@@ -169,6 +169,14 @@ class IndexAction {
             $lifeGiftProduct = null;
         }
 
+        // SITE-3982
+        // Трастфактор "Спасибо от Сбербанка" не должен отображаться на карточке товара от Связного
+        if (is_array($product->getPartnersOffer()) && count($product->getPartnersOffer()) !== 0 && (bool)$catalogJson['trustfactor_right']) {
+            $catalogJson['trustfactor_right'] = array_filter($catalogJson['trustfactor_right'], function ($trustfactor) {
+                return 'trust_sber' === $trustfactor ? false : true;
+            });
+        }
+
         $trustfactors = $this->getTrustfactors($catalogJson, $productCategoryTokens);
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
@@ -345,12 +353,17 @@ class IndexAction {
                     foreach ($data as $item) {
                         $shop = new \Model\Shop\Entity($item);
 
-                        $shopState = new \Model\Product\ShopState\Entity();
-                        $shopState->setShop($shop);
-                        $shopState->setQuantity(isset($quantityByShop[$shop->getId()]['quantity']) ? $quantityByShop[$shop->getId()]['quantity'] : 0);
-                        $shopState->setQuantityInShowroom(isset($quantityByShop[$shop->getId()]['quantityShowroom']) ? $quantityByShop[$shop->getId()]['quantityShowroom'] : 0);
+                        if ($shop->getWorkingTimeToday()) {
 
-                        $shopStates[] = $shopState;
+                            $shopState = new \Model\Product\ShopState\Entity();
+
+                            $shopState->setShop($shop);
+                            $shopState->setQuantity(isset($quantityByShop[$shop->getId()]['quantity']) ? $quantityByShop[$shop->getId()]['quantity'] : 0);
+                            $shopState->setQuantityInShowroom(isset($quantityByShop[$shop->getId()]['quantityShowroom']) ? $quantityByShop[$shop->getId()]['quantityShowroom'] : 0);
+
+                            $shopStates[] = $shopState;
+
+                        }
                     }
                 }
             );
@@ -407,11 +420,6 @@ class IndexAction {
         $page->setParam('additionalData', $additionalData);
         $page->setParam('creditData', $creditData);
         $page->setParam('shopStates', $shopStates);
-        $page->setParam('myThingsData', [
-            'EventType' => 'MyThings.Event.Visit',
-            'Action'    => '1010',
-            'ProductId' => $product->getId(),
-        ]);
         $page->setParam('reviewsData', $reviewsData);
         $page->setParam('reviewsDataSummary', $reviewsDataSummary);
         $page->setParam('categoryClass', $categoryClass);
@@ -457,7 +465,7 @@ class IndexAction {
             'price'        => $product->getPrice(),
             //'articul'      => $product->getArticle(),
             'name'         => $product->getName(),
-            'count'        => $cart->getQuantityByProduct($product->getId()),
+            'count'        => 1, //$cart->getQuantityByProduct($product->getId()),
             'product_type' => $productType,
             'session_id'   => session_id()
         );
@@ -471,7 +479,7 @@ class IndexAction {
      * Подготовка данных для набора продуктов
      * @var array $products
      * @var array $restProducts
-     * @var \Model\Product\Enitity $product
+     * @var \Model\Product\Entity $product
      * @var \Model\Region\Entity $region
      */
     private function prepareKit($products, $restProducts, $mainProduct, $region) {

@@ -1,0 +1,38 @@
+<div class="js-widget js-cart-total {{widgetId}}" data-template-selector="#tpl-cart-total">
+    <!-- итоговая стоимость заказа/купить в кредит -->
+    <div class="cartLine clearfix">
+        <div class="cartLine_left cartLine_left-double clearfix">
+            Итого {{shownQuantity}} на сумму: <span class="price">{{shownSum}} <span class="rubl">p</span></span>
+        </div><!--/ дубль для мобилки -->
+
+        {{#credit}}
+        <div class="js-creditPayment cartLine_right clearfix" data-template-selector="#tpl-creditPayment" data-value="{{&dataValue}}" data-price-selector=".{{widgetId}}">
+            <input class="js-creditButton customInput customInput-checkbox jsCustomRadio" type="checkbox" id="id-credit-input" name="" />
+
+            <label class="{{widgetId}} customLabel" for="id-credit-input"{{#isHidden}} style="display: none;"{{/isHidden}}>
+                <strong class="creditText">Купить в кредит</strong>
+                <span class="creditSum">&nbsp;</span>
+            </label>
+
+        </div>
+        {{/credit}}
+
+        <div class="cartLine_left clearfix">
+            Итого {{shownQuantity}} на сумму: <span class="price">{{shownSum}} <span class="rubl">p</span></span>
+        </div>
+    </div>
+    <!--/ итоговая стоимость заказа/купить в кредит -->
+
+    <!-- оформить заказ -->
+    <div class="cartBuy">
+        <a class="btnStyleOrange cartBuy_btn" href="{{orderUrl}}">Оформление заказа</a>
+    </div>
+    <!--/ оформить заказ -->
+</div>
+
+<script id="tpl-creditPayment" type="text/html">
+    {{={{{ }}}=}}
+    <strong class="creditText">Купить в кредит</strong>
+    <span class="creditSum">от <span class="price">{{shownPrice}} <span class="rubl">p</span></span> в месяц</span>
+    {{{={{ }}=}}}
+</script>

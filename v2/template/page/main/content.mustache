@@ -1,0 +1,57 @@
+<div class="content content-main">
+    <div class="js-slides-img slidesImg" data-value="{{&promoDataValue}}">
+	    <div class="js-slides-img-list slidesImgList">
+			<a class="js-slides-img-item slidesImg_item slidesImg_item-center" href="">
+				<img class="js-slides-img-cont slidesImg_cont" src="" />
+			</a>
+
+			<a class="js-slides-img-item slidesImg_item slidesImg_item-right" href="">
+				<img class="js-slides-img-cont slidesImg_cont" src="" />
+			</a>
+		</div>
+		<div class="js-slides-img-left slidesImgBtn slidesImgBtn-left"></div>
+		<div class="js-slides-img-right slidesImgBtn slidesImgBtn-right"></div>
+	</div>
+
+    {{#mainMenu}}
+        <ul class="menuCat clearfix">
+        {{#elements}}
+            <li class="menuCat_item">
+                <a class="menuCat_link" href="{{url}}">
+                    <span class="menuCat_chartWrap">
+                        <span class="menuCat_chart"{{#style}} style="{{style}}"{{/style}}>{{char}}</span>
+                        {{#image}}<img src="{{image}}" />{{/image}}
+                    </span>
+                    <span class="menuCat_name">{{&name}}</span>
+                </a>
+            </li>
+        {{/elements}}
+        </ul>
+    {{/mainMenu}}
+
+    <ul class="bannersLine clearfix">
+		<li class="bannersLine_item">
+			<a href="/how_choose_product" class="bannersLine_link">
+				<img src="/v2/css/modules/main-page/img/how_choose_product.png" alt="Как выбрать" class="bannersLine_img" />
+			</a>
+		</li>
+		
+		<li class="bannersLine_item">
+			<a href="/enterprize" class="bannersLine_link">
+				<img src="/v2/css/modules/main-page/img/enterprize.png" alt="Enter Prize" class="bannersLine_img" />
+			</a>
+		</li>
+
+		<li class="bannersLine_item">
+			<a href="/special_offers" class="bannersLine_link">
+				<img src="/v2/css/modules/main-page/img/special_offers.png" alt="WOW акции" class="bannersLine_img" />
+			</a>
+		</li>
+
+		<li class="bannersLine_item">
+			<a href="/take_credit" class="bannersLine_link">
+				<img src="/v2/css/modules/main-page/img/take_credit.png" alt="Купи в кредит" class="bannersLine_img" />
+			</a>
+		</li>
+    </ul>
+</div>

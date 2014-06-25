@@ -47,8 +47,11 @@ class ProductAction {
 
             $parentCategoryId = $product->getParentCategory() ? $product->getParentCategory()->getId() : null;
 
+            $params = [];
+            if ($request->get('shopId')) $params['shopId'] = $request->get('shopId');
+
             $responseData['success']  = true;
-            $responseData['redirect'] = \App::router()->generate('order.oneClick.new');
+            $responseData['redirect'] = \App::router()->generate('order.oneClick.new', $params);
             $responseData['cart']     = [
                 'sum'           => $cartProduct ? $cartProduct->getSum() : 0,
                 'quantity'      => $quantity,

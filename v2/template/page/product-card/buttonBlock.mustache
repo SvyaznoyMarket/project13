@@ -1,0 +1,27 @@
+<div class="js-widget {{widgetId}}" data-template-selector="#tpl-product-buyButtonBlock">
+    {{^cartLink}}
+        <div class="buyInfoBuy">
+            <!-- Каунтер -->
+            {{#cartSpinner}}
+                {{>partial/cart/spinner}}
+            {{/cartSpinner}}
+            <!--/ Каунтер -->
+
+            <!-- Кнопка купить -->
+            {{#cartButton}}
+                {{>partial/cart/button}}
+            {{/cartButton}}
+            <!--/ Кнопка купить -->
+
+            {{#cartQuickButton}}
+                {{>partial/cart/quickButton}}
+            {{/cartQuickButton}}
+        </div>
+    {{/cartLink}}
+
+    {{#cartLink}}
+        <a href="{{url}}" class="buyingBtn">
+            <strong>{{quantity}}</strong> шт. в <span class="buyingBtn_cart"><span class="borderBs">корзине</span></span>
+        </a>
+    {{/cartLink}}
+</div>

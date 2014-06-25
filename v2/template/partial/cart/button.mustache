@@ -1,0 +1,15 @@
+<div class="js-widget {{widgetId}}" data-template-selector="#tpl-product-buyButton">
+    {{^isDisabled}}
+        <a
+            href="{{url}}"
+            class="btnBuy {{id}}{{^isQuick}} js-buyButton{{/isQuick}}{{#isQuick}} js-quickBuyButton{{/isQuick}}{{#isInShopOnly}} btnBuy__inshop{{/isInShopOnly}}{{#isInCart}} btnBuy__incart{{/isInCart}}"
+            data-widget-selector=".{{widgetId}}"
+            data-url="{{&dataUrl}}"
+            data-value="{{&dataValue}}"
+        >{{text}}</a>
+    {{/isDisabled}}
+
+    {{#isDisabled}}
+        <span class="btnBuy btnBuy__disabled">{{text}}</span>
+    {{/isDisabled}}
+</div>

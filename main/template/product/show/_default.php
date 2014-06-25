@@ -52,7 +52,9 @@ $isKitPage = (bool)$product->getKit();
 
         <?= $helper->render('product/__notification-lowerPrice', ['product' => $product]) // Узнать о снижении цены ?>
 
-        <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Купи в кредит ?>
+        <? if (count($product->getPartnersOffer()) == 0) : ?>
+            <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Купи в кредит ?>
+        <? endif; ?>
 
             <?
             // new Card Properties Begin {
@@ -193,15 +195,23 @@ $isKitPage = (bool)$product->getKit();
 </div><!--/left section -->
 
 <div class="bProductSectionRightCol">
+
+    <? if (5 !== $product->getStatusId() && (bool)$shopStates): // SITE-3109 ?>
+    <div class="bWidgetBuy bWidgetBuy-shops mWidget">
+        <?= $helper->render('product/__shops', ['shopStates' => $shopStates, 'product' => $product]) // Доставка ?>
+    </div>
+    <? endif ?>
+
+    <? if ( $product->isInShopStockOnly() || !$product->getIsBuyable() ) : else : ?>
     <div class="bWidgetBuy mWidget">
         <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && 0 == count($kitProducts)): ?>
             <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
         <? endif ?>
-        
+
         <? if ($isKitPage && !$product->getIsKitLocked()) : ?>
             <?= $helper->render('cart/__button-product-kit', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить']) // Кнопка купить для набора продуктов ?>
         <? else : ?>
-        
+
             <?= $helper->render('cart/__button-product', [
                 'product' => $product,
                 'class' => 'btnBuy__eLink',
@@ -211,7 +221,7 @@ $isKitPage = (bool)$product->getKit();
             ]) // Кнопка купить ?>
         <? endif ?>
 
-        <? if (!$hasFurnitureConstructor): ?>
+        <? if (!$hasFurnitureConstructor && count($product->getPartnersOffer()) == 0): ?>
             <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
         <? endif ?>
 
@@ -224,6 +234,7 @@ $isKitPage = (bool)$product->getKit();
         <?= $helper->render('cart/__button-product-paypal', ['product' => $product]) // Кнопка купить через paypal ?>
 
     </div><!--/widget delivery -->
+    <? endif; ?>
 
     <? if ($lifeGiftProduct): ?>
         <?= $helper->render('cart/__button-product-lifeGift', ['product' => $lifeGiftProduct]) // Кнопка "Подари жизнь" ?>

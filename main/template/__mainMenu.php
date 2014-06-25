@@ -65,13 +65,18 @@ $count = count($menu);
     <? $showPromo = (!empty($parentToken) && !empty($promoHtmlBulk[$parentToken]['menu_promo']) && !empty($catalogJsonBulk[$parentToken]['use_promo_in_menu'])) ?>
 <? } ?>
 
+<? if (2 == $level): // SITE-3862 ?><!--noindex--><? endif ?>
+
 <ul class="bMainMenuLevel-<?= $level ?><?= empty($showPromo) ? '' : ' noPadding' ?>">
     <? if(!empty($showPromo)) { ?>
         <?= $promoHtmlBulk[$parentToken]['menu_promo'] ?>
     <? } else { ?>
         <? if ((3 ==$level) && $parent instanceof \Model\Menu\Entity && $parent->image): ?>
             <li class="bMainMenuLevel-<?= $level ?>__eHead"><?= $parent->name ?></li>
-            <li class="bMainMenuLevel-<?= $level ?>__eImageItem"><img class="bMainMenuLevel-<?= $level ?>__eImage" width="150" src="<?= $parent->image ?>" alt="<?= $helper->escape($parent->name) ?>" /></li>
+            <li class="bMainMenuLevel-<?= $level ?>__eImageItem">
+                <img class="bMainMenuLevel-<?= $level ?>__eImage lazyMenuImg" width="150" data-src="<?= $parent->image ?>" alt="<?= $helper->escape($parent->name) ?>" />
+                <noscript><img class="bMainMenuLevel-<?= $level ?>__eImage" width="150" src="<?= $parent->image ?>" alt="<?= $helper->escape($parent->name) ?>" /></noscript>
+            </li>
         <? endif ?>
 
         <? $i = 1; foreach ($menu as $iMenu): ?>
@@ -142,5 +147,7 @@ $count = count($menu);
         <? $i++; endforeach ?>
     <? } ?>
 </ul>
+
+<? if (2 == $level): // SITE-3862 ?><!--/noindex--><? endif ?>
 
 <? };

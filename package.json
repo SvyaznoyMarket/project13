@@ -1,0 +1,38 @@
+{
+  "name": "Enter",
+  "title": "Grunt.js for Enter.ru",
+  "homepage": "http://www.enter.ru/",
+  "author": {
+    "name": "Enter Frontend Team",
+    "url": "https://github.com/SvyaznoyMarket/project13"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SvyaznoyMarket/project13"
+  },
+  "private": true,
+  "engines": {
+    "node": ">= 0.10.21"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "dependencies": {
+    "jshint": "~2.4.0"
+  },
+  "devDependencies": {
+    "grunt": "0.4.2",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-contrib-less": "~0.11.0",
+    "grunt-contrib-uglify": "~0.3.2",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-jsmin-sourcemap": "^1.10.0",
+    "grunt-newer": "^0.7.0",
+    "grunt-shim-modules": "0.0.2",
+    "load-grunt-config": "^0.10.0",
+    "time-grunt": "^0.3.2"
+  },
+  "keywords": []
+}

@@ -1,0 +1,11 @@
+<!-- листинг товаров  -->
+<div class="js-productList-container catalogList" data-url="{{url}}" data-value="{{&dataValue}}" data-reset="{{&dataReset}}">
+    {{#products}}
+        {{>partial/product-card/default}}
+    {{/products}}
+</div>
+<!--/ листинг товаров  -->
+
+{{#moreLink}}
+    {{>partial/product-list/moreLink}}
+{{/moreLink}}

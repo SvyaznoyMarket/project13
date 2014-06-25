@@ -9,6 +9,7 @@
 		body = $('body'),
 		mobilePhoneField = $('.jsMobile'),
 		authBlock = $('#enterprize-auth-block'),
+//		infoBlock = $('#enterprize-info-block'),
 
 		/**
 		 * Конфигурация валидатора для формы ЛК Enterprize
@@ -281,6 +282,17 @@
 
 			return false;
 		};
+
+		// TODO - deprecated, по причине таска SITE-3934
+//		openInfoBlock = function openInfoBlock() {
+//			infoBlock.lightbox_me({
+//				centered: true,
+//				autofocus: true,
+//				closeSelector: ".closePopup"
+//			});
+//
+//			return false;
+//		};
 	// end of functions
 
 	// устанавливаем маску для поля "Ваш мобильный телефон"
@@ -294,4 +306,10 @@
 	if ( $('.bGoodsSlider').length ) {
 		$('.bGoodsSlider').goodsSlider();
 	}
+
+	// Открываем информационный попап
+//	if ( infoBlock.length ) {
+//		openInfoBlock();
+//	}
+
 }(window.ENTER));

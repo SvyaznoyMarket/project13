@@ -177,7 +177,7 @@ var DirectCredit = {
 			'getPayment', 
 			{ products : self.basketPull },
 			function(result){
-				console.info('sendCredit');
+				console.info('sendCredit', self.basketPull);
 
 				if ( result.payment > 0) {
 					self.output.text( window.printPrice( Math.ceil( result.payment ) ) );

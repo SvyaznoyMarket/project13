@@ -3,6 +3,8 @@
  * @var $page             \View\DefaultLayout
  * @var $user             \Session\User
  * @var $enterpizeCoupons \Model\EnterprizeCoupon\Entity[]
+ * @var $enterpizeCoupon  \Model\EnterprizeCoupon\Entity
+ * @var $isCouponSent     bool
  */
 ?>
 
@@ -15,7 +17,16 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
     <h1 class="enterPrize__logo">Enter Prize</h1>
 
     <div class="bgPage"></div>
-    
+
+    <? if ((bool)$isCouponSent): ?>
+        <div class="popup" id="enterprize-info-block">
+            <div class="popupbox">
+                <div class="font18 pb18">Вы можете заказать прямо сейчас любой товар Enter c фишкой, которую Вы получили по e-mail и в SMS. Или выбрать еще фишки <a href="#" class="closePopup">ЗДЕСЬ!</a></div>
+            </div>
+            <p style="text-align:center"><a href="#" class="closePopup bBigOrangeButton">OK</a></p>
+        </div>
+    <? endif ?>
+
     <? if (!$user->getEntity()): ?>
         <div class="enterPrizeHello">Всё, что вы хотели, со скидкой до 70%</div>
 
@@ -30,56 +41,11 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
 
     <? if ($isEnterprizeMember): ?>
         <div class="enterPrizeHello mReg">Всё, что вы хотели, со скидкой до 70%</div>
+        <?= $page->render('enterprize/_contentDescription') ?>
+    <? endif ?>
 
-        <p class="enterPrizeDesc"><span class="enterPrizeDesc__text">Как получить больше фишек?</span></p>
-
-        <div class="enterPrizeListWrap">
-            <ul class="enterPrizeList">
-                <li class="enterPrizeList__item mBlue">
-                    <strong>Сайт www.enter.ru</strong><br/>
-                    Всегда входите в личный кабинет.<br/>
-                    Заказывайте товары как обычно.
-                </li>
-
-                <li class="enterPrizeList__item mOrange">
-                    <strong>Розничные магазины ENTER</strong><br/>
-                    Входите в личный кабинет в терминале.<br/>
-                    Заказывайте товары через терминал.
-                </li>
-
-                <li class="enterPrizeList__item mGreen">
-                    <strong>Контакт-сENTER 8 800 700 00 09</strong><br/>
-                    Скажите оператору Контакт-cENTER, что Вы — участник Enter Prize!<br/>
-                    Оператор поможет оформить заказ.
-                </li>
-            </ul>
-
-            <div class="enterPrizeFinish">Ловите номер фишки в чеке после оплаты заказа!</div>
-        </div>
-
-        <p class="enterPrizeDesc"><span class="enterPrizeDesc__text">Как играть фишками и получать скидки?</span></p>
-
-        <div class="enterPrizeListWrap">
-            <ul class="enterPrizeList">
-                <li class="enterPrizeList__item mBlue">
-                    <strong>Сайт www.enter.ru</strong><br/>
-                    Входите в личный кабинет на www.enter.ru!<br/>
-                    При оформлении Заказа в поле КУПОН или ФИШКА вводите номер фишки! 
-                </li>
-
-                <li class="enterPrizeList__item mOrange">
-                    <strong>Розничные магазины ENTER</strong><br/>
-                    Скажите сотруднику магазина, что Вы — участник Enter Prize!<br/>
-                    И сообщите номер Фишки при оплате заказа! 
-                </li>
-
-                <li class="enterPrizeList__item mGreen">
-                    <strong>Контакт-сENTER 8 800 700 00 09</strong><br/>
-                    Скажите оператору Контакт-cENTER, что Вы — участник Enter Prize!<br/>
-                    И при оформлении заказа сообщите номер Фишки! 
-                </li>
-            </ul>
-        </div>
+    <? if ((bool)$isCouponSent): ?>
+        <?= $page->render('enterprize/_contentComplete') ?>
     <? endif ?>
 
     <ul class="enterPrize__list clearfix">

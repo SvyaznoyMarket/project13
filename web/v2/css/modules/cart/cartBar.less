@@ -1,0 +1,41 @@
+/* ==========================================================================
+   Корзина -> попап корзины .cartBar
+   ========================================================================== */
+
+.cartBar {
+	.box-shadow(0 0 12px rgba(0,0,0,0.2));
+	position: fixed;
+	z-index: 1009;
+	bottom: 0;
+	left: 0;
+
+	width: 100%;
+	padding: 15px 0;
+
+	background: rgb(255,255,255);
+	background: rgba(255,255,255,0.9);
+
+	&_text {
+		padding-right: 170px;
+
+		text-align: right;
+
+		font-size: 14px;
+		line-height: 30px;
+
+		.price {
+			font-size: 18px;
+		}
+	}
+
+	&_btn {
+		float: right;
+
+		width: 148px;
+		height: 28px;
+
+		font-size: 12px;
+		font-weight: bold;
+		line-height: 28px;
+	}
+}

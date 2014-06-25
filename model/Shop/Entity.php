@@ -39,6 +39,10 @@ class Entity {
     private $region;
     /* @var string */
     private $subwayName;
+    /* @var array */
+    private $subway = [];
+    /* @var array */
+    private $workingTime = [];
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -54,12 +58,16 @@ class Entity {
         if (array_key_exists('way_auto', $data)) $this->setWayAuto($data['way_auto']);
         if (array_key_exists('description', $data)) $this->setDescription($data['description']);
         if (array_key_exists('is_reconstruction', $data)) $this->setIsReconstructed($data['is_reconstruction']);
+        if (array_key_exists('working_time_by_day', $data)) $this->setWorkingTime($data['working_time_by_day']);
         if (array_key_exists('images', $data) && is_array($data['images'])) {
             foreach ($data['images'] as $photoData) {
                 $this->addPhoto(new Photo\Entity($photoData));
             }
         }
         if (array_key_exists('geo', $data)) $this->setRegion(new Region\Entity($data['geo']));
+        if (array_key_exists('subway', $data)) {
+            foreach ($data['subway'] as $subwayData) $this->setSubway(new Subway\Entity($subwayData));
+        }
     }
 
     /**
@@ -327,5 +335,56 @@ class Entity {
     {
         $this->subwayName = (string)$swName;
     }
+
+    /**
+     * @param \Model\Shop\Subway\Entity $subway
+     */
+    public function setSubway($subway)
+    {
+        $this->subway[] = $subway;
+    }
+
+    /**
+     * @return \Model\Shop\Subway\Entity[]
+     */
+    public function getSubway()
+    {
+        return $this->subway;
+    }
+
+    /**
+     * @param array $workingTime
+     */
+    private  function setWorkingTime($workingTime)
+    {
+        $this->workingTime = $workingTime;
+    }
+
+    /**
+     * @return array
+     */
+    public function getWorkingTime()
+    {
+        return $this->workingTime;
+    }
+
+    /**
+     * @return null|array
+     */
+    public function getWorkingTimeToday() {
+        if ((bool)$this->getWorkingTime()) {
+            $workingTime = $this->getWorkingTime();
+            // date('w') =>  0 - воскресенье ... 6 - суббота
+            $map = [ 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat' ];
+            if ( isset($workingTime[ $map[date('w')] ]) && $workingTime[ $map[date('w')] ]['start_time'] && $workingTime[ $map[date('w')] ]['end_time']) {
+                return $workingTime[ $map[date('w')] ];
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
 
 }

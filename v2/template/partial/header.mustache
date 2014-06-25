@@ -1,0 +1,57 @@
+<header class="header clearfix">
+    <!-- Обертка в 940 px-->
+    <div class="contentBox940">
+        <!-- Хлебные крошки -->
+        <div class="headerCenterWrap">
+            <div class="headerCenter">
+                {{#breadcrumbBlock}}
+                    <div class="breadCrumbs">
+                    {{#breadcrumbs}}
+                        <a class="breadCrumbs_link" href="{{url}}">{{name}}</a>
+                    {{/breadcrumbs}}
+                    </div>
+                {{/breadcrumbBlock}}
+            </div>
+        </div>
+        <!--/ Хлебные крошки -->
+
+        <!-- Меню и логотип -->
+        <div class="headerLeftAside">
+            <div class="navIco"><span class="navIco_link"></span></div>
+
+            <a class="logo" href="/"><img class="logo_img" src="/v2/css/modules/header/img/logo.gif" alt="" /></a>
+        </div>
+        <!--/ Меню и логотип -->
+
+        <!-- Панель юзера - личный кабинет, поиск, корзина -->
+        <div class="headerRightAside">
+            {{#userBlock}}
+                {{>partial/user}}
+            {{/userBlock}}
+            <div class="transBg"></div>
+        </div>
+        <!--/ Панель юзера - личный кабинет, поиск, корзина -->
+    </div><!--/ Обертка в 940 px-->
+</header><!--/ Шапка-->
+
+<nav id="nav" class="nav">
+    <div class="navHead">
+        <div class="navHead_col navIco"><span class="navIco_link"></span></div>
+
+        <a class="navHead_col navHead_col-ico" href="/">
+            <img class="navHead_icoImg" src="/v2/css/modules/header/img/logo.gif" />
+        </a>
+
+        <div class="navHead_colWrap">
+            <span class="navHead_col navHead_col-text jsSelectCity"><span class="text">{{regionBlock.regionName}}</span></span>
+
+            <div class="transBg"></div>
+        </div>
+    </div>
+
+    {{#mainMenu}}
+        {{>partial/main-menu/level-1}}
+    {{/mainMenu}}
+</nav>
+
+<div class="fader"></div>

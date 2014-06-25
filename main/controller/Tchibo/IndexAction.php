@@ -48,7 +48,9 @@ class IndexAction {
         }
         /** @var $category  \Model\Product\Category\Entity */
 
-
+        if ($category->getProductCount() == 0) {
+            return new \Http\RedirectResponse(\App::router()->generate('content', ['token' => \App::config()->tchibo['whereToBuyPage']]));
+        }
 
         // получаем catalog json для категории
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
@@ -96,10 +98,11 @@ class IndexAction {
                 $product = $products[$productId];
                 /** @var $product \Model\Product\Entity */
                 $itemProducts[] = [
-                    'image' => $product->getImageUrl(2), // 163х163 seize
-                    'link'  => $product->getLink(),
-                    'name'  => $product->getName(),
-                    'price' => $product->getPrice(),
+                    'image'         => $product->getImageUrl(2), // 163х163 seize
+                    'link'          => $product->getLink(),
+                    'name'          => $product->getName(),
+                    'price'         => $product->getPrice(),
+                    'isBuyable'     => $product->getIsBuyable()
                 ];
             }
 

@@ -1,0 +1,35 @@
+<div class="js-widget {{widgetId}}" data-template-selector="#tpl-product-slider">
+    <div class="js-productSlider {{#hasCategories}}sliderCat{{/hasCategories}} clearfix" data-url="{{&dataUrl}}" data-name="{{&dataName}}">
+
+        {{#hasCategories}}
+        <div class="sliderCatWrap">
+            <ul class="sliderCatList">
+            {{#categories}}
+                <li class="sliderCatList_item" data-id="{{id}}">{{name}}</li>
+            {{/categories}}
+            </ul>
+        </div>
+        {{/hasCategories}}
+
+        <div class="sliderBox js-productSliderList">
+            <div class="sliderBox_inner">
+                <ul class="sliderBoxItems">
+                    {{#productCards}}
+                        <li class="sliderBoxItems_item" data-category="{{categoryId}}">
+                            <a class="productDesc" href="{{url}}">
+                                <img class="productDesc_img" src="{{image}}" />
+                                <span class="productDesc_name">{{name}} </span>
+                            </a>
+                            <div class="productPrice">{{shownPrice}} <span class="rubl">p</span></div>
+
+                            {{#cartButton}}
+                                {{>partial/cart/button}}
+                            {{/cartButton}}
+                        </li>
+                    {{/productCards}}
+                </ul>
+            </div>
+            <div class="sliderBox_trans"></div>
+        </div>
+    </div>
+</div>

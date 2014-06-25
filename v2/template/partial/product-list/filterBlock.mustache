@@ -1,0 +1,50 @@
+<div class="catalogHead js-action-params clearfix">
+    <div class="catalogHead_title">Бренды и параметры</div>
+
+    <span class="catalogHead_btn btnStyleGrey"><span class="arrow">Еще параметры</span></span>
+</div><!--/ кнопки - показать фильтры -->
+
+<!-- параметры фильтрации -->
+<div class="params js-params">
+    {{#filters}}
+        {{^isHiddenType}}
+            <div class="params_title js-params-title">{{name}}</div>
+            <div class="params_cont js-params-cont">
+                {{>partial/product-list/filter}}
+            </div>
+        {{/isHiddenType}}
+
+        {{#isHiddenType}}
+            {{>partial/product-list/filter}}
+        {{/isHiddenType}}
+    {{/filters}}
+
+    {{#actionBlock}}
+        {{>partial/product-list/filterAction}}
+    {{/actionBlock}}
+</div>
+<!--/ параметры фильтрации -->
+
+<!-- фильтры  -->
+<div class="filter clearfix">
+    
+    {{>partial/product-list/hotlink}}
+
+    {{#selectedFilterBlock}}
+        {{>partial/product-list/selectedFilter}}
+    {{/selectedFilterBlock}}
+
+    <!--
+    <div class="viewNum">
+        Показано: 26 моделей
+    </div><!--/ показано моделей на странице -->
+
+    {{#openedFilters}}
+        <div class="filterPrice">{{>partial/product-list/filter}}</div>
+    {{/openedFilters}}
+
+    {{#sortingBlock}}
+        {{>partial/product-list/sorting}}
+    {{/sortingBlock}}
+</div>
+<!--/ фильтры  -->

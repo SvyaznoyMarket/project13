@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Ошибка</title>
+
+        <meta id="js-enter-debug" name="enter-debug" content="{{&dataDebug}}">
+        <meta id="js-enter-version" name="enter-version" content="{{&dataVersion}}">
+        <meta id="js-enter-module" name="enter-module" content="default">
+        <link rel="stylesheet" href="/v2/css/global.min.css">
+
+        <script data-main="/v2/js/main.js" src="/v2/js/vendor/require-2.1.11.js"></script>
+    </head>
+    <body>
+        <h1>Ошибка</h1>
+        <pre>
+{{#error.type}}<strong>type:</strong> {{error.type}}{{/error.type}}
+{{#error.message}}<strong>message:</strong> {{error.message}}{{/error.message}}
+{{#error.file}}<strong>file:</strong> {{error.file}}{{/error.file}}
+{{#error.line}}<strong>line:</strong> {{error.line}}{{/error.line}}
+        </pre>
+    </body>
+</html>

@@ -12,7 +12,7 @@
 	// end of vars
 
 	var
-		cardChangeHandler = function cardChangeHandler() {
+		cardChangeHandler = function cardChangeHandlerF() {
 			var
 				newCardData,
 				cardIndex,
@@ -22,7 +22,7 @@
 			// end of vars
 
 			var
-				changeCardImage = function changeCardImage() {
+				changeCardImage = function changeCardImageF() {
 					if ( !activeCard.length || !newCardData.hasOwnProperty('image') ) {
 						return;
 					}
@@ -30,7 +30,7 @@
 					activeCard.css('background', 'url(' + newCardData.image + ') 260px -3px no-repeat');
 				},
 
-				changeCardMask = function changeCardMask() {
+				changeCardMask = function changeCardMaskF() {
 					if ( !activeCardNumber.length || !newCardData.hasOwnProperty('mask') ) {
 						return;
 					}
@@ -39,7 +39,7 @@
 					activeCardNumber.mask(newCardData.mask, {placeholder: '*'});
 				},
 
-				changeCardDescription = function changeCardDescription() {
+				changeCardDescription = function changeCardDescriptionF() {
 					if ( !activeCardDescription.length || !newCardData.hasOwnProperty('description') ) {
 						return;
 					}
@@ -47,7 +47,7 @@
 					activeCardDescription.text(newCardData.description);
 				},
 
-				changeCardValue = function changeCardValue() {
+				changeCardValue = function changeCardValueF() {
 					if ( !activeCardNumber.length || !newCardData.hasOwnProperty('value') ) {
 						return;
 					}
@@ -60,7 +60,7 @@
 				return;
 			}
 
-			cardIndex = $('.jsBonusCard input[name="bonus_card"]').index(this);
+			cardIndex = $('.jsBonusCard .jsCard').index(this);
 			if ( -1 == cardIndex ) {
 				return;
 			}
@@ -80,13 +80,13 @@
 			changeCardDescription();
 		},
 
-		setDefaults = function setDefaults() {
+		setDefaults = function setDefaultsF() {
 			var
 				activeCardNumber = $('.jsActiveCard .jsCardNumber');
 			// end of vars
 
 			var
-				setMask = function setMask() {
+				setMask = function setMaskF() {
 					if ( !data[0].hasOwnProperty('mask') ) {
 						return;
 					}
@@ -94,7 +94,7 @@
 					activeCardNumber.mask(data[0].mask, {placeholder: '*'});
 				},
 
-				setValue = function setValue() {
+				setValue = function setValueF() {
 					if ( !data[0].hasOwnProperty('value') ) {
 						return;
 					}
@@ -129,17 +129,10 @@
 	$.mask.definitions['x'] = '[0-9]';
 	setDefaults();
 
-	body.on('change', '.jsBonusCard input[name="bonus_card"]', cardChangeHandler);
+	body.on('change', '.jsBonusCard .jsCard', cardChangeHandler);
 	console.groupEnd();
 
 })(jQuery);
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Order delivery address
  *
@@ -767,20 +760,14 @@
 	$('body').bind('orderdeliverychange', function() {ymaps.ready(mapCreate)});
 
 }(this, this.document, this.jQuery, this.ENTER));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 ;(function ( window, document, $, ENTER, ko ) {
 	var
 		constructors = ENTER.constructors,
 		utils = ENTER.utils,
 		OrderModel,
 		pageConfig = ENTER.config.pageConfig,
-		prepayment = pageConfig.prepayment;
+		prepayment = pageConfig.prepayment,
+        $body = $(document.body);
 	// end of vars
 
 	console.info('deliveryBox.js init');
@@ -1475,12 +1462,21 @@
 		 */
 		DeliveryBox.prototype.clickCalendarDay = function( data ) {
 			var
-				self = this;
+				self = this,
+                oldDate = self.choosenDate(),
+                daysDiff;
 			// end of vars
 			
 			if ( !data.avalible ) {
 				return false;
 			}
+
+            try {
+                daysDiff = (data.value - oldDate.value) / (24*60*60*1000);
+                $body.trigger('trackUserAction', ['1_4_1 Смена даты', daysDiff]);
+            } catch (e) {
+                console.error(e);
+            }
 
 			// Если включен PayPal ECS необходимо сохранить выбранную дату в cookie
 			if ( OrderModel.paypalECS() ) {
@@ -1814,13 +1810,6 @@
 	}());
 
 }(this, this.document, this.jQuery, this.ENTER, this.ko));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Работа с кредитными брокерами
  */
@@ -1874,13 +1863,6 @@
 		creditInit();
 	}
 }(this));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 ;(function (window, document, $, ENTER) {
 	console.info('orderDictionary.js init...');
 
@@ -2172,13 +2154,6 @@
 	}());
 	
 }(this, this.document, this.jQuery, this.ENTER));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Sertificate
  *
@@ -2331,13 +2306,108 @@
 	pin.mask('nnnn', { completed: SertificateCard.checkCard, placeholder: '*' } );
 
 }(this));
- 
- 
-/** 
- * NEW FILE!!! 
+/**
+ * Google Analytics steps tracking
+ *
+ * @author Zhukov Roman
+ * @requires jQuery
  */
- 
- 
+
+;(function(){
+    var // variables
+        w = window,
+        _gaq = w._gaq || [],
+        ga = w[w['GoogleAnalyticsObject']],
+        $ = w.jQuery,
+        body = $(document.body),
+        region = $('#jsDeliveryAddress').data('value')['regionName'],
+
+        // functions
+        sendAnalytic = function sendAnalyticF (event, step, action) {
+            var act = action || '',
+                st = step || '';
+
+            if (event && event.data) {
+                if (event.data.step) st = event.data.step;
+                if (event.data.action) act = event.data.action;
+            }
+
+            if (typeof ga === 'undefined') ga = window[window['GoogleAnalyticsObject']]; // try to assign ga
+
+            // sending
+            if (typeof _gaq === 'object') _gaq.push(['_trackEvent', 'воронка_' + region, st, act]);
+            if (typeof ga === 'function') ga('send', 'event', 'воронка_' + region, st, act);
+
+            // log to console
+            console.log('[Google Analytics] Step "%s" sended with action "%s" for воронка_%s', st, act, region);
+        };
+
+    console.log('[Init] Google Analytics Tracking');
+
+    // common listener for triggering from another files or functions
+    body.on('trackUserAction.orderTracking', sendAnalytic);
+
+    body.on('click.orderTracking', 'a.bBackCart', function(e) {
+        if ( $(e.target).hasClass('mOrdeRead') ) body.trigger('trackUserAction', ['3 Редактировать товары']);
+        else body.trigger('trackUserAction', ['1_3 Доставка, ушел в корзину']);
+    });
+
+    body.on('click.orderTracking', 'a#auth-link', {step: '4_0 Авторизация'}, sendAnalytic);
+
+    body.on('focusin.orderTracking', function(e) {
+        var $target = $(e.target);
+        switch ( $target.attr('id') ) {
+            case 'order_recipient_first_name':
+                body.trigger('trackUserAction', ['4_1 Имя']); break;
+            case 'order_recipient_last_name':
+                body.trigger('trackUserAction', ['4_2 Фамилия']); break;
+            case 'order_recipient_email':
+                body.trigger('trackUserAction', ['4_3 Email']); break;
+            case 'order_recipient_phonenumbers':
+                body.trigger('trackUserAction', ['4_4 телефон']);
+                for (var i in ENTER.OrderModel.deliveryBoxes()) {
+                    if (/standart/.test(ENTER.OrderModel.deliveryBoxes()[i].state)) {
+                        body.trigger('trackUserAction', ['4_5_1 ЛД Доставка - Адрес']);
+                        break;
+                    }
+                }
+                break;
+            case 'order_address_street':
+                body.trigger('trackUserAction', ['4_5_2 ЛД Доставка - Улица']); break;
+            case 'order_address_building':
+                body.trigger('trackUserAction', ['4_5_3 ЛД Доставка - Дом']); break;
+            case 'order_address_metro':
+                body.trigger('trackUserAction', ['4_5_4 ЛД Доставка - Метро']); break;
+            case 'bonus-card-number':
+                body.trigger('trackUserAction', ['5 Связной-клуб']); break;
+        }
+    });
+
+    body.on('click.orderTracking', '.mPayMethods .bCustomLabel', function(e){
+        body.trigger('trackUserAction', ['6 Тип оплаты', $(e.target).text()]);
+    });
+
+    body.on('click.orderTracking', '.mRules .bCustomLabel', function(e) {
+        var $target = $(e.target);
+        if ($target.hasClass('bCustomLabel')) body.trigger('trackUserAction', ['7 Согласие']);
+        if ($target.attr('href') == '/terms') body.trigger('trackUserAction', ['7_1 Условия']);
+        if ($target.attr('href') == '/legal') body.trigger('trackUserAction', ['7_2 Право']);
+    });
+
+    // Time interval change
+    body.on('focus', 'select.bSelect', function() {
+        var oldIndex = $(this).prop('selectedIndex');
+        $(this).off('blur').on('blur', function(){
+            var diff = oldIndex - $(this).prop('selectedIndex');
+            if (diff == 0) body.trigger('trackUserAction', ['1_4_2 Смена времени', 'оставил']);
+            else body.trigger('trackUserAction', ['1_4_2 Смена времени', 'сменил']);
+        })
+    });
+
+    // initial trigger
+    body.trigger('trackUserAction', ['0 Вход'])
+
+})();
 /**
  * Валидация формы. Отправка на сервер. Аналитика
  */
@@ -2552,6 +2622,7 @@
 			if ( typeof window.yaCounter10503055 !== 'undefined' ) {
 				window.yaCounter10503055.reachGoal('\\orders\\complete');
 			}
+            $(document.body).trigger('trackUserAction', ['9 Завершение - успех']);
 		},
 
 		/**
@@ -2569,6 +2640,7 @@
 
 			if ( !res.success ) {
 				console.log('ошибка оформления заказа');
+                $(document.body).trigger('trackUserAction', ['8 Завершение - ошибка', res.error.code]);
 
 				utils.blockScreen.unblock();
 
@@ -2809,9 +2881,9 @@
 	// end of functions
 	
 	$.mask.definitions['n'] = '[0-9]';
-//	bonusCardNumber.mask('2 98nnnn nnnnnn', {
-//		placeholder: '*'
-//	});
+	bonusCardNumber.mask('2 98nnnn nnnnnn', {
+		placeholder: '*'
+	});
 	qiwiPhone.mask('(nnn) nnn-nn-nn');
 	phoneField.mask('(nnn) nnn-nn-nn');
 
@@ -2884,13 +2956,6 @@
 	console.log('orderValidation.js inited');
 
 }(this, this.document, this.jQuery, this.ENTER));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
 /**
  * Получение данных с сервера
@@ -2906,7 +2971,7 @@
 	var
 		serverData = $('#jsOrderDelivery').data('value'),
 		utils = ENTER.utils,
-		body = $('body');
+		body = $(document.body);
 	// end of vars
 
 
@@ -3066,9 +3131,9 @@
             }
         }
 
-		console.info('Созданные блоки:');
-		console.log(ENTER.OrderModel.deliveryBoxes());
+		console.info('Созданные блоки:', ENTER.OrderModel.deliveryBoxes());
 
+        if (ENTER.OrderModel.deliveryBoxes().length > 1) body.trigger('trackUserAction', ['1_2 Доставка, заказ разбит', ENTER.OrderModel.deliveryBoxes().length]);
 
 		// Добавляем купоны
 		ENTER.OrderModel.couponsBox(discounts);
@@ -3115,8 +3180,9 @@
 
 		$('.bCountSection').goodsCounter({
 			onChange:function( count ) {
-				console.info('counter change');
-				console.log(count);
+				console.info('counter change', count);
+
+                body.trigger('trackUserAction', ['1_4_3 Число товаров']);
 
 				var
 					seturl = $(this).data('seturl') || '',
@@ -3625,10 +3691,10 @@
 				if ( !res.success ) {
 					ENTER.OrderModel.couponError(res.error.message);
 					utils.blockScreen.unblock();
-
+                    body.trigger('trackUserAction', ['2 Купон', 'Отказ']);
 					return;
 				}
-
+                body.trigger('trackUserAction', ['2 Купон', 'Принят']);
 				ENTER.OrderModel.couponNumber('');
 			};
 
@@ -3730,6 +3796,8 @@
 
 			console.log(priorityState);
 			console.log(checkedInputId);
+
+            body.trigger('trackUserAction', ['1_1 Доставка', data.shortName]);
 
 			if ( $('#'+checkedInputId).attr('checked') ) {
 				console.warn('Этот пункт '+checkedInputId+' уже был выбран');

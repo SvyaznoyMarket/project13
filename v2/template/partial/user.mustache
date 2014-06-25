@@ -1,0 +1,39 @@
+<div class="js-widget {{widgetId}}" data-template-selector="#tpl-user">
+    <ul class="userBox">
+        {{#isCartNotEmpty}}
+            <li class="userBox_item">
+                <a class="userBox_link userBox_link-cart userBox_link-cartVal" href="{{cart.url}}">
+                    <span class="qnt">{{cart.quantity}}</span>
+                    <span class="userBox_text"><strong>{{cart.shownSum}}</strong> <span class="rubl">p</span></span>
+                </a>
+            </li><!-- полная корзина -->
+        {{/isCartNotEmpty}}
+        {{^isCartNotEmpty}}
+            <li class="userBox_item">
+                <a class="userBox_link userBox_link-cart" href="{{cart.url}}">
+                    <span class="userBox_text">Корзина</span>
+                </a>
+            </li><!-- пустая корзина -->
+        {{/isCartNotEmpty}}
+
+        {{#isUserAuthorized}}
+            <li class="userBox_item">
+                <a class="userBox_link userBox_link-auth userBox_link-authVal" href="{{userLink.url}}">
+                    <span class="userBox_text">{{userLink.name}}</span>
+                    <div class="transBg"></div>
+                </a>
+            </li><!-- пользователь залогинен -->
+        {{/isUserAuthorized}}
+        {{^isUserAuthorized}}
+            <li class="userBox_item">
+                <a class="userBox_link userBox_link-auth userBox_item-last" href="{{userLink.url}}">
+                    <span class="userBox_text">Личный кабинет</span>
+                </a>
+            </li><!-- пользователь не залогинен -->
+        {{/isUserAuthorized}}
+
+        <li class="userBox_item userBox_item-last">
+            <a class="userBox_link js-searchLink" href=""><span class="userBox_text">Поиск</span></a>
+        </li>
+    </ul>
+</div>

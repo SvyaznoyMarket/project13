@@ -1,0 +1,42 @@
+
+{{#properties}}
+    {{#name}}
+    <div class="chooseModel_title">
+        {{name}}
+    </div>
+    {{/name}}
+
+    {{^isImage}}
+    <ul class="chooseModelNum clearfix">
+        {{#options}}
+            <li class="chooseModelNum_item{{#isActive}} chooseModelNum__item-active{{/isActive}}">
+                <a class="chooseModelNum_link" href="{{url}}">{{shownValue}}{{#unit}} {{unit}}{{/unit}}</a>
+            </li>
+        {{/options}}
+    </ul>
+    {{/isImage}}
+
+
+    {{#isImage}}
+        <!-- Выбор цвета модели -->
+        <ul class="chooseModelColor clearfix">
+            {{#options}}
+                <li class="chooseModelColor_item{{#isActive}} chooseModelColor_item{{/isActive}}">
+                    <a class="chooseModelColor_link{{#isActive}} chooseModelColor_link-active{{/isActive}}" href="{{url}}">
+                        <img class="chooseModelColor_img" src="{{image}}" alt="{{&shownValue}}" />
+
+                        {{#isActive}}
+                            <div class="sticker"></div>
+                        {{/isActive}}
+                    </a>
+                </li>
+            {{/options}}
+        </ul>
+        <!--/ Выбор цвета модели -->
+    {{/isImage}}
+{{/properties}}
+
+
+
+
+

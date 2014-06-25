@@ -1,0 +1,89 @@
+/* ==========================================================================
+   Каталог -> листинг товаров .catalogList 
+   ========================================================================== */
+   
+@media only screen and (max-width: 959px) {
+	.catalogList {
+		padding-left: 6px;
+
+		&_item {
+    		width: 29%;
+			padding: 0 2% 20px;
+
+			&:nth-child(4n) {
+				border-right: 1px solid #e1e1e1;
+			}
+
+			&:nth-child(3n),
+			&:last-child {
+				border-right: none;
+			}
+		}
+	}
+}
+
+@media only screen and (max-width: 700px) {
+	.catalogList {
+		margin: 0 0 30px;
+
+		&_item {
+    		width: 44.2%;
+			padding: 0 2.5% 20px;
+
+			&:nth-child(3n) {
+				border-right: 1px solid #e1e1e1;
+			}
+
+			&:nth-child(2n),
+			&:last-child {
+				border-right: none;
+			}
+		}
+	}
+}
+
+@media only screen and (max-width: 600px) {
+	.catalogList {
+
+		&_item {
+    		width: 100%;
+    		height: auto;
+			margin: 0;
+			padding: 15px 0;
+
+    		border-right: none !important;
+    		border-bottom: 1px solid #e1e1e1;
+    		background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAPCAYAAADZCo4zAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpDOTk5RjgzMEJGM0QxMUUzOUFCREE2NEFFNDZFRTFFNSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpDOTk5RjgzMUJGM0QxMUUzOUFCREE2NEFFNDZFRTFFNSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjQ0RkE5OTUxQkVFMDExRTM5QUJEQTY0QUU0NkVFMUU1IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjQ0RkE5OTUyQkVFMDExRTM5QUJEQTY0QUU0NkVFMUU1Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+uGbogwAAAI5JREFUeNpi3Lp1Ky8DBHxmwAKYgPgiEN8CYk1cCq4AsQQQ78emCKQgHIh3AbE4NkUgBd+BOACXIiYojVMRE5Jp2BSpM6G5CaQoEog/QBUVoSvgBOJlQCwAxC+BuJ8JTXI9ELtDJZ2A+AYTHslrMEfilAQBFiBegSTpCMTX0QNKF4hfYJOEmaCPLzYBAgwAjZUmOEs2tv0AAAAASUVORK5CYII=) 97% 50% no-repeat;
+
+    		&:after {
+				position: absolute;
+				bottom: 0;
+
+				width: 0;
+				height: 0;
+
+				background: transparent;
+			}
+    	}
+
+    	&_desc {
+    		float: right;
+
+    		width: 60%;
+    	}
+
+    	.img {
+		    float: left;
+
+		    width: 40%;
+
+		    img {
+		    	width: 90%;
+		    }
+    	}
+
+    	.name {
+    		height: auto;
+    	}
+	}
+}

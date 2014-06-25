@@ -1,0 +1,80 @@
+/* ==========================================================================
+   Главная страница
+   ========================================================================== */
+   
+@media only screen and (max-width: 650px) {
+	.menuCat {
+
+		&_item {
+			width: 50%;
+
+			&:nth-child(2n) {
+
+				.menuCat_link {
+					border-right: 0 none;
+				}
+			}
+		}
+	}
+
+	.mainBanner {
+		width: 100%;
+
+		img {
+			width: 100%;
+			height: auto;
+		}
+	} 
+
+	.bannersLine {
+		width: 100%;
+
+		padding: 0;
+
+		&_item {
+			float: left;
+
+			width: 50%;
+			height: 158px;
+
+			overflow: hidden;
+
+			&:nth-child(2n) {
+
+				.bannersLine_link {
+					border-right: 0 none;
+				}
+			}
+		}
+
+		&_link {
+			padding: 15px 0;
+
+			border-bottom: 1px solid #858585;
+			border-right: 1px solid #858585;
+
+			text-align: center;
+			line-height: 127px;
+
+			height: 127px;
+		}
+
+		&_img {
+			width: 80%;
+		}
+	}
+
+	.slidesImg {
+
+		&_pager {
+			.rounded(0);
+			left: 0;
+
+			width: 100%;
+			text-align: center;
+
+			padding: 5px 0 5px 0;
+			margin-left: 0 !important;
+		}
+	}
+}

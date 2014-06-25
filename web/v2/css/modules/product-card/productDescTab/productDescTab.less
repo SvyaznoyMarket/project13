@@ -1,0 +1,86 @@
+/* ==========================================================================
+   Карточка товара -> табы подробного описания товара .productDescTab 
+   ========================================================================== */
+
+.productDescTab {
+	display: table;
+
+	width: 100%;
+	margin: 0 0 30px;
+
+	border-top: 1px solid @tabGreyBorder;
+
+	behavior: url('js/display-table.min.htc');
+	dt-display: table;
+
+	&_item {
+		display: table-cell;
+        overflow: hidden;
+
+		padding: 8px 0;
+
+		cursor: pointer;
+		text-align: center;
+        white-space: nowrap;
+
+		color: @tabGreyText;
+		border-right: 1px solid @tabGreyBorder;
+		border-bottom: 1px solid @tabGreyBorder;
+		background-color: @tabGrey;
+
+		font-size: 20px;
+
+		-dt-display: table-cell;
+
+		&:hover,
+		&-active {
+			text-decoration: none;
+
+			color: @darkGreyText;
+			background-color: @white;
+		}
+
+		&:last-child {
+			border-right: none;
+		}
+	}
+
+	.tabText {
+		display: inline-block;
+		zoom: 1;
+
+		vertical-align: top;
+
+		*display: inline;
+	}
+
+	.tabImg {
+		display: inline-block;
+		zoom: 1;
+
+		vertical-align: top;
+
+		*display: inline;
+
+		&_view {
+			padding-top: 4px;
+		}
+	}
+
+	.reviews {
+		display: inline-block;
+		zoom: 1;
+
+	    margin: 6px 0 0;
+
+	    vertical-align: top;
+
+	    font-size: 12px;
+
+	    *display: inline;
+	}
+
+	.reviewsStar {
+		height: 16px;
+	}
+}

@@ -75,11 +75,16 @@ class AppConfig {
     public $session = [
         'name'            => null,
         'cookie_lifetime' => null,
+        'cookie_domain'   => null,
     ];
     /** @var string */
     public $cacheCookieName = null;
     /** @var array */
     public $redirect301 = [
+        'enabled' => null,
+    ];
+    /** @var array */
+    public $mobileRedirect = [
         'enabled' => null,
     ];
 
@@ -237,15 +242,6 @@ class AppConfig {
         ],
     ];
 
-
-    /**
-     * @var array
-     * @hidden
-     */
-    public $myThings = [
-        'feeByCategory' => [],
-        'cookieName'    =>  null,
-    ];
     /** @var array */
     public $adFox = [
         'enabled' => null,
@@ -421,7 +417,8 @@ class AppConfig {
     ];
     /** @var array */
     public $cart = [
-        'productLimit'    => null, // максимальное количество товаров в корзине, при котором добавляемый товар не будет вытеснять первый товар из корзины
+        'productLimit' => null, // максимальное количество товаров в корзине, при котором добавляемый товар не будет вытеснять первый товар из корзины
+        'sessionName'  => null,
     ];
     /** @var array */
     public $user = [
@@ -522,6 +519,7 @@ class AppConfig {
         'formDataSessionKey' => null,
         'itemsInSlider' => null,
         'showSlider' => null,
+        'cookieName' => null,
     ];
 
     /** @var array */
@@ -537,6 +535,7 @@ class AppConfig {
         'rowHeight'  => null,
         'rowPadding' => null,
         'analyticsEnabled' => null,
+        'whereToBuyPage'    => null
     ];
 
     /** @var array */
@@ -553,6 +552,17 @@ class AppConfig {
         'userTicket' => [
             'cookieName' => null,
         ]
+    ];
+
+    /** @var array */
+    public $flocktoryExchange = [
+        'enabled' => null,
+    ];
+
+    /** @var array */
+    public $flocktoryCoupon = [
+        'enabled' => null,
+        'paramName' => null,
     ];
 
     public function __construct() {

@@ -1,0 +1,108 @@
+/* ==========================================================================
+   Каталог -> листинг товаров .catalogList 
+   ========================================================================== */
+
+.catalogList {
+	font-size: 0;
+
+	&_item {
+		position: relative;
+		z-index: 10;
+
+		display: inline-block;
+
+		width: 199px;
+		height: 370px;
+		margin: 0 0 50px;
+		padding: 0 20px 1px;
+
+		vertical-align: top;
+
+		border-right: 1px solid #e1e1e1;
+
+		&:nth-child(4n),
+		&:last-child {
+			border-right: none;
+		}
+
+		&:hover {
+			text-decoration: none;
+		}
+
+		&:after {
+			position: absolute;
+			bottom: -25px;
+			left: 0;
+
+			width: 101%;
+			height: 1px;
+
+			content: "";
+
+			background: #E1E1E1;
+		}
+	}
+
+	.name {
+		display: inline-block;
+    	overflow: hidden;
+
+		max-height: 110px;
+		margin: 0 0 10px;
+
+		vertical-align: top;
+
+		font-size: 16px;
+	}
+
+	.reviews {
+		margin: 0 0 10px;
+
+		&_star {
+			display: inline-block;
+
+		    height: 14px;
+		    margin: 0 2px 0 0;
+
+		    vertical-align: top;
+
+		    line-height: 14px;
+		}
+
+		&_count {
+			display: inline-block;
+
+		    margin: 0 0 0 5px;
+
+		    vertical-align: top;
+
+			color: #6b6b6b;
+
+			font-size: 14px;
+			line-height: 1;
+		}
+	}
+
+	.price {
+		margin: 15px 0 20px;
+
+		&_old {
+			text-decoration: line-through;
+
+			color: #6b6b6b;
+
+			font-size: 14px;
+		}
+
+		&_now {
+			font-size: 22px;
+			font-weight: bold;
+		}
+	}
+
+	.img {
+		margin: 0 0 15px;
+
+		text-align: center;
+	}
+}

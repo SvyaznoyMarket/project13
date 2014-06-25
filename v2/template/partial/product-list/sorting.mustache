@@ -1,0 +1,25 @@
+<div id="id-productSorting" class="js-widget {{widgetId}} widgetFr" data-template-selector="#tpl-productSorting">
+    <ul class="sorting sortingFull">
+        <li class="sorting_title">Сортировать</li>
+
+        {{#sortings}}
+            <li class="sorting_item">
+                <a class="js-productFilter-sort sorting_link{{#isActive}} sorting_link-active{{/isActive}}" href="{{url}}" data-value="{{&dataValue}}">{{&name}}</a>
+            </li>
+        {{/sortings}}
+    </ul><!--/ сортировка -->
+
+    <div class="sorting sortingAbb">
+        <span class="sorting_title">Сортировать</span>
+
+        <div class="js-productSorting-select sortingSelect">{{&sorting.name}}</div>
+
+        <ul class="sortingList">
+        {{#sortings}}
+            <li class="sortingList_item">
+                <a class="js-productFilter-sort sortingList_link" href="{{url}}" data-value="{{&dataValue}}">{{&name}}</a>
+            </li>
+        {{/sortings}}
+        </ul>
+    </div><!--/ сортировка моб версия -->
+</div>

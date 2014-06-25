@@ -1,0 +1,32 @@
+<div class="content">
+    <div class="contentBox960">
+
+        {{#categoryBlock}}
+            <ul class="catalogCategories clearfix">
+                {{#categories}}
+                <li class="catalogCategories_item">
+                    <a href="{{url}}" class="catalogCategories_link">
+                        <img src="{{image}}" alt="{{name}}" class="catalogCategories_img">
+                        <span class="catalogCategories_text">{{name}}</span>
+                    </a>
+                </li>
+                {{/categories}}
+            </ul>
+        {{/categoryBlock}}
+
+        {{>partial/navigation}}
+
+        {{#filterBlock}}
+            {{>partial/product-list/filterBlock}}
+        {{/filterBlock}}
+
+        {{#productBlock}}
+            {{>partial/product-list/default}}
+        {{/productBlock}}
+
+        {{^productBlock}}
+            Товары не найдены
+        {{/productBlock}}
+    </div>
+</div>
+

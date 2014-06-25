@@ -1,5 +1,9 @@
 <?php
 
+set_include_path(get_include_path() . PATH_SEPARATOR . implode(PATH_SEPARATOR, [
+    realpath(__DIR__ . '/../v2/Enter'),
+]));
+
 require_once __DIR__ . '/../lib/Debug/Timer.php';
 \Debug\Timer::start('app');
 
@@ -118,11 +122,28 @@ $response = null;
         } else {
             \App::partner()->set($response);
             \App::sclubManager()->set($response);
+            \App::couponManager()->set($response);
         }
 
         // debug panel
         if (\App::config()->debug) {
             (new \Debug\ShowAction())->execute($request, $response);
+        }
+
+        // удаление старых кук
+        try {
+            $session = \App::session();
+            $sessionParams = session_get_cookie_params();
+
+            foreach ([\App::config()->mainHost, \App::config()->mobileHost, 'enter.ru'] as $domain) {
+                $response->headers->removeCookie(
+                    $session->getName(),
+                    $sessionParams['path'],
+                    $domain
+                );
+            }
+        } catch (\Exception $e) {
+            \App::logger()->error($e, ['response']);
         }
 
         $response->send();
@@ -141,14 +162,25 @@ $request = \App::request();
 $router = \App::router();
 
 try {
-    // проверка редиректа
-    if (\App::config()->redirect301['enabled']) {
+    $request->attributes->add($router->match($request->getPathInfo(), $request->getMethod()));
+
+    // проверка редиректа для мобильного устройства
+    if (!$response instanceof \Http\Response && \App::config()->mobileRedirect['enabled']) {
+        $response = (new \Controller\MobileRedirectAction())->execute($request);
+    }
+
+    // проверка редиректа из cms
+    if (!$response instanceof \Http\Response && \App::config()->redirect301['enabled']) {
         $response = (new \Controller\RedirectAction())->execute($request);
     }
+
     // если предыдущие контроллеры не вернули Response, ...
     if (!$response instanceof \Http\Response) {
-        $request->attributes->add($router->match($request->getPathInfo(), $request->getMethod()));
         \App::logger()->info(['message' => 'Match route', 'route' => $request->attributes->get('route'), 'uri' => $request->getRequestUri(), 'method' => $request->getMethod()]);
+
+        if (\App::config()->mobileRedirect['enabled']) {
+            $response = (new \Controller\MobileRedirectAction())->execute($request);
+        }
 
         // action resolver
         $resolver = \App::actionResolver();

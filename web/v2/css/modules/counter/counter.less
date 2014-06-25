@@ -1,23 +1,28 @@
 /* ==========================================================================
-   Стили блока редактирования количества товаров .counter
+   Блока каунтера .counter
    ========================================================================== */
 
 .counter {
+	width: 155px;
+
 	color: @tabGreyText;
-	width: 150px;
 
 	&__btn {
 		float: left;
-		margin: 0;
-		padding: 0;
+
 		width: 40px;
 		height: 40px;
+		margin: 0;
+		padding: 0;
+
+		text-align: center;
+
+		color: @tabGreyText;
 		border: 1px solid @tabLightGreyBorder;
 		background: @tabGrey;
-		color: @tabGreyText;
-		text-align: center;
-		font-weight: bold;
+
 		font-size: 18px;
+		font-weight: bold;
 		line-height: 38px;
 
 		&-plus {
@@ -32,24 +37,32 @@
 	&__input {
 		.rounded(0);
 		float: left;
-		padding: 0;
+
 		width: 40px;
 		height: 38px;
+		padding: 0;
+
+		text-align: center;
+
+		color: @tabGreyText;
 		border: 1px solid @tabLightGreyBorder;
 		border-right: none;
 		border-left: none;
 		background: @white;
-		color: @tabGreyText;
-		text-align: center;
+
 		font-size: 18px;
 		line-height: 38px;
 	}	
 
 	&__num {
 		display: inline-block;
+
     	padding: 0 0 0 6px;
-		color: @typGray;
+
 		vertical-align: top;
+
+		color: @typGray;
+
 		font-size: 15px;
 		line-height: 40px;
 	}

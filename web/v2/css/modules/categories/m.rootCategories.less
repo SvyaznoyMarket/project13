@@ -1,0 +1,67 @@
+/* ==========================================================================
+   Категории товаров
+   ========================================================================== */
+
+@media only screen and (max-width: 800px) {
+	.rootCategories {
+		
+		&_item {
+	    	width: 50%;
+		}
+	}
+}
+
+@media only screen and (max-width: 600px) {
+	.rootCategories {
+		
+		&_item {
+			float: none;
+
+	    	width: 100%;
+
+	    	&:last-child {
+
+	    		.rootCategories_link {
+	    			border-bottom: none;
+	    		}
+	    	}
+		}
+
+		&_link {
+		    display: block;
+
+		    height: 150px;
+
+		    text-align: left;
+
+		    border-right: none;
+
+
+		}
+
+		&_img {
+			display: block;
+			float: left;
+			overflow: hidden;
+
+			width: 130px;
+			height: 130px;
+			padding: 10px;
+
+			.img {
+				height: 130px;
+			}
+		}
+
+		&_name {
+			display: table-cell;
+
+		    height: 130px;
+		    padding: 10px;
+
+		    vertical-align: middle;
+
+		    font-size: 16px;
+		}
+	}
+}

@@ -135,6 +135,16 @@ window.ANALYTICS = {
 			$('body').on('userLogged', liveTexUserInfo);
 		}
 
+		LiveTex.on("chat_open", function(e){
+			undefined != typeof(_gaq) && _gaq.push(['_trackEvent', 'webchat', 'chat_open']);
+			undefined != typeof(ga) && ga('send', 'event', 'webchat', 'chat_open');
+		});
+
+		LiveTex.on("chat_invitation_action", function(e){
+			undefined != typeof(_gaq) && _gaq.push(['_trackEvent', 'webchat', e.data.action]);
+			undefined != typeof(ga) && ga('send', 'event', 'webchat', e.data.action);
+		});
+
 		//$(document).load(function() {
 		(function () {
 			console.info('LiveTexJS init');
@@ -475,22 +485,6 @@ window.ANALYTICS = {
 			data		= $('#gaJS').data('vars'),
 		// end of vars
 
-			ga_init = function ga_init() {
-				console.log( 'gaJS init' );
-
-				(function (i, s, o, g, r, a, m) {
-					i['GoogleAnalyticsObject'] = r;
-					i[r] = i[r] || function () {
-						(i[r].q = i[r].q || []).push( arguments )
-					}, i[r].l = 1 * new Date();
-					a = s.createElement( o ),
-						m = s.getElementsByTagName( o )[0];
-					a.async = 1;
-					a.src = g;
-					m.parentNode.insertBefore( a, m )
-				})( window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga' );
-			},
-
 			gaBannerClick = function gaBannerClick( BannerId ) {
 				console.log( 'GA: send', 'event', 'Internal_Promo', BannerId );
 				ga( 'send', 'event', 'Internal_Promo', BannerId );
@@ -750,9 +744,8 @@ window.ANALYTICS = {
 
 		console.group('ports.js::gaJS');
 		try{
-			ga_init(); // блок инициализации аналитики для всех страниц
 			if ( 'function' !== typeof(ga) ) {
-				console.warn('GA: init error');
+				console.error('GA: init error');
 				return false; // метод ga не определён, ошибка, нечего анализировать, выходим
 			}
 			ga( 'create', 'UA-25485956-5', 'enter.ru' );
@@ -1053,51 +1046,51 @@ window.ANALYTICS = {
         console.groupEnd();
     },
 
-    AdmitadJS : function() {
-        window._retag = window._retag || [];
-        var ad_data = $('#AdmitadJS').data('value');
-
-        if (ad_data) {
-
-            if (ad_data.ad_data) {
-                /**
-                 * NB! Переменные потипу var ad_category должны быть глобальными согласно задаче SITE-1670
-                 */
-                if (ad_data.ad_data.ad_category) {
-                    window.ad_category = ad_data.ad_data.ad_category;
-                }
-
-                if (ad_data.ad_data.ad_product) {
-                    window.ad_product = ad_data.ad_data.ad_product;
-                }
-
-                if (ad_data.ad_data.ad_products) {
-                    window.ad_products = ad_data.ad_data.ad_products;
-                }
-
-                if (ad_data.ad_data.ad_order) {
-                    window.ad_order = ad_data.ad_data.ad_order;
-                }
-
-                if (ad_data.ad_data.ad_amount) {
-                    window.ad_amount = ad_data.ad_data.ad_amount;
-                }
-
-            }
-
-            if (ad_data.pushData) {
-                window._retag.push(ad_data.pushData);
-            }
-        }
-
-        (function(d){
-            var s=document.createElement("script");
-            s.async=true;
-            s.src=(d.location.protocol == "https:" ? "https:" : "http:") + "//cdn.admitad.com/static/js/retag.js";
-            var a=d.getElementsByTagName("script")[0];
-            a.parentNode.insertBefore(s, a);
-        }(document));
-    },
+//    AdmitadJS : function() {
+//        window._retag = window._retag || [];
+//        var ad_data = $('#AdmitadJS').data('value');
+//
+//        if (ad_data) {
+//
+//            if (ad_data.ad_data) {
+//                /**
+//                 * NB! Переменные потипу var ad_category должны быть глобальными согласно задаче SITE-1670
+//                 */
+//                if (ad_data.ad_data.ad_category) {
+//                    window.ad_category = ad_data.ad_data.ad_category;
+//                }
+//
+//                if (ad_data.ad_data.ad_product) {
+//                    window.ad_product = ad_data.ad_data.ad_product;
+//                }
+//
+//                if (ad_data.ad_data.ad_products) {
+//                    window.ad_products = ad_data.ad_data.ad_products;
+//                }
+//
+//                if (ad_data.ad_data.ad_order) {
+//                    window.ad_order = ad_data.ad_data.ad_order;
+//                }
+//
+//                if (ad_data.ad_data.ad_amount) {
+//                    window.ad_amount = ad_data.ad_data.ad_amount;
+//                }
+//
+//            }
+//
+//            if (ad_data.pushData) {
+//                window._retag.push(ad_data.pushData);
+//            }
+//        }
+//
+//        (function(d){
+//            var s=document.createElement("script");
+//            s.async=true;
+//            s.src=(d.location.protocol == "https:" ? "https:" : "http:") + "//cdn.admitad.com/static/js/retag.js";
+//            var a=d.getElementsByTagName("script")[0];
+//            a.parentNode.insertBefore(s, a);
+//        }(document));
+//    },
 
 	AlexaJS: function () {
 		_atrk_opts = {
@@ -1232,35 +1225,6 @@ window.ANALYTICS = {
 			$('body').append( $(arguments[0] + '') );
 		}
 		console.groupEnd();
-	},
-
-	myThingsTracker: function() {
-		//трекинг от MyThings. Вызывается при загрузке внешнего скрипта
-		window._mt_ready = function () {
-			if ( typeof(MyThings) != "undefined" ) {
-				var sendData = $('#myThingsTracker').data('value');
-
-				if ( !$.isArray(sendData) ) {
-					sendData = [sendData];
-				}
-
-				$.each(sendData, function(i, e) {
-
-					if (e.EventType !== "undefined") {
-						e.EventType = eval(e.EventType);
-					}
-					MyThings.Track(e)
-				});
-			}
-		}
-
-		mtHost = (("https:" == document.location.protocol) ? "https" : "http") + "://rainbow-ru.mythings.com";
-		mtAdvertiserToken = "1989-100-ru";
-		document.write(unescape("%3Cscript src='" + mtHost + "/c.aspx?atok="+mtAdvertiserToken+"' type='text/javascript'%3E%3C/script%3E"));
-	},
-
-	testFreak : function() {
-		document.write('<scr'+'ipt type="text/javascript" src="http://js.testfreaks.com/badge/enter.ru/head.js"></scr'+'ipt>')
 	},
 
 	marinSoftwarePageAddJS: function( callback ) {
@@ -1829,6 +1793,28 @@ window.ANALYTICS = {
 			console.log('googleTagManagerJS init');
 			console.groupEnd();
 		})(window,document,'script','dataLayer', data.containerId);
+	},
+
+	flocktoryExchangeJS: function () {
+		var
+			flocktoryExchange = $('#flocktoryExchangeJS'),
+			data = flocktoryExchange.data('value'),
+			_flocktory = window._flocktory = _flocktory || [];
+		// end of vars
+
+		if ( !flocktoryExchange.length || undefined == typeof(data) ) {
+			return;
+		}
+
+		console.info('flocktoryExchange');
+		console.log(['exchange', data]);
+
+		_flocktory.push(['exchange', data]);
+		(function() {
+			var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
+			s.src = "//api.flocktory.com/1/hello.js";
+			var l = document.getElementsByTagName('script')[0]; l.parentNode.insertBefore(s, l);
+		})();
 	},
 
 	myragonOrderCompleteJS: function() {

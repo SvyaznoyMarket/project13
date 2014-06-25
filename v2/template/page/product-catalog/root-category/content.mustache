@@ -1,0 +1,17 @@
+<div class="content">
+	<div class="pageTitle">{{title}}</div>
+
+    {{#categoryBlock}}
+    <ul class="rootCategories clearfix">
+        {{#categories}}
+		<li class="rootCategories_item">
+			<a href="{{url}}" class="rootCategories_link">
+				<span class="rootCategories_img"><img src="{{image}}" alt="{{name}}" class="img"></span>
+				<span class="rootCategories_name">{{name}}</span>
+			</a>
+		</li>
+        {{/categories}}
+    </ul>
+    {{/categoryBlock}}
+</div>
+

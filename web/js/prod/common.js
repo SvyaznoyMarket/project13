@@ -107,13 +107,6 @@
 		}
 	});
 }(this, this.document, this.jQuery, this.ENTER));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Обработчик для личного кабинета
  *
@@ -160,13 +153,6 @@
 
 
 
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 // (function(){
 //   $(function(){
 //     if($('.bCtg__eMore').length) {
@@ -302,13 +288,6 @@
 //   });
 // })();
 
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Обработчик для кнопок купить
  *
@@ -541,22 +520,6 @@
 
 
 				/**
-				 * myThings аналитика добавления в корзину
-				 */
-					myThingsAnalytics = function myThingsAnalytics( event, data ) {
-					var
-						productData = data.product;
-
-					if ( productData && typeof(productData.id) && typeof MyThings !== 'undefined' ) {
-						MyThings.Track({
-							EventType: MyThings.Event.Visit,
-							Action: '1013',
-							ProductId: productData.id
-						});
-					}
-				},
-
-				/**
 				 * Soloway аналитика добавления в корзину
 				 */
 					adAdriver = function adAdriver( event, data ) {
@@ -703,7 +666,6 @@
                 if (data.product) {
                     kissAnalytics(event, data);
                     googleAnalytics(event, data);
-                    myThingsAnalytics(event, data);
                     adAdriver(event, data);
                     addToRetailRocket(event, data);
                 }
@@ -738,13 +700,6 @@
 
 }(window.ENTER));
 
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Окно смены региона
  *
@@ -1036,13 +991,6 @@
 		showRegionPopup();
 	}
 }(this));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Custom inputs
  *
@@ -1099,13 +1047,6 @@
 
 	inputs.trigger('updateState');
 }());
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 $(document).ready(function(){
 	// var carturl = $('.lightboxinner .point2').attr('href')
 
@@ -1349,13 +1290,6 @@ $(document).ready(function(){
 	}
 
 });
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Перемотка к Id
  *
@@ -1375,13 +1309,6 @@ $(document).ready(function(){
 		$('.jsGoToId').bind('click',goToId);
 	});
 }());
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Обработчик горячих ссылок
  *
@@ -1411,13 +1338,6 @@ $(document).ready(function(){
 
 
 
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * JIRA
  */
@@ -1438,13 +1358,6 @@ $(document).ready(function(){
 		}
 	};
 }());
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 ;(function( ENTER ) {
 	var constructors = ENTER.constructors,
 		body = $('body'),
@@ -2048,13 +1961,6 @@ $(document).ready(function(){
 	});
 
 }(window.ENTER));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 $(document).ready(function() {
 	/**
 	 * Подписка
@@ -2137,13 +2043,6 @@ $(document).ready(function() {
 			$(this).next('.enterPrizeListWrap').toggle('fast');
 	});
 });
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 ;(function($){	
 	/*paginator*/
 	var EnterPaginator = function( domID,totalPages, visPages, activePage ) {
@@ -2636,7 +2535,7 @@ $(document).ready(function() {
 						return;
 					}
 
-					item = ['_trackEvent', 'collection_view', collection_name+'_'+collection_position, delay];
+					item = ['_trackEvent', 'collection_view', collection_name+'_'+collection_position, delay.toString(), , true];
 
 					if ( 'undefined' == typeof(_gaq) ) {
 						tchiboAnalyticsBuffer.push(item);
@@ -2695,7 +2594,7 @@ $(document).ready(function() {
 						return;
 					}
 
-					item = ['_trackEvent', 'item_click', collection_name+'_'+item_name, position];
+					item = ['_trackEvent', 'item_click', collection_name+'_'+item_name, position.toString()];
 
 					console.info('TchiboSliderAnalytics item_click');
 					console.log(item);
@@ -2727,13 +2626,6 @@ $(document).ready(function() {
 		}
 	}
 })(jQuery);
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * SITE-2693
  * Показывать окно авторизации, если по аяксу был получен ответ с 403-м статусом
@@ -2763,13 +2655,6 @@ $(document).ready(function() {
 		}
 	});
 }());
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Всплывающая синяя плашка с предложением о подписке
  * Срабатывает при возникновении события showsubscribe.
@@ -2918,13 +2803,6 @@ $(document).ready(function() {
 	body.bind('showsubscribe', lboxCheckSubscribe);
 	body.trigger('showsubscribe');
 }());
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Саджест для поля поиска
  * Нужен рефакторинг
@@ -3197,13 +3075,6 @@ $(document).ready(function() {
 	});
 }());
 
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 ;(function(){
 
     // https://jira.enter.ru/browse/SITE-3508
@@ -3224,13 +3095,6 @@ $(document).ready(function() {
     }
 
 }());
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /* Top Menu */
 (function(){
 	var menuDelayLvl1 = 300; //ms
@@ -3283,6 +3147,11 @@ $(document).ready(function() {
 				activateItemLvl1(el);
 			}
 		}, menuDelayLvl1 + 20);
+
+        el.find('.lazyMenuImg').each(function(i, elem) {
+            var $el = $(elem);
+            $el.attr('src', $el.data('src'))
+        })
 	};
 
 	/**
@@ -3549,13 +3418,6 @@ $(document).ready(function() {
 })();
 
 	
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Кнопка наверх
  *
@@ -3591,13 +3453,6 @@ $(document).ready(function() {
 	$(window).scroll(pageScrolling);
 	upper.bind('click',goUp);
 }());
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * White floating user bar
  *

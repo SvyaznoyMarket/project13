@@ -1,0 +1,48 @@
+<!-- popup - выбор регина -->
+<div class="popupBox jsCitySelectBox">
+    <div class="popupBox_close"></div>
+
+    <div class="popupBox_title">Ваш город</div>
+
+    <form action="{{setUrl}}" class="js-regionSet-form regionForm form2col clearfix">
+        <button type="submit" class="regionForm_btn form2col_btn btnStyle">Сохранить</button>
+
+        <div class="regionForm_selectCity form2col_boxWrap">
+            <div class="regionForm_selectCityInner form2col_boxInner">
+                <input id="js-regionSet-input" data-url="{{autocompleteUrl}}" data-form-selector=".js-regionSet-form" name="q" type="text" class="regionForm_selectCityInput form2col_input" placeholder="Название города" value="{{regionName}}" />
+                <span class="js-regionSet-clear regionForm_selectCityDel" data-input-selector="#js-regionSet-input"></span>
+
+                <div class="regionForm_autocomplete" id="js-region-autocomplete"></div>
+            </div>
+
+            
+        </div>
+    </form>
+
+    <ul class="regionList">
+    {{#regions}}
+        <li class="regionList_item">
+            <a class="regionList_link" href="{{url}}">{{name}}</a>
+        </li>
+    {{/regions}}
+    </ul>
+
+    <p class="popupBox_text">Выберите город, в котором собираетесь получать товары.<br/>От выбора зависит стоимость товаров и доставки.</p>
+</div>
+<!--/ popup - выбор регина -->
+
+<!-- popup - поиска -->
+<div class="popupBox js-searchWindow">
+    <div class="popupBox_close"></div>
+
+    <form action="/search" class="js-search-form searchForm form2col clearfix" data-input-selector="#js-search-input">
+        <button class="searchForm_btn form2col_btn btnStyleBlack">Найти</button>
+
+        <div class="searchForm_searchField form2col_boxWrap">
+            <div class="searchForm_searchFieldInner form2col_boxInner">
+                <input id="js-search-input" type="text" class="searchForm_searchInput form2col_input" placeholder="Поиск" name="q" />
+            </div>
+        </div>
+    </form>
+</div>
+<!--/ popup - поиска -->

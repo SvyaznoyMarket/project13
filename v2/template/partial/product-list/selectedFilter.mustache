@@ -1,0 +1,23 @@
+<div class="js-widget {{widgetId}} clearfix" data-template-selector="#tpl-product-selectedFilter">
+    {{#hasFilter}}
+    <div class="filterBox">
+        {{#filters}}
+            <ul class="filterChecked">
+                <li class="filterChecked_item filterChecked_item-title">{{name}}</li>
+
+                {{#elements}}
+                    <li class="filterChecked_item filterChecked_item-param">
+                        <a href="{{deleteUrl}}" data-name="{{name}}" class="js-productFilter-delete delete">{{title}}
+                        </a>
+                    </li>
+                {{/elements}}
+
+            </ul><!--/ выбранные фильтры  -->
+        {{/filters}}
+
+        <div class="filterCheckedClear">
+            <a class="js-productFilter-clear link" href="#"><span class="text">Очистить все</span></a>
+        </div>
+    </div>
+    {{/hasFilter}}
+</div>

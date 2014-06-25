@@ -1,18 +1,12 @@
 /* ==========================================================================
-   Адаптиыне стили шапки сайта .header
+   Шапка сайта .header
    ========================================================================== */
 
 @media only screen and (max-width: 800px) {
-	.header {
-		background: @black;
-		color: @white;
-		padding: 10px 10px;
-	}
-
 	/* Панель юзера */
 	.headerRightAside {
-	    margin-left: -160px;
 	    width: 160px;
+	    margin-left: -160px;
 	}
 
 	.headerCenter {
@@ -21,33 +15,43 @@
 
 	.transBg {
 		float: left;
-		background: url("@{base-url}/header/img/breadCrumbsTrans.png") no-repeat 100% 0;
-		height: 30px;
-		width: 20px;
-	}
-    .userBox {
-		margin: 5px 0 0;
-		width: 140px;
 
-		&__item {
+		width: 20px;
+		height: 30px;
+
+		background: url("@{base-url}/header/img/breadCrumbsTrans.png") no-repeat 100% 0;
+	}
+	
+    .userBox {
+		width: 140px;
+		margin: 8px 0 0;
+
+		&_item {
 			margin: 2px 0 0 10px;
 		}
 
-		&__text {
+		&_text {
 			display: none;
 		}
 
-		&__link {
+		&_link {
+		    width: 34px;
 			height: 24px;
 		    padding: 0;
-		    width: 34px;
+
+		    &-authVal {
+
+		    	.userBox_text {
+		    		display: none;
+		    	}
+		    }
 		}
 	}
 
 	/* Хлебные крошки */
 	.breadCrumbs {
 
-		&__item {
+		&_item {
 			margin: 7px 0 0;
 		}
 	}
@@ -60,12 +64,9 @@
 @media only screen and (max-width: 580px) {
     /* Хлебные крошки */
 	.breadCrumbs {
-		border: none;
 		padding: 0;
 
-		&__itemImg {
-			display: none;
-		}
+		border: none;
 	}
 }
 
@@ -77,12 +78,14 @@
 
 	.headerLeftAside {
     	float: left;
+
 	    margin-left: 0;
 	}
 
 	.headerRightAside {
 	    float: right;
-	    margin-left: 0;
+
 	    width: 160px;
+	    margin-left: 0;
 	}
 }

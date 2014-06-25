@@ -1,51 +1,117 @@
-$(function(){
+var
+    date = new Date(),
+    debug = 'true' == document.getElementById('js-enter-debug').getAttribute('content'),
+    version = document.getElementById('js-enter-version').getAttribute('content'),
+    moduleName = 'module/' + (document.getElementById('js-enter-module').getAttribute('content') || 'default')
+;
 
-	var chooseModelWrap = $('.chooseModel'),
-	    chooseModelMoreLink = chooseModelWrap.find('.chooseModel__moreLink'),
-	    chooseModelMoreBox = chooseModelWrap.find('.chooseModel__moreBox'),
-	    chooseModelMoreBoxDown = chooseModelWrap.find('.chooseModel__moreBox.more'),
+console.info('Init app', debug, version, moduleName);
 
-		chooseModelMoreModel = function chooseModelMoreModel() {
-			chooseModelMoreBox.slideToggle('800');
-			chooseModelMoreLink.toggleClass('more');
-		};
-	//var
-		
-	chooseModelMoreLink.click(chooseModelMoreModel);
+require.config({
+    urlArgs: 't=' + version,
+    baseUrl: '/v2/js' + (debug ? '' : '/build'),
+    //baseUrl: '/v2/js',
+    paths: {
+        //'jquery': 'http://yandex.st/jquery/2.1.0/jquery',
+        //'jquery'            : 'vendor/jquery-1.11.0',
+        'jquery'                : ['http://yandex.st/jquery/1.8.3/jquery', 'vendor/jquery-1.8.3'],
+        'jquery.cookie'         : 'vendor/jquery/jquery.cookie-1.4.1',
+        'jquery.ui'             : 'vendor/jquery/jquery.ui-1.10.4.custom',
+        'jquery.ui.touch-punch' : 'vendor/jquery/jquery.ui.touch-punch-0.2.3',
+        'jquery.popup'          : 'plugin/jquery.popup',
+        'jquery.enterslide'     : 'plugin/jquery.enterslide',
+        'jquery.touchwipe'      : 'plugin/jquery.touchwipe',
+        'jquery.photoswipe'     : 'plugin/jquery.photoswipe',
+        'jquery.slides'         : 'plugin/jquery.slides',
+        'jquery.scrollTo'       : 'plugin/jquery.scrollTo',
 
-	//верхнее меню
-	
-	var header = $('.header'),
-		headerHeight = $('.header').height(),
-		headerHeightInner = $('.header').innerHeight(),
-		navIco = $('.navIco'),
-		navSite = $('.nav'),
-		navSiteHeight = navSite.height(),
-		navSiteItemLevel1 = navSite.find('.navList__text'),
-		navSiteListLevel2 = navSite.find('.navListLevel2');
-	//var
-	
-		// header.css({'height' : headerHeight});
-		// navSite.css({'top' : -navSite.height()-headerHeight, 'z-index': '1'});
+        'underscore'         : ['http://yandex.st/underscore/1.6.0/underscore', 'vendor/underscore-1.6.0'],
+        'mustache'           : 'vendor/mustache-0.8.2',
+        'html5'              : 'vendor/html5-3.6.2',
+        'boilerplate.helper' : 'vendor/boilerplate.helper-4.1.0',
 
-	var allPanels = navSite.hide();
-	var allPanels2 = navSiteListLevel2.hide();
+        'browserstate.history'         : 'vendor/browserstate.history-1.8b2',
+        'browserstate.history.adapter' : 'vendor/browserstate.history.adapter.jquery-1.8b2',
 
-	var
-		slideNav = function slideNav() {
-			//navSite.css({'top' : headerHeight+10});
-			navSite.slideToggle();
+        'direct-credit' : 'http://direct-credit.ru/widget/api_script_utf'
+    },
 
-			return false;
-		},
+    shim: {
+        'jquery': {
+            exports: 'jQuery'
+        },
+        'jquery.ui': {
+            deps: ['jquery']
+        },
+        'jquery.ui.touch-punch': {
+            deps: ['jquery', 'jquery.ui']
+        },
+        'jquery.enterslide': {
+            deps: ['jquery']
+        },
+        'jquery.popup': {
+            deps: ['jquery']
+        },
+        'jquery.touchwipe': {
+            deps: ['jquery']
+        },
+        'jquery.photoswipe': {
+            deps: ['jquery', 'jquery.touchwipe']
+        },
+        'jquery.slides': {
+            deps: ['jquery', 'jquery.touchwipe']
+        },
+        'jquery.scrollTo': {
+            deps: ['jquery']
+        },
+        'underscore': {
+            exports: '_'
+        },
+        'mustache': {
+            exports: '_'
+        },
+        'html5': [],
+        'boilerplate.helper': [],
 
-		slideNavLevel2 = function slideNavLevel2() {
-			navSiteListLevel2.slideUp();
-			$(this).next(navSiteListLevel2).slideDown();
+        'browserstate.history': [],
+        'browserstate.history.adapter': {
+            deps: ['browserstate.history', 'jquery']
+        },
 
-			return false;
-		};
-
-	navIco.click(slideNav);
-	navSiteItemLevel1.click(slideNavLevel2);
+        'direct-credit': []
+    }
 });
+
+if (debug) {
+    require(['module/debug']);
+}
+
+require(
+    [
+        'require',
+        'module/config',
+        'html5',
+        'boilerplate.helper',
+        'jquery',
+        'jquery.cookie',
+        'jquery.ui', 'jquery.ui.touch-punch', 'jquery.popup',
+        'jquery.touchwipe',
+        'module/util',
+        'module/navigation',
+        'module/region',
+        'module/search',
+        'module/widget',      // виджеты
+        'module/user.common', // инфо о пользователе
+        'module/cart.common', // кнопка купить, спиннер
+        'module/product.catalog.common'
+    ],
+    function(require, config) {
+        $.cookie.defaults.path = '/';
+        $.cookie.defaults.domain = config.cookie.domain;
+    }
+);
+
+require(
+    [moduleName],
+    function(module) {}
+);

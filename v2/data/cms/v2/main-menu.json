@@ -1,0 +1,185 @@
+{
+    "name": "Главное меню",
+    "verion": "2.0",
+    "items": [
+        {
+            "name": "Мебель",
+            "char": "C",
+            "style": "",
+            "styleHover": "",
+            "source": "category/get?id=80",
+            "children": [
+                {
+                    "source": "category/tree?root_id=80"
+                }
+            ]
+        },
+        {
+            "name": "Товары для дома",
+            "char": "A",
+            "style": "",
+            "styleHover": "",
+            "source": "category/get?id=443",
+            "children": [
+                {
+                    "source": "category/tree?root_id=443"
+                }
+            ]
+        },
+        {
+            "name": "Бытовая техника",
+            "char": "B",
+            "style": "",
+            "styleHover": "",
+            "source": "category/get?id=1",
+            "children": [
+                {
+                    "source": "category/tree?root_id=1"
+                }
+            ]
+        },
+        {
+            "name": "Электроника",
+            "char": "G",
+            "style": "",
+            "styleHover": "",
+            "source": "category/get?id=788",
+            "children": [
+                {
+                    "source": "category/tree?root_id=788"
+                }
+            ]
+        },
+        {
+            "name": "Детские товары",
+            "char": "D",
+            "style": "",
+            "styleHover": "",
+            "source": "category/get?id=320",
+            "children": [
+                {
+                    "source": "category/tree?root_id=320"
+                }
+            ]
+        },
+        {
+            "name": "Украшения и часы",
+            "char": "H",
+            "style": "",
+            "styleHover": "",
+            "source": "category/get?id=923",
+            "children": [
+                {
+                    "source": "category/tree?root_id=923"
+                }
+            ]
+        },
+        {
+            "name": "Парфюмерия и косметика",
+            "char": "L",
+            "style": "",
+            "styleHover": "",
+            "source": "category/get?id=2545",
+            "children": [
+                {
+                    "source": "category/tree?root_id=2545"
+                }
+            ]
+        },
+        {
+            "name": "Подарки и хобби",
+            "char": "J",
+            "style": "",
+            "styleHover": "",
+            "source": "category/get?id=185",
+            "children": [
+                {
+                    "source": "category/tree?root_id=185"
+                }
+            ]
+        },
+        {
+            "name": "Сделай сам",
+            "char": "F",
+            "style": "",
+            "styleHover": "",
+            "source": "category/get?id=224",
+            "children": [
+                {
+                    "source": "category/tree?root_id=224"
+                }
+            ]
+        },
+        {
+            "name": "Зоотовары",
+            "char": "E",
+            "style": "",
+            "styleHover": "",
+            "source": "category/get?id=1438",
+            "children": [
+                {
+                    "source": "category/tree?root_id=1438"
+                }
+            ]
+        },
+        {
+            "name": "Спорт и отдых",
+            "char": "I",
+            "style": "",
+            "styleHover": "",
+            "source": "category/get?id=647",
+            "children": [
+                {
+                    "source": "category/tree?root_id=647"
+                }
+            ]
+        },
+        {
+            "name": "Авто",
+            "char": "M",
+            "style": "",
+            "styleHover": "",
+            "source": "category/get?id=225",
+            "children": [
+                {
+                    "source": "category/tree?root_id=225"
+                }
+            ]
+        },
+        {
+            "name": "Сад и огород",
+            "char": "K",
+            "style": "",
+            "styleHover": "",
+            "source": "category/get?id=311",
+            "children": [
+                {
+                    "source": "category/tree?root_id=311"
+                }
+            ]
+        },
+        {
+            "name": "TCHIBO SHOP",
+            "char": "",
+            "style": "",
+            "image": "http://content.enter.ru/wp-content/uploads/2014/06/TCH_Logo.png",
+            "styleHover": "",
+            "source": "category/get?id=4506",
+            "children": [
+                {
+                    "source": "category/tree?root_id=4506"
+                }
+            ]
+        },
+        {
+            "disabled": true,
+            "name": "Ликвидация!",
+            "style": "",
+            "image": "http://content.enter.ru/wp-content/uploads/2013/07/icon_Liquidation2.gif",
+            "styleHover": "background: url('http://content.enter.ru/wp-content/uploads/2013/07/l_hover.png') no-repeat 0px 0px;",
+            "link": "/slices/likvidatsiya",
+            "children": [
+            ]
+        }
+    ]
+}

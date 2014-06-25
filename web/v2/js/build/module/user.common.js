@@ -1,0 +1,1 @@
+define(["jquery","underscore","module/config"],function(e,r,s){var t=e("body");s.user.infoUrl&&e.post(s.user.infoUrl).done(function(e){r.isObject(e.result)&&(r.isObject(e.result.widgets)&&(t.data("widget",e.result.widgets),t.trigger("render")),r.isObject(e.result.user)&&t.data("user",e.result.user))})});

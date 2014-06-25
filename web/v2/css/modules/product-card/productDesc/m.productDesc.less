@@ -1,0 +1,86 @@
+/* ==========================================================================
+   Карточка товара -> описание товара .productDesc .productDescHead
+   ========================================================================== */
+
+@media only screen and (max-width: 900px) {
+	.productDesc {
+		margin-bottom: 0;
+	}
+
+	.productDescInfo {
+		float: none;
+
+		width: auto;
+		padding: 10px 10px;
+
+		border-top: 1px solid @tabLightGreyBorder;
+		background: @tabGrey;
+	}
+
+	.slidesItems {
+		float: none;
+
+		width: auto;
+		margin: 0 0 30px;
+
+		text-align: center;
+	}
+
+	.productDescHead{
+		float: none;
+
+		width: auto;
+		padding: 0 10px;
+	}
+
+	.buyWidth {
+		max-width: 562px;
+		margin: 0 auto;
+	}
+}
+
+@media only screen and (max-width: 570px) {
+	.productDesc {
+
+		.buyInfoWrap {
+			float: none;
+		}
+
+		.buyInfo {
+	    	padding-right: 0;
+		}
+
+		.deliveryInfo {
+			float: none;
+
+		    width: auto;
+		    margin-top: 15px;
+		    margin-left: 0;
+		    padding-top: 15px;
+
+		    border-top: 1px solid @tabLightGreyBorder;
+		}
+	}
+
+	.slidesItems {
+		min-height: 300px;
+	}
+
+	.deliveryList {
+
+		&_item {
+
+			&-oneClick {
+				display: none;
+			}
+		}
+	}
+}
+
+@media only screen and (max-width: 330px) {
+	.buyInfoBuy .btnBuy {
+		float: right;
+
+		width: 128px;
+	}
+}

@@ -1,0 +1,24 @@
+<?php
+
+namespace EnterSite\Action;
+
+use EnterSite\ConfigTrait;
+
+class HandleConfig {
+    use ConfigTrait;
+
+    /**
+     * @param string $environment
+     * @param bool $debugLevel
+     */
+    public function execute($environment, $debugLevel) {
+        $config = $this->getConfig();
+
+        $config->environment = $environment;
+        $config->debugLevel = $debugLevel;
+        if (2 == $config->debugLevel) {
+            $config->curl->logResponse = true;
+            $config->logger->debugAppender->enabled = true;
+        }
+    }
+}

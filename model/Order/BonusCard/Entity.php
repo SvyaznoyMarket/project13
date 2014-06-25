@@ -3,6 +3,8 @@
 namespace Model\Order\BonusCard;
 
 class Entity {
+    const SVYAZNOY_ID = 1;
+
     /** @var int */
     private $id;
     /** @var string */

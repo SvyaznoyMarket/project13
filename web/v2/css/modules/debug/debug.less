@@ -1,0 +1,79 @@
+.debug {
+  position: fixed;
+  bottom: 20px;
+  background: #ededed;
+  padding: 4px 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 1020;
+
+  &__title {
+     padding-bottom: 4px;
+
+     a, a:hover {
+       color: #00bce1;
+     }
+  }
+
+  &__error, &__error a, &__error a:hover {
+     color: #ff0000;
+  }
+
+  &__container {
+     margin-bottom: 4px;
+     border-bottom: 1px solid #ffffff;
+
+     &:first-child {
+       padding-top: 7px;
+     }
+
+     &:last-child {
+       border-bottom: 0 none;
+     }
+  }
+
+  &__tab {
+     &__title {
+        display: inline;
+
+        a, a:hover {
+           border: #a0a0a0 1px solid;
+           padding: 1px 2px;
+           border-bottom: 0 none;
+           color: #a0a0a0;
+           text-decoration: none;
+        }
+     }
+
+     &__content {
+        max-height: 400px;
+        overflow: auto;
+
+        tr:nth-child(2n) {
+           background: #cccccc;
+        }
+        td {
+           vertical-align: top;
+        }
+        pre {
+           margin-top: 1px;
+        }
+     }
+  }
+
+  &__queryMap {
+     width: 961px;
+     margin: 5px auto;
+     border: #ededed;
+     background: #ffffff url('/debug/grid.gif');
+
+     &__line {
+        position: absolute;
+        z-index: 9999;
+        font: normal 12px Tahoma;
+        line-height: 28px;
+        white-space: nowrap;
+        overflow: hidden;
+        max-width: 400px;
+    }
+  }
+}

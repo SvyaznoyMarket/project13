@@ -1,0 +1,205 @@
+/* ==========================================================================
+   Карточка товара -> описание товара .productDesc .productDescHead
+   ========================================================================== */
+.productDesc {
+	margin: 0 0 40px;
+
+	.buyInfoWrap {
+		float: left; 
+		overflow: hidden;
+
+		width: 100%;
+	}
+
+	.buyInfo {
+		padding-right: 250px;
+	}
+
+	.deliveryInfo {
+		position: relative;
+
+		float: left;
+
+		width: 230px;
+		margin-left: -230px;
+	}
+}
+
+/* Шапка карточки товара - название товара, артикул и отзывы */
+.productDescHead {
+	padding: 0 10px 0 41.48936%;
+
+	&_name {
+		margin-bottom: 10px;
+	}
+
+	&_article {
+		display: inline-block;
+
+		margin-bottom: 20px;
+
+		color: @typGray;
+
+		font-size: 14px;
+	}
+
+	/* Отзывы в карточке товара */
+	&_reviews {
+		display: inline-block;
+		float: right;
+
+		margin: 2px 0 20px 0;
+	}
+}
+
+.reviewsCount {
+	display: inline-block;
+
+    margin: 0 0 0 5px;
+
+	vertical-align: top;
+
+	color: @typGray;
+
+    font-size: 15px;
+    line-height: 15px;
+}
+
+.reviewsStar {
+	display: inline-block;
+
+	height: 15px;
+
+	vertical-align: top;
+}
+
+/* Картинка товара */
+.slidesItems {
+	position: relative;
+
+	float: left;
+	overflow: hidden;
+
+	width: 37.23404%;
+	min-height: 330px;
+	margin-top: -75px;
+	padding-bottom: 10px;
+
+	text-align: center;
+}
+
+.slidesItemsList {
+	position: relative;
+	top: 0;
+	left: 0;
+
+	font-size: 0;
+
+	&_item {
+		display: none;
+		float: left;
+
+		&:first-child {
+			display: block;
+			float: none;
+		}
+	}
+
+	&_img {
+		width: 90%;
+		max-width: 350px;
+	}
+}
+
+.slidesItemsBtn {
+	.rounded(4px);
+	position: absolute;
+	z-index: 999;
+	top: 50%;
+
+	display: none;
+
+	width: 17px;
+	height: 42px;
+	margin-top: -23px;
+	padding: 4px;
+
+	cursor: pointer;
+	text-indent: -9999px;
+
+	outline: none;
+	background-color: rgba(255,255,255,0.7);
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+
+	&_left {
+		left: 10px;
+
+		display: none;
+
+		background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAqCAYAAAC6EtuqAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo3QzRGRTI5MEE1MzQxMUUzODExREU3OTc1MTBDRTA1QyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo3QzRGRTI5MUE1MzQxMUUzODExREU3OTc1MTBDRTA1QyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjdDNEZFMjhFQTUzNDExRTM4MTFERTc5NzUxMENFMDVDIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjdDNEZFMjhGQTUzNDExRTM4MTFERTc5NzUxMENFMDVDIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+N5QnfQAAAcpJREFUeNqclk0oRGEUhucHRbEwG3aykh3KhrWyo+wkgzQy2NFY+NsxjY1S5Kdh2EhZTWlsKFuyIhuNIqVYsCCaeE+9t75u83PPd+qpr+69z8w35z3fXH86nfZZVj14DVg+3AOeQMJGUAe2gTx7rxX4wS4IgQzY1ArGQTd4A2HwpxE0gTjXY+DFx314qXJwAKpAEhw7F7wKFkAbyIIp84IXQQeIgRwYAJ8aQTXYB0Hu/9J9QynBGmgEV2Ax3w3FBL1s1Re/+o9GIDnf4noG3BX6lECBtO0wbadgvdge8wmiRtqGJW0agaRthetRJ21eBRWutJ14SZgpmGfaHtxp8yLoNNI26E5bKYGkbY9pW86XtlKCJNN2DZa0x5MI2rk+B782ghH2egK02AgyHBqnjZVagdQsuAXN/CHVApm4fk7cJOjSCqRuGCY/O1OrFUglwAXHedNGkOMh8gH6mEqfdpyzbKlzpDVoBVIpnv01XAe1AqkIeOagTdsI3sEQUyoz0qoVSJ0ZKU3lS6mXf6aYkdK4jeDbSGnUnVKvf66S0jkjpSGtQGrVSOmGjcA5L52UhrUCqUd3Sm3e0qSdRzyMY2WW74kRbuXwX4ABAGTPXpqcnlnSAAAAAElFTkSuQmCC);
+	} 
+
+	&_right {
+		right: 10px;
+
+		background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAqCAYAAABV0LCUAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo4QUI4MDRDQkE1ODYxMUUzODExREU3OTc1MTBDRTA1QyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo4QUI4MDRDQ0E1ODYxMUUzODExREU3OTc1MTBDRTA1QyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjdDNEZFMjkyQTUzNDExRTM4MTFERTc5NzUxMENFMDVDIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjhBQjgwNENBQTU4NjExRTM4MTFERTc5NzUxMENFMDVDIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+jj4IIwAAAdpJREFUeNqc1jtIHFEUxvHZUQRZtVgIGmwsxEIQFIJJpZ2VWIjY+Cx8gNGk0QgJEkwTQTSCpgiID3wgIlhtY+EW2qpgQgorMYGQiEZsNCEa/wfOwpDMrnvPgR8723zM47t3JhKPxz2mCKe48QzjowJfse4ZR0K+4xKN6LKG/EC//n+HUkuIzKrKwxKyLCGens0XPMEra8hPdOAWI6i2hMgkMIVsvayoJUTmJQ5RhglryC+06m8P6i0hMh/1jCKYxQNLSLIz2yjUIFPIX3TqU2tAtyXE09706fFkqjb7Gdz8tUCbl8Pa7GfYp6c4weOwNmcacqH3J7TNvsMSSWj5/muz77jqR8La7BoiLW7BdbDNvmEj+6Q3N6JPLWoJkdnEH+TLpVlCpCfzeoMl7MASMohafEsuBdeQSrwJrKsz15BcrCAH77FlecRvUY7PeGFpbB2e4TfaceUaEsOc9uI19iwL8AOKsYtxy34ip96k7+q2VF8N6UJKMK3Hz3Hsuj1KKxdRgA0sWDbqIdRoK3st750qjAZaee4akqubsbRyJthKl5CxQCuHLV8F0soBbWXbv63MJCSmTyDZyn3LR4608iF2UrXyvpBHgVa2W75lJeRIF1hzulammzsBBgCc/2JKrbLCdQAAAABJRU5ErkJggg==);
+	}
+}
+
+.slidesItemsBtnPag {
+	position: absolute;
+	z-index: 999;
+	bottom: 0;
+
+	width: 100%;
+	height: 9px;
+
+	&_item {
+		display: inline-block;
+
+		width: 9px;
+		height: 9px;
+		margin: 0 2px;
+
+		text-align: center;
+		vertical-align: top;
+		text-indent: -9999px;
+
+		outline: none;
+		background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo4QUI4MDREM0E1ODYxMUUzODExREU3OTc1MTBDRTA1QyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo4QUI4MDRENEE1ODYxMUUzODExREU3OTc1MTBDRTA1QyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjhBQjgwNEQxQTU4NjExRTM4MTFERTc5NzUxMENFMDVDIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjhBQjgwNEQyQTU4NjExRTM4MTFERTc5NzUxMENFMDVDIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+vfA0IAAAAGhJREFUeNpiYUAFvEAsAGW/B+IvIAYLVIARiNWBWAJN01Mgvg1TJIdFAQhIA/F3JiQOLiAFUgTCbHgUsYMU/APiX3gU/WRCciAu8BSm6BEQv8CmAIRhvvsPxDegggJQPiicvoIkAQIMABsWE6UUzFJPAAAAAElFTkSuQmCC) no-repeat 0 0;
+			
+		&__active {
+			background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAYAAADgkQYQAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo4QUI4MDRDRkE1ODYxMUUzODExREU3OTc1MTBDRTA1QyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo4QUI4MDREMEE1ODYxMUUzODExREU3OTc1MTBDRTA1QyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjhBQjgwNENEQTU4NjExRTM4MTFERTc5NzUxMENFMDVDIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjhBQjgwNENFQTU4NjExRTM4MTFERTc5NzUxMENFMDVDIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+wj0B4gAAAHBJREFUeNpiYUAAcSBWBmJGIL4PxM9gEixQQQ8gNoOyYeACEG8C4n9MUElzNAUgYADEtiAGSJEJA25gClMkiEcRD8hJIEXv8Sj6DMR/QIpO41F0GmYdiHESiP+jKTgPxEcY0HwECidFqMYHyOEEEGAA0x0RFaIzod4AAAAASUVORK5CYII=) no-repeat 0 0;
+		}
+	}
+}
+
+/* Подробности покупки товара */
+.productDescInfo {
+	float: right;
+
+	width: 58.51063%;
+}
+
+/* Покупка */
+.buyInfoBuy {
+
+	.js-widget {
+		display: inline-block;
+
+		vertical-align: top;
+	}
+
+	.btnBuy {
+		display: inline-block;
+
+		vertical-align: top;
+	}
+
+	.counter {
+		display: inline-block;
+
+		vertical-align: top;
+	}
+}

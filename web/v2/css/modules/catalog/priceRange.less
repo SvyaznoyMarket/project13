@@ -1,0 +1,96 @@
+/* ==========================================================================
+   Каталог -> слайдер цен .priceRange
+   ========================================================================== */
+   
+.priceRange {
+	display: inline-block;
+
+	vertical-align: top;
+
+	&_title {
+		display: inline-block;
+
+		vertical-align: top;
+
+		color: #6b6b6b;
+
+		line-height: 40px;
+	}
+
+	&_amount {
+
+		.rounded(4px);
+		display: inline-block;
+
+		width: 46px;
+		height: 38px;
+		margin: 0 5px;
+		padding: 0 8px;
+
+		vertical-align: top;
+
+		border: 1px solid @tabLightGreyBorder;
+		background: @white;
+
+		font-size: 14px;
+		line-height: 38px;
+	}
+
+	&_slider {
+
+		.rounded(2px);
+		position: relative;
+
+		display: inline-block;
+
+		width: 215px;
+		height: 2px;
+		margin: 18px 10px 0 6px;
+
+		vertical-align: top;
+
+		border: 1px solid #fb9c00;
+
+		.ui-slider-range {
+			position: absolute;
+
+			height: 4px;
+
+			background: #fb9c00;
+		}
+
+		.ui-slider-handle {
+			position: absolute;
+			z-index: 10;
+			top: -12px;
+
+			display: block;
+
+			width: 26px;
+			height: 27px;
+			margin-left: -12px;
+
+			background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAbCAYAAABiFp9rAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDoxRkI5QTZBQ0JFOTYxMUUzOUFCREE2NEFFNDZFRTFFNSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoxRkI5QTZBREJFOTYxMUUzOUFCREE2NEFFNDZFRTFFNSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjFGQjlBNkFBQkU5NjExRTM5QUJEQTY0QUU0NkVFMUU1IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjFGQjlBNkFCQkU5NjExRTM5QUJEQTY0QUU0NkVFMUU1Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+Yp7pzwAAAa9JREFUeNq8lrtLw1AUxtMY66NK8VmLiiAooigu4uLq4OLu7p/g6Oif4e7g5uLiJC4iglScUhQfaBQfFKwVG63fkRO4XmJykqZ+8IOGnJOvOTn33pOqbhpRZIJW/l1lRLIEMb1gEPSAjHbvAzwDB9yCzzhG9OApkA2ISYMBZhLY4ALUJEYpTho1oinNfywPjsG7XnP9ei6GiapusKCXWTeaATmjfrWBedDsZzQEho3kRG80qxtZXN+kRU3SrxqN8MdshMbUrpOWjGo+DtpBEbwImyNjcVKnIGEarIEuvnbBNtgS5ObMkAXpqQ+sKyZeNVbAkiA/a3IrhmkxIG5Z0u6mz1ryUz6oLJI9lUy+BIF3AffuBfkuGVUEgXv63qVoR5BfIaOSIPABbGjt7HLH7QryS9Q5b+AVdIQEF8AqmODGsIXr6Ke83oK94qMhTHSinkbcGehgLHsdd8mnZSNkq3sd1fusASYOf99fa+gGXCdoUgYnfx18BeG6CG1ncKhOSboRLd4jcF6HCXXiAb9R4HBS4+/lCKYgffSKNAV5egL7/zHXeXpkSE2gJc6k+i3AAEpqVwpeAfKJAAAAAElFTkSuQmCC) no-repeat 0 0;
+
+			-ms-touch-action: none;
+			touch-action: none;
+
+			&:active,
+			&:focus,
+			&:hover {
+				outline: none;
+			}
+		}
+	}
+
+	&_rubl {
+		display: inline-block;
+
+		vertical-align: top;
+
+		color: #6b6b6b;
+
+		font-size: 14px;
+		line-height: 40px;
+	}
+}

@@ -1,13 +1,23 @@
+/* ==========================================================================
+   Подвал сайта .footer .socLink .publicInfoList .publicInfoText .footerCopy
+   ========================================================================== */
+   
 @media only screen and (max-width: 900px) {
+	.footer {
+	    height: 213px;
+	    margin: -213px auto 0;
+	}
+
 	.socLink {
-	    display: block;
 	    float: none;
-	    margin: 15px auto;
+
 	    width: 125px;
+	    margin: 15px auto;
 	}
 
 	.aboutList {
-	    display: block;
+	    float: none;
+
 	    text-align: center;
 
 	    &__item {
@@ -24,10 +34,22 @@
 	}
 }
 
-@media only screen and (max-width: 560px) {
+@media only screen and (max-width: 610px) {
 	.footer {
-	    height: 409px;
-	    margin: -409px auto 0;
+	    height: 628px;
+	    margin: -628px auto 0;
+	}
+
+	.aboutList {
+		width: auto;
+
+		&__item {
+			display: block;
+
+    		margin: 0 0 15px;
+
+    		text-align: center;
+		}
 	}
 
 	.appList {
@@ -35,8 +57,26 @@
 
 		&__item {
 			float: none;
+
     		margin: 0 0 15px;
+
     		text-align: center;
 		}
+	}
+
+	.publicInfoList {
+		width: auto;
+
+		&__item {
+			display: block;
+
+    		margin: 0 0 15px;
+
+    		text-align: center;
+		}
+	}
+
+	.footerCopy__link {
+		display: none;
 	}
 }

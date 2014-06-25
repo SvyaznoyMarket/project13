@@ -13,11 +13,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="robots" content="noyaca"/>
 
-    <script type="text/javascript">
-        window.htmlStartTime = new Date().getTime();
-        document.documentElement.className = document.documentElement.className.replace("no-js","js");
-    </script>
-
     <?= $page->slotMeta() ?>
     <link rel="shortcut icon" href="/favicon.ico"/>
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon.png">
@@ -151,7 +146,6 @@
         <?= $page->slotInnerJavascript() ?>
         <?= $page->slotYandexMetrika() ?>
         <?= $page->slotAdvanceSeoCounter() ?>
-        <?= $page->slotMyThings() ?>
         <?= $page->slotAdriver() ?>
         <?= $page->slotPartnerCounter() ?>
         <?= $page->slotEnterprizeConfirmJs() ?>

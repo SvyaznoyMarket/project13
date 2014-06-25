@@ -1,0 +1,92 @@
+.menuCat {
+
+	&_item {
+		width: 25%;
+		height: 158px;
+
+		overflow: hidden;
+
+		float: left;
+
+		&:nth-child(4n) {
+
+			.menuCat_link {
+				border-right: 0 none;
+			}
+		}
+	}
+
+	&_link {
+		display: block;
+
+		border-bottom: 1px solid #858585;
+		border-right: 1px solid #858585;
+
+		color: @white;
+		text-align: center;
+
+		height: 127px;
+
+		padding: 15px 0;
+
+		&:hover, 
+		&:active,
+		&:focus {
+			color: @firmOrange;
+			text-decoration: none;
+			outline: none;
+		}
+	}
+	
+	&_chartWrap {
+		height: 80px;
+		line-height: 80px;
+	}
+
+	&_chart {
+		display: inline-block;
+		height: 80px;
+	    vertical-align: top;
+
+	    font-family: 'menuIconFont';
+	    font-size: 220px;
+
+	    margin: 0 0 15px;
+	}
+
+	&_name {
+		font-size: 16px;
+
+		display: block;
+	}
+}
+
+.mainBanner {
+	width: 100%;
+
+	img {
+		width: 100%;
+		height: auto;
+	}
+} 
+
+.bannersLine {
+	display: table;
+	width: 100%;
+
+	padding: 25px 0;
+
+	&_item {
+		display: table-cell;
+
+		width: 25%;
+
+		padding: 0 15px;
+
+    	vertical-align: middle;
+	}
+
+	&_img {
+		width: 100%;
+	}
+}

@@ -17,23 +17,44 @@ class IndexAction {
 
         $client = \App::coreClientV2();
         $user = \App::user()->getEntity();
+        $session = \App::session();
+        $sessionName = \App::config()->enterprize['formDataSessionKey'];
 
-        /** @var $enterpizeCoupons \Model\EnterprizeCoupon\Entity[] */
+        $data = $session->get($sessionName, []);
+        $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
+
+        // SITE-3931, SITE-3934
+        $isCouponSent = (bool)$request->cookies->get(\App::config()->enterprize['cookieName']);
+
+        /**
+         * @var $enterpizeCoupon    \Model\EnterprizeCoupon\Entity
+         * @var $enterpizeCoupons   \Model\EnterprizeCoupon\Entity[]
+         */
+        $enterpizeCoupon = null;
         $enterpizeCoupons = [];
-        \App::dataStoreClient()->addQuery('enterprize/coupon-type.json', [], function($data) use (&$enterpizeCoupons, $user) {
-            foreach ((array)$data as $item) {
-                if (empty($item['token'])) continue;
+        \App::dataStoreClient()->addQuery(
+            'enterprize/coupon-type.json',
+            [],
+            function($data) use (&$enterpizeCoupons, &$enterpizeCoupon, $enterprizeToken, $isCouponSent, $user) {
+                foreach ((array)$data as $item) {
+                    if (empty($item['token'])) continue;
 
-                $coupon = new \Model\EnterprizeCoupon\Entity($item);
+                    $coupon = new \Model\EnterprizeCoupon\Entity($item);
 
-                if (
-                    ($coupon->isForMember() && $user && $user->isEnterprizeMember())
-                    || ($coupon->isForNotMember() && (!$user || !$user->isEnterprizeMember()))
-                ) {
-                    $enterpizeCoupons[] = $coupon;
+                    if (
+                        ($coupon->isForMember() && $user && $user->isEnterprizeMember())
+                        || ($coupon->isForNotMember() && (!$user || !$user->isEnterprizeMember()))
+                    ) {
+                        $enterpizeCoupons[] = $coupon;
+                    }
+
+                    // если купон уже отослан, то пытаемся его получить из общего списка
+                    if ($isCouponSent && (bool)$enterprizeToken && $enterprizeToken == $coupon->getToken()) {
+                        $enterpizeCoupon = $coupon;
+                    }
                 }
             }
-        });
+        );
 
         // получаем лимиты купонов
         $limits = [];
@@ -49,24 +70,26 @@ class IndexAction {
         // получаем купоны ренее выданные пользователю
         $userCouponSeries = [];
         $userCoupons = [];
-        $client->addQuery('user/get-discount-coupons', ['token' => \App::user()->getToken()], [],
-            function ($data) use (&$userCoupons, &$userCouponSeries) {
-                if (!isset($data['detail']) || !is_array($data['detail'])) {
-                    return;
-                }
+        if ( \App::user()->getToken() ) {
+            $client->addQuery('user/get-discount-coupons', ['token' => \App::user()->getToken()], [],
+                function ($data) use (&$userCoupons, &$userCouponSeries) {
+                    if (!isset($data['detail']) || !is_array($data['detail'])) {
+                        return;
+                    }
 
-                foreach($data['detail'] as $item) {
-                    $entity = new \Model\EnterprizeCoupon\DiscountCoupon\Entity($item);
-                    $userCoupons[] = $entity;
-                    $userCouponSeries[] = $entity->getSeries();
-                }
-            },
-            function(\Exception $e) {
-                \App::logger()->error($e->getMessage(), ['enterprize']);
-                \App::exception()->remove($e);
-            },
-            \App::config()->coreV2['timeout'] * 2
-        );
+                    foreach ($data['detail'] as $item) {
+                        $entity = new \Model\EnterprizeCoupon\DiscountCoupon\Entity($item);
+                        $userCoupons[] = $entity;
+                        $userCouponSeries[] = $entity->getSeries();
+                    }
+                },
+                function (\Exception $e) {
+                    \App::logger()->error($e->getMessage(), ['enterprize']);
+                    \App::exception()->remove($e);
+                },
+                \App::config()->coreV2['timeout'] * 2
+            );
+        }
 
         // выполнение пакета запросов
         $client->execute();
@@ -86,8 +109,16 @@ class IndexAction {
 
         $page = new \View\Enterprize\IndexPage();
         $page->setParam('enterpizeCoupons', $enterpizeCoupons);
+        $page->setParam('enterpizeCoupon', $enterpizeCoupon);
         $page->setParam('viewParams', ['showSideBanner' => false]);
+        $page->setParam('isCouponSent', $isCouponSent);
 
-        return new \Http\Response($page->show());
+        $response = new \Http\Response($page->show());
+
+        if ($isCouponSent) {
+            $response->headers-> clearCookie(\App::config()->enterprize['cookieName']);
+        }
+
+        return $response;
     }
 }

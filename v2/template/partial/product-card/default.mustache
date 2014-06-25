@@ -1,0 +1,19 @@
+<a href="{{url}}" class="catalogList_item">
+    <div class="img"><img src="{{image}}" /></div>
+
+    <div class="catalogList_desc">
+        <span class="name">{{name}}</span>
+
+        <div class="reviews">
+            {{#rating}}
+                {{>partial/rating/star-list}}
+            {{/rating}}
+            <span class="reviews_count">{{rating.reviewCount}}</span>
+        </div>
+
+        <div class="price">
+            {{#oldPrice}}<div class="price_old">{{shownOldPrice}} <span class="rubl">p</span></div>{{/oldPrice}}
+            {{#price}}<div class="price_now">{{shownPrice}} <span class="rubl">p</span></div>{{/price}}
+        </div>
+    </div>
+</a>

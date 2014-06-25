@@ -1,0 +1,1 @@
+define(["jquery","underscore"],function(e,n){return n.extend({cookie:{domain:null,lifetime:null},user:{infoUrl:null},credit:{cookieName:null}},e("body").data("config"))});

@@ -27,6 +27,7 @@ $c->sessionToken = 'enter';
 
 $c->session['name']            = 'enter';
 $c->session['cookie_lifetime'] = 15552000;
+$c->session['cookie_domain'] = '.enter.ru';
 
 $c->cacheCookieName = 'enter_auth';
 
@@ -34,6 +35,7 @@ $c->mainHost = 'www.enter.ru';
 $c->mobileHost = 'm.enter.ru';
 
 $c->redirect301['enabled'] = true;
+$c->mobileRedirect['enabled'] = false;
 
 $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 $c->coreV2['client_id']    = 'site';
@@ -67,7 +69,7 @@ $c->corePrivate['retryTimeout'] = [
     'forever' => 0,
 ];
 
-$c->reviewsStore['url']          = 'http://admin.enter.ru/reviews/';
+$c->reviewsStore['url']          = 'http://scms.enter.ru/reviews/';
 $c->reviewsStore['retryCount']   = 2;
 $c->reviewsStore['timeout']      = 0.36;
 $c->reviewsStore['retryTimeout'] = [
@@ -184,26 +186,8 @@ $c->partners['Myragon']['secretWord'] = 'RdjJBC9FLE';// секретное сл�
 $c->partners['Myragon']['subdomainNumber'] = 49;// номер поддомена в сервисе Myragon
 
 $c->adFox['enabled'] = true;
-$c->myThings['feeByCategory'] = [
-    80      => 0.105,   //Мебель
-    224     => 0.065,   //Сделай сам
-    1438    => 0.06,    //Зоотовары
-    320     => 0.07,    //Детские товары
-    443     => 0.105,   //Товары для дома
-    788     => 0.05,       //Электроника
-    //1024    => 0.05,    //Электроника => Аксессуары
-    1       => 0.038,   //Бытовая техника
-    21      => 0.064,   //Красота и здоровье
-    923     => 0.123,   //Украшения и часы
-    2545    => 0.061,   //Парфюмерия и косметика
-    185     => 0.098,   //Подарки и хобби
-    647     => 0.114,   //Спорт и отдых
-    225     => 0.065,   //Аксессуары для авто
-];
 
-$c->myThings['cookieName'] = '_mythings';
-
-$c->partner['cookieName'] = '_partner';
+$c->partner['cookieName'] = 'utm_source';
 $c->partner['cookieLifetime'] = 2592000; // 30 дней
 
 $c->onlineCall['enabled'] = false;
@@ -325,6 +309,7 @@ $c->banner['url'] = [
 ];
 
 $c->cart['productLimit'] = 30;
+$c->cart['sessionName'] = 'userCart';
 
 $c->payment['creditEnabled'] = true;
 $c->payment['paypalECS'] = false;
@@ -406,10 +391,12 @@ $c->enterprize['enabled'] = true;
 $c->enterprize['formDataSessionKey'] = 'enterprizeForm';
 $c->enterprize['itemsInSlider'] = 7;
 $c->enterprize['showSlider'] = true;
+$c->enterprize['cookieName'] = 'enterprize_coupon_sent';
 
 $c->tchibo['rowWidth'] = 78;
 $c->tchibo['rowHeight'] = 78;
 $c->tchibo['rowPadding'] = 0;
+$c->tchibo['whereToBuyPage'] = 'where_buy_tchibo';
 $c->tchiboSlider['analyticsEnabled'] = true;
 
 // настройки для АБ-тестов могут быть переопределены в json
@@ -436,5 +423,10 @@ $c->preview = false;
 
 $c->svyaznoyClub['cookieLifetime'] = 2592000; // 30 дней
 $c->svyaznoyClub['userTicket']['cookieName'] = 'UserTicket';
+
+$c->flocktoryExchange['enabled'] = true;
+
+$c->flocktoryCoupon['enabled'] = true;
+$c->flocktoryCoupon['paramName'] = 'utm_coupon';
 
 return $c;

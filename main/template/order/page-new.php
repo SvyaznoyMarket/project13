@@ -34,6 +34,7 @@ foreach (array_reverse($productsById) as $product) {
 		break;
 	}
 }
+if ($oneClick && strpos($request->headers->get('referer'), '/product/') > 0) $backLink = $product->getLink();
 
 if ($oneClick) {
     $createUrl = $page->url('order.oneClick.create');
@@ -47,6 +48,11 @@ if ($oneClick) {
 } else {
     $createUrl = $page->url('order.create');
     $deliveryUrl = $page->url('order.delivery');
+}
+
+$onlyPartnersProducts = true;
+foreach ($productsById as $product) {
+    if (count($product->getPartnersOffer()) == 0) $onlyPartnersProducts = false;
 }
 ?>
 
@@ -245,27 +251,23 @@ if ($oneClick) {
 	</div>
 	<!-- /Delivery boxes --> 
 	
-	<? if (!$oneClick): ?>
+	<? if (!$oneClick && !$onlyPartnersProducts): ?>
 	    <? if (\App::config()->coupon['enabled'] || \App::config()->blackcard['enabled']): ?>
 		<!-- Sale section -->
-		<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length && !$root.lifeGift(), ">
-			<div class="bBuyingLine">
+		<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length == 1 && !/svyaznoy/.test(deliveryBoxes()[0].state) && !$root.lifeGift(), ">
+			<div class="bBuyingLine clearfix">
 				<div class="bBuyingLine__eLeft">
 					<h2 class="bBuyingSteps__eTitle">
 						Скидки
 					</h2>
 
-					Если у вас есть
 	                <? if (\App::config()->blackcard['enabled']): ?> карта Enter SPA <? endif ?>
 	                <? if (\App::config()->coupon['enabled'] && \App::config()->blackcard['enabled']): ?> или<? endif ?>
-	                <? if (\App::config()->coupon['enabled']): ?> купон, <? endif ?>
-					укажите номер и получите скидку.
+	                <? if (\App::config()->coupon['enabled']): ?> Код фишки, купон, промокод <? endif ?>
 				</div>
 
 				<div class="bBuyingLine__eRight">
 					<div class="bSaleData" data-bind="couponsVisible: couponsBox()">
-
-						<div class="bTitle">Вид скидки:</div>
 						
 						<div class="bSaleData__eEmptyBlock">Скидок больше нет</div>
 
@@ -285,14 +287,17 @@ if ($oneClick) {
 	                        <? endif ?>
 						</ul>
 
-						<input class="bBuyingLine__eText mSaleInput" type="text" id="coupon_number" data-bind="value: couponNumber, valueUpdate: 'afterkeydown' " />
+						<input class="bBuyingLine__eText mSaleInput" type="text" id="coupon_number" data-bind="value: couponNumber, valueUpdate: 'afterkeydown', disable: couponsBox().length " />
 
-						<button class="bBigOrangeButton mSaleBtn" data-bind="click: checkCoupon">Применить</button>
+						<button class="bBigOrangeButton mSaleBtn" data-bind="click: checkCoupon, disable: couponsBox().length">Применить</button>
 
 						<p class="bSaleError" data-bind="text: couponError"></p>
 					</div>
 
-					<div class="bSaleCheck"></div>
+					<div class="bSalePreview">
+						<img class="bSalePreview_img" src="/css/bBuyingSteps/img/bCheck.jpg" />
+						<img class="bSalePreview_img bSalePreview_img-eprize" src="/css/bBuyingSteps/img/fishka.jpg" />
+					</div>
 
 					 <!-- Coupons -->
 					<div class="bBuyingLine mCouponsLine" data-bind="foreach: { data: couponsBox(), as: 'coupon' }">
@@ -301,7 +306,7 @@ if ($oneClick) {
 
 							<div class="bItemsRow mItemInfo" data-bind="text: (coupon.error && coupon.error.message) || coupon.name"></div>
 
-							<div class="bItemsRow mCountItem"></div>
+<!--							<div class="bItemsRow mCountItem"></div>-->
 
 							<div class="bItemsRow mDelItem">
 								<a class="bDelItem" data-bind="attr: { 'href': coupon.deleteUrl }, click: $root.deleteItem">удалить</a>
@@ -405,13 +410,7 @@ if ($oneClick) {
 						<input type="text" id="order_recipient_phonenumbers" class="bBuyingLine__eText mInputLong" name="order[recipient_phonenumbers]" value="" />
 					</div>
 
-					<div class="<? if ($isCorporative): ?> hidden<? endif ?>">
-						<div class="bBuyingLine__eLeft">Если у вас есть карта &laquo;Связной-Клуб&raquo;, вы можете указать ее номер</div>
-						<div class="bBuyingLine__eRight mSClub">
-							<input id="bonus-card-number" type="text" class="bBuyingLine__eText" placeholder="2 98хххх ххххxx" name="order[bonus_card_number]" />
-							<div class="bText">Чтобы получить 1% от суммы заказа<br/>плюсами на карту, введите ее номер,<br/>расположенный на обороте под штрихкодом</div>
-						</div>
-					</div>
+                    <?= $helper->render('order/_bonusCard', ['bonusCards' => $bonusCards, 'bonusCardsData' => $bonusCardsData]) // карты лояльности ?>
 
 				<? else: ?>
 					<label for="" class="bBuyingLine__eLeft">Имя получателя</label>

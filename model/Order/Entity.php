@@ -118,6 +118,8 @@ class Entity {
     private $paymentUrl;
     /** @var int */
     private $couponNumber;
+    /** @var bool */
+    private $isPartner;
 
     /**
      * @param array $data
@@ -204,6 +206,7 @@ class Entity {
         if (array_key_exists('subway_id', $data)) $this->setSubwayId($data['subway_id']);
         if (array_key_exists('payment_url', $data)) $this->setPaymentUrl($data['payment_url']);
         if (array_key_exists('coupon_number', $data)) $this->setCouponNumber($data['coupon_number']);
+        if (array_key_exists('is_partner', $data)) $this->setIsPartner($data['is_partner']);
     }
 
     public function dump() {
@@ -926,5 +929,22 @@ class Entity {
     public function getCouponNumber()
     {
         return $this->couponNumber;
+    }
+
+
+    /**
+     * @param int $isPartner
+     */
+    public function setIsPartner($isPartner)
+    {
+        $this->isPartner = (bool)$isPartner;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsPartner()
+    {
+        return $this->isPartner;
     }
 }

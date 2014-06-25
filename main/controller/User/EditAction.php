@@ -78,7 +78,7 @@ class EditAction {
                         'phone'         => $form->getHomePhone(),
                         'birthday'      => $form->getBirthday() ? $form->getBirthday()->format('Y-m-d') : null,
                         'occupation'    => $form->getOccupation(),
-                        'bonus_card'    => $form->getBonusCard(),
+                        'bonus_card'    => $form->getBonusCardNumbers(),
                         'is_subscribe'  => $form->getIsSubscribed(),
                     ],
                     \App::config()->coreV2['hugeTimeout']

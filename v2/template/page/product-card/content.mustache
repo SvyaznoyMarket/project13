@@ -1,0 +1,280 @@
+<div class="content">
+    <div class="contentBox960">
+        <!-- Название товара, артикул, отзывы -->
+        <div class="productDescHead">
+
+            <h1 class="productDescHead_name">
+                {{#product.namePrefix}}{{product.namePrefix}}<br />{{/product.namePrefix}}
+                {{product.name}}
+            </h1>
+
+            {{#product.article}}
+                <div class="productDescHead_article">Артикул: {{product.article}}</div>
+            {{/product.article}}
+
+            {{#product.rating}}
+                <div class="productDescHead_reviews">
+                    {{#product.rating}}
+                        {{>partial/rating/star-list}}
+                    {{/product.rating}}
+                    <span class="reviewsCount">{{product.rating.reviewCount}}</span>
+                </div>
+            {{/product.rating}}
+        </div>
+        <!--/ Название товара, артикул, отзывы -->
+
+        <div class="productDesc clearfix">
+
+            <!-- Изображение товара -->
+            <div class="productDescImg slidesItems">
+                <ul class="slidesItemsList clearfix">
+                    {{#product.photos}}
+                        <li class="slidesItemsList_item">
+                            <img class="slidesItemsList_img" src="{{url}}" alt="{{&name}}" />
+                        </li>
+                    {{/product.photos}}
+                </ul>
+
+                <div class="slidesItemsBtn slidesItemsBtn_left jsBtnSlidesLeft"></div>
+                <div class="slidesItemsBtn slidesItemsBtn_right jsBtnSlidesRight"></div>
+
+                <ul class="slidesItemsBtnPag"></ul>
+            </div>
+            <!--/ Изображение товара -->
+
+            <!-- Информация о покупке -->
+            <div class="productDescInfo clearfix">
+                {{#product.hasModel}}
+                <div class="chooseModel">
+                    {{#product.modelBlock}}
+                        {{>partial/product-model/propertyList}}
+                    {{/product.modelBlock}}
+
+                    {{#product.moreModelBlock}}
+                        <!-- Другие параметры выбора модели -->
+                        <div class="chooseModel_moreBox">
+                            {{>partial/product-model/propertyList}}
+                        </div>
+                        <!--/ Другие параметры выбора модели -->
+
+                        <div class="chooseModel_moreLink">Ещё модели</div>
+                    {{/product.moreModelBlock}}
+                </div>
+                {{/product.hasModel}}
+
+                <div class="buyWidth">
+                    <!-- Выбор варианта покупки, каунтер -->
+                    <div class="buyInfoWrap clearfix">
+                        <div class="buyInfo">
+                            <div class="buyInfoPrice">
+                                <!-- Купить по полной цене -->
+                                <div class="buyInfoPrice_item">
+                                    {{#product.credit}}
+                                    <input class="js-creditButton-remove customInput customInput-radio jsCustomRadio" type="radio" id="buyprice" name="selectbuy" checked="checked" />
+
+                                    <label class="customLabel customLabel-bigRadio" for="buyprice">
+                                        {{#product.shownOldPrice}}<span class="oldPrice">{{product.shownOldPrice}} <span class="rubl">p</span></span>{{/product.shownOldPrice}}
+                                        <span class="nowPrice">{{product.shownPrice}} <span class="rubl">p</span></span>
+                                    </label>
+                                    {{/product.credit}}
+
+                                    {{^product.credit}}
+                                        {{#product.shownOldPrice}}<span class="oldPrice">{{product.shownOldPrice}} <span class="rubl">p</span></span>{{/product.shownOldPrice}}
+                                        <span class="nowPrice">{{product.shownPrice}} <span class="rubl">p</span></span>
+                                    {{/product.credit}}
+                                </div>
+                                <!--/ Купить по полной цене -->
+
+                                {{#product.credit}}
+                                <!-- Купить в кредит -->
+                                <div class="js-creditPayment buyInfoPrice_item buyInfoPrice_item-credit" data-template-selector="#tpl-creditPayment" data-value="{{&product.credit.dataValue}}" data-price-selector=".{{product.credit.widgetId}}">
+                                    <input class="js-creditButton customInput customInput-radio jsCustomRadio" type="radio" id="creditinput" name="selectbuy" />
+
+                                    <label class="{{product.credit.widgetId}} customLabel customLabel-bigRadio" for="creditinput">
+                                        <span class="creditPrice">В кредит</span>
+                                    </label>
+
+                                    <script id="tpl-creditPayment" type="text/html">
+                                    {{={{{ }}}=}}
+                                        <span class="creditPrice">В кредит от <strong>{{shownPrice}}</strong> <span class="rubl">p</span> в месяц</span>
+                                    {{{={{ }}=}}}
+                                    </script>
+                                </div>
+                                <!--/ Купить в кредит -->
+                                {{/product.credit}}
+                            </div>
+
+                            <!-- Купить дешевле -->
+                            <!--<div class="buyInfoLess"><a class="buyInfoLess__link" href="">Хочешь дешевле?</a></div>-->
+                            <!--/ Купить дешевле -->
+
+                            {{#product.cartButtonBlock}}
+                                {{>page/product-card/buttonBlock}}
+                            {{/product.cartButtonBlock}}
+                        </div>
+                    </div>
+                    <!--/ Выбор варианта покупки, каунтер -->
+
+                    <!-- Информация о доставке -->
+                    {{#product.deliveryBlock}}
+                        <div class="deliveryInfo">
+                            <ul class="deliveryList">
+                                {{#deliveries}}
+                                    <li class="deliveryList_item deliveryList_item-{{token}}">
+                                        {{#name}}
+                                            {{name}} {{#priceText}}<strong>{{priceText}}</strong>{{/priceText}}
+                                        {{/name}}
+                                        <span class="{{#name}}descText{{/name}}{{^name}}descTextDotted{{/name}}">{{deliveredAtText}}
+                                        </span>
+
+                                        {{#hasShops}}
+                                            <ul class="addressShopsList">
+                                                {{#shops}}
+                                                    <li class="addressShopsList_item"><a class="" href="{{url}}">{{name}}</a></li>
+                                                {{/shops}}
+                                            </ul>
+                                        {{/hasShops}}
+                                    </li>
+                                {{/deliveries}}
+                            </ul>
+                        </div>
+                    {{/product.deliveryBlock}}
+                    <!--/ Информация о доставке -->
+                </div>
+            </div>
+            <!--/ Информация о покупке -->
+        </div>
+    </div>
+
+    <!-- Информация о товаре - табы -->
+    <div class="contentBox960">
+        <ul class="productDescTab js-tabs">
+            <li class="productDescTab_item js-tabs-item productDescTab_item-active">
+                <span class="tabText">Подробности</span>
+
+                {{#product.hasVideo}}
+                    <!--<img class="tabImg tabImg_view" src="/v2/css/modules/productDescTab/img/video.png" />-->
+                {{/product.hasVideo}}
+
+                {{#product.hasPhoto3d}}
+                    <!--<img class="tabImg tabImg_view" src="/v2/css/modules/productDescTab/img/grad260.png" />-->
+                {{/product.hasPhoto3d}}
+            </li>
+
+            {{#product.reviewBlock}}
+            <li class="productDescTab_item js-tabs-item">
+                <span class="tabText">Отзывы</span>
+                <span class="tabImg reviews">
+                    {{#product.rating}}
+                        {{>partial/rating/star-list}}
+                    {{/product.rating}}
+                    <span class="reviewsCount">{{product.rating.reviewCount}}</span>
+                </span>
+            </li>
+            {{/product.reviewBlock}}
+
+            {{#product.accessorySlider}}
+            <li class="productDescTab_item js-tabs-item">
+                Аксессуары
+            </li>
+            {{/product.accessorySlider}}
+
+            <li id="id-product-alsoBoughtTab" class="productDescTab_item js-tabs-item" style="display: none;">
+                С этим товаром покупают
+            </li>
+        </ul>
+    </div>
+    <!-- Информация о товаре - табы -->
+
+    <div class="contentBox940 js-tab-selector">
+        <div class="tabContentWrap js-tab-wrap">
+            <div class="tabContentInner js-tab">
+                <!-- Таб - Подробнее -->
+                <div class="tabContent js-cont">
+                    <div class="tabContent_title">Подробности</div>
+
+                    <p class="specificationsText">{{product.description}}</p>
+
+                    <div class="specificationsListCol">
+                        {{#product.propertyChunks}}
+                            <ul class="specificationsList">
+                            {{#properties}}
+                                {{#isTitle}}
+                                    <li class="specificationsList__item specificationsList__item-title">{{name}}</li>
+                                {{/isTitle}}
+
+                                {{^isTitle}}
+                                    <li class="specificationsList__item">{{name}}: {{value}}</li>
+                                {{/isTitle}}
+                            {{/properties}}
+                            </ul>
+                        {{/product.propertyChunks}}
+                    </div>
+                </div>
+                <!--/ Таб - Подробнее -->
+
+                <!-- Таб - Отзывы -->
+                {{#product.reviewBlock}}
+                <div class="tabContent js-cont">
+                    <div class="tabContent_title">Отзывы</div>
+
+                    {{#product.reviewBlock.reviews}}
+                        <div class="reviewsBox clearfix">
+                            <div class="reviewsBox__left">
+                                <div class="reviews">
+                                    {{>partial/rating/star-list}}
+                                </div>
+
+                                <div class="reviewsName">{{author}}</div>
+
+                                <div class="reviewsDate">{{createdAt}}</div>
+                            </div>
+
+                            <div class="reviewsBox__right">
+                                <div class="reviewsText">
+                                    <span class="reviewsText__mark">«</span>
+                                    <p class="reviewsText__par">{{extract}}</p>
+                                </div>
+
+                                <div class="reviewsText">
+                                    <span class="reviewsText__mark">+</span>
+                                    <p class="reviewsText__par">{{pros}}</p>
+                                </div>
+
+                                <div class="reviewsText">
+                                    <span class="reviewsText__mark">−</span>
+                                    <p class="reviewsText__par">{{cons}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {{/product.reviewBlock.reviews}}
+                </div>
+                {{/product.reviewBlock}}
+                <!--/ Таб - Отзывы -->
+
+                <!-- Таб - Аксессуары -->
+                <div class="tabContent js-container js-cont" {{^product.accessorySlider.count}}style="display: none;"{{/product.accessorySlider.count}}>
+
+                    <div class="tabContent_title">Аксессуары</div>
+
+                    {{#product.accessorySlider}}
+                        {{>partial/product-slider/default}}
+                    {{/product.accessorySlider}}
+                </div>
+                <!--/ Таб - Аксессуары -->
+            
+                <!-- Таб - С этим товаром покупают -->
+                <div class="tabContent js-container js-cont" data-tab-selector="#id-product-alsoBoughtTab" style="display: none;">
+
+                    <div class="tabContent_title">С этим товаром покупают</div>
+
+                    {{#product.alsoBoughtSlider}}
+                        {{>partial/product-slider/default}}
+                    {{/product.alsoBoughtSlider}}
+                </div>
+                <!--/ Таб - С этим товаром покупают -->
+            </div>
+        </div>
+    </div>
+
+</div><!--/ Контент -->

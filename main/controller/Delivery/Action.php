@@ -138,6 +138,8 @@ class Action {
 
             if (array_key_exists('action_list', $result) && !empty($result['action_list'])) {
                 $cart->setActionData((array)$result['action_list']);
+            } else {
+                $cart->clearActionData();
             }
 
             // Типы доставок
@@ -167,17 +169,25 @@ class Action {
                 foreach ($result['delivery_methods'] as $item) {
                     $token = $item['token'];
 
-                    // TODO standart_other - Плановая дата доставки
+                    // TODO перенести в модель
                     switch (true) {
-                        case (false !== strpos($token, 'standart')):
+                        case ($token == 'standart'):
                             $item['name'] = 'Доставим';
                             break;
-                        case (false !== strpos($token, 'self')):
-                        case (false !== strpos($token, 'now')):
+                        case ($token == 'self'):
+                        case ($token == 'now'):
                             $item['name'] = 'Самовывоз';
                             break;
-                        case (false !== strpos($token, 'pickpoint')):
+                        case ($token == 'pickpoint'):
                             $item['name'] = 'PickPoint';
+                            break;
+                        case ($token == 'self_svyaznoy'):
+                            $item['name'] = "Самовывоз (ООО «Связной-Логистика»)";
+                            break;
+                        case ($token == 'standart_svyaznoy'):
+                            $item['name'] = "Доставим (ООО «Связной-Логистика»)";
+                            break;
+                        default: $item['name'] = "";
                     }
 
                     $responseData['deliveryStates'][$token] = $item;
@@ -338,9 +348,8 @@ class Action {
                         'latitude'   => (float)$shopItem['coord_lat'],
                         'longitude'  => (float)$shopItem['coord_long'],
                         'products'   => isset($productIdsByShop[$shopId]) ? $productIdsByShop[$shopId] : [],
-                        'pointImage' => '/images/marker.png',
-                        'buttonName' => isset($responseData['deliveryTypes']['now']['buttonName']) ? $responseData['deliveryTypes']['now']['buttonName'] :
-                            (isset($responseData['deliveryTypes']['standart']['buttonName']) ? $responseData['deliveryTypes']['standart']['buttonName'] : ''),
+                        'pointImage' => $shopToken == 'shops_svyaznoy' ? '/images/marker-svyaznoy.png' : '/images/marker.png',
+                        'buttonName' => 'Забрать из этого магазина',
                     ];
                 }
                 // сортировка магазинов
@@ -502,10 +511,44 @@ class Action {
                     }
                 }
             }
+
+            if ($oneClick && \App::request()->get('shopId')) $responseData = $this->filterForReserve($responseData, \App::request()->get('shopId'));
+
         } catch(\Exception $e) {
             $this->failResponseData($e, $responseData);
         }
 
         return $responseData;
+    }
+
+    /**
+     * Функция, фильтрующая результат для кнопки "Резерв" ( SITE-3950 )
+     * Оставляет только deliveryType['now'], ставит магазин с id == $shopId первым в списке
+     *
+     * @param $data mixed
+     * @param $shopId string
+     * @return mixed
+     */
+    private function filterForReserve($data, $shopId) {
+        $result = $data;
+
+        /* Unset deliveryTypes */
+        $result['deliveryTypes'] = [];
+        $arrayWithNow = array_filter($data['deliveryTypes'], function($type) {
+            return $type['token'] == 'now';
+        });
+        $result['deliveryTypes'][] = reset($arrayWithNow);
+
+        /* Sorting shops */
+        $firstShop = $lastShops = [];
+
+        array_walk($result['shops'], function ($val) use (&$firstShop, &$lastShops, $shopId){
+            if ($val['id'] == $shopId) $firstShop[] = $val;
+            else $lastShops[] = $val;
+        });
+
+        $result['shops'] = array_merge($firstShop, $lastShops);
+
+        return $result;
     }
 }

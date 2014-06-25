@@ -1,0 +1,16 @@
+-  js: tpl.render('#tpl-product-buySpinner', data, partials) + кеширование: template.html(), mustache.compile
+-+ env, debug
++  простой маршрутизатор для EnterPartner; маршруты типа EnterSite\Partner\CityAds\GetOrderComplete
+-? сделать view-классы, которые работают с рендером
+-  array_key_exists -> isset
+-+ импорт конфигурации из v1
+-? мержить curl.query.info - суммировать total_time? добавить callbackStartAt, callbackEndAt
+-? вынести requestId из конфига
++  удалить NotFoundException
++  Exception\PermanentlyRedirect -> Controller\PermanentlyRedirect
++  http: JsonResponse
++  маршрутизация
++  кеширование конфига
++  исправить трейты для Query: передавать client_id
++  ConfigTrait::getConfig - сделать protected; то же - для других трейтов
++  падение curl-запросов - пустой ответ = маленький timeout

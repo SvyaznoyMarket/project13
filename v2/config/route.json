@@ -1,0 +1,154 @@
+{
+    "Index": {
+        "name": "Главная",
+        "pattern": "/"
+    },
+
+    "Promo\\Redirect": {
+        "name": "Редирект с баннера",
+        "pattern": "/banner-click/{promoId}",
+        "require": {
+            "promoId": "[\\w\\d-_]+"
+        }
+    },
+
+    "ProductCard\\Get": {
+        "name": "Карточка товара",
+        "pattern": "/product/{productPath}",
+        "require": {
+            "productPath": "[\\w\\d-_]+/{1}[\\w\\d-_]+"
+        }
+    },
+    "Product\\GetRecommendedList": {
+        "name": "Рекомендации товара",
+        "pattern": "/product-recommended/{productId}",
+        "require": {
+            "productId": "[\\w\\d-_]+"
+        }
+    },
+    "ProductCatalog\\GetRootCategory": {
+        "name": "Каталог товаров - родительская категория",
+        "pattern": "/catalog/{categoryPath}",
+        "require": {
+            "categoryPath": "[\\w\\d-_]+"
+        }
+    },
+    "ProductCatalog\\GetChildCategory": {
+        "name": "Каталог товаров - дочерняя категория",
+        "pattern": "/catalog/{categoryPath}",
+        "require": {
+            "categoryPath": "[\\w\\d-_]+/[\\w\\d-_]+"
+        }
+    },
+    "Product\\GetListByFilter": {
+        "name": "Список товаров",
+        "pattern": "/ajax/product-list"
+    },
+
+    "Region\\Autocomplete": {
+        "name": "Автоподстановка региона",
+        "pattern": "/ajax/region/autocomplete"
+    },
+    "Region\\SetById": {
+        "name": "Установить регион",
+        "pattern": "/region/set/{regionId}",
+        "require": {
+            "regionId": "[\\w\\d-_]+"
+        }
+    },
+    "Region\\SetByName": {
+        "name": "Установить регион",
+        "pattern": "/region/set"
+    },
+
+    "Cart\\Index": {
+        "name": "Корзина",
+        "pattern": "/cart"
+    },
+    "User\\Get": {
+        "name": "Информация о пользователе, его корзине, ...",
+        "pattern": "/ajax/user"
+    },
+    "User\\Cart\\Product\\Set": {
+        "name": "Установить товар в корзине",
+        "pattern": "/ajax/user/cart/product",
+        "method": ["POST", "PUT"]
+    },
+    "User\\Cart\\Product\\Delete": {
+        "name": "Удалить товар из корзины",
+        "pattern": "/ajax/user/cart/product/delete",
+        "method": ["POST"]
+    },
+
+    "Order\\Quick\\Index": {
+        "name": "Оформление заказа в один клик",
+        "pattern": "/orders/one-click/new"
+    },
+    "Order\\Index": {
+        "name": "Оформление заказа",
+        "pattern": "/orders/new"
+    },
+
+    "Shop\\Index": {
+        "name": "Магазины",
+        "pattern": "/shops"
+    },
+    "ShopCard\\Get": {
+        "name": "Карточка магазина",
+        "pattern": "/shops/{regionToken}/{shopToken}",
+        "require": {
+            "regionToken": "[\\w\\d-_]+",
+            "shopToken": "[\\w\\d-_]+"
+        }
+    },
+
+    "User\\Auth": {
+        "name": "Авторизация",
+        "pattern": "/login"
+    },
+    "User\\Index": {
+        "name": "Личный кабинет",
+        "pattern": "/private"
+    },
+    "User\\Cart\\Clear": {
+        "name": "Очистить корзину",
+        "pattern": "/ajax/user/cart/clear",
+        "method": ["DELETE"]
+    },
+
+    "Search\\Index": {
+        "name": "Поиск",
+        "pattern": "/search"
+    },
+
+    "Cart\\SetProduct": {
+        "name": "Установить товар в корзине (когда js поломался)",
+        "pattern": "/cart/set-product/{productId}",
+        "method": ["GET"],
+        "require": {
+            "productId": "[\\w\\d-_]+"
+        }
+    },
+    "Cart\\DeleteProduct": {
+        "name": "Удалить товар из корзины (когда js поломался)",
+        "pattern": "/cart/delete-product/{productId}",
+        "method": ["GET"],
+        "require": {
+            "productId": "[\\w\\d-_]+"
+        }
+    },
+
+    "Router": {
+        "name": "Маршрутизатор нескольких запросов",
+        "pattern": "/ajax/router",
+        "method": ["POST"]
+    },
+
+    "Log": {
+        "name": ":Журнал",
+        "pattern": "/log/{id}",
+        "require": {
+            "productId": "[\\w\\d-_]+"
+        }
+    }
+}

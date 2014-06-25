@@ -44,16 +44,17 @@
 
         <? if (!empty($promoContent)): ?>
             <?= $promoContent ?>
-        <? elseif ($productPager->getLastPage() > 1): ?>
+        <? else : ?>
             <?= $helper->render('product-category/__children',
                 [
                     'category'           => $category,
                     'promoStyle'         => $promoStyle,
                     'relatedCategories'  => $relatedCategories,
                     'categoryConfigById' => $categoryConfigById,
+                    'productPager'       => $productPager
                 ]
             ) // дочерние категории and relatedCategories ?>
-        <? endif ?>
+        <? endif; ?>
 
         <?= $helper->render('product/__smartChoice', ['smartChoiceProducts' => $smartChoiceProducts]); ?>
 
@@ -85,9 +86,12 @@
         <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
     </div>
 
-    <? if(!empty($seoContent)): ?>
+    <? if (!empty($seoContent) || (bool)$hotlinks): ?>
         <div class="bSeoText">
             <?= $seoContent ?>
+
+            <?= $helper->render('product-category/__hotlink', ['hotlinks' => $hotlinks, 'promoStyle' => $promoStyle]) // hotlinks ?>
         </div>
     <? endif ?>
+
 </div>

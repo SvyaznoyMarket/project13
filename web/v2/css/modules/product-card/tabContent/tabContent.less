@@ -1,0 +1,123 @@
+/* ==========================================================================
+   Карточка товара -> контент табов описания товара .tabContentWrap .tabContentInner .tabContent
+   ========================================================================== */
+
+.tabContentWrap {
+	overflow: hidden;
+}
+
+.tabContentInner {
+	position: relative;
+	top: 0;
+	left: 0;
+
+	width: 10000px;
+
+	font-size: 0;
+}
+
+.tabContent {
+	display: inline-block;
+
+    min-height: 350px;
+    margin: 0 0 30px;
+
+    vertical-align: top;
+
+    font-size: 12px;
+
+    &_title {
+    	display: none;
+    }
+}
+
+.tabTitle {
+	margin: 0 0 20px;
+	padding: 10px;
+
+	border-top: 1px solid @tabGreyBorder;
+	border-bottom: 1px solid @tabGreyBorder;
+	background: @tabGrey;
+
+	&__text {
+	    display: inline-block;
+		zoom: 1;
+
+		text-align: center;
+
+		border-bottom: none;
+
+	    font-size: 16px;
+	    font-weight: bold;
+
+		*display: inline;
+	}
+
+	&__add {
+		display: inline-block;
+	    float: right;
+		zoom: 1;
+
+	    border-bottom: 1px dotted;
+
+	    font-size: 14px;
+
+	    *display: inline;
+	}
+}
+
+
+.reviewsBox {
+	margin: 0 0 30px;
+
+	&__left {
+		float: left;
+
+		width: 110px; 
+	}
+
+	.reviews {
+
+		.reviewsStar {
+			height: 15px;
+		}
+	}
+
+	.reviewsName {
+	    margin: 6px 0;
+
+		font-size: 14px;
+	}
+
+	.reviewsDate {
+		color: @typGray;
+	}
+
+	&__right {
+		padding: 0 0 0 120px;
+	}
+
+	.reviewsText {
+
+		&__mark {
+		    display: block;
+		    float: left;
+
+		    width: 30px;
+		    margin-top: -2px;
+		    margin-right: 5px;
+
+		    text-align: right;
+
+			color: @typBoxShadowColor;
+
+		    font: bold 24px/24px Tahoma;
+		}
+
+		&__par {
+			padding: 0 0 0 40px;
+
+			font-size: 14px;
+		}
+	}
+}

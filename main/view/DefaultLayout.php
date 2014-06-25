@@ -241,10 +241,6 @@ class DefaultLayout extends Layout {
         return (\App::config()->yandexMetrika['enabled']) ? $this->render('_yandexMetrika') : '';
     }
 
-    public function slotMyThings() {
-        return (\App::config()->analytics['enabled'] && (bool)$this->getParam('myThingsData')) ? $this->render('_myThingsTracker', array('myThingsData' => $this->getParam('myThingsData'),)) : '';
-    }
-
     public function slotMetaOg() {
         return '';
     }
@@ -431,6 +427,7 @@ class DefaultLayout extends Layout {
         }
 
         $return .= $this->tryRender('partner-counter/livetex/_slot_liveTex');
+        $return .= $this->slotSociaPlus();
 
         return $return;
     }
@@ -938,6 +935,10 @@ class DefaultLayout extends Layout {
                 <noscript><iframe src=\"//www.googletagmanager.com/ns.html?id=" . $containerId . "\" height=\"0\" width=\"0\" style=\"display:none;visibility:hidden\"></iframe></noscript>
                 <!-- End Google Tag Manager -->
             </div>";
+    }
+
+    public function slotFlocktoryExchangeJS() {
+        return;
     }
 
     public function slotMyragonOrderCompleteJS() {

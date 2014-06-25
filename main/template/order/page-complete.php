@@ -32,14 +32,29 @@ if (!isset($paymentUrl)) $paymentUrl = null;
 
     <div class="bBuyingHead__eTitle">
         <span class="bSubTitle">Оформление заказа</span><br>
-        <span class="bTitle"><?= $isCredit ? 'Покупка в кредит' : 'Ваш заказ принят, спасибо!' ?></span>
+        <span class="bTitle"><?= $isCredit ? 'Покупка в кредит' : 'Спасибо за ваш заказ!' ?></span>
     </div>
 </div>
 <!-- /Header -->
 
 <? foreach ($orders as $order): ?>
-    <p class="title-font16 font16">Сейчас он отправлен на склад для сборки!<br/>
-Ожидайте смс или звонок от оператора контакт-сEnter по статусу заказа!</p>
+    <? if ($order->getIsPartner()) : ?>
+        <p class="title-font16 font16">
+            Ваш заказ передан продавцу, он обязательно свяжется с Вами.<br/>
+            <b>Продавец:</b> Закрытое акционерное общество «Связной Логистика».<br/>
+            Адрес: 115280, г. Москва, ул. Ленинская слобода, д. 19<br/>
+            ИНН: 7703567318, ОГРН 1057748731336<br/>
+            Интернет-магазин «Связной» 8 (800) 700 43 43
+        </p>
+    <? else : ?>
+        <p class="title-font16 font16">
+            Сейчас он отправлен на склад для сборки!<br/>
+            Ожидайте смс или звонок от оператора контакт-сEnter по статусу заказа!
+        </p>
+        <p style="margin: 10px 0;">Внимание! Важная информация об акции 1 + 1 = 3 на товары Tchibo.<br/>
+            На сайте скидка не показывается.<br/>
+            Скидка будет обязательно отражена в чеке на покупку по акции.</p>
+    <? endif; ?>
     <p class="font19">Номер заказа: <?= $order->getNumberErp() ?></p>
 
     <? if ($order->getDeliveredAt() instanceof \DateTime): ?>
@@ -80,7 +95,12 @@ if (!isset($paymentUrl)) $paymentUrl = null;
         <? } ?>
     <? } ?>
     <div class="mt32" style="text-align: center">
-        <a class='bBigOrangeButton' href="<?= $page->url('homepage') ?>">Продолжить покупки</a>
+        <? if ($isCredit): ?>
+            <a class='bBigOrangeButton jsCreditBtn' href="#">Перейти к оформлению кредита</a>
+            <p>Виджет оформления кредита откроется автоматически через несколько секунд</p>
+        <? else: ?>
+            <a class='bBigOrangeButton' href="<?= $page->url('homepage') ?>">Продолжить покупки</a>
+        <? endif ?>
     </div>
 <? endif ?>
 
@@ -135,4 +155,4 @@ if (!isset($paymentUrl)) $paymentUrl = null;
     echo $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $productsById]);
 } ?>
 
-<div id="flocktory_exchange"></div>
+<?= $page->slotFlocktoryExchangeJS() ?>

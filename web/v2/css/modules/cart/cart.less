@@ -1,0 +1,177 @@
+/* ==========================================================================
+   Корзина .cartItem .cartLine .cartBuy
+   ========================================================================== */
+
+ // товары в корзине
+.cartItem {
+	display: table;
+
+	width: 100%;
+	padding: 20px 0;
+
+	border-bottom: 1px solid @tabGreyBorder;
+
+	&_col {
+		display: table-cell;
+
+		vertical-align: top;
+
+		&-img {
+			width: 120px;
+
+			.img {
+				width: 100px;
+			}
+		}
+
+		&-desc {
+			vertical-align: top;
+
+			font-size: 20px;
+
+			.name {
+				display: inline-block;
+				zoom: 1;
+
+				min-height: 72px;
+
+				font-size: 20px;
+
+				*display: inline;
+
+				&_cat {
+					display: block;
+				}
+			}
+
+			.price {
+				color: #777777;
+			}
+		}
+
+		&-price {
+			width: 290px;
+			padding: 15px 0 0;
+
+			.priceNum {
+				display: none;
+			}
+
+			.price {
+				display: inline-block;
+				zoom: 1;
+
+				width: 100px;
+
+				text-align: right;
+				vertical-align: middle;
+
+				font-size: 20px;
+				line-height: 41px;
+
+				*display: inline;
+			}
+
+			.delete {
+				display: inline-block;
+				zoom: 1;
+
+	    		margin: 15px 0 0 25px;
+	    		padding: 1px 0 2px 25px;
+
+				color: #5e5d5d;
+				background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAACXBIWXMAAAsTAAALEwEAmpwYAAACS0lEQVQ4EZVUPW8aQRCdO8SHEAiCkBA6yUhYKeAPpLBCJJwqLkwq/wI3cRE37uI+dhzJken8C9Ig0VA5BY6pnAaJjyKioEA0CDcnPgXkPaQ7wx52kpGWZWfnvZudnbfaYrGQDeZuNBo57OWwt4MRx5hg3dE07Rbjezqd/qHiNJWs2Wy+n8/nX0Kh0HYwGBS32y0AL3GMnUwm0u/3ZTAYlF0u12Eqlfptka6S6cjms9frPYnFYoJAK2bjPB6PpdPpPOBD+8jyJ4NsMhCdBwKBk2g0ameykWXFOZvNpN1uP+i6/ooZ6tzj0ZjR/xARx+wNw3gB0muumZm7Xq83E4nE9t+ORsAm63a7MhqN3rJOORZbJeIRptOpAwuQwxeJRARJHej4yfHWVKtUKpLP54WFtuzX/b2cn50JP7RqHo+HZBnWbIfXr1omk5HE1pZ8u7yU4XAoJC8Wi/Lh6Mhx02wdDEOr1WrjZDLpUcmsdalUksrdnfDrH4+PJRwOW1trc6vVEmY2WfMqC7YrjqB4nUtkZrJmnaeCC4WCVKtV+XR6KtlsVr5eXEiv13MwEU8eHYy3lIhq5XJZmDqP5vf75TVq+G5vT/JXV44LIJ48Gnps1+fz3cTj1PKjsS2gUUEzPzrxzzRNgVLWfHafUf0U7WoLMJI3rBLRrxIRRzx5lnJCwx5StGr/EPycMZ444hm3JKNIceZ9ilbN8CkyxjGeOOsZsl8NgiD4l/jaNQr+hhJhbyHY5uOt/et7ZoOg110ADzAyIDMwBzCbmJ99af8ArqY5ldB+T2sAAAAASUVORK5CYII=) no-repeat 0 0;
+
+			
+				*display: inline;
+			}
+
+			.change {
+				float: right;
+
+			}
+		}
+	}
+}
+
+//итогая стоимость/купить в кредит
+.cartLine {
+	margin: 0 0 10px;
+
+	border-bottom: 1px solid @tabGreyBorder;
+	background: @tabGrey;
+
+	&_left {
+		float: right;
+
+		margin: 2px 30px 0 0;
+
+		font-size: 14px;
+
+		&-double {
+			display: none;
+		}
+
+		.price {
+			padding-left: 20px;
+
+			font-size: 22px;
+		}
+	}
+
+	&_right {
+		float: right;
+
+		padding: 10px 30px 10px 10px;
+
+		background: #ffefcb;
+
+		.customLabel {
+			line-height: 1.9;
+		}
+
+		.creditText {
+			display: block;
+		}
+	}
+}
+
+//кнопка - оформление заказа
+.cartBuy {
+	padding: 0 10px;
+
+	text-align: right;
+
+	&_btn {
+		display: inline-block;
+		zoom: 1;
+
+		width: 248px;
+		height: 38px;
+
+		font-size: 20px;
+		font-weight: bold;
+		line-height: 38px;
+
+		*display: inline;
+	}
+}
+
+.cartEmpty {
+	padding: 105px 10px 0;
+    text-align: center;
+	background: url("@{base-url}/cart/img/emptyCart.gif") no-repeat 50% 15px;
+
+	&_title {
+		font-size: 28px;
+		margin-bottom: 15px;
+	}
+
+	&_now {
+		font-size: 22px;
+
+		a {
+			text-decoration: underline;
+		}
+	}
+}

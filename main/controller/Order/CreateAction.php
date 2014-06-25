@@ -330,9 +330,6 @@ class CreateAction {
                             if ($partnerName = \App::partner()->getName()) {
                                 $partners[] = \App::partner()->getName();
                             }
-                            if (\Partner\Counter\MyThings::isTracking()) {
-                                $partners[] = \Partner\Counter\MyThings::NAME;
-                            }
                             foreach (\Controller\Product\BasicRecommendedAction::$recomendedPartners as $recomPartnerName) {
                                 if ($viewedAt = \App::user()->getRecommendedProductByParams($product->getId(), $recomPartnerName, 'viewed_at')) {
                                     if ((time() - $viewedAt) <= 30 * 24 * 60 * 60) { // 30days
@@ -348,6 +345,7 @@ class CreateAction {
                             );
                             $orderData['meta_data']['user_agent'] = $request->server->get('HTTP_USER_AGENT');
                             $orderData['meta_data']['kiss_session'] = $request->request->get('kiss_session');
+                            $orderData['meta_data']['last_partner'] = $request->cookies->get('last_partner');
                         }
                         \App::logger()->info(sprintf('Создается заказ от партнеров %s', json_encode($orderData['meta_data']['partner'])), ['order', 'partner']);
                     } catch (\Exception $e) {
