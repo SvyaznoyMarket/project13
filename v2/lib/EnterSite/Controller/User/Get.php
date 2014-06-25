@@ -30,7 +30,6 @@ class Get {
         $config = $this->getConfig();
         $session = $this->getSession();
         $curl = $this->getCurlClient();
-        $router = $this->getRouter();
         $cartRepository = new Repository\Cart();
 
         // ид региона

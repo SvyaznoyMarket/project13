@@ -33,8 +33,8 @@ class UserBlock {
         }
 
         $userBlock->isCartNotEmpty = (bool)$cart->product;
+        $userBlock->cart->url = $router->getUrlByRoute(new Routing\Cart\Index());
         if ($userBlock->isCartNotEmpty) {
-            $userBlock->cart->url = $router->getUrlByRoute(new Routing\Cart\Index());
             $userBlock->cart->quantity = count($cart->product);
             $userBlock->cart->shownSum = $cart->sum ? number_format((float)$cart->sum, 0, ',', ' ') : null;
             $userBlock->cart->sum = $cart->sum;
