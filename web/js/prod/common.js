@@ -107,13 +107,6 @@
 		}
 	});
 }(this, this.document, this.jQuery, this.ENTER));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Обработчик для личного кабинета
  *
@@ -160,13 +153,6 @@
 
 
 
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 // (function(){
 //   $(function(){
 //     if($('.bCtg__eMore').length) {
@@ -302,13 +288,6 @@
 //   });
 // })();
 
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Обработчик для кнопок купить
  *
@@ -694,13 +673,6 @@
 
 }(window.ENTER));
 
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Окно смены региона
  *
@@ -992,13 +964,6 @@
 		showRegionPopup();
 	}
 }(this));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Custom inputs
  *
@@ -1055,13 +1020,6 @@
 
 	inputs.trigger('updateState');
 }());
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 $(document).ready(function(){
 	// var carturl = $('.lightboxinner .point2').attr('href')
 
@@ -1305,13 +1263,6 @@ $(document).ready(function(){
 	}
 
 });
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Перемотка к Id
  *
@@ -1331,13 +1282,6 @@ $(document).ready(function(){
 		$('.jsGoToId').bind('click',goToId);
 	});
 }());
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Обработчик горячих ссылок
  *
@@ -1367,13 +1311,6 @@ $(document).ready(function(){
 
 
 
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * JIRA
  */
@@ -1394,13 +1331,6 @@ $(document).ready(function(){
 		}
 	};
 }());
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 ;(function( ENTER ) {
 	var constructors = ENTER.constructors,
 		body = $('body'),
@@ -2004,13 +1934,6 @@ $(document).ready(function(){
 	});
 
 }(window.ENTER));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 $(document).ready(function() {
 	/**
 	 * Подписка
@@ -2093,13 +2016,6 @@ $(document).ready(function() {
 			$(this).next('.enterPrizeListWrap').toggle('fast');
 	});
 });
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 ;(function($){	
 	/*paginator*/
 	var EnterPaginator = function( domID,totalPages, visPages, activePage ) {
@@ -2683,13 +2599,6 @@ $(document).ready(function() {
 		}
 	}
 })(jQuery);
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * SITE-2693
  * Показывать окно авторизации, если по аяксу был получен ответ с 403-м статусом
@@ -2719,13 +2628,6 @@ $(document).ready(function() {
 		}
 	});
 }());
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Всплывающая синяя плашка с предложением о подписке
  * Срабатывает при возникновении события showsubscribe.
@@ -2874,13 +2776,6 @@ $(document).ready(function() {
 	body.bind('showsubscribe', lboxCheckSubscribe);
 	body.trigger('showsubscribe');
 }());
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Саджест для поля поиска
  * Нужен рефакторинг
@@ -3153,13 +3048,6 @@ $(document).ready(function() {
 	});
 }());
 
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 ;(function(){
 
     // https://jira.enter.ru/browse/SITE-3508
@@ -3180,13 +3068,6 @@ $(document).ready(function() {
     }
 
 }());
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /* Top Menu */
 (function(){
 	var menuDelayLvl1 = 300; //ms
@@ -3510,13 +3391,6 @@ $(document).ready(function() {
 })();
 
 	
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Кнопка наверх
  *
@@ -3552,13 +3426,6 @@ $(document).ready(function() {
 	$(window).scroll(pageScrolling);
 	upper.bind('click',goUp);
 }());
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * White floating user bar
  *

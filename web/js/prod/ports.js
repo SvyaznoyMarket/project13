@@ -2075,13 +2075,6 @@ var ADFOX = {
 
 ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') );
 
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 ;(function () {
 	/**********************************************************************
 	 Visitor split, into groups, enabling separate targeting and remarketing.

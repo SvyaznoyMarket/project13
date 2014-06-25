@@ -30,13 +30,6 @@
 	console.info('enableHistoryAPI '+ catalog.enableHistoryAPI);
 
 }(window.ENTER));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Filters
  *
@@ -783,13 +776,6 @@
 	filterSliders.each(initSliderRange);
 
 }(window.ENTER));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Работа с HISTORY API
  *
@@ -956,13 +942,6 @@
 	History.Adapter.bind(window, 'statechange', stateChangeHandler);
 	
 }(window.ENTER));	
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Catalog infinity scroll
  *
@@ -1116,13 +1095,6 @@
 	viewParamPanel.on('click', '.jsInfinityEnable', infBtnHandler);
 
 }(window.ENTER));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Catalog loader
  *
@@ -1174,13 +1146,6 @@
 	};
 
 }(window.ENTER));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Package set
  *
@@ -1204,13 +1169,6 @@
 	packageSetBtn.on('click', showPackageSetPopup);
 
 }(window.ENTER));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 ;$(document).ready(function(){
 
 	var smartChoiceSlider = $('.jsDataSmartChoice'),
