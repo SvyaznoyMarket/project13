@@ -429,4 +429,16 @@ $c->flocktoryExchange['enabled'] = true;
 $c->flocktoryCoupon['enabled'] = true;
 $c->flocktoryCoupon['paramName'] = 'utm_coupon';
 
+
+$c->photoContest = [
+	'client' => [
+		'url'          => 'http://photo.enter.ru/',
+		'client_id'    => 'photocontest',
+		'timeout'      => 1,
+		'retryTimeout' => 1,
+		'retryCount'   => 2,
+		'debug'        => true,
+	]
+];
+
 return $c;
