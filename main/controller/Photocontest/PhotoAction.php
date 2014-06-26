@@ -148,7 +148,7 @@ class PhotoAction {
 				
 				if(!$_FILES['file']['name']) {
 					$hasError = true;
-					$form->file->error = 'Необходимо указать загружаемый файл';
+					$form->file->error = 'Вы не прикрепили файл';
 				} elseif($_FILES['file']['error']===1) {
 					$hasError = true;
 					$form->file->error = 'Файл слишком большой. Размер файла не может превышать '. ceil(ini_get('upload_max_filesize'));
