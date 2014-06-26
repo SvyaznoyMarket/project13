@@ -49,23 +49,17 @@
  <!--Комментарии вконтакте--> 
  <!-- Put this script tag to the <head> of your page -->
 <script type="text/javascript" src="//vk.com/js/api/openapi.js?113"></script>
-<?php if(App::config()->debug): ?>
-<script type="text/javascript">VK.init({apiId: 4432950, onlyWidgets: true}); //production</script>
-<?php else: ?> 
-<script type="text/javascript">VK.init({apiId: 4432944, onlyWidgets: true}); // test </script>
-<?php endif; ?>
+<script type="text/javascript">VK.init({apiId: <?=(App::config()->debug?4432950:4432944)?>, onlyWidgets: true}); //production</script>
 
 <!-- Комментарии facebook -->
-<div id="fb-root pc_right"></div>
-<script>
-	(function(d, s, id) {
-		var js, fjs = d.getElementsByTagName(s)[0];
-		if (d.getElementById(id)) return;
-		js = d.createElement(s); js.id = id;
-		js.src = "//connect.facebook.net/ru_RU/all.js#xfbml=1";
-		fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));
-</script>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+	var js, fjs = d.getElementsByTagName(s)[0];
+	if (d.getElementById(id)) return;
+	js = d.createElement(s); js.id = id;
+	js.src = "//connect.facebook.net/ru_RU/sdk.js#xfbml=1&appId=<?=(App::config()->debug?291694327668627:291693587668701)?>&version=v2.0";
+	fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 
 <div id="comments-box">
 	<div class="bCommentSn mVk pc_left" id="vk_comments"></div>
