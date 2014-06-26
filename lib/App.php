@@ -580,4 +580,18 @@ class App {
 
         return $instance;
    }
+
+    /**
+     * @static
+     * @return \Scms\Client
+     */
+    public static function scmsClientV2() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Scms\ClientV2(self::config()->scmsV2, self::curl());
+        }
+
+        return $instance;
+    }
 }
