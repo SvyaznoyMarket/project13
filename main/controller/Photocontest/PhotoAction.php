@@ -44,11 +44,12 @@ class PhotoAction {
 		
 		$hasError= false;
 		$form	= (object)[
-			'title'		=> (object)['title'=>'Заголовок'],
-			'orderIds'	=> (object)['title'=>'Номер(а) заказа'],
+//			'name'		=> (object)['title'=>'Заголовок'],
+//			'orderIds'	=> (object)['title'=>'Номер(а) заказа'],
 			'file'		=> (object)['title'=>'Фото'],
 			'email'		=> (object)['title'=>'E-mail'],
 			'mobile'	=> (object)['title'=>'Мобильный телефон'],
+			'isAccept'	=> (object)['title'=>null,'value'=>1],
 		];
 		
 		$user	= \App::user()->getEntity();
@@ -94,12 +95,11 @@ class PhotoAction {
 			$curl->getCurl()->setNativePost();
 			
 			// записываем имеющиеся значения в форму
-			$form->title->value		= $request->get('title');
-			$form->orderIds->value	= $request->get('orderIds');
-			if(isset($form->email))
-				$form->email->value	= $request->get('email');
-			if(isset($form->mobile))
-				$form->mobile->value= $request->get('mobile');
+			if(isset($form->name))		$form->name->value		= $request->get('name');
+			if(isset($form->orderIds))	$form->orderIds->value	= $request->get('orderIds');
+			if(isset($form->email))		$form->email->value		= $request->get('email');
+			if(isset($form->mobile))	$form->mobile->value	= $request->get('mobile');
+			if(isset($form->isAccept))	$form->isAccept->value	= $request->get('isAccept');
 			
 			
 			// Если не хватает контакта у пользователя, то валидируем и добавляем
@@ -136,15 +136,20 @@ class PhotoAction {
 			
 			// грузим изображение
 			try {
-				if(!$request->get('title')) {
+				if(isset($form->name) && !$request->get('name')) {
 					$hasError = true;
-					$form->title->error = 'Необходимо указать заголовок';
+					$form->name->error = 'Необходимо указать заголовок';
 				}
 				
-//				if(!$request->get('orderIds')) {
-//					$hasError = true;
-//					$form->orderIds->error = 'Необходимо указать номера Ваших заказов';
-//				}
+				if(isset($form->orderIds) && !$request->get('orderIds')) {
+					$hasError = true;
+					$form->orderIds->error = 'Необходимо указать номер(а) Ваших заказов';
+				}
+				
+				if(isset($form->isAccept) && !$request->get('isAccept')) {
+					$hasError = true;
+					$form->isAccept->error = 'Примите условия участия';
+				}
 				
 				if(!$_FILES['file']['name']) {
 					$hasError = true;
@@ -154,14 +159,14 @@ class PhotoAction {
 					$form->file->error = 'Файл слишком большой. Размер файла не может превышать '. ceil(ini_get('upload_max_filesize'));
 				} elseif($_FILES['file']['error']>1) {
 					$hasError = true;
-					$form->file->error = 'Не удает загрузить файл.';
+					$form->file->error = 'Не удается загрузить файл.';
 				}
 				
 				if(
 					!$hasError 
 					&& ($r = $curl->query(
 						'image/create/'.$contest->id, [], [
-							'name'		=> $request->get('title'),
+							'name'		=> $request->get('name'),
 							'orderIds'	=> $request->get('orderIds'),
 							'file'		=> '@'.$_FILES['file']['tmp_name']
 										.';filename='.$_FILES['file']['name']
@@ -169,8 +174,8 @@ class PhotoAction {
 						], 6
 					))
 				) {
-					$page->setParam('message', 'Вы стали участником фотоконкурса. Ваше фото на модерации и появиться в течение 24 часов');
-					return new \Http\Response($page->show());
+					$page->setParam('message', 'Вы стали участником фотоконкурса. Ваше фото на модерации и появится в течение 24 часов');
+					unset($form);	// отключаем вывод формы
 				}
 				
 			} catch (\Exception $e) {
@@ -183,7 +188,10 @@ class PhotoAction {
 		}
 		
 		
-		$page->setParam('form', $form);
+		if(isset($form)) {
+			$page->setParam('form', $form);
+		}
+		
 		return new \Http\Response($page->show());
 	}
 	
