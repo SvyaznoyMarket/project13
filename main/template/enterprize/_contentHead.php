@@ -17,7 +17,7 @@ $hasSeparateLine = isset($hasSeparateLine) ? (bool)$hasSeparateLine : false;
 $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
 
 $routeName = \App::request()->attributes->get('route');
-?>
+$priceNumDecimals = false === strpos((string)$enterpizeCoupon->getPrice(), '.') ? 0 : 2; ?>
 
 <div class="pagehead">
 
@@ -52,7 +52,12 @@ $routeName = \App::request()->attributes->get('route');
                                 <? endif ?>
 
                                 <? if ($enterpizeCoupon->getPrice()): ?>
-                                    <span class="cuponPrice"><?= $enterpizeCoupon->getPrice() . (!$enterpizeCoupon->getIsCurrency() ? '%' : '') ?> <? if ($enterpizeCoupon->getIsCurrency()): ?><span class="rubl">p</span><? endif ?></span>
+                                    <span class="cuponPrice">
+                                        <?= $page->helper->formatPrice($enterpizeCoupon->getPrice(), $priceNumDecimals) . (!$enterpizeCoupon->getIsCurrency() ? '%' : '') ?>
+                                        <? if ($enterpizeCoupon->getIsCurrency()): ?>
+                                            <span class="rubl">p</span>
+                                        <? endif ?>
+                                    </span>
                                 <? endif ?>
                             </span>
                         </span>
@@ -62,7 +67,7 @@ $routeName = \App::request()->attributes->get('route');
 
             <div class="enterPrize__rules"><!-- если пользователь уже получил купон то добавляем класс  mFailed-->
                 <div class="rulesText">
-                    Фишка со скидкой <strong><?= $enterpizeCoupon->getPrice() ?> <?= !$enterpizeCoupon->getIsCurrency() ? '%' : 'руб' ?></strong> на
+                    Фишка со скидкой <strong><?= $page->helper->formatPrice($enterpizeCoupon->getPrice(), $priceNumDecimals) ?><?= !$enterpizeCoupon->getIsCurrency() ? '%' : 'руб' ?></strong> на
                     <strong><a target="_blank" style="text-decoration: underline;" href="<?= $enterpizeCoupon->getLink() ?>"><?= $enterpizeCoupon->getLinkName() ? $enterpizeCoupon->getLinkName() : $enterpizeCoupon->getName() ?></a></strong><br />
                     Минимальная сумма заказа <?= $enterpizeCoupon->getMinOrderSum() ? $enterpizeCoupon->getMinOrderSum() : 0 ?> руб<br />
                     Действует

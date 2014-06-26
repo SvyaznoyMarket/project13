@@ -239,11 +239,14 @@
 				showHintPopup = function showHintPopup() {
 					console.log('hint show');
 					hintPopup.fadeIn(100);
-				}.
+
+					return false;
+				},
 
 				closeHintPopup = function closeHintPopup() {
 					hintPopup.fadeOut(100);
 
+					return false;
 				};
 			// end of functions
 
@@ -315,9 +318,11 @@
 		$('.bGoodsSlider').goodsSlider();
 	}
 
-	if ( $('.epHintPopup').length ) {
-		epHintPopup();
-	}
+	$(document).ready(function() {
+		if ( $('.epHintPopup').length ) {
+			epHintPopup();
+		}
+	});
 
 	// Открываем информационный попап
 //	if ( infoBlock.length ) {

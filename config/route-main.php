@@ -830,6 +830,11 @@ return [
         'action'  => ['Enterprize\ShowAction', 'execute'],
     ],
 
+    'enterprize.fishka' => [
+        'pattern' => '/fishka',
+        'action'  => ['Enterprize\RetailClient', 'fishka'],
+    ],
+
     // git pull
     'git.pull' => [
         'pattern' => '/git/pull',

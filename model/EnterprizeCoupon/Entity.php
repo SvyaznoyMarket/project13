@@ -9,7 +9,7 @@ class Entity {
     private $name;
     /** @var string */
     private $image;
-    /** @var string */
+    /** @var float */
     private $price;
     /** @var bool */
     private $isCurrency;
@@ -45,23 +45,74 @@ class Entity {
      * @var string
      */
     private $descriptionToken;
+    /** @var int */
+    private $countLimit;
+    /** @var string */
+    private $segmentDescription;
+    /** @var string */
+    private $partner;
+    /** @var string */
+    private $partnerUrl;
+    /** @var string */
+    private $partnerImageUrl;
+    /** @var string */
+    private $partnerDescription;
+    /** @var string */
+    private $partnerKeyword;
 
+    /**
+     * @param array $data
+     */
     public function __construct(array $data = []) {
-        if (array_key_exists('token', $data)) $this->setToken($data['token']);
-        if (array_key_exists('name', $data)) $this->setName($data['name']);
-        if (array_key_exists('image', $data)) $this->setImage($data['image']);
-        if (array_key_exists('price', $data)) $this->setPrice($data['price']);
-        if (array_key_exists('isCurrency', $data)) $this->setIsCurrency($data['isCurrency']);
-        if (array_key_exists('backgroundImage', $data)) $this->setBackgroundImage($data['backgroundImage']);
-        if (array_key_exists('minOrderSum', $data)) $this->setMinOrderSum($data['minOrderSum']);
-        if (array_key_exists('startDate', $data)) $this->setStartDate($data['startDate'] ? new \DateTime($data['startDate']) : null);
-        if (array_key_exists('endDate', $data)) $this->setEndDate($data['endDate'] ? new \DateTime($data['endDate']) : null);
-        if (array_key_exists('link', $data)) $this->setLink($data['link']);
-        if (array_key_exists('linkName', $data)) $this->setLinkName($data['linkName']);
-        if (array_key_exists('isInformationOnly', $data)) $this->setIsInformationOnly($data['isInformationOnly']);
-        if (array_key_exists('isForMember', $data)) $this->setIsForMember($data['isForMember']);
-        if (array_key_exists('isForNotMember', $data)) $this->setIsForNotMember($data['isForNotMember']);
-        if (array_key_exists('descriptionToken', $data)) $this->setDescriptionToken($data['descriptionToken']);
+        $this->fromScms($data);
+    }
+
+    /**
+     * Подгрузка данных полученых от http://cms.enter.ru/v1/enterprize/coupon-type.json
+     * @param array $data
+     */
+    public function fromCms(array $data = []) {
+        if (array_key_exists('token', $data))               $this->setToken($data['token']);
+        if (array_key_exists('name', $data))                $this->setName($data['name']);
+        if (array_key_exists('image', $data))               $this->setImage($data['image']);
+        if (array_key_exists('price', $data))               $this->setPrice($data['price']);
+        if (array_key_exists('isCurrency', $data))          $this->setIsCurrency($data['isCurrency']);
+        if (array_key_exists('backgroundImage', $data))     $this->setBackgroundImage($data['backgroundImage']);
+        if (array_key_exists('minOrderSum', $data))         $this->setMinOrderSum($data['minOrderSum']);
+        if (array_key_exists('startDate', $data))           $this->setStartDate($data['startDate'] ? new \DateTime($data['startDate']) : null);
+        if (array_key_exists('endDate', $data))             $this->setEndDate($data['endDate'] ? new \DateTime($data['endDate']) : null);
+        if (array_key_exists('link', $data))                $this->setLink($data['link']);
+        if (array_key_exists('linkName', $data))            $this->setLinkName($data['linkName']);
+        if (array_key_exists('isInformationOnly', $data))   $this->setIsInformationOnly($data['isInformationOnly']);
+        if (array_key_exists('isForMember', $data))         $this->setIsForMember($data['isForMember']);
+        if (array_key_exists('isForNotMember', $data))      $this->setIsForNotMember($data['isForNotMember']);
+        if (array_key_exists('descriptionToken', $data))    $this->setDescriptionToken($data['descriptionToken']);
+    }
+
+    /**
+     * Подгрузка данных полученых от http://scms.enter.ru/v2/coupon/get
+     * @param array $data
+     */
+    public function fromScms(array $data = []) {
+        if (array_key_exists('uid', $data))                     $this->setToken($data['uid']);
+        if (array_key_exists('segment', $data))                 $this->setName($data['segment']);
+        if (array_key_exists('segment_image_url', $data))       $this->setImage($data['segment_image_url']);
+        if (array_key_exists('value', $data))                   $this->setPrice($data['value']);
+        if (array_key_exists('is_currency', $data))             $this->setIsCurrency($data['is_currency']);
+        if (array_key_exists('background_image_url', $data))    $this->setBackgroundImage($data['background_image_url']);
+        if (array_key_exists('min_order_sum', $data))           $this->setMinOrderSum($data['min_order_sum']);
+        if (array_key_exists('start_date', $data))              $this->setStartDate($data['start_date'] ? new \DateTime($data['start_date']) : null);
+        if (array_key_exists('end_date', $data))                $this->setEndDate($data['end_date'] ? new \DateTime($data['end_date']) : null);
+        if (array_key_exists('segment_url', $data))             $this->setLink($data['segment_url']);
+        if (array_key_exists('is_for_member', $data))           $this->setIsForMember($data['is_for_member']);
+        if (array_key_exists('is_for_not_member', $data))       $this->setIsForNotMember($data['is_for_not_member']);
+        if (array_key_exists('count_limit', $data))             $this->setCountLimit($data['count_limit']);
+        if (array_key_exists('segment_description', $data))     $this->setSegmentDescription($data['segment_description']);
+        if (array_key_exists('partner', $data))                 $this->setPartner($data['partner']);
+        if (array_key_exists('partner_url', $data))             $this->setPartnerUrl($data['partner_url']);
+        if (array_key_exists('partner_image_url', $data))       $this->setPartnerImageUrl($data['partner_image_url']);
+        if (array_key_exists('partner_description', $data))     $this->setPartnerDescription($data['partner_description']);
+        if (array_key_exists('partner_keyword', $data))         $this->setPartnerKeyword($data['partner_keyword']);
     }
 
     /**
@@ -107,14 +158,14 @@ class Entity {
     }
 
     /**
-     * @param string $price
+     * @param float $price
      */
     public function setPrice($price) {
-        $this->price = (string)$price;
+        $this->price = (float)$price;
     }
 
     /**
-     * @return string
+     * @return float
      */
     public function getPrice() {
         return $this->price;
@@ -273,5 +324,103 @@ class Entity {
      */
     public function isInformationOnly() {
         return $this->isInformationOnly;
+    }
+
+    /**
+     * @param int $countLimit
+     */
+    public function setCountLimit($countLimit) {
+        $this->countLimit = $countLimit;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCountLimit() {
+        return $this->countLimit;
+    }
+
+    /**
+     * @param string $partner
+     */
+    public function setPartner($partner) {
+        $this->partner = $partner;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPartner() {
+        return $this->partner;
+    }
+
+    /**
+     * @param string $partnerDescription
+     */
+    public function setPartnerDescription($partnerDescription) {
+        $this->partnerDescription = $partnerDescription;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPartnerDescription() {
+        return $this->partnerDescription;
+    }
+
+    /**
+     * @param string $partnerImageUrl
+     */
+    public function setPartnerImageUrl($partnerImageUrl) {
+        $this->partnerImageUrl = $partnerImageUrl;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPartnerImageUrl() {
+        return $this->partnerImageUrl;
+    }
+
+    /**
+     * @param string $partnerKeyword
+     */
+    public function setPartnerKeyword($partnerKeyword) {
+        $this->partnerKeyword = $partnerKeyword;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPartnerKeyword() {
+        return $this->partnerKeyword;
+    }
+
+    /**
+     * @param string $partnerUrl
+     */
+    public function setPartnerUrl($partnerUrl) {
+        $this->partnerUrl = $partnerUrl;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPartnerUrl() {
+        return $this->partnerUrl;
+    }
+
+    /**
+     * @param string $segmentDescription
+     */
+    public function setSegmentDescription($segmentDescription) {
+        $this->segmentDescription = $segmentDescription;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSegmentDescription() {
+        return $this->segmentDescription;
     }
 }

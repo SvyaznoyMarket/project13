@@ -23,6 +23,7 @@ class FormAction {
         $user = \App::user();
         $session = \App::session();
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
+        $repository = \RepositoryManager::enterprize();
 
         $session->set($sessionName, array_merge(
             [
@@ -36,30 +37,17 @@ class FormAction {
         ));
 
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
-        $enterpizeCoupon = null;
-        if ($enterprizeToken) {
-            \App::dataStoreClient()->addQuery('enterprize/coupon-type.json', [], function($data) use (&$enterpizeCoupon, $enterprizeToken) {
-                foreach ((array)$data as $item) {
-                    if ($enterprizeToken == $item['token']) {
-                        $enterpizeCoupon = new \Model\EnterprizeCoupon\Entity($item);
-                    }
-                }
-            });
-            \App::dataStoreClient()->execute();
-        }
+        $enterpizeCoupon = $repository->getEntityByToken($enterprizeToken);
 
-        if ($enterpizeCoupon) {
-            $limitResponse = \App::coreClientV2()->query('coupon/limits', [], ['list' => array($enterpizeCoupon->getToken())]);
-        }
-
-        if ($enterpizeCoupon && isset($limitResponse['detail'][$enterpizeCoupon->getToken()])) {
-            $enterpizeCouponLimit = $limitResponse['detail'][$enterpizeCoupon->getToken()];
-        } else {
-            $enterpizeCouponLimit = null;
-        }
-
-        if (!$enterpizeCoupon || !$enterpizeCoupon instanceof \Model\EnterprizeCoupon\Entity) {
+        if (!(bool)$enterpizeCoupon || !$enterpizeCoupon instanceof \Model\EnterprizeCoupon\Entity) {
             throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
+        }
+
+        $limitResponse = \App::coreClientV2()->query('coupon/limits', [], ['list' => array($enterpizeCoupon->getToken())]);
+        $enterpizeCouponLimit = null;
+
+        if (isset($limitResponse['detail'][$enterpizeCoupon->getToken()])) {
+            $enterpizeCouponLimit = $limitResponse['detail'][$enterpizeCoupon->getToken()];
         }
 
         $data = (array)$session->get($sessionName, []);
