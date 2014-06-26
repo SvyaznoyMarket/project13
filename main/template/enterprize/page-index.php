@@ -6,9 +6,7 @@
  * @var $enterpizeCoupon  \Model\EnterprizeCoupon\Entity
  * @var $isCouponSent     bool
  */
-?>
 
-<?
 $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMember();
 ?>
 
@@ -148,7 +146,7 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
     <? endif ?>
 
     <section class="epHead">
-        <h2 class="epHead_title">Все, что вы хотели, со скидкой до 70%</h1>
+        <h2 class="epHead_title">Все, что вы хотели, со скидкой до 70%</h2>
 
         <ul class="epHead_list">
             <li class="epHead_list_item">Выберите фишку — получите <strong>код скидки</strong>. Используйте его при заказе.</li>
@@ -194,52 +192,66 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
                     : null;
             } ?>
 
-            <li class="<?= $itemClass ?>">
-                <a class="enterPrize__list__link" href="<?= $couponLink ? $couponLink : '#' ?>">
-                <span class="cuponImg"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
-                    <span class="cuponImg__inner">
-                        <? if ($coupon->getImage()): ?>
-                            <span class="cuponIco"><img src="<?= $coupon->getImage() ?>" /></span>
-                        <? endif ?>
 
-                        <? if ($coupon->getName()): ?>
-                            <span class="cuponDesc"><?= $coupon->getName() ?></span>
-                        <? endif ?>
+            <? if ($coupon->isForMember() && !$isEnterprizeMember): // Только для игроков EnterPrize  ?>
+                <li class="<?= !empty($itemClass) ? "$itemClass " : '' ?>mMembers">
+                    <div class="enterPrize__list__link">
+                        <span class="cuponImg"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
+                            <span class="cuponImg__inner">
+                                <? if ($coupon->getImage()): ?>
+                                    <span class="cuponIco"><img src="<?= $coupon->getImage() ?>" /></span>
+                                <? endif ?>
 
-                        <? if ($coupon->getPrice()): ?>
-                            <span class="cuponPrice"><?= $page->helper->formatPrice($coupon->getPrice(), $priceNumDecimals) . (!$coupon->getIsCurrency() ? '%' : '') ?>
-                                <? if ($coupon->getIsCurrency()): ?>
-                                    <span class="rubl">p</span>
+                                <? if ($coupon->getName()): ?>
+                                    <span class="cuponDesc"><?= $coupon->getName() ?></span>
+                                <? endif ?>
+
+                                <? if ($coupon->getPrice()): ?>
+                                    <span class="cuponPrice"><?= $page->helper->formatPrice($coupon->getPrice(), $priceNumDecimals) . (!$coupon->getIsCurrency() ? '%' : '') ?>
+                                        <? if ($coupon->getIsCurrency()): ?>
+                                            <span class="rubl">p</span>
+                                        <? endif ?>
+                                    </span>
                                 <? endif ?>
                             </span>
-                        <? endif ?>
-                    </span>
-                </span>
+                        </span>
 
-                <span class="cuponImgHover">
-                    <span class="cuponBtn">Получить</span>
-                </span>
-                </a>
-            </li>
+                        <span class="cuponImgHover">
+                            <span class="cuponText">Только<br/> для игроков<br/> <span class="epTextLogo">Enter <span class="epTextLogo_colors">Prize</span></span></span>
+                        </span>
+                    </div>
+                </li>
+
+            <? else: ?>
+                <li class="<?= $itemClass ?>">
+                    <a class="enterPrize__list__link" href="<?= $couponLink ? $couponLink : '#' ?>">
+                        <span class="cuponImg"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
+                            <span class="cuponImg__inner">
+                                <? if ($coupon->getImage()): ?>
+                                    <span class="cuponIco"><img src="<?= $coupon->getImage() ?>" /></span>
+                                <? endif ?>
+
+                                <? if ($coupon->getName()): ?>
+                                    <span class="cuponDesc"><?= $coupon->getName() ?></span>
+                                <? endif ?>
+
+                                <? if ($coupon->getPrice()): ?>
+                                    <span class="cuponPrice"><?= $page->helper->formatPrice($coupon->getPrice(), $priceNumDecimals) . (!$coupon->getIsCurrency() ? '%' : '') ?>
+                                        <? if ($coupon->getIsCurrency()): ?>
+                                            <span class="rubl">p</span>
+                                        <? endif ?>
+                                    </span>
+                                <? endif ?>
+                            </span>
+                        </span>
+
+                        <span class="cuponImgHover">
+                            <span class="cuponBtn">Получить</span>
+                        </span>
+                    </a>
+                </li>
+            <? endif ?>
         <? endforeach ?>
-
-        <li class="enterPrize__list__item mMembers">
-            <a href="" class="enterPrize__list__link">
-                <span style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_orange_b1.png);" class="cuponImg">
-                    <span class="cuponImg__inner">
-                        <span class="cuponIco"><img src="http://content.enter.ru/wp-content/uploads/2014/03/enterprize-icon-tchibo.jpg"></span>
-
-                        <span class="cuponDesc">Товары Tchibo</span>
-
-                        <span class="cuponPrice">10% </span>
-                    </span>
-                </span>
-
-                <span class="cuponImgHover">
-                    <span class="cuponText">Только<br/> для игроков<br/> <span class="epTextLogo">Enter <span class="epTextLogo_colors">Prize</span></span></span>
-                </span>
-            </a>
-        </li>
     </ul>
 
     <p class="rulesEP"><a href="/reklamnaya-akcia-enterprize">Правила участия в ENTER PRIZE</a></p>

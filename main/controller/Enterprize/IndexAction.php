@@ -37,56 +37,17 @@ class IndexAction {
         $enterpizeCoupon = null;
         $enterpizeCoupons = [];
         try {
-//            \App::dataStoreClient()->addQuery(
-//                'enterprize/coupon-type.json',
-//                [],
-//                function($data) use (&$enterpizeCoupons, &$enterpizeCoupon, $enterprizeToken, $isCouponSent, $user) {
-//                    foreach ((array)$data as $item) {
-//                        if (empty($item['token'])) continue;
-//
-//                        $coupon = new \Model\EnterprizeCoupon\Entity($item);
-//
-//                        if (
-//                            ($coupon->isForMember() && $user && $user->isEnterprizeMember())
-//                            || ($coupon->isForNotMember() && (!$user || !$user->isEnterprizeMember()))
-//                        ) {
-//                            $enterpizeCoupons[] = $coupon;
-//                        }
-//
-//                        // если купон уже отослан, то пытаемся его получить из общего списка
-//                        if ($isCouponSent && (bool)$enterprizeToken && $enterprizeToken == $coupon->getToken()) {
-//                            $enterpizeCoupon = $coupon;
-//                        }
-//                    }
-//                }
-//            );
+            $repository->prepareCollection(function($data) use (&$enterpizeCoupons, &$enterpizeCoupon, &$isCouponSent, $enterprizeToken, $user) {
+                foreach ((array)$data as $item) {
+                    $coupon = new \Model\EnterprizeCoupon\Entity($item);
+                    $enterpizeCoupons[] = $coupon;
 
-            // купон уже отослан
-            if ($isCouponSent) {
-                $repository->prepareCollection(function($data) use (&$enterpizeCoupons, &$enterpizeCoupon, $enterprizeToken, $user) {
-                    foreach ((array)$data as $item) {
-                        $coupon = new \Model\EnterprizeCoupon\Entity($item);
-                        if (
-                            ($coupon->isForMember() && $user && $user->isEnterprizeMember())
-                            || ($coupon->isForNotMember() && (!$user || !$user->isEnterprizeMember()))
-                        ) {
-                            $enterpizeCoupons[] = $coupon;
-                        }
-
-                        // если купон уже отослан, то пытаемся его получить из общего списка
-                        if ((bool)$enterprizeToken && $enterprizeToken == $coupon->getToken()) {
-                            $enterpizeCoupon = $coupon;
-                        }
+                    // если купон уже отослан, то пытаемся его получить из общего списка
+                    if ((bool)$isCouponSent && (bool)$enterprizeToken && $enterprizeToken == $coupon->getToken()) {
+                        $enterpizeCoupon = $coupon;
                     }
-                });
-            } else {
-                $memberType = $user && $user->isEnterprizeMember() ? 1 : 2;
-                $repository->prepareCollectionByMemberType($memberType, function($data) use (&$enterpizeCoupons, $user) {
-                    foreach ((array)$data as $item) {
-                        $enterpizeCoupons[] = new \Model\EnterprizeCoupon\Entity($item);
-                    }
-                });
-            }
+                }
+            });
         } catch (\Exception $e) {
             \App::logger()->error($e);
             \App::exception()->remove($e);
