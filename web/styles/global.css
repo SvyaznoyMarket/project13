@@ -471,33 +471,6 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-/**
- * Вспомогательные классы
- */
-.clearfix:before,
-.clearfix:after {
-  content: " ";
-  display: table;
-}
-.clearfix:after {
-  clear: both;
-}
-/* IE6/7 support */
-.clearfix {
-  *zoom: 1;
-}
-.fl {
-  float: left;
-}
-.fr {
-  float: right;
-}
-.ta-c {
-  text-align: center;
-}
-.mb5 {
-  margin-bottom: 5px;
-}
 /*--END---БАЗОВЫЕ СТИЛИ---*/
 /*---ОСНОВНЫЕ ПРАВИЛА---*/
 /**
@@ -4018,7 +3991,7 @@ img[height="0"] {
   .personalTitle_count {
     color: #7f7f7f;
   }
-  .personalOrders {
+  .personalTable {
     display: table;
     /* IE6-8 */
     *display: block;
@@ -4026,63 +3999,160 @@ img[height="0"] {
     *overflow: hidden;
     *position: relative;
     width: 100%;
-    margin: 0 0 60px;
+    margin: 0 0 10px;
   }
-  .personalOrders_row {
+  .personalTable-border {
+    margin: 0 0 60px;
+    border-bottom: 1px solid #c7c7c7;
+  }
+  .personalTable-border .personalTable_cell {
+    height: 40px;
+    padding: 5px;
+    vertical-align: middle;
+    border-top: 1px solid #c7c7c7;
+  }
+  .personalTable_caption {
+    display: table-caption;
+    background: rgba(193, 218, 30, 0.2);
+    font-size: 14px;
+    height: 20px;
+    padding: 5px;
+    line-height: 20px;
+  }
+  .personalTable_row {
     display: table-row;
     /* IE6-8 */
     *display: block;
     *float: left;
   }
-  .personalOrders_row-head {
+  .personalTable_row-head {
     color: #515151;
   }
-  .personalOrders_row-head .personalOrders_cell {
-    font-size: 12px;
+  .personalTable_row-head .personalTable_cell {
     height: auto;
+    border-top: none;
+    font-size: 12px;
   }
-  .personalOrders_row-canceled .personalOrders_cell {
+  .personalTable_row-canceled .personalTable_cell {
     background: #f6f6f6;
   }
-  .personalOrders_row-canceled .personalOrders_cell-strong {
+  .personalTable_row-canceled .personalTable_cell-strong {
     color: #7f7f7f;
   }
-  .personalOrders_row-canceled .personalOrders_cell-strong a {
+  .personalTable_row-canceled .personalTable_cell-strong a {
     color: #7f7f7f;
   }
-  .personalOrders_row:nth-child(2) .personalOrders_cell {
+  .personalTable_row:nth-child(2) .personalTable_cell {
     background: #f6f6f6;
   }
-  .personalOrders_cell {
+  .personalTable_cell {
     display: table-cell;
     /* IE6-8 */
     *display: block;
     *float: left;
     *clear: right;
     *zoom: 1;
-    padding: 5px;
-    line-height: 1.1;
-    vertical-align: middle;
-    border-bottom: 1px solid #c7c7c7;
     font-size: 14px;
-    height: 40px;
+    line-height: 1.1;
   }
-  .personalOrders_cell-text {
-    font-size: 12px;
+  .personalTable_cell-text {
     max-width: 300px;
+    font-size: 12px;
   }
-  .personalOrders_cell-right {
+  .personalTable_cell-right {
     text-align: right;
   }
-  .personalOrders .orderCancel {
+  .personalTable_cell-s {
     font-size: 12px;
   }
-  .personalOrders .textStatus {
+  .personalTable_cell-l {
+    font-size: 16px;
+  }
+  .personalTable_cell-w40 {
+    width: 40px;
+    text-align: center;
+  }
+  .personalTable_cell-w60 {
+    width: 60px;
+  }
+  .personalTable_cell-strong {
+    color: #7f7f7f;
+  }
+  .personalTable_cell-warn {
+    color: #e8303c;
+  }
+  .personalTable .orderCancel {
+    font-size: 12px;
+  }
+  .personalTable .textStatus {
     display: block;
     font-size: 12px;
   }
-  .personalOrders a {
+  .personalTable a {
     text-decoration: underline;
+  }
+  .personalTable .imgProd {
+    width: 40px;
+    height: 40px;
+  }
+}
+@media all {
+  .personalPage_left {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    width: 700px;
+  }
+  .personalPage_right {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    float: right;
+    width: 210px;
+    padding: 10px;
+    background: #f6f6f6;
+  }
+  .payCommandsList_item {
+    margin: 0 0 20px;
+  }
+  .payCommandsList .descPay {
+    display: block;
+    text-align: center;
+  }
+  .payCommandsList .btnPay {
+    background: #e5e5e5;
+    background: -moz-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #e3e3e3));
+    background: -webkit-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: -o-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%, #e3e3e3 100%);
+    background: linear-gradient(to bottom, #ffffff 0%, #e3e3e3 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e3e3e3', GradientType=0);
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    width: 200px;
+    height: 32px;
+    margin: 0 0 10px;
+    color: #383a3c;
+    border: 1px solid #c7c7c7;
+    font-size: 14px;
+    line-height: 3px;
+  }
+  .personalInfo {
+    color: #6f7173;
+    font-size: 14px;
+  }
+  .personalInfo .decorColor {
+    color: #000000;
+    background: none;
+  }
+  .personalInfo .decorColor-bullet {
+    display: list-item;
   }
 }
 /*---END----Личный кабинет пользователя---------*/
@@ -4721,5 +4791,37 @@ img[height="0"] {
   }
   .noti > div {
     margin-top: 50px;
+  }
+}
+@media all {
+  /**
+ * Вспомогательные классы
+ */
+  .clearfix:before,
+  .clearfix:after {
+    content: " ";
+    display: table;
+  }
+  .clearfix:after {
+    clear: both;
+  }
+  /* IE6/7 support */
+  .clearfix {
+    *zoom: 1;
+  }
+  .fl {
+    float: left;
+  }
+  .fr {
+    float: right;
+  }
+  .ta-c {
+    text-align: center;
+  }
+  .mb5 {
+    margin-bottom: 5px;
+  }
+  .nomargin {
+    margin: 0;
   }
 }
