@@ -47,8 +47,13 @@
 <h2 class="pc_left">Вы можете оставить свой комментарий к этой фотографии</h2>
 
  <!--Комментарии вконтакте--> 
+ <!-- Put this script tag to the <head> of your page -->
 <script type="text/javascript" src="//vk.com/js/api/openapi.js?113"></script>
-<script type="text/javascript">VK.init({apiId: 3969147, onlyWidgets: true});</script>
+<?php if(App::config()->debug): ?>
+<script type="text/javascript">VK.init({apiId: 4432950, onlyWidgets: true}); //production</script>
+<?php else: ?> 
+<script type="text/javascript">VK.init({apiId: 4432944, onlyWidgets: true}); // test </script>
+<?php endif; ?>
 
 <!-- Комментарии facebook -->
 <div id="fb-root pc_right"></div>
@@ -66,7 +71,6 @@
 	<div class="bCommentSn mVk pc_left" id="vk_comments"></div>
 	<div class="bCommentSn mFb fb-comments" data-href="<?=$request->getRequestUri()?>" data-numposts="10" data-width="460"></div>
 </div>
-
-<script type="text/javascript">VK.Widgets.Comments("vk_comments", {limit: 10, width: "460", attach: "*"});</script>
+<script type="text/javascript">VK.Widgets.Comments("vk_comments", {limit: 10, width: "460", attach: false});</script>
 
 <div class="clear"></div>
