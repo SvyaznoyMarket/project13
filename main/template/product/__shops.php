@@ -49,7 +49,7 @@ return function (
                 <!--  Магазин -->
                 <li class="markerList_row">
                     <span class="markerList_col markerList_col-mark">
-                        <i class="markColor" style="background-color: <?= $shop->getSubway()[0]->getLine()->getColor() ?>"></i>
+                        <i class="markColor" style="background-color: <?= $shop->getSubway()[0]->getLine() ? $shop->getSubway()[0]->getLine()->getColor() : '' ?>"></i>
                     </span>
 
                     <!--  Адрес  -->
