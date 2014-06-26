@@ -47,14 +47,15 @@
 			<?php endif; ?>
 
 			<?php if(isset($form->mobile)):?>
-			<label class="bBuyingLine__eLeft" for=""><span class="bFeildStarImg">*</span><?=$form->mobile->title?></label>
+			<label class="bBuyingLine__eLeft" for="mobile"><span class="bFeildStarImg">*</span><?=$form->mobile->title?></label>
 			<div class="bBuyingLine__eRight mPhone">
 				<span class="bPlaceholder">+7</span> 
 				<?php if(isset($form->mobile->error)): ?>
 				<div class="bErrorText"><div class="bErrorText__eInner"><?=$form->mobile->error?></div></div>
 				<?php endif; ?>
-				<input type="text" value="<?=$form->mobile->value?>" name="mobile" class="bBuyingLine__eText mInputLong" id="order_recipient_phonenumbers">
+				<input type="text" value="<?=$form->mobile->value?>" name="mobile" class="bBuyingLine__eText mInputLong" id="mobile">
 			</div>
+			<script type="text/javascript">jQuery(function($){$("#mobile").mask("(999) 999 99 99");})</script>
 			<?php endif; ?>
 			
 			<label class="bBuyingLine__eLeft" for="file"><span class="bFeildStarImg">*</span><?=$form->file->title?></label>
