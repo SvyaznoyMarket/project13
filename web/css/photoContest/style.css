@@ -42,6 +42,21 @@
   padding: 6px 80px;
   text-align: center;
 }
+label.pc_file {
+  background: none repeat scroll 0 0 #F89B1C;
+  border: 1px solid #E26500;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  color: #FFFFFF;
+  display: inline-block;
+  font: bold 14px Tahoma, sans-serif;
+  padding: 6px 30px;
+  text-align: center;
+}
+label.pc_file > input {
+  display: none;
+}
 .pc_info {
   background: #E6E6E6;
   border: 2px dashed #E6E6E6;

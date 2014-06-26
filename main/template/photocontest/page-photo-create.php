@@ -57,12 +57,14 @@
 			</div>
 			<?php endif; ?>
 			
-			<label class="bBuyingLine__eLeft" for=""><span class="bFeildStarImg">*</span><?=$form->file->title?></label>
+			<label class="bBuyingLine__eLeft" for="file"><span class="bFeildStarImg">*</span><?=$form->file->title?></label>
 			<div class="bBuyingLine__eRight">
 				<?php if(isset($form->file->error)): ?>
 				<div class="bErrorText"><div class="bErrorText__eInner"><?=$form->file->error?></div></div>
 				<?php endif; ?>
-				<input type="file" name="file" class="bBuyingLine__eText mInputLong pc_file">
+				<label class="pc_file" for="file">Выбрерите файл
+					<input type="file" name="file" id="file">
+				</label>
 				<br/><small>Максимальный размер файла <?=ini_get('upload_max_filesize')?><br/>Допустимые форматы jpeg, gif, png</small>
 			</div>
 			
