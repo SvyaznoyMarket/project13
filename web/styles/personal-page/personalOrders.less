@@ -11,7 +11,32 @@
 .personalTable {
 	.table();
 	width: 100%;
-	margin: 0 0 60px;
+	margin: 0 0 10px;
+	
+	&-border {
+		margin: 0 0 60px;
+
+		border-bottom: 1px solid #c7c7c7;
+
+		.personalTable_cell {
+			height: 40px;
+			padding: 5px;
+
+			vertical-align: middle;
+
+			border-top: 1px solid #c7c7c7;
+		}
+	}
+
+	&_caption {
+		display: table-caption;
+		background: rgba(193,218,30,0.2);
+		font-size: 14px;
+	    height: 20px;
+	    padding: 5px;
+
+	    line-height: 20px;
+	}
 
 	&_row {
 		.table-row();
@@ -20,8 +45,11 @@
 			color: #515151;
 
 			.personalTable_cell {
-				font-size: 12px;
 				height: auto;
+
+				border-top: none;
+
+				font-size: 12px;
 			}
 		}
 
@@ -40,10 +68,6 @@
 			}
 		}
 
-		// &-center {
-		// 	text-align: center;
-		// }
-
 		&:nth-child(2) {
 
 			.personalTable_cell {
@@ -54,22 +78,47 @@
 
 	&_cell {
 		.table-cell();
-		padding: 5px;
+		font-size: 14px;
 		line-height: 1.1;
 
-		vertical-align: middle;
-
-		border-bottom: 1px solid #c7c7c7;
-		font-size: 14px;
-		height: 40px;
-
 		&-text {
-			font-size: 12px;
-			max-width: 300px
-		}
+			max-width: 300px;
 
+			font-size: 12px;
+		}
+		
+		// выравнивание текста по правому краю
 		&-right {
 			text-align: right;
+		}
+		
+		// признак размера шрифта 12px
+		&-s {
+			font-size: 12px;
+		}
+		
+		// признак размера шрифта 16px
+		&-l {
+			font-size: 16px;
+		}
+		
+		// ширина ячейки 40px
+		&-w40 {
+			width: 40px;
+			text-align: center;
+		}
+		
+		// ширина ячейки 60px
+		&-w60 {
+			width: 60px;
+		}
+
+		&-strong {
+			color: #7f7f7f;
+		}
+
+		&-warn {
+			color: #e8303c;
 		}
 	}
 
@@ -83,10 +132,16 @@
 
 	.textStatus {
 		display: block;
+
 		font-size: 12px;
 	}
 
 	a {
 		text-decoration: underline;
+	}
+
+	.imgProd {
+		width: 40px;
+		height: 40px;
 	}
 }
