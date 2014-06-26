@@ -6,9 +6,13 @@ return function(\EnterSite\Config\Application $config) {
     $config->dir = realpath(__DIR__ . '/../..');
     $config->hostname = 'enter.ru';
 
-    $config->debug = false;
+    $config->debugLevel = 0;
 
+    $config->logger->fileAppender->enabled = true;
     $config->logger->fileAppender->file = realpath($config->dir . '/../logs') . '/mobile.log';
+
+    $config->logger->debugAppender->enabled = false;
+    $config->logger->debugAppender->file = realpath($config->dir . '/../logs') . '/mobile-debug.log';
 
     $config->session->name = 'enter';
     $config->session->cookieLifetime = 15552000;

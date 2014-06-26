@@ -13,14 +13,21 @@ class DirectCredit {
 
     /**
      * @param Model\Product[] $products
-     * @param Model\Cart\Product[] $productCartsById
+     * @param Model\Cart|null $cartModel
      * @return Partial\DirectCredit
      */
     public function getObject(
         $products = [],
-        $productCartsById = []
+        Model\Cart $cartModel = null
     ) {
         $directCredit = new Partial\DirectCredit();
+
+        $cartProductsById = [];
+        if ($cartModel) {
+            foreach ($cartModel->product as $cartProduct) {
+                $cartProductsById[$cartProduct->id] = $cartProduct;
+            }
+        }
 
         $productData = [];
         foreach ($products as $product) {
@@ -43,6 +50,7 @@ class DirectCredit {
             'partnerId' => $this->getConfig()->directCredit->partnerId,
             'product'   => $productData,
         ]);
+        $directCredit->isHidden = $cartModel ? !(new Repository\DirectCredit())->isEnabledForCart($cartModel) : false;
 
         return $directCredit;
     }

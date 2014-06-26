@@ -23,9 +23,13 @@ class ImportConfig {
         $config->dir = $applicationDir;
         $config->hostname = $importedConfig->mainHost;
 
-        $config->debug = $importedConfig->debug;
+        $config->debugLevel = $importedConfig->debug ? 1 : 0;
 
+        $config->logger->fileAppender->enabled = true;
         $config->logger->fileAppender->file = realpath($config->dir . '/../logs') . '/mobile.log';
+
+        $config->logger->debugAppender->enabled = false;
+        $config->logger->debugAppender->file = realpath($config->dir . '/../logs') . '/mobile-debug.log';
 
         $config->session->name = $importedConfig->session['name'];
         $config->session->cookieLifetime = $importedConfig->session['cookie_lifetime'];
@@ -70,7 +74,7 @@ class ImportConfig {
 
         $config->product->itemPerPage = $importedConfig->product['itemsPerPage'];
         $config->product->itemsInSlider = $importedConfig->product['itemsInSlider'] * 2;
-        $config->productReview->enabled = $importedConfig->product['reviewEnabled'];
+        $config->productReview->enabled = false; //$importedConfig->product['reviewEnabled']; // TODO: вернуть, когда починят
         $config->productPhoto->urlPaths = $importedConfig->productPhoto['url'];
         $config->productCategoryPhoto->urlPaths = $importedConfig->productCategory['url'];
         $config->search->minPhraseLength = $importedConfig->search['queryStringLimit'];

@@ -39,7 +39,7 @@ class Logger implements LoggerInterface, \IteratorAggregate {
             $message = ['message' => $message];
         }
 
-        $time = time();
+        $time = microtime(true);
         $message = $this->parameters
             + [
                 'time' => $time,

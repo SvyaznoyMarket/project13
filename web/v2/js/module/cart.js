@@ -1,9 +1,9 @@
 define(
     [
-        'require', 'jquery', 'underscore', 'mustache', 'module/util'
+        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/cart.common'
     ],
     function (
-        require, $, _, mustache, util
+        require, $, _, mustache, util, cart
     ) {
         var $body = $('body'),
 
@@ -29,6 +29,7 @@ define(
                             }));
 
                             $creditPayment.show();
+                            cart.initCredit();
                         }
                     );
                 });
@@ -36,9 +37,18 @@ define(
         ;
 
         $body
-            .on('render', '.js-cart-total', getCreditPayment)
+            .on('render', '.js-cart-total', getCreditPayment);
 
         getCreditPayment();
+
+        // не показываем в мобилках нижний бар, при активных полях ввода
+        $body.on('focus', 'input, textarea', function() {
+            $body.find('.cartBar').slideUp('100');
+        });
+
+        $body.on('blur', 'input, textarea', function() {
+            $body.find('.cartBar').slideDown('100');
+        });
 
     }
 );

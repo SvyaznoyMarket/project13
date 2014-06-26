@@ -1082,10 +1082,9 @@ body.noScroll {
   outline: none;
   font-size: 15px;
   line-height: 40px;
+  position: relative;
 }
-.navList_text:hover,
-.navList_text:active,
-.navList_text:focus {
+.navList_text:active {
   text-decoration: none;
   color: #ffa901;
   outline: none;
@@ -1122,7 +1121,11 @@ body.noScroll {
   color: #7e7e7e;
   font-size: 14px;
 }
+.navListLevel2_link:focus,
 .navListLevel2_link:hover {
+  color: #7e7e7e;
+}
+.navListLevel2_link:active {
   text-decoration: none;
   color: #ffffff;
   outline: none;
@@ -2780,6 +2783,21 @@ body.noScroll {
   line-height: 38px;
   *display: inline;
 }
+.cartEmpty {
+  padding: 105px 10px 0;
+  text-align: center;
+  background: url("modules/cart/img/emptyCart.gif") no-repeat 50% 15px;
+}
+.cartEmpty_title {
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+.cartEmpty_now {
+  font-size: 22px;
+}
+.cartEmpty_now a {
+  text-decoration: underline;
+}
 /* ==========================================================================
    Корзина .cartItem .cartLine .cartBuy
    ========================================================================== */
@@ -2906,6 +2924,21 @@ body.noScroll {
   .cartBuy {
     padding: 0 10px;
     text-align: center;
+  }
+  .cartEmpty {
+    padding: 105px 10px 0;
+    text-align: center;
+    background: url("modules/cart/img/emptyCart.gif") no-repeat 50% 15px;
+  }
+  .cartEmpty_title {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+  .cartEmpty_now {
+    font-size: 18px;
+  }
+  .cartEmpty_now a {
+    text-decoration: underline;
   }
 }
 /** попап корзины .cartBar **/
@@ -3161,6 +3194,8 @@ body.noScroll {
 }
 .catalogList .name {
   display: inline-block;
+  overflow: hidden;
+  max-height: 110px;
   margin: 0 0 10px;
   vertical-align: top;
   font-size: 16px;
@@ -3262,6 +3297,9 @@ body.noScroll {
   .catalogList .img img {
     width: 90%;
   }
+  .catalogList .name {
+    height: auto;
+  }
 }
 /** фильтры .filter .filterBox .filterTags .filterChecked **/
 /* ==========================================================================
@@ -3277,6 +3315,10 @@ body.noScroll {
   margin: 0 0 20px;
   padding-bottom: 10px;
   border-bottom: 1px solid #d3d3d3;
+}
+.filterPrice {
+  display: inline-block;
+  vertical-align: top;
 }
 .filterTags {
   font-size: 0;
@@ -3349,6 +3391,45 @@ body.noScroll {
   color: #6B6B6B;
   line-height: 40px;
 }
+/* ==========================================================================
+   Каталог -> фильтры .filter .filterBox .filterTags .filterChecked
+   ========================================================================== */
+@media only screen and (max-width: 770px) {
+  .filter .priceRange_slider {
+    width: 300px;
+  }
+}
+@media only screen and (max-width: 640px) {
+  .filter .priceRange_slider {
+    width: 230px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .filter {
+    padding: 10px;
+  }
+  .filter .priceRange_slider {
+    width: 250px;
+  }
+}
+@media only screen and (max-width: 480px) {
+  .filterPrice .priceRange_slider {
+    width: 300px;
+  }
+  .filter .widgetFr {
+    float: none;
+  }
+}
+@media only screen and (max-width: 360px) {
+  .filterPrice .priceRange_slider {
+    width: 170px;
+  }
+}
+@media only screen and (max-width: 320px) {
+  .filterPrice .priceRange_slider {
+    width: 140px;
+  }
+}
 /** слайдер цен .priceRange **/
 /* ==========================================================================
    Каталог -> слайдер цен .priceRange
@@ -3404,6 +3485,8 @@ body.noScroll {
   height: 27px;
   margin-left: -12px;
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAbCAYAAABiFp9rAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDoxRkI5QTZBQ0JFOTYxMUUzOUFCREE2NEFFNDZFRTFFNSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoxRkI5QTZBREJFOTYxMUUzOUFCREE2NEFFNDZFRTFFNSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjFGQjlBNkFBQkU5NjExRTM5QUJEQTY0QUU0NkVFMUU1IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjFGQjlBNkFCQkU5NjExRTM5QUJEQTY0QUU0NkVFMUU1Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+Yp7pzwAAAa9JREFUeNq8lrtLw1AUxtMY66NK8VmLiiAooigu4uLq4OLu7p/g6Oif4e7g5uLiJC4iglScUhQfaBQfFKwVG63fkRO4XmJykqZ+8IOGnJOvOTn33pOqbhpRZIJW/l1lRLIEMb1gEPSAjHbvAzwDB9yCzzhG9OApkA2ISYMBZhLY4ALUJEYpTho1oinNfywPjsG7XnP9ei6GiapusKCXWTeaATmjfrWBedDsZzQEho3kRG80qxtZXN+kRU3SrxqN8MdshMbUrpOWjGo+DtpBEbwImyNjcVKnIGEarIEuvnbBNtgS5ObMkAXpqQ+sKyZeNVbAkiA/a3IrhmkxIG5Z0u6mz1ryUz6oLJI9lUy+BIF3AffuBfkuGVUEgXv63qVoR5BfIaOSIPABbGjt7HLH7QryS9Q5b+AVdIQEF8AqmODGsIXr6Ke83oK94qMhTHSinkbcGehgLHsdd8mnZSNkq3sd1fusASYOf99fa+gGXCdoUgYnfx18BeG6CG1ncKhOSboRLd4jcF6HCXXiAb9R4HBS4+/lCKYgffSKNAV5egL7/zHXeXpkSE2gJc6k+i3AAEpqVwpeAfKJAAAAAElFTkSuQmCC) no-repeat 0 0;
+  -ms-touch-action: none;
+  touch-action: none;
 }
 .priceRange_slider .ui-slider-handle:active,
 .priceRange_slider .ui-slider-handle:focus,
@@ -3420,9 +3503,48 @@ body.noScroll {
 /* ==========================================================================
    Каталог -> слайдер цен .priceRange
    ========================================================================== */
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 770px) {
+  .priceRange_slider {
+    width: 300px;
+  }
+}
+@media only screen and (max-width: 600px) {
   .priceRange {
-    display: none;
+    margin: 0 0 15px;
+  }
+  .priceRange_title {
+    display: block;
+    margin: 0 0 5px;
+    line-height: 1;
+  }
+  .priceRange_amount {
+    width: 42px;
+    height: 30px;
+    margin: 0 5px 0 0;
+    padding: 0 4px;
+    line-height: 30px;
+  }
+  .priceRange_slider {
+    width: 290px;
+    margin: 14px 14px 0 6px;
+  }
+  .priceRange_rubl {
+    line-height: 33px;
+  }
+}
+@media only screen and (max-width: 480px) {
+  .priceRange_slider {
+    width: 270px;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .priceRange_slider {
+    width: 160px;
+  }
+}
+@media only screen and (max-width: 320px) {
+  .priceRange_slider {
+    width: 120px;
   }
 }
 /** сортировка .sorting .sortingAbb .sortingFull **/
@@ -3492,10 +3614,6 @@ body.noScroll {
     position: relative;
     z-index: 12;
   }
-  .sorting:hover .sortingList {
-    position: absolute;
-    display: block;
-  }
   .sorting_title {
     display: inline-block;
     vertical-align: top;
@@ -3551,6 +3669,14 @@ body.noScroll {
     display: inline-block;
   }
 }
+@media only screen and (max-width: 480px) {
+  .sorting {
+    float: none;
+  }
+  .sorting .sortingSelect {
+    margin: 0;
+  }
+}
 /** блок с параметрами фильтра .params .paramsList **/
 /* ==========================================================================
    Каталог -> блок с параметрами фильтра .params .paramsList
@@ -3582,14 +3708,13 @@ body.noScroll {
   background-position: 0 16px;
 }
 .params_cont {
-  overflow: hidden;
-  height: 0;
+  display: none;
   -webkit-transition: height 0.3s ease;
   -moz-transition: height 0.3s ease;
   transition: height 0.3s ease;
 }
 .params_cont-open {
-  height: auto;
+  display: block;
 }
 .params_cont .priceRange {
   margin: 10px 0 20px;
@@ -3665,6 +3790,14 @@ body.noScroll {
 /* ==========================================================================
    Каталог -> блок с параметрами фильтра .params .paramsList
    ========================================================================== */
+@media only screen and (max-width: 360px) {
+  .params_footBtn {
+    margin-left: 0;
+  }
+  .params_footBtn:last-child {
+    float: left;
+  }
+}
 /* ==========================================================================
    Главная страница
    ========================================================================== */
@@ -3919,6 +4052,7 @@ body.noScroll {
   .rootCategories_img {
     display: block;
     float: left;
+    overflow: hidden;
     width: 130px;
     height: 130px;
     padding: 10px;
@@ -3929,7 +4063,7 @@ body.noScroll {
   .rootCategories_name {
     display: table-cell;
     height: 130px;
-    padding: 10px 0;
+    padding: 10px;
     vertical-align: middle;
     font-size: 16px;
   }

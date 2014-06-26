@@ -2,13 +2,15 @@
    Каталог -> блок с параметрами фильтра .params .paramsList
    ========================================================================== */
    
-// @media only screen and (max-width: 600px) {
-// 	.params {
+@media only screen and (max-width: 360px) {
+	.params {
 
-// 		&_footBtn {
-// 			float: none;
-// 			margin-bottom: 20px;
-// 			margin-left: 0;
-// 		}
-// 	}
-// }
+		&_footBtn {
+			margin-left: 0;
+
+			&:last-child {
+				float: left;
+			}
+		}
+	}
+}

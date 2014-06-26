@@ -137,7 +137,7 @@ class ProductCard {
 
                 $curl->execute();
 
-                $productRepository->setShowroomDeliveryForObjectListByQuery([$product->id => $product], $shopListQuery);
+                $productRepository->setNowDeliveryForObjectListByQuery([$product->id => $product], $shopListQuery);
             }
         }
 
@@ -178,7 +178,7 @@ class ProductCard {
         (new Repository\Page\ProductCard())->buildObjectByRequest($page, $pageRequest);
 
         // debug
-        if ($config->debug) $this->getDebugContainer()->page = $page;
+        if ($config->debugLevel) $this->getDebugContainer()->page = $page;
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
         // рендер

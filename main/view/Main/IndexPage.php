@@ -72,4 +72,26 @@ class IndexPage extends \View\DefaultLayout {
 
         return "<div id=\"RuTargetHomepageJS\" class=\"jsanalytics\" data-value=\"" . $this->json(['regionId' => \App::user()->getRegionId()]) . "\"></div>";
     }
+
+    public function slotMyragonPageJS() {
+        $config = \App::config()->partners['Myragon'];
+        if (!$config['enabled'] || !$config['enterNumber'] || !$config['secretWord'] || !$config['subdomainNumber']) {
+            return;
+        }
+
+        $data = [
+            'config' => [
+                'enterNumber' => $config['enterNumber'],
+                'secretWord' => $config['secretWord'],
+                'subdomainNumber' => $config['subdomainNumber'],
+            ],
+            'page' => [
+                'url' => null,
+                'pageType' => 1,
+                'pageTitle' => $this->getTitle(),
+            ],
+        ];
+
+        return '<div id="myragonPageJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
+    }
 }

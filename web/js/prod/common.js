@@ -107,13 +107,6 @@
 		}
 	});
 }(this, this.document, this.jQuery, this.ENTER));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Обработчик для личного кабинета
  *
@@ -160,13 +153,6 @@
 
 
 
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 // (function(){
 //   $(function(){
 //     if($('.bCtg__eMore').length) {
@@ -302,13 +288,6 @@
 //   });
 // })();
 
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Обработчик для кнопок купить
  *
@@ -622,6 +601,32 @@
 				 * @param event
 				 * @param data
 				 */
+				addToMyragon = function addToMyragon( event, data ) {
+					var
+						product = data.product;
+					// end of vars
+
+					if ( !product.hasOwnProperty('id') || !product.hasOwnProperty('quantity') || !product.hasOwnProperty('price') ) {
+						return;
+					}
+
+					window.rbnt_rt_params = {
+						url: window.location.href,
+						pageType: 8,
+						pageTitle: $(document).find("title").text(),
+						basketProducts: [{id:product.id, price:product.price, currency:'RUB', amount:product.quantity}]
+					};
+					typeof rbnt_rt != "undefined" && rbnt_rt.send();
+
+					console.info('Myragon addToCart');
+					console.log(window.rbnt_rt_params);
+				},
+
+				/**
+				 * Аналитика при нажатии кнопки "купить"
+				 * @param event
+				 * @param data
+				 */
 				addToLamoda = function addToLamoda( event, data ) {
 					var
 						product = data.product;
@@ -678,6 +683,7 @@
                 }
 				//addToVisualDNA(event, data);
 				addToRuTarget(event, data);
+				addToMyragon(event, data);
 				addToLamoda(event, data);
 			}
 			catch( e ) {
@@ -694,13 +700,6 @@
 
 }(window.ENTER));
 
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Окно смены региона
  *
@@ -992,13 +991,6 @@
 		showRegionPopup();
 	}
 }(this));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Custom inputs
  *
@@ -1055,13 +1047,6 @@
 
 	inputs.trigger('updateState');
 }());
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 $(document).ready(function(){
 	// var carturl = $('.lightboxinner .point2').attr('href')
 
@@ -1305,13 +1290,6 @@ $(document).ready(function(){
 	}
 
 });
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Перемотка к Id
  *
@@ -1331,13 +1309,6 @@ $(document).ready(function(){
 		$('.jsGoToId').bind('click',goToId);
 	});
 }());
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Обработчик горячих ссылок
  *
@@ -1367,13 +1338,6 @@ $(document).ready(function(){
 
 
 
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * JIRA
  */
@@ -1394,13 +1358,6 @@ $(document).ready(function(){
 		}
 	};
 }());
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 ;(function( ENTER ) {
 	var constructors = ENTER.constructors,
 		body = $('body'),
@@ -2004,13 +1961,6 @@ $(document).ready(function(){
 	});
 
 }(window.ENTER));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 $(document).ready(function() {
 	/**
 	 * Подписка
@@ -2093,13 +2043,6 @@ $(document).ready(function() {
 			$(this).next('.enterPrizeListWrap').toggle('fast');
 	});
 });
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 ;(function($){	
 	/*paginator*/
 	var EnterPaginator = function( domID,totalPages, visPages, activePage ) {
@@ -2592,7 +2535,7 @@ $(document).ready(function() {
 						return;
 					}
 
-					item = ['_trackEvent', 'collection_view', collection_name+'_'+collection_position, delay.toString()];
+					item = ['_trackEvent', 'collection_view', collection_name+'_'+collection_position, delay.toString(), , true];
 
 					if ( 'undefined' == typeof(_gaq) ) {
 						tchiboAnalyticsBuffer.push(item);
@@ -2683,13 +2626,6 @@ $(document).ready(function() {
 		}
 	}
 })(jQuery);
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * SITE-2693
  * Показывать окно авторизации, если по аяксу был получен ответ с 403-м статусом
@@ -2719,13 +2655,6 @@ $(document).ready(function() {
 		}
 	});
 }());
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Всплывающая синяя плашка с предложением о подписке
  * Срабатывает при возникновении события showsubscribe.
@@ -2874,13 +2803,6 @@ $(document).ready(function() {
 	body.bind('showsubscribe', lboxCheckSubscribe);
 	body.trigger('showsubscribe');
 }());
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Саджест для поля поиска
  * Нужен рефакторинг
@@ -3153,13 +3075,6 @@ $(document).ready(function() {
 	});
 }());
 
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 ;(function(){
 
     // https://jira.enter.ru/browse/SITE-3508
@@ -3180,13 +3095,6 @@ $(document).ready(function() {
     }
 
 }());
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /* Top Menu */
 (function(){
 	var menuDelayLvl1 = 300; //ms
@@ -3510,13 +3418,6 @@ $(document).ready(function() {
 })();
 
 	
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Кнопка наверх
  *
@@ -3552,13 +3453,6 @@ $(document).ready(function() {
 	$(window).scroll(pageScrolling);
 	upper.bind('click',goUp);
 }());
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * White floating user bar
  *
@@ -3832,6 +3726,23 @@ $(document).ready(function() {
 					_rutarget.push(result);
 				},
 
+				deleteFromMyragon = function deleteFromMyragon( data ) {
+					if ( !data.hasOwnProperty('product') || !data.product.hasOwnProperty('id') ) {
+						return;
+					}
+
+					window.rbnt_rt_params = {
+						url: window.location.href,
+						pageType: 9,
+						pageTitle: $(document).find("title").text(),
+						basketProducts: [{id: data.product.id}]
+					};
+					typeof rbnt_rt != "undefined" && rbnt_rt.send();
+
+					console.info('Myragon removeFromCart');
+					console.log(window.rbnt_rt_params);
+				},
+
 				deleteFromLamoda = function deleteFromLamoda( data ) {
 					if ('undefined' == typeof(JSREObject) || !data.hasOwnProperty('product') || !data.product.hasOwnProperty('id') ) {
 						return;
@@ -3848,6 +3759,7 @@ $(document).ready(function() {
 					}
 
 					deleteFromRutarget(data);
+					deleteFromMyragon(data);
 					deleteFromLamoda(data);
 				},
 

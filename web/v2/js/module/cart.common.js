@@ -108,8 +108,8 @@ define(
                     $widget.data('timer', timer);
                 }
 
-                if (!_.isFinite(quantity) || (quantity <= 0)) {
-                    var error = {code: 'invalid', message: 'Количество должно быть большим нуля'};
+                if (!_.isFinite(quantity) || (quantity <= 0) || (quantity > 999)) {
+                    var error = {code: 'invalid', message: 'Неверное количество товара'};
 
                     console.info('changeProductQuantityData:js-buyButton', error, quantity, $el);
 
@@ -244,5 +244,11 @@ define(
             .on('change', '.js-creditButton-remove', removeCredit)
 
         initCredit($('.js-creditButton'));
+
+        return {
+            initCredit: function() {
+                initCredit($('.js-creditButton'));
+            }
+        }
     }
 );

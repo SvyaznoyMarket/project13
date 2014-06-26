@@ -26,7 +26,7 @@ $c->authToken['authorized_cookie'] = '_authorized';
 $c->sessionToken = 'enter';
 
 $c->session['name']            = 'enter';
-$c->session['cookie_lifetime'] = 259200; //15552000;
+$c->session['cookie_lifetime'] = 15552000;
 $c->session['cookie_domain'] = '.enter.ru';
 
 $c->cacheCookieName = 'enter_auth';
@@ -178,6 +178,12 @@ $c->partners['RuTarget']['containerId'] = 'GTM-4SJX';
 $c->partners['Lamoda']['enabled'] = true;
 $c->partners['Lamoda']['lamodaID'] = '11640775691088171491';
 $c->partners['TagMan']['enabled'] = false;
+
+// Myragon
+$c->partners['Myragon']['enabled'] = true;
+$c->partners['Myragon']['enterNumber'] = 1402;// номер Вашей кампании
+$c->partners['Myragon']['secretWord'] = 'RdjJBC9FLE';// секретное слово
+$c->partners['Myragon']['subdomainNumber'] = 49;// номер поддомена в сервисе Myragon
 
 $c->adFox['enabled'] = true;
 
@@ -390,6 +396,7 @@ $c->enterprize['cookieName'] = 'enterprize_coupon_sent';
 $c->tchibo['rowWidth'] = 78;
 $c->tchibo['rowHeight'] = 78;
 $c->tchibo['rowPadding'] = 0;
+$c->tchibo['whereToBuyPage'] = 'where_buy_tchibo';
 $c->tchiboSlider['analyticsEnabled'] = true;
 
 // настройки для АБ-тестов могут быть переопределены в json
@@ -421,5 +428,17 @@ $c->flocktoryExchange['enabled'] = true;
 
 $c->flocktoryCoupon['enabled'] = true;
 $c->flocktoryCoupon['paramName'] = 'utm_coupon';
+
+
+$c->photoContest = [
+	'client' => [
+		'url'          => 'http://photo.enter.ru/',
+		'client_id'    => 'photocontest',
+		'timeout'      => 1,
+		'retryTimeout' => 1,
+		'retryCount'   => 2,
+		'debug'        => true,
+	]
+];
 
 return $c;

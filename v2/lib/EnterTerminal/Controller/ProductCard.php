@@ -106,23 +106,18 @@ class ProductCard {
             $productRepository->setDeliveryForObjectListByQuery([$product->id => $product], $deliveryListQuery);
         }
 
-        // если у товара нет доставок, запрашиваем список магазинов, в которых товар может быть на витрине
-        if (!(bool)$product->nearestDeliveries) {
-            $shopsIds = [];
-            foreach ($product->stock as $stock) {
-                if ($stock->shopId && ($stock->showroomQuantity > 0)) {
-                    $shopsIds[] = $stock->shopId;
-                }
+        // список магазинов, в которых товар может быть только в магазине
+        $shopsIds = [];
+        foreach ($product->stock as $stock) {
+            if ($stock->shopId && ($stock->quantity > 0)) {
+                $shopsIds[] = $stock->shopId;
             }
+        }
+        if ((bool)$shopsIds) {
+            $shopListQuery = new Query\Shop\GetListByIdList($shopsIds);
+            $curl->prepare($shopListQuery)->execute();
 
-            if ((bool)$shopsIds) {
-                $shopListQuery = new Query\Shop\GetListByIdList($shopsIds);
-                $curl->prepare($shopListQuery);
-
-                $curl->execute();
-
-                $productRepository->setShowroomDeliveryForObjectListByQuery([$product->id => $product], $shopListQuery);
-            }
+            $productRepository->setNowDeliveryForObjectListByQuery([$product->id => $product], $shopListQuery);
         }
 
         // аксессуары

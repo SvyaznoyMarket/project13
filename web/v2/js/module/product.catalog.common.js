@@ -82,7 +82,9 @@ define(
             scrollTargetOffset,
 
             paramsTitle = $('.js-params-title'),
-            paramsCont = $('.js-params-cont');
+            paramsCont = $('.js-params-cont'),
+
+            sortBtn = $('.sortingAbb .sortingSelect');
         // end of vars
         
         var 
@@ -137,10 +139,18 @@ define(
                 $self.toggleClass('params_title-open').next('.params_cont').toggleClass('params_cont-open');
 
                 paramsBtnShow(); /** пересчет scrollTargetOffset при открытии параметра **/
+            },
+
+            showSortingList = function showSortingList() {
+                sortList = $('.sortingAbb .sortingList');
+
+                sortList.slideToggle();
             };
         // end of functions
         
         paramsBtn.on('click', paramsAction);
         paramsTitle.on('click', paramsItem);
+
+        $('#id-productSorting').on('click', '.js-productSorting-select', showSortingList);
     }
 );

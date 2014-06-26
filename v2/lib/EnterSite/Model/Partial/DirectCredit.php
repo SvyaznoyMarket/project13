@@ -7,4 +7,6 @@ class DirectCredit {
     public $widgetId;
     /** string */
     public $dataValue;
+    /** bool */
+    public $isHidden;
 }

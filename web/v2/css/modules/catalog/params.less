@@ -39,16 +39,14 @@
 	}
 
 	&_cont {
-		overflow: hidden;
-
-		height: 0;
+		display: none;
 
 		-webkit-transition: height 0.3s ease;
 		-moz-transition: height 0.3s ease;
 		transition: height 0.3s ease;
 
 		&-open {
-			height: auto;
+			display: block;
 		}
 
 		.priceRange {

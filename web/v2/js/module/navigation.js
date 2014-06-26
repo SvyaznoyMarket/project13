@@ -1,5 +1,5 @@
 define(
-    ['jquery'],
+    ['jquery', 'jquery.scrollTo'],
     function ($) {
 
         var chooseModelWrap = $('.chooseModel'),
@@ -63,6 +63,11 @@ define(
                 }
 
                 $(this).next(navSiteListLevel2).stop(true, false).slideDown();
+
+                if ($(this).parent().is(":last-child")) {
+                    navSite.animate({ scrollTop: navSite[0].scrollHeight }, 1000);
+                }
+
                 return false;
             },
 

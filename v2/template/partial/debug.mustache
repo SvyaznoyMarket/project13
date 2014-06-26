@@ -29,6 +29,7 @@
                 {{#config}}
                     <li class="debug__tab__title"><a class="js-debug-tab" href="#debug-{{requestId}}-content-config">config</a></li>
                 {{/config}}
+                <li class="debug__tab__title"><a href="/log/{{requestId}}" target="_blank">log</a></li>
             </ul>
 
             <div class="debug__tab__content" id="debug-{{requestId}}-content-time">
@@ -67,7 +68,9 @@
                 <table>
                 {{#queries}}
                     <tr>
-                        <td id="query-{{id}}">{{path}}</td>
+                        <td id="query-{{id}}">
+                            <a href="/log/{{requestId}}#{{logId}}">{{path}}</a>
+                        </td>
                         <td><pre>{{&info}}</pre></td>
                     </tr>
                 {{/queries}}

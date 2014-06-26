@@ -37,7 +37,10 @@
                 {{#date.name}}
                     <div class="bJustText">{{date.name}}</div>
                 {{/date.name}}
-                В любом магазине ENTER
+
+                {{^isOnlyFromPartner}}
+                    <a href="/shops">В любом магазине ENTER</a>
+                {{/isOnlyFromPartner}}
             </li>
         {{/self}}
 

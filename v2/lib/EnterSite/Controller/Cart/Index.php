@@ -9,6 +9,7 @@ use EnterSite\LoggerTrait;
 use EnterSite\MustacheRendererTrait;
 use EnterSite\RouterTrait;
 use EnterSite\SessionTrait;
+use EnterSite\DebugContainerTrait;
 use EnterSite\Routing;
 use EnterSite\Controller;
 use EnterSite\Curl\Query;
@@ -17,8 +18,8 @@ use EnterSite\Model\Page\Cart\Index as Page;
 use EnterSite\Repository;
 
 class Index {
-    use ConfigTrait, RouterTrait, LoggerTrait, CurlClientTrait, SessionTrait, MustacheRendererTrait {
-        ConfigTrait::getConfig insteadof RouterTrait, LoggerTrait, CurlClientTrait, SessionTrait, MustacheRendererTrait;
+    use ConfigTrait, RouterTrait, LoggerTrait, CurlClientTrait, SessionTrait, MustacheRendererTrait, DebugContainerTrait {
+        ConfigTrait::getConfig insteadof RouterTrait, LoggerTrait, CurlClientTrait, SessionTrait, MustacheRendererTrait, DebugContainerTrait;
         LoggerTrait::getLogger insteadof SessionTrait, CurlClientTrait;
     }
 
@@ -28,6 +29,7 @@ class Index {
      * @throws \Exception
      */
     public function execute(Http\Request $request) {
+        $config = $this->getConfig();
         $curl = $this->getCurlClient();
         $session = $this->getSession();
         $cartRepository = new Repository\Cart();
@@ -85,6 +87,10 @@ class Index {
         // страница
         $page = new Page();
         (new Repository\Page\Cart\Index())->buildObjectByRequest($page, $pageRequest);
+
+        // debug
+        if ($config->debugLevel) $this->getDebugContainer()->page = $page;
+        //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
         // рендер
         $renderer = $this->getRenderer();

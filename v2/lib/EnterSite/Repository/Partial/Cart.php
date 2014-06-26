@@ -27,11 +27,7 @@ class Cart {
         $cart->quantity = count($cartModel);
         $cart->shownQuantity = $cart->quantity . ' ' . $this->getTranslateHelper()->numberChoice($cart->quantity, ['товар', 'товара', 'товаров']);
 
-        $cartProductsById = [];
-        foreach ($cartModel->product as $cartProduct) {
-            $cartProductsById[$cartProduct->id] = $cartProduct;
-        }
-        $cart->credit = (new Repository\Partial\DirectCredit())->getObject($productModels, $cartProductsById);
+        $cart->credit = (new Repository\Partial\DirectCredit())->getObject($productModels, $cartModel);
 
         return $cart;
     }

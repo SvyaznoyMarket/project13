@@ -108,10 +108,9 @@
 
 		font-size: 15px;
 	    line-height: 40px;
+	    position: relative;
 
-		&:hover, 
-		&:active,
-		&:focus {
+		&:active, {
 			text-decoration: none;
 
 			color: @firmOrange;
@@ -169,7 +168,12 @@
 
 		font-size: 14px;
 
+		&:focus,
 		&:hover {
+			color: #7e7e7e;
+		}
+
+		&:active {
 			text-decoration: none;
 
 			color: @white;

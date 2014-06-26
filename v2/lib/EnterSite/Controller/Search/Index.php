@@ -5,17 +5,21 @@ namespace EnterSite\Controller\Search;
 use Enter\Http;
 use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
+use EnterSite\LoggerTrait;
 use EnterSite\MustacheRendererTrait;
 use EnterSite\DebugContainerTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;
 use EnterSite\Curl\Query;
+use EnterSite\RouterTrait;
+use EnterSite\Routing;
 use EnterSite\Model;
 use EnterSite\Model\Page\Search\Index as Page;
 
 class Index {
-    use ConfigTrait, CurlClientTrait, MustacheRendererTrait, DebugContainerTrait {
-        ConfigTrait::getConfig insteadof CurlClientTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ConfigTrait, LoggerTrait, RouterTrait, CurlClientTrait, MustacheRendererTrait, DebugContainerTrait {
+        ConfigTrait::getConfig insteadof LoggerTrait, RouterTrait, CurlClientTrait, MustacheRendererTrait, DebugContainerTrait;
+        LoggerTrait::getLogger insteadof CurlClientTrait;
     }
 
     /**
@@ -24,6 +28,7 @@ class Index {
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
+        $logger = $this->getLogger();
         $curl = $this->getCurlClient();
         $productRepository = new Repository\Product();
         $filterRepository = new Repository\Product\Filter();
@@ -77,7 +82,13 @@ class Index {
         $curl->execute();
 
         // листинг идентификаторов товаров
-        $searchResult = (new Repository\Search())->getObjectByQuery($searchResultQuery);
+        try {
+            $searchResult = (new Repository\Search())->getObjectByQuery($searchResultQuery);
+        } catch (\Exception $e) {
+            $logger->push(['type' => 'warn', 'error' => $e, 'action' => __METHOD__, 'tag' => ['region']]);
+
+            return (new Controller\Redirect())->execute($request->server['HTTP_REFERER'] ?: $this->getRouter()->getUrlByRoute(new Routing\Index()), 302);
+        }
 
         // фильтры
         $filters = $filterRepository->getObjectListByQuery($filterListQuery);
@@ -150,7 +161,7 @@ class Index {
         (new Repository\Page\Search())->buildObjectByRequest($page, $pageRequest);
 
         // debug
-        if ($config->debug) $this->getDebugContainer()->page = $page;
+        if ($config->debugLevel) $this->getDebugContainer()->page = $page;
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
         // рендер

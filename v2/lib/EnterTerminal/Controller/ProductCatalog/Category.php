@@ -126,6 +126,20 @@ class Category {
             $curl->prepare($productListQuery);
         }
 
+        // запрос доставки товаров
+        $deliveryListQuery = null;
+        if ((bool)$productIdPager->ids) {
+            $cartProducts = [];
+            foreach ($productIdPager->ids as $productId) {
+                $cartProducts[] = new Model\Cart\Product(['id' => $productId, 'quantity' => 1]);
+            }
+
+            if ((bool)$cartProducts) {
+                $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList($cartProducts, $shop->regionId);
+                $curl->prepare($deliveryListQuery);
+            }
+        }
+
         // запрос настроек каталога
         $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge($category->ascendants, [$category]));
         $curl->prepare($catalogConfigQuery);
@@ -145,6 +159,27 @@ class Category {
 
         // список товаров
         $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
+
+        // доставка товаров
+        if ($deliveryListQuery) {
+            $productRepository->setDeliveryForObjectListByQuery($productsById, $deliveryListQuery);
+        }
+
+        // список магазинов, в которых товар может быть только в магазине
+        $shopsIds = [];
+        foreach ($productsById as $product) {
+            foreach ($product->stock as $stock) {
+                if ($stock->shopId && ($stock->quantity > 0)) {
+                    $shopsIds[] = $stock->shopId;
+                }
+            }
+        }
+        if ((bool)$shopsIds) {
+            $shopListQuery = new Query\Shop\GetListByIdList($shopsIds);
+            $curl->prepare($shopListQuery)->execute();
+
+            $productRepository->setNowDeliveryForObjectListByQuery($productsById, $shopListQuery);
+        }
 
         // настройки каталога
         $catalogConfig = $catalogConfigQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;

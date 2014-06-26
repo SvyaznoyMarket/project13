@@ -1936,93 +1936,55 @@ img[height="0"] {
 /*---------Enter Prize----------*/
 @media all {
   .enterPrize {
-    margin: 0 10px;
     position: relative;
-  }
-  .enterPrize__logo {
-    background: url("/styles/enterPrize/img/bgLogo.png") no-repeat 0 0;
-    display: inline-block;
-    height: 76px;
-    text-indent: -9999px;
-    width: 264px;
-    margin-left: 7px;
-    vertical-align: top;
-    *display: inline;
-    zoom: 1;
+    margin: 0 10px;
   }
   .enterPrize__rules {
-    border-radius: 4px;
-    padding: 65px 0 10px 15px;
     margin-top: -64px;
+    padding: 65px 0 10px 15px;
+    border-radius: 4px;
   }
   .enterPrize__rules.mFailed .enterPrize__rules__item {
+    float: none;
     width: 592px;
     height: 100px;
-    float: none;
   }
   .enterPrize__rules.mFailed .enterPrize__rules__item .sep {
     margin-bottom: 10px;
   }
   .enterPrize__rules__item {
-    font-size: 18px;
-    font-family: "Enter Type";
     float: left;
-    background: #fff;
-    border-radius: 5px;
-    border-bottom: 2px solid #c7c7c7;
+    width: 500px;
     height: 87px;
     padding: 15px;
-    width: 500px;
+    border-bottom: 2px solid #c7c7c7;
+    border-radius: 5px;
+    background: #fff;
+    font-family: "Enter Type";
+    font-size: 18px;
   }
   .enterPrize__rules__item .sep {
-    font-size: 30px;
-    font-family: "Enter";
-    text-transform: uppercase;
     display: block;
+    text-transform: uppercase;
+    font-family: "Enter";
+    font-size: 30px;
   }
   .enterPrize__rules__sep {
     float: left;
     width: 70px;
-    background: url("/styles/enterPrize/img/bgListArrow.png") no-repeat 50% 50%;
     height: 120px;
-  }
-  .enterPrize .bgPage {
-    background: url("/styles/enterPrize/img/bgFishki.png") no-repeat 0 0;
-    position: absolute;
-    top: 23px;
-    right: 28px;
-    height: 191px;
-    width: 207px;
-  }
-  .enterPrize .bgPage.mFailed {
-    background: url("/styles/enterPrize/img/feiled.png") no-repeat 0 0;
-    top: 5px;
-    height: 208px;
-    width: 211px;
-  }
-  .enterPrize .enterPrizeHello {
-    color: #ffffff;
-    font-family: "Enter";
-    font-size: 32px;
-    margin: 10px 0 0 32px;
-    text-transform: uppercase;
-  }
-  .enterPrize .enterPrizeHello span {
-    color: #ffa901;
-  }
-  .enterPrize .enterPrizeHello.mReg {
-    margin: 0 0 14px 32px;
+    background: url("/styles/enterPrize/img/bgListArrow.png") no-repeat 50% 50%;
   }
   .enterPrize__list {
-    margin: 65px 0 0 2px;
+    margin: 25px 0 0 2px;
   }
   .enterPrize__list__item {
+    position: relative;
+    z-index: 1;
     float: left;
     width: 210px;
     height: 236px;
-    position: relative;
     margin-right: 26px;
-    z-index: 1;
   }
   .enterPrize__list__item:hover {
     z-index: 20;
@@ -2050,26 +2012,67 @@ img[height="0"] {
     top: 45px;
     height: 66px;
   }
+  .enterPrize__list__item.mMembers .cuponImg {
+    -moz-opacity: 0.45;
+    -khtml-opacity: 0.45;
+    -webkit-opacity: 0.45;
+    opacity: 0.45;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=45);
+    filter: alpha(opacity=45);
+  }
+  .enterPrize__list__item.mMembers .cuponImgHover {
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    -webkit-opacity: 0;
+    opacity: 0;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    filter: alpha(opacity=0);
+    z-index: 18;
+    text-align: center;
+    background: none;
+    top: 60px;
+  }
+  .enterPrize__list__item.mMembers .cuponImgHover .epTextLogo {
+    font-size: 25px;
+  }
+  .enterPrize__list__item.mMembers .cuponText {
+    color: #ffffff;
+    font-size: 20px;
+    text-align: center;
+    -webkit-text-shadow: 0 2px 5px #000000;
+    -moz-text-shadow: 0 2px 5px #000000;
+    text-shadow: 0 2px 5px #000000;
+  }
+  .enterPrize__list__item.mMembers:hover .cuponImgHover {
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    -webkit-opacity: 1;
+    opacity: 1;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
+    filter: alpha(opacity=100);
+    z-index: 18;
+    background: none;
+  }
   .enterPrize__list__link {
     display: block;
   }
   .enterPrize .cuponImg {
-    text-align: center;
-    display: block;
     position: relative;
     z-index: 10;
-    background: url("/styles/enterPrize/img/bgOrange.png") no-repeat 0 0;
+    z-index: 17;
+    display: block;
     width: 209px;
     height: 206px;
-    z-index: 17;
+    text-align: center;
+    background: url("/styles/enterPrize/img/bgOrange.png") no-repeat 0 0;
   }
   .enterPrize .cuponImg__inner {
-    display: block;
-    height: 188px;
-    left: 7px;
     position: relative;
     top: 6px;
+    left: 7px;
+    display: block;
     width: 190px;
+    height: 188px;
   }
   .enterPrize .cuponImgHover {
     -moz-opacity: 0.3;
@@ -2078,21 +2081,21 @@ img[height="0"] {
     opacity: 0.3;
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=30);
     filter: alpha(opacity=30);
-    z-index: 8;
-    background: url("/styles/enterPrize/img/luchi.png") no-repeat 50% 0;
+    -webkit-transition: opacity 0.4s ease-in-out;
+    -moz-transition: opacity 0.4s ease-in-out;
+    transition: opacity 0.4s ease-in-out;
     position: absolute;
+    z-index: 8;
+    z-index: 15;
     top: -41px;
     left: -38px;
     width: 281px;
     height: 280px;
-    -webkit-transition: opacity 0.4s ease-in-out;
-    -moz-transition: opacity 0.4s ease-in-out;
-    transition: opacity 0.4s ease-in-out;
+    outline: none;
+    background: url("/styles/enterPrize/img/luchi.png") no-repeat 50% 0;
     -webkit-perspective: 1000;
     -webkit-backface-visibility: hidden;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
-    outline: none;
-    z-index: 15;
   }
   .enterPrize .cuponImgHover.mPink {
     left: -3px;
@@ -2101,7 +2104,6 @@ img[height="0"] {
     left: -2px;
   }
   .enterPrize .cuponBtn {
-    position: absolute;
     background: #ffc000;
     background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ffaa01), color-stop(1, #ffc000));
     background: -ms-linear-gradient(bottom, #ffaa01, #ffc000);
@@ -2109,16 +2111,6 @@ img[height="0"] {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    display: block;
-    width: 94px;
-    height: 25px;
-    text-align: center;
-    color: #ffffff;
-    border: 1px solid #fb9c00;
-    font-size: 14px;
-    line-height: 25px;
-    bottom: 15px;
-    left: 92px;
     -moz-opacity: 0;
     -khtml-opacity: 0;
     -webkit-opacity: 0;
@@ -2128,10 +2120,21 @@ img[height="0"] {
     -webkit-transition: opacity 0.2s ease-in-out;
     -moz-transition: opacity 0.2s ease-in-out;
     transition: opacity 0.2s ease-in-out;
+    position: absolute;
+    bottom: 15px;
+    left: 92px;
+    display: block;
+    width: 94px;
+    height: 25px;
+    text-align: center;
+    color: #ffffff;
+    border: 1px solid #fb9c00;
+    outline: none;
+    font-size: 14px;
+    line-height: 25px;
     -webkit-perspective: 1000;
     -webkit-backface-visibility: hidden;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
-    outline: none;
   }
   .enterPrize .cuponBtn:hover {
     background: #ffa200;
@@ -2142,10 +2145,10 @@ img[height="0"] {
   .enterPrize .cuponIco {
     position: absolute;
     top: 33px;
-    text-align: center;
-    width: 100%;
     left: 0;
+    width: 100%;
     height: 43px;
+    text-align: center;
   }
   .enterPrize .cuponIco img {
     max-width: 75px;
@@ -2154,53 +2157,53 @@ img[height="0"] {
   .enterPrize .cuponDesc {
     position: absolute;
     top: 86px;
-    text-align: center;
-    width: 143px;
     left: 23px;
+    width: 143px;
+    text-align: center;
     line-height: 1.1;
   }
   .enterPrize .cuponPrice {
-    font-family: "Enter Type";
-    font-size: 40px;
     position: absolute;
-    text-align: center;
+    top: 110px;
     left: 0;
     width: 100%;
-    top: 110px;
+    text-align: center;
+    font-family: "Enter Type";
+    font-size: 40px;
   }
   .enterPrize.mPrivate {
-    margin: 40px 0 20px;
-    background: #eaeaea;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
+    margin: 40px 0 20px;
     padding: 10px;
+    background: #eaeaea;
   }
   .enterPrize.mPrivate .enterPrize__list {
     position: absolute;
-    right: 0;
     top: -80px;
+    right: 0;
   }
   .enterPrize.mPrivate .enterPrize__logo {
     margin: -40px 0 0;
   }
   .enterPrize.mPrivate .enterPrize__rules {
+    float: none;
     width: 550px;
     height: auto;
+    margin: 13px 0;
     padding: 15px;
     border-bottom: 1px solid #bbbbbb;
-    float: none;
     background: #ffffff;
     font-size: 16px;
     line-height: 1.6;
-    margin: 13px 0;
   }
   .enterPrize.mPrivate .enterPrize__rules strong {
     font-size: 18px;
   }
   .enterPrize.mPrivate .enterPrize__logIn {
-    font-size: 14px;
     margin: 0 0 0 15px;
+    font-size: 14px;
   }
   .enterPrize.mPrivate .enterPrize__logIn a {
     text-decoration: underline;
@@ -2218,64 +2221,64 @@ img[height="0"] {
     margin: 8px 0 0;
   }
   .enterPrize .finishedBox .mBtnOrange {
-    margin: 8px 0 0;
     width: 250px;
+    margin: 8px 0 0;
   }
   .enterPrize .rulesEP {
-    font-size: 14px;
-    color: #ffffff;
     margin: 20px 0 12px 31px;
+    color: #ffffff;
+    font-size: 14px;
   }
   .enterPrize .rulesEP a {
-    color: #ffffff;
     text-decoration: underline;
+    color: #ffffff;
   }
   .enterprizeConfirm {
     margin: 0 0 200px 25px;
     font-size: 14px;
   }
   .enterprizeConfirm .backForm {
-    font-size: 12px;
     display: inline-block;
-    text-decoration: underline;
-    margin: 15px 0 0;
-    *display: inline;
     zoom: 1;
+    margin: 15px 0 0;
+    text-decoration: underline;
+    font-size: 12px;
+    *display: inline;
   }
   .enterprizeConfirm .confirmForm {
     margin: 0 0 15px;
   }
   .enterprizeConfirm .labelCode {
     display: inline-block;
+    zoom: 1;
     margin: 5px 5px 0 0;
     *display: inline;
-    zoom: 1;
   }
   .enterprizeConfirm .text {
+    width: 50px;
     height: 31px;
     line-height: 31px;
-    width: 50px;
   }
   .enterprizeConfirm .newCode {
     display: inline-block;
-    vertical-align: top;
-    padding: 4px 17px;
-    height: 33px;
-    *display: inline;
     zoom: 1;
+    height: 33px;
     margin: 0 5px;
+    padding: 4px 17px;
+    vertical-align: top;
+    *display: inline;
   }
   .enterprizeConfirm .confirmCode {
-    display: inline-block;
-    vertical-align: top;
-    padding: 4px 17px;
-    border: 1px solid #F28900;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    margin: 0 0 0 5px;
-    *display: inline;
+    display: inline-block;
     zoom: 1;
+    margin: 0 0 0 5px;
+    padding: 4px 17px;
+    vertical-align: top;
+    border: 1px solid #F28900;
+    *display: inline;
   }
   .enterprizeConfirm .textConfirm {
     margin: 0 0 20px;
@@ -2284,16 +2287,16 @@ img[height="0"] {
     font-size: 16px;
   }
   .titleForm {
+    margin: 40px 0 20px 0;
+    text-align: center;
+    text-transform: uppercase;
     font-family: 'Enter';
     font-size: 26px;
     font-weight: normal;
-    text-align: center;
-    text-transform: uppercase;
-    margin: 40px 0 20px 0;
   }
   .jsEnterprizeForm {
-    margin: 0 auto;
     width: 368px;
+    margin: 0 auto;
   }
   .jsEnterprizeForm .formDefault__btnSubmit {
     margin: 20px auto 30px;
@@ -2312,9 +2315,9 @@ img[height="0"] {
     background: #000000;
   }
   .enterprize .topbar {
-    background: #000000;
     color: #ffffff;
     border-color: #404040;
+    background: #000000;
   }
   .enterprize .topbar a {
     color: #ffffff;
@@ -2330,17 +2333,17 @@ img[height="0"] {
     border: none;
   }
   .enterprize .fixedTopBar__dd {
-    background: #000000;
     color: #ffffff;
     border-color: #404040;
+    background: #000000;
   }
   .enterprize .bannersList,
   .enterprize .applist {
     display: none;
   }
   .enterprize .footer__inner {
-    background: #000000;
     color: #ffffff;
+    background: #000000;
   }
   .enterprize .footer .publicInfo__text {
     margin: 10px 0 25px;
@@ -2359,24 +2362,24 @@ img[height="0"] {
     color: #FFFFFF;
   }
   .enterprize .fixedTopBar .fixedTopBar__logOutLink {
-    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
     border: 0 none;
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
     box-shadow: 0 0 10px 2px #444443;
   }
   .enterprize .footer .publicInfo__list__link {
     color: #B5B5B5;
   }
   .bInputList.mEnterPrizeSubscr .bErrorText__eInner {
+    top: -8px;
     left: 25px;
     padding: 0;
-    top: -8px;
   }
   .enterprizeAuthBox__title {
-    background: url("/styles/enterPrize/img/bgLogo.png") no-repeat 50% 0;
-    text-transform: uppercase;
-    font-size: 24px;
-    padding-left: 280px;
     height: 88px;
+    padding-left: 280px;
+    text-transform: uppercase;
+    background: url("/styles/enterPrize/img/bgLogo.png") no-repeat 50% 0;
+    font-size: 24px;
     font-weight: bold;
   }
   .enterprizeAuthBox__form {
@@ -2388,10 +2391,10 @@ img[height="0"] {
     font-weight: bold;
   }
   .enterprizeMore {
-    font-family: "Enter";
-    font-size: 20px;
     margin: 40px 0 50px 25px;
     text-transform: uppercase;
+    font-family: "Enter";
+    font-size: 20px;
   }
   .enterprizeMore a {
     text-decoration: underline;
@@ -2401,30 +2404,30 @@ img[height="0"] {
     display: none !important;
   }
   .getCuponEP {
-    margin: 0 auto 200px;
     width: 100px;
+    margin: 0 auto 200px;
   }
   .completeTitleEP {
     margin: 0 0 0 15px;
   }
   .completeTitleEP__title {
-    font-family: "Enter";
     text-transform: uppercase;
+    font-family: "Enter";
     font-size: 22px;
   }
   .completeTitleEP__text {
     margin: 0;
   }
   .lastFishka {
-    font-size: 14px;
     margin: 0 0 20px 25px;
+    font-size: 14px;
   }
   .lastFishka__link {
     text-decoration: underline;
   }
   .epSliderTitle {
-    font-size: 16px;
     margin: 0 0 10px 25px;
+    font-size: 16px;
   }
   .epSliderBody {
     margin: 0 0 50px 25px;
@@ -2502,6 +2505,154 @@ img[height="0"] {
   .epToggleRules .enterPrizeList__item,
   .epToggleRules .enterPrizeFinish {
     color: #000000;
+  }
+}
+@media all {
+  .epTextLogo {
+    font-family: "Enter";
+    font-size: 20px;
+    color: #ffa901;
+  }
+  .epTextLogo_colors {
+    color: #ffffff;
+  }
+  .epHeader {
+    position: relative;
+    padding-right: 25px;
+  }
+  .epHeader_logo {
+    display: inline-block;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    width: 264px;
+    height: 76px;
+    vertical-align: top;
+    text-indent: -9999px;
+    background: url("/styles/enterPrize/img/bgLogo.png") no-repeat 0 0;
+  }
+  .epHeader_controls {
+    float: right;
+    margin: 13px 0 0;
+    color: #c7c7c7;
+    font-size: 14px;
+  }
+  .epHeader_controls_item {
+    margin: 0 0 8px;
+    text-align: right;
+  }
+  .epHeader_controls_item-colors {
+    color: #ffa901;
+    font-size: 16px;
+  }
+  .epHeader_controls_item-colors a {
+    text-decoration: underline;
+    color: #ffa901;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .epHeader_controls_item-border {
+    cursor: pointer;
+    border-bottom: 1px dotted;
+  }
+  .epHintPopup {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    position: absolute;
+    top: 61px;
+    right: 0;
+    display: none;
+    padding: 15px 10px;
+    background: #ffffff;
+    background: rgba(255, 255, 255, 0.95);
+  }
+  .epHintPopup_list {
+    font-size: 14px;
+  }
+  .epHintPopup_list_item {
+    margin: 0 0 5px;
+    list-style-position: inside;
+    list-style-type: decimal;
+  }
+  .epHintPopup_list_item:last-child {
+    margin-bottom: 0;
+  }
+  .epHintPopup_close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpCODc1OEQ3REYzQzcxMUUzQjQ3MzhCMUU5ODIzNjA5NiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpCODc1OEQ3RUYzQzcxMUUzQjQ3MzhCMUU5ODIzNjA5NiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkI4NzU4RDdCRjNDNzExRTNCNDczOEIxRTk4MjM2MDk2IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkI4NzU4RDdDRjNDNzExRTNCNDczOEIxRTk4MjM2MDk2Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+91edowAAAGNJREFUeNpiYGBgcALik0AsykAcEIWqB+kDM/4D8WUiDBCFqvsP1YcigM8AnOoIGUDQAlwKiHUZhkINYjViM+A7KRphQANJ43con+h4JMtmsv1MdmiTHc8UpTCK0jbZuQogwAD7+kj0e+2PzQAAAABJRU5ErkJggg==) no-repeat 0 0;
+  }
+  .epHead {
+    margin: 0 0 20px;
+    padding: 15px 0;
+    background: url("/styles/enterPrize/img/bgFishki.png") no-repeat 100% 0;
+  }
+  .epHead_title {
+    margin: 5px 0 25px;
+    text-transform: uppercase;
+    color: #ffffff;
+    font-family: "Enter";
+    font-size: 28px;
+  }
+  .epHead_list {
+    margin: 0 0 0 68px;
+    color: #c7c7c7;
+    font-size: 16px;
+  }
+  .epHead_list_item {
+    margin: 0 0 10px;
+  }
+  .epHead_list_item strong {
+    color: #ffffff;
+  }
+  .epListTitle {
+    text-transform: uppercase;
+    color: #ffffff;
+    font-family: "Enter";
+    font-size: 25px;
+  }
+  .epSelectFishka {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    margin: 0 0 30px;
+    padding: 10px;
+    background: #707070;
+  }
+  .epSelectFishka_left {
+    float: left;
+    margin: 0;
+  }
+  .epSelectFishka_left .enterPrize__list__item {
+    margin-right: 0;
+  }
+  .epSelectFishka_right {
+    float: right;
+    width: 680px;
+  }
+  .epSelectFishka_desc {
+    margin: 0 0 10px;
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .epSelectFishka_slider {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding: 10px;
+    background: #ffffff;
+  }
+  .epSelectFishka_slider_link {
+    text-decoration: underline;
+    color: #3f3f3f;
+    font-size: 14px;
+    font-weight: bold;
   }
 }
 /*---END----Enter Prize---------*/

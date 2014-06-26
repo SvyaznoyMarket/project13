@@ -23,7 +23,7 @@ class Debug {
         $logger = $this->getLogger();
         $viewHelper = $this->getViewHelper();
 
-        if (!$config->debug) {
+        if (!$config->debugLevel) {
             return;
         }
 
@@ -132,6 +132,7 @@ class Debug {
 
                 $query->info = json_encode($info, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
                 $query->id = md5($curlQuery->getId() . '-' . $curlQuery->getUrl() . '-' . $curlQuery->getStartAt());
+                $query->logId = 'log-' . $message['time'];
 
                 $query->css = [
                     'top'          => $i * 24,

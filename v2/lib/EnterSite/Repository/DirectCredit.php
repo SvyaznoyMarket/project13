@@ -26,7 +26,7 @@ class DirectCredit {
         // FIXME: использовать cartProduct.sum
         $config = $this->getConfig();
 
-        return $config->directCredit->enabled && ($product->price >= $config->directCredit->minPrice);
+        return $config->directCredit->enabled && $product->isBuyable && ($product->price >= $config->directCredit->minPrice);
     }
 
     /**

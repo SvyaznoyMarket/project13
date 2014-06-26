@@ -133,13 +133,6 @@
 	console.groupEnd();
 
 })(jQuery);
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Order delivery address
  *
@@ -767,13 +760,6 @@
 	$('body').bind('orderdeliverychange', function() {ymaps.ready(mapCreate)});
 
 }(this, this.document, this.jQuery, this.ENTER));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 ;(function ( window, document, $, ENTER, ko ) {
 	var
 		constructors = ENTER.constructors,
@@ -1824,13 +1810,6 @@
 	}());
 
 }(this, this.document, this.jQuery, this.ENTER, this.ko));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Работа с кредитными брокерами
  */
@@ -1884,13 +1863,6 @@
 		creditInit();
 	}
 }(this));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 ;(function (window, document, $, ENTER) {
 	console.info('orderDictionary.js init...');
 
@@ -2182,13 +2154,6 @@
 	}());
 	
 }(this, this.document, this.jQuery, this.ENTER));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Sertificate
  *
@@ -2341,13 +2306,6 @@
 	pin.mask('nnnn', { completed: SertificateCard.checkCard, placeholder: '*' } );
 
 }(this));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Google Analytics steps tracking
  *
@@ -2450,13 +2408,6 @@
     body.trigger('trackUserAction', ['0 Вход'])
 
 })();
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
  * Валидация формы. Отправка на сервер. Аналитика
  */
@@ -3005,13 +2956,6 @@
 	console.log('orderValidation.js inited');
 
 }(this, this.document, this.jQuery, this.ENTER));
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 /**
 /**
  * Получение данных с сервера
@@ -3964,6 +3908,20 @@
 						_rutarget.push(result);
 					}
 
+					/* Myragon */
+					if ( data.hasOwnProperty('product') && data.product.hasOwnProperty('id') ) {
+						window.rbnt_rt_params = {
+							url: window.location.href,
+							pageType: 9,
+							pageTitle: $(document).find("title").text(),
+							basketProducts: [{id: data.product.id}]
+						};
+						typeof rbnt_rt != "undefined" && rbnt_rt.send();
+
+						console.info('Myragon removeFromCart');
+						console.log(window.rbnt_rt_params);
+					}
+
 					/* Lamoda */
 					if ( 'undefined' != typeof(JSREObject) ) {
 						console.info('Lamoda removeFromCart');
@@ -4234,6 +4192,8 @@
 
 				return false;
 			}
+
+            if (res.error && res.error.message) showError(res.error.message);
 
 			console.info('Данные с сервера получены');
 

@@ -27,7 +27,7 @@ class MatchRoute {
 
         try {
             $route = $router->getRouteByPath($request->getPathInfo(), $request->getMethod(), $request->query->all());
-            if ($this->getConfig()->debug) $this->getDebugContainer()->route = [
+            if ($this->getConfig()->debugLevel) $this->getDebugContainer()->route = [
                 'name'       => get_class($route),
                 'action'     => $route->action,
                 'parameters' => $route->parameters,

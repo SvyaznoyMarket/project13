@@ -31,8 +31,6 @@
   }
   .bProductSection {
     .btnBuy__eLink, .btnBuy__eLink:hover {
-      float: right;
-      display: block;
       background: #000;
       color: #fff;
       box-shadow: none;
@@ -60,5 +58,13 @@
     clear: both;
     padding: 0 15px;
     margin: 10px 0 35px;
+  }
+
+  .markerList .btnBuy__eLink {
+    float: none;
+    display: inline-block;
+
+    zoom: 1;
+    *display: inline;
   }
 }

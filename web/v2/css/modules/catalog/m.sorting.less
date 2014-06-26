@@ -15,16 +15,6 @@
 		position: relative;
 		z-index: 12;
 
-		&:hover {
-
-			.sortingList {
-				position: absolute;
-
-				display: block;
-				
-			}
-		}
-
 		&_title{
 			display: inline-block;
 
@@ -105,4 +95,14 @@
 	}
 }
 
+@media only screen and (max-width: 480px) {
 
+	.sorting {
+		float: none;
+
+
+		.sortingSelect {
+			margin: 0;
+		}
+	}
+}

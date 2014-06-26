@@ -1,5 +1,4 @@
 <?php
-
 set_include_path(get_include_path() . PATH_SEPARATOR . implode(PATH_SEPARATOR, [
     realpath(__DIR__ . '/../v2/Enter'),
 ]));
@@ -62,6 +61,9 @@ if ('main' == \App::$name) {
     $config->templateDir = $config->appDir . '/terminal/template';
     $config->controllerPrefix = 'Terminal\\Controller';
     $config->routePrefix = 'terminal';
+} else if ('photocontest' == \App::$name) {
+    //$config->templateDir = $config->appDir . '/template';
+    //$config->controllerPrefix = '\\Controller';
 }
 
 // response
@@ -130,12 +132,17 @@ $response = null;
             (new \Debug\ShowAction())->execute($request, $response);
         }
 
-        // share session to mobile site
+        // удаление старых кук
         try {
-            if ($mobileHost = \App::config()->mobileHost) {
-                $session = \App::session();
-                $sessionParams = session_get_cookie_params();
-                $response->headers->setCookie(new \Http\Cookie($session->getName(), $session->getId(), 0 === $sessionParams['lifetime'] ? 0 : time() + $sessionParams['lifetime'], $sessionParams['path'], $mobileHost, $sessionParams['secure'], $sessionParams['httponly']));
+            $session = \App::session();
+            $sessionParams = session_get_cookie_params();
+
+            foreach ([\App::config()->mainHost, \App::config()->mobileHost, 'enter.ru'] as $domain) {
+                $response->headers->removeCookie(
+                    $session->getName(),
+                    $sessionParams['path'],
+                    $domain
+                );
             }
         } catch (\Exception $e) {
             \App::logger()->error($e, ['response']);
