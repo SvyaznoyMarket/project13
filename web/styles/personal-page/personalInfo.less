@@ -1,0 +1,59 @@
+.personalPage {
+
+	&_left {
+		.inline-block();
+		width: 700px;
+	}
+
+	&_right {
+		.inline-block();
+		float: right;
+
+		width: 210px;
+		padding: 10px;
+
+		background: #f6f6f6;
+	}
+}
+
+.payCommandsList {
+
+	&_item {
+		margin: 0 0 20px;
+	}
+
+	.descPay {
+		display: block;
+
+		text-align: center;
+	}
+
+	.btnPay {
+		.grayGradDark();
+		.rounded(4px);
+		width: 200px;
+		height: 32px;
+		margin: 0 0 10px;
+
+		color: #383a3c;
+		border: 1px solid #c7c7c7;
+
+		font-size: 14px;
+		line-height: 3px;
+	}
+}
+
+.personalInfo {
+	color: #6f7173;
+
+	font-size: 14px;
+
+	.decorColor {
+		color: @black;
+		background: none;
+
+		&-bullet {
+			display: list-item;
+		}
+	}
+}
