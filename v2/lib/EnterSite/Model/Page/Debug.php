@@ -101,5 +101,7 @@ namespace EnterSite\Model\Page\Debug {
         public $info;
         /** @var string */
         public $id;
+        /** @var string */
+        public $logId;
     }
 }

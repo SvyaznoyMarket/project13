@@ -19,6 +19,7 @@ class NewAction {
         $cart = $user->getCart();
 
         if ($cart->isEmpty()) {
+            \App::logger()->warn(['message' => 'Пустая корзина'], ['cart']);
             return new \Http\RedirectResponse(\App::router()->generate('cart'));
         }
 

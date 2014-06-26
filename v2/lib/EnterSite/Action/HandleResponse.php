@@ -41,22 +41,24 @@ class HandleResponse {
         // debug cookie
         try {
             if (
-                $response
+                ($response instanceof Http\Response)
                 && (
-                    ($request->cookies['debug'] && !$config->debugLevel)
-                    || (!$request->cookies['debug'] && $config->debugLevel)
+                    $request->cookies['debug'] != $config->debugLevel
                 )
             ) {
-                $cookie = new Http\Cookie(
-                    'debug',
-                    $config->debugLevel,
-                    strtotime('+7 days' ),
-                    '/',
-                    null,
-                    false,
-                    false
-                );
-                $response->headers->setCookie($cookie);
+                if (!$config->debugLevel) {
+                    $response->headers->removeCookie('debug', '/', null);
+                } else {
+                    $response->headers->setCookie(new Http\Cookie(
+                        'debug',
+                        $config->debugLevel,
+                        strtotime('+7 days' ),
+                        '/',
+                        null,
+                        false,
+                        false
+                    ));
+                }
             }
         } catch (\Exception $e) {
             $logger->push(['type' => 'error', 'action' => __METHOD__, 'error'  => $e]);

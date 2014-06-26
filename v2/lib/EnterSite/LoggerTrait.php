@@ -18,9 +18,6 @@ trait LoggerTrait {
             if ($config->fileAppender->enabled) {
                 $appenders[] = new Logging\FileAppender($config->fileAppender->file);
             }
-            if ($config->debugAppender->enabled) {
-                $appenders[] = new Logging\FileAppender($config->debugAppender->file);
-            }
 
             $GLOBALS[__METHOD__] = new Logging\Logger($appenders, null, [
                 '_id' => $this->getConfig()->requestId,

@@ -11305,7 +11305,7 @@
     border: 1px solid #a6a6a6;
     background: #f3f3f3;
   }
-  .bSaleList {
+  .hiddenCustom {
     -moz-opacity: 0;
     -khtml-opacity: 0;
     -webkit-opacity: 0;
@@ -11313,8 +11313,10 @@
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     filter: alpha(opacity=0);
     overflow: hidden;
-    width: 500px;
     height: 0;
+  }
+  .bSaleList {
+    width: 500px;
   }
   .bSaleList__eItem {
     -webkit-border-radius: 4px;
