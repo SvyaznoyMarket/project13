@@ -573,8 +573,21 @@ class Action {
             }
         } catch(\Exception $e) {
             \App::exception()->remove($e);
+
             if ( $errorMsg == null ) {
-                $errorMsg = 'Не удалось запросить пароль. Попробуйте позже' . (\App::config()->debug ? (': ' . $e->getMessage()) : '');
+                switch ($e->getCode()) {
+                    case 601: // Неправильные параметры запроса
+                        $errorMsg = 'Введите корректный логин';
+                        break;
+
+                    case 604: // Пользователь не найден
+                        $errorMsg = 'Пользователь не зарегистрирован';
+                        break;
+
+                    default:
+                        $errorMsg = 'Не удалось запросить пароль. Попробуйте позже' . (\App::config()->debug ? (': ' . $e->getMessage()) : '');
+                }
+
                 $formErrors[] = ['code' => 'invalid', 'message' => $errorMsg, 'field' => 'global'];
             }
         }
