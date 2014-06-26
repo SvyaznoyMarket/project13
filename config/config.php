@@ -23,9 +23,9 @@ $c->logger['pretty'] = false;
 $c->appName = 'Enter';
 $c->authToken['name']     = '_token';
 $c->authToken['authorized_cookie'] = '_authorized';
-$c->sessionToken = 'enter';
+$c->sessionToken = 'enter'; // TODO: удалить?
 
-$c->session['name']            = 'enter';
+$c->session['name']            = 'enter_session';
 $c->session['cookie_lifetime'] = 15552000;
 $c->session['cookie_domain'] = '.enter.ru';
 
