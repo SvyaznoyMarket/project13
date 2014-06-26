@@ -781,6 +781,16 @@ return [
         'pattern' => '/enterprize/fail',
         'action'  => ['Enterprize\CouponAction', 'fail'],
     ],
+    // enterprize retail
+    'enterprize.retail.show' => [
+        'pattern' => '/fishka',
+        'action'  => ['Enterprize\RetailClient', 'show'],
+    ],
+    'enterprize.retail.create' => [
+        'pattern' => '/enterprize/retail/create',
+        'action'  => ['Enterprize\RetailClient', 'create'],
+        'method'  => ['POST'],
+    ],
     // enterprize form
     'enterprize.form.update' => [
         'pattern' => '/enterprize/form/update',
@@ -828,11 +838,6 @@ return [
     'enterprize.show' => [
         'pattern' => '/enterprize/{enterprizeToken}',
         'action'  => ['Enterprize\ShowAction', 'execute'],
-    ],
-
-    'enterprize.fishka' => [
-        'pattern' => '/fishka',
-        'action'  => ['Enterprize\RetailClient', 'fishka'],
     ],
 
     // git pull
