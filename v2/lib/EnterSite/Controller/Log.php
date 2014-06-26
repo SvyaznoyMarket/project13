@@ -38,7 +38,7 @@ class Log {
 
         $result = shell_exec(sprintf('tail -n %s %s | grep "\"_id\":\"%s\""%s',
             $offset,
-            (2 == $config->debugLevel) ? $config->logger->debugAppender->file : $config->logger->fileAppender->file,
+            $config->logger->fileAppender->file,
             $id,
             $before ? (' -B ' . $before) : ''
         ));

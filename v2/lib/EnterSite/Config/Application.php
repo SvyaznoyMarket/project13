@@ -94,12 +94,9 @@ namespace EnterSite\Config\Application {
     class Logger {
         /** @var Logger\FileAppender */
         public $fileAppender;
-        /** @var Logger\FileAppender */
-        public $debugAppender;
 
         public function __construct() {
             $this->fileAppender = new Logger\FileAppender();
-            $this->debugAppender = new Logger\FileAppender();
         }
     }
 
