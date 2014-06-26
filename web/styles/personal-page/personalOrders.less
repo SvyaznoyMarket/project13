@@ -68,10 +68,18 @@
 			}
 		}
 
-		&:nth-child(2) {
+		&-total {
+
+			&:last-child {
+
+				.personalTable_cell {
+					border: none;
+				}
+			}
 
 			.personalTable_cell {
-				background: #f6f6f6;
+				background: @lightgreyBg;
+				height: 36px;
 			}
 		}
 	}
@@ -87,21 +95,6 @@
 			font-size: 12px;
 		}
 		
-		// выравнивание текста по правому краю
-		&-right {
-			text-align: right;
-		}
-		
-		// признак размера шрифта 12px
-		&-s {
-			font-size: 12px;
-		}
-		
-		// признак размера шрифта 16px
-		&-l {
-			font-size: 16px;
-		}
-		
 		// ширина ячейки 40px
 		&-w40 {
 			width: 40px;
@@ -111,20 +104,7 @@
 		// ширина ячейки 60px
 		&-w60 {
 			width: 60px;
-		}
-
-		&-strong {
-			color: #7f7f7f;
-		}
-
-		&-warn {
-			color: #e8303c;
-		}
-	}
-
-	.orderItem {
-		
-	}
+		}	}
 
 	.orderCancel {
 		font-size: 12px;

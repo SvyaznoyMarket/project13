@@ -14,12 +14,42 @@
 
 		background: #f6f6f6;
 	}
+
+	&_head {
+		margin: 0 0 10px;
+
+		font-size: 16px;
+
+		&_left {
+			float: left;
+
+			margin: 0;
+
+			font-size: 16px;
+			font-weight: bold;
+		}
+
+		&_right {
+			float: right;
+		}
+
+		.orderPrice {
+			.inline-block();
+			width: 100px;
+
+			text-align: right;
+		}
+	}
 }
 
 .payCommandsList {
 
 	&_item {
 		margin: 0 0 20px;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
 	}
 
 	.descPay {
@@ -34,6 +64,7 @@
 		width: 200px;
 		height: 32px;
 		margin: 0 0 10px;
+		padding: 0;
 
 		color: #383a3c;
 		border: 1px solid #c7c7c7;
@@ -44,13 +75,13 @@
 }
 
 .personalInfo {
+	margin: 0 0 15px;
+
 	color: #6f7173;
 
 	font-size: 14px;
 
 	.decorColor {
-		color: @black;
-		background: none;
 
 		&-bullet {
 			display: list-item;
