@@ -135,15 +135,15 @@ window.ANALYTICS = {
 			$('body').on('userLogged', liveTexUserInfo);
 		}
 
-		LiveTex.on("chat_open", function(e){
-			undefined != typeof(_gaq) && _gaq.push(['_trackEvent', 'webchat', 'chat_open']);
-			undefined != typeof(ga) && ga('send', 'event', 'webchat', 'chat_open');
-		});
-
-		LiveTex.on("chat_invitation_action", function(e){
-			undefined != typeof(_gaq) && _gaq.push(['_trackEvent', 'webchat', e.data.action]);
-			undefined != typeof(ga) && ga('send', 'event', 'webchat', e.data.action);
-		});
+//		LiveTex.on("chat_open", function(e){
+//			undefined != typeof(_gaq) && _gaq.push(['_trackEvent', 'webchat', 'chat_open']);
+//			undefined != typeof(ga) && ga('send', 'event', 'webchat', 'chat_open');
+//		});
+//
+//		LiveTex.on("chat_invitation_action", function(e){
+//			undefined != typeof(_gaq) && _gaq.push(['_trackEvent', 'webchat', e.data.action]);
+//			undefined != typeof(ga) && ga('send', 'event', 'webchat', e.data.action);
+//		});
 
 		//$(document).load(function() {
 		(function () {
@@ -2075,13 +2075,6 @@ var ADFOX = {
 
 ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') );
 
- 
- 
-/** 
- * NEW FILE!!! 
- */
- 
- 
 ;(function () {
 	/**********************************************************************
 	 Visitor split, into groups, enabling separate targeting and remarketing.
