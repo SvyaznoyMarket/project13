@@ -101,7 +101,7 @@ class CityAds {
                 '{customer_type}'   => ($uid)  ? 'returned' : 'new',
                 '{payment_method}'  => $paymentMethod,
                 '{price}'           => $order->getSum(),
-                '{currency}'        => 'RUB',
+                '{currency}'        => 'RUR',
                 //'{basket}'          => str_replace( '\"' ,  '\'', json_encode($basket, JSON_UNESCAPED_UNICODE)),
                 '{basket}'          => $page->json($basket),
             ]);

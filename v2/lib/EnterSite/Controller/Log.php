@@ -26,7 +26,13 @@ class Log {
         }
 
         $offset = (int)$request->query['offset'] ?: 600;
+        if ($offset > 100000) {
+            throw new \Exception('Слишком большой offset');
+        }
         $before = (int)$request->query['before'];
+        if ($before > 10000) {
+            throw new \Exception('Слишком большой before');
+        }
 
         // страница
         $page = [
@@ -42,8 +48,9 @@ class Log {
             $id,
             $before ? (' -B ' . $before) : ''
         ));
+
         $messages = [];
-        foreach (explode(PHP_EOL, $result) as $i => $line) {
+        foreach (explode(PHP_EOL, $result) as $line) {
             if (!$line) continue;
 
             $line = json_decode($line, true);

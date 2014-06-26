@@ -16,9 +16,11 @@ class HandleConfig {
 
         $config->environment = $environment;
         $config->debugLevel = $debugLevel;
+        if ($config->debugLevel) {
+            $config->logger->fileAppender->file = str_replace('.log', '-debug.log', $config->logger->fileAppender->file);
+        }
         if (2 == $config->debugLevel) {
             $config->curl->logResponse = true;
-            $config->logger->fileAppender->file = str_replace('.log', '-debug.log', $config->logger->fileAppender->file);
         }
     }
 }
