@@ -1,7 +1,7 @@
 <a href="<?=\App::router()->generate('pc.photo.create',['contestRoute'=>$contest->route])?>" class="pc_button pc_right">Участвовать</a>
 <div class="pc_head pc_left">
 	<?=\App::closureTemplating()->render('/__breadcrumbs', ['links' => $breadcrumbs]) ?>
-	<h1><?=$item->title?></h1>
+	<h1><?=$item->name?></h1>
 </div>
 <div class="clear"></div>
 
@@ -15,8 +15,8 @@
 			$url = \App::router()->generate('pc.photo.show',['id'=>$v->id,'contestRoute'=>$contest->route]);	
 			?>
 			<li<?=($v->id==$item->id)?' class="selected"':null?>>
-				<a href="<?=$url?>" title="<?=$v->title?>">
-					<img alt="<?=$v->title?>" src="<?=$v->fileUrlIcon?>">
+				<a href="<?=$url?>" title="<?=$v->name?>">
+					<img alt="<?=$v->name?>" src="<?=$v->fileUrlIcon?>">
 				</a>
 			</li>
 			<?php endforeach; ?>
@@ -28,7 +28,7 @@
 <div class="pc_photo">
 	<div class="pc_date"><?=date('d.m.Y H:i',$item->udCreate)?></div>
 	<div class="<?=$contest->voteEnabled?'__vote ':'disabled '?>pc_vote<?=$item->vote?' active':null?>" data-id="<?=$item->id?>"><i><?=$item->meta->voteCounter?$item->meta->voteCounter:0?></i></div>
-	<img src="<?=$item->fileUrlView?>" title="<?=$item->title?>"/>
+	<img src="<?=$item->fileUrlView?>" title="<?=$item->name?>"/>
 </div>
 
 <!-- Button BEGIN -->

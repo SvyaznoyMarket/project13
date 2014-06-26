@@ -30,7 +30,7 @@ if(!function_exists('routeParams')) {
 
 
 <?php if(!empty($list)): ?>
-
+	<a name="<?=$id?>"></a>
 	<?=($title?'<h2>'.$title.'</h2>':null)?>
 
 	<?php if ($filter): ?>
@@ -51,12 +51,12 @@ if(!function_exists('routeParams')) {
 		<ul class="bSortingList mSorting">
 			<li class="bSortingList__eItem mTitle">Показать сначала:</li>
 			<li class="bSortingList__eItem mSortItem<?=$list->order==='d'?' mActive':null?>">
-				<a href="<?=\App::router()->generate($route, routeParams($list, ['order'=>'d']))?>" class="bSortingList__eLink jsSorting">
+				<a href="<?=\App::router()->generate($route, routeParams($list, ['order'=>'d']))?>#<?=$id?>" class="bSortingList__eLink jsSorting">
 					Свежие
 				</a>
 			</li>
 			<li class="bSortingList__eItem mSortItem<?=$list->order==='r'?' mActive':null?>">
-				<a href="<?=\App::router()->generate($route,routeParams($list, ['order'=>'r']))?>" class="bSortingList__eLink jsSorting">
+				<a href="<?=\App::router()->generate($route,routeParams($list, ['order'=>'r']))?>#<?=$id?>" class="bSortingList__eLink jsSorting">
 					Популярные
 				</a>
 			</li>
@@ -67,10 +67,10 @@ if(!function_exists('routeParams')) {
 	<ul class="pc_tail">
 		<?php foreach ($list->items as $v): ?>
 		<li>
-			<a href="<?=\App::router()->generate('pc.photo.show',['id'=>$v->id,'contestRoute'=>$contest->route])?>" class="pc_photo" title="<?=$v->title?>">
+			<a href="<?=\App::router()->generate('pc.photo.show',['id'=>$v->id,'contestRoute'=>$contest->route])?>" class="pc_photo" title="<?=$v->name?>">
 				<div class="pc_date"><?=date('d.m.Y H:i',$v->udCreate)?></div>
 				<div class="<?=$contest->voteEnabled?'__vote ':'disabled '?> pc_vote<?=$v->vote?' active':null?>" data-id="<?=$v->id?>"><i><?=$v->meta->voteCounter?$v->meta->voteCounter:0?></i></div>
-				<img src="<?=$v->fileUrlPreview?>" title="<?=$v->title?>"/>
+				<img src="<?=$v->fileUrlPreview?>" title="<?=$v->name?>"/>
 			</a>
 		</li>
 		<?php endforeach; ?>
@@ -93,9 +93,9 @@ if(!function_exists('routeParams')) {
 				<?php for($i=0,$k=0; $i<$list->total; $i+=$list->limit,$k++): ?>
 				<li class="bSortingList__eItem mPage<?=$list->page==$k?' mActive':null?>">
 					<?php if($k>0):?>
-					<a href="<?=\App::router()->generate($route,routeParams($list, ['page'=>$k]))?>" class="bSortingList__eLink jsPagination"><?=($k+1)?></a>
+					<a href="<?=\App::router()->generate($route,routeParams($list, ['page'=>$k]))?>#<?=$id?>" class="bSortingList__eLink jsPagination"><?=($k+1)?></a>
 					<?php else: ?>
-					<a href="<?=\App::router()->generate($route,routeParams($list))?>" class="bSortingList__eLink jsPagination">1</a>
+					<a href="<?=\App::router()->generate($route,routeParams($list))?>#<?=$id?>" class="bSortingList__eLink jsPagination">1</a>
 					<?php endif; ?>
 				</li>
 				<?php endfor; ?>
