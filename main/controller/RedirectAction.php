@@ -14,7 +14,7 @@ class RedirectAction {
         $uri = $request->getPathInfo();
         // если главная страница, то игнорируем
         if ('/' == $uri) {
-            //return;
+            return;
         }
         // если ajax-запрос, то игнорируем
         if ($request->isXmlHttpRequest()) {
