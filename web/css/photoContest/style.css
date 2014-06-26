@@ -16,6 +16,10 @@
   margin: 0 10px 0 0;
   float: right;
 }
+.pc_file {
+  border: none !important;
+  padding: 0;
+}
 /* Базовые классы которых не хватает */
 .pc_left {
   float: left;
