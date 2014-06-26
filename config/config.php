@@ -35,7 +35,7 @@ $c->mainHost = 'www.enter.ru';
 $c->mobileHost = 'm.enter.ru';
 
 $c->redirect301['enabled'] = true;
-$c->mobileRedirect['enabled'] = true;
+$c->mobileRedirect['enabled'] = false;
 
 $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 $c->coreV2['client_id']    = 'site';
@@ -418,9 +418,9 @@ $c->preview = false;
 $c->svyaznoyClub['cookieLifetime'] = 2592000; // 30 дней
 $c->svyaznoyClub['userTicket']['cookieName'] = 'UserTicket';
 
-$c->flocktoryExchange['enabled'] = true;
+$c->flocktoryExchange['enabled'] = false;
 
-$c->flocktoryCoupon['enabled'] = true;
+$c->flocktoryCoupon['enabled'] = false;
 $c->flocktoryCoupon['paramName'] = 'utm_coupon';
 
 
@@ -431,7 +431,7 @@ $c->photoContest = [
 		'timeout'      => 1,
 		'retryTimeout' => 1,
 		'retryCount'   => 2,
-		'debug'        => true,
+		'debug'        => false,
 	]
 ];
 
