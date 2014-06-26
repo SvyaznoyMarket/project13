@@ -26,7 +26,13 @@ class Log {
         }
 
         $offset = (int)$request->query['offset'] ?: 600;
+        if ($offset > 100000) {
+            throw new \Exception('Слишком большой offset');
+        }
         $before = (int)$request->query['before'];
+        if ($before > 10000) {
+            throw new \Exception('Слишком большой before');
+        }
 
         // страница
         $page = [
@@ -38,10 +44,11 @@ class Log {
 
         $result = shell_exec(sprintf('tail -n %s %s | grep "\"_id\":\"%s\""%s',
             $offset,
-            (2 == $config->debugLevel) ? $config->logger->debugAppender->file : $config->logger->fileAppender->file,
+            $config->logger->fileAppender->file,
             $id,
             $before ? (' -B ' . $before) : ''
         ));
+
         $messages = [];
         foreach (explode(PHP_EOL, $result) as $i => $line) {
             if (!$line) continue;

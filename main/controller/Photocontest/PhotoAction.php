@@ -148,7 +148,7 @@ class PhotoAction {
 				
 				if(!$_FILES['file']['name']) {
 					$hasError = true;
-					$form->file->error = 'Необходимо указать загружаемый файл';
+					$form->file->error = 'Вы не прикрепили файл';
 				} elseif($_FILES['file']['error']===1) {
 					$hasError = true;
 					$form->file->error = 'Файл слишком большой. Размер файла не может превышать '. ceil(ini_get('upload_max_filesize'));
@@ -160,21 +160,24 @@ class PhotoAction {
 				if(
 					!$hasError 
 					&& ($r = $curl->query(
-						'image/create/'.$contest->id, [], 
-						[
+						'image/create/'.$contest->id, [], [
 							'name'		=> $request->get('title'),
 							'orderIds'	=> $request->get('orderIds'),
 							'file'		=> '@'.$_FILES['file']['tmp_name']
 										.';filename='.$_FILES['file']['name']
 										.';type='.$_FILES['file']['type']
-						]
+						], 6
 					))
 				) {
 					$page->setParam('message', 'Вы стали участником фотоконкурса. Ваше фото на модерации и появиться в течение 24 часов');
 					return new \Http\Response($page->show());
 				}
 				
-			} catch (Exception $e) {
+			} catch (\Exception $e) {
+				\App::exception()->remove($e);
+				$page->setParam('message', 'К сожалению что-то пошло не так, попробуйте загрузить фото позднее.');
+			} catch (\RuntimeException $e) {
+				\App::exception()->remove($e);
 				$page->setParam('message', 'К сожалению что-то пошло не так, попробуйте загрузить фото позднее.');
 			}
 		}

@@ -160,6 +160,7 @@ class CouponAction {
 
         $session = \App::session();
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
+        $repository = \RepositoryManager::enterprize();
 
         $data = $session->get($sessionName, []);
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
@@ -169,17 +170,7 @@ class CouponAction {
         }
 
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
-        $enterpizeCoupon = null;
-        if ($enterprizeToken) {
-            \App::dataStoreClient()->addQuery('enterprize/coupon-type.json', [], function($data) use (&$enterpizeCoupon, $enterprizeToken) {
-                foreach ((array)$data as $item) {
-                    if ($enterprizeToken == $item['token']) {
-                        $enterpizeCoupon = new \Model\EnterprizeCoupon\Entity($item);
-                    }
-                }
-            });
-            \App::dataStoreClient()->execute();
-        }
+        $enterpizeCoupon = $repository->getEntityByToken($enterprizeToken);
 
         if (!$enterpizeCoupon) {
             throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));

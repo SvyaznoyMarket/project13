@@ -16,6 +16,8 @@ class IndexAction {
         }
 
         $client = \App::coreClientV2();
+        $repository = \RepositoryManager::enterprize();
+
         $user = \App::user()->getEntity();
         $session = \App::session();
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
@@ -26,73 +28,68 @@ class IndexAction {
         // SITE-3931, SITE-3934
         $isCouponSent = (bool)$request->cookies->get(\App::config()->enterprize['cookieName']);
 
+
+        // получение купонов
         /**
          * @var $enterpizeCoupon    \Model\EnterprizeCoupon\Entity
          * @var $enterpizeCoupons   \Model\EnterprizeCoupon\Entity[]
          */
         $enterpizeCoupon = null;
         $enterpizeCoupons = [];
-        \App::dataStoreClient()->addQuery(
-            'enterprize/coupon-type.json',
-            [],
-            function($data) use (&$enterpizeCoupons, &$enterpizeCoupon, $enterprizeToken, $isCouponSent, $user) {
+        try {
+            $repository->prepareCollection(function($data) use (&$enterpizeCoupons, &$enterpizeCoupon, &$isCouponSent, $enterprizeToken, $user) {
                 foreach ((array)$data as $item) {
-                    if (empty($item['token'])) continue;
-
                     $coupon = new \Model\EnterprizeCoupon\Entity($item);
-
-                    if (
-                        ($coupon->isForMember() && $user && $user->isEnterprizeMember())
-                        || ($coupon->isForNotMember() && (!$user || !$user->isEnterprizeMember()))
-                    ) {
-                        $enterpizeCoupons[] = $coupon;
-                    }
+                    $enterpizeCoupons[] = $coupon;
 
                     // если купон уже отослан, то пытаемся его получить из общего списка
-                    if ($isCouponSent && (bool)$enterprizeToken && $enterprizeToken == $coupon->getToken()) {
+                    if ((bool)$isCouponSent && (bool)$enterprizeToken && $enterprizeToken == $coupon->getToken()) {
                         $enterpizeCoupon = $coupon;
                     }
                 }
-            }
-        );
+            });
+        } catch (\Exception $e) {
+            \App::logger()->error($e);
+            \App::exception()->remove($e);
+        }
 
-        // получаем лимиты купонов
+        // получение лимитов для купонов
         $limits = [];
-        $client->addQuery('coupon/limits', [], [], function($data) use (&$limits){
-            if ((bool)$data && !empty($data['detail'])) {
-                $limits = $data['detail'];
-            }
-        }, function(\Exception $e) {
+        try {
+            $client->addQuery('coupon/limits', [], [], function($data) use (&$limits){
+                if ((bool)$data && !empty($data['detail'])) {
+                    $limits = $data['detail'];
+                }
+            });
+        } catch (\Exception $e) {
             \App::logger()->error($e->getMessage(), ['enterprize']);
             \App::exception()->remove($e);
-        });
+        }
 
         // получаем купоны ренее выданные пользователю
         $userCouponSeries = [];
         $userCoupons = [];
-        if ( \App::user()->getToken() ) {
-            $client->addQuery('user/get-discount-coupons', ['token' => \App::user()->getToken()], [],
-                function ($data) use (&$userCoupons, &$userCouponSeries) {
-                    if (!isset($data['detail']) || !is_array($data['detail'])) {
-                        return;
-                    }
-
-                    foreach ($data['detail'] as $item) {
-                        $entity = new \Model\EnterprizeCoupon\DiscountCoupon\Entity($item);
-                        $userCoupons[] = $entity;
-                        $userCouponSeries[] = $entity->getSeries();
-                    }
-                },
-                function (\Exception $e) {
-                    \App::logger()->error($e->getMessage(), ['enterprize']);
-                    \App::exception()->remove($e);
-                },
-                \App::config()->coreV2['timeout'] * 2
-            );
+        if (\App::user()->getToken()) {
+            try {
+                $client->addQuery('user/get-discount-coupons', ['token' => \App::user()->getToken()], [],
+                    function ($data) use (&$userCoupons, &$userCouponSeries) {
+                        if (isset($data['detail']) && is_array($data['detail'])) {
+                            foreach ($data['detail'] as $item) {
+                                $entity = new \Model\EnterprizeCoupon\DiscountCoupon\Entity($item);
+                                $userCoupons[] = $entity;
+                                $userCouponSeries[] = $entity->getSeries();
+                            }
+                        }
+                    }, null, \App::config()->coreV2['timeout'] * 2
+                );
+            } catch (\Exception $e) {
+                \App::logger()->error($e->getMessage(), ['enterprize']);
+                \App::exception()->remove($e);
+            }
         }
 
         // выполнение пакета запросов
-        $client->execute();
+        \App::curl()->execute();
 
         // отфильтровываем ненужные купоны
         $enterpizeCoupons = array_filter($enterpizeCoupons, function($coupon) use ($limits, $userCouponSeries) {

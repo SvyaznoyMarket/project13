@@ -18,6 +18,8 @@ class ConfirmEmailAction {
 
         $session = \App::session();
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
+        $repository = \RepositoryManager::enterprize();
+
         $data = $session->get($sessionName, []);
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
@@ -30,17 +32,7 @@ class ConfirmEmailAction {
         }
 
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
-        $enterpizeCoupon = null;
-        if ($enterprizeToken) {
-            \App::dataStoreClient()->addQuery('enterprize/coupon-type.json', [], function($data) use (&$enterpizeCoupon, $enterprizeToken) {
-                foreach ((array)$data as $item) {
-                    if ($enterprizeToken == $item['token']) {
-                        $enterpizeCoupon = new \Model\EnterprizeCoupon\Entity($item);
-                    }
-                }
-            });
-            \App::dataStoreClient()->execute();
-        }
+        $enterpizeCoupon = $repository->getEntityByToken($enterprizeToken);
 
         if (!$enterpizeCoupon) {
             throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
@@ -113,8 +105,22 @@ class ConfirmEmailAction {
                 \App::session()->set('flash', ['message' => 'Письмо повторно отправлено']);
             }
 
+            // пишем данные формы в хранилище
+            try {
+                if (!isset($result['user_id']) || empty($result['user_id'])) {
+                    throw new \Exception('Не пришел user_id от ядра');
+                }
+
+                $storageResult = \App::coreClientPrivate()->query('storage/post', ['user_id' => $result['user_id']], $data);
+
+            } catch(\Exception $exception) {
+                \App::exception()->remove($exception);
+                \App::logger()->error($exception, ['enterprize', 'storage/post']);
+            }
+
         } catch (\Exception $e) {
             \App::exception()->remove($e);
+            \App::logger()->error($e);
             \App::session()->set('flash', ['error' => $e->getMessage()]);
         }
 
@@ -154,13 +160,11 @@ class ConfirmEmailAction {
                 throw new \Exception('Не получен code');
             }
 
-            $userToken = !empty($data['token']) ? $data['token'] : \App::user()->getToken();
-
             $result = \App::coreClientV2()->query(
                 'confirm/email',
                 [
                     'client_id' => \App::config()->coreV2['client_id'],
-                    'token'     => $userToken,
+                    'token'     => !empty($data['token']) ? $data['token'] : \App::user()->getToken(),
                 ],
                 [
                     'email'    => $email,
@@ -171,10 +175,35 @@ class ConfirmEmailAction {
             );
             \App::logger()->info(['core.response' => $result], ['coupon', 'confirm/email']);
 
+            // получаем данные с хранилища
+            try {
+                if (!isset($result['user_id']) || empty($result['user_id'])) {
+                    throw new \Exception('Не пришел user_id от ядра');
+                }
+
+                $storageResult = \App::coreClientPrivate()->query('storage/get', ['user_id' => $result['user_id']]);
+
+                if (!(bool)$storageResult || !isset($storageResult['value'])) {
+                    throw new \Exception(sprintf('Не пришли данные с хранилища для user_id=%s', $result['user_id']));
+                }
+
+                $storageData = json_decode($storageResult['value']);
+
+                // перелаживаем данные с хранилища в сессию
+                foreach (get_object_vars($storageData) as $name => $value) {
+                    $data = array_merge($data, [$name => $value]);
+                }
+
+            } catch(\Exception $exception) {
+                \App::exception()->remove($exception);
+                \App::logger()->error($exception, ['enterprize', 'storage/get']);
+            }
+
             // обновление сессионной формы
             $data = array_merge($data, ['isEmailConfirmed' => true]);
             $session->set($sessionName, $data);
 
+            $userToken = !empty($data['token']) ? $data['token'] : \App::user()->getToken();
             if ($userToken==null) {
 
                 $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.warn'));
