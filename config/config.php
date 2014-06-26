@@ -418,9 +418,9 @@ $c->preview = false;
 $c->svyaznoyClub['cookieLifetime'] = 2592000; // 30 дней
 $c->svyaznoyClub['userTicket']['cookieName'] = 'UserTicket';
 
-$c->flocktoryExchange['enabled'] = false;
+$c->flocktoryExchange['enabled'] = true;
 
-$c->flocktoryCoupon['enabled'] = false;
+$c->flocktoryCoupon['enabled'] = true;
 $c->flocktoryCoupon['paramName'] = 'utm_coupon';
 
 
