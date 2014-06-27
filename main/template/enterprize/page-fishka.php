@@ -1,16 +1,21 @@
 <?php
 /**
- * @var $page \View\DefaultLayout
+ * @var $page   \View\DefaultLayout
+ * @var $error  string
  */
 ?>
+
+<? if (!empty($error)): ?>
+    <p><?= $error ?></p>
+<? endif ?>
 
 <section class="epLand">
 	<h1 class="epLand_logo"><a href="" class="epLand_logo_link">Enter prize</a></h1>
 
-	<form class="epLand_form">
+	<form class="epLand_form" method="post" action="<?= $page->url('enterprize.retail.create') ?>">
 		<legend class="epLand_form_title">Пароль</legend>
 
-		<input type="password" class="epLand_form_field" placeholder="********" />
+		<input type="password" name="keyword" class="epLand_form_field" placeholder="********" />
 
 		<button class="epLand_form_btn bigbutton">Получить скидку</button>
 	</form>
