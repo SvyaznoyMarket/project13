@@ -20,6 +20,7 @@ class MobileRedirectAction {
             'homepage',
             'product.category',
             'product',
+            'user.login',
         ]);
         if (!$hasRedirect) {
             return null;
