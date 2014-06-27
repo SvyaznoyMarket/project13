@@ -75,6 +75,8 @@ class ConfirmEmailAction {
             throw new \Exception\NotFoundException();
         }
 
+        $userEntity = \App::user()->getEntity();
+
         if ($this->isEmailConfirmed()) {
             return new \Http\RedirectResponse(\App::router()->generate('enterprize.create'));
         }
@@ -87,11 +89,13 @@ class ConfirmEmailAction {
                 throw new \Exception('Не получен email');
             }
 
+            $userToken = !empty($data['token']) ? $data['token'] : \App::user()->getToken();
+
             $result = \App::coreClientV2()->query(
                 'confirm/email',
                 [
                     'client_id' => \App::config()->coreV2['client_id'],
-                    'token'     => !empty($data['token']) ? $data['token'] : \App::user()->getToken(),
+                    'token'     => $userToken,
                 ],
                 [
                     'email'    => $data['email'],
@@ -105,10 +109,21 @@ class ConfirmEmailAction {
                 \App::session()->set('flash', ['message' => 'Письмо повторно отправлено']);
             }
 
+            // получаем $user_id
+            $user_id = null;
+            if ($userEntity) {
+                $user_id = $userEntity->getId();
+            } elseif (!empty($userToken)) {
+                $user = \RepositoryManager::user()->getEntityByToken($userToken);
+                if ($user) {
+                    $user_id = $user->getId();
+                }
+            }
+
             // пишем данные формы в хранилище
             try {
-                if (!isset($result['user_id']) || empty($result['user_id'])) {
-                    throw new \Exception('Не пришел user_id от ядра');
+                if (!isset($user_id) || empty($user_id)) {
+                    throw new \Exception('Не передан user_id');
                 }
 
                 $storageResult = \App::coreClientPrivate()->query('storage/post', ['user_id' => $result['user_id']], $data);

@@ -25,10 +25,6 @@ class FormAction {
         $session = \App::session();
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
         $repository = \RepositoryManager::enterprize();
-        $products = [];
-
-        // флаг, партнерский купон или нет
-        $isPartnerCoupon = (bool)$request->get('is_partner_coupon') && (bool)$request->get('keyword');
 
         $session->set($sessionName, array_merge(
             [
@@ -42,15 +38,7 @@ class FormAction {
         ));
 
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
-        $enterpizeCoupon = null;
-
-        // партнерский купон
-        if ($isPartnerCoupon) {
-            $enterpizeCoupon = $repository->getEntityFromPartner($request->get('keyword'));
-        } else {
-            $enterpizeCoupon = $repository->getEntityByToken($enterprizeToken);
-            $products = $this->getProducts($enterpizeCoupon);
-        }
+        $enterpizeCoupon = $repository->getEntityByToken($enterprizeToken);
 
         if (!(bool)$enterpizeCoupon || !$enterpizeCoupon instanceof \Model\EnterprizeCoupon\Entity) {
             throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
@@ -66,7 +54,7 @@ class FormAction {
         $data = (array)$session->get($sessionName, []);
 
         // если пользователь авторизован и уже является участником enterprize
-        if ($user->getEntity() && $user->getEntity()->isEnterprizeMember() && $enterpizeCouponLimit != 0 && !$isPartnerCoupon) {
+        if ($user->getEntity() && $user->getEntity()->isEnterprizeMember() && $enterpizeCouponLimit != 0) {
             $data = array_merge($data, [
                 'token'            => $user->getToken(),
                 'name'             => $user->getEntity()->getFirstName(),
@@ -91,8 +79,7 @@ class FormAction {
         $page->setParam('errors', !empty($flash['errors']) ? $flash['errors'] : null);
         $page->setParam('authSource', $session->get('authSource', null));
         $page->setParam('viewParams', ['showSideBanner' => false]);
-        $page->setParam('products', $products);
-        $page->setParam('isPartnerCoupon', $isPartnerCoupon);
+        $page->setParam('products', $this->getProducts($enterpizeCoupon));
 
         return new \Http\Response($page->show());
     }
