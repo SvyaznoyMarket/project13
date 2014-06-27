@@ -413,6 +413,10 @@ class FormAction {
             $linkParts = explode('/', $coupon->getLink());
             $linkParts = array_values(array_filter($linkParts));
 
+            if (!isset($linkParts[0]) || empty($linkParts[0])) {
+                return $products;
+            }
+
             /** @var $category \Model\Product\Category\Entity */
             $category = null;
             $filters = [];
