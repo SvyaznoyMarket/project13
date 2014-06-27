@@ -105,6 +105,9 @@ class IndexAction {
             return true;
         });
 
+        $enterpizeCoupon = $repository->getEntityByToken('8ca49a4e-ade1-11e3-93ea-e4115b11879a');
+        $isCouponSent = true;
+
         // получаем товары
         $products = [];
         if ($enterpizeCoupon) {
