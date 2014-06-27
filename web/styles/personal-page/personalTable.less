@@ -21,7 +21,7 @@
 		border-bottom: 1px solid @lightgreyBr;
 
 		.personalTable_cell {
-			height: 40px;
+			height: 47px;
 			padding: 5px 15px 5px 5px;
 
 			vertical-align: middle;
@@ -58,19 +58,26 @@
 			}
 		}
 
-		&-canceled {
-
-			.personalTable_cell {
-				background: @lightgreyBg;
-			}
-		}
-
 		&-total {
 
 			.personalTable_cell {
 				height: 36px;
 
 				background: @lightgreyBg;
+			}
+		}
+
+		&:nth-child(even) {
+
+			.personalTable_cell {
+				background: @lightgreyBg;
+			}
+		}
+
+		&:hover {
+
+			.personalTable_cell {
+				background: @lightOrange;
 			}
 		}
 	}
@@ -82,6 +89,39 @@
 
 		.personalTable_cell {
 			border: none;
+		}
+
+		&-head {
+			position: relative;
+
+			height: 29px;
+
+			font-size: 14px;
+
+			.personalTable_cell {
+			    position: absolute;
+
+			    width: 100%;
+			    height: 28px;
+			    padding: 0;
+
+				background: none repeat scroll 0 0 #ededed;
+
+			    line-height: 27px;
+			}
+		}
+
+		.textCorner {
+			.inline-block();
+			margin-left: 5px;
+			padding: 0 5px 0 15px;
+
+			background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAJCAYAAAAPU20uAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAXklEQVQYGWNgYGDYAcTa////Z8CGgXIM/4H4DxDPAGIxdEVAMbACkCIQ/gjEFUDMAVMIZKMogCl8ABSPAClihCoAUlhBP0gUpguZvg8UB5uArgDmBnZ0N+D1Bd5wAADz9WuaSDLF9gAAAABJRU5ErkJggg==) no-repeat 0 50%;
+			
+			&-open {
+				background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAICAYAAAArzdW1AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAXklEQVQYGWNgYGDYAcT/8WCQPIM2EP/BoQgkrs3w/z/IEIYZOBTNAMtDFYkBFX1EUwjii8EVQRVWoCmqAImjK+IAKnoAVQiiOTAUQU2LgCqKgClAMQkmCFTUB2PDaAAgI3GU9+SBSgAAAABJRU5ErkJggg==);
+			}
+
 		}
 	}
 

@@ -1,7 +1,7 @@
 /*---------Личный кабинет пользователя----------*/
 .personalControl {
 	margin: 0 0 10px;
-	padding: 10px 10px 5px;
+	padding: 10px;
 
 	background: @typLightGray;
 
@@ -72,6 +72,11 @@
 		&-last {
 			margin-right: 0;
 		}
+
+		&-text {
+			background: none;
+			line-height: 20px;
+		}
 	}
 
 	.personalControl_item-last {
@@ -82,7 +87,7 @@
 		.inline-block();
     	padding: 10px 20px;
 
-		border-bottom: 5px solid @typLightGray;
+		border: 1px solid @lightgreyBr;
 
 		&:hover {
 			text-decoration: none;
@@ -92,6 +97,7 @@
 
 		&-active {
 			border-color: @firmOrange;
+			border-left-width: 5px;
 		}
 	}
 }
