@@ -209,9 +209,12 @@ class ConfirmEmailAction {
                     $data = array_merge($data, [$name => $value]);
                 }
 
+                // очистка данных в хранилище
+                $delete = \App::coreClientPrivate()->query('storage/delete', ['user_id' => $result['user_id']]);
+
             } catch(\Exception $exception) {
                 \App::exception()->remove($exception);
-                \App::logger()->error($exception, ['enterprize', 'storage/get']);
+                \App::logger()->error($exception, ['enterprize', 'storage/get', 'storage/delete']);
             }
 
             // обновление сессионной формы
