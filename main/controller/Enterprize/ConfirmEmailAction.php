@@ -126,7 +126,7 @@ class ConfirmEmailAction {
                     throw new \Exception('Не передан user_id');
                 }
 
-                $storageResult = \App::coreClientPrivate()->query('storage/post', ['user_id' => $result['user_id']], $data);
+                $storageResult = \App::coreClientPrivate()->query('storage/post', ['user_id' => $user_id], $data);
 
             } catch(\Exception $exception) {
                 \App::exception()->remove($exception);
@@ -219,11 +219,11 @@ class ConfirmEmailAction {
             $session->set($sessionName, $data);
 
             $userToken = !empty($data['token']) ? $data['token'] : \App::user()->getToken();
-//            if ($userToken==null) {
+            if ($userToken==null) {
 
                 $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.warn'));
 
-            /*} else {
+            } else {
 
                 $response = (new \Controller\Enterprize\CouponAction())->create($request);
 
@@ -237,7 +237,7 @@ class ConfirmEmailAction {
                         \App::logger()->error(sprintf('Не удалось получить пользователя по токену %s', $userToken));
                     }
                 }
-            }*/
+            }
 
             // передаем email пользователя для RetailRocket
             \App::retailrocket()->setUserEmail($response, $email);
