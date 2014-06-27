@@ -66,7 +66,7 @@ class FormAction {
         $data = (array)$session->get($sessionName, []);
 
         // если пользователь авторизован и уже является участником enterprize
-        if ($user->getEntity() && $user->getEntity()->isEnterprizeMember() && $enterpizeCouponLimit != 0) {
+        if ($user->getEntity() && $user->getEntity()->isEnterprizeMember() && $enterpizeCouponLimit != 0 && !$isPartnerCoupon) {
             $data = array_merge($data, [
                 'token'            => $user->getToken(),
                 'name'             => $user->getEntity()->getFirstName(),

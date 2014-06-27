@@ -57,7 +57,7 @@ class RetailClient {
             ]));
 
         } else {
-            $session->set('flash', ['error' => 'Не правильный пароль']);
+            $session->set('flash', ['error' => 'Неправильный пароль']);
             $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.retail.show'));
         }
 
