@@ -7,8 +7,9 @@ module.exports = {
     options: {
         template: './node_modules/grunt-shim-modules/ymodules-module_template.tpl',
             importNonFirst: true
-    },
+    }
 
+    /*
     jQuery: {
         src: '<%= pathRootV2 %>vendor/jquery-1.8.3.js',
             dest: '<%= pathRootV2 %>module/jquery.js',
@@ -40,4 +41,5 @@ module.exports = {
             module_name: 'LAB',
             exports: 'this.$LAB'
     }
+    */
 };

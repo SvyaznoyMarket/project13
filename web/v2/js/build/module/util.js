@@ -1,1 +1,0 @@
-define([],function(){return{formatCurrency:function(n){return n.toString().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g,"$1 ")}}});

@@ -1,5 +1,0 @@
-nocache:
-    /cart*
-    /orders*
-    /private
-    /region* (временно, потом удалим)
