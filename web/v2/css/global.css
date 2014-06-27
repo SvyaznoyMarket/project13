@@ -514,6 +514,10 @@ textarea[contenteditable] {
 .clearfix:after {
   clear: both;
 }
+.clear {
+  clear: both;
+  float: none;
+}
 /*
  * For IE 6/7 only
  * Include this rule to trigger hasLayout and contain floats.
@@ -521,11 +525,29 @@ textarea[contenteditable] {
 .clearfix {
   *zoom: 1;
 }
+.fl-l {
+  float: left;
+}
+.fl-r {
+  float: right;
+}
+.orangeText {
+  color: #f99b1c;
+}
+.lightGreyText {
+  color: #5e5d5d;
+}
 .borderBd {
   border-bottom: 1px dotted;
 }
 .borderBs {
   border-bottom: 1px solid;
+}
+.borderBdash {
+  border-bottom: 1px dashed;
+}
+.mb20 {
+  margin-bottom: 20px;
 }
 .btnStyle {
   background: #ffc000;
@@ -619,6 +641,43 @@ textarea[contenteditable] {
 }
 .btnStyleGrey:hover {
   text-decoration: none;
+}
+.textfield {
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  height: 35px;
+  border: 1px solid #9f9f9f;
+  line-height: 35px;
+  display: block;
+  margin: 0 0 15px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  padding-left: 10px;
+}
+.btnsubmit {
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  height: 33px;
+  padding: 0 15px;
+  color: #ffffff;
+  border: 1px solid #ff6c00;
+  background: #f99b1c;
+  font-size: 14px;
+  line-height: 33px;
+}
+.labeltext {
+  display: block;
+  line-height: 1.5;
+  margin: 0 0 5px;
+  font-size: 12px;
+}
+.legend {
+  font-size: 18px;
+  margin: 10px 0 15px;
 }
 /** цвета **/
 /* ==========================================================================
@@ -2060,6 +2119,24 @@ body.noScroll {
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB60lEQVQ4Ea2Vv0scQRTHvzPOraBcjFh4cKIJhutSmEaFgAqHioU/AhaSIvgHpLdRAmnS2RgsrAS1CGJhoYKCIIjYKIgg2JzoHZwIRjxjNrezN87bPVbv3DuynF/Y3bdv3/vsd2Z3Z5lSCqlUKmZZ1g8dxwGE9RZEGcbYVigUmohGo6csmUzGpJT7kUjktWEY0BeDwECGstks0un0jRCiHYlEYsU0TZ2vTMQgFteYODmrVMQgFtegcNBhAgq5xC/YB1PAv9+OlzwjLII6U38uILfHoC53nVbeMgJWXe9hAgHV9RHkRi/U30sX9nYUrKHNg1FAQ36UdQd1tQ9Yt4+5fKTuzmCtxz0Yq38P8XHuWV0B0D6ehrXagexiozs/ynYb5D3k5hBgXjnn7NU7iL41wKgrD+StY4CoBWwT9uF3yL2vukFB7nwBDZfEapsgBrado5Mo2hU4dO7cs0RtTlnuZFY7G9ZPdNltEzWOM4KWUgGQinjzIKo+fPPqc+erXiw6Z0BzV07PgFRc1TYJeh2eir/5BB4bf5ryjX2BNGTRNe/OJ7UxDtH50xdQnCwB1GWhMIzhA/DWzxD9W0BNpLjX97z8i10Xg+he8G0slSSHGf1Rl7r+3/k8I8NpcaT1rFIRg1gvvsAysvqSv4AHRV4DFNYsSZsAAAAASUVORK5CYII=);
   background-repeat: no-repeat;
   background-position: 0 2px;
+}
+.mCustomLabelBig {
+  padding-left: 35px;
+  line-height: 24px;
+}
+.customInput-bigCheck + .customLabel {
+  padding: 0 0 3px 32px;
+  background: url("data: image/png;base64, iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAAYdEVYdENyZWF0aW9uIFRpbWUAMjAuMTEuMjAxM1Han3MAAAFQSURBVEiJ7Za7bsIwGIU/X0IJlVBgY84T9FXapTOiI2OfomPHSoxs7av0CbwyAgtOYrDdgSZKq1aVuAyVOJKH38P5/B/LFwFgjLkGboEX4IrjVAEPwFue5xthjMmAJynlZDgc0uv10Fof5Lzb7bDWslwuCSHMgEcN3CulJqPRiE6nc9TStdb0+33SNGWxWIy99+/CGBOzLGMwGCCEOApQK8bIarVivV4jAbrd7snMAYQQpGkKsAec0rwNaQDn1AXwq2KM5wXUugAugP8CiDE2B+MUavtJAOcc3vuTAUIIOOcA0ADWWpIkAUApdfD1HWPEe09VVVhrG8C0LMvn+pFIkgQp91sjhGhGXdet1zG0ow0hsN1uKYqCsiwBphqYAzdFUYydcyilkFJ+Ma7r78Zt8xgjIQS893XcM2AuoPm23H1Oqp/abwP+kAfGwGue55sPn+udA99ikT0AAAAASUVORK5CYII=") no-repeat 0px 0px;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  line-height: 1;
+}
+.customInput-bigCheck:checked + .customLabel {
+  padding: 0 0 3px 32px;
+  background-image: url("data: image/png;base64, iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAAYdEVYdENyZWF0aW9uIFRpbWUAMjAuMTEuMjAxM1Han3MAAAG7SURBVEiJtZa9S8NAGIefXKOi9WvQIgjSSYouXZwULILO4p/g1s3OiqLY1erUTcTRQcS1WBB0cepSKC4GoSDWodaPYsyHwxniBzZpWl8Id8l7+T2/93IXTuEzShlmgSQwA4wSLMrABZCNpTgHUD7Ft9UQq5F+he5OUEPB1A0T6jrc12wMk3QsxZpSyjDXqXI2NqQQEgF9/wjTgtsHG91gQQDJob72iQOEBAz3KwBJAcyHu9on7kSP1JwXwIAI6j4chUQe4ju/UkIBoLe1iZk+hkgCxlf+HBIcMLkBg3HZL262GRCOSgBAtfAPgKl9t3+13HBo84BIQl4A17uygsCA0cXfH3BiXbbvVShuefpRG2anj2XbMSDn+Zv7PQnxiMYVOOU7K+ar++s9T3FvwOWS69JZ8+DbvTfgRXOdhqPuc5/uvQGO2Fe32oFv9/4A71W4OXDvy6e+xf0BALRDF1Y+aQqgAo+W5fFHrRbgqLk9adkAPAsg/6o39a6veH0DICeAbKVmY1rtEzctqNRsgKyIpcjpBmmtYvNUB6MFkGHBUx20io1ukI6lyClOspRhDvfYMhKQcYd7bMkDfABX0JEueuyW2AAAAABJRU5ErkJggg==");
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  line-height: 1;
 }
 /* ==========================================================================
    Пользовательских input[type=radio], input[type=checkbox] .customInput
@@ -4067,4 +4144,22 @@ body.noScroll {
     vertical-align: middle;
     font-size: 16px;
   }
+}
+/* ==========================================================================
+   Категории товаров
+   ========================================================================== */
+.formReg {
+  max-width: 370px;
+  margin: 0 auto;
+  padding: 10px;
+}
+.formReg_textfield {
+  width: 100%;
+}
+.formReg_btn {
+  float: right;
+}
+.formReg_subscribe {
+  width: 170px;
+  font-size: 11px;
 }

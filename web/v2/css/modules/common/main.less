@@ -176,6 +176,10 @@ textarea[contenteditable] {
     clear: both;
 }
 
+.clear {
+    clear: both;
+    float: none;
+}
 /*
  * For IE 6/7 only
  * Include this rule to trigger hasLayout and contain floats.
@@ -186,12 +190,38 @@ textarea[contenteditable] {
     *zoom: 1;
 }
 
+.fl-l {
+    float: left;
+}
+
+.fl-r {
+    float: right;
+}
+
+// цвета шрифтов
+
+.orangeText {
+    color: @submitBg;
+}
+
+.lightGreyText {
+    color: @tabGreyText;
+}
+
 .borderBd {
     border-bottom: 1px dotted;
 }
 
 .borderBs {
     border-bottom: 1px solid;
+}
+
+.borderBdash {
+    border-bottom: 1px dashed;
+}
+
+.mb20 {
+    margin-bottom: 20px;
 }
 
 .btnStyle {
@@ -293,4 +323,45 @@ textarea[contenteditable] {
     &:hover {
         text-decoration: none;
     }
+}
+
+
+// основные стили элементов форм 
+.textfield {
+    .rounded(4px);
+    height: 35px;
+
+    border: 1px solid @inputBorder;
+
+    line-height: 35px;
+    display: block;
+    margin: 0 0 15px;
+    .box-sizing();
+    padding-left: 10px;
+}
+
+.btnsubmit {
+    .rounded(4px);
+    height: 33px;
+    padding: 0 15px;
+
+    color: @white;
+    border: 1px solid #ff6c00;
+    background: @submitBg;
+
+    font-size: 14px;
+    line-height: 33px;
+}
+
+.labeltext {
+    display: block;
+    line-height: 1.5;
+    margin: 0 0 5px;
+
+    font-size: 12px;
+}
+
+.legend {
+    font-size: 18px;
+    margin: 10px 0 15px;
 }
