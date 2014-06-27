@@ -28,7 +28,6 @@ class IndexAction {
         // SITE-3931, SITE-3934
         $isCouponSent = (bool)$request->cookies->get(\App::config()->enterprize['cookieName']);
 
-
         // получение купонов
         /**
          * @var $enterpizeCoupon    \Model\EnterprizeCoupon\Entity
@@ -106,11 +105,18 @@ class IndexAction {
             return true;
         });
 
+        // получаем товары
+        $products = [];
+        if ($enterpizeCoupon) {
+            $products = \Controller\Enterprize\FormAction::getProducts($enterpizeCoupon);
+        }
+
         $page = new \View\Enterprize\IndexPage();
         $page->setParam('enterpizeCoupons', $enterpizeCoupons);
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
         $page->setParam('viewParams', ['showSideBanner' => false]);
         $page->setParam('isCouponSent', $isCouponSent);
+        $page->setParam('products', $products);
 
         $response = new \Http\Response($page->show());
 

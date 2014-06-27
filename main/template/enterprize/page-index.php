@@ -5,9 +5,11 @@
  * @var $enterpizeCoupons \Model\EnterprizeCoupon\Entity[]
  * @var $enterpizeCoupon  \Model\EnterprizeCoupon\Entity
  * @var $isCouponSent     bool
+ * @var $products         \Model\Product\Entity[]
  */
 
 $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMember();
+$helper = new \Helper\TemplateHelper();
 ?>
 
 <div class="enterPrize">
@@ -50,17 +52,30 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
     </header>
 
     <? if ((bool)$isCouponSent && (bool)$enterpizeCoupon): ?>
+
+        <? $priceNumDecimals = false === strpos((string)$enterpizeCoupon->getPrice(), '.') ? 0 : 2 ?>
+
         <div class="epSelectFishka clearfix">
             <div class="epSelectFishka_left enterPrize__list">
                 <div class="enterPrize__list__item mOrange">
                     <div class="enterPrize__list__link">
-                        <span style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_fuksiya_b1.png);" class="cuponImg">
+                        <span <? if ($enterpizeCoupon->getBackgroundImage()): ?> style="background-image: url(<?= $enterpizeCoupon->getBackgroundImage() ?>);"<? endif ?> class="cuponImg">
                             <span class="cuponImg__inner">
-                                <span class="cuponIco"><img src="http://content.enter.ru/wp-content/uploads/2014/03/electronica.png"></span>
+                                <? if ($enterpizeCoupon->getImage()): ?>
+                                    <span class="cuponIco"><img src="<?= $enterpizeCoupon->getImage() ?>" /></span>
+                                <? endif ?>
 
-                                <span class="cuponDesc">Фотокамеры SONY</span>
+                                <? if ($enterpizeCoupon->getName()): ?>
+                                    <span class="cuponDesc"><?= $enterpizeCoupon->getName() ?></span>
+                                <? endif ?>
 
-                                <span class="cuponPrice">500 <span class="rubl">p</span></span>
+                                <? if ($enterpizeCoupon->getPrice()): ?>
+                                    <span class="cuponPrice"><?= $page->helper->formatPrice($enterpizeCoupon->getPrice(), $priceNumDecimals) . (!$enterpizeCoupon->getIsCurrency() ? '%' : '') ?>
+                                        <? if ($enterpizeCoupon->getIsCurrency()): ?>
+                                            <span class="rubl">p</span>
+                                        <? endif ?>
+                                    </span>
+                                <? endif ?>
                             </span>
                         </span>
                     </div>
@@ -78,67 +93,17 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
 
                     <div class="bSlider">
                         <div class="bSlider__eInner">
-                            <ul class="bSlider__eList clearfix" style="width: 480px; left: 0px;">
-                                <li class="bSlider__eItem jsSliderItem" style="display: list-item;">
-                                    <div class="product__inner">
-                                        <a href="" class="productImg">
-                                            <img alt="" src="http://fs09.enter.ru/1/1/120/91/66457.jpg">
-                                        </a>
-                                        <div class="productName"><a href="">Карта памяти PS Vita Memory Card 8 ГБ (PCH-Z081)</a></div>
-                                        <div class="productPrice"><span class="price">1 199 <span class="rubl">p</span></span></div>
-
-                                        <div class="bWidgetBuy__eBuy btnBuy">
-                                            <a class="id-cartButton-product-31128 btnBuy__eLink mShopsOnly" href="/cart/one-click/add-product/31128">Резерв</a>
-                                        </div>
-                                    </div>
-                                </li>
-                                
-                                <li class="bSlider__eItem jsSliderItem" style="display: list-item;">
-                                    <div class="product__inner">
-                                        <a href="" class="productImg">
-                                            <img alt="" src="http://fs09.enter.ru/1/1/120/91/66457.jpg">
-                                        </a>
-                                        <div class="productName"><a href="">Карта памяти PS Vita Memory Card 8 ГБ (PCH-Z081)</a></div>
-                                        <div class="productPrice"><span class="price">1 199 <span class="rubl">p</span></span></div>
-
-                                        <div class="bWidgetBuy__eBuy btnBuy">
-                                            <a class="id-cartButton-product-31128 btnBuy__eLink mShopsOnly" href="/cart/one-click/add-product/31128">Резерв</a>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <li class="bSlider__eItem jsSliderItem" style="display: list-item;">
-                                    <div class="product__inner">
-                                        <a href="" class="productImg">
-                                            <img alt="" src="http://fs09.enter.ru/1/1/120/91/66457.jpg">
-                                        </a>
-                                        <div class="productName"><a href="">Карта памяти PS Vita Memory Card 8 ГБ (PCH-Z081)</a></div>
-                                        <div class="productPrice"><span class="price">1 199 <span class="rubl">p</span></span></div>
-
-                                        <div class="bWidgetBuy__eBuy btnBuy">
-                                            <a class="id-cartButton-product-31128 btnBuy__eLink mShopsOnly" href="/cart/one-click/add-product/31128">Резерв</a>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <li class="bSlider__eItem jsSliderItem" style="display: list-item;">
-                                    <div class="product__inner">
-                                        <a href="" class="productImg">
-                                            <img alt="" src="http://fs09.enter.ru/1/1/120/91/66457.jpg">
-                                        </a>
-                                        <div class="productName"><a href="">Карта памяти PS Vita Memory Card 8 ГБ (PCH-Z081)</a></div>
-                                        <div class="productPrice"><span class="price">1 199 <span class="rubl">p</span></span></div>
-
-                                        <div class="bWidgetBuy__eBuy btnBuy">
-                                            <a class="id-cartButton-product-31128 btnBuy__eLink mShopsOnly" href="/cart/one-click/add-product/31128">Резерв</a>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
+                            <?= $helper->render('product/__slider', [
+                                'type'     => 'enterprize',
+                                'title'    => '',
+                                'products' => $products,
+                                'count'    => null,
+                                'limit'    => \App::config()->enterprize['itemsInSlider'],
+                            ]) ?>
                         </div>
 
-                        <div class="bSlider__eBtn mPrev mDisabled"><span></span></div>
-                        <div class="bSlider__eBtn mNext mDisabled"><span></span></div>
+<!--                        <div class="bSlider__eBtn mPrev mDisabled"><span></span></div>-->
+<!--                        <div class="bSlider__eBtn mNext mDisabled"><span></span></div>-->
                     </div>
                 </div>
             </div>

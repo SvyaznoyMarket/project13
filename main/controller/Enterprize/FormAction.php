@@ -392,7 +392,7 @@ class FormAction {
      * @param \Model\EnterprizeCoupon\Entity $coupon
      * @return \Model\Product\Entity[]
      */
-    public function getProducts(\Model\EnterprizeCoupon\Entity $coupon) {
+    public static function getProducts(\Model\EnterprizeCoupon\Entity $coupon) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
