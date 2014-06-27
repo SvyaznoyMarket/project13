@@ -50,7 +50,7 @@ class RetailClient {
         /** @var \Model\EnterprizeCoupon\Entity $coupon */
         $coupon = \RepositoryManager::enterprize()->getEntityFromPartner($request->get('keyword'));
         if ((bool)$coupon && (bool)$coupon->getToken() && (bool)$coupon->getPartnerKeyword()) {
-            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.show', [
+            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', [
                 'enterprizeToken' => $coupon->getToken(),
                 'is_partner_coupon' => true,
                 'keyword' => $coupon->getPartnerKeyword(),

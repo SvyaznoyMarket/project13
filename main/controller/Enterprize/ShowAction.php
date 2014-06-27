@@ -15,22 +15,12 @@ class ShowAction {
             return new \Http\RedirectResponse(\App::router()->generate('enterprize'));
         }
 
-        // флаг, партнерский купон или нет
-        $isPartnerCoupon = (bool)$request->get('is_partner_coupon') && (bool)$request->get('keyword');
-
         $client = \App::coreClientV2();
         $repository = \RepositoryManager::enterprize();
 
         // получение купона
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
-        $enterpizeCoupon = null;
-
-        // партнерский купон
-        if ($isPartnerCoupon) {
-            $enterpizeCoupon = $repository->getEntityFromPartner($request->get('keyword'));
-        } else {
-            $enterpizeCoupon = $repository->getEntityByToken($enterprizeToken);
-        }
+        $enterpizeCoupon = $repository->getEntityByToken($enterprizeToken);
 
         if (!(bool)$enterpizeCoupon) {
             throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
@@ -54,7 +44,6 @@ class ShowAction {
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
         $page->setParam('limit', $limit);
         $page->setParam('viewParams', ['showSideBanner' => false]);
-        $page->setParam('isPartnerCoupon', $isPartnerCoupon);
 
         return new \Http\Response($page->show());
     }

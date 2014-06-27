@@ -49,7 +49,7 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
         <? endif ?>
     </header>
 
-    <? /*if ($isEnterprizeMember): ?>
+    <? if ((bool)$isCouponSent && (bool)$enterpizeCoupon): ?>
         <div class="epSelectFishka clearfix">
             <div class="epSelectFishka_left enterPrize__list">
                 <div class="enterPrize__list__item mOrange">
@@ -143,7 +143,7 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
                 </div>
             </div>
         </div>
-    <? endif*/ ?>
+    <? endif ?>
 
     <section class="epHead">
         <h2 class="epHead_title">Все, что вы хотели, со скидкой до 70%</h2>
