@@ -1,5 +1,5 @@
 .personalTitle {
-	margin: 20px 0 15px;
+	margin: 20px 0;
 
 	font-size: 20px;
 
@@ -12,29 +12,34 @@
 	.table();
 	width: 100%;
 	margin: 0 0 10px;
+
+	border-collapse: collapse;
 	
 	&-border {
 		margin: 0 0 60px;
 
-		border-bottom: 1px solid #c7c7c7;
+		border-bottom: 1px solid @lightgreyBr;
 
 		.personalTable_cell {
 			height: 40px;
-			padding: 5px;
+			padding: 5px 15px 5px 5px;
 
 			vertical-align: middle;
 
-			border-top: 1px solid #c7c7c7;
+			border-top: 1px solid @lightgreyBr;
 		}
 	}
 
 	&_caption {
 		display: table-caption;
-		background: rgba(193,218,30,0.2);
-		font-size: 14px;
+
 	    height: 20px;
 	    padding: 5px;
 
+		background: #eff7b7;
+		background: rgba(193,218,30,0.2);
+
+		font-size: 14px;
 	    line-height: 20px;
 	}
 
@@ -56,31 +61,27 @@
 		&-canceled {
 
 			.personalTable_cell {
-				background: #f6f6f6;
-
-				&-strong {
-					color: #7f7f7f;
-
-					a {
-						color: #7f7f7f;
-					}
-				}
+				background: @lightgreyBg;
 			}
 		}
 
 		&-total {
 
-			&:last-child {
-
-				.personalTable_cell {
-					border: none;
-				}
-			}
-
 			.personalTable_cell {
-				background: @lightgreyBg;
 				height: 36px;
+
+				background: @lightgreyBg;
 			}
+		}
+	}
+
+	&_rowgroup {
+		display: table-row-group;
+
+		border-top: 1px solid @lightgreyBr;
+
+		.personalTable_cell {
+			border: none;
 		}
 	}
 
@@ -94,17 +95,15 @@
 
 			font-size: 12px;
 		}
-		
-		// ширина ячейки 40px
-		&-w40 {
+
+		&-mini {
 			width: 40px;
-			text-align: center;
 		}
-		
-		// ширина ячейки 60px
-		&-w60 {
-			width: 60px;
-		}	}
+
+		&-long {
+			width: 510px;
+		}
+	}
 
 	.orderCancel {
 		font-size: 12px;
