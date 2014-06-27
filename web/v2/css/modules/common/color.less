@@ -54,6 +54,18 @@
 @submitBg: #f99b1c;
 
 //градиенты
+.tchboGradLight {
+  background: #f7d657; // Old browsers
+  background: -moz-linear-gradient(top,  #fbf6b9 0%, #f7d657 100%); // FF3.6+
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fbf6b9), color-stop(100%,#f7d657)); // Chrome,Safari4+
+  background: -webkit-linear-gradient(top,  #fbf6b9 0%,#f7d657 100%); // Chrome10+,Safari5.1+
+  background: -o-linear-gradient(top,  #fbf6b9 0%,#f7d657 100%); // Opera 11.10+
+  background: -ms-linear-gradient(top,  #fbf6b9 0%,#f7d657 100%); // IE10+
+  background: linear-gradient(to bottom,  #fbf6b9 0%,#f7d657 100%); // W3C
+
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fbf6b9', endColorstr='#f7d657',GradientType=0 ); // IE6-9
+}
+
 .orangeGradLight(){
   background: #ffc000; // Old browsers
   background: -moz-linear-gradient(top,  #ffc000 0%, #ffaa01 100%); // FF3.6+

@@ -683,6 +683,16 @@ textarea[contenteditable] {
 /* ==========================================================================
    Стили используемых цветов
    ========================================================================== */
+.tchboGradLight {
+  background: #f7d657;
+  background: -moz-linear-gradient(top, #fbf6b9 0%, #f7d657 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fbf6b9), color-stop(100%, #f7d657));
+  background: -webkit-linear-gradient(top, #fbf6b9 0%, #f7d657 100%);
+  background: -o-linear-gradient(top, #fbf6b9 0%, #f7d657 100%);
+  background: -ms-linear-gradient(top, #fbf6b9 0%, #f7d657 100%);
+  background: linear-gradient(to bottom, #fbf6b9 0%, #f7d657 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fbf6b9', endColorstr='#f7d657', GradientType=0);
+}
 /** шрифты **/
 @font-face {
   font-family: 'Rouble';
