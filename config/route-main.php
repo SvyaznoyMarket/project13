@@ -825,7 +825,7 @@ return [
     'enterprize.confirmEmail.check' => [
         'pattern' => '/enterprize/confirm-email/check',
         'action'  => ['Enterprize\ConfirmEmailAction', 'check'],
-        'method'  => ['POST'],
+        //'method'  => ['POST'],
     ],
     'enterprize.confirmEmail.warn' => [
         'pattern' => '/enterprize/confirm-email/warn',

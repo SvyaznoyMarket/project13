@@ -37,39 +37,29 @@ class Repository {
     }
 
     /**
-     * @param $token
-     * @return Entity|null
+     * @param null $uid
+     * @return null
      */
-    public function getEntityByToken($token) {
+    public function getEntityByToken($uid = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
-
-//        /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
-//        $enterpizeCoupon = null;
-//        \App::dataStoreClient()->addQuery('enterprize/coupon-type.json', [], function($data) use (&$enterpizeCoupon, $enterprizeToken) {
-//            foreach ((array)$data as $item) {
-//                if ($enterprizeToken == $item['token']) {
-//                    $enterpizeCoupon = new \Model\EnterprizeCoupon\Entity($item);
-//                }
-//            }
-//        });
-//        \App::dataStoreClient()->execute();
 
         $entityClass = $this->entityClass;
 
         $coupon = null;
         try {
-            $result = $this->client->query('coupon/get');
+            if (empty($uid)) {
+                throw new \Exception('uid не передан');
+            }
+
+            $result = $this->client->query('coupon/get', ['uid' => $uid]);
 
             if (!(bool)$result || !is_array($result)) {
-                throw new \Exception('Купоны не получены');
+                throw new \Exception(sprintf('Купон uid=%s не получен', $uid));
             }
 
-            foreach ((array)$result as $item) {
-                $entity = new $entityClass($item);
-                if ($token == $entity->getToken()) {
-                    $coupon = $entity;
-                }
-            }
+            $data = reset($result);
+            $coupon = new $entityClass($data);
+
         } catch (\Exception $e) {
             \App::logger()->error($e);
             \App::exception()->remove($e);
