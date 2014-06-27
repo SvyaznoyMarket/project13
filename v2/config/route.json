@@ -102,8 +102,9 @@
         }
     },
 
-    "User\\Auth": {
-        "name": "Авторизация",
+
+    "User\\Login": {
+        "name": "Вход пользователя",
         "pattern": "/login"
     },
     "User\\Index": {

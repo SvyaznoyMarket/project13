@@ -50,7 +50,7 @@ class Log {
         ));
 
         $messages = [];
-        foreach (explode(PHP_EOL, $result) as $i => $line) {
+        foreach (explode(PHP_EOL, $result) as $line) {
             if (!$line) continue;
 
             $line = json_decode($line, true);

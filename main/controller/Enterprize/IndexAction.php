@@ -101,6 +101,8 @@ class IndexAction {
             // убераем купоны ренее выданные пользователю
             if (in_array($coupon->getToken(), $userCouponSeries)) return false;
 
+            if (!(bool)$coupon->isForMember() && !(bool)$coupon->isForNotMember()) return false;
+
             return true;
         });
 

@@ -23,7 +23,7 @@ $c->logger['pretty'] = false;
 $c->appName = 'Enter';
 $c->authToken['name']     = '_token';
 $c->authToken['authorized_cookie'] = '_authorized';
-$c->sessionToken = 'enter';
+$c->sessionToken = 'enter'; // TODO: удалить?
 
 $c->session['name']            = 'enter';
 $c->session['cookie_lifetime'] = 15552000;
@@ -35,7 +35,7 @@ $c->mainHost = 'www.enter.ru';
 $c->mobileHost = 'm.enter.ru';
 
 $c->redirect301['enabled'] = true;
-$c->mobileRedirect['enabled'] = false;
+$c->mobileRedirect['enabled'] = true;
 
 $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 $c->coreV2['client_id']    = 'site';

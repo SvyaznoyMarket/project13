@@ -8,6 +8,7 @@
  * @var $extendedMargin  bool
  * @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null
  * @var $member          bool
+ * @var $isPartnerCoupon bool
  */
 ?>
 
@@ -34,7 +35,20 @@ $priceNumDecimals = false === strpos((string)$enterpizeCoupon->getPrice(), '.') 
 
     <div class="clear"></div>
 
-    <? if ($enterpizeCoupon): ?>
+    <? if ($enterpizeCoupon):
+
+        $url = $enterpizeCoupon->getLink();
+        $name = $enterpizeCoupon->getName();
+        $linkName = $enterpizeCoupon->getLinkName() ? $enterpizeCoupon->getLinkName() : $name;
+        $imageUrl = $enterpizeCoupon->getImage();
+
+        // партнерский купон
+        if (isset($isPartnerCoupon) && (bool)$isPartnerCoupon) {
+            $url = $enterpizeCoupon->getPartnerUrl();
+            $linkName = $name = $enterpizeCoupon->getPartner();
+            $imageUrl = $enterpizeCoupon->getPartnerImageUrl();
+        } ?>
+
         <div class="enterPrize mPrivate <?= isset($limit) && $limit === 0 ? 'mDisabled' : ''?>">
             <a class="enterPrize__logo" href="<?= $page->url('enterprize') ?>"></a>
 
@@ -43,12 +57,12 @@ $priceNumDecimals = false === strpos((string)$enterpizeCoupon->getPrice(), '.') 
                     <div class="enterPrize__list__link">
                         <span class="cuponImg"<? if ($enterpizeCoupon->getBackgroundImage()): ?> style="background-image: url(<?= $enterpizeCoupon->getBackgroundImage() ?>);"<? endif ?>>
                             <span class="cuponImg__inner">
-                                <? if ($enterpizeCoupon->getImage()): ?>
-                                    <span class="cuponIco"><img src="<?= $enterpizeCoupon->getImage() ?>" /></span>
+                                <? if ($imageUrl): ?>
+                                    <span class="cuponIco"><img src="<?= $imageUrl ?>" /></span>
                                 <? endif ?>
 
-                                <? if ($enterpizeCoupon->getName()): ?>
-                                    <span class="cuponDesc"><?= $enterpizeCoupon->getName() ?></span>
+                                <? if ($name): ?>
+                                    <span class="cuponDesc"><?= $name ?></span>
                                 <? endif ?>
 
                                 <? if ($enterpizeCoupon->getPrice()): ?>
@@ -68,7 +82,7 @@ $priceNumDecimals = false === strpos((string)$enterpizeCoupon->getPrice(), '.') 
             <div class="enterPrize__rules"><!-- если пользователь уже получил купон то добавляем класс  mFailed-->
                 <div class="rulesText">
                     Фишка со скидкой <strong><?= $page->helper->formatPrice($enterpizeCoupon->getPrice(), $priceNumDecimals) ?><?= !$enterpizeCoupon->getIsCurrency() ? '%' : 'руб' ?></strong> на
-                    <strong><a target="_blank" style="text-decoration: underline;" href="<?= $enterpizeCoupon->getLink() ?>"><?= $enterpizeCoupon->getLinkName() ? $enterpizeCoupon->getLinkName() : $enterpizeCoupon->getName() ?></a></strong><br />
+                    <strong><a target="_blank" style="text-decoration: underline;" href="<?= $url ?>"><?= $linkName ?></a></strong><br />
                     Минимальная сумма заказа <?= $enterpizeCoupon->getMinOrderSum() ? $enterpizeCoupon->getMinOrderSum() : 0 ?> руб<br />
                     Действует
                     <? if ($enterpizeCoupon->getStartDate() instanceof \DateTime): ?>

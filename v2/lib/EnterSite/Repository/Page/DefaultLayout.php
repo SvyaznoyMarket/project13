@@ -74,7 +74,7 @@ class DefaultLayout {
 
         // пользователь
         $page->userBlock->isUserAuthorized = false;
-        $page->userBlock->userLink->url = $router->getUrlByRoute(new Routing\User\Auth());
+        $page->userBlock->userLink->url = $router->getUrlByRoute(new Routing\User\Login());
         $page->userBlock->cart->url = $router->getUrlByRoute(new Routing\Cart\Index());
 
         // шаблоны mustache

@@ -132,14 +132,13 @@ $response = null;
             (new \Debug\ShowAction())->execute($request, $response);
         }
 
-        // удаление старых кук
+        // SITE-4040 удаление старых сессионных кук
         try {
-            $session = \App::session();
             $sessionParams = session_get_cookie_params();
 
             foreach ([\App::config()->mainHost, \App::config()->mobileHost, 'enter.ru'] as $domain) {
                 $response->headers->removeCookie(
-                    $session->getName(),
+                    \App::session()->getName(),
                     $sessionParams['path'],
                     $domain
                 );

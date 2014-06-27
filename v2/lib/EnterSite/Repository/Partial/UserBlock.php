@@ -29,7 +29,7 @@ class UserBlock {
             $userBlock->userLink->url = $router->getUrlByRoute(new Routing\User\Index());
         } else {
             $userBlock->isUserAuthorized = false;
-            $userBlock->userLink->url = $router->getUrlByRoute(new Routing\User\Auth());
+            $userBlock->userLink->url = $router->getUrlByRoute(new Routing\User\Login());
         }
 
         $userBlock->isCartNotEmpty = (bool)$cart->product;

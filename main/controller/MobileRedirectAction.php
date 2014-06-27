@@ -15,12 +15,13 @@ class MobileRedirectAction {
 
         $routeName = $request->attributes->get('route');
 
-        $hasRedirect = $routeName && (false
-            || in_array($routeName, [
-                'product.category',
-                'product',
-            ])
-        );
+        $hasRedirect = $routeName && in_array($routeName, [
+            'cart',
+            'homepage',
+            'product.category',
+            'product',
+            'user.login',
+        ]);
         if (!$hasRedirect) {
             return null;
         }
@@ -44,22 +45,16 @@ class MobileRedirectAction {
             ':8080'           => '', //FIXME: костыль для nginx-а
         ]) . $request->getRequestUri();
 
-        $response =  new \Http\RedirectResponse($redirectUrl, 301);
-
-        /*
-        if ($mobileHost = \App::config()->mobileHost) {
-            $cookie = new \Http\Cookie(
-                \App::config()->authToken['authorized_cookie'],
-                0, //cookieValue
-                time() + \App::config()->session['cookie_lifetime'],
-                '/',
-                $mobileHost,
-                false,
-                false
-            );
-            $response->headers->setCookie($cookie);
-        }
-        */
+        $response =  new \Http\RedirectResponse($redirectUrl, 302);
+        $response->headers->setCookie(new \Http\Cookie(
+            \App::session()->getName(),
+            \App::session()->getId(),
+            time() + \App::config()->session['cookie_lifetime'],
+            '/',
+            \App::config()->session['cookie_domain'],
+            false,
+            true
+        ));
 
         return $response;
     }
