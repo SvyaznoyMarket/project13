@@ -25,6 +25,10 @@ class FormAction {
         $session = \App::session();
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
         $repository = \RepositoryManager::enterprize();
+        $products = [];
+
+        // флаг, партнерский купон или нет
+        $isPartnerCoupon = (bool)$request->get('is_partner_coupon') && (bool)$request->get('keyword');
 
         $session->set($sessionName, array_merge(
             [
@@ -37,8 +41,20 @@ class FormAction {
             ]
         ));
 
+        // получение купона
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
-        $enterpizeCoupon = $repository->getEntityByToken($enterprizeToken);
+        $enterpizeCoupon = null;
+
+        // партнерский купон
+        if ($isPartnerCoupon) {
+            $enterpizeCoupon = $repository->getEntityFromPartner($request->get('keyword'));
+        } else {
+            $enterpizeCoupon = $repository->getEntityByToken($enterprizeToken);
+
+            if ($enterpizeCoupon) {
+                $products = $this->getProducts($enterpizeCoupon);
+            }
+        }
 
         if (!(bool)$enterpizeCoupon || !$enterpizeCoupon instanceof \Model\EnterprizeCoupon\Entity) {
             throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
@@ -79,7 +95,8 @@ class FormAction {
         $page->setParam('errors', !empty($flash['errors']) ? $flash['errors'] : null);
         $page->setParam('authSource', $session->get('authSource', null));
         $page->setParam('viewParams', ['showSideBanner' => false]);
-        $page->setParam('products', $this->getProducts($enterpizeCoupon));
+        $page->setParam('products', $products);
+        $page->setParam('isPartnerCoupon', $isPartnerCoupon);
 
         return new \Http\Response($page->show());
     }
@@ -375,7 +392,7 @@ class FormAction {
      * @param \Model\EnterprizeCoupon\Entity $coupon
      * @return \Model\Product\Entity[]
      */
-    public function getProducts(\Model\EnterprizeCoupon\Entity $coupon) {
+    public static function getProducts(\Model\EnterprizeCoupon\Entity $coupon) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
