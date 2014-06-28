@@ -88,24 +88,26 @@ $helper = new \Helper\TemplateHelper();
                     При заказе введите код в поле Код фишки, купон, промокод
                 </div>
 
-                <div class="epSelectFishka_slider">
-                    <a class="epSelectFishka_slider_link" href="">Выбрать товары с этой скидкой</a>
+                <? if (isset($products) && !empty($products) && is_array($products)): ?>
+                    <div class="epSelectFishka_slider">
+                        <a class="epSelectFishka_slider_link" href="">Выбрать товары с этой скидкой</a>
 
-                    <div class="bSlider">
-                        <div class="bSlider__eInner">
-                            <?= $helper->render('product/__slider', [
-                                'type'     => 'enterprize',
-                                'title'    => '',
-                                'products' => $products,
-                                'count'    => null,
-                                'limit'    => \App::config()->enterprize['itemsInSlider'],
-                            ]) ?>
+                        <div class="bSlider">
+                            <div class="bSlider__eInner">
+                                <?= $helper->render('product/__slider', [
+                                    'type'     => 'enterprize',
+                                    'title'    => '',
+                                    'products' => $products,
+                                    'count'    => null,
+                                    'limit'    => \App::config()->enterprize['itemsInSlider'],
+                                ]) ?>
+                            </div>
+
+    <!--                        <div class="bSlider__eBtn mPrev mDisabled"><span></span></div>-->
+    <!--                        <div class="bSlider__eBtn mNext mDisabled"><span></span></div>-->
                         </div>
-
-<!--                        <div class="bSlider__eBtn mPrev mDisabled"><span></span></div>-->
-<!--                        <div class="bSlider__eBtn mNext mDisabled"><span></span></div>-->
                     </div>
-                </div>
+                <? endif ?>
             </div>
         </div>
     <? endif ?>
