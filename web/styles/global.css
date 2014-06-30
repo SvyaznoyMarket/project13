@@ -4195,18 +4195,6 @@ img[height="0"] {
     width: 122px;
     background: rgba(251, 156, 0, 0.5) !important;
   }
-  .personalTable-border .personalTable_cell-w90 {
-    width: 90px;
-  }
-  .personalTable-border .personalTable_cell-w212 {
-    width: 212px;
-  }
-  .personalTable-border .personalTable_cell-w115 {
-    width: 115px;
-  }
-  .personalTable-border .personalTable_cell-w175 {
-    width: 106px;
-  }
   .personalTable-bg .personalTable_row:nth-child(even) .personalTable_cell {
     background: #f6f6f6;
   }
@@ -4290,6 +4278,18 @@ img[height="0"] {
   .personalTable_cell-long {
     width: 510px;
   }
+  .personalTable_cell-w90 {
+    width: 90px;
+  }
+  .personalTable_cell-w212 {
+    width: 212px;
+  }
+  .personalTable_cell-w115 {
+    width: 115px;
+  }
+  .personalTable_cell-w175 {
+    width: 106px;
+  }
   .personalTable .orderCancel {
     font-size: 12px;
   }
@@ -4327,25 +4327,31 @@ img[height="0"] {
   }
   .personalPage_head {
     margin: 0 0 10px;
-    font-size: 16px;
+    color: #616161;
+    font-size: 14px;
   }
   .personalPage_head_left {
-    float: left;
-    margin: 0;
-    font-size: 16px;
-    font-weight: bold;
-  }
-  .personalPage_head_right {
-    float: right;
-  }
-  .personalPage_head .orderPrice {
     display: inline-block;
     vertical-align: top;
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    width: 100px;
-    text-align: right;
+    margin: 2px 0 0;
+    color: #000000;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .personalPage_head_left .data {
+    color: #616161;
+    font-size: 14px;
+    font-weight: normal;
+  }
+  .personalPage_head_right {
+    float: right;
+  }
+  .personalPage_head_btn {
+    font-size: 14px !important;
+    margin-right: 5px;
   }
   .paySumm {
     margin: 0 0 20px;
@@ -4410,8 +4416,8 @@ img[height="0"] {
     font-weight: bold;
   }
   .payComplete {
-    background: url("/styles/personal-page/img/paying.png") no-repeat 0 0;
     height: 85px;
+    background: url("/styles/personal-page/img/paying.png") no-repeat 0 0;
   }
   .personalInfo {
     margin: 0 0 15px;
@@ -4419,6 +4425,13 @@ img[height="0"] {
   }
   .personalInfo .decorColor-bullet {
     display: list-item;
+    list-style-position: inside;
+  }
+  .personalInfo .shopsInfo {
+    padding-left: 13px;
+  }
+  .personalInfo .shopsInfo_time {
+    margin: 5px 0 0;
   }
 }
 @media all {
@@ -5134,60 +5147,6 @@ img[height="0"] {
   .clearfix {
     *zoom: 1;
   }
-  .fl-l {
-    float: left;
-  }
-  .fl-r {
-    float: right;
-  }
-  .xs {
-    font-size: 11px;
-  }
-  .s {
-    font-size: 12px;
-  }
-  .m {
-    font-size: 14px;
-  }
-  .l {
-    font-size: 16px;
-  }
-  .dblock {
-    display: block;
-  }
-  .ta-c {
-    text-align: center;
-  }
-  .ta-r {
-    text-align: right;
-  }
-  .ta-l {
-    text-align: left;
-  }
-  .va-t {
-    vertical-align: top;
-  }
-  .va-m {
-    vertical-align: middle;
-  }
-  .va-b {
-    vertical-align: bottom;
-  }
-  .td-lineth {
-    text-decoration: line-through;
-  }
-  .td-underl {
-    text-decoration: underline;
-  }
-  .mb5 {
-    margin-bottom: 5px;
-  }
-  .mb20 {
-    margin-bottom: 20px;
-  }
-  .nomargin {
-    margin: 0;
-  }
   /**
  * Стили кнопок
  */
@@ -5251,6 +5210,60 @@ img[height="0"] {
     text-align: center;
     padding: 5px 10px;
     border: 1px solid #c7c7c7;
+  }
+  .fl-l {
+    float: left;
+  }
+  .fl-r {
+    float: right;
+  }
+  .xs {
+    font-size: 11px;
+  }
+  .s {
+    font-size: 12px;
+  }
+  .m {
+    font-size: 14px;
+  }
+  .l {
+    font-size: 16px;
+  }
+  .dblock {
+    display: block;
+  }
+  .ta-c {
+    text-align: center;
+  }
+  .ta-r {
+    text-align: right;
+  }
+  .ta-l {
+    text-align: left;
+  }
+  .va-t {
+    vertical-align: top;
+  }
+  .va-m {
+    vertical-align: middle;
+  }
+  .va-b {
+    vertical-align: bottom;
+  }
+  .td-lineth {
+    text-decoration: line-through;
+  }
+  .td-underl {
+    text-decoration: underline;
+  }
+  .mb5 {
+    margin-bottom: 5px;
+  }
+  .mb20 {
+    margin-bottom: 20px;
+  }
+  .nomargin {
+    margin: 0;
   }
   .colorGrey {
     color: #a6a6a6;
