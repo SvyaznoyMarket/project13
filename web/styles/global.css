@@ -4151,7 +4151,6 @@ img[height="0"] {
   }
   .personalTable_rowgroup {
     display: table-row-group;
-    border-top: 1px solid #c7c7c7;
   }
   .personalTable_rowgroup .personalTable_cell {
     border: none;
@@ -4165,14 +4164,15 @@ img[height="0"] {
   .personalTable_rowgroup-head .personalTable_cell {
     height: 28px;
     padding: 0;
-    line-height: 28px;
     vertical-align: top;
+    line-height: 28px;
   }
   .personalTable_rowgroup-head .personalTable_cell_rowspan {
     position: absolute;
     width: 100%;
-    background: #ededed;
+    border-top: 1px solid #c7c7c7;
     border-bottom: 1px solid #c7c7c7;
+    background: #ededed;
   }
   .personalTable_rowgroup .textCorner {
     display: inline-block;

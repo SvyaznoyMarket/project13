@@ -10,6 +10,7 @@
 
 .personalTableWrap {
 	position: relative;
+
 	overflow: hidden;
 }
 
@@ -121,8 +122,6 @@
 	&_rowgroup {
 		display: table-row-group;
 
-		border-top: 1px solid @lightgreyBr;
-
 		.personalTable_cell {
 			border: none;
 		}
@@ -140,16 +139,18 @@
 			    height: 28px;
 			    padding: 0;
 
-			    line-height: 28px;
 			    vertical-align: top;
+
+			    line-height: 28px;
 
 			    &_rowspan {
 			    	position: absolute;
 
 			    	width: 100%;
 
-			    	background: #ededed;
+			    	border-top: 1px solid @lightgreyBr;
 			    	border-bottom: 1px solid @lightgreyBr;
+			    	background: #ededed;
 			    }
 			}
 		}

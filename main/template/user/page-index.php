@@ -328,7 +328,7 @@
             <div class="personalTable_rowgroup personalTable_rowgroup-head">
                 <div class="personalTable_cell">
                     <div class="personalTable_cell_rowspan">
-                        <strong class="textCorner textCorner-open">2014</strong> <span class="colorGrey">4 заказа</span>
+                        <strong class="textCorner textCorner">2014</strong> <span class="colorGrey">4 заказа</span>
                     </div>
                 </div>
             </div>
