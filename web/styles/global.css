@@ -1962,6 +1962,18 @@ img[height="0"] {
   .enterPrize__rules.mFailed .enterPrize__rules__item .sep {
     margin-bottom: 10px;
   }
+  .enterPrize__rules .rulesImg {
+    float: left;
+    width: 95px;
+    height: 82px;
+    margin-top: 10px;
+    margin-right: 15px;
+    vertical-align: middle;
+  }
+  .enterPrize__rules .rulesImg img {
+    width: 100%;
+    height: auto;
+  }
   .enterPrize__rules__item {
     float: left;
     width: 500px;
@@ -2038,20 +2050,20 @@ img[height="0"] {
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     filter: alpha(opacity=0);
     z-index: 18;
+    top: 60px;
     text-align: center;
     background: none;
-    top: 60px;
   }
   .enterPrize__list__item.mMembers .cuponImgHover .epTextLogo {
     font-size: 25px;
   }
   .enterPrize__list__item.mMembers .cuponText {
-    color: #ffffff;
-    font-size: 20px;
-    text-align: center;
     -webkit-text-shadow: 0 2px 5px #000000;
     -moz-text-shadow: 0 2px 5px #000000;
     text-shadow: 0 2px 5px #000000;
+    text-align: center;
+    color: #ffffff;
+    font-size: 20px;
   }
   .enterPrize__list__item.mMembers:hover .cuponImgHover {
     -moz-opacity: 1;
@@ -2191,7 +2203,7 @@ img[height="0"] {
   }
   .enterPrize.mPrivate .enterPrize__list {
     position: absolute;
-    top: -80px;
+    top: -45px;
     right: 0;
   }
   .enterPrize.mPrivate .enterPrize__logo {
@@ -2519,9 +2531,9 @@ img[height="0"] {
 }
 @media all {
   .epTextLogo {
+    color: #ffa901;
     font-family: "Enter";
     font-size: 20px;
-    color: #ffa901;
   }
   .epTextLogo_colors {
     color: #ffffff;
@@ -2621,6 +2633,7 @@ img[height="0"] {
     color: #ffffff;
   }
   .epListTitle {
+    margin-top: 25px;
     text-transform: uppercase;
     color: #ffffff;
     font-family: "Enter";
