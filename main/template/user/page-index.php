@@ -635,71 +635,80 @@
 <div class="personalPage">
     <div class="personalTitle">Изменить мои данные</div>
 
-    <div class="personalPage_left">
-        <div class="changeData">
-            <label class="changeData_label labeltext">Имя:</label>
-            <input class="changeData_text textfield" type="text" />
+        <form action="" class="personalData">
+            <fieldset class="personalData_left">
+                <legend class="legend">Личные данные</legend>
+            
+                <label class="personalData_label labeltext">Имя:</label>
+                <input class="personalData_text textfield" type="text" />
 
-            <label class="changeData_label labeltext">Отчество:</label>
-            <input class="changeData_text textfield" type="text" />
+                <label class="personalData_label labeltext">Отчество:</label>
+                <input class="personalData_text textfield" type="text" />
 
-            <label class="changeData_label labeltext">Фамилия:</label>
-            <input class="changeData_text textfield" type="text" />
+                <label class="personalData_label labeltext">Фамилия:</label>
+                <input class="personalData_text textfield" type="text" />
 
-            <label class="changeData_label labeltext">Дата рождения:</label>
+                <div class="">
+                    <label class="personalData_label labeltext">Дата рождения:</label>
 
-            <select name="day">
-                <option value="">1</option>
-                <option value="">2</option>
-            </select>
+                    <select name="day">
+                        <option value="">1</option>
+                        <option value="">2</option>
+                    </select>
 
-            <select name="month">
-                <option value="">июнь</option>
-                <option value="">июль</option>
-            </select>
+                    <select name="month">
+                        <option value="">июнь</option>
+                        <option value="">июль</option>
+                    </select>
 
-            <select name="years">
-                <option value="">2014</option>
-                <option value="">2013</option>
-            </select>
+                    <select name="years">
+                        <option value="">2014</option>
+                        <option value="">2013</option>
+                    </select>
+                </div>
 
-            <label class="changeData_label labeltext">Пол:</label>
+                <div>
+                    <label class="personalData_label labeltext">Пол:</label>
 
-            <select name="years">
-                <option value="">мужской</option>
-                <option value="">женский</option>
-            </select>
+                    <select name="years">
+                        <option value="">мужской</option>
+                        <option value="">женский</option>
+                    </select>
+                </div>
 
-            <label class="changeData_label labeltext">E-mail:</label>
-            <input class="changeData_text textfield" type="email" />
+                <label class="personalData_label labeltext">E-mail:</label>
+                <input class="personalData_text textfield" type="email" />
 
-            <label class="changeData_label labeltext">Мобильный телефон:</label>
-            <input class="changeData_text textfield" type="text" />
+                <label class="personalData_label labeltext">Мобильный телефон:</label>
+                <input class="personalData_text textfield" type="text" />
 
-            <label class="changeData_label labeltext">Домашний телефон:</label>
-            <input class="changeData_text textfield" type="text" />
+                <label class="personalData_label labeltext">Домашний телефон:</label>
+                <input class="personalData_text textfield" type="text" />
 
-            <label class="changeData_label labeltext">Номер карты "Связной-Клуб":</label>
-            <input class="changeData_text textfield" type="text" />
+                <label class="personalData_label labeltext">Номер карты "Связной-Клуб":</label>
+                <input class="personalData_text textfield" type="text" />
 
-            <label class="changeData_label labeltext">Род деятельности:</label>
-            <input class="changeData_text textfield" type="text" />
-        </div>
+                <label class="personalData_label labeltext">Род деятельности:</label>
+                <input class="personalData_text textfield" type="text" />
+            </fieldset>
 
-        <button class="btnsubmit">Сохранить изменения</button>
-    </div>
+        <fieldset class="personalData_right">
+            <legend class="legend">Пароль</legend>
 
-    <aside class="personalPage_right">
-        Изменить пароль
-        <p>Надежный пароль должен содержать от 6 до 16 знаков следующих трех видов: прописные буквы, строчные буквы, цифры или символы, но не должен включать широко распространенные слова и имена.</p>
-        <label class="labeltext">Старый пароль:</label>
-        <input class="textfield"></input>
+            <p>Надежный пароль должен содержать от 6 до 16 знаков следующих трех видов: прописные буквы, строчные буквы, цифры или символы, но не должен включать широко распространенные слова и имена.</p>
+            <label class="labeltext">Старый пароль:</label>
+            <input class="textfield"></input>
 
-        <label class="labeltext">Новый пароль:</label>
-        <input class="textfield"></input>
+            <label class="labeltext">Новый пароль:</label>
+            <input class="textfield"></input>
 
-        <p>Внимание! После смены пароля Вам придет письмо и SMS с новым паролем</p>
-    </aside>
+            <p>Внимание! После смены пароля Вам придет письмо и SMS с новым паролем</p>
+        </fieldset>
+        
+        <fieldset class="personalData_clear">
+            <input class="btnsubmit" type="submit" value="Сохранить изменения" />
+        </fieldset>
+    </form>
 </div>
 
 
