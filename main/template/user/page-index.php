@@ -8,9 +8,9 @@
 <div class="personalPage">
 
     <!-- навигация по личному кабинету -->
-    <nav class="personalControl">
-        <li class="personalControl_item">
-            <a href="" class="personalControl_link personalControl_link-active">Заказы</a>
+    <nav class="personalControl personalControl-links">
+        <li class="personalControl_item personalControl_item-active">
+            <a href="" class="personalControl_link">Заказы</a>
         </li>
 
         <li class="personalControl_item">
@@ -21,8 +21,8 @@
             <a href="" class="personalControl_link">Подписки e-mail и sms</a>
         </li>
 
-        <li class="personalControl_item personalControl_item-text fl-r td-underl">
-            <a href="personalControl_text" class="">cEnter защиты прав потребителей</a>
+        <li class="personalControl_item personalControl_item-text fl-r">
+            <a href="personalControl_text" class="td-underl">cEnter защиты прав потребителей</a>
         </li>
     </nav>
     <!-- /навигация по личному кабинету -->
@@ -30,7 +30,7 @@
     <div class="personalTitle">Текущие заказы <span class="personalTitle_count">3</span></div>
 
     <!-- таблица текущих заказов -->
-    <div class="personalTable personalTable-border">
+    <div class="personalTable personalTable-border personalTable-bg">
         <div class="personalTable_row personalTable_row-head">
             <div class="personalTable_cell">№ заказа</div>
             <div class="personalTable_cell">Состав</div>
@@ -41,7 +41,7 @@
         </div>
 
         <div class="personalTable_row">
-            <div class="personalTable_cell ta-c">
+            <div class="personalTable_cell">
                 <a href="">COXD-305176</a> 
                 <span class="s dblock">06 июн. 2014</span>
             </div>
@@ -72,7 +72,7 @@
         <!-- ----------------- -->
 
         <div class="personalTable_row">
-            <div class="personalTable_cell ta-c">
+            <div class="personalTable_cell">
                 <a href="">COXD-305176</a> 
                 <span class="s dblock">06 июн. 2014</span>
             </div>
@@ -96,7 +96,7 @@
                 <span class="s dblock">11 июл. 2014 9:00…18:00</span>
             </div>
 
-            <div class="personalTable_cell">В обработке</div>
+            <div class="personalTable_cell">Готов к передаче</div>
 
             <div class="personalTable_cell"></div>
         </div>
@@ -104,7 +104,7 @@
         <!-- ----------------- -->
 
         <div class="personalTable_row">
-            <div class="personalTable_cell ta-c">
+            <div class="personalTable_cell">
                 <a href="">COXD-305176</a> 
                 <span class="s dblock">06 июн. 2014</span>
             </div>
@@ -130,13 +130,15 @@
 
             <div class="personalTable_cell">В обработке</div>
 
-            <div class="personalTable_cell personalTable_cell"><button class="btnLightGrey">Заполнить заявку<br/>на кредит</button></div>
+            <div class="personalTable_cell personalTable_cell-last personalTable_cell-mark ta-r">
+                <button class="tableBtn btnLightGrey">Заполнить заявку<br/>на кредит</button>
+            </div>
         </div>
 
         <!-- ----------------- -->
 
         <div class="personalTable_row">
-            <div class="personalTable_cell ta-c">
+            <div class="personalTable_cell">
                 <a href="">COXD-305176</a> 
                 <span class="s dblock">06 июн. 2014</span>
             </div>
@@ -165,211 +167,229 @@
     </div>
     <!--/ таблица текущих заказов -->
 
-    <div class="personalTitle">История</div>
+    <div class="personalTitle">История <span class="personalTitle_count">3</span></div>
 
-    <!-- таблица истории заказов -->
-    <div class="personalTable personalTable-border">
-        <div class="personalTable_row personalTable_row-head">
-            <div class="personalTable_cell">№ заказа</div>
-            <div class="personalTable_cell">Состав</div>
-            <div class="personalTable_cell ta-c">Сумма</div>
-            <div class="personalTable_cell">Получение</div>
-            <div class="personalTable_cell">Статус</div>
-            <div class="personalTable_cell"></div>
-        </div>
+    <div class="personalTableWrap">
+        <!-- таблица истории заказов -->
+        <div class="personalTable personalTable-border personalTable-bg">
+            <div class="personalTable_row personalTable_row-head">
+                <div class="personalTable_cell">№ заказа</div>
+                <div class="personalTable_cell">Состав</div>
+                <div class="personalTable_cell ta-c">Сумма</div>
+                <div class="personalTable_cell">Получение</div>
+                <div class="personalTable_cell">Статус</div>
+                <div class="personalTable_cell"></div>
+            </div>
+            
+            <!-- кликаем по всему диву, что бы раскрыть блок с заказами -->
+            <div class="personalTable_rowgroup personalTable_rowgroup-head">
+                <div class="personalTable_cell">
+                    <div class="personalTable_cell_rowspan">
+                        <strong class="textCorner textCorner-open">2014</strong> <span class="colorGrey">4 заказа</span>
+                    </div>
+                </div>
+            </div>
+            <!--/ кликаем по всему диву, что бы раскрыть блок с заказами -->
+
+            <div class="personalTable_rowgroup">
+
+                <div class="personalTable_row">
+                    <div class="personalTable_cell">
+                        <a href="">COXD-305176</a> 
+                        <span class="s dblock">06 июн. 2014</span>
+                    </div>
+
+                    <div class="personalTable_cell personalTable_cell-text">
+                        <ul class="orderItem">
+                            <li>Бумажный конструктор 3 шт.</li>
+                            <li>Карта памяти microSDHC… 1 шт.</li>
+                            <li><a href="">и ещё 3 товара</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="personalTable_cell ta-r">
+                        46 740 <span class="rubl">p</span><br/>
+                        <span class="textStatus">оплачено</span>
+                    </div>
+
+                    <div class="personalTable_cell">Доставка</div>
+
+                    <div class="personalTable_cell">Получен</div>
+
+                    <div class="personalTable_cell personalTable_cell-last ta-r">
+                        <button class="tableBtn btnLightGrey">Добавить в корзину</button>
+                    </div>
+                </div>
+
+                <!-- ----------------- -->
+                
+                <!-- отмененный заказ, к ячейком добавляем класс colorGrey, кроме последний двух-->
+                <div class="personalTable_row personalTable_row-canceled colorGrey">
+                    <div class="personalTable_cell">
+                        <a href="">COXD-305176</a> 
+                        <span class="s dblock">06 июн. 2014</span>
+                    </div>
+
+                    <div class="personalTable_cell personalTable_cell-text">
+                        <ul class="orderItem">
+                            <li>Бумажный конструктор 3 шт.</li>
+                            <li>Карта памяти microSDHC… 1 шт.</li>
+                            <li><a href="">и ещё 3 товара</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="personalTable_cell ta-r">
+                        46 740 <span class="rubl">p</span><br/>
+                        <span class="textStatus">оплачено</span>
+                    </div>
+
+                    <div class="personalTable_cell">Доставка</div>
+
+                    <div class="personalTable_cell">Отменён</div>
+
+                    <div class="personalTable_cell personalTable_cell-last ta-r">
+                        <button class="tableBtn btnLightGrey">Добавить в корзину</button>
+                    </div>
+                </div>
+                <!--/ отмененный заказ, к ячейком добавляем класс colorGrey, кроме последний двух-->
+
+                <!-- ----------------- -->
+
+                <div class="personalTable_row">
+                    <div class="personalTable_cell">
+                        <a href="">COXD-305176</a> 
+                        <span class="s dblock">06 июн. 2014</span>
+                    </div>
+
+                    <div class="personalTable_cell personalTable_cell-text">
+                        <ul class="orderItem">
+                            <li>Бумажный конструктор 3 шт.</li>
+                            <li>Карта памяти microSDHC… 1 шт.</li>
+                            <li><a href="">и ещё 3 товара</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="personalTable_cell ta-r">
+                        46 740 <span class="rubl">p</span><br/>
+                        <span class="textStatus">оплачено</span>
+                    </div>
+
+                    <div class="personalTable_cell">Доставка</div>
+
+                    <div class="personalTable_cell">Получен</div>
+
+                    <div class="personalTable_cell personalTable_cell-last ta-r">
+                        <button class="tableBtn btnLightGrey">Добавить в корзину</button>
+                    </div>
+                </div>
+
+                <!-- ----------------- -->
+
+                <div class="personalTable_row">
+                    <div class="personalTable_cell">
+                        <a href="">COXD-305176</a> 
+                        <span class="s dblock">06 июн. 2014</span>
+                    </div>
+
+                    <div class="personalTable_cell personalTable_cell-text">
+                        <ul class="orderItem">
+                            <li>Бумажный конструктор 3 шт.</li>
+                            <li>Карта памяти microSDHC… 1 шт.</li>
+                            <li><a href="">и ещё 3 товара</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="personalTable_cell ta-r">
+                        46 740 <span class="rubl">p</span><br/>
+                        <span class="textStatus">оплачено</span>
+                    </div>
+
+                    <div class="personalTable_cell">Доставка</div>
+
+                    <div class="personalTable_cell">Получен</div>
+
+                    <div class="personalTable_cell personalTable_cell-last ta-r">
+                        <button class="tableBtn btnLightGrey">Добавить в корзину</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- кликаем по всему диву, что бы раскрыть блок с заказами -->
+            <div class="personalTable_rowgroup personalTable_rowgroup-head">
+                <div class="personalTable_cell">
+                    <div class="personalTable_cell_rowspan">
+                        <strong class="textCorner textCorner-open">2014</strong> <span class="colorGrey">4 заказа</span>
+                    </div>
+                </div>
+            </div>
+            <!--/ кликаем по всему диву, что бы раскрыть блок с заказами -->
         
-        <!-- кликаем по всему диву, что бы раскрыть блок с заказами -->
-        <div class="personalTable_rowgroup personalTable_rowgroup-head">
-            <div class="personalTable_cell">
-                <strong class="textCorner textCorner-open">2014</strong> <span class="colorGrey">4 заказа</span>
+            <!-- что бы раскрыть историю заказов необходимо добавить класс display: table-row-group, а не display: block  -->
+            <div style="display: none" class="personalTable_rowgroup">
+
+                <div class="personalTable_row">
+                    <div class="personalTable_cell">
+                        <a href="">COXD-305176</a> 
+                        <span class="s dblock">06 июн. 2014</span>
+                    </div>
+
+                    <div class="personalTable_cell personalTable_cell-text">
+                        <ul class="orderItem">
+                            <li>Бумажный конструктор 3 шт.</li>
+                            <li>Карта памяти microSDHC… 1 шт.</li>
+                            <li><a href="">и ещё 3 товара</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="personalTable_cell ta-r">
+                        46 740 <span class="rubl">p</span><br/>
+                        <span class="textStatus">оплачено</span>
+                    </div>
+
+                    <div class="personalTable_cell">Доставка</div>
+
+                    <div class="personalTable_cell">Получен</div>
+
+                    <div class="personalTable_cell personalTable_cell-last ta-r">
+                        <button class="tableBtn btnLightGrey">Добавить в корзину</button>
+                    </div>
+                </div>
+
+                <!-- ----------------- -->
+                
+                <!-- отмененный заказ, к ячейком добавляем класс colorGrey, кроме последний двух-->
+                <div class="personalTable_row personalTable_row-canceled colorGrey">
+                    <div class="personalTable_cell">
+                        <a href="">COXD-305176</a> 
+                        <span class="s dblock">06 июн. 2014</span>
+                    </div>
+
+                    <div class="personalTable_cell personalTable_cell-text">
+                        <ul class="orderItem">
+                            <li>Бумажный конструктор 3 шт.</li>
+                            <li>Карта памяти microSDHC… 1 шт.</li>
+                            <li><a href="">и ещё 3 товара</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="personalTable_cell ta-r">
+                        46 740 <span class="rubl">p</span><br/>
+                        <span class="textStatus">оплачено</span>
+                    </div>
+
+                    <div class="personalTable_cell">Доставка</div>
+
+                    <div class="personalTable_cell">Отменён</div>
+
+                    <div class="personalTable_cell personalTable_cell-last ta-r">
+                        <button class="tableBtn btnLightGrey">Добавить в корзину</button>
+                    </div>
+                </div>
+                <!--/ отмененный заказ, к ячейком добавляем класс colorGrey, кроме последний двух-->
             </div>
         </div>
-        <!--/ кликаем по всему диву, что бы раскрыть блок с заказами -->
-
-        <div class="personalTable_rowgroup">
-
-            <div class="personalTable_row">
-                <div class="personalTable_cell">
-                    <a href="">COXD-305176</a> 
-                    <span class="s dblock">06 июн. 2014</span>
-                </div>
-
-                <div class="personalTable_cell personalTable_cell-text">
-                    <ul class="orderItem">
-                        <li>Бумажный конструктор 3 шт.</li>
-                        <li>Карта памяти microSDHC… 1 шт.</li>
-                        <li><a href="">и ещё 3 товара</a></li>
-                    </ul>
-                </div>
-
-                <div class="personalTable_cell ta-r">
-                    46 740 <span class="rubl">p</span><br/>
-                    <span class="textStatus">оплачено</span>
-                </div>
-
-                <div class="personalTable_cell">Доставка</div>
-
-                <div class="personalTable_cell">Получен</div>
-
-                <div class="personalTable_cell"><button class="btnLightGrey">Добавить в корзину</button></div>
-            </div>
-
-            <!-- ----------------- -->
-            
-            <!-- отмененный заказ, к ячейком добавляем класс colorGrey, кроме последний двух-->
-            <div class="personalTable_row personalTable_row-canceled colorGrey">
-                <div class="personalTable_cell">
-                    <a href="">COXD-305176</a> 
-                    <span class="s dblock">06 июн. 2014</span>
-                </div>
-
-                <div class="personalTable_cell personalTable_cell-text">
-                    <ul class="orderItem">
-                        <li>Бумажный конструктор 3 шт.</li>
-                        <li>Карта памяти microSDHC… 1 шт.</li>
-                        <li><a href="">и ещё 3 товара</a></li>
-                    </ul>
-                </div>
-
-                <div class="personalTable_cell ta-r">
-                    46 740 <span class="rubl">p</span><br/>
-                    <span class="textStatus">оплачено</span>
-                </div>
-
-                <div class="personalTable_cell">Доставка</div>
-
-                <div class="personalTable_cell">Отменён</div>
-
-                <div class="personalTable_cell"><button class="btnLightGrey">Добавить в корзину</button></div>
-            </div>
-            <!--/ отмененный заказ, к ячейком добавляем класс colorGrey, кроме последний двух-->
-
-            <!-- ----------------- -->
-
-            <div class="personalTable_row">
-                <div class="personalTable_cell">
-                    <a href="">COXD-305176</a> 
-                    <span class="s dblock">06 июн. 2014</span>
-                </div>
-
-                <div class="personalTable_cell personalTable_cell-text">
-                    <ul class="orderItem">
-                        <li>Бумажный конструктор 3 шт.</li>
-                        <li>Карта памяти microSDHC… 1 шт.</li>
-                        <li><a href="">и ещё 3 товара</a></li>
-                    </ul>
-                </div>
-
-                <div class="personalTable_cell ta-r">
-                    46 740 <span class="rubl">p</span><br/>
-                    <span class="textStatus">оплачено</span>
-                </div>
-
-                <div class="personalTable_cell">Доставка</div>
-
-                <div class="personalTable_cell">Получен</div>
-
-                <div class="personalTable_cell"><button class="btnLightGrey">Добавить в корзину</button></div>
-            </div>
-
-            <!-- ----------------- -->
-
-            <div class="personalTable_row">
-                <div class="personalTable_cell">
-                    <a href="">COXD-305176</a> 
-                    <span class="s dblock">06 июн. 2014</span>
-                </div>
-
-                <div class="personalTable_cell personalTable_cell-text">
-                    <ul class="orderItem">
-                        <li>Бумажный конструктор 3 шт.</li>
-                        <li>Карта памяти microSDHC… 1 шт.</li>
-                        <li><a href="">и ещё 3 товара</a></li>
-                    </ul>
-                </div>
-
-                <div class="personalTable_cell ta-r">
-                    46 740 <span class="rubl">p</span><br/>
-                    <span class="textStatus">оплачено</span>
-                </div>
-
-                <div class="personalTable_cell">Доставка</div>
-
-                <div class="personalTable_cell">Получен</div>
-
-                <div class="personalTable_cell"><button class="btnLightGrey">Добавить в корзину</button></div>
-            </div>
-        </div>
-
-        <!-- кликаем по всему диву, что бы раскрыть блок с заказами -->
-        <div class="personalTable_rowgroup personalTable_rowgroup-head">
-            <div class="personalTable_cell">
-                <strong class="textCorner">2014</strong> <span class="colorGrey">4 заказа</span>
-            </div>
-        </div>
-        <!--/ кликаем по всему диву, что бы раскрыть блок с заказами -->
-    
-        <!-- что бы раскрыть историю заказов необходимо добавить класс display: table-row-group, а не display: block  -->
-        <div style="display: none" class="personalTable_rowgroup">
-
-            <div class="personalTable_row">
-                <div class="personalTable_cell">
-                    <a href="">COXD-305176</a> 
-                    <span class="s dblock">06 июн. 2014</span>
-                </div>
-
-                <div class="personalTable_cell personalTable_cell-text">
-                    <ul class="orderItem">
-                        <li>Бумажный конструктор 3 шт.</li>
-                        <li>Карта памяти microSDHC… 1 шт.</li>
-                        <li><a href="">и ещё 3 товара</a></li>
-                    </ul>
-                </div>
-
-                <div class="personalTable_cell ta-r">
-                    46 740 <span class="rubl">p</span><br/>
-                    <span class="textStatus">оплачено</span>
-                </div>
-
-                <div class="personalTable_cell">Доставка</div>
-
-                <div class="personalTable_cell">Получен</div>
-
-                <div class="personalTable_cell"><button class="btnLightGrey">Добавить в корзину</button></div>
-            </div>
-
-            <!-- ----------------- -->
-            
-            <!-- отмененный заказ, к ячейком добавляем класс colorGrey, кроме последний двух-->
-            <div class="personalTable_row personalTable_row-canceled colorGrey">
-                <div class="personalTable_cell">
-                    <a href="">COXD-305176</a> 
-                    <span class="s dblock">06 июн. 2014</span>
-                </div>
-
-                <div class="personalTable_cell personalTable_cell-text">
-                    <ul class="orderItem">
-                        <li>Бумажный конструктор 3 шт.</li>
-                        <li>Карта памяти microSDHC… 1 шт.</li>
-                        <li><a href="">и ещё 3 товара</a></li>
-                    </ul>
-                </div>
-
-                <div class="personalTable_cell ta-r">
-                    46 740 <span class="rubl">p</span><br/>
-                    <span class="textStatus">оплачено</span>
-                </div>
-
-                <div class="personalTable_cell">Доставка</div>
-
-                <div class="personalTable_cell">Отменён</div>
-
-                <div class="personalTable_cell"><button class="btnLightGrey">Добавить в корзину</button></div>
-            </div>
-            <!--/ отмененный заказ, к ячейком добавляем класс colorGrey, кроме последний двух-->
-        </div>
+        <!--/ таблица истории заказов -->
     </div>
-    <!--/ таблица истории заказов -->
 </div>
 
 <div class="personalPage">
@@ -380,17 +400,15 @@
     <div class="personalPage_left">
         <div class="personalPage_head clearfix">
             <h2 class="personalPage_head_left">Заказ COXD-305176 от 06.06.14</h2>
-
-            <div class="personalPage_head_right">К оплате: <span class="orderPrice">42 740 <span class="rubl">p</span></span></div>
         </div>
         
         <!-- статусы заказа -->
         <ul class="personalControl personalControl-arrow">
-            <li class="personalControl_item personalControl_item-arrow personalControl_item-active">
+            <li class="personalControl_item personalControl_item-arrow personalControl_item-past">
                 Принят
             </li>
 
-            <li class="personalControl_item personalControl_item-arrow">
+            <li class="personalControl_item personalControl_item-arrow personalControl_item-active">
                 Отправлен
             </li>
 
@@ -402,27 +420,29 @@
         
         <!-- информация о заказе -->
         <div class="personalInfo">
-            <p>Плановый срок получения заказа <mark class="colorBlack">Завтра, 15 июня, воскресенье</mark></p>
+            <p><strong>Самовывоз</strong> <mark class="colorBlack">завтра, 15 июня 2014, воскресенье</mark></p>
             
             <div class="personalTable">
                 <div class="personalTable_row">
-                    <div class="personalTable_cell">Магазин</div>
+                    <div class="personalTable_cell">из магазина</div>
 
-                    <div class="personalTable_cell s">
-                        <mark class="colorBlack decorColor-bullet" style="color: #b1b4c2"><span class="colorBlack">м. Петровско-Разумовская</span></mark>
-                        ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2
+                    <div class="personalTable_cell">
+                        <mark class="decorColor-bullet" style="color: #b1b4c2"><span class="colorBlack">м. Петровско-Разумовская</span></mark>
+                        <span class="colorBrightGrey">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
                     </div>
 
-                    <div class="personalTable_cell s">
-                        <mark class="colorBlack">режим работы</mark><br/>
-                        с 9.00 до 22.00
+                    <div class="personalTable_cell">
+                        режим работы<br/>
+                        <span class="colorBrightGrey">с 9.00 до 22.00</span>
                     </div>
-
-                    <div class="personalTable_cell va-m"><a class="colorBlack">Как добраться?</a></div>
                 </div>
             </div>
 
-            <p>В магазине можно оплатить заказ как наличными, так и банковской картой.</p>
+            <p class="colorBrightGrey">
+                Оплата при получении:&nbsp;
+                <img class="va-m" alt="" src="data:image/png;base64,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" />
+                <img class="va-m" alt="" src="data:image/png;base64,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" />
+            </p>
         </div>
         <!--/ информация о заказе -->
 
@@ -558,10 +578,25 @@
 
     <!-- сайдбар онлайн оплаты -->
     <aside class="personalPage_right">
+        <div class="paySumm">
+            К оплате: <span class="paySumm_val">42 740 <span class="rubl">p</span></span>
+        </div>
+
         <menu class="payCommands">
             <ul class="payCommandsList">
                 <li class="payCommandsList_item">
-                    <button class="btnPay">Оплатить баллами</button>
+                    <button class="btnPay btnLightGrey">Заполнить заявку на кредит</button>
+
+                    <span class="descPay">
+                        <img src="/styles/personal-page/img/cards/renesans.png" alt="" class="descPay_img" />
+                        <img src="/styles/personal-page/img/cards/tinkoff.png" alt="" class="descPay_img" />
+                        <img src="/styles/personal-page/img/cards/otpBank.png" alt="" class="descPay_img" />
+
+                    </span>
+                </li>
+
+                <li class="payCommandsList_item mb30">
+                    <button class="btnPay btnLightGrey">Оплатить баллами</button>
 
                     <span class="descPay">
                         <img src="/styles/personal-page/img/cards/sclub.png" alt="" class="descPay_img" />
@@ -570,7 +605,7 @@
                 </li>
 
                 <li class="payCommandsList_item">
-                    <button class="btnPay">Оплатить онлайн</button>
+                    <button class="btnPay btnLightGrey">Оплатить онлайн</button>
 
                     <span class="descPay">
                         <img src="/styles/personal-page/img/cards/MasterCard.png" alt="" class="descPay_img" />

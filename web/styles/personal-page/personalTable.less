@@ -8,55 +8,89 @@
 	}
 }
 
+.personalTableWrap {
+	position: relative;
+	overflow: hidden;
+}
+
 .personalTable {
 	.table();
 	width: 100%;
 	margin: 0 0 10px;
 
 	border-collapse: collapse;
-	
+
 	&-border {
 		margin: 0 0 60px;
 
 		border-bottom: 1px solid @lightgreyBr;
 
+		.personalTable_row {
+
+			&-head {
+				color: #515151;
+
+				.personalTable_cell {
+					height: auto;
+					padding-top: 8px;
+					padding-bottom: 8px;
+
+					border-top: none;
+
+					font-size: 12px;
+				}
+
+				&:hover {
+
+					.personalTable_cell {
+						background: none;
+					}
+				}
+			}
+		}
+
 		.personalTable_cell {
-			height: 47px;
-			padding: 5px 15px 5px 5px;
+			height: 50px;
+			padding: 5px 15px 5px 10px;
 
 			vertical-align: middle;
 
 			border-top: 1px solid @lightgreyBr;
+
+			&-last {
+			    padding-right: 10px;
+				padding-left: 10px;
+			}
+
+			&-mark {
+				width: 120px;
+
+				background: rgba(251, 156, 0, 0.5) !important;
+			}
 		}
 	}
 
-	&_caption {
-		display: table-caption;
+	&-bg {
+		.personalTable_row {
 
-	    height: 20px;
-	    padding: 5px;
+			&:nth-child(even) {
 
-		background: #eff7b7;
-		background: rgba(193,218,30,0.2);
+				.personalTable_cell {
+					background: @lightgreyBg;
+				}
+			}
 
-		font-size: 14px;
-	    line-height: 20px;
+			&:hover {
+
+				.personalTable_cell {
+					background: @lightOrange;
+				}
+			}
+		}
 	}
 
 	&_row {
 		.table-row();
-
-		&-head {
-			color: #515151;
-
-			.personalTable_cell {
-				height: auto;
-
-				border-top: none;
-
-				font-size: 12px;
-			}
-		}
 
 		&-total {
 
@@ -64,20 +98,6 @@
 				height: 36px;
 
 				background: @lightgreyBg;
-			}
-		}
-
-		&:nth-child(even) {
-
-			.personalTable_cell {
-				background: @lightgreyBg;
-			}
-		}
-
-		&:hover {
-
-			.personalTable_cell {
-				background: @lightOrange;
 			}
 		}
 	}
@@ -96,18 +116,25 @@
 
 			height: 29px;
 
+			cursor: pointer;
+
 			font-size: 14px;
 
 			.personalTable_cell {
-			    position: absolute;
-
-			    width: 100%;
 			    height: 28px;
 			    padding: 0;
 
-				background: none repeat scroll 0 0 #ededed;
+			    line-height: 28px;
+			    vertical-align: top;
 
-			    line-height: 27px;
+			    &_rowspan {
+			    	position: absolute;
+
+			    	width: 100%;
+
+			    	background: #ededed;
+			    	border-bottom: 1px solid @lightgreyBr;
+			    }
 			}
 		}
 
@@ -123,6 +150,19 @@
 			}
 
 		}
+	}
+
+	&_caption {
+		display: table-caption;
+
+	    height: 20px;
+	    padding: 5px;
+
+		background: #eff7b7;
+		background: rgba(193,218,30,0.2);
+
+		font-size: 14px;
+	    line-height: 20px;
 	}
 
 	&_cell {
@@ -162,5 +202,9 @@
 	.imgProd {
 		width: 40px;
 		height: 40px;
+	}
+
+	.tableBtn {
+		
 	}
 }
