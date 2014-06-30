@@ -4315,6 +4315,9 @@ img[height="0"] {
   .personalInfo .decorColor-bullet {
     display: list-item;
   }
+  .changeData_text {
+    width: 400px;
+  }
 }
 /*---END----Личный кабинет пользователя---------*/
 @media all {
@@ -5114,5 +5117,42 @@ img[height="0"] {
   }
   .bgGrey {
     background: #f6f6f6;
+  }
+  .textfield {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    height: 35px;
+    border: 1px solid #9f9f9f;
+    line-height: 35px;
+    display: block;
+    margin: 0 0 15px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    padding-left: 10px;
+  }
+  .btnsubmit {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    height: 33px;
+    padding: 0 15px;
+    color: #ffffff;
+    border: 1px solid #ff6c00;
+    background: #f99b1c;
+    font-size: 14px;
+    line-height: 33px;
+  }
+  .labeltext {
+    display: block;
+    line-height: 1.5;
+    margin: 0 0 5px;
+    font-size: 12px;
+  }
+  .legend {
+    font-size: 18px;
+    margin: 10px 0 15px;
   }
 }

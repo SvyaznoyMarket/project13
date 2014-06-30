@@ -22,7 +22,7 @@
         </li>
 
         <li class="personalControl_item personalControl_item-text fl-r">
-            <a href="personalControl_text" class="td-underl">cEnter защиты прав потребителей</a>
+            <a href="http://my.enter.ru/community/pravo?offset=0&count=5&solved=0" class="td-underl">cEnter защиты прав потребителей</a>
         </li>
     </nav>
     <!-- /навигация по личному кабинету -->
@@ -630,3 +630,80 @@
     </aside>
     <!--/ сайдбар онлайн оплаты -->
 </div>
+
+
+<div class="personalPage">
+    <div class="personalTitle">Изменить мои данные</div>
+
+    <div class="personalPage_left">
+        <div class="changeData">
+            <label class="changeData_label labeltext">Имя:</label>
+            <input class="changeData_text textfield" type="text" />
+
+            <label class="changeData_label labeltext">Отчество:</label>
+            <input class="changeData_text textfield" type="text" />
+
+            <label class="changeData_label labeltext">Фамилия:</label>
+            <input class="changeData_text textfield" type="text" />
+
+            <label class="changeData_label labeltext">Дата рождения:</label>
+
+            <select name="day">
+                <option value="">1</option>
+                <option value="">2</option>
+            </select>
+
+            <select name="month">
+                <option value="">июнь</option>
+                <option value="">июль</option>
+            </select>
+
+            <select name="years">
+                <option value="">2014</option>
+                <option value="">2013</option>
+            </select>
+
+            <label class="changeData_label labeltext">Пол:</label>
+
+            <select name="years">
+                <option value="">мужской</option>
+                <option value="">женский</option>
+            </select>
+
+            <label class="changeData_label labeltext">E-mail:</label>
+            <input class="changeData_text textfield" type="email" />
+
+            <label class="changeData_label labeltext">Мобильный телефон:</label>
+            <input class="changeData_text textfield" type="text" />
+
+            <label class="changeData_label labeltext">Домашний телефон:</label>
+            <input class="changeData_text textfield" type="text" />
+
+            <label class="changeData_label labeltext">Номер карты "Связной-Клуб":</label>
+            <input class="changeData_text textfield" type="text" />
+
+            <label class="changeData_label labeltext">Род деятельности:</label>
+            <input class="changeData_text textfield" type="text" />
+        </div>
+
+        <button class="btnsubmit">Сохранить изменения</button>
+    </div>
+
+    <aside class="personalPage_right">
+        Изменить пароль
+        <p>Надежный пароль должен содержать от 6 до 16 знаков следующих трех видов: прописные буквы, строчные буквы, цифры или символы, но не должен включать широко распространенные слова и имена.</p>
+        <label class="labeltext">Старый пароль:</label>
+        <input class="textfield"></input>
+
+        <label class="labeltext">Новый пароль:</label>
+        <input class="textfield"></input>
+
+        <p>Внимание! После смены пароля Вам придет письмо и SMS с новым паролем</p>
+    </aside>
+</div>
+
+
+
+
+
+
