@@ -4121,6 +4121,18 @@ img[height="0"] {
     width: 120px;
     background: rgba(251, 156, 0, 0.5) !important;
   }
+  .personalTable-border .personalTable_cell-w90 {
+    width: 90px;
+  }
+  .personalTable-border .personalTable_cell-w212 {
+    width: 212px;
+  }
+  .personalTable-border .personalTable_cell-w115 {
+    width: 115px;
+  }
+  .personalTable-border .personalTable_cell-w175 {
+    width: 106px;
+  }
   .personalTable-bg .personalTable_row:nth-child(even) .personalTable_cell {
     background: #f6f6f6;
   }

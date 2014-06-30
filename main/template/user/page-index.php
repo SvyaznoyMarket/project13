@@ -32,16 +32,21 @@
     <!-- таблица текущих заказов -->
     <div class="personalTable personalTable-border personalTable-bg">
         <div class="personalTable_row personalTable_row-head">
-            <div class="personalTable_cell">№ заказа</div>
-            <div class="personalTable_cell">Состав</div>
-            <div class="personalTable_cell ta-c">Сумма</div>
-            <div class="personalTable_cell">Получение</div>
+            <div class="personalTable_cell personalTable_cell-w90">№ заказа</div>
+
+            <div class="personalTable_cell personalTable_cell-w212">Состав</div>
+
+            <div class="personalTable_cell personalTable_cell-w115 ta-c">Сумма</div>
+
+            <div class="personalTable_cell personalTable_cell-w175">Получение</div>
+
             <div class="personalTable_cell">Статус</div>
+
             <div class="personalTable_cell"></div>
         </div>
 
         <div class="personalTable_row">
-            <div class="personalTable_cell">
+            <div class="personalTable_cell ta-c">
                 <a href="">COXD-305176</a> 
                 <span class="s dblock">06 июн. 2014</span>
             </div>
@@ -72,7 +77,7 @@
         <!-- ----------------- -->
 
         <div class="personalTable_row">
-            <div class="personalTable_cell">
+            <div class="personalTable_cell ta-c">
                 <a href="">COXD-305176</a> 
                 <span class="s dblock">06 июн. 2014</span>
             </div>
@@ -104,7 +109,7 @@
         <!-- ----------------- -->
 
         <div class="personalTable_row">
-            <div class="personalTable_cell">
+            <div class="personalTable_cell ta-c">
                 <a href="">COXD-305176</a> 
                 <span class="s dblock">06 июн. 2014</span>
             </div>
@@ -138,7 +143,7 @@
         <!-- ----------------- -->
 
         <div class="personalTable_row">
-            <div class="personalTable_cell">
+            <div class="personalTable_cell ta-c">
                 <a href="">COXD-305176</a> 
                 <span class="s dblock">06 июн. 2014</span>
             </div>
@@ -173,11 +178,16 @@
         <!-- таблица истории заказов -->
         <div class="personalTable personalTable-border personalTable-bg">
             <div class="personalTable_row personalTable_row-head">
-                <div class="personalTable_cell">№ заказа</div>
-                <div class="personalTable_cell">Состав</div>
-                <div class="personalTable_cell ta-c">Сумма</div>
-                <div class="personalTable_cell">Получение</div>
+                <div class="personalTable_cell personalTable_cell-w90">№ заказа</div>
+
+                <div class="personalTable_cell personalTable_cell-w212">Состав</div>
+
+                <div class="personalTable_cell personalTable_cell-w115 ta-c">Сумма</div>
+
+                <div class="personalTable_cell personalTable_cell-w175">Получение</div>
+
                 <div class="personalTable_cell">Статус</div>
+
                 <div class="personalTable_cell"></div>
             </div>
             
@@ -194,7 +204,7 @@
             <div class="personalTable_rowgroup">
 
                 <div class="personalTable_row">
-                    <div class="personalTable_cell">
+                    <div class="personalTable_cell ta-c">
                         <a href="">COXD-305176</a> 
                         <span class="s dblock">06 июн. 2014</span>
                     </div>
@@ -225,7 +235,7 @@
                 
                 <!-- отмененный заказ, к ячейком добавляем класс colorGrey, кроме последний двух-->
                 <div class="personalTable_row personalTable_row-canceled colorGrey">
-                    <div class="personalTable_cell">
+                    <div class="personalTable_cell ta-c">
                         <a href="">COXD-305176</a> 
                         <span class="s dblock">06 июн. 2014</span>
                     </div>
@@ -256,7 +266,7 @@
                 <!-- ----------------- -->
 
                 <div class="personalTable_row">
-                    <div class="personalTable_cell">
+                    <div class="personalTable_cell ta-c">
                         <a href="">COXD-305176</a> 
                         <span class="s dblock">06 июн. 2014</span>
                     </div>
@@ -286,7 +296,7 @@
                 <!-- ----------------- -->
 
                 <div class="personalTable_row">
-                    <div class="personalTable_cell">
+                    <div class="personalTable_cell ta-c">
                         <a href="">COXD-305176</a> 
                         <span class="s dblock">06 июн. 2014</span>
                     </div>
@@ -328,7 +338,7 @@
             <div style="display: none" class="personalTable_rowgroup">
 
                 <div class="personalTable_row">
-                    <div class="personalTable_cell">
+                    <div class="personalTable_cell ta-c">
                         <a href="">COXD-305176</a> 
                         <span class="s dblock">06 июн. 2014</span>
                     </div>
@@ -359,7 +369,7 @@
                 
                 <!-- отмененный заказ, к ячейком добавляем класс colorGrey, кроме последний двух-->
                 <div class="personalTable_row personalTable_row-canceled colorGrey">
-                    <div class="personalTable_cell">
+                    <div class="personalTable_cell ta-c">
                         <a href="">COXD-305176</a> 
                         <span class="s dblock">06 июн. 2014</span>
                     </div>
