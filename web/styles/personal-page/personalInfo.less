@@ -42,13 +42,30 @@
 	}
 }
 
+.paySumm {
+	text-align: right;
+	font-size: 16px;
+
+	&_val {
+		width: 90px;
+		.inline-block();
+
+		margin: 0 0 60px;
+	}
+}
+
 .payCommandsList {
 
 	&_item {
 		margin: 0 0 20px;
+		text-align: center;
 
 		&:last-child {
 			margin-bottom: 0;
+		}
+
+		&-online {
+			margin-bottom: 30px;
 		}
 	}
 
@@ -59,25 +76,18 @@
 	}
 
 	.btnPay {
-		.grayGradDark();
-		.rounded(4px);
-		width: 200px;
 		height: 32px;
 		margin: 0 0 10px;
-		padding: 0;
-
-		color: #383a3c;
-		border: 1px solid #c7c7c7;
+		padding: 0 10px;
+		min-width: 170px;
 
 		font-size: 14px;
-		line-height: 3px;
+		line-height: 31px;
 	}
 }
 
 .personalInfo {
 	margin: 0 0 15px;
-
-	color: #6f7173;
 
 	font-size: 14px;
 
