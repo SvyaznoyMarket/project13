@@ -43,22 +43,24 @@
 }
 
 .paySumm {
+	margin: 0 0 20px;
+
 	text-align: right;
+
 	font-size: 16px;
 
 	&_val {
-		width: 90px;
 		.inline-block();
-
-		margin: 0 0 60px;
+		width: 90px;
+		margin: 0 0 10px;
 	}
 }
 
 .payCommandsList {
+	text-align: center;
 
 	&_item {
 		margin: 0 0 20px;
-		text-align: center;
 
 		&:last-child {
 			margin-bottom: 0;
@@ -69,6 +71,27 @@
 		}
 	}
 
+	&-mark {
+		padding-top: 10px;
+		padding-bottom: 10px;
+
+		background: rgba(251, 156, 0, 0.5);
+
+		.descPay {
+
+			&_img {
+				.rounded(4px);
+
+				.inline-block();
+				margin-right: 2px;
+
+				border: 1px solid #fff;
+				border-right-width: 2px;
+				border-left-width: 2px;
+			}
+		}
+	}
+
 	.descPay {
 		display: block;
 
@@ -76,14 +99,26 @@
 	}
 
 	.btnPay {
+		min-width: 170px;
 		height: 32px;
 		margin: 0 0 10px;
 		padding: 0 10px;
-		min-width: 170px;
 
 		font-size: 14px;
 		line-height: 31px;
 	}
+
+	.titlePay {
+		margin: 0 0 5px;
+
+		font-size: 16px;
+		font-weight: bold;
+	}
+}
+
+.payComplete {
+	background: url("@{base-url}/personal-page/img/paying.png") no-repeat 0 0;
+	height: 85px;
 }
 
 .personalInfo {
@@ -96,12 +131,5 @@
 		&-bullet {
 			display: list-item;
 		}
-	}
-}
-
-.changeData {
-
-	&_text{
-		width: 400px;
 	}
 }

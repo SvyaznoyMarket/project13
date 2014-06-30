@@ -14,7 +14,7 @@
         </li>
 
         <li class="personalControl_item">
-            <a href="" class="personalControl_link">Личные данные</a>
+            <a href="" class="personalControl_link">Личные данные и пароль</a>
         </li>
 
         <li class="personalControl_item">
@@ -588,24 +588,17 @@
 
     <!-- сайдбар онлайн оплаты -->
     <aside class="personalPage_right">
-        <div class="paySumm">
-            К оплате: <span class="paySumm_val">42 740 <span class="rubl">p</span></span>
-        </div>
+
+    <!--
+        <ul class="paySumm">
+            <li>Сумма заказа: <span class="paySumm_val">42 740 <span class="rubl">p</span></span></li>
+            <li>Оплачено: <span class="paySumm_val">42 740 <span class="rubl">p</span></span></li>
+            <li>К оплате: <span class="paySumm_val">42 740 <span class="rubl">p</span></span></li>
+        </ul>
 
         <menu class="payCommands">
             <ul class="payCommandsList">
-                <li class="payCommandsList_item">
-                    <button class="btnPay btnLightGrey">Заполнить заявку на кредит</button>
-
-                    <span class="descPay">
-                        <img src="/styles/personal-page/img/cards/renesans.png" alt="" class="descPay_img" />
-                        <img src="/styles/personal-page/img/cards/tinkoff.png" alt="" class="descPay_img" />
-                        <img src="/styles/personal-page/img/cards/otpBank.png" alt="" class="descPay_img" />
-
-                    </span>
-                </li>
-
-                <li class="payCommandsList_item mb30">
+                <li class="payCommandsList_item mb20">
                     <button class="btnPay btnLightGrey">Оплатить баллами</button>
 
                     <span class="descPay">
@@ -627,6 +620,39 @@
                 </li>
             </ul>
         </menu>
+    -->
+
+    <!--
+
+        <ul class="paySumm">
+            <li>Сумма заказа: <span class="paySumm_val">42 740 <span class="rubl">p</span></span></li>
+            <li>К оплате: <span class="paySumm_val">42 740 <span class="rubl">p</span></span></li>
+        </ul>
+
+        <menu class="payCommands">
+            <ul class="payCommandsList payCommandsList-mark">
+                <li class="payCommandsList_item">
+                    <div class="titlePay">Кредит</div>
+
+                    <button class="btnPay btnLightGrey">Заполнить заявку</button>
+
+                    <span class="descPay">
+                        <img src="/styles/personal-page/img/cards/renesans.png" alt="" class="descPay_img" />
+                        <img src="/styles/personal-page/img/cards/tinkoff.png" alt="" class="descPay_img" />
+                        <img src="/styles/personal-page/img/cards/otpBank.png" alt="" class="descPay_img" />
+                    </span>
+                </li>
+            </ul>
+        </menu>
+    
+    -->
+
+
+        <ul class="paySumm">
+            <li>Сумма заказа: <span class="paySumm_val">42 740 <span class="rubl">p</span></span></li>
+        </ul>
+
+        <div class="payComplete"></div>
     </aside>
     <!--/ сайдбар онлайн оплаты -->
 </div>
@@ -648,7 +674,7 @@
                 <label class="personalData_label labeltext">Фамилия:</label>
                 <input class="personalData_text textfield" type="text" />
 
-                <div class="">
+                <div class="personalData_col">
                     <label class="personalData_label labeltext">Дата рождения:</label>
 
                     <select name="day">
@@ -667,13 +693,19 @@
                     </select>
                 </div>
 
-                <div>
+                <div class="personalData_col">
                     <label class="personalData_label labeltext">Пол:</label>
 
                     <select name="years">
                         <option value="">мужской</option>
                         <option value="">женский</option>
                     </select>
+                </div>
+
+                <div class="personalData_warn">
+                    <div class="personalData_warn_text">
+                        Одно из полей обязательно для заполнения!
+                    </div>
                 </div>
 
                 <label class="personalData_label labeltext">E-mail:</label>
@@ -695,14 +727,14 @@
         <fieldset class="personalData_right">
             <legend class="legend">Пароль</legend>
 
-            <p>Надежный пароль должен содержать от 6 до 16 знаков следующих трех видов: прописные буквы, строчные буквы, цифры или символы, но не должен включать широко распространенные слова и имена.</p>
+            <p style="xs">Надежный пароль должен содержать от 6 до 16 знаков следующих трех видов: прописные буквы, строчные буквы, цифры или символы, но не должен включать широко распространенные слова и имена.</p>
             <label class="labeltext">Старый пароль:</label>
-            <input class="textfield"></input>
+            <input class="textfield personalData_text"></input>
 
             <label class="labeltext">Новый пароль:</label>
-            <input class="textfield"></input>
+            <input class="textfield personalData_text"></input>
 
-            <p>Внимание! После смены пароля Вам придет письмо и SMS с новым паролем</p>
+            <p style="xs">Внимание! После смены пароля Вам придет письмо и SMS с новым паролем</p>
         </fieldset>
         
         <fieldset class="personalData_clear">
@@ -712,7 +744,31 @@
 </div>
 
 
+<div class="personalPage">
+    <div class="personalTitle">Подписки</div>
 
+    <form action="" class="personalSubscr">
+        <fieldset class="personalSubscr_row">
+            <legend class="legend">Email</legend>
+
+            <input class="jsCustomRadio customInput customInput-bigCheck" id="email" type="checkbox"  name="" checked />
+            <label class="customLabel customLabel-bigCheck" for="email">Акции, новости и специальные предложения </label>
+
+        </fieldset>
+
+        <fieldset class="personalSubscr_row">
+            <legend class="legend">SMS</legend>
+
+            <input class="jsCustomRadio customInput customInput-bigCheck" id="sms" type="checkbox" name="" />
+            <label class="customLabel customLabel-bigCheck" for="sms">Акции, новости и специальные предложения </label>
+
+        </fieldset>
+
+        <fieldset class="personalSubscr_clear">
+            <input class="btnsubmit" type="submit" value="Сохранить" />
+        </fieldset>
+    </form>
+</div>
 
 
 
