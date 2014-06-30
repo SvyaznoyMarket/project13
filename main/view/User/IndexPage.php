@@ -3,6 +3,8 @@
 namespace View\User;
 
 class IndexPage extends \View\DefaultLayout {
+    protected $layout  = 'layout-oneColumn';
+
     public function prepare() {
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
@@ -31,10 +33,6 @@ class IndexPage extends \View\DefaultLayout {
         }
 
         return $this->render('user/page-index', $this->params);
-    }
-
-    public function slotSidebar() {
-        return $this->render('user/_sidebar', $this->params);
     }
 
     public function slotBodyDataAttribute() {

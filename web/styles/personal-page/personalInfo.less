@@ -1,0 +1,100 @@
+.personalPage {
+
+	&_left {
+		.inline-block();
+		width: 700px;
+	}
+
+	&_right {
+		.inline-block();
+		float: right;
+
+		width: 210px;
+		padding: 10px;
+
+		background: #f6f6f6;
+	}
+
+	&_head {
+		margin: 0 0 10px;
+
+		font-size: 16px;
+
+		&_left {
+			float: left;
+
+			margin: 0;
+
+			font-size: 16px;
+			font-weight: bold;
+		}
+
+		&_right {
+			float: right;
+		}
+
+		.orderPrice {
+			.inline-block();
+			width: 100px;
+
+			text-align: right;
+		}
+	}
+}
+
+.paySumm {
+	text-align: right;
+	font-size: 16px;
+
+	&_val {
+		width: 90px;
+		.inline-block();
+
+		margin: 0 0 60px;
+	}
+}
+
+.payCommandsList {
+
+	&_item {
+		margin: 0 0 20px;
+		text-align: center;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		&-online {
+			margin-bottom: 30px;
+		}
+	}
+
+	.descPay {
+		display: block;
+
+		text-align: center;
+	}
+
+	.btnPay {
+		height: 32px;
+		margin: 0 0 10px;
+		padding: 0 10px;
+		min-width: 170px;
+
+		font-size: 14px;
+		line-height: 31px;
+	}
+}
+
+.personalInfo {
+	margin: 0 0 15px;
+
+	font-size: 14px;
+
+	.decorColor {
+
+		&-bullet {
+			display: list-item;
+		}
+	}
+}
