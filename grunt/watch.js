@@ -16,10 +16,10 @@ module.exports = function (grunt, options) {
             tasks: ['less:compileNew', 'less:compressNew']
         },
 
-        stylesV2: {
-            files: ['web/v2/css/*.less', 'web/v2/css/modules/**/*.less'],
-            tasks: ['less:compileV2', 'less:compressV2']
-        },
+        //stylesV2: {
+        //    files: ['web/v2/css/*.less', 'web/v2/css/modules/**/*.less'],
+        //    tasks: ['less:compileV2', 'less:compressV2']
+        //},
 
         photoContest: {
             files: ['web/css/photoContest/*.less'],

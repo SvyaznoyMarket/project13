@@ -41,6 +41,7 @@ class FormAction {
             ]
         ));
 
+        // получение купона
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
         $enterpizeCoupon = null;
 
@@ -49,7 +50,10 @@ class FormAction {
             $enterpizeCoupon = $repository->getEntityFromPartner($request->get('keyword'));
         } else {
             $enterpizeCoupon = $repository->getEntityByToken($enterprizeToken);
-            $products = $this->getProducts($enterpizeCoupon);
+
+            if ($enterpizeCoupon) {
+                $products = $this->getProducts($enterpizeCoupon);
+            }
         }
 
         if (!(bool)$enterpizeCoupon || !$enterpizeCoupon instanceof \Model\EnterprizeCoupon\Entity) {
@@ -66,7 +70,7 @@ class FormAction {
         $data = (array)$session->get($sessionName, []);
 
         // если пользователь авторизован и уже является участником enterprize
-        if ($user->getEntity() && $user->getEntity()->isEnterprizeMember() && $enterpizeCouponLimit != 0 && !$isPartnerCoupon) {
+        if ($user->getEntity() && $user->getEntity()->isEnterprizeMember() && $enterpizeCouponLimit != 0) {
             $data = array_merge($data, [
                 'token'            => $user->getToken(),
                 'name'             => $user->getEntity()->getFirstName(),
@@ -388,7 +392,7 @@ class FormAction {
      * @param \Model\EnterprizeCoupon\Entity $coupon
      * @return \Model\Product\Entity[]
      */
-    public function getProducts(\Model\EnterprizeCoupon\Entity $coupon) {
+    public static function getProducts(\Model\EnterprizeCoupon\Entity $coupon) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
@@ -412,6 +416,10 @@ class FormAction {
         if ($coupon && $coupon->getLink()) {
             $linkParts = explode('/', $coupon->getLink());
             $linkParts = array_values(array_filter($linkParts));
+
+            if (!isset($linkParts[0]) || empty($linkParts[0])) {
+                return $products;
+            }
 
             /** @var $category \Model\Product\Category\Entity */
             $category = null;

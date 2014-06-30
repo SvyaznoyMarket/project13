@@ -27,6 +27,14 @@ if ((bool)$slideData) {
     echo $helper->render('tchibo/promo-catalog', ['slideData' => $slideData]);
 } ?>
 
+<div class="tchiboSubscribe subscribe-form clearfix">
+    <div class="tchiboSubscribe_title">Новые коллекции каждую неделю! Узнай первым</div>
+    <input type="text" placeholder="Введите Ваш e-mail адрес" class="tchiboSubscribe_input subscribe-form__email" name="email" />
+    <input type="hidden" value="13" name="channel" />
+    <button data-url="<?= $page->url('subscribe.create') ?>" class="tchiboSubscribe_btn subscribe-form__btn">Подписаться</button> 
+    <div class="subscribecheck">Хочу получать рассылку о новых коллекциях Tchibo</div>
+</div>
+
 <!--TCHIBO - каталог разделов, баннеров, товаров Чибо -->
 <div class="tchiboCatalog clearfix">
     <? foreach($catalogCategories as $catalogCategory): ?>
@@ -44,6 +52,7 @@ if ((bool)$slideData) {
             //$categoryChildren = array_slice($categoryChildren, 5); // SITE-3840
         }
         ?>
+
         <div class="tchiboCatalogInner">
             <a href="<?= $catalogCategory->getLink() ?>">
                 <img class="tchiboCatalog__img"

@@ -17,8 +17,7 @@ $hasSearch = isset($hasSearch) ? (bool)$hasSearch : true;
 $hasSeparateLine = isset($hasSeparateLine) ? (bool)$hasSeparateLine : false;
 $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
 
-$routeName = \App::request()->attributes->get('route');
-$priceNumDecimals = false === strpos((string)$enterpizeCoupon->getPrice(), '.') ? 0 : 2; ?>
+$routeName = \App::request()->attributes->get('route'); ?>
 
 <div class="pagehead">
 
@@ -47,7 +46,9 @@ $priceNumDecimals = false === strpos((string)$enterpizeCoupon->getPrice(), '.') 
             $url = $enterpizeCoupon->getPartnerUrl();
             $linkName = $name = $enterpizeCoupon->getPartner();
             $imageUrl = $enterpizeCoupon->getPartnerImageUrl();
-        } ?>
+        }
+
+        $priceNumDecimals = false === strpos((string)$enterpizeCoupon->getPrice(), '.') ? 0 : 2; ?>
 
         <div class="enterPrize mPrivate <?= isset($limit) && $limit === 0 ? 'mDisabled' : ''?>">
             <a class="enterPrize__logo" href="<?= $page->url('enterprize') ?>"></a>

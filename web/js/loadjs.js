@@ -557,6 +557,7 @@
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
+                    .script( getWithVersion('infopage.js') )
 					.script( getWithVersion('tchibo.js') )
 					.script( getWithVersion('catalog.js') )
 					.script( getWithVersion('pandora.js') )
