@@ -2715,6 +2715,11 @@ img[height="0"] {
     font-size: 20px;
     line-height: 41px;
   }
+  .epLand_form_error {
+    color: #ff6464;
+    font-size: 16px;
+    margin: -15px 0 20px;
+  }
   .epLand_form_btn {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
