@@ -14,7 +14,7 @@
         </li>
 
         <li class="personalControl_item">
-            <a href="" class="personalControl_link">Личные данные</a>
+            <a href="" class="personalControl_link">Личные данные и пароль</a>
         </li>
 
         <li class="personalControl_item">
@@ -22,7 +22,7 @@
         </li>
 
         <li class="personalControl_item personalControl_item-text fl-r">
-            <a href="personalControl_text" class="td-underl">cEnter защиты прав потребителей</a>
+            <a href="http://my.enter.ru/community/pravo?offset=0&count=5&solved=0" class="td-underl">cEnter защиты прав потребителей</a>
         </li>
     </nav>
     <!-- /навигация по личному кабинету -->
@@ -409,7 +409,16 @@
 
     <div class="personalPage_left">
         <div class="personalPage_head clearfix">
-            <h2 class="personalPage_head_left">Заказ COXD-305176 от 06.06.14</h2>
+            <h2 class="personalPage_head_left">
+                Заказ COXD-305176 от 06.06.14 
+                <span class="data">от 06 июл. 2014</span>
+            </h2>
+            
+            <div class="personalPage_head_right">
+                Получить номер заказа: 
+                <button class="personalPage_head_btn btnLightGrey va-m">SMS</button>
+                <button class="personalPage_head_btn btnLightGrey va-m">e-mail</button>
+            </div>
         </div>
         
         <!-- статусы заказа -->
@@ -434,25 +443,28 @@
             
             <div class="personalTable">
                 <div class="personalTable_row">
-                    <div class="personalTable_cell">из магазина</div>
+                    <div class="personalTable_cell w90">из магазина</div>
 
                     <div class="personalTable_cell">
                         <mark class="decorColor-bullet" style="color: #b1b4c2"><span class="colorBlack">м. Петровско-Разумовская</span></mark>
-                        <span class="colorBrightGrey">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
+
+                        <div class="shopsInfo">
+                            <span class="colorBrightGrey">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
+
+                            <div class="shopsInfo_time">
+                                <span class="colorBrightGrey">Режим работы:</span> с 9.00 до 22.00 &nbsp;
+                                <span class="colorBrightGrey">Оплата при получении: </span>
+                                <img src="/styles/personal-page/img/nal.png" alt=""/>
+                                <img src="/styles/personal-page/img/card.png" alt=""/>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="personalTable_cell">
-                        режим работы<br/>
-                        <span class="colorBrightGrey">с 9.00 до 22.00</span>
+                    <div class="personalTable_cell va-m">
+                        <a href="td-underl" title="">Как добраться?</a>
                     </div>
                 </div>
             </div>
-
-            <p class="colorBrightGrey">
-                Оплата при получении:&nbsp;
-                <img class="va-m" alt="" src="data:image/png;base64,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" />
-                <img class="va-m" alt="" src="data:image/png;base64,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" />
-            </p>
         </div>
         <!--/ информация о заказе -->
 
@@ -588,24 +600,17 @@
 
     <!-- сайдбар онлайн оплаты -->
     <aside class="personalPage_right">
-        <div class="paySumm">
-            К оплате: <span class="paySumm_val">42 740 <span class="rubl">p</span></span>
-        </div>
+
+    <!--
+        <ul class="paySumm">
+            <li>Сумма заказа: <span class="paySumm_val">42 740 <span class="rubl">p</span></span></li>
+            <li>Оплачено: <span class="paySumm_val">42 740 <span class="rubl">p</span></span></li>
+            <li>К оплате: <span class="paySumm_val">42 740 <span class="rubl">p</span></span></li>
+        </ul>
 
         <menu class="payCommands">
             <ul class="payCommandsList">
-                <li class="payCommandsList_item">
-                    <button class="btnPay btnLightGrey">Заполнить заявку на кредит</button>
-
-                    <span class="descPay">
-                        <img src="/styles/personal-page/img/cards/renesans.png" alt="" class="descPay_img" />
-                        <img src="/styles/personal-page/img/cards/tinkoff.png" alt="" class="descPay_img" />
-                        <img src="/styles/personal-page/img/cards/otpBank.png" alt="" class="descPay_img" />
-
-                    </span>
-                </li>
-
-                <li class="payCommandsList_item mb30">
+                <li class="payCommandsList_item mb20">
                     <button class="btnPay btnLightGrey">Оплатить баллами</button>
 
                     <span class="descPay">
@@ -627,6 +632,155 @@
                 </li>
             </ul>
         </menu>
+    -->
+
+    <!--
+
+        <ul class="paySumm">
+            <li>Сумма заказа: <span class="paySumm_val">42 740 <span class="rubl">p</span></span></li>
+            <li>К оплате: <span class="paySumm_val">42 740 <span class="rubl">p</span></span></li>
+        </ul>
+
+        <menu class="payCommands">
+            <ul class="payCommandsList payCommandsList-mark">
+                <li class="payCommandsList_item">
+                    <div class="titlePay">Кредит</div>
+
+                    <button class="btnPay btnLightGrey">Заполнить заявку</button>
+
+                    <span class="descPay">
+                        <img src="/styles/personal-page/img/cards/renesans.png" alt="" class="descPay_img" />
+                        <img src="/styles/personal-page/img/cards/tinkoff.png" alt="" class="descPay_img" />
+                        <img src="/styles/personal-page/img/cards/otpBank.png" alt="" class="descPay_img" />
+                    </span>
+                </li>
+            </ul>
+        </menu>
+    
+    -->
+
+
+        <ul class="paySumm">
+            <li>Сумма заказа: <span class="paySumm_val">42 740 <span class="rubl">p</span></span></li>
+        </ul>
+
+        <div class="payComplete"></div>
     </aside>
     <!--/ сайдбар онлайн оплаты -->
 </div>
+
+
+<div class="personalPage">
+    <div class="personalTitle">Изменить мои данные</div>
+
+        <form action="" class="personalData">
+            <fieldset class="personalData_left">
+                <legend class="legend">Личные данные</legend>
+            
+                <label class="personalData_label labeltext">Имя:</label>
+                <input class="personalData_text textfield" type="text" />
+
+                <label class="personalData_label labeltext">Отчество:</label>
+                <input class="personalData_text textfield" type="text" />
+
+                <label class="personalData_label labeltext">Фамилия:</label>
+                <input class="personalData_text textfield" type="text" />
+
+                <div class="personalData_col">
+                    <label class="personalData_label labeltext">Дата рождения:</label>
+
+                    <select name="day">
+                        <option value="">1</option>
+                        <option value="">2</option>
+                    </select>
+
+                    <select name="month">
+                        <option value="">июнь</option>
+                        <option value="">июль</option>
+                    </select>
+
+                    <select name="years">
+                        <option value="">2014</option>
+                        <option value="">2013</option>
+                    </select>
+                </div>
+
+                <div class="personalData_col">
+                    <label class="personalData_label labeltext">Пол:</label>
+
+                    <select name="years">
+                        <option value="">мужской</option>
+                        <option value="">женский</option>
+                    </select>
+                </div>
+
+                <div class="personalData_warn">
+                    <div class="personalData_warn_text">
+                        Одно из полей обязательно для заполнения!
+                    </div>
+                </div>
+
+                <label class="personalData_label labeltext">E-mail:</label>
+                <input class="personalData_text textfield" type="email" />
+
+                <label class="personalData_label labeltext">Мобильный телефон:</label>
+                <input class="personalData_text textfield" type="text" />
+
+                <label class="personalData_label labeltext">Домашний телефон:</label>
+                <input class="personalData_text textfield" type="text" />
+
+                <label class="personalData_label labeltext">Номер карты "Связной-Клуб":</label>
+                <input class="personalData_text textfield" type="text" />
+
+                <label class="personalData_label labeltext">Род деятельности:</label>
+                <input class="personalData_text textfield" type="text" />
+            </fieldset>
+
+        <fieldset class="personalData_right">
+            <legend class="legend">Пароль</legend>
+
+            <p style="xs">Надежный пароль должен содержать от 6 до 16 знаков следующих трех видов: прописные буквы, строчные буквы, цифры или символы, но не должен включать широко распространенные слова и имена.</p>
+            <label class="labeltext">Старый пароль:</label>
+            <input class="textfield personalData_text"></input>
+
+            <label class="labeltext">Новый пароль:</label>
+            <input class="textfield personalData_text"></input>
+
+            <p style="xs">Внимание! После смены пароля Вам придет письмо и SMS с новым паролем</p>
+        </fieldset>
+        
+        <fieldset class="personalData_clear">
+            <input class="btnsubmit" type="submit" value="Сохранить изменения" />
+        </fieldset>
+    </form>
+</div>
+
+
+<div class="personalPage">
+    <div class="personalTitle">Подписки</div>
+
+    <form action="" class="personalSubscr">
+        <fieldset class="personalSubscr_row">
+            <legend class="legend">Email</legend>
+
+            <input class="jsCustomRadio customInput customInput-bigCheck" id="email" type="checkbox"  name="" checked />
+            <label class="customLabel customLabel-bigCheck" for="email">Акции, новости и специальные предложения </label>
+
+        </fieldset>
+
+        <fieldset class="personalSubscr_row">
+            <legend class="legend">SMS</legend>
+
+            <input class="jsCustomRadio customInput customInput-bigCheck" id="sms" type="checkbox" name="" />
+            <label class="customLabel customLabel-bigCheck" for="sms">Акции, новости и специальные предложения </label>
+
+        </fieldset>
+
+        <fieldset class="personalSubscr_clear">
+            <input class="btnsubmit" type="submit" value="Сохранить" />
+        </fieldset>
+    </form>
+</div>
+
+
+
