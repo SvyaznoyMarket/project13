@@ -23,6 +23,22 @@
 			}
 		}
 
+		.rulesImg {
+			float: left;
+
+		   	width: 95px;
+			height: 82px;
+		    margin-top: 10px;
+		    margin-right: 15px;
+
+		    vertical-align: middle;
+
+			img {
+				width: 100%;
+				height: auto;
+			}
+		}
+
 		&__item {
 			float: left;
 
@@ -94,6 +110,46 @@
 					height: 66px;
 				}
 			}
+
+			&.mMembers {
+
+				.cuponImg {
+					.opacity(0.45);
+				}
+
+				.cuponImgHover {
+					.opacity(0);
+					z-index: 18;
+					top: 60px;
+
+					text-align: center;
+
+					background: none;
+
+					.epTextLogo {
+						font-size: 25px;
+					}
+				}
+
+				.cuponText {
+					.text-shadow(0 2px 5px @black);
+					text-align: center;
+
+					color: @white;
+
+					font-size: 20px;
+				}
+
+				&:hover {
+
+					.cuponImgHover {
+						.opacity(1);
+						z-index: 18;
+
+						background: none;
+					}
+				}
+			} 
 		}
 
 		&__link {
@@ -237,7 +293,7 @@
 
 		.enterPrize__list {
 		    position: absolute;
-		    top: -80px;
+		    top: -45px;
 		    right: 0;
 		}
 

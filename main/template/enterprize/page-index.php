@@ -5,11 +5,11 @@
  * @var $enterpizeCoupons \Model\EnterprizeCoupon\Entity[]
  * @var $enterpizeCoupon  \Model\EnterprizeCoupon\Entity
  * @var $isCouponSent     bool
+ * @var $products         \Model\Product\Entity[]
  */
-?>
 
-<?
 $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMember();
+$helper = new \Helper\TemplateHelper();
 ?>
 
 <div class="enterPrize">
@@ -51,18 +51,31 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
         <? endif ?>
     </header>
 
-    <? if ($isEnterprizeMember): ?>
+    <? if ((bool)$isCouponSent && (bool)$enterpizeCoupon): ?>
+
+        <? $priceNumDecimals = false === strpos((string)$enterpizeCoupon->getPrice(), '.') ? 0 : 2 ?>
+
         <div class="epSelectFishka clearfix">
             <div class="epSelectFishka_left enterPrize__list">
                 <div class="enterPrize__list__item mOrange">
                     <div class="enterPrize__list__link">
-                        <span style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_fuksiya_b1.png);" class="cuponImg">
+                        <span <? if ($enterpizeCoupon->getBackgroundImage()): ?> style="background-image: url(<?= $enterpizeCoupon->getBackgroundImage() ?>);"<? endif ?> class="cuponImg">
                             <span class="cuponImg__inner">
-                                <span class="cuponIco"><img src="http://content.enter.ru/wp-content/uploads/2014/03/electronica.png"></span>
+                                <? if ($enterpizeCoupon->getImage()): ?>
+                                    <span class="cuponIco"><img src="<?= $enterpizeCoupon->getImage() ?>" /></span>
+                                <? endif ?>
 
-                                <span class="cuponDesc">Фотокамеры SONY</span>
+                                <? if ($enterpizeCoupon->getName()): ?>
+                                    <span class="cuponDesc"><?= $enterpizeCoupon->getName() ?></span>
+                                <? endif ?>
 
-                                <span class="cuponPrice">500 <span class="rubl">p</span></span>
+                                <? if ($enterpizeCoupon->getPrice()): ?>
+                                    <span class="cuponPrice"><?= $page->helper->formatPrice($enterpizeCoupon->getPrice(), $priceNumDecimals) . (!$enterpizeCoupon->getIsCurrency() ? '%' : '') ?>
+                                        <? if ($enterpizeCoupon->getIsCurrency()): ?>
+                                            <span class="rubl">p</span>
+                                        <? endif ?>
+                                    </span>
+                                <? endif ?>
                             </span>
                         </span>
                     </div>
@@ -75,80 +88,25 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
                     При заказе введите код в поле Код фишки, купон, промокод
                 </div>
 
-                <div class="epSelectFishka_slider">
-                    <a class="epSelectFishka_slider_link" href="">Выбрать товары с этой скидкой</a>
-
-                    <div class="bSlider">
-                        <div class="bSlider__eInner">
-                            <ul class="bSlider__eList clearfix" style="width: 480px; left: 0px;">
-                                <li class="bSlider__eItem jsSliderItem" style="display: list-item;">
-                                    <div class="product__inner">
-                                        <a href="" class="productImg">
-                                            <img alt="" src="http://fs09.enter.ru/1/1/120/91/66457.jpg">
-                                        </a>
-                                        <div class="productName"><a href="">Карта памяти PS Vita Memory Card 8 ГБ (PCH-Z081)</a></div>
-                                        <div class="productPrice"><span class="price">1 199 <span class="rubl">p</span></span></div>
-
-                                        <div class="bWidgetBuy__eBuy btnBuy">
-                                            <a class="id-cartButton-product-31128 btnBuy__eLink mShopsOnly" href="/cart/one-click/add-product/31128">Резерв</a>
-                                        </div>
-                                    </div>
-                                </li>
-                                
-                                <li class="bSlider__eItem jsSliderItem" style="display: list-item;">
-                                    <div class="product__inner">
-                                        <a href="" class="productImg">
-                                            <img alt="" src="http://fs09.enter.ru/1/1/120/91/66457.jpg">
-                                        </a>
-                                        <div class="productName"><a href="">Карта памяти PS Vita Memory Card 8 ГБ (PCH-Z081)</a></div>
-                                        <div class="productPrice"><span class="price">1 199 <span class="rubl">p</span></span></div>
-
-                                        <div class="bWidgetBuy__eBuy btnBuy">
-                                            <a class="id-cartButton-product-31128 btnBuy__eLink mShopsOnly" href="/cart/one-click/add-product/31128">Резерв</a>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <li class="bSlider__eItem jsSliderItem" style="display: list-item;">
-                                    <div class="product__inner">
-                                        <a href="" class="productImg">
-                                            <img alt="" src="http://fs09.enter.ru/1/1/120/91/66457.jpg">
-                                        </a>
-                                        <div class="productName"><a href="">Карта памяти PS Vita Memory Card 8 ГБ (PCH-Z081)</a></div>
-                                        <div class="productPrice"><span class="price">1 199 <span class="rubl">p</span></span></div>
-
-                                        <div class="bWidgetBuy__eBuy btnBuy">
-                                            <a class="id-cartButton-product-31128 btnBuy__eLink mShopsOnly" href="/cart/one-click/add-product/31128">Резерв</a>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <li class="bSlider__eItem jsSliderItem" style="display: list-item;">
-                                    <div class="product__inner">
-                                        <a href="" class="productImg">
-                                            <img alt="" src="http://fs09.enter.ru/1/1/120/91/66457.jpg">
-                                        </a>
-                                        <div class="productName"><a href="">Карта памяти PS Vita Memory Card 8 ГБ (PCH-Z081)</a></div>
-                                        <div class="productPrice"><span class="price">1 199 <span class="rubl">p</span></span></div>
-
-                                        <div class="bWidgetBuy__eBuy btnBuy">
-                                            <a class="id-cartButton-product-31128 btnBuy__eLink mShopsOnly" href="/cart/one-click/add-product/31128">Резерв</a>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="bSlider__eBtn mPrev mDisabled"><span></span></div>
-                        <div class="bSlider__eBtn mNext mDisabled"><span></span></div>
+                <? if (isset($products) && !empty($products) && is_array($products)): ?>
+                    <div class="epSelectFishka_slider">
+                        <a class="epSelectFishka_slider_link" href="">Выбрать товары с этой скидкой</a>
+                        
+                        <?= $helper->render('product/__slider', [
+                            'type'     => 'enterprize',
+                            'title'    => '',
+                            'products' => $products,
+                            'count'    => null,
+                            'limit'    => \App::config()->enterprize['itemsInSlider'],
+                        ]) ?>
                     </div>
-                </div>
+                <? endif ?>
             </div>
         </div>
     <? endif ?>
 
     <section class="epHead">
-        <h2 class="epHead_title">Все, что вы хотели, со скидкой до 70%</h1>
+        <h2 class="epHead_title">Все, что вы хотели, со скидкой до 70%</h2>
 
         <ul class="epHead_list">
             <li class="epHead_list_item">Выберите фишку — получите <strong>код скидки</strong>. Используйте его при заказе.</li>
@@ -174,6 +132,8 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
         <? $i = 0; foreach ($enterpizeCoupons as $coupon): $i++ ?>
 
             <?
+            $priceNumDecimals = false === strpos((string)$coupon->getPrice(), '.') ? 0 : 2;
+
             $itemClass = 'enterPrize__list__item';
             if (!($i % 4)) {
                 $itemClass .= ' mLast';
@@ -192,29 +152,65 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
                     : null;
             } ?>
 
-            <li class="<?= $itemClass ?>">
-                <a class="enterPrize__list__link" href="<?= $couponLink ? $couponLink : '#' ?>">
-                <span class="cuponImg"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
-                    <span class="cuponImg__inner">
-                        <? if ($coupon->getImage()): ?>
-                            <span class="cuponIco"><img src="<?= $coupon->getImage() ?>" /></span>
-                        <? endif ?>
 
-                        <? if ($coupon->getName()): ?>
-                            <span class="cuponDesc"><?= $coupon->getName() ?></span>
-                        <? endif ?>
+            <? if ($coupon->isForMember() && !$isEnterprizeMember): // Только для игроков EnterPrize  ?>
+                <li class="<?= !empty($itemClass) ? "$itemClass " : '' ?>mMembers">
+                    <div class="enterPrize__list__link">
+                        <span class="cuponImg"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
+                            <span class="cuponImg__inner">
+                                <? if ($coupon->getImage()): ?>
+                                    <span class="cuponIco"><img src="<?= $coupon->getImage() ?>" /></span>
+                                <? endif ?>
 
-                        <? if ($coupon->getPrice()): ?>
-                            <span class="cuponPrice"><?= $coupon->getPrice() . (!$coupon->getIsCurrency() ? '%' : '') ?> <? if ($coupon->getIsCurrency()): ?><span class="rubl">p</span><? endif ?></span>
-                        <? endif ?>
-                    </span>
-                </span>
+                                <? if ($coupon->getName()): ?>
+                                    <span class="cuponDesc"><?= $coupon->getName() ?></span>
+                                <? endif ?>
 
-                <span class="cuponImgHover">
-                    <span class="cuponBtn">Получить</span>
-                </span>
-                </a>
-            </li>
+                                <? if ($coupon->getPrice()): ?>
+                                    <span class="cuponPrice"><?= $page->helper->formatPrice($coupon->getPrice(), $priceNumDecimals) . (!$coupon->getIsCurrency() ? '%' : '') ?>
+                                        <? if ($coupon->getIsCurrency()): ?>
+                                            <span class="rubl">p</span>
+                                        <? endif ?>
+                                    </span>
+                                <? endif ?>
+                            </span>
+                        </span>
+
+                        <span class="cuponImgHover">
+                            <span class="cuponText">Только<br/> для игроков<br/> <span class="epTextLogo">Enter <span class="epTextLogo_colors">Prize</span></span></span>
+                        </span>
+                    </div>
+                </li>
+
+            <? else: ?>
+                <li class="<?= $itemClass ?>">
+                    <a class="enterPrize__list__link" href="<?= $couponLink ? $couponLink : '#' ?>">
+                        <span class="cuponImg"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
+                            <span class="cuponImg__inner">
+                                <? if ($coupon->getImage()): ?>
+                                    <span class="cuponIco"><img src="<?= $coupon->getImage() ?>" /></span>
+                                <? endif ?>
+
+                                <? if ($coupon->getName()): ?>
+                                    <span class="cuponDesc"><?= $coupon->getName() ?></span>
+                                <? endif ?>
+
+                                <? if ($coupon->getPrice()): ?>
+                                    <span class="cuponPrice"><?= $page->helper->formatPrice($coupon->getPrice(), $priceNumDecimals) . (!$coupon->getIsCurrency() ? '%' : '') ?>
+                                        <? if ($coupon->getIsCurrency()): ?>
+                                            <span class="rubl">p</span>
+                                        <? endif ?>
+                                    </span>
+                                <? endif ?>
+                            </span>
+                        </span>
+
+                        <span class="cuponImgHover">
+                            <span class="cuponBtn">Получить</span>
+                        </span>
+                    </a>
+                </li>
+            <? endif ?>
         <? endforeach ?>
     </ul>
 

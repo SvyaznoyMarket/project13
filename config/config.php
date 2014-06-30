@@ -10,7 +10,7 @@ $c->appDir = realpath(__DIR__ . '/..');
 $c->configDir = $c->appDir . '/config';
 $c->libDir = $c->appDir . '/lib';
 $c->dataDir = $c->appDir . '/data';
-$c->logDir = $c->appDir . '/log';
+$c->logDir = realpath($c->appDir . '/../logs');
 $c->webDir = $c->appDir . '/web';
 $c->templateDir = $c->appDir . '/main/template';
 $c->cmsDir = $c->appDir . '/../../cms.enter.ru/wwwroot';
@@ -23,7 +23,7 @@ $c->logger['pretty'] = false;
 $c->appName = 'Enter';
 $c->authToken['name']     = '_token';
 $c->authToken['authorized_cookie'] = '_authorized';
-$c->sessionToken = 'enter';
+$c->sessionToken = 'enter'; // TODO: удалить?
 
 $c->session['name']            = 'enter';
 $c->session['cookie_lifetime'] = 15552000;
@@ -35,7 +35,7 @@ $c->mainHost = 'www.enter.ru';
 $c->mobileHost = 'm.enter.ru';
 
 $c->redirect301['enabled'] = true;
-$c->mobileRedirect['enabled'] = false;
+$c->mobileRedirect['enabled'] = true;
 
 $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 $c->coreV2['client_id']    = 'site';
@@ -106,6 +106,19 @@ $c->dataStore['retryTimeout'] = [
     'medium'  => 0.1,
     'long'    => 0.5,
     'huge'    => 1,
+    'forever' => 0,
+];
+
+$c->scmsV2['url']          = 'http://scms.enter.ru/v2/';
+$c->scmsV2['retryCount']   = 2;
+$c->scmsV2['timeout']      = 0.36;
+$c->scmsV2['retryTimeout'] = [
+    'default' => 0.18,
+    'tiny'    => 0.18,
+    'short'   => 0.25,
+    'medium'  => 0.5,
+    'long'    => 1,
+    'huge'    => 2,
     'forever' => 0,
 ];
 
@@ -428,5 +441,17 @@ $c->flocktoryExchange['enabled'] = true;
 
 $c->flocktoryCoupon['enabled'] = true;
 $c->flocktoryCoupon['paramName'] = 'utm_coupon';
+
+
+$c->photoContest = [
+	'client' => [
+		'url'          => 'http://photo.enter.ru/',
+		'client_id'    => 'photocontest',
+		'timeout'      => 2,
+		'retryTimeout' => 1,
+		'retryCount'   => 2,
+		'debug'        => false,
+	]
+];
 
 return $c;

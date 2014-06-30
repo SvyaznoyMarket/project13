@@ -64,7 +64,7 @@ class RecommendedAction {
                         $ids[$type] = array_unique(array_merge($product->getRelatedId(), $ids[$type]));
                     }
 
-                    $allIds = array_unique(array_merge($allIds, $ids[$type]));
+                    $allIds = array_unique(array_merge($allIds, (array)$ids[$type]));
                 }, function(\Exception $e) {
                     \App::exception()->remove($e);
                 }, $rrConfig['timeout']);

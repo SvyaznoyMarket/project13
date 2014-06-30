@@ -781,6 +781,16 @@ return [
         'pattern' => '/enterprize/fail',
         'action'  => ['Enterprize\CouponAction', 'fail'],
     ],
+    // enterprize retail
+    'enterprize.retail.show' => [
+        'pattern' => '/fishka',
+        'action'  => ['Enterprize\RetailClient', 'show'],
+    ],
+    'enterprize.retail.create' => [
+        'pattern' => '/enterprize/retail/create',
+        'action'  => ['Enterprize\RetailClient', 'create'],
+        'method'  => ['POST'],
+    ],
     // enterprize form
     'enterprize.form.update' => [
         'pattern' => '/enterprize/form/update',
@@ -815,7 +825,7 @@ return [
     'enterprize.confirmEmail.check' => [
         'pattern' => '/enterprize/confirm-email/check',
         'action'  => ['Enterprize\ConfirmEmailAction', 'check'],
-        'method'  => ['POST'],
+        //'method'  => ['POST'],
     ],
     'enterprize.confirmEmail.warn' => [
         'pattern' => '/enterprize/confirm-email/warn',
@@ -847,11 +857,71 @@ return [
         ],
     ],
 
-    //content
+	/**
+	 * Фотоконкурс
+	 */
+	'pc.homepage' => [
+        'pattern' => '/contest',
+        'action'  => ['Photocontest\IndexAction', 'index'],
+		'require' => [
+            'order'	=> '\w{1}',
+			'page'	=> '\d{1,2}'
+        ],
+    ],
+	
+	'pc.service.safeKey' => [
+        'pattern' => '/contest/sk',
+        'action'  => ['Photocontest\PhotoAction', 'safeKey'],
+    ],
+	
+	'pc.photo.unvote' => [
+        'pattern' => '/contest/unvote/{id}',
+        'action'  => ['Photocontest\PhotoAction', 'unvote'],
+		'require' => [
+            'id'		=> '\d+'
+        ],
+    ],
+	
+	'pc.photo.vote' => [
+        'pattern' => '/contest/vote/{id}',
+        'action'  => ['Photocontest\PhotoAction', 'vote'],
+		'require' => [
+            'id'		=> '\d+'
+        ],
+    ],
+	
+	'pc.photo.create' => [
+        'pattern' => '/contest/{contestRoute}/add',
+        'action'  => ['Photocontest\PhotoAction', 'create'],
+		'require' => [
+            'contestRoute'	=> '[A-z0-9_]+',
+        ],
+    ],
+	
+	
+	'pc.photo.show' => [
+        'pattern' => '/contest/{contestRoute}/{id}',
+        'action'  => ['Photocontest\PhotoAction', 'show'],
+		'require' => [
+            'id'		=> '\d+',
+			'contestRoute'		=> '[A-z0-9_]+',
+        ],
+    ],
+
+	'pc.contest'	=> [
+		'pattern'	=> '/contest/{contestRoute}',
+		'action'  => ['Photocontest\IndexAction', 'contest'],
+		'require' => [
+            'contestRoute'	=> '[A-z0-9_]+',
+			'order'	=> '\w{1}',
+			'page'	=> '\d{1,2}'
+        ],
+	],
+	
+	
+	//content
     'content' => [
         'pattern' => '/{token}',
         'action'  => ['Content\Action', 'execute'],
     ],
-
-
 ];

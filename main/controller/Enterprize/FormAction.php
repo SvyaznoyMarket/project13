@@ -6,10 +6,11 @@ class FormAction {
 
     /**
      * @param null $enterprizeToken
-     * @return \Http\Response
+     * @param \Http\Request $request
+     * @return \Http\RedirectResponse|\Http\Response
      * @throws \Exception\NotFoundException
      */
-    public function show($enterprizeToken = null) {
+    public function show($enterprizeToken = null, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (!\App::config()->enterprize['enabled']) {
@@ -23,6 +24,11 @@ class FormAction {
         $user = \App::user();
         $session = \App::session();
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
+        $repository = \RepositoryManager::enterprize();
+        $products = [];
+
+        // флаг, партнерский купон или нет
+        $isPartnerCoupon = (bool)$request->get('is_partner_coupon') && (bool)$request->get('keyword');
 
         $session->set($sessionName, array_merge(
             [
@@ -35,31 +41,30 @@ class FormAction {
             ]
         ));
 
+        // получение купона
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
         $enterpizeCoupon = null;
-        if ($enterprizeToken) {
-            \App::dataStoreClient()->addQuery('enterprize/coupon-type.json', [], function($data) use (&$enterpizeCoupon, $enterprizeToken) {
-                foreach ((array)$data as $item) {
-                    if ($enterprizeToken == $item['token']) {
-                        $enterpizeCoupon = new \Model\EnterprizeCoupon\Entity($item);
-                    }
-                }
-            });
-            \App::dataStoreClient()->execute();
-        }
 
-        if ($enterpizeCoupon) {
-            $limitResponse = \App::coreClientV2()->query('coupon/limits', [], ['list' => array($enterpizeCoupon->getToken())]);
-        }
-
-        if ($enterpizeCoupon && isset($limitResponse['detail'][$enterpizeCoupon->getToken()])) {
-            $enterpizeCouponLimit = $limitResponse['detail'][$enterpizeCoupon->getToken()];
+        // партнерский купон
+        if ($isPartnerCoupon) {
+            $enterpizeCoupon = $repository->getEntityFromPartner($request->get('keyword'));
         } else {
-            $enterpizeCouponLimit = null;
+            $enterpizeCoupon = $repository->getEntityByToken($enterprizeToken);
+
+            if ($enterpizeCoupon) {
+                $products = $this->getProducts($enterpizeCoupon);
+            }
         }
 
-        if (!$enterpizeCoupon || !$enterpizeCoupon instanceof \Model\EnterprizeCoupon\Entity) {
+        if (!(bool)$enterpizeCoupon || !$enterpizeCoupon instanceof \Model\EnterprizeCoupon\Entity) {
             throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
+        }
+
+        $limitResponse = \App::coreClientV2()->query('coupon/limits', [], ['list' => array($enterpizeCoupon->getToken())]);
+        $enterpizeCouponLimit = null;
+
+        if (isset($limitResponse['detail'][$enterpizeCoupon->getToken()])) {
+            $enterpizeCouponLimit = $limitResponse['detail'][$enterpizeCoupon->getToken()];
         }
 
         $data = (array)$session->get($sessionName, []);
@@ -90,7 +95,8 @@ class FormAction {
         $page->setParam('errors', !empty($flash['errors']) ? $flash['errors'] : null);
         $page->setParam('authSource', $session->get('authSource', null));
         $page->setParam('viewParams', ['showSideBanner' => false]);
-        $page->setParam('products', $this->getProducts($enterpizeCoupon));
+        $page->setParam('products', $products);
+        $page->setParam('isPartnerCoupon', $isPartnerCoupon);
 
         return new \Http\Response($page->show());
     }
@@ -386,7 +392,7 @@ class FormAction {
      * @param \Model\EnterprizeCoupon\Entity $coupon
      * @return \Model\Product\Entity[]
      */
-    public function getProducts(\Model\EnterprizeCoupon\Entity $coupon) {
+    public static function getProducts(\Model\EnterprizeCoupon\Entity $coupon) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
@@ -410,6 +416,10 @@ class FormAction {
         if ($coupon && $coupon->getLink()) {
             $linkParts = explode('/', $coupon->getLink());
             $linkParts = array_values(array_filter($linkParts));
+
+            if (!isset($linkParts[0]) || empty($linkParts[0])) {
+                return $products;
+            }
 
             /** @var $category \Model\Product\Category\Entity */
             $category = null;

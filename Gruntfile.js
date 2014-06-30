@@ -3,7 +3,6 @@ module.exports = function(grunt) {
     var jsRootPath = 'web/js/',
         jsDevPath = jsRootPath+'dev/',
         jsProdPath = jsRootPath+'prod/',
-        jsV2RootPath = 'web/v2/js/',
 
         globalConfig = {
             jqueryPlugins:  [
@@ -49,7 +48,6 @@ module.exports = function(grunt) {
         data: {
             gc: globalConfig,
             pathRoot: jsRootPath,
-            pathRootV2: jsV2RootPath,
             pathDev: jsDevPath,
             pathProd: jsProdPath
         }

@@ -25,11 +25,16 @@
 	float: right;
 }
 
+.pc_file {
+	border: none !important;
+	padding: 0;
+}
+
 
 
 /* Базовые классы которых не хватает */
 .pc_left {float: left;}
-.pc_right {float: right;}
+.pc_right {float: right;} 
 
 .pc_button, .pc_form button, .pc_form input[type=submit] {
 	/* Скопировано с кнопки заказа */
@@ -40,7 +45,22 @@
 	display: inline-block;
 	font: bold 24px Tahoma, sans-serif;
 	padding: 6px 80px;
+	text-align: center; 
+}
+
+
+label.pc_file {
+	background: none repeat scroll 0 0 #F89B1C;
+	border: 1px solid #E26500; 
+	.rounded(5px); 
+	color: #FFFFFF;
+	display: inline-block;
+	font: bold 14px Tahoma, sans-serif;
+	padding: 6px 30px;
 	text-align: center;
+	> input {
+		display: none;
+	}
 }
 
 
@@ -216,7 +236,7 @@ ul.pc_tail {
 	}
 }
 
-
+ 
 
 #pc_splash {
 	background: url('i/transOtake.jpg');

@@ -271,7 +271,7 @@ foreach ($productsById as $product) {
 						
 						<div class="bSaleData__eEmptyBlock">Скидок больше нет</div>
 
-						<ul class="bSaleList bInputList clearfix">
+						<ul class="bSaleList bInputList clearfix hiddenCustom">
 	                        <? if (\App::config()->coupon['enabled']): ?>
 							<li class="bSaleList__eItem" data-type="coupon" data-bind="visible: (deliveryBoxes().length == 1)">
 								<input value="<?= $page->url('cart.coupon.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="svz_club" name="add_sale" data-bind="checked: couponUrl" />

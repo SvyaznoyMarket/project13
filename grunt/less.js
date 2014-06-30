@@ -42,6 +42,7 @@ module.exports = {
     },
 
     // компиляция LESS
+    /*
     compileV2: {
         options: {
             paths: ['web/v2/css/']
@@ -60,5 +61,25 @@ module.exports = {
         files: {
             'web/v2/css/global.min.css': ['web/v2/css/global.less']
         }
-    }
+    },
+	*/
+	
+	photoContestCompile: {
+		options: {
+			paths: ['web/css/photoContest/']
+		},
+		files: {
+			'web/css/photoContest/style.css': ['web/css/photoContest/style.less']
+		}
+	},
+	
+	photoContestCompress: {
+		options: {
+			paths: ['web/css/photoContest/'],
+			compress: true
+		},
+		files: {
+			'web/css/photoContest/style.min.css': ['web/css/photoContest/style.less']
+		}
+	}
 };

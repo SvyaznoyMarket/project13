@@ -8,6 +8,7 @@
  * @var $extendedMargin  bool
  * @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null
  * @var $member          bool
+ * @var $isPartnerCoupon bool
  */
 ?>
 
@@ -16,8 +17,7 @@ $hasSearch = isset($hasSearch) ? (bool)$hasSearch : true;
 $hasSeparateLine = isset($hasSeparateLine) ? (bool)$hasSeparateLine : false;
 $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
 
-$routeName = \App::request()->attributes->get('route');
-?>
+$routeName = \App::request()->attributes->get('route'); ?>
 
 <div class="pagehead">
 
@@ -34,7 +34,22 @@ $routeName = \App::request()->attributes->get('route');
 
     <div class="clear"></div>
 
-    <? if ($enterpizeCoupon): ?>
+    <? if ($enterpizeCoupon):
+
+        $url = $enterpizeCoupon->getLink();
+        $name = $enterpizeCoupon->getName();
+        $linkName = $enterpizeCoupon->getLinkName() ? $enterpizeCoupon->getLinkName() : $name;
+        $imageUrl = $enterpizeCoupon->getImage();
+
+        // партнерский купон
+        if (isset($isPartnerCoupon) && (bool)$isPartnerCoupon) {
+            $url = $enterpizeCoupon->getPartnerUrl();
+            $linkName = $name = $enterpizeCoupon->getPartner();
+            $imageUrl = $enterpizeCoupon->getPartnerImageUrl();
+        }
+
+        $priceNumDecimals = false === strpos((string)$enterpizeCoupon->getPrice(), '.') ? 0 : 2; ?>
+
         <div class="enterPrize mPrivate <?= isset($limit) && $limit === 0 ? 'mDisabled' : ''?>">
             <a class="enterPrize__logo" href="<?= $page->url('enterprize') ?>"></a>
 
@@ -43,16 +58,21 @@ $routeName = \App::request()->attributes->get('route');
                     <div class="enterPrize__list__link">
                         <span class="cuponImg"<? if ($enterpizeCoupon->getBackgroundImage()): ?> style="background-image: url(<?= $enterpizeCoupon->getBackgroundImage() ?>);"<? endif ?>>
                             <span class="cuponImg__inner">
-                                <? if ($enterpizeCoupon->getImage()): ?>
-                                    <span class="cuponIco"><img src="<?= $enterpizeCoupon->getImage() ?>" /></span>
+                                <? if ($imageUrl): ?>
+                                    <span class="cuponIco"><img src="<?= $imageUrl ?>" /></span>
                                 <? endif ?>
 
-                                <? if ($enterpizeCoupon->getName()): ?>
-                                    <span class="cuponDesc"><?= $enterpizeCoupon->getName() ?></span>
+                                <? if ($name): ?>
+                                    <span class="cuponDesc"><?= $name ?></span>
                                 <? endif ?>
 
                                 <? if ($enterpizeCoupon->getPrice()): ?>
-                                    <span class="cuponPrice"><?= $enterpizeCoupon->getPrice() . (!$enterpizeCoupon->getIsCurrency() ? '%' : '') ?> <? if ($enterpizeCoupon->getIsCurrency()): ?><span class="rubl">p</span><? endif ?></span>
+                                    <span class="cuponPrice">
+                                        <?= $page->helper->formatPrice($enterpizeCoupon->getPrice(), $priceNumDecimals) . (!$enterpizeCoupon->getIsCurrency() ? '%' : '') ?>
+                                        <? if ($enterpizeCoupon->getIsCurrency()): ?>
+                                            <span class="rubl">p</span>
+                                        <? endif ?>
+                                    </span>
                                 <? endif ?>
                             </span>
                         </span>
@@ -61,9 +81,13 @@ $routeName = \App::request()->attributes->get('route');
             </div>
 
             <div class="enterPrize__rules"><!-- если пользователь уже получил купон то добавляем класс  mFailed-->
+                <div class="rulesImg">
+                    <img src="" alt="" />
+                </div>
+
                 <div class="rulesText">
-                    Фишка со скидкой <strong><?= $enterpizeCoupon->getPrice() ?> <?= !$enterpizeCoupon->getIsCurrency() ? '%' : 'руб' ?></strong> на
-                    <strong><a target="_blank" style="text-decoration: underline;" href="<?= $enterpizeCoupon->getLink() ?>"><?= $enterpizeCoupon->getLinkName() ? $enterpizeCoupon->getLinkName() : $enterpizeCoupon->getName() ?></a></strong><br />
+                    Фишка со скидкой <strong><?= $page->helper->formatPrice($enterpizeCoupon->getPrice(), $priceNumDecimals) ?><?= !$enterpizeCoupon->getIsCurrency() ? '%' : 'руб' ?></strong> на
+                    <strong><a target="_blank" style="text-decoration: underline;" href="<?= $url ?>"><?= $linkName ?></a></strong><br />
                     Минимальная сумма заказа <?= $enterpizeCoupon->getMinOrderSum() ? $enterpizeCoupon->getMinOrderSum() : 0 ?> руб<br />
                     Действует
                     <? if ($enterpizeCoupon->getStartDate() instanceof \DateTime): ?>
