@@ -2699,7 +2699,7 @@ img[height="0"] {
     text-align: center;
   }
   .epLand_form_title {
-    margin: 0 0 10px;
+    margin: 0 auto 10px;
     text-transform: uppercase;
     color: #ffffff;
     font-size: 38px;
