@@ -44,8 +44,6 @@ $routeName = \App::request()->attributes->get('route'); ?>
         // партнерский купон
         if (isset($isPartnerCoupon) && (bool)$isPartnerCoupon) {
             $url = $enterpizeCoupon->getPartnerUrl();
-            $linkName = $name = $enterpizeCoupon->getPartner();
-            $imageUrl = $enterpizeCoupon->getPartnerImageUrl();
         }
 
         $priceNumDecimals = false === strpos((string)$enterpizeCoupon->getPrice(), '.') ? 0 : 2; ?>
