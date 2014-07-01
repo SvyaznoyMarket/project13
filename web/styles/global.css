@@ -1949,6 +1949,18 @@ img[height="0"] {
     position: relative;
     margin: 0 10px;
   }
+  .enterPrize__logo {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    width: 264px;
+    height: 76px;
+    margin-left: 7px;
+    text-indent: -9999px;
+    background: url("/styles/enterPrize/img/bgLogo.png") no-repeat 0 0;
+  }
   .enterPrize__rules {
     margin-top: -64px;
     padding: 65px 0 10px 15px;
@@ -2211,7 +2223,7 @@ img[height="0"] {
   }
   .enterPrize.mPrivate .enterPrize__rules {
     float: none;
-    width: 550px;
+    width: 600px;
     height: auto;
     margin: 13px 0;
     padding: 15px;
