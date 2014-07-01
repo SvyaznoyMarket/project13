@@ -312,7 +312,7 @@
 	loadScripts = {
 		'default': function() {
 			$LAB.queueWait( function() {
-				$LAB.script('jquery-plugins.min.js')
+				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
 					.script( loadDebugPanel )
@@ -325,7 +325,7 @@
 
 		'main': function() {
 			$LAB.queueWait( function() {
-				$LAB.script('jquery-plugins.min.js')
+				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
 					.script( loadDebugPanel )
@@ -345,7 +345,7 @@
 
 		'tag-category': function() {
 			$LAB.queueWait( function() {
-				$LAB.script('jquery-plugins.min.js')
+				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
 					.script( loadDebugPanel )
@@ -364,7 +364,7 @@
 
 		'infopage': function() {
 			$LAB.queueWait( function() {
-				$LAB.script('jquery-plugins.min.js')
+				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
 					.script( loadDebugPanel )
@@ -384,7 +384,7 @@
 
 		'enterprize': function() {
 			$LAB.queueWait( function() {
-				$LAB.script('jquery-plugins.min.js')
+				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
 					.script( loadDebugPanel )
@@ -405,7 +405,7 @@
 
 		'cart': function() {
 			$LAB.queueWait( function() {
-				$LAB.script('jquery-plugins.min.js')
+				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script('JsHttpRequest.min.js')
 					.script( getWithVersion('library.js') )
 					.script( directCreditUrl )
@@ -428,7 +428,7 @@
 
 		'lk': function() {
 			$LAB.queueWait( function() {
-				$LAB.script('jquery-plugins.min.js')
+				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
 					.script( loadDebugPanel )
@@ -450,7 +450,7 @@
 			$LAB.queueScript( yandexMapUrl )
 				.queueScript( knockoutUrl )
 				.queueWait( function() {
-					$LAB.script('jquery-plugins.min.js')
+					$LAB.script( getWithVersion('jquery-plugins.js') )
 						.script('JsHttpRequest.min.js')
 						.script( getWithVersion('library.js') )
 						.script( directCreditUrl )
@@ -475,7 +475,7 @@
 				.queueScript( knockoutUrl )
 				.queueScript( kladr )
 				.queueWait( function() {
-					$LAB.script('jquery-plugins.min.js')
+					$LAB.script( getWithVersion('jquery-plugins.js') )
 						.script('JsHttpRequest.min.js')
 						.script( getWithVersion('library.js') )
 						.script( directCreditUrl )
@@ -495,7 +495,7 @@
 
 		'order_complete': function() {
 			$LAB.queueWait( function() {
-				$LAB.script('jquery-plugins.min.js')
+				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
 					.script( loadDebugPanel )
@@ -516,7 +516,7 @@
 		// неиспользуется
 		'order_error': function() {
 			$LAB.queueWait( function() {
-				$LAB.script('jquery-plugins.min.js')
+				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -532,7 +532,7 @@
 		// Old catalog
 		// 'product_catalog': function() {
 		// 	$LAB.queueWait( function() {
-		// 		$LAB.script('jquery-plugins.min.js')
+		// 		$LAB.script( getWithVersion('jquery-plugins.js') )
 		// 			.script( getWithVersion('library.js') )
 		// 			.wait()
 		// 			.script( getWithVersion('common.js') )
@@ -550,7 +550,7 @@
 
 		'product_catalog': function() {
 			$LAB.queueWait( function() {
-				$LAB.script('jquery-plugins.min.js')
+				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( historyUrl )
 					.script( mustacheUrl )
@@ -577,7 +577,7 @@
 				// .queueScript( knockoutUrl )
 				// .queueScript( yandexMapUrl )
 				.queueWait( function() {
-					$LAB.script('jquery-plugins.min.js')
+					$LAB.script( getWithVersion('jquery-plugins.js') )
 						.script( getWithVersion('library.js') )
 						.script('JsHttpRequest.min.js')
 						.script( directCreditUrl )
@@ -600,7 +600,7 @@
 
 		'service': function() {
 			$LAB.queueWait( function() {
-				$LAB.script('jquery-plugins.min.js')
+				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
 					.script( loadDebugPanel )
@@ -620,7 +620,7 @@
 		'shop': function() {
 			$LAB.queueScript( yandexMapUrl )
 				.queueWait( function() {
-					$LAB.script('jquery-plugins.min.js')
+					$LAB.script( getWithVersion('jquery-plugins.js') )
 						.script( getWithVersion('library.js') )
 						.script( mustacheUrl )
 						.script( loadDebugPanel )
@@ -642,7 +642,7 @@
 			$LAB.queueScript( yandexMapUrl )
 				.queueScript( knockoutUrl )
 				.queueWait( function() {
-					$LAB.script('jquery-plugins.min.js')
+					$LAB.script( getWithVersion('jquery-plugins.js') )
 						.script( getWithVersion('library.js') )
 						.script( mustacheUrl )
 						.script( loadDebugPanel )

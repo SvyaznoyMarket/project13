@@ -151,15 +151,24 @@ class PhotoAction {
 					$form->isAccept->error = 'Примите условия участия';
 				}
 				
+				
 				if(!$_FILES['file']['name']) {
 					$hasError = true;
 					$form->file->error = 'Вы не прикрепили файл';
 				} elseif($_FILES['file']['error']===1) {
 					$hasError = true;
-					$form->file->error = 'Размер файла не может превышать '. ceil(ini_get('upload_max_filesize'));
+					$form->file->error = 'Размер файла не может превышать '.str_replace('M','Мб',ini_get('upload_max_filesize'));
 				} elseif($_FILES['file']['error']>1) {
 					$hasError = true;
-					$form->file->error = 'Не удается загрузить файл.';
+					$form->file->error = 'Не удается загрузить файл';
+				} elseif(
+					!in_array (
+						mime_content_type($_FILES['file']['tmp_name']),
+						['image/jpeg','image/gif','image/png']
+					)
+				) {
+					$hasError = true;
+					$form->file->error = 'Некорректный тип файла';
 				}
 				
 				if(
