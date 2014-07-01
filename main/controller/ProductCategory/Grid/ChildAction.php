@@ -9,7 +9,7 @@ class ChildAction {
      * @param array $catalogConfig
      * @return \Http\Response
      */
-    public function executeByEntity(\Http\Request $request, \Model\Product\Category\Entity $category, $catalogConfig = []) {
+    public function executeByEntity(\Http\Request $request, \Model\Product\Category\Entity $category, $catalogConfig = [], $shopScriptSeo = []) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $region = \App::user()->getRegion();
@@ -104,6 +104,7 @@ class ChildAction {
         $page->setParam('catalogConfig', $catalogConfig);
         $page->setParam('productsByUi', $productsByUi);
         $page->setParam('rootCategoryInMenu', $rootCategoryInMenu);
+        $page->setParam('shopScriptSeo', $shopScriptSeo);
 
         return new \Http\Response($page->show());
     }
