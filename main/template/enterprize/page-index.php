@@ -115,9 +115,9 @@ $helper = new \Helper\TemplateHelper();
         </ul>
     </section>
 
-    <? if ((bool)$isCouponSent): ?>
+    <? /* if ((bool)$isCouponSent): ?>
         <?= $page->render('enterprize/_contentComplete') ?>
-    <? endif ?>
+    <? endif  */ ?>
     
     <? if (!$user->getEntity()): ?>
         <h3 class="epListTitle">Выбирайте вашу первую фишку</h3>
