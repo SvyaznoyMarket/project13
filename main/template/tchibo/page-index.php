@@ -37,7 +37,8 @@ if ((bool)$slideData) {
 
 <!--TCHIBO - каталог разделов, баннеров, товаров Чибо -->
 <div class="tchiboCatalog clearfix">
-    <? foreach($catalogCategories as $catalogCategory): ?>
+    <? $catalogCategories[] = $catalogCategories[0] ?>
+    <? foreach($catalogCategories as $key => $catalogCategory): ?>
         <?
         /** @var \Model\Product\Category\TreeEntity $catalogCategory */
         $imgSrc = $catalogCategory->getImageUrl(3);
@@ -48,18 +49,21 @@ if ((bool)$slideData) {
         }
 
         $categoryChildren = $catalogCategory->getChild();
-        if (count($categoryChildren) > 5) {
-            //$categoryChildren = array_slice($categoryChildren, 5); // SITE-3840
+
+        $lastCategoryOdd = '';
+
+        if ($key == count($catalogCategories) - 1 && count($catalogCategories) % 2 == 1) {
+            $lastCategoryOdd = 'mFullWidth';
         }
         ?>
 
-        <div class="tchiboCatalogInner">
+        <div class="tchiboCatalogInner <?= $lastCategoryOdd ?>">
             <a href="<?= $catalogCategory->getLink() ?>">
                 <img class="tchiboCatalog__img"
                      src="<?= $imgSrc ?>" alt="<?= $catalogCategory->getName() ?>" />
             </a>
 
-            <div class="tchiboCatalog__title">
+            <div class="tchiboCatalog__title <?= $lastCategoryOdd ?>">
                 <a class="titleCat" href="<?= $catalogCategory->getLink() ?>">
                     <?= $catalogCategory->getName() ?>
                 </a>
