@@ -74,22 +74,34 @@ trait TrustfactorsTrait
      * @param $elem
      */
     private function trustfactorQuery(&$contentClient, &$source, &$elem) {
-        if (!isset($source)) return;
+        if (!isset($source) || empty($source)) return;
 
-        $contentClient->addQuery(
-            trim((string)$source),
-            [],
-            function($data) use (&$trustfactorRight, &$elem) {
-                if (!empty($data['content'])) {
-                    $elem = $data['content'];
+        $addQuery = function ($action) use (&$contentClient, &$trustfactorRight, &$elem) {
+            $contentClient->addQuery(
+                trim((string)$action),
+                [],
+                function($data) use (&$trustfactorRight, &$elem) {
+                    if (!empty($data['content'])) {
+                        $elem = $data['content'];
+                    }
+                },
+                function(\Exception $e) use ($action) {
+                    \App::logger()->error(sprintf('Не получено содержимое трастфактора от урла %s для страницы %s', $action, \App::request()->getRequestUri()));
+                    //\App::exception()->add($e);
+                    \App::exception()->remove($e);
                 }
-            },
-            function(\Exception $e) use ($source) {
-                \App::logger()->error(sprintf('Не получено содержимое трастфактора от урла %s для страницы %s', $source, \App::request()->getRequestUri()));
-                //\App::exception()->add($e);
-                \App::exception()->remove($e);
+            );
+        };
+
+        if (is_array($source)) {
+            foreach ($source as $item) {
+                if (!is_string($item) || empty($item)) continue;
+
+                $addQuery($item);
             }
-        );
+        } else {
+            $addQuery($source);
+        }
     }
 
 
