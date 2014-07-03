@@ -393,7 +393,7 @@ $(document).ready(function() {
 				url: window.location.href,
 				pageType: 9,
 				pageTitle: $(document).find("title").text(),
-				basketProducts: [{id: data.product.id}]
+				basketProducts: [{id: data.id}]
 			};
 			typeof rbnt_rt != "undefined" && rbnt_rt.send();
 
@@ -412,11 +412,23 @@ $(document).ready(function() {
 			JSREObject('cart_remove', data.id);
 		}
 
+		// analytics
+		this.deleteFromRetailRocket = function( data ) {
+			if ( !data.hasOwnProperty('id') ) {
+				return;
+			}
+
+			console.info('RetailRocket removeFromCart');
+			console.log('product_id=' + data.id);
+			window.rrApiOnReady.push(function(){ window.rrApi.removeFromBasket(data.id) });
+		}
+
 		this.analyticsDelete = function( data ) {
 			if ('undefined' == typeof(data) ) {
 				return;
 			}
 
+			self.deleteFromRetailRocket(data);
 			self.deleteFromRutarget(data);
 			self.deleteFromMyragon(data);
 			self.deleteFromLamoda(data);
