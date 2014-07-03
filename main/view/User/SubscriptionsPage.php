@@ -1,10 +1,11 @@
 <?php
 
+
 namespace View\User;
 
-use Helper\TemplateHelper;
 
-class OrderPage extends \View\DefaultLayout {
+class SubscriptionsPage extends \View\DefaultLayout {
+
     /** @var string */
     protected $layout  = 'layout-oneColumn';
 
@@ -12,21 +13,26 @@ class OrderPage extends \View\DefaultLayout {
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
             $breadcrumbs = [];
-            $breadcrumbs[] = array(
+            $breadcrumbs[] = [
                 'name' => 'Личный кабинет',
-                'url'  => $this->url(\App::config()->user['defaultRoute']),
-            );
+                'url'  => null,
+            ];
+
+            $this->setParam('breadcrumbs', $breadcrumbs);
         }
 
-        $this->setTitle('Личный кабинет - Заказ - Enter');
+        $this->setTitle('Личный кабинет -> Подписки - Enter');
         $this->setParam('title', 'Личный кабинет');
+        //$this->setParam('helper', new \Helper\TemplateHelper());
     }
 
     public function slotContent() {
-        return $this->render('user/page-order', $this->params);
+
+        return $this->render('user/page-subscriptions', $this->params);
     }
 
     public function slotBodyDataAttribute() {
         return 'lk';
     }
-}
+
+} 

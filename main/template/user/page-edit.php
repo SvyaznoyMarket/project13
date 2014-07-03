@@ -7,78 +7,52 @@
  */
 ?>
 
-<? if (!$form->isValid()): ?>
-    <? foreach ($form->getErrors() as $error): ?>
-        <p class="red"><?= $error ?></p>
-    <? endforeach ?>
-<? elseif ($message): ?>
-    <p class="green"><?= $message ?></p>
-<? endif ?>
+<div class="personalPage">
 
-<form class="userInfoEdit clearfix" action="<?= $page->url('user.edit') ?>" class="form" method="post">
-    <div class="fl width430">
-        <input type="hidden" name="redirect_to" value="<?= $redirect ?>">
+    <?= $page->render('user/_menu', ['page' => $page]) ?>
 
-        <label class="userInfoEdit__label" for="user_first_name">Имя:</label>
+    <div class="personalTitle">Изменить мои данные</div>
 
-        <input type="text" id="user_first_name" value="<?= $form->getFirstName() ?>" name="user[first_name]" class="text width418 mb10" />
+    <? if (!$form->isValid()): ?>
+        <? foreach ($form->getErrors() as $error): ?>
+            <p class="red"><?= $error ?></p>
+        <? endforeach ?>
+    <? elseif ($message): ?>
+        <p class="green"><?= $message ?></p>
+    <? endif ?>
 
-        <label class="userInfoEdit__label" for="user_middle_name">Отчество:</label>
+    <form action="<?= $page->url('user.edit') ?>" method="post" class="personalData">
+        <fieldset class="personalData_left">
+            <legend class="legend">Личные данные</legend>
 
-        <input type="text" id="user_middle_name" value="<?= $form->getMiddleName() ?>" name="user[middle_name]" class="text width418 mb10" />
+            <input type="hidden" name="redirect_to" value="<?= $redirect ?>">
 
-        <label class="userInfoEdit__label" for="user_last_name">Фамилия:</label>
+            <label class="personalData_label labeltext">Имя:</label>
+            <input class="personalData_text textfield" type="text" value ="<?= $form->getFirstName() ?>" name="user[first_name]" />
 
-        <input type="text" id="user_last_name" value="<?= $form->getLastName() ?>" name="user[last_name]" class="text width418 mb10" />
+            <label class="personalData_label labeltext">Отчество:</label>
+            <input class="personalData_text textfield" type="text" value="<?= $form->getMiddleName() ?>" name="user[middle_name]" />
 
-        <label class="userInfoEdit__label" for="user_sex">Пол:</label>
+            <label class="personalData_label labeltext">Фамилия:</label>
+            <input class="personalData_text textfield" type="text" value="<?= $form->getLastName() ?>" name="user[last_name]" />
 
-        <div class="userInfoEdit__checkBox selectbox170">
-            <select id="user_sex" name="user[sex]" >
-                <? foreach (array('' => '', '1' => 'мужской', '2' => 'женский') as $sexValue => $sexName): ?>
-                    <option value="<?= $sexValue ?>"<? if ((int)$sexValue == (int)$form->getSex()): ?> selected="selected"<? endif ?>><?= $sexName ?></option>
-                <? endforeach ?>
-            </select>
-        </div>
+            <div class="personalData_col">
+                <label class="personalData_label labeltext">Дата рождения:</label>
 
-        <label class="userInfoEdit__label" for="user_email">E-mail:</label>
-
-        <input type="text" id="user_email" value="<?= $form->getEmail() ?>" name="user[email]" class="text width418 mb10" <? if ($form->getIsDisabled()): ?>disabled="disabled"<? endif ?> />
-
-        <div class="pr fr">
-            <div class="doublehelp help">Одно из полей обязательно для заполнения!</div>
-        </div>
-
-        <label class="userInfoEdit__label" for="user_mobile_phone">Мобильный телефон:</label>
-
-        <input type="text" id="user_mobile_phone" value="<?= $form->getMobilePhone() ?>" name="user[mobile_phone]" class="text" <? if ($form->getIsDisabled()): ?>disabled="disabled"<? endif ?> />
-
-        <label class="userInfoEdit__label" for="user_home_phone">Домашний телефон:</label>
-
-        <input type="text" id="user_home_phone" value="<?= $form->getHomePhone() ?>" name="user[home_phone]" class="text" />
-
-        <label class="userInfoEdit__label">Дата рождения:</label>
-
-        <div class="userInfoEdit__checkBox clearfix">
-            <div class="checkBox selectbox75 fl">
                 <? $selectedDay = $form->getBirthday() ? $form->getBirthday()->format('j') : '' ?>
                 <select id="user_birthday_day" name="user[birthday][day]">
                     <? foreach (array_merge(array(''), range(1, 31)) as $day):  ?>
                         <option value="<?= $day ?>"<? if ((int)$day == (int)$selectedDay): ?> selected="selected"<? endif ?>><?= $day ?></option>
                     <? endforeach ?>
                 </select>
-            </div>
 
-            <div class="checkBox selectbox98 fl">
                 <? $selectedMonth = $form->getBirthday() ? $form->getBirthday()->format('n') : '' ?>
                 <select id="user_birthday_month" name="user[birthday][month]">
                     <? foreach (array_merge(array(''), range(1, 12)) as $month): ?>
                         <option value="<?= $month ?>"<? if ((int)$month == (int)$selectedMonth): ?> selected="selected"<? endif ?>><?= $month ?></option>
                     <? endforeach ?>
                 </select>
-            </div>
 
-            <div class="checkBox selectbox75 fl">
                 <? $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '' ?>
                 <select id="user_birthday_year" name="user[birthday][year]">
                     <? foreach (array_merge(array(''), range(2005, 1930)) as $year): ?>
@@ -86,37 +60,75 @@
                     <? endforeach ?>
                 </select>
             </div>
-        </div>
 
-        <? if (isset($bonusCards) && is_array($bonusCards)): ?>
-            <? foreach ($bonusCards as $card):
-                if (!$card instanceof \Model\Order\BonusCard\Entity) continue;
+            <div class="personalData_col">
+                <label class="personalData_label labeltext">Пол:</label>
 
-                $userCardNumber = null;
-                if ((bool)$form->getBonusCard() && is_array($form->getBonusCard())) {
-                    foreach ($form->getBonusCard() as $userCard) {
-                        if (
-                            !array_key_exists('bonus_card_id', $userCard) ||
-                            !array_key_exists('number', $userCard) ||
-                            $userCard['bonus_card_id'] != $card->getId()
-                        ) {
-                            continue;
+                <select name="user[sex]">
+                    <? foreach (array('' => '', '1' => 'мужской', '2' => 'женский') as $sexValue => $sexName): ?>
+                        <option value="<?= $sexValue ?>"<? if ((int)$sexValue == (int)$form->getSex()): ?> selected="selected"<? endif ?>><?= $sexName ?></option>
+                    <? endforeach ?>
+                </select>
+            </div>
+
+            <div class="personalData_warn">
+                <div class="personalData_warn_text">
+                    Одно из полей обязательно для заполнения!
+                </div>
+            </div>
+
+            <label class="personalData_label labeltext">E-mail:</label>
+            <input class="personalData_text textfield" type="email"  value="<?= $form->getEmail() ?>" name="user[email]" <? if ($form->getIsDisabled()): ?>disabled="disabled"<? endif ?> />
+
+            <label class="personalData_label labeltext">Мобильный телефон:</label>
+            <input class="personalData_text textfield" type="text"  value="<?= $form->getMobilePhone() ?>" name="user[mobile_phone]" class="text" <? if ($form->getIsDisabled()): ?>disabled="disabled"<? endif ?> />
+
+            <label class="personalData_label labeltext">Домашний телефон:</label>
+            <input class="personalData_text textfield" type="text" value="<?= $form->getHomePhone() ?>" name="user[home_phone]" />
+
+            <? if (isset($bonusCards) && is_array($bonusCards)): ?>
+                <? foreach ($bonusCards as $card):
+                    if (!$card instanceof \Model\Order\BonusCard\Entity) continue;
+
+                    $userCardNumber = null;
+                    if ((bool)$form->getBonusCard() && is_array($form->getBonusCard())) {
+                        foreach ($form->getBonusCard() as $userCard) {
+                            if (
+                                !array_key_exists('bonus_card_id', $userCard) ||
+                                !array_key_exists('number', $userCard) ||
+                                $userCard['bonus_card_id'] != $card->getId()
+                            ) {
+                                continue;
+                            }
+
+                            $userCardNumber = $userCard['number'];
                         }
+                    } ?>
 
-                        $userCardNumber = $userCard['number'];
-                    }
-                } ?>
+                    <label class="personalData_label labeltext" >Номер карты &quot;<?= $page->escape($card->getName()) ?>&quot;:</label>
+                    <input type="text" id="user_bonus_card_<?= $card->getId() ?>" value="<?= $page->escape($userCardNumber) ?>" name="user[bonus_card][<?= $card->getId() ?>]" data-mask="<?= $card->getMask() ?>" class="personalData_text textfield jsCardNumber" />
+                <? endforeach ?>
+            <? endif ?>
 
-                <label class="userInfoEdit__label" for="user_bonus_card_<?= $card->getId() ?>">Номер карты &quot;<?= $page->escape($card->getName()) ?>&quot;:</label>
-                <div><input type="text" id="user_bonus_card_<?= $card->getId() ?>" value="<?= $page->escape($userCardNumber) ?>" name="user[bonus_card][<?= $card->getId() ?>]" data-mask="<?= $card->getMask() ?>" class="text jsCardNumber" /></div>
-            <? endforeach ?>
-        <? endif ?>
+            <label class="personalData_label labeltext">Род деятельности:</label>
+            <input class="personalData_text textfield" type="text" value="<?= $form->getOccupation() ?>" name="user[occupation]" />
+        </fieldset>
 
-        <label class="userInfoEdit__label" for="user_occupation">Род деятельности:</label>
+        <fieldset class="personalData_right">
+            <legend class="legend">Пароль</legend>
 
-        <input type="text" id="user_occupation" value="<?= $form->getOccupation() ?>" name="user[occupation]" class="text width418 mb10" />
+            <p style="xs">Надежный пароль должен содержать от 6 до 16 знаков следующих трех видов: прописные буквы, строчные буквы, цифры или символы, но не должен включать широко распространенные слова и имена.</p>
+            <label class="labeltext">Старый пароль:</label>
+            <input class="textfield personalData_text" />
 
-        <input type="submit" value="Сохранить изменения" id="bigbutton" class="btnSave button bigbutton">
+            <label class="labeltext">Новый пароль:</label>
+            <input class="textfield personalData_text" />
 
-    </div>
-</form>
+            <p style="xs">Внимание! После смены пароля Вам придет письмо и SMS с новым паролем</p>
+        </fieldset>
+
+        <fieldset class="personalData_clear">
+            <input class="btnsubmit" type="submit" value="Сохранить изменения" />
+        </fieldset>
+    </form>
+</div>

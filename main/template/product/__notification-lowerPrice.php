@@ -25,7 +25,7 @@ return function(
             <div class="uEntered">
                 <? if (empty($uEmail) && $user->getEntity()): ?>
                     <div class="bLowPriceNotiferPopup__eTitle">
-                        Пожалуйста, укажите ваш e-mail в <a href="<?= $helper->url('user') ?>" title="Перейти в личный кабинет">личном кабинете</a>.
+                        Пожалуйста, укажите ваш e-mail в <a href="<?= $helper->url(\App::config()->user['defaultRoute']) ?>" title="Перейти в личный кабинет">личном кабинете</a>.
                     </div>
                 <? else: ?>
                     <div class="bLowPriceNotiferPopup__eTitle">
