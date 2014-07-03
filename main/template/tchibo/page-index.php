@@ -31,7 +31,7 @@ if ((bool)$slideData) {
     <div class="tchiboSubscribe_title">Узнай первым о новинках и акциях</div>
     <input type="text" placeholder="Введите Ваш e-mail адрес" class="tchiboSubscribe_input subscribe-form__email" name="email" />
     <input type="hidden" value="13" name="channel" />
-    <button data-url="<?= $page->url('subscribe.create') ?>" class="tchiboSubscribe_btn subscribe-form__btn">Подписаться</button> 
+    <button data-url="<?= $page->url('subscribe.create') ?>" data-error-msg="<?= $page->escape('Вы уже подписаны на рассылку! О всех проблемах сообщайте на feedback@enter.ru') ?>" class="tchiboSubscribe_btn subscribe-form__btn">Подписаться</button>
     <div class="subscribecheck">Хочу получать рассылку о коллекциях Tchibo</div>
 </div>
 
