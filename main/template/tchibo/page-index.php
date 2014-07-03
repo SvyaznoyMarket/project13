@@ -28,11 +28,11 @@ if ((bool)$slideData) {
 } ?>
 
 <div class="tchiboSubscribe subscribe-form clearfix">
-    <div class="tchiboSubscribe_title">Новые коллекции каждую неделю! Узнай первым</div>
+    <div class="tchiboSubscribe_title">Узнай первым о новинках и акциях</div>
     <input type="text" placeholder="Введите Ваш e-mail адрес" class="tchiboSubscribe_input subscribe-form__email" name="email" />
     <input type="hidden" value="13" name="channel" />
     <button data-url="<?= $page->url('subscribe.create') ?>" class="tchiboSubscribe_btn subscribe-form__btn">Подписаться</button> 
-    <div class="subscribecheck">Хочу получать рассылку о новых коллекциях Tchibo</div>
+    <div class="subscribecheck">Хочу получать рассылку о коллекциях Tchibo</div>
 </div>
 
 <!--TCHIBO - каталог разделов, баннеров, товаров Чибо -->
