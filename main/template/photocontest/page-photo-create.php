@@ -60,13 +60,11 @@
 			
 			<label class="bBuyingLine__eLeft" for="file"><span class="bFeildStarImg">*</span><?=$form->file->title?></label>
 			<div class="bBuyingLine__eRight">
-				<?php if(isset($form->file->error)): ?>
-				<div class="bErrorText"><div class="bErrorText__eInner"><?=$form->file->error?></div></div>
-				<?php endif; ?>
 				<label class="pc_file" for="file">Выбрерите файл
 					<input type="file" name="file" id="file">
+					<?php if(isset($form->file->error)):?><div class="bErrorText"><?=$form->file->error?></div><?php endif?>
 				</label>
-				<br/><small>Максимальный размер файла <?=ini_get('upload_max_filesize')?><br/>Допустимые форматы jpeg, gif, png</small>
+				<br/><small>Максимальный размер файла <?=str_replace('M','Мб',ini_get('upload_max_filesize'))?><br/>Допустимые форматы jpeg, gif, png</small>
 			</div>
 			
 			<?php if(isset($form->isAccept)):?>

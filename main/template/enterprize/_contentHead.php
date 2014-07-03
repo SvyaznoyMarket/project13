@@ -44,8 +44,6 @@ $routeName = \App::request()->attributes->get('route'); ?>
         // партнерский купон
         if (isset($isPartnerCoupon) && (bool)$isPartnerCoupon) {
             $url = $enterpizeCoupon->getPartnerUrl();
-            $linkName = $name = $enterpizeCoupon->getPartner();
-            $imageUrl = $enterpizeCoupon->getPartnerImageUrl();
         }
 
         $priceNumDecimals = false === strpos((string)$enterpizeCoupon->getPrice(), '.') ? 0 : 2; ?>
@@ -81,9 +79,11 @@ $routeName = \App::request()->attributes->get('route'); ?>
             </div>
 
             <div class="enterPrize__rules"><!-- если пользователь уже получил купон то добавляем класс  mFailed-->
+                <? if ($enterpizeCoupon->getPartnerImageUrl()) : ?>
                 <div class="rulesImg">
-                    <img src="" alt="" />
+                    <img src="<?= $enterpizeCoupon->getPartnerImageUrl() ?>" alt="" />
                 </div>
+                <? endif; ?>
 
                 <div class="rulesText">
                     Фишка со скидкой <strong><?= $page->helper->formatPrice($enterpizeCoupon->getPrice(), $priceNumDecimals) ?><?= !$enterpizeCoupon->getIsCurrency() ? '%' : 'руб' ?></strong> на

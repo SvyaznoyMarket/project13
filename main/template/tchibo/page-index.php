@@ -28,16 +28,16 @@ if ((bool)$slideData) {
 } ?>
 
 <div class="tchiboSubscribe subscribe-form clearfix">
-    <div class="tchiboSubscribe_title">Новые коллекции каждую неделю! Узнай первым</div>
+    <div class="tchiboSubscribe_title">Узнай первым о новинках и акциях</div>
     <input type="text" placeholder="Введите Ваш e-mail адрес" class="tchiboSubscribe_input subscribe-form__email" name="email" />
     <input type="hidden" value="13" name="channel" />
     <button data-url="<?= $page->url('subscribe.create') ?>" class="tchiboSubscribe_btn subscribe-form__btn">Подписаться</button> 
-    <div class="subscribecheck">Хочу получать рассылку о новых коллекциях Tchibo</div>
+    <div class="subscribecheck">Хочу получать рассылку о коллекциях Tchibo</div>
 </div>
 
 <!--TCHIBO - каталог разделов, баннеров, товаров Чибо -->
 <div class="tchiboCatalog clearfix">
-    <? foreach($catalogCategories as $catalogCategory): ?>
+    <? foreach($catalogCategories as $key => $catalogCategory): ?>
         <?
         /** @var \Model\Product\Category\TreeEntity $catalogCategory */
         $imgSrc = $catalogCategory->getImageUrl(3);
@@ -48,18 +48,21 @@ if ((bool)$slideData) {
         }
 
         $categoryChildren = $catalogCategory->getChild();
-        if (count($categoryChildren) > 5) {
-            //$categoryChildren = array_slice($categoryChildren, 5); // SITE-3840
+
+        $lastCategoryOdd = '';
+
+        if ($key == count($catalogCategories) - 1 && count($catalogCategories) % 2 == 1) {
+            $lastCategoryOdd = 'mFullWidth';
         }
         ?>
 
-        <div class="tchiboCatalogInner">
+        <div class="tchiboCatalogInner <?= $lastCategoryOdd ?>">
             <a href="<?= $catalogCategory->getLink() ?>">
                 <img class="tchiboCatalog__img"
                      src="<?= $imgSrc ?>" alt="<?= $catalogCategory->getName() ?>" />
             </a>
 
-            <div class="tchiboCatalog__title">
+            <div class="tchiboCatalog__title <?= $lastCategoryOdd ?>">
                 <a class="titleCat" href="<?= $catalogCategory->getLink() ?>">
                     <?= $catalogCategory->getName() ?>
                 </a>

@@ -14,7 +14,6 @@ class IndexAction {
 
         $slideData = [];
         $categoryToken = 'tchibo';
-        $category = null;
         $promo = null;
         $bannerBottom = null;
         $categoryTree = null;
@@ -29,12 +28,74 @@ class IndexAction {
         });
 
         // получим данные category
-        \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
-            $data = reset($data);
-            if ((bool)$data) {
-                $category = new \Model\Product\Category\Entity($data);
+        /** @var $category \Model\Product\Category\Entity */
+        $category = null;
+
+        $shopScriptException = null;
+        $shopScriptSeo = [];
+        if (\App::config()->shopScript['enabled']) {
+            try {
+                $shopScript = \App::shopScriptClient();
+                $shopScript->addQuery(
+                    'category/get-seo',
+                    [
+                        'slug' => $categoryToken,
+                        'geo_id' => \App::user()->getRegion()->getId(),
+                    ],
+                    [],
+                    function ($data) use (&$shopScriptSeo) {
+                        if ($data && is_array($data)) $shopScriptSeo = reset($data);
+                    },
+                    function (\Exception $e) use (&$shopScriptException) {
+                        $shopScriptException = $e;
+                    }
+                );
+                $shopScript->execute();
+                if ($shopScriptException instanceof \Exception) {
+                    throw $shopScriptException;
+                }
+
+                // если shopscript вернул редирект
+                if (!empty($shopScriptSeo['redirect']['link']) && !$request->isXmlHttpRequest()) {
+                    $redirect = $shopScriptSeo['redirect']['link'];
+                    if(!preg_match('/^http/', $redirect)) {
+                        $redirect = (preg_match('/^http/', \App::config()->mainHost) ? '' : 'http://') .
+                            \App::config()->mainHost .
+                            (preg_match('/^\//', $redirect) ? '' : '/') .
+                            $redirect;
+                    }
+
+                    return new \Http\RedirectResponse($redirect, 301);
+                }
+
+                if (empty($shopScriptSeo['ui'])) {
+                    throw new \Exception\NotFoundException(sprintf('Не получен ui для категории товара @%s', $categoryToken));
+                }
+
+                // запрашиваем категорию по ui
+                \RepositoryManager::productCategory()->prepareEntityByUi($shopScriptSeo['ui'], $region, function($data) use (&$category) {
+                    $data = reset($data);
+                    if ((bool)$data) {
+                        $category = new \Model\Product\Category\Entity($data);
+                    }
+                });
+            } catch (\Exception $e) { // если не плучилось добыть seo-данные или категорию по ui, пробуем старый добрый способ
+                \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
+                    $data = reset($data);
+                    if ((bool)$data) {
+                        $category = new \Model\Product\Category\Entity($data);
+                    }
+                });
             }
-        });
+
+        } else {
+            \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
+                $data = reset($data);
+                if ((bool)$data) {
+                    $category = new \Model\Product\Category\Entity($data);
+                }
+            });
+        }
 
         \RepositoryManager::productCategory()->prepareTreeCollection($region, 1, 1, function($data) use (&$categoryTree) {
             $categoryTree = $data;
@@ -59,10 +120,12 @@ class IndexAction {
             return new \Http\RedirectResponse(\App::router()->generate('content', ['token' => \App::config()->tchibo['whereToBuyPage']]));
         }
 
+        if (!empty($shopScriptSeo['link'])) {
+            $category->setLink($shopScriptSeo['link']);
+        }
+
         // получаем catalog json для категории
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
-
-
 
         // подготовка для 2-го пакета запросов в ядро
         // получим данные для меню
@@ -151,6 +214,7 @@ class IndexAction {
         $page->setParam('catalogCategories', $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : []);
         $page->setGlobalParam('rootCategoryInMenu', $rootCategoryInMenu);
         $page->setGlobalParam('bannerBottom', $bannerBottom);
+        $page->setParam('shopScriptSeo', $shopScriptSeo);
         //$page->setGlobalParam('products', $products);
 
         return new \Http\Response($page->show());
