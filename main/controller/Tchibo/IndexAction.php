@@ -144,6 +144,13 @@ class IndexAction {
             \App::contentClient()->execute();
         }
 
+        // SITE-3970
+        // Стили для названий категорий в меню tchibo
+        $tchiboMenuCategoryNameStyles = [];
+        if (isset($catalogJson['tchibo_menu']['style']['name']) && is_array($catalogJson['tchibo_menu']['style']['name'])) {
+            $tchiboMenuCategoryNameStyles = $catalogJson['tchibo_menu']['style']['name'];
+        }
+
         // формируем вьюху, передаём ей данные
         $page = new \View\Tchibo\IndexPage();
         $page->setParam('slideData', $slideData);
@@ -152,6 +159,7 @@ class IndexAction {
         $page->setGlobalParam('rootCategoryInMenu', $rootCategoryInMenu);
         $page->setGlobalParam('bannerBottom', $bannerBottom);
         //$page->setGlobalParam('products', $products);
+        $page->setGlobalParam('tchiboMenuCategoryNameStyles', $tchiboMenuCategoryNameStyles);
 
         return new \Http\Response($page->show());
     }

@@ -98,12 +98,20 @@ class ChildAction {
             return new \Http\RedirectResponse(\App::router()->generate('content', ['token' => \App::config()->tchibo['whereToBuyPage']]));
         }
 
+        // SITE-3970
+        // Стили для названий категорий tchibo
+        $tchiboMenuCategoryNameStyles = [];
+        if (isset($catalogConfig['tchibo_menu']['style']['name']) && is_array($catalogConfig['tchibo_menu']['style']['name'])) {
+            $tchiboMenuCategoryNameStyles = $catalogConfig['tchibo_menu']['style']['name'];
+        }
+
         $page = new \View\ProductCategory\Grid\ChildCategoryPage();
         $page->setParam('gridCells', $gridCells);
         $page->setParam('category', $category);
         $page->setParam('catalogConfig', $catalogConfig);
         $page->setParam('productsByUi', $productsByUi);
         $page->setParam('rootCategoryInMenu', $rootCategoryInMenu);
+        $page->setGlobalParam('tchiboMenuCategoryNameStyles', $tchiboMenuCategoryNameStyles);
 
         return new \Http\Response($page->show());
     }
