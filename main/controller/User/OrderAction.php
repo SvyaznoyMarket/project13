@@ -48,7 +48,7 @@ class OrderAction {
             foreach ($data as $item) {
                 $orderItem = new \Model\User\Order\Entity($item);
                 if ($orderId == $item['id']) $order = $orderItem;
-                if (!$order->isCompleted()) $currentOrdersCount++;
+                if (!$orderItem->isCompleted()) $currentOrdersCount++;
             }
         });
 
