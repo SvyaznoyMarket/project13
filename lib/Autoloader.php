@@ -25,17 +25,6 @@ class Autoloader {
                     $class = preg_replace('/^' . $namespace . '/', '', $class);
                     $path = $basePath . '/model';
                     break;
-                case 'Mobile': case 'Terminal':
-                    $parts = explode('\\', $class);
-                    $count = count($parts);
-                    for ($i = 0; $i < $count; $i++) {
-                        if (($i <= 1) && ($i < ($count - 1))) {
-                            $parts[$i] = lcfirst($parts[$i]);
-                        }
-                    }
-                    $class = implode('\\', $parts);
-                    $path = $basePath;
-                    break;
                 default:
                     $path = $basePath . '/lib';
             }

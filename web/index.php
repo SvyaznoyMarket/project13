@@ -47,20 +47,6 @@ if ('main' == \App::$name) {
         $config->controllerPrefix = 'Mobile\\Controller';
     }
     */
-} else if ('terminal' == \App::$name) {
-    $request = \Http\Request::createFromGlobals();
-
-    $clientId = $request->get('client_id') ? trim((string)$request->get('client_id')) : null;
-    $shopId = $request->get('shop_id') ? trim((string)$request->get('shop_id')) : null;
-    if (!$clientId) die('Не передан параметр client_id');
-    if (!$shopId) die('Не передан параметр shop_id');
-    $config->coreV2['client_id'] = $clientId;
-    $config->region['shop_id'] = $shopId;
-
-
-    $config->templateDir = $config->appDir . '/terminal/template';
-    $config->controllerPrefix = 'Terminal\\Controller';
-    $config->routePrefix = 'terminal';
 } else if ('photocontest' == \App::$name) {
     //$config->templateDir = $config->appDir . '/template';
     //$config->controllerPrefix = '\\Controller';
