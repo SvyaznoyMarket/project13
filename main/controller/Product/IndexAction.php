@@ -448,6 +448,9 @@ class IndexAction {
      * @return array
      */
     protected function getDataForCredit(\Model\Product\Entity $product) {
+        $user = \App::user();
+        $region = $user->getRegion();
+
         $result = [];
 
         $category = $product->getMainCategory();
@@ -461,6 +464,60 @@ class IndexAction {
             $productType = '';
         }
 
+        // SITE-4076 Учитывать возможность кредита из API
+        $hasCreditPaymentMethod = false;
+        $is_credit = (bool)(($product->getPrice() * (($cart->getQuantityByProduct($product->getId()) > 0) ? $cart->getQuantityByProduct($product->getId()) : 1)) >= \App::config()->product['minCreditPrice']);
+        \RepositoryManager::paymentGroup()->prepareCollection($region,
+            [
+                'is_corporative' => $user->getEntity() ? $user->getEntity()->getIsCorporative() : false,
+                'is_credit'      => $is_credit,
+            ],
+            [
+                'product_list'   => [$product->getId() => ['id' => $product->getId(), 'quantity' => (($cart->getQuantityByProduct($product->getId()) > 0) ? $cart->getQuantityByProduct($product->getId()) : 1)]],
+            ],
+            function($data) use (&$hasCreditPaymentMethod) {
+                if (!isset($data['detail']) || !is_array($data['detail'])) {
+                    return;
+                }
+
+                foreach ($data['detail'] as $group) {
+                    $paymentGroup = new \Model\PaymentMethod\Group\Entity($group);
+                    if (!$paymentGroup->getPaymentMethods()) {
+                        continue;
+                    }
+
+                    // выкидываем заблокированные методы
+                    $blockedIds = (array)\App::config()->payment['blockedIds'];
+                    $filteredMethods = array_filter($paymentGroup->getPaymentMethods(), function(\Model\PaymentMethod\Entity $method) use ($blockedIds) {
+                        if (in_array($method->getId(), $blockedIds)) return false;
+                        return true;
+                    });
+                    $paymentGroup->setPaymentMethods($filteredMethods);
+
+                    if (empty($filteredMethods)) {
+                        continue;
+                    }
+
+                    // пробегаем по методах и ищем метод "Покупка в кредит"
+                    foreach ($filteredMethods as $method) {
+                        if (
+                            !$method instanceof \Model\PaymentMethod\Entity ||
+                            $method->getId() != \Model\PaymentMethod\Entity::CREDIT_ID
+                        ) {
+                            continue;
+                        }
+
+                        $hasCreditPaymentMethod = true;
+                    }
+                }
+            },
+            function($e){
+                \App::exception()->remove($e);
+                \App::logger()->error($e);
+            }
+        );
+        \App::curl()->execute();
+
         $dataForCredit = array(
             'price'        => $product->getPrice(),
             //'articul'      => $product->getArticle(),
@@ -469,7 +526,9 @@ class IndexAction {
             'product_type' => $productType,
             'session_id'   => session_id()
         );
-        $result['creditIsAllowed'] = (bool)(($product->getPrice() * (($cart->getQuantityByProduct($product->getId()) > 0) ? $cart->getQuantityByProduct($product->getId()) : 1)) >= \App::config()->product['minCreditPrice']);
+
+        $result['creditIsAllowed'] = $hasCreditPaymentMethod;
+//        $result['creditIsAllowed'] = (bool)(($product->getPrice() * (($cart->getQuantityByProduct($product->getId()) > 0) ? $cart->getQuantityByProduct($product->getId()) : 1)) >= \App::config()->product['minCreditPrice']);
         $result['creditData'] = json_encode($dataForCredit);
 
         return $result;
