@@ -56,7 +56,7 @@ class IndexAction {
         $categoriesTchibo = array_filter($categoryTree, function ($cat) use ($categoryToken) { return $cat['token'] === $categoryToken; } );
 
         if (!(bool) $categoriesTchibo || $categoriesTchibo[0]['product_count'] == 0) {
-            return new \Http\RedirectResponse(\App::router()->generate('content', ['token' => \App::config()->tchibo['whereToBuyPage']]));
+            return new \Http\RedirectResponse(\App::router()->generate('tchibo.where_buy'));
         }
 
         // получаем catalog json для категории

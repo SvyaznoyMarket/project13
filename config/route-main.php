@@ -187,6 +187,10 @@ return [
         'pattern' => '/catalog/tchibo',
         'action'  => ['Tchibo\IndexAction', 'execute'],
     ],
+    'tchibo.where_buy' => [
+        'pattern'   => '/where_buy_tchibo',
+        'action'    => ['Shop\Action', 'index']
+    ],
 
     // каталог товаров
     'product.category' => [
