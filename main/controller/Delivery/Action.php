@@ -172,6 +172,7 @@ class Action {
                     // TODO перенести в модель
                     switch (true) {
                         case ($token == 'standart'):
+                        case ($token == 'standart_pred_supplier'):
                             $item['name'] = 'Доставим';
                             break;
                         case ($token == 'self'):
