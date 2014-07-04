@@ -50,7 +50,7 @@ class Action {
             $responseData = ['success' => false];
 
             if (910 == $e->getCode()) {
-                $responseData['data'] = 'Промокод уже отправлен на ваш email. Пожалуйста, проверьте почту.';
+                $responseData['data'] = trim((string)$request->get('error_msg')) ?: 'Промокод уже отправлен на ваш email. Пожалуйста, проверьте почту.';
             }
         }
 

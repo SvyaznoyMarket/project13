@@ -12,11 +12,19 @@ $(document).ready(function(){
 		var subscribing = function subscribing() {
 			var url = $(this).data('url'),
 				email = input.val(),
-				utm_source = document.location.search;
+				utm_source = document.location.search,
+				error_msg = $(this).data('error-msg'),
+				data = {};
 			// end of vars
 
 			if ( email && email.search('@') !== -1 ) {
-				$.post(url, {email: email, channel: channel}, function(res){
+				data = {email: email, channel: channel};
+
+				if ('undefined' !== typeof(error_msg) && error_msg) {
+					data.error_msg = error_msg;
+				}
+
+				$.post(url, data, function(res){
 					if ( res.hasOwnProperty('data') && undefined != typeof(res.data) ) {
 						form.html('<div class="subscribe-form__title">' + res.data + '</div>');
 					}
