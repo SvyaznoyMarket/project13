@@ -95,7 +95,7 @@ class ChildAction {
         });
 
         if ($category->getProductCount() == 0 && (bool) $category->getAncestor() && $category->getAncestor()[0]->getToken() == 'tchibo') {
-            return new \Http\RedirectResponse(\App::router()->generate('content', ['token' => \App::config()->tchibo['whereToBuyPage']]));
+            return new \Http\RedirectResponse(\App::router()->generate('tchibo.where_buy'));
         }
 
         // SITE-3970

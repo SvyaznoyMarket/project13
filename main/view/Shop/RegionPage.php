@@ -26,7 +26,7 @@ class RegionPage extends \View\DefaultLayout {
         // seo: title
         $title = $region ? ('Магазины Enter в ' . $region->getInflectedName(5)) : 'Все магазины';
         $this->setTitle($title);
-        $this->setParam('title', $title);
+        if (!(\App::request()->get('route') == 'tchibo.where_buy')) $this->setParam('title', $title);
     }
 
     public function slotBodyDataAttribute() {
