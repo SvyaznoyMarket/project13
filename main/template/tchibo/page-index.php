@@ -53,6 +53,7 @@ if ((bool)$slideData) {
 
         if ($key == count($catalogCategories) - 1 && count($catalogCategories) % 2 == 1) {
             $lastCategoryOdd = 'mFullWidth';
+            $imgSrc = $catalogCategory->getImageUrl(5);
         }
         ?>
 
