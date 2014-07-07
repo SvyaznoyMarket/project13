@@ -374,6 +374,10 @@ class Repository {
         if ($region) {
             $params['region_id'] = $region->getId();
         }
+
+        // SITE-3524 Поддержка неактивных категорий для отладки страниц на preview.enter.ru
+        if (\App::config()->preview === true) $params = array_merge($params, ['load_inactive' => 1, 'load_empty' => 1]);
+
         $this->client->addQuery('category/tree', $params, [], function($data) use (&$category, &$region) {
             /**
              * Загрузка дочерних и родительских узлов категории
