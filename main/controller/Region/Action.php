@@ -29,7 +29,11 @@ class Action {
             $link = $uri;
         } else {
             $link = parse_url($request->headers->get('referer') ?: \App::router()->generate('homepage'));
-            if (isset($link['query']) && isset($link['path'])) {
+
+            if ($link['host'] !== \App::config()->mainHost) {
+                $link = \App::router()->generate('homepage');
+            }
+            else if (isset($link['query']) && isset($link['path'])) {
                 parse_str(urldecode($link['query']), $variables);
                 if (isset($variables['shop'])) unset($variables['shop']);
                 $link = $link['path'] . ( count($variables) ? '?' . http_build_query($variables) : '' );
