@@ -11,8 +11,9 @@ return function (
 
     <? if (count($shopStates) == 1) : $shop = $shopStates[0]->getShop(); ?>
         <div class="shopsVar">
-            <span class="shopsVar_title">Есть в магазине</span>
-            
+
+            <span class="shopsVar_title"><?= $shopStates[0]->getQuantity() ? 'Есть в магазине' : 'Сегодня есть на витрине магазина' ?></span>
+
             <div class="markerList markerList-left">
                 <? if ((bool)$shop->getSubway()) : ?>
                     <!--  Метро  -->
@@ -21,13 +22,15 @@ return function (
                 <? endif; ?>
 
                 <!--  Адрес  -->
-                <a class="markerList_light" href="<?= $helper->url('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()]) ?>"><?= $shop->getAddress() ?></a>
+                <a class="markerList_light td-underl" target="_blank" href="<?= $helper->url('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()]) ?>"><?= $shop->getAddress() ?></a>
                 
                 <!--  Время работы  -->
                 <div class="ta-c mb5">с <?= $shop->getWorkingTimeToday()['start_time'] ?> до <?= $shop->getWorkingTimeToday()['end_time'] ?></div>
 
-                <!--  Кнопка Резерв -->
-                <?= $helper->render('cart/__button-product-oneClick',['product' => $product, 'url' => $helper->url('cart.oneClick.product.set', ['productId' => $product->getId(), 'shopId' => $shop->getId()]), 'class' => 'btnBuy__eLink mShopsOnly', 'value' => 'Резерв']) ?>
+                <? if ($shopStates[0]->getQuantity()) : ?>
+                    <!--  Кнопка Резерв -->
+                    <?= $helper->render('cart/__button-product-oneClick',['product' => $product, 'url' => $helper->url('cart.oneClick.product.set', ['productId' => $product->getId(), 'shopId' => $shop->getId()]), 'class' => 'btnBuy__eLink mShopsOnly', 'value' => 'Резерв']) ?>
+                <? endif; ?>
             </div>
         </div>
     <? endif; ?>

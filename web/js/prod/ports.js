@@ -1035,7 +1035,7 @@ window.ANALYTICS = {
 		// Передаем email пользователя для RetailRocket
 		RetailRocket.userEmailSend();
 
-        if (ENTER.config.userInfo === false) {
+        if ( !ENTER.config.userInfo ) {
             RetailRocket.action(null);
         } else {
             $('body').on('userLogged', function(){

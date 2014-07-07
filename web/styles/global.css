@@ -486,14 +486,56 @@ table {
 .clearfix {
   *zoom: 1;
 }
+.xs {
+  font-size: 12px;
+}
+.s {
+  font-size: 14px;
+}
+.m {
+  font-size: 16px;
+}
+.l {
+  font-size: 18px;
+}
+.xl {
+  font-size: 20px;
+}
+.ta-c {
+  text-align: center;
+}
+.ta-l {
+  text-align: left;
+}
+.ta-r {
+  text-align: right;
+}
+.td-underl {
+  text-decoration: underline;
+}
+.br-b {
+  border-bottom: 1px solid;
+}
 .fl {
   float: left;
 }
 .fr {
   float: right;
 }
-.ta-c {
-  text-align: center;
+.hidden {
+  overflow: hidden;
+}
+.borderBd {
+  border-bottom: 1px dotted;
+}
+.borderBs {
+  border-bottom: 1px solid;
+}
+.np {
+  padding: 0;
+}
+.mb10 {
+  margin-bottom: 10px;
 }
 .mb5 {
   margin-bottom: 5px;
@@ -3193,7 +3235,7 @@ img[height="0"] {
   .tchiboSubscribe {
     padding: 10px 0 10px 200px;
     margin: 10px 0 0 -10px;
-    width: 740px;
+    width: 760px;
     color: #ffffff;
     background: #002a5a;
   }
