@@ -22,7 +22,7 @@ return function (
                 <? endif; ?>
 
                 <!--  Адрес  -->
-                <a class="markerList_light" href="<?= $helper->url('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()]) ?>"><?= $shop->getAddress() ?></a>
+                <a class="markerList_light td-underl" target="_blank" href="<?= $helper->url('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()]) ?>"><?= $shop->getAddress() ?></a>
                 
                 <!--  Время работы  -->
                 <div class="ta-c mb5">с <?= $shop->getWorkingTimeToday()['start_time'] ?> до <?= $shop->getWorkingTimeToday()['end_time'] ?></div>
