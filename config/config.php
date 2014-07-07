@@ -362,6 +362,7 @@ $c->subscribe['cookieName'] = 'subscribed';
 
 $c->requestMainMenu = true;
 
+$c->newOrder = true;
 $c->order['cookieName'] = 'last_order';
 $c->order['sessionName'] = 'lastOrder';
 $c->order['enableMetaTag'] = true;

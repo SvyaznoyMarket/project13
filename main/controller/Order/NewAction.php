@@ -14,6 +14,12 @@ class NewAction {
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        if (\App::config()->newOrder) {
+            $page = new \View\OrderV3\NewPage();
+
+            return new \Http\Response($page->show());
+        }
+
         $user = \App::user();
         $region = $user->getRegion();
         $cart = $user->getCart();

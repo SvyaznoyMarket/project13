@@ -464,8 +464,10 @@ class AppConfig {
         'maxLockTime' => null,
     ];
 
-    /** @var boolean */
+    /** @var bool */
     public $requestMainMenu = null;
+    /** @var bool */
+    public $newOrder;
     /** @var array  */
     public $order = [
         'cookieName'     => null,
@@ -543,7 +545,7 @@ class AppConfig {
         'analyticsEnabled' => null,
     ];
 
-    /** @var boolean */
+    /** @var bool */
     public $preview = null;
 
     /** @var array */
