@@ -359,7 +359,7 @@ class Action {
         }
 
         // SITE-3381
-        if (1 < $category->getLevel() && false === strpos($categoryPath, '/')) {
+        if (!$request->isXmlHttpRequest() && ($category->getLevel() > 1) && false === strpos($categoryPath, '/')) {
             throw new \Exception\NotFoundException(sprintf('Не передана родительская категория для категории @%s', $categoryToken));
         }
 
