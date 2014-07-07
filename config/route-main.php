@@ -621,16 +621,14 @@ return [
         'action' => ['Product\RecommendedAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
-    'product.similar' => [ /// executed SmartEngine or RetailRocker
+    'product.similar' => [
         'pattern' => '/ajax/product-similar/{productId}',
-        'action' => ['Product\SimilarAction', 'execute'],
-        //'action' => ['Product\SimilarAction', 'debug'], // just for debug
+        'action'  => ['Product\SimilarAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
-    'product.alsoViewed' => [ /// executed SmartEngine or RetailRocker
+    'product.alsoViewed' => [
         'pattern' => '/ajax/product-also-viewed/{productId}',
-        'action' => ['Product\AlsoViewedAction', 'execute'],
-        //'action' => ['Product\AlsoViewedAction', 'debug'], // just for debug
+        'action'  => ['Product\AlsoViewedAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
     'product.upsale' => [
@@ -643,23 +641,6 @@ return [
     'product/smartchoice' => [
         'pattern' => '/ajax/product-smartchoice',
         'action' => ['Product\SmartChoiceAction', 'execute'],
-    ],
-    /*
-    'smartengine.pull.product_similar' => [
-        'pattern' => '/product-similar/{productId}',
-        'action' => ['Smartengine\Action', 'pullProductSimilar'],
-        'require' => ['productId' => '\d+'],
-    ],
-    */
-    'smartengine.push.product_view' => [
-        'pattern' => '/product-view/{productId}',
-        'action' => ['Smartengine\Action', 'pushView'],
-        'require' => ['productId' => '\d+'],
-    ],
-    'smartengine.push.buy' => [
-        'pattern' => '/product-buy',
-        'action'  => ['Smartengine\Action', 'pushBuy'],
-        'method'  => ['POST'],
     ],
 
     // редактирование данных пользователя

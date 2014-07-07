@@ -121,7 +121,6 @@ if (!isset($paymentUrl)) $paymentUrl = null;
     <div id="credit-widget" data-value="<?= $page->json($creditData) ?>"></div>
 <? endif ?>
 
-
 <? if ($isOrderAnalytics) echo $page->render('order/_analytics', array(
     'orders'       => $orders,
     'productsById' => $productsById,
@@ -129,19 +128,6 @@ if (!isset($paymentUrl)) $paymentUrl = null;
     'shopsById'    => $shopsById,
     'paymentMethod' => $paymentMethod
 )) ?>
-
-
-<? if (false && \App::config()->product['pushRecommendation']): // TODO: почистить ?>
-    <? foreach ($orders as $order): ?>
-    <?
-        $jsonOrdersData = array('order' => array('id' => $order->getId(), 'product' => array_map(function ($orderProduct) {
-            /** @var $orderProduct \Model\Order\Product\Entity */
-            return array('id' => $orderProduct->getId(), 'price' => $orderProduct->getPrice(), 'quantity' => $orderProduct->getQuantity());
-        }, $order->getProduct())))
-    ?>
-        <div class="product_buy-container" data-url="<?= $page->url('smartengine.push.buy') ?>" data-order="<?= $page->json($jsonOrdersData) ?>"></div>
-    <? endforeach ?>
-<? endif ?>
 
 <? if (!$sessionIsReaded) {
     // Если сесиия уже была прочитана, значит юзер обновляет страницу, не трекаем партнёров вторично
