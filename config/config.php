@@ -290,6 +290,7 @@ $c->productLabel['url'] = [
 $c->productCategory['url'] = [
     0 => '/6/1/163/',
     3 => '/6/1/500/',
+    5 => '/6/1/960/'
 ];
 
 $c->service['url'] = [
@@ -410,7 +411,6 @@ $c->enterprize['cookieName'] = 'enterprize_coupon_sent';
 $c->tchibo['rowWidth'] = 78;
 $c->tchibo['rowHeight'] = 78;
 $c->tchibo['rowPadding'] = 0;
-$c->tchibo['whereToBuyPage'] = 'where_buy_tchibo';
 $c->tchiboSlider['analyticsEnabled'] = true;
 
 // настройки для АБ-тестов могут быть переопределены в json

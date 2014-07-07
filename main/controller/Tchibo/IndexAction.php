@@ -117,7 +117,7 @@ class IndexAction {
         $categoriesTchibo = array_filter($categoryTree, function ($cat) use ($categoryToken) { return $cat['token'] === $categoryToken; } );
 
         if (!(bool) $categoriesTchibo || $categoriesTchibo[0]['product_count'] == 0) {
-            return new \Http\RedirectResponse(\App::router()->generate('content', ['token' => \App::config()->tchibo['whereToBuyPage']]));
+            return new \Http\RedirectResponse(\App::router()->generate('tchibo.where_buy'));
         }
 
         if (!empty($shopScriptSeo['link'])) {
@@ -207,6 +207,13 @@ class IndexAction {
             \App::contentClient()->execute();
         }
 
+        // SITE-3970
+        // Стили для названий категорий в меню tchibo
+        $tchiboMenuCategoryNameStyles = [];
+        if (isset($catalogJson['tchibo_menu']['style']['name']) && is_array($catalogJson['tchibo_menu']['style']['name'])) {
+            $tchiboMenuCategoryNameStyles = $catalogJson['tchibo_menu']['style']['name'];
+        }
+
         // формируем вьюху, передаём ей данные
         $page = new \View\Tchibo\IndexPage();
         $page->setParam('slideData', $slideData);
@@ -216,6 +223,7 @@ class IndexAction {
         $page->setGlobalParam('bannerBottom', $bannerBottom);
         $page->setParam('shopScriptSeo', $shopScriptSeo);
         //$page->setGlobalParam('products', $products);
+        $page->setGlobalParam('tchiboMenuCategoryNameStyles', $tchiboMenuCategoryNameStyles);
 
         return new \Http\Response($page->show());
     }
