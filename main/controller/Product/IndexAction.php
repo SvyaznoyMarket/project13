@@ -469,7 +469,7 @@ class IndexAction {
         $is_credit = (bool)(($product->getPrice() * (($cart->getQuantityByProduct($product->getId()) > 0) ? $cart->getQuantityByProduct($product->getId()) : 1)) >= \App::config()->product['minCreditPrice']);
         \RepositoryManager::paymentGroup()->prepareCollection($region,
             [
-                'is_corporative' => $user->getEntity() ? $user->getEntity()->getIsCorporative() : false,
+                'is_corporative' => false,
                 'is_credit'      => $is_credit,
             ],
             [
