@@ -1035,15 +1035,18 @@ window.ANALYTICS = {
 		// Передаем email пользователя для RetailRocket
 		RetailRocket.userEmailSend();
 
-        if ( !ENTER.config.userInfo ) {
-            RetailRocket.action(null);
-        } else {
-            $('body').on('userLogged', function(){
-                RetailRocket.action(null, ENTER.config.userInfo);
-            });
-        }
+		if ( ENTER.config.userInfo === false ) {
+			RetailRocket.action(null);
+		}
+		else if ( !ENTER.config.userInfo ) {
+			$("body").on("userLogged", function() {RetailRocket.action(null, ENTER.config.userInfo)} );
+		}
+		else {
+			console.warn(ENTER.config.userInfo);
+			RetailRocket.action(null, ENTER.config.userInfo);
+		}
 
-        console.groupEnd();
+		console.groupEnd();
     },
 
 //    AdmitadJS : function() {
