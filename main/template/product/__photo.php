@@ -12,6 +12,9 @@ return function(
     // TODO: SITE-1822
     //$useLens = true;
 
+    $modelId = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getMaybe3d() : null;
+    $modelId = 'Apple__iPad_Mini_4G_Black';
+
     /** @var string $model3dExternalUrl */
     $model3dExternalUrl = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getMaybe3d() : null;
     /** @var string $model3dImg */
@@ -34,7 +37,7 @@ return function(
         if (!strlen($model3dName)) $model3dExternalUrl = false;
     }
 
-    $maybe3dData = $model3dExternalUrl
+    $vFittingData = $model3dExternalUrl
         ? [
             'init' => [
                 'swf'       => $model3dExternalUrl,
@@ -63,21 +66,17 @@ return function(
     ;
 ?>
 
-<? if ((bool)$maybe3dData): ?>
-    <div id="maybe3dModelPopup" class="popup" data-value="<?= $helper->json($maybe3dData); ?>">
+<? if ($modelId): ?>
+    <div id="maybe3dModelPopup" class="popup" data-value="<?= $helper->json(['modelId' => $modelId]); ?>">
         <i class="close" title="Закрыть">Закрыть</i>
         <div id="maybe3dModelPopup_inner" style="position: relative;">
-            <div id="maybe3dModel">
-                <a href="http://www.adobe.com/go/getflashplayer">
-                    <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
-                </a>
-            </div>
+            <div id="maybe3dModel" style="width: 700px; height: 500px;"></div>
         </div>
     </div>
 <? endif ?>
 
     <? if ((bool)true): ?>
-        <div id="vFittingModelPopup" class="popup" data-value="<?= $helper->json($maybe3dData); ?>">
+        <div id="vFittingModelPopup" class="popup" data-value="<?= $helper->json($vFittingData); ?>">
             <i class="close" title="Закрыть">Закрыть</i>
             <div id="vFittingModelPopup_inner" style="position: relative;">
                 <div id="vFittingModel">
