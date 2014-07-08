@@ -551,7 +551,10 @@ class Repository {
     public function getCatalogJson($category) {
         if(empty($category) || !is_object($category)) return [];
 
+        /** @var \Model\Product\Category\Entity $category */
+
         // формируем ветку категорий для последующего формирования запроса к json-апи
+        /*
         $branch = [$category->getToken()];
         if(!$category->isRoot()) {
             $currentCategory = $category;
@@ -563,11 +566,13 @@ class Repository {
                 array_unshift($branch, $root->getToken());
             }
         }
+        */
 
         // формируем запрос к апи и получаем json
         $catalogJson = [];
         $dataStore = \App::dataStoreClient();
-        $query = sprintf('catalog/%s.json', implode('/', $branch));
+        //$query = sprintf('catalog/%s.json', implode('/', $branch));
+        $query = sprintf('catalog/%s.json', implode('/', array_merge(array_map(function($category) { return $category->getToken(); }, $category->getAncestor()), [$category->getToken()])));
         $dataStore->addQuery(
             $query,
             [],

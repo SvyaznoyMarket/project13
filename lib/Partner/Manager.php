@@ -7,7 +7,16 @@ class Manager {
     private $cookieLifetime;
     private $cookieDomain;
     private $cookieArray = [];
-    private $params4get = [ 'utm_source','utm_content','utm_term', 'actionpay', 'prx', 'aip', 'webmaster_id', 'affiliate_id' ];
+    private $params4get = [
+        'utm_source',
+        'utm_content',
+        'utm_term',
+        'actionpay',    // actionpay
+        'prx',          // cityads
+        'aip',          // для cityads
+        //'webmaster_id', // для actionpay, устарело?
+        //'affiliate_id', // устарело?
+    ];
 
     public function __construct() {
         $this->cookieName = \App::config()->partner['cookieName'];
