@@ -1,6 +1,7 @@
 <?php
 /**
- * @var $page       \View\User\OrderPage
+ * @var $page           \View\User\OrderPage
+ * @var $userChannels   \Model\User\SubscriptionEntity[]|array
  */
 ?>
 
@@ -9,25 +10,22 @@
 <div class="personalPage">
     <div class="personalTitle">Подписки</div>
 
-    <form action="" class="personalSubscr">
+    <form action="" method="post" class="personalSubscr">
         <fieldset class="personalSubscr_row">
             <legend class="legend">Email</legend>
 
-            <input class="jsCustomRadio customInput customInput-bigCheck" id="email" type="checkbox"  name="" checked />
-            <label class="customLabel customLabel-bigCheck" for="email">Акции, новости и специальные предложения </label>
+            <? foreach ($userChannels as $channel) : ?>
 
-        </fieldset>
+            <input class="jsCustomRadio customInput customInput-bigCheck" id="channel_<?= $channel->getChannelId() ?>" type="checkbox"  name="channel_<?= $channel->getChannelId() ?>" <?= $channel->getIsConfirmed() ? 'checked' : '' ?> disabled />
+            <label class="customLabel customLabel-bigCheck" for="channel_<?= $channel->getChannelId() ?>"><?= $channel->getChannel()->getName() ?></label>
+            <br />
 
-        <fieldset class="personalSubscr_row">
-            <legend class="legend">SMS</legend>
-
-            <input class="jsCustomRadio customInput customInput-bigCheck" id="sms" type="checkbox" name="" />
-            <label class="customLabel customLabel-bigCheck" for="sms">Акции, новости и специальные предложения </label>
+            <? endforeach; ?>
 
         </fieldset>
 
         <fieldset class="personalSubscr_clear">
-            <input class="btnsubmit" type="submit" value="Сохранить" />
+            <input class="btnsubmit" type="submit" value="Сохранить"  disabled />
         </fieldset>
     </form>
 </div>

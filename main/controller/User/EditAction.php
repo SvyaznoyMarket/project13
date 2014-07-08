@@ -65,7 +65,30 @@ class EditAction {
                     throw new \Exception("E-mail и телефон не могут быть отредактированы.");
                 }
 
-                $response = $client->query(
+                // Смена пароля
+                $oldPassword = trim((string)$request->get('password_old'));
+                $newPassword = trim((string)$request->get('password_new'));
+
+                if ( ($oldPassword && !$newPassword) || (!$oldPassword && $newPassword)) {
+                    throw new \Exception("Не заполнено одно из полей смены пароля");
+                }
+
+                if ($newPassword && $oldPassword == $newPassword) {
+                    throw new \Exception("Старый пароль совпадает с новым паролем");
+                }
+
+                if ($newPassword) {
+                    $response_change_password = $client->query(
+                        'user/change-password',
+                        [
+                            'token'         => \App::user()->getToken(),
+                            'password'      => $oldPassword,
+                            'new_password'  => $newPassword
+                        ]
+                    );
+                }
+
+                $response_change_info = $client->query(
                     'user/update',
                     ['token' => \App::user()->getToken()],
                     [
@@ -84,8 +107,12 @@ class EditAction {
                     \App::config()->coreV2['hugeTimeout']
                 );
 
-                if (!isset($response['confirmed']) || !$response['confirmed']) {
-                    throw new \Exception('Не получен ответ от сервера.');
+                if (!isset($response_change_info['confirmed']) || !$response_change_info['confirmed']) {
+                    throw new \Exception('Не удалось сменить данные пользователя.');
+                }
+
+                if (isset($response_change_password) && (!isset($response_change_password['confirmed']) || !$response_change_password['confirmed'])) {
+                    throw new \Exception('Не удалось сменить пароль пользователя.');
                 }
 
                 $session->set('flash', 'Данные сохранены');

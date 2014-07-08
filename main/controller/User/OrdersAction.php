@@ -81,8 +81,12 @@ class OrdersAction {
             // текущие заказы
             $currentOrders = array_filter($orders, function (\Model\User\Order\Entity $order) {
                 $lifecycle = $order->getLifecycle();
-                $lastcycle = end($lifecycle);
-                return !$lastcycle->getCompleted();
+                if ($lifecycle instanceof \Model\User\Order\LifecycleEntity) {
+                    $lastcycle = end($lifecycle);
+                    return !$lastcycle->getCompleted();
+                } else {
+                    return false;
+                }
             });
 
             $products = \RepositoryManager::product()->getCollectionById(
