@@ -55,6 +55,8 @@ $productVideo = reset($productVideos);
 <?
     $photoList = $product->getPhoto();
 
+    $modelId = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getMaybe3d() : null;
+
     /** @var string $model3dExternalUrl */
     $model3dExternalUrl = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getMaybe3d() : false;
     /** @var string $model3dImg */
@@ -104,43 +106,13 @@ $productVideo = reset($productVideos);
     }
 </style>
 
-<? if ($model3dExternalUrl) : 
-
-  $arrayToMaybe3D = [
-    'init' => [
-      'swf'=>$model3dExternalUrl,
-      'container'=>'maybe3dModel',
-      'width'=>'700px',
-      'height'=>'500px',
-      'version'=>'10.0.0',
-      'install'=>'js/vendor/expressInstall.swf',
-    ],
-    'params' => [
-      'menu'=> "false",
-      'scale'=> "noScale",
-      'allowFullscreen'=> "true",
-      'allowScriptAccess'=> "always",
-      'wmode'=> "direct"
-    ],
-    'attributes' => [
-      'id'=> $model3dName,
-    ],
-    'flashvars'=> [
-      'language'=> "auto",
-    ]
-    
-  ];
-  
-?>
-  <div id="maybe3dModelPopup" class="popup" data-value="<?php print $page->json($arrayToMaybe3D); ?>">
-    <i class="close" title="Закрыть">Закрыть</i>
-    <div id="maybe3dModel">
-        <a href="http://www.adobe.com/go/getflashplayer">
-            <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
-        </a>
+<? if ($modelId): ?>
+    <div id="maybe3dModelPopup" class="popup" data-value="<?= $helper->json(['modelId' => $modelId]); ?>">
+        <i class="close" title="Закрыть">Закрыть</i>
+        <div id="maybe3dModelPopup_inner" style="position: relative;">
+            <div id="maybe3dModel"></div>
+        </div>
     </div>
-  </div>
-
 <? endif ?>
 
 <? if ($model3dImg) : ?>

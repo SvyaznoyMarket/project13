@@ -13,7 +13,6 @@ return function(
     //$useLens = true;
 
     $modelId = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getMaybe3d() : null;
-    $modelId = 'Apple__iPad_Mini_4G_Black';
 
     /** @var string $model3dExternalUrl */
     $model3dExternalUrl = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getMaybe3d() : null;
@@ -70,7 +69,7 @@ return function(
     <div id="maybe3dModelPopup" class="popup" data-value="<?= $helper->json(['modelId' => $modelId]); ?>">
         <i class="close" title="Закрыть">Закрыть</i>
         <div id="maybe3dModelPopup_inner" style="position: relative;">
-            <div id="maybe3dModel" style="width: 700px; height: 500px;"></div>
+            <div id="maybe3dModel"></div>
         </div>
     </div>
 <? endif ?>
