@@ -600,48 +600,26 @@
 			}
 			return true;
 		},
-		loadMaybe3D = function() {
-		var
-			data = $('#maybe3dModelPopup').data('value');
+	loadMaybe3D = function() {
+		$('.mGrad360.maybe3d').bind('click', function( e ) {
+			$LAB.script('/maybe3DPlayer/player.min.js').wait(function() {
+				var maybe3dModelPopup = $('#maybe3dModelPopup');
 
-		var
-			afterLoad = function() {
-			var
-				maybe3dPopupShow = function( e ) {
-				e.stopPropagation();
-				try {
-					if ( !$('#maybe3dModel').length ) {
-						$('#maybe3dModelPopup_inner').append('<div id="maybe3dModel"></div>');
+				maybe3dModelPopup.lightbox_me({
+					centered: true,
+					closeSelector: '.close',
+					onLoad: function() {
+						Maybe3D.Starter.setModelPathHTML5('http://fs01.enter.ru/3d/html5/');
+						Maybe3D.Starter.embed(maybe3dModelPopup.data('value').modelId, 'maybe3dModel');
+					},
+					onClose: function() {
+						$('#maybe3dModel', maybe3dModelPopup).empty();
 					}
-
-					swfobject.embedSWF(data.init.swf, data.init.container, data.init.width, data.init.height, data.init.version, data.init.install, data.flashvars, data.params, data.attributes);
-					$('#maybe3dModelPopup').lightbox_me({
-						centered: true,
-						closeSelector: '.close',
-						onClose: function() {
-							swfobject.removeSWF(data.attributes.id);
-						}
-					});
-				}
-				catch ( err ) {
-					var
-						dataToLog = {
-							event: 'swfobject_error',
-							type:'ошибка загрузки swf maybe3d',
-							err: err
-						};
-					// end of vars
-
-					utils.logError(dataToLog);
-				}
-				return false;
-			};
-
-			$('.mGrad360.maybe3d').bind('click', maybe3dPopupShow);
-		};
-
-		loadWithSWF(afterLoad);
-	},
+				});
+			});
+			return false;
+		});
+    },
 	loadFitting = function loadFitting() {
 		console.log('### LoadFitting BEGIN');
 		var
