@@ -129,9 +129,9 @@ class Manager {
                 'cityads' => \Partner\Counter\CityAds::NAME,
                 'actionpay' => \Partner\Counter\Actionpay::NAME,
                 'myragon' => \Partner\Counter\Myragon::NAME,
-                'tradetracker' => \Partner\Counter\Tradetracker::NAME,
-                'unilead' => \Partner\Counter\Unilead::NAME,
-                'leadgid' => \Partner\Counter\Leadgid::NAME,
+                //'tradetracker' => \Partner\Counter\Tradetracker::NAME,
+                //'unilead' => \Partner\Counter\Unilead::NAME,
+                //'leadgid' => \Partner\Counter\Leadgid::NAME,
                 'yandex_market' => \Partner\PromoSource\YandexMarket::NAME,
                 'pricelist' => \Partner\PromoSource\Pricelist::NAME,
                 'criteo' => \Partner\PromoSource\Criteo::NAME,
@@ -216,7 +216,7 @@ class Manager {
 
             foreach ($this->cookieArray as $cookie) {
                 if ($cookie instanceof \Http\Cookie) {
-                    if ($lastPartner) $response->headers->setCookie(new \Http\Cookie('last_partner', $lastPartner, 0));
+                    if ($lastPartner) $response->headers->setCookie(new \Http\Cookie('last_partner', $lastPartner, 0, '/', \App::config()->session['cookie_domain']));
                     if ($cookie->getName() == $this->cookieName && $alreadyHasCookie) continue; // оставим существующую куку для трекинга изначального партнера
                     $response->headers->setCookie($cookie);
                 }
