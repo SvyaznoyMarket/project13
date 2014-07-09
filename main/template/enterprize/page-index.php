@@ -90,7 +90,7 @@ $helper = new \Helper\TemplateHelper();
 
                 <? if (isset($products) && !empty($products) && is_array($products)): ?>
                     <div class="epSelectFishka_slider">
-                        <a class="epSelectFishka_slider_link" href="">Выбрать товары с этой скидкой</a>
+                        <a class="epSelectFishka_slider_link" href="<?= $enterpizeCoupon->getLink() ?: '#' ?>">Выбрать товары с этой скидкой</a>
                         
                         <?= $helper->render('product/__slider', [
                             'type'     => 'enterprize',
