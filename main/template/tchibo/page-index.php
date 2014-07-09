@@ -6,11 +6,14 @@
  * @var $catalogConfig      array
  * @var $slideData          array
  * @var $bannerBottom       string
+ * @var $promoContent       string
  */
 
 
 $helper = new \Helper\TemplateHelper();
 $siblingCategories = $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : [];
+
+$isCategoriesOddCount = (bool)(count($catalogCategories) % 2 == 1);
 
 if ((bool)$siblingCategories) {
     /* <!-- TCHIBO - слайдер-меню разделов Чибо --> */
@@ -48,22 +51,15 @@ if ((bool)$slideData) {
         }
 
         $categoryChildren = $catalogCategory->getChild();
-
-        $lastCategoryOdd = '';
-
-        if ($key == count($catalogCategories) - 1 && count($catalogCategories) % 2 == 1) {
-            $lastCategoryOdd = 'mFullWidth';
-            $imgSrc = $catalogCategory->getImageUrl(5);
-        }
         ?>
 
-        <div class="tchiboCatalogInner <?= $lastCategoryOdd ?>">
+        <div class="tchiboCatalogInner">
             <a href="<?= $catalogCategory->getLink() ?>">
                 <img class="tchiboCatalog__img"
                      src="<?= $imgSrc ?>" alt="<?= $catalogCategory->getName() ?>" />
             </a>
 
-            <div class="tchiboCatalog__title <?= $lastCategoryOdd ?>">
+            <div class="tchiboCatalog__title">
                 <a class="titleCat" href="<?= $catalogCategory->getLink() ?>">
                     <?= $catalogCategory->getName() ?>
                 </a>
@@ -102,6 +98,12 @@ if ((bool)$slideData) {
             </div>
         </div><? /* <!--/ категория --> */ ?>
     <? endforeach; ?>
+
+    <? if ($isCategoriesOddCount && isset($promoContent) && !empty($promoContent)): ?>
+        <div class="tchiboCatalogInner">
+            <?= $promoContent ?>
+        </div>
+    <? endif ?>
 
     <? if (!empty($bannerBottom)): ?>
     <div class="tchiboCatalogInnerBanner">

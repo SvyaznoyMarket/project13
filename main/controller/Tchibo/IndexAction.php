@@ -127,8 +127,10 @@ class IndexAction {
             $catalogJson['promo_token'] = trim((string)$catalogJson['promo_token']);
         }
 
+        $contentClient = \App::contentClient();
+
         if (!empty($catalogJson['promo_token'])) {
-            \App::contentClient()->addQuery(
+            $contentClient->addQuery(
                 $catalogJson['promo_token'],
                 [],
                 function($data) use (&$bannerBottom) {
@@ -141,8 +143,27 @@ class IndexAction {
                     \App::exception()->remove($e);
                 }
             );
-            \App::contentClient()->execute();
         }
+
+        // Получаем контентный блок с вордпресса
+        $promoContent = null;
+        $promoToken = 'tchibo_promo';
+        $contentClient->addQuery(
+            $promoToken,
+            [],
+            function($data) use (&$promoContent) {
+                if (!empty($data['content'])) {
+                    $promoContent = $data['content'];
+                }
+            },
+            function(\Exception $e) use (&$promoToken) {
+                \App::logger()->error(sprintf('Не получен контентный блок %s', $promoToken));
+                \App::exception()->add($e);
+            }
+        );
+
+        // выполнение пакета запросов к вордпрессу
+        $contentClient->execute();
 
         // SITE-3970
         // Стили для названий категорий в меню tchibo
@@ -160,6 +181,7 @@ class IndexAction {
         $page->setGlobalParam('bannerBottom', $bannerBottom);
         //$page->setGlobalParam('products', $products);
         $page->setGlobalParam('tchiboMenuCategoryNameStyles', $tchiboMenuCategoryNameStyles);
+        $page->setGlobalParam('promoContent', $promoContent);
 
         return new \Http\Response($page->show());
     }
