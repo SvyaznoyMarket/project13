@@ -4480,6 +4480,9 @@ img[height="0"] {
     color: #ffffff;
     border-bottom: 5px solid #fb9c00;
   }
+  .orderHd_stps_i-pass {
+    color: #ffffff;
+  }
   .orderCnt {
     padding: 0 0 30px;
     font-size: 14px;

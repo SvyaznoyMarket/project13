@@ -3,7 +3,8 @@
 	<img class="orderHd_lg" src="/styles/order/img/logo.png" />
 
 	<ul class="orderHd_stps">
-		<li class="orderHd_stps_i">Получатель</li>
+		<!-- если шаг пройден то orderHd_stps_i-pass, текущий шаг orderHd_stps_i-act -->
+		<li class="orderHd_stps_i orderHd_stps_i-pass">Получатель</li>
 		<li class="orderHd_stps_i orderHd_stps_i-act">Самовывоз и доставка</li>	
 		<li class="orderHd_stps_i">Оплата</li>				
 	</ul>
