@@ -8,6 +8,7 @@ class IndexAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
+        $contentClient = \App::contentClient();
         $user = \App::user();
         $promoRepository = \RepositoryManager::promo();
         $region = $user->getRegion();
@@ -126,8 +127,6 @@ class IndexAction {
         if (isset($catalogJson['promo_token'])) {
             $catalogJson['promo_token'] = trim((string)$catalogJson['promo_token']);
         }
-
-        $contentClient = \App::contentClient();
 
         if (!empty($catalogJson['promo_token'])) {
             $contentClient->addQuery(
