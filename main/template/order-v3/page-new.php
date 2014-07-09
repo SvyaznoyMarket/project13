@@ -1,70 +1,71 @@
 <!-- шапка оформления заказа -->
-<header class="orderHead">
-	<img class="orderHead_logo" src="/styles/order/img/logo.png" />
+<header class="orderHd">
+	<img class="orderHd_lg" src="/styles/order/img/logo.png" />
 
-	<ul class="orderHead_steps">
-		<li class="orderHead_steps_item">Получатель</li>
-		<li class="orderHead_steps_item orderHead_steps_item-active">Самовывоз и доставка</li>	
-		<li class="orderHead_steps_item">Оплата</li>				
+	<ul class="orderHd_stps">
+		<li class="orderHd_stps_i">Получатель</li>
+		<li class="orderHd_stps_i orderHd_stps_i-act">Самовывоз и доставка</li>	
+		<li class="orderHd_stps_i">Оплата</li>				
 	</ul>
 </header>
 <!--/ шапка оформления заказа -->
 
-<section class="orderCont">
-	<h1 class="orderCont_title">Оформление заказа</h1>
+<section class="orderCnt">
+	<h1 class="orderCnt_t">Оформление заказа</h1>
 
-	<form class="orderUser" action="" method="" accept-charset="utf-8">
-		<fieldset class="orderUser_fieldset">
-			<div class="orderUser_field">
-				<label class="orderUser_label orderUser_label-strict" for="">Телефон</label>
-				<input class="orderUser_text textfield" type="text" name="" value="" placeholder="">
-				<span class="orderUser_hint">Для смс о состоянии заказа</span>
+	<form class="orderU" action="" method="" accept-charset="utf-8">
+		<fieldset class="orderU_flds">
+			<div class="orderU_fld">
+				<label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
+				<input class="orderU_tx textfield" type="text" name="" value="" placeholder="">
+				<span class="orderU_hint">Для смс о состоянии заказа</span>
 			</div>
 
-			<div class="orderUser_field">
-				<label class="orderUser_label" for="">E-mail</label>
-				<input class="orderUser_text textfield" type="text" name="" value="" placeholder="">
+			<div class="orderU_fld">
+				<label class="orderU_lbl" for="">E-mail</label>
+				<input class="orderU_tx textfield" type="text" name="" value="" placeholder="">
 			</div>
 
-			<div class="orderUser_field">
-				<label class="orderUser_label" for="">Имя</label>
-				<input class="orderUser_text textfield" type="text" name="" value="" placeholder="">
-				<span class="orderUser_hint">Как к вам обращаться?</span>
+			<div class="orderU_fld">
+				<label class="orderU_lbl" for="">Имя</label>
+				<input class="orderU_tx textfield" type="text" name="" value="" placeholder="">
+				<span class="orderU_hint">Как к вам обращаться?</span>
 			</div>
 		</fieldset>
 
-		<fieldset class="orderUser_fieldset">
-			<span class="orderBonus">Начислить баллы</span>
+		<fieldset class="orderU_flds">
+			<span class="orderU_bonus">Начислить баллы</span>
 
-			<img class="orderBonusItem" src="/styles/order/img/sClub.png" alt="" />
-			<img class="orderBonusItem" src="/styles/order/img/sBank.png" alt="" />
+			<img class="orderU_bonusImg" src="/styles/order/img/sClub.png" alt="" />
+			<img class="orderU_bonusImg" src="/styles/order/img/sBank.png" alt="" />
 		</fieldset>
 	</form>
 
 	<div class="orderAuth">
-		<div class="orderAuth_title">Уже заказывали у нас?</div>
+		<div class="orderAuth_t">Уже заказывали у нас?</div>
 		<button class="orderAuth_btn btnLightGrey">Войти с паролем</button>
 	</div>
 
-	<div class="orderComplete clearfix">
-		<div class="orderComplete_left orderComplete_left-line orderCheck orderCheck-strikt mb10">
+	<div class="orderCompl clearfix">
+		<div class="orderCompl_l orderCompl_l-ln orderCheck orderCheck-str mb10">
 			<input type="checkbox" class="customInput customInput-checkbox" id="accept" name="" value="" />
+
 			<label  class="customLabel" for="accept">
 				Я ознакомлен и согласен с «Условиями продажи» и «Правовой информацией»
 			</label>
 		</div>
 
-		<button class="orderComplete_btn btnsubmit">Далее ➜</button>
+		<button class="orderCompl_btn btnsubmit">Далее ➜</button>
 	</div>
 </section>
 
-<section class="orderCont">
-	<h1 class="orderCont_title">Самовывоз и доставка</h1>
+<section class="orderCnt">
+	<h1 class="orderCnt_t">Самовывоз и доставка</h1>
 	<!-- заголовок страницы -->
 
-	<p class="orderInfo">Товары будут оформлены как  <strong>3 отдельных заказа</strong></p>
+	<p class="orderInf">Товары будут оформлены как  <strong>3 отдельных заказа</strong></p>
 
-	<div class="orderInfo clearfix">
+	<div class="orderInf clearfix">
 		<div>Ваш регион: <strong>Москва</strong></div>
 
 		<div class="fl-l">От региона зависят доступные способы получения и оплаты заказов.</div>
@@ -75,76 +76,129 @@
 	<!-- блок разбиения заказа -->
 	<div class="orderRow clearfix">
 		<!-- информация о заказе -->
-		<div class="orderCell">
-			<div class="orderCellHead">
+		<div class="orderCol">
+			<div class="orderCol_h">
 				<strong>Заказ №1</strong> 
 				<span class="colorBrightGrey">продавец: ООО «Связной»</span>
 			</div>
 
-			<div class="orderItem">
-				<a href="" class="orderItem_img">
-					<img class="orderItem_img_resize" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg" alt="">
+			<div class="orderCol_cnt clearfix">
+				<a href="" class="orderCol_lk">
+					<img class="orderCol_img" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg" alt="">
 				</a>
 
-				<a href="" class="orderItem_name">
+				<a href="" class="orderCol_n">
 					Самокат<br/>
 					JD Bug Classic MS-305 синий
 				</a>
 
-				<div class="orderItem_data clearfix">
-					<span class="orderItem_data_item orderItem_data_item-summ fl-r">5 200 <span class="rubl">p</span></span>
-					<span class="orderItem_data_item orderItem_data_item-count fl-r">1 шт.</span>
-					<span class="orderItem_data_item orderItem_data_item-price fl-r">5 200 <span class="rubl">p</span></span>
-				</div>
+				<span class="orderCol_data orderCol_data-summ">5 200 <span class="rubl">p</span></span>
+				<span class="orderCol_data orderCol_data-count">1 шт.</span>
+				<span class="orderCol_data orderCol_data-price">5 200 <span class="rubl">p</span></span>
 			</div>
 
-			<div class="orderCellFoot clearfix">
-				<div class="orderCellFoot_left">
-					<span>Ввести код скидки</span>
+			<div class="orderCol_f clearfix">
+				<div class="orderCol_f_l">
+					<span class="orderCol_f_t brb-dt">Ввести код скидки</span>
 				</div>
 
-				<div class="orderCellFoot_right">
-					<span class="orderCheckSumm l">150 <span class="rubl">p</span></span>
-					<span class="orderCheckTitle">Доставка:</span>
+				<div class="orderCol_f_r">
+					<span class="orderCol_summ">150 <span class="rubl">p</span></span>
+					<span class="orderCol_summt orderCol_summt-m">Доставка:</span>
 					
-					<span class="orderCheckSumm l">2 334 <span class="rubl">p</span></span>
-					<span class="orderCheckTitle l">Итого:</span>
+					<span class="orderCol_summ">2 334 <span class="rubl">p</span></span>
+					<span class="orderCol_summt">Итого:</span>
 				</div>
 			</div>
 		</div>
 		<!--/ информация о заказе -->
 
 		<!-- информация о доставке -->
-		<div class="orderCell orderCell-right">
-			<menu class="orderDelivery">
-				<li class="orderDelivery_item orderDelivery_item-active">Самовывоз</li>
-				<li class="orderDelivery_item">Доставка</li>
+		<div class="orderCol orderCol-r">
+			<menu class="orderCol_delivrLst">
+				<li class="orderCol_delivrLst_i orderCol_delivrLst_i-act">Самовывоз</li>
+				<li class="orderCol_delivrLst_i">Доставка</li>
 			</menu>
 
 			<!-- дата доставки -->
-			<div class="orderDeliveryInfo clearfix">
-				15 сентября 2014, воскресенье 
+			<div class="orderCol_delivrIn clearfix">
+				<div class="orderCol_date">15 сентября 2014, воскресенье</div>
 				<span class="orderChange">изменить дату</span>
+
+				<div class="celedr">
+					<div class="celedr_clsr"></div>
+
+					<div class="celedr_t">27 сентября, воскресенье</div>
+
+					<button class="celedr_btn btnLightGrey">Хочу быстрее!</button>
+
+					<div class="celedr_tb">
+						<div class="celedr_row celedr_row-h">
+							<div class="celedr_col">Пн</div>
+							<div class="celedr_col">Вт</div>
+							<div class="celedr_col">Ср</div>
+							<div class="celedr_col">Чт</div>
+							<div class="celedr_col">Пт</div>
+							<div class="celedr_col">Сб</div>
+							<div class="celedr_col">Вс</div>
+						</div>
+
+						<div class="celedr_row">
+							<div class="celedr_col celedr_col-disbl">24</div>
+							<div class="celedr_col celedr_col-disbl">25</div>
+							<div class="celedr_col celedr_col-disbl">26</div>
+							<div class="celedr_col">27</div>
+							<div class="celedr_col">28</div>
+							<div class="celedr_col">29</div>
+							<div class="celedr_col">30</div>
+						</div>
+
+						<div class="celedr_row">
+							<div class="celedr_col">31</div>
+							<div class="celedr_col">1</div>
+							<div class="celedr_col">2</div>
+							<div class="celedr_col">3</div>
+							<div class="celedr_col">4</div>
+							<div class="celedr_col">5</div>
+							<div class="celedr_col">6</div>
+						</div>
+
+						<div class="celedr_row">
+							<div class="celedr_col">7</div>
+							<div class="celedr_col">8</div>
+							<div class="celedr_col">9</div>
+							<div class="celedr_col">10</div>
+							<div class="celedr_col celedr_col-disbl">11</div>
+							<div class="celedr_col celedr_col-disbl">12</div>
+							<div class="celedr_col celedr_col-disbl">13</div>
+						</div>
+					</div>
+
+					<div class="celedr_f clearfix">
+						<div class="celedr_f_btn celedr_f_btn-l">Сентябрь</div>
+						<div class="celedr_f_btn celedr_f_btn-r">Октябрь</div>
+					</div>
+				</div>
 			</div>
 			<!--/ дата доставки -->
 
 			<!-- способ доставки -->
-			<div class="orderDeliveryInfo orderDeliveryInfo-pl">
-				<div class="deliveryTitle clearfix">
+			<div class="orderCol_delivrIn orderCol_delivrIn-pl">
+				<div class="orderCol_delivrIn_t clearfix">
 					<strong>Постамат PickPoint</strong>
 
 					<span class="orderChange">изменить место</span>
 				</div>
 
-				<div class="deliveryAddress" style="background: red;">
-					<span class="deliveryAddress_text">
+				<div class="orderCol_addrs" style="background: red;">
+					<span class="orderCol_addrs_tx">
 						м. Петровско-Разумовская<br/>
 						<span class="colorBrightGrey">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
 					</span>
 				</div>
 
-				<div class="deliveryTime">
-					<span class="deliveryTime_title">Режим работы:</span> с 9.00 до 22.00
+				<div class="orderCol_tm">
+					<span class="orderCol_tm_t">Режим работы:</span> с 9.00 до 22.00
 				</div>
 			</div>
 			<!--/ способ доставки -->
@@ -156,62 +210,60 @@
 	<!-- блок разбиения заказа -->
 	<div class="orderRow clearfix">
 		<!-- информация о заказе -->
-		<div class="orderCell">
-			<div class="orderCellHead">
+		<div class="orderCol">
+			<div class="orderCol_h">
 				<strong>Заказ №1</strong> 
 				<span class="colorBrightGrey">продавец: ООО «Связной»</span>
 			</div>
 
-			<div class="orderItem">
-				<a href="" class="orderItem_img">
-					<img class="orderItem_img_resize" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg" alt="">
+			<div class="orderCol_cnt clearfix">
+				<a href="" class="orderCol_lk">
+					<img class="orderCol_img" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg" alt="">
 				</a>
 
-				<a href="" class="orderItem_name">
+				<a href="" class="orderCol_n">
 					Самокат<br/>
 					JD Bug Classic MS-305 синий
 				</a>
 
-				<div class="orderItem_data clearfix">
-					<span class="orderItem_data_item orderItem_data_item-summ fl-r">5 200 <span class="rubl">p</span></span>
-					<span class="orderItem_data_item orderItem_data_item-count fl-r">1 шт.</span>
-					<span class="orderItem_data_item orderItem_data_item-price fl-r">5 200 <span class="rubl">p</span></span>
-				</div>
+				<span class="orderCol_data orderCol_data-summ">5 200 <span class="rubl">p</span></span>
+				<span class="orderCol_data orderCol_data-count">1 шт.</span>
+				<span class="orderCol_data orderCol_data-price">5 200 <span class="rubl">p</span></span>
 			</div>
 
-			<div class="orderCellFoot clearfix">
-				<div class="orderCellFoot_left">
-					<span>Ввести код скидки</span>
+			<div class="orderCol_f clearfix">
+				<div class="orderCol_f_l">
+					<span class="orderCol_f_t brb-dt">Ввести код скидки</span>
 				</div>
 
-				<div class="orderCellFoot_right">
-					<span class="orderCheckSumm l">150 <span class="rubl">p</span></span>
-					<span class="orderCheckTitle">Доставка:</span>
+				<div class="orderCol_f_r">
+					<span class="orderCol_summ">150 <span class="rubl">p</span></span>
+					<span class="orderCol_summt orderCol_summt-m">Доставка:</span>
 					
-					<span class="orderCheckSumm l">2 334 <span class="rubl">p</span></span>
-					<span class="orderCheckTitle l">Итого:</span>
+					<span class="orderCol_summ">2 334 <span class="rubl">p</span></span>
+					<span class="orderCol_summt">Итого:</span>
 				</div>
 			</div>
 		</div>
 		<!--/ информация о заказе -->
 
 		<!-- информация о доставке -->
-		<div class="orderCell orderCell-right">
-			<menu class="orderDelivery">
-				<li class="orderDelivery_item orderDelivery_item-active">Самовывоз</li>
-				<li class="orderDelivery_item">Доставка</li>
+		<div class="orderCol orderCol-r">
+			<menu class="orderCol_delivrLst">
+				<li class="orderCol_delivrLst_i orderCol_delivrLst_i-act">Самовывоз</li>
+				<li class="orderCol_delivrLst_i">Доставка</li>
 			</menu>
 
 			<!-- дата доставки -->
-			<div class="orderDeliveryInfo clearfix">
+			<div class="orderCol_delivrIn clearfix">
 				15 сентября 2014, воскресенье 
 				<span class="orderChange">изменить дату</span>
 			</div>
 			<!--/ дата доставки -->
 
 			<!-- способ доставки -->
-			<div class="orderDeliveryInfo orderDeliveryInfo-pl orderDeliveryInfo-bg">
-				<div class="deliveryTitle clearfix">
+			<div class="orderCol_delivrIn orderCol_delivrIn-pl orderCol_delivrIn-bg">
+				<div class="orderCol_delivrIn_t clearfix">
 					<strong>Место самовывоза</strong>
 				</div>
 
@@ -227,113 +279,103 @@
 	<!-- блок разбиения заказа -->
 	<div class="orderRow clearfix">
 		<!-- информация о заказе -->
-		<div class="orderCell">
-			<div class="orderCellHead">
+		<div class="orderCol">
+			<div class="orderCol_h">
 				<strong>Заказ №1</strong> 
 				<span class="colorBrightGrey">продавец: ООО «Связной»</span>
 			</div>
 
-			<div class="orderItem">
-				<a href="" class="orderItem_img">
-					<img class="orderItem_img_resize" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg" alt="">
+			<div class="orderCol_cnt clearfix">
+				<a href="" class="orderCol_lk">
+					<img class="orderCol_img" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg" alt="">
 				</a>
 
-				<a href="" class="orderItem_name">
+				<a href="" class="orderCol_n">
 					Самокат<br/>
 					JD Bug Classic MS-305 синий
 				</a>
 
-				<div class="orderItem_data clearfix">
-					<span class="orderItem_data_item orderItem_data_item-summ fl-r">5 200 <span class="rubl">p</span></span>
-					<span class="orderItem_data_item orderItem_data_item-count fl-r">1 шт.</span>
-					<span class="orderItem_data_item orderItem_data_item-price fl-r">5 200 <span class="rubl">p</span></span>
-				</div>
+				<span class="orderCol_data orderCol_data-summ">5 200 <span class="rubl">p</span></span>
+				<span class="orderCol_data orderCol_data-count">1 шт.</span>
+				<span class="orderCol_data orderCol_data-price">5 200 <span class="rubl">p</span></span>
 			</div>
 
-			<div class="orderItem">
-				<a href="" class="orderItem_img">
-					<img class="orderItem_img_resize" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg" alt="">
+			<div class="orderCol_cnt clearfix">
+				<a href="" class="orderCol_lk">
+					<img class="orderCol_img" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg" alt="">
 				</a>
 
-				<a href="" class="orderItem_name">
+				<a href="" class="orderCol_n">
 					Самокат<br/>
 					JD Bug Classic MS-305 синий
 				</a>
 
-				<div class="orderItem_data clearfix">
-					<span class="orderItem_data_item orderItem_data_item-summ fl-r">5 200 <span class="rubl">p</span></span>
-					<span class="orderItem_data_item orderItem_data_item-count fl-r">1 шт.</span>
-					<span class="orderItem_data_item orderItem_data_item-price fl-r">5 200 <span class="rubl">p</span></span>
-				</div>
+				<span class="orderCol_data orderCol_data-summ">5 200 <span class="rubl">p</span></span>
+				<span class="orderCol_data orderCol_data-count">1 шт.</span>
+				<span class="orderCol_data orderCol_data-price">5 200 <span class="rubl">p</span></span>
 			</div>
 
-			<div class="orderItem">
-				<a href="" class="orderItem_img">
-					<img class="orderItem_img_resize" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg" alt="">
+			<div class="orderCol_cnt clearfix">
+				<a href="" class="orderCol_lk">
+					<img class="orderCol_img" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg" alt="">
 				</a>
 
-				<a href="" class="orderItem_name">
+				<a href="" class="orderCol_n">
 					Самокат<br/>
 					JD Bug Classic MS-305 синий
 				</a>
 
-				<div class="orderItem_data clearfix">
-					<span class="orderItem_data_item orderItem_data_item-summ fl-r">5 200 <span class="rubl">p</span></span>
-					<span class="orderItem_data_item orderItem_data_item-count fl-r">1 шт.</span>
-					<span class="orderItem_data_item orderItem_data_item-price fl-r">5 200 <span class="rubl">p</span></span>
-				</div>
+				<span class="orderCol_data orderCol_data-summ">5 200 <span class="rubl">p</span></span>
+				<span class="orderCol_data orderCol_data-count">1 шт.</span>
+				<span class="orderCol_data orderCol_data-price">5 200 <span class="rubl">p</span></span>
 			</div>
 
-			<div class="orderItemTitle">Скидки</div>
+			<div class="orderCol_t">Скидки</div>
 
-			<div class="orderItem">
-				<a href="" class="orderItem_img">
-					<img class="orderItem_img_resize" src="/styles/order/img/fishka.png" alt="">
+			<div class="orderCol_cnt clearfix">
+				<a href="" class="orderCol_lk">
+					<img class="orderCol_img" src="/styles/order/img/fishka.png" alt="">
 				</a>
 
-				<div class="orderItem_name">
+				<div class="orderCol_n">
 					Фишка со скидкой 2% на категорию Электроника<br/>
 					Минимальная сумма заказа 6999 руб
 				</div>
 
-				<div class="orderItem_data clearfix">
-					<span class="orderItem_data_item orderItem_data_item-summ orderItem_data_item-sale fl-r">-5 200 <span class="rubl">p</span></span>
-					<span class="orderItem_data_item orderItem_data_item-delete fl-r">удалить</span>
-				</div>
+				<span class="orderCol_data orderCol_data-summ orderCol_i_data-sale">-15 200 <span class="rubl">p</span></span>
+				<span class="orderCol_data orderCol_data-del">удалить</span>
 			</div>
 
-			<div class="orderItem">
-				<a href="" class="orderItem_img">
-					<img class="orderItem_img_resize" src="/styles/order/img/enter.png" alt="">
+			<div class="orderCol_cnt clearfix">
+				<a href="" class="orderCol_lk">
+					<img class="orderCol_img" src="/styles/order/img/enter.png" alt="">
 				</a>
 
-				<div class="orderItem_name">
+				<div class="orderCol_n">
 					Подарочный сертификат 5000 руб
 				</div>
 
-				<div class="orderItem_data clearfix">
-					<span class="orderItem_data_item orderItem_data_item-summ orderItem_data_item-sale fl-r">-15 200 <span class="rubl">p</span></span>
-					<span class="orderItem_data_item orderItem_data_item-delete fl-r">удалить</span>
-				</div>
+				<span class="orderCol_data orderCol_data-summ orderCol_data-sale">-15 200 <span class="rubl">p</span></span>
+				<span class="orderCol_data orderCol_data-del">удалить</span>
 			</div>
 
-			<div class="orderCellFoot clearfix">
-				<div class="orderCellFoot_left">
-					<div class="orderCellFoot_title">Код скидки, подарочный сертификат</div>
+			<div class="orderCol_f clearfix">
+				<div class="orderCol_f_l">
+					<div class="orderCol_f_t">Код скидки, подарочный сертификат</div>
 
 					<input class="cuponField textfieldgrey" type="text" name="" value="" placeholder="" />
 					<button class="cuponBtn btnLightGrey">Применить</button>
 				</div>
 
-				<div class="orderCellFoot_right">
-					<span class="orderCheckSumm l">Бесплатно</span>
-					<span class="orderCheckTitle">Самовывоз:</span>
+				<div class="orderCol_f_r">
+					<span class="orderCol_summ">Бесплатно</span>
+					<span class="orderCol_summt orderCol_summt-m">Самовывоз:</span>
 					
-					<span class="orderCheckSumm l">
+					<span class="orderCol_summ">
 						<sapn class="td-lineth colorBrightGrey">42 580 <span class="rubl">p</span></sapn><br/>
 						2 334 <span class="rubl">p</span>
 					</span>
-					<span class="orderCheckTitle l">Итого:</span>
+					<span class="orderCol_summt">Итого:</span>
 				</div>
 
 				<div class="orderCheck orderCheck-credit clearfix">
@@ -345,40 +387,40 @@
 		<!--/ информация о заказе -->
 
 		<!-- информация о доставке -->
-		<div class="orderCell orderCell-right">
-			<menu class="orderDelivery">
-				<li class="orderDelivery_item orderDelivery_item-active">Самовывоз</li>
-				<li class="orderDelivery_item">Доставка</li>
+		<div class="orderCol orderCol-r">
+			<menu class="orderCol_delivrLst">
+				<li class="orderCol_delivrLst_i orderCol_delivrLst_i-act">Самовывоз</li>
+				<li class="orderCol_delivrLst_i">Доставка</li>
 			</menu>
 
 			<!-- дата доставки -->
-			<div class="orderDeliveryInfo clearfix">
-				15 сентября 2014, воскресенье 
+			<div class="orderCol_delivrIn clearfix">
+				<div class="orderCol_date">15 сентября 2014, воскресенье</div>
 				<span class="orderChange">изменить дату</span>
 			</div>
 			<!--/ дата доставки -->
 
 			<!-- способ доставки -->
-			<div class="orderDeliveryInfo orderDeliveryInfo-pl">
-				<div class="deliveryTitle clearfix">
+			<div class="orderCol_delivrIn orderCol_delivrIn-pl">
+				<div class="orderCol_delivrIn_t clearfix">
 					<strong>Магазин</strong>
 
 					<span class="orderChange">изменить место</span>
 				</div>
 
-				<div class="deliveryAddress" style="background: red;">
-					<span class="deliveryAddress_text">
+				<div class="orderCol_addrs" style="background: red;">
+					<span class="orderCol_addrs_tx">
 						м. Петровско-Разумовская<br/>
 						<span class="colorBrightGrey">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
 					</span>
 				</div>
 
-				<div class="deliveryTime">
-					<span class="deliveryTime_title">Режим работы:</span> с 9.00 до 22.00
-					<span class="deliveryTime_title">Оплата при получении: </span> 
+				<div class="orderCol_tm">
+					<span class="orderCol_tm_t">Режим работы:</span> с 9.00 до 22.00
+					<span class="orderCol_tm_t">Оплата при получении: </span> 
 
-					<img class="deliveryTime_paymentImg" src="/styles/order/img/cash.png" alt="" /> 
-					<img class="deliveryTime_paymentImg" src="/styles/order/img/cards.png" alt="">
+					<img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt="" /> 
+					<img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt="">
 				</div>
 			</div>
 			<!--/ способ доставки -->
@@ -390,42 +432,38 @@
 	<!-- блок разбиения заказа -->
 	<div class="orderRow clearfix">
 		<!-- информация о заказе -->
-		<div class="orderCell">
-			<div class="orderCellHead">
+		<div class="orderCol">
+			<div class="orderCol_h">
 				<strong>Заказ №1</strong> 
 				<span class="colorBrightGrey">продавец: ООО «Связной»</span>
 			</div>
 
-			<div class="orderItem">
-				<a href="" class="orderItem_img">
-					<img class="orderItem_img_resize" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg" alt="">
+			<div class="orderCol_cnt clearfix">
+				<a href="" class="orderCol_lk">
+					<img class="orderCol_img" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg" alt="">
 				</a>
 
-				<a href="" class="orderItem_name">
+				<a href="" class="orderCol_n">
 					Самокат<br/>
 					JD Bug Classic MS-305 синий
 				</a>
 
-				<div class="orderItem_data clearfix">
-					<span class="orderItem_data_item orderItem_data_item-summ fl-r">5 200 <span class="rubl">p</span></span>
-					<span class="orderItem_data_item orderItem_data_item-count fl-r">1 шт.</span>
-					<span class="orderItem_data_item orderItem_data_item-price fl-r">5 200 <span class="rubl">p</span></span>
-				</div>
+				<span class="orderCol_data orderCol_data-summ">5 200 <span class="rubl">p</span></span>
+				<span class="orderCol_data orderCol_data-count">1 шт.</span>
+				<span class="orderCol_data orderCol_data-price">5 200 <span class="rubl">p</span></span>
 			</div>
 
-			<div class="orderCellFoot clearfix">
-				<div class="orderCellFoot_left">
-					<span>Ввести код скидки</span>
+			<div class="orderCol_f clearfix">
+				<div class="orderCol_f_l">
+					<span class="orderCol_f_t brb-dt">Ввести код скидки</span>
 				</div>
 
-				<div class="orderCellFoot_right">
-					<span class="orderCheckSumm l">290 <span class="rubl">p</span></span>
-					<span class="orderCheckTitle">Доставка:</span>
+				<div class="orderCol_f_r">
+					<span class="orderCol_summ">150 <span class="rubl">p</span></span>
+					<span class="orderCol_summt orderCol_summt-m">Доставка:</span>
 					
-					<span class="orderCheckSumm l">
-						2 334 <span class="rubl">p</span>
-					</span>
-					<span class="orderCheckTitle l">Итого:</span>
+					<span class="orderCol_summ">2 334 <span class="rubl">p</span></span>
+					<span class="orderCol_summt">Итого:</span>
 				</div>
 
 				<div class="orderCheck orderCheck-credit clearfix">
@@ -437,26 +475,37 @@
 		<!--/ информация о заказе -->
 
 		<!-- информация о доставке -->
-		<div class="orderCell orderCell-right">
-			<menu class="orderDelivery">
-				<li class="orderDelivery_item orderDelivery_item-active">Доставка</li>
+		<div class="orderCol orderCol-r">
+			<menu class="orderCol_delivrLst">
+				<li class="orderCol_delivrLst_i orderCol_delivrLst_i-act">Доставка</li>
 			</menu>
 
 			<!-- дата доставки -->
-			<div class="orderDeliveryInfo clearfix">
-				15 сентября 2014, воскресенье 
+			<div class="orderCol_delivrIn orderCol_delivrIn-sel clearfix">
+				<div class="orderCol_date">15 сентября 2014, воскресенье</div>
+
+				<div class="customSel">
+					<span class="customSel_def">10:00…18:00</span>
+
+					<ul class="customSel_lst">
+						<li class="customSel_i">10:00…18:00</li>
+						<li class="customSel_i">8:00…12:00</li>
+						<li class="customSel_i">12:00…18:00</li>
+					</ul>
+				</div>
+
 				<span class="orderChange">изменить дату</span>
 			</div>
 			<!--/ дата доставки -->
 
 			<!-- способ доставки -->
-			<div class="orderDeliveryInfo orderDeliveryInfo-bg">
-				<div class="deliveryTitle clearfix">
+			<div class="orderCol_delivrIn orderCol_delivrIn-bg">
+				<div class="orderCol_delivrIn_t clearfix">
 					<strong>Адрес</strong> <span class="colorBrightGrey">для всех заказов с доставкой</span>
 				</div>
 
-				<div class="deliveryAddress">
-					<input class="deliveryAddress_field textfield" type="text" name="" value="" placeholder="" />
+				<div class="orderCol_addrs">
+					<input class="orderCol_addrs_fld textfield" type="text" name="" value="" placeholder="" />
 				</div>
 			</div>
 
@@ -476,77 +525,74 @@
 	<!-- блок разбиения заказа -->
 	<div class="orderRow clearfix">
 		<!-- информация о заказе -->
-		<div class="orderCell">
-			<div class="orderCellHead">
+		<div class="orderCol">
+			<div class="orderCol_h">
 				<strong>Заказ №1</strong> 
 				<span class="colorBrightGrey">продавец: ООО «Связной»</span>
 			</div>
 
-			<div class="orderItem">
-				<a href="" class="orderItem_img">
-					<img class="orderItem_img_resize" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg" alt="">
+			<div class="orderCol_cnt clearfix">
+				<a href="" class="orderCol_lk">
+					<img class="orderCol_img" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg" alt="">
 				</a>
 
-				<a href="" class="orderItem_name">
+				<a href="" class="orderCol_n">
 					Самокат<br/>
 					JD Bug Classic MS-305 синий
 				</a>
 
-				<div class="orderItem_data clearfix">
-					<span class="orderItem_data_item orderItem_data_item-summ fl-r">5 200 <span class="rubl">p</span></span>
-					<span class="orderItem_data_item orderItem_data_item-count fl-r">1 шт.</span>
-					<span class="orderItem_data_item orderItem_data_item-price fl-r">5 200 <span class="rubl">p</span></span>
-				</div>
+				<span class="orderCol_data orderCol_data-summ">5 200 <span class="rubl">p</span></span>
+				<span class="orderCol_data orderCol_data-count">1 шт.</span>
+				<span class="orderCol_data orderCol_data-price">5 200 <span class="rubl">p</span></span>
 			</div>
 
-			<div class="orderCellFoot clearfix">
-				<div class="orderCellFoot_left">
-					<span>Ввести код скидки</span>
+			<div class="orderCol_f clearfix">
+				<div class="orderCol_f_l">
+					<span class="orderCol_f_t brb-dt">Ввести код скидки</span>
 				</div>
 
-				<div class="orderCellFoot_right">
-					<span class="orderCheckSumm l">290 <span class="rubl">p</span></span>
-					<span class="orderCheckTitle">Доставка:</span>
+				<div class="orderCol_f_r">
+					<span class="orderCol_summ">150 <span class="rubl">p</span></span>
+					<span class="orderCol_summt orderCol_summt-m">Доставка:</span>
 					
-					<span class="orderCheckSumm l">
-						2 334 <span class="rubl">p</span>
-					</span>
-					<span class="orderCheckTitle l">Итого:</span>
+					<span class="orderCol_summ">2 334 <span class="rubl">p</span></span>
+					<span class="orderCol_summt">Итого:</span>
 				</div>
 			</div>
 		</div>
 		<!--/ информация о заказе -->
 
 		<!-- информация о доставке -->
-		<div class="orderCell orderCell-right">
-			<menu class="orderDelivery">
-				<li class="orderDelivery_item orderDelivery_item-active">Доставка</li>
+		<div class="orderCol orderCol-r">
+			<menu class="orderCol_delivrLst">
+				<li class="orderCol_delivrLst_i orderCol_delivrLst_i-act">Доставка</li>
 			</menu>
 
 			<!-- дата доставки -->
-			<div class="orderDeliveryInfo clearfix">
-				15 сентября 2014, воскресенье
+			<div class="orderCol_delivrIn orderCol_delivrIn-sel clearfix">
+				<div class="orderCol_date">15 сентября 2014, воскресенье</div>
 
 				<div class="customSel">
-					<span class="customSel_def"></span>
+					<span class="customSel_def">10:00…18:00</span>
 
 					<ul class="customSel_lst">
-						<li class="customSel_i"></li>
+						<li class="customSel_i">10:00…18:00</li>
+						<li class="customSel_i">8:00…12:00</li>
+						<li class="customSel_i">12:00…18:00</li>
 					</ul>
 				</div>
 
 				<span class="orderChange">изменить дату</span>
 			</div>
 			<!--/ дата доставки -->
-
 			<!-- способ доставки -->
-			<div class="orderDeliveryInfo">
-				<div class="deliveryTitle clearfix">
+			<div class="orderCol_delivrIn">
+				<div class="orderCol_delivrIn_t clearfix">
 					<strong>Адрес</strong> <span class="colorBrightGrey">для всех заказов с доставкой</span> 
 					<span class="orderChange">изменить место</span>
 				</div>
 
-				<div class="deliveryAddress">
+				<div class="orderCol_addrs">
 					ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2
 				</div>
 			</div>
@@ -565,23 +611,23 @@
 	<!--/ блок разбиения заказа -->
 
 	<div class="orderComment">
-		<div class="orderComment_title">Дополнительные пожелания</div>
+		<div class="orderComment_t">Дополнительные пожелания</div>
 
-		<textarea class="orderComment_field textarea"></textarea>
+		<textarea class="orderComment_fld textarea"></textarea>
 	</div>
 
-	<div class="orderComplete clearfix">
-		<p class="orderComplete_left">
+	<div class="orderCompl clearfix">
+		<p class="orderCompl_l">
 			<span class="l">Итого <strong>3</strong> заказа на общую сумму <strong>123 000 <span class="rubl">p</span></strong></span>
 			<span class="colorBrightGrey dblock">Вы сможете заполнить заявку на кредит и оплатить онлайн на следующем шаге</span>
 		</p>
 
-		<button class="orderComplete_btn btnsubmit">Оформить ➜</button>
+		<button class="orderCompl_btn btnsubmit">Оформить ➜</button>
 	</div>
 </section>
 
-<section class="orderCont">
-	<h1 class="orderCont_title">Заказы оформлены</h1>
+<section class="orderCnt">
+	<h1 class="orderCnt_t">Заказы оформлены</h1>
 
 	<p>
 		Вы получите смс с номерами заказов. <br/>

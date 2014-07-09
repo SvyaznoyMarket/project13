@@ -1,28 +1,31 @@
-.orderDelivery {
-	width: 465px;
-	margin: 0 0 10px -10px;
+.orderCol {
+	
+	&_delivrLst {
+		width: 465px;
+		margin: 0 0 10px -10px;
 
-	font-size: 16px;
+		font-size: 16px;
 
-	&_item {
-		.inline-block();
-		width: 208px;
-		padding: 10px;
+		&_i {
+			.inline-block();
+			width: 208px;
+			padding: 10px;
 
-		cursor: pointer;
+			cursor: pointer;
 
-		border-bottom: 2px solid @typLightGray;
-		border-left: 1px solid @typLightGray;
-		background: @white;
+			border-bottom: 2px solid @typLightGray;
+			border-left: 1px solid @typLightGray;
+			background: @white;
 
-		&-active {
-			cursor: default;
+			&-act {
+				cursor: default;
 
-			border: none;
-			border-left: 1px solid @lightgreyBg;
-			background: @lightgreyBg;
+				border: none;
+				border-left: 1px solid @lightgreyBg;
+				background: @lightgreyBg;
 
-			font-weight: bold;
+				font-weight: bold;
+			}
 		}
 	}
 }

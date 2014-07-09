@@ -180,6 +180,11 @@
 	background: @lightgreyBg;
 }
 
+// бордеры
+.brb-dt {
+	border-bottom: 1px dotted;
+} 
+
 // основные стили элементов форм
 .textfield {
     .rounded(4px);
@@ -190,7 +195,7 @@
     margin: 0 0 15px;
     padding-left: 10px;
 
-    border: 1px solid @inputBorder;
+    border: 1px solid @lightgrey-2;
 
     line-height: 35px;
 }
@@ -239,11 +244,52 @@
 
     resize: none;
 
-    border: 1px solid @inputBorder;
+    border: 1px solid @lightgrey-2;
 }
 
 .legend {
     margin: 10px 0 15px;
 
     font-size: 18px;
+}
+
+// кастомный селект 
+.customSel {
+	.inline-block();
+	.rounded(4px);
+	position: relative;
+
+	height: 25px;
+	padding: 0 20px 0 5px;
+
+	cursor: pointer;
+	vertical-align: top;
+
+	border: 1px solid @lightgrey-2;
+	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAYElEQVQIHWMMDw/fysDw34sBAzBuYwKKFQLxLzQ5EL+QacWKFbeYmBgnIkuC+GBxkCAnJ3czkHoBVfACymcAGcswd+7cz0xMzBUgNogG8UFshv///8MwI9Bxk4B8RpgYAKNoKpNJevrLAAAAAElFTkSuQmCC) no-repeat 95% 50%;
+
+	&_def {
+		line-height: 25px;
+	}
+
+	&_lst {
+	    position: absolute;
+		z-index: 20;
+	    top: 23px;
+		left: -1px;
+
+		display: none;
+
+		width: 100%;
+
+		border: 1px solid @lightgrey-2;
+		border-top: none;
+		background: @white;
+	}
+
+	&_i {
+		padding: 5px 5px;
+
+		cursor: pointer;
+	}
 }
