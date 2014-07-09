@@ -2105,6 +2105,9 @@ img[height="0"] {
     filter: alpha(opacity=0);
     z-index: 18;
     top: 60px;
+    left: -13px;
+    width: 235px;
+    height: 115px;
     text-align: center;
     background: none;
   }
