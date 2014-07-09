@@ -1,0 +1,73 @@
+.orderCell {
+
+	.orderItem {
+		padding: 10px 0;
+
+		border-top: 1px solid @typLightGray;
+
+		&_img {
+			.inline-block();
+			width: 40px;
+			margin: 0 10px;
+
+			&_resize {
+				display: block;
+
+				width: 40px;
+			}
+		}
+
+		&_name {
+			.inline-block();
+			width: 395px;
+
+			font-size: 14px;
+		}
+
+		&_data {
+			padding-right: 10px;
+
+			font-size: 16px;
+
+			&_item {
+				.inline-block();
+				margin-left: 20px;
+
+				color: @colorActiveGrey;
+
+				&-summ {
+					width: 90px;
+
+					text-align: right;
+
+					color: @black;
+				}
+
+				&-count {
+					border-bottom: 1px dotted;
+				}
+
+				&-sale {
+					color: @firmRed;
+				}
+
+				&-delete {
+					color: @black;
+					border-bottom: 1px dotted;
+
+					font-size: 14px;
+				}
+			}
+		}
+	}
+
+	.orderItemTitle {
+		padding-left: 10px;
+
+		border-top: 1px solid @typLightGray;
+		background: @lightgreyBg;
+
+		font-size: 12px;
+		line-height: 20px;
+	}
+}

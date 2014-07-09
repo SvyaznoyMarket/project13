@@ -133,10 +133,12 @@
   -ms-transform: translate(@x, @y);
   transform: translate(@x, @y);
 }
-.box-sizing(@argument){
-  box-sizing: @argument;
-  -moz-box-sizing: @argument;
-  -webkit-box-sizing: @argument;
+.box-sizing(@sizing: border-box) {
+  box-sizing: @sizing;
+  -moz-box-sizing: @sizing;
+  -webkit-box-sizing: @sizing;
+
+  -ms-box-sizing: @sizing;
 }
 
 .inline-block() {
@@ -147,3 +149,32 @@
   *display: inline;
   *zoom: 1;
 }
+
+.table() {
+  display: table;
+
+  /* IE6-8 */
+  *display: block;
+  *float: left;
+  *overflow: hidden;
+  *position: relative;
+}
+
+.table-row() {
+  display: table-row;
+
+  /* IE6-8 */
+  *display: block;
+  *float: left;
+}
+
+.table-cell() {
+  display: table-cell;
+
+  /* IE6-8 */
+  *display: block;
+  *float: left;
+  *clear: right;
+  *zoom: 1;
+}
+

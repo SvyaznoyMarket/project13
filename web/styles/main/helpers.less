@@ -1,0 +1,249 @@
+/**
+ * Вспомогательные классы
+ */
+
+//отчистка потока
+.clearfix:before,
+.clearfix:after {
+    display: table;
+
+    content: " ";
+}
+ 
+.clearfix:after {
+    clear: both;
+}
+ 
+/* IE6/7 support */
+.clearfix {
+
+    *zoom: 1;
+}
+
+/**
+ * Стили кнопок
+ */
+
+//темно-серая кнопка в фильтрах и в фиксированной плашке
+.btnGrey {
+	.blackGrad();
+	.rounded(4px);
+	.inline-block();
+	width: 190px;
+	padding-left: 15px;
+
+	vertical-align: top;
+
+	color: @white;
+	border: 1px solid #a1a1a1;
+
+	font-weight: bold;
+	line-height: 30px;
+
+	&:hover {
+		text-decoration: none;
+
+		color: @white;
+		background: @black;
+	}
+}
+
+.btnLightGrey {
+	.grayGradDark();
+	.rounded(4px);
+	.inline-block();
+	padding: 0 10px;
+
+	text-align: center;
+	text-decoration: none;
+
+	color: @black;
+	border: 1px solid @lightgreyBr;
+}
+
+//правила для плавающих блоков
+.fl-l {
+  float: left;
+}
+
+.fl-r {
+  float: right;
+}
+
+// размеры шрифта
+.xs {
+	font-size: 11px;
+}
+
+.s {
+	font-size: 12px;
+}
+
+.m {
+	font-size: 14px;
+}
+
+.l {
+	font-size: 16px;
+}
+
+.dblock {
+	display: block;
+}
+
+// выравнивание текста
+.ta-c {
+  text-align: center;
+}
+
+.ta-r {
+	text-align: right;
+}
+
+.ta-l {
+	text-align: left;
+}
+
+.va-t {
+	vertical-align: top;
+}
+
+.va-m {
+	vertical-align: middle;
+}
+
+.va-b {
+	vertical-align: bottom;
+}
+
+// text-decoration
+.td-lineth {
+	text-decoration: line-through;
+}
+
+.td-underl {
+	text-decoration: underline;
+}
+
+// отступы
+.mb5 {
+  margin-bottom: 5px;
+}
+
+.mb20 {
+	margin-bottom: 20px;
+}
+
+.mb10 {
+	margin-bottom: 10px;
+}
+
+.nomargin {
+  margin: 0;
+}
+
+// цвета тестов 
+.colorGrey {
+	color: @typGray;
+
+	a {
+		color: @typGray;
+	}
+}
+
+.colorBrightGrey {
+	color: @colorActiveGrey;
+
+	a {
+		color: @colorActiveGrey;
+	}
+}
+
+.colorBlack {
+	color: @black;
+
+	a {
+		color: @black;
+	}
+}
+
+.colorRed {
+	color: @firmRed;
+
+	a {
+		color: @firmRed;
+	}
+}
+
+// фоны блоков 
+.bgGrey {
+	background: @lightgreyBg;
+}
+
+// основные стили элементов форм
+.textfield {
+    .rounded(4px);
+    .box-sizing();
+    display: block;
+
+    height: 35px;
+    margin: 0 0 15px;
+    padding-left: 10px;
+
+    border: 1px solid @inputBorder;
+
+    line-height: 35px;
+}
+
+.textfieldgrey {
+	.rounded(4px);
+    .box-sizing();
+    height: 26px;
+    margin: 0 0 10px;
+    padding-left: 10px;
+
+    border: 1px solid @typLightGray;
+
+    line-height: 26px;
+}
+
+.btnsubmit {
+    .rounded(4px);
+    height: 33px;
+    padding: 0 15px;
+
+    color: @white;
+    border: 1px solid #ff6c00;
+    background: @submitBg;
+
+    font-size: 14px;
+    line-height: 33px;
+}
+
+.labeltext {
+    display: block;
+
+    margin: 0 0 5px;
+
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.textarea {
+	.rounded(4px);
+    .box-sizing();
+    display: block;
+
+    margin: 0 0 15px;
+    padding: 10px;
+
+    resize: none;
+
+    border: 1px solid @inputBorder;
+}
+
+.legend {
+    margin: 10px 0 15px;
+
+    font-size: 18px;
+}

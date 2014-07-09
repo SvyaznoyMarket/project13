@@ -21,6 +21,8 @@
 @import "main/fonts.less";
 /*---END----ШРИФТЫ---------*/
 
+@import "main/helpers.less" all;
+
 /*---------СТИЛИ ШАБЛОННЫХ ФОРМ----------*/
 @import "formDefault/formDefault.less";
 /*---END----СТИЛИ ШАБЛОННЫХ ФОРМ---------*/
@@ -42,6 +44,10 @@
 @import "upper/upper.less" all;
 /*---END----КНОПКА НАВЕРХ---------*/
 
+
+/*---------КНОПКА НАВЕРХ----------*/
+@import "customInput/customInput.less" all;
+/*---END----КНОПКА НАВЕРХ---------*/
 
 
 /*---------ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК (ЛИСТИНГИ/КАРТОЧКА ТОВАРА)----------*/
@@ -118,12 +124,28 @@
 @import "packageSet/packageSet.less" all;
 /*---END----Наборы пакетов/лини мебели/наборы мебели---------*/
 
+
 /*---------Стили попапов и их содержимого----------*/
 @import "popup/popup.less" all;
 
 //попап со списком магазинов для резерва товара, в карточке товара
 @import "popup/markerList.less" all;
 /*---END----Стили попапов и их содержимого---------*/
+
+
+/*---------Оформление заказа 3.0----------*/
+@import "order/order.less" all;
+@import "order/orderDelivery.less" all;
+@import "order/orderDeliveryInfo.less" all;
+@import "order/orderItem.less" all;
+@import "order/orderComment.less" all;
+@import "order/orderComplete.less" all;
+@import "order/orderUser.less" all;
+
+
+/*---------Хиты продаж/Выгодное предложение/Самым разборчивым----------*/
+@import "personal-page/personalTable.less" all;
+/*---END----Хиты продаж/Выгодное предложение/Самым разборчивым---------*/
 
 
 //стили для фикса старых правил и классов, в последствии, при полном переходе на новую верстку удалить
