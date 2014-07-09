@@ -621,10 +621,11 @@ class Action {
                             $product = $products[$productId];
                             /** @var $product \Model\Product\Entity */
                             $itemProducts[] = [
-                                'image' => $product->getImageUrl(2), // 163х163 seize
-                                'link'  => $product->getLink(),
-                                'name'  => $product->getName(),
-                                'price' => $product->getPrice(),
+                                'image'     => $product->getImageUrl(2), // 163х163 seize
+                                'link'      => $product->getLink(),
+                                'name'      => $product->getName(),
+                                'price'     => $product->getPrice(),
+                                'isBuyable' => $product->getIsBuyable()
                             ];
                         }
 
