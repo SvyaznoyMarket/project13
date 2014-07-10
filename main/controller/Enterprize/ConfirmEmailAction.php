@@ -285,7 +285,12 @@ class ConfirmEmailAction {
 
         $userToken = !empty($data['token']) ? $data['token'] : \App::user()->getToken();
 
-        if (isset($data['email'])) {
+        $result = false;
+        try {
+            if (!isset($data['email']) || empty($data['email'])) {
+                throw new \Exception('Не передан email');
+            }
+
             $status = \App::coreClientV2()->query(
                 'confirm/status',
                 [
@@ -298,12 +303,14 @@ class ConfirmEmailAction {
                 ],
                 \App::config()->coreV2['hugeTimeout']
             );
-        }
 
-        if (isset($status['is_confirmed'])) {
-            $result = $status['is_confirmed'];
-        } else {
-            $result = false;
+            if (isset($status['is_confirmed'])) {
+                $result = $status['is_confirmed'];
+            }
+
+        } catch (\Exception $e) {
+            \App::exception()->remove($e);
+            \App::logger()->error($e, ['enterprize', 'isEmailConfirmed']);
         }
 
         return $result;
