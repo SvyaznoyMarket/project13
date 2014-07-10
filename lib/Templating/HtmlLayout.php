@@ -200,8 +200,7 @@ class HtmlLayout {
     public function addJavascript($javascript) {
         try {
             if (0 === strpos($javascript, '/')) {
-                $timestamp = filectime(\App::config()->webDir . '/' . trim($javascript, '/'));
-                $javascript .= '?t=' . $timestamp;
+                $javascript .= '?t=' . \Util\Application::getVersion();
             }
         } catch (\Exception $e) {
             \App::logger()->error($e, ['view']);
