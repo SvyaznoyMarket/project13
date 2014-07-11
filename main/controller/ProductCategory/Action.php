@@ -314,8 +314,8 @@ class Action {
                     }
 
                     // SITE-3782
-                    if ($request->server->get('QUERY_STRING')) {
-                        $redirect .= ((false === strpos($redirect, '?')) ? '?' : '&') . $request->server->get('QUERY_STRING');
+                    if ($request->getQueryString()) {
+                        $redirect .= ((false === strpos($redirect, '?')) ? '?' : '&') . $request->getQueryString();
                     }
 
                     if ($brand) {
