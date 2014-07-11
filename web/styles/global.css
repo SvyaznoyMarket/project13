@@ -2105,6 +2105,9 @@ img[height="0"] {
     filter: alpha(opacity=0);
     z-index: 18;
     top: 60px;
+    left: -13px;
+    width: 235px;
+    height: 115px;
     text-align: center;
     background: none;
   }
@@ -3166,9 +3169,6 @@ img[height="0"] {
     width: 966px;
     margin: 10px 0 10px -10px;
   }
-  .tchiboCatalog .mFullWidth {
-    width: 958px;
-  }
   .tchiboCatalog .tchiboCatalogInner {
     position: relative;
     float: left;
@@ -3181,9 +3181,6 @@ img[height="0"] {
   }
   .tchiboCatalog .tchiboCatalogInner:nth-child(2n) {
     margin-right: 0;
-  }
-  .tchiboCatalog .tchiboCatalogInner.mFullWidth {
-    width: 958px;
   }
   .tchiboCatalog__img {
     display: block;
@@ -3216,9 +3213,6 @@ img[height="0"] {
     background: url("/styles/tchiboNavSlider/img/bgWhiteIe.png");
     background: rgba(255, 255, 255, 0.8);
     font-size: 18px;
-  }
-  .tchiboCatalog__title.mFullWidth {
-    width: 950px;
   }
   .tchiboCatalog__list {
     float: right;
