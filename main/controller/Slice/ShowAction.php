@@ -73,13 +73,39 @@ class ShowAction {
 
         /** @var $slice \Model\Slice\Entity|null */
         $slice = null;
-        \RepositoryManager::slice()->prepareEntityByToken($sliceToken, function($data) use (&$slice, $sliceToken) {
-            if (is_array($data) && (bool)$data) {
-                $data['token'] = $sliceToken;
-                $slice = new \Model\Slice\Entity($data);
+        try {
+            \RepositoryManager::slice()->prepareEntityByToken($sliceToken, function($data) use (&$slice, $sliceToken) {
+                if (is_array($data) && (bool)$data) {
+                    $data['token'] = $sliceToken;
+                    $slice = new \Model\Slice\Entity($data);
+                }
+            });
+            \App::dataStoreClient()->execute();
+
+            if (!$slice) {
+                \RepositoryManager::slice()->prepareSeoJsonByToken($sliceToken, function($data) use (&$slice, $sliceToken) {
+                    if (is_array($data) && (bool)$data) {
+                        $data['token'] = $sliceToken;
+                        $slice = new \Model\Slice\Entity($data);
+                    }
+                });
+                \App::dataStoreClient()->execute();
+
+                if (!$slice) {
+                    throw new \Exception(sprintf('Не получен seo/slice/%s.json', $sliceToken));
+                }
+
+                // SITE-3382 seo слайзы редирект на основной URL
+                if ('slice.show' === $request->attributes->get('route')) {
+                    $redirect = \App::router()->generate('product.category.slice', ['sliceToken' => $sliceToken], true);
+
+                    return new \Http\RedirectResponse($redirect, 301);
+                }
             }
-        });
-        \App::dataStoreClient()->execute();
+        } catch (\Exception $e) {
+            \App::exception()->remove($e);
+            \App::logger()->error($e);
+        }
 
         if (!$slice) {
             throw new \Exception\NotFoundException(sprintf('Срез @%s не найден', $sliceToken));
