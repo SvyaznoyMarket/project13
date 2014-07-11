@@ -856,6 +856,9 @@ img[height="0"] {
   .footer .socLink__item.mYt {
     background-position: -81px 0;
   }
+  .footer .socLink__item.mOdn {
+    background-position: -108px 0;
+  }
   .footer .socLink__item:hover {
     top: -5px;
     height: 31px;
