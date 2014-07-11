@@ -313,6 +313,11 @@ class Action {
                             $redirect;
                     }
 
+                    // SITE-3782
+                    if ($request->server->get('QUERY_STRING')) {
+                        $redirect .= ((false === strpos($redirect, '?')) ? '?' : '&') . $request->server->get('QUERY_STRING');
+                    }
+
                     if ($brand) {
                         // TODO: исправить, когда FCMS-314 будет готова
                         $redirect .= ((false === strpos($redirect, '?')) ? '?' : '&') . sprintf('%s-brand-%s=%s', FilterForm::$name, $brandToken, $brand->getId());
