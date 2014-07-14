@@ -685,7 +685,10 @@ window.ANALYTICS = {
 				}
 
                 if (/product\/tchibo/.test(document.location.href)) {
-                    if (/catalog\/tchibo/.test(ref)) trackEvent('tchibo_item_visit', 'From_Tchibo', ref, null, true);
+                    if (/catalog\/tchibo/.test(ref)) {
+                        trackEvent('tchibo_item_visit', 'From_Tchibo', ref, null, true);
+                        window.docCookies.setItem('tchibo_track', 1, 0, '/');
+                    }
                     if (/catalog/.test(ref) && !/tchibo/.test(ref)) trackEvent('tchibo_item_visit', 'From_Enter', ref, null, true);
                     if (!/catalog/.test(ref)) trackEvent('tchibo_item_visit', 'Other', ref, null, true);
                     if (ref=='') trackEvent('tchibo_item_visit', 'From Ads', ref, null, true);
