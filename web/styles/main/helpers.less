@@ -255,41 +255,86 @@
 
 // кастомный селект 
 .customSel {
-	.inline-block();
-	.rounded(4px);
-	position: relative;
+    .inline-block();
+    .rounded(4px);
+    position: relative;
 
-	height: 25px;
-	padding: 0 20px 0 5px;
+    height: 30px;
+    padding: 0 20px 0 5px;
 
-	cursor: pointer;
-	vertical-align: top;
+    cursor: pointer;
+    vertical-align: top;
 
-	border: 1px solid @lightgrey-2;
-	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAYElEQVQIHWMMDw/fysDw34sBAzBuYwKKFQLxLzQ5EL+QacWKFbeYmBgnIkuC+GBxkCAnJ3czkHoBVfACymcAGcswd+7cz0xMzBUgNogG8UFshv///8MwI9Bxk4B8RpgYAKNoKpNJevrLAAAAAElFTkSuQmCC) no-repeat 95% 50%;
+    border: 1px solid @lightgrey-2;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAYElEQVQIHWMMDw/fysDw34sBAzBuYwKKFQLxLzQ5EL+QacWKFbeYmBgnIkuC+GBxkCAnJ3czkHoBVfACymcAGcswd+7cz0xMzBUgNogG8UFshv///8MwI9Bxk4B8RpgYAKNoKpNJevrLAAAAAElFTkSuQmCC) no-repeat 95% 50%;
 
-	&_def {
-		line-height: 25px;
-	}
+    font-size: 14px;
 
-	&_lst {
-	    position: absolute;
-		z-index: 20;
-	    top: 23px;
-		left: -1px;
+    &_def {
+        line-height: 30px;
+    }
 
-		display: none;
+    &_lst {
+        //display: none;
+        width: 100%;
+    }
 
-		width: 100%;
+    &_i {
+        padding: 6px 5px;
 
-		border: 1px solid @lightgrey-2;
-		border-top: none;
-		background: @white;
-	}
+        cursor: pointer;
 
-	&_i {
-		padding: 5px 5px;
+        border-bottom: 1px solid @lightgrey-2;
 
-		cursor: pointer;
-	}
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+}
+
+// цвет кнопок
+// белая
+.btn1 {
+    .rounded(4px);
+    .box-sizing();
+    .inline-block();
+    height: 35px;
+    padding: 0 10px;
+
+    text-align: center;
+    vertical-align: top;
+
+    border: 1px solid @lightgrey-2;
+    background: @white;
+
+    line-height: 35px;
+
+    &:disabled {
+        .opacity(0.6);
+        color: @lightgrey-5;
+    }
+} 
+
+// светло-серая
+.btn2 {
+    .grayGradDark();
+    .rounded(4px);
+    .inline-block();
+    padding: 5px 10px;
+
+    text-align: center;
+    text-decoration: none;
+
+    color: @black;
+    border: 1px solid @lightgreyBr;
+}
+
+// оранжевая
+.btn3 {
+    .rounded(4px);
+    padding: 0 15px;
+
+    color: @white;
+    border: 1px solid #ff6c00;
+    background: @submitBg;
 }

@@ -126,12 +126,12 @@
 				<div class="orderCol_date">15 сентября 2014, воскресенье</div>
 				<span class="orderChange">изменить дату</span>
 
-				<div class="celedr">
-					<div class="celedr_clsr"></div>
+				<div class="celedr popupFl">
+					<div class="popupFl_clsr"></div>
 
 					<div class="celedr_t">27 сентября, воскресенье</div>
 
-					<button class="celedr_btn btnLightGrey">Хочу быстрее!</button>
+					<button class="celedr_btn btn2">Хочу быстрее!</button>
 
 					<div class="celedr_tb">
 						<div class="celedr_row celedr_row-h">
@@ -409,6 +409,112 @@
 					<span class="orderChange">изменить место</span>
 				</div>
 
+				<div class="selShop popupFl">
+					<div class="popupFl_clsr"></div>
+
+					<div class="selShop_h">
+						<div class="selShop_tab selShop_tab-act">Магазины в Москве</div>
+						<div class="selShop_tab">Pick point</div>
+					</div>
+
+					<div class="selShop_l">
+						<ul class="shopLst">
+							<li class="shopLst_i">
+								<div style="background: red;" class="shopLst_addrs">
+									<span class="shopLst_addrs_tx">
+										м. Петровско-Разумовская<br>
+										<span class="colorBrightGrey">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
+									</span>
+
+									<span class="shopLst_addrs_tm">с 9.00 до 22.00</span>
+								</div>
+							</li>
+
+							<li class="shopLst_i">
+								<div style="background: green;" class="shopLst_addrs">
+									<span class="shopLst_addrs_tx">
+										м. Петровско-Разумовская<br>
+										<span class="colorBrightGrey">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
+									</span>
+
+									<span class="shopLst_addrs_tm">с 9.00 до 22.00</span>
+								</div>
+							</li>
+
+							<li class="shopLst_i">
+								<div style="background: grey;" class="shopLst_addrs">
+									<span class="shopLst_addrs_tx">
+										м. Петровско-Разумовская<br>
+										<span class="colorBrightGrey">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
+									</span>
+
+									<span class="shopLst_addrs_tm">с 9.00 до 22.00</span>
+								</div>
+							</li>
+
+							<li class="shopLst_i">
+								<div style="background: blue;" class="shopLst_addrs">
+									<span class="shopLst_addrs_tx">
+										м. Петровско-Разумовская<br>
+										<span class="colorBrightGrey">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
+									</span>
+
+									<span class="shopLst_addrs_tm">с 9.00 до 22.00</span>
+								</div>
+							</li>
+
+							<li class="shopLst_i">
+								<div style="background: red;" class="shopLst_addrs">
+									<span class="shopLst_addrs_tx">
+										м. Петровско-Разумовская<br>
+										<span class="colorBrightGrey">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
+									</span>
+
+									<span class="shopLst_addrs_tm">с 9.00 до 22.00</span>
+								</div>
+							</li>
+
+							<li class="shopLst_i">
+								<div style="background: green;" class="shopLst_addrs">
+									<span class="shopLst_addrs_tx">
+										м. Петровско-Разумовская<br>
+										<span class="colorBrightGrey">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
+									</span>
+
+									<span class="shopLst_addrs_tm">с 9.00 до 22.00</span>
+								</div>
+							</li>
+
+							<li class="shopLst_i">
+								<div style="background: grey;" class="shopLst_addrs">
+									<span class="shopLst_addrs_tx">
+										м. Петровско-Разумовская<br>
+										<span class="colorBrightGrey">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
+									</span>
+
+									<span class="shopLst_addrs_tm">с 9.00 до 22.00</span>
+								</div>
+							</li>
+
+							<li class="shopLst_i">
+								<div style="background: blue;" class="shopLst_addrs">
+									<span class="shopLst_addrs_tx">
+										м. Петровско-Разумовская<br>
+										<span class="colorBrightGrey">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
+									</span>
+
+									<span class="shopLst_addrs_tm">с 9.00 до 22.00</span>
+								</div>
+							</li>
+						</ul>
+
+					</div>
+
+					<div class="selShop_r">
+						<img src="/styles/order/img/map.png" alt="" />
+					</div>
+				</div>
+
 				<div class="orderCol_addrs" style="background: red;">
 					<span class="orderCol_addrs_tx">
 						м. Петровско-Разумовская<br/>
@@ -488,7 +594,7 @@
 				<div class="customSel">
 					<span class="customSel_def">10:00…18:00</span>
 
-					<ul class="customSel_lst">
+					<ul class="customSel_lst popupFl" style="display: block;">
 						<li class="customSel_i">10:00…18:00</li>
 						<li class="customSel_i">8:00…12:00</li>
 						<li class="customSel_i">12:00…18:00</li>
@@ -576,7 +682,7 @@
 				<div class="customSel">
 					<span class="customSel_def">10:00…18:00</span>
 
-					<ul class="customSel_lst">
+					<ul class="customSel_lst popupFl" style="display: block;">
 						<li class="customSel_i">10:00…18:00</li>
 						<li class="customSel_i">8:00…12:00</li>
 						<li class="customSel_i">12:00…18:00</li>
