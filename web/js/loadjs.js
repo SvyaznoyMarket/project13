@@ -338,9 +338,8 @@
 					.script('adfox.asyn.code.ver3.min.js')
 					.wait()
 					.script( getWithVersion('ports.js') )
-//					.wait()
-//					.script( getWithVersion('/js/game/slots/jquery.transit.js') )
-//					.script( getWithVersion('/js/game/slots/slots.js') )
+					.wait()
+					.script( getWithVersion('/js/game/slots.js') )
 					.wait()
 					.script( logTimeAfterPartnerScript );
 			}).runQueue();

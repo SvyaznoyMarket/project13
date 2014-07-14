@@ -81,5 +81,25 @@ module.exports = {
 		files: {
 			'web/css/photoContest/style.min.css': ['web/css/photoContest/style.less']
 		}
+	},
+	
+	
+	gameSlotsCompile: {
+		options: {
+			paths: ['web/css/game/slots']
+		},
+		files: {
+			'web/css/game/slots/style.css': ['web/css/game/slots/style.less']
+		}
+	},
+	
+	gameSlotsCompress: {
+		options: {
+			paths: ['web/css/game/slots/'],
+			compress: true
+		},
+		files: {
+			'web/css/game/slots/style.min.css': ['web/css/game/slots/style.less']
+		}
 	}
 };

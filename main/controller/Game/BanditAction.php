@@ -1,0 +1,283 @@
+<?php
+namespace Controller\Game;
+
+/**
+ * @author vadim.kovalenko
+ */
+class BanditAction {
+    const errorUnauthorized         = 301;  // не авторизован
+    const errorTriesExceeded        = 311;  // приходит от API
+    const errorNotEnterprizeMember  = 312;  // пользователь не является участником программы enter prize
+    
+    protected $isAvailable = true;
+    
+    public function index() {
+		$page = new \View\Game\BanditPage();
+		return new \Http\Response($page->show());
+	}
+	
+	
+	public function init() {
+		$crm	= \App::crmClient();
+        $user   = \App::user()->getEntity();
+        try {
+            $response  = $crm->query(
+                'game/bandit/init', [
+                    'uid'   => (isset($user)?$user->getUi():null)
+                ]
+            )['result'];
+        } catch (\Exception $e) {
+            //@todo отрефакторить согласно докам, не могу сходу найти
+            if (($error = $this->getError($e->getCode()))) {
+                \App::exception()->remove($e);
+                return new \Http\JsonResponse([
+                    'success'   => false,
+                    'error'     => $error
+                ]);
+            }
+        }
+        
+        $coupons = $this->getCoupons($response['slots']);
+        $slots = [];
+        foreach($coupons as $k=>$v) {
+            $slots[] = $this->couponAsSlot($v);
+        }
+        
+        $reels      = [$slots,$slots,$slots];
+		return new \Http\JsonResponse([
+            'success'       => true,
+            'isAvialable'   => $this->isAvailable,
+            'user'          => $response['user'],
+            'reels'         => $reels,
+            'config'        => $this->getConfig(),
+        ]);
+	}
+	
+    
+    public function play(){
+        $crm	= \App::crmClient();
+        $user   = \App::user()->getEntity();
+        try {
+            if(!$user) {
+                throw new \Exception(null,self::errorUnauthorized);
+            }
+            
+            if(!$user->isEnterprizeMember()) {
+                throw new \Exception(null,self::errorNotEnterprizeMember);
+            }
+            
+            $response  = $crm->query(
+                'game/bandit/play', [
+                    'uid'   => $user->getUi()
+                ]
+            );
+        } catch (\Exception $e) {
+            //@todo отрефакторить согласно докам, не могу сходу найти
+            if (($error = $this->getError($e->getCode()))) {
+                \App::exception()->remove($e);
+                return new \Http\JsonResponse([
+                    'isAvialable'   => $this->isAvailable,
+                    'success'       => false,
+                    'error'         => $error
+                ]);
+            }
+        }
+        
+        $coupons = $this->getCoupons($response['result']['line']);
+        foreach($response['result']['line'] as &$v) {
+            $v = $this->couponAsSlot($coupons[$v]);
+        }
+        
+        // отдаем купон клиенту
+        // @todo оттестить после обновления песочницы и возврата hosts к начальному состоянию
+        if($response['state']==='win') {
+            // добавляем плашку с сообщением о выигрыше
+            $response['result']['prizes'] =[
+                'type'      => $response['result']['prizes']['type'],
+                'message'   => \App::templating()->render('game/coupon-message', 
+                    $this->couponAsWin($coupons[$response['result']['prizes']['coupon']])
+                ),
+                'coupon'    => $this->couponAsWin($coupons[$response['result']['prizes']['coupon']])
+            ];
+            
+            try {
+                \App::coreClientV2()->query(
+                    'coupon/enter-prize',[
+                        'token' => $user->getToken()
+                    ],[
+                        'guid'      => $user->getUi(),
+                        // @todo надо бы порефакторить api сервис раздачи купонов
+                        // на текущий момент мы не пропускаем пользователей не являющихся участниками программы
+                        'name'      => $user->getMiddleName(),
+                        'mobile'    => $user->getMobilePhone(),
+                        'email'     => $user->getEmail(),
+                        'agree'     => true
+                    ]
+                );
+            } catch (\Exception $e) {
+                \App::exception()->remove($e);
+                // @todo определиться как поступать с данной ошибкой, пользователю необходимо что-то сообщить и при этом маякнуть про ошибку модераторам
+                $response['result']['prizes']['message'] = \App::templating()->render('game/coupon-message', 
+                    array_merge($response['result']['prizes']['coupon'], [
+                            'errorMessage'  => 'Вы сможете воспользоваться выигранным купоном после обработки нашими специалистами.'
+                        ]
+                    )
+                );
+            }
+        }
+		
+		return new \Http\JsonResponse(
+            array_merge([
+                    'success'       => true,
+                    'isAvialable'   => $this->isAvailable
+                ],
+                $response
+            )
+        );
+	}
+    
+    
+    protected function getError($code) {
+        return [
+            self::errorTriesExceeded => [
+                'code'          => 'triesExceeded',
+                'message'       => 'Выши попытки израсходованы'
+            ],
+            self::errorUnauthorized => [
+                'code'          => 'userUnauthorized',
+                'message'       => 'Необходимо авторизоваться'
+            ],
+            self::errorNotEnterprizeMember => [
+                'code'          => 'notEnterprizeMember',
+                'message'       => 'Вам необходимо являться участником программы Enter Prize'
+            ],
+        ][$code];
+    }
+    
+    
+    /**
+     * Запрашиваем купоны и отдаем ассоциативный массив с uid в качестве ключа
+     * @param array $uids
+     * @return array
+     */
+    protected function getCoupons($uids=null){
+        $response = [];
+        $t = \App::scmsClientV2()->query('coupon/get');
+        
+        if(!$uids) {
+            foreach($t as $v) {
+                $response[$v['uid']]  = $v;
+            }
+        } else {
+            // преобразуем массив к ассоциативному, т.к. проверка запрошенного дешевле
+            $uids = array_combine($uids, array_pad([], count($uids), true));
+            foreach($t as $v) {
+                if(true===$uids[$v['uid']]) {
+                    $response[$v['uid']]  = $v;
+                }
+            }
+        }
+        return $response;
+    }
+
+
+    /**
+     * @param array $coupon
+     * @return array
+     */
+    protected function couponAsWin($coupon) {
+        return array_merge(
+            $this->couponAsSlot($coupon),[
+                'startDate'     => $coupon['start_date'],
+                'endDate'       => $coupon['end_date'],
+                'minOrder'      => $coupon['min_order_sum']
+            ]
+        );
+    }
+    
+    
+    /**
+     * @param array $coupon
+     * @return array
+     */
+    protected function couponAsSlot($coupon) {
+        return [
+            'uid'           => $coupon['uid'],
+            'label'         => $coupon['segment'],
+            'url'           => $coupon['segment_url'],
+            'icon'          => $coupon['segment_image_url'],
+            'background'    => $coupon['background_image_url'],
+            'value'         => (int)$coupon['value'].($coupon['is_currency']?'руб.':'%')
+        ];
+    }
+    
+    
+    
+    /**
+     * Сюда помещаем пока те настройки которые не понятно куда бы вынести
+     * после корреткировки бизнесс требований узнаем
+     */
+    protected function getConfig() {
+        return [
+            "ledPanel" => [//тут настройки для лед панели (лампы)
+				"defaultAnimation" => [//стандартная анимация - стартует сразу при загруке страницы
+					[
+						"type" => "random", //тип анимации есть рандом, слева на право, таггл
+						"speed" => 5, //количество кадров в секунду
+						"n" => 1, //скольк ламп в ряд зажать зажечь в кадре
+						"m" => 1, //сколько ламп в столбец зажечь за кадр
+						"color" => "58,29,200" //цвет свечения ламп
+					]
+				],
+				"spiningAnimation" => [//анимация ламп при вращении рельс
+					[
+						"type" => "leftToRight",
+						"speed" => 10,
+						"n" => 3,
+						"m" => 1,
+						"color" => "158,29,20"
+					]
+				],
+				"stopAnimation" => [//анимация ламп при остановке рельс
+					[
+						"type" => "toggle",
+						"speed" => 7,
+						"n" => 2,
+						"m" => 1,
+						"color" => "158,129,20"
+					]
+				]
+			],
+			"textPanel" => [//настройки анимации текстовой панели
+				"defaultAnimation" => [//анимация при загрузке страницы
+					"animationType" => "leftToRight",
+					"step" => 3,
+					"delay" => 0,
+					"speed" => 20
+				],
+				"spiningAnimation" => [//анимация при вращении
+					"animationType" => "rightToLeft",
+					"step" => 6,
+					"delay" => 0,
+					"speed" => 20
+				],
+				"winAnimation" => [//выгрышная анимация
+					"animationType" => "random",
+					"step" => 2,
+					"delay" => 0,
+					"speed" => 300
+				],
+				"loseAnimation" => [//проигрышная анимация
+					"animationType" => "toggle",
+					"step" => 2,
+					"delay" => 0,
+					"speed" => 300
+				]
+			],
+			"game" => [//настройки автомата
+				"maxTimeSpinning" => 5000, // время кручения рельс
+			],
+			"isAvailable" => true//доступен ли автомат - если нет - режим "временно недоступен"
+        ];
+    }
+}

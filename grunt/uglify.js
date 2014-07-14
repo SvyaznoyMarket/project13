@@ -149,5 +149,14 @@ module.exports = {
         files: {
             'web/js/prod/watch3d.min.js': ['<%= pathDev %>watch3d/*.js']
         }
+    },
+	
+	gameSlotsJs: {
+        files: {
+            'web/js/game/slots.min.js': [
+				'web/js/game/slots/jquery.transit.js',
+				'web/js/game/slots/slots.js'
+			]
+        }
     }
 };

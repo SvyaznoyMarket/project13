@@ -6,6 +6,8 @@ class IndexPage extends \View\DefaultLayout {
     protected $layout  = 'layout-main';
 
     protected function prepare() {
+         $this->addStylesheet('/css/game/slots/style.css'); // стили для однорукого бандита
+        
         $this->addMeta('viewport', 'width=960');
         $this->addMeta('mailru', 'b0645ac6fd99f8f2');
 
@@ -93,5 +95,14 @@ class IndexPage extends \View\DefaultLayout {
         ];
 
         return '<div id="myragonPageJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
+    }
+    
+    
+    /**
+     * Добавляем бандита
+     * @return string
+     */
+    public function slotSlosts() {
+        return \App::templating()->render('game/page-bandit');
     }
 }

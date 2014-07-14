@@ -63,6 +63,11 @@
                 </div>
             </div>
         </div>
+        
+        <!-- GameSlots -->
+        <?=$page->slotSlosts()?>
+        <!--/ GameSlots -->
+        
     </div><!--/ Контент -->
 </div><!--/ Шаблон -->
 

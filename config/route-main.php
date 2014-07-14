@@ -903,6 +903,21 @@ return [
         ],
 	],
 	
+	/**
+	 * game.center
+	 */
+	'game.slots' => [
+		'pattern'	=> '/game/slots',
+		'action'	=> ['Game\BanditAction', 'index'],
+	],
+	'game.slots.init' => [
+		'pattern'	=> '/game/slots/init',
+		'action'	=> ['Game\BanditAction', 'init'],
+	],
+	'game.slots.play' => [
+		'pattern'	=> '/game/slots/play',
+		'action'	=> ['Game\BanditAction', 'play'],
+	],
 	
 	//content
     'content' => [
