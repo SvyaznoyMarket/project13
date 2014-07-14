@@ -643,6 +643,11 @@ class DefaultLayout extends Layout {
             return;
         }
 
+        // не нужно повторно инициализировать googletagmanager
+        if (true == \App::config()->googleTagManager['enabled']) {
+            return;
+        }
+
         return '<div id="RuTargetJS" class="jsanalytics" data-id="' . \App::config()->partners['RuTarget']['containerId'] . '">
             <!­­ RuTarget ­­> 
             <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM­4SJX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
