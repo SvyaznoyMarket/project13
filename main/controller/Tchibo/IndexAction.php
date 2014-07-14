@@ -173,7 +173,7 @@ class IndexAction {
                     'link'          => $product->getLink(),
                     'name'          => $product->getName(),
                     'price'         => $product->getPrice(),
-                    'isBuyable'     => $product->getIsBuyable()
+                    'isBuyable'     => ($product->getIsBuyable() || $product->isInShopOnly() || $product->isInShopStockOnly()),
                 ];
             }
 
