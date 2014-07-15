@@ -162,27 +162,53 @@ class NewAction {
         }
 
         // получение карт лояльности
-        try {
-            $bonusCards = \RepositoryManager::bonusCard()->getCollection();
-        } catch (\Exception $e) {
-            \App::logger()->error($e);
-            \App::exception()->remove($e);
+        $bonusCards = \RepositoryManager::bonusCard()->getCollection();
+        $userBonusCards = $user->getEntity() && $user->getEntity()->getBonusCard() ? $user->getEntity()->getBonusCard() : [];
 
-            $bonusCards = [];
+        // массив данных для JS
+        $bonusCardsData = \Controller\Order\NewAction::getBonusCardsData($request, $bonusCards, $userBonusCards);
+
+        $page = new \View\Order\NewPage();
+        $page->setParam('deliveryData', (new \Controller\Order\DeliveryAction())->getResponseData(false));
+        $page->setParam('productsById', $productsById);
+        $page->setParam('paymentMethods', $paymentMethods);
+        $page->setParam('paymentGroups', $paymentGroups);
+        $page->setParam('subways', $subways);
+        $page->setParam('banks', $banks);
+        $page->setParam('creditData', $creditData);
+        $page->setParam('form', $form);
+        $page->setParam('bonusCards', $bonusCards);
+        $page->setParam('bonusCardsData', $bonusCardsData);
+
+        return new \Http\Response($page->show());
+    }
+
+    /**
+     * @param \Http\Request $request
+     * @param array $bonusCards
+     * @param array $userBonusCards
+     * @return array
+     */
+    static public function getBonusCardsData(\Http\Request $request, array $bonusCards = [], array $userBonusCards = []) {
+        $userCards = [];
+        foreach ($userBonusCards as $card) {
+            if (
+                !array_key_exists('bonus_card_id', $card) || !(bool)$card['bonus_card_id'] ||
+                !array_key_exists('number', $card) || !(bool)$card['number']
+            ) {
+                continue;
+            }
+
+            $userCards[$card['bonus_card_id']] = $card['number'];
         }
 
-        $userCards = [];
-        if ($user->getEntity() && $user->getEntity()->getBonusCard()) {
-            foreach ($user->getEntity()->getBonusCard() as $card) {
-                if (
-                    !array_key_exists('bonus_card_id', $card) || !(bool)$card['bonus_card_id'] ||
-                    !array_key_exists('number', $card) || !(bool)$card['number']
-                ) {
-                    continue;
-                }
-
-                $userCards[$card['bonus_card_id']] = $card['number'];
-            }
+        // SITE-3947
+        $sclubId = \Model\Order\BonusCard\Entity::SVYAZNOY_ID;
+        if (
+            (!isset($userCards[$sclubId]) || empty($userCards[$sclubId])) &&
+            $request->cookies->get(\App::config()->svyaznoyClub['cardNumber']['cookieName'])
+        ) {
+            $userCards[$sclubId] = $request->cookies->get(\App::config()->svyaznoyClub['cardNumber']['cookieName']);
         }
 
         // подготавливаем массив данных для JS
@@ -201,18 +227,6 @@ class NewAction {
             ];
         }
 
-        $page = new \View\Order\NewPage();
-        $page->setParam('deliveryData', (new \Controller\Order\DeliveryAction())->getResponseData(false));
-        $page->setParam('productsById', $productsById);
-        $page->setParam('paymentMethods', $paymentMethods);
-        $page->setParam('paymentGroups', $paymentGroups);
-        $page->setParam('subways', $subways);
-        $page->setParam('banks', $banks);
-        $page->setParam('creditData', $creditData);
-        $page->setParam('form', $form);
-        $page->setParam('bonusCards', $bonusCards);
-        $page->setParam('bonusCardsData', $bonusCardsData);
-
-        return new \Http\Response($page->show());
+        return $bonusCardsData;
     }
 }

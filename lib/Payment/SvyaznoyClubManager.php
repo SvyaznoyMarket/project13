@@ -7,8 +7,11 @@ class SvyaznoyClubManager {
     private $params4get = [];
 
     public function __construct() {
+        $userTicket = \App::config()->svyaznoyClub['userTicket']['cookieName'];
+        $cardNumber = \App::config()->svyaznoyClub['cardNumber']['cookieName'];
+
+        $this->params4get = array_merge($this->params4get, [$userTicket, $cardNumber]);
         $this->cookieLifetime = \App::config()->svyaznoyClub['cookieLifetime'];
-        $this->params4get[] = \App::config()->svyaznoyClub['userTicket']['cookieName'];
     }
 
     /**
