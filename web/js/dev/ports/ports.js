@@ -1856,11 +1856,11 @@ window.ANALYTICS = {
 		console.log(['exchange', data]);
 
 		_flocktory.push(['exchange', data]);
-		(function() {
-			var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
-			s.src = "//api.flocktory.com/1/hello.js";
-			var l = document.getElementsByTagName('script')[0]; l.parentNode.insertBefore(s, l);
-		})();
+//		(function() {
+//			var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
+//			s.src = "//api.flocktory.com/1/hello.js";
+//			var l = document.getElementsByTagName('script')[0]; l.parentNode.insertBefore(s, l);
+//		})();
 	},
 
 	myragonOrderCompleteJS: function() {
