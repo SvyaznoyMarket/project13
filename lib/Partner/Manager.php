@@ -56,8 +56,12 @@ class Manager {
                     if (!isset($sourceOptions['match']) || !is_array($sourceOptions['match']) || !isset($referer['query'])) continue;
 
                     foreach ($sourceOptions['match'] as $matchKey => $matchValue) {
-                        if ($matchValue !== null && $request->query->get($matchKey) == $matchValue) $matchesCount += 1;
-                        else if ($request->query->has($matchKey)) $matchesCount += 1;
+                        if ($matchValue !== null && $request->query->get($matchKey) == $matchValue) {
+                            $matchesCount += 1;
+                        }
+                        else if ($matchValue === null && $request->query->has($matchKey)) {
+                            $matchesCount += 1;
+                        }
                     }
 
                     // если платный партнер
@@ -82,37 +86,28 @@ class Manager {
                         }
 
                         // если нет utm_source cookie или же она была проставлена не этим партнером
-                        if (!$request->cookies->has($this->cookieName) && $request->cookies->get($this->cookieName) != $nameSource) {
+                        if ($request->cookies->get($this->cookieName) != $lastPartner) {
                             $this->cookieArray[] = new \Http\Cookie(
                                 $this->cookieName,
-                                $nameSource,
+                                $lastPartner,
                                 time() + $this->cookieLifetime,
                                 '/',
                                 $this->cookieDomain
                             );
                         }
 
-                        // кука для отслеживания заказа
-                        $this->cookieArray[] = new \Http\Cookie(
-                            'last_partner',
-                            $nameSource,
-                            0,
-                            '/',
-                            $this->cookieDomain
-                        );
-
                     }
 
                 }
 
                 // Бесплатные партнеры
-                if ($lastPartner === null) {
+                if ($lastPartner === null && !$request->cookies->has($this->cookieName)) {
                     foreach ($freeHosts as $freeHost) {
                         if (preg_match('/'.$freeHost.'/', $refererHost)) {
                             $lastPartner = $freeHost;
                             // кука для отслеживания заказа
                             $this->cookieArray[] = new \Http\Cookie(
-                                'last_partner',
+                                $this->cookieName,
                                 $freeHost,
                                 0,
                                 '/',
@@ -123,9 +118,9 @@ class Manager {
                 }
 
                 // Рефералка
-                if ($lastPartner === null) {
+                if ($lastPartner === null && !$request->cookies->has($this->cookieName)) {
                     $this->cookieArray[] = new \Http\Cookie(
-                        'last_partner',
+                        $this->cookieName,
                         $request->cookies->has($this->cookieName) && in_array($request->cookies->get($this->cookieName), array_keys($paidSources))
                             ? $request->cookies->get($this->cookieName)
                             : $refererHost,
@@ -151,8 +146,8 @@ class Manager {
     public function getName() {
         $request = \App::request();
 
-        return $request->cookies->has('last_partner')
-            ? $request->cookies->get('last_partner')
+        return $request->cookies->has($this->cookieName)
+            ? $request->cookies->get($this->cookieName)
             : null;
     }
 
