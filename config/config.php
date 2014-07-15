@@ -200,7 +200,7 @@ $c->partners['Myragon']['subdomainNumber'] = 49;// номер поддомена
 
 $c->adFox['enabled'] = true;
 
-$c->partner['cookieName'] = 'utm_source';
+$c->partner['cookieName'] = 'last_partner';
 $c->partner['cookieLifetime'] = 2592000; // 30 дней
 
 $c->onlineCall['enabled'] = false;
