@@ -343,7 +343,7 @@ class Action {
 
                     $responseData[$shopToken][] = [
                         'id'         => $shopId,
-                        'name'       => $shopToken == 'shops_svyaznoy' ? $shopItem['address'] .'; '. $shopItem['name'] : $shopItem['name'],
+                        'name'       => $shopToken == 'shops_svyaznoy' ? $shopItem['address'] : $shopItem['name'],
                         'address'    => $shopItem['address'],
                         'regtime'    => $shopItem['working_time'],
                         'latitude'   => (float)$shopItem['coord_lat'],
