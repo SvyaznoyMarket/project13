@@ -2,13 +2,13 @@
 
 namespace View\OrderV3;
 
-class NewPage extends Layout {
+class DeliveryPage extends Layout {
     public function prepare() {
         $this->setTitle('Оформление заказа - Enter');
     }
 
     public function slotContent() {
-        return \App::closureTemplating()->render('order-v3/page-new', $this->params);
+        return \App::closureTemplating()->render('order-v3/page-delivery', $this->params);
     }
 
     public function slotBodyDataAttribute() {
