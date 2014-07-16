@@ -843,6 +843,14 @@ class DefaultLayout extends Layout {
         return '';
     }
 
+    public function slotFlocktoryEnterprizeJs() {
+        return '';
+    }
+
+    public function slotFlocktoryEnterprizeRegistrationJs() {
+        return '';
+    }
+
     public function slotAdblender() {
         return \App::config()->analytics['enabled'] ? '<div id="adblenderCommon" class="jsanalytics" data-vars="'.$this->json(['layout' =>$this->layout]).'"></div>' : '';
     }

@@ -32,4 +32,8 @@ class IndexPage extends \View\DefaultLayout {
     public function slotUserbarEnterprizeContent() {
         return '';
     }
+
+    public function slotFlocktoryEnterprizeJs() {
+        return '<div id="flocktoryEnterprizeJS" class="jsanalytics" data-uniqid="' . uniqid() . '"></div>';
+    }
 }

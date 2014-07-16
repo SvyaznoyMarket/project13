@@ -1920,6 +1920,99 @@ window.ANALYTICS = {
 		window.rbnt_rt_params = data.page;
 	},
 
+	flocktoryEnterprizeJS: function() {
+		console.groupCollapsed('ports.js::flocktoryEnterprizeJS');
+
+		var
+			uniqid = $("#flocktoryEnterprizeJS").data('uniqid'),
+			data = {
+				name: "",
+				email: "",
+				sex: "",
+				action: "precheckout",
+				spot: "popup_enterprize"
+			},
+			flocktoryEnterprize = {
+				/**
+				 * подставляем данные с get-параметров
+				 */
+				fillDataFromParams: function() {
+					var urlParams = getUrlParams();
+
+					if ( typeof urlParams === "undefined" ) {
+						return;
+					}
+
+					if ( typeof urlParams['name'] !== "undefined" )		data.name = urlParams['name'];
+					if ( typeof urlParams['email'] !== "undefined" )	data.email = urlParams['email'];
+					if ( typeof urlParams['sex'] !== "undefined" )		data.sex = urlParams['sex'];
+
+					return;
+				},
+
+				init: function() {
+					var needUserInfoData = false;
+
+					flocktoryEnterprize.fillDataFromParams();
+
+					if ( data.name == "" || data.email == "" || data.sex == "" ) {
+						needUserInfoData = true;
+					}
+
+					if ( ENTER.config.userInfo === false || needUserInfoData === false ) {
+						flocktoryEnterprize.action();
+					}
+					else if ( !ENTER.config.userInfo ) {
+						$("body").on("userLogged", function() {flocktoryEnterprize.action(ENTER.config.userInfo)} );
+					}
+					else {
+						// событие уже прошло
+						console.warn(ENTER.config.userInfo);
+						flocktoryEnterprize.action(ENTER.config.userInfo);
+					}
+				},
+
+				action: function(userInfo) {
+					if ( userInfo && userInfo.id ) {
+
+					}
+
+//					<div class="i-flocktory" data-fl-user-name="Ivan Petrov" data-fl-user-email="ivan@petrov.ru" data-fl-user-sex="male"></div>
+//					<div class="i-flocktory" data-fl-action="precheckout" data-fl-spot="popup_enterprize"></div>
+				}
+			};
+		// end of vars
+
+		var
+			/**
+			 * Получение get параметров текущей страницы
+			 */
+			getUrlParams = function () {
+				var $_GET = {},
+					__GET = window.location.search.substring(1).split('&'),
+					getVar,
+					i;
+				// end of vars
+
+				for ( i = 0; i < __GET.length; i++ ) {
+					getVar = __GET[i].split('=');
+					$_GET[getVar[0]] = typeof(getVar[1]) == 'undefined' ? '' : getVar[1];
+				}
+
+				return $_GET;
+			};
+		// end of functions
+
+		if ( typeof uniqid === "undefined" ) {
+			console.warn("Не передан uniqid");
+			return;
+		}
+
+		flocktoryEnterprize.init();
+
+		console.groupEnd();
+	},
+
 	enable : true
 }
 
