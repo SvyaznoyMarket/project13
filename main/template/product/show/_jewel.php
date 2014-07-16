@@ -14,21 +14,6 @@
  * @var $isTchibo          boolean
  * @var $addToCartJS string
  */
-
-$showLinkToProperties = true;
-$countModels = count($product->getModel());
-//$countProperties = count($product->getProperty());
-$countProperties = 0;
-foreach ($product->getGroupedProperties() as $group) {
-    if (!(bool)$group['properties']) continue;
-    foreach ($group['properties'] as $property) {
-        $countProperties++;
-    }
-}
-
-$is_showed = [];
-
-
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
@@ -37,62 +22,43 @@ $is_showed = [];
     <?= $helper->render('product/__photo', ['product' => $product, 'productVideos' => $productVideos, 'useLens' => $useLens]) ?>
 
     <div class="bProductDesc<? if (!$creditData['creditIsAllowed'] || $user->getRegion()->getHasTransportCompany()): ?> mNoCredit<? endif ?>">
-            <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>
+        <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>
 
-            <?= $helper->render('product/__price', ['product' => $product]) // Цена ?>
+        <?= $helper->render('product/__price', ['product' => $product]) // Цена ?>
 
-            <?= $helper->render('product/__notification-lowerPrice', ['product' => $product]) // Узнать о снижении цены ?>
+        <?= $helper->render('product/__notification-lowerPrice', ['product' => $product]) // Узнать о снижении цены ?>
 
-            <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Купи в кредит ?>
+        <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Купи в кредит ?>
 
-            <? /* // Old Card Properties
-            <div class="bProductDescText">
+        <? /* // Old Card Properties
+        <div class="bProductDescText">
+            <?= $product->getTagline() ?>
+
+            <?= $helper->render('product/__propertiesSimple', ['product' => $product, 'showLinkToProperties' => false]) // Характеристики ?>
+        </div>
+        */ ?>
+
+        <?
+        // new Card Properties Begin {
+        if ($product->getTagline()) {
+        ?>
+            <div itemprop="description" class="bProductDescText">
                 <?= $product->getTagline() ?>
-
-                <?= $helper->render('product/__property', ['product' => $product]) // Характеристики ?>
+                <? /* <div class="bTextMore"><a class="jsGoToId" data-goto="productspecification" href="">Характеристики</a></div> */ ?>
             </div>
-            */ ?>
+            <?= $helper->render('product/__reviewCount', ['product' => $product, 'reviewsData' => $reviewsData]) ?>
+        <?
+        }
 
-            <?
-            // new Card Properties Begin {
-            if ( $product->getTagline() ) {
-                ?>
-                <div itemprop="description" class="bProductDescText">
-                    <?= $product->getTagline() ?>
-                    <? /* <div class="bTextMore"><a class="jsGoToId" data-goto="productspecification" href="">Характеристики</a></div> */ ?>
-                </div>
-                <?= $helper->render('product/__reviewCount', ['product' => $product, 'reviewsData' => $reviewsData]); ?>
-            <?
-            } elseif (
-                (!$countModels) &&
-                ( !isset($product->getDescription) || (isset($product->getDescription) && !$product->getDescription) ) &&
-                ($countProperties < 16)
-            ) {
-                echo $helper->render('product/__reviewCount', ['product' => $product, 'reviewsData' => $reviewsData]);
+        if (!$product->getTagline() && !count($product->getModel()) && !$product->getDescription() && $product->getPropertiesCount() < 16) {
+            echo $helper->render('product/__reviewCount', ['product' => $product, 'reviewsData' => $reviewsData]);
+        }
 
-                // Выводим все характеристики товара в центральном блоке первого экрана карточки
-                $showLinkToProperties = false;
-                echo $helper->render('product/__property', ['product' => $product]);
-                $is_showed[] = 'all_properties';
-            }
+        echo $helper->render('product/__mainProperties', ['product' => $product]);
+        // } /end of new Card Properties
+        ?>
 
-            if ( $countProperties < 8 and empty($is_showed) ) {
-                // выводим все характеристики в первом экране, сразу под отзывами.
-                $showLinkToProperties = false;
-                echo $helper->render('product/__property', ['product' => $product]);
-                $is_showed[] = 'all_properties';
-
-            }
-
-            if (!in_array('all_properties', $is_showed)) { // Если ранее не были показаны характеристики все,
-                // (во всех остальных случаях) выводим главные характеристики (productExpanded)
-                echo $helper->render('product/__propertiesExpanded', ['productExpanded' => $productExpanded, 'showLinkToProperties' => $showLinkToProperties]);
-                $is_showed[] = 'main_properties';
-            }
-            // } /end of new Card Properties
-            ?>
-
-            <?= $helper->render('product/__model', ['product' => $product]) // Модели ?>
+        <?= $helper->render('product/__model', ['product' => $product]) // Модели ?>
     </div><!--/product shop description section -->
 
     <div class="clear"></div>
@@ -148,9 +114,9 @@ $is_showed = [];
     <? endif ?>
 
     <?
-    if (!in_array('all_properties', $is_showed)) {
+    if ($product->getSecondaryGroupedProperties()) {
         // показываем все характеристики (сгруппированые), если ранее они не были показаны
-        echo $helper->render('product/__groupedProperty', ['product' => $product]); // Характеристики
+        echo $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getSecondaryGroupedProperties()]); // Характеристики
     }
     ?>
 
