@@ -9,8 +9,6 @@
 
 <? $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []) ?>
 
-<!--div class="titleForm">Подтверди e-mail</div-->
-
 <? if ($error): ?>
     <p class="red enterprizeWar"><?= $error ?></p>
 <? endif ?>
@@ -30,6 +28,4 @@
     </form>
 
     <p style="margin: 30px 0 0 0; font-size: 12px;" class="textConfirm">Если письмо затерялось или обнаружили ошибку, пожалуйста, напишите нам на <a style="text-decoration: underline;" href="mailto:feedback@enter.ru">feedback@enter.ru</a>.</p>
-</div>
-
 </div>
