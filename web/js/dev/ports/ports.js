@@ -493,7 +493,32 @@ window.ANALYTICS = {
 			gaSubscribeClick = function gaSubscribeClick( type, email ) {
 				console.log( 'GA: send', 'event', 'Subscriptions', type, email );
 				ga( 'send', 'event', 'Subscriptions', type );
-			}
+            },
+
+            /**
+             * Tracking event for ga.js and analytics.js
+             * @param {string} category (required) The name you supply for the group of objects you want to track.
+             * @param {string} action (required) A string that is uniquely paired with each category, and commonly used to define the type of user interaction for the web object.
+             * @param {string} [label] (optional) An optional string to provide additional dimensions to the event data.
+             * @param {int} [value] (optional) An integer that you can use to provide numerical data about the user event.
+             * @param {bool} [nonInteraction] (optional) A boolean that when set to true, indicates that the event hit will not be used in bounce-rate calculation.
+             */
+            trackEvent = function trackEventF(category, action, label, value, nonInteraction) {
+                var // variables
+                    w = window,
+                    _gaq = w._gaq || [],
+                    ga = w[w['GoogleAnalyticsObject']];
+
+                /* Checking values */
+                if (category == '' || action == '') return;
+                if (typeof value == 'string') value = parseInt(value, 10);
+
+                /* Sending */
+                if (typeof _gaq === 'object') _gaq.push(['_trackEvent', category, action, label, value, nonInteraction]);
+                if (typeof ga === 'function') ga('send', 'event', category, action, label, value);
+
+                console.log('[Google trackEvent] category: %s, action: %s, label: %s, value: %s, nonInteraction: %s', category, action, label, value, nonInteraction)
+            },
 
 			ga_main = function() {
 				console.info( 'GoogleAnalyticsJS main page' );
@@ -561,6 +586,7 @@ window.ANALYTICS = {
 				console.info( 'gaJS product page' );
 				var
 					product = $('#jsProductCard').data('value'),
+                    ref = document.referrer,
 					gaInteractive = function gaInteractive(type) {
 						console.log('GA: event Interactive: ' + type);
 						ga( 'send', 'event', 'Interactive', type );
@@ -657,6 +683,16 @@ window.ANALYTICS = {
 					console.log('GA: Items after Search', data.upperCat, product.article);
 					ga('send', 'event', 'Items after Search', data.upperCat, product.article);
 				}
+
+                if (/product\/tchibo/.test(document.location.href)) {
+                    if (/catalog\/tchibo/.test(ref)) {
+                        trackEvent('tchibo_item_visit', 'From_Tchibo', ref, null, true);
+                        window.docCookies.setItem('tchibo_track', 1, 0, '/');
+                    }
+                    if (/catalog/.test(ref) && !/tchibo/.test(ref)) trackEvent('tchibo_item_visit', 'From_Enter', ref, null, true);
+                    if (!/catalog/.test(ref)) trackEvent('tchibo_item_visit', 'Other', ref, null, true);
+                    if (ref=='') trackEvent('tchibo_item_visit', 'From Ads', ref, null, true);
+                }
 			},
 
 			ga_orderComplete = function ga_orderComplete() {
@@ -666,7 +702,8 @@ window.ANALYTICS = {
 					items,
 					send,
 					count, i,
-					order, j;
+					order, j,
+                    tchiboItems = [], tchiboItemsPrice;
 				// end of vars
 
 				if ( !ecommerce ) {
@@ -693,6 +730,7 @@ window.ANALYTICS = {
 						for ( i = 0; i < count; i++ ) {
 							console.log('ecommerce:addItem', items[i]);
 							ga('ecommerce:addItem', items[i]);
+                            if (/Tchibo/.test(items[i].category) || /Tchibo/.test(items[i].name)) tchiboItems.push(items[i])
 						}
 					}
 
@@ -701,6 +739,11 @@ window.ANALYTICS = {
 						ga('ecommerce:send', send);
 					}
 				}
+
+                if (docCookies.hasItem('tchibo_track') && tchiboItems) {
+                    tchiboItemsPrice = tchiboItems.reduce(function(pv,cv) { return pv + cv.price; }, 0);
+                    if (tchiboItemsPrice) trackEvent('tchibo_item_purchase', 'purchase', '', tchiboItemsPrice, true);
+                }
 			},
 
 			ga_cart = function ga_cart() {
@@ -1035,15 +1078,18 @@ window.ANALYTICS = {
 		// Передаем email пользователя для RetailRocket
 		RetailRocket.userEmailSend();
 
-        if ( !ENTER.config.userInfo ) {
-            RetailRocket.action(null);
-        } else {
-            $('body').on('userLogged', function(){
-                RetailRocket.action(null, ENTER.config.userInfo);
-            });
-        }
+		if ( ENTER.config.userInfo === false ) {
+			RetailRocket.action(null);
+		}
+		else if ( !ENTER.config.userInfo ) {
+			$("body").on("userLogged", function() {RetailRocket.action(null, ENTER.config.userInfo)} );
+		}
+		else {
+			console.warn(ENTER.config.userInfo);
+			RetailRocket.action(null, ENTER.config.userInfo);
+		}
 
-        console.groupEnd();
+		console.groupEnd();
     },
 
 //    AdmitadJS : function() {
@@ -1810,11 +1856,11 @@ window.ANALYTICS = {
 		console.log(['exchange', data]);
 
 		_flocktory.push(['exchange', data]);
-		(function() {
-			var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
-			s.src = "//api.flocktory.com/1/hello.js";
-			var l = document.getElementsByTagName('script')[0]; l.parentNode.insertBefore(s, l);
-		})();
+//		(function() {
+//			var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
+//			s.src = "//api.flocktory.com/1/hello.js";
+//			var l = document.getElementsByTagName('script')[0]; l.parentNode.insertBefore(s, l);
+//		})();
 	},
 
 	myragonOrderCompleteJS: function() {

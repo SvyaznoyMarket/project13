@@ -252,7 +252,7 @@ class ActionPay {
         $orderInfo = [
           //'id'        =>  reset($orderNumbers),       // Берём номер первого заказа
             'id'        => implode(", ", $orderNumbersArr), // Берём все номера заказов через запятую
-            'price'     => $orderSum,
+            'totalPrice'     => $orderSum,
         ];
 
         if ( empty($orderInfo) ) return false;

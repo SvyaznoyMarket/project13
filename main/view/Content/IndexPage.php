@@ -32,4 +32,17 @@ class IndexPage extends \View\DefaultLayout {
     public function slotBodyDataAttribute() {
         return 'infopage';
     }
+
+    public function slotHeadJavascript()
+    {
+        return parent::slotHeadJavascript() . 
+        '<script type="text/javascript">
+            window.ENTER = window.ENTER || {};
+            window.ENTER.config = {
+            "regionId": '. \App::user()->getRegion()->getId() .'
+            }
+        </script>';
+    }
+
+
 }

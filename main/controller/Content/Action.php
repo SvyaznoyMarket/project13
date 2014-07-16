@@ -58,9 +58,19 @@ class Action {
 
         $serviceJson = [];
         $dataStore->addQuery('service_ha/*.json', [], function ($data) use (&$serviceJson) {
-            if($data) $serviceJson = $data;
+            if (is_array($data)) $serviceJson = $data;
         });
         $dataStore->execute();
+
+        $firstData = [];
+        foreach ($serviceJson as $key => $item) {
+            if (('Москва' == $key) || ('Санкт-Петербург' == $key)) {
+                $firstData[$key] = $item;
+                unset($serviceJson[$key]);
+            }
+        }
+
+        $serviceJson = array_reverse(array_merge($firstData, $serviceJson), true);
 
         return $serviceJson;
     }

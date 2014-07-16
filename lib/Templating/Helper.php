@@ -211,6 +211,30 @@ class Helper {
         return $dateRu;
     }
 
+    /** Склоняет месяц во входной строке
+     * @param $str
+     * @param $capitalize bool
+     * @return str
+     */
+    public function monthDeclension($str, $capitalize = false) {
+        $months = [
+            'Январь'    => 'января',
+            'Февраль'   => 'февраля',
+            'Март'      => 'марта',
+            'Апрель'    => 'апреля',
+            'Май'       => 'мая',
+            'Июнь'      => 'июня',
+            'Июль'      => 'июля',
+            'Август'    => 'августа',
+            'Сентябрь'  => 'сентября',
+            'Октябрь'   => 'октября',
+            'Ноябрь'    => 'ноября',
+            'Декабрь'   => 'декабря',
+        ];
+        if ($capitalize) array_walk($months, function (&$item) { $item = mb_convert_case($item, MB_CASE_TITLE, "UTF-8"); } );
+        return str_replace(array_keys($months), array_values($months), $str);
+    }
+
     /**
      * @param $value
      * @return int|string

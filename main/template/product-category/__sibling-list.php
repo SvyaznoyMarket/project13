@@ -6,7 +6,8 @@ return function(
     $catalogConfig = [],
     \Model\Product\Category\Entity $currentCategory = null,
     \Model\Product\Category\TreeEntity $rootCategoryInMenu = null,
-    $tchiboMenuCategoryNameStyles = []
+    $tchiboMenuCategoryNameStyles = [],
+    $rootCategoryInMenuImage = null
 ) {
     /** @var $categories \Model\Product\Category\Entity[] */
 
@@ -19,9 +20,11 @@ return function(
     <!-- TCHIBO - слайдер-меню разделов Чибо -->
     <div class="tchiboNav clearfix">
         <? if ($rootCategoryInMenu): ?>
-            <a class="tchiboNav__titleLink" href="<?= rtrim($rootCategoryInMenu->getLink(), '/') ?>"><div class="tchiboNav__title"></div></a>
+            <a class="tchiboNav__titleLink" href="<?= rtrim($rootCategoryInMenu->getLink(), '/') ?>">
+                <div class="tchiboNav__title"<? if ((bool)$rootCategoryInMenuImage): ?> style="background-image: url(<?= $rootCategoryInMenuImage ?>)" <? endif ?>></div>
+            </a>
         <? else: ?>
-            <div class="tchiboNav__title"></div>
+            <div class="tchiboNav__title"<? if ((bool)$rootCategoryInMenuImage): ?> style="background-image: url(<?= $rootCategoryInMenuImage ?>)" <? endif ?>></div>
         <? endif ?>
 
 
@@ -38,9 +41,21 @@ return function(
                 <? if ((bool)$category->getChild() && ($active || !$currentCategory)): ?>
                     <ul class="tchiboNav__sublist<? if (!$last): ?> mDefault<? endif ?><? if ($active): ?> active<? endif ?><? if ($last): ?> mLast<? endif ?>">
                     <? foreach ($category->getChild() as $child):
-                        $activeChild = $currentCategory && ($child->getId() === $currentCategory->getId()) ? true : false; ?>
+                        $activeChild = $currentCategory && ($child->getId() === $currentCategory->getId()) ? true : false;
+                        // Шильдик NEW
+                        $newCategory = false;
+                        if (isset($catalogConfig['category_timing'])
+                            && is_array($catalogConfig['category_timing'])
+                            && in_array($child->getToken(), array_keys($catalogConfig['category_timing']))) {
 
-                        <li class="sublistItem jsItemListTchibo<? if ($activeChild): ?> mActive<? endif ?>">
+                            $catalogTiming = $catalogConfig['category_timing'][$child->getToken()];
+                            $until = strtotime($catalogTiming['until']);
+                            if (time() < $until) {
+                                if ($catalogTiming['type'] == 'new') $newCategory = true;
+                            }
+                        }?>
+
+                        <li class="sublistItem jsItemListTchibo<? if ($activeChild): ?> mActive<? endif ?> <?= $newCategory ? 'new' : '' ?>">
                             <a class="link" href="<?= $child->getLink() ?>"<? if (in_array($child->getId(), array_keys($tchiboMenuCategoryNameStyles))): ?> style="<?= $tchiboMenuCategoryNameStyles[$child->getId()] ?>"<? endif ?>><?= $child->getName() ?></a>
                         </li>
                     <? endforeach ?>

@@ -4,170 +4,144 @@
  * @link http://github.com/twolfson/grunt-jsmin-sourcemap
  */
 
-module.exports = {
-    catalog: {
-        src: ['dev/catalog/*.js'],
+module.exports = function (grunt, options) {
+
+    var jqueryPlugins = options.gc.jqueryPlugins,
+        libraryFiles = options.gc.libraryFiles;
+
+    return {
+        catalog: {
+            src: ['dev/catalog/*.js'],
             dest: 'prod/catalog.js',
             destMap: 'prod/catalog.js.map',
             srcRoot: '/js',
             cwd: 'web/js'
-    },
-    ports: {
-        src: ['dev/ports/*.js'],
+        },
+        ports: {
+            src: ['dev/ports/*.js'],
             dest: 'prod/ports.js',
             destMap: 'prod/ports.js.map',
             srcRoot: '/js',
             cwd: 'web/js'
-    },
-    debugPanel: {
-        src: ['dev/debug-panel/*.js'],
+        },
+        debugPanel: {
+            src: ['dev/debug-panel/*.js'],
             dest: 'prod/debug-panel.js',
             destMap: 'prod/debug-panel.js.map',
             srcRoot: '/js',
             cwd: 'web/js'
-    },
-    cart: {
-        src: ['dev/cart/*.js'],
+        },
+        cart: {
+            src: ['dev/cart/*.js'],
             dest: 'prod/cart.js',
             destMap: 'prod/cart.js.map',
             srcRoot: '/js',
             cwd: 'web/js'
-    },
-    common: {
-        src: ['dev/common/*.js'],
+        },
+        common: {
+            src: ['dev/common/*.js'],
             dest: 'prod/common.js',
             destMap: 'prod/common.js.map',
             srcRoot: '/js',
             cwd: 'web/js'
-    },
-    infopage: {
-        src: ['dev/infopage/*.js'],
+        },
+        infopage: {
+            src: ['dev/infopage/*.js'],
             dest: 'prod/infopage.js',
             destMap: 'prod/infopage.js.map',
             srcRoot: '/js',
             cwd: 'web/js'
-    },
-    library: {
-        src: [
-            'dev/library/cloneObject.js',
-            'dev/library/getKeysLength.js',
-            'dev/library/JSON.js',
-            'dev/library/pubSub.js',
-            'dev/library/isTrueEmail.js',
-            'dev/library/printPrice.js',
-            'dev/library/doc_cookies.js',
-            'dev/library/simple_templating.js',
-            'dev/library/library.js',
-            'dev/library/mapDriver.js',
-            'dev/library/mapDriver-v2.js',
-            'dev/library/black_box.js',
-            'dev/library/formValidator.js',
-            'dev/library/addParameterToUrl.js',
-            'dev/library/blockScreen.js',
-            'dev/library/*.js'
-        ],
-            dest: 'prod/library.js',
-            destMap: 'prod/library.js.map',
-            srcRoot: '/js',
-            cwd: 'web/js'
-    },
-    jqueryPlugins: {
-        src: [
-            'dev/jquery-plugins/jquery.lightbox_me.js',
-            'dev/jquery-plugins/jquery.scrollto.js',
-            'dev/jquery-plugins/jquery.placeholder.js',
-            'dev/jquery-plugins/jquery.infinityCarousel.js',
-            'dev/jquery-plugins/jquery.visible.js',
-            'dev/jquery-plugins/typewriter.js',
-            'dev/jquery-plugins/jquery.maskedinput.js',
-            'dev/jquery-plugins/jquery.put_cursor_at_end.js',
-            'dev/jquery-plugins/goodsCounter.js',
-            'dev/jquery-plugins/jquery.elevatezoom.js',
-            'dev/jquery-plugins/jquery.animate-shadow.js',
-            'dev/jquery-plugins/customDropDown.js',
-            'dev/jquery-plugins/goodsSlider.js',
-            'dev/jquery-plugins/jquery-ui-1.10.3.custom.js'
-        ],
-            dest: 'prod/jquery-plugins.min.js',
-            destMap: 'prod/jquery-plugins.min.js.map',
-            srcRoot: '/js',
-            cwd: 'web/js'
-    },
-    lk: {
-        src: ['dev/lk/*.js'],
-            dest: 'prod/lk.js',
-            destMap: 'prod/lk.js.map',
-            srcRoot: '/js',
-            cwd: 'web/js'
-    },
-    enterprize: {
-        src: ['dev/enterprize/*.js'],
-            dest: 'prod/enterprize.js',
-            destMap: 'prod/enterprize.js.map',
-            srcRoot: '/js',
-            cwd: 'web/js'
-    },
-    main: {
-        src: ['dev/main/*.js'],
-            dest: 'prod/main.js',
-            destMap: 'prod/main.js.map',
-            srcRoot: '/js',
-            cwd: 'web/js'
-    },
-    oneclick: {
-        src: ['dev/oneclick/*.js'],
-            dest: 'prod/oneclick.js',
-            destMap: 'prod/oneclick.js.map',
-            srcRoot: '/js',
-            cwd: 'web/js'
-    },
-    order: {
-        src: ['dev/order/*.js'],
-            dest: 'prod/order.js',
-            destMap: 'prod/order.js.map',
-            srcRoot: '/js',
-            cwd: 'web/js'
-    },
-    order_new_v5: {
-        src: ['dev/order-new-v5/*.js'],
-            dest: 'prod/order-new-v5.js',
-            destMap: 'prod/order-new-v5.js.map',
-            srcRoot: '/js',
-            cwd: 'web/js'
-    },
-    pandora: {
-        src: ['dev/pandora/*.js'],
-            dest: 'prod/pandora.js',
-            destMap: 'prod/pandora.js.map',
-            srcRoot: '/js',
-            cwd: 'web/js'
-    },
-    product: {
-        src: ['dev/product/*.js'],
-            dest: 'prod/product.js',
-            destMap: 'prod/product.js.map',
-            srcRoot: '/js',
-            cwd: 'web/js'
-    },
-    shop: {
-        src: ['dev/shop/*.js'],
-            dest: 'prod/shop.js',
-            destMap: 'prod/shop.js.map',
-            srcRoot: '/js',
-            cwd: 'web/js'
-    },
-    tchibo: {
-        src: ['dev/tchibo/*.js'],
-            dest: 'prod/tchibo.js',
-            destMap: 'prod/tchibo.js.map',
-            srcRoot: '/js',
-            cwd: 'web/js'
-    },
-    watch3d: {
-        src: ['dev/watch3d/*.js'],
-            dest: 'prod/watch3d.js',
-            destMap: 'prod/watch3d.js.map',
-            srcRoot: '/js',
-            cwd: 'web/js'
+        },
+        library: {
+            src: libraryFiles,
+                dest: 'prod/library.js',
+                destMap: 'prod/library.js.map',
+                srcRoot: '/js',
+                cwd: 'web/js'
+        },
+        jqueryPlugins: {
+            src: jqueryPlugins,
+                dest: 'prod/jquery-plugins.js',
+                destMap: 'prod/jquery-plugins.js.map',
+                srcRoot: '/js',
+                cwd: 'web/js'
+        },
+        lk: {
+            src: ['dev/lk/*.js'],
+                dest: 'prod/lk.js',
+                destMap: 'prod/lk.js.map',
+                srcRoot: '/js',
+                cwd: 'web/js'
+        },
+        enterprize: {
+            src: ['dev/enterprize/*.js'],
+                dest: 'prod/enterprize.js',
+                destMap: 'prod/enterprize.js.map',
+                srcRoot: '/js',
+                cwd: 'web/js'
+        },
+        main: {
+            src: ['dev/main/*.js'],
+                dest: 'prod/main.js',
+                destMap: 'prod/main.js.map',
+                srcRoot: '/js',
+                cwd: 'web/js'
+        },
+        oneclick: {
+            src: ['dev/oneclick/*.js'],
+                dest: 'prod/oneclick.js',
+                destMap: 'prod/oneclick.js.map',
+                srcRoot: '/js',
+                cwd: 'web/js'
+        },
+        order: {
+            src: ['dev/order/*.js'],
+                dest: 'prod/order.js',
+                destMap: 'prod/order.js.map',
+                srcRoot: '/js',
+                cwd: 'web/js'
+        },
+        order_new_v5: {
+            src: ['dev/order-new-v5/*.js'],
+                dest: 'prod/order-new-v5.js',
+                destMap: 'prod/order-new-v5.js.map',
+                srcRoot: '/js',
+                cwd: 'web/js'
+        },
+        pandora: {
+            src: ['dev/pandora/*.js'],
+                dest: 'prod/pandora.js',
+                destMap: 'prod/pandora.js.map',
+                srcRoot: '/js',
+                cwd: 'web/js'
+        },
+        product: {
+            src: ['dev/product/*.js'],
+                dest: 'prod/product.js',
+                destMap: 'prod/product.js.map',
+                srcRoot: '/js',
+                cwd: 'web/js'
+        },
+        shop: {
+            src: ['dev/shop/*.js'],
+                dest: 'prod/shop.js',
+                destMap: 'prod/shop.js.map',
+                srcRoot: '/js',
+                cwd: 'web/js'
+        },
+        tchibo: {
+            src: ['dev/tchibo/*.js'],
+                dest: 'prod/tchibo.js',
+                destMap: 'prod/tchibo.js.map',
+                srcRoot: '/js',
+                cwd: 'web/js'
+        },
+        watch3d: {
+            src: ['dev/watch3d/*.js'],
+                dest: 'prod/watch3d.js',
+                destMap: 'prod/watch3d.js.map',
+                srcRoot: '/js',
+                cwd: 'web/js'
+        }
     }
 };
