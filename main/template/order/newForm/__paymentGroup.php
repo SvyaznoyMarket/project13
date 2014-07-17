@@ -47,11 +47,14 @@ return function (
             <? foreach ($group->getPaymentMethods() as $paymentMethod):
                 /*  @var $paymentMethod  \Model\PaymentMethod\Entity */
                 $elementId = sprintf('paymentMethod-%s', $paymentMethod->getId());
+                $maxSumOnline = null;
+                if (in_array($paymentMethod->getId(), [\Model\PaymentMethod\Entity::QIWI_ID, \Model\PaymentMethod\Entity::WEBMONEY_ID])) $maxSumOnline =  App::config()->order['maxSumOnline'];
+                if ($paymentMethod->getId() == \Model\PaymentMethod\Entity::PAYPAL_ID) $maxSumOnline = App::config()->order['maxSumOnlinePaypal']
                 ?>
                 <div class="bPayMethod<? if (\Model\PaymentMethod\Entity::TYPE_ALL == $groupId): ?> mMethodOption<? endif ?>"
                      data-value="<?= $helper->json([
                          'min-sum' => $paymentMethod->getIsCredit() ? \App::config()->product['minCreditPrice'] : null,
-                         'max-sum' => in_array($paymentMethod->getId(), [\Model\PaymentMethod\Entity::QIWI_ID, \Model\PaymentMethod\Entity::WEBMONEY_ID]) ? App::config()->order['maxSumOnline'] : null,
+                         'max-sum' => $maxSumOnline,
                          'method_id' => $paymentMethod->getId(),
                          'isAvailableToPickpoint' => $paymentMethod->getIsAvailableToPickpoint(),
                      ]) ?>"
