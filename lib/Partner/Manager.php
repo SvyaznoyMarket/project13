@@ -5,12 +5,23 @@ namespace Partner;
 class Manager {
     private $cookieName;
     private $cookieLifetime;
+    private $cookieDomain;
     private $cookieArray = [];
-    private $params4get = [ 'utm_source','utm_content','utm_term', 'actionpay', 'prx', 'aip', 'webmaster_id', 'affiliate_id' ];
+    private $params4get = [
+        'utm_source',
+        'utm_content',
+        'utm_term',
+        'actionpay',    // actionpay
+        'prx',          // cityads
+        'aip',          // для cityads
+        //'webmaster_id', // для actionpay, устарело?
+        //'affiliate_id', // устарело?
+    ];
 
     public function __construct() {
         $this->cookieName = \App::config()->partner['cookieName'];
         $this->cookieLifetime = \App::config()->partner['cookieLifetime'];
+        $this->cookieDomain = \App::config()->session['cookie_domain'];
     }
 
     /**
@@ -41,7 +52,7 @@ class Manager {
                 if (!empty($refererHost) && false === strpos($refererHost, 'enter')) {
                     // прямой трафик. уничтожаем партнерскую куку
                     if (\App::request()->cookies->has($this->cookieName)) {
-                        $response->headers->clearCookie($this->cookieName, '/', null);
+                        $response->headers->clearCookie($this->cookieName, '/', null, $this->cookieDomain);
                     }
 
                     // реферал не пустой
@@ -79,7 +90,11 @@ class Manager {
                         $data[] = $refererHost;
                         $this->cookieArray[] = new \Http\Cookie(
                             $this->cookieName,
-                            $refererHost, time() + $this->cookieLifetime, '/', null, false, true
+                            $refererHost, time() + $this->cookieLifetime,
+                            '/',
+                            $this->cookieDomain,
+                            false,
+                            true
                         );
 
                         // ссылочный трафик
@@ -87,7 +102,12 @@ class Manager {
                         $data[] = $refererHost;
                         $this->cookieArray[] = new \Http\Cookie(
                             $this->cookieName,
-                            $refererHost, time() + $this->cookieLifetime, '/', null, false, true
+                            $refererHost,
+                            time() + $this->cookieLifetime,
+                            '/',
+                            $this->cookieDomain,
+                            false,
+                            true
                         );
                     }
                 }
@@ -97,7 +117,12 @@ class Manager {
                 if (!empty($value)) {
                     $this->cookieArray[] = new \Http\Cookie(
                         $key,
-                        $value, time() + $this->cookieLifetime, '/', null, false, true
+                        $value,
+                        time() + $this->cookieLifetime,
+                        '/',
+                        $this->cookieDomain,
+                        false,
+                        true
                     );
                 }
             }
@@ -129,9 +154,9 @@ class Manager {
                 'cityads' => \Partner\Counter\CityAds::NAME,
                 'actionpay' => \Partner\Counter\Actionpay::NAME,
                 'myragon' => \Partner\Counter\Myragon::NAME,
-                'tradetracker' => \Partner\Counter\Tradetracker::NAME,
-                'unilead' => \Partner\Counter\Unilead::NAME,
-                'leadgid' => \Partner\Counter\Leadgid::NAME,
+                //'tradetracker' => \Partner\Counter\Tradetracker::NAME,
+                //'unilead' => \Partner\Counter\Unilead::NAME,
+                //'leadgid' => \Partner\Counter\Leadgid::NAME,
                 'yandex_market' => \Partner\PromoSource\YandexMarket::NAME,
                 'pricelist' => \Partner\PromoSource\Pricelist::NAME,
                 'criteo' => \Partner\PromoSource\Criteo::NAME,
@@ -146,8 +171,8 @@ class Manager {
                         $this->cookieName,
                         $value,
                         $this->cookieLifetime,
-                        '/',                            // ???
-                        null,                           // ???
+                        '/',
+                        $this->cookieDomain,
                         false,
                         true
                     );
@@ -162,7 +187,7 @@ class Manager {
                     $request->get('prx'),
                     time() + $this->cookieLifetime,
                     '/',
-                    null,
+                    $this->cookieDomain,
                     false,
                     true
                 );
@@ -171,7 +196,7 @@ class Manager {
                     $request->get('click_id'),
                     time() + $this->cookieLifetime,
                     '/',
-                    null,
+                    $this->cookieDomain,
                     false,
                     true
                 );
@@ -182,7 +207,7 @@ class Manager {
                     $request->get('actionpay'),
                     time() + $this->cookieLifetime,
                     '/',
-                    null,
+                    $this->cookieDomain,
                     false,
                     true
                 );
@@ -194,7 +219,7 @@ class Manager {
                     \Partner\PromoSource\Yandex::NAME,
                     time() + $this->cookieLifetime,
                     '/',
-                    null,
+                    $this->cookieDomain,
                     false,
                     true
                 );
@@ -208,7 +233,7 @@ class Manager {
                     \Partner\PromoSource\Google::NAME,
                     time() + $this->cookieLifetime,
                     '/',
-                    null,
+                    $this->cookieDomain,
                     false,
                     true
                 );
@@ -216,7 +241,7 @@ class Manager {
 
             foreach ($this->cookieArray as $cookie) {
                 if ($cookie instanceof \Http\Cookie) {
-                    if ($lastPartner) $response->headers->setCookie(new \Http\Cookie('last_partner', $lastPartner, 0));
+                    if ($lastPartner) $response->headers->setCookie(new \Http\Cookie('last_partner', $lastPartner, 0, '/', \App::config()->session['cookie_domain']));
                     if ($cookie->getName() == $this->cookieName && $alreadyHasCookie) continue; // оставим существующую куку для трекинга изначального партнера
                     $response->headers->setCookie($cookie);
                 }

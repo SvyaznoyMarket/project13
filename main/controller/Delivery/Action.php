@@ -183,10 +183,10 @@ class Action {
                             $item['name'] = 'PickPoint';
                             break;
                         case ($token == 'self_svyaznoy'):
-                            $item['name'] = "Самовывоз (ООО «Связной-Логистика»)";
+                            $item['name'] = "Самовывоз (ЗАО «Связной-Логистика»)";
                             break;
                         case ($token == 'standart_svyaznoy'):
-                            $item['name'] = "Доставим (ООО «Связной-Логистика»)";
+                            $item['name'] = "Доставим (ЗАО «Связной-Логистика»)";
                             break;
                         default: $item['name'] = "";
                     }
