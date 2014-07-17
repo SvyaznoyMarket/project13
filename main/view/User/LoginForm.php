@@ -2,21 +2,20 @@
 
 namespace View\User;
 
-class LoginForm {
+class LoginForm extends \Form\FormAbstract {
     /** @var string */
     private $username;
     /** @var string */
     private $password;
     /** @var array */
-    private $errors = array(
+    protected $errors = array(
         'global'   => null,
         'username' => null,
         'password' => null,
     );
-
-    public function __construct(array $data = []) {
-        $this->fromArray($data);
-    }
+    
+    /** @inheritdoc */
+    protected $route = 'user.login';
 
     public function fromArray(array $data) {
         if (array_key_exists('username', $data)) $this->setUsername($data['username']);
@@ -49,53 +48,5 @@ class LoginForm {
      */
     public function getUsername() {
         return $this->username;
-    }
-
-    /**
-     * @param $name
-     * @param $value
-     * @throws \InvalidArgumentException
-     */
-    public function setError($name, $value) {
-        if (!array_key_exists($name, $this->errors)) {
-            throw new \InvalidArgumentException(sprintf('Неизвестная ошибка "%s".', $name));
-        }
-
-        $this->errors[$name] = $value;
-    }
-
-    /**
-     * @param $name
-     * @return mixed
-     * @throws \InvalidArgumentException
-     */
-    public function getError($name) {
-        if (!array_key_exists($name, $this->errors)) {
-            throw new \InvalidArgumentException(sprintf('Неизвестная ошибка "%s".', $name));
-        }
-
-        return $this->errors[$name];
-    }
-
-    /**
-     * @return array
-     */
-    public function getErrors() {
-        return $this->errors;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isValid() {
-        $isValid = true;
-        foreach ($this->errors as $error) {
-            if (null !== $error) {
-                $isValid = false;
-                break;
-            }
-        }
-
-        return $isValid;
     }
 }

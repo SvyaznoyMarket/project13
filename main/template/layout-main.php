@@ -75,6 +75,7 @@
     <?= $page->slotFooter() ?>
 </div><!--/ Подвал -->
 
+<?= $page->slotEnterPrizeWidget() ?>
 <?= $page->slotRegionSelection() ?>
 <?= $page->slotAuth() ?>
 <?= $page->slotYandexMetrika() ?>

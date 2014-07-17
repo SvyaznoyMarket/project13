@@ -2,7 +2,7 @@
 
 namespace View\Enterprize;
 
-class Form {
+class Form extends \Form\FormAbstract {
     /** @var string */
     private $name;
     /** @var string */
@@ -16,7 +16,7 @@ class Form {
     /** @var bool */
     private $isSubscribe;
     /** @var array */
-    private $errors = array(
+    protected $errors = array(
         'global'    => null,
         'name'      => null,
         'email'     => null,
@@ -25,10 +25,8 @@ class Form {
         'agree'     => null,
         'subscribe' => null,
     );
-
-    public function __construct(array $data = []) {
-        $this->fromArray($data);
-    }
+    /** @inhetidoc */
+    protected $route = 'enterprize.form.update';
 
     /**
      * @param array $data
@@ -137,53 +135,5 @@ class Form {
      */
     public function getIsSubscribe() {
         return $this->isSubscribe;
-    }
-
-    /**
-     * @param $name
-     * @param $value
-     * @throws \InvalidArgumentException
-     */
-    public function setError($name, $value) {
-        if (!array_key_exists($name, $this->errors)) {
-            throw new \InvalidArgumentException(sprintf('Неизвестная ошибка "%s".', $name));
-        }
-
-        $this->errors[$name] = $value;
-    }
-
-    /**
-     * @param $name
-     * @return mixed
-     * @throws \InvalidArgumentException
-     */
-    public function getError($name) {
-        if (!array_key_exists($name, $this->errors)) {
-            throw new \InvalidArgumentException(sprintf('Неизвестная ошибка "%s".', $name));
-        }
-
-        return $this->errors[$name];
-    }
-
-    /**
-     * @return array
-     */
-    public function getErrors() {
-        return $this->errors;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isValid() {
-        $isValid = true;
-        foreach ($this->errors as $error) {
-            if (null !== $error) {
-                $isValid = false;
-                break;
-            }
-        }
-
-        return $isValid;
     }
 }

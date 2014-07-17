@@ -998,4 +998,15 @@ class DefaultLayout extends Layout {
 
         return '<div id="myragonPageJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
     }
+    
+    /**
+     * Активация виджета авторизации и гарантированной регистрации в программе Enter Prize
+     * @return string
+     */
+    public function slotEnterPrizeWidget(){
+        return $this->render('enterprize/_contentRegisterAuthWidget',[
+            'formEnterprizeRegistration'    => new \View\Enterprize\Form(),
+            'formAuth'                      => new \View\User\LoginForm()
+        ]);
+    }
 }
