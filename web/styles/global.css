@@ -4495,6 +4495,37 @@ img[height="0"] {
 /*---END----Стили попапов и их содержимого---------*/
 /*---------Оформление заказа 3.0----------*/
 @media all {
+  /*---------Оформление заказа 3.0 ----------*/
+  /* 
+    orderHd
+        orderHd_stps
+        	orderHd_stps_i+			    $-act | $-pass
+
+    orderCnt
+    	orderCnt_t
+		
+		[1]
+    	orderInf
+
+    	[2]
+    	orderRow
+
+    	[3]
+    	orderCol 		        -r
+    		orderCol_h
+    		orderCol_f
+    			orderCol_f_t
+    			orderCol_f_l
+    			orderCol_f_r
+
+    		orderCol_summt
+    		orderCol_summ
+    		[cuponField]
+
+    	[4]
+    	orderCheck 				$-credit | $-str
+    		[customLabel]
+*/
   .orderHd {
     width: 940px;
     height: 50px;
@@ -4762,6 +4793,16 @@ img[height="0"] {
   }
 }
 @media all {
+  /*---------Оформление заказа 3.0 ----------*/
+  /* 
+    orderCol
+        orderCol_cnt
+        orderCol_t
+        orderCol_lk
+        orderCol_img
+        orderCol_n
+        orderCol_data		-summ | -count | -sale | -del
+*/
   .orderCol_cnt {
     padding: 10px 0;
     border-top: 1px solid #e6e6e6;
@@ -4837,6 +4878,12 @@ img[height="0"] {
   }
 }
 @media all {
+  /*---------Оформление заказа 3.0 -> строка перехода к следующему шагу .orderCompl ----------*/
+  /* 
+    orderCompl
+        orderCompl_l
+        orderCompl_btn
+*/
   .orderCompl {
     width: 940px;
     margin: 0 0 0 -10px;
@@ -4862,6 +4909,21 @@ img[height="0"] {
   }
 }
 @media all {
+  /*---------Оформление заказа 3.0 -> форма личных данных пользователя .orderU ----------*/
+  /* 
+    orderU
+        orderU_flds+
+        orderU_fld+
+        orderU_lbl+
+        orderU_tx+
+        orderU_hint*
+        orderU_bonus
+        orderU_bonusImg+
+
+    orderAuth
+    	orderAuth_t 
+    	orderAuth_btn
+*/
   .orderU {
     display: inline-block;
     vertical-align: top;
