@@ -89,7 +89,7 @@ class User {
             $token,
             time() + \App::config()->session['cookie_lifetime'],
             '/',
-            preg_replace('/^www./', '.', \App::config()->mainHost),
+            \App::config()->session['cookie_domain'],
             false,
             true // важно httpOnly=true, чтобы js не мог получить куку
         );
@@ -108,7 +108,7 @@ class User {
             1,
             time() + \App::config()->session['cookie_lifetime'],
             '/',
-            null,
+            \App::config()->session['cookie_domain'],
             false,
             false
         );
@@ -177,7 +177,7 @@ class User {
             $region->getId(),
             time() + \App::config()->region['cookieLifetime'],
             '/',
-            null,
+            \App::config()->session['cookie_domain'],
             false,
             false // важно httpOnly=false, чтобы js мог получить куку
         );
@@ -430,7 +430,7 @@ class User {
             1, //cookieValue
             $time,
             '/',
-            null,
+            \App::config()->session['cookie_domain'],
             false,
             false
         );

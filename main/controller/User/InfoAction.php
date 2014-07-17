@@ -31,7 +31,7 @@ class InfoAction {
                     1,
                     time() + (4 * 7 * 24 * 60 * 60),
                     '/',
-                    null,
+                    \App::config()->session['cookie_domain'],
                     false,
                     false // важно httpOnly=false, чтобы js мог получить куку
                 );
