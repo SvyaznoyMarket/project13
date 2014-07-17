@@ -11514,7 +11514,7 @@
   .bEmptyCart {
     background: url("/css/bEmptyCart/img/bEmptyCart.gif") no-repeat 0 0;
     padding: 100px 0 0 110px;
-    margin: -40px 0 0 15px;
+    margin: -40px 0 20px 15px;
     min-height: 160px;
   }
   .bEmptyCart .bEmptyCartText {
@@ -11542,6 +11542,9 @@
   .bEmptyCart .bEmptyCartList .bGreyText {
     font: normal 16px/18px "Enter Type";
     text-transform: none;
+  }
+  .cart_ep {
+    text-align: center;
   }
 }
 /*---END---СТИЛИ ПУСТОЙ КОРЗИНЫ---*/
