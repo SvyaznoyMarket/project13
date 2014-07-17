@@ -14,11 +14,14 @@ class FormPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
+        $return = '';
+
         if ($this->params['limit'] > 0) {
-            return $this->render('enterprize/page-form', $this->params);
+            $return = $this->render('enterprize/page-form', $this->params);
+            $return .= '<div id="flocktoryEnterprizeFormJS" class="jsanalytics"></div>';
         }
 
-        return '';
+        return $return;
     }
 
     public function slotBodyClassAttribute() {

@@ -66,6 +66,7 @@ class InfoAction {
                 $responseData['user']['email'] = $userEntity->getEmail();
                 $responseData['user']['emailHash'] = md5($userEntity->getEmail());
                 $responseData['user']['hasEnterprizeCoupon'] = $user->getEntity()->isEnterprizeMember();
+                $responseData['user']['sex'] = $user->getEntity()->getSex(); // 1-мужской, 2-женский
             }
 
             if (!$cart->isEmpty()) {

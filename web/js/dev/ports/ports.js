@@ -1923,8 +1923,9 @@ window.ANALYTICS = {
 	flocktoryEnterprizeJS: function() {
 		console.groupCollapsed('ports.js::flocktoryEnterprizeJS');
 
+		this.flocktoryAddScript();
+
 		var
-			uniqid = $("#flocktoryEnterprizeJS").data('uniqid'),
 			data = {
 				name: "",
 				email: "",
@@ -1974,11 +1975,25 @@ window.ANALYTICS = {
 
 				action: function(userInfo) {
 					if ( userInfo && userInfo.id ) {
-
+						if ( data.name == "" )	data.name = userInfo.name;
+						if ( data.email == "" )	data.email = userInfo.email;
+						if ( data.sex == "" )	data.sex = (1 == userInfo.sex) ? "m" : ( 2 == userInfo.sex ? "f" : "" );
 					}
 
-//					<div class="i-flocktory" data-fl-user-name="Ivan Petrov" data-fl-user-email="ivan@petrov.ru" data-fl-user-sex="male"></div>
-//					<div class="i-flocktory" data-fl-action="precheckout" data-fl-spot="popup_enterprize"></div>
+					// первый блок
+					$('<div/>', {
+						"class": "i-flocktory",
+						"data-fl-user-name": data.name,
+						"data-fl-user-email": data.email,
+						"data-fl-user-sex": data.sex
+					}).appendTo('#flocktoryEnterprizeJS');
+
+					// второй блок
+					$('<div/>', {
+						"class": "i-flocktory",
+						"data-fl-action": data.action,
+						"data-fl-spot": data.spot
+					}).appendTo('#flocktoryEnterprizeJS');
 				}
 			};
 		// end of vars
@@ -2003,14 +2018,20 @@ window.ANALYTICS = {
 			};
 		// end of functions
 
-		if ( typeof uniqid === "undefined" ) {
-			console.warn("Не передан uniqid");
-			return;
-		}
-
 		flocktoryEnterprize.init();
 
 		console.groupEnd();
+	},
+
+	flocktoryEnterprizeFormJS: function() {
+		this.flocktoryAddScript();
+
+		var s = document.createElement('script');
+		s.type = 'text/javascript';
+		s.async = true;
+		s.src = "//api.flocktory.com/v2/loader.js?1401=";
+		var l = document.getElementsByTagName('script')[0];
+		l.parentNode.insertBefore(s, l);
 	},
 
 	enable : true
