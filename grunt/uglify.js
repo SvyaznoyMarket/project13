@@ -1,153 +1,140 @@
-module.exports = {
+module.exports = function (grunt, options) {
 
-    options: {
-        compress: {
-            drop_console: true
-        }
-    }
-    ,
-    partnerScripts: {
-        files: [
-            {
-                expand: true,
-                cwd: 'web/js/partner/',
-                src: ['*.js'],
-                dest: 'web/js/prod/',
-                rename: function(destBase, destPath) {
-                    return destBase + destPath.replace('js', 'min.js');
-                }
-            }
-        ]
-    },
+    var jqueryPlugins = options.gc.jqueryPlugins,
+        libraryFiles = options.gc.libraryFiles,
+        pathDev = options.pathDev,
+        pathProd = options.pathProd,
+        pathRoot = options.pathRoot;
 
-    vendorScripts: {
-        files: [
-            {
-                expand: true,
-                cwd: 'web/js/vendor/',
-                src: ['*.js'],
-                dest: 'web/js/prod/',
-                rename: function(destBase, destPath) {
-                    return destBase + destPath.replace('js', 'min.js');
-                }
-            }
-        ]
-    },
+    return {
 
-    loadJS: {
-        files: {
-            'web/js/loadjs.min.js': ['<%= pathRoot %>loadjs.js']
-        }
-    },
-
-    cartJS: {
-        files: {
-            'web/js/prod/cart.min.js': ['<%= pathDev %>cart/*.js']
-        }
-    },
-
-    commonJS: {
-        files: {
-            'web/js/prod/common.min.js': ['<%= pathDev %>common/*.js']
-        }
-    },
-
-    infopageJS: {
-        files: {
-            'web/js/prod/infopage.min.js': ['<%= pathDev %>infopage/*.js']
-        }
-    },
-
-    libraryJS: {
-        src: 'web/js/prod/library.js',
-            dest: 'web/js/prod/library.min.js'
-    },
-
-    jqueryPlugins: {
         options: {
-            mangle: {
-                except: ['jQuery']
+            compress: {
+                drop_console: true
             }
+        }
+        ,
+        partnerScripts: {
+            files: [
+                {
+                    expand: true,
+                    cwd: 'web/js/partner/',
+                    src: ['*.js'],
+                    dest: pathProd + '',
+                    rename: function(destBase, destPath) {
+                        return destBase + destPath.replace('js', 'min.js');
+                    }
+                }
+            ]
         },
-        src: 'web/js/prod/jquery-plugins.js',
-            dest: 'web/js/prod/jquery-plugins.min.js'
-    },
 
-    lkJS: {
-        files: {
-            'web/js/prod/lk.min.js': ['<%= pathDev %>lk/*.js']
-        }
-    },
+        vendorScripts: {
+            files: [
+                {
+                    expand: true,
+                    cwd: 'web/js/vendor/',
+                    src: ['*.js'],
+                    dest: pathProd + '',
+                    rename: function(destBase, destPath) {
+                        return destBase + destPath.replace('js', 'min.js');
+                    }
+                }
+            ]
+        },
 
-    enterprizeJS: {
-        files: {
-            'web/js/prod/enterprize.min.js': ['<%= pathDev %>enterprize/*.js']
-        }
-    },
+        loadJS: {
+            src: pathRoot + 'loadjs.js',
+            dest: pathRoot + 'loadjs.min.js'
+        },
 
-    mainJS: {
-        files: {
-            'web/js/prod/main.min.js': ['<%= pathDev %>main/*.js']
-        }
-    },
+        cartJS: {
+            src: pathDev + 'cart/*.js',
+            dest: pathProd + 'cart.min.js'
+        },
 
-    oneclickJS: {
-        files: {
-            'web/js/prod/oneclick.min.js': ['<%= pathDev %>oneclick/*.js']
-        }
-    },
+        commonJS: {
+            src: pathDev + 'common/*.js',
+            dest: pathProd + 'common.min.js'
+        },
 
-    orderJS: {
-        files: {
-            'web/js/prod/order.min.js': ['<%= pathDev %>order/*.js']
-        }
-    },
+        infopageJS: {
+            src: pathDev + 'infopage/*.js',
+            dest: pathProd + 'infopage.min.js'
+        },
 
-    orderNewV5JS : {
-        files: {
-            'web/js/prod/order-new-v5.min.js': ['<%= pathDev %>order-new-v5/*.js']
-        }
-    },
+        libraryJS: {
+            src: libraryFiles,
+            dest: pathProd + 'library.min.js'
+        },
 
-    pandoraJS: {
-        files: {
-            'web/js/prod/pandora.min.js': ['<%= pathDev %>pandora/*.js']
-        }
-    },
+        jqueryPlugins: {
+            options: {
+                mangle: {
+                    except: ['jQuery']
+                }
+            },
+            src: jqueryPlugins,
+            dest: pathProd + 'jquery-plugins.min.js'
+        },
 
-    portsJS: {
-        files: {
-            'web/js/prod/ports.min.js': ['<%= pathDev %>ports/*.js']
-        }
-    },
+        lkJS: {
+            src: pathDev + 'lk/*.js',
+            dest: pathProd + 'lk.min.js'
+        },
 
-    catalogJS: {
-        files: {
-            'web/js/prod/catalog.min.js': ['<%= pathDev %>catalog/*.js']
-        }
-    },
+        enterprizeJS: {
+            src: pathDev + 'enterprize/*.js',
+            dest: pathProd + 'enterprize.min.js'
+        },
 
-    productJS: {
-        files: {
-            'web/js/prod/product.min.js': ['<%= pathDev %>product/*.js']
-        }
-    },
+        mainJS: {
+            src: pathDev + 'main/*.js',
+            dest: pathProd + 'main.min.js'
+        },
 
-    shopJS: {
-        files: {
-            'web/js/prod/shop.min.js': ['<%= pathDev %>shop/*.js']
-        }
-    },
+        oneclickJS: {
+            src: pathDev + 'oneclick/*.js',
+            dest: pathProd + 'oneclick.min.js'
+        },
 
-    tchiboJS: {
-        files: {
-            'web/js/prod/tchibo.min.js': ['<%= pathDev %>tchibo/*.js']
-        }
-    },
+        orderNewV5JS : {
+            src: pathDev + 'order-new-v5/*.js',
+            dest: pathProd + 'order-new-v5.min.js'
+        },
 
-    watch3dJS: {
-        files: {
-            'web/js/prod/watch3d.min.js': ['<%= pathDev %>watch3d/*.js']
+        pandoraJS: {
+            src: pathDev + 'pandora/*.js',
+            dest: pathProd + 'pandora.min.js'
+        },
+
+        portsJS: {
+            src: pathDev + 'ports/*.js',
+            dest: pathProd + 'ports.min.js'
+        },
+
+        catalogJS: {
+            src: pathDev + 'catalog/*.js',
+            dest: pathProd + 'catalog.min.js'
+        },
+
+        productJS: {
+            src: pathDev + 'product/*.js',
+            dest: pathProd + 'product.min.js'
+        },
+
+        shopJS: {
+            src: pathDev + 'shop/*.js',
+            dest: pathProd + 'shop.min.js'
+        },
+
+        tchiboJS: {
+            src: pathDev + 'tchibo/*.js',
+            dest: pathProd + 'tchibo.min.js'
+        },
+
+        watch3dJS: {
+            src: pathDev + 'watch3d/*.js',
+            dest: pathProd + 'watch3d.min.js'
         }
     }
 };

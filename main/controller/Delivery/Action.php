@@ -183,10 +183,10 @@ class Action {
                             $item['name'] = 'PickPoint';
                             break;
                         case ($token == 'self_svyaznoy'):
-                            $item['name'] = "Самовывоз (ООО «Связной-Логистика»)";
+                            $item['name'] = "Самовывоз (ЗАО «Связной-Логистика»)";
                             break;
                         case ($token == 'standart_svyaznoy'):
-                            $item['name'] = "Доставим (ООО «Связной-Логистика»)";
+                            $item['name'] = "Доставим (ЗАО «Связной-Логистика»)";
                             break;
                         default: $item['name'] = "";
                     }
@@ -343,7 +343,7 @@ class Action {
 
                     $responseData[$shopToken][] = [
                         'id'         => $shopId,
-                        'name'       => $shopToken == 'shops_svyaznoy' ? $shopItem['address'] .'; '. $shopItem['name'] : $shopItem['name'],
+                        'name'       => $shopToken == 'shops_svyaznoy' ? $shopItem['address'] : $shopItem['name'],
                         'address'    => $shopItem['address'],
                         'regtime'    => $shopItem['working_time'],
                         'latitude'   => (float)$shopItem['coord_lat'],

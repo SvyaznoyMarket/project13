@@ -1,4 +1,5 @@
 <?php
+setlocale(LC_TIME, 'ru_RU', 'ru_RU.utf8');
 set_include_path(get_include_path() . PATH_SEPARATOR . implode(PATH_SEPARATOR, [
     realpath(__DIR__ . '/../v2/Enter'),
 ]));

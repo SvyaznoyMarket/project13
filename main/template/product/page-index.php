@@ -35,8 +35,4 @@ $reviewsPresent = !(empty($reviewsData['review_list']));
     <?//= $page->tryRender('product/partner-counter/_recreative', ['product' => $product]) ?>
 <? endif ?>
 
-<? if (false && \App::config()->product['pushRecommendation']): //TODO: почистить ?>
-    <div id="jsAlsoViewedProduct" data-url="<?= $page->url('smartengine.push.product_view', ['productId' => $product->getId()]) ?>"></div>
-<? endif ?>
-
 <?= $page->tryRender('product/_tag', ['product' => $product]) ?>

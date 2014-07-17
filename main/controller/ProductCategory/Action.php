@@ -313,6 +313,11 @@ class Action {
                             $redirect;
                     }
 
+                    // SITE-3782
+                    if ($request->getQueryString()) {
+                        $redirect .= ((false === strpos($redirect, '?')) ? '?' : '&') . $request->getQueryString();
+                    }
+
                     if ($brand) {
                         // TODO: исправить, когда FCMS-314 будет готова
                         $redirect .= ((false === strpos($redirect, '?')) ? '?' : '&') . sprintf('%s-brand-%s=%s', FilterForm::$name, $brandToken, $brand->getId());
@@ -359,7 +364,7 @@ class Action {
         }
 
         // SITE-3381
-        if (1 < $category->getLevel() && false === strpos($categoryPath, '/')) {
+        if (!$request->isXmlHttpRequest() && ($category->getLevel() > 1) && false === strpos($categoryPath, '/')) {
             throw new \Exception\NotFoundException(sprintf('Не передана родительская категория для категории @%s', $categoryToken));
         }
 
@@ -621,10 +626,11 @@ class Action {
                             $product = $products[$productId];
                             /** @var $product \Model\Product\Entity */
                             $itemProducts[] = [
-                                'image' => $product->getImageUrl(2), // 163х163 seize
-                                'link'  => $product->getLink(),
-                                'name'  => $product->getName(),
-                                'price' => $product->getPrice(),
+                                'image'     => $product->getImageUrl(2), // 163х163 seize
+                                'link'      => $product->getLink(),
+                                'name'      => $product->getName(),
+                                'price'     => $product->getPrice(),
+                                'isBuyable' => ($product->getIsBuyable() || $product->isInShopOnly() || $product->isInShopStockOnly()),
                             ];
                         }
 

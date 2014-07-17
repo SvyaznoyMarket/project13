@@ -6,11 +6,14 @@
  * @var $catalogConfig      array
  * @var $slideData          array
  * @var $bannerBottom       string
+ * @var $promoContent       string
  */
 
 
 $helper = new \Helper\TemplateHelper();
 $siblingCategories = $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : [];
+
+$isCategoriesOddCount = (bool)(count($catalogCategories) % 2 == 1);
 
 if ((bool)$siblingCategories) {
     /* <!-- TCHIBO - слайдер-меню разделов Чибо --> */
@@ -48,22 +51,15 @@ if ((bool)$slideData) {
         }
 
         $categoryChildren = $catalogCategory->getChild();
-
-        $lastCategoryOdd = '';
-
-        if ($key == count($catalogCategories) - 1 && count($catalogCategories) % 2 == 1) {
-            $lastCategoryOdd = 'mFullWidth';
-            $imgSrc = $catalogCategory->getImageUrl(5);
-        }
         ?>
 
-        <div class="tchiboCatalogInner <?= $lastCategoryOdd ?>">
+        <div class="tchiboCatalogInner">
             <a href="<?= $catalogCategory->getLink() ?>">
                 <img class="tchiboCatalog__img"
                      src="<?= $imgSrc ?>" alt="<?= $catalogCategory->getName() ?>" />
             </a>
 
-            <div class="tchiboCatalog__title <?= $lastCategoryOdd ?>">
+            <div class="tchiboCatalog__title">
                 <a class="titleCat" href="<?= $catalogCategory->getLink() ?>">
                     <?= $catalogCategory->getName() ?>
                 </a>
@@ -71,9 +67,29 @@ if ((bool)$slideData) {
                 <? if ($categoryChildren): ?>
                     <ul class="tchiboCatalog__list">
                         <? foreach($categoryChildren as $child): ?>
-                        <li class="item">
+
+                        <?  // Шильдики NEW и дата действия коллекции
+
+                        $newCategory = false;
+                        $oldCategory = '';
+
+                        if (isset($catalogConfig['category_timing'])
+                            && is_array($catalogConfig['category_timing'])
+                            && in_array($child->getToken(), array_keys($catalogConfig['category_timing']))) {
+
+                                $catalogTiming = $catalogConfig['category_timing'][$child->getToken()];
+                                $until = strtotime($catalogTiming['until']);
+                                if (time() < $until) {
+                                    if ($catalogTiming['type'] == 'new') $newCategory = true;
+                                    if ($catalogTiming['type'] == 'old') $oldCategory = '<br /><span style="color: #e21f26; font-weight: bold">до '.$page->helper->monthDeclension(strftime('%e %B')).'</span>';
+                                }
+                        }
+                        // Шильдики NEW и дата действия коллекции
+                        ?>
+
+                        <li class="item <?= $newCategory ? 'new' : '' ?>">
                             <a class="link" href="<?= $child->getLink() ?>">
-                                <?= $child->getName() ?>
+                                <?= $child->getName().$oldCategory ?>
                             </a>
                         </li>
                         <? endforeach; ?>
@@ -82,6 +98,12 @@ if ((bool)$slideData) {
             </div>
         </div><? /* <!--/ категория --> */ ?>
     <? endforeach; ?>
+
+    <? if ($isCategoriesOddCount && isset($promoContent) && !empty($promoContent)): ?>
+        <div class="tchiboCatalogInner">
+            <?= $promoContent ?>
+        </div>
+    <? endif ?>
 
     <? if (!empty($bannerBottom)): ?>
     <div class="tchiboCatalogInnerBanner">

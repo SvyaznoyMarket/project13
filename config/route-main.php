@@ -489,6 +489,33 @@ return [
         'action'  => ['Cart\SumAction', 'execute'],
     ],
 
+    // оформление заказа: 1-й шаг - контактные данные
+    'orderV3' => [
+        'pattern' => '/order',
+        'action'  => ['OrderV3\NewAction', 'execute'],
+    ],
+    // оформление заказа: сохранение контактных данных
+    'orderV3.update.contact' => [
+        'pattern' => '/order-update-contact',
+        'action'  => ['OrderV3\UpdateContactAction', 'execute'],
+    ],
+    // оформление заказа: 2-й шаг - выбор доставки
+    'orderV3.delivery' => [
+        'pattern' => '/order-delivery',
+        'action'  => ['OrderV3\DeliveryAction', 'execute'],
+    ],
+    // оформление заказа: создание
+    'orderV3.create' => [
+        'pattern' => '/order-create',
+        'action'  => ['OrderV3\CreateAction', 'execute'],
+        'method'  => ['POST'],
+    ],
+    // оформление заказа: завершение, онлайн-оплата
+    'orderV3.complete' => [
+        'pattern' => '/order-complete',
+        'action'  => ['OrderV3\CompleteAction', 'execute'],
+    ],
+
     // заказ
     'order.1click' => [
         'pattern' => '/orders/1click',
@@ -621,16 +648,14 @@ return [
         'action' => ['Product\RecommendedAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
-    'product.similar' => [ /// executed SmartEngine or RetailRocker
+    'product.similar' => [
         'pattern' => '/ajax/product-similar/{productId}',
-        'action' => ['Product\SimilarAction', 'execute'],
-        //'action' => ['Product\SimilarAction', 'debug'], // just for debug
+        'action'  => ['Product\SimilarAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
-    'product.alsoViewed' => [ /// executed SmartEngine or RetailRocker
+    'product.alsoViewed' => [
         'pattern' => '/ajax/product-also-viewed/{productId}',
-        'action' => ['Product\AlsoViewedAction', 'execute'],
-        //'action' => ['Product\AlsoViewedAction', 'debug'], // just for debug
+        'action'  => ['Product\AlsoViewedAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
     'product.upsale' => [
@@ -643,23 +668,6 @@ return [
     'product/smartchoice' => [
         'pattern' => '/ajax/product-smartchoice',
         'action' => ['Product\SmartChoiceAction', 'execute'],
-    ],
-    /*
-    'smartengine.pull.product_similar' => [
-        'pattern' => '/product-similar/{productId}',
-        'action' => ['Smartengine\Action', 'pullProductSimilar'],
-        'require' => ['productId' => '\d+'],
-    ],
-    */
-    'smartengine.push.product_view' => [
-        'pattern' => '/product-view/{productId}',
-        'action' => ['Smartengine\Action', 'pushView'],
-        'require' => ['productId' => '\d+'],
-    ],
-    'smartengine.push.buy' => [
-        'pattern' => '/product-buy',
-        'action'  => ['Smartengine\Action', 'pushBuy'],
-        'method'  => ['POST'],
     ],
 
     // редактирование данных пользователя
