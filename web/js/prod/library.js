@@ -1978,8 +1978,8 @@ window.MapInterface = (function() {
 	console.log('utils.blackBox created.');
 
 	if ( dCook.hasItem(authorized_cookie) ) {
-		loadBlackBox = (1 == dCook.getItem(authorized_cookie)) ? true : false;
-
+//		loadBlackBox = (1 == dCook.getItem(authorized_cookie)) ? true : false;
+        loadBlackBox = true;
 		console.log('Authorized CookieItem is:');
 		console.log(dCook.getItem(authorized_cookie));
 		console.log(loadBlackBox);
