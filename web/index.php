@@ -144,6 +144,8 @@ $response = null;
                     $domain
                 );
             }
+
+            $response->headers->clearCookie('geoshop', '/', 'www.enter.ru');
         } catch (\Exception $e) {
             \App::logger()->error($e, ['response']);
         }
