@@ -57,6 +57,5 @@ return function(
     </div>
 </section>
 
-<?
-};
+<? };
 

@@ -1,7 +1,8 @@
 <?php
 
 return function(
-    \Helper\TemplateHelper $helper
+    \Helper\TemplateHelper $helper,
+    \Model\OrderDelivery\Entity $orderDelivery
 ) {
 
 ?>
