@@ -217,13 +217,6 @@ window.ANALYTICS = {
 		})();
 	},
 
-	yaParamsJS: function () {
-		var yap = $('#yaParamsJS').data('vars');
-		if ( yap ) {
-			window.yaParams = yap;
-		}
-	},
-
     // enterleadsJS : function() { // SITE-1911
     //     (function () {
     //         try {

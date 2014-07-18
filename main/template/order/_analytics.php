@@ -42,7 +42,7 @@ if (\App::config()->analytics['enabled']):
     }
 
 ?>
-    <div id="yaParamsJS" data-vars="<?= $page->json($yaParams) ?>" class="jsanalytics"></div>
+    <div id="yaParamsJS" data-value="<?= $page->json($yaParams) ?>" class="jsanalytics"></div>
 <? /* ?>
 <script type="text/javascript">
     var yaParams =
