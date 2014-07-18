@@ -129,9 +129,8 @@ $response = null;
                     $sessionParams['path'],
                     $domain
                 );
-
-                //$response->headers->clearCookie(\App::config()->region['cookieName'], '/', $domain);
             }
+            $response->headers->clearCookie(\App::config()->region['cookieName'], '/');
         } catch (\Exception $e) {
             \App::logger()->error($e, ['response']);
         }
