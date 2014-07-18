@@ -123,15 +123,15 @@ $response = null;
         try {
             $sessionParams = session_get_cookie_params();
 
-            foreach ([\App::config()->mainHost, \App::config()->mobileHost, 'enter.ru'] as $domain) {
+            foreach ([\App::config()->mainHost, \App::config()->mobileHost] as $domain) {
                 $response->headers->removeCookie(
                     \App::session()->getName(),
                     $sessionParams['path'],
                     $domain
                 );
-            }
 
-            $response->headers->clearCookie(\App::config()->region['cookieName'], '/', \App::config()->mainHost);
+                $response->headers->clearCookie(\App::config()->region['cookieName'], '/', $domain);
+            }
         } catch (\Exception $e) {
             \App::logger()->error($e, ['response']);
         }
