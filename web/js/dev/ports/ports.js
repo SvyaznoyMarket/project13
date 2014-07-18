@@ -1835,7 +1835,7 @@ window.ANALYTICS = {
 		var
 			flocktoryExchange = $('#flocktoryExchangeJS'),
 			data = flocktoryExchange.data('value'),
-			_flocktory = window._flocktory = _flocktory || [];
+			_flocktory = window._flocktory || [];
 		// end of vars
 
 		if ( !flocktoryExchange.length || undefined == typeof(data) ) {
