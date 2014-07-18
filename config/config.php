@@ -23,13 +23,12 @@ $c->logger['pretty'] = false;
 $c->appName = 'Enter';
 $c->authToken['name']     = '_token';
 $c->authToken['authorized_cookie'] = '_authorized';
-$c->sessionToken = 'enter'; // TODO: удалить?
 
 $c->session['name']            = 'enter';
 $c->session['cookie_lifetime'] = 15552000;
 $c->session['cookie_domain'] = '.enter.ru';
 
-$c->cacheCookieName = 'enter_auth';
+$c->cacheCookieName = 'enter_auth'; //TODO: удалить
 
 $c->mainHost = 'www.enter.ru';
 $c->mobileHost = 'm.enter.ru';
@@ -366,6 +365,7 @@ $c->order['cookieName'] = 'last_order';
 $c->order['sessionName'] = 'lastOrder';
 $c->order['enableMetaTag'] = true;
 $c->order['maxSumOnline'] = 15000;
+$c->order['maxSumOnlinePaypal'] = 5000;
 $c->order['excludedError'] = [705, 708, 735, 759, 800];
 $c->order['addressAutocomplete'] = true;
 // предоплата (SITE-2959)

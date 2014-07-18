@@ -80,7 +80,7 @@ class Abtest {
                 'default',
                 time() + 10,//\App::config()->abtest['checkPeriod'],
                 '/',
-                null,
+                \App::config()->session['cookie_domain'],
                 false,
                 false // важно httpOnly=false, чтобы js мог получить куку
             );
@@ -92,7 +92,7 @@ class Abtest {
                 $case->getKey(),
                 strtotime($this->config['bestBefore']),
                 '/',
-                null,
+                \App::config()->session['cookie_domain'],
                 false,
                 false // важно httpOnly=false, чтобы js мог получить куку
             );
