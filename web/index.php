@@ -131,7 +131,7 @@ $response = null;
                 );
             }
 
-            $response->headers->clearCookie('geoshop', '/', 'www.enter.ru');
+            $response->headers->clearCookie('geoshop', '/', \App::config()->mainHost);
         } catch (\Exception $e) {
             \App::logger()->error($e, ['response']);
         }
