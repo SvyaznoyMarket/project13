@@ -131,7 +131,7 @@ $response = null;
                 );
             }
 
-            $response->headers->clearCookie('geoshop', '/', \App::config()->mainHost);
+            $response->headers->clearCookie(\App::config()->region['cookieName'], '/', \App::config()->mainHost);
         } catch (\Exception $e) {
             \App::logger()->error($e, ['response']);
         }
