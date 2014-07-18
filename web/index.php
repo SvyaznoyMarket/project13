@@ -130,7 +130,7 @@ $response = null;
                     $domain
                 );
 
-                $response->headers->clearCookie(\App::config()->region['cookieName'], '/', $domain);
+                //$response->headers->clearCookie(\App::config()->region['cookieName'], '/', $domain);
             }
         } catch (\Exception $e) {
             \App::logger()->error($e, ['response']);
