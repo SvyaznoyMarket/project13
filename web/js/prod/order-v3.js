@@ -1,0 +1,10 @@
+(function($) {
+
+
+
+})(jQuery);
+(function() {
+    $LAB.script('//api-maps.yandex.ru/2.1/?lang=ru_RU').wait(function() {
+        ymaps.ready(init);
+    });
+})();
