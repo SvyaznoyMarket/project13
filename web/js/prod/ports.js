@@ -1741,7 +1741,7 @@ window.ANALYTICS = {
 			window.JSREObject.q = window.JSREObject.q || [];
 			window.JSREObject.l = +new Date;
 			JSREObject('create', data.lamodaID, 'r24-tech.com');
-			$.getScript("//r24-tech.com/static/dsp/min/js/jsre-min.js");
+			$.getScript("//jsre.r24-tech.com/static/dsp/min/js/jsre-min.js");
 		})();
 	},
 
