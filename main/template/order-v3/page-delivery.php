@@ -82,35 +82,57 @@ return function(
             <!-- дата доставки -->
             <div class="orderCol_delivrIn clearfix">
                 <!--<div class="orderCol_date">15 сентября 2014, воскресенье</div>-->
-                <? if ($order->delivery && $order->delivery->date): ?>
+                <? if ($order->delivery->date): ?>
                     <div class="orderCol_date"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2 %G, %A', $order->delivery->date)) ?></div>
                 <? endif ?>
                 <span class="orderChange">изменить дату</span>
+
+                <?= $helper->render('order-v3/__calendar', ['timestamps' => $order->possible_days, 'timestamp' => $order->delivery->date]) ?>
             </div>
             <!--/ дата доставки -->
 
             <!-- способ доставки -->
-            <? if ($order->delivery && !$order->delivery->use_user_address): ?>
+            <? if (!$order->delivery->use_user_address): ?>
                 <? $point = $order->delivery->point ? $orderDelivery->points[$order->delivery->point->token]->list[$order->delivery->point->id] : null ?>
 
-            <div class="orderCol_delivrIn orderCol_delivrIn-pl">
-                <div class="orderCol_delivrIn_t clearfix">
-                    <strong><?= $orderDelivery->points[$order->delivery->point->token]->block_name ?></strong>
+                <div class="orderCol_delivrIn orderCol_delivrIn-pl">
+                    <div class="orderCol_delivrIn_t clearfix">
+                        <strong><?= $orderDelivery->points[$order->delivery->point->token]->block_name ?></strong>
 
-                    <span class="orderChange">изменить место</span>
+                        <span class="orderChange">изменить место</span>
+                    </div>
+
+                    <div class="orderCol_addrs"<? if (isset($point->subway[0]->line)): ?> style="background: <?= $point->subway[0]->line->color ?>;"<? endif ?>>
+                        <span class="orderCol_addrs_tx">
+                            <? if (isset($point->subway[0])): ?><?= $point->subway[0]->name ?><br/><? endif ?>
+                            <span class="colorBrightGrey"><?= $point->address ?></span>
+                        </span>
+                    </div>
+
+                    <div class="orderCol_tm">
+                        <? if ($point->regtime): ?><span class="orderCol_tm_t">Режим работы:</span> <?= $point->regtime ?><? endif ?>
+                    </div>
+                </div>
+            <? else: ?>
+                <div class="orderCol_delivrIn">
+                    <div class="orderCol_delivrIn_t clearfix">
+                        <strong>Адрес</strong> <span class="colorBrightGrey">для всех заказов с доставкой</span>
+                        <span class="orderChange">изменить место</span>
+                    </div>
+
+                    <div class="orderCol_addrs">
+                        <input class="orderCol_addrs_fld textfield" type="text" name="" value="" placeholder="" />
+                        <!--ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2-->
+                    </div>
                 </div>
 
-                <div class="orderCol_addrs"<? if (isset($point->subway[0]->line)): ?> style="background: <?= $point->subway[0]->line->color ?>;"<? endif ?>>
-                    <span class="orderCol_addrs_tx">
-                        <? if (isset($point->subway[0])): ?><?= $point->subway[0]->name ?><br/><? endif ?>
-                        <span class="colorBrightGrey"><?= $point->address ?></span>
-                    </span>
+                <div class="orderCheck mb10">
+                    <input type="checkbox" class="customInput customInput-checkbox" id="creditCardsPay" name="" value="" />
+                    <label  class="customLabel" for="creditCardsPay">
+                        Оплата банковской картой
+                        <span class="dblock colorBrightGrey s">Иначе курьер сможет принять только наличные</span>
+                    </label>
                 </div>
-
-                <div class="orderCol_tm">
-                    <? if ($point->regtime): ?><span class="orderCol_tm_t">Режим работы:</span> <?= $point->regtime ?><? endif ?>
-                </div>
-            </div>
             <? endif ?>
             <!--/ способ доставки -->
         </div>

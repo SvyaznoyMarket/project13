@@ -12,8 +12,8 @@ class DeliveryAction {
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        //$orderDelivery = new \Model\OrderDelivery\Entity(json_decode(file_get_contents(\App::config()->dataDir . '/data-store/cart-split.json'), true)['result']);
-        $orderDelivery = new \Model\OrderDelivery\Entity(\App::curl()->query('http://cms.enter.ru/mock/v2-cart-split.json'));
+        $orderDelivery = new \Model\OrderDelivery\Entity(json_decode(file_get_contents(\App::config()->dataDir . '/data-store/cart-split.json'), true)['result']);
+        //$orderDelivery = new \Model\OrderDelivery\Entity(\App::curl()->query('http://cms.enter.ru/mock/v2-cart-split.json'));
         if (!$orderDelivery) {
             throw new \Exception('Нет данных для разбиения заказа');
         }
