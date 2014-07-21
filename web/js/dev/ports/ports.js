@@ -1920,6 +1920,120 @@ window.ANALYTICS = {
 		window.rbnt_rt_params = data.page;
 	},
 
+	flocktoryEnterprizeJS: function() {
+		console.groupCollapsed('ports.js::flocktoryEnterprizeJS');
+
+		this.flocktoryAddScript();
+
+		var
+			data = {
+				name: "",
+				email: "",
+				sex: "",
+				action: "precheckout",
+				spot: "popup_enterprize"
+			},
+			flocktoryEnterprize = {
+				/**
+				 * подставляем данные с get-параметров
+				 */
+				fillDataFromParams: function() {
+					var urlParams = getUrlParams();
+
+					if ( typeof urlParams === "undefined" ) {
+						return;
+					}
+
+					if ( typeof urlParams['name'] !== "undefined" )		data.name = urlParams['name'];
+					if ( typeof urlParams['email'] !== "undefined" )	data.email = urlParams['email'];
+					if ( typeof urlParams['sex'] !== "undefined" )		data.sex = urlParams['sex'];
+
+					return;
+				},
+
+				init: function() {
+					var needUserInfoData = false;
+
+					flocktoryEnterprize.fillDataFromParams();
+
+					if ( data.name == "" || data.email == "" || data.sex == "" ) {
+						needUserInfoData = true;
+					}
+
+					if ( ENTER.config.userInfo === false || needUserInfoData === false ) {
+						flocktoryEnterprize.action();
+					}
+					else if ( !ENTER.config.userInfo ) {
+						$("body").on("userLogged", function() {flocktoryEnterprize.action(ENTER.config.userInfo)} );
+					}
+					else {
+						// событие уже прошло
+						console.warn(ENTER.config.userInfo);
+						flocktoryEnterprize.action(ENTER.config.userInfo);
+					}
+				},
+
+				action: function(userInfo) {
+					if ( userInfo && userInfo.id ) {
+						if ( data.name == "" )	data.name = userInfo.name;
+						if ( data.email == "" )	data.email = userInfo.email;
+						if ( data.sex == "" )	data.sex = (1 == userInfo.sex) ? "m" : ( 2 == userInfo.sex ? "f" : "" );
+					}
+
+					// первый блок
+					$('<div/>', {
+						"class": "i-flocktory",
+						"data-fl-user-name": data.name,
+						"data-fl-user-email": data.email,
+						"data-fl-user-sex": data.sex
+					}).appendTo('#flocktoryEnterprizeJS');
+
+					// второй блок
+					$('<div/>', {
+						"class": "i-flocktory",
+						"data-fl-action": data.action,
+						"data-fl-spot": data.spot
+					}).appendTo('#flocktoryEnterprizeJS');
+				}
+			};
+		// end of vars
+
+		var
+			/**
+			 * Получение get параметров текущей страницы
+			 */
+			getUrlParams = function () {
+				var $_GET = {},
+					__GET = window.location.search.substring(1).split('&'),
+					getVar,
+					i;
+				// end of vars
+
+				for ( i = 0; i < __GET.length; i++ ) {
+					getVar = __GET[i].split('=');
+					$_GET[getVar[0]] = typeof(getVar[1]) == 'undefined' ? '' : getVar[1];
+				}
+
+				return $_GET;
+			};
+		// end of functions
+
+		flocktoryEnterprize.init();
+
+		console.groupEnd();
+	},
+
+	flocktoryEnterprizeFormJS: function() {
+		this.flocktoryAddScript();
+
+		var s = document.createElement('script');
+		s.type = 'text/javascript';
+		s.async = true;
+		s.src = "//api.flocktory.com/v2/loader.js?1401=";
+		var l = document.getElementsByTagName('script')[0];
+		l.parentNode.insertBefore(s, l);
+	},
+
 	enable : true
 }
 
