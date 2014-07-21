@@ -36,12 +36,12 @@ namespace Model\OrderDelivery {
                 foreach ($data['points'] as $itemToken => $item) {
                     $item['token'] = $itemToken;
 
-                    $this->points[] = new Entity\Point($item);
+                    $this->points[$item['token']] = new Entity\Point($item);
                 }
             }
             if (isset($data['orders']) && is_array($data['orders'])) {
                 foreach ($data['orders'] as $item) {
-                    $this->orders[] = new Entity\Order($item);
+                    $this->orders[] = new Entity\Order($item, $this);
                 }
             }
             if (isset($data['payment_methods']) && is_array($data['payment_methods'])) {
@@ -124,7 +124,7 @@ namespace Model\OrderDelivery\Entity {
     class Order {
         /** @var string */
         public $block_name;
-        /** @var string */
+        /** @var Order\Seller|null */
         public $seller;
         /** @var Order\Product[] */
         public $products = [];
@@ -133,11 +133,15 @@ namespace Model\OrderDelivery\Entity {
         /** @var Order\Delivery|null */
         public $delivery;
         /** @var string|null */
+        public $delivery_group_id;
+        /** @var string|null */
         public $payment_method_id;
         /** @var array */
         public $payment_methods = [];
         /** @var array */
         public $possible_deliveries = [];
+        /** @var array */
+        public $possible_delivery_groups = [];
         /** @var array */
         public $possible_payment_methods = [];
         /** @var array */
@@ -147,7 +151,9 @@ namespace Model\OrderDelivery\Entity {
         /** @var int */
         public $total_cost;
 
-        public function __construct(array $data = []) {
+        public function __construct(array $data = [], \Model\OrderDelivery\Entity $orderDelivery = null) {
+            if (isset($data['block_name'])) $this->block_name = (string)$data['block_name'];
+            if (isset($data['seller']['name'])) $this->seller = new Order\Seller($data['seller']);
             if (isset($data['products']) && is_array($data['products'])) {
                 foreach ($data['products'] as $item) {
                     $this->products[] = new Order\Product($item);
@@ -165,6 +171,29 @@ namespace Model\OrderDelivery\Entity {
             if (isset($data['possible_days']) && is_array($data['possible_days'])) $this->possible_days = (array)$data['possible_days'];
             if (isset($data['possible_intervals']) && is_array($data['possible_intervals'])) $this->possible_intervals = (array)$data['possible_intervals'];
             if (isset($data['total_cost'])) $this->total_cost = (int)$data['total_cost'];
+
+            foreach ($this->possible_deliveries as $deliveryMethodId) {
+                /** @var \Model\OrderDelivery\Entity\DeliveryMethod|null $deliveryMethod */
+                $deliveryMethod = ($orderDelivery && !empty($orderDelivery->delivery_methods[$deliveryMethodId]))
+                    ? $orderDelivery->delivery_methods[$deliveryMethodId]
+                    : null
+                ;
+                $deliveryGroup = ($deliveryMethod && !empty($orderDelivery->delivery_groups[$deliveryMethod->group_id]))
+                    ? $orderDelivery->delivery_groups[$deliveryMethod->group_id]
+                    : null
+                ;
+                if (!$deliveryGroup) {
+                    \App::logger()->error(['message' => 'Не найдена группа доставки'], ['order-split']);
+                    continue;
+                }
+
+                $this->possible_delivery_groups[] = $deliveryGroup->id;
+
+                if ($this->delivery && ($deliveryMethod->token == $this->delivery->delivery_method_token)) {
+                    $this->delivery_group_id = $deliveryGroup->id;
+                }
+            }
+            $this->possible_delivery_groups = array_unique($this->possible_delivery_groups);
         }
     }
 
@@ -196,6 +225,32 @@ namespace Model\OrderDelivery\Entity {
             'build'  => null,
         ];
     }
+
+    class Subway {
+        /** @var string */
+        public $name;
+        /** @var string */
+        public $line;
+
+        public function __construct(array $data = []) {
+            if (isset($data['name'])) $this->name = (string)$data['name'];
+            if (isset($data['line']['name'])) $this->line = new Subway\Line($data['line']);
+        }
+    }
+}
+
+namespace Model\OrderDelivery\Entity\Subway {
+    class Line {
+        /** @var string */
+        public $name;
+        /** @var string */
+        public $color;
+
+        public function __construct(array $data = []) {
+            if (isset($data['name'])) $this->name = (string)$data['name'];
+            if (isset($data['color'])) $this->color = (string)$data['color'];
+        }
+    }
 }
 
 namespace Model\OrderDelivery\Entity\Point {
@@ -212,6 +267,8 @@ namespace Model\OrderDelivery\Entity\Point {
         public $latitude;
         /** @var float */
         public $longitude;
+        /** @var \Model\OrderDelivery\Entity\Subway[] */
+        public $subway = [];
 
         public function __construct(array $data = []) {
             if (isset($data['id'])) $this->id = (string)$data['id'];
@@ -220,6 +277,11 @@ namespace Model\OrderDelivery\Entity\Point {
             if (isset($data['regtime'])) $this->regtime = (string)$data['regtime'];
             if (isset($data['latitude'])) $this->latitude = (float)$data['latitude'];
             if (isset($data['longitude'])) $this->longitude = (float)$data['longitude'];
+            if (isset($data['subway']) && is_array($data['subway'])) {
+                foreach ($data['subway'] as $item) {
+                    $this->subway[] = new \Model\OrderDelivery\Entity\Subway($item);
+                }
+            }
         }
     }
 
@@ -255,11 +317,24 @@ namespace Model\OrderDelivery\Entity\Point {
 }
 
 namespace Model\OrderDelivery\Entity\Order {
+    class Seller {
+        /** @var string */
+        public $name;
+
+        public function __construct(array $data = []) {
+            if (isset($data['name'])) $this->name = (string)$data['name'];
+        }
+    }
+
     class Product {
         /** @var string */
         public $id;
         /** @var string */
         public $name;
+        /** @var string */
+        public $prefix;
+        /** @var string */
+        public $name_web;
         /** @var int */
         public $price;
         /** @var int */
@@ -274,6 +349,8 @@ namespace Model\OrderDelivery\Entity\Order {
         public function __construct(array $data = []) {
             if (isset($data['id'])) $this->id = (string)$data['id'];
             if (isset($data['name'])) $this->name = (string)$data['name'];
+            if (isset($data['name_web'])) $this->name_web = (string)$data['name_web'];
+            if (isset($data['prefix'])) $this->prefix = (string)$data['prefix'];
             if (isset($data['price'])) $this->price = (int)$data['price'];
             if (isset($data['original_price'])) $this->original_price = (int)$data['original_price'];
             if (isset($data['sum'])) $this->sum = (int)$data['sum'];
@@ -307,7 +384,7 @@ namespace Model\OrderDelivery\Entity\Order {
         public $point;
         /** @var int */
         public $price;
-        /** @var \DateTime */
+        /** @var int */
         public $date;
         /** @var array|null */
         public $interval;
@@ -318,11 +395,7 @@ namespace Model\OrderDelivery\Entity\Order {
             if (isset($data['delivery_method_token'])) $this->delivery_method_token = (string)$data['delivery_method_token'];
             if (isset($data['point']['id'])) $this->point = new Delivery\Point($data['point']);
             if (isset($data['price'])) $this->price = (int)$data['price'];
-            if (isset($data['date'])) {
-                try {
-                    $this->date = (new \DateTime())->setTimestamp($data['date']);
-                } catch (\Exception $e) {}
-            }
+            if (isset($data['date'])) $this->date = (int)$data['date'];
             if (isset($data['interval']) && is_array($data['interval'])) $this->interval = array_merge(['from' => null, 'to' => null], $data['interval']);
             if (isset($data['use_user_address'])) $this->use_user_address = (bool)$data['use_user_address'];
         }

@@ -44,7 +44,16 @@
                         "address": "ул. Орджоникидзе, д. 11, стр. 10",
                         "regtime": "с 9.00 до 21.00",
                         "latitude": 55.706488,
-                        "longitude": 37.596997
+                        "longitude": 37.596997,
+                        "subway": [
+                            {
+                                "name": "Ленинский проспект",
+                                "line": {
+                                    "name": "Калужско-Рижская",
+                                    "color": "#FBAA33"
+                                }
+                            }
+                        ]
                     },
                     "3": {
                         "id": "3",
@@ -52,7 +61,10 @@
                         "address": "ул. Б. Дорогомиловская, д. 8",
                         "regtime": "с 9.00 до 22.00",
                         "latitude": 55.746197,
-                        "longitude": 37.565389
+                        "longitude": 37.565389,
+                        "subway": [
+                            {"name": "Киевская"}
+                        ]
                     },
                     "13": {
                         "id": "13",
@@ -60,14 +72,20 @@
                         "address": "Волгоградский пр-т, д. 119а.",
                         "regtime": "с 9.00 до 22.00",
                         "latitude": 55.706279,
-                        "longitude": 37.765371
+                        "longitude": 37.765371,
+                        "subway": [
+                            {"name": "Кузьминки"}
+                        ]
                     },
                     "14": {
                         "name": "м. Сходненская, Химкинский бульвар, д. 16, корп. 1.",
                         "address": "Химкинский бульвар, д. 16, корп. 1.",
                         "regtime": "с 9.00 до 22.00",
                         "latitude": 55.851993,
-                        "longitude": 37.442905
+                        "longitude": 37.442905,
+                        "subway": [
+                            {"name": "Сходненская"}
+                        ]
                     },
                     "69": {
                         "id": "69",
@@ -75,7 +93,10 @@
                         "address": "Ленинградский пр-кт, д. 78",
                         "regtime": "с 9.00 до 22.00",
                         "latitude": 55.806052,
-                        "longitude": 37.513107
+                        "longitude": 37.513107,
+                        "subway": [
+                            {"name": "Сокол"}
+                        ]
                     },
                     "162": {
                         "id": "162",
@@ -83,7 +104,10 @@
                         "address": "ул. Линии Октябрьской Железной Дороги, д. 1, с. 2",
                         "regtime": "с 9.30 до 20.30",
                         "latitude": 55.8375,
-                        "longitude": 37.572477
+                        "longitude": 37.572477,
+                        "subway": [
+                            {"name": "Петровско-Разумовская"}
+                        ]
                     }
                 },
                 "action_name": "Забрать из этого магазина",
@@ -129,13 +153,15 @@
         "orders": {
             "block_name_1": {
                 "block_name": "block_name_1",
-                "seller": "ООО «Связной»",
+                "seller": {
+                    "name": "ООО «Связной»"
+                },
                 "products": [
                     {
                         "id": "152090",
                         "name": "Ролики MaxCityLego, размер 29-32, красный",
-                        "namePrefix": "Ролики",
-                        "webName": "MaxCityLego, размер 29-32, красный",
+                        "prefix": "Ролики",
+                        "name_web": "MaxCityLego, размер 29-32, красный",
                         "price": 1790,
                         "original_price": 2600,
                         "sum": 1790,
@@ -147,8 +173,8 @@
                     {
                         "id": "137634",
                         "name": "Мужские трусы Tchibo, в клетку, 2 шт. ",
-                        "namePrefix": "Мужские трусы",
-                        "webName": "Tchibo, в клетку, 2 шт.",
+                        "prefix": "Мужские трусы",
+                        "name_web": "Tchibo, в клетку, 2 шт.",
                         "price": 599,
                         "sum": 599,
                         "quantity": 1,
@@ -173,7 +199,7 @@
                         "possible_point_ids": ["2", "3", "13", "69"]
                     },
                     "price": 0,
-                    "date": 1406016376000,
+                    "date": 1405934739,
                     "interval": {
                         "from": "16:00",
                         "to": "21:00"
@@ -186,7 +212,7 @@
                     "now",
                     "standart"
                 ],
-                "possible_days": [1406016376000],
+                "possible_days": [1405934739, 1406021322, 1406107737],
                 "possible_payment_methods": ["1", "2"],
                 "possible_intervals": [
                     {
@@ -202,13 +228,15 @@
             },
             "block_name_2": {
                 "block_name": "block_name_2",
-                "seller": "ООО «Связной»",
+                "seller": {
+                    "name": "ООО «Связной»"
+                },
                 "products": [
                     {
                         "id": "45422",
                         "name": "Диван-кровать Anzoli Unico Comfort Size",
-                        "namePrefix": "Диван-кровать",
-                        "webName": "Anzoli Unico Comfort Size",
+                        "prefix": "Диван-кровать",
+                        "name_web": "Anzoli Unico Comfort Size",
                         "price": 18990,
                         "sum": 18990,
                         "quantity": 1,
@@ -221,7 +249,7 @@
                 "delivery": {
                     "delivery_method_token": "standart",
                     "price": 500,
-                    "date": 1406016376000,
+                    "date": 1407144482,
                     "interval": {
                         "from": "16:00",
                         "to": "21:00"
@@ -232,7 +260,7 @@
                 "possible_deliveries": [
                     "standart"
                 ],
-                "possible_days": [1405669777000],
+                "possible_days": [1407144482, 1407230951],
                 "possible_payment_methods": ["1", "2"],
                 "possible_intervals": [
                     {
