@@ -117,7 +117,7 @@ class IndexAction {
 
         $categoriesTchibo = array_filter($categoryTree, function ($cat) use ($categoryToken) { return $cat['token'] === $categoryToken; } );
 
-        if (!(bool) $categoriesTchibo || $categoriesTchibo[0]['product_count'] == 0) {
+        if (!(bool) $categoriesTchibo || $categoriesTchibo[0]['product_count'] == 0 && \App::config()->preview !== true) {
             return new \Http\RedirectResponse(\App::router()->generate('tchibo.where_buy'));
         }
 
