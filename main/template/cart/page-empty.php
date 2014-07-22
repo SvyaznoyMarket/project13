@@ -9,5 +9,5 @@
 		</li>
 	</ul>
 
-	<div class="cart_ep"><a href="/enterprize?from=enterprize-cart-banner" title=""><img src="/css/bEmptyCart/img/ep.jpg" alt="" /></a></div>
+	<div class="cart_ep"><a href="/enterprize" title=""><img src="/css/bEmptyCart/img/ep.jpg" alt="" /></a></div>
 </div>
