@@ -6,7 +6,8 @@ return function(
     array $promoStyle = [],
     array $relatedCategories = [],
     array $categoryConfigById = [],
-    \Iterator\EntityPager $productPager = null
+    \Iterator\EntityPager $productPager = null,
+    $category_class = null
 ) {
 
     $links = [];
@@ -17,10 +18,12 @@ return function(
     }
 
     foreach ($categories as $child) {
+        $image_size = 'furniture' === $category_class ? 3 : 0;
+
         $link = [
             'name'   => $child->getName(),
             'url'    => $child->getLink(),
-            'image'  => $child->getImageUrl(),
+            'image'  => $child->getImageUrl($image_size),
             'active' => false,
             'css'    => null,
         ];
@@ -48,7 +51,7 @@ return function(
     }
 ?>
 
-    <?= $helper->renderWithMustache('product-category/_listInFilter', [
+    <?= $helper->renderWithMustache(('furniture' === $category_class ? 'furniture/' : '') . 'product-category/_listInFilter', [
         'links' => $links,
         'promoStyle' => !empty($promoStyle) ? $promoStyle : '',
     ]) ?>
