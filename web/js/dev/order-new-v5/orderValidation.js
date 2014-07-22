@@ -209,9 +209,6 @@
 				_gaq.push(['_trackTiming', 'Order complete', 'DB response', ajaxDelta]);
 			}
 
-			if ( typeof window.yaCounter10503055 !== 'undefined' ) {
-				window.yaCounter10503055.reachGoal('\\orders\\complete');
-			}
             $(document.body).trigger('trackUserAction', ['9 Завершение - успех']);
 		},
 

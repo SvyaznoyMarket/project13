@@ -41,26 +41,30 @@ window.ANALYTICS = {
 			'&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border="0" width="1" height="1" alt="" />');
 	},
 	
-	// yandexMetrika : function() {
-	//     (function (d, w, c) {
-	//         (w[c] = w[c] || []).push(function() {
-	//             try {
-	//             w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true, webvisor:true});
-	//             } catch(e) {}
-	//         });
-
-	//         var n = d.getElementsByTagName("script")[0],
-	//         s = d.createElement("script"),
-	//         f = function () { n.parentNode.insertBefore(s, n); };
-	//         s.type = "text/javascript";
-	//         s.async = true;
-	//         s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
-
-	//         if (w.opera == "[object Opera]") {
-	//             d.addEventListener("DOMContentLoaded", f);
-	//         } else { f(); }
-	//     })(document, window, "yandex_metrika_callbacks");
-	// },
+	yandexOrderComplete: function() {
+        try {
+            var orderData = $('#jsOrder').data('value');
+            if (typeof window.yandexCounter == 'undefined' || orderData == undefined) return;
+            $.each(orderData.orders, function (index, order) {
+                window.yandexCounter.reachGoal('ORDERCOMPLETE', {
+                    order_id: order.number,
+                    order_price: order.sum,
+                    currency: "RUR",
+                    goods: $.map(order.products, function (product) {
+                        return {
+                            id: product.id,
+                            name: product.name,
+                            price: product.price,
+                            quantity: product.quantity
+                        }
+                    })
+                })
+            });
+            console.info('yandexOrderComplete reachGoal successfully sended');
+        } catch (e) {
+            console.error('yandexOrderComplete error', e);
+        }
+    },
 
 	LiveTexJS: function () {
 		console.group('ports.js::LiveTexJS log');
@@ -215,13 +219,6 @@ window.ANALYTICS = {
 			s.defer = true;
 			x.parentNode.insertBefore(s, x);
 		})();
-	},
-
-	yaParamsJS: function () {
-		var yap = $('#yaParamsJS').data('vars');
-		if ( yap ) {
-			window.yaParams = yap;
-		}
 	},
 
     // enterleadsJS : function() { // SITE-1911
@@ -1845,7 +1842,7 @@ window.ANALYTICS = {
 		var
 			flocktoryExchange = $('#flocktoryExchangeJS'),
 			data = flocktoryExchange.data('value'),
-			_flocktory = window._flocktory = _flocktory || [];
+			_flocktory = window._flocktory || [];
 		// end of vars
 
 		if ( !flocktoryExchange.length || undefined == typeof(data) ) {

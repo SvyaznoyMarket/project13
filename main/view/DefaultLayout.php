@@ -239,7 +239,12 @@ class DefaultLayout extends Layout {
     }
 
     public function slotYandexMetrika() {
-        return (\App::config()->yandexMetrika['enabled']) ? $this->render('_yandexMetrika') : '';
+
+        if (\App::config()->yandexMetrika['enabled']) {
+            // загрузка основного или тестового счетчика
+            return in_array(\App::config()->mainHost, ['www.enter.ru', 'm.enter.ru']) ? $this->render('_yandexMetrika') : $this->render('_yandexMetrikaTest');
+        }
+
     }
 
     public function slotMetaOg() {

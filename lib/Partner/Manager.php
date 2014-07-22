@@ -35,25 +35,25 @@ class Manager {
             $cookie = null;
             $lastPartner = null;
 
-            $paidSources = \App::dataStoreClient()->query('partner/paid-source.json');
-            $freeHosts = \App::dataStoreClient()->query('partner/free-host.json');
-
-            if (!is_array($paidSources) || !is_array($freeHosts)) {
-                throw new \Exception('Ошибка получения данных для партнеров из GIT CMS');
-            }
-
             $referer = parse_url($request->server->get('HTTP_REFERER'));
             $refererHost = $referer && !empty($referer['host']) ? $referer['host'] : null;
 
             // ОСНОВНАЯ ЛОГИКА
-            if ($refererHost && strpos($refererHost, 'enter.ru') === false) {
+            if ($refererHost && !preg_match('/ent(er|3)\.(ru|loc)/', $refererHost)) {
+
+                $paidSources = \App::dataStoreClient()->query('partner/paid-source.json');
+                $freeHosts = \App::dataStoreClient()->query('partner/free-host.json');
+
+                if (!is_array($paidSources) || !is_array($freeHosts)) {
+                    throw new \Exception('Ошибка получения данных для партнеров из GIT CMS');
+                }
 
                 // Платные партнеры
                 foreach ($paidSources as $nameSource => $sourceOptions) {
 
                     $matchesCount = 0;
 
-                    if (!isset($sourceOptions['match']) || !is_array($sourceOptions['match']) || !isset($referer['query'])) continue;
+                    if (!isset($sourceOptions['match']) || !is_array($sourceOptions['match'])) continue;
 
                     foreach ($sourceOptions['match'] as $matchKey => $matchValue) {
                         if ($matchValue !== null && $request->query->get($matchKey) == $matchValue) {

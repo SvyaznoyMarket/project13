@@ -4,8 +4,13 @@
     (function (d, w, c) {
         (w[c] = w[c] || []).push(function() {
             try {
-                w.yaCounter10503055 = new Ya.Metrika(
-                        {id:10503055, webvisor:false, clickmap:true, trackLinks:true, accurateTrackBounce:true}
+                w.yandexCounter = new Ya.Metrika( {
+                        id: 10503055,
+                        webvisor: false,
+                        clickmap: true,
+                        trackLinks: true,
+                        accurateTrackBounce: true
+                    }
                 );
             } catch(e) { }
         });

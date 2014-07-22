@@ -52,7 +52,7 @@ class FormAction {
             $enterpizeCoupon = $repository->getEntityByToken($enterprizeToken);
 
             if ($enterpizeCoupon) {
-                $products = $this->getProducts($enterpizeCoupon);
+                $products = self::getProducts($enterpizeCoupon);
             }
         }
 
