@@ -3,24 +3,62 @@
 namespace Controller\User;
 
 class EditAction {
+
+    private $client;
+    private $user;
+    private $session;
+
     public function __construct() {
         if (!\App::user()->getToken()) {
             throw new \Exception\AccessDeniedException();
         }
+        $this->client = \App::coreClientV2();
+        $this->user = \App::user()->getEntity();
+        $this->session = \App::session();
     }
 
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $session = \App::session();
-        $client = \App::coreClientV2();
-        $userEntity = \App::user()->getEntity();
+        if ($request->isMethod('post')) {
+            try {
+                $this->setData($request);
+                $this->session->flash(['type' => 'success', 'message' => 'Ваш профиль обновлён']);
+            } catch (\Curl\Exception $e) {
+                \App::logger()->error($e, ['error', 'curl']);
+                \App::exception()->remove($e);
+                $this->session->flash(['type' => 'error', 'message' => 'Не удалось сохранить данные: '.$e->getMessage()]);
+            } catch (\Exception $e) {
+                \App::logger()->error($e, ['error']);
+                $this->session->flash(['type' => 'error', 'message' => 'Не удалось сохранить данные: '.$e->getMessage()]);
+            }
+            return new \Http\RedirectResponse(\App::router()->generate('user.edit'));
+        }
+
+        if ($request->isXmlHttpRequest()) {
+            return new \Http\JsonResponse([
+                'data' => $this->getData($request)
+            ]);
+        }
+
+        $data = $this->getData($request);
+
+        $page = new \View\User\EditPage();
+        $page->setParam('form', $data['form']);
+        $page->setParam('flash', $this->session->flash());
+        $page->setParam('redirect', $data['redirect']);
+        $page->setParam('bonusCards', $data['bonusCards']);
+
+        return new \Http\Response($page->show());
+    }
+
+    private function getData(\Http\Request $request) {
 
         $form = new \View\User\EditForm();
-        $form->fromEntity($userEntity);
+        $form->fromEntity($this->user);
 
-        $message = $session->get('flash');
-        $session->remove('flash');
+        $message = $this->session->get('flash');
+        $this->session->remove('flash');
 
         $redirect = $request->get('redirect_to')
             ? $request->get('redirect_to')
@@ -30,104 +68,8 @@ class EditAction {
             $redirect = 'http://' . $redirect;
         }
 
-        if ($request->isMethod('post')) {
-            $userData = (array)$request->request->get('user');
-
-            if (!array_key_exists('is_subscribe', $userData)) {
-                $userData['is_subscribe'] = false;
-            }
-
-            if (array_key_exists('bonus_card', $userData) && (bool)$userData['bonus_card'] && is_array($userData['bonus_card'])) {
-                $bonusCards = [];
-                foreach ($userData['bonus_card'] as $id => $number) {
-                    $bonusCards[] = [
-                        'bonus_card_id' => $id,
-                        'number' => $number,
-                    ];
-                }
-
-                $userData['bonus_card'] = $bonusCards;
-            }
-
-            $form->fromArray($userData);
-
-            try {
-                $tmp = rtrim( $form->getEmail() ) . rtrim($form->getMobilePhone());
-                if ( empty($tmp) ) {
-                    throw new \Exception("E-mail и телефон не могут быть одновременно пустыми. Укажите ваш мобильный телефон либо e-mail.");
-                }
-
-                // пользователь является EnterPrize Member
-                if (
-                    ($form->getIsDisabled() && $userEntity) &&
-                    ($userEntity->getEmail() !== $form->getEmail() || $userEntity->getMobilePhone() !== $form->getMobilePhone())
-                ) {
-                    throw new \Exception("E-mail и телефон не могут быть отредактированы.");
-                }
-
-                // Смена пароля
-                $oldPassword = trim((string)$request->get('password_old'));
-                $newPassword = trim((string)$request->get('password_new'));
-
-                if ( ($oldPassword && !$newPassword) || (!$oldPassword && $newPassword)) {
-                    throw new \Exception("Не заполнено одно из полей смены пароля");
-                }
-
-                if ($newPassword && $oldPassword == $newPassword) {
-                    throw new \Exception("Старый пароль совпадает с новым паролем");
-                }
-
-                if ($newPassword) {
-                    $response_change_password = $client->query(
-                        'user/change-password',
-                        [
-                            'token'         => \App::user()->getToken(),
-                            'password'      => $oldPassword,
-                            'new_password'  => $newPassword
-                        ]
-                    );
-                }
-
-                $response_change_info = $client->query(
-                    'user/update',
-                    ['token' => \App::user()->getToken()],
-                    [
-                        'first_name'    => $form->getFirstName(),
-                        'middle_name'   => $form->getMiddleName(),
-                        'last_name'     => $form->getLastName(),
-                        'sex'           => $form->getSex(),
-                        'email'         => $form->getEmail(),
-                        'mobile'        => $form->getMobilePhone(),
-                        'phone'         => $form->getHomePhone(),
-                        'birthday'      => $form->getBirthday() ? $form->getBirthday()->format('Y-m-d') : null,
-                        'occupation'    => $form->getOccupation(),
-                        'bonus_card'    => $form->getBonusCardNumbers(),
-                        'is_subscribe'  => $form->getIsSubscribed(),
-                    ],
-                    \App::config()->coreV2['hugeTimeout']
-                );
-
-                if (!isset($response_change_info['confirmed']) || !$response_change_info['confirmed']) {
-                    throw new \Exception('Не удалось сменить данные пользователя.');
-                }
-
-                if (isset($response_change_password) && (!isset($response_change_password['confirmed']) || !$response_change_password['confirmed'])) {
-                    throw new \Exception('Не удалось сменить пароль пользователя.');
-                }
-
-                $session->set('flash', 'Данные сохранены');
-
-                return new \Http\RedirectResponse($redirect);
-            } catch (\Exception $e) {
-                \App::exception()->remove($e);
-                \App::logger()->error($e, ['user']);
-
-                $errorMess = $e->getMessage();
-                $form->setError('global', 'Не удалось сохранить форму. ' . $errorMess);
-            }
-        }
-
         $bonusCards = [];
+
         try {
             $bonusCards = \RepositoryManager::bonusCard()->getCollection();
         } catch (\Exception $e) {
@@ -135,12 +77,94 @@ class EditAction {
             \App::exception()->remove($e);
         }
 
-        $page = new \View\User\EditPage();
-        $page->setParam('form', $form);
-        $page->setParam('message', $message);
-        $page->setParam('redirect', $redirect);
-        $page->setParam('bonusCards', $bonusCards);
+        return ['form' => $form, 'message' => $message, 'redirect' => $redirect, 'bonusCards' => $bonusCards];
+    }
 
-        return new \Http\Response($page->show());
+    private function setData(\Http\Request $request) {
+
+        $userData = (array)$request->request->get('user');
+
+        if (!array_key_exists('is_subscribe', $userData)) {
+            $userData['is_subscribe'] = false;
+        }
+
+        if (array_key_exists('bonus_card', $userData) && (bool)$userData['bonus_card'] && is_array($userData['bonus_card'])) {
+            $bonusCards = [];
+            foreach ($userData['bonus_card'] as $id => $number) {
+                $bonusCards[] = [
+                    'bonus_card_id' => $id,
+                    'number' => $number,
+                ];
+            }
+
+            $userData['bonus_card'] = $bonusCards;
+        }
+
+        $form = new \View\User\EditForm();
+        $form->fromArray($userData);
+
+        $tmp = rtrim( $form->getEmail() ) . rtrim($form->getMobilePhone());
+        if ( empty($tmp) ) {
+            throw new \Exception("E-mail и телефон не могут быть одновременно пустыми. Укажите ваш мобильный телефон либо e-mail.");
+        }
+
+        // пользователь является EnterPrize Member
+        if (
+            ($form->getIsDisabled() && $this->user) &&
+            ($this->user->getEmail() !== $form->getEmail() || $this->user->getMobilePhone() !== $form->getMobilePhone())
+        ) {
+            throw new \Exception("E-mail и телефон не могут быть отредактированы.");
+        }
+
+        // Смена пароля
+        $oldPassword = trim((string)$request->get('password_old'));
+        $newPassword = trim((string)$request->get('password_new'));
+
+        if ( ($oldPassword && !$newPassword) || (!$oldPassword && $newPassword)) {
+            throw new \Exception("Не заполнено одно из полей смены пароля");
+        }
+
+        if ($newPassword && $oldPassword == $newPassword) {
+            throw new \Exception("Старый пароль совпадает с новым паролем");
+        }
+
+        if ($newPassword) {
+            $response_change_password = $this->client->query(
+                'user/change-password',
+                [
+                    'token'         => \App::user()->getToken(),
+                    'password'      => $oldPassword,
+                    'new_password'  => $newPassword
+                ]
+            );
+        }
+
+        $response_change_info = $this->client->query(
+            'user/update',
+            ['token' => \App::user()->getToken()],
+            [
+                'first_name'    => $form->getFirstName(),
+                'middle_name'   => $form->getMiddleName(),
+                'last_name'     => $form->getLastName(),
+                'sex'           => $form->getSex(),
+                'email'         => $form->getEmail(),
+                'mobile'        => $form->getMobilePhone(),
+                'phone'         => $form->getHomePhone(),
+                'birthday'      => $form->getBirthday() ? $form->getBirthday()->format('Y-m-d') : null,
+                'occupation'    => $form->getOccupation(),
+                'bonus_card'    => $form->getBonusCardNumbers(),
+                'is_subscribe'  => $form->getIsSubscribed(),
+            ],
+            \App::config()->coreV2['hugeTimeout']
+        );
+
+        if (!isset($response_change_info['confirmed']) || !$response_change_info['confirmed']) {
+            throw new \Exception('Не удалось сменить данные пользователя.');
+        }
+
+        if (isset($response_change_password) && (!isset($response_change_password['confirmed']) || !$response_change_password['confirmed'])) {
+            throw new \Exception('Не удалось сменить пароль пользователя.');
+        }
+
     }
 }

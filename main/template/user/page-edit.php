@@ -2,7 +2,7 @@
 /**
  * @var $page       \View\User\EditPage
  * @var $form       \View\User\EditForm
- * @var $message    string
+ * @var $flash      array|null
  * @var $bonusCards array
  */
 ?>
@@ -13,13 +13,9 @@
 
     <div class="personalTitle">Изменить мои данные</div>
 
-    <? if (!$form->isValid()): ?>
-        <? foreach ($form->getErrors() as $error): ?>
-            <p class="red"><?= $error ?></p>
-        <? endforeach ?>
-    <? elseif ($message): ?>
-        <p class="green"><?= $message ?></p>
-    <? endif ?>
+    <? if ($flash !== null) : ?>
+        <p class="<?= $flash['type'] == 'success' ? 'green' : 'red' ?>"><?= $flash['message'] ?></p>
+    <? endif; ?>
 
     <form action="<?= $page->url('user.edit') ?>" method="post" class="personalData">
         <fieldset class="personalData_left">
@@ -78,10 +74,10 @@
             </div>
 
             <label class="personalData_label labeltext">E-mail:</label>
-            <input class="personalData_text textfield" type="email"  value="<?= $form->getEmail() ?>" name="user[email]" <? if ($form->getIsDisabled()): ?>disabled="disabled"<? endif ?> />
+            <input class="personalData_text textfield" type="email"  value="<?= $form->getEmail() ?>" name="user[email]" <? if ($form->getIsDisabled()): ?>readonly<? endif ?> />
 
             <label class="personalData_label labeltext">Мобильный телефон:</label>
-            <input class="personalData_text textfield" type="text"  value="<?= $form->getMobilePhone() ?>" name="user[mobile_phone]" class="text" <? if ($form->getIsDisabled()): ?>disabled="disabled"<? endif ?> />
+            <input class="personalData_text textfield" type="text"  value="<?= $form->getMobilePhone() ?>" name="user[mobile_phone]" class="text" <? if ($form->getIsDisabled()): ?>readonly<? endif ?> />
 
             <label class="personalData_label labeltext">Домашний телефон:</label>
             <input class="personalData_text textfield" type="text" value="<?= $form->getHomePhone() ?>" name="user[home_phone]" />
