@@ -549,6 +549,9 @@ class AppConfig {
         'cookieLifetime' => null,
         'userTicket' => [
             'cookieName' => null,
+        ],
+        'cardNumber' => [
+            'cookieName' => null,
         ]
     ];
 	

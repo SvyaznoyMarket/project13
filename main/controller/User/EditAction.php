@@ -100,19 +100,11 @@ class EditAction {
             }
         }
 
-        $bonusCards = [];
-        try {
-            $bonusCards = \RepositoryManager::bonusCard()->getCollection();
-        } catch (\Exception $e) {
-            \App::logger()->error($e);
-            \App::exception()->remove($e);
-        }
-
         $page = new \View\User\EditPage();
         $page->setParam('form', $form);
         $page->setParam('message', $message);
         $page->setParam('redirect', $redirect);
-        $page->setParam('bonusCards', $bonusCards);
+        $page->setParam('bonusCards', \RepositoryManager::bonusCard()->getCollection());
 
         return new \Http\Response($page->show());
     }
