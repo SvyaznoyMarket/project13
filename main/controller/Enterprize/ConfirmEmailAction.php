@@ -84,7 +84,10 @@ class ConfirmEmailAction {
 
         $response = null;
         try {
-            if (!isset($data['email']) || empty($data['email'])) {
+            if (
+                (!isset($data['email']) || empty($data['email']))
+                || ($data['email']=\App::user()->getEntity()->getEmail())
+            ) {
                 throw new \Exception('Не получен email');
             }
 
@@ -284,7 +287,10 @@ class ConfirmEmailAction {
 
         $userToken = !empty($data['token']) ? $data['token'] : \App::user()->getToken();
 
-        if (isset($data['email'])) {
+        if (
+            isset($data['email'])
+            || ($data['email']=\App::user()->getEntity()->getEmail())
+        ) {
             $status = \App::coreClientV2()->query(
                 'confirm/status',
                 [

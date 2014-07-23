@@ -7,9 +7,7 @@
  */
 namespace Controller\Enterprize;
 
-use Curl\Exception;
 use Http\JsonResponse;
-use Http\RedirectResponse;
 use Http\Response;
 
 class ConfirmAction {
@@ -41,7 +39,7 @@ class ConfirmAction {
             return new JsonResponse([
                 'error' => [
                     'message'   => 'Необходимо авторизоваться',
-                    'code'      => 301
+                    'code'      => 401
                 ]
             ]);
         }
@@ -69,7 +67,7 @@ class ConfirmAction {
             return new JsonResponse([
                 'error' => [
                     'message'   => 'Необходимо авторизоваться',
-                    'code'      => 301
+                    'code'      => 401
                 ]
             ]);
         }
@@ -96,7 +94,7 @@ class ConfirmAction {
             return new JsonResponse([
                 'error' => [
                     'message'   => 'Необходимо авторизоваться',
-                    'code'      => 301
+                    'code'      => 401
                 ]
             ]);
         }
@@ -125,16 +123,102 @@ class ConfirmAction {
                 if($result && $result['code']==200) {
                     return new JsonResponse([
                         'success'   => true,
+                        'message'   => $result['message'],
+                        'status'     => $this->getConfirmStatus()
+                    ]);
+                }
+            } catch (\Exception $e) {
+                \App::exception()->remove($e);
+                switch ($e->getCode()) {
+                    case 402:
+                        $error = [
+                            'code'      => 401,
+                            'message'   => 'Необходимо авторизоваться'
+                        ];
+                        break;
+                    default:
+                        $error = $e->getContent();
+                        break;
+
+                }
+                return new JsonResponse([
+                    'success'   => false,
+                    'error'     => $error
+                ]);
+            }
+        } else {
+            return new JsonResponse([
+                'success'   => false,
+                'form'      => [
+                    'error'     => $errors
+                ],
+                'error'     => [
+                    'code'      => 0,
+                    'message'   => 'Данные введены некорректно'
+                ]
+            ]);
+        }
+    }
+
+
+    public function createConfirmEmail(\Http\Request $request){
+        if (!\App::config()->enterprize['enabled']) {
+            throw new \Exception\NotFoundException();
+        }
+
+        if(!$request->isXmlHttpRequest()) {
+            return new Response('Bad request',400);
+        }
+
+        if(!$this->user) {
+            return new JsonResponse([
+                'error' => [
+                    'message'   => 'Необходимо авторизоваться',
+                    'code'      => 401
+                ]
+            ]);
+        }
+
+        $errors = [];
+        if (!($email = $this->user->getEmail())) {
+            $errors['email'] = 'Email не известен';
+        }
+
+        if(empty($errors)) {
+            try{
+                $result = \App::coreClientV2()->query(
+                    'confirm/email', [
+                        'client_id' => \App::config()->coreV2['client_id'],
+                        'token'     => $this->user->getToken(),
+                    ], [
+                        'email'    => $email,
+                        'template' => 'enter_prize',
+                    ], \App::config()->coreV2['hugeTimeout']
+                );
+
+                if($result && $result['code']==200) {
+                    return new JsonResponse([
+                        'success'   => true,
                         'message'   => $result['message']
                     ]);
                 }
             } catch (\Exception $e) {
+                \App::exception()->remove($e);
+                switch ($e->getCode()) {
+                    case 402:
+                        $error = [
+                            'code'      => 401,
+                            'message'   => 'Необходимо авторизоваться'
+                        ];
+                        break;
+                    default:
+                        $error = $e->getContent();
+                        break;
+
+                }
                 return new JsonResponse([
                     'success'   => false,
-                    'error'     => [
-                        'code'      => 0,
-                        'message'   => 'Сервис временно не доступен'
-                    ]
+                    'error'     => $error
                 ]);
             }
         } else {
@@ -170,7 +254,7 @@ class ConfirmAction {
             return new JsonResponse([
                 'error' => [
                     'message'   => 'Необходимо авторизоваться',
-                    'code'      => 301
+                    'code'      => 401
                 ]
             ]);
         }
@@ -198,16 +282,107 @@ class ConfirmAction {
                 if($result && $result['code']==200) {
                     return new JsonResponse([
                         'success'   => true,
+                        'message'   => $result['message'],
+                        'status'     => $this->getConfirmStatus()
+                    ]);
+                }
+            } catch (\Exception $e) {
+                \App::exception()->remove($e);
+                switch ($e->getCode()) {
+                    case 402:
+                        $error = [
+                            'code'      => 401,
+                            'message'   => 'Необходимо авторизоваться'
+                        ];
+                        break;
+                    default:
+                        $error = $e->getContent();
+                        break;
+
+                }
+                return new JsonResponse([
+                    'success'   => false,
+                    'error'     => $error
+                ]);
+            }
+        } else {
+            return new JsonResponse([
+                'success'   => false,
+                'form'      => [
+                    'error'     => $errors
+                ],
+                'error'     => [
+                    'code'      => 0,
+                    'message'   => 'Данные введены некорректно'
+                ]
+            ]);
+        }
+    }
+
+    /**
+     * Запрос кода подтверждения
+     *
+     * @param \Http\Request $request
+     * @return JsonResponse|Response
+     * @throws \Exception\NotFoundException
+     */
+    public function createConfirmPhone(\Http\Request $request) {
+        if (!\App::config()->enterprize['enabled']) {
+            throw new \Exception\NotFoundException();
+        }
+
+        if(!$request->isXmlHttpRequest()) {
+            return new Response('Bad request',400);
+        }
+
+        if(!$this->user) {
+            return new JsonResponse([
+                'error' => [
+                    'message'   => 'Необходимо авторизоваться',
+                    'code'      => 401
+                ]
+            ]);
+        }
+
+        $errors = [];
+        if (!($mobile = $this->user->getMobilePhone())) {
+            $errors['mobile'] = 'Телефон не известен';
+        }
+
+        if(empty($errors)) {
+            try{
+                $result = \App::coreClientV2()->query(
+                    'confirm/mobile', [
+                        'client_id' => \App::config()->coreV2['client_id'],
+                        'token'     => $this->user->getToken(),
+                    ], [
+                        'mobile'   => $mobile,
+                    ], \App::config()->coreV2['hugeTimeout']
+                );
+
+                if($result && $result['code']==200) {
+                    return new JsonResponse([
+                        'success'   => true,
                         'message'   => $result['message']
                     ]);
                 }
             } catch (\Exception $e) {
+                \App::exception()->remove($e);
+                switch ($e->getCode()) {
+                    case 402:
+                        $error = [
+                            'code'      => 401,
+                            'message'   => 'Необходимо авторизоваться'
+                        ];
+                        break;
+                    default:
+                        $error = $e->getContent();
+                        break;
+
+                }
                 return new JsonResponse([
                     'success'   => false,
-                    'error'     => [
-                        'code'      => 0,
-                        'message'   => 'Сервис временно не доступен'
-                    ]
+                    'error'     => $error
                 ]);
             }
         } else {
@@ -244,7 +419,7 @@ class ConfirmAction {
             return new JsonResponse([
                 'error' => [
                     'message'   => 'Необходимо авторизоваться',
-                    'code'      => 301
+                    'code'      => 401
                 ]
             ]);
         }
@@ -283,50 +458,55 @@ class ConfirmAction {
             \App::exception()->remove($e);
             switch ($e->getCode()) {
                 case 402:
-                    $response = [
-                        'error' => [
-                            'message'   => 'Необходимо авторизоваться',
-                            'code'      => 301
-                        ]
+                    $error = [
+                        'code'      => 401,
+                        'message'   => 'Необходимо авторизоваться'
                     ];
                     break;
                 case 403:
-                    $response = [
-                        'error' => [
-                            'message'   => $e->getMessage(),
-                            'code'      => $e->getCode(),
-                            'detail'    => $this->getConfirmStatus()
-                        ]
-                    ];
-                    break;
-                case 409:
-                    $response = [
-                        'error' => [
-                            'message'   => $e->getMessage(),
-                            'code'      => $e->getCode()
-                        ]
-                    ];
-                    break;
-                case 600:
-                    $response = [
-                        'error' => [
-                            'message'   => $e->getMessage(),
-                            'code'      => $e->getCode(),
-                            'detail'    => $e->getContent()['detail']
-                        ]
+                    $error = [
+                        'message'   => $e->getMessage(),
+                        'code'      => $e->getCode(),
+                        'detail'    => $this->getConfirmStatus()
                     ];
                     break;
                 default:
-                    $response = [
-                        'error' => [
-                            'message'   => 'Не удается зарегестрировать участие в программе Enter Prize',
-                            'code'      => 0
-                        ]
-                    ];
+                    $error = $e->getContent();
+                    break;
+
             }
+            return new JsonResponse([
+                'success'   => false,
+                'error'     => $error
+            ]);
         }
 
         return new JsonResponse($response);
+    }
+
+
+    /**
+     * Удаление авторизованного пользователя в отладочном режиме
+     * @return JsonResponse
+     * @throws \Exception\NotFoundException
+     */
+    public function deleteUser() {
+        if (\App::config()->debug === true) {
+            try {
+                return new JsonResponse(\App::coreClientV2()->query(
+                    '/user/delete/', [
+                        'client_id' => \App::config()->coreV2['client_id'],
+                        'token'     => $this->user->getToken(),
+                    ], [], \App::config()->coreV2['hugeTimeout']
+                ));
+            } catch (\Exception $e) {
+                \App::exception()->remove($e);
+                return new JsonResponse($e->getContent());
+            }
+
+        } else {
+            throw new \Exception\NotFoundException();
+        }
     }
 
 

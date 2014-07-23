@@ -83,7 +83,10 @@ class ConfirmPhoneAction {
         $response = null;
         try {
             $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
-            if (!isset($data['mobile']) || empty($data['mobile'])) {
+            if (
+                (!isset($data['mobile']) || empty($data['mobile']))
+                && !($data['mobile'] = \App::user()->getEntity()->getMobilePhone())
+            ) {
                 throw new \Exception('Не получен мобильный телефон');
             }
 
@@ -176,6 +179,6 @@ class ConfirmPhoneAction {
         \App::logger()->debug('Exec ' . __METHOD__);
         $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
 
-        return isset($data['isPhoneConfirmed']) && $data['isPhoneConfirmed'] ? $data['isPhoneConfirmed'] : false;
+        return isset($data['isPhoneConfirmed']) && $data['isPhoneConfirmed'] || \App::user()->getEntity()->getIsPhoneConfirmed();
     }
 }

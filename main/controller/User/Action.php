@@ -427,12 +427,12 @@ class Action {
 
         $params = [];
         if($action=='update') {
-            if(!$form->getMobile()) {
-                $form->setError('mobile', 'Необходимо указать телефон');
-            }
             $params = [ 'token' => \App::user()->getEntity()->getToken()];
         }
 
+        if(!$form->getMobile()) {
+            $form->setError('mobile', 'Необходимо указать телефон');
+        }
         if(!$form->getAgree()) {
             $form->setError('agree','Необходимо согласие');
         }

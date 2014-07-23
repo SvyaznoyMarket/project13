@@ -838,9 +838,19 @@ return [
         'action'  => ['Enterprize\ConfirmAction', 'form'],
     ],
     // подтверждаем телефон
+    'enterprize.confirmAll.createPhone' => [
+        'pattern' => '/enterprize/confirm-wc/create-phone',
+        'action'  => ['Enterprize\ConfirmAction', 'createConfirmPhone'],
+    ],
+    // подтверждаем телефон
     'enterprize.confirmAll.phone' => [
         'pattern' => '/enterprize/confirm-wc/phone',
         'action'  => ['Enterprize\ConfirmAction', 'confirmPhone'],
+    ],
+    // запрашиваем подтверждение email
+    'enterprize.confirmAll.createEmail' => [
+        'pattern' => '/enterprize/confirm-wc/create-email',
+        'action'  => ['Enterprize\ConfirmAction', 'createConfirmEmail'],
     ],
     // подтверждаем email
     'enterprize.confirmAll.email' => [
@@ -857,7 +867,11 @@ return [
         'pattern' => '/enterprize/confirm-wc/state',
         'action'  => ['Enterprize\ConfirmAction', 'state'],
     ],
-
+    // получения состояния "подтержденности" данных
+    'enterprize.confirmAll.deleteUser' => [
+        'pattern' => '/enterprize/confirm-wc/deleteUser',
+        'action'  => ['Enterprize\ConfirmAction', 'deleteUser'],
+    ],
 
     'enterprize.show' => [
         'pattern' => '/enterprize/{enterprizeToken}',

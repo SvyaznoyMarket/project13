@@ -42,7 +42,7 @@ abstract class FormAbstract {
      * @param $data
      * @return mixed
      */
-    abstract public function fromArray($data);
+//    abstract public function fromArray($data);
 
     /**
      * @param array $data

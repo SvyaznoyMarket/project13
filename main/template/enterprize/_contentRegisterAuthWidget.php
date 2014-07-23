@@ -22,7 +22,7 @@
 $(window).load(function () {
     // @todo положить экземпляр в какую-нибудь глобальную переменную
     window.registerAuth = $('#enterprize-identify').registerAuth({
-//        state: 'update',
+        state: 'confirm',
         beforeInit: function (self, callback) {
             $(self.element).lightbox_me({
                 centered: true,
