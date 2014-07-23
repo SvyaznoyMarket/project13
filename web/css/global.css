@@ -1636,6 +1636,21 @@
     text-decoration: underline;
   }
 }
+/*окно идентификации EnterPrize*/
+@media all {
+  /**
+ * Представление частично использует стили authPopup.less
+ */
+  #enterprize-identify {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    margin: 0 0 0 -389px;
+    width: 724px;
+    z-index: 1002;
+    display: none;
+  }
+}
 /*большое окно в карточке товара*/
 @media all {
   .bPopupWrap {

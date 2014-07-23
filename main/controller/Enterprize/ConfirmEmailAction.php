@@ -75,12 +75,11 @@ class ConfirmEmailAction {
             throw new \Exception\NotFoundException();
         }
 
-        $userEntity = \App::user()->getEntity();
-
         if ($this->isEmailConfirmed()) {
             return new \Http\RedirectResponse(\App::router()->generate('enterprize.create'));
         }
 
+        $userEntity = \App::user()->getEntity();
         $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
 
         $response = null;

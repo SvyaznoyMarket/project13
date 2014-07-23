@@ -333,6 +333,8 @@
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('main.js') )
 					.wait()
+                    .script( getWithVersion('enterprize.js') )
+					.wait()
 					.script( logTimeAfterOurScript )
 					.script( optimizelyUrl )
 					.script('adfox.asyn.code.ver3.min.js')

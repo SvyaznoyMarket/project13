@@ -20,7 +20,7 @@ $helper = new \Helper\TemplateHelper();
 <? endif ?>
 
 <?=$page->render('enterprize/form-registration',[
-    'form'      => $form,
+    'form'      => $form->setSubmit('Получить скидку >'),
     'authSource'=> $authSource,
 ])?>
 

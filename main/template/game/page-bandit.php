@@ -35,30 +35,16 @@
                 }
             },
             handlers: {
-                /**
-                 * @param Object state including .message and .code   
-                 * @returns {undefined}
-                 */
                 userUnauthorized: function(state) {
-                    ENTER.constructors.Login().openAuth();
+                    window.registerAuth.init('authRegistration');
                 },
                 notEnterprizeMember: function(state){
-                    slotsPopup.messageBox.html(
-                        'Принимать участие в розигрыше могут только участники программы Enter Prize.<br/>'
-                        + '<b><a href="/enterprize">Стать участником программы</a></b>'
-                    );
-                    slotsPopup.lightbox_me({
-                        centered: true,
-                        autofocus: true,
-                        onClose: function(){
-                            slotsPopup.messageBox.html('');
-                        }
-                    });
+                    window.registerAuth.init('confirm');
                 }
             },
             api_url: {
-                init: "http://vadim.ent3.ru/game/slots/init",
-                play: "http://vadim.ent3.ru/game/slots/play",
+                init: "http://<?=\App::config()->mainHost?>/game/slots/init",
+                play: "http://<?=\App::config()->mainHost?>/game/slots/play",
                 img_led_off: "/css/game/slots/img/slot_led_off.png"
             }
         });

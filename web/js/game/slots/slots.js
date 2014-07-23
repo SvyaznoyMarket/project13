@@ -24,6 +24,7 @@ $.fn.slots = function (slot_config) {
                 init: location.origin+"/init",
                 play: "/play",
                 img_led_off: "/img/slot_led_off.png"
+
             }
         };
     }
@@ -302,9 +303,11 @@ $.fn.slots = function (slot_config) {
                             self.ledAnimations.animationHandler.startAnimation();
                             self.messageBox.stopAnimation();
                             self.messageBox.animateText("winAnimation");
+                            game.buttonsRow.find('.stop .reel_dot').removeClass('on');
                             self[game.result.prizes.type == "regular" ? "winChipAnimation" : "winBigChipAnimation" ](game.result.prizes.message);
                         }, 50);
                     } else  {
+                        game.buttonsRow.find('.stop .reel_dot').removeClass('on');
                         self.ledAnimations.stopAnimation(500);
                         self.setLedPanelOptions('stop');
                         self.ledAnimations.animationHandler.startAnimation();
@@ -312,7 +315,6 @@ $.fn.slots = function (slot_config) {
                         self.messageBox.animateText("loseAnimation");
                         self.messageBox.setRandomText('nowin', null,game.user);
                     }
-
 
                 } else {
                     self.notAvailableState();

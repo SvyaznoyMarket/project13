@@ -4,9 +4,13 @@
  * @var $form             \View\Enterprize\Form
  * @var $authSource       string|null
  */
+if (!isset($authSource))     $authSource = null;
+if (!isset($form)) {
+    $form = new \View\Enterprize\Form();
+}
 ?>
 
-<form class="formDefault jsEnterprizeForm" action="<?= $page->url($form->getRoute()) ?>" method="post">
+<form class="formDefault jsEnterprizeForm" action="<?=\App::router()->generate($form->getRoute()) ?>" method="post">
     <input type="hidden" name="user[guid]" value="<?= $form->getEnterprizeCoupon() ?>" />
 
     <fieldset class="formDefault__fields">
@@ -21,8 +25,8 @@
 
         <ul class="bInputList mEnterPrizeSubscr">
             <li class="bInputList__eListItem ">
-                <input type="hidden" name="user[subscribe]" value="1" />
-                <input class="jsCustomRadio bCustomInput mCustomCheckBig jsSubscribe" id="subscribe" type="checkbox" checked="checked" disabled="disabled" />
+                <input type="hidden" name="user[isSubscribe]" value="1" />
+                <input class="jsCustomRadio bCustomInput mCustomCheckBig jsSubscribe" id="isSubscribe" type="checkbox" checked="checked" disabled="disabled" />
                 <label class="bCustomLabel mCustomLabelBig mChecked" for="subscribe">Получить рекламную рассылку</label>
             </li>
 
@@ -32,6 +36,6 @@
             </li>
         </ul>
 
-        <input class="formDefault__btnSubmit mBtnOrange" type="submit" value="Получить скидку >" />
+        <input class="formDefault__btnSubmit mBtnOrange" type="submit" value="<?=$form->getSubmit()?>" />
     </fieldset>
 </form>

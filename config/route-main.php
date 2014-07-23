@@ -70,6 +70,16 @@ return [
         'pattern' => '/register',
         'action'  => ['User\Action', 'register'],
     ],
+    // регистрация c доп полями, аналогичка регистрации enterprize но не участвует coupon
+    'user.registrationExtended' => [
+        'pattern' => '/registrationExtended',
+        'action'  => ['User\Action', 'registrationExtended'],
+    ],
+    // Изменение регистрационных данных
+    'user.updateRegistration' => [
+        'pattern' => '/updateRegistration',
+        'action'  => ['User\Action', 'updateRegistration'],
+    ],
     // регистрация корпоративного пользователя
     'user.registerCorporate' => [
         'pattern' => '/b2b',
@@ -820,6 +830,35 @@ return [
         'pattern' => '/enterprize/confirm-email',
         'action'  => ['Enterprize\ConfirmEmailAction', 'show'],
     ],
+
+    /** confirmation without coupon */
+    // получение тела формы
+    'enterprize.confirmAll.form' => [
+        'pattern' => '/enterprize/confirm-wc/form',
+        'action'  => ['Enterprize\ConfirmAction', 'form'],
+    ],
+    // подтверждаем телефон
+    'enterprize.confirmAll.phone' => [
+        'pattern' => '/enterprize/confirm-wc/phone',
+        'action'  => ['Enterprize\ConfirmAction', 'confirmPhone'],
+    ],
+    // подтверждаем email
+    'enterprize.confirmAll.email' => [
+        'pattern' => '/enterprize/confirm-wc/email',
+        'action'  => ['Enterprize\ConfirmAction', 'confirmEmail'],
+    ],
+    // делаем пользователя участником программы
+    'enterprize.confirmAll.enterprize' => [
+        'pattern' => '/enterprize/confirm-wc/setEnterprize',
+        'action'  => ['Enterprize\ConfirmAction', 'setEnterprize'],
+    ],
+    // получения состояния "подтержденности" данных
+    'enterprize.confirmAll.state' => [
+        'pattern' => '/enterprize/confirm-wc/state',
+        'action'  => ['Enterprize\ConfirmAction', 'state'],
+    ],
+
+
     'enterprize.show' => [
         'pattern' => '/enterprize/{enterprizeToken}',
         'action'  => ['Enterprize\ShowAction', 'execute'],

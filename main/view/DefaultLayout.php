@@ -1004,9 +1004,6 @@ class DefaultLayout extends Layout {
      * @return string
      */
     public function slotEnterPrizeWidget(){
-        return $this->render('enterprize/_contentRegisterAuthWidget',[
-            'formEnterprizeRegistration'    => new \View\Enterprize\Form(),
-            'formAuth'                      => new \View\User\LoginForm()
-        ]);
+        return $this->render('enterprize/_contentRegisterAuthWidget');
     }
 }

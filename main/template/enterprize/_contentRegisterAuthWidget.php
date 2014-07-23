@@ -1,17 +1,41 @@
-<?php
-// сюда добавляем код инициализации виджета и блок модального окна с формами
-?>
-<div id="enterprize-identify" class="popup" style="position: absolute; top: 40px; margin-top: 0px; left: 50%; margin-left: -374px; z-index: 1002; display: block;">
+<div id="enterprize-identify" class="popup">
     <i class="close" title="Закрыть">Закрыть</i>
 
-    <div class="bPopupTitle">Вход в Enter</div>
+    <div class="enterprizeAuthBox__title"></div>
 
+    <div class="bFormLogin jsBodyWrapper">
         <?=$page->render('form-login',[
-            'form'  => $formAuth
+            'form' => new \View\User\LoginForm()
         ])?>
-        
-        <?=$page->render('enterprize/form-registration',[
-            'form'          => $formEnterprizeRegistration,
-            'submitName'    => ''
-        ])?>
+
+        <div class="bFormLogin__ePlace">
+            <?=$page->render('enterprize/form-registration',[
+                'form' => (new \View\Enterprize\Form())
+                        ->setRoute('user.registrationExtended')  // Кидаем на регистрацию с расширенным набором данных
+                        ->setSubmit('Регистрация'),
+            ])?>
+        </div>
+    </div>
 </div>
+
+<script type="text/javascript">
+$(window).load(function () {
+    // @todo положить экземпляр в какую-нибудь глобальную переменную
+    window.registerAuth = $('#enterprize-identify').registerAuth({
+//        state: 'update',
+        beforeInit: function (self, callback) {
+            $(self.element).lightbox_me({
+                centered: true,
+                autofocus: true,
+                onLoad: function () {
+                    callback();
+                }
+            });
+        },
+        afterComplete: function(self, callback) {
+            $(self.element).trigger('close.lme');
+        }
+    }).data('ui-registerAuth');
+    window.registerAuth.init();
+});
+</script>

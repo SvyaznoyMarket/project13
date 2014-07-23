@@ -1,15 +1,10 @@
-<?php
-/**
- * @var $page            \View\DefaultLayout
- */
-?>
-<form class="confirmForm" action="<?=$page->url('enterprize.confirmEmail.check') ?>" method="post">
+<form class="confirmForm" action="<?=\App::router()->generate('enterprize.confirmEmail.check') ?>" method="post">
     <label class="labelCode">Код</label>
     <input type="text" class="text" name="code" />
     <input class="confirmCode bigbutton" type="submit" value="Подтвердить" />
 </form>
 
-<form class="confirmForm" action="<?= $page->url('enterprize.confirmEmail.create') ?>" method="post">
+<form class="confirmForm" action="<?= \App::router()->generate('enterprize.confirmEmail.create') ?>" method="post">
     <input type="hidden" name="isRepeatRending" value="true" />
     <input style="margin-left: 0;" class="confirmCode bigbutton" type="submit" value="Отправить повторно" />
 </form>

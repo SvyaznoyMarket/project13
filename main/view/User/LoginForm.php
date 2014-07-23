@@ -17,6 +17,9 @@ class LoginForm extends \Form\FormAbstract {
     /** @inheritdoc */
     protected $route = 'user.login';
 
+    /** @inheritdoc */
+    protected $submit = 'Войти';
+
     public function fromArray(array $data) {
         if (array_key_exists('username', $data)) $this->setUsername($data['username']);
         if (array_key_exists('password', $data)) $this->setPassword($data['password']);
@@ -26,6 +29,10 @@ class LoginForm extends \Form\FormAbstract {
      * @param string $password
      */
     public function setPassword($password) {
+        if(!$password) {
+            $this->setError('password', 'Не указан пароль');
+            return;
+        }
         $this->password = trim((string)$password);
     }
 
@@ -40,6 +47,10 @@ class LoginForm extends \Form\FormAbstract {
      * @param string $username
      */
     public function setUsername($username) {
+        if(!$username) {
+            $this->setError('username', 'Не указан логин');
+            return;
+        }
         $this->username = trim((string)$username);
     }
 
@@ -48,5 +59,13 @@ class LoginForm extends \Form\FormAbstract {
      */
     public function getUsername() {
         return $this->username;
+    }
+
+    /** @inheritdoc */
+    public function __toArray() {
+        return [
+            'username'  => $this->getUsername(),
+            'password'  => $this->getPassword(),
+        ];
     }
 }

@@ -20,6 +20,7 @@ class BanditAction {
 	public function init() {
 		$crm	= \App::crmClient();
         $user   = \App::user()->getEntity();
+
         try {
             $response  = $crm->query(
                 'game/bandit/init', [
@@ -39,33 +40,34 @@ class BanditAction {
         
         $coupons = $this->getCoupons($response['slots']);
         $slots = [];
-        foreach($coupons as $k=>$v) {
+        foreach($coupons as $v) {
             $slots[] = $this->couponAsSlot($v);
         }
         
         $reels      = [$slots,$slots,$slots];
 		return new \Http\JsonResponse([
             'success'       => true,
-            'isAvialable'   => $this->isAvailable,
-            'user'          => $response['user'],
+            'isAvailable'   => $this->isAvailable,
+            'user'          => (isset($response['user'])?$response['user']:null ),
             'reels'         => $reels,
             'config'        => $this->getConfig(),
         ]);
 	}
-	
-    
+
+
     public function play(){
         $crm	= \App::crmClient();
         $user   = \App::user()->getEntity();
+
         try {
             if(!$user) {
                 throw new \Exception(null,self::errorUnauthorized);
             }
-            
+
             if(!$user->isEnterprizeMember()) {
                 throw new \Exception(null,self::errorNotEnterprizeMember);
             }
-            
+
             $response  = $crm->query(
                 'game/bandit/play', [
                     'uid'   => $user->getUi()
@@ -76,37 +78,41 @@ class BanditAction {
             if (($error = $this->getError($e->getCode()))) {
                 \App::exception()->remove($e);
                 return new \Http\JsonResponse([
-                    'isAvialable'   => $this->isAvailable,
+                    'isAvailable'   => $this->isAvailable,
                     'success'       => false,
                     'error'         => $error
                 ]);
             }
         }
-        
+
         $coupons = $this->getCoupons($response['result']['line']);
         foreach($response['result']['line'] as &$v) {
-            $v = $this->couponAsSlot($coupons[$v]);
+            // @todo если в наборе не окажется купона, для которого при этом есть счетчик оставшихся И настройки выигрыша
+            if(isset($coupons[$v])) {
+                $v = $this->couponAsSlot($coupons[$v]);
+            } else {
+                $v = null;
+            }
         }
-        
+
         // отдаем купон клиенту
         // @todo оттестить после обновления песочницы и возврата hosts к начальному состоянию
         if($response['state']==='win') {
             // добавляем плашку с сообщением о выигрыше
             $response['result']['prizes'] =[
                 'type'      => $response['result']['prizes']['type'],
-                'message'   => \App::templating()->render('game/coupon-message', 
+                'message'   => \App::templating()->render('game/coupon-message',
                     $this->couponAsWin($coupons[$response['result']['prizes']['coupon']])
                 ),
                 'coupon'    => $this->couponAsWin($coupons[$response['result']['prizes']['coupon']])
             ];
-            
+
             try {
                 \App::coreClientV2()->query(
                     'coupon/enter-prize',[
                         'token' => $user->getToken()
                     ],[
                         'guid'      => $user->getUi(),
-                        // @todo надо бы порефакторить api сервис раздачи купонов
                         // на текущий момент мы не пропускаем пользователей не являющихся участниками программы
                         'name'      => $user->getMiddleName(),
                         'mobile'    => $user->getMobilePhone(),
@@ -117,7 +123,7 @@ class BanditAction {
             } catch (\Exception $e) {
                 \App::exception()->remove($e);
                 // @todo определиться как поступать с данной ошибкой, пользователю необходимо что-то сообщить и при этом маякнуть про ошибку модераторам
-                $response['result']['prizes']['message'] = \App::templating()->render('game/coupon-message', 
+                $response['result']['prizes']['message'] = \App::templating()->render('game/coupon-message',
                     array_merge($response['result']['prizes']['coupon'], [
                             'errorMessage'  => 'Вы сможете воспользоваться выигранным купоном после обработки нашими специалистами.'
                         ]
@@ -125,11 +131,11 @@ class BanditAction {
                 );
             }
         }
-		
+
 		return new \Http\JsonResponse(
             array_merge([
                     'success'       => true,
-                    'isAvialable'   => $this->isAvailable
+                    'isAvailable'   => $this->isAvailable
                 ],
                 $response
             )
@@ -172,7 +178,7 @@ class BanditAction {
             // преобразуем массив к ассоциативному, т.к. проверка запрошенного дешевле
             $uids = array_combine($uids, array_pad([], count($uids), true));
             foreach($t as $v) {
-                if(true===$uids[$v['uid']]) {
+                if(isset($uids[$v['uid']]) && true===$uids[$v['uid']]) {
                     $response[$v['uid']]  = $v;
                 }
             }
@@ -219,7 +225,8 @@ class BanditAction {
      */
     protected function getConfig() {
         return [
-            "ledPanel" => [//тут настройки для лед панели (лампы)
+            'isAvailable'   => $this->isAvailable,
+            "ledPanel"      => [//тут настройки для лед панели (лампы)
 				"defaultAnimation" => [//стандартная анимация - стартует сразу при загруке страницы
 					[
 						"type" => "random", //тип анимации есть рандом, слева на право, таггл
@@ -277,7 +284,7 @@ class BanditAction {
 			"game" => [//настройки автомата
 				"maxTimeSpinning" => 5000, // время кручения рельс
 			],
-			"isAvailable" => true//доступен ли автомат - если нет - режим "временно недоступен"
+
         ];
     }
 }

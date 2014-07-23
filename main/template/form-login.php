@@ -22,6 +22,6 @@ if (!isset($form)) {
 
         <div><input class="text bFormLogin__eInput jsSigninPassword" type="password" name="signin[password]" /></div>
 
-        <input type="submit" class="bigbutton bFormLogin__eBtnSubmit jsSubmit" data-loading-value="Вхожу..." value="Войти" />
+        <input type="submit" class="bigbutton bFormLogin__eBtnSubmit jsSubmit" data-loading-value="Вхожу..." value="<?=$form->getSubmit()?>" />
     </fieldset>
 </form>

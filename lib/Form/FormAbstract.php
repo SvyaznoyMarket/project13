@@ -27,12 +27,45 @@ abstract class FormAbstract {
 
 
     /**
+     * Название кнопки отправки формы
+     * @var string
+     */
+    protected $submit;
+
+
+    /**
+     * @return array
+     */
+    abstract public function __toArray();
+
+    /**
+     * @param $data
+     * @return mixed
+     */
+    abstract public function fromArray($data);
+
+    /**
      * @param array $data
      */
     public function __construct(array $data = []) {
         $this->fromArray($data);
     }
-    
+
+    /**
+     * @return string
+     */
+    public function getSubmit() {
+        return ($this->submit?$this->submit:'Подтвердить');
+    }
+
+    /**
+     * @param string $submit
+     */
+    public function setSubmit($submit) {
+        $this->submit = $submit;
+        return $this;
+    }
+
     
     /**
      * @return string
@@ -97,5 +130,31 @@ abstract class FormAbstract {
      */
     public function getErrors() {
         return $this->errors;
+    }
+
+
+    /**
+     * Описание состояния формы
+     * @return array
+     */
+    public function getState() {
+        $fields = [];
+        $data   = $this->__toArray();
+        $errors = $this->getErrors();
+
+        foreach($data as $k=>$v) {
+            $fields[$k] = [
+                'value'     => $v,
+                'error'     => (isset($errors[$k])?$errors[$k]:null)
+            ];
+        }
+
+        return [
+            'route'     => $this->getRoute(),
+            'submit'    => $this->getSubmit(),
+            'isValid'   => $this->isValid(),
+            'fields'    => $fields,
+            'error'     => ($errors['global']?$errors['global']:null)
+        ];
     }
 }
