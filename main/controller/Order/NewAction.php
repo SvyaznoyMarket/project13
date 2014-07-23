@@ -203,12 +203,10 @@ class NewAction {
         }
 
         // SITE-3947
+        $sclubNumberFromCookies = $request->cookies->get(\App::config()->svyaznoyClub['cardNumber']['cookieName']);
         $sclubId = \Model\Order\BonusCard\Entity::SVYAZNOY_ID;
-        if (
-            (!isset($userCards[$sclubId]) || empty($userCards[$sclubId])) &&
-            $request->cookies->get(\App::config()->svyaznoyClub['cardNumber']['cookieName'])
-        ) {
-            $userCards[$sclubId] = $request->cookies->get(\App::config()->svyaznoyClub['cardNumber']['cookieName']);
+        if ($sclubNumberFromCookies) {
+            $userCards[$sclubId] = $sclubNumberFromCookies;
         }
 
         // подготавливаем массив данных для JS
