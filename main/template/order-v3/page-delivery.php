@@ -11,7 +11,7 @@ return function(
 
 <?= $helper->render('order-v3/__head', ['step' => 2]) ?>
 
-<section class="orderCnt">
+<section id="js-order-content" class="orderCnt">
     <h1 class="orderCnt_t">Самовывоз и доставка</h1>
     <!-- заголовок страницы -->
 
@@ -39,11 +39,11 @@ return function(
 
             <? foreach ($order->products as $product): ?>
             <div class="orderCol_cnt clearfix">
-                <a href="" class="orderCol_lk">
+                <a href="<?= $product->link ?>" class="orderCol_lk" target="_blank">
                     <img class="orderCol_img" src="<?= $product->image ?>" alt="<?= $helper->escape($product->name) ?>" />
                 </a>
 
-                <a href="" class="orderCol_n">
+                <a href="<?= $product->link ?>" target="_blank" class="orderCol_n">
                     <? if ($product->prefix): ?><?= $product->prefix ?><br/><? endif ?>
                     <?= $product->name_web ?>
                 </a>
@@ -99,8 +99,14 @@ return function(
                     <div class="orderCol_delivrIn_t clearfix">
                         <strong><?= $orderDelivery->points[$order->delivery->point->token]->block_name ?></strong>
 
-                        <span class="orderChange">изменить место</span>
+                        <span class="js-order-changePlace-link orderChange" data-content="#id-order-changePlace-content-<?= $order->id ?>">изменить место</span>
                     </div>
+
+                    <?= $helper->render('order-v3/__map', [
+                        'id'         => 'id-order-changePlace-content-' . $order->id,
+                        'delivery'   => $order->delivery,
+                        'pointsById' => $orderDelivery->points[$order->delivery->point->token]->list,
+                    ]) ?>
 
                     <div class="orderCol_addrs"<? if (isset($point->subway[0]->line)): ?> style="background: <?= $point->subway[0]->line->color ?>;"<? endif ?>>
                         <span class="orderCol_addrs_tx">

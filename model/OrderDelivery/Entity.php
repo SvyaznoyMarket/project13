@@ -97,7 +97,7 @@ namespace Model\OrderDelivery\Entity {
         public $action_name;
         /** @var string */
         public $block_name;
-        /** @var Point\Shop[] */
+        /** @var Point\Shop[]|Point\Pickpoint[] */
         public $list = [];
 
         public function __construct(array $data = []) {
@@ -122,6 +122,8 @@ namespace Model\OrderDelivery\Entity {
     }
 
     class Order {
+        /** @var string */
+        public $id;
         /** @var string */
         public $block_name;
         /** @var Order\Seller|null */
@@ -152,6 +154,8 @@ namespace Model\OrderDelivery\Entity {
         public $total_cost;
 
         public function __construct(array $data = [], \Model\OrderDelivery\Entity $orderDelivery = null) {
+            $this->id = uniqid();
+
             if (isset($data['block_name'])) $this->block_name = (string)$data['block_name'];
             if (isset($data['seller']['name'])) $this->seller = new Order\Seller($data['seller']);
             if (isset($data['products']) && is_array($data['products'])) {
@@ -332,6 +336,8 @@ namespace Model\OrderDelivery\Entity\Order {
         /** @var string */
         public $name;
         /** @var string */
+        public $link;
+        /** @var string */
         public $prefix;
         /** @var string */
         public $name_web;
@@ -349,6 +355,7 @@ namespace Model\OrderDelivery\Entity\Order {
         public function __construct(array $data = []) {
             if (isset($data['id'])) $this->id = (string)$data['id'];
             if (isset($data['name'])) $this->name = (string)$data['name'];
+            if (isset($data['link'])) $this->link = (string)$data['link'];
             if (isset($data['name_web'])) $this->name_web = (string)$data['name_web'];
             if (isset($data['prefix'])) $this->prefix = (string)$data['prefix'];
             if (isset($data['price'])) $this->price = (int)$data['price'];
