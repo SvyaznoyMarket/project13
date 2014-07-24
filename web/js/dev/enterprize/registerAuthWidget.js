@@ -66,11 +66,6 @@ $.widget("ui.registerAuth", {
         return this;
     },
 
-    destroy: function(){
-        debugger;
-    },
-
-
     _setState: function(state) {
         this._state[state]();
         this.state = state;
@@ -83,9 +78,12 @@ $.widget("ui.registerAuth", {
      * @param state
      */
     applyFormState: function(form,state) {
-        this.flushErrors(form);
+        this.flushFormState(form);
         if(state.error) {
             this.applyFormErrorMessage(form,state.error);
+        }
+        if(state.message) {
+            this.applyFormMessage(form,state.message);
         }
 
         for (k in state.fields) {
@@ -121,6 +119,14 @@ $.widget("ui.registerAuth", {
         return this.applyFormState(form,state);
     },
 
+
+    /**
+     * Применение ошибки к полю
+     * @param form
+     * @param fieldName
+     * @param error
+     * @returns {*}
+     */
     applyFieldError: function(form,fieldName,error) {
         var self = this;
         form
@@ -137,12 +143,12 @@ $.widget("ui.registerAuth", {
      * @param form
      * @returns {*}
      */
-    flushErrors: function(form) {
-        debugger;
+    flushFormState: function(form) {
         form
             .find('input').removeClass('mError').end()
             .find('.bErrorText').remove().end()
             .find('.error_list').remove().end()
+            .find('.message').remove().end()
         ;
         return this;
     },
@@ -156,6 +162,24 @@ $.widget("ui.registerAuth", {
      */
     applyFormErrorMessage: function(form, message) {
         form.prepend('<ul class="error_list"><li>' + message + '</li></ul>');
+        return this;
+    },
+
+
+    /**
+     * Добавляем общее сообщение к форме
+     *
+     * @param form
+     * @param message
+     * @returns {*}
+     */
+    applyFormMessage: function(form, message) {
+        form.prepend('<p class="message" style="border: 1px solid #ffa901; padding: 2px 5px">' + message + '</p>');
+        return this;
+    },
+
+    applyMessage: function(message) {
+        this.wrapper.prepend('<h2>' + message + '</h2>');
         return this;
     },
 
@@ -253,11 +277,17 @@ $.widget("ui.registerAuth", {
             $.ajax({
                 url: '/enterprize/confirm-wc/setEnterprize',
                 success: function(response,status,state) {
-                    if(typeof(response.error) !== 'undefined' && response.error.code==401) {
+                    if(response.error && response.error.code==401) {
                         self.widget._setState('authRegistration');
+                    } else if (response.error) {
+                        self.widget.wrapper.html('');
+                        self.widget.applyMessage(response.error.message);
                     } else {
-                        debugger;
-//                        self.widget.wrapper.html();
+                        self.widget.wrapper.html('');
+                        self.widget.applyMessage(response.message);
+                        window.setTimeout(function(){
+                            self.widget.complete();
+                        },5000)
                     }
                 }
             });
@@ -275,16 +305,20 @@ $.widget("ui.registerAuth", {
                 success: function(response) {
                     if(response.error) { // если ошибка
                         widget.applyFormErrors(self, response.form.error);
-                    } else if (response.alreadyLogged) { // если мы уже залогинены
+                    } else if(response.data.user.is_enterprize_member) {
+                        widget.complete();
+                    } else if(!response.data.user.is_email_confirmed || !response.data.user.is_phone_confirmed) {
+                        widget._setState('confirm');
+                    } else if(!response.data.user.mobile_phone || !response.data.user.email) {
                         widget._setState('update');
-                    } else {
-                        if(response.data.user.is_enterprize_member) {
-                            widget.complete();
-                        } else if(!response.data.user.mobile_phone || !response.data.user.email) {
-                            widget._setState('update');
-                        } else {
-                            widget._setState('confirm');
-                        }
+                    } else if(!response.data.user.is_enterprize_member) {
+                        widget._setState('setEnterprize');
+                    } else if (response.alreadyLogged) { // если мы уже залогинены, можем только на корректировку данных кинуть
+                        widget._setState('update');
+                    } else { // если вообще не понятно чего
+                        widget.applyFormState(self,{
+                            message: response.message
+                        });
                     }
                 },
                 error: function(xhr, status, errorThrown) {
@@ -351,17 +385,50 @@ $.widget("ui.registerAuth", {
                 url: this.attr('action'),
                 data: this.serializeArray(),
                 success: function(response) {
-                    if(response.error) {
-                        widget.applyFormState(self,{
+                    if (response.error) {
+                        widget.applyFormState(self, {
                             error: response.error.message
                         });
-                    } else {
+                    // проверяем состояние подтверждения
+                    // если и email подтвержден, то идем дальше
+                    } else if (response.status.isEmailConfirmed) {
                         widget._setState('setEnterprize');
+                    } else {
+                        widget.wrapper.find('.jsPhoneConfirm').hide('slow');
                     }
                 },
                 error: function(xhr, status, errorThrown) {
                     widget.applyFormState(self,{
                         error: 'Не удается подтвердить телефон.'
+                    });
+                }
+            });
+            return false;
+        },
+
+        confirmEmail: function(e) {
+            var self = this;
+            var widget = $(this.context).data().uiRegisterAuth;
+            $.ajax({
+                type: 'POST',
+                url: this.attr('action'),
+                data: this.serializeArray(),
+                success: function(response) {
+                    if(response.error) {
+                        widget.applyFormState(self,{
+                            error: response.error.message
+                        });
+                    // проверяем состояние подтверждения
+                    // если и телефон подтвержден, то идем дальше
+                    } else if(response.status.isPhoneConfirmed) {
+                        widget._setState('setEnterprize');
+                    } else {
+                        widget.wrapper.find('.jsEmailConfirm').hide('slow');
+                    }
+                },
+                error: function(xhr, status, errorThrown) {
+                    widget.applyFormState(self,{
+                        error: 'Не удается подтвердить email.'
                     });
                 }
             });
@@ -381,37 +448,14 @@ $.widget("ui.registerAuth", {
                             error: response.error.message
                         });
                     } else {
-
+                        widget.applyFormState(self,{
+                            message: response.message
+                        });
                     }
                 },
                 error: function(xhr, status, errorThrown) {
                     widget.applyFormState(self,{
                         error: 'Не удается запросить код повторно.'
-                    });
-                }
-            });
-            return false;
-        },
-
-        confirmEmail: function(e) {
-            var self = this;
-            var widget = $(this.context).data().uiRegisterAuth;
-            $.ajax({
-                type: 'POST',
-                url: this.attr('action'),
-                data: this.serializeArray(),
-                success: function(response) {
-                    if(response.error) {
-                        widget.applyFormState(self,{
-                            error: response.error.message
-                        });
-                    } else {
-                        widget._setState('setEnterprize');
-                    }
-                },
-                error: function(xhr, status, errorThrown) {
-                    widget.applyFormState(self,{
-                        error: 'Не удается подтвердить email.'
                     });
                 }
             });
@@ -431,7 +475,9 @@ $.widget("ui.registerAuth", {
                             error: response.error.message
                         });
                     } else {
-
+                        widget.applyFormState(self,{
+                            message: response.message
+                        });
                     }
                 },
                 error: function(xhr, status, errorThrown) {

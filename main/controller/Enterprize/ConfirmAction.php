@@ -120,14 +120,12 @@ class ConfirmAction {
                     ], \App::config()->coreV2['hugeTimeout']
                 );
 
-                if($result && $result['code']==200) {
-                    return new JsonResponse([
-                        'success'   => true,
-                        'message'   => $result['message'],
-                        'status'     => $this->getConfirmStatus()
-                    ]);
-                }
-            } catch (\Exception $e) {
+                $response = [
+                    'success'   => true,
+                    'message'   => $result['message'],
+                    'status'    => $this->getConfirmStatus()
+                ];
+            } catch (\Curl\Exception $e) {
                 \App::exception()->remove($e);
                 switch ($e->getCode()) {
                     case 402:
@@ -141,13 +139,22 @@ class ConfirmAction {
                         break;
 
                 }
-                return new JsonResponse([
+                $response = [
                     'success'   => false,
                     'error'     => $error
-                ]);
+                ];
+            } catch (\Exception $e) {
+                \App::exception()->remove($e);
+                $response = [
+                    'success'   => false,
+                    'error'     => [
+                        'message'   => 'Извините, но сервис временно недоступен',
+                        'code'      => 500
+                    ]
+                ];
             }
         } else {
-            return new JsonResponse([
+            $response = [
                 'success'   => false,
                 'form'      => [
                     'error'     => $errors
@@ -156,8 +163,10 @@ class ConfirmAction {
                     'code'      => 0,
                     'message'   => 'Данные введены некорректно'
                 ]
-            ]);
+            ];
         }
+
+        return new JsonResponse($response);
     }
 
 
@@ -196,13 +205,11 @@ class ConfirmAction {
                     ], \App::config()->coreV2['hugeTimeout']
                 );
 
-                if($result && $result['code']==200) {
-                    return new JsonResponse([
-                        'success'   => true,
-                        'message'   => $result['message']
-                    ]);
-                }
-            } catch (\Exception $e) {
+                $response = [
+                    'success'   => true,
+                    'message'   => $result['message']
+                ];
+            } catch (\Curl\Exception $e) {
                 \App::exception()->remove($e);
                 switch ($e->getCode()) {
                     case 402:
@@ -216,13 +223,22 @@ class ConfirmAction {
                         break;
 
                 }
-                return new JsonResponse([
+                $response = [
                     'success'   => false,
                     'error'     => $error
-                ]);
+                ];
+            } catch (\Exception $e) {
+                \App::exception()->remove($e);
+                $response = [
+                    'success'   => false,
+                    'error'     => [
+                        'message'   => 'Извините, но сервис временно недоступен',
+                        'code'      => 500
+                    ]
+                ];
             }
         } else {
-            return new JsonResponse([
+            $response = [
                 'success'   => false,
                 'form'      => [
                     'error'     => $errors
@@ -231,8 +247,10 @@ class ConfirmAction {
                     'code'      => 0,
                     'message'   => 'Данные введены некорректно'
                 ]
-            ]);
+            ];
         }
+
+        return new JsonResponse($response);
     }
 
     /**
@@ -279,14 +297,11 @@ class ConfirmAction {
                     ], \App::config()->coreV2['hugeTimeout']
                 );
 
-                if($result && $result['code']==200) {
-                    return new JsonResponse([
-                        'success'   => true,
-                        'message'   => $result['message'],
-                        'status'     => $this->getConfirmStatus()
-                    ]);
-                }
-            } catch (\Exception $e) {
+                $response = [
+                    'success'   => true,
+                    'message'   => $result['message']
+                ];
+            } catch (\Curl\Exception $e) {
                 \App::exception()->remove($e);
                 switch ($e->getCode()) {
                     case 402:
@@ -300,13 +315,22 @@ class ConfirmAction {
                         break;
 
                 }
-                return new JsonResponse([
+                $response = [
                     'success'   => false,
                     'error'     => $error
-                ]);
+                ];
+            } catch (\Exception $e) {
+                \App::exception()->remove($e);
+                $response = [
+                    'success'   => false,
+                    'error'     => [
+                        'message'   => 'Извините, но сервис временно недоступен',
+                        'code'      => 500
+                    ]
+                ];
             }
         } else {
-            return new JsonResponse([
+            $response = [
                 'success'   => false,
                 'form'      => [
                     'error'     => $errors
@@ -315,8 +339,10 @@ class ConfirmAction {
                     'code'      => 0,
                     'message'   => 'Данные введены некорректно'
                 ]
-            ]);
+            ];
         }
+
+        return new JsonResponse($response);
     }
 
     /**
@@ -360,13 +386,11 @@ class ConfirmAction {
                     ], \App::config()->coreV2['hugeTimeout']
                 );
 
-                if($result && $result['code']==200) {
-                    return new JsonResponse([
-                        'success'   => true,
-                        'message'   => $result['message']
-                    ]);
-                }
-            } catch (\Exception $e) {
+                $response = [
+                    'success'   => true,
+                    'message'   => $result['message']
+                ];
+            } catch (\Curl\Exception $e) {
                 \App::exception()->remove($e);
                 switch ($e->getCode()) {
                     case 402:
@@ -380,13 +404,22 @@ class ConfirmAction {
                         break;
 
                 }
-                return new JsonResponse([
+                $response = [
                     'success'   => false,
                     'error'     => $error
-                ]);
+                ];
+            } catch (\Exception $e) {
+                \App::exception()->remove($e);
+                $response = [
+                    'success'   => false,
+                    'error'     => [
+                        'message'   => 'Извините, но сервис временно недоступен',
+                        'code'      => 500
+                    ]
+                ];
             }
         } else {
-            return new JsonResponse([
+            $response = [
                 'success'   => false,
                 'form'      => [
                     'error'     => $errors
@@ -395,8 +428,9 @@ class ConfirmAction {
                     'code'      => 0,
                     'message'   => 'Данные введены некорректно'
                 ]
-            ]);
+            ];
         }
+        return new JsonResponse($response);
     }
 
 
@@ -411,9 +445,9 @@ class ConfirmAction {
             throw new \Exception\NotFoundException();
         }
 
-        if(!$request->isXmlHttpRequest()) {
-            return new Response('Bad request',400);
-        }
+//        if(!$request->isXmlHttpRequest()) {
+//            return new Response('Bad request',400);
+//        }
 
         if(!$this->user) {
             return new JsonResponse([
@@ -426,7 +460,7 @@ class ConfirmAction {
 
         try {
             $result = \App::coreClientV2()->query(
-                '/coupon/quick-register-in-enter-prize', [
+                'coupon/quick-register-in-enter-prize', [
                     'client_id' => \App::config()->coreV2['client_id'],
                     'token'     => $this->user->getToken(),
                 ], [
@@ -454,7 +488,7 @@ class ConfirmAction {
                     ]
                 ];
             }
-        } catch (\Exception $e) {
+        } catch (\Curl\Exception $e) {
             \App::exception()->remove($e);
             switch ($e->getCode()) {
                 case 402:
@@ -474,11 +508,20 @@ class ConfirmAction {
                     $error = $e->getContent();
                     break;
 
+                $response = [
+                    'success'   => false,
+                    'error'     => $error
+                ];
             }
-            return new JsonResponse([
+        } catch (\Exception $e) {
+            \App::exception()->remove($e);
+            $response = [
                 'success'   => false,
-                'error'     => $error
-            ]);
+                'error'     => [
+                    'message'   => 'Извините, но сервис временно недоступен',
+                    'code'      => 500
+                ]
+            ];
         }
 
         return new JsonResponse($response);
@@ -503,10 +546,21 @@ class ConfirmAction {
                 \App::exception()->remove($e);
                 return new JsonResponse($e->getContent());
             }
-
         } else {
             throw new \Exception\NotFoundException();
         }
+    }
+
+
+    public function debugOk() {
+        return new JsonResponse([
+            'success'   => true,
+            'message'   => 'ВСЕ ЗБС',
+            'status'    => [
+                'isEmailConfirmed'  => 1,
+                'isPhoneConfirmed'  => 1
+            ]
+        ]);
     }
 
 

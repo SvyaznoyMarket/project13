@@ -39,7 +39,7 @@
             </form>
 
             <form class="confirmForm jsConfirmPhoneRepeatCode" action="<?= \App::router()->generate('enterprize.confirmAll.createPhone') ?>" method="post">
-                <label class="labelCode">Если в течение трех минут не получили код</label>
+                <label class="labelCode">Если в течение трех минут не получили код</label><br/>
                 <input type="hidden" name="isRepeatRending" value="true" />
                 <input type="submit" class="confirmCode bigbutton" value="Отправить повторно" />
             </form>

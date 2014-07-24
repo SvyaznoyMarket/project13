@@ -110,6 +110,8 @@ class Action {
                                     'last_name'             => $userEntity->getLastName(),
                                     'mobile_phone'          => $userEntity->getMobilePhone(),
                                     'email'                 => $userEntity->getEmail(),
+                                    'is_phone_confirmed'    => $userEntity->getIsPhoneConfirmed(),
+                                    'is_email_confirmed'    => $userEntity->getIsEmailConfirmed(),
                                     'is_enterprize_member'  => $userEntity->isEnterprizeMember(),
                                 ],
                                 'link' => $this->redirect,

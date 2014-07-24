@@ -867,11 +867,6 @@ return [
         'pattern' => '/enterprize/confirm-wc/state',
         'action'  => ['Enterprize\ConfirmAction', 'state'],
     ],
-    // получения состояния "подтержденности" данных
-    'enterprize.confirmAll.deleteUser' => [
-        'pattern' => '/enterprize/confirm-wc/deleteUser',
-        'action'  => ['Enterprize\ConfirmAction', 'deleteUser'],
-    ],
 
     'enterprize.show' => [
         'pattern' => '/enterprize/{enterprizeToken}',
