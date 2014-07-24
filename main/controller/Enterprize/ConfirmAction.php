@@ -445,9 +445,9 @@ class ConfirmAction {
             throw new \Exception\NotFoundException();
         }
 
-//        if(!$request->isXmlHttpRequest()) {
-//            return new Response('Bad request',400);
-//        }
+        if(!$request->isXmlHttpRequest()) {
+            return new Response('Bad request',400);
+        }
 
         if(!$this->user) {
             return new JsonResponse([
@@ -507,12 +507,12 @@ class ConfirmAction {
                 default:
                     $error = $e->getContent();
                     break;
-
-                $response = [
-                    'success'   => false,
-                    'error'     => $error
-                ];
             }
+
+            $response = [
+                'success'   => false,
+                'error'     => $error
+            ];
         } catch (\Exception $e) {
             \App::exception()->remove($e);
             $response = [

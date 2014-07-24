@@ -43,7 +43,7 @@ class BanditAction {
         foreach($coupons as $v) {
             $slots[] = $this->couponAsSlot($v);
         }
-        
+
         $reels      = [$slots,$slots,$slots];
 		return new \Http\JsonResponse([
             'success'       => true,
@@ -55,6 +55,9 @@ class BanditAction {
 	}
 
 
+    /**
+     * @return \Http\JsonResponse
+     */
     public function play(){
         $crm	= \App::crmClient();
         $user   = \App::user()->getEntity();
@@ -74,7 +77,6 @@ class BanditAction {
                 ]
             );
         } catch (\Exception $e) {
-            //@todo отрефакторить согласно докам, не могу сходу найти
             if (($error = $this->getError($e->getCode()))) {
                 \App::exception()->remove($e);
                 return new \Http\JsonResponse([
@@ -96,10 +98,9 @@ class BanditAction {
         }
 
         // отдаем купон клиенту
-        // @todo оттестить после обновления песочницы и возврата hosts к начальному состоянию
         if($response['state']==='win') {
             // добавляем плашку с сообщением о выигрыше
-            $response['result']['prizes'] =[
+            $response['result']['prizes'] = [
                 'type'      => $response['result']['prizes']['type'],
                 'message'   => \App::templating()->render('game/coupon-message',
                     $this->couponAsWin($coupons[$response['result']['prizes']['coupon']])

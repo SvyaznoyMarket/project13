@@ -1000,7 +1000,7 @@ class DefaultLayout extends Layout {
     }
     
     /**
-     * Активация виджета авторизации и гарантированной регистрации в программе Enter Prize
+     * Активация виджета идентификации Enter Prize
      * @return string
      */
     public function slotEnterPrizeWidget(){

@@ -22,7 +22,6 @@
 $(window).load(function () {
     // @todo положить экземпляр в какую-нибудь глобальную переменную
     window.registerAuth = $('#enterprize-identify').registerAuth({
-        state: 'setEnterprize',
         beforeInit: function (self, callback) {
             $(self.element).lightbox_me({
                 centered: true,
@@ -39,6 +38,6 @@ $(window).load(function () {
             return self;
         }
     }).data('ui-registerAuth');
-    window.registerAuth.init();
+//    window.registerAuth.init(); // вызов виджета
 });
 </script>

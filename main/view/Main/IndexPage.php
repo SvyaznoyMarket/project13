@@ -26,7 +26,7 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotBanner() {
-//        return $this->render('main/_banner', $this->params);
+        return $this->render('main/_banner', $this->params);
     }
 
     public function slotFooter() {
@@ -52,7 +52,7 @@ class IndexPage extends \View\DefaultLayout {
 
         $response['content'] = str_replace('8 (800) 700-00-09', \App::config()->company['phone'], $response['content']);
 
-//        return $response['content'];
+        return $response['content'];
     }
 
     public function slotInnerJavascript() {
@@ -68,13 +68,13 @@ class IndexPage extends \View\DefaultLayout {
             return;
         }
 
-//        return '<div id="cpaexchangeJS" class="jsanalytics" data-value="' . $this->json(['id' => 22249]) . '"></div>';
+        return '<div id="cpaexchangeJS" class="jsanalytics" data-value="' . $this->json(['id' => 22249]) . '"></div>';
     }
 
     public function slotRuTargetHomepageJS() {
         if (!\App::config()->partners['RuTarget']['enabled']) return;
 
-//        return "<div id=\"RuTargetHomepageJS\" class=\"jsanalytics\" data-value=\"" . $this->json(['regionId' => \App::user()->getRegionId()]) . "\"></div>";
+        return "<div id=\"RuTargetHomepageJS\" class=\"jsanalytics\" data-value=\"" . $this->json(['regionId' => \App::user()->getRegionId()]) . "\"></div>";
     }
 
     public function slotMyragonPageJS() {
@@ -96,7 +96,7 @@ class IndexPage extends \View\DefaultLayout {
             ],
         ];
 
-//        return '<div id="myragonPageJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
+        return '<div id="myragonPageJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
     }
     
     
@@ -105,13 +105,6 @@ class IndexPage extends \View\DefaultLayout {
      * @return string
      */
     public function slotSlosts() {
-//        return \App::templating()->render('game/page-bandit');
-    }
-
-
-
-
-    public function slotMainMenu() {
-        return '';
+        return \App::templating()->render('game/page-bandit');
     }
 }
