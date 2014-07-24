@@ -69,7 +69,7 @@ class SetAction {
             $products = array_slice(
                 $products,
                 $limit * ($pageNum - 1),
-                $limit * ($pageNum)
+                $limit
             );
         };
 
