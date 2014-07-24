@@ -691,7 +691,7 @@ class Action {
         /**
          * @param array $fields
          */
-        $fillForm = function (array $fields = []) use (&$form, $cookieValue) {
+        $fillForm = function (array $fields = []) use (&$form, $cookieValue, $region) {
             $data = [];
             foreach ($fields as $k) {
                 if (!array_key_exists($k, $cookieValue) || (('subway_id' == $k) && !$region->getHasSubway())) continue;
