@@ -47,63 +47,63 @@
             }
         },{
             isAvailable: true,
-            "ledPanel": {
-                "defaultAnimation": [
+            ledPanel: {
+                defaultAnimation: [
                     {
-                        "type": "random",
-                        "speed": 5,
-                        "n": 1,
-                        "m": 1,
-                        "color": "58,29,200"
+                        type: "random",
+                        speed: 5,
+                        n: 1,
+                        m: 1,
+                        color: "58,29,200"
                     }
                 ],
-                "spiningAnimation": [
+                spiningAnimation: [
                     {
-                        "type": "leftToRight",
-                        "speed": 10,
-                        "n": 3,
-                        "m": 1,
-                        "color": "158,29,20"
+                        type: "leftToRight",
+                        speed: 10,
+                        n: 3,
+                        m: 1,
+                        color: "158,29,20"
                     }
                 ],
-                "stopAnimation": [
+                stopAnimation: [
                     {
-                        "type": "toggle",
-                        "speed": 7,
-                        "n": 2,
-                        "m": 1,
-                        "color": "158,129,20"
+                        type: "toggle",
+                        speed: 7,
+                        n: 2,
+                        m: 1,
+                        color: "158,129,20"
                     }
                 ]
             },
-            "textPanel": {
-                "defaultAnimation": {
-                    "animationType": "leftToRight",
-                    "step": 3,
-                    "delay": 0,
-                    "speed": 20
+            textPanel: {
+                defaultAnimation: {
+                    animationType: "leftToRight",
+                    step: 3,
+                    delay: 0,
+                    speed: 20
                 },
-                "spiningAnimation": {
-                    "animationType": "rightToLeft",
-                    "step": 6,
-                    "delay": 0,
-                    "speed": 20
+                spiningAnimation: {
+                    animationType: "rightToLeft",
+                    step: 6,
+                    delay: 0,
+                    speed: 20
                 },
-                "winAnimation": {
-                    "animationType": "random",
-                    "step": 2,
-                    "delay": 0,
-                    "speed": 300
+                winAnimation: {
+                    animationType: "random",
+                    step: 2,
+                    delay: 0,
+                    speed: 300
                 },
-                "loseAnimation": {
-                    "animationType": "toggle",
-                    "step": 2,
-                    "delay": 0,
-                    "speed": 300
+                loseAnimation: {
+                    animationType: "toggle",
+                    step: 2,
+                    delay: 0,
+                    speed: 300
                 }
             },
-            "game": {
-                "maxTimeSpinning": 5000
+            game: {
+                maxTimeSpinning: 5000
             }
         });
     });

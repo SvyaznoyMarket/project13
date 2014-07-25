@@ -205,6 +205,8 @@ $.widget("ui.registerAuth", {
             var form = this.widget.wrapper.find('.jsEnterprizeForm');
             form.off();
             form.on('submit', $.proxy(this.widget._formHandler.registration, form));
+            $.mask.definitions['n'] = '[0-9]';
+            form.find('.jsMobile').mask('8nnnnnnnnnn');
 
             var form = this.widget.wrapper.find('.jsLoginForm');
             form.off();

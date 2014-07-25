@@ -1619,6 +1619,7 @@
   }
   .bFormLogin .bInputList .mCustomLabelBig {
     line-height: 12px;
+    min-height: 24px;
   }
   .bFormLogin .bRulesText {
     clear: both;
