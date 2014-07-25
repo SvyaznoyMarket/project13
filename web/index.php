@@ -121,10 +121,8 @@ $response = null;
 
         // SITE-4040 удаление старых сессионных кук
         try {
-            /*
             $sessionParams = session_get_cookie_params();
             $response->headers->clearCookie(\App::session()->getName(), $sessionParams['path']);
-            */
             $response->headers->clearCookie(\App::config()->region['cookieName'], '/');
         } catch (\Exception $e) {
             \App::logger()->error($e, ['response']);
