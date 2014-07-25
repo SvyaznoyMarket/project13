@@ -268,7 +268,6 @@
 					.wait()
                     .script( getWithVersion('enterprize.js') )
 					.wait()
-					.script( logTimeAfterOurScript )
 					.script( optimizelyUrl )
 					.script('adfox.asyn.code.ver3.min.js')
 					.wait()
