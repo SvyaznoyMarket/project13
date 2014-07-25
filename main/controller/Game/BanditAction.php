@@ -88,7 +88,6 @@ class BanditAction {
 
         $coupons = $this->getCoupons($response['result']['line']);
         foreach($response['result']['line'] as &$v) {
-            // @todo если в наборе не окажется купона, для которого при этом есть счетчик оставшихся И настройки выигрыша
             if(isset($coupons[$v])) {
                 $v = $this->couponAsSlot($coupons[$v]);
             } else {
@@ -147,7 +146,7 @@ class BanditAction {
         return [
             self::errorTriesExceeded => [
                 'code'          => 'triesExceeded',
-                'message'       => 'Выши попытки израсходованы'
+                'message'       => 'Выши попытки израсходованы. Приходите завтра.'
             ],
             self::errorUnauthorized => [
                 'code'          => 'userUnauthorized',
@@ -214,76 +213,6 @@ class BanditAction {
             'icon'          => $coupon['segment_image_url'],
             'background'    => $coupon['background_image_url'],
             'value'         => (int)$coupon['value'].($coupon['is_currency']?'руб.':'%')
-        ];
-    }
-
-    
-    /**
-     * Сюда помещаем пока те настройки которые не понятно куда бы вынести
-     * после корреткировки бизнесс требований узнаем
-     */
-    protected function getConfig() {
-        return [
-            'isAvailable'   => $this->isAvailable,
-            "ledPanel"      => [//тут настройки для лед панели (лампы)
-				"defaultAnimation" => [//стандартная анимация - стартует сразу при загруке страницы
-					[
-						"type" => "random", //тип анимации есть рандом, слева на право, таггл
-						"speed" => 5, //количество кадров в секунду
-						"n" => 1, //скольк ламп в ряд зажать зажечь в кадре
-						"m" => 1, //сколько ламп в столбец зажечь за кадр
-						"color" => "58,29,200" //цвет свечения ламп
-					]
-				],
-				"spiningAnimation" => [//анимация ламп при вращении рельс
-					[
-						"type" => "leftToRight",
-						"speed" => 10,
-						"n" => 3,
-						"m" => 1,
-						"color" => "158,29,20"
-					]
-				],
-				"stopAnimation" => [//анимация ламп при остановке рельс
-					[
-						"type" => "toggle",
-						"speed" => 7,
-						"n" => 2,
-						"m" => 1,
-						"color" => "158,129,20"
-					]
-				]
-			],
-			"textPanel" => [//настройки анимации текстовой панели
-				"defaultAnimation" => [//анимация при загрузке страницы
-					"animationType" => "leftToRight",
-					"step" => 3,
-					"delay" => 0,
-					"speed" => 20
-				],
-				"spiningAnimation" => [//анимация при вращении
-					"animationType" => "rightToLeft",
-					"step" => 6,
-					"delay" => 0,
-					"speed" => 20
-				],
-				"winAnimation" => [//выгрышная анимация
-					"animationType" => "random",
-					"step" => 2,
-					"delay" => 0,
-					"speed" => 300
-				],
-				"loseAnimation" => [//проигрышная анимация
-					"animationType" => "toggle",
-					"step" => 2,
-					"delay" => 0,
-					"speed" => 300
-				]
-			],
-			"game" => [//настройки автомата
-				"maxTimeSpinning" => 5000, // время кручения рельс
-			],
-
         ];
     }
 }

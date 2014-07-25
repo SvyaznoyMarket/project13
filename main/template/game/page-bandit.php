@@ -33,11 +33,19 @@
                 }
             },
             handlers: {
-                userUnauthorized: function(state) {
+                userUnauthorized: function(self,state) {
+                    self.stillInGameState();
                     window.registerAuth.init('authRegistration');
                 },
-                notEnterprizeMember: function(state){
-                    window.registerAuth.init('confirm');
+                notEnterprizeMember: function(self,state){
+                    self.stillInGameState();
+                    window.registerAuth.init('update');
+                },
+                triesExceeded: function (self,state) {
+                    self.notAvailableState(state.message);
+                },
+                undefinedError: function (self,state) {
+                    self.notAvailableState();
                 }
             },
             api_url: {

@@ -763,8 +763,9 @@ $.fn.slots = function (slot_config, animations_config) {
                 }
             },
             handlers: {
-                userUnauthorized: function (message) {
-                    alert('userUnauthorized: ' + message);
+                userUnauthorized: function (self, message) {
+                    self.stillInGameState();
+                    console.log('userUnauthorized: ' + message);
                 }
             },
             api_url: {
@@ -871,10 +872,7 @@ $.fn.slots = function (slot_config, animations_config) {
                 data: data.data,
                 success: function (r) {
                     if (!r.success || r.error) {
-                        self.slot_config.handlers[r.error.code] && self.slot_config.handlers[r.error.code](r.error);
-                        clearTimeout(self.spinningTimeout);
-                        self.ledAnimations.animationHandler.stopAnimation();
-                        self.stopReels();
+                        self.slot_config.handlers[r.error.code] && self.slot_config.handlers[r.error.code](self, r.error);
                         return;
                     }
                     data.cb && data.cb(r);
@@ -888,15 +886,30 @@ $.fn.slots = function (slot_config, animations_config) {
             });
         },
 
-        notAvailableState: function () {//метод для вызова режима "временно недоступен"
+        notAvailableState: function (message) {//метод для вызова режима "временно недоступен"
             var self = this;
             self.ledAnimations.animationHandler.stopAnimation();//останавливаем анимацию лед панели
-
-            self.$notAvailableMessageText.text(self.slot_config.labels.notAvailable.message);//в  пишем сообщение что автомат недоступен
+            clearTimeout(self.spinningTimeout);
+            self.$notAvailableMessageText.text(message ? message : self.slot_config.labels.notAvailable.message);//в  пишем сообщение что автомат недоступен
             self.$notAvailablePrizeText.text(self.slot_config.labels.notAvailable.optionPrize);//пишем тексты в ссылки
             self.$notAvailableRemindText.text(self.slot_config.labels.notAvailable.optionRemind);
             self.$slotMachine.addClass('notavailable');//вешаем класс недоступен на автомат
             self.messageBox.stopAnimation();//останавлеваем анимацию текстовой панели
+            self.stopReels();
+        },
+        stillInGameState: function () {//метод для вызова режима "временно недоступен"
+            var self = this;
+            clearTimeout(self.spinningTimeout);
+            self.game.inGame = false;
+            self.game.buttonsRow.removeClass('stopplay').addClass('toplay');
+            self.setLedPanelOptions('default');
+            self.reels.addClass('spinning');
+            self.messageBox.stopAnimation();
+            self.messageBox.setRandomText("demo");
+            self.messageBox.animateText("defaultAnimation");
+            self.ledAnimations.animationHandler.startAnimation();
+            self.$slotMachine.removeClass('notavailable');//вешаем класс недоступен на автомат
+
         },
         renderMarkup: function () {
             //append popup overlay
@@ -954,6 +967,49 @@ $.fn.slots = function (slot_config, animations_config) {
                     //game.buttonsRow.removeClass('stopplay').addClass('toplay');
                 });
             },
+            playResultHandler: function (response) {
+                var self = $el.slotMachine;
+                var game = this;
+                if (!response.success && !response.result) {
+                    self.slot_config.handlers[r.error.code] ? self.slot_config.handlers[r.error.code](r.error) : self.notAvailableState(r.error);
+                    return;
+                }
+                if (response.spin && !response.spin.isAvailable) {//если автомат уже недоступен режим недоступен
+                    self.notAvailableState();
+                    return;
+                }
+                game.result = response.result;//результат спина
+                game.user = response.user;
+                var ch1 = $el.find(self.reels[0]).find('.chip:nth-child(2)');
+                var ch2 = $el.find(self.reels[1]).find('.chip:nth-child(2)');
+                var ch3 = $el.find(self.reels[2]).find('.chip:nth-child(2)');
+                var winCh = $el.find('#winContainer .chip');
+
+                var reels = response.result.line;
+
+                reels[0] && ch1.find('.border').attr('style', 'background-image: url(' + reels[0].background + ');  background-position: center; background-repeat: no-repeat; background-size: 100%; ');
+                reels[1] && ch2.find('.border').attr('style', 'background-image: url(' + reels[1].background + ');  background-position: center; background-repeat: no-repeat; background-size: 100%; ');
+                reels[2] && ch3.find('.border').attr('style', 'background-image: url(' + reels[2].background + ');  background-position: center; background-repeat: no-repeat; background-size: 100%; ');
+                reels[1] && winCh.find('.border').attr('style', 'background-image: url(' + reels[1].background + ');  background-position: center; background-repeat: no-repeat; background-size: 100%; ');
+
+                reels[0] && ch1.find('.cuponPrice').text(reels[0].value);
+                reels[1] && ch2.find('.cuponPrice').text(reels[1].value);
+                reels[2] && ch3.find('.cuponPrice').text(reels[2].value);
+                reels[1] && winCh.find('.cuponPrice').text(reels[1].value);
+
+                reels[0] && ch1.find('.cuponIco img').attr('src', reels[0].icon);
+                reels[1] && ch2.find('.cuponIco img').attr('src', reels[1].icon);
+                reels[2] && ch3.find('.cuponIco img').attr('src', reels[2].icon);
+                reels[1] && winCh.find('.cuponIco img').attr('src', reels[1].icon);
+
+
+                reels[0] && ch1.find('.cuponDesc').text(reels[0].label);
+                reels[1] && ch2.find('.cuponDesc').text(reels[1].label);
+                reels[2] && ch3.find('.cuponDesc').text(reels[2].label);
+                reels[1] && winCh.find('.cuponDesc').text(reels[1].label);
+
+
+            },
             start: function () {
                 var self = $el.slotMachine;
                 var game = this;
@@ -974,48 +1030,15 @@ $.fn.slots = function (slot_config, animations_config) {
                     self.spinningTimeout = null;//чистим таймаут
                 }, self.config.game.maxTimeSpinning);
                 game.result = null;//чистим предыдущий результат
+                game.response = null;
                 self.send({//шлем запрос на получения результатов спина
                     type: "GET",
                     url: self.slot_config.api_url.play,
                     data: {},
                     cb: function (response) {
-                        if (!response.success && !response.result) {
-                            self.slot_config.handlers[r.error.code] ? self.slot_config.handlers[r.error.code](r.error) : self.notAvailableState(r.error);
-                            return;
-                        }
-                        if (response.spin && !response.spin.isAvailable) {//если автомат уже недоступен режим недоступен
-                            self.notAvailableState();
-                            return;
-                        }
-                        game.result = response.result;//результат спина
-                        game.user = response.user;
-                        var ch1 = $el.find(self.reels[0]).find('.chip:nth-child(2)');
-                        var ch2 = $el.find(self.reels[1]).find('.chip:nth-child(2)');
-                        var ch3 = $el.find(self.reels[2]).find('.chip:nth-child(2)');
-                        var winCh = $el.find('#winContainer .chip');
+                        game.response = response;
 
-                        var reels = response.result.line;
-
-                        ch1.find('.border').attr('style', 'background-image: url(' + reels[0].background + ');  background-position: center; background-repeat: no-repeat; background-size: 100%; ');
-                        ch2.find('.border').attr('style', 'background-image: url(' + reels[1].background + ');  background-position: center; background-repeat: no-repeat; background-size: 100%; ');
-                        ch3.find('.border').attr('style', 'background-image: url(' + reels[2].background + ');  background-position: center; background-repeat: no-repeat; background-size: 100%; ');
-                        winCh.find('.border').attr('style', 'background-image: url(' + reels[1].background + ');  background-position: center; background-repeat: no-repeat; background-size: 100%; ');
-
-                        ch1.find('.cuponPrice').text(reels[0].value);
-                        ch2.find('.cuponPrice').text(reels[1].value);
-                        ch3.find('.cuponPrice').text(reels[2].value);
-                        winCh.find('.cuponPrice').text(reels[1].value);
-
-                        ch1.find('.cuponIco img').attr('src', reels[0].icon);
-                        ch2.find('.cuponIco img').attr('src', reels[1].icon);
-                        ch3.find('.cuponIco img').attr('src', reels[2].icon);
-                        winCh.find('.cuponIco img').attr('src', reels[1].icon);
-
-
-                        ch1.find('.cuponDesc').text(reels[0].label);
-                        ch2.find('.cuponDesc').text(reels[1].label);
-                        ch3.find('.cuponDesc').text(reels[2].label);
-                        winCh.find('.cuponDesc').text(reels[1].label);
+                        game.playResultHandler(response);
 
 
                     },
@@ -1029,12 +1052,21 @@ $.fn.slots = function (slot_config, animations_config) {
                 var game = this;
 
                 console.log('stopAll');
+                if (game.response) {
+                    self.stopReels();
+                    self.config.game.usedUserAttempts++;
+                    game.isWin(isAnimationsStopped);
+                } else {
+                    game.waitingForGameResult = setInterval(function () {
+                        if (game.response) {
+                            self.stopReels();
+                            self.config.game.usedUserAttempts++;
+                            game.isWin(isAnimationsStopped);
+                            clearInterval(game.waitingForGameResult);
+                        }
+                    }, 500);
+                }
 
-                self.stopReels();
-
-                self.config.game.usedUserAttempts++;
-
-                game.isWin(isAnimationsStopped);
             },
             stop: function (game) {
                 var self = $el.slotMachine;
@@ -1092,7 +1124,10 @@ $.fn.slots = function (slot_config, animations_config) {
             }
         },
         winChipAnimation: function (message) {
+
             var self = this;
+
+
             $.each(self.reels, function (i, reel) {
                 setTimeout(function () {
                     $($(reel).find('.chip')[1]).find('.border').addClass('winChip');
