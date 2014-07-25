@@ -769,8 +769,8 @@ $.fn.slots = function (slot_config, animations_config) {
                 }
             },
             api_url: {
-                init: location.origin + "/init",
-                play: "/play",
+                init: "http://vadim.ent3.ru/game/slots/init?t=" + new Date().getTime(),
+                play: "http://vadim.ent3.ru/game/slots/play?t=" + new Date().getTime(),
                 img_led_off: "/img/slot_led_off.png"
 
             },
@@ -956,6 +956,7 @@ $.fn.slots = function (slot_config, animations_config) {
 
 
                 game.play_button.click(function () {
+                    console.log('game.inGame',game.inGame);
                     if (game.inGame) {
                         return;
                     }
@@ -1014,6 +1015,7 @@ $.fn.slots = function (slot_config, animations_config) {
                 var self = $el.slotMachine;
                 var game = this;
                 game.inGame = true;
+                game.buttonsRow.find('.stop .reel_dot').removeClass('on');
                 self.setLedPanelOptions('spining');// ставим параметры лед панели
                 self.ledAnimations.animationHandler.startAnimation();//стартуем акнимацию лед панели
                 $el.find('.winChip').removeClass('winChip');//чистим классы фишек
@@ -1052,20 +1054,19 @@ $.fn.slots = function (slot_config, animations_config) {
                 var game = this;
 
                 console.log('stopAll');
-                if (game.response) {
-                    self.stopReels();
-                    self.config.game.usedUserAttempts++;
-                    game.isWin(isAnimationsStopped);
-                } else {
-                    game.waitingForGameResult = setInterval(function () {
-                        if (game.response) {
-                            self.stopReels();
-                            self.config.game.usedUserAttempts++;
-                            game.isWin(isAnimationsStopped);
-                            clearInterval(game.waitingForGameResult);
-                        }
-                    }, 500);
-                }
+                var check = function () {
+                    if (game.response) {
+                        self.stopReels();
+                        self.config.game.usedUserAttempts++;
+                        game.isWin(isAnimationsStopped);
+                        clearTimeout(game.waitingForGameResult);
+                    } else {
+                        game.waitingForGameResult = setTimeout(check, 500);
+                    }
+                };
+
+                check();
+
 
             },
             stop: function (game) {
@@ -1113,6 +1114,7 @@ $.fn.slots = function (slot_config, animations_config) {
                             self.messageBox.stopAnimation();
                             self.messageBox.animateText("loseAnimation");
                             self.messageBox.setRandomText('nowin', null, game.user);
+                            game.response = null;
                         }, isAnimationsStopped ? 10 : 1500);
                         game.inGame = false;
                     }
@@ -1135,6 +1137,7 @@ $.fn.slots = function (slot_config, animations_config) {
 
             });
             setTimeout(function () {
+                self.game.response = null;
                 self.$winContainer.find('.tile .rulesText').html(message);
                 self.$winContainer.show();
                 self.$winContainer.addClass('winner');
@@ -1161,6 +1164,7 @@ $.fn.slots = function (slot_config, animations_config) {
 
             });
             setTimeout(function () {
+                self.game.response = null;
                 self.$winContainer.find('.tile .rulesText').html(message);
                 self.$winContainer.show();
                 self.$winContainer.addClass('bigwinner');
