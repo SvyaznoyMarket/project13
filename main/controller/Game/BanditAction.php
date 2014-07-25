@@ -7,7 +7,8 @@ namespace Controller\Game;
 class BanditAction {
     const errorUnauthorized         = 301;  // не авторизован
     const errorTriesExceeded        = 311;  // приходит от API
-    const errorNotEnterprizeMember  = 312;  // пользователь не является участником программы enter prize
+    const errorWinExceeded          = 312;  // приходит от API
+    const errorNotEnterprizeMember  = 612;  // пользователь не является участником программы enter prize
     
     protected $isAvailable = true;
     
@@ -147,6 +148,10 @@ class BanditAction {
             self::errorTriesExceeded => [
                 'code'          => 'triesExceeded',
                 'message'       => 'Выши попытки израсходованы. Приходите завтра.'
+            ],
+            self::errorWinExceeded => [
+                'code'          => 'winExceeded',
+                'message'       => 'Выши попытки израсходованы. Приходите завтра.' // Не тактично писать человеку что он слишком везучий )))
             ],
             self::errorUnauthorized => [
                 'code'          => 'userUnauthorized',

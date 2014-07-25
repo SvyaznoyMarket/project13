@@ -371,10 +371,10 @@
   background-position: center;
   background-size: 100%;
   /*
-            border-radius: 8px;
-            border: 2px solid #E1E7EE;
-            box-shadow: inset 1px 1px 0px #000, inset -1px -1px 0px #000, inset 0px -2px 1px #AD7B05, inset 0px 2px 1px #FFE9B7, inset -2px 0px 1px #E7B95D, inset -2px 0px 1px #C09B4F, inset 0px 10px 10px #FFD481, inset 0px -10px 10px #AA5200, inset -10px 0px 10px #E8951E,inset 10px 0px 10px #E8951E;
-          */
+        border-radius: 8px;
+        border: 2px solid #E1E7EE;
+        box-shadow: inset 1px 1px 0px #000, inset -1px -1px 0px #000, inset 0px -2px 1px #AD7B05, inset 0px 2px 1px #FFE9B7, inset -2px 0px 1px #E7B95D, inset -2px 0px 1px #C09B4F, inset 0px 10px 10px #FFD481, inset 0px -10px 10px #AA5200, inset -10px 0px 10px #E8951E,inset 10px 0px 10px #E8951E;
+      */
 }
 #slotsWrapper #buttonsRow .button:hover {
   background-image: url(img/btn_play_hover.png);

@@ -173,6 +173,9 @@ $.fn.slots = function (slot_config, animations_config) {
             $el.append('<div id="slotsWrapper"> <div id="slotsMachine"> <div id="slotsGame"> <div id="slotsHeader"></div> <div id="notAvailable"> <div class="message"></div> <a href="#" class="option prize"></a> <a href="#" class="option remind"></a> <div class="plast br"></div> <div class="plast bl"></div> <div class="plast tr"></div> <div class="plast tl"></div> </div> <div id="slotsMessageBox"> <div id="slotsMessageReel"> <div id="messages" class="messageRow"></div> <div id="pixelOverlay"></div> </div> </div> <div id="reelsWrapper"> <div id="reel1" class="reel"> <div class="chips "> </div> <div class="slot-shadow-overlay overlay-top"></div> <div class="slot-shadow-overlay overlay-bottom"></div> </div> <div id="reel2" class="reel"> <div class="chips"> </div> <div class="slot-shadow-overlay overlay-top"></div> <div class="slot-shadow-overlay overlay-bottom"></div> </div> <div id="reel3" class="reel"> <div class="chips"> </div> <div class="slot-shadow-overlay overlay-top"></div> <div class="slot-shadow-overlay overlay-bottom"></div> </div> </div> <div id="winContainer" class=""> <div class="tile"> <div class="rulesText"> Фишка со скидкой <strong class="dicount">10 %</strong> на <strong class="category"><a target="_blank" style="text-decoration: underline;" href="/catalog/children">Детские товары</a></strong><br> Минимальная сумма заказа 499 руб<br> Действует c 28.05.2014 по 30.06.2014 </div> </div> <div class="confetil"></div> <div class="blue_shine"></div> <div class="shine"></div> <div class="chip "> <div class="border lime"> <div class="cuponImg__inner"> <div class="cuponIco"> <img src="http://content.enter.ru/wp-content/uploads/2014/03/kids.png"> </div> <div class="cuponDesc">Детские товары</div> <div class="cuponPrice">15% </div> </div> </div> </div> <div class=""></div> </div> <canvas height="388" width="588" id="canvas"></canvas> <div id="buttonsRow" class="toplay"> <div class="play btn_wrapper"> <div class="step_dots"> <div class="reel_dot first on"></div> <div class="reel_dot second on"></div> <div class="reel_dot third on"></div> </div> <div class="button">Играть</div> </div> <div class="stop btn_wrapper"> <div class="step_dots"> <div class="reel_dot first"></div> <div class="reel_dot second"></div> <div class="reel_dot third"></div> </div> <div class="button">Стоп</div> </div> </div> </div> </div> <div id="slotsBottomLine"></div> </div>');
             this.canvas = document.getElementById('canvas');
             this.context = canvas.getContext('2d');
+            this.context.webkitImageSmoothingEnabled = false;
+            this.context.mozImageSmoothingEnabled = false;
+            this.context.imageSmoothingEnabled = false;
             this.reels = $el.find('#reelsWrapper .chips');
             this.$notAvailableMessageText = $el.find('#notAvailable .message');
             this.$notAvailablePrizeText = $el.find('#notAvailable .option.prize');
@@ -209,7 +212,7 @@ $.fn.slots = function (slot_config, animations_config) {
 
 
                 game.play_button.click(function () {
-                    console.log('game.inGame',game.inGame);
+                    console.log('game.inGame', game.inGame);
                     if (game.inGame) {
                         return;
                     }
@@ -669,7 +672,10 @@ $.fn.slots = function (slot_config, animations_config) {
             $.each(self.reels, function (i, reel) {
                 setTimeout(function () {
                     self.stopReelSpin($(reel));
-                    $(self.game.buttonsRow.find('.stop .reel_dot')[i]).addClass('on');
+                    if (self.game.buttonsRow) {
+                        $(self.game.buttonsRow.find('.stop .reel_dot')[i]).addClass('on');
+                    }
+
                 }, i * 500 + 500);
             });
         },
