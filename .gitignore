@@ -28,3 +28,4 @@ erase_barcode.cmd
 /web/survey
 /node_modules
 /web/version.txt
+*.map

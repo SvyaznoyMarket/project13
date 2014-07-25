@@ -6,6 +6,9 @@
  * @var $categoryConfigById     array
  */
 
+$helper = new \Helper\TemplateHelper();
+$category_class = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
+
 $links = [];
 $categories = $category->getChild();
 if (!empty($relatedCategories)) $categories = array_merge($categories, $relatedCategories);
@@ -23,12 +26,14 @@ foreach ($categories as $child) {
                 : $page->helper->numberChoice($productCount, array('товар', 'товара', 'товаров'))
             );
     }
-    
+
+    $image_size = 'furniture' === $category_class ? 3 : 0;
+
     $links[] = [
         'name'          => isset($config['name']) ? $config['name'] : $child->getName(),
         //'url'           => $child->getLink(),
         'url'           => $child->getLink() . (\App::request()->get('instore') ? '?instore=1' : ''),
-        'image'         => (is_array($config) && array_key_exists('image', $config)) ? $config['image'] : $child->getImageUrl(),
+        'image'         => (is_array($config) && array_key_exists('image', $config)) ? $config['image'] : $child->getImageUrl($image_size),
         //'active'        => false, // пока тут не используется
         'css'           => isset($config['css']) ? $config['css'] : null,
         'totalText'     => $totalText,
@@ -40,7 +45,12 @@ foreach ($categories as $child) {
 
 <!-- Баннер --><div id="adfox683" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
 
-<? if (count($links)): ?>
+<? if ('furniture' === $category_class): ?>
+    <?= $helper->renderWithMustache('furniture/product-category/_listInFilter', [
+        'links' => $links,
+        'promoStyle' => !empty($promoStyle) ? $promoStyle : '',
+    ]) ?>
+<? elseif (count($links)): ?>
     <ul class="bCatalogRoot clearfix">
         <? /*
         <!--li class="bCatalogRoot__eItem mBannerItem" style="width: 0px;"><-div class="adfoxWrapper" id="adfox215"></div></li-->

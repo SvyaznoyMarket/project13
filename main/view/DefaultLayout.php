@@ -180,8 +180,9 @@ class DefaultLayout extends Layout {
     public function slotHeadJavascript() {
         $return = "\n";
         foreach ([
-            \App::config()->debug ? 'http://code.jquery.com/jquery-1.8.3.js' : 'http://yandex.st/jquery/1.8.3/jquery.min.js',
-            '/js/prod/LAB.min.js',
+            \App::config()->debug ? 'http://yandex.st/jquery/1.8.3/jquery.js' : 'http://yandex.st/jquery/1.8.3/jquery.min.js',
+
+            \App::config()->debug ? '/js/vendor/LAB.js' : '/js/prod/LAB.min.js',
 
             \App::config()->debug ? '/js/vendor/html5.js' : '/js/prod/html5.min.js',
             
@@ -238,7 +239,12 @@ class DefaultLayout extends Layout {
     }
 
     public function slotYandexMetrika() {
-        return (\App::config()->yandexMetrika['enabled']) ? $this->render('_yandexMetrika') : '';
+
+        if (\App::config()->yandexMetrika['enabled']) {
+            // загрузка основного или тестового счетчика
+            return in_array(\App::config()->mainHost, ['www.enter.ru', 'm.enter.ru']) ? $this->render('_yandexMetrika') : $this->render('_yandexMetrikaTest');
+        }
+
     }
 
     public function slotMetaOg() {
@@ -642,6 +648,11 @@ class DefaultLayout extends Layout {
             return;
         }
 
+        // не нужно повторно инициализировать googletagmanager
+        if (true == \App::config()->googleTagManager['enabled']) {
+            return;
+        }
+
         return '<div id="RuTargetJS" class="jsanalytics" data-id="' . \App::config()->partners['RuTarget']['containerId'] . '">
             <!­­ RuTarget ­­> 
             <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM­4SJX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -834,6 +845,14 @@ class DefaultLayout extends Layout {
     }
 
     public function slotEnterprizeCompleteJs() {
+        return '';
+    }
+
+    public function slotFlocktoryEnterprizeJs() {
+        return '';
+    }
+
+    public function slotFlocktoryEnterprizeRegistrationJs() {
         return '';
     }
 

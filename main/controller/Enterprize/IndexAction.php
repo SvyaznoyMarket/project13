@@ -70,7 +70,7 @@ class IndexAction {
         $userCoupons = [];
         if (\App::user()->getToken()) {
             try {
-                $client->addQuery('user/get-discount-coupons', ['token' => \App::user()->getToken()], [],
+                $client->addQuery('user/get-discount-coupons', ['token' => \App::user()->getToken(), 'extended' => false], [],
                     function ($data) use (&$userCoupons, &$userCouponSeries) {
                         if (isset($data['detail']) && is_array($data['detail'])) {
                             foreach ($data['detail'] as $item) {

@@ -15,12 +15,20 @@ class ChildAction {
         $region = \App::user()->getRegion();
 
         $rootCategoryIdInMenu = (!empty($catalogConfig['root_category_menu']['root_id']) && is_scalar($catalogConfig['root_category_menu']['root_id'])) ? (int)$catalogConfig['root_category_menu']['root_id'] : null;
-        \RepositoryManager::productCategory()->prepareTreeCollectionByRoot($rootCategoryIdInMenu, $region, 3, function($data) use (&$rootCategoryInMenu) {
-            $data = is_array($data) ? reset($data) : [];
-            if (isset($data['id'])) {
-                $rootCategoryInMenu = new \Model\Product\Category\TreeEntity($data);
-            }
-        });
+        $rootCategoryInMenu = null;
+        if ($rootCategoryIdInMenu) {
+            \RepositoryManager::productCategory()->prepareTreeCollectionByRoot($rootCategoryIdInMenu, $region, 3, function($data) use (&$rootCategoryInMenu) {
+                $data = is_array($data) ? reset($data) : [];
+                if (isset($data['id'])) {
+                    $rootCategoryInMenu = new \Model\Product\Category\TreeEntity($data);
+                }
+            });
+        }
+
+        $rootCategoryInMenuImage = null;
+        if (isset($catalogConfig['root_category_menu']['image']) && !empty($catalogConfig['root_category_menu']['image'])) {
+            $rootCategoryInMenuImage = $catalogConfig['root_category_menu']['image'];
+        }
 
         $result = [];
         \App::shopScriptClient()->addQuery(
@@ -94,8 +102,11 @@ class ChildAction {
             return $product instanceof \Model\Product\BasicEntity;
         });
 
-        if ($category->getProductCount() == 0 && (bool) $category->getAncestor() && $category->getAncestor()[0]->getToken() == 'tchibo') {
-            return new \Http\RedirectResponse(\App::router()->generate('tchibo.where_buy'));
+        if (
+            $category->getProductCount() == 0 && (bool)$category->getAncestor() &&
+            $category->getAncestor()[0]->getToken() == 'tchibo' && \App::config()->preview !== true
+        ) {
+            return new \Http\RedirectResponse(\App::router()->generate('tchibo.where_buy', $request->query->all()));
         }
 
         // SITE-3970
@@ -120,6 +131,7 @@ class ChildAction {
         $page->setParam('rootCategoryInMenu', $rootCategoryInMenu);
         $page->setParam('shopScriptSeo', $shopScriptSeo);
         $page->setGlobalParam('tchiboMenuCategoryNameStyles', $tchiboMenuCategoryNameStyles);
+        $page->setGlobalParam('rootCategoryInMenuImage', $rootCategoryInMenuImage);
 
         return new \Http\Response($page->show());
     }

@@ -75,19 +75,17 @@ class ConfirmEmailAction {
             throw new \Exception\NotFoundException();
         }
 
+        $userEntity = \App::user()->getEntity();
+
         if ($this->isEmailConfirmed()) {
             return new \Http\RedirectResponse(\App::router()->generate('enterprize.create'));
         }
 
-        $userEntity = \App::user()->getEntity();
         $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
 
         $response = null;
         try {
-            if (
-                (!isset($data['email']) || empty($data['email']))
-                || ($data['email']=\App::user()->getEntity()->getEmail())
-            ) {
+            if (!isset($data['email']) || empty($data['email'])) {
                 throw new \Exception('Не получен email');
             }
 
@@ -287,10 +285,12 @@ class ConfirmEmailAction {
 
         $userToken = !empty($data['token']) ? $data['token'] : \App::user()->getToken();
 
-        if (
-            isset($data['email'])
-            || ($data['email']=\App::user()->getEntity()->getEmail())
-        ) {
+        $result = false;
+        try {
+            if (!isset($data['email']) || empty($data['email'])) {
+                throw new \Exception('Не передан email');
+            }
+
             $status = \App::coreClientV2()->query(
                 'confirm/status',
                 [
@@ -303,12 +303,14 @@ class ConfirmEmailAction {
                 ],
                 \App::config()->coreV2['hugeTimeout']
             );
-        }
 
-        if (isset($status['is_confirmed'])) {
-            $result = $status['is_confirmed'];
-        } else {
-            $result = false;
+            if (isset($status['is_confirmed'])) {
+                $result = $status['is_confirmed'];
+            }
+
+        } catch (\Exception $e) {
+            \App::exception()->remove($e);
+            \App::logger()->error($e, ['enterprize', 'isEmailConfirmed']);
         }
 
         return $result;

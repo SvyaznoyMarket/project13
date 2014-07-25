@@ -18,9 +18,15 @@ class NewPage extends Layout {
         return 'order_new';
     }
 
-    // public function slotYandexMetrika() {
-        // return (\App::config()->yandexMetrika['enabled']) ? $this->render('order/_yandexMetrika') : '';
-    // }
+    public function slotInnerJavascript() {
+        $return = ''
+            . $this->render('_remarketingGoogle', ['tag_params' => ['pagetype' => 'cart_final']])
+            . "\n\n"
+            . $this->render('_innerJavascript');
+
+        return $return;
+    }
+
 
 //    public function slotInnerJavascript() {
         /** @var $productsForRetargeting \Model\Product\Entity */

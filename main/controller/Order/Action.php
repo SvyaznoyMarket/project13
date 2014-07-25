@@ -150,20 +150,27 @@ class Action {
             $paymentForm = null;
             if (in_array($paymentMethod->getId(), [5, 8, 14])) {
                 try {
+                    // Получение номера sclub
                     $sclub_card_number = null;
+                    $sclubId = \Model\Order\BonusCard\Entity::SVYAZNOY_ID;
+                    $sclubNumberFromCookies = $request->cookies->get(\App::config()->svyaznoyClub['cardNumber']['cookieName']);
 
                     // пытаемся получить sclub_card_number с данных формы
-                    if ((bool)$form->getBonusCardnumber() && \Model\Order\BonusCard\Entity::SVYAZNOY_ID == $form->getBonusCardId()) {
+                    if ((bool)$form->getBonusCardnumber() && $sclubId == $form->getBonusCardId()) {
                         $sclub_card_number = $form->getBonusCardnumber();
 
-                    // если авторизован, пытаемся получить sclub_card_number с пользовательских данных
+                        // пытаемся подставить номер с куки
+                    } elseif ($sclubNumberFromCookies) {
+                        $sclub_card_number = $sclubNumberFromCookies;
+
+                        // если авторизован, пытаемся получить sclub_card_number с пользовательских данных
                     } elseif ($userEntity) {
                         $bonusCards = $userEntity->getBonusCard();
                         if ((bool)$bonusCards && is_array($bonusCards)) {
                             foreach ($bonusCards as $card) {
                                 if (
                                     !isset($card['bonus_card_id']) || !isset($card['number']) || empty($card['number']) ||
-                                    \Model\Order\BonusCard\Entity::SVYAZNOY_ID != $card['bonus_card_id']
+                                    $sclubId != $card['bonus_card_id']
                                 ) {
                                     continue;
                                 }
@@ -671,6 +678,32 @@ class Action {
         $request = \App::request();
         $form = new \View\Order\Form();
 
+        $cookieValue = $request->cookies->get(self::ORDER_COOKIE_NAME);
+        if (!empty($cookieValue)) {
+            try {
+                $cookieValue = (array)unserialize(base64_decode(strtr($cookieValue, '-_', '+/')));
+            } catch (\Exception $e) {
+                \App::logger()->error($e, ['order']);
+                $cookieValue = [];
+            }
+        }
+
+        /**
+         * @param array $fields
+         */
+        $fillForm = function (array $fields = []) use (&$form, $cookieValue, $region) {
+            $data = [];
+            foreach ($fields as $k) {
+                if (!array_key_exists($k, $cookieValue) || (('subway_id' == $k) && !$region->getHasSubway())) continue;
+
+                if (('recipient_phonenumbers' == $k) && (strlen($cookieValue[$k])) > 10) {
+                    $cookieValue[$k] = substr($cookieValue[$k], -10);
+                }
+                $data[$k] = $cookieValue[$k];
+            }
+            $form->fromArray($data);
+        };
+
         // если пользователь авторизован
         if ($userEntity = \App::user()->getEntity()) {
             $form->setFirstName($userEntity->getFirstName());
@@ -680,44 +713,29 @@ class Action {
                     : $userEntity->getMobilePhone()
             );
             $form->setEmail($userEntity->getEmail());
+
         // иначе, если пользователь неавторизован, то вытащить из куки значения для формы
-        } else {
-            $cookieValue = $request->cookies->get(self::ORDER_COOKIE_NAME);
-            if (!empty($cookieValue)) {
-                try {
-                    $cookieValue = (array)unserialize(base64_decode(strtr($cookieValue, '-_', '+/')));
-                } catch (\Exception $e) {
-                    \App::logger()->error($e, ['order']);
-                    $cookieValue = [];
-                }
-                $data = [];
-                foreach ([
-                     'recipient_first_name',
-                     'recipient_last_name',
-                     'recipient_phonenumbers',
-                     'recipient_email',
-                     'address_street',
-                     'address_number',
-                     'address_building',
-                     'address_apartment',
-                     'address_floor',
-                     'subway_id',
-                     'bonus_card_number',
-                     'bonus_card_id',
-                ] as $k) {
-                    if (array_key_exists($k, $cookieValue)) {
-                        if (('subway_id' == $k) && !$region->getHasSubway()) {
-                            continue;
-                        }
-                        if (('recipient_phonenumbers' == $k) && (strlen($cookieValue[$k])) > 10) {
-                            $cookieValue[$k] = substr($cookieValue[$k], -10);
-                        }
-                        $data[$k] = $cookieValue[$k];
-                    }
-                }
-                $form->fromArray($data);
-            }
+        } elseif (!empty($cookieValue)) {
+            $fields = [
+                 'recipient_first_name',
+                 'recipient_last_name',
+                 'recipient_phonenumbers',
+                 'recipient_email',
+                 'address_street',
+                 'address_number',
+                 'address_building',
+                 'address_apartment',
+                 'address_floor',
+                 'subway_id',
+            ];
+            $fillForm($fields);
         }
+
+        $fields = [
+            'bonus_card_number',
+            'bonus_card_id',
+        ];
+        $fillForm($fields);
 
         return $form;
     }

@@ -40,29 +40,6 @@ module.exports = {
             'web/styles/global.min.css': ['web/styles/global.less']
         }
     },
-
-    // компиляция LESS
-    /*
-    compileV2: {
-        options: {
-            paths: ['web/v2/css/']
-        },
-        files: {
-            'web/v2/css/global.css': ['web/v2/css/global.less']
-        }
-    },
-
-    // компиляция и минификация LESS
-    compressV2: {
-        options: {
-            paths: ['web/v2/css/'],
-                compress: true
-        },
-        files: {
-            'web/v2/css/global.min.css': ['web/v2/css/global.less']
-        }
-    },
-	*/
 	
 	photoContestCompile: {
 		options: {

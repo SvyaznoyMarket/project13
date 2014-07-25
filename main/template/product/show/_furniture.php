@@ -69,7 +69,7 @@
         ]) ?>
     <? endif ?>
 
-    <?= $helper->render('product/__groupedProperty', ['product' => $product]) // Характеристики ?>
+    <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getGroupedProperties()]) // Характеристики ?>
 
     <div class="bReviews">
         <? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>

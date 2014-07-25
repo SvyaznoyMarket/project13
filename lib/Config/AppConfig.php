@@ -70,8 +70,6 @@ class AppConfig {
         'name'     => null,
         'authorized_cookie' => null,
     ];
-    /** @var string */
-    public $sessionToken;
     /** @var array */
     public $session = [
         'name'            => null,
@@ -564,6 +562,9 @@ class AppConfig {
     public $svyaznoyClub = [
         'cookieLifetime' => null,
         'userTicket' => [
+            'cookieName' => null,
+        ],
+        'cardNumber' => [
             'cookieName' => null,
         ]
     ];

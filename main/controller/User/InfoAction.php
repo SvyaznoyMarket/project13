@@ -31,7 +31,7 @@ class InfoAction {
                     1,
                     time() + (4 * 7 * 24 * 60 * 60),
                     '/',
-                    null,
+                    \App::config()->session['cookie_domain'],
                     false,
                     false // важно httpOnly=false, чтобы js мог получить куку
                 );
@@ -66,6 +66,7 @@ class InfoAction {
                 $responseData['user']['email'] = $userEntity->getEmail();
                 $responseData['user']['emailHash'] = md5($userEntity->getEmail());
                 $responseData['user']['hasEnterprizeCoupon'] = $user->getEntity()->isEnterprizeMember();
+                $responseData['user']['sex'] = $user->getEntity()->getSex(); // 1-мужской, 2-женский
             }
 
             if (!$cart->isEmpty()) {

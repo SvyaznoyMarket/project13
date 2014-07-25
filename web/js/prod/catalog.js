@@ -1039,6 +1039,13 @@
 				catalog.history.gotoUrl(url);
 			}
 
+			bottomInfButton = $('.jsInfinityEnable').last();
+
+			if (bottomInfButton.visible() && catalog.lastPage > 1) {
+				catalog.infScroll.nowPage += 1;
+				this.load();
+			}
+
 			console.log('Infinity scroll enabled');
 		},
 

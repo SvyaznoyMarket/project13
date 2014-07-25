@@ -80,6 +80,7 @@
                 <li class="socLink__item mTw"><a class="socLink__link" target="_blank" href="https://twitter.com/enter_ru"></a></li>
                 <li class="socLink__item mVk"><a class="socLink__link" target="_blank" href="http://vk.com/public31456119"></a></li>
                 <li class="socLink__item mYt"><a class="socLink__link" target="_blank" href="https://www.youtube.com/user/EnterLLC"></a></li>
+                <li class="socLink__item mOdn"><a class="socLink__link" target="_blank" href="http://www.odnoklassniki.ru/group/53202890129511"></a></li>
             </ul>
 
             <ul class="bannersList">
@@ -152,6 +153,7 @@
         <?= $page->slotEnterprizeCompleteJs() ?>
         <?= $page->slotAdblender() ?>
         <?= $page->slotKissMetrics() ?>
+        <?= $page->slotFlocktoryEnterprizeJs() ?>
     </div>
 </body>
 </html>
