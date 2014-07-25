@@ -64,6 +64,7 @@
   overflow: hidden;
 }
 #slotsWrapper #slotsMachine #slotsMessageBox #slotsMessageReel .messageRow {
+  width: auto;
   position: relative;
   white-space: nowrap;
   text-align: center;
@@ -872,11 +873,11 @@
 }
 @-webkit-keyframes spin {
   from {
-    transform: translate3d(0, -1770px, 1px);
-    -ms-transform: translate3d(0, -1770px, 0);
-    -moz-transform: translate3d(0, -1770px, 0);
-    -webkit-transform: translate3d(0, -1770px, 1px);
-    -o-transform: translate3d(0, -1770px, 0);
+    transform: translate3d(0, -826px, 1px);
+    -ms-transform: translate3d(0, -826px, 0);
+    -moz-transform: translate3d(0, -826px, 0);
+    -webkit-transform: translate3d(0, -826px, 1px);
+    -o-transform: translate3d(0, -826px, 0);
   }
   to {
     transform: translate3d(0, 0px, 1px);
@@ -888,11 +889,11 @@
 }
 @keyframes spin {
   from {
-    transform: translate3d(0, -1770px, 1px);
-    -ms-transform: translate3d(0, -1770px, 0);
-    -moz-transform: translate3d(0, -1770px, 0);
-    -webkit-transform: translate3d(0, -1770px, 1px);
-    -o-transform: translate3d(0, -1770px, 0);
+    transform: translate3d(0, -826px, 1px);
+    -ms-transform: translate3d(0, -826px, 0);
+    -moz-transform: translate3d(0, -826px, 0);
+    -webkit-transform: translate3d(0, -826px, 1px);
+    -o-transform: translate3d(0, -826px, 0);
   }
   to {
     transform: translate3d(0, 0px, 1px);
