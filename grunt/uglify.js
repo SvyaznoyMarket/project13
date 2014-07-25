@@ -135,15 +135,11 @@ module.exports = function (grunt, options) {
         watch3dJS: {
             src: pathDev + 'watch3d/*.js',
             dest: pathProd + 'watch3d.min.js'
-        }
-    },
-	
-	gameSlotsJs: {
-        files: {
-            'web/js/game/slots.min.js': [
-				'web/js/game/slots/jquery.transit.js',
-				'web/js/game/slots/slots.js'
-			]
+        },
+
+        gameSlotsJs: {
+            src: [ 'web/js/game/slots/jquery.transit.js','web/js/game/slots/slots.js'],
+            dest: 'web/js/game/slots.min.js'
         }
     }
 };
