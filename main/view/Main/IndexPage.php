@@ -105,7 +105,6 @@ class IndexPage extends \View\DefaultLayout {
      * @return string
      */
     public function slotSlosts() {
-        return null;
-//        return \App::templating()->render('game/page-bandit');
+        return \App::templating()->render('game/page-bandit');
     }
 }
