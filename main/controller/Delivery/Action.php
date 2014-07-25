@@ -196,7 +196,19 @@ class Action {
             }
 
             // Points By Delivery
+            $pointTokens = array_map(
+                function($state){return isset($state['point_token']) ? $state['point_token'] : null;},
+                $responseData['deliveryStates']
+            );
             $responseData['pointsByDelivery'] = [
+                'self_pred_supplier'      => [
+                    'token' => isset($pointTokens['self_pred_supplier']) ? $pointTokens['self_pred_supplier'] : null,
+                    'changeName' => 'Сменить магазин'
+                ],
+                'standart_pred_supplier'  => [
+                    'token' => isset($pointTokens['standart_pred_supplier']) ? $pointTokens['standart_pred_supplier'] : null,
+                    'changeName' => 'Сменить магазин'
+                ],
                 'self'      => ['token' => 'shops', 'changeName' => 'Сменить магазин'],
                 'self_svyaznoy'      => ['token' => 'shops_svyaznoy', 'changeName' => 'Сменить магазин'],
                 'now'       => ['token' => 'shops', 'changeName' => 'Сменить магазин'],
@@ -261,7 +273,7 @@ class Action {
                             $points[$point['id']] = $point;
 
                             // если самовывоз, то добавляем ид товара в соответствующий магазин
-                            if (in_array($deliveryMethod['token'], ['self', 'now', 'self_svyaznoy'])) {
+                            if (in_array($deliveryMethod['token'], ['self', 'now', 'self_svyaznoy', 'self_pred_supplier'])) {
                                 if (!isset($productIdsByShop[$point['id']])) {
                                     $productIdsByShop[$point['id']] = [];
                                 }
