@@ -123,7 +123,7 @@ $.fn.slots = function (slot_config, animations_config) {
                 url: data.url,
                 data: data.data,
                 success: function (r) {
-                    if (!r.success && r.error) {
+                    if (!r.success || r.error) {
                         self.slot_config.handlers[r.error.code] && self.slot_config.handlers[r.error.code](r.error);
                         clearTimeout(self.spinningTimeout);
                         self.ledAnimations.animationHandler.stopAnimation();
@@ -203,7 +203,6 @@ $.fn.slots = function (slot_config, animations_config) {
                     game.buttonsRow.removeClass('toplay').addClass('stopplay');
                 });
                 game.stop_button.click(function () {//останавливаем игру
-
                     game.stop(game);
                     //game.buttonsRow.removeClass('stopplay').addClass('toplay');
                 });
@@ -220,11 +219,12 @@ $.fn.slots = function (slot_config, animations_config) {
                 self.messageBox.setRandomText('spinning');//пишем текст текстовой панели
                 self.messageBox.animateText("spiningAnimation");//стартуем анимацию текстовой панели
                 clearTimeout(self.spinningTimeout);
+                self.spinningTimeout = null;//чистим таймаут
+
                 self.spinningTimeout = setTimeout(function () {//ставим таймер на максимальное кручение спинов
                     game.stopAll();//если таймер сработал останавливаем рельсы
                     clearTimeout(self.spinningTimeout);
                     self.spinningTimeout = null;//чистим таймаут
-
                 }, self.config.game.maxTimeSpinning);
                 game.result = null;//чистим предыдущий результат
                 self.send({//шлем запрос на получения результатов спина
@@ -277,19 +277,21 @@ $.fn.slots = function (slot_config, animations_config) {
                     }
                 });
             },
-            stopAll: function () {
+            stopAll: function (isAnimationsStopped) {
                 var self = $el.slotMachine;
                 var game = this;
 
+                console.log('stopAll');
+
                 self.stopReels();
 
-                game.buttonsRow.removeClass('stopplay').addClass('toplay');
                 self.config.game.usedUserAttempts++;
 
-                game.isWin();
+                game.isWin(isAnimationsStopped);
             },
             stop: function (game) {
                 var self = $el.slotMachine;
+                console.log('stop');
                 if (game.reelStoped === false) {
                     game.reelStoped = 0;
                 } else {
@@ -298,36 +300,41 @@ $.fn.slots = function (slot_config, animations_config) {
                 self.stopReelSpin($(self.reels[game.reelStoped]));
                 $(game.buttonsRow.find('.stop .reel_dot')[game.reelStoped]).addClass('on');
                 if (game.reelStoped == 2) {
-                    game.stopAll();
+                    game.stopAll(true);
                     clearTimeout(self.spinningTimeout);
                     game.reelStoped = false;
-                    game.buttonsRow.find('.stop .reel_dot').removeClass('on');
+//                    game.buttonsRow.find('.stop .reel_dot').removeClass('on');
+//                    game.buttonsRow.removeClass('stopplay').addClass('toplay');
+//                    self.ledAnimations.stopAnimation(500);
+//                    self.setLedPanelOptions('stop');
+//                    self.ledAnimations.animationHandler.startAnimation();
+//                    self.messageBox.stopAnimation();
+//                    self.messageBox.animateText("loseAnimation");
+//                    self.messageBox.setRandomText('nowin', null, game.user);
+
                 }
 
             },
-            isWin: function () {
+            isWin: function (isAnimationsStopped) {
                 /*if win*/
                 var self = $el.slotMachine;
                 var game = this;
                 if (game.result) {
                     if (game.result.prizes) {
                         setTimeout(function () {
+                            self[game.result.prizes.type == "regular" ? "winChipAnimation" : "winBigChipAnimation" ](game.result.prizes.message);
+                        }, 50);
+                    } else {
+                        setTimeout(function () {
+                            self.game.buttonsRow.find('.stop .reel_dot').removeClass('on');
+                            self.game.buttonsRow.removeClass('stopplay').addClass('toplay');
                             self.ledAnimations.stopAnimation(500);
                             self.setLedPanelOptions('stop');
                             self.ledAnimations.animationHandler.startAnimation();
                             self.messageBox.stopAnimation();
-                            self.messageBox.animateText("winAnimation");
-                            game.buttonsRow.find('.stop .reel_dot').removeClass('on');
-                            self[game.result.prizes.type == "regular" ? "winChipAnimation" : "winBigChipAnimation" ](game.result.prizes.message);
-                        }, 50);
-                    } else {
-                        game.buttonsRow.find('.stop .reel_dot').removeClass('on');
-                        self.ledAnimations.stopAnimation(500);
-                        self.setLedPanelOptions('stop');
-                        self.ledAnimations.animationHandler.startAnimation();
-                        self.messageBox.stopAnimation();
-                        self.messageBox.animateText("loseAnimation");
-                        self.messageBox.setRandomText('nowin', null, game.user);
+                            self.messageBox.animateText("loseAnimation");
+                            self.messageBox.setRandomText('nowin', null, game.user);
+                        }, isAnimationsStopped ? 10 : 1500);
                         game.inGame = false;
                     }
 
@@ -336,6 +343,54 @@ $.fn.slots = function (slot_config, animations_config) {
                 }
 
             }
+        },
+        winChipAnimation: function (message) {
+            var self = this;
+            $.each(self.reels, function (i, reel) {
+                setTimeout(function () {
+                    $($(reel).find('.chip')[1]).find('.border').addClass('winChip');
+                }, i * 500 + 500);
+
+            });
+            setTimeout(function () {
+                self.$winContainer.find('.tile .rulesText').html(message);
+                self.$winContainer.show();
+                self.$winContainer.addClass('winner');
+                self.$lb_overlay.show();
+                self.game.inGame = false;
+                self.game.buttonsRow.removeClass('stopplay').addClass('toplay');
+                self.ledAnimations.stopAnimation(500);
+                self.setLedPanelOptions('stop');
+                self.ledAnimations.animationHandler.startAnimation();
+                self.messageBox.stopAnimation();
+                self.messageBox.animateText("winAnimation");
+                self.game.buttonsRow.find('.stop .reel_dot').removeClass('on');
+            }, self.reels.length * 500 + 200);
+        },
+        winBigChipAnimation: function (message) {
+            var self = this;
+            $.each(self.reels, function (i, reel) {
+                setTimeout(function () {
+                    $($(reel).find('.chip')[1]).find('.border').addClass('winChip');
+
+                }, i * 500 + 500);
+
+            });
+            setTimeout(function () {
+                self.$winContainer.find('.tile .rulesText').html(message);
+                self.$winContainer.show();
+                self.$winContainer.addClass('bigwinner');
+                self.$lb_overlay.show();
+                self.game.inGame = false;
+                self.game.buttonsRow.removeClass('stopplay').addClass('toplay');
+                self.ledAnimations.stopAnimation(500);
+                self.setLedPanelOptions('stop');
+                self.ledAnimations.animationHandler.startAnimation();
+                self.messageBox.stopAnimation();
+                self.messageBox.animateText("winAnimation");
+                self.game.buttonsRow.find('.stop .reel_dot').removeClass('on');
+            }, self.reels.length * 500 + 200);
+
         },
         setLedPanelOptions: function (type) {
             var self = this;
@@ -573,46 +628,11 @@ $.fn.slots = function (slot_config, animations_config) {
             $.each(self.reels, function (i, reel) {
                 setTimeout(function () {
                     self.stopReelSpin($(reel));
+                    $(self.game.buttonsRow.find('.stop .reel_dot')[i]).addClass('on');
                 }, i * 500 + 500);
             });
         },
-        winChipAnimation: function (message) {
 
-            var self = this;
-            self.$winContainer.find('.tile .rulesText').html(message);
-            self.$winContainer.show();
-
-            $.each(self.reels, function (i, reel) {
-                setTimeout(function () {
-                    $($(reel).find('.chip')[1]).find('.border').addClass('winChip');
-                }, i * 500 + 500);
-
-            });
-            setTimeout(function () {
-                self.$winContainer.addClass('winner');
-                self.$lb_overlay.show();
-                self.game.inGame = false;
-            }, self.reels.length * 500 + 200);
-        },
-        winBigChipAnimation: function (message) {
-            var self = this;
-            self.$winContainer.find('.tile .rulesText').html(message);
-            self.$winContainer.show();
-
-            $.each(self.reels, function (i, reel) {
-                setTimeout(function () {
-                    $($(reel).find('.chip')[1]).find('.border').addClass('winChip');
-
-                }, i * 500 + 500);
-
-            });
-            setTimeout(function () {
-                self.$winContainer.addClass('bigwinner');
-                self.$lb_overlay.show();
-                self.game.inGame = false;
-            }, self.reels.length * 500 + 200);
-
-        },
         stopChipAnimation: function () {
             $el.find('.winChip').removeClass('winChip');
         },
@@ -653,22 +673,26 @@ $.fn.slots = function (slot_config, animations_config) {
                 console.log("leftToRight new");
                 var self = this;
                 self.isShowing = true;
+                self.textBox.attr('style', '');
 //                self.textBox.animate({left:600}, {duration:15000, easing: "linear"}); //$({ tempMoney: 0 })
                 self.textBox.css("left", self.left + "px");
-                $({ left: self.left }).animate({ left: 600 }, {
-                    duration: speed ? (speed * (Math.abs(self.left) + 600)) / 3 : 100 * 300,
+                self.textBox.animate({ left: 577 }, {
+//                $({ left: self.left }).animate({ left: 577 }, {
+                    duration: speed ? (speed * (Math.abs(self.left) + 577)) / 3 : 100 * 300,
                     easing: 'linear',
                     step: function () {
                         if (self.isShowing) {
                             self.left += 3;
                             self.textBox.css("left", self.left);
+                        } else if (self.left > 577) {
+//                            this.complete();
                         }
                     },
                     complete: function () {
-                        self.textBox.css("left", -600 + "px");
-                        self.left = -600;
+                        self.textBox.css("left", -577 + "px");
+                        self.left = -577;
                         if (self.isShowing) {
-                            self.applyAnimation("leftToRight", step, delay, speed)
+                            self.applyAnimation("leftToRight", step, delay, speed);
                         }
                     }
                 });
@@ -683,9 +707,12 @@ $.fn.slots = function (slot_config, animations_config) {
             rightToLeft: function (step, delay, speed) {
                 console.log("rightToLeft new");
                 var self = this;
+                self.isShowing = true;
+                self.textBox.attr('style', '');
                 self.textBox.css("left", self.left + "px");
-                $({ left: self.left }).animate({ left: -600 }, {
-                    duration: speed ? (speed * (Math.abs(self.left) + 600)) / 3 : 100 * 300,
+                self.textBox.animate({ left: -577 }, {
+//                $({ left: self.left }).animate({ left: -577 }, {
+                    duration: speed ? (speed * (Math.abs(self.left) + 577)) / 3 : 100 * 300,
                     easing: 'linear',
                     step: function () {
                         if (self.isShowing) {
@@ -694,46 +721,75 @@ $.fn.slots = function (slot_config, animations_config) {
                         }
                     },
                     complete: function () {
-                        self.textBox.css("left", 600 + "px");
-                        self.left = 600;
+                        self.textBox.css("left", 577 + "px");
+                        self.left = 577;
                         if (self.isShowing) {
-                            self.applyAnimation("leftToRight", step, delay, speed)
+                            self.applyAnimation("rightToLeft", step, delay, speed);
                         }
                     }
                 });
             },
+//            toggle: function (step, delay, speed) {
+//                console.log("toggle");
+//                this.textBox.attr('style', '');
+//                this.textBox.transition({ x: '0px', delay: 1, duration: 1});
+//                var opacity = this.textBox.css('opacity') != 0;
+//                this.textBox.transition({ opacity: opacity ? 0 : 1, delay: delay ? delay : 0, duration: speed ? speed : 100 });
+//            },
             toggle: function (step, delay, speed) {
-                console.log("toggle");
-                this.textBox.attr('style', '');
-                this.textBox.transition({ x: '0px', delay: 1, duration: 1});
-                var opacity = this.textBox.css('opacity') != 0;
-                this.textBox.transition({ opacity: opacity ? 0 : 1, delay: delay ? delay : 0, duration: speed ? speed : 100 });
-            },
-            random: function () {
+                console.log("toggle new");
+                var self = this;
+                self.isShowing = true;
+                self.left = 0;
+                self.textBox.css('left', 0 + "px");
+                if (self.isShowing) {
+                    self.textBox.attr('style', 'left: 1px; -webkit-animation: text_animation_toggle ' + ((speed ? speed : 500) / 1000) + 's linear infinite;')
+                }
 
+//                -webkit-animation: text_animation_toggle 0.5s linear infinite;
+//                self.textBox.css('left', 0 + "px");
+//                self.textBox.animate({opacity: 0 }, { duration: 1000, easing: "linear", complete: function () {
+//                    self.textBox.css("opacity", 1);
+//                    if (self.isShowing) {
+//                        setTimeout(function () {
+//                            self.applyAnimation("toggle", step, delay, speed)
+//                        },(speed ? speed : 1000));
+//
+//                    }
+//                }});
+            },
+            random: function (step, delay, speed) {
+                console.log("toggle new");
+                var self = this;
+                self.isShowing = true;
+                self.left = 0;
+                self.textBox.css('left', 0 + "px");
+                if (self.isShowing) {
+                    self.textBox.attr('style', 'left: 1px; -webkit-animation: text_animation_toggle ' + ((speed ? speed : 500) / 1000) + 's linear infinite;')
+                }
             },
             applyAnimation: function (animationType, step, delay, speed) {
                 var textBoxPane = this;
-                textBoxPane.clearIntervals();
                 var self = $el.slotMachine;
-                this.textBox.transition({ x: '0px', delay: 1, duration: 1});
-                this.textBox.attr('style', '');
+//                this.textBox.transition({ x: '0px', delay: 1, duration: 1});
+//                this.textBox.attr('style', '');
 //                setTimeout(function () {
 //                    textBoxPane.textInterval[animationType] = setInterval(function () {
 //                        textBoxPane[animationType] && textBoxPane[animationType](step, delay, speed);
 //                    }, (speed ? speed : 300) + 50);
 //                    console.log(textBoxPane.textInterval);
 //                }, speed ? speed : 300);
+                textBoxPane.stopAnimation();
                 textBoxPane[animationType] && textBoxPane[animationType](step, delay, speed);
             },
             stopAnimation: function () {
                 var self = $el.slotMachine;
                 var textBoxPane = this;
-                textBoxPane.clearIntervals();
-                this.textBox.attr('style', '');
+//                textBoxPane.clearIntervals();
+//                this.textBox.attr('style', '');
                 this.isShowing = false;
                 this.textBox.stop(true, false);
-                this.textBox.transition({ x: '0px', delay: 0, duration: 0});
+//                this.textBox.transition({ x: '0px', delay: 0, duration: 0});
             },
             clearIntervals: function () {
                 var textBoxPane = this;

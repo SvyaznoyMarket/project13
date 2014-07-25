@@ -216,8 +216,7 @@ class BanditAction {
             'value'         => (int)$coupon['value'].($coupon['is_currency']?'руб.':'%')
         ];
     }
-    
-    
+
     
     /**
      * Сюда помещаем пока те настройки которые не понятно куда бы вынести
