@@ -50,7 +50,6 @@ class BanditAction {
             'isAvailable'   => $this->isAvailable,
             'user'          => (isset($response['user'])?$response['user']:null ),
             'reels'         => $reels,
-            'config'        => $this->getConfig(),
         ]);
 	}
 
