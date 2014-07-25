@@ -108,4 +108,73 @@ class EditAction {
 
         return new \Http\Response($page->show());
     }
+
+
+    /**
+     * @param \Http\Request $request
+     * @return \Http\JsonResponse
+     */
+    public function editSclubNumber(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        if (!$request->isXmlHttpRequest()) {
+            throw new \Exception\NotFoundException('Request is not xml http request');
+        }
+
+        $client = \App::coreClientV2();
+        $userEntity = \App::user()->getEntity();
+
+        $responseData = [];
+        try {
+            $number = $request->get('number');
+            if (!$number) {
+                throw new \Exception('Не передан номер Связного');
+            }
+
+            $sclubId = \Model\Order\BonusCard\Entity::SVYAZNOY_ID;
+
+            $userBonusCards = $userEntity->getBonusCard() ?: [];
+            $isEdit = false;
+            foreach ($userBonusCards as $key => $card) {
+                if (isset($card['bonus_card_id']) && $card['bonus_card_id'] == $sclubId) {
+                    $userBonusCards[$key]['number'] = $number;
+                    $isEdit = true;
+                }
+            }
+
+            if (!$isEdit) {
+                $userBonusCards[] = ['bonus_card_id' => $sclubId, 'number' => $number];
+                $isEdit = true;
+            }
+
+            file_put_contents('/tmp/logger.txt', print_r($userBonusCards, true).PHP_EOL, FILE_APPEND);
+
+            $result = $client->query(
+                'user/update',
+                ['token' => \App::user()->getToken()],
+                [
+                    'bonus_card'    => $userBonusCards,
+                ],
+                \App::config()->coreV2['hugeTimeout']
+            );
+
+            if (!isset($result['confirmed']) || !$result['confirmed']) {
+                throw new \Exception('Не получен ответ от сервера.');
+            }
+
+            $responseData = ['success' => true];
+
+        } catch(\Exception $e) {
+            \App::exception()->remove($e);
+            \App::logger()->error($e);
+
+            $responseData = [
+                'success' => false,
+                'error' => $e->getMessage(),
+                'code' => $e->getCode()
+            ];
+        }
+
+        return new \Http\JsonResponse($responseData);
+    }
 }

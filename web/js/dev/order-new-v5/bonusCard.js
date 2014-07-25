@@ -8,7 +8,11 @@
 	var
 		body = $('body'),
 		bonusCard = $('.jsBonusCard'),
-		data;
+		sclubId,
+		sclubEditUrl,
+		data,
+		cookieNumber = window.docCookies.getItem('scid'), // номер пришедший от sclub
+		userNumber; // номер с пользовательских данных
 	// end of vars
 
 	var
@@ -112,6 +116,122 @@
 
 			setValue();
 			setMask();
+		},
+
+		sclub = {
+			init: function () {
+				// если пользователь не авторизован ничего не делаем
+				if ( ENTER.config.userInfo === false ) return;
+
+				if ( !ENTER.config.userInfo ) {
+					$("body").on("userLogged", function() {sclub.action(ENTER.config.userInfo)} );
+				}
+				else {
+					// событие "userLogged" уже произошло
+					console.log(ENTER.config.userInfo);
+					sclub.action(ENTER.config.userInfo);
+				}
+			},
+
+			action: function (userInfo) {
+				if (
+					typeof userInfo.id === "undefined" || // не пришли пользовательские данные
+					!userInfo.hasOwnProperty('sclubNumber') || // не передан номер
+					!cookieNumber
+				) {
+					return;
+				}
+
+				userNumber = userInfo.sclubNumber;
+
+				// номера идентичны, ничего не делаем
+				if (true === sclub.isNumbersEqual(userNumber, cookieNumber)) {
+					return;
+				}
+
+				// выводим сообщение
+				sclub.message();
+
+				body.on('change', '.jsBonusCard .jsCard', sclub.message);
+			},
+
+			/**
+			 * Номер Связного в личном кабинете равен номеру переданом от sclub (через get-параметр scid)
+			 */
+			isNumbersEqual: function (userNumber, cookieNumber) {
+				return userNumber == cookieNumber;
+			},
+
+			/**
+			 * Показать сообщение для карты Связного-клуба
+			 */
+			message: function () {
+				var message, link;
+
+				var
+					showMessage = function () {
+						var
+							sclubMsgBlock = $('.jsBonusCard .jsCardMessage .sclub-message');
+
+						if ( sclubMsgBlock.length ) {
+							hideMessage();
+						}
+
+						message = $('<div/>', {
+							class: 'sclub-message',
+							text: 'Номер карты в ЛК и пришедшим от sclub не совпадают.'
+						});
+
+						link = $('<a/>', {
+							href: sclubEditUrl,
+							title: 'Заменить номер в ЛК',
+							text: 'Заменить номер в ЛК'
+						});
+						link.click(function ( e ) {
+							e.preventDefault();
+
+							$.post(this.href, {number: cookieNumber}, function ( res ) {
+								if ( !res.success ) {
+									if ( res.error ) {
+										$('.jsBonusCard .jsCardMessage .sclub-message').html(res.error).addClass('error');
+									}
+
+									if ( res.hasOwnProperty('code') && 735 == res.code ) {// 735 - Невалидный номер карты
+										window.docCookies.removeItem('scid', '/');
+										cookieNumber = null;
+
+										$('#bonus-card-number').val(userNumber);
+									}
+
+									return;
+								}
+
+								window.docCookies.removeItem('scid', '/');
+								cookieNumber = null;
+
+								hideMessage();
+							});
+						});
+						link.appendTo(message);
+
+						message.appendTo('.jsBonusCard .jsCardMessage');
+					},
+
+					hideMessage = function () {
+						var sclubMsgBlock = $('.jsBonusCard .jsCardMessage .sclub-message');
+
+						if ( !sclubMsgBlock.length ) return;
+						sclubMsgBlock.remove();
+					};
+
+				// если не выбрана карта Связного, то скрывем сообщение
+				if ( sclubId != $('input[name="order[bonus_card_id]"]:checked', '.jsBonusCard').val() ) {
+					hideMessage();
+					return;
+				}
+
+				showMessage();
+			}
 		};
 	// end of functions
 
@@ -128,6 +248,11 @@
 
 	$.mask.definitions['x'] = '[0-9]';
 	setDefaults();
+
+	// sclub
+	sclubId = bonusCard.data('sclub-id');
+	sclubEditUrl = bonusCard.data('sclub-edit-url');
+	sclub.init();
 
 	body.on('change', '.jsBonusCard .jsCard', cardChangeHandler);
 	console.groupEnd();
