@@ -128,7 +128,7 @@
 				return false;
 			}
 
-			return this.pointsByDelivery.hasOwnProperty(state) && eval('this.pointsByDelivery.' + state + '.token');
+            return this.pointsByDelivery.hasOwnProperty(state) && this.pointsByDelivery[state].token;
 		};
 
 		/**
