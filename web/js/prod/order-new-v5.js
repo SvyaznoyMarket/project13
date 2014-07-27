@@ -1,6 +1,6 @@
 
 (function($){var
-body=$('body'),bonusCard=$('.jsBonusCard'),sclubId,sclubEditUrl,data,cookieNumber=window.docCookies.getItem('scid'),userNumber;var
+body=$('body'),bonusCard=$('.jsBonusCard'),sclubId,sclubEditUrl,data,sclubCookieName='scid',userNumber;var
 cardChangeHandler=function cardChangeHandlerF(){var
 newCardData,cardIndex,activeCard=$('.jsActiveCard'),activeCardNumber=$('.jsActiveCard .jsCardNumber'),activeCardDescription=$('.jsActiveCard .jsDescription');var
 changeCardImage=function changeCardImageF(){if(!activeCard.length||!newCardData.hasOwnProperty('image')){return;}
@@ -16,15 +16,21 @@ setMask=function setMaskF(){if(!data[0].hasOwnProperty('mask')){return;}
 activeCardNumber.mask(data[0].mask,{placeholder:'*'});},setValue=function setValueF(){if(!data[0].hasOwnProperty('value')){return;}
 activeCardNumber.val(data[0].value);};if(!activeCardNumber.length||!data||!data.hasOwnProperty(0)){return;}
 console.info('setDefaults');console.log(data[0]);setValue();setMask();},sclub={init:function(){if(ENTER.config.userInfo===false)return;if(!ENTER.config.userInfo){$("body").on("userLogged",function(){sclub.action(ENTER.config.userInfo)});}
-else{console.log(ENTER.config.userInfo);sclub.action(ENTER.config.userInfo);}},action:function(userInfo){if(typeof userInfo.id==="undefined"||!userInfo.hasOwnProperty('sclubNumber')||!cookieNumber){return;}
-userNumber=userInfo.sclubNumber;if(true===sclub.isNumbersEqual(userNumber,cookieNumber)){return;}
-sclub.message();body.on('change','.jsBonusCard .jsCard',sclub.message);},isNumbersEqual:function(userNumber,cookieNumber){return userNumber==cookieNumber;},message:function(){var message,link;var
+else{console.log(ENTER.config.userInfo);sclub.action(ENTER.config.userInfo);}
+body.on('change','.jsBonusCard .jsCard',sclub.message);},action:function(userInfo){if(typeof userInfo.id==="undefined"||!userInfo.hasOwnProperty('sclubNumber')||!window.docCookies.getItem(sclubCookieName)){return;}
+userNumber=userInfo.sclubNumber;sclub.message();},isNumbersEqual:function(userNumber,cookieNumber){return userNumber==cookieNumber;},message:function(){var message,linkYes,linkNo;var
 showMessage=function(){var
-sclubMsgBlock=$('.jsBonusCard .jsCardMessage .sclub-message');if(sclubMsgBlock.length){hideMessage();}
-message=$('<div/>',{class:'sclub-message',text:'Номер карты в ЛК и пришедшим от sclub не совпадают.'});link=$('<a/>',{href:sclubEditUrl,title:'Заменить номер в ЛК',text:'Заменить номер в ЛК'});link.click(function(e){e.preventDefault();$.post(this.href,{number:cookieNumber},function(res){if(!res.success){if(res.error){$('.jsBonusCard .jsCardMessage .sclub-message').html(res.error).addClass('error');}
-if(res.hasOwnProperty('code')&&735==res.code){window.docCookies.removeItem('scid','/');cookieNumber=null;$('#bonus-card-number').val(userNumber);}
+sclubMsgBlock=$('.jsBonusCard .jsCardMessage .sclub-message'),cardNumberField=$('.jsActiveCard .jsCardNumber'),msgText;if(sclubMsgBlock.length){hideMessage();}
+msgText=userNumber?'Номер карты в ЛК и пришедшим от sclub не совпадают. Заменить номер в ЛК?':'Сохранить номер в ЛК?';message=$('<div/>',{class:'sclub-message',text:msgText});message.append('&nbsp;');linkYes=$('<a/>',{href:sclubEditUrl,text:'Да'});linkYes.click(function(e){e.preventDefault();$.post(this.href,{number:window.docCookies.getItem(sclubCookieName)},function(res){if(!res.success){if(res.error){$('.jsBonusCard .jsCardMessage .sclub-message').html(res.error).addClass('error');}
+if(res.hasOwnProperty('code')&&735==res.code){window.docCookies.removeItem(sclubCookieName,'/');if(cardNumberField.length){cardNumberField.val(userNumber).mask(cardNumberField.attr('placeholder'),{placeholder:'*'});}
+if(sclubId){for(var i=0;i<data.length;i++){if(sclubId!=data[i].id)continue;data[i].value=userNumber;}}}
 return;}
-window.docCookies.removeItem('scid','/');cookieNumber=null;hideMessage();});});link.appendTo(message);message.appendTo('.jsBonusCard .jsCardMessage');},hideMessage=function(){var sclubMsgBlock=$('.jsBonusCard .jsCardMessage .sclub-message');if(!sclubMsgBlock.length)return;sclubMsgBlock.remove();};if(sclubId!=$('input[name="order[bonus_card_id]"]:checked','.jsBonusCard').val()){hideMessage();return;}
+window.docCookies.removeItem(sclubCookieName,'/');hideMessage();});});linkYes.appendTo(message);if(userNumber){message.append('&nbsp;');linkNo=$('<a/>',{href:sclubEditUrl,text:'Нет'});linkNo.click(function(e){e.preventDefault();window.docCookies.removeItem(sclubCookieName,'/');if(cardNumberField.length&&userNumber){cardNumberField.val(userNumber).mask(cardNumberField.attr('placeholder'),{placeholder:'*'});}
+if(sclubId){for(var i=0;i<data.length;i++){if(sclubId!=data[i].id)continue;data[i].value=userNumber;}}
+hideMessage();});linkNo.appendTo(message);}
+message.appendTo('.jsBonusCard .jsCardMessage');},hideMessage=function(){var sclubMsgBlock=$('.jsBonusCard .jsCardMessage .sclub-message');if(!sclubMsgBlock.length)return;sclubMsgBlock.remove();};if(sclubId!=$('input[name="order[bonus_card_id]"]:checked','.jsBonusCard').val()){hideMessage();return;}
+if(!window.docCookies.getItem(sclubCookieName)){return;}
+if(true===sclub.isNumbersEqual(userNumber,window.docCookies.getItem(sclubCookieName))){return;}
 showMessage();}};if(!bonusCard.length){return;}
 data=bonusCard.data('value');if(!data.length){return;}
 console.groupCollapsed('BonusCard');$.mask.definitions['x']='[0-9]';setDefaults();sclubId=bonusCard.data('sclub-id');sclubEditUrl=bonusCard.data('sclub-edit-url');sclub.init();body.on('change','.jsBonusCard .jsCard',cardChangeHandler);console.groupEnd();})(jQuery);

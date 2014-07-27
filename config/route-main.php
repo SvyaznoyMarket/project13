@@ -648,9 +648,9 @@ return [
         'pattern' => '/private/edit',
         'action'  => ['User\EditAction', 'execute'],
     ],
-    'user.edit.sclubNumber' => [
-        'pattern' => '/ajax/user/edit-sclub-number',
-        'action'  => ['User\EditAction', 'editSclubNumber'],
+    'user.edit.bonusCardNumber' => [
+        'pattern' => '/ajax/user/edit-bonus-card-number',
+        'action'  => ['User\EditAction', 'editBonusCardNumber'],
     ],
     // редактирование данных пользователя
     'user.order' => [
