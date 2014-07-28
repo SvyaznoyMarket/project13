@@ -9,6 +9,4 @@
     if (!empty($prod))       { ?>   data-prod="<?=       $page->json($prod)      ?>" <? }
     if (!empty($prod_cats))  { ?>   data-prod-cats="<?=  $page->json($prod_cats) ?>" <? }
     if (!empty($cart_prods)) { ?>   data-cart-prods="<?= $page->json($cart_prods)?>" <? }
-    ?> class="jsanalyticsParsed"></div><? /* специально ставим jsanalyticsParsed,
- чтобы не грузился скрипт автоматом. Но подгрузим его вручную в web/js/dev/ports/VisitorSplit.js
- */
+    ?> class="jsanalytics"></div>
