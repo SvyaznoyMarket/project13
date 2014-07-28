@@ -16,7 +16,7 @@
  */
 if(!function_exists('routeParams')) {
 	function routeParams ($list,array $params=[]){
-		if($params['page']==0)
+		if(isset($params['page']) && $params['page']==0)
 			unset($params['page']);
 		elseif(!isset($params['page']) && $list->page>0)
 			$params['page']	= $list->page;

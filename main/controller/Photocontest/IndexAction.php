@@ -23,22 +23,8 @@ class IndexAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
 		$curl	= \App::photoContestClient();
-		
-        // подготовка 1-го пакета запросов
-        // FIXME
 		$contest = $curl->query('contest/item/'.$request->get('contestRoute'));
-//        $curl->addQuery('contest/'.$request->get('id'), [], [],
-//            function($result) use (&$contest) {
-//			      не отдает данные гадина
-//                $contest = $result;
-//            }
-//        );
-//
-//        // выполнение 1-го пакета запросов
-//        $curl->execute();
-		
-        // теперь переменная $photos наполнена данными
-		
+
         // страница
         $page = new \View\Photocontest\IndexPage();
         $page->setParam('contest', $contest);
