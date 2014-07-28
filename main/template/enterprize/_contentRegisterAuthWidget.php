@@ -40,9 +40,8 @@ $(window).load(function () {
             });
             return self;
         },
-        afterComplete: function(self, callback) {
+        afterComplete: function(self) {
             $(self.element).trigger('close.lme');
-            callback();
             return self;
         }
     }).data('ui-registerAuth');
