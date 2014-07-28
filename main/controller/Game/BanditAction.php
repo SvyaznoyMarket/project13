@@ -113,8 +113,7 @@ class BanditAction {
                         'token' => $user->getToken()
                     ],[
                         'guid'      => $user->getUi(),
-                        // на текущий момент мы не пропускаем пользователей не являющихся участниками программы
-                        'name'      => $user->getMiddleName(),
+                        'name'      => $user->getFirstName(),
                         'mobile'    => $user->getMobilePhone(),
                         'email'     => $user->getEmail(),
                         'agree'     => true
@@ -122,6 +121,7 @@ class BanditAction {
                 );
             } catch (\Exception $e) {
                 \App::exception()->remove($e);
+                \App::logger()->error("Не удается отдать купон клиенту\n");
                 // @todo определиться как поступать с данной ошибкой, пользователю необходимо что-то сообщить и при этом маякнуть про ошибку модераторам
                 $response['result']['prizes']['message'] = \App::templating()->render('game/coupon-message',
                     array_merge($response['result']['prizes']['coupon'], [
