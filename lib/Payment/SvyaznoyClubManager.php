@@ -31,7 +31,7 @@ class SvyaznoyClubManager {
                 if (!empty($value)) {
                     $response->headers->setCookie(new \Http\Cookie(
                         $key,
-                        $value, time() + $this->cookieLifetime, '/', null, false, true
+                        $value, time() + $this->cookieLifetime, '/', null, false, false
                     ));
                 }
             }
