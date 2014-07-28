@@ -4,13 +4,13 @@
  * @var $request  \Http\Request
  * @var $form     \View\User\LoginForm
  */
+
+if (!isset($form)) {
+    $form = new \View\User\LoginForm();
+}
 ?>
 
-<?php
-if (!isset($form)) $form = new \View\User\LoginForm();
-?>
-
-<form action="<?= $page->url('user.login',['redirect_to'=>(isset($redirect_to)?$redirect_to:null)]) ?>" class="form bFormLogin__ePlace jsLoginForm" method="post">
+<form action="<?= $page->url($form->getRoute(),['redirect_to'=>(isset($redirect_to)?$redirect_to:null)]) ?>" class="form bFormLogin__ePlace jsLoginForm" method="post">
     <fieldset class="bFormLogin__ePlace">
         <legend class="bFormLogin__ePlaceTitle">Мои логин и пароль</legend>
 
@@ -22,6 +22,6 @@ if (!isset($form)) $form = new \View\User\LoginForm();
 
         <div><input class="text bFormLogin__eInput jsSigninPassword" type="password" name="signin[password]" /></div>
 
-        <input type="submit" class="bigbutton bFormLogin__eBtnSubmit jsSubmit" data-loading-value="Вхожу..." value="Войти" />
+        <input type="submit" class="bigbutton bFormLogin__eBtnSubmit jsSubmit" data-loading-value="Вхожу..." value="<?=$form->getSubmit()?>" />
     </fieldset>
 </form>

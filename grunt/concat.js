@@ -92,5 +92,13 @@ module.exports = {
     watch3dJS : {
         src: ['<%= pathDev %>watch3d/*.js'],
         dest: '<%= pathProd %>watch3d.js'
+    },
+	
+	gameSlotsJs: {
+		src: [
+			'web/js/game/slots/jquery.transit.js',
+			'web/js/game/slots/slots.js'
+		],
+        dest: 'web/js/game/slots.js'
     }
 };

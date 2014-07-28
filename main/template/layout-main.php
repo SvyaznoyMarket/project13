@@ -63,6 +63,11 @@
                 </div>
             </div>
         </div>
+        
+        <!-- GameSlots -->
+        <?=$page->slotSlosts()?>
+        <!--/ GameSlots -->
+        
     </div><!--/ Контент -->
 </div><!--/ Шаблон -->
 
@@ -70,6 +75,7 @@
     <?= $page->slotFooter() ?>
 </div><!--/ Подвал -->
 
+<?= $page->slotEnterPrizeWidget() ?>
 <?= $page->slotRegionSelection() ?>
 <?= $page->slotAuth() ?>
 <?= $page->slotYandexMetrika() ?>

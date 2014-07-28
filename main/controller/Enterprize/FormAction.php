@@ -132,8 +132,8 @@ class FormAction {
                 : new \Http\RedirectResponse($link);
         }
 
-        if (!isset($userData['subscribe'])) {
-            $form->setError('subscribe', 'Необходимо согласие');
+        if (!isset($userData['isSubscribe'])) {
+            $form->setError('isSubscribe', 'Необходимо согласие');
         }
 
         $needAuth = false;

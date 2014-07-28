@@ -109,7 +109,7 @@
 			if ( typeof( global.release['version']) !== 'undefined' ) {
 
 				if ( !debug ) {
-					filename = filename.replace('js', 'min.js');
+					filename = filename.replace('.js', '.min.js');
 				}
 
                 filename += '?t=' + global.release['version'];
@@ -266,10 +266,16 @@
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('main.js') )
 					.wait()
+                    .script( getWithVersion('enterprize.js') )
+					.wait()
 					.script( optimizelyUrl )
 					.script('adfox.asyn.code.ver3.min.js')
 					.wait()
 					.script( getWithVersion('ports.js') )
+					.wait()
+					.script( getWithVersion('/js/game/slots.js') )
+					.wait()
+					.script( logTimeAfterPartnerScript );
 			}).runQueue();
 		},
 
