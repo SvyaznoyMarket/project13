@@ -41,6 +41,9 @@
                     self.stillInGameState();
                     window.registerAuth.init('update');
                 },
+                winExceeded: function(self,state) {
+                    self.notAvailableState(state.message);
+                },
                 triesExceeded: function (self,state) {
                     self.notAvailableState(state.message);
                 },
