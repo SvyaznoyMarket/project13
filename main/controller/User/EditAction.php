@@ -114,12 +114,14 @@ class EditAction {
      * @param \Http\Request $request
      * @return \Http\JsonResponse
      */
-    public function editBonusCardNumber(\Http\Request $request) {
+    public function editSclubNumber(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (!$request->isXmlHttpRequest()) {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
+
+        $userEntity = \App::user()->getEntity();
 
         try {
             $number = trim($request->get('number'));
@@ -127,14 +129,33 @@ class EditAction {
                 throw new \Exception('Не передан номер Связного');
             }
 
-            $result = \App::coreClientV2()->query(
-                'user/update',
-                ['token' => \App::user()->getToken()],
-                [
-                    'bonus_card'    => [$number],
-                ],
-                \App::config()->coreV2['hugeTimeout']
-            );
+            $sclubId = \Model\Order\BonusCard\Entity::SVYAZNOY_ID;
+            $userBonusCards = $userEntity->getBonusCard() ?: [];
+
+            // подставляем новый номер Связного
+            $isEdit = false;
+            foreach ($userBonusCards as $key => $card) {
+                if (isset($card['bonus_card_id']) && $card['bonus_card_id'] == $sclubId) {
+                    $userBonusCards[$key]['number'] = $number;
+                    $isEdit = true;
+                }
+            }
+
+            if (!$isEdit) {
+                $userBonusCards[] = ['bonus_card_id' => $sclubId, 'number' => $number];
+                $isEdit = true;
+            }
+
+            // формируем массив номеров бонусных карт
+            $bonusCardNumbers = [];
+            if (is_array($userBonusCards) && !empty($userBonusCards)) {
+                $bonusCardNumbers = array_filter(array_map(function($card){
+                    return isset($card['number']) && !empty($card['number']) ? $card['number'] : null;
+                }, $userBonusCards));
+            }
+
+            $result = \App::coreClientV2()->query('user/update', ['token' => \App::user()->getToken()],
+                ['bonus_card' => $bonusCardNumbers], \App::config()->coreV2['hugeTimeout']);
 
             if (!isset($result['confirmed']) || !$result['confirmed']) {
                 throw new \Exception('Не получен ответ от сервера.');

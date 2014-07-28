@@ -120,6 +120,9 @@
 
 		sclub = {
 			init: function () {
+				sclubId = bonusCard.data('sclub-id');
+				sclubEditUrl = bonusCard.data('sclub-edit-url');
+
 				// если пользователь не авторизован ничего не делаем
 				if ( ENTER.config.userInfo === false ) return;
 
@@ -287,8 +290,6 @@
 	setDefaults();
 
 	// sclub
-	sclubId = bonusCard.data('sclub-id');
-	sclubEditUrl = bonusCard.data('sclub-edit-url');
 	sclub.init();
 
 	body.on('change', '.jsBonusCard .jsCard', cardChangeHandler);

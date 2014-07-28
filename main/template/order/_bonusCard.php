@@ -11,7 +11,7 @@ return function (
 
         <label class="bBuyingLine__eLeft">Карта программы лояльности</label>
 
-        <div class="bBuyingLine__eRight jsBonusCard" data-value="<?= $helper->json($bonusCardsData) ?>" data-sclub-id="<?= \Model\Order\BonusCard\Entity::SVYAZNOY_ID ?>" data-sclub-edit-url="<?= \App::router()->generate('user.edit.bonusCardNumber') ?>">
+        <div class="bBuyingLine__eRight jsBonusCard" data-value="<?= $helper->json($bonusCardsData) ?>" data-sclub-id="<?= \Model\Order\BonusCard\Entity::SVYAZNOY_ID ?>" data-sclub-edit-url="<?= \App::router()->generate('user.edit.sclubNumber') ?>">
             <ul class="bSaleList bInputList clearfix">
                 <? $i=1; foreach ($bonusCards as $card): ?>
                     <? if (!$card instanceof \Model\Order\BonusCard\Entity) continue ?>
