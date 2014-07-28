@@ -14,6 +14,7 @@ return function(
         data-use-hash="false"
         data-use-carousel="true"
         data-category-token="<?= $categoryToken ?>"
+        data-use-page-visibility="<?= (bool)\App::config()->tchiboSlider['analytics']['use_page_visibility'] ?>"
         data-analytics-config="<?= $helper->json(\App::config()->tchiboSlider['analytics']) ?>" >
 
         <script type="text/html" id="slide_tmpl">

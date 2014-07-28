@@ -412,6 +412,7 @@ $c->tchibo['rowHeight'] = 78;
 $c->tchibo['rowPadding'] = 0;
 $c->tchiboSlider['analytics'] = [
     'enabled' => true,
+    'use_page_visibility' => true,
     'collection_view' => [
         'enabled' => true,
         'tchiboOnly' => true

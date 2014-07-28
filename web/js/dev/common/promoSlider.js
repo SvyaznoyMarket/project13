@@ -146,7 +146,8 @@
 			analyticsConfig = typeof promoCatalog.data('analytics-config') !== "undefined" ? promoCatalog.data('analytics-config') : false,
             // Буфер, для коллекций. Пока _gaq не подгрузился, делаем запись в буфер. Затем трекаем все скопом.
 			tchiboAnalyticsBuffer = [],
-			categoryToken = typeof promoCatalog.data('category-token') !== "undefined" ? promoCatalog.data('category-token') : '';
+			categoryToken = typeof promoCatalog.data('category-token') !== "undefined" ? promoCatalog.data('category-token') : '',
+			documentHidden = false;
 		// end of vars
 
 		var
@@ -462,6 +463,54 @@
 					if ( tchiboAnalytics.checkRule('product_click') ) {
 						body.on('click', '.mTchiboSlider .prodItem > a', productClickHandler);
 					}
+
+					tchiboAnalytics.pageVisibility();
+				},
+
+				/**
+				 * Управление аналитикой в зависимости от присутствия пользователя на вкладке текущей страницы (Page Visibility API)
+				 */
+				pageVisibility: function() {
+					var
+						hidden, visibilityChange;
+					// end of vars
+
+					var
+						handleVisibilityChange = function() {
+							documentHidden = document[hidden] ? true : false;
+						};
+					// end of functions
+
+					if (
+						!tchiboAnalytics.isAnalyticsEnabled ||
+						!analyticsConfig.hasOwnProperty('use_page_visibility') ||
+						true != analyticsConfig.use_page_visibility
+					) {
+						return;
+					}
+
+					if ( typeof document.hidden !== "undefined" ) { // Opera 12.10 and Firefox 18 and later support
+						hidden = "hidden";
+						visibilityChange = "visibilitychange";
+					} else if ( typeof document.mozHidden !== "undefined" ) {
+						hidden = "mozHidden";
+						visibilityChange = "mozvisibilitychange";
+					} else if ( typeof document.msHidden !== "undefined" ) {
+						hidden = "msHidden";
+						visibilityChange = "msvisibilitychange";
+					} else if ( typeof document.webkitHidden !== "undefined" ) {
+						hidden = "webkitHidden";
+						visibilityChange = "webkitvisibilitychange";
+					}
+
+					handleVisibilityChange();
+
+					if ( typeof document.addEventListener === "undefined" || typeof hidden === "undefined" ) {
+						// requires a browser, such as Google Chrome or Firefox, that supports the Page Visibility API.
+					} else {
+						// Handle page visibility change
+						document.addEventListener(visibilityChange, handleVisibilityChange, false);
+					}
 				},
 
 				/**
@@ -493,6 +542,11 @@
 						'undefined' == typeof(collection_position) ||
 						'undefined' == typeof(delay)
 						) {
+						return;
+					}
+
+					// страница не отображается
+					if ( true === documentHidden ) {
 						return;
 					}
 
