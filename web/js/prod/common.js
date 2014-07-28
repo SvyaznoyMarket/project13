@@ -2187,10 +2187,11 @@ $(document).ready(function() {
 
 			disabledBtns = false,// Активность кнопок для пролистования и пагинатора.
 
-			// Флаг для аналитики Tchibo
-			tchiboAnalyticsEnabled = promoCatalog.data('use-tchibo-analytics') !== undefined ? promoCatalog.data('use-tchibo-analytics') : false,
+			// Настройки для аналитики слайдера
+			analyticsConfig = typeof promoCatalog.data('analytics-config') !== "undefined" ? promoCatalog.data('analytics-config') : false,
             // Буфер, для коллекций. Пока _gaq не подгрузился, делаем запись в буфер. Затем трекаем все скопом.
-			tchiboAnalyticsBuffer = [];
+			tchiboAnalyticsBuffer = [],
+			categoryToken = typeof promoCatalog.data('category-token') !== "undefined" ? promoCatalog.data('category-token') : '';
 		// end of vars
 
 		var
@@ -2438,14 +2439,14 @@ $(document).ready(function() {
 				}
 
 				slideData = data[slideId];
-				if ( slideData.hasOwnProperty('title') && slideData.hasOwnProperty('time') ) {
+				if ( (slideData.hasOwnProperty('title') && slideData.hasOwnProperty('time')) && tchiboAnalytics.checkRule('collection_view') ) {
 					tchiboAnalytics.collectionShow(slideData.title, (slideId*1)+1, slideData.time);
 				}
 			},
 
 			tchiboAnalytics = {
 				init: function() {
-					if ( !tchiboAnalyticsEnabled ){
+					if ( !tchiboAnalytics.isAnalyticsEnabled ){
 						return;
 					}
 
@@ -2499,8 +2500,13 @@ $(document).ready(function() {
 						};
 					// end of functions
 
-					body.on('click', '.mTchiboSlider .bPromoCatalogSliderWrap_eSlideLink', collectionClickHandler);
-					body.on('click', '.mTchiboSlider .prodItem > a', productClickHandler);
+					if ( tchiboAnalytics.checkRule('collection_click') ) {
+						body.on('click', '.mTchiboSlider .bPromoCatalogSliderWrap_eSlideLink', collectionClickHandler);
+					}
+
+					if ( tchiboAnalytics.checkRule('product_click') ) {
+						body.on('click', '.mTchiboSlider .prodItem > a', productClickHandler);
+					}
 				},
 
 				/**
@@ -2527,7 +2533,7 @@ $(document).ready(function() {
 					// end of functions
 
 					if (
-						!tchiboAnalyticsEnabled ||
+						!tchiboAnalytics.isAnalyticsEnabled ||
 						'undefined' == typeof(collection_name) ||
 						'undefined' == typeof(collection_position) ||
 						'undefined' == typeof(delay)
@@ -2561,7 +2567,7 @@ $(document).ready(function() {
 					var item;
 
 					if (
-						!tchiboAnalyticsEnabled ||
+						!tchiboAnalytics.isAnalyticsEnabled ||
 						'undefined' == typeof(_gaq) ||
 						'undefined' == typeof(collection_name) ||
 						'undefined' == typeof(collection_position)
@@ -2585,7 +2591,7 @@ $(document).ready(function() {
 					var item;
 
 					if (
-						!tchiboAnalyticsEnabled ||
+						!tchiboAnalytics.isAnalyticsEnabled ||
 						'undefined' == typeof(_gaq) ||
 						'undefined' == typeof(collection_name) ||
 						'undefined' == typeof(item_name) ||
@@ -2599,6 +2605,23 @@ $(document).ready(function() {
 					console.info('TchiboSliderAnalytics item_click');
 					console.log(item);
 					_gaq.push(item);
+				},
+
+				isAnalyticsEnabled: function() {
+					return analyticsConfig && analyticsConfig.hasOwnProperty('enabled') && true == analyticsConfig.enabled;
+				},
+
+				checkRule: function(rule) {
+					if (
+						tchiboAnalytics.isAnalyticsEnabled &&
+						typeof rule !== "undefined" &&
+						analyticsConfig.hasOwnProperty(rule) && true == analyticsConfig[rule].enabled &&
+						((true == analyticsConfig[rule].tchiboOnly && 'tchibo' === categoryToken) || (true != analyticsConfig[rule].tchiboOnly))
+					) {
+						return true;
+					}
+
+					return false;
 				}
 			};
 		// end of functions
@@ -2621,7 +2644,7 @@ $(document).ready(function() {
 		setScrollInterval(toSlide);
 
 		// аналитика показа первого слайда
-		if ( data.hasOwnProperty(toSlide) && data[toSlide].hasOwnProperty('title') && data[toSlide].hasOwnProperty('time') ) {
+		if ( data.hasOwnProperty(toSlide) && data[toSlide].hasOwnProperty('title') && data[toSlide].hasOwnProperty('time') && tchiboAnalytics.checkRule('collection_view') ) {
 			tchiboAnalytics.collectionShow(data[toSlide].title, ((toSlide*1)+1), data[toSlide].time);
 		}
 	}
