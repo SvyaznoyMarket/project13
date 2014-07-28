@@ -106,7 +106,7 @@ class ChildAction {
             $category->getProductCount() == 0 && (bool)$category->getAncestor() &&
             $category->getAncestor()[0]->getToken() == 'tchibo' && \App::config()->preview !== true
         ) {
-            return new \Http\RedirectResponse(\App::router()->generate('tchibo.where_buy'));
+            return new \Http\RedirectResponse(\App::router()->generate('tchibo.where_buy', $request->query->all()));
         }
 
         // SITE-3970
