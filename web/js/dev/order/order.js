@@ -4,6 +4,8 @@
 	 * Новая аналитика для оформления заказа
 	 */
 	var newOrderAnalytics = function newOrderAnalytics() {
+		if ( !$('#jsOrder').length ) return;
+
 		var
 			data = $('#jsOrder').data('value'),
 			orderData = data.orders,
