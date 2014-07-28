@@ -5,6 +5,7 @@
  * @var $filter bool  активация панели фильтрации
  * @var $pagination bool  активация указателя страниц
  * @var $route string текущий маршрут
+ * @var $page \View\Shop\ShowPage
  */
 
 
@@ -35,19 +36,7 @@ if(!function_exists('routeParams')) {
 
 	<?php if ($filter): ?>
 	<div class="bSortingLine clearfix">
-		<!-- Button BEGIN -->
-		<script type="text/javascript">(function() {
-		  if (window.pluso)if (typeof window.pluso.start == "function") return;
-		  if (window.ifpluso==undefined) { window.ifpluso = 1;
-			var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
-			s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true;
-			s.src = ('https:' == window.location.protocol ? 'https' : 'http')  + '://share.pluso.ru/pluso-like.js';
-			var h=d[g]('body')[0];
-			h.appendChild(s);
-		  }})();</script>
-		<div class="pluso pc_buttons" data-background="transparent" data-options="small,square,line,horizontal,nocounter,theme=08" data-services="facebook,vkontakte,odnoklassniki,twitter,email"></div>
-		<!-- Button END -->
-		
+		<?=$page->render('photocontest/_repostCode')?>
 		<ul class="bSortingList mSorting">
 			<li class="bSortingList__eItem mTitle">Показать сначала:</li>
 			<li class="bSortingList__eItem mSortItem<?=$list->order==='d'?' mActive':null?>">
