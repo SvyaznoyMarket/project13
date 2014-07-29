@@ -9,7 +9,8 @@ class BanditAction {
     const errorTriesExceeded        = 311;  // приходит от API
     const errorWinExceeded          = 312;  // приходит от API
     const errorNotEnterprizeMember  = 612;  // пользователь не является участником программы enter prize
-    
+    const errorUndefined            = 500;
+
     protected $isAvailable = true;
     
     public function index() {
@@ -144,7 +145,7 @@ class BanditAction {
     
     
     protected function getError($code) {
-        return [
+        $err = [
             self::errorTriesExceeded => [
                 'code'          => 'triesExceeded',
                 'message'       => 'Выши попытки израсходованы. Приходите завтра.'
@@ -161,7 +162,17 @@ class BanditAction {
                 'code'          => 'notEnterprizeMember',
                 'message'       => 'Вам необходимо являться участником программы Enter Prize'
             ],
-        ][$code];
+            self::errorUndefined => [
+                'code'          => 'undefined',
+                'message'       => 'Не удается выполнить операцию'
+            ],
+        ];
+
+        if(isset($err[$code])) {
+            return $err[$code];
+        } else {
+            return $err[self::errorUndefined];
+        }
     }
     
     
