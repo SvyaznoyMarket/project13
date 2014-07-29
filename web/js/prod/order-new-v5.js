@@ -8,7 +8,11 @@
 	var
 		body = $('body'),
 		bonusCard = $('.jsBonusCard'),
-		data;
+		sclubId,
+		sclubEditUrl,
+		data,
+		sclubCookieName = 'scid',
+		userNumber; // номер с пользовательских данных
 	// end of vars
 
 	var
@@ -112,6 +116,162 @@
 
 			setValue();
 			setMask();
+		},
+
+		sclub = {
+			init: function () {
+				sclubId = bonusCard.data('sclub-id');
+				sclubEditUrl = bonusCard.data('sclub-edit-url');
+
+				// если пользователь не авторизован ничего не делаем
+				if ( ENTER.config.userInfo === false ) return;
+
+				if ( !ENTER.config.userInfo ) {
+					$("body").on("userLogged", function() {sclub.action(ENTER.config.userInfo)} );
+				}
+				else {
+					// событие "userLogged" уже произошло
+					console.log(ENTER.config.userInfo);
+					sclub.action(ENTER.config.userInfo);
+				}
+
+				body.on('change', '.jsBonusCard .jsCard', sclub.message);
+			},
+
+			action: function (userInfo) {
+				if (
+					typeof userInfo.id === "undefined" || // не пришли пользовательские данные
+					!userInfo.hasOwnProperty('sclubNumber') || // не передан номер
+					!window.docCookies.getItem(sclubCookieName)
+				) {
+					return;
+				}
+
+				userNumber = userInfo.sclubNumber;
+
+				// выводим сообщение
+				sclub.message();
+			},
+
+			/**
+			 * Номер Связного в личном кабинете равен номеру переданом от sclub (через get-параметр scid)
+			 */
+			isNumbersEqual: function (userNumber, cookieNumber) {
+				return userNumber == cookieNumber;
+			},
+
+			/**
+			 * Показать сообщение для карты Связного-клуба
+			 */
+			message: function () {
+				var message, linkYes, linkNo;
+
+				var
+					showMessage = function () {
+						var
+							sclubMsgBlock = $('.jsBonusCard .jsCardMessage .sclub-message'),
+							cardNumberField = $('.jsActiveCard .jsCardNumber'),
+							msgText;
+
+						if ( sclubMsgBlock.length ) {
+							hideMessage();
+						}
+
+						msgText = userNumber ? 'Номер карты в ЛК и пришедшим от sclub не совпадают. Заменить номер в ЛК?' : 'Сохранить номер в ЛК?';
+
+						message = $('<div/>', {class: 'sclub-message', text: msgText});
+
+						// linkYes
+						message.append('&nbsp;');
+						linkYes = $('<a/>', {href: sclubEditUrl, text: 'Да'});
+						linkYes.click(function ( e ) {
+							e.preventDefault();
+
+							$.post(this.href, {number: window.docCookies.getItem(sclubCookieName)}, function ( res ) {
+								if ( !res.success ) {
+									if ( res.error ) {
+										$('.jsBonusCard .jsCardMessage .sclub-message').html(res.error).addClass('error');
+									}
+
+									if ( res.hasOwnProperty('code') && 735 == res.code ) {// 735 - Невалидный номер карты
+										window.docCookies.removeItem(sclubCookieName, '/');
+
+										if ( cardNumberField.length ) {
+											cardNumberField.val(userNumber).mask(cardNumberField.attr('placeholder'), {placeholder: '*'});
+										}
+
+										// очищаем значение с данных по умолчанию
+										if ( sclubId ) {
+											for ( var i = 0; i < data.length; i++ ) {
+												if ( sclubId != data[i].id ) continue;
+												data[i].value = userNumber;
+											}
+										}
+									}
+
+									return;
+								}
+
+								window.docCookies.removeItem(sclubCookieName, '/');
+
+								hideMessage();
+							});
+						});
+						linkYes.appendTo(message);
+
+						// linkNo
+						if ( userNumber ) {
+							message.append('&nbsp;');
+							linkNo = $('<a/>', {href: sclubEditUrl, text: 'Нет'});
+							linkNo.click(function ( e ) {
+								e.preventDefault();
+
+								window.docCookies.removeItem(sclubCookieName, '/');
+
+								if ( cardNumberField.length && userNumber ) {
+									cardNumberField.val(userNumber).mask(cardNumberField.attr('placeholder'), {placeholder: '*'});
+								}
+
+								if ( sclubId ) {
+									for ( var i = 0; i < data.length; i++ ) {
+										if ( sclubId != data[i].id ) continue;
+										data[i].value = userNumber;
+									}
+								}
+
+								hideMessage();
+							});
+							linkNo.appendTo(message);
+						}
+
+						message.appendTo('.jsBonusCard .jsCardMessage');
+					},
+
+					hideMessage = function () {
+						var sclubMsgBlock = $('.jsBonusCard .jsCardMessage .sclub-message');
+
+						if ( !sclubMsgBlock.length ) return;
+						sclubMsgBlock.remove();
+					};
+				// end of functions
+
+				// если не выбрана карта Связного, то скрывем сообщение
+				if ( sclubId != $('input[name="order[bonus_card_id]"]:checked', '.jsBonusCard').val() ) {
+					hideMessage();
+					return;
+				}
+
+				if ( !window.docCookies.getItem(sclubCookieName) ) {
+					return;
+				}
+
+				// номера идентичны, ничего не делаем
+				if (true === sclub.isNumbersEqual(userNumber, window.docCookies.getItem(sclubCookieName))) {
+					return;
+				}
+
+				showMessage();
+			}
 		};
 	// end of functions
 
@@ -128,6 +288,9 @@
 
 	$.mask.definitions['x'] = '[0-9]';
 	setDefaults();
+
+	// sclub
+	sclub.init();
 
 	body.on('change', '.jsBonusCard .jsCard', cardChangeHandler);
 	console.groupEnd();
@@ -1993,7 +2156,7 @@
 				return false;
 			}
 
-			return this.pointsByDelivery.hasOwnProperty(state);
+            return this.pointsByDelivery.hasOwnProperty(state) && this.pointsByDelivery[state].token;
 		};
 
 		/**
@@ -2619,9 +2782,6 @@
 				_gaq.push(['_trackTiming', 'Order complete', 'DB response', ajaxDelta]);
 			}
 
-			if ( typeof window.yaCounter10503055 !== 'undefined' ) {
-				window.yaCounter10503055.reachGoal('\\orders\\complete');
-			}
             $(document.body).trigger('trackUserAction', ['9 Завершение - успех']);
 		},
 
@@ -3375,7 +3535,7 @@
 			( !isNaN(maxSum) && maxSum < unwrapVal ) || /* Если существует максимальная сумма и текущая сумма больше максимальнодопустимой для этого варианта оплаты */
 			( !isNaN(minSum) && minSum > unwrapVal ) /* Если существует минимальная сумма и текущая сумма больше минимальнодопустимой для этого варианта оплаты */ ) {
 				node.hide();
-
+                if (methodId == 13 && -1 == $.inArray(ENTER.OrderModel.choosenDeliveryTypeId, [3,4])) node.show(); // показываем Paypal для всех методов доставки, кроме "самовывоза" и "заберу сейчас"
 				return;
 			}
 

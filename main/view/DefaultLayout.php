@@ -239,7 +239,12 @@ class DefaultLayout extends Layout {
     }
 
     public function slotYandexMetrika() {
-        return (\App::config()->yandexMetrika['enabled']) ? $this->render('_yandexMetrika') : '';
+
+        if (\App::config()->yandexMetrika['enabled']) {
+            // загрузка основного или тестового счетчика
+            return in_array(\App::config()->mainHost, ['www.enter.ru', 'm.enter.ru']) ? $this->render('_yandexMetrika') : $this->render('_yandexMetrikaTest');
+        }
+
     }
 
     public function slotMetaOg() {
@@ -458,7 +463,7 @@ class DefaultLayout extends Layout {
         }
 
         // на всех остальных страницах сайта // необходимо установить наш код главной страницы (inclusion tag)
-        //$return .= $this->render($smantic_path . '01-homepage');
+        $return .= $this->render($smantic_path . '01-homepage');
 
         if ($routeName == 'product.category') {
 
@@ -840,6 +845,14 @@ class DefaultLayout extends Layout {
     }
 
     public function slotEnterprizeCompleteJs() {
+        return '';
+    }
+
+    public function slotFlocktoryEnterprizeJs() {
+        return '';
+    }
+
+    public function slotFlocktoryEnterprizeRegistrationJs() {
         return '';
     }
 

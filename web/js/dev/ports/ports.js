@@ -41,26 +41,30 @@ window.ANALYTICS = {
 			'&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border="0" width="1" height="1" alt="" />');
 	},
 	
-	// yandexMetrika : function() {
-	//     (function (d, w, c) {
-	//         (w[c] = w[c] || []).push(function() {
-	//             try {
-	//             w.yaCounter10503055 = new Ya.Metrika({id:10503055, enableAll: true, webvisor:true});
-	//             } catch(e) {}
-	//         });
-
-	//         var n = d.getElementsByTagName("script")[0],
-	//         s = d.createElement("script"),
-	//         f = function () { n.parentNode.insertBefore(s, n); };
-	//         s.type = "text/javascript";
-	//         s.async = true;
-	//         s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
-
-	//         if (w.opera == "[object Opera]") {
-	//             d.addEventListener("DOMContentLoaded", f);
-	//         } else { f(); }
-	//     })(document, window, "yandex_metrika_callbacks");
-	// },
+	yandexOrderComplete: function() {
+        try {
+            var orderData = $('#jsOrder').data('value');
+            if (typeof window.yandexCounter == 'undefined' || orderData == undefined) return;
+            $.each(orderData.orders, function (index, order) {
+                window.yandexCounter.reachGoal('ORDERCOMPLETE', {
+                    order_id: order.number,
+                    order_price: order.sum,
+                    currency: "RUR",
+                    goods: $.map(order.products, function (product) {
+                        return {
+                            id: product.id,
+                            name: product.name,
+                            price: product.price,
+                            quantity: product.quantity
+                        }
+                    })
+                })
+            });
+            console.info('yandexOrderComplete reachGoal successfully sended');
+        } catch (e) {
+            console.error('yandexOrderComplete error', e);
+        }
+    },
 
 	LiveTexJS: function () {
 		console.group('ports.js::LiveTexJS log');
@@ -217,13 +221,6 @@ window.ANALYTICS = {
 		})();
 	},
 
-	yaParamsJS: function () {
-		var yap = $('#yaParamsJS').data('vars');
-		if ( yap ) {
-			window.yaParams = yap;
-		}
-	},
-
     // enterleadsJS : function() { // SITE-1911
     //     (function () {
     //         try {
@@ -292,7 +289,7 @@ window.ANALYTICS = {
 	},
 
 	sociomanticJS: function () {
-		/*(function () {
+		(function () {
 			var s = document.createElement('script'),
 				x = document.getElementsByTagName('script')[0];
 			s.type = 'text/javascript';
@@ -300,30 +297,32 @@ window.ANALYTICS = {
 			s.src = ('https:' == document.location.protocol ? 'https://' : 'http://')
 				+ 'eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru';
 			x.parentNode.insertBefore(s, x);
-		})();*/
+		})();
 	},
 
 	smanticPageJS: function() {
-		console.log('smanticPageJS');
-		var
-			elem = $('#smanticPageJS'),
-			prod = elem.data('prod'),
-			prod_cats = elem.data('prod-cats'),
-			cart_prods = elem.data('cart-prods');
+		(function(){
+			console.log('smanticPageJS');
+			var
+				elem = $('#smanticPageJS'),
+				prod = elem.data('prod'),
+				prod_cats = elem.data('prod-cats'),
+				cart_prods = elem.data('cart-prods');
 
-		window.sonar_product = window.sonar_product || {};
+			window.sonar_product = window.sonar_product || {};
 
-		if ( prod ) {
-			window.sonar_product = prod;
-		}
+			if ( prod ) {
+				window.sonar_product = prod;
+			}
 
-		if ( prod_cats ) {
-			window.sonar_product.category = prod_cats;
-		}
+			if ( prod_cats ) {
+				window.sonar_product.category = prod_cats;
+			}
 
-		if ( cart_prods ) {
-			window.sonar_basket = { products: cart_prods };
-		}
+			if ( cart_prods ) {
+				window.sonar_basket = { products: cart_prods };
+			}
+		})();
 	},
 
     criteoJS : function() {
@@ -500,7 +499,7 @@ window.ANALYTICS = {
              * @param {string} category (required) The name you supply for the group of objects you want to track.
              * @param {string} action (required) A string that is uniquely paired with each category, and commonly used to define the type of user interaction for the web object.
              * @param {string} [label] (optional) An optional string to provide additional dimensions to the event data.
-             * @param {int} [value] (optional) An integer that you can use to provide numerical data about the user event.
+             * @param {int|object} [value] (optional) An integer that you can use to provide numerical data about the user event (or {'hitcallback':func} object).
              * @param {bool} [nonInteraction] (optional) A boolean that when set to true, indicates that the event hit will not be used in bounce-rate calculation.
              */
             trackEvent = function trackEventF(category, action, label, value, nonInteraction) {
@@ -572,10 +571,19 @@ window.ANALYTICS = {
 				$('.mBannerItem').click(function() {
 					var
 						wrapper = $(this).find('.adfoxWrapper'),
-						banner = wrapper.find('div:first')
+						banner = wrapper.find('div:first'),
 						id = banner.attr('id') || 'adfox';
 					gaBannerClick( id );
 				});
+                // отслеживание кликов на блоках smartchoice
+                $('.specialPriceItem').on('click', '.specialPriceItemCont_imgLink, .specialPriceItemCont_name', function (e) {
+                    var $parent = $(this).closest('.specialPriceItem'),
+                        article = $parent.data('article'),
+                        title = $parent.find('.specialPriceItemTitle').text(),
+                        url = $(this).attr('href');
+                    e.preventDefault();
+                    trackEvent('smartchoice', title, article, { 'hitCallback': function () { document.location = url; }});
+                });
 			},
 
 			ga_search = function ga_search() {
@@ -1741,7 +1749,7 @@ window.ANALYTICS = {
 			window.JSREObject.q = window.JSREObject.q || [];
 			window.JSREObject.l = +new Date;
 			JSREObject('create', data.lamodaID, 'r24-tech.com');
-			$.getScript("//r24-tech.com/static/dsp/min/js/jsre-min.js");
+			$.getScript("//jsre.r24-tech.com/static/dsp/min/js/jsre-min.js");
 		})();
 	},
 
@@ -1845,7 +1853,7 @@ window.ANALYTICS = {
 		var
 			flocktoryExchange = $('#flocktoryExchangeJS'),
 			data = flocktoryExchange.data('value'),
-			_flocktory = window._flocktory = _flocktory || [];
+			_flocktory = window._flocktory || [];
 		// end of vars
 
 		if ( !flocktoryExchange.length || undefined == typeof(data) ) {
@@ -1918,6 +1926,120 @@ window.ANALYTICS = {
 
 		data.page.url = window.location.href;
 		window.rbnt_rt_params = data.page;
+	},
+
+	flocktoryEnterprizeJS: function() {
+		console.groupCollapsed('ports.js::flocktoryEnterprizeJS');
+
+		this.flocktoryAddScript();
+
+		var
+			data = {
+				name: "",
+				email: "",
+				sex: "",
+				action: "precheckout",
+				spot: "popup_enterprize"
+			},
+			flocktoryEnterprize = {
+				/**
+				 * подставляем данные с get-параметров
+				 */
+				fillDataFromParams: function() {
+					var urlParams = getUrlParams();
+
+					if ( typeof urlParams === "undefined" ) {
+						return;
+					}
+
+					if ( typeof urlParams['name'] !== "undefined" )		data.name = urlParams['name'];
+					if ( typeof urlParams['email'] !== "undefined" )	data.email = urlParams['email'];
+					if ( typeof urlParams['sex'] !== "undefined" )		data.sex = urlParams['sex'];
+
+					return;
+				},
+
+				init: function() {
+					var needUserInfoData = false;
+
+					flocktoryEnterprize.fillDataFromParams();
+
+					if ( data.name == "" || data.email == "" || data.sex == "" ) {
+						needUserInfoData = true;
+					}
+
+					if ( ENTER.config.userInfo === false || needUserInfoData === false ) {
+						flocktoryEnterprize.action();
+					}
+					else if ( !ENTER.config.userInfo ) {
+						$("body").on("userLogged", function() {flocktoryEnterprize.action(ENTER.config.userInfo)} );
+					}
+					else {
+						// событие уже прошло
+						console.warn(ENTER.config.userInfo);
+						flocktoryEnterprize.action(ENTER.config.userInfo);
+					}
+				},
+
+				action: function(userInfo) {
+					if ( userInfo && userInfo.id ) {
+						if ( data.name == "" )	data.name = userInfo.name;
+						if ( data.email == "" )	data.email = userInfo.email;
+						if ( data.sex == "" )	data.sex = (1 == userInfo.sex) ? "m" : ( 2 == userInfo.sex ? "f" : "" );
+					}
+
+					// первый блок
+					$('<div/>', {
+						"class": "i-flocktory",
+						"data-fl-user-name": data.name,
+						"data-fl-user-email": data.email,
+						"data-fl-user-sex": data.sex
+					}).appendTo('#flocktoryEnterprizeJS');
+
+					// второй блок
+					$('<div/>', {
+						"class": "i-flocktory",
+						"data-fl-action": data.action,
+						"data-fl-spot": data.spot
+					}).appendTo('#flocktoryEnterprizeJS');
+				}
+			};
+		// end of vars
+
+		var
+			/**
+			 * Получение get параметров текущей страницы
+			 */
+			getUrlParams = function () {
+				var $_GET = {},
+					__GET = window.location.search.substring(1).split('&'),
+					getVar,
+					i;
+				// end of vars
+
+				for ( i = 0; i < __GET.length; i++ ) {
+					getVar = __GET[i].split('=');
+					$_GET[getVar[0]] = typeof(getVar[1]) == 'undefined' ? '' : getVar[1];
+				}
+
+				return $_GET;
+			};
+		// end of functions
+
+		flocktoryEnterprize.init();
+
+		console.groupEnd();
+	},
+
+	flocktoryEnterprizeFormJS: function() {
+		this.flocktoryAddScript();
+
+		var s = document.createElement('script');
+		s.type = 'text/javascript';
+		s.async = true;
+		s.src = "//api.flocktory.com/v2/loader.js?1401=";
+		var l = document.getElementsByTagName('script')[0];
+		l.parentNode.insertBefore(s, l);
 	},
 
 	enable : true

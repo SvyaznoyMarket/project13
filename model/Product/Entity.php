@@ -47,6 +47,10 @@ class Entity extends BasicEntity {
     protected $propertyGroup = [];
     /** @var Property\Entity[] */
     protected $property = [];
+    /** @var Property\Entity[] */
+    protected $mainProperties = [];
+    /** @var [] */
+    protected $secondaryGroupedProperties = [];
     /** @var \Model\Tag\Entity[] */
     protected $tag = [];
     /** @var Media\Entity[] */
@@ -173,10 +177,13 @@ class Entity extends BasicEntity {
         if (array_key_exists('is_kit_locked', $data)) $this->setIsKitLocked($data['is_kit_locked']);
         if (array_key_exists('partners_offer', $data)) $this->setPartnersOffer(array_map(function($v) { return $v; }, $data['partners_offer']));
 
+        $indexedPropertyGroups = [];
         foreach ($this->propertyGroup as $group) {
             if (!isset($this->groupedProperties[$group->getId()])) {
                 $this->groupedProperties[$group->getId()] = array('group' => $group, 'properties' => []);
             }
+
+            $indexedPropertyGroups[$group->getId()] = $group;
         }
 
         foreach ($this->property as $property) {
@@ -184,6 +191,40 @@ class Entity extends BasicEntity {
                 $this->groupedProperties[$property->getGroupId()]['properties'][] = $property;
             }
         }
+
+        if ((!$this->getTagline() && !count($this->getModel()) && !$this->getDescription() && $this->getPropertiesCount() < 16) || $this->getPropertiesCount() < 8) {
+            $this->secondaryGroupedProperties = [];
+            foreach ($this->groupedProperties as $group) {
+                if (!(bool)$group['properties']) continue;
+
+                foreach ($group['properties'] as $property) {
+                    /* @var $property Property\Entity */
+                    if (mb_strlen($property->getStringValue(), 'utf-8') <= 45) {
+                        $this->mainProperties[] = $property;
+                    } else {
+                        if (isset($indexedPropertyGroups[$property->getGroupId()])) {
+                            $this->secondaryGroupedProperties[$property->getGroupId()]['group'] = $indexedPropertyGroups[$property->getGroupId()];
+                            $this->secondaryGroupedProperties[$property->getGroupId()]['properties'][] = $property;
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            foreach ($this->property as $property) {
+                if (!$property->getIsInList()) continue;
+                if (!$property->getStringValue()) continue;
+                if (!$property->getValue()) continue;
+
+                $this->mainProperties[] = $property;
+                $this->secondaryGroupedProperties = $this->groupedProperties;
+            }
+
+            usort($this->mainProperties, function(Property\Entity $a, Property\Entity $b) {
+                return $a->getPosition() - $b->getPosition();
+            });
+        }
+
 
         $this->calculateState();
     }
@@ -517,6 +558,14 @@ class Entity extends BasicEntity {
         return array_values($this->property);
     }
 
+    public function getMainProperties() {
+        return $this->mainProperties;
+    }
+
+    public function getSecondaryGroupedProperties() {
+        return $this->secondaryGroupedProperties;
+    }
+
     /**
      * @param int $id
      * @return Property\Entity|null
@@ -813,6 +862,23 @@ class Entity extends BasicEntity {
     public function getGroupedProperties()
     {
         return $this->groupedProperties;
+    }
+
+    public function getPropertiesCount()
+    {
+        //$countProperties = count($product->getProperty());
+        //$countProperties = count($product->getGroupedProperties());
+        $count = 0;
+
+        //foreach ($product->getProperty() as $property) if ( $property->getValue() ) $countProperties++;
+        foreach ($this->groupedProperties as $group) {
+            if (!(bool)$group['properties']) continue;
+            foreach ($group['properties'] as $property) {
+                $count++;
+            }
+        }
+
+        return $count;
     }
 
     /**

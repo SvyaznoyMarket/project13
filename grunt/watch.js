@@ -23,7 +23,7 @@ module.exports = function (grunt, options) {
 
         partnerScripts: {
             files: [ pathRoot + 'partner/*.js'],
-            tasks: ['concat:partnerScripts', 'jshint', 'uglify:partnerScripts']
+            tasks: ['concat:partnerScripts', 'uglify:partnerScripts']
         },
 
         vendorScripts: {
@@ -38,17 +38,17 @@ module.exports = function (grunt, options) {
 
         cartJS:{
             files: [ pathDev + 'cart/*.js'],
-            tasks: ['concat:cartJS', 'jshint', 'uglify:cartJS']
+            tasks: ['concat:cartJS', 'uglify:cartJS']
         },
 
         commonJS:{
             files: [ pathDev + 'common/*.js'],
-            tasks: ['concat:commonJS', 'jshint', 'uglify:commonJS']
+            tasks: ['concat:commonJS', 'uglify:commonJS']
         },
 
         infopageJS:{
             files: [ pathDev + 'infopage/*.js'],
-            tasks: ['concat:infopageJS', 'jshint', 'uglify:infopageJS']
+            tasks: ['concat:infopageJS', 'uglify:infopageJS']
         },
 
         jqueryPluginsJS:{
@@ -58,32 +58,32 @@ module.exports = function (grunt, options) {
 
         libraryJS:{
             files: [ pathDev + 'library/*.js'],
-            tasks: ['concat:libraryJS', 'jshint', 'uglify:libraryJS']
+            tasks: ['concat:libraryJS', 'uglify:libraryJS']
         },
 
         lkJS:{
             files: [ pathDev + 'lk/*.js'],
-            tasks: ['concat:lkJS', 'jshint', 'uglify:lkJS']
+            tasks: ['concat:lkJS', 'uglify:lkJS']
         },
 
         enterprizeJS:{
             files: [ pathDev + 'enterprize/*.js'],
-            tasks: ['concat:enterprizeJS', 'jshint', 'uglify:enterprizeJS']
+            tasks: ['concat:enterprizeJS', 'uglify:enterprizeJS']
         },
 
         mainJS:{
             files: [ pathDev + 'main/*.js'],
-            tasks: ['concat:mainJS', 'jshint', 'uglify:mainJS']
+            tasks: ['concat:mainJS', 'uglify:mainJS']
         },
 
         oneclickJS:{
             files: [ pathDev + 'oneclick/*.js'],
-            tasks: ['concat:oneclickJS', 'jshint', 'uglify:oneclickJS']
+            tasks: ['concat:oneclickJS', 'uglify:oneclickJS']
         },
 
         orderJS:{
             files: [ pathDev + 'order/*.js'],
-            tasks: ['concat:orderJS', 'jshint', 'uglify:orderJS']
+            tasks: ['concat:orderJS', 'uglify:orderJS']
         },
 
         orderV3JS: {
@@ -98,12 +98,12 @@ module.exports = function (grunt, options) {
 
         pandoraJS:{
             files: [ pathDev + 'pandora/*.js'],
-            tasks: ['concat:pandoraJS', 'jshint', 'uglify:pandoraJS']
+            tasks: ['concat:pandoraJS', 'uglify:pandoraJS']
         },
 
         portsJS:{
             files: [ pathDev + 'ports/*.js'],
-            tasks: ['concat:portsJS', 'jshint', 'uglify:portsJS']
+            tasks: ['concat:portsJS', 'uglify:portsJS']
         },
 
         catalogJS:{
@@ -113,22 +113,22 @@ module.exports = function (grunt, options) {
 
         productJS:{
             files: [ pathDev + 'product/*.js'],
-            tasks: ['concat:productJS', 'jshint', 'uglify:productJS']
+            tasks: ['concat:productJS', 'uglify:productJS']
         },
 
         shopJS:{
             files: [ pathDev + 'shop/*.js'],
-            tasks: ['concat:shopJS', 'jshint', 'uglify:shopJS']
+            tasks: ['concat:shopJS', 'uglify:shopJS']
         },
 
         tchiboJS:{
             files: [ pathDev + 'tchibo/*.js'],
-            tasks: ['concat:tchiboJS', 'jshint', 'uglify:tchiboJS']
+            tasks: ['concat:tchiboJS', 'uglify:tchiboJS']
         },
 
         watch3dJS:{
             files: [ pathDev + 'watch3d/*.js'],
-            tasks: ['concat:watch3dJS', 'jshint', 'uglify:watch3dJS']
+            tasks: ['concat:watch3dJS', 'uglify:watch3dJS']
         },
 
         loadJS:{

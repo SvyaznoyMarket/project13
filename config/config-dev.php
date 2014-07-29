@@ -8,7 +8,6 @@ $c->debug = true;
 // $c->coreV2['url']          = 'http://tester.core.ent3.ru/v2/';
 $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 
-$c->payment['paypalECS']   = true;
 $c->coreV2['timeout']      *= 3;
 $c->coreV2['retryTimeout'] = [
     'default' => 1,

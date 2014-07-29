@@ -563,9 +563,9 @@ $(document).ready(function() {
 				'Checkout Step 1 Order Type': 'one click order'
 			}
 
-			if ( typeof(yaCounter10503055) !== 'undefined' ) {
-				console.log('% Oneclick. Run yaCounter10503055');
-				yaCounter10503055.reachGoal('\orders\complete');
+			if ( typeof(yandexCounter) !== 'undefined' ) {
+				console.log('% Oneclick. Run yandexCounter');
+                yandexCounter.reachGoal('\orders\complete');
 			}
 
 			if ( typeof(_gaq) !== 'undefined' ) {
@@ -693,9 +693,9 @@ $(document).ready(function() {
 			}
 
 			analyticsData = $('#YA_paramsJS').data('vars');
-			if ( analyticsData && typeof(yaCounter10503055) !== 'undefined' ) {
+			if ( analyticsData && typeof(yandexCounter) !== 'undefined' ) {
 				console.log('% Oneclick. Complete. YA_paramsJS');
-				yaCounter10503055.reachGoal('QORDER', analyticsData);
+                yandexCounter.reachGoal('QORDER', analyticsData);
 			}
 
 			analyticsData = $('#adBelnderJS').data('vars');

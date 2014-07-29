@@ -153,6 +153,7 @@
         <?= $page->slotEnterprizeCompleteJs() ?>
         <?= $page->slotAdblender() ?>
         <?= $page->slotKissMetrics() ?>
+        <?= $page->slotFlocktoryEnterprizeJs() ?>
     </div>
 </body>
 </html>

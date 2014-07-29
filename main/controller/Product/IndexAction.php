@@ -69,12 +69,10 @@ class IndexAction {
         // запрашиваем товар по токену
         /** @var $product \Model\Product\Entity */
         $product = null;
-        $productExpanded = null;
-        $repository->prepareEntityByToken($productToken, $region, function($data) use (&$product, &$productExpanded) {
+        $repository->prepareEntityByToken($productToken, $region, function($data) use (&$product) {
             $data = reset($data);
 
             if ((bool)$data) {
-                $productExpanded = new \Model\Product\ExpandedEntity($data);
                 $product = new \Model\Product\Entity($data);
             }
         });
@@ -246,6 +244,10 @@ class IndexAction {
         if ($productLine instanceof \Model\Product\Line\Entity ) {
             try {
                 $line = \RepositoryManager::line()->getEntityByToken($productLine->getToken());
+                if (!$line || !$line instanceof \Model\Line\Entity) {
+                    throw new \Exception(sprintf('Не получена линия %s', $productLine->getToken()));
+                }
+
                 $lineKits = $productRepository->getCollectionById($line->getKitId());
                 $relatedKitsIds = [];
                 foreach ($lineKits as $kit) {
@@ -409,7 +411,6 @@ class IndexAction {
         $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('product', $product);
         $page->setParam('lifeGiftProduct', $lifeGiftProduct);
-        $page->setParam('productExpanded', $productExpanded);
         $page->setParam('productVideos', $productVideos);
         $page->setParam('title', $product->getName());
         $page->setParam('accessories', $accessories);

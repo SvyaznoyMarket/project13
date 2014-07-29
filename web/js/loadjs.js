@@ -253,6 +253,8 @@
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
+                    .wait()
+                    .script( getWithVersion('ports.js') )
 			}).runQueue();
 		},
 
@@ -510,6 +512,8 @@
 						.script('tour.min.js')
 						.wait()
 						.script( optimizelyUrl )
+                        .wait()
+                        .script( getWithVersion('ports.js') )
 			}).runQueue();
 		},
 

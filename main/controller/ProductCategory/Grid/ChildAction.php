@@ -102,8 +102,11 @@ class ChildAction {
             return $product instanceof \Model\Product\BasicEntity;
         });
 
-        if ($category->getProductCount() == 0 && (bool) $category->getAncestor() && $category->getAncestor()[0]->getToken() == 'tchibo') {
-            return new \Http\RedirectResponse(\App::router()->generate('tchibo.where_buy'));
+        if (
+            $category->getProductCount() == 0 && (bool)$category->getAncestor() &&
+            $category->getAncestor()[0]->getToken() == 'tchibo' && \App::config()->preview !== true
+        ) {
+            return new \Http\RedirectResponse(\App::router()->generate('tchibo.where_buy', $request->query->all()));
         }
 
         // SITE-3970

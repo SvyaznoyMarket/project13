@@ -31,7 +31,7 @@ class InfoAction {
                     1,
                     time() + (4 * 7 * 24 * 60 * 60),
                     '/',
-                    null,
+                    \App::config()->session['cookie_domain'],
                     false,
                     false // важно httpOnly=false, чтобы js мог получить куку
                 );
@@ -58,6 +58,7 @@ class InfoAction {
             ];
 
             // если пользователь авторизован
+            /** @var \Model\User\Entity|null $userEntity */
             if ($userEntity = $user->getEntity()) {
                 $responseData['user']['name'] = $userEntity->getName();
                 $responseData['user']['link'] = \App::router()->generate('user');
@@ -65,7 +66,12 @@ class InfoAction {
                 $responseData['user']['id'] = $userEntity->getId();
                 $responseData['user']['email'] = $userEntity->getEmail();
                 $responseData['user']['emailHash'] = md5($userEntity->getEmail());
-                $responseData['user']['hasEnterprizeCoupon'] = $user->getEntity()->isEnterprizeMember();
+                $responseData['user']['hasEnterprizeCoupon'] = $userEntity->isEnterprizeMember();
+                $responseData['user']['sex'] = $userEntity->getSex(); // 1-мужской, 2-женский
+
+                // sclubNumber
+                $sclubCard = $userEntity->getSclubCard() ?: [];
+                $responseData['user']['sclubNumber'] = !empty($sclubCard) && isset($sclubCard['number']) ? $sclubCard['number'] : null;
             }
 
             if (!$cart->isEmpty()) {

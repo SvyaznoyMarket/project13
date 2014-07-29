@@ -675,6 +675,10 @@ return [
         'pattern' => '/private/edit',
         'action'  => ['User\EditAction', 'execute'],
     ],
+    'user.edit.sclubNumber' => [
+        'pattern' => '/ajax/user/edit-sclub-number',
+        'action'  => ['User\EditAction', 'editSclubNumber'],
+    ],
     // редактирование данных пользователя
     'user.order' => [
         'pattern' => '/private/orders',

@@ -115,10 +115,13 @@ class IndexAction {
         }
         /** @var $category  \Model\Product\Category\Entity */
 
-        $categoriesTchibo = array_filter($categoryTree, function ($cat) use ($categoryToken) { return $cat['token'] === $categoryToken; } );
+        $categoriesTchibo = null;
+        if (is_array($categoryTree) && !empty($categoryTree)) {
+            $categoriesTchibo = array_filter($categoryTree, function ($cat) use ($categoryToken) { return $cat['token'] === $categoryToken; } );
+        }
 
-        if (!(bool) $categoriesTchibo || $categoriesTchibo[0]['product_count'] == 0) {
-            return new \Http\RedirectResponse(\App::router()->generate('tchibo.where_buy'));
+        if (!(bool) $categoriesTchibo || $categoriesTchibo[0]['product_count'] == 0 && \App::config()->preview !== true) {
+            return new \Http\RedirectResponse(\App::router()->generate('tchibo.where_buy', $request->query->all()));
         }
 
         if (!empty($shopScriptSeo['link'])) {
