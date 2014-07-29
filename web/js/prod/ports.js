@@ -499,7 +499,7 @@ window.ANALYTICS = {
              * @param {string} category (required) The name you supply for the group of objects you want to track.
              * @param {string} action (required) A string that is uniquely paired with each category, and commonly used to define the type of user interaction for the web object.
              * @param {string} [label] (optional) An optional string to provide additional dimensions to the event data.
-             * @param {int} [value] (optional) An integer that you can use to provide numerical data about the user event.
+             * @param {int|object} [value] (optional) An integer that you can use to provide numerical data about the user event (or {'hitcallback':func} object).
              * @param {bool} [nonInteraction] (optional) A boolean that when set to true, indicates that the event hit will not be used in bounce-rate calculation.
              */
             trackEvent = function trackEventF(category, action, label, value, nonInteraction) {
@@ -571,10 +571,19 @@ window.ANALYTICS = {
 				$('.mBannerItem').click(function() {
 					var
 						wrapper = $(this).find('.adfoxWrapper'),
-						banner = wrapper.find('div:first')
+						banner = wrapper.find('div:first'),
 						id = banner.attr('id') || 'adfox';
 					gaBannerClick( id );
 				});
+                // отслеживание кликов на блоках smartchoice
+                $('.specialPriceItem').on('click', '.specialPriceItemCont_imgLink, .specialPriceItemCont_name', function (e) {
+                    var $parent = $(this).closest('.specialPriceItem'),
+                        article = $parent.data('article'),
+                        title = $parent.find('.specialPriceItemTitle').text(),
+                        url = $(this).attr('href');
+                    e.preventDefault();
+                    trackEvent('smartchoice', title, article, { 'hitCallback': function () { document.location = url; }});
+                });
 			},
 
 			ga_search = function ga_search() {
