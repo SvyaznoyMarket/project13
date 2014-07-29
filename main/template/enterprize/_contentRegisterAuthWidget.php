@@ -45,6 +45,6 @@ $(window).load(function () {
             return self;
         }
     }).data('ui-registerAuth');
-    window.registerAuth.init('confirm'); // вызов виджета
+//    window.registerAuth.init('confirm'); // вызов виджета
 });
 </script>
