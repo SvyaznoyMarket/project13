@@ -60,6 +60,7 @@ $.fn.slots = function (slot_config, animations_config) {
         slot_config: slot_config,
         options: {type: "random", speed: 3, n: 0, m: 0, color: "58,209,255"},
         reels: $el.find('#reelsWrapper .chips'),
+        reels2: $el.find('#reelsWrapper .chips2'),
         $notAvailableMessageText: $el.find('#notAvailable .message'),
         $notAvailablePrizeText: $el.find('#notAvailable .option.prize'),
         $notAvailableRemindText: $el.find('#notAvailable .option.remind'),
@@ -156,6 +157,7 @@ $.fn.slots = function (slot_config, animations_config) {
             self.game.inGame = false;
             self.game.buttonsRow.removeClass('stopplay').addClass('toplay');
             self.setLedPanelOptions('default');
+            self.reels.removeClass('stop_spinning');
             self.reels.addClass('spinning');
             self.messageBox.stopAnimation();
             self.messageBox.setRandomText("demo");
@@ -170,13 +172,49 @@ $.fn.slots = function (slot_config, animations_config) {
             //append slots background
             $el.append('<div id="slotsBack"></div>');
             //append slots body
-            $el.append('<div id="slotsWrapper"> <div id="slotsMachine"> <div id="slotsGame"> <div id="slotsHeader"></div> <div id="notAvailable"> <div class="message"></div> <a href="#" class="option prize"></a> <a href="#" class="option remind"></a> <div class="plast br"></div> <div class="plast bl"></div> <div class="plast tr"></div> <div class="plast tl"></div> </div> <div id="slotsMessageBox"> <div id="slotsMessageReel"> <div id="messages" class="messageRow"></div> <div id="pixelOverlay"></div> </div> </div> <div id="reelsWrapper"> <div id="reel1" class="reel"> <div class="chips "> </div> <div class="slot-shadow-overlay overlay-top"></div> <div class="slot-shadow-overlay overlay-bottom"></div> </div> <div id="reel2" class="reel"> <div class="chips"> </div> <div class="slot-shadow-overlay overlay-top"></div> <div class="slot-shadow-overlay overlay-bottom"></div> </div> <div id="reel3" class="reel"> <div class="chips"> </div> <div class="slot-shadow-overlay overlay-top"></div> <div class="slot-shadow-overlay overlay-bottom"></div> </div> </div> <div id="winContainer" class=""> <div class="tile"> <div class="rulesText"> Фишка со скидкой <strong class="dicount">10 %</strong> на <strong class="category"><a target="_blank" style="text-decoration: underline;" href="/catalog/children">Детские товары</a></strong><br> Минимальная сумма заказа 499 руб<br> Действует c 28.05.2014 по 30.06.2014 </div> </div> <div class="confetil"></div> <div class="blue_shine"></div> <div class="shine"></div> <div class="chip "> <div class="border lime"> <div class="cuponImg__inner"> <div class="cuponIco"> <img src="http://content.enter.ru/wp-content/uploads/2014/03/kids.png"> </div> <div class="cuponDesc">Детские товары</div> <div class="cuponPrice">15% </div> </div> </div> </div> <div class=""></div> </div> <canvas height="388" width="588" id="canvas"></canvas> <div id="buttonsRow" class="toplay"> <div class="play btn_wrapper"> <div class="step_dots"> <div class="reel_dot first on"></div> <div class="reel_dot second on"></div> <div class="reel_dot third on"></div> </div> <div class="button">Играть</div> </div> <div class="stop btn_wrapper"> <div class="step_dots"> <div class="reel_dot first"></div> <div class="reel_dot second"></div> <div class="reel_dot third"></div> </div> <div class="button">Стоп</div> </div> </div> </div> </div> <div id="slotsBottomLine"></div> </div>');
+            $el.append('<div id="slotsWrapper"> ' +
+                '<div id="slotsMachine"> ' +
+                '<div id="slotsGame"> ' +
+                '<div id="slotsHeader"></div> ' +
+                '<div id="notAvailable"> ' +
+                '<div class="message"></div> ' +
+                '<a href="#" class="option prize"></a> ' +
+                '<a href="#" class="option remind"></a> ' +
+                '<div class="plast br"></div> ' +
+                '<div class="plast bl"></div> ' +
+                '<div class="plast tr"></div> ' +
+                '<div class="plast tl"></div> </div> ' +
+                '<div id="slotsMessageBox"> ' +
+                '<div id="slotsMessageReel"> ' +
+                '<div id="messages" class="messageRow"></div> ' +
+                '<div id="pixelOverlay"></div> ' +
+                '</div> ' +
+                '</div> ' +
+                '<div id="reelsWrapper"> ' +
+                '<div id="reel1" class="reel"> ' +
+                '<div class="chips "> </div> ' +
+                '<div class="slot-shadow-overlay overlay-top"></div> ' +
+                '<div class="slot-shadow-overlay overlay-bottom"></div> ' +
+                '</div> ' +
+                '<div id="reel2" class="reel"> ' +
+                '<div class="chips"> </div> ' +
+                '<div class="slot-shadow-overlay overlay-top"></div> ' +
+                '<div class="slot-shadow-overlay overlay-bottom"></div> ' +
+                '</div> ' +
+                '<div id="reel3" class="reel"> ' +
+                '<div class="chips"> </div> ' +
+                '<div class="slot-shadow-overlay overlay-top"></div> ' +
+                '<div class="slot-shadow-overlay overlay-bottom"></div> ' +
+                '</div> ' +
+                '</div> ' +
+                '<div id="winContainer" class=""> <div class="tile"> <div class="rulesText"> Фишка со скидкой <strong class="dicount">10 %</strong> на <strong class="category"><a target="_blank" style="text-decoration: underline;" href="/catalog/children">Детские товары</a></strong><br> Минимальная сумма заказа 499 руб<br> Действует c 28.05.2014 по 30.06.2014 </div> </div> <div class="confetil"></div> <div class="blue_shine"></div> <div class="shine"></div> <div class="chip "> <div class="border lime"> <div class="cuponImg__inner"> <div class="cuponIco"> <img src="http://content.enter.ru/wp-content/uploads/2014/03/kids.png"> </div> <div class="cuponDesc">Детские товары</div> <div class="cuponPrice">15% </div> </div> </div> </div> <div class=""></div> </div> <canvas height="388" width="588" id="canvas"></canvas> <div id="buttonsRow" class="toplay"> <div class="play btn_wrapper"> <div class="step_dots"> <div class="reel_dot first on"></div> <div class="reel_dot second on"></div> <div class="reel_dot third on"></div> </div> <div class="button">Играть</div> </div> <div class="stop btn_wrapper"> <div class="step_dots"> <div class="reel_dot first"></div> <div class="reel_dot second"></div> <div class="reel_dot third"></div> </div> <div class="button">Стоп</div> </div> </div> </div> </div> <div id="slotsBottomLine"></div> </div>');
             this.canvas = document.getElementById('canvas');
             this.context = canvas.getContext('2d');
             this.context.webkitImageSmoothingEnabled = false;
             this.context.mozImageSmoothingEnabled = false;
             this.context.imageSmoothingEnabled = false;
             this.reels = $el.find('#reelsWrapper .chips');
+            this.reels2 = $el.find('#reelsWrapper .chips2');
             this.$notAvailableMessageText = $el.find('#notAvailable .message');
             this.$notAvailablePrizeText = $el.find('#notAvailable .option.prize');
             this.$notAvailableRemindText = $el.find('#notAvailable .option.remind');
@@ -188,15 +226,30 @@ $.fn.slots = function (slot_config, animations_config) {
         game: {//логика слот машины1
             reelStoped: false,
             inGame: false,
+            radius: 315,
+            setupCips: function(chip){
+                var self = this;
+                var reelLength = ($('.reel .chip').length/3);
+                var posterAngle = 360 / reelLength;
+
+                chip.each(function(index){
+                    $(this).attr('style','-webkit-transform: '+ 'rotateX(' + (posterAngle * index) + 'deg) translateZ(' + self.radius + 'px)');
+                });
+            },
             init: function (reels) {//рисуем рельсы.
                 var self = this;
                 for (var i = 0; i < reels.length; i++) {
+                    self.setupCips($('#reel' + (i + 1) +' .chip'));
                     $el.find('#reel' + (i + 1) + ' .chips').html('');
                     for (var ch = 0; ch < reels[i].length; ch++) {
                         var chip = reels[i][ch];
                         $el.find('#reel' + (i + 1) + ' .chips').append('<div class="chip"> <span class="border " style="background-image: url(' + chip.background + ');  background-position: center; background-repeat: no-repeat; background-size: 100%; "> <span class="cuponImg__inner"> <span class="cuponIco"> <img src="' + chip.icon + '"> </span> <span class="cuponDesc">' + chip.label + '</span> <span class="cuponPrice">' + chip.value + '</span> </span> </span> </div>');
                     }
                 }
+                for (var j = 0; j < reels.length; j++) {
+                    self.setupCips($('#reel' + (j + 1) + ' .chip'));
+                }
+                $el.slotMachine.reels.removeClass('stop_spinning');
                 $el.slotMachine.reels.addClass('spinning');
                 if ($el.slotMachine.config.userAutoPlay) {
                     $el.slotMachine.spinningTimeout = setTimeout(function () {
@@ -212,7 +265,7 @@ $.fn.slots = function (slot_config, animations_config) {
 
 
                 game.play_button.click(function () {
-                    console.log('game.inGame', game.inGame);
+                    console.log('inGame', game.inGame);
                     if (game.inGame) {
                         return;
                     }
@@ -237,9 +290,9 @@ $.fn.slots = function (slot_config, animations_config) {
                 }
                 game.result = response.result;//результат спина
                 game.user = response.user;
-                var ch1 = $el.find(self.reels[0]).find('.chip:nth-child(2)');
-                var ch2 = $el.find(self.reels[1]).find('.chip:nth-child(2)');
-                var ch3 = $el.find(self.reels[2]).find('.chip:nth-child(2)');
+                var ch1 = $el.find(self.reels[0]).find('.chip:nth-child(1)');
+                var ch2 = $el.find(self.reels[1]).find('.chip:nth-child(1)');
+                var ch3 = $el.find(self.reels[2]).find('.chip:nth-child(1)');
                 var winCh = $el.find('#winContainer .chip');
 
                 var reels = response.result.line;
@@ -265,7 +318,6 @@ $.fn.slots = function (slot_config, animations_config) {
                 reels[2] && ch3.find('.cuponDesc').text(reels[2].label);
                 reels[1] && winCh.find('.cuponDesc').text(reels[1].label);
 
-
             },
             start: function () {
                 var self = $el.slotMachine;
@@ -275,6 +327,7 @@ $.fn.slots = function (slot_config, animations_config) {
                 self.setLedPanelOptions('spining');// ставим параметры лед панели
                 self.ledAnimations.animationHandler.startAnimation();//стартуем акнимацию лед панели
                 $el.find('.winChip').removeClass('winChip');//чистим классы фишек
+                self.reels.removeClass('stop_spinning');
                 self.reels.addClass('spinning');//стартуем анимацию кручения
                 self.messageBox.stopAnimation();
                 self.messageBox.setRandomText('spinning');//пишем текст текстовой панели
@@ -312,7 +365,7 @@ $.fn.slots = function (slot_config, animations_config) {
                 console.log('stopAll');
                 var check = function () {
                     if (game.response) {
-                        self.stopReels();
+                        self.stopReels(isAnimationsStopped);
                         self.config.game.usedUserAttempts++;
                         game.isWin(isAnimationsStopped);
                         clearTimeout(game.waitingForGameResult);
@@ -334,6 +387,7 @@ $.fn.slots = function (slot_config, animations_config) {
                     game.reelStoped++;
                 }
                 self.stopReelSpin($(self.reels[game.reelStoped]));
+                console.log("real stoped index", game.reelStoped);
                 $(game.buttonsRow.find('.stop .reel_dot')[game.reelStoped]).addClass('on');
                 if (game.reelStoped == 2) {
                     game.stopAll(true);
@@ -355,6 +409,7 @@ $.fn.slots = function (slot_config, animations_config) {
                 /*if win*/
                 var self = $el.slotMachine;
                 var game = this;
+                console.log('inGame', game.inGame);
                 if (game.result) {
                     if (game.result.prizes) {
                         setTimeout(function () {
@@ -388,7 +443,7 @@ $.fn.slots = function (slot_config, animations_config) {
 
             $.each(self.reels, function (i, reel) {
                 setTimeout(function () {
-                    $($(reel).find('.chip')[1]).find('.border').addClass('winChip');
+                    $($(reel).find('.chip')[0]).find('.border').addClass('winChip');
                 }, i * 500 + 500);
 
             });
@@ -414,7 +469,7 @@ $.fn.slots = function (slot_config, animations_config) {
 
             $.each(self.reels, function (i, reel) {
                 setTimeout(function () {
-                    $($(reel).find('.chip')[1]).find('.border').addClass('winChip');
+                    $($(reel).find('.chip')[0]).find('.border').addClass('winChip');
 
                 }, i * 500 + 500);
 
@@ -666,17 +721,23 @@ $.fn.slots = function (slot_config, animations_config) {
         },
         stopReelSpin: function ($reel) {
             $reel.removeClass('spinning');
+            $reel.addClass('stop_spinning');
         },
-        stopReels: function () {
+        stopReels: function (isAnimationsStopped) {
             var self = this;
-            $.each(self.reels, function (i, reel) {
-                setTimeout(function () {
-                    self.stopReelSpin($(reel));
-                    if (self.game.buttonsRow) {
-                        $(self.game.buttonsRow.find('.stop .reel_dot')[i]).addClass('on');
-                    }
 
-                }, i * 500 + 500);
+            $.each(self.reels, function (i, reel) {
+                if (isAnimationsStopped) { }
+                else {
+                    self.stopTimeout = setTimeout(function () {
+                        self.stopReelSpin($(reel));
+                        if (self.game.buttonsRow) {
+                            console.log("index", i);
+                            $(self.game.buttonsRow.find('.stop .reel_dot')[i]).addClass('on');
+                        }
+                    }, i * 500 + 500);
+                }
+
             });
         },
 
@@ -717,7 +778,6 @@ $.fn.slots = function (slot_config, animations_config) {
 //                this.textBox.transition({ x: '+=' + (step ? step : 3) + 'px', delay: delay ? delay : 1, duration: speed ? speed : 100 });
 //            },
             leftToRight: function (step, delay, speed) {
-                console.log("leftToRight new");
                 var self = this;
                 self.isShowing = true;
                 self.textBox.attr('style', '');
@@ -752,7 +812,6 @@ $.fn.slots = function (slot_config, animations_config) {
 //                this.textBox.transition({ x: '-=' + (step ? step : 3) + 'px', delay: delay ? delay : 1, duration: speed ? speed : 100 });
 //            },
             rightToLeft: function (step, delay, speed) {
-                console.log("rightToLeft new");
                 var self = this;
                 self.isShowing = true;
                 self.textBox.attr('style', '');
@@ -784,7 +843,6 @@ $.fn.slots = function (slot_config, animations_config) {
 //                this.textBox.transition({ opacity: opacity ? 0 : 1, delay: delay ? delay : 0, duration: speed ? speed : 100 });
 //            },
             toggle: function (step, delay, speed) {
-                console.log("toggle new");
                 var self = this;
                 self.isShowing = true;
                 self.left = 0;
@@ -806,7 +864,6 @@ $.fn.slots = function (slot_config, animations_config) {
 //                }});
             },
             random: function (step, delay, speed) {
-                console.log("toggle new");
                 var self = this;
                 self.isShowing = true;
                 self.left = 0;

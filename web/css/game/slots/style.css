@@ -91,6 +91,10 @@
   position: absolute;
   left: -2px;
   top: 223px;
+  image-rendering: crisp-edges;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
 }
 #slotsWrapper #slotsMachine #canvas .led {
   position: absolute;
@@ -109,7 +113,7 @@
 }
 #slotsWrapper #slotsMachine #reelsWrapper {
   position: absolute;
-  width: 480px;
+  width: 482px;
   height: 280px;
   padding: 16px 19px 21px;
   box-sizing: border-box;
@@ -119,6 +123,11 @@
   top: 270px;
 }
 #slotsWrapper #slotsMachine #reelsWrapper .reel {
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
+  transform-style: preserve-3d;
   position: relative;
   width: 141px;
   height: 243px;
@@ -154,26 +163,40 @@
   background-size: 100%;
   background-position: 0% 100%;
 }
-#slotsWrapper #slotsMachine #reelsWrapper .reel .chips {
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips,
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips2 {
   position: relative;
   width: 132px;
   height: auto;
-  top: -70px;
+  top: 55px;
+  margin-left: 8px;
   backface-visibility: hidden;
   max-height: 234px;
   transform-style: preserve-3d;
   -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
 }
-#slotsWrapper #slotsMachine #reelsWrapper .reel .chips.spinning {
-  -webkit-animation: spin 4s linear infinite;
-  animation: spin 4s linear infinite;
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips.spinning,
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips2.spinning {
+  -webkit-animation: x-spin 6s linear infinite;
+  -moz-animation: x-spin 6s linear infinite;
+  -ms-animation: x-spin 6s linear infinite;
+  -o-animation: x-spin 6s linear infinite;
+  animation: x-spin 6s linear infinite;
 }
-#slotsWrapper #slotsMachine #reelsWrapper .reel .chips.stop_spinning {
-  -webkit-animation: stop_spin 10s ease-in-out 0s;
-  animation: stop_spin 10s ease-in-out 0s;
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips.stop_spinning,
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips2.stop_spinning {
+  -webkit-animation: stop_spin 1s ease-in-out 0s;
+  -moz-animation: stop_spin 1s ease-in-out 0s;
+  -ms-animation: stop_spin 1s ease-in-out 0s;
+  -o-animation: stop_spin 1s ease-in-out 0s;
+  animation: stop_spin 1s ease-in-out 0s;
 }
-#slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip {
-  position: relative;
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip,
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips2 .chip {
+  position: absolute;
   width: 117px;
   height: 118px;
   box-sizing: border-box;
@@ -183,8 +206,10 @@
   margin: 0 auto;
   text-align: center;
   background-image: url(img/slot_cell.png);
+  background-color: #ffffff;
 }
-#slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip .border {
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip .border,
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips2 .chip .border {
   text-align: center;
   display: block;
   position: relative;
@@ -196,36 +221,44 @@
   border-radius: 50%;
   color: #000;
 }
-#slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip .border.winChip {
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip .border.winChip,
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips2 .chip .border.winChip {
   box-shadow: 2px 2px 20px rgba(0, 194, 252, 0.6), -2px 2px 20px rgba(0, 196, 255, 0.6), 2px -2px 20px rgba(0, 196, 255, 0.6), -2px -2px 20px rgba(0, 196, 255, 0.6);
   -webkit-transition: 0.2s ease-in;
   -moz-transition: 0.2s ease-in;
   -o-transition: 0.2s ease-in;
   transition: 0.2s ease-in;
 }
-#slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip .border.blue {
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip .border.blue,
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips2 .chip .border.blue {
   background-image: url(img/fishka_blue_b2.png);
 }
-#slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip .border.lime {
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip .border.lime,
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips2 .chip .border.lime {
   background-image: url(img/fishka_lime_b1.png);
 }
-#slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip .border.orange {
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip .border.orange,
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips2 .chip .border.orange {
   background-image: url(img/fishka_orange_b1.png);
 }
-#slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip .border.fuksiya {
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip .border.fuksiya,
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips2 .chip .border.fuksiya {
   background-image: url(img/fishka_fuksiya_b1.png);
 }
-#slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip .border .cuponIco {
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip .border .cuponIco,
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips2 .chip .border .cuponIco {
   top: 20px;
   text-align: center;
   width: 100%;
   position: relative;
 }
-#slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip .border .cuponIco img {
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip .border .cuponIco img,
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips2 .chip .border .cuponIco img {
   max-width: 45px;
   max-height: 25px;
 }
-#slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip .border .cuponDesc {
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip .border .cuponDesc,
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips2 .chip .border .cuponDesc {
   position: relative;
   top: 19px;
   font-size: 7px;
@@ -236,7 +269,8 @@
   margin: 0 auto;
   font-family: Tahoma;
 }
-#slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip .border .cuponPrice {
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip .border .cuponPrice,
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips2 .chip .border .cuponPrice {
   font-family: EnterType;
   font-size: 17px;
   position: relative;
@@ -871,74 +905,92 @@
     -webkit-transform: rotate(360deg);
   }
 }
-@-webkit-keyframes spin {
-  from {
-    transform: translate3d(0, -826px, 1px);
-    -ms-transform: translate3d(0, -826px, 0);
-    -moz-transform: translate3d(0, -826px, 0);
-    -webkit-transform: translate3d(0, -826px, 1px);
-    -o-transform: translate3d(0, -826px, 0);
+@-webkit-keyframes x-spin {
+  100% {
+    transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    -webkit-transform: rotateX(0deg);
+    -o-transform: rotateX(0deg);
   }
-  to {
-    transform: translate3d(0, 0px, 1px);
-    -ms-transform: translate3d(0, 0px, 0);
-    -moz-transform: translate3d(0, 0px, 0);
-    -webkit-transform: translate3d(0, 0px, 1px);
-    -o-transform: translate3d(0, 0px, 0);
+  50% {
+    transform: rotateX(180deg);
+    -ms-transform: rotateX(180deg);
+    -moz-transform: rotateX(180deg);
+    -webkit-transform: rotateX(180deg);
+    -o-transform: rotateX(180deg);
+  }
+  0% {
+    transform: rotateX(360deg);
+    -ms-transform: rotateX(360deg);
+    -moz-transform: rotateX(360deg);
+    -webkit-transform: rotateX(360deg);
+    -o-transform: rotateX(360deg);
   }
 }
-@keyframes spin {
-  from {
-    transform: translate3d(0, -826px, 1px);
-    -ms-transform: translate3d(0, -826px, 0);
-    -moz-transform: translate3d(0, -826px, 0);
-    -webkit-transform: translate3d(0, -826px, 1px);
-    -o-transform: translate3d(0, -826px, 0);
+@keyframes x-spin {
+  100% {
+    transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    -webkit-transform: rotateX(0deg);
+    -o-transform: rotateX(0deg);
   }
-  to {
-    transform: translate3d(0, 0px, 1px);
-    -ms-transform: translate3d(0, 0px, 0);
-    -moz-transform: translate3d(0, 0px, 0);
-    -webkit-transform: translate3d(0, 0px, 1px);
-    -o-transform: translate3d(0, 0px, 0);
+  50% {
+    transform: rotateX(180deg);
+    -ms-transform: rotateX(180deg);
+    -moz-transform: rotateX(180deg);
+    -webkit-transform: rotateX(180deg);
+    -o-transform: rotateX(180deg);
+  }
+  0% {
+    transform: rotateX(360deg);
+    -ms-transform: rotateX(360deg);
+    -moz-transform: rotateX(360deg);
+    -webkit-transform: rotateX(360deg);
+    -o-transform: rotateX(360deg);
+  }
+}
+@-moz-keyframes x-spin {
+  100% {
+    transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+  }
+  50% {
+    transform: rotateX(180deg);
+    -ms-transform: rotateX(180deg);
+    -moz-transform: rotateX(180deg);
+  }
+  0% {
+    transform: rotateX(360deg);
+    -ms-transform: rotateX(360deg);
+    -moz-transform: rotateX(360deg);
   }
 }
 @-webkit-keyframes stop_spin {
-  0% {
-    transform: translate3d(0, 0, 1px);
-    -ms-transform: translate3d(0, 0, 0);
-    -moz-transform: translate3d(0, 0, 0);
-    -webkit-transform: translate3d(0, 0, 1px);
-    -o-transform: translate3d(0, 0, 0);
-  }
-  99% {
-    transform: translate3d(0, -540px, 1px);
-    -ms-transform: translate3d(0, -540px, 0);
-    -moz-transform: translate3d(0, -540px, 0);
-    -webkit-transform: translate3d(0, -540px, 1px);
-    -o-transform: translate3d(0, -540px, 0);
-  }
   100% {
-    top: -540px;
+    transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    -webkit-transform: rotateX(0deg);
+    -o-transform: rotateX(0deg);
   }
 }
 @keyframes stop_spin {
-  0% {
-    transform: translate3d(0, 0, 1px);
-    -ms-transform: translate3d(0, 0, 0);
-    -moz-transform: translate3d(0, 0, 0);
-    -webkit-transform: translate3d(0, 0, 1px);
-    -o-transform: translate3d(0, 0, 0);
-  }
-  99% {
-    transform: translate3d(0, -540px, 1px);
-    -ms-transform: translate3d(0, -540px, 0);
-    -moz-transform: translate3d(0, -540px, 0);
-    -webkit-transform: translate3d(0, -540px, 1px);
-    -o-transform: translate3d(0, -540px, 0);
-  }
   100% {
-    top: -540px;
+    transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    -webkit-transform: rotateX(0deg);
+    -o-transform: rotateX(0deg);
+  }
+}
+@keyframes stop_spin {
+  100% {
+    transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
   }
 }
 @-webkit-keyframes text_animation_LtR {

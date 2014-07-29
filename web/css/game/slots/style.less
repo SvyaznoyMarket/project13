@@ -115,12 +115,15 @@
 
     }
     #canvas {
-
+      //  display: none;
       .absolute;
       left: -2px;
 
       top: 223px;
-
+      image-rendering: crisp-edges;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: -webkit-optimize-contrast;
+      -ms-interpolation-mode: nearest-neighbor;
       .led {
         .absolute;
         .sizeBlock(48px, 48px);
@@ -142,12 +145,17 @@
     }
     #reelsWrapper {
       .absolute;
-      .sizeBlock(480px, 280px);
+      .sizeBlock(482px, 280px);
       padding: 16px 19px 21px;
       .box-sizing;
       left: 51px;
       top: 270px;
       .reel {
+        -webkit-transform-style: preserve-3d;
+        -moz-transform-style: preserve-3d;
+        -ms-transform-style: preserve-3d;
+        -o-transform-style: preserve-3d;
+        transform-style: preserve-3d;
         .relative;
         .sizeBlock(141px, 243px);
         display: inline-block;
@@ -179,33 +187,44 @@
           background-size: 100%;
           background-position: 0% 100%;
         }
-        .chips {
+        .chips, .chips2 {
           .relative;
           .sizeBlock(132px, auto);
-          top: -70px;
+          //          top: -70px;
+          top: 55px;
+          margin-left: 8px;
           backface-visibility: hidden;
           max-height: 234px;
           transform-style: preserve-3d;
           -webkit-transform-style: preserve-3d;
-
+          -moz-transform-style: preserve-3d;
+          -ms-transform-style: preserve-3d;
+          -o-transform-style: preserve-3d;
           &.spinning {
-            -webkit-animation: spin 4s linear infinite;
-            animation: spin 4s linear infinite;
+            -webkit-animation: x-spin 6s linear infinite;
+            -moz-animation: x-spin 6s linear infinite;
+            -ms-animation: x-spin 6s linear infinite;
+            -o-animation: x-spin 6s linear infinite;
+            animation: x-spin 6s linear infinite;
           }
           &.stop_spinning {
-            -webkit-animation: stop_spin 10s ease-in-out 0s;
-            animation: stop_spin 10s ease-in-out 0s;
-
+            -webkit-animation: stop_spin 1s ease-in-out 0s;
+            -moz-animation: stop_spin 1s ease-in-out 0s;
+            -ms-animation: stop_spin 1s ease-in-out 0s;
+            -o-animation: stop_spin 1s ease-in-out 0s;
+            animation: stop_spin 1s ease-in-out 0s;
           }
 
           .chip {
-            .relative;
+            //            .relative;
+            position: absolute;
             .sizeBlock(117px, 118px);
             .box-sizing;
             padding: 7px 0;
             margin: 0 auto;
             text-align: center;
             background-image: url(img/slot_cell.png);
+            background-color: #ffffff;
             .border {
               text-align: center;
               display: block;
@@ -274,7 +293,6 @@
 
           }
         }
-
       }
     }
     #slotsGame {
@@ -952,81 +970,97 @@
   }
 }
 
-@-webkit-keyframes spin {
-  from {
-    transform: translate3d(0, -826px, 1px);
-    -ms-transform: translate3d(0, -826px, 0);
-    -moz-transform: translate3d(0, -826px, 0);
-    -webkit-transform: translate3d(0, -826px, 1px);
-    -o-transform: translate3d(0, -826px, 0);
+@-webkit-keyframes x-spin {
+  100% {
+    transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    -webkit-transform: rotateX(0deg);
+    -o-transform: rotateX(0deg);
   }
-  to {
-
-    transform: translate3d(0, 0px, 1px);
-    -ms-transform: translate3d(0, 0px, 0);
-    -moz-transform: translate3d(0, 0px, 0);
-    -webkit-transform: translate3d(0, 0px, 1px);
-    -o-transform: translate3d(0, 0px, 0);
+  50% {
+    transform: rotateX(180deg);
+    -ms-transform: rotateX(180deg);
+    -moz-transform: rotateX(180deg);
+    -webkit-transform: rotateX(180deg);
+    -o-transform: rotateX(180deg);
+  }
+  0% {
+    transform: rotateX(360deg);
+    -ms-transform: rotateX(360deg);
+    -moz-transform: rotateX(360deg);
+    -webkit-transform: rotateX(360deg);
+    -o-transform: rotateX(360deg);
   }
 }
 
-@keyframes spin {
-  from {
-    transform: translate3d(0, -826px, 1px);
-    -ms-transform: translate3d(0, -826px, 0);
-    -moz-transform: translate3d(0, -826px, 0);
-    -webkit-transform: translate3d(0, -826px, 1px);
-    -o-transform: translate3d(0, -826px, 0);
+@keyframes x-spin {
+  100% {
+    transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    -webkit-transform: rotateX(0deg);
+    -o-transform: rotateX(0deg);
   }
-  to {
+  50% {
+    transform: rotateX(180deg);
+    -ms-transform: rotateX(180deg);
+    -moz-transform: rotateX(180deg);
+    -webkit-transform: rotateX(180deg);
+    -o-transform: rotateX(180deg);
+  }
+  0% {
+    transform: rotateX(360deg);
+    -ms-transform: rotateX(360deg);
+    -moz-transform: rotateX(360deg);
+    -webkit-transform: rotateX(360deg);
+    -o-transform: rotateX(360deg);
+  }
+}
 
-    transform: translate3d(0, 0px, 1px);
-    -ms-transform: translate3d(0, 0px, 0);
-    -moz-transform: translate3d(0, 0px, 0);
-    -webkit-transform: translate3d(0, 0px, 1px);
-    -o-transform: translate3d(0, 0px, 0);
+@-moz-keyframes x-spin {
+  100% {
+    transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+  }
+  50% {
+    transform: rotateX(180deg);
+    -ms-transform: rotateX(180deg);
+    -moz-transform: rotateX(180deg);
+  }
+  0% {
+    transform: rotateX(360deg);
+    -ms-transform: rotateX(360deg);
+    -moz-transform: rotateX(360deg);
   }
 }
 
 @-webkit-keyframes stop_spin {
-  0% {
-    transform: translate3d(0, 0, 1px);
-    -ms-transform: translate3d(0, 0, 0);
-    -moz-transform: translate3d(0, 0, 0);
-    -webkit-transform: translate3d(0, 0, 1px);
-    -o-transform: translate3d(0, 0, 0);
-  }
-  99% {
-    transform: translate3d(0, -540px, 1px);
-    -ms-transform: translate3d(0, -540px, 0);
-    -moz-transform: translate3d(0, -540px, 0);
-    -webkit-transform: translate3d(0, -540px, 1px);
-    -o-transform: translate3d(0, -540px, 0);
-
-  }
   100% {
-    top: -540px;
+    transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    -webkit-transform: rotateX(0deg);
+    -o-transform: rotateX(0deg);
   }
 }
 
 @keyframes stop_spin {
-  0% {
-    transform: translate3d(0, 0, 1px);
-    -ms-transform: translate3d(0, 0, 0);
-    -moz-transform: translate3d(0, 0, 0);
-    -webkit-transform: translate3d(0, 0, 1px);
-    -o-transform: translate3d(0, 0, 0);
-  }
-  99% {
-    transform: translate3d(0, -540px, 1px);
-    -ms-transform: translate3d(0, -540px, 0);
-    -moz-transform: translate3d(0, -540px, 0);
-    -webkit-transform: translate3d(0, -540px, 1px);
-    -o-transform: translate3d(0, -540px, 0);
-
-  }
   100% {
-    top: -540px;
+    transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
+    -webkit-transform: rotateX(0deg);
+    -o-transform: rotateX(0deg);
+  }
+}
+
+@keyframes stop_spin {
+  100% {
+    transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    -moz-transform: rotateX(0deg);
   }
 }
 
@@ -1099,8 +1133,4 @@
   100% {
     opacity: 0;
   }
-
 }
-
-
-
