@@ -59,20 +59,21 @@ class ConfirmAction {
             throw new \Exception\NotFoundException();
         }
 
-        if(!$request->isXmlHttpRequest()) {
-            return new Response('Bad request',400);
-        }
+//        if(!$request->isXmlHttpRequest()) {
+//            return new Response('Bad request',400);
+//        }
+//
+//        if(!$this->user) {
+//            return new JsonResponse([
+//                'error' => [
+//                    'message'   => 'Необходимо авторизоваться',
+//                    'code'      => 401
+//                ]
+//            ]);
+//        }
 
-        if(!$this->user) {
-            return new JsonResponse([
-                'error' => [
-                    'message'   => 'Необходимо авторизоваться',
-                    'code'      => 401
-                ]
-            ]);
-        }
-
-        return new JsonResponse($this->getConfirmStatus());
+        var_dump($this->user);exit;
+        return new JsonResponse(['status'=>$this->getConfirmStatus()]);
     }
 
     /**

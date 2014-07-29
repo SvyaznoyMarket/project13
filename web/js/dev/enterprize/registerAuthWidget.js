@@ -240,10 +240,10 @@ $.widget("ui.registerAuth", {
         confirm: function() {
             var self = this;
             var init = function(self){
-                var form = self.widget.wrapper.find('.jsConfirmEmail');
-                form.off();
-                form.on('submit', $.proxy(self.widget._formHandler.confirmEmail, form));
-
+//                var form = self.widget.wrapper.find('.jsConfirmEmail');
+//                form.off();
+//                form.on('submit', $.proxy(self.widget._formHandler.confirmEmail, form));
+//
                 var form = self.widget.wrapper.find('.jsConfirmEmailRepeatCode');
                 form.off();
                 form.on('submit', $.proxy(self.widget._formHandler.confirmEmailRepeatCode, form));
@@ -255,6 +255,12 @@ $.widget("ui.registerAuth", {
                 var form = self.widget.wrapper.find('.jsConfirmPhoneRepeatCode');
                 form.off();
                 form.on('submit', $.proxy(self.widget._formHandler.confirmPhoneRepeatCode, form));
+
+
+                var form = self.widget.wrapper.find('.jsCheckConfirmForm');
+
+                form.off();
+                form.on('submit', $.proxy(self.widget._formHandler.confirmCheckState, form));
             };
 
             if(this.widget.state!='confirm') {
@@ -479,6 +485,45 @@ $.widget("ui.registerAuth", {
                     } else {
                         widget.applyFormState(self,{
                             message: response.message
+                        });
+                    }
+                },
+                error: function(xhr, status, errorThrown) {
+                    widget.applyFormState(self,{
+                        error: 'Не удается запросить письмо для подтверждения повторно.'
+                    });
+                }
+            });
+            return false;
+        },
+
+        confirmCheckState: function(e) {
+            var self = this;
+            var widget = $(this.context).data().uiRegisterAuth;
+            debugger;
+            $.ajax({
+                type: 'POST',
+                url: this.attr('action'),
+                data: this.serializeArray(),
+                success: function(response) {
+                    if(response.error) {
+                        widget.applyFormState(self,{
+                            error: response.error.message
+                        });
+                    }else if(response.status.isPhoneConfirmed && response.status.isEmailConfirmed) {
+                        widget._setState('setEnterprize');
+                    } else {
+                        var message = "";
+                        if(!response.status.isPhoneConfirmed) {
+                            message += "Вы еще не подтвердили телефонный номер <br/>";
+                        }
+
+                        if(!response.status.isEmailConfirmed) {
+                            message += "Вы еще не подтвердили email";
+                        }
+
+                        widget.applyFormState(self,{
+                            message: message
                         });
                     }
                 },
