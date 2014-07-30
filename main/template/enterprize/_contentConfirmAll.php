@@ -39,9 +39,8 @@
             </form>
 
             <form class="confirmForm jsConfirmPhoneRepeatCode" action="<?= \App::router()->generate('enterprize.confirmAll.createPhone') ?>" method="post">
-                <label class="labelCode">Если в течение трех минут не получили код</label><br/>
                 <input type="hidden" name="isRepeatRending" value="true" />
-                <input type="submit" class="confirmCode bigbutton" value="Отправить повторно" />
+                <input type="submit" class="confirmCode bigbutton" value="Отправить код подтверждения" />
             </form>
         </div>
     <?php endif; ?>
@@ -56,7 +55,7 @@
 
             <form class="confirmForm jsConfirmEmailRepeatCode" action="<?= \App::router()->generate('enterprize.confirmAll.createEmail') ?>" method="post">
                 <input type="hidden" name="isRepeatRending" value="true" />
-                <input style="margin-left: 0;" class="confirmCode bigbutton" type="submit" value="Отправить повторно" />
+                <input style="margin-left: 0;" class="confirmCode bigbutton" type="submit" value="Отправить письмо" />
             </form>
             <p style="margin: 30px 0 0 0; font-size: 12px;" class="textConfirm">
                 Если письмо затерялось или обнаружили ошибку, пожалуйста, напишите нам на <a style="text-decoration: underline;" href="mailto:feedback@enter.ru">feedback@enter.ru</a>.

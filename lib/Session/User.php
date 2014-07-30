@@ -128,6 +128,7 @@ class User {
         }
 
         \App::session()->set($this->tokenName, $token);
+        $this->token = $token;
     }
 
     /**

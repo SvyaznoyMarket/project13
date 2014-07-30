@@ -2,6 +2,7 @@
 
 namespace Controller\User;
 
+use Controller\Enterprize\ConfirmAction;
 use Http\Response;
 
 class Action {
@@ -359,8 +360,10 @@ class Action {
             $token = $response['result']['token'];
             $user = \RepositoryManager::user()->getEntityByToken($token);
             $user->setToken($token);
+
             // передаем email пользователя для RetailRocket
             \App::retailrocket()->setUserEmail($httpResponse, $form->getEmail());
+
             // авторизуем пользователя чтобы он мог сразу приступить к подтверждению контактных данных
             \App::user()->signIn($user, $httpResponse);
         }
@@ -451,10 +454,23 @@ class Action {
                     \App::config()->coreV2['hugeTimeout']
                 );
 
+                // отправляем коды подтверждения
+                $confirm = new ConfirmAction();
+                $email  = $confirm->createConfirmEmail(\App::request())->getData();
+                $mobile = $confirm->createConfirmPhone(\App::request())->getData();
+                \App::logger()->info('Send email confirm request on registration: '.json_encode($email));
+                \App::logger()->info('Send mobile confirm request on registration: '.json_encode($mobile));
+
                 $response = [
                     'success'   => true,
                     'message'   => 'Пароль отправлен на ваш email',
-                    'result'     => $result
+                    'result'    => array_merge($result,[
+                        'info'  => [
+                            'email'     => $email,
+                            'mobile'    => $mobile
+
+                        ]
+                    ])
                 ];
             } catch (\Exception $e) {
                 \App::exception()->remove($e);
