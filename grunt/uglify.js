@@ -97,6 +97,11 @@ module.exports = function (grunt, options) {
             dest: pathProd + 'oneclick.min.js'
         },
 
+        orderJS : {
+            src: pathDev + 'order/*.js',
+            dest: pathProd + 'order.min.js'
+        },
+
         orderNewV5JS : {
             src: pathDev + 'order-new-v5/*.js',
             dest: pathProd + 'order-new-v5.min.js'
