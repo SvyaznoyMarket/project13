@@ -1993,7 +1993,7 @@
 				return false;
 			}
 
-			return this.pointsByDelivery.hasOwnProperty(state);
+            return this.pointsByDelivery.hasOwnProperty(state) && this.pointsByDelivery[state].token;
 		};
 
 		/**
@@ -2619,9 +2619,6 @@
 				_gaq.push(['_trackTiming', 'Order complete', 'DB response', ajaxDelta]);
 			}
 
-			if ( typeof window.yaCounter10503055 !== 'undefined' ) {
-				window.yaCounter10503055.reachGoal('\\orders\\complete');
-			}
             $(document.body).trigger('trackUserAction', ['9 Завершение - успех']);
 		},
 
@@ -3375,7 +3372,7 @@
 			( !isNaN(maxSum) && maxSum < unwrapVal ) || /* Если существует максимальная сумма и текущая сумма больше максимальнодопустимой для этого варианта оплаты */
 			( !isNaN(minSum) && minSum > unwrapVal ) /* Если существует минимальная сумма и текущая сумма больше минимальнодопустимой для этого варианта оплаты */ ) {
 				node.hide();
-
+                if (methodId == 13 && -1 == $.inArray(ENTER.OrderModel.choosenDeliveryTypeId, [3,4])) node.show(); // показываем Paypal для всех методов доставки, кроме "самовывоза" и "заберу сейчас"
 				return;
 			}
 

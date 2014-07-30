@@ -51,6 +51,12 @@ class Repository {
                 throw new \Exception('uid не передан');
             }
 
+            // TODO SITE-4133 Убрать проверку, когда в логах появится инфа с тегом 'v2/coupon/get?uid=null'
+            if ('null' === $uid) {
+                \App::logger()->error(\App::request()->server->all(), ['v2/coupon/get?uid=null']);
+                throw new \Exception('uid не передан');
+            }
+
             $result = $this->client->query('coupon/get', ['uid' => $uid]);
 
             if (!(bool)$result || !is_array($result)) {

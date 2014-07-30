@@ -14,7 +14,10 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        return $this->render('enterprize/page-index', $this->params);
+        $return = $this->render('enterprize/page-index', $this->params);
+        $return .= '<div id="flocktoryEnterprizeFormJS" class="jsanalytics"></div>';
+
+        return $return;
     }
 
     public function slotBodyClassAttribute() {
@@ -31,5 +34,9 @@ class IndexPage extends \View\DefaultLayout {
 
     public function slotUserbarEnterprizeContent() {
         return '';
+    }
+
+    public function slotFlocktoryEnterprizeJs() {
+        return '<div id="flocktoryEnterprizeJS" class="jsanalytics"></div>';
     }
 }

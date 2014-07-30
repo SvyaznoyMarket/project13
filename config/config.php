@@ -23,13 +23,12 @@ $c->logger['pretty'] = false;
 $c->appName = 'Enter';
 $c->authToken['name']     = '_token';
 $c->authToken['authorized_cookie'] = '_authorized';
-$c->sessionToken = 'enter'; // TODO: удалить?
 
 $c->session['name']            = 'enter';
 $c->session['cookie_lifetime'] = 15552000;
 $c->session['cookie_domain'] = '.enter.ru';
 
-$c->cacheCookieName = 'enter_auth';
+$c->cacheCookieName = 'enter_auth'; //TODO: удалить
 
 $c->mainHost = 'www.enter.ru';
 $c->mobileHost = 'm.enter.ru';
@@ -200,7 +199,7 @@ $c->partners['Myragon']['subdomainNumber'] = 49;// номер поддомена
 
 $c->adFox['enabled'] = true;
 
-$c->partner['cookieName'] = 'utm_source';
+$c->partner['cookieName'] = 'last_partner';
 $c->partner['cookieLifetime'] = 2592000; // 30 дней
 
 $c->onlineCall['enabled'] = false;
@@ -367,6 +366,7 @@ $c->order['cookieName'] = 'last_order';
 $c->order['sessionName'] = 'lastOrder';
 $c->order['enableMetaTag'] = true;
 $c->order['maxSumOnline'] = 15000;
+$c->order['maxSumOnlinePaypal'] = 5000;
 $c->order['excludedError'] = [705, 708, 735, 759, 800];
 $c->order['addressAutocomplete'] = true;
 // предоплата (SITE-2959)
@@ -411,7 +411,22 @@ $c->enterprize['cookieName'] = 'enterprize_coupon_sent';
 $c->tchibo['rowWidth'] = 78;
 $c->tchibo['rowHeight'] = 78;
 $c->tchibo['rowPadding'] = 0;
-$c->tchiboSlider['analyticsEnabled'] = true;
+$c->tchiboSlider['analytics'] = [
+    'enabled' => true,
+    'use_page_visibility' => true,
+    'collection_view' => [
+        'enabled' => true,
+        'tchiboOnly' => true
+    ],
+    'collection_click' => [
+        'enabled' => true,
+        'tchiboOnly' => false
+    ],
+    'product_click' => [
+        'enabled' => true,
+        'tchiboOnly' => false
+    ],
+];
 
 // настройки для АБ-тестов могут быть переопределены в json
 $c->abtest['cookieName'] = 'switch';

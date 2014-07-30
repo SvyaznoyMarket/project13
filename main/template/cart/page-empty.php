@@ -8,4 +8,6 @@
 		<span class="bGreyText">Самые выгодные предложения</div>
 		</li>
 	</ul>
+
+	<div class="cart_ep"><a href="/enterprize" title=""><img src="/css/bEmptyCart/img/ep.jpg" alt="" /></a></div>
 </div>

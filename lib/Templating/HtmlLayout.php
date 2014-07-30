@@ -157,12 +157,13 @@ class HtmlLayout {
     }
 
     /**
-     * @param $value
+     * @param $value mixed
+     * @param $encodeDoubleQuotes bool Указывать false, если нужно вывести JSON, как значение js-переменной в HTML (а не в параметр тэга)
      * @return string
      */
-    public function json($value) {
+    public function json($value, $encodeDoubleQuotes = true) {
         try {
-            $return = htmlspecialchars(json_encode($value, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_QUOT|JSON_HEX_APOS), ENT_QUOTES, \App::config()->encoding);
+            $return = $encodeDoubleQuotes ? htmlspecialchars(json_encode($value, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES), ENT_QUOTES, \App::config()->encoding) : json_encode($value, JSON_UNESCAPED_UNICODE | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES);
         } catch (\Exception $e) {
             $return = '';
             \App::logger()->error(['action' => __METHOD__, 'value' => print_r($value, true), 'error' => $e]);
@@ -200,8 +201,7 @@ class HtmlLayout {
     public function addJavascript($javascript) {
         try {
             if (0 === strpos($javascript, '/')) {
-                $timestamp = filectime(\App::config()->webDir . '/' . trim($javascript, '/'));
-                $javascript .= '?t=' . $timestamp;
+                $javascript .= '?t=' . \Util\Application::getVersion();
             }
         } catch (\Exception $e) {
             \App::logger()->error($e, ['view']);

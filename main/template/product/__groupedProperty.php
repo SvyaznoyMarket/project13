@@ -2,11 +2,10 @@
 
 return function(
     \Helper\TemplateHelper $helper,
-    \Model\Product\Entity $product
+    $groupedProperties
 ) { ?>
 
 <h3 id="productspecification" class="bHeadSection">Характеристики</h3>
-<? $groupedProperties = $product->getGroupedProperties() ?>
 <div class="bSpecifications">
     <? foreach ($groupedProperties as $group): ?>
         <? if (!(bool)$group['properties']) continue ?>

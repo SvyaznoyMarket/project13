@@ -25,6 +25,7 @@
 
     // получаем promo стили
     $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? $catalogJson['promo_style'] : [];
+    $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
 ?>
 
 <div class="bCatalog<?= 'jewel' === $listingStyle ? ' mCustomCss' : '' ?>" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
@@ -39,7 +40,7 @@
         <? endif ?>
 
         <? if((bool)$slideData): ?>
-            <?= $helper->render('tchibo/promo-catalog', ['slideData' => $slideData]) // promo slider ?>
+            <?= $helper->render('tchibo/promo-catalog', ['slideData' => $slideData, 'categoryToken' => $category->getRoot() ? $category->getRoot()->getToken() : '']) // promo slider ?>
         <? endif ?>
 
         <? if (!empty($promoContent)): ?>
@@ -51,7 +52,8 @@
                     'promoStyle'         => $promoStyle,
                     'relatedCategories'  => $relatedCategories,
                     'categoryConfigById' => $categoryConfigById,
-                    'productPager'       => $productPager
+                    'productPager'       => $productPager,
+                    'category_class'     => $category_class
                 ]
             ) // дочерние категории and relatedCategories ?>
         <? endif; ?>

@@ -70,8 +70,6 @@ class AppConfig {
         'name'     => null,
         'authorized_cookie' => null,
     ];
-    /** @var string */
-    public $sessionToken;
     /** @var array */
     public $session = [
         'name'            => null,
@@ -541,7 +539,22 @@ class AppConfig {
 
     /** @var array */
     public $tchiboSlider = [
-        'analyticsEnabled' => null,
+        'analytics' => [
+            'enabled' => null,
+            'use_page_visibility' => null,
+            'collection_view' => [
+                'enabled' => null,
+                'tchiboOnly' => null
+            ],
+            'collection_click' => [
+                'enabled' => null,
+                'tchiboOnly' => null
+            ],
+            'product_click' => [
+                'enabled' => null,
+                'tchiboOnly' => null
+            ],
+        ],
     ];
 
     /** @var boolean */

@@ -8,6 +8,7 @@ class IndexAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
+        $contentClient = \App::contentClient();
         $user = \App::user();
         $promoRepository = \RepositoryManager::promo();
         $region = $user->getRegion();
@@ -114,10 +115,13 @@ class IndexAction {
         }
         /** @var $category  \Model\Product\Category\Entity */
 
-        $categoriesTchibo = array_filter($categoryTree, function ($cat) use ($categoryToken) { return $cat['token'] === $categoryToken; } );
+        $categoriesTchibo = null;
+        if (is_array($categoryTree) && !empty($categoryTree)) {
+            $categoriesTchibo = array_filter($categoryTree, function ($cat) use ($categoryToken) { return $cat['token'] === $categoryToken; } );
+        }
 
-        if (!(bool) $categoriesTchibo || $categoriesTchibo[0]['product_count'] == 0) {
-            return new \Http\RedirectResponse(\App::router()->generate('tchibo.where_buy'));
+        if (!(bool) $categoriesTchibo || $categoriesTchibo[0]['product_count'] == 0 && \App::config()->preview !== true) {
+            return new \Http\RedirectResponse(\App::router()->generate('tchibo.where_buy', $request->query->all()));
         }
 
         if (!empty($shopScriptSeo['link'])) {
@@ -172,7 +176,7 @@ class IndexAction {
                     'link'          => $product->getLink(),
                     'name'          => $product->getName(),
                     'price'         => $product->getPrice(),
-                    'isBuyable'     => $product->getIsBuyable()
+                    'isBuyable'     => ($product->getIsBuyable() || $product->isInShopOnly() || $product->isInShopStockOnly()),
                 ];
             }
 
@@ -191,7 +195,7 @@ class IndexAction {
         }
 
         if (!empty($catalogJson['promo_token'])) {
-            \App::contentClient()->addQuery(
+            $contentClient->addQuery(
                 $catalogJson['promo_token'],
                 [],
                 function($data) use (&$bannerBottom) {
@@ -204,8 +208,27 @@ class IndexAction {
                     \App::exception()->remove($e);
                 }
             );
-            \App::contentClient()->execute();
         }
+
+        // Получаем контентный блок с вордпресса
+        $promoContent = null;
+        $promoToken = 'tchibo_promo';
+        $contentClient->addQuery(
+            $promoToken,
+            [],
+            function($data) use (&$promoContent) {
+                if (!empty($data['content'])) {
+                    $promoContent = $data['content'];
+                }
+            },
+            function(\Exception $e) use (&$promoToken) {
+                \App::logger()->error(sprintf('Не получен контентный блок %s', $promoToken));
+                \App::exception()->add($e);
+            }
+        );
+
+        // выполнение пакета запросов к вордпрессу
+        $contentClient->execute();
 
         // SITE-3970
         // Стили для названий категорий в меню tchibo
@@ -224,6 +247,7 @@ class IndexAction {
         $page->setParam('shopScriptSeo', $shopScriptSeo);
         //$page->setGlobalParam('products', $products);
         $page->setGlobalParam('tchiboMenuCategoryNameStyles', $tchiboMenuCategoryNameStyles);
+        $page->setGlobalParam('promoContent', $promoContent);
 
         return new \Http\Response($page->show());
     }

@@ -52,7 +52,7 @@ class FormAction {
             $enterpizeCoupon = $repository->getEntityByToken($enterprizeToken);
 
             if ($enterpizeCoupon) {
-                $products = $this->getProducts($enterpizeCoupon);
+                $products = self::getProducts($enterpizeCoupon);
             }
         }
 
@@ -308,12 +308,47 @@ class FormAction {
                 }
             }
 
+            // Подготавливаем данные для отслеживания регистрации в EnterPrize для Flocktory
+            $userSex = '';
+            if ($user) {
+                $userSex = (1 == $user->getSex()) ? 'm' : (2 == $user->getSex() ? 'f' : '');
+            }
+
+            $flocktoryData = [
+                'order_id'     => uniqid(),
+                'email'        => $form->getEmail(),
+                'name'         => $form->getName(),
+                'sex'          => !empty($userSex) ? $userSex : ($form->getName() && preg_match('/[аяa]$/', $form->getName()) ? 'f' : 'm'),
+                'price'        => 2000,
+                'custom_field' => 'my_custom_id',
+                'items'        => [
+                    ['id' => 777, 'title' => 'Nike Shoes', 'price' => 1000, 'image' => 'http://path.to.image', 'count' => 1]
+                ],
+            ];
+
+//            $flocktoryData = [
+//                'user' => [
+//                    'name' => $form->getName(),
+//                    'email' => $form->getEmail(),
+//                    'sex' => $userSex,
+//                ],
+//                'order' => [
+//                    'id' => uniqid(),
+//                    'price' => 2000,
+//                    'custom_field' => 'my_custom_id',
+//                    'items' => [
+//                        ['id' => 777, 'title' => 'Nike Shoes', 'price' => 1000, 'image' => 'http://path.to.image', 'count' => 1]
+//                    ]
+//                ],
+//                'spot' => 'some_spot',
+//            ];
+
             $response = $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([
                     'success' => true,
                     'error'   => null,
                     'notice'  => ['message' => 'Поздравляем с регистрацией в Enter Prize!', 'type' => 'info'],
-                    'data'    => ['link' => $link],
+                    'data'    => ['link' => $link, 'flocktory' => $flocktoryData],
                 ])
                 : new \Http\RedirectResponse($link);
 

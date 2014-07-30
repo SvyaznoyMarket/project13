@@ -5,219 +5,135 @@ namespace Partner;
 class Manager {
     private $cookieName;
     private $cookieLifetime;
+    private $cookieDomain;
     private $cookieArray = [];
-    private $params4get = [ 'utm_source','utm_content','utm_term', 'actionpay', 'prx', 'aip', 'webmaster_id', 'affiliate_id' ];
+    private $params4get = [
+        'utm_source',
+        'utm_content',
+        'utm_term',
+        'actionpay',    // actionpay
+        'prx',          // cityads
+        'aip',          // для cityads
+        //'webmaster_id', // для actionpay, устарело?
+        //'affiliate_id', // устарело?
+    ];
 
     public function __construct() {
         $this->cookieName = \App::config()->partner['cookieName'];
         $this->cookieLifetime = \App::config()->partner['cookieLifetime'];
+        $this->cookieDomain = \App::config()->session['cookie_domain'];
     }
 
     /**
      * @param \Http\Response $response
      */
     public function set(\Http\Response $response = null) {
+
         try {
+
             $request = \App::request();
             $cookie = null;
-            $alreadyHasCookie = (bool) $request->cookies->get($this->cookieName);
             $lastPartner = null;
 
-            $getParams = []; // TODO непонятная логика
-            foreach( $this->params4get as $param ){
-                $getParams[$param] = $request->get($param) ?: '';
-            }
+            $referer = parse_url($request->server->get('HTTP_REFERER'));
+            $refererHost = $referer && !empty($referer['host']) ? $referer['host'] : null;
 
-            $utmSource = $getParams['utm_source'];
-            $utmMedium = $request->get('utm_medium');
+            // ОСНОВНАЯ ЛОГИКА
+            if ($refererHost && !preg_match('/ent(er|3)\.(ru|loc)/', $refererHost)) {
 
-            // SITE-3215
-            $utmSourceCookie = \App::request()->cookies->get($this->cookieName);
-            if (!$utmSource && !(bool)$utmSourceCookie) {
-                $referer = parse_url($request->server->get('HTTP_REFERER'));
-                $refererHost = $referer && !empty($referer['host']) ? $referer['host'] : null;
+                $paidSources = \App::dataStoreClient()->query('partner/paid-source.json');
+                $freeHosts = \App::dataStoreClient()->query('partner/free-host.json');
 
-                // реферал пустой
-                if (!empty($refererHost) && false === strpos($refererHost, 'enter')) {
-                    // прямой трафик. уничтожаем партнерскую куку
-                    if (\App::request()->cookies->has($this->cookieName)) {
-                        $response->headers->clearCookie($this->cookieName, '/', null);
-                    }
-
-                    // реферал не пустой
-                } elseif (!empty($refererHost)) {
-                    // список поисковиков
-                    $searchersList = [
-                        'yandex.ru',
-                        'google.ru',
-                        'google.com',
-                        'nova.rambler.ru',
-                        'go.mail.ru',
-                        'nigma.ru',
-                        'webalta.ru',
-                        'aport.ru',
-                        'poisk.ru',
-                        'km.ru',
-                        'liveinternet.ru',
-                        'quintura.ru',
-                        'search.qip.ru',
-                        'gde.ru',
-                        'gogo.ru',
-                        'ru.yahoo.com',
-                        'images.yandex.ru',
-                        'blogsearch.google.ru',
-                        'blogs.yandex.ru',
-                        'ru.search.yahoo.com',
-                        'ya.ru',
-                        'm.yandex.ru',
-                    ];
-
-                    $data = (array) \App::request()->cookies->get($this->cookieName, []);
-
-                    // реферал находится в списке поисковиков
-                    if (in_array($refererHost, $searchersList)) {
-                        $data[] = $refererHost;
-                        $this->cookieArray[] = new \Http\Cookie(
-                            $this->cookieName,
-                            $refererHost, time() + $this->cookieLifetime, '/', null, false, true
-                        );
-
-                        // ссылочный трафик
-                    } else {
-                        $data[] = $refererHost;
-                        $this->cookieArray[] = new \Http\Cookie(
-                            $this->cookieName,
-                            $refererHost, time() + $this->cookieLifetime, '/', null, false, true
-                        );
-                    }
+                if (!is_array($paidSources) || !is_array($freeHosts)) {
+                    throw new \Exception('Ошибка получения данных для партнеров из GIT CMS');
                 }
-            }
 
-            foreach( $getParams as $key => $value ){ // TODO непонятная логика
-                if (!empty($value)) {
-                    $this->cookieArray[] = new \Http\Cookie(
-                        $key,
-                        $value, time() + $this->cookieLifetime, '/', null, false, true
-                    );
-                }
-            }
+                // Платные партнеры
+                foreach ($paidSources as $nameSource => $sourceOptions) {
 
-            $sender = $request->get('sender');
+                    $matchesCount = 0;
 
-            //(SmartEngine & SmartAssistant) & RetailRocket
-            if ((bool)$sender) {
-                $sender = explode('|', $sender); // ?sender=SmartEngine|product_id
-                if ((bool)$sender[0] && (bool)$sender[1]) {
-                    switch ($sender[0]) { // не забывать про строчные (маленькие) буквы
-                        case \Smartengine\Client::NAME: {
-                            \App::user()->setRecommendedProductByParams(
-                                $sender[1], \Smartengine\Client::NAME, 'viewed_at', time()
-                            );
-                            break;
+                    if (!isset($sourceOptions['match']) || !is_array($sourceOptions['match'])) continue;
+
+                    foreach ($sourceOptions['match'] as $matchKey => $matchValue) {
+                        if ($matchValue !== null && 0 === strpos($request->query->get($matchKey), $matchValue)) {
+                            $matchesCount += 1;
                         }
-                        case \RetailRocket\Client::NAME: {
-                            \App::user()->setRecommendedProductByParams(
-                                $sender[1], \RetailRocket\Client::NAME, 'viewed_at', time()
+                        else if ($matchValue === null && $request->query->has($matchKey)) {
+                            $matchesCount += 1;
+                        }
+                    }
+
+                    // если платный партнер
+                    if ($matchesCount == count($sourceOptions['match'])) {
+                        $lastPartner = $nameSource;
+
+                        // ставим партнерские cookie
+                        if (isset($paidSources[$nameSource]['cookie']) && is_array($paidSources[$nameSource]['cookie'])) {
+                            foreach ($paidSources[$nameSource]['cookie'] as $partnerCookieName) {
+                                if ($request->query->has($partnerCookieName)) {
+                                    $this->cookieArray[] = new \Http\Cookie(
+                                        $partnerCookieName,
+                                        $request->query->get($partnerCookieName),
+                                        time() + $this->cookieLifetime,
+                                        '/',
+                                        $this->cookieDomain,
+                                        false,
+                                        false
+                                    );
+                                }
+                            }
+                        }
+
+                        // если нет utm_source cookie или же она была проставлена не этим партнером
+                        if ($request->cookies->get($this->cookieName) != $lastPartner) {
+                            $this->cookieArray[] = new \Http\Cookie(
+                                $this->cookieName,
+                                $lastPartner,
+                                time() + $this->cookieLifetime,
+                                '/',
+                                $this->cookieDomain
                             );
-                            break;
+                        }
+
+                    }
+
+                }
+
+                // Бесплатные партнеры
+                if ($lastPartner === null && !$request->cookies->has($this->cookieName)) {
+                    foreach ($freeHosts as $freeHost) {
+                        if (preg_match('/'.$freeHost.'/', $refererHost)) {
+                            $lastPartner = $freeHost;
+                            // кука для отслеживания заказа
+                            $this->cookieArray[] = new \Http\Cookie(
+                                $this->cookieName,
+                                $freeHost,
+                                0,
+                                '/',
+                                $this->cookieDomain
+                            );
                         }
                     }
                 }
-            }
 
-            $cookieValueArray = [
-                'cityads' => \Partner\Counter\CityAds::NAME,
-                'actionpay' => \Partner\Counter\Actionpay::NAME,
-                'myragon' => \Partner\Counter\Myragon::NAME,
-                //'tradetracker' => \Partner\Counter\Tradetracker::NAME,
-                //'unilead' => \Partner\Counter\Unilead::NAME,
-                //'leadgid' => \Partner\Counter\Leadgid::NAME,
-                'yandex_market' => \Partner\PromoSource\YandexMarket::NAME,
-                'pricelist' => \Partner\PromoSource\Pricelist::NAME,
-                'criteo' => \Partner\PromoSource\Criteo::NAME,
-                'sociomantic' => \Partner\PromoSource\Sociomantic::NAME,
-                'flocktory' => \Partner\PromoSource\Flocktory::NAME,
-            ];
-
-            foreach ($cookieValueArray as $key => $value) {
-                if (0 === strpos($utmSource, $key)) {
-                    $lastPartner = $value;
+                // Рефералка
+                if ($lastPartner === null && !$request->cookies->has($this->cookieName)) {
                     $this->cookieArray[] = new \Http\Cookie(
                         $this->cookieName,
-                        $value,
-                        $this->cookieLifetime,
-                        '/',                            // ???
-                        null,                           // ???
-                        false,
-                        true
+                        $request->cookies->has($this->cookieName) && in_array($request->cookies->get($this->cookieName), array_keys($paidSources))
+                            ? $request->cookies->get($this->cookieName)
+                            : $refererHost,
+                        0,
+                        '/',
+                        $this->cookieDomain
                     );
-                    break;
                 }
-            }
 
-            // Дополнительные куки или сложные условия
-            if (0 === strpos($utmSource, 'cityads')) {
-                $this->cookieArray[] = new \Http\Cookie(
-                    'prx',
-                    $request->get('prx'),
-                    time() + $this->cookieLifetime,
-                    '/',
-                    null,
-                    false,
-                    true
-                );
-                $this->cookieArray[] = new \Http\Cookie(
-                    'click_id',
-                    $request->get('click_id'),
-                    time() + $this->cookieLifetime,
-                    '/',
-                    null,
-                    false,
-                    true
-                );
-            // Actionpay
-            } else if (0 === strpos($utmSource, 'actionpay')) {
-                $this->cookieArray[] = new \Http\Cookie(
-                    'actionpay',
-                    $request->get('actionpay'),
-                    time() + $this->cookieLifetime,
-                    '/',
-                    null,
-                    false,
-                    true
-                );
-            // Yandex
-            }  else if (0 === strpos($utmSource, 'yandex') && $utmMedium && 0 === strpos($utmMedium, 'cpc')) {
-                $lastPartner = \Partner\PromoSource\Yandex::NAME;
-                $this->cookieArray[] = new \Http\Cookie(
-                    $this->cookieName,
-                    \Partner\PromoSource\Yandex::NAME,
-                    time() + $this->cookieLifetime,
-                    '/',
-                    null,
-                    false,
-                    true
-                );
-            }
-
-            // Google cpc
-            if ($request->get('gclid')) {
-                $lastPartner = \Partner\PromoSource\Google::NAME;
-                $this->cookieArray[] = new \Http\Cookie(
-                    $this->cookieName,
-                    \Partner\PromoSource\Google::NAME,
-                    time() + $this->cookieLifetime,
-                    '/',
-                    null,
-                    false,
-                    true
-                );
             }
 
             foreach ($this->cookieArray as $cookie) {
                 if ($cookie instanceof \Http\Cookie) {
-                    if ($lastPartner) $response->headers->setCookie(new \Http\Cookie('last_partner', $lastPartner, 0, '/', \App::config()->session['cookie_domain']));
-                    if ($cookie->getName() == $this->cookieName && $alreadyHasCookie) continue; // оставим существующую куку для трекинга изначального партнера
                     $response->headers->setCookie($cookie);
                 }
             }
@@ -230,8 +146,8 @@ class Manager {
     public function getName() {
         $request = \App::request();
 
-        return $request->cookies->has('last_partner')
-            ? $request->cookies->get('last_partner')
+        return $request->cookies->has($this->cookieName)
+            ? $request->cookies->get($this->cookieName)
             : null;
     }
 

@@ -6,7 +6,8 @@ return function(
     $catalogConfig = [],
     \Model\Product\Category\Entity $currentCategory = null,
     \Model\Product\Category\TreeEntity $rootCategoryInMenu = null,
-    $tchiboMenuCategoryNameStyles = []
+    $tchiboMenuCategoryNameStyles = [],
+    $rootCategoryInMenuImage = null
 ) {
     /** @var $categories \Model\Product\Category\Entity[] */
 
@@ -19,9 +20,11 @@ return function(
     <!-- TCHIBO - слайдер-меню разделов Чибо -->
     <div class="tchiboNav clearfix">
         <? if ($rootCategoryInMenu): ?>
-            <a class="tchiboNav__titleLink" href="<?= rtrim($rootCategoryInMenu->getLink(), '/') ?>"><div class="tchiboNav__title"></div></a>
+            <a class="tchiboNav__titleLink" href="<?= rtrim($rootCategoryInMenu->getLink(), '/') ?>">
+                <div class="tchiboNav__title"<? if ((bool)$rootCategoryInMenuImage): ?> style="background-image: url(<?= $rootCategoryInMenuImage ?>)" <? endif ?>></div>
+            </a>
         <? else: ?>
-            <div class="tchiboNav__title"></div>
+            <div class="tchiboNav__title"<? if ((bool)$rootCategoryInMenuImage): ?> style="background-image: url(<?= $rootCategoryInMenuImage ?>)" <? endif ?>></div>
         <? endif ?>
 
 
