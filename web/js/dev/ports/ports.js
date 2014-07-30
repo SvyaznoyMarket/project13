@@ -1922,7 +1922,7 @@ window.ANALYTICS = {
 	flocktoryEnterprizeJS: function() {
 		console.groupCollapsed('ports.js::flocktoryEnterprizeJS');
 
-		this.flocktoryAddScript();
+//		this.flocktoryAddScript();
 
 		var
 			data = {
@@ -2023,7 +2023,7 @@ window.ANALYTICS = {
 	},
 
 	flocktoryEnterprizeFormJS: function() {
-		this.flocktoryAddScript();
+//		this.flocktoryAddScript();
 
 		var s = document.createElement('script');
 		s.type = 'text/javascript';
