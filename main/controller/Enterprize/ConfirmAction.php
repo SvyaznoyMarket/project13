@@ -44,9 +44,15 @@ class ConfirmAction {
             ]);
         }
 
-        return new Response(\App::templating()->render(
-            'enterprize/_contentConfirmAll', $this->getConfirmStatus()
-        ));
+        return new JsonResponse([
+            'success'   => true,
+            'result'    => [
+                'form'      => \App::templating()->render(
+                    'enterprize/_contentConfirmAll', $this->getConfirmStatus()
+                ),
+                'status'    => $this->getConfirmStatus()
+            ]
+        ]);
     }
 
     /**

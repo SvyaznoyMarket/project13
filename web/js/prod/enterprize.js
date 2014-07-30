@@ -602,22 +602,28 @@ $.widget("ui.registerAuth", {
 //                form.on('submit', $.proxy(self.widget._formHandler.confirmEmail, form));
 //
                 var form = self.widget.wrapper.find('.jsConfirmEmailRepeatCode');
-                form.off();
-                form.on('submit', $.proxy(self.widget._formHandler.confirmEmailRepeatCode, form));
+                if(form.length>0) {
+                    form.off();
+                    form.on('submit', $.proxy(self.widget._formHandler.confirmEmailRepeatCode, form));
+                }
 
                 var form = self.widget.wrapper.find('.jsConfirmPhone');
-                form.off();
-                form.on('submit', $.proxy(self.widget._formHandler.confirmPhone, form));
+                if(form.length>0) {
+                    form.off();
+                    form.on('submit', $.proxy(self.widget._formHandler.confirmPhone, form));
+                }
 
                 var form = self.widget.wrapper.find('.jsConfirmPhoneRepeatCode');
-                form.off();
-                form.on('submit', $.proxy(self.widget._formHandler.confirmPhoneRepeatCode, form));
-
+                if(form.length>0) {
+                    form.off();
+                    form.on('submit', $.proxy(self.widget._formHandler.confirmPhoneRepeatCode, form));
+                }
 
                 var form = self.widget.wrapper.find('.jsCheckConfirmForm');
-
-                form.off();
-                form.on('submit', $.proxy(self.widget._formHandler.confirmCheckState, form));
+                if(form.length>0) {
+                    form.off();
+                    form.on('submit', $.proxy(self.widget._formHandler.confirmCheckState, form));
+                }
             };
 
             if(this.widget.state!='confirm') {
@@ -627,7 +633,7 @@ $.widget("ui.registerAuth", {
                         if(typeof(response.error) !== 'undefined' && response.error.code==401) {
                             self.widget._setState('authRegistration');
                         } else {
-                            self.widget.wrapper.html(response);
+                            self.widget.wrapper.html(response.result.form);
                             init(self);
                         }
                     }
@@ -649,7 +655,7 @@ $.widget("ui.registerAuth", {
                         self.widget.applyMessage(response.error.message);
                     } else {
                         self.widget.wrapper.html('');
-                        self.widget.applyMessage(response.message);
+                        self.widget.applyMessage(response.result.message);
                         window.setTimeout(function(){
                             self.widget.complete();
                         },5000)
@@ -756,9 +762,11 @@ $.widget("ui.registerAuth", {
                         });
                     // проверяем состояние подтверждения
                     // если и email подтвержден, то идем дальше
-                    } else if (response.status.isEmailConfirmed) {
+                    } else if (response.status && response.status.isEmailConfirmed) {
                         widget._setState('setEnterprize');
                     } else {
+                        widget.flushFormState(self);
+                        widget.applyFormMessage(self,response.message);
                         widget.wrapper.find('.jsPhoneConfirm').hide('slow');
                     }
                 },
@@ -788,7 +796,7 @@ $.widget("ui.registerAuth", {
                     } else if(response.status.isPhoneConfirmed) {
                         widget._setState('setEnterprize');
                     } else {
-                        widget.wrapper.find('.jsEmailConfirm').hide('slow');
+                        widget.wrapper.find('.jsPhoneConfirm').hide('slow');
                     }
                 },
                 error: function(xhr, status, errorThrown) {
@@ -857,7 +865,6 @@ $.widget("ui.registerAuth", {
         confirmCheckState: function(e) {
             var self = this;
             var widget = $(this.context).data().uiRegisterAuth;
-            debugger;
             $.ajax({
                 type: 'POST',
                 url: this.attr('action'),
@@ -886,7 +893,7 @@ $.widget("ui.registerAuth", {
                 },
                 error: function(xhr, status, errorThrown) {
                     widget.applyFormState(self,{
-                        error: 'Не удается запросить письмо для подтверждения повторно.'
+                        error: 'Извините, не удается подтвердить статус пользователя Enterprize'
                     });
                 }
             });
