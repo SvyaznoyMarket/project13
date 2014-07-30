@@ -410,7 +410,22 @@ $c->enterprize['cookieName'] = 'enterprize_coupon_sent';
 $c->tchibo['rowWidth'] = 78;
 $c->tchibo['rowHeight'] = 78;
 $c->tchibo['rowPadding'] = 0;
-$c->tchiboSlider['analyticsEnabled'] = true;
+$c->tchiboSlider['analytics'] = [
+    'enabled' => true,
+    'use_page_visibility' => true,
+    'collection_view' => [
+        'enabled' => true,
+        'tchiboOnly' => true
+    ],
+    'collection_click' => [
+        'enabled' => true,
+        'tchiboOnly' => false
+    ],
+    'product_click' => [
+        'enabled' => true,
+        'tchiboOnly' => false
+    ],
+];
 
 // настройки для АБ-тестов могут быть переопределены в json
 $c->abtest['cookieName'] = 'switch';
