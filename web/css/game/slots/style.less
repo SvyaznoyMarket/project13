@@ -33,11 +33,6 @@
   user-select: none;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-}
-
 .relative(@relative:relative) {
   position: @relative;
 }
@@ -50,6 +45,28 @@
 //  body {
 //    background: #000;
 
+#slotsWrapWrapper {
+  > .hello {
+    .box-sizing;
+    width: 583px;
+    margin: 0 auto;
+    border: 1px solid #565959;
+    border-radius: 10px;
+    padding: 10px 15px;
+    background: url(img/tile_back.png);
+    box-shadow: -2px 0px 35px #000, 2px 0px 35px #000;
+    color: #ffffff;
+    font-family: Tahoma, Geneva, sans-serif, helvetica, sans-serif;
+    font-size: 14px;
+    /** @todo после финализации виджета переделать адекватным способом **/
+    position: relative;
+    top: 0px;
+    height: 200px;
+    margin-bottom: -200px;
+    z-index: 2
+  }
+}
+
 #slotsWrapper {
   .relative;
   left: 0;
@@ -57,6 +74,11 @@
   /*overflow: hidden;*/
   margin: 0 auto;
   /*margin-top: 100px;*/
+
+  * {
+    margin: 0;
+    padding: 0;
+  }
 
   #slotsMachine {
     .relative;
@@ -578,35 +600,32 @@
   z-index: 1002;
   display: none;
   .tile {
-    position: absolute;
     .box-sizing;
-    opacity: 0;
-    width: 438px;
-    height: 105px;
     border: 2px solid #565959;
     border-radius: 10px;
     z-index: 2;
     padding: 5px;
-    left: 260px;
-    top: 90px;
     background-image: url(img/tile_back.png);
     background-repeat: repeat;
     box-shadow: -2px 0px 35px #000, 2px 0px 35px #000;
+    color: #ffffff;
+    font-family: Tahoma, Geneva, sans-serif, helvetica, sans-serif;
+    position: absolute;
+    left: 260px;
+    top: 90px;
+    width: 438px;
+    height: 105px;
+    opacity: 0;
+    font-size: 12px;
     .rulesText {
-      color: #fff;
       text-align: center;
-      font-family: Tahoma, Geneva, sans-serif, helvetica, sans-serif;
-      font-size: 12px;
       a {
         color: #36c6ff;
         cursor: pointer;
       }
     }
     .shareWrapper {
-      color: #fff;
       text-align: center;
-      font-family: Tahoma, Geneva, sans-serif, helvetica, sans-serif;
-      font-size: 14px;
       position: absolute;
       bottom: 10px;
       width: 100%;
