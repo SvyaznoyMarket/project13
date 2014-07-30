@@ -65,6 +65,27 @@ class Repository {
     }
 
     /**
+     * @param string $userToken
+     * @param int $id
+     * @return mixed|null
+     */
+    public function getOrderById($userToken, $id) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+
+        $client = clone $this->client;
+
+        $order = null;
+
+        $client->addQuery('order/get', ['token' => $userToken, 'id' => $id], [], function ($data) use (&$order) {
+            if (isset($data[0])) $order = $data[0];
+        });
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+
+        return $order;
+    }
+
+    /**
      * @param string $number
      * @param string $phone
      * @return Entity|null

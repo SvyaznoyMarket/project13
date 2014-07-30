@@ -23,103 +23,105 @@ class Entity {
     const PAYMENT_STATUS_CANCELED = 5;  // отмена оплаты
 
     /** @var int */
-    private $id;
+    public $id;
     /** @var int */
-    private $typeId;
+    public $typeId;
     /** @var int */
-    private $statusId;
+    public $statusId;
     /** @var string */
-    private $number;
+    public $number;
     /** @var string */
-    private $numberErp;
+    public $numberErp;
     /** @var int */
-    private $userId;
+    public $userId;
     /** @var bool */
-    private $isLegal;
+    public $isLegal;
     /** @var string */
-    private $lastName;
+    public $lastName;
     /** @var string */
-    private $firstName;
+    public $firstName;
     /** @var string */
-    private $middleName;
+    public $middleName;
     /** @var string */
-    private $mobilePhone;
+    public $mobilePhone;
     /** @var string */
-    private $homePhone;
+    public $homePhone;
     /** @var int */
-    private $paymentStatusId;
+    public $paymentStatusId;
     /** @var int */
-    private $paymentId;
+    public $paymentId;
     /** @var string */
-    private $paymentDetail;
+    public $paymentDetail;
     /** @var int */
-    private $certificateNumber;
+    public $certificateNumber;
     /** @var int */
-    private $certificatePin;
+    public $certificatePrice;
     /** @var int */
-    private $sum;
+    public $certificatePin;
+    /** @var int */
+    public $sum;
     /** @var bool */
-    private $isDelivery;
+    public $isDelivery;
     /** @var bool */
-    private $isPaidDelivery;
+    public $isPaidDelivery;
     /** @var int */
-    private $deliveryTypeId;
+    public $deliveryTypeId;
     /** @var \DateTime */
-    private $deliveredAt;
+    public $deliveredAt;
     /** @var int */
-    private $storeId;
+    public $storeId;
     /** @var int */
-    private $shopId;
+    public $shopId;
     /** @var int */
-    private $cityId;
+    public $cityId;
     /** @var int */
-    private $regionId;
+    public $regionId;
     /** @var int */
-    private $addressId;
+    public $addressId;
     /** @var string */
-    private $address;
+    public $address;
     /** @var string */
-    private $zipCode;
+    public $zipCode;
     /** @var bool */
-    private $isGift;
+    public $isGift;
     /** @var bool */
-    private $isSmsAlert = false;
+    public $isSmsAlert = false;
     /** @var string */
-    private $bill;
+    public $bill;
     /** @var string */
-    private $comment;
+    public $comment;
     /** @var string */
-    private $ipAddress;
+    public $ipAddress;
     /** @var \DateTime */
-    private $createdAt;
+    public $createdAt;
     /** @var \DateTime */
-    private $updatedAt;
+    public $updatedAt;
     /** @var \Model\Order\Interval\Entity */
-    private $interval;
+    public $interval;
     /** @var \Model\Region\Entity */
-    private $city;
+    public $city;
     /** @var \Model\User\Entity */
-    private $user;
+    public $user;
     /** @var \Model\Order\Product\Entity[] */
-    private $product = [];
+    public $product = [];
     /** @var \Model\Order\Service\Entity[] */
-    private $service = [];
+    public $service = [];
     /** @var \Model\Order\Delivery\Entity[] */
-    private $delivery = [];
+    public $delivery = [];
     /** @var int */
-    private $paySum;
+    public $paySum;
     /** @var int */
-    private $discountSum;
+    public $discountSum;
     /** @var Credit\Entity|null */
-    private $credit;
+    public $credit;
     /** @var int */
-    private $subway_id;
+    public $subway_id;
     /** @var string */
-    private $paymentUrl;
+    public $paymentUrl;
     /** @var int */
-    private $couponNumber;
+    public $couponNumber;
     /** @var bool */
-    private $isPartner;
+    public $isPartner;
 
     /**
      * @param array $data
@@ -141,6 +143,7 @@ class Entity {
         if (array_key_exists('payment_id', $data)) $this->setPaymentId($data['payment_id']);
         if (array_key_exists('payment_detail', $data)) $this->setPaymentDetail($data['payment_detail']);
         if (array_key_exists('certificate', $data)) $this->setCertificateNumber($data['certificate']);
+        if (array_key_exists('certificate_price', $data)) $this->setCertificatePrice($data['certificate_price']);
         if (array_key_exists('certificate_pin', $data)) $this->setCertificatePin($data['certificate_pin']);
         if (array_key_exists('sum', $data)) $this->setSum($data['sum']);
         if (array_key_exists('is_delivery', $data)) $this->setIsDelivery($data['is_delivery']);
@@ -946,5 +949,21 @@ class Entity {
     public function getIsPartner()
     {
         return $this->isPartner;
+    }
+
+    /**
+     * @param int $certificatePrice
+     */
+    public function setCertificatePrice($certificatePrice)
+    {
+        $this->certificatePrice = $certificatePrice;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCertificatePrice()
+    {
+        return $this->certificatePrice;
     }
 }

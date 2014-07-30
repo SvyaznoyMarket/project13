@@ -422,6 +422,7 @@ class AppConfig {
     /** @var array */
     public $user = [
         'corporateRegister' => null,
+        'defaultRoute'  => null
     ];
 
     /**

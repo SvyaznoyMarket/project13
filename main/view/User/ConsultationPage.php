@@ -9,7 +9,7 @@ class ConsultationPage extends \View\DefaultLayout {
             $breadcrumbs = [];
             $breadcrumbs[] = array(
                 'name' => 'Личный кабинет',
-                'url'  => $this->url('user'),
+                'url'  => $this->url(\App::config()->user['defaultRoute']),
             );
             $breadcrumbs[] = array(
                 'name' => 'Юридическая помощь',
