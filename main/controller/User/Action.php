@@ -360,11 +360,18 @@ class Action {
             $user = \RepositoryManager::user()->getEntityByToken($token);
             $user->setToken($token);
 
-            // передаем email пользователя для RetailRocket
-            \App::retailrocket()->setUserEmail($httpResponse, $form->getEmail());
-
             // авторизуем пользователя чтобы он мог сразу приступить к подтверждению контактных данных
             \App::user()->signIn($user, $httpResponse);
+
+            // отправляем коды подтверждения
+            $confirm = new ConfirmAction();
+            $email  = $confirm->createConfirmEmail($request)->getData();
+            $mobile = $confirm->createConfirmPhone($request)->getData();
+            \App::logger()->info('Send email confirm request on registration: '.json_encode($email));
+            \App::logger()->info('Send mobile confirm request on registration: '.json_encode($mobile));
+
+            // передаем email пользователя для RetailRocket
+            \App::retailrocket()->setUserEmail($httpResponse, $form->getEmail());
         }
 
         return $httpResponse;
@@ -407,6 +414,13 @@ class Action {
                 'form'      => $form->getState()
             ];
         }
+
+        // отправляем коды подтверждения
+        $confirm = new ConfirmAction();
+        $email  = $confirm->createConfirmEmail($request)->getData();
+        $mobile = $confirm->createConfirmPhone($request)->getData();
+        \App::logger()->info('Send email confirm request on update registration data: '.json_encode($email));
+        \App::logger()->info('Send mobile confirm request on update registration data: '.json_encode($mobile));
 
         // если запросили отрендеренную форму
         if($request->get('body')) {
@@ -453,23 +467,10 @@ class Action {
                     \App::config()->coreV2['hugeTimeout']
                 );
 
-                // отправляем коды подтверждения
-                $confirm = new ConfirmAction();
-                $email  = $confirm->createConfirmEmail(\App::request())->getData();
-                $mobile = $confirm->createConfirmPhone(\App::request())->getData();
-                \App::logger()->info('Send email confirm request on registration: '.json_encode($email));
-                \App::logger()->info('Send mobile confirm request on registration: '.json_encode($mobile));
-
                 $response = [
                     'success'   => true,
                     'message'   => 'Пароль отправлен на ваш email',
-                    'result'    => array_merge($result,[
-                        'info'  => [
-                            'email'     => $email,
-                            'mobile'    => $mobile
-
-                        ]
-                    ])
+                    'result'    => $result
                 ];
             } catch (\Exception $e) {
                 \App::exception()->remove($e);
