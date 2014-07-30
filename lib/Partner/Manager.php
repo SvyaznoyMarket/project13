@@ -56,7 +56,7 @@ class Manager {
                     if (!isset($sourceOptions['match']) || !is_array($sourceOptions['match'])) continue;
 
                     foreach ($sourceOptions['match'] as $matchKey => $matchValue) {
-                        if ($matchValue !== null && $request->query->get($matchKey) == $matchValue) {
+                        if ($matchValue !== null && 0 === strpos($request->query->get($matchKey), $matchValue)) {
                             $matchesCount += 1;
                         }
                         else if ($matchValue === null && $request->query->has($matchKey)) {

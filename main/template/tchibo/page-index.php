@@ -27,7 +27,7 @@ if ((bool)$siblingCategories) {
 
 // TCHIBO - крутилка разделов Чибо на рутовой странице
 if ((bool)$slideData) {
-    echo $helper->render('tchibo/promo-catalog', ['slideData' => $slideData]);
+    echo $helper->render('tchibo/promo-catalog', ['slideData' => $slideData, 'categoryToken' => 'tchibo']);
 } ?>
 
 <div class="tchiboSubscribe subscribe-form clearfix">
