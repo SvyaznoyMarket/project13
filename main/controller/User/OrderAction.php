@@ -63,7 +63,7 @@ class OrderAction {
             }
         });
 
-        $delivery = \RepositoryManager::deliveryType()->getEntityById($order->getDelivery()->getTypeId());
+        $delivery = $order->getDelivery() ? \RepositoryManager::deliveryType()->getEntityById($order->getDelivery()->getTypeId()) : null;
 
         $shop = null;
         if ($delivery && in_array($delivery->getToken(), ['now', 'self'])) {
