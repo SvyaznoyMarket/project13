@@ -192,6 +192,7 @@ $.widget("ui.registerAuth", {
         return '<div class="bErrorText"><div class="bErrorText__eInner">' + message + '</div>';
     },
 
+
     /**
      * Описываем обработку состояния
      * @private
@@ -377,10 +378,22 @@ $.widget("ui.registerAuth", {
                 url: this.attr('action'),
                 data: this.serializeArray(),
                 success: function(response) {
-                    if(!response.success) { // если ошибка
-                        widget.applyFormState(self,response.form);
-                    } else { // если все прошло хорошо, переходим к подтверждению
-                        widget._setState('confirm');
+                    if (response.success) {
+                        // проверяем состояние подтвержденности контактов
+                        $.ajax({
+                            type: 'POST',
+                            url: 'enterprize/confirm-wc/state',
+                            success: function(response){
+                                // Если у нас все было подтверждено
+                                if(response.status.isEmailConfirmed && response.status.isPhoneConfirmed) {
+                                    widget._setState('setEnterprize');
+                                } else {
+                                    widget._setState('confirm');
+                                }
+                            }
+                        });
+                    } else { // если ошибка
+                        widget.applyFormState(self, response.form);
                     }
                 },
                 error: function(xhr, status, errorThrown) {
@@ -439,6 +452,8 @@ $.widget("ui.registerAuth", {
                     } else if(response.status.isPhoneConfirmed) {
                         widget._setState('setEnterprize');
                     } else {
+                        widget.flushFormState(self);
+                        widget.applyFormMessage(self,response.message);
                         widget.wrapper.find('.jsPhoneConfirm').hide('slow');
                     }
                 },
