@@ -15,7 +15,7 @@ class ExternalLoginAction {
         // TODO: как действовать?
         // если пользователь уже аутентифицирован
         if ($user->getEntity()) {
-            return new \Http\RedirectResponse(\App::router()->generate('user'));
+            return new \Http\RedirectResponse(\App::router()->generate(\App::config()->user['defaultRoute']));
         }
 
         try {

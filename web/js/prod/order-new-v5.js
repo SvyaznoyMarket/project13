@@ -1993,7 +1993,7 @@
 				return false;
 			}
 
-			return this.pointsByDelivery.hasOwnProperty(state);
+            return this.pointsByDelivery.hasOwnProperty(state) && this.pointsByDelivery[state].token;
 		};
 
 		/**

@@ -289,7 +289,7 @@ window.ANALYTICS = {
 	},
 
 	sociomanticJS: function () {
-		/*(function () {
+		(function () {
 			var s = document.createElement('script'),
 				x = document.getElementsByTagName('script')[0];
 			s.type = 'text/javascript';
@@ -297,30 +297,32 @@ window.ANALYTICS = {
 			s.src = ('https:' == document.location.protocol ? 'https://' : 'http://')
 				+ 'eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru';
 			x.parentNode.insertBefore(s, x);
-		})();*/
+		})();
 	},
 
 	smanticPageJS: function() {
-		console.log('smanticPageJS');
-		var
-			elem = $('#smanticPageJS'),
-			prod = elem.data('prod'),
-			prod_cats = elem.data('prod-cats'),
-			cart_prods = elem.data('cart-prods');
+		(function(){
+			console.log('smanticPageJS');
+			var
+				elem = $('#smanticPageJS'),
+				prod = elem.data('prod'),
+				prod_cats = elem.data('prod-cats'),
+				cart_prods = elem.data('cart-prods');
 
-		window.sonar_product = window.sonar_product || {};
+			window.sonar_product = window.sonar_product || {};
 
-		if ( prod ) {
-			window.sonar_product = prod;
-		}
+			if ( prod ) {
+				window.sonar_product = prod;
+			}
 
-		if ( prod_cats ) {
-			window.sonar_product.category = prod_cats;
-		}
+			if ( prod_cats ) {
+				window.sonar_product.category = prod_cats;
+			}
 
-		if ( cart_prods ) {
-			window.sonar_basket = { products: cart_prods };
-		}
+			if ( cart_prods ) {
+				window.sonar_basket = { products: cart_prods };
+			}
+		})();
 	},
 
     criteoJS : function() {
@@ -1920,7 +1922,7 @@ window.ANALYTICS = {
 	flocktoryEnterprizeJS: function() {
 		console.groupCollapsed('ports.js::flocktoryEnterprizeJS');
 
-		this.flocktoryAddScript();
+//		this.flocktoryAddScript();
 
 		var
 			data = {
@@ -2021,12 +2023,12 @@ window.ANALYTICS = {
 	},
 
 	flocktoryEnterprizeFormJS: function() {
-		this.flocktoryAddScript();
+//		this.flocktoryAddScript();
 
 		var s = document.createElement('script');
 		s.type = 'text/javascript';
 		s.async = true;
-		s.src = "//api.flocktory.com/v2/loader.js?1401=";
+		s.src = "//api.flocktory.com/v2/loader.js?site_id=1401";
 		var l = document.getElementsByTagName('script')[0];
 		l.parentNode.insertBefore(s, l);
 	},

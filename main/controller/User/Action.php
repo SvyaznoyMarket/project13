@@ -2,9 +2,6 @@
 
 namespace Controller\User;
 
-use Controller\Enterprize\ConfirmAction;
-use Http\Response;
-
 class Action {
     private $redirect;
     private $requestRedirect;
@@ -16,7 +13,7 @@ class Action {
     private function checkRedirect(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $this->redirect = \App::router()->generate('user'); // default redirect to the /private page (Личный кабинет)
+        $this->redirect = \App::router()->generate(\App::config()->user['defaultRoute']); // default redirect to the /private page (Личный кабинет)
         $redirectTo = rawurldecode($request->get('redirect_to'));
         if ($redirectTo) {
             $this->redirect = $redirectTo;
@@ -30,7 +27,7 @@ class Action {
                         'success'       => true,
                         'alreadyLogged' => true
                     ])
-                    : new \Http\RedirectResponse(\App::router()->generate('user'));
+                    : new \Http\RedirectResponse(\App::router()->generate(\App::config()->user['defaultRoute']));
             } else { // if redirect isset:
                 return $request->isXmlHttpRequest()
                     ? new \Http\JsonResponse([
@@ -656,7 +653,7 @@ class Action {
                                 ]),
                             ],
                         ])
-                        : new \Http\RedirectResponse(\App::router()->generate('user'));
+                        : new \Http\RedirectResponse(\App::router()->generate(\App::config()->user['defaultRoute']));
 
                     //\App::user()->signIn($user, $response); // SITE-2279
 

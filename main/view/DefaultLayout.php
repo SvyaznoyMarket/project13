@@ -463,7 +463,7 @@ class DefaultLayout extends Layout {
         }
 
         // на всех остальных страницах сайта // необходимо установить наш код главной страницы (inclusion tag)
-        //$return .= $this->render($smantic_path . '01-homepage');
+        $return .= $this->render($smantic_path . '01-homepage');
 
         if ($routeName == 'product.category') {
 

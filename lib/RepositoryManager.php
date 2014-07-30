@@ -212,7 +212,7 @@ class RepositoryManager {
     }
 
     /**
-     * @return Model\PaymentMethod\Repository
+     * @return Model\PaymentMethod\Group\Repository
      */
     static function paymentGroup() {
         static $instance;
