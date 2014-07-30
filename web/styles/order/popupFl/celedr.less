@@ -1,5 +1,5 @@
 .celedr {
-	width: 298px;
+	width: 308px;
 	padding: 10px 0 0;
 
 	font-size: 16px;
@@ -13,7 +13,6 @@
 	}
 
 	&_tb {
-		.table();
 		width: 100%;
 
 		border-top: 1px solid @lightgrey-4;
@@ -22,29 +21,35 @@
 	}
 
 	&_row {
-		.table-row();
+		margin-bottom: -2px;
 
 		&-h {
 
 			.celedr_col {
+				height: 30px;
+				margin-bottom: 0;
+
 				color: #878787;
 				background: @lightgreyBg;
+
+				line-height: 30px;
 			}
 		}
 	}
 
 	&_col {
-		.table-cell();
-		height: 43px;
-		width: 42px;
+		float: left;
+
+		width: 44px;
+		height: 41px;
 
 		cursor: pointer;
 		text-align: center;
-		vertical-align: middle;
 
 		color: @darkgrey-1;
 		border-bottom: 1px solid @lightgrey-4;
-		border-left: 1px solid @lightgrey-4;
+
+		line-height: 41px;
 
 		&:first-child {
 			border-left: none;
@@ -53,6 +58,7 @@
 		&:active,
 		&:focus {
 			background: @orange-1;
+			color: @white;
 		}
 
 		&-disbl {
@@ -61,8 +67,24 @@
 			&:active,
 			&:focus {
 				background: @white;
+				color: @lightgrey-4;
 			}
 		}
+	}
+
+	&_month {
+		float: left;
+
+		width: 100%;
+		height: 25px;
+
+		text-align: center;
+
+		color: #878787;
+		border-bottom: 1px solid @lightgrey-4;
+		background: @lightgreyBg;
+
+		line-height: 25px;
 	}
 
 	&_f {
