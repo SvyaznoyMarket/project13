@@ -2,6 +2,8 @@
 
 namespace Controller\User;
 
+use Controller\Enterprize\ConfirmAction;
+
 class Action {
     private $redirect;
     private $requestRedirect;
