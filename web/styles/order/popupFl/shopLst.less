@@ -2,23 +2,7 @@
 	overflow: auto;
 
 	max-height: 448px;
-
-	&::-webkit-scrollbar {
-        display: none;
-    }
-
-	&:after {
-		position: absolute;
-		bottom: 0;
-		left: 0;
-
-		width: 285px;
-		height: 35px;
-
-		content: "";
-
-		background: url("/images/product/transGradWhBot.png") repeat-x 0 0;
-	}
+	display: block;
 
 	&_i {
 		padding: 5px;
@@ -62,5 +46,18 @@
 
 			font-size: 14px;
 		}
+	}
+
+	&:after {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+
+		width: 285px;
+		height: 35px;
+
+		content: "";
+
+		background: url("@{base-url}/order/img/transGradWhBot.png") repeat-x 0 0;
 	}
 }
