@@ -1,6 +1,6 @@
 .orderU {
 	.inline-block();
-	margin: 0 0 35px;
+	margin: 0 0 15px;
 
 	font-size: 12px;
 
@@ -47,23 +47,6 @@
 		font-size: 14px;
 		line-height: 33px;
 	}
-
-	&_bonus {
-		.inline-block();
-		padding-top: 10px;
-
-		border-bottom: 1px dotted;
-		cursor: pointer;
-
-		font-size: 14px;
-	}
-
-	&_bonusImg {
-		.inline-block();
-		margin: 0 0 0 10px;
-
-		vertical-align: top;
-	}
 }
 
 .orderAuth {
@@ -88,5 +71,84 @@
 		width: 155px;
 
 		font-size: 14px;
+	}
+}
+
+.bonusCnt {
+
+	&_t {
+		margin: 0 0 10px;
+
+		font-size: 14px;
+	}
+
+	&_lst {
+		font-size: 0;
+	}
+	
+	&_i {
+		.inline-block();
+		height: 65px;
+		margin: 0;
+		padding: 10px;
+
+		cursor: pointer;
+		text-align: center;
+
+		border: 1px solid @lightgrey-7;
+
+		font-size: 12px;
+
+		&:first-child {
+			border-right: none;
+		}
+
+		&-act {
+			background: @lightgreyBg;
+			cursor: default;
+
+			font-weight: bold;
+
+			.bonusCnt_tx {
+				border: none;
+			}
+		}
+	}
+
+	&_img {
+		.inline-block();
+		margin: 0 0 5px;
+	}
+
+	&_tx {
+		display: block;
+
+		border-bottom: 1px dotted;
+	}
+
+	&_it {
+		margin-top: -1px;
+		padding: 10px;
+		//width: 485px;
+
+		border: 1px solid @lightgrey-7;
+		background: @lightgreyBg;
+
+		.orderU_tx {
+			margin-bottom: 10px;
+		}
+
+		.orderU_fld {
+		    margin: 5px 5px 0 0;
+		}
+	}
+
+	&_descr {
+		width: 280px;
+
+		color: @lightgrey-5;
+
+		font-size: 14px;
+		padding-left: 10px;
 	}
 }
