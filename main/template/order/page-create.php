@@ -62,7 +62,7 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
 
         <div id="user-block">
             <? if ($user->getEntity()): ?>
-                Привет, <a href="<?= $page->url('user') ?>"><?= $user->getEntity()->getName() ?></a>
+                Привет, <a href="<?= $page->url(\App::config()->user['defaultRoute']) ?>"><?= $user->getEntity()->getName() ?></a>
             <? else: ?>
                 Уже покупали у нас?
                 <strong><a class="auth-link underline" data-update-url="<?//php echo url_for('order_getUser') ?>" href="<?= $page->url('user.login') ?>">Авторизуйтесь</a></strong>

@@ -158,6 +158,16 @@ class TemplateHelper {
     }
 
     /**
+     * @param int   $number  Например: 1, 43, 112
+     * @param array $choices Например: ['отзыв', 'отзыва', 'отзывов']
+     * @param string $wordsBetween Например 'прекрасных'
+     * @return string '3 прекрасных отзыва'
+     */
+    public function numberChoiceWithCount($number, array $choices, $wordsBetween = '') {
+        return preg_replace('/\s+/', ' ', $number.' '.$wordsBetween.' '.$this->numberChoice($number, $choices));
+    }
+
+    /**
      * @param $value
      * @return int|string
      */

@@ -653,9 +653,20 @@ return [
         'action'  => ['User\EditAction', 'editSclubNumber'],
     ],
     // редактирование данных пользователя
-    'user.order' => [
+    'user.orders' => [
         'pattern' => '/private/orders',
-        'action'  => ['User\OrderAction', 'execute'],
+        'action'  => ['User\OrdersAction', 'execute'],
+    ],
+    // данные о заказе пользователя
+    'user.order' => [
+        'pattern'   => '/private/order/{orderId}',
+        'action'    => ['User\OrderAction', 'execute'],
+        'require'   => ['orderId' => '\d+']
+    ],
+    // подписки пользователя
+    'user.subscriptions' => [
+        'pattern' => '/private/subscriptions',
+        'action'  => ['User\SubscriptionsAction', 'execute'],
     ],
     // адвокат клиента
     'user.consultation' => [

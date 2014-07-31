@@ -3,32 +3,27 @@
 namespace View\User;
 
 class EditPage extends \View\DefaultLayout {
+
+    protected $layout  = 'layout-oneColumn';
+
     public function prepare() {
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
             $breadcrumbs = [];
-            $breadcrumbs[] = array(
+            $breadcrumbs[] = [
                 'name' => 'Личный кабинет',
-                'url'  => $this->url('user'),
-            );
-            $breadcrumbs[] = array(
-                'name' => 'Профиль пользователя',
                 'url'  => null,
-            );
+            ];
 
             $this->setParam('breadcrumbs', $breadcrumbs);
         }
 
-        $this->setTitle('Профиль пользователя - Enter');
-        $this->setParam('title', 'Профиль пользователя');
+        $this->setTitle('Личный кабинет -> Профиль пользователя - Enter');
+        $this->setParam('title', 'Личный кабинет');
     }
 
     public function slotContent() {
         return $this->render('user/page-edit', $this->params);
-    }
-
-    public function slotSidebar() {
-        return $this->render('user/_sidebar', $this->params);
     }
 
     public function slotBodyDataAttribute() {
