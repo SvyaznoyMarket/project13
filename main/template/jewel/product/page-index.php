@@ -659,21 +659,7 @@ $productVideo = reset($productVideos);
 <div class="clear pb25"></div>
 <? endif ?>
 
-
-<? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
-    <h2 id="reviewsSectionHeader" class="bold">Отзывы</h2>
-    <div class="line pb5"></div>
-    <div id="reviewsSummary">
-      <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'layout' => 'jewel']) ?>
-    </div>
-
-    <? if (!empty($reviewsData['review_list'])) { ?>
-        <div id="reviewsWrapper" class="reviewsWrapper" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
-            <?= $page->render('product/_reviews', ['reviewsData' => $reviewsData, 'layout' => 'jewel']) ?>
-        </div>
-    <? } ?>
-<? endif ?>
-
+<?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent, 'layout' => 'jewel']) ?>
 
 <? if (!$showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
     <?= $page->render('jewel/product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory.jewel', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize', 'showCategories' => (bool)$accessoryCategory, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>

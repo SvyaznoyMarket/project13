@@ -120,21 +120,7 @@
     }
     ?>
 
-    <div class="bReviews">
-        <? if (\App::config()->product['reviewEnabled'] && $reviewsPresent): ?>
-            <h3 class="bHeadSection" id="bHeadSectionReviews">Отзывы</h3>
-
-            <div class="bReviewsSummary clearfix">
-                <?= $page->render('product/_reviewsSummary', ['reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary]) ?>
-            </div>
-
-            <? if (!empty($reviewsData['review_list'])) { ?>
-                <div class="bReviewsWrapper" data-product-ui="<?= $product->getUi() ?>" data-product-id="<?= $product->getId() ?>" data-page-count="<?= $reviewsData['page_count'] ?>" data-container="reviewsUser" data-reviews-type="user">
-                    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData]) ?>
-                </div>
-            <? } ?>
-        <? endif ?>
-    </div>
+    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent]) ?>
 
     <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
         <?= $helper->render('product/__slider', [
