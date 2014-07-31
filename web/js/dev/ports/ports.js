@@ -2037,7 +2037,7 @@ window.ANALYTICS = {
 		var s = document.createElement('script');
 		s.type = 'text/javascript';
 		s.async = true;
-		s.src = "//api.flocktory.com/v2/loader.js?1401=";
+		s.src = "//api.flocktory.com/v2/loader.js?site_id=1401";
 		var l = document.getElementsByTagName('script')[0];
 		l.parentNode.insertBefore(s, l);
 	},

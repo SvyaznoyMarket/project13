@@ -8,7 +8,7 @@ class ExternalLoginResponseAction {
 
         // если пользователь уже аутентифицирован
         if ($user->getEntity()) {
-            return new \Http\RedirectResponse(\App::router()->generate('user'));
+            return new \Http\RedirectResponse(\App::router()->generate(\App::config()->user['defaultRoute']));
         }
 
         try {
@@ -28,7 +28,7 @@ class ExternalLoginResponseAction {
 
             //TODO: отправить в ядро
 
-            $response = new \Http\RedirectResponse(\App::router()->generate('user'));
+            $response = new \Http\RedirectResponse(\App::router()->generate(\App::config()->user['defaultRoute']));
             //$user->signIn($user, $response);
 
             return $response;

@@ -106,7 +106,7 @@ class OldInfoAction {
             // если пользователь авторизован
             if ($userEntity = $user->getEntity()) {
                 $responseData['name'] = $userEntity->getName();
-                $responseData['link'] = \App::router()->generate('user');
+                $responseData['link'] = \App::router()->generate(\App::config()->user['defaultRoute']);
                 $responseData['is_subscribed'] = $user->getEntity()->getIsSubscribed();
             }
 

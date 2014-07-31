@@ -101,4 +101,21 @@ class Session implements \Http\SessionInterface {
     public function clear() {
         $_SESSION = [];
     }
+
+    /** Функция для работы с flash-сообщениями
+     *  При передаче параметра устанавливает сообщение
+     *  При вызове без параметра возвращает сообщение и удаляет его из сессии
+     * @param mixed $data
+     * @return mixed|null
+     */
+    public function flash($data = null) {
+        if ($data !== null) {
+            $this->set('message', $data);
+            return null;
+        } else {
+            $data = $this->get('message');
+            $this->remove('message');
+            return $data;
+        }
+    }
 }

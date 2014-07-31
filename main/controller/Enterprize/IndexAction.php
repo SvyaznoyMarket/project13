@@ -117,6 +117,7 @@ class IndexAction {
         $page->setParam('viewParams', ['showSideBanner' => false]);
         $page->setParam('isCouponSent', $isCouponSent);
         $page->setParam('products', $products);
+        $page->setParam('hasFlocktoryPopup', (bool)$request->get('flocktory_popup'));
 
         $response = new \Http\Response($page->show());
 

@@ -15,7 +15,10 @@ class IndexPage extends \View\DefaultLayout {
 
     public function slotContent() {
         $return = $this->render('enterprize/page-index', $this->params);
-        $return .= '<div id="flocktoryEnterprizeFormJS" class="jsanalytics"></div>';
+
+        if ((bool)$this->getParam('hasFlocktoryPopup')) {
+            $return .= '<div id="flocktoryEnterprizeFormJS" class="jsanalytics"></div>';
+        }
 
         return $return;
     }
