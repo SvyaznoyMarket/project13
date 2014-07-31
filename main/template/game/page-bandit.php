@@ -1,3 +1,5 @@
+<?= $page->slotEnterPrizeWidget() ?>
+
 <script type="text/javascript">
     $(window).load(function () {
         var slotsPopup = $('#slotsPopup');

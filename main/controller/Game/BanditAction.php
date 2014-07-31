@@ -12,13 +12,13 @@ class BanditAction {
     const errorUndefined            = 500;
 
     protected $isAvailable = true;
-    
+
     public function index() {
 		$page = new \View\Game\BanditPage();
 		return new \Http\Response($page->show());
 	}
-	
-	
+
+
 	public function init() {
 		$crm	= \App::crmClient();
         $user   = \App::user()->getEntity();
@@ -39,7 +39,7 @@ class BanditAction {
                 ]);
             }
         }
-        
+
         $coupons = $this->getCoupons($response['slots']);
         $slots = [];
         foreach($coupons as $v) {
@@ -103,8 +103,8 @@ class BanditAction {
             $response['result']['prizes'] = [
                 'type'      => $response['result']['prizes']['type'],
                 'message'   => \App::templating()->render('game/coupon-message',
-                    $this->couponAsWin($coupons[$response['result']['prizes']['coupon']])
-                ),
+                        $this->couponAsWin($coupons[$response['result']['prizes']['coupon']])
+                    ),
                 'coupon'    => $this->couponAsWin($coupons[$response['result']['prizes']['coupon']])
             ];
 
@@ -142,8 +142,8 @@ class BanditAction {
             )
         );
 	}
-    
-    
+
+
     protected function getError($code) {
         $err = [
             self::errorTriesExceeded => [
@@ -174,8 +174,8 @@ class BanditAction {
             return $err[self::errorUndefined];
         }
     }
-    
-    
+
+
     /**
      * Запрашиваем купоны и отдаем ассоциативный массив с uid в качестве ключа
      * @param array $uids
@@ -184,7 +184,7 @@ class BanditAction {
     protected function getCoupons($uids=null){
         $response = [];
         $t = \App::scmsClientV2()->query('coupon/get');
-        
+
         if(!$uids) {
             foreach($t as $v) {
                 $response[$v['uid']]  = $v;
@@ -215,8 +215,8 @@ class BanditAction {
             ]
         );
     }
-    
-    
+
+
     /**
      * @param array $coupon
      * @return array

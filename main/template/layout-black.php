@@ -18,7 +18,7 @@
     <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon.png">
-    
+
     <meta name="viewport" content="width=1000" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="HandheldFriendly" content="true" />
@@ -28,22 +28,14 @@
     <?= $page->slotHeadJavascript() ?>
     <?= $page->slotRelLink() ?>
     <?= $page->slotGoogleAnalytics() ?>
-
 </head>
 
 <body id="mainPage" data-template="main" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
 <?= $page->slotConfig() ?>
-<div class="bannersbox">
-    <div class="bannersboxinner">
-        <div class="banner banner3"><img class="rightImage" src="" alt=""/></div>
-        <div class="banner banner4"><img class="leftImage" src="" alt=""/></div>
-    </div>
-</div>
-
 <?= $page->slotBanner() ?>
 
 <div class="wrapper mWrapperMain">
-    <div class="content mContentMain clearfix">
+    <div class="content clearfix">
         <? if (\App::config()->adFox['enabled']): ?>
             <div class="adfoxWrapper" id="adfox980"></div>
         <? endif ?>
@@ -52,21 +44,11 @@
             <?= $page->slotHeader() ?>
         </header><!--/ Шапка-->
 
-        <?= $page->slotContentHead() ?>
-
-        <div class="bigbanner">
-            <div class='bCarouselWrap'>
-                <div class='bCarousel'>
-                    <div class='bCarousel__eBtnL leftArrow'></div>
-                    <div class='bCarousel__eBtnR rightArrow'></div>
-                    <img class="centerImage" src="" alt=""/>
-                </div>
-            </div>
-        </div>
+        <?= $page->slotContent() ?>
     </div><!--/ Контент -->
 </div><!--/ Шаблон -->
 
-<div class="footer__main">
+<div class="footer">
     <?= $page->slotFooter() ?>
 </div><!--/ Подвал -->
 
