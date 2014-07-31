@@ -547,6 +547,21 @@ class Entity {
     }
 
     /**
+     * @return array
+     */
+    public function getSclubCard() {
+        $data = array_filter($this->bonusCard ?: [], function($card){
+            return (isset($card['bonus_card_id']) && $card['bonus_card_id'] == \Model\Order\BonusCard\Entity::SVYAZNOY_ID) ?: false;
+        });
+
+        if (!empty($data)) {
+            $data = reset($data);
+        }
+
+        return $data;
+    }
+
+    /**
      * @param boolean $isEmailConfirmed
      */
     public function setIsEmailConfirmed($isEmailConfirmed) {

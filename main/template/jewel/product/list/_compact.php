@@ -11,7 +11,7 @@
 
 <? if (!$isAjax): // убрать декорацию div-ом, если ajax-запрос ?>
   <div class="bBrandGoods">
-    <ul class="bBrandGoodsList clearfix">
+    <ul class="bBrandGoodsList clearfix<? if(isset($itemsPerRow) && 3 == $itemsPerRow): ?> eItemBig<? endif ?>">
 <? endif ?>
 
     <? $i = 0; foreach ($pager as $product): $i++ ?>

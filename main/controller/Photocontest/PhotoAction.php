@@ -2,16 +2,24 @@
 
 namespace Controller\Photocontest;
 
+use Controller\Error\NotFoundAction;
+use Http\Response;
+
 class PhotoAction {
 	
 	public function show(\Http\Request $request){
 		\App::logger()->debug('Exec ' . __METHOD__);
 		
 		$curl = \App::photoContestClient();
-		$contest = $curl->query('contest/item/'.$request->get('contestRoute'));
+
+        try {
+		    $contest = $curl->query('contest/item/'.$request->get('contestRoute'));
+        } catch (\Exception $e) {
+            \App::exception()->remove($e);
+            return (new NotFoundAction())->execute($e,$request);
+        }
 		
 		$page = new \View\Photocontest\PhotoPage();
-		
 		$page->setParam('breadcrumbs', [
 			[
 				'name'	=> 'Главная',
@@ -26,11 +34,16 @@ class PhotoAction {
 		]);
 		
 		$page->setParam('contest',$contest);
-		
-		$page->setParam('item',
-			$curl->query('image/item',['id'=>$request->get('id')])
-		);
-		
+
+        try {
+            $page->setParam('item',
+                $curl->query('image/item',['id'=>$request->get('id')])
+            );
+        } catch (\Exception $e) {
+            \App::exception()->remove($e);
+            return (new NotFoundAction())->execute($e,$request);
+        }
+
 		$page->setParam('list',
 			$curl->query('image/list/'.$request->get('contestRoute'),['limit'=>100])
 		);

@@ -40,7 +40,7 @@ class ClientPhotoContest extends Client {
             throw new \RuntimeException('Пустой ответ');
         }
 		
-        $decoded = (array)json_decode($response);
+        $decoded = json_decode($response);
         if ($code = json_last_error()) {
             switch ($code) {
                 case JSON_ERROR_DEPTH:
@@ -67,26 +67,20 @@ class ClientPhotoContest extends Client {
         }
 		
         if (!empty($decoded)) {
-            if (array_key_exists('error', $decoded)) {
-				$decoded['error'] = (array)$decoded['error'];
-                $e = new Exception(
-					((isset($decoded['error']['message']) && is_scalar($decoded['error']['message'])) 
-						? $decoded['error']['message'] 
-						: 'В ответе содержится ошибка'), 
-					(int)$decoded['error']['code']
+            if (isset($decoded->errorCode)) {
+                $e = new Exception(((isset($decoded->message))?$decoded->message: 'В ответе содержится ошибка'),$decoded->code
 				);
 
                 /**
                  * $e->setContent нужен для того, чтобы сохранять ошибки от /v2/order/calc-tmp:
                  *   кроме error.code и error.message возвращается массив error.product_error_list
                  */
-                $e->setContent($decoded['error']);
-				
+                $e->setContent($decoded);
                 throw $e;
             }
 
-            if (array_key_exists('result', $decoded)) {
-                $decoded = $decoded['result'];
+            if (isset($decoded->result)) {
+                return $decoded->result;
             }
         }
 		

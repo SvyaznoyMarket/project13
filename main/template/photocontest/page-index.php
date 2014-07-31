@@ -17,7 +17,8 @@
 	'list'		=> $top,
 	'filter'	=> false,
 	'pagination'=> false,
-	'contest'	=> $contest
+	'contest'	=> $contest,
+    'page'      => $page
 ));?>
 
 
@@ -28,7 +29,8 @@
 	'filter'	=> true,
 	'pagination'=> true,
 	'route'		=> 'pc.homepage',
-	'contest'	=> $contest
+	'contest'	=> $contest,
+    'page'      => $page
 ));?>
 
 

@@ -198,6 +198,17 @@ class Action extends \Controller\ProductCategory\Action {
             $subCatMenu = reset($subCatMenu);
         }
 
+        switch (\App::abTest()->getCase()->getKey()) {
+            case 'jewelItems3':
+                $itemsPerRow = 3;
+                break;
+            case 'jewelItems4':
+                $itemsPerRow = 4;
+                break;
+            default:
+                $itemsPerRow = \App::config()->product['itemsPerRowJewel'];
+        }
+
         $setPageParameters = function(\View\Layout $page) use (
             &$category,
             &$regionsToSelect,
@@ -207,7 +218,8 @@ class Action extends \Controller\ProductCategory\Action {
             &$seoContent,
             &$catalogJson,
             &$promoContent,
-            &$shopScriptSeo
+            &$shopScriptSeo,
+            &$itemsPerRow
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
@@ -217,7 +229,7 @@ class Action extends \Controller\ProductCategory\Action {
             $page->setParam('seoContent', $seoContent);
             $page->setParam('catalogJson', $catalogJson);
             $page->setParam('promoContent', $promoContent);
-            $page->setParam('itemsPerRow', \App::config()->product['itemsPerRowJewel']);
+            $page->setParam('itemsPerRow', $itemsPerRow);
             $page->setParam('scrollTo', 'smalltabs');
             $page->setParam('shopScriptSeo', $shopScriptSeo);
             $page->setParam('searchHints', $this->getSearchHints($catalogJson));
@@ -411,7 +423,7 @@ class Action extends \Controller\ProductCategory\Action {
                 'productVideosByProduct' => $productVideosByProduct,
                 'isAjax'                 => true,
                 'isAddInfo'              => true,
-                'itemsPerRow'            => \App::config()->product['itemsPerRowJewel'],
+                'itemsPerRow'            => $page->getParam('itemsPerRow'),
             ]);
             // бесконечный скролл
             if(empty($scrollTo)) {
@@ -449,7 +461,6 @@ class Action extends \Controller\ProductCategory\Action {
                     'category'                  => $page->getParam('category'),
                     'productVideosByProduct'    => $productVideosByProduct,
                     'view'                      => $productView,
-                    'itemsPerRow'               => $page->getParam('itemsPerRow'),
                     'isAddInfo'                 => true,
                 ]);
                 $responseData['query_string'] = $request->getQueryString();

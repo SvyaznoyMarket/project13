@@ -41,8 +41,13 @@ if (!isset($isAddInfo)) $isAddInfo = false;
     <div class="line"></div>
 <? endif ?>
 
-<? $itemsPerRow = empty($itemsPerRow) ? null : $itemsPerRow ?>
-<?= $page->render('jewel/product/_list', array('pager' => $pager, 'view' => $view, 'productVideosByProduct' => $productVideosByProduct, 'isAddInfo' => $isAddInfo, 'itemsPerRow' => $itemsPerRow)) ?>
+<?= $page->render('jewel/product/_list', [
+    'pager' => $pager,
+    'view' => $view,
+    'productVideosByProduct' => $productVideosByProduct,
+    'isAddInfo' => $isAddInfo,
+    'itemsPerRow' => $page->getParam('itemsPerRow')
+]) ?>
 
 <?= $page->render('jewel/product-category/_loading_bottom') ?>
 
