@@ -30,7 +30,7 @@
     <?= $page->slotGoogleAnalytics() ?>
 </head>
 
-<body id="mainPage" data-template="main" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
+<body id="mainPage" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
 <?= $page->slotConfig() ?>
 <?= $page->slotBanner() ?>
 

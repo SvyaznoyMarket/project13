@@ -268,14 +268,10 @@
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('main.js') )
 					.wait()
-                    .script( getWithVersion('enterprize.js') )
-					.wait()
 					.script( optimizelyUrl )
 					.script('adfox.asyn.code.ver3.min.js')
 					.wait()
 					.script( getWithVersion('ports.js') )
-					.wait()
-					.script( getWithVersion('/js/game/slots.js') )
 					.wait()
 					.script( logTimeAfterPartnerScript );
 			}).runQueue();
@@ -527,7 +523,21 @@
 						.wait()
 						.script( getWithVersion('ports.js') )
 				}).runQueue();
-		}
+		},
+        'slots': function() {
+            $LAB.queueWait( function() {
+                $LAB.script( getWithVersion('jquery-plugins.js') )
+                    .script( getWithVersion('library.js') )
+                    .wait()
+                    .script( getWithVersion('common.js') )
+                    .script( getWithVersion('infopage.js') )
+                    .wait()
+                    .script( getWithVersion('enterprize.js') )
+                    .wait()
+                    .script( getWithVersion('/js/game/slots.js') )
+
+            }).runQueue();
+        }
 	};
 
 	if ( loadScripts.hasOwnProperty(templateType) ) {

@@ -28,7 +28,6 @@
 
 <script type="text/javascript">
 $(window).load(function () {
-    // @todo положить экземпляр в какую-нибудь глобальную переменную
     window.registerAuth = $('#enterprize-identify').registerAuth({
         beforeInit: function (self, callback) {
             $(self.element).lightbox_me({
@@ -45,6 +44,5 @@ $(window).load(function () {
             return self;
         }
     }).data('ui-registerAuth');
-//    window.registerAuth.init('confirm'); // вызов виджета
 });
 </script>
