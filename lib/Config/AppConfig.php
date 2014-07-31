@@ -239,6 +239,16 @@ class AppConfig {
             'secretWord' => null,
             'subdomainNumber' => null,
         ],
+        'SprosiKupi' => [
+            'timeout' => 1000,
+            'logEnabled' => false,
+            'logDataEnabled' => false,
+        ],
+        'ShopPilot' => [
+            'timeout' => 1000,
+            'logEnabled' => false,
+            'logDataEnabled' => false,
+        ],
     ];
 
     /** @var array */

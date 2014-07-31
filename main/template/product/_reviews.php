@@ -7,33 +7,13 @@
 <? switch (\App::abTest()->getCase()->getKey()):
     case 'reviews_sprosikupi': ?>
         <div id="spk-widget-reviews" style="display:none; width: 100%;" shop-id="52dbdd369928f539612151" good-id="<?= $page->helper->escape($product->getId()) ?>" good-title="<?= $page->helper->escape($product->getWebName()) ?>" good-url="<?= $page->helper->escape($product->getLink()) ?>">
-            <?php
-            $spkCurl = curl_init('http://widget.sprosikupi.ru/seo/15898ce50992cc789cdc21/' . $product->getId());
-            curl_setopt_array($spkCurl, array(
-                CURLOPT_TIMEOUT => 3, //Таймаут 3 секунды
-                CURLOPT_SSL_VERIFYPEER => 0,
-                CURLOPT_FOLLOWLOCATION => 0, //Не ожидаем редиректов
-                CURLOPT_FAILONERROR => 1, //На ошибку тихо фейлимся, а не возвращаеем результат
-                CURLOPT_RETURNTRANSFER => 0, //Сразу вывод, а не возврат строки
-            ));
-            curl_exec($spkCurl);
-            ?>
+            <?=$sprosikupiReviews?>
         </div>
 
         <? break ?>
     <? case 'reviews_shoppilot': ?>
         <div id="shoppilot-reviews-container" data-product-id="<?=$page->helper->escape($product->getId())?>">
-            <?
-            $widgetUrl = curl_init('http://ugc.shoppilot.ru/html/535a852cec8d830a890000a6/product/' . $product->getId() . '/product-reviews.html');
-            curl_setopt_array($widgetUrl, array(
-                CURLOPT_TIMEOUT        => 2,
-                CURLOPT_SSL_VERIFYPEER => 0,
-                CURLOPT_FOLLOWLOCATION => 0,
-                CURLOPT_FAILONERROR    => 1,
-                CURLOPT_RETURNTRANSFER => 0
-            ));
-            curl_exec($widgetUrl);
-            ?>
+            <?=$shoppilotReviews?>
         </div>
 
         <? break ?>

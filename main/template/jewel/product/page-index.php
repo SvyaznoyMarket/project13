@@ -659,7 +659,7 @@ $productVideo = reset($productVideos);
 <div class="clear pb25"></div>
 <? endif ?>
 
-<?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent, 'layout' => 'jewel']) ?>
+<?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent, 'sprosikupiReviews' => $sprosikupiReviews, 'shoppilotReviews' => $shoppilotReviews, 'layout' => 'jewel']) ?>
 
 <? if (!$showAccessoryUpper && count($product->getAccessoryId()) && \App::config()->product['showAccessories']): ?>
     <?= $page->render('jewel/product/_slider', ['product' => $product, 'productList' => array_values($accessories), 'totalProducts' => count($product->getAccessoryId()), 'itemsInSlider' => $accessoryCategory ? \App::config()->product['itemsInAccessorySlider'] : \App::config()->product['itemsInSlider'], 'page' => 1, 'title' => 'Аксессуары', 'url' => $page->url('product.accessory.jewel', array('productToken' => $product->getToken())), 'gaEvent' => 'Accessorize', 'showCategories' => (bool)$accessoryCategory, 'accessoryCategory' => $accessoryCategory, 'additionalData' => $additionalData]) ?>

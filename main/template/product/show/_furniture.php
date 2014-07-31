@@ -71,7 +71,7 @@
 
     <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getGroupedProperties()]) // Характеристики ?>
 
-    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent]) ?>
+    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent, 'sprosikupiReviews' => $sprosikupiReviews, 'shoppilotReviews' => $shoppilotReviews]) ?>
 
     <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
         <?= $helper->render('product/__slider', [

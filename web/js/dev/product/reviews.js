@@ -480,7 +480,7 @@ $(function() {
 		s.parentNode.insertBefore(script, s);
 	})();
 
-	$('#shoppilot-rating-container a.sp-product-inline-rating-label').live('click', function(e) {
+    $('#shoppilot-rating-container').on('click', 'a.sp-product-inline-rating-label', function(e) {
 		$(document).stop().scrollTo($(e.currentTarget).attr('href').replace(/^.*?#/, '#'), 800);
 		return false;
 	});
