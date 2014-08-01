@@ -2,6 +2,8 @@
 
 namespace Controller\User;
 
+use Controller\Enterprize\ConfirmAction;
+
 class Action {
     private $redirect;
     private $requestRedirect;
@@ -23,12 +25,16 @@ class Action {
         if (\App::user()->getEntity()) { // if user is logged in
             if (empty($redirectTo)) {
                 return $request->isXmlHttpRequest()
-                    ? new \Http\JsonResponse(['success' => true])
+                    ? new \Http\JsonResponse([
+                        'success'       => true,
+                        'alreadyLogged' => true
+                    ])
                     : new \Http\RedirectResponse(\App::router()->generate(\App::config()->user['defaultRoute']));
             } else { // if redirect isset:
                 return $request->isXmlHttpRequest()
                     ? new \Http\JsonResponse([
-                        'success' => true,
+                        'success'       => true,
+                        'alreadyLogged' => true,
                         'data'    => [
                             'link' => $redirectTo,
                         ],
@@ -55,12 +61,6 @@ class Action {
         $form = new \View\User\LoginForm();
         if ($request->isMethod('post')) {
             $form->fromArray((array)$request->request->get('signin'));
-            if (!$form->getUsername()) {
-                $form->setError('username', 'Не указан логин');
-            }
-            if (!$form->getPassword()) {
-                $form->setError('password', 'Не указан пароль');
-            }
 
             if ($form->isValid()) {
                 $authSource = null;
@@ -106,9 +106,13 @@ class Action {
                         ? new \Http\JsonResponse([
                             'data'    => [
                                 'user' => [
-                                    'first_name'   => $userEntity->getFirstName(),
-                                    'last_name'    => $userEntity->getLastName(),
-                                    'mobile_phone' => $userEntity->getMobilePhone(),
+                                    'first_name'            => $userEntity->getFirstName(),
+                                    'last_name'             => $userEntity->getLastName(),
+                                    'mobile_phone'          => $userEntity->getMobilePhone(),
+                                    'email'                 => $userEntity->getEmail(),
+                                    'is_phone_confirmed'    => $userEntity->getIsPhoneConfirmed(),
+                                    'is_email_confirmed'    => $userEntity->getIsEmailConfirmed(),
+                                    'is_enterprize_member'  => $userEntity->isEnterprizeMember(),
                                 ],
                                 'link' => $this->redirect,
                             ],
@@ -317,6 +321,196 @@ class Action {
 
         return new \Http\Response($page->show());
     }
+
+    /**
+     * Регистрация пользователя с расширенным набором полей
+     * (кстати https://translate.google.ru/#en/ru/register )
+     * на данный момент только в JSON
+     * @param \Http\Request $request
+     * @return bool|\Http\JsonResponse|\Http\RedirectResponse|\Http\Response
+     */
+    public function registrationExtended(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        // @todo причесать бы это дело, разнести логику чуть
+        $checkRedirect = $this->checkRedirect($request);
+        if ($checkRedirect) return $checkRedirect;
+
+        if (!$request->isMethod('post') || !$request->isXmlHttpRequest()) {
+            return (!$request->isXmlHttpRequest()
+                ? new \Http\Response('Некорректный запрос к серверу',400)
+                : new \Http\JsonResponse([
+                    'success' => false,
+                    'error'   => [
+                        'code'  => 400,
+                        'message' => 'Некорректный запрос к серверу'
+                    ],
+                ])
+            );
+        }
+
+        $form = new \View\Enterprize\FormRegistration();
+        $form->fromArray((array)$request->request->get('user'));
+
+        $response       = $this->CUUser($form);
+        $httpResponse   = new \Http\JsonResponse($response);
+
+        if($response['success']) {
+            $token = $response['result']['token'];
+            $user = \RepositoryManager::user()->getEntityByToken($token);
+            $user->setToken($token);
+
+            // авторизуем пользователя чтобы он мог сразу приступить к подтверждению контактных данных
+            \App::user()->signIn($user, $httpResponse);
+
+            // отправляем коды подтверждения
+            $confirm = new ConfirmAction();
+            $email  = $confirm->createConfirmEmail($request)->getData();
+            $mobile = $confirm->createConfirmPhone($request)->getData();
+            \App::logger()->info('Send email confirm request on registration: '.json_encode($email));
+            \App::logger()->info('Send mobile confirm request on registration: '.json_encode($mobile));
+
+            // передаем email пользователя для RetailRocket
+            \App::retailrocket()->setUserEmail($httpResponse, $form->getEmail());
+        }
+
+        return $httpResponse;
+    }
+
+
+    /**
+     * Изменение регистрационных данных
+     * @param \Http\Request $request
+     * @return bool|\Http\JsonResponse|\Http\RedirectResponse|\Http\Response
+     */
+    public function updateRegistration(\Http\Request $request){
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        if (!$request->isXmlHttpRequest()) {
+            return new \Http\Response('Некорректный запрос к серверу',400);
+        }
+
+        $user = \App::user()->getEntity();
+        if(!$user) {
+            return new \Http\JsonResponse([
+                'success' => false,
+                'error'   => [
+                    'code' => 301,
+                    'message' => 'Необходимо авторизоваться',
+                ]
+            ]);
+        }
+
+        $form = new \View\Enterprize\Form();
+        $form->setRoute('user.updateRegistration');
+        if($request->isMethod('post')) {
+            // @todo возможно стоит добавить защиту от изменения подтвержденных данных
+            $form->fromArray((array)$request->request->get('user'));
+            $response = $this->CUUser($form,'update');
+        } else {
+            $form->fromEntity($user);
+            $response = [
+                'success'   => true,
+                'form'      => $form->getState()
+            ];
+        }
+
+        // отправляем коды подтверждения
+        $confirm = new ConfirmAction();
+        $email  = $confirm->createConfirmEmail($request)->getData();
+        $mobile = $confirm->createConfirmPhone($request)->getData();
+        \App::logger()->info('Send email confirm request on update registration data: '.json_encode($email));
+        \App::logger()->info('Send mobile confirm request on update registration data: '.json_encode($mobile));
+
+        // если запросили отрендеренную форму
+        if($request->get('body')) {
+            $response['body']  = \App::templating()->render('enterprize/form-registration',['form' => $form]);
+        }
+
+        return new \Http\JsonResponse($response);
+    }
+
+
+    /**
+     * Create Update User
+     * @param $form \View\Enterprize\Form
+     * @param string $action
+     * @throws \Exception
+     * @return array
+     */
+    protected function CUUser ($form,$action='create') {
+        if($action!=='create' && $action!='update') {
+            throw new \Exception('Unsupported mode');
+        }
+
+        $params = [];
+        if($action=='update') {
+            $params = [ 'token' => \App::user()->getEntity()->getToken()];
+        }
+
+        if(!$form->getMobile()) {
+            $form->setError('mobile', 'Необходимо указать телефон');
+        }
+        if(!$form->getAgree()) {
+            $form->setError('agree','Необходимо согласие');
+        }
+
+        if ($form->isValid()) {
+            try {
+                $result = \App::coreClientV2()->query(
+                    'user/'.$action, $params, [
+                        'first_name'    => $form->getName(),
+                        'email'         => $form->getEmail(),
+                        'mobile'        => $form->getMobile(),
+                        'is_subscribe'  => $form->getIsSubscribe()
+                    ],
+                    \App::config()->coreV2['hugeTimeout']
+                );
+
+                $response = [
+                    'success'   => true,
+                    'message'   => 'Пароль отправлен на ваш email',
+                    'result'    => $result
+                ];
+            } catch (\Exception $e) {
+                \App::exception()->remove($e);
+                $errorMess = $e->getMessage();
+                // коды смотреть в проекте API в App_Service_Error
+                switch ($e->getCode()) {
+                    case 684:
+                        $form->setError('email', $errorMess);
+                        break;
+                    case 686:
+                        $form->setError('mobile', $errorMess);
+                        break;
+                    case 689:
+                        $form->setError('email', $errorMess);
+                        break;
+                    case 690:
+                        $form->setError('mobile', $errorMess );
+                        break;
+                    case 609:
+                    default:
+                        $form->setError('global', 'Не удалось '.($action=='create'?'создать':'изменить').' пользователя' . (\App::config()->debug ? (': ' . $errorMess) : '') );
+                        break;
+                }
+
+                $response = [
+                    'success'   => false,
+                    'form'      => $form->getState(),
+                ];
+            }
+        } else {
+            $response = [
+                'success'   => false,
+                'form'      => $form->getState(),
+                ''
+            ];
+        }
+
+        return $response;
+    }
+
 
     /**
      * @param \Http\Request $request

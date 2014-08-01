@@ -54,7 +54,7 @@
         <div class="bSubscribeLightboxPopupNotNow mFl"></div>
     </div>
     <noindex>
-        <div class="fixedTopBar mStatic <? if ('homepage' == \App::request()->attributes->get('route')):?> mHomepage<? endif ?>">
+        <div class="fixedTopBar mStatic <?=('homepage'==\App::request()->attributes->get('route') || isset($scheme) && $scheme === 'homepage'?'mHomepage':null)?>">
             <div class="fixedTopBar__cart mEmpty">
                 <a href="/cart" class="fixedTopBar__cartTitle">Корзина</a>
             </div>

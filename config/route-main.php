@@ -70,6 +70,16 @@ return [
         'pattern' => '/register',
         'action'  => ['User\Action', 'register'],
     ],
+    // регистрация c доп полями, аналогичка регистрации enterprize но не участвует coupon
+    'user.registrationExtended' => [
+        'pattern' => '/registrationExtended',
+        'action'  => ['User\Action', 'registrationExtended'],
+    ],
+    // Изменение регистрационных данных
+    'user.updateRegistration' => [
+        'pattern' => '/updateRegistration',
+        'action'  => ['User\Action', 'updateRegistration'],
+    ],
     // регистрация корпоративного пользователя
     'user.registerCorporate' => [
         'pattern' => '/b2b',
@@ -835,6 +845,44 @@ return [
         'pattern' => '/enterprize/confirm-email',
         'action'  => ['Enterprize\ConfirmEmailAction', 'show'],
     ],
+
+    /** confirmation without coupon */
+    // получение тела формы
+    'enterprize.confirmAll.form' => [
+        'pattern' => '/enterprize/confirm-wc/form',
+        'action'  => ['Enterprize\ConfirmAction', 'form'],
+    ],
+    // подтверждаем телефон
+    'enterprize.confirmAll.createPhone' => [
+        'pattern' => '/enterprize/confirm-wc/create-phone',
+        'action'  => ['Enterprize\ConfirmAction', 'createConfirmPhone'],
+    ],
+    // подтверждаем телефон
+    'enterprize.confirmAll.phone' => [
+        'pattern' => '/enterprize/confirm-wc/phone',
+        'action'  => ['Enterprize\ConfirmAction', 'confirmPhone'],
+    ],
+    // запрашиваем подтверждение email
+    'enterprize.confirmAll.createEmail' => [
+        'pattern' => '/enterprize/confirm-wc/create-email',
+        'action'  => ['Enterprize\ConfirmAction', 'createConfirmEmail'],
+    ],
+    // подтверждаем email
+    'enterprize.confirmAll.email' => [
+        'pattern' => '/enterprize/confirm-wc/email',
+        'action'  => ['Enterprize\ConfirmAction', 'confirmEmail'],
+    ],
+    // делаем пользователя участником программы
+    'enterprize.confirmAll.enterprize' => [
+        'pattern' => '/enterprize/confirm-wc/setEnterprize',
+        'action'  => ['Enterprize\ConfirmAction', 'setEnterprize'],
+    ],
+    // получения состояния "подтержденности" данных
+    'enterprize.confirmAll.state' => [
+        'pattern' => '/enterprize/confirm-wc/state',
+        'action'  => ['Enterprize\ConfirmAction', 'state'],
+    ],
+
     'enterprize.show' => [
         'pattern' => '/enterprize/{enterprizeToken}',
         'action'  => ['Enterprize\ShowAction', 'execute'],
@@ -918,6 +966,21 @@ return [
         ],
 	],
 	
+	/**
+	 * game.center
+	 */
+	'game.slots' => [
+		'pattern'	=> '/game/slots',
+		'action'	=> ['Game\BanditAction', 'index'],
+	],
+	'game.slots.init' => [
+		'pattern'	=> '/game/slots/init',
+		'action'	=> ['Game\BanditAction', 'init'],
+	],
+	'game.slots.play' => [
+		'pattern'	=> '/game/slots/play',
+		'action'	=> ['Game\BanditAction', 'play'],
+	],
 	
 	//content
     'content' => [

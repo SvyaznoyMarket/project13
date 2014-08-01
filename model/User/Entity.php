@@ -572,6 +572,23 @@ class Entity {
      * @return boolean
      */
     public function getIsEmailConfirmed() {
+        // если свойство null, то его не назначали, посему узнаем у API
+        if(is_null($this->isEmailConfirmed) && (bool)$this->email) {
+            try {
+                $r = \App::coreClientV2()->query(
+                    'confirm/status',[
+                    'token' => $this->getToken(),
+                ],[
+                    'criteria'  => $this->email,
+                    'type'      => 'email'
+                ]);
+                $this->setIsEmailConfirmed($r['is_confirmed']);
+            } catch (\Exception $e) {
+                \App::exception()->remove($e);
+                \App::logger()->error($e->getMessage());
+            }
+        }
+
         return $this->isEmailConfirmed;
     }
 
@@ -586,6 +603,23 @@ class Entity {
      * @return boolean
      */
     public function getIsPhoneConfirmed() {
+        // если свойство null, то его не назначали, посему узнаем у API
+        if(is_null($this->isPhoneConfirmed) && (bool)$this->mobilePhone) {
+            try {
+                $r = \App::coreClientV2()->query(
+                    'confirm/status',[
+                    'token' => $this->getToken(),
+                ],[
+                    'criteria'  => $this->mobilePhone,
+                    'type'      => 'mobile'
+                ]);
+                $this->setIsPhoneConfirmed($r['is_confirmed']);
+            } catch (\Exception $e) {
+                \App::exception()->remove($e);
+                \App::logger()->error($e->getMessage());
+            }
+        }
+
         return $this->isPhoneConfirmed;
     }
 }

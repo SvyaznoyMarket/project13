@@ -20,6 +20,11 @@ module.exports = function (grunt, options) {
             files: ['web/css/photoContest/*.less'],
             tasks: ['less:photoContestCompile', 'less:photoContestCompress']
         },
+		
+		gameSlots: {
+            files: ['web/css/game/slots/*.less'],
+            tasks: ['less:gameSlotsCompile', 'less:gameSlotsCompress']
+        },
 
         partnerScripts: {
             files: [ pathRoot + 'partner/*.js'],
@@ -124,6 +129,11 @@ module.exports = function (grunt, options) {
         watch3dJS:{
             files: [ pathDev + 'watch3d/*.js'],
             tasks: ['concat:watch3dJS', 'uglify:watch3dJS']
+        },
+		
+		gameSlotsJs:{
+            files: [ pathRoot + 'game/slots/jquery.transit.js', pathRoot + 'game/slots/slots.js'],
+            tasks: ['concat:gameSlotsJs', 'jshint', 'uglify:gameSlotsJs']
         },
 
         loadJS:{

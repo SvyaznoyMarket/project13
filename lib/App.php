@@ -294,6 +294,21 @@ class App {
         return $instance;
     }
 	
+	
+	/**
+     * @static
+     * @return \Core\ClientV2
+     */
+    public static function crmClient() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Core\ClientV2(self::config()->crm, self::curl());
+        }
+
+        return $instance;
+    }
+	
 
     /**
      * @static
