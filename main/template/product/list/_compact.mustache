@@ -9,7 +9,13 @@
         <div class="bListingItem__eInner">
             <!-- Блок с именем продукта и иконками доп. просмотра товара -->
             <div class="bSimplyDesc">
-                {{#review}}{{> product/_review-compact }}{{/review}}
+                {{#abtestKeys.shoppilot}}
+                    <div class="shoppilot-category-container" data-product-id="{{id}}"></div>
+                {{/abtestKeys.shoppilot}}
+
+                {{#abtestKeys.default}}
+                    {{#review}}{{> product/_review-compact }}{{/review}}
+                {{/abtestKeys.default}}
                 <p class="bSimplyDesc__eText"><a href="{{link}}">{{name}}</a></p>
                 <ul class="bSimplyDescStikers clearfix">
                     {{#label}}

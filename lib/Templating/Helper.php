@@ -327,4 +327,12 @@ class Helper {
         return $ret;
 
     }
+
+    /**
+     * @param $value
+     * @return string
+     */
+    public function escape($value) {
+        return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+    }
 }
