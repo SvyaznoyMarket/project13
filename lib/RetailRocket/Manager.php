@@ -32,7 +32,7 @@ class Manager {
 
         } catch (\Exception $e) {
             \App::exception()->remove($e);
-            \App::logger()->error('RetailRocket',$e->getTrace());
+            \App::logger()->error($e,['RetailRocket']);
         }
     }
 } 
