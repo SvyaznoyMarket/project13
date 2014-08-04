@@ -42,29 +42,29 @@ $.fn.slots = function (slot_config, animations_config) {
     String.prototype.format.regex = new RegExp("{-?[0-9A-z]*}", "g");
 
 
-
-
-    var g = function() {
+    var g = function () {
         var lastTime = 0;
         var vendors = ['ms', 'moz', 'webkit', 'o'];
-        for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-            window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
-            window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame']
-                || window[vendors[x]+'CancelRequestAnimationFrame'];
+        for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+            window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
+            window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame']
+                || window[vendors[x] + 'CancelRequestAnimationFrame'];
         }
 
         if (!window.requestAnimationFrame)
-            window.requestAnimationFrame = function(callback, element) {
+            window.requestAnimationFrame = function (callback, element) {
                 var currTime = new Date().getTime();
                 var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-                var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+                var id = window.setTimeout(function () {
+                        callback(currTime + timeToCall);
+                    },
                     timeToCall);
                 lastTime = currTime + timeToCall;
                 return id;
             };
 
         if (!window.cancelAnimationFrame)
-            window.cancelAnimationFrame = function(id) {
+            window.cancelAnimationFrame = function (id) {
                 clearTimeout(id);
             };
     };
@@ -99,6 +99,9 @@ $.fn.slots = function (slot_config, animations_config) {
         $lb_overlay: $el.find('.lbOverlay'),
         initialize: function () { //инитим автомат
             var self = this;
+            var ua = window.navigator.userAgent;
+            var msie = ua.indexOf("MSIE ");
+            self.isie = msie > 0;
             self.slot_config = slot_config;
             self.config = animations_config ? animations_config : {};//сохраняем конфиги слот машины
             self.renderMarkup();
@@ -335,7 +338,9 @@ $.fn.slots = function (slot_config, animations_config) {
             self.game.buttonsRow.removeClass('stopplay').addClass('toplay');
             self.setLedPanelOptions('default');
             self.reels.removeClass('stop_spinning');
-            self.reels.addClass('spinning');
+            if (!self.isie) {
+                self.reels.addClass('spinning');
+            }
             self.messageBox.stopAnimation();
             self.messageBox.setRandomText("demo");
             self.messageBox.animateText("defaultAnimation");
@@ -404,23 +409,84 @@ $.fn.slots = function (slot_config, animations_config) {
             reelStoped: false,
             inGame: false,
             radius: 315,
+            ie: {
+
+                spinEm: function ($reel, height) {
+
+                    var that = this;
+                    this.loopCount = 0;
+
+                    $reel
+                        .css('top', -height + 118 * 2)
+                        .animate({ 'top': '0px' }, 6000, 'linear', function () {
+                            that.lowerSpeed($reel, height);
+                        });
+
+                },
+
+                lowerSpeed: function ($reel, height) {
+
+
+                    this.loopCount++;
+
+                    if (this.loopCount < 100) {
+
+                        this.spinEm($reel, height);
+
+                    } else {
+
+                        this.finish($reel, height);
+
+                    }
+                },
+
+                // final rotation
+                finish: function ($reel, height) {
+
+                    var that = this;
+
+                    console.log('finish');
+                    $reel
+                        .css('top', -height + 118 * 3)
+                        .animate({'top': '0px'}, 1, 'linear', function () {
+                            console.log('stop spinn');
+                            that.stop($reel);
+                        });
+
+                },
+                // final rotation
+                stop: function ($reel) {
+
+                    var that = this;
+                    this.loopCount = 1000;
+                    console.log('stop reel ie called single', $reel);
+                    console.log('finish');
+                    $reel.stop().clearQueue().css('top', -59);
+                    this.loopCount = 1000;
+
+                }
+
+            },
             setupCips: function (chip) {
                 var self = this;
                 var reelLength = ($('.reel .chip').length / 3);
                 var posterAngle = 360 / reelLength;
 
-                chip.each(function (index) {
-                    var ua = window.navigator.userAgent;
-                    var msie = ua.indexOf("MSIE ");
-                    if(msie>0) {
-                        $(this).addClass('msSpin');
-                    } else {
-                        $(this).attr('style', '-webkit-transform: ' + 'rotateX(' + (posterAngle * index) + 'deg) translateZ(' + self.radius + 'px); ' +
-                            '-moz-transform: ' + 'rotateX(' + (posterAngle * index) + 'deg) translateZ(' + self.radius + 'px); '+
-                            '-ms-transform: rotate(' + (posterAngle * index) + 'deg) translateZ(' + self.radius + 'px);');
-                    }
 
-                });
+                if ($el.slotMachine.isie) {
+                    console.log('chips height ', $('.reel:first .chips').height());
+                    self.ie.spinEm(chip.parent(), 118 * $('.reel:first .chips .chip').length);
+                } else {
+                    self.radius = (18.529411764705884*chip.length);
+                    chip.each(function (index) {
+
+
+                        $(this).attr('style', '-webkit-transform: ' + 'rotateX(' + (posterAngle * index) + 'deg) translateZ(' + self.radius + 'px); ' +
+                            '-moz-transform: ' + 'rotateX(' + (posterAngle * index) + 'deg) translateZ(' + self.radius + 'px); ');
+
+                    });
+                }
+
             },
             init: function (reels) {//рисуем рельсы.
                 var self = this;
@@ -429,10 +495,8 @@ $.fn.slots = function (slot_config, animations_config) {
                     $el.find('#reel' + (i + 1) + ' .chips').html('');
                     for (var ch = 0; ch < reels[i].length; ch++) {
                         var chip = reels[i][ch];
-                        var ua = window.navigator.userAgent;
-                        var msie = ua.indexOf("MSIE ");
-                        if(msie>0) {
-                            $el.find('#reel' + (i + 1) + ' .chips').append('<div class="chip fffffr" style="-ms-transform: rotate(30deg) translateZ(175px);"> <span class="border " style="background-image: url(' + chip.background + ');  background-position: center; background-repeat: no-repeat; background-size: 100%; "> <span class="cuponImg__inner"> <span class="cuponIco"> <img src="' + chip.icon + '"> </span> <span class="cuponDesc">' + chip.label + '</span> <span class="cuponPrice">' + chip.value + '</span> </span> </span> </div>');
+                        if ($el.slotMachine.isie) {
+                            $el.find('#reel' + (i + 1) + ' .chips').append('<div class="chip" style="position:relative; margin-left: 0px;"> <span class="border " style="background-image: url(' + chip.background + ');  background-position: center; background-repeat: no-repeat; background-size: 100%; "> <span class="cuponImg__inner"> <span class="cuponIco"> <img src="' + chip.icon + '"> </span> <span class="cuponDesc">' + chip.label + '</span> <span class="cuponPrice">' + chip.value + '</span> </span> </span> </div>');
 
                         } else {
                             $el.find('#reel' + (i + 1) + ' .chips').append('<div class="chip"> <span class="border " style="background-image: url(' + chip.background + ');  background-position: center; background-repeat: no-repeat; background-size: 100%; "> <span class="cuponImg__inner"> <span class="cuponIco"> <img src="' + chip.icon + '"> </span> <span class="cuponDesc">' + chip.label + '</span> <span class="cuponPrice">' + chip.value + '</span> </span> </span> </div>');
@@ -444,7 +508,10 @@ $.fn.slots = function (slot_config, animations_config) {
                     self.setupCips($('#reel' + (j + 1) + ' .chip'));
                 }
                 $el.slotMachine.reels.removeClass('stop_spinning');
-                $el.slotMachine.reels.addClass('spinning');
+                if (!$el.slotMachine.isie) {
+                    $el.slotMachine.reels.addClass('spinning');
+                }
+
                 if ($el.slotMachine.config.userAutoPlay) {
                     $el.slotMachine.spinningTimeout = setTimeout(function () {
                         self.start();
@@ -468,7 +535,7 @@ $.fn.slots = function (slot_config, animations_config) {
                 });
                 game.stop_button.click(function () {//останавливаем игру
                     console.log('inGame', game.inGame);
-                    if(!game.inGame){
+                    if (!game.inGame) {
                         return;
                     }
                     game.stop(game);
@@ -488,9 +555,13 @@ $.fn.slots = function (slot_config, animations_config) {
                 }
                 game.result = response.result;//результат спина
                 game.user = response.user;
-                var ch1 = $el.find(self.reels[0]).find('.chip:nth-child(1)');
-                var ch2 = $el.find(self.reels[1]).find('.chip:nth-child(1)');
-                var ch3 = $el.find(self.reels[2]).find('.chip:nth-child(1)');
+                var winChinIndex = 1;
+                if (self.isie) {
+                    winChinIndex = 2;
+                }
+                var ch1 = $el.find(self.reels[0]).find('.chip:nth-child(' + winChinIndex + ')');
+                var ch2 = $el.find(self.reels[1]).find('.chip:nth-child(' + winChinIndex + ')');
+                var ch3 = $el.find(self.reels[2]).find('.chip:nth-child(' + winChinIndex + ')');
                 var winCh = $el.find('#winContainer .chip');
 
                 var reels = response.result.line;
@@ -526,7 +597,13 @@ $.fn.slots = function (slot_config, animations_config) {
                 self.ledAnimations.animationHandler.startAnimation();//стартуем акнимацию лед панели
                 $el.find('.winChip').removeClass('winChip');//чистим классы фишек
                 self.reels.removeClass('stop_spinning');
-                self.reels.addClass('spinning');//стартуем анимацию кручения
+                if (!self.isie) {
+                    self.reels.addClass('spinning');//стартуем анимацию кручения
+                } else {
+                    self.game.ie.spinEm($('#reel1 .chips'), 118 * $('.reel:first .chips .chip').length);
+                    self.game.ie.spinEm($('#reel2 .chips'), 118 * $('.reel:first .chips .chip').length);
+                    self.game.ie.spinEm($('#reel3 .chips'), 118 * $('.reel:first .chips .chip').length);
+                }
                 self.messageBox.stopAnimation();
                 self.messageBox.setRandomText('spinning');//пишем текст текстовой панели
                 self.messageBox.animateText("spiningAnimation");//стартуем анимацию текстовой панели
@@ -638,11 +715,14 @@ $.fn.slots = function (slot_config, animations_config) {
         winChipAnimation: function (message) {
 
             var self = this;
-
+            var chipIndex = 0;
+            if (self.isie) {
+                chipIndex = 1;
+            }
 
             $.each(self.reels, function (i, reel) {
                 setTimeout(function () {
-                    $($(reel).find('.chip')[0]).find('.border').addClass('winChip');
+                    $($(reel).find('.chip')[chipIndex]).find('.border').addClass('winChip');
                 }, i * 500 + 500);
 
             });
@@ -664,11 +744,15 @@ $.fn.slots = function (slot_config, animations_config) {
         },
         winBigChipAnimation: function (message) {
             var self = this;
+            var chipIndex = 0;
+            if (self.isie) {
+                chipIndex = 1;
+            }
 
 
             $.each(self.reels, function (i, reel) {
                 setTimeout(function () {
-                    $($(reel).find('.chip')[0]).find('.border').addClass('winChip');
+                    $($(reel).find('.chip')[chipIndex]).find('.border').addClass('winChip');
 
                 }, i * 500 + 500);
 
@@ -706,7 +790,8 @@ $.fn.slots = function (slot_config, animations_config) {
         ledAnimations: {
             currentAnimation: null,
             leds: null,
-            params: {},
+            params: {
+            },
             initLampArrays: function () {
                 var self = $el.slotMachine;
                 self.$canvas = $el.find('#canvas');
@@ -919,8 +1004,15 @@ $.fn.slots = function (slot_config, animations_config) {
 
         },
         stopReelSpin: function ($reel) {
-            $reel.removeClass('spinning');
-            $reel.addClass('stop_spinning');
+            var self = this;
+            if (!self.isie) {
+                $reel.removeClass('spinning');
+
+                $reel.addClass('stop_spinning');
+            } else {
+                console.log('ie stop reel ', $reel);
+                self.game.ie.stop($reel);
+            }
         },
         stopReels: function (isAnimationsStopped) {
             var self = this;
@@ -946,7 +1038,8 @@ $.fn.slots = function (slot_config, animations_config) {
         },
         messageBox: {
             textBox: $el.find('#slotsMessageReel #messages'),
-            textInterval: {},
+            textInterval: {
+            },
             left: 0,
             isShowing: false,
             getRandomText: function (type) {

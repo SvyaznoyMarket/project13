@@ -19,6 +19,10 @@
   margin: 0 auto;
   /*margin-top: 100px;*/
 }
+#slotsWrapper * {
+  margin: 0;
+  padding: 0;
+}
 #slotsWrapper #slotsMachine {
   position: relative;
   width: 583px;

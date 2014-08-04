@@ -33,6 +33,8 @@
   user-select: none;
 }
 
+
+
 .relative(@relative:relative) {
   position: @relative;
 }
@@ -46,6 +48,11 @@
 //    background: #000;
 
 #slotsWrapper {
+
+  * {
+    margin: 0;
+    padding: 0;
+  }
   .relative;
   left: 0;
   .sizeBlock(100%, 860px);
