@@ -70,7 +70,7 @@ if (!isset($paymentUrl)) $paymentUrl = null;
 
 <? if ($isCorporative): ?>
     <div class="mt32">
-        В ближайшее время мы оповестим вас о выставлении счета в <strong><a href="<?= $page->url('user.order') ?>">личном кабинете</a></strong>.
+        В ближайшее время мы оповестим вас о выставлении счета в <strong><a href="<?= $page->url('user.orders') ?>">личном кабинете</a></strong>.
     </div>
 <? endif ?>
 
