@@ -41,13 +41,42 @@ $.fn.slots = function (slot_config, animations_config) {
     };
     String.prototype.format.regex = new RegExp("{-?[0-9A-z]*}", "g");
 
+
+
+
+    var g = function() {
+        var lastTime = 0;
+        var vendors = ['ms', 'moz', 'webkit', 'o'];
+        for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+            window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+            window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame']
+                || window[vendors[x]+'CancelRequestAnimationFrame'];
+        }
+
+        if (!window.requestAnimationFrame)
+            window.requestAnimationFrame = function(callback, element) {
+                var currTime = new Date().getTime();
+                var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+                var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+                    timeToCall);
+                lastTime = currTime + timeToCall;
+                return id;
+            };
+
+        if (!window.cancelAnimationFrame)
+            window.cancelAnimationFrame = function(id) {
+                clearTimeout(id);
+            };
+    };
+    g();
+
     window.requestAnimFrame = (function () {
         return  window.requestAnimationFrame ||
             window.webkitRequestAnimationFrame ||
             window.mozRequestAnimationFrame ||
             window.oRequestAnimationFrame ||
             window.msRequestAnimationFrame
-    })();
+    });
     var $el = this;
     $el.slotMachine = {
         canvas: null,
@@ -381,8 +410,16 @@ $.fn.slots = function (slot_config, animations_config) {
                 var posterAngle = 360 / reelLength;
 
                 chip.each(function (index) {
-                    $(this).attr('style', '-webkit-transform: ' + 'rotateX(' + (posterAngle * index) + 'deg) translateZ(' + self.radius + 'px); ' +
-                        '-moz-transform: ' + 'rotateX(' + (posterAngle * index) + 'deg) translateZ(' + self.radius + 'px)');
+                    var ua = window.navigator.userAgent;
+                    var msie = ua.indexOf("MSIE ");
+                    if(msie>0) {
+                        $(this).addClass('msSpin');
+                    } else {
+                        $(this).attr('style', '-webkit-transform: ' + 'rotateX(' + (posterAngle * index) + 'deg) translateZ(' + self.radius + 'px); ' +
+                            '-moz-transform: ' + 'rotateX(' + (posterAngle * index) + 'deg) translateZ(' + self.radius + 'px); '+
+                            '-ms-transform: rotate(' + (posterAngle * index) + 'deg) translateZ(' + self.radius + 'px);');
+                    }
+
                 });
             },
             init: function (reels) {//рисуем рельсы.
@@ -392,7 +429,15 @@ $.fn.slots = function (slot_config, animations_config) {
                     $el.find('#reel' + (i + 1) + ' .chips').html('');
                     for (var ch = 0; ch < reels[i].length; ch++) {
                         var chip = reels[i][ch];
-                        $el.find('#reel' + (i + 1) + ' .chips').append('<div class="chip"> <span class="border " style="background-image: url(' + chip.background + ');  background-position: center; background-repeat: no-repeat; background-size: 100%; "> <span class="cuponImg__inner"> <span class="cuponIco"> <img src="' + chip.icon + '"> </span> <span class="cuponDesc">' + chip.label + '</span> <span class="cuponPrice">' + chip.value + '</span> </span> </span> </div>');
+                        var ua = window.navigator.userAgent;
+                        var msie = ua.indexOf("MSIE ");
+                        if(msie>0) {
+                            $el.find('#reel' + (i + 1) + ' .chips').append('<div class="chip fffffr" style="-ms-transform: rotate(30deg) translateZ(175px);"> <span class="border " style="background-image: url(' + chip.background + ');  background-position: center; background-repeat: no-repeat; background-size: 100%; "> <span class="cuponImg__inner"> <span class="cuponIco"> <img src="' + chip.icon + '"> </span> <span class="cuponDesc">' + chip.label + '</span> <span class="cuponPrice">' + chip.value + '</span> </span> </span> </div>');
+
+                        } else {
+                            $el.find('#reel' + (i + 1) + ' .chips').append('<div class="chip"> <span class="border " style="background-image: url(' + chip.background + ');  background-position: center; background-repeat: no-repeat; background-size: 100%; "> <span class="cuponImg__inner"> <span class="cuponIco"> <img src="' + chip.icon + '"> </span> <span class="cuponDesc">' + chip.label + '</span> <span class="cuponPrice">' + chip.value + '</span> </span> </span> </div>');
+
+                        }
                     }
                 }
                 for (var j = 0; j < reels.length; j++) {
@@ -1066,3 +1111,6 @@ $.fn.slots = function (slot_config, animations_config) {
     $el.data("slotMachine", $el.slotMachine);
     return $el;
 };
+
+
+
