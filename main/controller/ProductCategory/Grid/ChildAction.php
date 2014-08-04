@@ -132,6 +132,7 @@ class ChildAction {
         $page->setParam('shopScriptSeo', $shopScriptSeo);
         $page->setGlobalParam('tchiboMenuCategoryNameStyles', $tchiboMenuCategoryNameStyles);
         $page->setGlobalParam('rootCategoryInMenuImage', $rootCategoryInMenuImage);
+        $page->setGlobalParam('isTchibo', ($category->getRoot() && 'Tchibo' === $category->getRoot()->getName()));
 
         return new \Http\Response($page->show());
     }
