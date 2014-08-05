@@ -528,6 +528,8 @@
             $LAB.queueWait( function() {
                 $LAB.script( getWithVersion('jquery-plugins.js') )
                     .script( getWithVersion('library.js') )
+                    .script( mustacheUrl )
+                    .script( loadDebugPanel )
                     .wait()
                     .script( getWithVersion('common.js') )
                     .script( getWithVersion('infopage.js') )

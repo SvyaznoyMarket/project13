@@ -549,6 +549,7 @@ $.widget("ui.registerAuth", {
         return '<div class="bErrorText"><div class="bErrorText__eInner">' + message + '</div>';
     },
 
+
     /**
      * Описываем обработку состояния
      * @private
@@ -738,7 +739,7 @@ $.widget("ui.registerAuth", {
                         // проверяем состояние подтвержденности контактов
                         $.ajax({
                             type: 'POST',
-                            url: 'enterprize/confirm-wc/state',
+                            url: '/enterprize/confirm-wc/state',
                             success: function(response){
                                 // Если у нас все было подтверждено
                                 if(response.status.isEmailConfirmed && response.status.isPhoneConfirmed) {

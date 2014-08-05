@@ -10,27 +10,6 @@
   font-family: 'EnterType';
   src: url('fonts/Enter%20Type.otf') format('truetype');
 }
-#slotsWrapWrapper > .hello {
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  width: 583px;
-  margin: 0 auto;
-  border: 1px solid #565959;
-  border-radius: 10px;
-  padding: 10px 15px;
-  background: url(img/tile_back.png);
-  box-shadow: -2px 0px 35px #000000, 2px 0px 35px #000000;
-  color: #ffffff;
-  font-family: Tahoma, Geneva, sans-serif, helvetica, sans-serif;
-  font-size: 14px;
-  /** @todo после финализации виджета переделать адекватным способом **/
-  position: relative;
-  top: 0px;
-  height: 200px;
-  margin-bottom: -200px;
-  z-index: 2;
-}
 #slotsWrapper {
   position: relative;
   left: 0;
@@ -519,6 +498,9 @@
   height: 1px;
   background-image: url("img/slot_border.png");
 }
+#slotsWrapper .msSpin {
+  /*-ms-transform: rotate(30deg) translateZ(175px);*/
+}
 #slotsBack {
   position: absolute;
   display: none;
@@ -572,35 +554,38 @@
   display: none;
 }
 #winContainer .tile {
+  position: absolute;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
+  opacity: 0;
+  width: 438px;
+  height: 105px;
   border: 2px solid #565959;
   border-radius: 10px;
   z-index: 2;
   padding: 5px;
+  left: 260px;
+  top: 90px;
   background-image: url(img/tile_back.png);
   background-repeat: repeat;
   box-shadow: -2px 0px 35px #000000, 2px 0px 35px #000000;
-  color: #ffffff;
-  font-family: Tahoma, Geneva, sans-serif, helvetica, sans-serif;
-  position: absolute;
-  left: 260px;
-  top: 90px;
-  width: 438px;
-  height: 105px;
-  opacity: 0;
-  font-size: 12px;
 }
 #winContainer .tile .rulesText {
+  color: #fff;
   text-align: center;
+  font-family: Tahoma, Geneva, sans-serif, helvetica, sans-serif;
+  font-size: 14px;
 }
 #winContainer .tile .rulesText a {
   color: #36c6ff;
   cursor: pointer;
 }
 #winContainer .tile .shareWrapper {
+  color: #fff;
   text-align: center;
+  font-family: Tahoma, Geneva, sans-serif, helvetica, sans-serif;
+  font-size: 14px;
   position: absolute;
   bottom: 10px;
   width: 100%;
@@ -1070,4 +1055,29 @@
   100% {
     opacity: 0;
   }
+}
+#slotsWrapWrapper > .hello {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  width: 583px;
+  margin: 0 auto;
+  border: 1px solid #565959;
+  border-radius: 10px;
+  padding: 10px 15px;
+  background: url(img/tile_back.png);
+  box-shadow: -2px 0px 35px #000000, 2px 0px 35px #000000;
+  color: #ffffff;
+  font-family: Tahoma, Geneva, sans-serif, helvetica, sans-serif;
+  font-size: 14px;
+  /** @todo после финализации виджета переделать адекватным способом **/
+  position: relative;
+  top: 0px;
+  height: 200px;
+  margin-bottom: -200px;
+  z-index: 2;
+}
+#slotsWrapper * {
+  margin: 0;
+  padding: 0;
 }
