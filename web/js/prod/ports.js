@@ -482,6 +482,7 @@ window.ANALYTICS = {
 			route 		= template.substring(0, (templSep > 0) ? templSep : templLen),
 			rType 		= (templSep > 0) ? template.substring(templSep + 1, templLen) : '',
 			data		= $('#gaJS').data('vars'),
+			useTchiboAnalytics = Boolean($('#gaJS').data('use-tchibo-analytics')),
 		// end of vars
 
 			gaBannerClick = function gaBannerClick( BannerId ) {
@@ -800,6 +801,16 @@ window.ANALYTICS = {
 				return false; // метод ga не определён, ошибка, нечего анализировать, выходим
 			}
 			ga( 'create', 'UA-25485956-5', 'enter.ru' );
+
+			if ( true === useTchiboAnalytics ) {
+				ga('create', 'UA-12345-6', 'auto', {'name': 'tchiboTracker'});
+
+				if( data && 'object' === typeof(data.vars) && data.vars ) {
+					console.log('TchiboGA: tchiboTracker.send pageview');
+					console.log(data.vars);
+					ga('tchiboTracker.send', 'pageview');
+				}
+			}
 
 			ga_action();
 

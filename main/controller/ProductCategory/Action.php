@@ -684,6 +684,7 @@ class Action {
             ]);
             $page->setParam('categoryPath', $categoryPath);
             $page->setGlobalParam('slideData', $slideData);
+            $page->setGlobalParam('isTchibo', ($category->getRoot() && 'Tchibo' === $category->getRoot()->getName()));
         };
 
         // полнотекстовый поиск через сфинкс

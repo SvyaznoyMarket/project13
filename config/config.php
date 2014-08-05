@@ -149,6 +149,7 @@ $c->jsonLog['enabled'] = true;
 $c->analytics['enabled'] = true;
 $c->analytics['optimizelyEnabled'] = true;
 $c->googleAnalytics['enabled'] = true;
+$c->googleAnalyticsTchibo['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;
 $c->kissmentrics['enabled'] = true;
 $c->kissmentrics['cookieName']['needUpdate'] = 'kissNeedUpdate';
@@ -196,7 +197,7 @@ $c->partners['RetailRocket']['timeout'] = 0.5; //в секундах;
 $c->partners['RetailRocket']['cookieLifetime'] = 2592000; // 30 дней
 $c->partners['RetailRocket']['userEmail']['cookieName'] = 'user_email';
 
-$c->partners['livetex']['enabled'] = true;
+$c->partners['livetex']['enabled'] = false;
 $c->partners['livetex']['liveTexID'] = 41836; // for enter.ru
 //$c->partners['livetex']['liveTexID'] = 52705; // for olga.ent3.ru
 $c->partners['AdLens']['enabled'] = true;

@@ -58,6 +58,7 @@ class ProductAction {
                 'cartButton'     => [
                     'id' => \View\Id::cartButtonForProduct($product->getId()),
                 ],
+                'isTchiboProduct' => $product->getMainCategory() && 'Tchibo' === $product->getMainCategory()->getName(),
             ];
             if (\App::config()->kissmentrics['enabled']) {
                 try {
