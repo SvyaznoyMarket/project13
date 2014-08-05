@@ -121,6 +121,24 @@ $c->scmsV2['retryTimeout'] = [
     'forever' => 0,
 ];
 
+$c->crm = [
+	'url'          => 'http://crm.enter.ru/',
+	'client_id'    => 'site',
+	'timeout'      => 1,
+	'hugeTimeout'  => 5,
+	'retryCount'   => 2,
+	'retryTimeout' => [
+		'default' => 0.5,
+		'tiny'    => 0.1,
+		'short'   => 0.3,
+		'medium'  => 0.5,
+		'long'    => 0.8,
+		'huge'    => 1.5,
+		'forever' => 0,
+	],
+	'debug'        => false,
+];
+
 $c->connectTerminal = true;
 
 $c->company['phone'] = '8 (800) 700-00-09';

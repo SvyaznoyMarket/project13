@@ -100,6 +100,20 @@ class AppConfig {
         'debug'        => null,
         'chunk_size'   => null,
     ];
+	
+    /**
+     * @var array
+     */
+    public $crm = [
+        'url'          => null,
+        'client_id'    => null,
+        'timeout'      => null,
+        'hugeTimeout'  => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
+        'debug'        => null,
+        'chunk_size'   => null,
+    ];
 
     /**
      * @var array

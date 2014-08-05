@@ -1,0 +1,30 @@
+@import "slots.less";
+
+#slotsWrapWrapper {
+  > .hello {
+    .box-sizing;
+    width: 583px;
+    margin: 0 auto;
+    border: 1px solid #565959;
+    border-radius: 10px;
+    padding: 10px 15px;
+    background: url(img/tile_back.png);
+    box-shadow: -2px 0px 35px #000, 2px 0px 35px #000;
+    color: #ffffff;
+    font-family: Tahoma, Geneva, sans-serif, helvetica, sans-serif;
+    font-size: 14px;
+    /** @todo после финализации виджета переделать адекватным способом **/
+    position: relative;
+    top: 0px;
+    height: 200px;
+    margin-bottom: -200px;
+    z-index: 2
+  }
+}
+
+#slotsWrapper {
+  * {
+    margin: 0;
+    padding: 0;
+  }
+}

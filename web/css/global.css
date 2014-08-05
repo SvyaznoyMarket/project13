@@ -1619,6 +1619,7 @@
   }
   .bFormLogin .bInputList .mCustomLabelBig {
     line-height: 12px;
+    min-height: 24px;
   }
   .bFormLogin .bRulesText {
     clear: both;
@@ -1634,6 +1635,16 @@
   .bFormLogin .bAuthCompany a {
     color: #ffa901;
     text-decoration: underline;
+  }
+}
+/*окно идентификации EnterPrize*/
+@media all {
+  /**
+ * Представление частично использует стили authPopup.less
+ */
+  #enterprize-identify {
+    width: 724px;
+    display: none;
   }
 }
 /*большое окно в карточке товара*/
