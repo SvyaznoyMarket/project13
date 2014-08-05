@@ -182,6 +182,10 @@ class AppConfig {
         'enabled' => null,
     ];
     /** @var array */
+    public $googleAnalyticsTchibo = [
+        'enabled' => null,
+    ];
+    /** @var array */
     public $yandexMetrika = [
         'enabled' => null,
     ];

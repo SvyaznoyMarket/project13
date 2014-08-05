@@ -4,6 +4,7 @@ namespace View\Tchibo;
 
 class IndexPage extends \View\DefaultLayout {
     protected $layout = 'layout-oneColumn';
+    protected $useTchiboAnalytics = true;
 
     public function slotBodyDataAttribute() {
         return 'product_catalog';
