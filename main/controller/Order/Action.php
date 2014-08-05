@@ -188,7 +188,7 @@ class Action {
                         ],
                         [
                             'back_ref'    => $helper->url('order.paymentComplete', array('orderNumber' => $order->getNumber()), true),// обратная ссылка
-                            'email'       => $userEntity ? $userEntity->getEmail() : null,
+                            'email'       => $form->getEmail(),
                             'card_number' => $sclub_card_number,
                             'user_token'  => $request->cookies->get('UserTicket'),// токен кросс-авторизации. может быть передан для Связного-Клуба (UserTicket)
                         ],
