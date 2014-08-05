@@ -432,7 +432,7 @@ $c->tchiboSlider['analytics'] = [
 $c->abtest['cookieName'] = 'switch';
 $c->abtest['enabled']    = true;
 $c->abtest['checkPeriod'] = 3600; //секунд - как часто проверять необходимость запуска теста
-$c->abtest['bestBefore'] = '2014-09-04';
+$c->abtest['bestBefore'] = '2014-10-04'; // TODO после запуска рейтингов изменить дату так, чтобы аб-тест отработал один месяц с момента запуска
 $c->abtest['test']       = [
     [
         'traffic'  => 33,

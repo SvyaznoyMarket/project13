@@ -1,19 +1,19 @@
 /**
- * Обработчик для sprosikupi
+ * Обработчик для SprosiKupi
  */
-/*$(function() {
+$(function() {
 	if (!$('.spk-good-rating').length) {
 		return;
 	}
 
 	$.getScript("//static.sprosikupi.ru/js/widget/sprosikupi.bootstrap.js");
 	$('body').on('catalogLoadingComplete', function(){
-		spkInit()
+        spkLoadRatings();
 	});
-});*/
+});
 
 /**
- * Обработчик для shoppilot
+ * Обработчик для ShopPilot
  */
 $(function() {
 	if (!$('.shoppilot-category-container').length) {
