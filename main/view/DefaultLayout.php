@@ -1017,4 +1017,8 @@ class DefaultLayout extends Layout {
 
         return '<div id="myragonPageJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
     }
+
+    public function slotEnterprizeRegJS() {
+        return '';
+    }
 }

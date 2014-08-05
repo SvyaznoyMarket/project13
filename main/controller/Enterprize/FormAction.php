@@ -275,7 +275,7 @@ class FormAction {
                         ],
                         \App::config()->coreV2['hugeTimeout']
                     );
-                    \App::logger()->info(['core.response' => $result], ['coupon', 'confirm/email']);
+                    \App::logger()->info(['core.response' => $confirm], ['coupon', 'confirm/email']);
 
                 } catch (\Exception $e) {
                     \App::exception()->remove($e);
@@ -300,7 +300,7 @@ class FormAction {
                         ],
                         \App::config()->coreV2['hugeTimeout']
                     );
-                    \App::logger()->info(['core.response' => $result], ['coupon', 'confirm/mobile']);
+                    \App::logger()->info(['core.response' => $confirm], ['coupon', 'confirm/mobile']);
 
                 } catch (\Exception $e) {
                     \App::exception()->remove($e);
@@ -314,41 +314,32 @@ class FormAction {
                 $userSex = (1 == $user->getSex()) ? 'm' : (2 == $user->getSex() ? 'f' : '');
             }
 
-            $flocktoryData = [
-                'order_id'     => uniqid(),
-                'email'        => $form->getEmail(),
-                'name'         => $form->getName(),
-                'sex'          => !empty($userSex) ? $userSex : ($form->getName() && preg_match('/[аяa]$/', $form->getName()) ? 'f' : 'm'),
-                'price'        => 2000,
-                'custom_field' => 'my_custom_id',
-                'items'        => [
-                    ['id' => 777, 'title' => 'Nike Shoes', 'price' => 1000, 'image' => 'http://path.to.image', 'count' => 1]
-                ],
-            ];
+            // задаем регистрационный флаг
+            try {
+                $regData = ['isRegistration' => true];
 
-//            $flocktoryData = [
-//                'user' => [
-//                    'name' => $form->getName(),
-//                    'email' => $form->getEmail(),
-//                    'sex' => $userSex,
-//                ],
-//                'order' => [
-//                    'id' => uniqid(),
-//                    'price' => 2000,
-//                    'custom_field' => 'my_custom_id',
-//                    'items' => [
-//                        ['id' => 777, 'title' => 'Nike Shoes', 'price' => 1000, 'image' => 'http://path.to.image', 'count' => 1]
-//                    ]
-//                ],
-//                'spot' => 'some_spot',
-//            ];
+                // пишем в сессию
+                $data = array_merge($data, $regData);
+                $session->set($sessionName, $data);
+
+                if (!isset($result['user_id']) || empty($result['user_id'])) {
+                    throw new \Exception('Не передан user_id');
+                }
+
+                // пишем в хранилище
+                $storageResult = \App::coreClientPrivate()->query('storage/post', ['user_id' => $result['user_id']], $regData);
+
+            } catch (\Exception $e) {
+                \App::logger()->error($e, ['coupon/register-in-enter-prize', 'user_id']);
+                \App::exception()->remove($e);
+            }
 
             $response = $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([
                     'success' => true,
                     'error'   => null,
                     'notice'  => ['message' => 'Поздравляем с регистрацией в Enter Prize!', 'type' => 'info'],
-                    'data'    => ['link' => $link, 'flocktory' => $flocktoryData],
+                    'data'    => ['link' => $link],
                 ])
                 : new \Http\RedirectResponse($link);
 
