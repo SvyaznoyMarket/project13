@@ -30,7 +30,7 @@ class Repository {
                 'description'            => 'Мы привезем заказ по любому удобному вам адресу. Пожалуйста, укажите дату и время доставки.',
                 //'description'            => 'DHL, DPD, СПСР-Экспресс',
                 'methods'                => ['standart_furniture', 'standart_other', 'standart', 'standart_svyaznoy', 'standart_pred_supplier'],
-                'possible_method_tokens' => ['standart_furniture', 'standart_other', 'self', 'now', 'standart','standart_svyaznoy', 'standart_pred_supplier'],
+                'possible_method_tokens' => ['standart_furniture', 'standart_other', 'self', 'now', 'standart','standart_svyaznoy', 'standart_pred_supplier', 'self_pred_supplier'],
             ],
             /*
             [
@@ -44,8 +44,8 @@ class Repository {
                 'short_name'             => 'Самовывоз',
                 'name'                   => 'Самостоятельно заберу в магазине',
                 'description'            => 'Вы можете самостоятельно забрать товар из ближайшего к вам магазина. Услуга бесплатная! Резерв товара сохраняется 3 дня. Пожалуйста, выберите магазин.',
-                'methods'                => ['self', 'self_svyaznoy'],
-                'possible_method_tokens' => ['self', 'now', 'standart_furniture', 'standart_other', 'standart', 'self_svyaznoy', 'standart_pred_supplier'],
+                'methods'                => ['self', 'self_svyaznoy', 'self_pred_supplier'],
+                'possible_method_tokens' => ['self', 'now', 'self_pred_supplier', 'standart_furniture', 'standart_other', 'standart', 'self_svyaznoy', 'standart_pred_supplier'],
             ],
             [
                 'id'                     => 4,
@@ -55,7 +55,7 @@ class Repository {
                 'button_name'            => 'Забрать из этого магазина',
                 'description'            => 'Вы можете забрать товар из магазина прямо сейчас',
                 'methods'                => ['now'],
-                'possible_method_tokens' => ['now', 'self', 'standart_furniture', 'standart_other', 'standart', 'standart_pred_supplier'],
+                'possible_method_tokens' => ['now', 'self', 'self_pred_supplier', 'standart_furniture', 'standart_other', 'standart', 'standart_pred_supplier'],
             ],
             /*
             [
@@ -71,7 +71,7 @@ class Repository {
                 'button_name'            => 'Забрать из этого постамата',
                 'description'            => 'Автоматический пункт выдачи заказов',
                 'methods'                => ['pickpoint'],
-                'possible_method_tokens' => ['pickpoint', 'now', 'self', 'standart_furniture', 'standart_other', 'standart', 'standart_pred_supplier'],
+                'possible_method_tokens' => ['pickpoint', 'now', 'self', 'self_pred_supplier', 'standart_furniture', 'standart_other', 'standart', 'standart_pred_supplier'],
             ],
 /*            [
                 'id'                     => 7,
@@ -81,7 +81,7 @@ class Repository {
                 'description'            => 'Мы привезем заказ по любому удобному вам адресу. Пожалуйста, укажите дату и время доставки.',
                 //'description'            => 'DHL, DPD, СПСР-Экспресс',
                 'methods'                => ['standart_furniture', 'standart_other', 'standart', 'standart_svyaznoy'],
-                'possible_method_tokens' => ['standart_furniture', 'standart_other', 'self', 'now', 'standart', 'standart_svyaznoy', 'standart_pred_supplier'],
+                'possible_method_tokens' => ['standart_furniture', 'standart_other', 'self', 'now', 'standart', 'standart_svyaznoy', 'standart_pred_supplier', 'self_pred_supplier'],
             ],*/
         ];
 
