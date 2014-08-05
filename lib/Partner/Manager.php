@@ -219,7 +219,7 @@ class Manager {
     }
 
     public function fabricateMetaByPartners($partners = [], $product = null) {
-        if (!is_array($partners) || !count($partners) || !$product) return false;
+        if (!is_array($partners) || !count($partners) || !$product) return [];
 
         $return = [];
         $prefix = 'partner';
