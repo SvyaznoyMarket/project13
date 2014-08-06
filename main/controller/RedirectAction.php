@@ -22,20 +22,17 @@ class RedirectAction {
         }
 
         $redirectUrl = null;
-        \App::dataStoreClient()->addQuery('301.json', [], function($data) use(&$uri, &$redirectUrl) {
-            $redirectUrl = isset($data[$uri]) ? trim((string)$data[$uri]) : null;
+        \App::scmsSeoClient()->addQuery('redirect', ['from_url' => $uri], [], function($data) use(&$uri, &$redirectUrl) {
+            $redirectUrl = isset($data['to_url']) ? trim($data['to_url']) : null;
 
             if ($redirectUrl && (0 !== strpos($redirectUrl, '/'))) {
                 $redirectUrl = null;
                 \App::logger()->error(sprintf('Неправильный редирект %s -> %s', $uri, $redirectUrl), ['redirect']);
             }
-
-            if ($redirectUrl && isset($data[$redirectUrl])) {
-                $redirectUrl = null;
-                \App::logger()->error(sprintf('Обнаружен зацикливающийся редирект %s -> %s', $uri, $redirectUrl), ['redirect']);
-            }
         });
-        \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny']);
+
+        \App::scmsSeoClient()->execute(\App::config()->scmsSeo['retryTimeout']['tiny']);
+
         if (!$redirectUrl) {
             return;
         }
