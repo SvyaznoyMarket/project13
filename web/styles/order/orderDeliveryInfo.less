@@ -90,6 +90,9 @@
 		
 		.addrsAutocmplt {
 			z-index: 99;
+			overflow: auto;
+    		max-height: 125px;
+    		border: 1px solid @lightgrey-2;
 		}
 
 		.ui-helper-hidden-accessible { 
@@ -97,11 +100,10 @@
 		} 
 
 		.ui-autocomplete {
-			border: 1px solid @lightgrey-2;
+			
 			background: @white;
 			padding: 5px;
-			overflow: auto;
-    		max-height: 125px;
+    		width: 100%;
 
     		.ui-menu-item {
     			line-height: 23px;

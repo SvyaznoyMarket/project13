@@ -4783,16 +4783,17 @@ img[height="0"] {
   }
   .orderCol_addrs .addrsAutocmplt {
     z-index: 99;
+    overflow: auto;
+    max-height: 125px;
+    border: 1px solid #d3d3d3;
   }
   .orderCol_addrs .ui-helper-hidden-accessible {
     display: none;
   }
   .orderCol_addrs .ui-autocomplete {
-    border: 1px solid #d3d3d3;
     background: #ffffff;
     padding: 5px;
-    overflow: auto;
-    max-height: 125px;
+    width: 100%;
   }
   .orderCol_addrs .ui-autocomplete .ui-menu-item {
     line-height: 23px;
