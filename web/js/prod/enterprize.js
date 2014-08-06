@@ -360,7 +360,7 @@
  */
 $.widget("ui.registerAuth", {
 
-    availableStates: ['authRegistration','update','confirm','setEnterprize'],
+    availableStates: ['authRegistration',/*'update',*/'confirm','setEnterprize'],
     wrapper: undefined, // контейнер для смены данных
     state: 'authRegister',
     authRegistrationForm: '',

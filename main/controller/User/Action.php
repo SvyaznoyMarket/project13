@@ -352,7 +352,7 @@ class Action {
         $form = new \View\Enterprize\FormRegistration();
         $form->fromArray((array)$request->request->get('user'));
 
-        $response       = $this->CUUser($form);
+        $response       = $this->CUser($form);
         $httpResponse   = new \Http\JsonResponse($response);
 
         if($response['success']) {
@@ -492,6 +492,81 @@ class Action {
                     case 609:
                     default:
                         $form->setError('global', 'Не удалось '.($action=='create'?'создать':'изменить').' пользователя' . (\App::config()->debug ? (': ' . $errorMess) : '') );
+                        break;
+                }
+
+                $response = [
+                    'success'   => false,
+                    'form'      => $form->getState(),
+                ];
+            }
+        } else {
+            $response = [
+                'success'   => false,
+                'form'      => $form->getState(),
+                ''
+            ];
+        }
+
+        return $response;
+    }
+
+    /**
+     * Create User
+     * @param $form \View\Enterprize\Form
+     * @throws \Exception
+     * @return array
+     */
+    protected function CUser ($form) {
+        $params = [];
+
+        if(!$form->getEmail()) {
+            $form->setError('email', 'Необходимо указать email');
+        }
+        if(!$form->getMobile()) {
+            $form->setError('mobile', 'Необходимо указать телефон');
+        }
+        if(!$form->getAgree()) {
+            $form->setError('agree','Необходимо согласие');
+        }
+
+        if ($form->isValid()) {
+            try {
+                $result = \App::coreClientV2()->query(
+                    'coupon/register-in-enter-prize',
+                    $params,
+                    [
+                        'name'   => $form->getName(),
+                        'mobile' => $form->getMobile(),
+                        'email'  => $form->getEmail(),
+                        'guid'   => '00000000-0000-0000-0000-000000000000',
+                        'agree'  => $form->getAgree(),
+                    ],
+                    \App::config()->coreV2['hugeTimeout']
+                );
+                \App::logger()->info(['core.response' => $result], ['coupon', 'register-in-enter-prize']);
+
+                $response = [
+                    'success'   => true,
+                    'message'   => 'Пароль отправлен на ваш email',
+                    'result'    => $result
+                ];
+            } catch (\Exception $e) {
+                \App::exception()->remove($e);
+                $errorMess = $e->getMessage();
+                // коды смотреть в проекте API в App_Service_Error
+                switch ($e->getCode()) {
+                    case 684:
+                    case 689:
+                        $form->setError('email', $errorMess);
+                        break;
+                    case 686:
+                    case 690:
+                        $form->setError('mobile', $errorMess );
+                        break;
+                    case 609:
+                    default:
+                        $form->setError('global', 'Не удалось создать пользователя' . (\App::config()->debug ? (': ' . $errorMess) : '') );
                         break;
                 }
 
