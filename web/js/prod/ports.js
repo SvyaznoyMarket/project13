@@ -2044,45 +2044,44 @@ window.ANALYTICS = {
 
 	flocktoryEnterprizeRegJS: function() {
 		var
-			flocktory = $("#flocktoryEnterprizeRegJS"),
-			data,
-			result,
-			_flocktory = window._flocktory || [];
+			data = $("#flocktoryEnterprizeRegJS").data('value');
 		// end of vars
 
 		var
 			action = function( userInfo ) {
+				var result;
+
 				if (
 					!data ||
 					!userInfo ||
 					!userInfo.hasOwnProperty('email') || !userInfo.email ||
-					!userInfo.hasOwnProperty('name') || !userInfo.name ||
-					!userInfo.hasOwnProperty('sex') || !userInfo.sex
+					!userInfo.hasOwnProperty('name') || !userInfo.name
 				) {
 					return;
 				}
 
 				data.email = userInfo.email;
 				data.name = userInfo.name;
-				data.sex = userInfo.sex;
+
+				if ( userInfo.hasOwnProperty('sex') ) {
+					data.sex = 1 == userInfo.sex ? 'm' : (2 == userInfo.sex ? 'f' : null);
+				}
 
 				result = ['postcheckout', data];
 
 				console.info("Analytics flocktoryEnterprizeReg");
 				console.log(result);
+				console.log(JSON.stringify(result));
 
-				_flocktory.push(result);
+				window.flocktory.push(result);
 			};
 		// end of functions
 
-		if ( !flocktory.length ) {
-			return;
-		}
-
-		data = flocktory.data('value');
 		if ( !data ) {
 			return;
 		}
+
+		window.flocktory = window.flocktory || [];
 
 		if ( ENTER.config.userInfo === false ) {
 			// пользователь должен быть авторизован

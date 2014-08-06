@@ -16,9 +16,13 @@ class IndexPage extends \View\DefaultLayout {
     public function slotContent() {
         $return = $this->render('enterprize/page-index', $this->params);
 
-        if ((bool)$this->getParam('hasFlocktoryPopup')) {
+        if ((bool)$this->getParam('hasFlocktoryPopup') || (bool)$this->getParam('isRegistration')) {
             $return .= '<div id="flocktoryEnterprizeFormJS" class="jsanalytics"></div>';
         }
+
+//        if ((bool)$this->getParam('isRegistration')) {
+//            $return .= '<div id="flocktoryAddScript" class="jsanalytics"></div>';
+//        }
 
         return $return;
     }
@@ -40,7 +44,12 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotFlocktoryEnterprizeJs() {
-        return '<div id="flocktoryEnterprizeJS" class="jsanalytics"></div>';
+        $return = '';
+        if ((bool)$this->getParam('hasFlocktoryPopup')) {
+            $return .= '<div id="flocktoryEnterprizeJS" class="jsanalytics"></div>';
+        }
+
+        return $return;
     }
 
     public function slotEnterprizeRegJS() {
