@@ -204,9 +204,9 @@ class Entity extends BasicEntity {
         }
         else {
             foreach ($this->property as $property) {
+                /** @var \Model\Product\Property\Entity $property */
                 if (!$property->getIsInList()) continue;
                 if (!$property->getStringValue()) continue;
-                if (!$property->getValue()) continue;
 
                 $this->mainProperties[] = $property;
             }
