@@ -2060,18 +2060,17 @@ window.ANALYTICS = {
 					return;
 				}
 
-				data.email = userInfo.email;
-				data.name = userInfo.name;
+				data.user.email = userInfo.email;
+				data.user.name = userInfo.name;
 
 				if ( userInfo.hasOwnProperty('sex') ) {
-					data.sex = 1 == userInfo.sex ? 'm' : (2 == userInfo.sex ? 'f' : null);
+					data.user.sex = 1 == userInfo.sex ? 'm' : (2 == userInfo.sex ? 'f' : null);
 				}
 
 				result = ['postcheckout', data];
 
 				console.info("Analytics flocktoryEnterprizeReg");
 				console.log(result);
-				console.log(JSON.stringify(result));
 
 				window.flocktory.push(result);
 			};

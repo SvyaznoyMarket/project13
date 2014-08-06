@@ -58,15 +58,20 @@ class IndexPage extends \View\DefaultLayout {
         // flocktory
         if ((bool)$this->getParam('isRegistration') ) {
             $flocktoryData = [
-                'order_id'     => uniqid(),
-                'email'        => null,
-                'name'         => null,
-                'sex'          => null,
-                'price'        => 2000,
-                'custom_field' => 'my_custom_id',
-                'items'        => [
-                    ['id' => 777, 'title' => 'Nike Shoes', 'price' => 1000, 'image' => 'http://path.to.image', 'count' => 1]
+                'user' => [
+                    'name' => null,
+                    'email' => null,
+                    'sex' => null,
                 ],
+                'order' => [
+                    'id' => uniqid(),
+                    'price' => 2000,
+                    'custom_field' => 'my_custom_id',
+                    'items' => [
+                        ['id' => 777, 'title' => 'Nike Shoes', 'price' => 1000, 'image' => 'http://path.to.image', 'count' => 1]
+                    ]
+                ],
+                'spot' => 'some_spot',
             ];
 
             $return .= '<div id="flocktoryEnterprizeRegJS" class="jsanalytics" data-value="' . $this->json($flocktoryData) . '"></div>';
