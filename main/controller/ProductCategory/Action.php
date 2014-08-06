@@ -949,7 +949,8 @@ class Action {
 
         if ($smartChoiceEnabled) {
             try {
-                if (!in_array('is_store', array_map(function($var){return $var[0];}, $filters))) $filters[] = ["is_store",1,1];
+                if ($category->getIsFurniture() && !in_array('is_store', array_map(function($var){return $var[0];}, $filters))) $filters[] = ["is_store",1,1];
+
                 $smartChoiceData = \App::coreClientV2()->query('listing/smart-choice', ['region_id' => $region->getId(), 'client_id' => 'site', 'filter' => ['filters' => $filters]]);
                 $smartChoiceProductsIds = array_map(function ($a) {
                     return $a['products'][0]['id'];
