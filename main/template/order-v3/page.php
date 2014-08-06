@@ -150,7 +150,7 @@ return function(
                 <div class="orderCol_delivrIn clearfix">
                     <div class="orderCol_date">15 сентября 2014, воскресенье</div>
 
-                    <div class="celedr popupFl">
+                    <div class="celedr popupFl" style="display: none">
                         <div class="popupFl_clsr"></div>
 
                         <div class="celedr_t">27 сентября, воскресенье</div>
@@ -443,7 +443,7 @@ return function(
                     <span class="orderChange">изменить место</span>
                 </div>
 
-                <div class="selShop popupFl">
+                <div class="selShop popupFl" style="display: none;">
                     <div class="popupFl_clsr"></div>
 
                     <div class="selShop_h">
@@ -644,7 +644,30 @@ return function(
                     </div>
 
                     <div class="orderCol_addrs">
-                        <input class="orderCol_addrs_fld textfield" type="text" name="" value="" placeholder="" />
+                        <ul class="orderCol_addrs_fld clearfix textfield" style="height: inherit">
+                            <li class="orderCol_addrs_fld_i jsAddressItem" data-type="street">
+                                <span class="orderCol_addrs_fld_n jsAddressItemType">Улица</span><span class="orderCol_addrs_fld_val jsAddressItemName">Академика Бакулева</span>
+                            </li>
+
+                            <li class="orderCol_addrs_fld_i">
+                                <span id="addressInputPrefix" class="addrsAutocmpltLbl">Квартира:</span>
+                                <span role="status" aria-live="polite" class="ui-helper-hidden-accessible">[object Object]</span>
+                                <input type="text" class="ui-autocomplete-input" autocomplete="off">
+                                <div class="addrsAutocmplt" id="kladrAutocomplete" style="width: auto; position: absolute; background: white; overflow-x: hidden">
+                                    <ul class="ui-autocomplete ui-front ui-menu ui-widget ui-widget-content ui-corner-all" id="ui-id-2" tabindex="0" style="display: block; position: relative; top: 0; left: 0; width: auto;">
+                                        <li data-value="{&quot;id&quot;:&quot;7700000000007930002&quot;,&quot;name&quot;:&quot;10&quot;,&quot;zip&quot;:117513,&quot;type&quot;:&quot;дом&quot;,&quot;typeShort&quot;:&quot;д&quot;,&quot;okato&quot;:&quot;45293586000&quot;,&quot;contentType&quot;:&quot;building&quot;}" class="ui-menu-item" role="presentation"><a id="ui-id-23" class="ui-corner-all" tabindex="-1">10</a></li>
+                                        <li data-value="{&quot;id&quot;:&quot;7700000000007930003&quot;,&quot;name&quot;:&quot;12&quot;,&quot;zip&quot;:117513,&quot;type&quot;:&quot;дом&quot;,&quot;typeShort&quot;:&quot;д&quot;,&quot;okato&quot;:&quot;45293586000&quot;,&quot;contentType&quot;:&quot;building&quot;}" class="ui-menu-item" role="presentation"><a id="ui-id-24" class="ui-corner-all" tabindex="-1">12</a></li>
+                                        <li data-value="{&quot;id&quot;:&quot;7700000000007930003&quot;,&quot;name&quot;:&quot;14&quot;,&quot;zip&quot;:117513,&quot;type&quot;:&quot;дом&quot;,&quot;typeShort&quot;:&quot;д&quot;,&quot;okato&quot;:&quot;45293586000&quot;,&quot;contentType&quot;:&quot;building&quot;}" class="ui-menu-item" role="presentation"><a id="ui-id-25" class="ui-corner-all" tabindex="-1">14</a></li>
+                                        <li data-value="{&quot;id&quot;:&quot;7700000000007930003&quot;,&quot;name&quot;:&quot;16&quot;,&quot;zip&quot;:117513,&quot;type&quot;:&quot;дом&quot;,&quot;typeShort&quot;:&quot;д&quot;,&quot;okato&quot;:&quot;45293586000&quot;,&quot;contentType&quot;:&quot;building&quot;}" class="ui-menu-item" role="presentation"><a id="ui-id-26" class="ui-corner-all" tabindex="-1">16</a></li>
+                                        <li data-value="{&quot;id&quot;:&quot;7700000000007930003&quot;,&quot;name&quot;:&quot;18&quot;,&quot;zip&quot;:117513,&quot;type&quot;:&quot;дом&quot;,&quot;typeShort&quot;:&quot;д&quot;,&quot;okato&quot;:&quot;45293586000&quot;,&quot;contentType&quot;:&quot;building&quot;}" class="ui-menu-item" role="presentation"><a id="ui-id-27" class="ui-corner-all" tabindex="-1">18</a></li>
+                                        <li data-value="{&quot;id&quot;:&quot;7700000000007930003&quot;,&quot;name&quot;:&quot;10стр1&quot;,&quot;zip&quot;:117513,&quot;type&quot;:&quot;дом&quot;,&quot;typeShort&quot;:&quot;д&quot;,&quot;okato&quot;:&quot;45293586000&quot;,&quot;contentType&quot;:&quot;building&quot;}" class="ui-menu-item" role="presentation"><a id="ui-id-28" class="ui-corner-all" tabindex="-1">10стр1</a></li>
+                                        <li data-value="{&quot;id&quot;:&quot;7700000000007930003&quot;,&quot;name&quot;:&quot;10стр3&quot;,&quot;zip&quot;:117513,&quot;type&quot;:&quot;дом&quot;,&quot;typeShort&quot;:&quot;д&quot;,&quot;okato&quot;:&quot;45293586000&quot;,&quot;contentType&quot;:&quot;building&quot;}" class="ui-menu-item" role="presentation"><a id="ui-id-29" class="ui-corner-all" tabindex="-1">10стр3</a></li>
+                                        <li data-value="{&quot;id&quot;:&quot;7700000000007930003&quot;,&quot;name&quot;:&quot;18стр2&quot;,&quot;zip&quot;:117513,&quot;type&quot;:&quot;дом&quot;,&quot;typeShort&quot;:&quot;д&quot;,&quot;okato&quot;:&quot;45293586000&quot;,&quot;contentType&quot;:&quot;building&quot;}" class="ui-menu-item" role="presentation"><a id="ui-id-30" class="ui-corner-all" tabindex="-1">18стр2</a></li>
+                                        <li data-value="{&quot;id&quot;:&quot;7700000000007930003&quot;,&quot;name&quot;:&quot;18стр1&quot;,&quot;zip&quot;:117513,&quot;type&quot;:&quot;дом&quot;,&quot;typeShort&quot;:&quot;д&quot;,&quot;okato&quot;:&quot;45293586000&quot;,&quot;contentType&quot;:&quot;building&quot;}" class="ui-menu-item" role="presentation"><a id="ui-id-31" class="ui-corner-all" tabindex="-1">18стр1</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
@@ -714,7 +737,7 @@ return function(
                     <div class="customSel">
                         <span class="customSel_def">10:00…18:00</span>
 
-                        <ul class="customSel_lst popupFl" style="display: block;">
+                        <ul class="customSel_lst popupFl" style="display: none;">
                             <li class="customSel_i">10:00…18:00</li>
                             <li class="customSel_i">8:00…12:00</li>
                             <li class="customSel_i">12:00…18:00</li>
