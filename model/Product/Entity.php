@@ -205,8 +205,10 @@ class Entity extends BasicEntity {
         else {
             foreach ($this->property as $property) {
                 /** @var \Model\Product\Property\Entity $property */
+                $stringValue = $property->getStringValue();
+
                 if (!$property->getIsInList()) continue;
-                if (!$property->getStringValue()) continue;
+                if (!$stringValue || mb_strlen($stringValue, 'utf-8') > 45) continue;
 
                 $this->mainProperties[] = $property;
             }
