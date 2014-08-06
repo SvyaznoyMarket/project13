@@ -192,21 +192,13 @@ class Entity extends BasicEntity {
             }
         }
 
-        if ((!$this->getTagline() && !count($this->getModel()) && !$this->getDescription() && $this->getPropertiesCount() < 16) || $this->getPropertiesCount() < 8) {
-            $this->secondaryGroupedProperties = [];
+        $propertiesCount = $this->getPropertiesCount();
+        if (((!$this->getTagline() && !count($this->getModel()) && !$this->getDescription() && $propertiesCount < 16) || $propertiesCount < 8) && !$this->hasLongProperties()) {
             foreach ($this->groupedProperties as $group) {
                 if (!(bool)$group['properties']) continue;
 
                 foreach ($group['properties'] as $property) {
-                    /* @var $property Property\Entity */
-                    if (mb_strlen($property->getStringValue(), 'utf-8') <= 45) {
-                        $this->mainProperties[] = $property;
-                    } else {
-                        if (isset($indexedPropertyGroups[$property->getGroupId()])) {
-                            $this->secondaryGroupedProperties[$property->getGroupId()]['group'] = $indexedPropertyGroups[$property->getGroupId()];
-                            $this->secondaryGroupedProperties[$property->getGroupId()]['properties'][] = $property;
-                        }
-                    }
+                    $this->mainProperties[] = $property;
                 }
             }
         }
@@ -217,12 +209,13 @@ class Entity extends BasicEntity {
                 if (!$property->getValue()) continue;
 
                 $this->mainProperties[] = $property;
-                $this->secondaryGroupedProperties = $this->groupedProperties;
             }
 
             usort($this->mainProperties, function(Property\Entity $a, Property\Entity $b) {
                 return $a->getPosition() - $b->getPosition();
             });
+
+            $this->secondaryGroupedProperties = $this->groupedProperties;
         }
 
 
@@ -879,6 +872,21 @@ class Entity extends BasicEntity {
         }
 
         return $count;
+    }
+
+    public function hasLongProperties()
+    {
+        foreach ($this->groupedProperties as $group) {
+            if (!(bool)$group['properties']) continue;
+            foreach ($group['properties'] as $property) {
+                /* @var $property Property\Entity */
+                if (mb_strlen($property->getStringValue(), 'utf-8') > 45) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
