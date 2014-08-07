@@ -205,8 +205,10 @@ class Entity extends BasicEntity {
         else {
             foreach ($this->property as $property) {
                 /** @var \Model\Product\Property\Entity $property */
+                $stringValue = $property->getStringValue();
+
                 if (!$property->getIsInList()) continue;
-                if (!$property->getStringValue()) continue;
+                if (!$stringValue || mb_strlen($stringValue) > 45) continue;
 
                 $this->mainProperties[] = $property;
             }
@@ -880,7 +882,7 @@ class Entity extends BasicEntity {
             if (!(bool)$group['properties']) continue;
             foreach ($group['properties'] as $property) {
                 /* @var $property Property\Entity */
-                if (mb_strlen($property->getStringValue(), 'utf-8') > 45) {
+                if (mb_strlen($property->getStringValue()) > 45) {
                     return true;
                 }
             }
