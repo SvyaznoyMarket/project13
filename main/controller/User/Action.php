@@ -7,6 +7,8 @@ use Controller\Enterprize\ConfirmAction;
 class Action {
     private $redirect;
     private $requestRedirect;
+    /** @var bool Флаг позволяющий управлять возможностью редактирования пользовательских данных */
+    private $enterprizeUserUpdateEnabled = false;
 
     /**
      * @param \Http\Request $request
@@ -406,7 +408,7 @@ class Action {
         if($request->isMethod('post')) {
             // @todo возможно стоит добавить защиту от изменения подтвержденных данных
             $form->fromArray((array)$request->request->get('user'));
-            $response = $this->CUUser($form,'update');
+            $response = $this->enterprizeUserUpdateEnabled ? $this->CUUser($form,'update') : $this->CUser($form);
         } else {
             $form->fromEntity($user);
             $response = [
@@ -518,8 +520,11 @@ class Action {
      * @return array
      */
     protected function CUser ($form) {
-        $params = [];
+        \App::logger()->debug('Exec ' . __METHOD__);
 
+        if(!$form->getName()) {
+            $form->setError('name', 'Необходимо указать имя');
+        }
         if(!$form->getEmail()) {
             $form->setError('email', 'Необходимо указать email');
         }
@@ -532,9 +537,8 @@ class Action {
 
         if ($form->isValid()) {
             try {
-                $result = \App::coreClientV2()->query(
-                    'coupon/register-in-enter-prize',
-                    $params,
+                $result = \App::coreClientV2()->query('coupon/register-in-enter-prize',
+                    [],
                     [
                         'name'   => $form->getName(),
                         'mobile' => $form->getMobile(),
@@ -579,7 +583,6 @@ class Action {
             $response = [
                 'success'   => false,
                 'form'      => $form->getState(),
-                ''
             ];
         }
 
