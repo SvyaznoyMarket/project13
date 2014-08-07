@@ -522,6 +522,12 @@ class Action {
     protected function CUser ($form) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        $user = \App::user()->getEntity();
+        $params = [];
+        if($user && $user->getToken()) {
+            $params = [ 'token' => $user->getToken()];
+        }
+
         if(!$form->getName()) {
             $form->setError('name', 'Необходимо указать имя');
         }
@@ -538,7 +544,7 @@ class Action {
         if ($form->isValid()) {
             try {
                 $result = \App::coreClientV2()->query('coupon/register-in-enter-prize',
-                    [],
+                    $params,
                     [
                         'first_name'    => $form->getName(),
                         'mobile'        => $form->getMobile(),
