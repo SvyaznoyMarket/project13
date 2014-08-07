@@ -601,6 +601,14 @@ class AppConfig {
         'retryCount'   => null,
     ];
 
+    /** @var array */
+    public $scmsSeo = [
+        'url'          => null,
+        'timeout'      => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
+    ];
+
     public function __construct() {
         //$this->vkontakteOauth = new OAuth\VkontakteConfig();
         //$this->odnoklassnikiOauth = new OAuth\OdnoklassnikiConfig();
