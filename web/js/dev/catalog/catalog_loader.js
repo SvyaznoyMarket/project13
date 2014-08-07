@@ -45,6 +45,7 @@
 				catalog.loader._loader = null;
 			}
 			filterSubminBtn.removeClass('mButLoader');
+			$('body').trigger('catalogLoadingComplete');
 		}
 	};
 

@@ -9725,6 +9725,36 @@
     width: 115px;
     text-align: right;
   }
+  .sprosikupiRating .spk-good-rating {
+    float: left;
+  }
+  .sprosikupiRating .spk-good-rating .spk-rating-stars {
+    float: left;
+    position: relative;
+    top: -1px;
+    margin-right: 4px;
+  }
+  .sprosikupiRating .spk-good-rating .spk-good-rating-number {
+    display: none;
+  }
+  .sprosikupiRating .spk-good-rating span[style="margin-left:10px"] {
+    display: none;
+  }
+  .sprosikupiRating .spk-good-rating a {
+    float: left;
+    margin-left: 5px !important;
+    color: #a6a6a6;
+    text-decoration: underline;
+  }
+  .sprosikupiRating > a {
+    float: right;
+    color: #a6a6a6;
+    text-decoration: underline;
+    vertical-align: bottom;
+  }
+  #spk-widget-reviews {
+    margin-top: 2em;
+  }
   .bReviewSection {
     margin: 0 0 25px;
     padding: 0;
@@ -11734,6 +11764,24 @@
     padding: 10px;
     width: 198px;
     border: 1px solid #fff;
+  }
+  .bListing .bListingItem__eInner .sprosikupiCategoryRating .spk-good-rating {
+    display: block;
+  }
+  .bListing .bListingItem__eInner .sprosikupiCategoryRating .spk-good-rating .spk-rating-stars {
+    margin-bottom: 5px;
+  }
+  .bListing .bListingItem__eInner .sprosikupiCategoryRating .spk-good-rating .spk-rating-stars.spk-good-rating-0 {
+    display: none !important;
+  }
+  .bListing .bListingItem__eInner .sprosikupiCategoryRating .spk-good-rating .spk-good-rating-number {
+    display: none;
+  }
+  .bListing .bListingItem__eInner .sprosikupiCategoryRating .spk-good-rating span[style="margin-left:10px"] {
+    display: none;
+  }
+  .bListing .bListingItem__eInner .shoppilot-category-container .shoppilot-category-product-rating-snippet {
+    margin-bottom: 10px;
   }
   .bListing .bListingItem:hover {
     z-index: 10;

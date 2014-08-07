@@ -13,86 +13,101 @@ return function(
 ?>
 
 <div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating" class="bReviewSection clearfix">
-    <div class="bReviewSection__eStar">
-        <?= empty($rating) ? '' : $helper->render('product/__rating', ['score' => $rating]) ?>
-    </div>
-    <? if (empty($rating) && 0 == $reviewCount) { ?>
-        <span style="float: left;">Отзывов нет</span>
-    <? } else { ?>
-        <span itemprop="ratingCount" class="jsGoToId border" data-goto="bHeadSectionReviews">
-            <?= $reviewCount ?> <?= $helper->numberChoice($reviewCount, ['отзыв', 'отзыва', 'отзывов']) ?>
-        </span>
-    <? } ?>
+    <? switch (\App::abTest()->getCase()->getKey()):
+        case 'reviews_sprosikupi': ?>
+            <div class="sprosikupiRating clearfix">
+                <div class="spk-good-rating" shop-id="52dbdd369928f539612151" good-id="<?= $helper->escape($product->getId()) ?>"></div>
+                <a href="?spkPreState=addReview">Добавить отзыв</a>
+            </div>
+            <? break ?>
+        <? case 'reviews_shoppilot': ?>
+            <div id="shoppilot-rating-container"></div>
+            <? break ?>
+        <? default: ?>
+            <div class="bReviewSection__eStar">
+                <?= empty($rating) ? '' : $helper->render('product/__rating', ['score' => $rating]) ?>
+            </div>
 
-    <? if (\App::config()->product['pushReview']): ?>
-        <a id="send-review" class="reviewSend jsReviewSend" href="">Добавить отзыв</a>
+            <? if (empty($rating) && 0 == $reviewCount): ?>
+                <span style="float: left;">Отзывов нет</span>
+            <? else: ?>
+                <span itemprop="ratingCount" class="jsGoToId border" data-goto="bHeadSectionReviews">
+                    <?= $reviewCount ?> <?= $helper->numberChoice($reviewCount, ['отзыв', 'отзыва', 'отзывов']) ?>
+                </span>
+            <? endif ?>
 
-        <div class="popup reviewPopup jsReviewPopup" id="review-block">
-            <i title="Закрыть" class="close">Закрыть</i>
+            <? if (\App::config()->product['pushReview']): ?>
+                <a id="send-review" class="reviewSend jsReviewSend" href="">Добавить отзыв</a>
 
-            <div class="popupTitle">Отзыв о товаре</div>
+                <div class="popup reviewPopup jsReviewPopup" id="review-block">
+                    <i title="Закрыть" class="close">Закрыть</i>
 
-            <div class="productName"><span class="productName__inner"><?= $product->getPrefix() . ' ' . $product->getWebName() ?></span></div>
+                    <div class="popupTitle">Отзыв о товаре</div>
 
-            <form action="<?= $helper->url('product.review.create', ['productUi' => $product->getUi()]) ?>" id="" class="reviewForm clearfix jsReviewForm" method="post">
-                <ul class="error_list"></ul>
+                    <div class="productName"><span class="productName__inner"><?= $product->getPrefix() . ' ' . $product->getWebName() ?></span></div>
 
-                <fieldset class="reviewForm__place">
-                    <div class="place2Col">
-                        <label class="reviewForm__label">Достоинства</label>
-                        <textarea class="reviewForm__textarea jsReviewFormField jsAdvantage" name="review[advantage]"></textarea>
-                    </div>
+                    <form action="<?= $helper->url('product.review.create', ['productUi' => $product->getUi()]) ?>" id="" class="reviewForm clearfix jsReviewForm" method="post">
+                        <ul class="error_list"></ul>
 
-                    <div class="place2Col mRight">
-                        <label class="reviewForm__label">Недостатки</label>
-                        <textarea class="reviewForm__textarea jsReviewFormField jsDisadvantage" name="review[disadvantage]"></textarea>
-                    </div>
+                        <fieldset class="reviewForm__place">
+                            <div class="place2Col">
+                                <label class="reviewForm__label">Достоинства</label>
+                                <textarea class="reviewForm__textarea jsReviewFormField jsAdvantage" name="review[advantage]"></textarea>
+                            </div>
 
-                    <div>
-                        <label class="reviewForm__label">Комментарий</label>
-                        <textarea class="reviewForm__textarea jsReviewFormField jsExtract" name="review[extract]"></textarea>
-                    </div>
-                </fieldset>
+                            <div class="place2Col mRight">
+                                <label class="reviewForm__label">Недостатки</label>
+                                <textarea class="reviewForm__textarea jsReviewFormField jsDisadvantage" name="review[disadvantage]"></textarea>
+                            </div>
 
-                <fieldset class="reviewForm__place mLeft">
-                    <div class="reviewForm__stars">
-                        <strong class="reviewForm__label">Оценка</strong>
-                        <input class="jsReviewStarsCount" name="review[score]" value="0"/>
-                        <div class="starsList">
-                            <span class="starsList__item mEmpty"></span>
-                            <span class="starsList__item mEmpty"></span>
-                            <span class="starsList__item mEmpty"></span>
-                            <span class="starsList__item mEmpty"></span>
-                            <span class="starsList__item mEmpty"></span>
+                            <div>
+                                <label class="reviewForm__label">Комментарий</label>
+                                <textarea class="reviewForm__textarea jsReviewFormField jsExtract" name="review[extract]"></textarea>
+                            </div>
+                        </fieldset>
 
-<!--                             <img class="mEmpty" src="/images/reviews_star_empty.png" alt="*">
-                            <img class="mEmpty" src="/images/reviews_star_empty.png" alt="*">
-                            <img class="mEmpty" src="/images/reviews_star_empty.png" alt="*">
-                            <img class="mEmpty" src="/images/reviews_star_empty.png" alt="*">
-                            <img class="mEmpty" src="/images/reviews_star_empty.png" alt="*"> -->
-                        </div>
-                    </div>
-                </fieldset>
+                        <fieldset class="reviewForm__place mLeft">
+                            <div class="reviewForm__stars">
+                                <strong class="reviewForm__label">Оценка</strong>
+                                <input class="jsReviewStarsCount" name="review[score]" value="0"/>
+                                <div class="starsList">
+                                    <span class="starsList__item mEmpty"></span>
+                                    <span class="starsList__item mEmpty"></span>
+                                    <span class="starsList__item mEmpty"></span>
+                                    <span class="starsList__item mEmpty"></span>
+                                    <span class="starsList__item mEmpty"></span>
 
-                <fieldset class="reviewForm__place mCol jsFormFieldset">
-                    <div class="place2Col jsPlace2Col">
-                        <label class="reviewForm__label">Ваше имя</label>
-                        <input type="text" class="text reviewForm__text jsReviewFormField jsAuthorName" name="review[author_name]" id="" />
-                    </div>
+                                    <!--                             <img class="mEmpty" src="/images/reviews_star_empty.png" alt="*">
+                                                                <img class="mEmpty" src="/images/reviews_star_empty.png" alt="*">
+                                                                <img class="mEmpty" src="/images/reviews_star_empty.png" alt="*">
+                                                                <img class="mEmpty" src="/images/reviews_star_empty.png" alt="*">
+                                                                <img class="mEmpty" src="/images/reviews_star_empty.png" alt="*"> -->
+                                </div>
+                            </div>
+                        </fieldset>
 
-                    <div class="place2Col jsPlace2Col">
-                        <label class="reviewForm__label">Ваш e-mail</label>
-                        <input type="text" class="text reviewForm__text jsReviewFormField jsAuthorEmail" name="review[author_email]" id="" />
-                        <span class="reviewForm__footnote">Для подтверждения требуется действующий адрес.</span>
-                    </div>
-                </fieldset>
+                        <fieldset class="reviewForm__place mCol jsFormFieldset">
+                            <div class="place2Col jsPlace2Col">
+                                <label class="reviewForm__label">Ваше имя</label>
+                                <input type="text" class="text reviewForm__text jsReviewFormField jsAuthorName" name="review[author_name]" id="" />
+                            </div>
 
-                <fieldset class="reviewForm__place mRight">
-                    <input type="submit" class="bigbutton reviewForm__button jsFormSubmit" value="Сохранить">
-                </fieldset>
-            </form>
-        </div>
-    <? endif ?>
+                            <div class="place2Col jsPlace2Col">
+                                <label class="reviewForm__label">Ваш e-mail</label>
+                                <input type="text" class="text reviewForm__text jsReviewFormField jsAuthorEmail" name="review[author_email]" id="" />
+                                <span class="reviewForm__footnote">Для подтверждения требуется действующий адрес.</span>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="reviewForm__place mRight">
+                            <input type="submit" class="bigbutton reviewForm__button jsFormSubmit" value="Сохранить">
+                        </fieldset>
+                    </form>
+                </div>
+            <? endif ?>
+
+            <? break ?>
+    <?php endswitch ?>
 </div><!--/review section -->
 
 <? };

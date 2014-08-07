@@ -192,7 +192,7 @@ $c->partners['RetailRocket']['timeout'] = 0.5; //в секундах;
 $c->partners['RetailRocket']['cookieLifetime'] = 2592000; // 30 дней
 $c->partners['RetailRocket']['userEmail']['cookieName'] = 'user_email';
 
-$c->partners['livetex']['enabled'] = false;
+$c->partners['livetex']['enabled'] = true;
 $c->partners['livetex']['liveTexID'] = 41836; // for enter.ru
 //$c->partners['livetex']['liveTexID'] = 52705; // for olga.ent3.ru
 $c->partners['AdLens']['enabled'] = true;
@@ -446,19 +446,25 @@ $c->tchiboSlider['analytics'] = [
 $c->abtest['cookieName'] = 'switch';
 $c->abtest['enabled']    = true;
 $c->abtest['checkPeriod'] = 3600; //секунд - как часто проверять необходимость запуска теста
-$c->abtest['bestBefore'] = '2013-09-23';
+$c->abtest['bestBefore'] = '2014-09-08';
 $c->abtest['test']       = [
     [
-        'traffic'  => 50,
-        'key'      => 'retailrocket',
-        'name'     => "Похожие товары от RetailRocket",
-        'ga_event' => 'RetailRocket',
+        'traffic'  => 33,
+        'key'      => 'reviews_sprosikupi',
+        'name'     => "Отзывы от sprosikupi",
+        'ga_event' => 'reviews_sprosikupi',
     ],
     [
-        'traffic'  => 50,
-        'key'      => 'retailrocket',
-        'name'     => "С этим товаром также смотрят от RetailRocket",
-        'ga_event' => 'RetailRocket',
+        'traffic'  => 33,
+        'key'      => 'reviews_shoppilot',
+        'name'     => "Отзывы от shoppilot",
+        'ga_event' => 'reviews_shoppilot',
+    ],
+    [
+        'traffic'  => 34,
+        'key'      => 'reviews_default',
+        'name'     => "Отзывы по умолчанию",
+        'ga_event' => 'reviews_default',
     ],
 ];
 
