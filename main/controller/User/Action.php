@@ -358,6 +358,8 @@ class Action {
         $httpResponse   = new \Http\JsonResponse($response);
 
         if($response['success']) {
+            $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
+
             $token = $response['result']['token'];
             $user = \RepositoryManager::user()->getEntityByToken($token);
             $user->setToken($token);
@@ -367,10 +369,15 @@ class Action {
 
             // отправляем коды подтверждения
             $confirm = new ConfirmAction();
-            $email  = $confirm->createConfirmEmail($request)->getData();
-            $mobile = $confirm->createConfirmPhone($request)->getData();
-            \App::logger()->info('Send email confirm request on registration: '.json_encode($email));
-            \App::logger()->info('Send mobile confirm request on registration: '.json_encode($mobile));
+
+            if (isset($data['isEmailConfirmed']) && !$data['isEmailConfirmed']) {
+                $email  = $confirm->createConfirmEmail($request)->getData();
+                \App::logger()->info('Send email confirm request on registration: '.json_encode($email));
+            }
+            if (isset($data['isPhoneConfirmed']) && !$data['isPhoneConfirmed']) {
+                $mobile = $confirm->createConfirmPhone($request)->getData();
+                \App::logger()->info('Send mobile confirm request on registration: '.json_encode($mobile));
+            }
 
             // передаем email пользователя для RetailRocket
             \App::retailrocket()->setUserEmail($httpResponse, $form->getEmail());
@@ -419,10 +426,14 @@ class Action {
 
         // отправляем коды подтверждения
         $confirm = new ConfirmAction();
-        $email  = $confirm->createConfirmEmail($request)->getData();
-        $mobile = $confirm->createConfirmPhone($request)->getData();
-        \App::logger()->info('Send email confirm request on update registration data: '.json_encode($email));
-        \App::logger()->info('Send mobile confirm request on update registration data: '.json_encode($mobile));
+        if (isset($data['isEmailConfirmed']) && !$data['isEmailConfirmed']) {
+            $email  = $confirm->createConfirmEmail($request)->getData();
+            \App::logger()->info('Send email confirm request on registration: '.json_encode($email));
+        }
+        if (isset($data['isPhoneConfirmed']) && !$data['isPhoneConfirmed']) {
+            $mobile = $confirm->createConfirmPhone($request)->getData();
+            \App::logger()->info('Send mobile confirm request on registration: '.json_encode($mobile));
+        }
 
         // если запросили отрендеренную форму
         if($request->get('body')) {
@@ -523,6 +534,10 @@ class Action {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $user = \App::user()->getEntity();
+        $session = \App::session();
+        $sessionName = \App::config()->enterprize['formDataSessionKey'];
+        $data = $session->get($sessionName, []);
+
         $params = [];
         if($user && $user->getToken()) {
             $params = [ 'token' => $user->getToken()];
@@ -543,6 +558,14 @@ class Action {
 
         if ($form->isValid()) {
             try {
+                // Запоминаем данные enterprizeForm
+                $data = array_merge($data, [
+                    'name'   => $form->getName(),
+                    'email'  => $form->getEmail(),
+                    'mobile' => $form->getMobile(),
+                ]);
+                $session->set($sessionName, $data);
+
                 $result = \App::coreClientV2()->query('coupon/register-in-enter-prize',
                     $params,
                     [
@@ -554,6 +577,14 @@ class Action {
                     \App::config()->coreV2['hugeTimeout']
                 );
                 \App::logger()->info(['core.response' => $result], ['coupon', 'register-in-enter-prize']);
+
+                // Запоминаем данные enterprizeForm
+                $data = array_merge($data, [
+                    'token'            => isset($result['token']) ? $result['token'] : null,
+                    'isPhoneConfirmed' => isset($result['mobile_confirmed']) ? $result['mobile_confirmed'] : false,
+                    'isEmailConfirmed' => isset($result['email_confirmed']) ? $result['email_confirmed'] : false,
+                ]);
+                $session->set($sessionName, $data);
 
                 $response = [
                     'success'   => true,
