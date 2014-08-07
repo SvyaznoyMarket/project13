@@ -410,28 +410,34 @@ class Action {
             ]);
         }
 
+        $confirm = new ConfirmAction();
         $form = new \View\Enterprize\Form();
         $form->setRoute('user.updateRegistration');
         if($request->isMethod('post')) {
             // @todo возможно стоит добавить защиту от изменения подтвержденных данных
             $form->fromArray((array)$request->request->get('user'));
             $response = $this->enterprizeUserUpdateEnabled ? $this->CUUser($form,'update') : $this->CUser($form);
+
+            // отправляем коды подтверждения
+            if (isset($data['isEmailConfirmed']) && !$data['isEmailConfirmed']) {
+                $email  = $confirm->createConfirmEmail($request)->getData();
+                \App::logger()->info('Send email confirm request on registration: '.json_encode($email));
+            }
+            if (isset($data['isPhoneConfirmed']) && !$data['isPhoneConfirmed']) {
+                $mobile = $confirm->createConfirmPhone($request)->getData();
+                \App::logger()->info('Send mobile confirm request on registration: '.json_encode($mobile));
+            }
         } else {
             $form->fromEntity($user);
             $response = [
                 'success'   => true,
                 'form'      => $form->getState()
             ];
-        }
 
-        // отправляем коды подтверждения
-        $confirm = new ConfirmAction();
-        if (isset($data['isEmailConfirmed']) && !$data['isEmailConfirmed']) {
+            // отправляем коды подтверждения
             $email  = $confirm->createConfirmEmail($request)->getData();
-            \App::logger()->info('Send email confirm request on registration: '.json_encode($email));
-        }
-        if (isset($data['isPhoneConfirmed']) && !$data['isPhoneConfirmed']) {
             $mobile = $confirm->createConfirmPhone($request)->getData();
+            \App::logger()->info('Send email confirm request on registration: '.json_encode($email));
             \App::logger()->info('Send mobile confirm request on registration: '.json_encode($mobile));
         }
 

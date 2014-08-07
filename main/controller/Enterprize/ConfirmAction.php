@@ -16,9 +16,13 @@ class ConfirmAction {
      * @var \Model\User\Entity
      */
     protected $user;
+    protected $session;
+    protected $sessioName;
 
     public function __construct() {
         $this->user = \App::user()->getEntity();
+        $this->session = \App::session();
+        $this->sessioName = \App::config()->enterprize['formDataSessionKey'];
     }
 
     /**
@@ -106,7 +110,7 @@ class ConfirmAction {
         }
 
         $errors = [];
-        if (!($email = $this->user->getEmail())) {
+        if (!($email = $this->getEmail())) {
             $errors['email'] = 'Email не известен';
         }
         if (!($code = $request->get('code'))) {
@@ -118,7 +122,7 @@ class ConfirmAction {
                 $result = \App::coreClientV2()->query(
                     'confirm/email', [
                         'client_id' => \App::config()->coreV2['client_id'],
-                        'token'     => $this->user->getToken(),
+                        'token'     => $this->getToken(),
                     ], [
                         'email'    => $email,
                         'code'     => $code,
@@ -195,7 +199,7 @@ class ConfirmAction {
         }
 
         $errors = [];
-        if (!($email = $this->user->getEmail())) {
+        if (!($email = $this->getEmail())) {
             $errors['email'] = 'Email не известен';
         }
 
@@ -204,12 +208,14 @@ class ConfirmAction {
                 $result = \App::coreClientV2()->query(
                     'confirm/email', [
                         'client_id' => \App::config()->coreV2['client_id'],
-                        'token'     => $this->user->getToken(),
+                        'token'     => $this->getToken(),
                     ], [
                         'email'    => $email,
                         'template' => 'enter_prize',
                     ], \App::config()->coreV2['hugeTimeout']
                 );
+//\App::logger()->error($result, ['taggg']);
+
 
                 $response = [
                     'success'   => true,
@@ -284,7 +290,7 @@ class ConfirmAction {
         }
 
         $errors = [];
-        if (!($mobile = $this->user->getMobilePhone())) {
+        if (!($mobile = $this->getMobilePhone())) {
             $errors['mobile'] = 'Телефон не известен';
         }
         if (!($code = $request->get('code'))) {
@@ -296,7 +302,7 @@ class ConfirmAction {
                 $result = \App::coreClientV2()->query(
                     'confirm/mobile', [
                         'client_id' => \App::config()->coreV2['client_id'],
-                        'token'     => $this->user->getToken(),
+                        'token'     => $this->getToken(),
                     ], [
                         'mobile'   => $mobile,
                         'code'     => $code,
@@ -377,7 +383,7 @@ class ConfirmAction {
         }
 
         $errors = [];
-        if (!($mobile = $this->user->getMobilePhone())) {
+        if (!($mobile = $this->getMobilePhone())) {
             $errors['mobile'] = 'Телефон не известен';
         }
 
@@ -386,7 +392,7 @@ class ConfirmAction {
                 $result = \App::coreClientV2()->query(
                     'confirm/mobile', [
                         'client_id' => \App::config()->coreV2['client_id'],
-                        'token'     => $this->user->getToken(),
+                        'token'     => $this->getToken(),
                     ], [
                         'mobile'   => $mobile,
                     ], \App::config()->coreV2['hugeTimeout']
@@ -468,11 +474,11 @@ class ConfirmAction {
             $result = \App::coreClientV2()->query(
                 'coupon/quick-register-in-enter-prize', [
                     'client_id' => \App::config()->coreV2['client_id'],
-                    'token'     => $this->user->getToken(),
+                    'token'     => $this->getToken(),
                 ], [
-                    'mobile'    => $this->user->getMobilePhone(),
-                    'email'     => $this->user->getEmail(),
-                    'name'      => $this->user->getName(),
+                    'mobile'    => $this->getMobilePhone(),
+                    'email'     => $this->getEmail(),
+                    'name'      => $this->getName(),
                     'agree'     => true
                 ], \App::config()->coreV2['hugeTimeout']
             );
@@ -545,7 +551,7 @@ class ConfirmAction {
                 return new JsonResponse(\App::coreClientV2()->query(
                     '/user/delete/', [
                         'client_id' => \App::config()->coreV2['client_id'],
-                        'token'     => $this->user->getToken(),
+                        'token'     => $this->getToken(),
                     ], [], \App::config()->coreV2['hugeTimeout']
                 ));
             } catch (\Exception $e) {
@@ -576,5 +582,33 @@ class ConfirmAction {
             'isEmailConfirmed' => ($this->user?$this->user->getIsEmailConfirmed():null),
             'isPhoneConfirmed' => ($this->user?$this->user->getIsPhoneConfirmed():null)
         ];
+    }
+
+    protected function getEmail() {
+        $data = $this->session($this->sessioName, []);
+        $email = isset($data['email']) && !empty($data['email']) ? $data['email'] : null;
+
+        return !$email && $this->user ? $this->user->getEmail() : $email;
+    }
+
+    protected function getToken() {
+        $data = $this->session($this->sessioName, []);
+        $token = isset($data['token']) && !empty($data['token']) ? $data['token'] : null;
+
+        return !$token && $this->user ? $this->user->getToken() : $token;
+    }
+
+    protected function getMobilePhone() {
+        $data = $this->session($this->sessioName, []);
+        $mobile = isset($data['mobile']) && !empty($data['mobile']) ? $data['mobile'] : null;
+
+        return !$mobile && $this->user ? $this->user->getMobilePhone() : $mobile;
+    }
+
+    protected function getName() {
+        $data = $this->session($this->sessioName, []);
+        $name = isset($data['name']) && !empty($data['name']) ? $data['name'] : null;
+
+        return !$name && $this->user ? $this->user->getName() : $name;
     }
 }
