@@ -540,11 +540,10 @@ class Action {
                 $result = \App::coreClientV2()->query('coupon/register-in-enter-prize',
                     [],
                     [
-                        'name'   => $form->getName(),
-                        'mobile' => $form->getMobile(),
-                        'email'  => $form->getEmail(),
-                        'guid'   => '00000000-0000-0000-0000-000000000000',
-                        'agree'  => $form->getAgree(),
+                        'first_name'    => $form->getName(),
+                        'mobile'        => $form->getMobile(),
+                        'email'         => $form->getEmail(),
+                        'is_subscribe'  => $form->getIsSubscribe(),
                     ],
                     \App::config()->coreV2['hugeTimeout']
                 );
