@@ -11765,22 +11765,22 @@
     width: 198px;
     border: 1px solid #fff;
   }
-  .bListing .bListingItem__eInner .sprosikupiCatalogRating {
-    min-height: 14px;
-    margin-bottom: 7px;
-    color: #a6a6a6;
+  .bListing .bListingItem__eInner .sprosikupiCategoryRating .spk-good-rating {
+    display: block;
   }
-  .bListing .bListingItem__eInner .sprosikupiCatalogRating .spk-rating-stars {
-    vertical-align: bottom;
+  .bListing .bListingItem__eInner .sprosikupiCategoryRating .spk-good-rating .spk-rating-stars {
+    margin-bottom: 5px;
   }
-  .bListing .bListingItem__eInner .sprosikupiCatalogRating .spk-good-rating-number {
+  .bListing .bListingItem__eInner .sprosikupiCategoryRating .spk-good-rating .spk-rating-stars.spk-good-rating-0 {
+    display: none !important;
+  }
+  .bListing .bListingItem__eInner .sprosikupiCategoryRating .spk-good-rating .spk-good-rating-number {
     display: none;
   }
-  .bListing .bListingItem__eInner .sprosikupiCatalogRating span[style="margin-left:10px"] {
-    margin-left: 3px !important;
+  .bListing .bListingItem__eInner .sprosikupiCategoryRating .spk-good-rating span[style="margin-left:10px"] {
+    display: none;
   }
-  .bListing .bListingItem__eInner .shoppilot-category-container {
-    min-height: 10px;
+  .bListing .bListingItem__eInner .shoppilot-category-container .shoppilot-category-product-rating-snippet {
     margin-bottom: 10px;
   }
   .bListing .bListingItem:hover {

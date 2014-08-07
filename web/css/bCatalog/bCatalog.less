@@ -76,24 +76,28 @@
 
 			border: 1px solid #fff;
 
-			.sprosikupiCatalogRating {
-				min-height: 14px;
-				margin-bottom: 7px;
-				color: #a6a6a6;
-				.spk-rating-stars {
-					vertical-align: bottom;
-				}
-				.spk-good-rating-number {
-					display: none;
-				}
-				span[style="margin-left:10px"] {
-					margin-left: 3px !important;
+			.sprosikupiCategoryRating {
+				.spk-good-rating {
+					display: block;
+					.spk-rating-stars {
+						margin-bottom: 5px;
+					}
+					.spk-rating-stars.spk-good-rating-0 {
+						display: none !important;
+					}
+					.spk-good-rating-number {
+						display: none;
+					}
+					span[style="margin-left:10px"] {
+						display: none;
+					}
 				}
 			}
 
 			.shoppilot-category-container {
-				min-height: 10px;
-				margin-bottom: 10px;
+				.shoppilot-category-product-rating-snippet {
+					margin-bottom: 10px;
+				}
 			}
 		}
 		
