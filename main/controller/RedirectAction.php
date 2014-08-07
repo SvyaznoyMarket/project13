@@ -22,14 +22,22 @@ class RedirectAction {
         }
 
         $redirectUrl = null;
-        \App::scmsSeoClient()->addQuery('redirect', ['from_url' => $uri], [], function($data) use(&$uri, &$redirectUrl) {
-            $redirectUrl = isset($data['to_url']) ? trim($data['to_url']) : null;
+        \App::scmsSeoClient()->addQuery(
+            'redirect',
+            ['from_url' => $uri],
+            [],
+            function($data) use(&$uri, &$redirectUrl) {
+                $redirectUrl = isset($data['to_url']) ? trim($data['to_url']) : null;
 
-            if ($redirectUrl && (0 !== strpos($redirectUrl, '/'))) {
-                $redirectUrl = null;
-                \App::logger()->error(sprintf('Неправильный редирект %s -> %s', $uri, $redirectUrl), ['redirect']);
+                if ($redirectUrl && (0 !== strpos($redirectUrl, '/'))) {
+                    $redirectUrl = null;
+                    \App::logger()->error(sprintf('Неправильный редирект %s -> %s', $uri, $redirectUrl), ['redirect']);
+                }
+            },
+            function(\Exception $e) {
+                \App::exception()->remove($e);
             }
-        });
+        );
 
         \App::scmsSeoClient()->execute(\App::config()->scmsSeo['retryTimeout']['tiny']);
 
