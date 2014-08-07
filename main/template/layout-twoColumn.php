@@ -78,6 +78,7 @@
         <?= $page->slotAdblender() ?>
         <?= $page->slotKissMetrics() ?>
         <?= $page->slotFlocktoryEnterprizeJs() ?>
+        <?= $page->slotEnterprizeRegJS() ?>
     </div>
 </body>
 </html>
