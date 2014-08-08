@@ -209,8 +209,14 @@ class ConfirmEmailAction {
                     $data = array_merge($data, [$name => $value]);
                 }
 
-                // очистка данных в хранилище
-                $delete = \App::coreClientPrivate()->query('storage/delete', ['user_id' => $result['user_id']]);
+                // если в хранилище присутствует флаг Enterprize регистрации, оставляем его
+                if (array_key_exists('isRegistration', $storageData) && (bool)$storageData['isRegistration']) {
+                    $storagePostResult = \App::coreClientPrivate()->query('storage/post', ['user_id' => $result['user_id']], ['isRegistration' => $storageData['isRegistration']]);
+
+                // иначе чистим хранилище
+                } else {
+                    $delete = \App::coreClientPrivate()->query('storage/delete', ['user_id' => $result['user_id']]);
+                }
 
             } catch(\Exception $exception) {
                 \App::exception()->remove($exception);

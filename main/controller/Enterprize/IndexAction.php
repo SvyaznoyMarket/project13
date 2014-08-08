@@ -111,18 +111,63 @@ class IndexAction {
             $products = \Controller\Enterprize\FormAction::getProducts($enterpizeCoupon);
         }
 
+        /* SITE-4110 Задаем флаг полной регистрации в EnterPrize. Полная регистрация включает в себя регистрацию
+           с помощью метода "coupon/register-in-enter-prize" и подтверждение телефона и email-а */
+        $isRegistration = false;
+        if ($isCouponSent) {
+            try {
+                // получение флага с сессии
+                if (array_key_exists('isRegistration', $data)) {
+                    $isRegistration = $data['isRegistration'];
+
+                    // чистим флаг в сессии
+                    unset($data['isRegistration']);
+                    $session->set($sessionName, $data);
+                }
+
+                if (!$user || !$user->getId()) {
+                    throw new \Exception('Купон получили, но пользователь не авторизован');
+                }
+
+                // получение флага с хранилища
+                $storageResult = \App::coreClientPrivate()->query('storage/get', ['user_id' => $user->getId()]);
+                if (!(bool)$storageResult || !isset($storageResult['value'])) {
+                    throw new \Exception(sprintf('Не пришли данные с хранилища для user_id=%s', $user->getId()));
+                }
+
+                $storageData = (array)json_decode($storageResult['value']);
+
+                if (array_key_exists('isRegistration', $storageData)) {
+                    $isRegistration = $storageData['isRegistration'];
+
+                    // чистим флаг в хранилище
+                    unset($storageData['isRegistration']);
+                    if (empty($storageData)) {
+                        $delete = \App::coreClientPrivate()->query('storage/delete', ['user_id' => $user->getId()]);
+                    } else {
+                        $post = \App::coreClientPrivate()->query('storage/post', ['user_id' => $user->getId()], $storageData);
+                    }
+                }
+
+            } catch(\Exception $e) {
+                \App::exception()->remove($e);
+                \App::logger()->error($e);
+            }
+        }
+
         $page = new \View\Enterprize\IndexPage();
         $page->setParam('enterpizeCoupons', $enterpizeCoupons);
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
         $page->setParam('viewParams', ['showSideBanner' => false]);
         $page->setParam('isCouponSent', $isCouponSent);
+        $page->setParam('isRegistration', $isRegistration);
         $page->setParam('products', $products);
         $page->setParam('hasFlocktoryPopup', (bool)$request->get('flocktory_popup'));
 
         $response = new \Http\Response($page->show());
 
         if ($isCouponSent) {
-            $response->headers-> clearCookie(\App::config()->enterprize['cookieName']);
+            $response->headers->clearCookie(\App::config()->enterprize['cookieName']);
         }
 
         return $response;

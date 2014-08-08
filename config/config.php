@@ -121,22 +121,35 @@ $c->scmsV2['retryTimeout'] = [
     'forever' => 0,
 ];
 
+$c->scmsSeo['url']          = 'http://scms.enter.ru/seo/';
+$c->scmsSeo['retryCount']   = 2;
+$c->scmsSeo['timeout']      = 0.36;
+$c->scmsSeo['retryTimeout'] = [
+    'default' => 0.18,
+    'tiny'    => 0.18,
+    'short'   => 0.25,
+    'medium'  => 0.5,
+    'long'    => 1,
+    'huge'    => 2,
+    'forever' => 0,
+];
+
 $c->crm = [
-	'url'          => 'http://crm.enter.ru/',
-	'client_id'    => 'site',
-	'timeout'      => 1,
-	'hugeTimeout'  => 5,
-	'retryCount'   => 2,
-	'retryTimeout' => [
-		'default' => 0.5,
-		'tiny'    => 0.1,
-		'short'   => 0.3,
-		'medium'  => 0.5,
-		'long'    => 0.8,
-		'huge'    => 1.5,
-		'forever' => 0,
-	],
-	'debug'        => false,
+    'url'          => 'http://crm.enter.ru/',
+    'client_id'    => 'site',
+    'timeout'      => 1,
+    'hugeTimeout'  => 5,
+    'retryCount'   => 2,
+    'retryTimeout' => [
+        'default' => 0.5,
+        'tiny'    => 0.1,
+        'short'   => 0.3,
+        'medium'  => 0.5,
+        'long'    => 0.8,
+        'huge'    => 1.5,
+        'forever' => 0,
+    ],
+    'debug'        => false,
 ];
 
 $c->connectTerminal = true;
@@ -197,7 +210,7 @@ $c->partners['RetailRocket']['timeout'] = 0.5; //в секундах;
 $c->partners['RetailRocket']['cookieLifetime'] = 2592000; // 30 дней
 $c->partners['RetailRocket']['userEmail']['cookieName'] = 'user_email';
 
-$c->partners['livetex']['enabled'] = false;
+$c->partners['livetex']['enabled'] = true;
 $c->partners['livetex']['liveTexID'] = 41836; // for enter.ru
 //$c->partners['livetex']['liveTexID'] = 52705; // for olga.ent3.ru
 $c->partners['AdLens']['enabled'] = true;
@@ -451,19 +464,25 @@ $c->tchiboSlider['analytics'] = [
 $c->abtest['cookieName'] = 'switch';
 $c->abtest['enabled']    = true;
 $c->abtest['checkPeriod'] = 3600; //секунд - как часто проверять необходимость запуска теста
-$c->abtest['bestBefore'] = '2013-09-23';
+$c->abtest['bestBefore'] = '2014-09-08';
 $c->abtest['test']       = [
     [
-        'traffic'  => 50,
-        'key'      => 'retailrocket',
-        'name'     => "Похожие товары от RetailRocket",
-        'ga_event' => 'RetailRocket',
+        'traffic'  => 33,
+        'key'      => 'reviews_sprosikupi',
+        'name'     => "Отзывы от sprosikupi",
+        'ga_event' => 'reviews_sprosikupi',
     ],
     [
-        'traffic'  => 50,
-        'key'      => 'retailrocket',
-        'name'     => "С этим товаром также смотрят от RetailRocket",
-        'ga_event' => 'RetailRocket',
+        'traffic'  => 33,
+        'key'      => 'reviews_shoppilot',
+        'name'     => "Отзывы от shoppilot",
+        'ga_event' => 'reviews_shoppilot',
+    ],
+    [
+        'traffic'  => 34,
+        'key'      => 'reviews_default',
+        'name'     => "Отзывы по умолчанию",
+        'ga_event' => 'reviews_default',
     ],
 ];
 
