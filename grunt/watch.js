@@ -58,7 +58,7 @@ module.exports = function (grunt, options) {
 
         libraryJS:{
             files: [ pathDev + 'library/*.js'],
-            tasks: ['concat:libraryJS', 'uglify:libraryJS']
+            tasks: ['jsmin-sourcemap:library']
         },
 
         lkJS:{
@@ -113,7 +113,7 @@ module.exports = function (grunt, options) {
 
         shopJS:{
             files: [ pathDev + 'shop/*.js'],
-            tasks: ['concat:shopJS', 'uglify:shopJS']
+            tasks: ['jsmin-sourcemap:shop']
         },
 
         tchiboJS:{

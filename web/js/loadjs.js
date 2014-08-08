@@ -82,6 +82,7 @@
 		knockoutUrl = '',
 		optimizelyUrl = '//cdn.optimizely.com/js/204544654.js',
 		yandexMapUrl = '',
+        yandexMapUrlv2_1 = '',
 		mustacheUrl = '',
 		historyUrl = '',
 		kladr = '',
@@ -237,6 +238,7 @@
 	// knockoutUrl = ( debug ) ? 'http://knockoutjs.com/downloads/knockout-2.2.1.debug.js' : 'http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js';
 	knockoutUrl = ( debug ) ? '/js/vendor/knockout.js' : '/js/prod/knockout.min.js';
 	yandexMapUrl = ( debug ) ? 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU&mode=debug' : 'http://api-maps.yandex.ru/2.0/?load=package.full&lang=ru-RU&mode=release';
+	yandexMapUrlv2_1 = ( debug ) ? 'http://api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&mode=debug' : 'http://api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&mode=release';
 	mustacheUrl = ( debug ) ? '/js/vendor/mustache.js' : '/js/prod/mustache.min.js';
 	historyUrl = ( debug ) ? '/js/vendor/history.js' : '/js/prod/history.min.js';
 	kladr = ( debug ) ? '/js/vendor/jquery.kladr.js' : '/js/prod/jquery.kladr.min.js';
@@ -483,12 +485,12 @@
 		},
 
 		'shop': function() {
-			$LAB.queueScript( yandexMapUrl )
+			$LAB.queueScript( yandexMapUrlv2_1 )
 				.queueWait( function() {
 					$LAB.script( getWithVersion('jquery-plugins.js') )
 						.script( getWithVersion('library.js') )
 						.script( mustacheUrl )
-						.script( loadDebugPanel )
+//						.script( loadDebugPanel )
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('shop.js') )
