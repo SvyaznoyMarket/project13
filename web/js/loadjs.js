@@ -409,12 +409,12 @@
             $LAB
                 .queueWait( function() {
                     $LAB.script( getWithVersion('jquery-plugins.js') )
-                        .script('JsHttpRequest.min.js')
                         .script( getWithVersion('library.js') )
                         .script( mustacheUrl )
                         .script( loadDebugPanel )
                         .wait()
                         .script( getWithVersion('common.js') )
+                        .script( kladr )
                         .script( getWithVersion('order-v3.js') )
                         .wait()
                         .script( getWithVersion('ports.js') );

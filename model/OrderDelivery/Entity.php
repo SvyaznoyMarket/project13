@@ -1,37 +1,65 @@
 <?php
 
 namespace Model\OrderDelivery {
+
+    use Model\OrderDelivery\Entity\ValidationError;
+
     class Entity {
-        /** @var Entity\DeliveryGroup[] */
+        /** Глобальные группы доставки
+         * @var Entity\DeliveryGroup[]
+         */
         public $delivery_groups = [];
-        /** @var Entity\DeliveryMethod[] */
+        /** Методы доставки
+         * @var Entity\DeliveryMethod[]
+         */
         public $delivery_methods = [];
-        /** @var Entity\Point[] */
+        /** Точки самовывоза
+         * @var Entity\Point[]
+         */
         public $points = [];
-        /** @var Entity\Order[] */
+        /** Массив заказов
+         * @var Entity\Order[]
+         */
         public $orders = [];
-        /** @var Entity\PaymentMethod[] */
+        /** Методы оплаты
+         * @var Entity\PaymentMethod[]
+         */
         public $payment_methods = [];
-        /** @var Entity\UserInfo|null */
+        /** Информация о клиенте
+         * @var Entity\UserInfo|null
+         */
         public $user_info;
-        /** @var int */
+        /** Общая стоимость заказов
+         * @var int
+         */
         public $total_cost;
+        /** Ошибки разбиения
+         * @var Error[]
+         */
+        public $errors = [];
 
         public function __construct(array $data = []) {
+
             if (isset($data['delivery_groups']) && is_array($data['delivery_groups'])) {
                 foreach ($data['delivery_groups'] as $item) {
                     if (!isset($item['id'])) continue;
 
                     $this->delivery_groups[(string)$item['id']] = new Entity\DeliveryGroup($item);
                 }
+            } else {
+                throw new \Exception('Отстуствуют данные по группам доставки');
             }
+
             if (isset($data['delivery_methods']) && is_array($data['delivery_methods'])) {
                 foreach ($data['delivery_methods'] as $item) {
                     if (!isset($item['token'])) continue;
 
                     $this->delivery_methods[(string)$item['token']] = new Entity\DeliveryMethod($item);
                 }
+            } else {
+                throw new \Exception('Отстуствуют данные методам доставки');
             }
+
             if (isset($data['points']) && is_array($data['points'])) {
                 foreach ($data['points'] as $itemToken => $item) {
                     $item['token'] = $itemToken;
@@ -39,23 +67,85 @@ namespace Model\OrderDelivery {
                     $this->points[$item['token']] = new Entity\Point($item);
                 }
             }
-            if (isset($data['orders']) && is_array($data['orders'])) {
+
+            if (isset($data['payment_methods']) && is_array($data['payment_methods'])) {
+                foreach ($data['payment_methods'] as $item) {
+                    $this->payment_methods[$item['id']] = new Entity\PaymentMethod($item);
+                }
+            } else {
+                throw new \Exception('Отстуствуют данные по методам оплаты');
+            }
+
+            if (isset($data['orders']) && is_array($data['orders']) && (bool)$data['orders']) {
                 foreach ($data['orders'] as $item) {
                     $this->orders[] = new Entity\Order($item, $this);
                 }
+            } else {
+                throw new \Exception('Отстуствуют данные по заказам');
             }
-            if (isset($data['payment_methods']) && is_array($data['payment_methods'])) {
-                foreach ($data['payment_methods'] as $item) {
-                    $this->payment_methods[] = new Entity\PaymentMethod($item);
+
+            if (isset($data['user_info'])) $this->user_info = new Entity\UserInfo($data['user_info']);
+
+            if (isset($data['total_cost'])) {
+                $this->total_cost = (int)$data['total_cost'];
+            } else {
+                throw new \Exception('Отстуствует общая стоимость заказа');
+            }
+
+            if (isset($data['errors']) && is_array($data['errors'])) {
+                foreach ($data['errors'] as $error) {
+                    $this->errors[] = new Error($error);
                 }
             }
-            if (isset($data['user_info']['phone'])) $this->user_info = new Entity\UserInfo($data['user_info']);
-            if (isset($data['total_cost'])) $this->total_cost = (int)$data['total_cost'];
+
+            $this->validate();
+            $this->validateOrders();
+        }
+
+        /** Различные странные ситуации, которые надо проверить
+         * @throws ValidateException
+         */
+        private function validate() {
+
+            // Если комментарии в заказах отличаются
+            if (count(array_unique(array_map(function($elem) {return $elem->comment; }, $this->orders))) > 1) throw new ValidateException('Комментарии в заказах не идентичны');
+
+        }
+
+        /** Предвалидация для активации кнопки "Оформить"
+         *
+         */
+        private function validateOrders() {
+            foreach ($this->orders as &$order) {
+                if (!$order->delivery->use_user_address && $order->delivery->point === null) $order->validationErrors[] = new ValidationError('Не указана точка самовывоза');
+//                if ($order->delivery->use_user_address && $this->user_info->isAddressValid()) $order->validationErrors[] = new ValidationError('Не указан адрес доставки');
+            }
+        }
+
+    }
+
+    class ValidateException extends \Exception {
+
+    }
+
+    class Error {
+        /** @var int */
+        public $code;
+        /** @var string */
+        public $message;
+
+        public function __construct($arr) {
+            if (isset($arr['code'])) $this->code = (int)$arr['code'];
+            if (isset($arr['message'])) $this->message = (string)$arr['message'];
         }
     }
 }
 
 namespace Model\OrderDelivery\Entity {
+
+    use Model\OrderDelivery\Error;
+    use Model\OrderDelivery\ValidateException;
+
     class DeliveryGroup {
         /** @var string */
         public $id;
@@ -99,6 +189,11 @@ namespace Model\OrderDelivery\Entity {
         public $block_name;
         /** @var Point\Shop[]|Point\Pickpoint[] */
         public $list = [];
+        /** @var array */
+        public $marker = [
+            'iconImageSize' => [28, 39],
+            'iconImageOffset' => [-14, -39]
+        ];
 
         public function __construct(array $data = []) {
             if (isset($data['token'])) $this->token = (string)$data['token'];
@@ -115,89 +210,184 @@ namespace Model\OrderDelivery\Entity {
                         case 'pickpoints':
                             $this->list[(string)$item['id']] = new Point\Pickpoint($item);
                             break;
+                        case 'shops_svyaznoy':
+                            $this->list[(string)$item['id']] = new Point\Svyaznoy($item);
                     }
+                }
+            }
+            if ($this->token) {
+                switch ($this->token) {
+                    case 'shops':
+                        $this->marker['iconImageHref'] = '/images/map/marker-shop.png';
+                        break;
+                    case 'pickpoints':
+                        $this->marker['iconImageHref'] = '/images/map/marker-pickpoint.png';
+                        break;
+                    case 'shops_svyaznoy':
+                        $this->marker['iconImageHref'] = '/images/map/marker-svyaznoy.png';
+                        break;
                 }
             }
         }
     }
 
     class Order {
-        /** @var string */
+        /** Внутренний идентификатор
+         * @var string
+         */
         public $id;
-        /** @var string */
+        /** Идентификатор заказа
+         * @var string
+         */
         public $block_name;
-        /** @var Order\Seller|null */
+        /** Продавец
+         * @var Order\Seller|null
+         */
         public $seller;
-        /** @var Order\Product[] */
+        /** Массив продуктов заказа
+         * @var Order\Product[]
+         */
         public $products = [];
-        /** @var Order\Discount[] */
+        /** Массив скидок
+         * @var Order\Discount[]
+         */
         public $discounts = [];
-        /** @var Order\Delivery|null */
+        /** @var array */
+        public $action_list = [];
+        /** Выбранный способ доставки
+         * @var Order\Delivery|null
+         */
         public $delivery;
-        /** @var string|null */
+        /** Выбранная группа доставки
+         * @var int|null
+         */
         public $delivery_group_id;
-        /** @var string|null */
+        /** Выбранный метод оплаты
+         * @var int|null
+         */
         public $payment_method_id;
-        /** @var array */
+        /** Возможные методы оплаты
+         * @var array
+         */
         public $payment_methods = [];
-        /** @var array */
+        /** Возможные методы доставки
+         * @var array
+         */
         public $possible_deliveries = [];
-        /** @var array */
+        /** Возможные группы доставки
+         * @var DeliveryGroup[]
+         */
         public $possible_delivery_groups = [];
-        /** @var array */
+        /** Возможные методы оплаты
+         * @var array
+         */
         public $possible_payment_methods = [];
-        /** @var array */
+        /** Возможные дни доставки
+         * @var int[]
+         */
         public $possible_days = [];
-        /** @var array */
+        /** Возможные интервалы доставки
+         * @var array
+         */
         public $possible_intervals = [];
-        /** @var int */
+        /** Возможные точки самовывоза (id)
+         * @var array
+         */
+        public $possible_points = [];
+        /** Возможные точки самовывоза (ссылка на Point)
+         * @var Point
+         */
+        public $points;
+        /** Стоимость заказа
+         * @var int
+         */
         public $total_cost;
+        /** @var string */
+        public $comment = '';
+        /** @var Error[] */
+        public $errors = [];
+        /** @var ValidationError[] */
+        public $validationErrors = [];
 
-        public function __construct(array $data = [], \Model\OrderDelivery\Entity $orderDelivery = null) {
+        public function __construct(array $data = [], \Model\OrderDelivery\Entity &$orderDelivery = null) {
+
             $this->id = uniqid();
 
             if (isset($data['block_name'])) $this->block_name = (string)$data['block_name'];
+
             if (isset($data['seller']['name'])) $this->seller = new Order\Seller($data['seller']);
+
             if (isset($data['products']) && is_array($data['products'])) {
                 foreach ($data['products'] as $item) {
                     $this->products[] = new Order\Product($item);
                 }
             }
+
             if (isset($data['discounts']) && is_array($data['discounts'])) {
                 foreach ($data['discounts'] as $item) {
                     $this->discounts[] = new Order\Discount($item);
                 }
             }
-            if (isset($data['delivery']['delivery_method_token'])) $this->delivery = new Order\Delivery($data['delivery']);
-            if (isset($data['payment_method_id'])) $this->payment_method_id = (string)$data['payment_method_id'];
-            if (isset($data['possible_deliveries']) && is_array($data['possible_deliveries'])) $this->possible_deliveries = (array)$data['possible_deliveries'];
-            if (isset($data['possible_payment_methods']) && is_array($data['possible_payment_methods'])) $this->possible_payment_methods = (array)$data['possible_payment_methods'];
-            if (isset($data['possible_days']) && is_array($data['possible_days'])) $this->possible_days = (array)$data['possible_days'];
-            if (isset($data['possible_intervals']) && is_array($data['possible_intervals'])) $this->possible_intervals = (array)$data['possible_intervals'];
-            if (isset($data['total_cost'])) $this->total_cost = (int)$data['total_cost'];
 
-            foreach ($this->possible_deliveries as $deliveryMethodId) {
-                /** @var \Model\OrderDelivery\Entity\DeliveryMethod|null $deliveryMethod */
-                $deliveryMethod = ($orderDelivery && !empty($orderDelivery->delivery_methods[$deliveryMethodId]))
-                    ? $orderDelivery->delivery_methods[$deliveryMethodId]
-                    : null
-                ;
-                $deliveryGroup = ($deliveryMethod && !empty($orderDelivery->delivery_groups[$deliveryMethod->group_id]))
-                    ? $orderDelivery->delivery_groups[$deliveryMethod->group_id]
-                    : null
-                ;
-                if (!$deliveryGroup) {
-                    \App::logger()->error(['message' => 'Не найдена группа доставки'], ['order-split']);
-                    continue;
-                }
+            if (isset($data['action_list']) && is_array($data['action_list'])) $this->action_list = $data['action_list'];
 
-                $this->possible_delivery_groups[] = $deliveryGroup->id;
+            if (isset($data['delivery']['delivery_method_token'])) $this->delivery = new Order\Delivery($data['delivery'], $orderDelivery);
 
-                if ($this->delivery && ($deliveryMethod->token == $this->delivery->delivery_method_token)) {
-                    $this->delivery_group_id = $deliveryGroup->id;
+            if (isset($data['payment_method_id'])) $this->payment_method_id = (int)$data['payment_method_id'];
+
+            if (isset($data['possible_deliveries']) && is_array($data['possible_deliveries'])) {
+                foreach ($data['possible_deliveries'] as $token) {
+                    if (isset($orderDelivery->delivery_methods[$token])) $this->possible_deliveries[] = &$orderDelivery->delivery_methods[$token];
+                    else throw new \Exception('Для заказа нет доступного метода доставки');
                 }
             }
-            $this->possible_delivery_groups = array_unique($this->possible_delivery_groups);
+
+            if (isset($data['possible_payment_methods']) && is_array($data['possible_payment_methods'])) {
+//                $this->possible_payment_methods = (array)$data['possible_payment_methods'];
+                foreach ($data['possible_payment_methods'] as $id) {
+                    if (isset($orderDelivery->payment_methods[$id])) $this->possible_payment_methods[$id] = &$orderDelivery->payment_methods[$id];
+                    else throw new \Exception('Не существует метода оплаты для заказа');
+                }
+            }
+
+            if (isset($data['possible_days']) && is_array($data['possible_days'])) {
+                $this->possible_days = (array)$data['possible_days'];
+                if (count($this->possible_days) == 0) throw new \Exception('Не существует доступных дней');
+            }
+
+            if (isset($data['possible_intervals']) && is_array($data['possible_intervals'])) $this->possible_intervals = (array)$data['possible_intervals'];
+
+            if (isset($data['total_cost'])) $this->total_cost = (int)$data['total_cost'];
+
+            if (isset($data['possible_points']) && is_array($data['possible_points'])) {
+                foreach ($data['possible_points'] as $pointsType => $points) {
+                    if (is_array($points)) {
+                        array_walk($points, function ($point) use (&$orderDelivery, $pointsType) {
+                            if (isset($orderDelivery->points[$pointsType]->list[$point])) $this->possible_points[$pointsType][] = &$orderDelivery->points[$pointsType]->list[$point];
+                        });
+                    }
+                }
+            }
+
+            $possible_delivery_groups_ids = array_unique(array_map(function ($delivery) { return $delivery->group_id; }, $this->possible_deliveries));
+            sort($possible_delivery_groups_ids);
+
+            if (is_array($possible_delivery_groups_ids)) {
+                foreach ($possible_delivery_groups_ids as $id) {
+                    if (isset($orderDelivery->delivery_groups[$id])) $this->possible_delivery_groups[] = &$orderDelivery->delivery_groups[$id];
+                    else throw new \Exception ('Для заказа не найдена группа доставки');
+                }
+            }
+
+            $this->delivery_group_id = (int)$orderDelivery->delivery_methods[$this->delivery->delivery_method_token]->group_id;
+
+            if (isset($data['comment'])) $this->comment = (string)$data['comment'];
+
+            if (isset($data['errors']) && is_array($data['errors'])) {
+                foreach ($data['errors'] as $error) {
+                    $this->errors[] = new Error($error);
+                }
+            }
         }
     }
 
@@ -219,15 +409,52 @@ namespace Model\OrderDelivery\Entity {
     class UserInfo {
         /** @var string */
         public $phone;
-        /** @var string */
+        /** @var string|null */
         public $first_name;
-        /** @var string */
+        /** @var string|null */
         public $last_name;
+        /** @var string|null */
+        public $email;
         /** @var array */
         public $address = [
             'street' => null,
-            'build'  => null,
+            'building'  => null,
+            'number'  => null,
+            'apartment'  => null,
+            'metro_station'  => null,
         ];
+        /** @var string */
+        public $bonus_card_number;
+
+        public function __construct($arr) {
+
+            if (isset($arr['phone']) && $arr['phone'] != '') {
+                $phone = preg_replace('/\s+/', '', $arr['phone']);
+                if (preg_match('/(8|\+7)\d{10}/', $phone) === 0 ) throw new ValidateException('Неправильный формат номера телефона');
+                $this->phone = $phone;
+            } else {
+                //throw new ValidateException('Отсуствует номер телефона');
+            }
+
+            if (isset($arr['first_name'])) $this->first_name = (string)$arr['first_name'];
+            if (isset($arr['last_name'])) $this->last_name = (string)$arr['last_name'];
+            if (isset($arr['email'])) $this->email = (string)$arr['email'];
+
+            if (isset($arr['address']) && is_array($arr['address'])) {
+                if (isset($arr['address']['street'])) $this->address['street'] = $arr['address']['street'];
+                if (isset($arr['address']['building'])) $this->address['building'] = $arr['address']['building'];
+                if (isset($arr['address']['number'])) $this->address['number'] = $arr['address']['number'];
+                if (isset($arr['address']['apartment'])) $this->address['apartment'] = $arr['address']['apartment'];
+                if (isset($arr['address']['metro_station'])) $this->address['metro_station'] = $arr['address']['metro_station'];
+            }
+
+            if (isset($arr['bonus_card_number']) && $arr['bonus_card_number'] !== '') $this->bonus_card_number = (string)$arr['bonus_card_number'];
+
+        }
+
+        public function isAddressValid() {
+            return (bool)$this->address['street'] && (bool)$this->address['building'];
+        }
     }
 
     class Subway {
@@ -239,6 +466,13 @@ namespace Model\OrderDelivery\Entity {
         public function __construct(array $data = []) {
             if (isset($data['name'])) $this->name = (string)$data['name'];
             if (isset($data['line']['name'])) $this->line = new Subway\Line($data['line']);
+        }
+    }
+
+    class ValidationError {
+        public $message;
+        public function __construct($message) {
+            $this->message = $message;
         }
     }
 }
@@ -258,7 +492,8 @@ namespace Model\OrderDelivery\Entity\Subway {
 }
 
 namespace Model\OrderDelivery\Entity\Point {
-    class Shop {
+
+    class DefaultPoint {
         /** @var string */
         public $id;
         /** @var string */
@@ -271,8 +506,6 @@ namespace Model\OrderDelivery\Entity\Point {
         public $latitude;
         /** @var float */
         public $longitude;
-        /** @var \Model\OrderDelivery\Entity\Subway[] */
-        public $subway = [];
 
         public function __construct(array $data = []) {
             if (isset($data['id'])) $this->id = (string)$data['id'];
@@ -281,6 +514,15 @@ namespace Model\OrderDelivery\Entity\Point {
             if (isset($data['regtime'])) $this->regtime = (string)$data['regtime'];
             if (isset($data['latitude'])) $this->latitude = (float)$data['latitude'];
             if (isset($data['longitude'])) $this->longitude = (float)$data['longitude'];
+        }
+    }
+
+    class Shop extends DefaultPoint {
+        /** @var \Model\OrderDelivery\Entity\Subway[] */
+        public $subway = [];
+
+        public function __construct(array $data = []) {
+            parent::__construct($data);
             if (isset($data['subway']) && is_array($data['subway'])) {
                 foreach ($data['subway'] as $item) {
                     $this->subway[] = new \Model\OrderDelivery\Entity\Subway($item);
@@ -289,38 +531,30 @@ namespace Model\OrderDelivery\Entity\Point {
         }
     }
 
-    class Pickpoint {
-        /** @var string */
-        public $id;
+    class Pickpoint extends DefaultPoint {
         /** @var string */
         public $number;
         /** @var string */
-        public $name;
-        /** @var string */
-        public $address;
-        /** @var string */
         public $house;
-        /** @var string */
-        public $regtime;
-        /** @var float */
-        public $latitude;
-        /** @var float */
-        public $longitude;
 
         public function __construct(array $data = []) {
-            if (isset($data['id'])) $this->id = (string)$data['id'];
+            parent::__construct($data);
             if (isset($data['number'])) $this->number = (string)$data['number'];
-            if (isset($data['name'])) $this->name = (string)$data['name'];
-            if (isset($data['address'])) $this->address = (string)$data['address'];
             if (isset($data['house'])) $this->house = (string)$data['house'];
-            if (isset($data['regtime'])) $this->regtime = (string)$data['regtime'];
-            if (isset($data['latitude'])) $this->latitude = (float)$data['latitude'];
-            if (isset($data['longitude'])) $this->longitude = (float)$data['longitude'];
+        }
+    }
+
+    class Svyaznoy extends DefaultPoint {
+        public function __construct(array $data = []) {
+            parent::__construct($data);
         }
     }
 }
 
 namespace Model\OrderDelivery\Entity\Order {
+
+    use Model\OrderDelivery\ValidateException;
+
     class Seller {
         /** @var string */
         public $name;
@@ -331,7 +565,8 @@ namespace Model\OrderDelivery\Entity\Order {
     }
 
     class Product {
-        /** @var string */
+        use \Model\MediaHostTrait;
+        /** @var int */
         public $id;
         /** @var string */
         public $name;
@@ -351,18 +586,47 @@ namespace Model\OrderDelivery\Entity\Order {
         public $quantity;
         /** @var string */
         public $image;
+        /** @var int */
+        public $stock;
 
         public function __construct(array $data = []) {
-            if (isset($data['id'])) $this->id = (string)$data['id'];
+
+            if (isset($data['id'])) {
+                $this->id = (int)$data['id'];
+            } else {
+                throw new \Exception('Не указан id продукта');
+            }
+
             if (isset($data['name'])) $this->name = (string)$data['name'];
-            if (isset($data['link'])) $this->link = (string)$data['link'];
+            if (isset($data['url'])) $this->link = (string)$data['url'];
             if (isset($data['name_web'])) $this->name_web = (string)$data['name_web'];
             if (isset($data['prefix'])) $this->prefix = (string)$data['prefix'];
             if (isset($data['price'])) $this->price = (int)$data['price'];
             if (isset($data['original_price'])) $this->original_price = (int)$data['original_price'];
             if (isset($data['sum'])) $this->sum = (int)$data['sum'];
-            if (isset($data['quantity'])) $this->quantity = (int)$data['quantity'];
+
+            if (isset($data['quantity'])) {
+                $this->quantity = (int)$data['quantity'];
+            } else {
+                throw new \Exception('Не указано количество продукта');
+            }
+
             if (isset($data['image'])) $this->image = (string)$data['image'];
+            if (isset($data['stock'])) $this->stock = (int)$data['stock'];
+        }
+
+        /**
+         * @param int $size
+         * @return null|string
+         */
+        public function getImageUrl($size = 0) {
+            if ($this->image) {
+                $urls = \App::config()->productPhoto['url'];
+
+                return $this->getHost() . $urls[$size] . $this->image;
+            } else {
+                return null;
+            }
         }
     }
 
@@ -374,13 +638,20 @@ namespace Model\OrderDelivery\Entity\Order {
         /** @var string */
         public $type;
         /** @var string */
-        public $description;
+        public $number;
 
         public function __construct(array $data = []) {
-            if (isset($data['id'])) $this->id = (string)$data['id'];
+            if (isset($data['number'])) $this->number = (string)$data['number'];
             if (isset($data['discount'])) $this->discount = (int)$data['discount'];
             if (isset($data['type'])) $this->type = (string)$data['type'];
-            if (isset($data['description'])) $this->description = (string)$data['description'];
+            if (isset($data['name'])) $this->name = (string)$data['name'];
+            $this->validate();
+        }
+
+        private function validate() {
+            foreach (get_object_vars($this) as $name => $value) {
+                if ($this->$name === null) throw new ValidateException("Для скидки не указан $name");
+            }
         }
     }
 
@@ -391,20 +662,43 @@ namespace Model\OrderDelivery\Entity\Order {
         public $point;
         /** @var int */
         public $price;
-        /** @var int */
+        /** @var \DateTime */
         public $date;
         /** @var array|null */
         public $interval;
         /** @var bool */
         public $use_user_address;
+        /** @var \Model\OrderDelivery\Entity\DeliveryMethod */
+        public $delivery_method;
 
-        public function __construct(array $data = []) {
+        public function __construct(array $data = [], \Model\OrderDelivery\Entity &$orderDelivery = null) {
             if (isset($data['delivery_method_token'])) $this->delivery_method_token = (string)$data['delivery_method_token'];
             if (isset($data['point']['id'])) $this->point = new Delivery\Point($data['point']);
             if (isset($data['price'])) $this->price = (int)$data['price'];
-            if (isset($data['date'])) $this->date = (int)$data['date'];
+            if (isset($data['date'])) $this->date = \DateTime::createFromFormat('U', $data['date']);
             if (isset($data['interval']) && is_array($data['interval'])) $this->interval = array_merge(['from' => null, 'to' => null], $data['interval']);
             if (isset($data['use_user_address'])) $this->use_user_address = (bool)$data['use_user_address'];
+
+            if ($this->delivery_method_token
+                && $orderDelivery
+                && isset($orderDelivery->delivery_methods[$this->delivery_method_token])
+            ) {
+                $this->delivery_method =& $orderDelivery->delivery_methods[$this->delivery_method_token];
+            } else {
+                throw new \Exception ("Не существует метода доставки для заказа");
+            }
+        }
+    }
+
+    class Calendar {
+
+    }
+
+    class CalendarDay {
+        public $isAvailable;
+        public $day;
+        public function __construct() {
+
         }
     }
 }
@@ -415,13 +709,12 @@ namespace Model\OrderDelivery\Entity\Order\Delivery {
         public $token;
         /** @var string */
         public $id;
-        /** @var array */
-        public $possible_point_ids = [];
+
 
         public function __construct(array $data = []) {
             if (isset($data['token'])) $this->token = (string)$data['token'];
             if (isset($data['id'])) $this->id = (string)$data['id'];
-            if (isset($data['possible_point_ids']) && is_array($data['possible_point_ids'])) $this->possible_point_ids = (array)$data['possible_point_ids'];
+
         }
     }
 }

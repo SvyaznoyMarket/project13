@@ -1,17 +1,26 @@
 <?php
 
 return function(
-    \Helper\TemplateHelper $helper
+    \Helper\TemplateHelper $helper,
+    $id,
+    array $possible_days
 ) {
 
-    return '';
+    $lastAvailableDay = DateTime::createFromFormat('U', (string)end($possible_days));
+    $firstAvailableDay = DateTime::createFromFormat('U', (string)reset($possible_days));
+    $firstDayOfAvailableWeek = DateTime::createFromFormat('U', strtotime('this week', $firstAvailableDay->format('U')));
+    $lastDayOfAvailableMonth = DateTime::createFromFormat('U', strtotime('Monday next week', $lastAvailableDay->format('U')));
+//    $lastDayOfAvailableMonth->modify('+1 day');
+    $calendar = new DatePeriod($firstDayOfAvailableWeek, new DateInterval('P1D'), $lastDayOfAvailableMonth);
+
+    $currMonth = null;
 
 ?>
 
-    <div class="celedr popupFl">
+    <div class="celedr popupFl" style="display: none" id="<?= $id ?>">
         <div class="popupFl_clsr"></div>
 
-        <div class="celedr_t">27 сентября, воскресенье</div>
+        <div class="celedr_t"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2, %A', time()))?></div>
 
         <button class="celedr_btn btn2">Хочу быстрее!</button>
 
@@ -27,50 +36,39 @@ return function(
             </div>
 
             <div class="celedr_row clearfix">
-                <div class="celedr_month">Июль</div>
-                <div class="celedr_col celedr_col-disbl ">28</div>
-                <div class="celedr_col celedr_col-disbl ">29</div>
-                <div class="celedr_col  celedr_curr">30</div>
-                <div class="celedr_col  ">31</div>
-                <div class="celedr_col celedr_col-disbl "></div>
-                <div class="celedr_col celedr_col-disbl "></div>
-                <div class="celedr_col celedr_col-disbl "></div>
-                <div class="celedr_month">Август</div>
-                <div class="celedr_col celedr_col-disbl "></div>
-                <div class="celedr_col celedr_col-disbl "></div>
-                <div class="celedr_col celedr_col-disbl "></div>
-                <div class="celedr_col celedr_col-disbl "></div>
-                <div class="celedr_col  ">1</div>
-                <div class="celedr_col  ">2</div>
-                <div class="celedr_col  ">3</div>
-                <div class="celedr_col  ">4</div>
-                <div class="celedr_col  ">5</div>
-                <div class="celedr_col  ">6</div>
-                <div class="celedr_col  ">7</div>
-                <div class="celedr_col  ">8</div>
-                <div class="celedr_col  ">9</div>
-                <div class="celedr_col  ">10</div>
-                <div class="celedr_col  ">11</div>
-                <div class="celedr_col  ">12</div>
-                <div class="celedr_col  ">13</div>
-                <div class="celedr_col  ">14</div>
-                <div class="celedr_col  ">15</div>
-                <div class="celedr_col  ">16</div>
-                <div class="celedr_col  ">17</div>
-                <div class="celedr_col  ">18</div>
-                <div class="celedr_col  ">19</div>
-                <div class="celedr_col  ">20</div>
-                <div class="celedr_col  ">21</div>
-                <div class="celedr_col  ">22</div>
-                <div class="celedr_col  ">23</div>
-                <div class="celedr_col  ">24</div>
-                <div class="celedr_col  ">25</div>
-                <div class="celedr_col  ">26</div>
-                <div class="celedr_col  ">27</div>
-                <div class="celedr_col  ">28</div>
-                <div class="celedr_col  ">29</div>
-                <div class="celedr_col  ">30</div>
-                <div class="celedr_col celedr_col-disbl ">31</div>
+
+                <div class="celedr_month"><?= strftime('%B', $firstDayOfAvailableWeek->format('U')) ?></div>
+                <? $currMonth = $firstDayOfAvailableWeek->format('F') ?>
+
+                <? foreach ($calendar as $day) : ?>
+                    <? /** @var $day DateTime */ ?>
+
+                    <? if ($currMonth != $day->format('F')) : ?>
+
+                        <? $isMonday = $day->format('N') == 1 ?>
+
+                        <? if (!$isMonday) : ?>
+                            <? for ($i = 0; $i < 8 - $day->format('N'); $i++) : ?>
+                                <div class="celedr_col celedr_col-disbl"></div>
+                            <? endfor; ?>
+                        <? endif; ?>
+
+                        <div class="celedr_month"><?= strftime('%B', $day->format('U')) ?></div>
+                        <? $currMonth = $day->format('F') ?>
+
+                        <? if (!$isMonday) : ?>
+                            <? for ($i = 1; $i < $day->format('N'); $i++) : ?>
+                                <div class="celedr_col celedr_col-disbl"></div>
+                            <? endfor; ?>
+                        <? endif; ?>
+
+                    <? endif; ?>
+
+                    <? $isDayAvailable = in_array((int)$day->format('U'), $possible_days) ?>
+                    <div class="celedr_col <?= $isDayAvailable ? '' : 'celedr_col-disbl' ?>" data-value="<?= $isDayAvailable ? $day->format('U') : '' ?>"><?= $day->format('d')?></div>
+
+                <? endforeach; ?>
+
             </div>
         </div>
     </div>

@@ -17,8 +17,6 @@
 					};
 				// end of vars
 
-				ENTER.utils.logError(data);
-
 				if ( typeof _gaq !== 'undefined' ) {
 					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '404 ошибка, страница не найдена']);
 				}
@@ -48,8 +46,6 @@
 					};
 				// end of vars
 
-				ENTER.utils.logError(data);
-
 				if ( typeof _gaq !== 'undefined' ) {
 					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '500 сервер перегружен']);
 				}
@@ -63,8 +59,6 @@
 					};
 				// end of vars
 
-				ENTER.utils.logError(data);
-
 				if ( typeof _gaq !== 'undefined' ) {
 					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '503 ошибка, сервер перегружен']);
 				}
@@ -77,8 +71,6 @@
 						ajaxUrl: ajaxUrl
 					};
 				// end of vars
-
-				ENTER.utils.logError(data);
 
 				if ( typeof _gaq !== 'undefined' ) {
 					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '504 ошибка, проверьте соединение с интернетом']);
@@ -95,7 +87,6 @@
 			// end of vars
 			
 			if ( jqXHR.statusText === 'error' ) {
-				ENTER.utils.logError(data);
 
 				if ( typeof _gaq !== 'undefined' ) {
 					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', 'неизвестная ajax ошибка']);
@@ -829,7 +820,7 @@
 				
 			};
 
-			if ( autoResolve !== 'undefined' ) {
+			if (typeof autoResolve !== 'undefined' ) {
 				$.ajax({
 					type: 'GET',
 					url: autoResolve,

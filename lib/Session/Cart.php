@@ -248,7 +248,7 @@ class Cart {
         return isset($data['warrantyList'][$warrantyId][$productId]);
     }
 
-    /**
+    /** Возвращает количество продуктов и сервисов
      * @return int
      */
     public function count() {

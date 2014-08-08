@@ -491,29 +491,34 @@ return [
 
     // оформление заказа: 1-й шаг - контактные данные
     'orderV3' => [
-        'pattern' => '/order',
+        'pattern' => '/order/new',
         'action'  => ['OrderV3\NewAction', 'execute'],
     ],
     // оформление заказа: сохранение контактных данных
-    'orderV3.update.contact' => [
+/*    'orderV3.update.contact' => [
         'pattern' => '/order-update-contact',
         'action'  => ['OrderV3\UpdateContactAction', 'execute'],
-    ],
+    ],*/
     // оформление заказа: 2-й шаг - выбор доставки
     'orderV3.delivery' => [
-        'pattern' => '/order-delivery',
+        'pattern' => '/order/delivery',
         'action'  => ['OrderV3\DeliveryAction', 'execute'],
     ],
     // оформление заказа: создание
     'orderV3.create' => [
-        'pattern' => '/order-create',
+        'pattern' => '/order/create',
         'action'  => ['OrderV3\CreateAction', 'execute'],
         'method'  => ['POST'],
     ],
     // оформление заказа: завершение, онлайн-оплата
     'orderV3.complete' => [
-        'pattern' => '/order-complete',
+        'pattern' => '/order/complete',
         'action'  => ['OrderV3\CompleteAction', 'execute'],
+    ],
+    // ошибки
+    "orderV3.error" => [
+        'pattern'   => '/order/error',
+        'action'    => ['OrderV3\ErrorAction', 'execute']
     ],
 
     // заказ

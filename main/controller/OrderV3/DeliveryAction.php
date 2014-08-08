@@ -2,28 +2,200 @@
 
 namespace Controller\OrderV3;
 
-class DeliveryAction {
+class DeliveryAction extends OrderV3 {
 
-    /**
+    /** Main function
      * @param \Http\Request $request
      * @return \Http\Response
      * @throws \Exception
      */
     public function execute(\Http\Request $request) {
+
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $orderDelivery = new \Model\OrderDelivery\Entity(json_decode(file_get_contents(\App::config()->dataDir . '/data-store/cart-split.json'), true)['result']);
-        //$orderDelivery = new \Model\OrderDelivery\Entity(\App::curl()->query('http://cms.enter.ru/mock/v2-cart-split.json'));
-        if (!$orderDelivery) {
-            throw new \Exception('Нет данных для разбиения заказа');
-        }
-        if (!(bool)$orderDelivery->orders) {
-            throw new \Exception('Нет ни одного блока заказа');
+        if ($request->isXmlHttpRequest()) {
+
+            $splitData = [];
+
+            try {
+
+                $previousSplit = $this->session->get($this->splitSessionKey);
+
+                $splitData = [
+                    'previous_split' => $previousSplit,
+                    'changes'        => $this->formatChanges($request->request->all(), $previousSplit)
+                ];
+
+                $result['OrderDeliveryRequest'] = json_encode($splitData, JSON_UNESCAPED_UNICODE);
+                $result['OrderDeliveryModel'] = $this->getSplit($request->request->all());
+
+                $page = new \View\OrderV3\DeliveryPage();
+                $page->setParam('orderDelivery', $result['OrderDeliveryModel']);
+                $result['page'] = $page->show();
+
+            } catch (\Curl\Exception $e) {
+                \App::exception()->remove($e);
+                $result['error'] = array('message' => $e->getMessage());
+                $result['data'] = array('data' => $splitData);
+            } catch (\Exception $e) {
+                \App::exception()->remove($e);
+                $result['error'] = array('message' => $e->getMessage());
+            }
+
+            return new \Http\JsonResponse(['result' => $result], isset($result['error']) ? 500 : 200);
         }
 
-        $page = new \View\OrderV3\DeliveryPage();
-        $page->setParam('orderDelivery', $orderDelivery);
+        try {
 
-        return new \Http\Response($page->show());
+            $orderDelivery = //$this->getSplit();
+            $orderDelivery =  new \Model\OrderDelivery\Entity($this->session->get($this->splitSessionKey));
+
+            $page = new \View\OrderV3\DeliveryPage();
+            $page->setParam('orderDelivery', $orderDelivery);
+            return new \Http\Response($page->show());
+
+        } catch (\Curl\Exception $e) {
+            \App::exception()->remove($e);
+            \App::logger()->error($e->getMessage(), ['curl', 'cart/split']);
+            $page = new \View\OrderV3\ErrorPage();
+            $page->setParam('error', 'CORE: '.$e->getMessage());
+            $page->setParam('step', 2);
+            return new \Http\Response($page->show(), 500);
+        } catch (\Exception $e) {
+            \App::logger()->error($e->getMessage(), ['cart/split']);
+            $page = new \View\OrderV3\ErrorPage();
+            $page->setParam('error', $e->getMessage());
+            $page->setParam('step', 2);
+            return new \Http\Response($page->show(), 500);
+        }
+
     }
+
+    public function getSplit(array $data = null) {
+
+        if (!$this->cart->count()) throw new \Exception('Пустая корзина');
+
+        if ($data) {
+            $splitData = [
+                'previous_split' => $this->session->get($this->splitSessionKey),
+                'changes'        => $this->formatChanges($data, $this->session->get($this->splitSessionKey))
+            ];
+        } else {
+            $product_list = [];
+            foreach ($this->cart->getProductData() as $product) $product_list[$product['id']] = $product;
+
+            $splitData = [
+                'cart' => [
+                    'product_list' => $product_list
+                ]
+            ];
+        }
+
+        $orderDeliveryData = $this->client->query('cart/split',
+            ['geo_id' => $this->user->getRegionId()],
+            $splitData
+        );
+
+        $orderDelivery = new \Model\OrderDelivery\Entity($orderDeliveryData);
+
+        // обновляем корзину пользователя
+        if (isset($data['action']) && isset($data['params']['id']) && $data['action'] == 'changeProductQuantity') {
+            $product = (new \Model\Product\Repository($this->client))->getEntityById($data['params']['id']);
+            if ($product !== null) $this->cart->setProduct($product, $data['params']['quantity']);
+        }
+
+        // сохраняем в сессию расчет доставки
+        $this->session->set($this->splitSessionKey, $orderDeliveryData);
+
+        return $orderDelivery;
+    }
+
+    private function formatChanges($data, $previousSplit) {
+
+        $changes = [];
+
+        switch ($data['action']) {
+
+            case 'changeUserInfo':
+                $changes['user_info'] = array_merge($previousSplit['user_info'], $data['user_info']);
+                break;
+
+            case 'changeDelivery':
+                $changes['orders'] = array(
+                    $data['params']['block_name'] => array_merge($previousSplit['orders'][$data['params']['block_name']], array( 'delivery' => array( 'delivery_method_token' => $data['params']['delivery_method_token'] ) ) )
+                );
+                break;
+
+            case 'changePoint':
+                $changes['orders'] = array(
+                    $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
+                );
+                $changes['orders'][$data['params']['block_name']]['delivery']['point'] = ['id' => $data['params']['id'], 'token' => $data['params']['token']];
+                break;
+
+            case 'changeDate':
+                $changes['orders'] = array(
+                    $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
+                );
+                $changes['orders'][$data['params']['block_name']]['delivery']['date'] = $data['params']['date'];
+                break;
+
+            case 'changeInterval':
+                $changes['orders'] = array(
+                    $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
+                );
+                $changes['orders'][$data['params']['block_name']]['delivery']['interval'] = $data['params']['interval'];
+                break;
+
+            case 'changePaymentMethod':
+                $changes['orders'] = array(
+                    $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
+                );
+                $changes['orders'][$data['params']['block_name']]['payment_method_id'] = $data['params']['by_credit_card'] == 'true' ? 2 : 1;
+                break;
+
+            case 'changeProductQuantity':
+                $changes['orders'] = array(
+                    $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
+                );
+
+                $id = $data['params']['id'];
+                $quantity = $data['params']['quantity'];
+                $productsArray = &$changes['orders'][$data['params']['block_name']]['products'];
+
+                array_walk($productsArray, function(&$product) use ($id, $quantity) {
+                        if ($product['id'] == $id) $product['quantity'] = (int)$quantity;
+                });
+                break;
+            case 'changeAddress':
+                $changes['user_info'] = $previousSplit['user_info'];
+                $changes['user_info']['address'] = array_merge($changes['user_info']['address'], $data['params']);
+                break;
+            case 'changeOrderComment':
+                $changes['orders'] = $previousSplit['orders'];
+                foreach ($changes['orders'] as &$order) {
+                    $order['comment'] = $data['params']['comment'];
+                }
+                break;
+            case 'applyDiscount':
+                $changes['orders'] = array(
+                    $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
+                );
+                $changes['orders'][$data['params']['block_name']]['discounts'][] = array('number' => $data['params']['number'], 'name' => null, 'type' => null, 'discount' => null);
+                break;
+            case 'deleteDiscount':
+                $changes['orders'] = array(
+                    $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
+                );
+                $changes['orders'][$data['params']['block_name']]['discounts'] = array_filter($changes['orders'][$data['params']['block_name']]['discounts'], function($discount) use ($data) {
+                    return $discount['number'] != $data['params']['number'];
+                });
+                break;
+        }
+
+        return $changes;
+
+    }
+
+
 }

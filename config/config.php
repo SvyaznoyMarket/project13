@@ -375,6 +375,7 @@ $c->order['prepayment'] = [
     'priceLimit' => 100000,// если стоимость заказа >= priceLimit, то появится плашка с текстом про предоплату
     'labelId'    => 15, // id шильдика "предоплата"
 ];
+$config->order['splitSessionKey'] = 'order_split';
 
 $c->newDeliveryCalc = true;
 

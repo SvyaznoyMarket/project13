@@ -15,9 +15,7 @@ class NewAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->newOrder) {
-            $page = new \View\OrderV3\NewPage();
-
-            return new \Http\Response($page->show());
+            return (new \Controller\OrderV3\NewAction)->execute($request);
         }
 
         $user = \App::user();

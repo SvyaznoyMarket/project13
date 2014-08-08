@@ -472,6 +472,7 @@ class AppConfig {
         'sessionName'    => null,
         'enableMetaTag'  => null,
         'maxSumOnline'   => null,
+        'splitSessionKey'   => null
     ];
     /** @var bool */
     public $newDeliveryCalc;

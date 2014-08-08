@@ -8,12 +8,11 @@ class DeliveryPage extends Layout {
     }
 
     public function slotContent() {
-        //return \App::closureTemplating()->render('order-v3/page-delivery', $this->params);
-        return \App::closureTemplating()->render('order-v3/page', $this->params);
+        return \App::closureTemplating()->render('order-v3/page-delivery', $this->params);
+//        return \App::closureTemplating()->render('order-v3/page', $this->params);
     }
 
     public function slotBodyDataAttribute() {
-        //return 'order_new';
         return 'order-v3';
     }
 }
