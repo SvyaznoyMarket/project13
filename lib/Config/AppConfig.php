@@ -257,6 +257,16 @@ class AppConfig {
             'secretWord' => null,
             'subdomainNumber' => null,
         ],
+        'SprosiKupi' => [
+            'timeout' => 1000,
+            'logEnabled' => false,
+            'logDataEnabled' => false,
+        ],
+        'ShopPilot' => [
+            'timeout' => 1000,
+            'logEnabled' => false,
+            'logDataEnabled' => false,
+        ],
     ];
 
     /** @var array */
@@ -609,6 +619,14 @@ class AppConfig {
 
     /** @var array */
     public $scmsV2 = [
+        'url'          => null,
+        'timeout'      => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
+    ];
+
+    /** @var array */
+    public $scmsSeo = [
         'url'          => null,
         'timeout'      => null,
         'retryTimeout' => [],

@@ -15,7 +15,7 @@
 		catalog = utils.extendApp('ENTER.catalog'),
 		lastPage = $('#bCatalog').data('lastpage');
 	// end of vars
-	
+
 
 	catalog.enableHistoryAPI = ( typeof Mustache === 'object' ) && ( History.enabled );
 	catalog.listingWrap = $('.bListing');
