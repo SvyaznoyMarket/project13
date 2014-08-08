@@ -17,12 +17,12 @@ class ConfirmAction {
      */
     protected $user;
     protected $session;
-    protected $sessioName;
+    protected $sessionName;
 
     public function __construct() {
         $this->user = \App::user()->getEntity();
         $this->session = \App::session();
-        $this->sessioName = \App::config()->enterprize['formDataSessionKey'];
+        $this->sessionName = \App::config()->enterprize['formDataSessionKey'];
     }
 
     /**
@@ -214,8 +214,10 @@ class ConfirmAction {
                         'template' => 'enter_prize',
                     ], \App::config()->coreV2['hugeTimeout']
                 );
-//\App::logger()->error($result, ['taggg']);
 
+                $data = $this->session->get($this->sessionName, []);
+                $data = array_merge($data, ['isEmailConfirmed' => true]);
+                $this->session->set($this->sessionName, $data);
 
                 $response = [
                     'success'   => true,
@@ -308,6 +310,10 @@ class ConfirmAction {
                         'code'     => $code,
                     ], \App::config()->coreV2['hugeTimeout']
                 );
+
+                $data = $this->session->get($this->sessionName, []);
+                $data = array_merge($data, ['isPhoneConfirmed' => true]);
+                $this->session->set($this->sessionName, $data);
 
                 $response = [
                     'success'   => true,
@@ -575,40 +581,52 @@ class ConfirmAction {
         ]);
     }
 
-
-
     protected function getConfirmStatus() {
         return [
-            'isEmailConfirmed' => ($this->user?$this->user->getIsEmailConfirmed():null),
-            'isPhoneConfirmed' => ($this->user?$this->user->getIsPhoneConfirmed():null)
+            'isEmailConfirmed' => $this->getIsEmailConfirmed(),
+            'isPhoneConfirmed' => $this->getIsPhoneConfirmed()
         ];
     }
 
     protected function getEmail() {
-        $data = $this->session($this->sessioName, []);
+        $data = $this->session->get($this->sessionName, []);
         $email = isset($data['email']) && !empty($data['email']) ? $data['email'] : null;
 
-        return !$email && $this->user ? $this->user->getEmail() : $email;
+        return $email ?: ($this->user ? $this->user->getEmail() : null);
     }
 
     protected function getToken() {
-        $data = $this->session($this->sessioName, []);
+        $data = $this->session->get($this->sessionName, []);
         $token = isset($data['token']) && !empty($data['token']) ? $data['token'] : null;
 
-        return !$token && $this->user ? $this->user->getToken() : $token;
+        return $token ?: ($this->user ? $this->user->getToken() : null);
     }
 
     protected function getMobilePhone() {
-        $data = $this->session($this->sessioName, []);
+        $data = $this->session->get($this->sessionName, []);
         $mobile = isset($data['mobile']) && !empty($data['mobile']) ? $data['mobile'] : null;
 
-        return !$mobile && $this->user ? $this->user->getMobilePhone() : $mobile;
+        return $mobile ?: ($this->user ? $this->user->getMobilePhone() : null);
     }
 
     protected function getName() {
-        $data = $this->session($this->sessioName, []);
+        $data = $this->session->get($this->sessionName, []);
         $name = isset($data['name']) && !empty($data['name']) ? $data['name'] : null;
 
-        return !$name && $this->user ? $this->user->getName() : $name;
+        return $name ?: ($this->user ? $this->user->getName() : null);
+    }
+
+    protected function getIsEmailConfirmed() {
+        $data = $this->session->get($this->sessionName, []);
+        $isEmailConfirmed = isset($data['isEmailConfirmed']) && !empty($data['isEmailConfirmed']) ? $data['isEmailConfirmed'] : null;
+
+        return !is_null($isEmailConfirmed) ? (bool)$isEmailConfirmed : ($this->user ? $this->user->getIsEmailConfirmed() : false);
+    }
+
+    protected function getIsPhoneConfirmed() {
+        $data = $this->session->get($this->sessionName, []);
+        $isPhoneConfirmed = isset($data['isPhoneConfirmed']) && !empty($data['isPhoneConfirmed']) ? $data['isPhoneConfirmed'] : null;
+
+        return !is_null($isPhoneConfirmed) ? (bool)$isPhoneConfirmed : ($this->user ? $this->user->getIsPhoneConfirmed() : false);
     }
 }

@@ -679,10 +679,10 @@ $.widget("ui.registerAuth", {
                         widget.applyFormErrors(self, response.form.error);
                     } else if(response.data.user.is_enterprize_member) {
                         widget.complete();
-                    } else if(!response.data.user.is_email_confirmed || !response.data.user.is_phone_confirmed) {
-                        widget._setState('confirm');
                     } else if(!response.data.user.mobile_phone || !response.data.user.email) {
                         widget._setState('update');
+                    } else if(!response.data.user.is_email_confirmed || !response.data.user.is_phone_confirmed) {
+                        widget._setState('confirm');
                     } else if(!response.data.user.is_enterprize_member) {
                         widget._setState('setEnterprize');
                     } else if (response.alreadyLogged) { // если мы уже залогинены, можем только на корректировку данных кинуть
