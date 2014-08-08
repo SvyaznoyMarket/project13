@@ -2053,6 +2053,58 @@ window.ANALYTICS = {
 		l.parentNode.insertBefore(s, l);
 	},
 
+	flocktoryEnterprizeRegJS: function() {
+		var
+			data = $("#flocktoryEnterprizeRegJS").data('value');
+		// end of vars
+
+		var
+			action = function( userInfo ) {
+				var result;
+
+				if (
+					!data ||
+					!userInfo ||
+					!userInfo.hasOwnProperty('email') || !userInfo.email ||
+					!userInfo.hasOwnProperty('name') || !userInfo.name
+				) {
+					return;
+				}
+
+				data.user.email = userInfo.email;
+				data.user.name = userInfo.name;
+
+				if ( userInfo.hasOwnProperty('sex') ) {
+					data.user.sex = 1 == userInfo.sex ? 'm' : (2 == userInfo.sex ? 'f' : null);
+				}
+
+				result = ['postcheckout', data];
+
+				console.info("Analytics flocktoryEnterprizeReg");
+				console.log(result);
+
+				window.flocktory.push(result);
+			};
+		// end of functions
+
+		if ( !data ) {
+			return;
+		}
+
+		window.flocktory = window.flocktory || [];
+
+		if ( ENTER.config.userInfo === false ) {
+			// пользователь должен быть авторизован
+			return;
+		}
+		else if ( !ENTER.config.userInfo ) {
+			$("body").on("userLogged", function() {action(ENTER.config.userInfo)} );
+		}
+		else {
+			action(ENTER.config.userInfo);
+		}
+	},
+
 	enable : true
 }
 

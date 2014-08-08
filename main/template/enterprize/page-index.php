@@ -153,7 +153,7 @@ $helper = new \Helper\TemplateHelper();
             } ?>
 
 
-            <? if ($coupon->isForMember() && !$isEnterprizeMember): // Только для игроков EnterPrize  ?>
+            <? if (!$coupon->isForNotMember() && !$isEnterprizeMember): // Только для игроков EnterPrize  ?>
                 <li class="<?= !empty($itemClass) ? "$itemClass " : '' ?>mMembers">
                     <div class="enterPrize__list__link">
                         <span class="cuponImg"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>

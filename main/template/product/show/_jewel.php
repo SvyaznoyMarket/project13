@@ -46,14 +46,10 @@
                 <?= $product->getTagline() ?>
                 <? /* <div class="bTextMore"><a class="jsGoToId" data-goto="productspecification" href="">Характеристики</a></div> */ ?>
             </div>
-            <?= $helper->render('product/__reviewCount', ['product' => $product, 'reviewsData' => $reviewsData]) ?>
         <?
         }
 
-        if (!$product->getTagline() && !count($product->getModel()) && !$product->getDescription() && $product->getPropertiesCount() < 16) {
-            echo $helper->render('product/__reviewCount', ['product' => $product, 'reviewsData' => $reviewsData]);
-        }
-
+        echo $helper->render('product/__reviewCount', ['product' => $product, 'reviewsData' => $reviewsData]);
         echo $helper->render('product/__mainProperties', ['product' => $product]);
         // } /end of new Card Properties
         ?>
