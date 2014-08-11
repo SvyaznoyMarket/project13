@@ -46,7 +46,7 @@ class IndexAction {
                         $enterpizeCoupon = $coupon;
                     }
                 }
-            });
+            }, $isCouponSent ? 0 : null);
         } catch (\Exception $e) {
             \App::logger()->error($e);
             \App::exception()->remove($e);
@@ -91,7 +91,7 @@ class IndexAction {
         \App::curl()->execute();
 
         // отфильтровываем ненужные купоны
-        $enterpizeCoupons = array_filter($enterpizeCoupons, function($coupon) use ($limits, $userCouponSeries) {
+        $enterpizeCoupons = array_filter($enterpizeCoupons, function($coupon) use ($limits, $userCouponSeries, $user) {
             if (!$coupon instanceof \Model\EnterprizeCoupon\Entity || !array_key_exists($coupon->getToken(), $limits)) return false;
 
             // убераем купоны с кол-вом <= 0
@@ -101,6 +101,8 @@ class IndexAction {
             if (in_array($coupon->getToken(), $userCouponSeries)) return false;
 
             if (!(bool)$coupon->isForMember() && !(bool)$coupon->isForNotMember()) return false;
+
+            if ($user && $user->isEnterprizeMember() && !(bool)$coupon->isForMember() && (bool)$coupon->isForNotMember()) return false;
 
             return true;
         });
