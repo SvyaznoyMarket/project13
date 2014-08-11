@@ -58,7 +58,7 @@ class CouponAction {
             $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.complete', $params));
 
             // SITE-3931, SITE-3934
-            $cookie = new \Http\Cookie(\App::config()->enterprize['cookieName'], 1, strtotime('+1 days'));
+            $cookie = new \Http\Cookie(\App::config()->enterprize['cookieName'], 1, time() + (60*60*24), '/', null, false, true);
             $response->headers->setCookie($cookie);
 
         } catch (\Curl\Exception $e) {
