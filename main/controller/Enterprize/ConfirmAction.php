@@ -582,9 +582,23 @@ class ConfirmAction {
     }
 
     protected function getConfirmStatus() {
+        $isEmailConfirmed = null;
+        $isPhoneConfirmed = null;
+        try {
+            $emailRes = \App::coreClientV2()->query('confirm/status', ['token'=>$this->getToken()], ['criteria'=>$this->getEmail(), 'type'=>'email']);
+            $isEmailConfirmed = $emailRes['is_confirmed'];
+
+            $phoneRes = \App::coreClientV2()->query('confirm/status', ['token'=>$this->getToken()], ['criteria'=>$this->getMobilePhone(), 'type'=>'mobile']);
+            $isPhoneConfirmed = $phoneRes['is_confirmed'];
+
+        } catch (\Exception $e) {
+            \App::exception()->remove($e);
+            \App::logger()->error($e->getMessage());
+        }
+
         return [
-            'isEmailConfirmed' => $this->getIsEmailConfirmed(),
-            'isPhoneConfirmed' => $this->getIsPhoneConfirmed()
+            'isEmailConfirmed' => $isEmailConfirmed,
+            'isPhoneConfirmed' => $isPhoneConfirmed
         ];
     }
 
@@ -614,19 +628,5 @@ class ConfirmAction {
         $name = isset($data['name']) && !empty($data['name']) ? $data['name'] : null;
 
         return $name ?: ($this->user ? $this->user->getName() : null);
-    }
-
-    protected function getIsEmailConfirmed() {
-        $data = $this->session->get($this->sessionName, []);
-        $isEmailConfirmed = isset($data['isEmailConfirmed']) && !empty($data['isEmailConfirmed']) ? $data['isEmailConfirmed'] : null;
-
-        return !is_null($isEmailConfirmed) ? (bool)$isEmailConfirmed : ($this->user ? $this->user->getIsEmailConfirmed() : false);
-    }
-
-    protected function getIsPhoneConfirmed() {
-        $data = $this->session->get($this->sessionName, []);
-        $isPhoneConfirmed = isset($data['isPhoneConfirmed']) && !empty($data['isPhoneConfirmed']) ? $data['isPhoneConfirmed'] : null;
-
-        return !is_null($isPhoneConfirmed) ? (bool)$isPhoneConfirmed : ($this->user ? $this->user->getIsPhoneConfirmed() : false);
     }
 }
