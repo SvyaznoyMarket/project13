@@ -40,25 +40,6 @@ class BanditAction {
             }
         }
 
-        $response['slots'] = [
-            'bff70e2c-e707-11e3-93f1-e4115baba630',
-            'dcaa2416-0d77-11e4-93f1-e4115baba630',
-            'd07cf52c-1314-11e4-93f1-e4115baba630',
-            'd6f144bc-1314-11e4-93f1-e4115baba630',
-            'de6714f3-1314-11e4-93f1-e4115baba630',
-            'de6714f6-1314-11e4-93f1-e4115baba630',
-            'ef85668a-1314-11e4-93f1-e4115baba630',
-            '1dfd183d-1b57-11e4-93f1-e4115baba630',
-            '826e2e04-1b4f-11e4-93f1-e4115baba630',
-            '3c31491f-1b57-11e4-93f1-e4115baba630',
-            '6d1b7a24-1b57-11e4-93f1-e4115baba630',
-            '9c02dcbe-1b43-11e4-93f1-e4115baba630',
-            'e9cdb343-1b43-11e4-93f1-e4115baba630',
-            'a600d124-1b47-11e4-93f1-e4115baba630',
-            'dd6c9a5f-1b4a-11e4-93f1-e4115baba630',
-            'c94d1be4-1b4c-11e4-93f1-e4115baba630',
-        ];
-
         $coupons = $this->getCoupons($response['slots']);
         $slots = [];
         foreach($coupons as $v) {
@@ -204,7 +185,6 @@ class BanditAction {
         $response = [];
         $t = \App::scmsClientV2()->query('coupon/get');
 
-        \App::logger()->error(print_r($t,true), ['taggg']);
         if(!$uids) {
             foreach($t as $v) {
                 $response[$v['uid']]  = $v;
