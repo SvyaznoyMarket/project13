@@ -27,6 +27,7 @@ class IndexAction {
 
         // SITE-3931, SITE-3934
         $isCouponSent = (bool)$request->cookies->get(\App::config()->enterprize['cookieName']);
+        \App::logger()->info('Кука isCouponSent=%s', $isCouponSent ? 'true' : 'false');
 
         // получение купонов
         /**
