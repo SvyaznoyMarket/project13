@@ -26,8 +26,11 @@ class IndexAction {
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
         // SITE-3931, SITE-3934
-        $isCouponSent = (bool)$request->cookies->get(\App::config()->enterprize['cookieName']);
-        \App::logger()->info(sprintf('Кука isCouponSent=%s', $isCouponSent ? 'true' : 'false'));
+        $isCouponSent = isset($data['isCouponSent']) ? (bool)$data['isCouponSent'] : false;
+        if ($isCouponSent) {
+            unset($data['isCouponSent']);
+            $session->set($sessionName, $data);
+        }
 
         // получение купонов
         /**
@@ -168,10 +171,6 @@ class IndexAction {
         $page->setParam('hasFlocktoryPopup', (bool)$request->get('flocktory_popup'));
 
         $response = new \Http\Response($page->show());
-
-        if ($isCouponSent) {
-            $response->headers->clearCookie(\App::config()->enterprize['cookieName']);
-        }
 
         return $response;
     }

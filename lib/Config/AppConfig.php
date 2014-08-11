@@ -529,7 +529,6 @@ class AppConfig {
         'formDataSessionKey' => null,
         'itemsInSlider' => null,
         'showSlider' => null,
-        'cookieName' => null,
     ];
 
     /** @var array */
