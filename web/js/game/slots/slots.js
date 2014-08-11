@@ -496,10 +496,10 @@ $.fn.slots = function (slot_config, animations_config) {
                     for (var ch = 0; ch < reels[i].length; ch++) {
                         var chip = reels[i][ch];
                         if ($el.slotMachine.isie) {
-                            $el.find('#reel' + (i + 1) + ' .chips').append('<div class="chip" style="position:relative; margin-left: 0px;"> <span class="border " style="background-image: url(' + chip.background + ');  background-position: center; background-repeat: no-repeat; background-size: 100%; "> <span class="cuponImg__inner"> <span class="cuponIco"> <img src="' + chip.icon + '"> </span> <span class="cuponDesc">' + chip.label + '</span> <span class="cuponPrice">' + chip.value + '</span> </span> </span> </div>');
+                            $el.find('#reel' + (i + 1) + ' .chips').append('<div class="chip" style="position:relative; margin-left: 0px;"> <span class="border " style="background-image: url(' + chip.background + ');  background-position: center; background-repeat: no-repeat; background-size: 100%; "> <span class="cuponImg__inner"> <span class="cuponIco"> <img src="' + chip.icon + '"> </span> <span class="cuponDesc">' + chip.label + '</span> <span class="cuponPrice">' + chip.value + ('p' == chip.value_suffix ? ' <span class="rubl">' + chip.value_suffix + '</span>' : chip.value_suffix) + '</span> </span> </span> </div>');
 
                         } else {
-                            $el.find('#reel' + (i + 1) + ' .chips').append('<div class="chip"> <span class="border " style="background-image: url(' + chip.background + ');  background-position: center; background-repeat: no-repeat; background-size: 100%; "> <span class="cuponImg__inner"> <span class="cuponIco"> <img src="' + chip.icon + '"> </span> <span class="cuponDesc">' + chip.label + '</span> <span class="cuponPrice">' + chip.value + '</span> </span> </span> </div>');
+                            $el.find('#reel' + (i + 1) + ' .chips').append('<div class="chip"> <span class="border " style="background-image: url(' + chip.background + ');  background-position: center; background-repeat: no-repeat; background-size: 100%; "> <span class="cuponImg__inner"> <span class="cuponIco"> <img src="' + chip.icon + '"> </span> <span class="cuponDesc">' + chip.label + '</span> <span class="cuponPrice">' + chip.value + ('p' == chip.value_suffix ? ' <span class="rubl">' + chip.value_suffix + '</span>' : chip.value_suffix) + '</span> </span> </span> </div>');
 
                         }
                     }

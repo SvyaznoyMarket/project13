@@ -278,6 +278,10 @@
   top: 14px;
   width: 100%;
 }
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip .border .cuponPrice .rubl,
+#slotsWrapper #slotsMachine #reelsWrapper .reel .chips2 .chip .border .cuponPrice .rubl {
+  margin: 0 0 0 -5px;
+}
 #slotsWrapper #slotsMachine #slotsGame {
   position: relative;
   top: 246px;
