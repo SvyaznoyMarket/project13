@@ -209,9 +209,9 @@ class BanditAction {
     protected function couponAsWin($coupon) {
         return array_merge(
             $this->couponAsSlot($coupon),[
-                'startDate'     => $coupon['start_date'],
-                'endDate'       => $coupon['end_date'],
-                'minOrder'      => $coupon['min_order_sum']
+                'startDate'     => (new \DateTime($coupon['start_date']))->format('d.m.Y'),
+                'endDate'       => (new \DateTime($coupon['end_date']))->format('d.m.Y'),
+                'minOrder'      => floatval($coupon['min_order_sum'])
             ]
         );
     }
@@ -228,8 +228,8 @@ class BanditAction {
             'url'           => $coupon['segment_url'],
             'icon'          => $coupon['segment_image_url'],
             'background'    => $coupon['background_image_url'],
-            'value'         => (int)$coupon['value'],
-            'value_suffix'  => $coupon['is_currency'] ? 'p' : '%'
+            'value'         => floatval($coupon['value']),
+            'is_currency'   => (bool)$coupon['is_currency']
         ];
     }
 }
