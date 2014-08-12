@@ -1,10 +1,19 @@
+<?php
+/**
+ * @var $page \View\Game\BanditPage
+ */
+?>
+
 <?= $page->slotEnterPrizeWidget() ?>
 
 <script type="text/javascript">
     $(window).load(function () {
-        var slotsPopup = $('#slotsPopup');
+        var
+            slotsPopup = $('#slotsPopup'),
+            animations_config = $('#slotsWrapWrapper').data('animations-config');
+
         slotsPopup.messageBox = slotsPopup.find('.message');
-        
+
         $('#slotsWrapWrapper').slots({
             labels: {
                 messageBox: {
@@ -58,70 +67,11 @@
                 play: "http://<?=\App::config()->mainHost?>/game/slots/play",
                 img_led_off: "/css/game/slots/img/slot_led_off.png"
             }
-        },{
-            isAvailable: true,
-            ledPanel: {
-                defaultAnimation: [
-                    {
-                        type: "random",
-                        speed: 5,
-                        n: 1,
-                        m: 1,
-                        color: "58,29,200"
-                    }
-                ],
-                spiningAnimation: [
-                    {
-                        type: "leftToRight",
-                        speed: 10,
-                        n: 3,
-                        m: 1,
-                        color: "158,29,20"
-                    }
-                ],
-                stopAnimation: [
-                    {
-                        type: "toggle",
-                        speed: 7,
-                        n: 2,
-                        m: 1,
-                        color: "158,129,20"
-                    }
-                ]
-            },
-            textPanel: {
-                defaultAnimation: {
-                    animationType: "leftToRight",
-                    step: 3,
-                    delay: 0,
-                    speed: 20
-                },
-                spiningAnimation: {
-                    animationType: "rightToLeft",
-                    step: 6,
-                    delay: 0,
-                    speed: 20
-                },
-                winAnimation: {
-                    animationType: "random",
-                    step: 2,
-                    delay: 0,
-                    speed: 300
-                },
-                loseAnimation: {
-                    animationType: "toggle",
-                    step: 2,
-                    delay: 0,
-                    speed: 300
-                }
-            },
-            game: {
-                maxTimeSpinning: 5000
-            }
-        });
+        }, animations_config);
     });
 </script>
-<div id="slotsWrapWrapper">
+
+<div id="slotsWrapWrapper" data-animations-config="<?= $page->json($animationsConfig) ?>">
     <div class="hello">
         <div class="rulesText">
             <h2><i>Enter Prize Jackpot</i></h2>

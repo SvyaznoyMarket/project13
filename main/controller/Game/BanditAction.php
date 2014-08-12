@@ -14,9 +14,29 @@ class BanditAction {
     protected $isAvailable = true;
 
     public function index() {
-		$page = new \View\Game\BanditPage();
-		return new \Http\Response($page->show());
-	}
+        $banditJson = [];
+        try {
+            $banditJson = \App::dataStoreClient()->query('game/bandit.json');
+
+            if (!(bool)$banditJson) {
+                throw new \Exception(sprintf('Конфиг %s в cms-e пустой', 'game/bandit.json'));
+            }
+        } catch (\Exception $e) {
+            \App::logger()->error($e);
+            \App::exception()->remove($e);
+
+            $configFile = \App::config()->dataDir . '/data-store/game/bandit.json';
+            $content = file_exists($configFile) ? file_get_contents($configFile) : null;
+            if ((bool)$content) {
+                $banditJson = (array)json_decode($content);
+            }
+        }
+
+        $page = new \View\Game\BanditPage();
+        $page->setParam('animationsConfig', (isset($banditJson['animations_config']) && !empty($banditJson['animations_config'])) ? $banditJson['animations_config'] : []);
+
+        return new \Http\Response($page->show());
+    }
 
 
 	public function init() {
