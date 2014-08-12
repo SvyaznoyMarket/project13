@@ -272,15 +272,11 @@
 #slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip .border .cuponPrice,
 #slotsWrapper #slotsMachine #reelsWrapper .reel .chips2 .chip .border .cuponPrice {
   font-family: EnterType;
-  font-size: 17px;
+  font-size: 16px;
   position: relative;
   text-align: center;
   top: 17px;
   width: 100%;
-}
-#slotsWrapper #slotsMachine #reelsWrapper .reel .chips .chip .border .cuponPrice .rubl,
-#slotsWrapper #slotsMachine #reelsWrapper .reel .chips2 .chip .border .cuponPrice .rubl {
-  margin: 0 0 0 -5px;
 }
 #slotsWrapper #slotsMachine #slotsGame {
   position: relative;
@@ -564,7 +560,7 @@
   -webkit-box-sizing: border-box;
   opacity: 0;
   width: 438px;
-  height: 105px;
+  height: auto;
   border: 2px solid #565959;
   border-radius: 10px;
   z-index: 2;
