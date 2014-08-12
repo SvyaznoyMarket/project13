@@ -228,7 +228,8 @@ class BanditAction {
             'url'           => $coupon['segment_url'],
             'icon'          => $coupon['segment_image_url'],
             'background'    => $coupon['background_image_url'],
-            'value'         => (int)$coupon['value'].($coupon['is_currency']?'руб.':'%')
+            'value'         => (int)$coupon['value'],
+            'value_suffix'  => $coupon['is_currency'] ? 'p' : '%'
         ];
     }
 }
