@@ -58,8 +58,7 @@ class CouponAction {
             $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.complete', $params));
 
             // SITE-3931, SITE-3934
-            $cookie = new \Http\Cookie(\App::config()->enterprize['cookieName'], 1, strtotime('+1 days'));
-            $response->headers->setCookie($cookie);
+            $session->set($sessionName, array_merge($data, ['isCouponSent' => true]));
 
         } catch (\Curl\Exception $e) {
             \App::exception()->remove($e);
@@ -230,7 +229,7 @@ class CouponAction {
 //        }
 //
 //        // SITE-3931, SITE-3934
-//        if (\App::user()->getEntity() && (bool)$request->cookies->get(\App::config()->enterprize['cookieName'])) {
+//        if (\App::user()->getEntity()) {
 //            $response = new \Http\RedirectResponse(\App::router()->generate('enterprize'));
 //
 //            return $response;

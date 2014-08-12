@@ -420,7 +420,6 @@ $c->enterprize['enabled'] = true;
 $c->enterprize['formDataSessionKey'] = 'enterprizeForm';
 $c->enterprize['itemsInSlider'] = 7;
 $c->enterprize['showSlider'] = true;
-$c->enterprize['cookieName'] = 'enterprize_coupon_sent';
 
 $c->tchibo['rowWidth'] = 78;
 $c->tchibo['rowHeight'] = 78;

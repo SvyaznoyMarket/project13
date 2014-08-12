@@ -19,11 +19,15 @@ class Repository {
      * @param $done
      * @param null $fail
      */
-    public function prepareCollection($done, $fail = null) {
+    public function prepareCollection($done, $member_type = null, $fail = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $params = [];
-        if (\App::user()->getEntity() && \App::user()->getEntity()->isEnterprizeMember()) $params['member_type'] = 1;
+        if (!is_null($member_type)) {
+            $params['member_type'] = $member_type;
+        }  elseif (\App::user()->getEntity() && \App::user()->getEntity()->isEnterprizeMember()){
+            $params['member_type'] = 1;
+        }
 
         $this->client->addQuery('coupon/get', $params, [], $done, $fail);
     }
