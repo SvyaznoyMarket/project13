@@ -11,6 +11,7 @@ class Entity {
     const TYPE_SLIDER = 6;
     const TYPE_STEP_INTEGER = 'integer';
     const TYPE_STEP_FLOAT = 'fractional';
+    const BRAND_ID = 'prop9169';
 
     /** @var string */
     private $id;
