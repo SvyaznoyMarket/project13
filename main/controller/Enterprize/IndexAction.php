@@ -161,6 +161,21 @@ class IndexAction {
             }
         }
 
+        $enterprizeData = [];
+        if ($isRegistration && $isCouponSent && $enterpizeCoupon) {
+            $enterprizeDataDefault = [
+                'name'            => null,
+                'mobile'          => null,
+                'email'           => null,
+                'couponName'      => $enterpizeCoupon->getName(),
+                'enterprizeToken' => $enterpizeCoupon->getToken(),
+                'date'            => date('d.m.Y'),
+                'time'            => date('H:i'),
+                'enter_id'        => !empty($data['token']) ? $data['token'] : \App::user()->getToken(),
+            ];
+            $enterprizeData = array_merge($enterprizeDataDefault, array_intersect_key($data, $enterprizeDataDefault));
+        }
+
         $page = new \View\Enterprize\IndexPage();
         $page->setParam('enterpizeCoupons', $enterpizeCoupons);
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
@@ -169,9 +184,8 @@ class IndexAction {
         $page->setParam('isRegistration', $isRegistration);
         $page->setParam('products', $products);
         $page->setParam('hasFlocktoryPopup', (bool)$request->get('flocktory_popup'));
+        $page->setParam('enterprizeData', $enterprizeData);
 
-        $response = new \Http\Response($page->show());
-
-        return $response;
+        return new \Http\Response($page->show());
     }
 }
