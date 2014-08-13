@@ -803,15 +803,6 @@ $.fn.slots = function (slot_config, animations_config) {
         setLedPanelOptions: function (type) {
             var self = this;
             var animationParams = self.config.ledPanel[type + 'Animation'];
-
-			if ('spining' === type) {
-				console.warn('//////////////////////////');
-				console.warn(self.config);
-				console.warn(animationParams);
-				console.warn('//////////////////////////');
-			}
-
-
             self.options.type = animationParams[0].type;
             self.options.speed = animationParams[0].speed;
             self.options.n = animationParams[0].n;
