@@ -594,10 +594,10 @@ $.fn.slots = function (slot_config, animations_config) {
                 reels[2] && ch3.find('.border').attr('style', 'background-image: url(' + reels[2].background + ');  background-position: center; background-repeat: no-repeat; background-size: 100%; ');
                 reels[1] && winCh.find('.border').attr('style', 'background-image: url(' + reels[1].background + ');  background-position: center; background-repeat: no-repeat; background-size: 100%; ');
 
-                reels[0] && ch1.find('.cuponPrice').text(reels[0].value + (reels[0].is_currency ? ' <span class="rubl">p</span>' : '%'));
-                reels[1] && ch2.find('.cuponPrice').text(reels[1].value + (reels[1].is_currency ? ' <span class="rubl">p</span>' : '%'));
-                reels[2] && ch3.find('.cuponPrice').text(reels[2].value + (reels[2].is_currency ? ' <span class="rubl">p</span>' : '%'));
-                reels[1] && winCh.find('.cuponPrice').text(reels[1].value + (reels[1].is_currency ? ' <span class="rubl">p</span>' : '%'));
+                reels[0] && ch1.find('.cuponPrice').html(reels[0].value + (reels[0].is_currency ? ' <span class="rubl">p</span>' : '%'));
+                reels[1] && ch2.find('.cuponPrice').html(reels[1].value + (reels[1].is_currency ? ' <span class="rubl">p</span>' : '%'));
+                reels[2] && ch3.find('.cuponPrice').html(reels[2].value + (reels[2].is_currency ? ' <span class="rubl">p</span>' : '%'));
+                reels[1] && winCh.find('.cuponPrice').html(reels[1].value + (reels[1].is_currency ? ' <span class="rubl">p</span>' : '%'));
 
                 reels[0] && ch1.find('.cuponIco img').attr('src', reels[0].icon);
                 reels[1] && ch2.find('.cuponIco img').attr('src', reels[1].icon);
