@@ -446,7 +446,7 @@ $c->tchiboSlider['analytics'] = [
     'enabled' => true,
     'use_page_visibility' => true,
     'collection_view' => [
-        'enabled' => true,
+        'enabled' => false,
         'tchiboOnly' => true
     ],
     'collection_click' => [

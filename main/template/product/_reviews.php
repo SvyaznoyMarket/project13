@@ -1,12 +1,13 @@
 <?php
 /**
  * @var $product \Model\Product\Entity
+ * @var $page \View\DefaultLayout
  */
 ?>
 
 <? switch (\App::abTest()->getCase()->getKey()):
     case 'reviews_sprosikupi': ?>
-        <div id="spk-widget-reviews" style="display:none; width: 100%;" shop-id="52dbdd369928f539612151" good-id="<?= $page->helper->escape($product->getId()) ?>" good-title="<?= $page->helper->escape($product->getWebName()) ?>" good-url="<?= $page->helper->escape($product->getLink()) ?>">
+        <div id="spk-widget-reviews" style="display:none; width: 100%;" shop-id="52dbdd369928f539612151" good-id="<?= $page->helper->escape($product->getId()) ?>" good-title="<?= $page->helper->escape($product->getName()) ?>" good-url="<?= $page->helper->escape($page->url('product', ['productPath' => $product->getPath()], true)) ?>">
             <?=$sprosikupiReviews?>
         </div>
 

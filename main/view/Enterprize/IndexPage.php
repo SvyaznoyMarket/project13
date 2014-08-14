@@ -56,7 +56,7 @@ class IndexPage extends \View\DefaultLayout {
         $return = '';
 
         // flocktory
-        if ((bool)$this->getParam('isRegistration') ) {
+        if ((bool)$this->getParam('isRegistration')) {
             $flocktoryData = [
                 'user' => [
                     'name' => null,
@@ -78,5 +78,14 @@ class IndexPage extends \View\DefaultLayout {
         }
 
         return $return;
+    }
+
+    public function slotEnterprizeCompleteJs() {
+        $data = $this->getParam('enterprizeData');
+        if ($data && (bool)$this->getParam('isRegistration')) {
+            return '<div id="enterprizeCompleteJs" class="jsanalytics" data-value="' . $this->json($data) . '" ></div>';
+        }
+
+        return '';
     }
 }
