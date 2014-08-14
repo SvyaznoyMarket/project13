@@ -180,11 +180,11 @@
 }
 #slotsWrapper #slotsMachine #reelsWrapper .reel .chips.spinning,
 #slotsWrapper #slotsMachine #reelsWrapper .reel .chips2.spinning {
-  -webkit-animation: x-spin 6s linear infinite;
-  -moz-animation: x-spin 6s linear infinite;
-  -ms-animation: x-spin 6s linear infinite;
-  -o-animation: x-spin 6s linear infinite;
-  animation: x-spin 6s linear infinite;
+  /* -webkit-animation: x-spin 6s linear infinite;
+            -moz-animation: x-spin 6s linear infinite;
+            -ms-animation: x-spin 6s linear infinite;
+            -o-animation: x-spin 6s linear infinite;
+            animation: x-spin 6s linear infinite;*/
 }
 #slotsWrapper #slotsMachine #reelsWrapper .reel .chips.stop_spinning,
 #slotsWrapper #slotsMachine #reelsWrapper .reel .chips2.stop_spinning {
