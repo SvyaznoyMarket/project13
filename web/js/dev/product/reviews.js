@@ -426,6 +426,10 @@
 	reviewStar.hover(hoverStar, unhoverStar);
 	reviewStar.on('unhover', unhoverStar);
 	reviewStar.on('click', markStar);
+
+    if ('#add-review' == location.hash) {
+        openPopup();
+    }
 }());
 
 /**
@@ -435,6 +439,10 @@ $(function() {
 	if (!$('#spk-widget-reviews').length) {
 		return;
 	}
+
+    if ('#add-review' == location.hash) {
+        location.href = '?spkPreState=addReview';
+    }
 
 	$('.sprosikupiRating .spk-good-rating a').live('click', function(e) {
 		$(document).stop().scrollTo($(e.currentTarget).attr('href'), 800);
@@ -467,6 +475,12 @@ $(function() {
 			styles: 'product-reviews',
 			product_id: reviewsContainer.data('productId')
 		})).appendTo(reviewsContainer[0]);
+
+        if ('#add-review' == location.hash) {
+            (new Shoppilot.Surveybox({
+                product_id: reviewsContainer.data('productId')
+            })).open();
+        }
 	}]);
 
 	(function() {
