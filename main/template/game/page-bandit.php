@@ -10,39 +10,13 @@
     $(window).load(function () {
         var
             slotsPopup = $('#slotsPopup'),
-            animations_config = $('#slotsWrapWrapper').data('animations-config');
+            animations_config = $('#slotsWrapWrapper').data('animations-config'),
+            labels_config = $('#slotsWrapWrapper').data('labels-config');
 
         slotsPopup.messageBox = slotsPopup.find('.message');
 
         $('#slotsWrapWrapper').slots({
-            labels: {
-                messageBox: {
-                    demo: [
-                        "Скидки до 70%!",
-                        "Играй и выигрывай каждый день!"
-                    ],
-                    win: [
-                        "Ваш выигрыш",
-                        "Заберите вашу фишку",
-                        "Ура! Победа!"
-                    ],
-                    nowin: [
-                        "Осталось {tryRemain} попыток",
-                        "Попробуй еще раз!",
-                        "Крути барабан еще раз!",
-                        "В следующий раз повезет!"
-                    ],
-                    spinning: [
-                        "Удача все ближе",
-                        "Скидки ждут тебя"
-                    ]
-                },
-                notAvailable: {
-                    message: "Автомат временно не работает. Приходите завтра",
-                    optionPrize: '',//"Утешительный приз",
-                    optionRemind: ''//"Напомнить мне"
-                }
-            },
+            labels: labels_config,
             handlers: {
                 userUnauthorized: function(self,state) {
                     self.stillInGameState();
@@ -71,7 +45,7 @@
     });
 </script>
 
-<div id="slotsWrapWrapper" data-animations-config="<?= $page->json($animationsConfig) ?>">
+<div id="slotsWrapWrapper" data-animations-config="<?= $page->json($animationsConfig) ?>" data-labels-config="<?= $page->json($labelsConfig) ?>" >
     <div class="hello">
         <div class="rulesText">
             <h2><i>Enter Prize Jackpot</i></h2>

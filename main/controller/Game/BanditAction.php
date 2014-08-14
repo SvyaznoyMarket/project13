@@ -34,6 +34,7 @@ class BanditAction {
 
         $page = new \View\Game\BanditPage();
         $page->setParam('animationsConfig', (isset($banditJson['animations_config']) && !empty($banditJson['animations_config'])) ? $banditJson['animations_config'] : []);
+        $page->setParam('labelsConfig', (isset($banditJson['labels']) && !empty($banditJson['labels'])) ? $banditJson['labels'] : []);
 
         return new \Http\Response($page->show());
     }
