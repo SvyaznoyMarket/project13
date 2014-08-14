@@ -27,7 +27,8 @@
     _gaq.push(['_addOrganic', 'ya.ru', 'q']);
     _gaq.push(['_addOrganic', 'm.yandex.ru','query']);
 
-    <? $customVarNum = 1 ?>
+    <? /* Слот 1 занят под abTestJson, а слоты 3, 4, 5 заняты под нужды сотрудников отдела аналитики */ ?>
+    <? $customVarNum = 5 ?>
     <? foreach (\App::abTest()->getTests() as $test): ?>
         <? $customVarNum++ ?>
         <? if ($test->isActive()): ?>
