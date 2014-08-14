@@ -198,15 +198,17 @@ class Action extends \Controller\ProductCategory\Action {
             $subCatMenu = reset($subCatMenu);
         }
 
-        switch (\App::abTest()->getCase()->getKey()) {
-            case 'jewelItems3':
-                $itemsPerRow = 3;
-                break;
-            case 'jewelItems4':
-                $itemsPerRow = 4;
-                break;
-            default:
-                $itemsPerRow = \App::config()->product['itemsPerRowJewel'];
+        $itemsPerRow = \App::config()->product['itemsPerRowJewel'];
+        $abTestJson = \App::abTestJson($catalogJson);
+        if ($abTestJson) {
+            switch ($abTestJson->getCase()->getKey()) {
+                case 'jewel_items_3':
+                    $itemsPerRow = 3;
+                    break;
+                case 'jewel_items_4':
+                    $itemsPerRow = 4;
+                    break;
+            }
         }
 
         $setPageParameters = function(\View\Layout $page) use (
