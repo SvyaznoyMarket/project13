@@ -1217,22 +1217,22 @@ $.fn.slots = function (slot_config, animations_config) {
                 }
 
             },
-            setReelAnimation:function($reelEl){
+            setReelAnimation: function ($reelEl) {
                 var self = $el.slotMachine;
-                console.log('self.demoModeSpped ',self.demoModeSpped );
+                console.log('self.demoModeSpped ', self.demoModeSpped);
                 var cfgSpeed = self.demoModeSpped ? self.config.reelDemoSpinSpeed : self.config.reelSpinSpeed;
-                    //$el.slotMachine.demoModeSpped = true;
+                //$el.slotMachine.demoModeSpped = true;
                 var speedTime = cfgSpeed ? cfgSpeed : 6;
-
-                    $reelEl.attr('style','-webkit-animation: x-spin '+speedTime+'s linear infinite; -moz-animation: x-spin '+speedTime+'s linear infinite; -ms-animation: x-spin '+speedTime+'s linear infinite; -o-animation: x-spin '+speedTime+'s linear infinite; animation: x-spin '+speedTime+'s linear infinite;');
+                console.log('cfgSpeed ', cfgSpeed);
+                setTimeout(function () {
+                    $reelEl.attr('style', '-webkit-animation: x-spin ' + speedTime + 's linear infinite; -moz-animation: x-spin ' + speedTime + 's linear infinite; -ms-animation: x-spin ' + speedTime + 's linear infinite; -o-animation: x-spin ' + speedTime + 's linear infinite; animation: x-spin ' + speedTime + 's linear infinite;');
+                }, 50);
 
 
             },
-            stopReelAnimation:function($reelEl){
+            stopReelAnimation: function ($reelEl) {
                 var self = $el.slotMachine;
-                $reelEl.attr('style','');
-
-
+                $reelEl.attr('style', '');
             },
             setupCips: function (chip) {
                 var self = this;
@@ -1244,7 +1244,7 @@ $.fn.slots = function (slot_config, animations_config) {
                     console.log('chips height ', $('.reel:first .chips').height());
                     self.ie.spinEm(chip.parent(), 118 * $('.reel:first .chips .chip').length);
                 } else {
-                    self.radius = (18.529411764705884*chip.length);
+                    self.radius = (18.529411764705884 * chip.length);
                     chip.each(function (index) {
 
 
@@ -1341,10 +1341,10 @@ $.fn.slots = function (slot_config, animations_config) {
                 reels[2] && ch3.find('.border').attr('style', 'background-image: url(' + reels[2].background + ');  background-position: center; background-repeat: no-repeat; background-size: 100%; ');
                 reels[1] && winCh.find('.border').attr('style', 'background-image: url(' + reels[1].background + ');  background-position: center; background-repeat: no-repeat; background-size: 100%; ');
 
-                reels[0] && ch1.find('.cuponPrice').text(reels[0].value);
-                reels[1] && ch2.find('.cuponPrice').text(reels[1].value);
-                reels[2] && ch3.find('.cuponPrice').text(reels[2].value);
-                reels[1] && winCh.find('.cuponPrice').text(reels[1].value);
+                reels[0] && ch1.find('.cuponPrice').text(reels[0].value + (reels[0].is_currency ? ' <span class="rubl">p</span>' : '%'));
+                reels[1] && ch2.find('.cuponPrice').text(reels[1].value + (reels[1].is_currency ? ' <span class="rubl">p</span>' : '%'));
+                reels[2] && ch3.find('.cuponPrice').text(reels[2].value + (reels[2].is_currency ? ' <span class="rubl">p</span>' : '%'));
+                reels[1] && winCh.find('.cuponPrice').text(reels[1].value + (reels[1].is_currency ? ' <span class="rubl">p</span>' : '%'));
 
                 reels[0] && ch1.find('.cuponIco img').attr('src', reels[0].icon);
                 reels[1] && ch2.find('.cuponIco img').attr('src', reels[1].icon);
@@ -1362,6 +1362,7 @@ $.fn.slots = function (slot_config, animations_config) {
                 var self = $el.slotMachine;
                 var game = this;
                 game.inGame = true;
+                $el.slotMachine.demoModeSpped = false;
                 game.buttonsRow.find('.stop .reel_dot').removeClass('on');
                 self.setLedPanelOptions('spining');// ставим параметры лед панели
                 self.ledAnimations.animationHandler.startAnimation();//стартуем акнимацию лед панели
@@ -1369,6 +1370,7 @@ $.fn.slots = function (slot_config, animations_config) {
                 self.reels.removeClass('stop_spinning');
                 if (!self.isie) {
                     self.reels.addClass('spinning');//стартуем анимацию кручения
+                    self.game.stopReelAnimation(self.reels);
                     self.game.setReelAnimation(self.reels);
                 } else {
                     self.game.ie.spinEm($('#reel1 .chips'), 118 * $('.reel:first .chips .chip').length);
@@ -1379,7 +1381,7 @@ $.fn.slots = function (slot_config, animations_config) {
                 self.messageBox.setRandomText('spinning');//пишем текст текстовой панели
                 self.messageBox.animateText("spiningAnimation");//стартуем анимацию текстовой панели
                 clearTimeout(self.spinningTimeout);
-                $el.slotMachine.demoModeSpped = false;
+
                 self.spinningTimeout = null;//чистим таймаут
 
                 self.spinningTimeout = setTimeout(function () {//ставим таймер на максимальное кручение спинов
@@ -1760,8 +1762,8 @@ $.fn.slots = function (slot_config, animations_config) {
                 var anim = this;
                 var self = $el.slotMachine;
                 if (!self.isStopped) {
-
-                    setTimeout(function () {
+                    clearInterval(self.ledStepIntervalAnimation);
+                    self.ledStepIntervalAnimation = setTimeout(function () {
                         self.ledAnimations.render(self.options.type, self.options.n, self.options.m);
                         requestAnimationFrame(self.ledAnimations.step);
                     }, 1000 / self.options.speed);
@@ -1780,7 +1782,7 @@ $.fn.slots = function (slot_config, animations_config) {
             var self = this;
             if (!self.isie) {
                 $reel.removeClass('spinning');
-                self.game.stopReelAnimation(self.reels);
+                self.game.stopReelAnimation($reel);
 
                 $reel.addClass('stop_spinning');
             } else {
