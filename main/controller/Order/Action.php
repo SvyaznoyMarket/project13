@@ -617,7 +617,7 @@ class Action {
         }
 
         // абтест для обязательно поля email
-        if (\App::abTest()->getCase()->getKey() == 'emails' && !$form->getOneClick()) {
+        if (\App::abTest()->getTest('other')->getChosenCase()->getKey() == 'emails' && !$form->getOneClick()) {
             $email = $form->getEmail();
             $emailValidator = new \Validator\Email();
             if (!$emailValidator->isValid($email)) {
