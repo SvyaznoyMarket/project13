@@ -9,7 +9,9 @@ return function(
     $openFilter,
     array $promoStyle = [],
     array $categories = [],
-    \Model\Product\Category\Entity $selectedCategory = null
+    \Model\Product\Category\Entity $selectedCategory = null,
+    \Iterator\EntityPager $productPager = null,
+    $hasBanner = null
 ) {
     /**
      * @var $filters    \Model\Product\Filter\Entity[]
@@ -72,6 +74,10 @@ return function(
 
     $showParamsButton = (bool) ($countInListFilters > 1 || !$priceFilter);
 
+    $countProducts = null;
+    if ($productPager && (bool)$productFilter->getValues()) {
+        $countProducts = $hasBanner ? ($productPager->count() - 1) : $productPager->count();
+    }
 ?>
     <form id="productCatalog-filter-form" class="bFilter clearfix" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
         <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
@@ -86,7 +92,7 @@ return function(
             } ?>
 
             <div class="bBtnPick clearfix">
-                <button type="submit" class="bBtnPick__eLink mBtnGrey">Подобрать</button>
+                <button type="submit" class="bBtnPick__eLink mBtnGrey">Подобрать<?= $countProducts ? " ($countProducts)" : '' ?></button>
             </div>
         </div>
 

@@ -1113,6 +1113,7 @@ class Action {
         $page->setParam('productView', $productView);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setParam('sidebarHotlinks', true);
+        $page->setParam('hasBanner', $hasBanner);
 
         return new \Http\Response($page->show());
     }
