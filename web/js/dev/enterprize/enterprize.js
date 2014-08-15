@@ -207,10 +207,6 @@
 						return false;
 					}
 
-					if ( response.data.hasOwnProperty('flocktory') ) {
-						analytics.flocktoryEnterprizeReg(response.data.flocktory);
-					}
-
 					if ( response.data.link !== undefined ) {
 						window.location.href = response.data.link;
 					}
@@ -219,26 +215,6 @@
 					}
 
 					return false;
-				},
-
-				analytics = {
-					/**
-					 * Отслеживание регистрации в EnterPrize для Flocktory
-					 * @param flocktoryData
-					 */
-					flocktoryEnterprizeReg: function(flocktoryData) {
-						var
-							data,
-							_flocktory = window._flocktory || [];
-						// end of vars
-
-						data = ['postcheckout', flocktoryData];
-
-						console.info("Analytics flocktoryEnterprizeReg");
-						console.log(data);
-
-						_flocktory.push(data);
-					}
 				};
 			// end of functions
 

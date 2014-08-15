@@ -731,10 +731,10 @@ class Cart {
         ];
 
         try {
+            $response = $default;
+
             // если в корзине есть товары или услуги
             if (((bool)$this->getProductsQuantity() || (bool)$this->getServicesQuantity())) {
-                $response = $default;
-
                 // сертификат
                 $certificates = $this->getCertificates();
                 $certificate = is_array($certificates) ? reset($certificates) : null;
@@ -786,7 +786,9 @@ class Cart {
                         ],
                         $data,
                         function ($data) use (&$response) {
-                            $response = $data;
+                            if ((bool)$data) {
+                                $response = $data;
+                            }
                         },
                         function(\Exception $e) use (&$isFailed) {
                             $isFailed = true;
@@ -806,7 +808,9 @@ class Cart {
                                 'warranty_list' => $this->getWarrantyData(),
                             ],
                             function ($data) use (&$response) {
-                                $response = $data;
+                                if ((bool)$data) {
+                                    $response = $data;
+                                }
                             }
                         );
                         \App::coreClientV2()->execute();
@@ -821,13 +825,13 @@ class Cart {
                             'warranty_list' => $this->getWarrantyData(),
                         ],
                         function ($data) use (&$response) {
-                            $response = $data;
+                            if ((bool)$data) {
+                                $response = $data;
+                            }
                         }
                     );
                     \App::coreClientV2()->execute();
                 }
-            } else {
-                $response = $default;
             }
         } catch(\Exception $e) {
             \App::logger()->error($e, ['session', 'cart']);

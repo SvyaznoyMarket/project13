@@ -344,7 +344,7 @@ foreach ($productsById as $product) {
 
 		<div class="bHeadnote" data-bind="visible: !$root.lifeGift()">
             <? if ($user->getEntity()): ?>
-                Привет, <a href="<?= $page->url('user') ?>"><strong><?= $user->getEntity()->getName() ?></strong></a>
+                Привет, <a href="<?= $page->url(\App::config()->user['defaultRoute']) ?>"><strong><?= $user->getEntity()->getName() ?></strong></a>
             <? else: ?>
                 Уже покупали у нас?
                 <strong><a id="auth-link" class="underline bAuthLink" href="<?= $page->url('user.login') ?>">Авторизуйтесь</a></strong>

@@ -482,6 +482,7 @@ window.ANALYTICS = {
 			route 		= template.substring(0, (templSep > 0) ? templSep : templLen),
 			rType 		= (templSep > 0) ? template.substring(templSep + 1, templLen) : '',
 			data		= $('#gaJS').data('vars'),
+			useTchiboAnalytics = Boolean($('#gaJS').data('use-tchibo-analytics')),
 		// end of vars
 
 			gaBannerClick = function gaBannerClick( BannerId ) {
@@ -800,6 +801,16 @@ window.ANALYTICS = {
 				return false; // метод ga не определён, ошибка, нечего анализировать, выходим
 			}
 			ga( 'create', 'UA-25485956-5', 'enter.ru' );
+
+			if ( true === useTchiboAnalytics ) {
+				ga('create', 'UA-12345-6', 'auto', {'name': 'tchiboTracker'});
+
+				if( data && 'object' === typeof(data.vars) && data.vars ) {
+					console.log('TchiboGA: tchiboTracker.send pageview');
+					console.log(data.vars);
+					ga('tchiboTracker.send', 'pageview');
+				}
+			}
 
 			ga_action();
 
@@ -1931,7 +1942,7 @@ window.ANALYTICS = {
 	flocktoryEnterprizeJS: function() {
 		console.groupCollapsed('ports.js::flocktoryEnterprizeJS');
 
-		this.flocktoryAddScript();
+//		this.flocktoryAddScript();
 
 		var
 			data = {
@@ -2032,14 +2043,66 @@ window.ANALYTICS = {
 	},
 
 	flocktoryEnterprizeFormJS: function() {
-		this.flocktoryAddScript();
+//		this.flocktoryAddScript();
 
 		var s = document.createElement('script');
 		s.type = 'text/javascript';
 		s.async = true;
-		s.src = "//api.flocktory.com/v2/loader.js?1401=";
+		s.src = "//api.flocktory.com/v2/loader.js?site_id=1401";
 		var l = document.getElementsByTagName('script')[0];
 		l.parentNode.insertBefore(s, l);
+	},
+
+	flocktoryEnterprizeRegJS: function() {
+		var
+			data = $("#flocktoryEnterprizeRegJS").data('value');
+		// end of vars
+
+		var
+			action = function( userInfo ) {
+				var result;
+
+				if (
+					!data ||
+					!userInfo ||
+					!userInfo.hasOwnProperty('email') || !userInfo.email ||
+					!userInfo.hasOwnProperty('name') || !userInfo.name
+				) {
+					return;
+				}
+
+				data.user.email = userInfo.email;
+				data.user.name = userInfo.name;
+
+				if ( userInfo.hasOwnProperty('sex') ) {
+					data.user.sex = 1 == userInfo.sex ? 'm' : (2 == userInfo.sex ? 'f' : null);
+				}
+
+				result = ['postcheckout', data];
+
+				console.info("Analytics flocktoryEnterprizeReg");
+				console.log(result);
+
+				window.flocktory.push(result);
+			};
+		// end of functions
+
+		if ( !data ) {
+			return;
+		}
+
+		window.flocktory = window.flocktory || [];
+
+		if ( ENTER.config.userInfo === false ) {
+			// пользователь должен быть авторизован
+			return;
+		}
+		else if ( !ENTER.config.userInfo ) {
+			$("body").on("userLogged", function() {action(ENTER.config.userInfo)} );
+		}
+		else {
+			action(ENTER.config.userInfo);
+		}
 	},
 
 	enable : true

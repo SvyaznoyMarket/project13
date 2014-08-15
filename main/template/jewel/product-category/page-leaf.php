@@ -64,7 +64,6 @@
       'category'               => $category,
       'view'                   => $productView,
       'productVideosByProduct' => $productVideosByProduct,
-      'itemsPerRow'            => $itemsPerRow,
       'isAddInfo'              => true,
   )) ?>
 

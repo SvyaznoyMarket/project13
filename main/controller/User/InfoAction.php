@@ -61,7 +61,7 @@ class InfoAction {
             /** @var \Model\User\Entity|null $userEntity */
             if ($userEntity = $user->getEntity()) {
                 $responseData['user']['name'] = $userEntity->getName();
-                $responseData['user']['link'] = \App::router()->generate('user');
+                $responseData['user']['link'] = \App::router()->generate('user.orders');
                 $responseData['user']['isSubscribed'] = $user->getEntity()->getIsSubscribed();
                 $responseData['user']['id'] = $userEntity->getId();
                 $responseData['user']['email'] = $userEntity->getEmail();

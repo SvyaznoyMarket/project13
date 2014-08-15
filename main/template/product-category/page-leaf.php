@@ -40,7 +40,7 @@
         <? endif ?>
 
         <? if((bool)$slideData): ?>
-            <?= $helper->render('tchibo/promo-catalog', ['slideData' => $slideData]) // promo slider ?>
+            <?= $helper->render('tchibo/promo-catalog', ['slideData' => $slideData, 'categoryToken' => $category->getRoot() ? $category->getRoot()->getToken() : '']) // promo slider ?>
         <? endif ?>
 
         <? if (!empty($promoContent)): ?>
@@ -67,6 +67,8 @@
             'hotlinks'      => $hotlinks,
             'openFilter'    => false,
             'promoStyle'    => $promoStyle,
+            'hasBanner'     => isset($hasBanner) ? (bool)$hasBanner : false,
+            'productPager'  => $productPager,
         ]) // фильтры ?>
         
 

@@ -142,10 +142,12 @@
 
 			disabledBtns = false,// Активность кнопок для пролистования и пагинатора.
 
-			// Флаг для аналитики Tchibo
-			tchiboAnalyticsEnabled = promoCatalog.data('use-tchibo-analytics') !== undefined ? promoCatalog.data('use-tchibo-analytics') : false,
+			// Настройки для аналитики слайдера
+			analyticsConfig = typeof promoCatalog.data('analytics-config') !== "undefined" ? promoCatalog.data('analytics-config') : false,
             // Буфер, для коллекций. Пока _gaq не подгрузился, делаем запись в буфер. Затем трекаем все скопом.
-			tchiboAnalyticsBuffer = [];
+			tchiboAnalyticsBuffer = [],
+			categoryToken = typeof promoCatalog.data('category-token') !== "undefined" ? promoCatalog.data('category-token') : '',
+			documentHidden = false;
 		// end of vars
 
 		var
@@ -393,14 +395,14 @@
 				}
 
 				slideData = data[slideId];
-				if ( slideData.hasOwnProperty('title') && slideData.hasOwnProperty('time') ) {
+				if ( (slideData.hasOwnProperty('title') && slideData.hasOwnProperty('time')) && tchiboAnalytics.checkRule('collection_view') ) {
 					tchiboAnalytics.collectionShow(slideData.title, (slideId*1)+1, slideData.time);
 				}
 			},
 
 			tchiboAnalytics = {
 				init: function() {
-					if ( !tchiboAnalyticsEnabled ){
+					if ( !tchiboAnalytics.isAnalyticsEnabled ){
 						return;
 					}
 
@@ -454,8 +456,61 @@
 						};
 					// end of functions
 
-					body.on('click', '.mTchiboSlider .bPromoCatalogSliderWrap_eSlideLink', collectionClickHandler);
-					body.on('click', '.mTchiboSlider .prodItem > a', productClickHandler);
+					if ( tchiboAnalytics.checkRule('collection_click') ) {
+						body.on('click', '.mTchiboSlider .bPromoCatalogSliderWrap_eSlideLink', collectionClickHandler);
+					}
+
+					if ( tchiboAnalytics.checkRule('product_click') ) {
+						body.on('click', '.mTchiboSlider .prodItem > a', productClickHandler);
+					}
+
+					tchiboAnalytics.pageVisibility();
+				},
+
+				/**
+				 * Управление аналитикой в зависимости от присутствия пользователя на вкладке текущей страницы (Page Visibility API)
+				 */
+				pageVisibility: function() {
+					var
+						hidden, visibilityChange;
+					// end of vars
+
+					var
+						handleVisibilityChange = function() {
+							documentHidden = document[hidden] ? true : false;
+						};
+					// end of functions
+
+					if (
+						!tchiboAnalytics.isAnalyticsEnabled ||
+						!analyticsConfig.hasOwnProperty('use_page_visibility') ||
+						true != analyticsConfig.use_page_visibility
+					) {
+						return;
+					}
+
+					if ( typeof document.hidden !== "undefined" ) { // Opera 12.10 and Firefox 18 and later support
+						hidden = "hidden";
+						visibilityChange = "visibilitychange";
+					} else if ( typeof document.mozHidden !== "undefined" ) {
+						hidden = "mozHidden";
+						visibilityChange = "mozvisibilitychange";
+					} else if ( typeof document.msHidden !== "undefined" ) {
+						hidden = "msHidden";
+						visibilityChange = "msvisibilitychange";
+					} else if ( typeof document.webkitHidden !== "undefined" ) {
+						hidden = "webkitHidden";
+						visibilityChange = "webkitvisibilitychange";
+					}
+
+					handleVisibilityChange();
+
+					if ( typeof document.addEventListener === "undefined" || typeof hidden === "undefined" ) {
+						// requires a browser, such as Google Chrome or Firefox, that supports the Page Visibility API.
+					} else {
+						// Handle page visibility change
+						document.addEventListener(visibilityChange, handleVisibilityChange, false);
+					}
 				},
 
 				/**
@@ -464,48 +519,53 @@
 				 * @param delay					текущая задержка на данном слайдере
 				 */
 				collectionShow: function(collection_name, collection_position, delay) {
-					var
-						item,
-						i;
-					// end of vars
-
-					var
-						collectionViewPush = function collectionViewPush( item ) {
-							if ( !item ) {
-								return;
-							}
-
-							console.info('TchiboSliderAnalytics collection_view');
-							console.log(item);
-							_gaq.push(item);
-						};
-					// end of functions
-
-					if (
-						!tchiboAnalyticsEnabled ||
-						'undefined' == typeof(collection_name) ||
-						'undefined' == typeof(collection_position) ||
-						'undefined' == typeof(delay)
-						) {
-						return;
-					}
-
-					item = ['_trackEvent', 'collection_view', collection_name+'_'+collection_position, delay.toString(), , true];
-
-					if ( 'undefined' == typeof(_gaq) ) {
-						tchiboAnalyticsBuffer.push(item);
-
-						return;
-					}
-
-					if ( tchiboAnalyticsBuffer.length > 0 ) {
-						for ( i=0; i<tchiboAnalyticsBuffer.length; i++ ) {
-							collectionViewPush(tchiboAnalyticsBuffer[i]);
-						}
-						tchiboAnalyticsBuffer = [];
-					}
-
-					collectionViewPush(item);
+//					var
+//						item,
+//						i;
+//					// end of vars
+//
+//					var
+//						collectionViewPush = function collectionViewPush( item ) {
+//							if ( !item ) {
+//								return;
+//							}
+//
+//							console.info('TchiboSliderAnalytics collection_view');
+//							console.log(item);
+//							_gaq.push(item);
+//						};
+//					// end of functions
+//
+//					if (
+//						!tchiboAnalytics.isAnalyticsEnabled ||
+//						'undefined' == typeof(collection_name) ||
+//						'undefined' == typeof(collection_position) ||
+//						'undefined' == typeof(delay)
+//						) {
+//						return;
+//					}
+//
+//					// страница не отображается
+//					if ( true === documentHidden ) {
+//						return;
+//					}
+//
+//					item = ['_trackEvent', 'collection_view', collection_name+'_'+collection_position, delay.toString(), , true];
+//
+//					if ( 'undefined' == typeof(_gaq) ) {
+//						tchiboAnalyticsBuffer.push(item);
+//
+//						return;
+//					}
+//
+//					if ( tchiboAnalyticsBuffer.length > 0 ) {
+//						for ( i=0; i<tchiboAnalyticsBuffer.length; i++ ) {
+//							collectionViewPush(tchiboAnalyticsBuffer[i]);
+//						}
+//						tchiboAnalyticsBuffer = [];
+//					}
+//
+//					collectionViewPush(item);
 				},
 
 				/**
@@ -516,7 +576,7 @@
 					var item;
 
 					if (
-						!tchiboAnalyticsEnabled ||
+						!tchiboAnalytics.isAnalyticsEnabled ||
 						'undefined' == typeof(_gaq) ||
 						'undefined' == typeof(collection_name) ||
 						'undefined' == typeof(collection_position)
@@ -540,7 +600,7 @@
 					var item;
 
 					if (
-						!tchiboAnalyticsEnabled ||
+						!tchiboAnalytics.isAnalyticsEnabled ||
 						'undefined' == typeof(_gaq) ||
 						'undefined' == typeof(collection_name) ||
 						'undefined' == typeof(item_name) ||
@@ -554,6 +614,23 @@
 					console.info('TchiboSliderAnalytics item_click');
 					console.log(item);
 					_gaq.push(item);
+				},
+
+				isAnalyticsEnabled: function() {
+					return analyticsConfig && analyticsConfig.hasOwnProperty('enabled') && true == analyticsConfig.enabled;
+				},
+
+				checkRule: function(rule) {
+					if (
+						tchiboAnalytics.isAnalyticsEnabled &&
+						typeof rule !== "undefined" &&
+						analyticsConfig.hasOwnProperty(rule) && true == analyticsConfig[rule].enabled &&
+						((true == analyticsConfig[rule].tchiboOnly && 'tchibo' === categoryToken) || (true != analyticsConfig[rule].tchiboOnly))
+					) {
+						return true;
+					}
+
+					return false;
 				}
 			};
 		// end of functions
@@ -576,7 +653,7 @@
 		setScrollInterval(toSlide);
 
 		// аналитика показа первого слайда
-		if ( data.hasOwnProperty(toSlide) && data[toSlide].hasOwnProperty('title') && data[toSlide].hasOwnProperty('time') ) {
+		if ( data.hasOwnProperty(toSlide) && data[toSlide].hasOwnProperty('title') && data[toSlide].hasOwnProperty('time') && tchiboAnalytics.checkRule('collection_view') ) {
 			tchiboAnalytics.collectionShow(data[toSlide].title, ((toSlide*1)+1), data[toSlide].time);
 		}
 	}

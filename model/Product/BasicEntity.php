@@ -455,7 +455,7 @@ class BasicEntity {
         $inShowroom = false;
         $inShop = false;
         foreach ($this->getStock() as $stock) {
-            if ($stock->getStoreId()) {
+            if ($stock->getStoreId() && $stock->getQuantity()) {
                 $inStore = true;
             }
             if ($stock->getShopId() && $stock->getQuantity()) { // есть на складе магазина

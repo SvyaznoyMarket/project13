@@ -182,6 +182,10 @@ class AppConfig {
         'enabled' => null,
     ];
     /** @var array */
+    public $googleAnalyticsTchibo = [
+        'enabled' => null,
+    ];
+    /** @var array */
     public $yandexMetrika = [
         'enabled' => null,
     ];
@@ -238,6 +242,16 @@ class AppConfig {
             'enterNumber' => null,
             'secretWord' => null,
             'subdomainNumber' => null,
+        ],
+        'SprosiKupi' => [
+            'timeout' => 1000,
+            'logEnabled' => false,
+            'logDataEnabled' => false,
+        ],
+        'ShopPilot' => [
+            'timeout' => 1000,
+            'logEnabled' => false,
+            'logDataEnabled' => false,
         ],
     ];
 
@@ -422,6 +436,7 @@ class AppConfig {
     /** @var array */
     public $user = [
         'corporateRegister' => null,
+        'defaultRoute'  => null
     ];
 
     /**
@@ -521,7 +536,6 @@ class AppConfig {
         'formDataSessionKey' => null,
         'itemsInSlider' => null,
         'showSlider' => null,
-        'cookieName' => null,
     ];
 
     /** @var array */
@@ -541,7 +555,22 @@ class AppConfig {
 
     /** @var array */
     public $tchiboSlider = [
-        'analyticsEnabled' => null,
+        'analytics' => [
+            'enabled' => null,
+            'use_page_visibility' => null,
+            'collection_view' => [
+                'enabled' => null,
+                'tchiboOnly' => null
+            ],
+            'collection_click' => [
+                'enabled' => null,
+                'tchiboOnly' => null
+            ],
+            'product_click' => [
+                'enabled' => null,
+                'tchiboOnly' => null
+            ],
+        ],
     ];
 
     /** @var bool */
@@ -578,6 +607,14 @@ class AppConfig {
 
     /** @var array */
     public $scmsV2 = [
+        'url'          => null,
+        'timeout'      => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
+    ];
+
+    /** @var array */
+    public $scmsSeo = [
         'url'          => null,
         'timeout'      => null,
         'retryTimeout' => [],

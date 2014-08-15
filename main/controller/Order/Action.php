@@ -188,7 +188,7 @@ class Action {
                         ],
                         [
                             'back_ref'    => $helper->url('order.paymentComplete', array('orderNumber' => $order->getNumber()), true),// обратная ссылка
-                            'email'       => $userEntity ? $userEntity->getEmail() : null,
+                            'email'       => $form->getEmail(),
                             'card_number' => $sclub_card_number,
                             'user_token'  => $request->cookies->get('UserTicket'),// токен кросс-авторизации. может быть передан для Связного-Клуба (UserTicket)
                         ],
@@ -694,7 +694,7 @@ class Action {
         $fillForm = function (array $fields = []) use (&$form, $cookieValue, $region) {
             $data = [];
             foreach ($fields as $k) {
-                if (!array_key_exists($k, $cookieValue) || (('subway_id' == $k) && !$region->getHasSubway())) continue;
+                if (!array_key_exists($k, (array)$cookieValue) || (('subway_id' == $k) && !$region->getHasSubway())) continue;
 
                 if (('recipient_phonenumbers' == $k) && (strlen($cookieValue[$k])) > 10) {
                     $cookieValue[$k] = substr($cookieValue[$k], -10);

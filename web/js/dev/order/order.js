@@ -5,9 +5,9 @@
 	 */
 	var newOrderAnalytics = function newOrderAnalytics() {
 		var
-			data = $('#jsOrder').data('value'),
-			orderData = data.orders,
-			isUsedCartRecommendation = data.isUsedCartRecommendation,
+			data,
+			orderData,
+			isUsedCartRecommendation,
 
 			toKISS_orderInfo = {},
 			toKISS_productInfo = {},
@@ -16,6 +16,16 @@
 
 			sociomanticUrl = ( 'https:' === document.location.protocol ? 'https://' : 'http://' )+'eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru';
 		// end of vars
+
+		if ( !$('#jsOrder').length ) return;
+
+		data = $('#jsOrder').data('value');
+		if ( !data || !data.hasOwnProperty('orders') || !data.hasOwnProperty('isUsedCartRecommendation') ) {
+			return;
+		}
+
+		orderData = data.orders;
+		isUsedCartRecommendation = data.isUsedCartRecommendation;
 
 		console.info('newOrderAnalytics');
 		console.log(orderData);

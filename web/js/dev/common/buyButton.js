@@ -217,9 +217,22 @@
 						productData = data.product;
 					// end of vars
 
+					var
+						tchiboGA = function() {
+							if (typeof window.ga === "undefined" || !productData.hasOwnProperty("isTchiboProduct") || !productData.isTchiboProduct) {
+								return;
+							}
+
+							console.log("TchiboGA: tchiboTracker.send event Add2Basket product [%s, %s]", productData.name, productData.article);
+							ga("tchiboTracker.send", "event", "Add2Basket", productData.name, productData.article);
+						};
+					// end of functions
+
 					if ( !productData || typeof _gaq === 'undefined' ) {
 						return;
 					}
+
+					tchiboGA();
 
                     console.log ("_gaq: _trackEvent Add2Basket product %s", productData.article);
 					_gaq.push(['_trackEvent', 'Add2Basket', 'product', productData.article]);

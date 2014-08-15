@@ -244,23 +244,32 @@
 		 */
 		ajaxResponse = function ajaxResponse( event, xhr, settings ) {
 			var
-				res = JSON.parse(xhr.responseText),
-				debugInfo = res.debug || false,
+				res,
+				debugInfo,
 				siteUrl = settings.url,
 				outNode,
 				html;
 			// end of vars
 
-			if ( !debugInfo ) {
+			try {
+				res = JSON.parse(xhr.responseText);
+				if (!res || typeof res !== "object" || res === null) {
+					throw "JSON.parse error";
+				}
+
+				debugInfo = res.debug || false;
+				if ( !debugInfo ) {
+					throw "debugInfo error";
+				}
+			}
+			catch (e) {
+				console.warn(e);
 				return;
 			}
 
 			html = render['ajax'](siteUrl);
-			
 			debugPanel.append(html);
-
 			outNode = debugPanel.find('.jsDebugPanelContent').eq(debugPanel.find('.jsDebugPanelContent').length - 1);
-
 
 			initPanel( outNode, debugInfo );
 		},

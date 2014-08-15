@@ -202,15 +202,21 @@ class ConfirmEmailAction {
                     throw new \Exception(sprintf('Не пришли данные с хранилища для user_id=%s', $result['user_id']));
                 }
 
-                $storageData = json_decode($storageResult['value']);
+                $storageData = (array)json_decode($storageResult['value']);
 
                 // перелаживаем данные с хранилища в сессию
                 foreach (get_object_vars($storageData) as $name => $value) {
                     $data = array_merge($data, [$name => $value]);
                 }
 
-                // очистка данных в хранилище
-                $delete = \App::coreClientPrivate()->query('storage/delete', ['user_id' => $result['user_id']]);
+                // если в хранилище присутствует флаг Enterprize регистрации, оставляем его
+                if (array_key_exists('isRegistration', $storageData) && (bool)$storageData['isRegistration']) {
+                    $storagePostResult = \App::coreClientPrivate()->query('storage/post', ['user_id' => $result['user_id']], ['isRegistration' => $storageData['isRegistration']]);
+
+                // иначе чистим хранилище
+                } else {
+                    $delete = \App::coreClientPrivate()->query('storage/delete', ['user_id' => $result['user_id']]);
+                }
 
             } catch(\Exception $exception) {
                 \App::exception()->remove($exception);

@@ -1,143 +1,285 @@
 <?php
 /**
- * @var $page               \View\User\OrderPage
- * @var $user               \Session\User
- * @var $deliveryTypesById  \Model\DeliveryType\Entity[]
- * @var $paymentMethodsById \Model\PaymentMethod\Entity[]
- * @var $orders             \Model\Order\Entity[]
- * @var $productsById       \Model\Product\CartEntity[]
- * @var $servicesById       \Model\Product\Service\Entity[]
- * @var $delivery           \Model\Order\Delivery\Entity
+ * @var $page                   \View\User\OrderPage
+ * @var $user                   \Session\User
+ * @var $order                  \Model\User\Order\Entity
+ * @var $products               \Model\Product\Entity[]
+ * @var $delivery               \Model\DeliveryType\Entity
+ * @var $current_orders_count   int
+ * @var $shop                   \Model\Shop\Entity|null
  */
 ?>
 
-<div class="userTitle">Мои заказы (<?= count($orders) ?>)</div>
+<div class="personalPage">
 
-<? if (count($orders) < 1): ?>
-    <div>У Вас пока нет ни одного заказа.</div>
-<? endif ?>
+<?= $page->render('user/_menu', ['page' => $page]) ?>
 
-<? foreach ($orders as $order): ?>
-    <?
-    $deliveries = $order->getDelivery();
-    $delivery = reset($deliveries);
-    $deliveryType = ($delivery && isset($deliveryTypesById[$delivery->getTypeId()])) ? $deliveryTypesById[$delivery->getTypeId()] : null;
+<div class="personalTitle">
+    <a class="td-underl" href="<?= $page->url('user.orders') ?>">Текущие заказы</a> <span class="personalTitle_count"><?= $current_orders_count ?></span>
+</div>
 
-    $paymentMethod = ($order->getPaymentId() && isset($paymentMethodsById[$order->getPaymentId()])) ? $paymentMethodsById[$order->getPaymentId()] : null;
-    ?>
-
-<!--    <?/* if (\Model\Order\Entity::STATUS_READY == $order->getStatusId()): */?>
-        <div class="fr font16 orange">Заказ выполнен</div>
-    <?/* elseif (\Model\Order\Entity::PAYMENT_STATUS_PAID == $order->getPaymentStatusId()): */?>
-        <div class="fr font16 green">заказ оплачен</div>
-    <?/* elseif (\Model\Order\Entity::STATUS_CANCELED == $order->getStatusId()): */?>
-        <div class="fr font16 red">заказ отменен</div>
-    --><?/* endif; */?>
-
-    <div class="userTitleOrder">
-        
-        Заказ <strong>№ <?= $order->getNumber() ?></strong>
-        
-        <? if ($order->getCreatedAt()): ?>
-            от <?= $order->getCreatedAt()->format('d.m.Y') ?>
-        <? endif ?>
-
-
-        <!--на сумму&nbsp;<?= $page->helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span>-->
+<div class="personalPage_left">
+    <div class="personalPage_head clearfix">
+        <h2 class="personalPage_head_left">Заказ <?= $order->getNumberErp() ?> от <?= $order->getCreatedAt()->format('d.m.y')?></h2>
+ <!--       <div class="personalPage_head_right">
+            Получить номер заказа:
+            <button class="personalPage_head_btn btnLightGrey va-m">SMS</button>
+            <button class="personalPage_head_btn btnLightGrey va-m">e-mail</button>
+        </div>-->
     </div>
 
-    <table class="order">
-        <? foreach ($order->getProduct() as $orderProduct): ?>
-            <?
-                if (empty($productsById[$orderProduct->getId()])) continue;
-                $product = $productsById[$orderProduct->getId()];
+    <? if ((bool)$order->getLifecycle()) : ?>
+    <!-- статусы заказа -->
+    <ul class="personalControl personalControl-arrow">
+
+        <? foreach ($order->getLifecycle() as $key => $cycle) : ?>
+
+            <?  $classList = '';
+
+                // стрелка для всех, кроме последнего
+                if ($key == count($order->getLifecycle()) - 1) {
+                    $classList .= ' personalControl_item-last';
+                } else {
+                    $classList .= ' personalControl_item-arrow';
+                }
+
+                // галочка для выполненных
+                if ($cycle->getCompleted()) {
+                    if (isset($order->getLifecycle()[$key + 1]) && $order->getLifecycle()[$key + 1]->getCompleted()) {
+                        $classList .= ' personalControl_item-past';
+                    } else {
+                        $classList .= ' personalControl_item-active';
+                    }
+                }
+
+                // последний выполнен
+                if ($key == count($order->getLifecycle()) - 1 && $cycle->getCompleted()) $classList .= ' personalControl_item-active'
             ?>
-            <tr>
-                <th>
-                    <a href="<?= $product->getLink() ?>">
-                        <?= $product->getName() ?>
-                        <? if ($orderProduct->getQuantity()): ?>
-                            (<?= $orderProduct->getQuantity() ?> шт.)
-                        <? endif ?>
-                    </a>
-                </th>
-                <td>
-                    <strong class="font14"><?= $page->helper->formatPrice($orderProduct->getPrice()) ?>&nbsp;<span class="rubl">p</span></strong>
-                </td>
-            </tr>
 
-            <? if ($orderProduct->getWarrantyId() && ($warranty = $product->getWarrantyById($orderProduct->getWarrantyId()))): ?>
-            <tr>
-                <th>
-                    <?= $warranty->getName() ?>
-                </th>
-                <td>
-                    <strong class="font14"><?= $orderProduct->getWarrantyPrice() ?>&nbsp;<span class="rubl">p</span></strong>
-                </td>
-            </tr>
-            <? endif ?>
-        <? endforeach ?>
+            <li class="personalControl_item <?= $classList ?>">
+                <?= $cycle->getTitle() ?>
+            </li>
 
-        <? foreach ($order->getService() as $orderService): ?>
-            <?
-                if (empty($servicesById[$orderService->getId()])) continue;
-                $service = $servicesById[$orderService->getId()];
-            ?>
-            <tr>
-                <th>
-                    <a href="<?= $page->url('service.show', array('serviceToken' => $service->getToken())) ?>">
-                        <?= $service->getName() ?>
-                        <? if ($orderService->getQuantity()): ?>
-                            (<?= $orderService->getQuantity() ?> шт.)
-                        <? endif ?>
-                    </a>
-                </th>
-                <td>
-                    <strong class="font14"><?= $page->helper->formatPrice($orderService->getPrice()) ?>&nbsp;<span class="rubl">p</span></strong>
-                </td>
-            </tr>
-        <? endforeach ?>
+        <? endforeach; ?>
 
-        <? if ($deliveryType): ?>
-            <tr>
-                <th>
-                    <?= $deliveryType ? $deliveryType->getName() : '' ?>
-                </th>
-                <td>
-                <? if ($delivery->getPrice()): ?>
-                    <strong class="font14"><?= $page->helper->formatPrice($delivery->getPrice()) ?>&nbsp;<span class="rubl">p</span></strong>
-                <? endif ?>
-                </td>
-            </tr>
-        <? endif ?>
+    </ul>
+    <!--/ статусы заказа -->
+    <? endif; ?>
 
-        <tr>
-            <th>
-                <? if ($delivery && $delivery->getDeliveredAt()): ?>
-                <div class="font12">
-                    <?= $delivery->getDeliveredAt()->format('d.m.Y') ?>
-                </div>
-                <? endif ?>
+    <!-- информация о заказе -->
+    <div class="personalInfo">
+        <p><strong><?= $delivery ? $delivery->getShortName() : '' ?></strong> <mark class="colorBlack"><?= $order->getDeliveryDate() ?></mark></p>
 
-                <? if ($paymentMethod): ?>
-                <div class="font12">
-                    <?= $paymentMethod->getName() ?>
-                </div>
-                <? endif ?>
+        <? if ($delivery && in_array($delivery->getToken(), ['now', 'self']) && $shop) : ?>
 
-                <? if ($user->getEntity() && $user->getEntity()->getIsCorporative()): ?>
-                    <div class="font12">Счет:
-                        <? if ($order->getBill()): ?>
-                            <a href="<?= $page->url('order.bill', array('orderNumber' => $order->getNumber())) ?>">выставлен</a>
-                        <? else: ?>
-                            выставляется
-                        <? endif ?>
+        <div class="personalTable">
+            <div class="personalTable_row">
+                <div class="personalTable_cell w90">из магазина</div>
+
+                <div class="personalTable_cell">
+                    <? if ((bool)$shop->getSubway()) : ?>
+                    <mark class="decorColor-bullet" style="color: <?= $shop->getSubway()[0]->getLine()->getColor() ?>"><span class="colorBlack"><?= $shop->getSubway()[0]->getName() ?></span></mark>
+                    <? endif; ?>
+                    <div class="shopsInfo">
+
+                        <span class="colorBrightGrey"><?= $shop->getAddress() ?></span>
+
+                        <div class="shopsInfo_time">
+                            <span class="colorBrightGrey">Режим работы:</span> с <?= $shop->getWorkingTimeToday()['start_time'] /* TODO день работы на день вывоза */?> до <?= $shop->getWorkingTimeToday()['end_time'] /* TODO день работы на день вывоза */?> &nbsp;
+                            <span class="colorBrightGrey">Оплата при получении: </span>
+                            <img src="/styles/personal-page/img/nal.png" alt=""/>
+                            <img src="/styles/personal-page/img/card.png" alt=""/>
+                        </div>
                     </div>
-                <? endif ?>
-            </th>
-            <td>
-                <?= ($order->getPaymentStatusId() == \Model\Order\Entity::PAYMENT_STATUS_PAID) ? 'Оплачено' : 'Итого к оплате' ?>:<br><strong class="font18"><?= $page->helper->formatPrice($order->getPaySum()) ?>&nbsp;<span class="rubl">p</span></strong>
-            </td>
-        </tr>
-    </table>
-<? endforeach ?>
+                </div>
+
+                <div class="personalTable_cell va-m">
+                    <a href="<?= $page->url('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()]) ?>" title="">Как добраться?</a>
+                </div>
+            </div>
+        </div>
+
+        <? endif; ?>
+    </div>
+    <!--/ информация о заказе -->
+
+    <div class="personalTable personalTable-border nomargin">
+
+        <? foreach ($products as $product) : ?>
+
+        <div class="personalTable_row">
+            <div class="personalTable_cell personalTable_cell-mini">
+                <img class="imgProd" src="<?= $product->getImageUrl(0) ?>" alt="" />
+            </div>
+
+            <div class="personalTable_cell personalTable_cell-text">
+                <? $categories = $product->getCategory(); $category = end($categories) ?>
+                <?= $category ? $category->getName() : '' ; ?><br/>
+                <?= $product->getName() ?>
+            </div>
+
+            <div class="personalTable_cell l colorGrey ta-r">
+                <?= $page->helper->formatPrice($order->getProductById($product->getId())->getPrice()) ?> <span class="rubl">p</span><br/>
+            </div>
+
+            <div class="personalTable_cell l colorGrey ta-r"><?= $order->getProductById($product->getId())->getQuantity() ?> шт.</div>
+
+            <div class="personalTable_cell personalTable_cell-l ta-r">
+                <?=  $page->helper->formatPrice($order->getProductById($product->getId())->getSum()) ?> <span class="rubl">p</span><br/>
+            </div>
+        </div>
+
+        <? endforeach; ?>
+
+    </div>
+
+    <div class="personalTable personalTable-border">
+
+        <? if ($order->getCertificateNumber()) : ?>
+        <div class="personalTable_caption">
+            Скидки
+        </div>
+
+<!--        <div class="personalTable_row">
+            <div class="personalTable_cell personalTable_cell-mini">
+                <img class="imgProd" src="/styles/personal-page/img/fishka.png" alt="" />
+            </div>
+
+            <div class="personalTable_cell">
+                Фишка со скидкой 2% на категорию Электроника<br/>
+                Минимальная сумма заказа 6999 руб
+            </div>
+
+            <div class="personalTable_cell personalTable_cell-right l colorRed ta-r">
+                - 400 <span class="rubl">p</span><br/>
+            </div>
+        </div>-->
+
+        <? if ($order->getCertificateNumber()) : ?>
+
+            <div class="personalTable_row">
+                <div class="personalTable_cell personalTable_cell-mini">
+                    <img class="imgProd" src="/styles/personal-page/img/enterLogo.png" alt="" />
+                </div>
+
+                <div class="personalTable_cell">
+                    Подарочный сертификат <?= $page->helper->formatPrice($order->getCertificatePrice()) ?> руб
+                </div>
+
+                <div class="personalTable_cell personalTable_cell-right l colorRed ta-r">
+                    - <?= $page->helper->formatPrice($order->getCertificatePrice()) ?> <span class="rubl">p</span><br/>
+                </div>
+            </div>
+
+        <? endif; ?>
+
+        <? endif; ?>
+
+        <div class="personalTable_rowgroup">
+
+            <? if ( (bool)$order->getDelivery() ) : ?>
+            <div class="personalTable_row personalTable_row-total ta-r">
+                <div class="personalTable_cell">
+                </div>
+
+                <div class="personalTable_cell personalTable_cell-long">
+                    <?= $delivery ? $delivery->getShortName() : '' ?>:
+                </div>
+
+                <div class="personalTable_cell">
+                    <?= $order->getDelivery()->getPrice() == 0 ? 'Бесплатно' : $order->getDelivery()->getPrice() ?>
+                </div>
+            </div>
+            <? endif; ?>
+
+            <div class="personalTable_row personalTable_row-total ta-r">
+                <div class="personalTable_cell">
+                </div>
+
+                <div class="personalTable_cell personalTable_cell-long">
+                    Итого:
+                </div>
+
+                <div class="personalTable_cell l">
+                    <? if ($order->getPaySum() != $order->getSum() ) : ?>
+                        <span class="colorGrey td-lineth"><?= $page->helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span></span><br/>
+                    <? endif ?>
+                    <?= $page->helper->formatPrice($order->getPaySum()) ?> <span class="rubl">p</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- сайдбар онлайн оплаты -->
+<aside class="personalPage_right">
+
+    <? if ($order->getPaymentStatusId() == 2) : // Оплачено ?>
+
+        <ul class="paySumm">
+            <li>Сумма заказа: <span class="paySumm_val"><?= $page->helper->formatPrice($order->getPaySum()) ?> <span class="rubl">p</span></span></li>
+        </ul>
+
+        <div class="payComplete"></div>
+
+    <? else : // Не оплачено ?>
+
+        <ul class="paySumm">
+            <li>Сумма заказа: <span class="paySumm_val"><?= $page->helper->formatPrice($order->getPaySum()) ?> <span class="rubl">p</span></span></li>
+            <!--<li>Оплачено: <span class="paySumm_val"> <span class="rubl">p</span></span></li>-->
+            <li>К оплате: <span class="paySumm_val"><?= $page->helper->formatPrice($order->getPaySum()) ?> <span class="rubl">p</span></span></li>
+        </ul>
+
+        <? if ($order->getPaymentStatusId() == 3 || $order->getPaymentStatusId() == 6) : // Заявка на кредит? ?>
+
+            <!--<menu class="payCommands">
+                <ul class="payCommandsList payCommandsList-mark">
+                    <li class="payCommandsList_item">
+                        <div class="titlePay">Кредит</div>
+
+                        <button class="btnPay btnLightGrey">Заполнить заявку</button>
+
+                        <span class="descPay">
+                            <img src="/styles/personal-page/img/cards/renesans.png" alt="" class="descPay_img" />
+                            <img src="/styles/personal-page/img/cards/tinkoff.png" alt="" class="descPay_img" />
+                            <img src="/styles/personal-page/img/cards/otpBank.png" alt="" class="descPay_img" />
+                        </span>
+                    </li>
+                </ul>
+            </menu>-->
+
+        <? else : ?>
+
+            <!--<menu class="payCommands">
+                <ul class="payCommandsList">
+                    <li class="payCommandsList_item mb20">
+                        <button class="btnPay btnLightGrey">Оплатить баллами</button>
+
+                        <span class="descPay">
+                            <img src="/styles/personal-page/img/cards/sclub.png" alt="" class="descPay_img" />
+                            <img src="/styles/personal-page/img/cards/sber.png" alt="" class="descPay_img" />
+                        </span>
+                    </li>
+
+                    <li class="payCommandsList_item">
+                        <button class="btnPay btnLightGrey">Оплатить онлайн</button>
+
+                        <span class="descPay">
+                            <img src="/styles/personal-page/img/cards/MasterCard.png" alt="" class="descPay_img" />
+                            <img src="/styles/personal-page/img/cards/Visa.png" alt="" class="descPay_img" />
+                            <img src="/styles/personal-page/img/cards/Maestro.png" alt="" class="descPay_img" />
+                            <img src="/styles/personal-page/img/cards/paypal.png" alt="" class="descPay_img" />
+                            <img src="/styles/personal-page/img/cards/psb.png" alt="" class="descPay_img" />
+                        </span>
+                    </li>
+                </ul>
+            </menu>-->
+
+        <? endif; ?>
+
+    <? endif; ?>
+
+
+</aside>
+<!--/ сайдбар онлайн оплаты -->
+</div>

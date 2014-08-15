@@ -565,13 +565,28 @@ class App {
 
     /**
      * @static
-     * @return \Scms\Client
+     * @return \Scms\ClientV2
      */
     public static function scmsClientV2() {
         static $instance;
 
         if (!$instance) {
             $instance = new \Scms\ClientV2(self::config()->scmsV2, self::curl());
+        }
+
+        return $instance;
+    }
+
+
+    /**
+     * @static
+     * @return \Scms\ClientV2
+     */
+    public static function scmsSeoClient() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Scms\ClientV2(self::config()->scmsSeo, self::curl());
         }
 
         return $instance;

@@ -57,6 +57,11 @@ class ListAction {
         return [
             'products' => $productData,
             'productCount' => count($productData), // кол-во продуктов на странице с учётом смещений
+            'abtestKeys' => [
+                'sprosikupi' => (\App::abTest()->getCase()->getKey() === 'reviews_sprosikupi'),
+                'shoppilot' => (\App::abTest()->getCase()->getKey() === 'reviews_shoppilot'),
+                'default' => (\App::abTest()->getCase()->getKey() !== 'reviews_sprosikupi' && \App::abTest()->getCase()->getKey() !== 'reviews_shoppilot'),
+            ],
         ];
     }
 }

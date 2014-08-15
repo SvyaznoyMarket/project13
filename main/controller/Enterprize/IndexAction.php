@@ -26,7 +26,11 @@ class IndexAction {
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
         // SITE-3931, SITE-3934
-        $isCouponSent = (bool)$request->cookies->get(\App::config()->enterprize['cookieName']);
+        $isCouponSent = isset($data['isCouponSent']) ? (bool)$data['isCouponSent'] : false;
+        if ($isCouponSent) {
+            unset($data['isCouponSent']);
+            $session->set($sessionName, $data);
+        }
 
         // получение купонов
         /**
@@ -46,7 +50,7 @@ class IndexAction {
                         $enterpizeCoupon = $coupon;
                     }
                 }
-            });
+            }, $isCouponSent ? 0 : null);
         } catch (\Exception $e) {
             \App::logger()->error($e);
             \App::exception()->remove($e);
@@ -91,7 +95,7 @@ class IndexAction {
         \App::curl()->execute();
 
         // отфильтровываем ненужные купоны
-        $enterpizeCoupons = array_filter($enterpizeCoupons, function($coupon) use ($limits, $userCouponSeries) {
+        $enterpizeCoupons = array_filter($enterpizeCoupons, function($coupon) use ($limits, $userCouponSeries, $user) {
             if (!$coupon instanceof \Model\EnterprizeCoupon\Entity || !array_key_exists($coupon->getToken(), $limits)) return false;
 
             // убераем купоны с кол-вом <= 0
@@ -102,6 +106,8 @@ class IndexAction {
 
             if (!(bool)$coupon->isForMember() && !(bool)$coupon->isForNotMember()) return false;
 
+            if ($user && $user->isEnterprizeMember() && !(bool)$coupon->isForMember() && (bool)$coupon->isForNotMember()) return false;
+
             return true;
         });
 
@@ -111,19 +117,75 @@ class IndexAction {
             $products = \Controller\Enterprize\FormAction::getProducts($enterpizeCoupon);
         }
 
+        /* SITE-4110 Задаем флаг полной регистрации в EnterPrize. Полная регистрация включает в себя регистрацию
+           с помощью метода "coupon/register-in-enter-prize" и подтверждение телефона и email-а */
+        $isRegistration = false;
+        if ($isCouponSent) {
+            try {
+                // получение флага с сессии
+                if (array_key_exists('isRegistration', $data)) {
+                    $isRegistration = $data['isRegistration'];
+
+                    // чистим флаг в сессии
+                    unset($data['isRegistration']);
+                    $session->set($sessionName, $data);
+                }
+
+                if (!$user || !$user->getId()) {
+                    throw new \Exception('Купон получили, но пользователь не авторизован');
+                }
+
+                // получение флага с хранилища
+                $storageResult = \App::coreClientPrivate()->query('storage/get', ['user_id' => $user->getId()]);
+                if (!(bool)$storageResult || !isset($storageResult['value'])) {
+                    throw new \Exception(sprintf('Не пришли данные с хранилища для user_id=%s', $user->getId()));
+                }
+
+                $storageData = (array)json_decode($storageResult['value']);
+
+                if (array_key_exists('isRegistration', $storageData)) {
+                    $isRegistration = $storageData['isRegistration'];
+
+                    // чистим флаг в хранилище
+                    unset($storageData['isRegistration']);
+                    if (empty($storageData)) {
+                        $delete = \App::coreClientPrivate()->query('storage/delete', ['user_id' => $user->getId()]);
+                    } else {
+                        $post = \App::coreClientPrivate()->query('storage/post', ['user_id' => $user->getId()], $storageData);
+                    }
+                }
+
+            } catch(\Exception $e) {
+                \App::exception()->remove($e);
+                \App::logger()->error($e);
+            }
+        }
+
+        $enterprizeData = [];
+        if ($isRegistration && $isCouponSent && $enterpizeCoupon) {
+            $enterprizeDataDefault = [
+                'name'            => null,
+                'mobile'          => null,
+                'email'           => null,
+                'couponName'      => $enterpizeCoupon->getName(),
+                'enterprizeToken' => $enterpizeCoupon->getToken(),
+                'date'            => date('d.m.Y'),
+                'time'            => date('H:i'),
+                'enter_id'        => !empty($data['token']) ? $data['token'] : \App::user()->getToken(),
+            ];
+            $enterprizeData = array_merge($enterprizeDataDefault, array_intersect_key($data, $enterprizeDataDefault));
+        }
+
         $page = new \View\Enterprize\IndexPage();
         $page->setParam('enterpizeCoupons', $enterpizeCoupons);
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
         $page->setParam('viewParams', ['showSideBanner' => false]);
         $page->setParam('isCouponSent', $isCouponSent);
+        $page->setParam('isRegistration', $isRegistration);
         $page->setParam('products', $products);
+        $page->setParam('hasFlocktoryPopup', (bool)$request->get('flocktory_popup'));
+        $page->setParam('enterprizeData', $enterprizeData);
 
-        $response = new \Http\Response($page->show());
-
-        if ($isCouponSent) {
-            $response->headers-> clearCookie(\App::config()->enterprize['cookieName']);
-        }
-
-        return $response;
+        return new \Http\Response($page->show());
     }
 }

@@ -121,6 +121,19 @@ $c->scmsV2['retryTimeout'] = [
     'forever' => 0,
 ];
 
+$c->scmsSeo['url']          = 'http://scms.enter.ru/seo/';
+$c->scmsSeo['retryCount']   = 2;
+$c->scmsSeo['timeout']      = 0.36;
+$c->scmsSeo['retryTimeout'] = [
+    'default' => 0.18,
+    'tiny'    => 0.18,
+    'short'   => 0.25,
+    'medium'  => 0.5,
+    'long'    => 1,
+    'huge'    => 2,
+    'forever' => 0,
+];
+
 $c->connectTerminal = true;
 
 $c->company['phone'] = '8 (800) 700-00-09';
@@ -131,6 +144,7 @@ $c->jsonLog['enabled'] = true;
 $c->analytics['enabled'] = true;
 $c->analytics['optimizelyEnabled'] = true;
 $c->googleAnalytics['enabled'] = true;
+$c->googleAnalyticsTchibo['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;
 $c->kissmentrics['enabled'] = true;
 $c->kissmentrics['cookieName']['needUpdate'] = 'kissNeedUpdate';
@@ -342,6 +356,7 @@ $c->coupon['enabled'] = true;
 $c->blackcard['enabled'] = false;
 
 $c->user['corporateRegister'] = true;
+$c->user['defaultRoute'] = 'user.orders';
 
 $c->database['host']     = 'site-db';
 $c->database['name']     = 'enter';
@@ -407,30 +422,50 @@ $c->enterprize['enabled'] = true;
 $c->enterprize['formDataSessionKey'] = 'enterprizeForm';
 $c->enterprize['itemsInSlider'] = 7;
 $c->enterprize['showSlider'] = true;
-$c->enterprize['cookieName'] = 'enterprize_coupon_sent';
 
 $c->tchibo['rowWidth'] = 78;
 $c->tchibo['rowHeight'] = 78;
 $c->tchibo['rowPadding'] = 0;
-$c->tchiboSlider['analyticsEnabled'] = true;
+$c->tchiboSlider['analytics'] = [
+    'enabled' => true,
+    'use_page_visibility' => true,
+    'collection_view' => [
+        'enabled' => false,
+        'tchiboOnly' => true
+    ],
+    'collection_click' => [
+        'enabled' => true,
+        'tchiboOnly' => false
+    ],
+    'product_click' => [
+        'enabled' => true,
+        'tchiboOnly' => false
+    ],
+];
 
 // настройки для АБ-тестов могут быть переопределены в json
 $c->abtest['cookieName'] = 'switch';
 $c->abtest['enabled']    = true;
 $c->abtest['checkPeriod'] = 3600; //секунд - как часто проверять необходимость запуска теста
-$c->abtest['bestBefore'] = '2013-09-23';
+$c->abtest['bestBefore'] = '2014-09-08';
 $c->abtest['test']       = [
     [
-        'traffic'  => 50,
-        'key'      => 'retailrocket',
-        'name'     => "Похожие товары от RetailRocket",
-        'ga_event' => 'RetailRocket',
+        'traffic'  => 33,
+        'key'      => 'reviews_sprosikupi',
+        'name'     => "Отзывы от sprosikupi",
+        'ga_event' => 'reviews_sprosikupi',
     ],
     [
-        'traffic'  => 50,
-        'key'      => 'retailrocket',
-        'name'     => "С этим товаром также смотрят от RetailRocket",
-        'ga_event' => 'RetailRocket',
+        'traffic'  => 33,
+        'key'      => 'reviews_shoppilot',
+        'name'     => "Отзывы от shoppilot",
+        'ga_event' => 'reviews_shoppilot',
+    ],
+    [
+        'traffic'  => 34,
+        'key'      => 'reviews_default',
+        'name'     => "Отзывы по умолчанию",
+        'ga_event' => 'reviews_default',
     ],
 ];
 
