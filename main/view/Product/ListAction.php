@@ -54,13 +54,14 @@ class ListAction {
             $productData = array_merge(array_slice($productData, 0, $bannerPlaceholder['position']), [$bannerPlaceholder], array_slice($productData, $bannerPlaceholder['position']));
         }
 
+        $chosenCaseKey = \App::abTest()->getTest('reviews')->getChosenCase()->getKey();
         return [
             'products' => $productData,
             'productCount' => count($productData), // кол-во продуктов на странице с учётом смещений
             'abtestKeys' => [
-                'sprosikupi' => (\App::abTest()->getCase()->getKey() === 'reviews_sprosikupi'),
-                'shoppilot' => (\App::abTest()->getCase()->getKey() === 'reviews_shoppilot'),
-                'default' => (\App::abTest()->getCase()->getKey() !== 'reviews_sprosikupi' && \App::abTest()->getCase()->getKey() !== 'reviews_shoppilot'),
+                'sprosikupi' => ('sprosikupi' === $chosenCaseKey),
+                'shoppilot' => ('shoppilot' === $chosenCaseKey),
+                'default' => ('default' === $chosenCaseKey),
             ],
         ];
     }
