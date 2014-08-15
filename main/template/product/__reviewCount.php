@@ -13,14 +13,14 @@ return function(
 ?>
 
 <div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating" class="bReviewSection clearfix">
-    <? switch (\App::abTest()->getCase()->getKey()):
-        case 'reviews_sprosikupi': ?>
+    <? switch (\App::abTest()->getTest('reviews')->getChosenCase()->getKey()):
+        case 'sprosikupi': ?>
             <div class="sprosikupiRating clearfix">
                 <div class="spk-good-rating" shop-id="52dbdd369928f539612151" good-id="<?= $helper->escape($product->getId()) ?>"></div>
                 <a href="?spkPreState=addReview">Добавить отзыв</a>
             </div>
             <? break ?>
-        <? case 'reviews_shoppilot': ?>
+        <? case 'shoppilot': ?>
             <div id="shoppilot-rating-container"></div>
             <? break ?>
         <? default: ?>

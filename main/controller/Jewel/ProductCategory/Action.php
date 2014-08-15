@@ -198,7 +198,7 @@ class Action extends \Controller\ProductCategory\Action {
             $subCatMenu = reset($subCatMenu);
         }
 
-        switch (\App::abTest()->getCase()->getKey()) {
+        switch (\App::abTest()->getTest('other')->getChosenCase()->getKey()) {
             case 'jewelItems3':
                 $itemsPerRow = 3;
                 break;
