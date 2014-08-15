@@ -443,12 +443,9 @@ class AppConfig {
      * @var array
      * @hidden
      */
-    public $abtest = [
+    public $abTest = [
         'cookieName'  => null,
-        'bestBefore'  => null,
-        'enabled'     => null,
-        'checkPeriod' => null,
-        'test'        => [],
+        'tests'       => [],
     ];
 
     /**

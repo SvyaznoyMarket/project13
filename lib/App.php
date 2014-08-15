@@ -458,20 +458,20 @@ class App {
     }
 
     /**
-     * @return \Session\Abtest
+     * @return \Session\AbTest\AbTest
      */
     public static function abTest() {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Session\Abtest(self::config()->abtest);
+            $instance = new \Session\AbTest\AbTest();
         }
 
         return $instance;
     }
 
     /**
-     * @return array|null $catalogJson
+     * @param array|null $catalogJson
      * @return \Session\AbtestJson|null
      */
     public static function abTestJson($catalogJson = null) {
