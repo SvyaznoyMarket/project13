@@ -20,7 +20,7 @@ if ($disabled) {
 $inCart = \App::user()->getCart()->hasProduct($product->getId());
 $btnText = $inCart ? 'В корзине' : 'Купить';
 
-$imgSize = isset($itemsPerRow) && 3 == $itemsPerRow ? 3 : 2;
+$imgSize = isset($itemsPerRow) && 3 == $itemsPerRow ? 6 : 2;
 ?>
 
 <li class="bBrandGoodsList__eItem">
