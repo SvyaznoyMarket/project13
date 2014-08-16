@@ -3,6 +3,15 @@
 namespace Controller\Order;
 
 trait ResponseDataTrait {
+    protected $cart;
+
+    protected function getCart() {
+        if (!(bool)$this->cart) {
+            $this->cart = \App::user()->getCart();
+        }
+        return $this->cart;
+    }
+
     /**
      * На основе ошибки модифицирует данные для ответа \Http\JsonResponse:
      * [
@@ -15,7 +24,7 @@ trait ResponseDataTrait {
      */
     protected function failResponseData(\Exception $exception, array &$responseData) {
         $router = \App::router();
-        $cart = \App::user()->getCart();
+        $cart = $this->getCart();
         $region = \App::user()->getRegion();
 
         \App::exception()->remove($exception);
@@ -176,6 +185,9 @@ trait ResponseDataTrait {
                 case 735:
                     $message = $exception->getMessage();
                     $responseData['redirect'] = 0;
+                    break;
+                case 720:
+                    $message = 'Ошибка оформления заказа. Такой заказ уже существует';
                     break;
                 default:
                     $message = 'Ошибка формирования заказа';
