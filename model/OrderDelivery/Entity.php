@@ -298,10 +298,14 @@ namespace Model\OrderDelivery\Entity {
          * @var Point
          */
         public $points;
-        /** Стоимость заказа
+        /** Стоимость заказа (со скидками)
          * @var int
          */
         public $total_cost;
+        /** Стоимость заказа (без скидок)
+         * @var
+         */
+        public $total_original_cost;
         /** @var string */
         public $comment = '';
         /** @var Error[] */
@@ -325,6 +329,7 @@ namespace Model\OrderDelivery\Entity {
 
             if (isset($data['discounts']) && is_array($data['discounts'])) {
                 foreach ($data['discounts'] as $item) {
+                    if ($item['type'] === 'delivery') continue; // не должны отображать скидку на доставку
                     $this->discounts[] = new Order\Discount($item);
                 }
             }
@@ -358,6 +363,7 @@ namespace Model\OrderDelivery\Entity {
             if (isset($data['possible_intervals']) && is_array($data['possible_intervals'])) $this->possible_intervals = (array)$data['possible_intervals'];
 
             if (isset($data['total_cost'])) $this->total_cost = (int)$data['total_cost'];
+            if (isset($data['total_original_cost'])) $this->total_original_cost = (int)$data['total_original_cost'];
 
             if (isset($data['possible_points']) && is_array($data['possible_points'])) {
                 foreach ($data['possible_points'] as $pointsType => $points) {
@@ -650,7 +656,8 @@ namespace Model\OrderDelivery\Entity\Order {
 
         private function validate() {
             foreach (get_object_vars($this) as $name => $value) {
-                if ($this->$name === null) throw new ValidateException("Для скидки не указан $name");
+                // для некоторых скидок может и не быть number (бесплатная доставка)
+                if ($this->$name === null && $name !== 'number') throw new ValidateException("Для скидки не указан $name");
             }
         }
     }

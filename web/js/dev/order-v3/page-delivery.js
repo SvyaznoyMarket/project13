@@ -39,8 +39,10 @@
         changeProductQuantity = function changeProductQuantityF(block_name, id, quantity) {
             sendChanges('changeProductQuantity', {'block_name': block_name, 'id': id, 'quantity': quantity})
         },
-        changePaymentMethod = function changePaymentMethodF(block_name, by_credit_card) {
-            sendChanges('changePaymentMethod', {'block_name': block_name, 'by_credit_card': by_credit_card})
+        changePaymentMethod = function changePaymentMethodF(block_name, method, isActive) {
+            var params = {'block_name': block_name};
+            params[method] = isActive;
+            sendChanges('changePaymentMethod', params)
         },
         changeOrderComment = function changeOrderCommentF(comment){
             sendChanges('changeOrderComment', {'comment': comment})
@@ -94,11 +96,10 @@
 
             if (mapData) {
 
-                console.log('Show map with token = %s', token);
-
                 map.geoObjects.removeAll();
                 map.setCenter([mapOptions.latitude, mapOptions.longitude], mapOptions.zoom);
-                $currentMap.append(ENTER.OrderV3.$map);
+                $currentMap.append(ENTER.OrderV3.$map.show());
+                map.container.fitToViewport();
 
                 for (var i = 0; i < mapData.points[token].length; i++) {
                     var point = mapData.points[token][i];
@@ -119,7 +120,11 @@
                     map.geoObjects.add(placemark);
                 }
 
-                map.setBounds(map.geoObjects.getBounds());
+                if (map.geoObjects.getLength() === 1) {
+                    map.setCenter(map.geoObjects.get(0).geometry.getCoordinates(), 15);
+                } else {
+                    map.setBounds(map.geoObjects.getBounds());
+                }
 
             } else {
                 console.error('No map data for token = "%s", elemId = "%s"', token, elemId, $currentMap);
@@ -131,7 +136,7 @@
     // TODO change all selectors to .jsMethod
 
     // клик по крестику на всплывающих окнах
-    $orderContent.on('click', '.popupFl_clsr', function(e) {
+    $orderContent.on('click', '.jsCloseFl', function(e) {
         e.stopPropagation();
         $(this).closest('.popupFl').hide();
         e.preventDefault();
@@ -232,15 +237,17 @@
     });
 
     // клик по безналичному методу оплаты
-    $orderContent.on('click', '.orderCheck.mb10', function(e){
+    $orderContent.on('change', '.jsCreditCardPayment', function(){
         var $this = $(this),
-            $input = $this.find('input'),
-            block_name = $input.data('block_name');
+            block_name = $this.closest('.orderRow').data('block_name');
+        changePaymentMethod(block_name, 'by_credit_card', $this.is(':checked'))
+    });
 
-        // отсекаем нативный клик по label-у и ловим jQuery trigger
-        if (e.target.nodeName === 'INPUT') {
-            changePaymentMethod(block_name, $input.is(':checked'))
-        }
+    // клик по "купить в кредит"
+    $orderContent.on('change', '.jsCreditPayment', function() {
+        var $this = $(this),
+            block_name = $this.closest('.orderRow').data('block_name');
+        changePaymentMethod(block_name, 'by_online_credit', $(this).is(':checked'))
     });
 
     // сохранение комментария
@@ -248,10 +255,12 @@
         changeOrderComment($(this).val());
     });
 
+    // клик по "Дополнительные пожелания"
     $orderContent.on('click', '.orderComment_t', function(){
         $('.orderComment_fld').show();
     });
 
+    // применить скидку
     $orderContent.on('click', '.jsApplyDiscount', function(e){
         var $this = $(this),
             block_name = $this.closest('.orderRow').data('block_name'),
@@ -263,6 +272,7 @@
         e.preventDefault();
     });
 
+    // удалить скидку
     $orderContent.on('click', '.jsDeleteDiscount', function(e){
         var $this = $(this),
             block_name = $this.closest('.orderRow').data('block_name'),

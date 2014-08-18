@@ -12,7 +12,7 @@ return function(
 
 <?= $helper->render('order-v3/__head', ['step' => 1]) ?>
 
-    <section class="orderCnt">
+    <section class="orderCnt jsOrderV3PageNew">
         <h1 class="orderCnt_t">Оформление заказа</h1>
 
         <?= $helper->render('order-v3/__error', ['error' => $error]) ?>
@@ -22,7 +22,7 @@ return function(
             <fieldset class="orderU_flds">
                 <div class="orderU_fld">
                     <label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
-                    <input class="orderU_tx textfield" type="text" name="user_info[phone]" value="<?= $userEntity ? $userEntity->getMobilePhone() : '' ?>" placeholder="8 xxx xxx xx xx" data-mask="x xxx xxx xx xx">
+                    <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[phone]" value="<?= $userEntity ? $userEntity->getMobilePhone() : '' ?>" placeholder="8 xxx xxx xx xx" data-mask="8 xxx xxx xx xx">
                     <span class="orderU_hint">Для смс о состоянии заказа</span>
                 </div>
 
@@ -60,7 +60,7 @@ return function(
                             <div class="fl-l">
                                 <div class="orderU_fld">
                                     <label class="orderU_lbl" for="">Карта</label>
-                                    <input class="orderU_tx textfield" type="text" name="" value="" placeholder="<?= $card->getMask() ?>" data-mask="<?= $card->getMask() ?>">
+                                    <input class="orderU_tx textfield" type="text" name="user_info[bonus_card_number]" value="" placeholder="<?= $card->getMask() ?>" data-mask="<?= $card->getMask() ?>">
                                 </div>
 
                                 <div class="bonusCnt_descr"><?= $card->getDescription() ?></div>

@@ -2,7 +2,8 @@
 
 return function(
     \Helper\TemplateHelper $helper,
-    \Model\OrderDelivery\Entity $orderDelivery
+    \Model\OrderDelivery\Entity $orderDelivery,
+    $error = null
 ) {
     $orderCount = count($orderDelivery->orders);
     $region = \App::user()->getRegion();
@@ -13,9 +14,10 @@ return function(
 
 <?= $helper->render('order-v3/__head', ['step' => 2]) ?>
 
-<section id="js-order-content" class="orderCnt">
+<section id="js-order-content" class="orderCnt jsOrderV3PageDelivery">
     <h1 class="orderCnt_t">Самовывоз и доставка</h1>
-    <!-- заголовок страницы -->
+
+    <?= $helper->render('order-v3/__error', ['error' => $error]) ?>
 
     <? if ($orderCount != 1) : ?>
         <p class="orderInf">Товары будут оформлены как <strong><?= $orderCount ?> <?= $helper->numberChoice($orderCount, ['отдельный заказ', 'отдельных заказа', 'отдельных заказов']) ?></strong></p>
@@ -91,7 +93,7 @@ return function(
                     </div>
 
                     <span class="orderCol_data orderCol_data-summ orderCol_i_data-sale">-<?= $discount->discount ?> <span class="rubl">p</span></span>
-                    <span class="orderCol_data orderCol_data-del jsDeleteDiscount" data-value="<?= $discount->number ?>">удалить</span>
+                    <? if ($discount->number !== null) : ?><span class="orderCol_data orderCol_data-del jsDeleteDiscount" data-value="<?= $discount->number ?>">удалить</span><? endif ?>
                 </div>
 
                 <? endforeach ; ?>
@@ -118,6 +120,16 @@ return function(
                     <span class="orderCol_summ"><?= $helper->formatPrice($order->total_cost) ?> <span class="rubl">p</span></span>
                     <span class="orderCol_summt">Итого:</span>
                 </div>
+
+                <? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT])) : ?>
+
+                    <div class="orderCheck orderCheck-credit clearfix">
+                        <input type="checkbox" class="customInput customInput-checkbox jsCreditPayment" id="credit-<?= $order->block_name ?>" name="" value="" <?= $order->payment_method_id == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT ? 'checked' : '' ?>>
+                        <label class="customLabel" for="credit-<?= $order->block_name ?>">Купить в кредит<!--, от 2 223 <span class="rubl">p</span> в месяц--></label>
+                    </div>
+
+                <? endif; ?>
+
             </div>
         </div>
         <!--/ информация о заказе -->
@@ -196,8 +208,8 @@ return function(
                         <? if (isset($point->regtime)): ?><span class="orderCol_tm_t">Режим работы:</span> <?= $point->regtime ?><? endif ?>
                         <? if (isset($point)) : ?>
                             <span class="orderCol_tm_t">Оплата при получении: </span>
-                            <? if (isset($order->possible_payment_methods[1])) : ?><img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt=""><? endif; ?>
-                            <? if (isset($order->possible_payment_methods[2])) : ?><img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt=""><? endif; ?>
+                            <? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CASH])) : ?><img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt=""><? endif; ?>
+                            <? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY])) : ?><img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt=""><? endif; ?>
                         <? endif; ?>
                     </div>
                 </div>
@@ -217,10 +229,10 @@ return function(
 
                 </div>
 
-                <? if (isset($order->possible_payment_methods[2])) : ?>
+                <? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY])) : ?>
 
                     <div class="orderCheck mb10">
-                        <input type="checkbox" class="customInput customInput-checkbox" id="creditCardsPay-<?= $order->block_name ?>" name="" value="" data-block_name="<?= $order->block_name ?>" <?= $order->payment_method_id == 2  ? 'checked ' : '' ?>/>
+                        <input type="checkbox" class="customInput customInput-checkbox jsCreditCardPayment" id="creditCardsPay-<?= $order->block_name ?>" name="" value="" <?= $order->payment_method_id == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY  ? 'checked ' : '' ?>/>
                         <label  class="customLabel" for="creditCardsPay-<?= $order->block_name ?>">
                             Оплата банковской картой
                             <span class="dblock colorBrightGrey s">Иначе курьер сможет принять только наличные</span>
@@ -260,7 +272,7 @@ return function(
         <form id="js-orderForm" action="<?= $helper->url('orderV3.create') ?>" method="post">
 
             <div class="orderCompl_l orderCompl_l-ln orderCheck orderCheck-str">
-                <input type="checkbox" class="customInput customInput-checkbox" id="accept" name="" value="" />
+                <input type="checkbox" class="customInput customInput-checkbox jsAcceptAgreement" id="accept" name="" value="" />
 
                 <label  class="customLabel" for="accept">
                     Я ознакомлен и согласен с информацией о продавце и его офертой
@@ -273,7 +285,7 @@ return function(
 
 </section>
 
-<div id="yandex-map-container" class="selShop_r" style="display: none" data-options="<?= $helper->json(['latitude' => $region->getLatitude(), 'longitude' => $region->getLongitude(), 'zoom' => 10])?>"></div>
+<div id="yandex-map-container" class="selShop_r" style="display: none;" data-options="<?= $helper->json(['latitude' => $region->getLatitude(), 'longitude' => $region->getLongitude(), 'zoom' => 10])?>"></div>
 <div id="kladr-config" data-value="<?= $helper->json(\App::config()->kladr ); ?>"></div>
 <div id="region-name" data-value=<?= json_encode($region->getName(), JSON_UNESCAPED_UNICODE); ?>></div>
 <? if (App::config()->debug) : ?><div id="initialOrderModel" data-value="<?= $helper->json($orderDelivery) ?>"></div><? endif; ?>

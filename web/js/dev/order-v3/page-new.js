@@ -1,10 +1,6 @@
 (function($) {
     var $orderContent = $('.orderCnt'),
-        $inputs = $orderContent.find('input'),
-        showError = function(error) {
-            // TODO show error message
-            console.error(error);
-        };
+        $inputs = $orderContent.find('input');
 
     // jQuery masked input
     $.mask.definitions['x']='[0-9]';
@@ -27,19 +23,5 @@
         $elem.addClass('bonusCnt_i-act');
         $cardsDescriptions.hide().eq(eq).show();
     });
-
-    // проверка формы
-    $orderContent.on('submit', 'form', function(e) {
-        var error = false,
-            $phoneInput = $('[name=user_info\\[phone\\]]'),
-            phone = $phoneInput.val().replace(/\s+/g, '');
-
-        if (!/8\d{10}/.test(phone)) error = 'Неправильный номер телефона';
-
-        if (error) {
-            showError(error);
-            e.preventDefault();
-        }
-    })
 
 })(jQuery);

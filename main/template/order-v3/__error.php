@@ -3,10 +3,10 @@ return function(
     \Helper\TemplateHelper $helper,
     $error
 ) {
-    if ($error) : ?>
+?>
 
-    <div class="error">
+    <div id="OrderV3ErrorBlock" style="display: <?= $error ? 'block' : 'none'?>">
         <?= $error ?>
     </div>
 
-<? endif; } ?>
+<? } ?>

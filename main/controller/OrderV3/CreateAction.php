@@ -98,6 +98,9 @@ class CreateAction extends OrderV3 {
             }, $createdOrders));
         }
 
+        // удаляем предыдущее разбиение
+        $this->session->remove($this->splitSessionKey);
+
         return new \Http\RedirectResponse(\App::router()->generate('orderV3.complete'));
     }
 }

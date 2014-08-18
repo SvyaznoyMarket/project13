@@ -4,7 +4,7 @@
 namespace Model\Order;
 
 
-/**
+/** Класс для создания заказа на ядре
  * Class OrderEntity
  * @package Model\Order
  */
@@ -203,7 +203,7 @@ class OrderEntity {
         if (isset($arr['order']['delivery']['interval']['from']) && isset($arr['order']['delivery']['interval']['to'])) {
             $this->delivery_period = $arr['order']['delivery']['interval'];
         } else {
-            throw new \Exception('Не указан интервал доставки');
+            //throw new \Exception('Не указан интервал доставки');
         }
 
         if (isset($arr['order']['delivery']['point']['id'])) {

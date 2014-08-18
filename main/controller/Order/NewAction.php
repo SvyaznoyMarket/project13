@@ -15,7 +15,12 @@ class NewAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->newOrder) {
-            return (new \Controller\OrderV3\NewAction)->execute($request);
+
+            switch (\App::abTest()->getTest('orders')->getChosenCase()->getKey()) {
+                case 'new':
+                    return (new \Controller\OrderV3\NewAction)->execute($request);
+                    break;
+            }
         }
 
         $user = \App::user();

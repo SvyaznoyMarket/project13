@@ -3,6 +3,7 @@
 namespace Controller\OrderV3;
 
 use Model\Order\Entity;
+use Model\PaymentMethod\PaymentEntity;
 
 class CompleteAction extends OrderV3 {
 
@@ -17,8 +18,6 @@ class CompleteAction extends OrderV3 {
         $orders = [];
         $ordersPayment = [];
         $products = [];
-
-        // TODO remove previousSplit
 
         try {
 
@@ -40,24 +39,29 @@ class CompleteAction extends OrderV3 {
                     'client_id' => 'site',
                     'number'    => $sessionOrder['number']
                 ], [], function ($data) use ($sessionOrder, &$ordersPayment) {
-                        $ordersPayment[$sessionOrder['number']] = $data;
+                        $ordersPayment[$sessionOrder['number']] = new PaymentEntity($data);
                 });
             }
 
             $this->client->execute();
 
             // получаем продукты для заказов
-
             foreach ($orders as $order) {
                 /** @var $order \Model\Order\Entity */
                 \RepositoryManager::product()->prepareCollectionById(array_map(function(\Model\Order\Product\Entity $product) { return $product->getId(); }, $order->getProduct()), null, function ($data) use ($order, &$products) {
                     foreach ($data as $productData) {
-                        $products[$order->getNumber()][] = new \Model\Product\Entity($productData);
+                        $products[$productData['id']] = new \Model\Product\Entity($productData);
                     }
                 } );
             }
-
+            unset($order);
             $this->client->execute();
+
+            // очищаем корзину от продуктов из заказов
+            foreach ($products as $product) {
+                if ($product instanceof \Model\Product\Entity) $this->cart->setProduct($product, 0);
+            }
+            unset($product);
 
         } catch (\Curl\Exception $e) {
 
@@ -69,6 +73,7 @@ class CompleteAction extends OrderV3 {
         $page->setParam('orders', $orders);
         $page->setParam('ordersPayment', $ordersPayment);
         $page->setParam('products', $products);
+        $page->setParam('userEntity', $this->user->getEntity());
         return new \Http\Response($page->show());
     }
 }

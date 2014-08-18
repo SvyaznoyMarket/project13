@@ -21,6 +21,8 @@ class DeliveryAction extends OrderV3 {
 
                 $previousSplit = $this->session->get($this->splitSessionKey);
 
+                if ($previousSplit === null) throw new \Exception('Истекла сессия');
+
                 $splitData = [
                     'previous_split' => $previousSplit,
                     'changes'        => $this->formatChanges($request->request->all(), $previousSplit)
@@ -35,11 +37,11 @@ class DeliveryAction extends OrderV3 {
 
             } catch (\Curl\Exception $e) {
                 \App::exception()->remove($e);
-                $result['error'] = array('message' => $e->getMessage());
-                $result['data'] = array('data' => $splitData);
+                $result['error']    = ['message' => $e->getMessage()];
+                $result['data']     = ['data' => $splitData];
             } catch (\Exception $e) {
                 \App::exception()->remove($e);
-                $result['error'] = array('message' => $e->getMessage());
+                $result['error'] = ['message' => $e->getMessage()];
             }
 
             return new \Http\JsonResponse(['result' => $result], isset($result['error']) ? 500 : 200);
@@ -47,7 +49,6 @@ class DeliveryAction extends OrderV3 {
 
         try {
 
-            $orderDelivery = //$this->getSplit();
             $orderDelivery =  new \Model\OrderDelivery\Entity($this->session->get($this->splitSessionKey));
 
             $page = new \View\OrderV3\DeliveryPage();
@@ -151,7 +152,10 @@ class DeliveryAction extends OrderV3 {
                 $changes['orders'] = array(
                     $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
                 );
-                $changes['orders'][$data['params']['block_name']]['payment_method_id'] = $data['params']['by_credit_card'] == 'true' ? 2 : 1;
+                if (isset($data['params']['by_credit_card']) && $data['params']['by_credit_card'] == 'true') $paymentTypeId = \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY;
+                else if (isset($data['params']['by_online_credit']) && $data['params']['by_online_credit'] == 'true') $paymentTypeId = \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT;
+                else $paymentTypeId = \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CASH;
+                $changes['orders'][$data['params']['block_name']]['payment_method_id'] = $paymentTypeId;
                 break;
 
             case 'changeProductQuantity':

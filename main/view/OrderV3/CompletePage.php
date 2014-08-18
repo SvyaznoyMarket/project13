@@ -12,7 +12,6 @@ class CompletePage extends Layout {
     }
 
     public function slotBodyDataAttribute() {
-        //return 'order_new';
-        return 'default';
+        return 'order-v3';
     }
 }

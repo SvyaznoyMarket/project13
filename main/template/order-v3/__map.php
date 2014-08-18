@@ -33,7 +33,7 @@ return function(
 ?>
 
 <div id="<?= $id ?>" class="selShop popupFl" style="display: none;">
-    <div class="js-order-changePlace-close popupFl_clsr" data-content="#<?= $id ?>"></div>
+    <div class="js-order-changePlace-close popupFl_clsr jsCloseFl" data-content="#<?= $id ?>"></div>
 
     <div class="selShop_h">
         <? foreach ($order->possible_points as $token => $points) : ?>

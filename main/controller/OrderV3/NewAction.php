@@ -25,6 +25,11 @@ class NewAction extends OrderV3 {
                 return new RedirectResponse(\App::router()->generate('orderV3.delivery'));
             }
 
+            $this->session->remove($this->splitSessionKey);
+
+            // testing purpose only
+            (new DeliveryAction())->getSplit();
+
         } catch (ValidateException $e) {
             $page->setParam('error', $e->getMessage());
         } catch (\Curl\Exception $e) {

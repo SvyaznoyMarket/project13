@@ -693,28 +693,26 @@
 }(jQuery));
 (function($) {
 
-    var E = ENTER.OrderV3;
+    var E = ENTER.OrderV3,
+        $mapContainer = $('#yandex-map-container');
 
     var init = function() {
 
-            var mapContainer = $('#yandex-map-container'),
-                options = mapContainer.data('options');
+            var options = $mapContainer.data('options');
 
             E.map = new ymaps.Map("yandex-map-container", {
                 center: [options.latitude, options.longitude],
                 zoom: options.zoom
+            },{
+                autoFitToViewport: 'always'
             });
 
             E.mapOptions = options;
-            E.$map = mapContainer.detach().css('display', 'block');
+            E.$map = $mapContainer;
 
         };
 
-    if ($('#yandex-map-container').length) {
-        $LAB.script('//api-maps.yandex.ru/2.1/?lang=ru_RU').wait(function () {
-            ymaps.ready(init);
-        })
-    }
+    ymaps.ready(init);
 
 })(jQuery);
 (function($) {
@@ -1231,6 +1229,15 @@
     };
 })(jQuery);
 
+;(function($){
+    var $orderContent = $('.orderCnt');
+
+    // клик по "оплатить онлайн"
+    $orderContent.on('click', '.jsOnlinePaymentSpan', function(){
+        $(this).parent().siblings('.jsOnlinePaymentList').show();
+    });
+
+}(jQuery));
 ;(function($) {
 
     ENTER.OrderV3 = ENTER.OrderV3 || {};
@@ -1272,8 +1279,10 @@
         changeProductQuantity = function changeProductQuantityF(block_name, id, quantity) {
             sendChanges('changeProductQuantity', {'block_name': block_name, 'id': id, 'quantity': quantity})
         },
-        changePaymentMethod = function changePaymentMethodF(block_name, by_credit_card) {
-            sendChanges('changePaymentMethod', {'block_name': block_name, 'by_credit_card': by_credit_card})
+        changePaymentMethod = function changePaymentMethodF(block_name, method, isActive) {
+            var params = {'block_name': block_name};
+            params[method] = isActive;
+            sendChanges('changePaymentMethod', params)
         },
         changeOrderComment = function changeOrderCommentF(comment){
             sendChanges('changeOrderComment', {'comment': comment})
@@ -1327,11 +1336,10 @@
 
             if (mapData) {
 
-                console.log('Show map with token = %s', token);
-
                 map.geoObjects.removeAll();
                 map.setCenter([mapOptions.latitude, mapOptions.longitude], mapOptions.zoom);
-                $currentMap.append(ENTER.OrderV3.$map);
+                $currentMap.append(ENTER.OrderV3.$map.show());
+                map.container.fitToViewport();
 
                 for (var i = 0; i < mapData.points[token].length; i++) {
                     var point = mapData.points[token][i];
@@ -1352,7 +1360,11 @@
                     map.geoObjects.add(placemark);
                 }
 
-                map.setBounds(map.geoObjects.getBounds());
+                if (map.geoObjects.getLength() === 1) {
+                    map.setCenter(map.geoObjects.get(0).geometry.getCoordinates(), 15);
+                } else {
+                    map.setBounds(map.geoObjects.getBounds());
+                }
 
             } else {
                 console.error('No map data for token = "%s", elemId = "%s"', token, elemId, $currentMap);
@@ -1364,7 +1376,7 @@
     // TODO change all selectors to .jsMethod
 
     // клик по крестику на всплывающих окнах
-    $orderContent.on('click', '.popupFl_clsr', function(e) {
+    $orderContent.on('click', '.jsCloseFl', function(e) {
         e.stopPropagation();
         $(this).closest('.popupFl').hide();
         e.preventDefault();
@@ -1465,15 +1477,17 @@
     });
 
     // клик по безналичному методу оплаты
-    $orderContent.on('click', '.orderCheck.mb10', function(e){
+    $orderContent.on('change', '.jsCreditCardPayment', function(){
         var $this = $(this),
-            $input = $this.find('input'),
-            block_name = $input.data('block_name');
+            block_name = $this.closest('.orderRow').data('block_name');
+        changePaymentMethod(block_name, 'by_credit_card', $this.is(':checked'))
+    });
 
-        // отсекаем нативный клик по label-у и ловим jQuery trigger
-        if (e.target.nodeName === 'INPUT') {
-            changePaymentMethod(block_name, $input.is(':checked'))
-        }
+    // клик по "купить в кредит"
+    $orderContent.on('change', '.jsCreditPayment', function() {
+        var $this = $(this),
+            block_name = $this.closest('.orderRow').data('block_name');
+        changePaymentMethod(block_name, 'by_online_credit', $(this).is(':checked'))
     });
 
     // сохранение комментария
@@ -1481,10 +1495,12 @@
         changeOrderComment($(this).val());
     });
 
+    // клик по "Дополнительные пожелания"
     $orderContent.on('click', '.orderComment_t', function(){
         $('.orderComment_fld').show();
     });
 
+    // применить скидку
     $orderContent.on('click', '.jsApplyDiscount', function(e){
         var $this = $(this),
             block_name = $this.closest('.orderRow').data('block_name'),
@@ -1496,6 +1512,7 @@
         e.preventDefault();
     });
 
+    // удалить скидку
     $orderContent.on('click', '.jsDeleteDiscount', function(e){
         var $this = $(this),
             block_name = $this.closest('.orderRow').data('block_name'),
@@ -1507,11 +1524,7 @@
 })(jQuery);
 (function($) {
     var $orderContent = $('.orderCnt'),
-        $inputs = $orderContent.find('input'),
-        showError = function(error) {
-            // TODO show error message
-            console.error(error);
-        };
+        $inputs = $orderContent.find('input');
 
     // jQuery masked input
     $.mask.definitions['x']='[0-9]';
@@ -1535,27 +1548,58 @@
         $cardsDescriptions.hide().eq(eq).show();
     });
 
-    // проверка формы
-    $orderContent.on('submit', 'form', function(e) {
+})(jQuery);
+;(function($) {
+
+    var $orderContent = $('.orderCnt'),
+        $errorBlock = $orderContent.find('#OrderV3ErrorBlock'),
+        $pageNew = $('.jsOrderV3PageNew'),
+        $pageDelivery = $('.jsOrderV3PageDelivery'),
+//        $pageComplete = $('.jsOrderV3PageComplete'),
+        $validationErrors = $('.jsOrderValidationErrors'),
+        validateEmail = function validateEmailF(email) {
+            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        },
+        showError = function showErrorF(message) {
+            if (!$errorBlock) $orderContent.prepend($('<div />',{id: 'OrderV3ErrorBlock'}));
+            $errorBlock.text(message).show()
+        };
+
+    if ($validationErrors.length) {
+        console.warn('Validation errors', $validationErrors);
+    }
+
+    // PAGE NEW
+
+    // проверка телефона и email
+    $pageNew.find('form').on('submit', function (e) {
         var error = false,
             $phoneInput = $('[name=user_info\\[phone\\]]'),
+            $emailInput = $('[name=user_info\\[email\\]]'),
             phone = $phoneInput.val().replace(/\s+/g, '');
 
-        if (!/8\d{10}/.test(phone)) error = 'Неправильный номер телефона';
+        if (!/8\d{10}/.test(phone)) error = 'Неверный формат телефона';
+        if ($emailInput.val().length != 0 && !validateEmail($emailInput.val())) error = 'Неверный формат E-mail';
 
         if (error) {
             showError(error);
             e.preventDefault();
         }
-    })
+    });
 
-})(jQuery);
-;(function($){
+    // PAGE DELIVERY
 
-    var $validationErrors = $('.jsOrderValidationErrors');
+    $pageDelivery.find('form').on('submit', function(e){
+        var error = false;
 
-    if ($validationErrors.length) {
-        console.warn('Validation errors', $validationErrors);
-    }
+        if (!$('.jsAcceptAgreement').is(':checked')) error = 'Необходимо согласие с информацией о продавце и его офертой';
+
+        if (error) {
+            showError(error);
+            e.preventDefault()
+        }
+
+    });
 
 }(jQuery));
