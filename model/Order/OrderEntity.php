@@ -4,7 +4,7 @@
 namespace Model\Order;
 
 
-/** Класс для создания заказа на ядре
+/** Класс ля создания заказа на ядре
  * Class OrderEntity
  * @package Model\Order
  */
@@ -209,8 +209,7 @@ class OrderEntity {
         if (isset($arr['order']['delivery']['point']['id'])) {
             $this->shop_id = (int)$arr['order']['delivery']['point']['id'];
         } else {
-            if ($this->delivery_type_id === self::DELIVERY_TYPE_ID_NOW ||
-                $this->delivery_type_id === self::DELIVERY_TYPE_ID_SELF) throw new \Exception('Не указан магазин для самовывоза');
+            if ($this->delivery_type_id === self::DELIVERY_TYPE_ID_SELF) throw new \Exception('Не указан магазин для самовывоза');
         }
 
         if (isset($arr['order']['products']) && is_array($arr['order']['products']) && count($arr['order']['products']) > 0) {
