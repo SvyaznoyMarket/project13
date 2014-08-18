@@ -1,14 +1,14 @@
 <?php
 
-namespace Controller\Order\OneClick;
+namespace Controller\Order\LifeGift;
 
-trait ResponseDataOneClickTrait {
+trait ResponseDataLifeGiftTrait {
     use \Controller\Order\ResponseDataTrait {
         \Controller\Order\ResponseDataTrait::failResponseData as parentFailResponseData;
     }
 
     protected function failResponseData(\Exception $exception, array &$responseData) {
-        $this->cart = \App::user()->getOneClickCart();
+        $this->cart = \App::user()->getLifeGiftCart();
         $this->parentFailResponseData($exception, $responseData);
     }
 
@@ -17,7 +17,7 @@ trait ResponseDataOneClickTrait {
      * @param $responseData
      */
     protected function errorProductNotFoundHandler(&$message, &$responseData) {
-        /** @var \Session\Cart\OneClick $cart */
+        /** @var \Session\Cart\LifeGift $cart */
         $cart = $this->getCart();
         $router = \App::router();
 
