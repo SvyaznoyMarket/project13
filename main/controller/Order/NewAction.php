@@ -14,13 +14,8 @@ class NewAction {
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::config()->newOrder) {
-
-            switch (\App::abTest()->getTest('orders')->getChosenCase()->getKey()) {
-                case 'new':
-                    return (new \Controller\OrderV3\NewAction)->execute($request);
-                    break;
-            }
+        if (\App::config()->newOrder && \App::abTest()->getTest('orders')) {
+            if (\App::abTest()->getTest('orders')->getChosenCase()->getKey() == 'new') return (new \Controller\OrderV3\NewAction)->execute($request);
         }
 
         $user = \App::user();
