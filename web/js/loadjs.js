@@ -273,7 +273,11 @@
 					.wait()
 					.script( getWithVersion('ports.js') )
 					.wait()
-					.script( logTimeAfterPartnerScript );
+					.script( logTimeAfterPartnerScript )
+					.wait()
+					.script( getWithVersion('enterprize.js') )
+					.wait()
+					.script( getWithVersion('/js/game/slots.js') );
 			}).runQueue();
 		},
 

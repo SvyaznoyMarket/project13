@@ -632,6 +632,13 @@ class AppConfig {
         'retryCount'   => null,
     ];
 
+    /** @var array */
+    public $game = [
+        'bandit' => [
+            'showOnHomepage' => null
+        ]
+    ];
+
     public function __construct() {
         //$this->vkontakteOauth = new OAuth\VkontakteConfig();
         //$this->odnoklassnikiOauth = new OAuth\OdnoklassnikiConfig();
