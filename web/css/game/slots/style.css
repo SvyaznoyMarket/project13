@@ -1060,6 +1060,22 @@
     opacity: 0;
   }
 }
+body.parallax .wrapper.mWrapperMain .top-block,
+body.parallax .bannersbox {
+  position: fixed;
+}
+body.parallax .gameBandit {
+  position: absolute;
+  top: 635px;
+  z-index: 1;
+}
+body.parallax .footer__main {
+  /*position: absolute;*/
+  top: 1255px;
+  /*top: 0px;*/
+  z-index: 2;
+  /*padding-bottom: 0px;*/
+}
 #slotsWrapWrapper > .hello {
   box-sizing: border-box;
   -moz-box-sizing: border-box;

@@ -7,6 +7,10 @@ use View\Menu;
 class IndexPage extends \View\DefaultLayout {
     protected $layout  = 'layout-main';
 
+    public function slotBodyClassAttribute() {
+        return \App::config()->game['bandit']['showOnHomepage'] ? 'parallax' : '';
+    }
+
     protected function prepare() {
         if (\App::config()->game['bandit']['showOnHomepage']) {
             $this->addStylesheet('/css/game/slots/style.css');
@@ -104,7 +108,14 @@ class IndexPage extends \View\DefaultLayout {
     public function slotGameBandit() {
         if (!\App::config()->game['bandit']['showOnHomepage']) return;
 
-        return '<div data-rimage="" style="display:block; height:560px;">' . $this->render('game/page-bandit', $this->params) . '</div>';
+        return $this->render('game/page-bandit', $this->params);
+
+//        return '
+//            <div class="wrapper gameBandit">
+//                <div class="content" src="" data-rimage="">' .
+//                    $this->render('game/page-bandit', $this->params)
+//                . '</div>
+//            </div>';
     }
 
     /**
