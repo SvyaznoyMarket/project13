@@ -73,6 +73,9 @@
                 if (response.result) {
                     console.error(response.result);
                 }
+                if (response.result.redirect) {
+                    window.location.href = response.result.redirect;
+                }
             }).done(function(data) {
                 console.log("Query: %s", data.result.OrderDeliveryRequest);
                 console.log("Model:", data.result.OrderDeliveryModel);

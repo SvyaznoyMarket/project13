@@ -39,6 +39,10 @@ class DeliveryAction extends OrderV3 {
                 \App::exception()->remove($e);
                 $result['error']    = ['message' => $e->getMessage()];
                 $result['data']     = ['data' => $splitData];
+                if ($e->getCode() == 600) {
+                    $this->cart->clear();
+                    $result['redirect'] = \App::router()->generate('cart');
+                }
             } catch (\Exception $e) {
                 \App::exception()->remove($e);
                 $result['error'] = ['message' => $e->getMessage()];
@@ -51,7 +55,8 @@ class DeliveryAction extends OrderV3 {
 
             if (!$this->session->get($this->splitSessionKey)) return new \Http\RedirectResponse(\App::router()->generate('cart'));
 
-            $orderDelivery =  new \Model\OrderDelivery\Entity($this->session->get($this->splitSessionKey));
+            //$orderDelivery =  new \Model\OrderDelivery\Entity($this->session->get($this->splitSessionKey));
+            $orderDelivery = $this->getSplit();;
 
             $page = new \View\OrderV3\DeliveryPage();
             $page->setParam('orderDelivery', $orderDelivery);
