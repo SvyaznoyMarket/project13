@@ -20,13 +20,6 @@ class IndexParallaxPage extends IndexPage {
 
     public function slotGameBandit() {
         return $this->render('game/page-bandit', $this->params);
-
-//        return '
-//            <div class="wrapper gameBandit">
-//                <div class="content" src="" data-rimage="">' .
-//                    $this->render('game/page-bandit', $this->params)
-//                . '</div>
-//            </div>';
     }
 
     /**
