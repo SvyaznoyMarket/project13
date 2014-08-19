@@ -18,6 +18,7 @@ class CompleteAction extends OrderV3 {
         $orders = [];
         $ordersPayment = [];
         $products = [];
+//        $shops = [];
 
         try {
 
@@ -43,6 +44,8 @@ class CompleteAction extends OrderV3 {
                 });
             }
 
+            unset($sessionOrder);
+
             $this->client->execute();
 
             // получаем продукты для заказов
@@ -54,6 +57,14 @@ class CompleteAction extends OrderV3 {
                     }
                 } );
             }
+            // получаем магазины
+/*            \RepositoryManager::shop()->prepareCollectionById(array_map(function(\Model\Order\Entity $order){ return $order->getShopId(); }, array_filter($orders, function(\Model\Order\Entity $order){ return $order->getShopId() != 0; })),
+                function($data) use (&$shops) {
+                    foreach($data as $shopData) {
+                        if (isset($shopData['id'])) $shops[$shopData['id']] = new \Model\Shop\Entity($shopData);
+                    }
+            });*/
+
             unset($order);
             $this->client->execute();
 

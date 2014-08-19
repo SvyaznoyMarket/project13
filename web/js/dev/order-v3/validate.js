@@ -39,12 +39,13 @@
 
     // PAGE DELIVERY
 
-    $pageDelivery.find('form').on('submit', function(e){
+    $pageDelivery.on('submit', 'form', function(e){
         var error = false;
 
         if (!$('.jsAcceptAgreement').is(':checked')) error = 'Необходимо согласие с информацией о продавце и его офертой';
 
         if (error) {
+            $errorBlock = $orderContent.find('#OrderV3ErrorBlock'); // TODO не очень хорошее поведение
             showError(error);
             e.preventDefault()
         }

@@ -49,6 +49,8 @@ class DeliveryAction extends OrderV3 {
 
         try {
 
+            if (!$this->session->get($this->splitSessionKey)) return new \Http\RedirectResponse(\App::router()->generate('cart'));
+
             $orderDelivery =  new \Model\OrderDelivery\Entity($this->session->get($this->splitSessionKey));
 
             $page = new \View\OrderV3\DeliveryPage();

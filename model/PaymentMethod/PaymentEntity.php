@@ -26,7 +26,7 @@ namespace Model\PaymentMethod {
 
             if (isset($arr['methods']) && is_array($arr['methods'])) {
                 foreach ($arr['methods'] as $method) {
-                    $this->methods[] = new PaymentMethodEntity($method, $this->groups);
+                    $this->methods[$method['id']] = new PaymentMethodEntity($method, $this->groups);
                 }
             } else {
                 throw new \Exception('Нет методов оплаты');

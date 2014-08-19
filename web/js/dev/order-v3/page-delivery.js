@@ -96,6 +96,8 @@
 
             if (mapData) {
 
+                if (!elem.is(':visible')) elem.show();
+
                 map.geoObjects.removeAll();
                 map.setCenter([mapOptions.latitude, mapOptions.longitude], mapOptions.zoom);
                 $currentMap.append(ENTER.OrderV3.$map.show());
@@ -130,7 +132,6 @@
                 console.error('No map data for token = "%s", elemId = "%s"', token, elemId, $currentMap);
             }
 
-            if (!elem.is(':visible')) elem.show();
         };
 
     // TODO change all selectors to .jsMethod

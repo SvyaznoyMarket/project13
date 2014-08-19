@@ -12,6 +12,8 @@ class OrderEntity {
 
     const TYPE_ORDER = 1;
     const DEFAULT_PAYMENT_ID = 1;
+    const PAYMENT_ID_CREDIT_CARD = 2;
+    const PAYMENT_ID_CREDIT_ONLINE = 6;
 
     const DELIVERY_TYPE_ID_STANDART = 3;
     const DELIVERY_TYPE_ID_SELF = 154;
@@ -305,9 +307,15 @@ class OrderEntity {
      */
     public function getOrderData() {
         $data = [];
+
+        // создаем заказ с оплатой наличными, если выбран кредит, а предпочтительный метод записываем в meta
+        $this->meta_data['preferred_payment_id'] = $this->payment_id;
+        if ($this->payment_id == self::PAYMENT_ID_CREDIT_ONLINE) $this->payment_id = self::DEFAULT_PAYMENT_ID;
+
         foreach (get_object_vars($this) as $key => $value) {
             if ($value !== null) $data[$key] = $value;
         }
+
         return $data;
     }
 

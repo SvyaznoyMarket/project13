@@ -47,12 +47,16 @@ return function(
                         </ul>
 
                     </div>
-<!--
+
+                    <? if (\RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)) : ?>
+
                     <div class="orderLn_c">
-                        <div>Самовывоз 11 июл. 2014 9:00…18:00</div>
-                        <div>Оплата при получении: наличные, банковская карта</div>
+                        <div><?= \RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)->getShortName() ?> <!--11 июл. 2014 9:00…18:00--></div>
+                        <!--<div>Оплата при получении: наличные, банковская карта</div>-->
                     </div>
--->
+
+                    <? endif; ?>
+
                     <div class="orderLn_r">
                         <div class="orderLn_row orderLn_row-summ">
                             <span class="summT">Сумма заказа:</span>
@@ -62,9 +66,13 @@ return function(
                         <? if (isset($ordersPayment[$order->getNumber()])) : ?>
                         <? $paymentEntity = $ordersPayment[$order->getNumber()]; /** @var $paymentEntity \Model\PaymentMethod\PaymentEntity */?>
 
+                            <? if (isset($paymentEntity->groups[2])) : ?>
+
                             <div class="orderLn_row orderLn_row-bg">
 
-                                <? if (isset($paymentEntity->methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT])) : ?>
+                                <? if (isset($paymentEntity->methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT])
+                                        && isset($order->meta_data['preferred_payment_id'])
+                                        && reset($order->meta_data['preferred_payment_id']) == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT) : ?>
 
                                     <!-- Кредит -->
 
@@ -117,6 +125,8 @@ return function(
                                 <? endif; ?>
 
                             </div>
+
+                            <? endif; ?>
 
                         <? endif; ?>
                     </div>

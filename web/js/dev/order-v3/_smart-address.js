@@ -272,7 +272,7 @@
             } else {
                 $.kladr.api($.extend(config, {limit: 1, type: $.kladr.type.city, name: $('#region-name').data('value')}), function (data){
                     var id = data.length > 0 ? data[0].id : 0;
-                    // TODO generate err
+                    if (id==0) console.error('КЛАДР не определил город, конфигурация запроса: ', $.extend(config, {limit: 1, contentType: $.kladr.type.city, name: $('#region-name').data('value')}));
                     address = new Address(data[0]);
                 })
             }
