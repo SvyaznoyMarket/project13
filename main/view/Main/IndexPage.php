@@ -7,15 +7,7 @@ use View\Menu;
 class IndexPage extends \View\DefaultLayout {
     protected $layout  = 'layout-main';
 
-    public function slotBodyClassAttribute() {
-        return \App::config()->game['bandit']['showOnHomepage'] ? 'parallax' : '';
-    }
-
     protected function prepare() {
-        if (\App::config()->game['bandit']['showOnHomepage']) {
-            $this->addStylesheet('/css/game/slots/style.css');
-        }
-
         $this->addMeta('viewport', 'width=960');
         $this->addMeta('mailru', 'b0645ac6fd99f8f2');
 
@@ -103,28 +95,5 @@ class IndexPage extends \View\DefaultLayout {
         ];
 
         return '<div id="myragonPageJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
-    }
-
-    public function slotGameBandit() {
-        if (!\App::config()->game['bandit']['showOnHomepage']) return;
-
-        return $this->render('game/page-bandit', $this->params);
-
-//        return '
-//            <div class="wrapper gameBandit">
-//                <div class="content" src="" data-rimage="">' .
-//                    $this->render('game/page-bandit', $this->params)
-//                . '</div>
-//            </div>';
-    }
-
-    /**
-     * Активация виджета идентификации Enter Prize
-     * @return string
-     */
-    public function slotEnterPrizeWidget(){
-        if (!\App::config()->game['bandit']['showOnHomepage']) return;
-
-        return $this->render('enterprize/_contentRegisterAuthWidget');
     }
 }

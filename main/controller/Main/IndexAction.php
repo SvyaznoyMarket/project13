@@ -184,11 +184,14 @@ class IndexAction {
             }
         }
 
-        $page = new \View\Main\IndexPage();
+        $banditShow = (bool)\App::config()->game['bandit']['showOnHomepage'];
+        $className = $banditShow ? '\View\Main\IndexParallaxPage' : '\View\Main\IndexPage';
+
+        $page = new $className();
         $page->setParam('bannerData', $bannerData);
         $page->setParam('seoPage', $seoPage);
 
-        if (\App::config()->game['bandit']['showOnHomepage']) {
+        if ($banditShow) {
             $banditJson = \RepositoryManager::gameBandit()->getBanditJson();
             $page->setParam('animationsConfig', (isset($banditJson['animations_config']) && !empty($banditJson['animations_config'])) ? $banditJson['animations_config'] : []);
             $page->setParam('labelsConfig', (isset($banditJson['labels']) && !empty($banditJson['labels'])) ? $banditJson['labels'] : []);
