@@ -75,17 +75,10 @@
 
     <div class="bottom-parallax-block" src="" data-rimage="">
         <div class="footer__main">
-            <!--    <div class="content" src="" data-rimage="">-->
             <?= $page->slotFooter() ?>
-            <!--    </div>-->
         </div><!--/ Подвал -->
     </div>
-
 </div>
-
-<?//= $page->slotGameBandit() ?>
-
-
 
 <?= $page->slotRegionSelection() ?>
 <?= $page->slotAuth() ?>
