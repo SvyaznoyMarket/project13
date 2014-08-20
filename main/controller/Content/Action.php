@@ -64,7 +64,7 @@ class Action {
 
         $firstData = [];
         foreach ($serviceJson as $key => $item) {
-            if (('Москва' == $key) || ('Санкт-Петербург' == $key)) {
+            if (('Москва и МО' == $key) || ('Санкт-Петербург' == $key)) {
                 $firstData[$key] = $item;
                 unset($serviceJson[$key]);
             }
