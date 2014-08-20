@@ -8,7 +8,6 @@ class IndexPage extends \View\DefaultLayout {
     protected $layout  = 'layout-main';
 
     protected function prepare() {
-
         $this->addMeta('viewport', 'width=960');
         $this->addMeta('mailru', 'b0645ac6fd99f8f2');
 

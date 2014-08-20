@@ -508,4 +508,7 @@ $c->photoContest = [
 	]
 ];
 
+// Game
+$c->game['bandit']['showOnHomepage'] = true;
+
 return $c;

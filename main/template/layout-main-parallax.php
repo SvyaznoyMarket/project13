@@ -31,7 +31,7 @@
 
 </head>
 
-<body id="mainPage" data-template="main" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
+<body id="mainPage" class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
 <?= $page->slotConfig() ?>
 <div class="bannersbox">
     <div class="bannersboxinner">
@@ -44,31 +44,41 @@
 
 <div class="wrapper mWrapperMain">
     <div class="content mContentMain clearfix">
-        <? if (\App::config()->adFox['enabled']): ?>
-            <div class="adfoxWrapper" id="adfox980"></div>
-        <? endif ?>
+        <div class="top-parallax-block" src="" data-rimage="">
+            <? if (\App::config()->adFox['enabled']): ?>
+                <div class="adfoxWrapper" id="adfox980"></div>
+            <? endif ?>
 
-        <header class="header">
-            <?= $page->slotHeader() ?>
-        </header><!--/ Шапка-->
+            <header class="header">
+                <?= $page->slotHeader() ?>
+            </header><!--/ Шапка-->
 
-        <?= $page->slotContentHead() ?>
+            <?= $page->slotContentHead() ?>
 
-        <div class="bigbanner">
-            <div class='bCarouselWrap'>
-                <div class='bCarousel'>
-                    <div class='bCarousel__eBtnL leftArrow'></div>
-                    <div class='bCarousel__eBtnR rightArrow'></div>
-                    <img class="centerImage" src="" alt=""/>
+            <div class="bigbanner">
+                <div class='bCarouselWrap'>
+                    <div class='bCarousel'>
+                        <div class='bCarousel__eBtnL leftArrow'></div>
+                        <div class='bCarousel__eBtnR rightArrow'></div>
+                        <img class="centerImage" src="" alt=""/>
+                    </div>
                 </div>
             </div>
         </div>
     </div><!--/ Контент -->
 </div><!--/ Шаблон -->
 
-<div class="footer__main">
-    <?= $page->slotFooter() ?>
-</div><!--/ Подвал -->
+<div class="center-parallax-block" src="" data-rimage="">
+    <div class="gameBandit">
+        <?= $page->slotGameBandit() ?>
+    </div>
+
+    <div class="bottom-parallax-block" src="" data-rimage="">
+        <div class="footer__main">
+            <?= $page->slotFooter() ?>
+        </div><!--/ Подвал -->
+    </div>
+</div>
 
 <?= $page->slotRegionSelection() ?>
 <?= $page->slotAuth() ?>
