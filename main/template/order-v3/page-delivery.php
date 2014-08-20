@@ -41,7 +41,7 @@ return function(
             <div class="orderCol_h">
                 <strong class="orderNum">Заказ №<?= ($i + 1) ?></strong>
                 <? if ($order->seller): ?>
-                    <span class="orderDetl">продавец: <?= $order->seller->name ?> <a class="orderDetl_lk" href="">Информация и оферта</a></span>
+                    <span class="orderDetl">продавец: <?= $order->seller->name ?> <!--<a class="orderDetl_lk" href="">Информация и оферта</a></span>-->
                 <? endif ?>
             </div>
 
