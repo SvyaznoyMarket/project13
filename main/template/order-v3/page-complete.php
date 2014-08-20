@@ -111,7 +111,7 @@ return function(
                                             <img src="<?= $method->icon; ?>" alt="" />
                                         <? endforeach; ?>
 
-                                        <ul style="display: none;" class="customSel_lst popupFl jsOnlinePaymentList">
+                                        <ul style="display: none;" class="customSel_lst popupFl customSel_lst-pay jsOnlinePaymentList">
                                         <? foreach ($paymentMethods as $method) : ?>
                                             <li class="customSel_i">
                                                 <strong><?= $method->name; ?></strong><br/>

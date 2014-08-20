@@ -5193,12 +5193,6 @@ img[height="0"] {
   .orderLn_box {
     position: relative;
   }
-  .orderLn_box .popupFl {
-    top: 49px;
-    right: 16px;
-    width: 500px;
-    text-align: left;
-  }
   .orderLn_box .customSel_i {
     padding: 10px;
   }
@@ -5219,9 +5213,16 @@ img[height="0"] {
   }
   .orderLn_row {
     margin: 0 0 10px;
+    position: relative;
   }
   .orderLn_row:last-child {
     margin-bottom: 0;
+  }
+  .orderLn_row .customSel_lst-pay {
+    right: 0;
+    text-align: left;
+    top: 26px;
+    width: 500px;
   }
   .orderLn_row-t {
     font-size: 20px;
