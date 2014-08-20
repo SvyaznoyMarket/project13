@@ -1067,7 +1067,7 @@ body.parallax .bannersbox {
 body.parallax .center-parallax-block {
   position: absolute;
   top: 635px;
-  z-index: 1;
+  z-index: 1000;
   width: 100%;
 }
 body.parallax .center-parallax-block #slotsWrapper {
