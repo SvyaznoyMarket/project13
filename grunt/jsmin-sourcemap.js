@@ -142,6 +142,14 @@ module.exports = function (grunt, options) {
                 destMap: 'prod/watch3d.js.map',
                 srcRoot: '/js',
                 cwd: 'web/js'
+        },
+
+        serviceHa: {
+            src: ['dev/service_ha/*.js'],
+                dest: 'prod/service_ha.js',
+                destMap: 'prod/service_ha.js.map',
+                srcRoot: '/js',
+                cwd: 'web/js'
         }
     }
 };
