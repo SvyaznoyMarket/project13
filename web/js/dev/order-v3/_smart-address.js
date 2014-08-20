@@ -270,9 +270,11 @@
                 fillAddressBlock(address);
                 $input.hide();
             } else {
-                $.kladr.api($.extend(config, {limit: 1, type: $.kladr.type.city, name: $('#region-name').data('value')}), function (data){
+                console.log('Определение адреса КЛАДР, запрос', $.extend(config, {limit: 1, type: $.kladr.type.city, name: $('#region-name').data('value')}));
+                $.kladr.api($.extend(config, {limit: 1, contentType: $.kladr.type.city, query: $('#region-name').data('value')}), function (data){
+                    console.log('KLADR data', data);
                     var id = data.length > 0 ? data[0].id : 0;
-                    if (id==0) console.error('КЛАДР не определил город, конфигурация запроса: ', $.extend(config, {limit: 1, contentType: $.kladr.type.city, name: $('#region-name').data('value')}));
+                    if (id==0) console.error('КЛАДР не определил город, конфигурация запроса: ', $.extend(config, {limit: 1, type: $.kladr.type.city, name: $('#region-name').data('value')}));
                     address = new Address(data[0]);
                 })
             }

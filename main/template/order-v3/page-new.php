@@ -34,7 +34,7 @@ return function(
                     </div>
 
                     <div class="orderU_fld">
-                        <label class="orderU_lbl" for="">Имя</label>
+                        <label class="orderU_lbl orderU_lbl-str" for="">Имя</label>
                         <input class="orderU_tx textfield" type="text" name="user_info[first_name]" value="<?= $userEntity ? $userEntity->getFirstName() : '' ?>" placeholder="">
                         <span class="orderU_hint">Как к вам обращаться?</span>
                     </div>

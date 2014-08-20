@@ -22,7 +22,7 @@ return function(
 
         <div class="celedr_t"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2, %A', time()))?></div>
 
-        <button class="celedr_btn btn2">Хочу быстрее!</button>
+        <button class="celedr_btn btn2 jsWanna">Хочу быстрее!</button>
 
         <div class="celedr_tb">
             <div class="celedr_row celedr_row-h clearfix">

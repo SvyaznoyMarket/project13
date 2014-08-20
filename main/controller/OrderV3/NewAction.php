@@ -21,14 +21,29 @@ class NewAction extends OrderV3 {
             if ($request->isMethod('POST')) {
                 $post = $request->request->all();
                 (new DeliveryAction())->getSplit();
-                (new DeliveryAction())->getSplit($post);
+                $delivery = (new DeliveryAction())->getSplit($post);
+
+                // залогируем первичное время доставки
+                if ($delivery instanceof \Model\OrderDelivery\Entity && (bool)$delivery->orders) {
+                    $deliveryDates = [];
+                    $deliveryMethods = [];
+                    foreach ($delivery->orders as $order) {
+                        if ($order->delivery && $order->delivery->date instanceof \DateTime) $deliveryDates[] = $order->delivery->date->format('Y-n-d');
+                        if ($order->delivery) $deliveryMethods[] = $order->delivery->delivery_method->token;
+                    }
+                    if ((bool)$deliveryDates)  $this->logger(['delivery-dates' => $deliveryDates]);
+                    if ((bool)$deliveryMethods)  $this->logger(['delivery-tokens' => $deliveryMethods]);
+                }
+
                 return new RedirectResponse(\App::router()->generate('orderV3.delivery'));
             }
+
+            $this->logger(['action' => 'view-page-new']);
 
             $this->session->remove($this->splitSessionKey);
 
             // testing purpose only
-            (new DeliveryAction())->getSplit();
+            //(new DeliveryAction())->getSplit();
 
         } catch (ValidateException $e) {
             $page->setParam('error', $e->getMessage());

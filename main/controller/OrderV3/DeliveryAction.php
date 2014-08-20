@@ -53,6 +53,8 @@ class DeliveryAction extends OrderV3 {
 
         try {
 
+            $this->logger(['action' => 'view-page-delivery']);
+
             if (!$this->session->get($this->splitSessionKey)) return new \Http\RedirectResponse(\App::router()->generate('cart'));
 
             // сохраняем данные пользователя
@@ -146,6 +148,7 @@ class DeliveryAction extends OrderV3 {
                 break;
 
             case 'changeDate':
+                $this->logger(['action' => 'change-date']);
                 $changes['orders'] = array(
                     $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
                 );

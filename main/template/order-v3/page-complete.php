@@ -5,11 +5,16 @@ return function(
     $orders,
     $ordersPayment,
     $products,
-    $userEntity
+    $userEntity,
+    $paymentProviders
 ) {
 /** @var $products \Model\Product\Entity[] */
 ?>
-
+<style>
+    .jsPaymentForms {
+        display: none;
+    }
+</style>
 <?= $helper->render('order-v3/__head', ['step' => 3]) ?>
 
     <section class="orderCnt jsOrderV3PageComplete">
@@ -33,7 +38,7 @@ return function(
                             <? foreach ($order->getProduct() as $key => $product): ?>
                             <? /** @var $product \Model\Order\Product\Entity */?>
                                 <? if (isset($products[$product->getId()])) : ?>
-                                    <li class="orderLn_lst_i"><?= $products[$product->getId()]->getWebName() ?> <?= $product->getQuantity() ?> шт.</li>
+                                    <li class="orderLn_lst_i"><?= $products[$product->getId()]->getWebName() == '' ? $products[$product->getId()]->getName():  $products[$product->getId()]->getWebName(); ?> <?= $product->getQuantity() ?> шт.</li>
                                 <? endif ?>
                                 <? if ($key == 2) : ?>
                                     <? $orderProductsString = $helper->numberChoiceWithCount(count($order->getProduct()) - 2, ['товар', 'товара', 'товаров']) ?>
@@ -51,7 +56,10 @@ return function(
                     <? if (\RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)) : ?>
 
                     <div class="orderLn_c">
-                        <div><?= \RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)->getShortName() ?> <!--11 июл. 2014 9:00…18:00--></div>
+                        <div><?= \RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)->getShortName() ?>
+                            <? if ($order->deliveredAt) : ?><?= strftime('%e %b %Y', $order->deliveredAt->getTimestamp()) ?><? endif; ?>
+                            <? if ($order->interval) : ?><?= $order->interval->getStart()?>…<?= $order->interval->getEnd() ?><? endif; ?>
+                        </div>
                         <!--<div>Оплата при получении: наличные, банковская карта</div>-->
                     </div>
 
@@ -95,7 +103,7 @@ return function(
                                             </a>
                                             <ul style="display: none;" class="customSel_lst popupFl">
                                                 <? foreach ($paymentMethods as $method) : ?>
-                                                    <li class="customSel_i">
+                                                    <li class="customSel_i jsPaymentMethod">
                                                         <strong><?= $method->name; ?></strong><br/>
                                                         <?= $method->description; ?>
                                                     </li>
@@ -113,7 +121,7 @@ return function(
 
                                         <ul style="display: none;" class="customSel_lst popupFl customSel_lst-pay jsOnlinePaymentList">
                                         <? foreach ($paymentMethods as $method) : ?>
-                                            <li class="customSel_i">
+                                            <li class="customSel_i jsPaymentMethod" data-value="<?= $method->id; ?>">
                                                 <strong><?= $method->name; ?></strong><br/>
                                                 <?= $method->description; ?>
                                             </li>
@@ -121,6 +129,13 @@ return function(
                                         </ul>
 
                                     <? endif; ?>
+
+                                    <!-- Оплата банковской картой онлайн, PSB -->
+                                    <!-- TODO проверка возможности оплаты через этот метод -->
+<!--                                    --><?//= (new \Templating\HtmlLayout())->render('order/payment/form-psb', array('provider' => $paymentProviders['psb'], 'order' => $order, 'form' => null)) ?>
+
+                                    <!-- Выставление счета в PSB -->
+<!--                                    --><?//= (new \Templating\HtmlLayout())->render('order/payment/form-psbInvoice', array('provider' => $paymentProviders['psbInvoice'], 'order' => $order, 'form' => null)) ?>
 
                                 <? endif; ?>
 

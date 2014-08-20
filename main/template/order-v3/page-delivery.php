@@ -124,7 +124,7 @@ return function(
 
                     <div class="orderCheck orderCheck-credit clearfix">
                         <input type="checkbox" class="customInput customInput-checkbox jsCreditPayment" id="credit-<?= $order->block_name ?>" name="" value="" <?= $order->payment_method_id == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT ? 'checked' : '' ?>>
-                        <label class="customLabel" for="credit-<?= $order->block_name ?>">Купить в кредит<!--, от 2 223 <span class="rubl">p</span> в месяц--></label>
+                        <label class="customLabel" style="display: none" for="credit-<?= $order->block_name ?>">Купить в кредит<!--, от 2 223 <span class="rubl">p</span> в месяц--></label>
                     </div>
 
                 <? endif; ?>

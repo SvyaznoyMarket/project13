@@ -14,11 +14,13 @@ class NewAction {
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        return (new \Controller\OrderV3\NewAction)->execute($request);
-        
         $user = \App::user();
         $region = $user->getRegion();
         $cart = $user->getCart();
+
+        if ($region && $region->getId() == 119623 && \App::config()->newOrder && \App::abTest()->getTest('orders')) {
+            if (\App::abTest()->getTest('orders')->getChosenCase()->getKey() == 'new') return (new \Controller\OrderV3\NewAction)->execute($request);
+        }
 
         if ($cart->isEmpty()) {
             \App::logger()->warn(['message' => 'Пустая корзина'], ['cart']);

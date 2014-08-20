@@ -87,6 +87,13 @@
             });
 
         },
+        log = function logF(data){
+            $.ajax({
+                "type": 'POST',
+                "data": data,
+                "url": '/order/log'
+            })
+        },
         showMap = function(elem, token) {
             var $currentMap = elem.find('.js-order-map').first(),
                 mapData = $currentMap.data('value'),
@@ -160,6 +167,8 @@
             // первая вкладка активная
             $(elemId).find('.selShop_tab').removeClass('selShop_tab-act').first().addClass('selShop_tab-act');
             showMap($(this).closest('.orderCol'), token);
+        } else {
+            log({'action':'view-date'});
         }
 
         e.preventDefault();
@@ -283,6 +292,12 @@
             number = $this.data('value');
         deleteDiscount(block_name, number);
         e.preventDefault();
+    });
+
+    // клик по "хочу быстрее"
+    $orderContent.on('click', '.jsWanna', function(e){
+        log({'action':'wanna'});
+
     })
 
 })(jQuery);

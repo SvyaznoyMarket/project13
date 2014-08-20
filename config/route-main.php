@@ -520,6 +520,12 @@ return [
         'pattern'   => '/order/error',
         'action'    => ['OrderV3\ErrorAction', 'execute']
     ],
+    'orderV3.log'   => [
+        'pattern'   => '/order/log',
+        'action'    => ['OrderV3\OrderV3', 'logFromWeb'],
+        'method'    => ['POST']
+    ],
+
 
     // заказ
     'order.1click' => [

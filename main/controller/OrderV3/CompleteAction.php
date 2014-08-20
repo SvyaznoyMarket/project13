@@ -15,6 +15,7 @@ class CompleteAction extends OrderV3 {
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        /** @var \Model\Order\Entity $orders */
         $orders = [];
         $ordersPayment = [];
         $products = [];
@@ -106,6 +107,21 @@ class CompleteAction extends OrderV3 {
             }
             unset($product);
 
+            // логируем этот шит
+            foreach ($orders as $order) {
+                $productIds = array_map(function(\Model\Order\Product\Entity $product) { return $product->getId(); }, $order->getProduct());
+                $products = array_filter($products, function(\Model\Product\Entity $product) use ($productIds) { return in_array($product->getId(), $productIds); });
+                $data = [];
+                $data['order-number'] = $order->numberErp;
+                $data['order-products'] = $productIds;
+                $data['order-names'] = array_map(function(\Model\Product\Entity $product) { return $product->getName(); }, $products);
+                $data['order-product-category'] = array_map(function(\Model\Product\Entity $product) { $category = $product->getMainCategory(); return $category->getName(); }, $products);
+                $data['order-product-price'] = array_map(function(\Model\Product\Entity $product) { return $product->getPrice(); }, $products);
+                $data['order-sum'] = $order->getSum();
+                $date['order-delivery-price'] = isset($order->getDelivery()[0]) ? $order->getDelivery()[0]->getPrice() : '';
+                $date['user-phone'] = $order->getMobilePhone();
+                $this->logger($data);
+            }
 
 
         } catch (\Curl\Exception $e) {
@@ -116,7 +132,7 @@ class CompleteAction extends OrderV3 {
 
         $page = new \View\OrderV3\CompletePage();
         $page->setParam('orders', $orders);
-        $page->setParam('ordersPayment', $ordersPayment);
+        $page->setParam('ordersPayment', []);
         $page->setParam('products', $products);
         $page->setParam('userEntity', $this->user->getEntity());
         $page->setParam('paymentProviders', $paymentProviders);
