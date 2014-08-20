@@ -1,11 +1,3 @@
-/**
- * Parallax Scrolling
- *
- * @author  Shaposhnik Vitaly
- */
-;(function($){
-
-})(jQuery);
 var addKISSmetricsEvent = function(eventName, bannerId, banner) {
     var
         centerImageUrl = banner.attr('src'),
