@@ -3212,6 +3212,7 @@ img[height="0"] {
     float: left;
     overflow: hidden;
     width: 479px;
+    height: 479px;
     margin: 0 3px 40px 0;
   }
   .tchiboCatalog .tchiboCatalogInner.mLast {
