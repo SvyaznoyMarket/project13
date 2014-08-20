@@ -17,58 +17,60 @@ return function(
 
         <?= $helper->render('order-v3/__error', ['error' => $error]) ?>
 
-        <form class="orderU" action="" method="POST" accept-charset="utf-8">
+        <form class="orderU clearfix" action="" method="POST" accept-charset="utf-8">
             <input type="hidden" value="changeUserInfo" name="action" />
-            <fieldset class="orderU_flds">
-                <div class="orderU_fld">
-                    <label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
-                    <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[phone]" value="<?= $userEntity ? $userEntity->getMobilePhone() : '' ?>" placeholder="8 xxx xxx xx xx" data-mask="8 xxx xxx xx xx">
-                    <span class="orderU_hint">Для смс о состоянии заказа</span>
-                </div>
-
-                <div class="orderU_fld">
-                    <label class="orderU_lbl" for="">E-mail</label>
-                    <input class="orderU_tx textfield" type="text" name="user_info[email]" value="<?= $userEntity ? $userEntity->getEmail() : '' ?>" placeholder="">
-                </div>
-
-                <div class="orderU_fld">
-                    <label class="orderU_lbl" for="">Имя</label>
-                    <input class="orderU_tx textfield" type="text" name="user_info[first_name]" value="<?= $userEntity ? $userEntity->getFirstName() : '' ?>" placeholder="">
-                    <span class="orderU_hint">Как к вам обращаться?</span>
-                </div>
-            </fieldset>
-
-            <? if ($bonusCards) : ?>
 
             <fieldset class="orderU_flds">
-                <div class="bonusCnt">
-                    <div class="bonusCnt_t">Начислить баллы</div>
+                <div>
+                    <div class="orderU_fld">
+                        <label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
+                        <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[phone]" value="<?= $userEntity ? $userEntity->getMobilePhone() : '' ?>" placeholder="8 xxx xxx xx xx" data-mask="8 xxx xxx xx xx">
+                        <span class="orderU_hint">Для смс о состоянии заказа</span>
+                    </div>
 
-                        <div class="bonusCnt_lst">
-                            <? foreach ($bonusCards as $key => $card) : ?>
+                    <div class="orderU_fld">
+                        <label class="orderU_lbl" for="">E-mail</label>
+                        <input class="orderU_tx textfield" type="text" name="user_info[email]" value="<?= $userEntity ? $userEntity->getEmail() : '' ?>" placeholder="">
+                    </div>
 
-                                <div class="bonusCnt_i" data-eq="<?= $key ?>">
-<!--                                    <img class="bonusCnt_img" src="/styles/order/img/sBank.png" alt="" />-->
-                                    <img class="bonusCnt_img" src="/styles/order/img/sClub.png" alt="" />
-                                    <span class="bonusCnt_tx"><?= $card->getName() ?></span>
-                                </div>
-                            <? endforeach ?>
-                        </div>
+                    <div class="orderU_fld">
+                        <label class="orderU_lbl" for="">Имя</label>
+                        <input class="orderU_tx textfield" type="text" name="user_info[first_name]" value="<?= $userEntity ? $userEntity->getFirstName() : '' ?>" placeholder="">
+                        <span class="orderU_hint">Как к вам обращаться?</span>
+                    </div>
+                </div>
 
-                    <? foreach ($bonusCards as $card) : ?>
-                        <div class="bonusCnt_it clearfix" style="display: none">
-                            <div class="fl-l">
-                                <div class="orderU_fld">
-                                    <label class="orderU_lbl" for="">Карта</label>
-                                    <input class="orderU_tx textfield" type="text" name="user_info[bonus_card_number]" value="" placeholder="<?= $card->getMask() ?>" data-mask="<?= $card->getMask() ?>">
-                                </div>
+                <? if ($bonusCards) : ?>
+                <div>
+                    <div class="bonusCnt">
+                        <div class="bonusCnt_t">Начислить баллы</div>
 
-                                <div class="bonusCnt_descr"><?= $card->getDescription() ?></div>
+                            <div class="bonusCnt_lst">
+                                <? foreach ($bonusCards as $key => $card) : ?>
+
+                                    <div class="bonusCnt_i" data-eq="<?= $key ?>">
+    <!--                                    <img class="bonusCnt_img" src="/styles/order/img/sBank.png" alt="" />-->
+                                        <img class="bonusCnt_img" src="/styles/order/img/sClub.png" alt="" />
+                                        <span class="bonusCnt_tx"><span class="brb-dt"><?= $card->getName() ?></span></span>
+                                    </div>
+                                <? endforeach ?>
                             </div>
 
-                            <img class="fl-r" src="<?= $card->getImage() ?>" alt="" />
-                        </div>
-                    <? endforeach ; ?>
+                        <? foreach ($bonusCards as $card) : ?>
+                            <div class="bonusCnt_it clearfix" style="display: none">
+                                <div class="fl-l">
+                                    <div class="orderU_fld">
+                                        <label class="orderU_lbl" for="">Карта</label>
+                                        <input class="orderU_tx textfield" type="text" name="user_info[bonus_card_number]" value="" placeholder="<?= $card->getMask() ?>" data-mask="<?= $card->getMask() ?>">
+                                    </div>
+
+                                    <div class="bonusCnt_descr"><?= $card->getDescription() ?></div>
+                                </div>
+
+                                <img class="fl-r" src="<?= $card->getImage() ?>" alt="" />
+                            </div>
+                        <? endforeach ; ?>
+                    </div>
                 </div>
             </fieldset>
 

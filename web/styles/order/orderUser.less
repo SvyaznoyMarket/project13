@@ -1,8 +1,10 @@
 .orderU {
-	.inline-block();
-	margin: 0 0 15px;
-
 	font-size: 12px;
+
+	&_flds {
+		.inline-block();
+		margin: 0 0 15px;
+	}
 
 	&_fld {
 		position: relative;
@@ -90,6 +92,7 @@
 		.inline-block();
 		height: 65px;
 		margin: 0;
+		min-width: 90px;
 		padding: 10px;
 
 		cursor: pointer;
@@ -99,9 +102,9 @@
 
 		font-size: 12px;
 
-		&:first-child {
-			border-right: none;
-		}
+		// &:last-child {
+		// 	border-left: none;
+		// }
 
 		&-act {
 			background: @lightgreyBg;
@@ -122,8 +125,6 @@
 
 	&_tx {
 		display: block;
-
-		border-bottom: 1px dotted;
 	}
 
 	&_it {

@@ -24,9 +24,8 @@ return function(
     <? endif; ?>
 
     <div class="orderInf clearfix">
-        <div>Ваш регион: <strong><?= \App::user()->getRegion()->getName() ?></strong></div>
-
-        <div class="fl-l">От региона зависят доступные способы получения и оплаты заказов.</div>
+        <div class="fl-l">Ваш регион: <strong><?= \App::user()->getRegion()->getName() ?></strong> <br/> 
+        От региона зависят доступные способы получения и оплаты заказов.</div>
 
         <button class="btnLightGrey fl-r jsChangeRegion">Изменить регион</button>
     </div>
@@ -194,8 +193,6 @@ return function(
 
                         <span class="js-order-changePlace-link orderChange" data-content="#id-order-changePlace-content-<?= $order->id ?>">изменить место</span>
                     </div>
-
-
 
                     <div class="orderCol_addrs"<? if (isset($point->subway[0]->line)): ?> style="background: <?= $point->subway[0]->line->color ?>;"<? endif ?>>
                         <span class="orderCol_addrs_tx">

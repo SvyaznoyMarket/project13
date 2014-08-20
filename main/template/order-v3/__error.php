@@ -5,7 +5,7 @@ return function(
 ) {
 ?>
 
-    <div id="OrderV3ErrorBlock" style="display: <?= $error ? 'block' : 'none'?>">
+    <div id="OrderV3ErrorBlock" class="errtx" style="display: <?= $error ? 'block' : 'none'?>">
         <?= $error ?>
     </div>
 

@@ -14,10 +14,8 @@ class NewAction {
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if (\App::config()->newOrder && \App::abTest()->getTest('orders')) {
-            if (\App::abTest()->getTest('orders')->getChosenCase()->getKey() == 'new') return (new \Controller\OrderV3\NewAction)->execute($request);
-        }
-
+        return (new \Controller\OrderV3\NewAction)->execute($request);
+        
         $user = \App::user();
         $region = $user->getRegion();
         $cart = $user->getCart();
