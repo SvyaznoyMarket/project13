@@ -55,8 +55,12 @@ class DeliveryAction extends OrderV3 {
 
             if (!$this->session->get($this->splitSessionKey)) return new \Http\RedirectResponse(\App::router()->generate('cart'));
 
+            // сохраняем данные пользователя
+            $data['action'] = 'changeUserInfo';
+            $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
+
             //$orderDelivery =  new \Model\OrderDelivery\Entity($this->session->get($this->splitSessionKey));
-            $orderDelivery = $this->getSplit();;
+            $orderDelivery = $this->getSplit($data);
 
             $page = new \View\OrderV3\DeliveryPage();
             $page->setParam('orderDelivery', $orderDelivery);

@@ -91,9 +91,10 @@ class CreateAction extends OrderV3 {
         if ((bool)$createdOrders) {
             $this->session->set(\App::config()->order['sessionName'] ?: 'lastOrder', array_map(function(\Model\Order\CreatedEntity $createdOrder) use ($splitResult) {
                 return [
-                    'number'    => $createdOrder->getNumber(),
-                    'id'        => $createdOrder->getId(),
-                    'phone'    => (string)$splitResult['user_info']['phone']
+                    'number'        => $createdOrder->getNumber(),
+                    'number_erp'    => $createdOrder->numberErp,
+                    'id'            => $createdOrder->getId(),
+                    'phone'         => (string)$splitResult['user_info']['phone']
                 ];
             }, $createdOrders));
         }
