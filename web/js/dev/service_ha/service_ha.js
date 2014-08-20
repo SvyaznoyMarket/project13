@@ -8,7 +8,8 @@
 	var
 		region_list = $(".entry-content select#region_list"),
 		region = $(".jsChangeRegion"),
-		regionName = region.length ? region.text() : false;
+		regionName = region.length ? region.text() : false,
+		timeoutDelay = 1500;
 	// end of vars
 
 	var
@@ -35,6 +36,6 @@
 		return;
 	}
 
-	setTimeout(init, 1500);
+	setTimeout(init, timeoutDelay);
 
 })(jQuery);
