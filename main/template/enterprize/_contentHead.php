@@ -86,14 +86,14 @@ $routeName = \App::request()->attributes->get('route'); ?>
                 <? endif; ?>
 
                 <div class="rulesText">
-                    Фишка со скидкой <strong><?= $page->helper->formatPrice($enterpizeCoupon->getPrice(), $priceNumDecimals) ?><?= !$enterpizeCoupon->getIsCurrency() ? '%' : 'руб' ?></strong>
+                    Фишка со скидкой <strong><?= $page->helper->formatPrice($enterpizeCoupon->getPrice(), $priceNumDecimals) ?><?= !$enterpizeCoupon->getIsCurrency() ? '%' : ' <span class="rubl">p</span>' ?></strong>
                     <? if ($enterpizeCoupon->getSegmentDescription()): ?>
                         <?= $enterpizeCoupon->getSegmentDescription() ?>
                     <? else: ?>
                         <?= ' на ' ?><strong><a target="_blank" style="text-decoration: underline;" href="<?= $url ?>"><?= $linkName ?></a></strong>
                     <? endif ?>
                     <br />
-                    Минимальная сумма заказа <?= $enterpizeCoupon->getMinOrderSum() ? $enterpizeCoupon->getMinOrderSum() : 0 ?> руб<br />
+                    Минимальная сумма заказа <?= $enterpizeCoupon->getMinOrderSum() ? $enterpizeCoupon->getMinOrderSum() : 0 ?> <span class="rubl">p</span><br />
                     Действует
                     <? if ($enterpizeCoupon->getStartDate() instanceof \DateTime): ?>
                         c <?= $enterpizeCoupon->getStartDate()->format('d.m.Y') ?>

@@ -31,15 +31,13 @@
                 <div class="personalTable_cell personalTable_cell-w175">Получение</div>
 
                 <div class="personalTable_cell">Статус</div>
-
-                <div class="personalTable_cell"></div>
             </div>
 
             <? foreach ($current_orders as $order) : ?>
 
             <div class="personalTable_row">
                 <div class="personalTable_cell ta-c">
-                    <a href="<?= $page->url('user.order', ['orderId' => $order->getId() ]) ?>"><?= str_replace('-','-<br />',$order->getNumberErp()) ?></a>
+                    <a href="<?= $page->url('user.order', ['orderId' => $order->getId() ]) ?>"><?= str_replace('-','-',$order->getNumberErp()) ?></a>
                     <span class="s dblock"><?= strftime('%e %b %y', $order->getCreatedAt()->getTimestamp())?></span>
                 </div>
 
