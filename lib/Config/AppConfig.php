@@ -182,6 +182,10 @@ class AppConfig {
         'enabled' => null,
     ];
     /** @var array */
+    public $googleAnalyticsTchibo = [
+        'enabled' => null,
+    ];
+    /** @var array */
     public $yandexMetrika = [
         'enabled' => null,
     ];
@@ -439,12 +443,9 @@ class AppConfig {
      * @var array
      * @hidden
      */
-    public $abtest = [
+    public $abTest = [
         'cookieName'  => null,
-        'bestBefore'  => null,
-        'enabled'     => null,
-        'checkPeriod' => null,
-        'test'        => [],
+        'tests'       => [],
     ];
 
     /**
@@ -529,7 +530,6 @@ class AppConfig {
         'formDataSessionKey' => null,
         'itemsInSlider' => null,
         'showSlider' => null,
-        'cookieName' => null,
     ];
 
     /** @var array */
@@ -601,6 +601,14 @@ class AppConfig {
 
     /** @var array */
     public $scmsV2 = [
+        'url'          => null,
+        'timeout'      => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
+    ];
+
+    /** @var array */
+    public $scmsSeo = [
         'url'          => null,
         'timeout'      => null,
         'retryTimeout' => [],

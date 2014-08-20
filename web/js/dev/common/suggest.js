@@ -56,9 +56,12 @@
 				 * @param	{String}	response	Ответ от сервера
 				 */
 				renderResponse = function renderResponse( response ) {
-					suggestCache[text] = response; // memoization
+					if ( !response.success ) {
+						return;
+					}
 
-					suggestWrapper.html(response);
+					suggestCache[text] = response.content; // memoization
+					suggestWrapper.html(response.content);
 					suggestItem = $('.bSearchSuggest__eRes');
 					suggestLen = suggestItem.length;
 					if ( suggestLen ) {

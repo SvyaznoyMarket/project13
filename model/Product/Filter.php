@@ -67,7 +67,7 @@ class Filter {
                         if (!isset($value['from'])) {
                             $value['from'] = null;
                         }
-                        if ($filter->getMax() != $value['to'] || $filter->getMin() != $value['from']) {
+                        if ($filter->getMaxGlobal() != $value['to'] || $filter->getMinGlobal() != $value['from']) {
                             $return[] = [$filter->getId(), 2, $value['from'], $value['to']];
                         }
                         break;

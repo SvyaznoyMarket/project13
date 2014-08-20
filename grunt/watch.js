@@ -126,6 +126,11 @@ module.exports = function (grunt, options) {
             tasks: ['concat:watch3dJS', 'uglify:watch3dJS']
         },
 
+        serviceHaJS:{
+            files: [ pathDev + 'service_ha/*.js'],
+            tasks: ['concat:serviceHaJS', 'uglify:serviceHaJS']
+        },
+
         loadJS:{
             files: [ pathRoot + 'loadjs.js'],
             tasks: ['uglify:loadJS']

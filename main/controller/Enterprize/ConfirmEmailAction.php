@@ -202,7 +202,7 @@ class ConfirmEmailAction {
                     throw new \Exception(sprintf('Не пришли данные с хранилища для user_id=%s', $result['user_id']));
                 }
 
-                $storageData = json_decode($storageResult['value']);
+                $storageData = (array)json_decode($storageResult['value']);
 
                 // перелаживаем данные с хранилища в сессию
                 foreach (get_object_vars($storageData) as $name => $value) {

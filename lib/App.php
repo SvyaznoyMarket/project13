@@ -458,20 +458,20 @@ class App {
     }
 
     /**
-     * @return \Session\Abtest
+     * @return \Session\AbTest\AbTest
      */
     public static function abTest() {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Session\Abtest(self::config()->abtest);
+            $instance = new \Session\AbTest\AbTest();
         }
 
         return $instance;
     }
 
     /**
-     * @return array|null $catalogJson
+     * @param array|null $catalogJson
      * @return \Session\AbtestJson|null
      */
     public static function abTestJson($catalogJson = null) {
@@ -565,13 +565,28 @@ class App {
 
     /**
      * @static
-     * @return \Scms\Client
+     * @return \Scms\ClientV2
      */
     public static function scmsClientV2() {
         static $instance;
 
         if (!$instance) {
             $instance = new \Scms\ClientV2(self::config()->scmsV2, self::curl());
+        }
+
+        return $instance;
+    }
+
+
+    /**
+     * @static
+     * @return \Scms\ClientV2
+     */
+    public static function scmsSeoClient() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Scms\ClientV2(self::config()->scmsSeo, self::curl());
         }
 
         return $instance;

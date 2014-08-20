@@ -38,7 +38,7 @@ class ProductAction {
             $this->updateCartWarranty($product, $cartProduct, $quantity);
 
             $returnRedirect = $request->headers->get('referer') ?: ($product->getLink() ?: \App::router()->generate('homepage'));
-            switch (\App::abTest()->getCase()->getKey()) {
+            switch (\App::abTest()->getTest('other')->getChosenCase()->getKey()) {
                 case 'upsell':
                     $returnRedirect = \App::router()->generate('product.upsell', ['productToken' => $product->getToken()]);
                     break;
@@ -58,6 +58,7 @@ class ProductAction {
                 'cartButton'     => [
                     'id' => \View\Id::cartButtonForProduct($product->getId()),
                 ],
+                'isTchiboProduct' => $product->getMainCategory() && 'Tchibo' === $product->getMainCategory()->getName(),
             ];
             if (\App::config()->kissmentrics['enabled']) {
                 try {

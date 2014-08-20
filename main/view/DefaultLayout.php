@@ -5,6 +5,7 @@ namespace View;
 class DefaultLayout extends Layout {
     protected $layout  = 'layout-twoColumn';
     protected $breadcrumbsPath = null;
+    protected $useTchiboAnalytics = false;
 
     public function __construct() {
         parent::__construct();
@@ -404,28 +405,33 @@ class DefaultLayout extends Layout {
                 $return .= $this->tryRender('partner-counter/_actionpay', ['routeName' => $routeName] );
             }
 
-
             if ('subscribe_friends' == $routeToken) {
                 $return .= $this->tryRender('partner-counter/_am15_net');
                 $return .= $this->tryRender('partner-counter/_actionpay_subscribe');
                 $return .= $this->tryRender('partner-counter/_cityAds_subscribe');
             }
 
-
             // ActionPay ретаргетинг
             $return .= '<div id="ActionPayJS" data-vars="' .
                 $this->json( (new \View\Partners\ActionPay($routeName, $this->params))->execute() ) .
                 '" class="jsanalytics"></div>';
 
-
-
             // вызов JS Alexa-кода
             $return .= '<div id="AlexaJS" class="jsanalytics"></div><noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=mPO9i1acVE000x" style="display:none" height="1" width="1" alt="" /></noscript>';
 
             // new Google Analytics Code
-            $return .= '<div id="gaJS" class="jsanalytics" data-vars="' .
-                $this->json( (new \View\Partners\GoogleAnalytics($routeName, $this->params))->execute() ) .
-                '"></div>';
+            $useTchiboAnalytics = false;
+            if (\App::config()->googleAnalyticsTchibo['enabled']) {
+                $useTchiboAnalytics = $this->useTchiboAnalytics;
+                if (!$useTchiboAnalytics && $this->getGlobalParam('isTchibo')) {
+                    $useTchiboAnalytics = $this->getGlobalParam('isTchibo', false);
+                }
+            }
+
+            $return .= '<div id="gaJS" class="jsanalytics"
+                    data-vars="' . $this->json((new \View\Partners\GoogleAnalytics($routeName, $this->params))->execute()) . '"
+                    data-use-tchibo-analytics="' . $useTchiboAnalytics . '">
+                </div>';
 
             if (\App::config()->partners['TagMan']['enabled']) {
                 $return .= '<div id="TagManJS" class="jsanalytics"></div>';

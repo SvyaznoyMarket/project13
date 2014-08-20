@@ -26,7 +26,11 @@ class IndexAction {
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
         // SITE-3931, SITE-3934
-        $isCouponSent = (bool)$request->cookies->get(\App::config()->enterprize['cookieName']);
+        $isCouponSent = isset($data['isCouponSent']) ? (bool)$data['isCouponSent'] : false;
+        if ($isCouponSent) {
+            unset($data['isCouponSent']);
+            $session->set($sessionName, $data);
+        }
 
         // получение купонов
         /**
@@ -46,7 +50,7 @@ class IndexAction {
                         $enterpizeCoupon = $coupon;
                     }
                 }
-            });
+            }, $isCouponSent ? 0 : null);
         } catch (\Exception $e) {
             \App::logger()->error($e);
             \App::exception()->remove($e);
@@ -91,7 +95,7 @@ class IndexAction {
         \App::curl()->execute();
 
         // отфильтровываем ненужные купоны
-        $enterpizeCoupons = array_filter($enterpizeCoupons, function($coupon) use ($limits, $userCouponSeries) {
+        $enterpizeCoupons = array_filter($enterpizeCoupons, function($coupon) use ($limits, $userCouponSeries, $user) {
             if (!$coupon instanceof \Model\EnterprizeCoupon\Entity || !array_key_exists($coupon->getToken(), $limits)) return false;
 
             // убераем купоны с кол-вом <= 0
@@ -101,6 +105,8 @@ class IndexAction {
             if (in_array($coupon->getToken(), $userCouponSeries)) return false;
 
             if (!(bool)$coupon->isForMember() && !(bool)$coupon->isForNotMember()) return false;
+
+            if ($user && $user->isEnterprizeMember() && !(bool)$coupon->isForMember() && (bool)$coupon->isForNotMember()) return false;
 
             return true;
         });
@@ -155,6 +161,21 @@ class IndexAction {
             }
         }
 
+        $enterprizeData = [];
+        if ($isRegistration && $isCouponSent && $enterpizeCoupon) {
+            $enterprizeDataDefault = [
+                'name'            => null,
+                'mobile'          => null,
+                'email'           => null,
+                'couponName'      => $enterpizeCoupon->getName(),
+                'enterprizeToken' => $enterpizeCoupon->getToken(),
+                'date'            => date('d.m.Y'),
+                'time'            => date('H:i'),
+                'enter_id'        => !empty($data['token']) ? $data['token'] : \App::user()->getToken(),
+            ];
+            $enterprizeData = array_merge($enterprizeDataDefault, array_intersect_key($data, $enterprizeDataDefault));
+        }
+
         $page = new \View\Enterprize\IndexPage();
         $page->setParam('enterpizeCoupons', $enterpizeCoupons);
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
@@ -163,13 +184,8 @@ class IndexAction {
         $page->setParam('isRegistration', $isRegistration);
         $page->setParam('products', $products);
         $page->setParam('hasFlocktoryPopup', (bool)$request->get('flocktory_popup'));
+        $page->setParam('enterprizeData', $enterprizeData);
 
-        $response = new \Http\Response($page->show());
-
-        if ($isCouponSent) {
-            $response->headers->clearCookie(\App::config()->enterprize['cookieName']);
-        }
-
-        return $response;
+        return new \Http\Response($page->show());
     }
 }

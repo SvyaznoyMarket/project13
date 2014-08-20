@@ -776,7 +776,9 @@ class ShowAction {
 
         $values = [];
         foreach ($requestData as $k => $v) {
-            if (0 === strpos($k, \View\Product\FilterForm::$name)) {
+            if ('q' === $k) {
+                $values['text'] = $v;
+            } elseif (0 === strpos($k, \View\Product\FilterForm::$name)) {
                 $parts = array_pad(explode('-', $k), 3, null);
 
                 if (!isset($values[$parts[1]])) {
@@ -799,7 +801,9 @@ class ShowAction {
 
         $filterData = [];
         foreach ($values as $k => $v) {
-            if (isset($v['from']) || isset($v['to'])) {
+            if ('text' === $k) {
+                $filterData[] = [$k, 3, $v];
+            } elseif (isset($v['from']) || isset($v['to'])) {
                 $filterData[] = [$k, 2, isset($v['from']) ? $v['from'] : null, isset($v['to']) ? $v['to'] : null];
             } else {
                 $filterData[] = [$k, 1, $v];

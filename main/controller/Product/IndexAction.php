@@ -441,12 +441,12 @@ class IndexAction {
         
         $page->setParam('sprosikupiReviews', null);
         $page->setParam('shoppilotReviews', null);
-        switch (\App::abTest()->getCase()->getKey()) {
-            case 'reviews_sprosikupi':
+        switch (\App::abTest()->getTest('reviews')->getChosenCase()->getKey()) {
+            case 'sprosikupi':
                 $client = new \SprosiKupi\Client(\App::config()->partners['SprosiKupi'], \App::logger());
                 $page->setParam('sprosikupiReviews', $client->query($product->getId()));
                 break;
-            case 'reviews_shoppilot':
+            case 'shoppilot':
                 $client = new \ShopPilot\Client(\App::config()->partners['ShopPilot'], \App::logger());
                 $page->setParam('shoppilotReviews', $client->query($product->getId()));
                 break;

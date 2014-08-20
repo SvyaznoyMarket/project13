@@ -507,9 +507,22 @@
 						productData = data.product;
 					// end of vars
 
+					var
+						tchiboGA = function() {
+							if (typeof window.ga === "undefined" || !productData.hasOwnProperty("isTchiboProduct") || !productData.isTchiboProduct) {
+								return;
+							}
+
+							console.log("TchiboGA: tchiboTracker.send event Add2Basket product [%s, %s]", productData.name, productData.article);
+							ga("tchiboTracker.send", "event", "Add2Basket", productData.name, productData.article);
+						};
+					// end of functions
+
 					if ( !productData || typeof _gaq === 'undefined' ) {
 						return;
 					}
+
+					tchiboGA();
 
                     console.log ("_gaq: _trackEvent Add2Basket product %s", productData.article);
 					_gaq.push(['_trackEvent', 'Add2Basket', 'product', productData.article]);
@@ -1800,7 +1813,7 @@ $(document).ready(function(){
 							console.info('try to redirect to2 ' + response.data.link);
 							console.log(typeof response.data.link);
 
-							document.location.href = response.data.link;
+							document.location.href = response.data.link.replace(/#.*$/, '');
 
 							return false;
 						}
@@ -2564,53 +2577,53 @@ $(document).ready(function() {
 				 * @param delay					текущая задержка на данном слайдере
 				 */
 				collectionShow: function(collection_name, collection_position, delay) {
-					var
-						item,
-						i;
-					// end of vars
-
-					var
-						collectionViewPush = function collectionViewPush( item ) {
-							if ( !item ) {
-								return;
-							}
-
-							console.info('TchiboSliderAnalytics collection_view');
-							console.log(item);
-							_gaq.push(item);
-						};
-					// end of functions
-
-					if (
-						!tchiboAnalytics.isAnalyticsEnabled ||
-						'undefined' == typeof(collection_name) ||
-						'undefined' == typeof(collection_position) ||
-						'undefined' == typeof(delay)
-						) {
-						return;
-					}
-
-					// страница не отображается
-					if ( true === documentHidden ) {
-						return;
-					}
-
-					item = ['_trackEvent', 'collection_view', collection_name+'_'+collection_position, delay.toString(), , true];
-
-					if ( 'undefined' == typeof(_gaq) ) {
-						tchiboAnalyticsBuffer.push(item);
-
-						return;
-					}
-
-					if ( tchiboAnalyticsBuffer.length > 0 ) {
-						for ( i=0; i<tchiboAnalyticsBuffer.length; i++ ) {
-							collectionViewPush(tchiboAnalyticsBuffer[i]);
-						}
-						tchiboAnalyticsBuffer = [];
-					}
-
-					collectionViewPush(item);
+//					var
+//						item,
+//						i;
+//					// end of vars
+//
+//					var
+//						collectionViewPush = function collectionViewPush( item ) {
+//							if ( !item ) {
+//								return;
+//							}
+//
+//							console.info('TchiboSliderAnalytics collection_view');
+//							console.log(item);
+//							_gaq.push(item);
+//						};
+//					// end of functions
+//
+//					if (
+//						!tchiboAnalytics.isAnalyticsEnabled ||
+//						'undefined' == typeof(collection_name) ||
+//						'undefined' == typeof(collection_position) ||
+//						'undefined' == typeof(delay)
+//						) {
+//						return;
+//					}
+//
+//					// страница не отображается
+//					if ( true === documentHidden ) {
+//						return;
+//					}
+//
+//					item = ['_trackEvent', 'collection_view', collection_name+'_'+collection_position, delay.toString(), , true];
+//
+//					if ( 'undefined' == typeof(_gaq) ) {
+//						tchiboAnalyticsBuffer.push(item);
+//
+//						return;
+//					}
+//
+//					if ( tchiboAnalyticsBuffer.length > 0 ) {
+//						for ( i=0; i<tchiboAnalyticsBuffer.length; i++ ) {
+//							collectionViewPush(tchiboAnalyticsBuffer[i]);
+//						}
+//						tchiboAnalyticsBuffer = [];
+//					}
+//
+//					collectionViewPush(item);
 				},
 
 				/**
@@ -2938,9 +2951,12 @@ $(document).ready(function() {
 				 * @param	{String}	response	Ответ от сервера
 				 */
 				renderResponse = function renderResponse( response ) {
-					suggestCache[text] = response; // memoization
+					if ( !response.success ) {
+						return;
+					}
 
-					suggestWrapper.html(response);
+					suggestCache[text] = response.content; // memoization
+					suggestWrapper.html(response.content);
 					suggestItem = $('.bSearchSuggest__eRes');
 					suggestLen = suggestItem.length;
 					if ( suggestLen ) {

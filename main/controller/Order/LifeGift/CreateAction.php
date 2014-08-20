@@ -5,7 +5,7 @@ namespace Controller\Order\LifeGift;
 use View\Order\NewForm\Form as Form;
 
 class CreateAction {
-    use \Controller\Order\ResponseDataTrait;
+    use \Controller\Order\LifeGift\ResponseDataLifeGiftTrait;
     use \Controller\Order\FormTrait;
 
     /**

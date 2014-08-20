@@ -5,7 +5,7 @@ namespace Controller\Order\OneClick;
 use View\Order\NewForm\Form as Form;
 
 class CreateAction {
-    use \Controller\Order\ResponseDataTrait;
+    use \Controller\Order\OneClick\ResponseDataOneClickTrait;
     use \Controller\Order\FormTrait;
 
     /**

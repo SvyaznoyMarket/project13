@@ -684,6 +684,7 @@ class Action {
             ]);
             $page->setParam('categoryPath', $categoryPath);
             $page->setGlobalParam('slideData', $slideData);
+            $page->setGlobalParam('isTchibo', ($category->getRoot() && 'Tchibo' === $category->getRoot()->getName()));
         };
 
         // полнотекстовый поиск через сфинкс
@@ -1112,6 +1113,7 @@ class Action {
         $page->setParam('productView', $productView);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setParam('sidebarHotlinks', true);
+        $page->setParam('hasBanner', $hasBanner);
 
         return new \Http\Response($page->show());
     }

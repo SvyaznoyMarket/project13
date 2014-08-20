@@ -2970,7 +2970,7 @@ img[height="0"] {
     position: relative;
   }
   .tchiboNav__list .item {
-    margin: 0 25px 0 0;
+    margin: 0 12px 0 0;
     float: left;
   }
   .tchiboNav__list .item:hover .tchiboNav__sublist,
@@ -3212,6 +3212,7 @@ img[height="0"] {
     float: left;
     overflow: hidden;
     width: 479px;
+    height: 479px;
     margin: 0 3px 40px 0;
   }
   .tchiboCatalog .tchiboCatalogInner.mLast {

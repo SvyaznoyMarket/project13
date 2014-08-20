@@ -121,6 +121,19 @@ $c->scmsV2['retryTimeout'] = [
     'forever' => 0,
 ];
 
+$c->scmsSeo['url']          = 'http://scms.enter.ru/seo/';
+$c->scmsSeo['retryCount']   = 2;
+$c->scmsSeo['timeout']      = 0.36;
+$c->scmsSeo['retryTimeout'] = [
+    'default' => 0.18,
+    'tiny'    => 0.18,
+    'short'   => 0.25,
+    'medium'  => 0.5,
+    'long'    => 1,
+    'huge'    => 2,
+    'forever' => 0,
+];
+
 $c->connectTerminal = true;
 
 $c->company['phone'] = '8 (800) 700-00-09';
@@ -131,6 +144,7 @@ $c->jsonLog['enabled'] = true;
 $c->analytics['enabled'] = true;
 $c->analytics['optimizelyEnabled'] = true;
 $c->googleAnalytics['enabled'] = true;
+$c->googleAnalyticsTchibo['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;
 $c->kissmentrics['enabled'] = true;
 $c->kissmentrics['cookieName']['needUpdate'] = 'kissNeedUpdate';
@@ -406,7 +420,6 @@ $c->enterprize['enabled'] = true;
 $c->enterprize['formDataSessionKey'] = 'enterprizeForm';
 $c->enterprize['itemsInSlider'] = 7;
 $c->enterprize['showSlider'] = true;
-$c->enterprize['cookieName'] = 'enterprize_coupon_sent';
 
 $c->tchibo['rowWidth'] = 78;
 $c->tchibo['rowHeight'] = 78;
@@ -415,7 +428,7 @@ $c->tchiboSlider['analytics'] = [
     'enabled' => true,
     'use_page_visibility' => true,
     'collection_view' => [
-        'enabled' => true,
+        'enabled' => false,
         'tchiboOnly' => true
     ],
     'collection_click' => [
@@ -428,29 +441,32 @@ $c->tchiboSlider['analytics'] = [
     ],
 ];
 
-// настройки для АБ-тестов могут быть переопределены в json
-$c->abtest['cookieName'] = 'switch';
-$c->abtest['enabled']    = true;
-$c->abtest['checkPeriod'] = 3600; //секунд - как часто проверять необходимость запуска теста
-$c->abtest['bestBefore'] = '2014-09-08';
-$c->abtest['test']       = [
-    [
-        'traffic'  => 33,
-        'key'      => 'reviews_sprosikupi',
-        'name'     => "Отзывы от sprosikupi",
-        'ga_event' => 'reviews_sprosikupi',
-    ],
-    [
-        'traffic'  => 33,
-        'key'      => 'reviews_shoppilot',
-        'name'     => "Отзывы от shoppilot",
-        'ga_event' => 'reviews_shoppilot',
-    ],
-    [
-        'traffic'  => 34,
-        'key'      => 'reviews_default',
-        'name'     => "Отзывы по умолчанию",
-        'ga_event' => 'reviews_default',
+$c->abTest = [
+    'cookieName' => 'switch',
+    'tests' => [
+        'reviews' => [
+            'enabled' => true,
+            'expireDate' => '2014-09-08',
+            'cases' => [
+                'sprosikupi' => [
+                    'traffic'  => 33,
+                    'name'     => 'Отзывы от sprosikupi',
+                ],
+                'shoppilot' => [
+                    'traffic'  => 33,
+                    'name'     => 'Отзывы от shoppilot',
+                ],
+                'default' => [
+                    'traffic'  => 34,
+                    'name'     => 'Отзывы по умолчанию',
+                ],
+            ],
+        ],
+        'other' => [
+            'enabled' => false,
+            'expireDate' => '2000-01-01',
+            'cases' => [],
+        ],
     ],
 ];
 
