@@ -8,7 +8,8 @@ return function(
 
     $lastAvailableDay = DateTime::createFromFormat('U', (string)end($possible_days));
     $firstAvailableDay = DateTime::createFromFormat('U', (string)reset($possible_days));
-    $firstDayOfAvailableWeek = DateTime::createFromFormat('U', strtotime('this week', $firstAvailableDay->format('U')));
+    $week = $firstAvailableDay->format('w') == 0 ?  'previous week' : 'this week';
+    $firstDayOfAvailableWeek = DateTime::createFromFormat('U', strtotime($week, $firstAvailableDay->format('U')));
     $lastDayOfAvailableMonth = DateTime::createFromFormat('U', strtotime('Monday next week', $lastAvailableDay->format('U')));
 //    $lastDayOfAvailableMonth->modify('+1 day');
     $calendar = new DatePeriod($firstDayOfAvailableWeek, new DateInterval('P1D'), $lastDayOfAvailableMonth);
