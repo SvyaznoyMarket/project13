@@ -18,7 +18,7 @@ class NewAction {
         $region = $user->getRegion();
         $cart = $user->getCart();
 
-        if ($region && $region->getId() == 119623 && \App::config()->newOrder && \App::abTest()->getTest('orders')) {
+        if ($region && in_array($region->getId(), [119623, 93746]) && \App::config()->newOrder && \App::abTest()->getTest('orders')) {
             if (\App::abTest()->getTest('orders')->getChosenCase()->getKey() == 'new') return (new \Controller\OrderV3\NewAction)->execute($request);
         }
 

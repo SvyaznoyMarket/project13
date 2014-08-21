@@ -478,6 +478,20 @@ $c->abTest = [
                 ]
             ]
         ],
+        'order_delivery_price' => [
+            'enabled' => true,
+            'expireDate' => '2014-12-31',
+            'cases' => [
+                'delivery_self_100' => [
+                    'traffic'  => 50,
+                    'name'     => 'Платный самовывоз',
+                ],
+                'delivery_self_0' => [
+                    'traffic'  => 50,
+                    'name'     => 'Бесплатный самовывоз',
+                ]
+            ]
+        ],
         'other' => [
             'enabled' => false,
             'expireDate' => '2000-01-01',
