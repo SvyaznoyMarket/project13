@@ -36,7 +36,7 @@ class OrderV3 {
             'time' =>strftime('%Y-%m-%d %H:%M:%S')
         ];
 
-        \App::logger()->info(['data' => array_merge($commonData, $data)], ['order-v3-log']);
+        \App::logger('custom')->info(['data' => array_merge($commonData, $data)], ['order-v3-log']);
     }
 
     public function logFromWeb(\Http\Request $request) {
