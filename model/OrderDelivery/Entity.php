@@ -564,9 +564,15 @@ namespace Model\OrderDelivery\Entity\Order {
     class Seller {
         /** @var string */
         public $name;
+        /** @var string|null */
+        public $offer;
+        /** @var int|null */
+        public $id;
 
         public function __construct(array $data = []) {
             if (isset($data['name'])) $this->name = (string)$data['name'];
+            if (isset($data['offer'])) $this->offer = (string)$data['offer'];
+            if (isset($data['id'])) $this->id = (int)$data['id'];
         }
     }
 
