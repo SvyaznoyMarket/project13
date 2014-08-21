@@ -100,6 +100,13 @@ namespace Model\OrderDelivery {
 
             $this->validate();
             $this->validateOrders();
+
+
+            // идиотский АБ-тест TODO remove
+            if (\App::user()->getRegionId() == 93746 && \App::abTest()->getTest('order_delivery_price')  && \App::abTest()->getTest('order_delivery_price')->getChosenCase()->getKey() == 'delivery_self_100') {
+                $this->total_cost = 0;
+                foreach ($this->orders as $order) $this->total_cost += $order->total_cost;
+            }
         }
 
         /** Различные странные ситуации, которые надо проверить
@@ -393,6 +400,12 @@ namespace Model\OrderDelivery\Entity {
                 foreach ($data['errors'] as $error) {
                     $this->errors[] = new Error($error);
                 }
+            }
+
+            // идиотский АБ-тест TODO remove
+            if (\App::user()->getRegionId() == 93746 && $this->delivery->delivery_method_token == 'self' && $this->total_cost < 1000 && \App::abTest()->getTest('order_delivery_price')  && \App::abTest()->getTest('order_delivery_price')->getChosenCase()->getKey() == 'delivery_self_100') {
+                $this->delivery->price = 100;
+                $this->total_cost = $this->total_cost + $this->delivery->price;
             }
         }
     }

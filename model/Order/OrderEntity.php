@@ -56,6 +56,10 @@ class OrderEntity {
      * @var string
      */
     private $delivery_date;
+    /** Цена доставки
+     * @var int
+     */
+    private $delivery_price;
     /** Интервал доставки
      * Необязательный (если указан delivery_period)
      * @var int
@@ -227,6 +231,13 @@ class OrderEntity {
          */
 
         $this->ip = $request->getClientIp();
+
+        if (isset($arr['order']['delivery']['price'])) $this->delivery_price = (int)$arr['order']['delivery']['price'];
+
+        // идиотский АБ-тест TODO remove
+        if (\App::user()->getRegionId() == 93746 && $this->delivery_type_id == 3 && $arr['total_cost'] < 1000 && \App::abTest()->getTest('order_delivery_price')  && \App::abTest()->getTest('order_delivery_price')->getChosenCase()->getKey() == 'delivery_self_100') {
+            $this->delivery_price = 100;
+        }
 
         if ($user) {
             $this->user_id = $user->getId();
