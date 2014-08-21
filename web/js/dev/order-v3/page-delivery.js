@@ -296,8 +296,11 @@
 
     // клик по "хочу быстрее"
     $orderContent.on('click', '.jsWanna', function(e){
+        var span = '<span style="margin: 5px 0 17px 10px; display: inline-block; color: #878787;">Спасибо за участие в опросе.</span>';
+        $(span).insertAfter($(this));
+        $(this).hide();
+        window.docCookies.setItem('enter_order_v3_wanna', 1, 0, '/order');
         log({'action':'wanna'});
-
     })
 
 })(jQuery);

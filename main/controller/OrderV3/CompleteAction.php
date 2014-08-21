@@ -136,6 +136,9 @@ class CompleteAction extends OrderV3 {
         $page->setParam('products', $products);
         $page->setParam('userEntity', $this->user->getEntity());
         $page->setParam('paymentProviders', $paymentProviders);
-        return new \Http\Response($page->show());
+
+        $response = new \Http\Response($page->show());
+        $response->headers->setCookie(new \Http\Cookie('enter_order_v3_wanna', 0, 0, '/order',\App::config()->session['cookie_domain'], false, false)); // кнопка "Хочу быстрее"
+        return $response;
     }
 }

@@ -23,7 +23,11 @@ return function(
 
         <div class="celedr_t"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2, %A', time()))?></div>
 
+        <? if (\App::request()->cookies->get('enter_order_v3_wanna') != '1') : ?>
+
         <button class="celedr_btn btn2 jsWanna">Хочу быстрее!</button>
+
+        <? endif; ?>
 
         <div class="celedr_tb">
             <div class="celedr_row celedr_row-h clearfix">
