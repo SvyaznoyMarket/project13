@@ -70,14 +70,16 @@ class AbTest {
         }
     }
 
-    /**
-     * @return Test
+
+    /** Возвращает AB-тест
+     * @param $key
+     * @return null|Test
      */
     public function getTest($key) {
-        return $this->tests[$key];
+        return isset($this->tests[$key]) ? $this->tests[$key] : null;
     }
 
-    /**
+    /** Возвращает все тесты
      * @return Test[]
      */
     public function getTests() {

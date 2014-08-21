@@ -1,0 +1,1002 @@
+<?php
+
+return function(
+    \Helper\TemplateHelper $helper
+) {
+
+    // FIXME: удалить файл
+?>
+
+    <!-- шапка оформления заказа -->
+    <header class="orderHd">
+        <img class="orderHd_lg" src="/styles/order/img/logo.png" />
+
+        <ul class="orderHd_stps">
+            <!-- если шаг пройден то orderHd_stps_i-pass, текущий шаг orderHd_stps_i-act -->
+            <li class="orderHd_stps_i orderHd_stps_i-pass">Получатель</li>
+            <li class="orderHd_stps_i orderHd_stps_i-act">Самовывоз и доставка</li>
+            <li class="orderHd_stps_i">Оплата</li>
+        </ul>
+    </header>
+    <!--/ шапка оформления заказа -->
+
+    <section class="orderCnt">
+        <h1 class="orderCnt_t">Оформление заказа</h1>
+
+        <form class="orderU" action="" method="" accept-charset="utf-8">
+            <fieldset class="orderU_flds">
+                <div class="orderU_fld">
+                    <label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
+                    <input class="orderU_tx textfield" type="text" name="" value="" placeholder="">
+                    <span class="orderU_hint">Для смс о состоянии заказа</span>
+                </div>
+
+                <div class="orderU_fld">
+                    <label class="orderU_lbl" for="">E-mail</label>
+                    <input class="orderU_tx textfield" type="text" name="" value="" placeholder="">
+                </div>
+
+                <div class="orderU_fld">
+                    <label class="orderU_lbl" for="">Имя</label>
+                    <input class="orderU_tx textfield" type="text" name="" value="" placeholder="">
+                    <span class="orderU_hint">Как к вам обращаться?</span>
+                </div>
+            </fieldset>
+
+            <fieldset class="orderU_flds">
+                <div class="bonusCnt">
+                    <div class="bonusCnt_t">Начислить баллы</div>
+
+                    <div class="bonusCnt_lst">
+                        <div class="bonusCnt_i bonusCnt_i-act">
+                            <img class="bonusCnt_img" src="/styles/order/img/sClub.png" alt="" />
+                            <span class="bonusCnt_tx">Связной Клуб</span>
+                        </div>
+
+                        <div class="bonusCnt_i">
+                            <img class="bonusCnt_img" src="/styles/order/img/sBank.png" alt="" />
+                            <span class="bonusCnt_tx">Спасибо от Сбербанка</span>
+                        </div>
+                    </div>
+
+                    <div class="bonusCnt_it clearfix" style="display: block;">
+                        <div class="fl-l">
+                            <div class="orderU_fld">
+                                <label class="orderU_lbl" for="">Карта</label>
+                                <input class="orderU_tx textfield" type="text" name="" value="" placeholder="2 98xxxx xxxxx">
+                            </div>
+
+                            <div class="bonusCnt_descr">Номер карты «Связной-Клуб» расположен на обороте, под штрихкодом.</div>
+                        </div>
+
+                        <img class="fl-r" src="/styles/order/img/sClubBig.jpg" alt="" />
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
+        <div class="orderAuth">
+            <div class="orderAuth_t">Уже заказывали у нас?</div>
+            <button class="orderAuth_btn btnLightGrey">Войти с паролем</button>
+        </div>
+
+        <div class="orderCompl clearfix">
+            <button class="orderCompl_btn btnsubmit">Далее ➜</button>
+        </div>
+    </section>
+
+    <section class="orderCnt">
+        <h1 class="orderCnt_t">Самовывоз и доставка</h1>
+        <!-- заголовок страницы -->
+
+        <p class="orderInf">Товары будут оформлены как  <strong>3 отдельных заказа</strong></p>
+
+        <div class="orderInf clearfix">
+            <div>Ваш регион: <strong>Москва</strong></div>
+
+            <div class="fl-l">От региона зависят доступные способы получения и оплаты заказов.</div>
+
+            <button class="btnLightGrey fl-r">Изменить регион</button>
+        </div>
+
+        <!-- блок разбиения заказа -->
+        <div class="orderRow clearfix">
+            <!-- информация о заказе -->
+            <div class="orderCol">
+                <div class="orderCol_h">
+                    <strong class="orderNum">Заказ №1</strong>
+                    <span class="orderDetl">продавец: ООО «Связной» <a class="orderDetl_lk" href="">Информация и оферта</a></span>
+                </div>
+
+                <div class="orderCol_cnt clearfix">
+                    <a href="" class="orderCol_lk">
+                        <img class="orderCol_img" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg" alt="">
+                    </a>
+
+                    <a href="" class="orderCol_n">
+                        Самокат<br/>
+                        JD Bug Classic MS-305 синий
+                    </a>
+
+                    <span class="orderCol_data orderCol_data-summ" style="display: none;">5 200 <span class="rubl">p</span></span>
+                    <span class="orderCol_data orderCol_data-count" style="display: none;">1 шт.</span>
+
+                    <div class="orderCol_data orderCol_data-edit">
+                        <div data-spinner-for="" class="bCountSection clearfix">
+                            <button class="bCountSection__eM">-</button>
+                            <input type="text" value="1" class="bCountSection__eNum">
+                            <button class="bCountSection__eP">+</button>
+                            <span>шт.</span>
+                        </div>
+
+                        <a class="brb-dt" href="">Применить</a>&nbsp;|&nbsp;<a class="brb-dt" href="">Удалить товар</a>
+                    </div>
+                    <span class="orderCol_data orderCol_data-price">5 200 <span class="rubl">p</span></span>
+                </div>
+
+                <div class="orderCol_f clearfix">
+                    <div class="orderCol_f_l">
+                        <span class="orderCol_f_t brb-dt">Ввести код скидки</span>
+                    </div>
+
+                    <div class="orderCol_f_r">
+                        <span class="orderCol_summ">150 <span class="rubl">p</span></span>
+                        <span class="orderCol_summt orderCol_summt-m">Доставка:</span>
+
+                        <span class="orderCol_summ">2 334 <span class="rubl">p</span></span>
+                        <span class="orderCol_summt">Итого:</span>
+                    </div>
+                </div>
+            </div>
+            <!--/ информация о заказе -->
+
+            <!-- информация о доставке -->
+            <div class="orderCol orderCol-r">
+                <menu class="orderCol_delivrLst">
+                    <li class="orderCol_delivrLst_i orderCol_delivrLst_i-act">Самовывоз</li>
+                    <li class="orderCol_delivrLst_i">Доставка</li>
+                </menu>
+
+                <!-- дата доставки -->
+                <div class="orderCol_delivrIn clearfix">
+                    <div class="orderCol_date">15 сентября 2014, воскресенье</div>
+
+                    <div class="celedr popupFl" style="display: none">
+                        <div class="popupFl_clsr"></div>
+
+                        <div class="celedr_t">27 сентября, воскресенье</div>
+
+                        <button class="celedr_btn btn2">Хочу быстрее!</button>
+
+                        <div class="celedr_tb">
+                            <div class="celedr_row celedr_row-h clearfix">
+                                <div class="celedr_col">Пн</div>
+                                <div class="celedr_col">Вт</div>
+                                <div class="celedr_col">Ср</div>
+                                <div class="celedr_col">Чт</div>
+                                <div class="celedr_col">Пт</div>
+                                <div class="celedr_col">Сб</div>
+                                <div class="celedr_col">Вс</div>
+                            </div>
+
+                            <div class="celedr_row clearfix">
+                                <div class="celedr_month">Июль</div>
+                                <div class="celedr_col celedr_col-disbl ">28</div>
+                                <div class="celedr_col celedr_col-disbl ">29</div>
+                                <div class="celedr_col  celedr_curr">30</div>
+                                <div class="celedr_col  ">31</div>
+                                <div class="celedr_col celedr_col-disbl "></div>
+                                <div class="celedr_col celedr_col-disbl "></div>
+                                <div class="celedr_col celedr_col-disbl "></div>
+                                <div class="celedr_month">Август</div>
+                                <div class="celedr_col celedr_col-disbl "></div>
+                                <div class="celedr_col celedr_col-disbl "></div>
+                                <div class="celedr_col celedr_col-disbl "></div>
+                                <div class="celedr_col celedr_col-disbl "></div>
+                                <div class="celedr_col  ">1</div>
+                                <div class="celedr_col  ">2</div>
+                                <div class="celedr_col  ">3</div>
+                                <div class="celedr_col  ">4</div>
+                                <div class="celedr_col  ">5</div>
+                                <div class="celedr_col  ">6</div>
+                                <div class="celedr_col  ">7</div>
+                                <div class="celedr_col  ">8</div>
+                                <div class="celedr_col  ">9</div>
+                                <div class="celedr_col  ">10</div>
+                                <div class="celedr_col  ">11</div>
+                                <div class="celedr_col  ">12</div>
+                                <div class="celedr_col  ">13</div>
+                                <div class="celedr_col  ">14</div>
+                                <div class="celedr_col  ">15</div>
+                                <div class="celedr_col  ">16</div>
+                                <div class="celedr_col  ">17</div>
+                                <div class="celedr_col  ">18</div>
+                                <div class="celedr_col  ">19</div>
+                                <div class="celedr_col  ">20</div>
+                                <div class="celedr_col  ">21</div>
+                                <div class="celedr_col  ">22</div>
+                                <div class="celedr_col  ">23</div>
+                                <div class="celedr_col  ">24</div>
+                                <div class="celedr_col  ">25</div>
+                                <div class="celedr_col  ">26</div>
+                                <div class="celedr_col  ">27</div>
+                                <div class="celedr_col  ">28</div>
+                                <div class="celedr_col  ">29</div>
+                                <div class="celedr_col  ">30</div>
+                                <div class="celedr_col celedr_col-disbl ">31</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/ дата доставки -->
+
+                <!-- способ доставки -->
+                <div class="orderCol_delivrIn orderCol_delivrIn-pl">
+                    <div class="orderCol_delivrIn_t clearfix">
+                        <strong>Постамат PickPoint</strong>
+
+                        <span class="orderChange">изменить место</span>
+                    </div>
+
+                    <div class="orderCol_addrs" style="background: red;">
+    					<span class="orderCol_addrs_tx">
+    						м. Петровско-Разумовская<br/>
+    						<span class="colorBrightGrey">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
+    					</span>
+                    </div>
+
+                    <div class="orderCol_tm">
+                        <span class="orderCol_tm_t">Режим работы:</span> с 9.00 до 22.00
+                    </div>
+                </div>
+                <!--/ способ доставки -->
+            </div>
+            <!--/ информация о доставке -->
+        </div>
+        <!--/ блок разбиения заказа -->
+
+        <!-- блок разбиения заказа -->
+        <div class="orderRow clearfix">
+            <!-- информация о заказе -->
+            <div class="orderCol">
+                <div class="orderCol_h">
+                    <strong class="orderNum">Заказ №1</strong>
+                    <span class="orderDetl">продавец: ООО «Связной» <a class="orderDetl_lk" href="">Информация и оферта</a></span>
+                </div>
+
+                <div class="orderCol_cnt clearfix">
+                    <a href="" class="orderCol_lk">
+                        <img class="orderCol_img" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg" alt="">
+                    </a>
+
+                    <a href="" class="orderCol_n">
+                        Самокат<br/>
+                        JD Bug Classic MS-305 синий
+                    </a>
+
+                    <span class="orderCol_data orderCol_data-summ">5 200 <span class="rubl">p</span></span>
+                    <span class="orderCol_data orderCol_data-count">1 шт.</span>
+                    <span class="orderCol_data orderCol_data-price">5 200 <span class="rubl">p</span></span>
+                </div>
+
+                <div class="orderCol_f clearfix">
+                    <div class="orderCol_f_l">
+                        <span class="orderCol_f_t brb-dt">Ввести код скидки</span>
+                    </div>
+
+                    <div class="orderCol_f_r">
+                        <span class="orderCol_summ">150 <span class="rubl">p</span></span>
+                        <span class="orderCol_summt orderCol_summt-m">Доставка:</span>
+
+                        <span class="orderCol_summ">2 334 <span class="rubl">p</span></span>
+                        <span class="orderCol_summt">Итого:</span>
+                    </div>
+                </div>
+            </div>
+            <!--/ информация о заказе -->
+
+            <!-- информация о доставке -->
+            <div class="orderCol orderCol-r">
+                <menu class="orderCol_delivrLst">
+                    <li class="orderCol_delivrLst_i orderCol_delivrLst_i-act">Самовывоз</li>
+                    <li class="orderCol_delivrLst_i">Доставка</li>
+                </menu>
+
+                <!-- дата доставки -->
+                <div class="orderCol_delivrIn clearfix">
+                    <div class="orderCol_date">15 сентября 2014, воскресенье</div>
+                </div>
+                <!--/ дата доставки -->
+
+                <!-- способ доставки -->
+                <div class="orderCol_delivrIn orderCol_delivrIn-pl orderCol_delivrIn-bg">
+                    <div class="orderCol_delivrIn_t clearfix">
+                        <strong>Место самовывоза</strong>
+                    </div>
+
+                    <button class="btnLightGrey">Магазин Enter</button>
+                    <button class="btnLightGrey">Постамат PickPoint</button>
+                </div>
+                <!--/ способ доставки -->
+            </div>
+            <!--/ информация о доставке -->
+        </div>
+        <!--/ блок разбиения заказа -->
+
+        <!-- блок разбиения заказа -->
+        <div class="orderRow clearfix">
+        <!-- информация о заказе -->
+        <div class="orderCol">
+            <div class="orderCol_h">
+                <strong class="orderNum">Заказ №1</strong>
+                <span class="orderDetl">продавец: ООО «Связной» <a class="orderDetl_lk" href="">Информация и оферта</a></span>
+            </div>
+
+            <div class="orderCol_cnt clearfix">
+                <a href="" class="orderCol_lk">
+                    <img class="orderCol_img" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg" alt="">
+                </a>
+
+                <a href="" class="orderCol_n">
+                    Самокат<br/>
+                    JD Bug Classic MS-305 синий
+                </a>
+
+                <span class="orderCol_data orderCol_data-summ">5 200 <span class="rubl">p</span></span>
+                <span class="orderCol_data orderCol_data-count">1 шт.</span>
+                <span class="orderCol_data orderCol_data-price">5 200 <span class="rubl">p</span></span>
+            </div>
+
+            <div class="orderCol_cnt clearfix">
+                <a href="" class="orderCol_lk">
+                    <img class="orderCol_img" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg" alt="">
+                </a>
+
+                <a href="" class="orderCol_n">
+                    Самокат<br/>
+                    JD Bug Classic MS-305 синий
+                </a>
+
+                <span class="orderCol_data orderCol_data-summ">5 200 <span class="rubl">p</span></span>
+                <span class="orderCol_data orderCol_data-count">1 шт.</span>
+                <span class="orderCol_data orderCol_data-price">5 200 <span class="rubl">p</span></span>
+            </div>
+
+            <div class="orderCol_cnt clearfix">
+                <a href="" class="orderCol_lk">
+                    <img class="orderCol_img" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg" alt="">
+                </a>
+
+                <a href="" class="orderCol_n">
+                    Самокат<br/>
+                    JD Bug Classic MS-305 синий
+                </a>
+
+                <span class="orderCol_data orderCol_data-summ">5 200 <span class="rubl">p</span></span>
+                <span class="orderCol_data orderCol_data-count">1 шт.</span>
+                <span class="orderCol_data orderCol_data-price">5 200 <span class="rubl">p</span></span>
+            </div>
+
+            <div class="orderCol_t">Скидки</div>
+
+            <div class="orderCol_cnt clearfix">
+                <a href="" class="orderCol_lk">
+                    <img class="orderCol_img" src="/styles/order/img/fishka.png" alt="">
+                </a>
+
+                <div class="orderCol_n">
+                    Фишка со скидкой 2% на категорию Электроника<br/>
+                    Минимальная сумма заказа 6999 руб
+                </div>
+
+                <span class="orderCol_data orderCol_data-summ orderCol_i_data-sale">-15 200 <span class="rubl">p</span></span>
+                <span class="orderCol_data orderCol_data-del">удалить</span>
+            </div>
+
+            <div class="orderCol_cnt clearfix">
+                <a href="" class="orderCol_lk">
+                    <img class="orderCol_img" src="/styles/order/img/enter.png" alt="">
+                </a>
+
+                <div class="orderCol_n">
+                    Подарочный сертификат 5000 руб
+                </div>
+
+                <span class="orderCol_data orderCol_data-summ orderCol_data-sale">-15 200 <span class="rubl">p</span></span>
+                <span class="orderCol_data orderCol_data-del">удалить</span>
+            </div>
+
+            <div class="orderCol_f clearfix">
+                <div class="orderCol_f_l">
+                    <div class="orderCol_f_t">Код скидки, подарочный сертификат</div>
+
+                    <input class="cuponField textfieldgrey" type="text" name="" value="" placeholder="" />
+                    <button class="cuponBtn btnLightGrey">Применить</button>
+                </div>
+
+                <div class="orderCol_f_r">
+                    <span class="orderCol_summ">Бесплатно</span>
+                    <span class="orderCol_summt orderCol_summt-m">Самовывоз:</span>
+
+    					<span class="orderCol_summ">
+    						<sapn class="td-lineth colorBrightGrey">42 580 <span class="rubl">p</span></sapn><br/>
+    						2 334 <span class="rubl">p</span>
+    					</span>
+                    <span class="orderCol_summt">Итого:</span>
+                </div>
+
+                <div class="orderCheck orderCheck-credit clearfix">
+                    <input type="checkbox" class="customInput customInput-checkbox" id="credit" name="" value="" />
+                    <label  class="customLabel" for="credit">Купить в кредит, от 2 223 <span class="rubl">p</span> в месяц</label>
+                </div>
+            </div>
+        </div>
+        <!--/ информация о заказе -->
+
+        <!-- информация о доставке -->
+        <div class="orderCol orderCol-r">
+            <menu class="orderCol_delivrLst">
+                <li class="orderCol_delivrLst_i orderCol_delivrLst_i-act">Самовывоз</li>
+                <li class="orderCol_delivrLst_i">Доставка</li>
+            </menu>
+
+            <!-- дата доставки -->
+            <div class="orderCol_delivrIn clearfix">
+                <div class="orderCol_date">15 сентября 2014, воскресенье</div>
+            </div>
+            <!--/ дата доставки -->
+
+            <!-- способ доставки -->
+            <div class="orderCol_delivrIn orderCol_delivrIn-pl">
+                <div class="orderCol_delivrIn_t clearfix">
+                    <strong>Магазин</strong>
+
+                    <span class="orderChange">изменить место</span>
+                </div>
+
+                <div class="selShop popupFl" style="display: none;">
+                    <div class="popupFl_clsr"></div>
+
+                    <div class="selShop_h">
+                        <div class="selShop_tab selShop_tab-act">Магазины в Москве</div>
+                        <div class="selShop_tab">Pick point</div>
+                    </div>
+
+                    <div class="selShop_l">
+                        <ul class="shopLst">
+                            <li class="shopLst_i">
+                                <div style="background: red;" class="shopLst_addrs">
+    									<span class="shopLst_addrs_tx">
+    										м. Петровско-Разумовская<br>
+    										<span class="colorBrightGrey">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
+    									</span>
+
+                                    <span class="shopLst_addrs_tm">с 9.00 до 22.00</span>
+                                </div>
+                            </li>
+
+                            <li class="shopLst_i">
+                                <div style="background: green;" class="shopLst_addrs">
+    									<span class="shopLst_addrs_tx">
+    										м. Петровско-Разумовская<br>
+    										<span class="colorBrightGrey">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
+    									</span>
+
+                                    <span class="shopLst_addrs_tm">с 9.00 до 22.00</span>
+                                </div>
+                            </li>
+
+                            <li class="shopLst_i">
+                                <div style="background: grey;" class="shopLst_addrs">
+    									<span class="shopLst_addrs_tx">
+    										м. Петровско-Разумовская<br>
+    										<span class="colorBrightGrey">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
+    									</span>
+
+                                    <span class="shopLst_addrs_tm">с 9.00 до 22.00</span>
+                                </div>
+                            </li>
+
+                            <li class="shopLst_i">
+                                <div style="background: blue;" class="shopLst_addrs">
+    									<span class="shopLst_addrs_tx">
+    										м. Петровско-Разумовская<br>
+    										<span class="colorBrightGrey">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
+    									</span>
+
+                                    <span class="shopLst_addrs_tm">с 9.00 до 22.00</span>
+                                </div>
+                            </li>
+
+                            <li class="shopLst_i">
+                                <div style="background: red;" class="shopLst_addrs">
+    									<span class="shopLst_addrs_tx">
+    										м. Петровско-Разумовская<br>
+    										<span class="colorBrightGrey">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
+    									</span>
+
+                                    <span class="shopLst_addrs_tm">с 9.00 до 22.00</span>
+                                </div>
+                            </li>
+
+                            <li class="shopLst_i">
+                                <div style="background: green;" class="shopLst_addrs">
+    									<span class="shopLst_addrs_tx">
+    										м. Петровско-Разумовская<br>
+    										<span class="colorBrightGrey">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
+    									</span>
+
+                                    <span class="shopLst_addrs_tm">с 9.00 до 22.00</span>
+                                </div>
+                            </li>
+
+                            <li class="shopLst_i">
+                                <div style="background: grey;" class="shopLst_addrs">
+    									<span class="shopLst_addrs_tx">
+    										м. Петровско-Разумовская<br>
+    										<span class="colorBrightGrey">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
+    									</span>
+
+                                    <span class="shopLst_addrs_tm">с 9.00 до 22.00</span>
+                                </div>
+                            </li>
+
+                            <li class="shopLst_i">
+                                <div style="background: blue;" class="shopLst_addrs">
+    									<span class="shopLst_addrs_tx">
+    										м. Петровско-Разумовская<br>
+    										<span class="colorBrightGrey">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
+    									</span>
+
+                                    <span class="shopLst_addrs_tm">с 9.00 до 22.00</span>
+                                </div>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                    <div class="selShop_r">
+                        <img src="/styles/order/img/map.png" alt="" />
+                    </div>
+                </div>
+
+                <div class="orderCol_addrs" style="background: red;">
+    					<span class="orderCol_addrs_tx">
+    						м. Петровско-Разумовская<br/>
+    						<span class="colorBrightGrey">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
+    					</span>
+                </div>
+
+                <div class="orderCol_tm">
+                    <span class="orderCol_tm_t">Режим работы:</span> с 9.00 до 22.00
+                    <span class="orderCol_tm_t">Оплата при получении: </span>
+
+                    <img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt="" />
+                    <img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt="">
+                </div>
+            </div>
+            <!--/ способ доставки -->
+        </div>
+        <!--/ информация о доставке -->
+        </div>
+        <!--/ блок разбиения заказа -->
+
+        <!-- блок разбиения заказа -->
+        <div class="orderRow clearfix">
+            <!-- информация о заказе -->
+            <div class="orderCol">
+                <div class="orderCol_h">
+                    <strong class="orderNum">Заказ №1</strong>
+                    <span class="orderDetl">продавец: ООО «Связной» <a class="orderDetl_lk" href="">Информация и оферта</a></span>
+                </div>
+
+                <div class="orderCol_cnt clearfix">
+                    <a href="" class="orderCol_lk">
+                        <img class="orderCol_img" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg" alt="">
+                    </a>
+
+                    <a href="" class="orderCol_n">
+                        Самокат<br/>
+                        JD Bug Classic MS-305 синий
+                    </a>
+
+                    <span class="orderCol_data orderCol_data-summ">5 200 <span class="rubl">p</span></span>
+                    <span class="orderCol_data orderCol_data-count">1 шт.</span>
+                    <span class="orderCol_data orderCol_data-price">5 200 <span class="rubl">p</span></span>
+                </div>
+
+                <div class="orderCol_f clearfix">
+                    <div class="orderCol_f_l">
+                        <span class="orderCol_f_t brb-dt">Ввести код скидки</span>
+                    </div>
+
+                    <div class="orderCol_f_r">
+                        <span class="orderCol_summ">150 <span class="rubl">p</span></span>
+                        <span class="orderCol_summt orderCol_summt-m">Доставка:</span>
+
+                        <span class="orderCol_summ">2 334 <span class="rubl">p</span></span>
+                        <span class="orderCol_summt">Итого:</span>
+                    </div>
+
+                    <div class="orderCheck orderCheck-credit clearfix">
+                        <input type="checkbox" class="customInput customInput-checkbox" id="credit1" name="" value="" />
+                        <label  class="customLabel" for="credit1">Купить в кредит, от 2 223 <span class="rubl">p</span> в месяц</label>
+                    </div>
+                </div>
+            </div>
+            <!--/ информация о заказе -->
+
+            <!-- информация о доставке -->
+            <div class="orderCol orderCol-r">
+                <menu class="orderCol_delivrLst">
+                    <li class="orderCol_delivrLst_i orderCol_delivrLst_i-act">Доставка</li>
+                </menu>
+
+                <!-- дата доставки -->
+                <div class="orderCol_delivrIn orderCol_delivrIn-sel clearfix">
+                    <div class="orderCol_date">15 сентября 2014, воскресенье</div>
+
+                    <div class="customSel">
+                        <span class="customSel_def">10:00…18:00</span>
+
+                        <ul class="customSel_lst popupFl" style="display: block;">
+                            <li class="customSel_i">10:00…18:00</li>
+                            <li class="customSel_i">8:00…12:00</li>
+                            <li class="customSel_i">12:00…18:00</li>
+                        </ul>
+                    </div>
+                </div>
+                <!--/ дата доставки -->
+
+                <!-- способ доставки -->
+                <div class="orderCol_delivrIn orderCol_delivrIn-bg">
+                    <div class="orderCol_delivrIn_t clearfix">
+                        <strong>Адрес</strong> <span class="colorBrightGrey">для всех заказов с доставкой</span>
+                    </div>
+
+                    <div class="orderCol_addrs">
+                        <ul class="orderCol_addrs_fld textfield clearfix" style="height: inherit">
+                            <li class="orderCol_addrs_fld_i jsAddressItem" data-type="street">
+                                <span class="orderCol_addrs_fld_n jsAddressItemType">Улица</span><span class="orderCol_addrs_fld_val jsAddressItemName">Академика Бакулева</span>
+                            </li>
+
+                            <li class="orderCol_addrs_fld_i orderCol_addrs_fld_i-edit">
+                                <span id="addressInputPrefix" class="addrsAutocmpltLbl">квартира (необязательно):</span>
+                                <span role="status" aria-live="polite" class="ui-helper-hidden-accessible">[object Object]</span>
+                                <input type="text" class="ui-autocomplete-input" autocomplete="off">
+                                <div class="addrsAutocmplt" id="kladrAutocomplete" style="width: auto; position: absolute; overflow-x: hidden">
+                                    <ul class="ui-autocomplete ui-front ui-menu ui-widget ui-widget-content ui-corner-all" id="ui-id-2" tabindex="0" style="display: block; position: relative; top: 0; left: 0; width: auto">
+                                        <li data-value="{&quot;id&quot;:&quot;7700000000007930002&quot;,&quot;name&quot;:&quot;10&quot;,&quot;zip&quot;:117513,&quot;type&quot;:&quot;дом&quot;,&quot;typeShort&quot;:&quot;д&quot;,&quot;okato&quot;:&quot;45293586000&quot;,&quot;contentType&quot;:&quot;building&quot;}" class="ui-menu-item" role="presentation"><a id="ui-id-23" class="ui-corner-all" tabindex="-1">10</a></li>
+                                        <li data-value="{&quot;id&quot;:&quot;7700000000007930003&quot;,&quot;name&quot;:&quot;12&quot;,&quot;zip&quot;:117513,&quot;type&quot;:&quot;дом&quot;,&quot;typeShort&quot;:&quot;д&quot;,&quot;okato&quot;:&quot;45293586000&quot;,&quot;contentType&quot;:&quot;building&quot;}" class="ui-menu-item" role="presentation"><a id="ui-id-24" class="ui-corner-all" tabindex="-1">12</a></li>
+                                        <li data-value="{&quot;id&quot;:&quot;7700000000007930003&quot;,&quot;name&quot;:&quot;14&quot;,&quot;zip&quot;:117513,&quot;type&quot;:&quot;дом&quot;,&quot;typeShort&quot;:&quot;д&quot;,&quot;okato&quot;:&quot;45293586000&quot;,&quot;contentType&quot;:&quot;building&quot;}" class="ui-menu-item" role="presentation"><a id="ui-id-25" class="ui-corner-all" tabindex="-1">14</a></li>
+                                        <li data-value="{&quot;id&quot;:&quot;7700000000007930003&quot;,&quot;name&quot;:&quot;16&quot;,&quot;zip&quot;:117513,&quot;type&quot;:&quot;дом&quot;,&quot;typeShort&quot;:&quot;д&quot;,&quot;okato&quot;:&quot;45293586000&quot;,&quot;contentType&quot;:&quot;building&quot;}" class="ui-menu-item" role="presentation"><a id="ui-id-26" class="ui-corner-all" tabindex="-1">16</a></li>
+                                        <li data-value="{&quot;id&quot;:&quot;7700000000007930003&quot;,&quot;name&quot;:&quot;18&quot;,&quot;zip&quot;:117513,&quot;type&quot;:&quot;дом&quot;,&quot;typeShort&quot;:&quot;д&quot;,&quot;okato&quot;:&quot;45293586000&quot;,&quot;contentType&quot;:&quot;building&quot;}" class="ui-menu-item" role="presentation"><a id="ui-id-27" class="ui-corner-all" tabindex="-1">18</a></li>
+                                        <li data-value="{&quot;id&quot;:&quot;7700000000007930003&quot;,&quot;name&quot;:&quot;10стр1&quot;,&quot;zip&quot;:117513,&quot;type&quot;:&quot;дом&quot;,&quot;typeShort&quot;:&quot;д&quot;,&quot;okato&quot;:&quot;45293586000&quot;,&quot;contentType&quot;:&quot;building&quot;}" class="ui-menu-item" role="presentation"><a id="ui-id-28" class="ui-corner-all" tabindex="-1">10стр1</a></li>
+                                        <li data-value="{&quot;id&quot;:&quot;7700000000007930003&quot;,&quot;name&quot;:&quot;10стр3&quot;,&quot;zip&quot;:117513,&quot;type&quot;:&quot;дом&quot;,&quot;typeShort&quot;:&quot;д&quot;,&quot;okato&quot;:&quot;45293586000&quot;,&quot;contentType&quot;:&quot;building&quot;}" class="ui-menu-item" role="presentation"><a id="ui-id-29" class="ui-corner-all" tabindex="-1">10стр3</a></li>
+                                        <li data-value="{&quot;id&quot;:&quot;7700000000007930003&quot;,&quot;name&quot;:&quot;18стр2&quot;,&quot;zip&quot;:117513,&quot;type&quot;:&quot;дом&quot;,&quot;typeShort&quot;:&quot;д&quot;,&quot;okato&quot;:&quot;45293586000&quot;,&quot;contentType&quot;:&quot;building&quot;}" class="ui-menu-item" role="presentation"><a id="ui-id-30" class="ui-corner-all" tabindex="-1">18стр2</a></li>
+                                        <li data-value="{&quot;id&quot;:&quot;7700000000007930003&quot;,&quot;name&quot;:&quot;18стр1&quot;,&quot;zip&quot;:117513,&quot;type&quot;:&quot;дом&quot;,&quot;typeShort&quot;:&quot;д&quot;,&quot;okato&quot;:&quot;45293586000&quot;,&quot;contentType&quot;:&quot;building&quot;}" class="ui-menu-item" role="presentation"><a id="ui-id-31" class="ui-corner-all" tabindex="-1">18стр1</a></li>
+                                    </ul>                                
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="orderCheck mb10">
+                    <input type="checkbox" class="customInput customInput-checkbox" id="creditCardsPay" name="" value="" />
+                    <label  class="customLabel" for="creditCardsPay">
+                        Оплата банковской картой
+                        <span class="dblock colorBrightGrey s">Иначе курьер сможет принять только наличные</span>
+                    </label>
+                </div>
+                <!--/ способ доставки -->
+            </div>
+            <!--/ информация о доставке -->
+        </div>
+        <!--/ блок разбиения заказа -->
+
+        <!-- блок разбиения заказа -->
+        <div class="orderRow clearfix">
+            <!-- информация о заказе -->
+            <div class="orderCol">
+                <div class="orderCol_h">
+                    <strong class="orderNum">Заказ №1</strong>
+                    <span class="orderDetl">продавец: ООО «Связной» <a class="orderDetl_lk" href="">Информация и оферта</a></span>
+                </div>
+
+                <div class="orderCol_cnt clearfix">
+                    <a href="" class="orderCol_lk">
+                        <img class="orderCol_img" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg" alt="">
+                    </a>
+
+                    <a href="" class="orderCol_n">
+                        Самокат<br/>
+                        JD Bug Classic MS-305 синий
+                    </a>
+
+                    <span class="orderCol_data orderCol_data-summ">5 200 <span class="rubl">p</span></span>
+                    <span class="orderCol_data orderCol_data-count">1 шт.</span>
+                    <span class="orderCol_data orderCol_data-price">5 200 <span class="rubl">p</span></span>
+                </div>
+
+                <div class="orderCol_f clearfix">
+                    <div class="orderCol_f_l">
+                        <span class="orderCol_f_t brb-dt">Ввести код скидки</span>
+                    </div>
+
+                    <div class="orderCol_f_r">
+                        <span class="orderCol_summ">150 <span class="rubl">p</span></span>
+                        <span class="orderCol_summt orderCol_summt-m">Доставка:</span>
+
+                        <span class="orderCol_summ">2 334 <span class="rubl">p</span></span>
+                        <span class="orderCol_summt">Итого:</span>
+                    </div>
+                </div>
+            </div>
+            <!--/ информация о заказе -->
+
+            <!-- информация о доставке -->
+            <div class="orderCol orderCol-r">
+                <menu class="orderCol_delivrLst">
+                    <li class="orderCol_delivrLst_i orderCol_delivrLst_i-act">Доставка</li>
+                </menu>
+
+                <!-- дата доставки -->
+                <div class="orderCol_delivrIn orderCol_delivrIn-sel clearfix">
+                    <div class="orderCol_date">15 сентября 2014, воскресенье</div>
+
+                    <div class="customSel">
+                        <span class="customSel_def">10:00…18:00</span>
+
+                        <ul class="customSel_lst popupFl" style="display: none;">
+                            <li class="customSel_i">10:00…18:00</li>
+                            <li class="customSel_i">8:00…12:00</li>
+                            <li class="customSel_i">12:00…18:00</li>
+                        </ul>
+                    </div>
+                </div>
+                <!--/ дата доставки -->
+                <!-- способ доставки -->
+                <div class="orderCol_delivrIn">
+                    <div class="orderCol_delivrIn_t clearfix">
+                        <strong>Адрес</strong> <span class="colorBrightGrey">для всех заказов с доставкой</span>
+                        <span class="orderChange">изменить место</span>
+                    </div>
+
+                    <div class="orderCol_addrs">
+                        ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2
+                    </div>
+                </div>
+
+                <div class="orderCheck mb10">
+                    <input type="checkbox" class="customInput customInput-checkbox" id="creditCardsPay" name="" value="" />
+                    <label  class="customLabel" for="creditCardsPay">
+                        Оплата банковской картой
+                        <span class="dblock colorBrightGrey s">Иначе курьер сможет принять только наличные</span>
+                    </label>
+                </div>
+                <!--/ способ доставки -->
+            </div>
+            <!--/ информация о доставке -->
+        </div>
+        <!--/ блок разбиения заказа -->
+
+        <div class="orderComment">
+            <div class="orderComment_t">Дополнительные пожелания</div>
+
+            <textarea class="orderComment_fld textarea"></textarea>
+        </div>
+
+        <div class="orderComplSumm">
+            <span class="l">Итого <strong>3</strong> заказов на общую сумму <strong>123 000 <span class="rubl">p</span></strong></span>
+        </div>
+
+        <div class="orderCompl clearfix">
+            <div class="orderCompl_l orderCompl_l-ln orderCheck orderCheck-str">
+                <input type="checkbox" class="customInput customInput-checkbox" id="accept" name="" value="" />
+
+                <label  class="customLabel" for="accept">
+                    Я ознакомлен и согласен с информацией о продавце и его офертой
+                </label>
+            </div>
+
+            <button class="orderCompl_btn btnsubmit fl-r">Оформить ➜</button>
+        </div>
+    </section>
+
+    <section class="orderCnt">
+        <h1 class="orderCnt_t">Ваши заказы</h1>
+
+        <div class="orderLnSet">
+            <div class="orderLn clearfix">
+                <div class="orderLn_l">
+                    <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <a href="">COXD-305176</a></div>
+                    
+                    <ul class="orderLn_lst">
+                        <li class="orderLn_lst_i">Бумажный конструктор 3 шт.</li>
+                        <li class="orderLn_lst_i">Батарейки AAAA 18 шт.</li>
+                        <li class="orderLn_lst_i"><a class="orderLn_lst_lk" href="">и ещё 3 товара</a></li>
+                    </ul>
+                </div>
+
+                <div class="orderLn_c"></div>
+
+                <div class="orderLn_r">
+                    <div class="orderLn_row orderLn_row-summ">
+                        <span class="summT">Сумма заказа:</span>
+                        <span class="summP">42 740 <span class="rubl">p</span></span>
+                    </div>
+
+                    <div class="orderLn_row orderLn_row-bg">
+                        <div class="payT">Покупка в кредит</div>
+
+                        <a href="" class="btnLightGrey"><strong>Заполнить заявку</strong></a>
+                    </div>
+                </div>
+            </div> 
+
+            <div class="orderLn clearfix">
+                <div class="orderLn_l">
+                    <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <a href="">COXD-305176</a></div>
+                    
+                    <ul class="orderLn_lst">
+                        <li class="orderLn_lst_i">Бумажный конструктор 3 шт.</li>
+                        <li class="orderLn_lst_i">Батарейки AAAA 18 шт.</li>
+                        <li class="orderLn_lst_i"><a class="orderLn_lst_lk" href="">и ещё 3 товара</a></li>
+                    </ul>
+                </div>
+
+                <div class="orderLn_c">
+                    <div>Самовывоз 11 июл. 2014 9:00…18:00</div>
+                    <div>Оплата при получении: наличные, банковская карта</div>
+                </div>
+
+                <div class="orderLn_r">
+                    <div class="orderLn_row orderLn_row-summ">
+                        <span class="summT">Сумма заказа:</span>
+                        <span class="summP">42 740 <span class="rubl">p</span></span>
+                    </div>
+
+                    <div class="orderLn_row orderLn_row-bg">
+                        <div class="payT">Требуется предоплата</div>
+                        
+                        <div class="orderLn_box">
+                            <a href="" class="orderLn_btn btnLightGrey">
+                                <strong class="btn4">Оплатить онлайн</strong><br/>
+                                <img width="25" src="/styles/order/img/master.png" alt="" />
+                                <img width="25" src="/styles/order/img/Visa.png" alt="" />
+                                <img width="43" src="/styles/order/img/paypal.png" alt="" />
+                                <img width="16" src="/styles/order/img/psb.png" alt="" />
+                            </a>
+                            <ul style="display: none;" class="customSel_lst popupFl">
+                                <li class="customSel_i">
+                                    <strong>PayPal</strong><br/>
+                                    Вы можете оплатить ваш заказ прямо сейчас с помощью PayPal.
+                                </li>
+
+                                <li class="customSel_i">
+                                    <strong>Онлайн оплата</strong><br/>
+                                    Вы можете оплатить ваш заказ прямо сейчас. К оплате принимаются банковские карты платежных систем Visa, MasterCard, Diners Club, JCB. Услуга бесплатная, никаких дополнительных процентов вы не платите.
+                                </li>
+
+                                <li class="customSel_i">
+                                    <strong>Выставить электронный счёт в личный кабинет Промсвязьбанка</strong><br/>
+                                    Вы можете оплатить Ваш заказ путём выставления счёта в Ваш личный кабинет. Данная услуга доступна только для клиентов Промсвязьбанка.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+
+            <div class="orderLn clearfix">
+                <div class="orderLn_l">
+                    <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <a href="">COXD-305176</a></div>
+                    
+                    <ul class="orderLn_lst">
+                        <li class="orderLn_lst_i">Бумажный конструктор 3 шт.</li>
+                        <li class="orderLn_lst_i">Батарейки AAAA 18 шт.</li>
+                        <li class="orderLn_lst_i"><a class="orderLn_lst_lk" href="">и ещё 3 товара</a></li>
+                    </ul>
+                </div>
+
+                <div class="orderLn_c">
+                    <div>Самовывоз 11 июл. 2014 9:00…18:00</div>
+                    <div>Оплата при получении: наличные, банковская карта</div>
+                </div>
+
+                <div class="orderLn_r">
+                    <div class="orderLn_row orderLn_row-summ">
+                        <span class="summT">Сумма заказа:</span>
+                        <span class="summP">42 740 <span class="rubl">p</span></span>
+                    </div>
+                    
+                    <div class="orderLn_box orderLn_box-pay">
+                        <div class="orderLn_row orderLn_row-pay">
+                            <div class="payT">Можно <span class="payBtn btn4"><span class="brb-dt">оплатить онлайн</span></span></div>
+
+                            <img width="25" src="/styles/order/img/master.png" alt="" />
+                            <img width="25" src="/styles/order/img/Visa.png" alt="" />
+                            <img width="43" src="/styles/order/img/paypal.png" alt="" />
+                            <img width="16" src="/styles/order/img/psb.png" alt="" />
+                        </div>
+
+                        <ul style="display: none;" class="customSel_lst popupFl">
+                            <li class="customSel_i">
+                                <strong>PayPal</strong><br/>
+                                Вы можете оплатить ваш заказ прямо сейчас с помощью PayPal.
+                            </li>
+
+                            <li class="customSel_i">
+                                <strong>Онлайн оплата</strong><br/>
+                                Вы можете оплатить ваш заказ прямо сейчас. К оплате принимаются банковские карты платежных систем Visa, MasterCard, Diners Club, JCB. Услуга бесплатная, никаких дополнительных процентов вы не платите.
+                            </li>
+
+                            <li class="customSel_i">
+                                <strong>Выставить электронный счёт в личный кабинет Промсвязьбанка</strong><br/>
+                                Вы можете оплатить Ваш заказ путём выставления счёта в Ваш личный кабинет. Данная услуга доступна только для клиентов Промсвязьбанка.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>  
+
+            <div class="orderLn clearfix">
+                <div class="orderLn_l">
+                    <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <a href="">COXD-305176</a></div>
+                    
+                    <ul class="orderLn_lst">
+                        <li class="orderLn_lst_i">Бумажный конструктор 3 шт.</li>
+                        <li class="orderLn_lst_i">Батарейки AAAA 18 шт.</li>
+                        <li class="orderLn_lst_i"><a class="orderLn_lst_lk" href="">и ещё 3 товара</a></li>
+                    </ul>
+                </div>
+
+                <div class="orderLn_c">
+                    <div>Самовывоз 11 июл. 2014 9:00…18:00</div>
+                    <div>Оплата при получении: наличные, банковская карта</div>
+                </div>
+
+                <div class="orderLn_r">
+                    <div class="orderLn_row orderLn_row-summ">
+                        <span class="summT">Сумма заказа:</span>
+                        <span class="summP">42 740 <span class="rubl">p</span></span>
+                    </div>
+
+                    <div class="orderLn_box orderLn_box-pay">
+                        <div class="orderLn_row orderLn_row-pay">
+                            <div class="payT">Можно <span class="payBtn btn4"><span class="brb-dt">оплатить онлайн</span></span></div>
+
+                            <img width="25" src="/styles/order/img/master.png" alt="" />
+                            <img width="25" src="/styles/order/img/Visa.png" alt="" />
+                            <img width="43" src="/styles/order/img/paypal.png" alt="" />
+                            <img width="16" src="/styles/order/img/psb.png" alt="" />
+                        </div>
+
+                        <ul style="display: none;" class="customSel_lst popupFl">
+                            <li class="customSel_i">
+                                <strong>PayPal</strong><br/>
+                                Вы можете оплатить ваш заказ прямо сейчас с помощью PayPal.
+                            </li>
+
+                            <li class="customSel_i">
+                                <strong>Онлайн оплата</strong><br/>
+                                Вы можете оплатить ваш заказ прямо сейчас. К оплате принимаются банковские карты платежных систем Visa, MasterCard, Diners Club, JCB. Услуга бесплатная, никаких дополнительных процентов вы не платите.
+                            </li>
+
+                            <li class="customSel_i">
+                                <strong>Выставить электронный счёт в личный кабинет Промсвязьбанка</strong><br/>
+                                Вы можете оплатить Ваш заказ путём выставления счёта в Ваш личный кабинет. Данная услуга доступна только для клиентов Промсвязьбанка.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>   
+        </div>
+
+        <div class="orderCompl clearfix">
+            <button class="orderCompl_btn m-auto btnsubmit">Продолжить покупки</button>
+        </div>
+    </section>
+
+<? };

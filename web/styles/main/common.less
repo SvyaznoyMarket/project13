@@ -2,13 +2,14 @@
   * Стили шаблона
   */
 .wrapper {
-	margin: 0 auto;
-	min-height: 100%;
+	width: 940px;
 	height: auto !important;
 	height: 100%;
+	min-height: 100%;
+	margin: 0 auto;
 	padding: 0 10px;
+
 	background: @white;
-	width: 940px;
 
 	//Стили шаблона главной страницы
 	&.mWrapperMain {
@@ -34,7 +35,7 @@
 	// 	padding-bottom: 390px;
 	// }
 	&.mContentOrder {
-		padding-bottom: 20px;
+		padding-bottom: 0;
 	}
 
 	//Контентная часть главной страницы
@@ -53,11 +54,21 @@ img[height="0"] {
 
 /* fix заразы */
 #tndFrame, #market_context_headcrab {
-   height: 0 !important;
+   display: none !important;
+   visibility: hidden !important;
+   overflow: hidden !important;
+
    width: 0 !important;
+   height: 0 !important;
+
    font-size: 0 !important;
    line-height: 0 !important;
-   visibility: hidden !important;
-   display: none !important;
-   overflow: hidden !important;
+}
+
+#RuTargetJS {
+	height: 0;
+	padding: 0;
+	position: absolute;
+	z-index: 0;
+	overflow: hidden;
 }

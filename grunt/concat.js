@@ -64,6 +64,11 @@ module.exports = {
         dest: '<%= pathProd %>order-new-v5.js'
     },
 
+    orderV3JS: {
+        src: ['<%= pathDev %>order-v3/*.js'],
+        dest: '<%= pathProd %>order-v3.js'
+    },
+
     pandoraJS : {
         src: ['<%= pathDev %>pandora/*.js'],
         dest: '<%= pathProd %>pandora.js'

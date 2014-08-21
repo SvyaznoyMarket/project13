@@ -7,11 +7,17 @@
  * @var $form     \Payment\PsbInvoice\Form
  */
 
+$backUrl = $page->url('order.paymentComplete', array('orderNumber' => $order->getNumber()), true);
+
+if (\App::config()->newOrder && \App::abTest()->getTest('orders')) {
+    if (\App::abTest()->getTest('orders')->getChosenCase()->getKey() == 'new') $backUrl = $page->url('order.complete', [], true);
+}
+
 if (!$form instanceof \Payment\PsbInvoice\Form) {
-    $form = $provider->getForm($order, $page->url('order.paymentComplete', array('orderNumber' => $order->getNumber()), true));
+    $form = $provider->getForm($order, $backUrl);
 } ?>
 
-<form class="form" method="post" action="<?= $provider->getPayUrl() ?>">
+<form class="form jsPaymentForms jsPaymentFormPSBInvoice" method="post" action="<?= $provider->getPayUrl() ?>">
     <input type="hidden" name="ContractorID" value="<?= $form->getContractorId() ?>" />
     <input type="hidden" name="InvoiceID" value="<?= $form->getInvoiceId() ?>" />
     <input type="hidden" name="Sum" value="<?= $form->getSum() ?>" />

@@ -86,6 +86,11 @@ module.exports = function (grunt, options) {
             tasks: ['concat:orderJS', 'uglify:orderJS']
         },
 
+        orderV3JS: {
+            files: [ pathDev + 'order-v3/*.js'],
+            tasks: ['jsmin-sourcemap:orderV3JS']
+        },
+
         orderNewV5JS:{
             files: [ pathDev + 'order-new-v5/*.js'],
             tasks: ['jsmin-sourcemap:order_new_v5']

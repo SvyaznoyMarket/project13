@@ -107,6 +107,11 @@ module.exports = function (grunt, options) {
             dest: pathProd + 'order-new-v5.min.js'
         },
 
+        orderV3JS: {
+            src: pathDev + 'order-v3/*.js',
+            dest: pathProd + 'order-v3.min.js'
+        },
+
         pandoraJS: {
             src: pathDev + 'pandora/*.js',
             dest: pathProd + 'pandora.min.js'
