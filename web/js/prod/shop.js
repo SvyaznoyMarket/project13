@@ -1,163 +1,157 @@
-$(document).ready(function() {
-	/* bMap */
-	var marketfolio = $('.bMap__eScrollWrap');
+/**
+ * @requires jQuery, tmpl, ymaps
+ */
+;(function($){
 
-	marketfolio.on('click', 'div.map-image-link', function(e) {
-		if( $(this).hasClass('first') && $('div.map-360-link', marketfolio ).length ) {
-			$('div.map-360-link', marketfolio ).trigger('click');
-			return;
-		}
-		if( $(this).hasClass('mChecked') ){}
-		else{
-			$( 'div.mChecked' ,$(this).parent() ).removeClass('mChecked');
-			$(this).addClass('mChecked');
-		}
-	})
+    var $container = $('.bMapShops').first(),
+        cities = $container.find('.bMapShops__eMapCityList_city'),
+        markers = $('#map-markers').data('content'),
+        render = tmpl,
+        enterPlacemark = {
+            iconLayout: 'default#image',
+            iconImageHref: '/images/map/marker-shop.png',
+            iconImageSize: [28, 39],
+            iconImageOffset: [-14, -39]
+        },
+        availableShops, map;
 
-	if( $('div.map-360-link', marketfolio ).length ) {
-		marketfolio.on('click', 'div.map-360-link', function(e) {
-			$( 'div.mChecked' , $('.bMap__eScrollWrap') ).removeClass('mChecked')
-			if( ! $('#map-container embed').length ) {
-				var //el = $(this),
-					data = $('#map-panorama').data();
-				embedpano({swf: data.swf, xml: data.xml, target: 'map-container', wmode: 'transparent'})
-			}
-			e.stopPropagation() // cause in .map-image-link
-		});
+    if ($('#region_map-container').length == 1) {
 
-		//$('div.map-360-link', marketfolio ).trigger('click')
-	}
+        if (!$.isArray(markers) || markers.length === 0) return;
 
-	marketfolio.on('click', 'div.map-google-link', function(e) {
-		$( 'div.mChecked' , marketfolio ).removeClass('mChecked')
-		if( ! $('#map-container div').length ) { // only once, on first click !
-			var el = $(this),
-				position = {
-					latitude: $('[name="shop[latitude]"]').val(),
-					longitude: $('[name="shop[longitude]"]').val()
-				};
-			$.when(MapInterface.ready( 'yandex', {
-				yandex: $('#infowindowtmpl'), 
-				google: $('#map-info_window-container')
-			}))
-			.done(function(){
-				MapInterface.onePoint( position, 'map-container' )
-			})
-		}
-	});
+        // Доступные магазины
+        availableShops = $.grep(markers, function(elem) { return elem.is_reconstruction }, true);
 
-	$('div.map-google-link:first', marketfolio ).trigger('click');
+        // Спрячем города без магазинов
+        cities.each(function(){
+            var id = $(this).attr('ref');
+            if ($.grep(availableShops, function(elem) { return elem.region_id == id }).length === 0) $(this).remove();
+        });
 
-	if( $('#map-markers').length ) {
-		var allshops = $('#map-markers').data('content'),
-			showShopTrigger = false; // показан ли конкретный город
+        // Клик по городу
+        $container.on('click', '.bMapShops__eMapCityList_city', function(e) {
 
-		//показываем бабл магазина при наведении на него в списке
-		var hoverTimer = { 'timer': null, 'id': 0 }
-	    $('.bMapShops__eMapCityList ul').on('hover', 'li', function() {
-	        var id = $(this).attr('ref')//$(this).data('id')
-	        if( hoverTimer.timer ) {
-	            clearTimeout( hoverTimer.timer )
-	        }
-	        if( id && id != hoverTimer.id) {
-	            hoverTimer.id = id
-	            hoverTimer.timer = setTimeout( function() {   
-	                window.regionMap.showInfobox( id )
-	            }, 350)
-	        }
-	    })
+            var $this = $(this),
+                $shopsContainer = $this.find('ul'),
+                id = $this.attr('ref'),
+                shops = $.grep(availableShops, function(elem) { return elem.region_id == id }),
+                shopsHTML = '';
 
-	    // превращаем список магазинов в удобоваримый стек для яндекс карт
-	    function getShopsStack(shops) {
-			var shopsStack = {}
-			for( var sh in shops ){
-				shopsStack[ shops[sh].id ] = shops[sh]
-			}
-			return shopsStack
-	    }
-	    // выбранный город всегда остается наверху
-	    /*function shopScroll(){
-	    	
-	    }*/
+            if (shops.length > 0) {
+                if ($this.hasClass('chosedCity')) {
+                    $this.removeClass('chosedCity');
+                    $shopsContainer.hide();
+                    cities.show();
+                    $container.trigger('cityClose')
+                } else {
+                    cities.hide().removeClass('chosedCity');
+                    $this.addClass('chosedCity').show();
+                    if ($shopsContainer.find('li').length == 0)  { // если не было рендера
+                        $.each(shops, function(i, val) { shopsHTML += render('shopInCity', val)});
+                        $shopsContainer.html(shopsHTML)
+                    }
+                    $shopsContainer.show();
+                    $container.trigger('cityOpen', [id])
+                }
+            }
 
-	    //показываем карту города, при клике на название города
-		var cityHandler = function() {
-			var mapCity = $('.bMapShops__eMapCityList_city'),
-				shopsInCity = mapCity.find('ul');
+            e.stopPropagation();
 
-			// show current city
-			mapCity.click( function( event ) {
-				var nowRef = $(this).attr('ref'),
-					isCityName = $(event.target).hasClass('cityName');
+        });
 
-				// Если клик внутри списка городов по списку магазинов, то ничего не делаем
+        $container.on('click', '.shopInCity', function(e){
+            $container.trigger('shopClick', [$(this).attr('ref')]);
+            e.stopPropagation();
+        });
 
-				if ( isCityName ) {
+        // Карта со всеми магазинами
 
-					$('.bShopCard').hide();
-					shopsInCity.fadeOut(500, function(){
-						shopsInCity.empty();
-					});
+        ymaps.ready(function () {
 
-					if ( showShopTrigger ){
-						console.log('### город открыт, схлопываем список магазинов');
-						$(this).removeClass('chosedCity');
-						mapCity.show();
-						showShopTrigger = false;
-					}
-					else{
-						console.log('### город не открыт открываем спискок магазинов');
-						var curCity = [];
-						for ( var i in allshops ) { //получаем список магазинов в этом городе
-							if (allshops[i].region_id == $(this).attr('ref')){
-								var shopTpl = tmpl('shopInCity', allshops[i])
-								$(this).find('ul').append(shopTpl)
-								curCity.push(allshops[i])
-							}
-						}
-						if ( curCity.length ) { // если магазины есть
-							mapCity.hide()
-							$(this).addClass('chosedCity').show()
-							var startOffsetTop = $('.chosedCity').offset().top
-							$('.shop_'+nowRef).css('display', 'inline-block')
-							$(this).find('ul').fadeIn(500, function(){
-								window.regionMap.showMarkers(  getShopsStack(curCity) )
-								$('.bMapShops__eMapCityList').scroll(function(){
-									var nowOffestTop = $('.chosedCity').offset().top
-									$('.chosedCity .cityName').css('top', startOffsetTop-nowOffestTop)
-								})
-							})
-						}
-						else{
-							alert('В этом городе пока еще нет наших магазинов')
-						}
-						showShopTrigger = true
-					}
-				}
+            var yandexClusterer = new ymaps.Clusterer({
+                    hasBaloon: false,
+                    hasHint: false,
+                    minClusterSize: 3,
+                    preset: 'islands#orangeClusterIcons'
+                });
 
-			});
+            $.each(availableShops, function (i, elem) {
+                var point = new ymaps.Placemark([elem.latitude, elem.longitude], {
+                    balloonContent: '<h3>' + elem.name + '</h3><span>' + elem.regtime + '</span><br><a href="' + elem.link + '" class="bGrayButton shopchoose">Перейти к магазину</a>'
+                }, enterPlacemark);
+                yandexClusterer.add(point);
+            });
 
-		}
+            map = new ymaps.Map("region_map-container", {
+                center: [55.76, 37.64],
+                zoom: 10
+            });
 
-		function updateTmlt( marker ) {
-			$('#map-info_window-container').html(
-				tmpl('infowindowtmpl', marker )
-			)
-		}
+            map.geoObjects.add(yandexClusterer);
+            map.setBounds(yandexClusterer.getBounds());
 
-		var mapCenter =  calcMCenter( allshops),
-			mapCallback = function() {
-				window.regionMap.showCluster(  allshops )
-				cityHandler()
-			};
+            // событие открытия списка магазинов
+            $container.on('cityOpen', function (e, regionId) {
+                var shops = $.grep(availableShops, function (elem) {
+                        return elem.region_id == regionId
+                    }),
+                    yandexGeoObjectCollection = new ymaps.GeoObjectCollection(),
+                    objects = map.geoObjects;
 
-		$.when(MapInterface.ready( 'yandex', {
-			yandex: $('#infowindowtmpl'), 
-			google: $('#map-info_window-container')
-		}))
-		.done(function(){
-			MapInterface.init( mapCenter, 'region_map-container', mapCallback, updateTmlt )
-		})
-	}
+                $.each(shops, function (i, elem) {
+                    var point = new ymaps.Placemark([elem.latitude, elem.longitude], {
+                        balloonContent: '<h3>' + elem.address + '</h3><span>' + elem.regtime + '</span><br><a href="' + elem.link + '" class="bGrayButton shopchoose">Перейти к магазину</a>'
+                    }, enterPlacemark);
+                    yandexGeoObjectCollection.add(point);
+                });
 
-});
+                objects.removeAll();
+                objects.add(yandexGeoObjectCollection);
+
+                if (objects.get(0).getLength() > 1) {
+                    map.setBounds(yandexGeoObjectCollection.getBounds())
+                } else {
+                    console.log(objects.get(0).get(0).geometry.getCoordinates());
+                    map.setCenter(objects.get(0).get(0).geometry.getCoordinates(), 14)
+                }
+
+            });
+
+            // событие закрытия списка магазинов
+            $container.on('cityClose', function () {
+                map.geoObjects.removeAll();
+                map.geoObjects.add(yandexClusterer);
+                map.setBounds(yandexClusterer.getBounds());
+            });
+
+            // клик по магазину в списке
+            $container.on('shopClick', function (e, shopId) {
+                var shop = $.grep(availableShops, function (elem) {
+                    return elem.id == shopId
+                })[0];
+                map.setCenter([shop.latitude, shop.longitude], 16)
+            })
+
+        });
+    }
+
+    // карта для одного магазина
+    if ($('#map-container').length == 1) {
+
+        ymaps.ready(function () {
+
+            var lat = $('input[name=shop\\[latitude\\]]').val(),
+                lon = $('input[name=shop\\[longitude\\]]').val();
+
+            map = new ymaps.Map("map-container", {
+                center: [lat, lon],
+                zoom: 16
+            });
+
+            map.geoObjects.add(new ymaps.Placemark([lat, lon], {}, enterPlacemark))
+
+        })
+
+    }
+
+}(jQuery));

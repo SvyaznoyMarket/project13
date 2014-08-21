@@ -58,7 +58,7 @@ module.exports = function (grunt, options) {
 
         libraryJS:{
             files: [ pathDev + 'library/*.js'],
-            tasks: ['concat:libraryJS', 'uglify:libraryJS']
+            tasks: ['jsmin-sourcemap:library']
         },
 
         lkJS:{
@@ -118,7 +118,7 @@ module.exports = function (grunt, options) {
 
         shopJS:{
             files: [ pathDev + 'shop/*.js'],
-            tasks: ['concat:shopJS', 'uglify:shopJS']
+            tasks: ['jsmin-sourcemap:shop']
         },
 
         tchiboJS:{
@@ -129,6 +129,11 @@ module.exports = function (grunt, options) {
         watch3dJS:{
             files: [ pathDev + 'watch3d/*.js'],
             tasks: ['concat:watch3dJS', 'uglify:watch3dJS']
+        },
+
+        serviceHaJS:{
+            files: [ pathDev + 'service_ha/*.js'],
+            tasks: ['concat:serviceHaJS', 'uglify:serviceHaJS']
         },
 
         loadJS:{
