@@ -26,12 +26,20 @@
     _gaq.push(['_addOrganic', 'ru.search.yahoo.com','p']);
     _gaq.push(['_addOrganic', 'ya.ru', 'q']);
     _gaq.push(['_addOrganic', 'm.yandex.ru','query']);
-<? if (\App::config()->abtest['enabled']): ?>
-    _gaq.push(['_setCustomVar', 2, 'User segment', '<?= \App::abTest()->getCase()->getGaEvent() ?>', 2]);
-<? endif ?>
-<? if (\App::abtestJson() && \App::abtestJson()->isActive()) : ?>
-    _gaq.push(['_setCustomVar', 1, 'User segment', '<?= \App::abTestJson()->getCase()->getGaEvent() ?>', 2]);
-<? endif ?>
+
+    <? /* Слот 1 занят под abTestJson, а слоты 3, 4, 5 заняты под нужды сотрудников отдела аналитики */ ?>
+    <? $customVarNum = 5 ?>
+    <? foreach (\App::abTest()->getTests() as $test): ?>
+        <? $customVarNum++ ?>
+        <? if ($test->isActive()): ?>
+            _gaq.push(['_setCustomVar', <?= $customVarNum ?>, 'User segment', '<?= $test->getKey() ?>_<?= $test->getChosenCase()->getKey() ?>', 2]);
+        <? endif ?>
+    <? endforeach ?>
+
+    <? if (\App::abtestJson() && \App::abtestJson()->isActive()) : ?>
+        _gaq.push(['_setCustomVar', 1, 'User segment', '<?= \App::abTestJson()->getCase()->getGaEvent() ?>', 2]);
+    <? endif ?>
+
     _gaq.push(['_trackPageview']);
     _gaq.push(['_trackPageLoadTime']);
 

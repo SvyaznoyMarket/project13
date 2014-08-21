@@ -50,9 +50,9 @@ class BasicRecommendedAction {
                 throw new \Exception(sprintf('Товар #%s не найден', $productId));
             }
 
-            $key = \App::abTest()->getCase()->getKey();
+            $key = \App::abTest()->getTest('other')->getChosenCase()->getKey();
 
-            \App::logger()->info(sprintf('abTest.key=%s, response.cookie.switch=%s', $key, $request->cookies->get('switch')));
+            \App::logger()->info(sprintf('abTest.key=%s, response.cookie.switch=%s', $key, $request->cookies->get(\App::config()->abTest['cookieName'])));
 
             /*if ('retailrocket' == $key) {
                 $products = $this->getProductsFromRetailrocket($product, $request, $this->retailrocketMethodName);

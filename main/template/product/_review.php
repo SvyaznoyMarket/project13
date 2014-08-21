@@ -38,11 +38,13 @@ if (!$isEnter): ?>
 
         <div class="bReview__eLogo">
             <? if (!empty($review['source_logo_url'])): ?>
-                <? if (!empty($review['url'])) { ?>
+                <? if (!empty($review['url']) && 'yandex' !== $review['origin']) { ?>
                     <a class="reviewLink <?= $review['origin'] ?>" href="<?= $review['url'] ?>" title="<?= $review['title'] ?>" target="_blank">
                 <? } ?>
                         <img src="<?= $review['source_logo_url'] ?>" alt="<?= $review['title'] ?>" />
-                <? if (!empty($review['url'])) { ?></a><? } ?>
+                <? if (!empty($review['url']) && 'yandex' !== $review['origin']) { ?>
+                    </a>
+                <? } ?>
             <? endif ?>
         </div>
     </div>

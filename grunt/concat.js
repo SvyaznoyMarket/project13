@@ -98,12 +98,17 @@ module.exports = {
         src: ['<%= pathDev %>watch3d/*.js'],
         dest: '<%= pathProd %>watch3d.js'
     },
-	
-	gameSlotsJs: {
-		src: [
-			'web/js/game/slots/jquery.transit.js',
-			'web/js/game/slots/slots.js'
-		],
+
+    gameSlotsJs: {
+        src: [
+            'web/js/game/slots/jquery.transit.js',
+            'web/js/game/slots/slots.js'
+        ],
         dest: 'web/js/game/slots.js'
+    },
+
+    serviceHaJS : {
+        src: ['<%= pathDev %>service_ha/*.js'],
+        dest: '<%= pathProd %>service_ha.js'
     }
 };

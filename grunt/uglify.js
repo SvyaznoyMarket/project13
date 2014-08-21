@@ -145,6 +145,11 @@ module.exports = function (grunt, options) {
         gameSlotsJs: {
             src: [ 'web/js/game/slots/jquery.transit.js','web/js/game/slots/slots.js'],
             dest: 'web/js/game/slots.min.js'
-        }
+        },
+
+        serviceHaJS: {
+            src: pathDev + 'service_ha/*.js',
+            dest: pathProd + 'service_ha.min.js'
+        }        
     }
 };

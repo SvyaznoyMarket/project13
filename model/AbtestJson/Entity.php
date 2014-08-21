@@ -1,6 +1,6 @@
 <?php
 
-namespace Model\Abtest;
+namespace Model\AbtestJson;
 
 class Entity {
 

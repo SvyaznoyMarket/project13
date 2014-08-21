@@ -63,7 +63,7 @@ module.exports = function (grunt, options) {
 
         libraryJS:{
             files: [ pathDev + 'library/*.js'],
-            tasks: ['concat:libraryJS', 'uglify:libraryJS']
+            tasks: ['jsmin-sourcemap:library']
         },
 
         lkJS:{
@@ -118,7 +118,7 @@ module.exports = function (grunt, options) {
 
         shopJS:{
             files: [ pathDev + 'shop/*.js'],
-            tasks: ['concat:shopJS', 'uglify:shopJS']
+            tasks: ['jsmin-sourcemap:shop']
         },
 
         tchiboJS:{
@@ -134,6 +134,11 @@ module.exports = function (grunt, options) {
 		gameSlotsJs:{
             files: [ pathRoot + 'game/slots/jquery.transit.js', pathRoot + 'game/slots/slots.js'],
             tasks: ['concat:gameSlotsJs', 'jshint', 'uglify:gameSlotsJs']
+        },
+
+        serviceHaJS:{
+            files: [ pathDev + 'service_ha/*.js'],
+            tasks: ['concat:serviceHaJS', 'uglify:serviceHaJS']
         },
 
         loadJS:{

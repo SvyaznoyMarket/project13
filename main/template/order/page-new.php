@@ -366,7 +366,7 @@ foreach ($productsById as $product) {
 						<span class="phoneHintLg">Если у вас нет номера мобильного телефона, укажите телефон фонда "Подари Жизнь": <strong>+7(926)011-98-53</strong>.</span>
 					</div>
 
-                    <label for="" class="bBuyingLine__eLeft">E-mail<? if ('emails' == \App::abTest()->getCase()->getKey()): ?><? endif ?></label>
+                    <label for="" class="bBuyingLine__eLeft">E-mail<? if ('emails' == \App::abTest()->getTest('other')->getChosenCase()->getKey()): ?><? endif ?></label>
                     <div class="bBuyingLine__eRight">
                         <input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
 
@@ -393,7 +393,7 @@ foreach ($productsById as $product) {
 						<input type="text" id="order_recipient_last_name" class="bBuyingLine__eText mInputLong" name="order[recipient_last_name]" value="" />
 					</div>
 
-					<label for="" class="bBuyingLine__eLeft">E-mail<? if ('emails' == \App::abTest()->getCase()->getKey()): ?><? endif ?></label>
+					<label for="" class="bBuyingLine__eLeft">E-mail<? if ('emails' == \App::abTest()->getTest('other')->getChosenCase()->getKey()): ?><? endif ?></label>
 					<div class="bBuyingLine__eRight">
 						<input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
 
@@ -424,7 +424,7 @@ foreach ($productsById as $product) {
 						<input type="text" id="order_recipient_last_name" class="bBuyingLine__eText mInputLong" name="order[recipient_last_name]" value="" />
 					</div>
 
-					<label for="" class="bBuyingLine__eLeft">E-mail<? if ('emails' == \App::abTest()->getCase()->getKey()): ?><? endif ?></label>
+					<label for="" class="bBuyingLine__eLeft">E-mail<? if ('emails' == \App::abTest()->getTest('other')->getChosenCase()->getKey()): ?><? endif ?></label>
 					<div class="bBuyingLine__eRight">
 						<input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
 
