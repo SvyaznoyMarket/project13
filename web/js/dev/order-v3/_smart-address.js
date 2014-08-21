@@ -10,9 +10,30 @@
                 building: 'дом',
                 apartment: 'квартира'
             },
-            address, init, autocompleteRequest;
+            spinner = typeof Spinner == 'function' ? new Spinner({
+                lines: 7, // The number of lines to draw
+                length: 3, // The length of each line
+                width: 3, // The line thickness
+                radius: 2, // The radius of the inner circle
+                corners: 1, // Corner roundness (0..1)
+                rotate: 0, // The rotation offset
+                direction: 1, // 1: clockwise, -1: counterclockwise
+                color: '#666', // #rgb or #rrggbb or array of colors
+                speed: 1, // Rounds per second
+                trail: 60, // Afterglow percentage
+                shadow: false, // Whether to render a shadow
+                hwaccel: true, // Whether to use hardware acceleration
+                className: 'spinner', // The CSS class to assign to the spinner
+                zIndex: 2e9, // The z-index (defaults to 2000000000)
+                top: '50%', // Top position relative to parent
+                left: '50%' // Left position relative to parent
+            }) : null,
+            address, init, autocompleteRequest, spinnerBlock;
 
         if ($input.length === 0) return;
+
+        spinnerBlock = $('<div />', {'class':'kladr_spinner'}).css({'position': 'absolute', top: 0, right: 0, height: '30px', width: '30px'});
+        $addressBlock.prepend(spinnerBlock);
 
         function Address(c) {
             this.city = c;
@@ -41,13 +62,14 @@
 
                 if (typeof this.building.name !== 'undefined') return 'apartment';
                 else if (typeof this.street.name !== 'undefined') return 'building';
+                else if (typeof this.street.name === 'undefined') return 'street';
                 else return false;
             };
 
             this.update = function(item) {
                 if (typeof item.contentType === 'undefined') {
                     if (item.type === false) {
-                        console.error('False type in address update');
+                        console.error('False type in address update', item);
                         return;
                     }
                     item.contentType = item.type;
@@ -173,9 +195,11 @@
         autocompleteRequest = function autoCompleRequestF (request, response) {
             if (address.getParent() !== false) {
                 var query = $.extend(config, { limit: 10, type: $.kladr.type.street, name: request.term }, address.getParent());
+                if (spinner) spinner.spin($('.kladr_spinner')[0]);
                 console.log('[КЛАДР] запрос: ', query);
                 $.kladr.api(query, function (data) {
                     console.log('[КЛАДР] ответ', data);
+                    if (spinner) spinner.stop();
                     response($.map(data, function (elem) {
                         return { label: formatStreetName(elem) , value: elem }
                     }))
@@ -269,13 +293,18 @@
                 address = ENTER.OrderV3.address;
                 fillAddressBlock(address);
                 $input.hide();
+
             } else {
+                console.log('spinner', spinner);
+                if (spinner) spinner.spin($('.kladr_spinner')[0]);
+                address = new Address({});
                 console.log('Определение адреса КЛАДР, запрос', $.extend(config, {limit: 1, type: $.kladr.type.city, name: $('#region-name').data('value')}));
                 $.kladr.api($.extend(config, {limit: 1, contentType: $.kladr.type.city, query: $('#region-name').data('value')}), function (data){
                     console.log('KLADR data', data);
                     var id = data.length > 0 ? data[0].id : 0;
                     if (id==0) console.error('КЛАДР не определил город, конфигурация запроса: ', $.extend(config, {limit: 1, type: $.kladr.type.city, name: $('#region-name').data('value')}));
-                    address = new Address(data[0]);
+                    else address.city = data[0];
+                    if (spinner) spinner.stop()
                 })
             }
         };
