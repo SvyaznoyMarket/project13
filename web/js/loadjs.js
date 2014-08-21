@@ -408,7 +408,7 @@
 		},
 
         'order-v3': function() {
-            $LAB.queueScript(yandexMapUrlV21)
+            $LAB.queueScript(yandexMapUrlv2_1)
                 .queueWait( function() {
                     $LAB.script( getWithVersion('jquery-plugins.js') )
                         .script( getWithVersion('library.js') )
