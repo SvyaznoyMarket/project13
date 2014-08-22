@@ -540,6 +540,8 @@ $.fn.slots = function (slot_config, animations_config) {
                         self.start();
                     }, 30000);
                 }
+
+                $el.trigger('slotsInitialized');
             },
             bindAll: function () {//биндимся на клики по кнопкам
                 var game = this;
