@@ -1063,6 +1063,15 @@
 body.parallax .gameBandit {
   display: none;
 }
+body.parallax .center-parallax-block #slotsBack {
+  top: 0px !important;
+  background: #000000 url(img/slot_background.png) no-repeat bottom;
+  opacity: 0;
+}
+body.parallax .center-parallax-block #slotsWrapWrapper #slotsBottomLine {
+  background-position: center;
+  background-repeat: no-repeat;
+}
 #slotsWrapWrapper > .hello {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
