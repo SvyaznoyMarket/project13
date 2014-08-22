@@ -92,6 +92,11 @@ module.exports = function (grunt, options) {
             dest: pathProd + 'main.min.js'
         },
 
+        mainParallaxJS: {
+            src: pathDev + 'main-parallax/*.js',
+            dest: pathProd + 'main-parallax.min.js'
+        },
+
         oneclickJS: {
             src: pathDev + 'oneclick/*.js',
             dest: pathProd + 'oneclick.min.js'

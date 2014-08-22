@@ -292,11 +292,12 @@
 					.script( optimizelyUrl )
 					.script('adfox.asyn.code.ver3.min.js')
 					.wait()
-					.script( getWithVersion('ports.js') )
+					.script( getWithVersion('main-parallax.js') )
 					.wait()
 					.script( getWithVersion('enterprize.js') )
-					.wait()
 					.script( getWithVersion('/js/game/slots.js') )
+					.wait()
+					.script( getWithVersion('ports.js') )
 					.wait()
 					.script( logTimeAfterPartnerScript );
 			}).runQueue();

@@ -81,6 +81,11 @@ module.exports = function (grunt, options) {
             tasks: ['concat:mainJS', 'uglify:mainJS']
         },
 
+        mainParallaxJS:{
+            files: [ pathDev + 'main-parallax/*.js'],
+            tasks: ['concat:mainParallaxJS', 'uglify:mainParallaxJS']
+        },
+
         oneclickJS:{
             files: [ pathDev + 'oneclick/*.js'],
             tasks: ['concat:oneclickJS', 'uglify:oneclickJS']

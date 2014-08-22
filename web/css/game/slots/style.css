@@ -1060,8 +1060,16 @@
     opacity: 0;
   }
 }
+body.parallax {
+  /*.bannersbox,
+  .bCarousel,
+  .header {
+    position: fixed;
+  }*/
+}
 body.parallax .top-parallax-block,
-body.parallax .bannersbox {
+body.parallax .bannersbox,
+body.parallax .bCarouse {
   position: fixed;
 }
 body.parallax .center-parallax-block {
@@ -1070,55 +1078,40 @@ body.parallax .center-parallax-block {
   z-index: 1000;
   width: 100%;
 }
-body.parallax .center-parallax-block #slotsWrapper {
-  background: #000000;
-  background-image: url(img/slot_background.png);
-  height: 725px;
-}
-body.parallax .center-parallax-block #slotsWrapper #slotsMachine {
-  height: 724px;
-}
-body.parallax .center-parallax-block #slotsWrapper #slotsMachine #slotsGame {
-  top: 110px;
-  background-position: center 42%;
-}
-body.parallax .center-parallax-block #slotsWrapper #slotsMachine #slotsHeader {
-  top: -7px;
-}
-body.parallax .center-parallax-block #slotsWrapper #slotsMachine #slotsMessageBox #slotsMessageReel {
-  top: 12px;
-}
 body.parallax .center-parallax-block #slotsBack {
-  position: relative;
-  display: none;
-  width: auto;
-  height: auto;
-  background: none;
+  top: 0px !important;
+  background: #000000 url(img/slot_background.png) no-repeat bottom;
+  opacity: 0;
+}
+body.parallax .center-parallax-block #slotsWrapWrapper {
+  /*> .hello {
+        width: 100%;
+        margin: 0 auto;
+        border: none;
+        padding: 20px 15px;
+        background: black;
+        box-shadow: none;
+        top: 0px;
+        height: 112px;
+        opacity: 0.7;
+
+        .yashare-auto-init.pc_buttons {
+          display: none;
+        }
+
+        .rulesText {
+          width: 590px;
+          margin: 0 auto;
+
+          h2 {
+            display: none;
+          }
+        }
+      }*/
 }
 body.parallax .center-parallax-block #slotsWrapWrapper #slotsBottomLine {
   background-position: center;
   background-repeat: no-repeat;
-}
-body.parallax .center-parallax-block #slotsWrapWrapper > .hello {
-  width: 100%;
-  margin: 0 auto;
-  border: none;
-  padding: 20px 15px;
-  background: black;
-  box-shadow: none;
-  top: 0px;
-  height: 112px;
-  opacity: 0.7;
-}
-body.parallax .center-parallax-block #slotsWrapWrapper > .hello .yashare-auto-init.pc_buttons {
-  display: none;
-}
-body.parallax .center-parallax-block #slotsWrapWrapper > .hello .rulesText {
-  width: 590px;
-  margin: 0 auto;
-}
-body.parallax .center-parallax-block #slotsWrapWrapper > .hello .rulesText h2 {
-  display: none;
 }
 body.parallax .bottom-parallax-block {
   position: relative;
