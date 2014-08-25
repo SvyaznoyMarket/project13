@@ -131,11 +131,26 @@ return function(
                                     <? endif; ?>
 
                                     <!-- Оплата банковской картой онлайн, PSB -->
-                                    <!-- TODO проверка возможности оплаты через этот метод -->
-<!--                                    --><?//= (new \Templating\HtmlLayout())->render('order/payment/form-psb', array('provider' => $paymentProviders['psb'], 'order' => $order, 'form' => null)) ?>
+                                    <? if (isset($paymentProviders[$order->getNumber()][\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ONLINE])) : ?>
+                                    <? $form = (new \Payment\Psb\Form()); $form->fromArray($paymentProviders[$order->getNumber()][\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ONLINE]['detail']) ?>
+                                    <?= (new \Templating\HtmlLayout())->render('order/payment/form-psb', array(
+                                            'provider' => new \Payment\Psb\Provider(['payUrl' => $paymentProviders[$order->getNumber()][\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ONLINE]['url']]),
+                                            'order' => $order,
+                                            'form' => $form
+                                        )) ?>
+                                    <? endif; ?>
 
                                     <!-- Выставление счета в PSB -->
-<!--                                    --><?//= (new \Templating\HtmlLayout())->render('order/payment/form-psbInvoice', array('provider' => $paymentProviders['psbInvoice'], 'order' => $order, 'form' => null)) ?>
+                                    <? if (isset($paymentProviders[$order->getNumber()][\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_PSB])) : ?>
+                                        <? $form = (new \Payment\PsbInvoice\Form()); $form->fromArray($paymentProviders[$order->getNumber()][\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_PSB]['detail']) ?>
+                                        <?= (new \Templating\HtmlLayout())->render('order/payment/form-psbInvoice', array(
+                                            'provider' => new \Payment\PsbInvoice\Provider(['payUrl' => $paymentProviders[$order->getNumber()][\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_PSB]['url']]),
+                                            'order' => $order,
+                                            'form' => $form
+                                        )) ?>
+                                    <? endif; ?>
+
+                                    <!-- PAYPAL -->
 
                                 <? endif; ?>
 

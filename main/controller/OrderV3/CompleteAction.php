@@ -17,6 +17,7 @@ class CompleteAction extends OrderV3 {
 
         /** @var \Model\Order\Entity $orders */
         $orders = [];
+        /** @var \Model\PaymentMethod\PaymentEntity[] $ordersPayment */
         $ordersPayment = [];
         $products = [];
         $paymentProviders = [];
@@ -63,8 +64,16 @@ class CompleteAction extends OrderV3 {
                     }
                 } );
 
+                $onlineMethodsId = array_map(function(\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $method) { return $method->id; },
+                    array_filter($ordersPayment[$order->getNumber()]->methods,
+                        function(\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $payment) {return $payment->paymentGroup->id == 2;}
+                    )
+                );
+
+                if (!(bool)$onlineMethodsId) continue;
+
                 // Онлайн-оплата для каждого заказа
-                /*foreach([5,8,14] as $methodId) {
+                foreach (array_values($onlineMethodsId) as $methodId) {
 
                     $privateClient->addQuery('site-integration/payment-config',
                         [
@@ -78,28 +87,37 @@ class CompleteAction extends OrderV3 {
                             'user_token'  => $request->cookies->get('UserTicket'),// токен кросс-авторизации. может быть передан для Связного-Клуба (UserTicket)
                         ],
                         function($data) use (&$paymentProviders, $order, $methodId) {
-                            if ((bool)$data) {
-                                $paymentProviders[$order->getNumber()] = [ $methodId => $data ];
+                            if ((bool)$data && isset($data['code']) && $data['code'] == 200) {
+                                if (!isset($paymentProviders[$order->getNumber()])) $paymentProviders[$order->getNumber()] = [];
+                                $paymentProviders[$order->getNumber()][$methodId] =  $data ;
                             }
                         },
                         function(\Exception $e) {
                             \App::exception()->remove($e);
                         }
                     );
-                }*/
+                }
 
             }
+
             // получаем магазины
-/*            \RepositoryManager::shop()->prepareCollectionById(array_map(function(\Model\Order\Entity $order){ return $order->getShopId(); }, array_filter($orders, function(\Model\Order\Entity $order){ return $order->getShopId() != 0; })),
+            /*\RepositoryManager::shop()->prepareCollectionById(array_map(function(\Model\Order\Entity $order){ return $order->getShopId(); }, array_filter($orders, function(\Model\Order\Entity $order){ return $order->getShopId() != 0; })),
                 function($data) use (&$shops) {
                     foreach($data as $shopData) {
                         if (isset($shopData['id'])) $shops[$shopData['id']] = new \Model\Shop\Entity($shopData);
                     }
             });*/
 
-            unset($order);
             $this->client->execute();
             $privateClient->execute();
+            unset($order, $methodId, $onlineMethodsId, $privateClient);
+
+            // TODO фильтрация $ordersPayment по $paymentProviders
+/*            foreach ($orders as $order) {
+                $ordersPayment[$order->getNumber()]->methods = array_filter($ordersPayment[$order->getNumber()]->methods, function (\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $method) use ($paymentProviders, $order) {
+                    return isset($paymentProviders[$order->getNumber()][$method->id]);
+                });
+            }*/
 
             // очищаем корзину от заказанных продуктов
             foreach ($products as $product) {
@@ -118,21 +136,22 @@ class CompleteAction extends OrderV3 {
                 $data['order-product-category'] = array_map(function(\Model\Product\Entity $product) { $category = $product->getMainCategory(); return $category->getName(); }, $productsForOrder);
                 $data['order-product-price'] = array_map(function(\Model\Product\Entity $product) { return $product->getPrice(); }, $productsForOrder);
                 $data['order-sum'] = $order->getSum();
-                $date['order-delivery-price'] = isset($order->getDelivery()[0]) ? $order->getDelivery()[0]->getPrice() : '';
-                $date['user-phone'] = $order->getMobilePhone();
+                $data['order-delivery-price'] = isset($order->getDelivery()[0]) ? $order->getDelivery()[0]->getPrice() : '';
+                $data['user-phone'] = $order->getMobilePhone();
                 $this->logger($data);
             }
 
+            unset($order, $data, $productIds, $productsForOrder);
 
         } catch (\Curl\Exception $e) {
-
+            // TODO
         } catch (\Exception $e) {
-
+            // TODO
         }
 
         $page = new \View\OrderV3\CompletePage();
         $page->setParam('orders', $orders);
-        $page->setParam('ordersPayment', []);
+        $page->setParam('ordersPayment', $ordersPayment);
         $page->setParam('products', $products);
         $page->setParam('userEntity', $this->user->getEntity());
         $page->setParam('paymentProviders', $paymentProviders);
