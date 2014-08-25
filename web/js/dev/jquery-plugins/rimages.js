@@ -63,6 +63,8 @@
     },
 
     set: function(breakpointId) {
+      if (typeof($.rimages.breakpoints[breakpointId]) !== "undefined") return;
+
       var images = $.rimages.breakpoints[breakpointId]['els'];
       for (var i = 0; i < images.length; i++) {
         var image = images[i];

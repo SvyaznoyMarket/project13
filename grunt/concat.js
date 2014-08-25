@@ -49,6 +49,11 @@ module.exports = {
         dest: '<%= pathProd %>main.js'
     },
 
+    mainParallaxJS : {
+        src: ['<%= pathDev %>main-parallax/*.js'],
+        dest: '<%= pathProd %>main-parallax.js'
+    },
+
     oneclickJS : {
         src: ['<%= pathDev %>oneclick/*.js'],
         dest: '<%= pathProd %>oneclick.js'
