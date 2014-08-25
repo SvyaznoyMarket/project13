@@ -151,6 +151,11 @@ return function(
                                     <? endif; ?>
 
                                     <!-- PAYPAL -->
+                                    <? if (isset($paymentProviders[$order->getNumber()][\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_PAYPAL])) : ?>
+                                        <?= (new \Templating\HtmlLayout())->render('order/payment/form-paypal', array(
+                                            'url' => $paymentProviders[$order->getNumber()][\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_PAYPAL]['url']
+                                        )) ?>
+                                    <? endif; ?>
 
                                 <? endif; ?>
 
