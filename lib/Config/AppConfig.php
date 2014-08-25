@@ -488,14 +488,17 @@ class AppConfig {
         'maxLockTime' => null,
     ];
 
-    /** @var boolean */
+    /** @var bool */
     public $requestMainMenu = null;
+    /** @var bool */
+    public $newOrder;
     /** @var array  */
     public $order = [
         'cookieName'     => null,
         'sessionName'    => null,
         'enableMetaTag'  => null,
         'maxSumOnline'   => null,
+        'splitSessionKey'   => null
     ];
     /** @var bool */
     public $newDeliveryCalc;
@@ -581,7 +584,7 @@ class AppConfig {
         ],
     ];
 
-    /** @var boolean */
+    /** @var bool */
     public $preview = null;
 
     /** @var array */

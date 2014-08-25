@@ -18,6 +18,10 @@ class NewAction {
         $region = $user->getRegion();
         $cart = $user->getCart();
 
+        if ($region && in_array($region->getId(), [119623, 93746]) && \App::config()->newOrder && \App::abTest()->getTest('orders')) {
+            if (\App::abTest()->getTest('orders')->getChosenCase()->getKey() == 'new') return (new \Controller\OrderV3\NewAction)->execute($request);
+        }
+
         if ($cart->isEmpty()) {
             \App::logger()->warn(['message' => 'Пустая корзина'], ['cart']);
             return new \Http\RedirectResponse(\App::router()->generate('cart'));

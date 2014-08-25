@@ -394,6 +394,7 @@ $c->subscribe['cookieName'] = 'subscribed';
 
 $c->requestMainMenu = true;
 
+$c->newOrder = true;
 $c->order['cookieName'] = 'last_order';
 $c->order['sessionName'] = 'lastOrder';
 $c->order['enableMetaTag'] = true;
@@ -407,6 +408,7 @@ $c->order['prepayment'] = [
     'priceLimit' => 100000,// если стоимость заказа >= priceLimit, то появится плашка с текстом про предоплату
     'labelId'    => 15, // id шильдика "предоплата"
 ];
+$config->order['splitSessionKey'] = 'order_split';
 
 $c->newDeliveryCalc = true;
 
@@ -479,6 +481,34 @@ $c->abTest = [
                     'name'     => 'Отзывы по умолчанию',
                 ],
             ],
+        ],
+        'orders' => [
+            'enabled' => true,
+            'expireDate' => '2014-12-31',
+            'cases' => [
+                'new' => [
+                    'traffic'  => 20,
+                    'name'     => 'Новое оформление заказа',
+                ],
+                'default' => [
+                    'traffic'  => 80,
+                    'name'     => 'Старое оформление заказа',
+                ]
+            ]
+        ],
+        'order_delivery_price' => [
+            'enabled' => true,
+            'expireDate' => '2014-12-31',
+            'cases' => [
+                'delivery_self_100' => [
+                    'traffic'  => 50,
+                    'name'     => 'Платный самовывоз',
+                ],
+                'delivery_self_0' => [
+                    'traffic'  => 50,
+                    'name'     => 'Бесплатный самовывоз',
+                ]
+            ]
         ],
         'other' => [
             'enabled' => false,
