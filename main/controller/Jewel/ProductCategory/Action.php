@@ -329,7 +329,7 @@ class Action extends \Controller\ProductCategory\Action {
             }
 
             // вид товаров
-            $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
+            $productView = $category->getHasLine() ? 'line' : $category->getProductView();
             // листалка
             $limit = \App::config()->product['itemsPerPageJewel'];
             $repository = \RepositoryManager::product();
