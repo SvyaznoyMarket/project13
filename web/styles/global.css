@@ -994,6 +994,11 @@ img[height="0"] {
     height: 470px;
     position: relative;
   }
+  .footer__main .siteVersionSwitcher {
+    position: relative;
+    top: -3em;
+    color: #fff;
+  }
   /**
 * Стили подвала
 */

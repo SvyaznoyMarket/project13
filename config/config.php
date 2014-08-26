@@ -523,4 +523,7 @@ $c->photoContest = [
 	]
 ];
 
+$c->siteVersionSwitcher['cookieName'] = 'mobile';
+$c->siteVersionSwitcher['cookieLifetime'] = 20 * 365 * 24 * 60 * 60;
+
 return $c;

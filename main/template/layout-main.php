@@ -68,6 +68,7 @@
 
 <div class="footer__main">
     <?= $page->slotFooter() ?>
+    <a href="http://<?= \App::config()->mobileHost ?>/" class="siteVersionSwitcher js-siteVersionSwitcher" data-config="<?= $page->escape(json_encode(\App::config()->siteVersionSwitcher)) ?>">Мобильная версия</a>
 </div><!--/ Подвал -->
 
 <?= $page->slotRegionSelection() ?>
