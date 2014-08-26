@@ -51,6 +51,11 @@ class OrderEntity {
      * @var int
      */
     private $delivery_type_id;
+    /** Токен доставки
+     * Обязательный при партнерском заказе
+     * @var string
+     */
+    private $delivery_type_token;
     /** Дата доставки (YYYY-MM-DD)
      * Обязательный (кроме случая, когда delivery_type_id=4 - забрать на месте)
      * @var string
@@ -231,6 +236,8 @@ class OrderEntity {
          */
 
         $this->ip = $request->getClientIp();
+
+        if (isset($arr['order']['delivery']['delivery_method_token']) && !empty($arr['order']['delivery']['delivery_method_token'])) $this->delivery_type_token = (string)$arr['order']['delivery']['delivery_method_token'];
 
         if (isset($arr['order']['delivery']['price'])) $this->delivery_price = (int)$arr['order']['delivery']['price'];
 
