@@ -507,6 +507,20 @@ $c->abTest = [
                 ]
             ]
         ],
+        'jewel_items' => [
+            'enabled' => true,
+            'expireDate' => '2015-12-31',
+            'cases' => [
+                'jewelItems3' => [
+                    'traffic' => 50,
+                    'name' => 'Сетка листинга по 3 товара',
+                ],
+                'jewelItems4' => [
+                    'traffic'  => 50,
+                    'name'     => 'Сетка листинга по 4 товара',
+                ]
+            ]
+        ],
         'other' => [
             'enabled' => false,
             'expireDate' => '2000-01-01',
