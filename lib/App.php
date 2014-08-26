@@ -434,6 +434,9 @@ class App {
                 case 'query':
                     self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/query.log', self::$config->logger['pretty']), $name, $config[$name]['level']);
                     break;
+                case 'custom':
+                    self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/custom.log', self::$config->logger['pretty']), $name, $config[$name]['level']);
+                    break;
                 default:
                     self::$loggers[$name] = new \Logger\DefaultLogger(new \Logger\Appender\FileAppender(self::$config->logDir . '/app.log', self::$config->logger['pretty']), $name, $config[$name]['level']);
                     //$instances[$name] = new \Logger\NullLogger();
@@ -458,20 +461,20 @@ class App {
     }
 
     /**
-     * @return \Session\Abtest
+     * @return \Session\AbTest\AbTest
      */
     public static function abTest() {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Session\Abtest(self::config()->abtest);
+            $instance = new \Session\AbTest\AbTest();
         }
 
         return $instance;
     }
 
     /**
-     * @return array|null $catalogJson
+     * @param array|null $catalogJson
      * @return \Session\AbtestJson|null
      */
     public static function abTestJson($catalogJson = null) {

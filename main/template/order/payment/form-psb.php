@@ -7,11 +7,17 @@
  * @var $form     \Payment\Psb\Form|null
  */
 
+$backUrl = $page->url('order.paymentComplete', array('orderNumber' => $order->getNumber()), true);
+
+if (\App::config()->newOrder && \App::abTest()->getTest('orders')) {
+    if (\App::abTest()->getTest('orders')->getChosenCase()->getKey() == 'new') $backUrl = $page->url('order.complete', [], true);
+}
+
 if (!$form instanceof \Payment\Psb\Form) {
-    $form = $provider->getForm($order, $page->url('order.paymentComplete', array('orderNumber' => $order->getNumber()), true));
+    $form = $provider->getForm($order, $backUrl);
 } ?>
 
-<form class="form" method="post" action="<?= $provider->getPayUrl() ?>">
+<form class="form jsPaymentForms jsPaymentFormPSB" method="post" action="<?= $provider->getPayUrl() ?>">
     <input type="hidden" name="AMOUNT" value="<?= $form->getAmount() ?>" />
     <input type="hidden" name="CURRENCY" value="<?= $form->getCurrency() ?>" />
     <input type="hidden" name="ORDER" value="<?= $form->getOrder() ?>" />

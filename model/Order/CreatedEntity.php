@@ -20,6 +20,8 @@ class CreatedEntity {
     /** @var \DateTime */
     private $deliveredAt;
 
+    public $numberErp;
+
     /**
      * @param array $data
      */
@@ -38,6 +40,7 @@ class CreatedEntity {
                 \App::logger()->error($e);
             }
         }
+        if (array_key_exists('number_erp', $data)) $this->numberErp = (string)$data['number_erp'];
     }
 
     /**

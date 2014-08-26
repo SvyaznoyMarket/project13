@@ -127,7 +127,7 @@
 				
 			};
 
-			if ( autoResolve !== 'undefined' ) {
+			if (typeof autoResolve !== 'undefined' ) {
 				$.ajax({
 					type: 'GET',
 					url: autoResolve,

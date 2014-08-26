@@ -1,0 +1,63 @@
+.shopLst {
+	overflow: auto;
+
+	max-height: 448px;
+	display: block;
+
+	&_i {
+		padding: 5px;
+
+		border-bottom: 1px solid @lightgrey-2;
+
+		&:last-child {
+			margin-bottom: 10px;
+		}
+	}
+
+	&_addrs {
+    	position: relative;
+
+		margin: 0 0 5px 15px;
+
+		&:after {
+			.rounded(50%);
+			position: absolute;
+			top: 6px;
+			left: -15px;
+
+			width: 8px;
+			height: 8px;
+
+			content: '';
+
+			background: inherit;
+		}
+
+		&_tx {
+			display: block;
+
+			background: @white;
+		}
+
+		&_tm {
+			display: block;
+
+			background: @white;
+
+			font-size: 14px;
+		}
+	}
+
+	&:after {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+
+		width: 285px;
+		height: 35px;
+
+		content: "";
+
+		background: url("@{base-url}/order/img/transGradWhBot.png") repeat-x 0 0;
+	}
+}

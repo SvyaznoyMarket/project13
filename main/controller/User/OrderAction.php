@@ -13,13 +13,25 @@ class OrderAction {
     public function execute(\Http\Request $request, $orderId) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if ($request->isXmlHttpRequest()) {
-            return new \Http\JsonResponse([
-                'data' => $this->getData($request, $orderId)
-            ]);
-        }
+        try {
+            if ($request->isXmlHttpRequest()) {
+                return new \Http\JsonResponse([
+                    'data' => $this->getData($request, $orderId)
+                ]);
+            }
 
-        $data = $this->getData($request, $orderId);
+            $data = $this->getData($request, $orderId);
+        } catch (\Curl\Exception $e) {
+            \App::exception()->remove($e);
+            $page = new \View\Error\IndexPage();
+            $page->setParam('message', $e->getMessage());
+            return new \Http\Response($page->show());
+        } catch (\Exception $e) {
+            //\App::exception()->remove($e);
+            $page = new \View\Error\IndexPage();
+            $page->setParam('message', $e->getMessage());
+            return new \Http\Response($page->show());
+        }
 
         $page = new \View\User\OrderPage();
         $page->setParam('order', $data['order']);
@@ -45,6 +57,7 @@ class OrderAction {
         $currentOrdersCount = 0;
 
         \RepositoryManager::order()->prepareCollectionByUserToken($user->getToken(), function($data) use(&$order, &$orderId, &$currentOrdersCount) {
+            if (!is_array($data)) return;
             foreach ($data as $item) {
                 $orderItem = new \Model\User\Order\Entity($item);
                 if ($orderId == $item['id']) $order = $orderItem;
@@ -54,6 +67,8 @@ class OrderAction {
 
         // выполнение 1-го пакета запросов
         $client->execute();
+
+        if (!$order) throw new \Exception('Не найден заказ #'.$orderId);
 
         // подготовка 2-го пакета запросов (продукты)
         $products =  [];

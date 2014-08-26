@@ -156,16 +156,19 @@ class ShowAction {
 
         // ab test
         $abTestData = [];
-        if ((bool)\App::config()->abtest['enabled']) {
-            $abTestData['endAt'] = date('d-m-Y H:i', strtotime(\App::config()->abtest['bestBefore']));
-            foreach (\App::abTest()->getOption() as $option) {
-                $abTestData[$option->getKey()] = [
-                    'name'    => $option->getName(),
-                    'traffic' => $option->getTraffic(),
-                    'enabled' => $option->getKey() == \App::abTest()->getCase()->getKey(),
-                ];
+        foreach (\App::abTest()->getTests() as $test) {
+            if ($test->isActive()) {
+                $abTestData[$test->getKey()]['expireDate'] = date('d-m-Y H:i', strtotime($test->getExpireDate()));
+                foreach ($test->getCases() as $case) {
+                    $abTestData[$test->getKey()][$case->getKey()] = [
+                        'name'    => $case->getName(),
+                        'traffic' => $case->getTraffic(),
+                        'chosen'  => $case->getKey() === $test->getChosenCase()->getKey(),
+                    ];
+                }
             }
         }
+
         $debug->add('abTest', $abTestData, 89);
 
         // ab test json
@@ -176,7 +179,7 @@ class ShowAction {
                 $abTestJsonData[$option->getKey()] = [
                     'name'    => $option->getName(),
                     'traffic' => $option->getTraffic(),
-                    'enabled' => $option->getKey() == \App::abTestJson()->getCase()->getKey(),
+                    'chosen'  => $option->getKey() == \App::abTestJson()->getCase()->getKey(),
                 ];
             }
         }

@@ -49,11 +49,11 @@ class RetailClient {
         // получаем купон
         /** @var \Model\EnterprizeCoupon\Entity $coupon */
         $coupon = \RepositoryManager::enterprize()->getEntityFromPartner($request->get('keyword'));
-        if ((bool)$coupon && (bool)$coupon->getToken() && (bool)$coupon->getPartnerKeyword()) {
+        if ((bool)$coupon && (bool)$coupon->getToken()) {
             $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', [
                 'enterprizeToken' => $coupon->getToken(),
                 'is_partner_coupon' => true,
-                'keyword' => $coupon->getPartnerKeyword(),
+                'keyword' => $request->get('keyword'),
             ]));
 
         } else {

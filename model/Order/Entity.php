@@ -122,6 +122,8 @@ class Entity {
     public $couponNumber;
     /** @var bool */
     public $isPartner;
+    /** @var array */
+    public $meta_data = [];
 
     /**
      * @param array $data
@@ -210,6 +212,8 @@ class Entity {
         if (array_key_exists('payment_url', $data)) $this->setPaymentUrl($data['payment_url']);
         if (array_key_exists('coupon_number', $data)) $this->setCouponNumber($data['coupon_number']);
         if (array_key_exists('is_partner', $data)) $this->setIsPartner($data['is_partner']);
+
+        if (array_key_exists('meta_data', $data) && is_array($data['meta_data'])) $this->meta_data = $data['meta_data'];
     }
 
     public function dump() {

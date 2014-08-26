@@ -31,23 +31,23 @@
                 <div class="personalTable_cell personalTable_cell-w175">Получение</div>
 
                 <div class="personalTable_cell">Статус</div>
-
-                <div class="personalTable_cell"></div>
             </div>
 
             <? foreach ($current_orders as $order) : ?>
 
             <div class="personalTable_row">
                 <div class="personalTable_cell ta-c">
-                    <a href="<?= $page->url('user.order', ['orderId' => $order->getId() ]) ?>"><?= str_replace('-','-<br />',$order->getNumberErp()) ?></a>
+                    <a href="<?= $page->url('user.order', ['orderId' => $order->getId() ]) ?>"><?= str_replace('-','-',$order->getNumberErp()) ?></a>
                     <span class="s dblock"><?= strftime('%e %b %y', $order->getCreatedAt()->getTimestamp())?></span>
                 </div>
 
                 <div class="personalTable_cell personalTable_cell-text">
                     <ul class="orderItem">
                         <? foreach ($order->getProduct() as $i => $product) : ?>
+                            <? $productEntity = isset($products_by_id[$product->getId()]) ? $products_by_id[$product->getId()] : null; ?>
+                            <? if (!$productEntity) continue ?>
                             <? if ($i != 2) : ?>
-                                <li><?= strlen($products_by_id[$product->getId()]->getName()) > 25 ? mb_substr($products_by_id[$product->getId()]->getName(), 0, 25).'...' : $products_by_id[$product->getId()]->getName() ?> <?= $product->getQuantity()?> шт.</li>
+                                <li><?= strlen($productEntity->getName()) > 25 ? mb_substr($productEntity->getName(), 0, 25).'...' : $productEntity->getName() ?> <?= $product->getQuantity()?> шт.</li>
                             <? else : ?>
                                 <li><a href="<?= $page->url('user.order', ['orderId' => $order->getId() ]) ?>">и ещё <?= $helper->numberChoiceWithCount(count($order->getProduct()) - 2, ['товар', 'товара', 'товаров']) ?></a></li>
                                 <? break; ?>
@@ -126,8 +126,10 @@
                         <div class="personalTable_cell personalTable_cell-text">
                             <ul class="orderItem">
                                 <? foreach ($order->getProduct() as $i => $product) : ?>
+                                    <? $productEntity = isset($products_by_id[$product->getId()]) ? $products_by_id[$product->getId()] : null; ?>
+                                    <? if (!$productEntity) continue ?>
                                     <? if ($i != 2) : ?>
-                                        <li><?= strlen($products_by_id[$product->getId()]->getName()) > 25 ? mb_substr($products_by_id[$product->getId()]->getName(), 0, 25).'...' : $products_by_id[$product->getId()]->getName() ?> <?= $product->getQuantity()?> шт.</li>
+                                        <li><?= strlen($productEntity->getName()) > 25 ? mb_substr($productEntity->getName(), 0, 25).'...' : $productEntity->getName() ?> <?= $product->getQuantity()?> шт.</li>
                                     <? else : ?>
                                         <li><a href="<?= $page->url('user.order', ['orderId' => $order->getId() ]) ?>">и ещё <?= $helper->numberChoiceWithCount(count($order->getProduct()) - 2, ['товар', 'товара', 'товаров']) ?></a></li>
                                         <? break; ?>

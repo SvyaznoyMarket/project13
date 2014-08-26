@@ -107,6 +107,11 @@ module.exports = function (grunt, options) {
             dest: pathProd + 'order-new-v5.min.js'
         },
 
+        orderV3JS: {
+            src: pathDev + 'order-v3/*.js',
+            dest: pathProd + 'order-v3.min.js'
+        },
+
         pandoraJS: {
             src: pathDev + 'pandora/*.js',
             dest: pathProd + 'pandora.min.js'
@@ -140,6 +145,11 @@ module.exports = function (grunt, options) {
         watch3dJS: {
             src: pathDev + 'watch3d/*.js',
             dest: pathProd + 'watch3d.min.js'
+        },
+
+        serviceHaJS: {
+            src: pathDev + 'service_ha/*.js',
+            dest: pathProd + 'service_ha.min.js'
         }
     }
 };

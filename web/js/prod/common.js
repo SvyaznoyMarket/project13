@@ -17,8 +17,6 @@
 					};
 				// end of vars
 
-				ENTER.utils.logError(data);
-
 				if ( typeof _gaq !== 'undefined' ) {
 					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '404 ошибка, страница не найдена']);
 				}
@@ -48,8 +46,6 @@
 					};
 				// end of vars
 
-				ENTER.utils.logError(data);
-
 				if ( typeof _gaq !== 'undefined' ) {
 					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '500 сервер перегружен']);
 				}
@@ -63,8 +59,6 @@
 					};
 				// end of vars
 
-				ENTER.utils.logError(data);
-
 				if ( typeof _gaq !== 'undefined' ) {
 					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '503 ошибка, сервер перегружен']);
 				}
@@ -77,8 +71,6 @@
 						ajaxUrl: ajaxUrl
 					};
 				// end of vars
-
-				ENTER.utils.logError(data);
 
 				if ( typeof _gaq !== 'undefined' ) {
 					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', '504 ошибка, проверьте соединение с интернетом']);
@@ -95,7 +87,6 @@
 			// end of vars
 			
 			if ( jqXHR.statusText === 'error' ) {
-				ENTER.utils.logError(data);
 
 				if ( typeof _gaq !== 'undefined' ) {
 					_gaq.push(['_trackEvent', 'Errors', 'Ajax Errors', 'неизвестная ajax ошибка']);
@@ -842,7 +833,7 @@
 				
 			};
 
-			if ( autoResolve !== 'undefined' ) {
+			if (typeof autoResolve !== 'undefined' ) {
 				$.ajax({
 					type: 'GET',
 					url: autoResolve,
@@ -1813,7 +1804,7 @@ $(document).ready(function(){
 							console.info('try to redirect to2 ' + response.data.link);
 							console.log(typeof response.data.link);
 
-							document.location.href = response.data.link;
+							document.location.href = response.data.link.replace(/#.*$/, '');
 
 							return false;
 						}
@@ -2893,6 +2884,21 @@ $(document).ready(function() {
 	body.bind('showsubscribe', lboxCheckSubscribe);
 	body.trigger('showsubscribe');
 }());
+;(function() {
+	$('.js-siteVersionSwitcher').click(function(e){
+		e.preventDefault();
+		var domain = window.location.host;
+		var domainParts = domain.split(".");
+        if (domainParts.length > 2) {
+            domain = domainParts[domainParts.length - 2] + "." + domainParts[domainParts.length - 1];
+        }
+
+		var config = $(e.currentTarget).data('config');
+		document.cookie = config.cookieName + "=1; expires=" + (new Date(Date.now() + config.cookieLifetime * 1000)).toUTCString() + "; domain=" + domain + "; path=/";
+		location = e.currentTarget.href;
+	});
+}());
+
 /**
  * Саджест для поля поиска
  * Нужен рефакторинг
