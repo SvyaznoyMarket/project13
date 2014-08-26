@@ -1430,6 +1430,14 @@ window.ANALYTICS = {
 		}
 	},
 
+	/**
+	 * Аналитика при регистрации в EnterPrize
+	 */
+	enterprizeRegAnalyticsJS: function() {
+		typeof _gaq !== "undefined" && _gaq.push(['_trackEvent', 'Enterprize Registration', 'true']);
+		typeof ga !== "undefined" && ga('send', 'event', 'Enterprize Registration', 'true');
+	},
+
 	kissUpdateJS: function () {
 		var
 			kiss = $('#kissUpdateJS'),
