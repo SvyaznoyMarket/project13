@@ -25,7 +25,7 @@ return function(
             <? foreach ($orders as $order): ?>
             <? /** @var $order \Model\Order\Entity */?>
 
-                <div class="orderLn clearfix">
+                <div class="orderLn clearfix" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>">
                     <div class="orderLn_l">
 
                         <? if ($userEntity) : ?>
@@ -129,13 +129,6 @@ return function(
                                         </ul>
 
                                     <? endif; ?>
-
-                                    <!-- Оплата банковской картой онлайн, PSB -->
-                                    <!-- TODO проверка возможности оплаты через этот метод -->
-<!--                                    --><?//= (new \Templating\HtmlLayout())->render('order/payment/form-psb', array('provider' => $paymentProviders['psb'], 'order' => $order, 'form' => null)) ?>
-
-                                    <!-- Выставление счета в PSB -->
-<!--                                    --><?//= (new \Templating\HtmlLayout())->render('order/payment/form-psbInvoice', array('provider' => $paymentProviders['psbInvoice'], 'order' => $order, 'form' => null)) ?>
 
                                 <? endif; ?>
 

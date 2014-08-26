@@ -16,11 +16,11 @@ class OrdersAction {
 
         if ($request->isXmlHttpRequest()) {
             return new \Http\JsonResponse([
-                'data' => $this->getData($request)
+                'data' => $this->getData()
             ]);
         }
 
-        $data = $this->getData($request);
+        $data = $this->getData();
 
         $page = new \View\User\OrdersPage();
         $page->setParam('orders', $data['orders']);
@@ -36,7 +36,7 @@ class OrdersAction {
      * @param \Http\Request $request
      * @return array
      */
-    public function getData(\Http\Request $request) {
+    public function getData() {
 
         \App::logger()->debug('Exec ' . __METHOD__);
 
