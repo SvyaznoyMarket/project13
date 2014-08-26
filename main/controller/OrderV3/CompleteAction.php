@@ -7,6 +7,13 @@ use Model\PaymentMethod\PaymentEntity;
 
 class CompleteAction extends OrderV3 {
 
+    private $sessionOrders;
+
+    public function __construct() {
+        parent::__construct();
+        $this->sessionOrders = $this->session->get(\App::config()->order['sessionName'] ? : 'lastOrder');
+    }
+
     /**
      * @param \Http\Request $request
      * @return \Http\Response
@@ -26,11 +33,10 @@ class CompleteAction extends OrderV3 {
 
         try {
 
-            $sessionOrders = $this->session->get(\App::config()->order['sessionName'] ? : 'lastOrder');
-            if (!(bool)$sessionOrders) throw new \Exception('В сессии нет заказов');
+            if (!(bool)$this->sessionOrders) throw new \Exception('В сессии нет заказов');
 
             // забираем заказы и доступные методы оплаты
-            foreach ($sessionOrders as $sessionOrder) {
+            foreach ($this->sessionOrders as $sessionOrder) {
 
                 if (!is_array($sessionOrder)) continue;
 
@@ -64,40 +70,6 @@ class CompleteAction extends OrderV3 {
                     }
                 } );
 
-                $onlineMethodsId = array_map(function(\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $method) { return $method->id; },
-                    array_filter($ordersPayment[$order->getNumber()]->methods,
-                        function(\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $payment) {return $payment->paymentGroup->id == 2;}
-                    )
-                );
-
-                if (!(bool)$onlineMethodsId) continue;
-
-                // Онлайн-оплата для каждого заказа
-                foreach (array_values($onlineMethodsId) as $methodId) {
-
-                    $privateClient->addQuery('site-integration/payment-config',
-                        [
-                            'method_id' => $methodId,
-                            'order_id'  => $order->getId(),
-                        ],
-                        [
-                            'back_ref'    => \App::router()->generate('orderV3.complete', [], true),// обратная ссылка
-                            'email'       => $order->getUser() ? $order->getUser()->getEmail() : '',
-//                            'card_number' => $order->card,
-                            'user_token'  => $request->cookies->get('UserTicket'),// токен кросс-авторизации. может быть передан для Связного-Клуба (UserTicket)
-                        ],
-                        function($data) use (&$paymentProviders, $order, $methodId) {
-                            if ((bool)$data && isset($data['code']) && $data['code'] == 200) {
-                                if (!isset($paymentProviders[$order->getNumber()])) $paymentProviders[$order->getNumber()] = [];
-                                $paymentProviders[$order->getNumber()][$methodId] =  $data ;
-                            }
-                        },
-                        function(\Exception $e) {
-                            \App::exception()->remove($e);
-                        }
-                    );
-                }
-
             }
 
             // получаем магазины
@@ -111,13 +83,6 @@ class CompleteAction extends OrderV3 {
             $this->client->execute();
             $privateClient->execute();
             unset($order, $methodId, $onlineMethodsId, $privateClient);
-
-            // TODO фильтрация $ordersPayment по $paymentProviders
-/*            foreach ($orders as $order) {
-                $ordersPayment[$order->getNumber()]->methods = array_filter($ordersPayment[$order->getNumber()]->methods, function (\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $method) use ($paymentProviders, $order) {
-                    return isset($paymentProviders[$order->getNumber()][$method->id]);
-                });
-            }*/
 
             // очищаем корзину от заказанных продуктов
             foreach ($products as $product) {
@@ -158,6 +123,61 @@ class CompleteAction extends OrderV3 {
 
         $response = new \Http\Response($page->show());
         $response->headers->setCookie(new \Http\Cookie('enter_order_v3_wanna', 0, 0, '/order',\App::config()->session['cookie_domain'], false, false)); // кнопка "Хочу быстрее"
+        return $response;
+    }
+
+    public function getPaymentForm(\Http\Request $request, $methodId, $orderId, $orderNumber) {
+        $form = '';
+        $privateClient = \App::coreClientPrivate();
+
+        if (!(bool)$this->sessionOrders) throw new \Exception('В сессии нет заказов');
+        $sessionOrder = reset($this->sessionOrders);
+
+        $order = \RepositoryManager::order()->getEntityByNumberAndPhone($orderNumber, $sessionOrder['phone']);
+
+        $result = $privateClient->query('site-integration/payment-config',
+            [
+                'method_id' => $methodId,
+                'order_id'  => $orderId,
+            ],
+            [
+                'back_ref'    => \App::router()->generate('orderV3.complete', [], true),// обратная ссылка
+                'email'       => $order->getUser() ? $order->getUser()->getEmail() : '',
+//                            'card_number' => $order->card,
+                'user_token'  => $request->cookies->get('UserTicket'),// токен кросс-авторизации. может быть передан для Связного-Клуба (UserTicket)
+            ],
+            \App::config()->coreV2['hugeTimeout']
+        );
+
+        if (!$result) throw new \Exception('Ошибка получения данных payment-config');
+
+        switch ($methodId) {
+            case '5':
+                $formEntity = (new \Payment\Psb\Form());
+                $formEntity->fromArray($result['detail']);
+                $form = (new \Templating\HtmlLayout())->render('order/payment/form-psb', array(
+                    'provider' => new \Payment\Psb\Provider(['payUrl' => $result['url']]),
+                    'order' => $order,
+                    'form' => $formEntity
+                ));
+                break;
+            case '8':
+                $formEntity = (new \Payment\PsbInvoice\Form());
+                $formEntity->fromArray($result['detail']);
+                $form = (new \Templating\HtmlLayout())->render('order/payment/form-psbInvoice', array(
+                    'provider' => new \Payment\PsbInvoice\Provider(['payUrl' => $result['url']]),
+                    'order' => $order,
+                    'form' => $formEntity
+                ));
+                break;
+            case '13':
+                $form = (new \Templating\HtmlLayout())->render('order/payment/form-paypal', array(
+                    'url' => $result['url']
+                ));
+                break;
+        }
+
+        $response = new \Http\JsonResponse(['result' => $result, 'form' => $form]);
         return $response;
     }
 }
