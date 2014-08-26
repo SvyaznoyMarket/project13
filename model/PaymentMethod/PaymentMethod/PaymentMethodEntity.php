@@ -14,15 +14,24 @@ class PaymentMethodEntity {
     const PAYMENT_CERTIFICATE = 10;
     const PAYMENT_PAYPAL = 13;
 
+    /** @var int */
     public $id;
+    /** @var string */
     public $name;
+    /** @var string */
     public $description;
+    /** @var bool */
     public $isCredit;
+    /** @var bool */
     public $isOnline;
+    /** @var bool */
     public $isCorporative;
+    /** @var bool */
     public $isAvailableToPickpoint;
+    /** @var  \Model\PaymentMethod\PaymentGroup\PaymentGroupEntity */
     public $paymentGroup;
 
+    /** @var string|null */
     public $icon;
 
     public function __construct($arr, &$groups) {
