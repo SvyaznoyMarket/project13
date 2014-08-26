@@ -322,7 +322,7 @@ class RepositoryManager {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Model\Slice\Repository(\App::dataStoreClient());
+            $instance = new \Model\Slice\Repository(\App::scmsSeoClient());
         }
 
         return $instance;
