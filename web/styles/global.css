@@ -1024,11 +1024,11 @@ img[height="0"] {
   .footer__copy__link {
     float: right;
     color: #c7c7c7;
-    text-decoration: underline;
+    text-decoration: none;
   }
   .footer__copy__link:hover {
     color: #c7c7c7;
-    text-decoration: none;
+    text-decoration: underline;
   }
   .footer .aboutList {
     -webkit-border-radius: 4px;
