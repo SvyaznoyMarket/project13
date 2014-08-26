@@ -478,6 +478,20 @@ $c->abTest = [
                 ]
             ]
         ],
+        'orders_moscow' => [
+            'enabled' => true,
+            'expireDate' => '2014-12-31',
+            'cases' => [
+                'new' => [
+                    'traffic'  => 5,
+                    'name'     => 'Новое оформление заказа',
+                ],
+                'default' => [
+                    'traffic'  => 95,
+                    'name'     => 'Старое оформление заказа',
+                ]
+            ]
+        ],
         'order_delivery_price' => [
             'enabled' => true,
             'expireDate' => '2014-12-31',
