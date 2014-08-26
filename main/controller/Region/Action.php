@@ -27,13 +27,14 @@ class Action {
 
         if ($uri) {
             $link = $uri;
+        } else if ($request->query->count()) {
+            $link = \App::router()->generate('homepage', $request->query->all());
         } else {
             $link = parse_url($request->headers->get('referer') ?: \App::router()->generate('homepage'));
 
             if ($link['host'] !== \App::config()->mainHost) {
                 $link = \App::router()->generate('homepage');
-            }
-            else if (isset($link['query']) && isset($link['path'])) {
+            } else if (isset($link['query']) && isset($link['path'])) {
                 parse_str(urldecode($link['query']), $variables);
                 if (isset($variables['shop'])) unset($variables['shop']);
                 $link = $link['path'] . ( count($variables) ? '?' . http_build_query($variables) : '' );
