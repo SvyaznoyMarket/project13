@@ -126,6 +126,9 @@ class Cart {
         $this->coupons = null;
         $this->blackcards = null;
         $this->actions = null;
+
+        // MSITE-78 для мобильного сайта
+        $this->storage->set('cart', null);
     }
 
     public function clearPaypal() {
