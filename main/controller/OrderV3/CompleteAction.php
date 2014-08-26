@@ -81,7 +81,7 @@ class CompleteAction extends OrderV3 {
                             'order_id'  => $order->getId(),
                         ],
                         [
-                            'back_ref'    => \App::router()->generate('order.complete', array('orderNumber' => $order->getNumber()), true),// обратная ссылка
+                            'back_ref'    => \App::router()->generate('orderV3.complete', [], true),// обратная ссылка
                             'email'       => $order->getUser() ? $order->getUser()->getEmail() : '',
 //                            'card_number' => $order->card,
                             'user_token'  => $request->cookies->get('UserTicket'),// токен кросс-авторизации. может быть передан для Связного-Клуба (UserTicket)

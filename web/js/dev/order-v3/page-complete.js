@@ -8,7 +8,13 @@
         switch (id) {
             case 5: $order.find('.jsPaymentFormPSB').trigger('submit'); break;
             case 8: $order.find('.jsPaymentFormPSBInvoice').trigger('submit'); break;
-            case 13: window.location.href = $order.find('.jsPaymentFormPaypal').attr('action'); break;
+            case 13:
+                if (typeof $order.find('.jsPaymentFormPaypal').attr('action') != 'undefined') {
+                    window.location.href = $order.find('.jsPaymentFormPaypal').attr('action');
+                } else {
+                    // TODO error popup
+                }
+                break;
         }
     });
 
