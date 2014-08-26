@@ -56,7 +56,7 @@ class FormAction {
             }
         }
 
-        if (!(bool)$enterpizeCoupon || !$enterpizeCoupon instanceof \Model\EnterprizeCoupon\Entity) {
+        if (!(bool)$enterpizeCoupon || !(bool)$enterpizeCoupon->getToken() || !$enterpizeCoupon instanceof \Model\EnterprizeCoupon\Entity) {
             throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
         }
 
