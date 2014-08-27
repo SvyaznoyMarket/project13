@@ -377,6 +377,7 @@ $c->subscribe['cookieName'] = 'subscribed';
 
 $c->requestMainMenu = true;
 
+$c->newOrder = true;
 $c->order['cookieName'] = 'last_order';
 $c->order['sessionName'] = 'lastOrder';
 $c->order['enableMetaTag'] = true;
@@ -390,6 +391,7 @@ $c->order['prepayment'] = [
     'priceLimit' => 100000,// если стоимость заказа >= priceLimit, то появится плашка с текстом про предоплату
     'labelId'    => 15, // id шильдика "предоплата"
 ];
+$config->order['splitSessionKey'] = 'order_split';
 
 $c->newDeliveryCalc = true;
 
@@ -442,29 +444,88 @@ $c->tchiboSlider['analytics'] = [
     ],
 ];
 
-// настройки для АБ-тестов могут быть переопределены в json
-$c->abtest['cookieName'] = 'switch';
-$c->abtest['enabled']    = true;
-$c->abtest['checkPeriod'] = 3600; //секунд - как часто проверять необходимость запуска теста
-$c->abtest['bestBefore'] = '2014-09-08';
-$c->abtest['test']       = [
-    [
-        'traffic'  => 33,
-        'key'      => 'reviews_sprosikupi',
-        'name'     => "Отзывы от sprosikupi",
-        'ga_event' => 'reviews_sprosikupi',
-    ],
-    [
-        'traffic'  => 33,
-        'key'      => 'reviews_shoppilot',
-        'name'     => "Отзывы от shoppilot",
-        'ga_event' => 'reviews_shoppilot',
-    ],
-    [
-        'traffic'  => 34,
-        'key'      => 'reviews_default',
-        'name'     => "Отзывы по умолчанию",
-        'ga_event' => 'reviews_default',
+$c->abTest = [
+    'cookieName' => 'switch',
+    'tests' => [
+        'reviews' => [
+            'enabled' => true,
+            'expireDate' => '2014-09-08',
+            'cases' => [
+                'sprosikupi' => [
+                    'traffic'  => 33,
+                    'name'     => 'Отзывы от sprosikupi',
+                ],
+                'shoppilot' => [
+                    'traffic'  => 33,
+                    'name'     => 'Отзывы от shoppilot',
+                ],
+                'default' => [
+                    'traffic'  => 34,
+                    'name'     => 'Отзывы по умолчанию',
+                ],
+            ],
+        ],
+        'orders' => [
+            'enabled' => true,
+            'expireDate' => '2014-12-31',
+            'cases' => [
+                'new' => [
+                    'traffic'  => 50,
+                    'name'     => 'Новое оформление заказа',
+                ],
+                'default' => [
+                    'traffic'  => 50,
+                    'name'     => 'Старое оформление заказа',
+                ]
+            ]
+        ],
+        'orders_moscow' => [
+            'enabled' => true,
+            'expireDate' => '2014-12-31',
+            'cases' => [
+                'new' => [
+                    'traffic'  => 5,
+                    'name'     => 'Новое оформление заказа',
+                ],
+                'default' => [
+                    'traffic'  => 95,
+                    'name'     => 'Старое оформление заказа',
+                ]
+            ]
+        ],
+        'order_delivery_price' => [
+            'enabled' => true,
+            'expireDate' => '2014-12-31',
+            'cases' => [
+                'delivery_self_100' => [
+                    'traffic'  => 50,
+                    'name'     => 'Платный самовывоз',
+                ],
+                'delivery_self_0' => [
+                    'traffic'  => 50,
+                    'name'     => 'Бесплатный самовывоз',
+                ]
+            ]
+        ],
+        'jewel_items' => [
+            'enabled' => true,
+            'expireDate' => '2015-12-31',
+            'cases' => [
+                'jewelItems3' => [
+                    'traffic' => 50,
+                    'name' => 'Сетка листинга по 3 товара',
+                ],
+                'jewelItems4' => [
+                    'traffic'  => 50,
+                    'name'     => 'Сетка листинга по 4 товара',
+                ]
+            ]
+        ],
+        'other' => [
+            'enabled' => false,
+            'expireDate' => '2000-01-01',
+            'cases' => [],
+        ],
     ],
 ];
 
@@ -490,5 +551,8 @@ $c->photoContest = [
 		'debug'        => false,
 	]
 ];
+
+$c->siteVersionSwitcher['cookieName'] = 'mobile';
+$c->siteVersionSwitcher['cookieLifetime'] = 20 * 365 * 24 * 60 * 60;
 
 return $c;

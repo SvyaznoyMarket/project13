@@ -2,7 +2,16 @@
 
 namespace Session;
 
-class AbtestJson extends Abtest {
+class AbtestJson {
+
+    /** @var array */
+    protected $config = [];
+
+    /** @var \Model\AbtestJson\Entity[] */
+    protected $option = [];
+
+    /** @var \Model\AbtestJson\Entity */
+    protected $case;
 
     /** @var array */
     protected $values = [];
@@ -12,7 +21,7 @@ class AbtestJson extends Abtest {
 
     public function __construct($catalogJson) {
         // в случае конфликта имен куки с Abtest переименовываем куку
-        if(!empty($catalogJson['abtest']['cookieName']) && $catalogJson['abtest']['cookieName'] == \App::config()->abtest['cookieName']) {
+        if(!empty($catalogJson['abtest']['cookieName']) && $catalogJson['abtest']['cookieName'] == \App::config()->abTest['cookieName']) {
             $catalogJson['abtest']['cookieName'] .= '_json';
         }
 
@@ -28,7 +37,7 @@ class AbtestJson extends Abtest {
 
         if (isset($this->config['test']) && is_array($this->config['test'])) {
             foreach ($this->config['test'] as $option) {
-                $this->option[$option['key']] = new \Model\Abtest\Entity($option);
+                $this->option[$option['key']] = new \Model\AbtestJson\Entity($option);
             }
         }
 
@@ -68,4 +77,124 @@ class AbtestJson extends Abtest {
         }
     }
 
+    protected function setCase() {
+        $luck = mt_rand(0, 99);
+        $total = 0;
+
+        foreach ($this->option as $test) {
+            if ($total >= 100) continue;
+
+            $diff = ($test->getTraffic() !== '*') ? (int)$test->getTraffic() : (100 - $total);
+            if ($luck < $total + $diff) {
+                $this->case = $test;
+                break;
+            }
+            $total += $diff;
+        }
+    }
+
+    /**
+     * @return \Model\AbtestJson\Entity|null
+     */
+    public function getCase() {
+        if ((bool)$this->case) {
+            return $this->case;
+        }
+
+        if (!$this->isActive()) {
+            return $this->option['default'];
+        }
+        if (\App::request()->cookies->has($this->config['cookieName'])) {
+            $case = \App::request()->cookies->get($this->config['cookieName']);
+            if ($this->isValid($case)) {
+                return $this->option[$case];
+            }
+        }
+        return null;
+    }
+
+    public function setCookie($response = null) {
+        if (null === $response || !$response instanceof \Http\Response ) {
+            return;
+        }
+
+        /* @var $response \Http\Response */
+
+        if (!$this->isActive())
+        {
+            $cookie = new \Http\Cookie(
+                $this->config['cookieName'],
+                'default',
+                time() + 10,
+                '/',
+                \App::config()->session['cookie_domain'],
+                false,
+                false // важно httpOnly=false, чтобы js мог получить куку
+            );
+        } else {
+            $case = $this->getCase();
+
+            $cookie = new \Http\Cookie(
+                $this->config['cookieName'],
+                $case->getKey(),
+                strtotime($this->config['bestBefore']),
+                '/',
+                \App::config()->session['cookie_domain'],
+                false,
+                false // важно httpOnly=false, чтобы js мог получить куку
+            );
+        }
+
+        if (!\App::request()->cookies->has($this->config['cookieName'])) {
+            $response->headers->setCookie($cookie);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getConfig() {
+        return $this->config;
+    }
+
+    /**
+     * @return array|\Model\AbtestJson\Entity[]
+     */
+    public function getOption() {
+        return $this->option;
+    }
+
+    /**
+     * @param string $case
+     * @return bool
+     */
+    protected function isValid($case) {
+        foreach ($this->option as $test) {
+            if ($test->getKey() == $case) return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Возвращает опцию по умолчанию
+     *
+     * @return \Model\AbtestJson\Entity
+     */
+    protected function getDefaultOption() {
+        return new \Model\AbtestJson\Entity([
+            'traffic'  => '*',
+            'key'      => 'default',
+            'name'     => 'пусто',
+            'ga_event' => 'default',
+        ]);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive() {
+        return (bool)$this->config['enabled'] &&
+        (strtotime($this->config['bestBefore']) > strtotime('now'));
+    }
 }

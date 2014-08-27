@@ -440,7 +440,7 @@
 							console.info('try to redirect to2 ' + response.data.link);
 							console.log(typeof response.data.link);
 
-							document.location.href = response.data.link;
+							document.location.href = response.data.link.replace(/#.*$/, '');
 
 							return false;
 						}

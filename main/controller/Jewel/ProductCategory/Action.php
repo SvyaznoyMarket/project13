@@ -198,17 +198,15 @@ class Action extends \Controller\ProductCategory\Action {
             $subCatMenu = reset($subCatMenu);
         }
 
-        $itemsPerRow = \App::config()->product['itemsPerRowJewel'];
-        $abTestJson = \App::abTestJson($catalogJson);
-        if ($abTestJson) {
-            switch ($abTestJson->getCase()->getKey()) {
-                case 'jewel_items_3':
-                    $itemsPerRow = 3;
-                    break;
-                case 'jewel_items_4':
-                    $itemsPerRow = 4;
-                    break;
-            }
+        switch (\App::abTest()->getTest('jewel_items')->getChosenCase()->getKey()) {
+            case 'jewelItems3':
+                $itemsPerRow = 3;
+                break;
+            case 'jewelItems4':
+                $itemsPerRow = 4;
+                break;
+            default:
+                $itemsPerRow = \App::config()->product['itemsPerRowJewel'];
         }
 
         $setPageParameters = function(\View\Layout $page) use (
@@ -331,7 +329,7 @@ class Action extends \Controller\ProductCategory\Action {
             }
 
             // вид товаров
-            $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
+            $productView = $category->getHasLine() ? 'line' : $category->getProductView();
             // листалка
             $limit = \App::config()->product['itemsPerPageJewel'];
             $repository = \RepositoryManager::product();

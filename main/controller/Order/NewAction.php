@@ -18,6 +18,13 @@ class NewAction {
         $region = $user->getRegion();
         $cart = $user->getCart();
 
+        if ($region && in_array($region->getId(), [119623, 93746, 14974]) && \App::config()->newOrder && \App::abTest()->getTest('orders')) {
+            // АБ-тест для Ярославля и Воронежа
+            if ($region->getId() != 14974 && \App::abTest()->getTest('orders')->getChosenCase()->getKey() == 'new') return (new \Controller\OrderV3\NewAction)->execute($request);
+            // АБ-тест для Москвы
+            if ($region->getId() == 14974 && \App::abTest()->getTest('orders_moscow') && \App::abTest()->getTest('orders_moscow')->getChosenCase()->getKey() == 'new') return (new \Controller\OrderV3\NewAction)->execute($request);
+        }
+
         if ($cart->isEmpty()) {
             \App::logger()->warn(['message' => 'Пустая корзина'], ['cart']);
             return new \Http\RedirectResponse(\App::router()->generate('cart'));

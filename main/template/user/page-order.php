@@ -68,7 +68,7 @@
 
     <!-- информация о заказе -->
     <div class="personalInfo">
-        <p><strong><?= $delivery ? $delivery->getShortName() : '' ?></strong> <mark class="colorBlack"><?= $order->getDeliveryDate() ?></mark></p>
+        <p><strong><?= $delivery ? $delivery->getShortName() : '' ?></strong> <span class="colorBlack"><?= $order->getDeliveryDate() ?></span></p>
 
         <? if ($delivery && in_array($delivery->getToken(), ['now', 'self']) && $shop) : ?>
 
@@ -78,7 +78,7 @@
 
                 <div class="personalTable_cell">
                     <? if ((bool)$shop->getSubway()) : ?>
-                    <mark class="decorColor-bullet" style="color: <?= $shop->getSubway()[0]->getLine()->getColor() ?>"><span class="colorBlack"><?= $shop->getSubway()[0]->getName() ?></span></mark>
+                    <span class="decorColor-bullet" style="color: <?= $shop->getSubway()[0]->getLine()->getColor() ?>"><span class="colorBlack"><?= $shop->getSubway()[0]->getName() ?></span></span>
                     <? endif; ?>
                     <div class="shopsInfo">
 

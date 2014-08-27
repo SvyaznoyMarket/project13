@@ -21,6 +21,8 @@
 @import "main/fonts.less";
 /*---END----ШРИФТЫ---------*/
 
+@import "main/helpers.less" all;
+
 /*---------СТИЛИ ШАБЛОННЫХ ФОРМ----------*/
 @import "formDefault/formDefault.less";
 /*---END----СТИЛИ ШАБЛОННЫХ ФОРМ---------*/
@@ -42,6 +44,10 @@
 @import "upper/upper.less" all;
 /*---END----КНОПКА НАВЕРХ---------*/
 
+
+/*---------КНОПКА НАВЕРХ----------*/
+@import "customInput/customInput.less" all;
+/*---END----КНОПКА НАВЕРХ---------*/
 
 
 /*---------ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК (ЛИСТИНГИ/КАРТОЧКА ТОВАРА)----------*/
@@ -66,10 +72,6 @@
 @import "user/user.less" all;
 /*---END----ЛИЧНЫЙ КАБИНЕТ (СТАРАЯ ВЕРСТКА)---------*/
 
-
-/*---------ЛИЧНЫЙ КАБИНЕТ (СТАРАЯ ВЕРСТКА)----------*/
-@import "customInput/customInput.less" all;
-/*---END----ЛИЧНЫЙ КАБИНЕТ (СТАРАЯ ВЕРСТКА)---------*/
 
 
 /*---------Enter Prize----------*/
@@ -122,13 +124,48 @@
 @import "packageSet/packageSet.less" all;
 /*---END----Наборы пакетов/лини мебели/наборы мебели---------*/
 
-
 /*---------Стили попапов и их содержимого----------*/
 @import "popup/popup.less" all;
 
 //попап со списком магазинов для резерва товара, в карточке товара
 @import "popup/markerList.less" all;
 /*---END----Стили попапов и их содержимого---------*/
+
+
+/*---------Оформление заказа 3.0----------*/
+@import "order/order.less" all;
+
+//стили списка возможных вариантов доставки .orderCol_delivrLst
+@import "order/orderDelivery.less" all;
+
+//стили блоков с информацией о доставке .orderCol_delivrIn
+@import "order/orderDeliveryInfo.less" all;
+
+//блок товара в оформлении заказа .orderCol_cnt 
+@import "order/orderItem.less" all;
+
+//дополнительные пожелания .orderComment
+@import "order/orderComment.less" all;
+
+//строка перехода к следующему шагу .orderCompl
+@import "order/orderComplete.less" all;
+
+//форма личных данных пользователя .orderU
+@import "order/orderUser.less" all;
+
+//форма личных данных пользователя .orderU
+@import "order/orderLn.less" all;
+
+//календарь .celedr
+@import "order/popupFl/popupFl.less" all;
+@import "order/popupFl/celedr.less" all;
+@import "order/popupFl/selShop.less" all;
+@import "order/popupFl/shopLst.less" all;
+
+
+/*---------Хиты продаж/Выгодное предложение/Самым разборчивым----------*/
+@import "personal-page/personalTable.less" all;
+/*---END----Хиты продаж/Выгодное предложение/Самым разборчивым---------*/
 
 
 /*---------Личный кабинет пользователя----------*/
@@ -144,6 +181,3 @@
 
 //стили для фикса старых правил и классов, в последствии, при полном переходе на новую верстку удалить
 @import "main/old__style__fix.less" all;
-
-//стили для фикса старых правил и классов, в последствии, при полном переходе на новую верстку удалить
-@import "main/helpers.less" all;

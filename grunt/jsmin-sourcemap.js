@@ -53,14 +53,46 @@ module.exports = function (grunt, options) {
             cwd: 'web/js'
         },
         library: {
-            src: libraryFiles,
+            src: [
+                'dev/library/cloneObject.js',
+                'dev/library/getKeysLength.js',
+                'dev/library/JSON.js',
+                'dev/library/pubSub.js',
+                'dev/library/isTrueEmail.js',
+                'dev/library/printPrice.js',
+                'dev/library/doc_cookies.js',
+                'dev/library/simple_templating.js',
+                'dev/library/library.js',
+                'dev/library/mapDriver.js',
+                'dev/library/mapDriver-v2.js',
+                'dev/library/black_box.js',
+                'dev/library/formValidator.js',
+                'dev/library/addParameterToUrl.js',
+                'dev/library/blockScreen.js',
+                'dev/library/*.js'
+            ],
                 dest: 'prod/library.js',
                 destMap: 'prod/library.js.map',
                 srcRoot: '/js',
                 cwd: 'web/js'
         },
         jqueryPlugins: {
-            src: jqueryPlugins,
+            src: [
+                'dev/jquery-plugins/jquery.lightbox_me.js',
+                'dev/jquery-plugins/jquery.scrollto.js',
+                'dev/jquery-plugins/jquery.placeholder.js',
+                'dev/jquery-plugins/jquery.infinityCarousel.js',
+                'dev/jquery-plugins/jquery.visible.js',
+                'dev/jquery-plugins/typewriter.js',
+                'dev/jquery-plugins/jquery.maskedinput.js',
+                'dev/jquery-plugins/jquery.put_cursor_at_end.js',
+                'dev/jquery-plugins/goodsCounter.js',
+                'dev/jquery-plugins/jquery.elevatezoom.js',
+                'dev/jquery-plugins/jquery.animate-shadow.js',
+                'dev/jquery-plugins/customDropDown.js',
+                'dev/jquery-plugins/goodsSlider.js',
+                'dev/jquery-plugins/jquery-ui-1.10.3.custom.js'
+            ],
                 dest: 'prod/jquery-plugins.js',
                 destMap: 'prod/jquery-plugins.js.map',
                 srcRoot: '/js',
@@ -108,6 +140,13 @@ module.exports = function (grunt, options) {
                 srcRoot: '/js',
                 cwd: 'web/js'
         },
+        orderV3JS: {
+            src: ['dev/order-v3/*.js'],
+            dest: 'prod/order-v3.js',
+            destMap: 'prod/order-v3.js.map',
+            srcRoot: '/js',
+            cwd: 'web/js'
+        },
         pandora: {
             src: ['dev/pandora/*.js'],
                 dest: 'prod/pandora.js',
@@ -140,6 +179,14 @@ module.exports = function (grunt, options) {
             src: ['dev/watch3d/*.js'],
                 dest: 'prod/watch3d.js',
                 destMap: 'prod/watch3d.js.map',
+                srcRoot: '/js',
+                cwd: 'web/js'
+        },
+
+        serviceHa: {
+            src: ['dev/service_ha/*.js'],
+                dest: 'prod/service_ha.js',
+                destMap: 'prod/service_ha.js.map',
                 srcRoot: '/js',
                 cwd: 'web/js'
         }

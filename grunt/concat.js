@@ -64,6 +64,11 @@ module.exports = {
         dest: '<%= pathProd %>order-new-v5.js'
     },
 
+    orderV3JS: {
+        src: ['<%= pathDev %>order-v3/*.js'],
+        dest: '<%= pathProd %>order-v3.js'
+    },
+
     pandoraJS : {
         src: ['<%= pathDev %>pandora/*.js'],
         dest: '<%= pathProd %>pandora.js'
@@ -97,5 +102,10 @@ module.exports = {
     watch3dJS : {
         src: ['<%= pathDev %>watch3d/*.js'],
         dest: '<%= pathProd %>watch3d.js'
+    },
+
+    serviceHaJS : {
+        src: ['<%= pathDev %>service_ha/*.js'],
+        dest: '<%= pathProd %>service_ha.js'
     }
 };

@@ -67,6 +67,8 @@
             'hotlinks'      => $hotlinks,
             'openFilter'    => false,
             'promoStyle'    => $promoStyle,
+            'hasBanner'     => isset($hasBanner) ? (bool)$hasBanner : false,
+            'productPager'  => $productPager,
         ]) // фильтры ?>
         
 

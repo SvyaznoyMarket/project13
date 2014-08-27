@@ -443,12 +443,9 @@ class AppConfig {
      * @var array
      * @hidden
      */
-    public $abtest = [
+    public $abTest = [
         'cookieName'  => null,
-        'bestBefore'  => null,
-        'enabled'     => null,
-        'checkPeriod' => null,
-        'test'        => [],
+        'tests'       => [],
     ];
 
     /**
@@ -477,14 +474,17 @@ class AppConfig {
         'maxLockTime' => null,
     ];
 
-    /** @var boolean */
+    /** @var bool */
     public $requestMainMenu = null;
+    /** @var bool */
+    public $newOrder;
     /** @var array  */
     public $order = [
         'cookieName'     => null,
         'sessionName'    => null,
         'enableMetaTag'  => null,
         'maxSumOnline'   => null,
+        'splitSessionKey'   => null
     ];
     /** @var bool */
     public $newDeliveryCalc;
@@ -570,7 +570,7 @@ class AppConfig {
         ],
     ];
 
-    /** @var boolean */
+    /** @var bool */
     public $preview = null;
 
     /** @var array */
@@ -616,6 +616,12 @@ class AppConfig {
         'timeout'      => null,
         'retryTimeout' => [],
         'retryCount'   => null,
+    ];
+
+    /** @var array */
+    public $siteVersionSwitcher = [
+        'cookieName'     => null,
+        'cookieLifetime' => null,
     ];
 
     public function __construct() {
