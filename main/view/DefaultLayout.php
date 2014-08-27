@@ -389,14 +389,6 @@ class DefaultLayout extends Layout {
                 $return .= "\n\n" . $this->tryRender('partner-counter/_reactive');
             }*/
 
-            // на всех страницах сайта, кроме...
-            if (!in_array($routeName, [
-                'order',
-                'order.complete',
-            ])) {
-                $return .= "\n\n" . $this->tryRender('partner-counter/_ad4u');
-            }
-
             // ActionPay — на странице с полным описанием продукта и на стр "спс за заказ"
             if (in_array($routeName, [
                 'product',

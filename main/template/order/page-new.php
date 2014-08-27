@@ -636,5 +636,4 @@ foreach ($productsById as $product) {
 
 	<?= $page->tryRender('order/partner-counter/_cityads-create') ?>
 	<?//= $page->tryRender('order/partner-counter/_reactive-create') ?>
-	<?= $page->tryRender('order/partner-counter/_ad4u-create') ?>
 <?php endif ?>
