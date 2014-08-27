@@ -877,7 +877,8 @@ window.ANALYTICS = {
 	},
 
 	//SITE-3027 Установка кода TagMan на сайт
-	TagManJS : function() {
+    //SITE-3661 Удаление кода TagMan
+	/*TagManJS : function() {
 
 		initTagMan = function initTagMan() {
         	console.info( 'TagManJS init' );
@@ -928,7 +929,7 @@ window.ANALYTICS = {
 		};
 
         initTagMan();
-	},
+	},*/
 
     RetailRocketJS : function() {
     	console.groupCollapsed('ports.js::RetailRocketJS');

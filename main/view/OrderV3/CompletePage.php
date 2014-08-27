@@ -14,4 +14,14 @@ class CompletePage extends Layout {
     public function slotBodyDataAttribute() {
         return 'order-v3';
     }
+
+    public function slotPartnerCounter()
+    {
+        $html = parent::slotPartnerCounter();
+
+        // ActionPay
+        $html .= $this->tryRender('partner-counter/_actionpay', ['routeName' => 'order.complete'] );
+
+        return $html;
+    }
 }

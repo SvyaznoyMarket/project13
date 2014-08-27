@@ -8,18 +8,19 @@ use Model\PaymentMethod\PaymentEntity;
 class CompleteAction extends OrderV3 {
 
     private $sessionOrders;
+    private $sessionIsReaded;
 
     public function __construct() {
         parent::__construct();
         $this->sessionOrders = $this->session->get(\App::config()->order['sessionName'] ? : 'lastOrder');
+        $this->sessionIsReaded = $this->session->get(self::SESSION_IS_READED_KEY);
     }
 
     /**
-     * @param \Http\Request $request
      * @return \Http\Response
      * @throws \Exception
      */
-    public function execute(\Http\Request $request) {
+    public function execute() {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         /** @var \Model\Order\Entity $orders */
@@ -114,12 +115,21 @@ class CompleteAction extends OrderV3 {
             // TODO
         }
 
+        // логика первичного просмотра страницы
+        $sessionIsReaded = !$this->sessionIsReaded === false;
+        $this->session->remove(self::SESSION_IS_READED_KEY);
+
         $page = new \View\OrderV3\CompletePage();
         $page->setParam('orders', $orders);
         $page->setParam('ordersPayment', $ordersPayment);
         $page->setParam('products', $products);
         $page->setParam('userEntity', $this->user->getEntity());
         $page->setParam('paymentProviders', $paymentProviders);
+
+        $page->setParam('sessionIsReaded', $sessionIsReaded);
+        if ($this->sessionIsReaded) {
+            $page->setParam('isOrderAnalytics', false);
+        }
 
         $response = new \Http\Response($page->show());
         $response->headers->setCookie(new \Http\Cookie('enter_order_v3_wanna', 0, 0, '/order',\App::config()->session['cookie_domain'], false, false)); // кнопка "Хочу быстрее"

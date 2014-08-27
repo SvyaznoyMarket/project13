@@ -6,9 +6,11 @@ return function(
     $ordersPayment,
     $products,
     $userEntity,
-    $paymentProviders
+    $paymentProviders,
+    $sessionIsReaded
 ) {
 /** @var $products \Model\Product\Entity[] */
+    $page = new \View\OrderV3\CompletePage();
 ?>
 <style>
     .jsPaymentForms {
@@ -149,5 +151,16 @@ return function(
         </div>
     </section>
 
+    <? if (!$sessionIsReaded) {
+        // Если сесиия уже была прочитана, значит юзер обновляет страницу, не трекаем партнёров вторично
+        echo $page->render('order/partner-counter/_complete', [
+            'orders'       => $orders,
+            'productsById' => $products,
+        ]);
+        echo $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $products]);
+    } ?>
+
 <? };
+
+
 

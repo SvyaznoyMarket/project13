@@ -6,6 +6,9 @@ namespace Controller\OrderV3;
 
 class OrderV3 {
 
+    /** Флаг первичного просмотра страницы */
+    const SESSION_IS_READED_KEY = 'orderV3_is_readed';
+
     /** @var \Core\ClientV2 */
     protected $client;
     /** @var \Session\User */

@@ -970,4 +970,11 @@ class Entity {
     {
         return $this->certificatePrice;
     }
+
+    /** Статус оплаты: оплачен (true) или не оплачен (false)
+     * @return bool
+     */
+    public function isPaid() {
+        return $this->paymentStatusId == self::PAYMENT_STATUS_PAID;
+    }
 }
