@@ -101,7 +101,9 @@
                 map = ENTER.OrderV3.map;
 
             if (!token) {
-                token = Object.keys(mapData.points)[0]
+                token = Object.keys(mapData.points)[0];
+                $currentMap.siblings('.selShop_l').hide();
+                $currentMap.siblings('.selShop_l[data-token='+token+']').show();
             }
 
             if (mapData) {
@@ -185,7 +187,7 @@
         $('.selShop_tab').removeClass('selShop_tab-act');
         $('.selShop_tab[data-token='+token+']').addClass('selShop_tab-act');
         // показ карты
-        showMap('#'+id, token);
+        showMap($('#'+id), token);
     });
 
     // клик по "Ввести код скидки"
