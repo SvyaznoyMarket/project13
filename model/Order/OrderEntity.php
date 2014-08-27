@@ -255,7 +255,7 @@ class OrderEntity {
 
         if (isset($arr['user_info']['first_name']) && $arr['user_info']['first_name'] !== '') $this->first_name = (string)$arr['user_info']['first_name'];
 
-        if (isset($arr['user_info']['phone']) && $arr['user_info']['phone'] !== '') $this->mobile = (string)$arr['user_info']['phone'];
+        if (isset($arr['user_info']['phone']) && $arr['user_info']['phone'] !== '') $this->mobile = preg_replace('/\s+/','',(string)$arr['user_info']['phone']);
         if (isset($arr['user_info']['email']) && $arr['user_info']['email'] !== '') $this->email = (string)$arr['user_info']['email'];
 
         if (isset($arr['user_info']['address']['street']) && $arr['user_info']['address']['street'] !== '') $this->address_street = (string)$arr['user_info']['address']['street'];
