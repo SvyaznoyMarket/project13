@@ -6,7 +6,6 @@ return function(
     $ordersPayment,
     $products,
     $userEntity,
-    $paymentProviders,
     $sessionIsReaded
 ) {
 /** @var $products \Model\Product\Entity[] */
@@ -152,6 +151,10 @@ return function(
     </section>
 
     <? if (!$sessionIsReaded) {
+        echo $page->render('order/_analytics', array(
+            'orders'       => $orders,
+            'productsById' => $products,
+        ));
         // Если сесиия уже была прочитана, значит юзер обновляет страницу, не трекаем партнёров вторично
         echo $page->render('order/partner-counter/_complete', [
             'orders'       => $orders,

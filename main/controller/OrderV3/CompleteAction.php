@@ -116,7 +116,7 @@ class CompleteAction extends OrderV3 {
         }
 
         // логика первичного просмотра страницы
-        $sessionIsReaded = !$this->sessionIsReaded === false;
+        $sessionIsReaded = !($this->sessionIsReaded === false);
         $this->session->remove(self::SESSION_IS_READED_KEY);
 
         $page = new \View\OrderV3\CompletePage();
@@ -127,9 +127,6 @@ class CompleteAction extends OrderV3 {
         $page->setParam('paymentProviders', $paymentProviders);
 
         $page->setParam('sessionIsReaded', $sessionIsReaded);
-        if ($this->sessionIsReaded) {
-            $page->setParam('isOrderAnalytics', false);
-        }
 
         $response = new \Http\Response($page->show());
         $response->headers->setCookie(new \Http\Cookie('enter_order_v3_wanna', 0, 0, '/order',\App::config()->session['cookie_domain'], false, false)); // кнопка "Хочу быстрее"
