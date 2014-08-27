@@ -75,32 +75,15 @@ class ShowAction {
         $slice = null;
         try {
             \RepositoryManager::slice()->prepareEntityByToken($sliceToken, function($data) use (&$slice, $sliceToken) {
-                if (is_array($data) && (bool)$data) {
+                if (is_array($data) && $data) {
                     $data['token'] = $sliceToken;
                     $slice = new \Model\Slice\Entity($data);
                 }
             });
-            \App::dataStoreClient()->execute();
+            \App::scmsSeoClient()->execute();
 
             if (!$slice) {
-                \RepositoryManager::slice()->prepareSeoJsonByToken($sliceToken, function($data) use (&$slice, $sliceToken) {
-                    if (is_array($data) && (bool)$data) {
-                        $data['token'] = $sliceToken;
-                        $slice = new \Model\Slice\Entity($data);
-                    }
-                });
-                \App::dataStoreClient()->execute();
-
-                if (!$slice) {
-                    throw new \Exception(sprintf('Не получен seo/slice/%s.json', $sliceToken));
-                }
-
-                // SITE-3382 seo слайзы редирект на основной URL
-                if ('slice.show' === $request->attributes->get('route')) {
-                    $redirect = \App::router()->generate('product.category.slice', ['sliceToken' => $sliceToken], true);
-
-                    return new \Http\RedirectResponse($redirect, 301);
-                }
+                throw new \Exception('Не получен get-slice?url=' . $sliceToken);
             }
         } catch (\Exception $e) {
             \App::exception()->remove($e);
