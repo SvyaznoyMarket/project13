@@ -305,15 +305,15 @@ class OrderEntity {
                         }
                     }
                 }
-                $data['meta_data'] = \App::partner()->fabricateCompleteMeta(
-                    isset($data['meta_data']) ? $data['meta_data'] : [],
+                $data = \App::partner()->fabricateCompleteMeta(
+                    isset($data) ? $data : [],
                     \App::partner()->fabricateMetaByPartners($partners, $product)
                 );
-                $data['meta_data']['user_agent'] = $request->server->get('HTTP_USER_AGENT');
-                $data['meta_data']['kiss_session'] = $request->request->get('kiss_session');
-                $data['meta_data']['last_partner'] = $request->cookies->get('last_partner');
+                $data['user_agent'] = $request->server->get('HTTP_USER_AGENT');
+                $data['kiss_session'] = $request->request->get('kiss_session');
+                $data['last_partner'] = $request->cookies->get('last_partner');
             }
-            \App::logger()->info(sprintf('Создается заказ от партнеров %s', json_encode($data['meta_data']['partner'])), ['order', 'partner']);
+            \App::logger()->info(sprintf('Создается заказ от партнеров %s', json_encode($data['partner'])), ['order', 'partner']);
         } catch (\Exception $e) {
             \App::logger()->error($e, ['order_v3', 'partner']);
         }
