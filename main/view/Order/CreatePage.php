@@ -25,12 +25,14 @@ class CreatePage extends Layout {
 
         $tag_params = ['prodid' => [], 'pname' => [], 'pcat' => [], 'ordervalue' => \App::user()->getCart()->getSum(), 'pagetype' => 'try2order'];
         foreach ($productsForRetargeting as $product) {
+            /** @var $product \Model\Product\Entity */
             $categories = $product->getCategory();
             $category = array_pop($categories);
 
             $tag_params['prodid'][] = $product->getId();
             $tag_params['pname'][] = $product->getName();
             $tag_params['pcat'][] = $category ? $category->getToken() : '';
+            $tag_params['pcat_upper'][] = $product->getMainCategory() ? $product->getMainCategory()->getToken() : '';
         }
 
         return ''

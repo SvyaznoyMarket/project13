@@ -17,10 +17,17 @@ trait LayoutTrait {
 
 
     public function slotInnerJavascript() {
+        /** @var \Model\Product\Category\Entity $category */
         $category = $this->getParam('category');
 
+        $tag_params = [
+            'pagetype' => 'category',
+            'pcat' => $category->getToken(),
+            'pcat_upper' => 0 == $category->getParentId() ? $category->getToken() : ($category->getRoot() ? $category->getRoot()->getToken() : '')
+        ];
+
         return ''
-        . $this->render('_remarketingGoogle', ['tag_params' => ['pagetype' => 'category', 'pcat' => $category->getToken(), ]])
+        . $this->render('_remarketingGoogle', ['tag_params' => $tag_params])
         . "\n\n"
         . $this->render('_innerJavascript');
     }

@@ -33,8 +33,8 @@ class SetPage extends \View\DefaultLayout {
             $tagData['prodid'][] = $product->getId();
             $tagData['pname'][] = $product->getName();
             $tagData['pcat'][] = $category->getToken();
+            $tagData['pcat_upper'][] = $product->getMainCategory() ? $product->getMainCategory()->getToken() : '';
             $tagData['pvalue'][] = $product->getPrice();
-
         }
         $product = end($products);
 
