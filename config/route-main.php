@@ -883,13 +883,17 @@ return [
         'action'  => ['Enterprize\ShowAction', 'execute'],
     ],
 
+    'mobidengi' => [
+        'pattern' => '/mobidengi',
+        'action'  => ['Mobidengi\IndexAction', 'execute'],
+    ],
+
     // git pull
     'git.pull' => [
         'pattern' => '/git/pull',
         'action'  => ['GitAction', 'pull'],
         'method'  => ['GET'],
     ],
-
     // git checkout
     'git.checkout' => [
         'pattern' => '/git/checkout/{version}',

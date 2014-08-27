@@ -288,6 +288,7 @@ $c->productPhoto['url'] = [
     3 => '/1/1/500/',
     4 => '/1/1/2500/',
     5 => '/1/1/1500/',
+    6 => '/1/1/350/',
 ];
 
 $c->productPhoto3d['url'] = [
@@ -506,6 +507,20 @@ $c->abTest = [
                 ]
             ]
         ],
+        'jewel_items' => [
+            'enabled' => true,
+            'expireDate' => '2015-12-31',
+            'cases' => [
+                'jewelItems3' => [
+                    'traffic' => 50,
+                    'name' => 'Сетка листинга по 3 товара',
+                ],
+                'jewelItems4' => [
+                    'traffic'  => 50,
+                    'name'     => 'Сетка листинга по 4 товара',
+                ]
+            ]
+        ],
         'other' => [
             'enabled' => false,
             'expireDate' => '2000-01-01',
@@ -536,5 +551,8 @@ $c->photoContest = [
 		'debug'        => false,
 	]
 ];
+
+$c->siteVersionSwitcher['cookieName'] = 'mobile';
+$c->siteVersionSwitcher['cookieLifetime'] = 20 * 365 * 24 * 60 * 60;
 
 return $c;

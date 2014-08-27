@@ -198,7 +198,7 @@ class Action extends \Controller\ProductCategory\Action {
             $subCatMenu = reset($subCatMenu);
         }
 
-        switch (\App::abTest()->getTest('other')->getChosenCase()->getKey()) {
+        switch (\App::abTest()->getTest('jewel_items')->getChosenCase()->getKey()) {
             case 'jewelItems3':
                 $itemsPerRow = 3;
                 break;
@@ -329,7 +329,7 @@ class Action extends \Controller\ProductCategory\Action {
             }
 
             // вид товаров
-            $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
+            $productView = $category->getHasLine() ? 'line' : $category->getProductView();
             // листалка
             $limit = \App::config()->product['itemsPerPageJewel'];
             $repository = \RepositoryManager::product();

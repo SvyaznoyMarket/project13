@@ -12,7 +12,7 @@
  * @var $isAddInfo              bool                                Показывать ли дополнительную информацию
  */
 
-$view = $request->get('view', isset($view) ? $view : null);
+$view = isset($view) ? $view : null;
 $hasListView = isset($hasListView) && (bool)$hasListView ? true : false;
 if (!isset($productSorting)) $productSorting = null;
 if (!isset($category)) $category = null;

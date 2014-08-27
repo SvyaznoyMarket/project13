@@ -17,7 +17,8 @@
     <? $i = 0; foreach ($pager as $product): $i++ ?>
         <?= $page->render('jewel/product/show/_compact', [
             'product' => $product,
-            'addInfo' => $isAddInfo ? \Kissmetrics\Manager::getProductSearchEvent($product, $i, $pager->getPage()) : []
+            'addInfo' => $isAddInfo ? \Kissmetrics\Manager::getProductSearchEvent($product, $i, $pager->getPage()) : [],
+            'itemsPerRow' => $itemsPerRow
         ]) ?>
     <? endforeach ?>
 
