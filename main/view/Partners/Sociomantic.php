@@ -192,7 +192,25 @@ class Sociomantic
         if (!$prod['amount']) $prod['amount'] = $prod['price'];
         if ($photo) $prod['photo'] = $photo;
         if ($brand) $prod['brand'] = $brand;
-        $prod['valid'] = $product->getIsBuyable() ? 0 : time(); // Если товара нет в наличии, то необходимо передавать отметку времени
+
+        $valid = $product->getIsBuyable() ? 0 : time(); // Если товара нет в наличии, то необходимо передавать отметку времени
+        // SITE-4258
+        if ((bool)$product->getCategory()) {
+            $productCategories = array_filter(array_map(function($category){
+                return $category instanceof \Model\Product\Category\Entity ? $category->getName() : null;
+            }, $product->getCategory()));
+
+            $categoryFilter = ['Tchibo', 'Игрушки Hasbro'];
+            $filteredCategories = array_filter($productCategories, function($category) use ($categoryFilter) {
+                return in_array($category, $categoryFilter) ? true : false;
+            });
+
+            if ($product->getPrice() < 500 && !(bool)$filteredCategories) {
+                $valid = time();
+            }
+        }
+
+        $prod['valid'] = $valid;
 
         return $prod;
     }
