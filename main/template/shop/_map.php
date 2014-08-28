@@ -13,6 +13,7 @@ $shopCount = count($markers);
 
 <!-- bMapShops -->
 <div class="bMapShops">
+    <? /* SITE-4094
     <div class='bMapShops__eHead'>
         <div class='bMapShops__eRegion font14 width290'>
                 <p>У нас <?= $shopCount . ' ' . $page->helper->numberChoice($shopCount, array('магазин', 'магазина', 'магазинов')) ?> в <?php echo count($shopAvailableRegions)?> городах России.</p>
@@ -20,7 +21,7 @@ $shopCount = count($markers);
 
         </div>
         <img class="bMapShops__eImage" src="/images/shop-h1.png" alt="shopPageLogo" />
-    </div>
+    </div>*/ ?>
 
     <? if ((bool)$markers): ?>
     <h2 class='bMapShops__eTitle'>Магазины Enter на карте</h2>
