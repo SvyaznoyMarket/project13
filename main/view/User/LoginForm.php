@@ -2,21 +2,23 @@
 
 namespace View\User;
 
-class LoginForm {
+class LoginForm extends \Form\FormAbstract {
     /** @var string */
     private $username;
     /** @var string */
     private $password;
     /** @var array */
-    private $errors = array(
+    protected $errors = array(
         'global'   => null,
         'username' => null,
         'password' => null,
     );
+    
+    /** @inheritdoc */
+    protected $route = 'user.login';
 
-    public function __construct(array $data = []) {
-        $this->fromArray($data);
-    }
+    /** @inheritdoc */
+    protected $submit = 'Войти';
 
     public function fromArray(array $data) {
         if (array_key_exists('username', $data)) $this->setUsername($data['username']);
@@ -27,6 +29,10 @@ class LoginForm {
      * @param string $password
      */
     public function setPassword($password) {
+        if(!$password) {
+            $this->setError('password', 'Не указан пароль');
+            return;
+        }
         $this->password = trim((string)$password);
     }
 
@@ -41,6 +47,10 @@ class LoginForm {
      * @param string $username
      */
     public function setUsername($username) {
+        if(!$username) {
+            $this->setError('username', 'Не указан логин');
+            return;
+        }
         $this->username = trim((string)$username);
     }
 
@@ -51,51 +61,11 @@ class LoginForm {
         return $this->username;
     }
 
-    /**
-     * @param $name
-     * @param $value
-     * @throws \InvalidArgumentException
-     */
-    public function setError($name, $value) {
-        if (!array_key_exists($name, $this->errors)) {
-            throw new \InvalidArgumentException(sprintf('Неизвестная ошибка "%s".', $name));
-        }
-
-        $this->errors[$name] = $value;
-    }
-
-    /**
-     * @param $name
-     * @return mixed
-     * @throws \InvalidArgumentException
-     */
-    public function getError($name) {
-        if (!array_key_exists($name, $this->errors)) {
-            throw new \InvalidArgumentException(sprintf('Неизвестная ошибка "%s".', $name));
-        }
-
-        return $this->errors[$name];
-    }
-
-    /**
-     * @return array
-     */
-    public function getErrors() {
-        return $this->errors;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isValid() {
-        $isValid = true;
-        foreach ($this->errors as $error) {
-            if (null !== $error) {
-                $isValid = false;
-                break;
-            }
-        }
-
-        return $isValid;
+    /** @inheritdoc */
+    public function __toArray() {
+        return [
+            'username'  => $this->getUsername(),
+            'password'  => $this->getPassword(),
+        ];
     }
 }

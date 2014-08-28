@@ -150,6 +150,22 @@ $c->scmsSeo['retryTimeout'] = [
     'forever' => 0,
 ];
 
+$c->crm['url'] = 'http://crm.enter.ru/';
+$c->crm['client_id'] = 'site';
+$c->crm['timeout'] = 1;
+$c->crm['hugeTimeout'] = 5;
+$c->crm['retryCount'] = 2;
+$c->crm['retryTimeout'] = [
+    'default' => 0.5,
+    'tiny'    => 0.1,
+    'short'   => 0.3,
+    'medium'  => 0.5,
+    'long'    => 0.8,
+    'huge'    => 1.5,
+    'forever' => 0,
+];
+$c->crm['debug'] = false;
+
 $c->connectTerminal = true;
 
 $c->company['phone'] = '8 (800) 700-00-09';
@@ -567,6 +583,9 @@ $c->photoContest = [
 		'debug'        => false,
 	]
 ];
+
+// Game
+$c->game['bandit']['showOnHomepage'] = true;
 
 $c->siteVersionSwitcher['cookieName'] = 'mobile';
 $c->siteVersionSwitcher['cookieLifetime'] = 20 * 365 * 24 * 60 * 60;

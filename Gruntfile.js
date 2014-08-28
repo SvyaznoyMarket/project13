@@ -19,7 +19,8 @@ module.exports = function(grunt) {
                 jsDevPath+'jquery-plugins/jquery.animate-shadow.js',
                 jsDevPath+'jquery-plugins/customDropDown.js',
                 jsDevPath+'jquery-plugins/goodsSlider.js',
-                jsDevPath+'jquery-plugins/jquery-ui-1.10.3.custom.js'
+                jsDevPath+'jquery-plugins/jquery-ui-1.10.3.custom.js',
+                jsDevPath+'jquery-plugins/rimages.js'
             ],
             libraryFiles: [
                 jsDevPath+'library/cloneObject.js',

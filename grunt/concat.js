@@ -49,6 +49,11 @@ module.exports = {
         dest: '<%= pathProd %>main.js'
     },
 
+    mainParallaxJS : {
+        src: ['<%= pathDev %>main-parallax/*.js'],
+        dest: '<%= pathProd %>main-parallax.js'
+    },
+
     oneclickJS : {
         src: ['<%= pathDev %>oneclick/*.js'],
         dest: '<%= pathProd %>oneclick.js'
@@ -102,6 +107,14 @@ module.exports = {
     watch3dJS : {
         src: ['<%= pathDev %>watch3d/*.js'],
         dest: '<%= pathProd %>watch3d.js'
+    },
+
+    gameSlotsJs: {
+        src: [
+            'web/js/game/slots/jquery.transit.js',
+            'web/js/game/slots/slots.js'
+        ],
+        dest: 'web/js/game/slots.js'
     },
 
     serviceHaJS : {

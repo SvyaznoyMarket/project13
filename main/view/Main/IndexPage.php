@@ -2,6 +2,8 @@
 
 namespace View\Main;
 
+use View\Menu;
+
 class IndexPage extends \View\DefaultLayout {
     protected $layout  = 'layout-main';
 

@@ -92,6 +92,11 @@ module.exports = function (grunt, options) {
             dest: pathProd + 'main.min.js'
         },
 
+        mainParallaxJS: {
+            src: pathDev + 'main-parallax/*.js',
+            dest: pathProd + 'main-parallax.min.js'
+        },
+
         oneclickJS: {
             src: pathDev + 'oneclick/*.js',
             dest: pathProd + 'oneclick.min.js'
@@ -147,9 +152,14 @@ module.exports = function (grunt, options) {
             dest: pathProd + 'watch3d.min.js'
         },
 
+        gameSlotsJs: {
+            src: [ 'web/js/game/slots/jquery.transit.js','web/js/game/slots/slots.js'],
+            dest: 'web/js/game/slots.min.js'
+        },
+
         serviceHaJS: {
             src: pathDev + 'service_ha/*.js',
             dest: pathProd + 'service_ha.min.js'
-        }
+        }        
     }
 };

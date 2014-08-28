@@ -18,7 +18,7 @@
     <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon.png">
-    
+
     <meta name="viewport" content="width=1000" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="HandheldFriendly" content="true" />

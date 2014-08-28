@@ -101,6 +101,20 @@ class AppConfig {
         'debug'        => null,
         'chunk_size'   => null,
     ];
+	
+    /**
+     * @var array
+     */
+    public $crm = [
+        'url'          => null,
+        'client_id'    => null,
+        'timeout'      => null,
+        'hugeTimeout'  => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
+        'debug'        => null,
+        'chunk_size'   => null,
+    ];
 
     /**
      * @var array
@@ -628,6 +642,13 @@ class AppConfig {
         'timeout'      => null,
         'retryTimeout' => [],
         'retryCount'   => null,
+    ];
+
+    /** @var array */
+    public $game = [
+        'bandit' => [
+            'showOnHomepage' => null
+        ]
     ];
 
     /** @var array */
