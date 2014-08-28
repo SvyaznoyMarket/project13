@@ -68,9 +68,18 @@ class LinePage extends \View\DefaultLayout {
             $category = array_pop($categories);
         }
 
+        $tag_params = [
+            'prodid' => $product->getId(),
+            'pagetype' => 'product',
+            'pname' => $product->getName(),
+            'pcat' => ($category) ? $category->getToken() : '',
+            'pcat_upper' => $product->getMainCategory() ? $product->getMainCategory()->getToken() : '',
+            'pvalue' => $product->getPrice()
+        ];
+
         return ''
             . "\n\n"
-            . ((bool)$product ? $this->render('_remarketingGoogle', ['tag_params' => ['prodid' => $product->getId(), 'pagetype' => 'product', 'pname' => $product->getName(), 'pcat' => ($category) ? $category->getToken() : '', 'pvalue' => $product->getPrice()]]) : '')
+            . ((bool)$product ? $this->render('_remarketingGoogle', ['tag_params' => $tag_params]) : '')
             . "\n\n"
             . $this->render('_innerJavascript');
     }

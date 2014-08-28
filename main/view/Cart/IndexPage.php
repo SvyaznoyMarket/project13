@@ -54,6 +54,7 @@ class IndexPage extends \View\DefaultLayout {
             $tag_params['prodid'][] = $product->getId();
             $tag_params['pname'][] = $product->getName();
             $tag_params['pcat'][] = $category ? $category->getToken() : '';
+            $tag_params['pcat_upper'][] = $product->getMainCategory() ? $product->getMainCategory()->getToken() : '';
         }
 
         return ''
