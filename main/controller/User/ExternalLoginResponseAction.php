@@ -188,13 +188,15 @@ class ExternalLoginResponseAction {
                         \App::retailrocket()->setUserEmail($response, $data['email']);
                     }
 
+                    \App::user()->signIn($user, $response);
+
                     try {
-                        \App::coreClientV2()->query('user/create-account', ['user_id' => $user->getId()], $params);
+                        \App::coreClientV2()->query('user/create-account', ['token' => \App::user()->getToken()], $params);
                     } catch (\Exception $e) {
                         \App::logger()->error(sprintf('Не удалось обновить Account пользователя token=%s', \App::user()->getToken()), ['user']);
                     }
 
-                    \App::user()->signIn($user, $response);
+
 
                     return $response;
                 } catch(\Exception $e) {
