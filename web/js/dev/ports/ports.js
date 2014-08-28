@@ -215,7 +215,7 @@ window.ANALYTICS = {
 			if ($('body').data('template') != 'order_new') window.APRT_DATA = vars;
 
 			s.type  = 'text/javascript';
-			s.src = '//rt.actionpay.ru/code/enter/';
+			s.src = '//aprtx.com/code/enter/';
 			s.defer = true;
 			x.parentNode.insertBefore(s, x);
 		})();
