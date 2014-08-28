@@ -6,7 +6,9 @@ return function(
     $ordersPayment,
     $products,
     $userEntity,
-    $sessionIsReaded
+    $sessionIsReaded,
+    $banks,
+    $creditData
 ) {
 /** @var $products \Model\Product\Entity[] */
     $page = new \View\OrderV3\CompletePage();
@@ -86,7 +88,23 @@ return function(
                                     <!-- Кредит -->
 
                                     <div class="payT">Покупка в кредит</div>
-                                    <a href="" class="btnLightGrey"><strong>Заполнить заявку</strong></a>
+                                    <a href="" class="btnLightGrey jsCreditButton"><strong>Заполнить заявку</strong></a>
+
+                                    <ul style="display: none;" class="customSel_lst popupFl customSel_lst-pay jsCreditList">
+                                        <? foreach ($banks as $bank) : ?>
+                                            <? /** @var $bank \Model\CreditBank\Entity */?>
+                                            <li class="customSel_i jsPaymentMethod" data-value="<?= $bank->getId(); ?>" data-bank-provider-id="<?= $bank->getProviderId() ?>">
+                                                <img src="<?= $bank->getImage() ?>" />
+<!--                                                <strong>--><?//= $bank->getName(); ?><!--</strong><br/>-->
+<!--                                                --><?//= $bank->getDescription(); ?><!--<br/>-->
+                                                <a href="<?= $bank->getLink() ?>" target="_blank" style="float: right">Условия кредитования</a>
+                                            </li>
+                                        <? endforeach; ?>
+                                    </ul>
+
+                                    <? if (isset($creditData[$order->getNumber()])) : ?>
+                                        <div class="credit-widget" data-value="<?= $helper->json($creditData[$order->getNumber()]) ?>"></div>
+                                    <? endif; ?>
 
                                 <? elseif (isset($paymentEntity->groups[\Model\PaymentMethod\PaymentGroup\PaymentGroupEntity::PAYMENT_NOW])) : ?>
                                 <? $paymentMethods = array_filter($paymentEntity->methods, function (\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $method) use ($paymentEntity) {return $method->paymentGroup === $paymentEntity->groups[\Model\PaymentMethod\PaymentGroup\PaymentGroupEntity::PAYMENT_NOW]; }) ?>

@@ -23,14 +23,16 @@ class CompleteAction extends OrderV3 {
     public function execute() {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        /** @var \Model\Order\Entity $orders */
+        /** @var \Model\Order\Entity[] $orders */
         $orders = [];
         /** @var \Model\PaymentMethod\PaymentEntity[] $ordersPayment */
         $ordersPayment = [];
         $products = [];
         $paymentProviders = [];
         $privateClient = \App::coreClientPrivate();
-//        $shops = [];
+        $needCreditBanksData = false;
+        /** @var $banks \Model\CreditBank\Entity[] */
+        $banks = [];
 
         try {
 
@@ -61,6 +63,8 @@ class CompleteAction extends OrderV3 {
 
             $this->client->execute();
 
+            sort($orders);
+
             // получаем продукты для заказов
             foreach ($orders as $order) {
 
@@ -71,19 +75,23 @@ class CompleteAction extends OrderV3 {
                     }
                 } );
 
+                // Нужны ли нам кредитные банки?
+                if (isset($order->meta_data['preferred_payment_id']) && reset($order->meta_data['preferred_payment_id']) == \Model\Order\Entity::PAYMENT_TYPE_ID_ONLINE_CREDIT) $needCreditBanksData = true;
+
             }
 
-            // получаем магазины
-            /*\RepositoryManager::shop()->prepareCollectionById(array_map(function(\Model\Order\Entity $order){ return $order->getShopId(); }, array_filter($orders, function(\Model\Order\Entity $order){ return $order->getShopId() != 0; })),
-                function($data) use (&$shops) {
-                    foreach($data as $shopData) {
-                        if (isset($shopData['id'])) $shops[$shopData['id']] = new \Model\Shop\Entity($shopData);
+            // Запрашиваем данные по кредитным банкам
+            if ($needCreditBanksData) {
+                \RepositoryManager::creditBank()->prepareCollection(function($data) use (&$banks){
+                    foreach ($data as $item) {
+                        if (isset($item['token'])) $banks[$item['token']] = new \Model\CreditBank\Entity($item);
                     }
-            });*/
+                });
+            }
 
             $this->client->execute();
             $privateClient->execute();
-            unset($order, $methodId, $onlineMethodsId, $privateClient);
+            unset($order, $methodId, $onlineMethodsId, $privateClient, $needCreditBanksData);
 
             // очищаем корзину от заказанных продуктов
             foreach ($products as $product) {
@@ -125,6 +133,7 @@ class CompleteAction extends OrderV3 {
         $page->setParam('products', $products);
         $page->setParam('userEntity', $this->user->getEntity());
         $page->setParam('paymentProviders', $paymentProviders);
+        $page->setParam('banks', $banks);
 
         $page->setParam('sessionIsReaded', $sessionIsReaded);
 

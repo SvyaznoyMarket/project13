@@ -16,6 +16,8 @@ class Entity {
     const STATUS_DELIVERED = 5;
     const STATUS_CANCELED = 100;
 
+    const PAYMENT_TYPE_ID_ONLINE_CREDIT = 6;
+
     const PAYMENT_STATUS_NOT_PAID = 1;  // не оплачен
     const PAYMENT_STATUS_TRANSFER = 4;  // начало оплаты
     const PAYMENT_STATUS_ADVANCE = 3;   // частично оплачен

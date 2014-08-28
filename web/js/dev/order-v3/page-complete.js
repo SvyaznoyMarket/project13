@@ -19,6 +19,7 @@
             top: '50%', // Top position relative to parent
             left: '50%' // Left position relative to parent
         }) : null,
+
         getForm = function getFormF(methodId, orderId, orderNumber) {
             $.ajax({
                 'url': 'getPaymentForm/'+methodId+'/order/'+orderId+'/number/'+orderNumber,
@@ -38,6 +39,76 @@
 
                 }
             })
+        },
+
+        showCreditWidget = function showCreditWidgetF(bankProviderId, data) {
+
+            if ( bankProviderId == 1 ) showKupiVKredit(data['kupivkredit']);
+            if ( bankProviderId == 2 ) showDirectCredit(data['direct-credit']);
+
+        },
+
+        showKupiVKredit = function showKupiVKreditF(data){
+            var callback_close = function(decision) {
+/*                    setTimeout(function() {
+                        document.location = 'http://' + window.location.hostname;
+                    }, 1000);*/
+                },
+                callback_decision = function(decision) { },
+                vkredit;
+
+            $LAB.script( '//www.kupivkredit.ru/widget/vkredit.js')
+                .wait( function() {
+                    vkredit = new VkreditWidget(1, data.vars.sum,  {
+                        order: data.vars.order,
+                        sig: data.vars.sig,
+                        callbackUrl: window.location.href,
+                        onClose: callback_close,
+                        onDecision: callback_decision
+                    });
+
+                    vkredit.openWidget();
+                });
+        },
+
+        showDirectCredit = function showDirectCreditF(data){
+            var i, item,
+                openWidget = function openWidget() {
+                    dc_getCreditForTheProduct(
+                        '4427',
+                        data.vars.number ,// session
+                        'orderProductToBuyOnCredit',
+                        { order_id: data.vars.number,
+                            region: data.vars.region }
+                    );
+                };
+
+            $LAB.script( 'JsHttpRequest.min.js' )
+                .script( '//direct-credit.ru/widget/script_utf.js' )
+                .wait( function() {
+                    console.info('скрипты загружены для кредитного виджета. начинаем обработку');
+                    // fill cart
+                    for ( i = data.vars.items.length - 1; i >= 0; i-- ) {
+                        item = data.vars.items[i];
+
+                        dc_getCreditForTheProduct(
+                            '4427',
+                            data.vars.number,
+                            'addProductToBuyOnCredit',
+                            {
+                                name : item.name,
+                                count: item.quantity,
+                                articul: item.articul,
+                                price: item.price,
+                                type: item.type
+                            },
+                            function() {
+                                console.log('обработка завершена. открываем виджет');
+                                openWidget();
+                            }
+                        );
+                    }
+                });
         };
 
     // клик по методу онлайн-оплаты
@@ -54,10 +125,26 @@
     });
 
     // клик по "оплатить онлайн"
-    $orderContent.on('click', '.jsOnlinePaymentSpan', function(){
+    $orderContent.on('click', '.jsOnlinePaymentSpan', function(e){
         $(this).parent().siblings('.jsOnlinePaymentList').show();
+        e.stopPropagation();
     });
 
+    $orderContent.on('click', '.jsCreditButton', function(e){
+        $(this).siblings('.jsCreditList').show();
+        e.preventDefault();
+        e.stopPropagation();
+    });
 
+    $orderContent.on('click', '.jsCreditList li', function(){
+        var bankProviderId = $(this).data('bank-provider-id'),
+            creditData = $(this).parent().siblings('.credit-widget').data('value');
+        showCreditWidget(bankProviderId, creditData);
+        //$(this).parent().hide();
+    });
+
+    $(body).on('click', function(){
+        $('.popupFl').hide();
+    });
 
 }(jQuery));
