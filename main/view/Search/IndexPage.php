@@ -102,6 +102,6 @@ class IndexPage extends \View\DefaultLayout {
             'query' => $searchQuery,
         ];
 
-        return "<div id=\"LamodaSearchJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"><div>";
+        return "<div id=\"LamodaSearchJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
     }
 }
