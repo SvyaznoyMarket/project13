@@ -23,6 +23,7 @@ class FacebookProvider implements ProviderInterface {
             'client_id'     => $this->config->clientId,
             'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME], true),
             'response_type' => 'code',
+            'scope'         => 'email,user_birthday'
         ]);
     }
 
@@ -38,15 +39,18 @@ class FacebookProvider implements ProviderInterface {
             return null;
         }
 
-        $response = $this->query($this->getAccessTokenUrl($code), [], false);
+        $response = $this->query($this->getAccessTokenUrl($code), [], false, true);
+
         parse_str($response, $response);
+
         if (empty($response['access_token'])) {
             \App::logger()->warn(['provider' => self::NAME, 'url' => $this->getAccessTokenUrl($code), 'response' => $response], ['oauth']);
             return null;
         }
         $accessToken = $response['access_token'];
 
-        $response = $this->query($this->getProfileUrl($accessToken));
+        $response = $this->query($this->getProfileUrl($accessToken), [], false, false);
+
         $response = is_array($response) ? $response : [];
         if (empty($response['id']) || empty($response['first_name'])) {
             \App::logger()->warn(['provider' => self::NAME, 'url' => $this->getProfileUrl($accessToken), 'response' => $response], ['oauth']);
@@ -54,6 +58,7 @@ class FacebookProvider implements ProviderInterface {
         }
 
         $user = new \Oauth\Model\Facebook\Entity($response);
+        $user->setAccessToken($accessToken);
 
         return $user;
     }
@@ -85,14 +90,23 @@ class FacebookProvider implements ProviderInterface {
      * @param $url
      * @param array $data
      * @param bool $jsonDecode
+     * @param bool $get_access
      * @return mixed|null
      * @throws \Exception
      */
-    private function query($url, array $data = [], $jsonDecode = true) {
+    private function query($url, array $data = [], $jsonDecode = true, $get_access = false) {
         $client = new \Curl\Client(\App::logger());
 
         try {
-            $response = $client->query($url, $data);
+            //
+            // делаем запрос
+            if($get_access){
+                $response = file_get_contents($url);
+            }
+            else {
+                $response = $client->query($url, $data);
+            }
+
             if ($jsonDecode) {
                 $response = json_decode($response, true);
 

@@ -8,6 +8,6 @@ class ExternalLoginResponsePage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        return $this->render('user/external-login-response', $this->params);
+        return $this->render('user/page-external-login-response', $this->params);
     }
 }

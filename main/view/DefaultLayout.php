@@ -210,7 +210,7 @@ class DefaultLayout extends Layout {
 
     public function slotAuth() {
         // SITE-3676
-        return (!in_array(\App::request()->attributes->get('route'), ['user.login', 'user.register'])) ? $this->render('_auth') : '';
+        return (!in_array(\App::request()->attributes->get('route'), ['user.login', 'user.register'])) ? $this->render('_auth', ['oauthEnabled' => \App::config()->oauthEnabled]) : '';
 
 //        return ('user.login' != \App::request()->attributes->get('route')) ? $this->render('_auth') : '';
     }

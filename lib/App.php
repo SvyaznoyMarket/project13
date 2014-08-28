@@ -399,6 +399,8 @@ class App {
                 $instances[$name] = new \Oauth\OdnoklassnikiProvider(self::$config->odnoklassnikiOauth);
             } elseif (\Oauth\FacebookProvider::NAME == $name) {
                 $instances[$name] = new \Oauth\FacebookProvider(self::$config->facebookOauth);
+            } elseif (\Oauth\TwitterProvider::NAME == $name) {
+                $instances[$name] = new \Oauth\TwitterProvider(self::$config->twitterOauth);
             } else {
                 throw new \InvalidArgumentException(sprintf('Не найден провайдер аутентификации "%s".', $name));
             }
