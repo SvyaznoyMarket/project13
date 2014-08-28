@@ -21,9 +21,9 @@ class VkontakteProvider implements ProviderInterface {
     public function getLoginUrl() {
         return 'http://oauth.vk.com/authorize?' . http_build_query([
             'client_id'     => $this->config->clientId,
-            'scope'         => '',
+            'scope'         => 'email',//, offline для получения токена без срока годности
             'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME], true),
-            'response_type' => 'code',
+            'response_type' => 'code'
         ]);
     }
 
@@ -38,15 +38,20 @@ class VkontakteProvider implements ProviderInterface {
             \App::logger()->warn(['provider' => self::NAME, 'request' => $request->query->all()], ['oauth']);
             return null;
         }
-
         $response = $this->query($this->getAccessTokenUrl($code));
+
         if (empty($response['access_token']) || empty($response['user_id'])) {
             \App::logger()->warn(['provider' => self::NAME, 'url' => $this->getAccessTokenUrl($code), 'response' => $response], ['oauth']);
             return null;
         }
         $userId = $response['user_id'];
+        $access_token = $response['access_token'];
+        $email = $response['email'];
+
+       // print_r($this->getProfileUrl($userId));die;
 
         $response = $this->query($this->getProfileUrl($userId));
+
         $response = (isset($response['response']) && is_array($response['response'])) ? reset($response['response']) : [];
         if (empty($response['uid']) || empty($response['first_name']) || ('DELETED' == $response['first_name'])) {
             \App::logger()->warn(['provider' => self::NAME, 'url' => $this->getProfileUrl($userId), 'response' => $response], ['oauth']);
@@ -54,6 +59,8 @@ class VkontakteProvider implements ProviderInterface {
         }
 
         $user = new \Oauth\Model\Vkontakte\Entity($response);
+        $user->setAccessToken($access_token);
+        $user->setEmail($email);
 
         return $user;
     }
@@ -78,7 +85,7 @@ class VkontakteProvider implements ProviderInterface {
     private function getProfileUrl($id) {
         return 'https://api.vk.com/method/users.get?' . http_build_query([
             'uids'   => $id,
-            'fields' => 'uid,first_name,last_name,nickname,screen_name,sex,bdate,city,country,timezone,photo,photo_medium,photo_big',
+            'fields' => 'uid,contacts,education,first_name,last_name,nickname,screen_name,sex,bdate,city,country,timezone,photo,photo_medium,photo_big',
         ]);
     }
 
@@ -93,8 +100,9 @@ class VkontakteProvider implements ProviderInterface {
 
         try {
             $response = $client->query($url, $data);
-            $response = json_decode($response, true);
 
+            //возвращается массив с данными не JSON
+            //$response = json_decode($response, true);
             // TODO: json_last_error()
 
             if (!$response || !empty($response['error'])) {

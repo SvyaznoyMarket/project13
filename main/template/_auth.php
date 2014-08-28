@@ -16,6 +16,8 @@
         <?= $page->render('form-login') ?>
         <?= $page->render('form-register') ?>
     </div>
+    <a href="<?= $page->url('user.login.external', ['providerName' => 'vkontakte' ]) ?>" >Войти через VK</a>
+    <a href="<?= $page->url('user.login.external', ['providerName' => 'facebook' ]) ?>" >Войти через FB</a>
 </div>
 <!-- /Registration -->
 </noindex>

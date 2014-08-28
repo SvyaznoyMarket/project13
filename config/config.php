@@ -68,6 +68,20 @@ $c->corePrivate['retryTimeout'] = [
     'forever' => 0,
 ];
 
+$c->vkontakteOauth->clientId     = '4521578';
+$c->vkontakteOauth->secretKey    = 'UkIAtfUGErhudDIqWqzG';
+
+$c->facebookOauth->clientId     = '1447897185499716';
+$c->facebookOauth->secretKey    = 'f0e5e59f94577bae7cfe8e381123a0dc';
+
+$c->odnoklassnikiOauth->clientId     = '1099656960';
+$c->odnoklassnikiOauth->secretKey    = '03F94E54F81231EFCDE26D57';
+$c->odnoklassnikiOauth->publicKey    = 'CBAQGMICEBABABABA';
+
+//$c->twitterOauth->clientId     = 'tCBHggGaHaFAUNxzCXIv07f9w';
+//$c->twitterOauth->secretKey    = 'UStteR1Kyt81ur9WF20OMOjUdzp4GhwrFDuBmidTwyNsEZbEpH';
+
+
 $c->reviewsStore['url']          = 'http://scms.enter.ru/reviews/';
 $c->reviewsStore['retryCount']   = 2;
 $c->reviewsStore['timeout']      = 0.36;

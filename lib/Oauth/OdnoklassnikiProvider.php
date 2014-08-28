@@ -23,6 +23,7 @@ class OdnoklassnikiProvider implements ProviderInterface {
             'client_id'     => $this->config->clientId,
             'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME], true),
             'response_type' => 'code',
+            'scope' => 'VALUABLE_ACCESS;SET_STATUS'
         ]);
     }
 
@@ -38,13 +39,14 @@ class OdnoklassnikiProvider implements ProviderInterface {
             return null;
         }
 
-        $response = $this->query($this->getAccessTokenUrl(), [
+        $response = $this->queryPost($this->getAccessTokenUrl(),[
             'code'          => $code,
             'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME], true),
             'grant_type'    => 'authorization_code',
             'client_id'     => $this->config->clientId,
             'client_secret' => $this->config->secretKey,
         ]);
+
         if (empty($response['access_token'])) {
             \App::logger()->warn(['provider' => self::NAME, 'url' => $this->getAccessTokenUrl($code), 'response' => $response], ['oauth']);
             return null;
@@ -52,6 +54,7 @@ class OdnoklassnikiProvider implements ProviderInterface {
         $accessToken = $response['access_token'];
 
         $response = $this->query($this->getProfileUrl($accessToken));
+
         if (empty($response['uid']) || empty($response['first_name'])) {
             \App::logger()->warn(['provider' => self::NAME, 'url' => $this->getProfileUrl($accessToken), 'response' => $response], ['oauth']);
             return null;
@@ -89,12 +92,46 @@ class OdnoklassnikiProvider implements ProviderInterface {
      * @return mixed|null
      * @throws \Exception
      */
+    private function queryPost($url, array $data = []) {
+        try {
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $url); // url, куда будет отправлен запрос
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, urldecode(http_build_query($data))); // передаём параметры
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+
+            $result = curl_exec($curl);
+
+            curl_close($curl);
+
+            $response = json_decode($result, true);
+
+            if (!$response || !empty($response['error'])) {
+                \App::logger()->warn(['provider' => self::NAME, 'url' => $url, 'data' => $data, 'response' => $response], ['oauth']);
+                throw new \Exception($response['error'] . (isset($response['error_description']) ? (': ' . $response['error_description']) : ''));
+            }
+        } catch (\Exception $e) {
+            $response = null;
+            \App::logger()->error($e, ['oauth']);
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param $url
+     * @param array $data
+     * @return mixed|null
+     * @throws \Exception
+     */
     private function query($url, array $data = []) {
         $client = new \Curl\Client(\App::logger());
 
         try {
             $response = $client->query($url, $data);
-            $response = json_decode($response, true);
+
+            //$response = json_decode($response, true);
 
             // TODO: json_last_error()
 

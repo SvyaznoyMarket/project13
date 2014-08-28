@@ -6,6 +6,8 @@ class Entity implements \Oauth\Model\EntityInterface {
     /** @var string */
     private $id;
     /** @var string */
+    private $email;
+    /** @var string */
     private $firstName;
     /** @var string */
     private $lastName;
@@ -39,6 +41,8 @@ class Entity implements \Oauth\Model\EntityInterface {
     private $verified;
     /** @var string */
     private $updatedTime;
+    /** @var string */
+    private $accessToken;
 
     public function __construct(array $data = []) {
         $this->import($data);
@@ -46,6 +50,7 @@ class Entity implements \Oauth\Model\EntityInterface {
 
     public function import(array $data) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
+        if (array_key_exists('email', $data)) $this->setEmail($data['email']);
         if (array_key_exists('first_name', $data)) $this->setFirstName($data['first_name']);
         if (array_key_exists('last_name', $data)) $this->setLastName($data['last_name']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
@@ -67,6 +72,7 @@ class Entity implements \Oauth\Model\EntityInterface {
 
     public function export() {
         $data['id'] = $this->getId();
+        $data['email'] = $this->getEmail();
         $data['first_name'] = $this->getFirstName();
         $data['last_name'] = $this->getLastName();
         $data['name'] = $this->getName();
@@ -77,7 +83,7 @@ class Entity implements \Oauth\Model\EntityInterface {
         $data['location'] = $this->getLocation();
         $data['sports'] = $this->getSports();
         $data['education'] = $this->getEducation();
-        $data['gender'] = $this->getGender();
+        $data['gender'] = $this->getSex();
         $data['relationship_status'] = $this->getRelationshipStatus();
         $data['timezone'] = $this->getTimezone();
         $data['locale'] = $this->getLocale();
@@ -89,10 +95,24 @@ class Entity implements \Oauth\Model\EntityInterface {
     }
 
     /**
+     * @param string $email
+     */
+    public function setEmail($email) {
+        $this->email = (string)$email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail() {
+        return $this->email;
+    }
+
+    /**
      * @param string $birthday
      */
     public function setBirthday($birthday) {
-        $this->birthday = (string)$birthday;
+        $this->birthday = date('Y-m-d',strtotime($birthday));//1982-05-04
     }
 
     /**
@@ -134,13 +154,16 @@ class Entity implements \Oauth\Model\EntityInterface {
      * @param string $gender
      */
     public function setGender($gender) {
-        $this->gender = (string)$gender;
+        if(!empty($gender) && $gender == 'male')
+        $this->gender = 1;
+        else
+        $this->gender = 2;
     }
 
     /**
      * @return string
      */
-    public function getGender() {
+    public function getSex() {
         return $this->gender;
     }
 
@@ -338,5 +361,21 @@ class Entity implements \Oauth\Model\EntityInterface {
      */
     public function getVerified() {
         return $this->verified;
+    }
+
+    /**
+     * @param string $accessToken
+     */
+    public function setAccessToken($accessToken)
+    {
+        $this->accessToken = (string)$accessToken;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccessToken()
+    {
+        return $this->accessToken;
     }
 }

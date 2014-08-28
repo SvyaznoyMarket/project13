@@ -6,6 +6,8 @@ class Entity implements \Oauth\Model\EntityInterface {
     /** @var string */
     private $id;
     /** @var string */
+    private $email;
+    /** @var string */
     private $firstName;
     /** @var string */
     private $lastName;
@@ -29,6 +31,8 @@ class Entity implements \Oauth\Model\EntityInterface {
     private $photoMedium;
     /** @var string */
     private $photoBig;
+    /** @var string */
+    private $accessToken;
 
     public function __construct(array $data = []) {
         $this->import($data);
@@ -36,6 +40,7 @@ class Entity implements \Oauth\Model\EntityInterface {
 
     public function import(array $data) {
         if (array_key_exists('uid', $data)) $this->setId($data['uid']);
+        if (array_key_exists('email', $data)) $this->setEmail($data['email']);
         if (array_key_exists('first_name', $data)) $this->setFirstName($data['first_name']);
         if (array_key_exists('last_name', $data)) $this->setLastName($data['last_name']);
         if (array_key_exists('nickname', $data)) $this->setNickname($data['nickname']);
@@ -52,12 +57,13 @@ class Entity implements \Oauth\Model\EntityInterface {
 
     public function export() {
         $data['uid'] = $this->getId();
+        $data['email'] = $this->getEmail();
         $data['first_name'] = $this->getFirstName();
         $data['last_name'] = $this->getLastName();
         $data['nickname'] = $this->getNickname();
         $data['screen_name'] = $this->getScreenName();
         $data['sex'] = $this->getSex();
-        $data['bdate'] = $this->getBdate();
+        $data['bdate'] = $this->getBirthday();
         $data['city'] = $this->getCity();
         $data['country'] = $this->getCountry();
         $data['timezone'] = $this->getTimezone();
@@ -72,14 +78,28 @@ class Entity implements \Oauth\Model\EntityInterface {
      * @param string $bdate
      */
     public function setBdate($bdate) {
-        $this->bdate = (string)$bdate;
+        $this->bdate = date('Y-m-d',strtotime($bdate));//1982-05-04
     }
 
     /**
      * @return string
      */
-    public function getBdate() {
+    public function getBirthday() {
         return $this->bdate;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail($email) {
+        $this->email = (string)$email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail() {
+        return $this->email;
     }
 
     /**
@@ -226,7 +246,10 @@ class Entity implements \Oauth\Model\EntityInterface {
      * @param int $sex
      */
     public function setSex($sex) {
-        $this->sex = (int)$sex;
+        if(!empty($sex) && $sex == 2)
+        $this->sex = 1;
+        else
+        $this->sex = 2;
     }
 
     /**
@@ -248,5 +271,21 @@ class Entity implements \Oauth\Model\EntityInterface {
      */
     public function getTimezone() {
         return $this->timezone;
+    }
+
+    /**
+     * @param string $accessToken
+     */
+    public function setAccessToken($accessToken)
+    {
+        $this->accessToken = (string)$accessToken;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccessToken()
+    {
+        return $this->accessToken;
     }
 }
