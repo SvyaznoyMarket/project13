@@ -3,6 +3,7 @@
  * @var $page          \View\Layout
  * @var $product       \Model\Product\CompactEntity
  * @var $addInfo       array
+ * @var $itemsPerRow   int
  **/
 ?>
 
@@ -18,13 +19,15 @@ if ($disabled) {
 }
 $inCart = \App::user()->getCart()->hasProduct($product->getId());
 $btnText = $inCart ? 'В корзине' : 'Купить';
+
+$imgSize = isset($itemsPerRow) && 3 == $itemsPerRow ? 6 : 2;
 ?>
 
 <li class="bBrandGoodsList__eItem">
   <div class="goodsbox" ref="<?= $product->getToken(); ?>"><? //для корректной работы js ?>
     <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>" <?php if (isset($additionalData)) echo 'data-product="' . $page->json($additionalData) . '"' ?> <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
       <div class="bItemName"><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></div>
-      <div class="bItemImg"><a href="<?= $product->getLink() ?>"><img class="mainImg" src="<?= $product->getImageUrl(2) ?>" alt="<?= $page->escape($product->getNameWithCategory()) ?>" /></a></div>
+      <div class="bItemImg"><a href="<?= $product->getLink() ?>"><img class="mainImg" src="<?= $product->getImageUrl($imgSize) ?>" alt="<?= $page->escape($product->getNameWithCategory()) ?>" /></a></div>
 
         <? if ($product->getPriceOld()): ?>
             <div class="bPriceLine clearfix">

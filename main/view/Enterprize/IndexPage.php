@@ -77,15 +77,11 @@ class IndexPage extends \View\DefaultLayout {
             $return .= '<div id="flocktoryEnterprizeRegJS" class="jsanalytics" data-value="' . $this->json($flocktoryData) . '"></div>';
         }
 
-        return $return;
-    }
-
-    public function slotEnterprizeCompleteJs() {
-        $data = $this->getParam('enterprizeData');
-        if ($data && (bool)$this->getParam('isRegistration')) {
-            return '<div id="enterprizeCompleteJs" class="jsanalytics" data-value="' . $this->json($data) . '" ></div>';
+        // Enterprize registration analytics
+        if ((bool)$this->getParam('isRegistration')) {
+            $return .= '<div id="enterprizeRegAnalyticsJS" class="jsanalytics"></div>';
         }
 
-        return '';
+        return $return;
     }
 }

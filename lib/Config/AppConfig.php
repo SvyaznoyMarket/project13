@@ -624,6 +624,12 @@ class AppConfig {
         'retryCount'   => null,
     ];
 
+    /** @var array */
+    public $siteVersionSwitcher = [
+        'cookieName'     => null,
+        'cookieLifetime' => null,
+    ];
+
     public function __construct() {
 
         $this->vkontakteOauth = new OAuth\VkontakteConfig();

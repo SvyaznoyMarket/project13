@@ -515,6 +515,11 @@ return [
         'pattern' => '/order/complete',
         'action'  => ['OrderV3\CompleteAction', 'execute'],
     ],
+    'orderV3.paymentForm' => [
+        'pattern' => '/order/getPaymentForm/{methodId}/order/{orderId}/number/{orderNumber}',
+        'require' => ['methodId' => '\d+', 'orderId' => '\d+', 'orderNumber'=>'\w+'],
+        'action'  => ['OrderV3\CompleteAction', 'getPaymentForm'],
+    ],
     // ошибки
     "orderV3.error" => [
         'pattern'   => '/order/error',
@@ -878,13 +883,17 @@ return [
         'action'  => ['Enterprize\ShowAction', 'execute'],
     ],
 
+    'mobidengi' => [
+        'pattern' => '/mobidengi',
+        'action'  => ['Mobidengi\IndexAction', 'execute'],
+    ],
+
     // git pull
     'git.pull' => [
         'pattern' => '/git/pull',
         'action'  => ['GitAction', 'pull'],
         'method'  => ['GET'],
     ],
-
     // git checkout
     'git.checkout' => [
         'pattern' => '/git/checkout/{version}',

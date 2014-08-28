@@ -9997,11 +9997,17 @@
   }
   .bBrandGoodsList.eItemBig .bBrandGoodsList__eItem {
     width: 320px;
+    height: 380px;
   }
   .bBrandGoodsList.eItemBig .bBrandGoodsList__eItem .goodsbox {
     width: 297px;
+    height: 360px;
   }
   .bBrandGoodsList.eItemBig .bBrandGoodsList__eItem .goodsbox .goodsbox__inner {
+    width: 297px;
+    height: 361px;
+  }
+  .bBrandGoodsList.eItemBig .bBrandGoodsList__eItem .goodsbox .goodsbox__inner img.mainImg {
     width: 297px;
   }
 }

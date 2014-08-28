@@ -29,11 +29,18 @@ class OrderV3 {
 
         if (!is_array($data)) $data = array($data);
 
+        $sessionData = \App::session()->get($this->splitSessionKey);
+
+        $userPhone = ((bool)$sessionData && isset($sessionData['user_info']['phone']))
+            ? \App::session()->get($this->splitSessionKey)['user_info']['phone']
+            : '';
+
         $commonData = [
             'sessionId' => $this->session->getId(),
             'userAuth' => $this->user->getEntity() !== null,
             'regionId' => $this->user->getRegionId(),
-            'time' =>strftime('%Y-%m-%d %H:%M:%S')
+            'time' =>strftime('%Y-%m-%d %H:%M:%S'),
+            'userPhone' => $userPhone
         ];
 
         \App::logger('custom')->info(['data' => array_merge($commonData, $data)], ['order-v3-log']);

@@ -64,6 +64,10 @@ class DeliveryAction extends OrderV3 {
             //$orderDelivery =  new \Model\OrderDelivery\Entity($this->session->get($this->splitSessionKey));
             $orderDelivery = $this->getSplit($data);
 
+            foreach($orderDelivery->orders as $order) {
+                $this->logger(['delivery-self-price' => $order->delivery->price]);
+            }
+
             $page = new \View\OrderV3\DeliveryPage();
             $page->setParam('orderDelivery', $orderDelivery);
             return new \Http\Response($page->show());
