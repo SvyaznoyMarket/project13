@@ -67,6 +67,8 @@ $c->corePrivate['retryTimeout'] = [
     'huge'    => 1.5,
     'forever' => 0,
 ];
+$c->oauthEnabled['vkontakte'] = true;
+$c->oauthEnabled['facebook'] = true;
 
 $c->vkontakteOauth->clientId     = '4521578';
 $c->vkontakteOauth->secretKey    = 'UkIAtfUGErhudDIqWqzG';

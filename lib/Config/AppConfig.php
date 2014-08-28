@@ -617,6 +617,12 @@ class AppConfig {
     ];
 
     /** @var array */
+    public $oauthEnabled = [
+        'vkontakte'    => null,
+        'facebook'     => null,
+    ];
+
+    /** @var array */
     public $scmsSeo = [
         'url'          => null,
         'timeout'      => null,

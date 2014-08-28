@@ -100,6 +100,7 @@ class OdnoklassnikiProvider implements ProviderInterface {
             curl_setopt($curl, CURLOPT_POSTFIELDS, urldecode(http_build_query($data))); // передаём параметры
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($curl, CURLOPT_CONNECTTIMEOUT_MS, 5);
 
             $result = curl_exec($curl);
 

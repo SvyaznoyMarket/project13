@@ -130,7 +130,6 @@ class ExternalLoginResponseAction {
                 }
 
                 \App::user()->signIn($userEntity, $response);
-                //\Session\User::enableInfoCookie($response); // — делаем внутри signIn()
 
                 try {
                     \App::coreClientV2()->query('user/update', ['token' => \App::user()->getToken()], [
@@ -139,9 +138,6 @@ class ExternalLoginResponseAction {
                 } catch (\Exception $e) {
                     \App::logger()->error(sprintf('Не удалось обновить регион у пользователя token=%s', \App::user()->getToken()), ['user']);
                 }
-
-                //TODO Дополняем данные пользователя данными из соц.сети
-
 
                 return $response;
 
