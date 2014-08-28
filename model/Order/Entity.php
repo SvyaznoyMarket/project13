@@ -124,6 +124,8 @@ class Entity {
     public $isPartner;
     /** @var array */
     public $meta_data = [];
+    /** @var string|null */
+    public $email;
 
     /**
      * @param array $data
@@ -214,6 +216,7 @@ class Entity {
         if (array_key_exists('is_partner', $data)) $this->setIsPartner($data['is_partner']);
 
         if (array_key_exists('meta_data', $data) && is_array($data['meta_data'])) $this->meta_data = $data['meta_data'];
+        if (array_key_exists('email', $data) && !empty($data['email'])) $this->email = (string)$data['email'];
     }
 
     public function dump() {

@@ -151,16 +151,24 @@ return function(
     </section>
 
     <? if (!$sessionIsReaded) {
+        // Если сесиия уже была прочитана, значит юзер обновляет страницу, не трекаем партнёров вторично
         echo $page->render('order/_analytics', array(
             'orders'       => $orders,
             'productsById' => $products,
         ));
-        // Если сесиия уже была прочитана, значит юзер обновляет страницу, не трекаем партнёров вторично
+
         echo $page->render('order/partner-counter/_complete', [
             'orders'       => $orders,
             'productsById' => $products,
         ]);
+
         echo $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $products]);
+
+        // Flocktory popup
+        echo $helper->render('order-v3/partner-counter/_flocktory-complete',[
+            'orders'    => $orders,
+            'products'  => $products,
+        ]);
     } ?>
 
 <? };
