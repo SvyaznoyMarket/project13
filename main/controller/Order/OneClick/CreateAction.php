@@ -159,7 +159,7 @@ class CreateAction {
                 'geo_id'            => $user->getRegion()->getId(),
                 'user_id'           => $userEntity ? $userEntity->getId() : null,
                 'is_legal'          => $userEntity ? $userEntity->getIsCorporative() : false,
-                'payment_id'        => $form->getPaymentMethodId() ?: \Model\PaymentMethod\Entity::CASH_ID,
+                'payment_id'        => \Model\PaymentMethod\Entity::CASH_ID,
                 'credit_bank_id'    => $form->getCreditBankId(),
                 'last_name'         => $form->getLastName(),
                 'first_name'        => $form->getFirstName(),
