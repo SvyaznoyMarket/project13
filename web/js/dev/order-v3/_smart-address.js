@@ -111,7 +111,11 @@
                 type: 'POST',
                 data: {
                     'action' : 'changeAddress',
-                    'params' : { street: address.street.type + ' ' + address.street.name, building: address.building.name, apartment: address.apartment.name }
+                    'params' : {
+                        street: address.street.type + ' ' + address.street.name,
+                        building: address.building.name,
+                        apartment: address.apartment.name,
+                        kladr_id: address.building.id ? address.building.id : address.street.id ? address.street.id : address.city.id }
                 }
             }).fail(function(jqXHR){
                 var response = $.parseJSON(jqXHR.responseText);
@@ -297,7 +301,7 @@
             } else {
                 if (spinner) spinner.spin($('.kladr_spinner')[0]);
                 address = new Address({});
-                console.log('Определение адреса КЛАДР, запрос', $.extend(config, {limit: 1, type: $.kladr.type.city, name: $('#region-name').data('value')}));
+//                console.log('Определение адреса КЛАДР, запрос', $.extend(config, {limit: 1, type: $.kladr.type.city, name: $('#region-name').data('value')}));
                 $.kladr.api($.extend(config, {'limit': 1, type: $.kladr.type.city, name: $('#region-name').data('value')}), function (data){
                     console.log('KLADR data', data);
                     var id = data.length > 0 ? data[0].id : 0;

@@ -441,6 +441,7 @@ namespace Model\OrderDelivery\Entity {
             'number'  => null,
             'apartment'  => null,
             'metro_station'  => null,
+            'kladr_id'  => null
         ];
         /** @var string */
         public $bonus_card_number;
@@ -465,6 +466,7 @@ namespace Model\OrderDelivery\Entity {
                 if (isset($arr['address']['number'])) $this->address['number'] = $arr['address']['number'];
                 if (isset($arr['address']['apartment'])) $this->address['apartment'] = $arr['address']['apartment'];
                 if (isset($arr['address']['metro_station'])) $this->address['metro_station'] = $arr['address']['metro_station'];
+                if (isset($arr['address']['kladr_id'])) $this->address['kladr_id'] = $arr['address']['kladr_id'];
             }
 
             if (isset($arr['bonus_card_number']) && $arr['bonus_card_number'] !== '') $this->bonus_card_number = (string)$arr['bonus_card_number'];
