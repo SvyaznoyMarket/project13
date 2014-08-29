@@ -261,7 +261,7 @@ class OrderEntity {
         if (isset($arr['user_info']['address']['street']) && $arr['user_info']['address']['street'] !== '') $this->address_street = (string)$arr['user_info']['address']['street'];
         if (isset($arr['user_info']['address']['building']) && $arr['user_info']['address']['building'] !== '') $this->address_building = (string)$arr['user_info']['address']['building'];
         if (isset($arr['user_info']['address']['apartment']) && $arr['user_info']['address']['apartment'] !== '') $this->address_apartment = (string)$arr['user_info']['address']['apartment'];
-        if (isset($arr['user_info']['bonus_card']) && $arr['user_info']['bonus_card'] !== '') $this->bonus_card_number = (string)$arr['user_info']['bonus_card'];
+        if (isset($arr['user_info']['bonus_card_number']) && $arr['user_info']['bonus_card_number'] !== '') $this->bonus_card_number = preg_replace('/\s+/','',(string)$arr['user_info']['bonus_card_number']);
 
         $this->address = sprintf('%s, %s, д. %s, кв. %s', $regionName, $this->address_street, $this->address_building, $this->address_apartment);
 

@@ -295,7 +295,6 @@
                 $input.hide();
 
             } else {
-                console.log('spinner', spinner);
                 if (spinner) spinner.spin($('.kladr_spinner')[0]);
                 address = new Address({});
                 console.log('Определение адреса КЛАДР, запрос', $.extend(config, {limit: 1, type: $.kladr.type.city, name: $('#region-name').data('value')}));
