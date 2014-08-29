@@ -51,6 +51,7 @@ class NewAction {
             });
 
             // запрашиваем группы способов оплаты
+            // TODO а это нужно вообще? one-click оплачивается только кэшем.
             /**
              * @var $paymentGroups \Model\PaymentMethod\Group\Entity[]
              * @var $paymentMethods \Model\PaymentMethod\Entity[]
@@ -60,7 +61,7 @@ class NewAction {
             \RepositoryManager::paymentGroup()->prepareCollection($region,
                 [
                     'is_corporative' => $user->getEntity() ? $user->getEntity()->getIsCorporative() : false,
-                    'is_credit'      => true,
+                    'is_credit'      => false,
                 ],
                 [],
                 function($data) use (
