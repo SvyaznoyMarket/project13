@@ -97,6 +97,10 @@ $count = count($menu);
             if ((1 == $level) && empty($iMenu->child) && (\Model\Menu\Entity::ACTION_LINK == $iMenu->action)) {
                 $class .= ' jsEmptyChild';
             }
+            // SITE-3725
+            if (2 == $level && \Model\Menu\Entity::ACTION_PRODUCT_ALL_CATEGORIES === $iMenu->action) {
+                $class .= ' jsAllCategories';
+            }
 
             $class = trim($class);
             ?>

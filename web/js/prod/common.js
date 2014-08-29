@@ -3358,6 +3358,12 @@ $(document).ready(function() {
 	 */
 	var menuHoverInLvl2 = function(){
 		var el = $(this);
+
+		// SITE-3725
+		if (el.hasClass('jsAllCategories')) {
+			el.parents('li.bMainMenuLevel-1__eItem').addClass('mAction');
+		}
+
 		checkHoverLvl2(el);
 		el.addClass('hoverNowLvl2');
 
@@ -3375,6 +3381,12 @@ $(document).ready(function() {
 	 */
 	var menuMouseLeaveLvl2 = function(){
 		var el = $(this);
+
+		// SITE-3725
+		if (el.hasClass('jsAllCategories')) {
+			el.parents('li.bMainMenuLevel-1__eItem').removeClass('mAction');
+		}
+
 		el.removeClass('hoverNowLvl2');
 	};
 

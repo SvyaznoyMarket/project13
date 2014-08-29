@@ -164,7 +164,7 @@ class Menu {
 
         if ((2 == $category->getLevel()) && ($category->countChild() > \Model\Product\Category\MenuEntity::MAX_CHILD)) {
             $child = new \Model\Menu\Entity([
-                'action' => \Model\Menu\Entity::ACTION_PRODUCT_CATEGORY,
+                'action' => \Model\Menu\Entity::ACTION_PRODUCT_ALL_CATEGORIES,
                 'name'   => 'Все разделы',
                 'item'   => [$category->getId()],
             ]);
