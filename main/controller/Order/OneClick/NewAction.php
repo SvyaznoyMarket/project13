@@ -18,6 +18,17 @@ class NewAction {
         $region = $user->getRegion();
         $cart = $user->getOneClickCart();
 
+        if ($region && in_array($region->getId(), [119623, 93746, 14974]) && \App::config()->newOrder && \App::abTest()->getTest('orders')) {
+            // АБ-тест для Ярославля и Воронежа
+            if ($region->getId() != 14974 && \App::abTest()->getTest('orders')->getChosenCase()->getKey() == 'new') {
+                return new \Http\RedirectResponse(\App::router()->generate('orderV3.one-click'));
+            }
+            // АБ-тест для Москвы
+            if ($region->getId() == 14974 && \App::abTest()->getTest('orders_moscow') && \App::abTest()->getTest('orders_moscow')->getChosenCase()->getKey() == 'new') {
+                return new \Http\RedirectResponse(\App::router()->generate('orderV3.one-click'));
+            }
+        }
+
         try {
             // корзина
             $cartProducts = $cart->getProducts();

@@ -494,11 +494,11 @@ return [
         'pattern' => '/order/new',
         'action'  => ['OrderV3\NewAction', 'execute'],
     ],
-    // оформление заказа: сохранение контактных данных
-/*    'orderV3.update.contact' => [
-        'pattern' => '/order-update-contact',
-        'action'  => ['OrderV3\UpdateContactAction', 'execute'],
-    ],*/
+    // оформление заказа: 1-й шаг - один клик
+    'orderV3.one-click' => [
+        'pattern' => '/order/new/one-click',
+        'action'  => ['OrderV3\NewAction', 'execute'],
+    ],
     // оформление заказа: 2-й шаг - выбор доставки
     'orderV3.delivery' => [
         'pattern' => '/order/delivery',
