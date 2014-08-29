@@ -144,7 +144,7 @@
     });
 
     $(body).on('click', function(){
-        $('.popupFl').hide();
+        if (window.location.pathname == '/order/complete') $('.popupFl').hide();
     });
 
 }(jQuery));
