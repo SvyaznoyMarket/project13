@@ -761,6 +761,7 @@ img[height="0"] {
     height: 35px;
     margin: 0 0 15px;
     padding-left: 10px;
+    padding-right: 10px;
     border: 1px solid #d3d3d3;
     line-height: 35px;
   }
@@ -1439,6 +1440,18 @@ img[height="0"] {
     background-image: url("data: image/png;base64, iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAAYdEVYdENyZWF0aW9uIFRpbWUAMjAuMTEuMjAxM1Han3MAAAG7SURBVEiJtZa9S8NAGIefXKOi9WvQIgjSSYouXZwULILO4p/g1s3OiqLY1erUTcTRQcS1WBB0cepSKC4GoSDWodaPYsyHwxniBzZpWl8Id8l7+T2/93IXTuEzShlmgSQwA4wSLMrABZCNpTgHUD7Ft9UQq5F+he5OUEPB1A0T6jrc12wMk3QsxZpSyjDXqXI2NqQQEgF9/wjTgtsHG91gQQDJob72iQOEBAz3KwBJAcyHu9on7kSP1JwXwIAI6j4chUQe4ju/UkIBoLe1iZk+hkgCxlf+HBIcMLkBg3HZL262GRCOSgBAtfAPgKl9t3+13HBo84BIQl4A17uygsCA0cXfH3BiXbbvVShuefpRG2anj2XbMSDn+Zv7PQnxiMYVOOU7K+ar++s9T3FvwOWS69JZ8+DbvTfgRXOdhqPuc5/uvQGO2Fe32oFv9/4A71W4OXDvy6e+xf0BALRDF1Y+aQqgAo+W5fFHrRbgqLk9adkAPAsg/6o39a6veH0DICeAbKVmY1rtEzctqNRsgKyIpcjpBmmtYvNUB6MFkGHBUx20io1ukI6lyClOspRhDvfYMhKQcYd7bMkDfABX0JEueuyW2AAAAABJRU5ErkJggg==");
     background-repeat: no-repeat;
     background-position: 0 0;
+  }
+  .customInput-defcheck + .customLabel {
+    padding: 0 0 0 20px;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAVUlEQVQoFWMsKCjw/Pfv3ywGBgYZICYEnjAxMaUx5OXlPf7+/ft/YgBIHUg9E9BoGQ4ODkI2gOWh6mRAmkgGo5qgQUbfgHjy48cPouIKqu4JIzlpDwAOtUVHIztiigAAAABJRU5ErkJggg==);
+    background-repeat: no-repeat;
+    background-position: 0 1px;
+  }
+  .customInput-defcheck:checked + .customLabel {
+    padding: 0 0 0 20px;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QjkwQUU2Q0YzMDExMTFFNEJBNzhCOTZCNDAwQUNDRjYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QjkwQUU2RDAzMDExMTFFNEJBNzhCOTZCNDAwQUNDRjYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpCOTBBRTZDRDMwMTExMUU0QkE3OEI5NkI0MDBBQ0NGNiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpCOTBBRTZDRTMwMTExMUU0QkE3OEI5NkI0MDBBQ0NGNiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PurB2d4AAAEfSURBVHjalJIxS8NAGIaf3GW4QMGhOBQCDu0sYtG5ggj+AsFBpINuIVucXJwKDoLo0D/g0slFcHcriCjq5mDGzibYy8UEJaFW2vhOdx/f89773Z3l+/62MaYPuMxXKIQ4wPO89yiK0irK+/J+Oz9BKTXTPo1HIBVK1fKtK+blSV76pLcd0vCmqJWQ+cwsTemepuj7E+TwkGSsEYvr05B+PENft0neBt8ezxfIh2MSp4nsXEFtqYDsYuFuZlFO4W4fPRrC6yVGNRAbA6z6ykTkMl59FdbOMXqMeOph6Q9o96aASSiTbO4glo8QTjZTq4ts7f55Ofbvgswgs5DN0dgCS1aDsB1Ec2/mM+TxwjiOqaKfvtDO/1IQBP/6e18CDABDoH+xJ03iWAAAAABJRU5ErkJggg==);
+    background-repeat: no-repeat;
+    background-position: 0 1px;
   }
 }
 /*---END----КНОПКА НАВЕРХ---------*/
@@ -5942,6 +5955,151 @@ img[height="0"] {
   }
 }
 /*---END----Личный кабинет пользователя---------*/
+/*---------Личный кабинет пользователя----------*/
+@media all {
+  .popup-auth {
+    border: 1px solid #777777;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    padding: 12px 0 0;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    width: 318px;
+  }
+  .popup-auth .close-auth {
+    background: url("/styles/popup-auth/img/closer.gif") no-repeat 50% 50% !important;
+    height: 41px;
+    width: 41px;
+  }
+  .authForm {
+    margin: 0 20px 0;
+  }
+  .authForm_fld {
+    margin-bottom: 20px;
+  }
+  .authForm_fld-hdn {
+    opacity: 0;
+    overflow: hidden;
+    height: 0;
+  }
+  .authForm_fld-scrll {
+    height: 310px;
+    overflow: hidden;
+  }
+  .authForm_t {
+    font-size: 24px;
+    margin: 10px 0 20px;
+  }
+  .authForm_it {
+    width: 100%;
+    font-size: 14px;
+    margin: 0 0 20px;
+  }
+  .authForm_is {
+    margin: 0 auto;
+    width: 200px;
+    display: block;
+    height: 45px;
+    font-size: 22px;
+  }
+  .authForm_accept {
+    color: #7d7d7d;
+    margin: 20px 0 0;
+    font-size: 11px;
+  }
+  .authForm_accept a {
+    text-decoration: underline;
+    color: #7d7d7d;
+  }
+  .authForm_lbl {
+    color: #7d7d7d;
+    margin: 0 0 2px;
+    display: block;
+  }
+  .authForm_sbscr {
+    background: #fde6c6;
+    margin: 0 0 20px 0;
+    padding: 10px 20px;
+    position: relative;
+    left: -20px;
+    width: 100%;
+  }
+  .authForm_hint {
+    position: relative;
+  }
+  .authForm_hint_tx {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    line-height: 35px;
+    color: #656565;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .authForm_hint .textfield {
+    padding-right: 65px;
+  }
+  .authForm_regcomplt {
+    color: #7d7d7d;
+    font-weight: bold;
+  }
+  .authForm_inn-hdn {
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    -webkit-opacity: 0;
+    opacity: 0;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    filter: alpha(opacity=0);
+    overflow: hidden;
+  }
+  .authForm_socn {
+    margin: 20px 0 0;
+    text-align: center;
+    font-size: 20px;
+  }
+  .authForm_socn_lst {
+    margin: 10px 0 0;
+    font-size: 0;
+  }
+  .authForm_socn_i {
+    display: inline-block;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    vertical-align: top;
+    margin-right: 10px;
+  }
+  .authForm_socn_i:last-child {
+    margin-right: 0;
+  }
+  .authForm_socn_lk {
+    display: inline-block;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    vertical-align: top;
+    background: url("/styles/popup-auth/img/fb.png") no-repeat 50% 50%;
+    height: 40px;
+    width: 40px;
+    text-indent: -9999px;
+  }
+  .authForm_socn_lk-vk {
+    background: url("/styles/popup-auth/img/vk.png") no-repeat 50% 50%;
+  }
+  .authAct {
+    height: 65px;
+    line-height: 65px;
+    background: #e6e6e6;
+    text-align: center;
+    font-size: 20px;
+    cursor: pointer;
+    -webkit-border-radius: 0 0 4px 4px;
+    -moz-border-radius: 0 0 4px 4px;
+    border-radius: 0 0 4px 4px;
+  }
+}
 @media all {
   .notBuying {
     position: relative;

@@ -7,17 +7,119 @@
 
 <div class="bPageLogin clearfix">
     <div class="bPageLogin_eLogo fl"><a href="/"></a></div>
-    <div class="bPageLogin_eContent bLoginPageForms fl">
-        <h1 class="bLoginPageForms_eTitle">хотите быть в курсе новостей от enter?</h1>
-        <div class="clear"></div>
-        <p class="bLoginPageForms_eDesc">Зарегистрируйтесь и получайте актуальную информацию<br/>
-            о новых поступлениях, акциях и распродажах!</p>
 
-        <div class="bFormLogin"><?= $page->render('form-register') ?></div>
-        <br/>
-        <br/>
-        <a class="font18 dashed jsShowLoginForm" href="#">У меня уже есть логин и пароль</a>
-        <div class="clearfix"><?= $page->render('form-forgot') ?></div>
-        <?= $page->render('form-login',['redirect_to'=>(isset($redirect_to)?$redirect_to:null)]) ?>
+    <div class="popup-auth" style="margin: 10px auto;">
+        <form class="authForm" action="" method="" accept-charset="utf-8">
+            <fieldset class="authForm_fld authForm_fld-scrll">
+                <!-- секция входа -->
+                <div class="authForm_inn">
+                    <div class="authForm_t legend">Вход в Enter</div>
+
+                    <input type="text" class="authForm_it textfield" name="" value="" placeholder="Email или телефон">
+
+                    <div class="authForm_hint">
+                        <input type="text" class="authForm_it textfield" name="" value="" placeholder="Пароль">
+                        <span class="authForm_hint_tx">забыли?</span>
+                    </div>
+
+                    <input type="submit" class="authForm_is btnsubmit" name="" value="Войти">
+
+                    <div class="authForm_socn">
+                        Войти через
+
+                        <ul class="authForm_socn_lst">
+                            <? if($oauthEnabled['facebook']): ?>
+                                <li class="authForm_socn_i">
+                                    <a class="authForm_socn_lk authForm_socn_lk-fb" href="<?= $page->url('user.login.external', ['providerName' => 'facebook' ]) ?>" >Войти через FB</a>
+                                </li>
+                            <? endif; ?>
+
+                            <? if ($oauthEnabled['vkontakte']): ?>
+                                <li class="authForm_socn_i">
+                                    <a class="authForm_socn_lk authForm_socn_lk-vk" href="<?= $page->url('user.login.external', ['providerName' => 'vkontakte' ]) ?>" >Войти через VK</a>
+                                </li>
+                            <? endif; ?>
+                        </ul>
+                    </div>
+                </div>
+                <!--/ секция входа -->
+
+                <!-- секция регистрации -->
+                <div class="authForm_inn authForm_inn-hdn">
+                    <div class="authForm_t legend">Регистрация</div>
+
+                    <!-- показываем при удачной регистрации, authForm_regbox скрываем -->
+                    <div class="authForm_regcomplt" style="display: none;">
+                        Пароль отправлен на email<br/>и на мобильный телефон.
+                    </div>
+                    <!--/ показываем при удачной регистрации, authForm_regbox скрываем -->
+
+                    <div class="authForm_regbox">
+                        <label class="authForm_lbl">Как к вам обращаться?</label>
+                    
+                        <input type="text" class="authForm_it textfield" name="" value="" placeholder="Имя" />
+
+                        <input type="text" class="authForm_it textfield" name="" value="" placeholder="Email" />
+
+                        <input type="text" class="authForm_it textfield" name="" value="" placeholder="Телефон" />
+
+                        <div class="authForm_sbscr">
+                            <input class="customInput customInput-defcheck jsCustomRadio" type="checkbox" name="subscribe" id="subscribe" checked="checked" />
+                            <label class="customLabel" for="subscribe">Подписаться на рассылку,<br/> получить скидку 300 рублей </label>
+                        </div>
+
+                        <input type="submit" class="authForm_is btnsubmit" name="" value="Регистрация" />
+
+                        <p class="authForm_accept">Нажимая кнопку «Регистрация», я подтверждаю<br/> свое согласие с <a href="/terms">Условиями продажи...</a></p>
+
+                        <div class="authForm_socn">
+                            Войти через
+
+                            <ul class="authForm_socn_lst">
+                                <? if($oauthEnabled['facebook']): ?>
+                                    <li class="authForm_socn_i">
+                                        <a class="authForm_socn_lk authForm_socn_lk-fb" href="<?= $page->url('user.login.external', ['providerName' => 'facebook' ]) ?>" >Войти через FB</a>
+                                    </li>
+                                <? endif; ?>
+
+                                <? if ($oauthEnabled['vkontakte']): ?>
+                                    <li class="authForm_socn_i">
+                                        <a class="authForm_socn_lk authForm_socn_lk-vk" href="<?= $page->url('user.login.external', ['providerName' => 'vkontakte' ]) ?>" >Войти через VK</a>
+                                    </li>
+                                <? endif; ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--/ секция регистрации -->
+            </fieldset>
+
+            <!-- секция восстановления пароля -->
+            <fieldset class="authForm_fld" style="display: none;">
+                <legend class="authForm_t legend">Восстановление пароля</legend>
+
+                <!-- показываем при удачном восстановлении пароля, authForm_regbox скрываем -->
+                <div class="authForm_regcomplt" style="display: none;">
+                    Пароль отправлен на email.
+                </div>
+                <!--/ показываем при удачном восстановлении пароля, authForm_regbox скрываем -->
+
+                <div class="authForm_regbox">
+                    <input type="text" class="authForm_it textfield" name="" value="" placeholder="Email или телефон">
+
+                    <input type="submit" class="authForm_is btnsubmit" name="" value="Отправить">
+                </div>
+            </fieldset>
+            <!--/ секция восстановления пароля -->
+        </form>
+
+        <!-- показываем этот текст в окне входа на сайт -->
+        <div class="authAct"><span class="brb-dt">Регистрация</span></div>
+
+        <!-- показываем этот текст в окне регистрации -->
+        <!-- div class="authAct"><span class="brb-dt">Вход в Enter</span></div-->
+
+        <!-- показываем этот текст в окне восстановления пароля -->
+        <!-- <div class="authAct">Вспомнили? <span class="brb-dt">Вход в Enter</span></div> -->
     </div>
 </div>
