@@ -5224,6 +5224,13 @@ img[height="0"] {
   .orderLn_row:last-child {
     margin-bottom: 0;
   }
+  .orderLn_row_imgpay {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+  }
   .orderLn_row .customSel_lst-pay {
     right: 0;
     text-align: left;
@@ -5245,6 +5252,10 @@ img[height="0"] {
     padding: 5px 5px 10px;
     text-align: center;
     background: rgba(252, 171, 47, 0.2);
+  }
+  .orderLn_row-bg-grey {
+    background: #efefef;
+    padding: 5px;
   }
   .orderLn_row-pay {
     width: 200px;

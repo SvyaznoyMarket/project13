@@ -142,6 +142,31 @@ return function(
 
             <? endforeach; ?>
 
+            <div class="orderLn clearfix" data-order-id="7938680" data-order-number="XE016396">
+                <div class="orderLn_l">
+                    <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> COXE-016396</div>
+                    
+                    <ul class="orderLn_lst">
+                        <li class="orderLn_lst_i">Apple iPhone 4S 8 ГБ черный 1 шт.</li>
+                        <li class="orderLn_lst_i">Sniper Elite 3 1 шт.</li>
+                    </ul>
+                </div>
+
+                <div class="orderLn_c">
+                    <div>Самовывоз 31 Aug 2014 16:00…21:00</div>
+                </div>
+                
+                <div class="orderLn_r">
+                    <div class="orderLn_row orderLn_row-summ">
+                        <span class="summT">Сумма заказа:</span>
+                        <span class="summP">15 980 <span class="rubl">p</span></span>
+                    </div>
+
+                    <div class="orderLn_row orderLn_row-bg orderLn_row-bg-grey">
+                        <img class="orderLn_row_imgpay" src="/styles/order/img/payment.png" alt="">
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="orderCompl clearfix">
