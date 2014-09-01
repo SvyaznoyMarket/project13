@@ -25,13 +25,13 @@
     <meta name="HandheldFriendly" content="true" />
     <meta name="format-detection" content="telephone=no" />
 
-    <link href="/styles/mobidengi/mobidengi.css" rel="stylesheet" type="text/css" />
-
     <?= $page->slotStylesheet() ?>
     <?= $page->slotHeadJavascript() ?>
     <?= $page->slotRelLink() ?>
     <?= $page->slotGoogleAnalytics() ?>
     <?= $page->slotMetaOg() ?>
+
+    <link href="/styles/mobidengi/mobidengi.css" rel="stylesheet" type="text/css" />
 
 </head>
 
