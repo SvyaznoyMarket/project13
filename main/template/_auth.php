@@ -13,7 +13,7 @@ if (!isset($form)) $form = new \View\User\LoginForm();
     <div class="popup popup-auth" id="auth-block">
         <span class="close close-auth">Закрыть</span>
 
-        <form class="authForm jsLoginForm" action="<?= $page->url($form->getRoute(), ['redirect_to' => isset($redirect_to) ? $redirect_to : null]) ?>" method="post">
+        <form class="authForm js-authForm js-formContainer" action="<?= $page->url($form->getRoute(), ['redirect_to' => isset($redirect_to) ? $redirect_to : null]) ?>" method="post">
             <fieldset class="authForm_fld authForm_fld-scrll">
                 <!-- секция входа -->
                 <div class="authForm_inn">
@@ -23,7 +23,13 @@ if (!isset($form)) $form = new \View\User\LoginForm();
 
                     <div class="authForm_hint">
                         <input type="password" class="authForm_it textfield" name="signin[password]" value="" placeholder="Пароль">
-                        <span class="authForm_hint_tx">забыли?</span>
+                        <span
+                            class="authForm_hint_tx js-resetLink"
+                            data-show-container="#auth-block .js-resetForm"
+                            data-hide-container="#auth-block .js-formContainer"
+                            data-show-link="#auth-block .js-authLink"
+                            data-hide-link="#auth-block .js-link"
+                        >забыли?</span>
                     </div>
 
                     <input type="submit" class="authForm_is btnsubmit" name="" data-loading-value="Вхожу..." value="Войти">
@@ -50,10 +56,10 @@ if (!isset($form)) $form = new \View\User\LoginForm();
             </fieldset>
         </form>
 
-        <form class="authForm jsRegisterForm" action="<?= $page->url('user.register') ?>" method="post" style="display: none">
+        <form class="authForm js-registerForm js-formContainer" action="<?= $page->url('user.register') ?>" method="post" style="display: none">
             <fieldset class="authForm_fld authForm_fld-scrll">
                 <!-- секция регистрации -->
-                <div class="authForm_inn authForm_inn-hdn">
+                <div class="authForm_inn">
                     <div class="authForm_t legend">Регистрация</div>
 
                     <!-- показываем при удачной регистрации, authForm_regbox скрываем -->
@@ -103,9 +109,9 @@ if (!isset($form)) $form = new \View\User\LoginForm();
             </fieldset>
         </form>
 
-        <form class="authForm jsResetPwdForm" action="<?= $page->url('user.forgot') ?>" method="post" style="display: none">
+        <form class="authForm js-resetForm js-formContainer" action="<?= $page->url('user.forgot') ?>" method="post" style="display: none">
             <!-- секция восстановления пароля -->
-            <fieldset class="authForm_fld" style="display: none;">
+            <fieldset class="authForm_fld">
                 <legend class="authForm_t legend">Восстановление пароля</legend>
 
                 <!-- показываем при удачном восстановлении пароля, authForm_regbox скрываем -->
@@ -124,7 +130,23 @@ if (!isset($form)) $form = new \View\User\LoginForm();
         </form>
 
         <!-- показываем этот текст в окне входа на сайт -->
-        <div class="authAct"><span class="brb-dt">Регистрация</span></div>
+        <div class="authAct">
+            <span
+                class="brb-dt js-registerLink js-link"
+                data-show-container="#auth-block .js-registerForm"
+                data-hide-container="#auth-block .js-formContainer"
+                data-show-link="#auth-block .js-authLink"
+                data-hide-link="#auth-block .js-link"
+            >Регистрация</span>
+            <span
+                class="brb-dt js-authLink js-link"
+                data-show-container="#auth-block .js-authForm"
+                data-hide-container="#auth-block .js-formContainer"
+                data-show-link="#auth-block .js-registerLink"
+                data-hide-link="#auth-block .js-link"
+                style="display: none"
+            >Войти</span>
+        </div>
 
         <!-- показываем этот текст в окне регистрации -->
         <!-- div class="authAct"><span class="brb-dt">Вход в Enter</span></div-->
