@@ -42,7 +42,7 @@
 
                 <div class="landing_hd_top-rside"> 
                     <span class="landing_hd_top_lk mod_mastercard">MasterCard</span> 
-                    <a href="/" class="landing_hd_top_lk mod_sotmarket">Enter</a> 
+                    <a href="/" class="landing_hd_top_lk mod_enter">Enter</a> 
                 </div> 
             </div> 
 
@@ -480,7 +480,7 @@
                                             <span>Тип наушников</span> 
                                         </div> 
                                     </div> 
-                                    
+
                                     <div class="landing_gift_descr-specs-row"> 
                                         <div class="landing_gift_descr-specs-value">Sennheiser</div>
                                         <div class="landing_gift_descr-specs-type">
