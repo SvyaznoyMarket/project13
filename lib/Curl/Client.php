@@ -298,7 +298,7 @@ class Client {
                         $ready = curl_multi_select($this->isMultiple, $timeout);
                     } else {
                         //$this->logger->debug(microtime(true) . ':' . (0 === $retryTimeout ? '' : ' все попытки исчерпаны,') . ' ждем ответа', ['curl']);
-                        $ready = curl_multi_select($this->isMultiple, 30);
+                        $ready = curl_multi_select($this->isMultiple, $timeout);
                     }
 
                     if (0 === $ready) {
