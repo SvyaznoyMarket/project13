@@ -13,7 +13,7 @@ if (!isset($form)) $form = new \View\User\LoginForm();
     <div class="popup popup-auth" id="auth-block">
         <span class="close close-auth">Закрыть</span>
 
-        <form class="authForm jsLoginForm" action="<?= $page->url($form->getRoute(), ['redirect_to' => isset($redirect_to) ? $redirect_to : null]) ?>" method="post" accept-charset="utf-8">
+        <form class="authForm jsLoginForm" action="<?= $page->url($form->getRoute(), ['redirect_to' => isset($redirect_to) ? $redirect_to : null]) ?>" method="post">
             <fieldset class="authForm_fld authForm_fld-scrll">
                 <!-- секция входа -->
                 <div class="authForm_inn">
@@ -26,7 +26,7 @@ if (!isset($form)) $form = new \View\User\LoginForm();
                         <span class="authForm_hint_tx">забыли?</span>
                     </div>
 
-                    <input type="submit" class="authForm_is btnsubmit" name="" value="Войти">
+                    <input type="submit" class="authForm_is btnsubmit" name="" data-loading-value="Вхожу..." value="Войти">
 
                     <div class="authForm_socn">
                         Войти через
@@ -47,7 +47,11 @@ if (!isset($form)) $form = new \View\User\LoginForm();
                     </div>
                 </div>
                 <!--/ секция входа -->
+            </fieldset>
+        </form>
 
+        <form class="authForm jsRegisterForm" action="<?= $page->url('user.register') ?>" method="post" style="display: none">
+            <fieldset class="authForm_fld authForm_fld-scrll">
                 <!-- секция регистрации -->
                 <div class="authForm_inn authForm_inn-hdn">
                     <div class="authForm_t legend">Регистрация</div>
@@ -80,7 +84,7 @@ if (!isset($form)) $form = new \View\User\LoginForm();
                             Войти через
 
                             <ul class="authForm_socn_lst">
-                                <? if($oauthEnabled['facebook']): ?>
+                                <? if ($oauthEnabled['facebook']): ?>
                                     <li class="authForm_socn_i">
                                         <a class="authForm_socn_lk authForm_socn_lk-fb" href="<?= $page->url('user.login.external', ['providerName' => 'facebook' ]) ?>" >Войти через FB</a>
                                     </li>
@@ -97,7 +101,9 @@ if (!isset($form)) $form = new \View\User\LoginForm();
                 </div>
                 <!--/ секция регистрации -->
             </fieldset>
+        </form>
 
+        <form class="authForm jsResetPwdForm" action="<?= $page->url('user.forgot') ?>" method="post" style="display: none">
             <!-- секция восстановления пароля -->
             <fieldset class="authForm_fld" style="display: none;">
                 <legend class="authForm_t legend">Восстановление пароля</legend>
