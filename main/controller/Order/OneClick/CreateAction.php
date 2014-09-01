@@ -40,6 +40,9 @@ class CreateAction {
         $cartProduct = reset($cartProducts) ?: null;
 
         try {
+
+            (new \Controller\OrderV3\OrderV3())->logger(['action' => 'create-old-delivery-one-click']);
+
             // проверка на пустую корзину
             if (!(bool)$cartProducts) {
                 throw new \Exception('Корзина пустая');

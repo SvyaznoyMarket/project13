@@ -153,6 +153,8 @@ class NewAction {
             // массив данных для JS
             $bonusCardsData = \Controller\Order\NewAction::getBonusCardsData($request, $bonusCards, $userBonusCards);
 
+            (new \Controller\OrderV3\OrderV3())->logger(['action' => 'view-old-delivery-one-click']);
+
             $page = new \View\Order\NewPage();
             $page->setParam('paypalECS', false);
             $page->setParam('oneClick', true);
