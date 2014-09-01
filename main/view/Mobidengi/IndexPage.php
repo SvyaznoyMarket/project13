@@ -4,7 +4,7 @@ namespace View\Mobidengi;
 
 class IndexPage extends \View\DefaultLayout {
     /** @var string */
-    protected $layout  = 'layout-oneColumn';
+    protected $layout  = 'layout-landing';
 
     public function prepare() {
 
