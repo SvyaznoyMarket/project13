@@ -52,7 +52,6 @@ return function(
                                 <? foreach ($bonusCards as $key => $card) : ?>
 
                                     <div class="bonusCnt_i" data-eq="<?= $key ?>">
-    <!--                                    <img class="bonusCnt_img" src="/styles/order/img/sBank.png" alt="" />-->
                                         <img class="bonusCnt_img" src="/styles/order/img/sClub.png" alt="" />
                                         <span class="bonusCnt_tx"><span class="brb-dt"><?= $card->getName() ?></span></span>
                                     </div>
@@ -79,10 +78,8 @@ return function(
                         <? endforeach ; ?>
                     </div>
                 </div>
+                <? endif ?>
             </fieldset>
-
-            <? endif ?>
-
 
             <? if (!$userEntity) : ?>
 

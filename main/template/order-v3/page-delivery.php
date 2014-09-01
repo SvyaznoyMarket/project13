@@ -108,8 +108,14 @@ return function(
                 <div class="orderCol_f_l" style="display: none">
                     <div class="orderCol_f_t">Код скидки, подарочный сертификат</div>
 
-                    <input class="cuponField textfieldgrey" type="text" name="" value="" placeholder="" />
-                    <button class="cuponBtn btnLightGrey jsApplyDiscount">Применить</button>
+                    <input class="cuponField textfieldgrey" type="text" name="" value="" />
+
+                    <div class="cuponPin">
+                        <label class="cuponLbl">PIN:</label>
+                        <input class="cuponField cuponPin_it textfieldgrey" type="text" name="" value="" />
+                    </div>
+                    
+                    <div><button class="cuponBtn btnLightGrey jsApplyDiscount">Применить</button></div>
                 </div>
 
                 <div class="orderCol_f_r">
