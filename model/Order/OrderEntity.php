@@ -268,11 +268,11 @@ class OrderEntity {
         if (isset($arr['user_info']['address']['kladr_id']) && $arr['user_info']['address']['kladr_id'] !== '') $this->kladr_id = (string)$arr['user_info']['address']['kladr_id'];
         if (isset($arr['user_info']['bonus_card_number']) && $arr['user_info']['bonus_card_number'] !== '') $this->bonus_card_number = preg_replace('/\s+/','',(string)$arr['user_info']['bonus_card_number']);
 
-        $this->address = sprintf('%s, %s, д. %s, кв. %s', $regionName, $this->address_street, $this->address_building, $this->address_apartment);
+        if ($this->shop_id === null) $this->address = sprintf('%s, %s, д. %s, кв. %s', $regionName, $this->address_street, $this->address_building, $this->address_apartment);
 
         if (isset($arr['order']['comment']) && $arr['order']['comment'] !== '') $this->extra = (string)$arr['order']['comment'];
 
-        if (isset($arr['order']['action_list']) && is_array($arr['order']['action_list']) && (bool)$arr['order']['action_list']) $this->action_list = $arr['order']['action_list'];
+        if (isset($arr['order']['actions']) && is_array($arr['order']['actions']) && (bool)$arr['order']['actions']) $this->action_list = $arr['order']['actions'];
 
         if (\App::config()->order['enableMetaTag']) $this->meta_data = $this->getMetaData();
 

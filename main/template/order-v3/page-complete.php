@@ -41,7 +41,7 @@ return function(
                             <? foreach ($order->getProduct() as $key => $product): ?>
                             <? /** @var $product \Model\Order\Product\Entity */?>
                                 <? if (isset($products[$product->getId()])) : ?>
-                                    <li class="orderLn_lst_i"><?= $products[$product->getId()]->getWebName() == '' ? $products[$product->getId()]->getName():  $products[$product->getId()]->getWebName(); ?> <?= $product->getQuantity() ?> шт.</li>
+                                    <li class="orderLn_lst_i"><?= $products[$product->getId()]->getPrefix() == '' ? mb_strimwidth($products[$product->getId()]->getName(), 0, 40, '…') :  mb_strimwidth($products[$product->getId()]->getPrefix(), 0, 40, '…'); ?> <?= $product->getQuantity() ?> шт.</li>
                                 <? endif ?>
                                 <? if ($key == 2) : ?>
                                     <? $orderProductsString = $helper->numberChoiceWithCount(count($order->getProduct()) - 2, ['товар', 'товара', 'товаров']) ?>
@@ -50,7 +50,7 @@ return function(
                                     <? else : ?>
                                         <li class="orderLn_lst_i">и ещё <?= $orderProductsString ?></li>
                                     <? endif; ?>
-                                <? continue; endif; ?>
+                                <? break; endif; ?>
                             <? endforeach ?>
                         </ul>
 
@@ -161,7 +161,7 @@ return function(
 
             <? endforeach; ?>
 
-            <div class="orderLn clearfix" data-order-id="7938680" data-order-number="XE016396">
+            <!--<div class="orderLn clearfix" data-order-id="7938680" data-order-number="XE016396">
                 <div class="orderLn_l">
                     <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> COXE-016396</div>
                     
@@ -185,7 +185,7 @@ return function(
                         <img class="orderLn_row_imgpay" src="/styles/order/img/payment.png" alt="">
                     </div>
                 </div>
-            </div>
+            </div>-->
         </div>
 
         <div class="orderCompl clearfix">

@@ -110,7 +110,7 @@ return function(
 
                     <input class="cuponField textfieldgrey" type="text" name="" value="" />
 
-                    <div class="cuponPin">
+                    <div class="cuponPin" style="display: none">
                         <label class="cuponLbl">PIN:</label>
                         <input class="cuponField cuponPin_it textfieldgrey" type="text" name="" value="" />
                     </div>
