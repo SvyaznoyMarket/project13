@@ -4583,8 +4583,9 @@ img[height="0"] {
   .orderCnt_t {
     margin: 10px 0 20px;
   }
-  .orderCnt .btnLightGrey {
+  .orderCnt .cuponBtn {
     min-height: 26px;
+    width: 108px;
     line-height: 25px;
   }
   .orderCnt img {
@@ -4676,8 +4677,23 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    width: 138px;
-    margin: 0 5px 0 0;
+    width: 108px;
+    padding: 0;
+    text-align: center;
+    margin: 0 6px 5px 0;
+  }
+  .orderCol .cuponPin {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    line-height: 26px;
+  }
+  .orderCol .cuponPin_it {
+    width: 48px;
+    padding: 0;
+    text-align: center;
   }
   .orderCheck {
     clear: both;
