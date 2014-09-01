@@ -323,7 +323,10 @@
 				onLoad: function() {
 					authBlock.find('input:first').focus();
 				},
-				onClose: removeErrors
+                onClose: function() {
+                    removeErrors();
+                    authBlock.trigger('changeState', ['default']);
+                }
 			});
 
 			return false;

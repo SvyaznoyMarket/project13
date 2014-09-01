@@ -10,10 +10,10 @@ if (!isset($form)) $form = new \View\User\LoginForm();
 
 <noindex>
     <!-- Registration -->
-    <div class="popup popup-auth" id="auth-block">
+    <div class="popup popup-auth" data-state="default" id="auth-block">
         <span class="close close-auth">Закрыть</span>
 
-        <form class="authForm js-authForm js-formContainer" action="<?= $page->url($form->getRoute(), ['redirect_to' => isset($redirect_to) ? $redirect_to : null]) ?>" method="post">
+        <form class="authForm authForm_login js-authForm js-formContainer" data-state="default" action="<?= $page->url($form->getRoute(), ['redirect_to' => isset($redirect_to) ? $redirect_to : null]) ?>" method="post">
             <fieldset class="authForm_fld authForm_fld-scrll">
                 <!-- секция входа -->
                 <div class="authForm_inn">
@@ -24,11 +24,8 @@ if (!isset($form)) $form = new \View\User\LoginForm();
                     <div class="authForm_hint">
                         <input type="password" class="authForm_it textfield" name="signin[password]" value="" placeholder="Пароль">
                         <span
-                            class="authForm_hint_tx js-resetLink"
-                            data-show-container="#auth-block .js-resetForm"
-                            data-hide-container="#auth-block .js-formContainer"
-                            data-show-link="#auth-block .js-authLink"
-                            data-hide-link="#auth-block .js-link"
+                            class="authForm_hint_tx authForm_resetLink js-link"
+                            data-value="<?= $page->json(['target' => '#auth-block', 'state' => 'reset']) ?>"
                         >забыли?</span>
                     </div>
 
@@ -56,7 +53,7 @@ if (!isset($form)) $form = new \View\User\LoginForm();
             </fieldset>
         </form>
 
-        <form class="authForm js-registerForm js-formContainer" action="<?= $page->url('user.register') ?>" method="post" style="display: none">
+        <form class="authForm authForm_register js-registerForm js-formContainer" action="<?= $page->url('user.register') ?>" method="post" style="/*display: none*/">
             <fieldset class="authForm_fld authForm_fld-scrll">
                 <!-- секция регистрации -->
                 <div class="authForm_inn">
@@ -109,7 +106,7 @@ if (!isset($form)) $form = new \View\User\LoginForm();
             </fieldset>
         </form>
 
-        <form class="authForm js-resetForm js-formContainer" action="<?= $page->url('user.forgot') ?>" method="post" style="display: none">
+        <form class="authForm authForm_reset js-resetForm js-formContainer" action="<?= $page->url('user.forgot') ?>" method="post" style="/*display: none*/">
             <!-- секция восстановления пароля -->
             <fieldset class="authForm_fld">
                 <legend class="authForm_t legend">Восстановление пароля</legend>
@@ -132,19 +129,12 @@ if (!isset($form)) $form = new \View\User\LoginForm();
         <!-- показываем этот текст в окне входа на сайт -->
         <div class="authAct">
             <span
-                class="brb-dt js-registerLink js-link"
-                data-show-container="#auth-block .js-registerForm"
-                data-hide-container="#auth-block .js-formContainer"
-                data-show-link="#auth-block .js-authLink"
-                data-hide-link="#auth-block .js-link"
+                class="brb-dt authForm_registerLink js-link"
+                data-value="<?= $page->json(['target' => '#auth-block', 'state' => 'register']) ?>"
             >Регистрация</span>
             <span
-                class="brb-dt js-authLink js-link"
-                data-show-container="#auth-block .js-authForm"
-                data-hide-container="#auth-block .js-formContainer"
-                data-show-link="#auth-block .js-registerLink"
-                data-hide-link="#auth-block .js-link"
-                style="display: none"
+                class="brb-dt authForm_authLink js-link"
+                data-value="<?= $page->json(['target' => '#auth-block', 'state' => 'default']) ?>"
             >Войти</span>
         </div>
 

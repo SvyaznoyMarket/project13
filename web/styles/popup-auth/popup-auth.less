@@ -15,6 +15,33 @@
 				width: 41px;
 			}
 		}
+
+        /* форма авторизации */
+        &[data-state="default"], &.state_default {
+            .authForm_login { display: block; }
+            .authForm_reset { display: none; }
+            .authForm_register { display: none; }
+            .authForm_authLink { display: none; }
+            .authForm_registerLink { display: inline; }
+        }
+
+        /* форма регистрации */
+        &[data-state="register"], &.state_register {
+            .authForm_login { display: none; }
+            .authForm_reset { display: none; }
+            .authForm_register { display: block; }
+            .authForm_authLink { display: inline; }
+            .authForm_registerLink { display: none; }
+        }
+
+        /* форма сброса пароля */
+        &[data-state="reset"], &.state_reset {
+            .authForm_login { display: none; }
+            .authForm_reset { display: block; }
+            .authForm_register { display: none; }
+            .authForm_authLink { display: inline; }
+            .authForm_registerLink { display: none; }
+        }
 	}
 }
 

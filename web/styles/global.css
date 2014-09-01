@@ -5967,11 +5967,74 @@ img[height="0"] {
     -moz-border-radius: 4px;
     border-radius: 4px;
     width: 318px;
+    /* форма авторизации */
+    /* форма регистрации */
+    /* форма сброса пароля */
   }
   .popup-auth .close-auth {
     background: url("/styles/popup-auth/img/closer.gif") no-repeat 50% 50% !important;
     height: 41px;
     width: 41px;
+  }
+  .popup-auth[data-state="default"] .authForm_login,
+  .popup-auth.state_default .authForm_login {
+    display: block;
+  }
+  .popup-auth[data-state="default"] .authForm_reset,
+  .popup-auth.state_default .authForm_reset {
+    display: none;
+  }
+  .popup-auth[data-state="default"] .authForm_register,
+  .popup-auth.state_default .authForm_register {
+    display: none;
+  }
+  .popup-auth[data-state="default"] .authForm_authLink,
+  .popup-auth.state_default .authForm_authLink {
+    display: none;
+  }
+  .popup-auth[data-state="default"] .authForm_registerLink,
+  .popup-auth.state_default .authForm_registerLink {
+    display: inline;
+  }
+  .popup-auth[data-state="register"] .authForm_login,
+  .popup-auth.state_register .authForm_login {
+    display: none;
+  }
+  .popup-auth[data-state="register"] .authForm_reset,
+  .popup-auth.state_register .authForm_reset {
+    display: none;
+  }
+  .popup-auth[data-state="register"] .authForm_register,
+  .popup-auth.state_register .authForm_register {
+    display: block;
+  }
+  .popup-auth[data-state="register"] .authForm_authLink,
+  .popup-auth.state_register .authForm_authLink {
+    display: inline;
+  }
+  .popup-auth[data-state="register"] .authForm_registerLink,
+  .popup-auth.state_register .authForm_registerLink {
+    display: none;
+  }
+  .popup-auth[data-state="reset"] .authForm_login,
+  .popup-auth.state_reset .authForm_login {
+    display: none;
+  }
+  .popup-auth[data-state="reset"] .authForm_reset,
+  .popup-auth.state_reset .authForm_reset {
+    display: block;
+  }
+  .popup-auth[data-state="reset"] .authForm_register,
+  .popup-auth.state_reset .authForm_register {
+    display: none;
+  }
+  .popup-auth[data-state="reset"] .authForm_authLink,
+  .popup-auth.state_reset .authForm_authLink {
+    display: inline;
+  }
+  .popup-auth[data-state="reset"] .authForm_registerLink,
+  .popup-auth.state_reset .authForm_registerLink {
+    display: none;
   }
   .authForm {
     margin: 0 20px 0;

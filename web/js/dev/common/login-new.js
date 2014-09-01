@@ -1,41 +1,51 @@
 ;(function( ENTER ) {
 	var
-        body = $('body'),
-		authBlock = $('#auth-block'),
-		resetForm = $('.js-resetForm'),
-		registerForm = $('.js-registerForm'),
-		loginForm = $('.js-loginForm'),
+		$authBlock = $('#auth-block'),
 
         init = function() {
-            $('.js-resetLink, .js-authLink, .js-registerLink').on('click', function(e) {
+            // изменение состояния блока авторизации
+            $authBlock.on('changeState', function(e, state) {
                 var
-                    $el = $(e.target),
-                    $hideContainer = $($el.data('hideContainer')),
-                    $showContainer = $($el.data('showContainer')),
-                    $hideLink = $($el.data('hideLink')),
-                    $showLink = $($el.data('showLink'))
+                    $el = $(this)
                 ;
 
-                console.info({showLink: $showLink});
-                if ($showLink.length) {
-                    $hideLink.hide();
-                    $showLink.show();
+                console.info({'message': 'authBlock.changeState', 'state': state});
+
+                if (state) {
+                    var
+                        oldClass = $el.attr('data-state') ? ('state_' + $el.attr('data-state')) : null,
+                        newClass = 'state_' + state
+                    ;
+
+                    oldClass && $el.removeClass(oldClass);
+                    $el.addClass(newClass);
+                    $el.attr('data-state', state);
                 }
+            });
 
-                $hideContainer.slideUp('fast');
-                $showContainer.slideDown('fast');
-            })
+            // клик по ссылкам
+            $authBlock.find('.js-link').on('click', function(e) {
+                var
+                    $el = $(e.target),
+                    $target = $($el.data('value').target),
+                    state = $el.data('value').state
+                ;
+
+                console.info({'$target': $target, 'state': state});
+                $target.trigger('changeState', [state]);
+            });
+
+            // отправка форм
+            $('.js-resetForm, .js-authForm, js-registerForm').on('submit', function(e) {
+                var
+                    $el = $(e.target)
+                    ;
+
+                console.info($el);
+
+                e.preventDefault();
+            });
         };
-
-        $('.js-resetForm, .js-authForm, js-registerForm').on('submit', function(e) {
-            var
-                $el = $(e.target)
-            ;
-
-            console.info($el);
-
-            e.preventDefault();
-        });
     ;
 
 	$(document).ready(function() {
