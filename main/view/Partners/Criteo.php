@@ -93,6 +93,7 @@ class Criteo {
                     break;
 
                 case "order.complete":
+                case "orderV3.complete":
                     $viewEvent = 'trackTransaction';
                     $orders = $this->getParam('orders');
                     foreach($orders as $ord) {

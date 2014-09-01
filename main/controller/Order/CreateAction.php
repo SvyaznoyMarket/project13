@@ -38,6 +38,9 @@ class CreateAction {
         $cookies = [];
 
         try {
+
+            (new \Controller\OrderV3\OrderV3())->logger(['action' => 'create-old-delivery']);
+
             // проверка на пустую корзину
             if ($cart->isEmpty()) {
                 throw new \Exception('Корзина пустая');

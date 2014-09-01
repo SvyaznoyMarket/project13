@@ -203,7 +203,7 @@ class DeliveryAction extends OrderV3 {
                 $changes['orders'] = array(
                     $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
                 );
-                $changes['orders'][$data['params']['block_name']]['discounts'][] = array('number' => $data['params']['number'], 'name' => null, 'type' => null, 'discount' => null);
+                $changes['orders'][$data['params']['block_name']]['discounts'][] = ['number' => $data['params']['number'], 'name' => null, 'type' => null, 'discount' => null];
                 break;
             case 'deleteDiscount':
                 $changes['orders'] = array(
@@ -212,6 +212,12 @@ class DeliveryAction extends OrderV3 {
                 $changes['orders'][$data['params']['block_name']]['discounts'] = array_filter($changes['orders'][$data['params']['block_name']]['discounts'], function($discount) use ($data) {
                     return $discount['number'] != $data['params']['number'];
                 });
+                break;
+            case 'applyCertificate':
+                $changes['orders'] = [
+                    $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
+                ];
+                $changes['orders'][$data['params']['block_name']]['certificate'] = ['code' => $data['params']['code'], 'pin' => $data['params']['pin']];
                 break;
         }
 

@@ -30,9 +30,6 @@
             break;*/
     }
     ?>
-    <?
-    ?>
-    <?= $page->tryRender('order/partner-counter/_ad4u-complete', array('orders' => $orders)) ?>
     <?//= $page->tryRender('order/partner-counter/_reactive-complete', array('orders' => $orders)) ?>
     <?= $page->tryRender('order/partner-counter/_cityads-complete-counter', array('orders' => $orders)) ?>
     <? /*foreach ($orders as $order) { ?>

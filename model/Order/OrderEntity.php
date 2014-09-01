@@ -170,6 +170,10 @@ class OrderEntity {
      * @var array
      */
     private $action_list;
+    /** КЛАДР - идентификатор адреса
+     * @var string
+     */
+    private $kladr_id;
 
     /**
      * @param array $arr
@@ -261,13 +265,14 @@ class OrderEntity {
         if (isset($arr['user_info']['address']['street']) && $arr['user_info']['address']['street'] !== '') $this->address_street = (string)$arr['user_info']['address']['street'];
         if (isset($arr['user_info']['address']['building']) && $arr['user_info']['address']['building'] !== '') $this->address_building = (string)$arr['user_info']['address']['building'];
         if (isset($arr['user_info']['address']['apartment']) && $arr['user_info']['address']['apartment'] !== '') $this->address_apartment = (string)$arr['user_info']['address']['apartment'];
-        if (isset($arr['user_info']['bonus_card']) && $arr['user_info']['bonus_card'] !== '') $this->bonus_card_number = (string)$arr['user_info']['bonus_card'];
+        if (isset($arr['user_info']['address']['kladr_id']) && $arr['user_info']['address']['kladr_id'] !== '') $this->kladr_id = (string)$arr['user_info']['address']['kladr_id'];
+        if (isset($arr['user_info']['bonus_card_number']) && $arr['user_info']['bonus_card_number'] !== '') $this->bonus_card_number = preg_replace('/\s+/','',(string)$arr['user_info']['bonus_card_number']);
 
-        $this->address = sprintf('%s, %s, д. %s, кв. %s', $regionName, $this->address_street, $this->address_building, $this->address_apartment);
+        if ($this->shop_id === null) $this->address = sprintf('%s, %s, д. %s, кв. %s', $regionName, $this->address_street, $this->address_building, $this->address_apartment);
 
         if (isset($arr['order']['comment']) && $arr['order']['comment'] !== '') $this->extra = (string)$arr['order']['comment'];
 
-        if (isset($arr['order']['action_list']) && is_array($arr['order']['action_list']) && (bool)$arr['order']['action_list']) $this->action_list = $arr['order']['action_list'];
+        if (isset($arr['order']['actions']) && is_array($arr['order']['actions']) && (bool)$arr['order']['actions']) $this->action_list = $arr['order']['actions'];
 
         if (\App::config()->order['enableMetaTag']) $this->meta_data = $this->getMetaData();
 
@@ -305,15 +310,15 @@ class OrderEntity {
                         }
                     }
                 }
-                $data['meta_data'] = \App::partner()->fabricateCompleteMeta(
-                    isset($data['meta_data']) ? $data['meta_data'] : [],
+                $data = \App::partner()->fabricateCompleteMeta(
+                    isset($data) ? $data : [],
                     \App::partner()->fabricateMetaByPartners($partners, $product)
                 );
-                $data['meta_data']['user_agent'] = $request->server->get('HTTP_USER_AGENT');
-                $data['meta_data']['kiss_session'] = $request->request->get('kiss_session');
-                $data['meta_data']['last_partner'] = $request->cookies->get('last_partner');
+                $data['user_agent'] = $request->server->get('HTTP_USER_AGENT');
+                $data['kiss_session'] = $request->request->get('kiss_session');
+                $data['last_partner'] = $request->cookies->get('last_partner');
             }
-            \App::logger()->info(sprintf('Создается заказ от партнеров %s', json_encode($data['meta_data']['partner'])), ['order', 'partner']);
+            \App::logger()->info(sprintf('Создается заказ от партнеров %s', json_encode($data['partner'])), ['order', 'partner']);
         } catch (\Exception $e) {
             \App::logger()->error($e, ['order_v3', 'partner']);
         }

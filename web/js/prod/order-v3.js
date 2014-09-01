@@ -1029,7 +1029,11 @@
                 type: 'POST',
                 data: {
                     'action' : 'changeAddress',
-                    'params' : { street: address.street.type + ' ' + address.street.name, building: address.building.name, apartment: address.apartment.name }
+                    'params' : {
+                        street: address.street.type + ' ' + address.street.name,
+                        building: address.building.name,
+                        apartment: address.apartment.name,
+                        kladr_id: address.building.id ? address.building.id : address.street.id ? address.street.id : address.city.id }
                 }
             }).fail(function(jqXHR){
                 var response = $.parseJSON(jqXHR.responseText);
@@ -1213,10 +1217,9 @@
                 $input.hide();
 
             } else {
-                console.log('spinner', spinner);
                 if (spinner) spinner.spin($('.kladr_spinner')[0]);
                 address = new Address({});
-                console.log('Определение адреса КЛАДР, запрос', $.extend(config, {limit: 1, type: $.kladr.type.city, name: $('#region-name').data('value')}));
+//                console.log('Определение адреса КЛАДР, запрос', $.extend(config, {limit: 1, type: $.kladr.type.city, name: $('#region-name').data('value')}));
                 $.kladr.api($.extend(config, {'limit': 1, type: $.kladr.type.city, name: $('#region-name').data('value')}), function (data){
                     console.log('KLADR data', data);
                     var id = data.length > 0 ? data[0].id : 0;
@@ -1258,7 +1261,7 @@
 
         };
 
-    ymaps.ready(init);
+    if ($mapContainer.length) ymaps.ready(init);
 
 })(jQuery);
 ;(function($){
@@ -1282,6 +1285,7 @@
             top: '50%', // Top position relative to parent
             left: '50%' // Left position relative to parent
         }) : null,
+
         getForm = function getFormF(methodId, orderId, orderNumber) {
             $.ajax({
                 'url': 'getPaymentForm/'+methodId+'/order/'+orderId+'/number/'+orderNumber,
@@ -1301,6 +1305,76 @@
 
                 }
             })
+        },
+
+        showCreditWidget = function showCreditWidgetF(bankProviderId, data) {
+
+            if ( bankProviderId == 1 ) showKupiVKredit(data['kupivkredit']);
+            if ( bankProviderId == 2 ) showDirectCredit(data['direct-credit']);
+
+        },
+
+        showKupiVKredit = function showKupiVKreditF(data){
+            var callback_close = function(decision) {
+/*                    setTimeout(function() {
+                        document.location = 'http://' + window.location.hostname;
+                    }, 1000);*/
+                },
+                callback_decision = function(decision) { },
+                vkredit;
+
+            $LAB.script( '//www.kupivkredit.ru/widget/vkredit.js')
+                .wait( function() {
+                    vkredit = new VkreditWidget(1, data.vars.sum,  {
+                        order: data.vars.order,
+                        sig: data.vars.sig,
+                        callbackUrl: window.location.href,
+                        onClose: callback_close,
+                        onDecision: callback_decision
+                    });
+
+                    vkredit.openWidget();
+                });
+        },
+
+        showDirectCredit = function showDirectCreditF(data){
+            var i, item,
+                openWidget = function openWidget() {
+                    dc_getCreditForTheProduct(
+                        '4427',
+                        data.vars.number ,// session
+                        'orderProductToBuyOnCredit',
+                        { order_id: data.vars.number,
+                            region: data.vars.region }
+                    );
+                };
+
+            $LAB.script( 'JsHttpRequest.min.js' )
+                .script( '//direct-credit.ru/widget/script_utf.js' )
+                .wait( function() {
+                    console.info('скрипты загружены для кредитного виджета. начинаем обработку');
+                    // fill cart
+                    for ( i = data.vars.items.length - 1; i >= 0; i-- ) {
+                        item = data.vars.items[i];
+
+                        dc_getCreditForTheProduct(
+                            '4427',
+                            data.vars.number,
+                            'addProductToBuyOnCredit',
+                            {
+                                name : item.name,
+                                count: item.quantity,
+                                articul: item.articul,
+                                price: item.price,
+                                type: item.type
+                            },
+                            function() {
+                                console.log('обработка завершена. открываем виджет');
+                                openWidget();
+                            }
+                        );
+                    }
+                });
         };
 
     // клик по методу онлайн-оплаты
@@ -1317,11 +1391,27 @@
     });
 
     // клик по "оплатить онлайн"
-    $orderContent.on('click', '.jsOnlinePaymentSpan', function(){
+    $orderContent.on('click', '.jsOnlinePaymentSpan', function(e){
         $(this).parent().siblings('.jsOnlinePaymentList').show();
+        e.stopPropagation();
     });
 
+    $orderContent.on('click', '.jsCreditButton', function(e){
+        $(this).siblings('.jsCreditList').show();
+        e.preventDefault();
+        e.stopPropagation();
+    });
 
+    $orderContent.on('click', '.jsCreditList li', function(){
+        var bankProviderId = $(this).data('bank-provider-id'),
+            creditData = $(this).parent().siblings('.credit-widget').data('value');
+        showCreditWidget(bankProviderId, creditData);
+        //$(this).parent().hide();
+    });
+
+    $(body).on('click', function(){
+        if (window.location.pathname == '/order/complete') $('.popupFl').hide();
+    });
 
 }(jQuery));
 ;(function($) {
@@ -1374,13 +1464,34 @@
             sendChanges('changeOrderComment', {'comment': comment})
         },
         applyDiscount = function applyDiscountF(block_name, number) {
-            sendChanges('applyDiscount',{'block_name': block_name, 'number':number})
+            checkCertificate(block_name, number);
         },
         deleteDiscount = function deleteDiscountF(block_name, number) {
             sendChanges('deleteDiscount',{'block_name': block_name, 'number':number})
         },
-        checkCertificate = function checkCertificateF(number){
-
+        checkCertificate = function checkCertificateF(block_name, code){
+            $.ajax({
+                type: 'POST',
+                url: '/certificate-check',
+                data: {
+                    code: code,
+                    pin: '0000'
+                }
+            }).done(function(data){
+                if (data.error_code == 742) {
+                    // 742 - Неверный пин
+                    console.log('Сертификат найден');
+                    //$('[data-block_name='+block_name+']').find('.cuponPin').show();
+                } else if (data.error_code == 743) {
+                    // 743 - Сертификат не найден
+                    sendChanges('applyDiscount',{'block_name': block_name, 'number':code})
+                }
+            }).always(function(data){
+                console.log('Certificate check response',data);
+            })
+        },
+        applyCertificate = function applyCertificateF(block_name, code, pin) {
+            sendChanges('applyCertificate', {'block_name': block_name, 'code': code, 'pin': pin})
         },
         sendChanges = function sendChangesF (action, params) {
             console.info('Sending action "%s" with params:', action, params);
@@ -1522,7 +1633,6 @@
         $(this).hide().parent().next().show();
     });
 
-
     // клик по способу доставки
     $orderContent.on('click', '.orderCol_delivrLst li', function() {
         var $elem = $(this);
@@ -1605,10 +1715,8 @@
     $orderContent.on('click', '.jsApplyDiscount', function(e){
         var $this = $(this),
             block_name = $this.closest('.orderRow').data('block_name'),
-            number = $this.siblings('input').val();
+            number = $this.parent().siblings('input').val();
         // TODO mask
-        // TODO checkCertificate
-        // checkCertificate();
         if (number != '') applyDiscount(block_name, number);
         e.preventDefault();
     });
@@ -1623,13 +1731,22 @@
     });
 
     // клик по "хочу быстрее"
-    $orderContent.on('click', '.jsWanna', function(e){
+    $orderContent.on('click', '.jsWanna', function(){
         var span = '<span style="margin: 5px 0 17px 10px; display: inline-block; color: #878787;">Спасибо за участие в опросе.</span>';
         $(span).insertAfter($(this));
         $(this).hide();
         window.docCookies.setItem('enter_order_v3_wanna', 1, 0, '/order');
         log({'action':'wanna'});
-    })
+    });
+
+    // клик по "Применить" в окне ввода PIN сертификата
+    $orderContent.on('click', '.jsApplyCertificate', function(){
+        var $orderRow = $(this).closest('orderRow'),
+            block_name = $orderRow.data('block_name'),
+            pin = $orderRow.find('.jsCertificateInput').val(),
+            code = $orderRow.find('.jsCouponInput').val();
+        applyCertificate(block_name, code, pin);
+    });
 
 })(jQuery);
 (function($) {
@@ -1672,6 +1789,59 @@
             var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(email);
         },
+        checkEan = function checkEanF(data) {
+            // Check if only digits
+            var ValidChars = "0123456789",
+                i, digit, originalCheck, even, odd, total, checksum, eanCode;
+
+            eanCode = data.toString().replace(/\s+/g, '');
+
+            for (i = 0; i < eanCode.length; i++) {
+                digit = eanCode.charAt(i);
+                if (ValidChars.indexOf(digit) == -1) return false;
+            }
+
+            // Add five 0 if the code has only 8 digits
+            if (eanCode.length == 8 ) eanCode = "00000" + eanCode;
+            // Check for 13 digits otherwise
+            else if (eanCode.length != 13) return false;
+
+            // Get the check number
+            originalCheck = eanCode.substring(eanCode.length - 1);
+            eanCode = eanCode.substring(0, eanCode.length - 1);
+
+            // Add even numbers together
+            even = Number(eanCode.charAt(1)) +
+                Number(eanCode.charAt(3)) +
+                Number(eanCode.charAt(5)) +
+                Number(eanCode.charAt(7)) +
+                Number(eanCode.charAt(9)) +
+                Number(eanCode.charAt(11));
+            // Multiply this result by 3
+            even *= 3;
+
+            // Add odd numbers together
+            odd = Number(eanCode.charAt(0)) +
+                Number(eanCode.charAt(2)) +
+                Number(eanCode.charAt(4)) +
+                Number(eanCode.charAt(6)) +
+                Number(eanCode.charAt(8)) +
+                Number(eanCode.charAt(10));
+
+            // Add two totals together
+            total = even + odd;
+
+            // Calculate the checksum
+            // Divide total by 10 and store the remainder
+            checksum = total % 10;
+            // If result is not 0 then take away 10
+            if (checksum != 0) {
+                checksum = 10 - checksum;
+            }
+
+            // Return the result
+            return checksum == originalCheck;
+        },
         showError = function showErrorF(errArr) {
             var text = '';
             if (!$errorBlock) $orderContent.prepend($('<div />',{id: 'OrderV3ErrorBlock'}));
@@ -1694,6 +1864,7 @@
             $phoneInput = $('[name=user_info\\[phone\\]]'),
             $emailInput = $('[name=user_info\\[email\\]]'),
             $nameInput =  $('[name=user_info\\[first_name\\]]'),
+            $bonusCardInput =  $('[name=user_info\\[bonus_card_number\\]]'),
             phone = $phoneInput.val().replace(/\s+/g, '');
 
         if (!/8\d{10}/.test(phone)) {
@@ -1709,6 +1880,11 @@
         if ($nameInput.val().length == 0) {
             error.push('Поле имени не может быть пустым');
             $nameInput.addClass(errorClass);
+        }
+
+        if ($bonusCardInput.val().length != 0 && !checkEan($bonusCardInput.val())) {
+            error.push('Неверный код карты лояльности');
+            $bonusCardInput.addClass(errorClass);
         }
 
         if (error.length != 0) {

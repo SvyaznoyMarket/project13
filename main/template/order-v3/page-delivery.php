@@ -110,7 +110,7 @@ return function(
 
                     <input class="cuponField textfieldgrey" type="text" name="" value="" />
 
-                    <div class="cuponPin">
+                    <div class="cuponPin" style="display: none">
                         <label class="cuponLbl">PIN:</label>
                         <input class="cuponField cuponPin_it textfieldgrey" type="text" name="" value="" />
                     </div>
@@ -120,7 +120,7 @@ return function(
 
                 <div class="orderCol_f_r">
                     <span class="orderCol_summ"><?= $order->delivery->price == 0 ? 'Бесплатно' : $helper->formatPrice($order->delivery->price).' <span class="rubl">p</span>' ?></span>
-                    <span class="orderCol_summt orderCol_summt-m">Доставка:</span>
+                    <span class="orderCol_summt orderCol_summt-m"><?= $order->delivery->use_user_address ? 'Доставка' : 'Самовывоз' ?>:</span>
 
                     <span class="orderCol_summ"><?= $helper->formatPrice($order->total_cost) ?> <span class="rubl">p</span></span>
                     <span class="orderCol_summt">Итого:</span>
@@ -130,7 +130,7 @@ return function(
 
                     <div class="orderCheck orderCheck-credit clearfix">
                         <input type="checkbox" class="customInput customInput-checkbox jsCreditPayment" id="credit-<?= $order->block_name ?>" name="" value="" <?= $order->payment_method_id == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT ? 'checked' : '' ?>>
-                        <label class="customLabel" style="display: none" for="credit-<?= $order->block_name ?>">Купить в кредит<!--, от 2 223 <span class="rubl">p</span> в месяц--></label>
+                        <label class="customLabel" for="credit-<?= $order->block_name ?>">Купить в кредит<!--, от 2 223 <span class="rubl">p</span> в месяц--></label>
                     </div>
 
                 <? endif; ?>

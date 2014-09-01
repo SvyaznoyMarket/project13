@@ -6,6 +6,9 @@ namespace Controller\OrderV3;
 
 class OrderV3 {
 
+    /** Флаг первичного просмотра страницы */
+    const SESSION_IS_READED_KEY = 'orderV3_is_readed';
+
     /** @var \Core\ClientV2 */
     protected $client;
     /** @var \Session\User */
@@ -22,7 +25,7 @@ class OrderV3 {
         $this->splitSessionKey = \App::config()->order['splitSessionKey'];
         $this->client = \App::coreClientV2();
         $this->user = \App::user();
-        $this->cart = $this->user->getCart();
+        $this->cart = \App::request()->attributes->get('route') === 'orderV3.one-click' ? $this->cart = $this->user->getOneClickCart() : $this->user->getCart();
     }
 
     public function logger($data) {
