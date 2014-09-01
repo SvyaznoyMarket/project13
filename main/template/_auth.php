@@ -1,9 +1,11 @@
 <?php
 /**
- * @var $page \View\Layout
+ * @var $page         \View\Layout
  * @var $oauthEnabled array
+ * @var $form         \View\User\LoginForm
  */
 
+if (!isset($form)) $form = new \View\User\LoginForm();
 ?>
 
 <noindex>
@@ -11,16 +13,16 @@
     <div class="popup popup-auth" id="auth-block">
         <span class="close close-auth">Закрыть</span>
 
-        <form class="authForm" action="" method="" accept-charset="utf-8">
+        <form class="authForm jsLoginForm" action="<?= $page->url($form->getRoute(), ['redirect_to' => isset($redirect_to) ? $redirect_to : null]) ?>" method="post" accept-charset="utf-8">
             <fieldset class="authForm_fld authForm_fld-scrll">
                 <!-- секция входа -->
                 <div class="authForm_inn">
                     <div class="authForm_t legend">Вход в Enter</div>
 
-                    <input type="text" class="authForm_it textfield" name="" value="" placeholder="Email или телефон">
+                    <input type="text" class="authForm_it textfield" name="signin[username]" value="<?= $form->getUsername() ?>" placeholder="Email или телефон">
 
                     <div class="authForm_hint">
-                        <input type="text" class="authForm_it textfield" name="" value="" placeholder="Пароль">
+                        <input type="password" class="authForm_it textfield" name="signin[password]" value="" placeholder="Пароль">
                         <span class="authForm_hint_tx">забыли?</span>
                     </div>
 
@@ -59,11 +61,11 @@
                     <div class="authForm_regbox">
                         <label class="authForm_lbl">Как к вам обращаться?</label>
                     
-                        <input type="text" class="authForm_it textfield" name="" value="" placeholder="Имя" />
+                        <input type="text" class="authForm_it textfield" name="register[first_name]" value="" placeholder="Имя" />
 
-                        <input type="text" class="authForm_it textfield" name="" value="" placeholder="Email" />
+                        <input type="text" class="authForm_it textfield" name="register[email]" value="" placeholder="Email" />
 
-                        <input type="text" class="authForm_it textfield" name="" value="" placeholder="Телефон" />
+                        <input type="text" class="authForm_it textfield" name="register[phone]" value="" placeholder="Телефон" />
 
                         <div class="authForm_sbscr">
                             <input class="customInput customInput-defcheck jsCustomRadio" type="checkbox" name="subscribe" id="subscribe" checked="checked" />
