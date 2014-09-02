@@ -6132,6 +6132,9 @@ img[height="0"] {
     left: -20px;
     width: 100%;
   }
+  .authForm_sbscr .customLabel {
+    display: block;
+  }
   .authForm_hint {
     position: relative;
   }
