@@ -5967,6 +5967,9 @@ img[height="0"] {
     -moz-border-radius: 4px;
     border-radius: 4px;
     width: 318px;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    transition: all 0.5s ease;
     /* форма авторизации */
     /* форма регистрации */
     /* форма сброса пароля */
@@ -5978,15 +5981,21 @@ img[height="0"] {
   }
   .popup-auth[data-state="default"] .authForm_login,
   .popup-auth.state_default .authForm_login {
-    display: block;
+    opacity: 1;
+    overflow: visible;
+    height: auto;
   }
   .popup-auth[data-state="default"] .authForm_reset,
   .popup-auth.state_default .authForm_reset {
-    display: none;
+    opacity: 0;
+    overflow: hidden;
+    height: 0;
   }
   .popup-auth[data-state="default"] .authForm_register,
   .popup-auth.state_default .authForm_register {
-    display: none;
+    opacity: 0;
+    overflow: hidden;
+    height: 0;
   }
   .popup-auth[data-state="default"] .authForm_authLink,
   .popup-auth.state_default .authForm_authLink {
@@ -5998,15 +6007,21 @@ img[height="0"] {
   }
   .popup-auth[data-state="register"] .authForm_login,
   .popup-auth.state_register .authForm_login {
-    display: none;
+    opacity: 0;
+    overflow: hidden;
+    height: 0;
   }
   .popup-auth[data-state="register"] .authForm_reset,
   .popup-auth.state_register .authForm_reset {
-    display: none;
+    opacity: 0;
+    overflow: hidden;
+    height: 0;
   }
   .popup-auth[data-state="register"] .authForm_register,
   .popup-auth.state_register .authForm_register {
-    display: block;
+    opacity: 1;
+    overflow: visible;
+    height: auto;
   }
   .popup-auth[data-state="register"] .authForm_authLink,
   .popup-auth.state_register .authForm_authLink {
@@ -6018,15 +6033,21 @@ img[height="0"] {
   }
   .popup-auth[data-state="reset"] .authForm_login,
   .popup-auth.state_reset .authForm_login {
-    display: none;
+    opacity: 0;
+    overflow: hidden;
+    height: 0;
   }
   .popup-auth[data-state="reset"] .authForm_reset,
   .popup-auth.state_reset .authForm_reset {
-    display: block;
+    opacity: 1;
+    overflow: visible;
+    height: auto;
   }
   .popup-auth[data-state="reset"] .authForm_register,
   .popup-auth.state_reset .authForm_register {
-    display: none;
+    opacity: 0;
+    overflow: hidden;
+    height: 0;
   }
   .popup-auth[data-state="reset"] .authForm_authLink,
   .popup-auth.state_reset .authForm_authLink {
@@ -6038,6 +6059,9 @@ img[height="0"] {
   }
   .authForm {
     margin: 0 20px 0;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    transition: all 0.3s ease;
   }
   .authForm_fld {
     margin-bottom: 20px;
@@ -6049,7 +6073,6 @@ img[height="0"] {
   }
   .authForm_fld-scrll {
     /* height: 310px; */
-    overflow: hidden;
   }
   .authForm_t {
     font-size: 24px;
@@ -6159,10 +6182,12 @@ img[height="0"] {
     text-align: center;
     font-size: 20px;
     color: #515151;
-    cursor: pointer;
     -webkit-border-radius: 0 0 4px 4px;
     -moz-border-radius: 0 0 4px 4px;
     border-radius: 0 0 4px 4px;
+  }
+  .authAct span {
+    cursor: pointer;
   }
 }
 @media all {

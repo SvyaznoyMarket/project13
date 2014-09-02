@@ -6,6 +6,7 @@
 		padding: 12px 0 0;
 		.rounded(4px);
 		width: 318px;
+		.transition(all 0.5s ease);
 
 		.close {
 
@@ -18,27 +19,27 @@
 
         /* форма авторизации */
         &[data-state="default"], &.state_default {
-            .authForm_login { display: block; }
-            .authForm_reset { display: none; }
-            .authForm_register { display: none; }
+            .authForm_login { opacity: 1; overflow: visible; height: auto; }
+            .authForm_reset { opacity: 0; overflow: hidden; height: 0; }
+            .authForm_register { opacity: 0; overflow: hidden; height: 0; }
             .authForm_authLink { display: none; }
             .authForm_registerLink { display: inline; }
         }
 
         /* форма регистрации */
         &[data-state="register"], &.state_register {
-            .authForm_login { display: none; }
-            .authForm_reset { display: none; }
-            .authForm_register { display: block; }
+            .authForm_login { opacity: 0; overflow: hidden; height: 0; }
+            .authForm_reset { opacity: 0; overflow: hidden; height: 0; }
+            .authForm_register { opacity: 1; overflow: visible; height: auto; }
             .authForm_authLink { display: inline; }
             .authForm_registerLink { display: none; }
         }
 
         /* форма сброса пароля */
         &[data-state="reset"], &.state_reset {
-            .authForm_login { display: none; }
-            .authForm_reset { display: block; }
-            .authForm_register { display: none; }
+            .authForm_login { opacity: 0; overflow: hidden; height: 0; }
+            .authForm_reset { opacity: 1; overflow: visible; height: auto; }
+            .authForm_register { opacity: 0; overflow: hidden; height: 0; }
             .authForm_authLink { display: inline; }
             .authForm_registerLink { display: none; }
         }
@@ -47,6 +48,7 @@
 
 .authForm {
 	margin: 0 20px 0;
+	.transition(all 0.3s ease);
 
 	&_fld {
 		margin-bottom: 20px;
@@ -59,7 +61,7 @@
 
 		&-scrll {
 			/* height: 310px; */
-			overflow: hidden;
+			// overflow: hidden;
 		}
 	}
 
@@ -182,6 +184,9 @@
 	text-align: center;
 	font-size: 20px;
 	color: #515151;
-	cursor: pointer;
 	.rounded(0 0 4px 4px);
+
+	span {
+		cursor: pointer;
+	}
 }
