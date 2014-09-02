@@ -7,11 +7,18 @@ class RegistrationForm {
     private $username;
     /** @var string */
     private $firstName;
+    /** @var string */
+    private $email;
+    /** @var string */
+    private $phone;
+
     /** @var array */
     private $errors = array(
         'global'     => null,
         'username'   => null,
         'first_name' => null,
+        'email'      => null,
+        'phone'      => null,
     );
 
     public function __construct(array $data = []) {
@@ -20,7 +27,18 @@ class RegistrationForm {
 
     public function fromArray(array $data) {
         if (array_key_exists('username', $data)) $this->setUsername($data['username']);
+        // TODO: осторожно, опасно!
+        if ($this->getUsername()) {
+            if (strpos($this->getUsername(), '@')) {
+                $this->setEmail($this->getUsername());
+            } else {
+                $this->setPhone($this->getUsername());
+            }
+        }
+
         if (array_key_exists('first_name', $data)) $this->setFirstName($data['first_name']);
+        if (array_key_exists('email', $data)) $this->setEmail($data['email']);
+        if (array_key_exists('phone', $data)) $this->setPhone($data['phone']);
     }
 
     /**
@@ -49,6 +67,34 @@ class RegistrationForm {
      */
     public function getUsername() {
         return $this->username;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail($email) {
+        $this->email = $email ? trim((string)$email) : null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail() {
+        return $this->email;
+    }
+
+    /**
+     * @param string $phone
+     */
+    public function setPhone($phone) {
+        $this->phone = $phone ? trim((string)$phone) : null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhone() {
+        return $this->phone;
     }
 
     /**

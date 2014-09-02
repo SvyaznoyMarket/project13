@@ -237,11 +237,15 @@ class Action {
         $form = new \View\User\RegistrationForm();
         if ($request->isMethod('post')) {
             $form->fromArray((array)$request->request->get('register'));
+
+            $isEmail = strpos($form->getUsername(), '@');
+
             if (!$form->getFirstName()) {
                 $form->setError('first_name', 'Не указано имя');
             }
-            if (!$form->getUsername()) {
-                $form->setError('username', 'Не указан номер телефона или email');
+
+            if (!$form->getPhone() && !$form->getEmail()) {
+                $form->setError('email', 'Не указаны email или телефон');
             }
 
             if ($form->isValid()) {
@@ -252,12 +256,12 @@ class Action {
 
                 $isSubscribe = (bool)$request->get('subscribe', false);
 
-                if (strpos($form->getUsername(), '@')) {
-                    $data['email'] = $form->getUsername();
+                if ($form->getEmail()) {
+                    $data['email'] = $form->getEmail();
                     $data['is_subscribe'] = $isSubscribe;
                 }
                 else {
-                    $phone = $form->getUsername();
+                    $phone = $form->getPhone();
                     $phone = preg_replace('/^\+7/', '8', $phone);
                     $phone = preg_replace('/[^\d]/', '', $phone);
                     $data['mobile'] = $phone;
@@ -265,7 +269,7 @@ class Action {
                 }
 
                 try {
-                    $result = \App::coreClientV2()->query('user/create', [], $data, \App::config()->coreV2['hugeTimeout']);
+                    $result = \App::coreClientV2()->query('user/create', [], $data, 2 * \App::config()->coreV2['timeout']);
                     if (empty($result['token'])) {
                         throw new \Exception('Не удалось получить токен');
                     }
@@ -298,13 +302,16 @@ class Action {
 
                     return $response;
                 } catch(\Exception $e) {
+
                     \App::exception()->remove($e);
                     switch ($e->getCode()) {
                         case 684: case 689:
                             $form->setError('username', 'Неправильный email');
+                            $form->setError('email', 'Неправильный email');
                             break;
                         case 686: case 690:
                             $form->setError('username', 'Неправильный телефон');
+                            $form->setError('phone', 'Неправильный телефон');
                             break;
                         case 613:
                             $form->setError('password', 'Неверный пароль');

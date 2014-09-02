@@ -59,10 +59,10 @@ if (!isset($form)) $form = new \View\User\LoginForm();
                 <div class="authForm_inn">
                     <div class="authForm_t legend">Регистрация</div>
 
+                    <!--<input type="hidden" name="register[global]" disabled="disabled">-->
+
                     <!-- показываем при удачной регистрации, authForm_regbox скрываем -->
-                    <div class="authForm_regcomplt" style="display: none;">
-                        Пароль отправлен на email<br/>и на мобильный телефон.
-                    </div>
+                    <div class="js-message authForm_regcomplt"></div>
                     <!--/ показываем при удачной регистрации, authForm_regbox скрываем -->
 
                     <div class="authForm_regbox">

@@ -1385,6 +1385,8 @@ $(document).ready(function(){
                     $el.addClass(newClass);
                     $el.attr('data-state', state);
                 }
+
+                $('.js-resetForm, .js-authForm, .js-registerForm').trigger('clearError');
             });
 
             // клик по ссылкам
@@ -1400,7 +1402,7 @@ $(document).ready(function(){
             });
 
             // формы
-            $('.js-resetForm, .js-authForm, js-registerForm')
+            $('.js-resetForm, .js-authForm, .js-registerForm')
                 // отправка форм
                 .on('submit', function(e) {
                     var
@@ -1408,31 +1410,29 @@ $(document).ready(function(){
                         data = $el.serializeArray()
                     ;
 
-                    // очистить ошибки
-                    $el.find('input').each(function(i, el) {
-                        $el.trigger('fieldError', [{field: $(el).attr('name')}]);
-                    });
-
                     $.post($el.attr('action'), data).done(function(response) {
-                        if (!response.error) {
-                            window.location.href = (response.data && response.data.link) ? response.data.link : window.location.href;
+                        if (response.data && response.data.link) {
+                            window.location.href = response.data.link ? response.data.link : window.location.href;
 
                             return true;
+                        }
+
+                        $el.trigger('clearError');
+
+                        if (response.message) {
+                            $el.find('.js-message').html(response.message);
                         }
 
                         response.form && response.form.error && $.each(response.form.error, function(i, error) {
                             console.warn(error);
 
-                            if ('global' == error.field) {
-                            } else {
-                                $el.trigger('fieldError', [error]);
-                                console.info(error);
-                            }
+                            $el.trigger('fieldError', [error]);
                         });
                     });
 
                     e.preventDefault();
                 })
+
                 .on('fieldError', function(e, error) {
                     var
                         $el = $(e.target),
@@ -1446,10 +1446,20 @@ $(document).ready(function(){
                         }
                     }
                 })
+
+                // очистить ошибки
+                .on('clearError', function() {
+                    var $el = $(this);
+
+                    $el.find('.js-message').html('');
+
+                    $el.find('input').each(function(i, el) {
+                        $el.trigger('fieldError', [{field: $(el).attr('name')}]);
+                    });
+                })
+
                 .on('focus', 'input', function() {
-                    var
-                        $el = $(this)
-                    ;
+                    var $el = $(this);
 
                     $el.closest('form').trigger('fieldError', [{field: $el.attr('name')}])
                 })
