@@ -1512,6 +1512,14 @@
 }
 /*окно авторизации*/
 @media all {
+  #auth-block {
+    width: 694px;
+  }
+  #auth-block .registerbox .loginForm {
+    margin-right: -2px;
+    padding-right: 20px;
+    border-right: 1px solid #e6e6e6;
+  }
   #register-form .bSubscibe {
     display: none;
   }
@@ -7442,6 +7450,14 @@
 /*---------END ВСПЛЫВАЮЩЕЙ ПОДПИСКИ-----*/
 /*-------СТИЛИ СТРАНИЦЫ ВХОДА-----*/
 @media all {
+  #auth-block {
+    width: 694px;
+  }
+  #auth-block .registerbox .loginForm {
+    margin-right: -2px;
+    padding-right: 20px;
+    border-right: 1px solid #e6e6e6;
+  }
   #register-form .bSubscibe {
     display: none;
   }
