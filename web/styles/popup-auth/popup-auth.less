@@ -19,29 +19,25 @@
 
         /* форма авторизации */
         &[data-state="default"], &.state_default {
-            .authForm_login { }
-            .authWrap {height: 324px; margin-top: 0;}
-            .authForm_reset { opacity: 0; overflow: hidden; height: 0; }
-            .authForm_register { }
+            .authWrap { height: 324px; margin-top: 0; }
+            .authForm_reset { .opacity(0); overflow: hidden; height: 0; }
             .authForm_authLink { display: none; }
             .authForm_registerLink { display: inline; }
         }
 
         /* форма регистрации */
         &[data-state="register"], &.state_register {
-            .authForm_login { }
-            .authForm_reset { opacity: 0; overflow: hidden; height: 0; }
-            .authForm_register {  }
-            .authWrap {height: 845px;  margin-top: -324px;}
+            .authForm_reset { .opacity(0); overflow: hidden; height: 0; }
+            .authWrap { height: 845px;  margin-top: -324px; }
             .authForm_authLink { display: inline; }
             .authForm_registerLink { display: none; }
         }
 
         /* форма сброса пароля */
         &[data-state="reset"], &.state_reset {
-            .authForm_login { opacity: 0; overflow: hidden; height: 0; }
-            .authForm_reset { opacity: 1; overflow: visible; height: auto; }
-            .authForm_register { opacity: 0; overflow: hidden; height: 0; }
+            .authForm_login { .opacity(0); overflow: hidden; height: 0; }
+            .authForm_reset { .opacity(1); overflow: visible; height: auto; }
+            .authForm_register { .opacity(0); overflow: hidden; height: 0; }
             .authForm_authLink { display: inline; }
             .authForm_registerLink { display: none; }
         }
@@ -49,13 +45,13 @@
 }
 
 .authWrap {
-	.transition(all 0.3s ease);
+	.transition(all 0.2s ease);
 	margin-bottom: 20px;
 }
 
 .authForm {
 	margin: 0 20px 0;
-	.transition(all 0.3s ease);
+	.transition(all 0.2s ease);
 
 	&_reset {
 
