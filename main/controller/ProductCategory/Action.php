@@ -945,6 +945,12 @@ class Action {
             }
         }
 
+        // SITE-4244
+        $filters = array_map(function($filter){
+            if (\Model\Product\Filter\Entity::BRAND_ID === $filter[0]) $filter[0] = 'brand';
+            return $filter;
+        }, $filters);
+
         $smartChoiceEnabled = isset($catalogJson['smartchoice']) ? $catalogJson['smartchoice'] : false;
         $smartChoiceData = [];
 
@@ -1196,7 +1202,7 @@ class Action {
             $values['label'][] = 1; // TODO SITE-2403 Вернуть фильтр instore
         }
         if ($brand) {
-            $values['brand'] = [
+            $values[\Model\Product\Filter\Entity::BRAND_ID] = [
                 $brand->getId(),
             ];
         }
