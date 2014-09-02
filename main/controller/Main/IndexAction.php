@@ -170,8 +170,6 @@ class IndexAction {
 
         $bannerData = array_values($bannerData);
 
-
-
         $seoPageJson = \Model\Page\Repository::getSeoJson();
         $seoPage = [];
         foreach ($seoPageJson as $key => $val){
@@ -184,10 +182,12 @@ class IndexAction {
             }
         }
 
+        $page = new \View\Main\IndexPage();
         $banditShow = (bool)\App::config()->game['bandit']['showOnHomepage'];
-        $className = $banditShow ? '\View\Main\IndexParallaxPage' : '\View\Main\IndexPage';
+        if ($banditShow) {
+            $page = new \View\Main\IndexParallaxPage();
+        }
 
-        $page = new $className();
         $page->setParam('bannerData', $bannerData);
         $page->setParam('seoPage', $seoPage);
 

@@ -238,8 +238,6 @@ class Action {
         if ($request->isMethod('post')) {
             $form->fromArray((array)$request->request->get('register'));
 
-            $isEmail = strpos($form->getUsername(), '@');
-
             if (!$form->getFirstName()) {
                 $form->setError('first_name', 'Не указано имя');
             }
