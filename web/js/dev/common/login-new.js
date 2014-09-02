@@ -55,8 +55,13 @@
 
                         $el.trigger('clearError');
 
-                        if (response.message) {
-                            $el.find('.js-message').html(response.message);
+                        var message = response.message;
+                        if (!message && response.notice && response.notice.message) {
+                            message = response.notice.message;
+                        }
+
+                        if (message) {
+                            $el.find('.js-message').html(message);
                         }
 
                         response.form && response.form.error && $.each(response.form.error, function(i, error) {

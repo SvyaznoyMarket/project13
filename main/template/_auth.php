@@ -112,9 +112,7 @@ if (!isset($form)) $form = new \View\User\LoginForm();
                 <legend class="authForm_t legend">Восстановление пароля</legend>
 
                 <!-- показываем при удачном восстановлении пароля, authForm_regbox скрываем -->
-                <div class="authForm_regcomplt" style="display: none;">
-                    Пароль отправлен на email.
-                </div>
+                <div class="js-message authForm_regcomplt"></div>
                 <!--/ показываем при удачном восстановлении пароля, authForm_regbox скрываем -->
 
                 <div class="authForm_regbox">
