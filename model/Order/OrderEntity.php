@@ -14,6 +14,7 @@ class OrderEntity {
     const DEFAULT_PAYMENT_ID = 1;
     const PAYMENT_ID_CREDIT_CARD = 2;
     const PAYMENT_ID_CREDIT_ONLINE = 6;
+    const PAYMENT_ID_CERTIFICATE = 10;
 
     const DELIVERY_TYPE_ID_STANDART = 3;
     const DELIVERY_TYPE_ID_SELF = 154;
@@ -31,7 +32,7 @@ class OrderEntity {
     /** Станция метро
      * @var int|null
      */
-    private $subway_id;
+//    private $subway_id;
     /** IP адрес
      * @var string|null
      */
@@ -69,7 +70,7 @@ class OrderEntity {
      * Необязательный (если указан delivery_period)
      * @var int
      */
-    private $delivery_interval_id;
+//    private $delivery_interval_id;
     /** Интервал доставки
      * Обязательный. В массиве первый элемент - время начала, второй время завершения интервала
      * @var array
@@ -174,6 +175,15 @@ class OrderEntity {
      * @var string
      */
     private $kladr_id;
+    /** Номер сертификата
+     * @var string
+     */
+    private $certificate;
+    /** ПИН сертификата
+     * Обязательный, если есть $certificate
+     * @var string
+     */
+    private $certificate_pin;
 
     /**
      * @param array $arr
@@ -244,6 +254,12 @@ class OrderEntity {
         if (isset($arr['order']['delivery']['delivery_method_token']) && !empty($arr['order']['delivery']['delivery_method_token'])) $this->delivery_type_token = (string)$arr['order']['delivery']['delivery_method_token'];
 
         if (isset($arr['order']['delivery']['price'])) $this->delivery_price = (int)$arr['order']['delivery']['price'];
+
+        if (isset($arr['order']['certificate']['par']) && $arr['order']['certificate']['par'] !== null) {
+            $this->certificate = $arr['order']['certificate']['code'];
+            $this->certificate_pin = $arr['order']['certificate']['pin'];
+            $this->payment_id = self::PAYMENT_ID_CERTIFICATE;
+        }
 
         // идиотский АБ-тест TODO remove
         if (\App::user()->getRegionId() == 93746 && $this->delivery_type_id == 3 && $arr['total_cost'] < 1000 && \App::abTest()->getTest('order_delivery_price')  && \App::abTest()->getTest('order_delivery_price')->getChosenCase()->getKey() == 'delivery_self_100') {

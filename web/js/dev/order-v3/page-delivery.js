@@ -48,7 +48,9 @@
             sendChanges('changeOrderComment', {'comment': comment})
         },
         applyDiscount = function applyDiscountF(block_name, number) {
-            checkCertificate(block_name, number);
+            var pin = $('[data-block_name='+block_name+']').find('.jsCertificatePinInput').val();
+            if (pin != '') applyCertificate(block_name, number, pin);
+            else checkCertificate(block_name, number);
         },
         deleteDiscount = function deleteDiscountF(block_name, number) {
             sendChanges('deleteDiscount',{'block_name': block_name, 'number':number})
@@ -65,7 +67,7 @@
                 if (data.error_code == 742) {
                     // 742 - Неверный пин
                     console.log('Сертификат найден');
-                    //$('[data-block_name='+block_name+']').find('.cuponPin').show();
+                    $('[data-block_name='+block_name+']').find('.cuponPin').show();
                 } else if (data.error_code == 743) {
                     // 743 - Сертификат не найден
                     sendChanges('applyDiscount',{'block_name': block_name, 'number':code})
@@ -76,6 +78,9 @@
         },
         applyCertificate = function applyCertificateF(block_name, code, pin) {
             sendChanges('applyCertificate', {'block_name': block_name, 'code': code, 'pin': pin})
+        },
+        deleteCertificate = function deleteCertificateF(block_name) {
+            sendChanges('deleteCertificate', {'block_name': block_name})
         },
         sendChanges = function sendChangesF (action, params) {
             console.info('Sending action "%s" with params:', action, params);
@@ -323,13 +328,9 @@
         log({'action':'wanna'});
     });
 
-    // клик по "Применить" в окне ввода PIN сертификата
-    $orderContent.on('click', '.jsApplyCertificate', function(){
-        var $orderRow = $(this).closest('orderRow'),
-            block_name = $orderRow.data('block_name'),
-            pin = $orderRow.find('.jsCertificateInput').val(),
-            code = $orderRow.find('.jsCouponInput').val();
-        applyCertificate(block_name, code, pin);
-    });
+    $orderContent.on('click', '.jsDeleteCertificate', function(){
+        var block_name = $(this).closest('.orderRow').data('block_name');
+        deleteCertificate(block_name);
+    })
 
 })(jQuery);

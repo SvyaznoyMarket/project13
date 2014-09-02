@@ -219,6 +219,12 @@ class DeliveryAction extends OrderV3 {
                 ];
                 $changes['orders'][$data['params']['block_name']]['certificate'] = ['code' => $data['params']['code'], 'pin' => $data['params']['pin']];
                 break;
+            case 'deleteCertificate':
+                $changes['orders'] = [
+                    $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
+                ];
+                $changes['orders'][$data['params']['block_name']]['certificate'] = null;
+                break;
         }
 
         return $changes;

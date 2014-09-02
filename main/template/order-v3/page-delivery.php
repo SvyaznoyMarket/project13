@@ -76,26 +76,41 @@ return function(
             </div>
             <? endforeach ?>
 
-            <? if ((bool)$order->discounts) : ?>
+            <? if ((bool)$order->discounts || $order->certificate['par'] !== null) : ?>
 
                 <div class="orderCol_t">Скидки</div>
 
                 <? foreach ($order->discounts as $discount) : ?>
 
-                <div class="orderCol_cnt clearfix">
-                    <a href="" class="orderCol_lk">
-                        <img class="orderCol_img" src="/styles/order/img/fishka.png" alt="">
-                    </a>
+                    <div class="orderCol_cnt clearfix">
+                        <a href="" class="orderCol_lk">
+                            <img class="orderCol_img" src="/styles/order/img/fishka.png" alt="">
+                        </a>
 
-                    <div class="orderCol_n">
-                        <?= $discount->name; ?>
+                        <div class="orderCol_n">
+                            <?= $discount->name; ?>
+                        </div>
+
+                        <span class="orderCol_data orderCol_data-summ orderCol_i_data-sale">-<?= $discount->discount ?> <span class="rubl">p</span></span>
+                        <? if ($discount->number !== null) : ?><span class="orderCol_data orderCol_data-del jsDeleteDiscount" data-value="<?= $discount->number ?>">удалить</span><? endif ?>
                     </div>
 
-                    <span class="orderCol_data orderCol_data-summ orderCol_i_data-sale">-<?= $discount->discount ?> <span class="rubl">p</span></span>
-                    <? if ($discount->number !== null) : ?><span class="orderCol_data orderCol_data-del jsDeleteDiscount" data-value="<?= $discount->number ?>">удалить</span><? endif ?>
-                </div>
-
                 <? endforeach ; ?>
+
+                <? if ($order->certificate['par'] !== null) : ?>
+
+                    <div class="orderCol_cnt clearfix">
+                        <a href="" class="orderCol_lk">
+                            <img class="orderCol_img" src="/styles/order/img/enter.png" alt="">
+                        </a>
+
+                        <div class="orderCol_n">Подарочный сертификат <?= $order->certificate['par'] ?> руб</div>
+
+                        <span class="orderCol_data orderCol_data-summ orderCol_data-sale">-<?= $order->certificate['par'] ?> <span class="rubl">p</span></span>
+                        <span class="orderCol_data orderCol_data-del jsDeleteCertificate">удалить</span>
+                    </div>
+
+                <? endif; ?>
 
             <? endif; ?>
 
@@ -112,7 +127,7 @@ return function(
 
                     <div class="cuponPin" style="display: none">
                         <label class="cuponLbl">PIN:</label>
-                        <input class="cuponField cuponPin_it textfieldgrey" type="text" name="" value="" />
+                        <input class="cuponField cuponPin_it textfieldgrey jsCertificatePinInput" type="text" name="" value="" />
                     </div>
                     
                     <div><button class="cuponBtn btnLightGrey jsApplyDiscount">Применить</button></div>

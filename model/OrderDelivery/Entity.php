@@ -322,7 +322,8 @@ namespace Model\OrderDelivery\Entity {
         /** @var array  */
         public $certificate = [
             'code'  => null,
-            'pin'   => null
+            'pin'   => null,
+            'par'   => null
         ];
 
         public function __construct(array $data = [], \Model\OrderDelivery\Entity &$orderDelivery = null) {
@@ -410,6 +411,7 @@ namespace Model\OrderDelivery\Entity {
             if (isset($data['certificate'])) {
                 if (isset($data['certificate']['code'])) $this->certificate['code'] = (string)$data['certificate']['code'];
                 if (isset($data['certificate']['pin']))  $this->certificate['pin'] = (string)$data['certificate']['pin'];
+                if (isset($data['certificate']['par']))  $this->certificate['par'] = (string)$data['certificate']['par'];
             }
 
             // идиотский АБ-тест TODO remove
