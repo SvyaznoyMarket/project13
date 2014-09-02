@@ -13,7 +13,7 @@ if (!isset($form)) $form = new \View\User\LoginForm();
     <div class="popup popup-auth" data-state="default" id="auth-block">
         <span class="close close-auth">Закрыть</span>
 
-        <form class="authForm authForm_login js-authForm js-formContainer" data-state="default" action="<?= $page->url($form->getRoute(), ['redirect_to' => isset($redirect_to) ? $redirect_to : null]) ?>" method="post">
+        <form class="authForm authForm_login js-authForm" data-state="default" action="<?= $page->url($form->getRoute(), ['redirect_to' => isset($redirect_to) ? $redirect_to : null]) ?>" method="post">
             <fieldset class="authForm_fld authForm_fld-scrll">
                 <!-- секция входа -->
                 <div class="authForm_inn">
@@ -35,17 +35,17 @@ if (!isset($form)) $form = new \View\User\LoginForm();
                         Войти через
 
                         <ul class="authForm_socn_lst">
-                            <? if($oauthEnabled['facebook']): ?>
+                            <? if ($oauthEnabled['facebook']): ?>
                                 <li class="authForm_socn_i">
                                     <a class="authForm_socn_lk authForm_socn_lk-fb" href="<?= $page->url('user.login.external', ['providerName' => 'facebook' ]) ?>" >Войти через FB</a>
                                 </li>
-                            <? endif; ?>
+                            <? endif ?>
 
                             <? if ($oauthEnabled['vkontakte']): ?>
                                 <li class="authForm_socn_i">
                                     <a class="authForm_socn_lk authForm_socn_lk-vk" href="<?= $page->url('user.login.external', ['providerName' => 'vkontakte' ]) ?>" >Войти через VK</a>
                                 </li>
-                            <? endif; ?>
+                            <? endif ?>
                         </ul>
                     </div>
                 </div>
@@ -53,7 +53,7 @@ if (!isset($form)) $form = new \View\User\LoginForm();
             </fieldset>
         </form>
 
-        <form class="authForm authForm_register js-registerForm js-formContainer" action="<?= $page->url('user.register') ?>" method="post" style="/*display: none*/">
+        <form class="authForm authForm_register js-registerForm" action="<?= $page->url('user.register') ?>" method="post" style="/*display: none*/">
             <fieldset class="authForm_fld authForm_fld-scrll">
                 <!-- секция регистрации -->
                 <div class="authForm_inn">
@@ -91,13 +91,13 @@ if (!isset($form)) $form = new \View\User\LoginForm();
                                     <li class="authForm_socn_i">
                                         <a class="authForm_socn_lk authForm_socn_lk-fb" href="<?= $page->url('user.login.external', ['providerName' => 'facebook' ]) ?>" >Войти через FB</a>
                                     </li>
-                                <? endif; ?>
+                                <? endif ?>
 
                                 <? if ($oauthEnabled['vkontakte']): ?>
                                     <li class="authForm_socn_i">
                                         <a class="authForm_socn_lk authForm_socn_lk-vk" href="<?= $page->url('user.login.external', ['providerName' => 'vkontakte' ]) ?>" >Войти через VK</a>
                                     </li>
-                                <? endif; ?>
+                                <? endif ?>
                             </ul>
                         </div>
                     </div>
@@ -106,7 +106,7 @@ if (!isset($form)) $form = new \View\User\LoginForm();
             </fieldset>
         </form>
 
-        <form class="authForm authForm_reset js-resetForm js-formContainer" action="<?= $page->url('user.forgot') ?>" method="post" style="/*display: none*/">
+        <form class="authForm authForm_reset js-resetForm" action="<?= $page->url('user.forgot') ?>" method="post" style="/*display: none*/">
             <!-- секция восстановления пароля -->
             <fieldset class="authForm_fld">
                 <legend class="authForm_t legend">Восстановление пароля</legend>
@@ -118,7 +118,7 @@ if (!isset($form)) $form = new \View\User\LoginForm();
                 <!--/ показываем при удачном восстановлении пароля, authForm_regbox скрываем -->
 
                 <div class="authForm_regbox">
-                    <input type="text" class="authForm_it textfield" name="" value="" placeholder="Email или телефон">
+                    <input type="text" class="authForm_it textfield" name="forgot[login]" value="" placeholder="Email или телефон">
 
                     <input type="submit" class="authForm_is btnsubmit" name="" value="Отправить">
                 </div>

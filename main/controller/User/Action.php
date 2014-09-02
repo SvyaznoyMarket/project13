@@ -77,20 +77,12 @@ class Action {
                 }
 
                 try {
-                    $result = [];
-                    \App::coreClientV2()->addQuery(
+                    $result = \App::coreClientV2()->query(
                         'user/auth',
                         $params,
                         [],
-                        function($data) use(&$result) {
-                            $result = $data;
-                        },
-                        function(\Exception $e) {
-                            \App::exception()->remove($e);
-                        },
-                        \App::config()->coreV2['hugeTimeout']
+                        \App::config()->coreV2['timeout'] * 2
                     );
-                    \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium'], \App::config()->coreV2['retryCount']);
                     if (empty($result['token'])) {
                         throw new \Exception('Не удалось получить токен');
                     }
@@ -141,7 +133,25 @@ class Action {
 
                     return $response;
                 } catch(\Exception $e) {
-                    $form->setError('global', 'Неверно указан логин или пароль' . (\App::config()->debug ? (': ' . $e->getMessage()) : ''));
+                    \App::exception()->remove($e);
+
+                    switch ($e->getCode()) {
+                        case 614:
+                            $form->setError('username', 'Пользователь не найден');
+                            break;
+                        case 684: case 689:
+                            $form->setError('username', 'Неправильный email');
+                            break;
+                        case 686: case 690:
+                            $form->setError('username', 'Неправильный телефон');
+                            break;
+                        case 613:
+                            $form->setError('password', 'Неверный пароль');
+                            break;
+                        case 609: default:
+                            $form->setError('global', 'Не удалось создать пользователя');
+                            break;
+                    }
                 }
             }
 
@@ -162,6 +172,7 @@ class Action {
         $page = new \View\User\LoginPage();
         $page->setParam('form', $form);
 		$page->setParam('redirect_to', $this->redirect);
+        $page->setParam('oauthEnabled', \App::config()->oauthEnabled);
 
         return new \Http\Response($page->show());
     }
@@ -288,17 +299,18 @@ class Action {
                     return $response;
                 } catch(\Exception $e) {
                     \App::exception()->remove($e);
-                    $errorMess = $e->getMessage();
                     switch ($e->getCode()) {
-                        case 686:
-                        case 684:
-                        case 689:
-                        case 690:
-                            $form->setError('username', $errorMess );
+                        case 684: case 689:
+                            $form->setError('username', 'Неправильный email');
                             break;
-                        case 609:
-                        default:
-                            $form->setError('global', 'Не удалось создать пользователя' . (\App::config()->debug ? (': ' . $errorMess) : '') );
+                        case 686: case 690:
+                            $form->setError('username', 'Неправильный телефон');
+                            break;
+                        case 613:
+                            $form->setError('password', 'Неверный пароль');
+                            break;
+                        case 609: default:
+                            $form->setError('global', 'Не удалось создать пользователя');
                             break;
                     }
                 }
