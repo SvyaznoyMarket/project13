@@ -73,8 +73,8 @@ $c->oauthEnabled['facebook'] = true;
 $c->vkontakteOauth->clientId     = '4521578';
 $c->vkontakteOauth->secretKey    = 'UkIAtfUGErhudDIqWqzG';
 
-$c->facebookOauth->clientId     = '699159936838172';
-$c->facebookOauth->secretKey    = '98f2019667addd352ae41e4b803ff4c2';
+$c->facebookOauth->clientId     = '4514389';
+$c->facebookOauth->secretKey    = 'AtltsKfjxrvrJsBNbqgV';
 
 $c->odnoklassnikiOauth->clientId     = '1099656960';
 $c->odnoklassnikiOauth->secretKey    = '03F94E54F81231EFCDE26D57';
