@@ -6,9 +6,12 @@ return function(
     $ordersPayment,
     $products,
     $userEntity,
-    $paymentProviders
+    $sessionIsReaded,
+    $banks,
+    $creditData
 ) {
 /** @var $products \Model\Product\Entity[] */
+    $page = new \View\OrderV3\CompletePage();
 ?>
 <style>
     .jsPaymentForms {
@@ -38,7 +41,7 @@ return function(
                             <? foreach ($order->getProduct() as $key => $product): ?>
                             <? /** @var $product \Model\Order\Product\Entity */?>
                                 <? if (isset($products[$product->getId()])) : ?>
-                                    <li class="orderLn_lst_i"><?= $products[$product->getId()]->getWebName() == '' ? $products[$product->getId()]->getName():  $products[$product->getId()]->getWebName(); ?> <?= $product->getQuantity() ?> шт.</li>
+                                    <li class="orderLn_lst_i"><?= $products[$product->getId()]->getPrefix() == '' ? mb_strimwidth($products[$product->getId()]->getName(), 0, 40, '…') :  mb_strimwidth($products[$product->getId()]->getPrefix(), 0, 40, '…'); ?> <?= $product->getQuantity() ?> шт.</li>
                                 <? endif ?>
                                 <? if ($key == 2) : ?>
                                     <? $orderProductsString = $helper->numberChoiceWithCount(count($order->getProduct()) - 2, ['товар', 'товара', 'товаров']) ?>
@@ -47,7 +50,7 @@ return function(
                                     <? else : ?>
                                         <li class="orderLn_lst_i">и ещё <?= $orderProductsString ?></li>
                                     <? endif; ?>
-                                <? continue; endif; ?>
+                                <? break; endif; ?>
                             <? endforeach ?>
                         </ul>
 
@@ -85,7 +88,23 @@ return function(
                                     <!-- Кредит -->
 
                                     <div class="payT">Покупка в кредит</div>
-                                    <a href="" class="btnLightGrey"><strong>Заполнить заявку</strong></a>
+                                    <a href="" class="btnLightGrey jsCreditButton"><strong>Заполнить заявку</strong></a>
+
+                                    <ul style="display: none;" class="customSel_lst popupFl customSel_lst-pay jsCreditList">
+                                        <? foreach ($banks as $bank) : ?>
+                                            <? /** @var $bank \Model\CreditBank\Entity */?>
+                                            <li class="customSel_i jsPaymentMethod" data-value="<?= $bank->getId(); ?>" data-bank-provider-id="<?= $bank->getProviderId() ?>">
+                                                <img src="<?= $bank->getImage() ?>" />
+<!--                                                <strong>--><?//= $bank->getName(); ?><!--</strong><br/>-->
+<!--                                                --><?//= $bank->getDescription(); ?><!--<br/>-->
+                                                <a href="<?= $bank->getLink() ?>" target="_blank" style="float: right">Условия кредитования</a>
+                                            </li>
+                                        <? endforeach; ?>
+                                    </ul>
+
+                                    <? if (isset($creditData[$order->getNumber()])) : ?>
+                                        <div class="credit-widget" data-value="<?= $helper->json($creditData[$order->getNumber()]) ?>"></div>
+                                    <? endif; ?>
 
                                 <? elseif (isset($paymentEntity->groups[\Model\PaymentMethod\PaymentGroup\PaymentGroupEntity::PAYMENT_NOW])) : ?>
                                 <? $paymentMethods = array_filter($paymentEntity->methods, function (\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $method) use ($paymentEntity) {return $method->paymentGroup === $paymentEntity->groups[\Model\PaymentMethod\PaymentGroup\PaymentGroupEntity::PAYMENT_NOW]; }) ?>
@@ -142,6 +161,31 @@ return function(
 
             <? endforeach; ?>
 
+            <!--<div class="orderLn clearfix" data-order-id="7938680" data-order-number="XE016396">
+                <div class="orderLn_l">
+                    <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> COXE-016396</div>
+                    
+                    <ul class="orderLn_lst">
+                        <li class="orderLn_lst_i">Apple iPhone 4S 8 ГБ черный 1 шт.</li>
+                        <li class="orderLn_lst_i">Sniper Elite 3 1 шт.</li>
+                    </ul>
+                </div>
+
+                <div class="orderLn_c">
+                    <div>Самовывоз 31 Aug 2014 16:00…21:00</div>
+                </div>
+                
+                <div class="orderLn_r">
+                    <div class="orderLn_row orderLn_row-summ">
+                        <span class="summT">Сумма заказа:</span>
+                        <span class="summP">15 980 <span class="rubl">p</span></span>
+                    </div>
+
+                    <div class="orderLn_row orderLn_row-bg orderLn_row-bg-grey">
+                        <img class="orderLn_row_imgpay" src="/styles/order/img/payment.png" alt="">
+                    </div>
+                </div>
+            </div>-->
         </div>
 
         <div class="orderCompl clearfix">
@@ -149,5 +193,28 @@ return function(
         </div>
     </section>
 
+    <? if (!$sessionIsReaded) {
+        // Если сесиия уже была прочитана, значит юзер обновляет страницу, не трекаем партнёров вторично
+        echo $page->render('order/_analytics', array(
+            'orders'       => $orders,
+            'productsById' => $products,
+        ));
+
+        echo $page->render('order/partner-counter/_complete', [
+            'orders'       => $orders,
+            'productsById' => $products,
+        ]);
+
+        echo $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $products]);
+
+        // Flocktory popup
+        echo $helper->render('order-v3/partner-counter/_flocktory-complete',[
+            'orders'    => $orders,
+            'products'  => $products,
+        ]);
+    } ?>
+
 <? };
+
+
 

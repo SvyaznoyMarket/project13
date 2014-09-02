@@ -319,6 +319,12 @@ namespace Model\OrderDelivery\Entity {
         public $errors = [];
         /** @var ValidationError[] */
         public $validationErrors = [];
+        /** @var array  */
+        public $certificate = [
+            'code'  => null,
+            'pin'   => null,
+            'par'   => null
+        ];
 
         public function __construct(array $data = [], \Model\OrderDelivery\Entity &$orderDelivery = null) {
 
@@ -402,6 +408,12 @@ namespace Model\OrderDelivery\Entity {
                 }
             }
 
+            if (isset($data['certificate'])) {
+                if (isset($data['certificate']['code'])) $this->certificate['code'] = (string)$data['certificate']['code'];
+                if (isset($data['certificate']['pin']))  $this->certificate['pin'] = (string)$data['certificate']['pin'];
+                if (isset($data['certificate']['par']))  $this->certificate['par'] = (string)$data['certificate']['par'];
+            }
+
             // идиотский АБ-тест TODO remove
             if (\App::user()->getRegionId() == 93746 && $this->delivery->delivery_method_token == 'self' && $this->total_cost < 1000 && \App::abTest()->getTest('order_delivery_price')  && \App::abTest()->getTest('order_delivery_price')->getChosenCase()->getKey() == 'delivery_self_100') {
                 $this->delivery->price = 100;
@@ -441,6 +453,7 @@ namespace Model\OrderDelivery\Entity {
             'number'  => null,
             'apartment'  => null,
             'metro_station'  => null,
+            'kladr_id'  => null
         ];
         /** @var string */
         public $bonus_card_number;
@@ -465,6 +478,7 @@ namespace Model\OrderDelivery\Entity {
                 if (isset($arr['address']['number'])) $this->address['number'] = $arr['address']['number'];
                 if (isset($arr['address']['apartment'])) $this->address['apartment'] = $arr['address']['apartment'];
                 if (isset($arr['address']['metro_station'])) $this->address['metro_station'] = $arr['address']['metro_station'];
+                if (isset($arr['address']['kladr_id'])) $this->address['kladr_id'] = $arr['address']['kladr_id'];
             }
 
             if (isset($arr['bonus_card_number']) && $arr['bonus_card_number'] !== '') $this->bonus_card_number = (string)$arr['bonus_card_number'];

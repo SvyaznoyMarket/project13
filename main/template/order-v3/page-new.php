@@ -8,6 +8,9 @@ return function(
 ) {
     /** @var $bonusCards \Model\Order\BonusCard\Entity[] */
     $userEntity = $user->getEntity();
+
+    $userBonusCards = $userEntity ? $userEntity->getBonusCard() : null;
+    $userBonusCard = null;
 ?>
 
 <?= $helper->render('order-v3/__head', ['step' => 1]) ?>
@@ -49,7 +52,6 @@ return function(
                                 <? foreach ($bonusCards as $key => $card) : ?>
 
                                     <div class="bonusCnt_i" data-eq="<?= $key ?>">
-    <!--                                    <img class="bonusCnt_img" src="/styles/order/img/sBank.png" alt="" />-->
                                         <img class="bonusCnt_img" src="/styles/order/img/sClub.png" alt="" />
                                         <span class="bonusCnt_tx"><span class="brb-dt"><?= $card->getName() ?></span></span>
                                     </div>
@@ -57,11 +59,15 @@ return function(
                             </div>
 
                         <? foreach ($bonusCards as $card) : ?>
-                            <div class="bonusCnt_it clearfix" style="display: none">
+                        <? if ($userBonusCards) $userBonusCard = array_filter($userBonusCards, function($arr) use (&$card) {
+                                /** @var $card \Model\Order\BonusCard\Entity */
+                                return $card->getId() == $arr['bonus_card_id']; })
+                            ?>
+                            <div class="bonusCnt_it clearfix" style="display: <?= (bool)$userBonusCard ? 'block' : 'none' ?>">
                                 <div class="fl-l">
                                     <div class="orderU_fld">
                                         <label class="orderU_lbl" for="">Карта</label>
-                                        <input class="orderU_tx textfield" type="text" name="user_info[bonus_card_number]" value="" placeholder="<?= $card->getMask() ?>" data-mask="<?= $card->getMask() ?>">
+                                        <input class="orderU_tx textfield" type="text" name="user_info[bonus_card_number]" value="<?= (bool)$userBonusCard ? $userBonusCard[0]['number'] : '' ?>" placeholder="<?= $card->getMask() ?>" data-mask="<?= $card->getMask() ?>">
                                     </div>
 
                                     <div class="bonusCnt_descr"><?= $card->getDescription() ?></div>
@@ -72,10 +78,8 @@ return function(
                         <? endforeach ; ?>
                     </div>
                 </div>
+                <? endif ?>
             </fieldset>
-
-            <? endif ?>
-
 
             <? if (!$userEntity) : ?>
 

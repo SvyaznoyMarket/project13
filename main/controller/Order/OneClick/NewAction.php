@@ -18,6 +18,17 @@ class NewAction {
         $region = $user->getRegion();
         $cart = $user->getOneClickCart();
 
+        if ($region && in_array($region->getId(), [119623, 93746, 14974]) && \App::config()->newOrder && \App::abTest()->getTest('orders')) {
+            // АБ-тест для Ярославля и Воронежа
+            if ($region->getId() != 14974 && \App::abTest()->getTest('orders')->getChosenCase()->getKey() == 'new') {
+                return new \Http\RedirectResponse(\App::router()->generate('orderV3.one-click'));
+            }
+            // АБ-тест для Москвы
+            if ($region->getId() == 14974 && \App::abTest()->getTest('orders_moscow') && \App::abTest()->getTest('orders_moscow')->getChosenCase()->getKey() == 'new') {
+                return new \Http\RedirectResponse(\App::router()->generate('orderV3.one-click'));
+            }
+        }
+
         try {
             // корзина
             $cartProducts = $cart->getProducts();
@@ -40,6 +51,7 @@ class NewAction {
             });
 
             // запрашиваем группы способов оплаты
+            // TODO а это нужно вообще? one-click оплачивается только кэшем.
             /**
              * @var $paymentGroups \Model\PaymentMethod\Group\Entity[]
              * @var $paymentMethods \Model\PaymentMethod\Entity[]
@@ -49,7 +61,7 @@ class NewAction {
             \RepositoryManager::paymentGroup()->prepareCollection($region,
                 [
                     'is_corporative' => $user->getEntity() ? $user->getEntity()->getIsCorporative() : false,
-                    'is_credit'      => true,
+                    'is_credit'      => false,
                 ],
                 [],
                 function($data) use (
@@ -140,6 +152,8 @@ class NewAction {
 
             // массив данных для JS
             $bonusCardsData = \Controller\Order\NewAction::getBonusCardsData($request, $bonusCards, $userBonusCards);
+
+            (new \Controller\OrderV3\OrderV3())->logger(['action' => 'view-old-delivery-one-click']);
 
             $page = new \View\Order\NewPage();
             $page->setParam('paypalECS', false);

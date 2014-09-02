@@ -19,6 +19,6 @@
 
         };
 
-    ymaps.ready(init);
+    if ($mapContainer.length) ymaps.ready(init);
 
 })(jQuery);

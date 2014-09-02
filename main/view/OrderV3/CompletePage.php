@@ -3,8 +3,58 @@
 namespace View\OrderV3;
 
 class CompletePage extends Layout {
+
     public function prepare() {
         $this->setTitle('Оформление заказа - Enter');
+
+        // подготовим данные для кредита, если таковой есть
+        $creditData = [];
+        if (!empty($this->params['banks'])) {
+
+            $this->addStylesheet('http://direct-credit.ru/widget/style.css');
+
+            foreach ($this->params['orders'] as $order) {
+                /** @var $order \Model\Order\Entity */
+                if (isset($order->meta_data['preferred_payment_id']) && reset($order->meta_data['preferred_payment_id']) !=  \Model\Order\Entity::PAYMENT_TYPE_ID_ONLINE_CREDIT) continue;
+
+                // Данные для "Купи-в-кредит"
+                $data = new \View\Order\Credit\Kupivkredit($order, $this->params['products']);
+                $creditData[$order->getNumber()]['kupivkredit'] = [
+                    'widget' => 'kupivkredit',
+                    'vars'   => [
+                        'sum'   => $order->getProductSum(), // брокеру отпрвляем стоимость только продуктов!
+                        'order' => (string)$data,
+                        'sig'   => $data->getSig(),
+                    ],
+                ];
+
+                // Данные для Direct Credit
+                $creditData[$order->getNumber()]['direct-credit']['widget'] = 'direct-credit';
+
+                $creditData[$order->getNumber()]['direct-credit']['vars'] = [
+                    'number' => $order->getNumber(),
+                    'region' => $order->getShopId() ? $order->getShopId() : ( 'r_' . \App::user()->getRegion()->getParentId() ?: \App::user()->getRegion()->getId() ),
+                    'items'  => [],
+                ];
+
+                foreach ($order->getProduct() as $orderProduct) {
+                    /** @var $product \Model\Product\Entity|null */
+                    $product = isset($this->params['products'][$orderProduct->getId()]) ? $this->params['products'][$orderProduct->getId()] : null;
+                    if (!$product) {
+                        throw new \Exception(sprintf('Не найден товар #%s, который есть в заказе', $orderProduct->getId()));
+                    }
+
+                    $creditData[$order->getNumber()]['direct-credit']['vars']['items'][] = [
+                        'name'     => sprintf('%s шт %s', $orderProduct->getQuantity(), $product->getName()),
+                        'quantity' => "1",
+                        'price'    => (int)$orderProduct->getSum(),
+                        'articul'  => $product->getArticle(),
+                        'type'     => \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null)
+                    ];
+                }
+            }
+        }
+        $this->setParam('creditData', $creditData);
     }
 
     public function slotContent() {
@@ -13,5 +63,15 @@ class CompletePage extends Layout {
 
     public function slotBodyDataAttribute() {
         return 'order-v3';
+    }
+
+    public function slotPartnerCounter()
+    {
+        $html = parent::slotPartnerCounter();
+
+        // ActionPay
+        $html .= $this->tryRender('partner-counter/_actionpay', ['routeName' => 'order.complete'] );
+
+        return $html;
     }
 }

@@ -48,13 +48,39 @@
             sendChanges('changeOrderComment', {'comment': comment})
         },
         applyDiscount = function applyDiscountF(block_name, number) {
-            sendChanges('applyDiscount',{'block_name': block_name, 'number':number})
+            var pin = $('[data-block_name='+block_name+']').find('.jsCertificatePinInput').val();
+            if (pin != '') applyCertificate(block_name, number, pin);
+            else checkCertificate(block_name, number);
         },
         deleteDiscount = function deleteDiscountF(block_name, number) {
             sendChanges('deleteDiscount',{'block_name': block_name, 'number':number})
         },
-        checkCertificate = function checkCertificateF(number){
-
+        checkCertificate = function checkCertificateF(block_name, code){
+            $.ajax({
+                type: 'POST',
+                url: '/certificate-check',
+                data: {
+                    code: code,
+                    pin: '0000'
+                }
+            }).done(function(data){
+                if (data.error_code == 742) {
+                    // 742 - Неверный пин
+                    console.log('Сертификат найден');
+                    $('[data-block_name='+block_name+']').find('.cuponPin').show();
+                } else if (data.error_code == 743) {
+                    // 743 - Сертификат не найден
+                    sendChanges('applyDiscount',{'block_name': block_name, 'number':code})
+                }
+            }).always(function(data){
+                console.log('Certificate check response',data);
+            })
+        },
+        applyCertificate = function applyCertificateF(block_name, code, pin) {
+            sendChanges('applyCertificate', {'block_name': block_name, 'code': code, 'pin': pin})
+        },
+        deleteCertificate = function deleteCertificateF(block_name) {
+            sendChanges('deleteCertificate', {'block_name': block_name})
         },
         sendChanges = function sendChangesF (action, params) {
             console.info('Sending action "%s" with params:', action, params);
@@ -196,7 +222,6 @@
         $(this).hide().parent().next().show();
     });
 
-
     // клик по способу доставки
     $orderContent.on('click', '.orderCol_delivrLst li', function() {
         var $elem = $(this);
@@ -279,10 +304,8 @@
     $orderContent.on('click', '.jsApplyDiscount', function(e){
         var $this = $(this),
             block_name = $this.closest('.orderRow').data('block_name'),
-            number = $this.siblings('input').val();
+            number = $this.parent().siblings('input').val();
         // TODO mask
-        // TODO checkCertificate
-        // checkCertificate();
         if (number != '') applyDiscount(block_name, number);
         e.preventDefault();
     });
@@ -297,12 +320,17 @@
     });
 
     // клик по "хочу быстрее"
-    $orderContent.on('click', '.jsWanna', function(e){
+    $orderContent.on('click', '.jsWanna', function(){
         var span = '<span style="margin: 5px 0 17px 10px; display: inline-block; color: #878787;">Спасибо за участие в опросе.</span>';
         $(span).insertAfter($(this));
         $(this).hide();
         window.docCookies.setItem('enter_order_v3_wanna', 1, 0, '/order');
         log({'action':'wanna'});
+    });
+
+    $orderContent.on('click', '.jsDeleteCertificate', function(){
+        var block_name = $(this).closest('.orderRow').data('block_name');
+        deleteCertificate(block_name);
     })
 
 })(jQuery);

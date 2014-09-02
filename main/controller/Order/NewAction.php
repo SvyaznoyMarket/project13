@@ -172,6 +172,8 @@ class NewAction {
         $bonusCards = \RepositoryManager::bonusCard()->getCollection();
         $userBonusCards = $user->getEntity() && $user->getEntity()->getBonusCard() ? $user->getEntity()->getBonusCard() : [];
 
+        (new \Controller\OrderV3\OrderV3())->logger(['action' => 'view-old-delivery']);
+
         // массив данных для JS
         $bonusCardsData = \Controller\Order\NewAction::getBonusCardsData($request, $bonusCards, $userBonusCards);
 

@@ -215,7 +215,7 @@ window.ANALYTICS = {
 			if ($('body').data('template') != 'order_new') window.APRT_DATA = vars;
 
 			s.type  = 'text/javascript';
-			s.src = '//rt.actionpay.ru/code/enter/';
+			s.src = '//aprtx.com/code/enter/';
 			s.defer = true;
 			x.parentNode.insertBefore(s, x);
 		})();
@@ -877,7 +877,8 @@ window.ANALYTICS = {
 	},
 
 	//SITE-3027 Установка кода TagMan на сайт
-	TagManJS : function() {
+    //SITE-3661 Удаление кода TagMan
+	/*TagManJS : function() {
 
 		initTagMan = function initTagMan() {
         	console.info( 'TagManJS init' );
@@ -928,7 +929,7 @@ window.ANALYTICS = {
 		};
 
         initTagMan();
-	},
+	},*/
 
     RetailRocketJS : function() {
     	console.groupCollapsed('ports.js::RetailRocketJS');

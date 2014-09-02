@@ -68,6 +68,7 @@ class ActionPay {
 
                 case "order":
                 case "order.complete":
+                case "orderV3.complete":
                     $this->routeOrderComplete();
                     break;
 

@@ -16,6 +16,8 @@ class Entity {
     const STATUS_DELIVERED = 5;
     const STATUS_CANCELED = 100;
 
+    const PAYMENT_TYPE_ID_ONLINE_CREDIT = 6;
+
     const PAYMENT_STATUS_NOT_PAID = 1;  // не оплачен
     const PAYMENT_STATUS_TRANSFER = 4;  // начало оплаты
     const PAYMENT_STATUS_ADVANCE = 3;   // частично оплачен
@@ -124,6 +126,8 @@ class Entity {
     public $isPartner;
     /** @var array */
     public $meta_data = [];
+    /** @var string|null */
+    public $email;
 
     /**
      * @param array $data
@@ -214,6 +218,7 @@ class Entity {
         if (array_key_exists('is_partner', $data)) $this->setIsPartner($data['is_partner']);
 
         if (array_key_exists('meta_data', $data) && is_array($data['meta_data'])) $this->meta_data = $data['meta_data'];
+        if (array_key_exists('email', $data) && !empty($data['email'])) $this->email = (string)$data['email'];
     }
 
     public function dump() {
@@ -969,5 +974,12 @@ class Entity {
     public function getCertificatePrice()
     {
         return $this->certificatePrice;
+    }
+
+    /** Статус оплаты: оплачен (true) или не оплачен (false)
+     * @return bool
+     */
+    public function isPaid() {
+        return $this->paymentStatusId == self::PAYMENT_STATUS_PAID;
     }
 }

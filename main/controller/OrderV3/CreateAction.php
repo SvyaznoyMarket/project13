@@ -102,6 +102,9 @@ class CreateAction extends OrderV3 {
         // удаляем предыдущее разбиение
         $this->session->remove($this->splitSessionKey);
 
+        // устанавливаем флаг первичного просмотра страницы
+        $this->session->set(self::SESSION_IS_READED_KEY, false);
+
         return new \Http\RedirectResponse(\App::router()->generate('orderV3.complete'));
     }
 }

@@ -106,4 +106,16 @@ class OneClick {
             $this->sum += $cartProduct->getSum();
         }
     }
+
+    public function count() {
+        return count($this->getProducts());
+    }
+
+    public function getProductData() {
+        if ($this->getProducts() === null) return [];
+        return array_map(function(\Model\Cart\Product\Entity $product){
+            return ['id'=> $product->getId(), 'quantity'=>$product->getQuantity()];
+        }, $this->getProducts());
+    }
+
 }

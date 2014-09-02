@@ -69,6 +69,6 @@ class Action {
             }
         }
 
-        return new \Http\JsonResponse(['success' => false, 'error' => $error]);
+        return new \Http\JsonResponse(['success' => false, 'error' => $error, 'error_code' => $errcode]);
     }
 }
