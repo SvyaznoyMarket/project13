@@ -12,7 +12,8 @@ if (!isset($form)) $form = new \View\User\LoginForm();
     <!-- Registration -->
     <div class="popup popup-auth" data-state="default" id="auth-block">
         <span class="close close-auth">Закрыть</span>
-
+        
+        <div class="authWrap">
         <form class="authForm authForm_login js-authForm" data-state="default" action="<?= $page->url($form->getRoute(), ['redirect_to' => isset($redirect_to) ? $redirect_to : null]) ?>" method="post">
             <fieldset class="authForm_fld authForm_fld-scrll">
                 <!-- секция входа -->
@@ -105,6 +106,7 @@ if (!isset($form)) $form = new \View\User\LoginForm();
                 <!--/ секция регистрации -->
             </fieldset>
         </form>
+        </div>
 
         <form class="authForm authForm_reset js-resetForm" action="<?= $page->url('user.forgot') ?>" method="post" style="/*display: none*/">
             <!-- секция восстановления пароля -->

@@ -5962,11 +5962,11 @@ img[height="0"] {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
-    padding: 12px 0 0;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
     width: 318px;
+    padding: 0;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     transition: all 0.5s ease;
@@ -5979,20 +5979,13 @@ img[height="0"] {
     height: 41px;
     width: 41px;
   }
-  .popup-auth[data-state="default"] .authForm_login,
-  .popup-auth.state_default .authForm_login {
-    opacity: 1;
-    overflow: visible;
-    height: auto;
+  .popup-auth[data-state="default"] .authWrap,
+  .popup-auth.state_default .authWrap {
+    height: 324px;
+    margin-top: 0;
   }
   .popup-auth[data-state="default"] .authForm_reset,
   .popup-auth.state_default .authForm_reset {
-    opacity: 0;
-    overflow: hidden;
-    height: 0;
-  }
-  .popup-auth[data-state="default"] .authForm_register,
-  .popup-auth.state_default .authForm_register {
     opacity: 0;
     overflow: hidden;
     height: 0;
@@ -6005,23 +5998,16 @@ img[height="0"] {
   .popup-auth.state_default .authForm_registerLink {
     display: inline;
   }
-  .popup-auth[data-state="register"] .authForm_login,
-  .popup-auth.state_register .authForm_login {
-    opacity: 0;
-    overflow: hidden;
-    height: 0;
-  }
   .popup-auth[data-state="register"] .authForm_reset,
   .popup-auth.state_register .authForm_reset {
     opacity: 0;
     overflow: hidden;
     height: 0;
   }
-  .popup-auth[data-state="register"] .authForm_register,
-  .popup-auth.state_register .authForm_register {
-    opacity: 1;
-    overflow: visible;
-    height: auto;
+  .popup-auth[data-state="register"] .authWrap,
+  .popup-auth.state_register .authWrap {
+    height: 845px;
+    margin-top: -324px;
   }
   .popup-auth[data-state="register"] .authForm_authLink,
   .popup-auth.state_register .authForm_authLink {
@@ -6057,14 +6043,23 @@ img[height="0"] {
   .popup-auth.state_reset .authForm_registerLink {
     display: none;
   }
+  .authWrap {
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+  }
   .authForm {
     margin: 0 20px 0;
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
     transition: all 0.3s ease;
   }
+  .authForm_reset .authForm_fld {
+    margin: 0 0 20px;
+  }
   .authForm_fld {
-    margin-bottom: 20px;
+    padding: 12px 0 0;
   }
   .authForm_fld-hdn {
     opacity: 0;
@@ -6185,6 +6180,8 @@ img[height="0"] {
     -webkit-border-radius: 0 0 4px 4px;
     -moz-border-radius: 0 0 4px 4px;
     border-radius: 0 0 4px 4px;
+    position: relative;
+    z-index: 4;
   }
   .authAct span {
     cursor: pointer;

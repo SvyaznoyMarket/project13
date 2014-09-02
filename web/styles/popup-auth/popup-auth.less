@@ -3,9 +3,9 @@
 	&-auth {
 		border: 1px solid #777777;
 		.box-shadow(none);
-		padding: 12px 0 0;
 		.rounded(4px);
 		width: 318px;
+		padding: 0;
 		.transition(all 0.5s ease);
 
 		.close {
@@ -19,18 +19,20 @@
 
         /* форма авторизации */
         &[data-state="default"], &.state_default {
-            .authForm_login { opacity: 1; overflow: visible; height: auto; }
+            .authForm_login { }
+            .authWrap {height: 324px; margin-top: 0;}
             .authForm_reset { opacity: 0; overflow: hidden; height: 0; }
-            .authForm_register { opacity: 0; overflow: hidden; height: 0; }
+            .authForm_register { }
             .authForm_authLink { display: none; }
             .authForm_registerLink { display: inline; }
         }
 
         /* форма регистрации */
         &[data-state="register"], &.state_register {
-            .authForm_login { opacity: 0; overflow: hidden; height: 0; }
+            .authForm_login { }
             .authForm_reset { opacity: 0; overflow: hidden; height: 0; }
-            .authForm_register { opacity: 1; overflow: visible; height: auto; }
+            .authForm_register {  }
+            .authWrap {height: 845px;  margin-top: -324px;}
             .authForm_authLink { display: inline; }
             .authForm_registerLink { display: none; }
         }
@@ -46,12 +48,24 @@
 	}
 }
 
+.authWrap {
+	.transition(all 0.3s ease);
+	margin-bottom: 20px;
+}
+
 .authForm {
 	margin: 0 20px 0;
 	.transition(all 0.3s ease);
 
+	&_reset {
+
+		.authForm_fld {
+			margin: 0 0 20px;
+		}
+	}
+
 	&_fld {
-		margin-bottom: 20px;
+		padding: 12px 0 0;
 
 		&-hdn {
 			opacity: 0;
@@ -185,6 +199,8 @@
 	font-size: 20px;
 	color: #515151;
 	.rounded(0 0 4px 4px);
+	position: relative;
+	z-index: 4;
 
 	span {
 		cursor: pointer;
