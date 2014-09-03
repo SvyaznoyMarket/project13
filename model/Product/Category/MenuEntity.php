@@ -5,7 +5,7 @@ namespace Model\Product\Category;
 class MenuEntity {
     use \Model\MediaHostTrait;
 
-    const MAX_CHILD = 5;
+    const MAX_CHILD = 10;
 
     /** @var int */
     protected $id;
