@@ -47,16 +47,15 @@
             </div> 
 
             <div class="landing_hd-land">
-                <div class="landing_hd-land-bg"></div> 
+                <div class="landing_hd-land-bg"></div>
                 <a target="_blank" class="landing_hd-land-gift" href="https://mycard.tele2.ru/"></a> 
                 <div class="landing_hd-land_tx"> 
                     <div class="landing_hd-land_tx-1">Боитесь покупок онлайн? Напрасно. Теперь есть способ платить безопасно</div> 
-                    <div class="landing_hd-land_tx-2">Кстати, еще и выгодно — оплатите покупку виртуальной картой Tele2 MasterCard и получите наушники Sennheiser PX 80 в подарок</div>
-                    <a href="#terms" class="g-button mod_header">Получить подарок</a> 
+                    <a href="#terms" class="g-button mod_header">Получить подарок</a>
                 </div> 
             </div> 
 
-            <div class="landing_hd_socnet js-tele2Page-child js-widget action_share"> 
+<!--            <div class="landing_hd_socnet js-tele2Page-child js-widget action_share">
                 <div class="landing_hd_socnet_ic_i js-widget"> 
                     <div class="landing_hd_socnet_ic mod_vk"></div> 
                 </div> 
@@ -72,7 +71,7 @@
                 <div class="landing_hd_socnet_ic_i js-widget"> 
                     <div class="landing_hd_socnet_ic mod_ok"></div> 
                 </div> 
-            </div> 
+            </div> -->
         </div>
     </div>
 
@@ -83,8 +82,7 @@
                 <a href="#video" class="landing_nav_lst_i jsNavItemScroll">Видеопрезентация</a>
                 <a href="#card" class="landing_nav_lst_i jsNavItemScroll">Выпустить карту Tele2 MasterCard<sup>&copy;</sup></a>
                 <a href="#faq" class="landing_nav_lst_i jsNavItemScroll">Вопросы и ответы</a> 
-                <a href="#aboutgift" class="landing_nav_lst_i jsNavItemScroll">O Sennheiser PX 80</a> 
-            </div> 
+            </div>
         </div> 
     </div> 
 
@@ -109,11 +107,11 @@
                     </div> 
 
                     <div class="landing_terms-form-cell side_right">
-                        <form action="#" class="landing_form">
+                        <form action="#" class="landing_form jsMobiDengiForm">
                             <label class="landing_form_lbl">Номер вашего мобильного</label>
 
                             <div class="landing_form_fld">
-                                <input class="landing_form_it" type="text" name="" value="" placeholder="" />
+                                <input class="landing_form_it jsMobiDengiPhoneInput" type="text" name="phone" value="" placeholder="+7 950 027 74 96" />
 
                                 <div class="b-input-action">   
                                     <div class="b-input-error"></div>   
@@ -457,120 +455,7 @@
         </div>
     </div> 
 
-    <div class="landing_gift landing_hdn landing_res" id="aboutgift">
-        <div class="landing_hdn-h"> 
-            <div class="landing_ttl landing_ttl-black">
-                <strong>Sennheiser PX 80 за <nobr>1 770<span class="rubl">p</span></nobr><span class="g-font color_blue"> в подарок</span></strong>
-            </div>
-            <div class="g-columns cell_2 mod_gift"> 
-                <div class="g-columns-cell mod_gift">
-                    <a href="http://fs03.enter.ru/1/1/1500/4b/314780.jpg" class="landing_gift-image" target="_blank"> 
-                        <img src="http://fs03.enter.ru/1/1/1500/4b/314780.jpg" alt="">
-                        <br><span class="g-font size_9 g-icon set_external scheme_black">Увеличить изображение<span class="g-icon-h"><span class="g-icon_i"></span></span></span> 
-                    </a>
-                </div>
-                <div class="g-columns-cell mod_description">
-                    <div class="landing_gift_descr">
-                        <div class="landing_gift_descr-h">
-                            <div class="landing_gift_descr-cell">
-                                <div class="landing_gift_descr-specs"> 
-                                    <div class="landing_gift_descr-specs-row"> 
-                                        <div class="landing_gift_descr-specs-value">накладные</div>
-                                        <div class="landing_gift_descr-specs-type">
-                                            <span>Тип наушников</span> 
-                                        </div> 
-                                    </div> 
-
-                                    <div class="landing_gift_descr-specs-row"> 
-                                        <div class="landing_gift_descr-specs-value">Sennheiser</div>
-                                        <div class="landing_gift_descr-specs-type">
-                                            <span>Производитель</span> 
-                                        </div> 
-                                    </div>
-
-                                    <div class="landing_gift_descr-specs-row"> 
-                                        <div class="landing_gift_descr-specs-value">PX 80</div>
-                                        <div class="landing_gift_descr-specs-type"> <span>Модель</span> </div> 
-                                    </div> 
-
-                                    <div class="landing_gift_descr-specs-row"> 
-                                        <div class="landing_gift_descr-specs-value">проводные</div>
-                                        <div class="landing_gift_descr-specs-type"> <span>Тип подключения</span> </div> 
-                                    </div> 
-
-                                    <div class="landing_gift_descr-specs-row">
-                                        <div class="landing_gift_descr-specs-value">стерео</div> 
-                                        <div class="landing_gift_descr-specs-type"> <span>Звук</span> </div> 
-                                    </div>  
-
-                                    <div class="landing_gift_descr-specs-row"> 
-                                        <div class="landing_gift_descr-specs-value">прямой</div>
-                                        <div class="landing_gift_descr-specs-type"> <span>Форма разъема наушников</span> </div>
-                                    </div>  
-
-                                    <div class="landing_gift_descr-specs-row">
-                                        <div class="landing_gift_descr-specs-value">15 - 27000 Гц</div>
-                                        <div class="landing_gift_descr-specs-type"> <span>Воспроизводимые частоты</span> </div> 
-                                    </div> 
-
-                                    <div class="landing_gift_descr-specs-row">
-                                        <div class="landing_gift_descr-specs-value">32 Ом</div>
-                                        <div class="landing_gift_descr-specs-type"> <span>Импеданс</span> </div>
-                                    </div> 
-
-                                    <div class="landing_gift_descr-specs-row">
-                                        <div class="landing_gift_descr-specs-value">114 дБ</div>
-                                        <div class="landing_gift_descr-specs-type"> <span>Чувствительность</span> </div> 
-                                    </div>
-
-                                    <div class="landing_gift_descr-specs-row">
-                                        <div class="landing_gift_descr-specs-value">1.4 м</div> 
-                                        <div class="landing_gift_descr-specs-type"> <span>Длина кабеля</span> </div> 
-                                    </div>  
-
-                                    <div class="landing_gift_descr-specs-row">
-                                        <div class="landing_gift_descr-specs-value">3.5 мм</div>
-                                        <div class="landing_gift_descr-specs-type"> <span>Разъем</span> </div> 
-                                    </div>  
-
-                                    <div class="landing_gift_descr-specs-row"> 
-                                        <div class="landing_gift_descr-specs-value">60 г</div>
-                                        <div class="landing_gift_descr-specs-type"> <span>Вес</span> </div> 
-                                    </div>  
-
-                                    <div class="landing_gift_descr-specs-row"> 
-                                        <div class="landing_gift_descr-specs-value">Китай</div> 
-                                        <div class="landing_gift_descr-specs-type"> <span>Страна-производитель</span> </div>
-                                    </div>
-
-                                    <div class="landing_gift_descr-specs-row">
-                                        <div class="landing_gift_descr-specs-value">3 года</div> 
-                                        <div class="landing_gift_descr-specs-type"> <span>Гарантия</span> </div> 
-                                    </div> 
-
-                                    <div class="landing_gift_descr-specs-row">
-                                        <div class="landing_gift_descr-specs-value">есть</div>
-                                        <div class="landing_gift_descr-specs-type"> <span>Гарантия производителя</span> </div>
-                                    </div> 
-                                </div>
-                            </div>
-                            <div class="landing_gift_descr-cell">
-                                <div class="landing_gift_descr_tx">
-                                    <p class="g-font size_8"><strong>Описание подарка</strong></p>
-                                    <br>
-                                    <p>Среди профессионалов достаточно сказать только одно: «Sennheiser». Это производитель аудиотехники высочайшего уровня, технологии этого производителя признаны одними из лучших в мире. Сложнейшая высококлассная студийная аппаратура – это Sennheiser. Вам предлагается техника того же класса, но доступного уровня – Sennheiser PX 80.</p>
-                                    <br>
-                                    <p><a href="http://www.enter.ru/product/electronics/naushniki-sennheiser-px-80-2060508017168#productspecification" target="_blank" class="g-font size_9 g-icon set_external scheme_black">Полное описание товара<span class="g-icon-h"><span class="g-icon_i"></span></span></a></p>
-                                </div> 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> 
-        </div> 
-    </div>
-
-    <div class="landing_buynow landing_hdn landing_res"> 
+    <div class="landing_buynow landing_hdn landing_res">
         <div class="landing_hdn-h">
             <p class="landing_ttl landing_ttl-white">Оплачивайте покупки виртуальной картой Tele2 MasterCard<sup>©</sup></p>
             <p class="g-ui align_center"><a href="/" class="g-button scheme_dblue size_5 view_wide">Начать покупки</a></p>
