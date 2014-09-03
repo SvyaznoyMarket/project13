@@ -8,7 +8,7 @@
 <div class="bPageLogin clearfix">
     <div class="bPageLogin_eLogo fl"><a href="/"></a></div>
 
-    <div class="popup popup-auth" data-state="default" id="auth-block" style="display: block">
+    <div class="popup popup-auth" data-state="default" id="auth-block" style="display: block; float: left; margin: 20px 0 0 110px;">
         <div class="authWrap">
             <?= $page->render('user/_login-form') ?>
             <?= $page->render('user/_register-form') ?>
