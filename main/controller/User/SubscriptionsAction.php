@@ -67,17 +67,33 @@ class SubscriptionsAction {
         $userChannels = [];
         $channelCollection = [];
 
-        $this->client->addQuery('subscribe/get',['token'=>$this->user->getToken()],[], function ($data) use (&$userChannels) {
-            foreach ($data as $channel) {
-                $userChannels[] = new \Model\User\SubscriptionEntity($channel);
+        $this->client->addQuery(
+            'subscribe/get',
+            ['token'=>$this->user->getToken()],
+            [],
+            function ($data) use (&$userChannels) {
+                foreach ($data as $channel) {
+                    $userChannels[] = new \Model\User\SubscriptionEntity($channel);
+                }
+            },
+            function(\Exception $e) {
+                \App::exception()->remove($e);
             }
-        });
+        );
 
-        $this->client->addQuery('subscribe/get-channel', [], [], function ($data) use (&$channelCollection) {
-            foreach ($data as $channel) {
-                $channelCollection[] = new \Model\Subscribe\Channel\Entity($channel);
+        $this->client->addQuery(
+            'subscribe/get-channel',
+            [],
+            [],
+            function ($data) use (&$channelCollection) {
+                foreach ($data as $channel) {
+                    $channelCollection[] = new \Model\Subscribe\Channel\Entity($channel);
+                }
+            },
+            function(\Exception $e) {
+                \App::exception()->remove($e);
             }
-        });
+        );
 
         $this->client->execute();
 
