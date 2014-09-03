@@ -882,6 +882,9 @@ class Action {
 
         $errorMsg = null;
         $formErrors = [];
+
+        $isEmail = strpos($username, '@');
+
         try {
             if (!$username) {
                 $errorMsg = 'Не указан email или мобильный телефон';
@@ -890,7 +893,7 @@ class Action {
             }
 
             $result = \App::coreClientV2()->query('user/reset-password', [
-                (strpos($username, '@') ? 'email' : 'mobile') => $username,
+                ($isEmail ? 'email' : 'mobile') => $username,
             ]);
             if (isset($result['confirmed']) && $result['confirmed']) {
                 return new \Http\JsonResponse([
@@ -901,21 +904,17 @@ class Action {
         } catch(\Exception $e) {
             \App::exception()->remove($e);
 
-            if ( $errorMsg == null ) {
-                switch ($e->getCode()) {
-                    case 601: // Неправильные параметры запроса
-                        $errorMsg = 'Введите корректный логин';
-                        break;
+            switch ($e->getCode()) {
+                case 600: case 601:
+                    $formErrors[] = ['code' => 'invalid', 'message' => 'Неправильный ' . ($isEmail ? 'email' : 'телефон или email'), 'field' => 'login'];
+                    break;
 
-                    case 604: // Пользователь не найден
-                        $errorMsg = 'Пользователь не зарегистрирован';
-                        break;
+                case 604: // Пользователь не найден
+                    $formErrors[] = ['code' => 'invalid', 'message' => 'Пользователь не зарегистрирован', 'field' => 'login'];
+                    break;
 
-                    default:
-                        $errorMsg = 'Не удалось запросить пароль. Попробуйте позже' . (\App::config()->debug ? (': ' . $e->getMessage()) : '');
-                }
-
-                $formErrors[] = ['code' => 'invalid', 'message' => $errorMsg, 'field' => 'global'];
+                default:
+                    $formErrors[] = ['code' => 'invalid', 'message' => 'Не удалось запросить пароль. Попробуйте позже', 'field' => 'global'];
             }
         }
 
