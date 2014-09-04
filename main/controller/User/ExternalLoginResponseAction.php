@@ -14,7 +14,8 @@ class ExternalLoginResponseAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $this->redirect = \App::router()->generate(\App::config()->user['defaultRoute']); // default redirect to the /private page (Личный кабинет)
-        $redirectTo = rawurldecode($request->get('redirect_to'));
+        $redirectTo = rawurldecode($request->headers->get('referer'));
+
         if ($redirectTo) {
             $this->redirect = $redirectTo;
             $this->requestRedirect = $redirectTo;
