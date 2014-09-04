@@ -119,13 +119,6 @@ module.exports = function (grunt, options) {
                 srcRoot: '/js',
                 cwd: 'web/js'
         },
-        mainParallax: {
-            src: ['dev/main-parallax/*.js'],
-                dest: 'prod/main-parallax.js',
-                destMap: 'prod/main-parallax.js.map',
-                srcRoot: '/js',
-                cwd: 'web/js'
-        },
         oneclick: {
             src: ['dev/oneclick/*.js'],
                 dest: 'prod/oneclick.js',

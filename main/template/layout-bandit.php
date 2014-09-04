@@ -32,19 +32,11 @@
 </head>
 
 <body id="mainPage" class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
-<?= $page->slotConfig() ?>
-<div class="bannersbox">
-    <div class="bannersboxinner">
-        <div class="banner banner3"><img class="rightImage" src="" alt=""/></div>
-        <div class="banner banner4"><img class="leftImage" src="" alt=""/></div>
-    </div>
-</div>
+    <?= $page->slotConfig() ?>
+    <?= $page->slotBanner() ?>
 
-<?= $page->slotBanner() ?>
-
-<div class="wrapper mWrapperMain">
-    <div class="content mContentMain clearfix">
-        <div class="top-parallax-block" src="" data-rimage="">
+    <div class="wrapper mWrapperMain">
+        <div class="content mContentMain clearfix">
             <? if (\App::config()->adFox['enabled']): ?>
                 <div class="adfoxWrapper" id="adfox980"></div>
             <? endif ?>
@@ -54,45 +46,26 @@
             </header><!--/ Шапка-->
 
             <?= $page->slotContentHead() ?>
+            <?= $page->slotGameBandit() ?>
+        </div><!--/ Контент -->
+    </div><!--/ Шаблон -->
 
-            <div class="bigbanner">
-                <div class='bCarouselWrap'>
-                    <div class='bCarousel'>
-                        <div class='bCarousel__eBtnL leftArrow'></div>
-                        <div class='bCarousel__eBtnR rightArrow'></div>
-                        <img class="centerImage" src="" alt=""/>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div><!--/ Контент -->
-</div><!--/ Шаблон -->
+    <div class="footer__main">
+        <?= $page->slotFooter() ?>
+    </div><!--/ Подвал -->
 
-<div class="center-parallax-block" src="" data-rimage="">
-    <div class="gameBandit">
-        <?= $page->slotGameBandit() ?>
-    </div>
+    <?= $page->slotRegionSelection() ?>
+    <?= $page->slotAuth() ?>
+    <?= $page->slotYandexMetrika() ?>
+    <?= $page->slotBodyJavascript() ?>
+    <?= $page->slotInnerJavascript() ?>
+    <?= $page->slotAdriver() ?>
+    <?= $page->slotPartnerCounter() ?>
+    <?= $page->slotAdblender() ?>
+    <?= $page->slotKissMetrics() ?>
 
-    <div class="bottom-parallax-block" src="" data-rimage="">
-        <div class="footer__main">
-            <?= $page->slotFooter() ?>
-        </div><!--/ Подвал -->
-    </div>
-</div>
-
-<?= $page->slotRegionSelection() ?>
-<?= $page->slotAuth() ?>
-<?= $page->slotYandexMetrika() ?>
-<?= $page->slotBodyJavascript() ?>
-<?= $page->slotInnerJavascript() ?>
-<?= $page->slotAdriver() ?>
-<?= $page->slotPartnerCounter() ?>
-<?= $page->slotAdblender() ?>
-<?= $page->slotKissMetrics() ?>
-
-<? if (\App::config()->analytics['enabled']): ?>
-    <div id="yandexMetrika" class="jsanalytics"></div>
-<? endif ?>
-
+    <? if (\App::config()->analytics['enabled']): ?>
+        <div id="yandexMetrika" class="jsanalytics"></div>
+    <? endif ?>
 </body>
 </html>

@@ -584,10 +584,9 @@ $c->photoContest = [
 	]
 ];
 
-// Game
-$c->game['bandit']['showOnHomepage'] = true;
-
 $c->siteVersionSwitcher['cookieName'] = 'mobile';
 $c->siteVersionSwitcher['cookieLifetime'] = 20 * 365 * 24 * 60 * 60;
+
+$c->bandit['enabled'] = false;
 
 return $c;
