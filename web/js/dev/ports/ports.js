@@ -69,6 +69,30 @@ window.ANALYTICS = {
 	LiveTexJS: function () {
 		console.group('ports.js::LiveTexJS log');
 
+		function loadLiveTex() {
+//		LiveTex.on("chat_open", function(e){
+//			undefined != typeof(_gaq) && _gaq.push(['_trackEvent', 'webchat', 'chat_open']);
+//			undefined != typeof(ga) && ga('send', 'event', 'webchat', 'chat_open');
+//		});
+//
+//		LiveTex.on("chat_invitation_action", function(e){
+//			undefined != typeof(_gaq) && _gaq.push(['_trackEvent', 'webchat', e.data.action]);
+//			undefined != typeof(ga) && ga('send', 'event', 'webchat', e.data.action);
+//		});
+
+			console.info('LiveTexJS init');
+
+			var lt = document.createElement('script');
+			lt.type = 'text/javascript';
+			lt.async = true;
+			lt.src = 'http://cs15.livetex.ru/js/client.js';
+			var sc = document.getElementsByTagName('script')[0];
+			if ( sc ) sc.parentNode.insertBefore(lt, sc);
+			else  document.documentElement.firstChild.appendChild(lt);
+
+			console.log('LiveTexJS end');
+		}
+
 		var
 			LTData = $('#LiveTexJS').data('value');
 		// end of vars
@@ -113,10 +137,9 @@ window.ANALYTICS = {
 			},
 
 			/**
-			 * @param {Object}	event		Данные о событии
 			 * @param {Object}	userInfo	Данные пользователя
 			 */
-			liveTexUserInfo = function( event, userInfo ) {
+			liveTexUserInfo = function( userInfo ) {
 				try {
 					LTData.username = 'undefined' != typeof(userInfo.name) ? userInfo.name : null;
 					LTData.userid = 'undefined' != typeof(userInfo.id) ? userInfo.id : null;
@@ -135,37 +158,15 @@ window.ANALYTICS = {
 
 		if (ENTER.config.userInfo === false) {
 			liveTexAction();
+			loadLiveTex();
 		} else {
-			$('body').on('userLogged', liveTexUserInfo);
+			$('body').on('userLogged', function(event, userInfo){
+				liveTexUserInfo(userInfo);
+				loadLiveTex();
+			});
 		}
 
-//		LiveTex.on("chat_open", function(e){
-//			undefined != typeof(_gaq) && _gaq.push(['_trackEvent', 'webchat', 'chat_open']);
-//			undefined != typeof(ga) && ga('send', 'event', 'webchat', 'chat_open');
-//		});
-//
-//		LiveTex.on("chat_invitation_action", function(e){
-//			undefined != typeof(_gaq) && _gaq.push(['_trackEvent', 'webchat', e.data.action]);
-//			undefined != typeof(ga) && ga('send', 'event', 'webchat', e.data.action);
-//		});
-
-		//$(document).load(function() {
-		(function () {
-			console.info('LiveTexJS init');
-
-			var lt = document.createElement('script');
-			lt.type = 'text/javascript';
-			lt.async = true;
-			lt.src = 'http://cs15.livetex.ru/js/client.js';
-			var sc = document.getElementsByTagName('script')[0];
-			if ( sc ) sc.parentNode.insertBefore(lt, sc);
-			else  document.documentElement.firstChild.appendChild(lt);
-
-			console.log('LiveTexJS end');
-		})();
-
 		console.groupEnd();
-		//});
 	},
 
 	ActionPayJS: function () {
