@@ -1028,8 +1028,13 @@ return [
 		'pattern'	=> '/game/slots/play',
 		'action'	=> ['Game\BanditAction', 'play'],
 	],
-	
-	//content
+
+    'bandit' => [
+        'pattern' => '/bandit',
+        'action'  => ['Bandit\IndexAction', 'execute'],
+    ],
+
+	//content (должен быть в самом конце, иначе под паттерн попадут другие страницы)
     'content' => [
         'pattern' => '/{token}',
         'action'  => ['Content\Action', 'execute'],

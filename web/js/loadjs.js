@@ -279,7 +279,7 @@
 			}).runQueue();
 		},
 
-		'main-parallax': function() {
+		'bandit': function() {
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
@@ -287,15 +287,12 @@
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
-					.script( getWithVersion('main.js') )
 					.wait()
 					.script( optimizelyUrl )
 					.script('adfox.asyn.code.ver3.min.js')
 					.wait()
-					.script( getWithVersion('main-parallax.js') )
-					.wait()
 					.script( getWithVersion('enterprize.js') )
-					.script( getWithVersion('/js/game/slots.js') )
+					.script( getWithVersion('game/slots.js') )
 					.wait()
 					.script( getWithVersion('ports.js') )
 					.wait()
@@ -578,7 +575,7 @@
                     .wait()
                     .script( getWithVersion('enterprize.js') )
                     .wait()
-                    .script( getWithVersion('/js/game/slots.js') )
+                    .script( getWithVersion('game/slots.js') )
 
             }).runQueue();
         }

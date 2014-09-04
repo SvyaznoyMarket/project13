@@ -645,16 +645,14 @@ class AppConfig {
     ];
 
     /** @var array */
-    public $game = [
-        'bandit' => [
-            'showOnHomepage' => null
-        ]
-    ];
-
-    /** @var array */
     public $siteVersionSwitcher = [
         'cookieName'     => null,
         'cookieLifetime' => null,
+    ];
+
+    /** @var array */
+    public $bandit = [
+        'enabled'     => null,
     ];
 
     public function __construct() {

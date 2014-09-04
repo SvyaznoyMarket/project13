@@ -1,3 +1,32 @@
+#slotsWrapWrapper {
+  min-width: 940px;
+  min-height: 860px;
+}
+#slotsWrapWrapper > .hello {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  width: 583px;
+  margin: 0 auto;
+  border: 1px solid #565959;
+  border-radius: 10px;
+  padding: 10px 15px;
+  background: url(img/tile_back.png);
+  box-shadow: -2px 0px 35px #000000, 2px 0px 35px #000000;
+  color: #ffffff;
+  font-family: Tahoma, Geneva, sans-serif, helvetica, sans-serif;
+  font-size: 14px;
+  /** @todo после финализации виджета переделать адекватным способом **/
+  position: relative;
+  top: 0px;
+  height: 200px;
+  margin-bottom: -200px;
+  z-index: 2;
+}
+#slotsWrapWrapper #slotsBottomLine {
+  background-position: center;
+  background-repeat: no-repeat;
+}
 @font-face {
   font-family: 'led';
   src: url('fonts/Advanced_LED_Board-7.eot?') format('eot'), url('fonts/Advanced_LED_Board-7.woff') format('woff'), url('fonts/Advanced_LED_Board-7.ttf') format('truetype'), url('fonts/Advanced_LED_Board-7.svg#Advanced_LED_Board-7') format('svg');
@@ -181,10 +210,10 @@
 #slotsWrapper #slotsMachine #reelsWrapper .reel .chips.spinning,
 #slotsWrapper #slotsMachine #reelsWrapper .reel .chips2.spinning {
   /* -webkit-animation: x-spin 6s linear infinite;
-            -moz-animation: x-spin 6s linear infinite;
-            -ms-animation: x-spin 6s linear infinite;
-            -o-animation: x-spin 6s linear infinite;
-            animation: x-spin 6s linear infinite;*/
+							-moz-animation: x-spin 6s linear infinite;
+							-ms-animation: x-spin 6s linear infinite;
+							-o-animation: x-spin 6s linear infinite;
+							animation: x-spin 6s linear infinite;*/
 }
 #slotsWrapper #slotsMachine #reelsWrapper .reel .chips.stop_spinning,
 #slotsWrapper #slotsMachine #reelsWrapper .reel .chips2.stop_spinning {
@@ -409,10 +438,10 @@
   background-position: center;
   background-size: 100%;
   /*
-        border-radius: 8px;
-        border: 2px solid #E1E7EE;
-        box-shadow: inset 1px 1px 0px #000, inset -1px -1px 0px #000, inset 0px -2px 1px #AD7B05, inset 0px 2px 1px #FFE9B7, inset -2px 0px 1px #E7B95D, inset -2px 0px 1px #C09B4F, inset 0px 10px 10px #FFD481, inset 0px -10px 10px #AA5200, inset -10px 0px 10px #E8951E,inset 10px 0px 10px #E8951E;
-      */
+				border-radius: 8px;
+				border: 2px solid #E1E7EE;
+				box-shadow: inset 1px 1px 0px #000, inset -1px -1px 0px #000, inset 0px -2px 1px #AD7B05, inset 0px 2px 1px #FFE9B7, inset -2px 0px 1px #E7B95D, inset -2px 0px 1px #C09B4F, inset 0px 10px 10px #FFD481, inset 0px -10px 10px #AA5200, inset -10px 0px 10px #E8951E,inset 10px 0px 10px #E8951E;
+			  */
 }
 #slotsWrapper #buttonsRow .button:hover {
   background-image: url(img/btn_play_hover.png);
@@ -507,7 +536,6 @@
 }
 #slotsBack {
   position: absolute;
-  display: none;
   left: 0;
   width: 100%;
   height: 860px;
@@ -522,14 +550,14 @@
 }
 .popup {
   /*
-  display: none;
-  position: fixed;
-  top: 50%;
-  margin-top: -171.5px;
-  left: 50%;
-  margin-left: -374px;
-  z-index: 1002;
-  */
+	  display: none;
+	  position: fixed;
+	  top: 50%;
+	  margin-top: -171.5px;
+	  left: 50%;
+	  margin-left: -374px;
+	  z-index: 1002;
+	  */
 }
 .popup .bPopupTitle {
   font: normal 75% Tahoma, Geneva, sans-serif, helvetica, sans-serif;
@@ -1061,41 +1089,4 @@
   100% {
     opacity: 0;
   }
-}
-body.parallax .gameBandit {
-  display: none;
-}
-body.parallax .center-parallax-block #slotsBack {
-  top: 0px !important;
-  background: #000000 url(img/slot_background.png) no-repeat bottom;
-  opacity: 0;
-}
-body.parallax .center-parallax-block #slotsWrapWrapper #slotsBottomLine {
-  background-position: center;
-  background-repeat: no-repeat;
-}
-#slotsWrapWrapper > .hello {
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  width: 583px;
-  margin: 0 auto;
-  border: 1px solid #565959;
-  border-radius: 10px;
-  padding: 10px 15px;
-  background: url(img/tile_back.png);
-  box-shadow: -2px 0px 35px #000000, 2px 0px 35px #000000;
-  color: #ffffff;
-  font-family: Tahoma, Geneva, sans-serif, helvetica, sans-serif;
-  font-size: 14px;
-  /** @todo после финализации виджета переделать адекватным способом **/
-  position: relative;
-  top: 0px;
-  height: 200px;
-  margin-bottom: -200px;
-  z-index: 2;
-}
-#slotsWrapper * {
-  margin: 0;
-  padding: 0;
 }

@@ -1,51 +1,13 @@
 <?php
 /**
  * @var $page \View\Game\BanditPage
+ * @var array $config
  */
 ?>
 
 <?= $page->slotEnterPrizeWidget() ?>
 
-<script type="text/javascript">
-    $(window).load(function () {
-        var
-            slotsPopup = $('#slotsPopup'),
-            animations_config = $('#slotsWrapWrapper').data('animations-config'),
-            labels_config = $('#slotsWrapWrapper').data('labels-config');
-
-        slotsPopup.messageBox = slotsPopup.find('.message');
-
-        $('#slotsWrapWrapper').slots({
-            labels: labels_config,
-            handlers: {
-                userUnauthorized: function(self,state) {
-                    self.stillInGameState();
-                    window.registerAuth.init('authRegistration');
-                },
-                notEnterprizeMember: function(self,state){
-                    self.stillInGameState();
-                    window.registerAuth.init('update');
-                },
-                winExceeded: function(self,state) {
-                    self.notAvailableState(state.message);
-                },
-                triesExceeded: function (self,state) {
-                    self.notAvailableState(state.message);
-                },
-                undefinedError: function (self,state) {
-                    self.notAvailableState();
-                }
-            },
-            api_url: {
-                init: "http://<?=\App::config()->mainHost?>/game/slots/init",
-                play: "http://<?=\App::config()->mainHost?>/game/slots/play",
-                img_led_off: "/css/game/slots/img/slot_led_off.png"
-            }
-        }, animations_config);
-    });
-</script>
-
-<div id="slotsWrapWrapper" data-animations-config="<?= $page->json($animationsConfig) ?>" data-labels-config="<?= $page->json($labelsConfig) ?>" >
+<div id="slotsWrapWrapper" data-config="<?= $page->json($config) ?>">
     <div class="hello">
         <div class="rulesText">
             <h2><i>Enter Prize Jackpot</i></h2>
