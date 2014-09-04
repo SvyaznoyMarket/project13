@@ -514,6 +514,11 @@ return [
         'pattern' => '/order/delivery',
         'action'  => ['OrderV3\DeliveryAction', 'execute'],
     ],
+    // оформление заказа: 2-й шаг - выбор доставки
+    'orderV3.delivery.one-click' => [
+        'pattern' => '/order/delivery/one-click',
+        'action'  => ['OrderV3\DeliveryAction', 'execute'],
+    ],
     // оформление заказа: создание
     'orderV3.create' => [
         'pattern' => '/order/create',

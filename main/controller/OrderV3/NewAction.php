@@ -35,7 +35,10 @@ class NewAction extends OrderV3 {
                     if ((bool)$deliveryMethods)  $this->logger(['delivery-tokens' => $deliveryMethods]);
                 }
 
-                return new RedirectResponse(\App::router()->generate('orderV3.delivery'));
+                switch ($request->attributes->get('route')) {
+                    case 'orderV3': return new RedirectResponse(\App::router()->generate('orderV3.delivery'));
+                    case 'orderV3.one-click': return new RedirectResponse(\App::router()->generate('orderV3.delivery.one-click'));
+                }
             }
 
             $this->logger(['action' => 'view-page-new']);
@@ -67,10 +70,6 @@ class NewAction extends OrderV3 {
         }
 
         $bonusCards = (new \Model\Order\BonusCard\Repository($this->client))->getCollection();
-
-//        for testing
-//        $bonusCards[] = reset($bonusCards);
-
 
         $page->setParam('user', $this->user);
         $page->setParam('bonusCards', $bonusCards);
