@@ -20,7 +20,9 @@ class NewAction extends OrderV3 {
 
             if ($request->isMethod('POST')) {
                 $post = $request->request->all();
-                (new DeliveryAction())->getSplit();
+                $shop =  null;
+                if (method_exists($this->cart, 'getShop')) $shop = $this->cart->getShop();
+                (new DeliveryAction())->getSplit(null, $shop);
                 $delivery = (new DeliveryAction())->getSplit($post);
 
                 // залогируем первичное время доставки

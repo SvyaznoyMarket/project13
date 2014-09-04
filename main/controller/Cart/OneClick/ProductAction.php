@@ -44,6 +44,7 @@ class ProductAction {
             ]);
 
             $cart->setProduct($cartProduct);
+            if ($request->get('shopId')) $cart->setShop($request->get('shopId'));
 
             $parentCategoryId = $product->getParentCategory() ? $product->getParentCategory()->getId() : null;
 
