@@ -107,6 +107,14 @@ class Cart {
             $this->storage->set($this->sessionName, $data);
             \App::logger()->warn(sprintf('Пользователь sessionId=%s добавил %s-й товар в корзину', $this->storage->getId(), $productCount), ['session', 'cart']);
         }
+
+        // новый формат корзины
+        $data = $this->storage->get('cart');
+        if (!isset($data['product']) || !is_array($data['product'])) {
+            $this->storage->set('cart', [
+                'product' => [],
+            ]);
+        }
     }
 
     /**
@@ -150,6 +158,21 @@ class Cart {
 
         $this->storage->set($this->sessionName, $data);
         $this->clearEmpty();
+
+        // новый формат
+        $data = $this->storage->get('cart');
+        $item = [
+            'id'       => $product->getId(),
+            'ui'       => $product->getUi(),
+            'quantity' => $quantity,
+        ];
+        if (!isset($data['product'][$product->getId()]['added'])) {
+            $item['added'] = date('c');
+        } else {
+            $item = array_merge($data['product'][$product->getId()], $item);
+        }
+        $data['product'][$product->getId()] = $item;
+        $this->storage->set('cart', $data);
     }
 
     /**
