@@ -25,7 +25,7 @@ $c->authToken['name']     = '_token';
 $c->authToken['authorized_cookie'] = '_authorized';
 
 $c->session['name']            = 'enter';
-$c->session['cookie_lifetime'] = 15552000;
+$c->session['cookie_lifetime'] = 2592000; // 30 дней
 $c->session['cookie_domain'] = '.enter.ru';
 
 $c->cacheCookieName = 'enter_auth'; //TODO: удалить
