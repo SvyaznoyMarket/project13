@@ -72,7 +72,7 @@ class UpsellPage extends \View\DefaultLayout {
 
         return ''
             . "\n\n"
-            . (bool)$product ? $this->render('_remarketingGoogle', ['tag_params' => $tag_params]) : ''
+            . ($product ? $this->render('_remarketingGoogle', ['tag_params' => $tag_params]) : '')
             . "\n\n"
             . $this->render('_innerJavascript');
     }
