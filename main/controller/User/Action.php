@@ -139,10 +139,16 @@ class Action {
                         case 614:
                             $form->setError('username', 'Пользователь не найден');
                             break;
-                        case 684: case 689:
+                        case 684:
+                            $form->setError('username', 'Такой email уже занят');
+                            break;
+                        case 689:
                             $form->setError('username', 'Неправильный email');
                             break;
-                        case 686: case 690:
+                        case 686:
+                            $form->setError('username', 'Такой номер уже занят');
+                            break;
+                        case 690:
                             $form->setError('username', 'Неправильный телефон');
                             break;
                         case 613:
@@ -303,19 +309,19 @@ class Action {
 
                     \App::exception()->remove($e);
                     switch ($e->getCode()) {
-                        case 684:
+                        case 689:
                             $form->setError('username', 'Такой email уже занят');
                             $form->setError('email', 'Такой email уже занят');
                             break;
-                        case 689:
+                        case 684:
                             $form->setError('username', 'Неправильный email');
                             $form->setError('email', 'Неправильный email');
                             break;
-                        case 686:
+                        case 690:
                             $form->setError('username', 'Такой номер уже занят');
                             $form->setError('phone', 'Такой номер уже занят');
                             break;
-                        case 690:
+                        case 686:
                             $form->setError('username', 'Неправильный телефон');
                             $form->setError('phone', 'Неправильный телефон');
                             break;
