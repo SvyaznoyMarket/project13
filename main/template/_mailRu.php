@@ -11,7 +11,7 @@
     <!-- Rating@Mail.ru counter -->
     <script type="text/javascript">
         var _tmr = _tmr || [];
-        tmr.push({id: 2553999, type: "pageView", start: (new Date()).getTime()});
+        _tmr.push({id: 2553999, type: "pageView", start: (new Date()).getTime()});
         (function (d, w) {
             var ts = d.createElement("script"); ts.type = "text/javascript"; ts.async = true;
             ts.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//top-fwz1.mail.ru/js/code.js";
