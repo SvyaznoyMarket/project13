@@ -105,18 +105,6 @@ class Action extends \Controller\ProductCategory\Action {
                 if($data && is_array($data)) $shopScriptSeo = reset($data);
             });
             $shopScript->execute();
-
-            // если shopscript вернул редирект
-            if(!empty($shopScriptSeo['redirect']['link'])) {
-                $redirect = $shopScriptSeo['redirect']['link'];
-                if(!preg_match('/^http/', $redirect)) {
-                    $redirect = (preg_match('/^http/', \App::config()->mainHost) ? '' : 'http://') .
-                                \App::config()->mainHost .
-                                (preg_match('/^\//', $redirect) ? '' : '/') .
-                                $redirect;
-                }
-                return new \Http\RedirectResponse($redirect);
-            }
         }
 
         if (!$category) {
