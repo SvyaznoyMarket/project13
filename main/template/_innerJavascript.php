@@ -39,3 +39,5 @@
 <?= $page->slotLamodaOtherPageJS() ?>
 <?= $page->slotLamodaCompleteJS() ?>
 <!-- Lamoda End -->
+
+<?= $page->slotMailRu() ?>

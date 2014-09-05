@@ -329,10 +329,17 @@ class Helper {
     }
 
     /**
-     * @param $value
+     * @param string $value
+     * @param string $type "html" or "js"
      * @return string
      */
-    public function escape($value) {
-        return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+    public function escape($value, $type = 'html') {
+        if ($type === 'html') {
+            return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+        } else if ($type === 'js') {
+            return strtr($value, array('\\' => '\\\\', "'" => "\\'", '"' => '\\"', "\r" => '\\r', "\n" => '\\n', '</' => '<\/'));
+        } else {
+            throw new \Exception('Функции escape передан неверный тип данных ("' . $type . '")');
+        }
     }
 }

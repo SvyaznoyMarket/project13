@@ -178,6 +178,7 @@ class NewAction {
         $bonusCardsData = \Controller\Order\NewAction::getBonusCardsData($request, $bonusCards, $userBonusCards);
 
         $page = new \View\Order\NewPage();
+        $page->setParam('cart', $cart);
         $page->setParam('deliveryData', (new \Controller\Order\DeliveryAction())->getResponseData(false));
         $page->setParam('productsById', $productsById);
         $page->setParam('paymentMethods', $paymentMethods);
