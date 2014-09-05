@@ -21,7 +21,7 @@
     </script>
     <noscript>
         <div style="position:absolute;left:-10000px;">
-            <img src="//top-fwz1.mail.ru/counter?id=2499868;js=na" style="border:0;" height="1" width="1" alt="Рейтинг@Mail.ru" />
+            <img src="//top-fwz1.mail.ru/counter?id=2553999;js=na" style="border:0;" height="1" width="1" alt="Рейтинг@Mail.ru" />
         </div>
     </noscript>
     <!-- //Rating@Mail.ru counter -->
