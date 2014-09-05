@@ -38,8 +38,8 @@ class NewAction extends OrderV3 {
                 }
 
                 switch ($request->attributes->get('route')) {
-                    case 'orderV3': return new RedirectResponse(\App::router()->generate('orderV3.delivery'));
                     case 'orderV3.one-click': return new RedirectResponse(\App::router()->generate('orderV3.delivery.one-click'));
+                    default: return new RedirectResponse(\App::router()->generate('orderV3.delivery'));
                 }
             }
 
