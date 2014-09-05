@@ -25,13 +25,14 @@ class Action {
 
         // данные для JsonResponse
         $responseData = [
-            'time'      => strtotime(date('Y-m-d'), 0) * 1000,
-            'action'    => [],
-            'paypalECS' => false,
-            'lifeGift'  => false,
-            'oneClick'  => false,
-            'cart'      => [],
-            'defPoints' => [],
+            'time'           => strtotime(date('Y-m-d'), 0) * 1000,
+            'action'         => [],
+            'paypalECS'      => false,
+            'lifeGift'       => false,
+            'oneClick'       => false,
+            'cart'           => [],
+            'defPoints'      => [],
+            'deliveryStates' => [],
         ];
 
         try {
