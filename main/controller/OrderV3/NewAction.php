@@ -20,7 +20,9 @@ class NewAction extends OrderV3 {
 
             if ($request->isMethod('POST')) {
                 $post = $request->request->all();
-                (new DeliveryAction())->getSplit();
+                $shop =  null;
+                if (method_exists($this->cart, 'getShop')) $shop = $this->cart->getShop();
+                (new DeliveryAction())->getSplit(null, $shop);
                 $delivery = (new DeliveryAction())->getSplit($post);
 
                 // залогируем первичное время доставки
@@ -36,8 +38,8 @@ class NewAction extends OrderV3 {
                 }
 
                 switch ($request->attributes->get('route')) {
-                    case 'orderV3': return new RedirectResponse(\App::router()->generate('orderV3.delivery'));
                     case 'orderV3.one-click': return new RedirectResponse(\App::router()->generate('orderV3.delivery.one-click'));
+                    default: return new RedirectResponse(\App::router()->generate('orderV3.delivery'));
                 }
             }
 
