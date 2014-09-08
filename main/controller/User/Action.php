@@ -309,6 +309,15 @@ class Action {
 
                     \App::exception()->remove($e);
                     switch ($e->getCode()) {
+                        case 680:
+                            $form->setError('username', 'Неверный email или телефон');
+                            if ($form->getEmail()) {
+                                $form->setError('email', 'Неправильный email');
+                            }
+                            if ($form->getPhone()) {
+                                $form->setError('phone', 'Неправильный телефон');
+                            }
+                            break;
                         case 689:
                             $form->setError('username', 'Такой email уже занят');
                             $form->setError('email', 'Такой email уже занят');
