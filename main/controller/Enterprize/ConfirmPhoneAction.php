@@ -179,6 +179,6 @@ class ConfirmPhoneAction {
         \App::logger()->debug('Exec ' . __METHOD__);
         $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
 
-        return isset($data['isPhoneConfirmed']) && $data['isPhoneConfirmed'] || \App::user()->getEntity()->getIsPhoneConfirmed();
+        return isset($data['isPhoneConfirmed']) && $data['isPhoneConfirmed'] || (\App::user()->getEntity() ? \App::user()->getEntity()->getIsPhoneConfirmed() : false);
     }
 }
