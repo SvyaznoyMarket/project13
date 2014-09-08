@@ -258,6 +258,7 @@
     border-color: #e4e4e4;
     color: #dcdcdc;
     cursor: default;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#f9f9f9', GradientType=0);
   }
   .bSet__ePrice .link1 {
     background: #ffc000;
@@ -2309,6 +2310,10 @@
     background: #000000;
     color: #ffffff;
     border-color: #000000;
+  }
+  .reviewForm__button.mDisabled {
+    padding-left: 13px;
+    padding-right: 9px;
   }
 }
 /*---END---СТИЛИ ВСПЛЫВАЮЩИХ ОКОН---*/
