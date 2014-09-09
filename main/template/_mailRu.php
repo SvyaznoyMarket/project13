@@ -31,10 +31,10 @@
         var _tmr = _tmr || [];
         _tmr.push({
             type: 'itemView',
-            productid: [<?= count($productIds) ? "'" . implode("','", array_map(function($productId) use($page) { return $page->helper->escape($productId, 'js'); }, $productIds)) . "'" : '' ?>],
-            pagetype: '<?= $page->helper->escape($pageType, 'js') ?>',
+            productid: [<?= count($productIds) ? "'" . implode("','", array_map(function($productId) use($page) { return $page->helper->escapeJavaScript($productId); }, $productIds)) . "'" : '' ?>],
+            pagetype: '<?= $page->helper->escapeJavaScript($pageType) ?>',
             list: '',
-            totalvalue: '<?= $page->helper->escape($price, 'js') ?>'
+            totalvalue: '<?= $page->helper->escapeJavaScript($price) ?>'
         });
     </script>
     <!-- Rating@Mail.ru rem -->
