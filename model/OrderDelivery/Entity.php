@@ -214,9 +214,10 @@ namespace Model\OrderDelivery\Entity {
                         case 'shops':
                             $this->list[(string)$item['id']] = new Point\Shop($item);
                             break;
-                        case 'pickpoints':
+                        case 'self_partner_pickpoint':
                             $this->list[(string)$item['id']] = new Point\Pickpoint($item);
                             break;
+                        case 'self_partner_svyaznoy':
                         case 'shops_svyaznoy':
                             $this->list[(string)$item['id']] = new Point\Svyaznoy($item);
                     }
@@ -227,9 +228,10 @@ namespace Model\OrderDelivery\Entity {
                     case 'shops':
                         $this->marker['iconImageHref'] = '/images/map/marker-shop.png';
                         break;
-                    case 'pickpoints':
+                    case 'self_partner_pickpoint':
                         $this->marker['iconImageHref'] = '/images/map/marker-pickpoint.png';
                         break;
+                    case 'self_partner_svyaznoy':
                     case 'shops_svyaznoy':
                         $this->marker['iconImageHref'] = '/images/map/marker-svyaznoy.png';
                         break;
