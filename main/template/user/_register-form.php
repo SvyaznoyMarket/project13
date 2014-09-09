@@ -25,7 +25,7 @@ $oauthEnabled = \App::config()->oauthEnabled;
 
                 <input type="text" class="authForm_it textfield" name="register[email]" value="" placeholder="Email" />
 
-                <input type="text" class="authForm_it textfield" name="register[phone]" value="" placeholder="Телефон" />
+                <input type="text" class="authForm_it textfield js-phoneField" name="register[phone]" value="" placeholder="Телефон" />
 
                 <div class="authForm_sbscr">
                     <input class="customInput customInput-defcheck jsCustomRadio" type="checkbox" name="subscribe" id="subscribe" checked="checked" />
