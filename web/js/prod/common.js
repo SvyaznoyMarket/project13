@@ -1469,6 +1469,9 @@ $(document).ready(function(){
                     $el.closest('form').trigger('fieldError', [{field: $el.attr('name')}])
                 })
             ;
+
+			$.mask.definitions['n'] = '[0-9]';
+			$('.js-registerForm .js-phoneField').mask('+7 (nnn) nnn-nn-nn');
         };
     ;
 
