@@ -415,4 +415,18 @@ class IndexPage extends \View\DefaultLayout {
 
         return '<div id="myragonPageJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
     }
+
+    public function slotMailRu() {
+        /** @var \Model\Product\Entity $product */
+        $product = $this->getParam('product');
+        if (!is_object($product) || !($product instanceof \Model\Product\Entity)) {
+            return '';
+        }
+
+        return $this->render('_mailRu', [
+            'pageType' => 'product',
+            'productIds' => [$product->getId()],
+            'price' => $product->getPrice(),
+        ]);
+    }
 }

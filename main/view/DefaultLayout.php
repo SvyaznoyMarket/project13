@@ -1019,4 +1019,12 @@ class DefaultLayout extends Layout {
     public function slotEnterprizeRegJS() {
         return '';
     }
+
+    public function slotMailRu() {
+        return $this->render('_mailRu', [
+            'pageType' => 'other',
+            'productIds' => [],
+            'price' => '',
+        ]);
+    }
 }
