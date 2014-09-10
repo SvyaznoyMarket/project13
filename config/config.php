@@ -526,7 +526,7 @@ $c->abTest = [
             ]
         ],
         'order_delivery_price' => [
-            'enabled' => true,
+            'enabled' => false,
             'expireDate' => '2014-12-31',
             'cases' => [
                 'delivery_self_100' => [

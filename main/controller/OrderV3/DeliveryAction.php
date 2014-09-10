@@ -89,7 +89,7 @@ class DeliveryAction extends OrderV3 {
 
     }
 
-    public function getSplit(array $data = null) {
+    public function getSplit(array $data = null, $shopId = null) {
 
         if (!$this->cart->count()) throw new \Exception('Пустая корзина');
 
@@ -107,6 +107,8 @@ class DeliveryAction extends OrderV3 {
                     'product_list' => $product_list
                 ]
             ];
+
+            if ($shopId) $splitData['shop_id'] = (int)$shopId;
         }
 
         $orderDeliveryData = $this->client->query('cart/split',

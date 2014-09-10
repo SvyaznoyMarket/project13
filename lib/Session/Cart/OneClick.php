@@ -118,4 +118,15 @@ class OneClick {
         }, $this->getProducts());
     }
 
+    public function setShop($shop) {
+        $sessionData = $this->storage->get($this->sessionName);
+        $sessionData['shop'] = (int)$shop;
+        $this->storage->set($this->sessionName, $sessionData);
+    }
+
+    public function getShop() {
+        $cart = $this->storage->get($this->sessionName);
+        return isset($cart['shop']) ? (int)$cart['shop'] : null;
+    }
+
 }
