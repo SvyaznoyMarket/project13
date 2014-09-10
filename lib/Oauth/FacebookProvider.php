@@ -16,12 +16,13 @@ class FacebookProvider implements ProviderInterface {
     }
 
     /**
+     * @param string $redirect_to
      * @return string
      */
-    public function getLoginUrl() {
+    public function getLoginUrl($redirect_to = '') {
         return 'https://www.facebook.com/dialog/oauth?' . http_build_query([
             'client_id'     => $this->config->clientId,
-            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME], true),
+            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME, redirect_to => $redirect_to], true),
             'response_type' => 'code',
             'scope'         => 'email,user_birthday'
         ]);
@@ -39,7 +40,7 @@ class FacebookProvider implements ProviderInterface {
             return null;
         }
 
-        $response = $this->query($this->getAccessTokenUrl($code), [], false, true);
+        $response = $this->query($this->getAccessTokenUrl($code, $request->get('redirect_to')), [], false, true);
 
         parse_str($response, $response);
 
@@ -64,13 +65,14 @@ class FacebookProvider implements ProviderInterface {
     }
 
     /**
-     * @param string $code
+     * @param $code
+     * @param string $redirect_to
      * @return string
      */
-    private function getAccessTokenUrl($code) {
+    private function getAccessTokenUrl($code, $redirect_to = '') {
         return 'https://graph.facebook.com/oauth/access_token?' . http_build_query([
             'client_id'     => $this->config->clientId,
-            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME], true),
+            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME, redirect_to => $redirect_to], true),
             'client_secret' => $this->config->secretKey,
             'code'          => $code,
         ]);
