@@ -51,7 +51,7 @@
                 <a target="_blank" class="landing_hd-land-gift" href="https://mycard.tele2.ru/"></a> 
                 <div class="landing_hd-land_tx"> 
                     <div class="landing_hd-land_tx-1">Боитесь покупок онлайн? Напрасно. Теперь есть способ платить безопасно</div> 
-                    <a href="#terms" class="g-button mod_header">Получить подарок</a>
+                    <a href="#terms" class="g-button mod_header">Получить купон на 500 руб.</a>
                 </div> 
             </div> 
 
@@ -78,7 +78,7 @@
     <div class="landing_nav landing_hdn jsNavFixed"> 
         <div class="landing_nav_lst">
             <div class="landing_nav_lst-list-h">
-                <a href="#terms" class="landing_nav_lst_i jsNavItemScroll">Получить подарок</a>
+                <a href="#terms" class="landing_nav_lst_i jsNavItemScroll">Получить купон на 500 руб.</a>
                 <a href="#video" class="landing_nav_lst_i jsNavItemScroll">Видеопрезентация</a>
                 <a href="#card" class="landing_nav_lst_i jsNavItemScroll">Выпустить карту Tele2 MasterCard<sup>&copy;</sup></a>
                 <a href="#faq" class="landing_nav_lst_i jsNavItemScroll">Вопросы и ответы</a> 
@@ -90,19 +90,20 @@
         <div class="g-columns mod_terms"> 
             <div class="g-columns-cell">
                 <div class="landing_terms-how"> 
-                    <div class="landing_ttl landing_ttl-23"><strong>Как получить подарок</strong></div>
+                    <div class="landing_ttl landing_ttl-23"><strong>Как получить купон на 500 руб.</strong></div>
                     <ol class="b-ordered-list mod_terms">
-                        <li><p class="b-ordered-list_i">Выпусти <span class="g-pseudo g_lk jsg_lk"><span class="g-pseudo-h">виртуальную карту Tele2 MasterCard<sup>&copy;</sup></span></span> за 2 минуты</p></li> 
-                        <li><p class="b-ordered-list_i">Получи промо-код на подарок на номер мобильного телефона</p></li>
-                        <li><p class="b-ordered-list_i">Сделай заказ в <a href="/">Enter</a> на сумму от 990 рублей и укажи в корзине промо-код</p></li>
-                        <li><p class="b-ordered-list_i">Оплати заказ виртуальной картой Tele2 MasterCard<sup>©</sup> и получи подарок вместе с заказом</p></li>
+                        <li><p class="b-ordered-list_i">Выпусти <span class="g-pseudo g_lk jsg_lk"><span class="g-pseudo-h">виртуальную карту Tele2 MasterCard<sup>&copy;</sup></span></span>. Процедура занимает не более 2 минут</p></li>
+                        <li><p class="b-ordered-list_i">Получи код купона на номер мобильного телефона</p></li>
+                        <li><p class="b-ordered-list_i">Сделай заказ на сайте <a href="/">www.enter.ru</a> на сумму от 1000 рублей</p></li>
+                        <li><p class="b-ordered-list_i">Введи код купона в разделе "Оформление заказа"</p></li>
+                        <li><p class="b-ordered-list_i">Оплати заказ виртуальной картой Tele2 MasterCard<sup>©</sup></p></li>
                     </ol>
                 </div>
             </div> 
             <div class="g-columns-cell"> 
                 <div class="landing_terms-form"> 
                     <div class="landing_terms-form-cell side_left"> 
-                        <div class="landing_terms-form-terms"> Укажи номер своего мобильного и получи промо-код на покупку сразу, если у тебя уже оформлена виртуальная карта <strong>Tele2 MasterCard<sup>©</sup></strong> 
+                        <div class="landing_terms-form-terms"> У тебя уже есть виртуальная карта <strong>Tele2 MasterCard<sup>©</sup></strong>? Тогда укажи номер своего мобильного телефона и получи купон на 500 руб. прямо сейчас
                         </div> 
                     </div> 
 
@@ -122,7 +123,7 @@
 
                             <div class="landing_form_hint">Например, +7 950 027 74 96</div>
 
-                            <button type="submit" class="g-button scheme_dblue size_5 box_block js-form-button js-widget">Получить подарок</button>
+                            <button type="submit" class="g-button scheme_dblue size_5 box_block js-form-button js-widget" style="font-size: 18px">Получить купон на 500 руб.</button>
                         </form>
                     </div> 
                 </div> 
