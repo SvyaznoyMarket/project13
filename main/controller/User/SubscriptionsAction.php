@@ -127,7 +127,7 @@ class SubscriptionsAction {
 
         $response = $this->client->query('subscribe/set', ['token'=>$this->user->getToken()], $formData['channel']);
 
-        if (!isset($response['success']) || $response['success'] == false) throw new \Exception();
+        if (!isset($response['confirmed']) || $response['confirmed'] == false) throw new \Exception();
 
     }
 
