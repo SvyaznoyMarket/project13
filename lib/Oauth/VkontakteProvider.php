@@ -76,7 +76,7 @@ class VkontakteProvider implements ProviderInterface {
             'client_id'     => $this->config->clientId,
             'client_secret' => $this->config->secretKey,
             'code'          => $code,
-            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME, redirect_to => $redirect_to], true),
+            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME, 'redirect_to' => $redirect_to], true),
         ]);
     }
 
