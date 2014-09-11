@@ -88,7 +88,7 @@ return function(
 
                             <? if (isset($paymentEntity->groups[2])) : ?>
 
-                            <div class="orderLn_row orderLn_row-bg">
+                            <div class="orderLn_row orderLn_row-bg jsOnlinePaymentBlock">
 
                                 <? if (isset($paymentEntity->methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT])
                                         && isset($order->meta_data['preferred_payment_id'])
@@ -122,22 +122,22 @@ return function(
 
                                     <? if ($order->sum > \App::config()->order['prepayment']['priceLimit']) : ?>
 
-                                        <div class="payT">Требуется предоплата</div>
-                                        <div class="orderLn_box">
+                                        <div class="payT">Требуется <span class="payBtn btn4 jsOnlinePaymentSpan"><span class="brb-dt">предоплата</span></span></div>
+                                        <div class="orderLn_box jsOnlinePaymentBlock">
                                             <a href="" class="orderLn_btn btnLightGrey">
                                                 <? foreach ($paymentMethods as $method) : ?>
                                                     <img src="<?= $method->icon; ?>" alt="" />
                                                 <? endforeach; ?>
                                             </a>
-                                            <ul style="display: none;" class="customSel_lst popupFl">
-                                                <? foreach ($paymentMethods as $method) : ?>
-                                                    <li class="customSel_i jsPaymentMethod">
-                                                        <strong><?= $method->name; ?></strong><br/>
-                                                        <?= $method->description; ?>
-                                                    </li>
-                                                <? endforeach; ?>
-                                            </ul>
                                         </div>
+                                        <ul style="display: none;" class="customSel_lst popupFl jsOnlinePaymentList">
+                                            <? foreach ($paymentMethods as $method) : ?>
+                                                <li class="customSel_i jsPaymentMethod" data-value="<?= $method->id; ?>">
+                                                    <strong><?= $method->name; ?></strong><br/>
+                                                    <?= $method->description; ?>
+                                                </li>
+                                            <? endforeach; ?>
+                                        </ul>
 
                                     <? else : ?>
 
@@ -147,7 +147,7 @@ return function(
                                             <img src="<?= $method->icon; ?>" alt="" />
                                         <? endforeach; ?>
 
-                                        <ul style="display: none;" class="customSel_lst popupFl customSel_lst-pay jsOnlinePaymentList">
+                                        <ul style="display: none;" class="customSel_lst popupFl jsOnlinePaymentList">
                                         <? foreach ($paymentMethods as $method) : ?>
                                             <li class="customSel_i jsPaymentMethod" data-value="<?= $method->id; ?>">
                                                 <strong><?= $method->name; ?></strong><br/>
@@ -174,8 +174,8 @@ return function(
 
         </div>
 
-        <div class="orderCompl clearfix">
-            <button class="orderCompl_btn m-auto btnsubmit" onclick="window.location.href='<?= $helper->url('homepage') ?>'">Продолжить покупки</button>
+        <div class="orderCompl orderCompl_final clearfix">
+            <a class="orderCompl_continue_link" href="<?= $helper->url('homepage') ?>">Вернуться на главную</a>
         </div>
     </section>
 

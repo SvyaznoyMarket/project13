@@ -4,7 +4,7 @@
 
     // jQuery masked input
     $.mask.definitions['x']='[0-9]';
-    $.mask.placeholder= " ";
+    $.mask.placeholder= "_";
     $.map($inputs, function(elem, i) {
         if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
     });

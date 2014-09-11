@@ -873,6 +873,42 @@
 
 }));
 
+;(function($) {
+
+    var body = $(document.body),
+        _gaq = window._gaq,
+        region = '', // TODO
+
+        sendAnalytic = function sendAnalyticF (category, action, label, value) {
+        var lbl = label || '',
+            act = action || '';
+
+        if (category && category.data) {
+            if (category.data.step) act = category.data.step;
+            if (category.data.action) lbl = category.data.action;
+        }
+
+        if (typeof ga === 'undefined') ga = window[window['GoogleAnalyticsObject']]; // try to assign ga
+
+        // sending
+        if (typeof _gaq === 'object') _gaq.push(['_trackEvent', 'воронка_' + region, act, lbl]);
+        if (typeof ga === 'function') ga('send', 'event', 'воронка_' + region, act, lbl);
+
+        // log to console
+        console.log('[Google Analytics] Step "%s" sended with action "%s" for воронка_%s', act, lbl, region);
+    };
+
+    // common listener for triggering from another files or functions
+    body.on('trackUserAction.orderV3Tracking', sendAnalytic);
+
+    // SITE-4330 Пометка аудиторий для эксперимента
+    // Код  _gaq.push(['_setCustomVar']); необходимо выполнять до кода _gaq.push(['_trackPageview']);
+    /*if (typeof _gaq === 'object') {
+        _gaq.push(['_setCustomVar', 11, 'Order_Experiment', 'New', 2 ]);
+        console.log('[Google Analytics] SetCustomVar 11 Order_Experiment New 2');
+    }*/
+
+})(jQuery);
 ;(function($){
 
     var $orderContent = $('#js-order-content');
@@ -1050,7 +1086,7 @@
         function updatePrefix(elem) {
             var type = address.getLastType(),
                 $prefixHolder = $(elem).siblings('#addressInputPrefix');
-            $prefixHolder.text(typeNames[type] + (type == 'apartment' ? ' (необязательно)' : '') + ":");
+            if (type !== false) $prefixHolder.text(typeNames[type] + (type == 'apartment' ? ' (необязательно)' : '') + ":");
         }
 
         /**
@@ -1247,19 +1283,21 @@
 
     var init = function() {
 
-            var options = $mapContainer.data('options');
+        var options = $mapContainer.data('options');
 
-            E.map = new ymaps.Map("yandex-map-container", {
-                center: [options.latitude, options.longitude],
-                zoom: options.zoom
-            },{
-                autoFitToViewport: 'always'
-            });
+        E.map = new ymaps.Map("yandex-map-container", {
+            center: [options.latitude, options.longitude],
+            zoom: options.zoom
+        },{
+            autoFitToViewport: 'always'
+        });
 
-            E.mapOptions = options;
-            E.$map = $mapContainer;
+        E.map.controls.remove('searchControl')
 
-        };
+        E.mapOptions = options;
+        E.$map = $mapContainer;
+
+    };
 
     if ($mapContainer.length) ymaps.ready(init);
 
@@ -1308,6 +1346,7 @@
         },
 
         showCreditWidget = function showCreditWidgetF(bankProviderId, data) {
+            console.log('Credit Data', data);
 
             if ( bankProviderId == 1 ) showKupiVKredit(data['kupivkredit']);
             if ( bankProviderId == 2 ) showDirectCredit(data['direct-credit']);
@@ -1338,43 +1377,29 @@
         },
 
         showDirectCredit = function showDirectCreditF(data){
-            var i, item,
-                openWidget = function openWidget() {
-                    dc_getCreditForTheProduct(
-                        '4427',
-                        data.vars.number ,// session
-                        'orderProductToBuyOnCredit',
-                        { order_id: data.vars.number,
-                            region: data.vars.region }
-                    );
-                };
+            var productArr = [];
 
-            $LAB.script( 'JsHttpRequest.min.js' )
-                .script( '//direct-credit.ru/widget/script_utf.js' )
+            $LAB.script( '//api.direct-credit.ru/JsHttpRequest.js' )
+                .script( '//api.direct-credit.ru/dc.js' )
                 .wait( function() {
                     console.info('скрипты загружены для кредитного виджета. начинаем обработку');
-                    // fill cart
-                    for ( i = data.vars.items.length - 1; i >= 0; i-- ) {
-                        item = data.vars.items[i];
 
-                        dc_getCreditForTheProduct(
-                            '4427',
-                            data.vars.number,
-                            'addProductToBuyOnCredit',
-                            {
-                                name : item.name,
-                                count: item.quantity,
-                                articul: item.articul,
-                                price: item.price,
-                                type: item.type
-                            },
-                            function() {
-                                console.log('обработка завершена. открываем виджет');
-                                openWidget();
-                            }
-                        );
-                    }
-                });
+                    $.each(data.vars.items, function(index, elem){
+                        productArr.push({
+                            id: elem.articul,
+                            name: elem.name,
+                            price: elem.price,
+                            type: elem.type,
+                            count: elem.quantity
+                        })
+                    });
+
+
+                DCLoans(data.vars.partnerID, 'getCredit', { products: productArr, order: data.vars.number, codeTT: data.vars.shopId }, function(result){
+                   console.log(result);
+                }, false);
+
+            });
         };
 
     // клик по методу онлайн-оплаты
@@ -1396,17 +1421,26 @@
         e.stopPropagation();
     });
 
+    $orderContent.on('click', '.jsOnlinePaymentBlock', function(e) {
+        if ($(this).find('.jsOnlinePaymentList').length == 0) $(this).siblings('.jsOnlinePaymentList').show();
+        else $(this).find('.jsOnlinePaymentList').show();
+        if ( $(this).find('.jsCreditList').length != 0 )  $(this).find('.jsCreditList').show();
+        e.stopPropagation();
+    });
+
     $orderContent.on('click', '.jsCreditButton', function(e){
         $(this).siblings('.jsCreditList').show();
         e.preventDefault();
         e.stopPropagation();
     });
 
-    $orderContent.on('click', '.jsCreditList li', function(){
+    $orderContent.on('click', '.jsCreditList li', function(e){
         var bankProviderId = $(this).data('bank-provider-id'),
             creditData = $(this).parent().siblings('.credit-widget').data('value');
+//        e.preventDefault();
+        e.stopPropagation();
+        $(this).parent().hide();
         showCreditWidget(bankProviderId, creditData);
-        //$(this).parent().hide();
     });
 
     $(body).on('click', function(){
@@ -1422,6 +1456,7 @@
 
     var body = document.getElementsByTagName('body')[0],
         $orderContent = $('#js-order-content'),
+        comment = '',
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
             length: 5, // The length of each line
@@ -1523,6 +1558,7 @@
                 console.log("Model:", data.result.OrderDeliveryModel);
                 $orderContent.empty().html($(data.result.page).find('#js-order-content').html());
                 ENTER.OrderV3.constructors.smartAddress();
+                $orderContent.find('input[name=address]').focus();
             }).always(function(){
                 $orderContent.stop(true, true).fadeIn(200);
                 if (spinner) spinner.stop();
@@ -1558,13 +1594,25 @@
                 map.container.fitToViewport();
 
                 for (var i = 0; i < mapData.points[token].length; i++) {
-                    var point = mapData.points[token][i];
+                    var point = mapData.points[token][i],
+                        balloonContent = 'Адрес: ' + point.address;
 
                     if (!point.latitude || !point.longitude) continue;
 
+                    if (point.regtime) balloonContent += '<br /> Время работы: ' + point.regtime;
+
+                    // кнопка "Выбрать магазин"
+                    balloonContent += '<br />' + $('<button />', {
+                        'text':'Выбрать магазин',
+                        'class': 'btnLightGrey jsChangePoint',
+                        'data-id': point.id,
+                        'data-token': token
+                        }
+                    )[0].outerHTML;
+
                     var placemark = new ymaps.Placemark([point.latitude, point.longitude], {
                         balloonContentHeader: point.name,
-                        balloonContentBody: 'Адрес: ' + point.address + '',
+                        balloonContentBody: balloonContent,
                         hintContent: point.name
                     }, {
                         iconLayout: 'default#image',
@@ -1611,6 +1659,7 @@
             // первая вкладка активная
             $(elemId).find('.selShop_tab').removeClass('selShop_tab-act').first().addClass('selShop_tab-act');
             showMap($(this).closest('.orderCol'), token);
+            //$(elemId).lightbox_me({centered: true, closeSelector: '.jsCloseFl'});
         } else {
             log({'action':'view-date'});
         }
@@ -1642,11 +1691,11 @@
     $orderContent.on('click', '.orderCol_delivrLst li', function() {
         var $elem = $(this);
         if (!$elem.hasClass('orderCol_delivrLst_i-act')) {
-            if ($elem.data('delivery_group_id') == 1) {
-                showMap($elem.parent().siblings('.selShop').first());
-            } else {
+//            if ($elem.data('delivery_group_id') == 1) {
+//                showMap($elem.parent().siblings('.selShop').first());
+//            } else {
                 changeDelivery($(this).closest('.orderRow').data('block_name'), $(this).data('delivery_method_token'));
-            }
+//            }
         }
     });
 
@@ -1659,7 +1708,7 @@
     });
 
     // клик по списку точек самовывоза
-    $orderContent.on('click', '.shopLst_i', function() {
+    $orderContent.on('click', '.jsChangePoint', function() {
         var id = $(this).data('id'),
             token = $(this).data('token');
         if (id && token) {
@@ -1707,8 +1756,11 @@
     });
 
     // сохранение комментария
-    $orderContent.on('blur', '.orderComment_fld', function(){
-        changeOrderComment($(this).val());
+    $orderContent.on('blur focus', '.orderComment_fld', function(){
+        if (comment != $(this).val()) {
+            comment = $(this).val();
+            changeOrderComment($(this).val());
+        }
     });
 
     // клик по "Дополнительные пожелания"
@@ -1756,7 +1808,7 @@
 
     // jQuery masked input
     $.mask.definitions['x']='[0-9]';
-    $.mask.placeholder= " ";
+    $.mask.placeholder= "_";
     $.map($inputs, function(elem, i) {
         if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
     });
@@ -1868,7 +1920,7 @@
             $bonusCardInput =  $('[name=user_info\\[bonus_card_number\\]]'),
             phone = $phoneInput.val().replace(/\s+/g, '');
 
-        if (!/8\d{10}/.test(phone)) {
+        if (!/8\(\d{3}\)\d{3}-\d{2}-\d{2}/.test(phone)) {
             error.push('Неверный формат телефона');
             $phoneInput.addClass(errorClass);
         }

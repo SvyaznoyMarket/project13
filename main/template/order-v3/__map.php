@@ -17,13 +17,14 @@ return function(
         'points'    => [],
     ];
 
-    /** @var \Model\OrderDelivery\Entity\Point\Shop[]|\Model\OrderDelivery\Entity\Point\Pickpoint[] $points */
+    /** @var \Model\OrderDelivery\Entity\Point\Shop[]|\Model\OrderDelivery\Entity\Point\Pickpoint[]|\Model\OrderDelivery\Entity\Point\Svyaznoy[] $points */
     foreach ($order->possible_points as $token => $points) {
         foreach ($points as $point) {
             $dataValue['points'][$token][] = [
                 'id' => $point->id,
                 'name' => $point->name,
                 'address' => $point->address,
+                'regtime' => $point->regtime,
                 'latitude' => $point->latitude,
                 'longitude' => $point->longitude,
                 'marker'    => $orderDelivery->points[$token]->marker
@@ -34,6 +35,8 @@ return function(
 
 <div id="<?= $id ?>" class="selShop popupFl" style="display: none;">
     <div class="js-order-changePlace-close popupFl_clsr jsCloseFl" data-content="#<?= $id ?>"></div>
+
+    <div class="selShop_hh">Выберите точку самовывоза</div>
 
     <div class="selShop_h">
         <? foreach ($order->possible_points as $token => $points) : ?>
@@ -48,7 +51,7 @@ return function(
         <? foreach ($points as $point): ?>
             <? $subway = (isset($point->subway) && isset($point->subway[0])) ? $point->subway[0] : null ?>
 
-            <li class="shopLst_i" data-id="<?= $point->id ?>" data-token="<?= $token ?>">
+            <li class="shopLst_i jsChangePoint" data-id="<?= $point->id ?>" data-token="<?= $token ?>">
                 <div<? if ($subway && $subway->line): ?> style="background: <?= $subway->line->color ?>;"<? endif ?> class="shopLst_addrs">
                     <span class="shopLst_addrs_tx">
                         <? if ($subway): ?>

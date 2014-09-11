@@ -132,7 +132,7 @@
         function updatePrefix(elem) {
             var type = address.getLastType(),
                 $prefixHolder = $(elem).siblings('#addressInputPrefix');
-            $prefixHolder.text(typeNames[type] + (type == 'apartment' ? ' (необязательно)' : '') + ":");
+            if (type !== false) $prefixHolder.text(typeNames[type] + (type == 'apartment' ? ' (необязательно)' : '') + ":");
         }
 
         /**

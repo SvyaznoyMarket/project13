@@ -6,6 +6,7 @@
 
     var body = document.getElementsByTagName('body')[0],
         $orderContent = $('#js-order-content'),
+        comment = '',
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
             length: 5, // The length of each line
@@ -107,6 +108,7 @@
                 console.log("Model:", data.result.OrderDeliveryModel);
                 $orderContent.empty().html($(data.result.page).find('#js-order-content').html());
                 ENTER.OrderV3.constructors.smartAddress();
+                $orderContent.find('input[name=address]').focus();
             }).always(function(){
                 $orderContent.stop(true, true).fadeIn(200);
                 if (spinner) spinner.stop();
@@ -142,13 +144,25 @@
                 map.container.fitToViewport();
 
                 for (var i = 0; i < mapData.points[token].length; i++) {
-                    var point = mapData.points[token][i];
+                    var point = mapData.points[token][i],
+                        balloonContent = 'Адрес: ' + point.address;
 
                     if (!point.latitude || !point.longitude) continue;
 
+                    if (point.regtime) balloonContent += '<br /> Время работы: ' + point.regtime;
+
+                    // кнопка "Выбрать магазин"
+                    balloonContent += '<br />' + $('<button />', {
+                        'text':'Выбрать магазин',
+                        'class': 'btnLightGrey jsChangePoint',
+                        'data-id': point.id,
+                        'data-token': token
+                        }
+                    )[0].outerHTML;
+
                     var placemark = new ymaps.Placemark([point.latitude, point.longitude], {
                         balloonContentHeader: point.name,
-                        balloonContentBody: 'Адрес: ' + point.address + '',
+                        balloonContentBody: balloonContent,
                         hintContent: point.name
                     }, {
                         iconLayout: 'default#image',
@@ -195,6 +209,7 @@
             // первая вкладка активная
             $(elemId).find('.selShop_tab').removeClass('selShop_tab-act').first().addClass('selShop_tab-act');
             showMap($(this).closest('.orderCol'), token);
+            //$(elemId).lightbox_me({centered: true, closeSelector: '.jsCloseFl'});
         } else {
             log({'action':'view-date'});
         }
@@ -226,11 +241,11 @@
     $orderContent.on('click', '.orderCol_delivrLst li', function() {
         var $elem = $(this);
         if (!$elem.hasClass('orderCol_delivrLst_i-act')) {
-            if ($elem.data('delivery_group_id') == 1) {
-                showMap($elem.parent().siblings('.selShop').first());
-            } else {
+//            if ($elem.data('delivery_group_id') == 1) {
+//                showMap($elem.parent().siblings('.selShop').first());
+//            } else {
                 changeDelivery($(this).closest('.orderRow').data('block_name'), $(this).data('delivery_method_token'));
-            }
+//            }
         }
     });
 
@@ -243,7 +258,7 @@
     });
 
     // клик по списку точек самовывоза
-    $orderContent.on('click', '.shopLst_i', function() {
+    $orderContent.on('click', '.jsChangePoint', function() {
         var id = $(this).data('id'),
             token = $(this).data('token');
         if (id && token) {
@@ -291,8 +306,11 @@
     });
 
     // сохранение комментария
-    $orderContent.on('blur', '.orderComment_fld', function(){
-        changeOrderComment($(this).val());
+    $orderContent.on('blur focus', '.orderComment_fld', function(){
+        if (comment != $(this).val()) {
+            comment = $(this).val();
+            changeOrderComment($(this).val());
+        }
     });
 
     // клик по "Дополнительные пожелания"
