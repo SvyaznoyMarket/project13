@@ -2116,9 +2116,11 @@ window.ANALYTICS = {
 	},
 
 	enable : true
-}
+};
 
-ANALYTICS.parseAllAnalDivs( $('.jsanalytics') );
+$(function(){
+	ANALYTICS.parseAllAnalDivs( $('.jsanalytics') );
+});
 
 var ADFOX = {
 	adfoxbground : function() {
@@ -2369,9 +2371,11 @@ var ADFOX = {
 	},
 
 	enable : true
-}
+};
 
-ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') );
+$(function(){
+	ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') );
+});
 
 //;(function () {
 //	/**********************************************************************
