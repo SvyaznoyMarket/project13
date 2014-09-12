@@ -1655,7 +1655,7 @@
                 }
 
             } else {
-                console.error('No map data for token = "%s", elemId = "%s"', token, elemId, $currentMap);
+                console.error('No map data for token = "%s"', token,  elem);
             }
 
         };
@@ -1682,9 +1682,9 @@
             $(elemId).find('.selShop_l').hide().first().show();
             // первая вкладка активная
             $(elemId).find('.selShop_tab').removeClass('selShop_tab-act').first().addClass('selShop_tab-act');
-            showMap($(this).closest('.orderCol'), token);
+            showMap($(elemId), token);
             $body.trigger('trackUserAction', ['10 Место_самовывоза_Доставка_ОБЯЗАТЕЛЬНО']);
-            //$(elemId).lightbox_me({centered: true, closeSelector: '.jsCloseFl'});
+            $(elemId).lightbox_me({centered: true, closeSelector: '.jsCloseFl'});
         } else {
             log({'action':'view-date'});
             $body.trigger('trackUserAction', ['11 Срок_доставки_Доставка']);
@@ -1735,12 +1735,13 @@
     });
 
     // клик по списку точек самовывоза
-    $orderContent.on('click', '.jsChangePoint', function() {
+    $body.on('click', '.jsChangePoint', function() {
         var id = $(this).data('id'),
             token = $(this).data('token');
         if (id && token) {
             $body.trigger('trackUserAction', ['10_1 Ввод_данных_Самовывоза_Доставка_ОБЯЗАТЕЛЬНО']);
-            changePoint($(this).closest('.orderRow').data('block_name'), id, token)
+            $body.children('.selShop, .lb_overlay').remove();
+            changePoint($(this).closest('.selShop').data('block_name'), id, token);
         }
     });
 
