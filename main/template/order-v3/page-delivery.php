@@ -282,7 +282,7 @@ return function(
             <div class="orderCompl_l orderCompl_l-ln orderCheck orderCheck-str">
                 <input type="checkbox" class="customInput customInput-checkbox jsAcceptAgreement" id="accept" name="" value="" />
 
-                <label  class="customLabel" for="accept">
+                <label  class="customLabel jsAcceptTerms" for="accept">
                     Я ознакомлен и согласен с информацией о продавце и его офертой
                 </label>
             </div>

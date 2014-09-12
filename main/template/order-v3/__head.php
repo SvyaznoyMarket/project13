@@ -37,6 +37,8 @@ return function(
     unset($link);
 ?>
 
+<div style="display: none" class="jsRegion" data-value="<?= \App::user()->getRegion() ? \App::user()->getRegion()->getName() : '' ?>"></div>
+
 <!-- шапка оформления заказа -->
 <header class="orderHd">
     <img class="orderHd_lg" src="/styles/order/img/logo.png" />

@@ -877,7 +877,7 @@
 
     var body = $(document.body),
         _gaq = window._gaq,
-        region = '', // TODO
+        region = $('.jsRegion').data('value'),
 
         sendAnalytic = function sendAnalyticF (category, action, label, value) {
         var lbl = label || '',
@@ -891,22 +891,22 @@
         if (typeof ga === 'undefined') ga = window[window['GoogleAnalyticsObject']]; // try to assign ga
 
         // sending
-        if (typeof _gaq === 'object') _gaq.push(['_trackEvent', 'воронка_' + region, act, lbl]);
-        if (typeof ga === 'function') ga('send', 'event', 'воронка_' + region, act, lbl);
+        if (typeof _gaq === 'object') _gaq.push(['_trackEvent', 'Воронка_' + region, act, lbl]);
+        if (typeof ga === 'function') ga('send', 'event', 'Воронка_' + region, act, lbl);
 
         // log to console
-        console.log('[Google Analytics] Step "%s" sended with action "%s" for воронка_%s', act, lbl, region);
+        if (typeof ga !== 'function') console.warn('Нет объекта ga');
+        if (typeof ga === 'function' && ga.getAll().length == 0) console.warn('Не установлен трекер для ga');
+        console.log('[Google Analytics] Send event: category: "Воронка_%s", action: "%s", label: "%s"', region, act, lbl);
     };
 
     // common listener for triggering from another files or functions
     body.on('trackUserAction.orderV3Tracking', sendAnalytic);
 
-    // SITE-4330 Пометка аудиторий для эксперимента
-    // Код  _gaq.push(['_setCustomVar']); необходимо выполнять до кода _gaq.push(['_trackPageview']);
-    /*if (typeof _gaq === 'object') {
-        _gaq.push(['_setCustomVar', 11, 'Order_Experiment', 'New', 2 ]);
-        console.log('[Google Analytics] SetCustomVar 11 Order_Experiment New 2');
-    }*/
+    // TODO вынести инициализацию трекера из ports.js
+    if (typeof ga === 'function' && ga.getAll().length == 0) {
+        ga( 'create', 'UA-25485956-5', 'enter.ru' );
+    }
 
 })(jQuery);
 ;(function($){
@@ -955,7 +955,8 @@
 ;(function($) {
 
     function inputAddress(){
-        var config = $('#kladr-config').data('value'),
+        var $body = $(document.body),
+            config = $('#kladr-config').data('value'),
             $addressBlock = $('.orderCol_addrs'),
             $input = $addressBlock.find('input'),
             $inputPrefix = $addressBlock.find('#addressInputPrefix'),
@@ -1034,6 +1035,14 @@
                 addAddressItem(item);
                 updatePrefix($('input:focus').eq(0));
                 if (item.contentType == 'apartment') $input.hide();
+
+                // немного аналитики
+                if (item.contentType == 'street') {
+                    $body.trigger('trackUserEvent', ['10 Адрес_доставки_Доставка_ОБЯЗАТЕЛЬНО'])
+                } else if (item.contentType == 'building') {
+                    $body.trigger('trackUserEvent', ['10_1 Ввод_данных_Доставки_Доставка_ОБЯЗАТЕЛЬНО'])
+                }
+
                 console.log('Address update: address, item', this, item);
                 ENTER.OrderV3.address = this;
             };
@@ -1142,7 +1151,6 @@
             }
             e.preventDefault();
         });
-
 
 
         /**
@@ -1304,6 +1312,7 @@
 })(jQuery);
 ;(function($){
     var body = document.getElementsByTagName('body')[0],
+        $body = $(body),
         $orderContent = $('.orderCnt'),
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
@@ -1409,15 +1418,25 @@
             orderId = $order.data('order-id'),
             orderNumber = $order.data('order-number');
         switch (id) {
-            case 5: getForm(5, orderId, orderNumber); break;
-            case 8: getForm(8, orderId, orderNumber); break;
-            case 13: getForm(13, orderId, orderNumber); break;
+            case 5:
+                getForm(5, orderId, orderNumber);
+                body.trigger('trackUserAction', ['17_2 Оплатить_онлайн_Онлайн_Оплата']);
+                break;
+            case 8:
+                getForm(8, orderId, orderNumber);
+                body.trigger('trackUserAction', ['17_3 Оплатить_онлайн_Электронный счёт PSB_Оплата']);
+                break;
+            case 13:
+                getForm(13, orderId, orderNumber);
+                body.trigger('trackUserAction', ['17_1 Оплатить_онлайн_PayPal_Оплата']);
+                break;
         }
     });
 
     // клик по "оплатить онлайн"
     $orderContent.on('click', '.jsOnlinePaymentSpan', function(e){
         $(this).parent().siblings('.jsOnlinePaymentList').show();
+        $body.trigger('trackUserAction', ['17 Оплатить_онлайн_вход_Оплата']);
         e.stopPropagation();
     });
 
@@ -1447,6 +1466,10 @@
         if (window.location.pathname == '/order/complete') $('.popupFl').hide();
     });
 
+    if (/order\/complete/.test(window.location.href)) {
+        $body.trigger('trackUserAction', ['16 Вход_Оплата_ОБЯЗАТЕЛЬНО']);
+    }
+
 }(jQuery));
 ;(function($) {
 
@@ -1455,6 +1478,7 @@
     console.log('Model', $('#initialOrderModel').data('value'));
 
     var body = document.getElementsByTagName('body')[0],
+        $body = $(body),
         $orderContent = $('#js-order-content'),
         comment = '',
         spinner = typeof Spinner == 'function' ? new Spinner({
@@ -1659,9 +1683,11 @@
             // первая вкладка активная
             $(elemId).find('.selShop_tab').removeClass('selShop_tab-act').first().addClass('selShop_tab-act');
             showMap($(this).closest('.orderCol'), token);
+            $body.trigger('trackUserAction', ['10 Место_самовывоза_Доставка_ОБЯЗАТЕЛЬНО']);
             //$(elemId).lightbox_me({centered: true, closeSelector: '.jsCloseFl'});
         } else {
             log({'action':'view-date'});
+            $body.trigger('trackUserAction', ['11 Срок_доставки_Доставка']);
         }
 
         e.preventDefault();
@@ -1703,6 +1729,7 @@
     $orderContent.on('click', '.celedr_col', function(){
         var timestamp = $(this).data('value');
         if (typeof timestamp == 'number') {
+            $body.trigger('trackUserAction', ['11_1 Срок_Изменил_дату_Доставка']);
             changeDate($(this).closest('.orderRow').data('block_name'), timestamp)
         }
     });
@@ -1712,11 +1739,12 @@
         var id = $(this).data('id'),
             token = $(this).data('token');
         if (id && token) {
+            $body.trigger('trackUserAction', ['10_1 Ввод_данных_Самовывоза_Доставка_ОБЯЗАТЕЛЬНО']);
             changePoint($(this).closest('.orderRow').data('block_name'), id, token)
         }
     });
 
-    // клик по выборе даты
+    // клик на селекте интервала
     $orderContent.on('click', '.customSel_def', function() {
         $(this).next('.customSel_lst').show();
     });
@@ -1745,6 +1773,7 @@
     $orderContent.on('change', '.jsCreditCardPayment', function(){
         var $this = $(this),
             block_name = $this.closest('.orderRow').data('block_name');
+        if ($this.is(':checked')) $body.trigger('trackUserAction', ['13_1 Оплата_банковской_картой_Доставка']);
         changePaymentMethod(block_name, 'by_credit_card', $this.is(':checked'))
     });
 
@@ -1752,6 +1781,7 @@
     $orderContent.on('change', '.jsCreditPayment', function() {
         var $this = $(this),
             block_name = $this.closest('.orderRow').data('block_name');
+        if ($this.is(':checked')) $body.trigger('trackUserAction', ['13_2 Оплата_в_кредит_Доставка']);
         changePaymentMethod(block_name, 'by_online_credit', $(this).is(':checked'))
     });
 
@@ -1793,17 +1823,50 @@
         $(span).insertAfter($(this));
         $(this).hide();
         window.docCookies.setItem('enter_order_v3_wanna', 1, 0, '/order');
+        $body.trigger('trackUserAction', ['1_2 Срок_Хочу_быстрее_Доставка']);
         log({'action':'wanna'});
     });
 
     $orderContent.on('click', '.jsDeleteCertificate', function(){
         var block_name = $(this).closest('.orderRow').data('block_name');
         deleteCertificate(block_name);
+    });
+
+    // клик по "Я ознакомлен и согласен..."
+    $orderContent.on('click', '.jsAcceptTerms', function(){
+        $body.trigger('trackUserAction', ['14 Согласен_оферта_Доставка_ОБЯЗАТЕЛЬНО']);
+    });
+
+    // АНАЛИТИКА
+
+    if (/order\/delivery/.test(window.location.href)) {
+        $body.trigger('trackUserAction', ['6_1 Далее_успешно_Получатель_ОБЯЗАТЕЛЬНО']); // TODO перенести в validate.js
+        $body.trigger('trackUserAction', ['7 Вход_Доставка_ОБЯЗАТЕЛЬНО', 'Количество заказов: ' + $('.orderRow').length]);
+    }
+
+    // отслеживаем смену региона
+    $body.on('click', 'a.jsChangeRegionAnalytics', function(e){
+        var newRegion = $(this).text(),
+            oldRegion = $('.jsRegion').data('value'),
+            link = $(this).attr('href');
+
+        e.preventDefault();
+        // TODO вынести как функцию с проверкой существования ga и немедленным вызовом hitCallback в остуствии ga и трекера
+        ga('send', 'event', {
+            'eventCategory': 'Воронка_' + oldRegion,
+            'eventAction': '8 Регион_Доставка',
+            'eventLabel': 'Было: ' + oldRegion + ', Стало: ' + newRegion,
+            'hitCallback': function() {
+                window.location.href = link;
+            }
+        });
+
     })
 
 })(jQuery);
 (function($) {
-    var $orderContent = $('.orderCnt'),
+    var $body = $(document.body),
+        $orderContent = $('.orderCnt'),
         $inputs = $orderContent.find('input');
 
     // jQuery masked input
@@ -1828,10 +1891,33 @@
         $cardsDescriptions.hide().eq(eq).show();
     });
 
+    // АНАЛИТИКА
+
+    $body.on('focus', '.jsOrderV3PhoneField', function(){
+        $body.trigger('trackUserAction',['1 Телефон_Получатель_ОБЯЗАТЕЛЬНО'])
+    });
+
+    $body.on('focus', '.jsOrderV3EmailField', function(){
+        $body.trigger('trackUserAction',['2 Email_Получатель'])
+    });
+
+    $body.on('focus', '.jsOrderV3NameField', function(){
+        $body.trigger('trackUserAction',['3 Имя_Получатель_ОБЯЗАТЕЛЬНО'])
+    });
+
+    $body.on('focus', '.jsOrderV3BonusCardField', function(){
+        $body.trigger('trackUserAction',['4 Начислить_баллы_Получатель'])
+    });
+
+    $body.on('click', '.jsOrderV3AuthLink', function(){
+        $body.trigger('trackUserAction',['5 Войти_с_паролем_Получатель'])
+    });
+
 })(jQuery);
 ;(function($) {
 
-    var $orderContent = $('.orderCnt'),
+    var $body = $(document.body),
+        $orderContent = $('.orderCnt'),
         $errorBlock = $orderContent.find('#OrderV3ErrorBlock'),
         $pageNew = $('.jsOrderV3PageNew'),
         $pageDelivery = $('.jsOrderV3PageDelivery'),
@@ -1943,6 +2029,7 @@
         if (error.length != 0) {
             showError(error);
             e.preventDefault();
+            $body.trigger('trackUserAction', ['6_2 Далее_ошибка_Получатель', 'Поле ошибки: '+error.join(', ')])
         }
     });
 
@@ -1967,7 +2054,10 @@
         if (error.length != 0) {
             $errorBlock = $orderContent.find('#OrderV3ErrorBlock'); // TODO не очень хорошее поведение
             showError(error);
-            e.preventDefault()
+            e.preventDefault();
+            $body.trigger('trackUserAction', ['15_2 Оформить_ошибка_Доставка', 'Поле ошибки: '+error.join(', ')]);
+        } else {
+            $body.trigger('trackUserAction', ['15_1 Оформить_успешно_Доставка_ОБЯЗАТЕЛЬНО']);
         }
 
     });

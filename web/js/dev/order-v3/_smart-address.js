@@ -1,7 +1,8 @@
 ;(function($) {
 
     function inputAddress(){
-        var config = $('#kladr-config').data('value'),
+        var $body = $(document.body),
+            config = $('#kladr-config').data('value'),
             $addressBlock = $('.orderCol_addrs'),
             $input = $addressBlock.find('input'),
             $inputPrefix = $addressBlock.find('#addressInputPrefix'),
@@ -80,6 +81,14 @@
                 addAddressItem(item);
                 updatePrefix($('input:focus').eq(0));
                 if (item.contentType == 'apartment') $input.hide();
+
+                // немного аналитики
+                if (item.contentType == 'street') {
+                    $body.trigger('trackUserEvent', ['10 Адрес_доставки_Доставка_ОБЯЗАТЕЛЬНО'])
+                } else if (item.contentType == 'building') {
+                    $body.trigger('trackUserEvent', ['10_1 Ввод_данных_Доставки_Доставка_ОБЯЗАТЕЛЬНО'])
+                }
+
                 console.log('Address update: address, item', this, item);
                 ENTER.OrderV3.address = this;
             };
@@ -188,7 +197,6 @@
             }
             e.preventDefault();
         });
-
 
 
         /**

@@ -33,12 +33,12 @@ return function(
 
                     <div class="orderU_fld">
                         <label class="orderU_lbl" for="">E-mail</label>
-                        <input class="orderU_tx textfield" type="text" name="user_info[email]" value="<?= $userEntity ? $userEntity->getEmail() : '' ?>" placeholder="mail@domain.com">
+                        <input class="orderU_tx textfield jsOrderV3EmailField" type="text" name="user_info[email]" value="<?= $userEntity ? $userEntity->getEmail() : '' ?>" placeholder="mail@domain.com">
                     </div>
 
                     <div class="orderU_fld">
                         <label class="orderU_lbl orderU_lbl-str" for="">Имя</label>
-                        <input class="orderU_tx textfield" type="text" name="user_info[first_name]" value="<?= $userEntity ? $userEntity->getFirstName() : '' ?>" placeholder="">
+                        <input class="orderU_tx textfield jsOrderV3NameField" type="text" name="user_info[first_name]" value="<?= $userEntity ? $userEntity->getFirstName() : '' ?>" placeholder="">
                         <span class="orderU_hint">Как к вам обращаться?</span>
                     </div>
                 </div>
@@ -67,7 +67,7 @@ return function(
                                 <div class="fl-l">
                                     <div class="orderU_fld">
                                         <label class="orderU_lbl" for="">Карта</label>
-                                        <input class="orderU_tx textfield" type="text" name="user_info[bonus_card_number]" value="<?= (bool)$userBonusCard ? $userBonusCard[0]['number'] : '' ?>" placeholder="<?= $card->getMask() ?>" data-mask="<?= $card->getMask() ?>">
+                                        <input class="orderU_tx textfield jsOrderV3BonusCardField" type="text" name="user_info[bonus_card_number]" value="<?= (bool)$userBonusCard ? $userBonusCard[0]['number'] : '' ?>" placeholder="<?= $card->getMask() ?>" data-mask="<?= $card->getMask() ?>">
                                     </div>
 
                                     <div class="bonusCnt_descr"><?= $card->getDescription() ?></div>
@@ -85,7 +85,7 @@ return function(
 
                 <div class="orderAuth">
                     <div class="orderAuth_t">Уже заказывали у нас?</div>
-                    <a class="orderAuth_btn btnLightGrey bAuthLink" href="<?= \App::router()->generate('user.login') ?>">Войти с паролем</a>
+                    <a class="orderAuth_btn btnLightGrey bAuthLink jsOrderV3AuthLink" href="<?= \App::router()->generate('user.login') ?>">Войти с паролем</a>
                 </div>
 
             <? endif ?>

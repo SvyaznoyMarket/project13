@@ -1,6 +1,7 @@
 ;(function($) {
 
-    var $orderContent = $('.orderCnt'),
+    var $body = $(document.body),
+        $orderContent = $('.orderCnt'),
         $errorBlock = $orderContent.find('#OrderV3ErrorBlock'),
         $pageNew = $('.jsOrderV3PageNew'),
         $pageDelivery = $('.jsOrderV3PageDelivery'),
@@ -112,6 +113,7 @@
         if (error.length != 0) {
             showError(error);
             e.preventDefault();
+            $body.trigger('trackUserAction', ['6_2 Далее_ошибка_Получатель', 'Поле ошибки: '+error.join(', ')])
         }
     });
 
@@ -136,7 +138,10 @@
         if (error.length != 0) {
             $errorBlock = $orderContent.find('#OrderV3ErrorBlock'); // TODO не очень хорошее поведение
             showError(error);
-            e.preventDefault()
+            e.preventDefault();
+            $body.trigger('trackUserAction', ['15_2 Оформить_ошибка_Доставка', 'Поле ошибки: '+error.join(', ')]);
+        } else {
+            $body.trigger('trackUserAction', ['15_1 Оформить_успешно_Доставка_ОБЯЗАТЕЛЬНО']);
         }
 
     });

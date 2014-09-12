@@ -2,7 +2,7 @@
 
     var body = $(document.body),
         _gaq = window._gaq,
-        region = '', // TODO
+        region = $('.jsRegion').data('value'),
 
         sendAnalytic = function sendAnalyticF (category, action, label, value) {
         var lbl = label || '',
@@ -16,21 +16,21 @@
         if (typeof ga === 'undefined') ga = window[window['GoogleAnalyticsObject']]; // try to assign ga
 
         // sending
-        if (typeof _gaq === 'object') _gaq.push(['_trackEvent', 'воронка_' + region, act, lbl]);
-        if (typeof ga === 'function') ga('send', 'event', 'воронка_' + region, act, lbl);
+        if (typeof _gaq === 'object') _gaq.push(['_trackEvent', 'Воронка_' + region, act, lbl]);
+        if (typeof ga === 'function') ga('send', 'event', 'Воронка_' + region, act, lbl);
 
         // log to console
-        console.log('[Google Analytics] Step "%s" sended with action "%s" for воронка_%s', act, lbl, region);
+        if (typeof ga !== 'function') console.warn('Нет объекта ga');
+        if (typeof ga === 'function' && ga.getAll().length == 0) console.warn('Не установлен трекер для ga');
+        console.log('[Google Analytics] Send event: category: "Воронка_%s", action: "%s", label: "%s"', region, act, lbl);
     };
 
     // common listener for triggering from another files or functions
     body.on('trackUserAction.orderV3Tracking', sendAnalytic);
 
-    // SITE-4330 Пометка аудиторий для эксперимента
-    // Код  _gaq.push(['_setCustomVar']); необходимо выполнять до кода _gaq.push(['_trackPageview']);
-    /*if (typeof _gaq === 'object') {
-        _gaq.push(['_setCustomVar', 11, 'Order_Experiment', 'New', 2 ]);
-        console.log('[Google Analytics] SetCustomVar 11 Order_Experiment New 2');
-    }*/
+    // TODO вынести инициализацию трекера из ports.js
+    if (typeof ga === 'function' && ga.getAll().length == 0) {
+        ga( 'create', 'UA-25485956-5', 'enter.ru' );
+    }
 
 })(jQuery);

@@ -33,7 +33,7 @@ return function(
     }
 ?>
 
-<div id="<?= $id ?>" class="selShop popupFl" style="display: none;">
+<div id="<?= $id ?>" class="selShop popupFl" style="display: none;" data-block_name="<?= $order->block_name ?>">
     <div class="js-order-changePlace-close popupFl_clsr jsCloseFl" data-content="#<?= $id ?>"></div>
 
     <div class="selShop_hh">Выберите точку самовывоза</div>

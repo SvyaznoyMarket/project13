@@ -1,5 +1,6 @@
 ;(function($){
     var body = document.getElementsByTagName('body')[0],
+        $body = $(body),
         $orderContent = $('.orderCnt'),
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
@@ -105,15 +106,25 @@
             orderId = $order.data('order-id'),
             orderNumber = $order.data('order-number');
         switch (id) {
-            case 5: getForm(5, orderId, orderNumber); break;
-            case 8: getForm(8, orderId, orderNumber); break;
-            case 13: getForm(13, orderId, orderNumber); break;
+            case 5:
+                getForm(5, orderId, orderNumber);
+                body.trigger('trackUserAction', ['17_2 Оплатить_онлайн_Онлайн_Оплата']);
+                break;
+            case 8:
+                getForm(8, orderId, orderNumber);
+                body.trigger('trackUserAction', ['17_3 Оплатить_онлайн_Электронный счёт PSB_Оплата']);
+                break;
+            case 13:
+                getForm(13, orderId, orderNumber);
+                body.trigger('trackUserAction', ['17_1 Оплатить_онлайн_PayPal_Оплата']);
+                break;
         }
     });
 
     // клик по "оплатить онлайн"
     $orderContent.on('click', '.jsOnlinePaymentSpan', function(e){
         $(this).parent().siblings('.jsOnlinePaymentList').show();
+        $body.trigger('trackUserAction', ['17 Оплатить_онлайн_вход_Оплата']);
         e.stopPropagation();
     });
 
@@ -142,5 +153,9 @@
     $(body).on('click', function(){
         if (window.location.pathname == '/order/complete') $('.popupFl').hide();
     });
+
+    if (/order\/complete/.test(window.location.href)) {
+        $body.trigger('trackUserAction', ['16 Вход_Оплата_ОБЯЗАТЕЛЬНО']);
+    }
 
 }(jQuery));
