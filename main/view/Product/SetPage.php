@@ -64,19 +64,9 @@ class SetPage extends \View\DefaultLayout {
     }
 
     public function slotMailRu() {
-        $products = $this->getParam('products');
-        $productIds = [];
-        if (is_array($products)) {
-            foreach ($products as $product) {
-                if (is_object($product) && $product instanceof \Model\Product\Entity) {
-                    $productIds[] = $product->getId();
-                }
-            }
-        }
-
         return $this->render('_mailRu', [
             'pageType' => 'product_set',
-            'productIds' => $productIds,
+            'productIds' => [],
             'price' => '',
         ]);
     }

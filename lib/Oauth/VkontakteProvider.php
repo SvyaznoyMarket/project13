@@ -16,13 +16,14 @@ class VkontakteProvider implements ProviderInterface {
     }
 
     /**
+     * @param string $redirect_to
      * @return string
      */
-    public function getLoginUrl() {
+    public function getLoginUrl($redirect_to = '') {
         return 'http://oauth.vk.com/authorize?' . http_build_query([
             'client_id'     => $this->config->clientId,
             'scope'         => 'email',//, offline для получения токена без срока годности
-            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME], true),
+            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME, 'redirect_to' => $redirect_to], true),
             'response_type' => 'code'
         ]);
     }
@@ -32,13 +33,15 @@ class VkontakteProvider implements ProviderInterface {
      * @return \Oauth\Model\Vkontakte\Entity|null
      */
     public function getUser(\Http\Request $request) {
-        $code = $request->get('code');
 
+        $code = $request->get('code');
         if (empty($code)) {
             \App::logger()->warn(['provider' => self::NAME, 'request' => $request->query->all()], ['oauth']);
             return null;
         }
-        $response = $this->query($this->getAccessTokenUrl($code));
+
+        $response = $this->query($this->getAccessTokenUrl($code, $request->get('redirect_to')));
+
 
         if (empty($response['access_token']) || empty($response['user_id'])) {
             \App::logger()->warn(['provider' => self::NAME, 'url' => $this->getAccessTokenUrl($code), 'response' => $response], ['oauth']);
@@ -47,8 +50,6 @@ class VkontakteProvider implements ProviderInterface {
         $userId = $response['user_id'];
         $access_token = $response['access_token'];
         $email = $response['email'];
-
-       // print_r($this->getProfileUrl($userId));die;
 
         $response = $this->query($this->getProfileUrl($userId));
 
@@ -66,15 +67,16 @@ class VkontakteProvider implements ProviderInterface {
     }
 
     /**
-     * @param string $code
+     * @param $code
+     * @param string $redirect_to
      * @return string
      */
-    private function getAccessTokenUrl($code) {
+    private function getAccessTokenUrl($code, $redirect_to = '') {
         return 'https://oauth.vk.com/access_token?' . http_build_query([
             'client_id'     => $this->config->clientId,
             'client_secret' => $this->config->secretKey,
             'code'          => $code,
-            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME], true),
+            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME, 'redirect_to' => $redirect_to], true),
         ]);
     }
 
