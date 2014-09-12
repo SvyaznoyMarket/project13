@@ -11,7 +11,7 @@ class CompletePage extends Layout {
         $creditData = [];
         if (!empty($this->params['banks'])) {
 
-            $this->addStylesheet('http://direct-credit.ru/widget/style.css');
+            $this->addStylesheet('//api.direct-credit.ru/style.css');
 
             foreach ($this->params['orders'] as $order) {
                 /** @var $order \Model\Order\Entity */
@@ -32,6 +32,8 @@ class CompletePage extends Layout {
                 $creditData[$order->getNumber()]['direct-credit']['widget'] = 'direct-credit';
 
                 $creditData[$order->getNumber()]['direct-credit']['vars'] = [
+                    'partnerID' => \App::config()->creditProvider['directcredit']['partnerId'],
+                    'shopId' => (int)$order->shopId,
                     'number' => $order->getNumber(),
                     'region' => $order->getShopId() ? $order->getShopId() : ( 'r_' . \App::user()->getRegion()->getParentId() ?: \App::user()->getRegion()->getId() ),
                     'items'  => [],

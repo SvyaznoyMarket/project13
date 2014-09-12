@@ -15,7 +15,7 @@
 	background: rgba(252, 171, 47, 0.2);
 
 	&_l {
-		float: left;
+//		float: left;
 
 		width: 600px;
 		margin: 0;
@@ -30,16 +30,28 @@
 	&_btn {
 		min-width: 220px;
 		height: 40px;
+        margin: 10px 0 0 15px;
 
 		font-size: 20px;
 		font-weight: bold;
 		line-height: 32px;
 	}
+
+    &_continue_link {
+        font-size: 20px;
+        text-decoration: underline;
+        padding: 10px 0;
+        display: block;
+    }
+
+    &_final {
+       background: #f7f7f7;
+    }
 }
 
 .orderComplSumm {
 	width: 925px;
-	margin: 0 0 0 -10px;
+	margin: 40px 0 0 -10px;
 	padding: 10px 10px 10px 25px;
 
 	border-top: 1px solid @typGray;

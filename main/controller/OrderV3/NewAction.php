@@ -44,6 +44,7 @@ class NewAction extends OrderV3 {
             }
 
             $this->logger(['action' => 'view-page-new']);
+            $this->getLastOrderData();
 
             $this->session->remove($this->splitSessionKey);
 
@@ -77,5 +78,27 @@ class NewAction extends OrderV3 {
         $page->setParam('bonusCards', $bonusCards);
 
         return new \Http\Response($page->show());
+    }
+
+    /** Данные о прошлом заказе
+     * (оставлено ради совместимости с прошлым оформлением)
+     * @return array|null
+     */
+    public function getLastOrderData() {
+
+        $cookieValue = \App::request()->cookies->get(\App::config()->order['cookieName']);
+
+        if (!empty($cookieValue)) {
+
+            try {
+                $cookieValue = (array)unserialize(base64_decode(strtr($cookieValue, '-_', '+/')));
+            } catch (\Exception $e) {
+                \App::logger()->error($e, ['unserialize']);
+                $cookieValue = [];
+            }
+        }
+
+        return !empty($cookieValue) ? $cookieValue : null;
+
     }
 }

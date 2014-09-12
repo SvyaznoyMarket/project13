@@ -5,7 +5,9 @@
     console.log('Model', $('#initialOrderModel').data('value'));
 
     var body = document.getElementsByTagName('body')[0],
+        $body = $(body),
         $orderContent = $('#js-order-content'),
+        comment = '',
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
             length: 5, // The length of each line
@@ -107,6 +109,7 @@
                 console.log("Model:", data.result.OrderDeliveryModel);
                 $orderContent.empty().html($(data.result.page).find('#js-order-content').html());
                 ENTER.OrderV3.constructors.smartAddress();
+                $orderContent.find('input[name=address]').focus();
             }).always(function(){
                 $orderContent.stop(true, true).fadeIn(200);
                 if (spinner) spinner.stop();
@@ -142,13 +145,25 @@
                 map.container.fitToViewport();
 
                 for (var i = 0; i < mapData.points[token].length; i++) {
-                    var point = mapData.points[token][i];
+                    var point = mapData.points[token][i],
+                        balloonContent = 'Адрес: ' + point.address;
 
                     if (!point.latitude || !point.longitude) continue;
 
+                    if (point.regtime) balloonContent += '<br /> Время работы: ' + point.regtime;
+
+                    // кнопка "Выбрать магазин"
+                    balloonContent += '<br />' + $('<button />', {
+                        'text':'Выбрать магазин',
+                        'class': 'btnLightGrey jsChangePoint',
+                        'data-id': point.id,
+                        'data-token': token
+                        }
+                    )[0].outerHTML;
+
                     var placemark = new ymaps.Placemark([point.latitude, point.longitude], {
                         balloonContentHeader: point.name,
-                        balloonContentBody: 'Адрес: ' + point.address + '',
+                        balloonContentBody: balloonContent,
                         hintContent: point.name
                     }, {
                         iconLayout: 'default#image',
@@ -167,7 +182,7 @@
                 }
 
             } else {
-                console.error('No map data for token = "%s", elemId = "%s"', token, elemId, $currentMap);
+                console.error('No map data for token = "%s"', token,  elem);
             }
 
         };
@@ -194,9 +209,12 @@
             $(elemId).find('.selShop_l').hide().first().show();
             // первая вкладка активная
             $(elemId).find('.selShop_tab').removeClass('selShop_tab-act').first().addClass('selShop_tab-act');
-            showMap($(this).closest('.orderCol'), token);
+            showMap($(elemId), token);
+            $body.trigger('trackUserAction', ['10 Место_самовывоза_Доставка_ОБЯЗАТЕЛЬНО']);
+            $(elemId).lightbox_me({centered: true, closeSelector: '.jsCloseFl'});
         } else {
             log({'action':'view-date'});
+            $body.trigger('trackUserAction', ['11 Срок_доставки_Доставка']);
         }
 
         e.preventDefault();
@@ -226,11 +244,11 @@
     $orderContent.on('click', '.orderCol_delivrLst li', function() {
         var $elem = $(this);
         if (!$elem.hasClass('orderCol_delivrLst_i-act')) {
-            if ($elem.data('delivery_group_id') == 1) {
-                showMap($elem.parent().siblings('.selShop').first());
-            } else {
+//            if ($elem.data('delivery_group_id') == 1) {
+//                showMap($elem.parent().siblings('.selShop').first());
+//            } else {
                 changeDelivery($(this).closest('.orderRow').data('block_name'), $(this).data('delivery_method_token'));
-            }
+//            }
         }
     });
 
@@ -238,20 +256,23 @@
     $orderContent.on('click', '.celedr_col', function(){
         var timestamp = $(this).data('value');
         if (typeof timestamp == 'number') {
+            $body.trigger('trackUserAction', ['11_1 Срок_Изменил_дату_Доставка']);
             changeDate($(this).closest('.orderRow').data('block_name'), timestamp)
         }
     });
 
     // клик по списку точек самовывоза
-    $orderContent.on('click', '.shopLst_i', function() {
+    $body.on('click', '.jsChangePoint', function() {
         var id = $(this).data('id'),
             token = $(this).data('token');
         if (id && token) {
-            changePoint($(this).closest('.orderRow').data('block_name'), id, token)
+            $body.trigger('trackUserAction', ['10_1 Ввод_данных_Самовывоза_Доставка_ОБЯЗАТЕЛЬНО']);
+            $body.children('.selShop, .lb_overlay').remove();
+            changePoint($(this).closest('.selShop').data('block_name'), id, token);
         }
     });
 
-    // клик по выборе даты
+    // клик на селекте интервала
     $orderContent.on('click', '.customSel_def', function() {
         $(this).next('.customSel_lst').show();
     });
@@ -280,6 +301,7 @@
     $orderContent.on('change', '.jsCreditCardPayment', function(){
         var $this = $(this),
             block_name = $this.closest('.orderRow').data('block_name');
+        if ($this.is(':checked')) $body.trigger('trackUserAction', ['13_1 Оплата_банковской_картой_Доставка']);
         changePaymentMethod(block_name, 'by_credit_card', $this.is(':checked'))
     });
 
@@ -287,12 +309,16 @@
     $orderContent.on('change', '.jsCreditPayment', function() {
         var $this = $(this),
             block_name = $this.closest('.orderRow').data('block_name');
+        if ($this.is(':checked')) $body.trigger('trackUserAction', ['13_2 Оплата_в_кредит_Доставка']);
         changePaymentMethod(block_name, 'by_online_credit', $(this).is(':checked'))
     });
 
     // сохранение комментария
-    $orderContent.on('blur', '.orderComment_fld', function(){
-        changeOrderComment($(this).val());
+    $orderContent.on('blur focus', '.orderComment_fld', function(){
+        if (comment != $(this).val()) {
+            comment = $(this).val();
+            changeOrderComment($(this).val());
+        }
     });
 
     // клик по "Дополнительные пожелания"
@@ -325,12 +351,44 @@
         $(span).insertAfter($(this));
         $(this).hide();
         window.docCookies.setItem('enter_order_v3_wanna', 1, 0, '/order');
+        $body.trigger('trackUserAction', ['1_2 Срок_Хочу_быстрее_Доставка']);
         log({'action':'wanna'});
     });
 
     $orderContent.on('click', '.jsDeleteCertificate', function(){
         var block_name = $(this).closest('.orderRow').data('block_name');
         deleteCertificate(block_name);
+    });
+
+    // клик по "Я ознакомлен и согласен..."
+    $orderContent.on('click', '.jsAcceptTerms', function(){
+        $body.trigger('trackUserAction', ['14 Согласен_оферта_Доставка_ОБЯЗАТЕЛЬНО']);
+    });
+
+    // АНАЛИТИКА
+
+    if (/order\/delivery/.test(window.location.href)) {
+        $body.trigger('trackUserAction', ['6_1 Далее_успешно_Получатель_ОБЯЗАТЕЛЬНО']); // TODO перенести в validate.js
+        $body.trigger('trackUserAction', ['7 Вход_Доставка_ОБЯЗАТЕЛЬНО', 'Количество заказов: ' + $('.orderRow').length]);
+    }
+
+    // отслеживаем смену региона
+    $body.on('click', 'a.jsChangeRegionAnalytics', function(e){
+        var newRegion = $(this).text(),
+            oldRegion = $('.jsRegion').data('value'),
+            link = $(this).attr('href');
+
+        e.preventDefault();
+        // TODO вынести как функцию с проверкой существования ga и немедленным вызовом hitCallback в остуствии ga и трекера
+        ga('send', 'event', {
+            'eventCategory': 'Воронка_' + oldRegion,
+            'eventAction': '8 Регион_Доставка',
+            'eventLabel': 'Было: ' + oldRegion + ', Стало: ' + newRegion,
+            'hitCallback': function() {
+                window.location.href = link;
+            }
+        });
+
     })
 
 })(jQuery);
