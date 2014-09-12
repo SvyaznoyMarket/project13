@@ -28,20 +28,9 @@ class LeafPage extends Layout {
     }
 
     public function slotMailRu() {
-        /** @var \Iterator\EntityPager $productPages */
-        $productPager = $this->getParam('productPager');
-        $productIds = [];
-        if (is_object($productPager) && $productPager instanceof \Iterator) {
-            foreach ($productPager as $product) {
-                if (is_object($product) && $product instanceof \Model\Product\Entity) {
-                    $productIds[] = $product->getId();
-                }
-            }
-        }
-
         return $this->render('_mailRu', [
             'pageType' => 'category',
-            'productIds' => $productIds,
+            'productIds' => [],
             'price' => '',
         ]);
     }
