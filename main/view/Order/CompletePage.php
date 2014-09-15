@@ -14,7 +14,7 @@ class CompletePage extends Layout {
         if ($order) {
             // если банк Ренессанс
             if (($order->getCredit() instanceof \Model\Order\Credit\Entity) && (\Model\CreditBank\Entity::PROVIDER_DIRECT_CREDIT == $order->getCredit()->getBankProviderId())) {
-                $this->addStylesheet('http://direct-credit.ru/widget/style.css');
+                $this->addStylesheet('http://api.direct-credit.ru/style.css');
             }
         }
 
