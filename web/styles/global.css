@@ -4593,6 +4593,9 @@ img[height="0"] {
     padding: 0 0 30px;
     font-size: 14px;
   }
+  .orderCnt_btn {
+    padding: 5px 10px;
+  }
   .orderCnt_t {
     margin: 10px 0 20px;
   }
@@ -4736,24 +4739,28 @@ img[height="0"] {
     font-size: 16px;
   }
   .orderCol_delivrLst_i {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    width: 206px;
-    padding: 10px;
+    padding: 10px 0;
+    float: left;
+    list-style-type: none;
+    width: 231px;
+    text-indent: 10px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
     cursor: pointer;
     border-bottom: 2px solid #e6e6e6;
-    border-left: 1px solid #e6e6e6;
+    border-right: 1px solid #e6e6e6;
     background: #ffffff;
   }
   .orderCol_delivrLst_i-act {
     cursor: default;
-    border: none;
-    border-left: 1px solid #f6f6f6;
+    border-bottom: none;
     background: #f6f6f6;
     font-weight: bold;
+  }
+  .orderCol_delivrLst_i:last-child {
+    border-right: none;
   }
   .orderCol_delivrLst_i_span_inactive {
     border-bottom: 1px dotted #a6a6a6;
@@ -5180,6 +5187,7 @@ img[height="0"] {
   .orderAuth_btn {
     width: 155px;
     font-size: 14px;
+    padding: 5px 0;
   }
   .bonusCnt_t {
     margin: 0 0 10px;
