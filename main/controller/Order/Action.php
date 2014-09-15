@@ -122,6 +122,7 @@ class Action {
                     }
 
                     $creditData['vars'] = [
+                        'shopId' => $order->getShopId(),
                         'number' => $order->getNumber(),
                         'region' => $shop ? $shop->getId() : ( 'r_' . $user->getRegion()->getParentId() ?: $user->getRegion()->getId() ),
                         'items'  => [],
@@ -136,8 +137,8 @@ class Action {
 
                         $creditData['vars']['items'][] = [
                             'name'     => sprintf('%s шт %s', $orderProduct->getQuantity(), $product->getName()), // SITE-2662
-                            'quantity' => "1", // SITE-2662
-                            'price'    => (int)$orderProduct->getSum(), // SITE-2662
+                            'quantity' => $orderProduct->getQuantity(),
+                            'price'    => $orderProduct->getPrice(),
                             'articul'  => $product->getArticle(),
                             'type'     => \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null)
                         ];
