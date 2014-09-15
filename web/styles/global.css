@@ -5082,17 +5082,20 @@ img[height="0"] {
     background: rgba(252, 171, 47, 0.2);
   }
   .orderCompl_l {
-    width: 600px;
+    width: 685px;
     margin: 0;
     font-size: 14px;
   }
   .orderCompl_l-ln {
-    padding-top: 8px;
+    margin: 2px 0 0;
+    padding: 8px 0 0 15px;
+    display: inline-block;
+    vertical-align: top;
   }
   .orderCompl_btn {
     min-width: 220px;
     height: 40px;
-    margin: 10px 0 0 15px;
+    margin: 0 0 0 15px;
     font-size: 20px;
     font-weight: bold;
     line-height: 32px;
