@@ -17,7 +17,7 @@ return function(
     ]; ?>
 
     <ul class="bListing<? if (3 === $columnCount): ?> bListing-3col<? endif ?> clearfix<? if ('jewel' === $listingStyle): ?> mPandora<? endif ?>"><!-- mPandora если необходимо застилить листинги под пандору -->
-        <?= $helper->renderWithMustache('product/list/' . ($view == 'line' ? '_line' : '_compact'), (new \View\Product\ListAction())->execute($helper, $pager, $productVideosByProduct, $bannerPlaceholder, $buyMethod, $showState)) ?>
+        <?= $helper->renderWithMustache('product/list/' . ($view == 'line' ? '_line' : '_compact'), (new \View\Product\ListAction())->execute($helper, $pager, $productVideosByProduct, $bannerPlaceholder, $buyMethod, $showState, $columnCount)) ?>
     </ul>
 
     <script id="listing_compact_tmpl" type="text/html" data-partial="<?= $helper->json($partials) ?>">
