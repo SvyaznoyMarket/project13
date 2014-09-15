@@ -37,11 +37,6 @@
 				if ( userInfo ) {
 					if( userInfo.name ) {
 						// Если существует имя, значит юзер точно зарегистрирован и его данные получены
-						if( userInfo.isSubscribed ) {
-							// Если юзер уже подписан на акции, то не дадим подписыться повторно
-							subscribe.attr('checked', false);
-							subscribe.parent('label').hide();
-						}
 						notiferWrapper.show();
 					}
 					if( userInfo.email ) {

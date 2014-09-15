@@ -179,7 +179,7 @@ class Entity {
      * @param string $email
      */
     public function setEmail($email) {
-        $this->email = (string)$email;
+        $this->email = trim((string)$email);
     }
 
     /**

@@ -34,7 +34,7 @@ $isKitPage = (bool)$product->getKit();
 
         <?= $helper->render('product/__price', ['product' => $product]) // Цена ?>
 
-        <?= $helper->render('product/__notification-lowerPrice', ['product' => $product]) // Узнать о снижении цены ?>
+        <?= $helper->render('product/__notification-lowerPrice', ['product' => $product, 'isUserSubscribedToEmailActions' => $isUserSubscribedToEmailActions]) // Узнать о снижении цены ?>
 
         <? if (count($product->getPartnersOffer()) == 0) : ?>
             <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Купи в кредит ?>
