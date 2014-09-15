@@ -47,9 +47,9 @@ class CompletePage extends Layout {
                     }
 
                     $creditData[$order->getNumber()]['direct-credit']['vars']['items'][] = [
-                        'name'     => sprintf('%s шт %s', $orderProduct->getQuantity(), $product->getName()),
-                        'quantity' => "1",
-                        'price'    => (int)$orderProduct->getSum(),
+                        'name'     => $product->getName(),
+                        'quantity' => (int)$orderProduct->getQuantity(),
+                        'price'    => (int)$orderProduct->getPrice(),
                         'articul'  => $product->getArticle(),
                         'type'     => \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null)
                     ];
