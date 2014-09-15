@@ -153,6 +153,24 @@ class IndexAction {
             }
         }
 
+        $isUserSubscribedToEmailActions = false;
+        if ($user->getEntity()) {
+            $client->addQuery(
+                'subscribe/get',
+                ['token' => $user->getEntity()->getToken()],
+                [],
+                function($data) use(&$isUserSubscribedToEmailActions) {
+                    foreach ($data as $item) {
+                        $entity = new \Model\Subscribe\Entity($item);
+                        if (1 == $entity->getChannelId() && 'email' === $entity->getType() && $entity->getIsConfirmed()) {
+                            $isUserSubscribedToEmailActions = true;
+                            break;
+                        }
+                    }
+                }
+            );
+        }
+
         // выполнение 3-го пакета запросов
         \App::curl()->execute();
         $catalogJson = array_merge_recursive($catalogJson, $productConfig);
@@ -430,6 +448,7 @@ class IndexAction {
         $page->setParam('trustfactorContent', $trustfactors['content']);
         $page->setParam('line', $line);
         $page->setParam('deliveryData', (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId()));
+        $page->setParam('isUserSubscribedToEmailActions', $isUserSubscribedToEmailActions);
         $page->setGlobalParam('from', $request->get('from') ? $request->get('from') : null);
         $page->setParam('viewParams', [
             'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)

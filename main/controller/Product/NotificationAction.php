@@ -4,7 +4,9 @@ namespace Controller\Product;
 
 class NotificationAction {
 
-    const SUBSCRIPTION_EXISTS_CODE = 920;
+    const CHANNEL_2_SUBSCRIPTION_EXISTS_CODE = 920;
+    const CHANNEL_1_SUBSCRIPTION_EXISTS_CODE = 910;
+    const WRONG_EMAIL_CODE = 850;
 
     /**
      * @param $productId
@@ -34,11 +36,7 @@ class NotificationAction {
                 throw new \Exception('Не передан email для подписки');
             }
 
-            $emailValidator = new \Validator\Email();
-            if (!$emailValidator->isValid($email)) {
-                \App::logger()->error(['message' => 'Некорректный email', 'email' => $email], ['product.notification']);
-                //throw new \Exception('Некорректный email');
-            }
+            $userEntity = \App::user()->getEntity();
 
             $params = [
                 'email'      => $email,
@@ -46,40 +44,77 @@ class NotificationAction {
                 'product_id' => $product->getId(),
                 'channel_id' => 2,
             ];
-            if ($userEntity = \App::user()->getEntity()) {
+
+            if ($userEntity) {
                 $params['token'] = $userEntity->getToken();
             }
 
-            $result = $client->query('subscribe/create', $params, []);
+            $client->addQuery('subscribe/create', $params, [], null, function(\Curl\Exception $e){
+                if ($e->getCode() == self::CHANNEL_2_SUBSCRIPTION_EXISTS_CODE) {
+                    \App::exception()->remove($e);
+                } else {
+                    throw $e;
+                }
+            });
 
             // если отмечена галочка подписки на "Акции и суперпредложения"
-            $subscribe = trim((string)$request->get('subscribe'));
-            if ($subscribe === '1') {
-                $params = [
-                    'email'      => $email,
-                    'geo_id'     => $region->getId(),
-                    'channel_id' => 1,
-                ];
+            if (trim((string)$request->get('subscribe')) === '1') {
+                if ($userEntity && $email === $userEntity->getEmail() && $userEntity->getIsEmailConfirmed()) {
+                    $client->addQuery(
+                        'subscribe/set',
+                        ['token' => $userEntity->getToken()],
+                        [
+                            [
+                                'is_confirmed' => true,
+                                'channel_id' => 1,
+                                'type' => 'email',
+                                'email' => $email,
+                            ]
+                        ]
+                    );
+                } else {
+                    $params = [
+                        'email'      => $email,
+                        'geo_id'     => $region->getId(),
+                        'channel_id' => 1,
+                    ];
 
-                $mainSubscribeResult = $client->query('subscribe/create', $params, []);
+                    if ($userEntity) {
+                        $params['token'] = $userEntity->getToken();
+                    }
+
+                    $client->addQuery('subscribe/create', $params, [], null, function(\Curl\Exception $e){
+                        if ($e->getCode() == self::CHANNEL_1_SUBSCRIPTION_EXISTS_CODE) {
+                            \App::exception()->remove($e);
+                        } else {
+                            throw $e;
+                        }
+                    });
+                }
             }
+
+            $client->execute();
 
             $responseData = ['success' => true];
         } catch (\Exception $e) {
             \App::exception()->remove($e);
+            \App::logger()->error($e);
 
-            if($e->getCode() == self::SUBSCRIPTION_EXISTS_CODE) {
-                $responseData = ['success' => true];
-            } else {
-                \App::logger()->error($e);
-                $responseData = [
-                    'success' => false,
-                    'error' => [
-                        'code'    => $e->getCode(),
-                        'message' => 'Не удалось создать подписку' . (\App::config()->debug ? sprintf(': %s', $e->getMessage()) : ''),
-                    ],
-                ];
+            switch ($e->getCode()) {
+                case self::WRONG_EMAIL_CODE:
+                    $message = 'Неправильный email';
+                    break;
+                default:
+                    $message = 'Не удалось создать подписку' . (\App::config()->debug ? sprintf(': %s', $e->getMessage()) : '');
             }
+
+            $responseData = [
+                'success' => false,
+                'error' => [
+                    'code'    => $e->getCode(),
+                    'message' => $message,
+                ],
+            ];
         }
 
         $response = new \Http\JsonResponse($responseData);

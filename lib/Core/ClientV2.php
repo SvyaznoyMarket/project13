@@ -71,7 +71,7 @@ class ClientV2 implements ClientInterface {
      * @param float|null    $timeout
      * @return bool
      */
-    public function addQuery($action, array $params = [], array $data = [], $successCallback, $failCallback = null, $timeout = null) {
+    public function addQuery($action, array $params = [], array $data = [], $successCallback = null, $failCallback = null, $timeout = null) {
         \Debug\Timer::start('core');
 
         if (null === $timeout) {
