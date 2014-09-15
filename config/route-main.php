@@ -937,7 +937,7 @@ return [
     ],
 
     'mobidengi' => [
-        'pattern' => '/mobidengi',
+        'pattern' => '/tele2',
         'action'  => ['Mobidengi\IndexAction', 'execute'],
     ],
 
