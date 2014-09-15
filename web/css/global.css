@@ -12109,6 +12109,28 @@
   .bListing.mPandora .bPriceLine .bPrice.bHasSale {
     color: #000000;
   }
+  .bListing-3col .bListingItem {
+    height: 345px;
+    width: 290px;
+  }
+  .bListing-3col .bListingItem__eInner {
+    width: 278px;
+  }
+  .bListing-3col .bListingItem.mBannerItem {
+    width: 295px;
+  }
+  .bListing-3col .bListingItem .bSimplyDesc {
+    width: 260px;
+  }
+  .bListing-3col .bListingItem .bProductImg {
+    height: 230px;
+    text-align: center;
+    width: 270px;
+  }
+  .bListing-3col .bListingItem .bProductImg__eImg {
+    height: 230px;
+    width: 230px;
+  }
   .bBtnLine {
     display: none;
     margin: 10px 0 0;
