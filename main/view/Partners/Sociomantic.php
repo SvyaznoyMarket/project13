@@ -193,21 +193,34 @@ class Sociomantic
         if ($photo) $prod['photo'] = $photo;
         if ($brand) $prod['brand'] = $brand;
 
-        $valid = $product->getIsBuyable() ? 0 : time(); // Если товара нет в наличии, то необходимо передавать отметку времени
-        // SITE-4258
-        if ((bool)$product->getCategory()) {
-            $productCategories = array_filter(array_map(function($category){
-                return $category instanceof \Model\Product\Category\Entity ? $category->getName() : null;
-            }, $product->getCategory()));
+        $brandUis = [
+            '381b2197-e510-11e0-83b4-005056af265b', // Hasbro
+            '4e76b2a9-a674-11e1-ae16-3c4a92f6ffb8', // BeyBlades Hasbro
+            '4e76b2af-a674-11e1-ae16-3c4a92f6ffb8', // Starwars Hasbro
+            '78249c00-dcab-11e1-9bf4-3c4a92f6ffb8', // Hasbro Amazing Spider-man
+            'd8d416db-f374-11e2-93ed-e4115baba630', // Furby Famosa
+            'dde56e05-986c-11e2-bb85-e4115b118798', // Furby
+            '3d3fe23c-e3a9-11e2-9e3c-e4115b118798', // Transformers Prime
+            '4e76b2b0-a674-11e1-ae16-3c4a92f6ffb8', // Transformers Hasbro
+            '5a144e7c-ae3b-11e1-be71-3c4a92f6ffb8', // Transformers
+            'f71fe7c0-9a99-11e2-bb85-e4115b118798', // Nerf
+            '93ecd13a-28bf-11e2-bb99-3c4a92f6ffb8', // My Little Pony
+            'ac878d09-5843-11e3-93ee-e4115baba630', // FurReal Friends
+            '93ecd13b-28bf-11e2-bb99-3c4a92f6ffb8', // Littlest Pet Shop
+            '6b218ed2-2259-11e2-bb99-3c4a92f6ffb8', // Angry Birds
+            '0eb7b007-e51e-11e0-83b4-005056af265b', // Marvel
+            '82b714df-eac8-11e2-ac9e-e4115b118798', // Marvel Characters
+            'd86972fc-adfc-11e1-be71-3c4a92f6ffb8', // Star Wars
+            '730f7400-1c0d-11e2-bb99-3c4a92f6ffb8', // KRE-O
+            '93ecd139-28bf-11e2-bb99-3c4a92f6ffb8', // Play-Doh
+            '61beddf1-e928-11e2-ac9e-e4115b118798', // Playskool
+            '88bc4c6b-8e24-11e3-93ee-e4115baba630', // BABY ALIVE
+        ];
 
-            $categoryFilter = ['Tchibo', 'Игрушки Hasbro'];
-            $filteredCategories = array_filter($productCategories, function($category) use ($categoryFilter) {
-                return in_array($category, $categoryFilter) ? true : false;
-            });
-
-            if ($product->getPrice() < 500 && !(bool)$filteredCategories) {
-                $valid = time();
-            }
+        if ($product->getPrice() < 500 && (!$product->getBrand() || !in_array($product->getBrand()->getUi(), $brandUis))) {
+            $valid = time(); // SITE-4258
+        } else {
+            $valid = $product->getIsBuyable() ? 0 : time(); // Если товара нет в наличии, то необходимо передавать отметку времени
         }
 
         $prod['valid'] = $valid;
