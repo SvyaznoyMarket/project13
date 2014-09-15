@@ -50,7 +50,7 @@
                 <div class="landing_hd-land-bg"></div>
                 <a target="_blank" class="landing_hd-land-gift" href="https://mycard.tele2.ru/"></a> 
                 <div class="landing_hd-land_tx"> 
-                    <div class="landing_hd-land_tx-1">Боитесь покупок онлайн? Напрасно. Теперь есть способ платить безопасно</div> 
+                    <div class="landing_hd-land_tx-1">Боитесь покупок онлайн? Напрасно. Теперь есть способ платить безопасно.</div>
                     <a href="#terms" class="g-button mod_header">Получить купон на 500 руб.</a>
                 </div> 
             </div> 
@@ -90,20 +90,20 @@
         <div class="g-columns mod_terms"> 
             <div class="g-columns-cell">
                 <div class="landing_terms-how"> 
-                    <div class="landing_ttl landing_ttl-23"><strong>Как получить купон на 500 руб.</strong></div>
+                    <div class="landing_ttl landing_ttl-23"><strong>Как получить купон<br />на 500 руб.</strong></div>
                     <ol class="b-ordered-list mod_terms">
-                        <li><p class="b-ordered-list_i">Выпусти <span class="g-pseudo g_lk jsg_lk"><span class="g-pseudo-h">виртуальную карту Tele2 MasterCard<sup>&copy;</sup></span></span>. Процедура занимает не более 2 минут</p></li>
-                        <li><p class="b-ordered-list_i">Получи код купона на номер мобильного телефона</p></li>
-                        <li><p class="b-ordered-list_i">Сделай заказ на сайте <a href="/">www.enter.ru</a> на сумму от 1000 рублей</p></li>
-                        <li><p class="b-ordered-list_i">Введи код купона в разделе "Оформление заказа"</p></li>
-                        <li><p class="b-ordered-list_i">Оплати заказ виртуальной картой Tele2 MasterCard<sup>©</sup></p></li>
+                        <li><p class="b-ordered-list_i">Необходимо выпустить <span class="g-pseudo g_lk jsg_lk"><span class="g-pseudo-h">виртуальную карту Tele2 MasterCard<sup>&copy;</sup></span></span>. Процедура занимает не более 2&nbsp;минут.</p></li>
+                        <li><p class="b-ordered-list_i">Вы получите код купона на номер мобильного телефона.</p></li>
+                        <li><p class="b-ordered-list_i">Сделайте заказ на сайте <a href="/">www.enter.ru</a> на сумму от 1000&nbsp;руб.</p></li>
+                        <li><p class="b-ordered-list_i">Введите код купона в разделе «Оформление заказа».</p></li>
+                        <li><p class="b-ordered-list_i">Оплатите заказ виртуальной картой Tele2 MasterCard<sup>©</sup>.</p></li>
                     </ol>
                 </div>
             </div> 
             <div class="g-columns-cell"> 
                 <div class="landing_terms-form"> 
                     <div class="landing_terms-form-cell side_left"> 
-                        <div class="landing_terms-form-terms"> У тебя уже есть виртуальная карта <strong>Tele2 MasterCard<sup>©</sup></strong>? Тогда укажи номер своего мобильного телефона и получи купон на 500 руб. прямо сейчас
+                        <div class="landing_terms-form-terms">Уже есть виртуальная карта <strong>Tele2 MasterCard<sup>©</sup></strong>? Тогда укажите номер своего мобильного телефона и&nbsp;получите купон на&nbsp;500&nbsp;руб. прямо сейчас.
                         </div> 
                     </div> 
 
