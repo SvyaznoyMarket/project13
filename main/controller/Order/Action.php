@@ -122,6 +122,7 @@ class Action {
                     }
 
                     $creditData['vars'] = [
+                        'partnerID' => \App::config()->creditProvider['directcredit']['partnerId'],
                         'shopId' => $order->getShopId(),
                         'number' => $order->getNumber(),
                         'region' => $shop ? $shop->getId() : ( 'r_' . $user->getRegion()->getParentId() ?: $user->getRegion()->getId() ),

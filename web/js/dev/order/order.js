@@ -549,7 +549,7 @@
                     });
 
 
-                    DCLoans('6164378', 'getCredit', { products: productArr, order: creditWidget.vars.number, codeTT: creditWidget.vars.shopId }, function(result){
+                    DCLoans(creditWidget.vars.partnerID, 'getCredit', { products: productArr, order: creditWidget.vars.number, codeTT: creditWidget.vars.shopId }, function(result){
                         console.log(result);
                     }, false);
 				});
