@@ -45,6 +45,10 @@ return function(
                 <? endif ?>
             </div>
 
+            <? if ($order->total_cost > 100000) : ?>
+                <div class="orderCol orderCol_warn"><span class="orderCol_warn_l">Требуется предоплата.</span> <span class="orderCol_warn_r">Сумма заказа превышает 100&nbsp;000&nbsp;руб. <a href="/how_pay" target="_blank">Подробнее</a></span></div>
+            <? endif; ?>
+
             <? foreach ($order->products as $product): ?>
             <div class="orderCol_cnt clearfix">
                 <a href="<?= $product->link ?>" class="orderCol_lk" target="_blank">
@@ -73,6 +77,7 @@ return function(
                 </div>
 
                 <span class="orderCol_data orderCol_data-price"><?= $helper->formatPrice($product->original_price) ?> <span class="rubl">p</span></span>
+                <?= $helper->render('order-v3/__errors', [ 'orderDelivery' => $orderDelivery, 'order' => $order, 'product' => $product ]) ?>
             </div>
             <? endforeach ?>
 
@@ -116,22 +121,7 @@ return function(
 
             <div class="orderCol_f clearfix">
 
-                <div class="orderCol_f_l">
-                    <span class="orderCol_f_t brb-dt jsShowDiscountForm">Ввести код скидки</span>
-                </div>
-
-                <div class="orderCol_f_l" style="display: none">
-                    <div class="orderCol_f_t">Код скидки, подарочный сертификат</div>
-
-                    <input class="cuponField textfieldgrey" type="text" name="" value="" />
-
-                    <div class="cuponPin" style="display: none">
-                        <label class="cuponLbl">PIN:</label>
-                        <input class="cuponField cuponPin_it textfieldgrey jsCertificatePinInput" type="text" name="" value="" />
-                    </div>
-                    
-                    <div><button class="cuponBtn btnLightGrey jsApplyDiscount">Применить</button></div>
-                </div>
+                <?= $helper->render('order-v3/__discount', [ 'order' => $order ]) ?>
 
                 <div class="orderCol_f_r">
                     <span class="orderCol_summ"><?= $order->delivery->price == 0 ? 'Бесплатно' : $helper->formatPrice($order->delivery->price).' <span class="rubl">p</span>' ?></span>
@@ -166,7 +156,7 @@ return function(
                 <li class="orderCol_delivrLst_i <? if ($deliveryGroup->id == $order->delivery_group_id): ?>orderCol_delivrLst_i-act<? endif ?>"
                     data-delivery_group_id="<?= $deliveryGroup->id ?>"
                     data-delivery_method_token="<?= (string)$first_delivery_method_token ?>">
-                    <?= $deliveryGroup->name ?>
+                    <span class="<? if ($deliveryGroup->id != $order->delivery_group_id): ?>orderCol_delivrLst_i_span_inactive<? endif ?>"><?= $deliveryGroup->name ?></span>
                 </li>
             <? endforeach ?>
             </menu>
@@ -225,9 +215,9 @@ return function(
                     <div class="orderCol_tm">
                         <? if (isset($point->regtime)): ?><span class="orderCol_tm_t">Режим работы:</span> <?= $point->regtime ?><? endif ?>
                         <? if (isset($point)) : ?>
+                            <br />
                             <span class="orderCol_tm_t">Оплата при получении: </span>
-                            <? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CASH])) : ?><img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt=""><? endif; ?>
-                            <? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY])) : ?><img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt=""><? endif; ?>
+                            <? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CASH])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt="">-->наличные<? endif; ?><? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt="">-->, банковская карта<? endif; ?>
                         <? endif; ?>
                     </div>
                 </div>
@@ -292,12 +282,12 @@ return function(
             <div class="orderCompl_l orderCompl_l-ln orderCheck orderCheck-str">
                 <input type="checkbox" class="customInput customInput-checkbox jsAcceptAgreement" id="accept" name="" value="" />
 
-                <label  class="customLabel" for="accept">
+                <label  class="customLabel jsAcceptTerms" for="accept">
                     Я ознакомлен и согласен с информацией о продавце и его офертой
                 </label>
             </div>
 
-            <button class="orderCompl_btn btnsubmit fl-r">Оформить ➜</button>
+            <button class="orderCompl_btn btnsubmit">Оформить ➜</button>
         </form>
     </div>
 
