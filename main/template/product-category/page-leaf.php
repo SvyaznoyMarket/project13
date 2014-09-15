@@ -84,6 +84,7 @@
         'productVideosByProduct' => $productVideosByProduct,
         'bannerPlaceholder'      => !empty($catalogJson['bannerPlaceholder']) && 'jewel' !== $listingStyle ? $catalogJson['bannerPlaceholder'] : [],
         'listingStyle'           => $listingStyle,
+        'columnCount'            => isset($columnCount) ? $columnCount : 4,
     ]) // листинг ?>
 
     <div class="bSortingLine mPagerBottom clearfix">

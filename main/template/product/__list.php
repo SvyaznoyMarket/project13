@@ -8,14 +8,15 @@ return function(
     $listingStyle = null,
     $view,
     $buyMethod = null,
-    $showState = true
+    $showState = true,
+    $columnCount = 4
 ) {
     $partials = [
         'cart/_button-product' => file_get_contents(\App::config()->templateDir . '/cart/_button-product.mustache'),
         'product/_review-compact' => file_get_contents(\App::config()->templateDir . '/product/_review-compact.mustache')
     ]; ?>
 
-    <ul class="bListing bListing-3col clearfix<? if ('jewel' === $listingStyle): ?> mPandora<? endif ?>"><!-- mPandora если необходимо застилить листинги под пандору -->
+    <ul class="bListing<? if (3 === $columnCount): ?> bListing-3col<? endif ?> clearfix<? if ('jewel' === $listingStyle): ?> mPandora<? endif ?>"><!-- mPandora если необходимо застилить листинги под пандору -->
         <?= $helper->renderWithMustache('product/list/' . ($view == 'line' ? '_line' : '_compact'), (new \View\Product\ListAction())->execute($helper, $pager, $productVideosByProduct, $bannerPlaceholder, $buyMethod, $showState)) ?>
     </ul>
 
