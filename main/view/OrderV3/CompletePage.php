@@ -33,7 +33,6 @@ class CompletePage extends Layout {
 
                 $creditData[$order->getNumber()]['direct-credit']['vars'] = [
                     'partnerID' => \App::config()->creditProvider['directcredit']['partnerId'],
-                    'shopId' => (int)$order->shopId,
                     'number' => $order->getNumber(),
                     'region' => $order->getShopId() ? $order->getShopId() : ( 'r_' . \App::user()->getRegion()->getParentId() ?: \App::user()->getRegion()->getId() ),
                     'items'  => [],

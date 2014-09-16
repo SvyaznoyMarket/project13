@@ -549,7 +549,7 @@
                     });
 
 
-                    DCLoans(creditWidget.vars.partnerID, 'getCredit', { products: productArr, order: creditWidget.vars.number, codeTT: creditWidget.vars.shopId }, function(result){
+                    DCLoans(creditWidget.vars.partnerID, 'getCredit', { products: productArr, order: creditWidget.vars.number, codeTT: creditWidget.vars.region }, function(result){
                         console.log(result);
                     }, false);
 				});
