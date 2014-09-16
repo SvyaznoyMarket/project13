@@ -70,16 +70,6 @@ window.ANALYTICS = {
 		console.group('ports.js::LiveTexJS log');
 
 		function loadLiveTex() {
-//		LiveTex.on("chat_open", function(e){
-//			undefined != typeof(_gaq) && _gaq.push(['_trackEvent', 'webchat', 'chat_open']);
-//			undefined != typeof(ga) && ga('send', 'event', 'webchat', 'chat_open');
-//		});
-//
-//		LiveTex.on("chat_invitation_action", function(e){
-//			undefined != typeof(_gaq) && _gaq.push(['_trackEvent', 'webchat', e.data.action]);
-//			undefined != typeof(ga) && ga('send', 'event', 'webchat', e.data.action);
-//		});
-
 			console.info('LiveTexJS init');
 
 			var lt = document.createElement('script');
@@ -112,6 +102,11 @@ window.ANALYTICS = {
 				window.LiveTex = {
 					onLiveTexReady: function () {
 						window.LiveTex.setName(LTData.username);
+						LiveTex.on('chat_open', function(){
+							if ('undefined' != typeof(_gaq)) {
+								_gaq.push(['_trackEvent', 'webchat', 'chat_started']);
+							}
+						});
 					},
 
 					invitationShowing: true,
