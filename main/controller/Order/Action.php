@@ -123,7 +123,7 @@ class Action {
 
                     $creditData['vars'] = [
                         'partnerID' => \App::config()->creditProvider['directcredit']['partnerId'],
-                        'shopId' => $order->getShopId(),
+                        'shopId' => $order->getShopId() ? (string)$order->getShopId() : '1',
                         'number' => $order->getNumber(),
                         'region' => $shop ? $shop->getId() : ( 'r_' . $user->getRegion()->getParentId() ?: $user->getRegion()->getId() ),
                         'items'  => [],
