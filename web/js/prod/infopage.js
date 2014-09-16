@@ -144,8 +144,12 @@ $(document).ready(function(){
 
 					// form.after('<iframe src="https://track.cpaex.ru/affiliate/pixel/173/'+email+'" height="1" width="1" frameborder="0" scrolling="no" ></iframe>');
 
-					if( typeof(_gaq) !== 'undefined' ){
-						_gaq.push(['_trackEvent', 'subscribe', email, utm_source]);
+					if (typeof(_gaq) != 'undefined') {
+						if (location.pathname == '/enter-friends') {
+							_gaq.push(['_trackEvent', 'subscription', 'subscribe_enter_friends', email]);
+						} else if (location.pathname == '/special_offers') {
+							_gaq.push(['_trackEvent', 'subscription', 'subscribe_special_offers', email]);
+						}
 					}
 				});
 			}

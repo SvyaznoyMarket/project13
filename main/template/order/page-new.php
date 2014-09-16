@@ -371,7 +371,7 @@ foreach ($productsById as $product) {
                         <input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
 
                         <div class="bSubscibeCheck bInputList">
-                            <input class="jsCustomRadio bCustomInput mCustomCheckBig" name="subscribe" id="subscribe_gift" type="checkbox" checked="checked" />
+                            <input class="jsCustomRadio bCustomInput mCustomCheckBig" name="order[subscribe]" id="subscribe_gift" type="checkbox" checked="checked" />
                             <label class="bCustomLabel mCustomLabelBig" for="subscribe_gift">Хочу знать об интересных<br/>предложениях</label>
                         </div>
                     </div>
@@ -398,7 +398,7 @@ foreach ($productsById as $product) {
 						<input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
 
 						<div class="bSubscibeCheck bInputList">
-							<input type="checkbox" name="subscribe" id="subscribe_oneclick" class="jsCustomRadio bCustomInput mCustomCheckBig" checked />
+							<input type="checkbox" name="order[subscribe]" id="subscribe_oneclick" class="jsCustomRadio bCustomInput mCustomCheckBig" checked />
 							<label class="bCustomLabel mCustomLabelBig" for="subscribe_oneclick">Хочу знать об интересных<br/>предложениях</label>
 						</div>
 					</div>
@@ -429,7 +429,7 @@ foreach ($productsById as $product) {
 						<input type="text" id="order_recipient_email" class="bBuyingLine__eText mInputLong mInput265" name="order[recipient_email]" value="" />
 
 						<div class="bSubscibeCheck bInputList">
-							<input type="checkbox" name="subscribe" id="subscribe_def" class="jsCustomRadio bCustomInput mCustomCheckBig" checked />
+							<input type="checkbox" name="order[subscribe]" id="subscribe_def" class="jsCustomRadio bCustomInput mCustomCheckBig" checked />
 							<label class="bCustomLabel mCustomLabelBig" for="subscribe_def">Хочу знать об интересных<br/>предложениях</label>
 						</div>
 					</div>

@@ -91,7 +91,7 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
                 
                 <label class="bSubscibe checked" style="visibility:<?= empty($email) ? 'hidden' : 'visible' ?>;">
                     <b></b> Хочу знать об интересных<br />предложениях
-                    <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="subscibe" checked="checked" />
+                    <input type="checkbox" name="order[subscribe]" value="1" autocomplete="off" class="subscibe" checked="checked" />
                 </label>
             </div>
 
