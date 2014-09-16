@@ -105,7 +105,7 @@
 
 			console.log(toKISS_orderInfo);
 
-			if ( (typeof _kmq !== 'undefined') && (KM !== 'undefined') ) {
+			if ( (typeof _kmq !== 'undefined') && (typeof KM !== 'undefined') ) {
 				_kmq.push(['alias', orderData[0].phonenumber, KM.i()]);
 				// _kmq.push(['alias', emailVal, KM.i()]);
 				_kmq.push(['identify', orderData[0].phonenumber]);
@@ -603,3 +603,13 @@
 	});
 
 }(this));
+
+$(function(){
+	var orderDataElement = $('.js-orderData');
+	if ($('body').attr('data-template') == 'order_complete' && orderDataElement.length && typeof _gaq != 'undefined') {
+		var orderData = orderDataElement.data('value');
+		if (orderData.subscribe) {
+			_gaq.push(['_trackEvent', 'subscription', 'subscribe_order_confirmation', orderData.email]);
+		}
+	}
+});

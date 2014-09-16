@@ -198,7 +198,7 @@ class OneClickAction {
             }
 
             // подписка
-            $isSubscribe = $request->request->get('subscribe');
+            $isSubscribe = isset($formData['subscribe']) ? $formData['subscribe'] : false;
             $email = $formData['recipient_email'];
             if(!empty($isSubscribe) && !empty($email) && preg_match('/@/', $email)) {
                 $subscriptionParams = [

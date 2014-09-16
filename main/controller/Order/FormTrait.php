@@ -175,6 +175,7 @@ trait FormTrait {
             'recipient_last_name'    => $form->getLastName(),
             'recipient_phonenumbers' => $form->getMobilePhone(),
             'recipient_email'        => $form->getEmail(),
+            'subscribe'              => $form->getSubscribe(),
             'address_street'         => $form->getAddressStreet(),
             'address_number'         => $form->getAddressNumber(),
             'address_building'       => $form->getAddressBuilding(),
