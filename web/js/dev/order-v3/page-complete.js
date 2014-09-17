@@ -2,6 +2,7 @@
     var body = document.getElementsByTagName('body')[0],
         $body = $(body),
         $orderContent = $('.orderCnt'),
+        $jsOrder = $('#jsOrder'),
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
             length: 5, // The length of each line
@@ -164,6 +165,33 @@
 
     if (/order\/complete/.test(window.location.href)) {
         $body.trigger('trackUserAction', ['16 Вход_Оплата_ОБЯЗАТЕЛЬНО']);
+    }
+
+    if ($jsOrder.length != 0) {
+        console.log('[Google Analytics] Start processing orders');
+        $.each($jsOrder.data('value').orders, function(i,o) {
+            var googleOrderTrackingData = {};
+            googleOrderTrackingData.transaction = {
+                'id': o.numberErp,
+                'affiliation': o.is_partner ? 'Партнер' : 'Enter',
+                'total': o.paySum,
+                'shipping': o.delivery[0].price,
+                'city': o.region.name
+            };
+            googleOrderTrackingData.products = $.map(o.products, function(p){
+                return {
+                    'id': p.id,
+                    'name': p.name,
+                    'sku': p.article,
+                    'category': p.category[p.category.length -1].name,
+                    'price': p.price,
+                    'quantity': p.quantity
+                }
+            });
+            console.log(googleOrderTrackingData);
+            $body.trigger('trackGoogleTransaction',[googleOrderTrackingData])
+        });
+
     }
 
 }(jQuery));

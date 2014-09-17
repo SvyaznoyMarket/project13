@@ -184,7 +184,7 @@
          * @constructor
          */
         GoogleTransaction = function GoogleTransactionF(data) {
-            this.id = data.id;
+            this.id = data.id ? data.id : false;
             this.affiliation = data.affiliation;
             this.total = data.total;
             this.shipping = data.shipping ? data.shipping : '0';
