@@ -545,7 +545,11 @@ return [
         'action'    => ['OrderV3\OrderV3', 'logFromWeb'],
         'method'    => ['POST']
     ],
-
+    'orderV3.update-credit'   => [
+        'pattern'   => '/order/update-credit',
+        'action'    => ['OrderV3\CompleteAction', 'updateCredit'],
+        'method'    => ['POST']
+    ],
 
     // заказ
     'order.1click' => [

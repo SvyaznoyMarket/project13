@@ -196,4 +196,18 @@ class CompleteAction extends OrderV3 {
         $response = new \Http\JsonResponse(['result' => $result, 'form' => $form]);
         return $response;
     }
+
+    public function updateCredit() {
+        $params = \App::request()->request->all();
+
+        if (!isset($params['number_erp']) || !isset($params['bank_id'])) return null;
+
+        $result = \App::coreClientV2()->query('payment/credit-request',[],[
+            'number_erp'    => $params['number_erp'],
+            'bank_id'       => $params['bank_id']
+        ]);
+
+        return new \Http\JsonResponse($result);
+
+    }
 }

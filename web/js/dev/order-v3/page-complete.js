@@ -42,22 +42,28 @@
             })
         },
 
-        showCreditWidget = function showCreditWidgetF(bankProviderId, data) {
-            console.log('Credit Data', data);
+        showCreditWidget = function showCreditWidgetF(bankProviderId, data, number_erp, bank_id) {
 
             if ( bankProviderId == 1 ) showKupiVKredit(data['kupivkredit']);
             if ( bankProviderId == 2 ) showDirectCredit(data['direct-credit']);
 
+            $.ajax({
+                type: 'POST',
+                url: '/order/update-credit',
+                data: {
+                    number_erp: number_erp,
+                    bank_id: bank_id
+                }
+            })
+
         },
 
         showKupiVKredit = function showKupiVKreditF(data){
-            var callback_close = function(decision) {
-/*                    setTimeout(function() {
-                        document.location = 'http://' + window.location.hostname;
-                    }, 1000);*/
-                },
+            var callback_close = function(decision) { },
                 callback_decision = function(decision) { },
                 vkredit;
+
+            console.log(data);
 
             $LAB.script( '//www.kupivkredit.ru/widget/vkredit.js')
                 .wait( function() {
@@ -92,9 +98,9 @@
                     });
 
 
-                DCLoans(data.vars.partnerID, 'getCredit', { products: productArr, order: data.vars.number, codeTT: data.vars.region }, function(result){
-                   console.log(result);
-                }, false);
+                    DCLoans(data.vars.partnerID, 'getCredit', { products: productArr, order: data.vars.number, codeTT: data.vars.region }, function(result){
+                       console.log(result);
+                    }, false);
 
             });
         };
@@ -143,11 +149,13 @@
 
     $orderContent.on('click', '.jsCreditList li', function(e){
         var bankProviderId = $(this).data('bank-provider-id'),
-            creditData = $(this).parent().siblings('.credit-widget').data('value');
+            bank_id = $(this).data('value'),
+            creditData = $(this).parent().siblings('.credit-widget').data('value'),
+            order_number_erp = $(this).closest('.orderLn').data('order-number-erp');
 //        e.preventDefault();
         e.stopPropagation();
         $(this).parent().hide();
-        showCreditWidget(bankProviderId, creditData);
+        showCreditWidget(bankProviderId, creditData, order_number_erp, bank_id);
     });
 
     $(body).on('click', function(){

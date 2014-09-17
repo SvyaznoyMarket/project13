@@ -28,7 +28,7 @@ return function(
             <? foreach ($orders as $order): ?>
             <? /** @var $order \Model\Order\Entity */?>
 
-                <div class="orderLn clearfix" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>">
+                <div class="orderLn clearfix" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
                     <div class="orderLn_l">
 
                         <? if ($userEntity) : ?>
