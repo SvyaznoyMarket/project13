@@ -50,6 +50,43 @@ class Action {
         return new \Http\Response($page->show());
     }
 
+    public function kurkova(\Http\Request $request) {
+        $token = 'alenka_from_dit';
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        $client = \App::contentClient();
+
+        $content = $client->query($token, [], false, \App::config()->coreV2['retryTimeout']['huge']);
+
+        if (!(bool)$content) {
+            throw new \Exception\NotFoundException();
+        }
+
+        $page = new \View\Content\IndexPage();
+        $page->setTitle($content['title']);
+        $page->setParam('token', $token);
+
+
+        $htmlContent = $content['content'];
+        $page->setParam('data', []);
+
+        $page->setParam('htmlContent', $htmlContent);
+
+        //нужно для увеличения отступа от заголовкой и строки поика
+        $page->setParam('extendedMargin', true);
+        if (!(bool)$content['layout'])
+        {
+            $page->setParam('title', $content['title']);
+            //нужно, чтобы после заголовка и строки поиска была линия
+            $page->setParam('hasSeparateLine', true);
+        }
+        else {
+            $page->setParam('breadcrumbs', null);
+        }
+
+        return new \Http\Response($page->show());
+    }
+
 
     private function getServiceJson() {
         \App::logger()->debug('Exec ' . __METHOD__);

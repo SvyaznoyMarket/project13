@@ -250,6 +250,11 @@ return [
         'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brandToken' => '[\w\d-_]+'],
     ],
 
+    'kurkova' => [
+        'pattern'   => '/product/alena.kurkova',
+        'action'  => ['Content\Action', 'kurkova']
+    ],
+
     // карточка товара
     'product' => [
         'pattern' => '/product/{productPath}',
