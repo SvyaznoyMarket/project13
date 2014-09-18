@@ -271,23 +271,6 @@
 					_rutarget.push(result);
 				},
 
-				deleteFromMyragon = function deleteFromMyragon( data ) {
-					if ( !data.hasOwnProperty('product') || !data.product.hasOwnProperty('id') ) {
-						return;
-					}
-
-					window.rbnt_rt_params = {
-						url: window.location.href,
-						pageType: 9,
-						pageTitle: $(document).find("title").text(),
-						basketProducts: [{id: data.product.id}]
-					};
-					typeof rbnt_rt != "undefined" && rbnt_rt.send();
-
-					console.info('Myragon removeFromCart');
-					console.log(window.rbnt_rt_params);
-				},
-
 				deleteFromLamoda = function deleteFromLamoda( data ) {
 					if ('undefined' == typeof(JSREObject) || !data.hasOwnProperty('product') || !data.product.hasOwnProperty('id') ) {
 						return;
@@ -315,7 +298,6 @@
 
 					deleteFromRetailRocket(data);
 					deleteFromRutarget(data);
-					deleteFromMyragon(data);
 					deleteFromLamoda(data);
 				},
 

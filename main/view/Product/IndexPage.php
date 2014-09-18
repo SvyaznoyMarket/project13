@@ -355,67 +355,6 @@ class IndexPage extends \View\DefaultLayout {
         return "<div id=\"LamodaProductJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
     }
 
-    public function slotMyragonPageJS() {
-        $config = \App::config()->partners['Myragon'];
-        if (!$config['enabled'] || !$config['enterNumber'] || !$config['secretWord'] || !$config['subdomainNumber']) {
-            return;
-        }
-
-        /** @var $product \Model\Product\Entity */
-        $product = $this->getParam('product');
-        if (!$product) {
-            return;
-        }
-
-        $images = [];
-        if ($product->getPhoto()) {
-            foreach ($product->getPhoto() as $photo) {
-                if (!$photo instanceof \Model\Product\Media\Entity) continue;
-
-                $images[] = $photo->getUrl();
-            }
-        }
-
-        $currentProduct = [
-            'id' => $product->getId(), //id цветомодели товара (если нет деления по цветам, просто id товара)
-//            'uid' => $product->getId(), //id товара, в случае если uid=id можно не передавать
-            'name' => $product->getName(),
-            'description' => $product->getDescription(),
-            'price' => $product->getPrice(),
-            'price_old' => $product->getPriceOld(),
-            'currency' => 'RUB',
-            'vendor' => $product->getBrand(),
-            'img' => $images,
-            'available' => $product->getIsBuyable() ? 1 : 0,
-        ];
-
-        $categories = [];
-        if ($product->getCategory()) {
-            foreach ($product->getCategory() as $category) {
-                if (!$category instanceof \Model\Product\Category\Entity) continue;
-
-                $categories[] = $category->getName();
-            }
-        }
-
-        $data = [
-            'config' => [
-                'enterNumber' => $config['enterNumber'],
-                'secretWord' => $config['secretWord'],
-                'subdomainNumber' => $config['subdomainNumber'],
-            ],
-            'page' => [
-                'url' => null,
-                'pageType' => 2,
-                'pageTitle' => $this->getTitle(),
-                'currentProduct' => $currentProduct,
-                'categories' => $categories,
-            ],
-        ];
-
-        return '<div id="myragonPageJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
-    }
-
     public function slotMailRu() {
         /** @var \Model\Product\Entity $product */
         $product = $this->getParam('product');
