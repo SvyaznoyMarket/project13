@@ -556,6 +556,7 @@ return [
         'method'    => ['POST']
     ],
 
+
     // заказ
     'order.1click' => [
         'pattern' => '/orders/1click',
