@@ -568,24 +568,20 @@ class Repository {
         }
         */
 
-        // формируем запрос к апи и получаем json
+        $thisRepository = $this;
         $catalogJson = [];
-        $dataStore = \App::dataStoreClient();
-        //$query = sprintf('catalog/%s.json', implode('/', $branch));
-        $query = sprintf('catalog/%s.json', implode('/', array_merge(array_map(function($category) { return $category->getToken(); }, $category->getAncestor()), [$category->getToken()])));
-        $dataStore->addQuery(
-            $query,
+        \App::scmsClient()->addQuery(
+            'category/get',
+            ['uid' => $category->getUi(), 'geo_id' => \App::user()->getRegion()->getId()],
             [],
-            function ($data) use (&$catalogJson) {
-                if ($data) {
-                    $catalogJson = $data;
-                }
+            function ($data) use (&$catalogJson, $thisRepository) {
+                $catalogJson = $thisRepository->convertScmsDataToOldCmsData($data);
             },
             function(\Exception $e) {
                 \App::exception()->add($e);
             }
         );
-        $dataStore->execute();
+        \App::scmsClient()->execute();
 
         // AB-test по сортировкам SITE-1991
         $abTestJson = \App::abTestJson($catalogJson);
@@ -596,76 +592,144 @@ class Repository {
         return $catalogJson;
     }
 
-    /**
-     * Получает catalog json для всех категорий
-     * Возвращает массив с токенами категорий в качестве ключей и их catalogJson'ом (raw)
-     * в качестве значений
-     *
-     * @return array
-     */
-    public function getCatalogJsonBulk() {
-        // формируем запрос к апи и получаем json
-        $catalogJsonBulk = [];
-        $dataStore = \App::dataStoreClient();
-        $dataStore->addQuery('catalog/*.json', [], function ($data) use (&$catalogJsonBulk) {
-            if($data) $catalogJsonBulk = $data;
-        });
-        $dataStore->execute();
+    public function convertScmsDataToOldCmsData($data) {
+        $result = [];
 
-        return $catalogJsonBulk;
-    }
+        if (is_array($data)) {
+            if (isset($data['uid'])) {
+                $result['ui'] = $data['uid'];
+            }
 
-    /**
-     * Получает html-контент из catalog'а для данной категории
-     * Возвращает html в виде строки
-     *
-     * @param $category
-     * @return array
-     */
-    public function getCatalogHtml($category) {
-        // наследования здесь нет, поэтому обращаемся напрямую по токену категории
-        // формируем запрос к апи и получаем html
-        $catalogHtml = [];
-        $dataStore = \App::dataStoreClient();
-        $query = sprintf('catalog/html/%s.json', $category->getToken());
+            if (isset($data['properties']['bannerPlaceholder'])) {
+                $result['bannerPlaceholder'] = $data['properties']['bannerPlaceholder'];
+            }
 
-        $dataStore->addQuery($query, [], function ($data) use (&$catalogHtml) {
-            if($data) $catalogHtml = $data;
-        });
-        $dataStore->execute();
+            if (isset($data['properties']['smartchoice']['enabled'])) {
+                $result['smartchoice'] = $data['properties']['smartchoice']['enabled'];
+            }
 
-        return isset($catalogHtml['html']) ? $catalogHtml['html'] : '';
-    }
+            if (isset($data['properties']['appearance']['category_class'])) {
+                $result['category_class'] = $data['properties']['appearance']['category_class'];
+            }
 
-    /**
-     * Получает catalog html для всех категорий
-     * Возвращает массив с токенами категорий в качестве ключей и их промо html'ем
-     * в качестве значений
-     *
-     * @param $catalogJsonBulk
-     * @return array
-     */
-    public function getPromoHtmlBulk($catalogJsonBulk) {
-        // формируем запрос к апи и получаем json
-        $catalogHtmlBulk = [];
-        $dataStore = \App::dataStoreClient();
-        $dataStore->addQuery('catalog/html/*.json', [], function ($data) use (&$catalogHtmlBulk) {
-            if($data) $catalogHtmlBulk = $data;
-        });
-        $dataStore->execute();
+            if (isset($data['properties']['appearance']['promo_token'])) {
+                $result['promo_token'] = $data['properties']['appearance']['promo_token'];
+            }
 
-        foreach ($catalogJsonBulk as $token => $settings) {
-            if(in_array($token, array_keys($catalogHtmlBulk)) ||
-                empty($catalogJsonBulk[$token]['use_promo_in_menu']) ||
-                empty($catalogJsonBulk[$token]['promo_token_menu'])) continue;
+            if (isset($data['properties']['appearance']['use_logo'])) {
+                $result['use_logo'] = $data['properties']['appearance']['use_logo'];
+            }
 
-            $contentClient = \App::contentClient();
-            $content = $contentClient->query($settings['promo_token_menu'], [], false);
-            $promoContent = empty($content['content']) ? '' : $content['content'];
+            if (isset($data['properties']['appearance']['logo_path'])) {
+                $result['logo_path'] = $data['properties']['appearance']['logo_path'];
+            }
 
-            $catalogHtmlBulk[$token]['menu_promo'] = $promoContent;
+            if (isset($data['properties']['appearance']['use_lens'])) {
+                $result['use_lens'] = $data['properties']['appearance']['use_lens'];
+            }
+
+            if (isset($data['properties']['appearance']['default']['listing_style'])) {
+                $result['listing_style'] = $data['properties']['appearance']['default']['listing_style'];
+            }
+
+            if (isset($data['properties']['appearance']['default']['promo_style'])) {
+                $result['promo_style'] = $data['properties']['appearance']['default']['promo_style'];
+            }
+
+            if (isset($data['properties']['appearance']['pandora']['sub_category_filters_exclude']) && is_array(isset($data['properties']['appearance']['pandora']['sub_category_filters_exclude']))) {
+                $result['sub_category_filters_exclude'] = [];
+                foreach ($data['properties']['appearance']['pandora']['sub_category_filters_exclude'] as $item) {
+                    if (isset($item['filter_token'])) {
+                        $result['sub_category_filters_exclude'][] = $item['filter_token'];
+                    }
+                }
+            }
+
+            if (isset($data['properties']['appearance']['pandora']['sub_category_filter_menu'])) {
+                $result['sub_category_filter_menu'] = $data['properties']['appearance']['pandora']['sub_category_filter_menu'];
+            }
+
+            if (isset($data['properties']['appearance']['tchibo']['root_id'])) {
+                $result['root_category_menu']['root_id'] = $data['properties']['appearance']['tchibo']['root_id'];
+            }
+
+            if (isset($data['properties']['appearance']['tchibo']['image'])) {
+                $result['root_category_menu']['image'] = $data['properties']['appearance']['tchibo']['image'];
+            }
+
+            if (isset($data['properties']['appearance']['tchibo']['red_category_id'])) {
+                $result['tchibo_menu']['style']['name'] = [$data['properties']['appearance']['tchibo']['red_category_id'] => 'color:red;'];
+            }
+
+            if (isset($data['properties']['appearance']['show_branch_menu'])) {
+                $result['show_branch_menu'] = $data['properties']['appearance']['show_branch_menu'];
+            }
+
+            if (isset($data['properties']['appearance']['show_side_panels'])) {
+                $result['show_side_panels'] = $data['properties']['appearance']['show_side_panels'];
+            }
+
+            if (isset($data['properties']['sort']['json'])) {
+                $result['sort'] = $data['properties']['sort']['json'];
+            }
+
+            if (isset($data['properties']['related_categories']['related_categories'])) {
+                $result['related_categories'] = $data['properties']['related_categories']['related_categories'];
+            }
+
+            if (isset($data['properties']['search_hints']['search_hints']) && is_array($data['properties']['search_hints']['search_hints'])) {
+                $result['search_hints'] = [];
+                foreach ($data['properties']['search_hints']['search_hints'] as $val) {
+                    if (isset($val['search_string'])) {
+                        $result['search_hints'][] = $val['search_string'];
+                    }
+                }
+            }
+
+            if (isset($data['properties']['trust_factors']['top'])) {
+                $result['trustfactor_top'] = $data['properties']['trust_factors']['top'];
+            }
+
+            if (isset($data['properties']['trust_factors']['main'])) {
+                $result['trustfactor_main'] = $data['properties']['trust_factors']['main'];
+            }
+
+            if (isset($data['properties']['trust_factors']['right']) && is_array($data['properties']['trust_factors']['right'])) {
+                $result['trustfactor_right'] = [];
+                foreach ($data['properties']['trust_factors']['right'] as $val) {
+                    if (isset($val['type'])) {
+                        $result['trustfactor_right'][] = $val['type'];
+                    }
+                }
+            }
+
+            if (isset($data['properties']['trust_factors']['content']) && is_array($data['properties']['trust_factors']['content'])) {
+                $result['trustfactor_content'] = [];
+                foreach ($data['properties']['trust_factors']['content'] as $val) {
+                    if (isset($val['type'])) {
+                        $result['trustfactor_content'][] = $val['type'];
+                    }
+                }
+            }
+
+            if (isset($data['properties']['trust_factors']['exclude_token']) && is_array($data['properties']['trust_factors']['exclude_token'])) {
+                $result['trustfactor_exclude_token'] = [];
+                foreach ($data['properties']['trust_factors']['exclude_token'] as $val) {
+                    if (isset($val['type'])) {
+                        $result['trustfactor_exclude_token'][] = $val['type'];
+                    }
+                }
+            }
+
+            if (isset($data['properties']['promo_slider'])) {
+                $result['promo_slider'] = $data['properties']['promo_slider'];
+            }
+
+            if (isset($data['properties']['products']['accessory_category_token'])) {
+                $result['accessory_category_token'] = $data['properties']['products']['accessory_category_token'];
+            }
         }
 
-        return $catalogHtmlBulk;
+        return $result;
     }
 }

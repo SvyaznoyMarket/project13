@@ -77,8 +77,6 @@
 </div>
 <!-- /Header -->
 
-<?= $page->slotBrandMenu() ?>
-
 <script id="userbar_cart_empty_tmpl" type="text/html">
     <div class="fixedTopBar__cart mEmpty">
         <a href="/cart" class="fixedTopBar__cartTitle">Корзина</a>

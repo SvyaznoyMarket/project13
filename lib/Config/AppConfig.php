@@ -623,12 +623,23 @@ class AppConfig {
     ];
 
     /** @var array */
+    public $scms = [
+        'url'          => null,
+        'timeout'      => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
+    ];
+
+    /** @var array */
     public $scmsV2 = [
         'url'          => null,
         'timeout'      => null,
         'retryTimeout' => [],
         'retryCount'   => null,
     ];
+
+    /** @var string|null */
+    public $rootCategoryUi;
 
     /** @var array */
     public $oauthEnabled = [

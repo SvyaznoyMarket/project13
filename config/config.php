@@ -124,6 +124,19 @@ $c->dataStore['retryTimeout'] = [
     'forever' => 0,
 ];
 
+$c->scms['url']          = 'http://scms.enter.ru/';
+$c->scms['retryCount']   = 2;
+$c->scms['timeout']      = 0.36;
+$c->scms['retryTimeout'] = [
+    'default' => 0.18,
+    'tiny'    => 0.18,
+    'short'   => 0.25,
+    'medium'  => 0.5,
+    'long'    => 1,
+    'huge'    => 2,
+    'forever' => 0,
+];
+
 $c->scmsV2['url']          = 'http://scms.enter.ru/v2/';
 $c->scmsV2['retryCount']   = 2;
 $c->scmsV2['timeout']      = 0.36;
@@ -585,6 +598,8 @@ $c->photoContest = [
 		'debug'        => false,
 	]
 ];
+
+$c->rootCategoryUi = '00000000-0000-0000-0000-000000000000';
 
 $c->siteVersionSwitcher['cookieName'] = 'mobile';
 $c->siteVersionSwitcher['cookieLifetime'] = 20 * 365 * 24 * 60 * 60;

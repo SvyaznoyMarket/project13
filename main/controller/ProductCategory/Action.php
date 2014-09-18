@@ -413,11 +413,7 @@ class Action {
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
 
         $promoContent = '';
-        // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
-        if (!empty($catalogJson['category_layout_type']) &&
-            $catalogJson['category_layout_type'] == 'promo' &&
-            !empty($catalogJson['promo_token'])
-        ) {
+        if (!empty($catalogJson['promo_token'])) {
             \App::contentClient()->addQuery(
                 trim((string)$catalogJson['promo_token']),
                 [],
@@ -746,85 +742,6 @@ class Action {
         }
 
         $page->setParam('sidebarHotlinks', true);
-
-        $catalogJson = $page->getParam('catalogJson');
-        $catalogJsonBulk = [];
-        if(empty($catalogJson['category_layout_type']) || (!empty($catalogJson['category_layout_type']) && $catalogJson['category_layout_type'] == 'icons')) {
-            $catalogJsonBulk = \RepositoryManager::productCategory()->getCatalogJsonBulk();
-        }
-        $page->setParam('catalogJsonBulk', $catalogJsonBulk);
-
-        return new \Http\Response($page->show());
-    }
-
-    /**
-     * @param \Model\Product\Category\Entity $category
-     * @param \Model\Product\Filter          $productFilter
-     * @param \View\Layout                   $page
-     * @param \Http\Request                  $request
-     * @return \Http\Response
-     */
-    protected function branchCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
-
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.branchCategory', 134);
-
-        // сортировка
-        $productSorting = new \Model\Product\Sorting();
-        // дочерние категории сгруппированные по идентификаторам
-        $childrenById = [];
-        foreach ($category->getChild() as $child) {
-            $childrenById[$child->getId()] = $child;
-        }
-        // листалки сгруппированные по идентификаторам категорий
-        $limit = \App::config()->product['itemsInCategorySlider'] * 2;
-        $repository = \RepositoryManager::product();
-        $repository->setEntityClass('\\Model\\Product\\Entity');
-        // массив фильтров для каждой дочерней категории
-
-        $filterData = array_map(function(\Model\Product\Category\Entity $category) use ($productFilter) {
-            $productFilter = clone $productFilter;
-            $productFilter->setCategory($category);
-
-            return $productFilter->dump();
-        }, $childrenById);
-
-        /** @var $child \Model\Product\Category\Entity */
-        $child = reset($childrenById);
-        $productPagersByCategory = [];
-        $productVideosByProduct = [];
-        $productCount = 0;
-
-        foreach ($repository->getIteratorsByFilter($filterData, $productSorting->dump(), null, $limit) as $productPager) {
-            $productPager->setPage(1);
-            $productPager->setMaxPerPage($limit);
-            $productPagersByCategory[$child->getId()] = $productPager;
-            $productCount += $productPager->count();
-
-            foreach ($productPager as $product) {
-                /** @var $product \Model\Product\Entity */
-                $productVideosByProduct[$product->getId()] = [];
-            }
-
-            $child = next($childrenById);
-            if (!$child) {
-                break;
-            }
-        }
-
-        $productVideosByProduct =  \RepositoryManager::productVideo()->getVideosByProduct( $productVideosByProduct );
-
-        $page->setParam('productPagersByCategory', $productPagersByCategory);
-        $page->setParam('productVideosByProduct', $productVideosByProduct);
-        $page->setParam('sidebarHotlinks', true);
-
-        $catalogJson = $page->getParam('catalogJson');
-        $catalogJsonBulk = [];
-        if(!empty($catalogJson['category_layout_type']) && $catalogJson['category_layout_type'] == 'icons') {
-            $catalogJsonBulk = \RepositoryManager::productCategory()->getCatalogJsonBulk();
-        }
-        $page->setParam('catalogJsonBulk', $catalogJsonBulk);
-
         return new \Http\Response($page->show());
     }
 

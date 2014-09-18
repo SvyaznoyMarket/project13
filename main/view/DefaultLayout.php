@@ -263,9 +263,6 @@ class DefaultLayout extends Layout {
     public function slotMainMenu() {
         $renderer = \App::closureTemplating();
 
-        $catalogJsonBulk = \RepositoryManager::productCategory()->getCatalogJsonBulk();
-        $promoHtmlBulk = \RepositoryManager::productCategory()->getPromoHtmlBulk($catalogJsonBulk);
-
         if (\App::config()->requestMainMenu) {
             $client = \App::curl();
 
@@ -290,20 +287,11 @@ class DefaultLayout extends Layout {
             $client->execute(1, 2);
 
             if ($isFailed) {
-                $content = $renderer->render('__mainMenu', [
-                    'menu'            => (new Menu())->generate(\App::user()->getRegion()),
-                    'catalogJsonBulk' => $catalogJsonBulk,
-                    'promoHtmlBulk'   => $promoHtmlBulk,
-                ]);
+                $content = $renderer->render('__mainMenu', ['menu' => (new Menu())->generate(\App::user()->getRegion())]);
             }
         } else {
-
             \Debug\Timer::start('main-menu');
-            $content = $renderer->render('__mainMenu', [
-                'menu'            => (new Menu())->generate(\App::user()->getRegion()),
-                'catalogJsonBulk' => $catalogJsonBulk,
-                'promoHtmlBulk'   => $promoHtmlBulk,
-            ]);
+            $content = $renderer->render('__mainMenu', ['menu' => (new Menu())->generate(\App::user()->getRegion())]);
             \Debug\Timer::stop('main-menu');
 
             //\App::debug()->add('time.main-menu', round(\Debug\Timer::get('main-menu')['total'], 3) * 1000, 95);
@@ -311,49 +299,6 @@ class DefaultLayout extends Layout {
 
         return $content;
     }
-
-
-    public function slotBrandMenu() {
-        $renderer = \App::closureTemplating();
-        $content = '';
-
-        if ($this->getParam('category') instanceof \Model\Product\Category\Entity) {
-            $category = $this->getParam('category');
-            /** @var $category \Model\Product\Category\Entity */
-            $categoryToken = $category->getToken();
-            $catalogJsonBulk = \RepositoryManager::productCategory()->getCatalogJsonBulk();
-            $relatedCategoryJson = empty($catalogJsonBulk[$categoryToken]['related_category_main']) ?
-                    null :
-                    $catalogJsonBulk[$categoryToken]['related_category_main'];
-
-            if ($relatedCategoryJson && !empty($relatedCategoryJson['related_category_token'])) {
-                $relatedCategory = \RepositoryManager::productCategory()->getEntityByToken(trim((string)$relatedCategoryJson['related_category_token']));
-                if (!$relatedCategory) return '';
-                \RepositoryManager::productCategory()->prepareEntityBranch($relatedCategory, \App::user()->getRegion());
-                \App::coreClientV2()->execute();
-                if (!$relatedCategory) return '';
-
-                $categoryList = [];
-                foreach ($relatedCategory->getChild() as $child) {
-                    $categoryList[] = [
-                        'name'  => $child->getName(),
-                        'link'  => $child->getLink(),
-                    ];
-                }
-
-                $content .= $renderer->render('__brandMenu', [
-                    'css'           => isset($relatedCategoryJson['css']) ? $relatedCategoryJson['css'] : '',
-                    'brandLogo'     => isset($relatedCategoryJson['logo_path']) ? $relatedCategoryJson['logo_path'] : '',
-                    'categoryName'  => $relatedCategory->getName(),
-                    'categoryList'  => $categoryList,
-                ]);
-            } // end of if (json has related_category_token)
-
-        } // end of if (is category page)
-
-        return $content;
-    }
-
 
     public function slotBanner() {
         return '';

@@ -590,13 +590,12 @@ class Repository {
      * Получает разрешенные в json для аксессуаров категории
      * Возвращает массив с токенами категорий
      *
-     * @param $product
+     * @param \Model\Product\Entity $product
      * @return array
      */
     public static function getJsonCategoryToken($product) {
         // формируем запрос к апи и получаем json с разрешенными в качестве аксессуаров категориями
 
-        /** @var $categories \Model\Product\Category\Entity[] */
         $categories = $product->getCategory();
         if (!(bool)$categories) {
             return [];
@@ -605,7 +604,10 @@ class Repository {
         $productJson = [];
 
         $dataStore = \App::dataStoreClient();
-        $query = sprintf('catalog/%s/%s.json', implode('/', array_map(function($category){return $category->getToken();}, $categories)), $product->getToken());
+        $query = sprintf('catalog/%s/%s.json', implode('/', array_map(function($category){
+            /** @var $category \Model\Product\Category\Entity */
+            return $category->getToken();
+        }, $categories)), $product->getToken());
         $dataStore->addQuery($query, [], function ($data) use (&$productJson) {
             if($data) $productJson = $data;
         });

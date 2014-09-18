@@ -160,14 +160,6 @@ class Action extends \Controller\ProductCategory\Action {
     public function categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent, $shopScriptSeo) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
-        if(!empty($catalogJson['category_layout_type']) && $catalogJson['category_layout_type'] == 'promo') {
-            $htmlPromoContent = \RepositoryManager::productCategory()->getCatalogHtml($category);
-            if(!empty($htmlPromoContent)) {
-                $promoContent = $htmlPromoContent;
-            }
-        }
-
         // фильтры
         $productFilter = $this->getFilter($filters, $category, $brand, $request);
 
