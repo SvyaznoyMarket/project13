@@ -931,7 +931,7 @@ return [
         'action'  => ['Enterprize\ShowAction', 'execute'],
     ],
 
-    'mobidengi' => [
+    'tele2' => [
         'pattern' => '/mobidengi',
         'action'  => ['Mobidengi\IndexAction', 'execute'],
     ],
