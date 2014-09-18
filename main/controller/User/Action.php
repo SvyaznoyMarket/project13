@@ -139,10 +139,16 @@ class Action {
                         case 614:
                             $form->setError('username', 'Пользователь не найден');
                             break;
-                        case 684: case 689:
+                        case 684:
+                            $form->setError('username', 'Такой email уже занят');
+                            break;
+                        case 689:
                             $form->setError('username', 'Неправильный email');
                             break;
-                        case 686: case 690:
+                        case 686:
+                            $form->setError('username', 'Такой номер уже занят');
+                            break;
+                        case 690:
                             $form->setError('username', 'Неправильный телефон');
                             break;
                         case 613:
@@ -303,11 +309,28 @@ class Action {
 
                     \App::exception()->remove($e);
                     switch ($e->getCode()) {
-                        case 684: case 689:
+                        case 680:
+                            $form->setError('username', 'Неверный email или телефон');
+                            if ($form->getEmail()) {
+                                $form->setError('email', 'Неправильный email');
+                            }
+                            if ($form->getPhone()) {
+                                $form->setError('phone', 'Неправильный телефон');
+                            }
+                            break;
+                        case 689:
+                            $form->setError('username', 'Такой email уже занят');
+                            $form->setError('email', 'Такой email уже занят');
+                            break;
+                        case 684:
                             $form->setError('username', 'Неправильный email');
                             $form->setError('email', 'Неправильный email');
                             break;
-                        case 686: case 690:
+                        case 690:
+                            $form->setError('username', 'Такой номер уже занят');
+                            $form->setError('phone', 'Такой номер уже занят');
+                            break;
+                        case 686:
                             $form->setError('username', 'Неправильный телефон');
                             $form->setError('phone', 'Неправильный телефон');
                             break;
@@ -798,43 +821,43 @@ class Action {
                     \App::exception()->remove($e);
                     switch ($e->getCode()) {
                         case 686:
-                            $form->setError('phone', 'Такой номер телефона уже зарегистрирован.');
+                            $form->setError('phone', 'Поле заполнено неверно');
                             break;
                         case 684:
-                            $form->setError('email', 'Такой email уже зарегистрирован.');
+                            $form->setError('email', 'Поле заполнено неверно');
                             break;
                         case 689:
-                            $form->setError('email', 'Поле заполнено неверно.');
+                            $form->setError('email', 'Такой email уже зарегистрирован');
                             break;
                         case 690:
-                            $form->setError('phone', 'Поле заполнено неверно.');
+                            $form->setError('phone', 'Такой номер телефона уже зарегистрирован');
                             break;
                         case 692:
-                            $form->setError('corp_inn', 'Поле заполнено неверно.');
+                            $form->setError('corp_inn', 'Поле заполнено неверно');
                             break;
                         case 693:
-                            $form->setError('corp_kpp', 'Поле заполнено неверно.');
+                            $form->setError('corp_kpp', 'Поле заполнено неверно');
                             break;
                         case 696:
-                            $form->setError('corp_account', 'Поле заполнено неверно.');
+                            $form->setError('corp_account', 'Поле заполнено неверно');
                             break;
                         case 697:
-                            $form->setError('corp_korr_account', 'Поле заполнено неверно.');
+                            $form->setError('corp_korr_account', 'Поле заполнено неверно');
                             break;
                         case 694:
-                            $form->setError('corp_bik', 'Поле заполнено неверно.');
+                            $form->setError('corp_bik', 'Поле заполнено неверно');
                             break;
                         case 695:
-                            $form->setError('corp_okpo', 'Поле заполнено неверно.');
+                            $form->setError('corp_okpo', 'Поле заполнено неверно');
                             break;
                         case 698:
-                            $form->setError('corp_inn', 'Пользователь с таким ИНН уже зарегистрирован. Пожалуйста обратитесь в контакт-cENTER.');
+                            $form->setError('corp_inn', 'Пользователь с таким ИНН уже зарегистрирован. Пожалуйста обратитесь в контакт-cENTER');
                             break;
                         case 109001:
-                            $form->setError('corp_inn', 'Пользователь с таким ИНН уже зарегистрирован. Пожалуйста обратитесь в контакт-cENTER.');
+                            $form->setError('corp_inn', 'Пользователь с таким ИНН уже зарегистрирован. Пожалуйста обратитесь в контакт-cENTER');
                             break;
                         case 200001:
-                            $form->setError('global', 'Ошибка сохранения контрагента в базе. Пожалуйста обратитесь в контакт-cENTER.');
+                            $form->setError('global', 'Ошибка сохранения контрагента в базе. Пожалуйста обратитесь в контакт-cENTER');
                             break;
                         default:
                             $form->setError('global', 'Не удалось создать пользователя' . (\App::config()->debug ? (': ' . $e->getMessage()) : ''));
@@ -882,6 +905,9 @@ class Action {
 
         $errorMsg = null;
         $formErrors = [];
+
+        $isEmail = strpos($username, '@');
+
         try {
             if (!$username) {
                 $errorMsg = 'Не указан email или мобильный телефон';
@@ -890,7 +916,7 @@ class Action {
             }
 
             $result = \App::coreClientV2()->query('user/reset-password', [
-                (strpos($username, '@') ? 'email' : 'mobile') => $username,
+                ($isEmail ? 'email' : 'mobile') => $username,
             ]);
             if (isset($result['confirmed']) && $result['confirmed']) {
                 return new \Http\JsonResponse([
@@ -901,21 +927,17 @@ class Action {
         } catch(\Exception $e) {
             \App::exception()->remove($e);
 
-            if ( $errorMsg == null ) {
-                switch ($e->getCode()) {
-                    case 601: // Неправильные параметры запроса
-                        $errorMsg = 'Введите корректный логин';
-                        break;
+            switch ($e->getCode()) {
+                case 600: case 601:
+                    $formErrors[] = ['code' => 'invalid', 'message' => 'Неправильный ' . ($isEmail ? 'email' : 'телефон или email'), 'field' => 'login'];
+                    break;
 
-                    case 604: // Пользователь не найден
-                        $errorMsg = 'Пользователь не зарегистрирован';
-                        break;
+                case 604: // Пользователь не найден
+                    $formErrors[] = ['code' => 'invalid', 'message' => 'Пользователь не зарегистрирован', 'field' => 'login'];
+                    break;
 
-                    default:
-                        $errorMsg = 'Не удалось запросить пароль. Попробуйте позже' . (\App::config()->debug ? (': ' . $e->getMessage()) : '');
-                }
-
-                $formErrors[] = ['code' => 'invalid', 'message' => $errorMsg, 'field' => 'global'];
+                default:
+                    $formErrors[] = ['code' => 'invalid', 'message' => 'Не удалось запросить пароль. Попробуйте позже', 'field' => 'global'];
             }
         }
 

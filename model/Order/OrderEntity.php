@@ -348,8 +348,8 @@ class OrderEntity {
         $data = [];
 
         // создаем заказ с оплатой наличными, если выбран кредит, а предпочтительный метод записываем в meta
-        $this->meta_data['preferred_payment_id'] = $this->payment_id;
-        if ($this->payment_id == self::PAYMENT_ID_CREDIT_ONLINE) $this->payment_id = self::DEFAULT_PAYMENT_ID;
+//        $this->meta_data['preferred_payment_id'] = $this->payment_id;
+//        if ($this->payment_id == self::PAYMENT_ID_CREDIT_ONLINE) $this->payment_id = self::DEFAULT_PAYMENT_ID;
 
         // добавляем в мета-данные параметр о новом заказе
         $this->meta_data['split_version'] = 2;

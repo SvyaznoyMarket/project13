@@ -10,7 +10,7 @@ class BanditPage extends Layout {
     protected $layout = 'layout-black';
 
     public function prepare() {
-        $this->addStylesheet('/css/game/slots/style.css');
+        $this->addStylesheet('/styles/game/slots/style.css');
 //        $this->addJavascript('/js/game/slots.js');
 //        $this->addJavascript('/js/prod/enterprize.js');
         parent::prepare();

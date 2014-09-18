@@ -3,6 +3,8 @@
 namespace Model\Brand;
 
 class Entity {
+    /** @var string */
+    private $ui;
     /** @var int */
     private $id;
     /** @var string */
@@ -17,6 +19,7 @@ class Entity {
     private $isInFilter;
 
     public function __construct(array $data = []) {
+        if (array_key_exists('ui', $data)) $this->setUi($data['ui']);
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('token', $data)) $this->setToken($data['token']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
@@ -40,6 +43,20 @@ class Entity {
     }
 
     /**
+     * @param string $ui
+     */
+    public function setUi($ui) {
+        $this->ui = $ui;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUi() {
+        return $this->ui;
+    }
+
+    /**
      * @param int $id
      */
     public function setId($id) {
@@ -50,7 +67,6 @@ class Entity {
      * @return int
      */
     public function getId() {
-
         return $this->id;
     }
 

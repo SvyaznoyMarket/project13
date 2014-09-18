@@ -6,9 +6,10 @@
 
 if (!isset($form)) $form = new \View\User\LoginForm();
 $oauthEnabled = \App::config()->oauthEnabled;
+if (!isset($redirect_to)) $redirect_to = null;
 ?>
 
-<form class="authForm authForm_login js-authForm" data-state="default" action="<?= $page->url($form->getRoute(), ['redirect_to' => isset($redirect_to) ? $redirect_to : null]) ?>" method="post">
+<form class="authForm authForm_login js-authForm" data-state="default" action="<?= $page->url($form->getRoute()) ?>" method="post">
     <fieldset class="authForm_fld authForm_fld-scrll">
         <!-- секция входа -->
         <div class="authForm_inn">
@@ -24,6 +25,8 @@ $oauthEnabled = \App::config()->oauthEnabled;
                     >забыли?</span>
             </div>
 
+            <input type="hidden" name="redirect_to" value="<?= $redirect_to ?>">
+
             <input type="submit" class="authForm_is btnsubmit" name="" data-loading-value="Вхожу..." value="Войти">
 
             <div class="authForm_socn">
@@ -32,13 +35,13 @@ $oauthEnabled = \App::config()->oauthEnabled;
                 <ul class="authForm_socn_lst">
                     <? if ($oauthEnabled['facebook']): ?>
                         <li class="authForm_socn_i">
-                            <a class="authForm_socn_lk authForm_socn_lk-fb" href="<?= $page->url('user.login.external', ['providerName' => 'facebook' ]) ?>" >Войти через FB</a>
+                            <a class="authForm_socn_lk authForm_socn_lk-fb" href="<?= $page->url('user.login.external', ['providerName' => 'facebook']) ?>" >Войти через FB</a>
                         </li>
                     <? endif ?>
 
                     <? if ($oauthEnabled['vkontakte']): ?>
                         <li class="authForm_socn_i">
-                            <a class="authForm_socn_lk authForm_socn_lk-vk" href="<?= $page->url('user.login.external', ['providerName' => 'vkontakte' ]) ?>" >Войти через VK</a>
+                            <a class="authForm_socn_lk authForm_socn_lk-vk" href="<?= $page->url('user.login.external', ['providerName' => 'vkontakte']) ?>" >Войти через VK</a>
                         </li>
                     <? endif ?>
                 </ul>

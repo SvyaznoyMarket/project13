@@ -28,7 +28,7 @@ return function(
             <? foreach ($orders as $order): ?>
             <? /** @var $order \Model\Order\Entity */?>
 
-                <div class="orderLn clearfix" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>">
+                <div class="orderLn clearfix" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
                     <div class="orderLn_l">
 
                         <? if ($userEntity) : ?>
@@ -74,16 +74,24 @@ return function(
                             <span class="summP"><?= $helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span></span>
                         </div>
 
+                        <? if ($order->paymentStatusId == \Model\Order\Entity::PAYMENT_STATUS_PAID) : ?>
+
+                            <!-- Оплачено -->
+                            <div class="orderLn_row orderLn_row-bg orderLn_row-bg-grey">
+                                <img class="orderLn_row_imgpay" src="/styles/order/img/payment.png" alt="">
+                            </div>
+
+                        <? else : ?>
+
                         <? if (isset($ordersPayment[$order->getNumber()])) : ?>
                         <? $paymentEntity = $ordersPayment[$order->getNumber()]; /** @var $paymentEntity \Model\PaymentMethod\PaymentEntity */?>
 
                             <? if (isset($paymentEntity->groups[2])) : ?>
 
-                            <div class="orderLn_row orderLn_row-bg">
+                            <div class="orderLn_row orderLn_row-bg jsOnlinePaymentBlock">
 
                                 <? if (isset($paymentEntity->methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT])
-                                        && isset($order->meta_data['preferred_payment_id'])
-                                        && reset($order->meta_data['preferred_payment_id']) == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT) : ?>
+                                        && $order->paymentId == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT ) : ?>
 
                                     <!-- Кредит -->
 
@@ -113,22 +121,22 @@ return function(
 
                                     <? if ($order->sum > \App::config()->order['prepayment']['priceLimit']) : ?>
 
-                                        <div class="payT">Требуется предоплата</div>
-                                        <div class="orderLn_box">
+                                        <div class="payT">Требуется <span class="payBtn btn4 jsOnlinePaymentSpan"><span class="brb-dt">предоплата</span></span></div>
+                                        <div class="orderLn_box jsOnlinePaymentBlock">
                                             <a href="" class="orderLn_btn btnLightGrey">
                                                 <? foreach ($paymentMethods as $method) : ?>
                                                     <img src="<?= $method->icon; ?>" alt="" />
                                                 <? endforeach; ?>
                                             </a>
-                                            <ul style="display: none;" class="customSel_lst popupFl">
-                                                <? foreach ($paymentMethods as $method) : ?>
-                                                    <li class="customSel_i jsPaymentMethod">
-                                                        <strong><?= $method->name; ?></strong><br/>
-                                                        <?= $method->description; ?>
-                                                    </li>
-                                                <? endforeach; ?>
-                                            </ul>
                                         </div>
+                                        <ul style="display: none;" class="customSel_lst popupFl jsOnlinePaymentList">
+                                            <? foreach ($paymentMethods as $method) : ?>
+                                                <li class="customSel_i jsPaymentMethod" data-value="<?= $method->id; ?>">
+                                                    <strong><?= $method->name; ?></strong><br/>
+                                                    <?= $method->description; ?>
+                                                </li>
+                                            <? endforeach; ?>
+                                        </ul>
 
                                     <? else : ?>
 
@@ -138,7 +146,7 @@ return function(
                                             <img src="<?= $method->icon; ?>" alt="" />
                                         <? endforeach; ?>
 
-                                        <ul style="display: none;" class="customSel_lst popupFl customSel_lst-pay jsOnlinePaymentList">
+                                        <ul style="display: none;" class="customSel_lst popupFl jsOnlinePaymentList">
                                         <? foreach ($paymentMethods as $method) : ?>
                                             <li class="customSel_i jsPaymentMethod" data-value="<?= $method->id; ?>">
                                                 <strong><?= $method->name; ?></strong><br/>
@@ -156,40 +164,17 @@ return function(
                             <? endif; ?>
 
                         <? endif; ?>
+
+                        <? endif; ?>
                     </div>
                 </div>
 
             <? endforeach; ?>
 
-            <!--<div class="orderLn clearfix" data-order-id="7938680" data-order-number="XE016396">
-                <div class="orderLn_l">
-                    <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> COXE-016396</div>
-                    
-                    <ul class="orderLn_lst">
-                        <li class="orderLn_lst_i">Apple iPhone 4S 8 ГБ черный 1 шт.</li>
-                        <li class="orderLn_lst_i">Sniper Elite 3 1 шт.</li>
-                    </ul>
-                </div>
-
-                <div class="orderLn_c">
-                    <div>Самовывоз 31 Aug 2014 16:00…21:00</div>
-                </div>
-                
-                <div class="orderLn_r">
-                    <div class="orderLn_row orderLn_row-summ">
-                        <span class="summT">Сумма заказа:</span>
-                        <span class="summP">15 980 <span class="rubl">p</span></span>
-                    </div>
-
-                    <div class="orderLn_row orderLn_row-bg orderLn_row-bg-grey">
-                        <img class="orderLn_row_imgpay" src="/styles/order/img/payment.png" alt="">
-                    </div>
-                </div>
-            </div>-->
         </div>
 
-        <div class="orderCompl clearfix">
-            <button class="orderCompl_btn m-auto btnsubmit" onclick="window.location.href='<?= $helper->url('homepage') ?>'">Продолжить покупки</button>
+        <div class="orderCompl orderCompl_final clearfix">
+            <a class="orderCompl_continue_link" href="<?= $helper->url('homepage') ?>">Вернуться на главную</a>
         </div>
     </section>
 

@@ -1,6 +1,8 @@
 ;(function($){
     var body = document.getElementsByTagName('body')[0],
+        $body = $(body),
         $orderContent = $('.orderCnt'),
+        $jsOrder = $('#jsOrder'),
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
             length: 5, // The length of each line
@@ -41,21 +43,28 @@
             })
         },
 
-        showCreditWidget = function showCreditWidgetF(bankProviderId, data) {
+        showCreditWidget = function showCreditWidgetF(bankProviderId, data, number_erp, bank_id) {
 
             if ( bankProviderId == 1 ) showKupiVKredit(data['kupivkredit']);
             if ( bankProviderId == 2 ) showDirectCredit(data['direct-credit']);
 
+            $.ajax({
+                type: 'POST',
+                url: '/order/update-credit',
+                data: {
+                    number_erp: number_erp,
+                    bank_id: bank_id
+                }
+            })
+
         },
 
         showKupiVKredit = function showKupiVKreditF(data){
-            var callback_close = function(decision) {
-/*                    setTimeout(function() {
-                        document.location = 'http://' + window.location.hostname;
-                    }, 1000);*/
-                },
+            var callback_close = function(decision) { },
                 callback_decision = function(decision) { },
                 vkredit;
+
+            console.log(data);
 
             $LAB.script( '//www.kupivkredit.ru/widget/vkredit.js')
                 .wait( function() {
@@ -72,43 +81,29 @@
         },
 
         showDirectCredit = function showDirectCreditF(data){
-            var i, item,
-                openWidget = function openWidget() {
-                    dc_getCreditForTheProduct(
-                        '4427',
-                        data.vars.number ,// session
-                        'orderProductToBuyOnCredit',
-                        { order_id: data.vars.number,
-                            region: data.vars.region }
-                    );
-                };
+            var productArr = [];
 
-            $LAB.script( 'JsHttpRequest.min.js' )
-                .script( '//direct-credit.ru/widget/script_utf.js' )
+            $LAB.script( '//api.direct-credit.ru/JsHttpRequest.js' )
+                .script( '//api.direct-credit.ru/dc.js' )
                 .wait( function() {
                     console.info('скрипты загружены для кредитного виджета. начинаем обработку');
-                    // fill cart
-                    for ( i = data.vars.items.length - 1; i >= 0; i-- ) {
-                        item = data.vars.items[i];
 
-                        dc_getCreditForTheProduct(
-                            '4427',
-                            data.vars.number,
-                            'addProductToBuyOnCredit',
-                            {
-                                name : item.name,
-                                count: item.quantity,
-                                articul: item.articul,
-                                price: item.price,
-                                type: item.type
-                            },
-                            function() {
-                                console.log('обработка завершена. открываем виджет');
-                                openWidget();
-                            }
-                        );
-                    }
-                });
+                    $.each(data.vars.items, function(index, elem){
+                        productArr.push({
+                            id: elem.articul,
+                            name: elem.name,
+                            price: elem.price,
+                            type: elem.type,
+                            count: elem.quantity
+                        })
+                    });
+
+
+                    DCLoans(data.vars.partnerID, 'getCredit', { products: productArr, order: data.vars.number, codeTT: data.vars.region }, function(result){
+                       console.log(result);
+                    }, false);
+
+            });
         };
 
     // клик по методу онлайн-оплаты
@@ -118,15 +113,32 @@
             orderId = $order.data('order-id'),
             orderNumber = $order.data('order-number');
         switch (id) {
-            case 5: getForm(5, orderId, orderNumber); break;
-            case 8: getForm(8, orderId, orderNumber); break;
-            case 13: getForm(13, orderId, orderNumber); break;
+            case 5:
+                getForm(5, orderId, orderNumber);
+                body.trigger('trackUserAction', ['17_2 Оплатить_онлайн_Онлайн_Оплата']);
+                break;
+            case 8:
+                getForm(8, orderId, orderNumber);
+                body.trigger('trackUserAction', ['17_3 Оплатить_онлайн_Электронный счёт PSB_Оплата']);
+                break;
+            case 13:
+                getForm(13, orderId, orderNumber);
+                body.trigger('trackUserAction', ['17_1 Оплатить_онлайн_PayPal_Оплата']);
+                break;
         }
     });
 
     // клик по "оплатить онлайн"
     $orderContent.on('click', '.jsOnlinePaymentSpan', function(e){
         $(this).parent().siblings('.jsOnlinePaymentList').show();
+        $body.trigger('trackUserAction', ['17 Оплатить_онлайн_вход_Оплата']);
+        e.stopPropagation();
+    });
+
+    $orderContent.on('click', '.jsOnlinePaymentBlock', function(e) {
+        if ($(this).find('.jsOnlinePaymentList').length == 0) $(this).siblings('.jsOnlinePaymentList').show();
+        else $(this).find('.jsOnlinePaymentList').show();
+        if ( $(this).find('.jsCreditList').length != 0 )  $(this).find('.jsCreditList').show();
         e.stopPropagation();
     });
 
@@ -136,15 +148,50 @@
         e.stopPropagation();
     });
 
-    $orderContent.on('click', '.jsCreditList li', function(){
+    $orderContent.on('click', '.jsCreditList li', function(e){
         var bankProviderId = $(this).data('bank-provider-id'),
-            creditData = $(this).parent().siblings('.credit-widget').data('value');
-        showCreditWidget(bankProviderId, creditData);
-        //$(this).parent().hide();
+            bank_id = $(this).data('value'),
+            creditData = $(this).parent().siblings('.credit-widget').data('value'),
+            order_number_erp = $(this).closest('.orderLn').data('order-number-erp');
+//        e.preventDefault();
+        e.stopPropagation();
+        $(this).parent().hide();
+        showCreditWidget(bankProviderId, creditData, order_number_erp, bank_id);
     });
 
     $(body).on('click', function(){
         if (window.location.pathname == '/order/complete') $('.popupFl').hide();
     });
+
+    if (/order\/complete/.test(window.location.href)) {
+        $body.trigger('trackUserAction', ['16 Вход_Оплата_ОБЯЗАТЕЛЬНО']);
+    }
+
+    if ($jsOrder.length != 0) {
+        console.log('[Google Analytics] Start processing orders');
+        $.each($jsOrder.data('value').orders, function(i,o) {
+            var googleOrderTrackingData = {};
+            googleOrderTrackingData.transaction = {
+                'id': o.numberErp,
+                'affiliation': o.is_partner ? 'Партнер' : 'Enter',
+                'total': o.paySum,
+                'shipping': o.delivery[0].price,
+                'city': o.region.name
+            };
+            googleOrderTrackingData.products = $.map(o.products, function(p){
+                return {
+                    'id': p.id,
+                    'name': p.name,
+                    'sku': p.article,
+                    'category': p.category[p.category.length -1].name,
+                    'price': p.price,
+                    'quantity': p.quantity
+                }
+            });
+            console.log(googleOrderTrackingData);
+            $body.trigger('trackGoogleTransaction',[googleOrderTrackingData])
+        });
+
+    }
 
 }(jQuery));

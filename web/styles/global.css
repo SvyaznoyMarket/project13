@@ -4593,12 +4593,16 @@ img[height="0"] {
     padding: 0 0 30px;
     font-size: 14px;
   }
+  .orderCnt_btn {
+    padding: 5px 10px;
+  }
   .orderCnt_t {
     margin: 10px 0 20px;
   }
   .orderCnt .cuponBtn {
     min-height: 26px;
     width: 108px;
+    margin-bottom: 5px;
     line-height: 25px;
   }
   .orderCnt img {
@@ -4708,6 +4712,11 @@ img[height="0"] {
     padding: 0;
     text-align: center;
   }
+  .orderCol .cuponErr {
+    margin-bottom: 5px;
+    font-size: 12px;
+    color: #cb3735;
+  }
   .orderCheck {
     clear: both;
   }
@@ -4730,24 +4739,32 @@ img[height="0"] {
     font-size: 16px;
   }
   .orderCol_delivrLst_i {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    width: 208px;
-    padding: 10px;
+    padding: 10px 0;
+    float: left;
+    list-style-type: none;
+    width: 231px;
+    text-indent: 10px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
     cursor: pointer;
     border-bottom: 2px solid #e6e6e6;
-    border-left: 1px solid #e6e6e6;
+    border-right: 1px solid #e6e6e6;
     background: #ffffff;
   }
   .orderCol_delivrLst_i-act {
     cursor: default;
-    border: none;
-    border-left: 1px solid #f6f6f6;
+    border-bottom: none;
     background: #f6f6f6;
     font-weight: bold;
+  }
+  .orderCol_delivrLst_i:last-child {
+    border-right: none;
+  }
+  .orderCol_delivrLst_i_span_inactive {
+    border-bottom: 1px dotted #a6a6a6;
+    padding-bottom: 3px;
   }
 }
 @media all {
@@ -4787,7 +4804,7 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    padding-left: 5px;
+    vertical-align: baseline;
     color: #6f7173;
   }
   .orderCol_tm_t:first-child {
@@ -4912,6 +4929,31 @@ img[height="0"] {
     padding: 3px 5px 3px 10px;
     display: inline;
   }
+  .orderCol_warn {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    width: 459px;
+    padding: 10px 0;
+    border: 1px solid #D063A5;
+    border-left-width: 5px;
+    background: #F6E0ED;
+    font-size: 12px;
+  }
+  .orderCol_warn_l {
+    margin-left: 5px;
+    float: left;
+    font-weight: bold;
+  }
+  .orderCol_warn_r {
+    margin-right: 5px;
+    float: right;
+  }
+  .orderCol_warn_r a {
+    text-decoration: underline;
+  }
 }
 @media all {
   /*---------Оформление заказа 3.0 ----------*/
@@ -4971,6 +5013,7 @@ img[height="0"] {
   }
   .orderCol_data-count {
     border-bottom: 1px dotted;
+    cursor: pointer;
   }
   .orderCol_data-sale {
     color: #cb3735;
@@ -4978,6 +5021,7 @@ img[height="0"] {
   .orderCol_data-del {
     color: #000000;
     border-bottom: 1px dotted;
+    cursor: pointer;
     font-size: 14px;
   }
   .orderCol_data-edit {
@@ -4997,6 +5041,10 @@ img[height="0"] {
     *zoom: 1;
     margin-bottom: 0;
     padding-left: 0;
+  }
+  .orderCol_data-error-quantity {
+    font-size: 14px;
+    color: #cb3735;
   }
   .orderCol_t {
     padding-left: 10px;
@@ -5034,24 +5082,36 @@ img[height="0"] {
     background: rgba(252, 171, 47, 0.2);
   }
   .orderCompl_l {
-    float: left;
-    width: 600px;
+    width: 685px;
     margin: 0;
     font-size: 14px;
   }
   .orderCompl_l-ln {
-    padding-top: 8px;
+    margin: 2px 0 0;
+    padding: 8px 0 0 15px;
+    display: inline-block;
+    vertical-align: top;
   }
   .orderCompl_btn {
     min-width: 220px;
     height: 40px;
+    margin: 0 0 0 15px;
     font-size: 20px;
     font-weight: bold;
     line-height: 32px;
   }
+  .orderCompl_continue_link {
+    font-size: 20px;
+    text-decoration: underline;
+    padding: 10px 0;
+    display: block;
+  }
+  .orderCompl_final {
+    background: #f7f7f7;
+  }
   .orderComplSumm {
     width: 925px;
-    margin: 0 0 0 -10px;
+    margin: 40px 0 0 -10px;
     padding: 10px 10px 10px 25px;
     border-top: 1px solid #a6a6a6;
     background: #f6f6f6;
@@ -5130,6 +5190,7 @@ img[height="0"] {
   .orderAuth_btn {
     width: 155px;
     font-size: 14px;
+    padding: 5px 0;
   }
   .bonusCnt_t {
     margin: 0 0 10px;
@@ -5432,7 +5493,7 @@ img[height="0"] {
 @media all {
   .selShop {
     width: 850px;
-    max-height: 480px;
+    max-height: 510px;
     padding: 10px;
     font-size: 16px;
   }
@@ -5459,6 +5520,10 @@ img[height="0"] {
     margin: 0 0 5px;
     border-bottom: 1px solid #d3d3d3;
     font-size: 0;
+  }
+  .selShop_hh {
+    margin: 0 0 5px 10px;
+    font-size: 18px;
   }
   .selShop_tab {
     display: inline-block;

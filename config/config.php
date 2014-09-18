@@ -25,7 +25,7 @@ $c->authToken['name']     = '_token';
 $c->authToken['authorized_cookie'] = '_authorized';
 
 $c->session['name']            = 'enter';
-$c->session['cookie_lifetime'] = 15552000;
+$c->session['cookie_lifetime'] = 2592000; // 30 дней
 $c->session['cookie_domain'] = '.enter.ru';
 
 $c->cacheCookieName = 'enter_auth'; //TODO: удалить
@@ -321,6 +321,7 @@ $c->productPhoto['url'] = [
     4 => '/1/1/2500/',
     5 => '/1/1/1500/',
     6 => '/1/1/350/',
+    7 => '/1/1/200/',
 ];
 
 $c->productPhoto3d['url'] = [
@@ -399,6 +400,7 @@ $c->database['password'] = 'qazwsxedc';
 $c->creditProvider['kupivkredit']['partnerId'] = '1-6ADAEAT';
 $c->creditProvider['kupivkredit']['partnerName'] = 'ООО «Enter»';
 $c->creditProvider['kupivkredit']['signature'] = 'enter-secret-7X5dwb92';
+$c->creditProvider['directcredit']['partnerId'] = '4427';
 
 $c->queue['pidFile'] = (sys_get_temp_dir() ?: '/tmp').'/enter-queue.pid';
 $c->queue['workerLimit'] = 10;
@@ -526,7 +528,7 @@ $c->abTest = [
             ]
         ],
         'order_delivery_price' => [
-            'enabled' => true,
+            'enabled' => false,
             'expireDate' => '2014-12-31',
             'cases' => [
                 'delivery_self_100' => [
@@ -584,10 +586,9 @@ $c->photoContest = [
 	]
 ];
 
-// Game
-$c->game['bandit']['showOnHomepage'] = true;
-
 $c->siteVersionSwitcher['cookieName'] = 'mobile';
 $c->siteVersionSwitcher['cookieLifetime'] = 20 * 365 * 24 * 60 * 60;
+
+$c->bandit['enabled'] = false;
 
 return $c;

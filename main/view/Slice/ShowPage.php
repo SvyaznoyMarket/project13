@@ -49,4 +49,12 @@ class ShowPage extends \View\DefaultLayout {
             'target' => '.bCatalogList',
         ];
     }
+
+    public function slotMailRu() {
+        return $this->render('_mailRu', [
+            'pageType' => 'slice',
+            'productIds' => [],
+            'price' => '',
+        ]);
+    }
 }

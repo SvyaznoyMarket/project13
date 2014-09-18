@@ -329,10 +329,18 @@ class Helper {
     }
 
     /**
-     * @param $value
+     * @param string $value
      * @return string
      */
     public function escape($value) {
         return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+    }
+
+    /**
+     * @param string $value
+     * @return string
+     */
+    public function escapeJavaScript($value) {
+        return strtr($value, array('\\' => '\\\\', "'" => "\\'", '"' => '\\"', "\r" => '\\r', "\n" => '\\n', '</' => '<\/'));
     }
 }

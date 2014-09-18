@@ -42,7 +42,7 @@ class SetPage extends \View\DefaultLayout {
 
         return ''
             . "\n\n"
-            . (bool)$product ? $this->render('_remarketingGoogle', ['tag_params' => $tagData]) : ''
+            . ($product ? $this->render('_remarketingGoogle', ['tag_params' => $tagData]) : '')
             . "\n\n"
             . $this->render('_innerJavascript');
     }
@@ -61,5 +61,13 @@ class SetPage extends \View\DefaultLayout {
         return [
             'target' => '#productCatalog-filter-form',
         ];
+    }
+
+    public function slotMailRu() {
+        return $this->render('_mailRu', [
+            'pageType' => 'product_set',
+            'productIds' => [],
+            'price' => '',
+        ]);
     }
 }

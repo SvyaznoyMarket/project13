@@ -76,7 +76,7 @@ class CompleteAction extends OrderV3 {
                 } );
 
                 // Нужны ли нам кредитные банки?
-                if (isset($order->meta_data['preferred_payment_id']) && reset($order->meta_data['preferred_payment_id']) == \Model\Order\Entity::PAYMENT_TYPE_ID_ONLINE_CREDIT) $needCreditBanksData = true;
+                if ($order->paymentId == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT) $needCreditBanksData = true;
 
             }
 
@@ -107,7 +107,7 @@ class CompleteAction extends OrderV3 {
                 $data['order-number'] = $order->numberErp;
                 $data['order-products'] = $productIds;
                 $data['order-names'] = array_map(function(\Model\Product\Entity $product) { return $product->getName(); }, $productsForOrder);
-                $data['order-product-category'] = array_map(function(\Model\Product\Entity $product) { $category = $product->getMainCategory(); return $category->getName(); }, $productsForOrder);
+                $data['order-product-category'] = array_map(function(\Model\Product\Entity $product) { $category = $product->getMainCategory(); return $category ? $category->getName() : null; }, $productsForOrder);
                 $data['order-product-price'] = array_map(function(\Model\Product\Entity $product) { return $product->getPrice(); }, $productsForOrder);
                 $data['order-sum'] = $order->getSum();
                 $data['order-delivery-price'] = isset($order->getDelivery()[0]) ? $order->getDelivery()[0]->getPrice() : '';
@@ -195,5 +195,19 @@ class CompleteAction extends OrderV3 {
 
         $response = new \Http\JsonResponse(['result' => $result, 'form' => $form]);
         return $response;
+    }
+
+    public function updateCredit() {
+        $params = \App::request()->request->all();
+
+        if (!isset($params['number_erp']) || !isset($params['bank_id'])) return null;
+
+        $result = \App::coreClientV2()->query('payment/credit-request',[],[
+            'number_erp'    => $params['number_erp'],
+            'bank_id'       => $params['bank_id']
+        ]);
+
+        return new \Http\JsonResponse($result);
+
     }
 }

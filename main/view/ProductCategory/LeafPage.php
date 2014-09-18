@@ -26,4 +26,12 @@ class LeafPage extends Layout {
             'target' => '#productCatalog-filter-form',
         ];
     }
+
+    public function slotMailRu() {
+        return $this->render('_mailRu', [
+            'pageType' => 'category',
+            'productIds' => [],
+            'price' => '',
+        ]);
+    }
 }

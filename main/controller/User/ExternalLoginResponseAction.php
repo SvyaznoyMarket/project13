@@ -14,7 +14,8 @@ class ExternalLoginResponseAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $this->redirect = \App::router()->generate(\App::config()->user['defaultRoute']); // default redirect to the /private page (Личный кабинет)
-        $redirectTo = rawurldecode($request->get('redirect_to'));
+        $redirectTo = (rawurldecode($request->get('redirect_to'))) ? rawurldecode($request->get('redirect_to')) : rawurldecode($request->headers->get('referer'));
+
         if ($redirectTo) {
             $this->redirect = $redirectTo;
             $this->requestRedirect = $redirectTo;
@@ -92,7 +93,7 @@ class ExternalLoginResponseAction {
                 }
 
                 //Пытаемся авторизовать пользователя
-
+                $authSource = 'email';
                 $result = \App::coreClientV2()->query('user/social-auth',$params,[]);
                 if (empty($result['token'])) {
                     throw new \Exception('Не удалось получить токен');

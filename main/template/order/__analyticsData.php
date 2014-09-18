@@ -28,6 +28,7 @@ return function(
             ] : null,
             'region'       => [
                 'id' => $order->getRegionId(),
+                'name'  => \App::user()->getRegion() ? \App::user()->getRegion()->getName() : ''
             ],
             'deliveredAt'  => $order->getDeliveredAt() instanceof \DateTime ? $order->getDeliveredAt()->format('Y-m-d') : null,
             'createdAt'    => $order->getCreatedAt() instanceof \DateTime ? $order->getCreatedAt()->format('Y-m-d') : null,
@@ -54,6 +55,7 @@ return function(
             ],
             'products'      => [],
             'coupon_number' => $order->getCouponNumber(),
+            'is_partner'    => $order->getIsPartner()
         ];
 
         foreach ($order->getProduct() as $orderProduct) {

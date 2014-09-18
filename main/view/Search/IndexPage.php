@@ -104,4 +104,12 @@ class IndexPage extends \View\DefaultLayout {
 
         return "<div id=\"LamodaSearchJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
     }
+
+    public function slotMailRu() {
+        return $this->render('_mailRu', [
+            'pageType' => 'search_results',
+            'productIds' => [],
+            'price' => '',
+        ]);
+    }
 }

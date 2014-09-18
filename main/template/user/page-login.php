@@ -3,6 +3,8 @@
  * @var $page     \View\User\LoginPage
  * @var $form     \View\User\LoginForm|\View\User\RegistrationForm|null
  */
+
+if (!isset($redirect_to)) $redirect_to = null;
 ?>
 
 <div class="bPageLogin clearfix">
@@ -10,7 +12,7 @@
 
     <div class="popup popup-auth" data-state="default" id="auth-block" style="display: block; float: left; margin: 20px 0 0 110px;">
         <div class="authWrap">
-            <?= $page->render('user/_login-form') ?>
+            <?= $page->render('user/_login-form', ['redirect_to' => $redirect_to]) ?>
             <?= $page->render('user/_register-form') ?>
         </div>
 

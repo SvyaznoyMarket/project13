@@ -25,13 +25,14 @@ class Action {
 
         // данные для JsonResponse
         $responseData = [
-            'time'      => strtotime(date('Y-m-d'), 0) * 1000,
-            'action'    => [],
-            'paypalECS' => false,
-            'lifeGift'  => false,
-            'oneClick'  => false,
-            'cart'      => [],
-            'defPoints' => [],
+            'time'           => strtotime(date('Y-m-d'), 0) * 1000,
+            'action'         => [],
+            'paypalECS'      => false,
+            'lifeGift'       => false,
+            'oneClick'       => false,
+            'cart'           => [],
+            'defPoints'      => [],
+            'deliveryStates' => [],
         ];
 
         try {
@@ -353,6 +354,16 @@ class Action {
                         continue;
                     }
 
+                    // CORE-2090
+                    if (isset($shopItem['owner'])) {
+                        switch ($shopItem['owner']) {
+                            case 'svyaznoy': $mapPoint = '/images/marker-svyaznoy.png'; break;
+                            case 'enter':
+                            default: $mapPoint = '/images/marker.png'; break;
+
+                        }
+                    }
+
                     $responseData[$shopToken][] = [
                         'id'         => $shopId,
                         'name'       => $shopToken == 'shops_svyaznoy' ? $shopItem['address'] : $shopItem['name'],
@@ -361,7 +372,7 @@ class Action {
                         'latitude'   => (float)$shopItem['coord_lat'],
                         'longitude'  => (float)$shopItem['coord_long'],
                         'products'   => isset($productIdsByShop[$shopId]) ? $productIdsByShop[$shopId] : [],
-                        'pointImage' => $shopToken == 'shops_svyaznoy' ? '/images/marker-svyaznoy.png' : '/images/marker.png',
+                        'pointImage' => isset($mapPoint) ? $mapPoint : '/images/marker.png',
                         'buttonName' => 'Забрать из этого магазина',
                     ];
                 }

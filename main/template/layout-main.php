@@ -32,58 +32,57 @@
 </head>
 
 <body id="mainPage" data-template="main" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
-<?= $page->slotConfig() ?>
-<div class="bannersbox">
-    <div class="bannersboxinner">
-        <div class="banner banner3"><img class="rightImage" src="" alt=""/></div>
-        <div class="banner banner4"><img class="leftImage" src="" alt=""/></div>
+    <?= $page->slotConfig() ?>
+    <div class="bannersbox">
+        <div class="bannersboxinner">
+            <div class="banner banner3"><img class="rightImage" src="" alt=""/></div>
+            <div class="banner banner4"><img class="leftImage" src="" alt=""/></div>
+        </div>
     </div>
-</div>
 
-<?= $page->slotBanner() ?>
+    <?= $page->slotBanner() ?>
 
-<div class="wrapper mWrapperMain">
-    <div class="content mContentMain clearfix">
-        <? if (\App::config()->adFox['enabled']): ?>
-            <div class="adfoxWrapper" id="adfox980"></div>
-        <? endif ?>
+    <div class="wrapper mWrapperMain">
+        <div class="content mContentMain clearfix">
+            <? if (\App::config()->adFox['enabled']): ?>
+                <div class="adfoxWrapper" id="adfox980"></div>
+            <? endif ?>
 
-        <header class="header">
-            <?= $page->slotHeader() ?>
-        </header><!--/ Шапка-->
+            <header class="header">
+                <?= $page->slotHeader() ?>
+            </header><!--/ Шапка-->
 
-        <?= $page->slotContentHead() ?>
+            <?= $page->slotContentHead() ?>
 
-        <div class="bigbanner">
-            <div class='bCarouselWrap'>
-                <div class='bCarousel'>
-                    <div class='bCarousel__eBtnL leftArrow'></div>
-                    <div class='bCarousel__eBtnR rightArrow'></div>
-                    <img class="centerImage" src="" alt=""/>
+            <div class="bigbanner">
+                <div class='bCarouselWrap'>
+                    <div class='bCarousel'>
+                        <div class='bCarousel__eBtnL leftArrow'></div>
+                        <div class='bCarousel__eBtnR rightArrow'></div>
+                        <img class="centerImage" src="" alt=""/>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div><!--/ Контент -->
-</div><!--/ Шаблон -->
+        </div><!--/ Контент -->
+    </div><!--/ Шаблон -->
 
-<div class="footer__main">
-    <?= $page->slotFooter() ?>
-    <a href="http://<?= \App::config()->mobileHost ?>/" class="siteVersionSwitcher js-siteVersionSwitcher" data-config="<?= $page->escape(json_encode(\App::config()->siteVersionSwitcher)) ?>">Мобильная версия</a>
-</div><!--/ Подвал -->
+    <div class="footer__main">
+        <?= $page->slotFooter() ?>
+        <a href="http://<?= \App::config()->mobileHost ?>/" class="siteVersionSwitcher js-siteVersionSwitcher" data-config="<?= $page->escape(json_encode(\App::config()->siteVersionSwitcher)) ?>">Мобильная версия</a>
+    </div><!--/ Подвал -->
 
-<?= $page->slotRegionSelection() ?>
-<?= $page->slotAuth() ?>
-<?= $page->slotYandexMetrika() ?>
-<?= $page->slotBodyJavascript() ?>
-<?= $page->slotInnerJavascript() ?>
-<?= $page->slotAdriver() ?>
-<?= $page->slotPartnerCounter() ?>
-<?= $page->slotAdblender() ?>
-<?= $page->slotKissMetrics() ?>
+    <?= $page->slotRegionSelection() ?>
+    <?= $page->slotAuth() ?>
+    <?= $page->slotYandexMetrika() ?>
+    <?= $page->slotBodyJavascript() ?>
+    <?= $page->slotInnerJavascript() ?>
+    <?= $page->slotAdriver() ?>
+    <?= $page->slotPartnerCounter() ?>
+    <?= $page->slotAdblender() ?>
+    <?= $page->slotKissMetrics() ?>
 
-<? if (\App::config()->analytics['enabled']): ?>
-    <div id="yandexMetrika" class="jsanalytics"></div>
-<? endif ?>
-
+    <? if (\App::config()->analytics['enabled']): ?>
+        <div id="yandexMetrika" class="jsanalytics"></div>
+    <? endif ?>
 </body>
 </html>

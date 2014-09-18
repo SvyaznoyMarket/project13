@@ -22,7 +22,7 @@ module.exports = function (grunt, options) {
         },
 		
 		gameSlots: {
-            files: ['web/css/game/slots/*.less'],
+            files: ['web/styles/game/slots/*.less'],
             tasks: ['less:gameSlotsCompile', 'less:gameSlotsCompress']
         },
 
@@ -81,11 +81,6 @@ module.exports = function (grunt, options) {
             tasks: ['concat:mainJS', 'uglify:mainJS']
         },
 
-        mainParallaxJS:{
-            files: [ pathDev + 'main-parallax/*.js'],
-            tasks: ['concat:mainParallaxJS', 'uglify:mainParallaxJS']
-        },
-
         oneclickJS:{
             files: [ pathDev + 'oneclick/*.js'],
             tasks: ['concat:oneclickJS', 'uglify:oneclickJS']
@@ -142,7 +137,7 @@ module.exports = function (grunt, options) {
         },
 		
 		gameSlotsJs:{
-            files: [ pathRoot + 'game/slots/jquery.transit.js', pathRoot + 'game/slots/slots.js'],
+            files: [ pathDev + 'game/slots/jquery.transit.js', pathDev + 'game/slots/slots.js'],
             tasks: ['concat:gameSlotsJs', 'jshint', 'uglify:gameSlotsJs']
         },
 
