@@ -26,8 +26,6 @@ class CouponAction {
                 throw new \Exception\ActionException('Не передан номер карты');
             }
 
-            $cart->clearCoupons();
-
             $coupon = new \Model\Cart\Coupon\Entity();
             $coupon->setNumber($number);
 
@@ -46,15 +44,11 @@ class CouponAction {
         } catch (\Exception $e) {
             \App::exception()->remove($e);
 
-            $message = \Model\Cart\Coupon\Entity::getErrorMessage($e->getCode()) ?: 'Не удалось активировать купон';
-
-            if (in_array($e->getCode(), [300,  303,  305, 306, 307, 308, 309, 310, 311, 312, 313])) {
-                $cart->clearCoupons();
-            }
+            $cart->clearCoupons();
 
             $responseData = [
                 'success' => false,
-                'error'   => ['code' => $e->getCode(), 'message' => $message],
+                'error'   => ['code' => $e->getCode(), 'message' => \Model\Cart\Coupon\Entity::getErrorMessage($e->getCode()) ?: 'Не удалось активировать купон'],
             ];
         }
 
