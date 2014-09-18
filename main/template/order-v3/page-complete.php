@@ -91,8 +91,7 @@ return function(
                             <div class="orderLn_row orderLn_row-bg jsOnlinePaymentBlock">
 
                                 <? if (isset($paymentEntity->methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT])
-                                        && isset($order->meta_data['preferred_payment_id'])
-                                        && reset($order->meta_data['preferred_payment_id']) == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT) : ?>
+                                        && $order->paymentId == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT ) : ?>
 
                                     <!-- Кредит -->
 

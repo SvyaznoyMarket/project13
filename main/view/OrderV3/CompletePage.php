@@ -15,7 +15,7 @@ class CompletePage extends Layout {
 
             foreach ($this->params['orders'] as $order) {
                 /** @var $order \Model\Order\Entity */
-                if (isset($order->meta_data['preferred_payment_id']) && reset($order->meta_data['preferred_payment_id']) !=  \Model\Order\Entity::PAYMENT_TYPE_ID_ONLINE_CREDIT) continue;
+                if ($order->paymentId != \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT) continue;
 
                 // Данные для "Купи-в-кредит"
                 $data = new \View\Order\Credit\Kupivkredit($order, $this->params['products']);

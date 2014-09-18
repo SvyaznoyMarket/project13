@@ -76,7 +76,7 @@ class CompleteAction extends OrderV3 {
                 } );
 
                 // Нужны ли нам кредитные банки?
-                if (isset($order->meta_data['preferred_payment_id']) && reset($order->meta_data['preferred_payment_id']) == \Model\Order\Entity::PAYMENT_TYPE_ID_ONLINE_CREDIT) $needCreditBanksData = true;
+                if ($order->paymentId == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT) $needCreditBanksData = true;
 
             }
 
