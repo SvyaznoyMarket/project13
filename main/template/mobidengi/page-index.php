@@ -48,10 +48,10 @@
 
             <div class="landing_hd-land">
                 <div class="landing_hd-land-bg"></div>
-                <a target="_blank" class="landing_hd-land-gift" href="https://mycard.tele2.ru/"></a> 
+                <a class="landing_hd-land-gift jsNavItemScroll" href="#card"></a> 
                 <div class="landing_hd-land_tx"> 
                     <div class="landing_hd-land_tx-1">Боитесь покупок онлайн? Напрасно. Теперь есть способ платить безопасно.</div>
-                    <div class="landing_hd-land_tx-2">Кстати, еще и выгодно — оплатите покупку виртуальной картой Tele2<br/>MasterCard и получите купон на 500 рубллей</div>
+                    <div class="landing_hd-land_tx-2">Кстати, еще и выгодно — оплатите покупку виртуальной картой Tele2<br/>MasterCard и получите купон на 500 рублей</div>
                     <a href="#terms" class="g-button mod_header">Получить купон на 500 руб.</a>
                 </div> 
             </div> 
@@ -80,9 +80,9 @@
         <div class="landing_nav_lst">
             <div class="landing_nav_lst-list-h">
                 <a href="#terms" class="landing_nav_lst_i jsNavItemScroll">Получить купон на 500 руб.</a>
-                <a href="#video" class="landing_nav_lst_i jsNavItemScroll">Видеопрезентация</a>
                 <a href="#card" class="landing_nav_lst_i jsNavItemScroll">Выпустить карту Tele2 MasterCard<sup>&copy;</sup></a>
                 <a href="#faq" class="landing_nav_lst_i jsNavItemScroll">Вопросы и ответы</a> 
+                <a href="#video" class="landing_nav_lst_i jsNavItemScroll">Видеопрезентация</a>
             </div>
         </div> 
     </div> 
@@ -133,16 +133,7 @@
         <p class="g-ui align_center" style="margin-top: 20px;"><a href="/" class="g-button scheme_dblue size_5 view_wide">Начать покупки</a></p>
     </div> 
 
-    <div class="landing_video landing_hdn landing_res" id="video">
-        <div class="landing_hdn-h"> 
-            <div class="landing_ttl"><strong>Видеопрезентация Tele2 MasterCard</strong></div> 
-            <div class="landing_video"> 
-                <iframe width="100%" height="488" src="//www.youtube.com/embed/9bheT8JR2KU?wmode=opaque" frameborder="0" allowfullscreen=""></iframe>
-            </div>
-        </div>
-    </div> 
-
-    <div id="card" class="landing_card landing_hdn landing_res" data-placeholder="card"> 
+    <div id="card" class="landing_video landing_hdn landing_res"> 
         <div class="landing_hdn-h">
             <div class="landing_card-iframe js-tele2Page-child js-widget">
                 <iframe src="https://mycard.tele2.ru/iframe" width="960" height="330" frameborder="0" scrolling="no" class="js-tele2Page-cardIframe"></iframe>  
@@ -150,7 +141,7 @@
         </div>
     </div>
 
-    <div class="landing_faq landing_hdn landing_res" id="faq"> 
+    <div class="landing_card landing_hdn landing_res" id="faq"> 
         <div class="landing_hdn-h">
             <p class="landing_ttl"><strong>Вопросы и ответы</strong></p>
 
@@ -455,6 +446,15 @@
                     </div>
                 </div> 
             </div> 
+        </div>
+    </div> 
+
+    <div class="landing_video landing_hdn landing_res" id="video">
+        <div class="landing_hdn-h"> 
+            <div class="landing_ttl"><strong>Видеопрезентация Tele2 MasterCard</strong></div> 
+            <div class="landing_video"> 
+                <iframe width="100%" height="488" src="//www.youtube.com/embed/9bheT8JR2KU?wmode=opaque" frameborder="0" allowfullscreen=""></iframe>
+            </div>
         </div>
     </div> 
 

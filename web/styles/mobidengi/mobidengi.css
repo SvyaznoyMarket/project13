@@ -1100,7 +1100,7 @@ body.light .card {
     border: medium none;
 }
 .card.white-card {
-    background: none repeat scroll 0 0 #f3f3f3;
+    background: #ffffff !important;
 }
 .card.second-card {
     margin-top: 10px;
