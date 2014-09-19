@@ -31,18 +31,27 @@ class OneClick {
      * @param \Model\Cart\Product\Entity $product
      */
     public function setProduct(\Model\Cart\Product\Entity $product) {
-        $this->clear(); // возможно добавление только одного товара
-
         $sessionData = $this->storage->get($this->sessionName);
 
         if ($product->getQuantity() < 1) {
-            if (isset($sessionData['product'][$product->getId()])) unset($sessionData['product'][$product->getId()]);
+            unset($sessionData['product'][$product->getId()]);
+            unset($this->productsById[$product->getId()]);
         } else {
             $sessionData['product'][$product->getId()] = ['quantity' => $product->getQuantity()];
         }
 
         $this->storage->set($this->sessionName, $sessionData);
 
+        $this->calculate();
+    }
+
+    /**
+     * @param \Model\Cart\Product\Entity $product
+     */
+    public function addProduct(\Model\Cart\Product\Entity $product) {
+        $sessionData = $this->storage->get($this->sessionName);
+        $sessionData['product'][$product->getId()] = ['quantity' => $product->getQuantity()];
+        $this->storage->set($this->sessionName, $sessionData);
         $this->calculate();
     }
 

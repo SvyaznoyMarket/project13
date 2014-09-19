@@ -43,6 +43,7 @@ class ProductAction {
                 'sum'      => $product->getPrice() * $quantity,
             ]);
 
+            $cart->clear();
             $cart->setProduct($cartProduct);
             if ($request->get('shopId')) $cart->setShop($request->get('shopId'));
 
@@ -80,16 +81,137 @@ class ProductAction {
             : new \Http\RedirectResponse(\App::router()->generate('order.oneClick.new'));
     }
 
+    public function setList(\Http\Request $request) {
+        $region = \App::user()->getRegion();
+        $cart = \App::user()->getOneClickCart();
+
+        try {
+            $productData = (array)$request->get('product');
+            if (!$productData) {
+                throw new \Exception('Не получены данные о товарах');
+            }
+
+            $productQuantitiesById = [];
+            foreach ($productData as $productItem) {
+                if (isset($productItem['id'])) {
+                    $productId = (int)$productItem['id'];
+                } else {
+                    \App::logger()->error('Не указан ид товара');
+                    continue;
+                }
+
+                if (isset($productItem['quantity'])) {
+                    $productQuantity = (int)$productItem['quantity'];
+                } else {
+                    $productQuantity = 0;
+                }
+
+                if (!$productQuantity) {
+                    \App::logger()->error('Не указано количество товара');
+                    continue;
+                }
+
+                $productQuantitiesById[$productId] = $productQuantity;
+            }
+
+            if (!$productQuantitiesById) {
+                throw new \Exception('Не собраны ид товаров');
+            }
+
+            $cart->clear();
+
+            foreach (array_chunk(array_keys($productQuantitiesById), \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
+                \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$productQuantitiesById, $cart) {
+                    foreach ($data as $item) {
+                        $product = new \Model\Cart\Product\Entity($item);
+                        $product->setQuantity($productQuantitiesById[$product->getId()]);
+                        $cart->addProduct($product);
+                    }
+                });
+            }
+
+            \App::coreClientV2()->execute();
+
+            $responseData = [
+                'success' => true
+            ];
+        } catch(\Exception $e) {
+            $responseData = [
+                'success' => false,
+                'data'    => ['error' => 'Не удалось добавить товар или услугу в корзину', 'debug' => $e->getMessage()],
+            ];
+        }
+
+        return $request->isXmlHttpRequest()
+            ? new \Http\JsonResponse($responseData)
+            : new \Http\RedirectResponse(\App::router()->generate('order.oneClick.new'));
+    }
+
     /**
-     * @param $productId
      * @param \Http\Request $request
+     * @param $productId
      * @return \Http\JsonResponse|\Http\RedirectResponse
      */
     public function delete(\Http\Request $request, $productId) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $request->query->set('quantity', 0);
+        $cart = \App::user()->getOneClickCart();
+        $productId = (int)$productId;
 
-        return $this->set($productId, $request);
+        try {
+            if (!$productId) {
+                throw new \Exception('Не получен ид товара');
+            }
+
+            $cart->setProduct(new \Model\Cart\Product\Entity(['id' => $productId, 'quantity' => 0]));
+
+            $responseData = [
+                'success' => true
+            ];
+        } catch (\Exception $e) {
+            \App::logger()->error($e, ['order', 'one-click']);
+            $responseData = [
+                'success' => false,
+                'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],
+            ];
+        }
+
+        return $request->isXmlHttpRequest()
+            ? new \Http\JsonResponse($responseData)
+            : new \Http\RedirectResponse(\App::router()->generate('order.oneClick.new'));
+    }
+
+    /**
+     * @param \Http\Request $request
+     * @param $productId
+     * @return \Http\JsonResponse|\Http\RedirectResponse
+     */
+    public function change(\Http\Request $request, $productId) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        $cart = \App::user()->getOneClickCart();
+        $productId = (int)$productId;
+
+        try {
+            if (!$productId) {
+                throw new \Exception('Не получен ид товара');
+            }
+
+            $cart->setProduct(new \Model\Cart\Product\Entity(['id' => $productId, 'quantity' => (int)$request->get('quantity')]));
+
+            $responseData = [
+                'success' => true
+            ];
+        } catch (\Exception $e) {
+            \App::logger()->error($e, ['order', 'one-click']);
+            $responseData = [
+                'success' => false,
+                'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],
+            ];
+        }
+
+        return $request->isXmlHttpRequest()
+            ? new \Http\JsonResponse($responseData)
+            : new \Http\RedirectResponse(\App::router()->generate('order.oneClick.new'));
     }
 }
