@@ -130,6 +130,7 @@
                 </div> 
             </div> 
         </div> 
+        <p class="g-ui align_center" style="margin-top: 20px;"><a href="/" class="g-button scheme_dblue size_5 view_wide">Начать покупки</a></p>
     </div> 
 
     <div class="landing_video landing_hdn landing_res" id="video">
@@ -460,7 +461,7 @@
     <div class="landing_buynow landing_hdn landing_res">
         <div class="landing_hdn-h">
             <p class="landing_ttl landing_ttl-white">Оплачивайте покупки виртуальной картой Tele2 MasterCard<sup>©</sup></p>
-            <p class="g-ui align_center"><a href="/" class="g-button scheme_dblue size_5 view_wide">Начать покупки</a></p>
+            
         </div>
     </div>
 
