@@ -593,12 +593,13 @@ a[href^="tel"] {
     margin-top: -9px;
 }
 .landing_hd-land {
-    height: 332px;
+    height: 452px;
 }
 .landing_hd-land-bg {
-    /*height: 452px;*/
-    margin-left: -280px;
-    top: 0;
+	background: url("img/bg_hd.jpg") no-repeat 0 0;
+    height: 497px;
+    margin-left: -329px;
+    top: -12px;
     width: 1244px;
 }
 .landing_hd-land-gift {
