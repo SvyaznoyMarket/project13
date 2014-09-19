@@ -157,7 +157,7 @@ a[href^="tel"] {
     text-shadow: 0 0 2px #000000;
 }
 .g-button.scheme_dblue {
-    background: linear-gradient(to bottom, #484d56 0px, #2c3139 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+	background: #484d56;
     color: #fff;
     font-family: 'Tele2Russia';
     text-shadow: 0 0 3px #000;
