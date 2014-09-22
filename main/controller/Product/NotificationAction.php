@@ -6,6 +6,7 @@ class NotificationAction {
 
     const CHANNEL_2_SUBSCRIPTION_EXISTS_CODE = 920;
     const CHANNEL_1_SUBSCRIPTION_EXISTS_CODE = 910;
+    const SUBSCRIPTION_NOT_EXISTS_CODE = 921;
     const WRONG_EMAIL_CODE = 850;
 
     /**
@@ -38,6 +39,22 @@ class NotificationAction {
 
             $userEntity = \App::user()->getEntity();
 
+            if ($userEntity) {
+                $client->addQuery(
+                    'subscribe/bind-email-to-user',
+                    ['token' => $userEntity->getToken(), 'email' => $email, 'channel_id' => 2],
+                    [],
+                    null,
+                    function(\Curl\Exception $e) {
+                        if ($e->getCode() == self::SUBSCRIPTION_NOT_EXISTS_CODE) {
+                            \App::exception()->remove($e);
+                        } else {
+                            throw $e;
+                        }
+                    }
+                );
+            }
+
             $params = [
                 'email'      => $email,
                 'geo_id'     => $region->getId(),
@@ -49,7 +66,7 @@ class NotificationAction {
                 $params['token'] = $userEntity->getToken();
             }
 
-            $client->addQuery('subscribe/create', $params, [], null, function(\Curl\Exception $e){
+            $client->addQuery('subscribe/create', $params, [], null, function(\Curl\Exception $e) {
                 if ($e->getCode() == self::CHANNEL_2_SUBSCRIPTION_EXISTS_CODE) {
                     \App::exception()->remove($e);
                 } else {
@@ -59,6 +76,22 @@ class NotificationAction {
 
             // если отмечена галочка подписки на "Акции и суперпредложения"
             if (trim((string)$request->get('subscribe')) === '1') {
+                if ($userEntity) {
+                    $client->addQuery(
+                        'subscribe/bind-email-to-user',
+                        ['token' => $userEntity->getToken(), 'email' => $email, 'channel_id' => 1],
+                        [],
+                        null,
+                        function(\Curl\Exception $e) {
+                            if ($e->getCode() == self::SUBSCRIPTION_NOT_EXISTS_CODE) {
+                                \App::exception()->remove($e);
+                            } else {
+                                throw $e;
+                            }
+                        }
+                    );
+                }
+
                 if ($userEntity && $email === $userEntity->getEmail() && $userEntity->getIsEmailConfirmed()) {
                     $client->addQuery(
                         'subscribe/set',
@@ -83,7 +116,7 @@ class NotificationAction {
                         $params['token'] = $userEntity->getToken();
                     }
 
-                    $client->addQuery('subscribe/create', $params, [], null, function(\Curl\Exception $e){
+                    $client->addQuery('subscribe/create', $params, [], null, function(\Curl\Exception $e) {
                         if ($e->getCode() == self::CHANNEL_1_SUBSCRIPTION_EXISTS_CODE) {
                             \App::exception()->remove($e);
                         } else {
