@@ -3,7 +3,7 @@
 /**
  * @param \Helper\TemplateHelper $helper
  * @param \Model\GridCell\Entity[] $gridCells
- * @param \Model\Product\CompactEntity[] $productsByUi
+ * @param \Model\Product\Entity[] $productsByUi
  */
 $f = function(
     \Helper\TemplateHelper $helper,
@@ -37,10 +37,7 @@ $f = function(
                 </div>
             <? endif ?>
 
-            <? if (
-                ($product->getMainCategory() && 'tchibo' === $product->getMainCategory()->getToken()) &&
-                (!$product->getIsBuyable() && !$product->isInShopOnly() && !$product->isInShopStockOnly())
-            ): ?>
+            <? if ($product->getMainCategory() && 'tchibo' === $product->getMainCategory()->getToken() && !$product->isAvailable() && !$product->hasAvailableModels()): ?>
                 <div class="bProductDescSticker">
                     <img src="/images/shild_sold_out.png" alt="Нет в наличии" />
                 </div>
