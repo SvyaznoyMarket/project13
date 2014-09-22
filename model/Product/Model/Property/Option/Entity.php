@@ -6,23 +6,23 @@ class Entity {
 
     /** @var string */
     private $value;
-    /** @var Product\Entity[] */
+    /** @var \Model\Product\BasicEntity[] */
     private $product;
 
     public function __construct(array $data = []) {
         if (array_key_exists('value', $data)) $this->setValue($data['value']);
-        if (array_key_exists('product', $data) && (bool)$data['product']) $this->setProduct(new Product\Entity($data['product']));
+        if (array_key_exists('product', $data) && (bool)$data['product']) $this->setProduct(new \Model\Product\BasicEntity($data['product']));
     }
 
     /**
-     * @param Product\Entity $product
+     * @param \Model\Product\BasicEntity $product
      */
     public function setProduct($product) {
         $this->product = $product;
     }
 
     /**
-     * @return Product\Entity
+     * @return \Model\Product\BasicEntity
      */
     public function getProduct() {
         return $this->product;
