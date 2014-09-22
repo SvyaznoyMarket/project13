@@ -47,4 +47,8 @@
         $body.trigger('trackUserAction',['5 Войти_с_паролем_Получатель'])
     });
 
+    if (/orde(r|rs)\/new/.test(window.location.href)) {
+        $body.trigger('trackUserAction', ['1 Вход_Получатель_ОБЯЗАТЕЛЬНО']);
+    }
+
 })(jQuery);

@@ -151,11 +151,13 @@ a[href^="tel"] {
     padding: 14px;
 }
 .g-button.size_5.view_wide {
+    background: none repeat scroll 0 0 #10a3de;
     padding-left: 50px;
     padding-right: 50px;
+    text-shadow: 0 0 2px #000000;
 }
 .g-button.scheme_dblue {
-    background: linear-gradient(to bottom, #484d56 0px, #2c3139 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+	background: #484d56;
     color: #fff;
     font-family: 'Tele2Russia';
     text-shadow: 0 0 3px #000;
@@ -164,6 +166,11 @@ a[href^="tel"] {
     box-shadow: 0 -20px 20px -20px #919caf inset;
     color: #fff !important;
 }
+
+.g-button.size_5.view_wide:hover {
+	box-shadow: 0 -20px 20px -20px #fff inset;
+}
+
 .g-button.scheme_dblue:active {
     box-shadow: 0 0 3px 1px #000 inset;
     color: #fff !important;
@@ -220,6 +227,7 @@ a[href^="tel"] {
 .landing_hd {
     background-color: #000;
     color: #fff;
+    overflow: hidden;
 }
 .landing_hd:before {
     background-color: #2d313a;
@@ -565,7 +573,6 @@ a[href^="tel"] {
 }
 .g-button.mod_header:active {
     box-shadow: 0 3px 10px 3px #006999 inset;
-    color: #fff !important;
 }
 .landing_hd:before {
     top: 105px;
@@ -596,10 +603,10 @@ a[href^="tel"] {
     height: 452px;
 }
 .landing_hd-land-bg {
-    background: url("img/bg_hd.jpg") no-repeat  0 0;
-    height: 452px;
-    margin-left: -280px;
-    top: 0;
+	background: url("img/bg_hd.jpg") no-repeat 0 0;
+    height: 497px;
+    margin-left: -329px;
+    top: -12px;
     width: 1244px;
 }
 .landing_hd-land-gift {
@@ -1093,7 +1100,7 @@ body.light .card {
     border: medium none;
 }
 .card.white-card {
-    background: none repeat scroll 0 0 #f3f3f3;
+    background: #ffffff !important;
 }
 .card.second-card {
     margin-top: 10px;

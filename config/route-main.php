@@ -250,6 +250,11 @@ return [
         'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brandToken' => '[\w\d-_]+'],
     ],
 
+    'kurkova' => [
+        'pattern'   => '/product/alena.kurkova',
+        'action'  => ['Content\Action', 'kurkova']
+    ],
+
     // карточка товара
     'product' => [
         'pattern' => '/product/{productPath}',
@@ -543,6 +548,11 @@ return [
     'orderV3.log'   => [
         'pattern'   => '/order/log',
         'action'    => ['OrderV3\OrderV3', 'logFromWeb'],
+        'method'    => ['POST']
+    ],
+    'orderV3.update-credit'   => [
+        'pattern'   => '/order/update-credit',
+        'action'    => ['OrderV3\CompleteAction', 'updateCredit'],
         'method'    => ['POST']
     ],
 
@@ -937,7 +947,7 @@ return [
     ],
 
     'mobidengi' => [
-        'pattern' => '/mobidengi',
+        'pattern' => '/tele2',
         'action'  => ['Mobidengi\IndexAction', 'execute'],
     ],
 

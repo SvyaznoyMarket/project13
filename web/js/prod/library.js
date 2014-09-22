@@ -1913,7 +1913,7 @@ window.MapInterface = (function() {
 			// end of vars
 
 
-			var
+			var startTime, endTime, spendTime,
 				/**
 				 * Обработчик Action присланных с сервера
 				 * 
@@ -1957,7 +1957,22 @@ window.MapInterface = (function() {
 				};
 			//end of functions
 
-			$.get(self.updUrl, parseData);
+			//$.get(self.updUrl, parseData);
+            $.ajax({
+                url: self.updUrl,
+                beforeSend: function(){
+                    startTime = new Date().getTime();
+                },
+                success: function(data){
+                    endTime = new Date().getTime();
+                    spendTime = endTime - startTime;
+                    parseData(data);
+                    if (typeof ga == 'function') {
+                        ga('send', 'timing', 'userInfo', 'Load User Info', spendTime);
+                        console.log('[Google Analytics] Send user/info timing: %s ms', spendTime)
+                    }
+                }
+            })
 		};
 
 	

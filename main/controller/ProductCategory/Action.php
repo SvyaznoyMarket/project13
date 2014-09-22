@@ -365,7 +365,7 @@ class Action {
 
         // SITE-3381
         if (!$request->isXmlHttpRequest() && ($category->getLevel() > 1) && false === strpos($categoryPath, '/')) {
-            throw new \Exception\NotFoundException(sprintf('Не передана родительская категория для категории @%s', $categoryToken));
+            //throw new \Exception\NotFoundException(sprintf('Не передана родительская категория для категории @%s', $categoryToken));
         }
 
         if (!empty($shopScriptSeo['link'])) {

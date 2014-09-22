@@ -152,7 +152,7 @@ return function(
 
             <!-- информация о доставке -->
             <div class="orderCol orderCol-r">
-                <menu class="orderCol_delivrLst">
+                <menu class="orderCol_delivrLst clearfix">
                     <li class="orderCol_delivrLst_i orderCol_delivrLst_i-act">Самовывоз</li>
                     <li class="orderCol_delivrLst_i">Доставка</li>
                 </menu>

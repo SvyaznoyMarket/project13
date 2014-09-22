@@ -891,13 +891,13 @@
         if (typeof ga === 'undefined') ga = window[window['GoogleAnalyticsObject']]; // try to assign ga
 
         // sending
-        if (typeof _gaq === 'object') _gaq.push(['_trackEvent', 'Воронка_' + region, act, lbl]);
-        if (typeof ga === 'function') ga('send', 'event', 'Воронка_' + region, act, lbl);
+        if (typeof _gaq === 'object') _gaq.push(['_trackEvent', 'Воронка_новая_' + region, act, lbl]);
+        if (typeof ga === 'function') ga('send', 'event', 'Воронка_новая_' + region, act, lbl);
 
         // log to console
         if (typeof ga !== 'function') console.warn('Нет объекта ga');
         if (typeof ga === 'function' && ga.getAll().length == 0) console.warn('Не установлен трекер для ga');
-        console.log('[Google Analytics] Send event: category: "Воронка_%s", action: "%s", label: "%s"', region, act, lbl);
+        console.log('[Google Analytics] Send event: category: "Воронка_новая_%s", action: "%s", label: "%s"', region, act, lbl);
     };
 
     // common listener for triggering from another files or functions
@@ -1038,9 +1038,9 @@
 
                 // немного аналитики
                 if (item.contentType == 'street') {
-                    $body.trigger('trackUserEvent', ['10 Адрес_доставки_Доставка_ОБЯЗАТЕЛЬНО'])
+                    $body.trigger('trackUserAction', ['10 Адрес_доставки_Доставка_ОБЯЗАТЕЛЬНО'])
                 } else if (item.contentType == 'building') {
-                    $body.trigger('trackUserEvent', ['10_1 Ввод_данных_Доставки_Доставка_ОБЯЗАТЕЛЬНО'])
+                    $body.trigger('trackUserAction', ['10_1 Ввод_данных_Доставки_Доставка_ОБЯЗАТЕЛЬНО'])
                 }
 
                 console.log('Address update: address, item', this, item);
@@ -1314,6 +1314,7 @@
     var body = document.getElementsByTagName('body')[0],
         $body = $(body),
         $orderContent = $('.orderCnt'),
+        $jsOrder = $('#jsOrder'),
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
             length: 5, // The length of each line
@@ -1354,22 +1355,28 @@
             })
         },
 
-        showCreditWidget = function showCreditWidgetF(bankProviderId, data) {
-            console.log('Credit Data', data);
+        showCreditWidget = function showCreditWidgetF(bankProviderId, data, number_erp, bank_id) {
 
             if ( bankProviderId == 1 ) showKupiVKredit(data['kupivkredit']);
             if ( bankProviderId == 2 ) showDirectCredit(data['direct-credit']);
 
+            $.ajax({
+                type: 'POST',
+                url: '/order/update-credit',
+                data: {
+                    number_erp: number_erp,
+                    bank_id: bank_id
+                }
+            })
+
         },
 
         showKupiVKredit = function showKupiVKreditF(data){
-            var callback_close = function(decision) {
-/*                    setTimeout(function() {
-                        document.location = 'http://' + window.location.hostname;
-                    }, 1000);*/
-                },
+            var callback_close = function(decision) { },
                 callback_decision = function(decision) { },
                 vkredit;
+
+            console.log(data);
 
             $LAB.script( '//www.kupivkredit.ru/widget/vkredit.js')
                 .wait( function() {
@@ -1404,9 +1411,9 @@
                     });
 
 
-                DCLoans(data.vars.partnerID, 'getCredit', { products: productArr, order: data.vars.number, codeTT: data.vars.shopId }, function(result){
-                   console.log(result);
-                }, false);
+                    DCLoans(data.vars.partnerID, 'getCredit', { products: productArr, order: data.vars.number, codeTT: data.vars.region }, function(result){
+                       console.log(result);
+                    }, false);
 
             });
         };
@@ -1455,11 +1462,13 @@
 
     $orderContent.on('click', '.jsCreditList li', function(e){
         var bankProviderId = $(this).data('bank-provider-id'),
-            creditData = $(this).parent().siblings('.credit-widget').data('value');
+            bank_id = $(this).data('value'),
+            creditData = $(this).parent().siblings('.credit-widget').data('value'),
+            order_number_erp = $(this).closest('.orderLn').data('order-number-erp');
 //        e.preventDefault();
         e.stopPropagation();
         $(this).parent().hide();
-        showCreditWidget(bankProviderId, creditData);
+        showCreditWidget(bankProviderId, creditData, order_number_erp, bank_id);
     });
 
     $(body).on('click', function(){
@@ -1468,6 +1477,33 @@
 
     if (/order\/complete/.test(window.location.href)) {
         $body.trigger('trackUserAction', ['16 Вход_Оплата_ОБЯЗАТЕЛЬНО']);
+    }
+
+    if ($jsOrder.length != 0) {
+        console.log('[Google Analytics] Start processing orders');
+        $.each($jsOrder.data('value').orders, function(i,o) {
+            var googleOrderTrackingData = {};
+            googleOrderTrackingData.transaction = {
+                'id': o.numberErp,
+                'affiliation': o.is_partner ? 'Партнер' : 'Enter',
+                'total': o.paySum,
+                'shipping': o.delivery[0].price,
+                'city': o.region.name
+            };
+            googleOrderTrackingData.products = $.map(o.products, function(p){
+                return {
+                    'id': p.id,
+                    'name': p.name,
+                    'sku': p.article,
+                    'category': p.category[p.category.length -1].name,
+                    'price': p.price,
+                    'quantity': p.quantity
+                }
+            });
+            console.log(googleOrderTrackingData);
+            $body.trigger('trackGoogleTransaction',[googleOrderTrackingData])
+        });
+
     }
 
 }(jQuery));
@@ -1913,6 +1949,10 @@
     $body.on('click', '.jsOrderV3AuthLink', function(){
         $body.trigger('trackUserAction',['5 Войти_с_паролем_Получатель'])
     });
+
+    if (/orde(r|rs)\/new/.test(window.location.href)) {
+        $body.trigger('trackUserAction', ['1 Вход_Получатель_ОБЯЗАТЕЛЬНО']);
+    }
 
 })(jQuery);
 ;(function($) {

@@ -8,7 +8,8 @@ return function(
     $orderCount = count($orderDelivery->orders);
     $region = \App::user()->getRegion();
     $regionName = $region->getName();
-    $firstOrder = reset($orderDelivery->orders)
+    $firstOrder = reset($orderDelivery->orders);
+    $i = 0;
 
 ?>
 
@@ -27,10 +28,10 @@ return function(
         <div class="fl-l">Ваш регион: <strong><?= \App::user()->getRegion()->getName() ?></strong> <br/> 
         От региона зависят доступные способы получения и оплаты заказов.</div>
 
-        <button class="btnLightGrey fl-r jsChangeRegion">Изменить регион</button>
+        <button class="btnLightGrey orderCnt_btn fl-r jsChangeRegion">Изменить регион</button>
     </div>
 
-    <? foreach ($orderDelivery->orders as $i => $order): ?>
+    <? foreach ($orderDelivery->orders as $order): $i++;?>
         <? if ((bool)$order->validationErrors) : ?>
             <div class="jsOrderValidationErrors" data-value="<?= $helper->json($order->validationErrors) ?>"></div>
         <? endif; ?>
@@ -39,7 +40,7 @@ return function(
         <!-- информация о заказе -->
         <div class="orderCol">
             <div class="orderCol_h">
-                <strong class="orderNum">Заказ №<?= ($i + 1) ?></strong>
+                <strong class="orderNum">Заказ №<?= ($i) ?></strong>
                 <? if ($order->seller): ?>
                     <span class="orderDetl">продавец: <?= $order->seller->name ?> <a class="orderDetl_lk" href="<?= $order->seller->offer ?>" target="_blank">Информация и оферта</a></span>
                 <? endif ?>
@@ -146,7 +147,7 @@ return function(
 
         <!-- информация о доставке -->
         <div class="orderCol orderCol-r">
-            <menu class="orderCol_delivrLst">
+            <menu class="orderCol_delivrLst clearfix">
             <? foreach ($order->possible_delivery_groups as $deliveryGroup): ?>
                 <?  // Определение первого доступного delivery_method-а для группы
                     $delivery_methods_for_group = array_filter($order->possible_deliveries, function($delivery) use ($deliveryGroup) { return $delivery->group_id == $deliveryGroup->id; } );

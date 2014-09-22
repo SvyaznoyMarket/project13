@@ -16,13 +16,13 @@
         if (typeof ga === 'undefined') ga = window[window['GoogleAnalyticsObject']]; // try to assign ga
 
         // sending
-        if (typeof _gaq === 'object') _gaq.push(['_trackEvent', 'Воронка_' + region, act, lbl]);
-        if (typeof ga === 'function') ga('send', 'event', 'Воронка_' + region, act, lbl);
+        if (typeof _gaq === 'object') _gaq.push(['_trackEvent', 'Воронка_новая_' + region, act, lbl]);
+        if (typeof ga === 'function') ga('send', 'event', 'Воронка_новая_' + region, act, lbl);
 
         // log to console
         if (typeof ga !== 'function') console.warn('Нет объекта ga');
         if (typeof ga === 'function' && ga.getAll().length == 0) console.warn('Не установлен трекер для ga');
-        console.log('[Google Analytics] Send event: category: "Воронка_%s", action: "%s", label: "%s"', region, act, lbl);
+        console.log('[Google Analytics] Send event: category: "Воронка_новая_%s", action: "%s", label: "%s"', region, act, lbl);
     };
 
     // common listener for triggering from another files or functions
