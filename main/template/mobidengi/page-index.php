@@ -124,7 +124,7 @@
 
                             <div class="landing_form_hint">Например, +7 950 027 74 96</div>
 
-                            <button type="submit" class="g-button scheme_dblue size_5 box_block js-form-button js-widget" style="font-size: 18px">Получить купон на 500 руб.</button>
+                            <button type="submit" class="g-button scheme_dblue size_5 box_block js-form-button js-widget" style="font-size: 18px">Получить купон</button>
                         </form>
                     </div> 
                 </div> 
@@ -461,7 +461,7 @@
     <div class="landing_buynow landing_hdn landing_res">
         <div class="landing_hdn-h">
             <p class="landing_ttl landing_ttl-white">Оплачивайте покупки виртуальной картой Tele2 MasterCard<sup>©</sup></p>
-            
+            <p class="g-ui align_center" style="margin-top: 20px;"><a href="/" class="g-button scheme_dblue size_5 box_block" style="width: 260px; margin: 0 auto;">Начать покупки</a></p>
         </div>
     </div>
 
