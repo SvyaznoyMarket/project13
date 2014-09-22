@@ -291,7 +291,7 @@ window.ANALYTICS = {
 			s.type = 'text/javascript';
 			s.async = true;
 			s.src = ('https:' == document.location.protocol ? 'https://' : 'http://')
-				+ 'eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru';
+				+ 'eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru' + (ENTER.config.pageConfig.isMobile ? '-m' : '');
 			x.parentNode.insertBefore(s, x);
 		})();
 	},
@@ -1356,7 +1356,7 @@ window.ANALYTICS = {
 		data = enterprize.data('value');
 
 		// --- Kiss ---
-		if (typeof _kmq !== undefined) {
+		if (typeof _kmq != 'undefined') {
 			toKiss = {
 				'[Ent_Req] Name': data.name,
 				'[Ent_Req] Phone': data.mobile,
@@ -1372,7 +1372,7 @@ window.ANALYTICS = {
 		}
 
 		// --- GA ---
-		if (typeof ga !== undefined) {
+		if (typeof ga != 'undefined') {
 			ga('send', 'event', 'Enterprize Token Request', 'Номер фишки', data.enter_id);
 		}
 	},
@@ -1395,7 +1395,7 @@ window.ANALYTICS = {
 		data = enterprize.data('value');
 
 		// --- Kiss ---
-		if (typeof _kmq !== undefined) {
+		if (typeof _kmq != 'undefined') {
 			toKiss = {
 				'[Ent_Gr] Name': data.name,
 				'[Ent_Gr] Phone': data.mobile,
@@ -1421,7 +1421,7 @@ window.ANALYTICS = {
 		}
 
 		// --- GA ---
-		if (typeof ga !== undefined) {
+		if (typeof ga != 'undefined') {
 			ga('send', 'event', 'Enterprize Token Granted', 'Номер фишки', data.enter_id);
 			ga('set', '&uid', data.enter_id);
 		}
@@ -1558,7 +1558,7 @@ window.ANALYTICS = {
 		}
 
 		containerId = rutarget.data('id');
-		if ( undefined == typeof(containerId) ) {
+		if ( 'undefined' == typeof(containerId) ) {
 			return;
 		}
 
@@ -1872,7 +1872,7 @@ window.ANALYTICS = {
 			_flocktory = window._flocktory || [];
 		// end of vars
 
-		if ( !flocktoryExchange.length || undefined == typeof(data) ) {
+		if ( !flocktoryExchange.length || 'undefined' == typeof(data) ) {
 			return;
 		}
 
