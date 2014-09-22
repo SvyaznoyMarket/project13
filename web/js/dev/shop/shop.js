@@ -158,16 +158,17 @@
                 isMap = $(this).hasClass('map-google-link');
 
             if (isImage) {
-                $container.find('.ymaps-map').hide();
+                $container.find('ymaps:first').hide();
                 if ($container.find('img').length == 0) {
                     $container.append($('<img />', { "src": $(this).find('img').data('value'), 'width': $container.width() }));
                 } else {
-                    $container.find('img').attr('src', $(this).find('img').data('value'));
+                    $container.find('img').attr('src', $(this).find('img').data('value')).show();
                 }
             }
 
             if (isMap) {
-                $container.find('.ymaps-map').show();
+                $container.find('ymaps:first').show();
+                $container.find('img:first').hide();
             }
         });
 
