@@ -1,7 +1,7 @@
 <?php
 
 return function(
-    \Model\Product\BasicEntity $product
+    \Model\Product\Entity $product
 ) { ?>
 
 <? if ($product->getIsBuyable()): ?>
@@ -12,12 +12,9 @@ return function(
 <? else: ?>
     <link itemprop="availability" href="http://schema.org/OutOfStock" />
 
-    <? if (
-        ($product->getMainCategory() && 'Tchibo' == $product->getMainCategory()->getName()) &&
-        (!$product->getIsBuyable() && !$product->isInShopOnly() && !$product->isInShopStockOnly())
-    ) { ?>
+    <? if ($product->getMainCategory() && 'tchibo' === $product->getMainCategory()->getToken() && !$product->isAvailable() && !$product->hasAvailableModels()): ?>
         <img src="/images/shild_sold_out.png" alt="Нет в наличии" />
-    <? } ?>
+    <? endif ?>
 
 <? endif ?>
 

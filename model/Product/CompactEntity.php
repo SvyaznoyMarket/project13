@@ -15,25 +15,13 @@ class CompactEntity extends BasicEntity {
     protected $priceAverage;
     /** @var int */
     protected $priceOld;
-    /** @var Model\Entity */
-    protected $model;
 
     public function __construct(array $data = []) {
-        if (array_key_exists('ui', $data)) $this->setUi($data['ui']);
-        if (array_key_exists('id', $data)) $this->setId($data['id']);
-        if (array_key_exists('status_id', $data)) $this->setStatusId($data['status_id']);
-        if (array_key_exists('article', $data)) $this->setArticle($data['article']);
+        parent::__construct($data);
+
         if (array_key_exists('label_id', $data)) $this->setLabelId($data['label_id']);
-        if (array_key_exists('name', $data)) $this->setName($data['name']);
-        if (array_key_exists('link', $data)) $this->setLink($data['link']);
-        if (array_key_exists('token', $data)) $this->setToken($data['token']);
-        if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
         if (array_key_exists('rating', $data)) $this->setRating($data['rating']);
         if (array_key_exists('rating_count', $data)) $this->setRatingCount($data['rating_count']);
-        if (array_key_exists('category', $data) && (bool)$data['category']) {
-            $categoryData = reset($data['category']);
-            $this->setMainCategory(new Category\Entity($categoryData));
-        };
         if (array_key_exists('label', $data)) {
             if (isset($data['label'][0]) && (bool)$data['label'][0]) {
                 $this->setLabel(new Label\Entity($data['label'][0]));
@@ -41,18 +29,8 @@ class CompactEntity extends BasicEntity {
                 $this->setLabel(new Label\Entity($data['label']));
             }
         }
-        if (array_key_exists('price', $data)) $this->setPrice($data['price']);
         if (array_key_exists('price_average', $data)) $this->setPriceAverage($data['price_average']);
         if (array_key_exists('price_old', $data)) $this->setPriceOld($data['price_old']);
-        if (array_key_exists('state', $data) && (bool)$data['state']) $this->setState(new State\Entity($data['state']));
-        if (array_key_exists('line', $data) && (bool)$data['line']) $this->setLine(new Line\Entity($data['line']));
-        if (array_key_exists('model', $data) && (bool)$data['model']) $this->setModel(new Model\Entity($data['model']));
-        if (array_key_exists('stock', $data) && is_array($data['stock'])) $this->setStock(array_map(function($data) {
-            return new Stock\Entity($data);
-        }, $data['stock']));
-        if (array_key_exists('ean', $data)) $this->setEan($data['ean']);
-
-        $this->calculateState();
     }
 
     /**
@@ -81,20 +59,6 @@ class CompactEntity extends BasicEntity {
      */
     public function getLabelId() {
         return $this->labelId;
-    }
-
-    /**
-     * @param Model\Entity $model
-     */
-    public function setModel(Model\Entity $model = null) {
-        $this->model = $model;
-    }
-
-    /**
-     * @return Model\Entity
-     */
-    public function getModel() {
-        return $this->model;
     }
 
     /**
