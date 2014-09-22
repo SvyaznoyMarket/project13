@@ -100,7 +100,7 @@ if (!isset($paymentUrl)) $paymentUrl = null;
         <? } ?>
     <? } ?>
     <div class="mt32" style="text-align: center">
-        <? if ($isCredit && !$sessionIsReaded): ?>
+        <? if ($isCredit): ?>
             <a class='bBigOrangeButton jsCreditBtn' href="#">Перейти к оформлению кредита</a>
             <p>Виджет оформления кредита откроется автоматически через несколько секунд</p>
         <? else: ?>
@@ -125,7 +125,7 @@ if (!isset($paymentUrl)) $paymentUrl = null;
 <? // endif ?>
 
 
-<? if ($isCredit && !$sessionIsReaded): ?>
+<? if ($isCredit): ?>
     <div id="credit-widget" data-value="<?= $page->json($creditData) ?>"></div>
 <? endif ?>
 

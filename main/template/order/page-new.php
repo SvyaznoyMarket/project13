@@ -509,8 +509,8 @@ foreach ($productsById as $product) {
                         data-bind="paymentMethodVisible: totalSum"
                         data-value="<?= $page->json(['min-sum' => \App::config()->product['minCreditPrice'], 'method_id' => \Model\PaymentMethod\Entity::CREDIT_ID, 'isAvailableToPickpoint' => true]) ?>" >
 
-                        <input class="jsCustomRadio bCustomInput mCustomCheckBig" type="checkbox" name="order[payment_method_id]" value="<?= \Model\PaymentMethod\Entity::CREDIT_ID ?>" id="order_payment_method_id_6" <? if ($selectCredit): ?>checked="checked"<? endif ?> />
-                        <label class="bCustomLabel mCustomLabelBig<? if ($selectCredit): ?> mChecked<? endif ?>" for="order_payment_method_id_6">
+                        <input class="jsCustomRadio bCustomInput mCustomCheckBig" type="checkbox" name="order[payment_method_id]" value="<?= \Model\PaymentMethod\Entity::CREDIT_ID ?>" id="order_payment_method_id_6" <? if ($selectCredit && !$oneClick): ?>checked="checked"<? endif ?> />
+                        <label class="bCustomLabel mCustomLabelBig<? if ($selectCredit && !$oneClick): ?> mChecked<? endif ?>" for="order_payment_method_id_6">
                             Купить в кредит
                         </label>
 
