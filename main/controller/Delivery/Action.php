@@ -231,7 +231,7 @@ class Action {
                 $productId = (string)$productItem['id'];
 
                 /** @var $cartProduct \Model\Cart\Product\Entity|null */
-                $cartProduct = ($paypalECS || $lifeGift || $oneClick) ? reset($cartProducts) : $cart->getProductById($productId);
+                $cartProduct = ($paypalECS || $lifeGift || $oneClick) ? $cartProducts[$productId] : $cart->getProductById($productId);
                 if (!$cartProduct) {
                     \App::logger()->error(sprintf('Товар %s не найден в корзине', $productId));
                     continue;
@@ -309,7 +309,7 @@ class Action {
 
                 switch (true) {
                     case $oneClick:
-                        $setUrl = $router->generate('cart.oneClick.product.set', ['productId' => $productId]);
+                        $setUrl = $router->generate('cart.oneClick.product.change', ['productId' => $productId]);
                         $deleteUrl = $router->generate('cart.oneClick.product.delete', ['productId' => $productId]);
                         break;
                     case $paypalECS:

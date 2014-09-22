@@ -43,7 +43,7 @@ return function (
         foreach ($product->getKit() as $kitItem) {
             $urlParams['product'][] = ['id' => $kitItem->getId(), 'quantity' => $kitItem->getCount()];
         }
-        $url = $helper->url('cart.product.setList', $urlParams);
+        $url = $helper->url('cart.oneClick.product.setList', $urlParams);
     }
 
 ?>

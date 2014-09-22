@@ -450,6 +450,16 @@ return [
         'pattern' => '/cart/one-click/delete-product/{productId}',
         'action'  => ['Cart\OneClick\ProductAction', 'delete'],
     ],
+    // изменение товара в корзине
+    'cart.oneClick.product.change' => [
+        'pattern' => '/cart/one-click/change-product/{productId}',
+        'action'  => ['Cart\OneClick\ProductAction', 'change'],
+    ],
+    // добавление списка товаров в корзину
+    'cart.oneClick.product.setList' => [
+        'pattern' => '/cart/one-click/set-products',
+        'action'  => ['Cart\OneClick\ProductAction', 'setList'],
+    ],
 
     // добавление услуги в корзину
     'cart.service.set' => [
