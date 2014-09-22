@@ -389,11 +389,6 @@ class Action {
                 'success' => true,
                 'content' => \App::templating()->render('search/_autocomplete_easter_egg'),
             ];
-        } else if (!(bool)$data['product'] && !(bool)$data['category'] && preg_match('/^(ал(е|ё)на куркова|куркова ал(е|ё)на)$/iu', $keyword)) {
-            $responseData = [
-                'success' => true,
-                'content' => \App::templating()->render('search/_autocomplete_easter_egg_kurkova'),
-            ];
         } else {
             $responseData = [
                 'success' => true,
