@@ -12,6 +12,7 @@
  * @var $isOrderAnalytics   bool
  * @var $sessionIsReaded    bool
  * @var $paymentMethod      \Model\PaymentMethod\Entity
+ * @var $form               \View\Order\Form
  */
 ?>
 
@@ -25,6 +26,13 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
 
 if (!isset($paymentUrl)) $paymentUrl = null;
 ?>
+
+<? if (isset($form)): ?>
+    <div class="js-orderData" data-value="<?= $helper->json([
+        'email' => $form->getEmail(),
+        'subscribe' => $form->getSubscribe(),
+    ]) ?>"></div>
+<? endif ?>
 
 <!-- Header -->
 <div class='bBuyingHead clearfix'>

@@ -19,6 +19,8 @@ class Form implements \JsonSerializable {
     private $mobilePhone;
     /** @var string */
     private $email;
+    /** @var bool|null */
+    private $subscribe;
     /** @var string */
     private $addressStreet;
     /** @var int */
@@ -119,6 +121,7 @@ class Form implements \JsonSerializable {
         if (array_key_exists('recipient_last_name', $data))    $this->setLastName($data['recipient_last_name']);
         if (array_key_exists('recipient_phonenumbers', $data)) $this->setMobilePhone($data['recipient_phonenumbers']);
         if (array_key_exists('recipient_email', $data))        $this->setEmail($data['recipient_email']);
+        if (array_key_exists('subscribe', $data))              $this->setSubscribe($data['subscribe']);
         if (array_key_exists('address_street', $data))         $this->setAddressStreet($data['address_street']);
         if (array_key_exists('address_number', $data))         $this->setAddressNumber($data['address_number']);
         if (array_key_exists('address_building', $data))       $this->setAddressBuilding($data['address_building']);
@@ -426,6 +429,22 @@ class Form implements \JsonSerializable {
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * @param bool $subscribe
+     */
+    public function setSubscribe($subscribe)
+    {
+        $this->subscribe = (bool)$subscribe;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getSubscribe()
+    {
+        return $this->subscribe;
     }
 
     /**
