@@ -252,12 +252,6 @@ class AppConfig {
         'TagMan' => [
             'enabled' => null,
         ],
-        'Myragon' => [
-            'enabled' => null,
-            'enterNumber' => null,
-            'secretWord' => null,
-            'subdomainNumber' => null,
-        ],
         'SprosiKupi' => [
             'timeout' => 1000,
             'logEnabled' => false,

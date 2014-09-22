@@ -237,12 +237,6 @@ $c->partners['Lamoda']['enabled'] = false;
 $c->partners['Lamoda']['lamodaID'] = '11640775691088171491';
 $c->partners['TagMan']['enabled'] = false;
 
-// Myragon
-$c->partners['Myragon']['enabled'] = true;
-$c->partners['Myragon']['enterNumber'] = 1402;// номер Вашей кампании
-$c->partners['Myragon']['secretWord'] = 'RdjJBC9FLE';// секретное слово
-$c->partners['Myragon']['subdomainNumber'] = 49;// номер поддомена в сервисе Myragon
-
 $c->adFox['enabled'] = true;
 
 $c->partner['cookieName'] = 'last_partner';

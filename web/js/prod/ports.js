@@ -1887,63 +1887,6 @@ window.ANALYTICS = {
 //		})();
 	},
 
-	myragonOrderCompleteJS: function() {
-		var
-			myragon = $('#myragonOrderCompleteJS'),
-
-			/**
-			 * Object
-			 * 	{
-			 * 		enterNumber - номер Вашей кампании
-			 * 		secretWord - секретное слово
-			 * 		subdomainNumber - номер поддомена в сервисе Myragon
-			 * 		orderList - список заказов [{order_id, hash},...]
-			 * 	}
-			 */
-			data = {};
-		// end of vars
-
-		window.dataLayer = window.dataLayer || [];
-
-		if ( !myragon.length ) {
-			return;
-		}
-
-		data = myragon.data('value');
-		if ( !data || !data.hasOwnProperty('config') ) {
-			return;
-		}
-
-		window.dataLayer.push({'myragon_config': data.config});
-		window.dataLayer.push({'myragon_complete': data});
-	},
-
-	myragonPageJS: function() {
-		var
-			myragon = $('#myragonPageJS'),
-			data = {};
-		// end of vars
-
-		window.dataLayer = window.dataLayer || [];
-
-		if ( !myragon.length ) {
-			return;
-		}
-
-		data = myragon.data('value');
-		if ( !data || !data.hasOwnProperty('config') || !data.hasOwnProperty('page') ) {
-			return;
-		}
-
-		if ( undefined == typeof(window.dataLayer.myragon_config) ) {
-			window.dataLayer.push({'myragon_config': data.config});
-		}
-
-
-		data.page.url = window.location.href;
-		window.rbnt_rt_params = data.page;
-	},
-
 	flocktoryEnterprizeJS: function() {
 		console.groupCollapsed('ports.js::flocktoryEnterprizeJS');
 

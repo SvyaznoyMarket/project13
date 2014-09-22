@@ -4069,18 +4069,6 @@
 					}
 
 					if ( data.hasOwnProperty('product') && data.product.hasOwnProperty('id') ) {
-						/* Myragon */
-						window.rbnt_rt_params = {
-							url: window.location.href,
-							pageType: 9,
-							pageTitle: $(document).find("title").text(),
-							basketProducts: [{id: data.product.id}]
-						};
-						typeof rbnt_rt != "undefined" && rbnt_rt.send();
-
-						console.info('Myragon removeFromCart');
-						console.log(window.rbnt_rt_params);
-
 						/* Lamoda */
 						if ( 'undefined' != typeof(JSREObject) ) {
 							console.info('Lamoda removeFromCart');

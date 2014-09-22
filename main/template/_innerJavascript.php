@@ -4,8 +4,6 @@
  */
 ?>
 
-<?= $page->slotMyragonOrderCompleteJS() ?>
-<?= $page->slotMyragonPageJS() ?>
 <?= $page->slotSociomantic() ?>
 <?= $page->slotRetailRocket() ?>
 <?= $page->slotCriteo() ?>
