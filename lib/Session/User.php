@@ -27,7 +27,7 @@ class User {
 
     public function __construct() {
         $this->tokenName = \App::config()->authToken['name'];
-        $this->token = \App::session()->get($this->tokenName);
+        $this->token = \App::request()->cookies->get($this->tokenName);
         $this->recommendedProduct = \App::session()->get('recommendedProduct');
     }
 
@@ -117,7 +117,7 @@ class User {
     }
 
     /**
-     * Устанавливает токен в сессии
+     * Устанавливает токен
      *
      * @param string $token
      * @throws \LogicException
@@ -127,18 +127,16 @@ class User {
             throw new \LogicException('Токен пользователя не должен быть пустым.');
         }
 
-        \App::session()->set($this->tokenName, $token);
         $this->token = $token;
     }
 
     /**
-     * Удаляет токен из сессии
+     * Удаляет токен
      *
      * @param \Http\Response|\Http\RedirectResponse|null $response
      */
     public function removeToken($response = null) {
         $token = $this->getToken();
-        \App::session()->remove($this->tokenName);
 
         $domainParts = explode('.', \App::config()->mainHost);
         $tld = array_pop($domainParts);
@@ -146,8 +144,8 @@ class User {
         $subdomain = array_pop($domainParts);
 
         if ($response) {
-            $response->headers->clearCookie(\App::config()->authToken['name'], '/', "$domain.$tld");
-            $response->headers->clearCookie(\App::config()->authToken['name'], '/', "$subdomain.$domain.$tld");
+            $response->headers->clearCookie($this->tokenName, '/', "$domain.$tld");
+            $response->headers->clearCookie($this->tokenName, '/', "$subdomain.$domain.$tld");
 
             $response->headers->clearCookie(\App::config()->authToken['authorized_cookie'], '/', "$domain.$tld");
             $response->headers->clearCookie(\App::config()->authToken['authorized_cookie'], '/', "$subdomain.$domain.$tld");
@@ -160,7 +158,7 @@ class User {
      * @return string|null
      */
     public function getToken() {
-        return \App::session()->get($this->tokenName, null);
+        return $this->token;
     }
 
     /**
