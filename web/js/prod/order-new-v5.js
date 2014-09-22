@@ -3076,16 +3076,20 @@
 			if ( fields[field] ) {
 				console.log('для поля есть значение '+fields[field]);
 				fieldNode = $('input[name="'+field+'"]');
+				var fieldType = fieldNode.attr('type');
 
 				// радио кнопка
-				if ( fieldNode.attr('type') === 'radio' ) {
+				if ( fieldType === 'radio' ) {
 					fieldNode.filter('[value="'+fields[field]+'"]').attr('checked', 'checked').trigger('change');
 					
 					continue;
 				}
 
-				// поле текстовое	
-				fieldNode.val( fields[field] );
+
+				// поле текстовое
+				if ( $.inArray(fieldType, ['text', 'password', 'color', 'date', 'datetime', 'datetime-local', 'email', 'number', 'range', 'search', 'tel', 'time', 'url', 'month', 'week']) != -1 ) {
+					fieldNode.val( fields[field] );
+				}
 			}
 		}
         console.groupEnd();
@@ -4069,18 +4073,6 @@
 					}
 
 					if ( data.hasOwnProperty('product') && data.product.hasOwnProperty('id') ) {
-						/* Myragon */
-						window.rbnt_rt_params = {
-							url: window.location.href,
-							pageType: 9,
-							pageTitle: $(document).find("title").text(),
-							basketProducts: [{id: data.product.id}]
-						};
-						typeof rbnt_rt != "undefined" && rbnt_rt.send();
-
-						console.info('Myragon removeFromCart');
-						console.log(window.rbnt_rt_params);
-
 						/* Lamoda */
 						if ( 'undefined' != typeof(JSREObject) ) {
 							console.info('Lamoda removeFromCart');

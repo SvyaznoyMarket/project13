@@ -24,6 +24,7 @@ class ExternalLoginAction {
             throw new \Exception\NotFoundException(sprintf('Не найден провайдер аутентификации "%s"', $providerName));
         }
 
-        return new \Http\RedirectResponse($provider->getLoginUrl());
+        $redirectTo = (rawurldecode($request->get('redirect_to'))) ? rawurldecode($request->get('redirect_to')) : rawurldecode($request->headers->get('referer'));
+        return new \Http\RedirectResponse($provider->getLoginUrl($redirectTo));
     }
 }

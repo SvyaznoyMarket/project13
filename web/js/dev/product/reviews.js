@@ -154,7 +154,9 @@
 	var body = $('body'),
 		reviewPopup = $('.jsReviewPopup'),
 		form = reviewPopup.find('.jsReviewForm'),
-		
+		submitReviewButton = $('.jsFormSubmit'),
+		submitReviewButtonText = submitReviewButton.val(),
+
 		reviewStar = form.find('.starsList__item'),
 		reviewStarCount = form.find('.jsReviewStarsCount'),
 		starStateClass = {
@@ -317,25 +319,49 @@
 		 * Сабмит формы "Отзыв о товаре"
 		 */
 		formSubmit = function formSubmit() {
-			var requestToServer = function requestToServer() {
-				$.post(form.attr('action'), form.serializeArray(), responseFromServer, 'json');
-				console.log('Сабмит формы "Отзыв о товаре"');
-
+			if (form.data('disabled')) {
 				return false;
-			};
-			//end of functions
+			}
+
+			form.data('disabled', true);
+			submitReviewButton.attr('disabled', 'disabled');
+			submitReviewButton.addClass('mDisabled');
+			submitReviewButton.val('Сохраняю…');
 
 			// очищаем блок с глобальными ошибками
 			if ( $('ul.error_list', form).length ) {
 				$('ul.error_list', form).html('');
 			}
 
+			function enableSubmitReviewButton() {
+				form.data('disabled', false);
+				submitReviewButton.removeAttr('disabled');
+				submitReviewButton.removeClass('mDisabled');
+				submitReviewButton.val(submitReviewButtonText);
+			}
+
 			validator.validate({
 				onInvalid: function( err ) {
 					console.warn('invalid');
 					console.log(err);
+
+					enableSubmitReviewButton();
 				},
-				onValid: requestToServer
+				onValid: function() {
+					$.ajax({
+						type: 'post',
+						url: form.attr('action'),
+						data: form.serializeArray(),
+						dataType: 'json',
+						success: responseFromServer,
+						complete: function() {
+							enableSubmitReviewButton();
+						}
+					});
+					console.log('Сабмит формы "Отзыв о товаре"');
+
+					return false;
+				}
 			});
 
 			return false;

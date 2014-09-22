@@ -30,7 +30,8 @@ class BanditAction {
 
         try {
             $response  = $crm->query(
-                'game/bandit/init', [
+                'game/bandit/init',
+                [
                     'uid'   => (isset($user)?$user->getUi():null)
                 ]
             )['result'];

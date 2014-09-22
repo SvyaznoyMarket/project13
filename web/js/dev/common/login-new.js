@@ -47,6 +47,20 @@
                     ;
 
                     $.post($el.attr('action'), data).done(function(response) {
+						function getFieldValue(fieldName) {
+							for (var i = 0; i < data.length; i++) {
+								if (data[i]['name'] == fieldName) {
+									return data[i]['value'];
+								}
+							}
+
+							return null;
+						}
+
+						if ($el.hasClass('js-registerForm') && getFieldValue('subscribe') && typeof _gaq != 'undefined') {
+							_gaq.push(['_trackEvent', 'subscription', 'subscribe_registration', getFieldValue('register[email]')]);
+						}
+
                         if (response.data && response.data.link) {
                             window.location.href = response.data.link ? response.data.link : window.location.href;
 
@@ -105,6 +119,9 @@
                     $el.closest('form').trigger('fieldError', [{field: $el.attr('name')}])
                 })
             ;
+
+			$.mask.definitions['n'] = '[0-9]';
+			$('.js-registerForm .js-phoneField').mask('+7 (nnn) nnn-nn-nn');
         };
     ;
 

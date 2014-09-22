@@ -20,7 +20,9 @@ class NewAction extends OrderV3 {
 
             if ($request->isMethod('POST')) {
                 $post = $request->request->all();
-                (new DeliveryAction())->getSplit();
+                $shop =  null;
+                if (method_exists($this->cart, 'getShop')) $shop = $this->cart->getShop();
+                (new DeliveryAction())->getSplit(null, $shop);
                 $delivery = (new DeliveryAction())->getSplit($post);
 
                 // залогируем первичное время доставки
@@ -35,10 +37,14 @@ class NewAction extends OrderV3 {
                     if ((bool)$deliveryMethods)  $this->logger(['delivery-tokens' => $deliveryMethods]);
                 }
 
-                return new RedirectResponse(\App::router()->generate('orderV3.delivery'));
+                switch ($request->attributes->get('route')) {
+                    case 'orderV3.one-click': return new RedirectResponse(\App::router()->generate('orderV3.delivery.one-click'));
+                    default: return new RedirectResponse(\App::router()->generate('orderV3.delivery'));
+                }
             }
 
             $this->logger(['action' => 'view-page-new']);
+            $this->getLastOrderData();
 
             $this->session->remove($this->splitSessionKey);
 
@@ -68,13 +74,31 @@ class NewAction extends OrderV3 {
 
         $bonusCards = (new \Model\Order\BonusCard\Repository($this->client))->getCollection();
 
-//        for testing
-//        $bonusCards[] = reset($bonusCards);
-
-
         $page->setParam('user', $this->user);
         $page->setParam('bonusCards', $bonusCards);
 
         return new \Http\Response($page->show());
+    }
+
+    /** Данные о прошлом заказе
+     * (оставлено ради совместимости с прошлым оформлением)
+     * @return array|null
+     */
+    public function getLastOrderData() {
+
+        $cookieValue = \App::request()->cookies->get(\App::config()->order['cookieName']);
+
+        if (!empty($cookieValue)) {
+
+            try {
+                $cookieValue = (array)unserialize(base64_decode(strtr($cookieValue, '-_', '+/')));
+            } catch (\Exception $e) {
+                \App::logger()->error($e, ['unserialize']);
+                $cookieValue = [];
+            }
+        }
+
+        return !empty($cookieValue) ? $cookieValue : null;
+
     }
 }

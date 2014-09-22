@@ -250,6 +250,7 @@ return [
         'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brandToken' => '[\w\d-_]+'],
     ],
 
+
     // карточка товара
     'product' => [
         'pattern' => '/product/{productPath}',
@@ -445,6 +446,16 @@ return [
         'pattern' => '/cart/one-click/delete-product/{productId}',
         'action'  => ['Cart\OneClick\ProductAction', 'delete'],
     ],
+    // изменение товара в корзине
+    'cart.oneClick.product.change' => [
+        'pattern' => '/cart/one-click/change-product/{productId}',
+        'action'  => ['Cart\OneClick\ProductAction', 'change'],
+    ],
+    // добавление списка товаров в корзину
+    'cart.oneClick.product.setList' => [
+        'pattern' => '/cart/one-click/set-products',
+        'action'  => ['Cart\OneClick\ProductAction', 'setList'],
+    ],
 
     // добавление услуги в корзину
     'cart.service.set' => [
@@ -514,6 +525,11 @@ return [
         'pattern' => '/order/delivery',
         'action'  => ['OrderV3\DeliveryAction', 'execute'],
     ],
+    // оформление заказа: 2-й шаг - выбор доставки
+    'orderV3.delivery.one-click' => [
+        'pattern' => '/order/delivery/one-click',
+        'action'  => ['OrderV3\DeliveryAction', 'execute'],
+    ],
     // оформление заказа: создание
     'orderV3.create' => [
         'pattern' => '/order/create',
@@ -538,6 +554,11 @@ return [
     'orderV3.log'   => [
         'pattern'   => '/order/log',
         'action'    => ['OrderV3\OrderV3', 'logFromWeb'],
+        'method'    => ['POST']
+    ],
+    'orderV3.update-credit'   => [
+        'pattern'   => '/order/update-credit',
+        'action'    => ['OrderV3\CompleteAction', 'updateCredit'],
         'method'    => ['POST']
     ],
 
@@ -932,7 +953,7 @@ return [
     ],
 
     'mobidengi' => [
-        'pattern' => '/mobidengi',
+        'pattern' => '/tele2',
         'action'  => ['Mobidengi\IndexAction', 'execute'],
     ],
 
@@ -1028,8 +1049,13 @@ return [
 		'pattern'	=> '/game/slots/play',
 		'action'	=> ['Game\BanditAction', 'play'],
 	],
-	
-	//content
+
+    'bandit' => [
+        'pattern' => '/bandit',
+        'action'  => ['Bandit\IndexAction', 'execute'],
+    ],
+
+	//content (должен быть в самом конце, иначе под паттерн попадут другие страницы)
     'content' => [
         'pattern' => '/{token}',
         'action'  => ['Content\Action', 'execute'],

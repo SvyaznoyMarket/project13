@@ -162,7 +162,7 @@ class CreateAction {
                 'geo_id'            => $user->getRegion()->getId(),
                 'user_id'           => $userEntity ? $userEntity->getId() : null,
                 'is_legal'          => $userEntity ? $userEntity->getIsCorporative() : false,
-                'payment_id'        => \Model\PaymentMethod\Entity::CASH_ID,
+                'payment_id'        => $form->getPaymentMethodId() ?: \Model\PaymentMethod\Entity::CASH_ID,
                 'credit_bank_id'    => $form->getCreditBankId(),
                 'last_name'         => $form->getLastName(),
                 'first_name'        => $form->getFirstName(),
@@ -356,10 +356,9 @@ class CreateAction {
      */
     private function subscribeUser(Form $form) {
         $user = \App::user();
-        $request = \App::request();
 
         // подписка
-        $isSubscribe = $request->request->get('subscribe');
+        $isSubscribe = $form->getSubscribe();
         $email = $form->getEmail();
         if(!empty($isSubscribe) && !empty($email)) {
             $params = [

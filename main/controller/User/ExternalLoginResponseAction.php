@@ -93,7 +93,7 @@ class ExternalLoginResponseAction {
                 }
 
                 //Пытаемся авторизовать пользователя
-
+                $authSource = 'email';
                 $result = \App::coreClientV2()->query('user/social-auth',$params,[]);
                 if (empty($result['token'])) {
                     throw new \Exception('Не удалось получить токен');

@@ -155,7 +155,8 @@ class NewAction {
 
             (new \Controller\OrderV3\OrderV3())->logger(['action' => 'view-old-delivery-one-click']);
 
-            $page = new \View\Order\NewPage();
+            $page = new \View\Order\OneClick\NewPage();
+            $page->setParam('cart', $cart);
             $page->setParam('paypalECS', false);
             $page->setParam('oneClick', true);
             $page->setParam('deliveryData', (new \Controller\Order\DeliveryAction())->getResponseData(false, false, true)); // TODO: пахнет рефакторингом - нужно передавать корзину

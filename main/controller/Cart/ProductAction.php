@@ -102,7 +102,7 @@ class ProductAction {
             return $request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([
                     'success' => false,
-                    'cart'    => ['error' => 'Не удалось товар услугу в корзину', 'debug' => $e->getMessage()],
+                    'cart'    => ['error' => 'Не удалось добавить товар или услугу в корзину', 'debug' => $e->getMessage()],
                 ])
                 : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
         }
@@ -250,7 +250,7 @@ class ProductAction {
         } catch(\Exception $e) {
             $responseData = [
                 'success' => false,
-                'data'    => ['error' => 'Не удалось товар или услугу в корзину', 'debug' => $e->getMessage()],
+                'data'    => ['error' => 'Не удалось добавить товар или услугу в корзину', 'debug' => $e->getMessage()],
             ];
             return new \Http\JsonResponse($responseData);
         }

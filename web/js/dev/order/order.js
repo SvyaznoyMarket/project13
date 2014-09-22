@@ -105,7 +105,7 @@
 
 			console.log(toKISS_orderInfo);
 
-			if ( (typeof _kmq !== 'undefined') && (KM !== 'undefined') ) {
+			if ( (typeof _kmq !== 'undefined') && (typeof KM !== 'undefined') ) {
 				_kmq.push(['alias', orderData[0].phonenumber, KM.i()]);
 				// _kmq.push(['alias', emailVal, KM.i()]);
 				_kmq.push(['identify', orderData[0].phonenumber]);
@@ -506,25 +506,9 @@
 		;(function () {
 			var
 				creditWidget,
-				i, item,
-				backURL,
-				callback_close,
-				callback_decision,
 				vkredit,
 				creditBtn = $('.jsCreditBtn');
 			// end of vars
-
-			var
-				openWidget = function openWidget() {
-					dc_getCreditForTheProduct(
-						'4427',
-						creditWidget.vars.number ,// session
-						'orderProductToBuyOnCredit',
-						{ order_id: creditWidget.vars.number,
-							region: creditWidget.vars.region }
-					);
-				};
-			// end of functios
 
 			//window.onbeforeunload = function (){ return false }    // DEBUG
 			if ( ! $('#credit-widget').length ) {
@@ -544,76 +528,50 @@
 
 			console.info('обрабатываем как '+creditWidget.widget);
 
-			if ( creditWidget.widget === 'direct-credit' ) {
-				$LAB.script( 'JsHttpRequest.min.js' )
-				.script( 'http://direct-credit.ru/widget/script_utf.js' )
+			var isScriptsLoaded = false;
+			if ( creditWidget.widget == 'direct-credit' ) {
+				var products = [];
+				$.each(creditWidget.vars.items, function(index, elem){
+					products.push({
+						id: elem.articul,
+						name: elem.name,
+						price: elem.price,
+						type: elem.type,
+						count: elem.quantity
+					})
+				});
+
+				function openDirectCreditWidget() {
+					// Иначе иногда при обновлении страницы она прокручивается вниз
+					location.hash = '#/';
+					location.hash = '#';
+
+					DCLoans(creditWidget.vars.partnerID, 'getCredit', { products: products, order: creditWidget.vars.number, codeTT: creditWidget.vars.region }, function(result){
+						console.log(result);
+					}, false);
+				}
+
+				$LAB.script( '///api.direct-credit.ru/JsHttpRequest.js' )
+				.script( '//api.direct-credit.ru/dc.js' )
 				.wait( function() {
 					console.info('скрипты загружены для кредитного виджета. начинаем обработку');
-					// fill cart
-					for ( i = creditWidget.vars.items.length - 1; i >= 0; i-- ) {
-						item = creditWidget.vars.items[i];
-
-						dc_getCreditForTheProduct(
-							'4427',
-							creditWidget.vars.number,
-							'addProductToBuyOnCredit',
-							{
-								name : item.name,
-								count: item.quantity,
-								articul: item.articul,
-								price: item.price,
-								type: item.type
-							},
-							function( result ) {
-								console.log('обработка завершена. открываем виджет');
-								openWidget();
-							}
-						);
-					}
+					isScriptsLoaded = true;
+					openDirectCreditWidget();
 				});
-			}
-
-			backURL = 'http://' + window.location.hostname;
-
-			if ( creditWidget.widget === 'kupivkredit' ) {
+			} else if ( creditWidget.widget == 'kupivkredit' ) {
 				//console.info('kupivkredit')
-				callback_close = function( decision ) {
-					setTimeout(function() {
-						document.location = backURL;
-					}, 3000);
-					// var result = ''
-					// switch(decision) {
-					//     case 'ver':
-					//         result = 'Ваша заявка предварительно одобрена.'
-					//         break
-					//     case 'agr':
-					//         result = 'Ваша заявка одобрена! Поздравляем!'
-					//         break
-					//     case 'rej':
-					//         result = 'К сожалению, заявка отклонена банком.'
-					//         break
-					//     case '':
-					//         result = 'Вы не заполнили заявку до конца'
-					//         break
-					//     default:
-					//         result = 'Ваша заявка находится на рассмотрении'
-					//         break
-					// }
-					// alert(result)
-				};
 
-				callback_decision = function(decision) {
-					//console.info( 'Пришел статус: ' + decision )
-				};
-
-				$LAB.script( 'https://www.kupivkredit.ru/widget/vkredit.js')
+				$LAB.script('https://www.kupivkredit.ru/widget/vkredit.js')
 				.wait( function() {
+					isScriptsLoaded = true;
 					vkredit = new VkreditWidget(1, creditWidget.vars.sum,  {
 						order: creditWidget.vars.order,
 						sig: creditWidget.vars.sig,
 						callbackUrl: window.location.href,
-						onClose: callback_close,
-						onDecision: callback_decision
+						onClose: function(decision) {},
+						onDecision: function(decision) {
+							//console.info( 'Пришел статус: ' + decision )
+						}
 					});
 
 					vkredit.openWidget();
@@ -623,7 +581,17 @@
 			if ( creditBtn.length ) {
 				$('body').on('click', '.jsCreditBtn', function( e ) {
 					e.preventDefault();
-					!$('#dc_frame_block').length && openWidget();
+					if (!isScriptsLoaded) {
+						return;
+					}
+
+					if ( creditWidget.widget == 'direct-credit' ) {
+						if ( !$('#dc_frame_block').length ) {
+							openDirectCreditWidget();
+						}
+					} else if ( creditWidget.widget == 'kupivkredit' ) {
+						vkredit.openWidget();
+					}
 				});
 			}
 		})();
@@ -640,3 +608,13 @@
 	});
 
 }(this));
+
+$(function(){
+	var orderDataElement = $('.js-orderData');
+	if ($('body').attr('data-template') == 'order_complete' && orderDataElement.length && typeof _gaq != 'undefined') {
+		var orderData = orderDataElement.data('value');
+		if (orderData.subscribe) {
+			_gaq.push(['_trackEvent', 'subscription', 'subscribe_order_confirmation', orderData.email]);
+		}
+	}
+});

@@ -13,7 +13,7 @@ class OrderV3 {
     protected $client;
     /** @var \Session\User */
     protected $user;
-    /** @var \Session\Cart */
+    /** @var \Session\Cart|\Session\Cart\OneClick */
     protected $cart;
     /** @var \Http\Session */
     protected $session;
@@ -25,7 +25,7 @@ class OrderV3 {
         $this->splitSessionKey = \App::config()->order['splitSessionKey'];
         $this->client = \App::coreClientV2();
         $this->user = \App::user();
-        $this->cart = \App::request()->attributes->get('route') === 'orderV3.one-click' ? $this->cart = $this->user->getOneClickCart() : $this->user->getCart();
+        $this->cart = in_array(\App::request()->attributes->get('route'), ['orderV3.one-click', 'orderV3.delivery.one-click']) ? $this->cart = $this->user->getOneClickCart() : $this->user->getCart();
     }
 
     public function logger($data) {

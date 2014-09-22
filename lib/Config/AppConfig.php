@@ -252,12 +252,6 @@ class AppConfig {
         'TagMan' => [
             'enabled' => null,
         ],
-        'Myragon' => [
-            'enabled' => null,
-            'enterNumber' => null,
-            'secretWord' => null,
-            'subdomainNumber' => null,
-        ],
         'SprosiKupi' => [
             'timeout' => 1000,
             'logEnabled' => false,
@@ -645,16 +639,14 @@ class AppConfig {
     ];
 
     /** @var array */
-    public $game = [
-        'bandit' => [
-            'showOnHomepage' => null
-        ]
-    ];
-
-    /** @var array */
     public $siteVersionSwitcher = [
         'cookieName'     => null,
         'cookieLifetime' => null,
+    ];
+
+    /** @var array */
+    public $bandit = [
+        'enabled'     => null,
     ];
 
     public function __construct() {

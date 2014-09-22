@@ -14,7 +14,7 @@ if (!isset($form)) $form = new \View\User\LoginForm();
         <span class="close close-auth">Закрыть</span>
         
         <div class="authWrap">
-            <?= $page->render('user/_login-form') ?>
+            <?= $page->render('user/_login-form', ['redirect_to' => \App::request()->getPathInfo()]) ?>
             <?= $page->render('user/_register-form') ?>
         </div>
 

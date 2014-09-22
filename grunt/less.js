@@ -63,20 +63,20 @@ module.exports = {
 	
 	gameSlotsCompile: {
 		options: {
-			paths: ['web/css/game/slots']
+			paths: ['web/styles/game/slots']
 		},
 		files: {
-			'web/css/game/slots/style.css': ['web/css/game/slots/style.less']
+			'web/styles/game/slots/style.css': ['web/styles/game/slots/style.less']
 		}
 	},
 	
 	gameSlotsCompress: {
 		options: {
-			paths: ['web/css/game/slots/'],
+			paths: ['web/styles/game/slots'],
 			compress: true
 		},
 		files: {
-			'web/css/game/slots/style.min.css': ['web/css/game/slots/style.less']
+			'web/styles/game/slots/style.min.css': ['web/styles/game/slots/style.less']
 		}
 	}
 };

@@ -150,7 +150,27 @@
 
             map.geoObjects.add(new ymaps.Placemark([lat, lon], {}, enterPlacemark))
 
-        })
+        });
+
+        $('.bMap').on('click', '.bMap__eContainer', function(){
+            var $container = $('#map-container'),
+                isImage = $(this).hasClass('map-image-link'),
+                isMap = $(this).hasClass('map-google-link');
+
+            if (isImage) {
+                $container.find('ymaps:first').hide();
+                if ($container.find('img').length == 0) {
+                    $container.append($('<img />', { "src": $(this).find('img').data('value'), 'width': $container.width() }));
+                } else {
+                    $container.find('img').attr('src', $(this).find('img').data('value')).show();
+                }
+            }
+
+            if (isMap) {
+                $container.find('ymaps:first').show();
+                $container.find('img:first').hide();
+            }
+        });
 
     }
 

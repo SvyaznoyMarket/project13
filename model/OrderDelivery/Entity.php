@@ -77,8 +77,8 @@ namespace Model\OrderDelivery {
             }
 
             if (isset($data['orders']) && is_array($data['orders']) && (bool)$data['orders']) {
-                foreach ($data['orders'] as $item) {
-                    $this->orders[] = new Entity\Order($item, $this);
+                foreach ($data['orders'] as $key => $item) {
+                    $this->orders[$key] = new Entity\Order($item, $this);
                 }
             } else {
                 throw new \Exception('Отстуствуют данные по заказам');
@@ -94,7 +94,7 @@ namespace Model\OrderDelivery {
 
             if (isset($data['errors']) && is_array($data['errors'])) {
                 foreach ($data['errors'] as $error) {
-                    $this->errors[] = new Error($error);
+                    $this->errors[] = new Error($error, $this);
                 }
             }
 
@@ -140,10 +140,17 @@ namespace Model\OrderDelivery {
         public $code;
         /** @var string */
         public $message;
+        /** @var array */
+        public $details;
 
-        public function __construct($arr) {
+        public function __construct($arr, \Model\OrderDelivery\Entity &$order) {
             if (isset($arr['code'])) $this->code = (int)$arr['code'];
             if (isset($arr['message'])) $this->message = (string)$arr['message'];
+            if (isset($arr['details'])) $this->details = $arr['details'];
+
+            if (isset($arr['details']['block_name']) && isset($order->orders[$arr['details']['block_name']])) {
+                $order->orders[$arr['details']['block_name']]->errors[] = &$this;
+            }
         }
     }
 }
@@ -214,9 +221,10 @@ namespace Model\OrderDelivery\Entity {
                         case 'shops':
                             $this->list[(string)$item['id']] = new Point\Shop($item);
                             break;
-                        case 'pickpoints':
+                        case 'self_partner_pickpoint':
                             $this->list[(string)$item['id']] = new Point\Pickpoint($item);
                             break;
+                        case 'self_partner_svyaznoy':
                         case 'shops_svyaznoy':
                             $this->list[(string)$item['id']] = new Point\Svyaznoy($item);
                     }
@@ -227,9 +235,10 @@ namespace Model\OrderDelivery\Entity {
                     case 'shops':
                         $this->marker['iconImageHref'] = '/images/map/marker-shop.png';
                         break;
-                    case 'pickpoints':
+                    case 'self_partner_pickpoint':
                         $this->marker['iconImageHref'] = '/images/map/marker-pickpoint.png';
                         break;
+                    case 'self_partner_svyaznoy':
                     case 'shops_svyaznoy':
                         $this->marker['iconImageHref'] = '/images/map/marker-svyaznoy.png';
                         break;
@@ -402,12 +411,6 @@ namespace Model\OrderDelivery\Entity {
 
             if (isset($data['comment'])) $this->comment = (string)$data['comment'];
 
-            if (isset($data['errors']) && is_array($data['errors'])) {
-                foreach ($data['errors'] as $error) {
-                    $this->errors[] = new Error($error);
-                }
-            }
-
             if (isset($data['certificate'])) {
                 if (isset($data['certificate']['code'])) $this->certificate['code'] = (string)$data['certificate']['code'];
                 if (isset($data['certificate']['pin']))  $this->certificate['pin'] = (string)$data['certificate']['pin'];
@@ -462,7 +465,7 @@ namespace Model\OrderDelivery\Entity {
 
             if (isset($arr['phone']) && $arr['phone'] != '') {
                 $phone = preg_replace('/\s+/', '', $arr['phone']);
-                if (preg_match('/(8|\+7)\d{10}/', $phone) === 0 ) throw new ValidateException('Неправильный формат номера телефона');
+                if (preg_match('/8\(\d{3}\)\d{3}-\d{2}-\d{2}/', $phone) === 0 ) throw new ValidateException('Неправильный формат номера телефона');
                 $this->phone = $phone;
             } else {
                 //throw new ValidateException('Отсуствует номер телефона');

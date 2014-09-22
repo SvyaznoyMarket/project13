@@ -53,6 +53,8 @@ class BasicEntity {
     protected $isOnlyFromPartner;
     /** @var bool */
     protected $isUpsale = false;
+    /** @var Model\Entity */
+    protected $model;
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -83,9 +85,9 @@ class BasicEntity {
         if (array_key_exists('avg_star_score', $data)) $this->setAvgStarScore($data['avg_star_score']);
         if (array_key_exists('num_reviews', $data)) $this->setNumReviews($data['num_reviews']);
         if (array_key_exists('is_upsale', $data)) $this->setIsUpsale($data['is_upsale']);
+        if (array_key_exists('model', $data) && $data['model']) $this->setModel(new Model\Entity($data['model']));
 
         $this->calculateState();
-
     }
 
     /**
@@ -522,5 +524,43 @@ class BasicEntity {
      */
     public function isOnlyFromPartner() {
         return $this->isOnlyFromPartner;
+    }
+
+    /**
+     * @param Model\Entity $model
+     */
+    public function setModel(Model\Entity $model = null) {
+        $this->model = $model;
+    }
+
+    /**
+     * @return Model\Entity
+     */
+    public function getModel() {
+        return $this->model;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAvailable() {
+        return ($this->getIsBuyable() || $this->isInShopOnly() || $this->isInShopStockOnly());
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasAvailableModels() {
+        if ($this->getModel()) {
+            foreach ($this->getModel()->getProperty() as $property) {
+                foreach ($property->getOption() as $option) {
+                    if ($option->getProduct()->isAvailable()) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }

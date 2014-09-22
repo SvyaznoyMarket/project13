@@ -237,12 +237,6 @@ $c->partners['Lamoda']['enabled'] = false;
 $c->partners['Lamoda']['lamodaID'] = '11640775691088171491';
 $c->partners['TagMan']['enabled'] = false;
 
-// Myragon
-$c->partners['Myragon']['enabled'] = true;
-$c->partners['Myragon']['enterNumber'] = 1402;// номер Вашей кампании
-$c->partners['Myragon']['secretWord'] = 'RdjJBC9FLE';// секретное слово
-$c->partners['Myragon']['subdomainNumber'] = 49;// номер поддомена в сервисе Myragon
-
 $c->adFox['enabled'] = true;
 
 $c->partner['cookieName'] = 'last_partner';
@@ -321,6 +315,7 @@ $c->productPhoto['url'] = [
     4 => '/1/1/2500/',
     5 => '/1/1/1500/',
     6 => '/1/1/350/',
+    7 => '/1/1/200/',
 ];
 
 $c->productPhoto3d['url'] = [
@@ -399,6 +394,7 @@ $c->database['password'] = 'qazwsxedc';
 $c->creditProvider['kupivkredit']['partnerId'] = '1-6ADAEAT';
 $c->creditProvider['kupivkredit']['partnerName'] = 'ООО «Enter»';
 $c->creditProvider['kupivkredit']['signature'] = 'enter-secret-7X5dwb92';
+$c->creditProvider['directcredit']['partnerId'] = '4427';
 
 $c->queue['pidFile'] = (sys_get_temp_dir() ?: '/tmp').'/enter-queue.pid';
 $c->queue['workerLimit'] = 10;
@@ -526,7 +522,7 @@ $c->abTest = [
             ]
         ],
         'order_delivery_price' => [
-            'enabled' => true,
+            'enabled' => false,
             'expireDate' => '2014-12-31',
             'cases' => [
                 'delivery_self_100' => [
@@ -584,10 +580,9 @@ $c->photoContest = [
 	]
 ];
 
-// Game
-$c->game['bandit']['showOnHomepage'] = true;
-
 $c->siteVersionSwitcher['cookieName'] = 'mobile';
 $c->siteVersionSwitcher['cookieLifetime'] = 20 * 365 * 24 * 60 * 60;
+
+$c->bandit['enabled'] = false;
 
 return $c;

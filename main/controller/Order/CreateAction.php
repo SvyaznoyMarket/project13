@@ -431,10 +431,9 @@ class CreateAction {
      */
     private function subscribeUser(Form $form) {
         $user = \App::user();
-        $request = \App::request();
 
         // подписка
-        $isSubscribe = $request->request->get('subscribe');
+        $isSubscribe = $form->getSubscribe();
         $email = $form->getEmail();
         if(!empty($isSubscribe) && !empty($email)) {
             $params = [

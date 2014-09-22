@@ -2,7 +2,8 @@
 
 return function(
     \Helper\TemplateHelper $helper,
-    \Model\Product\BasicEntity $product
+    \Model\Product\BasicEntity $product,
+    $isUserSubscribedToEmailActions
 ) {
 
     if (!(\App::config()->product['lowerPriceNotification'] && $product->getMainCategory() && $product->getMainCategory()->getPriceChangeTriggerEnabled())) {
@@ -35,10 +36,12 @@ return function(
                         <? endif ?>
                     </div>
 
-                    <label class="clearfix checked">
-                        <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="bCustomInput subscribe jsSubscribe" checked="checked" />
-                        <b></b>Акции и <br>суперпредложения
-                    </label>
+                    <? if (!$isUserSubscribedToEmailActions): ?>
+                        <label class="clearfix checked">
+                            <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="bCustomInput subscribe jsSubscribe" checked="checked" />
+                            <b></b>Акции и <br>суперпредложения
+                        </label>
+                    <? endif ?>
 
                     <input class="bLowPriceNotiferPopup__eInputEmail" placeholder="Ваш email" value="<?= $user->getEntity() ? $user->getEntity()->getEmail() : '' ?>" />
                     <p class="bLowPriceNotiferPopup__eError red"></p>

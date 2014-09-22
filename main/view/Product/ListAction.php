@@ -10,6 +10,7 @@ class ListAction {
      * @param array $bannerPlaceholder
      * @param null $buyMethod
      * @param bool $showState
+     * @param int $columnCount
      * @return array
      */
     public function execute(
@@ -18,7 +19,8 @@ class ListAction {
         array $productVideosByProduct,
         array $bannerPlaceholder,
         $buyMethod = null,
-        $showState = true
+        $showState = true,
+        $columnCount = 4
     ) {
         /** @var \Model\Product\Entity $product */
 
@@ -44,7 +46,8 @@ class ListAction {
                 $buyMethod,
                 $showState,
                 $cartButtonAction,
-                $reviewAction
+                $reviewAction,
+                (3 === $columnCount) ? 6 : 7
             );
         }
 

@@ -449,9 +449,6 @@ class ShowAction {
             }
         }
 
-        // Формируем заголовок страницы (пока используется только в ajax)
-        $this->setPageTitle($category);
-
         // если категория содержится во внешнем узле дерева
         /*if ($category->isLeaf() || $textSearched) {
             $page = new \View\ProductCategory\LeafPage();
@@ -689,7 +686,7 @@ class ShowAction {
                     $productSorting
                 ),
                 'page'          => [
-                    'title'     => $this->getPageTitle()
+                    'title'     => $slice->getName()
                 ],
             ]);
         }
@@ -718,34 +715,6 @@ class ShowAction {
      */
     public static function inStore() {
         return (bool)\App::request()->get('instore');
-    }
-
-
-    /**
-     * @return mixed
-     */
-    protected function getPageTitle() {
-        return $this->pageTitle;
-    }
-
-
-    /**
-     * @param $category         \Model\Product\Category\Entity|null
-     * @param bool|string       $defaultTitle
-     * @return bool
-     */
-    protected function setPageTitle($category, $defaultTitle = false)
-    {
-        if ( $category ) {
-            /**@var $category \Model\Product\Category\Entity **/
-            $this->pageTitle = $category->getName();
-            return true;
-        }
-
-        if ( $defaultTitle ) {
-            return $this->pageTitle = $defaultTitle;
-        }
-        return false;
     }
 
     /**

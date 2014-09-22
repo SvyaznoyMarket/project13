@@ -125,25 +125,24 @@ class NewPage extends Layout {
         return (bool)$this->getParam('oneClick');
     }
 
-    public function slotMyragonPageJS() {
-        $config = \App::config()->partners['Myragon'];
-        if (!$config['enabled'] || !$config['enterNumber'] || !$config['secretWord'] || !$config['subdomainNumber']) {
-            return;
+    public function slotMailRu() {
+        $products = $this->getParam('productsById');
+        $productIds = [];
+        if (is_array($products)) {
+            foreach ($products as $product) {
+                if (is_object($product) && $product instanceof \Model\Product\Entity) {
+                    $productIds[] = $product->getId();
+                }
+            }
         }
 
-        $data = [
-            'config' => [
-                'enterNumber' => $config['enterNumber'],
-                'secretWord' => $config['secretWord'],
-                'subdomainNumber' => $config['subdomainNumber'],
-            ],
-            'page' => [
-                'url' => null,
-                'pageType' => 5,
-                'pageTitle' => $this->getTitle(),
-            ],
-        ];
+        /** @var \Session\Cart $cart */
+        $cart = $this->getParam('cart');
 
-        return '<div id="myragonPageJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
+        return $this->render('_mailRu', [
+            'pageType' => 'order',
+            'productIds' => $productIds,
+            'price' => is_object($cart) && $cart instanceof \Session\Cart ? $cart->getSum() : '',
+        ]);
     }
 }

@@ -365,7 +365,7 @@ class Action {
 
         // SITE-3381
         if (!$request->isXmlHttpRequest() && ($category->getLevel() > 1) && false === strpos($categoryPath, '/')) {
-            throw new \Exception\NotFoundException(sprintf('Не передана родительская категория для категории @%s', $categoryToken));
+            //throw new \Exception\NotFoundException(sprintf('Не передана родительская категория для категории @%s', $categoryToken));
         }
 
         if (!empty($shopScriptSeo['link'])) {
@@ -1114,6 +1114,13 @@ class Action {
         $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setParam('sidebarHotlinks', true);
         $page->setParam('hasBanner', $hasBanner);
+        $page->setParam('columnCount',
+            (
+                ('jewelItems3' === \App::abTest()->getTest('jewel_items')->getChosenCase()->getKey())
+                && array_filter($category->getAncestor(), function(\Model\Product\Category\Entity $category) { return 923 === $category->getId(); })
+            ) ? 3
+            : 4
+        );
 
         return new \Http\Response($page->show());
     }

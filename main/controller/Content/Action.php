@@ -50,7 +50,6 @@ class Action {
         return new \Http\Response($page->show());
     }
 
-
     private function getServiceJson() {
         \App::logger()->debug('Exec ' . __METHOD__);
 

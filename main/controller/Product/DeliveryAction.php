@@ -57,7 +57,7 @@ class DeliveryAction {
             $exception = null;
             $result = [];
             \App::coreClientV2()->addQuery(
-                'delivery/calc',
+                'delivery/calc2',
                 ['geo_id' => $regionId],
                 ['product_list' => $productData],
                 function($data) use (&$result) {

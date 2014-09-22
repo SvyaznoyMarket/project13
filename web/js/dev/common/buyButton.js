@@ -324,32 +324,6 @@
 				 * @param event
 				 * @param data
 				 */
-				addToMyragon = function addToMyragon( event, data ) {
-					var
-						product = data.product;
-					// end of vars
-
-					if ( !product.hasOwnProperty('id') || !product.hasOwnProperty('quantity') || !product.hasOwnProperty('price') ) {
-						return;
-					}
-
-					window.rbnt_rt_params = {
-						url: window.location.href,
-						pageType: 8,
-						pageTitle: $(document).find("title").text(),
-						basketProducts: [{id:product.id, price:product.price, currency:'RUB', amount:product.quantity}]
-					};
-					typeof rbnt_rt != "undefined" && rbnt_rt.send();
-
-					console.info('Myragon addToCart');
-					console.log(window.rbnt_rt_params);
-				},
-
-				/**
-				 * Аналитика при нажатии кнопки "купить"
-				 * @param event
-				 * @param data
-				 */
 				addToLamoda = function addToLamoda( event, data ) {
 					var
 						product = data.product;
@@ -406,7 +380,6 @@
                 }
 				//addToVisualDNA(event, data);
 				addToRuTarget(event, data);
-				addToMyragon(event, data);
 				addToLamoda(event, data);
 			}
 			catch( e ) {

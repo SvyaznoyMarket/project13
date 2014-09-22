@@ -14,7 +14,7 @@ class CompletePage extends Layout {
         if ($order) {
             // если банк Ренессанс
             if (($order->getCredit() instanceof \Model\Order\Credit\Entity) && (\Model\CreditBank\Entity::PROVIDER_DIRECT_CREDIT == $order->getCredit()->getBankProviderId())) {
-                $this->addStylesheet('http://direct-credit.ru/widget/style.css');
+                $this->addStylesheet('http://api.direct-credit.ru/style.css');
             }
         }
 
@@ -259,88 +259,26 @@ class CompletePage extends Layout {
             <div id="flocktoryExchangeJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
     }
 
-    public function slotMyragonOrderCompleteJS() {
-        $config = \App::config()->partners['Myragon'];
-        if (!$config['enabled'] || !$config['enterNumber'] || !$config['secretWord'] || !$config['subdomainNumber']) {
-            return;
-        }
-
-        /** @var $orders Order[] */
+    public function slotMailRu() {
         $orders = $this->getParam('orders');
-        if (!$orders || empty($orders) || !is_array($orders)) return;
-
-        $orderList = [];
-        foreach ($orders as $order) {
-            if (!$order instanceof Order || !$order->getId()) continue;
-
-            $orderList[] = [
-                'order_id' => $order->getId(),
-                'hash' => md5($config['enterNumber'] . $config['secretWord'] . $order->getId()),
-            ];
-        }
-
-        $data = [
-            'config' => [
-                'enterNumber' => $config['enterNumber'], // номер Вашей кампании
-                'secretWord' => $config['secretWord'], // секретное слово
-                'subdomainNumber' => $config['subdomainNumber'], // номер поддомена в сервисе Myragon
-            ],
-            'orderList' => $orderList,
-        ];
-
-        return '<div id="myragonOrderCompleteJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
-    }
-
-    public function slotMyragonPageJS() {
-        $config = \App::config()->partners['Myragon'];
-        if (!$config['enabled'] || !$config['enterNumber'] || !$config['secretWord'] || !$config['subdomainNumber']) {
-            return;
-        }
-
-        /** @var $orders Order[] */
-        $orders = $this->getParam('orders');
-        if (!$orders || empty($orders) || !is_array($orders)) return;
-
-        $orderInfo = [];
-        $purchasedProducts = [];
-        foreach ($orders as $order) {
-            if (!$order instanceof Order || !$order->getId()) continue;
-
-            $orderInfo[] = [
-                'id' => $order->getId(),
-                'totalPrice' => $order->getSum(),
-                'currency' => 'RUB',
-            ];
-
-            if ($order->getProduct()) {
-                foreach ($order->getProduct() as $product) {
-                    if (!$product instanceof \Model\Order\Product\Entity) continue;
-
-                    $purchasedProducts[] = [
-                        'id' => $product->getId(),
-                        'price' => $product->getPrice(),
-                        'currency' => 'RUB',
-                        'amount' => $product->getQuantity(),
-                    ];
+        $productIds = [];
+        $totalProductPrice = 0;
+        if (is_array($orders)) {
+            foreach ($orders as $order) {
+                /** @var \Model\Order\Entity $order */
+                if (is_object($order) && $order instanceof \Model\Order\Entity) {
+                    foreach ($order->getProduct() as $orderProduct) {
+                        $productIds[] = $orderProduct->getId();
+                        $totalProductPrice += $orderProduct->getSum();
+                    }
                 }
             }
         }
 
-        $data = [
-            'config' => [
-                'enterNumber' => $config['enterNumber'],
-                'secretWord' => $config['secretWord'],
-                'subdomainNumber' => $config['subdomainNumber'],
-            ],
-            'page' => [
-                'url' => null,
-                'pageType' => 6,
-                'pageTitle' => $this->getTitle(),
-                'orderInfo' => 1 == count($orderInfo) ? reset($orderInfo) : $orderInfo,
-                'purchasedProducts' => $purchasedProducts,
-            ],
-        ];
-
-        return '<div id="myragonPageJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
+        return $this->render('_mailRu', [
+            'pageType' => 'purchase',
+            'productIds' => $productIds,
+            'price' => $totalProductPrice,
+        ]);
     }
 }

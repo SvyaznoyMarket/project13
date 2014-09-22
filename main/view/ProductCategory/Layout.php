@@ -244,33 +244,4 @@ class Layout extends \View\DefaultLayout {
 
         return "<div id=\"LamodaCategoryJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
     }
-
-    public function slotMyragonPageJS() {
-        $config = \App::config()->partners['Myragon'];
-        if (!$config['enabled'] || !$config['enterNumber'] || !$config['secretWord'] || !$config['subdomainNumber']) {
-            return;
-        }
-
-        /** @var $category \Model\Product\Category\Entity */
-        $category = $this->getParam('category');
-        if (!$category) {
-            return;
-        }
-
-        $data = [
-            'config' => [
-                'enterNumber' => $config['enterNumber'],
-                'secretWord' => $config['secretWord'],
-                'subdomainNumber' => $config['subdomainNumber'],
-            ],
-            'page' => [
-                'url' => null,
-                'pageType' => 3,
-                'pageTitle' => $this->getTitle(),
-                'categories' => [$category->getName()],
-            ],
-        ];
-
-        return '<div id="myragonPageJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
-    }
 }

@@ -25,13 +25,14 @@ class Action {
 
         // данные для JsonResponse
         $responseData = [
-            'time'      => strtotime(date('Y-m-d'), 0) * 1000,
-            'action'    => [],
-            'paypalECS' => false,
-            'lifeGift'  => false,
-            'oneClick'  => false,
-            'cart'      => [],
-            'defPoints' => [],
+            'time'           => strtotime(date('Y-m-d'), 0) * 1000,
+            'action'         => [],
+            'paypalECS'      => false,
+            'lifeGift'       => false,
+            'oneClick'       => false,
+            'cart'           => [],
+            'defPoints'      => [],
+            'deliveryStates' => [],
         ];
 
         try {
@@ -230,7 +231,7 @@ class Action {
                 $productId = (string)$productItem['id'];
 
                 /** @var $cartProduct \Model\Cart\Product\Entity|null */
-                $cartProduct = ($paypalECS || $lifeGift || $oneClick) ? reset($cartProducts) : $cart->getProductById($productId);
+                $cartProduct = ($paypalECS || $lifeGift || $oneClick) ? $cartProducts[$productId] : $cart->getProductById($productId);
                 if (!$cartProduct) {
                     \App::logger()->error(sprintf('Товар %s не найден в корзине', $productId));
                     continue;
@@ -308,7 +309,7 @@ class Action {
 
                 switch (true) {
                     case $oneClick:
-                        $setUrl = $router->generate('cart.oneClick.product.set', ['productId' => $productId]);
+                        $setUrl = $router->generate('cart.oneClick.product.change', ['productId' => $productId]);
                         $deleteUrl = $router->generate('cart.oneClick.product.delete', ['productId' => $productId]);
                         break;
                     case $paypalECS:
@@ -353,6 +354,16 @@ class Action {
                         continue;
                     }
 
+                    // CORE-2090
+                    if (isset($shopItem['owner'])) {
+                        switch ($shopItem['owner']) {
+                            case 'svyaznoy': $mapPoint = '/images/marker-svyaznoy.png'; break;
+                            case 'enter':
+                            default: $mapPoint = '/images/marker.png'; break;
+
+                        }
+                    }
+
                     $responseData[$shopToken][] = [
                         'id'         => $shopId,
                         'name'       => $shopToken == 'shops_svyaznoy' ? $shopItem['address'] : $shopItem['name'],
@@ -361,7 +372,7 @@ class Action {
                         'latitude'   => (float)$shopItem['coord_lat'],
                         'longitude'  => (float)$shopItem['coord_long'],
                         'products'   => isset($productIdsByShop[$shopId]) ? $productIdsByShop[$shopId] : [],
-                        'pointImage' => $shopToken == 'shops_svyaznoy' ? '/images/marker-svyaznoy.png' : '/images/marker.png',
+                        'pointImage' => isset($mapPoint) ? $mapPoint : '/images/marker.png',
                         'buttonName' => 'Забрать из этого магазина',
                     ];
                 }

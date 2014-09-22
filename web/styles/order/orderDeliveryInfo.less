@@ -40,7 +40,8 @@
 
 		&_t {
 			.inline-block();
-			padding-left: 5px;
+//			padding-left: 5px;
+            vertical-align: baseline;
 
 			color: @colorActiveGrey;
 
@@ -175,4 +176,29 @@
 			}
 		}
 	}
+
+    &_warn {
+      .inline-block();
+      width: 459px;
+      padding: 10px 0;
+      border: 1px solid #D063A5;
+      border-left-width: 5px;
+      background: #F6E0ED;
+      font-size: 12px;
+
+      &_l {
+        margin-left: 5px;
+        float: left;
+        font-weight: bold;
+        }
+
+      &_r {
+        margin-right: 5px;
+        float: right;
+
+        a {
+          text-decoration: underline;
+        }
+      }
+    }
 }

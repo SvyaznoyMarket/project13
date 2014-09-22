@@ -69,6 +69,20 @@ window.ANALYTICS = {
 	LiveTexJS: function () {
 		console.group('ports.js::LiveTexJS log');
 
+		function loadLiveTex() {
+			console.info('LiveTexJS init');
+
+			var lt = document.createElement('script');
+			lt.type = 'text/javascript';
+			lt.async = true;
+			lt.src = 'http://cs15.livetex.ru/js/client.js';
+			var sc = document.getElementsByTagName('script')[0];
+			if ( sc ) sc.parentNode.insertBefore(lt, sc);
+			else  document.documentElement.firstChild.appendChild(lt);
+
+			console.log('LiveTexJS end');
+		}
+
 		var
 			LTData = $('#LiveTexJS').data('value');
 		// end of vars
@@ -88,6 +102,11 @@ window.ANALYTICS = {
 				window.LiveTex = {
 					onLiveTexReady: function () {
 						window.LiveTex.setName(LTData.username);
+						LiveTex.on('chat_open', function(){
+							if ('undefined' != typeof(_gaq)) {
+								_gaq.push(['_trackEvent', 'webchat', 'chat_started']);
+							}
+						});
 					},
 
 					invitationShowing: true,
@@ -113,10 +132,9 @@ window.ANALYTICS = {
 			},
 
 			/**
-			 * @param {Object}	event		Данные о событии
 			 * @param {Object}	userInfo	Данные пользователя
 			 */
-			liveTexUserInfo = function( event, userInfo ) {
+			liveTexUserInfo = function( userInfo ) {
 				try {
 					LTData.username = 'undefined' != typeof(userInfo.name) ? userInfo.name : null;
 					LTData.userid = 'undefined' != typeof(userInfo.id) ? userInfo.id : null;
@@ -135,37 +153,15 @@ window.ANALYTICS = {
 
 		if (ENTER.config.userInfo === false) {
 			liveTexAction();
+			loadLiveTex();
 		} else {
-			$('body').on('userLogged', liveTexUserInfo);
+			$('body').on('userLogged', function(event, userInfo){
+				liveTexUserInfo(userInfo);
+				loadLiveTex();
+			});
 		}
 
-//		LiveTex.on("chat_open", function(e){
-//			undefined != typeof(_gaq) && _gaq.push(['_trackEvent', 'webchat', 'chat_open']);
-//			undefined != typeof(ga) && ga('send', 'event', 'webchat', 'chat_open');
-//		});
-//
-//		LiveTex.on("chat_invitation_action", function(e){
-//			undefined != typeof(_gaq) && _gaq.push(['_trackEvent', 'webchat', e.data.action]);
-//			undefined != typeof(ga) && ga('send', 'event', 'webchat', e.data.action);
-//		});
-
-		//$(document).load(function() {
-		(function () {
-			console.info('LiveTexJS init');
-
-			var lt = document.createElement('script');
-			lt.type = 'text/javascript';
-			lt.async = true;
-			lt.src = 'http://cs15.livetex.ru/js/client.js';
-			var sc = document.getElementsByTagName('script')[0];
-			if ( sc ) sc.parentNode.insertBefore(lt, sc);
-			else  document.documentElement.firstChild.appendChild(lt);
-
-			console.log('LiveTexJS end');
-		})();
-
 		console.groupEnd();
-		//});
 	},
 
 	ActionPayJS: function () {
@@ -1891,63 +1887,6 @@ window.ANALYTICS = {
 //		})();
 	},
 
-	myragonOrderCompleteJS: function() {
-		var
-			myragon = $('#myragonOrderCompleteJS'),
-
-			/**
-			 * Object
-			 * 	{
-			 * 		enterNumber - номер Вашей кампании
-			 * 		secretWord - секретное слово
-			 * 		subdomainNumber - номер поддомена в сервисе Myragon
-			 * 		orderList - список заказов [{order_id, hash},...]
-			 * 	}
-			 */
-			data = {};
-		// end of vars
-
-		window.dataLayer = window.dataLayer || [];
-
-		if ( !myragon.length ) {
-			return;
-		}
-
-		data = myragon.data('value');
-		if ( !data || !data.hasOwnProperty('config') ) {
-			return;
-		}
-
-		window.dataLayer.push({'myragon_config': data.config});
-		window.dataLayer.push({'myragon_complete': data});
-	},
-
-	myragonPageJS: function() {
-		var
-			myragon = $('#myragonPageJS'),
-			data = {};
-		// end of vars
-
-		window.dataLayer = window.dataLayer || [];
-
-		if ( !myragon.length ) {
-			return;
-		}
-
-		data = myragon.data('value');
-		if ( !data || !data.hasOwnProperty('config') || !data.hasOwnProperty('page') ) {
-			return;
-		}
-
-		if ( undefined == typeof(window.dataLayer.myragon_config) ) {
-			window.dataLayer.push({'myragon_config': data.config});
-		}
-
-
-		data.page.url = window.location.href;
-		window.rbnt_rt_params = data.page;
-	},
-
 	flocktoryEnterprizeJS: function() {
 		console.groupCollapsed('ports.js::flocktoryEnterprizeJS');
 
@@ -2115,9 +2054,11 @@ window.ANALYTICS = {
 	},
 
 	enable : true
-}
+};
 
-ANALYTICS.parseAllAnalDivs( $('.jsanalytics') );
+$(function(){
+	ANALYTICS.parseAllAnalDivs( $('.jsanalytics') );
+});
 
 var ADFOX = {
 	adfoxbground : function() {
@@ -2368,6 +2309,8 @@ var ADFOX = {
 	},
 
 	enable : true
-}
+};
 
-ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') );
+$(function(){
+	ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') );
+});

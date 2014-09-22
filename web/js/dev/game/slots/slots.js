@@ -114,10 +114,6 @@ $.fn.slots = function (slot_config, animations_config) {
                 self.messageBox.setRandomText("demo");
                 self.messageBox.animateText("defaultAnimation");
             });
-            setTimeout(function () {
-                $el.find('#slotsBack').css('top', $('#slotsWrapper').offset().top + 'px').show();
-            }, 1000);
-
 
             if (!self.config.isAvailable) {
                 self.notAvailableState(); // если автомат недоступен - стартуем режим недоступен
@@ -292,8 +288,6 @@ $.fn.slots = function (slot_config, animations_config) {
                     } else {
                         self.notAvailableState(response.error);
                     }
-
-
                 }
             });
         },
@@ -393,6 +387,7 @@ $.fn.slots = function (slot_config, animations_config) {
                 '</div> ' +
                 '</div> ' +
                 '<div id="winContainer" class=""> <div class="tile"> <div class="rulesText"> Фишка со скидкой <strong class="dicount">10 %</strong> на <strong class="category"><a target="_blank" style="text-decoration: underline;" href="/catalog/children">Детские товары</a></strong><br> Минимальная сумма заказа 499 руб<br> Действует c 28.05.2014 по 30.06.2014 </div> </div> <div class="confetil"></div> <div class="blue_shine"></div> <div class="shine"></div> <div class="chip "> <div class="border lime"> <div class="cuponImg__inner"> <div class="cuponIco"> <img src="http://content.enter.ru/wp-content/uploads/2014/03/kids.png"> </div> <div class="cuponDesc">Детские товары</div> <div class="cuponPrice">15% </div> </div> </div> </div> <div class=""></div> </div> <canvas height="388" width="588" id="canvas"></canvas> <div id="buttonsRow" class="toplay"> <div class="play btn_wrapper"> <div class="step_dots"> <div class="reel_dot first on"></div> <div class="reel_dot second on"></div> <div class="reel_dot third on"></div> </div> <div class="button">Играть</div> </div> <div class="stop btn_wrapper"> <div class="step_dots"> <div class="reel_dot first"></div> <div class="reel_dot second"></div> <div class="reel_dot third"></div> </div> <div class="button">Стоп</div> </div> </div> </div> </div> <div id="slotsBottomLine"></div> </div>');
+
             this.canvas = document.getElementById('canvas');
             this.context = canvas.getContext('2d');
             this.context.webkitImageSmoothingEnabled = false;
@@ -1005,7 +1000,7 @@ $.fn.slots = function (slot_config, animations_config) {
                 } else {
                     if (!self.led_off_load_started) {
                         self.led_off.onload = led_offLoadedCb;
-                        self.led_off.src = self.slot_config.api_url.img_led_off || "/css/game/slots/img/slot_led_off.png";
+                        self.led_off.src = self.slot_config.api_url.img_led_off || "/styles/game/slots/img/slot_led_off.png";
                         self.led_off_load_started = true;
                     }
                 }
@@ -1230,11 +1225,44 @@ $.fn.slots = function (slot_config, animations_config) {
         }
     };
 
-
     $el.slotMachine.initialize();
     $el.data("slotMachine", $el.slotMachine);
     return $el;
 };
 
+$(function() {
+	var
+		slotsPopup = $('#slotsPopup'),
+		slotsWrapWrapper = $('#slotsWrapWrapper'),
+		config = slotsWrapWrapper.data('config');
 
+	slotsPopup.messageBox = slotsPopup.find('.message');
 
+	slotsWrapWrapper.slots({
+		labels: config.labels,
+		handlers: {
+			userUnauthorized: function(self,state) {
+				self.stillInGameState();
+				window.registerAuth.init('authRegistration');
+			},
+			notEnterprizeMember: function(self,state){
+				self.stillInGameState();
+				window.registerAuth.init('update');
+			},
+			winExceeded: function(self,state) {
+				self.notAvailableState(state.message);
+			},
+			triesExceeded: function (self,state) {
+				self.notAvailableState(state.message);
+			},
+			undefinedError: function (self,state) {
+				self.notAvailableState();
+			}
+		},
+		api_url: {
+			init: 'http://' + config.mainHost + '/game/slots/init',
+			play: 'http://' + config.mainHost + '/game/slots/play',
+			img_led_off: '/styles/game/slots/img/slot_led_off.png'
+		}
+	}, config.animations);
+});

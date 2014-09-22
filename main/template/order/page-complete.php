@@ -12,6 +12,7 @@
  * @var $isOrderAnalytics   bool
  * @var $sessionIsReaded    bool
  * @var $paymentMethod      \Model\PaymentMethod\Entity
+ * @var $form               \View\Order\Form
  */
 ?>
 
@@ -25,6 +26,13 @@ $isOrderAnalytics = isset($isOrderAnalytics) ? $isOrderAnalytics : true;
 
 if (!isset($paymentUrl)) $paymentUrl = null;
 ?>
+
+<? if (isset($form)): ?>
+    <div class="js-orderData" data-value="<?= $helper->json([
+        'email' => $form->getEmail(),
+        'subscribe' => $form->getSubscribe(),
+    ]) ?>"></div>
+<? endif ?>
 
 <!-- Header -->
 <div class='bBuyingHead clearfix'>
@@ -92,7 +100,7 @@ if (!isset($paymentUrl)) $paymentUrl = null;
         <? } ?>
     <? } ?>
     <div class="mt32" style="text-align: center">
-        <? if ($isCredit && !$sessionIsReaded): ?>
+        <? if ($isCredit): ?>
             <a class='bBigOrangeButton jsCreditBtn' href="#">Перейти к оформлению кредита</a>
             <p>Виджет оформления кредита откроется автоматически через несколько секунд</p>
         <? else: ?>
@@ -117,7 +125,7 @@ if (!isset($paymentUrl)) $paymentUrl = null;
 <? // endif ?>
 
 
-<? if ($isCredit && !$sessionIsReaded): ?>
+<? if ($isCredit): ?>
     <div id="credit-widget" data-value="<?= $page->json($creditData) ?>"></div>
 <? endif ?>
 

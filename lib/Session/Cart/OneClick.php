@@ -31,18 +31,27 @@ class OneClick {
      * @param \Model\Cart\Product\Entity $product
      */
     public function setProduct(\Model\Cart\Product\Entity $product) {
-        $this->clear(); // возможно добавление только одного товара
-
         $sessionData = $this->storage->get($this->sessionName);
 
         if ($product->getQuantity() < 1) {
-            if (isset($sessionData['product'][$product->getId()])) unset($sessionData['product'][$product->getId()]);
+            unset($sessionData['product'][$product->getId()]);
+            unset($this->productsById[$product->getId()]);
         } else {
             $sessionData['product'][$product->getId()] = ['quantity' => $product->getQuantity()];
         }
 
         $this->storage->set($this->sessionName, $sessionData);
 
+        $this->calculate();
+    }
+
+    /**
+     * @param \Model\Cart\Product\Entity $product
+     */
+    public function addProduct(\Model\Cart\Product\Entity $product) {
+        $sessionData = $this->storage->get($this->sessionName);
+        $sessionData['product'][$product->getId()] = ['quantity' => $product->getQuantity()];
+        $this->storage->set($this->sessionName, $sessionData);
         $this->calculate();
     }
 
@@ -116,6 +125,17 @@ class OneClick {
         return array_map(function(\Model\Cart\Product\Entity $product){
             return ['id'=> $product->getId(), 'quantity'=>$product->getQuantity()];
         }, $this->getProducts());
+    }
+
+    public function setShop($shop) {
+        $sessionData = $this->storage->get($this->sessionName);
+        $sessionData['shop'] = (int)$shop;
+        $this->storage->set($this->sessionName, $sessionData);
+    }
+
+    public function getShop() {
+        $cart = $this->storage->get($this->sessionName);
+        return isset($cart['shop']) ? (int)$cart['shop'] : null;
     }
 
 }

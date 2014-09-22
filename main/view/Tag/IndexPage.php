@@ -177,4 +177,12 @@ class IndexPage extends \View\DefaultLayout {
             'target' => '#productCatalog-filter-form',
         ];
     }
+
+    public function slotMailRu() {
+        return $this->render('_mailRu', [
+            'pageType' => 'tag',
+            'productIds' => [],
+            'price' => '',
+        ]);
+    }
 }

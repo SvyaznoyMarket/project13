@@ -124,7 +124,7 @@ class Client {
      * @param float|null    $timeout
      * @return bool
      */
-    public function addQuery($url, array $data = [], $successCallback, $failCallback = null, $timeout = null) {
+    public function addQuery($url, array $data = [], $successCallback = null, $failCallback = null, $timeout = null) {
         $timeout = $timeout ? $timeout : $this->getDefaultTimeout();
 
         if (!$this->isMultiple) {
@@ -136,7 +136,7 @@ class Client {
 
             return false;
         };
-        $this->successCallbacks[(string)$resource] = $successCallback;
+        $this->successCallbacks[(string)$resource] = $successCallback ?: function(){};
         $this->failCallbacks[(string)$resource] = $failCallback;
         $this->resources[] = $resource;
 
