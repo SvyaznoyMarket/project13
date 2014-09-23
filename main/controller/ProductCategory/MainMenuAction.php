@@ -19,15 +19,8 @@ class MainMenuAction {
             }
         }
 
-        $catalogJsonBulk = \RepositoryManager::productCategory()->getCatalogJsonBulk();
-        $promoHtmlBulk = \RepositoryManager::productCategory()->getPromoHtmlBulk($catalogJsonBulk);
-
         return new \Http\JsonResponse([
-            'content' => \App::closureTemplating()->render('__mainMenu', [
-                'menu'            => (new \View\Menu())->generate($region),
-                'catalogJsonBulk' => $catalogJsonBulk,
-                'promoHtmlBulk'   => $promoHtmlBulk,
-            ]),
+            'content' => \App::closureTemplating()->render('__mainMenu', ['menu' => (new \View\Menu())->generate($region)]),
         ]);
     }
 }

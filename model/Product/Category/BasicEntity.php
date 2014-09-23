@@ -8,6 +8,8 @@ class BasicEntity {
 
     /** @var int */
     protected $id;
+    /** @var string|null */
+    protected $ui;
     /** @var int */
     protected $parentId;
     /** @var string */
@@ -31,6 +33,7 @@ class BasicEntity {
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
+        if (array_key_exists('ui', $data)) $this->setUi($data['ui']);
         if (array_key_exists('parent_id', $data)) $this->setParentId($data['parent_id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('link', $data)) $this->setLink($data['link']);
@@ -54,6 +57,20 @@ class BasicEntity {
      */
     public function getId() {
         return $this->id;
+    }
+
+    /**
+     * @param string $ui
+     */
+    public function setUi($ui) {
+        $this->ui = (string)$ui;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getUi() {
+        return $this->ui;
     }
 
     /**

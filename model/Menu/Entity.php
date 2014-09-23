@@ -15,6 +15,10 @@ class Entity {
     public $image;
     /** @var string */
     public $smallImage;
+    /** @var bool|null */
+    public $useLogo;
+    /** @var string|null */
+    public $logoPath;
     /** @var string */
     public $action;
     /** @var array */
@@ -44,6 +48,8 @@ class Entity {
         if (isset($data['name'])) $this->name = (string)$data['name'];
         if (isset($data['image'])) $this->image = (string)$data['image'];
         if (isset($data['smallImage'])) $this->smallImage = (string)$data['smallImage'];
+        if (isset($data['useLogo'])) $this->useLogo = (bool)$data['useLogo'];
+        if (isset($data['logoPath'])) $this->logoPath = (string)$data['logoPath'];
         if (isset($data['action'])) $this->action = (string)$data['action'];
         if (isset($data['color'])) $this->color = (string)$data['color'];
         if (isset($data['colorHover'])) $this->colorHover = (string)$data['colorHover'];

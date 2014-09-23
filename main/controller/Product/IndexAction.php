@@ -102,16 +102,14 @@ class IndexAction {
         }
 
         // категории продукта
-        $categories = $product->getCategory();
         $productCategoryTokens = array_map(function($category){
             return $category->getToken();
         }, $product->getCategory());
 
         // получаем catalog json
         $catalogJson = [];
-        $dataStore = \App::dataStoreClient();
-        $dataStore->addQuery(sprintf('catalog/%s.json', implode('/', $productCategoryTokens)), [], function ($data) use (&$catalogJson) {
-            if (is_array($data)) $catalogJson = $data;
+        \App::scmsClient()->addQuery('category/get', ['uid' => $product->getLastCategory()->getUi(), 'geo_id' => $user->getRegion()->getId()], [], function ($data) use (&$catalogJson) {
+            $catalogJson = \RepositoryManager::productCategory()->convertScmsDataToOldCmsData($data);
         });
 
         // настройки товара
@@ -187,7 +185,7 @@ class IndexAction {
 
         // SITE-3982
         // Трастфактор "Спасибо от Сбербанка" не должен отображаться на карточке товара от Связного
-        if (is_array($product->getPartnersOffer()) && count($product->getPartnersOffer()) !== 0 && (bool)$catalogJson['trustfactor_right']) {
+        if (is_array($product->getPartnersOffer()) && count($product->getPartnersOffer()) !== 0 && isset($catalogJson['trustfactor_right']) && $catalogJson['trustfactor_right']) {
             $catalogJson['trustfactor_right'] = array_filter($catalogJson['trustfactor_right'], function ($trustfactor) {
                 return 'trust_sber' === $trustfactor ? false : true;
             });

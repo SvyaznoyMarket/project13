@@ -208,12 +208,12 @@ class Action {
 
         // bannerPlaceholder
         $bannerPlaceholder = [];
-        \App::dataStoreClient()->addQuery('catalog/global.json', [], function($data) use (&$bannerPlaceholder) {
+        \App::scmsClient()->addQuery('category/get', ['uid' => \App::config()->rootCategoryUi, 'geo_id' => \App::user()->getRegion()->getId()], [], function($data) use (&$bannerPlaceholder) {
             if (isset($data['bannerPlaceholder'])) {
                 $bannerPlaceholder = $data['bannerPlaceholder'];
             }
         });
-        \App::dataStoreClient()->execute();
+        \App::scmsClient()->execute();
 
         // ajax
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {

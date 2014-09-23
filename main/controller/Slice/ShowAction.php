@@ -345,11 +345,7 @@ class ShowAction {
         //$catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
 
         $promoContent = '';
-        // если в catalogJson'e указан category_layout_type == 'promo', то подгружаем промо-контент
-        if (!empty($catalogJson['category_layout_type']) &&
-            $catalogJson['category_layout_type'] == 'promo' &&
-            !empty($catalogJson['promo_token'])
-        ) {
+        if (!empty($catalogJson['promo_token'])) {
             \App::contentClient()->addQuery(
                 trim((string)$catalogJson['promo_token']),
                 [],

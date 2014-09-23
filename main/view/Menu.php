@@ -67,10 +67,47 @@ class Menu {
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium'], \App::config()->coreV2['retryCount']);
 
+
+        \App::scmsClient()->addQuery('category/get-by-filters', ['filters' => ['appearance.use_logo' => 'true'], 'geo_id' => $region->getId()], [], function($data) {
+            if (is_array($data)) {
+                $categoriesByUi = $this->indexCategoriesByUi(array_merge($this->rootCategoriesById, $this->categoriesById));
+                foreach ($data as $itemData) {
+                    $itemData = \RepositoryManager::productCategory()->convertScmsDataToOldCmsData($itemData);
+                    if (isset($categoriesByUi[$itemData['ui']])) {
+                        /** @var \Model\Product\Category\MenuEntity $category */
+                        $category = $categoriesByUi[$itemData['ui']];
+                        if (isset($itemData['use_logo'])) {
+                            $category->setUseLogo($itemData['use_logo']);
+                        }
+
+                        if (isset($itemData['logo_path'])) {
+                            $category->setLogoPath($itemData['logo_path']);
+                        }
+                    }
+                }
+            }
+        });
+
+        \App::scmsClient()->execute();
+
         $this->fillMenu($this->menu);
 
         $instance = $this->menu;
         return $this->menu;
+    }
+
+    /**
+     * @return \Model\Product\Category\MenuEntity|null
+     */
+    public function indexCategoriesByUi($categories) {
+        $result = [];
+        foreach ($categories as $category) {
+            /** @var \Model\Product\Category\MenuEntity $category */
+            $result[$category->getUi()] = $category;
+            $result = array_merge($result, $this->indexCategoriesByUi($category->getChild()));
+        }
+
+        return $result;
     }
 
     /**
@@ -122,6 +159,8 @@ class Menu {
                 }
 
                 $iMenu->link = $category->getLink();
+                $iMenu->useLogo = $category->getUseLogo();
+                $iMenu->logoPath = $category->getLogoPath();
             // ветка категории товара
             } else if (\Model\Menu\Entity::ACTION_PRODUCT_CATALOG == $iMenu->action) {
                 $categoryId = $iMenu->firstItem;
@@ -137,6 +176,8 @@ class Menu {
                 }
 
                 $iMenu->link = $category->getLink();
+                $iMenu->useLogo = $category->getUseLogo();
+                $iMenu->logoPath = $category->getLogoPath();
                 $this->fillCatalogMenu($iMenu, $category);
             }
         }
@@ -149,9 +190,11 @@ class Menu {
     private function fillCatalogMenu(\Model\Menu\Entity $iMenu, \Model\Product\Category\MenuEntity $category) {
         foreach ($category->getChild() as $childCategory) {
             $child = new \Model\Menu\Entity([
-                'action' => \Model\Menu\Entity::ACTION_PRODUCT_CATALOG,
-                'name'   => $childCategory->getName(),
-                'item'   => [$childCategory->getId()],
+                'action'   => \Model\Menu\Entity::ACTION_PRODUCT_CATALOG,
+                'name'     => $childCategory->getName(),
+                'item'     => [$childCategory->getId()],
+                'useLogo'  => $childCategory->getUseLogo(),
+                'logoPath' => $childCategory->getLogoPath(),
             ]);
             $child->link = $childCategory->getLink();
             $child->image = $childCategory->getImageUrl(0);
@@ -164,9 +207,11 @@ class Menu {
 
         if ((2 == $category->getLevel()) && ($category->countChild() > \Model\Product\Category\MenuEntity::MAX_CHILD)) {
             $child = new \Model\Menu\Entity([
-                'action' => \Model\Menu\Entity::ACTION_PRODUCT_CATEGORY,
-                'name'   => 'Все разделы',
-                'item'   => [$category->getId()],
+                'action'   => \Model\Menu\Entity::ACTION_PRODUCT_CATEGORY,
+                'name'     => 'Все разделы',
+                'item'     => [$category->getId()],
+                'useLogo'  => $category->getUseLogo(),
+                'logoPath' => $category->getLogoPath(),
             ]);
             $child->link = $category->getLink();
             $iMenu->child[] = $child;

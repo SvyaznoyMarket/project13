@@ -9,6 +9,8 @@ class MenuEntity {
 
     /** @var int */
     protected $id;
+    /** @var string|null */
+    protected $ui;
     /** @var int */
     protected $parentId;
     /** @var string */
@@ -19,6 +21,10 @@ class MenuEntity {
     protected $level;
     /** @var string */
     protected $image;
+    /** @var bool|null */
+    public $useLogo;
+    /** @var string|null */
+    public $logoPath;
     /** @var MenuEntity[] */
     protected $child = [];
     /** @var int */
@@ -29,11 +35,15 @@ class MenuEntity {
      */
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
+        if (array_key_exists('ui', $data)) $this->setUi($data['ui']); // http://api.enter.ru/v2/category/get возвращает ui
+        if (array_key_exists('uid', $data)) $this->setUi($data['uid']); // http://api.enter.ru/v2/category/tree возвращает uid
         if (array_key_exists('parent_id', $data)) $this->setParentId($data['parent_id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('link', $data)) $this->setLink($data['link']);
         if (array_key_exists('level', $data)) $this->setLevel($data['level']);
         if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
+        if (array_key_exists('use_logo', $data)) $this->setUseLogo($data['use_logo']);
+        if (array_key_exists('logo_path', $data)) $this->setLogoPath($data['logo_path']);
         if (array_key_exists('children', $data) && is_array($data['children'])) {
             $this->childCount = count($data['children']);
 
@@ -58,6 +68,20 @@ class MenuEntity {
      */
     public function getId() {
         return $this->id;
+    }
+
+    /**
+     * @param string $ui
+     */
+    public function setUi($ui) {
+        $this->ui = (string)$ui;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getUi() {
+        return $this->ui;
     }
 
     /**
@@ -166,6 +190,34 @@ class MenuEntity {
      */
     public function getImage() {
         return $this->image;
+    }
+
+    /**
+     * @param bool $useLogo
+     */
+    public function setUseLogo($useLogo) {
+        $this->useLogo = (bool)$useLogo;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getUseLogo() {
+        return $this->useLogo;
+    }
+
+    /**
+     * @param string $logoPath
+     */
+    public function setLogoPath($logoPath) {
+        $this->logoPath = (string)$logoPath;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getLogoPath() {
+        return $this->logoPath;
     }
 
     public function getImageUrl($size = 0) {

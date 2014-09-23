@@ -3,10 +3,10 @@
 namespace Model\Slice;
 
 class Repository {
-    /** @var \Scms\ClientV2 */
+    /** @var \Scms\Client */
     private $client;
 
-    public function __construct(\Scms\ClientV2 $client) {
+    public function __construct(\Scms\Client $client) {
         $this->client = $client;
     }
 

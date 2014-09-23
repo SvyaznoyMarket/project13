@@ -16,8 +16,6 @@ $totalText = $productCount . ' ' . ($category->getHasLine()
 );
 
 $link = $category->getLink() . (\App::request()->get('instore') ? '?instore=1' : '');
-$token = $category->getToken();
-$showImage = !empty($catalogJsonBulk[$token]) && !empty($catalogJsonBulk[$token]['logo_path']) && !empty($catalogJsonBulk[$token]['use_logo']);
 ?>
 
 <div class="goodsbox mCatalog">
@@ -29,11 +27,7 @@ $showImage = !empty($catalogJsonBulk[$token]) && !empty($catalogJsonBulk[$token]
 	    </div>
 	    <div class="h2">
             <a href="<?= $link ?>" class="underline">
-                <? if ($showImage) { ?>
-                    <img src="<?= $catalogJsonBulk[$token]['logo_path'] ?>">
-                <? } else { ?>
-                    <?= $category->getName() ?>
-                <? } ?>
+                <?= $category->getName() ?>
             </a>
         </div>
 		<div class="font11">
