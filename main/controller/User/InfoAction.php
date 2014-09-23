@@ -75,57 +75,44 @@ class InfoAction {
             }
 
             if (!$cart->isEmpty()) {
-                $responseData['cart']['sum'] = $cart->getSum();
-                $responseData['cart']['quantity'] = $cart->getProductsQuantity() + $cart->getServicesQuantity();
 
-                $productsById = [];
-                foreach (\RepositoryManager::product()->getCollectionById(array_keys($cart->getProducts())) as $product) {
-                    $productsById[$product->getId()] = $product;
+                // заполнение недостающих данных для продуктов
+                $productsToUpdate = [];
+                $productsNC = $cart->getProductsNC();
+
+                $responseData['cart']['sum'] = $cart->getSum();
+                $responseData['cart']['quantity'] = $cart->getProductsQuantity();
+
+                foreach ($productsNC as $id => $value) {
+                    foreach (['name', 'price', 'url', 'image'] as $prop) {
+                        if (!isset($value[$prop]) || empty($value[$prop])) {
+                            $productsToUpdate[] = $id;
+                            break;
+                        }
+                    }
                 }
+
+                foreach (\RepositoryManager::product()->getCollectionById($productsToUpdate) as $product) {
+                    $cart->updateProductNC($product);
+                }
+
 
                 $cartProductData = [];
-                foreach ($cart->getProducts() as $cartProduct) {
-                    /* @var $product \Model\Product\Entity|null */
-                    $product = isset($productsById[$cartProduct->getId()]) ? $productsById[$cartProduct->getId()] : null;
+                foreach ($cart->getProductsNC() as $cartProduct) {
 
                     $cartProductData[] = [
-                        'id'             => $cartProduct->getId(),
-                        'name'           => $product ? $product->getName() : null,
-                        'price'          => $cartProduct->getPrice(),
-                        'formattedPrice' => $helper->formatPrice($cartProduct->getPrice()),
-                        'quantity'       => $cartProduct->getQuantity(),
-                        'deleteUrl'      => $helper->url('cart.product.delete', ['productId' => $cartProduct->getId()]),
-                        'url'            => $product ? $product->getLink() : null,
-                        'image'          => $product ? $product->getImageUrl() : null,
-                        'cartButton'     => [
-                            'id' => \View\Id::cartButtonForProduct($cartProduct->getId()),
-                        ],
+                        'id'             => $cartProduct['id'],
+                        'name'           => $cartProduct['name'],
+                        'price'          => $cartProduct['price'],
+                        'formattedPrice' => $helper->formatPrice($cartProduct['price']),
+                        'quantity'       => $cartProduct['quantity'],
+                        'deleteUrl'      => $helper->url('cart.product.delete', ['productId' => $cartProduct['id']]),
+                        'url'            => $cartProduct['url'],
+                        'image'          => $cartProduct['image'],
+                        'cartButton'     => [ 'id' => \View\Id::cartButtonForProduct($cartProduct['id']), ],
                     ];
 
-                    /*
-                    foreach ($cartProduct->getWarranty() as $cartWarranty) {
-                        $buttons['warranty'][] = [
-                            'id'       => \View\Id::cartButtonForProductWarranty($cartProduct->getId(), $cartWarranty->getId()),
-                            'quantity' => $cartWarranty->getQuantity(),
-                        ];
-                    }
-                    foreach ($cartProduct->getService() as $cartService) {
-                        $buttons['service'][] = [
-                            'id'       => \View\Id::cartButtonForProductService($cartProduct->getId(), $cartService->getId()),
-                            'quantity' => $cartService->getQuantity(),
-                        ];
-                    }
-                    */
                 }
-
-                /*
-                foreach ($cart->getServices() as $cartService) {
-                    $buttons['service'][] = [
-                        'id'       => \View\Id::cartButtonForService($cartService->getId()),
-                        'quantity' => $cartService->getQuantity(),
-                    ];
-                }
-                */
 
                 $responseData['cartProducts'] = $cartProductData;
             }

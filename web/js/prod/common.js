@@ -4203,7 +4203,7 @@ $(document).ready(function() {
 
 					//возвращаем кнопку - Купить
 					var
-						addUrl = res.product.addUrl;
+						addUrl = res.product.addUrl,
 						addBtnBuy = res.product.cartButton.id;
 					// end of vars
 					
