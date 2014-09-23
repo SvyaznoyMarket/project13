@@ -28,7 +28,7 @@
 
             <? $productCount = number_format(\App::config()->product['totalCount'], 0, ',', ' ') ?>
             <form action="<?= $page->url('search') ?>" method="get" id="searchForm">
-                <input id="searchStr" name="q" type='text' value="Поиск среди <?= $productCount ?> товаров" onBlur="var field = document.getElementById('searchStr'); if(field.value == ''){field.value = 'Поиск среди <?= $productCount ?> товаров'};return false;" onFocus="var field = document.getElementById('searchStr'); if(field.value == 'Поиск среди <?= $productCount ?> товаров'){field.value = ''};return false;">
+                <input id="searchStr" name="q" type='text' value="Поиск среди десятков тысяч товаров<?//= $productCount ?>" onBlur="var field = document.getElementById('searchStr'); if(field.value == ''){field.value = 'Поиск среди десятков тысяч товаров<?//= $productCount ?>'};return false;" onFocus="var field = document.getElementById('searchStr'); if(field.value == 'Поиск среди десятков тысяч товаров<?//= $productCount ?>'){field.value = ''};return false;">
                 <a class='bOrangeButton' href onclick="document.getElementById('searchForm').submit(); return false;">Найти</a>
             </form>
             <br>

@@ -62,4 +62,12 @@ class RootPage extends Layout {
 
         return $return;
     }
+
+    public function slotMailRu() {
+        return $this->render('_mailRu', [
+            'pageType' => 'category',
+            'productIds' => [],
+            'price' => '',
+        ]);
+    }
 }

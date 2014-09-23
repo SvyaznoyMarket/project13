@@ -581,17 +581,31 @@ class App {
         }
 
         return $instance;
-   }
+    }
 
     /**
      * @static
-     * @return \Scms\ClientV2
+     * @return \Scms\Client
+     */
+    public static function scmsClient() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Scms\Client(self::config()->scms, self::curl());
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @static
+     * @return \Scms\Client
      */
     public static function scmsClientV2() {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Scms\ClientV2(self::config()->scmsV2, self::curl());
+            $instance = new \Scms\Client(self::config()->scmsV2, self::curl());
         }
 
         return $instance;
@@ -600,13 +614,13 @@ class App {
 
     /**
      * @static
-     * @return \Scms\ClientV2
+     * @return \Scms\Client
      */
     public static function scmsSeoClient() {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Scms\ClientV2(self::config()->scmsSeo, self::curl());
+            $instance = new \Scms\Client(self::config()->scmsSeo, self::curl());
         }
 
         return $instance;

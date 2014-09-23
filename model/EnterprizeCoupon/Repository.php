@@ -3,15 +3,15 @@
 namespace Model\EnterprizeCoupon;
 
 class Repository {
-    /** @var \Scms\ClientV2 */
+    /** @var \Scms\Client */
     private $client;
     private $entityClass = '\Model\EnterprizeCoupon\Entity';
 
     /**
-     * @param \Scms\ClientV2 $client
+     * @param \Scms\Client $client
      * @param \Core\ClientInterface $coreClient
      */
-    public function __construct(\Scms\ClientV2 $client) {
+    public function __construct(\Scms\Client $client) {
         $this->client = $client;
     }
 

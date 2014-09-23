@@ -236,6 +236,15 @@ class Entity extends BasicEntity {
     }
 
     /**
+     * @return Category\Entity
+     */
+    public function getLastCategory() {
+        $lastCategory = end($this->category);
+        reset($this->category);
+        return $lastCategory;
+    }
+
+    /**
      * @param string $link
      */
     public function setLink($link) {

@@ -2,7 +2,7 @@
 
 namespace Scms;
 
-class ClientV2 {
+class Client {
     /** @var array */
     private $config;
     /** @var \Curl\Client */
