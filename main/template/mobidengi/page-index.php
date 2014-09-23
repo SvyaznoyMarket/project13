@@ -52,7 +52,7 @@
                 <div class="landing_hd-land_tx"> 
                     <div class="landing_hd-land_tx-1">Боитесь покупок онлайн? Напрасно. Теперь есть способ платить безопасно.</div>
                     <div class="landing_hd-land_tx-2">Кстати, еще и выгодно — оплатите покупку виртуальной картой Tele2<br/>MasterCard и получите купон на 500 рублей</div>
-                    <a href="#terms" class="g-button mod_header">Получить купон на 500 руб.</a>
+                    <a href="#terms" class="g-button mod_header">Получить купон</a>
                 </div> 
             </div> 
 
