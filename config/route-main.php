@@ -1055,6 +1055,11 @@ return [
         'action'  => ['Bandit\IndexAction', 'execute'],
     ],
 
+    'compare' => [
+        'pattern' => '/compare',
+        'action'  => ['Compare\CompareAction', 'execute'],
+    ],
+
 	//content (должен быть в самом конце, иначе под паттерн попадут другие страницы)
     'content' => [
         'pattern' => '/{token}',
