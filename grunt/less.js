@@ -78,5 +78,24 @@ module.exports = {
 		files: {
 			'web/styles/game/slots/style.min.css': ['web/styles/game/slots/style.less']
 		}
+	},
+
+	basketIECompile: {
+		options: {
+			paths: ['web/css/basket/']
+		},
+		files: {
+			'web/css/basket/ie10.css': ['web/css/basket/ie10.less']
+		}
+	},
+
+	basketIECompress: {
+		options: {
+			paths: ['web/css/basket/'],
+			compress: true
+		},
+		files: {
+			'web/css/basket/ie10.min.css': ['web/css/basket/ie10.less']
+		}
 	}
 };
