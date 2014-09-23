@@ -52,7 +52,7 @@
                 <div class="landing_hd-land_tx"> 
                     <div class="landing_hd-land_tx-1">Боитесь покупок онлайн? Напрасно. Теперь есть способ платить безопасно.</div>
                     <div class="landing_hd-land_tx-2">Кстати, еще и выгодно — оплатите покупку виртуальной картой Tele2<br/>MasterCard и получите купон на 500 рублей</div>
-                    <a href="#terms" class="g-button mod_header">Получить купон на 500 руб.</a>
+                    <a href="#terms" class="g-button mod_header">Получить купон</a>
                 </div> 
             </div> 
 
@@ -124,7 +124,7 @@
 
                             <div class="landing_form_hint">Например, +7 950 027 74 96</div>
 
-                            <button type="submit" class="g-button scheme_dblue size_5 box_block js-form-button js-widget" style="font-size: 18px">Получить купон на 500 руб.</button>
+                            <button type="submit" class="g-button scheme_dblue size_5 box_block js-form-button js-widget" style="font-size: 18px">Получить купон</button>
                         </form>
                     </div> 
                 </div> 
@@ -461,7 +461,7 @@
     <div class="landing_buynow landing_hdn landing_res">
         <div class="landing_hdn-h">
             <p class="landing_ttl landing_ttl-white">Оплачивайте покупки виртуальной картой Tele2 MasterCard<sup>©</sup></p>
-            
+            <p class="g-ui align_center" style="margin-top: 20px;"><a href="/" class="g-button scheme_dblue size_5 box_block" style="width: 260px; margin: 0 auto;">Начать покупки</a></p>
         </div>
     </div>
 
@@ -469,7 +469,7 @@
         <div class="g-columns mod_footer"> 
             <div class="g-columns-cell">
                 <p style="margin: 0;">Служба клиентской поддержки: 611 (круглосуточно, звонок бесплатный), <a href="mailto:t2info@tele2.ru">t2info@tele2.ru</a></p>
-                <p style="margin: 0;"><a href="http://img2.sotmarket.ru/2014_05_12_rules/tele2_rules.pdf" target="_blank">Правила акции</a> PDF, 160 Кб</p>
+                <p style="margin: 0;"><a href="http://content.enter.ru/wp-content/uploads/2014/09/%D0%9F%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0-%D0%B0%D0%BA%D1%86%D0%B8%D0%B8-1.pdf" target="_blank">Правила акции</a> PDF, 318 Кб</p>
             </div> 
             <div class="g-columns-cell"> 
                 <div class="g-ui align_right">
