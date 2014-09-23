@@ -469,7 +469,7 @@
         <div class="g-columns mod_footer"> 
             <div class="g-columns-cell">
                 <p style="margin: 0;">Служба клиентской поддержки: 611 (круглосуточно, звонок бесплатный), <a href="mailto:t2info@tele2.ru">t2info@tele2.ru</a></p>
-                <p style="margin: 0;"><a href="http://img2.sotmarket.ru/2014_05_12_rules/tele2_rules.pdf" target="_blank">Правила акции</a> PDF, 160 Кб</p>
+                <p style="margin: 0;"><a href="http://content.enter.ru/wp-content/uploads/2014/09/%D0%9F%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0-%D0%B0%D0%BA%D1%86%D0%B8%D0%B8-1.pdf" target="_blank">Правила акции</a> PDF, 318 Кб</p>
             </div> 
             <div class="g-columns-cell"> 
                 <div class="g-ui align_right">
