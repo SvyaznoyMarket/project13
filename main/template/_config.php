@@ -9,6 +9,20 @@
 $appConfig = \App::config();
 $router = \App::router();
 
+try {
+    $classFile = $appConfig->appDir . '/vendor/Mobile-Detect/Mobile_Detect.php';
+    if (file_exists($classFile)) {
+        include_once $classFile;
+        $mobileDetect = new \Mobile_Detect();
+        $isMobile = $mobileDetect->isMobile();
+    } else {
+        \App::logger()->error('Класс Mobile_Detect не найден', ['mobile']);
+        $isMobile = false;
+    }
+} catch (\Exception $e) {
+    $isMobile = false;
+}
+
 $config = array_merge([
     'jsonLog'               => $appConfig->jsonLog['enabled'],
     'userUrl'               => $router->generate('user.info'),
@@ -17,6 +31,7 @@ $config = array_merge([
     'coupon'                => $appConfig->coupon['enabled'],
     'addressAutocomplete'   => $appConfig->order['addressAutocomplete'],
     'prepayment'            => $appConfig->order['prepayment'],
+    'isMobile'              => $isMobile,
 ], isset($config) ? (array)$config : []);
 ?>
 
