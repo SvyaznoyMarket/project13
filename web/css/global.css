@@ -2322,7 +2322,6 @@
   .topbar {
     font-size: 14px;
     font-family: Tahoma, sans-serif;
-    padding: 10px 0 0;
     position: relative;
     width: 948px;
     margin-left: -10px;
@@ -7950,35 +7949,6 @@
   }
   #mainPage .allpage {
     background: #000000;
-  }
-  #mainPage .topbar {
-    margin-bottom: 20px;
-    margin-left: 0;
-    padding-left: 10px;
-    width: auto;
-    background: none;
-    border-color: #404040;
-    -webkit-border-radius: 0 0 4px 4px;
-    -moz-border-radius: 0 0 4px 4px;
-    border-radius: 0 0 4px 4px;
-  }
-  #mainPage .topbar #jsregion,
-  #mainPage .topbar .usermenu a {
-    color: #ffffff;
-  }
-  #mainPage .topbar .hBasket {
-    background: url("/css/mainPage/img/mainPageSprite.png") no-repeat -312px -74px;
-  }
-  #mainPage .topbar .headerContactPhone,
-  #mainPage .topbar .headerShopLink {
-    display: block;
-    color: #fff;
-  }
-  #mainPage .topbar .headerShopLink {
-    display: none;
-  }
-  #mainPage .topbar .bRegion {
-    width: 580px;
   }
   #mainPage .searchtext {
     -webkit-box-shadow: 0 0 10px 4px #444443;

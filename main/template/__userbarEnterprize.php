@@ -4,6 +4,6 @@
  */
 ?>
 
-<div class="fixedTopBar__dd fixedTopBar__logOut">
+<div class="topbarfix_dd topbarfix_logOut">
     <?= $page->render('___userbarEnterprizeContent') ?>
 </div>

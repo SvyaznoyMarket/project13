@@ -15,10 +15,10 @@
 
 		userBar = utils.extendApp('ENTER.userBar'),
 
-		userBarFixed = userBar.userBarFixed = $('.fixedTopBar.mFixed'),
-		userbarStatic = userBar.userBarStatic = $('.fixedTopBar.mStatic'),
+		userBarFixed = userBar.userBarFixed = $('.topbarfix-fx'),
+		userbarStatic = userBar.userBarStatic = $('.topbarfix-stc'),
 
-		topBtn = userBarFixed.find('.fixedTopBar__upLink'),
+		topBtn = userBarFixed.find('.topbarfix_upLink'),
 		userbarConfig = userBarFixed.data('value'),
 		body = $('body'),
 		w = $(window),
@@ -92,8 +92,8 @@
 			console.log(data);
 
 			var
-				userWrap = userBarFixed.find('.fixedTopBar__logIn'),
-				userWrapStatic = userbarStatic.find('.fixedTopBar__logIn'),
+				userWrap = userBarFixed.find('.topbarfix_log'),
+				userWrapStatic = userbarStatic.find('.topbarfix_log'),
 				template = $('#userbar_user_tmpl'),
 				partials = template.data('partial'),
 				html;
@@ -105,8 +105,8 @@
 
 			html = Mustache.render(template.html(), data, partials);
 
-			userWrapStatic.removeClass('mLogin');
-			userWrap.removeClass('mLogin');
+			userWrapStatic.removeClass('topbarfix_log-unl');
+			userWrap.removeClass('topbarfix_log-unl');
 			userWrapStatic.html(html);
 			userWrap.html(html);
 		},
@@ -116,8 +116,8 @@
 		 */
 		closeBuyInfo = function closeBuyInfo() {
 			var
-				wrap = userBarFixed.find('.fixedTopBar__cart'),
-				wrapLogIn = userBarFixed.find('.fixedTopBar__logIn'),
+				wrap = userBarFixed.find('.topbarfix_cart'),
+				wrapLogIn = userBarFixed.find('.topbarfix_log'),
 				openClass = 'mOpenedPopup',
 				upsaleWrap = wrap.find('.hintDd');
 			// end of vars
@@ -128,7 +128,7 @@
 				 */
 				removeBuyInfoBlock = function removeBuyInfoBlock() {
 					var
-						buyInfo = $('.fixedTopBar__cartOn');
+						buyInfo = $('.topbarfix_cartOn');
 					// end of vars
 
 					if ( !buyInfo.length ) {
@@ -196,8 +196,8 @@
 			console.info('userbar::showBuyInfo');
 
 			var
-				wrap = userBarFixed.find('.fixedTopBar__cart'),
-				wrapLogIn = userBarFixed.find('.fixedTopBar__logIn'),
+				wrap = userBarFixed.find('.topbarfix_cart'),
+				wrapLogIn = userBarFixed.find('.topbarfix_log'),
 				template = $('#buyinfo_tmpl'),
 				partials = template.data('partial'),
 				openClass = 'mOpenedPopup',
@@ -212,9 +212,9 @@
 			console.log(dataToRender);
 
 			html = Mustache.render(template.html(), dataToRender, partials);
-			buyInfo = $(html).css({ left: -129 });
+			buyInfo = $(html).css({ right: -1 });
 			
-			buyInfo.find('.cartList__item').eq(0).addClass('mHover');
+			buyInfo.find('.cartLst_i').eq(0).addClass('mHover');
 			wrapLogIn.addClass(openClass);
 			wrap.addClass(openClass);
 			wrap.append(buyInfo);
@@ -363,8 +363,8 @@
 			console.log(clientCart);
 
 			var
-				cartWrap = userBarFixed.find('.fixedTopBar__cart'),
-				cartWrapStatic = userbarStatic.find('.fixedTopBar__cart'),
+				cartWrap = userBarFixed.find('.topbarfix_cart'),
+				cartWrapStatic = userbarStatic.find('.topbarfix_cart'),
 				template = $('#userbar_cart_tmpl'),
 				partials = template.data('partial'),
 				html;
@@ -424,7 +424,7 @@
 			console.info('userbar::showUpsell');
 
 			var
-				cartWrap = userBarFixed.find('.fixedTopBar__cart'),
+				cartWrap = userBarFixed.find('.topbarfix_cart'),
 				upsaleWrap = cartWrap.find('.hintDd'),
 				slider;
 			// end of vars

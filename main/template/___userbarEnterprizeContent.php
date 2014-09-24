@@ -5,10 +5,10 @@
 ?>
 
 <div class="enterPrize">
-    <div class="enterPrize__text">
+    <div class="enterPrize_text">
         <strong class="title">ENTER PRIZE</strong>
         Здесь скидки до 70%<br/> в ENTER!
     </div>
 
-    <a href="<?= $page->url('enterprize', ['from' => 'enterprize-dropdown-banner']) ?>" class="mBtnOrange enterPrize__reglink">Получить</a>
+    <a href="<?= $page->url('enterprize', ['from' => 'enterprize-dropdown-banner']) ?>" class="mBtnOrange enterPrize_reglink">Получить</a>
 </div>

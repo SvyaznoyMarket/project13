@@ -181,8 +181,8 @@ $c->crm['debug'] = false;
 
 $c->connectTerminal = true;
 
-$c->company['phone'] = '8 (800) 700-00-09';
-$c->company['moscowPhone'] = '8 (495) 775-00-06';
+$c->company['phone'] = '+7 (800) 700-00-09';
+$c->company['moscowPhone'] = '+7 (495) 703-77-30';
 $c->company['icq'] = '648198963';
 
 $c->jsonLog['enabled'] = true;

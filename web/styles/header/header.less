@@ -1,34 +1,120 @@
-.header {
+.topbar {
+	border-bottom: none;
 
-	.topbar {
+	&_loc {
+		color: @black;
+		.inline-block();
+	    float: left;
+	    font-size: 14px;
+	    line-height: 50px;
+	    margin-right: 20px;
+	    text-decoration: underline;
+	}
 
-		.menuItem {
-			background: url("@{base-url}/header/img/bgTrans.gif") repeat-y 100% 0;
-			float: right;
-			margin: -10px 0 0;
-			height: 49px;
+	&_call {
+		float: left;
 
-			&__link {
-				color: @white;
-				background: url("@{base-url}/header/img/bgTopMenuItem.gif") @black no-repeat 0 0;
-				display: block;
-				height: 27px;
-				font: normal 11px/27px 'Enter Type';
-				padding: 0 15px 0 12px;
-				text-transform: uppercase;
-				margin: 10px 0 0;
+		&_t {
+			background: url("@{base-url}/header/img/icons.png") no-repeat 0 1px;
+			.inline-block();
+			color: #f99b1c;
+		    font-size: 12px;
+		    font-weight: bold;
+		    line-height: 1.1;
+		    margin: 12px 0 0;
+		    padding: 0 0 2px 15px;
+		    vertical-align: top;
+		    width: 52px;
+		}
 
-				&:hover {
-					text-decoration: none;
-				}
-			}
+		&_lst {
+			.inline-block();
+			font-size: 14px;
+			font-weight: bold;
+			margin: 7px 20px 0 0;
+		}
 
-			&__text {
-				background-position: 0 50%;
-				background-repeat: no-repeat;
-				padding-left: 20px;
-				display: block;
+		&_i {
+			display: block;
+
+			&:last-child {
+				color: #808080;
 			}
 		}
 	}
+
+	&_lks {
+		.inline-block();
+		margin: 6px 0 0;
+
+		&_i {
+			display: block;
+			color: #808080;
+			font-size: 13px;
+			text-decoration: underline;
+		}
+	}
+
+	&_ep {
+		background: url("@{base-url}/header/img/icon_ep.png") no-repeat 0 50%;
+		display: inline-block;
+		width: 112px;
+		height: 49px;
+		float: right;
+		margin-right: 10px;
+	}
+
+	.menuItem {
+		background: url("@{base-url}/header/img/bgTrans.gif") repeat-y 100% 0;
+		float: right;
+		margin: -10px 0 0;
+		height: 49px;
+
+		&__link {
+			color: @white;
+			background: url("@{base-url}/header/img/bgTopMenuItem.gif") @black no-repeat 0 0;
+			display: block;
+			height: 27px;
+			font: normal 11px/27px 'Enter Type';
+			padding: 0 15px 0 12px;
+			text-transform: uppercase;
+			margin: 10px 0 0;
+
+			&:hover {
+				text-decoration: none;
+			}
+		}
+
+		&__text {
+			background-position: 0 50%;
+			background-repeat: no-repeat;
+			padding-left: 20px;
+			display: block;
+		}
+	}
+}
+
+#mainPage{
+  background: @black;
+
+  .topbar{
+    margin: 0 0 20px 0;
+    padding: 0 0 0 10px;
+    width: auto;
+    background: none;
+    border: none;
+    border-bottom: 1px solid @typLinkColor;
+    height: 50px;
+
+    &_loc {
+    	color: @white;
+    }
+
+    &_call {
+
+    	&_lst {
+    		color: @white;
+    	}
+    }
+  }
 }

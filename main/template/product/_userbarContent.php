@@ -12,16 +12,15 @@ if ($product) {
     $links[] = ['name' => $product->getWebName(), 'url' => null, 'last' => true];
 } ?>
 
-<div class="fixedTopBar__crumbs">
-    <div class="fixedTopBar__crumbsImg"><img class="crumbsImg" src="<?= $product ? $product->getImageUrl() : '' ?>" /></div>
+<div class="topbarfix_crumbs">
+    <div class="topbarfix_crumbsImg"><img class="crumbsImg" src="<?= $product ? $product->getImageUrl() : '' ?>" /></div>
 
     <div class="wrapperCrumbsList">
         <?= $helper->render('__breadcrumbsUserbar', ['links' => $links]) ?>
-        <div class="transGradWhite"></div>
     </div>
 </div>
 
-<div class="fixedTopBar__buy <?= $line ? 'hidden' : 'none' ?>">
+<div class="topbarfix_buy <?= $line ? 'hidden' : 'none' ?>">
 
     <? if ($product->getIsBuyable() && (!$product->getKit()) || $product->getIsKitLocked()): ?>
         <?= $helper->render('cart/__button-product', [

@@ -18,16 +18,15 @@ if ($category) {
     }
 } ?>
 
-<div class="fixedTopBar__up">
-    <a class="btnGrey fixedTopBar__upLink" href="">
+<div class="topbarfix_up">
+    <a class="btnGrey topbarfix_upLink" href="">
         <em class="cornerTop">&#9650;</em> Бренды и параметры
     </a>
 </div>
 
-<div class="fixedTopBar__crumbs">
-    <a class="fixedTopBar__crumbsImg" href="#"><img class="crumbsImg" src="<?= $category ? $category->getImageUrl() : '' ?>" alt="" /></a>
-    <div class="fixedTopBar__wrapCrumbsList">
+<div class="topbarfix_crumbs">
+    <a class="topbarfix_crumbsImg" href="#"><img class="crumbsImg" src="<?= $category ? $category->getImageUrl() : '' ?>" alt="" /></a>
+    <div class="topbarfix_wrapCrumbsList">
         <?= $helper->render('__breadcrumbsUserbar', ['links' => $links]) ?>
-        <div class="transGradWhite"></div>
     </div>
 </div>
