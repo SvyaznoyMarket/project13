@@ -1862,6 +1862,10 @@ img[height="0"] {
   }
   .topbarfix.mProdCard .topbarfix_crumbs {
     width: 100%;
+    left: 0;
+    padding: 0 5px;
+    position: absolute;
+    top: 0;
   }
   .topbarfix.mProdCard .topbarfix_crumbsListItem {
     background-image: none;
@@ -1962,13 +1966,16 @@ img[height="0"] {
   .topbarfix_crumbs {
     float: left;
     padding: 0 5px;
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
     overflow: hidden;
   }
   .topbarfix_wrapCrumbsList {
-    width: 270px;
+    width: 240px;
     display: inline-block;
     vertical-align: top;
     /* IE6-8 */

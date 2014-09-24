@@ -60,6 +60,10 @@
 
 			&_crumbs {
 				width: 100%;
+			    left: 0;
+			    padding: 0 5px;
+			    position: absolute;
+			    top: 0;
 			}
 
 			&_crumbsListItem {
@@ -168,14 +172,13 @@
 	&_crumbs {
 		float: left;
 		padding: 0 5px;
-		position: absolute;
-		top: 0;
-		left: 0;
+		position: relative;
+		.inline-block();
 		overflow: hidden;
 	}
 
 	&_wrapCrumbsList {
-		width: 270px;
+		width: 240px;
 		.inline-block();
 		position: relative;
 		overflow: hidden;
