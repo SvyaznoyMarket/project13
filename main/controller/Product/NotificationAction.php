@@ -39,17 +39,19 @@ class NotificationAction {
 
             $userEntity = \App::user()->getEntity();
 
+            $exception = null;
+
             if ($userEntity) {
                 $client->addQuery(
                     'subscribe/bind-email-to-user',
                     ['token' => $userEntity->getToken(), 'email' => $email, 'channel_id' => 2],
                     [],
                     null,
-                    function(\Curl\Exception $e) {
+                    function(\Curl\Exception $e) use(&$exception) {
                         if ($e->getCode() == self::SUBSCRIPTION_NOT_EXISTS_CODE) {
                             \App::exception()->remove($e);
                         } else {
-                            throw $e;
+                            $exception = $e;
                         }
                     }
                 );
@@ -66,11 +68,11 @@ class NotificationAction {
                 $params['token'] = $userEntity->getToken();
             }
 
-            $client->addQuery('subscribe/create', $params, [], null, function(\Curl\Exception $e) {
+            $client->addQuery('subscribe/create', $params, [], null, function(\Curl\Exception $e) use(&$exception) {
                 if ($e->getCode() == self::CHANNEL_2_SUBSCRIPTION_EXISTS_CODE) {
                     \App::exception()->remove($e);
                 } else {
-                    throw $e;
+                    $exception = $e;
                 }
             });
 
@@ -82,11 +84,11 @@ class NotificationAction {
                         ['token' => $userEntity->getToken(), 'email' => $email, 'channel_id' => 1],
                         [],
                         null,
-                        function(\Curl\Exception $e) {
+                        function(\Curl\Exception $e) use(&$exception) {
                             if ($e->getCode() == self::SUBSCRIPTION_NOT_EXISTS_CODE) {
                                 \App::exception()->remove($e);
                             } else {
-                                throw $e;
+                                $exception = $e;
                             }
                         }
                     );
@@ -116,17 +118,21 @@ class NotificationAction {
                         $params['token'] = $userEntity->getToken();
                     }
 
-                    $client->addQuery('subscribe/create', $params, [], null, function(\Curl\Exception $e) {
+                    $client->addQuery('subscribe/create', $params, [], null, function(\Curl\Exception $e) use(&$exception) {
                         if ($e->getCode() == self::CHANNEL_1_SUBSCRIPTION_EXISTS_CODE) {
                             \App::exception()->remove($e);
                         } else {
-                            throw $e;
+                            $exception = $e;
                         }
                     });
                 }
             }
 
             $client->execute();
+
+            if ($exception && $exception instanceof \Exception) {
+                throw $exception;
+            }
 
             $responseData = ['success' => true];
         } catch (\Exception $e) {
