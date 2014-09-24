@@ -2175,9 +2175,10 @@ img[height="0"] {
     *display: inline;
     *zoom: 1;
     width: 295px;
-    margin: 12px 10px 0 0;
+    margin: 12px 0 0;
     float: right;
     padding-left: 5px;
+    padding-right: 10px;
     background: #ffffff;
     position: relative;
     z-index: 10;
