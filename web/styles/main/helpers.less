@@ -324,7 +324,6 @@
     .rounded(4px);
     .box-sizing();
     .inline-block();
-    height: 35px;
     padding: 0 10px;
 
     text-align: center;
@@ -333,11 +332,13 @@
     border: 1px solid @lightgrey-2;
     background: @white;
 
-    line-height: 35px;
-
     &:disabled {
         .opacity(0.6);
         color: @lightgrey-5;
+    }
+
+    &:hover {
+        text-decoration: none;
     }
 } 
 

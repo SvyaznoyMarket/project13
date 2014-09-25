@@ -870,13 +870,11 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    height: 35px;
     padding: 0 10px;
     text-align: center;
     vertical-align: top;
     border: 1px solid #d3d3d3;
     background: #ffffff;
-    line-height: 35px;
   }
   .btn1:disabled {
     -moz-opacity: 0.6;
@@ -886,6 +884,9 @@ img[height="0"] {
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=60);
     filter: alpha(opacity=60);
     color: #5e5e5e;
+  }
+  .btn1:hover {
+    text-decoration: none;
   }
   .btn2 {
     background: #e5e5e5;
@@ -6498,6 +6499,25 @@ img[height="0"] {
     line-height: 20px;
     text-align: center;
     width: 25px;
+  }
+  .btnCmprb {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    border: 1px solid #c7c7c7;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background: url("/styles/btn/img/icon_compare.png") no-repeat 3px -82px #ffffff;
+    height: 25px;
+    width: 25px;
+  }
+  .btnCmprb-act {
+    background-position: 3px -58px;
+    background-color: #fff5e0;
+    border-color: #fb9c00;
   }
 }
 @media all {
