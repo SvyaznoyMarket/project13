@@ -209,6 +209,7 @@ class Action {
         // bannerPlaceholder
         $bannerPlaceholder = [];
         \App::scmsClient()->addQuery('category/get', ['uid' => \App::config()->rootCategoryUi, 'geo_id' => \App::user()->getRegion()->getId()], [], function($data) use (&$bannerPlaceholder) {
+            $data = \RepositoryManager::productCategory()->convertScmsDataToOldCmsData($data);
             if (isset($data['bannerPlaceholder'])) {
                 $bannerPlaceholder = $data['bannerPlaceholder'];
             }
