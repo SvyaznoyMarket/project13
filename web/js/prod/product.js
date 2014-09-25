@@ -712,8 +712,7 @@
 	var product = $('#jsProductCard').data('value'),
         packageSetBtn = $('.jsChangePackageSet'),
 		packageSetWindow = $('.jsPackageSetPopup'),
-        packageProducts = $('.mPackageSetEdit').data('value'),
-        knockoutUrl = ENTER.config.debug ? '/js/vendor/knockout.js' :'/js/prod/knockout.min.js'; // TODO-zra говнокод
+        packageProducts = $('.mPackageSetEdit').data('value');
 
 	/**
 	 * Показ окна с изменение комплекта 
@@ -740,7 +739,7 @@
         packageSetWindow.trigger('close.lme');
     });
 
-    if (!window.ko) $.getScript(knockoutUrl, init); else init();
+    init();
 
     function init() {
         var ko = window.ko;
@@ -892,7 +891,9 @@
 
         }
 
-        ko.applyBindings(new ProductList());
+		ko.cleanNode(document.querySelector('.jsPackageSetPopup')); // на всякий случай
+        ko.applyBindings(new ProductList(), document.querySelector('.jsPackageSetPopup'));
+
     }
 
 }(window.ENTER));

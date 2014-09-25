@@ -1694,14 +1694,6 @@ img[height="0"] {
     display: block;
     margin: 0 0 3px;
   }
-  .topbarfix .topbarfix_cartOn .transGradWhite {
-    background: url("/styles/topbarfix/img/tranGradientWhiteLong.png") no-repeat 0 0;
-    position: absolute;
-    left: 0;
-    top: 193px;
-    height: 20px;
-    width: 229px;
-  }
   .topbarfix_logOutLink {
     display: block;
     text-align: center;

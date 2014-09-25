@@ -41,10 +41,8 @@
 						data.product.fromUpsale = upsale && upsale.fromUpsale ? true : false;
 					}
 
-					$('.jsBuyButton[data-group="'+groupBtn+'"]').html('В корзине').addClass('mBought').attr('href', '/cart');
 					body.trigger('addtocart', [data]);
 					body.trigger('getupsale', [data, upsale]);
-					body.trigger('updatespinner',[groupBtn]);
 				};
 			// end of functions
 
@@ -76,30 +74,11 @@
 			button.trigger('buy');
 
 			return false;
-		},
-
-		/**
-		 * Маркировка кнопок «Купить»
-		 * см.BlackBox startAction
-		 */
-		markCartButton = function markCartButton() {
-			var
-				products = clientCart.products,
-				i,
-				len;
-			// end of vars
-			
-			console.info('markCartButton');
-
-			for ( i = 0, len = products.length; i < len; i++ ) {
-				$('.'+products[i].cartButton.id).html('В корзине').addClass('mBought').attr('href','/cart');
-			}
 		};
 	// end of functions
-	
+
 
 	$(document).ready(function() {
-		body.bind('markcartbutton', markCartButton);
 		body.on('click', '.jsBuyButton', buyButtonHandler);
 		body.on('buy', '.jsBuyButton', buy);
 	});

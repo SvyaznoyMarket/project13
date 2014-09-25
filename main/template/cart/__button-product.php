@@ -54,7 +54,7 @@ return function (
     ];
     ?>
     <div class="bWidgetBuy__eBuy btnBuy">
-        <a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>" data-upsale='<?= json_encode($upsaleData) ?>'<? if (!empty($onClick)): ?> onclick="<?= $onClick ?>" <? endif ?>><?= $value ?></a>
+        <a data-bind="buyButtonBinding: cart" href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>" data-upsale='<?= json_encode($upsaleData) ?>'<? if (!empty($onClick)): ?> onclick="<?= $onClick ?>" <? endif ?>><?= $value ?></a>
     </div>
 
 <? };
