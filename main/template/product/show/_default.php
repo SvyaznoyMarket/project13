@@ -172,6 +172,18 @@ $isKitPage = (bool)$product->getKit();
             <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
         <? endif ?>
 
+        <!-- кнопка сравнения -->
+        <div class="btnCmpr">
+            <a class="btnCmpr_lk" href=""><span class="btnCmpr_tx">Добавить к сравнению</span></a>
+        </div>
+        
+        <!-- активное состояние, добавление активных классов, смена текста -->
+        <div class="btnCmpr btnCmpr-act">
+            <a class="btnCmpr_lk btnCmpr_lk-act" href=""><span class="btnCmpr_tx">Убрать из сравнения</span></a>
+            <!-- если в сравнении есть несколько товаров из одной категории -->
+            <div class="btnCmpr_more"><a class="btnCmpr_more_lk" href="">Сравнить</a> <span class="btnCmpr_more_qn">2</span></div>
+        </div>
+
         <? if (5 !== $product->getStatusId()): // SITE-3109 ?>
             <?= $helper->render('product/__delivery', ['product' => $product, 'deliveryData' => $deliveryData, 'shopStates' => $shopStates]) // Доставка ?>
         <? endif ?>

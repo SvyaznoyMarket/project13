@@ -1,0 +1,50 @@
+.btnCmpr {
+    text-align: center;
+    margin-top: 25px;
+
+    &-act {
+    	text-align: left;
+    	margin-left: 5px;
+    }
+
+    &_lk {
+        .inline-block();
+        background: url("@{base-url}/btn/img/icon_compare.png") no-repeat 0 2px;
+        padding: 0 0 4px 28px;
+
+        &:hover {
+        	text-decoration: none;
+        }
+
+        &-act {
+        	background-position: 0 -30px;
+        }
+    }
+
+    &_tx {
+        border-bottom: 1px dotted;
+        font-size: 14px;
+    }
+
+    &_more {
+    	margin: 7px 0 0 28px;
+		
+		&_lk {
+			.inline-block();
+			text-decoration: underline;
+			font-size: 14px;
+			margin-right: 2px;
+		}
+
+		&_qn {
+			background: none repeat scroll 0 0 #666;
+			.rounded(4px);
+		    color: @white;
+		    .inline-block();
+		    height: 20px;
+		    line-height: 20px;
+		    text-align: center;
+		    width: 25px;
+		}
+    }
+}

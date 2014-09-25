@@ -6441,6 +6441,65 @@ img[height="0"] {
     cursor: pointer;
   }
 }
+/*---------Личный кабинет пользователя----------*/
+@media all {
+  .btnCmpr {
+    text-align: center;
+    margin-top: 25px;
+  }
+  .btnCmpr-act {
+    text-align: left;
+    margin-left: 5px;
+  }
+  .btnCmpr_lk {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    background: url("/styles/btn/img/icon_compare.png") no-repeat 0 2px;
+    padding: 0 0 4px 28px;
+  }
+  .btnCmpr_lk:hover {
+    text-decoration: none;
+  }
+  .btnCmpr_lk-act {
+    background-position: 0 -30px;
+  }
+  .btnCmpr_tx {
+    border-bottom: 1px dotted;
+    font-size: 14px;
+  }
+  .btnCmpr_more {
+    margin: 7px 0 0 28px;
+  }
+  .btnCmpr_more_lk {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    text-decoration: underline;
+    font-size: 14px;
+    margin-right: 2px;
+  }
+  .btnCmpr_more_qn {
+    background: none repeat scroll 0 0 #666;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    color: #ffffff;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    width: 25px;
+  }
+}
 @media all {
   .notBuying {
     position: relative;
