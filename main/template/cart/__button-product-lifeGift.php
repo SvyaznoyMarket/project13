@@ -25,7 +25,7 @@ return function (
 ?>
 <div class="bWidgetBuy mWidget mLiftGift">
     <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId())): ?>
-        <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId() . '-lifeGift')]) ?>
+        <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId() . '-lifeGift'), 'productId' => $product->getId()]) ?>
     <? endif ?>
 
     <div class="bWidgetBuy__eBuy btnBuy mBtnLifeGift">

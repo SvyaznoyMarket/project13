@@ -1059,6 +1059,20 @@ return [
         'pattern' => '/compare',
         'action'  => ['Compare\CompareAction', 'execute'],
     ],
+    'compare.add' => [
+        'pattern' => '/compare/add-product/{id}',
+        'action'  => ['Compare\CompareAction', 'add'],
+        'require'   => [ 'id' => '\d+']
+    ],
+    'compare.delete' => [
+        'pattern' => '/compare/delete-product/{id}',
+        'action'  => ['Compare\CompareAction', 'delete'],
+        'require'   => [ 'id' => '\d+']
+    ],
+    'compare.clear' => [
+        'pattern' => '/compare/clear',
+        'action'  => ['Compare\CompareAction', 'clear'],
+    ],
 
 	//content (должен быть в самом конце, иначе под паттерн попадут другие страницы)
     'content' => [

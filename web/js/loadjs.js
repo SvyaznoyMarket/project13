@@ -261,7 +261,8 @@
 		},
 
 		'main': function() {
-			$LAB.queueWait( function() {
+			$LAB.queueScript( knockoutUrl)
+				.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
@@ -334,7 +335,8 @@
 		},
 
 		'enterprize': function() {
-			$LAB.queueWait( function() {
+			$LAB.queueScript( knockoutUrl)
+				.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
@@ -352,7 +354,8 @@
 		},
 
 		'cart': function() {
-			$LAB.queueWait( function() {
+			$LAB.queueScript( knockoutUrl)
+				.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script('JsHttpRequest.min.js')
 					.script( getWithVersion('library.js') )
@@ -373,7 +376,8 @@
 
 		'lk': function() {
 			$LAB.queueWait( function() {
-				$LAB.script( getWithVersion('jquery-plugins.js') )
+				$LAB.queueScript( knockoutUrl)
+					.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
 					.script( loadDebugPanel )
@@ -431,7 +435,8 @@
 		},
 
         'order-v3': function() {
-            $LAB.queueScript(yandexMapUrlv2_1)
+            $LAB.queueScript( knockoutUrl)
+				.queueScript(yandexMapUrlv2_1)
                 .queueWait( function() {
                     $LAB.script( getWithVersion('jquery-plugins.js') )
                         .script( getWithVersion('library.js') )
@@ -447,7 +452,8 @@
         },
 
 		'order_complete': function() {
-			$LAB.queueWait( function() {
+			$LAB.queueScript( knockoutUrl)
+				.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
@@ -464,7 +470,8 @@
 		},
 
 		'product_catalog': function() {
-			$LAB.queueWait( function() {
+			$LAB.queueScript( knockoutUrl)
+				.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( historyUrl )
@@ -486,7 +493,7 @@
 
 		'product_card': function() {
 			$LAB
-				// .queueScript( knockoutUrl )
+				.queueScript( knockoutUrl )
 				// .queueScript( yandexMapUrl )
 				.queueWait( function() {
 					$LAB.script( getWithVersion('jquery-plugins.js') )
@@ -524,7 +531,8 @@
 		},
 
 		'shop': function() {
-			$LAB.queueScript( yandexMapUrlv2_1 )
+			$LAB.queueScript( knockoutUrl)
+				.queueScript( yandexMapUrlv2_1 )
 				.queueWait( function() {
 					$LAB.script( getWithVersion('jquery-plugins.js') )
 						.script( getWithVersion('library.js') )
@@ -542,29 +550,9 @@
 			}).runQueue();
 		},
 
-		// неиспользуется
-		'product_stock': function() {
-			$LAB.queueScript( yandexMapUrl )
-				.queueScript( knockoutUrl )
-				.queueWait( function() {
-					$LAB.script( getWithVersion('jquery-plugins.js') )
-						.script( getWithVersion('library.js') )
-						.script( mustacheUrl )
-						.script( loadDebugPanel )
-						.wait()
-						.script( getWithVersion('common.js') )
-						.wait()
-						.script( getWithVersion('product.js') )
-						.script( getWithVersion('oneclick.js') )
-						.wait()
-						.script( optimizelyUrl )
-						.script('adfox.asyn.code.ver3.min.js')
-						.wait()
-						.script( getWithVersion('ports.js') )
-				}).runQueue();
-		},
         'slots': function() {
-            $LAB.queueWait( function() {
+            $LAB.queueScript( knockoutUrl)
+				.queueWait( function() {
                 $LAB.script( getWithVersion('jquery-plugins.js') )
                     .script( getWithVersion('library.js') )
                     .script( mustacheUrl )

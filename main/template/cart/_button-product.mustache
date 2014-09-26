@@ -2,6 +2,7 @@
     <a
         href="{{url}}"
         class="{{class}} btnBuy__eLink{{#disabled}} mDisabled{{/disabled}}{{#inShopOnly}} mShopsOnly{{/inShopOnly}}"
+        data-bind="buyButtonBinding: cart"
         data-group="{{data.group}}"
         data-upsale='{{data.upsale}}'
     >

@@ -17,7 +17,6 @@
 		//clientUserInfo = utils.extendApp('ENTER.config.userInfo'),
 		body = $('body'),
 		dCook = window.docCookies,
-		loadBlackBox = true,
 		authorized_cookie = '_authorized';
 	// end of vars
 	
@@ -47,8 +46,6 @@
 				return new BlackBox(updateUrl);
 			}
 			// constructor body
-
-			this.updUrl = ( !window.docCookies.hasItem('enter') || !window.docCookies.hasItem('enter_auth') ) ? updateUrl += '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000) : updateUrl;
 		}
 
 		
@@ -77,15 +74,16 @@
 				 * @public
 				 */
 				update = function update( basketInfo ) {
-					clientCart.totalSum = basketInfo.quantity;
+
+					console.log('basketInfo', basketInfo)
+
+					ENTER.UserModel.cartProductQuantity(basketInfo.quantity);
 					clientCart.totalQuan = basketInfo.sum;
 
 					body.trigger('basketUpdate', [basketInfo]);
 
 					// запуск маркировки кнопок «купить»
 					body.trigger('markcartbutton');
-					// запуск маркировки спиннеров
-					body.trigger('updatespinner');
 				},
 
 				/**
@@ -102,28 +100,9 @@
 				 * @public
 				 */
 				add = function add ( data ) {
-					var product = data.product,
-						cart = data.cart,
-						tmpCart = {
-							formattedPrice: printPrice(product.price),
-							image: product.img,
-							url: product.link
-						},
-						toClientCart = {},
-						toBasketUpdate = {
-							quantity: cart.full_quantity,
-							sum: cart.full_price
-						};
-					// end of vars
 
-					toClientCart = $.extend(
-							{},
-							product,
-							tmpCart);
-
-					clientCart.products.push(toClientCart);
-					self.basket().update(toBasketUpdate);
-					// body.trigger('productAdded');
+					console.log('BlackBox add');
+					ENTER.UserModel.cart.unshift(data.product);
 
 				},
 
@@ -157,26 +136,7 @@
                 },
 
 				deleteItem = function deleteItem( data ) {
-					console.log('deleteItem');
-					var
-						deleteItemId = data.product.id,
-						toBasketUpdate = {
-							quantity: data.cart.full_quantity,
-							sum: data.cart.full_price
-						},
-						i;
-					// end of vars
-					
-					for ( i = clientCart.products.length - 1; i >= 0; i-- ) {
-						if ( clientCart.products[i].id === deleteItemId ) {
-							clientCart.products.splice(i, 1);
-
-							self.basket().update(toBasketUpdate);
-
-							return;
-						}
-					}
-
+					console.log('deleteItem', data);
 				};
 			//end of functions
 
@@ -198,10 +158,6 @@
 		 * @return	{Function}	update
 		 */
 		BlackBox.prototype.user = function() {
-			var 
-				self = this;
-			// end of vars
-
 
 			var
 				/**
@@ -236,82 +192,9 @@
 			};
 		};
 
-
-		/**
-		 * Инициализация BlackBox.
-		 * Получение данных о корзине и пользователе с сервера.
-		 * 
-		 * @this	{BlackBox}
-		 */
 		BlackBox.prototype.init = function() {
-			var
-				self = this;
-			// end of vars
-
-
-			var startTime, endTime, spendTime,
-				/**
-				 * Обработчик Action присланных с сервера
-				 * 
-				 * @param	{Object}	action	Список действий которые необходимо выполнить
-				 * 
-				 * @private
-				 */
-				/*startAction = function startAction( action ) {
-				},*/
-
-				/**
-				 * Обработчик данных о корзине и пользователе
-				 * 
-				 * @param	{Object}	data
-				 * 
-				 * @private
-				 */ 
-				parseData = function parseData( data ) {
-					var
-						userInfo = data.user,
-						cartInfo = data.cart,
-						productsInfo = data.cartProducts,
-						actionInfo = data.action;
-					//end of vars
-					
-
-					if ( data.success !== true ) {
-						return false;
-					}
-
-					self.user().update(userInfo);
-
-					if ( cartInfo.quantity && productsInfo.length ) {
-						clientCart.products = productsInfo;
-						self.basket().update( cartInfo );
-					}
-
-					/*if ( actionInfo !== undefined ) {
-						startAction(actionInfo);
-					}*/
-				};
-			//end of functions
-
-			//$.get(self.updUrl, parseData);
-            $.ajax({
-                url: self.updUrl,
-                beforeSend: function(){
-                    startTime = new Date().getTime();
-                },
-                success: function(data){
-                    endTime = new Date().getTime();
-                    spendTime = endTime - startTime;
-                    parseData(data);
-                    if (typeof ga == 'function') {
-                        ga('send', 'timing', 'userInfo', 'Load User Info', spendTime);
-                        console.log('[Google Analytics] Send user/info timing: %s ms', spendTime)
-                    }
-                }
-            })
 		};
 
-	
 		return BlackBox;
 	
 	}());
@@ -326,24 +209,5 @@
 	 * @type	{BlackBox}
 	 */
 	utils.blackBox = new BlackBox(userUrl);
-	console.log('utils.blackBox created.');
-
-	if ( dCook.hasItem(authorized_cookie) ) {
-//		loadBlackBox = (1 == dCook.getItem(authorized_cookie)) ? true : false;
-        loadBlackBox = true;
-		console.log('Authorized CookieItem is:');
-		console.log(dCook.getItem(authorized_cookie));
-		console.log(loadBlackBox);
-	}
-
-	if ( loadBlackBox ) {
-		utils.blackBox.init();
-		console.log('blackBox with init');
-	}
-	else {
-		config.userInfo = false;
-		// если === false, то данных юзера не узнаем , поэтому запустим RetailRocket.action() без параметров
-		console.log('blackBox without init');
-	}
 
 }(window.ENTER));

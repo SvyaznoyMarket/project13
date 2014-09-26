@@ -39,6 +39,7 @@
 		 * Показ юзербара
 		 */
 		showUserbar = function showUserbar() {
+			console.log('showUserbar');
 			userBarFixed.slideDown();
 			userbarStatic.css('visibility','hidden');
 		},
@@ -47,6 +48,7 @@
 		 * Скрытие юзербара
 		 */
 		hideUserbar = function hideUserbar() {
+			console.log('hideUserbar');
 			userBarFixed.slideUp();
 			userbarStatic.css('visibility','visible');
 		},
@@ -79,36 +81,6 @@
 			ENTER.catalog.filter.openFilter();
 
 			return false;
-		},
-
-		/**
-		 * Обновление данных пользователя
-		 *
-		 * @param	{Object}	event	Данные о событии
-		 * @param	{Object}	data	Данные пользователя
-		 */
-		updateUserInfo = function updateUserInfo( event, data ) {
-			console.info('userbar::updateUserInfo');
-			console.log(data);
-
-			var
-				userWrap = userBarFixed.find('.topbarfix_log'),
-				userWrapStatic = userbarStatic.find('.topbarfix_log'),
-				template = $('#userbar_user_tmpl'),
-				partials = template.data('partial'),
-				html;
-			// end of vars
-
-			if ( !( data && data.name && data.link ) ) {
-				return;
-			}
-
-			html = Mustache.render(template.html(), data, partials);
-
-			userWrapStatic.removeClass('topbarfix_log-unl');
-			userWrap.removeClass('topbarfix_log-unl');
-			userWrapStatic.html(html);
-			userWrap.html(html);
 		},
 
 		/**
@@ -195,34 +167,11 @@
 		showBuyInfo = function showBuyInfo( e ) {
 			console.info('userbar::showBuyInfo');
 
-			var
-				wrap = userBarFixed.find('.topbarfix_cart'),
-				wrapLogIn = userBarFixed.find('.topbarfix_log'),
-				template = $('#buyinfo_tmpl'),
-				partials = template.data('partial'),
-				openClass = 'mOpenedPopup',
-				dataToRender = {},
-				buyInfo,
-				html;
-			// end of vars
-
-			dataToRender.products = utils.cloneObject(clientCart.products);
-			dataToRender.showTransparent = !!( dataToRender.products.length > 3 );
-			dataToRender.products.reverse();
-			console.log(dataToRender);
-
-			html = Mustache.render(template.html(), dataToRender, partials);
-			buyInfo = $(html).css({ right: -1 });
-			
-			buyInfo.find('.cartLst_i').eq(0).addClass('mHover');
-			wrapLogIn.addClass(openClass);
-			wrap.addClass(openClass);
-			wrap.append(buyInfo);
+			var	buyInfo = $('.topbarfix_cartOn');
 
 			if ( !userBar.showOverlay ) {
 				body.append(overlay);
 				overlay.fadeIn(300);
-
 				userBar.showOverlay = true;
 			}
 
@@ -312,15 +261,15 @@
 					// аналитика
 					deleteProductAnalytics(res);
 
-					utils.blackBox.basket().deleteItem(res);
+					ENTER.UserModel.cart.remove(function(item){ return item.id == res.product.id});
 
 					//показываем корзину пользователя при удалении товара
-					if ( clientCart.products.length !== 0 ) {
+					if ( ENTER.UserModel.cart().length !== 0 ) {
 						showBuyInfo();
 					}
 
-					//скрываем оверлоу, если товаров в корзине нет
-					if ( clientCart.products.length == 0 ) {
+					//скрываем оверлей, если товаров в корзине нет
+					if ( ENTER.UserModel.cart().length == 0 ) {
 						overlay.fadeOut(300, function() {
 							overlay.off('click');
 							overlay.remove();
@@ -348,69 +297,6 @@
 			});
 
 			return false;
-		},
-
-		/**
-		 * Обновление данных о корзине
-		 * WARNING! перевести на Mustache
-		 * 
-		 * @param	{Object}	event	Данные о событии
-		 * @param	{Object}	data	Данные корзины
-		 */
-		updateBasketInfo = function updateBasketInfo( event, data ) {
-			console.info('userbar::updateBasketInfo');
-			console.log(data);
-			console.log(clientCart);
-
-			var
-				cartWrap = userBarFixed.find('.topbarfix_cart'),
-				cartWrapStatic = userbarStatic.find('.topbarfix_cart'),
-				template = $('#userbar_cart_tmpl'),
-				partials = template.data('partial'),
-				html;
-			// end of vars
-
-			console.log('vars inited');
-
-			data.hasProducts = false;
-			data.showTransparent = false;
-
-			if ( !(data && data.quantity && data.sum ) ) {
-				console.warn('data and data.quantuty and data.sum not true');
-
-				var
-					template = $('#userbar_cart_empty_tmpl');
-					partials = template.data('partial'),
-				// end of vars
-
-				html = Mustache.render(template.html(), data, partials);
-
-				cartWrap.addClass('mEmpty');
-				cartWrapStatic.addClass('mEmpty');
-				cartWrapStatic.html(html);
-				cartWrap.html(html);
-
-				return;
-			}
-
-			if ( clientCart.products.length !== 0 ) {
-				data.hasProducts = true;
-				data.products = utils.cloneObject(clientCart.products);
-				data.products.reverse();
-			}
-
-			if ( clientCart.products.length > 3 ) {
-				data.showTransparent = true;
-			}
-
-			data.sum = printPrice( data.sum );
-			html = Mustache.render(template.html(), data, partials);
-
-			cartWrapStatic.removeClass('mEmpty');
-			cartWrap.removeClass('mEmpty');
-			cartWrapStatic.html(html);
-			cartWrap.html(html);
-			
 		},
 
 		/**
@@ -445,6 +331,8 @@
 				upsaleWrap.append(slider);
 				upsaleWrap.addClass('mhintDdOn');
 				$(slider).goodsSlider();
+
+				ko.applyBindings(ENTER.UserModel, slider);
 
 				// показываем overlay для блока рекомендаций
 				body.append(overlay);
@@ -524,8 +412,6 @@
 	console.log(userbarConfig);
 
 	body.on('click', '.jsUpsaleProduct', upsaleProductClick);
-	body.on('userLogged', updateUserInfo);
-	body.on('basketUpdate', updateBasketInfo);
 	body.on('getupsale', showUpsell);
 
 
@@ -542,7 +428,7 @@
 		}
 
 		if ( scrollTarget.length ) {
-			scrollTargetOffset = scrollTarget.offset().top + userBarFixed.height();
+			scrollTargetOffset = scrollTarget.offset().top + userBarFixed.height() - scrollTarget.height();
 			w.on('scroll', checkScroll);
 		}
 	}

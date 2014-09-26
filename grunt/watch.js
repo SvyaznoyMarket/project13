@@ -53,7 +53,7 @@ module.exports = function (grunt, options) {
 
         commonJS:{
             files: [ pathDev + 'common/*.js'],
-            tasks: ['concat:commonJS', 'uglify:commonJS']
+            tasks: ['jsmin-sourcemap:common']
         },
 
         infopageJS:{

@@ -51,6 +51,7 @@ class InfoAction {
                     'sum'      => 0,
                     'quantity' => 0,
                 ],
+                'compare'   => \App::session()->get(\App::config()->session['compareKey']),
                 'order'   => [
                     'hasCredit' => 1 == $request->cookies->get('credit_on'),
                 ],
@@ -89,43 +90,20 @@ class InfoAction {
                     $product = isset($productsById[$cartProduct->getId()]) ? $productsById[$cartProduct->getId()] : null;
 
                     $cartProductData[] = [
-                        'id'             => $cartProduct->getId(),
-                        'name'           => $product ? $product->getName() : null,
-                        'price'          => $cartProduct->getPrice(),
-                        'formattedPrice' => $helper->formatPrice($cartProduct->getPrice()),
-                        'quantity'       => $cartProduct->getQuantity(),
-                        'deleteUrl'      => $helper->url('cart.product.delete', ['productId' => $cartProduct->getId()]),
-                        'url'            => $product ? $product->getLink() : null,
-                        'image'          => $product ? $product->getImageUrl() : null,
-                        'cartButton'     => [
+                        'id'                => $cartProduct->getId(),
+                        'name'              => $product ? $product->getName() : null,
+                        'price'             => $cartProduct->getPrice(),
+                        'formattedPrice'    => $helper->formatPrice($cartProduct->getPrice()),
+                        'quantity'          => $cartProduct->getQuantity(),
+                        'deleteUrl'         => $helper->url('cart.product.delete', ['productId' => $cartProduct->getId()]),
+                        'link'              => $product ? $product->getLink() : null,
+                        'img'               => $product ? $product->getImageUrl() : null,
+                        'cartButton'        => [
                             'id' => \View\Id::cartButtonForProduct($cartProduct->getId()),
                         ],
                     ];
 
-                    /*
-                    foreach ($cartProduct->getWarranty() as $cartWarranty) {
-                        $buttons['warranty'][] = [
-                            'id'       => \View\Id::cartButtonForProductWarranty($cartProduct->getId(), $cartWarranty->getId()),
-                            'quantity' => $cartWarranty->getQuantity(),
-                        ];
-                    }
-                    foreach ($cartProduct->getService() as $cartService) {
-                        $buttons['service'][] = [
-                            'id'       => \View\Id::cartButtonForProductService($cartProduct->getId(), $cartService->getId()),
-                            'quantity' => $cartService->getQuantity(),
-                        ];
-                    }
-                    */
                 }
-
-                /*
-                foreach ($cart->getServices() as $cartService) {
-                    $buttons['service'][] = [
-                        'id'       => \View\Id::cartButtonForService($cartService->getId()),
-                        'quantity' => $cartService->getQuantity(),
-                    ];
-                }
-                */
 
                 $responseData['cartProducts'] = $cartProductData;
             }

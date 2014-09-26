@@ -142,7 +142,7 @@
     <? if ( $product->isInShopStockOnly() || !$product->getIsBuyable() ) : else : ?>
     <div class="bWidgetBuy mWidget">
         <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId())): ?>
-            <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
+            <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'productId' => $product->getId()]) ?>
         <? endif ?>
 
         <?= $helper->render('cart/__button-product', [
