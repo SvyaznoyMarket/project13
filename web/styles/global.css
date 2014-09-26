@@ -1036,6 +1036,9 @@ img[height="0"] {
   .topbar_ep_mark {
     color: #f99b1c;
   }
+  .topbar_ep:hover {
+    text-decoration: none;
+  }
   .topbar .menuItem {
     background: url("/styles/header/img/bgTrans.gif") repeat-y 100% 0;
     float: right;
@@ -1075,7 +1078,8 @@ img[height="0"] {
   }
   #mainPage .topbar_ep {
     color: #fff;
-    background-position: 0 -219px;
+    background-position: 0 -218px;
+    line-height: 50px;
   }
   #mainPage .topbar_loc {
     color: #ffffff;
