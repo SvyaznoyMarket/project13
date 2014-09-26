@@ -40,5 +40,5 @@
         </div>
     </noindex>
 
-    <a class="topbar_ep" href="<?= \App::router()->generate('enterprize') ?>"></a>
+    <a class="topbar_ep" href="<?= \App::router()->generate('enterprize') ?>"><span class="topbar_ep_mark">Enter</span> Prize</a>
 </div>

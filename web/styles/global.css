@@ -1022,12 +1022,19 @@ img[height="0"] {
     text-decoration: underline;
   }
   .topbar_ep {
-    background: url("/styles/header/img/icon_ep.png") no-repeat 0 50%;
+    background: url("/styles/header/img/icons.png") no-repeat 0 -192px;
     display: inline-block;
     width: 112px;
     height: 49px;
     float: right;
+    line-height: 49px;
     margin-right: 10px;
+    padding: 0 0 0 30px;
+    font-size: 24px;
+    font-family: "Enter";
+  }
+  .topbar_ep_mark {
+    color: #f99b1c;
   }
   .topbar .menuItem {
     background: url("/styles/header/img/bgTrans.gif") repeat-y 100% 0;
@@ -1067,7 +1074,8 @@ img[height="0"] {
     height: 50px;
   }
   #mainPage .topbar_ep {
-    background: url("/styles/header/img/icon_ep_black.png") no-repeat 0 50%;
+    color: #fff;
+    background-position: 0 -219px;
   }
   #mainPage .topbar_loc {
     color: #ffffff;
@@ -2211,6 +2219,9 @@ img[height="0"] {
     font-size: 12px;
     height: 24px;
     line-height: 24px;
+  }
+  .topbarfix_buy .btnBuy.mBuySet {
+    width: 70px;
   }
   .topbarfix_buy .bPrice {
     float: right;
@@ -4561,22 +4572,22 @@ img[height="0"] {
     text-align: center;
     background: #ffffff;
   }
-  .fixedTopBar .btnBuy.mBuySet {
+  .topbarfix .btnBuy.mBuySet {
     height: 26px;
     width: 80px;
   }
-  .fixedTopBar .btnBuy.mBuySet .btnBuy__eLink {
+  .topbarfix .btnBuy.mBuySet .btnBuy__eLink {
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoklEQVQoFWP8//8/AymABai4Boi1gLgKiGWAmB+IsYGfQMFDIA3BQKwIxH1A7AzE8kCMbi0jUOwjEJ9iADpJFIgdgJgN5DxCmBGo4B7UVGsgDbMNyMQAH4AixSANsUCGJhBPAmIBIOYGYnQnAYUYfgPxdSYQixRAspPI8vR5oJNAweoCxN5AjC9Y60HxsBaIQRH3Boj3AjG+iPsB8gNQDfEAAIDIdEZhVaRSAAAAAElFTkSuQmCC) no-repeat 13px 50%;
     padding-left: 29px;
     width: 50px;
   }
-  .fixedTopBar .btnBuy.mBuySet .btnBuy__eLink:hover {
+  .topbarfix .btnBuy.mBuySet .btnBuy__eLink:hover {
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoklEQVQoFWP8//8/AymABai4Boi1gLgKiGWAmB+IsYGfQMFDIA3BQKwIxH1A7AzE8kCMbi0jUOwjEJ9iADpJFIgdgJgN5DxCmBGo4B7UVGsgDbMNyMQAH4AixSANsUCGJhBPAmIBIOYGYnQnAYUYfgPxdSYQixRAspPI8vR5oJNAweoCxN5AjC9Y60HxsBaIQRH3Boj3AjG+iPsB8gNQDfEAAIDIdEZhVaRSAAAAAElFTkSuQmCC) no-repeat 13px 50%;
   }
-  .fixedTopBar .btnBuy.mBuySet .btnBuy__eLink:active {
+  .topbarfix .btnBuy.mBuySet .btnBuy__eLink:active {
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoklEQVQoFWP8//8/AymABai4Boi1gLgKiGWAmB+IsYGfQMFDIA3BQKwIxH1A7AzE8kCMbi0jUOwjEJ9iADpJFIgdgJgN5DxCmBGo4B7UVGsgDbMNyMQAH4AixSANsUCGJhBPAmIBIOYGYnQnAYUYfgPxdSYQixRAspPI8vR5oJNAweoCxN5AjC9Y60HxsBaIQRH3Boj3AjG+iPsB8gNQDfEAAIDIdEZhVaRSAAAAAElFTkSuQmCC) no-repeat 13px 50%;
   }
-  .fixedTopBar .btnBuy.mBuySet .btnBuy__eLink.mBought {
+  .topbarfix .btnBuy.mBuySet .btnBuy__eLink.mBought {
     padding-left: 0;
     width: 170px;
     text-align: center;

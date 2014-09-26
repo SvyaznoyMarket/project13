@@ -56,12 +56,20 @@
 	}
 
 	&_ep {
-		background: url("@{base-url}/header/img/icon_ep.png") no-repeat 0 50%;
+		background: url("@{base-url}/header/img/icons.png") no-repeat 0 -192px;
 		display: inline-block;
 		width: 112px;
 		height: 49px;
 		float: right;
-		margin-right: 10px;
+		line-height: 49px;
+	    margin-right: 10px;
+	    padding: 0 0 0 30px;
+	    font-size: 24px;
+	    font-family: "Enter";
+
+	    &_mark {
+	    	color: #f99b1c;
+	    }
 	}
 
 	.menuItem {
@@ -107,7 +115,8 @@
     height: 50px;
 
     &_ep {
-    	background: url("@{base-url}/header/img/icon_ep_black.png") no-repeat 0 50%;
+    	color: #fff;
+    	background-position: 0 -219px;
     }
 
     &_loc {
