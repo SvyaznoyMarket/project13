@@ -64,32 +64,67 @@
 	max-height: 100%;
 }
 
-.cmprCntW {
-	overflow: scroll;
-}
-
-.cmprCntScroll {
-	overflow: auto;
-}
-
 .cmprCnt {
 	background: @white;
 	margin: 1px 0 0;
 	font-size: 14px;
-	overflow: auto;
-	display: table;
-	
 
-	&_leftcol {
-		overflow-x: hidden;
-		overflow-y: scroll;
+	&-scroll {
 
-		width: 240px;
+		.cmprCnt_cell-hd {
+			height: 135px;
+		}
+
+		.cmprCnt_thd {
+			height: 135px;
+
+			.cmprCnt_cell {
+				height: 135px;
+			}
+		}
+
+		.cmprCnt_img {
+		    .opacity(0);
+		    overflow: hidden;
+		    height: 0;
+
+		}
+
+		.cmprCnt_rating {
+		    .opacity(0);
+		    overflow: hidden;
+		    height: 0;
+		}
+
+		.cmprCnt_mode {
+		    margin: 10px 0 0 -10px;
+		}
 	}
 
-	&_rightcol {
+	&_prod {
+		overflow-x: hidden;
+	    overflow-y: scroll;
+	    width: 240px;
+	}
+
+	&_descr {
 		float: left;
-		overflow: auto;
+    	overflow: auto;
+	}
+
+	&_thd {
+		.transition(all 0.5s ease);
+		float: left;
+	    overflow-x: scroll;
+	    overflow-y: hidden;
+
+		.cmprCnt_cell {
+			height: 250px;
+    		padding-top: 10px;
+    		padding-bottom: 0;
+    		.transition(all 0.5s ease);
+    		position: relative;
+		}
 	}
 
 	&_l {
@@ -154,13 +189,14 @@
 
 	&_col {
 		float: left;
-	
+
 		width: 240px;
 	}
 
 	&_mode {
 		margin: 60px 0 0 -10px;
 		padding: 0;
+		.transition(all 0.5s ease);
 
 		text-align: center;
 
@@ -192,9 +228,10 @@
 	}
 
 	&_img {
-		height: 110px;
+		height: 100px;
 		display: block;
 		text-align: center;
+		.transition(all 0.5s ease);
 
 		img {
 			width: 100px;
@@ -202,22 +239,34 @@
 		}
 	}
 
-	&_cat {
+	&_pt {
+		height: 54px;
+		overflow: hidden;
+		padding-right: 25px;
+	}
 
+	&_cat {
+		font-size: 12px;
 	}
 
 	&_n {
 		font-size: 14px;
+		display: block;
 	}
 
 	&_price {
 		.inline-block();
 		font-size: 16px;
-		margin: 5px 15px 0 0;
+		margin: 3px 15px 0 0;
+
+		&-l {
+			color: #919291;
+			text-decoration: line-through;
+		}
 	}
 
 	&_buy {
-		margin-top: 10px;
+		margin-top: 5px;
 
 	    &_lk {
 			width: 100px;
@@ -231,33 +280,50 @@
 	&_cell {
 		box-sizing: border-box;
 		width: 240px;
-		max-width: 240px;
 		padding: 6px 10px;
 		vertical-align: middle;
 		border-bottom: 1px solid #c7c7c7;
-		display: table-cell;
+		.transition(all 0.5s ease);
+		position: relative;
 
 		&-hd {
-			height: 227px;
+			height: 250px;
 			padding-bottom: 0;
+			.transition(all 0.5s ease);
 		}
-
-
 	}
 
-	&_row {
-		display: table-row;
+	&_rating {
+	    text-align: center;
+	    font-size: 0px;
+	    .transition(all 0.5s ease);
 
-		&-hd {
-			background: #fff;
-		}
+	    &_img {
+	    	.inline-block();
+		    height: 11px;
+		    width: 11px;
+		    margin: 1px 2px 0 0;
+	    }
 
-		&-fix {
-			position: fixed;
-		}
+	    &_count {
+		    color: #a6a6a6;
+		    .inline-block();
+		    margin-left: 5px;
+		    font-size: 11px;
+	    }
 	}
 }
 
 .ovrfl {
 	overflow: auto;
+}
+
+.clsr {
+	background: url("@{base-url}/compare/img/btn_closer.png") no-repeat 0 0px;
+	cursor: pointer;
+	height: 23px;
+	width: 23px;
+	position: absolute;
+	top: 10px;
+	right: 10px;
 }
