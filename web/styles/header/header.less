@@ -1,5 +1,15 @@
 .topbar {
 	border-bottom: none;
+	display: table;
+
+	&_row {
+		display: table-row;
+	}
+
+	&_cell {
+		display: table-cell;
+		vertical-align: top;
+	}
 
 	&_loc {
 		color: @black;
@@ -109,8 +119,8 @@
 
     .topbar{
 	    margin: 0 0 20px 0;
-	    padding: 0 0 0 10px;
-	    width: auto;
+	    padding: 0;
+	    width: 100%;
 	    background: none;
 	    border: none;
 	    border-bottom: 1px solid @typLinkColor;
@@ -124,6 +134,7 @@
 
 	    &_loc {
 	    	color: @white;
+	    	margin-left: 10px;
 	    }
 
 	    &_call {
@@ -158,6 +169,27 @@
 			&_tl {
 				color: @white;
 				background-position: 0 -254px;
+			}
+		}
+	}
+}
+
+.lt-ie8 {
+
+	.topbar {
+
+		&_cell {
+			display: inline-block;
+			*display: inline;
+			float: left;
+			zoom: 1;
+
+			&-1 {
+				width: 400px;
+			}
+
+			&-2 {
+				width: 140px;
 			}
 		}
 	}

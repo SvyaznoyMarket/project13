@@ -959,6 +959,14 @@ img[height="0"] {
 @media all {
   .topbar {
     border-bottom: none;
+    display: table;
+  }
+  .topbar_row {
+    display: table-row;
+  }
+  .topbar_cell {
+    display: table-cell;
+    vertical-align: top;
   }
   .topbar_loc {
     color: #000000;
@@ -1067,8 +1075,8 @@ img[height="0"] {
   }
   #mainPage .topbar {
     margin: 0 0 20px 0;
-    padding: 0 0 0 10px;
-    width: auto;
+    padding: 0;
+    width: 100%;
     background: none;
     border: none;
     border-bottom: 1px solid #404040;
@@ -1081,6 +1089,7 @@ img[height="0"] {
   }
   #mainPage .topbar_loc {
     color: #ffffff;
+    margin-left: 10px;
   }
   #mainPage .topbar_call_lst {
     color: #ffffff;
@@ -1099,6 +1108,18 @@ img[height="0"] {
   .enterprize .topbarfix_cmpr_tl {
     color: #ffffff;
     background-position: 0 -254px;
+  }
+  .lt-ie8 .topbar_cell {
+    display: inline-block;
+    *display: inline;
+    float: left;
+    zoom: 1;
+  }
+  .lt-ie8 .topbar_cell-1 {
+    width: 400px;
+  }
+  .lt-ie8 .topbar_cell-2 {
+    width: 140px;
   }
 }
 /*---END---СТИЛИ ШАПКИ---*/
