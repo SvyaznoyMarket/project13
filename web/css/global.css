@@ -8579,12 +8579,6 @@
     *display: inline;
     zoom: 1;
   }
-  .bPageHead__eImgTrast {
-    display: inline-block;
-    vertical-align: top;
-    *display: inline;
-    zoom: 1;
-  }
   .bPageHead__eArticle {
     font-size: 14px;
     color: #a6a6a6;
@@ -9017,9 +9011,6 @@
   .priceSale {
     margin: 5px 0 10px;
     cursor: pointer;
-  }
-  .trustfactorContent {
-    margin-top: 20px;
   }
 }
 /*---END---СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА---*/

@@ -609,9 +609,9 @@ window.ANALYTICS = {
 					};
 
 				/** Событие клика на баннер */
-				$( '.trustfactorRight' ).on( 'click', gaBannerClickPrepare );
-				$( '.trustfactorMain' ).on( 'click', gaBannerClickPrepare );
-				$( '.trustfactorContent' ).on( 'click', gaBannerClickPrepare );
+				$( '.trustfactor-right' ).on( 'click', gaBannerClickPrepare );
+				$( '.trustfactor-main' ).on( 'click', gaBannerClickPrepare );
+				$( '.trustfactor-content' ).on( 'click', gaBannerClickPrepare );
 
 				/** Событие открытия списка магазинов */
 				$('span.bDeliveryNowClick').one('click', function ga_deliveryNow() {
