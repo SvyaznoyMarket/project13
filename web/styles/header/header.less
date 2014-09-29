@@ -2,13 +2,27 @@
 	border-bottom: none;
 	display: table;
 
-	&_row {
-		display: table-row;
+	// &_row {
+	// 	display: table-row;
+	// }
+
+	// &_cell {
+	// 	display: table-cell;
+	// 	vertical-align: top;
+	// }
+
+	&_l {
+		float: left;
 	}
 
-	&_cell {
-		display: table-cell;
-		vertical-align: top;
+	&_r {
+		float: right;
+	}
+
+	&_c {
+		margin: 0 auto;
+		text-align: center;
+		display: block;
 	}
 
 	&_loc {
@@ -68,9 +82,7 @@
 		background: url("@{base-url}/header/img/icons.png") no-repeat 0 -192px;
 		display: inline-block;
 		height: 49px;
-		float: right;
 		line-height: 49px;
-	    margin-right: 10px;
 	    padding: 0 0 0 30px;
 	    font-size: 22px;
 	    font-family: "Enter";
@@ -169,27 +181,6 @@
 			&_tl {
 				color: @white;
 				background-position: 0 -254px;
-			}
-		}
-	}
-}
-
-.lt-ie8 {
-
-	.topbar {
-
-		&_cell {
-			display: inline-block;
-			*display: inline;
-			float: left;
-			zoom: 1;
-
-			&-1 {
-				width: 400px;
-			}
-
-			&-2 {
-				width: 140px;
 			}
 		}
 	}
