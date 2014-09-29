@@ -1,6 +1,7 @@
 <?php
 /**
- * @var $page           \View\DefaultLayout
+ * @var $page \View\DefaultLayout
+ * @var $user \Session\User
  */
 ?>
 
@@ -16,8 +17,13 @@
     <? endif ?>
 
         <div class="topbar_call_lst">
-            <span class="topbar_call_i" itemprop="telephone"><?= \App::config()->company['phone'] ?></span>
-            <span class="topbar_call_i" itemprop="telephone"><?= \App::config()->company['moscowPhone'] ?></span>
+            <? if (108136 == $user->getRegion()->getId()): // Санкт-Петербург ?>
+                <span class="topbar_call_i" itemprop="telephone"><?= \App::config()->company['spbPhone'] ?></span>
+                <span class="topbar_call_i" itemprop="telephone"><?= \App::config()->company['phone'] ?></span>
+            <? else: ?>
+                <span class="topbar_call_i" itemprop="telephone"><?= \App::config()->company['phone'] ?></span>
+                <span class="topbar_call_i" itemprop="telephone"><?= \App::config()->company['moscowPhone'] ?></span>
+            <? endif ?>
         </div>
     </div>
 
