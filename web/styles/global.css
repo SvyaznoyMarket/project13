@@ -1087,6 +1087,10 @@ img[height="0"] {
   #mainPage .topbar_call_lst {
     color: #ffffff;
   }
+  .enterprize .topbar_ep {
+    background-position: 0 -218px;
+    line-height: 50px;
+  }
 }
 /*---END---СТИЛИ ШАПКИ---*/
 /*------СТИЛИ ПОДВАЛА------*/
