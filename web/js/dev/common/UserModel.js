@@ -60,6 +60,19 @@
 				ga('send', 'timing', 'userInfo', 'Load User Info', spendTime);
 				console.log('[Google Analytics] Send user/info timing: %s ms', spendTime)
 			}
+
+			ENTER.config.userInfo = data;
+
+			var authorized_cookie = '_authorized';
+			if (!docCookies.hasItem(authorized_cookie)) {
+				if (data && null !== data.id) {
+					docCookies.setItem(authorized_cookie, 1, 60*60, '/'); // on
+				} else {
+					docCookies.setItem(authorized_cookie, 0, 60*60, '/'); // off
+				}
+			}
+
+			$body.trigger('userLogged', [data]);
 		}
 	});
 
@@ -78,6 +91,5 @@
 				}
 			}
 		})
-	})
-
+	});
 }(jQuery));

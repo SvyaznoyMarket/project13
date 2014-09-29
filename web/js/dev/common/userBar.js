@@ -9,9 +9,7 @@
  */
 ;(function( ENTER ) {
 	var
-		config = ENTER.config,
 		utils = ENTER.utils,
-		clientCart = config.clientCart,
 
 		userBar = utils.extendApp('ENTER.userBar'),
 
@@ -277,7 +275,6 @@
 							userBar.showOverlay = false;
 						});
 						infoShowing = false;
-						console.log('clientCart is empty');
 						checkScroll();
 					}
 

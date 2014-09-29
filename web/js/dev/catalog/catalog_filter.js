@@ -227,8 +227,6 @@
 			}
 
 			catalog.filter.lastRes = dataToRender;
-
-			body.trigger('markcartbutton');
 		},
 
 		/**

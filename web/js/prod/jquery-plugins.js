@@ -2772,7 +2772,6 @@ jQuery(function($, undefined) {
 					leftBtn.addClass('mDisabled');
 					slider.css({'left':nowLeft});
 					wrap.removeClass('mLoader');
-					body.trigger('markcartbutton');
 					nowItems.show();
 				},
 
