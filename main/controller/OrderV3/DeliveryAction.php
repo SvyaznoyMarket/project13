@@ -121,6 +121,15 @@ class DeliveryAction extends OrderV3 {
         );
 
         $orderDelivery = new \Model\OrderDelivery\Entity($orderDeliveryData);
+        if (!(bool)$orderDelivery->orders) {
+            foreach ($orderDelivery->errors as $error) {
+                if (708 == $error->code) {
+                    throw new \Exception('Товара нет в наличии');
+                }
+            }
+
+            throw new \Exception('Отстуствуют данные по заказам');
+        }
 
         // обновляем корзину пользователя
         if (isset($data['action']) && isset($data['params']['id']) && $data['action'] == 'changeProductQuantity') {

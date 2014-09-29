@@ -81,7 +81,7 @@ namespace Model\OrderDelivery {
                     $this->orders[$key] = new Entity\Order($item, $this);
                 }
             } else {
-                throw new \Exception('Отстуствуют данные по заказам');
+                //throw new \Exception('Отстуствуют данные по заказам');
             }
 
             if (isset($data['user_info'])) $this->user_info = new Entity\UserInfo($data['user_info']);
