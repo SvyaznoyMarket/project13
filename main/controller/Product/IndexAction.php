@@ -3,8 +3,6 @@
 namespace Controller\Product;
 
 class IndexAction {
-    use TrustfactorsTrait;
-
     /**
      * @param string        $productPath
      * @param \Http\Request $request
@@ -101,11 +99,6 @@ class IndexAction {
             });
         }
 
-        // категории продукта
-        $productCategoryTokens = array_map(function($category){
-            return $category->getToken();
-        }, $product->getCategory());
-
         // получаем catalog json
         $catalogJson = [];
         if ($product->getLastCategory()) {
@@ -171,6 +164,22 @@ class IndexAction {
             );
         }
 
+        $trustfactors = [];
+        \App::scmsClient()->addQuery('product/get-description', ['uid' => $product->getUi()], [], function($data) use(&$trustfactors, $product) {
+            if (isset($data['trustfactors']) && is_array($data['trustfactors'])) {
+                $trustfactors = $data['trustfactors'];
+            }
+
+            // SITE-3982 Трастфактор "Спасибо от Сбербанка" не должен отображаться на карточке товара от Связного
+            if (is_array($product->getPartnersOffer()) && count($product->getPartnersOffer()) != 0) {
+                foreach ($trustfactors as $key => $trustfactor) {
+                    if ('right' === $trustfactor['type'] && 'ab3ca73c-6cc4-4820-b303-8165317420d5' === $trustfactor['uid']) {
+                        unset($trustfactors[$key]);
+                    }
+                }
+            }
+        });
+
         // выполнение 3-го пакета запросов
         \App::curl()->execute();
         $catalogJson = array_merge_recursive($catalogJson, $productConfig);
@@ -184,16 +193,6 @@ class IndexAction {
         if ($lifeGiftProduct && !($lifeGiftProduct->getLabel() && (\App::config()->lifeGift['labelId'] === $lifeGiftProduct->getLabel()->getId()))) {
             $lifeGiftProduct = null;
         }
-
-        // SITE-3982
-        // Трастфактор "Спасибо от Сбербанка" не должен отображаться на карточке товара от Связного
-        if (is_array($product->getPartnersOffer()) && count($product->getPartnersOffer()) !== 0 && isset($catalogJson['trustfactor_right']) && $catalogJson['trustfactor_right']) {
-            $catalogJson['trustfactor_right'] = array_filter($catalogJson['trustfactor_right'], function ($trustfactor) {
-                return 'trust_sber' === $trustfactor ? false : true;
-            });
-        }
-
-        $trustfactors = $this->getTrustfactors($catalogJson, $productCategoryTokens);
 
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
         $categoryClass = !empty($catalogJson['category_class']) ? $catalogJson['category_class'] : null;
@@ -442,10 +441,7 @@ class IndexAction {
         $page->setParam('categoryClass', $categoryClass);
         $page->setParam('useLens', $useLens);
         $page->setParam('catalogJson', $catalogJson);
-        $page->setParam('trustfactorTop', $trustfactors['top']);
-        $page->setParam('trustfactorMain', $trustfactors['main']);
-        $page->setParam('trustfactorRight', $trustfactors['right']);
-        $page->setParam('trustfactorContent', $trustfactors['content']);
+        $page->setParam('trustfactors', $trustfactors);
         $page->setParam('line', $line);
         $page->setParam('deliveryData', (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId()));
         $page->setParam('isUserSubscribedToEmailActions', $isUserSubscribedToEmailActions);

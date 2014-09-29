@@ -33,9 +33,7 @@ if (!isset($titlePrefix)) $titlePrefix = null;
         <? endif ?>
         <div class="bPageHead__eTitle clearfix">
             <h1 itemprop="name"><?= $product->getWebName() ?></h1>
-            <? if(!empty($trustfactorTop)) { ?>
-                <img src="<?= $trustfactorTop ?>" class="bPageHead__eImgTrast" />
-            <? } ?>
+            <?= \App::closureTemplating()->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'top']) ?>
         </div>
         <span class="bPageHead__eArticle">Артикул: <?= $product->getArticle() ?></span>
     </div><!--/head section -->
