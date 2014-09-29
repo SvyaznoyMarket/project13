@@ -28,6 +28,18 @@ class OrderV3 {
         $this->cart = in_array(\App::request()->attributes->get('route'), ['orderV3.one-click', 'orderV3.delivery.one-click']) ? $this->cart = $this->user->getOneClickCart() : $this->user->getCart();
     }
 
+    public function execute(\Http\Request $request) {
+        \App::logger()->debug('Exec ' . __METHOD__);
+
+        if (\App::config()->debug) return null; // чтобы можно было смотреть разбиение на тестовых площадках
+
+        if (!in_array($this->user->getRegion()->getId(), [119623, 93746, 14974])) {
+            return new \Http\RedirectResponse(\App::router()->generate('order'));
+        }
+
+        return null;
+    }
+
     public function logger($data) {
 
         if (!is_array($data)) $data = array($data);

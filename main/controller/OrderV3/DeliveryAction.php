@@ -10,6 +10,10 @@ class DeliveryAction extends OrderV3 {
      * @throws \Exception
      */
     public function execute(\Http\Request $request) {
+        $controller = parent::execute($request);
+        if ($controller) {
+            return $controller;
+        }
 
         \App::logger()->debug('Exec ' . __METHOD__);
 

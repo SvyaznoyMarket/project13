@@ -154,6 +154,10 @@ window.ANALYTICS = {
 		if (ENTER.config.userInfo === false) {
 			liveTexAction();
 			loadLiveTex();
+		} else if (ENTER.config.userInfo) {
+			// SITE-4382
+			liveTexUserInfo(ENTER.config.userInfo);
+			loadLiveTex();
 		} else {
 			$('body').on('userLogged', function(event, userInfo){
 				liveTexUserInfo(userInfo);
