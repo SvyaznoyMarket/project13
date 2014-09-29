@@ -4,6 +4,7 @@ return function (
     \Helper\TemplateHelper $helper
 ) { ?>
 
+<div class="wrapw">
     <div class="cmprHd clearfix">
     	<div class="cmprHd_l"><a href=""><img src="/styles/compare/img/logo_cmpr.png" alt=""></a></div>
 
@@ -22,8 +23,11 @@ return function (
     		</ul>
     	</div>
     </div>
+	
+	<!-- скроллинге добавляем класс модификатор cmprCnt-scroll -->
+	<div class="cmprCnt clearfix">
 
-	<div class="cmprCnt cmprCnt-scroll clearfix">
+		<!-- левая колонка сравнения -->
 	    <div class="cmprCnt_l" style="height: 549px;">
 	        <div class="cmprCnt_cell cmprCnt_cell-hd">
 	            <menu class="cmprCnt_mode">
@@ -31,7 +35,8 @@ return function (
 	                <button class="cmprCnt_mode_btn btn1 cmprCnt_mode_btn-act">Все характеристики</button>
 	            </menu>
 	        </div>
-
+			
+			<!-- параметры сравнения -->
 	        <div class="cmprCnt_prod" style="height: 269px;">
 	            <div style="overflow: hidden">
 	                <div class="cmprCnt_cpt">
@@ -243,11 +248,16 @@ return function (
 	                </div>
 	            </div>
 	        </div>
+	        <!--/ параметры сравнения -->
 	    </div>
-
+	    <!--/ левая колонка сравнения -->
+		
+		<!-- праваяя колонка сравнения -->
 	    <div class="cmprCnt_r" style="width: 1194px; height: 549px;">
+	    	<!-- описание товаров в сравнении -->
 		    <div class="cmprCnt_thd" style="width: 1194px;">
 				<div class="clearfix" style="width: 480px">
+					<!-- первый товар -->
 			        <div class="cmprCnt_col">
 			        	<div class="cmprCnt_cell">
 			        		<div class="clsr"></div>
@@ -284,7 +294,9 @@ return function (
 							<div class="cmprCnt_buy"><a href="" class="cmprCnt_buy_lk btnBuy__eLink">Купить</a></div>
 				        </div>
 			        </div>
-
+			        <!--/ первый товар -->
+					
+					<!-- второй товар -->
 			        <div class="cmprCnt_col">
 			        	<div class="cmprCnt_cell">
 			        		<div class="clsr"></div>
@@ -321,11 +333,15 @@ return function (
 							<div class="cmprCnt_buy"><a href="" class="cmprCnt_buy_lk btnBuy__eLink">Купить</a></div>
 				        </div>
 			        </div>
+			        <!--/ второй товар -->
 		        </div>
 	        </div>
-
+	        <!--/ описание товаров в сравнении -->
+			
+			<!-- характеристики товаров в сравнении -->
 	        <div class="cmprCnt_descr" style="width: 1194px; height: 269px;">
-	        	<div style="width: 240px">
+	        	<div style="width: 480px">
+	        		<!-- характеристики первого товара -->
 	            	<div class="cmprCnt_col">
 	            		<div style="overflow: hidden">
 		                    <div class="cmprCnt_cpt">
@@ -505,8 +521,198 @@ return function (
 	                        </div>
 		                </div>
 		            </div>
+		            <!--/ характеристики первого товара -->
+					
+					<!-- характеристики второго товара -->
+		            <div class="cmprCnt_col">
+	            		<div style="overflow: hidden">
+		                    <div class="cmprCnt_cpt">
+		                    </div>
+		                    <div class="cmprCnt_cell">
+		                        Android
+		                    </div>
+		                    <div class="cmprCnt_cell">
+		                        4.1
+		                    </div>
+		                    <div class="cmprCnt_cell">
+		                        Cortex A9
+		                    </div>
+		                    <div class="cmprCnt_cell">
+		                        1200
+		                    </div>
+		                    <div class="cmprCnt_cell">
+		                        да
+		                    </div>
+		                    <div class="cmprCnt_cell">
+		                        PowerVR SGX531
+		                    </div>
+		                </div>
+
+		                <div style="overflow: hidden">
+		                    <div class="cmprCnt_cpt">
+		                    </div>
+	                        <div class="cmprCnt_cell">
+	                            1024
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            8
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            да
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            да
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            32 ГБ
+	                        </div>
+		                </div>
+		                <div style="overflow: hidden">
+		                    <div class="cmprCnt_cpt">
+		                    </div>
+	                        <div class="cmprCnt_cell">
+	                            да
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            да
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            да
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            нет
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            да
+	                        </div>
+		                </div>
+		                <div style="overflow: hidden">
+		                    <div class="cmprCnt_cpt">
+		                    </div>
+	                        <div class="cmprCnt_cell">
+	                            нет
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            совместимый с USB
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            нет
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            да
+	                        </div>
+		                </div>
+		                <div style="overflow: hidden">
+		                    <div class="cmprCnt_cpt">
+		                    </div>
+	                        <div class="cmprCnt_cell">
+	                            5 Мпикс.
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            да
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            да
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            да
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            да
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            0,3 Мпикс.
+	                        </div>
+		                </div>
+		                <div style="overflow: hidden">
+		                    <div class="cmprCnt_cpt">
+		                    </div>
+	                        <div class="cmprCnt_cell">
+	                            встроенные динамики
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            AAC, WAV, OGG, APE, MP3
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            WMV, MKV, MOV, MP4
+	                        </div>
+		                </div>
+		                <div style="overflow: hidden">
+		                    <div class="cmprCnt_cpt">
+		                    </div>
+	                        <div class="cmprCnt_cell">
+	                            нет
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            да
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            нет
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            да
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            да
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            2
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            miniSIM (обычная)
+	                        </div>
+		                </div>
+		                <div style="overflow: hidden">
+		                    <div class="cmprCnt_cpt">
+		                    </div>
+	                        <div class="cmprCnt_cell">
+	                            Li-Pol
+	                        </div>
+	                        <div lass="cmprCnt_cell">
+	                            4000
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            до 6 ч.
+	                        </div>
+		                </div>
+		                <div style="overflow: hidden">
+		                    <div class="cmprCnt_cpt">
+		                    </div>
+	                        <div class="cmprCnt_cell">
+	                            Пластик
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            черный
+	                        </div>
+		                </div>
+		                <div style="overflow: hidden">
+		                    <div class="cmprCnt_cpt">
+		                    </div>
+	                        <div class="cmprCnt_cell">
+	                            19,3 х 11,9 х 0,98 см
+	                        </div>
+	                        <div class="cmprCnt_cell">
+	                            316
+	                        </div>
+		                </div>
+		                <div style="overflow: hidden">
+		                    <div class="cmprCnt_cpt">
+		                    </div>
+	                        <div class="cmprCnt_cell">
+	                            планшет, USB-кабель, сетевой адаптер, инструкция
+	                        </div>
+		                </div>
+		            </div>
+		            <!-- характеристики второго товара -->
 		        </div>
 	    	</div>
+	    	<!-- характеристики товаров в сравнении -->
 	    </div>
+	    <!--/ праваяя колонка сравнения -->
     </div>
+</div>
+
+    <footer class="footerw">
+	    <p class="footerw_tx clearfix">&copy; ООО «Энтер» 2011&ndash;2014. ENTER&reg; ЕНТЕР&reg; Enter&reg;. Все права защищены. <a href="javascript:void(0)" class="footer__copy__link" id="jira">Сообщить об ошибке</a></p>
+	</footer>
 <? } ?>

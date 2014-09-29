@@ -1,3 +1,11 @@
+.wrapw {
+    height: auto !important;
+    min-height: 100%;
+    min-width: 1000px;
+    width: 100%;
+    background: @white;
+}
+
 .cmprHd {
 	background: @typLightGray;
 	border-bottom: 1px solid @lightgreyBr;
@@ -38,6 +46,10 @@
 			cursor: pointer;
 			margin: 0 5px 10px 0;
 
+			&:hover {
+				border-color: #f99b1c;
+			}
+
 			&-act {
 				cursor: default;
 				border-color: #f99b1c;
@@ -68,6 +80,8 @@
 	background: @white;
 	margin: 1px 0 0;
 	font-size: 14px;
+	padding-bottom: 20px;
+	position: relative;
 
 	&-scroll {
 
@@ -326,4 +340,20 @@
 	position: absolute;
 	top: 10px;
 	right: 10px;
+}
+
+.footerw {
+    background: @black;
+    height: 20px;
+    margin: -20px auto 0;
+    position: relative;
+
+    &_tx {
+	    color: @white;
+	    height: 20px;
+	    line-height: 20px;
+	    margin: 0 auto;
+	    padding: 0 10px;
+	    width: 940px;
+	}
 }
