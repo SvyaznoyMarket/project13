@@ -3,7 +3,7 @@
 /** @var $c \Config\AppConfig */
 $c = require __DIR__ . '/config.php';
 
-$c->debug = false;
+$c->debug = true;
 
 // $c->coreV2['url'] = 'http://tester.core.ent3.ru/v2/';
 
