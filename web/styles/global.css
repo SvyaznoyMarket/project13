@@ -6308,6 +6308,29 @@ img[height="0"] {
   }
 }
 @media all {
+  .trustfactor-top {
+    display: inline-block;
+    vertical-align: top;
+    *display: inline;
+    zoom: 1;
+  }
+  .trustfactor-top img {
+    display: inline-block;
+    vertical-align: top;
+    *display: inline;
+    zoom: 1;
+  }
+  .trustfactor-content {
+    margin-top: 20px;
+  }
+  .trustfactor-right {
+    margin-bottom: 8px;
+  }
+  .trustfactor-main {
+    margin-left: -5px;
+  }
+}
+@media all {
   .notBuying {
     position: relative;
     margin-top: 10px;
