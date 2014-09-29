@@ -30,7 +30,6 @@
 		&_lst {
 			.inline-block();
 			font-size: 14px;
-			font-weight: bold;
 			margin: 7px 20px 0 0;
 		}
 
@@ -45,7 +44,7 @@
 
 	&_lks {
 		.inline-block();
-		margin: 6px 0 0;
+		margin: 7px 0 0;
 
 		&_i {
 			display: block;
@@ -58,13 +57,12 @@
 	&_ep {
 		background: url("@{base-url}/header/img/icons.png") no-repeat 0 -192px;
 		display: inline-block;
-		width: 112px;
 		height: 49px;
 		float: right;
 		line-height: 49px;
 	    margin-right: 10px;
 	    padding: 0 0 0 30px;
-	    font-size: 24px;
+	    font-size: 22px;
 	    font-family: "Enter";
 
 	    &_mark {
@@ -107,34 +105,34 @@
 }
 
 #mainPage{
-  background: @black;
+    background: @black;
 
-  .topbar{
-    margin: 0 0 20px 0;
-    padding: 0 0 0 10px;
-    width: auto;
-    background: none;
-    border: none;
-    border-bottom: 1px solid @typLinkColor;
-    height: 50px;
+    .topbar{
+	    margin: 0 0 20px 0;
+	    padding: 0 0 0 10px;
+	    width: auto;
+	    background: none;
+	    border: none;
+	    border-bottom: 1px solid @typLinkColor;
+	    height: 50px;
 
-    &_ep {
-    	color: #fff;
-    	background-position: 0 -218px;
-    	line-height: 50px;
-    }
+	    &_ep {
+	    	color: #fff;
+	    	background-position: 0 -218px;
+	    	line-height: 50px;
+	    }
 
-    &_loc {
-    	color: @white;
-    }
+	    &_loc {
+	    	color: @white;
+	    }
 
-    &_call {
+	    &_call {
 
-    	&_lst {
-    		color: @white;
-    	}
-    }
-  }
+	    	&_lst {
+	    		color: @white;
+	    	}
+	    }
+	}
 }
 
 .enterprize {
@@ -143,4 +141,24 @@
     	background-position: 0 -218px;
     	line-height: 50px;
     }
+
+    .topbarfix {
+
+		&_cmpr {
+			background: none;
+			border: none;
+
+			&-full {
+
+				.topbarfix_cmpr_tl {
+					background-position: 0 -294px;
+				}
+			}
+
+			&_tl {
+				color: @white;
+				background-position: 0 -254px;
+			}
+		}
+	}
 }

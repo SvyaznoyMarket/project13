@@ -998,7 +998,6 @@ img[height="0"] {
     *display: inline;
     *zoom: 1;
     font-size: 14px;
-    font-weight: bold;
     margin: 7px 20px 0 0;
   }
   .topbar_call_i {
@@ -1013,7 +1012,7 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    margin: 6px 0 0;
+    margin: 7px 0 0;
   }
   .topbar_lks_i {
     display: block;
@@ -1024,13 +1023,12 @@ img[height="0"] {
   .topbar_ep {
     background: url("/styles/header/img/icons.png") no-repeat 0 -192px;
     display: inline-block;
-    width: 112px;
     height: 49px;
     float: right;
     line-height: 49px;
     margin-right: 10px;
     padding: 0 0 0 30px;
-    font-size: 24px;
+    font-size: 22px;
     font-family: "Enter";
   }
   .topbar_ep_mark {
@@ -1090,6 +1088,17 @@ img[height="0"] {
   .enterprize .topbar_ep {
     background-position: 0 -218px;
     line-height: 50px;
+  }
+  .enterprize .topbarfix_cmpr {
+    background: none;
+    border: none;
+  }
+  .enterprize .topbarfix_cmpr-full .topbarfix_cmpr_tl {
+    background-position: 0 -294px;
+  }
+  .enterprize .topbarfix_cmpr_tl {
+    color: #ffffff;
+    background-position: 0 -254px;
   }
 }
 /*---END---СТИЛИ ШАПКИ---*/
@@ -1890,6 +1899,7 @@ img[height="0"] {
   }
   .topbarfix-home .topbarfix_log {
     background: none;
+    padding-left: 0;
   }
   .topbarfix-home .topbarfix_log_lk {
     color: #ffffff;
@@ -1908,8 +1918,12 @@ img[height="0"] {
     background: none;
     border: none;
   }
+  .topbarfix-home .topbarfix_cmpr-full .topbarfix_cmpr_tl {
+    background-position: 0 -294px;
+  }
   .topbarfix-home .topbarfix_cmpr_tl {
     color: #ffffff;
+    background-position: 0 -254px;
   }
   .topbarfix-home .topbarfix_logOutLink {
     background: none;
