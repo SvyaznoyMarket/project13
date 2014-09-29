@@ -45,6 +45,9 @@ return function(
                                 ?> selected="selected"<? endif
                             ?>>
                         <?= $option->getHumanizedName() ?>
+                        <? if (!$option->getProduct()->isAvailable()): ?>
+                            (распродано)
+                        <? endif ?>
                     </option>
                 <? endforeach ?>
             </select>
