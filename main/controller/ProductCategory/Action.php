@@ -287,7 +287,7 @@ class Action {
                 $shopScript->addQuery(
                     'category/get-seo',
                     [
-                        'slug' => $categoryToken,
+                        'slug'   => $categoryToken,
                         'geo_id' => \App::user()->getRegion()->getId(),
                     ],
                     [],
@@ -308,10 +308,16 @@ class Action {
                 }
 
                 // запрашиваем категорию по ui
-                \RepositoryManager::productCategory()->prepareEntityByUi($shopScriptSeo['ui'], $region, function($data) use (&$category) {
+                \RepositoryManager::productCategory()->prepareEntityByUi($shopScriptSeo['ui'], $region, function($data) use (&$category, &$shopScriptSeo) {
                     $data = reset($data);
                     if ((bool)$data) {
                         $category = new \Model\Product\Category\Entity($data);
+                        if (isset($shopScriptSeo['token'])) {
+                            $category->setToken($shopScriptSeo['token']);
+                        }
+                        if (isset($shopScriptSeo['link'])) {
+                            $category->setLink($shopScriptSeo['link']);
+                        }
                     }
                 });
             } catch (\Exception $e) { // если не плучилось добыть seo-данные или категорию по ui, пробуем старый добрый способ
@@ -342,10 +348,6 @@ class Action {
         // SITE-3381
         if (!$request->isXmlHttpRequest() && ($category->getLevel() > 1) && false === strpos($categoryPath, '/')) {
             //throw new \Exception\NotFoundException(sprintf('Не передана родительская категория для категории @%s', $categoryToken));
-        }
-
-        if (!empty($shopScriptSeo['link'])) {
-            $category->setLink($shopScriptSeo['link']);
         }
 
         // подготовка 3-го пакета запросов
