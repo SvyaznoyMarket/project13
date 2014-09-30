@@ -300,8 +300,12 @@
     body.on('trackGoogleTransaction', trackGoogleTransaction);
 
     // TODO вынести инициализацию трекера из ports.js
-    if (ga && (typeof ga === 'function') && ga.getAll().length == 0) {
-        ga( 'create', 'UA-25485956-5', 'enter.ru' );
+    try {
+        if (ga && (typeof ga === 'function') && ga.getAll().length == 0) {
+            ga( 'create', 'UA-25485956-5', 'enter.ru' );
+        }
+    } catch (e) {
+        console.error(e);
     }
 
 })(jQuery);
