@@ -357,7 +357,7 @@
 		float: right;
 		padding: 0 10px 0;
 		position: relative;
-		z-index: 10;
+		z-index: 11;
 
 		&-full {
 			background-color: @white;
@@ -386,6 +386,59 @@
 			vertical-align: top;
 			text-align: center;
 			line-height: 20px;
+		}
+
+		&_popup {
+			color: #808080;
+		    font-size: 16px;
+		    position: absolute;
+		    right: -80px;
+		    width: 410px;
+		    .transition(all 0.2s ease 0.2s);
+		    height: 0;
+		    .opacity(0);
+		    overflow: hidden;
+		    top: 66px;
+
+		    &_inn {
+		    	padding: 20px 30px 10px;
+		    	border: 1px solid #bbbbbb;
+		    	.drop-shadow(0, 0, 20px, 0.4);
+				.rounded(4px);
+		    	background: @white;
+		    	position: relative;
+
+		    	&:after {
+			    	border-bottom: 16px solid #fff;
+				    border-left: 15px solid transparent;
+				    border-right: 15px solid transparent;
+				    content: "";
+				    height: 0;
+				    left: 261px;
+				    position: absolute;
+				    top: -16px;
+				    width: 0;
+			    }
+
+			    &:before {
+			    	border-bottom: 18px solid #bbb;
+				    border-left: 17px solid transparent;
+				    border-right: 17px solid transparent;
+				    content: "";
+				    height: 0;
+				    left: 259px;
+				    position: absolute;
+				    top: -18px;
+				    width: 0;
+		    	}
+		    }
+
+		    &-show {
+		    	height: auto;
+			    .opacity(1);
+			    overflow: visible;
+			    top: 56px;
+		    }
 		}
 	}
 
