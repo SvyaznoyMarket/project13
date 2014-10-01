@@ -1581,7 +1581,8 @@
                     $('[data-block_name='+block_name+']').find('.cuponPin').show();
                 } else if (data.error_code == 743) {
                     // 743 - Сертификат не найден
-                    sendChanges('applyDiscount',{'block_name': block_name, 'number':code})
+					alert('Сертификат не найден');
+//                    sendChanges('applyDiscount',{'block_name': block_name, 'number':code})
                 }
             }).always(function(data){
                 console.log('Certificate check response',data);
