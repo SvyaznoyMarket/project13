@@ -23,6 +23,7 @@ try {
     $isMobile = false;
 }
 
+$routerRules = \App::router()->getRules();
 $config = array_merge([
     'jsonLog'               => $appConfig->jsonLog['enabled'],
     'userUrl'               => $router->generate('user.info'),
@@ -32,6 +33,11 @@ $config = array_merge([
     'addressAutocomplete'   => $appConfig->order['addressAutocomplete'],
     'prepayment'            => $appConfig->order['prepayment'],
     'isMobile'              => $isMobile,
+    'routes'                => [
+        'cart.product.set' => ['pattern' => $routerRules['cart.product.set']['pattern']],
+        'compare.add'      => ['pattern' => $routerRules['compare.add']['pattern']],
+        'compare.delete'   => ['pattern' => $routerRules['compare.delete']['pattern']],
+    ],
 ], isset($config) ? (array)$config : []);
 ?>
 

@@ -8,7 +8,7 @@
 		utils = global.ENTER.utils;
 	// end of vars
 
-	utils.packageReq = function packageReq( reqArray ) {
+	utils.packageReq = function packageReq( reqArray, onLoad ) {
 		console.info('Пакетный запрос');
 
 		var

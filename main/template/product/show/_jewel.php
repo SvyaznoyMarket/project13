@@ -134,13 +134,13 @@
 <div class="bProductSectionRightCol">
 
     <? if (5 !== $product->getStatusId() && (bool)$shopStates): // SITE-3109 ?>
-        <div class="bWidgetBuy bWidgetBuy-shops mWidget">
+        <div class="bWidgetBuy bWidgetBuy-shops mWidget js-WidgetBuy">
             <?= $helper->render('product/__shops', ['shopStates' => $shopStates, 'product' => $product]) // Доставка ?>
         </div>
     <? endif ?>
 
     <? if ( $product->isInShopStockOnly() || !$product->getIsBuyable() ) : else : ?>
-    <div class="bWidgetBuy mWidget">
+    <div class="bWidgetBuy mWidget js-WidgetBuy">
         <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId())): ?>
             <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'productId' => $product->getId()]) ?>
         <? endif ?>

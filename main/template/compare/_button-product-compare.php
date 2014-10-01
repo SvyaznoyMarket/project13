@@ -9,11 +9,9 @@
 <div class="btnCmpr"
      data-bind="compareButtonBinding: compare"
      data-id="<?= $id ?>"
-     data-category-id="<?= $categoryId ?>"
-     data-delete-url="<?= \App::router()->generate('compare.delete', ['id' => $id]) ?>"
-     data-add-url="<?= \App::router()->generate('compare.add', ['id' => $id]) ?>">
+     data-category-id="<?= $categoryId ?>">
 
-    <a class="btnCmpr_lk jsCompareLink" href="<?= \App::router()->generate('compare.add', ['id' => $id]) ?>">
+    <a class="btnCmpr_lk jsCompareLink" href="<?= \App::router()->generate('compare.add', ['productId' => $id]) ?>">
         <span class="btnCmpr_tx">Добавить к сравнению</span>
     </a>
 

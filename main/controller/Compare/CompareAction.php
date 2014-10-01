@@ -23,9 +23,9 @@ class CompareAction {
         return new \Http\Response($page->show());
     }
 
-    public function add(\Http\Request $request, $id) {
+    public function add(\Http\Request $request, $productId) {
 
-        $product = \RepositoryManager::product()->getEntityById($id);
+        $product = \RepositoryManager::product()->getEntityById($productId);
 
         if (!array_key_exists($product->getId(), $this->data)) {
             $this->data[$product->getId()] = [
@@ -45,10 +45,10 @@ class CompareAction {
         return new \Http\RedirectResponse($referrer);
     }
 
-    public function delete(\Http\Request $request, $id) {
+    public function delete(\Http\Request $request, $productId) {
 
-        if (array_key_exists($id, $this->data)) {
-            unset($this->data[$id]);
+        if (array_key_exists($productId, $this->data)) {
+            unset($this->data[$productId]);
             $this->session->set($this->compareSessionKey, $this->data);
         }
 

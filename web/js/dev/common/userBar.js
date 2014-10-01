@@ -1,7 +1,7 @@
 /**
  * White floating user bar
  *
- * 
+ *
  * @requires jQuery, ENTER.utils, ENTER.config
  * @author	Zaytsev Alexandr
  *
@@ -20,24 +20,28 @@
 		userbarConfig = userBarFixed.data('value'),
 		body = $('body'),
 		w = $(window),
-		infoShowing = false,
+		buyInfoShowing = false,
 		overlay = $('<div>').css({ position: 'fixed', display: 'none', width: '100%', height:'100%', top: 0, left: 0, zIndex: 900, background: 'black', opacity: 0.4 }),
-		newOverlay = false,
 
 		scrollTarget,
 		scrollTargetOffset;
 	// end of vars
 
-
 	userBar.showOverlay = false;
+	userBar.$emptyCompareNotice = null;
 
 
 	var
 		/**
 		 * Показ юзербара
 		 */
-		showUserbar = function showUserbar() {
+			showUserbar = function showUserbar() {
 			console.log('showUserbar');
+
+			if (userBar.$emptyCompareNotice) {
+				userBar.$emptyCompareNotice.removeClass('topbarfix_cmpr_popup-show');
+			}
+
 			userBarFixed.slideDown();
 			userbarStatic.css('visibility','hidden');
 		},
@@ -45,7 +49,7 @@
 		/**
 		 * Скрытие юзербара
 		 */
-		hideUserbar = function hideUserbar() {
+			hideUserbar = function hideUserbar() {
 			console.log('hideUserbar');
 			userBarFixed.slideUp();
 			userbarStatic.css('visibility','visible');
@@ -54,12 +58,12 @@
 		/**
 		 * Проверка текущего скролла
 		 */
-		checkScroll = function checkScroll() {
+			checkScroll = function checkScroll() {
 			var
 				nowScroll = w.scrollTop();
 			// end of vars
 
-			if ( infoShowing ) {
+			if ( buyInfoShowing ) {
 				return;
 			}
 
@@ -74,7 +78,7 @@
 		/**
 		 * Прокрутка до фильтра и раскрытие фильтров
 		 */
-		upToFilter = function upToFilter() {
+			upToFilter = function upToFilter() {
 			$.scrollTo(scrollTarget, 500);
 			ENTER.catalog.filter.openFilter();
 
@@ -84,7 +88,7 @@
 		/**
 		 * Закрытие окна о совершенной покупке
 		 */
-		closeBuyInfo = function closeBuyInfo() {
+			closeBuyInfo = function closeBuyInfo() {
 			var
 				wrap = userBarFixed.find('.topbarfix_cart'),
 				wrapLogIn = userBarFixed.find('.topbarfix_log'),
@@ -92,55 +96,45 @@
 				upsaleWrap = wrap.find('.hintDd');
 			// end of vars
 
-			var
-				/**
-				 * Удаление выпадающей плашки для корзины
-				 */
-				removeBuyInfoBlock = function removeBuyInfoBlock() {
-					var
-						buyInfo = $('.topbarfix_cartOn');
-					// end of vars
+			/**
+			 * Удаление выпадающей плашки для корзины
+			 */
+			function removeBuyInfoBlock() {
+				var
+					buyInfo = $('.topbarfix_cartOn');
+				// end of vars
 
-					if ( !buyInfo.length ) {
-						return;
-					}
+				if ( !buyInfo.length ) {
+					return;
+				}
 
-					buyInfo.slideUp(300, function() {
-						//checkScroll();
-//						buyInfo.remove();
-						infoShowing = false;
-					});
-				},
+				buyInfo.slideUp(300, function() {
+					buyInfo.removeAttr('style');
+				});
+			}
 
-				/**
-				 * Удаление Overlay блока
-				 */
-				removeOverlay = function removeOverlay() {
-					overlay.fadeOut(100, function() {
-						userBar.showOverlay = false;
+			/**
+			 * Удаление Overlay блока
+			 */
+			function removeOverlay() {
+				if (!overlay || !userBar.showOverlay) {
+					return;
+				}
 
-						if ( newOverlay ) {
-							newOverlay = false;
-
-							return;
-						}
-
-						overlay.off('click');
-						overlay.remove();
-						userBar.showOverlay = false;
-						checkScroll();
-					});
-				};
+				overlay.fadeOut(100, function() {
+					overlay.off('click');
+					overlay.remove();
+					userBar.showOverlay = false;
+					buyInfoShowing = false;
+					checkScroll();
+				});
+			}
 			// end of function
 
 			// только BuyInfoBlock
 			if ( !upsaleWrap.hasClass('mhintDdOn') ) {
 				removeBuyInfoBlock();
-
-				if ( userBar.showOverlay ) {
-					removeOverlay();
-				}
-
+				removeOverlay();
 				return;
 			}
 
@@ -148,29 +142,28 @@
 			wrapLogIn.removeClass(openClass);
 			wrap.removeClass(openClass);
 
-			if ( infoShowing ) {
-				removeBuyInfoBlock();
-			}
-
-			if ( userBar.showOverlay ) {
-				removeOverlay();
-			}
-
+			removeBuyInfoBlock();
+			removeOverlay();
 			return false;
 		},
 
 		/**
 		 * Показ окна о совершенной покупке
 		 */
-		showBuyInfo = function showBuyInfo( e ) {
+			showBuyInfo = function showBuyInfo( e, data, upsale ) {
 			console.info('userbar::showBuyInfo');
+
+			if (userBar.$emptyCompareNotice) {
+				userBar.$emptyCompareNotice.removeClass('topbarfix_cmpr_popup-show');
+			}
 
 			var	buyInfo = $('.topbarfix_cartOn');
 
-			if ( !userBar.showOverlay ) {
+			if ( !userBar.showOverlay && overlay ) {
 				body.append(overlay);
 				overlay.fadeIn(300);
 				userBar.showOverlay = true;
+				overlay.on('click', closeBuyInfo);
 			}
 
 			if ( e ) {
@@ -181,23 +174,22 @@
 			}
 
 			showUserbar();
+			if (upsale) {
+				showUpsell(data, upsale);
+			}
 
-			infoShowing = true;
-
-			overlay.on('click', closeBuyInfo);
+			buyInfoShowing = true;
 		},
 
 		/**
 		 * Удаление товара из корзины
 		 */
-		deleteProductHandler = function deleteProductHandler() {
+			deleteProductHandler = function deleteProductHandler() {
 			console.log('deleteProductHandler click!');
 
-			var
-				btn = $(this),
-				deleteUrl = btn.attr('href');
+			var btn = $(this);
 			// end of vars
-			
+
 			var
 				deleteFromRutarget = function deleteFromRutarget( data ) {
 					var
@@ -260,36 +252,18 @@
 					deleteProductAnalytics(res);
 
 					ENTER.UserModel.cart.remove(function(item){ return item.id == res.product.id});
+					$('.js-basketLineDeleteLink-' + res.product.id).click();
 
-					//показываем корзину пользователя при удалении товара
-					if ( ENTER.UserModel.cart().length !== 0 ) {
+					if ( ENTER.UserModel.cart().length == 0 ) {
+						closeBuyInfo();
+					} else {
 						showBuyInfo();
 					}
-
-					//скрываем оверлей, если товаров в корзине нет
-					if ( ENTER.UserModel.cart().length == 0 ) {
-						overlay.fadeOut(300, function() {
-							overlay.off('click');
-							overlay.remove();
-
-							userBar.showOverlay = false;
-						});
-						infoShowing = false;
-						checkScroll();
-					}
-
-					//возвращаем кнопку - Купить
-					var
-						addUrl = res.product.addUrl;
-						addBtnBuy = res.product.cartButton.id;
-					// end of vars
-					
-					$('.'+addBtnBuy).html('Купить').removeClass('mBought').attr('href', addUrl);
 				};
 
 			$.ajax({
 				type: 'GET',
-				url: deleteUrl,
+				url: btn.attr('href'),
 				success: authFromServer
 			});
 
@@ -299,11 +273,10 @@
 		/**
 		 * Обновление блока с рекомендациями "С этим товаром также покупают"
 		 *
-		 * @param	{Object}	event	Данные о событии
 		 * @param	{Object}	data	Данные о покупке
 		 * @param	{Object}	upsale
 		 */
-		showUpsell = function showUpsell( event, data, upsale ) {
+			showUpsell = function showUpsell( data, upsale ) {
 			console.info('userbar::showUpsell');
 
 			var
@@ -314,62 +287,54 @@
 
 			var
 				responseFromServer = function responseFromServer( response ) {
-				console.log(response);
+					console.log(response);
 
-				if ( !response.success ) {
-					return;
-				}
-
-				console.info('Получены рекомендации "С этим товаром также покупают" от RetailRocket');
-
-				upsaleWrap.find('.bGoodsSlider').remove();
-
-				slider = $(response.content)[0];
-				upsaleWrap.append(slider);
-				upsaleWrap.addClass('mhintDdOn');
-				$(slider).goodsSlider();
-
-				ko.applyBindings(ENTER.UserModel, slider);
-
-				// показываем overlay для блока рекомендаций
-				body.append(overlay);
-				newOverlay = true;
-				overlay.fadeIn(300);
-				overlay.on('click', closeBuyInfo);
-//				checkScroll();
-				userBar.showOverlay = true;
-
-                if ( !data.product ) return;
-
-				if ( !data.product.article ) {
-					console.warn('Не получен article продукта');
-
-					return;
-				}
-
-				console.log('Трекинг товара при показе блока рекомендаций');
-
-				// Retailrocket. Показ товарных рекомендаций
-				if ( response.data ) {
-					try {
-						rrApi.recomTrack(response.data.method, response.data.id, response.data.recommendations);
-					} catch( e ) {
-						console.warn('showUpsell() Retailrocket error');
-						console.log(e);
+					if ( !response.success || !userBar.showOverlay ) {
+						return;
 					}
-				}
 
-				// google analytics
-				typeof _gaq == 'function' && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_shown', data.product.article]);
-				// Kissmetrics
-				typeof _kmq == 'function' && _kmq.push(['record', 'cart recommendation shown', {'SKU cart rec shown': data.product.article}]);
-			};
+					console.info('Получены рекомендации "С этим товаром также покупают" от RetailRocket');
+
+					upsaleWrap.find('.bGoodsSlider').remove();
+
+					slider = $(response.content)[0];
+					upsaleWrap.append(slider);
+					upsaleWrap.addClass('mhintDdOn');
+					$(slider).goodsSlider();
+
+					ko.applyBindings(ENTER.UserModel, slider);
+
+					if ( !data.product ) return;
+
+					if ( !data.product.article ) {
+						console.warn('Не получен article продукта');
+
+						return;
+					}
+
+					console.log('Трекинг товара при показе блока рекомендаций');
+
+					// Retailrocket. Показ товарных рекомендаций
+					if ( response.data ) {
+						try {
+							rrApi.recomTrack(response.data.method, response.data.id, response.data.recommendations);
+						} catch( e ) {
+							console.warn('showUpsell() Retailrocket error');
+							console.log(e);
+						}
+					}
+
+					// google analytics
+					typeof _gaq == 'function' && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_shown', data.product.article]);
+					// Kissmetrics
+					typeof _kmq == 'function' && _kmq.push(['record', 'cart recommendation shown', {'SKU cart rec shown': data.product.article}]);
+				};
 			//end functions
 
 			console.log(upsale);
 
 			if ( !upsale.url ) {
-                console.log('if upsale.url');
+				console.log('if upsale.url');
 				return;
 			}
 
@@ -383,7 +348,7 @@
 		/**
 		 * Обработчик клика по товару из списка рекомендаций
 		 */
-		upsaleProductClick = function upsaleProductClick() {
+			upsaleProductClick = function upsaleProductClick() {
 			var
 				product = $(this).parents('.jsSliderItem').data('product');
 			//end of vars
@@ -401,6 +366,30 @@
 			_kmq && _kmq.push(['record', 'cart recommendation clicked', {'SKU cart rec clicked': product.article}]);
 
 			//window.docCookies.setItem('used_cart_rec', 1, 1, 4*7*24*60*60, '/');
+		},
+
+		showEmptyCompareNotice = function(e) {
+			e.stopPropagation();
+			if (!userBar.$emptyCompareNotice) {
+				userBar.$emptyCompareNotice = $('.js-compare-popup');
+				$('.js-compare-popup-closer', userBar.$emptyCompareNotice).click(function() {
+					userBar.$emptyCompareNotice.removeClass('topbarfix_cmpr_popup-show');
+				});
+
+				$('.js-topbarfixLogin, .js-topbarfixCart', userbarStatic).mouseover(function() {
+					userBar.$emptyCompareNotice.removeClass('topbarfix_cmpr_popup-show');
+				});
+
+				$(document.body).click(function() {
+					userBar.$emptyCompareNotice.removeClass('topbarfix_cmpr_popup-show');
+				});
+
+				$(userBar.$emptyCompareNotice).click(function(e) {
+					e.stopPropagation();
+				});
+			}
+
+			userBar.$emptyCompareNotice.addClass('topbarfix_cmpr_popup-show');
 		};
 	// end of functions
 
@@ -409,11 +398,8 @@
 	console.log(userbarConfig);
 
 	body.on('click', '.jsUpsaleProduct', upsaleProductClick);
-	body.on('getupsale', showUpsell);
-
-
 	userbarStatic.on('click', '.jsCartDelete', deleteProductHandler);
-
+	userbarStatic.on('click', '.js-noProductsForCompareLink', showEmptyCompareNotice);
 
 	if ( userBarFixed.length ) {
 		body.on('addtocart', showBuyInfo);

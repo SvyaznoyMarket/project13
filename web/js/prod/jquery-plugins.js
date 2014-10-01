@@ -2584,7 +2584,7 @@ jQuery(function($, undefined) {
 			}
 		});
 
-		var getSlidersData = function getSlidersData( event, url, type, callback ) {
+		var getSlidersData = function getSlidersData( url, type, callback ) {
 			if ( isRecommendation(type) ) {
 				recommendArray.push({
 					type: type,
@@ -2651,10 +2651,6 @@ jQuery(function($, undefined) {
 				}
 			}
 		};
-
-
-		body.bind('goodsliderneeddata', getSlidersData);
-
 
 		/**
 		 * Обработка для каждого элемента попавшего в набор
@@ -2815,6 +2811,10 @@ jQuery(function($, undefined) {
 					$self.before(newSlider);
 					$self.remove();
 					$(newSlider).goodsSlider();
+
+					if (params.onLoad) {
+						params.onLoad(newSlider);
+					}
 				},
 
 				/**
@@ -2829,7 +2829,7 @@ jQuery(function($, undefined) {
 
 			if ( sliderParams.url !== null ) {
 				if ( typeof window.ENTER.utils.packageReq === 'function' ) {
-					body.trigger('goodsliderneeddata', [sliderParams.url, sliderParams.type, authFromServer]);
+					getSlidersData(sliderParams.url, sliderParams.type, authFromServer);
 				}
 				else {
 					$.ajax({

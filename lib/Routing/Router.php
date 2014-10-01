@@ -14,6 +14,13 @@ class Router {
     }
 
     /**
+     * @return array
+     */
+    public function getRules() {
+        return $this->rules;
+    }
+
+    /**
      * @param string $path
      * @param string $method
      * @return array

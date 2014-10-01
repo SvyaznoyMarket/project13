@@ -23,7 +23,7 @@ return function (
     $url = $helper->url('cart.lifeGift.product.set', $urlParams);
 
 ?>
-<div class="bWidgetBuy mWidget mLiftGift">
+<div class="bWidgetBuy mWidget mLiftGift js-WidgetBuy">
     <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId())): ?>
         <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId() . '-lifeGift'), 'productId' => $product->getId()]) ?>
     <? endif ?>

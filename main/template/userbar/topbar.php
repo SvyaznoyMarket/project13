@@ -30,7 +30,7 @@
 
     <div class="topbar_r">
         <noindex>
-            <div class="topbarfix topbarfix-stc <?=('homepage'==\App::request()->attributes->get('route') || isset($scheme) && $scheme === 'homepage'?'topbarfix-home':null)?>">
+            <div class="topbarfix js-topbarfix topbarfix-stc <?=('homepage'==\App::request()->attributes->get('route') || isset($scheme) && $scheme === 'homepage'?'topbarfix-home':null)?>">
 
                 <?= $page->render('userbar/_usercart') ?>
 

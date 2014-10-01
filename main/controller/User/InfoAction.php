@@ -41,6 +41,8 @@ class InfoAction {
                 'success' => true,
                 'user'    => [
                     'name'         => null,
+                    'firstName'    => null,
+                    'lastName'     => null,
                     'isSubscribed' => null,
                     'link' => \App::router()->generate('user.login'),
                     'id' =>  null,
@@ -62,6 +64,8 @@ class InfoAction {
             /** @var \Model\User\Entity|null $userEntity */
             if ($userEntity = $user->getEntity()) {
                 $responseData['user']['name'] = $userEntity->getName();
+                $responseData['user']['firstName'] = $userEntity->getFirstName();
+                $responseData['user']['lastName'] = $userEntity->getLastName();
                 $responseData['user']['link'] = \App::router()->generate('user.orders');
                 $responseData['user']['isSubscribed'] = $user->getEntity()->getIsSubscribed();
                 $responseData['user']['id'] = $userEntity->getId();

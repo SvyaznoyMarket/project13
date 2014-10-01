@@ -244,7 +244,7 @@
 		padding: 0 10px;
 		z-index: 10;
 		background: @white;
-		z-index: 10;
+		min-width: 8.4em;
 
 		&.mEmpty {
 			background: #f4f4f4;
@@ -315,19 +315,24 @@
 		background: #fff5e0;
 		border-left: 1px dashed #bbbbbb;
 		float: right;
-		line-height: 50px;
 		padding: 0 10px 0;
 		max-width: 130px;
 		position: relative;
 		z-index: 10;
 
-		&-unl {
+		&-unlogin {
+			line-height: 50px;
 			background: #f4f4f4;
 
 			.topbarfix_log_lk {
 				background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAfklEQVQYGYWQwQ2AIBRD/WUmwhS6i0cdQI/uolMAMwFSIgkxGnr5tDwCVFJKA+W9H2OMc/aaXkQ8gENrfRVP0Fq75bkweCsf2I0xqzjnxhDC+QZar5SawOva8GtNBvVNX0DNyKCa3gR/14OeBnD0QNYE9sQK/mDuFYY9Ur3Cb25DQ2sv9bp2AAAAAElFTkSuQmCC);
 			}
-		} 
+		}
+
+		&-login {
+			min-height: 50px;
+			line-height: 1.2;
+		}
 
 		&:hover {
 

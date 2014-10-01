@@ -21,7 +21,7 @@ return function (
 
     $sliderId = 'slider-' . uniqid();
 ?>
-<div class="bGoodsSlider clearfix<? if ((bool)$categories): ?> mWithCategory<? endif ?><? if ($url && !(bool)$products): ?> <? endif ?><? if (!(bool)$url && !(bool)$products): ?> hf<? endif ?>"  data-slider="<?= $helper->json([
+<div class="bGoodsSlider js-<?= $helper->escape($type) ?> clearfix<? if ((bool)$categories): ?> mWithCategory<? endif ?><? if ($url && !(bool)$products): ?> <? endif ?><? if (!(bool)$url && !(bool)$products): ?> hf<? endif ?>"  data-slider="<?= $helper->json([
         'count' => $count,
         'limit' => $limit,
         'url'   => $url,

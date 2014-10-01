@@ -21,7 +21,7 @@ return function (
 
         <h3 class="bHeadSection"><?= $product->getName() ?> входит в наборы</h3>
 
-        <ul class="bListing clearfix">
+        <ul class="bListing clearfix js-listing">
             <?= $helper->renderWithMustache('product/list/_compact.mustache', ['products' => $products]) ?>
         </ul>
 

@@ -87,7 +87,7 @@
 </div><!--/left section -->
 
 <div class="bProductSectionRightCol">
-    <div class="bWidgetBuy mWidget">
+    <div class="bWidgetBuy mWidget js-WidgetBuy">
         <div class="bStoreDesc">
             <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>
 

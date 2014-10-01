@@ -142,7 +142,7 @@ $(document).ready(function() {
 		var form = $('.bF1SaleCard_eForm');
 		var input = $('#F1SaleCard_number');
 
-		
+
 		// console.log('c '+coupon)
 		// console.log('s '+f1Certificate)
 		// console.log('hasC '+hasCoupon)
@@ -155,7 +155,7 @@ $(document).ready(function() {
 			input.attr('placeholder','Код скидки')
 			$('.bF1SaleCard_eRadio').removeAttr('checked');
 			$('#cartCertificateAll').attr('checked', 'checked');
-			
+
 			if (!hasCoupon){
 				form.show();
 			}
@@ -257,11 +257,11 @@ $(document).ready(function() {
 	function basketline ( nodes, clearfunction ) {
 		var self = this
 		this.hasnodes = $(nodes.drop)
-		
+
 		$(nodes.less).data('run',false)
 		$(nodes.more).data('run',false)
 			var main = $(nodes.line)
-		this.id      = main.attr('ref')	
+		this.id      = main.attr('ref')
 		//var delurl   = $(nodes.less).parent().attr('href')
 		var addurl   = $(nodes.more).parent().attr('href')
 		// if( delurl === '#' )
@@ -327,12 +327,12 @@ $(document).ready(function() {
 			// analytics
 			self.analyticsDelete({id: self.id});
 
-			if( clearfunction ){ 
+			if( clearfunction ){
 				clearfunction()
 			}
 
 			$('body').trigger('remFromCart', {id: self.id, /*name: name,*/ price: self.price});
-			
+
 			$.when($.getJSON( drop , function( data ) {
 			})).then( function(data){
 				$(nodes.drop).data('run',false)
@@ -435,7 +435,7 @@ $(document).ready(function() {
 		}
 
 		this.update = function( minimax, delta ) {
-			
+
 			if( delta > 0 && ( limit < ( self.quantum + delta ) ) ) {
 				$(minimax).data('run',false)
 				return
@@ -443,12 +443,12 @@ $(document).ready(function() {
 			//var tmpurl = (delta > 0) ? addurl : delurl
 			//self.quantum += delta
             var tmpurl = addurl.slice(0, -1);
-            
+
             if (minimax) {
             	self.quantum += delta
             }
             	else self.quantum = delta
-            
+
             tmpurl += self.quantum
 
 			//$(nodes.quan).html( self.quantum)
@@ -457,7 +457,7 @@ $(document).ready(function() {
 			totalCash += self.price * delta;
 
 			// if (self.quantum < nodes.line.find('.extWarr.mBig .ajaquant').val()){
-				
+
 			// }
 
 			PubSub.publish( 'quantityChange', { q : self.quantum, id : self.id } )
@@ -484,7 +484,20 @@ $(document).ready(function() {
 					//liteboxJSON.sum    += delta * price
 					//ltbx.update( liteboxJSON )
 				//}
-				if( !data.success ) {
+				if( data.success ) {
+					var cart = $.extend({}, ENTER.UserModel.cart());
+					$.each(cart, function(){
+						if (this.id == data.product.id) {
+							this.quantity = data.product.quantity;
+							return false;
+						}
+					});
+
+					ENTER.UserModel.cart.removeAll();
+					$.each(cart, function(){
+						ENTER.UserModel.cart.push(this);
+					});
+				} else {
 					location.href = location.href
 				}
 				showOldPrice(data.cart.old_price)
@@ -515,6 +528,8 @@ $(document).ready(function() {
 			var basketLine = $(this).parent().parent().parent().parent(),
 				productId = basketLine.data('product-id'),
 				categoryId = basketLine.data('category-id');
+
+			ENTER.UserModel.cart.remove(function(item){ return item.id == productId});
 
 			// Soloway
 			// Чтобы клиент не видел баннер с товаром которого нет на сайте и призывом купить
@@ -547,7 +562,7 @@ $(document).ready(function() {
 		$(nodes.more).click( function() {
 			var plus = this;
 			var nQuan = parseInt(nodes.quan.val(),10)+1;
-			if(self.checkNode(nodes, nQuan)){	
+			if(self.checkNode(nodes, nQuan)){
 				if( ! $(plus).data('run') ) {
 					$(plus).data('run',true);
 					self.update( plus, 1 );
@@ -587,7 +602,7 @@ $(document).ready(function() {
 		});
 
 	} // object basketline
-	
+
 	var basket = [],
 		popupIsOpened = false;
 
@@ -604,7 +619,7 @@ $(document).ready(function() {
 						'limit': bline.find('.numerbox').data('limit')
 						});
 		basket.push( tmpline );
-				
+
 		if( $('div.bBacketServ.mBig.F1', bline).length ) {
 			$('div.bBacketServ.mBig.F1 tr', bline).each( function(){
 				if( $('.ajaquant', $(this)).length ) {
@@ -638,7 +653,7 @@ $(document).ready(function() {
 						showPrice(data.cart.full_price)
 					}
 				})
-				
+
 		   })
 			return false
 		})
@@ -665,7 +680,7 @@ $(document).ready(function() {
 					return false
 				wrntpopup.find('input.button').val('Выбрать').removeClass('active')
 				$(this).val('В корзине').addClass('active')
-				var tmpitem = $(this).data()			
+				var tmpitem = $(this).data()
 				$.getJSON( tmpitem.url, function(data) {
 					showOldPrice(data.cart.old_price);
 					showPrice(data.cart.full_price);
@@ -673,29 +688,29 @@ $(document).ready(function() {
 				popupIsOpened = false
 				wrntpopup.hide()
 				makeWideWrnt( bline, tmpitem )
-		   		
+
 		   })
 			return false
 		})
 	})
 
 	function addLine( tr, bline ) {
-	
+
 		var checkWide = function () {
 			var buttons = $('td.bF1Block_eBuy', bline)
-			var mBig = $('div.bBacketServ.mBig.F1', bline)		
+			var mBig = $('div.bBacketServ.mBig.F1', bline)
 			for(var i=0, l = $(buttons).length; i < l; i++) {
 				if( ! $('tr[ref=' + $(buttons[i]).attr('ref') + ']', mBig).length ) {
 					$(buttons[i]).find('input').val('Купить услугу').removeClass('active')
 					//break
-				}	
-			}	
-						
-			if ( !$('div.bBacketServ.mBig .ajaquant', bline).length ) {	
-				$('div.bBacketServ.mBig.F1', bline).hide()							
+				}
+			}
+
+			if ( !$('div.bBacketServ.mBig .ajaquant', bline).length ) {
+				$('div.bBacketServ.mBig.F1', bline).hide()
 				$('div.bBacketServ.mSmall.F1', bline).show()
-			}	
-		}	
+			}
+		}
 		var tmpline = new basketline({
 					'line': tr,
 					'less': tr.find('.ajaless'),
@@ -706,8 +721,8 @@ $(document).ready(function() {
 					'drop': tr.find('.whitelink')
 					}, checkWide)
 		basket.push( tmpline )
-	}		
-	
+	}
+
 	function makeWide( bline, f1item ) {
 		$('div.bBacketServ.mSmall.F1', bline).hide()
 		var bBig = $('div.bBacketServ.mBig.F1', bline)
@@ -723,18 +738,18 @@ $(document).ready(function() {
 	function addLineWrnt( tr, bline ) {
 		var checkWide = function () {
 			var buttons = $('.extWarranty .bF1Block_eBuy', bline)
-			var mBig = $('div.bBacketServ.mBig.extWarr', bline)	
+			var mBig = $('div.bBacketServ.mBig.extWarr', bline)
 			for(var i=0, l = $(buttons).length; i < l; i++) {
 				if( ! $('tr[ref=' + $(buttons[i]).attr('ref') + ']', mBig).length ) {
 					$(buttons[i]).find('input').val('Выбрать').removeClass('active')
 					//break
-				}	
-			}	
-						
+				}
+			}
+
 			if ( !$('div.bBacketServ.mBig.extWarr .mPrice', bline).length ) {
-				$('div.bBacketServ.mBig.extWarr', bline).hide()							
+				$('div.bBacketServ.mBig.extWarr', bline).hide()
 				$('div.bBacketServ.mSmall.extWarr', bline).show()
-			}	
+			}
 		}
 		var tmpline = new basketline({
 					'line': tr,
@@ -748,13 +763,13 @@ $(document).ready(function() {
 					'linked': bline.attr('ref')
 					}, checkWide)
 		basket.push( tmpline )
-	}	
+	}
 
 	function makeWideWrnt( bline, f1item ) {
 		$('div.bBacketServ.extWarr.mSmall', bline).hide()
 		f1item.productQ = bline.find('.ajaquant:first').text().replace(/[^0-9]/g,'')
 		var bBig = $('div.bBacketServ.extWarr.mBig', bline)
-		bBig.show()	
+		bBig.show()
 		var f1lineshead = $('tr:first', bBig)
 		var f1linecart = tmpl('wrntline', f1item)
 		f1linecart = f1linecart.replace(/WID/g, f1item.ewid ).replace(/PRID/g, bline.attr('ref') )
@@ -765,7 +780,7 @@ $(document).ready(function() {
 		addLineWrnt( $('tr:eq(1)', bBig), bline )
 		// getTotal()
 	}
-	
+
 	/* credit */
 	if( $('#selectCredit').length ) {
 		var minsum = $('#creditSum').data('minsum')
@@ -775,7 +790,7 @@ $(document).ready(function() {
 			$('#creditSum').toggle()
 		    $('#commonSum').toggle()
 		}
-		
+
 		function checkFlag() {
 			if( $('#selectCredit:checked').length ) {
 				anotherSum()
@@ -783,7 +798,7 @@ $(document).ready(function() {
 		}
 
 		function toggleFlag() {
-			$('#blockFromCreditAgent').fadeOut( 'slow' )	
+			$('#blockFromCreditAgent').fadeOut( 'slow' )
 			if( totalCash >= minsum ) {
 				if( $('#creditFlag').is(':hidden') ) { // сумма превысила рубеж
 					$('#creditFlag').show()
@@ -825,12 +840,12 @@ $(document).ready(function() {
 			$(this).toggleClass('checked')
 			anotherSum()
 			toggleCookie( 'credit_on' )
-		})	
-		
+		})
+
 		DirectCredit.init( $('#tsCreditCart').data('value'), $('#creditPrice') )
 		PubSub.subscribe( 'quantityChange', DirectCredit.change )
-	} // credit 
-    
+	} // credit
+
 
 	$('body').bind('remFromCart', function ( e,d ) {});
 });

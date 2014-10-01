@@ -1060,14 +1060,14 @@ return [
         'action'  => ['Compare\CompareAction', 'execute'],
     ],
     'compare.add' => [
-        'pattern' => '/compare/add-product/{id}',
+        'pattern' => '/compare/add-product/{productId}',
         'action'  => ['Compare\CompareAction', 'add'],
-        'require'   => [ 'id' => '\d+']
+        'require' => ['productId' => '\d+']
     ],
     'compare.delete' => [
-        'pattern' => '/compare/delete-product/{id}',
+        'pattern' => '/compare/delete-product/{productId}',
         'action'  => ['Compare\CompareAction', 'delete'],
-        'require'   => [ 'id' => '\d+']
+        'require' => ['productId' => '\d+']
     ],
     'compare.clear' => [
         'pattern' => '/compare/clear',

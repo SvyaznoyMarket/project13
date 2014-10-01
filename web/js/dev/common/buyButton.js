@@ -21,24 +21,30 @@
 			button.addClass('mLoading');
 
 			// Добавление в корзину на сервере. Получение данных о покупке и состоянии корзины. Маркировка кнопок.
-			$.get(button.attr('href'), function(data) {
-				var
-					upsale = button.data('upsale') ? button.data('upsale') : null,
-					product = button.parents('.jsSliderItem').data('product');
+			$.ajax({
+				url: button.attr('href'),
+				type: 'GET',
+				success: function(data) {
+					var
+						upsale = button.data('upsale') ? button.data('upsale') : null,
+						product = button.parents('.jsSliderItem').data('product');
 
-				if (!data.success) {
-					return;
+					if (!data.success) {
+						return;
+					}
+
+					button.removeClass('mLoading');
+
+					if (data.product) {
+						data.product.isUpsale = product && product.isUpsale ? true : false;
+						data.product.fromUpsale = upsale && upsale.fromUpsale ? true : false;
+					}
+
+					body.trigger('addtocart', [data, upsale]);
+				},
+				error: function() {
+					button.removeClass('mLoading');
 				}
-
-				button.removeClass('mLoading');
-
-				if (data.product) {
-					data.product.isUpsale = product && product.isUpsale ? true : false;
-					data.product.fromUpsale = upsale && upsale.fromUpsale ? true : false;
-				}
-
-				body.trigger('addtocart', [data]);
-				body.trigger('getupsale', [data, upsale]);
 			});
 
 			return false;

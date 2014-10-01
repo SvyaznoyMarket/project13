@@ -2,12 +2,12 @@
 ?>
 
 <!-- При пустой корзине -->
-<div class="topbarfix_cart mEmpty" data-bind=" visible: cart().length == 0 ">
+<div class="topbarfix_cart mEmpty js-topbarfixCart" data-bind=" visible: cart().length == 0 ">
     <a href="/cart" class="topbarfix_cart_tl">Корзина</a>
 </div>
 
 <!-- При непустой корзине -->
-<div class="topbarfix_cart" data-bind=" visible: cart().length > 0 " style="display: none">
+<div class="topbarfix_cart js-topbarfixCart" data-bind=" visible: cart().length > 0 " style="display: none">
 
     <a href="<?=  $page->url('cart') ?>" class="topbarfix_cart_tl">
         <span class="topbarfix_cart_tx">Корзина</span>

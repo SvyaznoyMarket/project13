@@ -16,7 +16,7 @@ return function(
         'product/_review-compact' => file_get_contents(\App::config()->templateDir . '/product/_review-compact.mustache')
     ]; ?>
 
-    <ul class="bListing<? if (3 === $columnCount): ?> bListing-3col<? endif ?> clearfix<? if ('jewel' === $listingStyle): ?> mPandora<? endif ?>"><!-- mPandora если необходимо застилить листинги под пандору -->
+    <ul class="bListing<? if (3 === $columnCount): ?> bListing-3col<? endif ?> clearfix<? if ('jewel' === $listingStyle): ?> mPandora<? endif ?> js-listing"><!-- mPandora если необходимо застилить листинги под пандору -->
         <?= $helper->renderWithMustache('product/list/' . ($view == 'line' ? '_line' : '_compact'), (new \View\Product\ListAction())->execute($helper, $pager, $productVideosByProduct, $bannerPlaceholder, $buyMethod, $showState, $columnCount)) ?>
     </ul>
 
