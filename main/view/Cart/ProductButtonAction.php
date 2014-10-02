@@ -46,7 +46,7 @@ class ProductButtonAction {
             $data['disabled'] = true;
             $data['url'] = '#';
             $data['class'] .= ' jsBuyButton';
-            $data['value'] = $product->isInShopShowroomOnly() ? 'На витрине' : 'Нет в наличии';
+            $data['value'] = $product->isInShopShowroomOnly() ? 'На витрине' : 'Нет';
         } else if (!isset($data['url'])) {
             $urlParams = [
                 'productId' => $product->getId(),
