@@ -25,6 +25,8 @@ class Entity {
     private $url;
     /** @var string */
     private $imageUrl;
+    /** @var string */
+    private $name;
 
     /**
      * @param array $data
@@ -183,5 +185,19 @@ class Entity {
      */
     public function getImageUrl() {
         return $this->imageUrl;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name) {
+        $this->name = (string)$name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName() {
+        return $this->name;
     }
 }

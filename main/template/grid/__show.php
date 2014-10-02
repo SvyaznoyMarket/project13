@@ -58,7 +58,7 @@ $f = function(
     <?
         $url = $cell->getImageUrl();
         $link = $cell->getUrl();
-        $name = '';//$cell->getName();
+        $name = $cell->getName();
     ?>
         <? if ($link) { ?> <a href="<?= $link ?>" title="<?= $name ?>"> <? } ?>
             <img src="<?= $url ?>" alt="<?= $name ?>" style="max-width:100%;" />

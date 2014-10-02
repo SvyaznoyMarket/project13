@@ -50,7 +50,7 @@ class ChildAction {
 
         /** @var $productsByUi \Model\Product\Entity[] */
         $productsByUi = [];
-        /** @var $grid \Model\GridCell\Entity[] */
+        /** @var $gridCells \Model\GridCell\Entity[] */
         $gridCells = [];
         foreach ($result['items'] as $item) {
             if (!is_array($item)) continue;
@@ -98,6 +98,7 @@ class ChildAction {
             });
         }
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
         $productsByUi = array_filter($productsByUi, function($product) {
             return $product instanceof \Model\Product\BasicEntity;
         });
