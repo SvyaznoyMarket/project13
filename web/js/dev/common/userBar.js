@@ -376,7 +376,7 @@
 					$emptyCompareNotice.removeClass('topbarfix_cmpr_popup-show');
 				});
 
-				$('.js-topbarfixLogin, .js-topbarfixCart', userbarStatic).mouseover(function() {
+				$('.js-topbarfixLogin, .js-topbarfixNotEmptyCart', userbarStatic).mouseover(function() {
 					$emptyCompareNotice.removeClass('topbarfix_cmpr_popup-show');
 				});
 
