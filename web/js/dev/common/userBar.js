@@ -16,6 +16,7 @@
 		userBarFixed = userBar.userBarFixed = $('.topbarfix-fx'),
 		userbarStatic = userBar.userBarStatic = $('.topbarfix-stc'),
 
+		$emptyCompareNotice = null,
 		topBtn = userBarFixed.find('.topbarfix_upLink'),
 		userbarConfig = userBarFixed.data('value'),
 		body = $('body'),
@@ -28,7 +29,6 @@
 	// end of vars
 
 	userBar.showOverlay = false;
-	userBar.$emptyCompareNotice = null;
 
 
 	var
@@ -38,8 +38,8 @@
 			showUserbar = function showUserbar() {
 			console.log('showUserbar');
 
-			if (userBar.$emptyCompareNotice) {
-				userBar.$emptyCompareNotice.removeClass('topbarfix_cmpr_popup-show');
+			if ($emptyCompareNotice) {
+				$emptyCompareNotice.removeClass('topbarfix_cmpr_popup-show');
 			}
 
 			userBarFixed.slideDown();
@@ -153,8 +153,8 @@
 			showBuyInfo = function showBuyInfo( e, data, upsale ) {
 			console.info('userbar::showBuyInfo');
 
-			if (userBar.$emptyCompareNotice) {
-				userBar.$emptyCompareNotice.removeClass('topbarfix_cmpr_popup-show');
+			if ($emptyCompareNotice) {
+				$emptyCompareNotice.removeClass('topbarfix_cmpr_popup-show');
 			}
 
 			var	buyInfo = $('.topbarfix_cartOn');
@@ -370,26 +370,26 @@
 
 		showEmptyCompareNotice = function(e) {
 			e.stopPropagation();
-			if (!userBar.$emptyCompareNotice) {
-				userBar.$emptyCompareNotice = $('.js-compare-popup');
-				$('.js-compare-popup-closer', userBar.$emptyCompareNotice).click(function() {
-					userBar.$emptyCompareNotice.removeClass('topbarfix_cmpr_popup-show');
+			if (!$emptyCompareNotice) {
+				$emptyCompareNotice = $('.js-compare-popup');
+				$('.js-compare-popup-closer', $emptyCompareNotice).click(function() {
+					$emptyCompareNotice.removeClass('topbarfix_cmpr_popup-show');
 				});
 
 				$('.js-topbarfixLogin, .js-topbarfixCart', userbarStatic).mouseover(function() {
-					userBar.$emptyCompareNotice.removeClass('topbarfix_cmpr_popup-show');
+					$emptyCompareNotice.removeClass('topbarfix_cmpr_popup-show');
 				});
 
 				$(document.body).click(function() {
-					userBar.$emptyCompareNotice.removeClass('topbarfix_cmpr_popup-show');
+					$emptyCompareNotice.removeClass('topbarfix_cmpr_popup-show');
 				});
 
-				$(userBar.$emptyCompareNotice).click(function(e) {
+				$($emptyCompareNotice).click(function(e) {
 					e.stopPropagation();
 				});
 			}
 
-			userBar.$emptyCompareNotice.addClass('topbarfix_cmpr_popup-show');
+			$emptyCompareNotice.addClass('topbarfix_cmpr_popup-show');
 		};
 	// end of functions
 
