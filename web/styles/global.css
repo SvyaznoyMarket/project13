@@ -2987,7 +2987,6 @@ img[height="0"] {
   .enterprize {
     background: #000000;
   }
-  .enterprize .bSubscribeLightboxPopupNotNow,
   .enterprize .bSubscribeLightboxPopup {
     display: none !important;
   }
@@ -3079,7 +3078,6 @@ img[height="0"] {
   .enterprizeMore a {
     text-decoration: underline;
   }
-  .enterprizeMember .bSubscribeLightboxPopupNotNow,
   .enterprizeMember .bSubscribeLightboxPopup {
     display: none !important;
   }

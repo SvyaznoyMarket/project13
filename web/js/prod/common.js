@@ -3190,7 +3190,6 @@ $(document).ready(function() {
 	var
 		lboxCheckSubscribe = function lboxCheckSubscribe( event ) {
 			var
-				notNowShield = $('.bSubscribeLightboxPopupNotNow'),
 				subPopup = $('.bSubscribeLightboxPopup'),
 				input = $('.bSubscribeLightboxPopup__eInput'),
 				submitBtn = $('.bSubscribeLightboxPopup__eBtn'),
@@ -3276,7 +3275,7 @@ $(document).ready(function() {
 
 							var url = $(this).data('url');
 
-							subPopup.slideUp(300, subscribeLater);
+							subPopup.slideUp(300);
 							window.docCookies.setItem('subscribed', 0, 157680000, '/');
 							$.post(url);
 						};
@@ -3288,24 +3287,12 @@ $(document).ready(function() {
 
 					notNow.off('click');
 					notNow.bind('click', notNowClickHandler);
-				},
-
-				subscribeLater = function subscribeLater() {
-					notNowShield.slideDown(300);
-					notNowShield.bind('click', function() {
-						$(this).slideUp(300);
-						subscribeNow();
-					});
 				};
 			//end of functions
 
 			input.placeholder();
 
 			if ( !subscribe.show ) {
-				if ( !subscribe.agreed ) {
-					subscribeLater();
-				}
-
 				return false;
 			}
 			else {

@@ -7329,16 +7329,6 @@
 /*---------END ПОДСКАЗОК ПОИСКА-----*/
 /*-------СТИЛИ ВСПЛЫВАЮЩЕЙ ПОДПИСКИ-----*/
 @media all {
-  .bSubscribeLightboxPopupNotNow {
-    position: absolute;
-    top: 0;
-    right: -40px;
-    display: none;
-    width: 39px;
-    height: 43px;
-    background: url('/css/subscribeLightboxPopup/img/EPicon.png') no-repeat 0 0;
-    cursor: pointer;
-  }
   .bSubscribeLightboxPopup {
     display: none;
     height: 43px;
