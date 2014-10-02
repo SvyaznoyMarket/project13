@@ -20,12 +20,4 @@ class EmptyPage extends \View\DefaultLayout {
     public function slotBodyClassAttribute() {
         return 'enterprize_user';
     }
-
-    public function slotUserbarEnterprize() {
-        return '';
-    }
-
-    public function slotUserbarEnterprizeContent() {
-        return '';
-    }
 }

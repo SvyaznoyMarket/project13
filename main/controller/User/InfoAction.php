@@ -47,7 +47,6 @@ class InfoAction {
                     'link' => \App::router()->generate('user.login'),
                     'id' =>  null,
                     'email' =>  null,
-                    'hasEnterprizeCoupon' => null,
                 ],
                 'cart'    => [
                     'sum'      => 0,
@@ -71,7 +70,6 @@ class InfoAction {
                 $responseData['user']['id'] = $userEntity->getId();
                 $responseData['user']['email'] = $userEntity->getEmail();
                 $responseData['user']['emailHash'] = md5($userEntity->getEmail());
-                $responseData['user']['hasEnterprizeCoupon'] = $userEntity->isEnterprizeMember();
                 $responseData['user']['sex'] = $userEntity->getSex(); // 1-мужской, 2-женский
 
                 // sclubNumber

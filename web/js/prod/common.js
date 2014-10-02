@@ -115,7 +115,6 @@
 			self.firstName = ko.observable();
 			self.lastName = ko.observable();
 			self.link = ko.observable();
-			self.hasEnterprizeCoupon = ko.observable(false);
 
 			self.cart = ko.observableArray();
 			self.compare = ko.observableArray();
@@ -135,7 +134,6 @@
 					if (data.user.firstName) self.firstName(data.user.firstName);
 					if (data.user.lastName) self.lastName(data.user.lastName);
 					if (data.user.link) self.link(data.user.link);
-					if (data.user.hasEnterprizeCoupon) self.hasEnterprizeCoupon(true);
 				}
 				if (data.cartProducts && $.isArray(data.cartProducts)) {
 					$.each(data.cartProducts, function(i,val){ self.cart.unshift(val) });

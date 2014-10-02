@@ -33,12 +33,4 @@ class ShowPage extends \View\DefaultLayout {
 
         return $this->render('enterprize/_contentHead', $this->params);
     }
-
-    public function slotUserbarEnterprize() {
-        return '';
-    }
-
-    public function slotUserbarEnterprizeContent() {
-        return '';
-    }
 }

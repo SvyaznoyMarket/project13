@@ -35,14 +35,6 @@ class IndexPage extends \View\DefaultLayout {
         return parent::slotContentHead() . $this->render('enterprize/_auth');
     }
 
-    public function slotUserbarEnterprize() {
-        return '';
-    }
-
-    public function slotUserbarEnterprizeContent() {
-        return '';
-    }
-
     public function slotFlocktoryEnterprizeJs() {
         $return = '';
         if ((bool)$this->getParam('hasFlocktoryPopup')) {
