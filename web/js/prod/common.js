@@ -148,7 +148,7 @@
 
 		// Биндинги на нужные элементы
 		// Топбар, кнопка Купить на странице продукта, листинги, слайдер аксессуаров
-		$('.js-topbarfix, .js-WidgetBuy, .js-listing, .js-accessorize').each(function() {ko.applyBindings(ENTER.UserModel, this) });
+		$('.js-topbarfix, .js-WidgetBuy, .js-listing, .js-jewelListing, .js-gridListing, .js-accessorize, .js-enterprize').each(function() {ko.applyBindings(ENTER.UserModel, this) });
 
 		// Обновление данных о пользователе и корзине
 		$.ajax({

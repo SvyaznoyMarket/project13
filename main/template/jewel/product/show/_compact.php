@@ -23,7 +23,7 @@ $btnText = $inCart ? 'В корзине' : 'Купить';
 $imgSize = isset($itemsPerRow) && 3 == $itemsPerRow ? 6 : 2;
 ?>
 
-<li class="bBrandGoodsList__eItem">
+<li class="bBrandGoodsList__eItem js-jewelListing">
   <div class="goodsbox" ref="<?= $product->getToken(); ?>"><? //для корректной работы js ?>
     <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>" <?php if (isset($additionalData)) echo 'data-product="' . $page->json($additionalData) . '"' ?> <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
       <div class="bItemName"><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></div>
