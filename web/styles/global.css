@@ -1887,7 +1887,7 @@ img[height="0"] {
   .topbarfix-stc .topbarfix_log {
     border-left: none;
   }
-  .topbarfix:hover .topbarfix_cartQuan {
+  .topbarfix .topbarfix_cart:hover .topbarfix_cartQuan {
     animation-name: shake;
     animation-duration: 0.6s;
     animation-timing-function: ease;
