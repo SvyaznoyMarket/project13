@@ -6540,12 +6540,7 @@ img[height="0"] {
 /*---------Личный кабинет пользователя----------*/
 @media all {
   .btnCmpr {
-    text-align: center;
-    margin-top: 25px;
-  }
-  .btnCmpr-act {
-    text-align: left;
-    margin-left: 5px;
+    margin: 25px 0 0 13px;
   }
   .btnCmpr_lk {
     display: inline-block;
@@ -6561,7 +6556,7 @@ img[height="0"] {
     text-decoration: none;
   }
   .btnCmpr_lk-act {
-    background-position: 0 -30px;
+    background-position: 0 -31px;
   }
   .btnCmpr_tx {
     border-bottom: 1px dotted;
