@@ -1038,7 +1038,7 @@ img[height="0"] {
   .topbar_lks_i {
     display: block;
     color: #808080;
-    font-size: 13px;
+    font-size: 12px;
     text-decoration: underline;
   }
   .topbar_ep {
@@ -2105,12 +2105,6 @@ img[height="0"] {
     line-height: 50px;
     background: url("/styles/header/img/icons.png") no-repeat 0 -142px;
   }
-  .topbarfix_cart_tl:hover {
-    text-decoration: none;
-  }
-  .topbarfix_cart_tl:hover .topbarfix_cart_tx {
-    text-decoration: none;
-  }
   .topbarfix_cart_tx {
     display: inline-block;
     vertical-align: top;
@@ -2204,7 +2198,6 @@ img[height="0"] {
     *zoom: 1;
     padding: 0 0 0 26px;
     line-height: 50px;
-    cursor: pointer;
     background: url("/styles/header/img/icons.png") no-repeat 0 -36px;
   }
   .topbarfix_cmpr_qn {
@@ -4122,7 +4115,7 @@ img[height="0"] {
     margin-top: 5px;
   }
   .tchiboProducts .productInner__desc .bBtnLine .btnBuy {
-    height: 22px;
+    margin-right: 16px;
   }
   .tchiboProducts .productInner__desc .bBtnLine .btnBuy .btnBuy__eLink {
     background: -moz-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
@@ -4175,20 +4168,6 @@ img[height="0"] {
     border: 1px solid #A1A1A1;
     display: inline-block;
     vertical-align: top;
-  }
-  .tchiboProducts .productInner__desc .bBtnLine .btnBuy__eLink {
-    width: 70px;
-    height: 22px;
-    font-size: 13px;
-    line-height: 22px;
-  }
-  .tchiboProducts .productInner__desc .bBtnLine .btnBuy__eLink.mDisabled {
-    width: 100px;
-  }
-  .tchiboProducts .productInner__desc .bBtnLine .btnView {
-    height: 22px;
-    font-size: 13px;
-    line-height: 22px;
   }
   .tchiboProducts .productInner__desc .bOptionsSection {
     margin-top: 8px;
@@ -6561,12 +6540,7 @@ img[height="0"] {
 /*---------Личный кабинет пользователя----------*/
 @media all {
   .btnCmpr {
-    text-align: center;
-    margin-top: 25px;
-  }
-  .btnCmpr-act {
-    text-align: left;
-    margin-left: 5px;
+    margin: 25px 0 0 13px;
   }
   .btnCmpr_lk {
     display: inline-block;
@@ -6582,7 +6556,7 @@ img[height="0"] {
     text-decoration: none;
   }
   .btnCmpr_lk-act {
-    background-position: 0 -30px;
+    background-position: 0 -31px;
   }
   .btnCmpr_tx {
     border-bottom: 1px dotted;
