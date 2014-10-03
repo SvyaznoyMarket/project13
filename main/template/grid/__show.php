@@ -28,7 +28,7 @@ $f = function(
 ">
     <? if (\Model\GridCell\Entity::TYPE_PRODUCT === $cell->getType()): ?>
     <?
-        $product = ((isset($productsByUi[$cell->getUi()]) && $productsByUi[$cell->getUi()] instanceof \Model\Product\BasicEntity) ? $productsByUi[$cell->getUi()] : null);
+        $product = ((isset($productsByUi[$cell->getObjectUi()]) && $productsByUi[$cell->getObjectUi()] instanceof \Model\Product\BasicEntity) ? $productsByUi[$cell->getObjectUi()] : null);
     ?>
         <? if ($product): ?>
             <? if ($product->getLabel()): ?>
@@ -56,10 +56,9 @@ $f = function(
         <? endif ?>
     <? elseif (\Model\GridCell\Entity::TYPE_IMAGE === $cell->getType()): ?>
     <?
-        $content = $cell->getContent();
-        $url = !empty($content['url']) ? $content['url'] : null;
-        $link = !empty($content['link']) ? $content['link'] : null;
-        $name = !empty($content['name']) ? $content['name'] : '';
+        $url = $cell->getImageUrl();
+        $link = $cell->getUrl();
+        $name = $cell->getName();
     ?>
         <? if ($link) { ?> <a href="<?= $link ?>" title="<?= $name ?>"> <? } ?>
             <img src="<?= $url ?>" alt="<?= $name ?>" style="max-width:100%;" />

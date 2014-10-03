@@ -7,6 +7,7 @@ class ChildAction {
      * @param \Http\Request $request
      * @param \Model\Product\Category\Entity $category
      * @param array $catalogConfig
+     * @param array $shopScriptSeo
      * @return \Http\Response
      */
     public function executeByEntity(\Http\Request $request, \Model\Product\Category\Entity $category, $catalogConfig = [], $shopScriptSeo = []) {
@@ -31,34 +32,33 @@ class ChildAction {
         }
 
         $result = [];
-        \App::shopScriptClient()->addQuery(
-            'category/get-meta',
+        \App::scmsClient()->addQuery(
+            'category/get',
             [
-                'slug' => [$category->getToken()],
+                'uid'    => $category->getUi(),
+                'geo_id' => $region->getId(),
             ],
             [],
             function($data) use (&$result) {
-                if (is_array($data)) {
-                    $data = reset($data);
-                }
-                if (isset($data['grid_data']) && is_array($data['grid_data'])) {
-                    $result = $data['grid_data'];
+                if (isset($data['grid']['items'][0])) {
+                    $result = $data['grid'];
                 }
             }
         );
-        \App::shopScriptClient()->execute();
+        \App::scmsClient()->execute();
+
 
         /** @var $productsByUi \Model\Product\Entity[] */
         $productsByUi = [];
-        /** @var $grid \Model\GridCell\Entity[] */
+        /** @var $gridCells \Model\GridCell\Entity[] */
         $gridCells = [];
-        foreach ($result as $item) {
+        foreach ($result['items'] as $item) {
             if (!is_array($item)) continue;
             $gridCell = new \Model\GridCell\Entity($item);
             $gridCells[] = $gridCell;
 
-            if ((\Model\GridCell\Entity::TYPE_PRODUCT === $gridCell->getType()) && $gridCell->getUi()) {
-                $productsByUi[$gridCell->getUi()] = $gridCell->getId();
+            if ((\Model\GridCell\Entity::TYPE_PRODUCT === $gridCell->getType()) && $gridCell->getObjectUi()) {
+                $productsByUi[$gridCell->getObjectUi()] = $gridCell->getObjectId();
             }
         }
 
@@ -98,6 +98,7 @@ class ChildAction {
             });
         }
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
         $productsByUi = array_filter($productsByUi, function($product) {
             return $product instanceof \Model\Product\BasicEntity;
         });
