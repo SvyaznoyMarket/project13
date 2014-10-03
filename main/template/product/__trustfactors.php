@@ -1,7 +1,7 @@
 <?php
 return function (\Helper\TemplateHelper $helper, $trustfactors, $type) {
 ?>
-    <? foreach ($trustfactors as $trustfactor): ?>
+    <? foreach ((array)$trustfactors as $trustfactor): ?>
         <? if ($trustfactor['type'] === $type): ?>
             <div class="trustfactor-<?= $type ?>">
                 <? if (isset($trustfactor['link'])): ?>
