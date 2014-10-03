@@ -6642,11 +6642,11 @@ img[height="0"] {
   .wrapw {
     height: auto !important;
     min-height: 100%;
-    min-width: 1000px;
     width: 100%;
     background: #ffffff;
   }
   .cmprHd {
+    position: relative;
     background: #e6e6e6;
     border-bottom: 1px solid #c7c7c7;
     padding: 20px 20px 0 0;
@@ -6664,12 +6664,21 @@ img[height="0"] {
     padding-left: 205px;
   }
   .cmprHd_t {
+    min-height: 33px;
     background: url("/styles/compare/img/icon_cmpr.png") no-repeat 0 3px;
     font-size: 25px;
     margin: 0 0 15px;
     padding: 0 0 2px 45px;
+    text-decoration: none;
   }
   .cmprHd_lst_i {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+  }
+  .cmprHd_lst_i a {
     display: inline-block;
     vertical-align: top;
     /* IE6-8 */
@@ -6684,10 +6693,10 @@ img[height="0"] {
     cursor: pointer;
     margin: 0 5px 10px 0;
   }
-  .cmprHd_lst_i:hover {
+  .cmprHd_lst_i a:hover {
     border-color: #f99b1c;
   }
-  .cmprHd_lst_i-act {
+  .cmprHd_lst_i-act a {
     cursor: default;
     border-color: #f99b1c;
     border-left-width: 5px;
@@ -6713,19 +6722,17 @@ img[height="0"] {
     max-height: 100%;
   }
   .cmprCnt {
+    position: relative;
     background: #ffffff;
     margin: 1px 0 0;
     font-size: 14px;
     padding-bottom: 20px;
-    position: relative;
+    width: 1px;
   }
-  .cmprCnt-scroll .cmprCnt_cell-hd {
-    height: 135px;
+  .cmprCnt_onlySimilar .cmprCnt_property_similar {
+    display: none;
   }
-  .cmprCnt-scroll .cmprCnt_thd {
-    height: 135px;
-  }
-  .cmprCnt-scroll .cmprCnt_thd .cmprCnt_cell {
+  .cmprCnt-scroll .cmprCnt_head .cmprCnt_cell {
     height: 135px;
   }
   .cmprCnt-scroll .cmprCnt_img {
@@ -6751,67 +6758,39 @@ img[height="0"] {
   .cmprCnt-scroll .cmprCnt_mode {
     margin: 10px 0 0 -10px;
   }
-  .cmprCnt_prod {
-    overflow-x: hidden;
-    overflow-y: scroll;
-    width: 240px;
-  }
-  .cmprCnt_descr {
-    float: left;
-    overflow: auto;
-  }
-  .cmprCnt_thd {
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    transition: all 0.5s ease;
-    float: left;
-    overflow-x: scroll;
-    overflow-y: hidden;
-  }
-  .cmprCnt_thd .cmprCnt_cell {
+  .cmprCnt_head .cmprCnt_cell {
     height: 250px;
+  }
+  .cmprCnt_modes .cmprCnt_cell {
+    padding-left: 22px;
+    background: #f2f2f2;
+  }
+  .cmprCnt_product .cmprCnt_cell {
     padding-top: 10px;
     padding-bottom: 0;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    transition: all 0.5s ease;
     position: relative;
+    background: #ffffff;
   }
-  .cmprCnt_l {
-    float: left;
+  .cmprCnt th {
+    position: relative;
     background: #f2f2f2;
     color: #515151;
-    width: 240px;
+    text-align: left;
+    vertical-align: middle;
   }
-  .cmprCnt_l .cmprCnt_cell {
-    padding-left: 22px;
+  .cmprCnt th .cmprCnt_border {
+    z-index: 1201;
   }
-  .cmprCnt_r {
-    float: left;
-    overflow-x: scroll;
-    overflow-y: hidden;
-  }
-  .cmprCnt-head {
-    float: left;
-    overflow-x: scroll;
-    overflow-y: hidden;
-  }
-  .cmprCnt-head .compareBox_cell {
+  .cmprCnt td {
     position: relative;
+    vertical-align: middle;
   }
-  .cmprCnt_cpt {
-    height: 21px;
+  .cmprCnt_property th .cmprCnt_cell {
     padding: 6px 10px;
-    border-bottom: 1px solid #c7c7c7;
     background: #f2f2f2;
   }
-  .cmprCnt_cpt-cls .cmprCnt_cpt_t {
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAPCAYAAAAyPTUwAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAk0lEQVQoFY2SMQqDQBBFJ42QIo0exjq1Xiv29qZK45XS2eUS4uZ9YUDQZUd4Ds6+78q4ZmYz1CklK4FnCX7QRWUFxASPXIi1XXJZdYHnVYD+SVZggxHuxxDPl7Lv9GW99UBJVmiFF1Q3bmpEro8k3zJX9eYBqpIc+ubwNBa2C835jVj8gzobvc8zV3H2U9fkhGP/DzG8DoNxdL/qAAAAAElFTkSuQmCC) no-repeat 0 3px;
-  }
-  .cmprCnt_cpt_t {
+  .cmprCnt_property_group a {
     z-index: 2;
-    display: block;
-    height: 21px;
     white-space: nowrap;
     color: #515151;
     word-wrap: normal;
@@ -6819,10 +6798,24 @@ img[height="0"] {
     font-size: 14px;
     padding-left: 12px;
     font-weight: bold;
+    text-decoration: none;
   }
-  .cmprCnt_col {
-    float: left;
-    width: 240px;
+  .cmprCnt_property_group a:hover {
+    text-decoration: none;
+  }
+  .cmprCnt_property_group a span {
+    border-bottom-width: 1px;
+    border-bottom-style: dotted;
+  }
+  .cmprCnt_property_group-act a {
+    background: none;
+  }
+  .cmprCnt_property_group-hide {
+    display: none;
+  }
+  .cmprCnt_property_item .cmprCnt_property_item_name {
+    display: block;
+    margin-left: 12px;
   }
   .cmprCnt_mode {
     margin: 60px 0 0 -10px;
@@ -6904,21 +6897,17 @@ img[height="0"] {
   }
   .cmprCnt_cell {
     box-sizing: border-box;
-    width: 240px;
+    width: 230px;
     padding: 6px 10px;
-    vertical-align: middle;
-    border-bottom: 1px solid #c7c7c7;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    transition: all 0.5s ease;
     position: relative;
   }
-  .cmprCnt_cell-hd {
-    height: 250px;
-    padding-bottom: 0;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+  .cmprCnt_border {
+    position: absolute;
+    right: 5px;
+    bottom: 0;
+    left: 5px;
+    height: 1px;
+    background: #c7c7c7;
   }
   .cmprCnt_rating {
     text-align: center;
@@ -6947,9 +6936,6 @@ img[height="0"] {
     margin-left: 5px;
     font-size: 11px;
   }
-  .ovrfl {
-    overflow: auto;
-  }
   .clsr {
     background: url("/styles/compare/img/btn_closer.png") no-repeat 0 0px;
     cursor: pointer;
@@ -6962,7 +6948,7 @@ img[height="0"] {
   .footerw {
     background: #000000;
     height: 20px;
-    margin: -20px auto 0;
+    margin: 0 auto;
     position: relative;
   }
   .footerw_tx {
@@ -6972,6 +6958,14 @@ img[height="0"] {
     margin: 0 auto;
     padding: 0 10px;
     width: 940px;
+  }
+  .js-compare-topbar .topbar {
+    width: 100%;
+    margin-left: 0;
+    padding-left: 0;
+  }
+  .js-compare-topbar .topbar_l {
+    padding-left: 10px;
   }
   .topbarfix:hover > div:last-child .topbarfix_cmpr_popup {
     display: none !important;

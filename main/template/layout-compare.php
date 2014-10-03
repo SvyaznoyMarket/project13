@@ -32,6 +32,7 @@
 </head>
 
 <body data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
+<?= $page->slotConfig() ?>
 
 <!-- CONTENT/ -->
 <?= $page->slotContent() ?>

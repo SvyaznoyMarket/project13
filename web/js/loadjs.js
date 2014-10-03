@@ -378,6 +378,26 @@
 			}).runQueue();
 		},
 
+		'compare': function() {
+			$LAB.queueWait( function() {
+				$LAB.script( getWithVersion('jquery-plugins.js') )
+					.script( getWithVersion('library.js') )
+					.script( directCreditUrl )
+					.script( mustacheUrl )
+					.script( knockoutUrl )
+					.script( loadDebugPanel )
+					.wait()
+					.script( getWithVersion('common.js') )
+					.wait()
+					.script( getWithVersion('compare.js') )
+					.wait()
+					.script( optimizelyUrl )
+					.script('adfox.asyn.code.ver3.min.js')
+					.wait()
+					.script( getWithVersion('ports.js') )
+			}).runQueue();
+		},
+
 		'lk': function() {
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )

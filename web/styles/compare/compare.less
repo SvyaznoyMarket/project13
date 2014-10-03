@@ -1,12 +1,12 @@
 .wrapw {
     height: auto !important;
     min-height: 100%;
-    min-width: 1000px;
     width: 100%;
     background: @white;
 }
 
 .cmprHd {
+	position: relative;
 	background: @typLightGray;
 	border-bottom: 1px solid @lightgreyBr;
 	padding: 20px 20px 0 0;
@@ -16,7 +16,7 @@
 		width: 200px;
 		float: left;
 		text-align: center;
-		
+
 		a {
 			display: block;
 		}
@@ -27,15 +27,21 @@
 	}
 
 	&_t {
+		min-height: 33px;
 		background: url("@{base-url}/compare/img/icon_cmpr.png") no-repeat 0 3px;
 		font-size: 25px;
 	    margin: 0 0 15px;
 	    padding: 0 0 2px 45px;
+		text-decoration: none;
 	}
 
 	&_lst {
 
 		&_i {
+			.inline-block();
+		}
+
+		&_i a {
 			.inline-block();
 			border: 1px solid @lightgreyBr;
 			font-size: 14px;
@@ -49,12 +55,12 @@
 			&:hover {
 				border-color: #f99b1c;
 			}
+		}
 
-			&-act {
-				cursor: default;
-				border-color: #f99b1c;
-				border-left-width: 5px;
-			}
+		&_i-act a {
+			cursor: default;
+			border-color: #f99b1c;
+			border-left-width: 5px;
 		}
 
 		&_qn {
@@ -77,21 +83,21 @@
 }
 
 .cmprCnt {
+	position: relative;
 	background: @white;
 	margin: 1px 0 0;
 	font-size: 14px;
 	padding-bottom: 20px;
-	position: relative;
+	width: 1px;
+
+	&_onlySimilar {
+		.cmprCnt_property_similar {
+			display: none;
+		}
+	}
 
 	&-scroll {
-
-		.cmprCnt_cell-hd {
-			height: 135px;
-		}
-
-		.cmprCnt_thd {
-			height: 135px;
-
+		.cmprCnt_head {
 			.cmprCnt_cell {
 				height: 135px;
 			}
@@ -115,79 +121,53 @@
 		}
 	}
 
-	&_prod {
-		overflow-x: hidden;
-	    overflow-y: scroll;
-	    width: 240px;
-	}
-
-	&_descr {
-		float: left;
-    	overflow: auto;
-	}
-
-	&_thd {
-		.transition(all 0.5s ease);
-		float: left;
-	    overflow-x: scroll;
-	    overflow-y: hidden;
-
+	&_head {
 		.cmprCnt_cell {
 			height: 250px;
-    		padding-top: 10px;
-    		padding-bottom: 0;
-    		.transition(all 0.5s ease);
-    		position: relative;
 		}
 	}
 
-	&_l {
-		float: left;
-		background: #f2f2f2;
-		color: #515151;
-
-		width: 240px;
-
+	&_modes {
 		.cmprCnt_cell {
 			padding-left: 22px;
+			background: #f2f2f2;
 		}
 	}
 
-	&_r {
-		float: left;
-		overflow-x: scroll;
-    	overflow-y: hidden;
-	}
-
-	&-head {
-		float: left;
-		overflow-x: scroll;
-		overflow-y: hidden;
-
-		.compareBox_cell {
-			position: relative;
+	&_product {
+		.cmprCnt_cell {
+    		padding-top: 10px;
+    		padding-bottom: 0;
+    		position: relative;
+			background: @white;
 		}
 	}
 
-	&_cpt {
-		height: 21px;
-		padding: 6px 10px;
-		border-bottom: 1px solid #c7c7c7;
+	th {
+		position: relative;
 		background: #f2f2f2;
+		color: #515151;
+		text-align: left;
+		vertical-align: middle;
 
-		&-cls {
+		.cmprCnt_border {
+			z-index: 1201;
+		}
+	}
 
-			.cmprCnt_cpt_t {
-				background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAPCAYAAAAyPTUwAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAk0lEQVQoFY2SMQqDQBBFJ42QIo0exjq1Xiv29qZK45XS2eUS4uZ9YUDQZUd4Ds6+78q4ZmYz1CklK4FnCX7QRWUFxASPXIi1XXJZdYHnVYD+SVZggxHuxxDPl7Lv9GW99UBJVmiFF1Q3bmpEro8k3zJX9eYBqpIc+ubwNBa2C835jVj8gzobvc8zV3H2U9fkhGP/DzG8DoNxdL/qAAAAAElFTkSuQmCC) no-repeat 0 3px;
-			}
+	td {
+		position: relative;
+		vertical-align: middle;
+	}
+
+	&_property {
+		th .cmprCnt_cell {
+			padding: 6px 10px;
+			background: #f2f2f2;
 		}
 
-		&_t {
+		&_group a {
 			z-index: 2;
-
-			display: block;
-
-			height: 21px;
 
 			white-space: nowrap;
 			color: #515151;
@@ -198,13 +178,30 @@
 			font-size: 14px;
 			padding-left: 12px;
 			font-weight: bold;
+			text-decoration: none;
+
+			&:hover {
+				text-decoration: none;
+			}
+
+			span {
+				border-bottom-width: 1px;
+				border-bottom-style: dotted;
+			}
 		}
-	}
 
-	&_col {
-		float: left;
+		&_group-act a {
+			background: none;
+		}
 
-		width: 240px;
+		&_group-hide {
+			display: none;
+		}
+
+		&_item .cmprCnt_property_item_name {
+			display: block;
+			margin-left: 12px;
+		}
 	}
 
 	&_mode {
@@ -293,18 +290,18 @@
 
 	&_cell {
 		box-sizing: border-box;
-		width: 240px;
+		width: 230px;
 		padding: 6px 10px;
-		vertical-align: middle;
-		border-bottom: 1px solid #c7c7c7;
-		.transition(all 0.5s ease);
 		position: relative;
+	}
 
-		&-hd {
-			height: 250px;
-			padding-bottom: 0;
-			.transition(all 0.5s ease);
-		}
+	&_border {
+		position: absolute;
+		right: 5px;
+		bottom: 0;
+		left: 5px;
+		height: 1px;
+		background: #c7c7c7;
 	}
 
 	&_rating {
@@ -328,10 +325,6 @@
 	}
 }
 
-.ovrfl {
-	overflow: auto;
-}
-
 .clsr {
 	background: url("@{base-url}/compare/img/btn_closer.png") no-repeat 0 0px;
 	cursor: pointer;
@@ -345,7 +338,7 @@
 .footerw {
     background: @black;
     height: 20px;
-    margin: -20px auto 0;
+    margin: 0 auto;
     position: relative;
 
     &_tx {
@@ -355,6 +348,18 @@
 	    margin: 0 auto;
 	    padding: 0 10px;
 	    width: 940px;
+	}
+}
+
+.js-compare-topbar {
+	.topbar {
+		width: 100%;
+		margin-left: 0;
+		padding-left: 0;
+
+		&_l {
+			padding-left: 10px;
+		}
 	}
 }
 
