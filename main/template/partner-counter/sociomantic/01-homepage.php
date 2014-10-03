@@ -1,1 +1,1 @@
-﻿<div id="sociomanticJS" class="jsanalytics"></div>
+<div id="sociomanticJS" class="jsanalytics"></div>
