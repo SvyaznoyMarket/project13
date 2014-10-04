@@ -146,8 +146,10 @@
 
 		// Биндинги на нужные элементы
 		// Топбар, кнопка Купить на странице продукта, листинги, слайдер аксессуаров
-		$('.js-topbarfix, .js-WidgetBuy, .js-listing, .js-jewelListing, .js-gridListing, .js-accessorize, .js-enterprize').each(function() {ko.applyBindings(ENTER.UserModel, this) });
-
+		$('.js-topbarfix, .js-WidgetBuy, .js-listing, .js-jewelListing, .js-gridListing, .js-accessorize, .js-enterprize').each(function(){
+			ko.applyBindings(ENTER.UserModel, this);
+		});
+		
 		// Обновление данных о пользователе и корзине
 		$.ajax({
 			url: userInfoURL,
@@ -177,12 +179,19 @@
 				$body.trigger('userLogged', [data]);
 			}
 		});
+		
+		$body.on('catalogLoadingComplete', function(){
+			$('.js-listing, .js-jewelListing').each(function(){
+				ko.cleanNode(this);
+				ko.applyBindings(ENTER.UserModel, this);
+			});
+		});
 
-		$('.jsCompareLink, .jsCompareList').on('click', function(e){
+		$body.on('click', '.jsCompareLink, .jsCompareListLink', function(e){
 			var url = this.href,
 				productId = $(this).data('id');
 
-			if ($(this).hasClass('jsCompareList')) {
+			if ($(this).hasClass('jsCompareListLink')) {
 				url = $(this).hasClass('btnCmprb-act') ? ENTER.utils.generateUrl('compare.delete', {productId: productId}) : ENTER.utils.generateUrl('compare.add', {productId: productId});
 			}
 
