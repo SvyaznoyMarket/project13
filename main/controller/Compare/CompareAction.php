@@ -196,10 +196,6 @@ class CompareAction {
     }
 
     public function delete(\Http\Request $request, $productId) {
-        if ($_SERVER['APPLICATION_ENV'] === 'local')
-            return new \Http\JsonResponse([]); // TODO remove
-
-
         if (array_key_exists($productId, $this->data)) {
             unset($this->data[$productId]);
             $this->session->set($this->compareSessionKey, $this->data);
