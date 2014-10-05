@@ -55,7 +55,7 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
             <span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span>
         </div>
         <div class="bBtnLine clearfix">
-            <? if (!$product->getKit()) : ?>
+            <? if (!$product->getKit() || $product->getIsKitLocked()) : ?>
                 <?= $page->render('cart/_button', ['product' => $product]) ?>
             <? endif; ?>
             <a href="" class="btnCmprb jsCompareListLink" data-id="<?= $page->escape($product->getId()) ?>" data-bind="compareListBinding: compare"></a>
