@@ -1,16 +1,4 @@
 ;(function($) {
-	function hasObjectWithIdElement(array, id) {
-		var has = false;
-		$.each(array, function(key, value){
-			if (value.id == id) {
-				has = true;
-				return false;
-			}
-		});
-		
-		return has;
-	}
-	
 	ko.bindingHandlers.buyButtonBinding = {
 		update: function(element, valueAccessor) {
 			var cart = ko.unwrap(valueAccessor()),
@@ -45,7 +33,7 @@
 					.removeClass('mBought')
 					.removeClass('jsBuyButton')
 					.attr('href', ENTER.utils.generateUrl('cart.oneClick.product.set', {productId: productId}));
-			} else if (hasObjectWithIdElement(cart, productId)) {
+			} else if (ENTER.utils.getObjectWithElement(cart, 'id', productId)) {
 				$elem
 					.text('В корзине')
 					.removeClass('mDisabled')
@@ -88,7 +76,7 @@
 				categoryId = $elem.data('category-id'),
 				comparableProducts;
 			
-			if (hasObjectWithIdElement(compare, productId)) {
+			if (ENTER.utils.getObjectWithElement(compare, 'id', productId)) {
 				$elem
 					.addClass('btnCmpr-act')
 					.find('a.btnCmpr_lk').addClass('btnCmpr_lk-act').attr('href', ENTER.utils.generateUrl('compare.delete', {productId: productId}))
@@ -117,7 +105,7 @@
 				$elem = $(element),
 				productId = $elem.data('id');
 	
-			if (hasObjectWithIdElement(compare, productId)) {
+			if (ENTER.utils.getObjectWithElement(compare, 'id', productId)) {
 				$elem.addClass('btnCmprb-act').attr('href', ENTER.utils.generateUrl('compare.delete', {productId: productId}));
 			} else {
 				$elem.removeClass('btnCmprb-act').attr('href', ENTER.utils.generateUrl('compare.add', {productId: productId}));

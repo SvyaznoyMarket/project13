@@ -49,27 +49,6 @@
 		return false;
 	});
 
-	// Обработка покупки, парсинг данных от сервера, запуск аналитики
-	body.on('addtocart', function(event, data) {
-		if ( data.redirect ) {
-			console.warn('redirect');
-
-			document.location.href = data.redirect;
-		} else {
-			// если добавляем единичный продукт
-			if (data.product) {
-				ENTER.UserModel.cart.unshift(data.product);
-			}
-
-			// если добавляем много продуктов за раз
-			if (data.products) {
-				$.each(data.products, function(){
-					ENTER.UserModel.cart.unshift(this);
-				});
-			}
-		}
-	});
-
 	// analytics
 	body.on('addtocart', function(event, data){
 		var

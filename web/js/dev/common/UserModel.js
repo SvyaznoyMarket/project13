@@ -112,5 +112,28 @@
 				}
 			})
 		});
+		
+		$body.on('addtocart', function(event, data) {
+			if ( data.redirect ) {
+				console.warn('redirect');
+	
+				document.location.href = data.redirect;
+			} else {
+				var products = data.products || [];
+				if (data.product) {
+					products.push(data.product);
+				}
+	
+				var cart = ENTER.UserModel.cart();
+				$.each(products, function(key, value){
+					var productInCart = ENTER.utils.getObjectWithElement(cart, 'id', value.id);
+					if (productInCart) {
+						productInCart.quantity(value.quantity);
+					} else {
+						ENTER.UserModel.cart.unshift(createCartModel(value));
+					}
+				});
+			}
+		});
 	});
 }(jQuery));

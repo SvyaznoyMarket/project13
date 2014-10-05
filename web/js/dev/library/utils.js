@@ -52,5 +52,19 @@
 
 		return url;
 	};
+	
+	utils.getObjectWithElement = function(array, elementKey, expectedElementValue) {
+		var object = null;
+		if (array) {
+			$.each(array, function(arrayKey, arrayValue){
+				if (arrayValue[elementKey] === expectedElementValue) {
+					object = arrayValue;
+					return false;
+				}
+			});
+		}
+		
+		return object;
+	};
 
 }(window.ENTER));
