@@ -29,7 +29,7 @@
 					.removeClass('mBought')
 					.removeClass('jsBuyButton')
 					.attr('href', '#');
-			} else if (typeof statusId != 'undefined' && 5 == statusId) { // SITE-2924, SITE-3109
+			} else if (typeof statusId != 'undefined' && 5 == statusId) { // SITE-2924, SITE-3109, SITE-3957
 				$elem
 					.text('Купить')
 					.addClass('mDisabled')
@@ -1497,23 +1497,7 @@ $(document).ready(function(){
 		$('.bSimilarGoods.mProduct .bSimilarGoodsSlider_eGoods').on('click', kissSimilar);
 	}
 
-
-
-	// hover imitation for IE
-	if ( window.navigator.userAgent.indexOf('MSIE') >= 0 ) {
-		$('.allpageinner').on( 'hover', '.goodsbox__inner', function() {
-			$(this).toggleClass('hover');
-		});
-	}
-
 	/* ---- */
-	$('body').on('click', '.goodsbox__inner', function(e) {
-		if ( $(this).attr('data-url') ) {
-			window.location.href = $(this).attr('data-url');
-		}
-	});
-
-
 
 	/**
 	 * KISS view category

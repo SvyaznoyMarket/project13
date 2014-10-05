@@ -3392,11 +3392,9 @@
   .goodsbox__inner {
     width: 195px;
     padding: 10px;
-    cursor: pointer;
     background: #ffffff;
   }
-  .goodsbox__inner:hover,
-  .goodsbox__inner.hover {
+  .goodsbox__inner:hover {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;

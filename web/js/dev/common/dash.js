@@ -108,23 +108,7 @@ $(document).ready(function(){
 		$('.bSimilarGoods.mProduct .bSimilarGoodsSlider_eGoods').on('click', kissSimilar);
 	}
 
-
-
-	// hover imitation for IE
-	if ( window.navigator.userAgent.indexOf('MSIE') >= 0 ) {
-		$('.allpageinner').on( 'hover', '.goodsbox__inner', function() {
-			$(this).toggleClass('hover');
-		});
-	}
-
 	/* ---- */
-	$('body').on('click', '.goodsbox__inner', function(e) {
-		if ( $(this).attr('data-url') ) {
-			window.location.href = $(this).attr('data-url');
-		}
-	});
-
-
 
 	/**
 	 * KISS view category

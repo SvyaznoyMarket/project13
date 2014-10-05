@@ -29,7 +29,7 @@
 					.removeClass('mBought')
 					.removeClass('jsBuyButton')
 					.attr('href', '#');
-			} else if (typeof statusId != 'undefined' && 5 == statusId) { // SITE-2924, SITE-3109
+			} else if (typeof statusId != 'undefined' && 5 == statusId) { // SITE-2924, SITE-3109, SITE-3957
 				$elem
 					.text('Купить')
 					.addClass('mDisabled')
