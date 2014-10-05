@@ -37,8 +37,13 @@ if (!$product->getIsBuyable()) {
     }
     $url = $page->url('cart.product.set', $urlParams);
 }
+
+$upsaleData = [
+    'url' => $page->url('product.upsale', ['productId' => $product->getId()]),
+    'fromUpsale' => ($page->hasGlobalParam('from') && 'cart_rec' === $page->getGlobalParam('from')) ? true : false,
+];
 ?>
 
 <div class="bWidgetBuy__eBuy btnBuy">
-    <a href="<?= $url ?>" class="<?= $class ?>" data-product-id="<?= $product->getId() ?>" data-bind="buyButtonBinding: cart"><?= $value ?></a>
+    <a href="<?= $url ?>" class="<?= $class ?>" data-product-id="<?= $product->getId() ?>" data-upsale="<?= $page->json($upsaleData) ?>" data-bind="buyButtonBinding: cart"><?= $value ?></a>
 </div>
