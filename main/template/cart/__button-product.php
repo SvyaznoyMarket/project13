@@ -41,6 +41,8 @@ return function (
         $urlParams = [
             'productId' => $product->getId(),
         ];
+        
+        // TODO: добавление класса mDisabled при данной логике не даст желаемого (по-видимому) эффекта, т.к. в данном случае он просто отключает ajax обработку ссылки, оставляя работающей простую ссылку для добавления товара в корзину
         if ($product->getStatusId() === 5) $class .= ' mDisabled';
         if ($helper->hasParam('sender')) {
             $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
@@ -54,7 +56,7 @@ return function (
     ];
     ?>
     <div class="bWidgetBuy__eBuy btnBuy">
-        <a data-bind="buyButtonBinding: cart" href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>" data-upsale='<?= json_encode($upsaleData) ?>'<? if (!empty($onClick)): ?> onclick="<?= $onClick ?>" <? endif ?>><?= $value ?></a>
+        <a data-bind="buyButtonBinding: cart" href="<?= $url ?>" class="<?= $class ?>" data-product-id="<?= $product->getId() ?>" data-upsale='<?= json_encode($upsaleData) ?>'<? if (!empty($onClick)): ?> onclick="<?= $onClick ?>" <? endif ?>><?= $value ?></a>
     </div>
 
 <? };

@@ -32,9 +32,16 @@ $config = array_merge([
     'coupon'                => $appConfig->coupon['enabled'],
     'addressAutocomplete'   => $appConfig->order['addressAutocomplete'],
     'prepayment'            => $appConfig->order['prepayment'],
-    'isMobile'              => $isMobile,
-    'routes'                => [
+    'isMobile' => $isMobile,
+    'user' => [
+        'region' => [
+            'forceDefaultBuy' => \App::user()->getRegion()->getForceDefaultBuy(),
+        ],
+    ],
+    'routes' => [
+        'cart'             => ['pattern' => $routerRules['cart']['pattern']],
         'cart.product.set' => ['pattern' => $routerRules['cart.product.set']['pattern']],
+        'cart.oneClick.product.set' => ['pattern' => $routerRules['cart.oneClick.product.set']['pattern']],
         'compare.add'      => ['pattern' => $routerRules['compare.add']['pattern']],
         'compare.delete'   => ['pattern' => $routerRules['compare.delete']['pattern']],
     ],

@@ -968,7 +968,6 @@ img[height="0"] {
 @media all {
   .topbar {
     border-bottom: none;
-    display: table;
   }
   .topbar_l {
     float: left;
@@ -6625,6 +6624,7 @@ img[height="0"] {
     border-bottom: 1px solid #c7c7c7;
     padding: 20px 20px 0 0;
     min-height: 120px;
+    margin-right: -2px;
   }
   .cmprHd_l {
     width: 200px;
@@ -6692,9 +6692,6 @@ img[height="0"] {
     padding: 0 5px;
     text-align: center;
   }
-  .compareBoxsWrap {
-    max-height: 100%;
-  }
   .cmprCnt {
     position: relative;
     background: #ffffff;
@@ -6753,7 +6750,7 @@ img[height="0"] {
     vertical-align: middle;
   }
   .cmprCnt th .cmprCnt_border {
-    z-index: 1201;
+    z-index: 121;
   }
   .cmprCnt td {
     position: relative;
@@ -6924,6 +6921,7 @@ img[height="0"] {
     height: 20px;
     margin: 0 auto;
     position: relative;
+    margin-right: -2px;
   }
   .footerw_tx {
     color: #ffffff;
@@ -6933,13 +6931,33 @@ img[height="0"] {
     padding: 0 10px;
     width: 940px;
   }
-  .js-compare-topbar .topbar {
-    width: 100%;
+  .compare-userbar .userbar-static {
+    width: auto;
     margin-left: 0;
     padding-left: 0;
+    margin-right: -2px;
+    border-width: 0;
   }
-  .js-compare-topbar .topbar_l {
+  .compare-userbar .userbar-static .topbar_l {
     padding-left: 10px;
+  }
+  .compare-userbar .userbar-fixed {
+    right: -3px;
+    left: 0;
+    width: auto;
+    margin-left: 0;
+  }
+  .compare-userbar .userbar-fixed .topbar_l {
+    padding-left: 10px;
+  }
+  .compare-scrolled .cmprHd {
+    padding-left: 2px;
+  }
+  .compare-scrolled .footerw {
+    padding-left: 2px;
+  }
+  .compare-scrolled .topbarfix_cart {
+    padding-right: 8px;
   }
   .topbarfix:hover > div:last-child .topbarfix_cmpr_popup {
     display: none !important;

@@ -2,13 +2,8 @@
 
 return function (
     \Helper\TemplateHelper $helper,
-    array $compareGroups,
-    \View\Compare\CompareLayout $page
+    array $compareGroups
 ) { ?>
-
-    <div class="js-compare-topbar">
-        <?= $page->render('userbar/topbar') ?>
-    </div>
 
     <div class="wrapw js-compare" data-compare-groups="<?= $helper->json($compareGroups) ?>">
         <div class="cmprHd clearfix js-compare-header">
@@ -76,7 +71,7 @@ return function (
                                     <span class="rubl">p</span>
                                 </span>
 
-                                <div class="cmprCnt_buy"><a href="" class="cmprCnt_buy_lk btnBuy__eLink jsBuyButton" data-bind="buyButtonBinding: $root.cart, attr: {'data-group': id}">Купить</a></div>
+                                <div class="cmprCnt_buy"><a href="" class="cmprCnt_buy_lk btnBuy__eLink mBought jsBuyButton" data-bind="attr: {'data-product-id': id, 'data-in-shop-only': inShopOnly ? 'true' : 'false', 'data-in-shop-showroom-only': inShopShowroomOnly ? 'true' : 'false', 'data-is-buyable': isBuyable ? 'true' : 'false', 'data-upsale': upsale}, buyButtonBinding: $root.cart">Купить</a></div>
                                 <div class="cmprCnt_border"></div>
                             </div>
                         </td>

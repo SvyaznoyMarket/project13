@@ -32,22 +32,30 @@
 </head>
 
 <body data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
-<?= $page->slotConfig() ?>
-
-<!-- CONTENT/ -->
-<?= $page->slotContent() ?>
-<!-- /CONTENT -->
-
-<?= $page->slotRegionSelection() ?>
-<?= $page->slotBodyJavascript() ?>
-<?= $page->slotInnerJavascript() ?>
-<?= $page->slotAuth() ?>
-<?= $page->slotYandexMetrika() ?>
-<?= $page->slotAdvanceSeoCounter() ?>
-<?= $page->slotAdriver() ?>
-<?= $page->slotPartnerCounter() ?>
-<?= $page->slotAdblender() ?>
-<?= $page->slotKissMetrics() ?>
-
+    <?= $page->slotConfig() ?>
+    
+    <div class="compare-userbar">
+        <?= $page->render('userbar/topbar') ?>
+    </div>
+    
+    <?= $page->slotContent() ?>
+    
+    <div class="compare-userbar">
+        <?= $page->render('_userbar') ?>
+    </div>
+    
+    <?= $page->slotAuth() ?>
+    <?= $page->slotRegionSelection() ?>
+    
+    <div style="position:absolute; height: 0; top:0; z-index:-1;">
+        <?= $page->slotBodyJavascript() ?>
+        <?= $page->slotInnerJavascript() ?>
+        <?= $page->slotYandexMetrika() ?>
+        <?= $page->slotAdvanceSeoCounter() ?>
+        <?= $page->slotAdriver() ?>
+        <?= $page->slotPartnerCounter() ?>
+        <?= $page->slotAdblender() ?>
+        <?= $page->slotKissMetrics() ?>
+    </div>
 </body>
 </html>

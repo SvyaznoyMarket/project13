@@ -252,6 +252,8 @@
 				deleteProductAnalytics(res);
 
 				ENTER.UserModel.cart.remove(function(item){ return item.id == res.product.id});
+				
+				// Удаляем товар на странице корзины
 				$('.js-basketLineDeleteLink-' + res.product.id).click();
 
 				if ( ENTER.UserModel.cart().length == 0 ) {

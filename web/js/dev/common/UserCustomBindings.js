@@ -1,104 +1,118 @@
 ;(function($) {
-	var buyButtonBinding = function(element, valueAccessor) {
-		var cart = ko.unwrap(valueAccessor()),
-			$elem = $(element),
-			productId = $elem.data('group'),
-			inCart = false;
-
-		$.each(cart, function(i,val){
-			if (val.id == productId) {
-				$elem.text('В корзине').addClass('mBought').attr('href','/cart');
-				inCart = true;
+	function hasObjectWithIdElement(array, id) {
+		var has = false;
+		$.each(array, function(key, value){
+			if (value.id == id) {
+				has = true;
 				return false;
 			}
 		});
-
-		if (!inCart && $elem.hasClass('mBought')) {
-			$elem.html('Купить').removeClass('mBought').attr('href', ENTER.utils.generateUrl('cart.product.set', {productId: productId}));
+		
+		return has;
+	}
+	
+	ko.bindingHandlers.buyButtonBinding = {
+		update: function(element, valueAccessor) {
+			var cart = ko.unwrap(valueAccessor()),
+				$elem = $(element),
+				productId = $elem.data('product-id'),
+				inShopOnly = $elem.data('in-shop-only'),
+				inShopShowroomOnly = $elem.data('in-shop-showroom-only'),
+				isBuyable = $elem.data('is-buyable');
+			
+			if (typeof isBuyable != 'undefined' && !isBuyable) {
+				$elem
+					.text(inShopShowroomOnly ? 'На витрине' : 'Нет')
+					.addClass('mDisabled')
+					.removeClass('mShopsOnly')
+					.removeClass('mBought')
+					.removeClass('jsBuyButton')
+					.attr('href', '#');
+			} else if (typeof inShopOnly != 'undefined' && inShopOnly && ENTER.config.pageConfig.user.region.forceDefaultBuy) {
+				$elem
+					.text('Резерв')
+					.removeClass('mDisabled')
+					.addClass('mShopsOnly')
+					.removeClass('mBought')
+					.removeClass('jsBuyButton')
+					.attr('href', ENTER.utils.generateUrl('cart.oneClick.product.set', {productId: productId}));
+			} else if (hasObjectWithIdElement(cart, productId)) {
+				$elem
+					.text('В корзине')
+					.removeClass('mDisabled')
+					.removeClass('mShopsOnly')
+					.addClass('mBought')
+					.removeClass('jsBuyButton')
+					.attr('href', ENTER.utils.generateUrl('cart'));
+			} else if ($elem.hasClass('mBought')) {
+				$elem
+					.text('Купить')
+					.removeClass('mDisabled')
+					.removeClass('mShopsOnly')
+					.removeClass('mBought')
+					.addClass('jsBuyButton')
+					.attr('href', ENTER.utils.generateUrl('cart.product.set', {productId: productId}));
+			}
 		}
 	};
 
-	var buySpinnerBinding = function(element, valueAccessor) {
-		var cart = ko.unwrap(valueAccessor()),
-			$elem = $(element);
-		$elem.removeClass('mDisabled').find('input').attr('disabled', false);
-		$.each(cart, function(i,val){
-			if (val.id == $elem.data('product-id')) {
-				$elem.addClass('mDisabled');
-				$elem.find('input').val(val.quantity).attr('disabled', true);
-			}
-		})
+	ko.bindingHandlers.buySpinnerBinding = {
+		update: function(element, valueAccessor) {
+			var cart = ko.unwrap(valueAccessor()),
+				$elem = $(element);
+			
+			$elem.removeClass('mDisabled').find('input').attr('disabled', false);
+			$.each(cart, function(){
+				if (this.id == $elem.data('product-id')) {
+					$elem.addClass('mDisabled');
+					$elem.find('input').val(this.quantity).attr('disabled', true);
+				}
+			})
+		}
 	};
 
-	/* TODO эта херня уже нуждается в рефакторинге :) */
-	var compareButtonBinding = function(element, valueAccessor) {
-		var compare = ko.unwrap(valueAccessor()),
-			$elem = $(element),
-			productId = $elem.data('id'),
-			categoryId = $elem.data('category-id'),
-			comparableProducts;
-
-		var inCompare = false;
-		$.each(compare, function(i,val) {
-			if (val.id == productId) {
-				inCompare = true;
+	ko.bindingHandlers.compareButtonBinding = {
+		update: function(element, valueAccessor) {
+			var compare = ko.unwrap(valueAccessor()),
+				$elem = $(element),
+				productId = $elem.data('id'),
+				categoryId = $elem.data('category-id'),
+				comparableProducts;
+			
+			if (hasObjectWithIdElement(compare, productId)) {
 				$elem
 					.addClass('btnCmpr-act')
 					.find('a.btnCmpr_lk').addClass('btnCmpr_lk-act').attr('href', ENTER.utils.generateUrl('compare.delete', {productId: productId}))
 					.find('span').text('Убрать из сравнения');
-
-				return false;
+			} else {
+				$elem
+					.removeClass('btnCmpr-act')
+					.find('a.btnCmpr_lk').removeClass('btnCmpr_lk-act').attr('href', ENTER.utils.generateUrl('compare.add', {productId: productId}))
+					.find('span').text('Добавить к сравнению');
 			}
-		});
-
-		if (!inCompare) {
-			$elem
-				.removeClass('btnCmpr-act')
-				.find('a.btnCmpr_lk').removeClass('btnCmpr_lk-act').attr('href', ENTER.utils.generateUrl('compare.add', {productId: productId}))
-				.find('span').text('Добавить к сравнению');
-		}
-
-		// массив продуктов, которые можно сравнить с данным продуктом
-		comparableProducts = $.grep(compare, function(val){ return categoryId == val.categoryId; });
-
-		if (comparableProducts.length > 1) {
-			$elem.find('.btnCmpr_more').show().find('.btnCmpr_more_qn').text(comparableProducts.length);
-		} else {
-			$elem.find('.btnCmpr_more').hide();
+	
+			// массив продуктов, которые можно сравнить с данным продуктом
+			comparableProducts = $.grep(compare, function(val){ return categoryId == val.categoryId; });
+	
+			if (comparableProducts.length > 1) {
+				$elem.find('.btnCmpr_more').show().find('.btnCmpr_more_qn').text(comparableProducts.length);
+			} else {
+				$elem.find('.btnCmpr_more').hide();
+			}
 		}
 	};
-
-	/* TODO и эта херня уже нуждается в рефакторинге :) */
-	var compareListBinding = function(element, valueAccessor) {
-		var compare = ko.unwrap(valueAccessor()),
-			$elem = $(element),
-			productId = $elem.data('id');
-
-		if ($.grep(compare, function(val){ return val.id == productId}).length > 0) {
-			$elem.addClass('btnCmprb-act').attr('href', ENTER.utils.generateUrl('compare.delete', {productId: productId}));
-		} else {
-			$elem.removeClass('btnCmprb-act').attr('href', ENTER.utils.generateUrl('compare.add', {productId: productId}));
-		}
-	};
-
+	
 	ko.bindingHandlers.compareListBinding = {
-		init: compareListBinding,
-		update: compareListBinding
+		update: function(element, valueAccessor) {
+			var compare = ko.unwrap(valueAccessor()),
+				$elem = $(element),
+				productId = $elem.data('id');
+	
+			if (hasObjectWithIdElement(compare, productId)) {
+				$elem.addClass('btnCmprb-act').attr('href', ENTER.utils.generateUrl('compare.delete', {productId: productId}));
+			} else {
+				$elem.removeClass('btnCmprb-act').attr('href', ENTER.utils.generateUrl('compare.add', {productId: productId}));
+			}
+		}
 	};
-
-	ko.bindingHandlers.buyButtonBinding = {
-		init: buyButtonBinding,
-		update: buyButtonBinding
-	};
-
-	ko.bindingHandlers.buySpinnerBinding = {
-		init: buySpinnerBinding,
-		update: buySpinnerBinding
-	};
-
-	ko.bindingHandlers.compareButtonBinding = {
-		init: compareButtonBinding,
-		update: compareButtonBinding
-	};
-
 }(jQuery));

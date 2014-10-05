@@ -1,6 +1,7 @@
 ;(function($) {
 	$(function(){
-		var compareElement = $('.js-compare'),
+		var bodyElement = $('body'),
+			compareElement = $('.js-compare'),
 			tableElement = $('.js-compare-table', compareElement),
 			headerElement = $('.js-compare-header'),
 			footerElement = $('.js-compare-footer'),
@@ -15,8 +16,12 @@
 			model.link = product.link;
 			model.price = product.price;
 			model.priceOld = product.priceOld;
+			model.inShopOnly = product.inShopOnly;
+			model.inShopShowroomOnly = product.inShopShowroomOnly;
+			model.isBuyable = product.isBuyable;
 			model.imageUrl = product.imageUrl;
 			model.removeFromCompareUrl = product.removeFromCompareUrl;
+			model.upsale = product.upsale;
 			return model;
 		}
 
@@ -101,16 +106,16 @@
 				windowElement = $(window);
 
 			rowContainers.css('position', 'relative');
-			rowContainers.css('z-index', '1100');
+			rowContainers.css('z-index', '110');
 
 			columnContainers.css('position', 'relative');
-			columnContainers.css('z-index', '1200');
+			columnContainers.css('z-index', '120');
 
 			rowContainers.each(function(){
 				var rowContainer = this;
 				columnContainers.each(function(){
 					if (rowContainer === this) {
-						$(this).css('z-index', '1300');
+						$(this).css('z-index', '130');
 					}
 				});
 			});
@@ -186,14 +191,14 @@
 					isScrollStarted = true;
 					events.onScrollStart();
 					setTimeout(function(){
-						calculateCellHeight($($.unique($.makeArray(rowContainers))));
+						calculateCellHeight(rowContainers);
 					}, 0);
 				}
 
 				if ((events || {}).onScrollEnd && !shifts.top && isScrollStarted) {
 					isScrollStarted = false;
 					events.onScrollEnd();
-					calculateCellHeight($($.unique($.makeArray(rowContainers))));
+					calculateCellHeight(rowContainers);
 				}
 			}
 
@@ -242,6 +247,7 @@
 
 		compareModel.activeCompareGroupIndex.subscribe(function(){
 			initFixedTableCells();
+			compareModel.cart.valueHasMutated();
 		});
 
 		setTimeout(function(){
@@ -289,11 +295,11 @@
 			compareModel.activeCompareGroupIndex($(e.currentTarget).data('index'));
 		});
 
-		$('.js-compare-modeOnlySimilar', compareElement).click(function(){
+		compareElement.on('click', '.js-compare-modeOnlySimilar', function(){
 			compareModel.onlySimilar(true);
 		});
 
-		$('.js-compare-modeAll', compareElement).click(function(){
+		compareElement.on('click', '.js-compare-modeAll', function(){
 			compareModel.onlySimilar(false);
 		});
 
@@ -353,12 +359,12 @@
 		});
 
 		$(window).scroll(function(){
-			var scrollX = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft;
-			if (scrollX + headerElement.width() < tableElement.width() || scrollX < parseInt(headerElement.css('left'))) {
-				topbarElement.css('left', scrollX + 'px');
-				headerElement.css('left', scrollX + 'px');
-				footerElement.css('left', scrollX + 'px');
-			}
+			var scrollX = (window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft) - 2;
+			topbarElement.css('left', scrollX + 'px');
+			headerElement.css('left', scrollX + 'px');
+			footerElement.css('left', scrollX + 'px');
+			
+			bodyElement.addClass('compare-scrolled');
 		});
 	});
 }(jQuery));

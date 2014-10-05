@@ -1,8 +1,8 @@
 .wrapw {
-    height: auto !important;
-    min-height: 100%;
-    width: 100%;
-    background: @white;
+	height: auto !important;
+	min-height: 100%;
+	width: 100%;
+	background: @white;
 }
 
 .cmprHd {
@@ -11,6 +11,7 @@
 	border-bottom: 1px solid @lightgreyBr;
 	padding: 20px 20px 0 0;
 	min-height: 120px;
+	margin-right: -2px;
 
 	&_l {
 		width: 200px;
@@ -30,8 +31,8 @@
 		min-height: 33px;
 		background: url("@{base-url}/compare/img/icon_cmpr.png") no-repeat 0 3px;
 		font-size: 25px;
-	    margin: 0 0 15px;
-	    padding: 0 0 2px 45px;
+		margin: 0 0 15px;
+		padding: 0 0 2px 45px;
 		text-decoration: none;
 	}
 
@@ -65,21 +66,16 @@
 
 		&_qn {
 			background: #666;
-		    .rounded(4px);
-		    color: @white;
-		    .inline-block();
-		    height: 20px;
-		    line-height: 20px;
-		    margin: 5px 0 0 8px;
-		    padding: 0 5px;
-		    text-align: center;
+			.rounded(4px);
+			color: @white;
+			.inline-block();
+			height: 20px;
+			line-height: 20px;
+			margin: 5px 0 0 8px;
+			padding: 0 5px;
+			text-align: center;
 		}
 	}
-}
-
-//таблица сравнения
-.compareBoxsWrap {
-	max-height: 100%;
 }
 
 .cmprCnt {
@@ -104,20 +100,20 @@
 		}
 
 		.cmprCnt_img {
-		    .opacity(0);
-		    overflow: hidden;
-		    height: 0;
-
+			.opacity(0);
+			overflow: hidden;
+			height: 0;
+	
 		}
-
+	
 		.cmprCnt_rating {
-		    .opacity(0);
-		    overflow: hidden;
-		    height: 0;
+			.opacity(0);
+			overflow: hidden;
+			height: 0;
 		}
-
+	
 		.cmprCnt_mode {
-		    margin: 10px 0 0 -10px;
+			margin: 10px 0 0 -10px;
 		}
 	}
 
@@ -136,9 +132,9 @@
 
 	&_product {
 		.cmprCnt_cell {
-    		padding-top: 10px;
-    		padding-bottom: 0;
-    		position: relative;
+			padding-top: 10px;
+			padding-bottom: 0;
+			position: relative;
 			background: @white;
 		}
 	}
@@ -149,9 +145,9 @@
 		color: #515151;
 		text-align: left;
 		vertical-align: middle;
-
+		
 		.cmprCnt_border {
-			z-index: 1201;
+			z-index: 121;
 		}
 	}
 
@@ -219,13 +215,13 @@
 			background-repeat: no-repeat;
 
 			font-size: 14px;
-		    height: 40px;
-		    line-height: 40px;
-		    margin: 0 auto 20px;
-		    padding: 0;
-		    text-align: left;
-		    text-indent: 40px;
-		    width: 180px;
+			height: 40px;
+			line-height: 40px;
+			margin: 0 auto 20px;
+			padding: 0;
+			text-align: left;
+			text-indent: 40px;
+			width: 180px;
 
 			&:last-child {
 				margin-bottom: 0;
@@ -279,13 +275,13 @@
 	&_buy {
 		margin-top: 5px;
 
-	    &_lk {
+		&_lk {
 			width: 100px;
 			height: 30px;
 			line-height: 30px;
 			font-size: 14px;
 			font-weight: bold;
-	    }
+		}
 	}
 
 	&_cell {
@@ -294,7 +290,7 @@
 		padding: 6px 10px;
 		position: relative;
 	}
-
+  
 	&_border {
 		position: absolute;
 		right: 5px;
@@ -305,23 +301,23 @@
 	}
 
 	&_rating {
-	    text-align: center;
-	    font-size: 0px;
-	    .transition(all 0.5s ease);
-
-	    &_img {
-	    	.inline-block();
-		    height: 11px;
-		    width: 11px;
-		    margin: 1px 2px 0 0;
-	    }
-
-	    &_count {
-		    color: #a6a6a6;
-		    .inline-block();
-		    margin-left: 5px;
-		    font-size: 11px;
-	    }
+		text-align: center;
+		font-size: 0px;
+		.transition(all 0.5s ease);
+  
+		&_img {
+			.inline-block();
+			height: 11px;
+			width: 11px;
+			margin: 1px 2px 0 0;
+		}
+  
+		&_count {
+			color: #a6a6a6;
+			.inline-block();
+			margin-left: 5px;
+			font-size: 11px;
+		}
 	}
 }
 
@@ -336,30 +332,58 @@
 }
 
 .footerw {
-    background: @black;
-    height: 20px;
-    margin: 0 auto;
-    position: relative;
+	background: @black;
+	height: 20px;
+	margin: 0 auto;
+	position: relative;
+	margin-right: -2px;
 
-    &_tx {
-	    color: @white;
-	    height: 20px;
-	    line-height: 20px;
-	    margin: 0 auto;
-	    padding: 0 10px;
-	    width: 940px;
+	&_tx {
+		color: @white;
+		height: 20px;
+		line-height: 20px;
+		margin: 0 auto;
+		padding: 0 10px;
+		width: 940px;
 	}
 }
 
-.js-compare-topbar {
-	.topbar {
-		width: 100%;
+.compare-userbar {
+	.userbar-static {
+		width: auto;
 		margin-left: 0;
 		padding-left: 0;
+		margin-right: -2px;
+		border-width: 0;
 
-		&_l {
+		.topbar_l {
 			padding-left: 10px;
 		}
+	}
+	
+	.userbar-fixed {
+		right: -3px;
+		left: 0;
+		width: auto;
+		margin-left: 0;
+
+		.topbar_l {
+			padding-left: 10px;
+		}
+	}
+}
+
+.compare-scrolled {
+	.cmprHd {
+		padding-left: 2px;
+	}
+	
+	.footerw {
+		padding-left: 2px;
+	}
+	
+	.topbarfix_cart {
+		padding-right: 8px;
 	}
 }
 

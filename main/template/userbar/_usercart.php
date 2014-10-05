@@ -1,6 +1,3 @@
-<?php
-?>
-
 <!-- При пустой корзине -->
 <div class="topbarfix_cart mEmpty" data-bind=" visible: cart().length == 0 ">
     <a href="/cart" class="topbarfix_cart_tl">Корзина</a>
@@ -9,7 +6,7 @@
 <!-- При непустой корзине -->
 <div class="topbarfix_cart js-topbarfixNotEmptyCart" data-bind=" visible: cart().length > 0 " style="display: none">
 
-    <a href="<?=  $page->url('cart') ?>" class="topbarfix_cart_tl">
+    <a href="<?= $page->url('cart') ?>" class="topbarfix_cart_tl">
         <span class="topbarfix_cart_tx">Корзина</span>
         <strong class="topbarfix_cart_qn topbarfix_cartQuan" data-bind="text: cartProductQuantity"></strong>
     </a>

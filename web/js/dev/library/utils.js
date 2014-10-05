@@ -46,8 +46,8 @@
 	 */
 	utils.generateUrl = function(routeName, params) {
 		var url = ENTER.config.pageConfig.routes[routeName]['pattern'];
-		$.each((params || {}), function(paramName){
-			url = url.replace('{' + paramName + '}', this);
+		$.each((params || {}), function(paramName, paramValue){
+			url = url.replace('{' + paramName + '}', paramValue);
 		});
 
 		return url;

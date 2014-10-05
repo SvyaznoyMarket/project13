@@ -622,7 +622,7 @@ window.ANALYTICS = {
 
 
 				/** Событие нажатия кнопки «Купить» или «Резерв» */
-				$('a.btnBuy__eLink').click(function ga_btnBuy() {
+				$('body').on('click', 'a.btnBuy__eLink', function ga_btnBuy() {
 					var
 						butType = $(this).hasClass('mShopsOnly') ? 'reserve' : 'add2basket';
 

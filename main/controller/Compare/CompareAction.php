@@ -36,7 +36,6 @@ class CompareAction {
                             $products[$product->getId()] = $product;
                         }
 
-                        $templateHelper = new \Helper\TemplateHelper();
                         foreach ($compareProducts as $compareProduct) {
                             /** @var \Model\Product\Entity $product */
                             $product = $products[$compareProduct['id']];
@@ -60,6 +59,7 @@ class CompareAction {
                             $compareGroups[$key]['propertyGroups'] = $this->getPropertyGroups($compareGroup['products']);
                         }
 
+                        $templateHelper = new \Helper\TemplateHelper();
                         foreach ($compareGroups as $key => $compareGroup) {
                             foreach ($compareGroup['products'] as $key2 => $product) {
                                 $compareGroups[$key]['products'][$key2] = [
@@ -69,8 +69,15 @@ class CompareAction {
                                     'link' => $product->getLink(),
                                     'price' => $templateHelper->formatPrice($product->getPrice()),
                                     'priceOld' => $templateHelper->formatPrice($product->getPriceOld()),
+                                    'inShopOnly' => $product->isInShopOnly(),
+                                    'inShopShowroomOnly' => $product->isInShopShowroomOnly(),
+                                    'isBuyable' => $product->getIsBuyable(),
                                     'imageUrl' => $product->getImageUrl(1),
                                     'removeFromCompareUrl' => \App::router()->generate('compare.delete', ['productId' => $product->getId()]),
+                                    'upsale' => json_encode([
+                                        'url' => \App::router()->generate('product.upsale', ['productId' => $product->getId()]),
+                                        'fromUpsale' => ($templateHelper->hasParam('from') && 'cart_rec' === $templateHelper->getParam('from')) ? true : false,
+                                    ])
                                 ];
                             }
                         }
@@ -84,7 +91,6 @@ class CompareAction {
 
             $page = new \View\Compare\CompareLayout();
             $page->setParam('compareGroups', $compareGroups);
-            $page->setParam('page', $page);
             return new \Http\Response($page->show());
         }
 
