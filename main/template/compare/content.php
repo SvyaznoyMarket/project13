@@ -40,18 +40,20 @@ return function (
                             <div class="cmprCnt_fixed js-compare-fixed cmprCnt_cell">
                                 <a href="" class="clsr js-compare-deleteProductLink" data-bind="attr: {href: deleteFromCompareUrl, 'data-product-id': id}"></a>
 
-                                <a class="cmprCnt_img" href="">
+                                <a class="cmprCnt_img" href="" data-bind="attr: {href: link}">
                                     <img src="" class="descrImg_img" data-bind="attr: {src: imageUrl}">
                                 </a>
 
                                 <div class="cmprCnt_rating">
-                                    <img src="/images/reviews_star.png" class="cmprCnt_rating_img">
-                                    <img src="/images/reviews_star.png" class="cmprCnt_rating_img">
-                                    <img src="/images/reviews_star.png" class="cmprCnt_rating_img">
-                                    <img src="/images/reviews_star.png" class="cmprCnt_rating_img">
-                                    <img src="/images/reviews_star.png" class="cmprCnt_rating_img">
+                                    <!-- ko foreach: {data: reviews.stars.notEmpty} -->
+                                        <img src="/images/reviews_star.png" class="cmprCnt_rating_img">
+                                    <!-- /ko -->
+                                    
+                                    <!-- ko foreach: {data: reviews.stars.empty} -->
+                                        <img src="/images/reviews_star_empty.png" class="cmprCnt_rating_img">
+                                    <!-- /ko -->
 
-                                    <span class="cmprCnt_rating_count">(16)</span>
+                                    <span class="cmprCnt_rating_count">(<!-- ko text: reviews.count --><!-- /ko -->)</span>
                                 </div>
 
                                 <div class="cmprCnt_pt">
@@ -78,7 +80,7 @@ return function (
                     <!-- /ko -->
                 </tr>
 
-                <!-- ko foreach: {data: compareGroups()[activeCompareGroupIndex()]['propertyGroups'], as: 'propertyGroup'} -->
+                <!-- ko foreach: {data: compareGroups()[activeCompareGroupIndex()].propertyGroups, as: 'propertyGroup'} -->
                     <tr class="cmprCnt_property cmprCnt_property_group js-compare-propertyGroup" data-bind="css: {'cmprCnt_property_similar': isSimilar}">
                         <th>
                             <div class="cmprCnt_fixed js-compare-fixed cmprCnt_cell">
@@ -95,7 +97,7 @@ return function (
                         <!-- /ko -->
                     </tr>
 
-                    <!-- ko foreach: {data: propertyGroup['properties']} -->
+                    <!-- ko foreach: {data: propertyGroup.properties} -->
                         <tr class="cmprCnt_property cmprCnt_property_item" data-bind="css: {'cmprCnt_property_similar': isSimilar}">
                             <th>
                                 <div class="cmprCnt_fixed js-compare-fixed cmprCnt_cell">

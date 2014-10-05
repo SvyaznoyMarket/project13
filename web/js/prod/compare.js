@@ -21,6 +21,7 @@
 			model.isBuyable = product.isBuyable;
 			model.statusId = product.statusId;
 			model.imageUrl = product.imageUrl;
+			model.reviews = product.reviews;
 			model.deleteFromCompareUrl = product.deleteFromCompareUrl;
 			model.upsale = product.upsale;
 			return model;

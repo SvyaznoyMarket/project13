@@ -17,85 +17,116 @@ class CompareAction {
 
     public function execute() {
         $compareProducts = $this->session->get($this->compareSessionKey);
-        if ($compareProducts) {
-            $compareGroups = [];
+        if ($compareProducts && is_array($compareProducts)) {
+            $productData = null;
+            $reviewsData = null;
+            $productIds = array_keys($compareProducts);
+            
             $client = \App::coreClientV2();
             $client->addQuery(
                 'product/get',
                 [
                     'select_type' => 'id',
-                    'id'          => array_keys($compareProducts),
+                    'id'          => $productIds,
                     'geo_id'      => \App::user()->getRegion()->getId(),
                 ],
                 [],
-                function($data) use(&$compareProducts, &$compareGroups) {
-                    if (is_array($data)) {
-                        $products = [];
-                        foreach ($data as $item) {
-                            $product = new \Model\Product\Entity($item);
-                            $products[$product->getId()] = $product;
-                        }
-
-                        foreach ($compareProducts as $compareProduct) {
-                            /** @var \Model\Product\Entity $product */
-                            $product = $products[$compareProduct['id']];
-
-                            if (!isset($compareGroups[$compareProduct['categoryId']])) {
-                                $lastCategory = $product->getLastCategory();
-                                $compareGroups[$compareProduct['categoryId']] = [
-                                    'category' => [
-                                        'id' => $lastCategory->getId(),
-                                        'name' => $lastCategory->getName(),
-                                    ],
-                                    'products' => [],
-                                    'propertyGroups' => [],
-                                ];
-                            }
-
-                            $compareGroups[$compareProduct['categoryId']]['products'][] = $product;
-                        }
-
-                        foreach ($compareGroups as $key => $compareGroup) {
-                            $compareGroups[$key]['propertyGroups'] = $this->getPropertyGroups($compareGroup['products']);
-                        }
-
-                        $templateHelper = new \Helper\TemplateHelper();
-                        foreach ($compareGroups as $key => $compareGroup) {
-                            foreach ($compareGroup['products'] as $key2 => $product) {
-                                $compareGroups[$key]['products'][$key2] = [
-                                    'id' => $product->getId(),
-                                    'prefix' => $product->getPrefix(),
-                                    'webName' => $product->getWebName(),
-                                    'link' => $product->getLink(),
-                                    'price' => $templateHelper->formatPrice($product->getPrice()),
-                                    'priceOld' => $templateHelper->formatPrice($product->getPriceOld()),
-                                    'inShopOnly' => $product->isInShopOnly(),
-                                    'inShopShowroomOnly' => $product->isInShopShowroomOnly(),
-                                    'isBuyable' => $product->getIsBuyable(),
-                                    'statusId' => $product->getStatusId(),
-                                    'imageUrl' => $product->getImageUrl(1),
-                                    'deleteFromCompareUrl' => \App::router()->generate('compare.delete', ['productId' => $product->getId()]),
-                                    'upsale' => json_encode([
-                                        'url' => \App::router()->generate('product.upsale', ['productId' => $product->getId()]),
-                                        'fromUpsale' => ($templateHelper->hasParam('from') && 'cart_rec' === $templateHelper->getParam('from')) ? true : false,
-                                    ])
-                                ];
-                            }
-                        }
-
-                        $compareGroups = array_values($compareGroups);
-                    }
+                function($data) use(&$productData) {
+                    $productData = $data;
                 }
             );
-
+            
+            \RepositoryManager::review()->prepareScoreCollection($productIds, function($data) use(&$reviewsData){
+                $reviewsData = $data;
+            });
+            
             $client->execute();
-
+            
             $page = new \View\Compare\CompareLayout();
-            $page->setParam('compareGroups', $compareGroups);
+            $page->setParam('compareGroups', $this->getCompareGroups($compareProducts, $productData, $reviewsData));
             return new \Http\Response($page->show());
         }
 
         return new \Http\Response();
+    }
+    
+    private function getCompareGroups(array $compareProducts, $productData, $reviewsData) {
+        $compareGroups = [];
+        
+        $reviews = [];
+        if (isset($reviewsData['product_scores']) && is_array($reviewsData['product_scores'])) {
+            foreach ($reviewsData['product_scores'] as $item) {
+                $reviews[$item['product_id']] = $item;
+            }
+        }
+        
+        if (is_array($productData)) {
+            $products = [];
+            foreach ($productData as $item) {
+                $product = new \Model\Product\Entity($item);
+                $products[$product->getId()] = $product;
+            }
+            
+            foreach ($compareProducts as $compareProduct) {
+                /** @var \Model\Product\Entity $product */
+                $product = $products[$compareProduct['id']];
+
+                if (!isset($compareGroups[$compareProduct['categoryId']])) {
+                    $lastCategory = $product->getLastCategory();
+                    $compareGroups[$compareProduct['categoryId']] = [
+                        'category' => [
+                            'id' => $lastCategory->getId(),
+                            'name' => $lastCategory->getName(),
+                        ],
+                        'products' => [],
+                        'propertyGroups' => [],
+                    ];
+                }
+
+                $compareGroups[$compareProduct['categoryId']]['products'][] = $product;
+            }
+
+            foreach ($compareGroups as $key => $compareGroup) {
+                $compareGroups[$key]['propertyGroups'] = $this->getPropertyGroups($compareGroup['products']);
+            }
+
+            $templateHelper = new \Helper\TemplateHelper();
+            foreach ($compareGroups as $key => $compareGroup) {
+                foreach ($compareGroup['products'] as $key2 => $product) {
+                    $starCount = isset($reviews[$product->getId()]['star_score']) ? $reviews[$product->getId()]['star_score'] : 0;
+                    
+                    $compareGroups[$key]['products'][$key2] = [
+                        'id' => $product->getId(),
+                        'prefix' => $product->getPrefix(),
+                        'webName' => $product->getWebName(),
+                        'link' => $product->getLink(),
+                        'price' => $templateHelper->formatPrice($product->getPrice()),
+                        'priceOld' => $templateHelper->formatPrice($product->getPriceOld()),
+                        'inShopOnly' => $product->isInShopOnly(),
+                        'inShopShowroomOnly' => $product->isInShopShowroomOnly(),
+                        'isBuyable' => $product->getIsBuyable(),
+                        'statusId' => $product->getStatusId(),
+                        'imageUrl' => $product->getImageUrl(1),
+                        'reviews' => [
+                            'stars' => [
+                                'notEmpty' => array_pad([], $starCount, null),
+                                'empty' => array_pad([], 5 - $starCount, null),
+                            ],
+                            'count' => isset($reviews[$product->getId()]['num_reviews']) ? $reviews[$product->getId()]['num_reviews'] : null,
+                        ],
+                        'deleteFromCompareUrl' => \App::router()->generate('compare.delete', ['productId' => $product->getId()]),
+                        'upsale' => json_encode([
+                            'url' => \App::router()->generate('product.upsale', ['productId' => $product->getId()]),
+                            'fromUpsale' => ($templateHelper->hasParam('from') && 'cart_rec' === $templateHelper->getParam('from')) ? true : false,
+                        ])
+                    ];
+                }
+            }
+
+            $compareGroups = array_values($compareGroups);
+        }
+        
+        return $compareGroups;
     }
 
     /**
