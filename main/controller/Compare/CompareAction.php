@@ -72,6 +72,7 @@ class CompareAction {
                                     'inShopOnly' => $product->isInShopOnly(),
                                     'inShopShowroomOnly' => $product->isInShopShowroomOnly(),
                                     'isBuyable' => $product->getIsBuyable(),
+                                    'statusId' => $product->getStatusId(),
                                     'imageUrl' => $product->getImageUrl(1),
                                     'deleteFromCompareUrl' => \App::router()->generate('compare.delete', ['productId' => $product->getId()]),
                                     'upsale' => json_encode([

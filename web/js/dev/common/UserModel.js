@@ -52,7 +52,7 @@
 
 		// Биндинги на нужные элементы
 		// Топбар, кнопка Купить на странице продукта, листинги, слайдер аксессуаров
-		$('.js-topbarfix, .js-WidgetBuy, .js-listing, .js-jewelListing, .js-gridListing, .js-accessorize, .js-enterprize').each(function(){
+		$('.js-topbarfix, .js-WidgetBuy, .js-listing, .js-jewelListing, .js-gridListing, .js-lineListing, .js-slider').each(function(){
 			ko.applyBindings(ENTER.UserModel, this);
 		});
 		

@@ -17,8 +17,6 @@ if ($disabled) {
 } else {
     $url = $page->url('cart.product.set', array('productId' => $product->getId()));
 }
-$inCart = \App::user()->getCart()->hasProduct($product->getId());
-$btnText = $inCart ? 'В корзине' : 'Купить';
 
 $imgSize = isset($itemsPerRow) && 3 == $itemsPerRow ? 6 : 2;
 ?>
@@ -40,7 +38,7 @@ $imgSize = isset($itemsPerRow) && 3 == $itemsPerRow ? 6 : 2;
       <div class="bItemPrice"><span><?= $page->helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
 
       <? if ($product->getIsBuyable()): ?>
-        <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => $btnText]) // Кнопка купить ?>
+        <?= $helper->render('cart/__button-product', ['product' => $product]) // Кнопка купить ?>
       <? endif ?>
     </div>
 

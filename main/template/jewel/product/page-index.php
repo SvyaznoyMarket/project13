@@ -265,7 +265,7 @@ $productVideo = reset($productVideos);
       <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId())): ?>
         <?= $helper->render('jewel/__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
       <?php endif ?>
-      <?= $page->render('jewel/cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => ($user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
+        <?= $helper->render('cart/__button-product', ['product' => $product]) ?>
       <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
         <div class="notBuying font12">
             <div class="corner"><div></div></div>
@@ -533,7 +533,7 @@ $productVideo = reset($productVideos);
           <strong class="font34"><span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></strong>
       </div>
       <div class="goodsbarbig mSmallBtns pb40" ref="<?= $product->getToken() ?>" data-value='<?= $json ?>'>
-        <?= $page->render('jewel/cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable()]) ?>
+          <?= $helper->render('cart/__button-product', ['product' => $product]) ?>
       </div>
 
       <h2>Фото:</h2>
@@ -676,7 +676,7 @@ $productVideo = reset($productVideos);
         <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId())): ?>
             <?= $helper->render('jewel/__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
         <? endif ?>
-        <?= $page->render('jewel/cart/_button', ['product' => $product, 'disabled' => !$product->getIsBuyable(), 'bought' => ($user->getCart()->hasProduct($product->getId()) ? 'style="visibility:hidden;"': '')]) ?>
+        <?= $helper->render('cart/__button-product', ['product' => $product]) ?>
         <? if (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>
             <div class="notBuying font12">
             <div class="corner"><div></div></div>Только в магазинах</div>

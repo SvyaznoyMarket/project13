@@ -19,6 +19,7 @@
 			model.inShopOnly = product.inShopOnly;
 			model.inShopShowroomOnly = product.inShopShowroomOnly;
 			model.isBuyable = product.isBuyable;
+			model.statusId = product.statusId;
 			model.imageUrl = product.imageUrl;
 			model.deleteFromCompareUrl = product.deleteFromCompareUrl;
 			model.upsale = product.upsale;

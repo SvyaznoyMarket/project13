@@ -18,7 +18,8 @@
 				productId = $elem.data('product-id'),
 				inShopOnly = $elem.data('in-shop-only'),
 				inShopShowroomOnly = $elem.data('in-shop-showroom-only'),
-				isBuyable = $elem.data('is-buyable');
+				isBuyable = $elem.data('is-buyable'),
+				statusId = $elem.data('status-id');
 			
 			if (typeof isBuyable != 'undefined' && !isBuyable) {
 				$elem
@@ -27,6 +28,14 @@
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
 					.removeClass('jsBuyButton')
+					.attr('href', '#');
+			} else if (typeof statusId != 'undefined' && 5 == statusId) { // SITE-2924, SITE-3109
+				$elem
+					.text('Купить')
+					.addClass('mDisabled')
+					.removeClass('mShopsOnly')
+					.removeClass('mBought')
+					.addClass('jsBuyButton')
 					.attr('href', '#');
 			} else if (typeof inShopOnly != 'undefined' && inShopOnly && ENTER.config.pageConfig.user.region.forceDefaultBuy) {
 				$elem

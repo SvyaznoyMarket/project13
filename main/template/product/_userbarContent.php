@@ -25,14 +25,12 @@ if ($product) {
     <? if ($product->getIsBuyable() && (!$product->getKit()) || $product->getIsKitLocked()): ?>
         <?= $helper->render('cart/__button-product', [
             'product' => $product,
-            'class' => 'btnBuy__eLink',
-            'value' => 'Купить',
             'onClick' => $addToCartJS ? $addToCartJS : null,
         ]) // Кнопка купить ?>
     <? endif ?>
 
     <? if ($product->getKit() && !$product->getIsKitLocked()): ?>
-        <?= $helper->render('cart/__button-product-kit', ['product' => $product, 'class' => 'btnBuy__eLink mBuySet', 'value' => 'Купить']) // Кнопка купить ?>
+        <?= $helper->render('cart/__button-product-kit', ['product' => $product]) // Кнопка купить ?>
     <? endif ?>
 
     <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && (!$product->getKit()) || $product->getIsKitLocked()): ?>

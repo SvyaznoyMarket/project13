@@ -71,7 +71,7 @@ return function (
                                     <span class="rubl">p</span>
                                 </span>
 
-                                <div class="cmprCnt_buy"><a href="" class="cmprCnt_buy_lk btnBuy__eLink mBought jsBuyButton" data-bind="attr: {'data-product-id': id, 'data-in-shop-only': inShopOnly ? 'true' : 'false', 'data-in-shop-showroom-only': inShopShowroomOnly ? 'true' : 'false', 'data-is-buyable': isBuyable ? 'true' : 'false', 'data-upsale': upsale}, buyButtonBinding: $root.cart">Купить</a></div>
+                                <div class="cmprCnt_buy"><a href="" class="cmprCnt_buy_lk btnBuy__eLink mBought" data-bind="attr: {'data-product-id': id, 'data-in-shop-only': inShopOnly ? 'true' : 'false', 'data-in-shop-showroom-only': inShopShowroomOnly ? 'true' : 'false', 'data-is-buyable': isBuyable ? 'true' : 'false', 'data-status-id': statusId, 'data-upsale': upsale}, buyButtonBinding: $root.cart">Купить</a></div>
                                 <div class="cmprCnt_border"></div>
                             </div>
                         </td>

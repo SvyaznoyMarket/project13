@@ -71,7 +71,7 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
             <? endif ?>
             <span class="db font18 pb10"><b><span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></b></span>
 
-            <?= $page->render('cart/_button', array('product' => $product, 'disabled' => !$product->getIsBuyable())) ?>
+            <?= $page->render('cart/_button', array('product' => $product)) ?>
             <?= $page->render('product/show/__corner_features', ['product' => $product]) ?>
             <? if ($product->getIsBuyable()): ?>
             <noindex>

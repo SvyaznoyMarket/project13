@@ -2,18 +2,15 @@
 
 return function (
     \Helper\TemplateHelper $helper,
-    \Model\Product\BasicEntity $product,
-    $url = null,
-    $class = null,
-    $value = 'Купить',
-    $directLink = false
+    \Model\Product\BasicEntity $product
 ) {
     /** @var $region \Model\Region\Entity|null */
     $region = \App::user()->getRegion();
     $forceDefaultBuy = $region ? $region->getForceDefaultBuy() : true;
 
-    $class = \View\Id::cartButtonForProduct($product->getId()) . ' ' . $class;
-    $class = $class . ' jsChangePackageSet';
+    $url = null;
+    $value = 'Купить';
+    $class = \View\Id::cartButtonForProduct($product->getId()) . ' btnBuy__eLink jsChangePackageSet';
 
     if ($product->isInShopStockOnly() && $forceDefaultBuy) {
         $class .= ' mShopsOnly';
@@ -22,7 +19,6 @@ return function (
     } elseif ($product->isInShopShowroomOnly()) {
         $class .= ' mShopsOnly';
     }
-
 
     if (5 === $product->getStatusId()) { // SITE-2924
         return '';
