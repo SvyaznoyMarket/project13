@@ -4046,7 +4046,10 @@ $(document).ready(function() {
 		});
 
 		userBarFixed.slideDown();
-		userbarStatic.css('visibility','hidden');
+		
+		if (userBarFixed.length) {
+			userbarStatic.css('visibility','hidden');
+		}
 	}
 
 	/**
