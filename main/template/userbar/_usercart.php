@@ -8,7 +8,7 @@
 
     <a href="<?= $page->url('cart') ?>" class="topbarfix_cart_tl">
         <span class="topbarfix_cart_tx">Корзина</span>
-        <strong class="topbarfix_cart_qn topbarfix_cartQuan" data-bind="text: cartProductQuantity"></strong>
+        <strong class="topbarfix_cart_qn topbarfix_cartQuan" data-bind="text: cart().length"></strong>
     </a>
 
     <div class="topbarfix_dd topbarfix_cartOn" >

@@ -73,7 +73,7 @@ class CompareAction {
                                     'inShopShowroomOnly' => $product->isInShopShowroomOnly(),
                                     'isBuyable' => $product->getIsBuyable(),
                                     'imageUrl' => $product->getImageUrl(1),
-                                    'removeFromCompareUrl' => \App::router()->generate('compare.delete', ['productId' => $product->getId()]),
+                                    'deleteFromCompareUrl' => \App::router()->generate('compare.delete', ['productId' => $product->getId()]),
                                     'upsale' => json_encode([
                                         'url' => \App::router()->generate('product.upsale', ['productId' => $product->getId()]),
                                         'fromUpsale' => ($templateHelper->hasParam('from') && 'cart_rec' === $templateHelper->getParam('from')) ? true : false,

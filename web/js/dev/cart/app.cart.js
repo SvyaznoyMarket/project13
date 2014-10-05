@@ -485,17 +485,11 @@ $(document).ready(function() {
 					//ltbx.update( liteboxJSON )
 				//}
 				if( data.success ) {
-					var cart = $.extend({}, ENTER.UserModel.cart());
-					$.each(cart, function(){
-						if (this.id == data.product.id) {
-							this.quantity = data.product.quantity;
+					$.each(ENTER.UserModel.cart(), function(key, value){
+						if (value.id == data.product.id) {
+							value.quantity(data.product.quantity);
 							return false;
 						}
-					});
-
-					ENTER.UserModel.cart.removeAll();
-					$.each(cart, function(){
-						ENTER.UserModel.cart.push(this);
 					});
 				} else {
 					location.href = location.href

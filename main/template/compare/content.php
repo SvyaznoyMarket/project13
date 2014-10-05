@@ -38,7 +38,7 @@ return function (
                     <!-- ko foreach: {data: compareGroups()[activeCompareGroupIndex()].products} -->
                         <td class="cmprCnt_product">
                             <div class="cmprCnt_fixed js-compare-fixed cmprCnt_cell">
-                                <a href="" class="clsr js-compare-removeProductLink" data-bind="attr: {href: removeFromCompareUrl, 'data-product-id': id}"></a>
+                                <a href="" class="clsr js-compare-deleteProductLink" data-bind="attr: {href: deleteFromCompareUrl, 'data-product-id': id}"></a>
 
                                 <a class="cmprCnt_img" href="">
                                     <img src="" class="descrImg_img" data-bind="attr: {src: imageUrl}">

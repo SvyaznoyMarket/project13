@@ -62,10 +62,10 @@
 				$elem = $(element);
 			
 			$elem.removeClass('mDisabled').find('input').attr('disabled', false);
-			$.each(cart, function(){
+			$.each(cart, function(key, value){
 				if (this.id == $elem.data('product-id')) {
 					$elem.addClass('mDisabled');
-					$elem.find('input').val(this.quantity).attr('disabled', true);
+					$elem.find('input').val(value.quantity()).attr('disabled', true);
 				}
 			})
 		}

@@ -20,7 +20,7 @@
 			model.inShopShowroomOnly = product.inShopShowroomOnly;
 			model.isBuyable = product.isBuyable;
 			model.imageUrl = product.imageUrl;
-			model.removeFromCompareUrl = product.removeFromCompareUrl;
+			model.deleteFromCompareUrl = product.deleteFromCompareUrl;
 			model.upsale = product.upsale;
 			return model;
 		}
@@ -92,6 +92,7 @@
 			model.activeCompareGroupIndex = ko.observable(0);
 			model.onlySimilar = ko.observable(true);
 			model.cart = ENTER.UserModel.cart;
+			model.compare = ENTER.UserModel.compare;
 			return model;
 		}
 
@@ -254,7 +255,7 @@
 			initFixedTableCells();
 		}, 0);
 
-		compareElement.on('click', '.js-compare-removeProductLink', function(e){
+		compareElement.on('click', '.js-compare-deleteProductLink', function(e){
 			e.preventDefault();
 			var anchor = e.currentTarget;
 			$.ajax({
@@ -281,6 +282,8 @@
 
 						return item.products().length == 0;
 					});
+					
+					compareModel.compare.remove(function(item){ return item.id == productId; });
 
 					var compareGroupsLength = compareModel.compareGroups().length;
 					if (compareModel.activeCompareGroupIndex() > compareGroupsLength - 1) {

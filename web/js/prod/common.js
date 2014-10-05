@@ -62,10 +62,10 @@
 				$elem = $(element);
 			
 			$elem.removeClass('mDisabled').find('input').attr('disabled', false);
-			$.each(cart, function(){
+			$.each(cart, function(key, value){
 				if (this.id == $elem.data('product-id')) {
 					$elem.addClass('mDisabled');
-					$elem.find('input').val(this.quantity).attr('disabled', true);
+					$elem.find('input').val(value.quantity()).attr('disabled', true);
 				}
 			})
 		}
@@ -122,41 +122,51 @@
 			userInfoURL = ENTER.config.pageConfig.userUrl + '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000),
 			startTime, endTime, spendTime;
 
-		ENTER.UserModel = new function(){
-			var self = this;
+		function createCartModel(cart) {
+			var model = {};
+			$.each(cart, function(key, value){
+				model[key] = value;
+			});
+			
+			model.quantity = ko.observable(cart.quantity);
+			return model;
+		}
+		
+		function createUserModel(){
+			var model = {};
 
-			self.name = ko.observable();
-			self.firstName = ko.observable();
-			self.lastName = ko.observable();
-			self.link = ko.observable();
+			model.name = ko.observable();
+			model.firstName = ko.observable();
+			model.lastName = ko.observable();
+			model.link = ko.observable();
 
-			self.cart = ko.observableArray();
-			self.compare = ko.observableArray();
+			model.cart = ko.observableArray();
+			model.compare = ko.observableArray();
 
-			self.isProductInCompare = function(elem){
+			model.isProductInCompare = function(elem){
 				console.log('isProductInCompare', elem);
-				return $.grep(self.compare, function(val){return val.id == $(elem).data('id')}).length == 0
+				return $.grep(model.compare, function(val){return val.id == $(elem).data('id')}).length == 0
 			};
 
-			self.cartProductQuantity = ko.computed(function(){
-				return self.cart().length;
-			});
-
-			self.update = function(data) {
+			model.update = function(data) {
 				if (data.user) {
-					if (data.user.name) self.name(data.user.name);
-					if (data.user.firstName) self.firstName(data.user.firstName);
-					if (data.user.lastName) self.lastName(data.user.lastName);
-					if (data.user.link) self.link(data.user.link);
+					if (data.user.name) model.name(data.user.name);
+					if (data.user.firstName) model.firstName(data.user.firstName);
+					if (data.user.lastName) model.lastName(data.user.lastName);
+					if (data.user.link) model.link(data.user.link);
 				}
 				if (data.cartProducts && $.isArray(data.cartProducts)) {
-					$.each(data.cartProducts, function(i,val){ self.cart.unshift(val) });
+					$.each(data.cartProducts, function(i,val){ model.cart.unshift(createCartModel(val)) });
 				}
 				if (data.compare) {
-					$.each(data.compare, function(i,val){ self.compare.push(val) })
+					$.each(data.compare, function(i,val){ model.compare.push(val) })
 				}
-			}
-		};
+			};
+			
+			return model;
+		}
+		
+		ENTER.UserModel = createUserModel();
 
 		// Биндинги на нужные элементы
 		// Топбар, кнопка Купить на странице продукта, листинги, слайдер аксессуаров
