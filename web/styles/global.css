@@ -3650,7 +3650,7 @@ img[height="0"] {
     width: 940px;
     height: 630px;
     background: url("/styles/tchiboNavSlider/img/shadow.png") no-repeat 50% 100%;
-    padding-bottom: 15px;
+    padding-bottom: 50px;
   }
   .bPromoCatalogSlider.mTchiboSlider .bPromoCatalogSliderWrap_eSlide {
     width: 940px;
@@ -3775,6 +3775,11 @@ img[height="0"] {
   .bPromoCatalogProducts .prodPrice {
     font-size: 18px;
     font-weight: bold;
+    float: left;
+  }
+  .bPromoCatalogProducts .btnBuy {
+    float: right;
+    width: 70px;
   }
   .bPromoCatalogProducts .prodName {
     font-size: 14px;
@@ -3812,6 +3817,12 @@ img[height="0"] {
   }
   .tchiboProducts .productInner .bProductDescSticker.mRight {
     right: 5px;
+  }
+  .tchiboProducts .productInner .stockSticker {
+    left: 50%;
+    margin: -70px 0 0 -73px;
+    position: absolute;
+    top: 50%;
   }
   .tchiboProducts .productInner__hover {
     width: 98%;
@@ -3869,10 +3880,21 @@ img[height="0"] {
   .tchiboProducts .productInner__desc .bBtnLine {
     margin-top: 5px;
   }
-  .tchiboProducts .productInner__desc .bBtnLine .btnBuy {
-    height: 22px;
+  .tchiboProducts .productInner__desc .bOptionsSection {
+    margin-top: 8px;
   }
-  .tchiboProducts .productInner__desc .bBtnLine .btnBuy .btnBuy__eLink {
+  .tchiboProducts .productInner__desc .bOptionsSection .bCorner {
+    border-width: 7px;
+    top: -7px;
+  }
+  .tchiboProducts .productInner__desc .bOptionsSection .bCornerDark {
+    border-width: 8px;
+    top: -8px;
+  }
+  .tchiboProducts .btnBuy {
+    height: 25px;
+  }
+  .tchiboProducts .btnBuy .btnBuy__eLink {
     background: -moz-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffc000), color-stop(100%, #ffaa01));
     background: -webkit-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
@@ -3890,21 +3912,21 @@ img[height="0"] {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6b839d', endColorstr='#052e5b', GradientType=0);
     border-color: #002958;
   }
-  .tchiboProducts .productInner__desc .bBtnLine .btnBuy .btnBuy__eLink.mBought {
+  .tchiboProducts .btnBuy .btnBuy__eLink.mBought {
     background: none repeat scroll 0 0 #E6E6E6;
     border: 1px solid #E6E6E6;
     box-shadow: none;
     color: #A6A6A6;
     cursor: default;
   }
-  .tchiboProducts .productInner__desc .bBtnLine .btnBuy .btnBuy__eLink.mDisabled {
+  .tchiboProducts .btnBuy .btnBuy__eLink.mDisabled {
     background: none repeat scroll 0 0 #F1F0F0;
     border: 1px solid #F1F0F0;
     box-shadow: none;
     color: #CBCBCB;
     cursor: default;
   }
-  .tchiboProducts .productInner__desc .bBtnLine .btnBuy .btnBuy__eLink.mShopsOnly {
+  .tchiboProducts .btnBuy .btnBuy__eLink.mShopsOnly {
     background: #040404;
     /* Old browsers */
     background: -moz-linear-gradient(top, #505050 0%, #040404 100%);
@@ -3925,30 +3947,19 @@ img[height="0"] {
     display: inline-block;
     vertical-align: top;
   }
-  .tchiboProducts .productInner__desc .bBtnLine .btnBuy__eLink {
+  .tchiboProducts .btnBuy__eLink {
     width: 70px;
-    height: 22px;
+    height: 25px;
     font-size: 13px;
-    line-height: 22px;
+    line-height: 25px;
   }
-  .tchiboProducts .productInner__desc .bBtnLine .btnBuy__eLink.mDisabled {
+  .tchiboProducts .btnBuy__eLink.mDisabled {
     width: 100px;
   }
-  .tchiboProducts .productInner__desc .bBtnLine .btnView {
-    height: 22px;
+  .tchiboProducts .btnView {
+    height: 25px;
     font-size: 13px;
-    line-height: 22px;
-  }
-  .tchiboProducts .productInner__desc .bOptionsSection {
-    margin-top: 8px;
-  }
-  .tchiboProducts .productInner__desc .bOptionsSection .bCorner {
-    border-width: 7px;
-    top: -7px;
-  }
-  .tchiboProducts .productInner__desc .bOptionsSection .bCornerDark {
-    border-width: 8px;
-    top: -8px;
+    line-height: 25px;
   }
 }
 /*---END----TCHIBO - листинг Чибо---------*/

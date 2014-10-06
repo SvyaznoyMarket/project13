@@ -38,8 +38,8 @@ $f = function(
             <? endif ?>
 
             <? if ($product->getMainCategory() && 'tchibo' === $product->getMainCategory()->getToken() && !$product->isAvailable() && !$product->hasAvailableModels()): ?>
-                <div class="bProductDescSticker">
-                    <img src="/images/shild_sold_out.png" alt="Нет в наличии" />
+                <div class="bProductDescSticker stockSticker">
+                    <img class="stockSticker_img" src="/images/shild_sold_out.png" alt="Нет в наличии" />
                 </div>
             <? endif ?>
 

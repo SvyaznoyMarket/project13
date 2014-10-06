@@ -20,6 +20,14 @@
     		}
 		}
 
+		.stockSticker {
+		    left: 50%;
+		    margin: -70px 0 0 -73px;
+		    position: absolute;
+		    top: 50%;
+		}
+
+
 		&__hover {
 		    width: 98%;
 
@@ -84,55 +92,6 @@
 
 			.bBtnLine {
 				margin-top: 5px;
-
-				.btnBuy {
-					height: 22px;
-
-					.btnBuy__eLink {
-						.orangeGradLight();
-						border-color: #002958;
-
-						&.mBought {
-						    background: none repeat scroll 0 0 #E6E6E6;
-						    border: 1px solid #E6E6E6;
-						    box-shadow: none;
-						    color: #A6A6A6;
-						    cursor: default;
-						}
-
-						&.mDisabled {
-						    background: none repeat scroll 0 0 #F1F0F0;
-						    border: 1px solid #F1F0F0;
-						    box-shadow: none;
-						    color: #CBCBCB;
-						    cursor: default;
-						}
-
-						&.mShopsOnly {
-						    .blackGrad();
-						    border: 1px solid #A1A1A1;
-						    display: inline-block;
-						    vertical-align: top;
-						}
-					}
-				}
-
-				.btnBuy__eLink {
-					width: 70px;
-					height: 22px;
-					font-size: 13px;
-					line-height: 22px;
-
-					&.mDisabled {
-						width: 100px;
-					}
-				}
-
-				.btnView {
-					height: 22px;
-					font-size: 13px;
-					line-height: 22px;
-				}
 			}
 
 			.bOptionsSection {
@@ -149,5 +108,54 @@
 				}
 			}
 		}
+	}
+
+	.btnBuy {
+		height: 25px;
+
+		.btnBuy__eLink {
+			.orangeGradLight();
+			border-color: #002958;
+
+			&.mBought {
+			    background: none repeat scroll 0 0 #E6E6E6;
+			    border: 1px solid #E6E6E6;
+			    box-shadow: none;
+			    color: #A6A6A6;
+			    cursor: default;
+			}
+
+			&.mDisabled {
+			    background: none repeat scroll 0 0 #F1F0F0;
+			    border: 1px solid #F1F0F0;
+			    box-shadow: none;
+			    color: #CBCBCB;
+			    cursor: default;
+			}
+
+			&.mShopsOnly {
+			    .blackGrad();
+			    border: 1px solid #A1A1A1;
+			    display: inline-block;
+			    vertical-align: top;
+			}
+		}
+	}
+
+	.btnBuy__eLink {
+		width: 70px;
+		height: 25px;
+		font-size: 13px;
+		line-height: 25px;
+
+		&.mDisabled {
+			width: 100px;
+		}
+	}
+
+	.btnView {
+		height: 25px;
+		font-size: 13px;
+		line-height: 25px;
 	}
 }
