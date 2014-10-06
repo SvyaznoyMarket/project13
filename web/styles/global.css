@@ -3818,6 +3818,17 @@ img[height="0"] {
   .tchiboProducts .productInner .bProductDescSticker.mRight {
     right: 5px;
   }
+  .tchiboProducts .productInner .stockSticker {
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.4);
+  }
+  .tchiboProducts .productInner .stockSticker_img {
+    left: 50%;
+    margin: -70px 0 0 -73px;
+    position: absolute;
+    top: 50%;
+  }
   .tchiboProducts .productInner__hover {
     width: 98%;
   }

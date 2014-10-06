@@ -9,8 +9,8 @@
             <a href="<%= products[ i ].link %>" title="<%= products[ i ].name %>">
 
                 <% if ( !products[ i ].isBuyable ) { %>
-                <div class="bProductDescSticker">
-                    <img src="/images/shild_sold_out.png" alt="Нет в наличии" />
+                <div class="bProductDescSticker stockSticker">
+                    <img class="stockSticker_img" src="/images/shild_sold_out.png" alt="Нет в наличии" />
                 </div>
                 <% } %>
 
