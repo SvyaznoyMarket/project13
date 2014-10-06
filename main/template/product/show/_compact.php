@@ -59,7 +59,7 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
                 <?= $page->render('cart/_button', ['product' => $product]) ?>
             <? endif; ?>
             <a href="" class="btnCmprb jsCompareListLink" data-id="<?= $page->escape($product->getId()) ?>" data-bind="compareListBinding: compare"></a>
-            <a class="btnView mBtnGrey" href="<?= $product->getLink() ?>">Посмотреть</a>
+            <a class="btnView btn1" href="<?= $product->getLink() ?>">Посмотреть</a>
         </div>
 
         <?= $page->render('product/show/__corner_features', ['product' => $product]) ?>

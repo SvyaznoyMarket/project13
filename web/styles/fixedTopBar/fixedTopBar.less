@@ -107,13 +107,13 @@
 				&-full {
 
 					.topbarfix_cmpr_tl {
-						background-position: 0 -294px;
+						background-position: 0 -323px;
 					}
 				}
 
 				&_tl {
 					color: @white;
-					background-position: 0 -254px;
+					background-position: 0 -285px;
 				}
 			}
 
@@ -145,7 +145,6 @@
 	}
 
 	.wrapperCrumbsList {
-		width: 800px;
 		position: relative;
 		overflow: hidden;
 		.inline-block();
@@ -262,6 +261,10 @@
 			padding: 0 0 0 26px;
     		line-height: 50px;
 			background: url("@{base-url}/header/img/icons.png") no-repeat 0 -142px;
+
+			&:hover {
+				text-decoration: none;
+			}
 		}
 
 		&_tx {
@@ -309,6 +312,7 @@
 		float: right;
 		padding: 0 10px 0;
 		max-width: 130px;
+		display: table;
 		position: relative;
 		z-index: 10;
 
@@ -335,13 +339,14 @@
 		}
 
 		&_lk {
-			display: block;
+			display: table-cell;
+			height: 50px;
 			background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAhElEQVQYGYWQUQ5AMBBEZ5crOQZnkDiBTw6gn04gnIFjuFJZ3RIkFd2PZjvzkk6HRAQ620Q5dtQQZF4grGD0SSmL3klBO1Dn9sYD4WHSSlqyI3LZMIf+o1CCgv1zj/a9uUh8Z/pGTtXl5j//7TH0d7FxDGsFMU4ZvnoyP7BRxveoUKzwA+X6MCjSOJRiAAAAAElFTkSuQmCC) no-repeat 0 50%;
 		    overflow: hidden;
 		    text-decoration: underline;
 		    white-space: nowrap;
+		    vertical-align: middle;
 		    padding-left: 15px;
-		    margin-top: 10px;
 		}
 	}
 
@@ -442,8 +447,7 @@
 		width: 295px;
 		margin: 12px 0 0;
 		float: right;
-		padding-left: 5px;
-		padding-right: 10px;
+		padding: 0 10px 8px 5px;
 		background: @white;
 		position: relative;
 		z-index: 10;
