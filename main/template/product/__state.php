@@ -13,7 +13,7 @@ return function(
     <link itemprop="availability" href="http://schema.org/OutOfStock" />
 
     <? if ($product->isSoldOut()): ?>
-        <img src="/images/shild_sold_out.png" alt="Нет в наличии" />
+        <img src="/images/shild_sold_out_card.png" alt="Нет в наличии" />
     <? endif ?>
 
 <? endif ?>
