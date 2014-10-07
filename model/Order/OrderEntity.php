@@ -170,7 +170,7 @@ class OrderEntity {
     /** Примененные скидки
      * @var array
      */
-    private $action_list;
+    private $action;
     /** КЛАДР - идентификатор адреса
      * @var string
      */
@@ -288,7 +288,7 @@ class OrderEntity {
 
         if (isset($arr['order']['comment']) && $arr['order']['comment'] !== '') $this->extra = (string)$arr['order']['comment'];
 
-        if (isset($arr['order']['actions']) && is_array($arr['order']['actions']) && (bool)$arr['order']['actions']) $this->action_list = $arr['order']['actions'];
+        if (isset($arr['order']['actions']) && is_array($arr['order']['actions']) && (bool)$arr['order']['actions']) $this->action = $arr['order']['actions'];
 
         if (\App::config()->order['enableMetaTag']) $this->meta_data = $this->getMetaData();
 
