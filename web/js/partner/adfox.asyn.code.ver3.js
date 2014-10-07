@@ -14,20 +14,23 @@ function AdFox_Close(AF_id){
 
 function AdFox_getCodeScript(AF_n,AF_id,AF_src){
    var AF_doc;
-   if(AF_n<10){
-      try{
-	     if(document.all && !window.opera){
-		    AF_doc = window.frames['AdFox_iframe_'+AF_id].document;
-			}else if(document.getElementById){
-			         AF_doc = document.getElementById('AdFox_iframe_'+AF_id).contentDocument;
-					 }
-		 }catch(e){}
-    if(AF_doc){
-	   AF_doc.write('<scr'+'ipt type="text/javascript" src="'+AF_src+'"><\/scr'+'ipt>');
-	   }else{
-	      setTimeout('AdFox_getCodeScript('+(++AF_n)+','+AF_id+',"'+AF_src+'");', 100);
-		  }
-		  }
+	if(AF_n<10) {
+		try {
+			if (document.all && !window.opera) {
+				AF_doc = window.frames['AdFox_iframe_'+AF_id].document;
+			} else if(document.getElementById) {
+				AF_doc = document.getElementById('AdFox_iframe_'+AF_id).contentDocument;
+			}
+		} catch(e){}
+
+		if (AF_doc) {
+			var script = AF_doc.createElement('script');
+			script.src = AF_src;
+			AF_doc.getElementsByTagName('head')[0].appendChild(script);
+		} else {
+			setTimeout('AdFox_getCodeScript('+(++AF_n)+','+AF_id+',"'+AF_src+'");', 100);
+		}
+	}
 }
 
 function adfoxSdvigContent(banID, flashWidth, flashHeight){
