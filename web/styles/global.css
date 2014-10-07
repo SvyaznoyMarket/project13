@@ -2835,12 +2835,12 @@ img[height="0"] {
   }
   .enterPrize .cuponPrice {
     position: absolute;
-    top: 110px;
+    top: 115px;
     left: 0;
     width: 100%;
     text-align: center;
     font-family: "Enter Type";
-    font-size: 40px;
+    font-size: 32px;
   }
   .enterPrize.mPrivate {
     -webkit-border-radius: 4px;
