@@ -1800,7 +1800,9 @@ img[height="0"] {
   .fixedTopBar__buy {
     display: inline-block;
     vertical-align: top;
+    /* IE6-8 */
     *display: inline;
+    *zoom: 1;
     zoom: 1;
     width: 305px;
     margin: 12px 0 0 10px;
@@ -3246,10 +3248,9 @@ img[height="0"] {
     position: relative;
     overflow: hidden;
     height: 101px;
-    font-size: 0;
     z-index: 10;
   }
-  .tchiboNav__title {
+  .tchiboNav_t {
     background: url("/styles/tchiboNavSlider/img/logo.jpg") no-repeat 0 0;
     line-height: 80px;
     min-height: 80px;
@@ -3257,27 +3258,25 @@ img[height="0"] {
     width: 80px;
     float: left;
   }
-  .tchiboNav__titleLink {
+  .tchiboNav_t_img {
     display: block;
     float: left;
     height: 80px;
     width: 80px;
     margin: 1px 0 0;
   }
-  .tchiboNav__list {
+  .tchiboNav_lst {
     width: 838px;
     border-bottom: 1px solid #e8e8e8;
-    margin: 0;
-    padding: 0;
     float: right;
     position: relative;
   }
-  .tchiboNav__list .item {
+  .tchiboNav_lst_i {
     margin: 0 12px 0 0;
     float: left;
   }
-  .tchiboNav__list .item:hover .tchiboNav__sublist,
-  .tchiboNav__list .item.active .tchiboNav__sublist {
+  .tchiboNav_lst_i:hover .tchiboNav_slst,
+  .tchiboNav_lst_i-act .tchiboNav_slst {
     -moz-opacity: 1;
     -khtml-opacity: 1;
     -webkit-opacity: 1;
@@ -3287,45 +3286,49 @@ img[height="0"] {
     z-index: 5;
     visibility: visible;
   }
-  .tchiboNav__list .item.active .link {
+  .tchiboNav_lst_i-act .tchiboNav_lst_lk {
     font-weight: bold;
   }
-  .tchiboNav__list .item.active .itemText {
+  .tchiboNav_lst_i-act .tchiboNav_lst_tx {
     background: url("/styles/tchiboNavSlider/img/arrow.png") no-repeat 50% 100%;
   }
-  .tchiboNav__list .item.active .itemText:hover {
+  .tchiboNav_lst_i-act .tchiboNav_lst_tx:hover {
     text-decoration: none;
   }
-  .tchiboNav__list .item.active .tchiboNav__sublist.active .link {
+  .tchiboNav_lst_i-act .tchiboNav_slst-act .tchiboNav_slst_lk {
     font-weight: normal;
   }
-  .tchiboNav__list .item.active .tchiboNav__sublist.active .mActive .link {
+  .tchiboNav_lst_i-act .tchiboNav_slst-act .tchiboNav_slst_i-act .tchiboNav_slst_lk {
     font-weight: bold;
   }
-  .tchiboNav__list .item.active .tchiboNav__sublist.active .mActive .link:hover {
+  .tchiboNav_lst_i-act .tchiboNav_slst-act .tchiboNav_slst_i-act .tchiboNav_slst_lk:hover {
     text-decoration: none;
   }
-  .tchiboNav__list .item.mLast {
+  .tchiboNav_lst .tchiboNav_lst_i-last {
     float: right;
     margin: 0;
   }
-  .tchiboNav__list .link {
+  .tchiboNav_lst_lk {
     color: #002a5a;
     display: block;
     font-size: 16px;
   }
-  .tchiboNav__list .link:hover {
+  .tchiboNav_lst_lk:hover {
     text-decoration: underline;
     color: #002a5a;
   }
-  .tchiboNav__list .itemText {
+  .tchiboNav_lst_tx {
     display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
     padding-bottom: 10px;
   }
-  .tchiboNav__list .itemText:hover {
+  .tchiboNav_lst_tx:hover {
     text-decoration: underline;
   }
-  .tchiboNav__sublist {
+  .tchiboNav_slst {
     -moz-opacity: 0;
     -khtml-opacity: 0;
     -webkit-opacity: 0;
@@ -3341,27 +3344,46 @@ img[height="0"] {
     top: 13px;
     z-index: 0;
   }
-  .tchiboNav__sublist.mDefault {
+  .tchiboNav_slst-def {
     left: 0;
     width: 838px;
   }
-  .tchiboNav__sublist.mLast {
+  .tchiboNav_slst-last {
     right: 0;
   }
-  .tchiboNav__sublist .sublistItem {
-    vertical-align: top;
+  .tchiboNav_slst_i {
     display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
     margin: 0 25px 5px 0;
   }
-  .tchiboNav__sublist .sublistItem:last-child {
+  .tchiboNav_slst_i:last-child {
     margin-right: 0;
   }
-  .tchiboNav__sublist .new {
-    background: url('/styles/tchibo/img/shild_new_top.png') no-repeat right 1px;
-    padding-right: 36px;
-  }
-  .tchiboNav__sublist .link {
+  .tchiboNav_slst_lk {
     font-size: 14px;
+    color: #002a5a;
+  }
+  .itemNew {
+    background: #ef404a;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    margin-top: 2px;
+    color: #ffffff;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    font-family: "Arial";
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 1;
+    padding: 3px 3px 2px;
+    text-align: center;
   }
 }
 /*---END----TCHIBO - слайдер-меню разделов Чибо---------*/

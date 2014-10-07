@@ -20,26 +20,26 @@ return function(
     <!-- TCHIBO - слайдер-меню разделов Чибо -->
     <div class="tchiboNav clearfix">
         <? if ($rootCategoryInMenu): ?>
-            <a class="tchiboNav__titleLink" href="<?= rtrim($rootCategoryInMenu->getLink(), '/') ?>">
-                <div class="tchiboNav__title"<? if ((bool)$rootCategoryInMenuImage): ?> style="background-image: url(<?= $rootCategoryInMenuImage ?>)" <? endif ?>></div>
+            <a class="tchiboNav_t" href="<?= rtrim($rootCategoryInMenu->getLink(), '/') ?>">
+                <div class="tchiboNav_t_img"<? if ((bool)$rootCategoryInMenuImage): ?> style="background-image: url(<?= $rootCategoryInMenuImage ?>)" <? endif ?>></div>
             </a>
         <? else: ?>
-            <div class="tchiboNav__title"<? if ((bool)$rootCategoryInMenuImage): ?> style="background-image: url(<?= $rootCategoryInMenuImage ?>)" <? endif ?>></div>
+            <div class="tchiboNav_t"<? if ((bool)$rootCategoryInMenuImage): ?> style="background-image: url(<?= $rootCategoryInMenuImage ?>)" <? endif ?>></div>
         <? endif ?>
 
 
-        <ul class="tchiboNav__list clearfix">
+        <ul class="tchiboNav_lst clearfix">
         <? $i = 0; foreach ($categories as $category):
             $active = $currentCategory && in_array($category->getId(), [$currentCategory->getParentId(), $currentCategory->getId()]) ? true : false;
             $last = (count($categories) - ($i++)) <= 1; ?>
 
-            <li class="item<? if ($active): ?> active<? endif ?><? if ($last): ?> mLast<? endif ?>">
-                <a class="link" href="<?= $category->getLink() ?>"<? if (in_array($category->getId(), array_keys($tchiboMenuCategoryNameStyles))): ?> style="<?= $tchiboMenuCategoryNameStyles[$category->getId()] ?>"<? endif ?>>
-                    <span class="itemText"><?= $category->getName() ?></span>
+            <li class="tchiboNav_lst_i<? if ($active): ?> tchiboNav_lst_i-act<? endif ?><? if ($last): ?> tchiboNav_lst_i-last<? endif ?>">
+                <a class="tchiboNav_lst_lk" href="<?= $category->getLink() ?>"<? if (in_array($category->getId(), array_keys($tchiboMenuCategoryNameStyles))): ?> style="<?= $tchiboMenuCategoryNameStyles[$category->getId()] ?>"<? endif ?>>
+                    <span class="tchiboNav_lst_tx"><?= $category->getName() ?></span>
                 </a>
 
                 <? if ((bool)$category->getChild() && ($active || !$currentCategory)): ?>
-                    <ul class="tchiboNav__sublist<? if (!$last): ?> mDefault<? endif ?><? if ($active): ?> active<? endif ?><? if ($last): ?> mLast<? endif ?>">
+                    <ul class="tchiboNav_slst<? if (!$last): ?> tchiboNav_slst-def<? endif ?><? if ($active): ?> tchiboNav_slst-act<? endif ?><? if ($last): ?> tchiboNav_slst-last<? endif ?>">
                     <? foreach ($category->getChild() as $child):
                         $activeChild = $currentCategory && ($child->getId() === $currentCategory->getId()) ? true : false;
                         // Шильдик NEW
@@ -55,8 +55,9 @@ return function(
                             }
                         }?>
 
-                        <li class="sublistItem jsItemListTchibo<? if ($activeChild): ?> mActive<? endif ?> <?= $newCategory ? 'new' : '' ?>">
-                            <a class="link" href="<?= $child->getLink() ?>"<? if (in_array($child->getId(), array_keys($tchiboMenuCategoryNameStyles))): ?> style="<?= $tchiboMenuCategoryNameStyles[$child->getId()] ?>"<? endif ?>><?= $child->getName() ?></a>
+                        <li class="tchiboNav_slst_i jsItemListTchibo<? if ($activeChild): ?> tchiboNav_slst_i-act<? endif ?> <?= $newCategory ? 'new' : '' ?>">
+                            <a class="tchiboNav_slst_lk" href="<?= $child->getLink() ?>"<? if (in_array($child->getId(), array_keys($tchiboMenuCategoryNameStyles))): ?> style="<?= $tchiboMenuCategoryNameStyles[$child->getId()] ?>"<? endif ?>><?= $child->getName() ?></a>
+                            <span class="itemNew">NEW!</span>
                         </li>
                     <? endforeach ?>
                     </ul>
