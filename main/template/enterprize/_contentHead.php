@@ -87,11 +87,15 @@ $routeName = \App::request()->attributes->get('route'); ?>
 
                 <div class="rulesText">
                     Фишка со скидкой <strong><?= $page->helper->formatPrice($enterpizeCoupon->getPrice(), $priceNumDecimals) ?><?= !$enterpizeCoupon->getIsCurrency() ? '%' : ' <span class="rubl">p</span>' ?></strong>
-                    <? if ($enterpizeCoupon->getSegmentDescription()): ?>
-                        <?= $enterpizeCoupon->getSegmentDescription() ?>
-                    <? else: ?>
+                    <? if ($linkName): ?>
                         <?= ' на ' ?><strong><a target="_blank" style="text-decoration: underline;" href="<?= $url ?>"><?= $linkName ?></a></strong>
                     <? endif ?>
+
+                    <? if ($enterpizeCoupon->getSegmentDescription()): ?>
+                        <br />
+                        <?= $enterpizeCoupon->getSegmentDescription() ?>
+                    <? endif ?>
+
                     <br />
                     Минимальная сумма заказа <?= $enterpizeCoupon->getMinOrderSum() ? $enterpizeCoupon->getMinOrderSum() : 0 ?> <span class="rubl">p</span><br />
                     Действует

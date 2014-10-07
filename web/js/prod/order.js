@@ -613,7 +613,7 @@ $(function(){
 	var orderDataElement = $('.js-orderData');
 	if ($('body').attr('data-template') == 'order_complete' && orderDataElement.length && typeof _gaq != 'undefined') {
 		var orderData = orderDataElement.data('value');
-		if (orderData.subscribe) {
+		if (orderData.subscribe && !orderData.sessionIsReaded) {
 			_gaq.push(['_trackEvent', 'subscription', 'subscribe_order_confirmation', orderData.email]);
 		}
 	}
