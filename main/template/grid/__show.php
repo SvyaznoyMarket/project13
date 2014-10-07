@@ -20,16 +20,18 @@ $f = function(
 ?>
 
 <? foreach ($gridCells as $cell): ?>
-<div class="productInner" style="position: absolute;
+    <?
+        /** @var \Model\Product\Entity|null $product */
+        $product = ((\Model\GridCell\Entity::TYPE_PRODUCT === $cell->getType()) && (isset($productsByUi[$cell->getObjectUi()]) && $productsByUi[$cell->getObjectUi()] instanceof \Model\Product\BasicEntity) ? $productsByUi[$cell->getObjectUi()] : null);
+    ?>
+
+<div class="productInner<? if ($product && $product->isSoldOut()): ?> productInner-off<? endif ?>" style="position: absolute;
     <?= 'left: ' . (($cell->getColumn() - 1) *  $step + ($cell->getColumn() - 1) * $offset) . 'px;' ?>
     <?= 'top: ' . (($cell->getRow() - 1) *  $step + ($cell->getRow() - 1) * $offset) . 'px;' ?>
     <?= 'width:' . ($cell->getSizeX() * $step + ($cell->getSizeX() - 1) * $offset) . 'px;' ?>
     <?= 'height:' . ($cell->getSizeY() * $step + ($cell->getSizeY() - 1) * $offset) . 'px;' ?>
 ">
     <? if (\Model\GridCell\Entity::TYPE_PRODUCT === $cell->getType()): ?>
-    <?
-        $product = ((isset($productsByUi[$cell->getObjectUi()]) && $productsByUi[$cell->getObjectUi()] instanceof \Model\Product\BasicEntity) ? $productsByUi[$cell->getObjectUi()] : null);
-    ?>
         <? if ($product): ?>
             <? if ($product->getLabel()): ?>
                 <div class="bProductDescSticker mLeft">
@@ -37,7 +39,7 @@ $f = function(
                 </div>
             <? endif ?>
 
-            <? if ($product->getMainCategory() && 'tchibo' === $product->getMainCategory()->getToken() && !$product->isAvailable() && !$product->hasAvailableModels()): ?>
+            <? if ($product->isSoldOut()): ?>
                 <div class="bProductDescSticker stockSticker">
                     <img class="stockSticker_img" src="/images/shild_sold_out.png" alt="Нет в наличии" />
                 </div>

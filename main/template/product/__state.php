@@ -12,7 +12,7 @@ return function(
 <? else: ?>
     <link itemprop="availability" href="http://schema.org/OutOfStock" />
 
-    <? if ($product->getMainCategory() && 'tchibo' === $product->getMainCategory()->getToken() && !$product->isAvailable() && !$product->hasAvailableModels()): ?>
+    <? if ($product->isSoldOut()): ?>
         <img src="/images/shild_sold_out.png" alt="Нет в наличии" />
     <? endif ?>
 
