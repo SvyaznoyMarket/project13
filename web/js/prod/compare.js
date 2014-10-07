@@ -6,7 +6,8 @@
 			$footer = $('.js-compare-footer'),
 			$table = $('.js-compare-table', $compare),
 			$topbar = $('.js-topbar'),
-			compareModel = createCompareModel($compare.data('compare-groups'));
+			compareModel = createCompareModel($compare.data('compare-groups')),
+			fixedTableCells = null;
 
 		function createProductModel(product) {
 			var model = {};
@@ -57,6 +58,7 @@
 			var model = {};
 			model.name = propertyGroup.name;
 			model.isSimilar = ko.observable();
+			model.opened = ko.observable(true);
 
 			model.properties = ko.observableArray();
 			$.each(propertyGroup.properties, function(){
@@ -93,6 +95,7 @@
 
 			model.activeCompareGroupIndex = ko.observable(0);
 			model.similarOnly = ko.observable(true);
+			model.scrolled = ko.observable(false);
 			model.cart = ENTER.UserModel.cart;
 			model.compare = ENTER.UserModel.compare;
 			return model;
@@ -101,45 +104,51 @@
 		function hideNotSimilarProperties() {
 			compareModel.similarOnly(true);
 
-			$.each(compareModel.compareGroups()[compareModel.activeCompareGroupIndex()].propertyGroups(), function(key, value){
-				var isSimilarGroup = true;
+			var compareGroups = compareModel.compareGroups();
+			if (compareGroups.length) {
+				$.each(compareGroups[compareModel.activeCompareGroupIndex()].propertyGroups(), function(key, value){
+					var isSimilarGroup = true;
 
-				$.each(value.properties(), function(key, value){
-					var isSimilarProperty = true,
-						previousValueText = null;
+					$.each(value.properties(), function(key, value){
+						var isSimilarProperty = true,
+							previousValueText = null;
 
-					$.each(value.values(), function(key, value){
-						if (value.text != previousValueText && previousValueText !== null) {
-							isSimilarGroup = false;
-							isSimilarProperty = false;
-							return false;
-						}
+						$.each(value.values(), function(key, value){
+							if (value.text != previousValueText && previousValueText !== null) {
+								isSimilarGroup = false;
+								isSimilarProperty = false;
+								return false;
+							}
 
-						previousValueText = value.text;
+							previousValueText = value.text;
+						});
+
+						value.isSimilar(isSimilarProperty);
 					});
 
-					value.isSimilar(isSimilarProperty);
+					value.isSimilar(isSimilarGroup);
 				});
-
-				value.isSimilar(isSimilarGroup);
-			});
+			}
 		}
 
 		function showNotSimilarProperties() {
 			compareModel.similarOnly(false);
 
-			$.each(compareModel.compareGroups()[compareModel.activeCompareGroupIndex()].propertyGroups(), function(key, value){
-				$.each(value.properties(), function(key, value){
+			var compareGroups = compareModel.compareGroups();
+			if (compareGroups.length) {
+				$.each(compareGroups[compareModel.activeCompareGroupIndex()].propertyGroups(), function(key, value){
+					$.each(value.properties(), function(key, value){
+						value.isSimilar(false);
+					});
+
 					value.isSimilar(false);
 				});
-
-				value.isSimilar(false);
-			});
+			}
 		}
 
 		function createFixedTableCells(rowContainers, columnContainers, events) {
 			if (!rowContainers[0]) {
-				throw Error('Empty "rowContainers" in "createFixedTableCells" function');
+				return null;
 			}
 
 			var offset = $(rowContainers[0]).offset(),
@@ -162,7 +171,11 @@
 				});
 			});
 
-			function calculateCellHeight(cells) {
+			function updateCellHeight(cells) {
+				if (!cells) {
+					cells = $($.unique($.merge($.makeArray(rowContainers), $.makeArray(columnContainers))));
+				}
+
 				cells.each(function(){
 					$(this).css('min-height', '0');
 				});
@@ -233,14 +246,14 @@
 					isScrollStarted = true;
 					events.onScrollStart();
 					setTimeout(function(){
-						calculateCellHeight(rowContainers);
+						updateCellHeight(rowContainers);
 					}, 0);
 				}
 
 				if ((events || {}).onScrollEnd && !shifts.top && isScrollStarted) {
 					isScrollStarted = false;
 					events.onScrollEnd();
-					calculateCellHeight(rowContainers);
+					updateCellHeight(rowContainers);
 				}
 			}
 
@@ -250,7 +263,7 @@
 				leftOffset = offset.left;
 			}
 
-			calculateCellHeight($($.unique($.merge($.makeArray(rowContainers), $.makeArray(columnContainers)))));
+			updateCellHeight();
 			windowElement.scroll(scrollHandler);
 			windowElement.resize(resizeHandler);
 
@@ -258,6 +271,7 @@
 
 			return {
 				updatePosition: updatePosition,
+				updateCellHeight: updateCellHeight,
 				destroy: function(){
 					windowElement.unbind('scroll', scrollHandler);
 					windowElement.unbind('resize', resizeHandler);
@@ -265,7 +279,6 @@
 			};
 		}
 
-		var fixedTableCells = null;
 		function initFixedTableCells() {
 			if (fixedTableCells) {
 				fixedTableCells.destroy();
@@ -276,10 +289,10 @@
 				$('th .js-compare-fixed', $table),
 				{
 					onScrollStart: function(){
-						$table.addClass('cmprCnt-scroll');
+						compareModel.scrolled(true);
 					},
 					onScrollEnd: function(){
-						$table.removeClass('cmprCnt-scroll');
+						compareModel.scrolled(false);
 					}
 				}
 			);
@@ -303,6 +316,12 @@
 			initFixedTableCells();
 			compareModel.cart.valueHasMutated();
 			updateSimilarPropertiesDisplay();
+		});
+
+		compareModel.similarOnly.subscribe(function(){
+			if (fixedTableCells) {
+				fixedTableCells.updateCellHeight();
+			}
 		});
 
 		$compare.on('click', '.js-compare-deleteProductLink', function(e){
@@ -348,6 +367,7 @@
 		$compare.on('click', '.js-compare-categoryLink', function(e){
 			e.preventDefault();
 			compareModel.activeCompareGroupIndex($(e.currentTarget).data('index'));
+			$(window).scroll();
 		});
 
 		$compare.on('click', '.js-compare-modeSimilarOnly', function(){
@@ -361,65 +381,40 @@
 		$compare.on('click', '.js-compare-propertyGroupLink', function(e){
 			e.preventDefault();
 
-			var rowElement = $(e.currentTarget).closest('tr');
-			var tableElement = rowElement.closest('table');
-			var className = 'cmprCnt_property_group-act';
-			var isGroupStarted = false;
-
-			if (rowElement.hasClass(className)) {
-				rowElement.removeClass(className);
-
-				$('>tbody>tr', tableElement).each(function() {
-					if (this.rowIndex < rowElement[0].rowIndex) {
-						return;
-					}
-
-					if (this.rowIndex == rowElement[0].rowIndex) {
-						isGroupStarted = true;
-						return;
-					}
-
-					if ($(this).hasClass('js-compare-propertyGroup')) {
-						return false;
-					}
-
-					if (isGroupStarted) {
-						$(this).removeClass('cmprCnt_property_group-hide');
-					}
-				});
-			} else {
-				rowElement.addClass(className);
-
-				$('>tbody>tr', tableElement).each(function() {
-					if (this.rowIndex < rowElement[0].rowIndex) {
-						return;
-					}
-
-					if (this.rowIndex == rowElement[0].rowIndex) {
-						isGroupStarted = true;
-						return;
-					}
-
-					if ($(this).hasClass('js-compare-propertyGroup')) {
-						return false;
-					}
-
-					if (isGroupStarted) {
-						$(this).addClass('cmprCnt_property_group-hide');
-					}
-				});
+			var compareGroups = compareModel.compareGroups();
+			if (!compareGroups.length) {
+				return;
 			}
 
-			isGroupStarted = false;
+			var propertyGroups = compareGroups[compareModel.activeCompareGroupIndex()].propertyGroups(),
+				propertyGroupIndex = $(e.currentTarget).closest('tr').data('property-group-index');
+
+			if (propertyGroups[propertyGroupIndex].opened()) {
+				propertyGroups[propertyGroupIndex].opened(false);
+			} else {
+				propertyGroups[propertyGroupIndex].opened(true);
+			}
 		});
 
 		$(window).scroll(function(){
-			var scrollX = (window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft) - 2;
-			$topbar.css('left', scrollX + 'px');
-			$header.css('left', scrollX + 'px');
-			$footer.css('left', scrollX + 'px');
-			
-			$body.addClass('compare-scrolled');
+			var scrollX = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft,
+				maxScrollX = $table.width() - $body.width();
+
+			if (maxScrollX > 0) {
+				if (scrollX < maxScrollX) {
+					$topbar.css('left', scrollX + 'px');
+					$header.css('left', scrollX + 'px');
+					$footer.css('left', scrollX + 'px');
+				} else if (scrollX >= maxScrollX) {
+					$topbar.css('left', maxScrollX + 'px');
+					$header.css('left', maxScrollX + 'px');
+					$footer.css('left', maxScrollX + 'px');
+				}
+			} else {
+				$topbar.css('left', '0');
+				$header.css('left', '0');
+				$footer.css('left', '0');
+			}
 		});
 	});
 }(jQuery));
