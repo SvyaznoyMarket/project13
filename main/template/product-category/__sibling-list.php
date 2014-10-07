@@ -57,7 +57,9 @@ return function(
 
                         <li class="tchiboNav_slst_i jsItemListTchibo<? if ($activeChild): ?> tchiboNav_slst_i-act<? endif ?> <?= $newCategory ? 'new' : '' ?>">
                             <a class="tchiboNav_slst_lk" href="<?= $child->getLink() ?>"<? if (in_array($child->getId(), array_keys($tchiboMenuCategoryNameStyles))): ?> style="<?= $tchiboMenuCategoryNameStyles[$child->getId()] ?>"<? endif ?>><?= $child->getName() ?></a>
+                            <? if (false): // SITE-3809 временно закомментировал ?>
                             <span class="itemNew">NEW!</span>
+                            <? endif ?>
                         </li>
                     <? endforeach ?>
                     </ul>
