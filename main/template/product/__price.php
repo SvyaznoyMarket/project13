@@ -8,11 +8,9 @@ return function(
     if (0 === $product->getPrice()) {
         return;
     }
-
-    $user = \App::user();
 ?>
 
-<? if ($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
+<? if ($product->getPriceOld()): ?>
     <div class="priceOld"><span><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></div>
 <? elseif (\App::config()->product['showAveragePrice'] && !$product->getPriceOld() && $product->getPriceAverage()): ?>
 
