@@ -18,17 +18,17 @@
                     <img src="<%= products[ i ].image %>" alt="<%= products[ i ].name %>" />
                 </div>
             </a>
-                
+
             <div class="prodDesc tchiboProducts">
                 <div class="prodDesc__inner clearfix">
                     <div class="prodName"><a href="<%= products[ i ].link %>" title="<%= products[ i ].name %>"><%= products[ i ].name %></a></div>
                     <div class="prodPrice"><%= products[ i ].price %> <span class="rubl">p</span></div>
 
                     <div class="btnBuy">
-                        <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
+                        <a href="<%= products[ i ].cartButton.url %>" class="jsBuyButton btnBuy__eLink <%= products[ i ].cartButton.class %>" data-group="<%= products[ i ].id %>" data-upsale='<%= products[ i ].cartButton.data.upsale %>'><%= products[ i ].cartButton.value %></a>
                     </div>
                 </div>
-            </div> 
+            </div>
         </div>
     <% } %>
     </div>
