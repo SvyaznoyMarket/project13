@@ -6703,7 +6703,7 @@ img[height="0"] {
     padding-bottom: 20px;
     width: 1px;
   }
-  .cmprCnt_onlySimilar .cmprCnt_property_similar {
+  .cmprCnt_similarOnly .cmprCnt_property_similar {
     display: none;
   }
   .cmprCnt-scroll .cmprCnt_head .cmprCnt_cell {

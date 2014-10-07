@@ -23,13 +23,13 @@ return function (
         </div>
 
         <!-- ko if: compareGroups()[activeCompareGroupIndex()] -->
-            <table class="cmprCnt clearfix js-compare-table" data-bind="css: {'cmprCnt_onlySimilar': onlySimilar}">
+            <table class="cmprCnt clearfix js-compare-table" data-bind="css: {'cmprCnt_similarOnly': similarOnly}">
                 <tr class="cmprCnt_head js-compare-tableHeadRow">
                     <th class="cmprCnt_modes">
                         <div class="cmprCnt_fixed js-compare-fixed cmprCnt_cell">
                             <menu class="cmprCnt_mode">
-                                <button class="cmprCnt_mode_btn btn1 js-compare-modeOnlySimilar" data-bind="css: {'cmprCnt_mode_btn-act': onlySimilar}">Только отличия</button>
-                                <button class="cmprCnt_mode_btn btn1 js-compare-modeAll" data-bind="css: {'cmprCnt_mode_btn-act': !onlySimilar()}">Все характеристики</button>
+                                <button class="cmprCnt_mode_btn btn1 js-compare-modeSimilarOnly" data-bind="css: {'cmprCnt_mode_btn-act': similarOnly}">Только отличия</button>
+                                <button class="cmprCnt_mode_btn btn1 js-compare-modeAll" data-bind="css: {'cmprCnt_mode_btn-act': !similarOnly()}">Все характеристики</button>
                             </menu>
                             <div class="cmprCnt_border"></div>
                         </div>

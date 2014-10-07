@@ -1,12 +1,12 @@
 ;(function($) {
 	$(function(){
-		var bodyElement = $('body'),
-			compareElement = $('.js-compare'),
-			tableElement = $('.js-compare-table', compareElement),
-			headerElement = $('.js-compare-header'),
-			footerElement = $('.js-compare-footer'),
-			topbarElement = $('.js-topbar'),
-			compareModel = createCompareModel(compareElement.data('compare-groups'));
+		var $body = $('body'),
+			$compare = $('.js-compare'),
+			$header = $('.js-compare-header'),
+			$footer = $('.js-compare-footer'),
+			$table = $('.js-compare-table', $compare),
+			$topbar = $('.js-topbar'),
+			compareModel = createCompareModel($compare.data('compare-groups'));
 
 		function createProductModel(product) {
 			var model = {};
@@ -43,7 +43,7 @@
 		function createPropertyModel(property) {
 			var model = {};
 			model.name = property.name;
-			model.isSimilar = property.isSimilar;
+			model.isSimilar = ko.observable();
 
 			model.values = ko.observableArray();
 			$.each(property.values, function(){
@@ -56,7 +56,7 @@
 		function createPropertyGroupModel(propertyGroup) {
 			var model = {};
 			model.name = propertyGroup.name;
-			model.isSimilar = propertyGroup.isSimilar;
+			model.isSimilar = ko.observable();
 
 			model.properties = ko.observableArray();
 			$.each(propertyGroup.properties, function(){
@@ -92,10 +92,49 @@
 			});
 
 			model.activeCompareGroupIndex = ko.observable(0);
-			model.onlySimilar = ko.observable(true);
+			model.similarOnly = ko.observable(true);
 			model.cart = ENTER.UserModel.cart;
 			model.compare = ENTER.UserModel.compare;
 			return model;
+		}
+
+		function hideNotSimilarProperties() {
+			compareModel.similarOnly(true);
+
+			$.each(compareModel.compareGroups()[compareModel.activeCompareGroupIndex()].propertyGroups(), function(key, value){
+				var isSimilarGroup = true;
+
+				$.each(value.properties(), function(key, value){
+					var isSimilarProperty = true,
+						previousValueText = null;
+
+					$.each(value.values(), function(key, value){
+						if (value.text != previousValueText && previousValueText !== null) {
+							isSimilarGroup = false;
+							isSimilarProperty = false;
+							return false;
+						}
+
+						previousValueText = value.text;
+					});
+
+					value.isSimilar(isSimilarProperty);
+				});
+
+				value.isSimilar(isSimilarGroup);
+			});
+		}
+
+		function showNotSimilarProperties() {
+			compareModel.similarOnly(false);
+
+			$.each(compareModel.compareGroups()[compareModel.activeCompareGroupIndex()].propertyGroups(), function(key, value){
+				$.each(value.properties(), function(key, value){
+					value.isSimilar(false);
+				});
+
+				value.isSimilar(false);
+			});
 		}
 
 		function createFixedTableCells(rowContainers, columnContainers, events) {
@@ -226,8 +265,6 @@
 			};
 		}
 
-		ko.applyBindings(compareModel, compareElement[0]);
-
 		var fixedTableCells = null;
 		function initFixedTableCells() {
 			if (fixedTableCells) {
@@ -235,29 +272,40 @@
 			}
 
 			fixedTableCells = createFixedTableCells(
-				$('tr.js-compare-tableHeadRow td .js-compare-fixed, tr.js-compare-tableHeadRow th .js-compare-fixed', tableElement),
-				$('th .js-compare-fixed', tableElement),
+				$('tr.js-compare-tableHeadRow td .js-compare-fixed, tr.js-compare-tableHeadRow th .js-compare-fixed', $table),
+				$('th .js-compare-fixed', $table),
 				{
 					onScrollStart: function(){
-						tableElement.addClass('cmprCnt-scroll');
+						$table.addClass('cmprCnt-scroll');
 					},
 					onScrollEnd: function(){
-						tableElement.removeClass('cmprCnt-scroll');
+						$table.removeClass('cmprCnt-scroll');
 					}
 				}
 			);
 		}
 
-		compareModel.activeCompareGroupIndex.subscribe(function(){
-			initFixedTableCells();
-			compareModel.cart.valueHasMutated();
-		});
+		function updateSimilarPropertiesDisplay() {
+			if (compareModel.similarOnly()) {
+				hideNotSimilarProperties();
+			} else {
+				showNotSimilarProperties();
+			}
+		}
 
+		updateSimilarPropertiesDisplay();
+		ko.applyBindings(compareModel, $compare[0]);
 		setTimeout(function(){
 			initFixedTableCells();
 		}, 0);
 
-		compareElement.on('click', '.js-compare-deleteProductLink', function(e){
+		compareModel.activeCompareGroupIndex.subscribe(function(){
+			initFixedTableCells();
+			compareModel.cart.valueHasMutated();
+			updateSimilarPropertiesDisplay();
+		});
+
+		$compare.on('click', '.js-compare-deleteProductLink', function(e){
 			e.preventDefault();
 			var anchor = e.currentTarget;
 			$.ajax({
@@ -291,24 +339,26 @@
 					if (compareModel.activeCompareGroupIndex() > compareGroupsLength - 1) {
 						compareModel.activeCompareGroupIndex(compareGroupsLength - 1);
 					}
+
+					updateSimilarPropertiesDisplay();
 				}
 			});
 		});
 
-		compareElement.on('click', '.js-compare-categoryLink', function(e){
+		$compare.on('click', '.js-compare-categoryLink', function(e){
 			e.preventDefault();
 			compareModel.activeCompareGroupIndex($(e.currentTarget).data('index'));
 		});
 
-		compareElement.on('click', '.js-compare-modeOnlySimilar', function(){
-			compareModel.onlySimilar(true);
+		$compare.on('click', '.js-compare-modeSimilarOnly', function(){
+			hideNotSimilarProperties();
 		});
 
-		compareElement.on('click', '.js-compare-modeAll', function(){
-			compareModel.onlySimilar(false);
+		$compare.on('click', '.js-compare-modeAll', function(){
+			showNotSimilarProperties();
 		});
 
-		compareElement.on('click', '.js-compare-propertyGroupLink', function(e){
+		$compare.on('click', '.js-compare-propertyGroupLink', function(e){
 			e.preventDefault();
 
 			var rowElement = $(e.currentTarget).closest('tr');
@@ -365,11 +415,11 @@
 
 		$(window).scroll(function(){
 			var scrollX = (window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft) - 2;
-			topbarElement.css('left', scrollX + 'px');
-			headerElement.css('left', scrollX + 'px');
-			footerElement.css('left', scrollX + 'px');
+			$topbar.css('left', scrollX + 'px');
+			$header.css('left', scrollX + 'px');
+			$footer.css('left', scrollX + 'px');
 			
-			bodyElement.addClass('compare-scrolled');
+			$body.addClass('compare-scrolled');
 		});
 	});
 }(jQuery));

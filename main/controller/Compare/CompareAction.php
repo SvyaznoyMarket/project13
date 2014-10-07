@@ -146,7 +146,6 @@ class CompareAction {
                 if (!isset($propertyGroups[$group->getId()])) {
                     $propertyGroups[$group->getId()] = [
                         'name' => $group->getName(),
-                        'isSimilar' => false,
                         'properties' => [],
                     ];
                 }
@@ -156,7 +155,6 @@ class CompareAction {
                     if (!isset($propertyGroups[$group->getId()]['properties'][$property->getId()])) {
                         $propertyGroups[$group->getId()]['properties'][$property->getId()] = [
                             'name' => $property->getName(),
-                            'isSimilar' => false,
                             'values' => $previousValuesStub,
                         ];
                     }
@@ -188,18 +186,8 @@ class CompareAction {
         foreach ($propertyGroups as $key => $propertyGroup) {
             $propertyGroups[$key]['properties'] = array_values($propertyGroup['properties']);
 
-            $isGroupSimilar = true;
             foreach ($propertyGroups[$key]['properties'] as $key2 => $property) {
                 $propertyGroups[$key]['properties'][$key2]['values'] = array_values($property['values']);
-                $propertyGroups[$key]['properties'][$key2]['isSimilar'] = count(array_unique(array_map(function($item){ return $item['text']; }, $property['values']))) == 1;
-
-                if (!$propertyGroups[$key]['properties'][$key2]['isSimilar']) {
-                    $isGroupSimilar = false;
-                }
-            }
-
-            if ($isGroupSimilar) {
-                $propertyGroups[$key]['isSimilar'] = true;
             }
 
             if (!count($propertyGroups[$key]['properties'])) {
