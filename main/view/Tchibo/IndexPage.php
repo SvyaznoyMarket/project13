@@ -32,4 +32,8 @@ class IndexPage extends \View\DefaultLayout {
             $this->addMeta('keywords', $shopScriptSeo['keywords']);
         }
     }
+
+    public function slotUserbar() {
+        return $this->render('_userbar');
+    }
 }

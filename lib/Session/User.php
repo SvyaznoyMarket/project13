@@ -210,7 +210,11 @@ class User {
                 }
             // иначе автоопределение
             } else if (\App::config()->region['autoresolve']) {
-                $this->region = $this->getAutoresolvedRegion();
+                if (false !== strpos(\App::request()->headers->get('user-agent'), 'http://yandex.com/bots')) { // SITE-4393
+                    $this->region = \RepositoryManager::region()->getDefaultEntity();
+                } else {
+                    $this->region = $this->getAutoresolvedRegion();
+                }
             }
         }
 

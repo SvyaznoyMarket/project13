@@ -92,7 +92,7 @@ $isKitPage = (bool)$product->getKit();
         <?= $product->getDescription() ?>
     </div>
 
-    <?= $helper->render('product/__trustfactorContent', ['trustfactorContent' => $trustfactorContent]) ?>
+    <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'content']) ?>
 
     <? if (\App::config()->product['showRelated'] && !$isTchibo): ?>
         <?= $helper->render('product/__slider', [
@@ -178,7 +178,7 @@ $isKitPage = (bool)$product->getKit();
 
         <?= $helper->render('cart/__button-product-paypal', ['product' => $product]) // Кнопка купить через paypal ?>
 
-        <?= $helper->render('product/__trustfactorMain', ['trustfactorMain' => $trustfactorMain]) ?>
+        <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'main']) ?>
     </div><!--/widget delivery -->
     <? endif; ?>
 
@@ -191,7 +191,7 @@ $isKitPage = (bool)$product->getKit();
     <?//= $helper->render('product/__warranty', ['product' => $product]) ?>
     <?//= $helper->render('product/__service', ['product' => $product]) ?>
 
-    <?= $helper->render('product/__trustfactorRight', ['trustfactorRight' => $trustfactorRight]) ?>
+    <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'right']) ?>
 </div><!--/right section -->
 
 <div class="clear"></div>

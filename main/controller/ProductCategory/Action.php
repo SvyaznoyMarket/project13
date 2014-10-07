@@ -182,7 +182,7 @@ class Action {
                 $shopScript->addQuery(
                     'category/get-seo',
                     [
-                        'slug' => $categoryToken,
+                        'slug'   => $categoryToken,
                         'geo_id' => \App::user()->getRegion()->getId(),
                     ],
                     [],
@@ -198,39 +198,21 @@ class Action {
                     throw $shopScriptException;
                 }
 
-                // если shopscript вернул редирект
-                if (!empty($shopScriptSeo['redirect']['link']) && !$request->isXmlHttpRequest()) {
-                    $redirect = $shopScriptSeo['redirect']['link'];
-                    if(!preg_match('/^http/', $redirect)) {
-                        $redirect = (preg_match('/^http/', \App::config()->mainHost) ? '' : 'http://') .
-                            \App::config()->mainHost .
-                            (preg_match('/^\//', $redirect) ? '' : '/') .
-                            $redirect;
-                    }
-
-                    // SITE-3782
-                    if ($request->getQueryString()) {
-                        $redirect .= ((false === strpos($redirect, '?')) ? '?' : '&') . $request->getQueryString();
-                    }
-
-                    if ($brand) {
-                        // TODO: исправить, когда FCMS-314 будет готова
-                        $redirect .= ((false === strpos($redirect, '?')) ? '?' : '&') . sprintf('%s-brand-%s=%s', FilterForm::$name, $brandToken, $brand->getId());
-                        //$redirect .= rtrim($redirect, '/') . '/' . $brandToken;
-                    }
-
-                    return new \Http\RedirectResponse($redirect, 301);
-                }
-
                 if (empty($shopScriptSeo['ui'])) {
                     throw new \Exception\NotFoundException(sprintf('Не получен ui для категории товара @%s', $categoryToken));
                 }
 
                 // запрашиваем категорию по ui
-                \RepositoryManager::productCategory()->prepareEntityByUi($shopScriptSeo['ui'], $region, function($data) use (&$category) {
+                \RepositoryManager::productCategory()->prepareEntityByUi($shopScriptSeo['ui'], $region, function($data) use (&$category, &$shopScriptSeo) {
                     $data = reset($data);
                     if ((bool)$data) {
                         $category = new \Model\Product\Category\Entity($data);
+                        if (isset($shopScriptSeo['token'])) {
+                            $category->setToken($shopScriptSeo['token']);
+                        }
+                        if (isset($shopScriptSeo['link'])) {
+                            $category->setLink($shopScriptSeo['link']);
+                        }
                     }
                 });
             } catch (\Exception $e) { // если не плучилось добыть seo-данные или категорию по ui, пробуем старый добрый способ
@@ -261,10 +243,6 @@ class Action {
         // SITE-3381
         if (!$request->isXmlHttpRequest() && ($category->getLevel() > 1) && false === strpos($categoryPath, '/')) {
             //throw new \Exception\NotFoundException(sprintf('Не передана родительская категория для категории @%s', $categoryToken));
-        }
-
-        if (!empty($shopScriptSeo['link'])) {
-            $category->setLink($shopScriptSeo['link']);
         }
 
         // подготовка 3-го пакета запросов

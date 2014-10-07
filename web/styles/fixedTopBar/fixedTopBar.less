@@ -1,6 +1,6 @@
 .topbarfix {
 	display: none;
-	
+
 	&-fx {
 		position: fixed;
 		background: @white;
@@ -16,7 +16,7 @@
 		border-top: none;
 
 		.topbarfix_cartOn {
-		    width: 228px;
+			width: 228px;
 		}
 	}
 
@@ -37,19 +37,19 @@
 	.topbarfix_cart:hover {
 
 		.topbarfix_cartQuan {
-			animation-name: shake; 
-			animation-duration: 0.6s; 
-			animation-timing-function: ease; 
+			animation-name: shake;
+			animation-duration: 0.6s;
+			animation-timing-function: ease;
 			animation-iteration-count: 1;
 
-			-moz-animation-name: shake; 
-			-moz-animation-duration: 0.6s; 
-			-moz-animation-timing-function: ease; 
+			-moz-animation-name: shake;
+			-moz-animation-duration: 0.6s;
+			-moz-animation-timing-function: ease;
 			-moz-animation-iteration-count: 1;
 
-			-webkit-animation-name: shake; 
-			-webkit-animation-duration: 0.6s; 
-			-webkit-animation-timing-function: ease; 
+			-webkit-animation-name: shake;
+			-webkit-animation-duration: 0.6s;
+			-webkit-animation-timing-function: ease;
 			-webkit-animation-iteration-count: 1;
 		}
 	}
@@ -60,10 +60,10 @@
 
 			&_crumbs {
 				width: 100%;
-			    left: 0;
-			    padding: 0 5px;
-			    position: absolute;
-			    top: 0;
+				left: 0;
+				padding: 0 5px;
+				position: absolute;
+				top: 0;
 			}
 
 			&_crumbsListItem {
@@ -86,7 +86,7 @@
 					color: @white;
 				}
 			}
-			
+
 			&_cart {
 				color: @white;
 				background: @black;
@@ -94,7 +94,7 @@
 				&.mEmpty {
 					background: @black;
 				}
-				
+
 				&_tl {
 					color: @white;
 				}
@@ -119,9 +119,9 @@
 
 			&_logOutLink {
 				background: none;
-			    border: 0px;
-			    color: @white;
-			    .box-shadow(0 0 10px 2px #444443);
+				border: 0px;
+				color: @white;
+				.box-shadow(0 0 10px 2px #444443);
 			}
 
 			&_dd {
@@ -161,7 +161,7 @@
 	&_upLink {
 		.inline-block();
 
-		 &:hover {
+		&:hover {
 			background: @black;
 
 			color: @white;
@@ -175,7 +175,7 @@
 			float: left;
 			padding-right: 5px;
 		}
-	}	
+	}
 
 	&_crumbs {
 		float: left;
@@ -259,7 +259,7 @@
 		&_tl {
 			display: block;
 			padding: 0 0 0 26px;
-    		line-height: 50px;
+			line-height: 50px;
 			background: url("@{base-url}/header/img/icons.png") no-repeat 0 -142px;
 
 			&:hover {
@@ -298,7 +298,7 @@
 				display: none;
 			}
 		}
-	} 
+	}
 
 	&_cartPrice {
 		display: block;
@@ -342,11 +342,11 @@
 			display: table-cell;
 			height: 50px;
 			background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAhElEQVQYGYWQUQ5AMBBEZ5crOQZnkDiBTw6gn04gnIFjuFJZ3RIkFd2PZjvzkk6HRAQ620Q5dtQQZF4grGD0SSmL3klBO1Dn9sYD4WHSSlqyI3LZMIf+o1CCgv1zj/a9uUh8Z/pGTtXl5j//7TH0d7FxDGsFMU4ZvnoyP7BRxveoUKzwA+X6MCjSOJRiAAAAAElFTkSuQmCC) no-repeat 0 50%;
-		    overflow: hidden;
-		    text-decoration: underline;
-		    white-space: nowrap;
-		    vertical-align: middle;
-		    padding-left: 15px;
+			overflow: hidden;
+			text-decoration: underline;
+			white-space: nowrap;
+			vertical-align: middle;
+			padding-left: 15px;
 		}
 	}
 
@@ -371,7 +371,7 @@
 		&_tl {
 			.inline-block();
 			padding: 0 0 0 26px;
-    		line-height: 50px;
+			line-height: 50px;
 			background: url("@{base-url}/header/img/icons.png") no-repeat 0 -36px;
 		}
 
@@ -390,55 +390,55 @@
 
 		&_popup {
 			color: #808080;
-		    font-size: 16px;
-		    position: absolute;
-		    right: -80px;
-		    width: 410px;
-		    .transition(all 0.2s ease 0.2s);
-		    height: 0;
-		    .opacity(0);
-		    overflow: hidden;
-		    top: 66px;
+			font-size: 16px;
+			position: absolute;
+			right: -80px;
+			width: 410px;
+			.transition(all 0.2s ease 0.2s);
+			height: 0;
+			.opacity(0);
+			overflow: hidden;
+			top: 66px;
 
-		    &_inn {
-		    	padding: 20px 30px 10px;
-		    	border: 1px solid #bbbbbb;
-		    	.drop-shadow(0, 0, 20px, 0.4);
+			&_inn {
+				padding: 20px 30px 10px;
+				border: 1px solid #bbbbbb;
+				.drop-shadow(0, 0, 20px, 0.4);
 				.rounded(4px);
-		    	background: @white;
-		    	position: relative;
+				background: @white;
+				position: relative;
 
-		    	&:after {
-			    	border-bottom: 16px solid #fff;
-				    border-left: 15px solid transparent;
-				    border-right: 15px solid transparent;
-				    content: "";
-				    height: 0;
-				    left: 261px;
-				    position: absolute;
-				    top: -16px;
-				    width: 0;
-			    }
+				&:after {
+					border-bottom: 16px solid #fff;
+					border-left: 15px solid transparent;
+					border-right: 15px solid transparent;
+					content: "";
+					height: 0;
+					left: 261px;
+					position: absolute;
+					top: -16px;
+					width: 0;
+				}
 
-			    &:before {
-			    	border-bottom: 18px solid #bbb;
-				    border-left: 17px solid transparent;
-				    border-right: 17px solid transparent;
-				    content: "";
-				    height: 0;
-				    left: 259px;
-				    position: absolute;
-				    top: -18px;
-				    width: 0;
-		    	}
-		    }
+				&:before {
+					border-bottom: 18px solid #bbb;
+					border-left: 17px solid transparent;
+					border-right: 17px solid transparent;
+					content: "";
+					height: 0;
+					left: 259px;
+					position: absolute;
+					top: -18px;
+					width: 0;
+				}
+			}
 
-		    &-show {
-		    	height: auto;
-			    .opacity(1);
-			    overflow: visible;
-			    top: 56px;
-		    }
+			&-show {
+				height: auto;
+				.opacity(1);
+				overflow: visible;
+				top: 56px;
+			}
 		}
 	}
 
@@ -456,10 +456,10 @@
 			content: '';
 			position: absolute;
 			height: 50px;
-		    left: -20px;
-		    position: absolute;
-		    top: -12px;
-		    width: 20px;
+			left: -20px;
+			position: absolute;
+			top: -12px;
+			width: 20px;
 			background: -moz-linear-gradient(left,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 49%); /* FF3.6+ */
 			background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,0)), color-stop(49%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
 			background: -webkit-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 49%); /* Chrome10+,Safari5.1+ */

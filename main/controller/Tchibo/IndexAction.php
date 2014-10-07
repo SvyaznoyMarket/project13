@@ -56,19 +56,6 @@ class IndexAction {
                     throw $shopScriptException;
                 }
 
-                // если shopscript вернул редирект
-                if (!empty($shopScriptSeo['redirect']['link']) && !$request->isXmlHttpRequest()) {
-                    $redirect = $shopScriptSeo['redirect']['link'];
-                    if(!preg_match('/^http/', $redirect)) {
-                        $redirect = (preg_match('/^http/', \App::config()->mainHost) ? '' : 'http://') .
-                            \App::config()->mainHost .
-                            (preg_match('/^\//', $redirect) ? '' : '/') .
-                            $redirect;
-                    }
-
-                    return new \Http\RedirectResponse($redirect, 301);
-                }
-
                 if (empty($shopScriptSeo['ui'])) {
                     throw new \Exception\NotFoundException(sprintf('Не получен ui для категории товара @%s', $categoryToken));
                 }
@@ -172,11 +159,13 @@ class IndexAction {
                 $product = $products[$productId];
                 /** @var $product \Model\Product\Entity */
                 $itemProducts[] = [
+                    'id'            => $product->getId(),
                     'image'         => $product->getImageUrl(2), // 163х163 seize
                     'link'          => $product->getLink(),
                     'name'          => $product->getName(),
                     'price'         => $product->getPrice(),
                     'isBuyable'     => $product->isAvailable() || $product->hasAvailableModels(),
+                    'cartButton'    => (new \View\Cart\ProductButtonAction())->execute(new \Helper\TemplateHelper(), $product),
                 ];
             }
 

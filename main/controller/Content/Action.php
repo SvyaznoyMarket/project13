@@ -33,6 +33,8 @@ class Action {
                 break;
         }
 
+        $htmlContent = str_replace('<script src="https://content.enter.ru/wp-includes/js/jquery/jquery.js" type="text/javascript"></script>', '', $htmlContent);
+
         $page->setParam('htmlContent', $htmlContent);
 
         //нужно для увеличения отступа от заголовкой и строки поика

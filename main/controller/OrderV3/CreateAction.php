@@ -13,6 +13,11 @@ class CreateAction extends OrderV3 {
      * @throws \Exception
      */
     public function execute(\Http\Request $request) {
+        $controller = parent::execute($request);
+        if ($controller) {
+            return $controller;
+        }
+
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $coreResponse = null;   // ответ о ядра
@@ -37,8 +42,9 @@ class CreateAction extends OrderV3 {
         } catch (\Curl\Exception $e) {
             \App::logger()->error($e->getMessage(), ['curl', 'order/create']);
             \App::exception()->remove($e);
+
             $page = new \View\OrderV3\ErrorPage();
-            $page->setParam('error', 'CORE: '.$e->getMessage());
+            $page->setParam('error', (708 == $e->getCode()) ? 'Товара нет в наличии' : ('CORE: ' . $e->getMessage()));
             $page->setParam('step', 3);
             return new Response($page->show(), 500);
         } catch (\Exception $e) {

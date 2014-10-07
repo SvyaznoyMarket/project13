@@ -43,5 +43,8 @@
         <?= $page->slotBodyJavascript() // for loadjs.js ?>
     </div>
 
+    <?= $page->slotInnerJavascript() ?>
+    <?= $page->slotYandexMetrika() ?>
+
 </body>
 </html>

@@ -18,11 +18,7 @@ class TemplateHelper {
      * @return string
      */
     public function renderWithMustache($template, $params = []) {
-        \Debug\Timer::start('mustacheRenderer.get');
-        $return = \App::mustache()->render($template, $params);
-        \Debug\Timer::stop('mustacheRenderer.get');
-
-        return $return;
+        return \App::mustache()->render($template, $params);
     }
 
     /**

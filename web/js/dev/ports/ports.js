@@ -154,6 +154,10 @@ window.ANALYTICS = {
 		if (ENTER.config.userInfo === false) {
 			liveTexAction();
 			loadLiveTex();
+		} else if (ENTER.config.userInfo) {
+			// SITE-4382
+			liveTexUserInfo(ENTER.config.userInfo);
+			loadLiveTex();
 		} else {
 			$('body').on('userLogged', function(event, userInfo){
 				liveTexUserInfo(userInfo);
@@ -605,9 +609,9 @@ window.ANALYTICS = {
 					};
 
 				/** Событие клика на баннер */
-				$( '.trustfactorRight' ).on( 'click', gaBannerClickPrepare );
-				$( '.trustfactorMain' ).on( 'click', gaBannerClickPrepare );
-				$( '.trustfactorContent' ).on( 'click', gaBannerClickPrepare );
+				$( '.trustfactor-right' ).on( 'click', gaBannerClickPrepare );
+				$( '.trustfactor-main' ).on( 'click', gaBannerClickPrepare );
+				$( '.trustfactor-content' ).on( 'click', gaBannerClickPrepare );
 
 				/** Событие открытия списка магазинов */
 				$('span.bDeliveryNowClick').one('click', function ga_deliveryNow() {

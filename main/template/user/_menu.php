@@ -20,7 +20,7 @@ $activeMenuCss = 'personalControl_item-active';
     </li>
 
     <li class="personalControl_item <?= $route == 'user.subscriptions' ? $activeMenuCss : '' ?>">
-        <a href="<?= $helper->url('user.subscriptions') ?>" class="personalControl_link">Подписки e-mail и sms</a>
+        <a href="<?= $helper->url('user.subscriptions') ?>" class="personalControl_link">Подписки</a>
     </li>
 
     <li class="personalControl_item personalControl_item-text fl-r td-underl">

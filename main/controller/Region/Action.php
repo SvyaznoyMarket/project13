@@ -25,12 +25,16 @@ class Action {
             return new \Http\RedirectResponse(\App::router()->generate('homepage'));
         }
 
-        if ($uri) {
+        $referer = $request->headers->get('referer');
+
+        if (false !== strpos($referer, 'where_buy_tchibo')) {
+            $link = \App::router()->generate('product.category', ['categoryPath' => 'tchibo']);
+        } else if ($uri) {
             $link = $uri;
         } else if ($request->query->count()) {
             $link = \App::router()->generate('homepage', $request->query->all());
         } else {
-            $link = parse_url($request->headers->get('referer') ?: \App::router()->generate('homepage'));
+            $link = parse_url($referer ?: \App::router()->generate('homepage'));
 
             if ($link['host'] !== \App::config()->mainHost) {
                 $link = \App::router()->generate('homepage');

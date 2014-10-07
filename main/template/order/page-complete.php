@@ -31,6 +31,7 @@ if (!isset($paymentUrl)) $paymentUrl = null;
     <div class="js-orderData" data-value="<?= $helper->json([
         'email' => $form->getEmail(),
         'subscribe' => $form->getSubscribe(),
+        'sessionIsReaded' => $sessionIsReaded,
     ]) ?>"></div>
 <? endif ?>
 
