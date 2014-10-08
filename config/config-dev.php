@@ -55,8 +55,6 @@ $c->database['host'] = 'localhost';
 
 $c->loadMediaHost = false;
 
-$c->onlineCall['enabled'] = true;
-
 $c->jsonLog['enabled'] = false;
 $c->analytics['enabled'] = false;
 $c->analytics['optimizelyEnabled'] = false;
