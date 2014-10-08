@@ -43,9 +43,11 @@ class ChildAction {
                 if (isset($data['grid']['items'][0])) {
                     $result = $data['grid'];
                 }
-            }
+            },
+            null,
+            \App::config()->scms['timeout'] * 1.8
         );
-        \App::scmsClient()->execute();
+        \App::scmsClient()->execute(\App::config()->scms['retryTimeout']['short']);
 
 
         /** @var $productsByUi \Model\Product\Entity[] */
