@@ -4100,9 +4100,9 @@ img[height="0"] {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   }
   .tchiboProducts .productInner__hover {
     width: 98%;
@@ -6664,6 +6664,10 @@ img[height="0"] {
     min-height: 100%;
     width: 100%;
     background: #ffffff;
+    min-width: 960px;
+  }
+  .compare-userbar {
+    min-width: 1000px;
   }
   .cmprHd {
     position: relative;
