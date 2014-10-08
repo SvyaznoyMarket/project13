@@ -41,13 +41,15 @@ class CompareAction {
             });
             
             $client->execute();
-            
-            $page = new \View\Compare\CompareLayout();
-            $page->setParam('compareGroups', $this->getCompareGroups($compareProducts, $productData, $reviewsData));
-            return new \Http\Response($page->show());
+
+            $compareGroups = $this->getCompareGroups($compareProducts, $productData, $reviewsData);
+        } else {
+            $compareGroups = [];
         }
 
-        return new \Http\Response();
+        $page = new \View\Compare\CompareLayout();
+        $page->setParam('compareGroups', $compareGroups);
+        return new \Http\Response($page->show());
     }
     
     private function getCompareGroups(array $compareProducts, $productData, $reviewsData) {

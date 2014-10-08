@@ -116,12 +116,13 @@ return function (
             </table>
         <!-- /ko -->
 
-        <div class="cmprEmpty">
-            <strong>Товаров для сравнения пока нет.</strong>
-            <p><span style="display: inline-block;">Добавляйте товары к сравнению кнопкой</span> <span class="btnCmprb"></span></p>
+            <div class="cmprEmpty">
+                <strong>Товаров для сравнения пока нет.</strong>
+                <p><span style="display: inline-block;">Добавляйте товары к сравнению кнопкой</span> <span class="btnCmprb"></span></p>
+            </div>
         </div>
     </div>
-</div>
+    
     <footer class="footerw js-compare-footer">
         <p class="footerw_tx clearfix">&copy; ООО «Энтер» 2011&ndash;2014. ENTER&reg; ЕНТЕР&reg; Enter&reg;. Все права защищены. <a href="javascript:void(0)" class="footer__copy__link" id="jira">Сообщить об ошибке</a></p>
     </footer>
