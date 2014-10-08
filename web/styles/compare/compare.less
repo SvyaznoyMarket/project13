@@ -4,7 +4,7 @@
 	width: 100%;
 	min-width: 960px;
 	background: @white;
-	min-width: 960px;
+	min-width: 1000px;
 }
 
 .compare-userbar {
@@ -85,12 +85,17 @@
 	}
 }
 
+.cmprCntW {
+	position: relative;
+	background: @white;
+	padding-bottom: 20px;
+	margin: 1px 0 0;
+}
+
 .cmprCnt {
 	position: relative;
 	background: @white;
-	margin: 1px 0 0;
 	font-size: 14px;
-	padding-bottom: 20px;
 	width: 1px;
 
 	&_similarOnly {
@@ -132,7 +137,6 @@
 
 	&_modes {
 		.cmprCnt_cell {
-			padding-left: 22px;
 			background: #f2f2f2;
 		}
 	}
@@ -146,21 +150,47 @@
 		}
 	}
 
+	&_cell {
+		box-sizing: border-box;
+		width: 230px;
+		padding: 6px 10px;
+		position: relative;
+	}
+
 	th {
 		position: relative;
 		background: #f2f2f2;
 		color: #515151;
 		text-align: left;
 		vertical-align: middle;
-		
-		.cmprCnt_border {
-			z-index: 121;
+		border-bottom: 1px solid #c7c7c7;
+		width: 210px;
+	
+		.cmprCnt_cell {
+			width: 210px;
+		}
+
+		.cmprCnt_modeW {
+			border-bottom: 1px solid #c7c7c7;
+		}
+
+		&.cmprCnt_modes {
+			border: none;
 		}
 	}
 
 	td {
 		position: relative;
 		vertical-align: middle;
+		border-bottom: 1px solid #c7c7c7;
+
+		.cmprCnt_modeW {
+			border-bottom: 1px solid #c7c7c7;
+		}
+
+		&.cmprCnt_product {
+			border: none;
+		}
 	}
 
 	&_property {
@@ -209,17 +239,19 @@
 	}
 
 	&_mode {
-		margin: 60px 0 0 -10px;
+		margin: 60px 0 0 0;
 		padding: 0;
 		.transition(all 0.5s ease);
 
 		text-align: center;
+		text-align: center;
 
 		&_btn {
 			.rounded(4px);
+			.inline-block();
 
 			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAACXBIWXMAAAsTAAALEwEAmpwYAAABC0lEQVQoFaWTT2uDQBDFZweP6kWKHu3ZWyn6RUJI8gFTKP0e/iHpzXO9qQQv6lHWzCsKQqHp0geiu/7eW2Yc1TzPtBHneb6XvZNS6lX2Pbk6WV9kfU6S5F3WeuXVai6K4llr/eE4zovv++S6LlmWRdM0Ud/31LYtDcPwycy7OI6/EPBtXox5GIZPQRCswT/uTdNQVVU3CUgQwEIwTnxkRBKCwYGHT2VZdrBt+y2KIrz/k8qypHEcj4zmoEYTgYeP0VU0x0Tg4UPNHrpqooX3YO7wOUy08B1qvuA7mgg8fKj5jAEwEXj4kMBpml7rupbHxwIHXkhGzRojh8nBBP2mzYTt4Pv/bG9OM/qr7tKP4T6vKlQoAAAAAElFTkSuQmCC);
-			background-position: 14px 50%;
+			background-position: 10px 50%;
 			background-repeat: no-repeat;
 
 			font-size: 14px;
@@ -228,8 +260,8 @@
 			margin: 0 auto 20px;
 			padding: 0;
 			text-align: left;
-			text-indent: 40px;
-			width: 180px;
+			text-indent: 32px;
+			width: 170px;
 
 			&:last-child {
 				margin-bottom: 0;
@@ -290,22 +322,6 @@
 			font-size: 14px;
 			font-weight: bold;
 		}
-	}
-
-	&_cell {
-		box-sizing: border-box;
-		width: 230px;
-		padding: 6px 10px;
-		position: relative;
-	}
-  
-	&_border {
-		position: absolute;
-		right: 5px;
-		bottom: 0;
-		left: 5px;
-		height: 1px;
-		background: #c7c7c7;
 	}
 
 	&_rating {
@@ -392,4 +408,14 @@
 
 .topbarfix:hover > div:last-child .topbarfix_cmpr_popup {
 	display: none !important;
+}
+
+.cmprEmpty {
+	color: #808080;
+	font-size: 16px;
+	border: 1px dashed #808080;
+	.rounded(6px);
+	width: 345px;
+	padding: 20px 30px 15px;
+	margin: 20px 0 40px 200px;
 }
