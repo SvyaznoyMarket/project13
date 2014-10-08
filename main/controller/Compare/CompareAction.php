@@ -49,6 +49,7 @@ class CompareAction {
 
         $page = new \View\Compare\CompareLayout();
         $page->setParam('compareGroups', $compareGroups);
+        $page->setParam('page', $page);
         return new \Http\Response($page->show());
     }
     
