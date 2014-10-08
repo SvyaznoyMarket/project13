@@ -40,6 +40,8 @@ $imgSize = isset($itemsPerRow) && 3 == $itemsPerRow ? 6 : 2;
       <? if ($product->getIsBuyable()): ?>
         <?= $helper->render('cart/__button-product', ['product' => $product]) // Кнопка купить ?>
       <? endif ?>
+
+      <a href="" class="btnCmprb jsCompareListLink" data-id="<?= $page->escape($product->getId()) ?>" data-bind="compareListBinding: compare"></a>
     </div>
 
       <?= $page->render('product/show/__corner_features', ['product' => $product]) ?>
