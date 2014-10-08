@@ -2147,7 +2147,6 @@ img[height="0"] {
     float: right;
     padding: 0 10px 0;
     max-width: 130px;
-    display: table;
     position: relative;
     z-index: 10;
   }
@@ -6666,6 +6665,16 @@ img[height="0"] {
     min-width: 960px;
     background: #ffffff;
     min-width: 1000px;
+    position: relative;
+  }
+  .wrapw:after {
+    background: #f2f2f2;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 210px;
+    height: 100%;
   }
   .compare-userbar {
     min-width: 1000px;
@@ -6674,9 +6683,16 @@ img[height="0"] {
     position: relative;
     background: #e6e6e6;
     border-bottom: 1px solid #c7c7c7;
-    padding: 20px 20px 0 0;
+    border-top: 1px solid #c7c7c7;
+    padding: 20px 20px 8px 0;
     min-height: 120px;
     margin-right: -2px;
+    z-index: 2;
+  }
+  .cmprHd-empty .cmprHd_t {
+    line-height: 112px;
+    margin: 0;
+    background: url("/styles/compare/img/icon_cmpr_empty.gif") no-repeat 5px 50%;
   }
   .cmprHd_l {
     width: 200px;
@@ -6747,9 +6763,9 @@ img[height="0"] {
   }
   .cmprCntW {
     position: relative;
-    background: #ffffff;
     padding-bottom: 20px;
     margin: 1px 0 0;
+    z-index: 2;
   }
   .cmprCnt {
     position: relative;
@@ -6785,7 +6801,7 @@ img[height="0"] {
     height: 0;
   }
   .cmprCnt-scroll .cmprCnt_mode {
-    margin: 10px 0 0 -10px;
+    margin: 10px 0 0 0;
   }
   .cmprCnt_head .cmprCnt_cell {
     height: 250px;
@@ -6996,9 +7012,8 @@ img[height="0"] {
   .footerw {
     background: #000000;
     height: 20px;
-    margin: 0 auto;
+    margin: -20px auto 0;
     position: relative;
-    margin-right: -2px;
   }
   .footerw_tx {
     color: #ffffff;
@@ -7042,7 +7057,7 @@ img[height="0"] {
     border-radius: 6px;
     width: 345px;
     padding: 20px 30px 15px;
-    margin: 20px 0 40px 200px;
+    margin: 20px 0 40px 230px;
   }
 }
 @media all {

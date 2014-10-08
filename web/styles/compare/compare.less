@@ -5,6 +5,17 @@
 	min-width: 960px;
 	background: @white;
 	min-width: 1000px;
+	position: relative;
+
+	&:after {
+		background: #f2f2f2;
+		content: '';
+		position: absolute;
+		top:0;
+		left: 0;
+		width: 210px;
+		height: 100%;
+	}
 }
 
 .compare-userbar {
@@ -15,9 +26,20 @@
 	position: relative;
 	background: @typLightGray;
 	border-bottom: 1px solid @lightgreyBr;
-	padding: 20px 20px 0 0;
+	border-top: 1px solid @lightgreyBr;
+	padding: 20px 20px 8px 0;
 	min-height: 120px;
 	margin-right: -2px;
+	z-index: 2;
+
+	&-empty {
+
+		.cmprHd_t {
+			line-height: 112px;
+			margin: 0;
+			background: url("@{base-url}/compare/img/icon_cmpr_empty.gif") no-repeat 5px 50%;
+		}
+	}
 
 	&_l {
 		width: 200px;
@@ -87,9 +109,9 @@
 
 .cmprCntW {
 	position: relative;
-	background: @white;
 	padding-bottom: 20px;
 	margin: 1px 0 0;
+	z-index: 2;
 }
 
 .cmprCnt {
@@ -125,7 +147,7 @@
 		}
 	
 		.cmprCnt_mode {
-			margin: 10px 0 0 -10px;
+			margin: 10px 0 0 0;
 		}
 	}
 
@@ -365,9 +387,8 @@
 .footerw {
 	background: @black;
 	height: 20px;
-	margin: 0 auto;
+	margin: -20px auto 0;
 	position: relative;
-	margin-right: -2px;
 
 	&_tx {
 		color: @white;
@@ -417,5 +438,5 @@
 	.rounded(6px);
 	width: 345px;
 	padding: 20px 30px 15px;
-	margin: 20px 0 40px 200px;
+	margin: 20px 0 40px 230px;
 }

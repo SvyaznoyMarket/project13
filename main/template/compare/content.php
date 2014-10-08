@@ -62,7 +62,6 @@ return function (
 
                                             <!-- ko if: !reviews.count -->
                                                 <div class="cmprCnt_noRating">
-                                                    Отзывов нет
                                                 </div>
                                             <!-- /ko -->
 
