@@ -6677,7 +6677,8 @@ img[height="0"] {
     height: 100%;
   }
   .compare-userbar {
-    min-width: 1000px;
+    position: relative;
+    z-index: 1;
   }
   .cmprHd {
     position: relative;
