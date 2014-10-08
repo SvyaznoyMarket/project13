@@ -145,24 +145,26 @@ class CompareAction {
             foreach ($product->getGroupedProperties() as $propertyGroup) {
                 /** @var \Model\Product\Property\Group\Entity $group */
                 $group = $propertyGroup['group'];
-                if (!isset($propertyGroups[$group->getId()])) {
-                    $propertyGroups[$group->getId()] = [
-                        'name' => $group->getName(),
+                $groupName = trim($group->getName());
+                if (!isset($propertyGroups[$groupName])) {
+                    $propertyGroups[$groupName] = [
+                        'name' => $groupName,
                         'properties' => [],
                     ];
                 }
 
                 foreach ($propertyGroup['properties'] as $property) {
                     /** @var \Model\Product\Property\Entity $property */
-                    if (!isset($propertyGroups[$group->getId()]['properties'][$property->getId()])) {
-                        $propertyGroups[$group->getId()]['properties'][$property->getId()] = [
-                            'name' => $property->getName(),
+                    $propertyName = trim($property->getName());
+                    if (!isset($propertyGroups[$groupName]['properties'][$propertyName])) {
+                        $propertyGroups[$groupName]['properties'][$propertyName] = [
+                            'name' => $propertyName,
                             'values' => $previousValuesStub,
                         ];
                     }
 
-                    $propertyGroups[$group->getId()]['properties'][$property->getId()]['values'][] = [
-                        'text' => $property->getStringValue(),
+                    $propertyGroups[$groupName]['properties'][$propertyName]['values'][] = [
+                        'text' => trim($property->getStringValue()),
                         'productId' => $product->getId(),
                     ];
                 }
