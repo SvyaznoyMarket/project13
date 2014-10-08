@@ -82,4 +82,19 @@ class IndexPage extends \View\DefaultLayout {
             'price' => '',
         ]);
     }
+
+    public function slotMetaOg()
+    {
+        $result = '';
+
+        if (isset($this->params['bannerData'][0]['imgb'])) {
+            $image_url = $this->params['bannerData'][0]['imgb'];
+            $result .=  "<meta property=\"og:image\" content=\"" . $image_url . "\" />\r\n".
+                        "<link rel=\"image_src\" href=\"". $image_url . "\" />\r\n";
+        }
+
+        return $result;
+    }
+
+
 }

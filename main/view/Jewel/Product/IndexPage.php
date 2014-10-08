@@ -134,7 +134,8 @@ class IndexPage extends \View\DefaultLayout {
                 "<meta property=\"og:description\" content=\"" . $this->escape($description) . "\"/>\r\n" .
                 "<meta property=\"og:image\" content=\"" . $this->escape($product->getImageUrl(3)) . "\"/>\r\n".
                 "<meta property=\"og:site_name\" content=\"ENTER\"/>\r\n".
-                "<meta property=\"og:type\" content=\"website\"/>\r\n";
+                "<meta property=\"og:type\" content=\"website\"/>\r\n".
+                "<link rel=\"image_src\" href=\"". $this->escape($product->getImageUrl(3)). "\" />\r\n";
     }
 
     public function slotAdvanceSeoCounter() {
