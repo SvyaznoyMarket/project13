@@ -40,21 +40,30 @@ class ChildAction {
             ],
             [],
             function($data) use (&$result) {
-                if (isset($data['grid']['items'][0])) {
+                if (isset($data['grid'])) {
                     $result = $data['grid'];
+                }
+
+                if (!isset($result['items'][0])) {
+                    \App::logger()->error(['message' => 'Не передан grid.items.0', 'scms.response' => $data, 'sender' => __FILE__ . ' ' .  __LINE__], ['tchibo']);
                 }
             },
             null,
-            \App::config()->scms['timeout'] * 1.8
+            \App::config()->scms['timeout'] * 1.5
         );
-        \App::scmsClient()->execute(\App::config()->scms['retryTimeout']['short']);
 
+        \App::scmsClient()->execute();
+
+        $result += ['items' => []];
+        if (!(bool)$result['items']) {
+            \App::exception()->add(new \Exception('Проблема с гридстером'));
+        }
 
         /** @var $productsByUi \Model\Product\Entity[] */
         $productsByUi = [];
         /** @var $gridCells \Model\GridCell\Entity[] */
         $gridCells = [];
-        foreach ($result['items'] as $item) {
+        foreach ((array)$result['items'] as $item) {
             if (!is_array($item)) continue;
             $gridCell = new \Model\GridCell\Entity($item);
             $gridCells[] = $gridCell;
