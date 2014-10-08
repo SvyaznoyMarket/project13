@@ -4382,6 +4382,12 @@ $(document).ready(function() {
 				e.stopPropagation();
 			});
 
+			$(document).keyup(function(e) {
+				if (e.keyCode == 27) {
+					element.removeClass(emptyCompareNoticeShowClass);
+				}
+			});
+
 			emptyCompareNoticeElements[emptyCompareNoticeName] = element;
 		}
 
