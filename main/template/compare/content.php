@@ -21,23 +21,24 @@ return function (
                 </ul>
             </div>
         </div>
+    
+        <div class="cmprCntW">
+        <!-- ko if: compareGroups()[activeCompareGroupIndex()] -->  
 
-        <!-- ko if: compareGroups()[activeCompareGroupIndex()] -->
             <table class="cmprCnt clearfix js-compare-table" data-bind="css: {'cmprCnt_similarOnly': similarOnly}">
                 <tr class="cmprCnt_head js-compare-tableHeadRow">
                     <th class="cmprCnt_modes">
-                        <div class="cmprCnt_fixed js-compare-fixed cmprCnt_cell">
+                        <div class="cmprCnt_fixed cmprCnt_modeW js-compare-fixed cmprCnt_cell">
                             <menu class="cmprCnt_mode">
                                 <button class="cmprCnt_mode_btn btn1 js-compare-modeSimilarOnly" data-bind="css: {'cmprCnt_mode_btn-act': similarOnly}">Только отличия</button>
                                 <button class="cmprCnt_mode_btn btn1 js-compare-modeAll" data-bind="css: {'cmprCnt_mode_btn-act': !similarOnly()}">Все характеристики</button>
                             </menu>
-                            <div class="cmprCnt_border"></div>
                         </div>
                     </th>
 
                     <!-- ko foreach: {data: compareGroups()[activeCompareGroupIndex()].products} -->
                         <td class="cmprCnt_product">
-                            <div class="cmprCnt_fixed js-compare-fixed cmprCnt_cell">
+                            <div class="cmprCnt_fixed cmprCnt_modeW js-compare-fixed cmprCnt_cell">
                                 <a href="" class="clsr js-compare-deleteProductLink" data-bind="attr: {href: deleteFromCompareUrl, 'data-product-id': id}"></a>
 
                                 <a class="cmprCnt_img" href="" data-bind="attr: {href: link}">
@@ -74,7 +75,6 @@ return function (
                                 </span>
 
                                 <div class="cmprCnt_buy"><a href="" class="cmprCnt_buy_lk btnBuy__eLink mBought" data-bind="attr: {'data-product-id': id, 'data-in-shop-only': inShopOnly ? 'true' : 'false', 'data-in-shop-showroom-only': inShopShowroomOnly ? 'true' : 'false', 'data-is-buyable': isBuyable ? 'true' : 'false', 'data-status-id': statusId, 'data-upsale': upsale}, buyButtonBinding: $root.cart">Купить</a></div>
-                                <div class="cmprCnt_border"></div>
                             </div>
                         </td>
                     <!-- /ko -->
@@ -85,14 +85,12 @@ return function (
                         <th>
                             <div class="cmprCnt_fixed js-compare-fixed cmprCnt_cell">
                                 <a href="#" class="js-compare-propertyGroupLink"><span><!-- ko text: name --><!-- /ko --></span></a>
-                                <div class="cmprCnt_border"></div>
                             </div>
                         </th>
 
                         <!-- ko foreach: {data: $root.compareGroups()[$root.activeCompareGroupIndex()].products} -->
                             <td>
                                 <div class="cmprCnt_cell"></div>
-                                <div class="cmprCnt_border"></div>
                             </td>
                         <!-- /ko -->
                     </tr>
@@ -102,7 +100,6 @@ return function (
                             <th>
                                 <div class="cmprCnt_fixed js-compare-fixed cmprCnt_cell">
                                     <span class="cmprCnt_property_item_name"><!-- ko text: name --><!-- /ko --></span>
-                                    <div class="cmprCnt_border"></div>
                                 </div>
                             </th>
 
@@ -111,7 +108,6 @@ return function (
                                     <div class="cmprCnt_cell">
                                         <!-- ko text: value.text --><!-- /ko -->
                                     </div>
-                                    <div class="cmprCnt_border"></div>
                                 </td>
                             <!-- /ko -->
                         </tr>
@@ -119,8 +115,13 @@ return function (
                 <!-- /ko -->
             </table>
         <!-- /ko -->
-    </div>
 
+        <div class="cmprEmpty">
+            <strong>Товаров для сравнения пока нет.</strong>
+            <p><span style="display: inline-block;">Добавляйте товары к сравнению кнопкой</span> <span class="btnCmprb"></span></p>
+        </div>
+    </div>
+</div>
     <footer class="footerw js-compare-footer">
         <p class="footerw_tx clearfix">&copy; ООО «Энтер» 2011&ndash;2014. ENTER&reg; ЕНТЕР&reg; Enter&reg;. Все права защищены. <a href="javascript:void(0)" class="footer__copy__link" id="jira">Сообщить об ошибке</a></p>
     </footer>
