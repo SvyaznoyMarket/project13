@@ -219,7 +219,14 @@ class CompareAction {
         }
 
         if ($request->isXmlHttpRequest()) {
-            return new \Http\JsonResponse(['compare' => $this->session->get($this->compareSessionKey)]);
+            return new \Http\JsonResponse([
+                'compare' => $this->session->get($this->compareSessionKey),
+                'product' => [
+                    'prefix' => $product->getPrefix(),
+                    'webName' => $product->getWebName(),
+                    'imageUrl' => $product->getImageUrl(0),
+                ],
+            ]);
         }
 
         $referrer = $request->server->get('HTTP_REFERER');

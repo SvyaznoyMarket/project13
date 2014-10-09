@@ -407,6 +407,8 @@
 	console.info('Init userbar module');
 	console.log(userbarConfig);
 
+	userBar.show = showUserbar;
+
 	body.on('click', '.jsUpsaleProduct', upsaleProductClick);
 	userbarStatic.on('click', '.jsCartDelete', deleteProductHandler);
 

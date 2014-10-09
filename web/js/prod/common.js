@@ -125,7 +125,9 @@
 	$(function(){
 		var $body = $(document.body),
 			userInfoURL = ENTER.config.pageConfig.userUrl + '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000),
-			startTime, endTime, spendTime;
+			startTime, endTime, spendTime,
+			$compareNotice = null,
+			compareNoticeTimeout = null;
 
 		function createCartModel(cart) {
 			var model = {};
@@ -169,6 +171,52 @@
 			};
 			
 			return model;
+		}
+
+		function showCompareNotice(product) {
+			var compareNoticeShowClass = 'topbarfix_cmpr_popup-show';
+
+			if (!$compareNotice) {
+				var $userbar = ENTER.userBar.userBarFixed;
+				$compareNotice = $('.js-compare-addPopup', $userbar);
+
+				$('.js-compare-addPopup-closer', $compareNotice).click(function() {
+					$compareNotice.removeClass(compareNoticeShowClass);
+				});
+
+				$('.js-topbarfixLogin, .js-topbarfixNotEmptyCart', $userbar).mouseover(function() {
+					$compareNotice.removeClass(compareNoticeShowClass);
+				});
+
+				$('html').click(function() {
+					$compareNotice.removeClass(compareNoticeShowClass);
+				});
+
+				$($compareNotice).click(function(e) {
+					e.stopPropagation();
+				});
+
+				$(document).keyup(function(e) {
+					if (e.keyCode == 27) {
+						$compareNotice.removeClass(compareNoticeShowClass);
+					}
+				});
+			}
+
+			if (compareNoticeTimeout) {
+				clearTimeout(compareNoticeTimeout);
+			}
+
+			compareNoticeTimeout = setTimeout(function() {
+				$compareNotice.removeClass(compareNoticeShowClass);
+			}, 2000);
+
+			$('.js-compare-addPopup-image', $compareNotice).attr('src', product.imageUrl);
+			$('.js-compare-addPopup-prefix', $compareNotice).text(product.prefix);
+			$('.js-compare-addPopup-webName', $compareNotice).text(product.webName);
+
+			ENTER.userBar.show();
+			$compareNotice.addClass(compareNoticeShowClass);
 		}
 		
 		ENTER.UserModel = createUserModel();
@@ -218,10 +266,11 @@
 
 		$body.on('click', '.jsCompareLink, .jsCompareListLink', function(e){
 			var url = this.href,
-				productId = $(this).data('id');
+				productId = $(this).data('id'),
+				inCompare = $(this).hasClass('btnCmprb-act');
 
 			if ($(this).hasClass('jsCompareListLink')) {
-				url = $(this).hasClass('btnCmprb-act') ? ENTER.utils.generateUrl('compare.delete', {productId: productId}) : ENTER.utils.generateUrl('compare.add', {productId: productId});
+				url = inCompare ? ENTER.utils.generateUrl('compare.delete', {productId: productId}) : ENTER.utils.generateUrl('compare.add', {productId: productId});
 			}
 
 			e.preventDefault();
@@ -231,6 +280,10 @@
 					if (data.compare) {
 						ENTER.UserModel.compare.removeAll();
 						$.each(data.compare, function(i,val){ ENTER.UserModel.compare.push(val) })
+
+						if (!inCompare) {
+							showCompareNotice(data.product);
+						}
 					}
 				}
 			})
@@ -4405,6 +4458,8 @@ $(document).ready(function() {
 
 	console.info('Init userbar module');
 	console.log(userbarConfig);
+
+	userBar.show = showUserbar;
 
 	body.on('click', '.jsUpsaleProduct', upsaleProductClick);
 	userbarStatic.on('click', '.jsCartDelete', deleteProductHandler);
