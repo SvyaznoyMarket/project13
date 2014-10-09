@@ -128,6 +128,8 @@ class Entity {
     public $meta_data = [];
     /** @var string|null */
     public $email;
+    /** @var Seller|null */
+    public $seller;
 
     /**
      * @param array $data
@@ -219,6 +221,7 @@ class Entity {
 
         if (array_key_exists('meta_data', $data) && is_array($data['meta_data'])) $this->meta_data = $data['meta_data'];
         if (array_key_exists('email', $data) && !empty($data['email'])) $this->email = (string)$data['email'];
+        if (array_key_exists('seller', $data) && !empty($data['seller'])) $this->seller = new Seller($data['seller']);
     }
 
     public function dump() {
@@ -981,5 +984,18 @@ class Entity {
      */
     public function isPaid() {
         return $this->paymentStatusId == self::PAYMENT_STATUS_PAID;
+    }
+}
+
+class Seller {
+
+    public $id;
+    public $ui;
+    public $name;
+
+    public function __construct(array $data = []) {
+        if (isset($data['id'])) $this->id = (int)$data['id'];
+        if (isset($data['ui'])) $this->ui = (string)$data['ui'];
+        if (isset($data['name'])) $this->name = (string)$data['name'];
     }
 }
