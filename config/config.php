@@ -439,7 +439,7 @@ $c->newDeliveryCalc = true;
 $c->kladr = [
     'token' => '52b04de731608f2773000000',
     'key' => 'c20b52a7dc6f6b28023e3d8ef81b9dbdb51ff74b',
-    'itemLimit' => 1000,
+    'itemLimit' => 20,
 ];
 
 $c->maybe3d['xmlUrl']     = 'http://hq.maybe3d.com/MappingService.svc/GetMappings?customerId=';
