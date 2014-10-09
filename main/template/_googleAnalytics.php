@@ -40,6 +40,15 @@
         _gaq.push(['_setCustomVar', 1, 'User segment', '<?= \App::abTestJson()->getCase()->getGaEvent() ?>', 2]);
     <? endif ?>
 
+    <? /* Маркировка продуктов Marketplace */ ?>
+    <? if (isset($product) && $product instanceof \Model\Product\Entity) : ?>
+        <? /*  Если товар ТОЛЬКО от партнеров или нет у нас, но есть у партнеров */
+            if ($product->isOnlyFromPartner() || ($product->getPartnersOffer() && !$product->getIsBuyable())) : ?>
+            _gaq.push(['_setCustomVar', 11, 'shop_type', 'marketplace', 3]);
+            if (console && typeof console.log == 'function') console.log('[Google Analytics] _setCustomVar 11 shop_type marketplace');
+        <? endif; ?>
+    <? endif; ?>
+
     _gaq.push(['_trackPageview']);
     _gaq.push(['_trackPageLoadTime']);
 
