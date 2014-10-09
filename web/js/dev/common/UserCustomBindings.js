@@ -11,11 +11,19 @@
 			
 			if (typeof isBuyable != 'undefined' && !isBuyable) {
 				$elem
-					.text(inShopShowroomOnly ? 'На витрине' : 'Нет')
+					.text('Нет')
 					.addClass('mDisabled')
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
-					.removeClass('jsBuyButton')
+					.addClass('jsBuyButton')
+					.attr('href', '#');
+			} else if (typeof inShopShowroomOnly != 'undefined' && inShopShowroomOnly) {
+				$elem
+					.text('На витрине')
+					.addClass('mDisabled')
+					.removeClass('mShopsOnly')
+					.removeClass('mBought')
+					.addClass('jsBuyButton')
 					.attr('href', '#');
 			} else if (typeof statusId != 'undefined' && 5 == statusId) { // SITE-2924, SITE-3109, SITE-3957
 				$elem
