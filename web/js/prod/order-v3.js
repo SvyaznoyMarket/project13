@@ -1491,9 +1491,10 @@
                 'city': o.region.name
             };
             googleOrderTrackingData.products = $.map(o.products, function(p){
+				var productName = o.is_partner ? p.name + ' (marketplace)' : p.name;
                 return {
                     'id': p.id,
-                    'name': p.name,
+                    'name': productName,
                     'sku': p.article,
                     'category': p.category[p.category.length -1].name,
                     'price': p.price,

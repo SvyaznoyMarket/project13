@@ -52,9 +52,12 @@
     _gaq.push(['_trackPageview']);
     _gaq.push(['_trackPageLoadTime']);
 
-    <? if (isset($orders) && isset($productsById) && isset($servicesById)): ?>
+    <? if (isset($orders) && isset($productsById)): ?>
         <? foreach ($orders as $order): ?>
             <?
+            /** @var $order \Model\Order\Entity */
+            /** @var $shop  \Model\Shop\Entity */
+            /** @var $page  \View\DefaultLayout */
             $shop = $order->getShopId() && isset($shopsById[$order->getShopId()]) ? $shopsById[$order->getShopId()] : null;
             $deliveries = $order->getDelivery();
             /** @var $delivery \Model\Order\Delivery\Entity */
@@ -75,6 +78,7 @@
         // _addItem: Номер заказа, Артикул, Название товара, Категория товара, Стоимость 1 единицы товара, Количество товара
             <? foreach ($order->getProduct() as $orderProduct): ?>
                 <?
+                /** @var $product \Model\Product\Entity */
                 $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
                 if (!$product) continue;
 
@@ -86,27 +90,11 @@
                 $categoryName = ($rootCategory && ($rootCategory->getId() != $category->getId()))
                     ? ($rootCategory->getName() . ' - ' . $category->getName())
                     : $category->getName();
+                    $productName = $order->isPartner ? $product->getName() . ' (marketplace)' : $product->getName();
                 ?>
 
-    _gaq.push(['_addItem', '<?= implode("','", array($order->getNumberErp(), $product->getArticle(), $page->escape($product->getName()), $page->escape($categoryName), $orderProduct->getPrice(), $orderProduct->getQuantity())) ?>']);
+    _gaq.push(['_addItem', '<?= implode("','", array($order->getNumberErp(), $product->getArticle(), $page->escape($productName), $page->escape($categoryName), $orderProduct->getPrice(), $orderProduct->getQuantity())) ?>']);
             <?php endforeach ?>
-
-            <? foreach ($order->getService() as $orderService): ?>
-                <?
-                $service = isset($servicesById[$orderService->getId()]) ? $servicesById[$orderService->getId()] : null;
-                if (!$service) continue;
-
-                $categories = $service->getCategory();
-                $category = array_pop($categories);
-                $rootCategory = array_shift($categories);
-
-                $categoryName = ($rootCategory && ($rootCategory->getId() != $category->getId()))
-                    ? ($rootCategory->getName() . ' - ' . $category->getName())
-                    : $category->getName();
-                ?>
-
-    _gaq.push(['_addItem', '<?= implode("','", array($order->getNumberErp(), $service->getToken(), $page->escape($service->getName()), $page->escape($categoryName), $orderService->getPrice(), $orderService->getQuantity())) ?>']);
-                <?php endforeach ?>
 
     _gaq.push(['_trackTrans']);
             <? endforeach ?>
