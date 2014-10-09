@@ -6902,6 +6902,10 @@ img[height="0"] {
   .cmprCnt_head .cmprCnt_cell {
     height: 250px;
   }
+  .cmprCnt_head td,
+  .cmprCnt_head th {
+    vertical-align: top;
+  }
   .cmprCnt_modes .cmprCnt_cell {
     background: #f2f2f2;
   }
@@ -6922,7 +6926,6 @@ img[height="0"] {
     background: #f2f2f2;
     color: #515151;
     text-align: left;
-    vertical-align: middle;
     border-bottom: 1px solid #c7c7c7;
     width: 210px;
   }
@@ -6937,7 +6940,6 @@ img[height="0"] {
   }
   .cmprCnt td {
     position: relative;
-    vertical-align: middle;
     border-bottom: 1px solid #c7c7c7;
   }
   .cmprCnt td .cmprCnt_modeW {
@@ -7109,7 +7111,10 @@ img[height="0"] {
     background: #000000;
     height: 20px;
     margin: -20px auto 0;
-    position: relative;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
   }
   .footerw_tx {
     color: #ffffff;

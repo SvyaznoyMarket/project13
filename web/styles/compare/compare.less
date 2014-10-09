@@ -138,15 +138,15 @@
 			.opacity(0);
 			overflow: hidden;
 			height: 0;
-	
+
 		}
-	
+
 		.cmprCnt_rating, .cmprCnt_noRating {
 			.opacity(0);
 			overflow: hidden;
 			height: 0;
 		}
-	
+
 		.cmprCnt_mode {
 			margin: 10px 0 0 0;
 		}
@@ -155,6 +155,10 @@
 	&_head {
 		.cmprCnt_cell {
 			height: 250px;
+		}
+
+		td, th {
+			vertical-align: top;
 		}
 	}
 
@@ -185,10 +189,9 @@
 		background: #f2f2f2;
 		color: #515151;
 		text-align: left;
-		vertical-align: middle;
 		border-bottom: 1px solid #c7c7c7;
 		width: 210px;
-	
+
 		.cmprCnt_cell {
 			width: 210px;
 		}
@@ -204,7 +207,6 @@
 
 	td {
 		position: relative;
-		vertical-align: middle;
 		border-bottom: 1px solid #c7c7c7;
 
 		.cmprCnt_modeW {
@@ -266,7 +268,6 @@
 		padding: 0;
 		.transition(all 0.5s ease);
 
-		text-align: center;
 		text-align: center;
 
 		&_btn {
@@ -351,14 +352,14 @@
 		text-align: center;
 		font-size: 0px;
 		.transition(all 0.5s ease);
-  
+
 		&_img {
 			.inline-block();
 			height: 11px;
 			width: 11px;
 			margin: 1px 2px 0 0;
 		}
-  
+
 		&_count {
 			color: #a6a6a6;
 			.inline-block();
@@ -389,7 +390,10 @@
 	background: @black;
 	height: 20px;
 	margin: -20px auto 0;
-	position: relative;
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	left: 0;
 
 	&_tx {
 		color: @white;
@@ -415,7 +419,7 @@
 			padding-left: 10px;
 		}
 	}
-	
+
 	.userbar-fixed {
 		right: -3px;
 		left: 0;

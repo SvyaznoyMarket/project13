@@ -1,9 +1,7 @@
 ;(function($) {
 	$(function(){
-		var $body = $('body'),
-			$compare = $('.js-compare'),
+		var $compare = $('.js-compare'),
 			$header = $('.js-compare-header'),
-			$footer = $('.js-compare-footer'),
 			$table = $('.js-compare-table', $compare),
 			$topbar = $('.js-topbar'),
 			compareModel = createCompareModel($compare.data('compare-groups')),
@@ -151,85 +149,88 @@
 				return null;
 			}
 
-			var offset = $(rowContainers[0]).offset(),
-				topOffset = offset.top,
-				leftOffset = offset.left,
-				windowElement = $(window);
+			var firstContainerCell = $(rowContainers[0]).closest('th, td'),
+				offset = firstContainerCell.offset(),
+				windowElement = $(window),
+				sameContainers = $(),
+				isVerticalScrollStarted = false,
+				isHorizontalScrollStarted = false;
 
-			rowContainers.css('position', 'relative');
-			rowContainers.css('z-index', '110');
-
-			columnContainers.css('position', 'relative');
-			columnContainers.css('z-index', '120');
-
-			rowContainers.each(function(){
+			rowContainers.each(function() {
 				var rowContainer = this;
-				columnContainers.each(function(){
+				columnContainers.each(function() {
 					if (rowContainer === this) {
-						$(this).css('z-index', '130');
+						rowContainers = rowContainers.not(this);
+						columnContainers = columnContainers.not(this);
+						sameContainers = sameContainers.add(this);
 					}
 				});
 			});
 
-			function updateCellHeight(cells) {
+			rowContainers.css('z-index', '110');
+			columnContainers.css('z-index', '120');
+			sameContainers.css('z-index', '130');
+
+			function updateCell(cells) {
 				if (!cells) {
-					cells = $($.unique($.merge($.makeArray(rowContainers), $.makeArray(columnContainers))));
+					cells = $($.merge($.makeArray(rowContainers), $.makeArray(columnContainers), $.makeArray(sameContainers)));
 				}
 
-				cells.each(function(){
-					$(this).css('min-height', '0');
+				var containerStyles = {};
+				cells.each(function(key) {
+					$(this).attr('style', function(i, style) {
+						return (style || '').replace(/height:[^;]+;?/g, '');
+					});
+
+					$(this).closest('th, td').attr('style', function(i, style) {
+						return (style || '').replace(/height:[^;]+;?/g, '');
+					});
+
+					containerStyles[key] = $(this).attr('style');
+					$(this).css({
+						'position': 'relative',
+						'left': 'auto',
+						'top': 'auto',
+						'margin-left': '0',
+						'margin-top': '0'
+					});
 				});
 
-				cells.each(function(){
-					var container = $(this);
+				cells.each(function(key) {
+					var container = $(this),
+						cell = container.closest('th, td'),
+						cellHeight = cell.height(),
+						containerFullHeight = container.outerHeight(false);
 
-					var cell = container.closest('th, td');
-
-					var cellHeight = cell.height();
-					var containerHeight = container.height();
-
-					var containerPaddingTop = parseInt(container.css('padding-top')) || 0;
-					var containerPaddingBottom = parseInt(container.css('padding-bottom')) || 0;
-
-					var containerBorderTop = parseInt(container.css('border-top-width')) || 0;
-					var containerBorderBottom = parseInt(container.css('border-bottom-width')) || 0;
-
-					var containerFullHeight = containerHeight + containerPaddingTop + containerPaddingBottom + containerBorderTop + containerBorderBottom;
-
-					var newContainerPaddingTop = containerPaddingTop;
+					$(this).attr('style', containerStyles[key]);
 
 					if (cellHeight > containerFullHeight) {
+						var containerPaddingTop = parseInt(container.css('padding-top')) || 0;
+
 						if (cell.css('vertical-align') == 'middle') {
-							newContainerPaddingTop = Math.round((cellHeight - containerFullHeight) / 2) + containerPaddingTop;
-							container.css('padding-top', newContainerPaddingTop + 'px');
+							container.css('padding-top', Math.round((cellHeight - containerFullHeight) / 2) + containerPaddingTop + 'px');
 						} else if (cell.css('vertical-align') == 'bottom') {
-							newContainerPaddingTop = Math.round((cellHeight - containerFullHeight)) + containerPaddingTop;
-							container.css('padding-top', newContainerPaddingTop + 'px');
+							container.css('padding-top', Math.round((cellHeight - containerFullHeight)) + containerPaddingTop + 'px');
 						}
 					}
 
-					container.css('min-height', cellHeight + 'px');
+					container.css('height', cellHeight + 'px');
+					cell.css({'height': cellHeight + 'px', 'vertical-align': 'top'});
 				});
 			}
 
-			function updatePosition() {
+			function getShift() {
 				var scrollY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop,
 					scrollX = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft,
-					top = null,
-					left = null;
+					top = 0,
+					left = 0;
 
-				if (scrollY > topOffset) {
-					top = scrollY - topOffset;
-					rowContainers.css('top', top + 'px');
-				} else {
-					rowContainers.css('top', 'auto');
+				if (scrollY > offset.top) {
+					top = scrollY - offset.top;
 				}
 
-				if (scrollX > leftOffset) {
-					left = scrollX - leftOffset;
-					columnContainers.css('left', left + 'px');
-				} else {
-					columnContainers.css('left', 'auto');
+				if (scrollX > offset.left) {
+					left = scrollX - offset.left;
 				}
 
 				return {
@@ -238,42 +239,129 @@
 				};
 			}
 
-			var isScrollStarted = false;
-			function scrollHandler() {
-				var shifts = updatePosition();
+			function updatePosition() {
+				var shift = getShift();
 
-				if ((events || {}).onScrollStart && shifts.top && !isScrollStarted) {
-					isScrollStarted = true;
-					events.onScrollStart();
-					setTimeout(function(){
-						updateCellHeight(rowContainers);
+				if (shift.top) {
+					if (!isVerticalScrollStarted) {
+						isVerticalScrollStarted = true;
+
+						if ((events || {}).onVerticalScrollStart) {
+							events.onVerticalScrollStart();
+						}
+
+						setTimeout(function() {
+							updateCell($($.merge($.makeArray(rowContainers), $.makeArray(sameContainers))));
+
+							rowContainers.css({
+								'position': 'fixed',
+								'top': '0',
+								'margin-left': -shift.left + 'px'
+							});
+
+							sameContainers.css({
+								'position': 'fixed',
+								'top': '0',
+								'margin-top': '0'
+							});
+						}, 0);
+					} else {
+						rowContainers.css('margin-left', -shift.left + 'px');
+					}
+
+					if (!isHorizontalScrollStarted) {
+						sameContainers.css('margin-left', -shift.left + 'px');
+					}
+				}
+
+				if (!shift.top && isVerticalScrollStarted) {
+					isVerticalScrollStarted = false;
+
+					if ((events || {}).onVerticalScrollEnd) {
+						events.onVerticalScrollEnd();
+					}
+
+					rowContainers.css({
+						'position': 'relative',
+						'top': 'auto',
+						'margin-left': '0'
+					});
+
+					sameContainers.css({
+						'top': 'auto',
+						'margin-left': '0'
+					});
+
+					setTimeout(function() {
+						updateCell($($.merge($.makeArray(rowContainers), $.makeArray(sameContainers))));
 					}, 0);
 				}
 
-				if ((events || {}).onScrollEnd && !shifts.top && isScrollStarted) {
-					isScrollStarted = false;
-					events.onScrollEnd();
-					updateCellHeight(rowContainers);
+				if (shift.left) {
+					if (!isHorizontalScrollStarted) {
+						isHorizontalScrollStarted = true;
+
+						if ((events || {}).onHorizontalScrollStart) {
+							events.onHorizontalScrollStart();
+						}
+
+						columnContainers.css({
+							'position': 'fixed',
+							'left': '0'
+						});
+
+						sameContainers.css({
+							'position': 'fixed',
+							'left': '0',
+							'margin-left': '0'
+						});
+					}
+
+					columnContainers.css('margin-top', -(window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop) + 'px');
+
+					if (!isVerticalScrollStarted) {
+						sameContainers.css('margin-top', -(window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop) + 'px');
+					}
+				}
+
+				if (!shift.left && isHorizontalScrollStarted) {
+					isHorizontalScrollStarted = false;
+
+					if ((events || {}).onHorizontalScrollEnd) {
+						events.onHorizontalScrollEnd();
+					}
+
+					columnContainers.css({
+						'position': 'relative',
+						'left': 'auto',
+						'margin-top': '0'
+					});
+
+					sameContainers.css({
+						'left': 'auto',
+						'margin-top': '0'
+					});
+				}
+
+				if (!shift.top && !shift.left) {
+					sameContainers.css('position', 'relative');
 				}
 			}
 
 			function resizeHandler() {
-				offset = $(rowContainers.get(0)).offset();
-				topOffset = offset.top;
-				leftOffset = offset.left;
+				offset = firstContainerCell.offset();
 			}
 
-			updateCellHeight();
-			windowElement.scroll(scrollHandler);
-			windowElement.resize(resizeHandler);
-
+			updateCell();
 			updatePosition();
 
+			windowElement.scroll(updatePosition);
+			windowElement.resize(resizeHandler);
+
 			return {
-				updatePosition: updatePosition,
-				updateCellHeight: updateCellHeight,
+				updateCell: updateCell,
 				destroy: function(){
-					windowElement.unbind('scroll', scrollHandler);
+					windowElement.unbind('scroll', updatePosition);
 					windowElement.unbind('resize', resizeHandler);
 				}
 			};
@@ -288,10 +376,10 @@
 				$('tr.js-compare-tableHeadRow td .js-compare-fixed, tr.js-compare-tableHeadRow th .js-compare-fixed', $table),
 				$('th .js-compare-fixed', $table),
 				{
-					onScrollStart: function(){
+					onVerticalScrollStart: function(){
 						compareModel.scrolled(true);
 					},
-					onScrollEnd: function(){
+					onVerticalScrollEnd: function(){
 						compareModel.scrolled(false);
 					}
 				}
@@ -304,6 +392,31 @@
 			} else {
 				showNotSimilarProperties();
 			}
+		}
+
+
+		function updateHeader(){
+			var scrollY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+
+			$table.css({
+				'margin-top': $topbar.outerHeight(false) + $header.outerHeight(false)
+			});
+
+			$topbar.css({
+				'position': 'fixed',
+				'top': '0',
+				'right': '0',
+				'left': '0',
+				'margin-top': -scrollY + 'px'
+			});
+
+			$header.css({
+				'position': 'fixed',
+				'top': $topbar.outerHeight(false) + 'px',
+				'right': '0',
+				'left': '0',
+				'margin-top': -scrollY + 'px'
+			});
 		}
 
 		updateSimilarPropertiesDisplay();
@@ -320,7 +433,7 @@
 
 		compareModel.similarOnly.subscribe(function(){
 			if (fixedTableCells) {
-				fixedTableCells.updateCellHeight();
+				fixedTableCells.updateCell();
 			}
 		});
 
@@ -396,25 +509,9 @@
 			}
 		});
 
-		$(window).scroll(function(){
-			var scrollX = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft,
-				maxScrollX = $table.width() - $body.width();
+		$(window).resize(updateHeader);
+		$(window).scroll(updateHeader);
 
-			if (maxScrollX > 0) {
-				if (scrollX < maxScrollX) {
-					$topbar.css('left', scrollX + 'px');
-					$header.css('left', scrollX + 'px');
-					$footer.css('left', scrollX + 'px');
-				} else if (scrollX >= maxScrollX) {
-					$topbar.css('left', maxScrollX + 'px');
-					$header.css('left', maxScrollX + 'px');
-					$footer.css('left', maxScrollX + 'px');
-				}
-			} else {
-				$topbar.css('left', '0');
-				$header.css('left', '0');
-				$footer.css('left', '0');
-			}
-		});
+		updateHeader();
 	});
 }(jQuery));
