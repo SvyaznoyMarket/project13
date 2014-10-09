@@ -23,8 +23,8 @@ return function(
 
         <div class="bPromoCatalogSlider mTchiboSlider">
             <a href="#" class="bPromoCatalogSlider_eArrow mArLeft"></a>
-        <a href="#" class="bPromoCatalogSlider_eArrow mArRight"></a>
-        <div class="bPromoCatalogSliderWrap jsPromoCatalogSliderWrap clearfix"></div>
+            <a href="#" class="bPromoCatalogSlider_eArrow mArRight"></a>
+            <div class="bPromoCatalogSliderWrap jsPromoCatalogSliderWrap clearfix"></div>
         </div>
 
         <div id="promoCatalogPaginator" class="bPaginator mTchiboPaginator clearfix"></div>

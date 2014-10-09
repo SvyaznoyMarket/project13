@@ -25,10 +25,15 @@ if ((bool)$siblingCategories) {
     /* <!--/ TCHIBO - слайдер-меню разделов Чибо -->*/
 }
 
-// TCHIBO - крутилка разделов Чибо на рутовой странице
-if ((bool)$slideData) {
-    echo $helper->render('tchibo/promo-catalog', ['slideData' => $slideData, 'categoryToken' => 'tchibo']);
-} ?>
+?>
+
+<div class="slider2">
+    <?
+    // TCHIBO - крутилка разделов Чибо на рутовой странице
+    if ((bool)$slideData) {
+        echo $helper->render('tchibo/promo-catalog', ['slideData' => $slideData, 'categoryToken' => 'tchibo']);
+    } ?>
+</div>
 
 <div class="tchiboSubscribe subscribe-form clearfix">
     <div class="tchiboSubscribe_title">Узнай первым о новинках и акциях</div>
