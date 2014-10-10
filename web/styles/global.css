@@ -997,7 +997,7 @@ img[height="0"] {
     float: left;
   }
   .topbar_call_t {
-    background: url("/styles/header/img/icons.png") no-repeat 0 1px;
+    background: url("/styles/header/img/icons.png") no-repeat 5px 3px;
     display: inline-block;
     /* IE6-8 */
     *display: inline;
@@ -1006,10 +1006,15 @@ img[height="0"] {
     font-size: 12px;
     font-weight: bold;
     line-height: 1.1;
-    margin: 12px 0 0;
-    padding: 0 0 2px 15px;
+    margin: 9px 10px 0 0;
     vertical-align: top;
     width: 52px;
+    border: 1px solid firmOrange;
+    border: 1px solid rgba(249, 155, 28, 0.51);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    padding: 2px 0 3px 20px;
   }
   .topbar_call_lst {
     display: inline-block;
@@ -1019,6 +1024,7 @@ img[height="0"] {
     *zoom: 1;
     font-size: 14px;
     margin: 7px 20px 0 0;
+    font-weight: bold;
   }
   .topbar_call_i {
     display: block;
@@ -1032,7 +1038,7 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    margin: 10px 0 0;
+    margin: 9px 0 0;
   }
   .topbar_lks_i {
     display: block;
