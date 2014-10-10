@@ -368,4 +368,11 @@ class IndexPage extends \View\DefaultLayout {
             'price' => $product->getPrice(),
         ]);
     }
+
+    public function slotGoogleAnalytics()
+    {
+        return $this->tryRender('_googleAnalytics', ['product' => $this->getParam('product')]);
+    }
+
+
 }
