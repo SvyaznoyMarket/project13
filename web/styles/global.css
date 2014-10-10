@@ -2278,6 +2278,9 @@ img[height="0"] {
     overflow: hidden;
     top: 66px;
   }
+  .topbarfix_cmpr_popup-add {
+    color: #000000;
+  }
   .topbarfix_cmpr_popup_inn {
     padding: 20px 30px 10px;
     border: 1px solid #bbbbbb;
@@ -2324,7 +2327,7 @@ img[height="0"] {
     top: 56px;
   }
   .topbarfix_cmpr_popup .cmprAdd {
-    margin: 5px 0 10px;
+    margin: 10px 0 10px;
     font-size: 14px;
   }
   .topbarfix_cmpr_popup .cmprAdd_img {
@@ -2343,9 +2346,6 @@ img[height="0"] {
     *zoom: 1;
     width: 300px;
     vertical-align: middle;
-  }
-  .topbarfix_cmpr_popup .cmprAdd_n_t {
-    font-size: 13px;
   }
   .topbarfix_buy {
     display: inline-block;
