@@ -1994,6 +1994,7 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
+    width: 500px;
   }
   .topbarfix_up {
     float: left;
@@ -2178,14 +2179,14 @@ img[height="0"] {
     right: 0;
     height: 50px;
     width: 15px;
-    background: rgba(255, 255, 255, 0);
-    background: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(241, 111, 92, 0) 0%, #fff5e0 100%);
-    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(0%, rgba(241, 111, 92, 0)), color-stop(100%, #fff5e0));
-    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(241, 111, 92, 0) 0%, #fff5e0 100%);
-    background: -o-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(241, 111, 92, 0) 0%, #fff5e0 100%);
-    background: -ms-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(241, 111, 92, 0) 0%, #fff5e0 100%);
-    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(241, 111, 92, 0) 0%, #fff5e0 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#fff5e0', GradientType=1);
+    background: rgba(255, 245, 224, 0);
+    background: -moz-linear-gradient(left, rgba(255, 245, 224, 0) 0%, rgba(255, 245, 224, 0.62) 41%, #fff5e0 66%, #fff5e0 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255, 245, 224, 0)), color-stop(41%, rgba(255, 245, 224, 0.62)), color-stop(66%, #fff5e0), color-stop(100%, #fff5e0));
+    background: -webkit-linear-gradient(left, rgba(255, 245, 224, 0) 0%, rgba(255, 245, 224, 0.62) 41%, #fff5e0 66%, #fff5e0 100%);
+    background: -o-linear-gradient(left, rgba(255, 245, 224, 0) 0%, rgba(255, 245, 224, 0.62) 41%, #fff5e0 66%, #fff5e0 100%);
+    background: -ms-linear-gradient(left, rgba(255, 245, 224, 0) 0%, rgba(255, 245, 224, 0.62) 41%, #fff5e0 66%, #fff5e0 100%);
+    background: linear-gradient(to right, rgba(255, 245, 224, 0) 0%, rgba(255, 245, 224, 0.62) 41%, #fff5e0 66%, #fff5e0 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff5e0', endColorstr='#fff5e0', GradientType=1);
   }
   .topbarfix_log-login {
     min-height: 50px;
@@ -2331,7 +2332,7 @@ img[height="0"] {
     width: 295px;
     margin: 12px 0 0;
     float: right;
-    padding: 0 10px 8px 5px;
+    padding: 0 10px 3px 5px;
     background: #ffffff;
     position: relative;
     z-index: 10;
