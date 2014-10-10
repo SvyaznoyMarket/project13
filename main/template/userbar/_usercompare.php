@@ -15,7 +15,7 @@
     	</div>
     </div>
 
-    <div class="topbarfix_cmpr_popup js-compare-addPopup">
+    <div class="topbarfix_cmpr_popup topbarfix_cmpr_popup-add js-compare-addPopup">
         <div class="topbarfix_cmpr_popup_inn">
             <div class="clsr2 js-compare-addPopup-closer"></div>
             <strong>Товар добавлен к сравнению.</strong>
