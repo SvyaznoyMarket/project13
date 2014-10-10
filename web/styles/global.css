@@ -2323,6 +2323,30 @@ img[height="0"] {
     overflow: visible;
     top: 56px;
   }
+  .topbarfix_cmpr_popup .cmprAdd {
+    margin: 5px 0 10px;
+    font-size: 14px;
+  }
+  .topbarfix_cmpr_popup .cmprAdd_img {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+  }
+  .topbarfix_cmpr_popup .cmprAdd_n {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    width: 300px;
+    vertical-align: middle;
+  }
+  .topbarfix_cmpr_popup .cmprAdd_n_t {
+    font-size: 13px;
+  }
   .topbarfix_buy {
     display: inline-block;
     vertical-align: top;
