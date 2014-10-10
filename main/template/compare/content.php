@@ -28,7 +28,7 @@ return function (
                 </div>
             </div>
 
-            <div class="cmprCntW">
+            <div class="cmprCntW js-compare-content">
                 <!-- ko if: compareGroups().length -->
                     <div data-bind="visible: compareGroups().length" style="display: none;">
                         <!-- ko if: compareGroups()[activeCompareGroupIndex()] -->

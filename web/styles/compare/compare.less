@@ -24,14 +24,16 @@
 }
 
 .cmprHd {
-	position: relative;
+	position: fixed;
+	right: 0;
+	left: 0;
 	background: @typLightGray;
 	border-bottom: 1px solid @lightgreyBr;
 	border-top: 1px solid @lightgreyBr;
 	padding: 20px 20px 8px 0;
 	min-height: 120px;
 	margin-right: -2px;
-	z-index: 2;
+	z-index: 3;
 
 	&-empty {
 
@@ -386,13 +388,11 @@
 }
 
 .footerw {
-	background: @black;
-	height: 20px;
-	margin: -20px auto 0;
 	position: fixed;
 	right: 0;
-	bottom: 0;
 	left: 0;
+	background: @black;
+	height: 20px;
 
 	&_tx {
 		color: @white;
@@ -408,6 +408,10 @@
 	min-width: 960px;
 
 	.userbar-static {
+		position: fixed;
+		top: 0;
+		right: 0;
+		left: 0;
 		width: auto;
 		margin-left: 0;
 		padding-left: 0;

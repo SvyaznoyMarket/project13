@@ -6801,14 +6801,16 @@ img[height="0"] {
     z-index: 10000;
   }
   .cmprHd {
-    position: relative;
+    position: fixed;
+    right: 0;
+    left: 0;
     background: #e6e6e6;
     border-bottom: 1px solid #c7c7c7;
     border-top: 1px solid #c7c7c7;
     padding: 20px 20px 8px 0;
     min-height: 120px;
     margin-right: -2px;
-    z-index: 2;
+    z-index: 3;
   }
   .cmprHd-empty .cmprHd_t {
     line-height: 112px;
@@ -7132,13 +7134,11 @@ img[height="0"] {
     right: 10px;
   }
   .footerw {
-    background: #000000;
-    height: 20px;
-    margin: -20px auto 0;
     position: fixed;
     right: 0;
-    bottom: 0;
     left: 0;
+    background: #000000;
+    height: 20px;
   }
   .footerw_tx {
     color: #ffffff;
@@ -7152,6 +7152,10 @@ img[height="0"] {
     min-width: 960px;
   }
   .compare-userbar .userbar-static {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
     width: auto;
     margin-left: 0;
     padding-left: 0;

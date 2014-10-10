@@ -1,7 +1,11 @@
 ;(function($) {
 	$(function(){
-		var $compare = $('.js-compare'),
+		var $window = $(window),
+			$document = $(document),
+			$compare = $('.js-compare'),
+			$content = $('.js-compare-content'),
 			$header = $('.js-compare-header'),
+			$footer = $('.js-compare-footer'),
 			$table = $('.js-compare-table', $compare),
 			$topbar = $('.js-topbar'),
 			compareModel = createCompareModel($compare.data('compare-groups')),
@@ -100,8 +104,6 @@
 		}
 
 		function hideNotSimilarProperties() {
-			compareModel.similarOnly(true);
-
 			var compareGroups = compareModel.compareGroups();
 			if (compareGroups.length) {
 				$.each(compareGroups[compareModel.activeCompareGroupIndex()].propertyGroups(), function(key, value){
@@ -127,11 +129,11 @@
 					value.isSimilar(isSimilarGroup);
 				});
 			}
+
+			compareModel.similarOnly(true);
 		}
 
 		function showNotSimilarProperties() {
-			compareModel.similarOnly(false);
-
 			var compareGroups = compareModel.compareGroups();
 			if (compareGroups.length) {
 				$.each(compareGroups[compareModel.activeCompareGroupIndex()].propertyGroups(), function(key, value){
@@ -142,6 +144,8 @@
 					value.isSimilar(false);
 				});
 			}
+
+			compareModel.similarOnly(false);
 		}
 
 		function createFixedTableCells(rowContainers, columnContainers, events) {
@@ -220,8 +224,8 @@
 			}
 
 			function getShift() {
-				var scrollY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop,
-					scrollX = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft,
+				var scrollY = $window.scrollTop(),
+					scrollX = $window.scrollLeft(),
 					top = 0,
 					left = 0;
 
@@ -317,10 +321,10 @@
 						});
 					}
 
-					columnContainers.css('margin-top', -(window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop) + 'px');
+					columnContainers.css('margin-top', -$window.scrollTop() + 'px');
 
 					if (!isVerticalScrollStarted) {
-						sameContainers.css('margin-top', -(window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop) + 'px');
+						sameContainers.css('margin-top', -$window.scrollTop() + 'px');
 					}
 				}
 
@@ -395,27 +399,24 @@
 		}
 
 
-		function updateHeader(){
-			var scrollY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+		function updateElements(){
+			var scrollY = $window.scrollTop();
 
-			$table.css({
-				'margin-top': $topbar.outerHeight(false) + $header.outerHeight(false)
+			$content.css({
+				'padding-top': $topbar.outerHeight(false) + $header.outerHeight(false)
 			});
 
 			$topbar.css({
-				'position': 'fixed',
-				'top': '0',
-				'right': '0',
-				'left': '0',
 				'margin-top': -scrollY + 'px'
 			});
 
 			$header.css({
-				'position': 'fixed',
 				'top': $topbar.outerHeight(false) + 'px',
-				'right': '0',
-				'left': '0',
 				'margin-top': -scrollY + 'px'
+			});
+
+			$footer.css({
+				'top': $window.height() - $footer.outerHeight(false) + ($document.height() - $window.height() - $window.scrollTop()) + 'px'
 			});
 		}
 
@@ -429,12 +430,15 @@
 			initFixedTableCells();
 			compareModel.cart.valueHasMutated();
 			updateSimilarPropertiesDisplay();
+			updateElements();
 		});
 
 		compareModel.similarOnly.subscribe(function(){
 			if (fixedTableCells) {
 				fixedTableCells.updateCell();
 			}
+
+			updateElements();
 		});
 
 		$compare.on('click', '.js-compare-deleteProductLink', function(e){
@@ -473,6 +477,7 @@
 					}
 
 					updateSimilarPropertiesDisplay();
+					updateElements();
 				}
 			});
 		});
@@ -480,7 +485,6 @@
 		$compare.on('click', '.js-compare-categoryLink', function(e){
 			e.preventDefault();
 			compareModel.activeCompareGroupIndex($(e.currentTarget).data('index'));
-			$(window).scroll();
 		});
 
 		$compare.on('click', '.js-compare-modeSimilarOnly', function(){
@@ -509,9 +513,9 @@
 			}
 		});
 
-		$(window).resize(updateHeader);
-		$(window).scroll(updateHeader);
+		$(window).resize(updateElements);
+		$(window).scroll(updateElements);
 
-		updateHeader();
+		updateElements();
 	});
 }(jQuery));
