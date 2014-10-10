@@ -496,7 +496,7 @@
         /**
          * Объект транзакции
          * @param data Object {id,affiliation,total,shipping,tax,city}
-         * @returns {}
+         * @returns Object
          * @constructor
          */
         GoogleTransaction = function GoogleTransactionF(data) {
@@ -530,12 +530,13 @@
         /**
          * Объект продукта
          * @param data Object {id,name,category,sku,price,quantity}
-         * @returns {}
+         * @param transaction_id String
+         * @returns Object
          * @constructor
          */
-        GoogleProduct = function GoogleProductF(data) {
+        GoogleProduct = function GoogleProductF(data, transaction_id) {
 
-            this.id = data.id ? String(data.id) : '';
+            this.id = transaction_id ? String(transaction_id) : '';
             this.name = data.name ? String(data.name) : '';
             this.category = data.category ? String(data.category) : '';
             this.sku = data.sku ? String(data.sku) : '';
@@ -578,7 +579,7 @@
             try {
 
                 googleTrans = new GoogleTransaction(eventObject.transaction);
-                googleProducts = $.map(eventObject.products, function(elem){ return new GoogleProduct(elem)});
+                googleProducts = $.map(eventObject.products, function(elem){ return new GoogleProduct(elem, googleTrans.id)});
 
                 // Classic Tracking Code
                 if (typeof _gaq === 'object') {
