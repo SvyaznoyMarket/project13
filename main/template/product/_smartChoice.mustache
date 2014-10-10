@@ -37,6 +37,7 @@
                             class="{{class}} btnBox_link btnBox_link-buy {{#disabled}} mDisabled{{/disabled}}{{#inShopOnly}} mShopsOnly{{/inShopOnly}}"
                             data-product-id="{{data.productId}}"
                             data-upsale='{{data.upsale}}'
+                            data-bind="buyButtonBinding: cart"
                         >
                             {{value}}
                         </a>

@@ -73,4 +73,5 @@
 		track('SmartChoice_similar_click', article);
 	});
 
+	ko.applyBindings(ENTER.UserModel, $('.js-specialPrice')[0]);
 });

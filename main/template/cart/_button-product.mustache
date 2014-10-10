@@ -1,11 +1,10 @@
-<div class="btnBuy">
+<div class="bWidgetBuy__eBuy btnBuy">
     <a
         href="{{url}}"
         class="{{class}} btnBuy__eLink{{#disabled}} mDisabled{{/disabled}}{{#inShopOnly}} mShopsOnly{{/inShopOnly}}"
         data-product-id="{{data.productId}}"
         data-upsale="{{data.upsale}}"
+        {{#onClick}}onclick="{{onClick}}"{{/onClick}}
         data-bind="buyButtonBinding: cart"
-    >
-        {{value}}
-    </a>
+    >{{value}}</a>
 </div>

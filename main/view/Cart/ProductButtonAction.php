@@ -11,21 +11,23 @@ class ProductButtonAction {
      */
     public function execute(
         \Helper\TemplateHelper $helper,
-        \Model\Product\BasicEntity $product
+        \Model\Product\BasicEntity $product,
+        $onClick = null
     ) {
         $data = [
-            'disabled'   => null,
+            'disabled'   => false,
             'url'        => null,
             'value'      => null,
-            'inShopOnly' => null,
+            'inShopOnly' => false,
+            'class'      => \View\Id::cartButtonForProduct($product->getId()),
+            'onClick'    => $onClick,
             'data'       => [
-                'productId'  => $product->getId(),
+                'productId' => $product->getId(),
                 'upsale' => json_encode([
                     'url' => $helper->url('product.upsale', ['productId' => $product->getId()]),
                     'fromUpsale' => ($helper->hasParam('from') && 'cart_rec' === $helper->getParam('from')) ? true : false,
                 ]),
             ],
-            'class'      => \View\Id::cartButtonForProduct($product->getId()),
         ];
 
         /** @var $region \Model\Region\Entity|null */
