@@ -88,6 +88,12 @@ class InfoAction {
                     /* @var $product \Model\Product\Entity|null */
                     $product = isset($productsById[$cartProduct->getId()]) ? $productsById[$cartProduct->getId()] : null;
 
+                    if (!$product) { // SITE-4400
+                        \App::logger()->error(['Товар не найден', 'product' => ['id' => $cartProduct->getId()], 'sender' => __FILE__ . ' ' .  __LINE__], ['cart']);
+
+                        continue;
+                    }
+
                     $cartProductData[] = [
                         'id'             => $cartProduct->getId(),
                         'name'           => $product ? $product->getName() : null,
