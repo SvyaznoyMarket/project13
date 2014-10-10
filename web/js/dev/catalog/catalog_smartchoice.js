@@ -73,5 +73,8 @@
 		track('SmartChoice_similar_click', article);
 	});
 
-	ko.applyBindings(ENTER.UserModel, $('.js-specialPrice')[0]);
+	var $specialPrice = $('.js-specialPrice');
+	if ($specialPrice.length) {
+		ko.applyBindings(ENTER.UserModel, $specialPrice[0]);
+	}
 });
