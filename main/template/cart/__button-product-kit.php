@@ -50,7 +50,7 @@ return function (
     ];
     ?>
     <div class="bWidgetBuy__eBuy btnBuy mBuySet">
-        <a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>" data-upsale='<?= json_encode($upsaleData) ?>'><?= $value ?></a>
+        <a href="<?= $url ?>" class="<?= $class ?>" data-upsale='<?= json_encode($upsaleData) ?>'><?= $value ?></a>
     </div>
 
 <? };

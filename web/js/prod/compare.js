@@ -19,7 +19,7 @@
 			model.link = product.link;
 			model.price = product.price;
 			model.priceOld = product.priceOld;
-			model.inShopOnly = product.inShopOnly;
+			model.inShopStockOnly = product.inShopStockOnly;
 			model.inShopShowroomOnly = product.inShopShowroomOnly;
 			model.isBuyable = product.isBuyable;
 			model.statusId = product.statusId;

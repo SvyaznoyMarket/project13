@@ -44,4 +44,7 @@ class OrdersPage extends \View\DefaultLayout {
         return 'lk';
     }
 
+    public function slotUserbar() {
+        return $this->render('_userbar');
+    }
 }

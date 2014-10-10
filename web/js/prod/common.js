@@ -4,28 +4,20 @@
 			var cart = ko.unwrap(valueAccessor()),
 				$elem = $(element),
 				productId = $elem.data('product-id'),
-				inShopOnly = $elem.data('in-shop-only'),
+				inShopStockOnly = $elem.data('in-shop-stock-only'),
 				inShopShowroomOnly = $elem.data('in-shop-showroom-only'),
 				isBuyable = $elem.data('is-buyable'),
 				statusId = $elem.data('status-id');
 			
 			if (typeof isBuyable != 'undefined' && !isBuyable) {
 				$elem
-					.text('Нет')
+					.text(typeof inShopShowroomOnly != 'undefined' && inShopShowroomOnly ? 'На витрине' : 'Нет')
 					.addClass('mDisabled')
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
 					.addClass('jsBuyButton')
 					.attr('href', '#');
-			} else if (typeof inShopShowroomOnly != 'undefined' && inShopShowroomOnly) {
-				$elem
-					.text('На витрине')
-					.addClass('mDisabled')
-					.removeClass('mShopsOnly')
-					.removeClass('mBought')
-					.addClass('jsBuyButton')
-					.attr('href', '#');
-			} else if (typeof statusId != 'undefined' && 5 == statusId) { // SITE-2924, SITE-3109, SITE-3957
+			} else if (typeof statusId != 'undefined' && 5 == statusId) { // SITE-2924
 				$elem
 					.text('Купить')
 					.addClass('mDisabled')
@@ -33,7 +25,7 @@
 					.removeClass('mBought')
 					.addClass('jsBuyButton')
 					.attr('href', '#');
-			} else if (typeof inShopOnly != 'undefined' && inShopOnly && ENTER.config.pageConfig.user.region.forceDefaultBuy) {
+			} else if (typeof inShopStockOnly != 'undefined' && inShopStockOnly && ENTER.config.pageConfig.user.region.forceDefaultBuy) {
 				$elem
 					.text('Резерв')
 					.removeClass('mDisabled')

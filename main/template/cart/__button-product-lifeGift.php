@@ -29,7 +29,7 @@ return function (
     <? endif ?>
 
     <div class="bWidgetBuy__eBuy btnBuy mBtnLifeGift">
-        <a class="bLifeGiftLink jsLifeGiftButton <?= \View\Id::cartButtonForProduct($product->getId() . '-lifeGift') ?>" href="<?= $url ?>" data-group="<?= $product->getId() ?>">Подарить</a>
+        <a class="bLifeGiftLink jsLifeGiftButton <?= \View\Id::cartButtonForProduct($product->getId() . '-lifeGift') ?>" href="<?= $url ?>">Подарить</a>
     </div>
 
     <ul class="bDeliveryGift">
