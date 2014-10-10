@@ -155,7 +155,7 @@ class Action {
                             $form->setError('password', 'Неверный пароль');
                             break;
                         case 609: default:
-                            $form->setError('global', 'Не удалось создать пользователя');
+                            $form->setError('username', 'Не удалось войти');
                             break;
                     }
                 }
