@@ -1120,14 +1120,14 @@ img[height="0"] {
     background-position: 0 -285px;
   }
   .enterprize .topbarfix_log:after {
-    background: rgba(255, 255, 255, 0);
-    background: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(241, 111, 92, 0) 0%, #000000 100%);
-    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(0%, rgba(241, 111, 92, 0)), color-stop(100%, #000000));
-    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(241, 111, 92, 0) 0%, #000000 100%);
-    background: -o-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(241, 111, 92, 0) 0%, #000000 100%);
-    background: -ms-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(241, 111, 92, 0) 0%, #000000 100%);
-    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(241, 111, 92, 0) 0%, #000000 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#000000', GradientType=1);
+    background: rgba(0, 0, 0, 0);
+    background: -moz-linear-gradient(left, rgba(0, 0, 0, 0) 17%, rgba(0, 0, 0, 0.58) 55%, #000000 82%, #000000 93%, #000000 100%);
+    background: -webkit-gradient(left top, right top, color-stop(17%, rgba(0, 0, 0, 0)), color-stop(55%, rgba(0, 0, 0, 0.58)), color-stop(82%, #000000), color-stop(93%, #000000), color-stop(100%, #000000));
+    background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0) 17%, rgba(0, 0, 0, 0.58) 55%, #000000 82%, #000000 93%, #000000 100%);
+    background: -o-linear-gradient(left, rgba(0, 0, 0, 0) 17%, rgba(0, 0, 0, 0.58) 55%, #000000 82%, #000000 93%, #000000 100%);
+    background: -ms-linear-gradient(left, rgba(0, 0, 0, 0) 17%, rgba(0, 0, 0, 0.58) 55%, #000000 82%, #000000 93%, #000000 100%);
+    background: linear-gradient(to right, rgba(0, 0, 0, 0) 17%, rgba(0, 0, 0, 0.58) 55%, #000000 82%, #000000 93%, #000000 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#000000', GradientType=1);
   }
 }
 /*---END---СТИЛИ ШАПКИ---*/
@@ -1934,14 +1934,14 @@ img[height="0"] {
     color: #ffffff;
   }
   .topbarfix-home .topbarfix_log:after {
-    background: rgba(255, 255, 255, 0);
-    background: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(241, 111, 92, 0) 0%, #000000 100%);
-    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(0%, rgba(241, 111, 92, 0)), color-stop(100%, #000000));
-    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(241, 111, 92, 0) 0%, #000000 100%);
-    background: -o-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(241, 111, 92, 0) 0%, #000000 100%);
-    background: -ms-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(241, 111, 92, 0) 0%, #000000 100%);
-    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(241, 111, 92, 0) 0%, #000000 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#000000', GradientType=1);
+    background: rgba(0, 0, 0, 0);
+    background: -moz-linear-gradient(left, rgba(0, 0, 0, 0) 17%, rgba(0, 0, 0, 0.58) 55%, #000000 82%, #000000 93%, #000000 100%);
+    background: -webkit-gradient(left top, right top, color-stop(17%, rgba(0, 0, 0, 0)), color-stop(55%, rgba(0, 0, 0, 0.58)), color-stop(82%, #000000), color-stop(93%, #000000), color-stop(100%, #000000));
+    background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0) 17%, rgba(0, 0, 0, 0.58) 55%, #000000 82%, #000000 93%, #000000 100%);
+    background: -o-linear-gradient(left, rgba(0, 0, 0, 0) 17%, rgba(0, 0, 0, 0.58) 55%, #000000 82%, #000000 93%, #000000 100%);
+    background: -ms-linear-gradient(left, rgba(0, 0, 0, 0) 17%, rgba(0, 0, 0, 0.58) 55%, #000000 82%, #000000 93%, #000000 100%);
+    background: linear-gradient(to right, rgba(0, 0, 0, 0) 17%, rgba(0, 0, 0, 0.58) 55%, #000000 82%, #000000 93%, #000000 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#000000', GradientType=1);
   }
   .topbarfix-home .topbarfix_cart {
     color: #ffffff;
