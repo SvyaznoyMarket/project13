@@ -2359,7 +2359,6 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    width: 295px;
     margin: 12px 0 0;
     float: right;
     padding: 0 10px 3px 5px;
@@ -2390,18 +2389,15 @@ img[height="0"] {
     /* IE6-9 */
   }
   .topbarfix_buy .btnBuy {
-    width: 70px;
+    width: 86px;
     float: right;
     margin: 0 5px;
   }
   .topbarfix_buy .btnBuy__eLink {
-    width: 68px;
+    width: 86px;
     font-size: 12px;
     height: 24px;
     line-height: 24px;
-  }
-  .topbarfix_buy .btnBuy.mBuySet {
-    width: 70px;
   }
   .topbarfix_buy .bPrice {
     float: right;
@@ -4795,63 +4791,62 @@ img[height="0"] {
     width: 170px;
   }
   .btnBuy.mBuySet {
-    background: #ffc000;
-    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ffaa01), color-stop(1, #ffc000));
-    background: -ms-linear-gradient(bottom, #ffaa01, #ffc000);
-    background: -moz-linear-gradient(center bottom, #ffaa01 0%, #ffc000 100%);
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
     width: 171px;
     height: 36px;
   }
-  .btnBuy.mBuySet:hover {
-    background: #ffa200;
-    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #f79200), color-stop(1, #ffa200));
-    background: -ms-linear-gradient(bottom, #f79200, #ffa200);
-    background: -moz-linear-gradient(center bottom, #f79200 0%, #ffa200 100%);
-  }
-  .btnBuy.mBuySet:active {
-    background: #f79200;
-  }
   .btnBuy.mBuySet .btnBuy__eLink {
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAABNElEQVQ4EbWUsWoCQRCGT5FAUEExkEJsfIMQ8AXSJvZiE6xSpBBb8wZ5jISkCBGCfYoQCDZaCGIdCDaCBBJTeef3y204rG7Xc+Bj5paZudnd2UkFQeAlKekwWQVdBvPt/I8MkXdQBx9a8AJnUAAbmeI89thyVK75KMI8uhjTfsLPU4U30ABVOIEF1CALNjKTc0pZkxRVeA6qcAW3MIaDEFRsWeLpK2E/EjLA/oR3OI6sxzF7OF0p4QhOwogf9B88QClci6s+5KgzzKOVUJei5L/gLDs38vafVeGQRbPlS+xH6MAR2Ii2/KwzNMkUnINDaILtpSh2k/ACw7TNG/Y3nIJax0Y2Z7+Xxu5Shnl6bexXqILL05vvZTjcU40ZX1/YOkNV7DK+/oeDBqwaWxND2lkSv5Q18LLgXSSy53IAAAAASUVORK5CYII=) no-repeat 41px 50%;
-    text-align: left;
+    position: relative;
     padding-left: 71px;
     width: 99px;
+    text-align: left;
   }
-  .btnBuy.mBuySet .btnBuy__eLink:hover {
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAABNElEQVQ4EbWUsWoCQRCGT5FAUEExkEJsfIMQ8AXSJvZiE6xSpBBb8wZ5jISkCBGCfYoQCDZaCGIdCDaCBBJTeef3y204rG7Xc+Bj5paZudnd2UkFQeAlKekwWQVdBvPt/I8MkXdQBx9a8AJnUAAbmeI89thyVK75KMI8uhjTfsLPU4U30ABVOIEF1CALNjKTc0pZkxRVeA6qcAW3MIaDEFRsWeLpK2E/EjLA/oR3OI6sxzF7OF0p4QhOwogf9B88QClci6s+5KgzzKOVUJei5L/gLDs38vafVeGQRbPlS+xH6MAR2Ii2/KwzNMkUnINDaILtpSh2k/ACw7TNG/Y3nIJax0Y2Z7+Xxu5Shnl6bexXqILL05vvZTjcU40ZX1/YOkNV7DK+/oeDBqwaWxND2lkSv5Q18LLgXSSy53IAAAAASUVORK5CYII=) no-repeat 41px 50%;
-  }
-  .btnBuy.mBuySet .btnBuy__eLink:active {
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAABNElEQVQ4EbWUsWoCQRCGT5FAUEExkEJsfIMQ8AXSJvZiE6xSpBBb8wZ5jISkCBGCfYoQCDZaCGIdCDaCBBJTeef3y204rG7Xc+Bj5paZudnd2UkFQeAlKekwWQVdBvPt/I8MkXdQBx9a8AJnUAAbmeI89thyVK75KMI8uhjTfsLPU4U30ABVOIEF1CALNjKTc0pZkxRVeA6qcAW3MIaDEFRsWeLpK2E/EjLA/oR3OI6sxzF7OF0p4QhOwogf9B88QClci6s+5KgzzKOVUJei5L/gLDs38vafVeGQRbPlS+xH6MAR2Ii2/KwzNMkUnINDaILtpSh2k/ACw7TNG/Y3nIJax0Y2Z7+Xxu5Shnl6bexXqILL05vvZTjcU40ZX1/YOkNV7DK+/oeDBqwaWxND2lkSv5Q18LLgXSSy53IAAAAASUVORK5CYII=) no-repeat 41px 50%;
+  .btnBuy.mBuySet .btnBuy__eLink:after {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAABNElEQVQ4EbWUsWoCQRCGT5FAUEExkEJsfIMQ8AXSJvZiE6xSpBBb8wZ5jISkCBGCfYoQCDZaCGIdCDaCBBJTeef3y204rG7Xc+Bj5paZudnd2UkFQeAlKekwWQVdBvPt/I8MkXdQBx9a8AJnUAAbmeI89thyVK75KMI8uhjTfsLPU4U30ABVOIEF1CALNjKTc0pZkxRVeA6qcAW3MIaDEFRsWeLpK2E/EjLA/oR3OI6sxzF7OF0p4QhOwogf9B88QClci6s+5KgzzKOVUJei5L/gLDs38vafVeGQRbPlS+xH6MAR2Ii2/KwzNMkUnINDaILtpSh2k/ACw7TNG/Y3nIJax0Y2Z7+Xxu5Shnl6bexXqILL05vvZTjcU40ZX1/YOkNV7DK+/oeDBqwaWxND2lkSv5Q18LLgXSSy53IAAAAASUVORK5CYII=) no-repeat 0 0;
+    content: '';
+    height: 20px;
+    left: 45px;
+    position: absolute;
+    top: 8px;
+    width: 40px;
   }
   .btnBuy.mBuySet .btnBuy__eLink.mBought {
     padding-left: 0;
     width: 170px;
     text-align: center;
-    background: #ffffff;
+  }
+  .btnBuy.mBuySet .btnBuy__eLink.mBought:after {
+    background: none;
   }
   .topbarfix .btnBuy.mBuySet {
     height: 26px;
-    width: 80px;
+    width: 86px;
   }
   .topbarfix .btnBuy.mBuySet .btnBuy__eLink {
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoklEQVQoFWP8//8/AymABai4Boi1gLgKiGWAmB+IsYGfQMFDIA3BQKwIxH1A7AzE8kCMbi0jUOwjEJ9iADpJFIgdgJgN5DxCmBGo4B7UVGsgDbMNyMQAH4AixSANsUCGJhBPAmIBIOYGYnQnAYUYfgPxdSYQixRAspPI8vR5oJNAweoCxN5AjC9Y60HxsBaIQRH3Boj3AjG+iPsB8gNQDfEAAIDIdEZhVaRSAAAAAElFTkSuQmCC) no-repeat 13px 50%;
-    padding-left: 29px;
-    width: 50px;
+    padding-left: 25px;
+    width: 48px;
+    float: right;
   }
-  .topbarfix .btnBuy.mBuySet .btnBuy__eLink:hover {
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoklEQVQoFWP8//8/AymABai4Boi1gLgKiGWAmB+IsYGfQMFDIA3BQKwIxH1A7AzE8kCMbi0jUOwjEJ9iADpJFIgdgJgN5DxCmBGo4B7UVGsgDbMNyMQAH4AixSANsUCGJhBPAmIBIOYGYnQnAYUYfgPxdSYQixRAspPI8vR5oJNAweoCxN5AjC9Y60HxsBaIQRH3Boj3AjG+iPsB8gNQDfEAAIDIdEZhVaRSAAAAAElFTkSuQmCC) no-repeat 13px 50%;
-  }
-  .topbarfix .btnBuy.mBuySet .btnBuy__eLink:active {
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoklEQVQoFWP8//8/AymABai4Boi1gLgKiGWAmB+IsYGfQMFDIA3BQKwIxH1A7AzE8kCMbi0jUOwjEJ9iADpJFIgdgJgN5DxCmBGo4B7UVGsgDbMNyMQAH4AixSANsUCGJhBPAmIBIOYGYnQnAYUYfgPxdSYQixRAspPI8vR5oJNAweoCxN5AjC9Y60HxsBaIQRH3Boj3AjG+iPsB8gNQDfEAAIDIdEZhVaRSAAAAAElFTkSuQmCC) no-repeat 13px 50%;
+  .topbarfix .btnBuy.mBuySet .btnBuy__eLink:after {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoklEQVQoFWP8//8/AymABai4Boi1gLgKiGWAmB+IsYGfQMFDIA3BQKwIxH1A7AzE8kCMbi0jUOwjEJ9iADpJFIgdgJgN5DxCmBGo4B7UVGsgDbMNyMQAH4AixSANsUCGJhBPAmIBIOYGYnQnAYUYfgPxdSYQixRAspPI8vR5oJNAweoCxN5AjC9Y60HxsBaIQRH3Boj3AjG+iPsB8gNQDfEAAIDIdEZhVaRSAAAAAElFTkSuQmCC) no-repeat 0 0;
+    top: 6px;
+    left: 10px;
+    width: 12px;
+    height: 12px;
   }
   .topbarfix .btnBuy.mBuySet .btnBuy__eLink.mBought {
-    padding-left: 0;
-    width: 170px;
+    padding: 0;
+    width: 73px;
+  }
+  .topbarfix .btnBuy.mBuySet .btnBuy__eLink.mBought:after {
+    background: none;
+  }
+  .topbarfix .btnBuy.mBuySet .btnBuy__eLink.mDisabled {
     text-align: center;
-    background: #ffffff;
+    width: 86px;
+    padding-left: 0;
+  }
+  .topbarfix .btnBuy.mBuySet .btnBuy__eLink.mDisabled:after {
+    background: none;
   }
 }
 /*---END----Наборы пакетов/лини мебели/наборы мебели---------*/
