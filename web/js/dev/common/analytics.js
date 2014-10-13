@@ -202,7 +202,7 @@
 
     // TODO вынести инициализацию трекера из ports.js
     try {
-        if (ga && (typeof ga === 'function') && ga.getAll().length == 0) {
+        if (typeof ga === 'function' && ga.getAll().length == 0) {
             ga( 'create', 'UA-25485956-5', 'enter.ru' );
         }
     } catch (e) {
