@@ -50,7 +50,6 @@ class CompareAction {
         $page = new \View\Compare\CompareLayout();
         $page->setParam('compareGroups', $compareGroups);
         $page->setParam('activeCompareGroupIndex', $this->getActiveCompareGroupIndex($compareGroups, $request->get('categoryId')));
-        $page->setParam('page', $page);
         return new \Http\Response($page->show());
     }
 
