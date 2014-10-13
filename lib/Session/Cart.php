@@ -2,8 +2,6 @@
 
 namespace Session;
 
-use Helper\TemplateHelper;
-
 class Cart {
 
     /** @var string */
@@ -176,7 +174,7 @@ class Cart {
         $this->storage->set($this->sessionNameNC, $data);
     }
 
-    /** Дополняет данные в сессии для продукта
+    /** Дополняет данные в сессии для продукта (новая корзина)
      * @param \Model\Product\Entity $product
      */
     public function updateProductNC(\Model\Product\Entity $product) {
@@ -187,8 +185,8 @@ class Cart {
         $item['price']  = $product->getPrice();
         $item['image']  = $product->getImageUrl();
         $item['url']    = $product->getLink();
-        $item['category']       = $product->getLastCategory()->getName();
-        $item['rootCategory']   = $product->getMainCategory()->getName();
+        $item['category']       = [ 'name' => $product->getLastCategory()->getName()];
+        $item['rootCategory']   = [ 'name' => $product->getMainCategory()->getName()];
 
         $data['product'][$product->getId()] = $item;
 
@@ -209,8 +207,8 @@ class Cart {
             'price'         => $product->getPrice(),
             'image'         => $product->getImageUrl(),
             'url'           => $product->getLink(),
-            'rootCategory'  => $product->getMainCategory()->getName(),
-            'category'      => $product->getLastCategory()->getName()
+            'rootCategory'  => [ 'name' => $product->getMainCategory()->getName()],
+            'category'      => [ 'name' => $product->getLastCategory()->getName()]
         ];
     }
 
