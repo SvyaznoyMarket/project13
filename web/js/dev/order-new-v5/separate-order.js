@@ -1095,7 +1095,7 @@
 		productError = {
 			// Товар недоступен для продажи
 			'default': function( product ) {
-				var msg = 'Товар '+product.name+' недоступен для продажи.',
+				var msg = 'Товар ' + (product.name ? product.name : '') + ' недоступен для продажи.',
 
 					productErrorIsResolve = $.Deferred();
 				// end of vars

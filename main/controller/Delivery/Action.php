@@ -119,6 +119,7 @@ class Action {
                 \App::config()->coreV2['timeout'] * 4
             );
             $client->execute();
+
             if ($exception instanceof \Exception) {
                 throw $exception;
             }
