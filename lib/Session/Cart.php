@@ -187,6 +187,8 @@ class Cart {
         $item['price']  = $product->getPrice();
         $item['image']  = $product->getImageUrl();
         $item['url']    = $product->getLink();
+        $item['category']       = $product->getLastCategory()->getName();
+        $item['rootCategory']   = $product->getMainCategory()->getName();
 
         $data['product'][$product->getId()] = $item;
 
@@ -200,13 +202,15 @@ class Cart {
      */
     public function formatProductNC(\Model\Product\Entity $product, $quantity) {
         return [
-            'id'        => $product->getId(),
-            'ui'        => $product->getUi(),
-            'quantity'  => $quantity,
-            'name'      => $product->getName(),
-            'price'     => $product->getPrice(),
-            'image'     => $product->getImageUrl(),
-            'url'       => $product->getLink()
+            'id'            => $product->getId(),
+            'ui'            => $product->getUi(),
+            'quantity'      => $quantity,
+            'name'          => $product->getName(),
+            'price'         => $product->getPrice(),
+            'image'         => $product->getImageUrl(),
+            'url'           => $product->getLink(),
+            'rootCategory'  => $product->getMainCategory()->getName(),
+            'category'      => $product->getLastCategory()->getName()
         ];
     }
 

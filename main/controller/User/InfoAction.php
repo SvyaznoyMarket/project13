@@ -87,7 +87,7 @@ class InfoAction {
                 $responseData['cart']['quantity'] = $cart->getProductsQuantity();
 
                 foreach ($productsNC as $id => $value) {
-                    foreach (['name', 'price', 'url', 'image'] as $prop) {
+                    foreach (['name', 'price', 'url', 'image', 'category', 'rootCategory'] as $prop) {
                         if (!isset($value[$prop]) || empty($value[$prop])) {
                             $productsToUpdate[] = $id;
                             break;
@@ -99,28 +99,27 @@ class InfoAction {
                     $cart->updateProductNC($product);
                 }
 
-
                 $cartProductData = [];
                 foreach ($cart->getProductsNC() as $cartProduct) {
 
-                    if (!$product) { // SITE-4400
-                        \App::logger()->error(['Товар не найден', 'product' => ['id' => $cartProduct->getId()], 'sender' => __FILE__ . ' ' .  __LINE__], ['cart']);
+                    if (!$cartProduct) { // SITE-4400
+                        \App::logger()->error(['Товар не найден', 'product' => ['id' => $cartProduct['id']], 'sender' => __FILE__ . ' ' .  __LINE__], ['cart']);
 
                         continue;
                     }
 
                     $cartProductData[] = [
-                        'id'                => $cartProduct->getId(),
-                        'name'              => $product ? $product->getName() : null,
-                        'price'             => $cartProduct->getPrice(),
-                        'formattedPrice'    => $helper->formatPrice($cartProduct->getPrice()),
-                        'quantity'          => $cartProduct->getQuantity(),
-                        'deleteUrl'         => $helper->url('cart.product.delete', ['productId' => $cartProduct->getId()]),
-                        'link'              => $product ? $product->getLink() : null,
-                        'img'               => $product ? $product->getImageUrl() : null,
-                        'cartButton'        => [
-                            'id' => \View\Id::cartButtonForProduct($cartProduct->getId()),
-                        ],
+                        'id'                => $cartProduct['id'],
+                        'name'              => $cartProduct['name'],
+                        'price'             => $cartProduct['price'],
+                        'formattedPrice'    => $helper->formatPrice($cartProduct['price']),
+                        'quantity'          => $cartProduct['quantity'],
+                        'deleteUrl'         => $helper->url('cart.product.delete', ['productId' => $cartProduct['id']]),
+                        'link'              => $cartProduct['url'],
+                        'img'               => $cartProduct['image'],
+                        'cartButton'        => [ 'id' => \View\Id::cartButtonForProduct($cartProduct['id']), ],
+                        'category'          => $cartProduct['category'],
+                        'rootCategory'      => $cartProduct['rootCategory'],
                     ];
 
                 }
