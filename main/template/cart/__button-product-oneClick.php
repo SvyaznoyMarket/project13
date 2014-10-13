@@ -49,7 +49,7 @@ return function (
 ?>
 
     <div class="btnOneClickBuy">
-        <a class="btnOneClickBuy__eLink <?= $class ?>" href="<?= $url ?>" data-group="<?= $product->getId() ?>"><?= $value ?></a>
+        <a class="btnOneClickBuy__eLink <?= $class ?>" href="<?= $url ?>"><?= $value ?></a>
     </div>
 
 <? };

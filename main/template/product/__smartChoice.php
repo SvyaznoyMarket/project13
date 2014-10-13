@@ -22,7 +22,7 @@ return function(
 
 ?>
 
-    <div class="specialPrice clearfix">
+    <div class="specialPrice clearfix js-specialPrice">
 
     <? foreach ($smartChoiceProducts as $key => $product) : ?>
 

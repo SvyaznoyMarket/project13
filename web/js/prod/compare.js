@@ -19,7 +19,7 @@
 			model.link = product.link;
 			model.price = product.price;
 			model.priceOld = product.priceOld;
-			model.inShopOnly = product.inShopOnly;
+			model.inShopStockOnly = product.inShopStockOnly;
 			model.inShopShowroomOnly = product.inShopShowroomOnly;
 			model.isBuyable = product.isBuyable;
 			model.statusId = product.statusId;
@@ -175,13 +175,13 @@
 			columnContainers.css('z-index', '120');
 			sameContainers.css('z-index', '130');
 
-			function updateCell(cells) {
-				if (!cells) {
-					cells = $($.merge($.makeArray(rowContainers), $.makeArray(columnContainers), $.makeArray(sameContainers)));
+			function updateSize(containers) {
+				if (!containers) {
+					containers = $($.merge($.makeArray(rowContainers), $.makeArray(columnContainers), $.makeArray(sameContainers)));
 				}
 
 				var containerStyles = {};
-				cells.each(function(key) {
+				containers.each(function(key) {
 					$(this).attr('style', function(i, style) {
 						return (style || '').replace(/height:[^;]+;?/g, '');
 					});
@@ -200,7 +200,7 @@
 					});
 				});
 
-				cells.each(function(key) {
+				containers.each(function(key) {
 					var container = $(this),
 						cell = container.closest('th, td'),
 						cellHeight = cell.height(),
@@ -255,7 +255,7 @@
 						}
 
 						setTimeout(function() {
-							updateCell($($.merge($.makeArray(rowContainers), $.makeArray(sameContainers))));
+							updateSize($($.merge($.makeArray(rowContainers), $.makeArray(sameContainers))));
 
 							rowContainers.css({
 								'position': 'fixed',
@@ -297,7 +297,7 @@
 					});
 
 					setTimeout(function() {
-						updateCell($($.merge($.makeArray(rowContainers), $.makeArray(sameContainers))));
+						updateSize($($.merge($.makeArray(rowContainers), $.makeArray(sameContainers))));
 					}, 0);
 				}
 
@@ -356,14 +356,14 @@
 				offset = firstContainerCell.offset();
 			}
 
-			updateCell();
+			updateSize();
 			updatePosition();
 
 			windowElement.scroll(updatePosition);
 			windowElement.resize(resizeHandler);
 
 			return {
-				updateCell: updateCell,
+				updateSize: updateSize,
 				destroy: function(){
 					windowElement.unbind('scroll', updatePosition);
 					windowElement.unbind('resize', resizeHandler);
@@ -435,7 +435,7 @@
 
 		compareModel.similarOnly.subscribe(function(){
 			if (fixedTableCells) {
-				fixedTableCells.updateCell();
+				fixedTableCells.updateSize();
 			}
 
 			updateElements();
@@ -478,6 +478,9 @@
 
 					updateSimilarPropertiesDisplay();
 					updateElements();
+					if (fixedTableCells) {
+						fixedTableCells.updateSize(); // Иначе после удаления товара иногда оставшиеся товары не сдвигаются влево (на место удалённого товара)
+					}
 				}
 			});
 		});

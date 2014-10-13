@@ -15,7 +15,13 @@
 						$('.specialBorderBox').append($slider);
 						$('.smartChoiceSliderToggle-'+i).show();
 					});
-					$('.bGoodsSlider').goodsSlider();
+
+					var goodsSlider = $('.bGoodsSlider');
+					goodsSlider.goodsSlider();
+					goodsSlider.each(function() {
+						ko.applyBindings(ENTER.UserModel, this);
+					});
+
 					console.info('smartchoice ajax: ', data.result);
 				}
 			}
@@ -67,4 +73,8 @@
 		track('SmartChoice_similar_click', article);
 	});
 
+	var $specialPrice = $('.js-specialPrice');
+	if ($specialPrice.length) {
+		ko.applyBindings(ENTER.UserModel, $specialPrice[0]);
+	}
 });

@@ -81,15 +81,13 @@ return function (
                         <div class="productName"><a href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a></div>
                         <div class="productPrice"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
 
-                    <? if (!$product->getKit()) : ?>
-                        <?= $helper->render('cart/__button-product', [
-                            'product'    => $product,
-                            'directLink' => true,
-                            'onClick'    => $addToCartJS ? $addToCartJS : null,
-                        ]) // Кнопка купить ?>
-                    <? endif ?>
-                        <? if ($product->getKit()) : ?>
+                        <? if ($product->getKit() && !$product->getIsKitLocked()) : ?>
                             <a class="btnView mBtnGrey" href="<?= $product->getLink() ?>">Посмотреть</a> <!--TODO-zra стиль для кнопки "Посмотреть" -->
+                        <? else: ?>
+                            <?= $helper->render('cart/__button-product', [
+                                'product'    => $product,
+                                'onClick'    => $addToCartJS ? $addToCartJS : null,
+                            ]) // Кнопка купить ?>
                         <? endif ?>
                     </div>
                 </li>

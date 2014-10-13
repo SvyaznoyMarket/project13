@@ -12,21 +12,22 @@ class ProductButtonAction {
     public function execute(
         \Helper\TemplateHelper $helper,
         \Model\Product\BasicEntity $product,
-        $url = null
+        $onClick = null
     ) {
         $data = [
-            'disabled'   => null,
+            'disabled'   => false,
             'url'        => null,
             'value'      => null,
-            'inShopOnly' => null,
+            'inShopOnly' => false,
+            'class'      => \View\Id::cartButtonForProduct($product->getId()),
+            'onClick'    => $onClick,
             'data'       => [
-                'group'  => $product->getId(),
+                'productId' => $product->getId(),
                 'upsale' => json_encode([
                     'url' => $helper->url('product.upsale', ['productId' => $product->getId()]),
                     'fromUpsale' => ($helper->hasParam('from') && 'cart_rec' === $helper->getParam('from')) ? true : false,
                 ]),
             ],
-            'class'      => \View\Id::cartButtonForProduct($product->getId()),
         ];
 
         /** @var $region \Model\Region\Entity|null */
@@ -37,18 +38,13 @@ class ProductButtonAction {
             $data['disabled'] = true;
             $data['url'] = '#';
             $data['class'] .= ' mDisabled jsBuyButton';
-            $data['value'] = 'Нет';
-        } else if ($product->isInShopShowroomOnly()) {
-            $data['disabled'] = true;
-            $data['url'] = '#';
-            $data['class'] .= ' mDisabled jsBuyButton';
-            $data['value'] = 'На витрине';
-        } else if (5 == $product->getStatusId()) { // SITE-2924, SITE-3109, SITE-3957
+            $data['value'] = $product->isInShopShowroomOnly() ? 'На витрине' : 'Нет';
+        } else if (5 == $product->getStatusId()) { // SITE-2924
             $data['disabled'] = true;
             $data['url'] = '#';
             $data['class'] .= ' mDisabled jsBuyButton';
             $data['value'] = 'Купить';
-        } else if ($product->isInShopOnly() && $forceDefaultBuy) {
+        } else if ($product->isInShopStockOnly() && $forceDefaultBuy) {
             $data['inShopOnly'] = true;
             $data['url'] = $helper->url('cart.oneClick.product.set', ['productId' => $product->getId()]);
             $data['class'] .= ' mShopsOnly jsOneClickButton';

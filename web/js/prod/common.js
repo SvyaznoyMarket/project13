@@ -4,28 +4,20 @@
 			var cart = ko.unwrap(valueAccessor()),
 				$elem = $(element),
 				productId = $elem.data('product-id'),
-				inShopOnly = $elem.data('in-shop-only'),
+				inShopStockOnly = $elem.data('in-shop-stock-only'),
 				inShopShowroomOnly = $elem.data('in-shop-showroom-only'),
 				isBuyable = $elem.data('is-buyable'),
 				statusId = $elem.data('status-id');
 			
 			if (typeof isBuyable != 'undefined' && !isBuyable) {
 				$elem
-					.text('Нет')
+					.text(typeof inShopShowroomOnly != 'undefined' && inShopShowroomOnly ? 'На витрине' : 'Нет')
 					.addClass('mDisabled')
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
 					.addClass('jsBuyButton')
 					.attr('href', '#');
-			} else if (typeof inShopShowroomOnly != 'undefined' && inShopShowroomOnly) {
-				$elem
-					.text('На витрине')
-					.addClass('mDisabled')
-					.removeClass('mShopsOnly')
-					.removeClass('mBought')
-					.addClass('jsBuyButton')
-					.attr('href', '#');
-			} else if (typeof statusId != 'undefined' && 5 == statusId) { // SITE-2924, SITE-3109, SITE-3957
+			} else if (typeof statusId != 'undefined' && 5 == statusId) { // SITE-2924
 				$elem
 					.text('Купить')
 					.addClass('mDisabled')
@@ -33,7 +25,7 @@
 					.removeClass('mBought')
 					.addClass('jsBuyButton')
 					.attr('href', '#');
-			} else if (typeof inShopOnly != 'undefined' && inShopOnly && ENTER.config.pageConfig.user.region.forceDefaultBuy) {
+			} else if (typeof inShopStockOnly != 'undefined' && inShopStockOnly && ENTER.config.pageConfig.user.region.forceDefaultBuy) {
 				$elem
 					.text('Резерв')
 					.removeClass('mDisabled')
@@ -493,7 +485,7 @@
         /**
          * Объект транзакции
          * @param data Object {id,affiliation,total,shipping,tax,city}
-         * @returns {}
+         * @returns Object
          * @constructor
          */
         GoogleTransaction = function GoogleTransactionF(data) {
@@ -527,12 +519,13 @@
         /**
          * Объект продукта
          * @param data Object {id,name,category,sku,price,quantity}
-         * @returns {}
+         * @param transaction_id String
+         * @returns Object
          * @constructor
          */
-        GoogleProduct = function GoogleProductF(data) {
+        GoogleProduct = function GoogleProductF(data, transaction_id) {
 
-            this.id = data.id ? String(data.id) : '';
+            this.id = transaction_id ? String(transaction_id) : '';
             this.name = data.name ? String(data.name) : '';
             this.category = data.category ? String(data.category) : '';
             this.sku = data.sku ? String(data.sku) : '';
@@ -575,7 +568,7 @@
             try {
 
                 googleTrans = new GoogleTransaction(eventObject.transaction);
-                googleProducts = $.map(eventObject.products, function(elem){ return new GoogleProduct(elem)});
+                googleProducts = $.map(eventObject.products, function(elem){ return new GoogleProduct(elem, googleTrans.id)});
 
                 // Classic Tracking Code
                 if (typeof _gaq === 'object') {
@@ -614,7 +607,7 @@
 
     // TODO вынести инициализацию трекера из ports.js
     try {
-        if (ga && (typeof ga === 'function') && ga.getAll().length == 0) {
+        if (typeof ga === 'function' && ga.getAll().length == 0) {
             ga( 'create', 'UA-25485956-5', 'enter.ru' );
         }
     } catch (e) {

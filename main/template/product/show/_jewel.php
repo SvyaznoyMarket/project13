@@ -147,7 +147,6 @@
 
         <?= $helper->render('cart/__button-product', [
             'product' => $product,
-            'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null,
             'onClick' => isset($addToCartJS) ? $addToCartJS : null,
         ]) // Кнопка купить ?>
 

@@ -105,7 +105,7 @@ class CompareAction {
                         'link' => $product->getLink(),
                         'price' => $templateHelper->formatPrice($product->getPrice()),
                         'priceOld' => $templateHelper->formatPrice($product->getPriceOld()),
-                        'inShopOnly' => $product->isInShopOnly(),
+                        'inShopStockOnly' => $product->isInShopStockOnly(),
                         'inShopShowroomOnly' => $product->isInShopShowroomOnly(),
                         'isBuyable' => $product->getIsBuyable(),
                         'statusId' => $product->getStatusId(),

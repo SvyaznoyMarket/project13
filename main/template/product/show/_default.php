@@ -158,10 +158,8 @@ $isKitPage = (bool)$product->getKit();
         <? if ($isKitPage && !$product->getIsKitLocked()) : ?>
             <?= $helper->render('cart/__button-product-kit', ['product' => $product]) // Кнопка купить для набора продуктов ?>
         <? else : ?>
-
             <?= $helper->render('cart/__button-product', [
                 'product' => $product,
-                'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null,
                 'onClick' => isset($addToCartJS) ? $addToCartJS : null,
             ]) // Кнопка купить ?>
         <? endif ?>
