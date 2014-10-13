@@ -9074,15 +9074,12 @@
     -webkit-transition: all 0.05s linear;
     -moz-transition: all 0.05s linear;
     transition: all 0.05s linear;
-    width: 100px;
-    height: 25px;
-    margin: 0 0 0 -1px;
   }
   .bSlider__eList .btnBuy .btnBuy__eLink {
     width: 100px;
-    height: 25px;
+    height: 27px;
     font-size: 14px;
-    line-height: 25px;
+    line-height: 26px;
   }
   .bSlider__eList .btnView {
     -moz-opacity: 0;
@@ -9402,8 +9399,11 @@
 /*------СТИЛИ КНОПКИ "КУПИТЬ"------*/
 @media all {
   .btnBuy {
-    width: 170px;
-    height: 35px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    overflow: hidden;
+    text-align: center;
   }
   .btnBuy.mBtnPayPal {
     width: 195px;
@@ -9443,6 +9443,15 @@
     -moz-border-radius: 5px;
     border-radius: 5px;
     display: block;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
     width: 170px;
     height: 35px;
     text-align: center;
@@ -9834,24 +9843,22 @@
     bottom: 0;
     display: block;
     width: auto;
-    height: 25px;
+    height: 27px;
     padding: 0 10px;
     text-align: center;
     text-indent: 0;
     color: #ffffff;
-    border: 1px solid #000;
-    background: #000;
+    border: 1px solid #000000;
+    background: #000000;
     text-shadow: none;
-    font: normal 12px tahoma, verdana, arial, helvetica, sans-serif;
-    line-height: 21px;
-    line-height: 25px;
+    font-size: 12px;
+    line-height: 26px;
   }
   .bBrandCatalog .goodsbox__inner .btnBuy__eLink.mBought {
     width: auto;
-    height: 21px;
-    color: #000;
-    border: 1px solid #000;
-    background: #fff;
+    color: #000000;
+    border: 1px solid #000000;
+    background: #ffffff;
   }
   .bBrandCatalog .goodsbox__inner .btnCmprb {
     position: absolute;
@@ -12115,15 +12122,13 @@
   }
   .bBtnLine .btnBuy {
     float: left;
-    width: 68px;
-    margin-right: 15px;
-    height: 25px;
+    margin-right: 10px;
   }
   .bBtnLine .btnBuy__eLink {
     width: 72px;
-    height: 25px;
+    height: 27px;
     font-size: 12px;
-    line-height: 25px;
+    line-height: 26px;
   }
   .bBtnLine .btnBuy__eLink.mBought {
     -webkit-box-shadow: none;
