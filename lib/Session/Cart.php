@@ -6,6 +6,8 @@ class Cart {
 
     /** @var string */
     private $sessionName;
+    /** @var string Сессионное имя новой корзины */
+    private $sessionNameNC = 'cart';
     /** @var \Http\Session */
     private $storage;
     /** @var \Model\Cart\Product\Entity[]|null */
@@ -107,6 +109,14 @@ class Cart {
             $this->storage->set($this->sessionName, $data);
             \App::logger()->warn(sprintf('Пользователь sessionId=%s добавил %s-й товар в корзину', $this->storage->getId(), $productCount), ['session', 'cart']);
         }
+
+        // новый формат корзины
+        $data = $this->storage->get('cart');
+        if (!isset($data['product']) || !is_array($data['product'])) {
+            $this->storage->set('cart', [
+                'product' => [],
+            ]);
+        }
     }
 
     /**
@@ -150,6 +160,71 @@ class Cart {
 
         $this->storage->set($this->sessionName, $data);
         $this->clearEmpty();
+
+        // новый формат
+        $data = $this->storage->get($this->sessionNameNC);
+        $item = $this->formatProductNC($product, $quantity);
+        if (!isset($data['product'][$product->getId()]['added'])) {
+            $item['added'] = date('c');
+        } else {
+            $item = array_merge($data['product'][$product->getId()], $item);
+        }
+        $data['product'][$product->getId()] = $item;
+        if ($quantity == 0 ) unset($data['product'][$product->getId()]);
+        $this->storage->set($this->sessionNameNC, $data);
+    }
+
+    /** Дополняет данные в сессии для продукта (новая корзина)
+     * @param \Model\Product\Entity $product
+     */
+    public function updateProductNC(\Model\Product\Entity $product) {
+        $data = $this->storage->get($this->sessionNameNC);
+        $item = $data['product'][$product->getId()];
+
+        $item['name']   = $product->getName();
+        $item['price']  = $product->getPrice();
+        $item['image']  = $product->getImageUrl();
+        $item['url']    = $product->getLink();
+        $item['category']       = [ 'name' => $product->getLastCategory()->getName()];
+        $item['rootCategory']   = [ 'name' => $product->getMainCategory()->getName()];
+
+        $data['product'][$product->getId()] = $item;
+
+        $this->storage->set($this->sessionNameNC, $data);
+    }
+
+    /** Возвращает массив данных для продукта в сессии (новая корзина)
+     * @param \Model\Product\Entity $product
+     * @param $quantity
+     * @return array
+     */
+    public function formatProductNC(\Model\Product\Entity $product, $quantity) {
+        return [
+            'id'            => $product->getId(),
+            'ui'            => $product->getUi(),
+            'quantity'      => $quantity,
+            'name'          => $product->getName(),
+            'price'         => $product->getPrice(),
+            'image'         => $product->getImageUrl(),
+            'url'           => $product->getLink(),
+            'rootCategory'  => [ 'name' => $product->getMainCategory()->getName()],
+            'category'      => [ 'name' => $product->getLastCategory()->getName()]
+        ];
+    }
+
+    /** Возвращает данные новой корзины
+     * @return array|null
+     */
+    public function getCartNC() {
+        return $this->storage->get($this->sessionNameNC);
+    }
+
+    /** Возвращает продукты новой корзины
+     * @return array|null
+     */
+    public function getProductsNC(){
+        $data = $this->storage->get($this->sessionNameNC);
+        return isset($data['product']) ? $data['product'] : null;
     }
 
     /**
