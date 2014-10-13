@@ -17,13 +17,11 @@ if ($disabled) {
 } else {
     $url = $page->url('cart.product.set', array('productId' => $product->getId()));
 }
-$inCart = \App::user()->getCart()->hasProduct($product->getId());
-$btnText = $inCart ? 'В корзине' : 'Купить';
 
 $imgSize = isset($itemsPerRow) && 3 == $itemsPerRow ? 6 : 2;
 ?>
 
-<li class="bBrandGoodsList__eItem">
+<li class="bBrandGoodsList__eItem js-jewelListing">
   <div class="goodsbox" ref="<?= $product->getToken(); ?>"><? //для корректной работы js ?>
     <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>" <?php if (isset($additionalData)) echo 'data-product="' . $page->json($additionalData) . '"' ?> <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
       <div class="bItemName"><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></div>
@@ -40,8 +38,10 @@ $imgSize = isset($itemsPerRow) && 3 == $itemsPerRow ? 6 : 2;
       <div class="bItemPrice"><span><?= $page->helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
 
       <? if ($product->getIsBuyable()): ?>
-        <?= $helper->render('cart/__button-product', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => $btnText]) // Кнопка купить ?>
+        <?= $helper->render('cart/__button-product', ['product' => $product]) // Кнопка купить ?>
       <? endif ?>
+
+      <a href="" class="btnCmprb jsCompareListLink" data-id="<?= $page->escape($product->getId()) ?>" data-bind="compareListBinding: compare"></a>
     </div>
 
       <?= $page->render('product/show/__corner_features', ['product' => $product]) ?>

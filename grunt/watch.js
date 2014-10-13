@@ -51,9 +51,14 @@ module.exports = function (grunt, options) {
             tasks: ['concat:cartJS', 'uglify:cartJS']
         },
 
+		compareJS:{
+            files: [ pathDev + 'compare/*.js'],
+            tasks: ['concat:compareJS', 'uglify:compareJS']
+        },
+
         commonJS:{
             files: [ pathDev + 'common/*.js'],
-            tasks: ['concat:commonJS', 'uglify:commonJS']
+            tasks: ['jsmin-sourcemap:common']
         },
 
         infopageJS:{

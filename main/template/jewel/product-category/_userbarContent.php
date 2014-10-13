@@ -18,10 +18,9 @@ if ($category) {
     }
 } ?>
 
-<div class="fixedTopBar__crumbs">
-    <a class="fixedTopBar__crumbsImg" href=""><img class="crumbsImg" src="<?= $category ? $category->getImageUrl() : '' ?>" /></a>
-    <div class="fixedTopBar__wrapCrumbsList">
+<div class="topbarfix_crumbs">
+    <a class="topbarfix_crumbsImg" href=""><img class="crumbsImg" src="<?= $category ? $category->getImageUrl() : '' ?>" /></a>
+    <div class="topbarfix_wrapCrumbsList">
         <?= $helper->render('__breadcrumbsUserbar', ['links' => $links]) ?>
-        <div class="transGradWhite"></div>
     </div>
 </div>

@@ -61,7 +61,7 @@ $helper = new \Helper\TemplateHelper();
     <? endif ?>
 
 	<? if ((bool)$productPager): ?>
-		<div class="bProductList">
+		<div class="bProductList js-lineListing">
 			<h3 class="bHeadSection">Товары серии <?= $line->getName() ?></h3>
 			<?= $page->render('product/_list', ['pager' => $productPager, 'view' => $productView, 'itemsPerRow' => 4]) ?>
 		</div>

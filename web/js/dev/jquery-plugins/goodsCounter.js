@@ -161,43 +161,6 @@
 							) {
 						return false;
 					}
-				},
-
-				/**
-				 * Обновление количества в поле ввода, если товар уже лежит в корзине. Вызывается событием «updatespinner» у body
-				 * 
-				 * @param	{Event}		e			Данные события
-				 * @param	{Array}		products	Массив продуктов
-				 * @param	{Object}	spinner		Ссылка на спиннеры принадлежащие купленному товару
-				 * @param	{Object}	input		Поля которые необходимо обновить
-				 */
-				updatespinner = function updatespinner( e, products ) {
-					var
-						products = ( products ) ? products : ENTER.config.clientCart.products,
-						i = 0,
-						spinner,
-						input;
-					// end of vars
-					
-					// Маркировка одиночного продукта
-					if ( typeof products === 'number' ) {
-						spinner = $('[data-spinner-for="id-cartButton-product-'+products+'"]');
-						spinner.addClass('mDisabled');
-						input = spinner.find('input');
-						input.attr('disabled','disabled');
-
-						return;
-					}
-
-					// Массив продуктов
-					for ( i = products.length - 1; i >= 0; i-- ) {
-                        if (products[i].cartButton != undefined) {
-                            spinner = $('[data-spinner-for="' + products[i].cartButton.id + '"]');
-                            spinner.addClass('mDisabled');
-                            input = spinner.find('input');
-                            input.val(products[i].quantity).attr('disabled', 'disabled');
-                        }
-					}
 				};
 			//end of functions
 
@@ -205,7 +168,6 @@
 			minusBtn.on('click.goodsCounter',minusHandler);
 			input.on('keydown.goodsCounter', keydownHandler);
 			input.on('keyup.goodsCounter', keyupHandler);
-			$('body').on('updatespinner.goodsCounter', updatespinner);
 		});
 	};
 

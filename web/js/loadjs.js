@@ -252,6 +252,7 @@
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
+					.script( knockoutUrl )
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -265,6 +266,7 @@
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
+					.script( knockoutUrl )
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -284,6 +286,7 @@
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
+					.script( knockoutUrl )
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -305,6 +308,7 @@
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
+					.script( knockoutUrl )
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -321,6 +325,7 @@
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
+					.script( knockoutUrl )
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -338,6 +343,7 @@
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
+					.script( knockoutUrl )
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -358,6 +364,7 @@
 					.script( getWithVersion('library.js') )
 					.script( directCreditUrl )
 					.script( mustacheUrl )
+					.script( knockoutUrl )
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -371,11 +378,32 @@
 			}).runQueue();
 		},
 
+		'compare': function() {
+			$LAB.queueWait( function() {
+				$LAB.script( getWithVersion('jquery-plugins.js') )
+					.script( getWithVersion('library.js') )
+					.script( directCreditUrl )
+					.script( mustacheUrl )
+					.script( knockoutUrl )
+					.script( loadDebugPanel )
+					.wait()
+					.script( getWithVersion('common.js') )
+					.wait()
+					.script( getWithVersion('compare.js') )
+					.wait()
+					.script( optimizelyUrl )
+					.script('adfox.asyn.code.ver3.min.js')
+					.wait()
+					.script( getWithVersion('ports.js') )
+			}).runQueue();
+		},
+
 		'lk': function() {
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
+					.script( knockoutUrl )
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -390,13 +418,13 @@
 
 		'order': function() {
 			$LAB.queueScript( yandexMapUrl )
-				.queueScript( knockoutUrl )
 				.queueWait( function() {
 					$LAB.script( getWithVersion('jquery-plugins.js') )
 						.script('JsHttpRequest.min.js')
 						.script( getWithVersion('library.js') )
 						.script( directCreditUrl )
 						.script( mustacheUrl )
+						.script( knockoutUrl )
 						.script( loadDebugPanel )
 						.wait()
 						.script( getWithVersion('common.js') )
@@ -411,7 +439,6 @@
 
 		'order_new': function() {
 			$LAB.queueScript( yandexMapUrl )
-				.queueScript( knockoutUrl )
 				.queueScript( kladr )
 				.queueWait( function() {
 					$LAB.script( getWithVersion('jquery-plugins.js') )
@@ -419,6 +446,7 @@
 						.script( getWithVersion('library.js') )
 						.script( directCreditUrl )
 						.script( mustacheUrl )
+						.script( knockoutUrl )
 						.script( loadDebugPanel )
 						.wait()
 						.script( getWithVersion('common.js') )
@@ -436,6 +464,7 @@
                     $LAB.script( getWithVersion('jquery-plugins.js') )
                         .script( getWithVersion('library.js') )
                         .script( mustacheUrl )
+                        .script( knockoutUrl )
                         .script( loadDebugPanel )
                         .wait()
                         .script( getWithVersion('common.js') )
@@ -451,6 +480,7 @@
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
+					.script( knockoutUrl )
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -469,6 +499,7 @@
 					.script( getWithVersion('library.js') )
 					.script( historyUrl )
 					.script( mustacheUrl )
+					.script( knockoutUrl )
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -486,7 +517,6 @@
 
 		'product_card': function() {
 			$LAB
-				// .queueScript( knockoutUrl )
 				// .queueScript( yandexMapUrl )
 				.queueWait( function() {
 					$LAB.script( getWithVersion('jquery-plugins.js') )
@@ -494,6 +524,7 @@
 						.script('JsHttpRequest.min.js')
 						.script( directCreditUrl )
 						.script( mustacheUrl )
+						.script( knockoutUrl )
 						.script( loadDebugPanel )
 						.wait()
 						.script( getWithVersion('common.js') )
@@ -512,6 +543,7 @@
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( mustacheUrl )
+					.script( knockoutUrl )
 					.script( loadDebugPanel )
 					.wait()
 					.script( getWithVersion('common.js') )
@@ -529,6 +561,7 @@
 					$LAB.script( getWithVersion('jquery-plugins.js') )
 						.script( getWithVersion('library.js') )
 						.script( mustacheUrl )
+						.script( knockoutUrl )
 						.script( loadDebugPanel )
 						.wait()
 						.script( getWithVersion('common.js') )
@@ -542,32 +575,12 @@
 			}).runQueue();
 		},
 
-		// неиспользуется
-		'product_stock': function() {
-			$LAB.queueScript( yandexMapUrl )
-				.queueScript( knockoutUrl )
-				.queueWait( function() {
-					$LAB.script( getWithVersion('jquery-plugins.js') )
-						.script( getWithVersion('library.js') )
-						.script( mustacheUrl )
-						.script( loadDebugPanel )
-						.wait()
-						.script( getWithVersion('common.js') )
-						.wait()
-						.script( getWithVersion('product.js') )
-						.script( getWithVersion('oneclick.js') )
-						.wait()
-						.script( optimizelyUrl )
-						.script('adfox.asyn.code.ver3.min.js')
-						.wait()
-						.script( getWithVersion('ports.js') )
-				}).runQueue();
-		},
         'slots': function() {
             $LAB.queueWait( function() {
                 $LAB.script( getWithVersion('jquery-plugins.js') )
                     .script( getWithVersion('library.js') )
                     .script( mustacheUrl )
+                    .script( knockoutUrl )
                     .script( loadDebugPanel )
                     .wait()
                     .script( getWithVersion('common.js') )

@@ -20,7 +20,12 @@ class CompleteAction extends OrderV3 {
      * @return \Http\Response
      * @throws \Exception
      */
-    public function execute() {
+    public function execute(\Http\Request $request) {
+        $controller = parent::execute($request);
+        if ($controller) {
+            return $controller;
+        }
+
         \App::logger()->debug('Exec ' . __METHOD__);
 
         /** @var \Model\Order\Entity[] $orders */

@@ -712,8 +712,7 @@
 	var product = $('#jsProductCard').data('value'),
         packageSetBtn = $('.jsChangePackageSet'),
 		packageSetWindow = $('.jsPackageSetPopup'),
-        packageProducts = $('.mPackageSetEdit').data('value'),
-        knockoutUrl = ENTER.config.debug ? '/js/vendor/knockout.js' :'/js/prod/knockout.min.js'; // TODO-zra говнокод
+        packageProducts = $('.mPackageSetEdit').data('value');
 
 	/**
 	 * Показ окна с изменение комплекта 
@@ -740,7 +739,7 @@
         packageSetWindow.trigger('close.lme');
     });
 
-    if (!window.ko) $.getScript(knockoutUrl, init); else init();
+    init();
 
     function init() {
         var ko = window.ko;
@@ -892,7 +891,9 @@
 
         }
 
-        ko.applyBindings(new ProductList());
+		ko.cleanNode(document.querySelector('.jsPackageSetPopup')); // на всякий случай
+        ko.applyBindings(new ProductList(), document.querySelector('.jsPackageSetPopup'));
+
     }
 
 }(window.ENTER));
@@ -990,8 +991,11 @@ $(document).ready(function() {
 	/**
 	 * Подключение слайдера товаров
 	 */
-	$('.bGoodsSlider').goodsSlider();
-
+	$('.bGoodsSlider').goodsSlider({
+		onLoad: function(goodsSlider) {
+			ko.applyBindings(ENTER.UserModel, goodsSlider);
+		}
+	});
 
 	/**
 	 * Подключение кастомных дропдаунов
@@ -1070,7 +1074,7 @@ $(document).ready(function() {
 		$('.jsLifeGiftButton').bind('click', buyOneClickAndRedirect);
 		$('.jsOneClickButton').bind('click', buyOneClickAndRedirect);
 	})();
-	
+
 
 
 	/**
@@ -1087,7 +1091,7 @@ $(document).ready(function() {
 	// 	'rollindex': '.scrollbox div b',
 	// 	'propriate': ['.versioncontrol','.scrollbox']
 	// }
-	
+
 	// if( typeof( product_3d_small ) !== 'undefined' && typeof( product_3d_big ) !== 'undefined' )
 	// 	lkmv = new likemovie('#photobox', api, product_3d_small, product_3d_big )
 	// if( $('#bigpopup').length )
@@ -1095,20 +1099,20 @@ $(document).ready(function() {
 
 	// $('.viewme').click( function(){
 	// 	if ($(this).hasClass('maybe3d')){
-			
+
 	// 		return false
 	// 	}
 	// 	if ($(this).hasClass('3dimg')){
 
 	// 	}
-		
+
 	// 	if( mLib )
 	// 		mLib.show( $(this).attr('ref') , $(this).attr('href'))
 	// 	return false
 	// });
 
 
-	
+
 	// карточка товара - характеристики товара краткие/полные
 	if ( $('#productDescriptionToggle').length ) {
 		$('#productDescriptionToggle').toggle(

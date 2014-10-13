@@ -34,14 +34,6 @@ class ConfirmEmailPageWarn extends \View\DefaultLayout {
         return $this->render('enterprize/_contentHead', $this->params);
     }
 
-    public function slotUserbarEnterprize() {
-        return '';
-    }
-
-    public function slotUserbarEnterprizeContent() {
-        return '';
-    }
-
     public function slotEnterprizeConfirmJs() {
         $data = $this->getParam('enterprizeData');
         if ($data) {

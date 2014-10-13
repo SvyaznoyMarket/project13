@@ -30,17 +30,17 @@ if (0 == $i && $slice) {
 
 ?>
 <? if (isset($fixedBtn['name'])) { ?>
-<div class="fixedTopBar__up">
-    <a class="btnGrey fixedTopBar__upLink <?= $fixedBtn['class'] ?>" href="<?= $fixedBtn['link'] ?>" title="<?= $fixedBtn['title'] ?>">
+<div class="topbarfix_up">
+    <a class="btnGrey topbarfix_upLink <?= $fixedBtn['class'] ?>" href="<?= $fixedBtn['link'] ?>" title="<?= $fixedBtn['title'] ?>">
         <? if ($fixedBtn['showCorner']): ?><em class="cornerTop">&#9650;</em><? endif; ?>
         <?= $fixedBtn['name'] ?>
     </a>
 </div>
 <? } ?>
 
-<div class="fixedTopBar__crumbs">
+<div class="topbarfix_crumbs">
     <? if (!empty($categoryImg)): ?>
-        <a class="fixedTopBar__crumbsImg" href="#">
+        <a class="topbarfix_crumbsImg" href="#">
             <img class="crumbsImg" src="<?= $categoryImg ?>" alt="" />
         </a>
     <? endif; ?>

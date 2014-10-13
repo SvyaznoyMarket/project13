@@ -41,16 +41,18 @@ class InfoAction {
                 'success' => true,
                 'user'    => [
                     'name'         => null,
+                    'firstName'    => null,
+                    'lastName'     => null,
                     'isSubscribed' => null,
                     'link' => \App::router()->generate('user.login'),
                     'id' =>  null,
                     'email' =>  null,
-                    'hasEnterprizeCoupon' => null,
                 ],
                 'cart'    => [
                     'sum'      => 0,
                     'quantity' => 0,
                 ],
+                'compare'   => \App::session()->get(\App::config()->session['compareKey']),
                 'order'   => [
                     'hasCredit' => 1 == $request->cookies->get('credit_on'),
                 ],
@@ -61,12 +63,13 @@ class InfoAction {
             /** @var \Model\User\Entity|null $userEntity */
             if ($userEntity = $user->getEntity()) {
                 $responseData['user']['name'] = $userEntity->getName();
+                $responseData['user']['firstName'] = $userEntity->getFirstName();
+                $responseData['user']['lastName'] = $userEntity->getLastName();
                 $responseData['user']['link'] = \App::router()->generate('user.orders');
                 $responseData['user']['isSubscribed'] = $user->getEntity()->getIsSubscribed();
                 $responseData['user']['id'] = $userEntity->getId();
                 $responseData['user']['email'] = $userEntity->getEmail();
                 $responseData['user']['emailHash'] = md5($userEntity->getEmail());
-                $responseData['user']['hasEnterprizeCoupon'] = $userEntity->isEnterprizeMember();
                 $responseData['user']['sex'] = $userEntity->getSex(); // 1-мужской, 2-женский
 
                 // sclubNumber
@@ -100,16 +103,24 @@ class InfoAction {
                 $cartProductData = [];
                 foreach ($cart->getProductsNC() as $cartProduct) {
 
+                    if (!$product) { // SITE-4400
+                        \App::logger()->error(['Товар не найден', 'product' => ['id' => $cartProduct->getId()], 'sender' => __FILE__ . ' ' .  __LINE__], ['cart']);
+
+                        continue;
+                    }
+
                     $cartProductData[] = [
-                        'id'             => $cartProduct['id'],
-                        'name'           => $cartProduct['name'],
-                        'price'          => $cartProduct['price'],
-                        'formattedPrice' => $helper->formatPrice($cartProduct['price']),
-                        'quantity'       => $cartProduct['quantity'],
-                        'deleteUrl'      => $helper->url('cart.product.delete', ['productId' => $cartProduct['id']]),
-                        'url'            => $cartProduct['url'],
-                        'image'          => $cartProduct['image'],
-                        'cartButton'     => [ 'id' => \View\Id::cartButtonForProduct($cartProduct['id']), ],
+                        'id'                => $cartProduct->getId(),
+                        'name'              => $product ? $product->getName() : null,
+                        'price'             => $cartProduct->getPrice(),
+                        'formattedPrice'    => $helper->formatPrice($cartProduct->getPrice()),
+                        'quantity'          => $cartProduct->getQuantity(),
+                        'deleteUrl'         => $helper->url('cart.product.delete', ['productId' => $cartProduct->getId()]),
+                        'link'              => $product ? $product->getLink() : null,
+                        'img'               => $product ? $product->getImageUrl() : null,
+                        'cartButton'        => [
+                            'id' => \View\Id::cartButtonForProduct($cartProduct->getId()),
+                        ],
                     ];
 
                 }

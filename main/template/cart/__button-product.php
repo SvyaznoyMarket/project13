@@ -4,8 +4,6 @@ return function (
     \Helper\TemplateHelper $helper,
     \Model\Product\BasicEntity $product,
     $url = null,
-    $class = null,
-    $value = 'Купить',
     $directLink = false,
     $onClick = null
 ) {
@@ -13,7 +11,8 @@ return function (
     $region = \App::user()->getRegion();
     $forceDefaultBuy = $region ? $region->getForceDefaultBuy() : true;
 
-    $class = \View\Id::cartButtonForProduct($product->getId()) . ' ' . $class;
+    $value = \App::user()->getCart()->hasProduct($product->getId()) ? 'В корзине' : 'Купить';
+    $class = \View\Id::cartButtonForProduct($product->getId()) . ' btnBuy__eLink';
 
     if (!$directLink) {
         $class .= $product->isInShopStockOnly() && $forceDefaultBuy ? ' jsOneClickButton' : ' jsBuyButton';
@@ -41,7 +40,9 @@ return function (
         $urlParams = [
             'productId' => $product->getId(),
         ];
-        if ($product->getStatusId() === 5) $class .= ' mDisabled';
+        
+        // SITE-2924, SITE-3109
+        if ($product->getStatusId() === 5) $class .= ' mDisabled jsBuyButton';
         if ($helper->hasParam('sender')) {
             $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
         }
@@ -54,7 +55,14 @@ return function (
     ];
     ?>
     <div class="bWidgetBuy__eBuy btnBuy">
-        <a href="<?= $url ?>" class="<?= $class ?>" data-group="<?= $product->getId() ?>" data-upsale='<?= json_encode($upsaleData) ?>'<? if (!empty($onClick)): ?> onclick="<?= $onClick ?>" <? endif ?>><?= $value ?></a>
+        <a
+            href="<?= $url ?>"
+            class="<?= $class ?>"
+            data-product-id="<?= $product->getId() ?>"
+            data-upsale='<?= json_encode($upsaleData) ?>'
+            <? if (!empty($onClick)): ?> onclick="<?= $onClick ?>"<? endif ?>
+            data-bind="buyButtonBinding: cart"
+        ><?= $value ?></a>
     </div>
 
 <? };

@@ -10,17 +10,12 @@ class SetPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        //return $this->render('product/page-set', $this->params);
         return $this->render('product/page-set-new', $this->params);
     }
 
     public function slotBodyDataAttribute() {
         return 'product_catalog';
     }
-
-    /*public function slotSidebar() {
-        return $this->render('product/page-set-sidebar', $this->params);
-    }*/
 
     public function slotInnerJavascript() {
         /** @var $product \Model\Product\Entity */

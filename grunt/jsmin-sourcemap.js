@@ -38,6 +38,13 @@ module.exports = function (grunt, options) {
             srcRoot: '/js',
             cwd: 'web/js'
         },
+		compare: {
+            src: ['dev/compare/*.js'],
+            dest: 'prod/compare.js',
+            destMap: 'prod/compare.js.map',
+            srcRoot: '/js',
+            cwd: 'web/js'
+        },
         common: {
             src: ['dev/common/*.js'],
             dest: 'prod/common.js',

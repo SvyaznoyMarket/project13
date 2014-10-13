@@ -227,18 +227,6 @@ class DefaultLayout extends Layout {
         return '';
     }
 
-    public function slotUserbarEnterprize() {
-        if (!\App::config()->enterprize['enabled']) return '';
-
-        return $this->render('__userbarEnterprize', $this->params);
-    }
-
-    public function slotUserbarEnterprizeContent() {
-        if (!\App::config()->enterprize['enabled']) return '';
-
-        return $this->render('___userbarEnterprizeContent', $this->params);
-    }
-
     public function slotYandexMetrika() {
 
         if (\App::config()->yandexMetrika['enabled']) {

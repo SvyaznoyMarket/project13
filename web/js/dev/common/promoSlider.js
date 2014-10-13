@@ -169,7 +169,8 @@
 						slideTmpl = $(slideTmpl).attr("id", 'slide_id_' + slide);
 					}
 
-					$('.bPromoCatalogSliderWrap').append(slideTmpl);
+					var $slide = $(slideTmpl).appendTo('.bPromoCatalogSliderWrap');
+					ko.applyBindings(ENTER.UserModel, $slide[0]);
 
 					if ( $('.bPromoCatalogSliderWrap_eSlideLink').eq(slide).attr('href') === '' ) {
 						$('.bPromoCatalogSliderWrap_eSlideLink').eq(slide).removeAttr('href');

@@ -50,111 +50,6 @@ class Action {
     /**
      * @param string        $categoryPath
      * @param \Http\Request $request
-     * @return \Http\Response
-     * @throws \Exception\NotFoundException
-     */
-    public function slider($categoryPath, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
-
-        if (!$request->isXmlHttpRequest()) {
-            throw new \Exception\NotFoundException('Request is not xml http request');
-        }
-
-        $categoryToken = explode('/', $categoryPath);
-        $categoryToken = end($categoryToken);
-
-        $region = self::isGlobal() ? null : \App::user()->getRegion();
-
-        $repository = \RepositoryManager::productCategory();
-
-        $category = null;
-        $repository->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
-            $category = new \Model\Product\Category\Entity(reset($data));
-        });
-        \App::coreClientV2()->execute();
-
-        if (!$category) {
-            throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена.', $categoryToken));
-        }
-
-        $pageNum = (int)$request->get('page', 1);
-        if ($pageNum < 1) {
-            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
-        }
-
-        // сортировка
-        $productSorting = new \Model\Product\Sorting();
-
-        // вид товаров
-        $productView = $category->getHasLine() ? 'line' : 'compact';
-        // фильтры
-        try {
-            $filters = \RepositoryManager::productFilter()->getCollectionByCategory($category, $region);
-        } catch (\Exception $e) {
-            \App::exception()->add($e);
-            \App::logger()->error($e);
-
-            $filters = [];
-        }
-        $productFilter = $this->getFilter($filters, $category, null, $request);
-        // листалка
-        $limit = \App::config()->product['itemsInCategorySlider'];
-        $repository = \RepositoryManager::product();
-        $repository->setEntityClass('\\Model\\Product\\Entity');
-
-        $productIds = [];
-        $productCount = 0;
-        $repository->prepareIteratorByFilter(
-            $productFilter->dump(),
-            $productSorting->dump(),
-            ($pageNum - 1) * $limit,
-            $limit,
-            $region,
-            function($data) use (&$productIds, &$productCount) {
-                if (isset($data['list'][0])) $productIds = $data['list'];
-                if (isset($data['count'])) $productCount = (int)$data['count'];
-            }
-        );
-        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-        $products = [];
-        if ((bool)$productIds) {
-            $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
-                foreach ($data as $item) {
-                    $products[] = new \Model\Product\Entity($item);
-                }
-            });
-        }
-        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-        $scoreData = [];
-        if ((bool)$products) {
-            $productUIs = [];
-            foreach ($products as $product) {
-                if (!$product instanceof \Model\Product\BasicEntity) continue;
-                $productUIs[] = $product->getUi();
-            }
-
-            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
-                if (isset($data['product_scores'][0])) {
-                    $scoreData = $data;
-                }
-            });
-        }
-        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-        \RepositoryManager::review()->addScores($products, $scoreData);
-
-        $productPager = new \Iterator\EntityPager($products, $productCount);
-        $productPager->setPage($pageNum);
-        $productPager->setMaxPerPage($limit);
-
-        return (new \Controller\Product\SliderAction())->execute($productPager, $productView, $request);
-    }
-
-    /**
-     * @param string        $categoryPath
-     * @param \Http\Request $request
      * @return \Http\JsonResponse
      * @throws \Exception\NotFoundException
      */
@@ -287,7 +182,7 @@ class Action {
                 $shopScript->addQuery(
                     'category/get-seo',
                     [
-                        'slug' => $categoryToken,
+                        'slug'   => $categoryToken,
                         'geo_id' => \App::user()->getRegion()->getId(),
                     ],
                     [],
@@ -303,39 +198,21 @@ class Action {
                     throw $shopScriptException;
                 }
 
-                // если shopscript вернул редирект
-                if (!empty($shopScriptSeo['redirect']['link']) && !$request->isXmlHttpRequest()) {
-                    $redirect = $shopScriptSeo['redirect']['link'];
-                    if(!preg_match('/^http/', $redirect)) {
-                        $redirect = (preg_match('/^http/', \App::config()->mainHost) ? '' : 'http://') .
-                            \App::config()->mainHost .
-                            (preg_match('/^\//', $redirect) ? '' : '/') .
-                            $redirect;
-                    }
-
-                    // SITE-3782
-                    if ($request->getQueryString()) {
-                        $redirect .= ((false === strpos($redirect, '?')) ? '?' : '&') . $request->getQueryString();
-                    }
-
-                    if ($brand) {
-                        // TODO: исправить, когда FCMS-314 будет готова
-                        $redirect .= ((false === strpos($redirect, '?')) ? '?' : '&') . sprintf('%s-brand-%s=%s', FilterForm::$name, $brandToken, $brand->getId());
-                        //$redirect .= rtrim($redirect, '/') . '/' . $brandToken;
-                    }
-
-                    return new \Http\RedirectResponse($redirect, 301);
-                }
-
                 if (empty($shopScriptSeo['ui'])) {
                     throw new \Exception\NotFoundException(sprintf('Не получен ui для категории товара @%s', $categoryToken));
                 }
 
                 // запрашиваем категорию по ui
-                \RepositoryManager::productCategory()->prepareEntityByUi($shopScriptSeo['ui'], $region, function($data) use (&$category) {
+                \RepositoryManager::productCategory()->prepareEntityByUi($shopScriptSeo['ui'], $region, function($data) use (&$category, &$shopScriptSeo) {
                     $data = reset($data);
                     if ((bool)$data) {
                         $category = new \Model\Product\Category\Entity($data);
+                        if (isset($shopScriptSeo['token'])) {
+                            $category->setToken($shopScriptSeo['token']);
+                        }
+                        if (isset($shopScriptSeo['link'])) {
+                            $category->setLink($shopScriptSeo['link']);
+                        }
                     }
                 });
             } catch (\Exception $e) { // если не плучилось добыть seo-данные или категорию по ui, пробуем старый добрый способ
@@ -366,10 +243,6 @@ class Action {
         // SITE-3381
         if (!$request->isXmlHttpRequest() && ($category->getLevel() > 1) && false === strpos($categoryPath, '/')) {
             //throw new \Exception\NotFoundException(sprintf('Не передана родительская категория для категории @%s', $categoryToken));
-        }
-
-        if (!empty($shopScriptSeo['link'])) {
-            $category->setLink($shopScriptSeo['link']);
         }
 
         // подготовка 3-го пакета запросов
@@ -627,6 +500,7 @@ class Action {
                                 'name'      => $product->getName(),
                                 'price'     => $product->getPrice(),
                                 'isBuyable' => ($product->getIsBuyable() || $product->isInShopOnly() || $product->isInShopStockOnly()),
+                                'cartButton'    => (new \View\Cart\ProductButtonAction())->execute(new \Helper\TemplateHelper(), $product)
                             ];
                         }
 

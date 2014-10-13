@@ -563,4 +563,16 @@ class BasicEntity {
 
         return false;
     }
+
+    /**
+     * @return bool
+     */
+    public function isSoldOut() {
+        return
+            $this->getMainCategory()
+            && ('tchibo' === $this->getMainCategory()->getToken())
+            && !$this->isAvailable()
+            && !$this->hasAvailableModels()
+        ;
+    }
 }

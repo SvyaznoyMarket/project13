@@ -32,8 +32,8 @@
 
             <div class="bBtnLine clearfix">
                 {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
-
-                <a class="btnView mBtnGrey" href="{{link}}">Посмотреть</a>
+                <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare"></a>
+                <a class="btnView btn1" href="{{link}}">Посмотреть</a>
             </div>
         </div>
     </div><!--/ описание продукта -->

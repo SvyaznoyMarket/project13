@@ -154,6 +154,10 @@ window.ANALYTICS = {
 		if (ENTER.config.userInfo === false) {
 			liveTexAction();
 			loadLiveTex();
+		} else if (ENTER.config.userInfo) {
+			// SITE-4382
+			liveTexUserInfo(ENTER.config.userInfo);
+			loadLiveTex();
 		} else {
 			$('body').on('userLogged', function(event, userInfo){
 				liveTexUserInfo(userInfo);
@@ -605,9 +609,9 @@ window.ANALYTICS = {
 					};
 
 				/** Событие клика на баннер */
-				$( '.trustfactorRight' ).on( 'click', gaBannerClickPrepare );
-				$( '.trustfactorMain' ).on( 'click', gaBannerClickPrepare );
-				$( '.trustfactorContent' ).on( 'click', gaBannerClickPrepare );
+				$( '.trustfactor-right' ).on( 'click', gaBannerClickPrepare );
+				$( '.trustfactor-main' ).on( 'click', gaBannerClickPrepare );
+				$( '.trustfactor-content' ).on( 'click', gaBannerClickPrepare );
 
 				/** Событие открытия списка магазинов */
 				$('span.bDeliveryNowClick').one('click', function ga_deliveryNow() {
@@ -622,7 +626,7 @@ window.ANALYTICS = {
 
 
 				/** Событие нажатия кнопки «Купить» или «Резерв» */
-				$('a.btnBuy__eLink').click(function ga_btnBuy() {
+				$('body').on('click', 'a.btnBuy__eLink', function ga_btnBuy() {
 					var
 						butType = $(this).hasClass('mShopsOnly') ? 'reserve' : 'add2basket';
 
@@ -2079,7 +2083,7 @@ var ADFOX = {
 		
 		document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>'+
 		'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>' )
-		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=enlz&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);		
+		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&ps=vto&p2=enlz&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&prr=' + afReferrer + '&dl='+dl+'&pr1='+pr1);		
 	},
 	
 	adfox400counter : function() {
@@ -2096,7 +2100,7 @@ var ADFOX = {
 		var pr1 = Math.floor(Math.random() * 1000000);  
 		document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>' +
 		'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>')
-		AdFox_getCodeScript(1,pr1, 'http://ads.adfox.ru/171829/prepareCode?p1=biewf&amp;p2=engb&amp;pct=a&amp;pfc=a&amp;pfb=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
+		AdFox_getCodeScript(1,pr1, 'http://ads.adfox.ru/171829/prepareCode?p1=biewf&p2=engb&pct=a&pfc=a&pfb=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&prr=' + afReferrer + '&dl='+dl+'&pr1='+pr1);
 	},
 
 	adfox400 : function() {
@@ -2113,7 +2117,7 @@ var ADFOX = {
 			pr1 = Math.floor(Math.random() * 1000000);
 		document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>' +
 		'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>' )
-		//AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=engb&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
+		//AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&ps=vto&p2=engb&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&prr=' + afReferrer + '&dl='+dl+'&pr1='+pr1);
 	},
 	
 	adfox215 : function() {
@@ -2131,7 +2135,7 @@ var ADFOX = {
 		
 		document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>')
 		document.write( '<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>' )
-		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=emud&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);		
+		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&ps=vto&p2=emud&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&prr=' + afReferrer + '&dl='+dl+'&pr1='+pr1);		
 	},
 	
 	adfox683 : function() {
@@ -2149,7 +2153,7 @@ var ADFOX = {
 		
 		document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>' +
 		'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>' )
-		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=emue&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
+		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&ps=vto&p2=emue&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&prr=' + afReferrer + '&dl='+dl+'&pr1='+pr1);
 	},
 	
 	adfox683sub : function() {
@@ -2168,7 +2172,7 @@ var ADFOX = {
 		document.write('<div id="AdFox_banner_'+pr1+'"><\/div>');
 		document.write('<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>');
 
-		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=bdto&amp;p2=emue&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
+		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&ps=bdto&p2=emue&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&prr=' + afReferrer + '&dl='+dl+'&pr1='+pr1);
 	},
 
 	adfox980 : function() {
@@ -2186,7 +2190,7 @@ var ADFOX = {
 		
 		document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>'+
 		'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>' )
-		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=emvi&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
+		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&ps=vto&p2=emvi&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&prr=' + afReferrer + '&dl='+dl+'&pr1='+pr1);
 	},
 
 	adfoxWowCredit : function() {
@@ -2205,7 +2209,7 @@ var ADFOX = {
 		document.write('<div id="AdFox_banner_'+pr1+'"><\/div>');
 		document.write('<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>');
 
-		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?p1=bipsp&amp;p2=engb&amp;pct=a&amp;pfc=a&amp;pfb=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
+		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?p1=bipsp&p2=engb&pct=a&pfc=a&pfb=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&prr=' + afReferrer + '&dl='+dl+'&pr1='+pr1);
 	},
 
 	adfoxGift : function() {
@@ -2224,7 +2228,7 @@ var ADFOX = {
 		document.write('<div id="AdFox_banner_'+pr1+'"><\/div>');
 		document.write('<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>');
 
-		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?p1=bizeq&amp;p2=engb&amp;pct=a&amp;pfc=a&amp;pfb=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
+		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?p1=bizeq&p2=engb&pct=a&pfc=a&pfb=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&prr=' + afReferrer + '&dl='+dl+'&pr1='+pr1);
 	},
 
 	adfox920: function() {
@@ -2243,7 +2247,7 @@ var ADFOX = {
 		document.write('<div id="AdFox_banner_'+pr1+'"><\/div>');
 		document.write('<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>');
 
-		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=epis&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
+		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&ps=vto&p2=epis&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&prr=' + afReferrer + '&dl='+dl+'&pr1='+pr1);
 	},
 
 	adfox_categoryFilterBanner: function() {
@@ -2262,7 +2266,7 @@ var ADFOX = {
 		document.write('<div id="AdFox_banner_'+pr1+'"><\/div>');
 		document.write('<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>');
 
-		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&amp;ps=vto&amp;p2=espi&amp;pct=a&amp;plp=a&amp;pli=a&amp;pop=a&amp;pr=' + pr +'&amp;pt=b&amp;pd=' + addate.getDate() + '&amp;pw=' + addate.getDay() + '&amp;pv=' + addate.getHours() + '&amp;prr=' + afReferrer + '&amp;dl='+dl+'&amp;pr1='+pr1);
+		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&ps=vto&p2=espi&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&prr=' + afReferrer + '&dl='+dl+'&pr1='+pr1);
 	},
 
 	parseAllAdfoxDivs : function( nodes ) {

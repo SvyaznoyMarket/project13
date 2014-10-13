@@ -19,6 +19,11 @@ module.exports = {
         dest: '<%= pathProd %>cart.js'
     },
 
+	compareJS : {
+		src: ['<%= pathDev %>compare/*.js'],
+		dest: '<%= pathProd %>compare.js'
+	},
+
     commonJS : {
         src: ['<%= pathDev %>common/*.js'],
         dest: '<%= pathProd %>common.js'

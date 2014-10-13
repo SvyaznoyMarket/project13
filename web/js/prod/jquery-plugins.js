@@ -1114,43 +1114,6 @@ $.fn.extend({
 							) {
 						return false;
 					}
-				},
-
-				/**
-				 * Обновление количества в поле ввода, если товар уже лежит в корзине. Вызывается событием «updatespinner» у body
-				 * 
-				 * @param	{Event}		e			Данные события
-				 * @param	{Array}		products	Массив продуктов
-				 * @param	{Object}	spinner		Ссылка на спиннеры принадлежащие купленному товару
-				 * @param	{Object}	input		Поля которые необходимо обновить
-				 */
-				updatespinner = function updatespinner( e, products ) {
-					var
-						products = ( products ) ? products : ENTER.config.clientCart.products,
-						i = 0,
-						spinner,
-						input;
-					// end of vars
-					
-					// Маркировка одиночного продукта
-					if ( typeof products === 'number' ) {
-						spinner = $('[data-spinner-for="id-cartButton-product-'+products+'"]');
-						spinner.addClass('mDisabled');
-						input = spinner.find('input');
-						input.attr('disabled','disabled');
-
-						return;
-					}
-
-					// Массив продуктов
-					for ( i = products.length - 1; i >= 0; i-- ) {
-                        if (products[i].cartButton != undefined) {
-                            spinner = $('[data-spinner-for="' + products[i].cartButton.id + '"]');
-                            spinner.addClass('mDisabled');
-                            input = spinner.find('input');
-                            input.val(products[i].quantity).attr('disabled', 'disabled');
-                        }
-					}
 				};
 			//end of functions
 
@@ -1158,7 +1121,6 @@ $.fn.extend({
 			minusBtn.on('click.goodsCounter',minusHandler);
 			input.on('keydown.goodsCounter', keydownHandler);
 			input.on('keyup.goodsCounter', keyupHandler);
-			$('body').on('updatespinner.goodsCounter', updatespinner);
 		});
 	};
 
@@ -2622,7 +2584,7 @@ jQuery(function($, undefined) {
 			}
 		});
 
-		var getSlidersData = function getSlidersData( event, url, type, callback ) {
+		var getSlidersData = function getSlidersData( url, type, callback ) {
 			if ( isRecommendation(type) ) {
 				recommendArray.push({
 					type: type,
@@ -2689,10 +2651,6 @@ jQuery(function($, undefined) {
 				}
 			}
 		};
-
-
-		body.bind('goodsliderneeddata', getSlidersData);
-
 
 		/**
 		 * Обработка для каждого элемента попавшего в набор
@@ -2810,7 +2768,6 @@ jQuery(function($, undefined) {
 					leftBtn.addClass('mDisabled');
 					slider.css({'left':nowLeft});
 					wrap.removeClass('mLoader');
-					body.trigger('markcartbutton');
 					nowItems.show();
 				},
 
@@ -2854,6 +2811,10 @@ jQuery(function($, undefined) {
 					$self.before(newSlider);
 					$self.remove();
 					$(newSlider).goodsSlider();
+
+					if (params.onLoad) {
+						params.onLoad(newSlider);
+					}
 				},
 
 				/**
@@ -2868,7 +2829,7 @@ jQuery(function($, undefined) {
 
 			if ( sliderParams.url !== null ) {
 				if ( typeof window.ENTER.utils.packageReq === 'function' ) {
-					body.trigger('goodsliderneeddata', [sliderParams.url, sliderParams.type, authFromServer]);
+					getSlidersData(sliderParams.url, sliderParams.type, authFromServer);
 				}
 				else {
 					$.ajax({

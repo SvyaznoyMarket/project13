@@ -636,7 +636,7 @@ class Repository {
                 $result['promo_style'] = $data['properties']['appearance']['default']['promo_style'];
             }
 
-            if (isset($data['properties']['appearance']['pandora']['sub_category_filters_exclude']) && is_array(isset($data['properties']['appearance']['pandora']['sub_category_filters_exclude']))) {
+            if (isset($data['properties']['appearance']['pandora']['sub_category_filters_exclude']) && is_array($data['properties']['appearance']['pandora']['sub_category_filters_exclude'])) {
                 $result['sub_category_filters_exclude'] = [];
                 foreach ($data['properties']['appearance']['pandora']['sub_category_filters_exclude'] as $item) {
                     if (isset($item['filter_token'])) {

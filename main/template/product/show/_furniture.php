@@ -42,7 +42,7 @@
         <?= $product->getDescription() ?>
     </div>
 
-    <?= $helper->render('product/__trustfactorContent', ['trustfactorContent' => $trustfactorContent]) ?>
+    <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'content']) ?>
 
     <? if (\App::config()->product['showRelated'] && !$isTchibo): ?>
         <?= $helper->render('product/__slider', [
@@ -87,7 +87,7 @@
 </div><!--/left section -->
 
 <div class="bProductSectionRightCol">
-    <div class="bWidgetBuy mWidget">
+    <div class="bWidgetBuy mWidget js-WidgetBuy">
         <div class="bStoreDesc">
             <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>
 
@@ -100,8 +100,6 @@
 
         <?= $helper->render('cart/__button-product', [
             'product' => $product,
-            'class' => 'btnBuy__eLink',
-            'value' => 'Купить',
             'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null,
             'onClick' => isset($addToCartJS) ? $addToCartJS : null,
         ]) // Кнопка купить ?>
@@ -117,7 +115,7 @@
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
 
-    <?= $helper->render('product/__trustfactorRight', ['trustfactorRight' => $trustfactorRight]) ?>
+    <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'right']) ?>
 </div><!--/right section -->
 
 <div class="bBreadCrumbsBottom"><?= $page->render('_breadcrumbs', ['breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer']) ?></div>

@@ -52,6 +52,11 @@ module.exports = function (grunt, options) {
             dest: pathProd + 'cart.min.js'
         },
 
+		compareJS: {
+            src: pathDev + 'compare/*.js',
+            dest: pathProd + 'compare.min.js'
+        },
+
         commonJS: {
             src: pathDev + 'common/*.js',
             dest: pathProd + 'common.min.js'

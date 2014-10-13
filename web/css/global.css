@@ -2322,7 +2322,6 @@
   .topbar {
     font-size: 14px;
     font-family: Tahoma, sans-serif;
-    padding: 10px 0 0;
     position: relative;
     width: 948px;
     margin-left: -10px;
@@ -3393,11 +3392,9 @@
   .goodsbox__inner {
     width: 195px;
     padding: 10px;
-    cursor: pointer;
     background: #ffffff;
   }
-  .goodsbox__inner:hover,
-  .goodsbox__inner.hover {
+  .goodsbox__inner:hover {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -7330,16 +7327,6 @@
 /*---------END ПОДСКАЗОК ПОИСКА-----*/
 /*-------СТИЛИ ВСПЛЫВАЮЩЕЙ ПОДПИСКИ-----*/
 @media all {
-  .bSubscribeLightboxPopupNotNow {
-    position: absolute;
-    top: 0;
-    right: -40px;
-    display: none;
-    width: 39px;
-    height: 43px;
-    background: url('/css/subscribeLightboxPopup/img/EPicon.png') no-repeat 0 0;
-    cursor: pointer;
-  }
   .bSubscribeLightboxPopup {
     display: none;
     height: 43px;
@@ -7951,35 +7938,6 @@
   #mainPage .allpage {
     background: #000000;
   }
-  #mainPage .topbar {
-    margin-bottom: 20px;
-    margin-left: 0;
-    padding-left: 10px;
-    width: auto;
-    background: none;
-    border-color: #404040;
-    -webkit-border-radius: 0 0 4px 4px;
-    -moz-border-radius: 0 0 4px 4px;
-    border-radius: 0 0 4px 4px;
-  }
-  #mainPage .topbar #jsregion,
-  #mainPage .topbar .usermenu a {
-    color: #ffffff;
-  }
-  #mainPage .topbar .hBasket {
-    background: url("/css/mainPage/img/mainPageSprite.png") no-repeat -312px -74px;
-  }
-  #mainPage .topbar .headerContactPhone,
-  #mainPage .topbar .headerShopLink {
-    display: block;
-    color: #fff;
-  }
-  #mainPage .topbar .headerShopLink {
-    display: none;
-  }
-  #mainPage .topbar .bRegion {
-    width: 580px;
-  }
   #mainPage .searchtext {
     -webkit-box-shadow: 0 0 10px 4px #444443;
     -moz-box-shadow: 0 0 10px 4px #444443;
@@ -8579,12 +8537,6 @@
     *display: inline;
     zoom: 1;
   }
-  .bPageHead__eImgTrast {
-    display: inline-block;
-    vertical-align: top;
-    *display: inline;
-    zoom: 1;
-  }
   .bPageHead__eArticle {
     font-size: 14px;
     color: #a6a6a6;
@@ -9017,9 +8969,6 @@
   .priceSale {
     margin: 5px 0 10px;
     cursor: pointer;
-  }
-  .trustfactorContent {
-    margin-top: 20px;
   }
 }
 /*---END---СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА---*/
@@ -9881,11 +9830,11 @@
     -moz-transition: opacity 0.1s ease-in-out;
     transition: opacity 0.1s ease-in-out;
     position: absolute;
-    right: 0;
+    right: 37px;
     bottom: 0;
     display: block;
     width: auto;
-    height: 23px;
+    height: 25px;
     padding: 0 10px;
     text-align: center;
     text-indent: 0;
@@ -9895,6 +9844,7 @@
     text-shadow: none;
     font: normal 12px tahoma, verdana, arial, helvetica, sans-serif;
     line-height: 21px;
+    line-height: 25px;
   }
   .bBrandCatalog .goodsbox__inner .btnBuy__eLink.mBought {
     width: auto;
@@ -9902,6 +9852,20 @@
     color: #000;
     border: 1px solid #000;
     background: #fff;
+  }
+  .bBrandCatalog .goodsbox__inner .btnCmprb {
+    position: absolute;
+    right: 0;
+    bottom: 0px;
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    -webkit-opacity: 0;
+    opacity: 0;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    filter: alpha(opacity=0);
+    -webkit-transition: opacity 0.1s ease-in-out;
+    -moz-transition: opacity 0.1s ease-in-out;
+    transition: opacity 0.1s ease-in-out;
   }
   .bBrandCatalog .bNavLoader__eIco {
     background: url("/css/ajaxPopup/img/arrow_bg_b.png") no-repeat;
@@ -9964,6 +9928,7 @@
     position: absolute;
     bottom: 0;
     left: 0;
+    line-height: 25px;
   }
   .bBrandGoodsList__eItem .bPriceLine {
     bottom: 15px;
@@ -10004,6 +9969,14 @@
     filter: alpha(opacity=100);
   }
   .bBrandGoodsList__eItem:hover .btnBuy__eLink {
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    -webkit-opacity: 1;
+    opacity: 1;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
+    filter: alpha(opacity=100);
+  }
+  .bBrandGoodsList__eItem:hover .btnCmprb {
     -moz-opacity: 1;
     -khtml-opacity: 1;
     -webkit-opacity: 1;
@@ -12142,13 +12115,14 @@
   }
   .bBtnLine .btnBuy {
     float: left;
-    width: 70px;
+    width: 68px;
+    margin-right: 15px;
     height: 25px;
   }
   .bBtnLine .btnBuy__eLink {
-    width: 79px;
+    width: 72px;
     height: 25px;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 25px;
   }
   .bBtnLine .btnBuy__eLink.mBought {
@@ -12158,19 +12132,19 @@
     border: 1px solid #e6e6e6;
     background: #e6e6e6;
     color: #a6a6a6;
-    cursor: default;
   }
   .bBtnLine .btnBuy__eLink.mBought:hover {
     border: 1px solid #e6e6e6;
     background: #e6e6e6;
     color: #a6a6a6;
   }
-  .bBtnLine .btnBuy__eLink.mDisabled {
-    width: 100px;
-  }
   .bBtnLine .btnView {
     float: right;
-    width: 90px;
+    font-size: 12px;
+    height: 27px;
+    line-height: 26px;
+    padding: 0;
+    width: 79px;
   }
   .btnView {
     height: 25px;

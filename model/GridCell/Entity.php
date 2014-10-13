@@ -4,12 +4,13 @@ namespace Model\GridCell;
 
 class Entity {
     const TYPE_PRODUCT = 'product';
-    const TYPE_IMAGE = 'image';
+    const TYPE_IMAGE = 'media';
+    const TYPE_EMPTY = 'empty';
 
     /** @var int */
-    private $id;
+    private $objectId;
     /** @var string */
-    private $ui;
+    private $objectUi;
     /** @var int */
     private $column;
     /** @var int */
@@ -20,21 +21,44 @@ class Entity {
     private $sizeY;
     /** @var string */
     private $type;
-    /** @var array */
-    private $content = [];
+    /** @var string */
+    private $url;
+    /** @var string */
+    private $imageUrl;
+    /** @var string */
+    private $name;
 
     /**
      * @param array $data
      */
     public function __construct(array $data = []) {
-        if (array_key_exists('col', $data)) $this->setColumn($data['col']);
-        if (array_key_exists('row', $data)) $this->setRow($data['row']);
-        if (array_key_exists('size_x', $data)) $this->setSizeX($data['size_x']);
-        if (array_key_exists('size_y', $data)) $this->setSizeY($data['size_y']);
-        if (isset($data['meta']['id'])) $this->setId($data['meta']['id']);
-        if (isset($data['meta']['ui'])) $this->setUi($data['meta']['ui']);
-        if (isset($data['meta']['type'])) $this->setType($data['meta']['type']);
-        if (array_key_exists('meta', $data) && is_array($data['meta'])) $this->setContent($data['meta']);
+        if (isset($data['col'])) $this->setColumn($data['col']);
+        if (isset($data['row'])) $this->setRow($data['row']);
+        if (isset($data['sizex'])) $this->setSizeX($data['sizex']);
+        if (isset($data['sizey'])) $this->setSizeY($data['sizey']);
+        if (isset($data['type'])) $this->setType($data['type']);
+
+        switch ($this->type) {
+            case self::TYPE_PRODUCT:
+                //$this->setObjectId(isset($data['object']['product']['id']) ? $data['object']['product']['id'] : null);
+                $this->setObjectUi(isset($data['object']['product']['uid']) ? $data['object']['product']['uid'] : null);
+                break;
+            case self::TYPE_IMAGE:
+                $this->setUrl(isset($data['object']['link']) ? $data['object']['link'] : null);
+                foreach ((isset($data['object']['media']['sources'][0]) ? $data['object']['media']['sources'] : []) as $imageItem) {
+                    $imageItem += ['type' => null, 'url' => null];
+
+                    if ('original' == $imageItem['type']) {
+                        $this->setImageUrl($imageItem['url']);
+                    }
+                }
+
+                break;
+        }
+
+        if ((self::TYPE_IMAGE == $this->type) && empty($data['object']['media'])) {
+            $this->type = self::TYPE_EMPTY;
+        }
     }
 
     /**
@@ -54,15 +78,15 @@ class Entity {
     /**
      * @param int $id
      */
-    public function setId($id) {
-        $this->id = (int)$id;
+    public function setObjectId($id) {
+        $this->objectId = (int)$id;
     }
 
     /**
      * @return int
      */
-    public function getId() {
-        return $this->id;
+    public function getObjectId() {
+        return $this->objectId;
     }
 
     /**
@@ -122,30 +146,58 @@ class Entity {
     }
 
     /**
-     * @param array $content
-     */
-    public function setContent(array $content) {
-        $this->content = $content;
-    }
-
-    /**
-     * @return array
-     */
-    public function getContent() {
-        return $this->content;
-    }
-
-    /**
      * @param string $ui
      */
-    public function setUi($ui) {
-        $this->ui = (string)$ui;
+    public function setObjectUi($ui) {
+        $this->objectUi = (string)$ui;
     }
 
     /**
      * @return string
      */
-    public function getUi() {
-        return $this->ui;
+    public function getObjectUi() {
+        return $this->objectUi;
+    }
+
+    /**
+     * @param string $url
+     */
+    public function setUrl($url) {
+        $this->url = $url ? (string)$url : null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl() {
+        return $this->url;
+    }
+
+    /**
+     * @param string $imageUrl
+     */
+    public function setImageUrl($imageUrl) {
+        $this->imageUrl = $imageUrl ? (string)$imageUrl : null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageUrl() {
+        return $this->imageUrl;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name) {
+        $this->name = (string)$name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName() {
+        return $this->name;
     }
 }

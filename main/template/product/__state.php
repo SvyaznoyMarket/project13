@@ -12,8 +12,8 @@ return function(
 <? else: ?>
     <link itemprop="availability" href="http://schema.org/OutOfStock" />
 
-    <? if ($product->getMainCategory() && 'tchibo' === $product->getMainCategory()->getToken() && !$product->isAvailable() && !$product->hasAvailableModels()): ?>
-        <img src="/images/shild_sold_out.png" alt="Нет в наличии" />
+    <? if ($product->isSoldOut()): ?>
+        <img src="/images/shild_sold_out_card.png" alt="Нет в наличии" />
     <? endif ?>
 
 <? endif ?>

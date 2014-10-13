@@ -51,13 +51,13 @@
 
 
 /*---------ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК (ЛИСТИНГИ/КАРТОЧКА ТОВАРА)----------*/
-@import "fixedTopBar/fixedTopBar.less" all;
-
 // анимация количества товаров в корзине
 @import "fixedTopBar/fixedTopBarAnim.less" all;
 
 // выпадающие блоки из блока корзины и логина
 @import "fixedTopBar/fixedTopBarDd.less" all;
+
+@import "fixedTopBar/fixedTopBar.less" all;
 /*---END----ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК (ЛИСТИНГИ/КАРТОЧКА ТОВАРА)---------*/
 
 
@@ -182,7 +182,13 @@
 /*---------Личный кабинет пользователя----------*/
 @import "popup-auth/popup-auth.less" all;
 
+/*---------Личный кабинет пользователя----------*/
+@import "btn/btn.less" all;
 
+/*---------Личный кабинет пользователя----------*/
+@import "compare/compare.less" all;
+
+@import "product/trustfactors.less" all;
 
 //стили для фикса старых правил и классов, в последствии, при полном переходе на новую верстку удалить
 @import "main/old__style__fix.less" all;

@@ -21,7 +21,7 @@ return function (
 
     $sliderId = 'slider-' . uniqid();
 ?>
-<div class="bGoodsSlider clearfix<? if ((bool)$categories): ?> mWithCategory<? endif ?><? if ($url && !(bool)$products): ?> <? endif ?><? if (!(bool)$url && !(bool)$products): ?> hf<? endif ?>"  data-slider="<?= $helper->json([
+<div class="bGoodsSlider js-slider clearfix<? if ((bool)$categories): ?> mWithCategory<? endif ?><? if ($url && !(bool)$products): ?> <? endif ?><? if (!(bool)$url && !(bool)$products): ?> hf<? endif ?>"  data-slider="<?= $helper->json([
         'count' => $count,
         'limit' => $limit,
         'url'   => $url,
@@ -84,8 +84,6 @@ return function (
                     <? if (!$product->getKit()) : ?>
                         <?= $helper->render('cart/__button-product', [
                             'product'    => $product,
-                            'class'      => 'btnBuy__eLink',
-                            'value'      => 'Купить',
                             'directLink' => true,
                             'onClick'    => $addToCartJS ? $addToCartJS : null,
                         ]) // Кнопка купить ?>

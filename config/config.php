@@ -27,6 +27,7 @@ $c->authToken['authorized_cookie'] = '_authorized';
 $c->session['name']            = 'enter';
 $c->session['cookie_lifetime'] = 2592000; // 30 дней
 $c->session['cookie_domain'] = '.enter.ru';
+$c->session['compareKey']   = 'compare'; // ключ для массива сравнения
 
 $c->cacheCookieName = 'enter_auth'; //TODO: удалить
 
@@ -181,8 +182,9 @@ $c->crm['debug'] = false;
 
 $c->connectTerminal = true;
 
-$c->company['phone'] = '8 (800) 700-00-09';
-$c->company['moscowPhone'] = '8 (495) 775-00-06';
+$c->company['phone'] = '+7 (800) 700-00-09';
+$c->company['moscowPhone'] = '+7 (495) 775-00-06';
+$c->company['spbPhone'] = '+7 (812) 703-77-30';
 $c->company['icq'] = '648198963';
 
 $c->jsonLog['enabled'] = true;
@@ -432,14 +434,14 @@ $c->order['prepayment'] = [
     'priceLimit' => 100000,// если стоимость заказа >= priceLimit, то появится плашка с текстом про предоплату
     'labelId'    => 15, // id шильдика "предоплата"
 ];
-$config->order['splitSessionKey'] = 'order_split';
+$c->order['splitSessionKey'] = 'order_split';
 
 $c->newDeliveryCalc = true;
 
 $c->kladr = [
     'token' => '52b04de731608f2773000000',
     'key' => 'c20b52a7dc6f6b28023e3d8ef81b9dbdb51ff74b',
-    'itemLimit' => 1000,
+    'itemLimit' => 20,
 ];
 
 $c->maybe3d['xmlUrl']     = 'http://hq.maybe3d.com/MappingService.svc/GetMappings?customerId=';

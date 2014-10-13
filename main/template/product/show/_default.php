@@ -92,7 +92,7 @@ $isKitPage = (bool)$product->getKit();
         <?= $product->getDescription() ?>
     </div>
 
-    <?= $helper->render('product/__trustfactorContent', ['trustfactorContent' => $trustfactorContent]) ?>
+    <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'content']) ?>
 
     <? if (\App::config()->product['showRelated'] && !$isTchibo): ?>
         <?= $helper->render('product/__slider', [
@@ -144,25 +144,23 @@ $isKitPage = (bool)$product->getKit();
 <div class="bProductSectionRightCol">
 
     <? if (5 !== $product->getStatusId() && (bool)$shopStates): // SITE-3109 ?>
-    <div class="bWidgetBuy bWidgetBuy-shops mWidget">
+    <div class="bWidgetBuy bWidgetBuy-shops mWidget js-WidgetBuy">
         <?= $helper->render('product/__shops', ['shopStates' => $shopStates, 'product' => $product]) // Доставка ?>
     </div>
     <? endif ?>
 
     <? if ( $product->isInShopStockOnly() || !$product->getIsBuyable() ) : else : ?>
-    <div class="bWidgetBuy mWidget">
+    <div class="bWidgetBuy mWidget js-WidgetBuy">
         <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && 0 == count($kitProducts)): ?>
-            <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId())]) ?>
+            <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'productId' => $product->getId()]) ?>
         <? endif ?>
 
         <? if ($isKitPage && !$product->getIsKitLocked()) : ?>
-            <?= $helper->render('cart/__button-product-kit', ['product' => $product, 'class' => 'btnBuy__eLink', 'value' => 'Купить']) // Кнопка купить для набора продуктов ?>
+            <?= $helper->render('cart/__button-product-kit', ['product' => $product]) // Кнопка купить для набора продуктов ?>
         <? else : ?>
 
             <?= $helper->render('cart/__button-product', [
                 'product' => $product,
-                'class' => 'btnBuy__eLink',
-                'value' => 'Купить',
                 'url' => $hasFurnitureConstructor ? $page->url('cart.product.setList') : null,
                 'onClick' => isset($addToCartJS) ? $addToCartJS : null,
             ]) // Кнопка купить ?>
@@ -172,13 +170,15 @@ $isKitPage = (bool)$product->getKit();
             <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
         <? endif ?>
 
+        <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'categoryId' => $product->getLastCategory()->getId()]) ?>
+
         <? if (5 !== $product->getStatusId()): // SITE-3109 ?>
             <?= $helper->render('product/__delivery', ['product' => $product, 'deliveryData' => $deliveryData, 'shopStates' => $shopStates]) // Доставка ?>
         <? endif ?>
 
         <?= $helper->render('cart/__button-product-paypal', ['product' => $product]) // Кнопка купить через paypal ?>
 
-        <?= $helper->render('product/__trustfactorMain', ['trustfactorMain' => $trustfactorMain]) ?>
+        <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'main']) ?>
     </div><!--/widget delivery -->
     <? endif; ?>
 
@@ -191,7 +191,7 @@ $isKitPage = (bool)$product->getKit();
     <?//= $helper->render('product/__warranty', ['product' => $product]) ?>
     <?//= $helper->render('product/__service', ['product' => $product]) ?>
 
-    <?= $helper->render('product/__trustfactorRight', ['trustfactorRight' => $trustfactorRight]) ?>
+    <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'right']) ?>
 </div><!--/right section -->
 
 <div class="clear"></div>

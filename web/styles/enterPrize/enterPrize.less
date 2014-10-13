@@ -288,7 +288,7 @@
 
 	.cuponPrice {
 		position: absolute;
-		top: 110px;
+		top: 115px;
 		left: 0;
 
 		width: 100%;
@@ -296,7 +296,7 @@
 		text-align: center;
 
 		font-family: "Enter Type";
-		font-size: 40px;
+		font-size: 32px;
 	}
 
 	&.mPrivate {
@@ -480,7 +480,6 @@
 .enterprize {
 	background: @black;
 
-	.bSubscribeLightboxPopupNotNow,
 	.bSubscribeLightboxPopup {
 		display: none !important;
 	}
@@ -491,31 +490,47 @@
 
 	.topbar {
 		color: @white;
-		border-color: #404040;
+		border: none;
+		border-bottom: 1px solid #404040;
 		background: @black;
 
 		a {
 			color: @white; 
 		}
+	}
 
-		.fixedTopBar__logIn,
-		.fixedTopBar__cart {
+	.topbarfix {
+
+		&-stc {
+			border: none;
+		}
+
+		&_cart,
+		&_log,
+		&_cmpr {
 			background: @black;
+			border: none;
 		}
 
-		.fixedTopBar__logIn {
-			border-color: #404040;
+		&_dd {
+			background: @black;
+			border-color: @typLinkColor;
+			color: @white;
+		}
+
+		&_logOutLink {
+	    	color: @white;
+		}
+
+		&_logOutLink {
+		    border: 0 none;
+		    background: @black;
+		    box-shadow: 0 0 10px 2px #444443;
 		}
 	}
 
-	.fixedTopBar.mStatic {
-		border: none;
-	}
-
-	.fixedTopBar__dd {
-		color: @white;
-		border-color: #404040;
-		background: @black;
+	.quickOrder {
+		border-color: @typLinkColor;
 	}
 	
 	.bannersList, 
@@ -523,40 +538,26 @@
 		display: none;
 	}
 
-	.footer__inner {
-		color: @white;
-		background: @black;
-	}
-
-	.footer .publicInfo__text {
-	    margin: 10px 0 25px;
-	}
-
 	.footer {
 	    height: 150px;
 	    margin: -150px auto 0;
+
+	    &__inner {
+			color: @white;
+			background: @black;
+		}
+
+		.publicInfo__text {
+		    margin: 10px 0 25px;
+		}
+
+		.publicInfo__list__link {
+		    color: #B5B5B5;
+		}
 	}
 
 	.content {
 	    padding: 0 0 180px;
-	}
-
-	.fixedTopBar__logIn .transGrad {
-		background: url("/styles/fixedTopBar/img/tranGradientBlack.png") no-repeat 0 0;
-	}
-
-	.fixedTopBar .fixedTopBar__logOutLink {
-    	color: #FFFFFF;
-	}
-	
-	.fixedTopBar .fixedTopBar__logOutLink {
-	    border: 0 none;
-	    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
-	    box-shadow: 0 0 10px 2px #444443;
-	}
-
-	.footer .publicInfo__list__link {
-	    color: #B5B5B5;
 	}
 }
 
@@ -611,14 +612,6 @@
 
 	a {
 		text-decoration: underline;
-	}
-}
-
-.enterprizeMember {	
-
-	.bSubscribeLightboxPopupNotNow,
-	.bSubscribeLightboxPopup {
-		display: none !important;
 	}
 }
 

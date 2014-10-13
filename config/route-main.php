@@ -1055,6 +1055,25 @@ return [
         'action'  => ['Bandit\IndexAction', 'execute'],
     ],
 
+    'compare' => [
+        'pattern' => '/compare',
+        'action'  => ['Compare\CompareAction', 'execute'],
+    ],
+    'compare.add' => [
+        'pattern' => '/compare/add-product/{productId}',
+        'action'  => ['Compare\CompareAction', 'add'],
+        'require' => ['productId' => '\d+']
+    ],
+    'compare.delete' => [
+        'pattern' => '/compare/delete-product/{productId}',
+        'action'  => ['Compare\CompareAction', 'delete'],
+        'require' => ['productId' => '\d+']
+    ],
+    'compare.clear' => [
+        'pattern' => '/compare/clear',
+        'action'  => ['Compare\CompareAction', 'clear'],
+    ],
+
 	//content (должен быть в самом конце, иначе под паттерн попадут другие страницы)
     'content' => [
         'pattern' => '/{token}',

@@ -188,7 +188,7 @@
         position: fixed;
         bottom: 30px;
         left: 2px;
-        z-index: 1100;
+        z-index: 999999;
         color: #cdcdcd;
         font: normal 13px Courier New;
         opacity: 0.95;

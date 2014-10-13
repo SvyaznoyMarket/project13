@@ -1,7 +1,7 @@
 <?php
 /**
  * @var $page          \View\Layout
- * @var $product       \Model\Product\CompactEntity
+ * @var $product       \Model\Product\Entity
  * @var $isHidden      bool
  * @var $kit           \Model\Product\Kit\Entity
  * @var $productVideos \Model\Product\Video\Entity[]
@@ -55,10 +55,11 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
             <span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span>
         </div>
         <div class="bBtnLine clearfix">
-            <? if (!$product->getKit()) : ?>
+            <? if (!$product->getKit() || $product->getIsKitLocked()) : ?>
                 <?= $page->render('cart/_button', ['product' => $product]) ?>
             <? endif; ?>
-            <a class="btnView mBtnGrey" href="<?= $product->getLink() ?>">Посмотреть</a>
+            <a href="" class="btnCmprb jsCompareListLink" data-id="<?= $page->escape($product->getId()) ?>" data-bind="compareListBinding: compare"></a>
+            <a class="btnView btn1" href="<?= $product->getLink() ?>">Посмотреть</a>
         </div>
 
         <?= $page->render('product/show/__corner_features', ['product' => $product]) ?>

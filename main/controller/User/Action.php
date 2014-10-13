@@ -155,7 +155,7 @@ class Action {
                             $form->setError('password', 'Неверный пароль');
                             break;
                         case 609: default:
-                            $form->setError('global', 'Не удалось создать пользователя');
+                            $form->setError('username', 'Не удалось войти');
                             break;
                     }
                 }
@@ -264,8 +264,7 @@ class Action {
                     $data['email'] = $form->getEmail();
                     $data['is_subscribe'] = $isSubscribe;
                 }
-                else {
-                    $phone = $form->getPhone();
+                if ($phone = $form->getPhone()) {
                     $phone = preg_replace('/^\+7/', '8', $phone);
                     $phone = preg_replace('/[^\d]/', '', $phone);
                     $data['mobile'] = $phone;
