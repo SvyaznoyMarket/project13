@@ -128,8 +128,20 @@
   -ms-transform: translate(@x, @y);
   transform: translate(@x, @y);
 }
-.box-sizing(@argument){
-  box-sizing: @argument;
-  -moz-box-sizing: @argument;
-  -webkit-box-sizing: @argument;
+
+.inline-block() {
+  display: inline-block;
+  vertical-align: top;
+
+  /* IE6-8 */
+  *display: inline;
+  *zoom: 1;
+}
+
+.box-sizing(@sizing: border-box) {
+  box-sizing: @sizing;
+  -moz-box-sizing: @sizing;
+  -webkit-box-sizing: @sizing;
+
+  -ms-box-sizing: @sizing;
 }
