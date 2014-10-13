@@ -3,7 +3,8 @@
 return function (
     \Helper\TemplateHelper $helper,
     array $compareGroups,
-    \View\Compare\CompareLayout $page
+    \View\Compare\CompareLayout $page,
+    $activeCompareGroupIndex
 ) { ?>
 
     <div class="wrapw">
@@ -11,7 +12,7 @@ return function (
             <?= $page->render('userbar/topbar') ?>
         </div>
 
-        <div class="js-compare" data-compare-groups="<?= $helper->json($compareGroups) ?>">
+        <div class="js-compare" data-compare-groups="<?= $helper->json($compareGroups) ?>" data-active-compare-group-index="<?= $helper->escape($activeCompareGroupIndex) ?>">
             <div class="cmprHd clearfix js-compare-header" data-bind="css: {'cmprHd-empty': !compareGroups().length}">
                 <div class="cmprHd_l"><a href="/"><img src="/styles/compare/img/logo_cmpr.png" alt=""></a></div>
 

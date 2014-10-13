@@ -14,7 +14,7 @@ return function (
 <div class="packageSet">
     <div class="packageSetHead cleared">
         <span class="packageSetHead_title">Базовая комплектация набора</span>
-        <? if (!$product->getIsKitLocked()) : ?>
+        <? if (!$product->getIsKitLocked() && !$product->isInShopStockOnly() && $product->getIsBuyable() && $product->getStatusId() != 5) : ?>
             <span class="packageSetHead_change"><span class="packageSetHead_changeText jsChangePackageSet">Изменить комплектацию</span></span>
         <? endif ?>
     </div>

@@ -20,12 +20,21 @@ return function (
         $class .= ' mShopsOnly';
     }
 
+    if ($product->getKit()) {
+        $urlParams = [];
+        foreach ($product->getKit() as $kitItem) {
+            $urlParams['product'][] = ['id' => $kitItem->getId(), 'quantity' => $kitItem->getCount()];
+        }
+        $url = $helper->url('cart.product.setList', $urlParams);
+    }
+
     if (5 === $product->getStatusId()) { // SITE-2924
         return '';
     } else if (!$product->getIsBuyable()) {
-        $url = '#';
+        $url = null;
         $class .= ' mDisabled';
-        $value = $product->isInShopShowroomOnly() ? 'На витрине' : 'Нет в наличии';
+        $class = str_replace(' jsChangePackageSet', '', $class);
+        $value = $product->isInShopShowroomOnly() ? 'На витрине' : 'Нет';
     } else if (!isset($url)) {
         $urlParams = [
             'productId' => $product->getId(),
@@ -36,21 +45,17 @@ return function (
         $url = $helper->url('cart.product.set', $urlParams);
     }
 
-    if ($product->getKit()) {
-        $urlParams = [];
-        foreach ($product->getKit() as $kitItem) {
-            $urlParams['product'][] = ['id' => $kitItem->getId(), 'quantity' => $kitItem->getCount()];
-        }
-        $url = $helper->url('cart.product.setList', $urlParams);
-    }
-
     $upsaleData = [
         'url' => $helper->url('product.upsale', ['productId' => $product->getId()]),
         'fromUpsale' => ($helper->hasParam('from') && 'cart_rec' === $helper->getParam('from')) ? true : false,
     ];
     ?>
     <div class="bWidgetBuy__eBuy btnBuy mBuySet">
-        <a href="<?= $url ?>" class="<?= $class ?>" data-upsale='<?= json_encode($upsaleData) ?>'><?= $value ?></a>
+        <? if ($url === null): ?>
+            <span class="<?= $class ?>"><?= $value ?></span>
+        <? else: ?>
+            <a href="<?= $url ?>" class="<?= $class ?>" data-upsale='<?= json_encode($upsaleData) ?>'><?= $value ?></a>
+        <? endif ?>
     </div>
 
 <? };

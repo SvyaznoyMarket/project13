@@ -8,7 +8,7 @@
 			$footer = $('.js-compare-footer'),
 			$table = $('.js-compare-table', $compare),
 			$topbar = $('.js-topbar'),
-			compareModel = createCompareModel($compare.data('compare-groups')),
+			compareModel = createCompareModel($compare.data('compare-groups'), $compare.data('active-compare-group-index')),
 			fixedTableCells = null;
 
 		function createProductModel(product) {
@@ -87,7 +87,7 @@
 			return model;
 		}
 
-		function createCompareModel(compareGroups) {
+		function createCompareModel(compareGroups, activeCompareGroupIndex) {
 			var model = {};
 
 			model.compareGroups = ko.observableArray();
@@ -95,7 +95,7 @@
 				model.compareGroups.push(createCompareGroupModel(this));
 			});
 
-			model.activeCompareGroupIndex = ko.observable(0);
+			model.activeCompareGroupIndex = ko.observable(activeCompareGroupIndex);
 			model.similarOnly = ko.observable(true);
 			model.scrolled = ko.observable(false);
 			model.cart = ENTER.UserModel.cart;
