@@ -8,10 +8,10 @@
         <div class="prodItem">
             <a href="<%= products[ i ].link %>" title="<%= products[ i ].name %>">
 
-                <% if ( !products[ i ].isBuyable ) { %>
-                <div class="bProductDescSticker stockSticker">
-                    <img class="stockSticker_img" src="/images/shild_sold_out.png" alt="Нет в наличии" />
-                </div>
+                <% if ( !products[ i ].isBuyable || products[ i ].statusId == 5 ) { %>
+                    <div class="bProductDescSticker stockSticker">
+                        <img class="stockSticker_img" src="/images/shild_sold_out.png" alt="Нет в наличии" />
+                    </div>
                 <% } %>
 
                 <div class="prodImg">
@@ -28,7 +28,7 @@
                         <a
                             href="<%= products[ i ].cartButton.url %>"
                             class="btnBuy__eLink <%= products[ i ].cartButton.class %>"
-                            data-product-id="<%= products[ i ].id %>"
+                            data-product-id="<%= products[ i ].cartButton.data.productId %>"
                             data-upsale='<%= products[ i ].cartButton.data.upsale %>'
                             data-bind="buyButtonBinding: cart"
                         ><%= products[ i ].cartButton.value %></a>

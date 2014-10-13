@@ -43,7 +43,7 @@ class ProductButtonAction {
             $data['disabled'] = true;
             $data['url'] = '#';
             $data['class'] .= ' mDisabled jsBuyButton';
-            $data['value'] = 'Купить';
+            $data['value'] = 'Нет';
         } else if ($product->isInShopStockOnly() && $forceDefaultBuy) {
             $data['inShopOnly'] = true;
             $data['url'] = $helper->url('cart.oneClick.product.set', ['productId' => $product->getId()]);
