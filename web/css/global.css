@@ -11756,6 +11756,10 @@
     height: 265px;
     width: 215px;
   }
+  .bListing .bListingItem.mBannerItem img {
+    width: 100%;
+    height: auto;
+  }
   .bListing .bListingItem.mBanner2Item {
     margin-right: 0;
     width: 0;
@@ -12103,6 +12107,16 @@
   }
   .bListing-3col .bListingItem.mBannerItem {
     width: 295px;
+    height: 315px;
+    background-position: 50% 0;
+    text-align: center;
+  }
+  .bListing-3col .bListingItem.mBannerItem .adfoxWrapper {
+    height: 315px;
+  }
+  .bListing-3col .bListingItem.mBannerItem .adfoxWrapper img {
+    height: 100%;
+    width: auto;
   }
   .bListing-3col .bListingItem .bSimplyDesc {
     width: 260px;
