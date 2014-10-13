@@ -209,8 +209,9 @@
 			$('.js-compare-addPopup-prefix', $compareNotice).text(product.prefix);
 			$('.js-compare-addPopup-webName', $compareNotice).text(product.webName);
 
-			ENTER.userBar.show();
-			$compareNotice.addClass(compareNoticeShowClass);
+			ENTER.userBar.show(true, function(){
+				$compareNotice.addClass(compareNoticeShowClass);
+			});
 		}
 		
 		ENTER.UserModel = createUserModel();
@@ -4082,15 +4083,19 @@ $(document).ready(function() {
 	/**
 	 * Показ юзербара
 	 */
-	function showUserbar() {
+	function showUserbar(disableAnimation, onOpen) {
 		console.log('showUserbar');
 
 		$.each(emptyCompareNoticeElements, function(){
 			this.removeClass(emptyCompareNoticeShowClass);
 		});
 
-		userBarFixed.slideDown();
-		
+		if (disableAnimation) {
+			userBarFixed.show(0, onOpen || function(){});
+		} else {
+			userBarFixed.slideDown();
+		}
+
 		if (userBarFixed.length) {
 			userbarStatic.css('visibility','hidden');
 		}
@@ -4108,7 +4113,7 @@ $(document).ready(function() {
 	/**
 	 * Проверка текущего скролла
 	 */
-	function checkScroll() {
+	function checkScroll(hideOnly) {
 		var
 			nowScroll = w.scrollTop();
 		// end of vars
@@ -4118,7 +4123,9 @@ $(document).ready(function() {
 		}
 
 		if ( nowScroll >= scrollTargetOffset ) {
-			showUserbar();
+			if (!hideOnly) {
+				showUserbar();
+			}
 		}
 		else {
 			hideUserbar();
@@ -4223,7 +4230,7 @@ $(document).ready(function() {
 			buyInfo.show();
 		}
 
-		showUserbar();
+		showUserbar(true);
 		if (upsale) {
 			showUpsell(data, upsale);
 		}
@@ -4473,7 +4480,9 @@ $(document).ready(function() {
 
 		if ( scrollTarget.length ) {
 			scrollTargetOffset = scrollTarget.offset().top + userBarFixed.height() - scrollTarget.height();
-			w.on('scroll', checkScroll);
+			w.on('scroll', function(){ checkScroll(); });
+		} else {
+			w.on('scroll', function(){ checkScroll(true); });
 		}
 	}
 	else {

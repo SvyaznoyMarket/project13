@@ -94,8 +94,9 @@
 			$('.js-compare-addPopup-prefix', $compareNotice).text(product.prefix);
 			$('.js-compare-addPopup-webName', $compareNotice).text(product.webName);
 
-			ENTER.userBar.show();
-			$compareNotice.addClass(compareNoticeShowClass);
+			ENTER.userBar.show(true, function(){
+				$compareNotice.addClass(compareNoticeShowClass);
+			});
 		}
 		
 		ENTER.UserModel = createUserModel();
