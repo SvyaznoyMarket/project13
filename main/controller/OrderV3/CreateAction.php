@@ -37,7 +37,12 @@ class CreateAction extends OrderV3 {
                 $ordersData[] = (new OrderEntity(array_merge($splitResult, array('order' => $splitOrder))))->getOrderData();
             }
 
-            $coreResponse = $this->client->query((\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet'), $params, $ordersData, \App::config()->coreV2['hugeTimeout']);
+            $coreResponse = $this->client->query(
+                (\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet'),
+                $params + ['request_id' => \App::$id], // SITE-4445
+                $ordersData,
+                \App::config()->coreV2['hugeTimeout']
+            );
 
         } catch (\Curl\Exception $e) {
             \App::logger()->error($e->getMessage(), ['curl', 'order/create']);
