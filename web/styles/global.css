@@ -4008,6 +4008,14 @@ img[height="0"] {
   .bPromoCatalogSlider.mTchiboSlider .topLifted:before {
     box-shadow: none;
   }
+  .bPromoCatalogSlider .bProductDescSticker.stockSticker {
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    left: 50%;
+    margin: -70px 0 0 -73px;
+    position: absolute;
+    top: 50%;
+  }
   .bPromoCatalogSlider .bPromoCatalogSlider_eArrow {
     background-repeat: no-repeat;
     width: 58px;
