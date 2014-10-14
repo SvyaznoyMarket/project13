@@ -8,9 +8,10 @@ return function (
     $region = \App::user()->getRegion();
     $forceDefaultBuy = $region ? $region->getForceDefaultBuy() : true;
 
+    $cartButtonClass = \View\Id::cartButtonForProduct($product->getId());
     $url = null;
     $value = 'Купить';
-    $class = \View\Id::cartButtonForProduct($product->getId()) . ' btnBuy__eLink jsChangePackageSet';
+    $class = $cartButtonClass . ' jsChangePackageSet btnBuy__eLink';
 
     if ($product->isInShopStockOnly() && $forceDefaultBuy) {
         $class .= ' mShopsOnly';
@@ -33,7 +34,7 @@ return function (
     } else if (!$product->getIsBuyable()) {
         $url = null;
         $class .= ' mDisabled';
-        $class = str_replace(' jsChangePackageSet', '', $class);
+        $class = str_replace($cartButtonClass . ' jsChangePackageSet ', '', $class);
         $value = $product->isInShopShowroomOnly() ? 'На витрине' : 'Нет';
     } else if (!isset($url)) {
         $urlParams = [
