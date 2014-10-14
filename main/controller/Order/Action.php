@@ -77,7 +77,7 @@ class Action {
         }
 
         // метод оплаты
-        $paymentMethod = \RepositoryManager::paymentMethod()->getEntityById($order->getPaymentId());
+        $paymentMethod = \RepositoryManager::paymentMethod()->getEntityById($order->getPaymentId(), new \Model\Region\Entity(['id' => \App::config()->region['defaultId']]));
         if (!$paymentMethod) {
             throw new \Exception(sprintf('Не найден метод оплаты для заказа #%s', $order->getId()));
         }
