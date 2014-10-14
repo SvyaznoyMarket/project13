@@ -8557,7 +8557,11 @@
     zoom: 1;
   }
   .bProductSectionRightCol .btnBuy {
-    margin: 0 auto;
+    margin: 0 auto 25px;
+  }
+  .bProductSectionRightCol .btnOneClickBuy {
+    margin-bottom: 25px;
+    margin-top: -15px;
   }
   .bProductSectionRightCol .adfoxWrapper {
     margin: 0 0 10px;

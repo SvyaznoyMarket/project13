@@ -4008,6 +4008,14 @@ img[height="0"] {
   .bPromoCatalogSlider.mTchiboSlider .topLifted:before {
     box-shadow: none;
   }
+  .bPromoCatalogSlider .bProductDescSticker.stockSticker {
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    left: 50%;
+    margin: -70px 0 0 -73px;
+    position: absolute;
+    top: 50%;
+  }
   .bPromoCatalogSlider .bPromoCatalogSlider_eArrow {
     background-repeat: no-repeat;
     width: 58px;
@@ -4151,7 +4159,14 @@ img[height="0"] {
     border-color: #002958;
   }
   .slider2 .btnBuy .btnBuy__eLink.mBought {
-    background: none repeat scroll 0 0 #E6E6E6;
+    background: #E6E6E6;
+    background: -moz-linear-gradient(top, #e6e6e6 0%, #e6e6e6 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e6e6e6), color-stop(100%, #e6e6e6));
+    background: -webkit-linear-gradient(top, #e6e6e6 0%, #e6e6e6 100%);
+    background: -o-linear-gradient(top, #e6e6e6 0%, #e6e6e6 100%);
+    background: -ms-linear-gradient(top, #e6e6e6 0%, #e6e6e6 100%);
+    background: linear-gradient(to bottom, #e6e6e6 0%, #e6e6e6 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#E6E6E6', endColorstr='#E6E6E6', GradientType=0);
     border: 1px solid #E6E6E6;
     box-shadow: none;
     color: #A6A6A6;
@@ -6690,7 +6705,7 @@ img[height="0"] {
 /*---------Личный кабинет пользователя----------*/
 @media all {
   .btnCmpr {
-    margin: 25px 0 0 13px;
+    margin: 0 0 0 13px;
   }
   .btnCmpr_lk {
     display: inline-block;

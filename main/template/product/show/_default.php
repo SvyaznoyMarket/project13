@@ -149,36 +149,44 @@ $isKitPage = (bool)$product->getKit();
     </div>
     <? endif ?>
 
-    <? if ( $product->isInShopStockOnly() || !$product->getIsBuyable() ) : else : ?>
-    <div class="bWidgetBuy mWidget js-WidgetBuy">
-        <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && 0 == count($kitProducts)): ?>
-            <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'productId' => $product->getId()]) ?>
-        <? endif ?>
+    <? if (!$product->isInShopStockOnly() && $product->getIsBuyable()): ?>
+        <div class="bWidgetBuy mWidget js-WidgetBuy">
+            <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && 0 == count($kitProducts)): ?>
+                <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'productId' => $product->getId()]) ?>
+            <? endif ?>
 
-        <? if ($isKitPage && !$product->getIsKitLocked()) : ?>
-            <?= $helper->render('cart/__button-product-kit', ['product' => $product]) // Кнопка купить для набора продуктов ?>
-        <? else : ?>
-            <?= $helper->render('cart/__button-product', [
-                'product' => $product,
-                'onClick' => isset($addToCartJS) ? $addToCartJS : null,
-            ]) // Кнопка купить ?>
-        <? endif ?>
+            <? if ($isKitPage && !$product->getIsKitLocked()) : ?>
+                <?= $helper->render('cart/__button-product-kit', ['product' => $product]) // Кнопка купить для набора продуктов ?>
+            <? else : ?>
+                <?= $helper->render('cart/__button-product', [
+                    'product' => $product,
+                    'onClick' => isset($addToCartJS) ? $addToCartJS : null,
+                ]) // Кнопка купить ?>
+            <? endif ?>
 
-        <? if (!$hasFurnitureConstructor && count($product->getPartnersOffer()) == 0): ?>
-            <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
-        <? endif ?>
+            <? if (!$hasFurnitureConstructor && count($product->getPartnersOffer()) == 0): ?>
+                <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
+            <? endif ?>
 
-        <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'categoryId' => $product->getLastCategory()->getId()]) ?>
+            <? if (!$isKitPage || $product->getIsKitLocked()) : ?>
+                <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'categoryId' => $product->getLastCategory()->getId()]) ?>
+            <? endif ?>
 
-        <? if (5 !== $product->getStatusId()): // SITE-3109 ?>
-            <?= $helper->render('product/__delivery', ['product' => $product, 'deliveryData' => $deliveryData, 'shopStates' => $shopStates]) // Доставка ?>
-        <? endif ?>
+            <? if (5 !== $product->getStatusId()): // SITE-3109 ?>
+                <?= $helper->render('product/__delivery', ['product' => $product, 'deliveryData' => $deliveryData, 'shopStates' => $shopStates]) // Доставка ?>
+            <? endif ?>
 
-        <?= $helper->render('cart/__button-product-paypal', ['product' => $product]) // Кнопка купить через paypal ?>
+            <?= $helper->render('cart/__button-product-paypal', ['product' => $product]) // Кнопка купить через paypal ?>
 
-        <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'main']) ?>
-    </div><!--/widget delivery -->
-    <? endif; ?>
+            <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'main']) ?>
+        </div>
+    <? else: ?>
+        <div class="bWidgetBuy mWidget js-WidgetBuy">
+            <? if (!$isKitPage || $product->getIsKitLocked()) : ?>
+                <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'categoryId' => $product->getLastCategory()->getId()]) ?>
+            <? endif ?>
+        </div>
+    <? endif ?>
 
     <? if ($lifeGiftProduct): ?>
         <?= $helper->render('cart/__button-product-lifeGift', ['product' => $lifeGiftProduct]) // Кнопка "Подари жизнь" ?>

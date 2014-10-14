@@ -500,6 +500,7 @@ class Action {
                                 'name'      => $product->getName(),
                                 'price'     => $product->getPrice(),
                                 'isBuyable' => ($product->getIsBuyable() || $product->isInShopOnly() || $product->isInShopStockOnly()),
+                                'statusId'      => $product->getStatusId(),
                                 'cartButton'    => (new \View\Cart\ProductButtonAction())->execute(new \Helper\TemplateHelper(), $product)
                             ];
                         }

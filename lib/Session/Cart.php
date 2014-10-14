@@ -752,19 +752,15 @@ class Cart {
             $data = $this->storage->get($this->sessionName);
             \App::logger()->info(['action' => __METHOD__,  'cart.actionData' => $data['actionData']], ['cart']);
 
-            $data['actionData'] += $actionData;
-
             foreach ($actionData as $i => $actionItem) {
-                if (!(isset($actionItem['product_list']) && is_array($actionItem['product_list']))) continue;
-
-                if (!isset($data['actionData'][$i]['product_list'])) {
-                    $data['actionData'][$i]['product_list'] = [];
-                }
-
-                foreach ($actionItem['product_list'] as $k => $v) {
-                    $data['actionData'][$i]['product_list'][$k] = $v;
+                if (!isset($actionData[$i]['product_list'])) {
+                    $actionData[$i]['product_list'] = [];
                 }
             }
+
+            $data['actionData'] = array_merge($data['actionData'], $actionData);
+            $data['actionData'] = array_map('unserialize', array_unique(array_map('serialize', $data['actionData'])));
+
             $this->actions = $data['actionData'];
 
             \App::logger()->info(['action' => __METHOD__, 'cart.actionData' => $data['actionData']], ['cart']);

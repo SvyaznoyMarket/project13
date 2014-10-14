@@ -8,7 +8,7 @@
     <a href="/login" class="topbarfix_log_lk bAuthLink">Личный кабинет</a>
 </div>
 
-<div class="topbarfix_log topbarfix_log-login js-topbarfixLogin" data-bind="visible: name()" style="display: none">
+<div class="topbarfix_log topbarfix_log-login js-topbarfixLogin" data-bind="visible: name(), css: {'enterprizeMember': isEnterprizeMember}" style="display: none">
     <a href="" class="topbarfix_log_lk" data-bind="attr: { href: link }">
         <!--ko text: firstName--><!--/ko--><br />
         <!--ko text: lastName--><!--/ko-->

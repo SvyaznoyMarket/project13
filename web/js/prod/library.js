@@ -616,7 +616,7 @@ String.prototype.isEmail = isTrueEmail; // добавляем методом д�
  */
 (function( global ) {
 	global.printPrice = function( num ) {
-		var str = num.toString();
+		var str = (num || '').toString();
 
 		return str.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
 	};
