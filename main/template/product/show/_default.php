@@ -180,11 +180,9 @@ $isKitPage = (bool)$product->getKit();
 
             <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'main']) ?>
         </div>
-    <? else: ?>
+    <? elseif (!$isKitPage || $product->getIsKitLocked()): ?>
         <div class="bWidgetBuy mWidget js-WidgetBuy">
-            <? if (!$isKitPage || $product->getIsKitLocked()) : ?>
-                <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'categoryId' => $product->getLastCategory()->getId()]) ?>
-            <? endif ?>
+            <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'categoryId' => $product->getLastCategory()->getId()]) ?>
         </div>
     <? endif ?>
 
