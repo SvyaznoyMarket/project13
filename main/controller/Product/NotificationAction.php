@@ -4,8 +4,8 @@ namespace Controller\Product;
 
 class NotificationAction {
 
-    const CHANNEL_2_SUBSCRIPTION_EXISTS_CODE = 920;
-    const CHANNEL_1_SUBSCRIPTION_EXISTS_CODE = 910;
+    const SUBSCRIPTION_PRODUCT_EXISTS_CODE = 920;
+    const SUBSCRIPTION_EXISTS_CODE = 910;
     const SUBSCRIPTION_NOT_EXISTS_CODE = 921;
     const WRONG_EMAIL_CODE = 850;
 
@@ -69,7 +69,7 @@ class NotificationAction {
             }
 
             $client->addQuery('subscribe/create', $params, [], null, function(\Curl\Exception $e) use(&$exception) {
-                if ($e->getCode() == self::CHANNEL_2_SUBSCRIPTION_EXISTS_CODE) {
+                if ($e->getCode() == self::SUBSCRIPTION_PRODUCT_EXISTS_CODE) {
                     \App::exception()->remove($e);
                 } else {
                     $exception = $e;
@@ -119,7 +119,7 @@ class NotificationAction {
                     }
 
                     $client->addQuery('subscribe/create', $params, [], null, function(\Curl\Exception $e) use(&$exception) {
-                        if ($e->getCode() == self::CHANNEL_1_SUBSCRIPTION_EXISTS_CODE) {
+                        if ($e->getCode() == self::SUBSCRIPTION_EXISTS_CODE) {
                             \App::exception()->remove($e);
                         } else {
                             $exception = $e;
