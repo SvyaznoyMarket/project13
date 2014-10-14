@@ -136,6 +136,7 @@
 		model.firstName = ko.observable();
 		model.lastName = ko.observable();
 		model.link = ko.observable();
+		model.isEnterprizeMember = ko.observable();
 
 		model.cart = ko.observableArray();
 		model.compare = ko.observableArray();
@@ -151,6 +152,7 @@
 				if (data.user.firstName) model.firstName(data.user.firstName);
 				if (data.user.lastName) model.lastName(data.user.lastName);
 				if (data.user.link) model.link(data.user.link);
+				if (data.user.isEnterprizeMember) model.isEnterprizeMember(data.user.isEnterprizeMember);
 			}
 			if (data.cartProducts && $.isArray(data.cartProducts)) {
 				$.each(data.cartProducts, function(i,val){ model.cart.unshift(createCartModel(val)) });
@@ -205,8 +207,9 @@
 		$('.js-compare-addPopup-prefix', $compareNotice).text(product.prefix);
 		$('.js-compare-addPopup-webName', $compareNotice).text(product.webName);
 
-		ENTER.userBar.show();
-		$compareNotice.addClass(compareNoticeShowClass);
+		ENTER.userBar.show(true, function(){
+			compareNotice.addClass(compareNoticeShowClass)
+		});
 	}
 
 	ENTER.UserModel = createUserModel();
@@ -3185,27 +3188,29 @@ $(document).ready(function() {
 			};
 		// end of functions
 
-		initSlider(); //запуск слайдера
+		$(function(){
+			initSlider(); //запуск слайдера
 
-		tchiboAnalytics.init();
+			tchiboAnalytics.init();
 
-		body.on('click', '.bPromoCatalogSlider_eArrow', btnsClick);
-		body.on('click', '.bPaginator_eLink', paginatorClick);
+			body.on('click', '.bPromoCatalogSlider_eArrow', btnsClick);
+			body.on('click', '.bPaginator_eLink', paginatorClick);
 
-		if ( activeHash ) {
-			hash = window.location.hash;
-			if ( hash.indexOf('slide') + 1 ) {
-				toSlide = parseInt(hash.slice(6), 10) - 1;
-				moveSlide(toSlide);
+			if ( activeHash ) {
+				hash = window.location.hash;
+				if ( hash.indexOf('slide') + 1 ) {
+					toSlide = parseInt(hash.slice(6), 10) - 1;
+					moveSlide(toSlide);
+				}
 			}
-		}
 
-		setScrollInterval(toSlide);
+			setScrollInterval(toSlide);
 
-		// аналитика показа первого слайда
-		if ( data.hasOwnProperty(toSlide) && data[toSlide].hasOwnProperty('title') && data[toSlide].hasOwnProperty('time') && tchiboAnalytics.checkRule('collection_view') ) {
-			tchiboAnalytics.collectionShow(data[toSlide].title, ((toSlide*1)+1), data[toSlide].time);
-		}
+			// аналитика показа первого слайда
+			if ( data.hasOwnProperty(toSlide) && data[toSlide].hasOwnProperty('title') && data[toSlide].hasOwnProperty('time') && tchiboAnalytics.checkRule('collection_view') ) {
+				tchiboAnalytics.collectionShow(data[toSlide].title, ((toSlide*1)+1), data[toSlide].time);
+			}
+		});
 	}
 })(jQuery);
 /**
@@ -3667,7 +3672,7 @@ $(document).ready(function() {
     // https://jira.enter.ru/browse/SITE-3508
     // SITE-3508 Закрепить товары в листинге чибы
 
-    if ( /catalog\/tchibo/.test(document.location.href) && window.history) {
+    if (/catalog\/tchibo/.test(document.location.href) && window.history && window.history.replaceState) {
 
         var history = window.history;
 
@@ -3675,7 +3680,7 @@ $(document).ready(function() {
             history.replaceState({pageYOffset: pageYOffset}, '');
         });
 
-        if (history && history.state.pageYOffset) {
+        if (history && history.state && history.state.pageYOffset) {
             window.scrollTo(0, history.state.pageYOffset);
         }
 
@@ -4077,15 +4082,19 @@ $(document).ready(function() {
 	/**
 	 * Показ юзербара
 	 */
-	function showUserbar() {
+	function showUserbar(disableAnimation, onOpen) {
 		console.log('showUserbar');
 
 		$.each(emptyCompareNoticeElements, function(){
 			this.removeClass(emptyCompareNoticeShowClass);
 		});
 
-		userBarFixed.slideDown();
-		
+		if (disableAnimation) {
+			userBarFixed.show(0, onOpen || function(){});
+		} else {
+			userBarFixed.slideDown();
+		}
+
 		if (userBarFixed.length) {
 			userbarStatic.css('visibility','hidden');
 		}
@@ -4103,7 +4112,7 @@ $(document).ready(function() {
 	/**
 	 * Проверка текущего скролла
 	 */
-	function checkScroll() {
+	function checkScroll(hideOnly) {
 		var
 			nowScroll = w.scrollTop();
 		// end of vars
@@ -4113,7 +4122,9 @@ $(document).ready(function() {
 		}
 
 		if ( nowScroll >= scrollTargetOffset ) {
-			showUserbar();
+			if (!hideOnly) {
+				showUserbar();
+			}
 		}
 		else {
 			hideUserbar();
@@ -4218,7 +4229,7 @@ $(document).ready(function() {
 			buyInfo.show();
 		}
 
-		showUserbar();
+		showUserbar(true);
 		if (upsale) {
 			showUpsell(data, upsale);
 		}
@@ -4468,7 +4479,9 @@ $(document).ready(function() {
 
 		if ( scrollTarget.length ) {
 			scrollTargetOffset = scrollTarget.offset().top + userBarFixed.height() - scrollTarget.height();
-			w.on('scroll', checkScroll);
+			w.on('scroll', function(){ checkScroll(); });
+		} else {
+			w.on('scroll', function(){ checkScroll(true); });
 		}
 	}
 	else {

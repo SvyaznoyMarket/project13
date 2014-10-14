@@ -21,6 +21,7 @@
 		model.firstName = ko.observable();
 		model.lastName = ko.observable();
 		model.link = ko.observable();
+		model.isEnterprizeMember = ko.observable();
 
 		model.cart = ko.observableArray();
 		model.compare = ko.observableArray();
@@ -36,6 +37,7 @@
 				if (data.user.firstName) model.firstName(data.user.firstName);
 				if (data.user.lastName) model.lastName(data.user.lastName);
 				if (data.user.link) model.link(data.user.link);
+				if (data.user.isEnterprizeMember) model.isEnterprizeMember(data.user.isEnterprizeMember);
 			}
 			if (data.cartProducts && $.isArray(data.cartProducts)) {
 				$.each(data.cartProducts, function(i,val){ model.cart.unshift(createCartModel(val)) });
@@ -90,8 +92,9 @@
 		$('.js-compare-addPopup-prefix', $compareNotice).text(product.prefix);
 		$('.js-compare-addPopup-webName', $compareNotice).text(product.webName);
 
-		ENTER.userBar.show();
-		$compareNotice.addClass(compareNoticeShowClass);
+		ENTER.userBar.show(true, function(){
+			compareNotice.addClass(compareNoticeShowClass)
+		});
 	}
 
 	ENTER.UserModel = createUserModel();
