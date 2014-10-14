@@ -281,4 +281,17 @@ class CompletePage extends Layout {
             'price' => $totalProductPrice,
         ]);
     }
+
+    public function slotRevolverJS()
+    {
+        if (!\App::config()->partners['Revolver']['enabled']) return '';
+
+        $content = parent::slotRevolverJS();
+
+        if (is_array($this->getParam('orders')) && (bool)$this->getParam('orders')) {
+            $content .= parent::revolverOrdersJS($this->getParam('orders'));
+        }
+
+        return $content;
+    }
 }
