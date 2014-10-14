@@ -561,6 +561,11 @@ return [
         'action'    => ['OrderV3\CompleteAction', 'updateCredit'],
         'method'    => ['POST']
     ],
+    // Подари жизнь (новое оформление)
+    'orderV3.lifegift' => [
+        'pattern'   => '/order/life-gift',
+        'action'    => ['OrderV3\LifeGiftAction', 'execute']
+    ],
 
 
     // заказ
