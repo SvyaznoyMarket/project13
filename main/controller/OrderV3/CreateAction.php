@@ -31,6 +31,8 @@ class CreateAction extends OrderV3 {
             $params['token'] = $this->user->getEntity()->getToken();
         }
 
+        $params += ['request_id' => \App::$id]; // SITE-4445
+
         try {
 
             foreach ($splitResult['orders'] as &$splitOrder) {
@@ -39,7 +41,7 @@ class CreateAction extends OrderV3 {
 
             $coreResponse = $this->client->query(
                 (\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet'),
-                $params + ['request_id' => \App::$id], // SITE-4445
+                $params,
                 $ordersData,
                 \App::config()->coreV2['hugeTimeout']
             );

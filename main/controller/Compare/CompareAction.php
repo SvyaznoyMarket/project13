@@ -15,7 +15,7 @@ class CompareAction {
         $this->data = (bool)$this->session->get($this->compareSessionKey) ? $this->session->get($this->compareSessionKey) : [];
     }
 
-    public function execute() {
+    public function execute(\Http\Request $request) {
         $compareProducts = $this->session->get($this->compareSessionKey);
         if ($compareProducts && is_array($compareProducts)) {
             $productData = null;
@@ -49,10 +49,10 @@ class CompareAction {
 
         $page = new \View\Compare\CompareLayout();
         $page->setParam('compareGroups', $compareGroups);
-        $page->setParam('page', $page);
+        $page->setParam('activeCompareGroupIndex', $this->getActiveCompareGroupIndex($compareGroups, $request->get('categoryId')));
         return new \Http\Response($page->show());
     }
-    
+
     private function getCompareGroups(array $compareProducts, $productData, $reviewsData) {
         $compareGroups = [];
         
@@ -203,6 +203,16 @@ class CompareAction {
         $propertyGroups = array_values($propertyGroups);
 
         return $propertyGroups;
+    }
+
+    private function getActiveCompareGroupIndex(array $compareGroups, $defaultCategoryId) {
+        foreach ($compareGroups as $i => $compareGroup) {
+            if ((string)$compareGroup['category']['id'] === $defaultCategoryId) {
+                return $i;
+            }
+        }
+
+        return 0;
     }
 
     public function add(\Http\Request $request, $productId) {

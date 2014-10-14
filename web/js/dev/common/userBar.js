@@ -35,15 +35,19 @@
 	/**
 	 * Показ юзербара
 	 */
-	function showUserbar() {
+	function showUserbar(disableAnimation, onOpen) {
 		console.log('showUserbar');
 
 		$.each(emptyCompareNoticeElements, function(){
 			this.removeClass(emptyCompareNoticeShowClass);
 		});
 
-		userBarFixed.slideDown();
-		
+		if (disableAnimation) {
+			userBarFixed.show(0, onOpen || function(){});
+		} else {
+			userBarFixed.slideDown();
+		}
+
 		if (userBarFixed.length) {
 			userbarStatic.css('visibility','hidden');
 		}
@@ -61,7 +65,7 @@
 	/**
 	 * Проверка текущего скролла
 	 */
-	function checkScroll() {
+	function checkScroll(hideOnly) {
 		var
 			nowScroll = w.scrollTop();
 		// end of vars
@@ -71,7 +75,9 @@
 		}
 
 		if ( nowScroll >= scrollTargetOffset ) {
-			showUserbar();
+			if (!hideOnly) {
+				showUserbar();
+			}
 		}
 		else {
 			hideUserbar();
@@ -176,7 +182,7 @@
 			buyInfo.show();
 		}
 
-		showUserbar();
+		showUserbar(true);
 		if (upsale) {
 			showUpsell(data, upsale);
 		}
@@ -426,7 +432,9 @@
 
 		if ( scrollTarget.length ) {
 			scrollTargetOffset = scrollTarget.offset().top + userBarFixed.height() - scrollTarget.height();
-			w.on('scroll', checkScroll);
+			w.on('scroll', function(){ checkScroll(); });
+		} else {
+			w.on('scroll', function(){ checkScroll(true); });
 		}
 	}
 	else {

@@ -269,7 +269,7 @@ namespace Model\OrderDelivery\Entity {
          */
         public $discounts = [];
         /** @var array */
-        public $action_list = [];
+        public $actions = [];
         /** Выбранный способ доставки
          * @var Order\Delivery|null
          */
@@ -356,7 +356,7 @@ namespace Model\OrderDelivery\Entity {
                 }
             }
 
-            if (isset($data['action_list']) && is_array($data['action_list'])) $this->action_list = $data['action_list'];
+            if (isset($data['actions']) && is_array($data['actions'])) $this->actions = $data['actions'];
 
             if (isset($data['delivery']['delivery_method_token'])) $this->delivery = new Order\Delivery($data['delivery'], $orderDelivery);
 

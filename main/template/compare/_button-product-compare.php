@@ -17,7 +17,7 @@
 
     <!-- если в сравнении есть несколько товаров из одной категории -->
     <div class="btnCmpr_more" style="display: none">
-        <a class="btnCmpr_more_lk" href="<?= \App::router()->generate('compare') ?>">Сравнить</a> <span class="btnCmpr_more_qn"></span>
+        <a class="btnCmpr_more_lk" href="<?= \App::router()->generate('compare', ['categoryId' => $categoryId]) ?>">Сравнить</a> <span class="btnCmpr_more_qn"></span>
     </div>
 
 </div>

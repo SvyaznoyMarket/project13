@@ -159,12 +159,12 @@ class IndexAction {
                 $product = $products[$productId];
                 /** @var $product \Model\Product\Entity */
                 $itemProducts[] = [
-                    'id'            => $product->getId(),
                     'image'         => $product->getImageUrl(2), // 163х163 seize
                     'link'          => $product->getLink(),
                     'name'          => $product->getName(),
                     'price'         => $product->getPrice(),
                     'isBuyable'     => $product->isAvailable() || $product->hasAvailableModels(),
+                    'statusId'      => $product->getStatusId(),
                     'cartButton'    => (new \View\Cart\ProductButtonAction())->execute(new \Helper\TemplateHelper(), $product),
                 ];
             }
