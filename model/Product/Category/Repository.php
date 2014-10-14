@@ -522,7 +522,7 @@ class Repository {
         // удаляем дубликаты из autohotlinks, встречающиеся в hotlinks
         // такой подход кроме прочего позволяет в hotlinks отключать показ горячей ссылки
         // даже если в autohotlinks она активна
-        foreach ($hotlinks as $key => $hotlink) {
+        foreach ($hotlinks as $hotlink) {
             foreach ($autohotlinks as $autokey => $autohotlink) {
                 if($autohotlink['title'] == $hotlink['title']) {
                     unset($autohotlinks[$autokey]);
