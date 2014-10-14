@@ -355,6 +355,7 @@ $(document).ready(function() {
 					location.href = location.href
 				}
 				else{
+					ENTER.UserModel.cart.remove(function(item){ return item.id == productId; });
 					// console.log(data)
 					showOldPrice(data.cart.old_price)
 					showPrice(data.cart.full_price)
@@ -523,7 +524,7 @@ $(document).ready(function() {
 				productId = basketLine.data('product-id'),
 				categoryId = basketLine.data('category-id');
 
-			ENTER.UserModel.cart.remove(function(item){ return item.id == productId});
+			ENTER.UserModel.cart.remove(function(item){ return item.id == productId; });
 
 			// Soloway
 			// Чтобы клиент не видел баннер с товаром которого нет на сайте и призывом купить
