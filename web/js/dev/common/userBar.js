@@ -26,8 +26,7 @@
 		buyInfoShowing = false,
 		overlay = $('<div>').css({ position: 'fixed', display: 'none', width: '100%', height:'100%', top: 0, left: 0, zIndex: 900, background: 'black', opacity: 0.4 }),
 
-		scrollTarget,
-		scrollTargetOffset;
+		scrollTarget;
 	// end of vars
 
 	userBar.showOverlay = false;
@@ -66,18 +65,12 @@
 	 * Проверка текущего скролла
 	 */
 	function checkScroll(hideOnly) {
-		var
-			nowScroll = w.scrollTop();
-		// end of vars
-
 		if ( buyInfoShowing ) {
 			return;
 		}
 
-		if ( nowScroll >= scrollTargetOffset ) {
-			if (!hideOnly) {
-				showUserbar();
-			}
+		if (scrollTarget && scrollTarget.length && w.scrollTop() >= scrollTarget.offset().top && !hideOnly) {
+			showUserbar();
 		}
 		else {
 			hideUserbar();
@@ -431,7 +424,6 @@
 		}
 
 		if ( scrollTarget.length ) {
-			scrollTargetOffset = scrollTarget.offset().top + userBarFixed.height() - scrollTarget.height();
 			w.on('scroll', function(){ checkScroll(); });
 		} else {
 			w.on('scroll', function(){ checkScroll(true); });
