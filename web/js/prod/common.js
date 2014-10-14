@@ -3191,27 +3191,29 @@ $(document).ready(function() {
 			};
 		// end of functions
 
-		initSlider(); //запуск слайдера
+		$(function(){
+			initSlider(); //запуск слайдера
 
-		tchiboAnalytics.init();
+			tchiboAnalytics.init();
 
-		body.on('click', '.bPromoCatalogSlider_eArrow', btnsClick);
-		body.on('click', '.bPaginator_eLink', paginatorClick);
+			body.on('click', '.bPromoCatalogSlider_eArrow', btnsClick);
+			body.on('click', '.bPaginator_eLink', paginatorClick);
 
-		if ( activeHash ) {
-			hash = window.location.hash;
-			if ( hash.indexOf('slide') + 1 ) {
-				toSlide = parseInt(hash.slice(6), 10) - 1;
-				moveSlide(toSlide);
+			if ( activeHash ) {
+				hash = window.location.hash;
+				if ( hash.indexOf('slide') + 1 ) {
+					toSlide = parseInt(hash.slice(6), 10) - 1;
+					moveSlide(toSlide);
+				}
 			}
-		}
 
-		setScrollInterval(toSlide);
+			setScrollInterval(toSlide);
 
-		// аналитика показа первого слайда
-		if ( data.hasOwnProperty(toSlide) && data[toSlide].hasOwnProperty('title') && data[toSlide].hasOwnProperty('time') && tchiboAnalytics.checkRule('collection_view') ) {
-			tchiboAnalytics.collectionShow(data[toSlide].title, ((toSlide*1)+1), data[toSlide].time);
-		}
+			// аналитика показа первого слайда
+			if ( data.hasOwnProperty(toSlide) && data[toSlide].hasOwnProperty('title') && data[toSlide].hasOwnProperty('time') && tchiboAnalytics.checkRule('collection_view') ) {
+				tchiboAnalytics.collectionShow(data[toSlide].title, ((toSlide*1)+1), data[toSlide].time);
+			}
+		});
 	}
 })(jQuery);
 /**
@@ -3673,7 +3675,7 @@ $(document).ready(function() {
     // https://jira.enter.ru/browse/SITE-3508
     // SITE-3508 Закрепить товары в листинге чибы
 
-    if ( /catalog\/tchibo/.test(document.location.href) && window.history) {
+    if (/catalog\/tchibo/.test(document.location.href) && window.history && window.history.replaceState) {
 
         var history = window.history;
 
@@ -3681,7 +3683,7 @@ $(document).ready(function() {
             history.replaceState({pageYOffset: pageYOffset}, '');
         });
 
-        if (history && history.state.pageYOffset) {
+        if (history && history.state && history.state.pageYOffset) {
             window.scrollTo(0, history.state.pageYOffset);
         }
 
