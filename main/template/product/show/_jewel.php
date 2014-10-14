@@ -14,6 +14,8 @@
  * @var $isTchibo          boolean
  * @var $addToCartJS string
  */
+
+$isKitPage = (bool)$product->getKit();
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
@@ -139,31 +141,37 @@
         </div>
     <? endif ?>
 
-    <? if ( $product->isInShopStockOnly() || !$product->getIsBuyable() ) : else : ?>
-    <div class="bWidgetBuy mWidget js-WidgetBuy">
-        <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId())): ?>
-            <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'productId' => $product->getId()]) ?>
-        <? endif ?>
+    <? if (!$product->isInShopStockOnly() && $product->getIsBuyable()): ?>
+        <div class="bWidgetBuy mWidget js-WidgetBuy">
+            <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId())): ?>
+                <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'productId' => $product->getId()]) ?>
+            <? endif ?>
 
-        <?= $helper->render('cart/__button-product', [
-            'product' => $product,
-            'onClick' => isset($addToCartJS) ? $addToCartJS : null,
-        ]) // Кнопка купить ?>
+            <?= $helper->render('cart/__button-product', [
+                'product' => $product,
+                'onClick' => isset($addToCartJS) ? $addToCartJS : null,
+            ]) // Кнопка купить ?>
 
-        <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
+            <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
 
-        <? if (!$product->getKit() || $product->getIsKitLocked()) : ?>
-            <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'categoryId' => $product->getLastCategory()->getId()]) ?>
-        <? endif ?>
+            <? if (!$isKitPage || $product->getIsKitLocked()) : ?>
+                <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'categoryId' => $product->getLastCategory()->getId()]) ?>
+            <? endif ?>
 
-        <? if (5 !== $product->getStatusId()): // SITE-3109 ?>
-            <?= $helper->render('product/__delivery', ['product' => $product, 'deliveryData' => $deliveryData, 'shopStates' => $shopStates]) // Доставка ?>
-        <? endif ?>
+            <? if (5 !== $product->getStatusId()): // SITE-3109 ?>
+                <?= $helper->render('product/__delivery', ['product' => $product, 'deliveryData' => $deliveryData, 'shopStates' => $shopStates]) // Доставка ?>
+            <? endif ?>
 
-        <?= $helper->render('cart/__button-product-paypal', ['product' => $product]) // Кнопка купить через paypal ?>
+            <?= $helper->render('cart/__button-product-paypal', ['product' => $product]) // Кнопка купить через paypal ?>
 
-        <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'main']) ?>
-    </div><!--/widget delivery -->
+            <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'main']) ?>
+        </div>
+    <? else: ?>
+        <div class="bWidgetBuy mWidget js-WidgetBuy">
+            <? if (!$isKitPage || $product->getIsKitLocked()) : ?>
+                <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'categoryId' => $product->getLastCategory()->getId()]) ?>
+            <? endif ?>
+        </div>
     <? endif; ?>
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
