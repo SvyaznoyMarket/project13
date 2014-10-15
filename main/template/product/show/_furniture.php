@@ -103,6 +103,8 @@
             'onClick' => isset($addToCartJS) ? $addToCartJS : null,
         ]) // Кнопка купить ?>
 
+        <div class="js-showTopBar"></div>
+
         <div id="coupeError" class="red" style="display:none"></div>
 
         <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>

@@ -152,6 +152,8 @@ $isKitPage = (bool)$product->getKit();
                 'onClick' => isset($addToCartJS) ? $addToCartJS : null,
             ]) // Кнопка купить ?>
 
+            <div class="js-showTopBar"></div>
+
             <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
 
             <? if (!$isKitPage || $product->getIsKitLocked()) : ?>
@@ -168,8 +170,11 @@ $isKitPage = (bool)$product->getKit();
         </div>
     <? elseif (!$isKitPage || $product->getIsKitLocked()): ?>
         <div class="bWidgetBuy mWidget js-WidgetBuy">
+            <div class="js-showTopBar"></div>
             <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'categoryId' => $product->getLastCategory()->getId()]) ?>
         </div>
+    <? else: ?>
+        <div class="js-showTopBar"></div>
     <? endif; ?>
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
