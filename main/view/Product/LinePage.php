@@ -108,7 +108,7 @@ class LinePage extends \View\DefaultLayout {
         /** @var $product \Model\Product\Entity */
 
         return [
-            'target' => '.' . \View\Id::cartButtonForProduct($product->getId()),
+            'target' => '.js-showTopBar',
             'productId' => $product->getId(),
         ];
     }

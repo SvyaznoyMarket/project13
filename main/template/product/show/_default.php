@@ -144,9 +144,9 @@ $isKitPage = (bool)$product->getKit();
 <div class="bProductSectionRightCol">
 
     <? if (5 !== $product->getStatusId() && (bool)$shopStates): // SITE-3109 ?>
-    <div class="bWidgetBuy bWidgetBuy-shops mWidget js-WidgetBuy">
-        <?= $helper->render('product/__shops', ['shopStates' => $shopStates, 'product' => $product]) // Доставка ?>
-    </div>
+        <div class="bWidgetBuy bWidgetBuy-shops mWidget js-WidgetBuy">
+            <?= $helper->render('product/__shops', ['shopStates' => $shopStates, 'product' => $product]) // Доставка ?>
+        </div>
     <? endif ?>
 
     <? if (!$product->isInShopStockOnly() && $product->getIsBuyable()): ?>
@@ -155,14 +155,16 @@ $isKitPage = (bool)$product->getKit();
                 <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'productId' => $product->getId()]) ?>
             <? endif ?>
 
-            <? if ($isKitPage && !$product->getIsKitLocked()) : ?>
+            <? if ($isKitPage && !$product->getIsKitLocked()): ?>
                 <?= $helper->render('cart/__button-product-kit', ['product' => $product]) // Кнопка купить для набора продуктов ?>
-            <? else : ?>
+            <? else: ?>
                 <?= $helper->render('cart/__button-product', [
                     'product' => $product,
                     'onClick' => isset($addToCartJS) ? $addToCartJS : null,
                 ]) // Кнопка купить ?>
             <? endif ?>
+
+            <div class="js-showTopBar"></div>
 
             <? if (!$hasFurnitureConstructor && count($product->getPartnersOffer()) == 0): ?>
                 <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
@@ -180,12 +182,13 @@ $isKitPage = (bool)$product->getKit();
 
             <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'main']) ?>
         </div>
-    <? else: ?>
+    <? elseif (!$isKitPage || $product->getIsKitLocked()): ?>
         <div class="bWidgetBuy mWidget js-WidgetBuy">
-            <? if (!$isKitPage || $product->getIsKitLocked()) : ?>
-                <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'categoryId' => $product->getLastCategory()->getId()]) ?>
-            <? endif ?>
+            <div class="js-showTopBar"></div>
+            <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'categoryId' => $product->getLastCategory()->getId()]) ?>
         </div>
+    <? else: ?>
+        <div class="js-showTopBar"></div>
     <? endif ?>
 
     <? if ($lifeGiftProduct): ?>

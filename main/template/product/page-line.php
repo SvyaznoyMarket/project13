@@ -23,6 +23,7 @@ $helper = new \Helper\TemplateHelper();
         'jstitle' => $page->escape($mainProduct->getName()),
         'jsprice' => $mainProduct->getPrice(),
     ]) ?>">
+        <div class="js-showTopBar"></div>
 		<div class="bProductDescImg">
 	        <div class="bProductDescImgBig">
 		        <a href="<?= $mainProduct->getLink() ?>" title="<?= $mainProduct->getName() ?>">
