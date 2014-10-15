@@ -428,42 +428,55 @@ class Action {
         }
 
         // SITE-4439
-        $hotlinks = array_filter($hotlinks, function($item) { return isset($item['group_name']) ? (bool)$item['group_name'] : false; }); // TODO: временная заглушка
-        // опции брендов
-        $brandOptionsById = [];
-        foreach ($filters as $filter) {
-            if ('brand' == $filter->getId()) {
-                foreach ($filter->getOption() as $i => $option) {
-                    $brandOptionsById[$option->getId()] = $option;
-                    if ($i >= 50) break;
-                }
-
-                break;
-            }
-        }
-        // сортировка брендов по наибольшему количеству товаров
-        usort($brandOptionsById, function(\Model\Product\Filter\Option\Entity $a, \Model\Product\Filter\Option\Entity $b) { return $b->getQuantity() - $a->getQuantity(); });
-        $brands = [];
-        if ((bool)$brandOptionsById) {
-            \RepositoryManager::brand()->prepareByIds(array_keys($brandOptionsById), null, function($data) use (&$brands) {
-                if (isset($data[0])) {
-                    foreach ($data as $item) {
-                        if (empty($item['token'])) continue;
-
-                        $brands[] = new \Model\Brand\Entity($item);
+        try {
+            $hotlinks = array_filter($hotlinks, function($item) { return isset($item['group_name']) ? (bool)$item['group_name'] : false; }); // TODO: временная заглушка
+            // опции брендов
+            $brandOptions = [];
+            foreach ($filters as $filter) {
+                if ('brand' == $filter->getId()) {
+                    foreach ($filter->getOption() as $option) {
+                        $brandOptions[] = $option;
                     }
+
+                    break;
                 }
-            }, function(\Exception $e) { \App::exception()->remove($e); });
-
-            \App::coreClientV2()->execute();
-
-            foreach ($brands as $brand) {
-                $hotlinks[] = [
-                    'group_name' => '',
-                    'title'      => $brand->getName(),
-                    'url'        => $categoryPath . '/' . $brand->getToken(),
-                ];
             }
+            // сортировка брендов по наибольшему количеству товаров
+            usort($brandOptions, function(\Model\Product\Filter\Option\Entity $a, \Model\Product\Filter\Option\Entity $b) { return $b->getQuantity() - $a->getQuantity(); });
+            $brandOptions = array_slice($brandOptions, 0, 50);
+            /** @var \Model\Brand\Entity[] $brands */
+            $brands = [];
+            if ((bool)$brandOptions) {
+                \RepositoryManager::brand()->prepareByIds(
+                    array_map(function(\Model\Product\Filter\Option\Entity $option) { return $option->getId(); }, $brandOptions),
+                    null,
+                    function($data) use (&$brands) {
+                        if (isset($data[0])) {
+                            foreach ($data as $item) {
+                                if (empty($item['token'])) continue;
+
+                                $brands[] = new \Model\Brand\Entity($item);
+                            }
+                        }
+                    },
+                    function(\Exception $e) { \App::exception()->remove($e); }
+                );
+
+                \App::coreClientV2()->execute();
+
+                foreach ($brands as $iBrand) {
+                    $hotlinks[] = [
+                        'group_name' => '',
+                        'title'      => $iBrand->getName(),
+                        'url'        => \App::router()->generate('product.category.brand', [
+                            'categoryPath' => $categoryPath,
+                            'brandToken'   => $iBrand->getToken(),
+                        ]),
+                    ];
+                }
+            }
+        } catch (\Exception $e) {
+            \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['hotlinks']);
         }
 
         $pageNum = (int)$request->get('page', 1);
