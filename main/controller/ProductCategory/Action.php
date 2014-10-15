@@ -409,6 +409,8 @@ class Action {
         $productFilter = $this->getFilter($filters, $category, $brand, $request, $shop);
 
         // получаем из json данные о горячих ссылках и content
+        $hotlinks = [];
+        $seoContent = '';
         try {
             $seoCatalogJson = \Model\Product\Category\Repository::getSeoJson($category, null, $shopScriptSeo);
             // получаем горячие ссылки
@@ -422,8 +424,46 @@ class Action {
                 $seoContent = empty($seoBrandJson['content']) ? '' : implode('<br />', (array) $seoBrandJson['content']);
             }
         } catch (\Exception $e) {
-            $hotlinks = [];
-            $seoContent = '';
+            \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['controller']);
+        }
+
+        // SITE-4439
+        $hotlinks = array_filter($hotlinks, function($item) { return isset($item['group_name']) ? (bool)$item['group_name'] : false; }); // TODO: временная заглушка
+        // опции брендов
+        $brandOptionsById = [];
+        foreach ($filters as $filter) {
+            if ('brand' == $filter->getId()) {
+                foreach ($filter->getOption() as $i => $option) {
+                    $brandOptionsById[$option->getId()] = $option;
+                    if ($i >= 50) break;
+                }
+
+                break;
+            }
+        }
+        // сортировка брендов по наибольшему количеству товаров
+        usort($brandOptionsById, function(\Model\Product\Filter\Option\Entity $a, \Model\Product\Filter\Option\Entity $b) { return $b->getQuantity() - $a->getQuantity(); });
+        $brands = [];
+        if ((bool)$brandOptionsById) {
+            \RepositoryManager::brand()->prepareByIds(array_keys($brandOptionsById), null, function($data) use (&$brands) {
+                if (isset($data[0])) {
+                    foreach ($data as $item) {
+                        if (empty($item['token'])) continue;
+
+                        $brands[] = new \Model\Brand\Entity($item);
+                    }
+                }
+            }, function(\Exception $e) { \App::exception()->remove($e); });
+
+            \App::coreClientV2()->execute();
+
+            foreach ($brands as $brand) {
+                $hotlinks[] = [
+                    'group_name' => '',
+                    'title'      => $brand->getName(),
+                    'url'        => $categoryPath . '/' . $brand->getToken(),
+                ];
+            }
         }
 
         $pageNum = (int)$request->get('page', 1);
