@@ -257,7 +257,7 @@ $c->adFox['enabled'] = true;
 $c->partner['cookieName'] = 'last_partner';
 $c->partner['cookieLifetime'] = 2592000; // 30 дней
 
-$c->onlineCall['enabled'] = true;
+$c->onlineCall['enabled'] = false;
 
 // промсвязьбанк
 $c->paymentPsb['terminal']     = '20097201';
