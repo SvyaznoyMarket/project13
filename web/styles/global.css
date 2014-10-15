@@ -4175,7 +4175,14 @@ img[height="0"] {
     color: #A6A6A6;
   }
   .slider2 .btnBuy .btnBuy__eLink.mDisabled {
-    background: none repeat scroll 0 0 #F1F0F0;
+    background: #F1F0F0;
+    background: -moz-linear-gradient(top, #f1f0f0 0%, #f1f0f0 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f1f0f0), color-stop(100%, #f1f0f0));
+    background: -webkit-linear-gradient(top, #f1f0f0 0%, #f1f0f0 100%);
+    background: -o-linear-gradient(top, #f1f0f0 0%, #f1f0f0 100%);
+    background: -ms-linear-gradient(top, #f1f0f0 0%, #f1f0f0 100%);
+    background: linear-gradient(to bottom, #f1f0f0 0%, #f1f0f0 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F1F0F0', endColorstr='#F1F0F0', GradientType=0);
     border: 1px solid #F1F0F0;
     box-shadow: none;
     color: #CBCBCB;
@@ -7095,6 +7102,8 @@ img[height="0"] {
   .cmprCnt_rating {
     text-align: center;
     font-size: 0px;
+    height: 15px;
+    margin-top: 2px;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     transition: all 0.5s ease;
@@ -7120,9 +7129,8 @@ img[height="0"] {
     font-size: 11px;
   }
   .cmprCnt_noRating {
-    text-align: center;
-    font-size: 12px;
-    color: #a6a6a6;
+    height: 15px;
+    margin-top: 2px;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     transition: all 0.5s ease;
