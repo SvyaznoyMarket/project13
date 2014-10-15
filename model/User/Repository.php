@@ -35,7 +35,7 @@ class Repository {
             function (\Exception $e) {
                 \App::exception()->remove($e);
             },
-            \App::config()->coreV2['hugeTimeout']
+            \App::config()->coreV2['timeout'] * 2
         );
 
         $client->execute(\App::config()->coreV2['retryTimeout']['default']);
@@ -59,7 +59,7 @@ class Repository {
             [],
             $done,
             $fail,
-            \App::config()->coreV2['hugeTimeout']
+            \App::config()->coreV2['timeout'] * 2
         );
     }
 }
