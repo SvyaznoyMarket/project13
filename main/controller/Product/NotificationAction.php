@@ -48,9 +48,8 @@ class NotificationAction {
                     [],
                     null,
                     function(\Curl\Exception $e) use(&$exception) {
-                        if ($e->getCode() == self::SUBSCRIPTION_NOT_EXISTS_CODE) {
-                            \App::exception()->remove($e);
-                        } else {
+                        \App::exception()->remove($e);
+                        if ($e->getCode() != self::SUBSCRIPTION_NOT_EXISTS_CODE) {
                             $exception = $e;
                         }
                     }
@@ -69,9 +68,8 @@ class NotificationAction {
             }
 
             $client->addQuery('subscribe/create', $params, [], null, function(\Curl\Exception $e) use(&$exception) {
-                if ($e->getCode() == self::SUBSCRIPTION_PRODUCT_EXISTS_CODE) {
-                    \App::exception()->remove($e);
-                } else {
+                \App::exception()->remove($e);
+                if ($e->getCode() != self::SUBSCRIPTION_PRODUCT_EXISTS_CODE) {
                     $exception = $e;
                 }
             });
@@ -85,9 +83,8 @@ class NotificationAction {
                         [],
                         null,
                         function(\Curl\Exception $e) use(&$exception) {
-                            if ($e->getCode() == self::SUBSCRIPTION_NOT_EXISTS_CODE) {
-                                \App::exception()->remove($e);
-                            } else {
+                            \App::exception()->remove($e);
+                            if ($e->getCode() != self::SUBSCRIPTION_NOT_EXISTS_CODE) {
                                 $exception = $e;
                             }
                         }
@@ -119,9 +116,8 @@ class NotificationAction {
                     }
 
                     $client->addQuery('subscribe/create', $params, [], null, function(\Curl\Exception $e) use(&$exception) {
-                        if ($e->getCode() == self::SUBSCRIPTION_EXISTS_CODE) {
-                            \App::exception()->remove($e);
-                        } else {
+                        \App::exception()->remove($e);
+                        if ($e->getCode() != self::SUBSCRIPTION_EXISTS_CODE) {
                             $exception = $e;
                         }
                     });
