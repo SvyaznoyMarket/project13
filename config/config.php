@@ -251,6 +251,7 @@ $c->partners['RuTarget']['containerId'] = 'GTM-4SJX';
 $c->partners['Lamoda']['enabled'] = false;
 $c->partners['Lamoda']['lamodaID'] = '11640775691088171491';
 $c->partners['TagMan']['enabled'] = false;
+$c->partners['Insider']['enabled'] = true;
 
 $c->adFox['enabled'] = true;
 

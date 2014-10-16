@@ -2057,6 +2057,38 @@ window.ANALYTICS = {
 		}
 	},
 
+	insiderJS: function(){
+
+		var InsiderProduct, fillProducts, products = [];
+
+		InsiderProduct = function (data) {
+			this.category = [];
+			if (data.category && $.isArray(data.category)) this.category = data.category;
+			if (data.name) this.name = data.name;
+			if (data.img) this.img = data.img;
+			if (data.link) this.url = data.link;
+			if (data.price) this.price = '' + data.price;
+			return this;
+		};
+
+		fillProducts = function(data) {
+			$.each(data, function(i,val){
+				products.push(new InsiderProduct(val))
+			})
+		};
+
+		if (ENTER.UserModel && ENTER.UserModel.cart()) fillProducts(ENTER.UserModel.cart());
+
+		body.on('userLogged', function(e,data){
+			if (data && data.cartProducts && $.isArray(data.cartProducts)) {
+				products = [];
+				fillProducts(data.cartProducts);
+			}
+		});
+
+		window.spApiPaidProducts = products;
+	},
+
 	enable : true
 };
 
