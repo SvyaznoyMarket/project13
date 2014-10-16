@@ -902,4 +902,8 @@ class DefaultLayout extends Layout {
             'price' => '',
         ]);
     }
+
+    public function slotInsiderJS(){
+        return \App::config()->partners['Insider']['enabled'] ? '<div id="insiderJS" class="jsanalytics"></div>' :  '';
+    }
 }

@@ -251,6 +251,7 @@ $c->partners['RuTarget']['containerId'] = 'GTM-4SJX';
 $c->partners['Lamoda']['enabled'] = false;
 $c->partners['Lamoda']['lamodaID'] = '11640775691088171491';
 $c->partners['TagMan']['enabled'] = false;
+$c->partners['Insider']['enabled'] = true;
 
 $c->adFox['enabled'] = true;
 
@@ -306,7 +307,7 @@ $c->product['itemsInSlider']            = 5;
 $c->product['itemsInCategorySlider']    = 3;
 $c->product['itemsInAccessorySlider']   = 4;
 $c->product['minCreditPrice']           = 3000;
-$c->product['totalCount']               = 30000;
+$c->product['totalCount']               = 55000;
 $c->product['recommendationSessionKey'] = 'recommendationProductIds';
 // глобальный (без учета региона) список товаров
 $c->product['globalListEnabled']      = true;
