@@ -239,8 +239,12 @@ class CompareAction {
             ]);
         }
 
-        $referrer = $request->server->get('HTTP_REFERER');
-        return new \Http\RedirectResponse($referrer);
+        $returnUrl = $request->server->get('HTTP_REFERER');
+        if (!$returnUrl) {
+            $returnUrl = \App::router()->generate('homepage');
+        }
+
+        return new \Http\RedirectResponse($returnUrl);
     }
 
     public function delete(\Http\Request $request, $productId) {
@@ -253,7 +257,9 @@ class CompareAction {
             return new \Http\JsonResponse(['compare' => $this->session->get($this->compareSessionKey)]);
         }
 
-        return new \Http\RedirectResponse($request->server->get('HTTP_REFERER'));
+        $returnUrl = $request->server->get('HTTP_REFERER') ?: \App::router()->generate('homepage');
+
+        return new \Http\RedirectResponse($returnUrl);
     }
 
     public function clear() {

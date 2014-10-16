@@ -8,7 +8,7 @@ $links = [];
 if (!isset($line)) $line = false;
 
 if ($product) {
-    $links[] = ['name' => $product->getParentCategory()->getName(), 'url' => $product->getParentCategory() ? $product->getParentCategory()->getLink() : null, 'last' => false];
+    $links[] = ['name' => $product->getParentCategory() ? $product->getParentCategory()->getName() : '', 'url' => $product->getParentCategory() ? $product->getParentCategory()->getLink() : null, 'last' => false];
     $links[] = ['name' => $product->getName(), 'url' => null, 'last' => true];
 } ?>
 
