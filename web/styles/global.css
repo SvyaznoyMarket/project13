@@ -6825,7 +6825,6 @@ img[height="0"] {
   .cmprHd-empty .cmprHd_t {
     line-height: 112px;
     margin: 0;
-    background: url("/styles/compare/img/icon_cmpr_empty.gif") no-repeat 5px 50%;
   }
   .cmprHd_l {
     width: 200px;
@@ -6840,10 +6839,9 @@ img[height="0"] {
   }
   .cmprHd_t {
     min-height: 33px;
-    background: url("/styles/compare/img/icon_cmpr.png") no-repeat 0 3px;
     font-size: 25px;
     margin: 0 0 15px;
-    padding: 0 0 2px 45px;
+    padding: 0 0 2px 0;
     text-decoration: none;
   }
   .cmprHd_lst_i {
