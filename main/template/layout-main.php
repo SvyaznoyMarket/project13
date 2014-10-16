@@ -28,6 +28,7 @@
     <?= $page->slotHeadJavascript() ?>
     <?= $page->slotRelLink() ?>
     <?= $page->slotGoogleAnalytics() ?>
+    <?= $page->slotMetaOg() ?>
 
 </head>
 
