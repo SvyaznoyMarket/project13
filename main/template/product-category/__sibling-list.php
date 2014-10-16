@@ -11,7 +11,6 @@ return function(
 ) {
     /** @var $categories \Model\Product\Category\Entity[] */
 
-
 ?>
     <? if ($rootCategoryInMenu && "tchibo" === $rootCategoryInMenu->getToken() && 0 == $rootCategoryInMenu->getProductCount()): ?>
         <img src="http://content.enter.ru/wp-content/uploads/2014/04/Tch_out.jpg" alt="К сожалению, товары Tchibo недоступны к покупке в вашем городе" />
@@ -57,8 +56,8 @@ return function(
 
                         <li class="tchiboNav_slst_i jsItemListTchibo<? if ($activeChild): ?> tchiboNav_slst_i-act<? endif ?> <?= $newCategory ? 'new' : '' ?>">
                             <a class="tchiboNav_slst_lk" href="<?= $child->getLink() ?>"<? if (in_array($child->getId(), array_keys($tchiboMenuCategoryNameStyles))): ?> style="<?= $tchiboMenuCategoryNameStyles[$child->getId()] ?>"<? endif ?>><?= $child->getName() ?></a>
-                            <? if (false): // SITE-3809 временно закомментировал ?>
-                            <span class="itemNew">NEW!</span>
+                            <? if (isset($catalogConfig['is_new']) && $catalogConfig['is_new']): // SITE-3809 ?>
+                                <span class="itemNew">NEW!</span>
                             <? endif ?>
                         </li>
                     <? endforeach ?>
