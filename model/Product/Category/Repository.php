@@ -628,6 +628,10 @@ class Repository {
                 $result['use_lens'] = $data['properties']['appearance']['use_lens'];
             }
 
+            if (isset($data['properties']['appearance']['is_new'])) {
+                $result['is_new'] = (bool)$data['properties']['appearance']['is_new'];
+            }
+
             if (isset($data['properties']['appearance']['default']['listing_style'])) {
                 $result['listing_style'] = $data['properties']['appearance']['default']['listing_style'];
             }
