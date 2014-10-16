@@ -257,10 +257,7 @@ class CompareAction {
             return new \Http\JsonResponse(['compare' => $this->session->get($this->compareSessionKey)]);
         }
 
-        $returnUrl = $request->server->get('HTTP_REFERER');
-        if (!$returnUrl) {
-            $returnUrl = \App::router()->generate('homepage');
-        }
+        $returnUrl = $request->server->get('HTTP_REFERER') ?: \App::router()->generate('homepage');
 
         return new \Http\RedirectResponse($returnUrl);
     }
