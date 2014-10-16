@@ -44,5 +44,5 @@ if (0 == $i && $slice) {
             <img class="crumbsImg" src="<?= $categoryImg ?>" alt="" />
         </a>
     <? endif; ?>
-    <div class="wrapperCrumbsList"><?= $helper->render('__breadcrumbsUserbar', ['links' => $links]) ?></div>
+    <div class="topbarfix_wrapCrumbsList"><?= $helper->render('__breadcrumbsUserbar', ['links' => $links]) ?></div>
 </div>
