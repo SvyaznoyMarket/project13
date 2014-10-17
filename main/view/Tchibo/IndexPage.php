@@ -36,4 +36,10 @@ class IndexPage extends \View\DefaultLayout {
     public function slotUserbar() {
         return $this->render('_userbar');
     }
+
+    public function slotUserbarContent() {
+        return $this->render('jewel/product-category/_userbarContent', [
+            'category'  => $this->getGlobalParam('rootCategoryInMenu'),
+        ]);
+    }
 }

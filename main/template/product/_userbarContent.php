@@ -8,8 +8,8 @@ $links = [];
 if (!isset($line)) $line = false;
 
 if ($product) {
-    $links[] = ['name' => $product->getPrefix(), 'url' => $product->getParentCategory() ? $product->getParentCategory()->getLink() : null, 'last' => false];
-    $links[] = ['name' => $product->getWebName(), 'url' => null, 'last' => true];
+    $links[] = ['name' => $product->getParentCategory() ? $product->getParentCategory()->getName() : '', 'url' => $product->getParentCategory() ? $product->getParentCategory()->getLink() : null, 'last' => false];
+    $links[] = ['name' => $product->getName(), 'url' => null, 'last' => true];
 } ?>
 
 <div class="topbarfix_crumbs">
@@ -22,14 +22,12 @@ if ($product) {
 
 <div class="topbarfix_buy <?= $line ? 'hidden' : 'none' ?>">
 
-    <? if ($product->getIsBuyable() && (!$product->getKit()) || $product->getIsKitLocked()): ?>
+    <? if (!$product->getKit() || $product->getIsKitLocked()): ?>
         <?= $helper->render('cart/__button-product', [
             'product' => $product,
             'onClick' => $addToCartJS ? $addToCartJS : null,
         ]) // Кнопка купить ?>
-    <? endif ?>
-
-    <? if ($product->getKit() && !$product->getIsKitLocked()): ?>
+    <? else: ?>
         <?= $helper->render('cart/__button-product-kit', ['product' => $product]) // Кнопка купить ?>
     <? endif ?>
 

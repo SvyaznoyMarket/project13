@@ -9,7 +9,7 @@ if (isset(\App::config()->partners['livetex']['liveTexID'])) {
     $livetexID = \App::config()->partners['livetex']['liveTexID'];
 }
 
-if ($livetexID && \App::config()->partners['livetex']['enabled']) :
+if ($livetexID && \App::config()->partners['livetex']['enabled'] && \App::request()->getPathInfo() !== $page->url('compare')) :
 
 //    $user = \App::user();
 //    $user_entity = $user->getEntity();

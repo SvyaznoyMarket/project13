@@ -317,7 +317,7 @@ class IndexPage extends \View\DefaultLayout {
         }
 
         return [
-            'target' => '.' . \View\Id::cartButtonForProduct($product->getId()),
+            'target' => '.js-showTopBar',
             'productId' => $product->getId(),
         ];
     }

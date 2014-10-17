@@ -40,7 +40,6 @@
 		.cmprHd_t {
 			line-height: 112px;
 			margin: 0;
-			background: url("@{base-url}/compare/img/icon_cmpr_empty.gif") no-repeat 5px 50%;
 		}
 	}
 
@@ -60,10 +59,9 @@
 
 	&_t {
 		min-height: 33px;
-		background: url("@{base-url}/compare/img/icon_cmpr.png") no-repeat 0 3px;
 		font-size: 25px;
 		margin: 0 0 15px;
-		padding: 0 0 2px 45px;
+		padding: 0 0 2px 0;
 		text-decoration: none;
 	}
 
@@ -143,7 +141,8 @@
 
 		}
 
-		.cmprCnt_rating, .cmprCnt_noRating {
+		.cmprCnt_rating, 
+		.cmprCnt_noRating {
 			.opacity(0);
 			overflow: hidden;
 			height: 0;
@@ -352,6 +351,8 @@
 	&_rating {
 		text-align: center;
 		font-size: 0px;
+		height: 15px;
+		margin-top: 2px;
 		.transition(all 0.5s ease);
 
 		&_img {
@@ -370,9 +371,8 @@
 	}
 
 	&_noRating {
-		text-align: center;
-		font-size: 12px;
-		color: @typGray;
+		height: 15px;
+		margin-top: 2px;
 		.transition(all 0.5s ease);
 	}
 }
