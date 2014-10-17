@@ -30,9 +30,9 @@
 			return model;
 		}
 
-		function createCategoryModel(category) {
+		function createTypeModel(type) {
 			var model = {};
-			model.name = category.name;
+			model.name = type.name;
 			return model;
 		}
 
@@ -72,7 +72,7 @@
 
 		function createCompareGroupModel(compareGroup) {
 			var model = {};
-			model.category = createCategoryModel(compareGroup.category);
+			model.type = createTypeModel(compareGroup.type);
 
 			model.products = ko.observableArray();
 			$.each(compareGroup.products, function(){
@@ -485,7 +485,7 @@
 			});
 		});
 
-		$compare.on('click', '.js-compare-categoryLink', function(e){
+		$compare.on('click', '.js-compare-typeLink', function(e){
 			e.preventDefault();
 			compareModel.activeCompareGroupIndex($(e.currentTarget).data('index'));
 		});

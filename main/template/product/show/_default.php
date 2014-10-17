@@ -171,7 +171,7 @@ $isKitPage = (bool)$product->getKit();
             <? endif ?>
 
             <? if (!$isKitPage || $product->getIsKitLocked()) : ?>
-                <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'categoryId' => $product->getLastCategory() ? $product->getLastCategory()->getId() : null]) ?>
+                <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'typeId' => $product->getType() ? $product->getType()->getId() : null]) ?>
             <? endif ?>
 
             <? if (5 !== $product->getStatusId()): // SITE-3109 ?>
@@ -185,7 +185,7 @@ $isKitPage = (bool)$product->getKit();
     <? elseif (!$isKitPage || $product->getIsKitLocked()): ?>
         <div class="bWidgetBuy mWidget js-WidgetBuy">
             <div class="js-showTopBar"></div>
-            <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'categoryId' => $product->getLastCategory() ? $product->getLastCategory()->getId() : null]) ?>
+            <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'typeId' => $product->getType() ? $product->getType()->getId() : null]) ?>
         </div>
     <? else: ?>
         <div class="js-showTopBar"></div>
