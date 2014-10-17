@@ -5812,11 +5812,13 @@ img[height="0"] {
   }
   .orderLgift_slgn {
     font-size: 20px;
+    line-height: 1.1;
     color: #d260a6;
   }
   .orderLgift_hd {
     font-family: "Enter";
     width: 453px;
+    line-height: 1.1;
     text-transform: uppercase;
     background: url("/styles/order/img/bg_order_lgift.gif") no-repeat 0 0;
     padding: 5px 0 0 315px;
@@ -5857,10 +5859,15 @@ img[height="0"] {
     margin-top: 10px;
   }
   .orderLgift .orderAuth {
-    margin-top: 30px;
+    float: left;
+    margin-left: 40px;
+    padding: 15px 30px 20px;
   }
   .orderLgift .orderU_flds {
     display: block;
+  }
+  .orderLgift .orderU_flds-mb30 {
+    margin-bottom: 30px;
   }
   .orderLgift .orderU_lbl {
     font-size: 14px;
@@ -5874,8 +5881,7 @@ img[height="0"] {
     -moz-border-radius: 4px;
     border-radius: 4px;
     border: 1px solid #d3d3d3;
-    float: right;
-    width: 588px;
+    width: 448px;
     height: 143px;
   }
   .orderLgift .orderU_lbtx {
@@ -5911,7 +5917,7 @@ img[height="0"] {
   }
   .orderLgift_paydscr {
     font-size: 16px;
-    margin: -10px 0 25px;
+    margin: 0 0 5px;
   }
   .orderLgift .orderCompl {
     margin: 0 0 0 -30px;
@@ -5953,7 +5959,7 @@ img[height="0"] {
     color: #5e5e5e;
   }
 }
-@media all and (min-height: 1100px) {
+@media all and (min-height: 1200px) {
   .orderLgift .orderCompl {
     position: absolute;
     bottom: 0;

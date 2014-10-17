@@ -37,6 +37,30 @@ return function(
                         <div class="orderLgift_dscr_pr">1 828 <span class="rubl">p</span></div>
                     </div>
                 </div>
+            </fieldset>
+
+            <fieldset class="orderU_flds clearfix" style="margin-bottom: 0;">
+                <legend class="orderLgift_st">От кого</legend>
+                
+                <div class="fl-l">
+                    <div class="orderU_fld">
+                        <label class="orderU_lbl" for="">Имя</label>
+                        <input class="orderU_tx textfield" type="text" name="" value="" placeholder="">
+                        <span class="orderU_hint">Как к вам обращаться?</span>
+                    </div>
+
+                    <div class="orderU_fld">
+                        <label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
+                        <input class="orderU_tx textfield" type="text" name="" value="" placeholder="">
+                        <span class="orderU_hint">Для смс о состоянии заказа</span>
+                    </div>
+
+                    <div class="orderU_fld">
+                        <label class="orderU_lbl" for="">E-mail</label>
+                        <input class="orderU_tx textfield" type="text" name="" value="" placeholder="">
+                        <span class="orderU_hint">Для информации о заказе</span>
+                    </div>
+                </div>
 
                 <div class="orderAuth">
                     <div class="orderAuth_t">Уже заказывали у нас?</div>
@@ -44,39 +68,15 @@ return function(
                 </div>
             </fieldset>
 
-            <fieldset class="orderU_flds clesrfix">
-                <legend class="orderLgift_st">От кого</legend>
-                
-                <div class="fl-l">
-                    <div class="orderU_fld">
-                        <label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
-                        <input class="orderU_tx textfield" type="text" name="" value="" placeholder="">
-                    </div>
-
-                    <div class="orderU_fld">
-                        <label class="orderU_lbl" for="">E-mail</label>
-                        <input class="orderU_tx textfield" type="text" name="" value="" placeholder="">
-                    </div>
-
-                    <div class="orderU_fld">
-                        <label class="orderU_lbl" for="">Имя</label>
-                        <input class="orderU_tx textfield" type="text" name="" value="" placeholder="">
-                    </div>
-                </div>
-
+            <fieldset class="orderU_flds orderU_flds-mb30">
                 <div class="orderU_txbox">
                     <label for="" class="orderU_lbtx">Добрые пожелания ребёнку</label>
                     <textarea name="" id="" class="orderU_txarea"></textarea>
                 </div>
             </fieldset>
 
-            <fieldset class="orderU_flds clesrfix">
-                <legend class="orderLgift_st">Оплатить онлайн</legend>
-                
-                <p class="orderLgift_paydscr">
-                    <strong>Просим вас сразу оплатить подарок.</strong><br/>
-                    Детям передаются только оплаченные товары. 
-                </p>
+            <fieldset class="orderU_flds clearfix">
+                <legend class="orderLgift_st">Доступные способы оплаты</legend>
 
                 <ul class="onpay_lst">
                     <li class="onpay_lst_i">
@@ -86,7 +86,7 @@ return function(
                             <img class="customLabel_img" src="/styles/order/img/icon_visa.png" alt=""> 
                             <img class="customLabel_img" src="/styles/order/img/icon_mc.png" alt="">
                         </label>
-                        <p class="onpay_lst_desc">А также Maestro, Diners Club, JCB.</p>
+                        <p class="onpay_lst_desc">Visa, MasterCard, Maestro, Diners Club, JCB.</p>
                     </li>
 
                     <li class="onpay_lst_i">
@@ -98,7 +98,10 @@ return function(
                     </li>
                 </ul>
 
-                <p class="onpay_footn">Вы будете автоматически перемещены на сайт платежной системы.</p>
+                <div class="orderLgift_paydscr">
+                    <strong>Детям передаются только оплаченные товары. </strong>
+                    <div class="onpay_footn">После нажатия кнопки "Оформить" вы будете перемещены на сайт платежной системы.</div>
+                </div>
             </fieldset>
 
             <fieldset class="orderCompl clearfix">
