@@ -208,7 +208,7 @@
 		$('.js-compare-addPopup-webName', $compareNotice).text(product.webName);
 
 		ENTER.userBar.show(true, function(){
-			compareNotice.addClass(compareNoticeShowClass)
+			$compareNotice.addClass(compareNoticeShowClass)
 		});
 	}
 
