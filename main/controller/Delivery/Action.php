@@ -193,7 +193,7 @@ class Action {
                         case ($token == 'standart_bu'):
                             $item['name'] = "Доставим (ООО «Ювелирный торговый дом»)";
                             break;
-                        case ($token == 'standart_standart_fortochki'):
+                        case ($token == 'standart_fortochki'):
                             $item['name'] = "Доставим (ООО «Пауэр Интернэшнл-шины»)";
                             break;
                         default: $item['name'] = "";
