@@ -73,7 +73,7 @@
 			var compare = ko.unwrap(valueAccessor()),
 				$elem = $(element),
 				productId = $elem.data('id'),
-				categoryId = $elem.data('category-id'),
+				typeId = $elem.data('type-id'),
 				comparableProducts;
 			
 			if (ENTER.utils.getObjectWithElement(compare, 'id', productId)) {
@@ -89,7 +89,7 @@
 			}
 	
 			// массив продуктов, которые можно сравнить с данным продуктом
-			comparableProducts = $.grep(compare, function(val){ return categoryId == val.categoryId; });
+			comparableProducts = $.grep(compare, function(val){ return typeId == val.typeId; });
 	
 			if (comparableProducts.length > 1) {
 				$elem.find('.btnCmpr_more').show().find('.btnCmpr_more_qn').text(comparableProducts.length);

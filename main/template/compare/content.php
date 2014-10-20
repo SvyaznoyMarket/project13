@@ -16,7 +16,7 @@ return function (
 
                 <ul class="cmprHd_lst" data-bind="visible: compareGroups().length" style="display: none;">
                     <!-- ko foreach: {data: compareGroups} -->
-                        <li class="cmprHd_lst_i" data-bind="css: {'cmprHd_lst_i-act': $parent.activeCompareGroupIndex() == $index()}"><a href="#" class="js-compare-categoryLink" data-bind="attr: {'data-index': $index}"><!-- ko text: category.name --><!-- /ko --><span class="cmprHd_lst_qn"> <!-- ko text: products().length --><!-- /ko --></span></a></li>
+                        <li class="cmprHd_lst_i" data-bind="css: {'cmprHd_lst_i-act': $parent.activeCompareGroupIndex() == $index()}"><a href="#" class="js-compare-typeLink" data-bind="attr: {'data-index': $index}"><!-- ko text: type.name --><!-- /ko --><span class="cmprHd_lst_qn"> <!-- ko text: products().length --><!-- /ko --></span></a></li>
                     <!-- /ko -->
                 </ul>
             </div>

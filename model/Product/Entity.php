@@ -236,7 +236,7 @@ class Entity extends BasicEntity {
     }
 
     /**
-     * @return Category\Entity
+     * @return Category\Entity|null
      */
     public function getLastCategory() {
         $lastCategory = end($this->category);

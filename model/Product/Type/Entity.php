@@ -2,6 +2,9 @@
 
 namespace Model\Product\Type;
 
+/**
+ * Вид номенклатуры товара в 1С.
+ */
 class Entity {
     /** @var int */
     private $id;

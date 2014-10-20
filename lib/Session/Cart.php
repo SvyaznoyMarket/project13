@@ -682,6 +682,17 @@ class Cart {
     public function clearCoupons() {
         $data = $this->storage->get($this->sessionName);
         $data['couponList'] = [];
+
+        if (is_array($data['actionData'])) {
+            foreach ($data['actionData'] as $key => $actionDataItem) {
+                if (isset($actionDataItem['type']) && $actionDataItem['type'] === 'coupon') {
+                    unset($data['actionData'][$key]);
+                }
+            }
+
+            $data['actionData'] = array_values($data['actionData']);
+        }
+
         $this->coupons = null;
         $this->storage->set($this->sessionName, $data);
         $this->fill();
@@ -745,22 +756,33 @@ class Cart {
     /**
      * Костылище для ядра
      *
-     * @param array $actionData
+     * @param array $newActionData
      */
-    public function setActionData(array $actionData) {
+    public function setActionData(array $newActionData) {
         try {
             $data = $this->storage->get($this->sessionName);
             \App::logger()->info(['action' => __METHOD__,  'cart.actionData' => $data['actionData']], ['cart']);
 
-            foreach ($actionData as $i => $actionItem) {
-                if (!isset($actionData[$i]['product_list'])) {
-                    $actionData[$i]['product_list'] = [];
+            $actionDataCopy = $data['actionData'];
+            foreach ($newActionData as $newActionDataItem) {
+                if (!isset($newActionDataItem['id'])) {
+                    continue;
                 }
+
+                if (!isset($newActionDataItem['product_list'])) {
+                    $newActionDataItem['product_list'] = [];
+                }
+
+                foreach ($actionDataCopy as $i => $actionDataCopyItem) {
+                    if (isset($actionDataCopyItem['id']) && $actionDataCopyItem['id'] === $newActionDataItem['id']) {
+                        unset($data['actionData'][$i]);
+                    }
+                }
+
+                $data['actionData'][] = $newActionDataItem;
             }
 
-            $data['actionData'] = array_merge($data['actionData'], $actionData);
-            $data['actionData'] = array_map('unserialize', array_unique(array_map('serialize', $data['actionData'])));
-
+            $data['actionData'] = array_values($data['actionData']);
             $this->actions = $data['actionData'];
 
             \App::logger()->info(['action' => __METHOD__, 'cart.actionData' => $data['actionData']], ['cart']);
@@ -917,8 +939,6 @@ class Cart {
 
         if (array_key_exists('action_list', $response)) {
             $this->setActionData((array)$response['action_list']);
-        } else {
-
         }
 
         $this->certificates = [];
