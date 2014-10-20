@@ -49,7 +49,7 @@ class CompareAction {
 
         $page = new \View\Compare\CompareLayout();
         $page->setParam('compareGroups', $compareGroups);
-        $page->setParam('activeCompareGroupIndex', $this->getActiveCompareGroupIndex($compareGroups, $request->get('categoryId')));
+        $page->setParam('activeCompareGroupIndex', $this->getActiveCompareGroupIndex($compareGroups, $request->get('typeId')));
         return new \Http\Response($page->show());
     }
 
@@ -74,19 +74,19 @@ class CompareAction {
                 /** @var \Model\Product\Entity $product */
                 $product = $products[$compareProduct['id']];
 
-                if (!isset($compareGroups[$compareProduct['categoryId']])) {
-                    $lastCategory = $product->getLastCategory();
-                    $compareGroups[$compareProduct['categoryId']] = [
-                        'category' => [
-                            'id' => $lastCategory->getId(),
-                            'name' => $lastCategory->getName(),
+                $typeId = $product->getType() ? $product->getType()->getId() : null;
+                if (!isset($compareGroups[$typeId])) {
+                    $compareGroups[$typeId] = [
+                        'type' => [
+                            'id' => $typeId,
+                            'name' => $product->getType() ? $product->getType()->getName() : null,
                         ],
                         'products' => [],
                         'propertyGroups' => [],
                     ];
                 }
 
-                $compareGroups[$compareProduct['categoryId']]['products'][] = $product;
+                $compareGroups[$typeId]['products'][] = $product;
             }
 
             foreach ($compareGroups as $key => $compareGroup) {
@@ -205,9 +205,9 @@ class CompareAction {
         return $propertyGroups;
     }
 
-    private function getActiveCompareGroupIndex(array $compareGroups, $defaultCategoryId) {
+    private function getActiveCompareGroupIndex(array $compareGroups, $defaultTypeId) {
         foreach ($compareGroups as $i => $compareGroup) {
-            if ((string)$compareGroup['category']['id'] === $defaultCategoryId) {
+            if ((string)$compareGroup['type']['id'] === $defaultTypeId) {
                 return $i;
             }
         }
@@ -221,9 +221,9 @@ class CompareAction {
 
         if (!array_key_exists($product->getId(), $this->data)) {
             $this->data[$product->getId()] = [
-                'id'            => $product->getId(),
-                'ui'            => $product->getUi(),
-                'categoryId'    => $product->getLastCategory()->getId()
+                'id'     => $product->getId(),
+                'ui'     => $product->getUi(),
+                'typeId' => $product->getType() ? $product->getType()->getId() : null,
             ];
             $this->session->set($this->compareSessionKey, $this->data);
         }
