@@ -5,13 +5,21 @@
 
     <div class="topbar_call" itemscope itemtype="http://schema.org/Organization">
 
-    <? if (\App::config()->onlineCall['enabled']): ?>
-        <a onclick="typeof(_gaq)=='undefined'?'':_gaq.push(['_trackEvent', 'Zingaya', 'ButtonClick']);typeof(_gat)=='undefined'?'':_gat._getTrackerByName()._setAllowLinker(true); window.open(typeof(_gat)=='undefined'?this.href+'?referrer='+escape(window.location.href):_gat._getTrackerByName()._getLinkerUrl(this.href+'?referrer='+escape(window.location.href)), '_blank', 'width=236,height=220,resizable=no,toolbar=no,menubar=no,location=no,status=no'); return false" href="http://zingaya.com/widget/e990d486d664dfcff5f469b52f6bdb62"><div class="topbar_call_t">Звонок с сайта</div></a>
-    <? endif ?>
+        <? if (\App::config()->onlineCall['enabled']): ?>
+            <a onclick="typeof(_gaq)=='undefined'?'':_gaq.push(['_trackEvent', 'Zingaya', 'ButtonClick']);typeof(_gat)=='undefined'?'':_gat._getTrackerByName()._setAllowLinker(true); window.open(typeof(_gat)=='undefined'?this.href+'?referrer='+escape(window.location.href):_gat._getTrackerByName()._getLinkerUrl(this.href+'?referrer='+escape(window.location.href)), '_blank', 'width=236,height=220,resizable=no,toolbar=no,menubar=no,location=no,status=no'); return false" href="http://zingaya.com/widget/e990d486d664dfcff5f469b52f6bdb62"><div class="topbar_call_t">Звонок с сайта</div></a>
+        <? endif ?>
 
         <div class="topbar_call_lst">
-            <span class="topbar_call_i" itemprop="telephone"><?= \App::config()->company['phone'] ?></span>
-            <span class="topbar_call_i" itemprop="telephone"><?= \App::config()->company['moscowPhone'] ?></span>
+            <? if (108136 == $user->getRegion()->getId()): // Санкт-Петербург ?>
+                <span class="topbar_call_i" itemprop="telephone"><?= \App::config()->company['spbPhone'] ?></span>
+                <span class="topbar_call_i" itemprop="telephone"><?= \App::config()->company['phone'] ?></span>
+            <? elseif (14974 == $user->getRegion()->getId()): // Москва ?>
+                <span class="topbar_call_i" itemprop="telephone"><?= \App::config()->company['moscowPhone'] ?></span>
+                <span class="topbar_call_i" itemprop="telephone"><?= \App::config()->company['phone'] ?></span>
+            <? else: ?>
+                <span class="topbar_call_i" itemprop="telephone"><?= \App::config()->company['phone'] ?></span>
+                <span class="topbar_call_i" itemprop="telephone"><?= \App::config()->company['moscowPhone'] ?></span>
+            <? endif ?>
         </div>
     </div>
 
