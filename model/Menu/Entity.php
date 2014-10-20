@@ -12,6 +12,8 @@ class Entity {
     /** @var string */
     public $name;
     /** @var string */
+    public $char;
+    /** @var string */
     public $image;
     /** @var string */
     public $smallImage;
@@ -46,6 +48,7 @@ class Entity {
 
     public function __construct(array $data = []) {
         if (isset($data['name'])) $this->name = (string)$data['name'];
+        if (isset($data['char'])) $this->char = (string)$data['char'];
         if (isset($data['image'])) $this->image = (string)$data['image'];
         if (isset($data['smallImage'])) $this->smallImage = (string)$data['smallImage'];
         if (isset($data['useLogo'])) $this->useLogo = (bool)$data['useLogo'];

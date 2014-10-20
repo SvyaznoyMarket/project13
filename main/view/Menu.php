@@ -97,6 +97,7 @@ class Menu {
     }
 
     /**
+     * @param $categories
      * @return \Model\Product\Category\MenuEntity|null
      */
     public function indexCategoriesByUi($categories) {
