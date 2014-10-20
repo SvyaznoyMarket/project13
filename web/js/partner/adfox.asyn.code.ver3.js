@@ -26,7 +26,14 @@ function AdFox_getCodeScript(AF_n,AF_id,AF_src){
 		if (AF_doc) {
 			var script = AF_doc.createElement('script');
 			script.src = AF_src;
-			AF_doc.getElementsByTagName('head')[0].appendChild(script);
+			(function(){
+				var head = AF_doc.getElementsByTagName('head')[0];
+				if (head) {
+					head.appendChild(script);
+				} else {
+					setTimeout(arguments.callee, 50);
+				}
+			})();
 		} else {
 			setTimeout('AdFox_getCodeScript('+(++AF_n)+','+AF_id+',"'+AF_src+'");', 100);
 		}

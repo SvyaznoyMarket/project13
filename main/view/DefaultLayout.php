@@ -903,6 +903,10 @@ class DefaultLayout extends Layout {
         ]);
     }
 
+    public function slotInsiderJS(){
+        return \App::config()->partners['Insider']['enabled'] ? '<div id="insiderJS" class="jsanalytics"></div>' :  '';
+    }
+
     public function slotRevolverJS() {
         if (!\App::config()->partners['Revolver']['enabled']) return '';
         return '

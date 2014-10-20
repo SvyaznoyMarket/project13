@@ -40,3 +40,4 @@
 
 <?= $page->slotMailRu() ?>
 <?= $page->slotRevolverJS() ?>
+<?= $page->slotInsiderJS() ?>

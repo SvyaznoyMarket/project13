@@ -1820,7 +1820,10 @@ img[height="0"] {
   .topbarfix .quickOrder {
     border-top: 1px solid #ccc;
     padding: 10px;
-    width: 208px;
+    width: 210px;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
   }
   .topbarfix .quickOrder.btnBuy .btnBuy__eLink {
     width: 100%;
@@ -1988,6 +1991,9 @@ img[height="0"] {
   }
   .topbarfix-home .quickOrder {
     border-color: #404040;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
   }
   .topbarfix-home .cartLst_n a {
     color: #ffffff;
@@ -2017,6 +2023,8 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
+    padding-right: 15px;
+    width: auto;
   }
   .topbarfix_upLink:hover {
     background: #000000;
@@ -6909,6 +6917,7 @@ img[height="0"] {
   }
   .cmprCnt-scroll .cmprCnt_head .cmprCnt_cell {
     height: 135px;
+    padding-top: 2px;
   }
   .cmprCnt-scroll .cmprCnt_img {
     -moz-opacity: 0;
@@ -6932,7 +6941,7 @@ img[height="0"] {
     height: 0;
   }
   .cmprCnt-scroll .cmprCnt_mode {
-    margin: 10px 0 0 0;
+    margin: 15px 0 0 0;
   }
   .cmprCnt_head .cmprCnt_cell {
     height: 250px;
@@ -7017,9 +7026,9 @@ img[height="0"] {
   .cmprCnt_mode {
     margin: 60px 0 0 0;
     padding: 0;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    transition: all 0.3s ease;
     text-align: center;
   }
   .cmprCnt_mode_btn {
@@ -7054,9 +7063,9 @@ img[height="0"] {
     height: 100px;
     display: block;
     text-align: center;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    transition: all 0.3s ease;
   }
   .cmprCnt_img img {
     width: 100px;
@@ -7102,9 +7111,9 @@ img[height="0"] {
     font-size: 0px;
     height: 15px;
     margin-top: 2px;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    transition: all 0.3s ease;
   }
   .cmprCnt_rating_img {
     display: inline-block;
@@ -7129,9 +7138,9 @@ img[height="0"] {
   .cmprCnt_noRating {
     height: 15px;
     margin-top: 2px;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    transition: all 0.3s ease;
   }
   .clsr {
     background: url("/styles/compare/img/btn_closer.png") no-repeat 0 0px;

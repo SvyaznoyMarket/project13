@@ -11,7 +11,7 @@
     	<div class="topbarfix_cmpr_popup_inn">
     		<div class="clsr2 js-compare-popup-closer"></div>
 	    	<strong>Товаров для сравнения пока нет.</strong>
-		    <p><span style="display: inline-block;">Добавляйте товары к сравнению кнопкой</span> <span class="btnCmprb"></span></p>
+		    <p><span style="display: inline-block; vertical-align: middle;">Добавляйте товары к сравнению кнопкой</span> <span class="btnCmprb"></span></p>
     	</div>
     </div>
 
