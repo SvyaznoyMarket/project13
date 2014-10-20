@@ -30,5 +30,5 @@
 </div>
 
 <div class="topbar_c">
-    <a class="topbar_ep" href="<?= \App::router()->generate('enterprize') ?>"><span class="topbar_ep_mark">Enter</span> Prize</a>
+    <a class="topbar_ep" href="<?= \App::router()->generate('enterprize', ['from' => 'enterprize_header']) ?>"><span class="topbar_ep_mark">Enter</span> Prize</a>
 </div>
