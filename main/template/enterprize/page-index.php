@@ -110,8 +110,9 @@ $helper = new \Helper\TemplateHelper();
 
         <ul class="epHead_list">
             <li class="epHead_list_item">Выберите фишку — получите <strong>код скидки</strong>. Используйте его при заказе.</li>
-            <li class="epHead_list_item">Каждую неделю появляются <strong>новые фишки</strong> в ограниченном количестве.</li>
+            <li class="epHead_list_item">Каждый месяц появляются <strong>новые фишки</strong> в ограниченном количестве.</li>
             <li class="epHead_list_item">О самых интересных скидках мы сообщаем по <strong>e-mail</strong> и в соцсетях.</li>
+            <li class="epHead_list_item">Поучить и применить фишку можно  <strong>один раз</strong>.</li>
         </ul>
     </section>
 
