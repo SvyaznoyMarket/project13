@@ -607,6 +607,17 @@ class Cart {
     public function clearCoupons() {
         $data = $this->storage->get($this->sessionName);
         $data['couponList'] = [];
+
+        if (is_array($data['actionData'])) {
+            foreach ($data['actionData'] as $key => $actionDataItem) {
+                if (isset($actionDataItem['type']) && $actionDataItem['type'] === 'coupon') {
+                    unset($data['actionData'][$key]);
+                }
+            }
+
+            $data['actionData'] = array_values($data['actionData']);
+        }
+
         $this->coupons = null;
         $this->storage->set($this->sessionName, $data);
         $this->fill();
@@ -853,8 +864,6 @@ class Cart {
 
         if (array_key_exists('action_list', $response)) {
             $this->setActionData((array)$response['action_list']);
-        } else {
-
         }
 
         $this->certificates = [];
