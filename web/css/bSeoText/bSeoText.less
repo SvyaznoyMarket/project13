@@ -1,25 +1,30 @@
 .bSeoText {
 	margin:20px 0;
 
-	&__eText {
-
-	}
-
 	&__eList {
 		margin: 15px 0;
 	}
 
-	&__eListItem, li {
-		list-style: disc;
-		margin: 0 0 0px 20px;
-		line-height: 1.3;
-	}
-
-	a {
-		text-decoration: underline;
-
+	.bPopularSection__eText {
 		&:hover {
 			text-decoration: none;
 		}
+	}
+
+	.bPopularSection__eItem {
+	    margin: 2px 8px;
+	    display: none;
+
+	    &.seotext-show {
+	    	.inline-block();
+	    }
+	}
+
+	.bPopularSection_more {
+		.inline-block();
+    	border-bottom: 1px dotted;
+		color: #777;
+		cursor: pointer;
+		margin: 2px 8px;
 	}
 }

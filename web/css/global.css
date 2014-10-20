@@ -12946,17 +12946,30 @@
   .bSeoText__eList {
     margin: 15px 0;
   }
-  .bSeoText__eListItem,
-  .bSeoText li {
-    list-style: disc;
-    margin: 0 0 0px 20px;
-    line-height: 1.3;
-  }
-  .bSeoText a {
-    text-decoration: underline;
-  }
-  .bSeoText a:hover {
+  .bSeoText .bPopularSection__eText:hover {
     text-decoration: none;
+  }
+  .bSeoText .bPopularSection__eItem {
+    margin: 2px 8px;
+    display: none;
+  }
+  .bSeoText .bPopularSection__eItem.seotext-show {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+  }
+  .bSeoText .bPopularSection_more {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    border-bottom: 1px dotted;
+    color: #777;
+    cursor: pointer;
+    margin: 2px 8px;
   }
 }
 /*---END---СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/
