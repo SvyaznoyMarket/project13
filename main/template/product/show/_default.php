@@ -16,6 +16,8 @@
  * @var $deliveryData           array
  * @var $isTchibo               boolean
  * @var $addToCartJS     string
+ * @var $isUserSubscribedToEmailActions boolean
+ * @var $actionChannelName string
  */
 
 if (!$lifeGiftProduct) $lifeGiftProduct = null;
@@ -34,7 +36,7 @@ $isKitPage = (bool)$product->getKit();
 
         <?= $helper->render('product/__price', ['product' => $product]) // Цена ?>
 
-        <?= $helper->render('product/__notification-lowerPrice', ['product' => $product, 'isUserSubscribedToEmailActions' => $isUserSubscribedToEmailActions]) // Узнать о снижении цены ?>
+        <?= $helper->render('product/__notification-lowerPrice', ['product' => $product, 'isUserSubscribedToEmailActions' => $isUserSubscribedToEmailActions, 'actionChannelName' => $actionChannelName]) // Узнать о снижении цены ?>
 
         <? if (count($product->getPartnersOffer()) == 0) : ?>
             <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Купи в кредит ?>
@@ -171,7 +173,7 @@ $isKitPage = (bool)$product->getKit();
             <? endif ?>
 
             <? if (!$isKitPage || $product->getIsKitLocked()) : ?>
-                <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'categoryId' => $product->getLastCategory() ? $product->getLastCategory()->getId() : null]) ?>
+                <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'typeId' => $product->getType() ? $product->getType()->getId() : null]) ?>
             <? endif ?>
 
             <? if (5 !== $product->getStatusId()): // SITE-3109 ?>
@@ -185,7 +187,7 @@ $isKitPage = (bool)$product->getKit();
     <? elseif (!$isKitPage || $product->getIsKitLocked()): ?>
         <div class="bWidgetBuy mWidget js-WidgetBuy">
             <div class="js-showTopBar"></div>
-            <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'categoryId' => $product->getLastCategory() ? $product->getLastCategory()->getId() : null]) ?>
+            <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'typeId' => $product->getType() ? $product->getType()->getId() : null]) ?>
         </div>
     <? else: ?>
         <div class="js-showTopBar"></div>

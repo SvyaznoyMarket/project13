@@ -4726,6 +4726,10 @@
     width: 100%;
     margin: 10px 0;
   }
+  .bLowPriceNotiferPopup__actionChannel {
+    display: block;
+    width: 185px;
+  }
 }
 /*стили для продуктов f1*/
 @media all {

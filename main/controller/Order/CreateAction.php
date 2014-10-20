@@ -372,8 +372,15 @@ class CreateAction {
             $params['token'] = $userEntity->getToken();
         }
 
+        $params += ['request_id' => \App::$id]; // SITE-4445
+
         try {
-            $result = \App::coreClientV2()->query((\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet'), $params, $data, \App::config()->coreV2['hugeTimeout']);
+            $result = \App::coreClientV2()->query(
+                (\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet'),
+                $params,
+                $data,
+                \App::config()->coreV2['hugeTimeout']
+            );
         } catch(\Exception $e) {
             if (!in_array($e->getCode(), \App::config()->order['excludedError'])) {
                 \App::logger('order')->error([
