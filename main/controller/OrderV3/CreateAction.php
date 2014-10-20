@@ -31,13 +31,20 @@ class CreateAction extends OrderV3 {
             $params['token'] = $this->user->getEntity()->getToken();
         }
 
+        $params += ['request_id' => \App::$id]; // SITE-4445
+
         try {
 
             foreach ($splitResult['orders'] as &$splitOrder) {
                 $ordersData[] = (new OrderEntity(array_merge($splitResult, array('order' => $splitOrder))))->getOrderData();
             }
 
-            $coreResponse = $this->client->query((\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet'), $params, $ordersData, \App::config()->coreV2['hugeTimeout']);
+            $coreResponse = $this->client->query(
+                (\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet'),
+                $params,
+                $ordersData,
+                \App::config()->coreV2['hugeTimeout']
+            );
 
         } catch (\Curl\Exception $e) {
             \App::logger()->error($e->getMessage(), ['curl', 'order/create']);
