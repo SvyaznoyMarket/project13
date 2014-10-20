@@ -81,5 +81,6 @@ Disallow: /catalog/electronics/aksessuari-dlya-fotokamer-obektivi-2695
 Disallow: /catalog/electronics/aksessuari-dlya-fotokamer-karti-pamyati-2314
 Disallow: /catalog/electronics/televizori-audio-video-mp3-pleeri-3437
 Disallow: /catalog/doityourself/oroshenie-opriskivateli-4208
+Disallow: /compare
 Host: www.enter.ru
 Sitemap: http://www.enter.ru/sitemap.xml
