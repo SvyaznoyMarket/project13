@@ -49,10 +49,12 @@ return function(
                         <span class="orderU_hint">Как к вам обращаться?</span>
                     </div>
 
-                    <div class="orderU_fld">
-                        <label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
+                    <div class="orderU_fld orderU_fld-str">
+                        <label class="orderU_lbl" for="">Телефон</label>
                         <input class="orderU_tx textfield" type="text" name="" value="" placeholder="">
                         <span class="orderU_hint">Для смс о состоянии заказа</span>
+
+                        <div class="orderU_phones">Если вы делаете подарок из-за границы,<br/> укажите телефонный номер +7 (926) 529-42-01.</div>
                     </div>
 
                     <div class="orderU_fld">
@@ -109,7 +111,10 @@ return function(
                     <input type="checkbox" class="jsCustomRadio customInput customInput-checkbox" id="accept" name="" value="" />
 
                     <label  class="customLabel customLabel-checkbox" for="accept">
-                        Я ознакомлен и согласен с информацией о продавце и его офертой
+                        Адрес доставки:  <br/>
+                        119048, г. Москва, ул. Доватора, д. 13, подъезд 2А, этаж 1 (вход с ул. 10-летия Октября).<br/>
+                        Телефон/факс: 8-800-250-5222, +7 (495) 995-31-05.<br/>
+                        Сотрудник фонда Юлия Сергеевна Сазонова. <br/>
                     </label>
                 </div>
 

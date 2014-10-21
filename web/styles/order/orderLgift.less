@@ -65,12 +65,35 @@
 			}
 		}
 
+		&_phones {
+			font-size: 14px;
+			color: #5e5e5e;
+			margin: 2px 0 0 10px;
+		}
+
 		&_lbl {
 			font-size: 14px;
 		}
 
+		&_fld {
+			margin-bottom: 20px;
+
+			&-str {
+
+				.textfield {
+				    border: 1px solid #f89b1c;
+				}	
+
+				.orderU_lbl {
+				    background: #f89b1c;
+				    color: @white;
+				    border-right: 1px solid #f89b1c;
+				}
+			}
+		}
+
 		&_tx {
-			 margin: 0 10px 20px 0;
+			 margin: 0 10px 0 0;
 			 width: 270px;
 		}
 
@@ -125,10 +148,11 @@
 
 		&_l {
 		    font-size: 16px;
+		    width: 730px;
 
 		    &-ln {
 			    display: inline-block;
-			    margin: 2px 0 0 -5px;
+			    margin: 0 0 0 -5px;
 			    padding: 8px 0 0 15px;
 			    vertical-align: top;
 			}
@@ -165,15 +189,4 @@
 .onpay_footn {
 	font-size: 14px;
 	color: #5e5e5e;
-}
-
-@media (min-height: 1200px) { 
-
-	.orderLgift {
-
-		.orderCompl {
-			position: absolute;
-			bottom: 0;
-		}
-	}
 }

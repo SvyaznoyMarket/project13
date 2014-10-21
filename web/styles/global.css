@@ -5869,11 +5869,27 @@ img[height="0"] {
   .orderLgift .orderU_flds-mb30 {
     margin-bottom: 30px;
   }
+  .orderLgift .orderU_phones {
+    font-size: 14px;
+    color: #5e5e5e;
+    margin: 2px 0 0 10px;
+  }
   .orderLgift .orderU_lbl {
     font-size: 14px;
   }
+  .orderLgift .orderU_fld {
+    margin-bottom: 20px;
+  }
+  .orderLgift .orderU_fld-str .textfield {
+    border: 1px solid #f89b1c;
+  }
+  .orderLgift .orderU_fld-str .orderU_lbl {
+    background: #f89b1c;
+    color: #ffffff;
+    border-right: 1px solid #f89b1c;
+  }
   .orderLgift .orderU_tx {
-    margin: 0 10px 20px 0;
+    margin: 0 10px 0 0;
     width: 270px;
   }
   .orderLgift .orderU_txbox {
@@ -5929,10 +5945,11 @@ img[height="0"] {
   }
   .orderLgift .orderCompl_l {
     font-size: 16px;
+    width: 730px;
   }
   .orderLgift .orderCompl_l-ln {
     display: inline-block;
-    margin: 2px 0 0 -5px;
+    margin: 0 0 0 -5px;
     padding: 8px 0 0 15px;
     vertical-align: top;
   }
@@ -5957,12 +5974,6 @@ img[height="0"] {
   .onpay_footn {
     font-size: 14px;
     color: #5e5e5e;
-  }
-}
-@media all and (min-height: 1200px) {
-  .orderLgift .orderCompl {
-    position: absolute;
-    bottom: 0;
   }
 }
 @media all {
