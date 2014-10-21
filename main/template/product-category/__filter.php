@@ -79,69 +79,180 @@ return function(
         $countProducts = $hasBanner ? ($productPager->count() - 1) : $productPager->count();
     }
 ?>
-    <form id="productCatalog-filter-form" class="bFilter clearfix" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
-        <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
-            <? if ($showParamsButton): ?>
-                <a class="bFilterToggle btnGrey <?= ($openFilter) ? 'mOpen' : 'mClose'?>" href="#"><span class="bToggleText">Бренды и параметры</span></a>
-            <? endif ?>
 
+    
+<div class="fltr">
+    <div class="fltrSet">
+        <div class="fltrSet_tggl">
+            <span class="fltrSet_tggl_tx">Металл</span>
+        </div>
+
+        <div class="fltrSet_cnt">
+            <div class="fltrSet_inn">
+                <input type="checkbox" name="" id="name" class="customInput customInput-box jsCustomRadio">
+                <label for="name" class="customLabel customLabel-box">
+                    <img class="customLabel_bimg" src="/styles/catalog/img/icon.png" alt="">
+                    <span class="customLabel_btx">Финальная распродажа</span>
+                </label>
+
+                <input type="checkbox" name="" id="name2" class="customInput customInput-box jsCustomRadio">
+                <label for="name2" class="customLabel customLabel-box">
+                    <img class="customLabel_bimg" src="/styles/catalog/img/icon.png" alt="">
+                    <span class="customLabel_btx">Финальная распродажа</span>
+                </label>
+
+                <input type="checkbox" name="" id="name3" class="customInput customInput-box jsCustomRadio">
+                <label for="name3" class="customLabel customLabel-box">
+                    <img class="customLabel_bimg" src="/styles/catalog/img/icon.png" alt="">
+                    <span class="customLabel_btx">Финальная распродажа</span>
+                </label>
+
+                <input type="checkbox" name="" id="name6" class="customInput customInput-box jsCustomRadio">
+                <label for="name6" class="customLabel customLabel-box">
+                    <img class="customLabel_bimg" src="/styles/catalog/img/icon.png" alt="">
+                    <span class="customLabel_btx">Финальная распродажа</span>
+                </label>
+
+                <input type="checkbox" name="" id="name7" class="customInput customInput-box jsCustomRadio">
+                <label for="name7" class="customLabel customLabel-box">
+                    <img class="customLabel_bimg" src="/styles/catalog/img/icon.png" alt="">
+                    <span class="customLabel_btx">Финальная</span>
+                </label>
+
+                <input type="checkbox" name="" id="name8" class="customInput customInput-box jsCustomRadio">
+                <label for="name8" class="customLabel customLabel-box">
+                    <img class="customLabel_bimg" src="/styles/catalog/img/icon.png" alt="">
+                    <span class="customLabel_btx">Финальная распродажа</span>
+                </label>
+
+                <input type="checkbox" name="" id="name9" class="customInput customInput-box jsCustomRadio">
+                <label for="name9" class="customLabel customLabel-box">
+                    <img class="customLabel_bimg" src="/styles/catalog/img/icon.png" alt="">
+                    <span class="customLabel_btx">Финальная распродажа</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="fltrSet">
+        <div class="fltrSet_tggl fltrSet_tggl-dn">
+            <span class="fltrSet_tggl_tx">Вставка</span>
+        </div>
+
+        <div class="fltrSet_cnt">
+            <div class="fltrSet_inn">
+                <input type="checkbox" name="" id="name" class="customInput customInput-box jsCustomRadio">
+                <label for="name" class="customLabel customLabel-box">
+                    <img class="customLabel_bimg" src="/styles/catalog/img/icon.png" alt="">
+                    <span class="customLabel_btx">Финальная распродажа</span>
+                </label>
+
+                <input type="checkbox" name="" id="name2" class="customInput customInput-box jsCustomRadio">
+                <label for="name2" class="customLabel customLabel-box">
+                    <img class="customLabel_bimg" src="/styles/catalog/img/icon.png" alt="">
+                    <span class="customLabel_btx">Финальная распродажа</span>
+                </label>
+
+                <input type="checkbox" name="" id="name3" class="customInput customInput-box jsCustomRadio">
+                <label for="name3" class="customLabel customLabel-box">
+                    <img class="customLabel_bimg" src="/styles/catalog/img/icon.png" alt="">
+                    <span class="customLabel_btx">Финальная распродажа</span>
+                </label>
+
+                <input type="checkbox" name="" id="name6" class="customInput customInput-box jsCustomRadio">
+                <label for="name6" class="customLabel customLabel-box">
+                    <img class="customLabel_bimg" src="/styles/catalog/img/icon.png" alt="">
+                    <span class="customLabel_btx">Финальная распродажа</span>
+                </label>
+
+                <input type="checkbox" name="" id="name7" class="customInput customInput-box jsCustomRadio">
+                <label for="name7" class="customLabel customLabel-box">
+                    <img class="customLabel_bimg" src="/styles/catalog/img/icon.png" alt="">
+                    <span class="customLabel_btx">Финальная</span>
+                </label>
+
+                <input type="checkbox" name="" id="name8" class="customInput customInput-box jsCustomRadio">
+                <label for="name8" class="customLabel customLabel-box">
+                    <img class="customLabel_bimg" src="/styles/catalog/img/icon.png" alt="">
+                    <span class="customLabel_btx">Финальная распродажа</span>
+                </label>
+
+                <input type="checkbox" name="" id="name9" class="customInput customInput-box jsCustomRadio">
+                <label for="name9" class="customLabel customLabel-box">
+                    <img class="customLabel_bimg" src="/styles/catalog/img/icon.png" alt="">
+                    <span class="customLabel_btx">Финальная распродажа</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <form id="productCatalog-filter-form" class="bFilter clearfix" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
+
+        <div class="flrtBox">
             <? if ($priceFilter && $productFilter) {
                 /**@var     $productFilter      \Model\Product\Filter
                  **@var     $priceFilter        \Model\Product\Filter\Entity **/
                 echo $helper->render('product-category/filter/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter, 'promoStyle' => $promoStyle]);
             } ?>
-
-            <div class="bBtnPick clearfix">
-                <button type="submit" class="bBtnPick__eLink mBtnGrey">Подобрать<?= $countProducts ? " ($countProducts)" : '' ?></button>
-            </div>
         </div>
 
-        <!-- Фильтр по выбранным параметрам -->
-        <div class="bFilterCont clearfix" <? if (!$openFilter): ?>style="display: none"<? endif ?>>
-            <!-- Список названий параметров -->
-            <ul class="bFilterParams">
-            <? $i = 0; foreach ($filters as $filter): ?>
-            <?
-                if (!$filter->getIsInList()) continue;
-                $viewId = \View\Id::productCategoryFilter($filter->getTypeId() . '-' . $filter->getId());
-            ?>
-                <li class="bFilterParams__eItem<? if (0 == $i): ?> mActive<? endif ?>" data-ref="<?= $viewId ?>">
-                    <span class="bParamName"><?= $filter->getName() ?></span>
-                </li>
-            <? $i++; endforeach ?>
-            </ul>
-            <!-- /Список названий параметров -->
+        <div class="fltrSet">
+            <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
+                <? if ($showParamsButton): ?>
+                    <div class="fltrSet_tggl fltrSet_tggl-dn js-filter-toggle-btn <?= ($openFilter) ? 'mOpen' : 'mClose'?>">
+                        <span class="fltrSet_tggl_tx">Бренды и параметры</span>
+                    </div>
+                <? endif ?>
+            </div>
 
-            <!-- Список значений параметров -->
-            <div class="bFilterValues">
+            <!-- Фильтр по выбранным параметрам -->
+            <div class="bFilterCont clearfix" <? if (!$openFilter): ?>style="display: none"<? endif ?>>
+                <!-- Список названий параметров -->
+                <ul class="bFilterParams">
                 <? $i = 0; foreach ($filters as $filter): ?>
                 <?
                     if (!$filter->getIsInList()) continue;
                     $viewId = \View\Id::productCategoryFilter($filter->getTypeId() . '-' . $filter->getId());
                 ?>
-                    <div class="bFilterValuesItem clearfix<? if ($i > 0): ?> hf<? endif ?><? if (in_array($filter->getId(), ['shop', 'category'])): ?> mLineItem<? endif ?>" id="<?= $viewId ?>">
-
-                    <? switch ($filter->getTypeId()) {
-                        case \Model\Product\Filter\Entity::TYPE_NUMBER:
-                        case \Model\Product\Filter\Entity::TYPE_SLIDER:
-                            echo $helper->render('product-category/filter/__slider', ['productFilter' => $productFilter, 'filter' => $filter, 'promoStyle' => $promoStyle]);
-                            break;
-                        case \Model\Product\Filter\Entity::TYPE_LIST:
-                            echo $helper->render('product-category/filter/__list', ['productFilter' => $productFilter, 'filter' => $filter]);
-                            break;
-                        case \Model\Product\Filter\Entity::TYPE_BOOLEAN:
-                            echo $helper->render('product-category/filter/__choice', ['productFilter' => $productFilter, 'filter' => $filter]);
-                            break;
-                    } ?>
-
-                    </div>
+                    <li class="bFilterParams__eItem<? if (0 == $i): ?> mActive<? endif ?>" data-ref="<?= $viewId ?>">
+                        <span class="bParamName"><?= $filter->getName() ?></span>
+                    </li>
                 <? $i++; endforeach ?>
-            </div>
-            <!-- /Список значений параметров -->
-        </div>
-        <!-- /Фильтр по выбранным параметрам -->
+                </ul>
+                <!-- /Список названий параметров -->
 
+                <!-- Список значений параметров -->
+                <div class="bFilterValues">
+                    <? $i = 0; foreach ($filters as $filter): ?>
+                    <?
+                        if (!$filter->getIsInList()) continue;
+                        $viewId = \View\Id::productCategoryFilter($filter->getTypeId() . '-' . $filter->getId());
+                    ?>
+                        <div class="bFilterValuesItem clearfix<? if ($i > 0): ?> hf<? endif ?><? if (in_array($filter->getId(), ['shop', 'category'])): ?> mLineItem<? endif ?>" id="<?= $viewId ?>">
+
+                        <? switch ($filter->getTypeId()) {
+                            case \Model\Product\Filter\Entity::TYPE_NUMBER:
+                            case \Model\Product\Filter\Entity::TYPE_SLIDER:
+                                echo $helper->render('product-category/filter/__slider', ['productFilter' => $productFilter, 'filter' => $filter, 'promoStyle' => $promoStyle]);
+                                break;
+                            case \Model\Product\Filter\Entity::TYPE_LIST:
+                                echo $helper->render('product-category/filter/__list', ['productFilter' => $productFilter, 'filter' => $filter]);
+                                break;
+                            case \Model\Product\Filter\Entity::TYPE_BOOLEAN:
+                                echo $helper->render('product-category/filter/__choice', ['productFilter' => $productFilter, 'filter' => $filter]);
+                                break;
+                        } ?>
+
+                        </div>
+                    <? $i++; endforeach ?>
+                </div>
+                <!-- /Список значений параметров -->
+            </div>
+            <!-- /Фильтр по выбранным параметрам -->
+        </div>
         <?= $helper->render('product-category/__selectedFilter', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
     </form>
+</div>    
+
 
 <? };

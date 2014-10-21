@@ -19,7 +19,7 @@
 		filterBlock = $('.bFilter'),
 
 		filterSubminBtn = filterBlock.find('.bBtnPick__eLink'),
-		filterToggleBtn = filterBlock.find('.bFilterToggle'),
+		filterToggleBtn = filterBlock.find('.js-filter-toggle-btn'),
 		filterContent = filterBlock.find('.bFilterCont'),
 		filterSliders = filterBlock.find('.bRangeSlider'),
 		filterMenuItem = filterBlock.find('.bFilterParams__eItem'),
