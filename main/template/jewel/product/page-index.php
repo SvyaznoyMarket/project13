@@ -249,8 +249,8 @@ $productVideo = reset($productVideos);
     <? endif ?>
   </div>
 
-  <? if($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
-  <div style="text-decoration: line-through; font: normal 18px verdana; letter-spacing: -0.05em; color: #6a6a6a;"><span class="price"><?= $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></div>
+  <? if($product->getPriceOld()): ?>
+    <div style="text-decoration: line-through; font: normal 18px verdana; letter-spacing: -0.05em; color: #6a6a6a;"><span class="price"><?= $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></div>
   <? elseif($showAveragePrice): ?>
   <div class="mOurGray">
     Средняя цена в магазинах города*<br/><div class='mOurGray mIco'><span class="price"><?= $page->helper->formatPrice($product->getPriceAverage()) ?></span> <span class="rubl">p</span> &nbsp;</div>
