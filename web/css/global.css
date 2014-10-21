@@ -212,8 +212,7 @@
     border-color: #c9c9c9;
     color: #010101;
     font-size: 11px;
-    height: 24px;
-    padding: 0px 7px 3px;
+    padding: 5px 7px;
   }
   .whitebutton:hover {
     background: #e5e5e5;
@@ -9098,9 +9097,8 @@
   }
   .bSlider__eList .btnBuy .btnBuy__eLink {
     width: 100px;
-    height: 27px;
+    padding: 3px 0;
     font-size: 14px;
-    line-height: 26px;
   }
   .bSlider__eList .btnView {
     -moz-opacity: 0;
@@ -9866,8 +9864,7 @@
     bottom: 0;
     display: block;
     width: auto;
-    height: 27px;
-    padding: 0 10px;
+    padding: 5px 10px 6px;
     text-align: center;
     text-indent: 0;
     color: #ffffff;
@@ -9875,7 +9872,6 @@
     background: #000000;
     text-shadow: none;
     font-size: 12px;
-    line-height: 26px;
   }
   .bBrandCatalog .goodsbox__inner .btnBuy__eLink.mBought {
     width: auto;
@@ -11997,7 +11993,6 @@
     bottom: 10px;
     display: block;
     width: auto;
-    height: 23px;
     padding: 0 10px;
     text-align: center;
     text-indent: 0;
@@ -12006,7 +12001,7 @@
     background: #000;
     text-shadow: none;
     font: normal 12px tahoma, verdana, arial, helvetica, sans-serif;
-    line-height: 21px;
+    padding: 4px 0;
   }
   .bListing.mPandora .btnBuy__eLink.mBought {
     width: auto;
@@ -12163,9 +12158,8 @@
   }
   .bBtnLine .btnBuy__eLink {
     width: 72px;
-    height: 27px;
     font-size: 12px;
-    line-height: 26px;
+    padding: 5px 0 6px;
   }
   .bBtnLine .btnBuy__eLink.mBought {
     -webkit-box-shadow: none;
