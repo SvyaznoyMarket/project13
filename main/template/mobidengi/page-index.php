@@ -9,8 +9,9 @@
             <a href="/" class="landing_hd_top_lk mod_enter">Enter</a>
             <div class="landing_hd-land">
                 <div class="landing_hd-land_tx"> 
-                    <div class="landing_hd-land_tx-1">Эта акция<br/> завершена</div>
-                    <div class="landing_hd-land_tx-2">Однако бесплатная <a href="https://mycard.tele2.ru/">виртуальная<br/> карта Tele2 MasterCard</a> всё ещё<br/> остаётся чрезвычайно выгодным<br/> приобретением</div>
+                    <div class="landing_hd-land_tx-1">Акция<br/> завершена</div>
+                    <div class="landing_hd-land_tx-2">Напоминаем, что воспользоваться<br/> 
+                    скидкой 500 рублей на покупки <br/>можно до 30.10.2014.</div>
                 </div> 
             </div> 
         </div>
