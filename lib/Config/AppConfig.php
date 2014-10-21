@@ -660,6 +660,12 @@ class AppConfig {
         'enabled'     => null,
     ];
 
+    /** Платный самовывоз
+     * @var array */
+    public $self_delivery = [
+        'limit' => 0
+    ];
+
     public function __construct() {
 
         $this->vkontakteOauth = new OAuth\VkontakteConfig();

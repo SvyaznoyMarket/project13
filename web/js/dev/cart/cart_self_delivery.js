@@ -1,0 +1,3 @@
+;(function($){
+	$('.bGoodsSlider').goodsSlider();
+}(jQuery));

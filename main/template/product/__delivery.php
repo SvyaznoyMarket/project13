@@ -33,6 +33,11 @@ return function (
         }
     }
 
+    if (isset($delivery['self']) && \Controller\Delivery\Action::isPaidSelfDelivery()) {
+        $delivery['self']['limit'] = App::config()->self_delivery['limit'];
+        $delivery['self']['ab_paid_delivery'] = true;
+    }
+
 ?>
     <?= $helper->renderWithMustache('product/__delivery', ['delivery' => $delivery]); // список способов доставки ?>
 <? };

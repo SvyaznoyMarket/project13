@@ -509,6 +509,10 @@ return [
         'pattern' => '/cart/sum',
         'action'  => ['Cart\SumAction', 'execute'],
     ],
+    'cart.recommended' => [
+        'pattern' => '/cart/recommended',
+        'action'  => ['Cart\RecommendedAction', 'execute'],
+    ],
 
     // оформление заказа: 1-й шаг - контактные данные
     'orderV3' => [

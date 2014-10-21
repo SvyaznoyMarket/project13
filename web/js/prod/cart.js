@@ -844,3 +844,6 @@ $(document).ready(function() {
 
 	$('body').bind('remFromCart', function ( e,d ) {});
 });
+;(function($){
+	$('.bGoodsSlider').goodsSlider();
+}(jQuery));

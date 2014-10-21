@@ -45,6 +45,8 @@ $config = array_merge([
         'compare.add'      => ['pattern' => $routerRules['compare.add']['pattern']],
         'compare.delete'   => ['pattern' => $routerRules['compare.delete']['pattern']],
     ],
+    'selfDeliveryTest'    => \Controller\Delivery\Action::isPaidSelfDelivery(),
+    'selfDeliveryLimit'    => $appConfig->self_delivery['limit'] // стоимость платного самовывоза
 ], isset($config) ? (array)$config : []);
 ?>
 
