@@ -18,7 +18,8 @@
         <?= $page->render('jewel/product/show/_compact', [
             'product' => $product,
             'addInfo' => $isAddInfo ? \Kissmetrics\Manager::getProductSearchEvent($product, $i, $pager->getPage()) : [],
-            'itemsPerRow' => $itemsPerRow
+            'itemsPerRow' => $itemsPerRow,
+            'productVideo' => isset($productVideosByProduct[$product->getId()]) ? reset($productVideosByProduct[$product->getId()]) : null
         ]) ?>
     <? endforeach ?>
 

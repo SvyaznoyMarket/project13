@@ -313,11 +313,7 @@ class Action extends \Controller\ProductCategory\Action {
             // листалка
             $limit = \App::config()->product['itemsPerPageJewel'];
             $repository = \RepositoryManager::product();
-            $repository->setEntityClass(
-                \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
-                    ? '\\Model\\Product\\ExpandedEntity'
-                    : '\\Model\\Product\\CompactEntity'
-            );
+            $repository->setEntityClass('\Model\Product\Entity');
 
             $productIds = [];
             $productCount = 0;
@@ -338,7 +334,7 @@ class Action extends \Controller\ProductCategory\Action {
             if ((bool)$productIds) {
                 $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
                     foreach ($data as $item) {
-                        $products[] = new \Model\Product\CompactEntity($item);
+                        $products[] = new \Model\Product\Entity($item);
                     }
                 });
             }
