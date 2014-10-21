@@ -9,7 +9,12 @@
         continue;
       } 
     ?>
-    <? require __DIR__ . '/filter/_dropdown.php' ?>
+    <?= $page->render('jewel/product-category/filter/_dropdown', [
+        'category' => $category,
+        'productFilter' => $productFilter,
+        'filter' => $filter,
+        'scrollTo' => $scrollTo,
+      ]) ?>
   <? } ?>
 
   <? $filtersEmpty = true; 
@@ -20,7 +25,7 @@
   ?>
 
   <? if(!$filtersEmpty) { ?>
-    <li class="bBrandSortingList__eItem mReset"><a <?= empty($values) ? 'class="active"' : '' ?> href="<?= $category->getLink()?>?scrollTo=<?= $scrollTo ?>">Показать<br/>все</a></li>
+    <li class="bBrandSortingList__eItem mReset"><a <?= empty($values) ? 'class="active"' : '' ?> href="?scrollTo=<?= $scrollTo ?>">Показать<br/>все</a></li>
   <? } ?>
 
   <? if ($productSorting && $productPager->count()): ?>
