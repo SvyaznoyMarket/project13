@@ -4,6 +4,9 @@ namespace Model\Product\Category;
 
 class BasicEntity {
     const PRODUCT_VIEW_COMPACT = 'compact';
+    const PRODUCT_VIEW_COMPACT_WITH_BOTTOM_DESCRIPTION = 'compact_with_bottom_description';
+    const PRODUCT_VIEW_COMPACT_WITH_HOVER_BOTTOM_DESCRIPTION = 'compact_with_hover_bottom_description';
+    const PRODUCT_VIEW_COMPACT_WITHOUT_DESCRIPTION = 'compact_without_description';
     const PRODUCT_VIEW_EXPANDED = 'expanded';
 
     /** @var int */

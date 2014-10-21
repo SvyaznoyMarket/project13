@@ -1,10 +1,11 @@
 <?php
 /**
- * @var $page          \View\Layout
- * @var $product       \Model\Product\Entity
- * @var $addInfo       array
- * @var $itemsPerRow   int
- * @var $productVideo  \Model\Product\Video\Entity|null
+ * @var $page         \View\Layout
+ * @var $product      \Model\Product\Entity
+ * @var $addInfo      array
+ * @var $itemsPerRow  int
+ * @var $productVideo \Model\Product\Video\Entity|null
+ * @var $view         array
  **/
 ?>
 
@@ -35,10 +36,13 @@ if ($productVideo instanceof \Model\Product\Video\Entity) {
 }
 ?>
 
-<li class="bBrandGoodsList__eItem js-jewelListing">
+<li class="bBrandGoodsList__eItem <? if ($view['descriptionHover']): ?>bBrandGoodsList__eItem-descriptionHover<? endif ?> js-jewelListing">
     <div class="goodsbox" ref="<?= $product->getToken(); ?>"><? //для корректной работы js ?>
     <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>" <?php if (isset($additionalData)) echo 'data-product="' . $page->json($additionalData) . '"' ?> <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
-        <div class="bItemName"><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></div>
+        <? if ('top' === $view['descriptionPosition']): ?>
+            <div class="bItemName"><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></div>
+        <? endif ?>
+
         <div class="bItemImg"><a href="<?= $product->getLink() ?>"><img class="mainImg" src="<?= $product->getImageUrl($imgSize) ?>" alt="<?= $page->escape($product->getNameWithCategory()) ?>" /></a></div>
 
             <ul class="bSimplyDescStikers clearfix">
@@ -78,6 +82,14 @@ if ($productVideo instanceof \Model\Product\Video\Entity) {
             <? endif ?>
 
             <a href="" class="btnCmprb jsCompareListLink" data-id="<?= $page->escape($product->getId()) ?>" data-bind="compareListBinding: compare"></a>
+
+            <? if ('bottom' === $view['descriptionPosition']): ?>
+                <div class="bItemName"><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></div>
+
+                <? if (\App::config()->product['reviewEnabled']): ?>
+                    <?= $page->render('product/_reviewsStarsCompact', ['product' => $product]) ?>
+                <? endif ?>
+            <? endif ?>
         </div>
 
         <?= $page->render('product/show/__corner_features', ['product' => $product]) ?>

@@ -2,10 +2,11 @@
 /**
  * @var $page                   \View\Layout
  * @var $pager                  \Iterator\EntityPager
- * @var $product                \Model\Product\Entity
  * @var $isAjax                 bool
  * @var $productVideosByProduct array
  * @var $isAddInfo              bool
+ * @var $itemsPerRow            int
+ * @var $view                   array
  **/
 ?>
 
@@ -15,11 +16,13 @@
 <? endif ?>
 
     <? $i = 0; foreach ($pager as $product): $i++ ?>
+        <? /** @var \Model\Product\Entity $product */ ?>
         <?= $page->render('jewel/product/show/_compact', [
             'product' => $product,
             'addInfo' => $isAddInfo ? \Kissmetrics\Manager::getProductSearchEvent($product, $i, $pager->getPage()) : [],
             'itemsPerRow' => $itemsPerRow,
-            'productVideo' => isset($productVideosByProduct[$product->getId()]) ? reset($productVideosByProduct[$product->getId()]) : null
+            'productVideo' => isset($productVideosByProduct[$product->getId()]) ? reset($productVideosByProduct[$product->getId()]) : null,
+            'view' => $view,
         ]) ?>
     <? endforeach ?>
 

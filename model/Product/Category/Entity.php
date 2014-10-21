@@ -170,10 +170,16 @@ class Entity extends BasicEntity {
      */
     public function setProductView($productView) {
         if ((int)$productView > 0) {
-            if (1 == $productView) {
-                $this->productView = self::PRODUCT_VIEW_COMPACT;
-            } else if (2 == $productView) {
-                $this->productView = self::PRODUCT_VIEW_EXPANDED;
+            $idToNameMap = [
+                1 => self::PRODUCT_VIEW_COMPACT,
+                2 => self::PRODUCT_VIEW_EXPANDED,
+                3 => self::PRODUCT_VIEW_COMPACT_WITH_BOTTOM_DESCRIPTION,
+                4 => self::PRODUCT_VIEW_COMPACT_WITH_HOVER_BOTTOM_DESCRIPTION,
+                5 => self::PRODUCT_VIEW_COMPACT_WITHOUT_DESCRIPTION,
+            ];
+
+            if (array_key_exists($productView, $idToNameMap)) {
+                $this->productView = $idToNameMap[$productView];
             }
         } else {
             $this->productView = (string)$productView;

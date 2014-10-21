@@ -139,8 +139,8 @@ class Repository {
     /**
      * Устанавливает рейтинги для коллекции товаров
      *
-     * @param array $products
-     * @return array $products
+     * @param \Model\Product\BasicEntity[] $products
+     * @return \Model\Product\BasicEntity[] $products
      */
     public function addScores(&$products, &$scoreData = null) {
         if (null === $scoreData) {
