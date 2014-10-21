@@ -7265,6 +7265,19 @@
     color: #a6a6a6;
     text-decoration: line-through;
   }
+  .cartInfo {
+    border: 1px solid #f99b1c;
+    border-top-width: 5px;
+    font-size: 14px;
+    padding: 10px 15px;
+    margin: 9px 0 0 10px;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    float: left;
+  }
 }
 /*---END---СТИЛИ КОРЗИНЫ---*/
 /*-------СТИЛИ ПОДСКАЗОК ПОИСКА-----*/
@@ -9172,6 +9185,9 @@
     cursor: default;
     background: #f2f2f2;
   }
+  .bSlider-7item .bSlider__eInner {
+    width: 840px;
+  }
   /**
  * Если есть категории
  */
@@ -9461,12 +9477,11 @@
     *display: inline;
     *zoom: 1;
     width: 170px;
-    height: 35px;
+    padding: 7px 0;
     text-align: center;
     color: #ffffff;
     border: 1px solid #fb9c00;
     font-size: 18px;
-    line-height: 35px;
   }
   .btnBuy__eLink.mShopsOnly {
     background: #040404;

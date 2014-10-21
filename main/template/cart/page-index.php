@@ -60,8 +60,12 @@ foreach (array_reverse($products) as $product) {
         <? endif ?>
     </div>
 
+    <div class="cartInfo">
+        Для бесплатного самовывоза добавьте товаров на <strong>345 <span class="rubl">p</span></strong>
+    </div>
+
     <div id="total" class="fr" style="margin-right: 20px;">
-        <? if ($creditEnabled) : ?>
+        <? /* if ($creditEnabled) : ?>
         <div class="cre" id="creditSum" data-minsum="<?= \App::config()->product['minCreditPrice'] ?>" style="display:none">
             
             <div class="creditRate clearfix grayUnderline">
@@ -88,7 +92,7 @@ foreach (array_reverse($products) as $product) {
                 </p>
             </div>
         </div>
-        <? endif; ?>
+        <? endif; */?>
 
         <div class="basketSum" id="commonSum">
             Сумма заказа:
@@ -105,6 +109,138 @@ foreach (array_reverse($products) as $product) {
                 <span class="rubl">p</span>
             </div>
         </div>
+    </div>
+</div>
+
+<div class="basketLine">
+    <div class="bSlider bSlider-7item">
+        <div class="bSlider__eInner">
+            <ul class="bSlider__eList clearfix" style="width: 2160px; left: 0px;">
+                <li class="bSlider__eItem jsSliderItem" style="display: list-item;">
+                    <div class="product__inner">
+                        <a href="" class="productImg">
+                            <img alt="" src="http://fs05.enter.ru/1/1/120/d4/231424.jpg">
+                        </a>
+
+                        <div class="productName"><a href="">Смартфон Samsung GT-I9190 S4 mini коричневый</a></div>
+                        <div class="productPrice"><span class="price">11 990 <span class="rubl">p</span></span></div>
+
+                        <div class="bWidgetBuy__eBuy btnBuy">
+                            <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
+                        </div>                                            
+                    </div>
+                </li>
+
+                <li class="bSlider__eItem jsSliderItem" style="display: list-item;">
+                    <div class="product__inner">
+                        <a href="" class="productImg">
+                            <img alt="" src="http://fs05.enter.ru/1/1/120/d4/231424.jpg">
+                        </a>
+
+                        <div class="productName"><a href="">Смартфон Samsung GT-I9190 S4 mini коричневый</a></div>
+                        <div class="productPrice"><span class="price">11 990 <span class="rubl">p</span></span></div>
+
+                        <div class="bWidgetBuy__eBuy btnBuy">
+                            <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
+                        </div>                                            
+                    </div>
+                </li>
+
+                <li class="bSlider__eItem jsSliderItem" style="display: list-item;">
+                    <div class="product__inner">
+                        <a href="" class="productImg">
+                            <img alt="" src="http://fs05.enter.ru/1/1/120/d4/231424.jpg">
+                        </a>
+
+                        <div class="productName"><a href="">Смартфон Samsung GT-I9190 S4 mini коричневый</a></div>
+                        <div class="productPrice"><span class="price">11 990 <span class="rubl">p</span></span></div>
+
+                        <div class="bWidgetBuy__eBuy btnBuy">
+                            <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
+                        </div>                                            
+                    </div>
+                </li>
+
+                <li class="bSlider__eItem jsSliderItem" style="display: list-item;">
+                    <div class="product__inner">
+                        <a href="" class="productImg">
+                            <img alt="" src="http://fs05.enter.ru/1/1/120/d4/231424.jpg">
+                        </a>
+
+                        <div class="productName"><a href="">Смартфон Samsung GT-I9190 S4 mini коричневый</a></div>
+                        <div class="productPrice"><span class="price">11 990 <span class="rubl">p</span></span></div>
+
+                        <div class="bWidgetBuy__eBuy btnBuy">
+                            <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
+                        </div>                                            
+                    </div>
+                </li>
+
+                <li class="bSlider__eItem jsSliderItem" style="display: list-item;">
+                    <div class="product__inner">
+                        <a href="" class="productImg">
+                            <img alt="" src="http://fs05.enter.ru/1/1/120/d4/231424.jpg">
+                        </a>
+
+                        <div class="productName"><a href="">Смартфон Samsung GT-I9190 S4 mini коричневый</a></div>
+                        <div class="productPrice"><span class="price">11 990 <span class="rubl">p</span></span></div>
+
+                        <div class="bWidgetBuy__eBuy btnBuy">
+                            <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
+                        </div>                                            
+                    </div>
+                </li>
+
+                <li class="bSlider__eItem jsSliderItem" style="display: list-item;">
+                    <div class="product__inner">
+                        <a href="" class="productImg">
+                            <img alt="" src="http://fs05.enter.ru/1/1/120/d4/231424.jpg">
+                        </a>
+
+                        <div class="productName"><a href="">Смартфон Samsung GT-I9190 S4 mini коричневый</a></div>
+                        <div class="productPrice"><span class="price">11 990 <span class="rubl">p</span></span></div>
+
+                        <div class="bWidgetBuy__eBuy btnBuy">
+                            <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
+                        </div>                                            
+                    </div>
+                </li>
+
+                <li class="bSlider__eItem jsSliderItem" style="display: list-item;">
+                    <div class="product__inner">
+                        <a href="" class="productImg">
+                            <img alt="" src="http://fs05.enter.ru/1/1/120/d4/231424.jpg">
+                        </a>
+
+                        <div class="productName"><a href="">Смартфон Samsung GT-I9190 S4 mini коричневый</a></div>
+                        <div class="productPrice"><span class="price">11 990 <span class="rubl">p</span></span></div>
+
+                        <div class="bWidgetBuy__eBuy btnBuy">
+                            <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
+                        </div>                                            
+                    </div>
+                </li>
+
+                <li class="bSlider__eItem jsSliderItem" style="display: list-item;">
+                    <div class="product__inner">
+                        <a href="" class="productImg">
+                            <img alt="" src="http://fs05.enter.ru/1/1/120/d4/231424.jpg">
+                        </a>
+
+                        <div class="productName"><a href="">Смартфон Samsung GT-I9190 S4 mini коричневый</a></div>
+                        <div class="productPrice"><span class="price">11 990 <span class="rubl">p</span></span></div>
+
+                        <div class="bWidgetBuy__eBuy btnBuy">
+                            <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
+                        </div>                                            
+                    </div>
+                </li>
+                           
+            </ul>
+        </div>
+
+        <div class="bSlider__eBtn mPrev mDisabled"><span></span></div>
+        <div class="bSlider__eBtn mNext"><span></span></div>
     </div>
 </div>
 

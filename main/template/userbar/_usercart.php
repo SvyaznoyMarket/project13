@@ -23,8 +23,19 @@
                 </div>
             </li>
         </ul>
+        
+        <!-- для кнопки с иконкой btnBuy-inf -->
+        <div class="btnBuy btnBuy-inf quickOrder"><a href="<?= $page->url('order') ?>" class="btnBuy__eLink quickOrder__link">Оформить заказ</a></div>
 
-        <div class="btnBuy quickOrder"><a href="<?= $page->url('order') ?>" class="btnBuy__eLink quickOrder__link">Оформить заказ</a></div>
+        <div class="buyInfo">
+            До бесплатного самовывоза осталось
+            <div class="buyInfo_pr">175 <span class="rubl">p</span></div>
+            <a class="buyInfo_lk" href="">Выбрать товары по суперценам</a> >
+        </div>
+
+        <div class="buyInfo">
+            <div class="buyInfo_self">Самовывоз<br/>БЕСПЛАТНО</div>
+        </div>
     </div>
 
     <div class="hintDd"><!-- если похожии товары есть то добавляем класс mhintDdOn -->
