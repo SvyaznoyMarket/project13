@@ -139,6 +139,11 @@
 		model.isEnterprizeMember = ko.observable();
 
 		model.cart = ko.observableArray();
+		model.cartSum = ko.computed(function(){
+			var sum = 0;
+			$.each(model.cart(), function(i,val){ sum += val.price * val.quantity()});
+			return sum;
+		});
 		model.compare = ko.observableArray();
 
 		model.isProductInCompare = function(elem){
@@ -161,6 +166,9 @@
 				$.each(data.compare, function(i,val){ model.compare.push(val) })
 			}
 		};
+
+		/* АБ-тест платного самовывоза */
+		model.infoIconVisible = ko.observable(false);
 
 		return model;
 	}
@@ -304,6 +312,21 @@
 			});
 		}
 	});
+
+	/* AB-тест платного самовывоза */
+	$body.on('mouseover', '.btnBuy-inf', function(){
+		if (!docCookies.hasItem('enter_ab_self_delivery_view_info')) docCookies.setItem('enter_ab_self_delivery_view_info', true);
+		ENTER.UserModel.infoIconVisible(false);
+	});
+
+	/* Если человек еще не наводил на иконку в всплывающей корзине */
+	if (ENTER.config.pageConfig.selfDeliveryTest) {
+		if (!docCookies.hasItem('enter_ab_self_delivery_view_info')) {
+			ENTER.UserModel.infoIconVisible(true);
+		}
+	}
+
+
 });
 
 ;(function (window, document, $, ENTER) {
