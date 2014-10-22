@@ -119,7 +119,7 @@ class SelectedFilterAction {
                         $url = $helper->replacedUrl([
                             $paramName => null,
                             'ajax'     => null,
-                            'page'     => 1, // SITE-4511
+                            'page'     => null, // SITE-4511
                         ], null,
                             ('product.category' === \App::request()->attributes->get('route')) ? 'product.category' : null
                         );
