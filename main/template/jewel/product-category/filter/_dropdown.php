@@ -5,9 +5,7 @@
  * @var $category      \Model\Product\Category\Entity
  * @var $productFilter \Model\Product\Filter
  * @var $filter        \Model\Product\Filter\Entity
- * @var $isOpened      bool
- * @var $index         int
- * @var $formName      string
+ * @var $scrollTo      string
  */
 ?>
 
@@ -15,7 +13,7 @@
 $values = $productFilter->getValue($filter);
 $options = $filter->getOption();
 
-$allLink = $page->helper->getFilterItemAllLink($category, $productFilter, $filter, $scrollTo);
+$allLink = $page->helper->getFilterItemAllLink($productFilter, $filter, $scrollTo);
 
 foreach ($options as $option) {
     if (in_array($option->getId(), $values)) continue;

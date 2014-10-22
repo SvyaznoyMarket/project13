@@ -98,7 +98,7 @@ class ShowAction {
         ];
 
         // oldPrice and priceSale
-        if ( $product->getPriceOld() && !$user->getRegion()->getHasTransportCompany() ) {
+        if ( $product->getPriceOld() ) {
             $productItem['oldPrice'] = $helper->formatPrice($product->getPriceOld());
             $productItem['priceSale'] = round( ( 1 - ($product->getPrice() / $product->getPriceOld() ) ) *100, 0 );
         }
