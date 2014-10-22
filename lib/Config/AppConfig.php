@@ -663,7 +663,8 @@ class AppConfig {
     /** Платный самовывоз
      * @var array */
     public $self_delivery = [
-        'limit' => 0
+        'limit'     => 0,
+        'regions'   => []
     ];
 
     public function __construct() {

@@ -103,7 +103,8 @@ namespace Model\OrderDelivery {
 
 
             // идиотский АБ-тест TODO remove
-            if (\App::user()->getRegionId() == 93746 && \App::abTest()->getTest('order_delivery_price')  && \App::abTest()->getTest('order_delivery_price')->getChosenCase()->getKey() == 'delivery_self_100') {
+            // суммируем общую стоимость заказов заново
+            if (\Controller\Delivery\Action::isPaidSelfDelivery()) {
                 $this->total_cost = 0;
                 foreach ($this->orders as $order) $this->total_cost += $order->total_cost;
             }
@@ -418,7 +419,7 @@ namespace Model\OrderDelivery\Entity {
             }
 
             // идиотский АБ-тест TODO remove
-            if (\App::user()->getRegionId() == 93746 && $this->delivery->delivery_method_token == 'self' && $this->total_cost < 1000 && \App::abTest()->getTest('order_delivery_price')  && \App::abTest()->getTest('order_delivery_price')->getChosenCase()->getKey() == 'delivery_self_100') {
+            if (\Controller\Delivery\Action::isPaidSelfDelivery()) {
                 $this->delivery->price = 100;
                 $this->total_cost = $this->total_cost + $this->delivery->price;
             }
