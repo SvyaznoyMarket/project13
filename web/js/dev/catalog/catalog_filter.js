@@ -16,14 +16,13 @@
 		utils = ENTER.utils,
 		catalog = utils.extendApp('ENTER.catalog'),
 
-		filterBlock = $('.bFilter'),
+		filterBlock = $('.js-filter'),
 
-		filterSubminBtn = filterBlock.find('.bBtnPick__eLink'),
-		filterToggleBtn = filterBlock.find('.js-filter-toggle-btn'),
-		filterContent = filterBlock.find('.bFilterCont'),
-		filterSliders = filterBlock.find('.bRangeSlider'),
-		filterMenuItem = filterBlock.find('.bFilterParams__eItem'),
-		filterCategoryBlocks = filterBlock.find('.bFilterValuesItem'),
+		filterOtherParamsToggleButton = filterBlock.find('.js-filter-otherParamsToggleButton'),
+		filterOtherParamsContent = filterBlock.find('.js-filter-otherParamsContent'),
+		filterSliders = filterBlock.find('.js-filter-rangeSlider'),
+		filterMenuItem = filterBlock.find('.js-filter-param'),
+		filterCategoryBlocks = filterBlock.find('.js-filter-element'),
 
 		viewParamPanel = $('.bSortingLine'),
 
@@ -595,19 +594,39 @@
 		 * Обработчик кнопки переключения между расширенным и компактным видом фильтра
 		 */
 		toggleFilterViewHandler = function toggleFilterViewHandler( openAnyway ) {
-			var openClass = 'mOpen',
-				closeClass = 'mClose',
-				open = filterToggleBtn.hasClass(openClass);
+			var openClass = 'fltrSet_tggl-dn',
+				open = filterOtherParamsToggleButton.hasClass(openClass);
 			// end of vars
 
 
 			if ( open && typeof openAnyway !== 'boolean' ) {
-				filterToggleBtn.removeClass(openClass).addClass(closeClass);
-				filterContent.slideUp(400);
+				filterOtherParamsToggleButton.removeClass(openClass);
+				filterOtherParamsContent.slideUp(400);
 			}
 			else {
-				filterToggleBtn.removeClass(closeClass).addClass(openClass);
-				filterContent.slideDown(400);
+				filterOtherParamsToggleButton.addClass(openClass);
+				filterOtherParamsContent.slideDown(400);
+			}
+
+			return false;
+		},
+
+
+		/**
+		 * Обработчик кнопк сворачивания/разворачивания блоков
+		 */
+			toggleHandler = function(e) {
+			var openClass = 'fltrSet_tggl-dn',
+				$button = $(e.currentTarget),
+				$content = $('.js-filter-toggle-content', $button.closest('.js-filter-toggle-container'));
+			// end of vars
+
+			if ($button.hasClass(openClass)) {
+				$button.removeClass(openClass);
+				$content.slideUp(400);
+			} else {
+				$button.addClass(openClass);
+				$content.slideDown(400);
 			}
 
 			return false;
@@ -721,7 +740,8 @@
 
 
 	// Handlers
-	filterToggleBtn.on('click', toggleFilterViewHandler);
+	filterBlock.on('click', '.js-filter-toggle-button', toggleHandler);
+	filterOtherParamsToggleButton.on('click', toggleFilterViewHandler);
 	filterMenuItem.on('click', selectFilterCategoryHandler);
 	filterBlock.on('change', catalog.filter.changeFilterHandler);
 	filterBlock.on('submit', catalog.filter.sendFilter);

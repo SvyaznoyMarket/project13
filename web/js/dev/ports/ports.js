@@ -554,7 +554,7 @@ window.ANALYTICS = {
 			ga_category = function ga_category() {
 				console.info( 'gaJS product catalog' );
 				/** Событие выбора фильтра */
-				$('div.bFilterBand input:not(:checked)').click(function ga_filterBrand(){
+				$('.js-filter-brand:not(:checked)').click(function ga_filterBrand(){
 					var
 						input = $(this),
 						name = input.data('name');

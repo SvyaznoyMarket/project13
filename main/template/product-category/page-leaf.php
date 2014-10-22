@@ -64,7 +64,6 @@
             'baseUrl'       => $helper->url('product.category', ['categoryPath' => $category->getPath()]),
             'countUrl'      => $helper->url('product.category.count', ['categoryPath' => $category->getPath()]),
             'productFilter' => $productFilter,
-            'hotlinks'      => $hotlinks,
             'openFilter'    => false,
             'promoStyle'    => $promoStyle,
             'hasBanner'     => isset($hasBanner) ? (bool)$hasBanner : false,

@@ -23,6 +23,8 @@ class Entity {
     /** @var bool */
     private $isMultiple;
     /** @var bool */
+    private $isAlwaysShow;
+    /** @var bool */
     private $isSlider;
     /** @var float */
     private $min;
@@ -50,6 +52,7 @@ class Entity {
         if (array_key_exists('type_id', $data)) $this->setTypeId($data['type_id']);
         if (array_key_exists('unit', $data)) $this->setUnit($data['unit']);
         if (array_key_exists('is_multiple', $data)) $this->setIsMultiple($data['is_multiple']);
+        if (array_key_exists('always_show', $data)) $this->setIsAlwaysShow($data['always_show']);
         if (array_key_exists('is_slider', $data)) $this->setIsSlider($data['is_slider']);
         if (array_key_exists('min', $data)) $this->setMin($data['min']);
         if (array_key_exists('max', $data)) $this->setMax($data['max']);
@@ -107,6 +110,20 @@ class Entity {
         // TODO: осторожно, костыль
         return (self::TYPE_LIST == $this->typeId) && !in_array($this->id, ['shop', 'category']);
         //return $this->isMultiple;
+    }
+
+    /**
+     * @param bool $isAlwaysShow
+     */
+    public function setIsAlwaysShow($isAlwaysShow) {
+        $this->isAlwaysShow = (bool)$isAlwaysShow;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsAlwaysShow() {
+        return $this->isAlwaysShow;
     }
 
     /**

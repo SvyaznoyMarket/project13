@@ -13,9 +13,7 @@ return function(
         'baseUrl'          => $baseUrl,
         'countUrl'         => $countUrl,
         'productFilter'    => $productFilter,
-        'hotlinks'         => [],
         'categories'       => $categories,
-        'selectedCategory' => $selectedCategory,
         'openFilter'    => true,
     ]) // фильтры ?>
 
