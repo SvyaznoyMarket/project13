@@ -76,7 +76,8 @@ class SelectedFilterAction {
                             'name' => $isPrice ? sprintf('от %sр', $helper->formatPrice($value['from'])) : sprintf('от %s', round($value['from'], 1)),
                             'url'  => $helper->replacedUrl([
                                 $paramName => null,
-                                'ajax'     => null
+                                'ajax'     => null,
+                                'page'     => null, // SITE-4511
                             ]),
                         ];
                         $filterValueData[$paramName] = $value['from'];
@@ -87,7 +88,8 @@ class SelectedFilterAction {
                             'name' => $isPrice ? sprintf('до %sр', $helper->formatPrice($value['to'])) : sprintf('до %s', round($value['to'], 1)),
                             'url'  => $helper->replacedUrl([
                                 $paramName => null,
-                                'ajax'     => null
+                                'ajax'     => null,
+                                'page'     => null, // SITE-4511
                             ]),
                         ];
                         $filterValueData[$paramName] = $value['to'];
@@ -102,7 +104,8 @@ class SelectedFilterAction {
                             'name' => (1 == $v) ? 'да' : 'нет',
                             'url'  => $helper->replacedUrl([
                                 $paramName => null,
-                                'ajax'    => null
+                                'ajax'     => null,
+                                'page'     => null, // SITE-4511
                             ]),
                         ];
                         $filterValueData[$paramName] = $v;
@@ -115,7 +118,8 @@ class SelectedFilterAction {
                         $paramName = \View\Name::productCategoryFilter($filter, $option);
                         $url = $helper->replacedUrl([
                             $paramName => null,
-                            'ajax'     => null
+                            'ajax'     => null,
+                            'page'     => 1, // SITE-4511
                         ], null,
                             ('product.category' === \App::request()->attributes->get('route')) ? 'product.category' : null
                         );
