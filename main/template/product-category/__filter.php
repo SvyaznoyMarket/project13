@@ -222,7 +222,7 @@ return function(
                 <!-- /Список названий параметров -->
 
                 <!-- Список значений параметров -->
-                <div class="bFilterValues">
+                <div class="bFilterValues clearfix">
                     <? $i = 0; foreach ($filters as $filter): ?>
                     <?
                         if (!$filter->getIsInList()) continue;
@@ -249,10 +249,9 @@ return function(
                 <!-- /Список значений параметров -->
             </div>
             <!-- /Фильтр по выбранным параметрам -->
+            <?= $helper->render('product-category/__selectedFilter', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
         </div>
-        <?= $helper->render('product-category/__selectedFilter', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
     </form>
 </div>    
-
 
 <? };

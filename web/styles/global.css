@@ -1639,6 +1639,10 @@ img[height="0"] {
     background: #606060;
     color: #ffffff;
   }
+  .customLabel-box.mChecked {
+    background: #606060;
+    color: #ffffff;
+  }
 }
 /*---END----КНОПКА НАВЕРХ---------*/
 /*---------ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК (ЛИСТИНГИ/КАРТОЧКА ТОВАРА)----------*/
@@ -7283,96 +7287,158 @@ img[height="0"] {
 }
 /*---------Каталог----------*/
 @media all {
-  .fltr {
+  .bCatalog-custom .bSortingLine {
+    background: #fff;
+    border-color: #e6e6e6;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    margin: 0 0 0 -10px;
+    padding: 5px 10px;
+    width: 940px;
+  }
+  .bCatalog-custom .bSortingList__eLink {
+    background: #ffffff;
+    height: auto;
+    line-height: 1.4;
+    padding: 3px 15px;
+  }
+  .bCatalog-custom .bSortingList__eLink:hover {
+    background: #404040;
+    border-color: #515151;
+    color: #fff;
+  }
+  .bCatalog-custom .bSortingList__eItem.mTitle {
+    color: #000;
+    float: left;
+    margin: 3px 10px 0 0;
+  }
+  .bCatalog-custom .bSortingList__eItem.mActive .bSortingList__eLink {
+    background: #404040;
+    border-color: #515151;
+    color: #fff;
+  }
+  .bCatalog-custom .bSortingList.mPager .bSortingList__eLink {
+    height: 22px;
+    line-height: 22px;
+    padding: 0;
+    width: 22px;
+  }
+  .bCatalog-custom .fltr {
     background: #f6f6f6;
     margin-left: -10px;
     width: 960px;
   }
-  .fltr .bFilter {
-    background: none;
-  }
-  .fltr .bFilterCont {
+  .bCatalog-custom .fltr .bFilterCont {
     background: #e6e6e6;
-    width: 926px;
+    width: 928px;
     margin-left: 20px;
   }
-  .fltr .bFilterParams {
+  .bCatalog-custom .fltr .bFilterParams {
     border: 1px solid #e6e6e6;
     margin: 0;
   }
-  .fltr .bFilterParams__eItem.mActive .bParamName {
+  .bCatalog-custom .fltr .bFilterFoot__eInner {
+    padding: 10px 20px 0;
+  }
+  .bCatalog-custom .fltr .bFilterValues .bFilterValuesItem.mLineItem .bFilterValuesCol {
+    float: none;
+    width: auto;
+  }
+  .bCatalog-custom .fltr .bFilterValues .bFilterValuesItem.mLineItem .bFilterValuesCol .bFilterCheckbox {
+    padding-right: 20px;
+  }
+  .bCatalog-custom .fltr .bFilter {
+    background: none;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    margin: 0 0 5px;
+    padding: 0;
+    position: relative;
+    box-shadow: 0 5px 2px -2px #cccccc;
+  }
+  .bCatalog-custom .fltr .bFilterParams__eItem.mActive .bParamName {
     background: #e6e6e6;
   }
-  .fltr .bFilterValues {
-    margin: 10px 8px 0;
-    padding: 0;
-    width: 745px;
+  .bCatalog-custom .fltr .bFilterValues {
+    margin: 10px 0 0 5px;
     max-height: 292px;
+    padding: 0;
+    width: 758px;
   }
-  .fltr .bFilterValues .bFilterValuesCol {
+  .bCatalog-custom .fltr .bFilterValues .bFilterValuesCol {
     float: left;
     margin: 0;
     position: relative;
     width: 370px;
   }
-  .fltr .bFilterValues .bFilterCheckbox {
+  .bCatalog-custom .fltr .bFilterValues .bFilterCheckbox {
     border-radius: 0;
     padding: 9px 0 8px 37px;
-    width: 333px;
+    width: 332px;
     margin: -1px 0 0;
   }
-  .fltr .bFilterValues .bInputHidden + .bFilterCheckbox {
+  .bCatalog-custom .fltr .bFilterValues .bInputHidden + .bFilterCheckbox {
     background-position: 7px 50%;
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAQAAAADHm0dAAAASklEQVQoz+3TIQLAIAwDwCr4fveyxKD2AFyfQCbwUMQciT2ZWCtwBrQqA96K8ekaWmeoC26MHZyYYVAu0KWX/kRP9urpF7w1+60P/WJXmQwD9hMAAAAASUVORK5CYII=);
   }
-  .fltr .bFilterValues .bInputHidden:checked + .bFilterCheckbox {
+  .bCatalog-custom .fltr .bFilterValues .bInputHidden:checked + .bFilterCheckbox {
     background-color: #606060;
     color: #ffffff;
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAQAAAADHm0dAAAAcUlEQVR4Ae3TMQ4CMAgFUKY6c1G5Cp4Mlk4eoFtnu/TrZGJoG4yr/JE3tR+qxdS74ZTXXmshvzVMnGeiwZS8B7jE3smQG8ObDggY9BGGYER6BS0jkfKGcqS0y5/+9K6S/61HogP5Zn3TV01fwf2Sva0nnky3FRUblecAAAAASUVORK5CYII=);
   }
-  .fltrSet {
+  .bCatalog-custom .fltr .bFilterValues .bFilterCheckbox.mChecked {
+    background-color: #606060;
+    color: #ffffff;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAQAAAADHm0dAAAAcUlEQVR4Ae3TMQ4CMAgFUKY6c1G5Cp4Mlk4eoFtnu/TrZGJoG4yr/JE3tR+qxdS74ZTXXmshvzVMnGeiwZS8B7jE3smQG8ObDggY9BGGYER6BS0jkfKGcqS0y5/+9K6S/61HogP5Zn3TV01fwf2Sva0nnky3FRUblecAAAAASUVORK5CYII=);
+  }
+  .bCatalog-custom .fltrSet {
     border: 1px solid #e6e6e6;
     border-top: none;
-    padding: 15px 10px 10px;
+    padding: 10px;
   }
-  .fltrSet_tggl {
+  .bCatalog-custom .fltrSet_tggl {
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAANCAQAAAA3IEfJAAAAeElEQVQY02NomNPwBguMYqg1bfiPAZ/lsjMwMDTsQZeoK2UAgQYXVOH692W8DBBQfxpFqoUBBuqCkYS/NYjBJRqYGm7AJaYwIIOGJKj5vxsUUCXYGp6AJRYzoIO6QqDEvwYdDIkS7vq39ZsZsIGGhlprrBKFnMg8AG3rcXu/iPj8AAAAAElFTkSuQmCC) no-repeat 0 50%;
     padding: 0 0 0 20px;
     margin: 0 0 10px;
   }
-  .fltrSet_tggl-dn {
+  .bCatalog-custom .fltrSet_tggl-dn {
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAMCAQAAAATvv9SAAAAbElEQVQY02NoiMplZ8AOGt40PKsrLePFLvW/4X/9+4aWBjGsUmD4rWFKgwJ2KZDu3/WLG3SwSoHhv/rNtdbYpf7Xv21oKOTElHpSV1jCjWngjYakBjYMZ9SfrgtuYMJ0/J4GF2xenlNrij2cADvFcXsMl7eyAAAAAElFTkSuQmCC);
   }
-  .fltrSet_tggl_tx {
+  .bCatalog-custom .fltrSet_tggl_tx {
     font-size: 16px;
     border-bottom: 1px dotted;
     cursor: pointer;
   }
-  .fltrSet_inn {
+  .bCatalog-custom .fltrSet_inn {
     font-size: 0;
     border-left: 1px solid #e6e6e6;
     margin-left: 20px;
   }
-  .fltrSet .bFilterHead {
+  .bCatalog-custom .fltrSet .bFilterHead {
     padding: 0;
   }
-  .flrtBox {
+  .bCatalog-custom .fltrSet .bFilterHead-custom {
+    display: none;
+  }
+  .bCatalog-custom .flrtBox {
     background: #ffffff;
     border-bottom: 1px solid #e6e6e6;
     padding: 10px 0;
   }
-  .flrtBox .bRangeSlider {
+  .bCatalog-custom .flrtBox .bRangeSlider {
     margin: 0 0 0 10px;
     height: auto;
     width: 820px;
   }
-  .flrtBox .bFilterSlider {
+  .bCatalog-custom .flrtBox .bFilterSlider {
     width: 555px;
   }
-  .flrtBox .bFilterSlider .ui-slider-handle {
+  .bCatalog-custom .flrtBox .bFilterSlider .ui-slider-handle {
     background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAQAAADYBBcfAAAAvUlEQVR4AZ2VsQ2EIBhGHzvQY+EE7MAiFJRUVCaEHRyOUQyd11xyZ/zP05/XiS8S+PjkNAyOQKRQqRQiAYfhchg8mSaQ8b9lS6JdkLCSNrPQ/rAwn7VKu0E9qlb8msyC/WxJoj0gYQDA0x7iAQz5sZgxMNEUOAjixEpnMOis4nyAKGob+5tNVCMU4XFn/6ILbxTEgx8HcYhB0Irqpeo3R38cThcAdeSUIVdfK+1F1leHvqz09agvZEGe7vwCXiG7Slb1bfrpAAAAAElFTkSuQmCC") no-repeat 0 0;
   }
-  .flrtBox .bFilterSlider .ui-slider-range {
+  .bCatalog-custom .flrtBox .bFilterSlider .ui-slider-range {
     background: #757575;
   }
 }
