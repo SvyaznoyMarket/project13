@@ -5820,8 +5820,8 @@ img[height="0"] {
     width: 453px;
     line-height: 1.1;
     text-transform: uppercase;
-    background: url("/styles/order/img/bg_order_lgift.gif") no-repeat 0 0;
-    padding: 5px 0 0 315px;
+    background: url("/styles/order/img/bg_order_lgift.png") no-repeat 0 0;
+    padding: 5px 0 20px 200px;
   }
   .orderLgift_st {
     font-size: 25px;

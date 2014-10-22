@@ -49,8 +49,8 @@ return function(
                         <span class="orderU_hint">Как к вам обращаться?</span>
                     </div>
 
-                    <div class="orderU_fld orderU_fld-str">
-                        <label class="orderU_lbl" for="">Телефон</label>
+                    <div class="orderU_fld">
+                        <label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
                         <input class="orderU_tx textfield" type="text" name="" value="" placeholder="">
                         <span class="orderU_hint">Для смс о состоянии заказа</span>
 
