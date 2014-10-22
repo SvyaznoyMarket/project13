@@ -32,7 +32,6 @@ class RecommendedAction {
             'personal' => new \Controller\Product\PersonalAction()
         ]);
 
-        $responseData = [];
         try {
             $product = \RepositoryManager::product()->getEntityById($productId);
 
@@ -172,11 +171,11 @@ class RecommendedAction {
                 $recommend[$type] = [
                     'success' => true,
                     'content' => \App::closureTemplating()->render('product/__slider', [
-                        'title' => $controller[$type]->getActionTitle(),
-                        'products' => $products,
+                        'title'                        => $controller[$type]->getActionTitle(),
+                        'products'                     => $products,
                         'isRetailrocketRecommendation' => true,
-                        'retailrocketMethod' => $method,
-                        'retailrocketIds' => $ids[$type] ? $ids[$type] : [],
+                        'retailrocketMethod'           => $method,
+                        'retailrocketIds'              => $ids[$type] ? $ids[$type] : [],
                     ]),
                     'data' => [
                         'id' => $product->getId(),//id товара (или категории, пользователя или поисковая фраза) к которому были отображены рекомендации

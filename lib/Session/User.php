@@ -369,6 +369,7 @@ class User {
     public function deleteRecommendedProductByParams($productId, $partnerName, $key) {
         try {
             unset($this->recommendedProduct[$productId][$partnerName][$key]);
+
             return true;
         } catch (\Exception $e) {
             return false;

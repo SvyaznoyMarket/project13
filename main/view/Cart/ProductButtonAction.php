@@ -6,13 +6,16 @@ class ProductButtonAction {
     /**
      * @param \Helper\TemplateHelper $helper
      * @param \Model\Product\BasicEntity $product
-     * @param string|null $url
+     * @param null $onClick
+     * @param bool $isRetailRocket
+     * @internal param null|string $url
      * @return array
      */
     public function execute(
         \Helper\TemplateHelper $helper,
         \Model\Product\BasicEntity $product,
-        $onClick = null
+        $onClick = null,
+        $isRetailRocket = false
     ) {
         $data = [
             'disabled'   => false,
@@ -60,6 +63,8 @@ class ProductButtonAction {
 
             if ($helper->hasParam('sender')) {
                 $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
+            } else if ($isRetailRocket) {
+                $urlParams['sender'] = 'retailrocket';
             }
 
             $data['url'] = $helper->url('cart.product.set', $urlParams);

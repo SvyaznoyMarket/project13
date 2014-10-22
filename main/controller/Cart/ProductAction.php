@@ -35,7 +35,7 @@ class ProductAction {
             // не учитываем является ли товар набором или нет - за это отвечает ядро
             $cart->setProduct($product, $quantity);
             $cartProduct = $cart->getProductById($product->getId());
-            $this->updateCartWarranty($product, $cartProduct, $quantity);
+            //$this->updateCartWarranty($product, $cartProduct, $quantity);
 
             $returnRedirect = $request->headers->get('referer') ?: ($product->getLink() ?: \App::router()->generate('homepage'));
             switch (\App::abTest()->getTest('other')->getChosenCase()->getKey()) {
@@ -94,6 +94,16 @@ class ProductAction {
                 \Session\User::enableInfoCookie($response);
             } else {
 //                \Session\User::disableInfoCookie($response); // SITE-3926
+            }
+
+            try {
+                if (is_scalar($request->query->get('sender'))) {
+                    $recommendedProductIds = (array)\App::session()->get(\App::config()->product['recommendationSessionKey']);
+                    $recommendedProductIds[] = $cartProduct->getId();
+                    \App::session()->set(\App::config()->product['recommendationSessionKey'], $recommendedProductIds);
+                }
+            } catch (\Exception $e) {
+                \App::logger()->error(['error' => $e], ['cart']);
             }
 
             return $response;
@@ -166,7 +176,7 @@ class ProductAction {
 
                 $cart->setProduct($product, $productQuantity + $cart->getQuantityByProduct($productId));
                 $cartProduct = $cart->getProductById($product->getId());
-                $this->updateCartWarranty($product, $cartProduct, $productQuantity);
+                //$this->updateCartWarranty($product, $cartProduct, $productQuantity);
 
                 $quantity += $cart->getQuantityByProduct($productId);
             }
