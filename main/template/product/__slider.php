@@ -85,8 +85,9 @@ return function (
                             <a class="btnView mBtnGrey" href="<?= $product->getLink() ?>">Посмотреть</a> <!--TODO-zra стиль для кнопки "Посмотреть" -->
                         <? else: ?>
                             <?= $helper->render('cart/__button-product', [
-                                'product'    => $product,
-                                'onClick'    => $addToCartJS ? $addToCartJS : null,
+                                'product'        => $product,
+                                'onClick'        => $addToCartJS ? $addToCartJS : null,
+                                'isRetailRocket' => $isRetailrocketProduct,
                             ]) // Кнопка купить ?>
                         <? endif ?>
                     </div>

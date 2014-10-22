@@ -151,8 +151,9 @@ class Cart {
     /**
      * @param \Model\Product\Entity $product
      * @param int $quantity
+     * @param array $params Дополнительные параметры товара в корзине
      */
-    public function setProduct(\Model\Product\Entity $product, $quantity = 1) {
+    public function setProduct(\Model\Product\Entity $product, $quantity = 1, array $params = []) {
         if ($quantity < 0) $quantity = 0;
 
         $data = $this->storage->get($this->sessionName, []);
@@ -169,7 +170,10 @@ class Cart {
         } else {
             $item = array_merge($data['product'][$product->getId()], $item);
         }
+        $item += $params;
+
         $data['product'][$product->getId()] = $item;
+
         if ($quantity == 0 ) unset($data['product'][$product->getId()]);
         $this->storage->set($this->sessionNameNC, $data);
     }
