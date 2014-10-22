@@ -36,6 +36,7 @@ $config = array_merge([
     'user' => [
         'region' => [
             'forceDefaultBuy' => \App::user()->getRegion()->getForceDefaultBuy(),
+            'name'            => \App::user()->getRegion() ? \App::user()->getRegion()->getName() : null
         ],
     ],
     'routes' => [
@@ -45,8 +46,8 @@ $config = array_merge([
         'compare.add'      => ['pattern' => $routerRules['compare.add']['pattern']],
         'compare.delete'   => ['pattern' => $routerRules['compare.delete']['pattern']],
     ],
-    'selfDeliveryTest'    => \Controller\Delivery\Action::isPaidSelfDelivery(),
-    'selfDeliveryLimit'    => $appConfig->self_delivery['limit'] // стоимость платного самовывоза
+    'selfDeliveryTest'    => \Controller\Delivery\Action::isPaidSelfDelivery(), // удалять осторожно, поломается JS
+    'selfDeliveryLimit'    => $appConfig->self_delivery['limit'] // стоимость платного самовывоза, удалять осторожно, поломается JS
 ], isset($config) ? (array)$config : []);
 ?>
 

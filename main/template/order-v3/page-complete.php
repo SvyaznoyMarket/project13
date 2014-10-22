@@ -178,7 +178,7 @@ return function(
         </div>
     </section>
 
-    <? if (!$sessionIsReaded) {
+    <? if ($sessionIsReaded) {
         // Если сесиия уже была прочитана, значит юзер обновляет страницу, не трекаем партнёров вторично
         echo $page->render('order/_analytics', array(
             'orders'       => $orders,
