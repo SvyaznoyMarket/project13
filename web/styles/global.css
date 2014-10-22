@@ -1969,6 +1969,9 @@ img[height="0"] {
     -moz-border-radius: 0 0 4px 4px;
     border-radius: 0 0 4px 4px;
   }
+  .topbarfix-home .buyInfo_lk {
+    color: #ffffff;
+  }
   .topbarfix-home .topbarfix_log {
     background: none;
     padding-left: 0;
@@ -4958,10 +4961,9 @@ img[height="0"] {
   }
   .markerList .btnBuy__eLink {
     width: 66px;
-    height: 27px;
+    padding: 5px 0;
     text-decoration: none;
     font-size: 12px;
-    line-height: 26px;
   }
   .markerList .btnText {
     text-transform: lowercase;
