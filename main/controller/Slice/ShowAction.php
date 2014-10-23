@@ -73,22 +73,20 @@ class ShowAction {
 
         /** @var $slice \Model\Slice\Entity|null */
         $slice = null;
-        try {
-            \RepositoryManager::slice()->prepareEntityByToken($sliceToken, function($data) use (&$slice, $sliceToken) {
+        \RepositoryManager::slice()->prepareEntityByToken(
+            $sliceToken,
+            function($data) use (&$slice, $sliceToken) {
                 if (is_array($data) && $data) {
                     $data['token'] = $sliceToken;
                     $slice = new \Model\Slice\Entity($data);
                 }
-            });
-            \App::scmsSeoClient()->execute();
-
-            if (!$slice) {
-                throw new \Exception('Не получен get-slice?url=' . $sliceToken);
+            },
+            function (\Exception $e) {
+                \App::exception()->remove($e);
             }
-        } catch (\Exception $e) {
-            \App::exception()->remove($e);
-            \App::logger()->error($e);
-        }
+        );
+
+        \App::scmsSeoClient()->execute();
 
         if (!$slice) {
             throw new \Exception\NotFoundException(sprintf('Срез @%s не найден', $sliceToken));
@@ -720,6 +718,8 @@ class ShowAction {
         foreach ($requestData as $k => $v) {
             if ('q' === $k) {
                 $values['text'] = $v;
+            } else if ('category' == $k) {
+                $values['category'] = $v;
             } elseif (0 === strpos($k, \View\Product\FilterForm::$name)) {
                 $parts = array_pad(explode('-', $k), 3, null);
 
@@ -743,7 +743,9 @@ class ShowAction {
 
         $filterData = [];
         foreach ($values as $k => $v) {
-            if ('text' === $k) {
+            if ('f-segment' == $k) {
+                $filterData[] = ['segment', 4, $v];
+            } else if ('text' === $k) {
                 $filterData[] = [$k, 3, $v];
             } elseif (isset($v['from']) || isset($v['to'])) {
                 $filterData[] = [$k, 2, isset($v['from']) ? $v['from'] : null, isset($v['to']) ? $v['to'] : null];
