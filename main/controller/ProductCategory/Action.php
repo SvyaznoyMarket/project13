@@ -892,11 +892,10 @@ class Action {
 
         // проверка на максимально допустимый номер страницы
         if ((1 != $productPager->getPage()) && (($productPager->getPage() - $productPager->getLastPage()) > 0)) {
-            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
-                'page' => null,
-            ]));
-
             //throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
+                'page' => $productPager->getLastPage(),
+            ]));
         }
 
         // video

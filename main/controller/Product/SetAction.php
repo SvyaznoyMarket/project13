@@ -87,16 +87,7 @@ class SetAction {
         // проверка на максимально допустимый номер страницы
         if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
-            /*return new \Http\JsonResponse([
-                'list' => [
-                    'products' => [],
-                    'productCount' => 0,
-                ]
-            ]);*/
         }
-
-
-
 
         // ajax
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
