@@ -17,6 +17,7 @@
 		catalog = utils.extendApp('ENTER.catalog'),
 
 		filterBlock = $('.js-filter'),
+		hasAlwaysShowFilters = filterBlock.hasClass('js-filter-hasAlwaysShowFilters'),
 
 		filterOtherParamsToggleButton = filterBlock.find('.js-filter-otherParamsToggleButton'),
 		filterOtherParamsContent = filterBlock.find('.js-filter-otherParamsContent'),
@@ -25,6 +26,7 @@
 		filterCategoryBlocks = filterBlock.find('.js-filter-element'),
 
 		viewParamPanel = $('.bSortingLine'),
+		filterOpenClass = 'fltrSet_tggl-dn',
 
 		tID;
 	// end of vars
@@ -508,6 +510,11 @@
 
 		openFilter: function() {
 			toggleFilterViewHandler( true );
+
+			$('.js-filter-toggle-container', filterBlock).each(function() {
+				$('.js-filter-toggle-button', this).addClass(filterOpenClass);
+				$('.js-filter-toggle-content', this).slideDown(400);
+			});
 		}
 	};
 
@@ -594,17 +601,15 @@
 		 * Обработчик кнопки переключения между расширенным и компактным видом фильтра
 		 */
 		toggleFilterViewHandler = function toggleFilterViewHandler( openAnyway ) {
-			var openClass = 'fltrSet_tggl-dn',
-				open = filterOtherParamsToggleButton.hasClass(openClass);
+			var open = filterOtherParamsToggleButton.hasClass(filterOpenClass);
 			// end of vars
 
-
 			if ( open && typeof openAnyway !== 'boolean' ) {
-				filterOtherParamsToggleButton.removeClass(openClass);
+				filterOtherParamsToggleButton.removeClass(filterOpenClass);
 				filterOtherParamsContent.slideUp(400);
 			}
 			else {
-				filterOtherParamsToggleButton.addClass(openClass);
+				filterOtherParamsToggleButton.addClass(filterOpenClass);
 				filterOtherParamsContent.slideDown(400);
 			}
 
@@ -615,17 +620,16 @@
 		/**
 		 * Обработчик кнопк сворачивания/разворачивания блоков
 		 */
-			toggleHandler = function(e) {
-			var openClass = 'fltrSet_tggl-dn',
-				$button = $(e.currentTarget),
+		toggleHandler = function(e) {
+			var $button = $(e.currentTarget),
 				$content = $('.js-filter-toggle-content', $button.closest('.js-filter-toggle-container'));
 			// end of vars
 
-			if ($button.hasClass(openClass)) {
-				$button.removeClass(openClass);
+			if ($button.hasClass(filterOpenClass)) {
+				$button.removeClass(filterOpenClass);
 				$content.slideUp(400);
 			} else {
-				$button.addClass(openClass);
+				$button.addClass(filterOpenClass);
 				$content.slideDown(400);
 			}
 
@@ -678,7 +682,9 @@
 				$('#'+categoryId).fadeIn(300);
 			});
 
-			$.scrollTo(filterBlock, 500);
+			if (!hasAlwaysShowFilters) {
+				$.scrollTo(filterBlock, 500);
+			}
 
 			return false;
 		},
