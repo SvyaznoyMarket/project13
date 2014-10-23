@@ -72,7 +72,7 @@
 			}
 
 			.bFilterFoot__eInner {
-			    padding: 10px 20px 0;
+			    padding: 5px 0 0 20px;
 			}
 
 			.bFilterValues .bFilterValuesItem.mLineItem .bFilterValuesCol {
@@ -87,6 +87,7 @@
 			.bFilterHead {
 				border-left: 1px solid @typLightGray;
 				border-right: 1px solid @typLightGray;
+				padding: 10px 10px 0;
 			}
 
 			.bFilter {
@@ -138,12 +139,11 @@
 		.fltrSet {
 			border: 1px solid #e6e6e6;
 			border-top: none;
-			padding: 10px;
+			padding: 10px 10px 0;
 
 			&_tggl {
-				background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAMCAQAAAATvv9SAAAAbElEQVQY02NoiMplZ8AOGt40PKsrLePFLvW/4X/9+4aWBjGsUmD4rWFKgwJ2KZDu3/WLG3SwSoHhv/rNtdbYpf7Xv21oKOTElHpSV1jCjWngjYakBjYMZ9SfrgtuYMJ0/J4GF2xenlNrij2cADvFcXsMl7eyAAAAAElFTkSuQmCC) no-repeat 0 50%;
-				padding: 0 0 0 20px;
-				margin: 0 0 10px;
+				background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAMCAQAAAATvv9SAAAAbElEQVQY02NoiMplZ8AOGt40PKsrLePFLvW/4X/9+4aWBjGsUmD4rWFKgwJ2KZDu3/WLG3SwSoHhv/rNtdbYpf7Xv21oKOTElHpSV1jCjWngjYakBjYMZ9SfrgtuYMJ0/J4GF2xenlNrij2cADvFcXsMl7eyAAAAAElFTkSuQmCC) no-repeat 0 5px;
+				padding: 0 0 10px 20px;
 
 				&-dn {
 					background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAANCAQAAAA3IEfJAAAAeElEQVQY02NomNPwBguMYqg1bfiPAZ/lsjMwMDTsQZeoK2UAgQYXVOH692W8DBBQfxpFqoUBBuqCkYS/NYjBJRqYGm7AJaYwIIOGJKj5vxsUUCXYGp6AJRYzoIO6QqDEvwYdDIkS7vq39ZsZsIGGhlprrBKFnMg8AG3rcXu/iPj8AAAAAElFTkSuQmCC);
@@ -162,12 +162,8 @@
 				margin-left: 20px;
 			}
 
-			.bFilterHead {
-			    padding: 0;
-
-			    &-custom {
-			    	display: none;
-			    }
+			&_cnt {
+				padding-bottom: 10px;
 			}
 
 			.bFilterValuesCol {
@@ -201,6 +197,13 @@
 					}
 			    }
 			}
+
+			.bFilterParams__eItem {
+
+				&:first-child {
+					border-top: none;
+				}
+			}
 		}
 
 		.flrtBox {
@@ -227,6 +230,27 @@
 				.ui-slider-range {
 				    background: #757575;
 				}
+			}
+		}
+
+		.bFilterCheckedParams__eItem {
+
+			&.mParams {
+				border: 1px solid #e6e6e6;
+				background: #606060;
+				color: @white;
+			}
+
+			.bParamsName {
+				color: @white;
+				border-color: @white;
+			}
+		}
+
+		.bFilterCheckedParams {
+
+			.bDelete {
+			    color: @white;
 			}
 		}
 	}

@@ -132,7 +132,7 @@ return function(
             </div>
         <? endif; ?>
 
-        <div class="fltrSet">
+        <div class="fltrSet" style="padding-top: 0;">
             <!-- Фильтр по выбранным параметрам -->
             <div class="bFilterCont clearfix js-filter-otherParamsContent" <? if (!$openFilter): ?>style="display: none"<? endif ?>>
                 <!-- Список названий параметров -->

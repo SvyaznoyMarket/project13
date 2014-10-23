@@ -7339,7 +7339,7 @@ img[height="0"] {
     margin: 0;
   }
   .bCatalog-custom .fltr .bFilterFoot__eInner {
-    padding: 10px 20px 0;
+    padding: 5px 0 0 20px;
   }
   .bCatalog-custom .fltr .bFilterValues .bFilterValuesItem.mLineItem .bFilterValuesCol {
     float: none;
@@ -7351,6 +7351,7 @@ img[height="0"] {
   .bCatalog-custom .fltr .bFilterHead {
     border-left: 1px solid #e6e6e6;
     border-right: 1px solid #e6e6e6;
+    padding: 10px 10px 0;
   }
   .bCatalog-custom .fltr .bFilter {
     background: none;
@@ -7394,12 +7395,11 @@ img[height="0"] {
   .bCatalog-custom .fltrSet {
     border: 1px solid #e6e6e6;
     border-top: none;
-    padding: 10px;
+    padding: 10px 10px 0;
   }
   .bCatalog-custom .fltrSet_tggl {
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAMCAQAAAATvv9SAAAAbElEQVQY02NoiMplZ8AOGt40PKsrLePFLvW/4X/9+4aWBjGsUmD4rWFKgwJ2KZDu3/WLG3SwSoHhv/rNtdbYpf7Xv21oKOTElHpSV1jCjWngjYakBjYMZ9SfrgtuYMJ0/J4GF2xenlNrij2cADvFcXsMl7eyAAAAAElFTkSuQmCC) no-repeat 0 50%;
-    padding: 0 0 0 20px;
-    margin: 0 0 10px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAAMCAQAAAATvv9SAAAAbElEQVQY02NoiMplZ8AOGt40PKsrLePFLvW/4X/9+4aWBjGsUmD4rWFKgwJ2KZDu3/WLG3SwSoHhv/rNtdbYpf7Xv21oKOTElHpSV1jCjWngjYakBjYMZ9SfrgtuYMJ0/J4GF2xenlNrij2cADvFcXsMl7eyAAAAAElFTkSuQmCC) no-repeat 0 5px;
+    padding: 0 0 10px 20px;
   }
   .bCatalog-custom .fltrSet_tggl-dn {
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAANCAQAAAA3IEfJAAAAeElEQVQY02NomNPwBguMYqg1bfiPAZ/lsjMwMDTsQZeoK2UAgQYXVOH692W8DBBQfxpFqoUBBuqCkYS/NYjBJRqYGm7AJaYwIIOGJKj5vxsUUCXYGp6AJRYzoIO6QqDEvwYdDIkS7vq39ZsZsIGGhlprrBKFnMg8AG3rcXu/iPj8AAAAAElFTkSuQmCC);
@@ -7414,11 +7414,8 @@ img[height="0"] {
     border-left: 1px solid #e6e6e6;
     margin-left: 20px;
   }
-  .bCatalog-custom .fltrSet .bFilterHead {
-    padding: 0;
-  }
-  .bCatalog-custom .fltrSet .bFilterHead-custom {
-    display: none;
+  .bCatalog-custom .fltrSet_cnt {
+    padding-bottom: 10px;
   }
   .bCatalog-custom .fltrSet .bFilterValuesCol {
     float: left;
@@ -7447,6 +7444,9 @@ img[height="0"] {
     background: #606060;
     color: #ffffff;
   }
+  .bCatalog-custom .fltrSet .bFilterParams__eItem:first-child {
+    border-top: none;
+  }
   .bCatalog-custom .flrtBox {
     background: #ffffff;
     border-bottom: 1px solid #e6e6e6;
@@ -7465,6 +7465,18 @@ img[height="0"] {
   }
   .bCatalog-custom .flrtBox .bFilterSlider .ui-slider-range {
     background: #757575;
+  }
+  .bCatalog-custom .bFilterCheckedParams__eItem.mParams {
+    border: 1px solid #e6e6e6;
+    background: #606060;
+    color: #ffffff;
+  }
+  .bCatalog-custom .bFilterCheckedParams__eItem .bParamsName {
+    color: #ffffff;
+    border-color: #ffffff;
+  }
+  .bCatalog-custom .bFilterCheckedParams .bDelete {
+    color: #ffffff;
   }
 }
 @media all {
