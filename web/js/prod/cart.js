@@ -875,7 +875,7 @@ $(document).ready(function() {
 	});
 
 	/* Трекинг перехода в карточку товара из блока рекомендаций */
-	$body.on('click', '.basketLine a', function(e){
+	$body.on('click', '.basketLine a:not(.jsBuyButton)', function(e){
 		var $target = $(e.target),
 			nodeName = $target.prop('nodeName'),
 			href = '',
