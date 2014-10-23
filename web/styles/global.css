@@ -1559,32 +1559,7 @@ img[height="0"] {
     height: 29px;
     padding: 5px 10px 5px 38px;
   }
-  .customLabel-box {
-    background: #ffffff;
-    border: 1px solid #e6e6e6;
-    padding: 5px;
-    border-left: none;
-    margin-top: -1px;
-    width: 172px;
-  }
-  .customLabel_bimg {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    vertical-align: middle;
-  }
   .customLabel_btx {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    vertical-align: middle;
-    font-size: 14px;
-    margin-left: 7px;
-    max-width: 135px;
     line-height: 1;
   }
   .customInput-radio + .customLabel {
@@ -7377,6 +7352,7 @@ img[height="0"] {
     padding: 9px 0 8px 37px;
     width: 332px;
     margin: -1px 0 0;
+    line-height: 1;
   }
   .bCatalog-custom .fltr .bFilterValues .customInput + .bFilterCheckbox {
     background-position: 7px 50%;
@@ -7443,6 +7419,26 @@ img[height="0"] {
   .bCatalog-custom .fltrSet .bFilterValuesCol-gbox .bFilterCheckbox.mChecked {
     background: #606060;
     color: #ffffff;
+  }
+  .bCatalog-custom .fltrSet .bFilterValuesCol-gbox .customLabel_bimg {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    margin-right: 7px;
+  }
+  .bCatalog-custom .fltrSet .bFilterValuesCol-gbox .customLabel_btx {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    font-size: 14px;
+    max-width: 135px;
+    line-height: 1;
   }
   .bCatalog-custom .fltrSet .bFilterParams__eItem:first-child {
     border-top: none;

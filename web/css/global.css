@@ -12392,8 +12392,9 @@
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    margin: 10px 0 0;
-    padding: 5px;
+    vertical-align: middle;
+    margin: 5px 0;
+    padding: 3px;
     border: 1px solid #c7c7c7;
     background: #f6f6f6;
   }
@@ -12494,6 +12495,7 @@
     overflow: hidden;
     margin: 0;
     padding: 5px 5px 5px 30px;
+    line-height: 1;
     width: 183px;
     border: 1px solid #e6e6e6;
     vertical-align: top;
