@@ -11,6 +11,7 @@ class ListAction {
      * @param null $buyMethod
      * @param bool $showState
      * @param int $columnCount
+     * @param array $view
      * @return array
      */
     public function execute(
@@ -20,7 +21,8 @@ class ListAction {
         array $bannerPlaceholder,
         $buyMethod = null,
         $showState = true,
-        $columnCount = 4
+        $columnCount = 4,
+        array $view = []
     ) {
         /** @var \Model\Product\Entity $product */
 
@@ -66,6 +68,7 @@ class ListAction {
                 'shoppilot' => ('shoppilot' === $chosenCaseKey),
                 'default' => ('default' === $chosenCaseKey),
             ],
+            'view' => $view,
         ];
     }
 }

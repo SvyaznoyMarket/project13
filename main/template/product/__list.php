@@ -17,10 +17,44 @@ return function(
     ]; ?>
 
     <ul class="bListing<? if (3 === $columnCount): ?> bListing-3col<? endif ?> clearfix<? if ('jewel' === $listingStyle): ?> mPandora<? endif ?> js-listing"><!-- mPandora если необходимо застилить листинги под пандору -->
-        <?= $helper->renderWithMustache('product/list/' . ($view == 'line' ? '_line' : '_compact'), (new \View\Product\ListAction())->execute($helper, $pager, $productVideosByProduct, $bannerPlaceholder, $buyMethod, $showState, $columnCount)) ?>
+        <?php switch ($view) {
+            case 'light_with_bottom_description':
+                $templatePath = 'product/list/_light';
+                $templateView = [
+                    'extraContent' => true,
+                    'bottomDescription' => true,
+                    'hoverDescription' => false,
+                ];
+                break;
+            case 'light_with_hover_bottom_description':
+                $templatePath = 'product/list/_light';
+                $templateView = [
+                    'extraContent' => true,
+                    'bottomDescription' => true,
+                    'hoverDescription' => true,
+                ];
+                break;
+            case 'light_without_description':
+                $templatePath = 'product/list/_light';
+                $templateView = [
+                    'extraContent' => false,
+                    'bottomDescription' => false,
+                    'hoverDescription' => false,
+                ];
+                break;
+            case 'line':
+                $templatePath = 'product/list/_line';
+                $templateView = [];
+                break;
+            default:
+                $templatePath = 'product/list/_compact';
+                $templateView = [];
+                break;
+        } ?>
+        <?= $helper->renderWithMustache($templatePath, (new \View\Product\ListAction())->execute($helper, $pager, $productVideosByProduct, $bannerPlaceholder, $buyMethod, $showState, $columnCount, $templateView)) ?>
     </ul>
 
     <script id="listing_compact_tmpl" type="text/html" data-partial="<?= $helper->json($partials) ?>">
-        <?= file_get_contents(\App::config()->templateDir . '/product/list/' . ($view == 'line' ? '_line.mustache' : '_compact.mustache')) ?>
+        <?= file_get_contents(\App::config()->templateDir . '/' . $templatePath . '.mustache') ?>
     </script>
 <? };

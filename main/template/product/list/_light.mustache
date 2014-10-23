@@ -1,0 +1,107 @@
+<!-- Листинг товаров -->
+{{#products}}
+    <!-- Элемент листинга/продукт -->
+    {{#isBanner}}
+        <li class="bListingItem mBannerItem" style="background-image: url('{{image}}'); background-repeat: no-repeat;"><div class="adfoxWrapper" id="adfox215"></div></li>
+    {{/isBanner}}
+
+    {{^isBanner}}
+        <li class="bListingItem {{#view.hoverDescription}}bListingItem-hoverDescription{{/view.hoverDescription}}">
+            <div class="bListingItem__eInner">
+                <ul class="bSimplyDescStikers clearfix">
+                    {{#label}}
+                        <li class="bSimplyDescStikers__eItem mLeftStiker"><img class="SimplyDescStikers__eImg" src="{{image}}" alt="{{name}}" /></li>
+                    {{/label}}
+                    {{#brandImage}}
+                        <li class="bSimplyDescStikers__eItem mRightStiker"><img class="SimplyDescStikers__eImg" src="{{brandImage}}" alt="{{name}}" /></li>
+                    {{/brandImage}}
+
+                    {{#hasVideo}}
+                        <li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/video.png" /></li>
+                    {{/hasVideo}}
+
+                    {{#has360}}
+                        <li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/grad360.png" /></li>
+                    {{/has360}}
+                </ul>
+
+                <a href="{{link}}" class="bProductImg"><img class="bProductImg__eImg" src="{{image}}" alt="" /></a>
+
+                <div class="bPriceLine clearfix">
+                    {{#oldPrice}}
+                        <span class="bPriceOld">
+                            <strong class="bDecor">{{oldPrice}}</strong> <span class="rubl">p</span>
+                            {{#priceSale}}
+                                <span class="bPriceSale">-{{priceSale}}%</span>
+                            {{/priceSale}}
+                        </span>
+                    {{/oldPrice}}
+                </div>
+
+                <div class="bPriceLine clearfix">
+                    <span class="bPrice{{#priceSale}} bHasSale{{/priceSale}}"><strong>{{price}}</strong> <span class="rubl">p</span></span>
+                </div>
+
+                {{#view.extraContent}}
+                    <div class="bBtnLine clearfix">
+                        {{^hasKit}}
+                            {{#isBuyable}}
+                                {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
+                            {{/isBuyable}}
+                            <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare"></a>
+                        {{/hasKit}}
+
+                        {{#isKitLocked}}
+                            {{#isBuyable}}
+                                {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
+                            {{/isBuyable}}
+                            <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare"></a>
+                        {{/isKitLocked}}
+                    </div>
+                {{/view.extraContent}}
+
+                {{#view.bottomDescription}}
+                    <p class="bSimplyDesc__eText"><a href="{{link}}">{{name}}</a></p>
+                    {{#review}}{{> product/_review-compact }}{{/review}}
+                {{/view.bottomDescription}}
+            </div>
+
+            {{#view.extraContent}}
+                <div class="status">
+                    {{#isInShopShowroomOnly}}
+                        <div class="notBuying font12">
+                            <div class="corner"><div></div></div>
+                            Только на витрине
+                        </div>
+                    {{/isInShopShowroomOnly}}
+
+                    {{^isInShopShowroomOnly}}
+                        {{#isInShopStockOnly}}
+                            <div class="notBuying font12">
+                                <div class="corner"><div></div></div>
+                                Только в магазине
+                            </div>
+                        {{/isInShopStockOnly}}
+                    {{/isInShopShowroomOnly}}
+
+                    {{^isInShopShowroomOnly}}
+                        {{^isInShopStockOnly}}
+                            {{^isBuyable}}
+                                <div class="notBuying font12">
+                                    <div class="corner"><div></div></div>
+                                    Нет в наличии
+                                </div>
+                            {{/isBuyable}}
+                        {{/isInShopStockOnly}}
+                    {{/isInShopShowroomOnly}}
+                </div>
+            {{/view.extraContent}}
+        </li>
+    {{/isBanner}}
+    <!-- /Элемент листинга/продукт -->
+{{/products}}
+
+{{^products}}
+    <li>Товары не найдены</li>
+{{/products}}
+<!-- /Листинг товаров -->

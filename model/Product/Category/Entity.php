@@ -173,9 +173,9 @@ class Entity extends BasicEntity {
             $idToNameMap = [
                 1 => self::PRODUCT_VIEW_COMPACT,
                 2 => self::PRODUCT_VIEW_EXPANDED,
-                3 => self::PRODUCT_VIEW_COMPACT_WITH_BOTTOM_DESCRIPTION,
-                4 => self::PRODUCT_VIEW_COMPACT_WITH_HOVER_BOTTOM_DESCRIPTION,
-                5 => self::PRODUCT_VIEW_COMPACT_WITHOUT_DESCRIPTION,
+                3 => self::PRODUCT_VIEW_LIGHT_WITH_BOTTOM_DESCRIPTION,
+                4 => self::PRODUCT_VIEW_LIGHT_WITH_HOVER_BOTTOM_DESCRIPTION,
+                5 => self::PRODUCT_VIEW_LIGHT_WITHOUT_DESCRIPTION,
             ];
 
             if (array_key_exists($productView, $idToNameMap)) {
