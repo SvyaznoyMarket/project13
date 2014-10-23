@@ -407,16 +407,7 @@ class Action {
 
         // фильтры
         $productFilter = $this->getFilter($filters, $category, $brand, $request, $shop);
-        if ($_SERVER['APPLICATION_ENV'] === 'local') {
-            foreach ($productFilter->getFilterCollection() as $filter) {
-                if ($filter->getName() === 'Металл' || $filter->getName() === 'Вставка') {
-                    $filter->setIsAlwaysShow(true);
-                    foreach ($filter->getOption() as $option) {
-                        $option->setImageUrl('/styles/catalog/img/icon.png');
-                    }
-                }
-            }
-        }
+
         // получаем из json данные о горячих ссылках и content
         $hotlinks = [];
         $seoContent = '';
