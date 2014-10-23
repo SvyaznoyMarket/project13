@@ -6,7 +6,6 @@
  * @var $productVideosByProduct array
  * @var $isAddInfo              bool
  * @var $itemsPerRow            int
- * @var $view                   array
  **/
 ?>
 
@@ -22,7 +21,6 @@
             'addInfo' => $isAddInfo ? \Kissmetrics\Manager::getProductSearchEvent($product, $i, $pager->getPage()) : [],
             'itemsPerRow' => $itemsPerRow,
             'productVideo' => isset($productVideosByProduct[$product->getId()]) ? reset($productVideosByProduct[$product->getId()]) : null,
-            'view' => $view,
         ]) ?>
     <? endforeach ?>
 

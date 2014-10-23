@@ -68,6 +68,8 @@ class ShowAction {
             'price'        => $helper->formatPrice($product->getPrice()),
             'oldPrice'     => null,
             'isBuyable'    => $product->getIsBuyable(),
+            'isInShopShowroomOnly' => $product->isInShopShowroomOnly(),
+            'isInShopStockOnly'    => $product->isInShopStockOnly(),
             'onlyInShop'   => $product->isInShopOnly(),
             'stateLabel'   => $showState ? $stateLabel : null,
             'variations'   =>
