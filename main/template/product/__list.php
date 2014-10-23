@@ -16,41 +16,47 @@ return function(
         'product/_review-compact' => file_get_contents(\App::config()->templateDir . '/product/_review-compact.mustache')
     ]; ?>
 
-    <ul class="bListing<? if (3 === $columnCount): ?> bListing-3col<? endif ?> clearfix<? if ('jewel' === $listingStyle): ?> mPandora<? endif ?> js-listing"><!-- mPandora если необходимо застилить листинги под пандору -->
-        <?php switch ($view) {
-            case 'light_with_bottom_description':
-                $templatePath = 'product/list/_light';
-                $templateView = [
-                    'extraContent' => true,
-                    'bottomDescription' => true,
-                    'hoverDescription' => false,
-                ];
-                break;
-            case 'light_with_hover_bottom_description':
-                $templatePath = 'product/list/_light';
-                $templateView = [
-                    'extraContent' => true,
-                    'bottomDescription' => true,
-                    'hoverDescription' => true,
-                ];
-                break;
-            case 'light_without_description':
-                $templatePath = 'product/list/_light';
-                $templateView = [
-                    'extraContent' => false,
-                    'bottomDescription' => false,
-                    'hoverDescription' => false,
-                ];
-                break;
-            case 'line':
-                $templatePath = 'product/list/_line';
-                $templateView = [];
-                break;
-            default:
-                $templatePath = 'product/list/_compact';
-                $templateView = [];
-                break;
-        } ?>
+    <?php switch ($view) {
+        case 'light_with_bottom_description':
+            $listingClass = 'bListing-light';
+            $templatePath = 'product/list/_light';
+            $templateView = [
+                'extraContent' => true,
+                'bottomDescription' => true,
+                'hoverDescription' => false,
+            ];
+            break;
+        case 'light_with_hover_bottom_description':
+            $listingClass = 'bListing-light';
+            $templatePath = 'product/list/_light';
+            $templateView = [
+                'extraContent' => true,
+                'bottomDescription' => true,
+                'hoverDescription' => true,
+            ];
+            break;
+        case 'light_without_description':
+            $listingClass = 'bListing-light';
+            $templatePath = 'product/list/_light';
+            $templateView = [
+                'extraContent' => false,
+                'bottomDescription' => false,
+                'hoverDescription' => false,
+            ];
+            break;
+        case 'line':
+            $listingClass = '';
+            $templatePath = 'product/list/_line';
+            $templateView = [];
+            break;
+        default:
+            $listingClass = '';
+            $templatePath = 'product/list/_compact';
+            $templateView = [];
+            break;
+    } ?>
+
+    <ul class="bListing<? if (3 === $columnCount): ?> bListing-3col<? endif ?> clearfix<? if ('jewel' === $listingStyle): ?> mPandora<? endif ?> <?= $listingClass ?> js-listing"><!-- mPandora если необходимо застилить листинги под пандору -->
         <?= $helper->renderWithMustache($templatePath, (new \View\Product\ListAction())->execute($helper, $pager, $productVideosByProduct, $bannerPlaceholder, $buyMethod, $showState, $columnCount, $templateView)) ?>
     </ul>
 
