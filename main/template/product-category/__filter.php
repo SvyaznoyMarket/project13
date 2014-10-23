@@ -87,7 +87,7 @@ return function(
 ?>
 
 <div class="fltr <? if ($hasAlwaysShowFilters): ?>fltr-hasAlwaysShowFilters<? endif ?>">
-    <form id="productCatalog-filter-form" class="bFilter clearfix js-filter" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
+    <form id="productCatalog-filter-form" class="bFilter clearfix js-filter <? if ($hasAlwaysShowFilters): ?>js-filter-hasAlwaysShowFilters<? endif ?>" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
         <? if ($hasAlwaysShowFilters): ?>
             <? foreach ($alwaysShowFilters as $filter): ?>
                 <div class="fltrSet js-filter-toggle-container">

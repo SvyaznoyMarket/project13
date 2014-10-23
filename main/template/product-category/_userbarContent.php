@@ -2,6 +2,7 @@
 /**
  * @var $page \View\Layout
  * @var $category \Model\Product\Category\Entity|null
+ * @var $productFilter \Model\Product\Filter|null
  */
 $helper = new \Helper\TemplateHelper();
 $links = [];
@@ -19,9 +20,15 @@ if ($category) {
 } ?>
 
 <div class="topbarfix_up">
-    <a class="btnGrey topbarfix_upLink" href="">
-        <em class="cornerTop">&#9650;</em> Бренды и параметры
-    </a>
+    <? if ($productFilter && $productFilter->hasAlwaysShowFilters()): ?>
+        <a class="btnGrey topbarfix_upLink topbarfix_upLink-custom js-userbar-upLink" href="">
+            <em class="cornerTop">&#9650;</em> Параметры
+        </a>
+    <? else: ?>
+        <a class="btnGrey topbarfix_upLink js-userbar-upLink" href="">
+            <em class="cornerTop">&#9650;</em> Бренды и параметры
+        </a>
+    <? endif ?>
 </div>
 
 <div class="topbarfix_crumbs">

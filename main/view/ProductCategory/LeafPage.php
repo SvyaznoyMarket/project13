@@ -16,14 +16,20 @@ class LeafPage extends Layout {
     }
 
     public function slotUserbarContent() {
+        $category = $this->getParam('category');
+        $productFilter = $this->getParam('productFilter');
+
         return $this->render('product-category/_userbarContent', [
-            'category'  => $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null,
+            'category'  => $category instanceof \Model\Product\Category\Entity ? $category : null,
+            'productFilter'  => $productFilter instanceof \Model\Product\Filter ? $productFilter : null,
         ]);
     }
 
     public function slotUserbarContentData() {
+        $productFilter = $this->getParam('productFilter');
         return [
-            'target' => '#productCatalog-filter-form',
+            'target' => $productFilter instanceof \Model\Product\Filter && $productFilter->hasAlwaysShowFilters() ? '.js-listing' : '#productCatalog-filter-form',
+            'filterTarget' => '#productCatalog-filter-form',
         ];
     }
 
