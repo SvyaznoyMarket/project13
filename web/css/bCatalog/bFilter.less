@@ -196,21 +196,6 @@
         width: 220px;
 	}
 
-	.bInputHidden {
-		.opacity(0);
-        overflow: hidden;
-        position: absolute;
-        zoom: 1;
-
-        height: 0;
-        float: left;
-        width: 0;
-        line-height: 0;
-        font-size: 0;
-        padding: 0;
-        margin-top: 0;
-	}
-
 	.bFilterCheckbox {
         .rounded(4px);
 
@@ -238,11 +223,11 @@
         *display: inline;
 	}
 
-    .bInputHidden + .bFilterCheckbox {
+    .customInput + .bFilterCheckbox {
         background: url("@{base-url}/customInput/img/bCustomCheckbox.png") no-repeat 5px 7px @white;
     }
 
-    .bInputHidden:checked + .bFilterCheckbox {
+    .customInput:checked + .bFilterCheckbox {
         border: 1px solid #c7c7c7;
         background: url("@{base-url}/customInput/img/bCustomCheckbox.png") no-repeat 5px -20px #fbebd2;
     }
@@ -252,12 +237,12 @@
         background: url("@{base-url}/customInput/img/bCustomCheckbox.png") no-repeat 5px -20px #fbebd2;
     }
 
-	.bInputHidden + .mCustomLabelRadio {
+	.customInput + .mCustomLabelRadio {
         background-image: url("/css/leftNav/img/radioBtn.png");
         background-position: 5px -14px;
     }
 
-    .bInputHidden:checked + .mCustomLabelRadio {
+    .customInput:checked + .mCustomLabelRadio {
     	background-image: url("/css/leftNav/img/radioBtn.png");
         background-position: 5px 7px;
 	}

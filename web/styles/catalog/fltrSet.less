@@ -84,6 +84,11 @@
 			    }
 			}
 
+			.bFilterHead {
+				border-left: 1px solid @typLightGray;
+				border-right: 1px solid @typLightGray;
+			}
+
 			.bFilter {
 			    background: none;
 			    .rounded(0);
@@ -104,13 +109,6 @@
 			    padding: 0;
 			    width: 758px;
 
-			    .bFilterValuesCol {
-				    float: left;
-				    margin: 0;
-				    position: relative;
-				    width: 370px;
-				}
-
 				.bFilterCheckbox {
 				    border-radius: 0;
 				    padding: 9px 0 8px 37px;
@@ -118,12 +116,12 @@
 				    margin: -1px 0 0;
 				}
 
-				.bInputHidden + .bFilterCheckbox {
+				.customInput + .bFilterCheckbox {
 					background-position: 7px 50%;
 					background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAQAAAADHm0dAAAASklEQVQoz+3TIQLAIAwDwCr4fveyxKD2AFyfQCbwUMQciT2ZWCtwBrQqA96K8ekaWmeoC26MHZyYYVAu0KWX/kRP9urpF7w1+60P/WJXmQwD9hMAAAAASUVORK5CYII=);
 				}
 				
-				.bInputHidden:checked + .bFilterCheckbox {
+				.customInput:checked + .bFilterCheckbox {
 					background-color: #606060;
 					color: @white;
 					background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAQAAAADHm0dAAAAcUlEQVR4Ae3TMQ4CMAgFUKY6c1G5Cp4Mlk4eoFtnu/TrZGJoG4yr/JE3tR+qxdS74ZTXXmshvzVMnGeiwZS8B7jE3smQG8ObDggY9BGGYER6BS0jkfKGcqS0y5/+9K6S/61HogP5Zn3TV01fwf2Sva0nnky3FRUblecAAAAASUVORK5CYII=);
@@ -169,6 +167,38 @@
 
 			    &-custom {
 			    	display: none;
+			    }
+			}
+
+			.bFilterValuesCol {
+			    float: left;
+			    margin: 0;
+			    position: relative;
+			    width: 370px;
+
+			    &-gbox {
+			    	width: 183px;
+
+			    	.bFilterCheckbox {
+			    		background: @white;
+				        border: 1px solid @typLightGray;
+				        padding: 5px;
+				        border-left: none;
+				        margin-top: -1px;
+				    	width: 172px;
+				        display: block;
+			    	}
+
+			    	.customInput:checked+.bFilterCheckbox  {
+					    background: #606060;
+					    color: @white;
+					    width: 172px;
+					}
+
+					.bFilterCheckbox.mChecked {
+					    background: #606060;
+					    color: @white;
+					}
 			    }
 			}
 		}

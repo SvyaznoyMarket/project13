@@ -7348,6 +7348,10 @@ img[height="0"] {
     padding-right: 20px;
     width: 682px;
   }
+  .bCatalog-custom .fltr .bFilterHead {
+    border-left: 1px solid #e6e6e6;
+    border-right: 1px solid #e6e6e6;
+  }
   .bCatalog-custom .fltr .bFilter {
     background: none;
     -webkit-border-radius: 0;
@@ -7367,23 +7371,17 @@ img[height="0"] {
     padding: 0;
     width: 758px;
   }
-  .bCatalog-custom .fltr .bFilterValues .bFilterValuesCol {
-    float: left;
-    margin: 0;
-    position: relative;
-    width: 370px;
-  }
   .bCatalog-custom .fltr .bFilterValues .bFilterCheckbox {
     border-radius: 0;
     padding: 9px 0 8px 37px;
     width: 332px;
     margin: -1px 0 0;
   }
-  .bCatalog-custom .fltr .bFilterValues .bInputHidden + .bFilterCheckbox {
+  .bCatalog-custom .fltr .bFilterValues .customInput + .bFilterCheckbox {
     background-position: 7px 50%;
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAQAAAADHm0dAAAASklEQVQoz+3TIQLAIAwDwCr4fveyxKD2AFyfQCbwUMQciT2ZWCtwBrQqA96K8ekaWmeoC26MHZyYYVAu0KWX/kRP9urpF7w1+60P/WJXmQwD9hMAAAAASUVORK5CYII=);
   }
-  .bCatalog-custom .fltr .bFilterValues .bInputHidden:checked + .bFilterCheckbox {
+  .bCatalog-custom .fltr .bFilterValues .customInput:checked + .bFilterCheckbox {
     background-color: #606060;
     color: #ffffff;
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAQAAAADHm0dAAAAcUlEQVR4Ae3TMQ4CMAgFUKY6c1G5Cp4Mlk4eoFtnu/TrZGJoG4yr/JE3tR+qxdS74ZTXXmshvzVMnGeiwZS8B7jE3smQG8ObDggY9BGGYER6BS0jkfKGcqS0y5/+9K6S/61HogP5Zn3TV01fwf2Sva0nnky3FRUblecAAAAASUVORK5CYII=);
@@ -7421,6 +7419,33 @@ img[height="0"] {
   }
   .bCatalog-custom .fltrSet .bFilterHead-custom {
     display: none;
+  }
+  .bCatalog-custom .fltrSet .bFilterValuesCol {
+    float: left;
+    margin: 0;
+    position: relative;
+    width: 370px;
+  }
+  .bCatalog-custom .fltrSet .bFilterValuesCol-gbox {
+    width: 183px;
+  }
+  .bCatalog-custom .fltrSet .bFilterValuesCol-gbox .bFilterCheckbox {
+    background: #ffffff;
+    border: 1px solid #e6e6e6;
+    padding: 5px;
+    border-left: none;
+    margin-top: -1px;
+    width: 172px;
+    display: block;
+  }
+  .bCatalog-custom .fltrSet .bFilterValuesCol-gbox .customInput:checked + .bFilterCheckbox {
+    background: #606060;
+    color: #ffffff;
+    width: 172px;
+  }
+  .bCatalog-custom .fltrSet .bFilterValuesCol-gbox .bFilterCheckbox.mChecked {
+    background: #606060;
+    color: #ffffff;
   }
   .bCatalog-custom .flrtBox {
     background: #ffffff;

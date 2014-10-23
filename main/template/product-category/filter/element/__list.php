@@ -18,9 +18,9 @@ return function(
         $optionId = $option->getId();
         $viewId = \View\Id::productCategoryFilter($filter->getId()) . '-option-' . $optionId;
     ?>
-    <div class="bFilterValuesCol <? if ($option->getImageUrl()): ?>bFilterValuesCol-hasImage<? endif ?>">
+    <div class="bFilterValuesCol <? if ($option->getImageUrl()): ?>bFilterValuesCol-gbox<? endif ?>">
         <input
-            class="bInputHidden bCustomInput jsCustomRadio <?= $filter->isBrand() ? 'js-filter-brand' : '' ?>"
+            class="customInput jsCustomRadio <?= $filter->isBrand() ? 'js-filter-brand' : '' ?>"
             type="<?= $filter->getIsMultiple() ? 'checkbox' : 'radio' ?>"
             id="<?= $viewId ?>"
             name="<?= \View\Name::productCategoryFilter($filter, $option) ?>"
@@ -30,10 +30,10 @@ return function(
         />
         <label class="bFilterCheckbox<? if (!$filter->getIsMultiple()) { ?> mCustomLabelRadio<? } ?>" for="<?= $viewId ?>">
             <? if ($option->getImageUrl()): ?>
-                <img src="<?= $helper->escape($option->getImageUrl()) ?>" alt="" />
+                <img class="customLabel_bimg" src="<?= $helper->escape($option->getImageUrl()) ?>">
             <? endif ?>
 
-            <?= $option->getName() ?><?= ($showFasets && $option->getQuantity()) ? " ({$option->getQuantity()})" : '' ?>
+            <span class="customLabel_btx"><?= $option->getName() ?><?= ($showFasets && $option->getQuantity()) ? " ({$option->getQuantity()})" : '' ?></span>
         </label>
     </div>
     <? $i++; endforeach ?>

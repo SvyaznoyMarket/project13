@@ -96,15 +96,7 @@ return function(
                     </div>
 
                     <div class="fltrSet_cnt js-filter-toggle-content">
-                        <div class="fltrSet_inn">
-                            <? /*
-                                <input type="checkbox" name="" id="name" class="customInput customInput-box jsCustomRadio">
-                                <label for="name" class="customLabel customLabel-box">
-                                    <img class="customLabel_bimg" src="/styles/catalog/img/icon.png" alt="">
-                                    <span class="customLabel_btx">Финальная распродажа</span>
-                                </label>
-                            */ ?>
-
+                        <div class="fltrSet_inn clearfix">
                             <?= $helper->render('product-category/filter/__element', ['productFilter' => $productFilter, 'filter' => $filter, 'promoStyle' => $promoStyle]) ?>
                         </div>
                     </div>
