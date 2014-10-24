@@ -419,7 +419,7 @@ namespace Model\OrderDelivery\Entity {
             }
 
             // идиотский АБ-тест TODO remove
-            if (\Controller\Delivery\Action::isPaidSelfDelivery() && $this->total_cost < \App::config()->self_delivery['limit']) {
+            if (\Controller\Delivery\Action::isPaidSelfDelivery() && $this->total_cost < \App::config()->self_delivery['limit'] && $this->delivery->delivery_method_token == 'self') {
                 $this->delivery->price = 100;
                 $this->total_cost = $this->total_cost + $this->delivery->price;
             }
