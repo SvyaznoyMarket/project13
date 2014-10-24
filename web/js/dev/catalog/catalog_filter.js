@@ -606,10 +606,12 @@
 
 			if ( open && typeof openAnyway !== 'boolean' ) {
 				filterOtherParamsToggleButton.removeClass(filterOpenClass);
+				filterOtherParamsToggleButton.parent().removeClass('bFilterHead-open');
 				filterOtherParamsContent.slideUp(400);
 			}
 			else {
 				filterOtherParamsToggleButton.addClass(filterOpenClass);
+				filterOtherParamsToggleButton.parent().addClass('bFilterHead-open');
 				filterOtherParamsContent.slideDown(400);
 			}
 
@@ -621,16 +623,20 @@
 		 * Обработчик кнопк сворачивания/разворачивания блоков
 		 */
 		toggleHandler = function(e) {
-			var $button = $(e.currentTarget),
+			var $self = $(this),
+				$button = $(e.currentTarget),
+				$container = $('.js-filter-toggle-container'),
 				$content = $('.js-filter-toggle-content', $button.closest('.js-filter-toggle-container'));
 			// end of vars
 
 			if ($button.hasClass(filterOpenClass)) {
 				$button.removeClass(filterOpenClass);
 				$content.slideUp(400);
+				$self.parent('.js-filter-toggle-container').addClass('fltrSet-close');
 			} else {
 				$button.addClass(filterOpenClass);
 				$content.slideDown(400);
+				$self.parent('.js-filter-toggle-container').removeClass('fltrSet-close');
 			}
 
 			return false;
