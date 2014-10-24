@@ -7523,6 +7523,159 @@ img[height="0"] {
   }
 }
 @media all {
+  .lstn {
+    margin: 0 0 0 -10px;
+    width: 960px;
+  }
+  .lstn_i {
+    float: left;
+    width: 240px;
+    position: relative;
+    height: 344px;
+  }
+  .lstn_i_inn {
+    border: 1px solid #e6e6e6;
+    border-top: 1px solid #ffffff;
+    border-left: 1px solid #ffffff;
+    width: 218px;
+    position: relative;
+    height: 312px;
+    padding: 20px 10px 10px;
+    background-color: #ffffff;
+    z-index: 2;
+  }
+  .lstn_i:hover .lstn_i_inn {
+    border-color: #a0a0a0;
+  }
+  .lstn_i-hover {
+    height: 281px;
+    overflow: hidden;
+  }
+  .lstn_i-hover .lstn_i_inn {
+    height: 249px;
+  }
+  .lstn_i-hover.lstn_i-banner:hover .lstn_i_inn {
+    height: 249px;
+  }
+  .lstn_i-hover:hover {
+    overflow: visible;
+  }
+  .lstn_i-hover:hover .lstn_i_inn {
+    height: 314px;
+    z-index: 5;
+  }
+  .lstn_i-banner {
+    background-position: 50% 50%;
+  }
+  .lstn_i-banner .lstn_i_inn {
+    background-color: transparent;
+  }
+  .lstn_imglk {
+    display: block;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 8px;
+  }
+  .lstn_img {
+    display: block;
+    width: 200px;
+    height: 200px;
+  }
+  .lstn_pr {
+    margin: 0 0 5px;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    width: 99px;
+  }
+  .lstn_pr_old {
+    color: #9c9c9c;
+  }
+  .lstn_pr_now {
+    color: #404040;
+    font-size: 14px;
+  }
+  .lstn_btn {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    text-align: right;
+    width: 115px;
+  }
+  .lstn_btn .btnBuy {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    margin-left: 5px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+  }
+  .lstn_btn .btnBuy__eLink {
+    background: #404040;
+    border: 1px solid #000000;
+    height: auto;
+    font-size: 12px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    line-height: 1;
+    padding: 6px 10px 7px;
+    width: auto;
+  }
+  .lstn_btn .btnBuy__eLink.mBought {
+    background: none repeat scroll 0 0 #fff;
+    border: 1px solid #b3b3b3;
+    box-shadow: none;
+    color: #000;
+  }
+  .lstn_desc {
+    display: table-cell;
+    height: 41px;
+    line-height: 1.1;
+    overflow: hidden;
+    padding: 5px 0 8px;
+    text-align: center;
+    vertical-align: middle;
+    width: 218px;
+  }
+  .lstn_desc a {
+    color: #404040;
+  }
+  .lstn .bSimplyDescReviews {
+    text-align: center;
+  }
+  .lstn-light .lstn_i {
+    height: 281px;
+  }
+  .lstn-light .lstn_i_inn {
+    height: 249px;
+  }
+  .stickLst {
+    left: 10px;
+    padding: 0;
+    position: absolute;
+    top: 10px;
+    width: 200px;
+    z-index: 2;
+  }
+  .stickLst_i {
+    float: right;
+    margin-right: 5px;
+  }
+  .stickLst_i-l {
+    float: left;
+  }
+}
+@media all {
   .notBuying {
     position: relative;
     margin-top: 10px;

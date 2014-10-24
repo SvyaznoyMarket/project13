@@ -1,0 +1,174 @@
+.lstn {
+	margin: 0 0 0 -10px;
+	width: 960px;
+
+	&_i {
+		float: left;
+		width: 240px;
+		position: relative;
+		height: 344px;
+
+		&_inn {
+			border: 1px solid #e6e6e6;
+		    border-top: 1px solid @white;
+		    border-left: 1px solid @white;
+			width: 218px;
+			position: relative;
+			height: 312px;
+			padding: 20px 10px 10px;
+			background-color: @white;
+			z-index: 2;
+		}
+
+		&:hover {
+
+			.lstn_i_inn {
+				border-color: #a0a0a0;
+			}
+		}
+
+		&-hover {
+			height: 281px;
+			overflow: hidden;
+
+			.lstn_i_inn {
+				height: 249px;
+			}
+
+			&.lstn_i-banner {
+
+				&:hover {
+
+					.lstn_i_inn {
+						height: 249px;
+					}
+				}
+			}
+
+			&:hover {
+				overflow: visible;
+
+				.lstn_i_inn {
+					height: 314px;
+					z-index: 5;
+				}
+			}
+		}
+
+		&-banner {
+			background-position: 50% 50%;
+
+			.lstn_i_inn {
+				background-color: transparent;
+			}
+		}
+	}
+
+	&_imglk {
+		display: block;
+		width: 200px;
+		height: 200px;
+		margin: 0 auto 8px;
+	}
+
+	&_img {
+		display: block;
+		width: 200px;
+		height: 200px;
+	}
+
+	&_pr {
+		margin: 0 0 5px;
+		.inline-block();
+		vertical-align: middle;
+    	width: 99px;
+
+		&_old {
+			color: #9c9c9c;
+		}
+
+		&_now {
+			color: #404040;
+			font-size: 14px;
+		}
+	}
+
+	&_btn {
+		.inline-block();
+		vertical-align: middle;
+		text-align: right;
+		width: 115px;
+
+		.btnBuy {
+			.inline-block();
+			margin-left: 5px;
+			.rounded(3px);
+
+			&__eLink {
+				background: #404040;
+				border: 1px solid @black;
+				height: auto;
+				font-size: 12px;
+				.rounded(3px);
+				line-height: 1;
+				padding: 6px 10px 7px;
+	    		width: auto;
+
+	    		&.mBought {
+				    background: none repeat scroll 0 0 #fff;
+				    border: 1px solid #b3b3b3;
+				    box-shadow: none;
+				    color: #000;
+				}
+			}
+		}
+	}
+
+	&_desc {
+	    display: table-cell;
+	    height: 41px;
+	    line-height: 1.1;
+	    overflow: hidden;
+	    padding: 5px 0 8px;
+	    text-align: center;
+	    vertical-align: middle;
+	    width: 218px;
+
+	    a {
+			color: #404040;
+	    }
+	}
+
+	.bSimplyDescReviews {
+		text-align: center;
+	}
+
+	&-light {
+
+		.lstn_i {
+			height: 281px;
+
+			&_inn {
+				height: 249px;
+			}
+		}
+	}
+}
+
+.stickLst {
+	left: 10px;
+    padding: 0;
+    position: absolute;
+    top: 10px;
+    width: 200px;
+    z-index: 2;
+
+    &_i {
+    	float: right;
+    	margin-right: 5px;
+
+    	&-l {
+    		float: left;
+    	}
+    }
+}

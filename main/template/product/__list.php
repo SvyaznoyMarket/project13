@@ -18,7 +18,7 @@ return function(
 
     <?php switch ($view) {
         case 'light_with_bottom_description':
-            $listingClass = 'bListing-light';
+            $listingClass = 'lstn';
             $templatePath = 'product/list/_light';
             $templateView = [
                 'extraContent' => true,
@@ -27,7 +27,7 @@ return function(
             ];
             break;
         case 'light_with_hover_bottom_description':
-            $listingClass = 'bListing-light';
+            $listingClass = 'lstn';
             $templatePath = 'product/list/_light';
             $templateView = [
                 'extraContent' => true,
@@ -36,7 +36,7 @@ return function(
             ];
             break;
         case 'light_without_description':
-            $listingClass = 'bListing-light';
+            $listingClass = 'lstn lstn-light';
             $templatePath = 'product/list/_light';
             $templateView = [
                 'extraContent' => false,

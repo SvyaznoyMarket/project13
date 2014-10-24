@@ -338,6 +338,10 @@ class Action {
             }
         }
 
+        if ($_SERVER['APPLICATION_ENV'] === 'local') {
+            $category->setProductView(3);
+        }
+
         if ($categoryClass && ('default' !== $categoryClass)) {
             if ('jewel' == $categoryClass) {
                 if (\App::config()->debug) \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\categoryDirect', 134);
@@ -883,6 +887,13 @@ class Action {
             \RepositoryManager::review()->addScores($products, $scoreData);
 
             $productPager = new \Iterator\EntityPager($products, $productCount);
+        }
+
+        if ($_SERVER['APPLICATION_ENV'] === 'local') {
+            foreach ($products as $product) {
+                $product->setAvgStarScore(5);
+                $product->setNumReviews(5);
+            }
         }
 
         // Если товаров слишком мало (меньше 3 строк в листинге), то не показываем SmartChoice

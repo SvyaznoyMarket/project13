@@ -2,66 +2,66 @@
 {{#products}}
     <!-- Элемент листинга/продукт -->
     {{#isBanner}}
-        <li class="bListingItem mBannerItem" style="background-image: url('{{image}}'); background-repeat: no-repeat;"><div class="adfoxWrapper" id="adfox215"></div></li>
+        <li class="lstn_i lstn_i-banner {{#view.hoverDescription}}lstn_i-hover{{/view.hoverDescription}}" style="background-image: url('{{image}}'); background-repeat: no-repeat;">
+            <div class="lstn_i_inn"><div class="adfoxWrapper" id="adfox215"></div></div>
+        </li>
     {{/isBanner}}
 
     {{^isBanner}}
-        <li class="bListingItem {{#view.hoverDescription}}bListingItem-hoverDescription{{/view.hoverDescription}}">
-            <div class="bListingItem__eInner">
-                <ul class="bSimplyDescStikers clearfix">
+        <li class="lstn_i {{#view.hoverDescription}}lstn_i-hover{{/view.hoverDescription}}">
+            <div class="lstn_i_inn">
+                <ul class="stickLst clearfix">
                     {{#label}}
-                        <li class="bSimplyDescStikers__eItem mLeftStiker"><img class="SimplyDescStikers__eImg" src="{{image}}" alt="{{name}}" /></li>
+                        <li class="stickLst_i stickLst_i-l"><img class="stickLst_img" src="{{image}}" alt="{{name}}" /></li>
                     {{/label}}
                     {{#brandImage}}
-                        <li class="bSimplyDescStikers__eItem mRightStiker"><img class="SimplyDescStikers__eImg" src="{{brandImage}}" alt="{{name}}" /></li>
+                        <li class="stickLst_i stickLst_i-r"><img class="stickLst_img" src="{{brandImage}}" alt="{{name}}" /></li>
                     {{/brandImage}}
 
                     {{#hasVideo}}
-                        <li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/video.png" /></li>
+                        <li class="stickLst_i"><img class="stickLst_img" src="/css/bCatalog/img/video.png" /></li>
                     {{/hasVideo}}
 
                     {{#has360}}
-                        <li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/grad360.png" /></li>
+                        <li class="stickLst_i"><img class="stickLst_img" src="/css/bCatalog/img/grad360.png" /></li>
                     {{/has360}}
                 </ul>
 
-                <a href="{{link}}" class="bProductImg"><img class="bProductImg__eImg" src="{{image}}" alt="" /></a>
+                <a href="{{link}}" class="lstn_imglk"><img class="lstn_img" src="{{image}}" alt="" /></a>
 
-                <div class="bPriceLine clearfix">
+                <div class="lstn_pr clearfix">
                     {{#oldPrice}}
-                        <span class="bPriceOld">
-                            <strong class="bDecor">{{oldPrice}}</strong> <span class="rubl">p</span>
+                        <span class="lstn_pr_old">
+                            {{oldPrice}} <span class="rubl">p</span>
                             {{#priceSale}}
-                                <span class="bPriceSale">-{{priceSale}}%</span>
+                                &nbsp;<span class="lstn_pr_sale">-{{priceSale}}%</span>
                             {{/priceSale}}
                         </span>
                     {{/oldPrice}}
-                </div>
-
-                <div class="bPriceLine clearfix">
-                    <span class="bPrice{{#priceSale}} bHasSale{{/priceSale}}"><strong>{{price}}</strong> <span class="rubl">p</span></span>
+                    <br/>
+                    <span class="lstn_pr_now{{#priceSale}} lstn_pr_now-sale{{/priceSale}}"><strong>{{price}}</strong> <span class="rubl">p</span></span>
                 </div>
 
                 {{#view.extraContent}}
-                    <div class="bBtnLine clearfix">
+                    <div class="lstn_btn clearfix">
                         {{^hasKit}}
+                            <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare"></a>
                             {{#isBuyable}}
                                 {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
                             {{/isBuyable}}
-                            <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare"></a>
                         {{/hasKit}}
 
                         {{#isKitLocked}}
+                            <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare"></a>
                             {{#isBuyable}}
                                 {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
                             {{/isBuyable}}
-                            <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare"></a>
                         {{/isKitLocked}}
                     </div>
                 {{/view.extraContent}}
 
                 {{#view.bottomDescription}}
-                    <p class="bSimplyDesc__eText"><a href="{{link}}">{{name}}</a></p>
+                    <div class="lstn_desc"><a href="{{link}}">{{name}}</a></div>
                     {{#review}}{{> product/_review-compact }}{{/review}}
                 {{/view.bottomDescription}}
             </div>
