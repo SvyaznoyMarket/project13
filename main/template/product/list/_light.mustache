@@ -29,7 +29,7 @@
 
                 <a href="{{link}}" class="lstn_imglk"><img class="lstn_img" src="{{image}}" alt="" /></a>
 
-                <div class="lstn_pr clearfix">
+                <div class="lstn_pr">
                     {{#oldPrice}}
                         <span class="lstn_pr_old">
                             {{oldPrice}} <span class="rubl">p</span>
@@ -38,7 +38,6 @@
                             {{/priceSale}}
                         </span>
                     {{/oldPrice}}
-                    <br/>
                     <span class="lstn_pr_now{{#priceSale}} lstn_pr_now-sale{{/priceSale}}"><strong>{{price}}</strong> <span class="rubl">p</span></span>
                 </div>
 
@@ -46,9 +45,36 @@
                     <div class="lstn_btn clearfix">
                         {{^hasKit}}
                             <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare"></a>
+
                             {{#isBuyable}}
                                 {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
                             {{/isBuyable}}
+
+                            {{#view.extraContent}}
+                                {{#isInShopShowroomOnly}}
+                                    <span class="lstn_btn_notb">
+                                        На витрине
+                                    </span>
+                                {{/isInShopShowroomOnly}}
+
+                                {{^isInShopShowroomOnly}}
+                                    {{#isInShopStockOnly}}
+                                        <span class="lstn_btn_notb">
+                                            Только в магазине
+                                        </span>
+                                    {{/isInShopStockOnly}}
+                                {{/isInShopShowroomOnly}}
+
+                                {{^isInShopShowroomOnly}}
+                                    {{^isInShopStockOnly}}
+                                        {{^isBuyable}}
+                                            <span class="lstn_btn_notb">
+                                                Нет в наличии
+                                            </span>
+                                        {{/isBuyable}}
+                                    {{/isInShopStockOnly}}
+                                {{/isInShopShowroomOnly}}
+                            {{/view.extraContent}}
                         {{/hasKit}}
 
                         {{#isKitLocked}}
@@ -56,6 +82,32 @@
                             {{#isBuyable}}
                                 {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
                             {{/isBuyable}}
+
+                            {{#view.extraContent}}
+                                {{#isInShopShowroomOnly}}
+                                    <span class="lstn_btn_notb">
+                                        На витрине
+                                    </span>
+                                {{/isInShopShowroomOnly}}
+
+                                {{^isInShopShowroomOnly}}
+                                    {{#isInShopStockOnly}}
+                                        <span class="lstn_btn_notb">
+                                            Только в магазине
+                                        </span>
+                                    {{/isInShopStockOnly}}
+                                {{/isInShopShowroomOnly}}
+
+                                {{^isInShopShowroomOnly}}
+                                    {{^isInShopStockOnly}}
+                                        {{^isBuyable}}
+                                            <span class="lstn_btn_notb">
+                                                Нет в наличии
+                                            </span>
+                                        {{/isBuyable}}
+                                    {{/isInShopStockOnly}}
+                                {{/isInShopShowroomOnly}}
+                            {{/view.extraContent}}
                         {{/isKitLocked}}
                     </div>
                 {{/view.extraContent}}
@@ -65,37 +117,6 @@
                     {{#review}}{{> product/_review-compact }}{{/review}}
                 {{/view.bottomDescription}}
             </div>
-
-            {{#view.extraContent}}
-                <div class="status">
-                    {{#isInShopShowroomOnly}}
-                        <div class="notBuying font12">
-                            <div class="corner"><div></div></div>
-                            Только на витрине
-                        </div>
-                    {{/isInShopShowroomOnly}}
-
-                    {{^isInShopShowroomOnly}}
-                        {{#isInShopStockOnly}}
-                            <div class="notBuying font12">
-                                <div class="corner"><div></div></div>
-                                Только в магазине
-                            </div>
-                        {{/isInShopStockOnly}}
-                    {{/isInShopShowroomOnly}}
-
-                    {{^isInShopShowroomOnly}}
-                        {{^isInShopStockOnly}}
-                            {{^isBuyable}}
-                                <div class="notBuying font12">
-                                    <div class="corner"><div></div></div>
-                                    Нет в наличии
-                                </div>
-                            {{/isBuyable}}
-                        {{/isInShopStockOnly}}
-                    {{/isInShopShowroomOnly}}
-                </div>
-            {{/view.extraContent}}
         </li>
     {{/isBanner}}
     <!-- /Элемент листинга/продукт -->

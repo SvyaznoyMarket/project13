@@ -7582,6 +7582,10 @@ img[height="0"] {
   .lstn_i-hover .lstn_i_inn {
     height: 249px;
   }
+  .lstn_i-hover .lstn_desc,
+  .lstn_i-hover .bSimplyDescReviews {
+    display: none;
+  }
   .lstn_i-hover.lstn_i-banner:hover .lstn_i_inn {
     height: 249px;
   }
@@ -7591,6 +7595,12 @@ img[height="0"] {
   .lstn_i-hover:hover .lstn_i_inn {
     height: 314px;
     z-index: 5;
+  }
+  .lstn_i-hover:hover .bSimplyDescReviews {
+    display: block;
+  }
+  .lstn_i-hover:hover .lstn_desc {
+    display: table-cell;
   }
   .lstn_i-banner {
     background-position: 50% 50%;
@@ -7610,7 +7620,6 @@ img[height="0"] {
     height: 200px;
   }
   .lstn_pr {
-    margin: 0 0 5px;
     display: inline-block;
     vertical-align: top;
     /* IE6-8 */
@@ -7621,6 +7630,7 @@ img[height="0"] {
   }
   .lstn_pr_old {
     color: #9c9c9c;
+    display: block;
   }
   .lstn_pr_now {
     color: #404040;
@@ -7664,6 +7674,20 @@ img[height="0"] {
     border: 1px solid #b3b3b3;
     box-shadow: none;
     color: #000;
+  }
+  .lstn_btn .btnCmprb {
+    vertical-align: middle;
+  }
+  .lstn_btn_notb {
+    font-weight: bold;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    color: #808080;
+    margin-left: 8px;
   }
   .lstn_desc {
     display: table-cell;
