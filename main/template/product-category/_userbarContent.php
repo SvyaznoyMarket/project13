@@ -21,8 +21,8 @@ if ($category) {
 
 <div class="topbarfix_up">
     <? if ($productFilter && $productFilter->hasAlwaysShowFilters()): ?>
-        <a class="btnGrey topbarfix_upLink topbarfix_upLink-custom js-userbar-upLink" href="">
-            <em class="cornerTop">&#9650;</em> Параметры
+        <a class="topbarfix_upLink topbarfix_upLink-custom js-userbar-upLink" href="">
+            <em class="cornerTop">&#9650;</em> <span class="topbarfix_upLink_tx">Параметры</span>
         </a>
     <? else: ?>
         <a class="btnGrey topbarfix_upLink js-userbar-upLink" href="">

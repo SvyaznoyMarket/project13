@@ -2028,21 +2028,7 @@ img[height="0"] {
     -moz-border-radius: 0 0 0 4px;
     border-radius: 0 0 0 4px;
   }
-  .topbarfix_upLink {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    padding-right: 15px;
-    width: auto;
-  }
-  .topbarfix_upLink:hover {
-    background: #000000;
-    color: #ffffff;
-    text-decoration: none;
-  }
-  .topbarfix_upLink .cornerTop {
+  .topbarfix .cornerTop {
     font-size: 10px;
     font-style: normal;
     display: inline-block;
@@ -2052,6 +2038,30 @@ img[height="0"] {
     *zoom: 1;
     float: left;
     padding-right: 5px;
+  }
+  .topbarfix_upLink {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    padding-right: 15px;
+    width: auto;
+  }
+  .topbarfix_upLink-custom {
+    font-size: 16px;
+    margin: 6px 0 0;
+  }
+  .topbarfix_upLink-custom .topbarfix_upLink_tx {
+    border-bottom: 1px dotted;
+  }
+  .topbarfix_upLink-custom .cornerTop {
+    color: #808080;
+    font-size: 14px;
+    padding-top: 1px;
+  }
+  .topbarfix_upLink:hover {
+    text-decoration: none;
   }
   .topbarfix_crumbs {
     float: left;
