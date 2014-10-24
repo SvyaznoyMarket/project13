@@ -591,4 +591,28 @@ class Action {
 
         return $result;
     }
+
+    /** Платный самовывоз?
+     * @return bool
+     */
+    public static function isPaidSelfDelivery() {
+        $region = \App::user()->getRegion();
+
+        /* Есть регион и необходимые ключи АБ-тестов */
+        if ($region && in_array($region->getId(), \App::config()->self_delivery['regions'])
+            && \App::config()->newOrder
+            && \App::abTest()->getTest('orders') && \App::abTest()->getTest('orders_moscow') && \App::abTest()->getTest('order_delivery_price')) {
+            // Новое ОЗ для Ярославля и Воронежа
+            if ($region->getId() != 14974 && \App::abTest()->getTest('orders')->getChosenCase()->getKey() == 'new') {
+                return \App::abTest()->getTest('order_delivery_price')->getChosenCase()->getKey() == 'delivery_self_100';
+            }
+            // Новое ОЗ для Москвы
+            if ($region->getId() == 14974 && \App::abTest()->getTest('orders_moscow') && \App::abTest()->getTest('orders_moscow')->getChosenCase()->getKey() == 'new') {
+                return \App::abTest()->getTest('order_delivery_price')->getChosenCase()->getKey() == 'delivery_self_100';
+            }
+        }
+
+        return false;
+
+    }
 }

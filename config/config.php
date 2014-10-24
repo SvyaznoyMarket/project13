@@ -539,7 +539,7 @@ $c->abTest = [
             ]
         ],
         'order_delivery_price' => [
-            'enabled' => false,
+            'enabled' => true,
             'expireDate' => '2014-12-31',
             'cases' => [
                 'delivery_self_100' => [
@@ -573,6 +573,9 @@ $c->abTest = [
         ],
     ],
 ];
+
+$c->self_delivery['limit'] = 1000;
+$c->self_delivery['regions'] = [119623, 93746, 14974];
 
 $c->preview = false;
 

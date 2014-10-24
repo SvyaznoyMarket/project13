@@ -1741,6 +1741,22 @@ img[height="0"] {
     -moz-border-radius: 0 0 4px 4px;
     border-radius: 0 0 4px 4px;
   }
+  .topbarfix_dd .btnBuy-inf {
+    position: relative;
+  }
+  .topbarfix_dd .btnBuy-inf .btnBuy__eLink {
+    padding-left: 30px;
+  }
+  .topbarfix_dd .btnBuy-inf .btnBuy__eLink:after {
+    background: url("/styles/fixedTopBar/img/i-btn.png") no-repeat 0 0;
+    position: absolute;
+    content: '';
+    height: 20px;
+    top: 50%;
+    left: 30px;
+    width: 20px;
+    margin-top: -10px;
+  }
   .topbarfix_logOut {
     width: 230px;
     left: -1px;
@@ -1864,6 +1880,24 @@ img[height="0"] {
     width: 700px;
     margin: 0 auto;
   }
+  .buyInfo {
+    border-top: 3px solid #f99b1c;
+    text-align: center;
+    padding: 10px 0 8px;
+  }
+  .buyInfo_pr {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 5px 0;
+  }
+  .buyInfo_lk {
+    text-decoration: underline;
+  }
+  .buyInfo_self {
+    color: #f99b1c;
+    font-weight: bold;
+    font-size: 20px;
+  }
   .ddBlock {
     display: block;
   }
@@ -1934,6 +1968,9 @@ img[height="0"] {
     -webkit-border-radius: 0 0 4px 4px;
     -moz-border-radius: 0 0 4px 4px;
     border-radius: 0 0 4px 4px;
+  }
+  .topbarfix-home .buyInfo_lk {
+    color: #ffffff;
   }
   .topbarfix-home .topbarfix_log {
     background: none;
@@ -2407,8 +2444,7 @@ img[height="0"] {
   .topbarfix_buy .btnBuy__eLink {
     width: 86px;
     font-size: 12px;
-    height: 25px;
-    line-height: 24px;
+    padding: 4px 0;
   }
   .topbarfix_buy .bPrice {
     float: right;
@@ -4344,6 +4380,7 @@ img[height="0"] {
     background: linear-gradient(to bottom, #6b839d 0%, #052e5b 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6b839d', endColorstr='#052e5b', GradientType=0);
     border-color: #002958;
+    padding: 5px 0 6px;
   }
   .tchiboProducts .btnBuy .btnBuy__eLink.mBought {
     background: none repeat scroll 0 0 #E6E6E6;
@@ -4824,7 +4861,6 @@ img[height="0"] {
   }
   .btnBuy.mBuySet {
     width: 171px;
-    height: 36px;
   }
   .btnBuy.mBuySet .btnBuy__eLink {
     position: relative;
@@ -4834,15 +4870,15 @@ img[height="0"] {
   }
   .btnBuy.mBuySet .btnBuy__eLink:after {
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAABNElEQVQ4EbWUsWoCQRCGT5FAUEExkEJsfIMQ8AXSJvZiE6xSpBBb8wZ5jISkCBGCfYoQCDZaCGIdCDaCBBJTeef3y204rG7Xc+Bj5paZudnd2UkFQeAlKekwWQVdBvPt/I8MkXdQBx9a8AJnUAAbmeI89thyVK75KMI8uhjTfsLPU4U30ABVOIEF1CALNjKTc0pZkxRVeA6qcAW3MIaDEFRsWeLpK2E/EjLA/oR3OI6sxzF7OF0p4QhOwogf9B88QClci6s+5KgzzKOVUJei5L/gLDs38vafVeGQRbPlS+xH6MAR2Ii2/KwzNMkUnINDaILtpSh2k/ACw7TNG/Y3nIJax0Y2Z7+Xxu5Shnl6bexXqILL05vvZTjcU40ZX1/YOkNV7DK+/oeDBqwaWxND2lkSv5Q18LLgXSSy53IAAAAASUVORK5CYII=) no-repeat 0 0;
-    content: '';
+    content: "";
     height: 20px;
     left: 45px;
+    margin-top: -10px;
     position: absolute;
-    top: 8px;
+    top: 50%;
     width: 40px;
   }
   .topbarfix .btnBuy.mBuySet {
-    height: 26px;
     width: 86px;
   }
   .topbarfix .btnBuy.mBuySet .btnBuy__eLink {
@@ -4852,10 +4888,11 @@ img[height="0"] {
   }
   .topbarfix .btnBuy.mBuySet .btnBuy__eLink:after {
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoklEQVQoFWP8//8/AymABai4Boi1gLgKiGWAmB+IsYGfQMFDIA3BQKwIxH1A7AzE8kCMbi0jUOwjEJ9iADpJFIgdgJgN5DxCmBGo4B7UVGsgDbMNyMQAH4AixSANsUCGJhBPAmIBIOYGYnQnAYUYfgPxdSYQixRAspPI8vR5oJNAweoCxN5AjC9Y60HxsBaIQRH3Boj3AjG+iPsB8gNQDfEAAIDIdEZhVaRSAAAAAElFTkSuQmCC) no-repeat 0 0;
-    top: 6px;
-    left: 15px;
-    width: 12px;
     height: 12px;
+    left: 15px;
+    margin-top: -6px;
+    top: 50%;
+    width: 12px;
   }
   .topbarfix .btnBuy.mBuySet .btnBuy__eLink.mDisabled {
     text-align: center;
@@ -4924,10 +4961,9 @@ img[height="0"] {
   }
   .markerList .btnBuy__eLink {
     width: 66px;
-    height: 27px;
+    padding: 5px 0;
     text-decoration: none;
     font-size: 12px;
-    line-height: 26px;
   }
   .markerList .btnText {
     text-transform: lowercase;

@@ -29,6 +29,7 @@ foreach (array_reverse($products) as $product) {
         break;
     }
 }
+$helper = new \Helper\TemplateHelper();
 ?>
 
 <? if (\App::config()->adFox['enabled']): ?>
@@ -38,8 +39,6 @@ foreach (array_reverse($products) as $product) {
 <? endif ?>
 
 <? require __DIR__ . '/_show.php' ?>
-
-<?//= $page->render('cart/form-certificate') ?>
 
 <div id="_cartKiss" style="display: none" data-cart="<?=$page->json(['count'=>(count($cart->getProducts()) + count($cart->getServices())), 'price'=>$cart->getSum()]);?>"></div>
 
@@ -60,35 +59,17 @@ foreach (array_reverse($products) as $product) {
         <? endif ?>
     </div>
 
-    <div id="total" class="fr" style="margin-right: 20px;">
-        <? if ($creditEnabled) : ?>
-        <div class="cre" id="creditSum" data-minsum="<?= \App::config()->product['minCreditPrice'] ?>" style="display:none">
-            
-            <div class="creditRate clearfix grayUnderline">
-                <div class="creditRate__title">Сумма заказа:</div>
+    <? if (\Controller\Delivery\Action::isPaidSelfDelivery()) : ?>
 
-                <div class="creditRate__price">
-                    <span class="price"><?= $page->helper->formatPrice($cart->getSum()) ?></span> <span class="rubl">p</span>
-                </div>
-            </div>
-
-            <div class="creditRate clearfix" style="display:none; padding-top: 10px;" id="blockFromCreditAgent">
-                <div class="creditRate__title">
-                    <strong>Ежемесячный платеж *:</strong>
-                </div>
-
-                <strong class="creditRate__price">
-                    <span id="creditPrice">(считаем...)</span>
-                    <span class="rubl">p</span>
-                </strong>
-
-                <p class="creditRate__footer">
-                    * Кредит не распространяется на услуги F1 и доставку.
-                    Сумма платежей предварительная и уточняется банком в процессе принятия кредитного решения.
-                </p>
-            </div>
+        <div class="cartInfo"
+             data-bind="visible: cartSum() < ENTER.config.pageConfig.selfDeliveryLimit"
+             style="display: <?= \App::config()->self_delivery['limit'] > $cart->getSum() ? 'block' : 'none' ?>">
+            Для бесплатного самовывоза добавьте товаров на <strong><span data-bind="text: ENTER.config.pageConfig.selfDeliveryLimit - cartSum()"><?= \App::config()->self_delivery['limit'] - $cart->getSum()?></span> <span class="rubl">p</span></strong>
         </div>
-        <? endif; ?>
+
+    <? endif; ?>
+
+    <div id="total" class="fr" style="margin-right: 20px;">
 
         <div class="basketSum" id="commonSum">
             Сумма заказа:
@@ -107,6 +88,20 @@ foreach (array_reverse($products) as $product) {
         </div>
     </div>
 </div>
+
+<? if (\Controller\Delivery\Action::isPaidSelfDelivery()) : ?>
+
+    <div class="basketLine">
+
+        <?= $helper->render('product/__slider', [
+            'type'      => 'alsoBought',
+            'products'  => [],
+            'url'       => $page->url('cart.recommended'),
+        ]) ?>
+
+    </div>
+
+<? endif; ?>
 
 <div class="backShop fl mNoPrint">&lt; <a class="underline" href="<?= $backLink ?>">Вернуться к покупкам</a></div>
 

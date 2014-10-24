@@ -32,75 +32,22 @@ foreach ($products as $product) {
 
 
 <!-- Basket -->
-<script type="text/html" id="f1cartline">
-    <tr ref="<%=f1token%>">
-        <td>
-            <%=f1title%>
-            <br/>
-            <a class="bBacketServ__eMore" href="<?= $page->url('service.show', array('serviceToken' => 'F1TOKEN')); ?>">Подробнее об услуге</a>
-        </td>
-        <td class="mPrice">
-            <span class="price"><%=f1price%> </span>
-            <span class="rubl">p</span>
-        </td>
-        <td class="mEdit">
-            <div class="numerbox mInlineBlock mVAMiddle">
-                <a ref="<?= $page->url('cart.service.set', array('serviceId' => 'F1ID', 'quantity' => -1, 'productId' => 'PRID')); ?>"
-                   href="#">
-                    <b class="ajaless" title="Уменьшить"></b>
-                </a>
-                <input maxlength="2" class="ajaquant" value="1"/>
-                <a href="<?= $page->url('cart.service.set', array('serviceId' => 'F1ID', 'quantity' => 1, 'productId' => 'PRID')); ?>">
-                    <b class="ajamore" title="Увеличить"></b>
-                </a>
-            </div>
-            <a class="button whitelink ml5 mInlineBlock mVAMiddle"
-               href="<?= $page->url('cart.service.delete', array('serviceId' => 'F1ID', 'productId' => 'PRID')); ?>">Отменить</a>
-        </td>
-    </tr>
-</script>
-
-<script type="text/html" id="wrntline">
-    <tr ref="<%=ewid%>">
-        <td>
-            <span class="ew_title"><%=f1title%></span>
-            <br/>
-            <!--a class="bBacketServ__eMore" href="#">Подробнее об услуге</a-->
-        </td>
-        <td class="mPrice">
-            <span class="price"><%=f1price%></span>
-            &nbsp;<span class="rubl">p</span>
-        </td>
-        <td class="mEdit">
-        <div class="numerbox">
-            <b title="Уменьшить" class="ajaless"></b>
-            <input value="1" class="ajaquant" maxlength="2">
-            <a href="<?= $page->url('cart.warranty.set', array('warrantyId' => 'WID', 'productId' => 'PRID', 'quantity' => 1)) ?>"><b title="Увеличить" class="ajamore"></b></a>
-        </div>
-            <a class="button whitelink ml5 mInlineBlock mVAMiddle"
-               href="<?= $page->url('cart.warranty.delete', array('warrantyId' => 'WID', 'productId' => 'PRID')) ?>">Отменить</a>
-        </td>
-    </tr>
-</script>
-
 <? if ($creditEnabled): ?>
     <div id="tsCreditCart" data-value="<?= $page->json($creditData) ?>"></div>
 <? endif ?>
 
 
-<script type="text/html" id="bKitPopupLine_Tmpl">
-    <div class="bKitPopupLine clearfix">
-        <div class="bKitPopupLine_eImg fl"><img src="<%=image%>" alt="<%=name%>"/></div>
-        <div class="bKitPopupLine_eName fl"><%=name%></div>
-        <div class="bKitPopupLine_ePrice fl"><%=price%> <span class="rubl">p</span></div>
-        <div class="bKitPopupLine_eQuan fl"><%=quantity%> шт.</div>
-    </div>
-</script>
 <div id="kitPopup" class="popup">
     <a class="close" href="#">Закрыть</a>
-    <div class="bKitPopup">
-        
+    <div class="bKitPopup"></div>
+    <!-- ko foreach: kitPopupItems -->
+    <div class="bKitPopupLine clearfix">
+        <div class="bKitPopupLine_eImg fl"><img src="" alt="" data-bind="attr: { src: $data.image, alt: $data.name }"/></div>
+        <div class="bKitPopupLine_eName fl" data-bind="text: $data.name"></div>
+        <div class="bKitPopupLine_ePrice fl"><!-- ko text: window.printPrice($data.price) --><!-- /ko --> <span class="rubl">p</span></div>
+        <div class="bKitPopupLine_eQuan fl"><!-- ko text: $data.quantity --><!-- /ko --> шт.</div>
     </div>
+    <!-- /ko -->
 </div>
 
 <? foreach ($products as $product): ?>
@@ -119,15 +66,13 @@ foreach ($products as $product) {
         <div class="basketLine__desc">
             <div class="basketLine__desc__name">
                 <a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a>
+                <noindex>
                 <? if ($cartProduct->getIsBuyable()): ?>
-                    <noindex>
-                        <div class="basketLine__desc__available">Есть в наличии</div>
-                    </noindex>
+                    <div class="basketLine__desc__available">Есть в наличии</div>
                 <? else: ?>
-                    <noindex>
-                        <div class="basketLine__desc__available">Нет в наличии</div>
-                    </noindex>
+                    <div class="basketLine__desc__available">Нет в наличии</div>
                 <? endif ?>
+                </noindex>
             </div>
 
             <div class="basketLine__desc__info basketinfo">
@@ -139,8 +84,8 @@ foreach ($products as $product) {
                     <div class="descCount">
                         <?= $page->render('_spinner', array(
                             'quantity' => $cartProduct->getQuantity(),
-                            'incUrl'   => $page->url('cart.product.set', array('productId' => $product->getId(), 'quantity' => 1)),
-                            'decUrl'   => $page->url('cart.product.set', array('productId' => $product->getId(), 'quantity' => -1)),
+                            'incUrl'   => $page->url('cart.product.set', array('productId' => $product->getId(), 'quantity' => $cartProduct->getQuantity() + 1)),
+                            'decUrl'   => $page->url('cart.product.set', array('productId' => $product->getId(), 'quantity' => $cartProduct->getQuantity() - 1)),
                         ))?>
                     </div>
                 </div>
@@ -170,14 +115,6 @@ foreach ($products as $product) {
             ?>
             <div class="clear pb15"></div>
 
-            <? if ((bool)$product->getService()): ?>
-                <?= $page->render('cart/_serviceByProduct', array('product' => $product, 'cartProduct' => $cartProduct)) ?>
-            <?endif ?>
-
-            <? if (\App::config()->warranty['enabled'] && (bool)$product->getWarranty()): ?>
-                <?= $page->render('cart/_warrantyByProduct', array('product' => $product, 'cartProduct' => $cartProduct)) ?>
-            <?endif ?>
-
             <? if ((bool)$kitData): ?>
                 <a id="<?= sprintf('product-%s-kit', $product->getId()) ?>" href="#" class="product_kit-data fr mt15 button whitelink" data-value="<?= $page->json($kitData) ?>">Посмотреть состав набора</a>
             <? endif ?>
@@ -186,55 +123,43 @@ foreach ($products as $product) {
     </div>
 <? endforeach ?>
 
+<!-- /Basket -->
 
-<? foreach ($services as $service): ?>
-    <?
-    /** @var $cartService \Model\Cart\Service\Entity */
-    $cartService = $cartServicesById[$service->getId()];
-    ?>
+<div class="jsKnockoutCart" style="display: none" data-bind="visible: ajaxProducts().length > 0">
 
-    <div class="basketline mWrap">
-        <div class="basketleft">
-            <a href="<?= $page->url('service.show', array('serviceToken' => $service->getToken())) ?>">
-                <? if ($service->getImageUrl()): ?>
-                    <img src="<?= $service->getImageUrl(2) ?>" alt="<?= $service->getName() ?>" />
-                <? else: ?>
-                    <div class="bServiceCard__eLogo_free pr_imp"></div>
-                <? endif ?>
+    <!-- ko foreach: ajaxProducts -->
+
+    <div class="basketLine basketline clearfix" ref="" data-product-id="" data-category-id="" data-bind="">
+        <div class="basketLine__img">
+            <a class="basketLine__imgLink" href="" data-bind="attr: { href: $data.product.link }">
+                <img src="" alt="" data-bind="attr: { src: $data.product.img, alt: $data.product.name}">
             </a>
         </div>
-        <div class="basketright">
-            <div class="goodstitle">
-                <div class="font24 pb5">
-                    <a href="<?= $page->url('service.show', array('serviceToken' => $service->getToken())) ?>"><?= $service->getName() ?></a>
-                </div>
-                <? if ($cartService->getIsBuyable()): ?>
-                    <noindex>
-                        <div class="font11">Есть в наличии</div>
-                    </noindex>
-                <? else: ?>
-                    <noindex>
-                        <div class="font11">Нет в наличии</div>
-                    </noindex>
-                <? endif ?>
+
+        <div class="basketLine__desc">
+            <div class="basketLine__desc__name">
+                <a href="" data-bind="text: $data.product.name"></a>
+                <noindex><div class="basketLine__desc__available">Есть в наличии</div></noindex>
             </div>
-            <div class="basketinfo pb15">
-                <div class="left font11">
-                    Цена:<br/><span class="font12">
-                    <span class="price"><?= $service->getPrice() ? $page->helper->formatPrice($service->getPrice()) : '' ?></span> <span class="rubl">p</span></span>
+
+            <div class="basketLine__desc__info basketinfo">
+                <div class="descPriceLine">
+                    <div class="descPriceOne">
+                        <span class="price one" data-bind="text: window.printPrice($data.product.price)"></span>
+                        <span class="rubl">p</span>
+                    </div>
+                    <div class="descCount">
+
+                        <div class="numerbox">
+                            <a href="" data-bind="attr: { href: '/cart/add-product/' + $data.product.id + '?quantity=' + ($data.product.quantity - 1) }"><b class="ajaless" title="Уменьшить"></b></a>
+                            <input maxlength="2" class="ajaquant" value="" data-bind="value: $data.product.quantity">
+                            <a href="" data-bind="attr: { href: '/cart/add-product/' + $data.product.id + '?quantity=' + ($data.product.quantity + 1) }"><b class="ajamore" title="Увеличить"></b></a>
+                        </div>                    </div>
                 </div>
-                <div class="right">
-                    <?= $page->render('_spinner', array(
-                        'quantity' => $cartService->getQuantity(),
-                       'incUrl'   => $page->url('cart.service.set', array('serviceId' => $service->getId(), 'productId' => 0, 'quantity' => 1)),
-                       'decUrl'   => $page->url('cart.service.set', array('serviceId' => $service->getId(), 'productId' => 0, 'quantity' => -1)),
-                    ))?>
-                </div>
-            </div>
-            <div class="basketinfo">
-                <div class="left font24"><span class="sum"><?= $page->helper->formatPrice($cartService->getSum()) ?></span> <span class="rubl">p</span></div>
-                <div class="right">
-                    <a href="<?= $page->url('cart.service.delete', array('serviceId' => $service->getId(), 'productId' => 0)) ?>" class="button whitelink mr5">Удалить</a>
+
+                <div class="descPrice">
+                    <span class="price sum" data-bind="text: window.printPrice($data.product.price * $data.product.quantity)"></span> <span class="rubl">p</span>
+                    <a href="" class="button whitelink js-basketLineDeleteLink-61596" data-bind="attr: { href: '/cart/delete-product/' + $data.product.id }">Удалить</a>
                 </div>
             </div>
 
@@ -242,5 +167,7 @@ foreach ($products as $product) {
 
         </div>
     </div>
-<? endforeach ?>
-<!-- /Basket -->
+
+    <!-- /ko -->
+
+</div>

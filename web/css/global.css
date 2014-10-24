@@ -212,8 +212,7 @@
     border-color: #c9c9c9;
     color: #010101;
     font-size: 11px;
-    height: 24px;
-    padding: 0px 7px 3px;
+    padding: 5px 7px;
   }
   .whitebutton:hover {
     background: #e5e5e5;
@@ -7265,6 +7264,19 @@
     color: #a6a6a6;
     text-decoration: line-through;
   }
+  .cartInfo {
+    border: 1px solid #f99b1c;
+    border-top-width: 5px;
+    font-size: 14px;
+    padding: 10px 15px;
+    margin: 9px 0 0 10px;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    float: left;
+  }
 }
 /*---END---СТИЛИ КОРЗИНЫ---*/
 /*-------СТИЛИ ПОДСКАЗОК ПОИСКА-----*/
@@ -9085,9 +9097,8 @@
   }
   .bSlider__eList .btnBuy .btnBuy__eLink {
     width: 100px;
-    height: 27px;
+    padding: 3px 0;
     font-size: 14px;
-    line-height: 26px;
   }
   .bSlider__eList .btnView {
     -moz-opacity: 0;
@@ -9171,6 +9182,9 @@
     filter: alpha(opacity=30);
     cursor: default;
     background: #f2f2f2;
+  }
+  .bSlider-7item .bSlider__eInner {
+    width: 840px;
   }
   /**
  * Если есть категории
@@ -9461,12 +9475,11 @@
     *display: inline;
     *zoom: 1;
     width: 170px;
-    height: 35px;
+    padding: 7px 0;
     text-align: center;
     color: #ffffff;
     border: 1px solid #fb9c00;
     font-size: 18px;
-    line-height: 35px;
   }
   .btnBuy__eLink.mShopsOnly {
     background: #040404;
@@ -9851,8 +9864,7 @@
     bottom: 0;
     display: block;
     width: auto;
-    height: 27px;
-    padding: 0 10px;
+    padding: 5px 10px 6px;
     text-align: center;
     text-indent: 0;
     color: #ffffff;
@@ -9860,7 +9872,6 @@
     background: #000000;
     text-shadow: none;
     font-size: 12px;
-    line-height: 26px;
   }
   .bBrandCatalog .goodsbox__inner .btnBuy__eLink.mBought {
     width: auto;
@@ -11982,7 +11993,6 @@
     bottom: 10px;
     display: block;
     width: auto;
-    height: 23px;
     padding: 0 10px;
     text-align: center;
     text-indent: 0;
@@ -11991,7 +12001,7 @@
     background: #000;
     text-shadow: none;
     font: normal 12px tahoma, verdana, arial, helvetica, sans-serif;
-    line-height: 21px;
+    padding: 4px 0;
   }
   .bListing.mPandora .btnBuy__eLink.mBought {
     width: auto;
@@ -12148,9 +12158,8 @@
   }
   .bBtnLine .btnBuy__eLink {
     width: 72px;
-    height: 27px;
     font-size: 12px;
-    line-height: 26px;
+    padding: 5px 0 6px;
   }
   .bBtnLine .btnBuy__eLink.mBought {
     -webkit-box-shadow: none;
