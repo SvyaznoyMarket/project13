@@ -7272,6 +7272,15 @@ img[height="0"] {
     padding: 5px 10px;
     width: 940px;
   }
+  .bCatalog-custom .bSortingLine.mPagerBottom {
+    margin-top: -1px;
+  }
+  .bCatalog-custom .bSortingLine.mPagerBottom .bSortingList {
+    margin-right: 0;
+  }
+  .bCatalog-custom .bSortingList.mPager {
+    margin-right: 0;
+  }
   .bCatalog-custom .bSortingList__eLink {
     background: #ffffff;
     line-height: 1;
@@ -7529,20 +7538,23 @@ img[height="0"] {
   }
   .lstn_i {
     float: left;
-    width: 240px;
+    width: 241px;
     position: relative;
     height: 344px;
+    margin: -1px -1px 0 0;
+    z-index: 2;
   }
   .lstn_i_inn {
     border: 1px solid #e6e6e6;
-    border-top: 1px solid #ffffff;
-    border-left: 1px solid #ffffff;
-    width: 218px;
+    width: 219px;
     position: relative;
     height: 312px;
     padding: 20px 10px 10px;
     background-color: #ffffff;
     z-index: 2;
+  }
+  .lstn_i:hover {
+    z-index: 10;
   }
   .lstn_i:hover .lstn_i_inn {
     border-color: #a0a0a0;

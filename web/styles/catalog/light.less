@@ -4,15 +4,15 @@
 
 	&_i {
 		float: left;
-		width: 240px;
+		width: 241px;
 		position: relative;
 		height: 344px;
+		margin: -1px -1px 0 0;
+		z-index: 2;
 
 		&_inn {
 			border: 1px solid #e6e6e6;
-		    border-top: 1px solid @white;
-		    border-left: 1px solid @white;
-			width: 218px;
+			width: 219px;
 			position: relative;
 			height: 312px;
 			padding: 20px 10px 10px;
@@ -21,6 +21,7 @@
 		}
 
 		&:hover {
+			z-index: 10;
 
 			.lstn_i_inn {
 				border-color: #a0a0a0;
