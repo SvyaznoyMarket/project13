@@ -35,6 +35,8 @@
 			href = '',
 			product = $(e.target).closest('.jsSliderItem').data('product');
 
+		if (!product) return;
+
 		if (nodeName == 'A') href = $target.prop('href');
 		if (nodeName == 'IMG') href = $target.closest('a').prop('href');
 

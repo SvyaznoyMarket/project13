@@ -40,8 +40,6 @@ $helper = new \Helper\TemplateHelper();
 
 <? require __DIR__ . '/_show.php' ?>
 
-<?//= $page->render('cart/form-certificate') ?>
-
 <div id="_cartKiss" style="display: none" data-cart="<?=$page->json(['count'=>(count($cart->getProducts()) + count($cart->getServices())), 'price'=>$cart->getSum()]);?>"></div>
 
 <div class="basketLine clearfix">
@@ -65,41 +63,13 @@ $helper = new \Helper\TemplateHelper();
 
         <div class="cartInfo"
              data-bind="visible: cartSum() < ENTER.config.pageConfig.selfDeliveryLimit"
-             style="display: <?= \App::config()->self_delivery['limit'] - $cart->getSum() > 0 ? 'block' : 'none' ?>">
+             style="display: <?= \App::config()->self_delivery['limit'] > $cart->getSum() ? 'block' : 'none' ?>">
             Для бесплатного самовывоза добавьте товаров на <strong><span data-bind="text: ENTER.config.pageConfig.selfDeliveryLimit - cartSum()"><?= \App::config()->self_delivery['limit'] - $cart->getSum()?></span> <span class="rubl">p</span></strong>
         </div>
 
     <? endif; ?>
 
     <div id="total" class="fr" style="margin-right: 20px;">
-        <? /* if ($creditEnabled) : ?>
-        <div class="cre" id="creditSum" data-minsum="<?= \App::config()->product['minCreditPrice'] ?>" style="display:none">
-            
-            <div class="creditRate clearfix grayUnderline">
-                <div class="creditRate__title">Сумма заказа:</div>
-
-                <div class="creditRate__price">
-                    <span class="price"><?= $page->helper->formatPrice($cart->getSum()) ?></span> <span class="rubl">p</span>
-                </div>
-            </div>
-
-            <div class="creditRate clearfix" style="display:none; padding-top: 10px;" id="blockFromCreditAgent">
-                <div class="creditRate__title">
-                    <strong>Ежемесячный платеж *:</strong>
-                </div>
-
-                <strong class="creditRate__price">
-                    <span id="creditPrice">(считаем...)</span>
-                    <span class="rubl">p</span>
-                </strong>
-
-                <p class="creditRate__footer">
-                    * Кредит не распространяется на услуги F1 и доставку.
-                    Сумма платежей предварительная и уточняется банком в процессе принятия кредитного решения.
-                </p>
-            </div>
-        </div>
-        <? endif; */?>
 
         <div class="basketSum" id="commonSum">
             Сумма заказа:
