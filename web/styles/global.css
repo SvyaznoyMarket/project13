@@ -7269,8 +7269,8 @@ img[height="0"] {
     -moz-border-radius: 0;
     border-radius: 0;
     margin: 0 0 0 -10px;
-    padding: 5px 10px;
-    width: 940px;
+    padding: 5px 5px 5px 10px;
+    width: 945px;
   }
   .bCatalog-custom .bSortingLine.mPagerBottom {
     margin-top: -1px;
@@ -7428,6 +7428,7 @@ img[height="0"] {
   }
   .bCatalog-custom .fltrSet .bFilterValuesCol-gbox {
     width: 184px;
+    cursor: pointer;
   }
   .bCatalog-custom .fltrSet .bFilterValuesCol-gbox .bFilterCheckbox {
     background: #ffffff;
@@ -7437,6 +7438,7 @@ img[height="0"] {
     margin-top: -1px;
     width: 173px;
     display: block;
+    cursor: pointer;
   }
   .bCatalog-custom .fltrSet .bFilterValuesCol-gbox .customInput:checked + .bFilterCheckbox {
     background: #606060;
@@ -7535,6 +7537,10 @@ img[height="0"] {
   .lstn {
     margin: 0 0 0 -10px;
     width: 960px;
+  }
+  .lstn_empty {
+    padding: 30px 10px;
+    font-size: 16px;
   }
   .lstn_i {
     float: left;
