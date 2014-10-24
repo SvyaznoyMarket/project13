@@ -73,7 +73,7 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
 
             <?= $page->render('cart/_button', array('product' => $product)) ?>
             <?= $page->render('product/show/__corner_features', ['product' => $product]) ?>
-            <? if ($product->getIsBuyable()): ?>
+            <? if ($product->getIsBuyable() && 5 != $product->getStatusId()): ?>
             <noindex>
                 <ul class="bNGB__eUl">
                     <li><strong class="orange">Есть в наличии</strong></li>
