@@ -151,7 +151,7 @@ $isKitPage = (bool)$product->getKit();
         </div>
     <? endif ?>
 
-    <? if (!$product->isInShopStockOnly() && $product->getIsBuyable()): ?>
+    <? if (!$product->isInShopStockOnly() && $product->getIsBuyable() && 5 != $product->getStatusId()): ?>
         <div class="bWidgetBuy mWidget js-WidgetBuy">
             <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && 0 == count($kitProducts)): ?>
                 <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'productId' => $product->getId()]) ?>
