@@ -262,7 +262,7 @@ class OrderEntity {
         }
 
         // идиотский АБ-тест TODO remove
-        if (\App::user()->getRegionId() == 93746 && $this->delivery_type_id == 3 && $arr['total_cost'] < 1000 && \App::abTest()->getTest('order_delivery_price')  && \App::abTest()->getTest('order_delivery_price')->getChosenCase()->getKey() == 'delivery_self_100') {
+        if (\Controller\Delivery\Action::isPaidSelfDelivery() && $arr['total_cost'] < \App::config()->self_delivery['limit'] && $this->delivery_type_id == 3) {
             $this->delivery_price = 100;
         }
 
