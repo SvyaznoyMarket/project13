@@ -14,7 +14,6 @@ class BasicRecommendedAction {
     protected $engine;
 
     static public $recomendedPartners = [
-        \Smartengine\Client::NAME,
         \RetailRocket\Client::NAME,
     ];
 

@@ -414,17 +414,6 @@ class AppConfig {
         'key'          => null,
         'payUrl'       => null,
     ];
-    /**
-     * @var array
-     * @hidden
-     */
-    public $smartengine = [
-        'apiUrl'         => null,
-        'apiKey'         => null,
-        'tenantid'       => null,
-        'logEnabled'     => null,
-        'logDataEnabled' => null,
-    ];
 
     /** @var array */
     public $warranty = [

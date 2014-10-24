@@ -3,8 +3,8 @@ $helper = new \Helper\TemplateHelper();
 $priceNumDecimals = false === strpos((string)$value, '.') ? 0 : 2;
 ?>
 
-<?=(isset($errorMessage)?$errorMessage.'<br/>':null)?>
-Фишка со скидкой <?= $helper->formatPrice($value, $priceNumDecimals) ?><?= $is_currency ? 'руб' : '%' ?> на <a href="<?=$url?>">"<?=$label?>"</a><br/>
+<?= (isset($errorMessage) ? $errorMessage . '<br/>' : null) ?>
+Фишка со скидкой <?= $helper->formatPrice($value, $priceNumDecimals) ?><?= $is_currency ? 'руб' : '%' ?> на <a href="<?=$url?>">"<?= $label ?>"</a><br/>
 Минимальная сумма заказа <?=$minOrder?>руб<br/>
 Действует c <?=$startDate?> по <?=$endDate?><br/>
 Поделиться радостью с друзьями:
