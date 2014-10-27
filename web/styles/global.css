@@ -5265,6 +5265,10 @@ img[height="0"] {
     -moz-border-radius: 4px;
     border-radius: 4px;
   }
+  .orderCol-v2 .orderCol_delivrIn .textfield-err {
+    border-color: #ED404D;
+    border-width: 2px;
+  }
   .orderCol-v2 .orderCol_delivrIn-pl {
     background: #ffffff;
     border: 1px solid #d3d3d3;
@@ -5283,6 +5287,7 @@ img[height="0"] {
   }
   .orderCol-v2 .orderCheck_img {
     margin-left: 10px;
+    vertical-align: top;
   }
   .orderOferta_tabs_i {
     display: inline-block;
@@ -5657,8 +5662,18 @@ img[height="0"] {
     font-weight: normal;
   }
   .orderCompl-v2 .orderCompl_l {
-    width: 920px;
+    width: auto;
     margin: 0px 0 10px;
+    background-color: #fff;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding: 3px 10px 3px 20px;
+    border: 2px solid #fff;
+    background-position: 6px 7px;
+  }
+  .orderCompl-v2 .orderCompl_l.accept-err {
+    border-color: #ED404D;
   }
   .orderCompl-v2 .orderCompl_l_lk {
     display: inline-block;
