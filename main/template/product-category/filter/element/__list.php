@@ -30,6 +30,7 @@ return function(
         />
         <label class="bFilterCheckbox<? if (!$filter->getIsMultiple()) { ?> mCustomLabelRadio<? } ?>" for="<?= $viewId ?>">
             <? if ($option->getImageUrl()): ?>
+                <span class="customLabel_wimg"></span>
                 <img class="customLabel_bimg" src="<?= $helper->escape($option->getImageUrl()) ?>">
             <? endif ?>
 

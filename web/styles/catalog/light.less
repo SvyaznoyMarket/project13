@@ -23,8 +23,6 @@
 			padding: 20px 10px 10px;
 			background-color: @white;
 			z-index: 2;
-
-
 		}
 
 		&:hover {
@@ -32,6 +30,10 @@
 
 			.lstn_i_inn {
 				border-color: #a0a0a0;
+			}
+
+			.lstn_btn {
+				.inline-block();
 			}
 		}
 
@@ -52,6 +54,10 @@
 
 				&:hover {
 
+					.lstn_btn {
+						.inline-block();
+					}
+
 					.lstn_i_inn {
 						height: 249px;
 					}
@@ -64,6 +70,10 @@
 				.lstn_i_inn {
 					height: 314px;
 					z-index: 5;
+				}
+
+				.lstn_btn {
+					.inline-block();
 				}
 
 				.bSimplyDescReviews {
@@ -115,10 +125,10 @@
 	}
 
 	&_btn {
-		.inline-block();
 		vertical-align: middle;
 		text-align: right;
 		width: 115px;
+		display: none;
 
 		.btnBuy {
 			.inline-block();

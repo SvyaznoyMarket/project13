@@ -7458,6 +7458,14 @@ img[height="0"] {
     background: #606060;
     color: #ffffff;
   }
+  .bCatalog-custom .fltrSet .bFilterValuesCol-gbox .customLabel_wimg {
+    background: url("/styles/catalog/img/wimg1.png") no-repeat 0 0;
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    display: block;
+    margin: -1px 0 0 -1px;
+  }
   .bCatalog-custom .fltrSet .bFilterValuesCol-gbox .customLabel_bimg {
     display: inline-block;
     vertical-align: top;
@@ -7466,6 +7474,7 @@ img[height="0"] {
     *zoom: 1;
     vertical-align: middle;
     margin-right: 7px;
+    position: relative;
   }
   .bCatalog-custom .fltrSet .bFilterValuesCol-gbox .customLabel_btx {
     display: inline-block;
@@ -7477,6 +7486,9 @@ img[height="0"] {
     font-size: 14px;
     max-width: 136px;
     line-height: 1;
+  }
+  .bCatalog-custom .fltrSet-insertion .bFilterValuesCol-gbox .customLabel_wimg {
+    background: url("/styles/catalog/img/wimg2.png") no-repeat 0 0;
   }
   .bCatalog-custom .fltrSet .bFilterParams__eItem:first-child {
     border-top: none;
@@ -7575,6 +7587,13 @@ img[height="0"] {
   .lstn_i:hover .lstn_i_inn {
     border-color: #a0a0a0;
   }
+  .lstn_i:hover .lstn_btn {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+  }
   .lstn_i-hover {
     height: 281px;
     overflow: hidden;
@@ -7586,6 +7605,13 @@ img[height="0"] {
   .lstn_i-hover .bSimplyDescReviews {
     display: none;
   }
+  .lstn_i-hover.lstn_i-banner:hover .lstn_btn {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+  }
   .lstn_i-hover.lstn_i-banner:hover .lstn_i_inn {
     height: 249px;
   }
@@ -7595,6 +7621,13 @@ img[height="0"] {
   .lstn_i-hover:hover .lstn_i_inn {
     height: 314px;
     z-index: 5;
+  }
+  .lstn_i-hover:hover .lstn_btn {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
   }
   .lstn_i-hover:hover .bSimplyDescReviews {
     display: block;
@@ -7637,14 +7670,10 @@ img[height="0"] {
     font-size: 14px;
   }
   .lstn_btn {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
     vertical-align: middle;
     text-align: right;
     width: 115px;
+    display: none;
   }
   .lstn_btn .btnBuy {
     display: inline-block;

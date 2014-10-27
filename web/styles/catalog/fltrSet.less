@@ -227,20 +227,45 @@
 					    color: @white;
 					}
 
-					.customLabel_bimg {
-			            .inline-block();
-			            vertical-align: middle;
-			            margin-right: 7px;
-			        }
+					.customLabel {
 
-			        .customLabel_btx {
-			            .inline-block();
-			            vertical-align: middle;
-			            font-size: 14px;
-			            max-width: 136px;
-			            line-height: 1;
-			        }
+						&_wimg {
+							background: url("@{base-url}/catalog/img/wimg1.png") no-repeat 0 0;
+							position: absolute;
+							width: 32px;
+							height: 32px;
+							display: block;
+							margin: -1px 0 0 -1px;
+						}
+
+						&_bimg {
+				            .inline-block();
+				            vertical-align: middle;
+				            margin-right: 7px;
+				            position: relative;
+				        }
+
+				        &_btx {
+				            .inline-block();
+				            vertical-align: middle;
+				            font-size: 14px;
+				            max-width: 136px;
+				            line-height: 1;
+				        }
+				    }
 			    }
+			}
+
+			&-insertion {
+				.bFilterValuesCol {
+				    &-gbox {
+				    	.customLabel {
+							&_wimg {
+								background: url("@{base-url}/catalog/img/wimg2.png") no-repeat 0 0;
+							}
+				    	}
+				    }
+				}   
 			}
 
 			.bFilterParams__eItem {
