@@ -305,6 +305,7 @@
                 address = ENTER.OrderV3.address;
                 fillAddressBlock(address);
                 $input.hide();
+				$('.jsSmartAddressBlock').removeClass('orderCol_delivrIn-empty').addClass('orderCol_delivrIn-pl');
 
             } else {
                 if (spinner) spinner.spin($('.kladr_spinner')[0]);

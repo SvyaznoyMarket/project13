@@ -23,7 +23,34 @@
         $('.bonusCnt_i').removeClass('bonusCnt_i-act');
         $elem.addClass('bonusCnt_i-act');
         $cardsDescriptions.hide().eq(eq).show();
+		$elem.find('.bonusCnt_tx_code .brb-dt').hide();
     });
+
+	/* Подсказки бонусных карт */
+
+	$body.on('mouseenter', '.jsShowBonusCardHint', function(){
+		$(this).parent().siblings('.bonusCnt_popup').show()
+	});
+
+	$body.on('mouseleave', '.jsShowBonusCardHint', function(){
+		$(this).parent().siblings('.bonusCnt_popup').hide()
+	});
+
+	$('.jsOrderV3BonusCardField').each(function(i,elem){
+		$(elem).closest('.bonusCnt-v2').find('.bonusCnt_tx_code .brb-dt').text($(elem).val())
+	});
+
+	/* Если это orders/new */
+
+	if (/new$/.test(window.location.href)) {
+		$('.jsOrderV3PhoneField').on('blur', function(){
+			if ($(this).val().length == 0) {
+				$(this).addClass('textfield-err').siblings('.errTx').show();
+			} else {
+				$(this).removeClass('textfield-err').siblings('.errTx').hide();
+			}
+		});
+	}
 
     // АНАЛИТИКА
 

@@ -26,9 +26,9 @@ return function(
             <fieldset class="orderU_flds">
                 <div>
                     <div class="orderU_fld">
-                        <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[phone]" value="<?= $userEntity ? $userEntity->getMobilePhone() : '' ?>" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx">
+                        <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[phone]" value="<?= $userEntity ? $userEntity->getMobilePhone() : '' ?>" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" autofocus>
                         <label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
-                        <span class="errTx">Неверный формат телефона</span>
+                        <span class="errTx" style="display: none">Неверный формат телефона</span>
                         <span class="orderU_hint">Для смс о состоянии заказа</span>
                     </div>
 
@@ -54,7 +54,7 @@ return function(
                                         <img class="bonusCnt_img" src="/styles/order/img/sClub.png" alt="" />
                                         <span class="bonusCnt_tx">
                                             <span class="brb-dt">Карта <?= $card->getName() ?></span><!-- что бы урать бордер можно удалить класс brb-dt -->
-                                            <span class="bonusCnt_tx_code"><span class="brb-dt">4753975634593</span></span>
+                                            <span class="bonusCnt_tx_code"><span class="brb-dt"></span></span>
                                         </span>
                                     </div>
                                 <? endforeach ?>
@@ -65,14 +65,14 @@ return function(
                                 /** @var $card \Model\Order\BonusCard\Entity */
                                 return $card->getId() == $arr['bonus_card_id']; })
                             ?>
-                            <div class="bonusCnt_it clearfix" style="display: <?= (bool)$userBonusCard ? 'block' : 'none' ?>">
+                            <div class="bonusCnt_it clearfix" style="display: <?= (bool)$userBonusCard ? 'none' : 'none' ?>">
                                 <div class="orderU_fld">
                                     <label class="orderU_lbl" for="">Номер</label>
                                     <input class="orderU_tx textfield jsOrderV3BonusCardField" type="text" name="user_info[bonus_card_number]" value="<?= (bool)$userBonusCard ? $userBonusCard[0]['number'] : '' ?>" placeholder="<?= $card->getMask() ?>" data-mask="<?= $card->getMask() ?>">
-                                    <span class="orderU_inf"></span>
+                                    <span class="orderU_inf jsShowBonusCardHint"></span>
                                 </div>
 
-                                <div class="bonusCnt_popup">
+                                <div class="bonusCnt_popup" style="display: none">
                                     <div class="bonusCnt_descr"><?= $card->getDescription() ?></div>
                                     <img src="<?= $card->getImage() ?>" alt="" />
                                 </div>

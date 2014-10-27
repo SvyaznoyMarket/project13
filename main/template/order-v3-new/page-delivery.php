@@ -42,7 +42,7 @@ return function(
             <div class="orderCol_h">
                 <strong class="orderNum">Заказ №<?= ($i) ?></strong>
                 <? if ($order->seller): ?>
-                    <span class="orderDetl">продавец: <?= $order->seller->name ?> <a class="orderDetl_lk" href="<?= $order->seller->offer ?>" target="_blank">Информация и оферта</a></span>
+                    <span class="orderDetl">продавец: <?= $order->seller->name ?> <a class="orderDetl_lk js-order-oferta-popup-btn" href="<?= $order->seller->offer ?>" data-value="<?= $order->seller->offer ?>" target="_blank">Информация и оферта</a></span>
                 <? endif ?>
             </div>
 
@@ -189,35 +189,35 @@ return function(
             <? if (!$order->delivery->use_user_address): ?>
                 <? $point = $order->delivery->point ? $orderDelivery->points[$order->delivery->point->token]->list[$order->delivery->point->id] : null ?>
 
-                <div class="orderCol_delivrIn orderCol_delivrIn-pl">
-                    <div class="orderCol_delivrIn_t clearfix">
-                        <strong><?= $orderDelivery->delivery_groups[$orderDelivery->delivery_methods[$order->delivery->delivery_method_token]->group_id]->name ?></strong>
+                <div class="orderCol_delivrIn <?= $order->delivery->point ? 'orderCol_delivrIn-pl' : 'orderCol_delivrIn-empty' ?>">
 
-                        <span class="js-order-changePlace-link orderChange" data-content="#id-order-changePlace-content-<?= $order->id ?>">изменить место</span>
-                    </div>
+                    <? if (!$order->delivery->point) : ?>
+                        <span class="js-order-changePlace-link brb-dt" data-content="#id-order-changePlace-content-<?= $order->id ?>">Указать место самовывоза</span>
+                    <? else : ?>
+                        <div class="orderCol_delivrIn_t clearfix">
+                            <span class="js-order-changePlace-link orderChange brb-dt" data-content="#id-order-changePlace-content-<?= $order->id ?>">изменить место</span>
+                        </div>
+                    <? endif; ?>
 
-                    <div class="orderCol_addrs"<? if (isset($point->subway[0]->line)): ?> style="background: <?= $point->subway[0]->line->color ?>;"<? endif ?>>
-                        <span class="orderCol_addrs_tx">
-                            <? if (isset($point->subway[0])): ?><?= $point->subway[0]->name ?><br/><? endif ?>
-                            <? if (isset($point->address)): ?><span class="colorBrightGrey"><?= $point->address ?></span><? endif; ?>
-                        </span>
-                    </div>
+                        <div class="orderCol_addrs"<? if (isset($point->subway[0]->line)): ?> style="background: <?= $point->subway[0]->line->color ?>;"<? endif ?>>
+                            <span class="orderCol_addrs_tx">
+                                <? if (isset($point->subway[0])): ?><?= $point->subway[0]->name ?><br/><? endif ?>
+                                <? if (isset($point->address)): ?><span class="colorBrightGrey"><?= $point->address ?></span><? endif; ?>
+                            </span>
+                        </div>
 
-                    <div class="orderCol_tm">
-                        <? if (isset($point->regtime)): ?><span class="orderCol_tm_t">Режим работы:</span> <?= $point->regtime ?><? endif ?>
-                        <? if (isset($point)) : ?>
-                            <br />
-                            <span class="orderCol_tm_t">Оплата при получении: </span>
-                            <? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CASH])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt="">-->наличные<? endif; ?><? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt="">-->, банковская карта<? endif; ?>
-                        <? endif; ?>
-                    </div>
-                </div>
+                        <div class="orderCol_tm">
+                            <? if (isset($point->regtime)): ?><span class="orderCol_tm_t">Режим работы:</span> <?= $point->regtime ?><? endif ?>
+                            <? if (isset($point)) : ?>
+                                <br />
+                                <span class="orderCol_tm_t">Оплата при получении: </span>
+                                <? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CASH])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt="">-->наличные<? endif; ?><? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt="">-->, банковская карта<? endif; ?>
+                            <? endif; ?>
+                        </div>
 
-                <div class="orderCol_delivrIn orderCol_delivrIn-empty">
-                    <span class="js-order-changePlace-link brb-dt">Указать место</span>
                 </div>
             <? else: ?>
-                <div class="orderCol_delivrIn orderCol_delivrIn-empty">
+                <div class="orderCol_delivrIn orderCol_delivrIn-empty jsSmartAddressBlock">
                     <div class="orderCol_delivrIn_t clearfix">
                         <strong>Адрес</strong> <span class="colorBrightGrey">для всех заказов с доставкой</span>
                     </div>
@@ -256,7 +256,7 @@ return function(
 
                 <div class="orderCheck orderCheck-credit clearfix">
                     <input type="checkbox" class="customInput customInput-checkbox jsCreditPayment" id="credit-<?= $order->block_name ?>" name="" value="" <?= $order->payment_method_id == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT ? 'checked' : '' ?>>
-                    <label class="customLabel" for="credit-<?= $order->block_name ?>"><span class="brb-dt">Купить в кредит</span>, от 2 223 <span class="rubl">p</span> в месяц</label>
+                    <label class="customLabel" for="credit-<?= $order->block_name ?>"><span class="brb-dt">Купить в кредит</span><!--, от 2 223 <span class="rubl">p</span> в месяц--></label>
                 </div>
 
             <? endif; ?>
@@ -279,11 +279,14 @@ return function(
     <div class="orderCompl orderCompl-v2 clearfix">
         <form id="js-orderForm" action="<?= $helper->url('orderV3.create') ?>" method="post">
 
-            <div class="orderCompl_l orderCompl_l-ln orderCheck orderCheck-str accept-err">
+            <div class="orderCompl_l orderCompl_l-ln orderCheck orderCheck-str">
                 <input type="checkbox" class="customInput customInput-checkbox jsAcceptAgreement" id="accept" name="" value="" />
 
                 <label  class="customLabel jsAcceptTerms" for="accept">
-                    Я ознакомлен и согласен с информацией о продавце и его офертой <span class="orderCompl_l_lk js-order-oferta-popup-btn">Ознакомиться</span>
+                    Я ознакомлен и согласен с информацией о продавце и его офертой
+                    <? if ($orderCount == 1) : ?>
+                        <span class="orderCompl_l_lk js-order-oferta-popup-btn" data-value="<?= $order->seller->offer ?>">Ознакомиться</span>
+                    <? endif; ?>
                 </label>
             </div><br/>
 

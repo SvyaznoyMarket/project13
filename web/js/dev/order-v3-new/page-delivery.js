@@ -185,7 +185,22 @@
                 console.error('No map data for token = "%s"', token,  elem);
             }
 
-        };
+		},
+		showOfertaPopup = function showOfertaPopupF() {
+			$('.js-order-oferta-popup').lightbox_me();
+		},
+
+		tabsOfertaAction = function tabsOfertaActionF() {
+			var $self = $(this),
+				tabContent = $('.js-tab-oferta-content'),
+				tab_id = $(this).attr('data-tab');
+
+			$('.js-oferta-tab').removeClass('orderOferta_tabs_i-cur');
+			tabContent.removeClass('orderOferta_tabcnt-cur');
+
+			$self.addClass('orderOferta_tabs_i-cur');
+			$("#"+tab_id).addClass('orderOferta_tabcnt-cur');
+		};
 
     // TODO change all selectors to .jsMethod
 
@@ -364,6 +379,27 @@
     $orderContent.on('click', '.jsAcceptTerms', function(){
         $body.trigger('trackUserAction', ['14 Согласен_оферта_Доставка_ОБЯЗАТЕЛЬНО']);
     });
+
+	/* Оферта */
+	$body.on('click', '.js-order-oferta-popup-btn', function(e){
+		var href = $(this).data('value');
+		e.preventDefault();
+		if (href != '') {
+			if (window.location.host != 'www.enter.ru') href = href.replace(/\/\/.*\//, '/' + window.location.host + '/'); /* для работы на demo-серверах */
+			$.ajax({
+				url: 'http://enter.loc/terms',
+				success: function(data) {
+					$('.orderOferta_tl:first').html($(data).find('.entry-content').html());
+					showOfertaPopup();
+				}
+			})
+		}
+
+	});
+
+	$body.on('click', '.js-oferta-tab', function(){
+		tabsOfertaAction()
+	});
 
     // АНАЛИТИКА
 

@@ -3,9 +3,6 @@
         $body = $(body),
         $orderContent = $('.orderCnt'),
         $jsOrder = $('#jsOrder'),
-        $ofertaBtn = $('.js-order-oferta-popup-btn'),
-        $ofertaPopup = $('.js-order-oferta-popup'),
-        $ofertaTab = $('.js-oferta-tab'),
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
             length: 5, // The length of each line
@@ -83,23 +80,6 @@
                 });
         },
 
-        showOfertaPopup = function showOfertaPopup() {
-            $ofertaPopup.lightbox_me({
-            });
-        },
-
-        tabsOfertaAction = function tabsOfertaAction() {
-            var $self = $(this),
-                tabContent = $('.js-tab-oferta-content'),
-                tab_id = $(this).attr('data-tab');
-
-            $ofertaTab.removeClass('orderOferta_tabs_i-cur');
-            tabContent.removeClass('orderOferta_tabcnt-cur');
-
-            $self.addClass('orderOferta_tabs_i-cur');
-            $("#"+tab_id).addClass('orderOferta_tabcnt-cur');
-        },
-
         showDirectCredit = function showDirectCreditF(data){
             var productArr = [];
 
@@ -147,10 +127,6 @@
                 break;
         }
     });
-
-    $ofertaBtn.on('click', showOfertaPopup);
-
-    $ofertaTab.on('click', tabsOfertaAction);
 
     // клик по "оплатить онлайн"
     $orderContent.on('click', '.jsOnlinePaymentSpan', function(e){

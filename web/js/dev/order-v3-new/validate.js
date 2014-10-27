@@ -86,7 +86,7 @@
         var error = [],
             $phoneInput = $('[name=user_info\\[phone\\]]'),
             $emailInput = $('[name=user_info\\[email\\]]'),
-            $nameInput =  $('[name=user_info\\[first_name\\]]'),
+//            $nameInput =  $('[name=user_info\\[first_name\\]]'),
             $bonusCardInput =  $('[name=user_info\\[bonus_card_number\\]]'),
             phone = $phoneInput.val().replace(/\s+/g, '');
 
@@ -100,10 +100,10 @@
             $emailInput.addClass(errorClass);
         }
 
-        if ($nameInput.val().length == 0) {
+/*        if ($nameInput.val().length == 0) {
             error.push('Поле имени не может быть пустым');
             $nameInput.addClass(errorClass);
-        }
+        }*/
 
         if ($bonusCardInput.val().length != 0 && !checkEan($bonusCardInput.val())) {
             error.push('Неверный код карты лояльности');
@@ -111,7 +111,7 @@
         }
 
         if (error.length != 0) {
-            showError(error);
+//            showError(error);
             e.preventDefault();
             $body.trigger('trackUserAction', ['6_2 Далее_ошибка_Получатель', 'Поле ошибки: '+error.join(', ')])
         }
@@ -120,11 +120,15 @@
     // PAGE DELIVERY
 
     $pageDelivery.on('submit', 'form', function(e){
-        var error = [];
+        var error = [],
+			$agreement = $('.jsAcceptAgreement');
 
-        if (!$('.jsAcceptAgreement').is(':checked')) {
+        if (!$agreement.is(':checked')) {
             error.push('Необходимо согласие с информацией о продавце и его офертой');
-        }
+			$agreement.parent().addClass('accept-err')
+        } else {
+			$agreement.parent().removeClass('accept-err')
+		}
 
         // Доставка
         if ($('.orderCol_delivrLst_i-act').text().indexOf('Доставка') != -1) {
@@ -137,7 +141,7 @@
 
         if (error.length != 0) {
             $errorBlock = $orderContent.find('#OrderV3ErrorBlock'); // TODO не очень хорошее поведение
-            showError(error);
+//            showError(error);
             e.preventDefault();
             $body.trigger('trackUserAction', ['15_2 Оформить_ошибка_Доставка', 'Поле ошибки: '+error.join(', ')]);
         } else {

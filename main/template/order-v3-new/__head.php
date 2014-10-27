@@ -22,7 +22,7 @@ return function(
             'isPassed' => false,
         ],
         3 => [
-            'name'     => 'Выбор оплаты',
+            'name'     => 'Способы оплаты',
             'url'      => $helper->url('orderV3.complete'),
             'isActive' => false,
             'isPassed' => false,
