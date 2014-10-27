@@ -90,7 +90,7 @@ return function(
     <form id="productCatalog-filter-form" class="bFilter clearfix js-filter <? if ($hasAlwaysShowFilters): ?>js-filter-hasAlwaysShowFilters<? endif ?>" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
         <? if ($hasAlwaysShowFilters): ?>
             <? foreach ($alwaysShowFilters as $filter): ?>
-                <div class="fltrSet js-filter-toggle-container">
+                <div class="fltrSet js-filter-toggle-container <? if ('Металл' === $filter->getName()): ?>fltrSet-metall<? endif ?> <? if ('Вставка' === $filter->getName()): ?>fltrSet-insertion<? endif ?>">
                     <div class="fltrSet_tggl fltrSet_tggl-dn js-filter-toggle-button">
                         <span class="fltrSet_tggl_tx"><?= $helper->escape($filter->getName()) ?></span>
                     </div>
