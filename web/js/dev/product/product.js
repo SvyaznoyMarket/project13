@@ -189,15 +189,16 @@ $(document).ready(function() {
                         beforeSend: function() {
                             $orderContent.fadeOut(500);
                             //if (spinner) spinner.spin(body)
-                        }
+                        },
+                        closeClick: false
                     }).fail(function(jqXHR){
-                            var response = $.parseJSON(jqXHR.responseText);
-                            if (response.result) {
-                                console.error(response.result);
-                            }
-                            if (response.result.redirect) {
-                                window.location.href = response.result.redirect;
-                            }
+                        var response = $.parseJSON(jqXHR.responseText);
+                        if (response.result) {
+                            console.error(response.result);
+                        }
+                        if (response.result.redirect) {
+                            window.location.href = response.result.redirect;
+                        }
                     }).done(function(data) {
                         console.log("Query: %s", data.result.OrderDeliveryRequest);
                         console.log("Model:", data.result.OrderDeliveryModel);
