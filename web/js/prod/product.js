@@ -1067,12 +1067,28 @@ $(document).ready(function() {
 				$.get(url, data, successHandler);
 
 				return false;
-			};
+            },
+
+            handleOneClick = function() {
+                console.info('show one click form');
+
+                var button = $(this),
+                    $target = $(button.data('target'))
+                ; // end of vars
+
+                if ($target.length) {
+                    $target.lightbox_me();
+                }
+
+                return false;
+            }
+
+        ;
 		// end of functions
 
 		$('.jsPayPalButton').bind('click', buyOneClickAndRedirect);
 		$('.jsLifeGiftButton').bind('click', buyOneClickAndRedirect);
-		$('.jsOneClickButton').bind('click', buyOneClickAndRedirect);
+		$('.jsOneClickButton').bind('click', handleOneClick);
 	})();
 
 

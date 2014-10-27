@@ -531,6 +531,8 @@
 						.script( getWithVersion('product.js') )
 						// .script( getWithVersion('oneclick.js') )
 						.wait()
+                        .script( getWithVersion('order-v3-1click.js') )
+                        //.script( getWithVersion('order-v3-1click.js') )
 						.script( optimizelyUrl )
 						.script('adfox.asyn.code.ver3.min.js')
 						.wait()

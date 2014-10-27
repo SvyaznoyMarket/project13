@@ -7,6 +7,8 @@ return function (
     $class = null,
     $value = 'Купить быстро в 1 клик'
 ) {
+    $region = \App::user()->getRegion();
+
     if (
         !$product->getIsBuyable()
         || (5 === $product->getStatusId()) // SITE-2924
@@ -49,7 +51,19 @@ return function (
 ?>
 
     <div class="btnOneClickBuy">
-        <a class="btnOneClickBuy__eLink <?= $class ?>" href="<?= $url ?>"><?= $value ?></a>
+        <a class="btnOneClickBuy__eLink <?= $class ?>" data-target="#jsOneClickContent" href="<?= $url ?>"><?= $value ?></a>
     </div>
+
+    <div id="jsOneClickContent" class="popup">
+        <a class="close" href="#">Закрыть</a>
+
+        <?= $helper->render('order-v3-1click/__form', [
+            'user'          => \App::user(),
+            'orderDelivery' => $helper->getParam('orderDelivery'),
+        ]) ?>
+    </div>
+
+    <div id="yandex-map-container" class="selShop_r" style="display: none;" data-options="<?= $helper->json(['latitude' => $region->getLatitude(), 'longitude' => $region->getLongitude(), 'zoom' => 10])?>"></div>
+    <div id="kladr-config" data-value="<?= $helper->json(\App::config()->kladr ); ?>"></div>
 
 <? };
