@@ -90,8 +90,10 @@
                 url: '/order-1click/delivery',
                 type: 'POST',
                 data: {
-                    'action' : action,
-                    'params' : params
+                    action : action,
+                    params : params,
+                    products: JSON.parse($orderContent.data('param')).products,
+                    update: 1
                 },
                 beforeSend: function() {
                     $orderContent.fadeOut(500);
@@ -108,7 +110,7 @@
             }).done(function(data) {
                 console.log("Query: %s", data.result.OrderDeliveryRequest);
                 console.log("Model:", data.result.OrderDeliveryModel);
-                $orderContent.empty().html($(data.result.page).find('#js-order-content').html());
+                $orderContent.empty().html($(data.result.page).html());
                 ENTER.OrderV3.constructors.smartAddress();
                 $orderContent.find('input[name=address]').focus();
             }).always(function(){

@@ -20,6 +20,9 @@ class DeliveryAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $product_list = json_decode($request->getContent(), true)['products'];
+        if (!$product_list) {
+            $product_list = $request->get('products');
+        }
 
         if ($request->isXmlHttpRequest()) {
 
@@ -28,7 +31,7 @@ class DeliveryAction {
 
                 $previousSplit = $this->session->get($this->splitSessionKey);
 
-                if ($previousSplit === null) {
+                if (!$previousSplit || !$request->get('update')) {
                     $result['OrderDeliveryRequest'] = json_encode($splitData, JSON_UNESCAPED_UNICODE);
                     $result['OrderDeliveryModel'] = $this->getSplit(null, null, $product_list);
                 } else {
@@ -98,7 +101,6 @@ class DeliveryAction {
     }
 
     public function getSplit(array $data = null, $shopId = null, $product_list) {
-
         if (!(bool)$product_list) throw new \Exception('Пустая корзина');
 
         if ($data) {
