@@ -517,7 +517,6 @@
 
 		'product_card': function() {
 			$LAB
-				.queueScript( yandexMapUrl )
 				.queueWait( function() {
 					$LAB.script( getWithVersion('jquery-plugins.js') )
 						.script( getWithVersion('library.js') )
@@ -530,6 +529,8 @@
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('product.js') )
 						.wait()
+                        .script(yandexMapUrlv2_1)
+                        .wait()
                         .script( getWithVersion('order-v3-1click.js') )
 						.script( optimizelyUrl )
 						.script('adfox.asyn.code.ver3.min.js')

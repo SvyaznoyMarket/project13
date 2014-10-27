@@ -23,6 +23,7 @@
 
     };
 
+    console.warn($mapContainer);
     if ($mapContainer.length) ymaps.ready(init);
 
 })(jQuery);

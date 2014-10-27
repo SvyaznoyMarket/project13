@@ -6,7 +6,7 @@ class DeliveryAction {
 
     public function __construct() {
         $this->session = \App::session();
-        $this->splitSessionKey = \App::config()->order['splitSessionKey'];
+        $this->splitSessionKey = \App::config()->order['splitSessionKey'] . '-1click';
         $this->client = \App::coreClientV2();
         $this->user = \App::user();
     }
@@ -66,7 +66,7 @@ class DeliveryAction {
 
         try {
 
-            $this->logger(['action' => 'view-page-delivery']);
+            //$this->logger(['action' => 'view-page-delivery']);
 
             // сохраняем данные пользователя
             $data['action'] = 'changeUserInfo';
@@ -76,7 +76,7 @@ class DeliveryAction {
             $orderDelivery = $this->getSplit($data);
 
             foreach($orderDelivery->orders as $order) {
-                $this->logger(['delivery-self-price' => $order->delivery->price]);
+                //$this->logger(['delivery-self-price' => $order->delivery->price]);
             }
 
             $page = new \View\OrderV3\DeliveryPage();
@@ -173,7 +173,7 @@ class DeliveryAction {
                 break;
 
             case 'changeDate':
-                $this->logger(['action' => 'change-date']);
+                //$this->logger(['action' => 'change-date']);
                 $changes['orders'] = array(
                     $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
                 );
