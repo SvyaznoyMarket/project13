@@ -19,6 +19,8 @@
         E.mapOptions = options;
         E.$map = $mapContainer;
 
+        console.info(E.map);
+
     };
 
     if ($mapContainer.length) ymaps.ready(init);

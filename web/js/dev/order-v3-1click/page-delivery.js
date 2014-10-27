@@ -109,7 +109,7 @@
                 console.log("Query: %s", data.result.OrderDeliveryRequest);
                 console.log("Model:", data.result.OrderDeliveryModel);
                 $orderContent.empty().html($(data.result.page).find('#js-order-content').html());
-                //ENTER.OrderV3.constructors.smartAddress();
+                ENTER.OrderV3.constructors.smartAddress();
                 $orderContent.find('input[name=address]').focus();
             }).always(function(){
                 $orderContent.stop(true, true).fadeIn(200);
