@@ -131,22 +131,12 @@ return function(
                     <span class="orderCol_summ"><?= $helper->formatPrice($order->total_cost) ?> <span class="rubl">p</span></span>
                     <span class="orderCol_summt">Итого:</span>
                 </div>
-
-                <? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT])) : ?>
-
-                    <div class="orderCheck orderCheck-credit clearfix">
-                        <input type="checkbox" class="customInput customInput-checkbox jsCreditPayment" id="credit-<?= $order->block_name ?>" name="" value="" <?= $order->payment_method_id == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT ? 'checked' : '' ?>>
-                        <label class="customLabel" for="credit-<?= $order->block_name ?>">Купить в кредит<!--, от 2 223 <span class="rubl">p</span> в месяц--></label>
-                    </div>
-
-                <? endif; ?>
-
             </div>
         </div>
         <!--/ информация о заказе -->
 
         <!-- информация о доставке -->
-        <div class="orderCol orderCol-r">
+        <div class="orderCol orderCol-v2 orderCol-r">
             <menu class="orderCol_delivrLst clearfix">
             <? foreach ($order->possible_delivery_groups as $deliveryGroup): ?>
                 <?  // Определение первого доступного delivery_method-а для группы
@@ -222,8 +212,12 @@ return function(
                         <? endif; ?>
                     </div>
                 </div>
+
+                <div class="orderCol_delivrIn orderCol_delivrIn-empty">
+                    <span class="js-order-changePlace-link brb-dt">Указать место</span>
+                </div>
             <? else: ?>
-                <div class="orderCol_delivrIn">
+                <div class="orderCol_delivrIn orderCol_delivrIn-empty">
                     <div class="orderCol_delivrIn_t clearfix">
                         <strong>Адрес</strong> <span class="colorBrightGrey">для всех заказов с доставкой</span>
                     </div>
@@ -243,8 +237,7 @@ return function(
                     <div class="orderCheck mb10">
                         <input type="checkbox" class="customInput customInput-checkbox jsCreditCardPayment" id="creditCardsPay-<?= $order->block_name ?>" name="" value="" <?= $order->payment_method_id == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY  ? 'checked ' : '' ?>/>
                         <label  class="customLabel" for="creditCardsPay-<?= $order->block_name ?>">
-                            Оплата банковской картой
-                            <span class="dblock colorBrightGrey s">Иначе курьер сможет принять только наличные</span>
+                            <span class="brb-dt">Оплата курьеру банковской картой</span> <img class="orderCheck_img" src="/styles/order/img/i-visa.png" alt=""><img class="orderCheck_img" src="/styles/order/img/i-mc.png" alt="">
                         </label>
                     </div>
 
@@ -259,6 +252,14 @@ return function(
             ]) ?>
 
             <!--/ способ доставки -->
+            <? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT])) : ?>
+
+                <div class="orderCheck orderCheck-credit clearfix">
+                    <input type="checkbox" class="customInput customInput-checkbox jsCreditPayment" id="credit-<?= $order->block_name ?>" name="" value="" <?= $order->payment_method_id == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT ? 'checked' : '' ?>>
+                    <label class="customLabel" for="credit-<?= $order->block_name ?>"><span class="brb-dt">Купить в кредит</span>, от 2 223 <span class="rubl">p</span> в месяц</label>
+                </div>
+
+            <? endif; ?>
         </div>
         <!--/ информация о доставке -->
     </div>
@@ -277,18 +278,18 @@ return function(
         <span class="l">Итого <strong><?= $orderCount ?></strong> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму <strong><?= $helper->formatPrice($orderDelivery->total_cost) ?> <span class="rubl">p</span></strong></span>
     </div>
 
-    <div class="orderCompl clearfix">
+    <div class="orderCompl orderCompl-v2 clearfix">
         <form id="js-orderForm" action="<?= $helper->url('orderV3.create') ?>" method="post">
 
             <div class="orderCompl_l orderCompl_l-ln orderCheck orderCheck-str">
                 <input type="checkbox" class="customInput customInput-checkbox jsAcceptAgreement" id="accept" name="" value="" />
 
                 <label  class="customLabel jsAcceptTerms" for="accept">
-                    Я ознакомлен и согласен с информацией о продавце и его офертой
+                    Я ознакомлен и согласен с информацией о продавце и его офертой <span class="orderCompl_l_lk js-order-oferta-popup-btn">Ознакомиться</span>
                 </label>
             </div>
 
-            <button class="orderCompl_btn btnsubmit">Оформить ➜</button>
+            <button class="orderCompl_btn btnsubmit">Оформить</button>
         </form>
     </div>
 
@@ -299,4 +300,41 @@ return function(
 <div id="region-name" data-value=<?= json_encode($region->getName(), JSON_UNESCAPED_UNICODE); ?>></div>
 <? if (App::config()->debug) : ?><div id="initialOrderModel" data-value="<?= $helper->json($orderDelivery) ?>"></div><? endif; ?>
 
+<div class="popup popup-simple js-order-oferta-popup">
+    <a href="" class="close"></a>
+
+    <div class="popup_inn">
+        <div class="orderOferta">
+            <div class="orderOferta_tabs">
+                <div class="orderOferta_tabs_i orderOferta_tabs_i-cur js-oferta-tab" data-tab="tab-1">Условия продажи</div>
+                <div class="orderOferta_tabs_i js-oferta-tab" data-tab="tab-2">Правовая информация</div>
+            </div>
+
+            <div class="orderOferta_tabcnt orderOferta_tabcnt-cur js-tab-oferta-content" id="tab-1">
+                <div class="orderOferta_tl">Условия продажи</div>
+            </div>
+            
+            <div class="orderOferta_tabcnt js-tab-oferta-content" id="tab-2">
+                <div class="orderOferta_tl">Правовая информация для пользователей сайта ООО «Энтер»</div>
+
+                <p>ООО «Энтер» оставляет за собой право изменять публикуемые на данном сайте материалы в любое время без предварительного уведомления.</p>
+
+                <div class="orderOferta_tl">Авторские права</div>
+                <p>Информация сайта ООО «Энтер» защищена авторским правом и действующим законодательством о защите интеллектуальной собственности. ООО «Энтер» предоставляет право посетителям сайта использовать опубликованные материалы в любых личных и некоммерческих целях. Любое копирование, изменение или использование данных материалов в коммерческих целях допускается с письменного согласия ООО «Энтер».</p>
+
+                <div class="orderOferta_tl">Содержание материалов</div>
+                <p>ООО «Энтер» приняты все разумные меры к тому, чтобы обеспечить точность и актуальность размещенной на этом сайте информации. ООО «Энтер» оставляет за собой право вносить изменение в содержание материалов этого сайта в любое время по собственному усмотрению. Продукты или услуги, не относящиеся напрямую к ООО «Энтер», упомянуты исключительно в информационных целях. Вся информация об ООО «Энтер» и третьих сторонах на этом сайте представлена в том виде, в котором она существует в распоряжении ООО «Энтер».</p>
+
+                <div class="orderOferta_tl">Товарные знаки</div>
+                <p>Товарные знаки, торговые марки, а также другие средства индивидуализации, помещенные на данном сайте, являются собственностью ООО «Энтер» и третьих лиц. Информация, опубликованная на сайте, не предоставляет никаких лицензионных прав на использование любых товарных знаков без получения предварительного письменного согласия владельца.</p>
+
+                <div class="orderOferta_tl">Ссылки</div>
+                <p>На данном сайте Вы можете найти ссылки на другие (внешние) сайты, не принадлежащие ООО «Энтер». Информация с этих сайтов не является продолжением или дополнением материалов ООО «Энтер».</p>
+
+                <div class="orderOferta_tl">Реквизиты</div>
+                <p>Наименование: ООО «Энтер» Место нахождения: 115419, г. Москва, улица Орджоникидзе, дом 11, строение 10. Государственный регистрационный номер записи о создании юридического лица: 1117746043381 ИНН: 7710881860 КПП: 772501001 Наименование банка: Связной Банк ЗАО г. Москва БИК: 044583139 Расчетный счет: 40702810400000002751</p>
+            </div>
+        </div>
+    </div>
+</div>
 <? };

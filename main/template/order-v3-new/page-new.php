@@ -16,11 +16,11 @@ return function(
 <?= $helper->render('order-v3-new/__head', ['step' => 1]) ?>
 
     <section class="orderCnt jsOrderV3PageNew">
-        <h1 class="orderCnt_t">Оформление заказа</h1>
+        <h1 class="orderCnt_t">Получатель</h1>
 
         <?= $helper->render('order-v3-new/__error', ['error' => $error]) ?>
 
-        <form class="orderU clearfix" action="" method="POST" accept-charset="utf-8">
+        <form class="orderU orderU-v2 clearfix" action="" method="POST" accept-charset="utf-8">
             <input type="hidden" value="changeUserInfo" name="action" />
 
             <fieldset class="orderU_flds">
@@ -37,7 +37,7 @@ return function(
                     </div>
 
                     <div class="orderU_fld">
-                        <label class="orderU_lbl orderU_lbl-str" for="">Имя</label>
+                        <label class="orderU_lbl" for="">Имя</label>
                         <input class="orderU_tx textfield jsOrderV3NameField" type="text" name="user_info[first_name]" value="<?= $userEntity ? $userEntity->getFirstName() : '' ?>" placeholder="">
                         <span class="orderU_hint">Как к вам обращаться?</span>
                     </div>
@@ -45,15 +45,16 @@ return function(
 
                 <? if ($bonusCards) : ?>
                 <div>
-                    <div class="bonusCnt">
-                        <div class="bonusCnt_t">Начислить баллы</div>
-
+                    <div class="bonusCnt bonusCnt-v2">
                             <div class="bonusCnt_lst">
                                 <? foreach ($bonusCards as $key => $card) : ?>
 
                                     <div class="bonusCnt_i" data-eq="<?= $key ?>">
                                         <img class="bonusCnt_img" src="/styles/order/img/sClub.png" alt="" />
-                                        <span class="bonusCnt_tx"><span class="brb-dt"><?= $card->getName() ?></span></span>
+                                        <span class="bonusCnt_tx">
+                                            <span class="brb-dt">Карта <?= $card->getName() ?></span><!-- что бы урать бордер можно удалить класс brb-dt -->
+                                            <span class="bonusCnt_tx_code"><span class="brb-dt">4753975634593</span></span>
+                                        </span>
                                     </div>
                                 <? endforeach ?>
                             </div>
@@ -64,16 +65,16 @@ return function(
                                 return $card->getId() == $arr['bonus_card_id']; })
                             ?>
                             <div class="bonusCnt_it clearfix" style="display: <?= (bool)$userBonusCard ? 'block' : 'none' ?>">
-                                <div class="fl-l">
-                                    <div class="orderU_fld">
-                                        <label class="orderU_lbl" for="">Карта</label>
-                                        <input class="orderU_tx textfield jsOrderV3BonusCardField" type="text" name="user_info[bonus_card_number]" value="<?= (bool)$userBonusCard ? $userBonusCard[0]['number'] : '' ?>" placeholder="<?= $card->getMask() ?>" data-mask="<?= $card->getMask() ?>">
-                                    </div>
-
-                                    <div class="bonusCnt_descr"><?= $card->getDescription() ?></div>
+                                <div class="orderU_fld">
+                                    <label class="orderU_lbl" for="">Номер</label>
+                                    <input class="orderU_tx textfield jsOrderV3BonusCardField" type="text" name="user_info[bonus_card_number]" value="<?= (bool)$userBonusCard ? $userBonusCard[0]['number'] : '' ?>" placeholder="<?= $card->getMask() ?>" data-mask="<?= $card->getMask() ?>">
+                                    <span class="orderU_inf"></span>
                                 </div>
 
-                                <img class="fl-r" src="<?= $card->getImage() ?>" alt="" />
+                                <div class="bonusCnt_popup">
+                                    <div class="bonusCnt_descr"><?= $card->getDescription() ?></div>
+                                    <img src="<?= $card->getImage() ?>" alt="" />
+                                </div>
                             </div>
                         <? endforeach ; ?>
                     </div>
@@ -90,8 +91,8 @@ return function(
 
             <? endif ?>
 
-            <div class="orderCompl clearfix">
-                <button class="orderCompl_btn btnsubmit" type="submit">Далее ➜</button>
+            <div class="orderCompl orderCompl-v2 clearfix">
+                <button class="orderCompl_btn btnsubmit" type="submit">Далее</button>
             </div>
 
         </form>
