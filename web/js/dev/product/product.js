@@ -174,11 +174,40 @@ $(document).ready(function() {
                 console.info('show one click form');
 
                 var button = $(this),
-                    $target = $(button.data('target'))
+                    $target = $(button.data('target')),
+                    $orderContent = $('#js-order-content')
                 ; // end of vars
 
                 if ($target.length) {
                     $target.lightbox_me();
+
+                    $.ajax({
+                        url: $orderContent.data('url'),
+                        type: 'POST',
+                        data: $orderContent.data('param'),
+                        dataType: 'json',
+                        beforeSend: function() {
+                            $orderContent.fadeOut(500);
+                            //if (spinner) spinner.spin(body)
+                        }
+                    }).fail(function(jqXHR){
+                            var response = $.parseJSON(jqXHR.responseText);
+                            if (response.result) {
+                                console.error(response.result);
+                            }
+                            if (response.result.redirect) {
+                                window.location.href = response.result.redirect;
+                            }
+                    }).done(function(data) {
+                        console.log("Query: %s", data.result.OrderDeliveryRequest);
+                        console.log("Model:", data.result.OrderDeliveryModel);
+                        $orderContent.empty().html($(data.result.page).html());
+                        ENTER.OrderV3.constructors.smartAddress();
+                        $orderContent.find('input[name=address]').focus();
+                    }).always(function(){
+                        $orderContent.stop(true, true).fadeIn(200);
+                        if (spinner) spinner.stop();
+                    });
                 }
 
                 return false;

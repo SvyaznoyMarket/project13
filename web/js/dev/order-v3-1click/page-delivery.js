@@ -87,7 +87,7 @@
         sendChanges = function sendChangesF (action, params) {
             console.info('Sending action "%s" with params:', action, params);
             $.ajax({
-                url: '/order/delivery',
+                url: '/order-1click/delivery',
                 type: 'POST',
                 data: {
                     'action' : action,
