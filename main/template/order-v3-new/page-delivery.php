@@ -234,10 +234,10 @@ return function(
 
                 <? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY])) : ?>
 
-                    <div class="orderCheck mb10">
+                    <div class="orderCheck" style="margin-bottom: 0;">
                         <input type="checkbox" class="customInput customInput-checkbox jsCreditCardPayment" id="creditCardsPay-<?= $order->block_name ?>" name="" value="" <?= $order->payment_method_id == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY  ? 'checked ' : '' ?>/>
                         <label  class="customLabel" for="creditCardsPay-<?= $order->block_name ?>">
-                            <span class="brb-dt">Оплата курьеру банковской картой</span> <img class="orderCheck_img" src="/styles/order/img/i-visa.png" alt=""><img class="orderCheck_img" src="/styles/order/img/i-mc.png" alt="">
+                            <span class="brb-dt" style="vertical-align: top;">Оплата курьеру банковской картой</span> <img class="orderCheck_img" src="/styles/order/img/i-visa.png" alt=""><img class="orderCheck_img" src="/styles/order/img/i-mc.png" alt="">
                         </label>
                     </div>
 
@@ -272,8 +272,6 @@ return function(
         <textarea class="orderComment_fld textarea" style="display: <?= $firstOrder->comment == '' ? 'none': 'block' ?>"><?= $firstOrder->comment ?></textarea>
     </div>
 
-
-
     <div class="orderComplSumm">
         <span class="l">Итого <strong><?= $orderCount ?></strong> <?= $helper->numberChoice($orderCount, ['заказ', 'заказа', 'заказов']) ?> на общую сумму <strong><?= $helper->formatPrice($orderDelivery->total_cost) ?> <span class="rubl">p</span></strong></span>
     </div>
@@ -281,13 +279,13 @@ return function(
     <div class="orderCompl orderCompl-v2 clearfix">
         <form id="js-orderForm" action="<?= $helper->url('orderV3.create') ?>" method="post">
 
-            <div class="orderCompl_l orderCompl_l-ln orderCheck orderCheck-str">
+            <div class="orderCompl_l orderCompl_l-ln orderCheck orderCheck-str accept-err">
                 <input type="checkbox" class="customInput customInput-checkbox jsAcceptAgreement" id="accept" name="" value="" />
 
                 <label  class="customLabel jsAcceptTerms" for="accept">
                     Я ознакомлен и согласен с информацией о продавце и его офертой <span class="orderCompl_l_lk js-order-oferta-popup-btn">Ознакомиться</span>
                 </label>
-            </div>
+            </div><br/>
 
             <button class="orderCompl_btn btnsubmit">Оформить</button>
         </form>

@@ -57,8 +57,17 @@
 			font-weight: normal;
     	}
     	.orderCompl_l {
-			width: 920px;
+			width: auto;
 			margin: 0px 0 10px;
+			background-color: #fff;
+			.rounded(4px);
+			padding: 3px 10px 3px 20px;
+			border: 2px solid #fff;
+			background-position: 6px 7px;
+
+			&.accept-err {
+				border-color: #ED404D;
+			}
 
 			&_lk {
 				.inline-block();
