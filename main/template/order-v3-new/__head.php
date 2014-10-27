@@ -40,8 +40,11 @@ return function(
 <div style="display: none" class="jsRegion" data-value="<?= \App::user()->getRegion() ? \App::user()->getRegion()->getName() : '' ?>"></div>
 
 <!-- шапка оформления заказа -->
-<header class="orderHd">
-    <img class="orderHd_lg" src="/styles/order/img/logo.png" />
+<header class="orderHd orderHd-v2">
+    <div class="orderHd_l">
+        <img class="orderHd_lg" src="/styles/order/img/logo.png" />
+        <div class="orderHd_t">Оформление заказа</div>
+    </div>
 
     <!-- если шаг пройден то orderHd_stps_i-pass, текущий шаг orderHd_stps_i-act -->
     <ul class="orderHd_stps">

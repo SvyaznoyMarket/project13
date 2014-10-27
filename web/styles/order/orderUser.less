@@ -3,7 +3,7 @@
 
 	&_flds {
 		.inline-block();
-		margin: 0 0 15px;
+		margin: 0 0 40px;
 	}
 
 	&_fld {
@@ -48,6 +48,27 @@
 
 		font-size: 14px;
 		line-height: 33px;
+	}
+
+	&-v2 {
+		.orderU_tx{
+			line-height: 14px;
+
+			&:focus {
+				border-color: #f89b1c;
+			}
+		}
+
+		.orderU_inf {
+			position: absolute;
+			top: 8px;
+			left: 275px;
+			display: block;
+			width: 19px;
+			height: 19px;
+			cursor: pointer;
+			background: no-repeat 0 0 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAQAAADYWf5HAAAA5klEQVQoz41SQQ6CMBDsjR9445+8gW9xYNKDkegFUaIHuWk4aEIVHDcIpYCJTNJk225mZ3ZXKQvtI0CEAkZOhED7aorMQ6irnCUNGzklc+oKYeY5SckKcSqfYximRJysBqb4zN84S2LHiDB1Pho++HLuwhi2wnU1lLtwK6p2PPFtS+tKzCDIbdKVxy46SNwjJwKFqLQPN9676Chxj5KIFAozE/5gIhoHxygUTDNrxEYSXVMwP9j2TsGBzdH2xdq6dLU5Tnu/Y7ROx30ja+lZPSrZ9m06BcOYz/kUFs904YYs3rf/2/sB+Dc7oEscnqEAAAAASUVORK5CYII=);
+		}
 	}
 }
 
@@ -153,5 +174,90 @@
 
 		font-size: 14px;
 		padding-left: 10px;
+	}
+
+	&-v2 {
+		.bonusCnt {
+
+			&_i {
+				.inline-block();
+				height: auto;
+				margin: 5px 0;
+				min-width: 300px;
+				padding: 0;
+				text-align: left;
+				border: none;
+				color: #5e5e5e;
+				font-size: 14px;
+
+				&-act {
+					background: none;
+					font-weight: normal;
+				}
+			}
+
+			&_it {
+				margin-top: 0;
+				padding: 0;
+				border: none;
+				position: relative;
+				background: none;
+			} 
+
+			&_img {
+				margin: 0 10px 0 -2px;
+			}
+
+			&_tx {
+				.inline-block();
+				vertical-align: middle;
+
+				&_code {
+					display: block;
+					color: @black;
+				}
+			}
+
+			&_descr {
+				width: auto;
+				margin: 0 0 5px;
+			}
+
+			&_popup {
+				position: absolute;
+				background: #fff;
+				border: 1px solid #d3d3d3;
+				border-radius: 0 4px 4px 0;
+				box-shadow: 0px 2px 5px #939393;
+				bottom: -30px;
+				right: -75px;
+				width: 222px;
+				padding: 10px;
+
+				&:after {
+					width: 0;
+					height: 0;
+					content: '';
+					border-top: 10px solid transparent;
+					border-right: 15px solid #fff;
+					border-bottom: 10px solid transparent;
+					position: absolute;
+					bottom: 45px;
+					left: -15px;
+				}
+
+				&:before {
+					width: 0;
+					height: 0;
+					content: '';
+					border-top: 13px solid transparent;
+					border-right: 17px solid #d3d3d3;
+					border-bottom: 13px solid transparent;
+					position: absolute;
+					bottom: 42px;
+					left: -17px;
+				}
+			} 
+		}
 	}
 }
