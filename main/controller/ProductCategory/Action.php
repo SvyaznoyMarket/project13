@@ -933,6 +933,8 @@ class Action {
             \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
         }
 
+        $columnCount = ('jewelItems3' === \App::abTest()->getTest('jewel_items')->getChosenCase()->getKey() && array_filter($category->getAncestor(), function(\Model\Product\Category\Entity $category) { return 923 === $category->getId(); })) ? 3 : 4;
+
         // ajax
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
             $data = [
@@ -940,7 +942,11 @@ class Action {
                     \App::closureTemplating()->getParam('helper'),
                     $productPager,
                     $productVideosByProduct,
-                    !empty($catalogJson['bannerPlaceholder']) && $hasBanner ? $catalogJson['bannerPlaceholder'] : []
+                    !empty($catalogJson['bannerPlaceholder']) && $hasBanner ? $catalogJson['bannerPlaceholder'] : [],
+                    null,
+                    true,
+                    $columnCount,
+                    $productView
                 ),
                 'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
@@ -979,13 +985,7 @@ class Action {
         $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setParam('sidebarHotlinks', true);
         $page->setParam('hasBanner', $hasBanner);
-        $page->setParam('columnCount',
-            (
-                ('jewelItems3' === \App::abTest()->getTest('jewel_items')->getChosenCase()->getKey())
-                && array_filter($category->getAncestor(), function(\Model\Product\Category\Entity $category) { return 923 === $category->getId(); })
-            ) ? 3
-            : 4
-        );
+        $page->setParam('columnCount', $columnCount);
 
         return new \Http\Response($page->show());
     }
