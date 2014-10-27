@@ -26,8 +26,9 @@ return function(
             <fieldset class="orderU_flds">
                 <div>
                     <div class="orderU_fld">
-                        <label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
                         <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[phone]" value="<?= $userEntity ? $userEntity->getMobilePhone() : '' ?>" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx">
+                        <label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
+                        <span class="errTx">Неверный формат телефона</span>
                         <span class="orderU_hint">Для смс о состоянии заказа</span>
                     </div>
 
