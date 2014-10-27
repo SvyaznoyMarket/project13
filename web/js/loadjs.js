@@ -475,6 +475,23 @@
                 }).runQueue();
         },
 
+		'order-v3-new': function() {
+			$LAB.queueScript(yandexMapUrlv2_1)
+				.queueWait( function() {
+					$LAB.script( getWithVersion('jquery-plugins.js') )
+						.script( getWithVersion('library.js') )
+						.script( mustacheUrl )
+						.script( knockoutUrl )
+						.script( loadDebugPanel )
+						.wait()
+						.script( getWithVersion('common.js') )
+//                        .script( kladr )
+						.script( getWithVersion('order-v3-new.js') )
+						.wait()
+						.script( getWithVersion('ports.js') );
+				}).runQueue();
+		},
+
 		'order_complete': function() {
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )
