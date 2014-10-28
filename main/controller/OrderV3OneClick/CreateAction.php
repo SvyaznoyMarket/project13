@@ -53,6 +53,7 @@ class CreateAction {
 
             foreach ($splitResult['orders'] as &$splitOrder) {
                 $orderItem = array_merge($userInfo, (new OrderEntity(array_merge($splitResult, ['order' => $splitOrder])))->getOrderData());
+                $orderItem['type_id'] = \Model\Order\Entity::TYPE_1CLICK;
 
                 $ordersData[] = $orderItem;
             }
