@@ -36,6 +36,10 @@
         console.warn('Validation errors', $validationErrors);
     }
 
+    $pageNew.on('blur', 'input',function(){
+        validate()
+    });
+
     // проверка телефона и email
     $pageNew.find('form').on('submit', function (e) {
         var error = validate();
