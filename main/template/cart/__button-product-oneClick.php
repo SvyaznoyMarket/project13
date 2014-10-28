@@ -12,15 +12,16 @@ return function (
 
     $isNewOneClick = false;
     try {
-        if (
-            ($region && in_array($region->getId(), \App::config()->self_delivery['regions']))
+        if (true
+            //($region && in_array($region->getId(), \App::config()->self_delivery['regions']))
             && \App::config()->newOrder
-            && \App::abTest()->getTest('orders') && \App::abTest()->getTest('orders_moscow') && \App::abTest()->getTest('order_delivery_price')
+            && \App::abTest()->getTest('orders') && \App::abTest()->getTest('orders_moscow')
+            //&& \App::abTest()->getTest('orders') && \App::abTest()->getTest('orders_moscow') && \App::abTest()->getTest('order_delivery_price')
             && (
                 // Новое ОЗ для Ярославля и Воронежа
-                ($region->getId() != 14974 && \App::abTest()->getTest('orders')->getChosenCase()->getKey() == 'new')
+                (($region->getId() != 14974) && \App::abTest()->getTest('orders')->getChosenCase()->getKey() == 'new')
                 // Новое ОЗ для Москвы
-                || ($region->getId() == 14974 && \App::abTest()->getTest('orders_moscow') && \App::abTest()->getTest('orders_moscow')->getChosenCase()->getKey() == 'new')
+                || (($region->getId() == 14974) && \App::abTest()->getTest('orders_moscow')->getChosenCase()->getKey() == 'new')
             )
         ) {
             $isNewOneClick = true;

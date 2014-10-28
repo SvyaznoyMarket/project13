@@ -21,6 +21,8 @@ class CreateAction {
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        $referer = $request->headers->get('referer') ?: '/';
+
         $coreResponse = null;   // ответ о ядра
         $ordersData = [];       // данные для отправки на ядро
         /** @var \Model\Order\CreatedEntity[] $createdOrders */
@@ -78,7 +80,7 @@ class CreateAction {
             $result['error'] = ['message' => $message];
             $result['errorContent'] = \App::closureTemplating()->render('order-v3/__error', ['error' => $message]);
 
-            return new \Http\JsonResponse(['result' => $result], 500);
+            return $request->isXmlHttpRequest() ? new \Http\JsonResponse(['result' => $result], 500) : new \Http\RedirectResponse($referer);
         } catch (\Exception $e) {
             if (!in_array($e->getCode(), \App::config()->order['excludedError'])) {
                 \App::logger('order')->error([
@@ -102,7 +104,7 @@ class CreateAction {
             $result['error'] = ['message' => $message];
             $result['errorContent'] = \App::closureTemplating()->render('order-v3/__error', ['error' => $message]);
 
-            return new \Http\JsonResponse(['result' => $result], 500);
+            return $request->isXmlHttpRequest() ? new \Http\JsonResponse(['result' => $result], 500) : new \Http\RedirectResponse($referer);
         }
 
         \App::logger()->info(['action' => __METHOD__, 'core.response' => $coreResponse], ['order']);
@@ -154,6 +156,6 @@ class CreateAction {
             ]),
         ];
 
-        return new \Http\JsonResponse(['result' => $result]);
+        return $request->isXmlHttpRequest() ? new \Http\JsonResponse(['result' => $result]) : new \Http\RedirectResponse($referer);
     }
 }
