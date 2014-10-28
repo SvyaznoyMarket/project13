@@ -35,6 +35,9 @@ class CreateAction {
         $params += ['request_id' => \App::$id]; // SITE-4445
 
         try {
+            if (empty($splitResult['orders'])) {
+                throw new \Exception('Ошибка оформления');
+            }
 
             foreach ($splitResult['orders'] as &$splitOrder) {
                 $ordersData[] = (new OrderEntity(array_merge($splitResult, ['order' => $splitOrder])))->getOrderData();
@@ -52,10 +55,12 @@ class CreateAction {
             \App::logger()->error($e->getMessage(), ['curl', 'order/create']);
             \App::exception()->remove($e);
 
-            $page = new \View\OrderV3\ErrorPage();
-            $page->setParam('error', (708 == $e->getCode()) ? 'Товара нет в наличии' : ('CORE: ' . $e->getMessage()));
-            $page->setParam('step', 3);
-            return new Response($page->show(), 500);
+            $message = (708 == $e->getCode()) ? 'Товара нет в наличии' : $e->getMessage();
+
+            $result['error'] = ['message' => $message];
+            $result['errorContent'] = \App::closureTemplating()->render('order-v3/__error', ['error' => $message]);
+
+            return new \Http\JsonResponse(['result' => $result], 500);
         } catch (\Exception $e) {
             if (!in_array($e->getCode(), \App::config()->order['excludedError'])) {
                 \App::logger('order')->error([
@@ -74,7 +79,12 @@ class CreateAction {
                 ]);
             }
 
-            throw $e;
+            $message = $e->getMessage();
+
+            $result['error'] = ['message' => $message];
+            $result['errorContent'] = \App::closureTemplating()->render('order-v3/__error', ['error' => $message]);
+
+            return new \Http\JsonResponse(['result' => $result], 500);
         }
 
         \App::logger()->info(['action' => __METHOD__, 'core.response' => $coreResponse], ['order']);
@@ -118,7 +128,7 @@ class CreateAction {
         $this->session->remove($this->splitSessionKey);
 
         // устанавливаем флаг первичного просмотра страницы
-        $this->session->set(self::SESSION_IS_READED_KEY, false);
+        //$this->session->set(self::SESSION_IS_READED_KEY, false);
 
         return new \Http\JsonResponse([
             'page' => \App::closureTemplating()->render('order-v3-1click', [

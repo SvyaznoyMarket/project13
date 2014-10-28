@@ -13,7 +13,7 @@ return function(
 
     <h1 class="orderCnt_t">Купить быстро в 1 клик</h1>
 
-    <?//= $helper->render('order-v3/__error', ['error' => $error]) ?>
+    <?= $helper->render('order-v3/__error', ['error' => null]) ?>
 
     <div>
         <img src="<?= $product->getImageUrl(1) ?>" />

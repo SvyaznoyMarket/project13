@@ -441,33 +441,6 @@ class IndexAction {
             }
         }
 
-        // FIXME: временно, перенести в отдельный контроллер {
-        $orderDeliveryData = \App::coreClientV2()->query('cart/split',
-            [
-                'geo_id'     => \App::user()->getRegionId(),
-                'request_id' => \App::$id, // SITE-4445
-            ],
-            [
-                'cart' => [
-                    'product_list' => [
-                        ['id' => $product->getId(), 'quantity' => 1],
-                    ]
-                ],
-            ]
-        );
-        $orderDelivery = new \Model\OrderDelivery\Entity($orderDeliveryData);
-        if (!(bool)$orderDelivery->orders) {
-            foreach ($orderDelivery->errors as $error) {
-                if (708 == $error->code) {
-                    throw new \Exception('Товара нет в наличии');
-                }
-            }
-
-            throw new \Exception('Отстуствуют данные по заказам');
-        }
-        // }
-
-
         $page = new \View\Product\IndexPage();
         $page->setParam('renderer', \App::closureTemplating());
         $page->setParam('regionsToSelect', $regionsToSelect);
@@ -512,8 +485,6 @@ class IndexAction {
                 $page->setParam('shoppilotReviews', $client->query($product->getId()));
                 break;
         }
-
-        $page->setGlobalParam('orderDelivery', $orderDelivery);
 
         return new \Http\Response($page->show());
     }

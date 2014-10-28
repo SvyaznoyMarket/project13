@@ -1078,7 +1078,7 @@ $(document).ready(function() {
                 ; // end of vars
 
                 if ($target.length) {
-                    $target.lightbox_me({centered: true, closeSelector: '.jsCloseFl', removeOtherOnCreate: false, closeClick: false, closeEsc: false});
+                    $target.lightbox_me({centered: true, closeSelector: '.close', removeOtherOnCreate: false, closeClick: false, closeEsc: false});
 
                     $.ajax({
                         url: $orderContent.data('url'),
@@ -1092,11 +1092,9 @@ $(document).ready(function() {
                         closeClick: false
                     }).fail(function(jqXHR){
                         var response = $.parseJSON(jqXHR.responseText);
-                        if (response.result) {
-                            console.error(response.result);
-                        }
-                        if (response.result.redirect) {
-                            window.location.href = response.result.redirect;
+
+                        if (response.result && response.result.errorContent) {
+                            $('#OrderV3ErrorBlock').html($(response.result.errorContent).html()).show();
                         }
                     }).done(function(data) {
                         console.log("Query: %s", data.result.OrderDeliveryRequest);
@@ -1106,7 +1104,7 @@ $(document).ready(function() {
                         $orderContent.find('input[name=address]').focus();
                     }).always(function(){
                         $orderContent.stop(true, true).fadeIn(200);
-                        if (spinner) spinner.stop();
+                        //if (spinner) spinner.stop();
                     });
                 }
 
