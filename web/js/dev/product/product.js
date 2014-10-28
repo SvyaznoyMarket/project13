@@ -73,6 +73,7 @@ $(document).ready(function() {
 		onChange:function( count ){
 			var spinnerFor = this.attr('data-spinner-for'),
 				bindButton = $('.'+spinnerFor),
+                bindOneClickButton = $('.' + spinnerFor + '-oneClick')
 				newHref = bindButton.attr('href') || '';
 			// end of vars
 
@@ -80,6 +81,7 @@ $(document).ready(function() {
 			console.log(bindButton);
 
 			bindButton.attr('href',newHref.addParameterToUrl('quantity',count));
+            bindOneClickButton.data('quantity', count);
 
 			// добавление в корзину после обновления спиннера
 			// if (bindButton.hasClass('mBought')){
@@ -197,10 +199,13 @@ $(document).ready(function() {
                         }
                     });
 
+                    var data = $.parseJSON($orderContent.data('param'));
+                    data.quantity = button.data('quantity');
+
                     $.ajax({
                         url: $orderContent.data('url'),
                         type: 'POST',
-                        data: $.parseJSON($orderContent.data('param')),
+                        data: data,
                         dataType: 'json',
                         beforeSend: function() {
                             $orderContent.fadeOut(500);

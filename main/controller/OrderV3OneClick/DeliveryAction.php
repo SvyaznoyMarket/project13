@@ -21,6 +21,15 @@ class DeliveryAction {
 
         $product_list = (array)$request->get('products');
         $shopId = is_scalar($request->get('shopId')) ? $request->get('shopId') : null;
+        $quantity = is_scalar($request->get('quantity')) ? (int)$request->get('quantity') : 1;
+        if ($quantity <= 1) {
+            $quantity = 1;
+        }
+
+        foreach ($product_list as &$productItem) {
+            $productItem['quantity'] = $quantity;
+        }
+        if (isset($productItem)) unset($productItem);
 
         if ($request->isXmlHttpRequest()) {
 

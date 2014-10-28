@@ -49,6 +49,7 @@ return function (
         $url = $helper->url('cart.oneClick.product.setList', $urlParams);
     }
 
+    // FIXME: резерв по старому
     if ((false !== strpos($class, ' jsOneClickButton ')) && !$shop) {
         $class = str_replace(' jsOneClickButton ', ' jsOneClickButton-new ', $class);
     }
