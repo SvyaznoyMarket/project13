@@ -40,6 +40,8 @@ if ($productVideo instanceof \Model\Product\Video\Entity) {
 ?>
 
 <li class="brandItems_i js-jewelListing">
+    <div class="goodsbox" ref="<?= $product->getToken(); ?>"><? //для корректной работы js ?>
+    <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>" <?php if (isset($additionalData)) echo 'data-product="' . $page->json($additionalData) . '"' ?> <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
 
         <a class="brandItems_n" href="<?= $product->getLink() ?>"><?= $product->getName() ?></a>
 
@@ -84,7 +86,8 @@ if ($productVideo instanceof \Model\Product\Video\Entity) {
                 <?= $helper->render('cart/__button-product', ['product' => $product]) // Кнопка купить ?>
             <? endif ?>
         </div>
+    </div>
 
     <?= $page->render('product/show/__corner_features', ['product' => $product]) ?>
-
+    </div>
 </li>
