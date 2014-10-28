@@ -543,11 +543,11 @@ $c->abTest = [
             'expireDate' => '2014-12-31',
             'cases' => [
                 'delivery_self_100' => [
-                    'traffic'  => 50,
+                    'traffic'  => 25,
                     'name'     => 'Платный самовывоз',
                 ],
                 'delivery_self_0' => [
-                    'traffic'  => 50,
+                    'traffic'  => 75,
                     'name'     => 'Бесплатный самовывоз',
                 ]
             ]
