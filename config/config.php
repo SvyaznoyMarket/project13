@@ -530,6 +530,20 @@ $c->abTest = [
                 ]
             ]
         ],
+        'orders_new' => [
+            'enabled' => true,
+            'expireDate' => '2014-12-31',
+            'cases' => [
+                'orders_new_2' => [
+                    'traffic'  => 50,
+                    'name'     => 'Обновленное новое ОЗ',
+                ],
+                'orders_new_1' => [
+                    'traffic'  => 50,
+                    'name'     => 'Не обновленное новое ОЗ',
+                ]
+            ]
+        ],
         'order_delivery_price' => [
             'enabled' => true,
             'expireDate' => '2014-12-31',

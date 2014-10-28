@@ -54,6 +54,66 @@
 			}
 		}
 	}
+
+	&-v2 {
+		background: #242424;
+		padding: 0;
+		height: 55px;
+		width: 960px;
+
+		.orderHd_l {
+			.inline-block();
+			background: @black;
+			color: @white;
+			border-right: 1px solid #757575;
+			padding: 5px 30px 5px 20px;
+		}
+
+		.orderCol_tm {
+			font-size: 13px;
+			margin-bottom: 5px;
+		}
+
+		.orderHd_lg {
+			.inline-block();
+		}
+
+		.orderHd_t {
+			.inline-block();
+			font-size: 18px;
+			margin: 0 0 0 10px;
+			color: @white;
+		}
+
+		.orderHd_stps {
+			line-height: 50px;
+
+			&_i {
+				margin: 0 50px 0 0;
+				
+				&-act {
+					color: #f89b1c;
+				}
+
+				&-pass {
+					color: #bababa;
+				}
+
+				&:after {
+					right: -35px;
+					width: 10px;
+					background: no-repeat 0 50% url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAARCAQAAAClHU5tAAAAVElEQVQYV2P4r/TfmAEV/O/4//t/KKoQ4//5mIJMJAhO+//1f/x/VmyCLKiCc4HaA5CF2P9X///xPxdZoBIoUEmRABuaAFAo7f93FAGgkAWKS7ADAPcyV4jb/fsTAAAAAElFTkSuQmCC);
+				}
+
+				&:last-child {
+
+					&:after {
+						background: none;
+					}
+				}
+			}
+		}
+	}
 }
 
 .orderCnt {
@@ -131,9 +191,8 @@
 	&_f {
 		padding: 10px 10px 0;
 
-		border: 1px solid @typLightGray;
-		border-top-width: 2px;
-		border-bottom-width: 2px;
+		border-top: 1px solid @typLightGray;
+		border-bottom: 1px solid @typLightGray;
 		background: @lightgreyBg;
 
 		font-size: 14px;

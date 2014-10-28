@@ -8,11 +8,17 @@ class NewPage extends Layout {
     }
 
     public function slotContent() {
-        return \App::closureTemplating()->render('order-v3/page-new', $this->params);
+        $path = 'order-v3';
+        if (\App::abTest()->getTest('orders_new') && \App::abTest()->getTest('orders_new')->getKey('orders_new_2')) {
+            $path = 'order-v3-new';
+        }
+        return \App::closureTemplating()->render($path . '/page-new', $this->params);
     }
 
     public function slotBodyDataAttribute() {
-        //return 'order_new';
+        if (\App::abTest()->getTest('orders_new') && \App::abTest()->getTest('orders_new')->getKey('orders_new_2')) {
+           return 'order-v3-new';
+        }
         return 'order-v3';
     }
 }

@@ -1,6 +1,25 @@
 .popup {
 
-	&-w635 {
-		width: 635px;
-	}
+    &-w635 {
+        width: 635px;
+    }
+
+    &-simple {
+        border: 1px solid #777777;
+        .box-shadow(none);
+        .rounded(4px);
+        width: 628px;
+        padding: 0;
+        .transition(all 0.5s ease);
+
+        .close {
+            background: url("@{base-url}/popup-auth/img/closer.gif") no-repeat 50% 50% !important;
+            height: 41px;
+            width: 41px;
+        }
+    }
+
+    &_inn {
+        padding: 10px 10px 30px;
+    }
 }

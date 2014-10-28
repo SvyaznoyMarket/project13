@@ -79,6 +79,11 @@ module.exports = {
         dest: '<%= pathProd %>order-v3-1click.js'
     },
 
+    orderV3newJS: {
+        src: ['<%= pathDev %>order-v3-new/*.js'],
+        dest: '<%= pathProd %>order-v3-new.js'
+    },
+    
     pandoraJS : {
         src: ['<%= pathDev %>pandora/*.js'],
         dest: '<%= pathProd %>pandora.js'

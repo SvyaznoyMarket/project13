@@ -111,6 +111,11 @@ module.exports = function (grunt, options) {
             tasks: ['jsmin-sourcemap:orderV31ClickJS']
         },
 
+        orderV3newJS: {
+            files: [ pathDev + 'order-v3-new/*.js'],
+            tasks: ['jsmin-sourcemap:orderV3newJS']
+        },
+        
         orderNewV5JS:{
             files: [ pathDev + 'order-new-v5/*.js'],
             tasks: ['jsmin-sourcemap:order_new_v5']
