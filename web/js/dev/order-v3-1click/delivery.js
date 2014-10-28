@@ -214,7 +214,7 @@
             $(elemId).find('.selShop_tab').removeClass('selShop_tab-act').first().addClass('selShop_tab-act');
             showMap($(elemId), token);
             $body.trigger('trackUserAction', ['10 Место_самовывоза_Доставка_ОБЯЗАТЕЛЬНО']);
-            $(elemId).lightbox_me({centered: true, closeSelector: '.jsCloseFl'});
+            $(elemId).lightbox_me({centered: true, closeSelector: '.jsCloseFl', removeOtherOnCreate: false});
         } else {
             log({'action':'view-date'});
             $body.trigger('trackUserAction', ['11 Срок_доставки_Доставка']);

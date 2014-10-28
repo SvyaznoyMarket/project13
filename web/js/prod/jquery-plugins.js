@@ -36,7 +36,7 @@
                 $iframe = $('iframe#lb_iframe'),
                 ie6 = ($.browser.msie && $.browser.version < 7);
 
-            if ($overlay.length > 0) {
+            if (($overlay.length > 0) && opts.removeOtherOnCreate) {
                 $overlay[0].removeModal(); // if the overlay exists, then a modal probably exists. Ditch it!
             } else {
                 $overlay =  $('<div class="' + opts.classPrefix + '_overlay" style="display:none;"/>'); // otherwise just create an all new overlay.
@@ -265,6 +265,7 @@
         // callbacks
         onLoad: function() {},
         onClose: function() {},
+        removeOtherOnCreate: true, // удалять другие окна при создании
         autofocus: false, 
 
         // style

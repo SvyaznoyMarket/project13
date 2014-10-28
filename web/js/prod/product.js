@@ -1078,7 +1078,7 @@ $(document).ready(function() {
                 ; // end of vars
 
                 if ($target.length) {
-                    $target.lightbox_me();
+                    $target.lightbox_me({centered: true, closeSelector: '.jsCloseFl', removeOtherOnCreate: false, closeClick: false, closeEsc: false});
 
                     $.ajax({
                         url: $orderContent.data('url'),
