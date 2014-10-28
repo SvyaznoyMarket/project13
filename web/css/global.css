@@ -12088,6 +12088,18 @@
     height: 230px;
     width: 230px;
   }
+  .bListing-3col .lstn_i {
+    width: 321px;
+  }
+  .bListing-3col .lstn_i_inn {
+    width: 299px;
+  }
+  .bListing-3col .lstn_desc {
+    width: 300px;
+  }
+  .bListing-3col .lstn_pr {
+    width: 180px;
+  }
   .bBtnLine {
     display: none;
     margin: 10px 0 0;
