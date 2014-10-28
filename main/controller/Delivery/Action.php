@@ -599,7 +599,8 @@ class Action {
         $region = \App::user()->getRegion();
 
         /* Есть регион и необходимые ключи АБ-тестов */
-        if ($region && in_array($region->getId(), \App::config()->self_delivery['regions'])
+        if ($region
+            //&& in_array($region->getId(), \App::config()->self_delivery['regions'])
             && \App::config()->newOrder
             && \App::abTest()->getTest('orders') && \App::abTest()->getTest('orders_moscow') && \App::abTest()->getTest('order_delivery_price')) {
             // Новое ОЗ для Ярославля и Воронежа
