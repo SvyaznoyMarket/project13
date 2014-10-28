@@ -2,7 +2,7 @@
 
     var body = $(document.body),
         _gaq = window._gaq,
-        region = $('.jsRegion').data('value'),
+        region = $('.jsChangeRegion').text().trim(),
 
         sendAnalytic = function sendAnalyticF (category, action, label, value) {
         var lbl = label || '',

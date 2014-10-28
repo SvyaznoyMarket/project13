@@ -1127,7 +1127,10 @@ $(document).ready(function() {
                     }).always(function(){
                         $orderContent.stop(true, true).fadeIn(200);
                         //if (spinner) spinner.stop();
+
+                        $('body').trigger('trackUserAction', ['0 Вход']);
                     });
+
                 }
 
                 return false;
