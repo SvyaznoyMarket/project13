@@ -15,6 +15,10 @@ return function(
 
     <?//= $helper->render('order-v3/__error', ['error' => $error]) ?>
 
+    <div>
+        <img src="<?= $product->getImageUrl(1) ?>" />
+    </div>
+
     <form class="orderU clearfix jsOrderV3OneClickForm" action="<?= $helper->url('orderV3OneClick.create') ?>" method="POST" accept-charset="utf-8">
         <input type="hidden" value="changeUserInfo" name="action" />
 

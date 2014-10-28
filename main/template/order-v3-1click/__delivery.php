@@ -7,6 +7,7 @@ return function(
 ) {
 ?>
 
+
 <div id="js-order-content" class="orderCnt jsOrderV3PageDelivery">
     <? $i = 0; foreach ($orderDelivery->orders as $order): $i++;?>
     <? if ((bool)$order->validationErrors) : ?>
