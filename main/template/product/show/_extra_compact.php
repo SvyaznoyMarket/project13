@@ -17,8 +17,8 @@ $additionalData = isset($additionalData) ? $additionalData : null;
 $productLink = $product->getLink().($page->hasGlobalParam('sender')?(false === strpos($product->getLink(), '?') ? '?' : '&') . 'sender='.$page->getGlobalParam('sender').'|'.$product->getId():'');
 ?>
 
-<div class="goodsbox<? if ($maxHeight): ?> height220<? endif ?>"<? if ($isHidden): ?> style="display:none;"<? endif ?> ref="<?php echo $product->getToken(); ?>" data-quantity="<?php echo empty($totalProducts) ? '' : $totalProducts; ?>" data-category="<?php echo empty($categoryToken) ? '' : $categoryToken; ?>" data-total-pages="<?php echo empty($totalPages) ? '' : $totalPages; ?>" data-category="<?php echo empty($categoryToken) ? '' : $categoryToken; ?>">
-    <div class="goodsbox__inner" data-url="<?= $productLink ?>" <?php if (isset($additionalData)) echo 'data-product="' . $page->json($additionalData) . '"' ?>>
+<div class="goodsbox<? if ($maxHeight): ?> height220<? endif ?> js-goodsbox"<? if ($isHidden): ?> style="display:none;"<? endif ?> data-quantity="<?php echo empty($totalProducts) ? '' : $totalProducts; ?>" data-category="<?php echo empty($categoryToken) ? '' : $categoryToken; ?>" data-total-pages="<?php echo empty($totalPages) ? '' : $totalPages; ?>" data-category="<?php echo empty($categoryToken) ? '' : $categoryToken; ?>">
+    <div class="goodsbox__inner js-goodsboxContainer" data-url="<?= $productLink ?>" <?php if (isset($additionalData)) echo 'data-product="' . $page->json($additionalData) . '"' ?>>
     	<div class="photo">
 			<a href="<?= $productLink ?>"<?php if (!empty($gaEvent)) echo ' data-event="'.$gaEvent.'" data-title="Переход по ссылке" class="gaEvent"'; ?>>
 			  <img class="mainImg" src="<?php echo $product->getImageUrl() ?>" alt="<?php echo $product->getNameWithCategory() ?>"

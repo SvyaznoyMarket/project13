@@ -39,9 +39,8 @@ if ($productVideo instanceof \Model\Product\Video\Entity) {
 }
 ?>
 
-<li class="brandItems_i js-jewelListing">
-    <div class="goodsbox" ref="<?= $product->getToken(); ?>"><? //для корректной работы js ?>
-    <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>" <?php if (isset($additionalData)) echo 'data-product="' . $page->json($additionalData) . '"' ?> <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
+<li class="brandItems_i js-jewelListing js-goodsbox">
+    <div class="goodsbox__inner js-goodsboxContainer" data-url="<?= $product->getLink() ?>" <?php if (isset($additionalData)) echo 'data-product="' . $page->json($additionalData) . '"' ?> <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
 
         <a class="brandItems_n" href="<?= $product->getLink() ?>"><?= $product->getName() ?></a>
 
@@ -64,7 +63,7 @@ if ($productVideo instanceof \Model\Product\Video\Entity) {
                 <li class="stickLst_i"><img class="stickLst_img" src="/css/bCatalog/img/grad360.png" /></li>
             <? endif ?>
         </ul>
-            
+
         <div class="lstn_pr">
             <? if ($product->getPriceOld()): ?>
                 <span class="lstn_pr_old">
@@ -89,5 +88,4 @@ if ($productVideo instanceof \Model\Product\Video\Entity) {
     </div>
 
     <?= $page->render('product/show/__corner_features', ['product' => $product]) ?>
-    </div>
 </li>
