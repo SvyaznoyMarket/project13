@@ -130,6 +130,8 @@ class Entity {
     public $email;
     /** @var Seller|null */
     public $seller;
+    /** @var string */
+    private $accessToken;
 
     /**
      * @param array $data
@@ -138,6 +140,7 @@ class Entity {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('type_id', $data)) $this->setTypeId($data['type_id']);
         if (array_key_exists('status_id', $data)) $this->setStatusId($data['status_id']);
+        if (array_key_exists('access_token', $data)) $this->setAccessToken($data['access_token']);
         if (array_key_exists('number', $data)) $this->setNumber($data['number']);
         if (array_key_exists('number_erp', $data)) $this->setNumberErp($data['number_erp']);
         if (array_key_exists('user_id', $data)) $this->setUserId($data['user_id']);
@@ -984,6 +987,20 @@ class Entity {
      */
     public function isPaid() {
         return $this->paymentStatusId == self::PAYMENT_STATUS_PAID;
+    }
+
+    /**
+     * @param string $acceessToken
+     */
+    public function setAccessToken($acceessToken) {
+        $this->accessToken = (string)$acceessToken;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccessToken() {
+        return $this->accessToken;
     }
 }
 

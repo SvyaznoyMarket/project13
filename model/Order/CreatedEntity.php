@@ -19,6 +19,8 @@ class CreatedEntity {
     private $paymentUrl;
     /** @var \DateTime */
     private $deliveredAt;
+    /** @var string */
+    private $accessToken;
 
     public $numberErp;
 
@@ -29,6 +31,7 @@ class CreatedEntity {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('number', $data)) $this->setNumber($data['number']);
         if (array_key_exists('user_id', $data)) $this->setUserId($data['user_id']);
+        if (array_key_exists('access_token', $data)) $this->setAccessToken($data['access_token']);
         if (array_key_exists('confirmed', $data)) $this->setConfirmed($data['confirmed']);
         if (array_key_exists('price', $data)) $this->setSum($data['price']);
         if (array_key_exists('pay_sum', $data)) $this->setPaySum($data['pay_sum']);
@@ -155,4 +158,17 @@ class CreatedEntity {
         return $this->userId;
     }
 
+    /**
+     * @param string $acceessToken
+     */
+    public function setAccessToken($acceessToken) {
+        $this->accessToken = (string)$acceessToken;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccessToken() {
+        return $this->accessToken;
+    }
 }

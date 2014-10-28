@@ -2,7 +2,7 @@
 
 return function(
     \Helper\TemplateHelper $helper,
-    \Model\Product\BasicEntity $product
+    \Model\Product\Entity $product
 ) {
     /** @var $bonusCards \Model\Order\BonusCard\Entity[] */
     $userEntity = \App::user()->getEntity();
@@ -18,10 +18,14 @@ return function(
     <div class="orderOneClick_hd">
         <img class="orderOneClick_hd_l" src="<?= $product->getImageUrl(1) ?>" />
         <div class="orderOneClick_hd_r">
-            <div class="orderOneClick_hd_n">Отбойный молоток<br/>
-            Калибр Мастер ОМ-1700/30М</div>
+            <div class="orderOneClick_hd_n">
+                <? if ($product->getPrefix()): ?>
+                    <?= $product->getPrefix() ?><br/>
+                <? endif ?>
+                <?= $product->getWebName() ?>
+            </div>
 
-            <div class="orderOneClick_hd_pr"><strong>10 520</strong> <span class="rubl">p</span></div>
+            <div class="orderOneClick_hd_pr"><strong><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
         </div>
     </div>
 

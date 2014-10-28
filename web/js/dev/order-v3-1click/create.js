@@ -14,7 +14,15 @@
 
         $.post($el.attr('action'), data)
             .done(function(response) {
+                console.warn(response);
                 $('#jsOneClickContentPage').empty().html(response.result.page);
+
+                var $orderContainer = $('#jsOrderV3OneClickOrder');
+                if ($orderContainer.length) {
+                    $.get($orderContainer.data('url')).done(function(response) {
+                        $orderContainer.html(response.result.page);
+                    });
+                }
             })
             .fail(function(jqXHR){
                 var response = $.parseJSON(jqXHR.responseText);

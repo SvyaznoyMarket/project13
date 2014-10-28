@@ -23,6 +23,7 @@ class CreateAction {
 
         $coreResponse = null;   // ответ о ядра
         $ordersData = [];       // данные для отправки на ядро
+        /** @var \Model\Order\CreatedEntity[] $createdOrders */
         $createdOrders = [];    // созданные заказы
         $params = [];           // параметры запроса на ядро
 

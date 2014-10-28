@@ -570,6 +570,10 @@ return [
         'pattern' => '/order-1click/create',
         'action'  => ['OrderV3OneClick\CreateAction', 'execute'],
     ],
+    'orderV3OneClick.get' => [
+        'pattern' => '/order-1click/get/{accessToken}',
+        'action'  => ['OrderV3OneClick\GetAction', 'execute'],
+    ],
 
 
     // заказ
