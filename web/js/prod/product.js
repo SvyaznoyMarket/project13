@@ -1139,7 +1139,8 @@ $(document).ready(function() {
 
 		$('.jsPayPalButton').bind('click', buyOneClickAndRedirect);
 		$('.jsLifeGiftButton').bind('click', buyOneClickAndRedirect);
-		$('.jsOneClickButton').bind('click', handleOneClick);
+		$('.jsOneClickButton').bind('click', buyOneClickAndRedirect);
+        $('.jsOneClickButton-new').bind('click', handleOneClick);
 		$('.js-order-oneclick-delivery-toggle-btn').on('click', toggleOneClickDelivery);
 	})();
 

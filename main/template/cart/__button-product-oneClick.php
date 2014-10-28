@@ -49,25 +49,30 @@ return function (
         $url = $helper->url('cart.oneClick.product.setList', $urlParams);
     }
 
+    if ((false !== strpos($class, ' jsOneClickButton ')) && !$shop) {
+        $class = str_replace(' jsOneClickButton ', ' jsOneClickButton-new ', $class);
+    }
 ?>
 
     <div class="btnOneClickBuy">
         <a class="btnOneClickBuy__eLink <?= $class ?>" data-target="#jsOneClickContent" href="<?= $url ?>"><?= $value ?></a>
     </div>
 
-    <div id="yandex-map-container" class="selShop_r" style="display: none;" data-options="<?= $helper->json(['latitude' => $region->getLatitude(), 'longitude' => $region->getLongitude(), 'zoom' => 10])?>"></div>
-    <div id="kladr-config" data-value="<?= $helper->json(\App::config()->kladr ); ?>"></div>
-    <div id="region-name" data-value=<?= json_encode($region->getName(), JSON_UNESCAPED_UNICODE); ?>></div>
+    <? if (!$shop): ?>
+        <div id="yandex-map-container" class="selShop_r" style="display: none;" data-options="<?= $helper->json(['latitude' => $region->getLatitude(), 'longitude' => $region->getLongitude(), 'zoom' => 10])?>"></div>
+        <div id="kladr-config" data-value="<?= $helper->json(\App::config()->kladr ); ?>"></div>
+        <div id="region-name" data-value=<?= json_encode($region->getName(), JSON_UNESCAPED_UNICODE); ?>></div>
 
-    <div id="jsOneClickContent" class="popup popup-w635">
-        <a class="close" href="#">Закрыть</a>
+        <div id="jsOneClickContent" class="popup popup-w635">
+            <a class="close" href="#">Закрыть</a>
 
-        <div id="jsOneClickContentPage">
-            <?= $helper->render('order-v3-1click/__form', [
-                'product' => $product,
-                'shop'    => $shop,
-            ]) ?>
+            <div id="jsOneClickContentPage">
+                <?= $helper->render('order-v3-1click/__form', [
+                    'product' => $product,
+                    'shop'    => $shop,
+                ]) ?>
+            </div>
         </div>
-    </div>
+    <? endif ?>
 
 <? };
