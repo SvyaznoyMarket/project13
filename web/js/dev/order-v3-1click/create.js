@@ -34,7 +34,7 @@
 
                 var error = (response.result && response.result.error) ? response.result.error : [];
 
-                $('body').trigger('trackUserAction', ['3_2 Оформить_ошибка', 'Поле ошибки: '+error.join(', ')]);
+                $('body').trigger('trackUserAction', ['3_2 Оформить_ошибка', 'Поле ошибки: '+ (error ? error.join(', ') : '')]);
             })
         ;
 
