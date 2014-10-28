@@ -34,7 +34,7 @@ return function(
             <div>
                 <div class="orderU_fld">
                     <label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
-                    <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[phone]" value="<?= $userEntity ? $userEntity->getMobilePhone() : '' ?>" placeholder="+7 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx">
+                    <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[phone]" value="<?= $userEntity ? $userEntity->getMobilePhone() : '' ?>" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx">
                 </div>
 
                 <div class="orderU_fld">
