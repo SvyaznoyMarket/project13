@@ -11,15 +11,26 @@ class IndexPage extends \View\DefaultLayout {
             $this->addStylesheet('/css/basket/ie10.min.css');
         }
 
+        $backlink = $this->url('homepage');
+
+        if ($this->hasParam('products')) {
+            $products = $this->getParam('products');
+            foreach (array_reverse($products) as $product) {
+                /** @var $product \Model\Product\Entity */
+                if ($product->getMainCategory() instanceof \Model\Product\Category\Entity) {
+                    $backlink = $product->getMainCategory()->getLink();
+                    break;
+                }
+            }
+        }
+
         $this->setTitle('Корзина - Enter.ru');
         $this->setParam('title', 'Корзина');
+        $this->setParam('backlink', $backlink);
     }
 
     public function slotContent() {
-        return
-            (bool)\App::user()->getCart()->count()
-            ? $this->render('cart/page-index', $this->params)
-            : $this->render('cart/page-empty', $this->params);
+        return $this->render('cart/page-cart', $this->params);
     }
 
     public function slotBodyDataAttribute() {
