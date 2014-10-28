@@ -10,21 +10,19 @@
 ?>
 
 <? if (!$isAjax): // убрать декорацию div-ом, если ajax-запрос ?>
-  <div class="bBrandGoods">
-    <ul class="bBrandGoodsList clearfix<? if(isset($itemsPerRow) && 3 == $itemsPerRow): ?> eItemBig<? endif ?>">
+<ul class="brandItems clearfix<? if(isset($itemsPerRow) && 3 == $itemsPerRow): ?> brandItems-3col<? endif ?>">
 <? endif ?>
 
-    <? $i = 0; foreach ($pager as $product): $i++ ?>
-        <? /** @var \Model\Product\Entity $product */ ?>
-        <?= $page->render('jewel/product/show/_compact', [
-            'product' => $product,
-            'addInfo' => $isAddInfo ? \Kissmetrics\Manager::getProductSearchEvent($product, $i, $pager->getPage()) : [],
-            'itemsPerRow' => $itemsPerRow,
-            'productVideo' => isset($productVideosByProduct[$product->getId()]) ? reset($productVideosByProduct[$product->getId()]) : null,
-        ]) ?>
-    <? endforeach ?>
+<? $i = 0; foreach ($pager as $product): $i++ ?>
+    <? /** @var \Model\Product\Entity $product */ ?>
+    <?= $page->render('jewel/product/show/_compact', [
+        'product' => $product,
+        'addInfo' => $isAddInfo ? \Kissmetrics\Manager::getProductSearchEvent($product, $i, $pager->getPage()) : [],
+        'itemsPerRow' => $itemsPerRow,
+        'productVideo' => isset($productVideosByProduct[$product->getId()]) ? reset($productVideosByProduct[$product->getId()]) : null,
+    ]) ?>
+<? endforeach ?>
 
 <? if (!$isAjax): // убрать декорацию div-ом, если ajax-запрос ?>
-    </ul>
-  </div>
+</ul>
 <? endif ?>

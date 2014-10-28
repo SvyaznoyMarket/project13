@@ -32,7 +32,7 @@ $(document).ready(function(){
 var ableToLoadJewel = true;
 function liveScrollJewel( lsURL, filters, pageid ) {
   var params = [];
-  var tmpnodeJewel = $('.bBrandGoodsList');
+  var tmpnodeJewel = $('.brandItems');
 
   $('#ajaxgoods').show();
 
