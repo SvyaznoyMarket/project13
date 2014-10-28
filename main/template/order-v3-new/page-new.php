@@ -35,6 +35,7 @@ return function(
                     <div class="orderU_fld">
                         <label class="orderU_lbl" for="">E-mail</label>
                         <input class="orderU_tx textfield jsOrderV3EmailField" type="text" name="user_info[email]" value="<?= $userEntity ? $userEntity->getEmail() : '' ?>" placeholder="mail@domain.com">
+                        <span class="errTx" style="display: none">Неверный формат email</span>
                     </div>
 
                     <div class="orderU_fld">

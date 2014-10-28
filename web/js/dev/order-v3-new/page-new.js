@@ -40,18 +40,6 @@
 		$(elem).closest('.bonusCnt-v2').find('.bonusCnt_tx_code .brb-dt').text($(elem).val())
 	});
 
-	/* Если это orders/new */
-
-	if (/new$/.test(window.location.href)) {
-		$('.jsOrderV3PhoneField').on('blur', function(){
-			if ($(this).val().length == 0) {
-				$(this).addClass('textfield-err').siblings('.errTx').show();
-			} else {
-				$(this).removeClass('textfield-err').siblings('.errTx').hide();
-			}
-		});
-	}
-
     // АНАЛИТИКА
 
     $body.on('focus', '.jsOrderV3PhoneField', function(){

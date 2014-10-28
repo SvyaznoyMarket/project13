@@ -190,10 +190,10 @@
 			$('.js-order-oferta-popup').lightbox_me();
 		},
 
-		tabsOfertaAction = function tabsOfertaActionF() {
-			var $self = $(this),
+		tabsOfertaAction = function tabsOfertaActionF(that) {
+			var $self = $(that),
 				tabContent = $('.js-tab-oferta-content'),
-				tab_id = $(this).attr('data-tab');
+				tab_id = $(that).attr('data-tab');
 
 			$('.js-oferta-tab').removeClass('orderOferta_tabs_i-cur');
 			tabContent.removeClass('orderOferta_tabcnt-cur');
@@ -385,20 +385,21 @@
 		var href = $(this).data('value');
 		e.preventDefault();
 		if (href != '') {
-			if (window.location.host != 'www.enter.ru') href = href.replace(/\/\/.*\//, '/' + window.location.host + '/'); /* для работы на demo-серверах */
+			console.log('OLD href', href);
+			if (window.location.host != 'www.enter.ru') href = href.replace(/^.*enter.ru/, ''); /* для работы на demo-серверах */
+			console.log('NEW href', href);
 			$.ajax({
-				url: 'http://enter.loc/terms',
+				url: href,
 				success: function(data) {
 					$('.orderOferta_tl:first').html($(data).find('.entry-content').html());
 					showOfertaPopup();
 				}
 			})
 		}
-
 	});
 
 	$body.on('click', '.js-oferta-tab', function(){
-		tabsOfertaAction()
+		tabsOfertaAction(this)
 	});
 
     // АНАЛИТИКА

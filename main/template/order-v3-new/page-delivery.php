@@ -192,7 +192,7 @@ return function(
                 <div class="orderCol_delivrIn <?= $order->delivery->point ? 'orderCol_delivrIn-pl' : 'orderCol_delivrIn-empty' ?>">
 
                     <? if (!$order->delivery->point) : ?>
-                        <span class="js-order-changePlace-link brb-dt" data-content="#id-order-changePlace-content-<?= $order->id ?>">Указать место самовывоза</span>
+                        <span class="js-order-changePlace-link brb-dt" data-content="#id-order-changePlace-content-<?= $order->id ?>" style="cursor: pointer">Указать место самовывоза</span>
                     <? else : ?>
                         <div class="orderCol_delivrIn_t clearfix">
                             <span class="js-order-changePlace-link orderChange brb-dt" data-content="#id-order-changePlace-content-<?= $order->id ?>">изменить место</span>

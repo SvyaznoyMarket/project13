@@ -5,7 +5,6 @@
         $errorBlock = $orderContent.find('#OrderV3ErrorBlock'),
         $pageNew = $('.jsOrderV3PageNew'),
         $pageDelivery = $('.jsOrderV3PageDelivery'),
-//        $pageComplete = $('.jsOrderV3PageComplete'),
         $validationErrors = $('.jsOrderValidationErrors'),
         errorClass = 'textfield-err',
         validateEmail = function validateEmailF(email) {
@@ -65,53 +64,49 @@
             // Return the result
             return checksum == originalCheck;
         },
-        showError = function showErrorF(errArr) {
-            var text = '';
-            if (!$errorBlock) $orderContent.prepend($('<div />',{id: 'OrderV3ErrorBlock'}));
-            $.each(errArr, function(i,val){
-                text += val;
-                if (i != errArr - 1) text += '<br/>';
-            });
-            $errorBlock.html(text).show()
-        };
+        validate = function validateF(){
+			var error = [],
+				$phoneInput = $('[name=user_info\\[phone\\]]'),
+				$emailInput = $('[name=user_info\\[email\\]]'),
+				$bonusCardInput =  $('[name=user_info\\[bonus_card_number\\]]'),
+				phone = $phoneInput.val().replace(/\s+/g, '');
+
+			if (!/8\(\d{3}\)\d{3}-\d{2}-\d{2}/.test(phone)) {
+				error.push('Неверный формат телефона');
+				$phoneInput.addClass('textfield-err').siblings('.errTx').show();
+			} else {
+				$phoneInput.removeClass('textfield-err').siblings('.errTx').hide();
+			}
+
+			if ($emailInput.val().length != 0 && !validateEmail($emailInput.val())) {
+				error.push('Неверный формат E-mail');
+				$emailInput.addClass('textfield-err').siblings('.errTx').show();
+			} else {
+				$emailInput.removeClass('textfield-err').siblings('.errTx').hide();
+			}
+
+			if ($bonusCardInput.val().length != 0 && !checkEan($bonusCardInput.val())) {
+				error.push('Неверный код карты лояльности');
+				$bonusCardInput.addClass(errorClass);
+			}
+
+			return error;
+		};
 
     if ($validationErrors.length) {
         console.warn('Validation errors', $validationErrors);
     }
 
+	/* Проверяем форму при потере фокуса любого input */
+	$pageNew.on('blur', 'input', function(){
+		validate();
+	});
+
     // PAGE NEW
 
     // проверка телефона и email
     $pageNew.find('form').on('submit', function (e) {
-        var error = [],
-            $phoneInput = $('[name=user_info\\[phone\\]]'),
-            $emailInput = $('[name=user_info\\[email\\]]'),
-//            $nameInput =  $('[name=user_info\\[first_name\\]]'),
-            $bonusCardInput =  $('[name=user_info\\[bonus_card_number\\]]'),
-            phone = $phoneInput.val().replace(/\s+/g, '');
-
-        if (!/8\(\d{3}\)\d{3}-\d{2}-\d{2}/.test(phone)) {
-            error.push('Неверный формат телефона');
-            $phoneInput.addClass(errorClass);
-        }
-
-        if ($emailInput.val().length != 0 && !validateEmail($emailInput.val())) {
-            error.push('Неверный формат E-mail');
-            $emailInput.addClass(errorClass);
-        }
-
-/*        if ($nameInput.val().length == 0) {
-            error.push('Поле имени не может быть пустым');
-            $nameInput.addClass(errorClass);
-        }*/
-
-        if ($bonusCardInput.val().length != 0 && !checkEan($bonusCardInput.val())) {
-            error.push('Неверный код карты лояльности');
-            $bonusCardInput.addClass(errorClass);
-        }
-
-        if (error.length != 0) {
-//            showError(error);
+        if (validate().length != 0) {
             e.preventDefault();
             $body.trigger('trackUserAction', ['6_2 Далее_ошибка_Получатель', 'Поле ошибки: '+error.join(', ')])
         }
@@ -141,7 +136,6 @@
 
         if (error.length != 0) {
             $errorBlock = $orderContent.find('#OrderV3ErrorBlock'); // TODO не очень хорошее поведение
-//            showError(error);
             e.preventDefault();
             $body.trigger('trackUserAction', ['15_2 Оформить_ошибка_Доставка', 'Поле ошибки: '+error.join(', ')]);
         } else {
