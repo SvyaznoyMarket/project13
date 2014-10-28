@@ -178,6 +178,13 @@ $(document).ready(function() {
                     $orderContent = $('#js-order-content')
                 ; // end of vars
 
+                // mask
+                $.mask.definitions['x']='[0-9]';
+                $.mask.placeholder= "_";
+                $.map($('#jsOneClickContent').find('input'), function(elem, i) {
+                    if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
+                });
+
                 if ($target.length) {
                     $target.lightbox_me({
                         centered: true,
@@ -210,6 +217,7 @@ $(document).ready(function() {
                         console.log("Query: %s", data.result.OrderDeliveryRequest);
                         console.log("Model:", data.result.OrderDeliveryModel);
                         $orderContent.empty().html($(data.result.page).html());
+
                         ENTER.OrderV3.constructors.smartAddress();
                         $orderContent.find('input[name=address]').focus();
                     }).always(function(){
