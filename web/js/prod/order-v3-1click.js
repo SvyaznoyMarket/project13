@@ -956,6 +956,7 @@
 
     function inputAddress(){
         var $body = $(document.body),
+			$orderContent = $('#js-order-content'),
             config = $('#kladr-config').data('value'),
             $addressBlock = $('.orderCol_addrs'),
             $input = $addressBlock.find('input'),
@@ -1071,14 +1072,18 @@
 
         function saveAddressRequest() {
             $.ajax({
+				url: ENTER.utils.generateUrl('orderV3OneClick.delivery'),
                 type: 'POST',
                 data: {
-                    'action' : 'changeAddress',
-                    'params' : {
+                    action : 'changeAddress',
+                    params : {
                         street: address.street.type + ' ' + address.street.name,
                         building: address.building.name,
                         apartment: address.apartment.name,
-                        kladr_id: address.building.id ? address.building.id : address.street.id ? address.street.id : address.city.id }
+                        kladr_id: address.building.id ? address.building.id : address.street.id ? address.street.id : address.city.id
+					},
+					products : JSON.parse($orderContent.data('param')).products,
+					update : 1
                 }
             }).fail(function(jqXHR){
                 var response = $.parseJSON(jqXHR.responseText);
