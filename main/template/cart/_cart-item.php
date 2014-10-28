@@ -7,7 +7,7 @@
 
     <div class="basketLine__desc">
         <div class="basketLine__desc__name">
-            <a href="" data-bind="text: name"></a>
+            <a href="" data-bind="text: name, attr: {href: link}"></a>
             <noindex><div class="basketLine__desc__available">Есть в наличии</div></noindex>
         </div>
 
