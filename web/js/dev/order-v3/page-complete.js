@@ -35,7 +35,8 @@
                         if ($form.hasClass('jsPaymentFormPaypal') && typeof $form.attr('action') != 'undefined') {
                             window.location.href = $form.attr('action');
                         } else {
-                            $(data.form).submit();
+							$body.append($form);
+							$form.submit();
                         }
                     }
                     console.log('Payment data', data);
@@ -116,15 +117,15 @@
         switch (id) {
             case 5:
                 getForm(5, orderId, orderNumber);
-                body.trigger('trackUserAction', ['17_2 Оплатить_онлайн_Онлайн_Оплата']);
+                $body.trigger('trackUserAction', ['17_2 Оплатить_онлайн_Онлайн_Оплата']);
                 break;
             case 8:
                 getForm(8, orderId, orderNumber);
-                body.trigger('trackUserAction', ['17_3 Оплатить_онлайн_Электронный счёт PSB_Оплата']);
+                $body.trigger('trackUserAction', ['17_3 Оплатить_онлайн_Электронный счёт PSB_Оплата']);
                 break;
             case 13:
                 getForm(13, orderId, orderNumber);
-                body.trigger('trackUserAction', ['17_1 Оплатить_онлайн_PayPal_Оплата']);
+                $body.trigger('trackUserAction', ['17_1 Оплатить_онлайн_PayPal_Оплата']);
                 break;
         }
     });
