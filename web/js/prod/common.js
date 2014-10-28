@@ -120,6 +120,7 @@
 		authorized_cookie = '_authorized',
 		startTime, endTime, spendTime, $compareNotice, compareNoticeTimeout;
 
+	/* Модель продукта в корзине */
 	function createCartModel(cart) {
 		var model = {};
 		$.each(cart, function(key, value){
@@ -138,6 +139,9 @@
 		model.lastName = ko.observable();
 		model.link = ko.observable();
 		model.isEnterprizeMember = ko.observable();
+		/* была ли модель обновлена данными от /ajax/userinfo */
+		/* чтобы предотвратить моргание элементов, видимость которых зависит от суммы корзины, например */
+		model.isUpdated = ko.observable(false);
 
 		model.cart = ko.observableArray();
 		model.cartSum = ko.computed(function(){
@@ -166,7 +170,20 @@
 			if (data.compare) {
 				$.each(data.compare, function(i,val){ model.compare.push(val) })
 			}
+			model.isUpdated(true);
 			$body.trigger('userModelUpdate')
+		};
+
+		/* Обновление количества продукта */
+		model.productQuantityUpdate = function(product_id, count) {
+			$.each(model.cart(), function(i,val){
+				if (product_id == val.id) val.quantity(count)
+			})
+		};
+
+		/* Удаление продукта по ID */
+		model.removeProductByID = function(product_id) {
+			model.cart.remove(function(item) { return item.id == product_id })
 		};
 
 		/* АБ-тест платного самовывоза */
@@ -232,7 +249,7 @@
 
 	// Биндинги на нужные элементы
 	// Топбар, кнопка Купить на странице продукта, листинги, слайдер аксессуаров
-	$('.js-topbarfix, .js-WidgetBuy, .js-listing, .js-jewelListing, .js-gridListing, .js-lineListing, .js-slider').each(function(){
+	$('.js-topbarfix, .js-WidgetBuy, .js-listing, .js-jewelListing, .js-gridListing, .js-lineListing, .js-slider, .jsKnockoutCart').each(function(){
 		ko.applyBindings(ENTER.UserModel, this);
 	});
 

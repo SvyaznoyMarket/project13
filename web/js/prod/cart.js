@@ -1,28 +1,46 @@
 ;(function($){
 
-	var kitPopupItems = ko.observableArray(),
-		ajaxProducts = ko.observableArray(),
-		$body = $(document.body);
+	var $body = $(document.body);
 
-	$('.product_kit-data').on('click', function(e){
-		var items = $(this).data('value');
-		kitPopupItems.removeAll(); // clear
-		$.each(items, function(i, val){ kitPopupItems.push(val) });
-		$('#kitPopup').lightbox_me({
-			centered: true
-		});
-		e.preventDefault();
+	/* Увеличение и уменьшение товара AJAX */
+	$body.on('click', '.numerbox a', function(e){
+		var $elem = $(this),
+			href = $elem.attr('href');
+
+		if (href != '') {
+			e.preventDefault();
+			$.ajax({
+				url: href,
+				success: function(data){
+					if (data.success && data.product && typeof data.product.quantity != 'undefined') {
+						ENTER.UserModel.productQuantityUpdate(data.product.id, data.product.quantity);
+					} else if (data.success && data.product && typeof data.product.quantity == 'undefined') {
+						ENTER.UserModel.removeProductByID(data.product.id);
+					}
+				}
+			})
+		}
+
 	});
 
-	ko.applyBindings({ kitPopupItems: kitPopupItems	}, $('#kitPopup')[0]);
+	/* Удаление продукта AJAX */
+	$body.on('click', '.jsCartDeleteProduct', function(e){
+		var href = $(this).attr('href');
 
-	ko.applyBindings({ ajaxProducts: ajaxProducts }, $('.jsKnockoutCart')[0]);
+		if (href != '') {
+			e.preventDefault();
+			$.ajax({
+				url: href,
+				success: function(data){
+					if (data.success && data.product) {
+						ENTER.UserModel.removeProductByID(data.product.id);
+						$body.trigger('removeFromCart', [data.product]);
+					}
+				}
+			})
+		}
 
-	$body.on('addtocart', function(e, data) {
-		if (!data.product) return;
-		ajaxProducts.push(data);
-		$('.basketSum__price .price').text( printPrice(data.cart.full_price) );
-	});
+	})
 
 }(jQuery));
 ;(function($){
@@ -35,7 +53,7 @@
 
 	$('.bGoodsSlider').goodsSlider();
 
-	if (cartInfoBlock.length > 0) ko.applyBindings(ENTER.UserModel, cartInfoBlock[0]);
+//	if (cartInfoBlock.length > 0) ko.applyBindings(ENTER.UserModel, cartInfoBlock[0]);
 
 	$body.on('userLogged', function(){
 		if (user.cartSum() < config.selfDeliveryLimit && user.cartSum() != 0) {

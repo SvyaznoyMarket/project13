@@ -5,9 +5,10 @@
 		<li class="bEmptyCartList__eItem">НАЙТИ ТОВАР?  <span class="bOrange">ЛЕГКО!</span></li>
 
 		<li class="bEmptyCartList__eItem">посмотреть <a class="bBlue" href="special_offers">wow-акции</a>
-		<span class="bGreyText">Самые выгодные предложения</div>
+		<span class="bGreyText">Самые выгодные предложения</span>
 		</li>
 	</ul>
 
-	<div class="cart_ep"><a href="/enterprize" title=""><img src="/css/bEmptyCart/img/ep.jpg" alt="" /></a></div>
+
 </div>
+<div class="cart_ep"><a href="/enterprize" title=""><img src="/css/bEmptyCart/img/ep.jpg" alt="" /></a></div>

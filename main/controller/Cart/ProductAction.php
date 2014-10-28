@@ -50,7 +50,7 @@ class ProductAction {
             $productInfo = [
                 'id'        => $product->getId(),
                 'name'      => $product->getName(),
-                'img'       => $product->getImageUrl(2),
+                'img'       => $product->getImageUrl(),
                 'link'      => $product->getLink(),
                 'price'     => $product->getPrice(),
                 'deleteUrl' => $cartProduct  ? (new \Helper\TemplateHelper())->url('cart.product.delete', ['productId' => $cartProduct->getId()]) : null,

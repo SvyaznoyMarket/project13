@@ -8,7 +8,7 @@
 
 	$('.bGoodsSlider').goodsSlider();
 
-	if (cartInfoBlock.length > 0) ko.applyBindings(ENTER.UserModel, cartInfoBlock[0]);
+//	if (cartInfoBlock.length > 0) ko.applyBindings(ENTER.UserModel, cartInfoBlock[0]);
 
 	$body.on('userLogged', function(){
 		if (user.cartSum() < config.selfDeliveryLimit && user.cartSum() != 0) {
