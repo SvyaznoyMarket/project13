@@ -1142,6 +1142,8 @@ $(document).ready(function() {
 
             		button.toggleClass('orderU_lgnd-cur');
             		$toggleBox.toggle();
+
+                $('body').trigger('trackUserAction', ['2 Способ получения']);
             };
 		// end of functions
 
