@@ -5043,6 +5043,10 @@ img[height="0"] {
     border-right: 1px solid #757575;
     padding: 5px 30px 5px 20px;
   }
+  .orderHd-v2 .orderCol_tm {
+    font-size: 13px;
+    margin-bottom: 5px;
+  }
   .orderHd-v2 .orderHd_lg {
     display: inline-block;
     vertical-align: top;
@@ -5260,7 +5264,7 @@ img[height="0"] {
   }
   .orderCol-v2 .orderCol_delivrIn-empty {
     background: #fee6c6;
-    padding: 10px;
+    padding: 10px 10px 1px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
@@ -5272,10 +5276,17 @@ img[height="0"] {
   .orderCol-v2 .orderCol_delivrIn-pl {
     background: #ffffff;
     border: 1px solid #d3d3d3;
-    padding: 5px 10px 5px 20px;
+    padding: 10px 10px 1px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
+  }
+  .orderCol-v2 .orderCol_addrs {
+    margin-left: 13px;
+  }
+  .orderCol-v2 .orderCol_tm {
+    font-size: 13px;
+    margin-bottom: 5px;
   }
   .orderCol-v2 .orderCol_date,
   .orderCol-v2 .customSel {

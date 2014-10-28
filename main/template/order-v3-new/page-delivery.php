@@ -192,7 +192,7 @@ return function(
                 <div class="orderCol_delivrIn <?= $order->delivery->point ? 'orderCol_delivrIn-pl' : 'orderCol_delivrIn-empty' ?>">
 
                     <? if (!$order->delivery->point) : ?>
-                        <span class="js-order-changePlace-link brb-dt" data-content="#id-order-changePlace-content-<?= $order->id ?>">Указать место самовывоза</span>
+                        <span class="js-order-changePlace-link brb-dt" style="cursor: pointer;" data-content="#id-order-changePlace-content-<?= $order->id ?>">Указать место самовывоза</span>
                     <? else : ?>
                         <div class="orderCol_delivrIn_t clearfix">
                             <span class="js-order-changePlace-link orderChange brb-dt" data-content="#id-order-changePlace-content-<?= $order->id ?>">изменить место</span>
@@ -222,7 +222,7 @@ return function(
                         <strong>Адрес</strong> <span class="colorBrightGrey">для всех заказов с доставкой</span>
                     </div>
 
-                    <div class="orderCol_addrs">
+                    <div class="orderCol_addrs" style="margin-left: 0;">
                         <ul class="orderCol_addrs_fld textfield clearfix" style="height: inherit">
                             <li class="orderCol_addrs_fld_i orderCol_addrs_fld_i-edit ui-front">
                                 <span id="addressInputPrefix" class="addrsAutocmpltLbl"></span><input name="address" type="text" />
