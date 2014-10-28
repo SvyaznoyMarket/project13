@@ -2141,9 +2141,9 @@
 //            if (!ENTER.OrderV3.address || !ENTER.OrderV3.address.building.name) error.push('Укажите адрес доставки');
         }
 
-        $('.orderCol_addrs_tx').each(function(i,val){
-            if ($(val).text().replace(/\s+/, '').length == 0) error.push('Укажите адрес самовывоза');
-        });
+//        $('.orderCol_addrs_tx').each(function(i,val){
+//            if ($(val).text().replace(/\s+/, '').length == 0) error.push('Укажите адрес самовывоза');
+//        });
 
         if (error.length != 0) {
             $errorBlock = $orderContent.find('#OrderV3ErrorBlock'); // TODO не очень хорошее поведение
