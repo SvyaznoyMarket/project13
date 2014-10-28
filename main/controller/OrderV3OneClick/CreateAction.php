@@ -27,6 +27,8 @@ class CreateAction {
         $createdOrders = [];    // созданные заказы
         $params = [];           // параметры запроса на ядро
 
+        $userInfo = (array)$request->get('user_info');
+
         $splitResult = $this->session->get($this->splitSessionKey);
 
         if ($this->user->getEntity() && $this->user->getEntity()->getToken()) {
@@ -36,24 +38,35 @@ class CreateAction {
         $params += ['request_id' => \App::$id]; // SITE-4445
 
         try {
+            if (empty($userInfo['mobile'])) {
+                throw new \Exception('Не указан телефон');
+            }
+            $userInfo['mobile'] = preg_replace('/^\+7/', '8', $userInfo['mobile']);
+            $userInfo['mobile'] = preg_replace('/[^\d]/', '', $userInfo['mobile']);
+            if (10 == strlen($userInfo['mobile'])) {
+                $userInfo['mobile'] = '8' . $userInfo['mobile'];
+            }
+
             if (empty($splitResult['orders'])) {
                 throw new \Exception('Ошибка оформления');
             }
 
             foreach ($splitResult['orders'] as &$splitOrder) {
-                $ordersData[] = (new OrderEntity(array_merge($splitResult, ['order' => $splitOrder])))->getOrderData();
+                $orderItem = array_merge($userInfo, (new OrderEntity(array_merge($splitResult, ['order' => $splitOrder])))->getOrderData());
+
+                $ordersData[] = $orderItem;
             }
             if (isset($splitOrder)) unset($splitOrder);
 
-            /*
+            ///*
             $coreResponse = $this->client->query(
                 (\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet'),
                 $params,
                 $ordersData,
                 \App::config()->coreV2['hugeTimeout']
             );
-            */
-            $coreResponse = json_decode('[{"confirmed":"true","id":"8473373","access_token":"300F0632-7253-4472-8C68-364A6FC61A2A","is_partner":0,"partner_ui":null,"number":"TE411112","number_erp":"COTE-411112","user_id":null,"price":10280,"pay_sum":10280,"payment_invoice_id":null,"payment_url":null}]', true);
+            //*/
+            //$coreResponse = json_decode('[{"confirmed":"true","id":"8473373","access_token":"300F0632-7253-4472-8C68-364A6FC61A2A","is_partner":0,"partner_ui":null,"number":"TE411112","number_erp":"COTE-411112","user_id":null,"price":10280,"pay_sum":10280,"payment_invoice_id":null,"payment_url":null}]', true);
 
         } catch (\Curl\Exception $e) {
             \App::logger()->error($e->getMessage(), ['curl', 'order/create']);

@@ -101,11 +101,9 @@
                 }
             }).fail(function(jqXHR){
                 var response = $.parseJSON(jqXHR.responseText);
-                if (response.result) {
-                    console.error(response.result);
-                }
-                if (response.result.redirect) {
-                    window.location.href = response.result.redirect;
+
+                if (response.result && response.result.errorContent) {
+                    $('#OrderV3ErrorBlock').html($(response.result.errorContent).html()).show();
                 }
             }).done(function(data) {
                 console.log("Query: %s", data.result.OrderDeliveryRequest);

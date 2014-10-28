@@ -14,7 +14,6 @@
 
         $.post($el.attr('action'), data)
             .done(function(response) {
-                console.warn(response);
                 $('#jsOneClickContentPage').empty().html(response.result.page);
 
                 var $orderContainer = $('#jsOrderV3OneClickOrder');

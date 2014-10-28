@@ -13,7 +13,7 @@ return function(
 <div class="orderOneClick">
     <h1 class="orderOneClick_t">Купить быстро в 1 клик</h1>
 
-    <?//= $helper->render('order-v3/__error', ['error' => $error]) ?>
+    <?= $helper->render('order-v3/__error', ['error' => null]) ?>
 
     <div class="orderOneClick_hd">
         <img class="orderOneClick_hd_l" src="<?= $product->getImageUrl(1) ?>" />
@@ -38,7 +38,7 @@ return function(
             <div>
                 <div class="orderU_fld">
                     <label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
-                    <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[phone]" value="<?= $userEntity ? $userEntity->getMobilePhone() : '' ?>" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx">
+                    <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[mobile]" value="<?= $userEntity ? $userEntity->getMobilePhone() : '' ?>" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx">
                 </div>
 
                 <div class="orderU_fld">
