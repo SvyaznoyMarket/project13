@@ -2,7 +2,10 @@
 
 namespace Controller\Queue;
 
-// TODO: Переделать с использованием QueueManager
+/**
+ * @deprecated
+ * @package Controller\Queue
+ */
 class Action {
 
     /** @var \PDO */

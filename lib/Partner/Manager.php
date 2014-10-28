@@ -182,11 +182,12 @@ class Manager {
                     $prefix => [\Partner\Counter\Recreative::NAME],
                 ];
                 break;*/
+            /*
             case \Smartengine\Client::NAME:
                 $return = [
                     $prefix => [\Smartengine\Client::NAME],
                 ];
-                break;
+                break;*/
             /*case \Partner\Counter\Reactive::NAME:
                 $return = [
                     'name' => \Partner\Counter\Reactive::NAME,

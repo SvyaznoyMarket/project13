@@ -73,6 +73,7 @@ $(document).ready(function() {
 		onChange:function( count ){
 			var spinnerFor = this.attr('data-spinner-for'),
 				bindButton = $('.'+spinnerFor),
+                bindOneClickButton = $('.' + spinnerFor + '-oneClick')
 				newHref = bindButton.attr('href') || '';
 			// end of vars
 
@@ -80,6 +81,7 @@ $(document).ready(function() {
 			console.log(bindButton);
 
 			bindButton.attr('href',newHref.addParameterToUrl('quantity',count));
+            bindOneClickButton.data('quantity', count);
 
 			// добавление в корзину после обновления спиннера
 			// if (bindButton.hasClass('mBought')){
@@ -168,12 +170,84 @@ $(document).ready(function() {
 				$.get(url, data, successHandler);
 
 				return false;
-			};
+            },
+
+            handleOneClick = function() {
+                console.info('show one click form');
+
+                var button = $(this),
+                    $target = $(button.data('target')),
+                    $orderContent = $('#js-order-content')
+                ; // end of vars
+
+                // mask
+                $.mask.definitions['x']='[0-9]';
+                $.mask.placeholder= "_";
+                $.map($('#jsOneClickContent').find('input'), function(elem, i) {
+                    if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
+                });
+
+                if ($target.length) {
+                    $target.lightbox_me({
+                        centered: true,
+                        closeSelector: '.close',
+                        removeOtherOnCreate: false,
+                        closeClick: false,
+                        closeEsc: false,
+                        onLoad: function() {
+                            $('#OrderV3ErrorBlock').empty().hide();
+                        }
+                    });
+
+                    var data = $.parseJSON($orderContent.data('param'));
+                    data.quantity = button.data('quantity');
+
+                    $.ajax({
+                        url: $orderContent.data('url'),
+                        type: 'POST',
+                        data: data,
+                        dataType: 'json',
+                        beforeSend: function() {
+                            $orderContent.fadeOut(500);
+                            //if (spinner) spinner.spin(body)
+                        },
+                        closeClick: false
+                    }).fail(function(jqXHR){
+                        var response = $.parseJSON(jqXHR.responseText);
+
+                        if (response.result && response.result.errorContent) {
+                            $('#OrderV3ErrorBlock').html($(response.result.errorContent).html()).show();
+                        }
+                    }).done(function(data) {
+                        console.log("Query: %s", data.result.OrderDeliveryRequest);
+                        console.log("Model:", data.result.OrderDeliveryModel);
+                        $orderContent.empty().html($(data.result.page).html());
+
+                        ENTER.OrderV3.constructors.smartAddress();
+                        $orderContent.find('input[name=address]').focus();
+                    }).always(function(){
+                        $orderContent.stop(true, true).fadeIn(200);
+                        //if (spinner) spinner.stop();
+                    });
+                }
+
+                return false;
+            },
+
+            toggleOneClickDelivery = function toggleOneClickDelivery() {
+            	var button = $(this),
+            		$toggleBox = $('.js-order-oneclick-delivery-toggle');
+
+            		button.toggleClass('orderU_lgnd-cur');
+            		$toggleBox.toggle();
+            };
 		// end of functions
 
 		$('.jsPayPalButton').bind('click', buyOneClickAndRedirect);
 		$('.jsLifeGiftButton').bind('click', buyOneClickAndRedirect);
 		$('.jsOneClickButton').bind('click', buyOneClickAndRedirect);
+        $('.jsOneClickButton-new').bind('click', handleOneClick);
+		$('.js-order-oneclick-delivery-toggle-btn').on('click', toggleOneClickDelivery);
 	})();
 
 

@@ -387,14 +387,6 @@ $c->payment['creditEnabled'] = true;
 $c->payment['paypalECS'] = false;
 $c->payment['blockedIds'] = [];
 
-$c->smartengine['cert']           = $c->dataDir . '/cert/gsorganizationvalg2.crt';
-$c->smartengine['apiUrl']         = 'https://www.selightprod.smartengine.at/se-light/api/1.0/json/';
-$c->smartengine['apiKey']         = 'c41851b19511c20acc84f47b7816fb8e';
-$c->smartengine['tenantid']       = 'ENojUTRcD8';
-$c->smartengine['logEnabled']     = true;
-$c->smartengine['logDataEnabled'] = true;
-$c->smartengine['sslVerify']      = true;
-
 $c->warranty['enabled'] = true;
 $c->f1Certificate['enabled'] = true;
 $c->coupon['enabled'] = true;

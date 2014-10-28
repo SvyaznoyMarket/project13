@@ -4906,6 +4906,11 @@ img[height="0"] {
 /*---END----Наборы пакетов/лини мебели/наборы мебели---------*/
 /*---------Стили попапов и их содержимого----------*/
 @media all {
+  .popup-w635 {
+    width: 635px;
+  }
+}
+@media all {
   .markerList-table {
     display: table;
     width: 605px;
@@ -5823,6 +5828,185 @@ img[height="0"] {
   .orderLn_lst_lk {
     color: #5e5e5e;
     border-bottom: 1px dotted;
+  }
+}
+@media all {
+  .orderOneClick_t {
+    font-size: 30px;
+    margin: 0 0 30px;
+  }
+  .orderOneClick_hd {
+    margin: 0 0 20px;
+  }
+  .orderOneClick_hd_l {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+  }
+  .orderOneClick_hd_r {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    margin: 0 0 0 15px;
+    font-size: 20px;
+    max-width: 400px;
+  }
+  .orderOneClick_hd_n {
+    line-height: 1.2;
+    margin: 0 0 15px;
+  }
+  .orderOneClick_dlvr {
+    display: none;
+  }
+  .orderOneClick_cmpl_t {
+    font-size: 25px;
+    margin-bottom: 15px;
+  }
+  .orderOneClick_cmpl .orderCompl_btn {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    height: 40px;
+    line-height: 40px;
+  }
+  .orderOneClick_cmpl .orderCompl_btn:hover {
+    text-decoration: none;
+  }
+  .orderOneClick .orderOneClick_cmpl.orderU_fldsbottom {
+    padding-top: 10px;
+    font-size: 20px;
+  }
+  .orderOneClick .orderU_flds {
+    display: block;
+    margin: 0;
+  }
+  .orderOneClick .orderU_lgnd {
+    font-size: 20px;
+    margin: 0 0 15px;
+  }
+  .orderOneClick .orderU_lgnd-cur {
+    border-bottom: none;
+  }
+  .orderOneClick .orderU_lgnd-tggl {
+    color: #808080;
+    border-bottom: 1px dotted #808080;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    font-size: 16px;
+  }
+  .orderOneClick .orderU_lbl {
+    font-size: 14px;
+  }
+  .orderOneClick .orderU_fldsbottom {
+    background: #fee6c6;
+    border-top: 1px solid #eaeaea;
+    margin: 0 0 -21px -25px;
+    padding: 25px 10px;
+    width: 665px;
+  }
+  .orderOneClick .orderCol-r {
+    float: none;
+    width: 614px;
+  }
+  .orderOneClick .orderCol_delivrLst {
+    background: #fff;
+    width: 635px;
+    border-bottom: 1px solid #e6e6e6;
+  }
+  .orderOneClick .orderCol_lk {
+    vertical-align: middle;
+  }
+  .orderOneClick .orderCol_delivrIn {
+    background: none;
+    border: medium none;
+    padding: 10px 10px 1px;
+    position: relative;
+  }
+  .orderOneClick .orderCol_delivrIn-pl {
+    background: #fff;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding: 10px 10px 1px;
+    border: 1px solid #d3d3d3;
+  }
+  .orderOneClick .orderCol_n {
+    font-size: 16px;
+    width: 480px;
+    vertical-align: middle;
+  }
+  .orderOneClick .orderCol_f {
+    border-width: 1px 0;
+    background: none;
+    margin: 0 0 40px;
+  }
+  .orderOneClick .orderCol_data {
+    color: #000;
+    padding-right: 10px;
+    margin-top: 10px;
+  }
+  .orderOneClick .orderCol_cnt {
+    border-top: medium none;
+    padding: 10px 0 15px;
+  }
+  .orderOneClick .orderCol_addrs {
+    margin: 0 0 10px 10px;
+  }
+  .orderOneClick .orderCol_tm {
+    margin: 0 0 10px;
+  }
+  .orderOneClick .orderCol .customSel {
+    background-color: #fff;
+  }
+  .orderOneClick .orderCol_date {
+    background-color: #fff;
+  }
+  .orderOneClick .orderCol_summt {
+    float: right;
+    font-size: 16px;
+    margin: 0 0 10px;
+    width: 109px;
+  }
+  .orderOneClick .orderRow {
+    border-top: medium none;
+  }
+  .orderOneClick .celedr {
+    bottom: -178px;
+    right: 80px;
+  }
+  .orderOneClick .orderCol_delivrLst_i {
+    border-bottom: none;
+    padding: 10px 10px 10px 0;
+    width: auto;
+    margin-bottom: -1px;
+  }
+  .orderOneClick .orderCol_delivrLst_i:first-child {
+    border-top: 1px solid #e6e6e6;
+    padding-bottom: 9px;
+  }
+  .orderOneClick .orderCol_delivrLst_i:first-child.orderCol_delivrLst_i-act {
+    padding-bottom: 10px;
+  }
+  .orderOneClick .orderCol_delivrLst_i:last-child.orderCol_delivrLst_i-act {
+    border-right: 1px solid #e6e6e6;
+  }
+  .orderOneClick .orderCol_delivrLst_i-act {
+    background: #f6f6f6;
+    border-top: 1px solid #e6e6e6;
+    cursor: default;
+    font-weight: bold;
   }
 }
 @media all {

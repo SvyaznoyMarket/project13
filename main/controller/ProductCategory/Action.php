@@ -431,7 +431,7 @@ class Action {
         try {
             // если у категории нет дочерних узлов
             if ($category && (!$category->getHasChild()) || in_array($category->getId(), [1096])) {
-                $hotlinks = array_filter($hotlinks, function($item) { return isset($item['group_name']) ? (bool)$item['group_name'] : false; }); // TODO: временная заглушка
+                //$hotlinks = array_filter($hotlinks, function($item) { return isset($item['group_name']) ? (bool)$item['group_name'] : false; }); // TODO: временная заглушка
                 // опции брендов
                 $brandOptions = [];
                 foreach ($filters as $filter) {
@@ -894,8 +894,11 @@ class Action {
         }
 
         // проверка на максимально допустимый номер страницы
-        if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
-            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+        if ((1 != $productPager->getPage()) && (($productPager->getPage() - $productPager->getLastPage()) > 0)) {
+            //throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
+                'page' => $productPager->getLastPage(),
+            ]));
         }
 
         // video

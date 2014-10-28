@@ -566,6 +566,19 @@ return [
         'method'    => ['POST']
     ],
 
+    'orderV3OneClick.delivery' => [
+        'pattern' => '/order-1click/delivery',
+        'action'  => ['OrderV3OneClick\DeliveryAction', 'execute'],
+    ],
+    'orderV3OneClick.create' => [
+        'pattern' => '/order-1click/create',
+        'action'  => ['OrderV3OneClick\CreateAction', 'execute'],
+    ],
+    'orderV3OneClick.get' => [
+        'pattern' => '/order-1click/get/{accessToken}',
+        'action'  => ['OrderV3OneClick\GetAction', 'execute'],
+    ],
+
 
     // заказ
     'order.1click' => [
