@@ -13,7 +13,7 @@ return function(
 <div class="orderOneClick">
     <h1 class="orderOneClick_t">Купить быстро в 1 клик</h1>
 
-    <?//= $helper->render('order-v3/__error', ['error' => $error]) ?>
+    <?= $helper->render('order-v3/__error', ['error' => null]) ?>
 
     <div class="orderOneClick_hd">
         <img class="orderOneClick_hd_l" src="<?= $product->getImageUrl(1) ?>" />

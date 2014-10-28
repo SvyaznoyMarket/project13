@@ -1309,14 +1309,13 @@
 
     };
 
-    console.warn($mapContainer);
     if ($mapContainer.length) ymaps.ready(init);
 
 })(jQuery);
 ;(function($) {
 
     var
-        $form = $('#jsOrderV3OneClickForm')
+        $form = $('.jsOrderV3OneClickForm')
     ;
 
 
@@ -1327,9 +1326,18 @@
             data = $el.serializeArray()
         ;
 
-        $.post($el.attr('action'), data).done(function(response) {
+        $.post($el.attr('action'), data)
+            .done(function(response) {
 
-        });
+            })
+            .fail(function(jqXHR){
+                var response = $.parseJSON(jqXHR.responseText);
+
+                if (response.result && response.result.errorContent) {
+                    $('#OrderV3ErrorBlock').html($(response.result.errorContent).html()).show();
+                }
+            })
+        ;
 
         e.preventDefault();
     })

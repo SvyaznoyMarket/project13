@@ -51,6 +51,7 @@ class DeliveryAction {
             } catch (\Curl\Exception $e) {
                 \App::exception()->remove($e);
                 $result['error']    = ['message' => $e->getMessage()];
+                $result['errorContent'] = \App::closureTemplating()->render('order-v3/__error', ['error' => $e->getMessage()]);
                 $result['data']     = ['data' => $splitData];
                 if ($e->getCode() == 600) {
                     //$this->cart->clear();
@@ -59,6 +60,7 @@ class DeliveryAction {
             } catch (\Exception $e) {
                 \App::exception()->remove($e);
                 $result['error'] = ['message' => $e->getMessage()];
+                $result['errorContent'] = \App::closureTemplating()->render('order-v3/__error', ['error' => $e->getMessage()]);
             }
 
             return new \Http\JsonResponse(['result' => $result], isset($result['error']) ? 500 : 200);
