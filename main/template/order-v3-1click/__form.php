@@ -3,7 +3,7 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
-    $title = null
+    \Model\Shop\Entity $shop = null
 ) {
     /** @var $bonusCards \Model\Order\BonusCard\Entity[] */
     $userEntity = \App::user()->getEntity();
@@ -11,9 +11,7 @@ return function(
     $userBonusCards = $userEntity ? $userEntity->getBonusCard() : null;
     $userBonusCard = null;
 
-    if (null === $title) {
-        $title = 'Купить быстро в 1 клик';
-    }
+    $title = $shop ? 'Резерв товара' :'Купить быстро в 1 клик';
 ?>
 <div class="orderOneClick">
     <h1 class="orderOneClick_t"><?= $title ?></h1>
@@ -70,6 +68,7 @@ return function(
                         'products' => [
                             ['id' => $product->getId(), 'quantity' => 1],
                         ],
+                        'shopId'   => $shop ? $shop->getId() : null,
                     ]) ?>
                 "></div>
             </div>

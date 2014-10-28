@@ -5,7 +5,8 @@ return function (
     \Model\Product\Entity $product,
     $url = null,
     $class = null,
-    $value = 'Купить быстро в 1 клик'
+    $value = 'Купить быстро в 1 клик',
+    $shop = null
 ) {
     $region = \App::user()->getRegion();
 
@@ -24,12 +25,6 @@ return function (
         $class .= ' mShopsOnly';
     } elseif ($product->isInShopShowroomOnly()) {
         $class .= ' mShopsOnly';
-    }
-
-    // FIXME
-    $oneClickTitle = null;
-    if (false !== strpos($class, 'mShopsOnly')) {
-        $oneClickTitle = 'Резерв товара';
     }
 
     if (!$product->getIsBuyable()) {
@@ -70,7 +65,7 @@ return function (
         <div id="jsOneClickContentPage">
             <?= $helper->render('order-v3-1click/__form', [
                 'product' => $product,
-                'title'   => $oneClickTitle,
+                'shop'    => $shop,
             ]) ?>
         </div>
     </div>

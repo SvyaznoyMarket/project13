@@ -29,7 +29,7 @@ return function (
 
                 <? if ($shopStates[0]->getQuantity()) : ?>
                     <!--  Кнопка Резерв -->
-                    <?= $helper->render('cart/__button-product-oneClick',['product' => $product, 'url' => $helper->url('cart.oneClick.product.set', ['productId' => $product->getId(), 'shopId' => $shop->getId()]), 'class' => 'btnBuy__eLink mShopsOnly', 'value' => 'Резерв']) ?>
+                    <?= $helper->render('cart/__button-product-oneClick',['product' => $product, 'shop' => $shop, 'url' => $helper->url('cart.oneClick.product.set', ['productId' => $product->getId(), 'shopId' => $shop->getId()]), 'class' => 'btnBuy__eLink mShopsOnly', 'value' => 'Резерв']) ?>
                 <? endif; ?>
             </div>
         </div>
@@ -72,7 +72,7 @@ return function (
                     <!--  Кнопка "Резерв" или "На витрине"  -->
                     <span class="markerList_col markerList_col-right">
                         <? if ( $shopState->getQuantity() > 0 ) : ?>
-                            <?= $helper->render('cart/__button-product-oneClick',['product' => $product, 'url' => $helper->url('cart.oneClick.product.set', ['productId' => $product->getId(), 'shopId' => $shop->getId()]), 'class' => 'btnBuy__eLink mShopsOnly', 'value' => 'Резерв']); ?>
+                            <?= $helper->render('cart/__button-product-oneClick',['product' => $product, 'shop' => $shop, 'url' => $helper->url('cart.oneClick.product.set', ['productId' => $product->getId(), 'shopId' => $shop->getId()]), 'class' => 'btnBuy__eLink mShopsOnly', 'value' => 'Резерв']); ?>
                         <? else : ?>
                             <span class="btnText">На витрине</span>
                         <? endif; ?>

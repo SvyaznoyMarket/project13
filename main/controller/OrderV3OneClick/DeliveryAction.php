@@ -19,10 +19,8 @@ class DeliveryAction {
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $product_list = json_decode($request->getContent(), true)['products'];
-        if (!$product_list) {
-            $product_list = $request->get('products');
-        }
+        $product_list = (array)$request->get('products');
+        $shopId = is_scalar($request->get('shopId')) ? $request->get('shopId') : null;
 
         if ($request->isXmlHttpRequest()) {
 
@@ -33,7 +31,7 @@ class DeliveryAction {
 
                 if (!$previousSplit || !$request->get('update')) {
                     $result['OrderDeliveryRequest'] = json_encode($splitData, JSON_UNESCAPED_UNICODE);
-                    $result['OrderDeliveryModel'] = $this->getSplit(null, null, $product_list);
+                    $result['OrderDeliveryModel'] = $this->getSplit(null, $shopId, $product_list);
                 } else {
                     $splitData = [
                         'previous_split' => $previousSplit,

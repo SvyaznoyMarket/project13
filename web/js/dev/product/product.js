@@ -200,7 +200,7 @@ $(document).ready(function() {
                     $.ajax({
                         url: $orderContent.data('url'),
                         type: 'POST',
-                        data: $orderContent.data('param'),
+                        data: $.parseJSON($orderContent.data('param')),
                         dataType: 'json',
                         beforeSend: function() {
                             $orderContent.fadeOut(500);
