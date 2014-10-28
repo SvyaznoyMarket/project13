@@ -15,7 +15,7 @@ return function(
 
     <?//= $helper->render('order-v3/__error', ['error' => $error]) ?>
 
-    <form class="orderU clearfix" action="" method="POST" accept-charset="utf-8">
+    <form class="orderU clearfix jsOrderV3OneClickForm" action="<?= $helper->url('orderV3OneClick.create') ?>" method="POST" accept-charset="utf-8">
         <input type="hidden" value="changeUserInfo" name="action" />
 
         <fieldset class="orderU_flds">
@@ -47,6 +47,8 @@ return function(
                 ],
             ]) ?>
         "></div>
+
+        <button type="submit" class="orderCompl_btn btnsubmit">Оформить</button>
 
     </form>
 

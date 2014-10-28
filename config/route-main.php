@@ -566,6 +566,10 @@ return [
         'pattern' => '/order-1click/delivery',
         'action'  => ['OrderV3OneClick\DeliveryAction', 'execute'],
     ],
+    'orderV3OneClick.create' => [
+        'pattern' => '/order-1click/create',
+        'action'  => ['OrderV3OneClick\CreateAction', 'execute'],
+    ],
 
 
     // заказ

@@ -121,7 +121,9 @@ class CreateAction {
         $this->session->set(self::SESSION_IS_READED_KEY, false);
 
         return new \Http\JsonResponse([
-            'orders' => $createdOrders,
+            'page' => \App::closureTemplating()->render('order-v3-1click', [
+                'orders' => $createdOrders,
+            ]),
         ]);
     }
 }
