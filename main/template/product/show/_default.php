@@ -168,7 +168,7 @@ $isKitPage = (bool)$product->getKit();
 
             <div class="js-showTopBar"></div>
 
-            <? if (!$hasFurnitureConstructor && count($product->getPartnersOffer()) == 0): ?>
+            <? if (!$hasFurnitureConstructor && count($product->getPartnersOffer()) == 0 && (!$isKitPage || $product->getIsKitLocked())): ?>
                 <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
             <? endif ?>
 

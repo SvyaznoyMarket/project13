@@ -16,6 +16,8 @@
  * @var $isUserSubscribedToEmailActions boolean
  * @var $actionChannelName string
  */
+
+$isKitPage = (bool)$product->getKit();
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
@@ -109,7 +111,9 @@
 
         <div id="coupeError" class="red" style="display:none"></div>
 
-        <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
+        <? if (!$isKitPage || $product->getIsKitLocked()): ?>
+            <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
+        <? endif ?>
 
         <? if (5 !== $product->getStatusId()): // SITE-3109 ?>
             <?= $helper->render('product/__delivery', ['product' => $product, 'deliveryData' => $deliveryData, 'shopStates' => $shopStates]) // Доставка ?>
