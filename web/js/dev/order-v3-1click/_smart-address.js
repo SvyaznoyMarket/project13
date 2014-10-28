@@ -84,9 +84,9 @@
 
                 // немного аналитики
                 if (item.contentType == 'street') {
-                    $body.trigger('trackUserAction', ['10 Адрес_доставки_Доставка_ОБЯЗАТЕЛЬНО'])
+                    //$body.trigger('trackUserAction', ['10 Адрес_доставки_Доставка_ОБЯЗАТЕЛЬНО'])
                 } else if (item.contentType == 'building') {
-                    $body.trigger('trackUserAction', ['10_1 Ввод_данных_Доставки_Доставка_ОБЯЗАТЕЛЬНО'])
+                    //$body.trigger('trackUserAction', ['10_1 Ввод_данных_Доставки_Доставка_ОБЯЗАТЕЛЬНО'])
                 }
 
                 console.log('Address update: address, item', this, item);

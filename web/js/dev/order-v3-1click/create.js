@@ -22,6 +22,8 @@
                         $orderContainer.html(response.result.page);
                     });
                 }
+
+                $body.trigger('trackUserAction', ['3_1 Оформить_успешно']);
             })
             .fail(function(jqXHR){
                 var response = $.parseJSON(jqXHR.responseText);
@@ -29,6 +31,10 @@
                 if (response.result && response.result.errorContent) {
                     $('#OrderV3ErrorBlock').html($(response.result.errorContent).html()).show();
                 }
+
+                var error = (response.result && response.result.error) ? response.result.error : [];
+
+                $body.trigger('trackUserAction', ['3_2 Оформить_ошибка', 'Поле ошибки: '+error.join(', ')]);
             })
         ;
 

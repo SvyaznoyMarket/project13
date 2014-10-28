@@ -211,11 +211,11 @@
             // первая вкладка активная
             $(elemId).find('.selShop_tab').removeClass('selShop_tab-act').first().addClass('selShop_tab-act');
             showMap($(elemId), token);
-            $body.trigger('trackUserAction', ['10 Место_самовывоза_Доставка_ОБЯЗАТЕЛЬНО']);
+            $body.trigger('trackUserAction', ['2_1 Место_самовывоза|Адрес_доставки']);
             $(elemId).lightbox_me({centered: true, closeSelector: '.jsCloseFl', removeOtherOnCreate: false});
         } else {
             log({'action':'view-date'});
-            $body.trigger('trackUserAction', ['11 Срок_доставки_Доставка']);
+            //$body.trigger('trackUserAction', ['11 Срок_доставки_Доставка']);
         }
 
         e.preventDefault();
@@ -257,7 +257,7 @@
     $orderContent.on('click', '.celedr_col', function(){
         var timestamp = $(this).data('value');
         if (typeof timestamp == 'number') {
-            $body.trigger('trackUserAction', ['11_1 Срок_Изменил_дату_Доставка']);
+            //$body.trigger('trackUserAction', ['11_1 Срок_Изменил_дату_Доставка']);
             changeDate($(this).closest('.orderRow').data('block_name'), timestamp)
         }
     });
@@ -267,7 +267,7 @@
         var id = $(this).data('id'),
             token = $(this).data('token');
         if (id && token) {
-            $body.trigger('trackUserAction', ['10_1 Ввод_данных_Самовывоза_Доставка_ОБЯЗАТЕЛЬНО']);
+            $body.trigger('trackUserAction', ['2_2 Ввод_данных_Самовывоза|Доставки']);
             $body.children('.selShop, .lb_overlay').remove();
             changePoint($(this).closest('.selShop').data('block_name'), id, token);
         }
@@ -283,97 +283,22 @@
         changeInterval($(this).closest('.orderRow').data('block_name'), $(this).data('value'));
     });
 
-    // клик по ссылке "Применить" у каунтера
-    $orderContent.on('click', '.jsChangeProductQuantity', function(e){
-        var $this = $(this),
-            quantity = $this.parent().find('input').val();
-        changeProductQuantity($this.data('block_name'), $this.data('id'), quantity);
-        e.preventDefault();
-    });
-
-    // клик по ссылке "Удалить" у каунтера
-    $orderContent.on('click', '.jsDeleteProduct', function(e){
-        var $this = $(this);
-        changeProductQuantity($this.data('block_name'), $this.data('id'), 0);
-        e.preventDefault();
-    });
-
-    // клик по безналичному методу оплаты
-    $orderContent.on('change', '.jsCreditCardPayment', function(){
-        var $this = $(this),
-            block_name = $this.closest('.orderRow').data('block_name');
-        if ($this.is(':checked')) $body.trigger('trackUserAction', ['13_1 Оплата_банковской_картой_Доставка']);
-        changePaymentMethod(block_name, 'by_credit_card', $this.is(':checked'))
-    });
-
-    // клик по "купить в кредит"
-    $orderContent.on('change', '.jsCreditPayment', function() {
-        var $this = $(this),
-            block_name = $this.closest('.orderRow').data('block_name');
-        if ($this.is(':checked')) $body.trigger('trackUserAction', ['13_2 Оплата_в_кредит_Доставка']);
-        changePaymentMethod(block_name, 'by_online_credit', $(this).is(':checked'))
-    });
-
-    // сохранение комментария
-    $orderContent.on('blur focus', '.orderComment_fld', function(){
-        if (comment != $(this).val()) {
-            comment = $(this).val();
-            changeOrderComment($(this).val());
-        }
-    });
-
-    // клик по "Дополнительные пожелания"
-    $orderContent.on('click', '.orderComment_t', function(){
-        $('.orderComment_fld').show();
-    });
-
-    // применить скидку
-    $orderContent.on('click', '.jsApplyDiscount', function(e){
-        var $this = $(this),
-            block_name = $this.closest('.orderRow').data('block_name'),
-            number = $this.parent().siblings('input').val();
-        // TODO mask
-        if (number != '') applyDiscount(block_name, number);
-        e.preventDefault();
-    });
-
-    // удалить скидку
-    $orderContent.on('click', '.jsDeleteDiscount', function(e){
-        var $this = $(this),
-            block_name = $this.closest('.orderRow').data('block_name'),
-            number = $this.data('value');
-        deleteDiscount(block_name, number);
-        e.preventDefault();
-    });
-
-    // клик по "хочу быстрее"
-    $orderContent.on('click', '.jsWanna', function(){
-        var span = '<span style="margin: 5px 0 17px 10px; display: inline-block; color: #878787;">Спасибо за участие в опросе.</span>';
-        $(span).insertAfter($(this));
-        $(this).hide();
-        window.docCookies.setItem('enter_order_v3_wanna', 1, 0, '/order');
-        $body.trigger('trackUserAction', ['1_2 Срок_Хочу_быстрее_Доставка']);
-        log({'action':'wanna'});
-    });
-
-    $orderContent.on('click', '.jsDeleteCertificate', function(){
-        var block_name = $(this).closest('.orderRow').data('block_name');
-        deleteCertificate(block_name);
-    });
-
-    // клик по "Я ознакомлен и согласен..."
-    $orderContent.on('click', '.jsAcceptTerms', function(){
-        $body.trigger('trackUserAction', ['14 Согласен_оферта_Доставка_ОБЯЗАТЕЛЬНО']);
-    });
-
     // АНАЛИТИКА
 
-    if (/order\/delivery/.test(window.location.href)) {
-        $body.trigger('trackUserAction', ['6_1 Далее_успешно_Получатель_ОБЯЗАТЕЛЬНО']); // TODO перенести в validate.js
-        $body.trigger('trackUserAction', ['7 Вход_Доставка_ОБЯЗАТЕЛЬНО', 'Количество заказов: ' + $('.orderRow').length]);
-    }
+    $body.on('focus', '.jsOrderV3PhoneField', function(){
+        $body.trigger('trackUserAction',['1_1 Телефон'])
+    });
+
+    $body.on('focus', '.jsOrderV3EmailField', function(){
+        $body.trigger('trackUserAction',['1_3 E-mail'])
+    });
+
+    $body.on('focus', '.jsOrderV3NameField', function(){
+        $body.trigger('trackUserAction',['1_2 Имя'])
+    });
 
     // отслеживаем смену региона
+    /*
     $body.on('click', 'a.jsChangeRegionAnalytics', function(e){
         var newRegion = $(this).text(),
             oldRegion = $('.jsRegion').data('value'),
@@ -391,5 +316,6 @@
         });
 
     })
+    */
 
 })(jQuery);
