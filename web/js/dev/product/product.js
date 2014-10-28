@@ -212,14 +212,21 @@ $(document).ready(function() {
                 }
 
                 return false;
-            }
+            },
 
-        ;
+            toggleOneClickDelivery = function toggleOneClickDelivery() {
+            	var button = $(this),
+            		$toggleBox = $('.js-order-oneclick-delivery-toggle');
+
+            		button.toggleClass('orderU_lgnd-cur');
+            		$toggleBox.toggle();
+            };
 		// end of functions
 
 		$('.jsPayPalButton').bind('click', buyOneClickAndRedirect);
 		$('.jsLifeGiftButton').bind('click', buyOneClickAndRedirect);
 		$('.jsOneClickButton').bind('click', handleOneClick);
+		$('.js-order-oneclick-delivery-toggle-btn').on('click', toggleOneClickDelivery);
 	})();
 
 

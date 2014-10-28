@@ -10,23 +10,31 @@ return function(
     $userBonusCards = $userEntity ? $userEntity->getBonusCard() : null;
     $userBonusCard = null;
 ?>
-
-    <h1 class="orderCnt_t">Купить быстро в 1 клик</h1>
+<div class="orderOneClick">
+    <h1 class="orderOneClick_t">Купить быстро в 1 клик</h1>
 
     <?//= $helper->render('order-v3/__error', ['error' => $error]) ?>
 
-    <div>
-        <img src="<?= $product->getImageUrl(1) ?>" />
+    <div class="orderOneClick_hd">
+        <img class="orderOneClick_hd_l" src="<?= $product->getImageUrl(1) ?>" />
+        <div class="orderOneClick_hd_r">
+            <div class="orderOneClick_hd_n">Отбойный молоток<br/>
+            Калибр Мастер ОМ-1700/30М</div>
+
+            <div class="orderOneClick_hd_pr"><strong>10 520</strong> <span class="rubl">p</span></div>
+        </div>
     </div>
 
     <form class="orderU clearfix jsOrderV3OneClickForm" action="<?= $helper->url('orderV3OneClick.create') ?>" method="POST" accept-charset="utf-8">
         <input type="hidden" value="changeUserInfo" name="action" />
 
         <fieldset class="orderU_flds">
+            <legend class="orderU_lgnd">Покупатель</legend>
+
             <div>
                 <div class="orderU_fld">
                     <label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
-                    <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[phone]" value="<?= $userEntity ? $userEntity->getMobilePhone() : '' ?>" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx">
+                    <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[phone]" value="<?= $userEntity ? $userEntity->getMobilePhone() : '' ?>" placeholder="+7 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx">
                 </div>
 
                 <div class="orderU_fld">
@@ -40,20 +48,25 @@ return function(
                 </div>
             </div>
         </fieldset>
+        
+        <fieldset class="orderU_flds">
+            <legend class="orderU_lgnd orderU_lgnd-tggl js-order-oneclick-delivery-toggle-btn">Способ получения</legend>
 
-        <div
-            id="js-order-content"
-            class="orderCnt jsOrderV3PageDelivery"
-            data-url="<?= $helper->url('orderV3OneClick.delivery') ?>"
-            data-param="<?= $helper->json([
-                'products' => [
-                    ['id' => $product->getId(), 'quantity' => 1],
-                ],
-            ]) ?>
-        "></div>
-
-        <button type="submit" class="orderCompl_btn btnsubmit">Оформить</button>
-
+            <div
+                id="js-order-content"
+                class="orderOneClick_dlvr orderCnt jsOrderV3PageDelivery js-order-oneclick-delivery-toggle"
+                data-url="<?= $helper->url('orderV3OneClick.delivery') ?>"
+                data-param="<?= $helper->json([
+                    'products' => [
+                        ['id' => $product->getId(), 'quantity' => 1],
+                    ],
+                ]) ?>
+            " style="display: none;"></div>
+        </fieldset>
+        
+        <fieldset class="orderU_fldsbottom">
+            <button type="submit" class="orderCompl_btn btnsubmit">Оформить</button>
+        </fieldset>
     </form>
-
+</div>
 <? };

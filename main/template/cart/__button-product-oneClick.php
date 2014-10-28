@@ -58,7 +58,7 @@ return function (
     <div id="kladr-config" data-value="<?= $helper->json(\App::config()->kladr ); ?>"></div>
     <div id="region-name" data-value=<?= json_encode($region->getName(), JSON_UNESCAPED_UNICODE); ?>></div>
 
-    <div id="jsOneClickContent" class="popup">
+    <div id="jsOneClickContent" class="popup popup-w635">
         <a class="close" href="#">Закрыть</a>
 
         <?= $helper->render('order-v3-1click/__form', ['product' => $product]) ?>
