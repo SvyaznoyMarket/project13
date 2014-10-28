@@ -10,6 +10,23 @@ return function (
 ) {
     $region = \App::user()->getRegion();
 
+    $isNewOneClick = false;
+    try {
+        if (
+            ($region && in_array($region->getId(), \App::config()->self_delivery['regions']))
+            && \App::config()->newOrder
+            && \App::abTest()->getTest('orders') && \App::abTest()->getTest('orders_moscow') && \App::abTest()->getTest('order_delivery_price')
+            && (
+                // Новое ОЗ для Ярославля и Воронежа
+                ($region->getId() != 14974 && \App::abTest()->getTest('orders')->getChosenCase()->getKey() == 'new')
+                // Новое ОЗ для Москвы
+                || ($region->getId() == 14974 && \App::abTest()->getTest('orders_moscow') && \App::abTest()->getTest('orders_moscow')->getChosenCase()->getKey() == 'new')
+            )
+        ) {
+            $isNewOneClick = true;
+        }
+    } catch (\Exception $e) {}
+
     if (
         !$product->getIsBuyable()
         || (5 === $product->getStatusId()) // SITE-2924
@@ -50,7 +67,7 @@ return function (
     }
 
     // FIXME: резерв по старому
-    if ((false !== strpos($class, ' jsOneClickButton ')) && !$shop) {
+    if ($isNewOneClick && (false !== strpos($class, ' jsOneClickButton ')) && !$shop) {
         $class = str_replace(' jsOneClickButton ', ' jsOneClickButton-new ', $class);
     }
 ?>
