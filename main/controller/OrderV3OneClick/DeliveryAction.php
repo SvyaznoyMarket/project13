@@ -170,7 +170,10 @@ class DeliveryAction {
 
             case 'changeDelivery':
                 $changes['orders'] = array(
-                    $data['params']['block_name'] => array_merge($previousSplit['orders'][$data['params']['block_name']], array( 'delivery' => array( 'delivery_method_token' => $data['params']['delivery_method_token'] ) ) )
+                    $data['params']['block_name'] => array_merge(
+                        (array)$previousSplit['orders'][$data['params']['block_name']],
+                        array( 'delivery' => array( 'delivery_method_token' => $data['params']['delivery_method_token'] ) )
+                    )
                 );
                 break;
 
