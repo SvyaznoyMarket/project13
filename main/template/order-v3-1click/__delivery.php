@@ -34,7 +34,7 @@ return function(
             </menu>
 
             <!-- дата доставки -->
-            <div class="orderCol_delivrIn clearfix">
+            <div class="orderCol_delivrIn clearfix" style="padding-left: 0;">
                 <!--<div class="orderCol_date">15 сентября 2014, воскресенье</div>-->
                 <? if ($order->delivery->date): ?>
                     <div class="orderCol_date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2 %G, %A', $order->delivery->date->format('U'))) ?></div>
@@ -94,7 +94,7 @@ return function(
                     </div>
                 </div>
             <? else: ?>
-                <div class="orderCol_delivrIn">
+                <div class="orderCol_delivrIn orderCol_delivrIn-pl">
                     <div class="orderCol_delivrIn_t clearfix">
                         <strong>Адрес</strong> <span class="colorBrightGrey">для всех заказов с доставкой</span>
                     </div>
