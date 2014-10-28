@@ -26,6 +26,12 @@ return function (
         $class .= ' mShopsOnly';
     }
 
+    // FIXME
+    $oneClickTitle = null;
+    if (false !== strpos($class, 'mShopsOnly')) {
+        $oneClickTitle = 'Резерв товара';
+    }
+
     if (!$product->getIsBuyable()) {
         $url = '#';
         $class .= ' mDisabled';
@@ -62,7 +68,10 @@ return function (
         <a class="close" href="#">Закрыть</a>
 
         <div id="jsOneClickContentPage">
-            <?= $helper->render('order-v3-1click/__form', ['product' => $product]) ?>
+            <?= $helper->render('order-v3-1click/__form', [
+                'product' => $product,
+                'title'   => $oneClickTitle,
+            ]) ?>
         </div>
     </div>
 

@@ -2,16 +2,21 @@
 
 return function(
     \Helper\TemplateHelper $helper,
-    \Model\Product\Entity $product
+    \Model\Product\Entity $product,
+    $title = null
 ) {
     /** @var $bonusCards \Model\Order\BonusCard\Entity[] */
     $userEntity = \App::user()->getEntity();
 
     $userBonusCards = $userEntity ? $userEntity->getBonusCard() : null;
     $userBonusCard = null;
+
+    if (null === $title) {
+        $title = 'Купить быстро в 1 клик';
+    }
 ?>
 <div class="orderOneClick">
-    <h1 class="orderOneClick_t">Купить быстро в 1 клик</h1>
+    <h1 class="orderOneClick_t"><?= $title ?></h1>
 
     <?= $helper->render('order-v3/__error', ['error' => null]) ?>
 
