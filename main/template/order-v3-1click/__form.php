@@ -40,18 +40,20 @@ return function(
 
             <div>
                 <div class="orderU_fld">
+                    <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[mobile]" value="" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx">
                     <label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
-                    <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[mobile]" value="<?= $userEntity ? $userEntity->getMobilePhone() : '' ?>" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx">
+                    <span class="errTx" style="display: none">Неверный формат телефона</span>
                 </div>
 
                 <div class="orderU_fld">
+                    <input class="orderU_tx textfield jsOrderV3EmailField" type="text" name="user_info[email]" value="" placeholder="mail@domain.com">
                     <label class="orderU_lbl" for="">E-mail</label>
-                    <input class="orderU_tx textfield jsOrderV3EmailField" type="text" name="user_info[email]" value="<?= $userEntity ? $userEntity->getEmail() : '' ?>" placeholder="mail@domain.com">
+                    <span class="errTx" style="display: none">Неверный формат email</span>
                 </div>
 
                 <div class="orderU_fld">
                     <label class="orderU_lbl" for="">Имя</label>
-                    <input class="orderU_tx textfield jsOrderV3NameField" type="text" name="user_info[first_name]" value="<?= $userEntity ? $userEntity->getFirstName() : '' ?>" placeholder="">
+                    <input class="orderU_tx textfield jsOrderV3NameField" type="text" name="user_info[first_name]" value="" placeholder="">
                 </div>
             </div>
         </fieldset>
