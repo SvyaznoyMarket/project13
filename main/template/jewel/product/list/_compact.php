@@ -10,7 +10,7 @@
 ?>
 
 <? if (!$isAjax): // убрать декорацию div-ом, если ajax-запрос ?>
-<ul class="brandItems clearfix<? if(isset($itemsPerRow) && 3 == $itemsPerRow): ?> brandItems-3col<? endif ?>">
+<ul class="lstn lstn-jewel clearfix<? if(isset($itemsPerRow) && 3 == $itemsPerRow): ?> lstn-jewel-3col<? endif ?> js-jewel-category">
 <? endif ?>
 
 <? $i = 0; foreach ($pager as $product): $i++ ?>

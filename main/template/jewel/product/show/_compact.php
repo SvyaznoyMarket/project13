@@ -39,12 +39,12 @@ if ($productVideo instanceof \Model\Product\Video\Entity) {
 }
 ?>
 
-<li class="brandItems_i js-jewelListing js-goodsbox">
-    <div class="goodsbox__inner js-goodsboxContainer" data-url="<?= $product->getLink() ?>" <?php if (isset($additionalData)) echo 'data-product="' . $page->json($additionalData) . '"' ?> <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
+<li class="lstn_i js-jewelListing js-goodsbox">
+    <div class="lstn_i_inn js-goodsboxContainer" data-url="<?= $product->getLink() ?>" <?php if (isset($additionalData)) echo 'data-product="' . $page->json($additionalData) . '"' ?> <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
 
-        <a class="brandItems_n" href="<?= $product->getLink() ?>"><?= $product->getName() ?></a>
+        <a class="lstn_n" href="<?= $product->getLink() ?>"><?= $product->getName() ?></a>
 
-        <a class="brandItems_img" href="<?= $product->getLink() ?>"><img class="mainImg" src="<?= $product->getImageUrl($imgSize) ?>" alt="<?= $page->escape($product->getNameWithCategory()) ?>" /></a>
+        <a class="lstn_imglk" href="<?= $product->getLink() ?>"><img class="lstn_img" src="<?= $product->getImageUrl($imgSize) ?>" alt="<?= $page->escape($product->getNameWithCategory()) ?>" /></a>
 
         <ul class="stickLst clearfix">
             <? if ($product->getLabel() && $product->getLabel()->getImageUrl()): ?>
