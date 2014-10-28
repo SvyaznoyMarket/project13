@@ -32,7 +32,7 @@ return function(
         </div>
     </div>
 
-    <form class="orderU clearfix jsOrderV3OneClickForm" action="<?= $helper->url('orderV3OneClick.create') ?>" method="POST" accept-charset="utf-8">
+    <form class="orderU orderU-v2 clearfix jsOrderV3OneClickForm" action="<?= $helper->url('orderV3OneClick.create') ?>" method="POST" accept-charset="utf-8">
         <input type="hidden" value="changeUserInfo" name="action" />
 
         <fieldset class="orderU_flds">

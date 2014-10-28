@@ -84,7 +84,7 @@
     // проверка телефона и email
     $pageNew.find('form').on('submit', function (e) {
         var error = [],
-            $phoneInput = $('[name=user_info\\[phone\\]]'),
+            $phoneInput = $('[name=user_info\\[mobile\\]]'),
             $emailInput = $('[name=user_info\\[email\\]]'),
             $nameInput =  $('[name=user_info\\[first_name\\]]'),
             $bonusCardInput =  $('[name=user_info\\[bonus_card_number\\]]'),
