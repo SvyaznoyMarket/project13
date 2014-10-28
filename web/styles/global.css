@@ -5883,6 +5883,12 @@ img[height="0"] {
     padding: 10px 10px 1px;
     border: 1px solid #d3d3d3;
   }
+  .orderOneClick .orderCol_addrs {
+    margin: 0 0 10px 10px;
+  }
+  .orderOneClick .orderCol_tm {
+    margin: 0 0 10px;
+  }
   .orderOneClick .orderCol .customSel {
     background-color: #fff;
   }
