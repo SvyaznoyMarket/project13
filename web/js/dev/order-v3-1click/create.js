@@ -14,7 +14,7 @@
 
         $.post($el.attr('action'), data)
             .done(function(response) {
-
+                $('#jsOneClickContentPage').empty().html(response.result.page);
             })
             .fail(function(jqXHR){
                 var response = $.parseJSON(jqXHR.responseText);

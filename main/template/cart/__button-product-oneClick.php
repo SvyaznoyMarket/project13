@@ -61,7 +61,9 @@ return function (
     <div id="jsOneClickContent" class="popup">
         <a class="close" href="#">Закрыть</a>
 
-        <?= $helper->render('order-v3-1click/__form', ['product' => $product]) ?>
+        <div id="jsOneClickContentPage">
+            <?= $helper->render('order-v3-1click/__form', ['product' => $product]) ?>
+        </div>
     </div>
 
 <? };

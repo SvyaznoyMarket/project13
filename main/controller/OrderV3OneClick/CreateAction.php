@@ -44,12 +44,15 @@ class CreateAction {
             }
             if (isset($splitOrder)) unset($splitOrder);
 
+            /*
             $coreResponse = $this->client->query(
                 (\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet'),
                 $params,
                 $ordersData,
                 \App::config()->coreV2['hugeTimeout']
             );
+            */
+            $coreResponse = json_decode('[{"confirmed":"true","id":"8473373","access_token":"300F0632-7253-4472-8C68-364A6FC61A2A","is_partner":0,"partner_ui":null,"number":"TE411112","number_erp":"COTE-411112","user_id":null,"price":10280,"pay_sum":10280,"payment_invoice_id":null,"payment_url":null}]', true);
 
         } catch (\Curl\Exception $e) {
             \App::logger()->error($e->getMessage(), ['curl', 'order/create']);
@@ -130,10 +133,12 @@ class CreateAction {
         // устанавливаем флаг первичного просмотра страницы
         //$this->session->set(self::SESSION_IS_READED_KEY, false);
 
-        return new \Http\JsonResponse([
-            'page' => \App::closureTemplating()->render('order-v3-1click', [
+        $result = [
+            'page' => \App::closureTemplating()->render('order-v3-1click/__complete', [
                 'orders' => $createdOrders,
             ]),
-        ]);
+        ];
+
+        return new \Http\JsonResponse(['result' => $result]);
     }
 }

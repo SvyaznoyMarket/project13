@@ -179,7 +179,16 @@ $(document).ready(function() {
                 ; // end of vars
 
                 if ($target.length) {
-                    $target.lightbox_me({centered: true, closeSelector: '.close', removeOtherOnCreate: false, closeClick: false, closeEsc: false});
+                    $target.lightbox_me({
+                        centered: true,
+                        closeSelector: '.close',
+                        removeOtherOnCreate: false,
+                        closeClick: false,
+                        closeEsc: false,
+                        onLoad: function() {
+                            $('#OrderV3ErrorBlock').empty().hide();
+                        }
+                    });
 
                     $.ajax({
                         url: $orderContent.data('url'),
