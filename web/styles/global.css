@@ -5828,6 +5828,26 @@ img[height="0"] {
   .orderOneClick_dlvr {
     display: none;
   }
+  .orderOneClick_cmpl_t {
+    font-size: 25px;
+    margin-bottom: 15px;
+  }
+  .orderOneClick_cmpl .orderCompl_btn {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    height: 40px;
+    line-height: 40px;
+  }
+  .orderOneClick_cmpl .orderCompl_btn:hover {
+    text-decoration: none;
+  }
+  .orderOneClick .orderOneClick_cmpl.orderU_fldsbottom {
+    padding-top: 10px;
+    font-size: 20px;
+  }
   .orderOneClick .orderU_flds {
     display: block;
     margin: 0;
@@ -5869,6 +5889,9 @@ img[height="0"] {
     width: 635px;
     border-bottom: 1px solid #e6e6e6;
   }
+  .orderOneClick .orderCol_lk {
+    vertical-align: middle;
+  }
   .orderOneClick .orderCol_delivrIn {
     background: none;
     border: medium none;
@@ -5883,6 +5906,25 @@ img[height="0"] {
     padding: 10px 10px 1px;
     border: 1px solid #d3d3d3;
   }
+  .orderOneClick .orderCol_n {
+    font-size: 16px;
+    width: 480px;
+    vertical-align: middle;
+  }
+  .orderOneClick .orderCol_f {
+    border-width: 1px 0;
+    background: none;
+    margin: 0 0 40px;
+  }
+  .orderOneClick .orderCol_data {
+    color: #000;
+    padding-right: 10px;
+    margin-top: 10px;
+  }
+  .orderOneClick .orderCol_cnt {
+    border-top: medium none;
+    padding: 10px 0 15px;
+  }
   .orderOneClick .orderCol_addrs {
     margin: 0 0 10px 10px;
   }
@@ -5894,6 +5936,12 @@ img[height="0"] {
   }
   .orderOneClick .orderCol_date {
     background-color: #fff;
+  }
+  .orderOneClick .orderCol_summt {
+    float: right;
+    font-size: 16px;
+    margin: 0 0 10px;
+    width: 109px;
   }
   .orderOneClick .orderRow {
     border-top: medium none;

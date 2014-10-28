@@ -13,7 +13,7 @@ return function(
 <div class="orderOneClick">
     <h1 class="orderOneClick_t">Купить быстро в 1 клик</h1>
 
-    <?= $helper->render('order-v3/__error', ['error' => null]) ?>
+    <?//= $helper->render('order-v3/__error', ['error' => $error]) ?>
 
     <div class="orderOneClick_hd">
         <img class="orderOneClick_hd_l" src="<?= $product->getImageUrl(1) ?>" />
@@ -52,16 +52,18 @@ return function(
         <fieldset class="orderU_flds">
             <legend class="orderU_lgnd orderU_lgnd-tggl js-order-oneclick-delivery-toggle-btn">Способ получения</legend>
 
-            <div
-                id="js-order-content"
-                class="orderOneClick_dlvr orderCnt jsOrderV3PageDelivery js-order-oneclick-delivery-toggle"
-                data-url="<?= $helper->url('orderV3OneClick.delivery') ?>"
-                data-param="<?= $helper->json([
-                    'products' => [
-                        ['id' => $product->getId(), 'quantity' => 1],
-                    ],
-                ]) ?>
-            " style="display: none;"></div>
+            <div class="js-order-oneclick-delivery-toggle" style="display: none;">
+                <div
+                    id="js-order-content"
+                    class="orderOneClick_dlvr orderCnt jsOrderV3PageDelivery"
+                    data-url="<?= $helper->url('orderV3OneClick.delivery') ?>"
+                    data-param="<?= $helper->json([
+                        'products' => [
+                            ['id' => $product->getId(), 'quantity' => 1],
+                        ],
+                    ]) ?>
+                "></div>
+            </div>
         </fieldset>
         
         <fieldset class="orderU_fldsbottom">
