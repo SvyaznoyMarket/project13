@@ -213,13 +213,13 @@
             function setSelfPosition() {
                 var s = $self[0].style;
 
-                if (($self.height() + 80  >= $(window).height()) && ($self.css('position') != 'absolute' || ie6)) {
+                if (($self.height() + 80  >= $(window).height() || !opts.sticky) && ($self.css('position') != 'absolute' || ie6)) {
                     var topOffset = $(document).scrollTop() + 40;
                     $self.css({position: 'absolute', top: topOffset + 'px', marginTop: 0})
                     if (ie6) {
                         s.removeExpression('top');
                     }
-                } else if ($self.height()+ 80  < $(window).height()) {
+                } else if ($self.height()+ 80  < $(window).height() && opts.sticky) {
                     if (ie6) {
                         s.position = 'absolute';
                         if (opts.centered) {
@@ -272,6 +272,7 @@
         classPrefix: 'lb',
         zIndex: 999,
         centered: false,
+		sticky: true,
         modalCSS: {top: '40px'},
         overlayCSS: {background: 'black', opacity: .4}
     }

@@ -1089,6 +1089,7 @@ $(document).ready(function() {
                 if ($target.length) {
                     $target.lightbox_me({
                         centered: true,
+						sticky: '#jsOneClickContent' != button.data('target'),
                         closeSelector: '.close',
                         removeOtherOnCreate: false,
                         closeClick: false,
