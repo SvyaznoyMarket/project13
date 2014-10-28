@@ -2,7 +2,7 @@
 
     ENTER.OrderV3 = ENTER.OrderV3 || {};
 
-    console.log('Model', $('#initialOrderModel').data('value'));
+    //console.log('Model', $('#initialOrderModel').data('value'));
 
     var body = document.getElementsByTagName('body')[0],
         $body = $(body),
@@ -68,14 +68,14 @@
             }).done(function(data){
                 if (data.error_code == 742) {
                     // 742 - Неверный пин
-                    console.log('Сертификат найден');
+                    //console.log('Сертификат найден');
                     $('[data-block_name='+block_name+']').find('.cuponPin').show();
                 } else if (data.error_code == 743) {
                     // 743 - Сертификат не найден
                     sendChanges('applyDiscount',{'block_name': block_name, 'number':code})
                 }
             }).always(function(data){
-                console.log('Certificate check response',data);
+                //console.log('Certificate check response',data);
             })
         },
         applyCertificate = function applyCertificateF(block_name, code, pin) {
@@ -106,8 +106,8 @@
                     $('#OrderV3ErrorBlock').html($(response.result.errorContent).html()).show();
                 }
             }).done(function(data) {
-                console.log("Query: %s", data.result.OrderDeliveryRequest);
-                console.log("Model:", data.result.OrderDeliveryModel);
+                //console.log("Query: %s", data.result.OrderDeliveryRequest);
+                //console.log("Model:", data.result.OrderDeliveryModel);
                 $orderContent.empty().html($(data.result.page).html());
                 ENTER.OrderV3.constructors.smartAddress();
                 $orderContent.find('input[name=address]').focus();
