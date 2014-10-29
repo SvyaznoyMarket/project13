@@ -1091,6 +1091,11 @@ return [
         'action'  => ['Compare\CompareAction', 'clear'],
     ],
 
+    'switch' => [
+        'pattern'   => '/switch',
+        'action'    => ['SwitchAction', 'execute']
+    ],
+
 	//content (должен быть в самом конце, иначе под паттерн попадут другие страницы)
     'content' => [
         'pattern' => '/{token}',
