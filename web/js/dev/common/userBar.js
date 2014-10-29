@@ -262,6 +262,8 @@
 				} else {
 					showBuyInfo();
 				}
+
+				body.trigger('removeFromCart', [res.product]);
 			};
 
 		$.ajax({

@@ -190,7 +190,7 @@ window.ANALYTICS = {
 			};
 
 		$('body').on('addtocart', addToBasket);
-		$('body').on('remFromCart', remFromBasket);
+		$('body').on('removeFromCart', remFromBasket);
 
 		(function () {
 			var s = document.createElement('script'),
@@ -206,12 +206,7 @@ window.ANALYTICS = {
 				vars = {};
 				vars.pageType = 0;
 			}
-			else if ( vars.extraData ) {
-				if ( true == vars.extraData.cartProducts && ENTER.config.cartProducts ) {
-					vars.basketProducts = ENTER.config.cartProducts;
-				}
-				delete vars.extraData;
-			}
+
 			if ($('body').data('template') != 'order_new') window.APRT_DATA = vars;
 
 			s.type  = 'text/javascript';
