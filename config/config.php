@@ -502,45 +502,67 @@ $c->abTest = [
                 ],
             ],
         ],
-        'orders' => [
-            'enabled' => true,
-            'expireDate' => '2014-12-31',
-            'cases' => [
-                'new' => [
-                    'traffic'  => 50,
-                    'name'     => 'Новое оформление заказа',
-                ],
-                'default' => [
-                    'traffic'  => 50,
-                    'name'     => 'Старое оформление заказа',
-                ]
-            ]
-        ],
-        'orders_moscow' => [
-            'enabled' => true,
-            'expireDate' => '2014-12-31',
-            'cases' => [
-                'new' => [
-                    'traffic'  => 5,
-                    'name'     => 'Новое оформление заказа',
-                ],
-                'default' => [
-                    'traffic'  => 95,
-                    'name'     => 'Старое оформление заказа',
-                ]
-            ]
-        ],
+//        'orders' => [
+//            'enabled' => true,
+//            'expireDate' => '2014-12-31',
+//            'cases' => [
+//                'new' => [
+//                    'traffic'  => 50,
+//                    'name'     => 'Новое оформление заказа',
+//                ],
+//                'default' => [
+//                    'traffic'  => 50,
+//                    'name'     => 'Старое оформление заказа',
+//                ]
+//            ]
+//        ],
+//        'orders_moscow' => [
+//            'enabled' => true,
+//            'expireDate' => '2014-12-31',
+//            'cases' => [
+//                'new' => [
+//                    'traffic'  => 5,
+//                    'name'     => 'Новое оформление заказа',
+//                ],
+//                'default' => [
+//                    'traffic'  => 95,
+//                    'name'     => 'Старое оформление заказа',
+//                ]
+//            ]
+//        ],
         'orders_new' => [
             'enabled' => true,
             'expireDate' => '2014-12-31',
             'cases' => [
-                'orders_new_2' => [
-                    'traffic'  => 50,
-                    'name'     => 'Обновленное новое ОЗ',
+                'old' => [
+                    'traffic'  => 80,
+                    'name'     => 'Старое оформление заказа',
                 ],
-                'orders_new_1' => [
+                'new_1' => [
+                    'traffic'  => 10,
+                    'name'     => 'Новое оформление заказа, версия 1',
+                ],
+                'new_2' => [
+                    'traffic'  => 10,
+                    'name'     => 'Новое оформление заказа, версия 2',
+                ]
+            ]
+        ],
+        'orders_new_some_regions' => [
+            'enabled' => true,
+            'expireDate' => '2014-12-31',
+            'cases' => [
+                'old' => [
+                    'traffic'  => 0,
+                    'name'     => 'Старое оформление заказа',
+                ],
+                'new_1' => [
                     'traffic'  => 50,
-                    'name'     => 'Не обновленное новое ОЗ',
+                    'name'     => 'Новое оформление заказа, версия 1',
+                ],
+                'new_2' => [
+                    'traffic'  => 50,
+                    'name'     => 'Новое оформление заказа, версия 2',
                 ]
             ]
         ],

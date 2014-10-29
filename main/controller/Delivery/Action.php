@@ -598,19 +598,18 @@ class Action {
     public static function isPaidSelfDelivery() {
         $region = \App::user()->getRegion();
 
+        $ordersNewTest = \App::abTest()->getTest('orders_new');
+        $ordersNewSomeRegionsTest = \App::abTest()->getTest('orders_new_some_regions');
         /* Есть регион и необходимые ключи АБ-тестов */
-        if ($region
-            //&& in_array($region->getId(), \App::config()->self_delivery['regions'])
-            && \App::config()->newOrder
-            && \App::abTest()->getTest('orders') && \App::abTest()->getTest('orders_moscow') && \App::abTest()->getTest('order_delivery_price')) {
-            // Новое ОЗ для Ярославля и Воронежа
-            if ($region->getId() != 14974 && \App::abTest()->getTest('orders')->getChosenCase()->getKey() == 'new') {
-                return \App::abTest()->getTest('order_delivery_price')->getChosenCase()->getKey() == 'delivery_self_100';
-            }
-            // Новое ОЗ для Москвы
-            if ($region->getId() == 14974 && \App::abTest()->getTest('orders_moscow') && \App::abTest()->getTest('orders_moscow')->getChosenCase()->getKey() == 'new') {
-                return \App::abTest()->getTest('order_delivery_price')->getChosenCase()->getKey() == 'delivery_self_100';
-            }
+        if (
+            $region && \App::config()->newOrder
+            && \App::abTest()->getTest('order_delivery_price')
+            && (
+                (!in_array($region->getId(), [93746, 119623]) && $ordersNewTest && in_array($ordersNewTest->getChosenCase()->getKey(), ['new_1', 'new_2'], true)) // АБ-тест для остальных регионов
+                || (in_array($region->getId(), [93746, 119623]) && $ordersNewSomeRegionsTest && in_array($ordersNewSomeRegionsTest->getChosenCase()->getKey(), ['new_1', 'new_2'], true)) // АБ-тест для Ярославля и Ростова-на-дону
+            )
+        ) {
+            return \App::abTest()->getTest('order_delivery_price')->getChosenCase()->getKey() === 'delivery_self_100';
         }
 
         return false;
