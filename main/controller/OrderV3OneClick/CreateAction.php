@@ -8,7 +8,7 @@ use Model\Order\OrderEntity;
 class CreateAction {
     public function __construct() {
         $this->session = \App::session();
-        $this->splitSessionKey = \App::config()->order['splitSessionKey'] . '-1click';
+        $this->splitSessionKey = \App::config()->order['oneClickSplitSessionKey'];
         $this->client = \App::coreClientV2();
         $this->user = \App::user();
     }

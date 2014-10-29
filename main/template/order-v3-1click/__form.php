@@ -5,12 +5,6 @@ return function(
     \Model\Product\Entity $product,
     \Model\Shop\Entity $shop = null
 ) {
-    /** @var $bonusCards \Model\Order\BonusCard\Entity[] */
-    $userEntity = \App::user()->getEntity();
-
-    $userBonusCards = $userEntity ? $userEntity->getBonusCard() : null;
-    $userBonusCard = null;
-
     $title = $shop ? 'Резерв товара' :'Купить быстро в 1 клик';
 ?>
 <div class="orderOneClick">

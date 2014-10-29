@@ -483,11 +483,12 @@ class AppConfig {
     public $newOrder;
     /** @var array  */
     public $order = [
-        'cookieName'     => null,
-        'sessionName'    => null,
-        'enableMetaTag'  => null,
-        'maxSumOnline'   => null,
-        'splitSessionKey'   => null
+        'cookieName'              => null,
+        'sessionName'             => null,
+        'enableMetaTag'           => null,
+        'maxSumOnline'            => null,
+        'splitSessionKey'         => null,
+        'oneClickSplitSessionKey' => null,
     ];
     /** @var bool */
     public $newDeliveryCalc;

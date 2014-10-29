@@ -1,9 +1,16 @@
 <?php
 
-return function(
+/**
+ * @param \Helper\TemplateHelper $helper
+ * @param $id
+ * @param array $possible_days
+ * @param string $position
+ */
+$f = function(
     \Helper\TemplateHelper $helper,
     $id,
-    array $possible_days
+    array $possible_days,
+    $position = 'top' // top, bottom
 ) {
 
     $lastAvailableDay = DateTime::createFromFormat('U', (string)end($possible_days));
@@ -18,7 +25,7 @@ return function(
 
 ?>
 
-    <div class="celedr celedr-top celedr-bottom popupFl" style="display: none" id="<?= $id ?>">
+    <div class="celedr celedr-<?= $position ?> popupFl" style="display: none" id="<?= $id ?>">
         <div class="popupFl_clsr jsCloseFl"></div>
 
         <div class="celedr_t"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2, %A', time()))?></div>
@@ -78,4 +85,4 @@ return function(
         </div>
     </div>
 
-<? };
+<? }; return $f;

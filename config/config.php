@@ -429,6 +429,7 @@ $c->order['prepayment'] = [
     'labelId'    => 15, // id шильдика "предоплата"
 ];
 $c->order['splitSessionKey'] = 'order_split';
+$c->order['oneClickSplitSessionKey'] = $c->order['splitSessionKey'] . '-1click';
 
 $c->newDeliveryCalc = true;
 

@@ -2,8 +2,7 @@
 
 return function(
     \Helper\TemplateHelper $helper,
-    \Model\OrderDelivery\Entity $orderDelivery,
-    $error = null
+    \Model\OrderDelivery\Entity $orderDelivery
 ) {
 ?>
 
@@ -43,6 +42,7 @@ return function(
                 <?= $helper->render('order-v3/__calendar', [
                     'id'            => 'id-order-changeDate-content-' . $order->id,
                     'possible_days' => $order->possible_days,
+                    'position'      => 'bottom',
                 ]) ?>
 
                 <? if ((bool)$order->possible_intervals) : ?>
@@ -57,11 +57,11 @@ return function(
                     <ul class="customSel_lst popupFl" style="display: none;">
                         <? foreach ($order->possible_intervals as $interval) : ?>
                         <li class="customSel_i" data-value="<?= $helper->json($interval) ?>"><?= isset ($interval['from']) ? $interval['from'] : '' ?>…<?= isset ($interval['to']) ? $interval['to'] : '' ?></li>
-                        <? endforeach; ?>
+                        <? endforeach ?>
                     </ul>
                 </div>
 
-                <? endif; ?>
+                <? endif ?>
 
             </div>
             <!--/ дата доставки -->
@@ -80,7 +80,7 @@ return function(
                     <div class="orderCol_addrs"<? if (isset($point->subway[0]->line)): ?> style="background: <?= $point->subway[0]->line->color ?>;"<? endif ?>>
                         <span class="orderCol_addrs_tx">
                             <? if (isset($point->subway[0])): ?><?= $point->subway[0]->name ?><br/><? endif ?>
-                            <? if (isset($point->address)): ?><span class="colorBrightGrey"><?= $point->address ?></span><? endif; ?>
+                            <? if (isset($point->address)): ?><span class="colorBrightGrey"><?= $point->address ?></span><? endif ?>
                         </span>
                     </div>
 
@@ -89,8 +89,8 @@ return function(
                         <? if (isset($point)) : ?>
                             <br />
                             <span class="orderCol_tm_t">Оплата при получении: </span>
-                            <? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CASH])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt="">-->наличные<? endif; ?><? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt="">-->, банковская карта<? endif; ?>
-                        <? endif; ?>
+                            <? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CASH])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt="">-->наличные<? endif ?><? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt="">-->, банковская карта<? endif ?>
+                        <? endif ?>
                     </div>
                 </div>
             <? else: ?>
