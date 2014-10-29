@@ -236,7 +236,7 @@
     });
 
     // клик по способу доставки
-    $orderContent.on('click', '.selShop_tab:not(.selShop_tab-act)', function(){
+	$body.on('click', '.selShop_tab:not(.selShop_tab-act)', function(){
         var token = $(this).data('token'),
             id = $(this).closest('.popupFl').attr('id');
         // переключение списка магазинов
