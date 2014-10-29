@@ -69,7 +69,7 @@ class ChildAction {
             $gridCells[] = $gridCell;
 
             if ((\Model\GridCell\Entity::TYPE_PRODUCT === $gridCell->getType()) && $gridCell->getObjectUi()) {
-                $productsByUi[$gridCell->getObjectUi()] = $gridCell->getObjectId();
+                $productsByUi[$gridCell->getObjectUi()] = $gridCell->getObjectUi();
             }
         }
 
@@ -101,10 +101,11 @@ class ChildAction {
         foreach (array_chunk($productsByUi, \App::config()->coreV2['chunk_size'], true) as $uisInChunk) {
             \RepositoryManager::product()->prepareCollectionByUi(array_values($uisInChunk), \App::user()->getRegion(), function($data) use (&$productsByUi, &$uisInChunk) {
                 foreach ($data as $item) {
-                    if (!isset($productsByUi[$item['ui']])) {
+                    $key = array_search($item['ui'], $productsByUi, true);
+                    if (!isset($productsByUi[$key])) {
                         continue;
                     }
-                    $productsByUi[$item['ui']] = new \Model\Product\Entity($item);
+                    $productsByUi[$key] = new \Model\Product\Entity($item);
                 }
             });
         }
