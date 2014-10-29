@@ -67,7 +67,7 @@
 					}
 
 					.lstn_i_inn {
-						height: 249px;
+						height: auto;
 					}
 				}
 			}
@@ -76,7 +76,7 @@
 				overflow: visible;
 
 				.lstn_i_inn {
-					height: 314px;
+					height: auto;
 					z-index: 5;
 				}
 
@@ -175,12 +175,18 @@
 			vertical-align: middle;
 		}
 
-		&_notb {
+		&_not {
 			font-weight: bold;
 			.inline-block();
 			vertical-align: middle;
-			color: #808080;
+			color: #9c9c9c;
 			margin-left: 8px;
+		}
+
+		&_ftn {
+			color: #9c9c9c;
+			.inline-block();
+			margin: 3px 0 0;
 		}
 	}
 
@@ -217,32 +223,51 @@
 	&-jewel {
 		margin-left: 0;
 
-		.lstn_i {
-			height: 240px;
+		.stickLst {
+			top: 45px;
+		}
+			
+		.lstn {
 
-			&:hover {
+			&_i {
+				height: 240px;
 
-				.lstn_i_inn {
+				&:hover {
+
+					.lstn_i_inn {
+						height: 228px;
+					}
+				}
+
+				&_inn {
+					border-color: #f9f9f9;
+					padding-top: 10px;
 					height: 228px;
+					padding-bottom: 0;
 				}
 			}
 
-			&_inn {
-				border-color: #f9f9f9;
-				padding-top: 10px;
-				height: 228px;
-				padding-bottom: 0;
+			&_img {
+				width: 160px;
+				height: 160px;
 			}
-		}
 
-		.lstn_img {
-			width: 160px;
-			height: 160px;
-		}
+			&_imglk {
+			    height: 160px;
+			    width: 160px;
+			}
 
-		.lstn_imglk {
-		    height: 160px;
-		    width: 160px;
+			&_pr {
+				position: absolute;
+				bottom: 10px;
+				left: 10px;
+			}
+
+			&_btn {
+				position: absolute;
+				bottom: 10px;
+				right: 10px;
+			}
 		}
 
 		&-3col {
@@ -288,11 +313,15 @@
     z-index: 2;
 
     &_i {
-    	float: right;
+    	float: left;
     	margin-right: 5px;
 
     	&-l {
     		float: left;
+    	}
+
+    	&-r {
+    		float: right;
     	}
     }
 }

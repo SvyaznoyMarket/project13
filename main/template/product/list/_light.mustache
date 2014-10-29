@@ -42,7 +42,7 @@
                 </div>
 
                 {{#view.extraContent}}
-                    <div class="lstn_btn clearfix">
+                    <div class="lstn_btn">
                         {{^hasKit}}
                             <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare"></a>
 
@@ -52,15 +52,15 @@
 
                             {{#view.extraContent}}
                                 {{#isInShopShowroomOnly}}
-                                    <span class="lstn_btn_notb">
+                                    <span class="lstn_btn_not">
                                         На витрине
                                     </span>
                                 {{/isInShopShowroomOnly}}
 
                                 {{^isInShopShowroomOnly}}
                                     {{#isInShopStockOnly}}
-                                        <span class="lstn_btn_notb">
-                                            Только в магазине
+                                        <span class="lstn_btn_ftn">
+                                            Только в магазинах
                                         </span>
                                     {{/isInShopStockOnly}}
                                 {{/isInShopShowroomOnly}}
@@ -68,7 +68,7 @@
                                 {{^isInShopShowroomOnly}}
                                     {{^isInShopStockOnly}}
                                         {{^isBuyable}}
-                                            <span class="lstn_btn_notb">
+                                            <span class="lstn_btn_not">
                                                 Нет в наличии
                                             </span>
                                         {{/isBuyable}}
@@ -85,15 +85,15 @@
 
                             {{#view.extraContent}}
                                 {{#isInShopShowroomOnly}}
-                                    <span class="lstn_btn_notb">
+                                    <span class="lstn_btn_not">
                                         На витрине
                                     </span>
                                 {{/isInShopShowroomOnly}}
 
                                 {{^isInShopShowroomOnly}}
                                     {{#isInShopStockOnly}}
-                                        <span class="lstn_btn_notb">
-                                            Только в магазине
+                                        <span class="lstn_btn_ftn">
+                                            Только в магазинах
                                         </span>
                                     {{/isInShopStockOnly}}
                                 {{/isInShopShowroomOnly}}
@@ -101,7 +101,7 @@
                                 {{^isInShopShowroomOnly}}
                                     {{^isInShopStockOnly}}
                                         {{^isBuyable}}
-                                            <span class="lstn_btn_notb">
+                                            <span class="lstn_btn_not">
                                                 Нет в наличии
                                             </span>
                                         {{/isBuyable}}
@@ -111,7 +111,7 @@
                         {{/isKitLocked}}
                     </div>
                 {{/view.extraContent}}
-
+                <br/>
                 {{#view.bottomDescription}}
                     <div class="lstn_desc"><a href="{{link}}">{{name}}</a></div>
                     {{#review}}{{> product/_review-compact }}{{/review}}

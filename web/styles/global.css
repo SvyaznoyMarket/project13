@@ -7624,13 +7624,13 @@ img[height="0"] {
     *zoom: 1;
   }
   .lstn_i-hover.lstn_i-banner:hover .lstn_i_inn {
-    height: 249px;
+    height: auto;
   }
   .lstn_i-hover:hover {
     overflow: visible;
   }
   .lstn_i-hover:hover .lstn_i_inn {
-    height: 314px;
+    height: auto;
     z-index: 5;
   }
   .lstn_i-hover:hover .lstn_btn {
@@ -7730,7 +7730,7 @@ img[height="0"] {
   .lstn_btn .btnCmprb {
     vertical-align: middle;
   }
-  .lstn_btn_notb {
+  .lstn_btn_not {
     font-weight: bold;
     display: inline-block;
     vertical-align: top;
@@ -7738,8 +7738,17 @@ img[height="0"] {
     *display: inline;
     *zoom: 1;
     vertical-align: middle;
-    color: #808080;
+    color: #9c9c9c;
     margin-left: 8px;
+  }
+  .lstn_btn_ftn {
+    color: #9c9c9c;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    margin: 3px 0 0;
   }
   .lstn_desc {
     display: table-cell;
@@ -7766,6 +7775,9 @@ img[height="0"] {
   .lstn-jewel {
     margin-left: 0;
   }
+  .lstn-jewel .stickLst {
+    top: 45px;
+  }
   .lstn-jewel .lstn_i {
     height: 240px;
   }
@@ -7785,6 +7797,16 @@ img[height="0"] {
   .lstn-jewel .lstn_imglk {
     height: 160px;
     width: 160px;
+  }
+  .lstn-jewel .lstn_pr {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+  }
+  .lstn-jewel .lstn_btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
   }
   .lstn-jewel-3col .lstn_i {
     width: 321px;
@@ -7814,11 +7836,14 @@ img[height="0"] {
     z-index: 2;
   }
   .stickLst_i {
-    float: right;
+    float: left;
     margin-right: 5px;
   }
   .stickLst_i-l {
     float: left;
+  }
+  .stickLst_i-r {
+    float: right;
   }
 }
 @media all {
