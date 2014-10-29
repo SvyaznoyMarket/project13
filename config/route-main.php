@@ -1091,6 +1091,7 @@ return [
         'action'  => ['Compare\CompareAction', 'clear'],
     ],
 
+    // Переключение АБ-тестов
     'switch' => [
         'pattern'   => '/switch',
         'action'    => ['SwitchAction', 'execute']

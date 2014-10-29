@@ -12,7 +12,7 @@
         <? foreach ($test->getCases() as $case) : ?>
             <li>
                 <input type="radio" class="changeCase" name="<?= $test->getKey() ?>" value="<?= $case->getKey() ?>" <?= $test->getChosenCase() == $case ? 'checked' : '' ?> <?= !$test->isActive() ? 'disabled' : '' ?> />
-                <?= $case->getName() ?>
+                <?= $case->getName() ?> <span style="color: gray;"><?= $case->getTraffic() ?>%</span>
             </li>
         <? endforeach ?>
         </ul>
@@ -35,7 +35,7 @@
                 testName = $(this).attr('name'),
                 testCase = $(this).val();
 
-            if (testCase == '' || testName == '' || typeof cookie[testName] == 'undefined') return;
+            if (testCase == '' || testName == '') return;
 
             cookie[testName] = testCase;
 

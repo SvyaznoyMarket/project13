@@ -3,8 +3,6 @@
 
 namespace Controller;
 
-
-use Exception\AccessDeniedException;
 use Exception\NotFoundException;
 
 class SwitchAction {
