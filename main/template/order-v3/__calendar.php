@@ -18,7 +18,7 @@ return function(
 
 ?>
 
-    <div class="celedr popupFl" style="display: none" id="<?= $id ?>">
+    <div class="celedr celedr-top celedr-bottom popupFl" style="display: none" id="<?= $id ?>">
         <div class="popupFl_clsr jsCloseFl"></div>
 
         <div class="celedr_t"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2, %A', time()))?></div>
