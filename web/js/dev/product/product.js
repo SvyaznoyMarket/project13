@@ -197,6 +197,7 @@ $(document).ready(function() {
                         closeEsc: false,
                         onLoad: function() {
                             $('#OrderV3ErrorBlock').empty().hide();
+							$('.jsOrderV3PhoneField').focus();
                         }
                     });
 
