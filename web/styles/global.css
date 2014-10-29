@@ -6179,9 +6179,6 @@ img[height="0"] {
     font-size: 20px;
     margin: 0 0 15px;
   }
-  .orderOneClick .orderU_lgnd-cur {
-    border-bottom: none;
-  }
   .orderOneClick .orderU_lgnd-tggl {
     color: #808080;
     border-bottom: 1px dotted #808080;
@@ -6192,6 +6189,25 @@ img[height="0"] {
     *display: inline;
     *zoom: 1;
     font-size: 16px;
+  }
+  .orderOneClick .orderU_lgnd-tggl-cur {
+    color: #000000;
+    border-bottom: none;
+  }
+  .orderOneClick .orderU_lgnd_tgglnote {
+    color: #808080;
+    border-bottom: 1px dotted #808080;
+    cursor: pointer;
+    display: none;
+    font-size: 16px;
+    margin-left: 10px;
+  }
+  .orderOneClick .orderU_lgnd_tgglnote-cur {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
   }
   .orderOneClick .orderU_lbl {
     font-size: 14px;

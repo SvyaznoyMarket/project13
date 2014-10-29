@@ -242,10 +242,12 @@ $(document).ready(function() {
 
             toggleOneClickDelivery = function toggleOneClickDelivery() {
             	var button = $(this),
+            		$toggleNote = $('.js-order-oneclick-delivery-toggle-btn-note'),
             		$toggleBox = $('.js-order-oneclick-delivery-toggle');
 
-            		button.toggleClass('orderU_lgnd-cur');
+            		button.toggleClass('orderU_lgnd-tggl-cur');
             		$toggleBox.toggle();
+            		$toggleNote.toggleClass('orderU_lgnd_tgglnote-cur')
 
                 $('body').trigger('trackUserAction', ['2 Способ получения']);
             };

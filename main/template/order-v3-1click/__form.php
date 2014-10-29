@@ -53,7 +53,7 @@ return function(
         </fieldset>
         
         <fieldset class="orderU_flds">
-            <legend class="orderU_lgnd orderU_lgnd-tggl js-order-oneclick-delivery-toggle-btn">Способ получения</legend>
+            <legend class="orderU_lgnd orderU_lgnd-tggl js-order-oneclick-delivery-toggle-btn">Способ получения<span class="orderU_lgnd_tgglnote js-order-oneclick-delivery-toggle-btn-note">скрыть</span></legend>
 
             <div class="js-order-oneclick-delivery-toggle" style="display: none;">
                 <div

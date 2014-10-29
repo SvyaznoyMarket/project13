@@ -62,16 +62,28 @@
 			font-size: 20px;
 			margin: 0 0 15px;
 
-			&-cur {
-				border-bottom: none;
-			}
-
 			&-tggl {
 				color: #808080;
 				border-bottom: 1px dotted #808080;
 				cursor: pointer;
 				.inline-block();
 				font-size: 16px;
+
+				&-cur {
+					color: @black;
+					border-bottom: none;
+				}
+			}
+			&_tgglnote {
+				color: #808080;
+				border-bottom: 1px dotted #808080;
+				cursor: pointer;
+				display: none;
+				font-size: 16px;
+				margin-left: 10px;
+				&-cur {
+					.inline-block();
+				}
 			}
 		}
 		&_lbl {
