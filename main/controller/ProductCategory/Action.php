@@ -430,7 +430,7 @@ class Action {
         // SITE-4439
         try {
             // если у категории нет дочерних узлов
-            if ($category && (!$category->getHasChild()) || in_array($category->getId(), [1096])) {
+            if ($category && (!$category->getHasChild() || in_array($category->getId(), [1096]))) {
                 //$hotlinks = array_filter($hotlinks, function($item) { return isset($item['group_name']) ? (bool)$item['group_name'] : false; }); // TODO: временная заглушка
                 // опции брендов
                 $brandOptions = [];
