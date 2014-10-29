@@ -1082,6 +1082,7 @@ $(document).ready(function() {
                 // mask
                 $.mask.definitions['x']='[0-9]';
                 $.mask.placeholder= "_";
+                $.mask.autoclear= false;
                 $.map($('#jsOneClickContent').find('input'), function(elem, i) {
                     if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
                 });

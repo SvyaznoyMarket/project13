@@ -6,6 +6,7 @@
     // jQuery masked input
     $.mask.definitions['x']='[0-9]';
     $.mask.placeholder= "_";
+	$.mask.autoclear = false;
     $.map($inputs, function(elem, i) {
         if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
     });
@@ -65,5 +66,7 @@
     if (/orde(r|rs)\/new/.test(window.location.href)) {
         $body.trigger('trackUserAction', ['1 Вход_Получатель_ОБЯЗАТЕЛЬНО']);
     }
+
+	$('.jsOrderV3PhoneField').focus()
 
 })(jQuery);
