@@ -15,7 +15,7 @@ class RecommendedAction {
         /* Для всех продуктов корзины получим рекомендации */
         /* Неплохо распараллелить запросы, ну да ладно */
         foreach ($cart->getProducts() as $product) {
-            $recommendedProducts = array_merge($recommendedProducts, $recommendController->getProductsIdsFromRetailrocket($product, $request));
+            $recommendedProducts = array_merge($recommendedProducts, $recommendController->getProductsIdsFromRetailrocket($product, $request, 'CrossSellItemToItems'));
         }
 
         /* Перемешаем и обрежем массив продуктов */
