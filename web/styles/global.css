@@ -7606,11 +7606,10 @@ img[height="0"] {
     margin-top: 5px;
   }
   .cmprCnt_buy_lk {
-    width: 100px;
-    height: 30px;
-    line-height: 30px;
     font-size: 14px;
     font-weight: bold;
+    padding: 5px 0;
+    width: 100px;
   }
   .cmprCnt_rating {
     text-align: center;
