@@ -1005,7 +1005,6 @@
 		},
 
 		checkScroll: function() {
-			console.info('checkscroll');
 
 			var w = $(window),
 				d = $(document);

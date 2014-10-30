@@ -21,10 +21,10 @@ class CompleteAction extends OrderV3 {
      * @throws \Exception
      */
     public function execute(\Http\Request $request) {
-        $controller = parent::execute($request);
-        if ($controller) {
-            return $controller;
-        }
+//        $controller = parent::execute($request);
+//        if ($controller) {
+//            return $controller;
+//        }
 
         \App::logger()->debug('Exec ' . __METHOD__);
 
@@ -55,13 +55,22 @@ class CompleteAction extends OrderV3 {
                 });
 
                 // методы оплаты для заказа
-                $this->client->addQuery('payment-method/get-for-order', [
-                    'geo_id'    => $this->user->getRegionId(),
-                    'client_id' => 'site',
-                    'number_erp'    => $sessionOrder['number_erp']
-                ], [], function ($data) use ($sessionOrder, &$ordersPayment) {
+                $this->client->addQuery(
+                    'payment-method/get-for-order',
+                    [
+                        'geo_id'     => $this->user->getRegionId(),
+                        'client_id'  => 'site',
+                        'number_erp' => $sessionOrder['number_erp']
+                    ],
+                    [],
+                    function ($data) use ($sessionOrder, &$ordersPayment) {
                         $ordersPayment[$sessionOrder['number']] = new PaymentEntity($data);
-                });
+                    },
+                    function (\Exception $e) {
+                        \App::logger()->error(['error' => $e, 'message' => 'Не получены методы оплаты'], ['order']);
+                        \App::exception()->remove($e);
+                    }
+                );
             }
 
             unset($sessionOrder);

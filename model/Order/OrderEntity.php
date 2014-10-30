@@ -262,7 +262,7 @@ class OrderEntity {
         }
 
         // идиотский АБ-тест TODO remove
-        if (\App::user()->getRegionId() == 93746 && $this->delivery_type_id == 3 && $arr['total_cost'] < 1000 && \App::abTest()->getTest('order_delivery_price')  && \App::abTest()->getTest('order_delivery_price')->getChosenCase()->getKey() == 'delivery_self_100') {
+        if (\Controller\Delivery\Action::isPaidSelfDelivery() && $arr['total_cost'] < \App::config()->self_delivery['limit'] && $this->delivery_type_id == 3) {
             $this->delivery_price = 100;
         }
 
@@ -317,6 +317,9 @@ class OrderEntity {
                 if ($partnerName = \App::partner()->getName()) {
                     $partners[] = \App::partner()->getName();
                 }
+
+                // FIXME: похоже, не работает
+                /*
                 foreach (\Controller\Product\BasicRecommendedAction::$recomendedPartners as $recomPartnerName) {
                     if ($viewedAt = \App::user()->getRecommendedProductByParams($product->getId(), $recomPartnerName, 'viewed_at')) {
                         if ((time() - $viewedAt) <= 30 * 24 * 60 * 60) { // 30days
@@ -326,6 +329,24 @@ class OrderEntity {
                         }
                     }
                 }
+                */
+
+                try {
+                    $recommendedProductIds = (array)\App::session()->get(\App::config()->product['recommendationSessionKey']);
+                    if ((bool)$recommendedProductIds) {
+                        foreach ($recommendedProductIds as $recommendedIndex => $recommendedProductId) {
+                            if ($product->getId() == $recommendedProductId) {
+                                $data['product.'. $product->getUi() . '.' . 'sender'] = 'retailrocket'; // FIXME: поправить в будущем - не все рекомендации от rr
+                                unset($recommendedProductIds[$recommendedIndex]);
+                            }
+                        }
+
+                        \App::session()->set(\App::config()->product['recommendationSessionKey'], $recommendedProductIds);
+                    }
+                } catch (\Exception $e) {
+                    \App::logger()->error(['error' => $e], ['order', 'partner']);
+                }
+
                 $data = \App::partner()->fabricateCompleteMeta(
                     isset($data) ? $data : [],
                     \App::partner()->fabricateMetaByPartners($partners, $product)
@@ -338,6 +359,7 @@ class OrderEntity {
         } catch (\Exception $e) {
             \App::logger()->error($e, ['order_v3', 'partner']);
         }
+
         return (bool)$data ? $data : null;
     }
 

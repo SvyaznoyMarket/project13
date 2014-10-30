@@ -190,7 +190,7 @@ window.ANALYTICS = {
 			};
 
 		$('body').on('addtocart', addToBasket);
-		$('body').on('remFromCart', remFromBasket);
+		$('body').on('removeFromCart', remFromBasket);
 
 		(function () {
 			var s = document.createElement('script'),
@@ -206,12 +206,7 @@ window.ANALYTICS = {
 				vars = {};
 				vars.pageType = 0;
 			}
-			else if ( vars.extraData ) {
-				if ( true == vars.extraData.cartProducts && ENTER.config.cartProducts ) {
-					vars.basketProducts = ENTER.config.cartProducts;
-				}
-				delete vars.extraData;
-			}
+
 			if ($('body').data('template') != 'order_new') window.APRT_DATA = vars;
 
 			s.type  = 'text/javascript';
@@ -242,6 +237,8 @@ window.ANALYTICS = {
 	 * CityAds counter
  	 */
 	xcntmyAsync: function () {
+		// Счётчик отключен, т.к. из-за обращений к rtrgt.com, которые производятся данным счётчиком, наш сайт был забанен на google.adwords
+		/*
 		var
 			elem = $('#xcntmyAsync'),
 			data = elem ? elem.data('value') : false,
@@ -285,7 +282,7 @@ window.ANALYTICS = {
 			product();
 		}
 		init();
-
+		*/
 	},
 
 	sociomanticJS: function () {
@@ -2074,7 +2071,8 @@ window.ANALYTICS = {
 		fillProducts = function(data) {
 			$.each(data, function(i,val){
 				products.push(new InsiderProduct(val))
-			})
+			});
+			window.spApiPaidProducts = products;
 		};
 
 		if (ENTER.UserModel && ENTER.UserModel.cart()) fillProducts(ENTER.UserModel.cart());
@@ -2086,7 +2084,13 @@ window.ANALYTICS = {
 			}
 		});
 
-		window.spApiPaidProducts = products;
+		body.on('addtocart', function(e,data){
+			if (data.product) {
+				window.spApiPaidProducts = window.spApiPaidProducts || [];
+				data.product.category = null; // TODO временно, пока не отдаются категории в едином виде
+				window.spApiPaidProducts.push(new InsiderProduct(data.product));
+			}
+		})
 	},
 
 	enable : true

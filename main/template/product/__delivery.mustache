@@ -34,6 +34,10 @@
                     {{/isPriceNaN}}
                 {{/isPriceEqualZero}}
 
+                {{#ab_paid_delivery}}
+                    <div class="bJustText">для заказов от {{limit}}&nbsp;<span class="rubl">p</span></div>
+                {{/ab_paid_delivery}}
+
                 {{#date.name}}
                     <div class="bJustText">{{date.name}}</div>
                 {{/date.name}}

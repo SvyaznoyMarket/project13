@@ -36,7 +36,6 @@
 	 * Показ юзербара
 	 */
 	function showUserbar(disableAnimation, onOpen) {
-		console.log('showUserbar');
 
 		$.each(emptyCompareNoticeElements, function(){
 			this.removeClass(emptyCompareNoticeShowClass);
@@ -57,7 +56,6 @@
 	 * Скрытие юзербара
 	 */
 	function hideUserbar() {
-		console.log('hideUserbar');
 		userBarFixed.slideUp();
 		userbarStatic.css('visibility','visible');
 	}
@@ -182,6 +180,7 @@
 		}
 
 		buyInfoShowing = true;
+		$(document.body).trigger('showUserCart');
 	}
 
 	/**
@@ -264,6 +263,8 @@
 				} else {
 					showBuyInfo();
 				}
+
+				body.trigger('removeFromCart', [res.product]);
 			};
 
 		$.ajax({

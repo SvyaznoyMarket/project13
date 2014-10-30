@@ -441,7 +441,6 @@ class IndexAction {
             }
         }
 
-
         $page = new \View\Product\IndexPage();
         $page->setParam('renderer', \App::closureTemplating());
         $page->setParam('regionsToSelect', $regionsToSelect);

@@ -36,6 +36,7 @@ $config = array_merge([
     'user' => [
         'region' => [
             'forceDefaultBuy' => \App::user()->getRegion()->getForceDefaultBuy(),
+            'name'            => \App::user()->getRegion() ? \App::user()->getRegion()->getName() : null
         ],
     ],
     'routes' => [
@@ -44,7 +45,10 @@ $config = array_merge([
         'cart.oneClick.product.set' => ['pattern' => $routerRules['cart.oneClick.product.set']['pattern']],
         'compare.add'      => ['pattern' => $routerRules['compare.add']['pattern']],
         'compare.delete'   => ['pattern' => $routerRules['compare.delete']['pattern']],
+        'orderV3OneClick.delivery'  => ['pattern' => $routerRules['orderV3OneClick.delivery']['pattern']],
     ],
+    'selfDeliveryTest'    => \Controller\Delivery\Action::isPaidSelfDelivery(), // удалять осторожно, поломается JS
+    'selfDeliveryLimit'    => $appConfig->self_delivery['limit'] // стоимость платного самовывоза, удалять осторожно, поломается JS
 ], isset($config) ? (array)$config : []);
 ?>
 

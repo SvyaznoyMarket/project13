@@ -369,7 +369,10 @@ class Action extends \Controller\ProductCategory\Action {
 
             // проверка на максимально допустимый номер страницы
             if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
-                throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+                //throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+                return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
+                    'page' => $productPager->getLastPage(),
+                ]));
             }
 
             // video
