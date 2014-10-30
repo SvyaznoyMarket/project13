@@ -101,7 +101,7 @@ class ChildAction {
         \App::scmsClient()->addQuery(
             'category/get-by-filters',
             [
-                'filters' => ['appearance.is_new' => true],
+                'filters' => ['appearance.is_new' => 'true'],
                 'geo_id'  => $region->getId(),
             ],
             [],
