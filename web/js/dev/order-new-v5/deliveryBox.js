@@ -627,7 +627,7 @@
 		 */
 		DeliveryBox.prototype._getFullNameDayOfWeek = function( dayOfWeek ) {
 			var
-				days = ['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье'];
+				days = ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'];
 			// end of vars
 
 			return days[dayOfWeek];
