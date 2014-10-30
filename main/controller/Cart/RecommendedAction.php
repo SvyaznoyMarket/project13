@@ -19,10 +19,6 @@ class RecommendedAction {
             $productIds = array_merge($productIds, (array)$recommendController->getProductsIdsFromRetailrocket($product, $request, 'CrossSellItemToItems'));
         }
 
-        /* Перемешаем и обрежем массив продуктов */
-        //shuffle($productIds);
-        //$productIds = array_slice($recommendedProductIds, 0, 20);
-
         /* Получаем продукты из ядра */
         $products = [];
         foreach (array_chunk(array_keys($productIds), \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
@@ -45,6 +41,8 @@ class RecommendedAction {
                     return ($b->isInShopOnly() ? -1 : 1) - ($a->isInShopOnly() ? -1 : 1); // потом те, которые можно зарезервировать
                 } else if ($b->isInShopShowroomOnly() != $a->isInShopShowroomOnly()) {// потом те, которые есть на витрине
                     return ($b->isInShopShowroomOnly() ? -1 : 1) - ($a->isInShopShowroomOnly() ? -1 : 1);
+                } else {
+                    return (int)rand(-1, 1);
                 }
             });
         } catch (\Exception $e) {}
