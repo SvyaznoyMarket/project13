@@ -26,7 +26,7 @@ return function(
             $templatePath = 'product/list/_light';
             break;
         case 'light_without_description':
-            $listingClass = 'lstn lstn-light';
+            $listingClass = 'lstn-light lstn';
             $templatePath = 'product/list/_light';
             break;
         case 'line':

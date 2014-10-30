@@ -473,8 +473,8 @@
 		}
 		
 		// адаптация нового листинга к 3-м колонкам
-		.lstn {
-			&_i {
+		&.lstn {
+			.lstn_i {
 			    width: 321px;
 			    height: 380px;
 			    &_inn {
@@ -486,6 +486,12 @@
 				    .lstn_i_inn {
 				    	height: 289px;
 				    }
+
+				    &:hover {
+						.lstn_i_inn {
+							height: auto;
+						}
+					}
 				}
 				&-banner {
 					.lstn_i_inn {
@@ -493,19 +499,19 @@
 					}
 				}
 			}
-			&_imglk {
+			.lstn_imglk {
 			    height: 240px;
 			    width: 240px;
 			}
-			&_img {
+			.lstn_img {
 			    display: block;
 			    height: 240px;
 			    width: 240px;
 			}
-			&_desc {
+			.lstn_desc {
 			    width: 300px;
 			}
-			&_pr {
+			.lstn_pr {
 			    width: 170px;
 			}
 
