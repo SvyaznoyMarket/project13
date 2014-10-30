@@ -471,21 +471,57 @@
 				}
 			}
 		}
+		
+		// адаптация нового листинга к 3-м колонкам
+		.lstn {
+			&_i {
+			    width: 321px;
+			    height: 380px;
+			    &_inn {
+			    	width: 299px;
+			    	height: 348px;
+			    }
+			    &-hover {
+				    height: 321px;
+				    .lstn_i_inn {
+				    	height: 289px;
+				    }
+				}
+				&-banner {
+					.lstn_i_inn {
+					    min-height: 289px;
+					}
+				}
+			}
+			&_imglk {
+			    height: 240px;
+			    width: 240px;
+			}
+			&_img {
+			    display: block;
+			    height: 240px;
+			    width: 240px;
+			}
+			&_desc {
+			    width: 300px;
+			}
+			&_pr {
+			    width: 170px;
+			}
 
-		.lstn_i {
-		    width: 321px;
-
-		    &_inn {
-		    	width: 299px;
-		    }
-		}
-
-		.lstn_desc {
-		    width: 300px;
-		}
-
-		.lstn_pr {
-		    width: 180px;
+			&-light {
+				.lstn_i {
+				    height: 310px;
+				    &_inn {
+				    	height: 279px;
+				    }
+					&-banner {
+						.lstn_i_inn {
+						    min-height: 279px;
+						}
+					}
+				}
+			}
 		}
 	}
 }

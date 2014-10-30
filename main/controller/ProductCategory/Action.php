@@ -339,7 +339,7 @@ class Action {
         }
 
         if ($_SERVER['APPLICATION_ENV'] === 'local') {
-            $category->setProductView(4);
+            $category->setProductView(5);
         }
 
         if ($categoryClass && ('default' !== $categoryClass)) {

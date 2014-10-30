@@ -12090,15 +12090,47 @@
   }
   .bListing-3col .lstn_i {
     width: 321px;
+    height: 380px;
   }
   .bListing-3col .lstn_i_inn {
     width: 299px;
+    height: 348px;
+  }
+  .bListing-3col .lstn_i-hover {
+    height: 321px;
+  }
+  .bListing-3col .lstn_i-hover .lstn_i_inn {
+    height: 289px;
+  }
+  .bListing-3col .lstn_i-banner .lstn_i_inn {
+    min-height: 289px;
+  }
+  .bListing-3col .lstn_imglk {
+    height: 240px;
+    width: 240px;
+  }
+  .bListing-3col .lstn_img {
+    display: block;
+    height: 240px;
+    width: 240px;
   }
   .bListing-3col .lstn_desc {
     width: 300px;
   }
   .bListing-3col .lstn_pr {
-    width: 180px;
+    width: 170px;
+  }
+  .bListing-3col .lstn-light {
+    background: #fff;
+  }
+  .bListing-3col .lstn-light .lstn_i {
+    height: 310px;
+  }
+  .bListing-3col .lstn-light .lstn_i_inn {
+    height: 279px;
+  }
+  .bListing-3col .lstn-light .lstn_i-banner .lstn_i_inn {
+    min-height: 279px;
   }
   .bBtnLine {
     display: none;
