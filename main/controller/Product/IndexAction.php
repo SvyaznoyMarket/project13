@@ -101,7 +101,7 @@ class IndexAction {
 
         // получаем catalog json
         $catalogJson = [];
-        if ($product->getLastCategory()) {
+        if ($product->getLastCategory() && $product->getLastCategory()->getUi()) {
             \App::scmsClient()->addQuery('category/get', ['uid' => $product->getLastCategory()->getUi(), 'geo_id' => $user->getRegion()->getId()], [], function ($data) use (&$catalogJson) {
                 $catalogJson = \RepositoryManager::productCategory()->convertScmsDataToOldCmsData($data);
             });
