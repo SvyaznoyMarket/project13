@@ -9,10 +9,6 @@
 ?>
 
 <?
-if ($_SERVER['APPLICATION_ENV'] === 'local') {
-    $product->setPriceOld(10000);
-}
-
 $helper = new \Helper\TemplateHelper();
 $disabled = !$product->getIsBuyable();
 $gaEvent = !empty($gaEvent) ? $gaEvent : null;

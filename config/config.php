@@ -566,6 +566,24 @@ $c->abTest = [
                 ]
             ]
         ],
+        'jewel_filter' => [
+            'enabled' => true,
+            'expireDate' => '2015-12-31',
+            'cases' => [
+                'old_filter' => [
+                    'traffic' => 50,
+                    'name'    => 'Старый фильтр',
+                ],
+                'new_filter_with_photo' => [
+                    'traffic' => 25,
+                    'name'    => 'Новый фильтр и есть фото "как товар смотрится на модели"',
+                ],
+                'new_filter_without_photo' => [
+                    'traffic' => 25,
+                    'name'    => 'Новый фильтр и нет фото "как товар смотрится на модели"',
+                ],
+            ]
+        ],
         'other' => [
             'enabled' => false,
             'expireDate' => '2000-01-01',
