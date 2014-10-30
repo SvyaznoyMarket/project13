@@ -65,6 +65,7 @@ class ShowAction {
             ,
             'cartButton'   => [],
             'image'        => $product->getImageUrl($imageSize),
+            'hoverImage'   => $this->getHoverImageUrl($product, $imageSize),
             'price'        => $helper->formatPrice($product->getPrice()),
             'oldPrice'     => null,
             'isBuyable'    => $product->getIsBuyable(),
@@ -113,5 +114,18 @@ class ShowAction {
         }
 
         return $productItem;
+    }
+
+    private function getHoverImageUrl(\Model\Product\Entity $product, $imageSize) {
+        $test = \App::abTest()->getTest('jewel_filter');
+        if ($test && 'new_filter_with_photo' === $test->getChosenCase()->getKey()) {
+            foreach ($product->getPhoto() as $photo) {
+                if (40 == $photo->getPosition()) {
+                    return $photo->getUrl($imageSize);
+                }
+            }
+        }
+
+        return null;
     }
 }

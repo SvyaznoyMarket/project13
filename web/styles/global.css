@@ -8132,6 +8132,12 @@ img[height="0"] {
   .lstn_i:hover .notBuying {
     display: block;
   }
+  .lstn_i:hover .lstn_imglk-default {
+    display: none;
+  }
+  .lstn_i:hover .lstn_imglk-hover {
+    display: block;
+  }
   .lstn_i-hover {
     height: 281px;
     overflow: hidden;
@@ -8199,6 +8205,9 @@ img[height="0"] {
     width: 200px;
     height: 200px;
     margin: 0 auto 8px;
+  }
+  .lstn_imglk-hover {
+    display: none;
   }
   .lstn_img {
     display: block;

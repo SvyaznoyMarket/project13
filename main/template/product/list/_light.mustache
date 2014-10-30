@@ -27,7 +27,14 @@
                     {{/has360}}
                 </ul>
 
-                <a href="{{link}}" class="lstn_imglk"><img class="lstn_img" src="{{image}}" alt="" /></a>
+                {{#hoverImage}}
+                    <a href="{{link}}" class="lstn_imglk lstn_imglk-default"><img class="lstn_img" src="{{image}}" alt="" /></a>
+                    <a href="{{link}}" class="lstn_imglk lstn_imglk-hover"><img class="lstn_img" src="{{hoverImage}}" alt="" /></a>
+                {{/hoverImage}}
+
+                {{^hoverImage}}
+                    <a href="{{link}}" class="lstn_imglk"><img class="lstn_img" src="{{image}}" alt="" /></a>
+                {{/hoverImage}}
 
                 <div class="lstn_pr">
                     {{#oldPrice}}
