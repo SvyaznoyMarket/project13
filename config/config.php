@@ -251,13 +251,15 @@ $c->partners['RuTarget']['containerId'] = 'GTM-4SJX';
 $c->partners['Lamoda']['enabled'] = false;
 $c->partners['Lamoda']['lamodaID'] = '11640775691088171491';
 $c->partners['TagMan']['enabled'] = false;
+$c->partners['Revolver']['enabled'] = true;
+$c->partners['Insider']['enabled'] = true;
 
 $c->adFox['enabled'] = true;
 
 $c->partner['cookieName'] = 'last_partner';
 $c->partner['cookieLifetime'] = 2592000; // 30 дней
 
-$c->onlineCall['enabled'] = false;
+$c->onlineCall['enabled'] = true;
 
 // промсвязьбанк
 $c->paymentPsb['terminal']     = '20097201';
@@ -306,7 +308,7 @@ $c->product['itemsInSlider']            = 5;
 $c->product['itemsInCategorySlider']    = 3;
 $c->product['itemsInAccessorySlider']   = 4;
 $c->product['minCreditPrice']           = 3000;
-$c->product['totalCount']               = 30000;
+$c->product['totalCount']               = 55000;
 $c->product['recommendationSessionKey'] = 'recommendationProductIds';
 // глобальный (без учета региона) список товаров
 $c->product['globalListEnabled']      = true;
@@ -385,14 +387,6 @@ $c->payment['creditEnabled'] = true;
 $c->payment['paypalECS'] = false;
 $c->payment['blockedIds'] = [];
 
-$c->smartengine['cert']           = $c->dataDir . '/cert/gsorganizationvalg2.crt';
-$c->smartengine['apiUrl']         = 'https://www.selightprod.smartengine.at/se-light/api/1.0/json/';
-$c->smartengine['apiKey']         = 'c41851b19511c20acc84f47b7816fb8e';
-$c->smartengine['tenantid']       = 'ENojUTRcD8';
-$c->smartengine['logEnabled']     = true;
-$c->smartengine['logDataEnabled'] = true;
-$c->smartengine['sslVerify']      = true;
-
 $c->warranty['enabled'] = true;
 $c->f1Certificate['enabled'] = true;
 $c->coupon['enabled'] = true;
@@ -435,6 +429,7 @@ $c->order['prepayment'] = [
     'labelId'    => 15, // id шильдика "предоплата"
 ];
 $c->order['splitSessionKey'] = 'order_split';
+$c->order['oneClickSplitSessionKey'] = $c->order['splitSessionKey'] . '-1click';
 
 $c->newDeliveryCalc = true;
 
@@ -508,44 +503,80 @@ $c->abTest = [
                 ],
             ],
         ],
-        'orders' => [
+//        'orders' => [
+//            'enabled' => true,
+//            'expireDate' => '2014-12-31',
+//            'cases' => [
+//                'new' => [
+//                    'traffic'  => 50,
+//                    'name'     => 'Новое оформление заказа',
+//                ],
+//                'default' => [
+//                    'traffic'  => 50,
+//                    'name'     => 'Старое оформление заказа',
+//                ]
+//            ]
+//        ],
+//        'orders_moscow' => [
+//            'enabled' => true,
+//            'expireDate' => '2014-12-31',
+//            'cases' => [
+//                'new' => [
+//                    'traffic'  => 5,
+//                    'name'     => 'Новое оформление заказа',
+//                ],
+//                'default' => [
+//                    'traffic'  => 95,
+//                    'name'     => 'Старое оформление заказа',
+//                ]
+//            ]
+//        ],
+        'orders_new' => [
             'enabled' => true,
             'expireDate' => '2014-12-31',
             'cases' => [
-                'new' => [
-                    'traffic'  => 50,
-                    'name'     => 'Новое оформление заказа',
-                ],
-                'default' => [
-                    'traffic'  => 50,
+                'old' => [
+                    'traffic'  => 80,
                     'name'     => 'Старое оформление заказа',
+                ],
+                'new_1' => [
+                    'traffic'  => 10,
+                    'name'     => 'Новое оформление заказа, версия 1',
+                ],
+                'new_2' => [
+                    'traffic'  => 10,
+                    'name'     => 'Новое оформление заказа, версия 2',
                 ]
             ]
         ],
-        'orders_moscow' => [
+        'orders_new_some_regions' => [
             'enabled' => true,
             'expireDate' => '2014-12-31',
             'cases' => [
-                'new' => [
-                    'traffic'  => 5,
-                    'name'     => 'Новое оформление заказа',
-                ],
-                'default' => [
-                    'traffic'  => 95,
+                'old' => [
+                    'traffic'  => 0,
                     'name'     => 'Старое оформление заказа',
+                ],
+                'new_1' => [
+                    'traffic'  => 50,
+                    'name'     => 'Новое оформление заказа, версия 1',
+                ],
+                'new_2' => [
+                    'traffic'  => 50,
+                    'name'     => 'Новое оформление заказа, версия 2',
                 ]
             ]
         ],
         'order_delivery_price' => [
-            'enabled' => false,
+            'enabled' => true,
             'expireDate' => '2014-12-31',
             'cases' => [
                 'delivery_self_100' => [
-                    'traffic'  => 50,
+                    'traffic'  => 25,
                     'name'     => 'Платный самовывоз',
                 ],
                 'delivery_self_0' => [
-                    'traffic'  => 50,
+                    'traffic'  => 75,
                     'name'     => 'Бесплатный самовывоз',
                 ]
             ]
@@ -571,6 +602,9 @@ $c->abTest = [
         ],
     ],
 ];
+
+$c->self_delivery['limit'] = 1000;
+$c->self_delivery['regions'] = [119623, 93746, 14974];
 
 $c->preview = false;
 

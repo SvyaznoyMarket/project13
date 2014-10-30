@@ -31,7 +31,7 @@ class ChildAction {
             $rootCategoryInMenuImage = $catalogConfig['root_category_menu']['image'];
         }
 
-        $result = [];
+        $gridResult = [];
         \App::scmsClient()->addQuery(
             'category/get',
             [
@@ -39,12 +39,12 @@ class ChildAction {
                 'geo_id' => $region->getId(),
             ],
             [],
-            function($data) use (&$result) {
+            function($data) use (&$gridResult) {
                 if (isset($data['grid'])) {
-                    $result = $data['grid'];
+                    $gridResult = $data['grid'];
                 }
 
-                if (!isset($result['items'][0])) {
+                if (!isset($gridResult['items'][0])) {
                     \App::logger()->error(['message' => 'Не передан grid.items.0', 'scms.response' => $data, 'sender' => __FILE__ . ' ' .  __LINE__], ['tchibo']);
                 }
             },
@@ -54,8 +54,8 @@ class ChildAction {
 
         \App::scmsClient()->execute();
 
-        $result += ['items' => []];
-        if (!(bool)$result['items']) {
+        $gridResult += ['items' => []];
+        if (!(bool)$gridResult['items']) {
             \App::exception()->add(new \Exception('Проблема с гридстером'));
         }
 
@@ -63,13 +63,13 @@ class ChildAction {
         $productsByUi = [];
         /** @var $gridCells \Model\GridCell\Entity[] */
         $gridCells = [];
-        foreach ((array)$result['items'] as $item) {
+        foreach ((array)$gridResult['items'] as $item) {
             if (!is_array($item)) continue;
             $gridCell = new \Model\GridCell\Entity($item);
             $gridCells[] = $gridCell;
 
             if ((\Model\GridCell\Entity::TYPE_PRODUCT === $gridCell->getType()) && $gridCell->getObjectUi()) {
-                $productsByUi[$gridCell->getObjectUi()] = $gridCell->getObjectId();
+                $productsByUi[$gridCell->getObjectUi()] = $gridCell->getObjectUi();
             }
         }
 
@@ -95,16 +95,40 @@ class ChildAction {
                 }
             );
         }
+
+        $catalogConfigsByCategoryUi = [];
+        // Шильдик is_new
+        \App::scmsClient()->addQuery(
+            'category/get-by-filters',
+            [
+                'filters' => ['appearance.is_new' => 'true'],
+                'geo_id'  => $region->getId(),
+            ],
+            [],
+            function($data) use(&$catalogConfigsByCategoryUi) {
+                if (isset($data[0]['uid'])) {
+                    foreach ($data as $item) {
+                        if (!isset($item['uid'])) continue;
+                        $catalogConfigsByCategoryUi[$item['uid']] = $item;
+                    }
+                }
+            },
+            function(\Exception $e) {
+                \App::exception()->remove($e);
+            }
+        );
+
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
         // внимание! получаем значения массива
         foreach (array_chunk($productsByUi, \App::config()->coreV2['chunk_size'], true) as $uisInChunk) {
             \RepositoryManager::product()->prepareCollectionByUi(array_values($uisInChunk), \App::user()->getRegion(), function($data) use (&$productsByUi, &$uisInChunk) {
                 foreach ($data as $item) {
-                    if (!isset($productsByUi[$item['ui']])) {
+                    $key = array_search($item['ui'], $productsByUi, true);
+                    if (!isset($productsByUi[$key])) {
                         continue;
                     }
-                    $productsByUi[$item['ui']] = new \Model\Product\Entity($item);
+                    $productsByUi[$key] = new \Model\Product\Entity($item);
                 }
             });
         }
@@ -145,6 +169,7 @@ class ChildAction {
         $page->setGlobalParam('tchiboMenuCategoryNameStyles', $tchiboMenuCategoryNameStyles);
         $page->setGlobalParam('rootCategoryInMenuImage', $rootCategoryInMenuImage);
         $page->setGlobalParam('isTchibo', ($category->getRoot() && 'Tchibo' === $category->getRoot()->getName()));
+        $page->setGlobalParam('catalogConfigsByCategoryUi', $catalogConfigsByCategoryUi);
 
         return new \Http\Response($page->show());
     }

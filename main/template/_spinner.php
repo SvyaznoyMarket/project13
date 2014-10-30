@@ -8,11 +8,7 @@
 ?>
 
 <div class="numerbox">
-    <? if ($quantity > 1): ?>
-        <a href="<?= $decUrl ?>"><b class="ajaless" title="Уменьшить"></b></a>
-    <? else: ?>
-        <b class="ajaless" title="Уменьшить"></b>
-    <? endif ?>
+    <a href="<?= $decUrl ?>" class="ajaxLess"><b class="ajaless" title="Уменьшить"></b></a>
     <input maxlength="2" class="ajaquant" value="<?= $quantity ?>" />
-    <a href="<?= $incUrl ?>"><b class="ajamore" title="Увеличить"></b></a>
+    <a href="<?= $incUrl ?>" class="ajaxMore"><b class="ajamore" title="Увеличить"></b></a>
 </div>

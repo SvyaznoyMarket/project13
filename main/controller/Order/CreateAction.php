@@ -333,6 +333,8 @@ class CreateAction {
                             if ($partnerName = \App::partner()->getName()) {
                                 $partners[] = \App::partner()->getName();
                             }
+                            // FIXME: похоже, не работает
+                            /*
                             foreach (\Controller\Product\BasicRecommendedAction::$recomendedPartners as $recomPartnerName) {
                                 if ($viewedAt = \App::user()->getRecommendedProductByParams($product->getId(), $recomPartnerName, 'viewed_at')) {
                                     if ((time() - $viewedAt) <= 30 * 24 * 60 * 60) { // 30days
@@ -342,6 +344,25 @@ class CreateAction {
                                     }
                                 }
                             }
+                            */
+
+                            // рекомендации от retail rocket
+                            try {
+                                $recommendedProductIds = (array)\App::session()->get(\App::config()->product['recommendationSessionKey']);
+                                if ((bool)$recommendedProductIds) {
+                                    foreach ($recommendedProductIds as $recommendedIndex => $recommendedProductId) {
+                                        if ($product->getId() == $recommendedProductId) {
+                                            $orderData['meta_data']['product.'. $product->getUi() . '.' . 'sender'] = 'retailrocket'; // FIXME: поправить в будущем - не все рекомендации от rr
+                                            unset($recommendedProductIds[$recommendedIndex]);
+                                        }
+                                    }
+
+                                    \App::session()->set(\App::config()->product['recommendationSessionKey'], $recommendedProductIds);
+                                }
+                            } catch (\Exception $e) {
+                                \App::logger()->error(['error' => $e], ['order', 'partner']);
+                            }
+
                             $orderData['meta_data'] = \App::partner()->fabricateCompleteMeta(
                                 isset($orderData['meta_data']) ? $orderData['meta_data'] : [],
                                 \App::partner()->fabricateMetaByPartners($partners, $product)
@@ -350,7 +371,7 @@ class CreateAction {
                             $orderData['meta_data']['kiss_session'] = $request->request->get('kiss_session');
                             $orderData['meta_data']['last_partner'] = $request->cookies->get('last_partner');
                         }
-                        \App::logger()->info(sprintf('Создается заказ от партнеров %s', json_encode($orderData['meta_data']['partner'])), ['order', 'partner']);
+                        \App::logger()->info(['message' => 'Создается заказ от партнеров', 'meta_data' => $orderData['meta_data']['partner']], ['order', 'partner']);
                     } catch (\Exception $e) {
                         \App::logger()->error($e, ['order', 'partner']);
                     }
@@ -372,8 +393,15 @@ class CreateAction {
             $params['token'] = $userEntity->getToken();
         }
 
+        $params += ['request_id' => \App::$id]; // SITE-4445
+
         try {
-            $result = \App::coreClientV2()->query((\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet'), $params, $data, \App::config()->coreV2['hugeTimeout']);
+            $result = \App::coreClientV2()->query(
+                (\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet'),
+                $params,
+                $data,
+                \App::config()->coreV2['hugeTimeout']
+            );
         } catch(\Exception $e) {
             if (!in_array($e->getCode(), \App::config()->order['excludedError'])) {
                 \App::logger('order')->error([

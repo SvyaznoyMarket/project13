@@ -12,6 +12,10 @@ class OrdersAction {
         }
     }
 
+    /**
+     * @param \Http\Request $request
+     * @return \Http\JsonResponse|\Http\Response
+     */
     public function execute(\Http\Request $request) {
 
         if ($request->isXmlHttpRequest()) {
@@ -32,8 +36,8 @@ class OrdersAction {
 
     }
 
-    /** Возвращает массив заказов и продуктов
-     * @param \Http\Request $request
+    /**
+     * Возвращает массив заказов и продуктов
      * @return array
      */
     public function getData() {
@@ -49,25 +53,24 @@ class OrdersAction {
         $orders = [];
         $orders_by_year = [];
 
-        \RepositoryManager::order()->prepareCollectionByUserToken($user->getToken(), function($data) use(&$orders, &$orders_by_year) {
-            foreach ($data as $item) {
-                $orders[] = new \Model\User\Order\Entity($item);
-            }
+        \RepositoryManager::order()->prepareCollectionByUserToken(
+            $user->getToken(),
+            function($data) use(&$orders, &$orders_by_year) {
+                foreach (array_slice(array_reverse((array)$data), 1, 40) as $item) {
+                    $orders[] = new \Model\User\Order\Entity($item);
+                }
 
-            // сортировка по дате desc
-            /** @var $orders \Model\User\Order\Entity[] */
-            $orders = array_reverse($orders);
-
-            // история заказов
-            foreach ($orders as $order) {
-                if ( !(bool) $order->getLifecycle() || // если данного поля не существует
-                     $order->getLifecycle()[count($order->getLifecycle()) - 1]->getCompleted() // или последний статус true
-                    )
-                {
-                    $orders_by_year[$order->getCreatedAt()->format('Y')][] = $order;
+                // история заказов
+                foreach ($orders as $order) {
+                    if ( !(bool) $order->getLifecycle() || // если данного поля не существует
+                         $order->getLifecycle()[count($order->getLifecycle()) - 1]->getCompleted() // или последний статус true
+                        )
+                    {
+                        $orders_by_year[$order->getCreatedAt()->format('Y')][] = $order;
+                    }
                 }
             }
-        });
+        );
 
         // выполнение 1-го пакета запросов
         $client->execute();

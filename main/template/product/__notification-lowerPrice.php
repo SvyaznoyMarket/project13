@@ -3,7 +3,8 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\BasicEntity $product,
-    $isUserSubscribedToEmailActions
+    $isUserSubscribedToEmailActions,
+    $actionChannelName
 ) {
 
     if (!(\App::config()->product['lowerPriceNotification'] && $product->getMainCategory() && $product->getMainCategory()->getPriceChangeTriggerEnabled())) {
@@ -37,9 +38,9 @@ return function(
                     </div>
 
                     <? if (!$isUserSubscribedToEmailActions): ?>
-                        <label class="clearfix checked">
+                        <label class="bLowPriceNotiferPopup__actionChannel clearfix checked">
                             <input type="checkbox" name="subscribe" value="1" autocomplete="off" class="bCustomInput subscribe jsSubscribe" checked="checked" />
-                            <b></b>Акции и <br>суперпредложения
+                            <b></b><?= $helper->escape($actionChannelName) ?>
                         </label>
                     <? endif ?>
 

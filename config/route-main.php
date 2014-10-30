@@ -509,6 +509,10 @@ return [
         'pattern' => '/cart/sum',
         'action'  => ['Cart\SumAction', 'execute'],
     ],
+    'cart.recommended' => [
+        'pattern' => '/cart/recommended',
+        'action'  => ['Cart\RecommendedAction', 'execute'],
+    ],
 
     // оформление заказа: 1-й шаг - контактные данные
     'orderV3' => [
@@ -565,6 +569,19 @@ return [
     'orderV3.lifegift' => [
         'pattern'   => '/order/life-gift',
         'action'    => ['OrderV3\LifeGiftAction', 'execute']
+    ],
+
+    'orderV3OneClick.delivery' => [
+        'pattern' => '/order-1click/delivery',
+        'action'  => ['OrderV3OneClick\DeliveryAction', 'execute'],
+    ],
+    'orderV3OneClick.create' => [
+        'pattern' => '/order-1click/create',
+        'action'  => ['OrderV3OneClick\CreateAction', 'execute'],
+    ],
+    'orderV3OneClick.get' => [
+        'pattern' => '/order-1click/get/{accessToken}',
+        'action'  => ['OrderV3OneClick\GetAction', 'execute'],
     ],
 
 
@@ -1077,6 +1094,12 @@ return [
     'compare.clear' => [
         'pattern' => '/compare/clear',
         'action'  => ['Compare\CompareAction', 'clear'],
+    ],
+
+    // Переключение АБ-тестов
+    'switch' => [
+        'pattern'   => '/switch',
+        'action'    => ['SwitchAction', 'execute']
     ],
 
 	//content (должен быть в самом конце, иначе под паттерн попадут другие страницы)

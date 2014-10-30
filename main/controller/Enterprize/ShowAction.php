@@ -22,8 +22,14 @@ class ShowAction {
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
         $enterpizeCoupon = $repository->getEntityByToken($enterprizeToken);
 
+        $products = [];
+
         if (!(bool)$enterpizeCoupon) {
             throw new \Exception\NotFoundException(sprintf('Купон @%s не найден.', $enterprizeToken));
+        }
+
+        if (!$enterpizeCoupon->getPartner()) {
+            $products = \Controller\Enterprize\FormAction::getProducts($enterpizeCoupon);
         }
 
         // получаем лимит для купона
@@ -44,6 +50,7 @@ class ShowAction {
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
         $page->setParam('limit', $limit);
         $page->setParam('viewParams', ['showSideBanner' => false]);
+        $page->setParam('products', $products);
 
         return new \Http\Response($page->show());
     }

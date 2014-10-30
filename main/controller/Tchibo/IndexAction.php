@@ -145,6 +145,28 @@ class IndexAction {
             });
         }
 
+        $catalogConfigsByCategoryUi = [];
+        // Шильдик is_new
+        \App::scmsClient()->addQuery(
+            'category/get-by-filters',
+            [
+                'filters' => ['appearance.is_new' => 'true'],
+                'geo_id'  => $region->getId(),
+            ],
+            [],
+            function($data) use(&$catalogConfigsByCategoryUi) {
+                if (isset($data[0]['uid'])) {
+                    foreach ($data as $item) {
+                        if (!isset($item['uid'])) continue;
+                        $catalogConfigsByCategoryUi[$item['uid']] = $item;
+                    }
+                }
+            },
+            function(\Exception $e) {
+                \App::exception()->remove($e);
+            }
+        );
+
         // выполнение 2-го пакета запросов в ядро
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);
 
@@ -237,6 +259,7 @@ class IndexAction {
         //$page->setGlobalParam('products', $products);
         $page->setGlobalParam('tchiboMenuCategoryNameStyles', $tchiboMenuCategoryNameStyles);
         $page->setGlobalParam('promoContent', $promoContent);
+        $page->setGlobalParam('catalogConfigsByCategoryUi', $catalogConfigsByCategoryUi);
 
         return new \Http\Response($page->show());
     }

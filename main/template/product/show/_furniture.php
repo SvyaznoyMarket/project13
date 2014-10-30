@@ -13,7 +13,11 @@
  * @var $deliveryData      array
  * @var $isTchibo          boolean
  * @var $addToCartJS string
+ * @var $isUserSubscribedToEmailActions boolean
+ * @var $actionChannelName string
  */
+
+$isKitPage = (bool)$product->getKit();
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
@@ -93,7 +97,7 @@
 
             <?= $helper->render('product/__price', ['product' => $product]) // Цена ?>
 
-            <?= $helper->render('product/__notification-lowerPrice', ['product' => $product, 'isUserSubscribedToEmailActions' => $isUserSubscribedToEmailActions]) // Узнать о снижении цены ?>
+            <?= $helper->render('product/__notification-lowerPrice', ['product' => $product, 'isUserSubscribedToEmailActions' => $isUserSubscribedToEmailActions, 'actionChannelName' => $actionChannelName]) // Узнать о снижении цены ?>
 
             <?//= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Купи в кредит ?>
         </div>
@@ -103,9 +107,13 @@
             'onClick' => isset($addToCartJS) ? $addToCartJS : null,
         ]) // Кнопка купить ?>
 
+        <div class="js-showTopBar"></div>
+
         <div id="coupeError" class="red" style="display:none"></div>
 
-        <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
+        <? if (!$isKitPage || $product->getIsKitLocked()): ?>
+            <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
+        <? endif ?>
 
         <? if (5 !== $product->getStatusId()): // SITE-3109 ?>
             <?= $helper->render('product/__delivery', ['product' => $product, 'deliveryData' => $deliveryData, 'shopStates' => $shopStates]) // Доставка ?>

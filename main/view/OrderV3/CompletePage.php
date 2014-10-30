@@ -59,10 +59,36 @@ class CompletePage extends Layout {
     }
 
     public function slotContent() {
-        return \App::closureTemplating()->render('order-v3/page-complete', $this->params);
+        $path = 'order-v3';
+
+        $region = \App::user()->getRegion();
+        if ($region && \App::config()->newOrder) {
+            $ordersNewTest = \App::abTest()->getTest('orders_new');
+            $ordersNewSomeRegionsTest = \App::abTest()->getTest('orders_new_some_regions');
+            if (
+                (!in_array($region->getId(), [93746, 119623]) && $ordersNewTest && in_array($ordersNewTest->getChosenCase()->getKey(), ['new_2'], true)) // АБ-тест для остальных регионов
+                || (in_array($region->getId(), [93746, 119623]) && $ordersNewSomeRegionsTest && in_array($ordersNewSomeRegionsTest->getChosenCase()->getKey(), ['new_2'], true)) // АБ-тест для Ярославля и Ростова-на-дону
+            ) {
+                $path = 'order-v3-new';
+            }
+        }
+
+        return \App::closureTemplating()->render( $path . '/page-complete', $this->params);
     }
 
     public function slotBodyDataAttribute() {
+        $region = \App::user()->getRegion();
+        if ($region && \App::config()->newOrder) {
+            $ordersNewTest = \App::abTest()->getTest('orders_new');
+            $ordersNewSomeRegionsTest = \App::abTest()->getTest('orders_new_some_regions');
+            if (
+                (!in_array($region->getId(), [93746, 119623]) && $ordersNewTest && in_array($ordersNewTest->getChosenCase()->getKey(), ['new_2'], true)) // АБ-тест для остальных регионов
+                || (in_array($region->getId(), [93746, 119623]) && $ordersNewSomeRegionsTest && in_array($ordersNewSomeRegionsTest->getChosenCase()->getKey(), ['new_2'], true)) // АБ-тест для Ярославля и Ростова-на-дону
+            ) {
+                return 'order-v3-new';
+            }
+        }
+
         return 'order-v3';
     }
 
@@ -75,4 +101,19 @@ class CompletePage extends Layout {
 
         return $html;
     }
+
+    public function slotRevolverJS()
+    {
+        if (!\App::config()->partners['Revolver']['enabled']) return '';
+
+        $content = parent::slotRevolverJS();
+
+        if (is_array($this->getParam('orders')) && (bool)$this->getParam('orders')) {
+            $content .= parent::revolverOrdersJS($this->getParam('orders'));
+        }
+
+        return $content;
+    }
+
+
 }

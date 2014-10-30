@@ -49,16 +49,17 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
 	    <div class="h3"><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></div>
 
         <div class="font18 pb10 mSmallBtns">
-            <? if ($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
-            <p class="font16 crossText"><span class="old_price"><?= $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></p>
+            <? if ($product->getPriceOld()): ?>
+                <p class="font16 crossText"><span class="old_price"><?= $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></p>
             <? endif ?>
             <span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span>
         </div>
         <div class="bBtnLine clearfix">
             <? if (!$product->getKit() || $product->getIsKitLocked()) : ?>
                 <?= $page->render('cart/_button', ['product' => $product]) ?>
+                <a href="" class="btnCmprb jsCompareListLink" data-id="<?= $page->escape($product->getId()) ?>" data-bind="compareListBinding: compare"></a>
             <? endif; ?>
-            <a href="" class="btnCmprb jsCompareListLink" data-id="<?= $page->escape($product->getId()) ?>" data-bind="compareListBinding: compare"></a>
+
             <a class="btnView btn1" href="<?= $product->getLink() ?>">Посмотреть</a>
         </div>
 

@@ -11,3 +11,5 @@
 <? else: ?>
     <a class="formDefault__btnSubmit getCuponEP mBtnOrange" href="<?= $page->url('enterprize.form.show', ['enterprizeToken' => $enterpizeCoupon->getToken()]) ?>">Получить</a>
 <? endif ?>
+
+<?= $page->render('enterprize/_slider', ['enterpizeCoupon' => $enterpizeCoupon, 'products' => $products]) ?>

@@ -164,6 +164,27 @@ class IndexAction {
             );
         }
 
+        $actionChannelName = '';
+        $client->addQuery(
+            'subscribe/get-channel',
+            [],
+            [],
+            function ($data) use (&$actionChannelName) {
+                if (is_array($data)) {
+                    foreach ($data as $channel) {
+                        $channel = new \Model\Subscribe\Channel\Entity($channel);
+                        if (1 == $channel->getId()) {
+                            $actionChannelName = $channel->getName();
+                            break;
+                        }
+                    }
+                }
+            },
+            function(\Exception $e) {
+                \App::exception()->remove($e);
+            }
+        );
+
         $trustfactors = [];
         \App::scmsClient()->addQuery('product/get-description', ['uid' => $product->getUi()], [], function($data) use(&$trustfactors, $product) {
             if (isset($data['trustfactors']) && is_array($data['trustfactors'])) {
@@ -420,7 +441,6 @@ class IndexAction {
             }
         }
 
-
         $page = new \View\Product\IndexPage();
         $page->setParam('renderer', \App::closureTemplating());
         $page->setParam('regionsToSelect', $regionsToSelect);
@@ -445,6 +465,7 @@ class IndexAction {
         $page->setParam('line', $line);
         $page->setParam('deliveryData', (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId()));
         $page->setParam('isUserSubscribedToEmailActions', $isUserSubscribedToEmailActions);
+        $page->setParam('actionChannelName', $actionChannelName);
         $page->setGlobalParam('from', $request->get('from') ? $request->get('from') : null);
         $page->setParam('viewParams', [
             'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)

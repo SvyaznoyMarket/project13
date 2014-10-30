@@ -22,7 +22,7 @@ class Entity {
     /** @var bool */
     private $showProductState;
     /** @var int */
-    private $categoryId;
+    private $categoryIds;
     /** @var string */
     private $content;
 
@@ -35,7 +35,7 @@ class Entity {
         if (array_key_exists('meta_description', $data)) $this->setMetaDescription($data['meta_description']);
         if (array_key_exists('description', $data)) $this->setDescription($data['description']);
         if (array_key_exists('productBuyMethod', $data)) $this->setProductBuyMethod($data['productBuyMethod']);
-        if (array_key_exists('category_id', $data)) $this->setCategoryId($data['category_id']);
+        if (array_key_exists('category_id', $data)) $this->setCategoryIds($data['category_id']);
         if (array_key_exists('content', $data)) $this->setContent($data['content']);
         if (array_key_exists('show_state', $data)) {
             $this->setShowProductState($data['show_state']);
@@ -171,17 +171,24 @@ class Entity {
     }
 
     /**
-     * @param int $categoryId
+     * @param int $categoryIds
      */
-    public function setCategoryId($categoryId) {
-        $this->categoryId = (int)$categoryId;
+    public function setCategoryIds($categoryIds) {
+        $this->categoryIds = is_array($categoryIds) ? $categoryIds : [$categoryIds];
+    }
+
+    /**
+     * @return int
+     */
+    public function getCategoryIds() {
+        return $this->categoryIds;
     }
 
     /**
      * @return int
      */
     public function getCategoryId() {
-        return $this->categoryId;
+        return reset($this->categoryIds);
     }
 
     /**

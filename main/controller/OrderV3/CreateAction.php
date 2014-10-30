@@ -13,10 +13,10 @@ class CreateAction extends OrderV3 {
      * @throws \Exception
      */
     public function execute(\Http\Request $request) {
-        $controller = parent::execute($request);
-        if ($controller) {
-            return $controller;
-        }
+//        $controller = parent::execute($request);
+//        if ($controller) {
+//            return $controller;
+//        }
 
         \App::logger()->debug('Exec ' . __METHOD__);
 
@@ -31,13 +31,21 @@ class CreateAction extends OrderV3 {
             $params['token'] = $this->user->getEntity()->getToken();
         }
 
+        $params += ['request_id' => \App::$id]; // SITE-4445
+
         try {
 
             foreach ($splitResult['orders'] as &$splitOrder) {
-                $ordersData[] = (new OrderEntity(array_merge($splitResult, array('order' => $splitOrder))))->getOrderData();
+                $ordersData[] = (new OrderEntity(array_merge($splitResult, ['order' => $splitOrder])))->getOrderData();
             }
+            if (isset($splitOrder)) unset($splitOrder);
 
-            $coreResponse = $this->client->query((\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet'), $params, $ordersData, \App::config()->coreV2['hugeTimeout']);
+            $coreResponse = $this->client->query(
+                (\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet'),
+                $params,
+                $ordersData,
+                \App::config()->coreV2['hugeTimeout']
+            );
 
         } catch (\Curl\Exception $e) {
             \App::logger()->error($e->getMessage(), ['curl', 'order/create']);

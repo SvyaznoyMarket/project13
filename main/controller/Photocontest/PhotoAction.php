@@ -203,9 +203,6 @@ class PhotoAction {
 			} catch (\Exception $e) {
 				\App::exception()->remove($e);
 				$page->setParam('message', 'К сожалению что-то пошло не так, попробуйте загрузить фото позднее.');
-			} catch (\RuntimeException $e) {
-				\App::exception()->remove($e);
-				$page->setParam('message', 'К сожалению что-то пошло не так, попробуйте загрузить фото позднее.');
 			}
 		}
 		

@@ -30,9 +30,9 @@
 			return model;
 		}
 
-		function createCategoryModel(category) {
+		function createTypeModel(type) {
 			var model = {};
-			model.name = category.name;
+			model.name = type.name;
 			return model;
 		}
 
@@ -72,7 +72,7 @@
 
 		function createCompareGroupModel(compareGroup) {
 			var model = {};
-			model.category = createCategoryModel(compareGroup.category);
+			model.type = createTypeModel(compareGroup.type);
 
 			model.products = ko.observableArray();
 			$.each(compareGroup.products, function(){
@@ -158,7 +158,9 @@
 				windowElement = $(window),
 				sameContainers = $(),
 				isVerticalScrollStarted = false,
-				isHorizontalScrollStarted = false;
+				isHorizontalScrollStarted = false,
+				isVerticalScrollEventDispatched = true,
+				isHorizontalScrollEventDispatched = true;
 
 			rowContainers.each(function() {
 				var rowContainer = this;
@@ -249,6 +251,7 @@
 				if (shift.top) {
 					if (!isVerticalScrollStarted) {
 						isVerticalScrollStarted = true;
+						isVerticalScrollEventDispatched = false;
 
 						if ((events || {}).onVerticalScrollStart) {
 							events.onVerticalScrollStart();
@@ -270,85 +273,116 @@
 							});
 						}, 0);
 					} else {
-						rowContainers.css('margin-left', -shift.left + 'px');
+						setTimeout(function() {
+							rowContainers.css('margin-left', -shift.left + 'px');
+						}, 0);
 					}
 
 					if (!isHorizontalScrollStarted) {
-						sameContainers.css('margin-left', -shift.left + 'px');
+						setTimeout(function() {
+							sameContainers.css('margin-left', -shift.left + 'px');
+						}, 0);
+					}
+				}
+
+				if (!shift.top && !isVerticalScrollEventDispatched && $document.height() - ($window.scrollTop() + $window.height()) > 0) {
+					isVerticalScrollEventDispatched = true;
+
+					if ((events || {}).onVerticalScrollEnd) {
+						events.onVerticalScrollEnd();
+					}
+
+					if (!isVerticalScrollStarted) {
+						setTimeout(function() {
+							updateSize($($.merge($.makeArray(rowContainers), $.makeArray(sameContainers))));
+						}, 0);
 					}
 				}
 
 				if (!shift.top && isVerticalScrollStarted) {
 					isVerticalScrollStarted = false;
 
-					if ((events || {}).onVerticalScrollEnd) {
-						events.onVerticalScrollEnd();
-					}
-
-					rowContainers.css({
-						'position': 'relative',
-						'top': 'auto',
-						'margin-left': '0'
-					});
-
-					sameContainers.css({
-						'top': 'auto',
-						'margin-left': '0'
-					});
-
 					setTimeout(function() {
-						updateSize($($.merge($.makeArray(rowContainers), $.makeArray(sameContainers))));
+						rowContainers.css({
+							'position': 'relative',
+							'top': 'auto',
+							'margin-left': '0'
+						});
+
+						sameContainers.css({
+							'top': 'auto',
+							'margin-left': '0'
+						});
+
+						setTimeout(function() {
+							updateSize($($.merge($.makeArray(rowContainers), $.makeArray(sameContainers))));
+						}, 0);
 					}, 0);
 				}
 
 				if (shift.left) {
 					if (!isHorizontalScrollStarted) {
 						isHorizontalScrollStarted = true;
+						isHorizontalScrollEventDispatched = false;
 
 						if ((events || {}).onHorizontalScrollStart) {
 							events.onHorizontalScrollStart();
 						}
 
-						columnContainers.css({
-							'position': 'fixed',
-							'left': '0'
-						});
+						setTimeout(function() {
+							columnContainers.css({
+								'position': 'fixed',
+								'left': '0'
+							});
 
-						sameContainers.css({
-							'position': 'fixed',
-							'left': '0',
-							'margin-left': '0'
-						});
+							sameContainers.css({
+								'position': 'fixed',
+								'left': '0',
+								'margin-left': '0'
+							});
+						}, 0);
 					}
 
-					columnContainers.css('margin-top', -$window.scrollTop() + 'px');
+					setTimeout(function() {
+						columnContainers.css('margin-top', -$window.scrollTop() + 'px');
+					}, 0);
 
 					if (!isVerticalScrollStarted) {
-						sameContainers.css('margin-top', -$window.scrollTop() + 'px');
+						setTimeout(function() {
+							sameContainers.css('margin-top', -$window.scrollTop() + 'px');
+						}, 0);
+					}
+				}
+
+				if (!shift.left && !isHorizontalScrollEventDispatched && $document.width() - ($window.scrollLeft() + $window.width()) > 0) {
+					isHorizontalScrollEventDispatched = true;
+
+					if ((events || {}).onHorizontalScrollEnd) {
+						events.onHorizontalScrollEnd();
 					}
 				}
 
 				if (!shift.left && isHorizontalScrollStarted) {
 					isHorizontalScrollStarted = false;
 
-					if ((events || {}).onHorizontalScrollEnd) {
-						events.onHorizontalScrollEnd();
-					}
+					setTimeout(function() {
+						columnContainers.css({
+							'position': 'relative',
+							'left': 'auto',
+							'margin-top': '0'
+						});
 
-					columnContainers.css({
-						'position': 'relative',
-						'left': 'auto',
-						'margin-top': '0'
-					});
-
-					sameContainers.css({
-						'left': 'auto',
-						'margin-top': '0'
-					});
+						sameContainers.css({
+							'left': 'auto',
+							'margin-top': '0'
+						});
+					}, 0);
 				}
 
 				if (!shift.top && !shift.left) {
-					sameContainers.css('position', 'relative');
+					setTimeout(function() {
+						sameContainers.css('position', 'relative');
+					}, 0);
 				}
 			}
 
@@ -485,7 +519,7 @@
 			});
 		});
 
-		$compare.on('click', '.js-compare-categoryLink', function(e){
+		$compare.on('click', '.js-compare-typeLink', function(e){
 			e.preventDefault();
 			compareModel.activeCompareGroupIndex($(e.currentTarget).data('index'));
 		});

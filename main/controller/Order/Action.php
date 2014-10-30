@@ -95,10 +95,10 @@ class Action {
             // если покупка в кредит
             } else if ($paymentMethod->getIsCredit()) {
                 if (!$order->getCredit() || !$order->getCredit()->getBankProviderId()) {
-                    throw new \Exception(sprintf('Не найден кредитный банк для заказа #%s', $order->getId()));
+                    \App::logger()->error(['message' => 'Не найден кредитный банк для заказа', 'order.id' => $order->getId()], ['order']);
                 }
 
-                $creditProviderId = $order->getCredit()->getBankProviderId();
+                $creditProviderId = $order->getCredit() && $order->getCredit()->getBankProviderId();
                 if ($creditProviderId == \Model\CreditBank\Entity::PROVIDER_KUPIVKREDIT) {
                     $data = new \View\Order\Credit\Kupivkredit($order, $productsById);
                     $creditData = [

@@ -505,8 +505,7 @@ class FormAction {
                             }
 
                             // если у среза задана category_id, то запрашиваем категорию
-                            if ($slice->getCategoryId()) {
-                                $categoryId = $slice->getCategoryId();
+                            if ($categoryId = $slice->getCategoryId()) {
                                 $category = $categoryId ? $productCategoryRepository->getEntityById($categoryId) : null;
 
                                 // пытаемся получить категорию от shopScript

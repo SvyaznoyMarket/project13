@@ -4,7 +4,7 @@ return function(
     \Model\Product\Entity $product
 ) { ?>
 
-<? if ($product->getIsBuyable()): ?>
+<? if ($product->getIsBuyable() && 5 != $product->getStatusId()): ?>
     <link itemprop="availability" href="http://schema.org/InStock" />
     <div class="inStock">Есть в наличии</div>
 <? elseif (!$product->getIsBuyable() && $product->getState()->getIsShop()): ?>

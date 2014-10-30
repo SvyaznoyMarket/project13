@@ -46,7 +46,7 @@ class Test {
     }
 
     /**
-     * @return bool
+     * @return string|null
      */
     public function getKey() {
         return $this->key;

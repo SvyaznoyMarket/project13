@@ -141,9 +141,10 @@ class IndexPage extends \View\DefaultLayout {
 
         return "<meta property=\"og:title\" content=\"" . $this->escape($product->getName()) . "\"/>\r\n" .
                 "<meta property=\"og:description\" content=\"" . $this->escape($description) . "\"/>\r\n" .
-            "<meta property=\"og:image\" content=\"" . $this->escape($product->getImageUrl(3).'?'.time()) . "\"/>\r\n".
+                "<meta property=\"og:image\" content=\"" . $this->escape($product->getImageUrl(3).'?'.time()) . "\"/>\r\n".
                 "<meta property=\"og:site_name\" content=\"ENTER\"/>\r\n".
-                "<meta property=\"og:type\" content=\"website\"/>\r\n";
+                "<meta property=\"og:type\" content=\"website\"/>\r\n".
+                "<link rel=\"image_src\" href=\"". $this->escape($product->getImageUrl(3)). "\" />\r\n";
     }
 
     public function slotAdvanceSeoCounter() {
@@ -317,7 +318,7 @@ class IndexPage extends \View\DefaultLayout {
         }
 
         return [
-            'target' => '.' . \View\Id::cartButtonForProduct($product->getId()),
+            'target' => '.js-showTopBar',
             'productId' => $product->getId(),
         ];
     }

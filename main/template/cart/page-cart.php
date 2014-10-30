@@ -1,0 +1,51 @@
+<?php
+/**
+ * @var $page Templating\HtmlLayout
+ * @var $user \Session\User
+*/
+
+$cart = $user->getCart();
+
+?>
+
+<div class="jsKnockoutCart" data-bind="visible: !isUpdated()">
+    <?= $page->render('cart/_spinner') ?>
+</div>
+
+<div class="jsKnockoutCart" data-bind="visible: isUpdated() && cartSum() == 0" style="display: none">
+    <?= $page->render('cart/_cart-empty') ?>
+</div>
+
+<div class="jsKnockoutCart" data-bind="visible: isUpdated() && cartSum() > 0" style="display: none">
+
+    <?= $page->render('cart/partner/_adfox') ?>
+
+    <!-- ko foreach: cart -->
+    <?= $page->render('cart/_cart-item') ?>
+    <!-- /ko -->
+
+    <div class="basketLine clearfix">
+
+        <?= $page->render('cart/ab-self-delivery/_infoblock', ['cart' => $cart]) ?>
+
+        <?= $page->render('cart/_cart-total') ?>
+
+    </div>
+
+</div>
+
+<?= $page->render('cart/ab-self-delivery/_recommendSlider') ?>
+
+<div class="backShop fl mNoPrint jsKnockoutCart" data-bind="visible: isUpdated() && cartSum() > 0" style="display: none">&lt; <a class="underline" href="<?= $backlink ?>">Вернуться к покупкам</a></div>
+
+<div class="basketBuy mNoPrint jsKnockoutCart" data-bind="visible: isUpdated() && cartSum() > 0" style="display: none">
+    <a href="<?= $page->url('order') ?>" class="bBigOrangeButton">Оформить заказ</a>
+</div>
+
+<div class="clear"></div>
+
+<? if (\App::config()->analytics['enabled']): ?>
+    <?= $page->render('cart/partner/_mixmarket') ?>
+    <?= $page->render('cart/partner/_kiss', ['cart' => $cart]) ?>
+    <?= $page->tryRender('cart/partner/_cityads') ?>
+<? endif ?>

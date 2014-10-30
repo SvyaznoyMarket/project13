@@ -16,6 +16,8 @@
  * @var $deliveryData           array
  * @var $isTchibo               boolean
  * @var $addToCartJS     string
+ * @var $isUserSubscribedToEmailActions boolean
+ * @var $actionChannelName string
  */
 
 if (!$lifeGiftProduct) $lifeGiftProduct = null;
@@ -34,7 +36,7 @@ $isKitPage = (bool)$product->getKit();
 
         <?= $helper->render('product/__price', ['product' => $product]) // Цена ?>
 
-        <?= $helper->render('product/__notification-lowerPrice', ['product' => $product, 'isUserSubscribedToEmailActions' => $isUserSubscribedToEmailActions]) // Узнать о снижении цены ?>
+        <?= $helper->render('product/__notification-lowerPrice', ['product' => $product, 'isUserSubscribedToEmailActions' => $isUserSubscribedToEmailActions, 'actionChannelName' => $actionChannelName]) // Узнать о снижении цены ?>
 
         <? if (count($product->getPartnersOffer()) == 0) : ?>
             <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Купи в кредит ?>
@@ -144,32 +146,34 @@ $isKitPage = (bool)$product->getKit();
 <div class="bProductSectionRightCol">
 
     <? if (5 !== $product->getStatusId() && (bool)$shopStates): // SITE-3109 ?>
-    <div class="bWidgetBuy bWidgetBuy-shops mWidget js-WidgetBuy">
-        <?= $helper->render('product/__shops', ['shopStates' => $shopStates, 'product' => $product]) // Доставка ?>
-    </div>
+        <div class="bWidgetBuy bWidgetBuy-shops mWidget js-WidgetBuy">
+            <?= $helper->render('product/__shops', ['shopStates' => $shopStates, 'product' => $product]) // Доставка ?>
+        </div>
     <? endif ?>
 
-    <? if (!$product->isInShopStockOnly() && $product->getIsBuyable()): ?>
+    <? if (!$product->isInShopStockOnly() && $product->getIsBuyable() && 5 != $product->getStatusId()): ?>
         <div class="bWidgetBuy mWidget js-WidgetBuy">
             <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && 0 == count($kitProducts)): ?>
                 <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'productId' => $product->getId()]) ?>
             <? endif ?>
 
-            <? if ($isKitPage && !$product->getIsKitLocked()) : ?>
+            <? if ($isKitPage && !$product->getIsKitLocked()): ?>
                 <?= $helper->render('cart/__button-product-kit', ['product' => $product]) // Кнопка купить для набора продуктов ?>
-            <? else : ?>
+            <? else: ?>
                 <?= $helper->render('cart/__button-product', [
                     'product' => $product,
                     'onClick' => isset($addToCartJS) ? $addToCartJS : null,
                 ]) // Кнопка купить ?>
             <? endif ?>
 
-            <? if (!$hasFurnitureConstructor && count($product->getPartnersOffer()) == 0): ?>
+            <div class="js-showTopBar"></div>
+
+            <? if (!$hasFurnitureConstructor && count($product->getPartnersOffer()) == 0 && (!$isKitPage || $product->getIsKitLocked())): ?>
                 <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
             <? endif ?>
 
             <? if (!$isKitPage || $product->getIsKitLocked()) : ?>
-                <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'categoryId' => $product->getLastCategory()->getId()]) ?>
+                <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'typeId' => $product->getType() ? $product->getType()->getId() : null]) ?>
             <? endif ?>
 
             <? if (5 !== $product->getStatusId()): // SITE-3109 ?>
@@ -180,12 +184,13 @@ $isKitPage = (bool)$product->getKit();
 
             <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'main']) ?>
         </div>
-    <? else: ?>
+    <? elseif (!$isKitPage || $product->getIsKitLocked()): ?>
         <div class="bWidgetBuy mWidget js-WidgetBuy">
-            <? if (!$isKitPage || $product->getIsKitLocked()) : ?>
-                <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'categoryId' => $product->getLastCategory()->getId()]) ?>
-            <? endif ?>
+            <div class="js-showTopBar"></div>
+            <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'typeId' => $product->getType() ? $product->getType()->getId() : null]) ?>
         </div>
+    <? else: ?>
+        <div class="js-showTopBar"></div>
     <? endif ?>
 
     <? if ($lifeGiftProduct): ?>

@@ -36,7 +36,7 @@
                 $iframe = $('iframe#lb_iframe'),
                 ie6 = ($.browser.msie && $.browser.version < 7);
 
-            if ($overlay.length > 0) {
+            if (($overlay.length > 0) && opts.removeOtherOnCreate) {
                 $overlay[0].removeModal(); // if the overlay exists, then a modal probably exists. Ditch it!
             } else {
                 $overlay =  $('<div class="' + opts.classPrefix + '_overlay" style="display:none;"/>'); // otherwise just create an all new overlay.
@@ -213,13 +213,13 @@
             function setSelfPosition() {
                 var s = $self[0].style;
 
-                if (($self.height() + 80  >= $(window).height()) && ($self.css('position') != 'absolute' || ie6)) {
+                if (($self.height() + 80  >= $(window).height() || !opts.sticky) && ($self.css('position') != 'absolute' || ie6)) {
                     var topOffset = $(document).scrollTop() + 40;
                     $self.css({position: 'absolute', top: topOffset + 'px', marginTop: 0})
                     if (ie6) {
                         s.removeExpression('top');
                     }
-                } else if ($self.height()+ 80  < $(window).height()) {
+                } else if ($self.height()+ 80  < $(window).height() && opts.sticky) {
                     if (ie6) {
                         s.position = 'absolute';
                         if (opts.centered) {
@@ -265,12 +265,14 @@
         // callbacks
         onLoad: function() {},
         onClose: function() {},
+        removeOtherOnCreate: true, // удалять другие окна при создании
         autofocus: false, 
 
         // style
         classPrefix: 'lb',
         zIndex: 999,
         centered: false,
+		sticky: true,
         modalCSS: {top: '40px'},
         overlayCSS: {background: 'black', opacity: .4}
     }

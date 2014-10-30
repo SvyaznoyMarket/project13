@@ -17,8 +17,6 @@ class ActionPay {
     private $cart;
 
     private $sendData = [];
-    private $extraData = [];
-
 
     /**
      * @param   string    $rName
@@ -76,11 +74,6 @@ class ActionPay {
                     $this->routeDefault();
             }
             // end of case
-
-            if ( !empty($this->extraData) ) {
-                $this->sendData['extraData'] = $this->extraData;
-            }
-
         } catch (\Exception $e) {
             \App::logger()->error($e, ['ActionPayJS']);
         }
@@ -95,44 +88,15 @@ class ActionPay {
      *
      * @return bool
      */
-    private function basketInfo(){
-        /*
-        if ( !empty( $this->sendData['basketProducts'] ) ) {
-            // если данные в массиве уже есть, то не добавляем
-            return true;
-        }
-
-        $cartProductsById = $this->getParam('cartProductsById');
-        if ( empty($cartProductsById) ) return false;
-
-        foreach($cartProductsById as $product) {
-            // @var $product \Model\Cart\Product\Entity
+    private function basketInfo() {
+        $this->sendData['basketProducts'] = [];
+        foreach ($this->cart->getProducts() as $product) {
             $this->sendData['basketProducts'][] = array(
                 'id' => $product->getId(),
                 'price' => $product->getPrice(),
                 'quantity' => $product->getQuantity(),
             );
         }
-        */
-
-        /* // old
-        $in_basket = $this->cart->getData()['productList'];
-        $products = $this->getParam('productEntities');
-
-        if (!$products) return false;
-
-        foreach($products as $product) {
-            // @var $product \Model\Product\Entity
-            $this->sendData['basketProducts'][] = array(
-                'id' => $product->getId(),
-                'price' => $product->getPrice(),
-                'quantity' => $in_basket[ $product->getId() ],
-            );
-        }*/
-
-        $this->extraData['cartProducts'] = true;
-
-        return true;
     }
 
 

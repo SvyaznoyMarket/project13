@@ -10,10 +10,10 @@ class DeliveryAction extends OrderV3 {
      * @throws \Exception
      */
     public function execute(\Http\Request $request) {
-        $controller = parent::execute($request);
-        if ($controller) {
-            return $controller;
-        }
+//        $controller = parent::execute($request);
+//        if ($controller) {
+//            return $controller;
+//        }
 
         \App::logger()->debug('Exec ' . __METHOD__);
 
@@ -116,7 +116,10 @@ class DeliveryAction extends OrderV3 {
         }
 
         $orderDeliveryData = $this->client->query('cart/split',
-            ['geo_id' => $this->user->getRegionId()],
+            [
+                'geo_id'     => $this->user->getRegionId(),
+                'request_id' => \App::$id, // SITE-4445
+            ],
             $splitData
         );
 

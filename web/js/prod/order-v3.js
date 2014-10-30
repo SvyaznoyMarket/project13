@@ -1315,6 +1315,7 @@
         $body = $(body),
         $orderContent = $('.orderCnt'),
         $jsOrder = $('#jsOrder'),
+		region = $('.jsRegion').data('value'),
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
             length: 5, // The length of each line
@@ -1346,7 +1347,8 @@
                         if ($form.hasClass('jsPaymentFormPaypal') && typeof $form.attr('action') != 'undefined') {
                             window.location.href = $form.attr('action');
                         } else {
-                            $(data.form).submit();
+							$body.append($form);
+							$form.submit();
                         }
                     }
                     console.log('Payment data', data);
@@ -1427,15 +1429,15 @@
         switch (id) {
             case 5:
                 getForm(5, orderId, orderNumber);
-                body.trigger('trackUserAction', ['17_2 Оплатить_онлайн_Онлайн_Оплата']);
+                $body.trigger('trackUserAction', ['17_2 Оплатить_онлайн_Онлайн_Оплата']);
                 break;
             case 8:
                 getForm(8, orderId, orderNumber);
-                body.trigger('trackUserAction', ['17_3 Оплатить_онлайн_Электронный счёт PSB_Оплата']);
+                $body.trigger('trackUserAction', ['17_3 Оплатить_онлайн_Электронный счёт PSB_Оплата']);
                 break;
             case 13:
                 getForm(13, orderId, orderNumber);
-                body.trigger('trackUserAction', ['17_1 Оплатить_онлайн_PayPal_Оплата']);
+                $body.trigger('trackUserAction', ['17_1 Оплатить_онлайн_PayPal_Оплата']);
                 break;
         }
     });
@@ -1492,6 +1494,8 @@
             };
             googleOrderTrackingData.products = $.map(o.products, function(p){
 				var productName = o.is_partner ? p.name + ' (marketplace)' : p.name;
+				/* SITE-4472 Аналитика по АБ-тесту платного самовывоза и рекомендаций из корзины */
+				if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.config.pageConfig.selfDeliveryLimit > parseInt(o.paySum, 10) - o.delivery[0].price) productName = productName + ' (paid pickup)';
                 return {
                     'id': p.id,
                     'name': productName,
@@ -1502,7 +1506,21 @@
                 }
             });
             console.log(googleOrderTrackingData);
-            $body.trigger('trackGoogleTransaction',[googleOrderTrackingData])
+            $body.trigger('trackGoogleTransaction',[googleOrderTrackingData]);
+
+			/* SITE-4472 Аналитика по АБ-тесту платного самовывоза и рекомендаций из корзины */
+			$.each(o.products, function(i, p){
+				var cookieKey1 = 'enter_ab_self_delivery_products_1', //cookie, где содержатся артикулы товаров, добавленных в корзину из блока рекомендаций
+					cookieKey2 = 'enter_ab_self_delivery_products_2', //cookie, где содержатся артикулы товаров, на которые перешли из блока рекомендаций
+					products1 = docCookies.hasItem(cookieKey1) ? docCookies.getItem(cookieKey1).split(',') : [],
+					products2 = docCookies.hasItem(cookieKey2) ? docCookies.getItem(cookieKey2).split(',') : [];
+
+				if ($.inArray(p.article, products1) != -1) $body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + region, 'купил добавленный из рекомендации', 'статичная корзина']);
+				if ($.inArray(p.article, products2) != -1) $body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + region, 'купил просмотренный из рекомендации', 'статичная корзина']);
+
+				docCookies.removeItem(cookieKey1);
+				docCookies.removeItem(cookieKey2);
+			});
         });
 
     }
@@ -1731,7 +1749,7 @@
     });
 
     // клик по способу доставки
-    $orderContent.on('click', '.selShop_tab:not(.selShop_tab-act)', function(){
+    $body.on('click', '.selShop_tab:not(.selShop_tab-act)', function(){
         var token = $(this).data('token'),
             id = $(this).closest('.popupFl').attr('id');
         // переключение списка магазинов

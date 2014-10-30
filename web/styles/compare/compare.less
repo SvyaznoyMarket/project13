@@ -40,7 +40,6 @@
 		.cmprHd_t {
 			line-height: 112px;
 			margin: 0;
-			background: url("@{base-url}/compare/img/icon_cmpr_empty.gif") no-repeat 5px 50%;
 		}
 	}
 
@@ -60,10 +59,9 @@
 
 	&_t {
 		min-height: 33px;
-		background: url("@{base-url}/compare/img/icon_cmpr.png") no-repeat 0 3px;
 		font-size: 25px;
 		margin: 0 0 15px;
-		padding: 0 0 2px 45px;
+		padding: 0 0 2px 0;
 		text-decoration: none;
 	}
 
@@ -133,6 +131,7 @@
 		.cmprCnt_head {
 			.cmprCnt_cell {
 				height: 135px;
+				padding-top: 2px;
 			}
 		}
 
@@ -143,14 +142,15 @@
 
 		}
 
-		.cmprCnt_rating, .cmprCnt_noRating {
+		.cmprCnt_rating, 
+		.cmprCnt_noRating {
 			.opacity(0);
 			overflow: hidden;
 			height: 0;
 		}
 
 		.cmprCnt_mode {
-			margin: 10px 0 0 0;
+			margin: 15px 0 0 0;
 		}
 	}
 
@@ -267,7 +267,7 @@
 	&_mode {
 		margin: 60px 0 0 0;
 		padding: 0;
-		.transition(all 0.5s ease);
+		.transition(all 0.3s ease);
 
 		text-align: center;
 
@@ -303,7 +303,7 @@
 		height: 100px;
 		display: block;
 		text-align: center;
-		.transition(all 0.5s ease);
+		.transition(all 0.3s ease);
 
 		img {
 			width: 100px;
@@ -341,18 +341,19 @@
 		margin-top: 5px;
 
 		&_lk {
-			width: 100px;
-			height: 30px;
-			line-height: 30px;
 			font-size: 14px;
-			font-weight: bold;
+		    font-weight: bold;
+		    padding: 5px 0;
+		    width: 100px;
 		}
 	}
 
 	&_rating {
 		text-align: center;
 		font-size: 0px;
-		.transition(all 0.5s ease);
+		height: 15px;
+		margin-top: 2px;
+		.transition(all 0.3s ease);
 
 		&_img {
 			.inline-block();
@@ -370,10 +371,9 @@
 	}
 
 	&_noRating {
-		text-align: center;
-		font-size: 12px;
-		color: @typGray;
-		.transition(all 0.5s ease);
+		height: 15px;
+		margin-top: 2px;
+		.transition(all 0.3s ease);
 	}
 }
 

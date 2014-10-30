@@ -39,3 +39,5 @@
 <!-- Lamoda End -->
 
 <?= $page->slotMailRu() ?>
+<?= $page->slotRevolverJS() ?>
+<?= $page->slotInsiderJS() ?>

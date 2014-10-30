@@ -409,6 +409,8 @@ class Action {
         $productFilter = $this->getFilter($filters, $category, $brand, $request, $shop);
 
         // получаем из json данные о горячих ссылках и content
+        $hotlinks = [];
+        $seoContent = '';
         try {
             $seoCatalogJson = \Model\Product\Category\Repository::getSeoJson($category, null, $shopScriptSeo);
             // получаем горячие ссылки
@@ -422,8 +424,62 @@ class Action {
                 $seoContent = empty($seoBrandJson['content']) ? '' : implode('<br />', (array) $seoBrandJson['content']);
             }
         } catch (\Exception $e) {
-            $hotlinks = [];
-            $seoContent = '';
+            \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['controller']);
+        }
+
+        // SITE-4439
+        try {
+            // если у категории нет дочерних узлов
+            if ($category && (!$category->getHasChild() || in_array($category->getId(), [1096]))) {
+                //$hotlinks = array_filter($hotlinks, function($item) { return isset($item['group_name']) ? (bool)$item['group_name'] : false; }); // TODO: временная заглушка
+                // опции брендов
+                $brandOptions = [];
+                foreach ($filters as $filter) {
+                    if ('brand' == $filter->getId()) {
+                        foreach ($filter->getOption() as $option) {
+                            $brandOptions[] = $option;
+                        }
+
+                        break;
+                    }
+                }
+                // сортировка брендов по наибольшему количеству товаров
+                usort($brandOptions, function(\Model\Product\Filter\Option\Entity $a, \Model\Product\Filter\Option\Entity $b) { return $b->getQuantity() - $a->getQuantity(); });
+                $brandOptions = array_slice($brandOptions, 0, 60);
+                /** @var \Model\Brand\Entity[] $brands */
+                $brands = [];
+                if ((bool)$brandOptions) {
+                    \RepositoryManager::brand()->prepareByIds(
+                        array_map(function(\Model\Product\Filter\Option\Entity $option) { return $option->getId(); }, $brandOptions),
+                        null,
+                        function($data) use (&$brands) {
+                            if (isset($data[0])) {
+                                foreach ($data as $item) {
+                                    if (empty($item['token'])) continue;
+
+                                    $brands[] = new \Model\Brand\Entity($item);
+                                }
+                            }
+                        },
+                        function(\Exception $e) { \App::exception()->remove($e); }
+                    );
+
+                    \App::coreClientV2()->execute();
+
+                    foreach ($brands as $iBrand) {
+                        $hotlinks[] = [
+                            'group_name' => '',
+                            'title'      => $iBrand->getName(),
+                            'url'        => \App::router()->generate('product.category.brand', [
+                                'categoryPath' => $categoryPath,
+                                'brandToken'   => $iBrand->getToken(),
+                            ]),
+                        ];
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['hotlinks']);
         }
 
         $pageNum = (int)$request->get('page', 1);
@@ -838,8 +894,11 @@ class Action {
         }
 
         // проверка на максимально допустимый номер страницы
-        if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
-            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+        if ((1 != $productPager->getPage()) && (($productPager->getPage() - $productPager->getLastPage()) > 0)) {
+            //throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
+                'page' => $productPager->getLastPage(),
+            ]));
         }
 
         // video

@@ -21,7 +21,7 @@
 			 * @return bool
 			 */
 			isRecommendation = function isRecommendation( type ) {
-				return -1 == $.inArray(type, ["alsoBought", "similar", "alsoViewed"]) ? false : true;
+				return -1 != $.inArray(type, ["alsoBought", "similar", "alsoViewed"]);
 			};
 		// end of functions
 
@@ -109,25 +109,28 @@
 
 		/**
 		 * Обработка для каждого элемента попавшего в набор
-		 *
-		 * @param	{Object}	options			Расширение стандартных значений слайдера пользовательскими настройками
-		 * @param	{Object}	$self			Ссылка на текущий элемент из набора
-		 * @param	{Object}	sliderParams	Параметры текущего слайдера
-		 * @param	{Boolean}	hasCategory		Имеет ли слайдер категории
-		 * 
-		 * @param	{Object}	leftBtn			Ссылка на левую стрелку
-		 * @param	{Object}	rightBtn		Ссылка на правую стрелку
-		 * @param	{Object}	wrap			Ссылка на обертку слайдера
-		 * @param	{Object}	slider			Ссылка на контейнер с товарами
-		 * @param	{Object}	item			Ссылка на карточки товаров в слайдере
-		 * @param	{Object}	catItem			Ссылка на категории в слайдере
-		 * 
-		 * @param	{Number}	itemW			Ширина одной карточки товара в слайдере
-		 * @param	{Number}	elementOnSlide	Количество помещающихся карточек на один слайд
-		 * 
-		 * @param	{Number}	nowLeft			Текущий отступ слева
 		 */
 		var SliderControl = function( mainNode ) {
+			/**
+			 * Обработка для каждого элемента попавшего в набор
+			 *
+			 * @var		{Object}	options			Расширение стандартных значений слайдера пользовательскими настройками
+			 * @var	{Object}	$self			Ссылка на текущий элемент из набора
+			 * @var	{Object}	sliderParams	Параметры текущего слайдера
+			 * @var	{Boolean}	hasCategory		Имеет ли слайдер категории
+			 *
+			 * @var	{Object}	leftBtn			Ссылка на левую стрелку
+			 * @var	{Object}	rightBtn		Ссылка на правую стрелку
+			 * @var	{Object}	wrap			Ссылка на обертку слайдера
+			 * @var	{Object}	slider			Ссылка на контейнер с товарами
+			 * @var	{Object}	item			Ссылка на карточки товаров в слайдере
+			 * @var	{Object}	catItem			Ссылка на категории в слайдере
+			 *
+			 * @var	{Number}	itemW			Ширина одной карточки товара в слайдере
+			 * @var	{Number}	elementOnSlide	Количество помещающихся карточек на один слайд
+			 *
+			 * @var	{Number}	nowLeft			Текущий отступ слева
+			 */
 			var
 				options = $.extend(
 							{},

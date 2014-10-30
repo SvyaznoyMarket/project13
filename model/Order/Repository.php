@@ -61,7 +61,7 @@ class Repository {
     public function prepareCollectionByUserToken($userToken, $callback) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery('order/get', ['token' => $userToken], [], $callback);
+        $this->client->addQuery('order/get', ['token' => $userToken], [], $callback, null, \App::config()->coreV2['hugeTimeout']);
     }
 
     /**
@@ -99,6 +99,27 @@ class Repository {
         $client->addQuery('order/get-by-mobile', ['number' => $number, 'mobile' => $phone], [], function ($data) use (&$entity) {
             $data = reset($data);
             $entity = $data ? new Entity($data) : null;
+        });
+
+        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+
+        return $entity;
+    }
+
+    /**
+     * @param string $accessToken
+     * @return Entity|null
+     */
+    public function getEntityByAccessToken($accessToken) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+
+        $client = clone $this->client;
+
+        $entity = null;
+        $client->addQuery('order/get-by-token', ['token' => $accessToken], [], function ($data) use (&$entity) {
+            if ($data = reset($data)) {
+                $entity = $data ? new Entity($data) : null;
+            }
         });
 
         $client->execute(\App::config()->coreV2['retryTimeout']['default']);
