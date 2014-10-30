@@ -35,7 +35,8 @@
                 {{^hoverImage}}
                     <a href="{{link}}" class="lstn_imglk"><img class="lstn_img" src="{{image}}" alt="" /></a>
                 {{/hoverImage}}
-
+                
+                <div style="display: table; width: 100%;">
                 <div class="lstn_pr">
                     {{#oldPrice}}
                         <span class="lstn_pr_old">
@@ -118,7 +119,8 @@
                         {{/isKitLocked}}
                     </div>
                 {{/view.extraContent}}
-                <br/>
+                </div>
+                
                 {{#view.bottomDescription}}
                     <div class="lstn_desc"><a href="{{link}}">{{name}}</a></div>
                     {{#review}}{{> product/_review-compact }}{{/review}}

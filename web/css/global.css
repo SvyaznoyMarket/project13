@@ -9982,7 +9982,7 @@
   /** Сортировка **/
   .bBrandSorting {
     position: relative;
-    z-index: 2;
+    z-index: 99;
     margin: 0;
     background: url("/css/bBrandCatalog/img/bg_items_list.png") repeat-x 0 100%;
     font-family: tahoma;
@@ -12105,35 +12105,32 @@
     height: 380px;
   }
   .bListing-3col.lstn .lstn_i_inn {
-    width: 299px;
+    width: 279px;
     height: 348px;
   }
   .bListing-3col.lstn .lstn_i-hover {
-    height: 321px;
+    height: 355px;
   }
   .bListing-3col.lstn .lstn_i-hover .lstn_i_inn {
-    height: 289px;
+    height: 323px;
   }
   .bListing-3col.lstn .lstn_i-hover:hover .lstn_i_inn {
     height: auto;
   }
   .bListing-3col.lstn .lstn_i-banner .lstn_i_inn {
-    min-height: 289px;
+    min-height: 323px;
   }
   .bListing-3col.lstn .lstn_imglk {
-    height: 240px;
-    width: 240px;
+    height: 279px;
+    width: 279px;
   }
   .bListing-3col.lstn .lstn_img {
     display: block;
-    height: 240px;
-    width: 240px;
+    height: 279px;
+    width: 279px;
   }
   .bListing-3col.lstn .lstn_desc {
     width: 300px;
-  }
-  .bListing-3col.lstn .lstn_pr {
-    width: 170px;
   }
   .bListing-3col.lstn-light .lstn_i {
     height: 310px;

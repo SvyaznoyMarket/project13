@@ -8100,10 +8100,10 @@ img[height="0"] {
   }
   .lstn_i_inn {
     border: 1px solid #e6e6e6;
-    width: 219px;
+    width: 199px;
     position: relative;
     height: 312px;
-    padding: 20px 10px 10px;
+    padding: 20px 20px 10px;
     background-color: #ffffff;
     z-index: 2;
   }
@@ -8215,13 +8215,8 @@ img[height="0"] {
     height: 200px;
   }
   .lstn_pr {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
+    display: table-cell;
     vertical-align: middle;
-    width: 89px;
   }
   .lstn_pr_old {
     color: #9c9c9c;
@@ -8232,14 +8227,9 @@ img[height="0"] {
     font-size: 14px;
   }
   .lstn_btn {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
+    display: table-cell;
     vertical-align: middle;
     text-align: right;
-    width: 125px;
     -moz-opacity: 0;
     -khtml-opacity: 0;
     -webkit-opacity: 0;
@@ -8335,9 +8325,8 @@ img[height="0"] {
   }
   .lstn-jewel .lstn_i_inn {
     border-color: #f9f9f9;
-    padding-top: 10px;
-    height: 228px;
-    padding-bottom: 0;
+    padding: 10px 10px 0;
+    width: 219px;
   }
   .lstn-jewel .lstn_img {
     width: 160px;

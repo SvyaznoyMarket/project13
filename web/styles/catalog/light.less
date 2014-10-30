@@ -17,10 +17,10 @@
 
 		&_inn {
 			border: 1px solid #e6e6e6;
-			width: 219px;
+			width: 199px;
 			position: relative;
 			height: 312px;
-			padding: 20px 10px 10px;
+			padding: 20px 20px 10px;
 			background-color: @white;
 			z-index: 2;
 		}
@@ -139,9 +139,8 @@
 	}
 
 	&_pr {
-		.inline-block();
+		display: table-cell;
 		vertical-align: middle;
-    	width: 89px;
 
 		&_old {
 			color: #9c9c9c;
@@ -155,10 +154,9 @@
 	}
 
 	&_btn {
-		.inline-block();
+		display: table-cell;
 		vertical-align: middle;
 		text-align: right;
-		width: 125px;
 		.opacity(0);
 
 		.btnBuy {
@@ -255,9 +253,8 @@
 
 				&_inn {
 					border-color: #f9f9f9;
-					padding-top: 10px;
-					height: 228px;
-					padding-bottom: 0;
+					padding: 10px 10px 0;
+    				width: 219px;
 				}
 			}
 
