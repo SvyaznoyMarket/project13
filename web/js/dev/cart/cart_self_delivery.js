@@ -26,6 +26,15 @@
 			docCookies.setItem(cookieKey1, docCookies.getItem(cookieKey1) + ',' + product.article)
 		}
 		$body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + config.user.region.name, 'добавил из рекомендации', 'статичная корзина'])
+
+        // FIXME
+        $(e.target).text('В корзине')
+            .removeClass('mDisabled')
+            .removeClass('mShopsOnly')
+            .addClass('mBought')
+            //.removeClass('jsBuyButton')
+            //.attr('href', ENTER.utils.generateUrl('cart'))
+        ;
 	});
 
 	/* Трекинг перехода в карточку товара из блока рекомендаций */
