@@ -1039,9 +1039,9 @@
 
                 // немного аналитики
                 if (item.contentType == 'street') {
-                    //$body.trigger('trackUserAction', ['10 Адрес_доставки_Доставка_ОБЯЗАТЕЛЬНО'])
+                    $body.trigger('trackUserAction', ['2_2 Ввод_данных_Самовывоза|Доставки'])
                 } else if (item.contentType == 'building') {
-                    //$body.trigger('trackUserAction', ['10_1 Ввод_данных_Доставки_Доставка_ОБЯЗАТЕЛЬНО'])
+                    $body.trigger('trackUserAction', ['2_2 Ввод_данных_Самовывоза|Доставки'])
                 }
 
                 //console.log('Address update: address, item', this, item);
@@ -1202,7 +1202,8 @@
 
         $input.on({
             focus: function(){
-                updatePrefix(this)
+                updatePrefix(this);
+                $body.trigger('trackUserAction', ['2_2 Ввод_данных_Самовывоза|Доставки'])
             },
             blur: function(){
                 $inputPrefix.text('');
