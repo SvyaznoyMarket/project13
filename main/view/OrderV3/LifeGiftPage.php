@@ -12,6 +12,7 @@ class LifeGiftPage extends Layout{
 
     public function slotContent() {
         $template = 'page-lifegift';
+        if ($this->hasParam('message')) $template = 'page-complete';
         if ($this->getParam('error') !== null) $template = 'page-error';
         return \App::closureTemplating()->render('order-v3/lifegift/' . $template, $this->params);
     }

@@ -572,6 +572,11 @@ return [
         'action'    => ['OrderV3\LifeGiftAction', 'execute']
     ],
 
+    'orderV3.lifegift.complete' => [
+        'pattern'   => '/order/life-gift/complete',
+        'action'    => ['OrderV3\LifeGiftAction', 'complete']
+    ],
+
     'orderV3OneClick.delivery' => [
         'pattern' => '/order-1click/delivery',
         'action'  => ['OrderV3OneClick\DeliveryAction', 'execute'],

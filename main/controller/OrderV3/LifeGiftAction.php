@@ -132,7 +132,7 @@ class LifeGiftAction {
                 'order_id'  => $order->getId(),
             ],
             [
-                'back_ref'    => \App::router()->generate('homepage', [], true),// обратная ссылка
+                'back_ref'    => \App::router()->generate('orderV3.lifegift.complete', [], true),// обратная ссылка
             ],
             \App::config()->coreV2['hugeTimeout']
         );
@@ -155,6 +155,13 @@ class LifeGiftAction {
 
         return $form;
 
+    }
+
+    public function complete() {
+        $message = 'Спасибо за заказ!';
+        $page = new \View\OrderV3\LifeGiftPage();
+        $page->setParam('message', $message);
+        return new \Http\Response($page->show());
     }
 
 
