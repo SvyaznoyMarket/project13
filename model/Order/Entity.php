@@ -16,6 +16,7 @@ class Entity {
     const STATUS_DELIVERED = 5;
     const STATUS_CANCELED = 100;
 
+    const PAYMENT_TYPE_ID_CREDIT_CARD_ONLINE = 5;
     const PAYMENT_TYPE_ID_ONLINE_CREDIT = 6;
 
     const PAYMENT_STATUS_NOT_PAID = 1;  // не оплачен

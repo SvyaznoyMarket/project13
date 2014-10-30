@@ -1,57 +1,52 @@
 <?php
 
 return function(
-    \Helper\TemplateHelper $helper
+    \Helper\TemplateHelper $helper,
+    \Model\Product\Entity $product,
+    $user
 ) {
-?>
+    /**
+     * @var $user \Model\User\Entity|null
+     */
+    ?>
 
-    <div style="display: none" class="jsRegion" data-value="<?= \App::user()->getRegion() ? \App::user()->getRegion()->getName() : '' ?>"></div>
-
-    <!-- шапка оформления заказа -->
-    <header class="orderHd">
-        <img class="orderHd_lg" src="/styles/order/img/logo.png" />
-
-        <ul class="orderHd_stps">
-            <li class="orderHd_stps_i" style="color: #fff;">Оформление заказа</li>
-        </ul>
-    </header>
-    <!-- /шапка оформления заказа -->
+    <?= $helper->render('order-v3/lifegift/_header') ?>
 
     <section class="orderLgift">
         <div class="orderLgift_hd">
             <h1 class="orderLgift_t">ВЫ ОФОРМЛЯЕТЕ ЗАКАЗ В ПОДАРОК РЕБЕНКУ, КОТОРОГО ПОДДЕРЖИВАЕТ ФОНД "ПОДАРИ ЖИЗНЬ".</h1>
             <p class="orderLgift_slgn">ОПЛАТИТЕ ЗАКАЗ ОНЛАЙН, И ENTER ДОСТАВИТ ПОДАРОК РЕБЕНКУ К НОВОМУ ГОДУ.</p>
         </div>
-        
-        <form action="" class="orderU clearfix">
-            
+
+        <form action="" class="orderU clearfix jsOrderForm" method="post">
+
             <fieldset class="orderU_flds">
                 <legend class="orderLgift_st">Подарок</legend>
 
                 <div class="orderLgift_prod">
-                    <img class="orderLgift_img" src="http://fs08.enter.ru/1/1/200/83/223272.jpg" alt="">
+                    <img class="orderLgift_img" src="<?= $product->getImageUrl(2) ?>" alt="<?= $product->getName() ?>">
 
                     <div class="orderLgift_dscr">
-                        <div class="orderLgift_dscr_n">Конструктор</div>
-                        <div class="orderLgift_dscr_n">LEGO City 60017 Эвакуатор</div>
-                        <div class="orderLgift_dscr_pr">1 828 <span class="rubl">p</span></div>
+                        <div class="orderLgift_dscr_n"><?= $product->getPrefix() ?></div>
+                        <div class="orderLgift_dscr_n"><?= $product->getWebName() ?></div>
+                        <div class="orderLgift_dscr_pr"><?= $helper->formatPrice($product->getPrice()) ?>&nbsp;<span class="rubl">p</span></div>
                     </div>
                 </div>
             </fieldset>
 
             <fieldset class="orderU_flds clearfix" style="margin-bottom: 0;">
                 <legend class="orderLgift_st">От кого</legend>
-                
+
                 <div class="fl-l">
                     <div class="orderU_fld">
                         <label class="orderU_lbl" for="">Имя</label>
-                        <input class="orderU_tx textfield" type="text" name="" value="" placeholder="">
+                        <input class="orderU_tx textfield" type="text" name="user_name" value="<?= $user ? $user->getName() : '' ?>" placeholder="">
                         <span class="orderU_hint">Как к вам обращаться?</span>
                     </div>
 
                     <div class="orderU_fld">
                         <label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
-                        <input class="orderU_tx textfield" type="text" name="" value="" placeholder="">
+                        <input class="orderU_tx textfield jsMobileField" type="text" name="user_phone" value="<?= $user ? $user->getMobilePhone() : '' ?>" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx">
                         <span class="orderU_hint">Для смс о состоянии заказа</span>
 
                         <div class="orderU_phones">Если вы делаете подарок из-за границы,<br/> укажите телефонный номер +7 (926) 529-42-01.</div>
@@ -59,21 +54,23 @@ return function(
 
                     <div class="orderU_fld">
                         <label class="orderU_lbl" for="">E-mail</label>
-                        <input class="orderU_tx textfield" type="text" name="" value="" placeholder="">
+                        <input class="orderU_tx textfield jsEmailField" type="text" name="user_mail" value="<?= $user ? $user->getEmail() : '' ?>" placeholder="">
                         <span class="orderU_hint">Для информации о заказе</span>
                     </div>
                 </div>
 
-                <div class="orderAuth">
-                    <div class="orderAuth_t">Уже заказывали у нас?</div>
-                    <button class="orderAuth_btn btnLightGrey">Войти с паролем</button>
-                </div>
+                <? if (!$user) : ?>
+                    <div class="orderAuth">
+                        <div class="orderAuth_t">Уже заказывали у нас?</div>
+                        <button class="orderAuth_btn btnLightGrey jsLoginButton">Войти с паролем</button>
+                    </div>
+                <? endif; ?>
             </fieldset>
 
             <fieldset class="orderU_flds orderU_flds-mb30">
                 <div class="orderU_txbox">
                     <label for="" class="orderU_lbtx">Добрые пожелания ребёнку</label>
-                    <textarea name="" id="" class="orderU_txarea"></textarea>
+                    <textarea name="comment" id="" class="orderU_txarea"></textarea>
                 </div>
             </fieldset>
 
@@ -82,19 +79,19 @@ return function(
 
                 <ul class="onpay_lst">
                     <li class="onpay_lst_i">
-                        <input type="radio" id="pay1" name="paynow" class="jsCustomRadio customInput customInput-defradio" checked>
+                        <input type="radio" id="pay1" value="card" name="paynow" class="jsCustomRadio customInput customInput-defradio" checked>
                         <label class="customLabel customLabel-defradio" for="pay1">
-                            <span class="customLabel_tx">Банковская карта</span> 
-                            <img class="customLabel_img" src="/styles/order/img/icon_visa.png" alt=""> 
+                            <span class="customLabel_tx">Банковская карта</span>
+                            <img class="customLabel_img" src="/styles/order/img/icon_visa.png" alt="">
                             <img class="customLabel_img" src="/styles/order/img/icon_mc.png" alt="">
                         </label>
                         <p class="onpay_lst_desc">Visa, MasterCard, Maestro, Diners Club, JCB.</p>
                     </li>
 
                     <li class="onpay_lst_i">
-                        <input type="radio" id="pay2" name="paynow" class="jsCustomRadio customInput customInput-defradio">
+                        <input type="radio" id="pay2" value="paypal" name="paynow" class="jsCustomRadio customInput customInput-defradio">
                         <label class="customLabel customLabel-defradio" for="pay2">
-                            <span class="customLabel_tx">Платёжная система</span> 
+                            <span class="customLabel_tx">Платёжная система</span>
                             <img class="customLabel_img" src="/styles/order/img/icon_pp.png" alt="">
                         </label>
                     </li>
@@ -108,7 +105,7 @@ return function(
 
             <fieldset class="orderCompl clearfix">
                 <div class="orderCompl_l orderCompl_l-ln orderCheck orderCheck-str">
-                    <input type="checkbox" class="jsCustomRadio customInput customInput-checkbox" id="accept" name="" value="" />
+                    <input type="checkbox" class="jsCustomRadio customInput customInput-checkbox jsAgreedCheckbox" id="accept" name="agreed" value="" />
 
                     <label  class="customLabel customLabel-checkbox" for="accept">
                         Адрес доставки:  <br/>
@@ -118,7 +115,7 @@ return function(
                     </label>
                 </div>
 
-                <button class="orderCompl_btn btnsubmit">Оформить</button>
+                <button type="submit" class="orderCompl_btn btnsubmit">Оформить</button>
             </fieldset>
         </form>
     </section>

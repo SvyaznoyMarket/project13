@@ -567,7 +567,8 @@ return [
     ],
     // Подари жизнь (новое оформление)
     'orderV3.lifegift' => [
-        'pattern'   => '/order/life-gift',
+        'pattern'   => '/order/life-gift/{productId}',
+        'require' => ['productId' => '\d+'],
         'action'    => ['OrderV3\LifeGiftAction', 'execute']
     ],
 

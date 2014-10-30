@@ -11,12 +11,13 @@ class LifeGiftPage extends Layout{
     }
 
     public function slotContent() {
-        return \App::closureTemplating()->render('order-v3/lifegift/page-lifegift', $this->params);
+        $template = 'page-lifegift';
+        if ($this->getParam('error') !== null) $template = 'page-error';
+        return \App::closureTemplating()->render('order-v3/lifegift/' . $template, $this->params);
     }
 
     public function slotBodyDataAttribute() {
-        //return 'order_new';
-        return 'order-v3-life-gift';
+        return 'order-v3-lifegift';
     }
 
 } 
