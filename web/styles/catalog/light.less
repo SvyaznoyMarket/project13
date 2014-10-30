@@ -33,7 +33,7 @@
 			}
 
 			.lstn_btn {
-				.inline-block();
+				.opacity(1);
 			}
 
 			.lstn_n {
@@ -63,7 +63,7 @@
 				&:hover {
 
 					.lstn_btn {
-						.inline-block();
+						.opacity(1);
 					}
 
 					.lstn_i_inn {
@@ -81,7 +81,7 @@
 				}
 
 				.lstn_btn {
-					.inline-block();
+					.opacity(1);
 				}
 
 				.bSimplyDescReviews {
@@ -99,6 +99,7 @@
 
 			.lstn_i_inn {
 				background-color: transparent;
+				min-height: 249px;
 			}
 		}
 	}
@@ -128,7 +129,7 @@
 	&_pr {
 		.inline-block();
 		vertical-align: middle;
-    	width: 99px;
+    	width: 89px;
 
 		&_old {
 			color: #9c9c9c;
@@ -142,10 +143,11 @@
 	}
 
 	&_btn {
+		.inline-block();
 		vertical-align: middle;
 		text-align: right;
-		width: 115px;
-		display: none;
+		width: 125px;
+		.opacity(0);
 
 		.btnBuy {
 			.inline-block();
@@ -180,7 +182,7 @@
 			.inline-block();
 			vertical-align: middle;
 			color: #9c9c9c;
-			margin-left: 8px;
+			margin-left: 3px;
 		}
 
 		&_ftn {
