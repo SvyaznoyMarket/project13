@@ -12948,6 +12948,12 @@
     cursor: pointer;
     margin: 2px 8px;
   }
+  .bSeoText__eListItem,
+  .bSeoText li {
+    list-style: disc;
+    margin: 0 0 0px 20px;
+    line-height: 1.3;
+  }
 }
 /*---END---СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/
 /*------СТИЛИ НОВЫЙ ЮЗЕР БАР пока скрыт------*/
