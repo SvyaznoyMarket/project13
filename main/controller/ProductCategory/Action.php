@@ -451,8 +451,6 @@ class Action {
                     }
                 }
             } else if ('new_filter_with_photo' === $testKey || 'new_filter_without_photo' === $testKey) {
-                $category->setProductView(4);
-
                 // TODO удалить данную заглушку как только будет выпушен 65 релиз ядра
                 $filterImages = [
                     'белое золото 375' => 'https://scms.enter.ru/uploads/media/5b/e7/c9/a4dd4817bca9ddc078ebe41ca96c34e9dbb06d9a.png',
@@ -490,8 +488,10 @@ class Action {
                     'эмаль' => 'https://scms.enter.ru/uploads/media/f4/05/69/33459291edb0ab7dcaa5a0b149d26bf6e21b6f76.png',
                 ];
 
+                $isNewFilterPresent = false;
                 foreach ($productFilter->getFilterCollection() as $filter) {
                     if ('Металл' === $filter->getName() || 'Вставка' === $filter->getName()) {
+                        $isNewFilterPresent = true;
                         $filter->setIsAlwaysShow(true);
 
                         // TODO удалить данную заглушку как только будет выпушен 65 релиз ядра
@@ -501,6 +501,10 @@ class Action {
                             }
                         }
                     }
+                }
+
+                if ($isNewFilterPresent) {
+                    $category->setProductView(4);
                 }
             }
         }
