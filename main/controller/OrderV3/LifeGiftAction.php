@@ -75,7 +75,7 @@ class LifeGiftAction {
             'shop_id'           => 172,
             'user_id'           => $this->user ? $this->user->getId() : null,
             'is_legal'          => $this->user ? $this->user->getIsCorporative() : false,
-            'payment_id'        => \Model\Order\Entity::PAYMENT_TYPE_ID_CREDIT_CARD_ONLINE,
+            'payment_id'        => $request->get('paynow') == 'card' ? \Model\Order\Entity::PAYMENT_TYPE_ID_CREDIT_CARD_ONLINE : \Model\Order\Entity::PAYMENT_TYPE_ID_PAYPAL,
             'first_name'        => $request->get('user_name'),
             'email'             => $request->get('user_email'),
             'mobile'            => $request->get('user_phone'),

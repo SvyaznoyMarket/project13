@@ -18,6 +18,7 @@ class Entity {
 
     const PAYMENT_TYPE_ID_CREDIT_CARD_ONLINE = 5;
     const PAYMENT_TYPE_ID_ONLINE_CREDIT = 6;
+    const PAYMENT_TYPE_ID_PAYPAL = 13;
 
     const PAYMENT_STATUS_NOT_PAID = 1;  // не оплачен
     const PAYMENT_STATUS_TRANSFER = 4;  // начало оплаты
