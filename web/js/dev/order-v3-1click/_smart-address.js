@@ -198,7 +198,12 @@
         // Клик по блоку адреса
         $addressBlock.on('click', function(e) {
             if (address.getLastType() !== false) {
-                $(this).find('input').eq(0).show().focus();
+				var $input = $(this).find('input').eq(0);
+				$input.show();
+
+				if (!$input.is(':focus')) {
+					$input.focus();
+				}
             }
             e.preventDefault();
         });
@@ -249,7 +254,7 @@
         $input.on({
             focus: function(){
                 updatePrefix(this);
-                $body.trigger('trackUserAction', ['2_2 Ввод_данных_Самовывоза|Доставки'])
+                $body.trigger('trackUserAction', ['2_1 Место_самовывоза|Адрес_доставки'])
             },
             blur: function(){
                 $inputPrefix.text('');
