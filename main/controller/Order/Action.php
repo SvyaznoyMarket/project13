@@ -96,55 +96,54 @@ class Action {
             } else if ($paymentMethod->getIsCredit()) {
                 if (!$order->getCredit() || !$order->getCredit()->getBankProviderId()) {
                     \App::logger()->error(['message' => 'Не найден кредитный банк для заказа', 'order.id' => $order->getId()], ['order']);
-                }
+                } else {
+                    $creditProviderId = $order->getCredit()->getBankProviderId();
+                    if ($creditProviderId == \Model\CreditBank\Entity::PROVIDER_KUPIVKREDIT) {
+                        $data = new \View\Order\Credit\Kupivkredit($order, $productsById);
+                        $creditData = [
+                            'widget' => 'kupivkredit',
+                            'vars'   => [
+                                'sum'   => $order->getProductSum(), // брокеру отпрвляем стоимость только продуктов!
+                                'order' => (string)$data,
+                                'sig'   => $data->getSig(),
+                            ],
+                        ];
+                    } else if ($creditProviderId == \Model\CreditBank\Entity::PROVIDER_DIRECT_CREDIT) {
 
-                $creditProviderId = $order->getCredit() && $order->getCredit()->getBankProviderId();
-                if ($creditProviderId == \Model\CreditBank\Entity::PROVIDER_KUPIVKREDIT) {
-                    $data = new \View\Order\Credit\Kupivkredit($order, $productsById);
-                    $creditData = [
-                        'widget' => 'kupivkredit',
-                        'vars'   => [
-                            'sum'   => $order->getProductSum(), // брокеру отпрвляем стоимость только продуктов!
-                            'order' => (string)$data,
-                            'sig'   => $data->getSig(),
-                        ],
-                    ];
-                } else if ($creditProviderId == \Model\CreditBank\Entity::PROVIDER_DIRECT_CREDIT) {
+                        $creditData['widget'] = 'direct-credit';
 
-                    $creditData['widget'] = 'direct-credit';
-
-                    $shop = $order->getShopId()
-                        ? \RepositoryManager::shop()->getEntityById($order->getShopId())
-                        : null;
-                    if (!$shop) {
-                        $shops = \RepositoryManager::shop()->getCollectionByRegion($user->getRegion());
-                        $shop = reset($shops);
-                    }
-
-                    $creditData['vars'] = [
-                        'partnerID' => \App::config()->creditProvider['directcredit']['partnerId'],
-                        'number' => $order->getNumber(),
-                        'region' => $shop ? $shop->getId() : ( 'r_' . $user->getRegion()->getParentId() ?: $user->getRegion()->getId() ),
-                        'items'  => [],
-                    ];
-
-                    foreach ($order->getProduct() as $orderProduct) {
-                        /** @var $product \Model\Product\Entity|null */
-                        $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
-                        if (!$product) {
-                            throw new \Exception(sprintf('Не найден товар #%s, который есть в заказе', $orderProduct->getId()));
+                        $shop = $order->getShopId()
+                            ? \RepositoryManager::shop()->getEntityById($order->getShopId())
+                            : null;
+                        if (!$shop) {
+                            $shops = \RepositoryManager::shop()->getCollectionByRegion($user->getRegion());
+                            $shop = reset($shops);
                         }
 
-                        $creditData['vars']['items'][] = [
-                            'name'     => sprintf('%s шт %s', $orderProduct->getQuantity(), $product->getName()), // SITE-2662
-                            'quantity' => $orderProduct->getQuantity(),
-                            'price'    => $orderProduct->getPrice(),
-                            'articul'  => $product->getArticle(),
-                            'type'     => \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null)
+                        $creditData['vars'] = [
+                            'partnerID' => \App::config()->creditProvider['directcredit']['partnerId'],
+                            'number' => $order->getNumber(),
+                            'region' => $shop ? $shop->getId() : ( 'r_' . $user->getRegion()->getParentId() ?: $user->getRegion()->getId() ),
+                            'items'  => [],
                         ];
+
+                        foreach ($order->getProduct() as $orderProduct) {
+                            /** @var $product \Model\Product\Entity|null */
+                            $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
+                            if (!$product) {
+                                throw new \Exception(sprintf('Не найден товар #%s, который есть в заказе', $orderProduct->getId()));
+                            }
+
+                            $creditData['vars']['items'][] = [
+                                'name'     => sprintf('%s шт %s', $orderProduct->getQuantity(), $product->getName()), // SITE-2662
+                                'quantity' => $orderProduct->getQuantity(),
+                                'price'    => $orderProduct->getPrice(),
+                                'articul'  => $product->getArticle(),
+                                'type'     => \RepositoryManager::creditBank()->getCreditTypeByCategoryToken($product->getMainCategory() ? $product->getMainCategory()->getToken() : null)
+                            ];
+                        }
                     }
                 }
-
             }
 
             // PaymentConfig
