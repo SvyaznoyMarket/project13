@@ -966,11 +966,15 @@ class Action {
         $page->setParam('sidebarHotlinks', true);
         $page->setParam('hasBanner', $hasBanner);
         $page->setParam('columnCount',
+            /*
             (
                 ('jewelItems3' === \App::abTest()->getTest('jewel_items')->getChosenCase()->getKey())
                 && array_filter($category->getAncestor(), function(\Model\Product\Category\Entity $category) { return 923 === $category->getId(); })
             ) ? 3
             : 4
+            */
+            // Pandora, Guess - по 3, остальные - по 4
+            (bool)array_intersect(array_map(function(\Model\Product\Category\BasicEntity $category) { return $category->getId(); }, $category->getAncestor()), [1320, 4649]) ? 3 : 4
         );
 
         return new \Http\Response($page->show());

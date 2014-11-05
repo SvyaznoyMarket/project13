@@ -581,6 +581,7 @@ $c->abTest = [
                 ]
             ]
         ],
+        /*
         'jewel_items' => [
             'enabled' => true,
             'expireDate' => '2015-12-31',
@@ -595,6 +596,7 @@ $c->abTest = [
                 ]
             ]
         ],
+        */
         'other' => [
             'enabled' => false,
             'expireDate' => '2000-01-01',
