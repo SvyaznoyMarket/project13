@@ -977,7 +977,7 @@ img[height="0"] {
   }
   .bodybar_clsr {
     color: #ffffff;
-    font-size: 20px;
+    font-size: 22px;
     line-height: 1;
     text-shadow: 0 1px 1px #333;
     vertical-align: middle;
@@ -986,6 +986,7 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
+    cursor: pointer;
   }
   .sbscrBar {
     display: inline-block;
@@ -1001,9 +1002,9 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    vertical-align: middle;
     font-size: 16px;
     color: #ffffff;
+    padding: 5px 0 0;
     font-family: "Enter";
     text-transform: uppercase;
   }
@@ -1013,7 +1014,6 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    vertical-align: middle;
     border: 1px solid #e6e6e6;
     background: #ffffff;
     font-size: 14px;
@@ -1031,9 +1031,7 @@ img[height="0"] {
     *display: inline;
     *zoom: 1;
     padding: 4px 15px;
-    vertical-align: middle;
-    font-size: 13px;
-    font-weight: bold;
+    font-size: 14px;
   }
   .sbscrBar_tx {
     display: inline-block;
@@ -1041,8 +1039,8 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    vertical-align: baseline;
     font-size: 14px;
+    padding: 3px 0 0;
     color: #ffffff;
     text-shadow: 0 1px 1px #333;
     margin: 0 10px;
