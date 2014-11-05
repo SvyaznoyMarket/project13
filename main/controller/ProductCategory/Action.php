@@ -1020,7 +1020,7 @@ class Action {
             \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
         }
 
-        $columnCount = ('jewelItems3' === \App::abTest()->getTest('jewel_items')->getChosenCase()->getKey() && array_filter($category->getAncestor(), function(\Model\Product\Category\Entity $category) { return 923 === $category->getId(); })) ? 3 : 4;
+        $columnCount = (bool)array_intersect(array_map(function(\Model\Product\Category\BasicEntity $category) { return $category->getId(); }, $category->getAncestor()), [1320, 4649]) ? 3 : 4;
 
         // ajax
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {

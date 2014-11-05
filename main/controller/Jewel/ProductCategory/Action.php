@@ -178,6 +178,7 @@ class Action extends \Controller\ProductCategory\Action {
             $subCatMenu = reset($subCatMenu);
         }
 
+        /*
         switch (\App::abTest()->getTest('jewel_items')->getChosenCase()->getKey()) {
             case 'jewelItems3':
                 $itemsPerRow = 3;
@@ -188,6 +189,9 @@ class Action extends \Controller\ProductCategory\Action {
             default:
                 $itemsPerRow = \App::config()->product['itemsPerRowJewel'];
         }
+        */
+        // Pandora, Guess - по 3, остальные - по 4
+        $itemsPerRow = (bool)array_intersect(array_map(function(\Model\Product\Category\BasicEntity $category) { return $category->getId(); }, $category->getAncestor()), [1320, 4649]) ? 3 : 4;
 
         $setPageParameters = function(\View\Layout $page) use (
             &$category,
