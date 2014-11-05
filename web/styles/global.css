@@ -1582,18 +1582,18 @@ img[height="0"] {
   }
   .customLabel {
     display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
     zoom: 1;
     margin: 0;
     padding: 0 0 0 29px;
     cursor: pointer;
-    *display: inline;
   }
   .customLabel-bigRadio {
     height: 29px;
     padding: 5px 10px 5px 38px;
-  }
-  .customLabel_btx {
-    line-height: 1;
   }
   .customInput-radio + .customLabel {
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAXCAYAAADgKtSgAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpGRjA2RTc0NDgwN0MxMUUzQkI0NEQxN0Y5NTBDNkNCRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpGRjA2RTc0NTgwN0MxMUUzQkI0NEQxN0Y5NTBDNkNCRiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkU1MkIzMDk3ODA3QTExRTNCQjQ0RDE3Rjk1MEM2Q0JGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkU1MkIzMDk4ODA3QTExRTNCQjQ0RDE3Rjk1MEM2Q0JGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+ElWMcwAAAhNJREFUeNqslc1rWkEUxW+egor43ChoAgWlXaUli2YtATfiOuR/6CrdFLrIotBNod114f8QutVkoxRB9/kQRANiKCrGTRXxA3V6jswLqTGN1XfgMjBvzu/Om/fm3i2llDylTCazh+EIkUDsIlyIEaKEOEecJpPJi6f8W8vggB5geGea5lE4HJZAICA+n08Mw5DZbCa9Xk86nY40m03pdrunWJtCkp+PQIQ/jHQ6/SmXy6lGo6FWEddxPX2LrEXwt2KxqEajkfofcT199C+F48FJoVBQk8lErSP6dIITizk/c5zxjtPp/BWLxcTtdsu6Gg6Hks/nBYl28A0ahp4/jkajG4Ep+smB3s//FryGD7vuxuNxcTgcsqmm06lks1nu3uTOE8Fg0BYwRQ555BL+Fv+z2Cm/389hn/DtTc96US4XL7KECDdx5rbCNc9PeHs8HtsK17w7wq9YK+yU5l0SftZut22Fa96ZdfUzmFB2iBzyyLVuaKpcLsu/avsqop8c8v4qucj2vVKpbLRr+smxmMaDxJ+r1arU6/W1dk0f/eRYc/dwVDF+hTelUimFmNeIVWsJ19NHv+Ysb3Mov0z4Bbf2QyQSkVAoJB6P5xF0MBhIq9WSWq3GUvsVUx8Bnj3bQ3WSl+yjiEP0zxder3d+81DtpN/v81++xbMfun/erNyglyR6jeEVrzTiN6IK4PVzvj8CDAAigVcsj+tQhgAAAABJRU5ErkJggg==);
@@ -7841,9 +7841,17 @@ img[height="0"] {
   }
   .bCatalog-custom .bSortingLine.mPagerBottom {
     margin-top: -1px;
+    margin-bottom: 35px;
   }
   .bCatalog-custom .bSortingLine.mPagerBottom .bSortingList {
     margin-right: 0;
+  }
+  .bCatalog-custom .adfoxWrapper {
+    left: 50%;
+    line-height: 100%;
+    margin: -129px 0 0 -108px;
+    position: absolute;
+    top: 50%;
   }
   .bCatalog-custom .bSortingList.mPager {
     margin-right: 0;
@@ -7956,6 +7964,10 @@ img[height="0"] {
   .bCatalog-custom .fltr .bFilterValues .mCustomLabelRadio.mChecked {
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAQAAAADHm0dAAAA3UlEQVQoz5WTsY2DQBBFJ6IIUgqgDndAC6YN6qEKZ1wwI1i3gES2Eo7w4ucA7Dss0Hn/pE+7X3/+iPyRy63SRr0G9dpY5XLZU5dZ7egZmZiZGOlxWN1lH2B7Mj/wYKsHA+bb0wa8hhv7unENb7jLzL/ACwUpCSkFlzdsfrVh9QDAnRLZTMkdgAGrRcTlbvV4/gAXePHscLlY1a9fy+4sNnqsEv0ZASgO0AKAEW1E/QRAeoCmAEyoFw0zAMkBmgAwoyHq1e+9RiTwm2v5X64R24rqQESzovoadQXf3NYTn0U254ZaY9QAAAAASUVORK5CYII=);
   }
+  .bCatalog-custom .fltr .customLabel_btx {
+    font-size: 14px;
+    line-height: 28px;
+  }
   .bCatalog-custom .fltrSet {
     border: 1px solid #e6e6e6;
     border-top: none;
@@ -7987,18 +7999,12 @@ img[height="0"] {
   .bCatalog-custom .fltrSet_cnt {
     padding-bottom: 10px;
   }
-  .bCatalog-custom .fltrSet .bFilterValuesCol {
-    float: left;
-    margin: 0;
-    position: relative;
-    width: 370px;
-  }
-  .bCatalog-custom .fltrSet .bFilterValuesCol-gbox {
-    width: 184px;
+  .bCatalog-custom .fltrSet_cnt .bFilterValuesCol {
+    width: 184px !important;
     height: 41px;
     cursor: pointer;
   }
-  .bCatalog-custom .fltrSet .bFilterValuesCol-gbox .bFilterCheckbox {
+  .bCatalog-custom .fltrSet_cnt .bFilterValuesCol .bFilterCheckbox {
     background: #ffffff;
     border: 1px solid #e6e6e6;
     padding: 5px;
@@ -8007,14 +8013,21 @@ img[height="0"] {
     width: 173px;
     display: block;
     cursor: pointer;
+    min-height: 30px;
   }
-  .bCatalog-custom .fltrSet .bFilterValuesCol-gbox .customInput:checked + .bFilterCheckbox {
+  .bCatalog-custom .fltrSet_cnt .bFilterValuesCol .customInput:checked + .bFilterCheckbox {
     background: #606060;
     color: #ffffff;
   }
-  .bCatalog-custom .fltrSet .bFilterValuesCol-gbox .bFilterCheckbox.mChecked {
+  .bCatalog-custom .fltrSet_cnt .bFilterValuesCol .bFilterCheckbox.mChecked {
     background: #606060;
     color: #ffffff;
+  }
+  .bCatalog-custom .fltrSet .bFilterValuesCol {
+    float: left;
+    margin: 0;
+    position: relative;
+    width: 370px;
   }
   .bCatalog-custom .fltrSet .bFilterValuesCol-gbox .customLabel_wimg {
     background: url("/styles/catalog/img/wimg1.png") no-repeat 0 0;

@@ -12,11 +12,20 @@
 
 		    &.mPagerBottom {
 		    	margin-top: -1px;
+		    	margin-bottom: 35px;
 
 		    	.bSortingList {
 					margin-right: 0;
 		    	}
 		    }
+		}
+
+		.adfoxWrapper {
+			left: 50%;
+		    line-height: 100%;
+		    margin: -129px 0 0 -108px;
+		    position: absolute;
+		    top: 50%;
 		}
 
 		.bSortingList {
@@ -157,6 +166,11 @@
 					background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAQAAAADHm0dAAAA3UlEQVQoz5WTsY2DQBBFJ6IIUgqgDndAC6YN6qEKZ1wwI1i3gES2Eo7w4ucA7Dss0Hn/pE+7X3/+iPyRy63SRr0G9dpY5XLZU5dZ7egZmZiZGOlxWN1lH2B7Mj/wYKsHA+bb0wa8hhv7unENb7jLzL/ACwUpCSkFlzdsfrVh9QDAnRLZTMkdgAGrRcTlbvV4/gAXePHscLlY1a9fy+4sNnqsEv0ZASgO0AKAEW1E/QRAeoCmAEyoFw0zAMkBmgAwoyHq1e+9RiTwm2v5X64R24rqQESzovoadQXf3NYTn0U254ZaY9QAAAAASUVORK5CYII=);
 				}
 			}
+
+			.customLabel_btx {
+				font-size: 14px;
+				line-height: 28px;
+			}
 		}
 
 		.fltrSet {
@@ -194,16 +208,9 @@
 
 			&_cnt {
 				padding-bottom: 10px;
-			}
 
-			.bFilterValuesCol {
-			    float: left;
-			    margin: 0;
-			    position: relative;
-			    width: 370px;
-
-			    &-gbox {
-			    	width: 184px;
+				.bFilterValuesCol {
+					width: 184px !important;
 			    	height: 41px;
 			    	cursor: pointer;
 
@@ -216,6 +223,7 @@
 				    	width: 173px;
 				        display: block;
 				        cursor: pointer;
+				        min-height: 30px;
 			    	}
 
 			    	.customInput:checked+.bFilterCheckbox  {
@@ -227,6 +235,16 @@
 					    background: #606060;
 					    color: @white;
 					}
+				}
+			}
+
+			.bFilterValuesCol {
+			    float: left;
+			    margin: 0;
+			    position: relative;
+			    width: 370px;
+
+			    &-gbox {
 
 					.customLabel {
 
