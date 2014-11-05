@@ -7995,6 +7995,7 @@ img[height="0"] {
   }
   .bCatalog-custom .fltrSet .bFilterValuesCol-gbox {
     width: 184px;
+    height: 41px;
     cursor: pointer;
   }
   .bCatalog-custom .fltrSet .bFilterValuesCol-gbox .bFilterCheckbox {
