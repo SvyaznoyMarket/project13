@@ -76,5 +76,6 @@ $c->paymentPsbInvoice['key']          = $c->dataDir . '/key/privkey.pem';
 $c->paymentPsbInvoice['payUrl']       = 'https://retail-tst.payment.ru/dn/Invoices/ReceiveUniversalInvoices.aspx';
 
 $c->requestMainMenu = false;
+$c->enterprize['enabled'] = true;
 
 return $c;
