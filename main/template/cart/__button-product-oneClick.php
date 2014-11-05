@@ -6,7 +6,7 @@ return function (
     $url = null,
     $class = null,
     $value = 'Купить быстро в 1 клик',
-    $shop = null
+    \Model\Shop\Entity $shop = null
 ) {
     $region = \App::user()->getRegion();
 
@@ -66,30 +66,13 @@ return function (
     }
 
     // FIXME: резерв по старому
-    if ($isNewOneClick && (false !== strpos($class, ' jsOneClickButton ')) && !$shop) {
+    if ($isNewOneClick && (false !== strpos($class, ' jsOneClickButton '))) {
         $class = str_replace(' jsOneClickButton ', ' jsOneClickButton-new ', $class);
     }
 ?>
 
     <div class="btnOneClickBuy">
-        <a class="btnOneClickBuy__eLink <?= $class ?>" data-target="#jsOneClickContent" href="<?= $url ?>"><?= $value ?></a>
+        <a class="btnOneClickBuy__eLink <?= $class ?>" data-target="#jsOneClickContent" data-title="<?= $shop ? 'Резерв товара' : 'Купить быстро в 1 клик' ?>" data-shop="<?= $shop ? $shop->getId() : null ?>" href="<?= $url ?>"><?= $value ?></a>
     </div>
-
-    <? if (!$shop): ?>
-        <div id="yandex-map-container" class="selShop_r" style="display: none;" data-options="<?= $helper->json(['latitude' => $region->getLatitude(), 'longitude' => $region->getLongitude(), 'zoom' => 10])?>"></div>
-        <div id="kladr-config" data-value="<?= $helper->json(\App::config()->kladr ); ?>"></div>
-        <div id="region-name" data-value=<?= json_encode($region->getName(), JSON_UNESCAPED_UNICODE); ?>></div>
-
-        <div id="jsOneClickContent" class="popup popup-w635">
-            <a class="close" href="#">Закрыть</a>
-
-            <div id="jsOneClickContentPage">
-                <?= $helper->render('order-v3-1click/__form', [
-                    'product' => $product,
-                    'shop'    => $shop,
-                ]) ?>
-            </div>
-        </div>
-    <? endif ?>
 
 <? };

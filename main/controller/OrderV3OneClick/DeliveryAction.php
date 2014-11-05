@@ -21,6 +21,12 @@ class DeliveryAction {
 
         $product_list = (array)$request->get('products');
         $shopId = is_scalar($request->get('shopId')) ? $request->get('shopId') : null;
+        if (!$shopId) {
+            $params = $request->get('params');
+            if (!empty($params['shopId'])) {
+                $shopId = $params['shopId'];
+            }
+        }
         $quantity = is_scalar($request->get('quantity')) ? (int)$request->get('quantity') : 1;
         if ($quantity <= 1) {
             $quantity = 1;
@@ -48,7 +54,7 @@ class DeliveryAction {
                     ];
 
                     $result['OrderDeliveryRequest'] = json_encode($splitData, JSON_UNESCAPED_UNICODE);
-                    $result['OrderDeliveryModel'] = $this->getSplit($request->request->all(), null, $product_list);
+                    $result['OrderDeliveryModel'] = $this->getSplit($request->request->all(), $shopId, $product_list);
                 }
 
                 $result['page'] = \App::closureTemplating()->render('order-v3-1click/__delivery', [
@@ -123,8 +129,10 @@ class DeliveryAction {
                     'product_list' => $product_list
                 ]
             ];
+        }
 
-            if ($shopId) $splitData['shop_id'] = (int)$shopId;
+        if ($shopId) {
+            $splitData['shop_id'] = (int)$shopId;
         }
 
         $orderDeliveryData = $this->client->query('cart/split',

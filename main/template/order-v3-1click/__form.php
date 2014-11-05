@@ -2,13 +2,12 @@
 
 return function(
     \Helper\TemplateHelper $helper,
-    \Model\Product\Entity $product,
-    \Model\Shop\Entity $shop = null
+    \Model\Product\Entity $product
 ) {
-    $title = $shop ? 'Резерв товара' :'Купить быстро в 1 клик';
+    $title = 'Купить быстро в 1 клик';
 ?>
 <div class="orderOneClick">
-    <h1 class="orderOneClick_t"><?= $title ?></h1>
+    <span class="orderOneClick_t jsOneClickTitle"><?= $title ?></span>
 
     <?= $helper->render('order-v3/__error', ['error' => null]) ?>
 
@@ -64,7 +63,7 @@ return function(
                         'products' => [
                             ['id' => $product->getId(), 'quantity' => 1],
                         ],
-                        'shopId'   => $shop ? $shop->getId() : null,
+                        'shopId'   => null, // устанавливается на стороне javascript
                     ]) ?>
                 "></div>
             </div>
