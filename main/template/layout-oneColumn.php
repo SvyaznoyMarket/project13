@@ -37,6 +37,16 @@
     <?= $page->slotConfig() ?>
 
     <?= $page->slotAdFoxBground() ?>
+    <div class="bodybar">
+        <form action="" class="sbscrBar">
+            <label for="" class="sbscrBar_lbl">Сообщайте мне об акциях и специальных ценах</label>
+            <input type="text" name="" id="" class="sbscrBar_it" placeholder="Ваш e-mail">
+            <input type="submit" value="Подписаться" class="sbscrBar_is btn3">
+            <div class="sbscrBar_tx">и получить купон на 300 руб.</div>
+        </form>
+
+        <div class="bodybar_clsr">&#215;</div>
+    </div>
 
     <div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
 
