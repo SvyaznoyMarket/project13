@@ -399,12 +399,6 @@
 				return;
 			}
 
-			if ( !catalog.enableHistoryAPI ) {
-				console.warn('history api off');
-
-				return;
-			}
-
 			console.info('need update from server...');
 
 			clearTimeout(tID);
@@ -585,7 +579,8 @@
 					console.log('change slider');
 
 					if ( e.originalEvent ) {
-						filterBlock.trigger('change', [true]);
+						sliderFromInput.trigger('change', [true]);
+						sliderToInput.trigger('change', [true]);
 					}
 				}
 			});
@@ -787,7 +782,7 @@
 	filterBlock.on('click', '.js-filter-toggle-button', toggleHandler);
 	filterOtherParamsToggleButton.on('click', toggleFilterViewHandler);
 	filterMenuItem.on('click', selectFilterCategoryHandler);
-	filterBlock.on('change', catalog.filter.changeFilterHandler);
+	$('input, select, textarea', filterBlock).on('change', catalog.filter.changeFilterHandler);
 	filterBlock.on('submit', catalog.filter.sendFilter);
 
 	// Sorting items
@@ -858,7 +853,7 @@
 			// end of vars
 
 			if ( !catalog.enableHistoryAPI ) {
-				document.location.href = url;
+				document.location.href = url.replace(/\#.*$|$/, '#productCatalog-filter-form');
 
 				return;
 			}
