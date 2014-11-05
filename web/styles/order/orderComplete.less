@@ -50,6 +50,33 @@
     &_final {
        background: #f7f7f7;
     }
+
+    &-v2 {
+    	.orderCompl_btn {
+			margin: 0;
+			font-weight: normal;
+    	}
+    	.orderCompl_l {
+			width: auto;
+			margin: 0px 0 10px;
+			background-color: #fff;
+			.rounded(4px);
+			padding: 3px 10px 3px 20px;
+			border: 2px solid #fff;
+			background-position: 6px 7px;
+
+			&.accept-err {
+				border-color: #ED404D;
+			}
+
+			&_lk {
+				.inline-block();
+				color: #777777;
+				border-bottom: 1px solid #c2c2c2;
+				margin: 0 0 0 10px;
+			}
+		}
+    }
 }
 
 .orderComplSumm {
@@ -58,5 +85,6 @@
 	padding: 10px 10px 10px 25px;
 
 	border-top: 1px solid @typGray;
+	border-bottom: 1px solid @lightgrey-7;
 	background: @lightgreyBg;
 }

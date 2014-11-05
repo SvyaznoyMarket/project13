@@ -11,6 +11,7 @@ class ListAction {
      * @param null $buyMethod
      * @param bool $showState
      * @param int $columnCount
+     * @param array $view
      * @return array
      */
     public function execute(
@@ -20,7 +21,8 @@ class ListAction {
         array $bannerPlaceholder,
         $buyMethod = null,
         $showState = true,
-        $columnCount = 4
+        $columnCount = 4,
+        $view = 'compact'
     ) {
         /** @var \Model\Product\Entity $product */
 
@@ -57,6 +59,33 @@ class ListAction {
             $productData = array_merge(array_slice($productData, 0, $bannerPlaceholder['position']), [$bannerPlaceholder], array_slice($productData, $bannerPlaceholder['position']));
         }
 
+        switch ($view) {
+            case 'light_with_bottom_description':
+                $templateView = [
+                    'extraContent' => true,
+                    'bottomDescription' => true,
+                    'hoverDescription' => false,
+                ];
+                break;
+            case 'light_with_hover_bottom_description':
+                $templateView = [
+                    'extraContent' => true,
+                    'bottomDescription' => true,
+                    'hoverDescription' => true,
+                ];
+                break;
+            case 'light_without_description':
+                $templateView = [
+                    'extraContent' => false,
+                    'bottomDescription' => false,
+                    'hoverDescription' => false,
+                ];
+                break;
+            default:
+                $templateView = [];
+                break;
+        }
+
         $chosenCaseKey = \App::abTest()->getTest('reviews')->getChosenCase()->getKey();
         return [
             'products' => $productData,
@@ -66,6 +95,7 @@ class ListAction {
                 'shoppilot' => ('shoppilot' === $chosenCaseKey),
                 'default' => ('default' === $chosenCaseKey),
             ],
+            'view' => $templateView,
         ];
     }
 }

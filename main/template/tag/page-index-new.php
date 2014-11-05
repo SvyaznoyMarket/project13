@@ -47,9 +47,7 @@ foreach ( $categories as $subCategory ) {
 
     <?= $helper->render('product-category/__filter', [
         'productFilter'     => $productFilter,
-        'hotlinks'          => $hotlinks,
         'categories'        => $categories,
-        'selectedCategory'  => $selectedCategory,
         'openFilter'        => true,
         'countUrl'          => $helper->url('tag.count', $tagCategoryTokens),
         'baseUrl'           => $helper->url('tag', $tagCategoryTokens),

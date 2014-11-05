@@ -13,10 +13,10 @@ class CreateAction extends OrderV3 {
      * @throws \Exception
      */
     public function execute(\Http\Request $request) {
-        $controller = parent::execute($request);
-        if ($controller) {
-            return $controller;
-        }
+//        $controller = parent::execute($request);
+//        if ($controller) {
+//            return $controller;
+//        }
 
         \App::logger()->debug('Exec ' . __METHOD__);
 
@@ -36,8 +36,9 @@ class CreateAction extends OrderV3 {
         try {
 
             foreach ($splitResult['orders'] as &$splitOrder) {
-                $ordersData[] = (new OrderEntity(array_merge($splitResult, array('order' => $splitOrder))))->getOrderData();
+                $ordersData[] = (new OrderEntity(array_merge($splitResult, ['order' => $splitOrder])))->getOrderData();
             }
+            if (isset($splitOrder)) unset($splitOrder);
 
             $coreResponse = $this->client->query(
                 (\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet'),

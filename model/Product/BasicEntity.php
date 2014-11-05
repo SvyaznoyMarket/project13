@@ -290,6 +290,7 @@ class BasicEntity {
      * @return bool
      */
     public function getIsBuyable() {
+        //return true;
         return
             $this->getState() && $this->getState()->getIsBuyable()
             && (\App::config()->product['allowBuyOnlyInshop'] ? true : !$this->isInShopStockOnly())

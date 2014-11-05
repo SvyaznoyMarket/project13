@@ -408,6 +408,107 @@ class Action {
         // фильтры
         $productFilter = $this->getFilter($filters, $category, $brand, $request, $shop);
 
+        $test = \App::abTest()->getTest('jewel_filter');
+
+        $testCategoryUis = [
+            '633c0d73-d9f5-4984-a679-e8154be71c6a', // ЗОЛОТЫЕ УКРАШЕНИЯ
+            '3835654e-0b7c-4ce8-9006-f042fdb9676a', // Золотые серьги
+            '152aacd2-b43c-4b48-ac16-a95045ad8083', // Золотые кольца
+            '1c0c96a5-6fcb-4b00-9616-8c41fae9f0c0', // Золотые колье и подвески
+            '759d26d8-96de-4960-8ca9-8a7a0633ff8c', // Золотые цепи и браслеты
+            '5e97747a-31d7-4f4e-9031-3b7122e53b66', // Золотой пирсинг
+
+            '06aaa4e1-1546-4364-a9a5-68d0f9a39fae', // СЕРЕБРЯНЫЕ УКРАШЕНИЯ
+            '6e6c8154-5ee6-437a-bb74-644c1b67a096', // Серебряные серьги
+            'a6018a60-da37-49f6-b195-58e4a651f914', // Серебряные кольца
+            'd869c0e2-958c-4919-b6e8-0f9159b74204', // Серебряные колье и подвески
+            '0423bec4-a8a7-4e85-a334-71089a2baf9f', // Серебряные цепи и браслеты
+            
+            '5505db94-143c-4c28-adb9-b608d39afe26', // КОЛЬЦА
+            'd7b951ed-7b94-4ece-a3ae-c685cf77e0dd', // СЕРЬГИ
+            '8b21a199-4c0a-4eba-91e8-6833b4b7a443', // КОЛЬЕ И ПОДВЕСКИ
+            'fb4788dd-25fb-49dd-a3a0-9da170b28d70', // ДЕТСКИЕ УКРАШЕНИЯ
+            '35386cba-037b-4db1-b3f1-64d5ba2e492a', // Детские серьги
+            '3d5785ba-e2bf-4450-a0e1-938b4447dfdb', // Детские кольца
+            'a1acc4d6-0a63-411d-ba82-696a9600402f', // Детские цепочки
+            '968c7510-d174-434c-8fd5-0a4941280792', // Детские подвески
+
+            '5f80bd78-df8e-4f8f-b8a0-9258479484bd', // УКРАШЕНИЯ ИЗ СЕРЕБРА
+            '9a4758ad-bc74-4c3b-a113-dcf76e61c35d', // Кольца из серебра
+            'e0b806a4-bd2b-4360-869d-9c078dadd6c3', // Серьги из серебра
+            'f2ffa700-0ac7-4125-867b-1a114b5f20b6', // Подвески из серебра
+        ];
+
+        if ($test && in_array($category->getUi(), $testCategoryUis, true)) {
+            $testKey = $test->getChosenCase()->getKey();
+            if ('old_filter' === $testKey) {
+                foreach ($productFilter->getFilterCollection() as $filter) {
+                    if ('Металл' === $filter->getName() || 'Вставка' === $filter->getName()) {
+                        $filter->setIsAlwaysShow(false);
+                        foreach ($filter->getOption() as $option) {
+                            $option->setImageUrl('');
+                        }
+                    }
+                }
+            } else if ('new_filter_with_photo' === $testKey || 'new_filter_without_photo' === $testKey) {
+                // TODO удалить данную заглушку как только будет выпушен 65 релиз ядра
+                $filterImages = [
+                    'белое золото 375' => 'https://scms.enter.ru/uploads/media/5b/e7/c9/a4dd4817bca9ddc078ebe41ca96c34e9dbb06d9a.png',
+                    'белое золото 585' => 'https://scms.enter.ru/uploads/media/fb/ed/c8/8750e48fe26f4e02ea5776914561ea5228f5490e.png',
+                    'желтое золото 585' => 'https://scms.enter.ru/uploads/media/f1/1e/59/38c72c637f05867d9d5649e96179e8f60fa52342.png',
+                    'красное золото 375' => 'https://scms.enter.ru/uploads/media/ef/dd/f3/b1bd6e14dae63f5c47b60968666fc138bef759df.png',
+                    'красное золото 585' => 'https://scms.enter.ru/uploads/media/8c/df/8f/927818bd5e15c8ddcd9f17af8f7cd3b15c63635d.png',
+                    'серебро' => 'https://scms.enter.ru/uploads/media/6b/6b/1b/10f14a00bca6ca8b9e3e6cd5b628cb7277f7c009.png',
+                    'агат' => 'https://scms.enter.ru/uploads/media/be/4a/e9/b76078ce6a186de0b8e6bdd1c582f846e1831e6b.png',
+                    'аметист' => 'https://scms.enter.ru/uploads/media/ae/b3/2b/2cb15804f1ac6129aace4e69892f0040de7e5a9c.png',
+                    'бирюза' => 'https://scms.enter.ru/uploads/media/35/6b/8e/f4a4af695b4e373c5ada1683bb9846912274206c.png',
+                    'бриллиант' => 'https://scms.enter.ru/uploads/media/70/e0/5e/03062588d11501d8242bc4f7784d70b042ca9312.png',
+                    'гранат' => 'https://scms.enter.ru/uploads/media/16/1f/25/94a46fb68a2aaaec3f2e52b27896b53cecb16762.png',
+                    'жадеит' => 'https://scms.enter.ru/uploads/media/f4/a0/26/a31b9e567c2795c890e8b54997413cf331bb5a1c.png',
+                    'жемчуг' => 'https://scms.enter.ru/uploads/media/1d/73/53/36aaaff28820ad84bf8cb3eb0bfb23c17cd48fa8.png',
+                    'изумруд' => 'https://scms.enter.ru/uploads/media/c1/80/8e/613e3df11817c12d601ee2d95ffd31771cfa3a8d.png',
+                    'искусственный коралл' => 'https://scms.enter.ru/uploads/media/98/10/fb/73e6269abcbdbf4adc0bb72ea467405db773819c.png',
+                    'кварц' => 'https://scms.enter.ru/uploads/media/1c/ac/83/35eea8b12abe309fd908b03a219f898535cda9c9.png',
+                    'керамика' => 'https://scms.enter.ru/uploads/media/1a/46/99/96d681b4385f093b2c186adcdca87f178db014d4.png',
+                    'корунд' => 'https://scms.enter.ru/uploads/media/2d/43/07/d9d91d418154a7f8d0b3d99f1664e86eca39293f.png',
+                    'кошачий глаз' => 'https://scms.enter.ru/uploads/media/de/5c/5c/919e80e90d94b6674ca711acc0cfcdf93f56f027.png',
+                    'кристаллы Swarovski' => 'https://scms.enter.ru/uploads/media/4f/1b/88/04c272d72741a5b1a5f7be910754fa22743673b3.png',
+                    'кубический цирконий' => 'https://scms.enter.ru/uploads/media/36/2f/49/8e51e52a811f8ef910e66ed2ab63c5cf3bac1b1b.png',
+                    'микс камней' => 'https://scms.enter.ru/uploads/media/43/34/fb/3397655677dc7b06396ec3d821c8ff93d65c3c1f.png',
+                    'оникс' => 'https://scms.enter.ru/uploads/media/07/7d/42/7f97e26718b153fab629d9476846515465becb3d.png',
+                    'рубин' => 'https://scms.enter.ru/uploads/media/a5/8d/2d/c7261000a3f373af0069c0e1fa6b2b4b1880c8e1.png',
+                    'сапфир' => 'https://scms.enter.ru/uploads/media/42/1a/34/ad40aff7e1b882363ecc5e76890930d4a4193e85.png',
+                    'стразы' => 'https://scms.enter.ru/uploads/media/d0/09/5f/a2f90242362ba2f4c2d5e2a986674c4a15037d87.png',
+                    'топаз' => 'https://scms.enter.ru/uploads/media/32/d5/56/8de5f9e90b85ab2d2aefb7a9012187546e394c1f.png',
+                    'фианит' => 'https://scms.enter.ru/uploads/media/ff/5e/26/2c27c9afeca824b2dfb0891ca59ba02ffcc964bf.png',
+                    'халцедон' => 'https://scms.enter.ru/uploads/media/2d/b8/74/502fcfa2cb4ea984d5104b4492306342fd8d76d6.png',
+                    'хризолит' => 'https://scms.enter.ru/uploads/media/f4/2a/8b/a1e835980f9819e1ea3d48076a62afc0c8e8494e.png',
+                    'хризопраз' => 'https://scms.enter.ru/uploads/media/85/aa/26/40e866339d5a1ed13647118506eb25f9392becd5.png',
+                    'цитрин' => 'https://scms.enter.ru/uploads/media/1c/2a/f0/c46b3340fce701c12d4151df385f1a978a91b4da.png',
+                    'эмаль' => 'https://scms.enter.ru/uploads/media/f4/05/69/33459291edb0ab7dcaa5a0b149d26bf6e21b6f76.png',
+                ];
+
+                $isNewFilterPresent = false;
+                foreach ($productFilter->getFilterCollection() as $filter) {
+                    if ('Металл' === $filter->getName() || 'Вставка' === $filter->getName()) {
+                        $isNewFilterPresent = true;
+                        $filter->setIsAlwaysShow(true);
+
+                        // TODO удалить данную заглушку как только будет выпушен 65 релиз ядра
+                        foreach ($filter->getOption() as $option) {
+                            if (isset($filterImages[$option->getName()])) {
+                                $option->setImageUrl($filterImages[$option->getName()]);
+                            }
+                        }
+                    }
+                }
+
+                if ($isNewFilterPresent) {
+                    $category->setProductView(4);
+                }
+            }
+        }
+
         // получаем из json данные о горячих ссылках и content
         $hotlinks = [];
         $seoContent = '';
@@ -429,50 +530,53 @@ class Action {
 
         // SITE-4439
         try {
-            $hotlinks = array_filter($hotlinks, function($item) { return isset($item['group_name']) ? (bool)$item['group_name'] : false; }); // TODO: временная заглушка
-            // опции брендов
-            $brandOptions = [];
-            foreach ($filters as $filter) {
-                if ('brand' == $filter->getId()) {
-                    foreach ($filter->getOption() as $option) {
-                        $brandOptions[] = $option;
-                    }
-
-                    break;
-                }
-            }
-            // сортировка брендов по наибольшему количеству товаров
-            usort($brandOptions, function(\Model\Product\Filter\Option\Entity $a, \Model\Product\Filter\Option\Entity $b) { return $b->getQuantity() - $a->getQuantity(); });
-            $brandOptions = array_slice($brandOptions, 0, 50);
-            /** @var \Model\Brand\Entity[] $brands */
-            $brands = [];
-            if ((bool)$brandOptions) {
-                \RepositoryManager::brand()->prepareByIds(
-                    array_map(function(\Model\Product\Filter\Option\Entity $option) { return $option->getId(); }, $brandOptions),
-                    null,
-                    function($data) use (&$brands) {
-                        if (isset($data[0])) {
-                            foreach ($data as $item) {
-                                if (empty($item['token'])) continue;
-
-                                $brands[] = new \Model\Brand\Entity($item);
-                            }
+            // если у категории нет дочерних узлов
+            if ($category && (!$category->getHasChild() || in_array($category->getId(), [1096]))) {
+                //$hotlinks = array_filter($hotlinks, function($item) { return isset($item['group_name']) ? (bool)$item['group_name'] : false; }); // TODO: временная заглушка
+                // опции брендов
+                $brandOptions = [];
+                foreach ($filters as $filter) {
+                    if ('brand' == $filter->getId()) {
+                        foreach ($filter->getOption() as $option) {
+                            $brandOptions[] = $option;
                         }
-                    },
-                    function(\Exception $e) { \App::exception()->remove($e); }
-                );
 
-                \App::coreClientV2()->execute();
+                        break;
+                    }
+                }
+                // сортировка брендов по наибольшему количеству товаров
+                usort($brandOptions, function(\Model\Product\Filter\Option\Entity $a, \Model\Product\Filter\Option\Entity $b) { return $b->getQuantity() - $a->getQuantity(); });
+                $brandOptions = array_slice($brandOptions, 0, 60);
+                /** @var \Model\Brand\Entity[] $brands */
+                $brands = [];
+                if ((bool)$brandOptions) {
+                    \RepositoryManager::brand()->prepareByIds(
+                        array_map(function(\Model\Product\Filter\Option\Entity $option) { return $option->getId(); }, $brandOptions),
+                        null,
+                        function($data) use (&$brands) {
+                            if (isset($data[0])) {
+                                foreach ($data as $item) {
+                                    if (empty($item['token'])) continue;
 
-                foreach ($brands as $iBrand) {
-                    $hotlinks[] = [
-                        'group_name' => '',
-                        'title'      => $iBrand->getName(),
-                        'url'        => \App::router()->generate('product.category.brand', [
-                            'categoryPath' => $categoryPath,
-                            'brandToken'   => $iBrand->getToken(),
-                        ]),
-                    ];
+                                    $brands[] = new \Model\Brand\Entity($item);
+                                }
+                            }
+                        },
+                        function(\Exception $e) { \App::exception()->remove($e); }
+                    );
+
+                    \App::coreClientV2()->execute();
+
+                    foreach ($brands as $iBrand) {
+                        $hotlinks[] = [
+                            'group_name' => '',
+                            'title'      => $iBrand->getName(),
+                            'url'        => \App::router()->generate('product.category.brand', [
+                                'categoryPath' => $categoryPath,
+                                'brandToken'   => $iBrand->getToken(),
+                            ]),
+                        ];
+                    }
                 }
             }
         } catch (\Exception $e) {
@@ -891,8 +995,11 @@ class Action {
         }
 
         // проверка на максимально допустимый номер страницы
-        if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
-            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+        if ((1 != $productPager->getPage()) && (($productPager->getPage() - $productPager->getLastPage()) > 0)) {
+            //throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
+                'page' => $productPager->getLastPage(),
+            ]));
         }
 
         // video
@@ -913,6 +1020,8 @@ class Action {
             \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
         }
 
+        $columnCount = ('jewelItems3' === \App::abTest()->getTest('jewel_items')->getChosenCase()->getKey() && array_filter($category->getAncestor(), function(\Model\Product\Category\Entity $category) { return 923 === $category->getId(); })) ? 3 : 4;
+
         // ajax
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
             $data = [
@@ -920,7 +1029,11 @@ class Action {
                     \App::closureTemplating()->getParam('helper'),
                     $productPager,
                     $productVideosByProduct,
-                    !empty($catalogJson['bannerPlaceholder']) && $hasBanner ? $catalogJson['bannerPlaceholder'] : []
+                    !empty($catalogJson['bannerPlaceholder']) && $hasBanner ? $catalogJson['bannerPlaceholder'] : [],
+                    null,
+                    true,
+                    $columnCount,
+                    $productView
                 ),
                 'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
@@ -959,13 +1072,7 @@ class Action {
         $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setParam('sidebarHotlinks', true);
         $page->setParam('hasBanner', $hasBanner);
-        $page->setParam('columnCount',
-            (
-                ('jewelItems3' === \App::abTest()->getTest('jewel_items')->getChosenCase()->getKey())
-                && array_filter($category->getAncestor(), function(\Model\Product\Category\Entity $category) { return 923 === $category->getId(); })
-            ) ? 3
-            : 4
-        );
+        $page->setParam('columnCount', $columnCount);
 
         return new \Http\Response($page->show());
     }

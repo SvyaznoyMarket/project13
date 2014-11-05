@@ -414,17 +414,6 @@ class AppConfig {
         'key'          => null,
         'payUrl'       => null,
     ];
-    /**
-     * @var array
-     * @hidden
-     */
-    public $smartengine = [
-        'apiUrl'         => null,
-        'apiKey'         => null,
-        'tenantid'       => null,
-        'logEnabled'     => null,
-        'logDataEnabled' => null,
-    ];
 
     /** @var array */
     public $warranty = [
@@ -494,11 +483,12 @@ class AppConfig {
     public $newOrder;
     /** @var array  */
     public $order = [
-        'cookieName'     => null,
-        'sessionName'    => null,
-        'enableMetaTag'  => null,
-        'maxSumOnline'   => null,
-        'splitSessionKey'   => null
+        'cookieName'              => null,
+        'sessionName'             => null,
+        'enableMetaTag'           => null,
+        'maxSumOnline'            => null,
+        'splitSessionKey'         => null,
+        'oneClickSplitSessionKey' => null,
     ];
     /** @var bool */
     public $newDeliveryCalc;
@@ -658,6 +648,13 @@ class AppConfig {
     /** @var array */
     public $bandit = [
         'enabled'     => null,
+    ];
+
+    /** Платный самовывоз
+     * @var array */
+    public $self_delivery = [
+        'limit'     => 0,
+        'regions'   => []
     ];
 
     public function __construct() {

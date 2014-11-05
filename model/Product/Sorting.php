@@ -19,12 +19,12 @@ class Sorting {
         ),
         'price_asc'   => array(
             'name'      => 'price',
-            'title'     => 'По цене &#8595;',
+            'title'     => 'По цене &#9650;',
             'direction' => 'asc',
         ),
         'price_desc'   => array(
             'name'      => 'price',
-            'title'     => 'По цене &#8593;',
+            'title'     => 'По цене &#9660;',
             'direction' => 'desc',
         ),
         'creator_asc' => array(

@@ -109,10 +109,6 @@ class Layout extends \View\DefaultLayout {
 
     }
 
-    public function slotSidebar() {
-        return $this->render('product-category/_sidebar', $this->params);
-    }
-
     /**
      * @param \Model\Page\Entity $page
      */

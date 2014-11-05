@@ -23,8 +23,19 @@
                 </div>
             </li>
         </ul>
+        
+        <!-- для кнопки с иконкой btnBuy-inf -->
+        <div class="btnBuy quickOrder" data-bind="css: {'btnBuy-inf': infoIconVisible() }"><a href="<?= $page->url('order') ?>" class="btnBuy__eLink quickOrder__link">Оформить заказ</a></div>
 
-        <div class="btnBuy quickOrder"><a href="<?= $page->url('order') ?>" class="btnBuy__eLink quickOrder__link">Оформить заказ</a></div>
+        <div class="buyInfo" data-bind="visible: !infoIconVisible() && infoBlock_1Visible() ">
+            До бесплатного самовывоза осталось
+            <div class="buyInfo_pr"><span data-bind="text: ENTER.config.pageConfig.selfDeliveryLimit - cartSum()">175</span> <span class="rubl">p</span></div>
+            <a class="buyInfo_lk jsAbSelfDeliveryLink" href="/slices/all_labels">Выбрать товары по суперценам</a> >
+        </div>
+
+        <div class="buyInfo" data-bind="visible: !infoIconVisible() && infoBlock_2Visible() ">
+            <div class="buyInfo_self">Самовывоз<br/>БЕСПЛАТНО</div>
+        </div>
     </div>
 
     <div class="hintDd"><!-- если похожии товары есть то добавляем класс mhintDdOn -->

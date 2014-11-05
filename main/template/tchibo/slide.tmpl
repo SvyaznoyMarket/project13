@@ -27,7 +27,7 @@
                     <div class="btnBuy">
                         <a
                             href="<%= products[ i ].cartButton.url %>"
-                            class="btnBuy__eLink <%= products[ i ].cartButton.class %>"
+                            class="btnBuy__eLink <%= products[ i ].cartButton['class'] %>"
                             data-product-id="<%= products[ i ].cartButton.data.productId %>"
                             data-upsale='<%= products[ i ].cartButton.data.upsale %>'
                             data-bind="buyButtonBinding: cart"

@@ -16,16 +16,17 @@
 		utils = ENTER.utils,
 		catalog = utils.extendApp('ENTER.catalog'),
 
-		filterBlock = $('.bFilter'),
+		filterBlock = $('.js-filter'),
+		hasAlwaysShowFilters = filterBlock.hasClass('js-filter-hasAlwaysShowFilters'),
 
-		filterSubminBtn = filterBlock.find('.bBtnPick__eLink'),
-		filterToggleBtn = filterBlock.find('.bFilterToggle'),
-		filterContent = filterBlock.find('.bFilterCont'),
-		filterSliders = filterBlock.find('.bRangeSlider'),
-		filterMenuItem = filterBlock.find('.bFilterParams__eItem'),
-		filterCategoryBlocks = filterBlock.find('.bFilterValuesItem'),
+		filterOtherParamsToggleButton = filterBlock.find('.js-filter-otherParamsToggleButton'),
+		filterOtherParamsContent = filterBlock.find('.js-filter-otherParamsContent'),
+		filterSliders = filterBlock.find('.js-filter-rangeSlider'),
+		filterMenuItem = filterBlock.find('.js-filter-param'),
+		filterCategoryBlocks = filterBlock.find('.js-filter-element'),
 
 		viewParamPanel = $('.bSortingLine'),
+		filterOpenClass = 'fltrSet_tggl-dn',
 
 		tID;
 	// end of vars
@@ -509,6 +510,11 @@
 
 		openFilter: function() {
 			toggleFilterViewHandler( true );
+
+			$('.js-filter-toggle-container', filterBlock).each(function() {
+				$('.js-filter-toggle-button', this).addClass(filterOpenClass);
+				$('.js-filter-toggle-content', this).slideDown(400);
+			});
 		}
 	};
 
@@ -595,19 +601,42 @@
 		 * Обработчик кнопки переключения между расширенным и компактным видом фильтра
 		 */
 		toggleFilterViewHandler = function toggleFilterViewHandler( openAnyway ) {
-			var openClass = 'mOpen',
-				closeClass = 'mClose',
-				open = filterToggleBtn.hasClass(openClass);
+			var open = filterOtherParamsToggleButton.hasClass(filterOpenClass);
 			// end of vars
 
-
 			if ( open && typeof openAnyway !== 'boolean' ) {
-				filterToggleBtn.removeClass(openClass).addClass(closeClass);
-				filterContent.slideUp(400);
+				filterOtherParamsToggleButton.removeClass(filterOpenClass);
+				filterOtherParamsToggleButton.parent().removeClass('bFilterHead-open');
+				filterOtherParamsContent.slideUp(400);
 			}
 			else {
-				filterToggleBtn.removeClass(closeClass).addClass(openClass);
-				filterContent.slideDown(400);
+				filterOtherParamsToggleButton.addClass(filterOpenClass);
+				filterOtherParamsToggleButton.parent().addClass('bFilterHead-open');
+				filterOtherParamsContent.slideDown(400);
+			}
+
+			return false;
+		},
+
+
+		/**
+		 * Обработчик кнопк сворачивания/разворачивания блоков
+		 */
+		toggleHandler = function(e) {
+			var $self = $(this),
+				$button = $(e.currentTarget),
+				$container = $('.js-filter-toggle-container'),
+				$content = $('.js-filter-toggle-content', $button.closest('.js-filter-toggle-container'));
+			// end of vars
+
+			if ($button.hasClass(filterOpenClass)) {
+				$button.removeClass(filterOpenClass);
+				$content.slideUp(400);
+				$self.parent('.js-filter-toggle-container').addClass('fltrSet-close');
+			} else {
+				$button.addClass(filterOpenClass);
+				$content.slideDown(400);
+				$self.parent('.js-filter-toggle-container').removeClass('fltrSet-close');
 			}
 
 			return false;
@@ -659,7 +688,9 @@
 				$('#'+categoryId).fadeIn(300);
 			});
 
-			$.scrollTo(filterBlock, 500);
+			if (!hasAlwaysShowFilters) {
+				$.scrollTo(filterBlock, 500);
+			}
 
 			return false;
 		},
@@ -721,7 +752,8 @@
 
 
 	// Handlers
-	filterToggleBtn.on('click', toggleFilterViewHandler);
+	filterBlock.on('click', '.js-filter-toggle-button', toggleHandler);
+	filterOtherParamsToggleButton.on('click', toggleFilterViewHandler);
 	filterMenuItem.on('click', selectFilterCategoryHandler);
 	filterBlock.on('change', catalog.filter.changeFilterHandler);
 	filterBlock.on('submit', catalog.filter.sendFilter);

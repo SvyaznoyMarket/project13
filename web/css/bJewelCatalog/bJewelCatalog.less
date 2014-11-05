@@ -26,68 +26,6 @@
   }
 }
 
-/** Листинг товаров **/
-.bBrandGoods {
-  position: relative;
-  z-index: 1;
-  top: -4px;
-
-  margin: 0 0 30px;
-  
-  .bBrandGoodsList {
-    border-top: 1px solid #f9f9f9;
-
-    &__eItem {
-      float: left;
-
-      width: 240px;
-      height: 240px;
-
-      .bItemPrice {
-        .transition(left 0 ease-in-out);
-        position: absolute;
-        bottom: 0;
-        left: 80px;
-
-        -webkit-backface-visibility: hidden; -webkit-tap-highlight-color: rgba(255,255,255,0);
-      }
-
-      .bItemName {
-        .opacity(0);
-        .transition(opacity 0.1s ease-in-out);
-      }
-
-      .bItemimg {
-        text-align: center;
-      }
-    
-      &:hover {
-
-        .goodsbox {
-          z-index: 10;
-
-          border: 1px solid #AAAAAA;
-        }
-
-        .bItemName {
-          .opacity(1);
-        }
-
-        .btnBuy__eLink {
-          .opacity(1);
-        }
-
-        .bItemPrice {
-          .transition(left 0.1s ease-in-out);
-          left: 0;
-
-          -webkit-backface-visibility: hidden; -webkit-tap-highlight-color: rgba(255,255,255,0);
-        }
-      }  
-    }
-  }
-}
-
 /**  Баннер раздела, по хорошему все стили должны быть в вордпрессе **/
 .banner-categories {
   .banner-categories__title {
@@ -305,7 +243,7 @@
   }
 
   .allpagerJewel {
-    margin-right: 20px;
+    margin: 5px 10px 0 0;
   }
 
   .goodsbox {

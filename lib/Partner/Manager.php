@@ -182,11 +182,12 @@ class Manager {
                     $prefix => [\Partner\Counter\Recreative::NAME],
                 ];
                 break;*/
+            /*
             case \Smartengine\Client::NAME:
                 $return = [
                     $prefix => [\Smartengine\Client::NAME],
                 ];
-                break;
+                break;*/
             /*case \Partner\Counter\Reactive::NAME:
                 $return = [
                     'name' => \Partner\Counter\Reactive::NAME,
@@ -203,7 +204,9 @@ class Manager {
             } else {
                 $keyName .= '.id.' . $product->getId();
             }
-            if ($product->getMainCategory()) $return[$keyName . '.category'] = $product->getMainCategory()->getId();
+            if ($product->getMainCategory()) {
+                $return[$keyName . '.category'] = $product->getMainCategory()->getId();
+            }
         }
 
 

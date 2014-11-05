@@ -27,7 +27,7 @@ $productVideo = reset($productVideos);
     }
 </style>
 
-<div class="goodsbox goodsline bNewGoodsBox" ref="<?= $product->getToken() ?>">
+<div class="goodsbox goodsline bNewGoodsBox js-goodsbox">
     <div class="goodsboxlink" <? if ($product->getIsBuyable()): ?> data-cid="<?= $product->getId() ?>" <? endif ?> <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
         <div class="photo">
             <? if ($productVideo && $productVideo->getContent()): ?><a class="goodsphoto_eVideoShield goodsphoto_eVideoShield_small" href="<?= $product->getLink() ?>"></a><? endif ?>
@@ -64,8 +64,8 @@ $productVideo = reset($productVideos);
 
         </div>
         <div class="extrainfo">
-            <? if ($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
-            <p class="font16 crossText"><span class="price"><?= $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></p>
+            <? if ($product->getPriceOld()): ?>
+                <p class="font16 crossText"><span class="price"><?= $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></p>
             <? endif ?>
             <span class="db font18 pb10"><b><span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></b></span>
 

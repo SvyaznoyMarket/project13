@@ -69,7 +69,7 @@ class ChildAction {
             $gridCells[] = $gridCell;
 
             if ((\Model\GridCell\Entity::TYPE_PRODUCT === $gridCell->getType()) && $gridCell->getObjectUi()) {
-                $productsByUi[$gridCell->getObjectUi()] = $gridCell->getObjectId();
+                $productsByUi[$gridCell->getObjectUi()] = $gridCell->getObjectUi();
             }
         }
 
@@ -95,16 +95,40 @@ class ChildAction {
                 }
             );
         }
+
+        $catalogConfigsByCategoryUi = [];
+        // Шильдик is_new
+        \App::scmsClient()->addQuery(
+            'category/get-by-filters',
+            [
+                'filters' => ['appearance.is_new' => true],
+                'geo_id'  => $region->getId(),
+            ],
+            [],
+            function($data) use(&$catalogConfigsByCategoryUi) {
+                if (isset($data[0]['uid'])) {
+                    foreach ($data as $item) {
+                        if (!isset($item['uid'])) continue;
+                        $catalogConfigsByCategoryUi[$item['uid']] = $item;
+                    }
+                }
+            },
+            function(\Exception $e) {
+                \App::exception()->remove($e);
+            }
+        );
+
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
         // внимание! получаем значения массива
         foreach (array_chunk($productsByUi, \App::config()->coreV2['chunk_size'], true) as $uisInChunk) {
             \RepositoryManager::product()->prepareCollectionByUi(array_values($uisInChunk), \App::user()->getRegion(), function($data) use (&$productsByUi, &$uisInChunk) {
                 foreach ($data as $item) {
-                    if (!isset($productsByUi[$item['ui']])) {
+                    $key = array_search($item['ui'], $productsByUi, true);
+                    if (!isset($productsByUi[$key])) {
                         continue;
                     }
-                    $productsByUi[$item['ui']] = new \Model\Product\Entity($item);
+                    $productsByUi[$key] = new \Model\Product\Entity($item);
                 }
             });
         }
@@ -145,6 +169,7 @@ class ChildAction {
         $page->setGlobalParam('tchiboMenuCategoryNameStyles', $tchiboMenuCategoryNameStyles);
         $page->setGlobalParam('rootCategoryInMenuImage', $rootCategoryInMenuImage);
         $page->setGlobalParam('isTchibo', ($category->getRoot() && 'Tchibo' === $category->getRoot()->getName()));
+        $page->setGlobalParam('catalogConfigsByCategoryUi', $catalogConfigsByCategoryUi);
 
         return new \Http\Response($page->show());
     }

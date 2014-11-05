@@ -14,8 +14,8 @@ $url = $product->getLine() ? $page->url('product.line', ['lineToken' => $product
 $addInfo = isset($addInfo)?$addInfo:[];
 ?>
 
-<div class="goodsbox height250"<? if ($isHidden): ?> style="display:none;"<? endif ?>>
-    <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>" <?php if (count($addInfo)) print 'data-add="'.$page->json($addInfo).'"'; ?>>
+<div class="goodsbox height250 js-goodsbox"<? if ($isHidden): ?> style="display:none;"<? endif ?>>
+    <div class="goodsbox__inner js-goodsboxContainer" data-url="<?= $product->getLink() ?>" <?php if (count($addInfo)) print 'data-add="'.$page->json($addInfo).'"'; ?>>
 	    <div class="photo">
 	        <a href="<?= $url ?>">
 	            <? if ($label = $product->getLabel()): ?>

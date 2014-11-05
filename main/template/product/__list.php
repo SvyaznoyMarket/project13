@@ -16,11 +16,34 @@ return function(
         'product/_review-compact' => file_get_contents(\App::config()->templateDir . '/product/_review-compact.mustache')
     ]; ?>
 
-    <ul class="bListing<? if (3 === $columnCount): ?> bListing-3col<? endif ?> clearfix<? if ('jewel' === $listingStyle): ?> mPandora<? endif ?> js-listing"><!-- mPandora если необходимо застилить листинги под пандору -->
-        <?= $helper->renderWithMustache('product/list/' . ($view == 'line' ? '_line' : '_compact'), (new \View\Product\ListAction())->execute($helper, $pager, $productVideosByProduct, $bannerPlaceholder, $buyMethod, $showState, $columnCount)) ?>
+    <?php switch ($view) {
+        case 'light_with_bottom_description':
+            $listingClass = 'lstn';
+            $templatePath = 'product/list/_light';
+            break;
+        case 'light_with_hover_bottom_description':
+            $listingClass = 'lstn';
+            $templatePath = 'product/list/_light';
+            break;
+        case 'light_without_description':
+            $listingClass = 'lstn-light lstn';
+            $templatePath = 'product/list/_light';
+            break;
+        case 'line':
+            $listingClass = '';
+            $templatePath = 'product/list/_line';
+            break;
+        default:
+            $listingClass = '';
+            $templatePath = 'product/list/_compact';
+            break;
+    } ?>
+
+    <ul class="bListing<? if (3 === $columnCount): ?> bListing-3col<? endif ?> clearfix<? if ('jewel' === $listingStyle): ?> mPandora<? endif ?> <?= $listingClass ?> js-listing"><!-- mPandora если необходимо застилить листинги под пандору -->
+        <?= $helper->renderWithMustache($templatePath, (new \View\Product\ListAction())->execute($helper, $pager, $productVideosByProduct, $bannerPlaceholder, $buyMethod, $showState, $columnCount, $view)) ?>
     </ul>
 
     <script id="listing_compact_tmpl" type="text/html" data-partial="<?= $helper->json($partials) ?>">
-        <?= file_get_contents(\App::config()->templateDir . '/product/list/' . ($view == 'line' ? '_line.mustache' : '_compact.mustache')) ?>
+        <?= file_get_contents(\App::config()->templateDir . '/' . $templatePath . '.mustache') ?>
     </script>
 <? };

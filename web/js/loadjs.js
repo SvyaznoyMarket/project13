@@ -475,6 +475,23 @@
                 }).runQueue();
         },
 
+		'order-v3-new': function() {
+			$LAB.queueScript(yandexMapUrlv2_1)
+				.queueWait( function() {
+					$LAB.script( getWithVersion('jquery-plugins.js') )
+						.script( getWithVersion('library.js') )
+						.script( mustacheUrl )
+						.script( knockoutUrl )
+						.script( loadDebugPanel )
+						.wait()
+						.script( getWithVersion('common.js') )
+//                        .script( kladr )
+						.script( getWithVersion('order-v3-new.js') )
+						.wait()
+						.script( getWithVersion('ports.js') );
+				}).runQueue();
+		},
+
 		'order_complete': function() {
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )
@@ -517,7 +534,6 @@
 
 		'product_card': function() {
 			$LAB
-				// .queueScript( yandexMapUrl )
 				.queueWait( function() {
 					$LAB.script( getWithVersion('jquery-plugins.js') )
 						.script( getWithVersion('library.js') )
@@ -529,8 +545,10 @@
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('product.js') )
-						// .script( getWithVersion('oneclick.js') )
 						.wait()
+                        .script(yandexMapUrlv2_1)
+                        .wait()
+                        .script( getWithVersion('order-v3-1click.js') )
 						.script( optimizelyUrl )
 						.script('adfox.asyn.code.ver3.min.js')
 						.wait()

@@ -156,7 +156,9 @@ $isKitPage = (bool)$product->getKit();
 
             <div class="js-showTopBar"></div>
 
-            <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
+            <? if (!$isKitPage || $product->getIsKitLocked()): ?>
+                <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
+            <? endif ?>
 
             <? if (!$isKitPage || $product->getIsKitLocked()) : ?>
                 <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'typeId' => $product->getType() ? $product->getType()->getId() : null]) ?>

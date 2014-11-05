@@ -346,20 +346,6 @@ class App {
 
     /**
      * @static
-     * @return \Smartengine\Client
-     */
-    public static function smartengineClient() {
-        static $instance;
-
-        if (!$instance) {
-            $instance = new \Smartengine\Client(self::$config->smartengine, \App::logger());
-        }
-
-        return $instance;
-    }
-
-    /**
-     * @static
      * @return \RetailRocket\Client
      */
     public static function retailrocketClient() {

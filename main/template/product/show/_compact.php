@@ -24,8 +24,8 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
 
 ?>
 
-<div class="goodsbox <? echo ($isHidden)? 'hidden': '' ?>" ref="<?= $product->getToken(); ?>">
-    <div class="goodsbox__inner" data-url="<?= $product->getLink() ?>" <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
+<div class="goodsbox <? echo ($isHidden)? 'hidden': '' ?> js-goodsbox">
+    <div class="goodsbox__inner js-goodsboxContainer" data-url="<?= $product->getLink() ?>" <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
     	<div class="photo">
             <? if ($productVideo && $productVideo->getContent()): ?><a class="goodsphoto_eVideoShield goodsphoto_eVideoShield_small" href="<?= $product->getLink() ?>"></a><? endif ?>
             <? if ($model3dExternalUrl || $model3dImg): ?><a style="right:<?= $productVideo && $productVideo->getContent() ? '42' : '0' ?>px;" class="goodsphoto_eGrad360 goodsphoto_eGrad360_small" href="<?= $product->getLink() ?>"></a><? endif ?>
@@ -49,8 +49,8 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
 	    <div class="h3"><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></div>
 
         <div class="font18 pb10 mSmallBtns">
-            <? if ($product->getPriceOld() && !$user->getRegion()->getHasTransportCompany()): ?>
-            <p class="font16 crossText"><span class="old_price"><?= $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></p>
+            <? if ($product->getPriceOld()): ?>
+                <p class="font16 crossText"><span class="old_price"><?= $page->helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span></p>
             <? endif ?>
             <span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span>
         </div>
