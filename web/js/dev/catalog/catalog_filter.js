@@ -387,6 +387,10 @@
 			if ( url !== (document.location.pathname + document.location.search) ) {
 				console.info('goto url '+url);
 
+				if ( !catalog.enableHistoryAPI ) {
+					url = url.replace(/\#.*$|$/, '#productCatalog-filter-form');
+				}
+
 				catalog.history.gotoUrl(url);
 			}
 

@@ -50,7 +50,7 @@
 			// end of vars
 
 			if ( !catalog.enableHistoryAPI ) {
-				document.location.href = url.replace(/\#.*$|$/, '#productCatalog-filter-form');
+				document.location.href = url;
 
 				return;
 			}
