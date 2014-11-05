@@ -237,8 +237,6 @@ window.ANALYTICS = {
 	 * CityAds counter
  	 */
 	xcntmyAsync: function () {
-		// Счётчик отключен, т.к. из-за обращений к rtrgt.com, которые производятся данным счётчиком, наш сайт был забанен на google.adwords
-		/*
 		var
 			elem = $('#xcntmyAsync'),
 			data = elem ? elem.data('value') : false,
@@ -282,7 +280,6 @@ window.ANALYTICS = {
 			product();
 		}
 		init();
-		*/
 	},
 
 	sociomanticJS: function () {
