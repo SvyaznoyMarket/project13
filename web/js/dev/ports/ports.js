@@ -2097,12 +2097,14 @@ $(function(){
 	ANALYTICS.parseAllAnalDivs( $('.jsanalytics') );
 });
 
+var ADFOX_pr = Math.floor(Math.random() * 1000000);
+
 var ADFOX = {
 	adfoxbground : function() {
 		if( $(window).width() < 1000 ) // ATTENTION
 			return
 
-		if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
 		if (typeof(document.referrer) != 'undefined') {
 		  if (typeof(afReferrer) == 'undefined') {
 			afReferrer = escape(document.referrer);
@@ -2120,7 +2122,7 @@ var ADFOX = {
 	},
 	
 	adfox400counter : function() {
-	 if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
 		if (typeof(document.referrer) != 'undefined') {
 		  if (typeof(afReferrer) == 'undefined') {
 			afReferrer = escape(document.referrer);
@@ -2137,7 +2139,7 @@ var ADFOX = {
 	},
 
 	adfox400 : function() {
-		if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
 		if (typeof(document.referrer) != 'undefined') {
 		  if (typeof(afReferrer) == 'undefined') {
 			afReferrer = escape(document.referrer);
@@ -2154,7 +2156,7 @@ var ADFOX = {
 	},
 	
 	adfox215 : function() {
-		if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
 		if (typeof(document.referrer) != 'undefined') {
 		  if (typeof(afReferrer) == 'undefined') {
 			afReferrer = escape(document.referrer);
@@ -2190,7 +2192,7 @@ var ADFOX = {
 	},
 	
 	adfox683sub : function() {
-		if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
 		if (typeof(document.referrer) != 'undefined') {
 		  if (typeof(afReferrer) == 'undefined') {
 			afReferrer = escape(document.referrer);
@@ -2209,7 +2211,7 @@ var ADFOX = {
 	},
 
 	adfox980 : function() {
-		if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
 		if (typeof(document.referrer) != 'undefined') {
 		  if (typeof(afReferrer) == 'undefined') {
 			afReferrer = escape(document.referrer);
@@ -2227,7 +2229,7 @@ var ADFOX = {
 	},
 
 	adfoxWowCredit : function() {
-		if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
 		if (typeof(document.referrer) != 'undefined') {
 		  if (typeof(afReferrer) == 'undefined') {
 			afReferrer = escape(document.referrer);
@@ -2246,7 +2248,7 @@ var ADFOX = {
 	},
 
 	adfoxGift : function() {
-		if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
 		if (typeof(document.referrer) != 'undefined') {
 		  if (typeof(afReferrer) == 'undefined') {
 			afReferrer = escape(document.referrer);
@@ -2265,7 +2267,7 @@ var ADFOX = {
 	},
 
 	adfox920: function() {
-		if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
 		if (typeof(document.referrer) != 'undefined') {
 		  if (typeof(afReferrer) == 'undefined') {
 			afReferrer = escape(document.referrer);
@@ -2284,7 +2286,7 @@ var ADFOX = {
 	},
 
 	adfox_categoryFilterBanner: function() {
-		if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
 		if (typeof(document.referrer) != 'undefined') {
 			if (typeof(afReferrer) == 'undefined') {
 				afReferrer = escape(document.referrer);
