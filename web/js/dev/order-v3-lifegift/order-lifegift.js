@@ -86,7 +86,8 @@
 				if (data.form) {
 					$form = $(data.form);
 					$body.append($form);
-					$form.submit();
+					if ($form.attr('method') == 'get') window.location.href = $form.attr('action');
+					else $form.submit();
 				}
 			})
 			.fail(function(data){
