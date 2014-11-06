@@ -77,10 +77,10 @@
             <input class="personalData_text textfield" type="email"  value="<?= $form->getEmail() ?>" name="user[email]" <? if ($form->getIsDisabled()): ?>readonly<? endif ?> />
 
             <label class="personalData_label labeltext">Мобильный телефон:</label>
-            <input class="personalData_text textfield" type="text"  value="<?= $form->getMobilePhone() ?>" name="user[mobile_phone]" class="text" <? if ($form->getIsDisabled()): ?>readonly<? endif ?> />
+            <input class="personalData_text textfield jsPersonPhone" type="text" placeholder="8 (___) ___-__-__"  value="<?= $form->getMobilePhone() ?>" name="user[mobile_phone]" class="text" <? if ($form->getIsDisabled()): ?>readonly<? endif ?> />
 
             <label class="personalData_label labeltext">Домашний телефон:</label>
-            <input class="personalData_text textfield" type="text" value="<?= $form->getHomePhone() ?>" name="user[home_phone]" />
+            <input class="personalData_text textfield jsPersonPhone" placeholder="8 (___) ___-__-__" type="text" value="<?= $form->getHomePhone() ?>" name="user[home_phone]" />
 
             <? if (isset($bonusCards) && is_array($bonusCards)): ?>
                 <? foreach ($bonusCards as $card):
@@ -102,7 +102,7 @@
                     } ?>
 
                     <label class="personalData_label labeltext" >Номер карты &quot;<?= $page->escape($card->getName()) ?>&quot;:</label>
-                    <input type="text" id="user_bonus_card_<?= $card->getId() ?>" value="<?= $page->escape($userCardNumber) ?>" name="user[bonus_card][<?= $card->getId() ?>]" data-mask="<?= $card->getMask() ?>" class="personalData_text textfield jsCardNumber" />
+                    <input type="text" id="user_bonus_card_<?= $card->getId() ?>" value="<?= $page->escape($userCardNumber) ?>" name="user[bonus_card][<?= $card->getId() ?>]" placeholder="2 _8____ ______" data-mask="<?= $card->getMask() ?>" class="personalData_text textfield jsCardNumber" />
                 <? endforeach ?>
             <? endif ?>
 

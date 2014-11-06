@@ -5,14 +5,14 @@
  */
 ;(function() {
 	var
-		mobilePhoneField = $('#user_mobile_phone'),
+		mobilePhoneField = $('.jsPersonPhone'),
 		bonusCardFields = $('.jsCardNumber');
 	// end of vars
 
 	var
 		setMask = function setMask(field, mask) {
 			if ( undefined == typeof(field) || undefined == typeof(mask) ) return;
-			field.mask(mask, { placeholder: '*' });
+			field.mask(mask, { placeholder: '_' });
 		},
 
 		addCardMask = function addCardMask() {
@@ -32,7 +32,7 @@
 	$.mask.definitions['x'] = '[0-9]';
 
 	// устанавливаем маску для поля "Ваш мобильный телефон"
-	//mobilePhoneField.length && mobilePhoneField.mask('8xxxxxxxxxx');
+	mobilePhoneField.length && mobilePhoneField.mask('8 (xxx) xxx-xx-xx');
 
 	// устанавливаем маски для карт лояльности
 	bonusCardFields.length && bonusCardFields.each(addCardMask);
