@@ -41,4 +41,12 @@ class BillPage extends \View\DefaultLayout {
     public function slotBodyDataAttribute() {
         return 'infopage';
     }
+    
+    public function slotBodybar() {
+        return '';
+    }
+    
+    public function slotFooterbar() {
+        return '';
+    }
 }

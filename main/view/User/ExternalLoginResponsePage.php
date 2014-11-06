@@ -3,6 +3,8 @@
 namespace View\User;
 
 class ExternalLoginResponsePage extends \View\DefaultLayout {
+    protected $layout  = 'layout-oneColumn';
+    
     public function prepare() {
         $this->setParam('title', 'Авторизация');
     }

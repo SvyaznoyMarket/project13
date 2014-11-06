@@ -842,7 +842,7 @@ window.ANALYTICS = {
 			});
 
 			/** Событие клика на подписку | TODO: проверить другие подписки */
-			$('.bSubscribeLightboxPopup__eBtn').on('click', function(){
+			$('.js-bodybar-subscribeButton, .js-footerbar-subscribeButton').on('click', function(){
 				/*var
 					email = $( this ).siblings( '.bSubscribeLightboxPopup__eInput' ).val(); // если нужно
 				*/

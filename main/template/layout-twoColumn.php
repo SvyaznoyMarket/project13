@@ -36,6 +36,7 @@
     <?= $page->slotConfig() ?>
 
     <?= $page->slotAdFoxBground() ?>
+    <?= $page->slotBodybar() ?>
 
     <div class="wrapper">
         <header class="header">
@@ -59,7 +60,7 @@
         </div><!--/ Контент -->
     </div><!--/ Шаблон -->
 
-    <? if (!(bool)\App::exception()->all()) echo $page->render('order/_footer') ?>
+    <?= \App::closureTemplating()->render('__footer', ['footerbar' => $page->slotFooterbar()]) ?>
 
     <a class="upper" id="upper" href="#">Наверх</a>
 

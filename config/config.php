@@ -457,7 +457,7 @@ $c->lifeGift['regionId'] = 151021;
 $c->lifeGift['labelId'] = 17;
 $c->lifeGift['deliveryTypeId'] = 1077;
 
-$c->enterprize['enabled'] = true;
+$c->enterprize['enabled'] = false;
 $c->enterprize['formDataSessionKey'] = 'enterprizeForm';
 $c->enterprize['itemsInSlider'] = 7;
 $c->enterprize['showSlider'] = true;

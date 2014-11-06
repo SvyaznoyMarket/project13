@@ -34,6 +34,7 @@
 
 <body id="mainPage" data-template="main" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
     <?= $page->slotConfig() ?>
+    <?= $page->slotBodybar() ?>
     <div class="bannersbox">
         <div class="bannersboxinner">
             <div class="banner banner3"><img class="rightImage" src="" alt=""/></div>

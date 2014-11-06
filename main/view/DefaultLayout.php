@@ -78,63 +78,11 @@ class DefaultLayout extends Layout {
     }
 
     public function slotHeader() {
-        $subscribeForm = [];
-
-        \App::dataStoreClient()->addQuery(
-            'subscribe-form.json', [],
-            function($data) use (&$subscribeForm) {
-                if ($data) $subscribeForm = (array) $data;
-            },
-            function(\Exception $e) {
-                \App::exception()->remove($e);
-            }
-        );
-
-        \App::dataStoreClient()->execute();
-
-        if (!isset($subscribeForm['mainText'])) {
-            $subscribeForm['mainText'] = 'Подпишитесь на рассылку и будьте в курсе акций, скидок и суперцен!';
-        }
-
-        if (!isset($subscribeForm['inputText'])) {
-            $subscribeForm['inputText'] = 'Введите Ваш e-mail';
-        }
-
-        if (!isset($subscribeForm['buttonText'])) {
-            $subscribeForm['buttonText'] = 'Подписаться';
-        }
-
-        return $this->render('_header',
-            $this->params + ['subscribeForm' => $subscribeForm]
-        );
+        return $this->render('_header', $this->params);
     }
 
     public function slotSeoContent() {
         return $this->render('_seoContent', $this->params);
-    }
-
-    public function slotFooter() {
-        $client = \App::contentClient();
-
-        $response = null;
-        $client->addQuery(
-            'footer_default',
-            [],
-            function($data) use (&$response) {
-                $response = $data;
-            },
-            function(\Exception $e) {
-                \App::exception()->add($e);
-            }
-        );
-        $client->execute();
-
-        $response = array_merge(['content' => ''], (array)$response);
-
-        $response['content'] = str_replace('8 (800) 700-00-09', \App::config()->company['phone'], $response['content']);
-
-
-        return $response['content'];
     }
 
     public function slotContentHead() {
@@ -738,9 +686,15 @@ class DefaultLayout extends Layout {
 
         return '<div class="adfoxWrapper" id="adfoxbground"></div>';
     }
-
-
-
+    
+    public function slotBodybar() {
+        return \App::closureTemplating()->render('__bodybar');
+    }
+    
+    public function slotFooterbar() {
+        return \App::closureTemplating()->render('__footerbar');
+    }
+    
     public function getBreadcrumbsPath() {
         if (null !== $this->breadcrumbsPath) {
             return $this->breadcrumbsPath;

@@ -2,7 +2,7 @@
 
 namespace View\ProductCategory;
 
-class Layout extends \View\DefaultLayout {
+abstract class Layout extends \View\DefaultLayout {
     use LayoutTrait;
 
     public function prepare() {
