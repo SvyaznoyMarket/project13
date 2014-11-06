@@ -688,7 +688,9 @@ class DefaultLayout extends Layout {
     }
     
     public function slotBodybar() {
-        return \App::closureTemplating()->render('__bodybar');
+        return \App::closureTemplating()->render('__bodybar', [
+            'showBodybar' => !\App::request()->cookies->has(\App::config()->subscribe['cookieName']),
+        ]);
     }
     
     public function slotFooterbar() {

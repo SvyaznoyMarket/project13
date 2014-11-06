@@ -1,5 +1,6 @@
 $(function(){
-    var $bodybar = $('.js-bodybar'),
+    var $body = $('body'),
+    	$bodybar = $('.js-bodybar'),
 		timeout;
 
     $bodybar.on('mouseenter', function() {
@@ -21,6 +22,11 @@ $(function(){
 		e.preventDefault();
 		e.stopPropagation();
 		clearInterval(timeout);
+		docCookies.setItem('subscribed', 0, 157680000, '/');
+		$body.trigger('bodybar-hide');
+	});
+	
+	$body.on('bodybar-hide', function() {
 		$bodybar.addClass('bodybar-hide');
 	});
 });

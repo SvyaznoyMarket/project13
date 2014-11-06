@@ -12,7 +12,6 @@ class Action {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
-        $responseData = ['success' => false];
         $channelId = (int)$request->get('channel', 1);
 
         $email = null;
@@ -37,7 +36,7 @@ class Action {
             }
             */
 
-            $result = $client->query('subscribe/create', $params, []);
+            $client->query('subscribe/create', $params, []);
 
             $responseData = [
                 'success' => true,
@@ -62,19 +61,6 @@ class Action {
         }
 
         return $response;
-    }
-
-    /**
-     * @return \Http\JsonResponse
-     */
-    public function cancel() {
-        try {
-            $responseData = ['success' => true];
-        } catch (\Exception $e) {
-            $responseData = ['success' => false];
-        }
-
-        return new \Http\JsonResponse($responseData);
     }
 
     /**
