@@ -5,15 +5,6 @@
  */
 ?>
 
-<? if (\App::config()->enterprize['enabled']): ?>
-    <div class="bSubscribeLightboxPopup mEnterPrize clearfix">
-        <img class="bSubscribeLightboxPopup__eImg fl" src="/css/subscribeLightboxPopup/img/epLogo.png" />
-        <h3 class="bSubscribeLightboxPopup__eTitle fl">Лучшие предложения Enter для клиентов</h3>
-        <a class="bSubscribeLightboxPopup__eLink" href="<?= $page->url('enterprize', ['from' => 'enterprize-top-banner']) ?>">выбрать</a>
-        <a class="bSubscribeLightboxPopup__eNotNow fr" data-url="<?= $page->url('subscribe.cancel') ?>" href="#">Спасибо, не сейчас</a>
-    </div>
-<? endif ?>
-
 <!-- Topbar -->
 <?= $page->render('userbar/topbar') ?>
 <!-- /Topbar -->
