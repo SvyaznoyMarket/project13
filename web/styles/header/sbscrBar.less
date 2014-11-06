@@ -1,0 +1,66 @@
+.sbscrBar {
+	.inline-block();
+	vertical-align: middle;
+
+	&_lbl {
+		.inline-block();
+		font-size: 16px;
+		color: @white;
+		padding: 5px 0 0;
+		font-family: "Enter";
+		text-transform: uppercase;
+	}
+
+	&_it {
+		.inline-block();
+		border: 1px solid #e6e6e6;
+		background: @white;
+		font-size: 14px;
+		.rounded(4px);
+		padding: 4px 10px;
+		margin: 0 10px;
+	    width: 210px;
+	    &-err {
+	    	border-color: #ec5656;
+	    }
+	}
+
+	&_itw {
+		.inline-block();
+	}
+
+	&_errtx {
+		color: #ec5656;
+	    font-weight: bold;
+	    margin: 2px 0 -4px 10px;
+	    text-align: left;
+	}
+
+	&_is {
+		.inline-block();
+		padding: 4px 15px;
+		font-size: 14px;
+	}
+
+	&_tx {
+		.inline-block();
+		font-size: 14px;
+		padding: 3px 0 0;
+		color: @white;
+		text-shadow: 0 1px 1px #333;
+		margin: 0 10px;
+	}
+
+	&-foot {
+		padding: 15px 10px 10px;
+		.sbscrBar_is {
+		    background: @firmBlue;
+		    border: 1px solid @firmBlue;
+		    .rounded(4px);
+		    color: @white;
+		}
+		.sbscrBar_it {
+		    width: 235px;
+		}
+	}
+}

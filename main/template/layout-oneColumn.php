@@ -37,15 +37,42 @@
     <?= $page->slotConfig() ?>
 
     <?= $page->slotAdFoxBground() ?>
-    <div class="bodybar">
+    <script>
+    $(function(){
+        var $bodybarBtn = $('.js-hide-bodybar');
+            $bodybar = $('.js-bodybar');
+            var 
+
+            bodybarHide = function bodybarHide() {
+                $self = $(this),
+                $bodybar = $self.closest('.js-bodybar');
+
+                $bodybar.addClass('bodybar-hide');
+            },
+
+            bodybarShow = function bodybarShow() {
+                $self = $(this);
+
+                $self.removeClass('bodybar-hide');
+            };
+
+        $bodybarBtn.on('click', bodybarHide);
+        $bodybar.on('mouseenter', bodybarShow)
+    });
+    </script>
+
+    <div class="bodybar js-bodybar">
         <form action="" class="sbscrBar">
             <label for="" class="sbscrBar_lbl">Сообщайте мне об акциях и специальных ценах</label>
-            <input type="text" name="" id="" class="sbscrBar_it" placeholder="Ваш e-mail">
+            <div class="sbscrBar_itw">
+                <input type="text" name="" id="" class="sbscrBar_it" placeholder="Ваш e-mail">
+                <div class="sbscrBar_errtx">Неверно введен email</div>
+            </div>
             <input type="submit" value="Подписаться" class="sbscrBar_is btn3">
             <div class="sbscrBar_tx">и получить купон на 300 руб.</div>
         </form>
 
-        <div class="bodybar_clsr">&#215;</div>
+        <div class="bodybar_clsr js-hide-bodybar">&#215;</div>
     </div>
 
     <div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
@@ -118,6 +145,16 @@
         </div>
 
         <div class="footer__insert">
+            <form action="" class="sbscrBar sbscrBar-foot">
+                <label for="" class="sbscrBar_lbl">Сообщайте мне об акциях и специальных ценах</label>
+                <div class="sbscrBar_itw">
+                    <input type="text" name="" id="" class="sbscrBar_it" placeholder="Ваш e-mail">
+                    <div class="sbscrBar_errtx">Неверно введен email</div>
+                </div>
+                <input type="submit" value="Подписаться" class="sbscrBar_is">
+                <div class="sbscrBar_tx">и получить купон на 300 руб.</div>
+            </form>
+
             <p class="footer__copy clearfix">&copy; ООО «Энтер» 2011–2014. ENTER® ЕНТЕР® Enter®. Все права защищены. <a id="jira" class="footer__copy__link" href="javascript:void(0)">Сообщить об ошибке</a></p>
         </div>
 

@@ -1,9 +1,17 @@
 .bodybar {
 	background: @firmBlue;
 	width: 100%;
-	height: 28px;
 	padding: 8px 0;
 	text-align: center;
+	.transition(all .3s ease);
+
+	&-hide {
+		padding-bottom: 0;
+		padding-top: 5px;
+		height: 0;
+		cursor: pointer;
+		overflow: hidden;
+	}
 
 	&_clsr {
 		color: @white;
@@ -38,6 +46,20 @@
 		padding: 4px 10px;
 		margin: 0 10px;
 	    width: 210px;
+	    &-err {
+	    	border-color: #ec5656;
+	    }
+	}
+
+	&_itw {
+		.inline-block();
+	}
+
+	&_errtx {
+		color: #ec5656;
+	    font-weight: bold;
+	    margin: 2px 0 -4px 10px;
+	    text-align: left;
 	}
 
 	&_is {
@@ -53,6 +75,19 @@
 		color: @white;
 		text-shadow: 0 1px 1px #333;
 		margin: 0 10px;
+	}
+
+	&-foot {
+		padding: 15px 10px 10px;
+		.sbscrBar_is {
+		    background: @firmBlue;
+		    border: 1px solid @firmBlue;
+		    .rounded(4px);
+		    color: @white;
+		}
+		.sbscrBar_it {
+		    width: 235px;
+		}
 	}
 }
 
