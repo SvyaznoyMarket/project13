@@ -273,8 +273,8 @@
     });
 
     // клик на селекте интервала
-    $orderContent.on('click', '.customSel_def', function() {
-        $(this).next('.customSel_lst').show();
+    $orderContent.on('click', '.jsShowDeliveryIntervals', function() {
+        $(this).find('.customSel_lst').show();
     });
 
     // клик по интервалу доставки
