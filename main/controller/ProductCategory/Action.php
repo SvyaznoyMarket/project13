@@ -451,55 +451,11 @@ class Action {
                     }
                 }
             } else if ('new_filter_with_photo' === $testKey || 'new_filter_without_photo' === $testKey) {
-                // TODO удалить данную заглушку как только будет выпушен 65 релиз ядра
-                $filterImages = [
-                    'белое золото 375' => 'https://scms.enter.ru/uploads/media/5b/e7/c9/a4dd4817bca9ddc078ebe41ca96c34e9dbb06d9a.png',
-                    'белое золото 585' => 'https://scms.enter.ru/uploads/media/fb/ed/c8/8750e48fe26f4e02ea5776914561ea5228f5490e.png',
-                    'желтое золото 585' => 'https://scms.enter.ru/uploads/media/f1/1e/59/38c72c637f05867d9d5649e96179e8f60fa52342.png',
-                    'красное золото 375' => 'https://scms.enter.ru/uploads/media/ef/dd/f3/b1bd6e14dae63f5c47b60968666fc138bef759df.png',
-                    'красное золото 585' => 'https://scms.enter.ru/uploads/media/8c/df/8f/927818bd5e15c8ddcd9f17af8f7cd3b15c63635d.png',
-                    'серебро' => 'https://scms.enter.ru/uploads/media/6b/6b/1b/10f14a00bca6ca8b9e3e6cd5b628cb7277f7c009.png',
-                    'агат' => 'https://scms.enter.ru/uploads/media/be/4a/e9/b76078ce6a186de0b8e6bdd1c582f846e1831e6b.png',
-                    'аметист' => 'https://scms.enter.ru/uploads/media/ae/b3/2b/2cb15804f1ac6129aace4e69892f0040de7e5a9c.png',
-                    'бирюза' => 'https://scms.enter.ru/uploads/media/35/6b/8e/f4a4af695b4e373c5ada1683bb9846912274206c.png',
-                    'бриллиант' => 'https://scms.enter.ru/uploads/media/70/e0/5e/03062588d11501d8242bc4f7784d70b042ca9312.png',
-                    'гранат' => 'https://scms.enter.ru/uploads/media/16/1f/25/94a46fb68a2aaaec3f2e52b27896b53cecb16762.png',
-                    'жадеит' => 'https://scms.enter.ru/uploads/media/f4/a0/26/a31b9e567c2795c890e8b54997413cf331bb5a1c.png',
-                    'жемчуг' => 'https://scms.enter.ru/uploads/media/1d/73/53/36aaaff28820ad84bf8cb3eb0bfb23c17cd48fa8.png',
-                    'изумруд' => 'https://scms.enter.ru/uploads/media/c1/80/8e/613e3df11817c12d601ee2d95ffd31771cfa3a8d.png',
-                    'искусственный коралл' => 'https://scms.enter.ru/uploads/media/98/10/fb/73e6269abcbdbf4adc0bb72ea467405db773819c.png',
-                    'кварц' => 'https://scms.enter.ru/uploads/media/1c/ac/83/35eea8b12abe309fd908b03a219f898535cda9c9.png',
-                    'керамика' => 'https://scms.enter.ru/uploads/media/1a/46/99/96d681b4385f093b2c186adcdca87f178db014d4.png',
-                    'корунд' => 'https://scms.enter.ru/uploads/media/2d/43/07/d9d91d418154a7f8d0b3d99f1664e86eca39293f.png',
-                    'кошачий глаз' => 'https://scms.enter.ru/uploads/media/de/5c/5c/919e80e90d94b6674ca711acc0cfcdf93f56f027.png',
-                    'кристаллы Swarovski' => 'https://scms.enter.ru/uploads/media/4f/1b/88/04c272d72741a5b1a5f7be910754fa22743673b3.png',
-                    'кубический цирконий' => 'https://scms.enter.ru/uploads/media/36/2f/49/8e51e52a811f8ef910e66ed2ab63c5cf3bac1b1b.png',
-                    'микс камней' => 'https://scms.enter.ru/uploads/media/43/34/fb/3397655677dc7b06396ec3d821c8ff93d65c3c1f.png',
-                    'оникс' => 'https://scms.enter.ru/uploads/media/07/7d/42/7f97e26718b153fab629d9476846515465becb3d.png',
-                    'рубин' => 'https://scms.enter.ru/uploads/media/a5/8d/2d/c7261000a3f373af0069c0e1fa6b2b4b1880c8e1.png',
-                    'сапфир' => 'https://scms.enter.ru/uploads/media/42/1a/34/ad40aff7e1b882363ecc5e76890930d4a4193e85.png',
-                    'стразы' => 'https://scms.enter.ru/uploads/media/d0/09/5f/a2f90242362ba2f4c2d5e2a986674c4a15037d87.png',
-                    'топаз' => 'https://scms.enter.ru/uploads/media/32/d5/56/8de5f9e90b85ab2d2aefb7a9012187546e394c1f.png',
-                    'фианит' => 'https://scms.enter.ru/uploads/media/ff/5e/26/2c27c9afeca824b2dfb0891ca59ba02ffcc964bf.png',
-                    'халцедон' => 'https://scms.enter.ru/uploads/media/2d/b8/74/502fcfa2cb4ea984d5104b4492306342fd8d76d6.png',
-                    'хризолит' => 'https://scms.enter.ru/uploads/media/f4/2a/8b/a1e835980f9819e1ea3d48076a62afc0c8e8494e.png',
-                    'хризопраз' => 'https://scms.enter.ru/uploads/media/85/aa/26/40e866339d5a1ed13647118506eb25f9392becd5.png',
-                    'цитрин' => 'https://scms.enter.ru/uploads/media/1c/2a/f0/c46b3340fce701c12d4151df385f1a978a91b4da.png',
-                    'эмаль' => 'https://scms.enter.ru/uploads/media/f4/05/69/33459291edb0ab7dcaa5a0b149d26bf6e21b6f76.png',
-                ];
-
                 $isNewFilterPresent = false;
                 foreach ($productFilter->getFilterCollection() as $filter) {
                     if ('Металл' === $filter->getName() || 'Вставка' === $filter->getName()) {
                         $isNewFilterPresent = true;
                         $filter->setIsAlwaysShow(true);
-
-                        // TODO удалить данную заглушку как только будет выпушен 65 релиз ядра
-                        foreach ($filter->getOption() as $option) {
-                            if (isset($filterImages[$option->getName()])) {
-                                $option->setImageUrl($filterImages[$option->getName()]);
-                            }
-                        }
                     }
                 }
 
