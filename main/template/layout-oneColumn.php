@@ -89,62 +89,62 @@
 
     </div><!--/ Шаблон -->
 
-    <footer class="footer">
-        <div class="footer__inner clearfix">
-            <ul class="aboutList clearfix">
-                <li class="aboutList__item"><a class="aboutList__link" href="/about_company">О компании</a></li>
-                <li class="aboutList__item"><a class="aboutList__link" href="/shops">Магазины Enter</a></li>
-                <li class="aboutList__item"><a class="aboutList__link" href="http://feedback.enter.ru/">Напишите нам</a></li>
-                <li class="aboutList__item"><a class="aboutList__link" href="/how_get_order">Условия доставки</a></li>
-                <li class="aboutList__item"><a class="aboutList__link" href="/how_pay">Способы оплаты</a></li>
-                <li class="aboutList__item"><a class="aboutList__link" href="/credit">Покупка в кредит</a></li>
-                <li class="aboutList__item mLast"><a class="aboutList__link" href="http://my.enter.ru/community/job">Работа у нас</a></li>
+    <div class="footer">
+        <div class="footer_t clearfix">
+            <ul class="footer_cmpn clearfix">
+                <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="/about_company">О компании</a></li>
+                <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="/shops">Магазины Enter</a></li>
+                <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="http://feedback.enter.ru/">Напишите нам</a></li>
+                <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="/how_get_order">Условия доставки</a></li>
+                <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="/how_pay">Способы оплаты</a></li>
+                <li class="footer_cmpn_i footer_cmpn_i-last"><a class="footer_cmpn_lk" href="/credit">Покупка в кредит</a></li>
+                <li class="footer_cmpn_i footer_cmpn_i-last fl-r"><a class="footer_cmpn_lk" href="http://my.enter.ru/community/job">Работа у нас</a></li>
             </ul>
 
-            <div class="publicInfo">
-                <ul class="publicInfo__list">
-                    <li class="publicInfo__list__item"><a class="publicInfo__list__link" href="/legal">Правовая информация</a></li>
-                    <li class="publicInfo__list__item"><a class="publicInfo__list__link" href="/terms">Условия продажи</a></li>
-                    <li class="publicInfo__list__item"><a class="publicInfo__list__link" href="/media_info">Информация о СМИ</a></li>
-                    <li class="publicInfo__list__item"><a class="publicInfo__list__link" href="/refurbished-sale">Уцененные товары оптом</a></li>
+            <div class="footer_inf">
+                <ul class="footer_inf_lst">
+                    <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/legal">Правовая информация</a></li>
+                    <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/terms">Условия продажи</a></li>
+                    <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/media_info">Информация о СМИ</a></li>
+                    <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/refurbished-sale">Уцененные товары оптом</a></li>
                 </ul>
 
-                <p class="publicInfo__text">Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.</p>
+                <p class="footer_inf_tx">Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.</p>
             </div>
 
-            <ul class="socLink">
-                <li class="socLink__item mFb"><a class="socLink__link" target="_blank" href="https://www.facebook.com/enter.ru"></a></li>
-                <li class="socLink__item mTw"><a class="socLink__link" target="_blank" href="https://twitter.com/enter_ru"></a></li>
-                <li class="socLink__item mVk"><a class="socLink__link" target="_blank" href="http://vk.com/public31456119"></a></li>
-                <li class="socLink__item mYt"><a class="socLink__link" target="_blank" href="https://www.youtube.com/user/EnterLLC"></a></li>
-                <li class="socLink__item mOdn"><a class="socLink__link" target="_blank" href="http://www.odnoklassniki.ru/group/53202890129511"></a></li>
+            <ul class="footer_socnet">
+                <li class="footer_socnet_i footer_socnet_i-fb"><a class="footer_socnet_lk" target="_blank" href="https://www.facebook.com/enter.ru"></a></li>
+                <li class="footer_socnet_i footer_socnet_i-tw"><a class="footer_socnet_lk" target="_blank" href="https://twitter.com/enter_ru"></a></li>
+                <li class="footer_socnet_i footer_socnet_i-vk"><a class="footer_socnet_lk" target="_blank" href="http://vk.com/public31456119"></a></li>
+                <li class="footer_socnet_i footer_socnet_i-ytb"><a class="footer_socnet_lk" target="_blank" href="https://www.youtube.com/user/EnterLLC"></a></li>
+                <li class="footer_socnet_i footer_socnet_i-odnk"><a class="footer_socnet_lk" target="_blank" href="http://www.odnoklassniki.ru/group/53202890129511"></a></li>
             </ul>
 
-            <ul class="bannersList">
-                <li class="bannersList__item"><img src="/styles/footer/img/prava-potreb.gif" /></li>
-                <li class="bannersList__item"><a href="/akit"><img src="/styles/footer/img/akita.png" /></a></li>
-                <li class="bannersList__item"><div class="teleportator" id="teleportator"></div></li>
+            <ul class="footer_bnnr">
+                <li class="footer_bnnr_i"><img src="/styles/footer/img/prava-potreb.gif" /></li>
+                <li class="footer_bnnr_i"><a href="/akit"><img src="/styles/footer/img/akita.png" /></a></li>
+                <li class="footer_bnnr_i"><div class="teleportator" id="teleportator"></div></li>
             </ul>
 
-            <ul class="applist">
-                <li class="applist__item mTitle">Мобильные приложения</li>
-                <li class="applist__item"><a target="_blank" href="https://itunes.apple.com/ru/app/enter/id486318342?mt=8"><img src="/styles/footer/img/apple.png" /></a></li>
+            <ul class="footer_app">
+                <li class="footer_app_i footer_app_i-t">Мобильные приложения</li>
+                <li class="footer_app_i"><a target="_blank" href="https://itunes.apple.com/ru/app/enter/id486318342?mt=8"><img class="footer_app_img" src="/styles/footer/img/apple.png" /></a></li>
                 
-                <li class="applist__item">
+                <li class="footer_app_i">
                     <a target="_blank" href="http://www.windowsphone.com/ru-ru/store/app/enter/6f4c5810-682f-47dc-87b2-aced84582787">
-                        <img src="/styles/footer/img/wind.png" />
+                        <img class="footer_app_img" src="/styles/footer/img/wind.png" />
                     </a>
                 </li>
 
-                <li class="applist__item">
+                <li class="footer_app_i">
                     <a target="_blank" href="https://play.google.com/store/apps/details?id=ru.enter">
-                      <img alt="Get it on Google Play" src="/styles/footer/img/google.png" />
+                      <img class="footer_app_img" alt="Get it on Google Play" src="/styles/footer/img/google.png" />
                     </a>
                 </li>
             </ul>
         </div>
 
-        <div class="footer__insert">
+        <footer class="footer_b">
             <form action="" class="sbscrBar sbscrBar-foot">
                 <label for="" class="sbscrBar_lbl">Сообщайте мне об акциях и специальных ценах</label>
                 <div class="sbscrBar_itw">
@@ -155,8 +155,12 @@
                 <div class="sbscrBar_tx">и получить купон на 300 руб.</div>
             </form>
 
-            <p class="footer__copy clearfix">&copy; ООО «Энтер» 2011–2014. ENTER® ЕНТЕР® Enter®. Все права защищены. <a id="jira" class="footer__copy__link" href="javascript:void(0)">Сообщить об ошибке</a></p>
-        </div>
+            <div class="footer_cpy clearfix">
+                <a id="jira" class="footer_cpy_r" href="javascript:void(0)">Сообщить об ошибке</a>
+                <div class="footer_cpy_l">&copy; ООО «Энтер» 2011–2014. ENTER® ЕНТЕР® Enter®. Все права защищены.</div>
+                <div class="footer_cpy_c"><a href="" class="footer_cpy_mbl">Мобильный сайт</a></div>
+            </div>
+        </footer>
 
         <!-- krible.ru Teleportator -->
         <script type="text/javascript">
@@ -180,7 +184,7 @@
         })(document, window);
         </script>
         <!-- /krible.ru Teleportator end -->
-    </footer><!--/ Подвал-->
+    </div><!--/ Подвал-->
 
     <a id="upper" class="upper" href="#">Наверх</a>
 

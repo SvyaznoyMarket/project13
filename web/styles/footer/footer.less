@@ -3,218 +3,190 @@
 */
 
 .footer__main {
-	width: 940px;
-	padding: 0 10px;
-	margin: -470px auto 0;
-	height: 470px;
-	position: relative;
-	.siteVersionSwitcher {
-		position: relative;
-		top: -3em;
-		color: #fff;
-	}
+    width: 940px;
+    padding: 0 10px;
+    margin: -470px auto 0;
+    height: 470px;
+    position: relative;
+    .siteVersionSwitcher {
+        position: relative;
+        top: -3em;
+        color: #fff;
+    }
 }
-
 /**
 * Стили подвала
 */
 
 .footer {
-	width: 960px;
-	margin: -222px auto 0;
-	height: 222px;
-	position: relative;
-
-	&__inner {
-		width: 940px;
-		padding: 0 10px 10px;
-		margin: 0 auto;
-		background: @white;
-	}
-
-	&__insert {
-		width: 100%;
-		background: @black;
-	}
-
-
-	&__copy {
-		width: 940px;
-		padding: 0 10px;
-		height: 20px;
-		line-height: 20px;
-		margin: 0 auto;
-		color: @white;
-
-		&__link {
-			float: right;
-			color: #c7c7c7;
-			text-decoration: none;
-
-			&:hover {
-				color: #c7c7c7;
-				text-decoration: underline;
-			}
-		}
-	}
-
-	.aboutList {
-		.rounded(4px);
-		margin: 0 0 15px;
-		padding: 0 10px 0 10px;
-		height: 30px;
-		background-color: @typLightGray;
-		font-size: 0;
-
-		&__item {
-			display: inline-block;
-			margin: 0 52px 0 0;
-			font-size: 12px;
-			float: left;
-			line-height: 30px;
-
-			*diaplay: inline;
-			zoom: 1;
-
-			&:last-child {
-				margin-right: 0;
-			}
-
-			&.mLast {
-				margin-right: 0;
-			}
-		}
-	}
-
-	.publicInfo {
-		float: left;
-
-		&__list {
-
-			&__item {
-				display: inline-block;
-				color: #515151;
-				margin-right: 35px;
-			}
-
-			&__link {
-				color: #515151;
-			}
-		}
-
-		&__text {
-			color: #929292;
-			margin: 3px 0 25px;
-			display: inline-block;
-			vertical-align: top;
-		}
-	}
-
-	.socLink {
-		float: right;
-		font-size: 0;
-		display: inline-block;
-		margin: 5px 0 0;
-
-		&__item {
-			display: inline-block;
-			color: #515151;
-			background: url("@{base-url}/footer/img/socialicon.png") no-repeat 0 0;
-			width: 26px;
-			height: 26px;
-			vertical-align: top;
-			margin-right: 5px;
-			position: relative;
-			top: 0;
-			transition: all 0.3s ease;
-			-webkit-transition: all 0.3s ease;
-			-moz-transition: all 0.3s ease;
-			-o-transition: all 0.3s ease;
-
-			&.mTw {
-				background-position: -27px 0;
-			} 
-
-			&.mVk {
-				background-position: -54px 0;
-			}
-
-			&.mYt {
-				background-position: -81px 0;
-			}
-
-			&.mOdn {
-				background-position: -108px 0;
-			}
-
-			&:hover {
-				top: -5px;
-				height: 31px;
-			}
-		}
-
-		&__link {
-			display: block;
-			width: 26px;
-			height: 26px;
-		}
-	}
-
-	.bannersList {
-		float: left;
-
-		&__item {
-			float: left;
-			.opacity(0.5);
-			margin-right: 20px;
-			.transition(all 0.2s ease);
-
-			&:hover {
-				.opacity(1);
-			}
-
-			&:last-child {
-				margin-right: 0;
-			}
-
-			.teleportator {
-				width: 130px;
-
-				
-			}
-		}
-	}
-
-	.applist {
-		float: right;
-		width: 360px;
-
-		&__item {
-			float: right;
-			margin: 0 0 5px 5px;
-			.opacity(0.5);
-			.transition(all 0.2s ease);
-
-			&:hover {
-				.opacity(1);
-			}
-
-			img {
-				display: block;
-				.rounded(4px);
-			}
-
-			&.mTitle {
-				width: 160px;
-				padding: 3px 5px 0;
-				.opacity(1);
-				color: #515151;
-				height: 37px;
-				line-height: 34px;
-				color: #515151;
-				background: #e6e6e6;
-				.rounded(4px);
-			}
-		}
-	}
+    width: 960px;
+    margin: -284px auto 0;
+    height: 284px;
+    position: relative;
+    &_t {
+        width: 940px;
+        padding: 0 10px 10px;
+        margin: 0 auto;
+        background: @white;
+    }
+    &_b {
+        width: 100%;
+        background: @black;
+        padding-bottom: 5px;
+    }
+    //копирайт
+    &_cpy {
+        width: 940px;
+        padding: 0 10px;
+        height: 20px;
+        line-height: 20px;
+        margin: 0 auto;
+        color: @white;
+        &_l {
+            float: left;
+        }
+        &_r {
+            float: right;
+            color: #c7c7c7;
+            text-decoration: none;
+            &:hover {
+                color: #c7c7c7;
+                text-decoration: underline;
+            }
+        }
+        &_c {
+            margin: 0 auto;
+            text-align: center;
+        }
+        &_mbl {
+            background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAMCAQAAAAXSy9vAAAAI0lEQVR4AWP8/58BDyAonYZfmgG/tDEBuymSNqbIaWm0cxoA/xwTLdo5eG4AAAAASUVORK5CYII") no-repeat 0 4px;
+            .inline-block();
+            text-decoration: underline;
+            color: @white;
+            padding: 0 0 0 22px;
+        }
+    }
+    // информация о компании
+    &_cmpn {
+        .rounded(4px);
+        margin: 0 0 15px;
+        padding: 0 10px 0 10px;
+        height: 30px;
+        background-color: @typLightGray;
+        font-size: 0;
+        &_i {
+            .inline-block();
+            margin: 0 55px 0 0;
+            font-size: 12px;
+            line-height: 30px;
+            &:last-child {
+                margin-right: 0;
+            }
+            &-last {
+                margin-right: 0;
+            }
+        }
+    }
+    // правовая информация
+    &_inf {
+        float: left;
+        &_lst {
+            &_i {
+                .inline-block();
+                color: #515151;
+                margin-right: 35px;
+            }
+            &_lk {
+                color: #515151;
+            }
+        }
+        &_tx {
+            color: #929292;
+            margin: 3px 0 25px;
+            display: inline-block;
+            vertical-align: top;
+        }
+    }
+    // ссылки на соц сети
+    &_socnet {
+        float: right;
+        .inline-block();
+        margin: 5px 0 0;
+        &_i {
+            .inline-block();
+            color: #515151;
+            background: url("@{base-url}/footer/img/socialicon.png") no-repeat 0 0;
+            width: 26px;
+            height: 26px;
+            margin-right: 2px;
+            &-tw {
+                background-position: -27px 0;
+            }
+            &-vk {
+                background-position: -54px 0;
+            }
+            &-ytb {
+                background-position: -81px 0;
+            }
+            &-odnkl {
+                background-position: -108px 0;
+            }
+        }
+        &_lk {
+            display: block;
+            width: 26px;
+            height: 26px;
+        }
+    }
+    // баннерки
+    &_bnnr {
+        float: left;
+        &_i {
+            float: left;
+            .opacity(0.5);
+            margin-right: 20px;
+            .transition(all .2s ease);
+            &:hover {
+                .opacity(1);
+            }
+            &:last-child {
+                margin-right: 0;
+            }
+            .teleportator {
+                width: 130px;
+            }
+        }
+    }
+    //ссылки на приложения
+    &_app {
+        float: right;
+        width: 360px;
+        &_i {
+            float: right;
+            margin: 0 0 5px 5px;
+            
+            &:hover {
+            	.footer_app_img {
+					.opacity(1);
+            	}
+            }
+            &-t {
+                width: 160px;
+                padding: 3px 5px 0;
+                .opacity(1);
+                color: #515151;
+                height: 37px;
+                line-height: 34px;
+                color: #515151;
+                background: #e6e6e6;
+                .rounded(4px);
+            }
+        }
+        &_img {
+            display: block;
+            .rounded(4px);
+            .opacity(0.5);
+        	.transition(opacity .2s ease);
+        }
+    }
 }
