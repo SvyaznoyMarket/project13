@@ -309,7 +309,7 @@
 
 	// устанавливаем маску для поля "Ваш мобильный телефон"
 	$.mask.definitions['n'] = '[0-9]';
-	mobilePhoneField.length && mobilePhoneField.mask('8nnnnnnnnnn');
+	mobilePhoneField.length && mobilePhoneField.mask('8 (nnn) nnn-nn-nn');
 
 	body.on('submit', '.jsEnterprizeForm', formSubmit);
 	body.on('click', '.jsEnterprizeAuthLink', openAuth);
