@@ -5349,6 +5349,11 @@ img[height="0"] {
   .orderCol_delivrLst_i:last-child {
     border-right: none;
   }
+  .orderCol .customSel_cl {
+    background: none;
+    border: none;
+    cursor: default;
+  }
   .orderCol-v2 .orderCol_delivrIn {
     position: relative;
     padding: 0;
@@ -5392,6 +5397,11 @@ img[height="0"] {
   .orderCol-v2 .orderCheck_img {
     margin-left: 10px;
     vertical-align: top;
+  }
+  .orderCol-v2 .customSel_cl {
+    background: none;
+    border: none;
+    cursor: default;
   }
   .orderOferta_tabs_i {
     display: inline-block;
@@ -6326,6 +6336,9 @@ img[height="0"] {
   }
   .orderOneClick .orderCol .customSel {
     background-color: #fff;
+  }
+  .orderOneClick .orderCol .customSel_cl {
+    background: none;
   }
   .orderOneClick .orderCol_date {
     background-color: #fff;
