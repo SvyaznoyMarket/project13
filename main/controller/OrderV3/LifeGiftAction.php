@@ -158,7 +158,7 @@ class LifeGiftAction {
     }
 
     public function complete() {
-        $message = 'Спасибо за заказ!';
+        $message = 'Спасибо!';
         $page = new \View\OrderV3\LifeGiftPage();
         $page->setParam('message', $message);
         return new \Http\Response($page->show());
