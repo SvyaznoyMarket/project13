@@ -21,7 +21,7 @@ class CreatedEntity {
     private $deliveredAt;
     /** @var string */
     private $accessToken;
-
+    /** @var string */
     public $numberErp;
 
     /**

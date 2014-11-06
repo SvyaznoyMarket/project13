@@ -116,6 +116,11 @@ module.exports = function (grunt, options) {
             tasks: ['jsmin-sourcemap:orderV3newJS']
         },
         
+        orderV3lifegiftJS: {
+            files: [ pathDev + 'order-v3-lifegift/*.js'],
+            tasks: ['jsmin-sourcemap:orderV3lifegiftJS']
+        },
+
         orderNewV5JS:{
             files: [ pathDev + 'order-new-v5/*.js'],
             tasks: ['jsmin-sourcemap:order_new_v5']

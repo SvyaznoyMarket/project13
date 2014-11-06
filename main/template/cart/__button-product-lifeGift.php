@@ -20,25 +20,22 @@ return function (
     if ($helper->hasParam('sender')) {
         $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
     }
-    $url = $helper->url('cart.lifeGift.product.set', $urlParams);
+    $url = $helper->url('orderV3.lifegift', $urlParams);
 
 ?>
 <div class="bWidgetBuy mWidget mLiftGift js-WidgetBuy">
-    <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId())): ?>
-        <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId() . '-lifeGift'), 'productId' => $product->getId()]) ?>
-    <? endif ?>
 
     <div class="bWidgetBuy__eBuy btnBuy mBtnLifeGift">
-        <a class="bLifeGiftLink jsLifeGiftButton <?= \View\Id::cartButtonForProduct($product->getId() . '-lifeGift') ?>" href="<?= $url ?>">Подарить</a>
+        <a class="bLifeGiftLink " href="<?= $url ?>">Подарить</a>
     </div>
 
     <ul class="bDeliveryGift">
-        <li class="bDeliveryGift__eItem mDeliveryPrice"><span><span class="bJustText">Доставка</span></span>  в Фонд &#171;Подари жизнь&#187;</li>
+        <li class="bDeliveryGift__eItem mDeliveryPrice"><span><span class="bJustText">Доставка</span></span>  в Фонд &#171;Подари жизнь&#187;, 25.11.2014</li>
     </ul>
 
     <div class="bGiftText">Специальная цена этого подарка</div>
 
-    <div class="bPrice5321a13ebb1e5"><strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
+    <div class="bPrice"><strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
 </div>
 
 <? };
