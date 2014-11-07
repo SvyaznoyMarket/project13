@@ -80,7 +80,7 @@
 			console.error('Ошибки в форме', errors);
 			return;
 		}
-		$.post('', $('.jsOrderForm').serialize())
+		$.post(window.location.href, $('.jsOrderForm').serialize())
 			.done(function(data) {
 				var $form;
 				if (data.form) {
