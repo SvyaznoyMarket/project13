@@ -21,7 +21,7 @@
 		<div class="subscribe-form clearfix">
 			<div class="subscribe-form__title">Будем друзьями?</div>
 		    <input class="subscribe-form__email flocktory_email" placeholder="Введите ваш email" />
-		    <button class="subscribe-form__btn run_flocktory_popup" data-url="<?= $page->url('subscribe.create') ?>">Да, хочу дружить</button>
+		    <button class="subscribe-form__btn run_flocktory_popup" data-url="<?= $page->url('subscribe.create') ?>" data-error-msg="Промокод уже отправлен на ваш email. Пожалуйста, проверьте почту.">Да, хочу дружить</button>
 		</div>
 	</div>
 

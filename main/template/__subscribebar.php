@@ -1,7 +1,7 @@
 <?php
-return function() { ?>
+return function(\Helper\TemplateHelper $helper, $class = null) { ?>
     
-    <form action="" class="sbscrBar sbscrBar-foot js-subscribebar">
+    <form action="" class="sbscrBar <?= $helper->escape($class) ?> js-subscribebar">
         <label for="" class="sbscrBar_lbl">Сообщайте мне об акциях и специальных ценах</label>
         <div class="sbscrBar_itw">
             <input type="text" name="" id="" class="sbscrBar_it js-subscribebar-email" placeholder="Ваш e-mail">

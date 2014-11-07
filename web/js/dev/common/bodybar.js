@@ -24,6 +24,10 @@ $(function(){
 		clearInterval(timeout);
 		docCookies.setItem('subscribed', 0, 157680000, '/');
 		$body.trigger('bodybar-hide');
+
+		if (typeof _gaq != 'undefined') {
+			_gaq.push(['_trackEvent', 'subscription', 'subscribe_form_close']);
+		}
 	});
 	
 	$body.on('bodybar-hide', function() {

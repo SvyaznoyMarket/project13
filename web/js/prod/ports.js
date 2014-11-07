@@ -841,14 +841,6 @@ window.ANALYTICS = {
 				ga('send', 'dimension8', regionName);
 			});
 
-			/** Событие клика на подписку | TODO: проверить другие подписки */
-			$('.js-subscribebar-subscribeButton').on('click', function(){
-				/*var
-					email = $( this ).siblings( '.bSubscribeLightboxPopup__eInput' ).val(); // если нужно
-				*/
-				gaSubscribeClick( 1 );
-			});
-
 			window.gaRun = {
 				register: function register() {
 					/** Метод для регистрации на сайте */

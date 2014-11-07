@@ -694,7 +694,7 @@ class DefaultLayout extends Layout {
     }
     
     public function slotFooterbar() {
-        return \App::closureTemplating()->render('__footerbar');
+        return \App::closureTemplating()->render('__subscribebar', ['class' => 'sbscrBar-foot']);
     }
     
     public function getBreadcrumbsPath() {

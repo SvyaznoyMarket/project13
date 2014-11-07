@@ -11,16 +11,10 @@ class Action {
     public function create(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $client = \App::coreClientV2();
-        $channelId = (int)$request->get('channel', 1);
-
         $email = null;
+        $channelId = (int)$request->get('channel', 1);
         try {
             $email = trim((string)$request->get('email'));
-            if (empty($email)) {
-                throw new \Exception('Не передан email для подписки');
-            }
-
             $channels = \RepositoryManager::subscribeChannel()->getCollection(\App::user()->getEntity());
             if (!(bool)$channels) {
                 throw new \Exception('Не получен ни один канал для подписки');
@@ -30,33 +24,41 @@ class Action {
                 'email'      => $email,
                 'channel_id' => $channelId,
             ];
-            /* SITE-1374
+
             if ($userEntity = \App::user()->getEntity()) {
                 $params['token'] = $userEntity->getToken();
             }
-            */
 
-            $client->query('subscribe/create', $params, []);
+            \App::coreClientV2()->query('subscribe/create', $params, []);
 
             $responseData = [
                 'success' => true,
-                'data' => 'Спасибо! подтверждение подписки отправлено на указанный e-mail',
+                'code' => null,
+                'data' => 'Спасибо! Подтверждение подписки отправлено на указанный e-mail.',
             ];
         } catch (\Exception $e) {
             \App::logger()->error($e);
             \App::exception()->remove($e);
 
-            $responseData = ['success' => false];
+            $responseData = ['success' => false, 'code' => $e->getCode()];
 
-            if (910 == $e->getCode()) {
-                $responseData['data'] = trim((string)$request->get('error_msg')) ?: 'Вы уже подписаны на нашу рассылку. Мы сообщим Вам о лучших скидках в письме. Не забывайте проверять почту от Enter!';
+            switch ($e->getCode()) {
+                case 850:
+                    $responseData['data'] = 'Неверно введён e-mail';
+                    break;
+                case 619:
+                    $responseData['data'] = 'Не введён e-mail';
+                    break;
+                case 910:
+                    $responseData['data'] = trim((string)$request->get('error_msg'));
+                    break;
             }
         }
 
         $response = new \Http\JsonResponse($responseData);
 
         // передаем email пользователя для RetailRocket
-        if (true === $responseData['success'] && !empty($email)) {
+        if (true === $responseData['success']) {
             \App::retailrocket()->setUserEmail($response, $email);
         }
 
@@ -84,7 +86,7 @@ class Action {
 
             $email = $request->get('email');
             if (!$email) {
-                throw new \Exception('Не получен email подтверждения подписки');
+                throw new \Exception('Не получен e-mail подтверждения подписки');
             }
 
             $hasbro = $request->get('hasbro');
@@ -113,7 +115,7 @@ class Action {
         }
 
         if (empty($error)) {
-            if (empty($email)) $error = ['message' => 'Не получен емейл пользователя'];
+            if (empty($email)) $error = ['message' => 'Не получен e-mail пользователя'];
                 elseif (empty($action)) $error = ['message' => 'Не получен ожидаемый ответа ядра'];
         }
 
