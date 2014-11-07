@@ -1328,6 +1328,7 @@ img[height="0"] {
     margin: -284px auto 0;
     height: 284px;
     position: relative;
+    background: #000000;
   }
   .footer_t {
     width: 940px;
