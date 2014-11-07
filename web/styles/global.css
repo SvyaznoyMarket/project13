@@ -5180,6 +5180,7 @@ img[height="0"] {
     color: #ffffff;
     border-right: 1px solid #757575;
     padding: 5px 30px 5px 20px;
+    font-weight: bold;
   }
   .orderHd-v2 .orderCol_tm {
     font-size: 13px;
@@ -5210,6 +5211,7 @@ img[height="0"] {
   }
   .orderHd-v2 .orderHd_stps_i-act {
     color: #f89b1c;
+    font-weight: bold;
   }
   .orderHd-v2 .orderHd_stps_i-pass {
     color: #bababa;
