@@ -8,7 +8,7 @@ return function($showBodybar) { ?>
                 <input type="text" name="" id="" class="sbscrBar_it js-subscribebar-email" placeholder="Ваш e-mail">
                 <div class="sbscrBar_errtx">Неверно введен email</div>
             </div>
-            <input type="submit" value="Подписаться" class="sbscrBar_is btn3 js-subscribebar-subscribeButton">
+            <input type="submit" value="Подписаться" class="sbscrBar_is js-subscribebar-subscribeButton">
             <div class="sbscrBar_tx">и получить купон на 300 руб.</div>
         </form>
 

@@ -480,10 +480,6 @@
 .enterprize {
 	background: @black;
 
-	.bSubscribeLightboxPopup {
-		display: none !important;
-	}
-
 	.wrapper {
 		background: @black;
 	}
@@ -532,32 +528,34 @@
 	.quickOrder {
 		border-color: @typLinkColor;
 	}
-	
-	.bannersList, 
-	.applist {
-		display: none;
+
+	.content {
+		padding-bottom: 235px;
 	}
 
 	.footer {
-	    height: 150px;
-	    margin: -150px auto 0;
-
-	    &__inner {
+		height: 205px;
+		margin-top: -205px;
+	    &_t {
 			color: @white;
 			background: @black;
 		}
 
-		.publicInfo__text {
-		    margin: 10px 0 25px;
+		&_bnnr,
+		&_app {
+			display: none;
 		}
 
-		.publicInfo__list__link {
-		    color: #B5B5B5;
+		&_inf {
+			&_tx {
+				margin: 10px 0 25px;
+			}
+			&_lst {
+				&_lk {
+					color: #B5B5B5;
+				}
+			}
 		}
-	}
-
-	.content {
-	    padding: 0 0 180px;
 	}
 }
 
