@@ -72,6 +72,17 @@ class DeliveryAction extends OrderV3 {
                 $this->logger(['delivery-self-price' => $order->delivery->price]);
             }
 
+            // вытаскиваем старые ошибки из предыдущих разбиений
+            $oldErrors = $this->session->flash();
+            if ($oldErrors && is_array($oldErrors)) {
+                foreach ($oldErrors as $error) {
+                    // распихиваем их по заказам
+                    if ($error instanceof \Model\OrderDelivery\Error && isset($error->details['block_name']) && isset($orderDelivery->orders[$error->details['block_name']])) {
+                        $orderDelivery->orders[$error->details['block_name']]->errors[] = $error;
+                    }
+                }
+            }
+
             $page = new \View\OrderV3\DeliveryPage();
             $page->setParam('orderDelivery', $orderDelivery);
             return new \Http\Response($page->show());
