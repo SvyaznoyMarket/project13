@@ -126,12 +126,14 @@ class DeliveryAction extends OrderV3 {
             if ($shopId) $splitData['shop_id'] = (int)$shopId;
         }
 
-        $orderDeliveryData = $this->client->query('cart/split',
+        $orderDeliveryData = $this->client->query(
+            'cart/split',
             [
                 'geo_id'     => $this->user->getRegionId(),
                 'request_id' => \App::$id, // SITE-4445
             ],
-            $splitData
+            $splitData,
+            3 * \App::config()->coreV2['timeout']
         );
 
         $orderDelivery = new \Model\OrderDelivery\Entity($orderDeliveryData);
