@@ -775,11 +775,6 @@ return [
         'pattern' => '/private/consultation',
         'action'  => ['User\ConsultationAction', 'execute'],
     ],
-    // изменение пароля пользователя
-    'user.changePassword' => [
-        'pattern' => '/private/password',
-        'action'  => ['User\ChangePasswordAction', 'execute'],
-    ],
 
     // маршрутизатор нескольких запросов
     'route' => [
