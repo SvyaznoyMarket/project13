@@ -1,6 +1,8 @@
 <?php
 /**
- * @var $page    \View\User\ChangePasswordPage
+ * @deprecated
+ *
+ * @var $page    \View\User\ConsultationPage
  * @var $user    \Session\User
  * @var $form    \View\User\ConsultationForm
  * @var $error   string

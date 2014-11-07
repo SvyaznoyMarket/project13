@@ -2,6 +2,9 @@
 
 namespace View\User;
 
+/**
+ * @deprecated
+ */
 class ConsultationForm {
     /** @var string */
     private $name;

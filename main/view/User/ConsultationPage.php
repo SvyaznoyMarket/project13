@@ -2,6 +2,9 @@
 
 namespace View\User;
 
+/**
+ * @deprecated
+ */
 class ConsultationPage extends \View\DefaultLayout {
     public function prepare() {
         // breadcrumbs
