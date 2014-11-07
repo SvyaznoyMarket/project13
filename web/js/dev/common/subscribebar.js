@@ -35,7 +35,7 @@
 			removeEmailError();
 		}
 
-		$.post(ENTER.utils.generateUrl('subscribe.create'), {email: email, error_msg: 'Вы уже подписаны на рассылку.'}, function(res) {
+		$.post(ENTER.utils.generateUrl('subscribe.create'), {email: email, error_msg: 'Вы уже подписаны на рассылку!'}, function(res) {
 			if (850 == res.code || 619 == res.code) {
 				removeEmailError();
 
