@@ -6,7 +6,7 @@
  * @author	Zaytsev Alexandr
  */
 ;(function() {
-	var inputs = $('input.bCustomInput'),
+	var inputs = $('input.bCustomInput, .js-customInput'),
 		body = $('body');
 	// end of vars
 
@@ -46,9 +46,9 @@
 	};
 
 
-	body.on('updateState', '.bCustomInput', updateState);
+	body.on('updateState', '.bCustomInput, .js-customInput', updateState);
 
-	body.on( 'change', '.bCustomInput', function() {
+	body.on( 'change', '.bCustomInput, .js-customInput', function() {
 		$(this).trigger('updateState');
 	});
 

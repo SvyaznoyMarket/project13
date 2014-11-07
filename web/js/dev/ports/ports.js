@@ -237,8 +237,6 @@ window.ANALYTICS = {
 	 * CityAds counter
  	 */
 	xcntmyAsync: function () {
-		// Счётчик отключен, т.к. из-за обращений к rtrgt.com, которые производятся данным счётчиком, наш сайт был забанен на google.adwords
-		/*
 		var
 			elem = $('#xcntmyAsync'),
 			data = elem ? elem.data('value') : false,
@@ -282,7 +280,6 @@ window.ANALYTICS = {
 			product();
 		}
 		init();
-		*/
 	},
 
 	sociomanticJS: function () {
@@ -551,7 +548,7 @@ window.ANALYTICS = {
 			ga_category = function ga_category() {
 				console.info( 'gaJS product catalog' );
 				/** Событие выбора фильтра */
-				$('div.bFilterBand input:not(:checked)').click(function ga_filterBrand(){
+				$('.js-filter-brand:not(:checked)').click(function ga_filterBrand(){
 					var
 						input = $(this),
 						name = input.data('name');
@@ -2100,12 +2097,14 @@ $(function(){
 	ANALYTICS.parseAllAnalDivs( $('.jsanalytics') );
 });
 
+var ADFOX_pr = Math.floor(Math.random() * 1000000);
+
 var ADFOX = {
 	adfoxbground : function() {
 		if( $(window).width() < 1000 ) // ATTENTION
 			return
 
-		if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
 		if (typeof(document.referrer) != 'undefined') {
 		  if (typeof(afReferrer) == 'undefined') {
 			afReferrer = escape(document.referrer);
@@ -2123,7 +2122,7 @@ var ADFOX = {
 	},
 	
 	adfox400counter : function() {
-	 if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
 		if (typeof(document.referrer) != 'undefined') {
 		  if (typeof(afReferrer) == 'undefined') {
 			afReferrer = escape(document.referrer);
@@ -2140,7 +2139,7 @@ var ADFOX = {
 	},
 
 	adfox400 : function() {
-		if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
 		if (typeof(document.referrer) != 'undefined') {
 		  if (typeof(afReferrer) == 'undefined') {
 			afReferrer = escape(document.referrer);
@@ -2157,7 +2156,7 @@ var ADFOX = {
 	},
 	
 	adfox215 : function() {
-		if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
 		if (typeof(document.referrer) != 'undefined') {
 		  if (typeof(afReferrer) == 'undefined') {
 			afReferrer = escape(document.referrer);
@@ -2193,7 +2192,7 @@ var ADFOX = {
 	},
 	
 	adfox683sub : function() {
-		if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
 		if (typeof(document.referrer) != 'undefined') {
 		  if (typeof(afReferrer) == 'undefined') {
 			afReferrer = escape(document.referrer);
@@ -2212,7 +2211,7 @@ var ADFOX = {
 	},
 
 	adfox980 : function() {
-		if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
 		if (typeof(document.referrer) != 'undefined') {
 		  if (typeof(afReferrer) == 'undefined') {
 			afReferrer = escape(document.referrer);
@@ -2230,7 +2229,7 @@ var ADFOX = {
 	},
 
 	adfoxWowCredit : function() {
-		if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
 		if (typeof(document.referrer) != 'undefined') {
 		  if (typeof(afReferrer) == 'undefined') {
 			afReferrer = escape(document.referrer);
@@ -2249,7 +2248,7 @@ var ADFOX = {
 	},
 
 	adfoxGift : function() {
-		if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
 		if (typeof(document.referrer) != 'undefined') {
 		  if (typeof(afReferrer) == 'undefined') {
 			afReferrer = escape(document.referrer);
@@ -2268,7 +2267,7 @@ var ADFOX = {
 	},
 
 	adfox920: function() {
-		if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
 		if (typeof(document.referrer) != 'undefined') {
 		  if (typeof(afReferrer) == 'undefined') {
 			afReferrer = escape(document.referrer);
@@ -2287,7 +2286,7 @@ var ADFOX = {
 	},
 
 	adfox_categoryFilterBanner: function() {
-		if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
+        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
 		if (typeof(document.referrer) != 'undefined') {
 			if (typeof(afReferrer) == 'undefined') {
 				afReferrer = escape(document.referrer);

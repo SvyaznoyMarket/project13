@@ -24,6 +24,7 @@
 
   .notBuying {
     z-index: 9;
+    background: @white;
   }
 
   .allpager, .allpagerJewel {
@@ -43,7 +44,7 @@
   }
 
   .allpagerJewel {
-    margin-right: 20px;
+    margin: 5px 10px 0 0;
   }
 
   .goodsbox {
@@ -80,44 +81,6 @@
 
     border: none !important;
     box-shadow: none;
-
-    .btnBuy__eLink {
-      .opacity(0);
-      .transition(opacity 0.1s ease-in-out);
-      position: absolute;
-      right: 37px;
-      bottom: 0;
-
-      display: block;
-
-      width: auto;
-      padding: 5px 10px 6px;
-
-      text-align: center;
-      text-indent: 0;
-
-      color: @white;
-      border: 1px solid @black;
-      background: @black;
-      text-shadow: none;
-      font-size: 12px;
-
-      &.mBought {
-        width: auto;
-
-        color: @black;
-        border: 1px solid @black;
-        background: @white;
-      }
-    }
-
-    .btnCmprb {
-      position: absolute;
-      right: 0;
-      bottom: 0px;
-      .opacity(0);
-      .transition(opacity 0.1s ease-in-out);
-    }
   }
 
   .bNavLoader__eIco {

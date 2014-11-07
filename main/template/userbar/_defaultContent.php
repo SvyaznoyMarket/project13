@@ -1,6 +1,6 @@
 <div class="topbar_l">
     <a class="topbar_loc jsChangeRegion" href="<?= $page->url('region.change', ['regionId' => $user->getRegion()->getId()]) ?>" data-url="<?= $page->url('region.init') ?>" data-region-id="<?= $user->getRegion()->getId() ?>" data-autoresolve-url="<?= $page->url('region.autoresolve', ['nocache' => 1]) ?>">
-        <?= ((mb_strlen($user->getRegion()->getName()) > 20) ? (mb_substr($user->getRegion()->getName(), 0, 20) . '...') : $user->getRegion()->getName()) ?>
+        <?= $user->getRegion()->getName() ?>
     </a>
 
     <div class="topbar_call" itemscope itemtype="http://schema.org/Organization">

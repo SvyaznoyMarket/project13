@@ -41,6 +41,7 @@ class Entity extends BasicEntity {
         $data['price_change_percent_trigger'] = 90;
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('ui', $data)) $this->setUi($data['ui']);
+        if (array_key_exists('uid', $data)) $this->setUi($data['uid']); // http://api.enter.ru/v2/category/tree возвращает uid
         if (array_key_exists('parent_id', $data)) $this->setParentId($data['parent_id']);
         if (array_key_exists('is_furniture', $data)) $this->setIsFurniture($data['is_furniture']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
@@ -170,10 +171,16 @@ class Entity extends BasicEntity {
      */
     public function setProductView($productView) {
         if ((int)$productView > 0) {
-            if (1 == $productView) {
-                $this->productView = self::PRODUCT_VIEW_COMPACT;
-            } else if (2 == $productView) {
-                $this->productView = self::PRODUCT_VIEW_EXPANDED;
+            $idToNameMap = [
+                1 => self::PRODUCT_VIEW_COMPACT,
+                2 => self::PRODUCT_VIEW_EXPANDED,
+                3 => self::PRODUCT_VIEW_LIGHT_WITH_BOTTOM_DESCRIPTION,
+                4 => self::PRODUCT_VIEW_LIGHT_WITH_HOVER_BOTTOM_DESCRIPTION,
+                5 => self::PRODUCT_VIEW_LIGHT_WITHOUT_DESCRIPTION,
+            ];
+
+            if (array_key_exists($productView, $idToNameMap)) {
+                $this->productView = $idToNameMap[$productView];
             }
         } else {
             $this->productView = (string)$productView;

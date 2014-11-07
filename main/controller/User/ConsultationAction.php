@@ -2,6 +2,9 @@
 
 namespace Controller\User;
 
+/**
+ * @deprecated
+ */
 class ConsultationAction {
 
     public function __construct() {

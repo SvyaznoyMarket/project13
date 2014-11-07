@@ -31,7 +31,7 @@ if (0 == $i && $slice) {
 ?>
 <? if (isset($fixedBtn['name'])) { ?>
 <div class="topbarfix_up">
-    <a class="btnGrey topbarfix_upLink <?= $fixedBtn['class'] ?>" href="<?= $fixedBtn['link'] ?>" title="<?= $fixedBtn['title'] ?>">
+    <a class="btnGrey topbarfix_upLink <?= $fixedBtn['class'] ?> js-userbar-upLink" href="<?= $fixedBtn['link'] ?>" title="<?= $fixedBtn['title'] ?>">
         <? if ($fixedBtn['showCorner']): ?><em class="cornerTop">&#9650;</em><? endif; ?>
         <?= $fixedBtn['name'] ?>
     </a>

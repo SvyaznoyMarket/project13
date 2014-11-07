@@ -175,25 +175,36 @@
 		.rounded(0 0 0 4px);
 	}
 
+	.cornerTop {
+		font-size: 10px;
+		font-style: normal;
+		.inline-block();
+		float: left;
+		padding-right: 5px;
+	}
+
 	&_upLink {
 		.inline-block();
 	    padding-right: 15px;
 	    width: auto;
 
+	    &-custom {
+	    	font-size: 16px;
+	    	margin: 6px 0 0;
+
+	    	.topbarfix_upLink_tx {
+	    		border-bottom: 1px dotted;
+	    	}
+
+	    	.cornerTop {
+	    		color: #808080;
+	    		font-size: 14px;
+	    		padding-top: 1px;
+	    	}
+	    }
 
 		&:hover {
-			background: @black;
-
-			color: @white;
 			text-decoration: none;
-		}
-
-		.cornerTop {
-			font-size: 10px;
-			font-style: normal;
-			.inline-block();
-			float: left;
-			padding-right: 5px;
 		}
 	}
 

@@ -1,93 +1,62 @@
 /** Листинг товаров **/
-.bBrandGoods {
-  position: relative;
-  z-index: 1;
-  top: -4px;
-  clear: both;
 
-  margin: 0 0 30px;
-}
+.brandItems {
+	border-top: 1px solid #f9f9f9;
+	margin: 0 0 5px;
+	&_n {
+		.opacity(0);
+		display: block;
+	}
+	&_img {
+		text-align: center;
+		display: block;
+		margin: 0 auto 8px;
+	}
+	.lstn_btn {
+		.inline-block();
+		vertical-align: middle;
+		.opacity(0);
+	}
+	&_i {
+		float: left;
+		width: 240px;
+		height: 240px;
+		&:hover {
+			.goodsbox {
+				z-index: 10;
+				border: 1px solid #AAAAAA;
+			}
+			.brandItems_n {
+				.opacity(1);
+			}
+			.lstn_btn {
+				.opacity(1);
+			}
+		}
+	}
 
-.bBrandGoodsList {
-  border-top: 1px solid #f9f9f9;
+	&-3col {
+		   .brandItems_i {
+			   width: 320px;
+			   height: 380px;
 
-  &__eItem {
-    float: left;
+			   .goodsbox {
+				   width: 297px;
+				   height: 360px;
 
-    width: 240px;
-    height: 240px;
+				   &__inner {
+					   width: 297px;
+					   height: 361px;
 
-    .bItemPrice {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      line-height: 25px;
-    }
+					   img.mainImg {
+						   width: 297px;
+					   }
 
-    .bPriceLine {
-      bottom: 21px;
-      color: #A6A6A6;
-      left: 0;
-      position: absolute;
-
-      .bPriceOld {
-        text-decoration: line-through;
-      }
-
-      .bDecor {
-        font-weight: normal;
-      }
-    }
-
-    .bItemName {
-      .opacity(0);
-      .transition(opacity 0.1s ease-in-out);
-    }
-
-    .bItemImg {
-      text-align: center;
-    }
-  
-    &:hover {
-
-      .goodsbox {
-        z-index: 10;
-
-        border: 1px solid #AAAAAA;
-      }
-
-      .bItemName {
-        .opacity(1);
-      }
-
-      .btnBuy__eLink {
-        .opacity(1);
-      }
-
-      .btnCmprb {
-        .opacity(1);
-      }
-    }
-  }
-
-  &.eItemBig {
-    .bBrandGoodsList__eItem {
-      width: 320px;
-      height: 380px;
-
-      .goodsbox {
-        width: 297px;
-        height: 360px;
-
-        .goodsbox__inner {
-          width: 297px;
-          height: 361px;
-
-          img.mainImg {
-            width: 297px;
-          }
-        }
-      }
-    }
-  }
-}
+					   .lstn_pr {
+						   width: 178px;
+					   }
+				   }
+			   }
+		   }
+	   }
+	}

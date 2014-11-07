@@ -24,7 +24,7 @@ $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productV
 
 ?>
 
-<div class="goodsbox goodsline bNewGoodsBox <? echo ($isHidden)? 'hidden': '' ?>" ref="<?= $product->getToken() ?>">
+<div class="goodsbox goodsline bNewGoodsBox <? echo ($isHidden)? 'hidden': '' ?> js-goodsbox">
     <div class="goodsboxlink" <? if ($product->getIsBuyable()): ?> data-cid="<?= $product->getId() ?>" <? endif ?> <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
         <div class="photo">
             <? if ($productVideo && $productVideo->getContent()): ?><a class="goodsphoto_eVideoShield goodsphoto_eVideoShield_small" href="<?= $product->getLink() ?>"></a><? endif ?>

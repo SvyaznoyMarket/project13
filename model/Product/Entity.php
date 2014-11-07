@@ -351,20 +351,6 @@ class Entity extends BasicEntity {
     }
 
     /**
-     * @param string $image
-     */
-    public function setImage($image) {
-        $this->image = (string)$image;
-    }
-
-    /**
-     * @return string
-     */
-    public function getImage() {
-        return $this->image;
-    }
-
-    /**
      * @param boolean $isModel
      */
     public function setIsModel($isModel) {
@@ -430,7 +416,7 @@ class Entity extends BasicEntity {
     }
 
     public function getPhoto3d() {
-      return $this->photo3d;
+        return $this->photo3d;
     }
 
     /**

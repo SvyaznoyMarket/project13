@@ -13,6 +13,8 @@ class Entity {
     private $link;
     /** @var int */
     private $quantity;
+    /** @var string */
+    private $imageUrl;
 
 
     public function __construct(array $data = []) {
@@ -21,6 +23,7 @@ class Entity {
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('link', $data)) $this->setLink($data['link']);
         if (array_key_exists('quantity', $data)) $this->setQuantity($data['quantity']);
+        if (array_key_exists('media_image', $data)) $this->setImageUrl($data['media_image']);
     }
 
     /**
@@ -80,17 +83,30 @@ class Entity {
     }
 
     /**
-     * @param string $quantity
+     * @param int $quantity
      */
     public function setQuantity($quantity) {
         $this->quantity = (int)$quantity;
     }
 
     /**
-     * @return quantity
+     * @return int
      */
     public function getQuantity() {
         return $this->quantity;
     }
 
+    /**
+     * @param string $url
+     */
+    public function setImageUrl($url) {
+        $this->imageUrl = (string)$url;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageUrl() {
+        return $this->imageUrl;
+    }
 }

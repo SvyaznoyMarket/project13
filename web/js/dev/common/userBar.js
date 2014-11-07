@@ -19,14 +19,15 @@
 		emptyCompareNoticeElements = {},
 		emptyCompareNoticeShowClass = 'topbarfix_cmpr_popup-show',
 
-		topBtn = userBarFixed.find('.topbarfix_upLink'),
+		topBtn = userBarFixed.find('.js-userbar-upLink'),
 		userbarConfig = userBarFixed.data('value'),
 		body = $('body'),
 		w = $(window),
 		buyInfoShowing = false,
 		overlay = $('<div>').css({ position: 'fixed', display: 'none', width: '100%', height:'100%', top: 0, left: 0, zIndex: 900, background: 'black', opacity: 0.4 }),
 
-		scrollTarget;
+		scrollTarget,
+		filterTarget;
 	// end of vars
 
 	userBar.showOverlay = false;
@@ -79,7 +80,7 @@
 	 * Прокрутка до фильтра и раскрытие фильтров
 	 */
 	function upToFilter() {
-		$.scrollTo(scrollTarget, 500);
+		$.scrollTo(filterTarget, 500);
 		ENTER.catalog.filter.openFilter();
 
 		return false;
@@ -419,6 +420,12 @@
 		body.on('addtocart', showBuyInfo);
 		userBarFixed.on('click', '.jsCartDelete', deleteProductHandler);
 		scrollTarget = $(userbarConfig.target);
+
+		if (userbarConfig.filterTarget) {
+			filterTarget = $(userbarConfig.filterTarget);
+		} else {
+			filterTarget = scrollTarget;
+		}
 
 		if ( topBtn.length ) {
 			topBtn.on('click', upToFilter);

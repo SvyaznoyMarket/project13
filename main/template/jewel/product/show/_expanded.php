@@ -27,7 +27,7 @@ $productVideo = reset($productVideos);
     }
 </style>
 
-<div class="goodsbox goodsline bNewGoodsBox" ref="<?= $product->getToken() ?>">
+<div class="goodsbox goodsline bNewGoodsBox js-goodsbox">
     <div class="goodsboxlink" <? if ($product->getIsBuyable()): ?> data-cid="<?= $product->getId() ?>" <? endif ?> <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
         <div class="photo">
             <? if ($productVideo && $productVideo->getContent()): ?><a class="goodsphoto_eVideoShield goodsphoto_eVideoShield_small" href="<?= $product->getLink() ?>"></a><? endif ?>

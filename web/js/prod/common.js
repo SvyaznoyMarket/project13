@@ -1472,7 +1472,7 @@
  * @author	Zaytsev Alexandr
  */
 ;(function() {
-	var inputs = $('input.bCustomInput'),
+	var inputs = $('input.bCustomInput, .js-customInput'),
 		body = $('body');
 	// end of vars
 
@@ -1512,9 +1512,9 @@
 	};
 
 
-	body.on('updateState', '.bCustomInput', updateState);
+	body.on('updateState', '.bCustomInput, .js-customInput', updateState);
 
-	body.on( 'change', '.bCustomInput', function() {
+	body.on( 'change', '.bCustomInput, .js-customInput', function() {
 		$(this).trigger('updateState');
 	});
 
@@ -1660,7 +1660,7 @@ $(document).ready(function(){
             datac = $('#_categoryData').data('category');
         // end of vars
 
-        box = t.parents('div.goodsbox__inner');
+        box = t.parents('.js-goodsboxContainer');
 
         if ( !box.length ) {
         	box = t.parents('div.goodsboxlink');
@@ -1703,7 +1703,7 @@ $(document).ready(function(){
     if ( $('#_categoryData').length ) {
 		kissForCategory();
         /** Вызываем kissForProductOfCategory() для всех категорий - в том числе слайдеров, аджаксов и тп **/
-        $('body').delegate('div.goodsbox a', 'click', kissForProductOfCategory);
+        $('body').delegate('.js-goodsbox a', 'click', kissForProductOfCategory);
 	}
 
 	/**
@@ -1738,7 +1738,7 @@ $(document).ready(function(){
 			}
 		};
 
-		$('.goodsbox__inner').on('click', KISSsearchClick);
+		$('.js-goodsboxContainer').on('click', KISSsearchClick);
 		$('.goodsboxlink').on('click', KISSsearchClick);
 	};
 
@@ -4151,14 +4151,15 @@ $(document).ready(function() {
 		emptyCompareNoticeElements = {},
 		emptyCompareNoticeShowClass = 'topbarfix_cmpr_popup-show',
 
-		topBtn = userBarFixed.find('.topbarfix_upLink'),
+		topBtn = userBarFixed.find('.js-userbar-upLink'),
 		userbarConfig = userBarFixed.data('value'),
 		body = $('body'),
 		w = $(window),
 		buyInfoShowing = false,
 		overlay = $('<div>').css({ position: 'fixed', display: 'none', width: '100%', height:'100%', top: 0, left: 0, zIndex: 900, background: 'black', opacity: 0.4 }),
 
-		scrollTarget;
+		scrollTarget,
+		filterTarget;
 	// end of vars
 
 	userBar.showOverlay = false;
@@ -4211,7 +4212,7 @@ $(document).ready(function() {
 	 * Прокрутка до фильтра и раскрытие фильтров
 	 */
 	function upToFilter() {
-		$.scrollTo(scrollTarget, 500);
+		$.scrollTo(filterTarget, 500);
 		ENTER.catalog.filter.openFilter();
 
 		return false;
@@ -4551,6 +4552,12 @@ $(document).ready(function() {
 		body.on('addtocart', showBuyInfo);
 		userBarFixed.on('click', '.jsCartDelete', deleteProductHandler);
 		scrollTarget = $(userbarConfig.target);
+
+		if (userbarConfig.filterTarget) {
+			filterTarget = $(userbarConfig.filterTarget);
+		} else {
+			filterTarget = scrollTarget;
+		}
 
 		if ( topBtn.length ) {
 			topBtn.on('click', upToFilter);

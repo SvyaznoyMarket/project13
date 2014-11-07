@@ -138,7 +138,7 @@ $(document).ready(function(){
             datac = $('#_categoryData').data('category');
         // end of vars
 
-        box = t.parents('div.goodsbox__inner');
+        box = t.parents('.js-goodsboxContainer');
 
         if ( !box.length ) {
         	box = t.parents('div.goodsboxlink');
@@ -181,7 +181,7 @@ $(document).ready(function(){
     if ( $('#_categoryData').length ) {
 		kissForCategory();
         /** Вызываем kissForProductOfCategory() для всех категорий - в том числе слайдеров, аджаксов и тп **/
-        $('body').delegate('div.goodsbox a', 'click', kissForProductOfCategory);
+        $('body').delegate('.js-goodsbox a', 'click', kissForProductOfCategory);
 	}
 
 	/**
@@ -216,7 +216,7 @@ $(document).ready(function(){
 			}
 		};
 
-		$('.goodsbox__inner').on('click', KISSsearchClick);
+		$('.js-goodsboxContainer').on('click', KISSsearchClick);
 		$('.goodsboxlink').on('click', KISSsearchClick);
 	};
 

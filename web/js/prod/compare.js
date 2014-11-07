@@ -475,6 +475,18 @@
 			updateElements();
 		});
 
+		$.each(compareModel.compareGroups(), function(key, value) {
+			$.each(value.propertyGroups(), function(key, value) {
+				value.opened.subscribe(function(){
+					if (fixedTableCells) {
+						fixedTableCells.updateSize();
+					}
+
+					updateElements();
+				});
+			});
+		});
+
 		$compare.on('click', '.js-compare-deleteProductLink', function(e){
 			e.preventDefault();
 			var anchor = e.currentTarget;
