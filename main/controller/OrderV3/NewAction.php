@@ -27,7 +27,8 @@ class NewAction extends OrderV3 {
                 $post = $request->request->all();
                 $shop =  null;
                 if (method_exists($this->cart, 'getShop')) $shop = $this->cart->getShop();
-                (new DeliveryAction())->getSplit(null, $shop);
+                $firstDelivery = (new DeliveryAction())->getSplit(null, $shop);
+                if ($firstDelivery->errors) $this->session->flash($firstDelivery->errors);
                 $delivery = (new DeliveryAction())->getSplit($post);
 
                 // залогируем первичное время доставки
