@@ -15,10 +15,6 @@ class Action {
         $channelId = (int)$request->get('channel', 1);
         try {
             $email = trim((string)$request->get('email'));
-            $channels = \RepositoryManager::subscribeChannel()->getCollection(\App::user()->getEntity());
-            if (!(bool)$channels) {
-                throw new \Exception('Не получен ни один канал для подписки');
-            }
 
             $params = [
                 'email'      => $email,
