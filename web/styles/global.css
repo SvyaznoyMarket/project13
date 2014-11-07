@@ -8082,13 +8082,6 @@ img[height="0"] {
   .bCatalog-custom .bSortingLine.mPagerBottom .bSortingList {
     margin-right: 0;
   }
-  .bCatalog-custom .adfoxWrapper {
-    left: 50%;
-    line-height: 100%;
-    margin: -129px 0 0 -108px;
-    position: absolute;
-    top: 50%;
-  }
   .bCatalog-custom .bSortingList.mPager {
     margin-right: 0;
   }
@@ -8468,6 +8461,13 @@ img[height="0"] {
   .lstn_i-banner .lstn_i_inn {
     background-color: transparent;
     min-height: 249px;
+  }
+  .lstn_i-banner .adfoxWrapper {
+    left: 50%;
+    line-height: 100%;
+    margin: -129px 0 0 -108px;
+    position: absolute;
+    top: 50%;
   }
   .lstn_n {
     -moz-opacity: 0;
