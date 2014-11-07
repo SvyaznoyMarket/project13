@@ -1238,7 +1238,7 @@ img[height="0"] {
     margin: 0 10px;
     width: 210px;
   }
-  .sbscrBar_it-err {
+  .sbscrBar_it.mError {
     border-color: #ec5656;
   }
   .sbscrBar_itw {
@@ -1247,13 +1247,11 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
+    position: relative;
   }
-  .sbscrBar_errtx {
-    color: #ec5656;
-    font-weight: bold;
-    margin: 2px 0 -4px 10px;
-    text-align: left;
-    display: none;
+  .sbscrBar_itw .bErrorText {
+    right: 12px;
+    top: 13px;
   }
   .sbscrBar_is {
     display: inline-block;
