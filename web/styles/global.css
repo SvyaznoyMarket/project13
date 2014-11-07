@@ -5123,6 +5123,7 @@ img[height="0"] {
     height: 50px;
     margin-left: -10px;
     padding: 5px 10px 0;
+    white-space: nowrap;
     background: #000000;
     line-height: 45px;
   }
@@ -5169,6 +5170,7 @@ img[height="0"] {
     padding: 0;
     height: 55px;
     width: 960px;
+    white-space: nowrap;
   }
   .orderHd-v2 .orderHd_l {
     display: inline-block;
