@@ -9064,11 +9064,11 @@
   .slideItem_cntr {
     text-align: right;
     font-size: 12px;
-    margin: 0 0 5px;
+    margin: 0 20px 5px 0;
   }
   .slideItem_inn {
     overflow: hidden;
-    width: 600px;
+    width: 650px;
     margin: 0 auto;
   }
   .slideItem_lst {
@@ -9078,7 +9078,7 @@
   .slideItem_i {
     display: none;
     float: left;
-    margin: 10px 0 0 10px;
+    margin: 10px 5px;
     width: 120px;
     position: relative;
   }
@@ -9114,6 +9114,9 @@
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
   }
   .slideItem .btnBuy__eLink {
     background: #f99b1c;
@@ -9134,11 +9137,11 @@
     cursor: pointer;
   }
   .slideItem_btn-nxt {
-    right: 10px;
+    right: 0;
     background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAYAAAD5Jg1dAAAA2UlEQVQoz2PQ1tYWMjM13WtiYmLIgA8YGhrKm5ua/jY3MbkmIyPDiVcxUGEdEP83NTGZwkAAMAOtPwZSDHSCJ16VpqamSkDrPwM1PAc6R5SQ4kSQqWYmJhsIOYEBaOoasHuNjFLxKjTT0BAGKn4KNPWLgYGBKl7FQA+5AhX+A2o4CeSy4HeCsfEEkBOAuAmvQgUFBQ6gqZeBCv8AnaCAU6GKigo7UQqBsdRP0GqiPANKTUQFD1EBDotCoOKN+BOFqeknQomCuGRmamxcSzDhGhsbyxGVFYjNXABdnlb0UcXpFwAAAABJRU5ErkJggg==") no-repeat 50% 50%;
   }
   .slideItem_btn-prv {
-    left: 10px;
+    left: 0;
     background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAYCAYAAADDLGwtAAAA30lEQVR42q3TMQ4BQRQGYAkJWqLbMJGVbLLNjvnf7AkUjqFwDAoXoHAMBQfQStQSNxA9OoI3hYr3IuElW+zmy/wzb98U/lIArCdap2laE1EURdUc2OdEV+dcU4QEzBk9yLmRFtkPiGM3/Fr8iKy1DQZHhiciaour5cAqrMZoICLqdocBMV6IKMuyjgcujA5aO0oMtgzvAHryvogmIZKAqRZpGN08sIvjuPwVNMZUXt/V6Ny5maz0w+jt8UlSF5jQcK08sBR+oTAUwFkeCn3M9MHlZyyQ96vA22n9cLmEegKx01b0E6PhwQAAAABJRU5ErkJggg==") no-repeat 50% 50%;
   }
   .slideItem_btn.mDisabled {
@@ -9150,7 +9153,7 @@
     filter: alpha(opacity=30);
   }
   .slideItem-7item .slideItem_inn {
-    width: 897px;
+    width: 910px;
   }
   .slideItem-br1 {
     border: 3px solid #ffa901;
@@ -9158,6 +9161,12 @@
     -moz-border-radius: 10px;
     border-radius: 10px;
     padding: 15px 20px 40px;
+  }
+  .slideItem-br1 .slideItem_btn-prv {
+    left: 10px;
+  }
+  .slideItem-br1 .slideItem_btn-nxt {
+    right: 10px;
   }
   /**
  * Если есть категории
@@ -9173,7 +9182,7 @@
     float: left;
     overflow: auto;
     width: 219px;
-    height: 215px;
+    height: 226px;
     padding: 5px 0 0;
     border-top: 1px solid #c7c7c7;
     border-right: 1px solid #c7c7c7;
@@ -9203,8 +9212,8 @@
     padding: 5px 0 0 20px;
     border-top: 1px solid #c7c7c7;
   }
-  .bGoodsSlider.mWithCategory .slideItem__eInner {
-    width: 360px;
+  .bGoodsSlider.mWithCategory .slideItem_inn {
+    width: 390px;
   }
 }
 /*---END---СТИЛИ СЛАЙДЕРА---*/
