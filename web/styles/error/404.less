@@ -1,17 +1,39 @@
 .errPage {
-	position: relative;
+	margin: 0 auto;
+	padding: 20px 0 0;
+    width: 986px;
+    font-size: 14px;
 	&_lg {
 		background: url("@{base-url}/error/img/b404Logo.png") no-repeat 0 0;
 	    height: 87px;
 	    position: absolute;
-	    right: 10px;
-	    top: 10px;
+	    right: 20px;
+	    top: 20px;
 	    width: 95px;
 	}
 	&_cnt {
-		background: url("@{base-url}/errors/img/b404.png") no-repeat 0 0;
-	    height: 305px;
-	    padding: 120px 0 0 500px;
-	    text-align: left;
+	    &_t {
+	    	background: url("@{base-url}/error/img/b404.png") no-repeat 0 0;
+		    height: 305px;
+		    padding: 120px 0 0 500px;
+		    text-align: left;
+		    margin: 0 0 70px;
+	    }
+	    &_b {
+
+	    }
+	}
+	&_f {
+		margin: 0 0 20px;
+	}
+	&_tx {
+		border: 1px solid #ddd;
+	    .rounded(5px);
+	    font-size: 16px;
+	    margin: 0 10px 0 0;
+	    outline: none;
+	    padding: 5px 0 4px 10px;
+	    vertical-align: top;
+	    width: 300px;
 	}
 }

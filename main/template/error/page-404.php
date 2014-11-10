@@ -11,6 +11,7 @@
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
     <link href="/css/global.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/styles/global.min.css" rel="stylesheet" type="text/css"/>
     <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
     <script src="/js/prod/LAB.min.js" type="text/javascript"></script>
     <script src="/js/vendor/html5.js" type="text/javascript"></script>
@@ -23,18 +24,123 @@
     <a class="errPage_lg" href='/'></a>
 
     <div class="errPage_cnt">
-        <span><?= \App::config()->debug ? $exception->getMessage() : 'Упс! Запрашиваемая вами страница не найдена' ?></span>
+        <div class="errPage_cnt_t">
+            <span><?= \App::config()->debug ? $exception->getMessage() : 'Упс! Запрашиваемая вами страница не найдена' ?></span>
 
-        <h2><b>Вы легко можете найти то,<br> что искали!</b></h2>
+            <h2><b>Вы легко можете найти то,<br> что искали!</b></h2>
 
-        <? $productCount = number_format(\App::config()->product['totalCount'], 0, ',', ' ') ?>
-        <form action="<?= $page->url('search') ?>" method="get" id="searchForm">
-            <input id="searchStr" name="q" type='text' value="Поиск среди десятков тысяч товаров<?//= $productCount ?>" onBlur="var field = document.getElementById('searchStr'); if(field.value == ''){field.value = 'Поиск среди десятков тысяч товаров<?//= $productCount ?>'};return false;" onFocus="var field = document.getElementById('searchStr'); if(field.value == 'Поиск среди десятков тысяч товаров<?//= $productCount ?>'){field.value = ''};return false;">
-            <a class='bOrangeButton' href onclick="document.getElementById('searchForm').submit(); return false;">Найти</a>
-        </form>
-        <br>
-        <span>или позвоните нам в&nbsp;Контакт-сENTER <b>8 (800) 700 00 09</b><br> Звонок бесплатный. Радость в&nbsp;подарок.</span><br><br>
-        <a class='bBigOrangeButton' href='/'>Перейти на&nbsp;главную</a>
+            <? $productCount = number_format(\App::config()->product['totalCount'], 0, ',', ' ') ?>
+            <form class="errPage_f" action="<?= $page->url('search') ?>" method="get" id="searchForm">
+                <input id="searchStr" name="q" type='text' class="errPage_tx" value="Поиск среди десятков тысяч товаров<?//= $productCount ?>" onBlur="var field = document.getElementById('searchStr'); if(field.value == ''){field.value = 'Поиск среди десятков тысяч товаров<?//= $productCount ?>'};return false;" onFocus="var field = document.getElementById('searchStr'); if(field.value == 'Поиск среди десятков тысяч товаров<?//= $productCount ?>'){field.value = ''};return false;">
+                <a class='bOrangeButton' href onclick="document.getElementById('searchForm').submit(); return false;">Найти</a>
+            </form>
+
+            <span>или позвоните нам в&nbsp;Контакт-сENTER <b>8 (800) 700 00 09</b><br> Звонок бесплатный. Радость в&nbsp;подарок.</span><br><br>
+            <a class='bBigOrangeButton' href='/'>Перейти на&nbsp;главную</a>
+        </div>
+        
+        <div class="errPage_cnt_b">
+            <div class="bSlider bSlider-7item bSlider-br1">
+                <div class="bSlider_t">Мы рекомендуем</div>
+                <div class="bSlider_cntr">Страница 2 из 8</div>
+
+                <div class="bSlider__eInner">
+                    <ul class="bSlider__eList clearfix" style="width: 1200px; left: 0px;">
+                        <li class="bSlider__eItem jsSliderItem" style="display: list-item;">
+                            <img alt="Подари жизнь" src="http://fs08.enter.ru/7/1/66x23/ff/236550.png" class="bProductDescSticker">
+                            <a href="" class="productImg">
+                                <img alt="" src="http://fs07.enter.ru/1/1/120/a3/206929.jpg">
+                            </a>
+                            <div class="productName"><a href="">Гарнитура Genius HS-G600 с микрофоном, черная</a></div>
+                            <div class="productPrice"><span class="price">2 340 <span class="rubl">p</span></span></div>
+                            <div class="btnBuy">
+                                <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
+                            </div>                                            
+                        </li>
+                        <li class="bSlider__eItem jsSliderItem" style="display: list-item;">
+                            <img alt="Подари жизнь" src="http://fs08.enter.ru/7/1/66x23/ff/236550.png" class="bProductDescSticker">
+                            <a href="" class="productImg">
+                                <img alt="" src="http://fs07.enter.ru/1/1/120/a3/206929.jpg">
+                            </a>
+                            <div class="productName"><a href="">Гарнитура Genius HS-G600 с микрофоном, черная</a></div>
+                            <div class="productPrice"><span class="price">2 340 <span class="rubl">p</span></span></div>
+                            <div class="btnBuy">
+                                <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
+                            </div>                                            
+                        </li>
+                        <li class="bSlider__eItem jsSliderItem" style="display: list-item;">
+                            <img alt="Подари жизнь" src="http://fs08.enter.ru/7/1/66x23/ff/236550.png" class="bProductDescSticker">
+                            <a href="" class="productImg">
+                                <img alt="" src="http://fs07.enter.ru/1/1/120/a3/206929.jpg">
+                            </a>
+                            <div class="productName"><a href="">Гарнитура Genius HS-G600 с микрофоном, черная</a></div>
+                            <div class="productPrice"><span class="price">2 340 <span class="rubl">p</span></span></div>
+                            <div class="btnBuy">
+                                <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
+                            </div>                                            
+                        </li>
+                        <li class="bSlider__eItem jsSliderItem" style="display: list-item;">
+                            <img alt="Подари жизнь" src="http://fs08.enter.ru/7/1/66x23/ff/236550.png" class="bProductDescSticker">
+                            <a href="" class="productImg">
+                                <img alt="" src="http://fs07.enter.ru/1/1/120/a3/206929.jpg">
+                            </a>
+                            <div class="productName"><a href="">Гарнитура Genius HS-G600 с микрофоном, черная</a></div>
+                            <div class="productPrice"><span class="price">2 340 <span class="rubl">p</span></span></div>
+                            <div class="btnBuy">
+                                <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
+                            </div>                                            
+                        </li>
+                        <li class="bSlider__eItem jsSliderItem" style="display: list-item;">
+                            <img alt="Подари жизнь" src="http://fs08.enter.ru/7/1/66x23/ff/236550.png" class="bProductDescSticker">
+                            <a href="" class="productImg">
+                                <img alt="" src="http://fs07.enter.ru/1/1/120/a3/206929.jpg">
+                            </a>
+                            <div class="productName"><a href="">Гарнитура Genius HS-G600 с микрофоном, черная</a></div>
+                            <div class="productPrice"><span class="price">2 340 <span class="rubl">p</span></span></div>
+                            <div class="btnBuy">
+                                <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
+                            </div>                                            
+                        </li>
+                        <li class="bSlider__eItem jsSliderItem" style="display: list-item;">
+                            <img alt="Подари жизнь" src="http://fs08.enter.ru/7/1/66x23/ff/236550.png" class="bProductDescSticker">
+                            <a href="" class="productImg">
+                                <img alt="" src="http://fs07.enter.ru/1/1/120/a3/206929.jpg">
+                            </a>
+                            <div class="productName"><a href="">Гарнитура Genius HS-G600 с микрофоном, черная</a></div>
+                            <div class="productPrice"><span class="price">2 340 <span class="rubl">p</span></span></div>
+                            <div class="btnBuy">
+                                <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
+                            </div>                                            
+                        </li>
+                        <li class="bSlider__eItem jsSliderItem" style="display: list-item;">
+                            <img alt="Подари жизнь" src="http://fs08.enter.ru/7/1/66x23/ff/236550.png" class="bProductDescSticker">
+                            <a href="" class="productImg">
+                                <img alt="" src="http://fs07.enter.ru/1/1/120/a3/206929.jpg">
+                            </a>
+                            <div class="productName"><a href="">Гарнитура Genius HS-G600 с микрофоном, черная</a></div>
+                            <div class="productPrice"><span class="price">2 340 <span class="rubl">p</span></span></div>
+                            <div class="btnBuy">
+                                <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
+                            </div>                                            
+                        </li>
+                        <li class="bSlider__eItem jsSliderItem" style="display: list-item;">
+                            <img alt="Подари жизнь" src="http://fs08.enter.ru/7/1/66x23/ff/236550.png" class="bProductDescSticker">
+                            <a href="" class="productImg">
+                                <img alt="" src="http://fs07.enter.ru/1/1/120/a3/206929.jpg">
+                            </a>
+                            <div class="productName"><a href="">Гарнитура Genius HS-G600 с микрофоном, черная</a></div>
+                            <div class="productPrice"><span class="price">2 340 <span class="rubl">p</span></span></div>
+                            <div class="btnBuy">
+                                <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
+                            </div>                                            
+                        </li>                    
+                    </ul>
+                </div>
+
+                <div class="bSlider__eBtn mPrev mDisabled"></div>
+                <div class="bSlider__eBtn mNext"></div>
+            </div>
+        </div>
     </div>
 </div>
 
