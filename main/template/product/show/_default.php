@@ -19,11 +19,12 @@
  * @var $isUserSubscribedToEmailActions boolean
  * @var $actionChannelName string
  */
+?>
 
+<?
+$region = \App::user()->getRegion();
 if (!$lifeGiftProduct) $lifeGiftProduct = null;
-
 $isKitPage = (bool)$product->getKit();
-
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
@@ -170,6 +171,22 @@ $isKitPage = (bool)$product->getKit();
 
             <? if (!$hasFurnitureConstructor && count($product->getPartnersOffer()) == 0 && (!$isKitPage || $product->getIsKitLocked())): ?>
                 <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
+
+                <div id="yandex-map-container" class="selShop_r" style="display: none;" data-options="<?= $helper->json(['latitude' => $region->getLatitude(), 'longitude' => $region->getLongitude(), 'zoom' => 10])?>"></div>
+                <div id="kladr-config" data-value="<?= $helper->json(\App::config()->kladr ) ?>"></div>
+                <div id="region-name" data-value=<?= $helper->json($region->getName()) ?>></div>
+
+                <noindex>
+                    <div id="jsOneClickContent" class="popup popup-w635">
+                        <a class="close" href="#">Закрыть</a>
+
+                        <div id="jsOneClickContentPage">
+                            <?= $helper->render('order-v3-1click/__form', [
+                              'product' => $product,
+                            ]) ?>
+                        </div>
+                    </div>
+                </noindex>
             <? endif ?>
 
             <? if (!$isKitPage || $product->getIsKitLocked()) : ?>

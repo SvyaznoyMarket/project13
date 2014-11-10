@@ -86,6 +86,11 @@
         },
         sendChanges = function sendChangesF (action, params) {
             console.info('Sending action "%s" with params:', action, params);
+
+            if ($orderContent.data('shop')) {
+                params.shopId = $orderContent.data('shop')
+            }
+
             $.ajax({
                 url: '/order-1click/delivery',
                 type: 'POST',

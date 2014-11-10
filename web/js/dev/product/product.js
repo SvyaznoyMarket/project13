@@ -189,6 +189,15 @@ $(document).ready(function() {
                 });
 
                 if ($target.length) {
+                    var data = $.parseJSON($orderContent.data('param'));
+                    data.quantity = button.data('quantity');
+                    data.shopId = button.data('shop');
+                    $orderContent.data('shop', data.shopId);
+
+                    if (button.data('title')) {
+                        $target.find('.jsOneClickTitle').text(button.data('title'));
+                    }
+
                     $target.lightbox_me({
                         centered: true,
 						sticky: '#jsOneClickContent' != button.data('target'),
@@ -201,9 +210,6 @@ $(document).ready(function() {
 							$('.jsOrderV3PhoneField').focus();
                         }
                     });
-
-                    var data = $.parseJSON($orderContent.data('param'));
-                    data.quantity = button.data('quantity');
 
                     $.ajax({
                         url: $orderContent.data('url'),
