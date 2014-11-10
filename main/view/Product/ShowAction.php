@@ -63,6 +63,7 @@ class ShowAction {
                 ? ['name' => $product->getLabel()->getName(), 'image' => $product->getLabel()->getImageUrl()]
                 : null
             ,
+            'isPodariZhiznProduct' => $product->getLabel() && $product->getLabel()->getId() == \Model\Product\BasicEntity::LABEL_ID_PODARI_ZHIZN,
             'cartButton'   => [],
             'image'        => $product->getImageUrl($imageSize),
             'hoverImage'   => $this->getHoverImageUrl($product, $imageSize),
