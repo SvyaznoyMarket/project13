@@ -739,10 +739,9 @@ return [
         'require' => ['productId' => '\d+'],
     ],
 
-    // smartchoice
-    'product/smartchoice' => [
-        'pattern' => '/ajax/product-smartchoice',
-        'action' => ['Product\SmartChoiceAction', 'execute'],
+    'main.recommended' => [
+        'pattern' => '/main/recommended',
+        'action'  => ['Main\RecommendedAction', 'execute'],
     ],
 
     // редактирование данных пользователя

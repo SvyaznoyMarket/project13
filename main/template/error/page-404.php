@@ -3,6 +3,10 @@
  * @var $page      \View\Layout
  * @var $exception \Exception
  */
+
+$page = new \View\DefaultLayout();
+$helper = new \Helper\TemplateHelper();
+
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -12,12 +16,12 @@
     <meta name="keywords" content=""/>
     <link href="/css/global.min.css" rel="stylesheet" type="text/css"/>
     <link href="/styles/global.min.css" rel="stylesheet" type="text/css"/>
-    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+    <script src="http://yandex.st/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
     <script src="/js/prod/LAB.min.js" type="text/javascript"></script>
-    <script src="/js/vendor/html5.js" type="text/javascript"></script>
+    <script src="/js/prod/html5.min.js" type="text/javascript"></script>
 </head>
-<body class='b404' data-template="page404" data-debug="<?= $page->json(\App::config()->debug); ?>">
-<? if (\App::config()->debug) echo \App::templating()->render('_config',['page'=> $page]); ?>
+<body class='b404' data-template="page404" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
+<?= $page->render('_config'); ?>
 
 
 <div class="errPage">
@@ -38,6 +42,18 @@
             <span>или позвоните нам в&nbsp;Контакт-сENTER <b>8 (800) 700 00 09</b><br> Звонок бесплатный. Радость в&nbsp;подарок.</span><br><br>
             <a class='bBigOrangeButton' href='/'>Перейти на&nbsp;главную</a>
         </div>
+
+        <? if (\App::config()->product['showRelated']): ?>
+            <?= $helper->render('product/__slider', [
+                'type'           => 'alsoBought',
+                'title'          => 'Мы рекомендуем',
+                'products'       => [],
+                'count'          => null,
+                'limit'          => \App::config()->product['itemsInSlider'],
+                'page'           => 1,
+                'url'            => $page->url('main.recommended'),
+            ]) ?>
+        <? endif ?>
         
         <div class="errPage_cnt_b">
             <div class="slideItem slideItem-7item slideItem-br1">
@@ -202,6 +218,6 @@
     }
 </script>
 
-<script src="/js/loadjs.js" type="text/javascript"></script>
+<script src="/js/loadjs.js?t=<?= uniqid() //t90 ?>" type="text/javascript"></script>
 </body>
 </html>

@@ -19,7 +19,7 @@ class Client {
     }
 
 
-    public function query($action, $item_id) {
+    public function query($action, $item_id = null) {
         $startedAt = \Debug\Timer::start('RetailRocket');
 
         $connection = $this->createResource($action, $item_id);
@@ -85,7 +85,7 @@ class Client {
 
 
 
-    public function createResource($action, $item_id) {
+    public function createResource($action, $item_id = null) {
         $query = $this->config['apiUrl'] . $action . '/' . $this->config['account'] . '/' . $item_id;
 
         $user = \App::user();

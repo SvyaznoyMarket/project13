@@ -219,12 +219,12 @@ class BasicRecommendedAction {
      * @return \Model\Product\Entity[]  $products
      * @throws \Exception\
      */
-    public function getProductsIdsFromRetailrocket( $product, \Http\Request $request, $method = 'UpSellItemToItems' ) {
+    public function getProductsIdsFromRetailrocket( $product = null, \Http\Request $request, $method = 'UpSellItemToItems' ) {
         \App::logger()->debug('Exec ' . __METHOD__);
         $this->setEngine('retailrocket');
 
         $client = \App::retailrocketClient();
-        $productId = $product->getId();
+        $productId = $product ? $product->getId() : null;
         $ids = $client->query('Recomendation/' . $method, $productId);
 
         return $ids;

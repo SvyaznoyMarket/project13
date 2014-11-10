@@ -211,7 +211,7 @@ class RecommendedAction {
         }
 
         foreach ($products as $i => $product) {
-            /* @var product Model\Product\Entity */
+            /* @var \Model\Product\Entity $product */
 
             if (!$product instanceof \Model\Product\BasicEntity || !$product->getIsBuyable())  {
                 unset($products[$i]);
