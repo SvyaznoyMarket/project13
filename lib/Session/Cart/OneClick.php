@@ -28,16 +28,16 @@ class OneClick {
     }
 
     /**
-     * @param \Model\Cart\Product\Entity $product
+     * @param \Model\Product\Entity $product
+     * @param int $quantity
      */
-    public function setProduct(\Model\Cart\Product\Entity $product) {
+    public function setProduct(\Model\Product\Entity $product, $quantity = 1) {
         $sessionData = $this->storage->get($this->sessionName);
 
-        if ($product->getQuantity() < 1) {
-            unset($sessionData['product'][$product->getId()]);
-            unset($this->productsById[$product->getId()]);
+        if ($quantity < 1) {
+            $this->deleteProduct($product->getId());
         } else {
-            $sessionData['product'][$product->getId()] = ['quantity' => $product->getQuantity()];
+            $sessionData['product'][$product->getId()] = ['quantity' => (int)$quantity];
         }
 
         $this->storage->set($this->sessionName, $sessionData);
@@ -45,12 +45,37 @@ class OneClick {
         $this->calculate();
     }
 
-    /**
-     * @param \Model\Cart\Product\Entity $product
+    /** Добавляет/изменяет количество продукта в корзине
+     * @param int $id
+     * @param int $quantity
      */
-    public function addProduct(\Model\Cart\Product\Entity $product) {
+    public function setProductById($id, $quantity) {
         $sessionData = $this->storage->get($this->sessionName);
-        $sessionData['product'][$product->getId()] = ['quantity' => $product->getQuantity()];
+        $sessionData['product'][$id] = ['quantity' => (int)$quantity];
+        $this->storage->set($this->sessionName, $sessionData);
+
+        $this->calculate();
+    }
+
+    /** Удаление продукта из корзины "в один клик"
+     * @param $id
+     */
+    public function deleteProduct($id) {
+        $sessionData = $this->storage->get($this->sessionName);
+
+        if (isset($sessionData['product'][$id]))    unset($sessionData['product'][$id]);
+        if (isset($this->productsById[$id]))        unset($this->productsById[$id]);
+
+        $this->storage->set($this->sessionName, $sessionData);
+    }
+
+    /**
+     * @param \Model\Product\Entity $product
+     * @param int $quantity
+     */
+    public function addProduct(\Model\Product\Entity $product, $quantity = 1) {
+        $sessionData = $this->storage->get($this->sessionName);
+        $sessionData['product'][$product->getId()] = ['quantity' => $quantity];
         $this->storage->set($this->sessionName, $sessionData);
         $this->calculate();
     }

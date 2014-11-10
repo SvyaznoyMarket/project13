@@ -44,7 +44,7 @@ class ProductAction {
             ]);
 
             $cart->clear();
-            $cart->setProduct($cartProduct);
+            $cart->setProduct($product, $quantity);
             if ($request->get('shopId')) $cart->setShop($request->get('shopId'));
 
             $parentCategoryId = $product->getParentCategory() ? $product->getParentCategory()->getId() : null;
@@ -163,7 +163,7 @@ class ProductAction {
                 throw new \Exception('Не получен ид товара');
             }
 
-            $cart->setProduct(new \Model\Cart\Product\Entity(['id' => $productId, 'quantity' => 0]));
+            $cart->deleteProduct($productId);
 
             $responseData = [
                 'success' => true
@@ -194,10 +194,10 @@ class ProductAction {
 
         try {
             if (!$productId) {
-                throw new \Exception('Не получен ид товара');
+                throw new \Exception('Не получен id товара');
             }
 
-            $cart->setProduct(new \Model\Cart\Product\Entity(['id' => $productId, 'quantity' => (int)$request->get('quantity')]));
+            $cart->setProductById($productId, $request->get('quantity'));
 
             $responseData = [
                 'success' => true
