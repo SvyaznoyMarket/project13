@@ -1826,9 +1826,6 @@ img[height="0"] {
     -moz-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
     color: #000000;
-    -webkit-border-radius: 0 0 4px 4px;
-    -moz-border-radius: 0 0 4px 4px;
-    border-radius: 0 0 4px 4px;
   }
   .topbarfix_dd .btnBuy-inf {
     position: relative;
@@ -1870,7 +1867,7 @@ img[height="0"] {
     line-height: 25px;
   }
   .topbarfix .cartLst {
-    max-height: 213px;
+    max-height: 209px;
     overflow: auto;
   }
   .topbarfix .cartLst_i {
@@ -1936,8 +1933,8 @@ img[height="0"] {
   .topbarfix .hintDd {
     position: absolute;
     top: 50px;
-    width: 729px;
-    left: -839px;
+    width: 730px;
+    left: -838px;
     background: #fff;
     height: 0;
     /* Переход */
@@ -1948,9 +1945,6 @@ img[height="0"] {
     border: 1px solid #ccc;
     border-top: none;
     border-bottom: none;
-    -webkit-border-radius: 0 0 4px 4px;
-    -moz-border-radius: 0 0 4px 4px;
-    border-radius: 0 0 4px 4px;
   }
   .topbarfix .hintDd .bHeadSection {
     padding: 10px 0 0 10px;
@@ -1965,7 +1959,7 @@ img[height="0"] {
     box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.2);
     border-bottom: 1px solid #ccc;
   }
-  .topbarfix .bSlider {
+  .topbarfix .slideItem {
     width: 700px;
     margin: 0 auto;
   }

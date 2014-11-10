@@ -9126,7 +9126,8 @@
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    width: 50px;
+    padding: 0 4px;
+    width: auto;
   }
   .slideItem_btn {
     position: absolute;
@@ -9154,6 +9155,9 @@
   }
   .slideItem-7item .slideItem_inn {
     width: 910px;
+  }
+  .slideItem-3item .slideItem_inn {
+    width: 390px;
   }
   .slideItem-br1 {
     border: 3px solid #ffa901;
