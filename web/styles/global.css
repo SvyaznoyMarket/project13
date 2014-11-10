@@ -972,6 +972,7 @@ img[height="0"] {
     background: #4fcbf4;
     width: 100%;
     padding: 8px 0;
+    height: 28px;
     text-align: center;
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
@@ -989,12 +990,13 @@ img[height="0"] {
     font-size: 22px;
     line-height: 1;
     text-shadow: 0 1px 1px #333;
-    vertical-align: middle;
     display: inline-block;
     vertical-align: top;
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
+    vertical-align: middle;
+    margin-top: -2px;
     cursor: pointer;
   }
   .topbar {
@@ -1213,14 +1215,15 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
+    vertical-align: middle;
     font-size: 16px;
     color: #ffffff;
-    padding: 5px 0 0;
     font-family: "Enter";
     text-transform: uppercase;
     -webkit-text-shadow: 0 1px 1px #333333;
     -moz-text-shadow: 0 1px 1px #333333;
     text-shadow: 0 1px 1px #333333;
+    line-height: 1;
   }
   .sbscrBar_it {
     display: inline-block;
