@@ -178,6 +178,10 @@ try {
         if(\App::abTestJson()) \App::abTestJson()->setCookie($response);
     }
 } catch (\Exception\NotFoundException $e) {
+    \App::request()->attributes->set('pattern', '');
+    \App::request()->attributes->set('route', '');
+    \App::request()->attributes->set('action', ['Error\NotFoundAction', 'execute']);
+    
     $action = new \Controller\Error\NotFoundAction();
     $response = $action->execute($e, $request);
 } catch (\Exception\AccessDeniedException $e) {
