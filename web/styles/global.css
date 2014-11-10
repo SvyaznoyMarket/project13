@@ -1254,7 +1254,6 @@ img[height="0"] {
     background: -o-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
     background: -ms-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
     background: linear-gradient(to bottom, #ffc000 0%, #ffaa01 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffc000', endColorstr='#ffaa01', GradientType=0);
     border: 1px solid #ffa901;
     border-radius: 4px;
     color: #ffffff;
@@ -4383,7 +4382,6 @@ img[height="0"] {
     background: -o-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
     background: -ms-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
     background: linear-gradient(to bottom, #ffc000 0%, #ffaa01 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffc000', endColorstr='#ffaa01', GradientType=0);
     border-color: #002958;
   }
   .slider2 .btnBuy .btnBuy__eLink.mBought {
@@ -4552,7 +4550,6 @@ img[height="0"] {
     background: -o-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
     background: -ms-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
     background: linear-gradient(to bottom, #ffc000 0%, #ffaa01 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffc000', endColorstr='#ffaa01', GradientType=0);
     border-color: #002958;
     padding: 5px 0 6px;
   }
