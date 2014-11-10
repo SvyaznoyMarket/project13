@@ -43,10 +43,10 @@ return function (
         </div>
     <? endif ?>
 
-    <div class="bSlider<? if ($class): ?> <?= $class ?><? endif ?>">
+    <div class="slideItem<? if ($class): ?> <?= $class ?><? endif ?>">
 
-        <div class="bSlider__eInner mLoader">
-            <ul class="bSlider__eList clearfix">
+        <div class="slideItem_inn mLoader">
+            <ul class="slideItem_lst clearfix">
             <? foreach ($products as $product):
                 if (!$product instanceof \Model\Product\Entity) continue;
 
@@ -66,38 +66,39 @@ return function (
 
                 $category = $product->getParentCategory() ? $product->getParentCategory() : null;
             ?>
-                <li class="bSlider__eItem jsSliderItem" data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>" data-product="<?= $helper->json([
+                <li class="slideItem_i jsSliderItem" data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>" data-product="<?= $helper->json([
                         'article' => $product->getArticle(),
                         'name' => $product->getName(),
                         'isUpsale' => $product->getIsUpsale(),
                     ]) ?>">
-                    <div class="product__inner">
-                        <? if ((bool)$product->getLabel()): ?>
-                            <img class="bProductDescSticker" src="<?= $product->getLabel()->getImageUrl(0) ?>" alt="<?= $product->getLabel()->getName() ?>" />
-                        <? endif ?>
-                        <a class="productImg<? if($product->getIsUpsale()): ?> jsUpsaleProduct<? endif; ?>" href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>>
-                            <img src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" />
-                        </a>
-                        <div class="productName"><a href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a></div>
-                        <div class="productPrice"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
+                    <? if ((bool)$product->getLabel()): ?>
+                        <img class="bProductDescSticker" src="<?= $product->getLabel()->getImageUrl(0) ?>" alt="<?= $product->getLabel()->getName() ?>" />
+                    <? endif ?>
 
-                        <? if ($product->getKit() && !$product->getIsKitLocked()) : ?>
-                            <a class="btnView mBtnGrey" href="<?= $product->getLink() ?>">Посмотреть</a> <!--TODO-zra стиль для кнопки "Посмотреть" -->
-                        <? else: ?>
-                            <?= $helper->render('cart/__button-product', [
-                                'product'        => $product,
-                                'onClick'        => $addToCartJS ? $addToCartJS : null,
-                                'isRetailRocket' => $isRetailrocketProduct,
-                            ]) // Кнопка купить ?>
-                        <? endif ?>
-                    </div>
+                    <a class="slideItem_imgw<? if($product->getIsUpsale()): ?> jsUpsaleProduct<? endif; ?>" href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>>
+                        <img class="slideItem_img" src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" />
+                    </a>
+
+                    <div class="slideItem_n"><a href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a></div>
+
+                    <div class="slideItem_pr"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
+
+                    <? if ($product->getKit() && !$product->getIsKitLocked()) : ?>
+                        <a class="btnView mBtnGrey" href="<?= $product->getLink() ?>">Посмотреть</a> <!--TODO-zra стиль для кнопки "Посмотреть" -->
+                    <? else: ?>
+                        <?= $helper->render('cart/__button-product', [
+                            'product'        => $product,
+                            'onClick'        => $addToCartJS ? $addToCartJS : null,
+                            'isRetailRocket' => $isRetailrocketProduct,
+                        ]) // Кнопка купить ?>
+                    <? endif ?>
                 </li>
             <? endforeach ?>
             </ul>
         </div>
 
-        <div class="bSlider__eBtn mPrev mDisabled"><span></span></div>
-        <div class="bSlider__eBtn mNext mDisabled"><span></span></div>
+        <div class="slideItem_btn slideItem_btn-prv mDisabled"></div>
+        <div class="slideItem_btn slideItem_btn-nxt mDisabled"></div>
     </div>
 
 </div><?/*<!--/product accessory section -->*/?>

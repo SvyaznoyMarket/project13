@@ -8668,7 +8668,7 @@ img[height="0"] {
 @media all {
   .errPage {
     margin: 0 auto;
-    padding: 20px 0 0;
+    padding: 20px 0 35px;
     width: 986px;
     font-size: 14px;
   }

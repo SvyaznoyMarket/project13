@@ -1,186 +1,141 @@
 // product slider
-.bSlider {
-	position: relative;
-	z-index: 10;
-
-	&_t {
-		font-size: 18px;
-	}
-
-	&_cntr {
-		text-align: right;
-		font-size: 12px;
-		margin: 0 0 5px;
-	}
-
-	&__eInner {
-		overflow: hidden;
-
-		width: 600px;
-		margin: 0 auto;
-	}
-
-	&__eList {
-		position: relative;
-
-		width: 5000px;
-
-		.productImg {
-			display: table-cell;
-
-			width: 100px;
-			height: 100px;
-
-			vertical-align: middle;
-
-			img {
-				max-width: 110px;
-				max-height: 110px;
-			}
-		}
-
-		.productName {
-			overflow: hidden;
-
-			height: 37px;
-			margin: 5px 0 12px;
-
-			font-size: 11px;
-			line-height: 1.1;
-		}
-
-		.productPrice {
-			margin: 0 5px 0 0;
-			.inline-block();
-
-			font-size: 14px;
-		}
-
-		.btnBuy {
-			.inline-block();
-
-			&__eLink {
-				background: #f99b1c;
-			    border-color: #f08a00;
-			    font-size: 12px;
-			    padding: 0;
-			    .rounded(3px);
-			    width: 50px;
-			}
-		}
-	}
-
-	&__eItem {
-		display: none;
-		float: left;
-		margin: 10px 0 0 10px;
-		width: 120px;
-
-		position: relative;
-	}
-
-	&__eBtn {
-		position: absolute;
-		top: 50%;
-		margin-top: -15px;
-
-		width: 20px;
-		height: 40px;
-
-		cursor: pointer;
-
-		&.mNext {
-			right: 10px;
-			background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAYAAAD5Jg1dAAAA2UlEQVQoz2PQ1tYWMjM13WtiYmLIgA8YGhrKm5ua/jY3MbkmIyPDiVcxUGEdEP83NTGZwkAAMAOtPwZSDHSCJ16VpqamSkDrPwM1PAc6R5SQ4kSQqWYmJhsIOYEBaOoasHuNjFLxKjTT0BAGKn4KNPWLgYGBKl7FQA+5AhX+A2o4CeSy4HeCsfEEkBOAuAmvQgUFBQ6gqZeBCv8AnaCAU6GKigo7UQqBsdRP0GqiPANKTUQFD1EBDotCoOKN+BOFqeknQomCuGRmamxcSzDhGhsbyxGVFYjNXABdnlb0UcXpFwAAAABJRU5ErkJggg==") no-repeat 50% 50%;
-		}
-
-		&.mPrev {
-			background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAYCAYAAADDLGwtAAAA30lEQVR42q3TMQ4BQRQGYAkJWqLbMJGVbLLNjvnf7AkUjqFwDAoXoHAMBQfQStQSNxA9OoI3hYr3IuElW+zmy/wzb98U/lIArCdap2laE1EURdUc2OdEV+dcU4QEzBk9yLmRFtkPiGM3/Fr8iKy1DQZHhiciaour5cAqrMZoICLqdocBMV6IKMuyjgcujA5aO0oMtgzvAHryvogmIZKAqRZpGN08sIvjuPwVNMZUXt/V6Ny5maz0w+jt8UlSF5jQcK08sBR+oTAUwFkeCn3M9MHlZyyQ96vA22n9cLmEegKx01b0E6PhwQAAAABJRU5ErkJggg==") no-repeat 50% 50%;
-		}
-
-		&.mDisabled {
-			left: 10px;
-			.opacity(0.3);
-		}
-	}
-
-	&-7item {
-
-		.bSlider__eInner {
-		    width: 897px;
-		}
-	}
-
-	&-br1 {
-		border: 3px solid @firmOrange;
-		.rounded(10px);
-		padding: 15px 20px;
-	}
+.slideItem {
+    position: relative;
+    z-index: 10;
+    &_t {
+        font-size: 18px;
+    }
+    &_cntr {
+        text-align: right;
+        font-size: 12px;
+        margin: 0 0 5px;
+    }
+    &_inn {
+        overflow: hidden;
+        width: 600px;
+        margin: 0 auto;
+    }
+    &_lst {
+        position: relative;
+        width: 5000px;
+    }
+    &_i {
+        display: none;
+        float: left;
+        margin: 10px 0 0 10px;
+        width: 120px;
+        position: relative;
+    }
+    &_imgw {
+        display: table-cell;
+        width: 110px;
+        height: 110px;
+        vertical-align: middle;
+    }
+    &_img {
+        max-width: 110px;
+        max-height: 110px;
+    }
+    &_n {
+        overflow: hidden;
+        height: 37px;
+        margin: 5px 0 12px;
+        font-size: 11px;
+        line-height: 1.1;
+    }
+    &_pr {
+        margin: 0 5px 0 0;
+        .inline-block();
+        font-size: 14px;
+    }
+    .btnBuy {
+        .inline-block();
+        &__eLink {
+            background: #f99b1c;
+            border-color: #f08a00;
+            font-size: 12px;
+            padding: 0;
+            .rounded(3px);
+            width: 50px;
+        }
+    }
+    &_btn {
+        position: absolute;
+        top: 50%;
+        margin-top: -15px;
+        width: 20px;
+        height: 40px;
+        cursor: pointer;
+        &-nxt {
+            right: 10px;
+            background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAYAAAD5Jg1dAAAA2UlEQVQoz2PQ1tYWMjM13WtiYmLIgA8YGhrKm5ua/jY3MbkmIyPDiVcxUGEdEP83NTGZwkAAMAOtPwZSDHSCJ16VpqamSkDrPwM1PAc6R5SQ4kSQqWYmJhsIOYEBaOoasHuNjFLxKjTT0BAGKn4KNPWLgYGBKl7FQA+5AhX+A2o4CeSy4HeCsfEEkBOAuAmvQgUFBQ6gqZeBCv8AnaCAU6GKigo7UQqBsdRP0GqiPANKTUQFD1EBDotCoOKN+BOFqeknQomCuGRmamxcSzDhGhsbyxGVFYjNXABdnlb0UcXpFwAAAABJRU5ErkJggg==") no-repeat 50% 50%;
+        }
+        &-prv {
+            left: 10px;
+            background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAYCAYAAADDLGwtAAAA30lEQVR42q3TMQ4BQRQGYAkJWqLbMJGVbLLNjvnf7AkUjqFwDAoXoHAMBQfQStQSNxA9OoI3hYr3IuElW+zmy/wzb98U/lIArCdap2laE1EURdUc2OdEV+dcU4QEzBk9yLmRFtkPiGM3/Fr8iKy1DQZHhiciaour5cAqrMZoICLqdocBMV6IKMuyjgcujA5aO0oMtgzvAHryvogmIZKAqRZpGN08sIvjuPwVNMZUXt/V6Ny5maz0w+jt8UlSF5jQcK08sBR+oTAUwFkeCn3M9MHlZyyQ96vA22n9cLmEegKx01b0E6PhwQAAAABJRU5ErkJggg==") no-repeat 50% 50%;
+        }
+        &.mDisabled {
+            .opacity(0.3);
+        }
+    }
+    &-7item {
+        .slideItem_inn {
+            width: 897px;
+        }
+    }
+    &-br1 {
+        border: 3px solid @firmOrange;
+        .rounded(10px);
+        padding: 15px 20px 40px;
+    }
 }
-
 /**
  * Если есть категории
  */
 
 .bGoodsSlider {
-
-	&.mWithCategory{
-		border-bottom: 1px solid #c7c7c7;
-	}
-
-	&__eCat{
-		display: none;
-	}
-
-	.mWithCategory &__eCat {
-		display: block;
-		float: left;
-		overflow: auto;
-
-		width: 219px;
-		height: 215px;
-		padding: 5px 0 0;
-
-		border-top: 1px solid #c7c7c7;
-		border-right: 1px solid #c7c7c7;
-	}
-
-	&__eCatItem {
-		cursor: pointer;
-
-		span {
-			display: block;
-
-			padding: 5px;
-
-			&:hover {
-				text-decoration: underline;
-			}
-		}
-
-		&.mActive {
-			cursor: default;
-
-			span {
-				background: #e4e4e4;
-
-				&:hover {
-					text-decoration: none;
-				}
-			}
-		}
-	}
-
-	&.mWithCategory .bSlider {
-		float: right;
-
-		width: 459px;
-		padding: 5px 0 0 20px;
-
-		border-top: 1px solid #c7c7c7;
-
-		&__eInner {
-			width: 360px;
-		}
-	}
+    &.mWithCategory {
+        border-bottom: 1px solid #c7c7c7;
+    }
+    &__eCat {
+        display: none;
+    }
+    .mWithCategory &__eCat {
+        display: block;
+        float: left;
+        overflow: auto;
+        width: 219px;
+        height: 215px;
+        padding: 5px 0 0;
+        border-top: 1px solid #c7c7c7;
+        border-right: 1px solid #c7c7c7;
+    }
+    &__eCatItem {
+        cursor: pointer;
+        span {
+            display: block;
+            padding: 5px;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+        &.mActive {
+            cursor: default;
+            span {
+                background: #e4e4e4;
+                &:hover {
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+    &.mWithCategory .slideItem {
+        float: right;
+        width: 459px;
+        padding: 5px 0 0 20px;
+        border-top: 1px solid #c7c7c7;
+        &__eInner {
+            width: 360px;
+        }
+    }
 }
