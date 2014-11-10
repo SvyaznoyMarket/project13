@@ -977,6 +977,7 @@ img[height="0"] {
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
     transition: all 0.3s ease;
+    line-height: 22px;
   }
   .bodybar-hide {
     padding-bottom: 0;
@@ -1207,15 +1208,9 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    vertical-align: middle;
   }
   .sbscrBar_lbl {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    vertical-align: middle;
+    float: left;
     font-size: 16px;
     color: #ffffff;
     font-family: "Enter";
@@ -1224,13 +1219,9 @@ img[height="0"] {
     -moz-text-shadow: 0 1px 1px #333333;
     text-shadow: 0 1px 1px #333333;
     line-height: 1;
+    line-height: 28px;
   }
   .sbscrBar_it {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
     border: 1px solid #e6e6e6;
     background: #ffffff;
     font-size: 14px;
@@ -1245,11 +1236,7 @@ img[height="0"] {
     border-color: #ec5656;
   }
   .sbscrBar_itw {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
+    float: left;
     position: relative;
   }
   .sbscrBar_itw .bErrorText {
@@ -1257,11 +1244,7 @@ img[height="0"] {
     top: 13px;
   }
   .sbscrBar_is {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
+    float: left;
     padding: 4px 15px;
     font-size: 14px;
     background: #ffc000;
@@ -1277,21 +1260,18 @@ img[height="0"] {
     color: #ffffff;
   }
   .sbscrBar_tx {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
+    float: left;
     font-size: 14px;
-    padding: 3px 0 0;
     color: #ffffff;
     -webkit-text-shadow: 0 1px 1px #333333;
     -moz-text-shadow: 0 1px 1px #333333;
     text-shadow: 0 1px 1px #333333;
     margin: 0 10px;
+    line-height: 26px;
   }
   .sbscrBar-foot {
     padding: 15px 10px 10px;
+    line-height: 24px;
   }
   .sbscrBar-foot .sbscrBar_is {
     background: #4fcbf4;

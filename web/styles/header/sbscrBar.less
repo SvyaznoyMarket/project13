@@ -1,20 +1,18 @@
 .sbscrBar {
 	.inline-block();
-	vertical-align: middle;
 
 	&_lbl {
-		.inline-block();
-		vertical-align: middle;
+		float: left;
 		font-size: 16px;
 		color: @white;
 		font-family: "Enter";
 		text-transform: uppercase;
 		.text-shadow(0 1px 1px #333);
 		line-height: 1;
+		line-height: 28px;
 	}
 
 	&_it {
-		.inline-block();
 		border: 1px solid #e6e6e6;
 		background: @white;
 		font-size: 14px;
@@ -28,7 +26,7 @@
 	}
 
 	&_itw {
-		.inline-block();
+		float: left;
 		position: relative;
 
 		.bErrorText {
@@ -38,7 +36,7 @@
 	}
 
 	&_is {
-		.inline-block();
+		float: left;
 		padding: 4px 15px;
 		font-size: 14px;
 		.orangeGradLight();
@@ -48,16 +46,17 @@
 	}
 
 	&_tx {
-		.inline-block();
+		float: left;
 		font-size: 14px;
-		padding: 3px 0 0;
 		color: @white;
 		.text-shadow(0 1px 1px #333);
 		margin: 0 10px;
+		line-height: 26px;
 	}
 
 	&-foot {
 		padding: 15px 10px 10px;
+		line-height: 24px;
 		.sbscrBar_is {
 		    background: @firmBlue;
 		    border: 1px solid @firmBlue;
