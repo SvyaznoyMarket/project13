@@ -9089,8 +9089,8 @@
     vertical-align: middle;
   }
   .slideItem_img {
-    max-width: 110px;
-    max-height: 110px;
+    width: 110px;
+    height: 110px;
   }
   .slideItem_n {
     overflow: hidden;
@@ -9171,6 +9171,80 @@
   }
   .slideItem-br1 .slideItem_btn-nxt {
     right: 10px;
+  }
+  .slideItem-main {
+    border-bottom: 1px solid #474747;
+    padding-bottom: 10px;
+    margin-bottom: 35px;
+  }
+  .slideItem-main .slideItem_inn {
+    width: 880px;
+  }
+  .slideItem-main .slideItem_i {
+    width: 150px;
+    margin: 10px 35px;
+  }
+  .slideItem-main .slideItem_imgw {
+    width: 150px;
+    height: 150px;
+    padding: 0 0 15px;
+  }
+  .slideItem-main .slideItem_img {
+    width: 150px;
+    height: 150px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+  }
+  .slideItem-main .slideItem_t {
+    border-bottom: 1px solid #474747;
+    color: #ffffff;
+    font-family: "Enter type";
+    font-size: 22px;
+    font-weight: bold;
+    padding: 0 0 5px;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .slideItem-main .slideItem_pr {
+    color: #ffffff;
+    font-family: "Enter type";
+    font-size: 22px;
+    line-height: 26px;
+  }
+  .slideItem-main .slideItem_n {
+    color: #fff;
+    font-family: "Enter type";
+    font-size: 14px;
+    height: 31px;
+    margin: 5px 0 8px;
+  }
+  .slideItem-main .slideItem_n a {
+    color: #ffffff;
+  }
+  .slideItem-main .slideItem_btn {
+    margin-top: -5px;
+  }
+  .slideItem-main .slideItem_btn-prv {
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAcCAQAAAD/qpb3AAAAmElEQVQoz33SvxEBQRiG8TUkhORU4EowejCaoAuqoIrTAyEZFcgvldz8ZGZ8d7sbPu/O/nm+N6XOsnZXdfHMG4+IBy74WMZgD3YRVz6oI5544W0agzNaq4i34BDxQoOr4T8euaExj/uPYNNV0OLUr+BpHIN+BSmpc8E0c1T28sJzCx/MKilILGgvDCo72kIZCvXJFu5X0eUXASvDcmPvB3EAAAAASUVORK5CYII=") no-repeat 50% 50%;
+    left: 0;
+  }
+  .slideItem-main .slideItem_btn-nxt {
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAcCAQAAAD/qpb3AAAAlElEQVQoz43SsQ3CQBBEUSNIIMQ5VGBKQPSAaAK6gCqgCtMDhJBBBc6dOrEeBeytxKVfmt37O5XGy66KzxudOoLGgLtJREdwKsW1GGwiWOrwtYhoa8StFHcGhwimHuitI1rp8TSLaA8upUlXjAVF5j7oLDNFbeoui6r/G56sm3wwVZJITLSnh0pOm5QhrU9euE25oj+4MsNyCCfkfwAAAABJRU5ErkJggg==") no-repeat 50% 50%;
+    right: 0;
+  }
+  .slideItem-main .btnBuy {
+    float: right;
+  }
+  .slideItem-main .btnBuy__eLink {
+    background: #feb723;
+    border-color: #feb723;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    font-family: "Enter type";
+    font-size: 16px;
+    padding: 3px 10px;
   }
   /**
  * Если есть категории
