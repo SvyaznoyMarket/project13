@@ -17,26 +17,28 @@
 </head>
 <body class='b404' data-template="page404" data-debug="<?= $page->json(\App::config()->debug); ?>">
 <? if (\App::config()->debug) echo \App::templating()->render('_config',['page'=> $page]); ?>
-<table class='b404InnerWrap'>
-    <td>
-        <a class='b404__eLogo' href='/'></a>
 
-        <div class='b404Block'>
-            <span><?= \App::config()->debug ? $exception->getMessage() : 'Упс! Запрашиваемая вами страница не найдена' ?></span>
 
-            <h2><b>Вы легко можете найти то,<br> что искали!</b></h2>
+<div class="errPage">
+    <a class="errPage_lg" href='/'></a>
 
-            <? $productCount = number_format(\App::config()->product['totalCount'], 0, ',', ' ') ?>
-            <form action="<?= $page->url('search') ?>" method="get" id="searchForm">
-                <input id="searchStr" name="q" type='text' value="Поиск среди десятков тысяч товаров<?//= $productCount ?>" onBlur="var field = document.getElementById('searchStr'); if(field.value == ''){field.value = 'Поиск среди десятков тысяч товаров<?//= $productCount ?>'};return false;" onFocus="var field = document.getElementById('searchStr'); if(field.value == 'Поиск среди десятков тысяч товаров<?//= $productCount ?>'){field.value = ''};return false;">
-                <a class='bOrangeButton' href onclick="document.getElementById('searchForm').submit(); return false;">Найти</a>
-            </form>
-            <br>
-            <span>или позвоните нам в&nbsp;Контакт-сENTER <b>8 (800) 700 00 09</b><br> Звонок бесплатный. Радость в&nbsp;подарок.</span><br><br>
-            <a class='bBigOrangeButton' href='/'>Перейти на&nbsp;главную</a>
-        </div>
-    </td>
-</table>
+    <div class="errPage_cnt">
+        <span><?= \App::config()->debug ? $exception->getMessage() : 'Упс! Запрашиваемая вами страница не найдена' ?></span>
+
+        <h2><b>Вы легко можете найти то,<br> что искали!</b></h2>
+
+        <? $productCount = number_format(\App::config()->product['totalCount'], 0, ',', ' ') ?>
+        <form action="<?= $page->url('search') ?>" method="get" id="searchForm">
+            <input id="searchStr" name="q" type='text' value="Поиск среди десятков тысяч товаров<?//= $productCount ?>" onBlur="var field = document.getElementById('searchStr'); if(field.value == ''){field.value = 'Поиск среди десятков тысяч товаров<?//= $productCount ?>'};return false;" onFocus="var field = document.getElementById('searchStr'); if(field.value == 'Поиск среди десятков тысяч товаров<?//= $productCount ?>'){field.value = ''};return false;">
+            <a class='bOrangeButton' href onclick="document.getElementById('searchForm').submit(); return false;">Найти</a>
+        </form>
+        <br>
+        <span>или позвоните нам в&nbsp;Контакт-сENTER <b>8 (800) 700 00 09</b><br> Звонок бесплатный. Радость в&nbsp;подарок.</span><br><br>
+        <a class='bBigOrangeButton' href='/'>Перейти на&nbsp;главную</a>
+    </div>
+</div>
+
+
 <script type="text/javascript">
     var _gaq = _gaq || [];
     var nowURL = document.URL;
