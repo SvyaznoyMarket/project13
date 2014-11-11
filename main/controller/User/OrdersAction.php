@@ -57,6 +57,7 @@ class OrdersAction {
             $user->getToken(),
             function($data) use(&$orders, &$orders_by_year) {
                 foreach ((array)$data as $item) {
+                    if (empty($item['id'])) continue;
                     $orders[] = new \Model\User\Order\Entity($item);
                 }
 
