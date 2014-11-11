@@ -253,13 +253,13 @@
 				}
 			}
 
-			catalog.infScroll.checkInfinity();
-
 			if ( lastPage ) {
 				catalog.lastPage = lastPage;
 			}
 
 			catalog.filter.lastRes = dataToRender;
+
+			catalog.infScroll.checkInfinity();
 		},
 
 		/**
