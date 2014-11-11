@@ -107,7 +107,7 @@
 		 * @return	{String}				Новое имя файла
 		 */
 		getWithVersion = function getWithVersion( filename ) {
-			if ( typeof( global.release['version']) !== 'undefined' ) {
+			if ( typeof(global.release) !== 'undefined' && typeof(global.release['version']) !== 'undefined' ) {
 
 				if ( !debug ) {
 					filename = filename.replace('.js', '.min.js');

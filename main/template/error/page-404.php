@@ -19,6 +19,7 @@ $helper = new \Helper\TemplateHelper();
     <script src="http://yandex.st/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
     <script src="/js/prod/LAB.min.js" type="text/javascript"></script>
     <script src="/js/prod/html5.min.js" type="text/javascript"></script>
+    <?= $page->render('_headJavascript') ?>
 </head>
 <body class='b404' data-template="page404" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
 <?= $page->render('_config'); ?>
