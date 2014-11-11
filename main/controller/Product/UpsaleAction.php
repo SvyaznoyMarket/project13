@@ -22,7 +22,7 @@ class UpsaleAction extends BasicRecommendedAction {
                 throw new \Exception(sprintf('Товар #%s не найден', $productId));
             }
 
-            $key = \App::abTest()->getTest('other')->getChosenCase()->getKey();
+            $key = \App::abTest()->getTest('other') ? \App::abTest()->getTest('other')->getChosenCase()->getKey() : null;
             $relatedId = null;
             $products = null;
 

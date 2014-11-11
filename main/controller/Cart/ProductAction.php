@@ -38,13 +38,15 @@ class ProductAction {
             //$this->updateCartWarranty($product, $cartProduct, $quantity);
 
             $returnRedirect = $request->headers->get('referer') ?: ($product->getLink() ?: \App::router()->generate('homepage'));
-            switch (\App::abTest()->getTest('other')->getChosenCase()->getKey()) {
-                case 'upsell':
-                    $returnRedirect = \App::router()->generate('product.upsell', ['productToken' => $product->getToken()]);
-                    break;
-                case 'order2cart':
-                    $returnRedirect = \App::router()->generate('cart');
-                    break;
+            if (\App::abTest()->getTest('other')) {
+                switch (\App::abTest()->getTest('other')->getChosenCase()->getKey()) {
+                    case 'upsell':
+                        $returnRedirect = \App::router()->generate('product.upsell', ['productToken' => $product->getToken()]);
+                        break;
+                    case 'order2cart':
+                        $returnRedirect = \App::router()->generate('cart');
+                        break;
+                }
             }
 
             $productInfo = [
