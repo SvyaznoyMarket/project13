@@ -13,6 +13,8 @@ class RecommendedAction {
     public function execute(\Http\Request $request) {
         $region = \App::user()->getRegion();
 
+        $cssClass = $request->query->get('class') ?: 'slideItem-main';
+
         $productIds = [];
         $recommendController = new \Controller\Product\BasicRecommendedAction();
 
@@ -46,12 +48,12 @@ class RecommendedAction {
             });
         } catch (\Exception $e) {}
 
-        $products = array_slice($products, 0, 30);
+        $products = array_slice($products, 0, 35);
 
         /* Рендерим слайдер */
         $slider = \App::closureTemplating()->render('product/__slider', [
             'products'  => $products,
-            'class'     => 'bSlider-7item',
+            'class'     => $cssClass,
         ]);
 
         $recommend = [];

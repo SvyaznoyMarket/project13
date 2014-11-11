@@ -44,126 +44,18 @@ $helper = new \Helper\TemplateHelper();
             <a class='bBigOrangeButton' href='/'>Перейти на&nbsp;главную</a>
         </div>
 
-        <? if (\App::config()->product['showRelated']): ?>
-            <?= $helper->render('product/__slider', [
-                'type'           => 'alsoBought',
-                'title'          => 'Мы рекомендуем',
-                'products'       => [],
-                'count'          => null,
-                'limit'          => \App::config()->product['itemsInSlider'],
-                'page'           => 1,
-                'url'            => $page->url('main.recommended'),
-            ]) ?>
-        <? endif ?>
-        
         <div class="errPage_cnt_b">
-            <div class="slideItem slideItem-7item slideItem-br1">
-                <div class="slideItem_t">Мы рекомендуем</div>
-                <div class="slideItem_cntr">Страница 2 из 8</div>
-
-                <div class="slideItem_inn">
-                    <ul class="slideItem_lst clearfix" style="width: 1200px; left: 0px;">
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                            <img alt="Подари жизнь" src="http://fs08.enter.ru/7/1/66x23/ff/236550.png" class="bProductDescSticker">
-                            <a href="" class="slideItem_imgw">
-                                <img class="slideItem_img" alt="" src="http://fs07.enter.ru/1/1/120/a3/206929.jpg">
-                            </a>
-                            <div class="slideItem_n"><a href="">Гарнитура Genius HS-G600 с микрофоном, черная</a></div>
-                            <div class="slideItem_pr"><span class="price">2 340 <span class="rubl">p</span></span></div>
-                            <div class="btnBuy">
-                                <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
-                            </div>                                            
-                        </li>
-                        
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                            <img alt="Подари жизнь" src="http://fs08.enter.ru/7/1/66x23/ff/236550.png" class="bProductDescSticker">
-                            <a href="" class="slideItem_imgw">
-                                <img class="slideItem_img" alt="" src="http://fs07.enter.ru/1/1/120/a3/206929.jpg">
-                            </a>
-                            <div class="slideItem_n"><a href="">Гарнитура Genius HS-G600 с микрофоном, черная</a></div>
-                            <div class="slideItem_pr"><span class="price">2 340 <span class="rubl">p</span></span></div>
-                            <div class="btnBuy">
-                                <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
-                            </div>                                            
-                        </li>
-
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                            <img alt="Подари жизнь" src="http://fs08.enter.ru/7/1/66x23/ff/236550.png" class="bProductDescSticker">
-                            <a href="" class="slideItem_imgw">
-                                <img class="slideItem_img" alt="" src="http://fs07.enter.ru/1/1/120/a3/206929.jpg">
-                            </a>
-                            <div class="slideItem_n"><a href="">Гарнитура Genius HS-G600 с микрофоном, черная</a></div>
-                            <div class="slideItem_pr"><span class="price">2 340 <span class="rubl">p</span></span></div>
-                            <div class="btnBuy">
-                                <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
-                            </div>                                            
-                        </li>
-
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                            <img alt="Подари жизнь" src="http://fs08.enter.ru/7/1/66x23/ff/236550.png" class="bProductDescSticker">
-                            <a href="" class="slideItem_imgw">
-                                <img class="slideItem_img" alt="" src="http://fs07.enter.ru/1/1/120/a3/206929.jpg">
-                            </a>
-                            <div class="slideItem_n"><a href="">Гарнитура Genius HS-G600 с микрофоном, черная</a></div>
-                            <div class="slideItem_pr"><span class="price">2 340 <span class="rubl">p</span></span></div>
-                            <div class="btnBuy">
-                                <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
-                            </div>                                            
-                        </li>
-
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                            <img alt="Подари жизнь" src="http://fs08.enter.ru/7/1/66x23/ff/236550.png" class="bProductDescSticker">
-                            <a href="" class="slideItem_imgw">
-                                <img class="slideItem_img" alt="" src="http://fs07.enter.ru/1/1/120/a3/206929.jpg">
-                            </a>
-                            <div class="slideItem_n"><a href="">Гарнитура Genius HS-G600 с микрофоном, черная</a></div>
-                            <div class="slideItem_pr"><span class="price">2 340 <span class="rubl">p</span></span></div>
-                            <div class="btnBuy">
-                                <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
-                            </div>                                            
-                        </li>
-
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                            <img alt="Подари жизнь" src="http://fs08.enter.ru/7/1/66x23/ff/236550.png" class="bProductDescSticker">
-                            <a href="" class="slideItem_imgw">
-                                <img class="slideItem_img" alt="" src="http://fs07.enter.ru/1/1/120/a3/206929.jpg">
-                            </a>
-                            <div class="slideItem_n"><a href="">Гарнитура Genius HS-G600 с микрофоном, черная</a></div>
-                            <div class="slideItem_pr"><span class="price">2 340 <span class="rubl">p</span></span></div>
-                            <div class="btnBuy">
-                                <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
-                            </div>                                            
-                        </li>
-
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                            <img alt="Подари жизнь" src="http://fs08.enter.ru/7/1/66x23/ff/236550.png" class="bProductDescSticker">
-                            <a href="" class="slideItem_imgw">
-                                <img class="slideItem_img" alt="" src="http://fs07.enter.ru/1/1/120/a3/206929.jpg">
-                            </a>
-                            <div class="slideItem_n"><a href="">Гарнитура Genius HS-G600 с микрофоном, черная</a></div>
-                            <div class="slideItem_pr"><span class="price">2 340 <span class="rubl">p</span></span></div>
-                            <div class="btnBuy">
-                                <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
-                            </div>                                            
-                        </li>
-
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                            <img alt="Подари жизнь" src="http://fs08.enter.ru/7/1/66x23/ff/236550.png" class="bProductDescSticker">
-                            <a href="" class="slideItem_imgw">
-                                <img class="slideItem_img" alt="" src="http://fs07.enter.ru/1/1/120/a3/206929.jpg">
-                            </a>
-                            <div class="slideItem_n"><a href="">Гарнитура Genius HS-G600 с микрофоном, черная</a></div>
-                            <div class="slideItem_pr"><span class="price">2 340 <span class="rubl">p</span></span></div>
-                            <div class="btnBuy">
-                                <a class="jsBuyButton btnBuy__eLink" href="">Купить</a>
-                            </div>                                            
-                        </li>                    
-                    </ul>
-                </div>
-
-                <div class="slideItem_btn slideItem_btn-prv mDisabled"></div>
-                <div class="slideItem_btn slideItem_btn-nxt"></div>
-            </div>
+            <? if (\App::config()->product['showRelated']): ?>
+                <?= $helper->render('product/__slider', [
+                    'type'           => 'alsoBought',
+                    'title'          => 'Мы рекомендуем',
+                    'products'       => [],
+                    'count'          => null,
+                    'limit'          => \App::config()->product['itemsInSlider'],
+                    'page'           => 1,
+                    'url'            => $page->url('main.recommended', ['class' => 'slideItem-7item slideItem-br1']),
+                ]) ?>
+            <? endif ?>
         </div>
     </div>
 </div>

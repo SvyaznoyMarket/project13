@@ -271,6 +271,7 @@
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('main.js') )
+                    .script( getWithVersion('product.js') )
 					.wait()
 					.script( optimizelyUrl )
 					.script('adfox.asyn.code.ver3.min.js')
@@ -624,6 +625,21 @@
                     .script( getWithVersion('game/slots.js') )
 
             }).runQueue();
+        },
+
+        'page404': function() {
+            $LAB
+                .queueWait( function() {
+                    $LAB.script( getWithVersion('jquery-plugins.js') )
+                        .script( getWithVersion('library.js') )
+                        .script('JsHttpRequest.min.js')
+                        .script( mustacheUrl )
+                        .script( knockoutUrl )
+                        .script( loadDebugPanel )
+                        .wait()
+                        .script( getWithVersion('common.js') )
+                        .script( getWithVersion('product.js') )
+                }).runQueue();
         }
 	};
 
