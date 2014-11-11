@@ -2862,7 +2862,7 @@ $(document).ready(function() {
 					setScrollInterval(slide);
 
 					if ('tchibo' == categoryToken && typeof _gaq != 'undefined') {
-						_gaq.push(['_trackEvent', 'slider view', 'tchibo', getSlideIndex(slide) + 1]);
+						_gaq.push(['_trackEvent', 'slider view', 'tchibo', getSlideIndex(slide) + 1 + '']);
 					}
 				}, time);
 			},
@@ -2900,7 +2900,7 @@ $(document).ready(function() {
 				setScrollInterval(slide);
 				
 				if ('tchibo' == categoryToken && typeof _gaq != 'undefined') {
-					_gaq.push(['_trackEvent', 'slider view', 'tchibo', getSlideIndex(slide) + 1]);
+					_gaq.push(['_trackEvent', 'slider view', 'tchibo', getSlideIndex(slide) + 1 + '']);
 				}
 			},
 
@@ -2937,7 +2937,7 @@ $(document).ready(function() {
 				setScrollInterval(link);
 				
 				if ('tchibo' == categoryToken && typeof _gaq != 'undefined') {
-					_gaq.push(['_trackEvent', 'slider view', 'tchibo', link + 1]);
+					_gaq.push(['_trackEvent', 'slider view', 'tchibo', link + 1 + '']);
 				}
 			},
 
