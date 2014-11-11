@@ -285,6 +285,10 @@ class Action {
         // получаем catalog json для категории (например, тип раскладки)
         $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
 
+        // SITE-4600 АБ-тест разводяшки в разделе Мебель
+        // Модифицируем $catalogJson['promo_token']
+        if ($category->getUi() == 'f7a2f781-c776-4342-81e8-ab2ebe24c51a') $this->ab_site_4600($catalogJson);
+
         $promoContent = '';
         if (!empty($catalogJson['promo_token'])) {
             \App::contentClient()->addQuery(
@@ -1263,11 +1267,16 @@ class Action {
      * убираем/показываем уши
      *
      * @param array $catalogJson
+     * @return bool
      */
     static public function checkAdFoxBground(&$catalogJson) {
         if (isset($catalogJson['show_side_panels'])) {
             return (bool)$catalogJson['show_side_panels'];
         }
         return true;
+    }
+
+    private function ab_site_4600(&$catalogJson) {
+        if (\App::abTest()->getTest('furniture_anzoli')) $catalogJson['promo_token'] = \App::abTest()->getTest('furniture_anzoli')->getChosenCase()->getKey();
     }
 }

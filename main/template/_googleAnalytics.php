@@ -56,6 +56,11 @@
         _gaq.push(['_setCustomVar', 13, 'paid_pickup', 'no', 2]);
     <? endif; ?>
 
+    <? /* Пометка аудиторий платного самовывоза */ ?>
+    <? if (\App::abTest()->getTest('furniture_anzoli') && App::abTest()->getTest('furniture_anzoli')->getChosenCase()) : ?>
+        _gaq.push(['_setCustomVar', 15, 'furniture-main', '<?= App::abTest()->getTest('furniture_anzoli')->getChosenCase()->getKey() ?>', 2]);
+    <? endif; ?>
+
     _gaq.push(['_trackPageview']);
     _gaq.push(['_trackPageLoadTime']);
 
