@@ -2857,6 +2857,10 @@ $(document).ready(function() {
 
 					moveSlide(slide);
 					setScrollInterval(slide);
+
+					if ('tchibo' == categoryToken && typeof _gaq != 'undefined') {
+						_gaq.push(['_trackEvent', 'slider view', 'tchibo', getSlideIndex(slide) + 1]);
+					}
 				}, time);
 			},
 
@@ -2891,6 +2895,10 @@ $(document).ready(function() {
 				removeScrollInterval();
 				moveSlide(slide);
 				setScrollInterval(slide);
+				
+				if ('tchibo' == categoryToken && typeof _gaq != 'undefined') {
+					_gaq.push(['_trackEvent', 'slider view', 'tchibo', getSlideIndex(slide) + 1]);
+				}
 			},
 
 			/**
@@ -2924,6 +2932,10 @@ $(document).ready(function() {
 				}
 
 				setScrollInterval(link);
+				
+				if ('tchibo' == categoryToken && typeof _gaq != 'undefined') {
+					_gaq.push(['_trackEvent', 'slider view', 'tchibo', link + 1]);
+				}
 			},
 
 			/**
@@ -3036,6 +3048,22 @@ $(document).ready(function() {
 				if ( (slideData.hasOwnProperty('title') && slideData.hasOwnProperty('time')) && tchiboAnalytics.checkRule('collection_view') ) {
 					tchiboAnalytics.collectionShow(slideData.title, (slideId*1)+1, slideData.time);
 				}
+			},
+
+			getSlideIndex = function(slide) {
+				var slideId = parseInt(slide);
+
+				if (activeCarousel) {
+					if ( slide > slider_SlideCount - 1 ) {
+						slide = slider_SlideCount - 1;
+					} else if ( slide < 0 ) {
+						slide = 0;
+					}
+
+					slideId = parseInt($(".jsPromoCatalogSliderWrap .bPromoCatalogSliderWrap_eSlide").eq(slide).attr("id").replace('slide_id_', ''));
+				}
+
+				return slideId;
 			},
 
 			tchiboAnalytics = {
