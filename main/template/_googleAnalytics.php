@@ -49,6 +49,13 @@
         <? endif; ?>
     <? endif; ?>
 
+    <? /* Пометка аудиторий платного самовывоза */ ?>
+    <? if (\Controller\Delivery\Action::isPaidSelfDelivery()) : ?>
+        _gaq.push(['_setCustomVar', 13, 'paid_pickup', 'yes', 2]);
+    <? else : ?>
+        _gaq.push(['_setCustomVar', 13, 'paid_pickup', 'no', 2]);
+    <? endif; ?>
+
     _gaq.push(['_trackPageview']);
     _gaq.push(['_trackPageLoadTime']);
 

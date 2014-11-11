@@ -5,6 +5,8 @@ namespace Model\Product;
 class BasicEntity {
     use \Model\MediaHostTrait;
 
+    const LABEL_ID_PODARI_ZHIZN = 17;
+
     /** @var string */
     protected $ui;
     /** @var int */
