@@ -1009,7 +1009,8 @@
 			 */
 				googleAnalytics = function googleAnalytics( event, data ) {
 				var
-					productData = data.product;
+					productData = data.product,
+					ga_action;
 				// end of vars
 
 				var
@@ -1029,8 +1030,10 @@
 
 				tchiboGA();
 
-				console.log ("_gaq: _trackEvent Add2Basket product %s", productData.article);
-				_gaq.push(['_trackEvent', 'Add2Basket', 'product', productData.article]);
+				if (productData.article) {
+					ga_action = typeof productData.price != 'undefined' && parseInt(productData.price, 10) < 500 ? 'product-500' : 'product';
+					body.trigger('trackGoogleEvent',['Add2Basket', ga_action, productData.article]);
+				}
 
 				productData.isUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_from_rec', productData.article]);
 				productData.fromUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_to_cart', productData.article]);
