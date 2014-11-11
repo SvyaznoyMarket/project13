@@ -12,7 +12,8 @@ return function (
     $type = null,
     $isRetailrocketRecommendation = false,
     $retailrocketMethod = null,
-    $retailrocketIds = []
+    $retailrocketIds = [],
+    $namePosition = 'bottom'
 ) {
 /**
  * @var $products   \Model\Product\Entity[]
@@ -67,11 +68,19 @@ return function (
 
                 $category = $product->getParentCategory() ? $product->getParentCategory() : null;
             ?>
-                <li class="slideItem_i jsSliderItem" data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>" data-product="<?= $helper->json([
+                <li
+                    class="slideItem_i jsSliderItem"
+                    data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>"
+                    data-product="<?= $helper->json([
                         'article' => $product->getArticle(),
                         'name' => $product->getName(),
                         'isUpsale' => $product->getIsUpsale(),
-                    ]) ?>">
+                    ]) ?>"
+                >
+                    <? if ('top' == $namePosition): ?>
+                        <div class="slideItem_n"><a href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a></div>
+                    <? endif ?>
+
                     <? if ((bool)$product->getLabel()): ?>
                         <img class="bProductDescSticker" src="<?= $product->getLabel()->getImageUrl(0) ?>" alt="<?= $product->getLabel()->getName() ?>" />
                     <? endif ?>
@@ -80,7 +89,9 @@ return function (
                         <img class="slideItem_img" src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" />
                     </a>
 
-                    <div class="slideItem_n"><a href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a></div>
+                    <? if ('bottom' == $namePosition): ?>
+                        <div class="slideItem_n"><a href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a></div>
+                    <? endif ?>
 
                     <div class="slideItem_pr"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
 

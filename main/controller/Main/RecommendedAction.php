@@ -14,6 +14,7 @@ class RecommendedAction {
         $region = \App::user()->getRegion();
 
         $cssClass = $request->query->get('class') ?: 'slideItem-main';
+        $namePosition = $request->query->get('namePosition') ?: 'bottom';
 
         $productIds = [];
         $recommendController = new \Controller\Product\BasicRecommendedAction();
@@ -52,8 +53,9 @@ class RecommendedAction {
 
         /* Рендерим слайдер */
         $slider = \App::closureTemplating()->render('product/__slider', [
-            'products'  => $products,
-            'class'     => $cssClass,
+            'products'     => $products,
+            'class'        => $cssClass,
+            'namePosition' => $namePosition,
         ]);
 
         $recommend = [];
