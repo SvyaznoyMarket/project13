@@ -45,7 +45,7 @@ return function (
     <? endif ?>
 
     <div class="slideItem<? if ($class): ?> <?= $class ?><? endif ?>">
-        <div class="slideItem_cntr">Страница 2 из 8</div>
+        <div class="slideItem_cntr"><!--Страница 2 из 8--></div>
 
         <div class="slideItem_inn mLoader">
             <ul class="slideItem_lst clearfix">

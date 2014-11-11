@@ -2516,6 +2516,7 @@ jQuery(function($, undefined) {
 			 * @var	{Object}	slider			Ссылка на контейнер с товарами
 			 * @var	{Object}	item			Ссылка на карточки товаров в слайдере
 			 * @var	{Object}	catItem			Ссылка на категории в слайдере
+			 * @var	{Object}	pageTitle   	Ссылка на заголовоклисталки в слайдере
 			 *
 			 * @var	{Number}	itemW			Ширина одной карточки товара в слайдере
 			 * @var	{Number}	elementOnSlide	Количество помещающихся карточек на один слайд
@@ -2537,6 +2538,7 @@ jQuery(function($, undefined) {
 				slider = $self.find(options.sliderSelector),
 				item = $self.find(options.itemSelector),
 				catItem = $self.find(options.categoryItemSelector),
+                pageTitle = $self.find(options.pageTitleSelector)
 
 				itemW = item.width() + parseInt(item.css('marginLeft'),10) + parseInt(item.css('marginRight'),10),
 				elementOnSlide = parseInt(wrap.width()/itemW, 10),
@@ -2544,7 +2546,10 @@ jQuery(function($, undefined) {
 				nowLeft = 0;
 			// end of vars
 
-			
+            if (sliderParams.count) {
+                pageTitle.text('Страница ' + '1' +  ' из ' + Math.ceil(sliderParams.count / elementOnSlide));
+            }
+
 			var
 				/**
 				 * Переключение на следующий слайд. Проверка состояния кнопок.
@@ -2572,6 +2577,8 @@ jQuery(function($, undefined) {
 
 					slider.animate({'left': -nowLeft });
 
+                    updatePageTitle(wrap.width(), nowLeft);
+
 					return false;
 				},
 
@@ -2596,8 +2603,18 @@ jQuery(function($, undefined) {
 
 					slider.animate({'left': -nowLeft });
 
+                    updatePageTitle(wrap.width(), nowLeft);
+
 					return false;
 				},
+
+                updatePageTitle = function updatePageTitle(width, left) {
+                    var pageNum = Math.ceil(left / width) + 1;
+
+                    if (!sliderParams.count || !elementOnSlide || !pageNum) return;
+
+                    pageTitle.text('Страница ' + pageNum +  ' из ' + Math.ceil(sliderParams.count / elementOnSlide));
+                },
 
 				/**
 				 * Вычисление ширины слайдера
@@ -2721,7 +2738,8 @@ jQuery(function($, undefined) {
 		sliderWrapperSelector: '.slideItem_inn',
 		sliderSelector: '.slideItem_lst',
 		itemSelector: '.slideItem_i',
-		categoryItemSelector: '.bGoodsSlider__eCatItem'
+		categoryItemSelector: '.bGoodsSlider__eCatItem',
+        pageTitleSelector: '.slideItem_cntr'
 	};
 
 })(jQuery);

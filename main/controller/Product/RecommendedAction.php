@@ -173,6 +173,7 @@ class RecommendedAction {
                     'content' => \App::closureTemplating()->render('product/__slider', [
                         'title'                        => $controller[$type]->getActionTitle(),
                         'products'                     => $products,
+                        'count'                        => count($products),
                         'isRetailrocketRecommendation' => true,
                         'retailrocketMethod'           => $method,
                         'retailrocketIds'              => $ids[$type] ? $ids[$type] : [],

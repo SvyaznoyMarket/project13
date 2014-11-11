@@ -54,6 +54,7 @@ class RecommendedAction {
         /* Рендерим слайдер */
         $slider = \App::closureTemplating()->render('product/__slider', [
             'products'     => $products,
+            'count'        => count($products),
             'class'        => $cssClass,
             'namePosition' => $namePosition,
         ]);

@@ -72,10 +72,11 @@ class BasicRecommendedAction {
             $responseData = [
                 'success' => true,
                 'content' => \App::closureTemplating()->render('product/__slider', [
-                    'title' => $this->actionTitle,
-                    'products' => $products,
+                    'title'                        => $this->actionTitle,
+                    'products'                     => $products,
+                    'count'                        => count($products),
                     'isRetailrocketRecommendation' => true,
-                    'retailrocketMethod' => $this->retailrocketMethodName,
+                    'retailrocketMethod'           => $this->retailrocketMethodName,
                 ]),
             ];
 
