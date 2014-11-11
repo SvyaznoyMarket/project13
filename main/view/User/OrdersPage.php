@@ -30,7 +30,7 @@ class OrdersPage extends \View\DefaultLayout {
         if (!$this->hasParam('orderCount')) {
             $orderCount = 0;
             \RepositoryManager::order()->prepareCollectionByUserToken(\App::user()->getToken(), function($data) use(&$orderCount) {
-                $orderCount = (bool)$data ? count($data) : 0;
+                $orderCount = isset($data['total']) ? $data['total'] : 0;
             });
             \App::coreClientV2()->execute();
 

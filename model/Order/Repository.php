@@ -61,7 +61,7 @@ class Repository {
     public function prepareCollectionByUserToken($userToken, $callback) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery('order/get', ['token' => $userToken], [], $callback, null, \App::config()->coreV2['hugeTimeout']);
+        $this->client->addQuery('order/get-limited', ['token' => $userToken], [], $callback, null, \App::config()->coreV2['hugeTimeout']);
     }
 
     /**

@@ -56,7 +56,8 @@ class OrdersAction {
         \RepositoryManager::order()->prepareCollectionByUserToken(
             $user->getToken(),
             function($data) use(&$orders, &$orders_by_year) {
-                foreach ((array)$data as $item) {
+                if (empty($data['orders'][0])) return;
+                foreach ($data['orders'] as $item) {
                     if (empty($item['id'])) continue;
                     $orders[] = new \Model\User\Order\Entity($item);
                 }
