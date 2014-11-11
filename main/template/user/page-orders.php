@@ -30,7 +30,7 @@
 
                 <div class="personalTable_cell personalTable_cell-w175">Получение</div>
 
-                <div class="personalTable_cell">Статус</div>
+                <!--<div class="personalTable_cell">Статус</div>-->
             </div>
 
             <? foreach ($current_orders as $order) : ?>
@@ -58,7 +58,7 @@
 
                 <div class="personalTable_cell ta-r">
                     <?= $page->helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span>
-                    <strong class="s dblock"><?= $order->getPaymentStatusText($order->getPaymentStatusId()) ?></strong>
+                    <!--<strong class="s dblock"><?//= $order->getPaymentStatusText($order->getPaymentStatusId()) ?></strong>-->
                 </div>
 
                 <div class="personalTable_cell">
@@ -66,7 +66,7 @@
                     <span class="s dblock"><?= $order->getDeliveryDate() ?></span>
                 </div>
 
-                <div class="personalTable_cell"><?= $order->getLastLifecycleStatus() ?></div>
+                <!--<div class="personalTable_cell"><?//= $order->getLastLifecycleStatus() ?></div>-->
 
                 <div class="personalTable_cell"></div>
             </div>
