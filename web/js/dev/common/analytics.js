@@ -52,8 +52,8 @@
             // Classic Tracking Code
             if (typeof _gaq === 'object') {
                 classicEvent.push(e.category, e.action);
-                if (e.label) classicEvent.push(e.label);
-                if (e.value) classicEvent.push(e.value);
+                classicEvent.push(e.label ? e.label: null);
+                classicEvent.push(e.value ? e.value: null);
                 if (e.nonInteraction) classicEvent.push(e.nonInteraction);
                 _gaq.push(classicEvent);
             } else {
