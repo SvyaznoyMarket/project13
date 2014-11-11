@@ -87,11 +87,7 @@
 
 			// analytics only for main page
 			if ( document.location.pathname === '/' ) {
-				console.info( 'run analytics for main page' );
-
-				if ( typeof _gaq !== 'undefined' ) {
-					_gaq.push(['_trackEvent', 'citySelector', 'viewed']);
-				}
+				body.trigger('trackGoogleEvent',[{category: 'citySelector', action: 'viewed', nonInteraction: true}]);
 			}
 		},
 
