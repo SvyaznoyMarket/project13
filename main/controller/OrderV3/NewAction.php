@@ -78,7 +78,8 @@ class NewAction extends OrderV3 {
             return new \Http\Response($page->show(), 500);
         }
 
-        $bonusCards = (new \Model\Order\BonusCard\Repository($this->client))->getCollection();
+        $cart = \App::user()->getCart();
+        $bonusCards = (new \Model\Order\BonusCard\Repository($this->client))->getCollection(['product_list' => array_map(function(\Model\Cart\Product\Entity $v) { return ['id' => $v->getId(), 'quantity' => $v->getQuantity()]; }, $cart->getProducts())]);
 
         $page->setParam('user', $this->user);
         $page->setParam('bonusCards', $bonusCards);
