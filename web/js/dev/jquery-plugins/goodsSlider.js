@@ -156,7 +156,7 @@
 			// end of vars
 
             if (sliderParams.count) {
-                pageTitle.text('Страница ' + '1' +  ' из ' + Math.ceil(sliderParams.count / elementOnSlide));
+                //pageTitle.text('Страница ' + '1' +  ' из ' + Math.ceil(sliderParams.count / elementOnSlide));
             }
 
 			var
@@ -218,11 +218,11 @@
 				},
 
                 updatePageTitle = function updatePageTitle(width, left) {
-                    var pageNum = Math.ceil(left / width) + 1;
+                    var pageNum = Math.floor(left / width) + 1;
 
                     if (!sliderParams.count || !elementOnSlide || !pageNum) return;
 
-                    pageTitle.text('Страница ' + pageNum +  ' из ' + Math.ceil(sliderParams.count / elementOnSlide));
+                    //pageTitle.text('Страница ' + pageNum +  ' из ' + Math.ceil(sliderParams.count / elementOnSlide));
                 },
 
 				/**
