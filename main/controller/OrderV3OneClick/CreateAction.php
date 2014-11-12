@@ -45,9 +45,6 @@ class CreateAction {
             }
             $userInfo['mobile'] = preg_replace('/^\+7/', '8', $userInfo['mobile']);
             $userInfo['mobile'] = preg_replace('/[^\d]/', '', $userInfo['mobile']);
-            if (10 == strlen($userInfo['mobile'])) {
-                $userInfo['mobile'] = '8' . $userInfo['mobile'];
-            }
 
             if (11 != strlen($userInfo['mobile'])) {
                 throw new \Exception('Неверный номер телефона');
