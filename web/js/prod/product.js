@@ -1079,7 +1079,8 @@ $(document).ready(function() {
                     $orderContent = $('#js-order-content')
                 ; // end of vars
 
-                $('.jsOneClickCompletePage').remove();
+                $('.shopsPopup').find('.close').trigger('click'); // закрыть выбор магазинов
+                $('.jsOneClickCompletePage').remove(); // удалить ранее созданный контент с оформленным заказом
                 $('#jsOneClickContentPage').show();
 
                 // mask

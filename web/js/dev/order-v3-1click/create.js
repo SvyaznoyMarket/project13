@@ -39,9 +39,6 @@
 
                 $('body').trigger('trackUserAction', ['3_2 Оформить_ошибка', 'Поле ошибки: '+ ((typeof error !== 'undefined') ? error.join(', ') : '')]);
             })
-            .complete(function() {
-                $('.shopsPopup').find('.close').trigger('click');
-            })
         ;
 
         e.preventDefault();
