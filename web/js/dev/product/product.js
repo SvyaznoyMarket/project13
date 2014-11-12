@@ -191,6 +191,7 @@ $(document).ready(function() {
                     if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
                 });
 
+                console.warn($target.length);
                 if ($target.length) {
                     var data = $.parseJSON($orderContent.data('param'));
                     data.quantity = button.data('quantity');
