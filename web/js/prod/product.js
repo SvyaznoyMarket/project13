@@ -1079,6 +1079,9 @@ $(document).ready(function() {
                     $orderContent = $('#js-order-content')
                 ; // end of vars
 
+                $('.jsOneClickCompletePage').remove();
+                $('#jsOneClickContentPage').show();
+
                 // mask
                 $.mask.definitions['x']='[0-9]';
                 $.mask.placeholder= "_";
