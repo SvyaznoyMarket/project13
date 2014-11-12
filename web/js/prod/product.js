@@ -1140,9 +1140,8 @@ $(document).ready(function() {
                         $('body').trigger('trackUserAction', ['0 Вход']);
                     });
 
+                    return false;
                 }
-
-                return false;
             },
 
             toggleOneClickDelivery = function toggleOneClickDelivery() {
