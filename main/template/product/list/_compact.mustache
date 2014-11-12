@@ -80,7 +80,9 @@
 
             <div class="bBtnLine clearfix">
                 {{^hasKit}}
-                    {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
+                    {{^isPodariZhiznProduct}}
+                        {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
+                    {{/isPodariZhiznProduct}}
                     <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare"></a>
                 {{/hasKit}}
                 {{#isKitLocked}}

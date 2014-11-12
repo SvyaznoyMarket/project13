@@ -17,14 +17,14 @@ foreach ($orders as $order) {
     $ordersSum += $order->getPaySum();
 }
 
-/** @var $order \Model\Order\Entity */
+/** @var $order false|\Model\Order\Entity */
 $order = reset($orders);
 
 $data = [
     'page'              => 'order.complete',
-    'productIds'        => implode(',', $productIds),       // где XX,YY,ZZ – это ID товаров в корзине через запятую.
-    'productQuantities' => implode(',', $productQuantities),// где X,Y,Z – это количество соответствующих товаров (опционально).
-    'orderId'           => $order->getId(),                 // где XXXYYY – это ID заказа (желательно, можно  шифровать значение в MD5)
+    'productIds'        => implode(',', $productIds),        // где XX,YY,ZZ – это ID товаров в корзине через запятую.
+    'productQuantities' => implode(',', $productQuantities), // где X,Y,Z – это количество соответствующих товаров (опционально).
+    'orderId'           => $order ? $order->getId() : '',    // где XXXYYY – это ID заказа (желательно, можно  шифровать значение в MD5)
     'orderTotal'        => $ordersSum,                       // сумма заказа (опционально)
 ];
 ?>

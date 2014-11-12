@@ -49,7 +49,7 @@ class BasicRecommendedAction {
                 throw new \Exception(sprintf('Товар #%s не найден', $productId));
             }
 
-            $key = \App::abTest()->getTest('other')->getChosenCase()->getKey();
+            $key = \App::abTest()->getTest('other') ? \App::abTest()->getTest('other')->getChosenCase()->getKey() : null;
 
             \App::logger()->info(sprintf('abTest.key=%s, response.cookie.switch=%s', $key, $request->cookies->get(\App::config()->abTest['cookieName'])));
 

@@ -57,8 +57,10 @@ class OrderAction {
         $currentOrdersCount = 0;
 
         \RepositoryManager::order()->prepareCollectionByUserToken($user->getToken(), function($data) use(&$order, &$orderId, &$currentOrdersCount) {
-            if (!is_array($data)) return;
-            foreach ($data as $item) {
+            if (empty($data['orders'][0])) return;
+            foreach ($data['orders'] as $item) {
+                if (empty($item['id'])) continue;
+
                 $orderItem = new \Model\User\Order\Entity($item);
                 if ($orderId == $item['id']) $order = $orderItem;
                 if (!$orderItem->isCompleted()) $currentOrdersCount++;

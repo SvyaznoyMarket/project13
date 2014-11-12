@@ -147,7 +147,7 @@ class NewAction {
             }
 
             // получение карт лояльности
-            $bonusCards = \RepositoryManager::bonusCard()->getCollection();
+            $bonusCards = \RepositoryManager::bonusCard()->getCollection(['product_list' => array_map(function(\Model\Cart\Product\Entity $v) { return ['id' => $v->getId(), 'quantity' => $v->getQuantity()]; }, $cart->getProducts())]);
             $userBonusCards = $user->getEntity() && $user->getEntity()->getBonusCard() ? $user->getEntity()->getBonusCard() : [];
 
             // массив данных для JS
