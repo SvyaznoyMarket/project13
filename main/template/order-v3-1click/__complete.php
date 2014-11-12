@@ -15,7 +15,7 @@ $f = function(
 
 <? foreach ($orders as $order): ?>
 <div class="orderOneClick jsOneClickCompletePage">
-    <h1 class="orderOneClick_t">Оформление завершено</h1>
+    <span class="orderOneClick_t">Оформление завершено</span>
 
     <div id="jsOrderV3OneClickOrder" data-url="<?= $helper->url('orderV3OneClick.get', ['accessToken' => $order->getAccessToken()]) ?>"></div>
 	

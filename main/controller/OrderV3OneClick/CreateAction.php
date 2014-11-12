@@ -49,6 +49,10 @@ class CreateAction {
                 $userInfo['mobile'] = '8' . $userInfo['mobile'];
             }
 
+            if (11 != strlen($userInfo['mobile'])) {
+                throw new \Exception('Неверный номер телефона');
+            }
+
             if (empty($splitResult['orders'])) {
                 throw new \Exception('Ошибка оформления');
             }
@@ -101,7 +105,7 @@ class CreateAction {
 
             $message = $e->getMessage();
 
-            $result['error'] = ['message' => $message];
+            $result['error'] = [$message];
             $result['errorContent'] = \App::closureTemplating()->render('order-v3/__error', ['error' => $message]);
 
             return $request->isXmlHttpRequest() ? new \Http\JsonResponse(['result' => $result], 500) : new \Http\RedirectResponse($referer);
