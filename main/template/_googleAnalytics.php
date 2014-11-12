@@ -28,11 +28,9 @@
     _gaq.push(['_addOrganic', 'm.yandex.ru','query']);
 
     <? /* Слот 1 занят под abTestJson, а слоты 3, 4, 5 заняты под нужды сотрудников отдела аналитики */ ?>
-    <? $customVarNum = 5 ?>
     <? foreach (\App::abTest()->getTests() as $test): ?>
-        <? $customVarNum++ ?>
-        <? if ($test->isActive()): ?>
-            _gaq.push(['_setCustomVar', <?= $customVarNum ?>, 'User segment', '<?= $test->getKey() ?>_<?= $test->getChosenCase()->getKey() ?>', 2]);
+        <? if ($test->isActive() && $test->gaSlotNumber): ?>
+            _gaq.push(['_setCustomVar', <?= $test->gaSlotNumber ?>, 'User segment', '<?= $test->getKey() ?>_<?= $test->getChosenCase()->getKey() ?>', <?= $test->gaSlotScope ?>]);
         <? endif ?>
     <? endforeach ?>
 

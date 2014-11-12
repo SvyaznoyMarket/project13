@@ -28,7 +28,7 @@
         </div>-->
     </div>
 
-    <? if ((bool)$order->getLifecycle()) : ?>
+    <? if (false && (bool)$order->getLifecycle()) : ?>
     <!-- статусы заказа -->
     <ul class="personalControl personalControl-arrow">
 
@@ -64,7 +64,7 @@
 
     </ul>
     <!--/ статусы заказа -->
-    <? endif; ?>
+    <? endif ?>
 
     <!-- информация о заказе -->
     <div class="personalInfo">

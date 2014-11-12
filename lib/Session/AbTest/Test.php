@@ -19,7 +19,24 @@ class Test {
     /** @var TestCase|null */
     private $chosenCase;
 
+    /** @var string|null */
+    public $name;
+
+    /** Слот для customVar в GA
+     *  Слот 1 занят под abTestJson, а слоты 3, 4, 5 заняты под нужды сотрудников отдела аналитики
+     * @var int|null
+     */
+    public $gaSlotNumber;
+
+    /** Scope для CustomVar в GA
+     * @var int
+     */
+    public $gaSlotScope = 2;
+
     public function __construct(array $data = []) {
+        if (array_key_exists('name', $data)) $this->name = $data['name'];
+        if (array_key_exists('gaSlotNumber', $data) && !empty($data['gaSlotNumber'])) $this->gaSlotNumber = (int)$data['gaSlotNumber'];
+        if (array_key_exists('gaSlotScope', $data) && !empty($data['gaSlotScope'])) $this->gaSlotScope = (int)$data['gaSlotScope'];
         if (array_key_exists('key', $data)) $this->key = $data['key'];
         if (array_key_exists('enabled', $data)) $this->enabled = $data['enabled'];
         if (array_key_exists('expireDate', $data)) $this->expireDate = $data['expireDate'];

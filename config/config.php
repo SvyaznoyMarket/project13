@@ -485,7 +485,9 @@ $c->tchiboSlider['analytics'] = [
 $c->abTest = [
     'cookieName' => 'switch',
     'tests' => [
+
         'reviews' => [
+            'name'  => 'Отзывы',
             'enabled' => true,
             'expireDate' => '2014-09-08',
             'cases' => [
@@ -503,35 +505,10 @@ $c->abTest = [
                 ],
             ],
         ],
-//        'orders' => [
-//            'enabled' => true,
-//            'expireDate' => '2014-12-31',
-//            'cases' => [
-//                'new' => [
-//                    'traffic'  => 50,
-//                    'name'     => 'Новое оформление заказа',
-//                ],
-//                'default' => [
-//                    'traffic'  => 50,
-//                    'name'     => 'Старое оформление заказа',
-//                ]
-//            ]
-//        ],
-//        'orders_moscow' => [
-//            'enabled' => true,
-//            'expireDate' => '2014-12-31',
-//            'cases' => [
-//                'new' => [
-//                    'traffic'  => 5,
-//                    'name'     => 'Новое оформление заказа',
-//                ],
-//                'default' => [
-//                    'traffic'  => 95,
-//                    'name'     => 'Старое оформление заказа',
-//                ]
-//            ]
-//        ],
+
         'orders_new' => [
+            'name'  => 'Новое ОЗ',
+            'gaSlotNumber'        => 7,
             'enabled' => true,
             'expireDate' => '2014-12-31',
             'cases' => [
@@ -549,7 +526,10 @@ $c->abTest = [
                 ]
             ]
         ],
+
         'orders_new_some_regions' => [
+            'name'  => 'Новое ОЗ для Ярославля и Ростова',
+            'gaSlotNumber'        => 8,
             'enabled' => true,
             'expireDate' => '2014-12-31',
             'cases' => [
@@ -567,7 +547,10 @@ $c->abTest = [
                 ]
             ]
         ],
+
         'order_delivery_price' => [
+            'name'  => 'Платный самовывоз',
+            'gaSlotNumber'        => 9,
             'enabled' => true,
             'expireDate' => '2014-12-31',
             'cases' => [
@@ -581,25 +564,33 @@ $c->abTest = [
                 ]
             ]
         ],
-        /*
-        'jewel_items' => [
+
+        'furniture_anzoli' => [
+            'name'  => 'Вид категории Anzoli в разделе Мебель',
+            'gaSlotNumber'        => 10,
             'enabled' => true,
-            'expireDate' => '2015-12-31',
+            'expireDate' => '2014-12-31',
             'cases' => [
-                'jewelItems3' => [
-                    'traffic' => 50,
-                    'name' => 'Сетка листинга по 3 товара',
+                'furniture_main1' => [
+                    'traffic'  => 33,
+                    'name'     => 'Широкий баннер',
                 ],
-                'jewelItems4' => [
-                    'traffic'  => 50,
-                    'name'     => 'Сетка листинга по 4 товара',
+                'furniture_main2' => [
+                    'traffic'  => 33,
+                    'name'     => 'Баннер из пяти частей',
+                ],
+                'furniture_main3' => [
+                    'traffic'  => 34,
+                    'name'     => 'Большой баннер',
                 ]
             ]
         ],
-        */
+
         'jewel_filter' => [
-            'enabled' => true,
-            'expireDate' => '2015-12-31',
+            'name'          => 'Графические фильтры для ювелирки',
+            'gaSlotNumber'        => 11,
+            'enabled'       => true,
+            'expireDate'    => '2015-12-31',
             'cases' => [
                 'old_filter' => [
                     'traffic' => 50,
@@ -614,12 +605,7 @@ $c->abTest = [
                     'name'    => 'Новый фильтр и нет фото "как товар смотрится на модели"',
                 ],
             ]
-        ],
-        'other' => [
-            'enabled' => false,
-            'expireDate' => '2000-01-01',
-            'cases' => [],
-        ],
+        ]
     ],
 ];
 
