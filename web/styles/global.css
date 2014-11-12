@@ -5910,6 +5910,12 @@ img[height="0"] {
     font-size: 14px;
     line-height: 33px;
   }
+  .orderU_hint .customLabel {
+    background-position: 0 50%;
+  }
+  .orderU_hint .customInput-defcheck:checked + .customLabel {
+    background-position: 0 50%;
+  }
   .orderU-v2 .orderU_tx {
     line-height: 14px;
   }

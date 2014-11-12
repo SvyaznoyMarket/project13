@@ -36,6 +36,10 @@ return function(
                         <input class="orderU_tx textfield jsOrderV3EmailField" type="text" name="user_info[email]" value="<?= $userEntity ? $userEntity->getEmail() : '' ?>" placeholder="mail@domain.com">
                         <label class="orderU_lbl" for="">E-mail</label>
                         <span class="errTx" style="display: none">Неверный формат email</span>
+                        <span class="orderU_hint">
+                            <input type="checkbox" name="" id="subscribe" class="customInput customInput-defcheck">
+                            <label for="subscribe" class="customLabel">Подписаться на рассылку, получить 300 рублей</label>
+                        </span>
                     </div>
 
                     <div class="orderU_fld">
