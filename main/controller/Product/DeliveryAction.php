@@ -58,8 +58,12 @@ class DeliveryAction {
             $result = [];
             \App::coreClientV2()->addQuery(
                 'delivery/calc2',
-                ['geo_id' => $regionId],
-                ['product_list' => $productData],
+                [
+                    'geo_id' => $regionId
+                ],
+                [
+                    'product_list' => $productData
+                ],
                 function($data) use (&$result) {
                     $result = array_merge([
                         'product_list'  => [],
@@ -71,9 +75,12 @@ class DeliveryAction {
                 function(\Exception $e) use (&$exception) {
                     $exception = $e;
                     \App::exception()->remove($e);
-                }
+                },
+                1.5 * \App::config()->coreV2['timeout']
             );
+
             \App::coreClientV2()->execute();
+
             if ($exception instanceof \Exception) {
                 throw $exception;
             }
