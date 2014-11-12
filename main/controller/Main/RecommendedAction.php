@@ -28,7 +28,16 @@ class RecommendedAction {
                 foreach ($data as $item) {
                     if (empty($item['id'])) continue;
 
-                    $products[] = new \Model\Product\Entity($item);
+                    $product = new \Model\Product\Entity($item);
+                    // если товар недоступен для покупки - пропустить
+                    if (
+                        !$product->getIsBuyable()
+                        && !$product->isInShopShowroomOnly()
+                    ) {
+                        continue;
+                    }
+
+                    $products[] = $product;
                 }
             });
         }
