@@ -46,16 +46,16 @@ $f = function(
             <div class="orderCol_f_r">
                 <span class="orderCol_summ">
                     <? if ($delivery->getPrice()): ?>
-                        <?= $helper->formatPrice($delivery->getPrice()) ?>
+                        <?= $helper->formatPrice($delivery->getPrice()) ?> <span class="rubl">p</span></span>
                     <? else: ?>
                         Бесплатно
                     <? endif ?>
                 </span>
                 <span class="orderCol_summt">
-                    <? if (3 == $delivery->getTypeId()): ?>
-                        Самовывоз:
-                    <? else: ?>
+                    <? if ('1' == $delivery->getTypeId()): ?>
                         Доставка
+                    <? else: ?>
+                        Самовывоз:
                     <? endif ?>
                 </span>
 
