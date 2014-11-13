@@ -228,6 +228,85 @@ $isKitPage = (bool)$product->getKit();
 
 <div class="clear"></div>
 
+<div class="bGoodsSlider js-slider clearfix">
+    <h3 class="bHeadSection">Вы смотрели</h3>
+    
+    <div class="slideItem slideItem-viewed">
+        <!-- позиция leftБ вычисляется - номер слайдера начиная с 0 уможенный на 90 -->
+        <div class="slideItem_flt">
+            <div class="slideItem_flt_i">LED-телевизор 32" Sony KDL-32W503ABR</div> 
+        </div>
+
+        <div class="slideItem_inn">
+            <ul class="slideItem_lst clearfix" style="width: 1690px;">
+                <li class="slideItem_i jsSliderItem" style="display: list-item;">
+                    <a href="" class="slideItem_imgw">
+                        <img alt="" src="http://fs04.enter.ru/1/1/120/61/308188.jpg" class="slideItem_img">
+                    </a>    
+                </li>
+                <li class="slideItem_i jsSliderItem" style="display: list-item;">
+                    <a href="" class="slideItem_imgw">
+                        <img alt="" src="http://fs04.enter.ru/1/1/120/61/308188.jpg" class="slideItem_img">
+                    </a>    
+                </li>   
+                <li class="slideItem_i jsSliderItem" style="display: list-item;">
+                    <a href="" class="slideItem_imgw">
+                        <img alt="" src="http://fs04.enter.ru/1/1/120/61/308188.jpg" class="slideItem_img">
+                    </a>  
+                </li>   
+                <li class="slideItem_i jsSliderItem" style="display: list-item;">
+                    <a href="" class="slideItem_imgw">
+                        <img alt="" src="http://fs04.enter.ru/1/1/120/61/308188.jpg" class="slideItem_img">
+                    </a>    
+                </li>   
+                <li class="slideItem_i jsSliderItem" style="display: list-item;">
+                    <a href="" class="slideItem_imgw">
+                        <img alt="" src="http://fs04.enter.ru/1/1/120/61/308188.jpg" class="slideItem_img">
+                    </a>    
+                </li>   
+                <li class="slideItem_i jsSliderItem" style="display: list-item;">
+                    <a href="" class="slideItem_imgw">
+                        <img alt="" src="http://fs04.enter.ru/1/1/120/61/308188.jpg" class="slideItem_img">
+                    </a>  
+                </li>   
+                <li class="slideItem_i jsSliderItem" style="display: list-item;">
+                    <a href="" class="slideItem_imgw">
+                        <img alt="" src="http://fs04.enter.ru/1/1/120/61/308188.jpg" class="slideItem_img">
+                    </a>    
+                </li>   
+                <li class="slideItem_i jsSliderItem" style="display: list-item;">
+                    <a href="" class="slideItem_imgw">
+                        <img alt="" src="http://fs04.enter.ru/1/1/120/61/308188.jpg" class="slideItem_img">
+                    </a>   
+                </li>   
+                <li class="slideItem_i jsSliderItem" style="display: list-item;">
+                    <a href="" class="slideItem_imgw">
+                        <img alt="" src="http://fs04.enter.ru/1/1/120/61/308188.jpg" class="slideItem_img">
+                    </a>    
+                </li>   
+                <li class="slideItem_i jsSliderItem" style="display: list-item;">
+                    <a href="" class="slideItem_imgw">
+                        <img alt="" src="http://fs04.enter.ru/1/1/120/61/308188.jpg" class="slideItem_img">
+                    </a>   
+                </li>   
+                <li class="slideItem_i jsSliderItem" style="display: list-item;">
+                    <a href="" class="slideItem_imgw">
+                        <img alt="" src="http://fs04.enter.ru/1/1/120/61/308188.jpg" class="slideItem_img">
+                    </a>    
+                </li>   
+                <li class="slideItem_i jsSliderItem" style="display: list-item;">
+                    <a href="" class="slideItem_imgw">
+                        <img alt="" src="http://fs04.enter.ru/1/1/120/61/308188.jpg" class="slideItem_img">
+                    </a> 
+                </li>                      
+            </ul>
+        </div>
+
+        <div class="slideItem_btn slideItem_btn-prv"></div>
+        <div class="slideItem_btn slideItem_btn-nxt"></div>
+    </div>
+</div>
+
 <div class="bBreadCrumbsBottom"><?= $page->render('_breadcrumbs', ['breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer']) ?></div>
 
 </div>
