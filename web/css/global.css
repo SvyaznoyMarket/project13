@@ -9153,6 +9153,11 @@
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=30);
     filter: alpha(opacity=30);
   }
+  .slideItem_stick {
+    position: absolute;
+    top: 0;
+    z-index: 1;
+  }
   .slideItem_flt {
     margin: 0px auto;
     position: relative;
@@ -9285,6 +9290,9 @@
   }
   .slideItem-main .slideItem_n a {
     color: #ffffff;
+  }
+  .slideItem-main .slideItem_stick {
+    top: 45px;
   }
   .slideItem-main .slideItem_btn {
     margin-top: -5px;

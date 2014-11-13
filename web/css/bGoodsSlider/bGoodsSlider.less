@@ -81,6 +81,12 @@
         }
     }
 
+    &_stick {
+        position: absolute;
+        top: 0;
+        z-index: 1;
+    }
+
     &_flt {
         margin: 0px auto; 
         position: relative; 
@@ -177,7 +183,6 @@
 			height: 150px;
 			padding: 0 0 15px;
     	}
-
     	.slideItem_img {
 			width: 150px;
 			height: 150px;
@@ -193,43 +198,38 @@
 		    text-align: center;
 		    text-transform: uppercase;
 		}
-
 		.slideItem_pr {
 		    color: @white;
 		    font-family: "Enter type";
 		    font-size: 22px;
 		    line-height: 26px;
 		}
-
 		.slideItem_n {
 		    color: #fff;
 		    font-family: "Enter type";
 		    font-size: 14px;
 		    height: 31px;
 		    margin: 5px 0 8px;
-
 		    a {
 		    	color: @white;
 		    }
 		}
-
+        .slideItem_stick {
+            top: 45px;
+        }
 		.slideItem_btn {
 		    margin-top: -5px;
-
 		    &-prv {
 			    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAcCAQAAAD/qpb3AAAAmElEQVQoz33SvxEBQRiG8TUkhORU4EowejCaoAuqoIrTAyEZFcgvldz8ZGZ8d7sbPu/O/nm+N6XOsnZXdfHMG4+IBy74WMZgD3YRVz6oI5544W0agzNaq4i34BDxQoOr4T8euaExj/uPYNNV0OLUr+BpHIN+BSmpc8E0c1T28sJzCx/MKilILGgvDCo72kIZCvXJFu5X0eUXASvDcmPvB3EAAAAASUVORK5CYII=") no-repeat 50% 50%;
 			    left: 0;
 			}
-
 			&-nxt {
 			    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAcCAQAAAD/qpb3AAAAlElEQVQoz43SsQ3CQBBEUSNIIMQ5VGBKQPSAaAK6gCqgCtMDhJBBBc6dOrEeBeytxKVfmt37O5XGy66KzxudOoLGgLtJREdwKsW1GGwiWOrwtYhoa8StFHcGhwimHuitI1rp8TSLaA8upUlXjAVF5j7oLDNFbeoui6r/G56sm3wwVZJITLSnh0pOm5QhrU9euE25oj+4MsNyCCfkfwAAAABJRU5ErkJggg==") no-repeat 50% 50%;
 			    right: 0;
 			}
 		}
-
 		.btnBuy {
 		    float: right;
-
 		    &__eLink {
 			    background: #feb723;
 			    border-color: #feb723;
