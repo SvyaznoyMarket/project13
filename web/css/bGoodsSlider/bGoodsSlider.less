@@ -64,7 +64,7 @@
     &_btn {
         position: absolute;
         top: 50%;
-        margin-top: -15px;
+        margin-top: -20px;
         width: 20px;
         height: 40px;
         cursor: pointer;
@@ -78,6 +78,59 @@
         }
         &.mDisabled {
             .opacity(0.3);
+        }
+    }
+
+    &_flt {
+        margin: 0px auto; 
+        position: relative; 
+        width: 900px;
+        .transition(all .2s ease);
+        .opacity(0);
+        overflow: hidden;
+        &-show {
+            .opacity(1);
+            overflow: visible;
+        }
+
+        &_i {
+            background: @white;
+            border: 1px solid #a0a0a0;
+            .rounded(3px);
+            bottom: -5px;
+            left: 0;
+            margin-left: -59px;
+            overflow: visible;
+            padding: 10px;
+            position: absolute;
+            width: 180px;
+
+            &:after {
+                border-left: 6px solid transparent;
+                border-right: 6px solid transparent;
+                border-top: 7px solid #a0a0a0;
+                bottom: -7px;
+                content: "";
+                height: 0;
+                left: 50%;
+                margin-left: -3px;
+                position: absolute;
+                width: 0;
+                z-index: 1;
+            }
+            &:before {
+                border-left: 4px solid transparent;
+                border-right: 4px solid transparent;
+                border-top: 5px solid #fff;
+                bottom: -5px;
+                content: "";
+                height: 0;
+                left: 50%;
+                margin-left: -1px;
+                position: absolute;
+                width: 0;
+                z-index: 2;
+            }
         }
     }
     // 7 товаров в слайдере
@@ -186,6 +239,64 @@
 			    padding: 3px 10px;
 			}
 		}
+    }
+        
+    // слайдер "Вы смотрели"
+    &-viewed {
+        background: #ededed;
+        .rounded(3px);
+
+        .slideItem_inn {
+            margin: 0 auto;
+            overflow: hidden;
+            width: 900px;
+        }
+
+        .slideItem_i {
+            margin: 10px 5px;
+            width: 80px;
+            &:hover {
+                .slideItem_n {
+                    display: block;
+                }
+            }
+        }
+
+        .slideItem_imgw {
+            background: @white;
+            .rounded(4px);
+            height: 74px;
+            padding: 2px;
+            border: 1px solid @white;
+            width: 74px;
+            .transition(all .3s ease);
+            &:hover {
+                border-color: #a0a0a0;
+            }
+        }
+
+        .slideItem_img {
+            height: 74px;
+            width: 74px;
+        }
+    } 
+    
+    // если в слайдере для прокрутке нет товаров
+    &-static {
+        width: auto;
+        margin: 0;
+
+        .slideItem_inn {
+            width: auto;
+        }
+
+        .slideItem_flt {
+            width: auto;
+        }
+
+        .slideItem_btn {
+            display: none;
+        }
     }
 }
 /**
