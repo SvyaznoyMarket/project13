@@ -200,8 +200,10 @@
 	if (typeof initialAddressData == 'object') {
 		if (initialAddressData.street) {
 			var regexResult = initialAddressData.street.match(/(.+?)\s+(.+)/);
-			address.streetType(regexResult[1]);
-			address.streetName(regexResult[2]);
+			if (regexResult) {
+				address.streetType(regexResult[1]);
+				address.streetName(regexResult[2]);
+			}
 		}
 		if (initialAddressData.building) address.buildingName(initialAddressData.building);
 		if (initialAddressData.apartment) address.apartmentName(initialAddressData.apartment);

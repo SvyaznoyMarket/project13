@@ -484,7 +484,6 @@
 						.script( loadDebugPanel )
 						.wait()
 						.script( getWithVersion('common.js') )
-//                        .script( kladr )
 						.script( getWithVersion('order-v3-new.js') )
 						.wait()
 						.script( getWithVersion('ports.js') );
