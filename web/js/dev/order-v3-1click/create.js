@@ -14,7 +14,12 @@
 
         $.post($el.attr('action'), data)
             .done(function(response) {
-                $('#jsOneClickContentPage').empty().html(response.result.page);
+                if (typeof response.result !== 'undefined') {
+                    $('#jsOneClickContentPage').hide();
+                    $('#jsOneClickContent').append(response.result.page);
+
+                    $('body').trigger('trackUserAction', ['3_1 Оформить_успешно']);
+                }
 
                 var $orderContainer = $('#jsOrderV3OneClickOrder');
                 if ($orderContainer.length) {
@@ -22,8 +27,6 @@
                         $orderContainer.html(response.result.page);
                     });
                 }
-
-                $('body').trigger('trackUserAction', ['3_1 Оформить_успешно']);
             })
             .fail(function(jqXHR){
                 var response = $.parseJSON(jqXHR.responseText);
@@ -32,9 +35,9 @@
                     $('#OrderV3ErrorBlock').html($(response.result.errorContent).html()).show();
                 }
 
-                var error = (response.result && response.result.error) ? response.result.error : [];
+                var error = (response.result && response.result.error) ? response.result.error : {};
 
-                $('body').trigger('trackUserAction', ['3_2 Оформить_ошибка', 'Поле ошибки: '+ (error ? error.join(', ') : '')]);
+                $('body').trigger('trackUserAction', ['3_2 Оформить_ошибка', 'Поле ошибки: '+ ((typeof error !== 'undefined') ? error.join(', ') : '')]);
             })
         ;
 

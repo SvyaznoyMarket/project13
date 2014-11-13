@@ -180,6 +180,10 @@ $(document).ready(function() {
                     $orderContent = $('#js-order-content')
                 ; // end of vars
 
+                $('.shopsPopup').find('.close').trigger('click'); // закрыть выбор магазинов
+                $('.jsOneClickCompletePage').remove(); // удалить ранее созданный контент с оформленным заказом
+                $('#jsOneClickContentPage').show();
+
                 // mask
                 $.mask.definitions['x']='[0-9]';
                 $.mask.placeholder= "_";
@@ -188,6 +192,7 @@ $(document).ready(function() {
                     if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
                 });
 
+                console.warn($target.length);
                 if ($target.length) {
                     var data = $.parseJSON($orderContent.data('param'));
                     data.quantity = button.data('quantity');
@@ -241,9 +246,8 @@ $(document).ready(function() {
                         $('body').trigger('trackUserAction', ['0 Вход']);
                     });
 
+                    return false;
                 }
-
-                return false;
             },
 
             toggleOneClickDelivery = function toggleOneClickDelivery() {
