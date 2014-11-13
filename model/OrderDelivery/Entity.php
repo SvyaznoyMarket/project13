@@ -573,6 +573,7 @@ namespace Model\OrderDelivery\Entity\Point {
 
 namespace Model\OrderDelivery\Entity\Order {
 
+    use Model\OrderDelivery\Entity\Point;
     use Model\OrderDelivery\ValidateException;
 
     class Seller {
@@ -713,6 +714,17 @@ namespace Model\OrderDelivery\Entity\Order {
                 $this->delivery_method =& $orderDelivery->delivery_methods[$this->delivery_method_token];
             } else {
                 throw new \Exception ("Не существует метода доставки для заказа");
+            }
+
+            $this->validate($orderDelivery);
+
+        }
+
+        private function validate(\Model\OrderDelivery\Entity &$orderDelivery = null) {
+            // Предвыбранная точка приходит с неправильным токеном ( CORE-2367 )
+            $uniquePointTokens = array_unique(array_map(function(Point $point){ return $point->token; }, $orderDelivery->points));
+            if ($this->point && $this->point->token && !in_array($this->point->token, $uniquePointTokens)) {
+                throw new \Exception('CORE: Для одного из заказов указан несуществующий token в списке точек самовывоза');
             }
         }
     }
