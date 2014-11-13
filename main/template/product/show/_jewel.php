@@ -179,7 +179,9 @@ $isKitPage = (bool)$product->getKit();
         </div>
     <? else: ?>
         <div class="js-showTopBar"></div>
-    <? endif; ?>
+    <? endif ?>
+
+    <?= $helper->render('cart/__form-oneClick', ['product' => $product, 'region' => \App::user()->getRegion()]) // Форма покупки в один клик ?>
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
 

@@ -117,7 +117,8 @@ class Repository {
 
         $entity = null;
         $client->addQuery('order/get-by-token', ['token' => $accessToken], [], function ($data) use (&$entity) {
-            if ($data = reset($data)) {
+            if ($data) {
+                $data = reset($data);
                 $entity = $data ? new Entity($data) : null;
             }
         });
