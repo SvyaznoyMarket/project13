@@ -215,11 +215,7 @@ return function(
                     </div>
 
                     <div class="orderCol_addrs">
-                        <ul class="orderCol_addrs_fld textfield clearfix" style="height: inherit">
-                            <li class="orderCol_addrs_fld_i orderCol_addrs_fld_i-edit ui-front">
-                                <span id="addressInputPrefix" class="addrsAutocmpltLbl"></span><input name="address" type="text" />
-                            </li>
-                        </ul>
+                        <?= $helper->render('order-v3/common/_smartaddress') ?>
                     </div>
 
                 </div>
@@ -284,5 +280,5 @@ return function(
 <div id="kladr-config" data-value="<?= $helper->json(\App::config()->kladr ); ?>"></div>
 <div id="region-name" data-value=<?= json_encode($region->getName(), JSON_UNESCAPED_UNICODE); ?>></div>
 <? if (App::config()->debug) : ?><div id="initialOrderModel" data-value="<?= $helper->json($orderDelivery) ?>"></div><? endif; ?>
-
+<div id="jsUserAddress" data-value="<?= $helper->json($orderDelivery->user_info->address) ?>"></div>
 <? };
