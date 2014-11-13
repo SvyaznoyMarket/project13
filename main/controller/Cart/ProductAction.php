@@ -16,6 +16,7 @@ class ProductAction {
 
         $productId = (int)$productId;
         $quantity = (int)$request->get('quantity', 1);
+        $sender = is_scalar($request->query->get('sender')) ? (string)$request->query->get('sender') : null;
 
         try {
             if ($quantity < 0) {
@@ -32,8 +33,13 @@ class ProductAction {
                 throw new \Exception(sprintf('Товар #%s не найден', $productId));
             }
 
+            $params = [];
+            if ($sender) {
+                $params['sender'] = $sender;
+            }
+
             // не учитываем является ли товар набором или нет - за это отвечает ядро
-            $cart->setProduct($product, $quantity);
+            $cart->setProduct($product, $quantity, $params);
             $cartProduct = $cart->getProductById($product->getId());
             //$this->updateCartWarranty($product, $cartProduct, $quantity);
 
@@ -99,7 +105,8 @@ class ProductAction {
             }
 
             try {
-                if (is_scalar($request->query->get('sender'))) {
+                if ($sender) {
+                    // старый метод запоминания рекомендаций
                     $recommendedProductIds = (array)\App::session()->get(\App::config()->product['recommendationSessionKey']);
                     $recommendedProductIds[] = $cartProduct->getId();
                     \App::session()->set(\App::config()->product['recommendationSessionKey'], $recommendedProductIds);

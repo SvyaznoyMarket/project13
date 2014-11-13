@@ -13,7 +13,8 @@ return function (
     $isRetailrocketRecommendation = false,
     $retailrocketMethod = null,
     $retailrocketIds = [],
-    $namePosition = 'bottom'
+    $namePosition = 'bottom',
+    array $senderData = []
 ) {
 /**
  * @var $products   \Model\Product\Entity[]
@@ -102,6 +103,7 @@ return function (
                             'product'        => $product,
                             'onClick'        => $addToCartJS ? $addToCartJS : null,
                             'isRetailRocket' => $isRetailrocketProduct,
+                            'senderData'     => $senderData,
                         ]) // Кнопка купить ?>
                     <? endif ?>
                 </li>

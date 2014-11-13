@@ -1,9 +1,11 @@
 <?php
+
 return function (
     \Helper\TemplateHelper $helper,
     \Model\Product\BasicEntity $product,
     $onClick = null,
-    $isRetailRocket = null
+    $isRetailRocket = null,
+    $senderData = []
 ) {
-    print $helper->renderWithMustache('cart/_button-product', (new \View\Cart\ProductButtonAction())->execute(new \Helper\TemplateHelper(), $product, $onClick, $isRetailRocket));
+    echo $helper->renderWithMustache('cart/_button-product', (new \View\Cart\ProductButtonAction())->execute(new \Helper\TemplateHelper(), $product, $onClick, $isRetailRocket, $senderData));
 };

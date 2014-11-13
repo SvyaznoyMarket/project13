@@ -15,6 +15,7 @@ class RecommendedAction {
 
         $cssClass = $request->query->get('class') ?: 'slideItem-main';
         $namePosition = $request->query->get('namePosition') ?: 'bottom';
+        $senderData = (array)$request->query->get('senderData');
 
         $productIds = [];
         $recommendController = new \Controller\Product\BasicRecommendedAction();
@@ -66,6 +67,7 @@ class RecommendedAction {
             'count'        => count($products),
             'class'        => $cssClass,
             'namePosition' => $namePosition,
+            'senderData'   => $senderData,
         ]);
 
         $recommend = [];

@@ -39,6 +39,9 @@ $isKitPage = (bool)$product->getKit();
             //'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
             'gaEvent'        => 'Accessorize',
             'additionalData' => $additionalData,
+            'senderData'   => [
+                'position' => 'ProductAccessoriesManual',
+            ],
         ]) ?>
     <? endif ?>
 
@@ -56,7 +59,12 @@ $isKitPage = (bool)$product->getKit();
             'count'          => null,
             'limit'          => \App::config()->product['itemsInSlider'],
             'page'           => 1,
-            'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
+            'url'            => $page->url('product.recommended', [
+                'productId'  => $product->getId(),
+                'senderData' => [
+                    'position' => 'ProductAccessories', // все правильно - так и надо!
+                ],
+            ]),
             'additionalData' => $additionalData,
         ]) ?>
     <? endif ?>
@@ -69,7 +77,12 @@ $isKitPage = (bool)$product->getKit();
             'count'    => null,
             'limit'    => \App::config()->product['itemsInSlider'],
             'page'     => 1,
-            'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
+            'url'      => $page->url('product.recommended', [
+                'productId'  => $product->getId(),
+                'senderData' => [
+                    'position' => 'ProductSimilar',
+                ],
+            ]),
         ]) ?>
     <? endif ?>
 
@@ -85,7 +98,12 @@ $isKitPage = (bool)$product->getKit();
             'count'    => null,
             'limit'    => \App::config()->product['itemsInSlider'],
             'page'     => 1,
-            'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
+            'url'      => $page->url('product.recommended', [
+                'productId'  => $product->getId(),
+                'senderData' => [
+                    'position' => 'ProductUpSale',
+                ],
+            ]),
         ]) ?>
     <? endif ?>
 </div><!--/left section -->

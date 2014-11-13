@@ -8,6 +8,7 @@ class ProductButtonAction {
      * @param \Model\Product\BasicEntity $product
      * @param null $onClick
      * @param bool $isRetailRocket
+     * @param array $senderData Данные поставщика, например: {place: аксессуары, action: Переход ав карточку товара}
      * @internal param null|string $url
      * @return array
      */
@@ -15,7 +16,8 @@ class ProductButtonAction {
         \Helper\TemplateHelper $helper,
         \Model\Product\BasicEntity $product,
         $onClick = null,
-        $isRetailRocket = false
+        $isRetailRocket = false,
+        array $senderData = []
     ) {
         $data = [
             'disabled'   => false,
@@ -66,6 +68,8 @@ class ProductButtonAction {
             } else if ($isRetailRocket) {
                 $urlParams['sender'] = 'retailrocket';
             }
+
+            $urlParams += $senderData;
 
             $data['url'] = $helper->url('cart.product.set', $urlParams);
             $data['class'] .= ' jsBuyButton';

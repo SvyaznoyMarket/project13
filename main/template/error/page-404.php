@@ -53,7 +53,12 @@ $helper = new \Helper\TemplateHelper();
                     'count'          => null,
                     'limit'          => \App::config()->product['itemsInSlider'],
                     'page'           => 1,
-                    'url'            => $page->url('main.recommended', ['class' => 'slideItem-7item slideItem-br1']),
+                    'url'            => $page->url('main.recommended', [
+                        'class' => 'slideItem-7item slideItem-br1',
+                        'senderData'   => [
+                            'position' => '404',
+                        ],
+                    ]),
                 ]) ?>
             <? endif ?>
         </div>
