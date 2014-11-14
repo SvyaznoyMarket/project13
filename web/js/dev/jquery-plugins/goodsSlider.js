@@ -22,7 +22,7 @@
 			 * @return bool
 			 */
 			isRecommendation = function isRecommendation( type ) {
-				return -1 != $.inArray(type, ["alsoBought", "similar", "alsoViewed", "main"]);
+				return -1 != $.inArray(type, ['alsoBought', 'similar', 'alsoViewed', 'main']);
 			};
 		// end of functions
 
@@ -31,8 +31,6 @@
 				sliderParams = $self.data('slider');
 			// end of vars
 
-            console.info({sliderParams: sliderParams});
-			
 			if ( sliderParams.url !== null ) {
 				slidersWithUrl++;
 			}
@@ -42,6 +40,7 @@
 			}
 
             if (sliderParams.sender) {
+                sliderParams.sender.type = sliderParams.type;
                 urlData.senders.push(sliderParams.sender);
             }
 		});

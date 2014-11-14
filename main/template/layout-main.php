@@ -80,7 +80,7 @@
                 'url'            => $page->url('main.recommended', [
                     'namePosition' => 'top',
                     'class'        => 'slideItem-main',
-                    'sender'       => [
+                    'sender'       => [ // TODO: вынести на уровень выше и переименовать в senders
                         'position' => 'Main',
                     ],
                 ]),

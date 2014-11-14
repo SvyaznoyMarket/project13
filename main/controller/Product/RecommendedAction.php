@@ -14,6 +14,20 @@ class RecommendedAction {
         $rrConfig = \App::config()->partners['RetailRocket'];
         $region = \App::user()->getRegion();
 
+        $sendersByType = [];
+        foreach ((array)$request->query->get('senders') as $sender) {
+            if (!is_array($sender)) {
+                continue;
+            }
+
+            $sender = array_merge(['name' => null, 'position' => null, 'type' => null], $sender);
+            if (empty($sender['name'])) {
+                $sender['name'] = 'enter';
+            }
+
+            $sendersByType[$sender['type']] = $sender;
+        }
+
         $recommend = [
             'alsoBought' => null,
             'similar'    => null,
@@ -168,6 +182,9 @@ class RecommendedAction {
 
                 $method = $controller[$type]->getRetailrocketMethodName() ? $controller[$type]->getRetailrocketMethodName() : null;
 
+                // поставщик
+                $sender = isset($sendersByType[$type]['type']) ? $sendersByType[$type] : [];
+
                 $recommend[$type] = [
                     'success' => true,
                     'content' => \App::closureTemplating()->render('product/__slider', [
@@ -177,6 +194,7 @@ class RecommendedAction {
                         'isRetailrocketRecommendation' => true,
                         'retailrocketMethod'           => $method,
                         'retailrocketIds'              => $ids[$type] ? $ids[$type] : [],
+                        'sender'                       => $sender,
                     ]),
                     'data' => [
                         'id' => $product->getId(),//id товара (или категории, пользователя или поисковая фраза) к которому были отображены рекомендации

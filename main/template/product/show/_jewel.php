@@ -99,13 +99,12 @@ $isKitPage = (bool)$product->getKit();
             'count'          => null,
             'limit'          => \App::config()->product['itemsInSlider'],
             'page'           => 1,
-            'url'            => $page->url('product.recommended', [
-                'productId' => $product->getId(),
-                'sender'    => [
-                    'position' => 'ProductAccessories', // все правильно - так и надо!
-                ],
-            ]),
             'additionalData' => $additionalData,
+            'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
+            'sender'         => [
+                'name'     => 'retailrocket',
+                'position' => 'ProductAccessories', // все правильно - так и надо!
+            ],
         ]) ?>
     <? endif ?>
 
@@ -117,12 +116,11 @@ $isKitPage = (bool)$product->getKit();
             'count'    => null,
             'limit'    => \App::config()->product['itemsInSlider'],
             'page'     => 1,
-            'url'      => $page->url('product.recommended', [
-                'productId' => $product->getId(),
-                'sender'    => [
-                    'position' => 'ProductSimilar',
-                ],
-            ]),
+            'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
+            'sender'    => [
+                'name'     => 'retailrocket',
+                'position' => 'ProductSimilar',
+            ],
         ]) ?>
     <? endif ?>
 
@@ -143,12 +141,11 @@ $isKitPage = (bool)$product->getKit();
             'count'    => null,
             'limit'    => \App::config()->product['itemsInSlider'],
             'page'     => 1,
-            'url'      => $page->url('product.recommended', [
-                'productId' => $product->getId(),
-                'sender'    => [
-                    'position' => 'ProductUpSale',
-                ],
-            ]),
+            'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
+            'sender'    => [
+                'name'     => 'retailrocket',
+                'position' => 'ProductUpSale',
+            ],
         ]) ?>
     <? endif ?>
 </div><!--/left section -->

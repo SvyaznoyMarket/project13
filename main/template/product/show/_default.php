@@ -89,7 +89,7 @@ $isKitPage = (bool)$product->getKit();
             'gaEvent'        => 'Accessorize',
             'additionalData' => $additionalData,
             'sender' => [
-                'name'     => null,
+                //'name'     => null,
                 'position' => 'ProductAccessoriesManual',
             ],
         ]) ?>
@@ -109,8 +109,8 @@ $isKitPage = (bool)$product->getKit();
             'count'          => null,
             'limit'          => \App::config()->product['itemsInSlider'],
             'page'           => 1,
-            'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
             'additionalData' => $additionalData,
+            'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
             'sender'    => [
                 'name'     => 'retailrocket',
                 'position' => 'ProductAccessories', // все правильно - так и надо!
