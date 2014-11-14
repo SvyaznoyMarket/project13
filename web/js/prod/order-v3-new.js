@@ -1347,7 +1347,8 @@
                         if ($form.hasClass('jsPaymentFormPaypal') && typeof $form.attr('action') != 'undefined') {
                             window.location.href = $form.attr('action');
                         } else {
-                            $(data.form).submit();
+							$body.append($form);
+							$form.submit();
                         }
                     }
                     console.log('Payment data', data);
