@@ -42,7 +42,7 @@
     <? if (isset($product) && $product instanceof \Model\Product\Entity) : ?>
         <? /*  Если товар ТОЛЬКО от партнеров или нет у нас, но есть у партнеров */
             if ($product->isOnlyFromPartner() || ($product->getPartnersOffer() && !$product->getIsBuyable())) : ?>
-            _gaq.push(['_setCustomVar', 11, 'shop_type', 'marketplace', 3]);
+            _gaq.push(['_setCustomVar', 12, 'shop_type', 'marketplace', 3]);
             if (console && typeof console.log == 'function') console.log('[Google Analytics] _setCustomVar 11 shop_type marketplace');
         <? endif; ?>
     <? endif; ?>
