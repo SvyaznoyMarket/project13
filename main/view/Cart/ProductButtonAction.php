@@ -8,7 +8,7 @@ class ProductButtonAction {
      * @param \Model\Product\BasicEntity $product
      * @param null $onClick
      * @param bool $isRetailRocket
-     * @param array $senderData Данные поставщика, например: {place: аксессуары, action: Переход ав карточку товара}
+     * @param array $sender Данные поставщика, например: {name: retailrocket, position: ProductSimilar, action: Переход в карточку товара}
      * @internal param null|string $url
      * @return array
      */
@@ -17,7 +17,7 @@ class ProductButtonAction {
         \Model\Product\BasicEntity $product,
         $onClick = null,
         $isRetailRocket = false,
-        array $senderData = []
+        array $sender = []
     ) {
         $data = [
             'disabled'   => false,
@@ -69,7 +69,7 @@ class ProductButtonAction {
                 $urlParams['sender'] = 'retailrocket';
             }
 
-            $urlParams += $senderData;
+            $urlParams = array_merge($urlParams, ['sender' => $sender]);
 
             $data['url'] = $helper->url('cart.product.set', $urlParams);
             $data['class'] .= ' jsBuyButton';

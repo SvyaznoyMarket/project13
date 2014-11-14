@@ -54,8 +54,8 @@ $helper = new \Helper\TemplateHelper();
                     'limit'          => \App::config()->product['itemsInSlider'],
                     'page'           => 1,
                     'url'            => $page->url('main.recommended', [
-                        'class' => 'slideItem-7item slideItem-br1',
-                        'senderData'   => [
+                        'class'  => 'slideItem-7item slideItem-br1',
+                        'sender' => [
                             'position' => '404',
                         ],
                     ]),

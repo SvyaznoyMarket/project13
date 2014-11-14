@@ -5,7 +5,7 @@ return function (
     \Model\Product\BasicEntity $product,
     $onClick = null,
     $isRetailRocket = null,
-    $senderData = []
+    $sender = []
 ) {
-    echo $helper->renderWithMustache('cart/_button-product', (new \View\Cart\ProductButtonAction())->execute(new \Helper\TemplateHelper(), $product, $onClick, $isRetailRocket, $senderData));
+    echo $helper->renderWithMustache('cart/_button-product', (new \View\Cart\ProductButtonAction())->execute(new \Helper\TemplateHelper(), $product, $onClick, $isRetailRocket, $sender));
 };

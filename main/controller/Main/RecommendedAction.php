@@ -15,18 +15,19 @@ class RecommendedAction {
 
         $cssClass = $request->query->get('class') ?: 'slideItem-main';
         $namePosition = $request->query->get('namePosition') ?: 'bottom';
-        $senderData = (array)$request->query->get('senderData');
+        $sender = (array)$request->query->get('sender') + ['name' => null, 'position' => null, 'action' => null];
 
         $productIds = [];
         $recommendController = new \Controller\Product\BasicRecommendedAction();
 
         $productIds = array_merge($productIds, (array)$recommendController->getProductsIdsFromRetailrocket(null, $request, 'ItemsToMain'));
+        $sender['name'] = 'retailrocket';
 
         /* Получаем продукты из ядра */
         $products = [];
         foreach (array_chunk($productIds, \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
             \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$products) {
-                foreach ($data as $item) {
+                foreach ((array)$data as $item) {
                     if (empty($item['id'])) continue;
 
                     $product = new \Model\Product\Entity($item);
@@ -50,7 +51,7 @@ class RecommendedAction {
                 if ($b->getIsBuyable() != $a->getIsBuyable()) {
                     return ($b->getIsBuyable() ? 1 : -1) - ($a->getIsBuyable() ? 1 : -1); // сначала те, которые можно купить
                 } else if ($b->isInShopOnly() != $a->isInShopOnly()) {
-                    return ($b->isInShopOnly() ? -1 : 1) - ($a->isInShopOnly() ? -1 : 1); // потом те, которые можно зарезервировать
+                    //return ($b->isInShopOnly() ? -1 : 1) - ($a->isInShopOnly() ? -1 : 1); // потом те, которые можно зарезервировать
                 } else if ($b->isInShopShowroomOnly() != $a->isInShopShowroomOnly()) {// потом те, которые есть на витрине
                     return ($b->isInShopShowroomOnly() ? -1 : 1) - ($a->isInShopShowroomOnly() ? -1 : 1);
                 } else {
@@ -67,11 +68,14 @@ class RecommendedAction {
             'count'        => count($products),
             'class'        => $cssClass,
             'namePosition' => $namePosition,
-            'senderData'   => $senderData,
+            'sender'       => $sender,
+            'isRetailrocketRecommendation' => true,
+            'retailrocketIds'              => array_map(function(\Model\Product\Entity $product) { return $product->getId(); }, $products),
+            'retailrocketMethod'           => 'ItemsToMain',
         ]);
 
         $recommend = [];
-        $recommend['alsoBought'] = [
+        $recommend['main'] = [
             'content'   => $slider,
             'success'   => true
         ];

@@ -9,7 +9,7 @@
             'type'      => 'alsoBought',
             'products'  => [],
             'url'       => $page->url('cart.recommended', [
-                'senderData'   => [
+                'sender' => [
                     'position' => 'Basket',
                 ],
             ]),

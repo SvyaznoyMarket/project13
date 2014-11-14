@@ -71,7 +71,7 @@
 
         <? if (\App::config()->product['showRelated']): ?>
             <?= (new \Helper\TemplateHelper())->render('product/__slider', [
-                'type'           => 'alsoBought',
+                'type'           => 'main',
                 'title'          => 'Мы рекомендуем',
                 'products'       => [],
                 'count'          => null,
@@ -80,7 +80,7 @@
                 'url'            => $page->url('main.recommended', [
                     'namePosition' => 'top',
                     'class'        => 'slideItem-main',
-                    'senderData'   => [
+                    'sender'       => [
                         'position' => 'Main',
                     ],
                 ]),

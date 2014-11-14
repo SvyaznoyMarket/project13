@@ -16,7 +16,13 @@ class ProductAction {
 
         $productId = (int)$productId;
         $quantity = (int)$request->get('quantity', 1);
-        $sender = is_scalar($request->query->get('sender')) ? (string)$request->query->get('sender') : null;
+        $sender = $request->query->get('sender');
+        if (is_string($sender) && !empty($sender)) {
+            $sender = ['name' => $sender];
+        }
+        if (!is_array($sender)) {
+            $sender = null;
+        }
 
         try {
             if ($quantity < 0) {
