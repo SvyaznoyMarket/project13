@@ -114,9 +114,11 @@
 
     // PAGE DELIVERY
 
-    $pageDelivery.on('submit', 'form', function(e){
+    $pageDelivery.on('click', '.orderCompl_btn', function(e){
         var error = [],
-			$agreement = $('.jsAcceptAgreement');
+			$agreement = $('.jsAcceptAgreement'),
+			$form = $(this).closest('form'),
+			send15_3 = false;
 
         if (!$agreement.is(':checked')) {
             error.push('Необходимо согласие с информацией о продавце и его офертой');
@@ -139,7 +141,16 @@
             e.preventDefault();
             $body.trigger('trackUserAction', ['15_2 Оформить_ошибка_Доставка', 'Поле ошибки: '+error.join(', ')]);
         } else {
+
+			// Два условия, по которым мы должны отправить событие 15_3
+			if ( $('.orderCol_addrs_fld').length > 0 && $('.orderCol_addrs_fld li.jsAddressItem').length == 0) send15_3 = true;
+			if ( $('.orderCol_delivrIn-empty:not(.jsSmartAddressBlock)').length > 0 ) send15_3 = true;
+
+			if (send15_3) $body.trigger('trackUserAction', ['15_3 Оформить_успешно_КЦ']);
+
             $body.trigger('trackUserAction', ['15_1 Оформить_успешно_Доставка_ОБЯЗАТЕЛЬНО']);
+			e.preventDefault();
+			setTimeout(function() {	$form.submit(); }, 1000 ); // быстрая обертка для отправки аналитики, иногда не успевает отправляться
         }
 
     });
