@@ -17,7 +17,7 @@ class RecommendedAction {
         $recommend = [
             'alsoBought' => null,
             'similar'    => null,
-            'alsoViewed' => null
+            'alsoViewed' => null,
         ];
 
         if (!\App::user()->getToken()) $recommend['personal'] = null;

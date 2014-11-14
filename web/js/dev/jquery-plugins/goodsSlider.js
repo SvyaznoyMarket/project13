@@ -10,6 +10,7 @@
 			slidersRecommendation = 0,
 			body = $('body'),
 			reqArray = [],
+            urlData = {senders: []},
 			recommendArray = [];
 		// end of vars
 
@@ -29,6 +30,8 @@
 			var $self = $(this),
 				sliderParams = $self.data('slider');
 			// end of vars
+
+            console.info({sliderParams: sliderParams});
 			
 			if ( sliderParams.url !== null ) {
 				slidersWithUrl++;
@@ -37,6 +40,10 @@
 			if ( sliderParams.type !== null && isRecommendation(sliderParams.type) ) {
 				slidersRecommendation++;
 			}
+
+            if (sliderParams.sender) {
+                urlData.senders.push(sliderParams.sender);
+            }
 		});
 
 		var getSlidersData = function getSlidersData( url, type, callback ) {
@@ -50,6 +57,7 @@
 					$.ajax({
 						type: 'GET',
 						url: url,
+                        data: urlData,
 						success: function( res ) {
 							var
 								i, type, callbF, data;
