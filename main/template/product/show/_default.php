@@ -228,6 +228,7 @@ $isKitPage = (bool)$product->getKit();
 
 <div class="clear"></div>
 
+<? if (false): ?>
 <div class="bGoodsSlider js-slider clearfix">
     <h3 class="bHeadSection">Вы смотрели</h3>
     
@@ -306,6 +307,7 @@ $isKitPage = (bool)$product->getKit();
         <div class="slideItem_btn slideItem_btn-nxt"></div>
     </div>
 </div>
+<? endif ?>
 
 <div class="bBreadCrumbsBottom"><?= $page->render('_breadcrumbs', ['breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer']) ?></div>
 
