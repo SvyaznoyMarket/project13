@@ -53,6 +53,14 @@ class App {
                 E_USER_DEPRECATED   => 'User Deprecated',
             ];
 
+            if (E_NOTICE == $level) {
+                if ($logger = \App::logger()) {
+                    $logger->error(['message' => $message, 'senser' => $file . ' ' . $line], ['critical', 'error_handler']);
+                }
+
+                return true;
+            }
+
             if (error_reporting() & $level) {
                 throw new \ErrorException(sprintf('%s: %s in %s line %d', isset($levels[$level]) ? $levels[$level] : $level, $message, $file, $line));
             }
