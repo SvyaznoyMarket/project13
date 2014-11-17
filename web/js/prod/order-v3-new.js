@@ -2051,7 +2051,7 @@
         } else {
 
 			// Два условия, по которым мы должны отправить событие 15_3
-			if ( $('.orderCol_addrs_fld').length > 0 && $('.orderCol_addrs_fld li.jsAddressItem').length == 0) send15_3 = true;
+			if ( $('.orderCol_addrs_fld').length > 0 && $('.orderCol_addrs_fld li.jsAddressItem').length < 2) send15_3 = true;
 			if ( $('.orderCol_delivrIn-empty:not(.jsSmartAddressBlock)').length > 0 ) send15_3 = true;
 
 			if (send15_3) $body.trigger('trackUserAction', ['15_3 Оформить_успешно_КЦ']);
