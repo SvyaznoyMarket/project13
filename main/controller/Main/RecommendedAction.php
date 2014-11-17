@@ -30,6 +30,10 @@ class RecommendedAction {
                 foreach ((array)$data as $item) {
                     if (empty($item['id'])) continue;
 
+                    \Controller\Product\BasicRecommendedAction::prepareLink(
+                        $item['link'], ['engine' => 'retailrocket', 'method' => 'MainToMain', 'id' => $item['id']]
+                    );
+
                     $product = new \Model\Product\Entity($item);
                     // если товар недоступен для покупки - пропустить
                     if (
