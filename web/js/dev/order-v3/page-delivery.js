@@ -200,7 +200,7 @@
 
     //
     $orderContent.on('click', '.jsAddressRootNode', function() {
-        address.inputFocus(true);
+        ENTER.OrderV3.address.inputFocus(true);
     });
 
     // клик по "изменить дату" и "изменить место"
