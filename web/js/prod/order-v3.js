@@ -1613,7 +1613,7 @@
 
     //
     $orderContent.on('click', '.jsAddressRootNode', function() {
-        address.inputFocus(true);
+        ENTER.OrderV3.address.inputFocus(true);
     });
 
     // клик по "изменить дату" и "изменить место"
@@ -1996,7 +1996,7 @@
 
         // Доставка
         if ($('.orderCol_delivrLst_i-act').text().indexOf('Доставка') != -1) {
-            if (!ENTER.OrderV3.address || !ENTER.OrderV3.address.building.name) error.push('Укажите адрес доставки');
+            if (ENTER.OrderV3.address.buildingName() == '') error.push('Укажите адрес доставки');
         }
 
         $('.orderCol_addrs_tx').each(function(i,val){
