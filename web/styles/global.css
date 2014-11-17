@@ -3763,9 +3763,12 @@ img[height="0"] {
   }
   .tchiboCatalog .titleCat {
     display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
     width: 210px;
     padding: 0 0 0 20px;
-    vertical-align: top;
     color: #002a5a;
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAUCAYAAAC58NwRAAAATElEQVQoz2NggAGtKH8gFmAgCmhFxQPxHyA+S1gTQvEf4jRpRc1F0zCqiXJNOBQLQE1E1zB3BCqGaCBBMURDPPGKMTURoRihSZ8YZQD1OpTf/FXeGwAAAABJRU5ErkJggg==) no-repeat 0 7px;
     font-size: 27px;
@@ -3941,6 +3944,10 @@ img[height="0"] {
   }
   .bPaginator.mTchiboPaginator .bPaginator_eWrap {
     display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
     font-size: 0;
     width: auto !important;
     left: 0 !important;
@@ -4078,6 +4085,9 @@ img[height="0"] {
     border: 1px solid #A1A1A1;
     display: inline-block;
     vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
   }
 }
 @media all {
@@ -4239,6 +4249,9 @@ img[height="0"] {
     border: 1px solid #A1A1A1;
     display: inline-block;
     vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
   }
 }
 /*---END---TCHIBO------*/
