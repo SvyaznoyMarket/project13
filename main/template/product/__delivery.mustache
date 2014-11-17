@@ -35,7 +35,9 @@
                 {{/isPriceEqualZero}}
 
                 {{#ab_paid_delivery}}
+                    {{^isOnlyFromPartner}}
                     <div class="bJustText">для заказов от {{limit}}&nbsp;<span class="rubl">p</span></div>
+                    {{/isOnlyFromPartner}}
                 {{/ab_paid_delivery}}
 
                 {{#date.name}}
