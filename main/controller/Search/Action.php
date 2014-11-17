@@ -255,6 +255,15 @@ class Action {
             return new \Http\RedirectResponse(reset($products)->getLink() . '?q=' . urlencode($searchQuery));
         }
 
+        if (0 == count($products)) {
+            $page = new \View\Search\EmptyPage();
+            $page->setParam('searchQuery', $searchQuery);
+            $page->setParam('meanQuery', $meanQuery);
+            $page->setParam('forceMean', $forceMean);
+
+            return new \Http\Response($page->show());
+        }
+
 
         $productVideosByProduct =  \RepositoryManager::productVideo()->getVideoByProductPager( $productPager );
 
