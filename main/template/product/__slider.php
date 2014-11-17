@@ -66,11 +66,19 @@ $f = function (
             <? foreach ($products as $product):
                 if (!$product instanceof \Model\Product\Entity) continue;
 
+                $urlParams = [];
+                if ($sender['name']) {
+                    $urlParams['sender'] = $sender;
+                }
+                if ('retailrocket' == $sender['name']) {
+                    $urlParams['from'] = 'cart_rec';
+                }
+
                 $link = $helper->url(
                     'product',
                     array_merge(
                         ['productPath' => $product->getPath()],
-                        $sender['name'] ? $sender : []
+                        $urlParams
                     ));
 
                 // Retailrocket
