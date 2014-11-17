@@ -54,6 +54,11 @@ class RecommendedAction {
             'products'  => $products,
             'count'     => count($products),
             'class'     => 'bSlider-7item',
+            'sender'    => [
+                'name'     => 'retailrocket',
+                'method'   => 'CrossSellItemToItems',
+                'position' => 'Basket',
+            ],
         ]);
 
         $recommend = [];
