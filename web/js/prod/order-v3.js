@@ -1168,9 +1168,6 @@
 	ENTER.OrderV3.address = address;
 	ENTER.OrderV3.constructors.smartAddressInit();
 
-	w.address = address; //TODO REMOVE
-
-
 }(window, ko, jQuery));
 (function($) {
 
