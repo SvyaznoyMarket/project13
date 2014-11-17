@@ -3594,7 +3594,7 @@ img[height="0"] {
   }
 }
 /*---END----Enter Prize---------*/
-/*------TCHIBO - верхнее меню Чибо, под продуктовым меню------*/
+/*------TCHIBO------*/
 @media all {
   .tchiboMenuOverflow {
     margin: 0 0 -9px -10px;
@@ -3674,8 +3674,6 @@ img[height="0"] {
     top: 0;
   }
 }
-/*---END---TCHIBO - верхнее меню Чибо, под продуктовым меню---*/
-/*---------TCHIBO - заголовок раздела----------*/
 @media all {
   .tchiboTitle {
     -webkit-border-radius: 4px;
@@ -3690,8 +3688,6 @@ img[height="0"] {
     font-weight: 100;
   }
 }
-/*---END----TCHIBO - заголовок раздела---------*/
-/*---------TCHIBO - слайдер-меню разделов Чибо----------*/
 @media all {
   .tchiboNav {
     width: 940px;
@@ -3836,8 +3832,6 @@ img[height="0"] {
     text-align: center;
   }
 }
-/*---END----TCHIBO - слайдер-меню разделов Чибо---------*/
-/*---------TCHIBO - навигация по разделу Чибо----------*/
 @media all {
   .tchiboNavSection {
     position: relative;
@@ -3975,8 +3969,6 @@ img[height="0"] {
     color: #000000;
   }
 }
-/*---END----TCHIBO - навигация по разделу Чибо---------*/
-/*---------TCHIBO - каталог разделов, баннеров, товаров Чибо----------*/
 @media all {
   .tchiboCatalog {
     width: 966px;
@@ -4318,10 +4310,6 @@ img[height="0"] {
     vertical-align: top;
   }
 }
-/*---END----TCHIBO - каталог разделов, баннеров, товаров Чибо---------*/
-/*---------TCHIBO - крутилка разделов Чибо на рутовой странице----------*/
-/*---END----TCHIBO - крутилка разделов Чибо на рутовой странице---------*/
-/*---------TCHIBO - листинг Чибо----------*/
 @media all {
   .tchiboProducts .productInner {
     z-index: 5;
@@ -4483,7 +4471,7 @@ img[height="0"] {
     vertical-align: top;
   }
 }
-/*---END----TCHIBO - листинг Чибо---------*/
+/*---END---TCHIBO------*/
 /*---------Хиты продаж/Выгодное предложение/Самым разборчивым----------*/
 @media all {
   .specialPrice {
