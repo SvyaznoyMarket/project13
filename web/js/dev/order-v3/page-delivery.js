@@ -108,8 +108,10 @@
                 console.log("Query: %s", data.result.OrderDeliveryRequest);
                 console.log("Model:", data.result.OrderDeliveryModel);
                 $orderContent.empty().html($(data.result.page).find('#js-order-content').html());
-                ENTER.OrderV3.constructors.smartAddress();
-                $orderContent.find('input[name=address]').focus();
+				if ($orderContent.find('.jsAddressRootNode').length > 0) {
+					ko.applyBindings(ENTER.OrderV3.address, $orderContent.find('.jsAddressRootNode')[0]);
+					if (typeof ENTER.OrderV3.constructors.smartAddressInit == 'function') ENTER.OrderV3.constructors.smartAddressInit();
+				}
             }).always(function(){
                 $orderContent.stop(true, true).fadeIn(200);
                 if (spinner) spinner.stop();
@@ -194,6 +196,11 @@
         e.stopPropagation();
         $(this).closest('.popupFl').hide();
         e.preventDefault();
+    });
+
+    //
+    $orderContent.on('click', '.jsAddressRootNode', function() {
+        address.inputFocus(true);
     });
 
     // клик по "изменить дату" и "изменить место"
