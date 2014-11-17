@@ -69,7 +69,15 @@ class ProductButtonAction {
                 $urlParams['sender'] = 'retailrocket';
             }
 
-            $urlParams = array_merge($urlParams, ['sender' => $sender]);
+            if ($sender) {
+                $urlParams = array_merge($urlParams, [
+                    'sender' => [
+                        'name'     => @$sender['name'],
+                        'position' => @$sender['position'],
+                        'method'   => @$sender['method'],
+                    ],
+                ]);
+            }
 
             $data['url'] = $helper->url('cart.product.set', $urlParams);
             $data['class'] .= ' jsBuyButton';

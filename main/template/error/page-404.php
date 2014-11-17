@@ -47,7 +47,7 @@ $helper = new \Helper\TemplateHelper();
         <div class="errPage_cnt_b">
             <? if (\App::config()->product['showRelated']): ?>
                 <?= $helper->render('product/__slider', [
-                    'type'           => 'alsoBought',
+                    'type'           => 'main',
                     'title'          => 'Мы рекомендуем',
                     'products'       => [],
                     'count'          => null,
