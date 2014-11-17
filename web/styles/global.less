@@ -85,38 +85,20 @@
 /*---END----Enter Prize---------*/
 
 
+/*------TCHIBO------*/
+//навигация
+@import "tchibo/tchiboNavSlider.less" all;
 
-/*------TCHIBO - верхнее меню Чибо, под продуктовым меню------*/
-@import "tchiboMenu/tchiboMenu.less" all;
-/*---END---TCHIBO - верхнее меню Чибо, под продуктовым меню---*/
-
-/*---------TCHIBO - заголовок раздела----------*/
-@import "tchiboTitle/tchiboTitle.less" all;
-/*---END----TCHIBO - заголовок раздела---------*/
-
-/*---------TCHIBO - слайдер-меню разделов Чибо----------*/
-@import "tchiboNavSlider/tchiboNavSlider.less" all;
-/*---END----TCHIBO - слайдер-меню разделов Чибо---------*/
-
-/*---------TCHIBO - навигация по разделу Чибо----------*/
-@import "tchiboNavSection/tchiboNavSection.less" all;
-/*---END----TCHIBO - навигация по разделу Чибо---------*/
-
-/*---------TCHIBO - каталог разделов, баннеров, товаров Чибо----------*/
-@import "tchiboCatalog/tchiboCatalog.less" all;
-/*---END----TCHIBO - каталог разделов, баннеров, товаров Чибо---------*/
-
-/*---------TCHIBO - крутилка разделов Чибо на рутовой странице----------*/
+//разделы, баннеры
 @import "tchibo/tchiboCatalog.less" all;
-/*---END----TCHIBO - крутилка разделов Чибо на рутовой странице---------*/
 
-/*---------TCHIBO - листинг Чибо----------*/
-@import "tchiboProducts/tchiboProducts.less" all;
-/*---END----TCHIBO - листинг Чибо---------*/
+//листинг товаров
+@import "tchibo/tchiboProducts.less" all;
+/*---END---TCHIBO------*/
 
 
 /*---------Хиты продаж/Выгодное предложение/Самым разборчивым----------*/
-@import "specialPrice/specialPrice.less" all;
+@import "smartChoice/smartChoice.less" all;
 /*---END----Хиты продаж/Выгодное предложение/Самым разборчивым---------*/
 
 
@@ -203,6 +185,9 @@
 
 /*---------Страницы ошибок----------*/
 @import "error/404.less" all;
+
+/*---------Поиск на сайте, результаты поиска----------*/
+@import "search/empty.less" all;
 
 //стили для фикса старых правил и классов, в последствии, при полном переходе на новую верстку удалить
 @import "main/old__style__fix.less" all;

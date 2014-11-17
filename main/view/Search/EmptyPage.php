@@ -11,7 +11,7 @@ class EmptyPage extends \View\DefaultLayout {
             if (empty($searchQuery)) {
                 $this->setParam('title', 'Пустая фраза поиска');
             }else{
-                $this->setParam('title', 'Вы искали “' . $searchQuery . '”');
+                $this->setParam('title', 'Вы искали <span class="searchEmptyMark">' . $searchQuery . '</span>');
             }
         }
     }
