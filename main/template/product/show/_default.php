@@ -180,7 +180,9 @@ $isKitPage = (bool)$product->getKit();
                 <?= $helper->render('cart/__button-product', [
                     'product' => $product,
                     'onClick' => isset($addToCartJS) ? $addToCartJS : null,
-                    'sender'  => (array)$request->get('sender') + ['name' => null, 'method' => null, 'position'],
+                    'sender'  => (array)$request->get('sender') + [
+                            'from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) // удаляем из REFERER параметры
+                        ],
                 ]) // Кнопка купить ?>
             <? endif ?>
 
