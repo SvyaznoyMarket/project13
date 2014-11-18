@@ -975,7 +975,7 @@
 
 		self.inputFocus = ko.observable(true);
 		self.inputPrefix = ko.computed(function(){
-			if (self.streetName() == '') return 'улица:';
+			if (self.streetName() == '') return 'Улица:';
 			else if (self.buildingName() == '') return 'дом:';
 			else return 'квартира:';
 		});
@@ -983,7 +983,7 @@
 		// return {type, parentType, parentId} or false
 		self.getParent = function(){
 			var result = false;
-			if (self.cityId() != 0 && self.inputPrefix() == 'улица:') result = { type: $.kladr.type.street, parentType: 'city', parentId: self.cityId() };
+			if (self.cityId() != 0 && self.inputPrefix() == 'Улица:') result = { type: $.kladr.type.street, parentType: 'city', parentId: self.cityId() };
 			else if (self.streetId() != 0  && self.inputPrefix() == 'дом:') result = { type: $.kladr.type.building ,parentType: 'street', parentId: self.streetId() };
 			return result;
 		};
@@ -1613,7 +1613,7 @@
 
     //
     $orderContent.on('click', '.jsAddressRootNode', function() {
-        address.inputFocus(true);
+        ENTER.OrderV3.address.inputFocus(true);
     });
 
     // клик по "изменить дату" и "изменить место"
@@ -1996,7 +1996,7 @@
 
         // Доставка
         if ($('.orderCol_delivrLst_i-act').text().indexOf('Доставка') != -1) {
-            if (!ENTER.OrderV3.address || !ENTER.OrderV3.address.building.name) error.push('Укажите адрес доставки');
+            if (ENTER.OrderV3.address.buildingName() == '') error.push('Укажите адрес доставки');
         }
 
         $('.orderCol_addrs_tx').each(function(i,val){

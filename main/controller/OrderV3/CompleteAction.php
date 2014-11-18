@@ -202,7 +202,8 @@ class CompleteAction extends OrderV3 {
                 break;
             case '13':
                 $form = (new \Templating\HtmlLayout())->render('order/payment/form-paypal', array(
-                    'url' => $result['url']
+                    'url'           => $result['url'],
+                    'url_params'    => isset($result['url_params']) && !empty($result['url_params']) ? $result['url_params'] : null
                 ));
                 break;
         }

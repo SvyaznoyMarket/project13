@@ -28,10 +28,17 @@ return function(
                 <?= empty($rating) ? '' : $helper->render('product/__rating', ['score' => $rating]) ?>
             </div>
 
+            <? if ($reviewCount > 0) : ?>
+                <? /* Микроразметка для отзывов */?>
+                <span itemprop="ratingValue" style="display:none"><?= $rating != 0 ? $rating : ''  ?></span>
+                <meta itemprop="reviewcount" content="<?= $reviewCount ?>">
+                <meta itemprop="bestRating" content="5">
+            <? endif; ?>
+
             <? if (empty($rating) && 0 == $reviewCount): ?>
                 <span style="float: left;">Отзывов нет</span>
             <? else: ?>
-                <span itemprop="ratingCount" class="jsGoToId border" data-goto="bHeadSectionReviews">
+                <span class="jsGoToId border" data-goto="bHeadSectionReviews">
                     <?= $reviewCount ?> <?= $helper->numberChoice($reviewCount, ['отзыв', 'отзыва', 'отзывов']) ?>
                 </span>
             <? endif ?>
