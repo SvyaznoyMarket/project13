@@ -5,7 +5,7 @@ namespace View\Main;
 use View\Menu;
 
 class IndexPage extends \View\DefaultLayout {
-    protected $layout  = 'layout-main';
+    protected $layout  = 'layout-main-new';
 
     protected function prepare() {
         $this->addMeta('viewport', 'width=960');

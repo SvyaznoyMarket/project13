@@ -32,44 +32,41 @@
 
 </head>
 
-<body id="mainPage" data-template="main" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
-    <?= $page->slotConfig() ?>
-    <div class="bannersbox">
-        <div class="bannersboxinner">
-            <div class="banner banner3"><img class="rightImage" src="" alt=""/></div>
-            <div class="banner banner4"><img class="leftImage" src="" alt=""/></div>
-        </div>
-    </div>
+<body class="main">
+    <div class="wrapper">
+        <div class="header">
+            <div class="header_t clearfix">
+                <menu class="userbtn">
+                    <li class="userbtn_i">
+                        <a class="userbtn_lk" href="">Вход</a>
+                    </li>
 
-    <?= $page->slotBanner() ?>
-
-    <div class="wrapper mWrapperMain">
-        <div class="content mContentMain clearfix">
-            <? if (\App::config()->adFox['enabled']): ?>
-                <div class="adfoxWrapper" id="adfox980"></div>
-            <? endif ?>
-
-            <header class="header">
-                <?= $page->slotHeader() ?>
-            </header><!--/ Шапка-->
-
-            <?= $page->slotContentHead() ?>
-
-            <div class="bigbanner">
-                <div class='bCarouselWrap'>
-                    <div class='bCarousel'>
-                        <div class='bCarousel__eBtnL leftArrow'></div>
-                        <div class='bCarousel__eBtnR rightArrow'></div>
-                        <img class="centerImage" src="" alt=""/>
-                    </div>
-                </div>
+                    <li class="userbtn_i">
+                        <span class="userbtn_lk"><i class="i-header i-header-compare"></i> Сравнение</span>
+                    </li>
+                    
+                    <li class="userbtn_i">
+                        <a class="userbtn_lk userbtn_lk-cart" href=""><i class="i-header i-header-cart"></i> Корзина</a>
+                    </li>
+                </menu>
             </div>
+
+            <div class="header_c">
+                
+            </div>
+
+            <div class="header_b">
+                
+            </div>
+        </div>
+
+        <div class="content">
+            
         </div><!--/ Контент -->
     </div><!--/ Шаблон -->
 
-    <div class="footer__main">
-        <?= $page->slotFooter() ?>
-        <a href="http://<?= \App::config()->mobileHost ?>/" class="siteVersionSwitcher js-siteVersionSwitcher" data-config="<?= $page->escape(json_encode(\App::config()->siteVersionSwitcher)) ?>">Мобильная версия</a>
+    <div class="footer">
+
     </div><!--/ Подвал -->
 
     <?= $page->slotRegionSelection() ?>

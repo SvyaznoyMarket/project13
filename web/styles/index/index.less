@@ -1,0 +1,69 @@
+.main {
+	background: @white;
+
+	.wrapper {
+		padding: 0;
+	}
+}
+
+.header {
+	//верхняя часть шапки
+	&_t {
+		background: #f4f4f4;
+		border-color: #bbbbbb;
+		border-style: solid;
+		height: 50px;
+		border-width: 0 1px 0 1px;
+		padding: 0 0 0 10px;
+	}
+}
+
+// пользовательские контролы
+.userbtn {
+	float: right;
+	.table(); 
+	height: 100%;
+	&_i {
+		.table-cell();
+		vertical-align: middle;
+		padding: 0 10px;
+		border-left: 1px dotted #bbbbbb;
+	}
+	&_lk {
+		display: block;
+		position: relative;
+		line-height: 50px;
+	}
+}
+
+.stitches-header(@x: 0, @y: 0, @width: 0, @height: 0) {
+    background-position: @x @y;
+    width: @width;
+    height: @height;
+}
+
+.i-header {
+    background-image: url("@{base-url}/index/img/i-header.png");    
+    background-repeat: no-repeat;
+    .inline-block();
+
+    &-cart {
+        .stitches-header(-2px, -2px, 25px, 25px);
+    }
+
+    &-compare {
+        .stitches-header(-31px, -2px, 25px, 25px);
+    }
+
+    &-ep {
+        .stitches-header(-60px, -2px, 97px, 24px);
+    }
+
+    &-phone {
+        .stitches-header(-161px, -2px, 21px, 28px);
+    }
+
+    &-search {
+        .stitches-header(-186px, -2px, 27px, 20px);
+    }
+}

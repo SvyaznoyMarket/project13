@@ -311,6 +311,13 @@ sup {
 sub {
   bottom: -0.25em;
 }
+menu {
+  padding: 0;
+  margin: 0;
+}
+menu li {
+  list-style-type: none;
+}
 /* ==========================================================================
    Embedded content
    ========================================================================== */
@@ -7613,6 +7620,83 @@ img[height="0"] {
     background-position: 3px -58px;
     background-color: #fff5e0;
     border-color: #fb9c00;
+  }
+}
+/*---------Личный кабинет пользователя----------*/
+@media all {
+  .main {
+    background: #ffffff;
+  }
+  .main .wrapper {
+    padding: 0;
+  }
+  .header_t {
+    background: #f4f4f4;
+    border-color: #bbbbbb;
+    border-style: solid;
+    height: 50px;
+    border-width: 0 1px 0 1px;
+    padding: 0 0 0 10px;
+  }
+  .userbtn {
+    float: right;
+    display: table;
+    /* IE6-8 */
+    *display: block;
+    *float: left;
+    *overflow: hidden;
+    *position: relative;
+    height: 100%;
+  }
+  .userbtn_i {
+    display: table-cell;
+    /* IE6-8 */
+    *display: block;
+    *float: left;
+    *clear: right;
+    *zoom: 1;
+    vertical-align: middle;
+    padding: 0 10px;
+    border-left: 1px dotted #bbbbbb;
+  }
+  .userbtn_lk {
+    display: block;
+    position: relative;
+    line-height: 50px;
+  }
+  .i-header {
+    background-image: url("/styles/index/img/i-header.png");
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+  }
+  .i-header-cart {
+    background-position: -2px -2px;
+    width: 25px;
+    height: 25px;
+  }
+  .i-header-compare {
+    background-position: -31px -2px;
+    width: 25px;
+    height: 25px;
+  }
+  .i-header-ep {
+    background-position: -60px -2px;
+    width: 97px;
+    height: 24px;
+  }
+  .i-header-phone {
+    background-position: -161px -2px;
+    width: 21px;
+    height: 28px;
+  }
+  .i-header-search {
+    background-position: -186px -2px;
+    width: 27px;
+    height: 20px;
   }
 }
 /*---------Сравнение----------*/
