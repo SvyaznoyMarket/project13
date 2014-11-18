@@ -117,7 +117,7 @@ $isKitPage = (bool)$product->getKit();
             'limit'    => \App::config()->product['itemsInSlider'],
             'page'     => 1,
             'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
-            'sender'    => [
+            'sender'   => [
                 'name'     => 'retailrocket',
                 'position' => 'ProductSimilar',
             ],
@@ -142,7 +142,7 @@ $isKitPage = (bool)$product->getKit();
             'limit'    => \App::config()->product['itemsInSlider'],
             'page'     => 1,
             'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
-            'sender'    => [
+            'sender'   => [
                 'name'     => 'retailrocket',
                 'position' => 'ProductUpSale',
             ],
@@ -167,6 +167,7 @@ $isKitPage = (bool)$product->getKit();
             <?= $helper->render('cart/__button-product', [
                 'product' => $product,
                 'onClick' => isset($addToCartJS) ? $addToCartJS : null,
+                'sender'  => (array)$request->get('sender') + ['name' => null, 'method' => null, 'position'],
             ]) // Кнопка купить ?>
 
             <div class="js-showTopBar"></div>
@@ -196,7 +197,11 @@ $isKitPage = (bool)$product->getKit();
         <div class="js-showTopBar"></div>
     <? endif ?>
 
-    <?= $helper->render('cart/__form-oneClick', ['product' => $product, 'region' => \App::user()->getRegion()]) // Форма покупки в один клик ?>
+    <?= $helper->render('cart/__form-oneClick', [
+        'product' => $product,
+        'region'  => \App::user()->getRegion(),
+        'sender'  => (array)$request->get('sender') + ['name' => null, 'method' => null, 'position'],
+    ]) // Форма покупки в один клик ?>
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
 

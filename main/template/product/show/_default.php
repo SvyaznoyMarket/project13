@@ -88,7 +88,7 @@ $isKitPage = (bool)$product->getKit();
             //'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
             'gaEvent'        => 'Accessorize',
             'additionalData' => $additionalData,
-            'sender' => [
+            'sender'         => [
                 //'name'     => null,
                 'position' => 'ProductAccessoriesManual',
             ],
@@ -111,7 +111,7 @@ $isKitPage = (bool)$product->getKit();
             'page'           => 1,
             'additionalData' => $additionalData,
             'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
-            'sender'    => [
+            'sender'         => [
                 'name'     => 'retailrocket',
                 'position' => 'ProductAccessories', // все правильно - так и надо!
             ],
@@ -127,7 +127,7 @@ $isKitPage = (bool)$product->getKit();
             'limit'    => \App::config()->product['itemsInSlider'],
             'page'     => 1,
             'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
-            'sender'    => [
+            'sender'   => [
                 'name'     => 'retailrocket',
                 'position' => 'ProductSimilar',
             ],
@@ -152,7 +152,7 @@ $isKitPage = (bool)$product->getKit();
             'limit'    => \App::config()->product['itemsInSlider'],
             'page'     => 1,
             'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
-            'sender'    => [
+            'sender'   => [
                 'name'     => 'retailrocket',
                 'position' => 'ProductUpSale',
             ],
