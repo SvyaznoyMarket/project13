@@ -326,13 +326,19 @@ class GoogleAnalytics {
                 $categoryName = null;
                 $mainCategory = $product ? $product->getMainCategory() : null;
                 $parentCategory = $product ? $product->getParentCategory() : null;
+
+                $productName = $product ? $product->getName() : '';
+                if (isset($order->meta_data[sprintf('product.%s.sender', $product->getUi())][0])) {
+                    if ($order->meta_data[sprintf('product.%s.sender', $product->getUi())][0] == 'retailrocket') $productName .= sprintf(' (RR_%s)', @$order->meta_data[sprintf('product.%s.position', $product->getUi())][0]);
+                }
+
                 if ($mainCategory || $parentCategory) {
                     $categoryName .= implode(array_filter([$mainCategory->getName(), $parentCategory->getName()]), ' ');
                 }
 
                 $purchasedProducts[] = [
                     'id'        => $order->getNumber(),
-                    'name'      => $product ? $product->getName() : '',
+                    'name'      => $productName,
                     'sku'       => $product ? $product->getArticle() : null,
                     'category'  => $categoryName,
                     'price'     => $orderProduct->getPrice(),
