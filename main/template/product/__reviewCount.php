@@ -31,7 +31,7 @@ return function(
             <? if ($reviewCount > 0) : ?>
                 <? /* Микроразметка для отзывов */?>
                 <span itemprop="ratingValue" style="display:none"><?= $rating != 0 ? $rating : ''  ?></span>
-                <meta itemprop="reviewcount" content="<?= $reviewCount ?>">
+                <meta itemprop="reviewCount" content="<?= $reviewCount ?>">
                 <meta itemprop="bestRating" content="5">
             <? endif; ?>
 
