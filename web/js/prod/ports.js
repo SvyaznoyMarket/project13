@@ -733,7 +733,9 @@ window.ANALYTICS = {
 						for ( i = 0; i < count; i++ ) {
 							console.log('ecommerce:addItem', items[i]);
 							ga('ecommerce:addItem', items[i]);
-                            if (/Tchibo/.test(items[i].category) || /Tchibo/.test(items[i].name)) tchiboItems.push(items[i])
+                            if (/Tchibo/.test(items[i].category) || /Tchibo/.test(items[i].name)) tchiboItems.push(items[i]);
+							if (items[i].rr_viewed) body.trigger('trackGoogleEvent',['RR_покупка','Купил просмотренные', items[i].rr_block]);
+							if (items[i].rr_added) body.trigger('trackGoogleEvent',['RR_покупка','Купил добавленные', items[i].rr_block]);
 						}
 					}
 

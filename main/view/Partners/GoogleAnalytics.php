@@ -328,8 +328,16 @@ class GoogleAnalytics {
                 $parentCategory = $product ? $product->getParentCategory() : null;
 
                 $productName = $product ? $product->getName() : '';
+                $RR_buy_viewed = false;
+                $RR_buy_added = false;
+                $RR_buy_block = null;
                 if (isset($order->meta_data[sprintf('product.%s.sender', $product->getUi())][0])) {
-                    if ($order->meta_data[sprintf('product.%s.sender', $product->getUi())][0] == 'retailrocket') $productName .= sprintf(' (RR_%s)', @$order->meta_data[sprintf('product.%s.position', $product->getUi())][0]);
+                    if ($order->meta_data[sprintf('product.%s.sender', $product->getUi())][0] == 'retailrocket') {
+                        $productName .= sprintf(' (RR_%s)', @$order->meta_data[sprintf('product.%s.position', $product->getUi())][0]);
+                        $RR_buy_block = @$order->meta_data[sprintf('product.%s.position', $product->getUi())][0];
+                        if (isset($order->meta_data[sprintf('product.%s.from', $product->getUi())][0])) $RR_buy_viewed = true;
+                        else $RR_buy_added = true;
+                    }
                 }
 
                 if ($mainCategory || $parentCategory) {
@@ -343,6 +351,9 @@ class GoogleAnalytics {
                     'category'  => $categoryName,
                     'price'     => $orderProduct->getPrice(),
                     'quantity'  => $orderProduct->getQuantity(),
+                    'rr_added'  => $RR_buy_added,
+                    'rr_viewed' => $RR_buy_viewed,
+                    'rr_block'  => $RR_buy_block
                 ];
             }
 
