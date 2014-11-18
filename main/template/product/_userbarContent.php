@@ -26,6 +26,7 @@ if ($product) {
         <?= $helper->render('cart/__button-product', [
             'product' => $product,
             'onClick' => $addToCartJS ? $addToCartJS : null,
+            'sender'  => (array)$request->get('sender') + ['name' => null, 'method' => null, 'position'],
         ]) // Кнопка купить ?>
     <? else: ?>
         <?= $helper->render('cart/__button-product-kit', ['product' => $product]) // Кнопка купить ?>

@@ -173,6 +173,6 @@ class RecommendedAction {
             'alsoViewed'  => 'С этим товаром также смотрят',
         ];
 
-        return isset($titlesByType[$type]) ? $titlesByType[$type] : 'Рекомендации';
+        return isset($titlesByType[$type]) ? $titlesByType[$type] : 'Мы рекомендуем';
     }
 }
