@@ -1,208 +1,261 @@
 .popup {
+    &-auth#auth-block{
+        width: 318px;
+        padding: 0;
 
-	&-auth#auth-block {
-		border: 1px solid #777777;
-		.box-shadow(none);
-		.rounded(4px);
-		width: 318px;
-		padding: 0;
-		.transition(all 0.5s ease);
+        border: 1px solid #777;
 
-		.close {
+        .box-shadow(none);
+        .rounded(4px);
+        .transition(all .5s ease);
+        .close{
+            &-auth{
+                width: 41px;
+                height: 41px;
 
-			&-auth {
-				background: url("@{base-url}/popup-auth/img/closer.gif") no-repeat 50% 50% !important;
-				height: 41px;
-				width: 41px;
-			}
-		}
-
+                background: url('@{base-url}/popup/img/closer.gif') no-repeat 50% 50% !important;
+            }
+        }
         /* форма авторизации */
-        &[data-state="default"], &.state_default {
-            .authWrap { height: 324px; margin-top: 0; }
-            .authForm_reset { .opacity(0); overflow: hidden; height: 0; }
-            .authForm_authLink { display: none; }
-            .authForm_registerLink { display: inline; }
-        }
+        &[data-state='default'],
+        &.state_default{
+            .authWrap{
+                height: 324px;
+                margin-top: 0;
+            }
+            .authForm_reset{
+                overflow: hidden;
 
+                height: 0;
+
+                .opacity(0);
+            }
+            .authForm_authLink{
+                display: none;
+            }
+            .authForm_registerLink{
+                display: inline;
+            }
+        }
         /* форма регистрации */
-        &[data-state="register"], &.state_register {
-            .authForm_reset { .opacity(0); overflow: hidden; height: 0; }
-            .authWrap { height: 845px;  margin-top: -324px; }
-            .authForm_authLink { display: inline; }
-            .authForm_registerLink { display: none; }
-        }
+        &[data-state='register'],
+        &.state_register{
+            .authForm_reset{
+                overflow: hidden;
 
+                height: 0;
+
+                .opacity(0);
+            }
+            .authWrap{
+                height: 845px;
+                margin-top: -324px;
+            }
+            .authForm_authLink{
+                display: inline;
+            }
+            .authForm_registerLink{
+                display: none;
+            }
+        }
         /* форма сброса пароля */
-        &[data-state="reset"], &.state_reset {
-            .authForm_login { .opacity(0); overflow: hidden; height: 0; }
-            .authForm_reset { .opacity(1); overflow: visible; height: auto; }
-            .authForm_register { .opacity(0); overflow: hidden; height: 0; }
-            .authForm_authLink { display: inline; }
-            .authForm_registerLink { display: none; }
+        &[data-state='reset'],
+        &.state_reset{
+            .authForm_login{
+                overflow: hidden;
+
+                height: 0;
+
+                .opacity(0);
+            }
+            .authForm_reset{
+                overflow: visible;
+
+                height: auto;
+
+                .opacity(1);
+            }
+            .authForm_register{
+                overflow: hidden;
+
+                height: 0;
+
+                .opacity(0);
+            }
+            .authForm_authLink{
+                display: inline;
+            }
+            .authForm_registerLink{
+                display: none;
+            }
         }
-	}
+    }
 }
+.authWrap{
+    margin-bottom: 20px;
 
-.authWrap {
-	.transition(all 0.2s ease);
-	margin-bottom: 20px;
+    .transition(all .2s ease);
 }
+.authForm{
+    margin: 0 20px 0;
 
-.authForm {
-	margin: 0 20px 0;
-	.transition(all 0.2s ease);
+    .transition(all .2s ease);
+    &_reset{
+        .authForm_fld{
+            margin: 0 0 20px;
+        }
+    }
+    &_fld{
+        padding: 12px 0 0;
+        &-hdn{
+            overflow: hidden;
 
-	&_reset {
+            height: 0;
 
-		.authForm_fld {
-			margin: 0 0 20px;
-		}
-	}
+            opacity: 0;
+        }
+        &-scrll{
+            /* height: 310px; */
+            // overflow: hidden;
+        }
+    }
+    &_t{
+        font-size: 24px;
 
-	&_fld {
-		padding: 12px 0 0;
+        margin: 10px 0 20px;
+    }
+    &_it{
+        font-size: 14px;
 
-		&-hdn {
-			opacity: 0;
-			overflow: hidden;
-			height: 0;
-		}
+        width: 100%;
+        margin: 0 0 20px;
+    }
+    &_is{
+        font-size: 22px;
 
-		&-scrll {
-			/* height: 310px; */
-			// overflow: hidden;
-		}
-	}
+        display: block;
 
-	&_t {
-		font-size: 24px;
-		margin: 10px 0 20px;
-	}
+        width: 200px;
+        height: 45px;
+        margin: 0 auto;
+    }
+    &_accept{
+        font-size: 11px;
 
-	&_it {
-		width: 100%;
-		font-size: 14px;
-		margin: 0 0 20px;
-	}
+        margin: 20px 0 0;
 
-	&_is {
-		margin: 0 auto;
-		width: 200px;
-		display: block;
-		height: 45px;
-		font-size: 22px;
-	}
+        color: @darkgrey-2;
+        a{
+            text-decoration: underline;
 
-	&_accept {
-		color: @darkgrey-2;
-		margin: 20px 0 0;
-		font-size: 11px;
+            color: @darkgrey-2;
+        }
+    }
+    &_lbl{
+        display: block;
 
-		a {
-			text-decoration: underline;
-			color: @darkgrey-2;
-		}
-	}
+        margin: 0 0 2px;
 
-	&_lbl {
-		color: @darkgrey-2;
-		margin: 0 0 2px;
-		display: block;
-	}
+        color: @darkgrey-2;
+    }
+    &_sbscr{
+        position: relative;
+        left: -20px;
 
-	&_sbscr {
-		background: #fde6c6;
-		margin: 0 0 20px 0;
-		padding: 10px 20px;
-		position: relative;
-		left: -20px;
-		width: 100%;
+        width: 100%;
+        margin: 0 0 20px 0;
+        padding: 10px 20px;
 
-		.customLabel {
-			display: block;
-		}
-	}
+        background: #fde6c6;
+        .customLabel{
+            display: block;
+        }
+    }
+    &_hint{
+        position: relative;
+        &_tx{
+            font-size: 14px;
+            line-height: 35px;
 
-	&_hint {
-		position: relative;
+            position: absolute;
+            top: 0;
+            right: 10px;
 
-		&_tx {
-			position: absolute;
-			right: 10px;
-			top: 0;
-			line-height: 35px;
-			color: #656565;
-			font-size: 14px;
-			cursor: pointer;
-		}
+            cursor: pointer;
 
-		.textfield {
-			padding-right: 65px;
-		}
-	}
+            color: #656565;
+        }
+        .textfield{
+            padding-right: 65px;
+        }
+    }
+    &_regcomplt{
+        font-weight: bold;
 
-	&_regcomplt {
-		color: @darkgrey-2;
-		font-weight: bold;
-	}
+        color: @darkgrey-2;
+    }
+    &_inn{
+        &-hdn{
+            overflow: hidden;
 
-	&_inn {
+            .opacity(0);
+        }
+    }
+    &_socn{
+        font-size: 20px;
 
-		&-hdn {
-			.opacity(0);
-			overflow: hidden;
-		}
-	}
+        margin: 20px 0 0;
 
-	&_socn {
-		margin: 20px 0 0;
-		text-align: center;
-		font-size: 20px;
-		color: #515151;
+        text-align: center;
 
-		&_lst {
-			margin: 10px 0 0;
-			font-size: 0;
-		}
+        color: #515151;
+        &_lst{
+            font-size: 0;
 
-		&_i {
-			.inline-block();
-			vertical-align: top;
-			margin-right: 10px;
+            margin: 10px 0 0;
+        }
+        &_i{
+            margin-right: 10px;
 
-			&:last-child {
-				margin-right: 0;
-			}
-		}
+            vertical-align: top;
 
-		&_lk {
-			.inline-block();
-			vertical-align: top;
-			background: url("@{base-url}/popup-auth/img/fb.png") no-repeat 50% 50%;
-			height: 40px;
-			width: 40px;
-			text-indent: -9999px;
+            .inline-block();
+            &:last-child{
+                margin-right: 0;
+            }
+        }
+        &_lk{
+            width: 40px;
+            height: 40px;
 
-			&-vk {
-				background: url("@{base-url}/popup-auth/img/vk.png") no-repeat 50% 50%;
-			}
-		}
-	}
+            vertical-align: top;
+            text-indent: -9999px;
+
+            background: url('@{base-url}/popup/img/fb.png') no-repeat 50% 50%;
+
+            .inline-block();
+            &-vk{
+                background: url('@{base-url}/popup/img/vk.png') no-repeat 50% 50%;
+            }
+        }
+    }
 }
+.authAct{
+    font-size: 20px;
+    line-height: 65px;
 
-.authAct {
-	height: 65px;
-	line-height: 65px;
-	background: @typLightGray;
-	text-align: center;
-	font-size: 20px;
-	color: #515151;
-	.rounded(0 0 4px 4px);
-	position: relative;
-	z-index: 4;
+    position: relative;
+    z-index: 4;
 
-	span {
-		cursor: pointer;
-	}
+    height: 65px;
+
+    text-align: center;
+
+    color: #515151;
+    background: @typLightGray;
+
+    .rounded(0 0 4px 4px);
+    span{
+        cursor: pointer;
+    }
 }

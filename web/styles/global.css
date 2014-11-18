@@ -4009,10 +4009,10 @@ img[height="0"] {
     right: 5px;
   }
   .tchiboProducts .productInner .stockSticker {
-    left: 50%;
-    margin: -70px 0 0 -73px;
     position: absolute;
     top: 50%;
+    left: 50%;
+    margin: -70px 0 0 -73px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
@@ -4025,34 +4025,34 @@ img[height="0"] {
   }
   .tchiboProducts .productInner__hover:hover {
     z-index: 100;
+    background: #ffffff;
     -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
-    background: #ffffff;
   }
   .tchiboProducts .productInner__hover:hover .bBtnLine,
   .tchiboProducts .productInner__hover:hover .bOptionsSection {
     display: block;
   }
-  .tchiboProducts .productInner__imgBox {
+  .tchiboProducts .productInner__imgbox {
     width: 100%;
   }
-  .tchiboProducts .productInner__imgLink {
+  .tchiboProducts .productInner__imglink {
     display: block;
     text-align: center;
   }
   .tchiboProducts .productInner__img {
-    width: 70%;
     position: relative;
+    width: 70%;
     vertical-align: middle;
   }
   .tchiboProducts .productInner__desc {
+    position: relative;
     width: 100%;
+    margin: -20px 0 0;
+    padding: 5px 0 5px;
     background: #ffffff;
     background: rgba(255, 255, 255, 0.5);
-    margin: -20px 0 0;
-    position: relative;
-    padding: 5px 0 5px;
   }
   .tchiboProducts .productInner__desc .inner {
     width: 200px;
@@ -4060,10 +4060,10 @@ img[height="0"] {
     padding: 0;
   }
   .tchiboProducts .productInner__desc .name {
-    margin: 0 10px 2px 0;
     font-size: 14px;
     display: block;
     overflow: hidden;
+    margin: 0 10px 2px 0;
   }
   .tchiboProducts .productInner__desc .price {
     font-size: 18px;
@@ -4071,7 +4071,7 @@ img[height="0"] {
     float: left;
   }
   .tchiboProducts .productInner__desc .bOptions {
-    background-image: url("/styles/tchibo/img/options.png");
+    background-image: url('/styles/tchibo/img/options.png');
   }
   .tchiboProducts .productInner__desc .bBtnLine {
     margin-top: 5px;
@@ -4080,17 +4080,19 @@ img[height="0"] {
     margin-top: 8px;
   }
   .tchiboProducts .productInner__desc .bOptionsSection .bCorner {
-    border-width: 7px;
     top: -7px;
+    border-width: 7px;
   }
   .tchiboProducts .productInner__desc .bOptionsSection .bCornerDark {
-    border-width: 8px;
     top: -8px;
+    border-width: 8px;
   }
   .tchiboProducts .btnBuy {
     margin-right: 11px;
   }
   .tchiboProducts .btnBuy .btnBuy__eLink {
+    padding: 5px 0 6px;
+    border-color: #002958;
     background: -moz-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffc000), color-stop(100%, #ffaa01));
     background: -webkit-linear-gradient(top, #ffc000 0%, #ffaa01 100%);
@@ -4106,23 +4108,22 @@ img[height="0"] {
     background: -ms-linear-gradient(top, #6b839d 0%, #052e5b 100%);
     background: linear-gradient(to bottom, #6b839d 0%, #052e5b 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#6b839d', endColorstr='#052e5b', GradientType=0);
-    border-color: #002958;
-    padding: 5px 0 6px;
   }
   .tchiboProducts .btnBuy .btnBuy__eLink.mBought {
-    background: none repeat scroll 0 0 #E6E6E6;
-    border: 1px solid #E6E6E6;
+    color: #a6a6a6;
+    border: 1px solid #e6e6e6;
+    background: none repeat scroll 0 0 #e6e6e6;
     box-shadow: none;
-    color: #A6A6A6;
   }
   .tchiboProducts .btnBuy .btnBuy__eLink.mDisabled {
-    background: none repeat scroll 0 0 #F1F0F0;
-    border: 1px solid #F1F0F0;
-    box-shadow: none;
-    color: #CBCBCB;
     cursor: default;
+    color: #cbcbcb;
+    border: 1px solid #f1f0f0;
+    background: none repeat scroll 0 0 #f1f0f0;
+    box-shadow: none;
   }
   .tchiboProducts .btnBuy .btnBuy__eLink.mShopsOnly {
+    border: 1px solid #a1a1a1;
     background: #040404;
     /* Old browsers */
     background: -moz-linear-gradient(top, #505050 0%, #040404 100%);
@@ -4139,7 +4140,6 @@ img[height="0"] {
     /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#505050', endColorstr='#040404', GradientType=0);
     /* IE6-9 */
-    border: 1px solid #A1A1A1;
     display: inline-block;
     vertical-align: top;
     /* IE6-8 */
@@ -4748,15 +4748,15 @@ img[height="0"] {
 }
 @media all {
   .popup-auth#auth-block {
-    border: 1px solid #777777;
+    width: 318px;
+    padding: 0;
+    border: 1px solid #777;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    width: 318px;
-    padding: 0;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     transition: all 0.5s ease;
@@ -4765,104 +4765,104 @@ img[height="0"] {
     /* форма сброса пароля */
   }
   .popup-auth#auth-block .close-auth {
-    background: url("/styles/popup-auth/img/closer.gif") no-repeat 50% 50% !important;
-    height: 41px;
     width: 41px;
+    height: 41px;
+    background: url('/styles/popup/img/closer.gif') no-repeat 50% 50% !important;
   }
-  .popup-auth#auth-block[data-state="default"] .authWrap,
+  .popup-auth#auth-block[data-state='default'] .authWrap,
   .popup-auth#auth-block.state_default .authWrap {
     height: 324px;
     margin-top: 0;
   }
-  .popup-auth#auth-block[data-state="default"] .authForm_reset,
+  .popup-auth#auth-block[data-state='default'] .authForm_reset,
   .popup-auth#auth-block.state_default .authForm_reset {
+    overflow: hidden;
+    height: 0;
     -moz-opacity: 0;
     -khtml-opacity: 0;
     -webkit-opacity: 0;
     opacity: 0;
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     filter: alpha(opacity=0);
-    overflow: hidden;
-    height: 0;
   }
-  .popup-auth#auth-block[data-state="default"] .authForm_authLink,
+  .popup-auth#auth-block[data-state='default'] .authForm_authLink,
   .popup-auth#auth-block.state_default .authForm_authLink {
     display: none;
   }
-  .popup-auth#auth-block[data-state="default"] .authForm_registerLink,
+  .popup-auth#auth-block[data-state='default'] .authForm_registerLink,
   .popup-auth#auth-block.state_default .authForm_registerLink {
     display: inline;
   }
-  .popup-auth#auth-block[data-state="register"] .authForm_reset,
+  .popup-auth#auth-block[data-state='register'] .authForm_reset,
   .popup-auth#auth-block.state_register .authForm_reset {
+    overflow: hidden;
+    height: 0;
     -moz-opacity: 0;
     -khtml-opacity: 0;
     -webkit-opacity: 0;
     opacity: 0;
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     filter: alpha(opacity=0);
-    overflow: hidden;
-    height: 0;
   }
-  .popup-auth#auth-block[data-state="register"] .authWrap,
+  .popup-auth#auth-block[data-state='register'] .authWrap,
   .popup-auth#auth-block.state_register .authWrap {
     height: 845px;
     margin-top: -324px;
   }
-  .popup-auth#auth-block[data-state="register"] .authForm_authLink,
+  .popup-auth#auth-block[data-state='register'] .authForm_authLink,
   .popup-auth#auth-block.state_register .authForm_authLink {
     display: inline;
   }
-  .popup-auth#auth-block[data-state="register"] .authForm_registerLink,
+  .popup-auth#auth-block[data-state='register'] .authForm_registerLink,
   .popup-auth#auth-block.state_register .authForm_registerLink {
     display: none;
   }
-  .popup-auth#auth-block[data-state="reset"] .authForm_login,
+  .popup-auth#auth-block[data-state='reset'] .authForm_login,
   .popup-auth#auth-block.state_reset .authForm_login {
+    overflow: hidden;
+    height: 0;
     -moz-opacity: 0;
     -khtml-opacity: 0;
     -webkit-opacity: 0;
     opacity: 0;
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     filter: alpha(opacity=0);
-    overflow: hidden;
-    height: 0;
   }
-  .popup-auth#auth-block[data-state="reset"] .authForm_reset,
+  .popup-auth#auth-block[data-state='reset'] .authForm_reset,
   .popup-auth#auth-block.state_reset .authForm_reset {
+    overflow: visible;
+    height: auto;
     -moz-opacity: 1;
     -khtml-opacity: 1;
     -webkit-opacity: 1;
     opacity: 1;
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
     filter: alpha(opacity=100);
-    overflow: visible;
-    height: auto;
   }
-  .popup-auth#auth-block[data-state="reset"] .authForm_register,
+  .popup-auth#auth-block[data-state='reset'] .authForm_register,
   .popup-auth#auth-block.state_reset .authForm_register {
+    overflow: hidden;
+    height: 0;
     -moz-opacity: 0;
     -khtml-opacity: 0;
     -webkit-opacity: 0;
     opacity: 0;
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     filter: alpha(opacity=0);
-    overflow: hidden;
-    height: 0;
   }
-  .popup-auth#auth-block[data-state="reset"] .authForm_authLink,
+  .popup-auth#auth-block[data-state='reset'] .authForm_authLink,
   .popup-auth#auth-block.state_reset .authForm_authLink {
     display: inline;
   }
-  .popup-auth#auth-block[data-state="reset"] .authForm_registerLink,
+  .popup-auth#auth-block[data-state='reset'] .authForm_registerLink,
   .popup-auth#auth-block.state_reset .authForm_registerLink {
     display: none;
   }
   .authWrap {
+    margin-bottom: 20px;
     -webkit-transition: all 0.2s ease;
     -moz-transition: all 0.2s ease;
     transition: all 0.2s ease;
-    margin-bottom: 20px;
   }
   .authForm {
     margin: 0 20px 0;
@@ -4877,9 +4877,9 @@ img[height="0"] {
     padding: 12px 0 0;
   }
   .authForm_fld-hdn {
-    opacity: 0;
     overflow: hidden;
     height: 0;
+    opacity: 0;
   }
   .authForm_fld-scrll {
     /* height: 310px; */
@@ -4889,38 +4889,38 @@ img[height="0"] {
     margin: 10px 0 20px;
   }
   .authForm_it {
-    width: 100%;
     font-size: 14px;
+    width: 100%;
     margin: 0 0 20px;
   }
   .authForm_is {
-    margin: 0 auto;
-    width: 200px;
-    display: block;
-    height: 45px;
     font-size: 22px;
+    display: block;
+    width: 200px;
+    height: 45px;
+    margin: 0 auto;
   }
   .authForm_accept {
-    color: #7d7d7d;
-    margin: 20px 0 0;
     font-size: 11px;
+    margin: 20px 0 0;
+    color: #7d7d7d;
   }
   .authForm_accept a {
     text-decoration: underline;
     color: #7d7d7d;
   }
   .authForm_lbl {
-    color: #7d7d7d;
-    margin: 0 0 2px;
     display: block;
+    margin: 0 0 2px;
+    color: #7d7d7d;
   }
   .authForm_sbscr {
-    background: #fde6c6;
-    margin: 0 0 20px 0;
-    padding: 10px 20px;
     position: relative;
     left: -20px;
     width: 100%;
+    margin: 0 0 20px 0;
+    padding: 10px 20px;
+    background: #fde6c6;
   }
   .authForm_sbscr .customLabel {
     display: block;
@@ -4929,77 +4929,77 @@ img[height="0"] {
     position: relative;
   }
   .authForm_hint_tx {
-    position: absolute;
-    right: 10px;
-    top: 0;
-    line-height: 35px;
-    color: #656565;
     font-size: 14px;
+    line-height: 35px;
+    position: absolute;
+    top: 0;
+    right: 10px;
     cursor: pointer;
+    color: #656565;
   }
   .authForm_hint .textfield {
     padding-right: 65px;
   }
   .authForm_regcomplt {
-    color: #7d7d7d;
     font-weight: bold;
+    color: #7d7d7d;
   }
   .authForm_inn-hdn {
+    overflow: hidden;
     -moz-opacity: 0;
     -khtml-opacity: 0;
     -webkit-opacity: 0;
     opacity: 0;
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     filter: alpha(opacity=0);
-    overflow: hidden;
   }
   .authForm_socn {
+    font-size: 20px;
     margin: 20px 0 0;
     text-align: center;
-    font-size: 20px;
     color: #515151;
   }
   .authForm_socn_lst {
-    margin: 10px 0 0;
     font-size: 0;
+    margin: 10px 0 0;
   }
   .authForm_socn_i {
+    margin-right: 10px;
     display: inline-block;
+    vertical-align: top;
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    vertical-align: top;
-    margin-right: 10px;
   }
   .authForm_socn_i:last-child {
     margin-right: 0;
   }
   .authForm_socn_lk {
+    width: 40px;
+    height: 40px;
+    text-indent: -9999px;
+    background: url('/styles/popup/img/fb.png') no-repeat 50% 50%;
     display: inline-block;
+    vertical-align: top;
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    vertical-align: top;
-    background: url("/styles/popup-auth/img/fb.png") no-repeat 50% 50%;
-    height: 40px;
-    width: 40px;
-    text-indent: -9999px;
   }
   .authForm_socn_lk-vk {
-    background: url("/styles/popup-auth/img/vk.png") no-repeat 50% 50%;
+    background: url('/styles/popup/img/vk.png') no-repeat 50% 50%;
   }
   .authAct {
-    height: 65px;
-    line-height: 65px;
-    background: #e6e6e6;
-    text-align: center;
     font-size: 20px;
+    line-height: 65px;
+    position: relative;
+    z-index: 4;
+    height: 65px;
+    text-align: center;
     color: #515151;
+    background: #e6e6e6;
     -webkit-border-radius: 0 0 4px 4px;
     -moz-border-radius: 0 0 4px 4px;
     border-radius: 0 0 4px 4px;
-    position: relative;
-    z-index: 4;
   }
   .authAct span {
     cursor: pointer;
