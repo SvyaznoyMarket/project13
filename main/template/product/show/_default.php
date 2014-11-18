@@ -88,7 +88,7 @@ $isKitPage = (bool)$product->getKit();
             //'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
             'gaEvent'        => 'Accessorize',
             'additionalData' => $additionalData,
-            'sender' => [
+            'sender'         => [
                 //'name'     => null,
                 'position' => 'ProductAccessoriesManual',
             ],
@@ -111,7 +111,7 @@ $isKitPage = (bool)$product->getKit();
             'page'           => 1,
             'additionalData' => $additionalData,
             'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
-            'sender'    => [
+            'sender'         => [
                 'name'     => 'retailrocket',
                 'position' => 'ProductAccessories', // все правильно - так и надо!
             ],
@@ -127,7 +127,7 @@ $isKitPage = (bool)$product->getKit();
             'limit'    => \App::config()->product['itemsInSlider'],
             'page'     => 1,
             'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
-            'sender'    => [
+            'sender'   => [
                 'name'     => 'retailrocket',
                 'position' => 'ProductSimilar',
             ],
@@ -152,7 +152,7 @@ $isKitPage = (bool)$product->getKit();
             'limit'    => \App::config()->product['itemsInSlider'],
             'page'     => 1,
             'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
-            'sender'    => [
+            'sender'   => [
                 'name'     => 'retailrocket',
                 'position' => 'ProductUpSale',
             ],
@@ -180,6 +180,7 @@ $isKitPage = (bool)$product->getKit();
                 <?= $helper->render('cart/__button-product', [
                     'product' => $product,
                     'onClick' => isset($addToCartJS) ? $addToCartJS : null,
+                    'sender'  => (array)$request->get('sender') + ['name' => null, 'method' => null, 'position'],
                 ]) // Кнопка купить ?>
             <? endif ?>
 
@@ -210,7 +211,11 @@ $isKitPage = (bool)$product->getKit();
         <div class="js-showTopBar"></div>
     <? endif ?>
 
-    <?= $helper->render('cart/__form-oneClick', ['product' => $product, 'region' => $region]) // Форма покупки в один клик ?>
+    <?= $helper->render('cart/__form-oneClick', [
+        'product' => $product,
+        'region'  => $region,
+        'sender'  => (array)$request->get('sender') + ['name' => null, 'method' => null, 'position'],
+    ]) // Форма покупки в один клик ?>
 
     <? if ($lifeGiftProduct): ?>
         <?= $helper->render('cart/__button-product-lifeGift', ['product' => $lifeGiftProduct]) // Кнопка "Подари жизнь" ?>

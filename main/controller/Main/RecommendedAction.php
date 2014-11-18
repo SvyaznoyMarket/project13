@@ -22,6 +22,7 @@ class RecommendedAction {
 
         $productIds = array_merge($productIds, (array)$recommendController->getProductsIdsFromRetailrocket(null, $request, 'ItemsToMain'));
         $sender['name'] = 'retailrocket';
+        $sender['method'] = 'MainToMain';
 
         /* Получаем продукты из ядра */
         $products = [];
@@ -30,9 +31,11 @@ class RecommendedAction {
                 foreach ((array)$data as $item) {
                     if (empty($item['id'])) continue;
 
+                    /*
                     \Controller\Product\BasicRecommendedAction::prepareLink(
                         $item['link'], ['engine' => 'retailrocket', 'method' => 'MainToMain', 'id' => $item['id']]
                     );
+                    */
 
                     $product = new \Model\Product\Entity($item);
                     // если товар недоступен для покупки - пропустить
@@ -73,15 +76,12 @@ class RecommendedAction {
             'class'        => $cssClass,
             'namePosition' => $namePosition,
             'sender'       => $sender,
-            'isRetailrocketRecommendation' => true,
-            'retailrocketIds'              => array_map(function(\Model\Product\Entity $product) { return $product->getId(); }, $products),
-            'retailrocketMethod'           => 'ItemsToMain',
         ]);
 
         $recommend = [];
         $recommend['main'] = [
-            'content'   => $slider,
-            'success'   => true
+            'content' => $slider,
+            'success' => true
         ];
 
         return new \Http\JsonResponse(['success'=> true, 'recommend' => $recommend]);

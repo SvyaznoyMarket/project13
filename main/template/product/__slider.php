@@ -1,6 +1,19 @@
 <?php
 
-return function (
+/**
+ * @param \Helper\TemplateHelper $helper
+ * @param \Model\Product\Entity[] $products
+ * @param null $title
+ * @param \Model\Product\Category\Entity[] $categories
+ * @param null $class
+ * @param null $count
+ * @param null $limit
+ * @param null $url
+ * @param null $type
+ * @param string $namePosition
+ * @param array $sender
+ */
+$f = function (
     \Helper\TemplateHelper $helper,
     array $products,
     $title = null,
@@ -10,16 +23,15 @@ return function (
     $limit = null,
     $url = null,
     $type = null,
-    $isRetailrocketRecommendation = false,
-    $retailrocketMethod = null,
-    $retailrocketIds = [],
     $namePosition = 'bottom',
     array $sender = []
 ) {
-/**
- * @var $products   \Model\Product\Entity[]
- * @var $categories \Model\Product\Category\Entity[]
- */
+    $sender += ['name' => null, 'method' => null, 'position' => null, 'items' => []];
+
+    $isRetailrocketRecommendation = 'retailrocket' == $sender['name'];
+    $retailrocketMethod = $sender['method'];
+    $retailrocketIds = (array)$sender['items'];
+    unset($sender['items']);
 
     $sliderId = 'slider-' . uniqid();
 ?>
@@ -54,10 +66,23 @@ return function (
             <? foreach ($products as $product):
                 if (!$product instanceof \Model\Product\Entity) continue;
 
-                $link = $helper->url('product', ['productPath' => $product->getPath()]);
+                $urlParams = [];
+                if ($sender['name']) {
+                    $urlParams['sender'] = $sender;
+                }
+                if ('retailrocket' == $sender['name']) {
+                    $urlParams['from'] = 'cart_rec';
+                }
+
+                $link = $helper->url(
+                    'product',
+                    array_merge(
+                        ['productPath' => $product->getPath()],
+                        $urlParams
+                    ));
 
                 // Retailrocket
-                $isRetailrocketProduct = is_array($retailrocketIds) && in_array($product->getId(), $retailrocketIds);
+                $isRetailrocketProduct = in_array($product->getId(), $retailrocketIds);
                 $linkClickJS = null;
                 $addToCartJS = null;
                 if ($isRetailrocketRecommendation && !empty($retailrocketMethod) && $isRetailrocketProduct) {
@@ -74,8 +99,8 @@ return function (
                     class="slideItem_i jsSliderItem"
                     data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>"
                     data-product="<?= $helper->json([
-                        'article' => $product->getArticle(),
-                        'name' => $product->getName(),
+                        'article'  => $product->getArticle(),
+                        'name'     => $product->getName(),
                         'isUpsale' => $product->getIsUpsale(),
                     ]) ?>"
                 >
@@ -103,7 +128,7 @@ return function (
                         <?= $helper->render('cart/__button-product', [
                             'product'        => $product,
                             'onClick'        => $addToCartJS ? $addToCartJS : null,
-                            'isRetailRocket' => $isRetailrocketProduct,
+                            'isRetailRocket' => $isRetailrocketProduct, // TODO: удалить
                             'sender'         => $sender,
                         ]) // Кнопка купить ?>
                     <? endif ?>
@@ -118,4 +143,4 @@ return function (
 
 </div><?/*<!--/product accessory section -->*/?>
 
-<? };
+<? }; return $f;

@@ -2,7 +2,8 @@
 
 return function(
     \Helper\TemplateHelper $helper,
-    \Model\Product\Entity $product
+    \Model\Product\Entity $product,
+    $sender = [] // Поставщик товара: обычно retail rocket
 ) {
     $title = 'Купить быстро в 1 клик';
 ?>
@@ -70,6 +71,8 @@ return function(
         </fieldset>
         
         <fieldset class="orderU_fldsbottom">
+            <input type="hidden" name="sender" value="<?= $helper->json($sender) ?>" />
+
             <button type="submit" class="orderCompl_btn btnsubmit">Оформить</button>
         </fieldset>
     </form>

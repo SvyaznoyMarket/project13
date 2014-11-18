@@ -39,7 +39,7 @@
 				slidersRecommendation++;
 			}
 
-            if (sliderParams.sender) {
+            if (sliderParams.url && sliderParams.sender) {
                 sliderParams.sender.type = sliderParams.type;
                 urlData.senders.push(sliderParams.sender);
             }
