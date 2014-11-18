@@ -27,15 +27,15 @@
     _gaq.push(['_addOrganic', 'ya.ru', 'q']);
     _gaq.push(['_addOrganic', 'm.yandex.ru','query']);
 
-    <? /* Слот 1 занят под abTestJson, а слоты 3, 4, 5 заняты под нужды сотрудников отдела аналитики */ ?>
+    <? /* Слот 1 занят под регион, а слоты 3, 4, 5 заняты под нужды сотрудников отдела аналитики */ ?>
     <? foreach (\App::abTest()->getTests() as $test): ?>
         <? if ($test->isActive() && $test->gaSlotNumber): ?>
             _gaq.push(['_setCustomVar', <?= $test->gaSlotNumber ?>, 'User segment', '<?= $test->getKey() ?>_<?= $test->getChosenCase()->getKey() ?>', <?= $test->gaSlotScope ?>]);
         <? endif ?>
     <? endforeach ?>
 
-    <? if (\App::abtestJson() && \App::abtestJson()->isActive()) : ?>
-        _gaq.push(['_setCustomVar', 1, 'User segment', '<?= \App::abTestJson()->getCase()->getGaEvent() ?>', 2]);
+    <? if (\App::user()->getRegion() && \App::user()->getRegion()->getName()) : ?>
+        _gaq.push(['_setCustomVar', 1, 'city', '<?= \App::user()->getRegion()->getName() ?>', 2]);
     <? endif ?>
 
     <? /* Маркировка продуктов Marketplace */ ?>

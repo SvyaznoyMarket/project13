@@ -88,6 +88,8 @@ class GoogleAnalytics {
             \App::exception()->remove($e);
         }
 
+        if (\App::user()->getRegion()) $this->sendData['vars']['dimension14'] = \App::user()->getRegion()->getName();
+
         if (empty($this->sendData['vars'])) {
             unset($this->sendData['vars']);
         }
