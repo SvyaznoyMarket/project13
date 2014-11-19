@@ -609,7 +609,7 @@ $c->abTest = [
 
         'recommended_product' => [
             'name'          => 'Рекомендации в карточке товара',
-            'gaSlotNumber'  => 12,
+            'gaSlotNumber'  => 13,
             'enabled'       => true,
             'expireDate'    => '2015-12-31',
             'cases' => [
