@@ -609,6 +609,7 @@ $c->abTest = [
     ],
 ];
 
+$c->self_delivery['enabled'] = false;
 $c->self_delivery['limit'] = 500;
 $c->self_delivery['regions'] = [119623, 93746, 14974];
 
