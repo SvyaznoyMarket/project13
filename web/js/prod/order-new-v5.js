@@ -2488,7 +2488,11 @@
         // functions
         sendAnalytic = function sendAnalyticF (event, step, action) {
             var act = action || '',
-                st = step || '';
+                st = step || '',
+				oneClickOrder = ENTER.config.pageConfig.currentRoute == 'order.oneClick.new',
+				categoryPrefix = 'воронка_';
+
+			if (oneClickOrder) categoryPrefix += 'старый_1_клик_';
 
             if (event && event.data) {
                 if (event.data.step) st = event.data.step;
@@ -2498,11 +2502,11 @@
             if (typeof ga === 'undefined') ga = window[window['GoogleAnalyticsObject']]; // try to assign ga
 
             // sending
-            if (typeof _gaq === 'object') _gaq.push(['_trackEvent', 'воронка_' + region, st, act]);
-            if (typeof ga === 'function') ga('send', 'event', 'воронка_' + region, st, act);
+            if (typeof _gaq === 'object') _gaq.push(['_trackEvent', categoryPrefix + region, st, act]);
+            if (typeof ga === 'function') ga('send', 'event', categoryPrefix + region, st, act);
 
             // log to console
-            console.log('[Google Analytics] Step "%s" sended with action "%s" for воронка_%s', st, act, region);
+            console.log('[Google Analytics] Step "%s" sended with action "%s" for %s', st, act, categoryPrefix + region);
         };
 
     console.log('[Init] Google Analytics Tracking');

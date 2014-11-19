@@ -35,6 +35,10 @@ class CreateAction extends OrderV3 {
 
         try {
 
+            if (!isset($splitResult['orders']) || empty($splitResult['orders'])) {
+                throw new \Exception('Ошибка создания заказа: невозможно получить предыдущее разбиение');
+            }
+
             foreach ($splitResult['orders'] as &$splitOrder) {
                 $ordersData[] = (new OrderEntity(array_merge($splitResult, ['order' => $splitOrder])))->getOrderData();
             }
