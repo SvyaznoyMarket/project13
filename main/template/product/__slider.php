@@ -137,8 +137,8 @@ $f = function (
             </ul>
         </div>
 
-        <div class="slideItem_btn slideItem_btn-prv mDisabled<? if ($isRetailrocketProduct): ?> jsRecommendedSliderNav<? endif ?>"></div>
-        <div class="slideItem_btn slideItem_btn-nxt mDisabled<? if ($isRetailrocketProduct): ?> jsRecommendedSliderNav<? endif ?>"></div>
+        <div class="slideItem_btn slideItem_btn-prv mDisabled<? if ('retailrocket' == $sender['name']): ?> jsRecommendedSliderNav<? endif ?>"></div>
+        <div class="slideItem_btn slideItem_btn-nxt mDisabled<? if ('retailrocket' == $sender['name']): ?> jsRecommendedSliderNav<? endif ?>"></div>
     </div>
 
 </div><?/*<!--/product accessory section -->*/?>

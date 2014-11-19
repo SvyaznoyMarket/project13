@@ -18,19 +18,7 @@ class RecommendedAction {
         }
 
         // поставщик из http-запроса
-        $sendersByType = [];
-        foreach ((array)$request->query->get('senders') as $sender) {
-            if (!is_array($sender)) {
-                continue;
-            }
-
-            $sender = array_merge(['name' => null, 'position' => null, 'type' => null, 'method' => null, 'items' => []], $sender);
-            if (empty($sender['name'])) {
-                $sender['name'] = 'enter';
-            }
-
-            $sendersByType[$sender['type']] = $sender;
-        }
+        $sendersByType = $this->getSendersIndexedByTypeByHttpRequest($request);
 
         // ид пользователя retail rocket
         $queryParams = [];
@@ -131,6 +119,7 @@ class RecommendedAction {
 
             // сортировка
             try {
+                // TODO: вынести в репозиторий
                 usort($products, function(\Model\Product\Entity $a, \Model\Product\Entity $b) {
                     if ($b->getIsBuyable() != $a->getIsBuyable()) {
                         return ($b->getIsBuyable() ? 1 : -1) - ($a->getIsBuyable() ? 1 : -1); // сначала те, которые можно купить
@@ -166,17 +155,41 @@ class RecommendedAction {
     }
 
     /**
-     * @param $type
+     * @param string $type
      * @return string
      */
-    private function getTitleByType($type) {
+    public function getTitleByType($type) {
         $titlesByType = [
             'accessorize' => 'Аксессуары',
             'alsoBought'  => 'С этим товаром также покупают',
             'similar'     => 'Похожие товары',
             'alsoViewed'  => 'С этим товаром также смотрят',
+            'search'      => 'Возможно, вам подойдут',
         ];
 
         return isset($titlesByType[$type]) ? $titlesByType[$type] : 'Мы рекомендуем';
+    }
+
+    /**
+     * @param \Http\Request $request
+     * @return array
+     */
+    public function getSendersIndexedByTypeByHttpRequest(\Http\Request $request) {
+        // поставщик из http-запроса
+        $sendersByType = [];
+        foreach ((array)$request->query->get('senders') as $sender) {
+            if (!is_array($sender)) {
+                continue;
+            }
+
+            $sender = array_merge(['name' => null, 'position' => null, 'type' => null, 'method' => null, 'items' => []], $sender);
+            if (empty($sender['name'])) {
+                $sender['name'] = 'enter';
+            }
+
+            $sendersByType[$sender['type']] = $sender;
+        }
+
+        return $sendersByType;
     }
 }

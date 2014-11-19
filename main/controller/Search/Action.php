@@ -11,14 +11,7 @@ class Action {
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $searchQuery = (string)$request->get('q');
-        $encode = mb_detect_encoding($searchQuery, array('UTF-8', 'Windows-1251'), TRUE);
-        switch ($encode) {
-            case 'Windows-1251': {
-                $searchQuery = iconv('Windows-1251', 'UTF-8', $searchQuery);
-            }
-        }
-        $searchQuery = trim(preg_replace('/[^\wА-Яа-я-]+/u', ' ', $searchQuery));
+        $searchQuery = $this->getSearchQueryByRequest($request);
 
         if (empty($searchQuery) || (mb_strlen($searchQuery) <= \App::config()->search['queryStringLimit'])) {
             $page = new \View\Search\EmptyPage();
@@ -417,5 +410,22 @@ class Action {
         }
         
         return new \Http\JsonResponse($responseData);
+    }
+
+    /**
+     * @param \Http\Request $request
+     * @return string
+     */
+    public function getSearchQueryByRequest(\Http\Request $request) {
+        $searchQuery = (string)$request->get('q');
+        $encode = mb_detect_encoding($searchQuery, ['UTF-8', 'Windows-1251'], true);
+        switch ($encode) {
+            case 'Windows-1251': {
+                $searchQuery = iconv('Windows-1251', 'UTF-8', $searchQuery);
+            }
+        }
+        $searchQuery = trim(preg_replace('/[^\wА-Яа-я-]+/u', ' ', $searchQuery));
+
+        return $searchQuery;
     }
 }
