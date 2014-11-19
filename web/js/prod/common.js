@@ -1038,6 +1038,16 @@
 
 				productData.isUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_from_rec', productData.article]);
 				productData.fromUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_to_cart', productData.article]);
+
+                try {
+                    var sender = data.sender;
+                    console.info({sender: sender});
+                    if (sender && ('retailrocket' == sender.name)) {
+                        body.trigger('trackGoogleEvent',['RR_Взаимодействие', 'Добавил в корзину', sender.position]);
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
 			},
 
 

@@ -605,7 +605,24 @@ $c->abTest = [
                     'name'    => 'Новый фильтр и нет фото "как товар смотрится на модели"',
                 ],
             ]
-        ]
+        ],
+
+        'recommended_product' => [
+            'name'          => 'Рекомендации в карточке товара',
+            'gaSlotNumber'  => 12,
+            'enabled'       => true,
+            'expireDate'    => '2015-12-31',
+            'cases' => [
+                'old_recommendation' => [
+                    'traffic' => 80,
+                    'name'    => 'Старые рекомендации',
+                ],
+                'new_recommendation' => [
+                    'traffic' => 20,
+                    'name'    => 'Новые рекомендации',
+                ],
+            ]
+        ],
     ],
 ];
 

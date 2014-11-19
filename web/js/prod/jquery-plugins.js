@@ -2561,7 +2561,7 @@ jQuery(function($, undefined) {
 				/**
 				 * Переключение на следующий слайд. Проверка состояния кнопок.
 				 */
-				nextSlide = function nextSlide() {
+				nextSlide = function nextSlide(e) {
 					if ( $(this).hasClass('mDisabled') ) {
 						return false;
 					}
@@ -2586,13 +2586,14 @@ jQuery(function($, undefined) {
 
                     updatePageTitle(wrap.width(), nowLeft);
 
-					return false;
+                    e.preventDefault();
+                    //return false;
 				},
 
 				/**
 				 * Переключение на предыдущий слайд. Проверка состояния кнопок.
 				 */
-				prevSlide = function prevSlide() {
+				prevSlide = function prevSlide(e) {
 					if ( $(this).hasClass('mDisabled') ) {
 						return false;
 					}
@@ -2612,7 +2613,8 @@ jQuery(function($, undefined) {
 
                     updatePageTitle(wrap.width(), nowLeft);
 
-					return false;
+                    e.preventDefault();
+					//return false;
 				},
 
                 updatePageTitle = function updatePageTitle(width, left) {

@@ -7,11 +7,15 @@ class RecommendedAction {
     public function execute(\Http\Request $request, $productId) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $templating = \App::closureTemplating();
-
-        $config = \App::config()->partners['RetailRocket'];
         $client = \App::retailrocketClient();
+        $templating = \App::closureTemplating();
         $region = \App::user()->getRegion();
+
+        if ($test = \App::abTest()->getTest('recommended_product')) {
+            if ($test->getEnabled() && $test->getChosenCase() && ('old_recommendation' == $test->getChosenCase()->getKey())) {
+                return (new \Controller\Product\OldRecommendedAction())->execute($request, $productId);
+            }
+        }
 
         // поставщик из http-запроса
         $sendersByType = [];

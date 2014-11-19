@@ -26,7 +26,7 @@ $f = function (
     $namePosition = 'bottom',
     array $sender = []
 ) {
-    $sender += ['name' => null, 'method' => null, 'position' => null, 'items' => []];
+    $sender += ['name' => null, 'method' => null, 'position' => null, 'from' => null, 'items' => []];
 
     $isRetailrocketRecommendation = 'retailrocket' == $sender['name'];
     $retailrocketMethod = $sender['method'];
@@ -96,7 +96,7 @@ $f = function (
                 $category = $product->getParentCategory() ? $product->getParentCategory() : null;
             ?>
                 <li
-                    class="slideItem_i jsSliderItem"
+                    class="slideItem_i jsRecommendedItem"
                     data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>"
                     data-product="<?= $helper->json([
                         'article'  => $product->getArticle(),
@@ -105,19 +105,19 @@ $f = function (
                     ]) ?>"
                 >
                     <? if ('top' == $namePosition): ?>
-                        <div class="slideItem_n"><a href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a></div>
+                        <div class="slideItem_n"><a <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a></div>
                     <? endif ?>
 
                     <? if ((bool)$product->getLabel()): ?>
                         <img class="slideItem_stick" src="<?= $product->getLabel()->getImageUrl(0) ?>" alt="<?= $product->getLabel()->getName() ?>" />
                     <? endif ?>
 
-                    <a class="slideItem_imgw<? if($product->getIsUpsale()): ?> jsUpsaleProduct<? endif; ?>" href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>>
+                    <a class="<? if ($isRetailrocketProduct): ?>jsRecommendedItem <? endif ?>slideItem_imgw<? if($product->getIsUpsale()): ?> jsUpsaleProduct<? endif; ?>" href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>>
                         <img class="slideItem_img" src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" />
                     </a>
 
                     <? if ('bottom' == $namePosition): ?>
-                        <div class="slideItem_n"><a href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a></div>
+                        <div class="slideItem_n"><a <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a></div>
                     <? endif ?>
 
                     <div class="slideItem_pr"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
@@ -137,8 +137,8 @@ $f = function (
             </ul>
         </div>
 
-        <div class="slideItem_btn slideItem_btn-prv mDisabled"></div>
-        <div class="slideItem_btn slideItem_btn-nxt mDisabled"></div>
+        <div class="slideItem_btn slideItem_btn-prv mDisabled<? if ($isRetailrocketProduct): ?> jsRecommendedSliderNav<? endif ?>"></div>
+        <div class="slideItem_btn slideItem_btn-nxt mDisabled<? if ($isRetailrocketProduct): ?> jsRecommendedSliderNav<? endif ?>"></div>
     </div>
 
 </div><?/*<!--/product accessory section -->*/?>
