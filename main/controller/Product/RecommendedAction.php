@@ -57,6 +57,13 @@ class RecommendedAction {
                         $sender['items'] = array_slice($data, 0, 50);
                         $productIds = array_merge($productIds, $sender['items']);
                     });
+                } else if ('viewed' == $sender['type']) {
+                    $sender['method'] = '';
+
+                    $idString = $request->cookies->get('rrviewed');
+                    if (is_string($idString) && !empty($idString)) {
+                        $sender['items'] = array_slice(array_unique(explode(',', $idString)), 0, 50);
+                    }
                 }
             }
         }
@@ -133,13 +140,24 @@ class RecommendedAction {
                 });
             } catch (\Exception $e) {}
 
+            $cssClass = '';
+            $namePosition = null;
+            if ('viewed' == $sender['type']) {
+                $cssClass = 'slideItem-viewed';
+                $namePosition = 'none';
+            } else if ('alsoViewed' == $sender['type']) {
+                $cssClass = 'slideItem-7item';
+            }
+
             $recommendData[$type] = [
                 'success' => true,
                 'content' => $templating->render('product/__slider', [
-                    'title'                        => $this->getTitleByType($type),
-                    'products'                     => $products,
-                    'count'                        => count($products),
-                    'sender'                       => $sender,
+                    'title'        => $this->getTitleByType($type),
+                    'products'     => $products,
+                    'count'        => count($products),
+                    'sender'       => $sender,
+                    'class'        => $cssClass,
+                    'namePosition' => $namePosition,
                 ]),
                 'data' => [
                     'id'              => $product->getId(), //id товара (или категории, пользователя или поисковая фраза) к которому были отображены рекомендации
@@ -165,6 +183,7 @@ class RecommendedAction {
             'similar'     => 'Похожие товары',
             'alsoViewed'  => 'С этим товаром также смотрят',
             'search'      => 'Возможно, вам подойдут',
+            'viewed'      => 'Вы смотрели',
         ];
 
         return isset($titlesByType[$type]) ? $titlesByType[$type] : 'Мы рекомендуем';

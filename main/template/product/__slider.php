@@ -23,9 +23,13 @@ $f = function (
     $limit = null,
     $url = null,
     $type = null,
-    $namePosition = 'bottom',
+    $namePosition = null,
     array $sender = []
 ) {
+    if (null === $namePosition) {
+        $namePosition = 'bottom';
+    }
+
     $sender += ['name' => null, 'method' => null, 'position' => null, 'from' => null, 'items' => []];
 
     $isRetailrocketRecommendation = 'retailrocket' == $sender['name'];
@@ -96,6 +100,7 @@ $f = function (
                 $category = $product->getParentCategory() ? $product->getParentCategory() : null;
             ?>
                 <li
+                    title = "<?= $helper->escape($product->getName()) ?>"
                     class="slideItem_i jsRecommendedItem"
                     data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>"
                     data-product="<?= $helper->json([

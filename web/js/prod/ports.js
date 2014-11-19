@@ -840,6 +840,8 @@ window.ANALYTICS = {
             body.on('click', '.jsRecommendedItem', function(event) {
                 console.log('jsRecommendedItem');
 
+                event.stopPropagation();
+
                 try {
                     var
                         $el = $(this),
@@ -853,12 +855,15 @@ window.ANALYTICS = {
                         action: 'Перешел на карточку товара',
                         label: sender ? sender.position : null,
                         hitCallback: function(){
-                            window.location.href = link;
-                        }
-                    })
-                } catch (e) { console.error(e); }
+                            console.log({link: link});
 
-                event.preventDefault();
+                            if (link) {
+                                setTimeout(function() { window.location.href = link; }, 90);
+                            }
+                        }
+                    });
+
+                } catch (e) { console.error(e); }
             });
 
             /** Событие пролистывание в слайдере */

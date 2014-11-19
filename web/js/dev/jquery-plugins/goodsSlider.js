@@ -22,7 +22,7 @@
 			 * @return bool
 			 */
 			isRecommendation = function isRecommendation( type ) {
-				return -1 != $.inArray(type, ['alsoBought', 'similar', 'alsoViewed', 'main', 'search']);
+				return -1 != $.inArray(type, ['alsoBought', 'similar', 'alsoViewed', 'main', 'search', 'viewed']);
 			};
 		// end of functions
 
@@ -231,7 +231,7 @@
 
                     if (!sliderParams.count || !elementOnSlide || !pageNum) return;
 
-                    //pageTitle.text('Страница ' + pageNum +  ' из ' + Math.ceil(sliderParams.count / elementOnSlide));
+                    //pageTitle.text('Страница ' + pageNum +  ' goodsSliderиз ' + Math.ceil(sliderParams.count / elementOnSlide));
                 },
 
 				/**
