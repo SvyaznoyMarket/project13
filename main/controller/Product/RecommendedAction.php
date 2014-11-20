@@ -4,12 +4,14 @@ namespace Controller\Product;
 
 class RecommendedAction {
 
-    public function execute(\Http\Request $request, $productId) {
+    public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::retailrocketClient();
         $templating = \App::closureTemplating();
         $region = \App::user()->getRegion();
+
+        $productId = $request->get('productId') ?: null;
 
         if ($test = \App::abTest()->getTest('recommended_product')) {
             if ($test->getEnabled() && $test->getChosenCase() && ('old_recommendation' == $test->getChosenCase()->getKey())) {
@@ -27,7 +29,10 @@ class RecommendedAction {
         }
 
         // ид товаров
-        $productIds = [$productId];
+        $productIds = [];
+        if ($productId) {
+            $productIds[] = $productId;
+        }
 
         // получение ид рекомендаций
         $sender = null;
@@ -60,9 +65,14 @@ class RecommendedAction {
                 } else if ('viewed' == $sender['type']) {
                     $sender['method'] = '';
 
-                    $idString = $request->cookies->get('rrviewed');
-                    if (is_string($idString) && !empty($idString)) {
-                        $sender['items'] = array_slice(array_unique(explode(',', $idString)), 0, 50);
+                    //$ids = $request->cookies->get('rrviewed');
+                    $ids = $request->get('rrviewed');
+                    if (is_string($ids)) {
+                        $ids = explode(',', $ids);
+                    }
+                    if (is_array($ids)) {
+                        $sender['items'] = array_slice(array_unique($ids), 0, 50);
+                        $productIds = array_merge($productIds, $sender['items']);
                     }
                 }
             }
@@ -90,8 +100,8 @@ class RecommendedAction {
          * Главный товар
          * @var \Model\Product\Entity|null $product
          */
-        $product = @$productsById[$productId];
-        if (!$product) {
+        $product = ($productId && isset($productsById[$productId])) ? $productsById[$productId] : null;
+        if ($productId && !$product) {
             throw new \Exception(sprintf('Товар #%s не найден', $productId));
         }
 
@@ -160,10 +170,11 @@ class RecommendedAction {
                     'namePosition' => $namePosition,
                 ]),
                 'data' => [
-                    'id'              => $product->getId(), //id товара (или категории, пользователя или поисковая фраза) к которому были отображены рекомендации
+                    'id'              => $product ? $product->getId() : null, //id товара (или категории, пользователя или поисковая фраза) к которому были отображены рекомендации
                     'method'          => $sender['method'], //алгоритм (ItemToItems, UpSellItemToItems, CrossSellItemToItems и т.д.)
                     'recommendations' => $sender['items'], //массив ids от Retail Rocket
                 ],
+                'hasBubble' => in_array($sender['type'], ['viewed']),
             ];
         }
         $responseData['recommend'] = $recommendData;

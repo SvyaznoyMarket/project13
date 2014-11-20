@@ -12,6 +12,7 @@
  * @param null $type
  * @param string $namePosition
  * @param array $sender
+ * @param bool $hasBubble
  */
 $f = function (
     \Helper\TemplateHelper $helper,
@@ -24,7 +25,8 @@ $f = function (
     $url = null,
     $type = null,
     $namePosition = null,
-    array $sender = []
+    array $sender = [],
+    $hasBubble = false
 ) {
     if (null === $namePosition) {
         $namePosition = 'bottom';
@@ -64,6 +66,13 @@ $f = function (
 
     <div class="slideItem<? if ($class): ?> <?= $class ?><? endif ?>">
         <div class="slideItem_cntr"><!--Страница 2 из 8--></div>
+
+        <? if ($hasBubble): ?>
+            <!-- позиция leftБ вычисляется - номер слайдера начиная с 0 уможенный на 90 -->
+            <div class="slideItem_flt">
+                <div class="slideItem_flt_i">LED-телевизор 32" Sony KDL-32W503ABR</div>
+            </div>
+        <? endif ?>
 
         <div class="slideItem_inn mLoader">
             <ul class="slideItem_lst clearfix">

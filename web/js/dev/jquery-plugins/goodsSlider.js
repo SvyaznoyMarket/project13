@@ -53,6 +53,8 @@
 				});
 
 				if ( recommendArray.length === slidersRecommendation ) {
+                    urlData['rrviewed'] = docCookies.getItem('rrviewed').split(',').unique();
+
 					$.ajax({
 						type: 'GET',
 						url: url,

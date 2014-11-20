@@ -90,6 +90,22 @@
         <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
     </div>
 
+    <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
+        <?= $helper->render('product/__slider', [
+            'type'      => 'viewed',
+            'title'     => 'Вы смотрели',
+            'products'  => [],
+            'count'     => null,
+            'limit'     => \App::config()->product['itemsInSlider'],
+            'page'      => 1,
+            'url'       => $page->url('product.recommended'),
+            'sender'    => [
+                'name'     => 'retailrocket',
+                'position' => 'Viewed',
+            ],
+        ]) ?>
+    <? endif ?>
+
     <? if (!empty($seoContent) || (bool)$hotlinks): ?>
         <div class="bSeoText">
             <?= $seoContent ?>

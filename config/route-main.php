@@ -724,7 +724,7 @@ return [
 
     // recommended products
     'product.recommended' => [
-        'pattern' => '/product-recommended/{productId}',
+        'pattern' => '/product-recommended',
         'action' => ['Product\RecommendedAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
