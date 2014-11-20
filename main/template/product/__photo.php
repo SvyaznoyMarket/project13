@@ -128,6 +128,8 @@ return function(
              data-zoom-disable="<?= $useLens ? false : true ?>"
              alt="<?= $helper->escape($product->getName()) ?>"
         />
+
+        <div class="bProductDescImgBig_none">Нет в наличии</div>
     </div><!--/product big image section -->
 
     <div class="bPhotoAction clearfix">
