@@ -43,6 +43,10 @@
                 sliderParams.sender.type = sliderParams.type;
                 urlData.senders.push(sliderParams.sender);
             }
+
+            if (sliderParams.rrviewed) {
+                urlData.rrviewed = sliderParams.rrviewed;
+            }
 		});
 
 		var getSlidersData = function getSlidersData( url, type, callback ) {
@@ -53,7 +57,7 @@
 				});
 
 				if ( recommendArray.length === slidersRecommendation ) {
-                    urlData['rrviewed'] = docCookies.getItem('rrviewed').split(',').unique();
+                    urlData['rrviewed'] = urlData.rrviewed;
 
 					$.ajax({
 						type: 'GET',
