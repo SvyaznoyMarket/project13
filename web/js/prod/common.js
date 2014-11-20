@@ -3520,13 +3520,23 @@ $(document).ready(function() {
 ;(function() {
 
     $(document).ready(function() {
-        $('.js-slider').each(function(i, el) {
-            var data = $(el).data('slider');
+        try {
+            $('.js-slider').each(function(i, el) {
+                var
+                    data = $(el).data('slider'),
+                    rrviewed = docCookies.getItem('rrviewed')
+                ;
 
-            data['rrviewed'] = docCookies.getItem('rrviewed').split(',').unique();
+                if (typeof rrviewed === 'string') {
+                    data['rrviewed'] = rrviewed.split(',').unique();
+                }
 
-            $(el).data('slider', data);
-        });
+                $(el).data('slider', data);
+            });
+        } catch (e) {
+            console.error(e);
+        }
+
     });
 
 }());
