@@ -68,6 +68,25 @@
     </div><!--/ Шаблон -->
 
     <div class="footer__main">
+
+        <? if (\App::config()->product['showRelated']): ?>
+            <?= (new \Helper\TemplateHelper())->render('product/__slider', [
+                'type'           => 'main',
+                'title'          => 'Мы рекомендуем',
+                'products'       => [],
+                'count'          => null,
+                'limit'          => \App::config()->product['itemsInSlider'],
+                'page'           => 1,
+                'url'            => $page->url('main.recommended', [
+                    'namePosition' => 'top',
+                    'class'        => 'slideItem-main',
+                    'sender'       => [ // TODO: вынести на уровень выше и переименовать в senders
+                        'position' => 'Main',
+                    ],
+                ]),
+            ]) ?>
+        <? endif ?>
+
         <?= $page->slotFooter() ?>
         <a href="http://<?= \App::config()->mobileHost ?>/" class="siteVersionSwitcher js-siteVersionSwitcher" data-config="<?= $page->escape(json_encode(\App::config()->siteVersionSwitcher)) ?>">Мобильная версия</a>
     </div><!--/ Подвал -->

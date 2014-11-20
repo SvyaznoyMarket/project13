@@ -61,17 +61,9 @@
 /*---END----ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК (ЛИСТИНГИ/КАРТОЧКА ТОВАРА)---------*/
 
 
-
 /*---------КОРЗИНА (СТАРАЯ ВЕРСТКА)----------*/
 @import "basket/basket.less" all;
 /*---END----КОРЗИНА (СТАРАЯ ВЕРСТКА)---------*/
-
-
-
-/*---------ЛИЧНЫЙ КАБИНЕТ (СТАРАЯ ВЕРСТКА)----------*/
-@import "user/user.less" all;
-/*---END----ЛИЧНЫЙ КАБИНЕТ (СТАРАЯ ВЕРСТКА)---------*/
-
 
 
 /*---------Enter Prize----------*/
@@ -85,38 +77,20 @@
 /*---END----Enter Prize---------*/
 
 
+/*------TCHIBO------*/
+//навигация
+@import "tchibo/nav.less" all;
 
-/*------TCHIBO - верхнее меню Чибо, под продуктовым меню------*/
-@import "tchiboMenu/tchiboMenu.less" all;
-/*---END---TCHIBO - верхнее меню Чибо, под продуктовым меню---*/
+//разделы, баннеры
+@import "tchibo/catalog.less" all;
 
-/*---------TCHIBO - заголовок раздела----------*/
-@import "tchiboTitle/tchiboTitle.less" all;
-/*---END----TCHIBO - заголовок раздела---------*/
-
-/*---------TCHIBO - слайдер-меню разделов Чибо----------*/
-@import "tchiboNavSlider/tchiboNavSlider.less" all;
-/*---END----TCHIBO - слайдер-меню разделов Чибо---------*/
-
-/*---------TCHIBO - навигация по разделу Чибо----------*/
-@import "tchiboNavSection/tchiboNavSection.less" all;
-/*---END----TCHIBO - навигация по разделу Чибо---------*/
-
-/*---------TCHIBO - каталог разделов, баннеров, товаров Чибо----------*/
-@import "tchiboCatalog/tchiboCatalog.less" all;
-/*---END----TCHIBO - каталог разделов, баннеров, товаров Чибо---------*/
-
-/*---------TCHIBO - крутилка разделов Чибо на рутовой странице----------*/
-@import "tchibo/tchiboCatalog.less" all;
-/*---END----TCHIBO - крутилка разделов Чибо на рутовой странице---------*/
-
-/*---------TCHIBO - листинг Чибо----------*/
-@import "tchiboProducts/tchiboProducts.less" all;
-/*---END----TCHIBO - листинг Чибо---------*/
+//листинг товаров
+@import "tchibo/products.less" all;
+/*---END---TCHIBO------*/
 
 
 /*---------Хиты продаж/Выгодное предложение/Самым разборчивым----------*/
-@import "specialPrice/specialPrice.less" all;
+@import "smartChoice/smartChoice.less" all;
 /*---END----Хиты продаж/Выгодное предложение/Самым разборчивым---------*/
 
 
@@ -124,11 +98,15 @@
 @import "packageSet/packageSet.less" all;
 /*---END----Наборы пакетов/лини мебели/наборы мебели---------*/
 
+
 /*---------Стили попапов и их содержимого----------*/
 @import "popup/popup.less" all;
 
 //попап со списком магазинов для резерва товара, в карточке товара
 @import "popup/markerList.less" all;
+
+//регистрация/авторизация
+@import "popup/popup-auth.less" all;
 /*---END----Стили попапов и их содержимого---------*/
 
 
@@ -185,9 +163,6 @@
 
 
 /*---------Личный кабинет пользователя----------*/
-@import "popup-auth/popup-auth.less" all;
-
-/*---------Личный кабинет пользователя----------*/
 @import "btn/btn.less" all;
 
 
@@ -201,6 +176,11 @@
 @import "catalog/fltrSet.less" all;
 @import "catalog/light.less" all;
 
+/*---------Страницы ошибок----------*/
+@import "error/404.less" all;
+
+/*---------Поиск на сайте, результаты поиска----------*/
+@import "search/empty.less" all;
 
 //стили для фикса старых правил и классов, в последствии, при полном переходе на новую верстку удалить
 @import "main/old__style__fix.less" all;

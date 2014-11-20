@@ -39,6 +39,10 @@ $isKitPage = (bool)$product->getKit();
             //'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
             'gaEvent'        => 'Accessorize',
             'additionalData' => $additionalData,
+            'sender'         => [
+                //'name'     => null,
+                'position' => 'ProductAccessoriesManual',
+            ],
         ]) ?>
     <? endif ?>
 
@@ -58,6 +62,10 @@ $isKitPage = (bool)$product->getKit();
             'page'           => 1,
             'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
             'additionalData' => $additionalData,
+            'sender'         => [
+                'name'     => 'retailrocket',
+                'position' => 'ProductAccessories', // все правильно - так и надо!
+            ],
         ]) ?>
     <? endif ?>
 
@@ -70,6 +78,10 @@ $isKitPage = (bool)$product->getKit();
             'limit'    => \App::config()->product['itemsInSlider'],
             'page'     => 1,
             'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
+            'sender'   => [
+                'name'     => 'retailrocket',
+                'position' => 'ProductSimilar',
+            ],
         ]) ?>
     <? endif ?>
 
@@ -86,6 +98,10 @@ $isKitPage = (bool)$product->getKit();
             'limit'    => \App::config()->product['itemsInSlider'],
             'page'     => 1,
             'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
+            'sender'   => [
+                'name'     => 'retailrocket',
+                'position' => 'ProductUpSale',
+            ],
         ]) ?>
     <? endif ?>
 </div><!--/left section -->
@@ -105,6 +121,7 @@ $isKitPage = (bool)$product->getKit();
         <?= $helper->render('cart/__button-product', [
             'product' => $product,
             'onClick' => isset($addToCartJS) ? $addToCartJS : null,
+            'sender'  => (array)$request->get('sender') + ['name' => null, 'method' => null, 'position'],
         ]) // Кнопка купить ?>
 
         <div class="js-showTopBar"></div>

@@ -306,6 +306,7 @@ class OrderEntity {
         $request = \App::request();
         $user = \App::user();
         $data = [];
+        $cart = $user->getCart()->getProductsNC();
         try {
             /** @var $products \Model\Product\Entity[] */
             $products = [];
@@ -347,6 +348,17 @@ class OrderEntity {
 
                         \App::session()->set(\App::config()->product['recommendationSessionKey'], $recommendedProductIds);
                     }
+
+                    // добавляем информацию о блоке рекомендаций, откуда был добавлен товар (используется корзина, которая очищается только на /order/complete)
+                    if (isset($cart[$product->getId()]['sender'])) {
+                        $senderData = $cart[$product->getId()]['sender'];
+                        if (isset($senderData['name']))     $data[sprintf('product.%s.sender', $product->getUi())] = $senderData['name'];       // система рекомендаций
+                        if (isset($senderData['position'])) $data[sprintf('product.%s.position', $product->getUi())] = $senderData['position']; // позиция блока на сайте
+                        if (isset($senderData['method']))   $data[sprintf('product.%s.method', $product->getUi())] = $senderData['method'];     // метод рекомендаций
+                        if (isset($senderData['from']) && !empty($senderData['from']))     $data[sprintf('product.%s.from', $product->getUi())] = $senderData['from'];         // откуда перешели на карточку товара
+                        unset($senderData);
+                    }
+
                 } catch (\Exception $e) {
                     \App::logger()->error(['error' => $e], ['order', 'partner']);
                 }

@@ -34,6 +34,7 @@ class RecommendedAction {
         \App::coreClientV2()->execute();
 
         try {
+            // TODO: вынести в репозиторий
             usort($products, function(\Model\Product\Entity $a, \Model\Product\Entity $b) {
                 if ($b->getIsBuyable() != $a->getIsBuyable()) {
                     return ($b->getIsBuyable() ? 1 : -1) - ($a->getIsBuyable() ? 1 : -1); // сначала те, которые можно купить
@@ -52,7 +53,13 @@ class RecommendedAction {
         /* Рендерим слайдер */
         $slider = \App::closureTemplating()->render('product/__slider', [
             'products'  => $products,
-            'class'     => 'bSlider-7item',
+            'count'     => count($products),
+            'class'     => 'slideItem-7item',
+            'sender'    => [
+                'name'     => 'retailrocket',
+                'method'   => 'CrossSellItemToItems',
+                'position' => 'Basket',
+            ],
         ]);
 
         $recommend = [];

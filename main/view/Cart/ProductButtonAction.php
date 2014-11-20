@@ -8,6 +8,7 @@ class ProductButtonAction {
      * @param \Model\Product\BasicEntity $product
      * @param null $onClick
      * @param bool $isRetailRocket
+     * @param array $sender Данные поставщика, например: {name: retailrocket, position: ProductSimilar, action: Переход в карточку товара}
      * @internal param null|string $url
      * @return array
      */
@@ -15,7 +16,8 @@ class ProductButtonAction {
         \Helper\TemplateHelper $helper,
         \Model\Product\BasicEntity $product,
         $onClick = null,
-        $isRetailRocket = false
+        $isRetailRocket = false,
+        array $sender = []
     ) {
         $data = [
             'disabled'   => false,
@@ -65,6 +67,17 @@ class ProductButtonAction {
                 $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
             } else if ($isRetailRocket) {
                 $urlParams['sender'] = 'retailrocket';
+            }
+
+            if ($sender) {
+                $urlParams = array_merge($urlParams, [
+                    'sender' => [
+                        'name'      => @$sender['name'],
+                        'position'  => @$sender['position'],
+                        'method'    => @$sender['method'],
+                        'from'      => @$sender['from'],
+                    ],
+                ]);
             }
 
             $data['url'] = $helper->url('cart.product.set', $urlParams);
