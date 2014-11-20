@@ -159,6 +159,10 @@ class RecommendedAction {
                 $cssClass = 'slideItem-7item';
             }
 
+            if (('similar' == $sender['type']) && ('ProductMissing' == $sender['position'])) {
+                $cssClass = 'slideItem-3item';
+            }
+
             $recommendData[$type] = [
                 'success' => true,
                 'content' => $templating->render('product/__slider', [

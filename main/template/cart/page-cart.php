@@ -5,6 +5,15 @@
 */
 
 $cart = $user->getCart();
+$helper = new \Helper\TemplateHelper();
+
+// АБ-тест рекомендаций
+$test = \App::abTest()->getTest('recommended_product');
+$isNewRecommendation =
+    $test->getEnabled()
+    && $test->getChosenCase()
+    && ('new_recommendation' == $test->getChosenCase()->getKey())
+;
 
 ?>
 
@@ -34,7 +43,22 @@ $cart = $user->getCart();
 
 </div>
 
-<?= $page->render('cart/ab-self-delivery/_recommendSlider') ?>
+<? if ($isNewRecommendation): ?>
+    <div class="basketLine">
+
+        <?= $helper->render('product/__slider', [
+            'type'      => 'alsoBought',
+            'products'  => [],
+            'url'       => $page->url('cart.recommended', [
+                'sender' => [
+                    'position' => 'Basket',
+                ],
+            ]),
+        ]) ?>
+    </div>
+<? else: ?>
+    <?= $page->render('cart/ab-self-delivery/_recommendSlider') ?>
+<? endif ?>
 
 <div class="backShop fl mNoPrint jsKnockoutCart" data-bind="visible: isUpdated() && cartSum() > 0" style="display: none">&lt; <a class="underline" href="<?= $backlink ?>">Вернуться к покупкам</a></div>
 

@@ -54,7 +54,7 @@ class RecommendedAction {
         $slider = \App::closureTemplating()->render('product/__slider', [
             'products'  => $products,
             'count'     => count($products),
-            'class'     => 'bSlider-7item',
+            'class'     => 'slideItem-7item',
             'sender'    => [
                 'name'     => 'retailrocket',
                 'method'   => 'CrossSellItemToItems',
