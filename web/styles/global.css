@@ -8474,6 +8474,18 @@ img[height="0"] {
     position: absolute;
     right: 40px;
     bottom: 30px;
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+  }
+  .slidesBox_btnview:hover {
+    -moz-opacity: 0.9;
+    -khtml-opacity: 0.9;
+    -webkit-opacity: 0.9;
+    opacity: 0.9;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=90);
+    filter: alpha(opacity=90);
+    text-decoration: none;
   }
   .item {
     margin: 0 0 10px;
