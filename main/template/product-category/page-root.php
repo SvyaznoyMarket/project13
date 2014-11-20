@@ -83,7 +83,8 @@ foreach ($categories as $child) {
             </li>
         <? endforeach ?>
     </ul>
-
+    
+    <div class="margin: 0 0 30px;">
     <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
         <?= $helper->render('product/__slider', [
             'type'      => 'viewed',
@@ -99,6 +100,7 @@ foreach ($categories as $child) {
             ],
         ]) ?>
     <? endif ?>
+    </div>
 
     <? if(!empty($seoContent)): ?>
         <div class="bSeoText">

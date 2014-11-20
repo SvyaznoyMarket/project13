@@ -9166,6 +9166,14 @@
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     filter: alpha(opacity=0);
   }
+  .slideItem_btn:hover {
+    -moz-opacity: 0.8;
+    -khtml-opacity: 0.8;
+    -webkit-opacity: 0.8;
+    opacity: 0.8;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=80);
+    filter: alpha(opacity=80);
+  }
   .slideItem_stick {
     position: absolute;
     top: 0;
@@ -9422,8 +9430,8 @@
   }
   .bGoodsSlider.mWithCategory .slideItem {
     float: right;
-    width: 460px;
-    padding: 5px 0 0 20px;
+    width: 480px;
+    padding: 5px 0 0;
     border-top: 1px solid #c7c7c7;
   }
   .bGoodsSlider.mWithCategory .slideItem_inn {
