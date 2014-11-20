@@ -27,6 +27,15 @@ if (!$lifeGiftProduct) $lifeGiftProduct = null;
 $isKitPage = (bool)$product->getKit();
 
 $showSimilarOnTop = !$product->getIsBuyable() && !$product->isInShopShowroomOnly();
+
+// АБ-тест рекомендаций
+$test = \App::abTest()->getTest('recommended_product');
+$isNewRecommendation =
+    $test->getEnabled()
+    && $test->getChosenCase()
+    && ('new_recommendation' == $test->getChosenCase()->getKey())
+;
+
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
@@ -52,7 +61,7 @@ $showSimilarOnTop = !$product->getIsBuyable() && !$product->isInShopShowroomOnly
             </div>
         <? endif // } /end of new Card Properties ?>
 
-        <? if ($showSimilarOnTop): ?>
+        <? if ($showSimilarOnTop && $isNewRecommendation): ?>
             <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
                 <?= $helper->render('product/__slider', [
                     'type'     => 'similar',
@@ -133,7 +142,7 @@ $showSimilarOnTop = !$product->getIsBuyable() && !$product->isInShopShowroomOnly
         ]) ?>
     <? endif ?>
 
-    <? if (!$showSimilarOnTop): ?>
+    <? if (!$showSimilarOnTop || !$isNewRecommendation): ?>
         <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
             <?= $helper->render('product/__slider', [
                 'type'     => 'similar',
