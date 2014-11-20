@@ -26,7 +26,7 @@ $region = \App::user()->getRegion();
 if (!$lifeGiftProduct) $lifeGiftProduct = null;
 $isKitPage = (bool)$product->getKit();
 
-$showSimilarOnTop = !$product->getIsBuyable() && !$product->isInShopShowroomOnly();
+$showSimilarOnTop = !$product->isAvailable();
 
 // АБ-тест рекомендаций
 $test = \App::abTest()->getTest('recommended_product');

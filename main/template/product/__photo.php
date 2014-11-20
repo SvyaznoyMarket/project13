@@ -129,7 +129,9 @@ return function(
              alt="<?= $helper->escape($product->getName()) ?>"
         />
 
-        <div class="bProductDescImgBig_none">Нет в наличии</div>
+        <? if (!$product->isAvailable()): ?>
+            <div class="bProductDescImgBig_none">Нет в наличии</div>
+        <? endif ?>
     </div><!--/product big image section -->
 
     <div class="bPhotoAction clearfix">
