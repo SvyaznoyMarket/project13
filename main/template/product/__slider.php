@@ -12,7 +12,7 @@
  * @param null $type
  * @param string $namePosition
  * @param array $sender
- * @param bool $hasBubble
+ * @param bool $isCompact
  */
 $f = function (
     \Helper\TemplateHelper $helper,
@@ -26,7 +26,7 @@ $f = function (
     $type = null,
     $namePosition = null,
     array $sender = [],
-    $hasBubble = false
+    $isCompact = false
 ) {
     if (null === $namePosition) {
         $namePosition = 'bottom';
@@ -34,7 +34,7 @@ $f = function (
 
     $sender += ['name' => null, 'method' => null, 'position' => null, 'from' => null, 'items' => []];
 
-    $isRetailrocketRecommendation = 'retailrocket' == $sender['name'];
+    $isRetailrocketRecommendation = ('retailrocket' == $sender['name']);
     $retailrocketMethod = $sender['method'];
     $retailrocketIds = (array)$sender['items'];
     unset($sender['items']);
@@ -67,7 +67,7 @@ $f = function (
     <div class="slideItem<? if ($class): ?> <?= $class ?><? endif ?>">
         <div class="slideItem_cntr"><!--Страница 2 из 8--></div>
 
-        <? if ($hasBubble): ?>
+        <? if ($isCompact): ?>
             <!-- позиция leftБ вычисляется - номер слайдера начиная с 0 уможенный на 90 -->
             <div class="slideItem_flt">
                 <div class="slideItem_flt_i">LED-телевизор 32" Sony KDL-32W503ABR</div>
@@ -130,21 +130,25 @@ $f = function (
                         <img class="slideItem_img" src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" />
                     </a>
 
-                    <? if ('bottom' == $namePosition): ?>
+                    <? if (('bottom' == $namePosition) && !$isCompact): ?>
                         <div class="slideItem_n"><a <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a></div>
                     <? endif ?>
 
-                    <div class="slideItem_pr"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
+                    <? if (!$isCompact): ?>
+                        <div class="slideItem_pr"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
+                    <? endif ?>
 
-                    <? if ($product->getKit() && !$product->getIsKitLocked()) : ?>
-                        <a class="btnView mBtnGrey" href="<?= $product->getLink() ?>">Посмотреть</a> <!--TODO-zra стиль для кнопки "Посмотреть" -->
-                    <? else: ?>
-                        <?= $helper->render('cart/__button-product', [
-                            'product'        => $product,
-                            'onClick'        => $addToCartJS ? $addToCartJS : null,
-                            'isRetailRocket' => $isRetailrocketProduct, // TODO: удалить
-                            'sender'         => $sender,
-                        ]) // Кнопка купить ?>
+                    <? if (!$isCompact): ?>
+                        <? if ($product->getKit() && !$product->getIsKitLocked()) : ?>
+                            <a class="btnView mBtnGrey" href="<?= $product->getLink() ?>">Посмотреть</a> <!--TODO-zra стиль для кнопки "Посмотреть" -->
+                        <? else: ?>
+                            <?= $helper->render('cart/__button-product', [
+                                'product'        => $product,
+                                'onClick'        => $addToCartJS ? $addToCartJS : null,
+                                'isRetailRocket' => $isRetailrocketProduct, // TODO: удалить
+                                'sender'         => $sender,
+                            ]) // Кнопка купить ?>
+                        <? endif ?>
                     <? endif ?>
                 </li>
             <? endforeach ?>

@@ -164,21 +164,21 @@ class RecommendedAction {
             }
 
             $recommendData[$type] = [
-                'success' => true,
-                'content' => $templating->render('product/__slider', [
+                'success'   => true,
+                'content'   => $templating->render('product/__slider', [
                     'title'        => $this->getTitleByType($type),
                     'products'     => $products,
                     'count'        => count($products),
                     'sender'       => $sender,
                     'class'        => $cssClass,
                     'namePosition' => $namePosition,
+                    'isCompact'    => in_array($sender['type'], ['viewed']),
                 ]),
-                'data' => [
+                'data'      => [
                     'id'              => $product ? $product->getId() : null, //id товара (или категории, пользователя или поисковая фраза) к которому были отображены рекомендации
                     'method'          => $sender['method'], //алгоритм (ItemToItems, UpSellItemToItems, CrossSellItemToItems и т.д.)
                     'recommendations' => $sender['items'], //массив ids от Retail Rocket
                 ],
-                'hasBubble' => in_array($sender['type'], ['viewed']),
             ];
         }
         $responseData['recommend'] = $recommendData;

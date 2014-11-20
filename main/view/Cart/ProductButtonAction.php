@@ -72,10 +72,10 @@ class ProductButtonAction {
             if ($sender) {
                 $urlParams = array_merge($urlParams, [
                     'sender' => [
-                        'name'      => @$sender['name'],
-                        'position'  => @$sender['position'],
-                        'method'    => @$sender['method'],
-                        'from'      => @$sender['from'],
+                        'name'      => isset($sender['name']) ? $sender['name'] : null,
+                        'position'  => isset($sender['position']) ? $sender['position'] : null,
+                        'method'    => isset($sender['method']) ? $sender['method'] : null,
+                        'from'      => isset($sender['from']) ? $sender['from'] : null,
                     ],
                 ]);
             }
