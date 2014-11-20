@@ -243,6 +243,7 @@ class Action {
         $form = new \View\User\RegistrationForm();
         if ($request->isMethod('post')) {
             $form->fromArray((array)$request->request->get('register'));
+            $isSubscribe = (bool)$request->get('subscribe', false);
 
             if (!$form->getFirstName()) {
                 $form->setError('first_name', 'Не указано имя');
@@ -252,13 +253,15 @@ class Action {
                 $form->setError('email', 'Не указаны email или телефон');
             }
 
+            if ($isSubscribe && !$form->getEmail()) {
+                $form->setError('email', 'Не указан email');
+            }
+
             if ($form->isValid()) {
                 $data = [
                     'first_name' => $form->getFirstName(),
                     'geo_id'     => \App::user()->getRegion() ? \App::user()->getRegion()->getId() : null,
                 ];
-
-                $isSubscribe = (bool)$request->get('subscribe', false);
 
                 if ($form->getEmail()) {
                     $data['email'] = $form->getEmail();

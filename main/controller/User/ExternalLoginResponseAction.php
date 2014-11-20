@@ -193,7 +193,14 @@ class ExternalLoginResponseAction {
                         \App::logger()->error(sprintf('Не удалось обновить Account пользователя token=%s', \App::user()->getToken()), ['user']);
                     }
 
-
+                    if ($request->query->get('subscribe') === '1' && isset($data['email']) && $data['email'] != '') {
+                        \App::coreClientV2()->query('subscribe/create', [
+                            'email'      => $data['email'],
+                            'geo_id'     => \App::user()->getRegion()->getId(),
+                            'channel_id' => 1,
+                            'token'      => \App::user()->getToken(),
+                        ]);
+                    }
 
                     return $response;
                 } catch(\Exception $e) {
