@@ -210,13 +210,15 @@
 		},
 
 		changeRegionAnalytics = function changeRegionAnalytics( regionName ) {
-			// analytics only for main page
-			if ( document.location.pathname === '/' ) {
-				console.info( 'run analytics for main page ' + regionName);
+			if ( typeof _gaq !== 'undefined' ) {
+				_gaq.push(['_setCustomVar', 1, 'city', regionName, 2]);
+				_gaq.push(['_trackEvent', 'citySelector', 'selected', regionName]);
+			}
 
-				if ( typeof _gaq !== 'undefined' ) {
-					_gaq.push(['_trackEvent', 'citySelector', 'selected', regionName]);
-				}
+			if (typeof ga == 'function') {
+				ga('send', 'event', 'citySelector', 'selected', regionName, {
+					'dimension14': regionName
+				});
 			}
 		},
 

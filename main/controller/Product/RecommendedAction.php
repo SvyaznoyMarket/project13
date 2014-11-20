@@ -4,29 +4,23 @@ namespace Controller\Product;
 
 class RecommendedAction {
 
-    public function execute(\Http\Request $request, $productId) {
+    public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $templating = \App::closureTemplating();
-
-        $config = \App::config()->partners['RetailRocket'];
         $client = \App::retailrocketClient();
+        $templating = \App::closureTemplating();
         $region = \App::user()->getRegion();
 
-        // поставщик из http-запроса
-        $sendersByType = [];
-        foreach ((array)$request->query->get('senders') as $sender) {
-            if (!is_array($sender)) {
-                continue;
-            }
+        $productId = $request->get('productId') ?: null;
 
-            $sender = array_merge(['name' => null, 'position' => null, 'type' => null, 'method' => null, 'items' => []], $sender);
-            if (empty($sender['name'])) {
-                $sender['name'] = 'enter';
+        if ($test = \App::abTest()->getTest('recommended_product')) {
+            if ($test->getEnabled() && $test->getChosenCase() && ('old_recommendation' == $test->getChosenCase()->getKey())) {
+                return (new \Controller\Product\OldRecommendedAction())->execute($request, $productId);
             }
-
-            $sendersByType[$sender['type']] = $sender;
         }
+
+        // поставщик из http-запроса
+        $sendersByType = $this->getSendersIndexedByTypeByHttpRequest($request);
 
         // ид пользователя retail rocket
         $queryParams = [];
@@ -35,7 +29,10 @@ class RecommendedAction {
         }
 
         // ид товаров
-        $productIds = [$productId];
+        $productIds = [];
+        if ($productId) {
+            $productIds[] = $productId;
+        }
 
         // получение ид рекомендаций
         $sender = null;
@@ -65,6 +62,18 @@ class RecommendedAction {
                         $sender['items'] = array_slice($data, 0, 50);
                         $productIds = array_merge($productIds, $sender['items']);
                     });
+                } else if ('viewed' == $sender['type']) {
+                    $sender['method'] = '';
+
+                    //$ids = $request->cookies->get('rrviewed');
+                    $ids = $request->get('rrviewed');
+                    if (is_string($ids)) {
+                        $ids = explode(',', $ids);
+                    }
+                    if (is_array($ids)) {
+                        $sender['items'] = array_slice(array_unique($ids), 0, 50);
+                        $productIds = array_merge($productIds, $sender['items']);
+                    }
                 }
             }
         }
@@ -91,8 +100,8 @@ class RecommendedAction {
          * Главный товар
          * @var \Model\Product\Entity|null $product
          */
-        $product = @$productsById[$productId];
-        if (!$product) {
+        $product = ($productId && isset($productsById[$productId])) ? $productsById[$productId] : null;
+        if ($productId && !$product) {
             throw new \Exception(sprintf('Товар #%s не найден', $productId));
         }
 
@@ -127,6 +136,7 @@ class RecommendedAction {
 
             // сортировка
             try {
+                // TODO: вынести в репозиторий
                 usort($products, function(\Model\Product\Entity $a, \Model\Product\Entity $b) {
                     if ($b->getIsBuyable() != $a->getIsBuyable()) {
                         return ($b->getIsBuyable() ? 1 : -1) - ($a->getIsBuyable() ? 1 : -1); // сначала те, которые можно купить
@@ -140,19 +150,31 @@ class RecommendedAction {
                 });
             } catch (\Exception $e) {}
 
+            $cssClass = '';
+            $namePosition = null;
+            if ('viewed' == $sender['type']) {
+                $cssClass = 'slideItem-viewed';
+                $namePosition = 'none';
+            } else if ('alsoViewed' == $sender['type']) {
+                $cssClass = 'slideItem-7item';
+            }
+
             $recommendData[$type] = [
                 'success' => true,
                 'content' => $templating->render('product/__slider', [
-                    'title'                        => $this->getTitleByType($type),
-                    'products'                     => $products,
-                    'count'                        => count($products),
-                    'sender'                       => $sender,
+                    'title'        => $this->getTitleByType($type),
+                    'products'     => $products,
+                    'count'        => count($products),
+                    'sender'       => $sender,
+                    'class'        => $cssClass,
+                    'namePosition' => $namePosition,
                 ]),
                 'data' => [
-                    'id'              => $product->getId(), //id товара (или категории, пользователя или поисковая фраза) к которому были отображены рекомендации
+                    'id'              => $product ? $product->getId() : null, //id товара (или категории, пользователя или поисковая фраза) к которому были отображены рекомендации
                     'method'          => $sender['method'], //алгоритм (ItemToItems, UpSellItemToItems, CrossSellItemToItems и т.д.)
                     'recommendations' => $sender['items'], //массив ids от Retail Rocket
                 ],
+                'hasBubble' => in_array($sender['type'], ['viewed']),
             ];
         }
         $responseData['recommend'] = $recommendData;
@@ -162,17 +184,42 @@ class RecommendedAction {
     }
 
     /**
-     * @param $type
+     * @param string $type
      * @return string
      */
-    private function getTitleByType($type) {
+    public function getTitleByType($type) {
         $titlesByType = [
             'accessorize' => 'Аксессуары',
             'alsoBought'  => 'С этим товаром также покупают',
             'similar'     => 'Похожие товары',
             'alsoViewed'  => 'С этим товаром также смотрят',
+            'search'      => 'Возможно, вам подойдут',
+            'viewed'      => 'Вы смотрели',
         ];
 
         return isset($titlesByType[$type]) ? $titlesByType[$type] : 'Мы рекомендуем';
+    }
+
+    /**
+     * @param \Http\Request $request
+     * @return array
+     */
+    public function getSendersIndexedByTypeByHttpRequest(\Http\Request $request) {
+        // поставщик из http-запроса
+        $sendersByType = [];
+        foreach ((array)$request->query->get('senders') as $sender) {
+            if (!is_array($sender)) {
+                continue;
+            }
+
+            $sender = array_merge(['name' => null, 'position' => null, 'type' => null, 'method' => null, 'items' => []], $sender);
+            if (empty($sender['name'])) {
+                $sender['name'] = 'enter';
+            }
+
+            $sendersByType[$sender['type']] = $sender;
+        }
+
+        return $sendersByType;
     }
 }

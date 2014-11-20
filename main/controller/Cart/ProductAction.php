@@ -87,8 +87,8 @@ class ProductAction {
 
             if ($request->isXmlHttpRequest()) {
                 $response = new \Http\JsonResponse([
-                    'success' => true,
-                    'cart'    => [
+                    'success'    => true,
+                    'cart'       => [
                         'sum'           => $cartProduct ? $cartProduct->getSum() : 0,
                         'quantity'      => $quantity,
                         'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
@@ -96,9 +96,10 @@ class ProductAction {
                         'old_price'     => $cart->getOriginalSum(),
                         'link'          => \App::router()->generate('order'),
                     ],
-                    'product'  => $productInfo,
+                    'product'     => $productInfo,
                     'category_id' => $parentCategoryId,
-                    'regionId' => \App::user()->getRegionId(),
+                    'regionId'    => \App::user()->getRegionId(),
+                    'sender'      => $sender,
                 ]);
             } else {
                 $response = new \Http\RedirectResponse($returnRedirect);

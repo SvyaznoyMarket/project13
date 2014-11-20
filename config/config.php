@@ -513,15 +513,15 @@ $c->abTest = [
             'expireDate' => '2014-12-31',
             'cases' => [
                 'old' => [
-                    'traffic'  => 80,
+                    'traffic'  => 60,
                     'name'     => 'Старое оформление заказа',
                 ],
                 'new_1' => [
-                    'traffic'  => 10,
+                    'traffic'  => 20,
                     'name'     => 'Новое оформление заказа, версия 1',
                 ],
                 'new_2' => [
-                    'traffic'  => 10,
+                    'traffic'  => 20,
                     'name'     => 'Новое оформление заказа, версия 2',
                 ]
             ]
@@ -605,10 +605,28 @@ $c->abTest = [
                     'name'    => 'Новый фильтр и нет фото "как товар смотрится на модели"',
                 ],
             ]
-        ]
+        ],
+
+        'recommended_product' => [
+            'name'          => 'Рекомендации в карточке товара',
+            'gaSlotNumber'  => 13,
+            'enabled'       => true,
+            'expireDate'    => '2015-12-31',
+            'cases' => [
+                'old_recommendation' => [
+                    'traffic' => 80,
+                    'name'    => 'Старые рекомендации',
+                ],
+                'new_recommendation' => [
+                    'traffic' => 20,
+                    'name'    => 'Новые рекомендации',
+                ],
+            ]
+        ],
     ],
 ];
 
+$c->self_delivery['enabled'] = false;
 $c->self_delivery['limit'] = 500;
 $c->self_delivery['regions'] = [119623, 93746, 14974];
 

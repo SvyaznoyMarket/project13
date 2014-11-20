@@ -696,6 +696,7 @@
     // TODO вынести инициализацию трекера из ports.js
     try {
         if (typeof ga === 'function' && ga.getAll().length == 0) {
+			console.warn('Creating ga tracker');
             ga( 'create', 'UA-25485956-5', 'enter.ru' );
         }
     } catch (e) {
@@ -1037,6 +1038,16 @@
 
 				productData.isUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_from_rec', productData.article]);
 				productData.fromUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_to_cart', productData.article]);
+
+                try {
+                    var sender = data.sender;
+                    console.info({sender: sender});
+                    if (sender && ('retailrocket' == sender.name)) {
+                        body.trigger('trackGoogleEvent',['RR_Взаимодействие', 'Добавил в корзину', sender.position]);
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
 			},
 
 
@@ -1388,13 +1399,15 @@
 		},
 
 		changeRegionAnalytics = function changeRegionAnalytics( regionName ) {
-			// analytics only for main page
-			if ( document.location.pathname === '/' ) {
-				console.info( 'run analytics for main page ' + regionName);
+			if ( typeof _gaq !== 'undefined' ) {
+				_gaq.push(['_setCustomVar', 1, 'city', regionName, 2]);
+				_gaq.push(['_trackEvent', 'citySelector', 'selected', regionName]);
+			}
 
-				if ( typeof _gaq !== 'undefined' ) {
-					_gaq.push(['_trackEvent', 'citySelector', 'selected', regionName]);
-				}
+			if (typeof ga == 'function') {
+				ga('send', 'event', 'citySelector', 'selected', regionName, {
+					'dimension14': regionName
+				});
 			}
 		},
 

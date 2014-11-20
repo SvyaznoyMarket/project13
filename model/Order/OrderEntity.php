@@ -284,7 +284,11 @@ class OrderEntity {
         if (isset($arr['user_info']['address']['kladr_id']) && $arr['user_info']['address']['kladr_id'] !== '') $this->kladr_id = (string)$arr['user_info']['address']['kladr_id'];
         if (isset($arr['user_info']['bonus_card_number']) && $arr['user_info']['bonus_card_number'] !== '') $this->bonus_card_number = preg_replace('/\s+/','',(string)$arr['user_info']['bonus_card_number']);
 
-        if ($this->shop_id === null) $this->address = sprintf('%s, %s, д. %s, кв. %s', $regionName, $this->address_street, $this->address_building, $this->address_apartment);
+        if ($this->shop_id === null && !empty($this->address_street)) {
+            $this->address = $this->address_street;
+            if (!empty($this->address_building)) $this->address .= ', д. '.$this->address_building;
+            if (!empty($this->address_apartment)) $this->address .= ', кв. '.$this->address_apartment;
+        }
 
         if (isset($arr['order']['comment']) && $arr['order']['comment'] !== '') $this->extra = (string)$arr['order']['comment'];
 
@@ -302,6 +306,7 @@ class OrderEntity {
         $request = \App::request();
         $user = \App::user();
         $data = [];
+        $cart = $user->getCart()->getProductsNC();
         try {
             /** @var $products \Model\Product\Entity[] */
             $products = [];
@@ -343,6 +348,17 @@ class OrderEntity {
 
                         \App::session()->set(\App::config()->product['recommendationSessionKey'], $recommendedProductIds);
                     }
+
+                    // добавляем информацию о блоке рекомендаций, откуда был добавлен товар (используется корзина, которая очищается только на /order/complete)
+                    if (isset($cart[$product->getId()]['sender'])) {
+                        $senderData = $cart[$product->getId()]['sender'];
+                        if (isset($senderData['name']))     $data[sprintf('product.%s.sender', $product->getUi())] = $senderData['name'];       // система рекомендаций
+                        if (isset($senderData['position'])) $data[sprintf('product.%s.position', $product->getUi())] = $senderData['position']; // позиция блока на сайте
+                        if (isset($senderData['method']))   $data[sprintf('product.%s.method', $product->getUi())] = $senderData['method'];     // метод рекомендаций
+                        if (isset($senderData['from']) && !empty($senderData['from']))     $data[sprintf('product.%s.from', $product->getUi())] = $senderData['from'];         // откуда перешели на карточку товара
+                        unset($senderData);
+                    }
+
                 } catch (\Exception $e) {
                     \App::logger()->error(['error' => $e], ['order', 'partner']);
                 }

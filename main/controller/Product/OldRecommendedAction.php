@@ -20,7 +20,7 @@ class OldRecommendedAction {
                 continue;
             }
 
-            $sender = array_merge(['name' => null, 'position' => null, 'type' => null], $sender);
+            $sender = array_merge(['name' => null, 'position' => null, 'type' => null, 'method' => null, 'from' => null], $sender);
             if (empty($sender['name'])) {
                 $sender['name'] = 'enter';
             }
@@ -184,6 +184,9 @@ class OldRecommendedAction {
 
                 // поставщик
                 $sender = isset($sendersByType[$type]['type']) ? $sendersByType[$type] : [];
+                if ($sender) {
+                    $sender['method'] = $method;
+                }
 
                 $recommend[$type] = [
                     'success' => true,

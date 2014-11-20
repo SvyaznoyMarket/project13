@@ -54,6 +54,7 @@ class RecommendedAction {
         \App::coreClientV2()->execute();
 
         try {
+            // TODO: вынести в репозиторий
             usort($products, function(\Model\Product\Entity $a, \Model\Product\Entity $b) {
                 if ($b->getIsBuyable() != $a->getIsBuyable()) {
                     return ($b->getIsBuyable() ? 1 : -1) - ($a->getIsBuyable() ? 1 : -1); // сначала те, которые можно купить

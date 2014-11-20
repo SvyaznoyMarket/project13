@@ -11,6 +11,15 @@ return function(
     $firstOrder = reset($orderDelivery->orders);
     $i = 0;
 
+    $isCoordsValid = $region && $region->getLatitude() != null && $region->getLongitude() != null;
+
+    $initialMapCords = [
+        'latitude' => $isCoordsValid ? $region->getLatitude() : 55.76,
+        'longitude' => $isCoordsValid ? $region->getLongitude() : 37.64,
+        'zoom' => $isCoordsValid ? 10 : 4
+    ];
+
+
 ?>
 
 <?= $helper->render('order-v3/__head', ['step' => 2]) ?>
@@ -215,11 +224,7 @@ return function(
                     </div>
 
                     <div class="orderCol_addrs">
-                        <ul class="orderCol_addrs_fld textfield clearfix" style="height: inherit">
-                            <li class="orderCol_addrs_fld_i orderCol_addrs_fld_i-edit ui-front">
-                                <span id="addressInputPrefix" class="addrsAutocmpltLbl"></span><input name="address" type="text" />
-                            </li>
-                        </ul>
+                        <?= $helper->render('order-v3/common/_smartaddress') ?>
                     </div>
 
                 </div>
@@ -280,9 +285,9 @@ return function(
 
 </section>
 
-<div id="yandex-map-container" class="selShop_r" style="display: none;" data-options="<?= $helper->json(['latitude' => $region->getLatitude(), 'longitude' => $region->getLongitude(), 'zoom' => 10])?>"></div>
+<div id="yandex-map-container" class="selShop_r" style="display: none;" data-options="<?= $helper->json($initialMapCords)?>"></div>
 <div id="kladr-config" data-value="<?= $helper->json(\App::config()->kladr ); ?>"></div>
 <div id="region-name" data-value=<?= json_encode($region->getName(), JSON_UNESCAPED_UNICODE); ?>></div>
 <? if (App::config()->debug) : ?><div id="initialOrderModel" data-value="<?= $helper->json($orderDelivery) ?>"></div><? endif; ?>
-
+<div id="jsUserAddress" data-value="<?= $helper->json($orderDelivery->user_info->address) ?>"></div>
 <? };

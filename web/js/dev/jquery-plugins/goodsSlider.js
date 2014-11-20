@@ -22,7 +22,7 @@
 			 * @return bool
 			 */
 			isRecommendation = function isRecommendation( type ) {
-				return -1 != $.inArray(type, ['alsoBought', 'similar', 'alsoViewed', 'main']);
+				return -1 != $.inArray(type, ['alsoBought', 'similar', 'alsoViewed', 'main', 'search', 'viewed']);
 			};
 		// end of functions
 
@@ -53,6 +53,8 @@
 				});
 
 				if ( recommendArray.length === slidersRecommendation ) {
+                    urlData['rrviewed'] = docCookies.getItem('rrviewed').split(',').unique();
+
 					$.ajax({
 						type: 'GET',
 						url: url,
@@ -170,7 +172,7 @@
 				/**
 				 * Переключение на следующий слайд. Проверка состояния кнопок.
 				 */
-				nextSlide = function nextSlide() {
+				nextSlide = function nextSlide(e) {
 					if ( $(this).hasClass('mDisabled') ) {
 						return false;
 					}
@@ -195,13 +197,14 @@
 
                     updatePageTitle(wrap.width(), nowLeft);
 
-					return false;
+                    e.preventDefault();
+                    //return false;
 				},
 
 				/**
 				 * Переключение на предыдущий слайд. Проверка состояния кнопок.
 				 */
-				prevSlide = function prevSlide() {
+				prevSlide = function prevSlide(e) {
 					if ( $(this).hasClass('mDisabled') ) {
 						return false;
 					}
@@ -221,7 +224,8 @@
 
                     updatePageTitle(wrap.width(), nowLeft);
 
-					return false;
+                    e.preventDefault();
+					//return false;
 				},
 
                 updatePageTitle = function updatePageTitle(width, left) {
@@ -229,7 +233,7 @@
 
                     if (!sliderParams.count || !elementOnSlide || !pageNum) return;
 
-                    //pageTitle.text('Страница ' + pageNum +  ' из ' + Math.ceil(sliderParams.count / elementOnSlide));
+                    //pageTitle.text('Страница ' + pageNum +  ' goodsSliderиз ' + Math.ceil(sliderParams.count / elementOnSlide));
                 },
 
 				/**

@@ -733,7 +733,9 @@ window.ANALYTICS = {
 						for ( i = 0; i < count; i++ ) {
 							console.log('ecommerce:addItem', items[i]);
 							ga('ecommerce:addItem', items[i]);
-                            if (/Tchibo/.test(items[i].category) || /Tchibo/.test(items[i].name)) tchiboItems.push(items[i])
+                            if (/Tchibo/.test(items[i].category) || /Tchibo/.test(items[i].name)) tchiboItems.push(items[i]);
+							if (items[i].rr_viewed) body.trigger('trackGoogleEvent',['RR_покупка','Купил просмотренные', items[i].rr_block]);
+							if (items[i].rr_added) body.trigger('trackGoogleEvent',['RR_покупка','Купил добавленные', items[i].rr_block]);
 						}
 					}
 
@@ -794,7 +796,8 @@ window.ANALYTICS = {
 				console.error('GA: init error');
 				return false; // метод ga не определён, ошибка, нечего анализировать, выходим
 			}
-			ga( 'create', 'UA-25485956-5', 'enter.ru' );
+			ga('create', 'UA-25485956-5', 'enter.ru');
+			ga('require', 'displayfeatures');
 
 			if ( true === useTchiboAnalytics ) {
 				ga('create', 'UA-12345-6', 'auto', {'name': 'tchiboTracker'});
@@ -832,6 +835,51 @@ window.ANALYTICS = {
                     ga('send', 'event', '<button>', productData.name, productData.article, productData.price);
                 }
 			});
+
+            /** Событие клика на товар в слайдере */
+            body.on('click', '.jsRecommendedItem', function(event) {
+                console.log('jsRecommendedItem');
+
+                event.stopPropagation();
+
+                try {
+                    var
+                        $el = $(this),
+                        link = $el.attr('href'),
+                        $slider = $el.parents('.js-slider'),
+                        sender = $slider.length ? $slider.data('slider').sender : null
+                    ;
+
+                    body.trigger('trackGoogleEvent', {
+                        category: 'RR_взаимодействие',
+                        action: 'Перешел на карточку товара',
+                        label: sender ? sender.position : null,
+                        hitCallback: function(){
+                            console.log({link: link});
+
+                            if (link) {
+                                setTimeout(function() { window.location.href = link; }, 90);
+                            }
+                        }
+                    });
+
+                } catch (e) { console.error(e); }
+            });
+
+            /** Событие пролистывание в слайдере */
+            body.on('click', '.jsRecommendedSliderNav', function(event) {
+                console.log('jsRecommendedSliderNav');
+
+                try {
+                    var
+                        $el = $(this),
+                        $slider = $el.parents('.js-slider'),
+                        sender = $slider.length ? $slider.data('slider').sender : null
+                    ;
+
+                    body.trigger('trackGoogleEvent',['RR_Взаимодействие', 'Пролистывание', sender.position]);
+                } catch (e) { console.error(e); }
+            });
 
 			/** Событие выбора города */
 			$('.jsChangeRegionAnalytics' ).click(function(){

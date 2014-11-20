@@ -4,6 +4,7 @@
         $inputs = $orderContent.find('input');
 
     // jQuery masked input
+	delete $.mask.definitions[9];
     $.mask.definitions['x']='[0-9]';
     $.mask.placeholder= "_";
 	$.mask.autoclear = false;

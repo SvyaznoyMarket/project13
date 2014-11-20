@@ -32,7 +32,7 @@ $isKitPage = (bool)$product->getKit();
 <div class="bProductSectionLeftCol">
     <?= $helper->render('product/__photo', ['product' => $product, 'productVideos' => $productVideos, 'useLens' => $useLens]) ?>
 
-    <div class="bProductDesc<? if (!$creditData['creditIsAllowed'] || $user->getRegion()->getHasTransportCompany()): ?> mNoCredit<? endif ?>">
+    <div class="bProductDesc<? if (!$creditData['creditIsAllowed'] || $user->getRegion()->getHasTransportCompany()): ?> mNoCredit<? endif ?>" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
         <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>
 
         <?= $helper->render('product/__price', ['product' => $product]) // Цена ?>
@@ -88,6 +88,7 @@ $isKitPage = (bool)$product->getKit();
             //'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
             'gaEvent'        => 'Accessorize',
             'additionalData' => $additionalData,
+            'class'          => 'slideItem-7item',
             'sender'         => [
                 //'name'     => null,
                 'position' => 'ProductAccessoriesManual',
@@ -143,21 +144,6 @@ $isKitPage = (bool)$product->getKit();
 
     <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent, 'sprosikupiReviews' => $sprosikupiReviews, 'shoppilotReviews' => $shoppilotReviews]) ?>
 
-    <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
-        <?= $helper->render('product/__slider', [
-            'type'     => 'alsoViewed',
-            'title'    => 'С этим товаром также смотрят',
-            'products' => [],
-            'count'    => null,
-            'limit'    => \App::config()->product['itemsInSlider'],
-            'page'     => 1,
-            'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
-            'sender'   => [
-                'name'     => 'retailrocket',
-                'position' => 'ProductUpSale',
-            ],
-        ]) ?>
-    <? endif ?>
 </div><!--/left section -->
 
 <div class="bProductSectionRightCol">
@@ -180,7 +166,9 @@ $isKitPage = (bool)$product->getKit();
                 <?= $helper->render('cart/__button-product', [
                     'product' => $product,
                     'onClick' => isset($addToCartJS) ? $addToCartJS : null,
-                    'sender'  => (array)$request->get('sender') + ['name' => null, 'method' => null, 'position'],
+                    'sender'  => (array)$request->get('sender') + [
+                        'from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) // удаляем из REFERER параметры
+                    ],
                 ]) // Кнопка купить ?>
             <? endif ?>
 
@@ -231,85 +219,36 @@ $isKitPage = (bool)$product->getKit();
 
 <div class="clear"></div>
 
-<? if (false): ?>
-<div class="bGoodsSlider js-slider clearfix">
-    <h3 class="bHeadSection">Вы смотрели</h3>
-    
-    <div class="slideItem slideItem-viewed">
-        <!-- позиция leftБ вычисляется - номер слайдера начиная с 0 уможенный на 90 -->
-        <div class="slideItem_flt">
-            <div class="slideItem_flt_i">LED-телевизор 32" Sony KDL-32W503ABR</div> 
-        </div>
+<? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
+    <?= $helper->render('product/__slider', [
+        'type'     => 'alsoViewed',
+        'title'    => 'С этим товаром также смотрят',
+        'products' => [],
+        'count'    => null,
+        'limit'    => \App::config()->product['itemsInSlider'],
+        'page'     => 1,
+        'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
+        'sender'   => [
+            'name'     => 'retailrocket',
+            'position' => 'ProductUpSale',
+        ],
+    ]) ?>
+<? endif ?>
 
-        <div class="slideItem_inn">
-            <ul class="slideItem_lst clearfix" style="width: 1690px;">
-                <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                    <a href="" class="slideItem_imgw">
-                        <img alt="" src="http://fs04.enter.ru/1/1/120/61/308188.jpg" class="slideItem_img">
-                    </a>    
-                </li>
-                <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                    <a href="" class="slideItem_imgw">
-                        <img alt="" src="http://fs04.enter.ru/1/1/120/61/308188.jpg" class="slideItem_img">
-                    </a>    
-                </li>   
-                <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                    <a href="" class="slideItem_imgw">
-                        <img alt="" src="http://fs04.enter.ru/1/1/120/61/308188.jpg" class="slideItem_img">
-                    </a>  
-                </li>   
-                <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                    <a href="" class="slideItem_imgw">
-                        <img alt="" src="http://fs04.enter.ru/1/1/120/61/308188.jpg" class="slideItem_img">
-                    </a>    
-                </li>   
-                <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                    <a href="" class="slideItem_imgw">
-                        <img alt="" src="http://fs04.enter.ru/1/1/120/61/308188.jpg" class="slideItem_img">
-                    </a>    
-                </li>   
-                <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                    <a href="" class="slideItem_imgw">
-                        <img alt="" src="http://fs04.enter.ru/1/1/120/61/308188.jpg" class="slideItem_img">
-                    </a>  
-                </li>   
-                <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                    <a href="" class="slideItem_imgw">
-                        <img alt="" src="http://fs04.enter.ru/1/1/120/61/308188.jpg" class="slideItem_img">
-                    </a>    
-                </li>   
-                <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                    <a href="" class="slideItem_imgw">
-                        <img alt="" src="http://fs04.enter.ru/1/1/120/61/308188.jpg" class="slideItem_img">
-                    </a>   
-                </li>   
-                <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                    <a href="" class="slideItem_imgw">
-                        <img alt="" src="http://fs04.enter.ru/1/1/120/61/308188.jpg" class="slideItem_img">
-                    </a>    
-                </li>   
-                <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                    <a href="" class="slideItem_imgw">
-                        <img alt="" src="http://fs04.enter.ru/1/1/120/61/308188.jpg" class="slideItem_img">
-                    </a>   
-                </li>   
-                <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                    <a href="" class="slideItem_imgw">
-                        <img alt="" src="http://fs04.enter.ru/1/1/120/61/308188.jpg" class="slideItem_img">
-                    </a>    
-                </li>   
-                <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                    <a href="" class="slideItem_imgw">
-                        <img alt="" src="http://fs04.enter.ru/1/1/120/61/308188.jpg" class="slideItem_img">
-                    </a> 
-                </li>                      
-            </ul>
-        </div>
-
-        <div class="slideItem_btn slideItem_btn-prv"></div>
-        <div class="slideItem_btn slideItem_btn-nxt"></div>
-    </div>
-</div>
+<? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
+    <?= $helper->render('product/__slider', [
+        'type'      => 'viewed',
+        'title'     => 'Вы смотрели',
+        'products'  => [],
+        'count'     => null,
+        'limit'     => \App::config()->product['itemsInSlider'],
+        'page'      => 1,
+        'url'       => $page->url('product.recommended', ['productId' => $product->getId()]),
+        'sender'    => [
+            'name'     => 'retailrocket',
+            'position' => 'Viewed',
+        ],
+    ]) ?>
 <? endif ?>
 
 <div class="bBreadCrumbsBottom"><?= $page->render('_breadcrumbs', ['breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer']) ?></div>

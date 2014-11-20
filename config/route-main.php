@@ -39,6 +39,11 @@ return [
         'pattern' => '/search/autocomplete',
         'action'  => ['Search\Action', 'autocomplete'],
     ],
+    // рекомендации в поиске
+    'search.recommended' => [
+        'pattern' => '/search/recommended',
+        'action'  => ['Search\RecommendedAction', 'execute'],
+    ],
 
     // инфо пользователя
     'user.info' => [
@@ -719,7 +724,7 @@ return [
 
     // recommended products
     'product.recommended' => [
-        'pattern' => '/product-recommended/{productId}',
+        'pattern' => '/product-recommended',
         'action' => ['Product\RecommendedAction', 'execute'],
         'require' => ['productId' => '\d+'],
     ],
