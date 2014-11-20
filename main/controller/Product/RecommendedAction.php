@@ -120,8 +120,9 @@ class RecommendedAction {
         foreach ($sendersByType as $type => $sender) {
             $products = [];
             foreach ($sender['items'] as $id) {
+                /** @var \Model\Product\Entity|null $iProduct */
                 $iProduct = isset($productsById[$id]) ? $productsById[$id] : null;
-                if (!$iProduct) continue;
+                if (!$iProduct || !$iProduct->isAvailable()) continue;
 
                 $products[] = $iProduct;
             }
