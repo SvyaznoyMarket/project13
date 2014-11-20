@@ -8299,17 +8299,20 @@ img[height="0"] {
     *zoom: 1;
   }
   .slidesBox-items .slidesBox_inn {
-    width: 453px;
-    height: 463px;
-    padding: 10px;
+    width: 473px;
+    height: 483px;
   }
   .slidesBox-items .slidesBox_lst {
     width: 2000px;
   }
   .slidesBox-items .slidesBox_i {
+    width: 473px;
+    height: 483px;
+  }
+  .slidesBox-items .slidesBox_i .item {
+    float: left;
+    margin: 7px 19px 0 10px;
     width: 207px;
-    padding: 0 10px 0 0;
-    margin: 0 14px 0 0;
   }
   .slidesBox_h {
     background: #c1d837;
@@ -8473,7 +8476,7 @@ img[height="0"] {
     bottom: 30px;
   }
   .item {
-    margin: 0 0 7px;
+    margin: 0 0 10px;
   }
   .item_imgw {
     display: block;
