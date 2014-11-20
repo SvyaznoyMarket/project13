@@ -111,7 +111,7 @@ $isNewRecommendation =
             //'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
             'gaEvent'        => 'Accessorize',
             'additionalData' => $additionalData,
-            'class'          => 'slideItem-7item',
+            'class'          => 'slideItem-3item',
             'sender'         => [
                 //'name'     => null,
                 'position' => 'ProductAccessoriesManual',
