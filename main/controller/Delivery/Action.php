@@ -596,6 +596,9 @@ class Action {
      * @return bool
      */
     public static function isPaidSelfDelivery() {
+
+        if (\App::config()->self_delivery['enabled'] === false) return false;
+
         $region = \App::user()->getRegion();
 
         $ordersNewTest = \App::abTest()->getTest('orders_new');

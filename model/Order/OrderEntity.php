@@ -285,8 +285,7 @@ class OrderEntity {
         if (isset($arr['user_info']['bonus_card_number']) && $arr['user_info']['bonus_card_number'] !== '') $this->bonus_card_number = preg_replace('/\s+/','',(string)$arr['user_info']['bonus_card_number']);
 
         if ($this->shop_id === null && !empty($this->address_street)) {
-            $this->address = (string)$regionName;
-            if (!empty($this->address_street)) $this->address .= ', '.$this->address_street;
+            $this->address = $this->address_street;
             if (!empty($this->address_building)) $this->address .= ', д. '.$this->address_building;
             if (!empty($this->address_apartment)) $this->address .= ', кв. '.$this->address_apartment;
         }
