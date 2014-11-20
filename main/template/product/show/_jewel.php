@@ -175,6 +175,23 @@ $isNewRecommendation =
             ],
         ]) ?>
     <? endif ?>
+
+    <? if ($isNewRecommendation && \App::config()->product['pullRecommendation'] && !$isTchibo): ?>
+        <?= $helper->render('product/__slider', [
+            'type'      => 'viewed',
+            'title'     => 'Вы смотрели',
+            'products'  => [],
+            'count'     => null,
+            'limit'     => \App::config()->product['itemsInSlider'],
+            'page'      => 1,
+            'url'       => $page->url('product.recommended', ['productId' => $product->getId()]),
+            'sender'    => [
+                'name'     => 'retailrocket',
+                'position' => 'Viewed',
+            ],
+        ]) ?>
+    <? endif ?>
+
 </div><!--/left section -->
 
 <div class="bProductSectionRightCol">

@@ -260,7 +260,7 @@ $isNewRecommendation =
     ]) ?>
 <? endif ?>
 
-<? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
+<? if ($isNewRecommendation && \App::config()->product['pullRecommendation'] && !$isTchibo): ?>
     <?= $helper->render('product/__slider', [
         'type'      => 'viewed',
         'title'     => 'Вы смотрели',
