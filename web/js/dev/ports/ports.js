@@ -2090,6 +2090,63 @@ window.ANALYTICS = {
 		})
 	},
 
+	GetIntentJS: function(){
+		var data = $('#GetIntentJS').data('value');
+
+		if (typeof __GetI === "undefined") {
+			__GetI = [];
+		}
+
+		(function () {
+			var p = {
+				type: "VIEW",
+				/* config START */
+				site_id: "267",
+				product_id: data.productId,
+				product_price: data.productPrice,
+				category_id: data.categoryId,
+				pixel_id: ''
+				/* config END */
+			};
+			__GetI.push(p);
+			var domain = (typeof __GetI_domain) == "undefined" ? "px.adhigh.net" : __GetI_domain;
+			var src = ('https:' == document.location.protocol ? 'https://' : 'http://') + domain + '/p.js';
+			var script = document.createElement( 'script' );
+			script.type = 'text/javascript';
+			script.src = src;
+			var s = document.getElementsByTagName('script')[0];
+			s.parentNode.insertBefore(script, s);
+		})();
+
+		if (data.orderProducts) {
+			if (typeof __GetI === "undefined") {
+				__GetI = [];
+			}
+
+			(function () {
+				var p = {
+					type: "CONVERSION",
+					/* config START */
+					site_id: "267",
+					order: data.orderProducts,
+					conversion_id: "",
+					transaction_id: "",
+					revenue: data.orderRevenue,
+					pixel_id: ""
+					/* config END */
+				};
+				__GetI.push(p);
+				var domain = (typeof __GetI_domain) == "undefined" ? "px.adhigh.net" : __GetI_domain;
+				var src = ('https:' == document.location.protocol ? 'https://' : 'http://') + domain + '/p.js';
+				var script = document.createElement( 'script' );
+				script.type = 'text/javascript';
+				script.src = src;
+				var s = document.getElementsByTagName('script')[0];
+				s.parentNode.insertBefore(script, s);
+			})();
+		}
+	},
+
 	enable : true
 };
 

@@ -953,4 +953,18 @@ class DefaultLayout extends Layout {
                 //-->!]>]
             </script>";
     }
+
+    public function slotGetIntentJS() {
+        if (!\App::config()->partners['GetIntent']['enabled']) {
+            return '';
+        }
+
+        $data = [
+            'productId' => '',
+            'productPrice' => '',
+            'categoryId' => '',
+        ];
+
+        return '<div id="GetIntentJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
+    }
 }
