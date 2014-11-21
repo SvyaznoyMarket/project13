@@ -1222,6 +1222,22 @@ $(document).ready(function() {
 			}
 		);
 	}
+
+    try {
+        var
+            productId = ENTER.config.pageConfig.product.id,
+            cookieValue = docCookies.getItem('product_viewed') || '',
+            viewed = []
+        ;
+
+        if (productId) {
+            viewed = cookieValue ? cookieValue.split(',') : [];
+            viewed.push(productId);
+            docCookies.setItem('product_viewed', viewed.join(','));
+        }
+    } catch (e) {
+        console.error(e);
+    }
 });
 /**
  * Аналитика просмотра карточки товара
