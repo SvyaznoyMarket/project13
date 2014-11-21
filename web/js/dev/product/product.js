@@ -326,7 +326,7 @@ $(document).ready(function() {
 
     try {
         var
-            productId = ENTER.config.pageConfig.product.id,
+            productId =ENTER.config.pageConfig.product ? ENTER.config.pageConfig.product.id : null,
             cookieValue = docCookies.getItem('product_viewed') || '',
             viewed = []
         ;

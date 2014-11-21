@@ -30,6 +30,7 @@ class IndexPage extends \View\DefaultLayout {
     public function slotFooter() {
         $client = \App::contentClient();
 
+        /*
         $response = null;
         $client->addQuery(
             (14974 == \App::user()->getRegion()->getId() || 83 == \App::user()->getRegion()->getParentId())
@@ -51,6 +52,9 @@ class IndexPage extends \View\DefaultLayout {
         $response['content'] = str_replace('8 (800) 700-00-09', \App::config()->company['phone'], $response['content']);
 
         return $response['content'];
+        */
+
+        return (new \Helper\TemplateHelper())->render('main/__footer');
     }
 
     public function slotInnerJavascript() {
