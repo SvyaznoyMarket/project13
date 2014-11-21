@@ -575,6 +575,13 @@ img[height="0"] {
   font-family: Rouble;
   font-size: 36px;
 }
+@font-face {
+  font-family: 'menuIconFont';
+  src: url('/css/common/fonts/iconFont/entericon-regular-webfont.eot');
+  src: local('menuIconFont'), url('/css/common/fonts/iconFont/entericon-regular-webfont.woff') format('woff'), url('/css/common/fonts/iconFont/entericon-regular-webfont.ttf') format('truetype'), url('/css/common/fonts/iconFont/entericon-regular-webfont.svg#menuIconFont') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
 /*---END----ШРИФТЫ---------*/
 @media all {
   /**

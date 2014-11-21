@@ -9158,14 +9158,6 @@
     left: 0;
     background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAYCAYAAADDLGwtAAAA30lEQVR42q3TMQ4BQRQGYAkJWqLbMJGVbLLNjvnf7AkUjqFwDAoXoHAMBQfQStQSNxA9OoI3hYr3IuElW+zmy/wzb98U/lIArCdap2laE1EURdUc2OdEV+dcU4QEzBk9yLmRFtkPiGM3/Fr8iKy1DQZHhiciaour5cAqrMZoICLqdocBMV6IKMuyjgcujA5aO0oMtgzvAHryvogmIZKAqRZpGN08sIvjuPwVNMZUXt/V6Ny5maz0w+jt8UlSF5jQcK08sBR+oTAUwFkeCn3M9MHlZyyQ96vA22n9cLmEegKx01b0E6PhwQAAAABJRU5ErkJggg==") no-repeat 50% 50%;
   }
-  .slideItem_btn.mDisabled {
-    -moz-opacity: 0;
-    -khtml-opacity: 0;
-    -webkit-opacity: 0;
-    opacity: 0;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
-    filter: alpha(opacity=0);
-  }
   .slideItem_btn:hover {
     -moz-opacity: 0.8;
     -khtml-opacity: 0.8;
@@ -9173,6 +9165,9 @@
     opacity: 0.8;
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=80);
     filter: alpha(opacity=80);
+  }
+  .slideItem_btn.mDisabled {
+    display: none;
   }
   .slideItem_stick {
     position: absolute;
