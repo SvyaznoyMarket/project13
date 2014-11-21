@@ -160,7 +160,7 @@
 				slider = $self.find(options.sliderSelector),
 				item = $self.find(options.itemSelector),
 				catItem = $self.find(options.categoryItemSelector),
-                pageTitle = $self.find(options.pageTitleSelector)
+                pageTitle = $self.find(options.pageTitleSelector),
 
 				itemW = item.width() + parseInt(item.css('marginLeft'),10) + parseInt(item.css('marginRight'),10),
 				elementOnSlide = parseInt(wrap.width()/itemW, 10),
