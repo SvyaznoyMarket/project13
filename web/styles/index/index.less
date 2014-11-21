@@ -202,7 +202,7 @@
 			}
 			.navsite_lk {
 				&:after {
-					.pseudo-corner-top(6px, #292929, 74px);
+					.pseudo-corner-top(6px, #292929, 80px);
 					left: 50%;
 					margin-left: -6px;
 				}
@@ -236,7 +236,7 @@
 		text-transform: uppercase;
 		font-family: "Enter type";
 		font-size: 11px;
-		line-height: 1.1;
+		line-height: 1;
 	}
 	&_lk {
 		display: block;
@@ -251,7 +251,7 @@
 .navsite2 {
 	display: none;
 	position: absolute;
-	top: 79px;
+	top: 85px;
 	left: -50px;
 	z-index: 20;
 	border: 1px solid #292929;
@@ -797,6 +797,13 @@
 		height: 34px;
 	    margin: 0 0 7px;
 	    overflow: hidden;
+
+	    a {
+	    	&:hover {
+		    	border-bottom: 1px solid #a0a0a0;
+		    	text-decoration: none;
+		    }
+	    }
 	}
 
 	&_pr {
@@ -847,5 +854,16 @@
 
 	&_lk {
 		font-size: 14px;
+		&:hover {
+	    	text-decoration: none;
+
+	    	.lstitem_n {
+			    border-bottom: 1px solid #a0a0a0;
+	    	}
+	    }
+	}
+
+	&_n {
+		display: inline;
 	}
 }

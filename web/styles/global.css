@@ -7882,7 +7882,7 @@ img[height="0"] {
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
     border-bottom: 6px solid #292929;
-    top: 74px;
+    top: 80px;
     left: 50%;
     margin-left: -6px;
   }
@@ -7913,7 +7913,7 @@ img[height="0"] {
     text-transform: uppercase;
     font-family: "Enter type";
     font-size: 11px;
-    line-height: 1.1;
+    line-height: 1;
   }
   .navsite_lk {
     display: block;
@@ -7926,7 +7926,7 @@ img[height="0"] {
   .navsite2 {
     display: none;
     position: absolute;
-    top: 79px;
+    top: 85px;
     left: -50px;
     z-index: 20;
     border: 1px solid #292929;
@@ -8708,6 +8708,10 @@ img[height="0"] {
     margin: 0 0 7px;
     overflow: hidden;
   }
+  .item_n a:hover {
+    border-bottom: 1px solid #a0a0a0;
+    text-decoration: none;
+  }
   .item_pr {
     font-size: 21px;
     display: inline-block;
@@ -8758,6 +8762,15 @@ img[height="0"] {
   }
   .lstitem_lk {
     font-size: 14px;
+  }
+  .lstitem_lk:hover {
+    text-decoration: none;
+  }
+  .lstitem_lk:hover .lstitem_n {
+    border-bottom: 1px solid #a0a0a0;
+  }
+  .lstitem_n {
+    display: inline;
   }
 }
 /*---------Сравнение----------*/
