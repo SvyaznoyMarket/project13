@@ -9,6 +9,7 @@ class ProductButtonAction {
      * @param null $onClick
      * @param bool $isRetailRocket
      * @param array $sender Данные поставщика, например: {name: retailrocket, position: ProductSimilar, action: Переход в карточку товара}
+     * @param bool $noUpdate
      * @internal param null|string $url
      * @return array
      */
@@ -17,7 +18,8 @@ class ProductButtonAction {
         \Model\Product\BasicEntity $product,
         $onClick = null,
         $isRetailRocket = false,
-        array $sender = []
+        array $sender = [],
+        $noUpdate = false // Не обновлять кнопку купить
     ) {
         $data = [
             'disabled'   => false,
@@ -28,10 +30,11 @@ class ProductButtonAction {
             'onClick'    => $onClick,
             'data'       => [
                 'productId' => $product->getId(),
-                'upsale' => json_encode([
-                    'url' => $helper->url('product.upsale', ['productId' => $product->getId()]),
+                'upsale'    => json_encode([
+                    'url'        => $helper->url('product.upsale', ['productId' => $product->getId()]),
                     'fromUpsale' => ($helper->hasParam('from') && 'cart_rec' === $helper->getParam('from')) ? true : false,
                 ]),
+                'noUpdate'  => $noUpdate,
             ],
         ];
 

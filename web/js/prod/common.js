@@ -7,7 +7,9 @@
 				inShopStockOnly = $elem.data('in-shop-stock-only'),
 				inShopShowroomOnly = $elem.data('in-shop-showroom-only'),
 				isBuyable = $elem.data('is-buyable'),
-				statusId = $elem.data('status-id');
+				statusId = $elem.data('status-id'),
+                noUpdate = $elem.data('noUpdate')
+            ;
 			
 			if (typeof isBuyable != 'undefined' && !isBuyable) {
 				$elem
@@ -33,7 +35,8 @@
 					.removeClass('mBought')
 					.removeClass('jsBuyButton')
 					.attr('href', ENTER.utils.generateUrl('cart.oneClick.product.set', {productId: productId}));
-			} else if (ENTER.utils.getObjectWithElement(cart, 'id', productId)) {
+			} else if (ENTER.utils.getObjectWithElement(cart, 'id', productId) && !noUpdate) {
+                console.warn({noUpdate: noUpdate});
 				$elem
 					.text('В корзине')
 					.removeClass('mDisabled')

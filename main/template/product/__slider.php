@@ -153,6 +153,7 @@ $f = function (
                                 'onClick'        => $addToCartJS ? $addToCartJS : null,
                                 'isRetailRocket' => $isRetailrocketProduct, // TODO: удалить
                                 'sender'         => $sender,
+                                'noUpdate'       => true,
                             ]) // Кнопка купить ?>
                         <? endif ?>
                     <? endif ?>
