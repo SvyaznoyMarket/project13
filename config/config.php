@@ -565,27 +565,6 @@ $c->abTest = [
             ]
         ],
 
-        'furniture_anzoli' => [
-            'name'  => 'Вид категории Anzoli в разделе Мебель',
-            'gaSlotNumber'        => 10,
-            'enabled' => true,
-            'expireDate' => '2014-12-31',
-            'cases' => [
-                'furniture_main1' => [
-                    'traffic'  => 33,
-                    'name'     => 'Широкий баннер',
-                ],
-                'furniture_main2' => [
-                    'traffic'  => 33,
-                    'name'     => 'Баннер из пяти частей',
-                ],
-                'furniture_main3' => [
-                    'traffic'  => 34,
-                    'name'     => 'Большой баннер',
-                ]
-            ]
-        ],
-
         'jewel_filter' => [
             'name'          => 'Графические фильтры для ювелирки',
             'gaSlotNumber'        => 11,
