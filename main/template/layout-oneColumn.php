@@ -38,11 +38,11 @@
 
     <?= $page->slotAdFoxBground() ?>
 
-    <div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
+    <header class="header">
+        <?= $page->slotHeader() ?>
+    </header>
 
-        <header class="header">
-            <?= $page->slotHeader() ?>
-        </header><!--/ Шапка-->
+    <div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
 
         <div class="content clearfix">
             <?= $page->slotContentHead() ?>

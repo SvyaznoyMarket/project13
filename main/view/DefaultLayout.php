@@ -6,9 +6,13 @@ class DefaultLayout extends Layout {
     protected $layout  = 'layout-twoColumn';
     protected $breadcrumbsPath = null;
     protected $useTchiboAnalytics = false;
+    /** @var bool АБ-тест новой главной страницы (и новое меню) */
+    protected $new_menu = false;
 
     public function __construct() {
         parent::__construct();
+
+        $this->new_menu = \App::abTest()->getTest('main_page') && \App::abTest()->getTest('main_page')->getChosenCase()->getKey() == 'new';
 
         $this->setTitle('Enter - это выход!');
         $this->addMeta('yandex-verification', '623bb356993d4993');
@@ -215,8 +219,32 @@ class DefaultLayout extends Layout {
 //        return ('user.login' != \App::request()->attributes->get('route')) ? $this->render('_auth') : '';
     }
 
+    /** Статичный юзербар (над меню)
+     * @return string
+     */
+    public function slotTopbar() {
+        return $this->render($this->new_menu ? 'userbar2/topbar' : 'userbar/topbar');
+    }
+
+    /** Всплывающий юзербар
+     * @return string
+     */
     public function slotUserbar() {
-        return '';
+        return $this->render('common/_userbar');
+    }
+
+    /** Панель поиска
+     * @return string
+     */
+    public function slotSearchBar() {
+        return $this->render('common/_searchbar');
+    }
+
+    /** Строка поиска
+     * @return string
+     */
+    public function slotNavigation() {
+        return $this->render('common/_navigation');
     }
 
     public function slotUserbarContent() {

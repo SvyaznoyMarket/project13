@@ -2,10 +2,8 @@
 
 namespace View\Main;
 
-use View\Menu;
-
 class IndexPage extends \View\DefaultLayout {
-    protected $layout  = 'layout-main-new';
+    protected $layout  = 'layout-main';
 
     protected function prepare() {
         $this->addMeta('viewport', 'width=960');
@@ -21,6 +19,8 @@ class IndexPage extends \View\DefaultLayout {
                 $this->addMeta($key, $val);
             }
         }
+
+        if ($this->new_menu) $this->layout = 'layout-main-new';
     }
 
     public function slotBanner() {

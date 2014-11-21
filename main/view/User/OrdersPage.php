@@ -43,8 +43,4 @@ class OrdersPage extends \View\DefaultLayout {
     public function slotBodyDataAttribute() {
         return 'lk';
     }
-
-    public function slotUserbar() {
-        return $this->render('_userbar');
-    }
 }

@@ -68,10 +68,6 @@ class IndexPage extends \View\DefaultLayout {
         return '';
     }
 
-    public function slotUserbar() {
-        return $this->render('_userbar');
-    }
-
     public function slotUserbarContent() {
         return $this->render('product-category/_userbarContent', [
             'category'  => $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null,
