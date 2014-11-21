@@ -294,4 +294,36 @@ class CompletePage extends Layout {
 
         return $content;
     }
+
+    public function slotGetIntentJS() {
+        if (!\App::config()->partners['GetIntent']['enabled']) {
+            return '';
+        }
+
+        $data = [];
+
+        if (!$this->getParam('sessionIsReaded') && \App::partner()->getName() === 'blackfridaysale') {
+            $data['orders'] = [];
+
+            $orders = $this->getParam('orders');
+            if (is_array($orders)) {
+                foreach ($orders as $order) {
+                    /** @var \Model\Order\Entity $order */
+                    if ($order instanceof \Model\Order\Entity) {
+                        $order2 = ['id' => $order->getNumber(), 'products' => [], 'revenue' => 0];
+
+                        foreach ($order->getProduct() as $orderProduct) {
+                            $order2['products'][] = ['id' => (string)$orderProduct->getId(), 'price' => (string)$orderProduct->getPrice(), 'quantity' => (int)$orderProduct->getQuantity()];
+                            $order2['revenue'] += $orderProduct->getSum();
+                        }
+
+                        $order2['revenue'] = (string)$order2['revenue'];
+                        $data['orders'][] = $order2;
+                    }
+                }
+            }
+        }
+
+        return '<div id="GetIntentJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
+    }
 }
