@@ -21,14 +21,14 @@
 ]) ?>
 
 <?= $page->render('product/_pager', [
-    'request'         => $request,
-    'pager'           => $productPager,
-    'hasListView'     => true,
-    'category'        => $selectedCategory,
-    'view'            => $productView,
-    'productSorting'  => $productSorting,
-    'isAddInfo'       => true,
-    'showPagerHeader' => true,
-    'inSearch'        => true,
+    'request'                => $request,
+    'pager'                  => $productPager,
+    'hasListView'            => true,
+    'category'               => $selectedCategory,
+    'view'                   => $productView,
+    'productSorting'         => $productSorting,
+    'isAddInfo'              => true,
+    'showPagerHeader'        => true,
+    'inSearch'               => true,
     'productVideosByProduct' => $productVideosByProduct,
 ]) ?>

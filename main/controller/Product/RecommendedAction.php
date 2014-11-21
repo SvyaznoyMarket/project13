@@ -167,13 +167,14 @@ class RecommendedAction {
             $recommendData[$type] = [
                 'success'   => true,
                 'content'   => $templating->render('product/__slider', [
-                    'title'        => $this->getTitleByType($type),
-                    'products'     => $products,
-                    'count'        => count($products),
-                    'sender'       => $sender,
-                    'class'        => $cssClass,
-                    'namePosition' => $namePosition,
-                    'isCompact'    => in_array($sender['type'], ['viewed']),
+                    'title'          => $this->getTitleByType($type),
+                    'products'       => $products,
+                    'count'          => count($products),
+                    'sender'         => $sender,
+                    'class'          => $cssClass,
+                    'namePosition'   => $namePosition,
+                    'isCompact'      => in_array($sender['type'], ['viewed']),
+                    'containerStyle' => (in_array($sender['type'], ['similar']) && !$product->isAvailable()) ? 'width: 430px;' : '',
                 ]),
                 'data'      => [
                     'id'              => $product ? $product->getId() : null, //id товара (или категории, пользователя или поисковая фраза) к которому были отображены рекомендации

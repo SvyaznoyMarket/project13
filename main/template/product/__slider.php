@@ -13,6 +13,7 @@
  * @param string $namePosition
  * @param array $sender
  * @param bool $isCompact
+ * @param string|null $containerStyle
  */
 $f = function (
     \Helper\TemplateHelper $helper,
@@ -26,7 +27,8 @@ $f = function (
     $type = null,
     $namePosition = null,
     array $sender = [],
-    $isCompact = false
+    $isCompact = false,
+    $containerStyle = '' // вот это хардкод
 ) {
     if (null === $namePosition) {
         $namePosition = 'bottom';
@@ -41,13 +43,17 @@ $f = function (
 
     $sliderId = 'slider-' . uniqid();
 ?>
-<div class="bGoodsSlider js-slider clearfix<? if ((bool)$categories): ?> mWithCategory<? endif ?><? if ($url && !(bool)$products): ?> <? endif ?><? if (!(bool)$url && !(bool)$products): ?> hf<? endif ?>"  data-slider="<?= $helper->json([
+<div
+    class="bGoodsSlider js-slider clearfix<? if ((bool)$categories): ?> mWithCategory<? endif ?><? if ($url && !(bool)$products): ?> <? endif ?><? if (!(bool)$url && !(bool)$products): ?> hf<? endif ?>"
+    data-slider="<?= $helper->json([
         'count'  => $count,
         'limit'  => $limit,
         'url'    => $url,
         'type'   => $type,
         'sender' => $sender,
-    ]) ?>">
+    ]) ?>"
+    <? if ($containerStyle): ?> style="<?= $containerStyle ?>" <? endif ?>
+>
     <? if ($title): ?>
         <h3 class="bHeadSection"><?= $title ?></h3>
     <? endif ?>
