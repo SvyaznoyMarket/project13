@@ -306,11 +306,7 @@ class DefaultLayout extends Layout {
                 $content = $renderer->render('__mainMenu', ['menu' => (new Menu())->generate(\App::user()->getRegion())]);
             }
         } else {
-            \Debug\Timer::start('main-menu');
             $content = $renderer->render('__mainMenu', ['menu' => (new Menu())->generate(\App::user()->getRegion())]);
-            \Debug\Timer::stop('main-menu');
-
-            //\App::debug()->add('time.main-menu', round(\Debug\Timer::get('main-menu')['total'], 3) * 1000, 95);
         }
 
         return $content;

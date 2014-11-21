@@ -270,7 +270,7 @@ class RepositoryManager {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Model\Menu\Repository(\App::dataStoreClient());
+            $instance = new \Model\Menu\Repository();
         }
 
         return $instance;
