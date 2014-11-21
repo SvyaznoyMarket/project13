@@ -155,6 +155,15 @@ class CreateAction {
             'page' => \App::closureTemplating()->render('order-v3-1click/__complete', [
                 'orders' => $createdOrders,
             ]),
+            'orders' => [
+                [
+                    'id' => $createdOrders[0]->getNumber(),
+                    'products' => array_map(function($product) {
+                        return ['id' => $product['id'], 'price' => $product['price'], 'quantity' => $product['quantity']];
+                    }, reset($splitResult['orders'])['products']),
+                ],
+            ],
+            'lastPartner' => \App::partner()->getName(),
         ];
 
         return $request->isXmlHttpRequest() ? new \Http\JsonResponse(['result' => $result]) : new \Http\RedirectResponse($referer);

@@ -253,6 +253,7 @@ $c->partners['Lamoda']['lamodaID'] = '11640775691088171491';
 $c->partners['TagMan']['enabled'] = false;
 $c->partners['Revolver']['enabled'] = true;
 $c->partners['Insider']['enabled'] = true;
+$c->partners['GetIntent']['enabled'] = true;
 
 $c->adFox['enabled'] = true;
 
