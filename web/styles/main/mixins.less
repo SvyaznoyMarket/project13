@@ -198,3 +198,14 @@
   border-bottom: @border-width solid @border-color;
   top: @posTop;
 }
+
+.pseudo-corner-right(@border-width, @border-width2, @border-color, @posTop) {
+  position: absolute;
+  content: '';
+  width: 0;
+  height: 0;
+  border-top: @border-width solid transparent;
+  border-right: @border-width2 solid @border-color;
+  border-bottom: @border-width solid transparent;
+  top: @posTop;
+}

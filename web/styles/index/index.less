@@ -1,3 +1,4 @@
+@full-size: 100%;
 .main {
 	background: @white;
 
@@ -29,6 +30,13 @@
 		background: @black;
 		padding: 5px 10px;
 		height: 60px;
+	}
+
+	&_b {
+		height: 80px; 
+		padding: 10px 10px 0;
+		border-left: 1px solid #c7c7c7;
+		border-right: 1px solid #c7c7c7;
 	}
 }
 // контакты
@@ -178,6 +186,94 @@
 		margin: 0 0 10px;
 		line-height: 1;
 	}
+}
+
+// навигация по сайту
+.navsite {
+	.table();
+	height: @full-size;
+	&_i {
+		.table-cell();
+		text-align: center;
+		position: relative;
+		&:hover {
+			.navsite2 {
+				display: block;
+			}
+		}
+	}
+	&_icon {
+		height: 40px;
+		margin: 0 0 10px;
+	}
+	&_tx {
+		text-transform: uppercase;
+		font-family: "Enter type";
+		font-size: 11px;
+	}
+	&_lk {
+		display: block;
+		height: 80px;
+	}
+}
+
+.navsite2 {
+	display: none;
+	position: absolute;
+	top: 74px;
+	left: 0;
+	z-index: 20;
+	border: 1px solid #292929;
+	border-top-width: 6px;
+	background: @white;
+	width: 205px;
+	text-align: left;
+	.transition(all .3s ease);
+	&:hover {
+		width: 415px;
+	}
+	&_i {
+		&:hover {
+			.navsite3 {
+				display: block;
+				.opacity(1);
+			}
+		}
+	}
+	&_lk {
+		font-size: 14px;
+		padding: 5px 10px;
+		width: 185px;
+		line-height: 1.2;
+		display: block;
+		position: relative;
+		z-index: 2;
+		&:hover {
+			background: #e3e3e3;
+			text-decoration: none;
+
+			&:after {
+				.pseudo-corner-right(6px, 6px, @white, 6px);
+				right: 0;
+			}
+		}
+	}
+}
+
+.navsite3 {
+	display: none;
+	border: 1px solid #292929;
+	border-top-width: 6px;
+	background: @white;
+	left: -1px;
+    min-height: 100%;
+    padding-left: 215px;
+    padding-right: 5px;
+    position: absolute;
+    top: -6px;
+    width: 195px;
+    .transition(all .3s ease);
+    .opacity(0);
 }
 
 // иконки в шапке
@@ -412,7 +508,7 @@
 	}
 	&_lst {
 		.table();
-		width: 100%;
+		width: @full-size;
 		margin: 0 0 20px;
 	}
 	&_i {
@@ -552,7 +648,7 @@
 		}
 	}
 	&-full {
-		@full-width: 100%;
+		width: @full-size;
 		.box-sizing();
 
 		.slidesBox_t {
@@ -576,7 +672,7 @@
 	// превью товаров на слайдере
 	&_items {
 		position: absolute;
-		width: 100%;
+		width: @full-size;
 		text-align: center;
 		bottom: 20px;
 
@@ -647,7 +743,6 @@
 	}
 }
 
-@full-width: 100%;
 .lstitem {
 	margin: 0 0 20px;
 	&_i {
@@ -656,7 +751,7 @@
 	}
 	&-7i {
 		.lstitem_i {
-			width: @full-width/7;
+			width: @full-size/7;
 			float: left;
 			display: block;
 			margin: 0;

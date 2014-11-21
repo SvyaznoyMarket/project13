@@ -89,9 +89,39 @@
                 </div>
             </div>
 
-            <div class="header_b">
-                
-            </div>
+            <nav class="header_b">
+                <ul class="navsite">
+                    <li class="navsite_i">
+                        <a href="" class="navsite_lk">
+                            <div class="navsite_icon"></div>
+                            <span class="navsite_tx">МЕБЕЛЬ</span>
+                        </a>
+                        
+                        <ul class="navsite2">
+                            <li class="navsite2_i">
+                                <a href="" class="navsite2_lk">Планшетные компьютеры</a>
+
+                                <ul class="navsite3">
+                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                </ul>
+                            </li>
+                            <li class="navsite2_i"><a href="" class="navsite2_lk">Ноутбуки и моноблоки</a></li>
+                            <li class="navsite2_i"><a href="" class="navsite2_lk">Телефоны</a></li>
+                            <li class="navsite2_i"><a href="" class="navsite2_lk">Телевизоры, аудио, видео</a></li>
+                            <li class="navsite2_i"><a href="" class="navsite2_lk">Фото и видео</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
         </div>
 
         <div class="content">
