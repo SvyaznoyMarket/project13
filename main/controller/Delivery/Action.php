@@ -160,7 +160,7 @@ class Action {
                         'states'      => isset($result['delivery_types'][$token]['methods']) ? (array)$result['delivery_types'][$token]['methods'] : [],
                     ];
 
-                    if ('pickpoint' === $typeDataFromRepository->getToken()) {
+                    if ('self_partner_pickpoint' === $typeDataFromRepository->getToken()) {
                         $responseData['deliveryTypes'][$token]['description'] = \App::closureTemplating()->render('order/newForm/__deliveryType-pickpoint-description');
                     }
                 }
@@ -181,7 +181,7 @@ class Action {
                         case ($token == 'now'):
                             $item['name'] = 'Самовывоз';
                             break;
-                        case ($token == 'pickpoint'):
+                        case ($token == 'self_partner_pickpoint'):
                             $item['name'] = 'PickPoint';
                             break;
                         case ($token == 'self_svyaznoy'):
@@ -220,7 +220,7 @@ class Action {
                 'self'      => ['token' => 'shops', 'changeName' => 'Сменить магазин'],
                 'self_svyaznoy'      => ['token' => 'shops_svyaznoy', 'changeName' => 'Сменить магазин'],
                 'now'       => ['token' => 'shops', 'changeName' => 'Сменить магазин'],
-                'pickpoint' => ['token' => 'pickpoints', 'changeName' => 'Сменить постамат'],
+                'self_partner_pickpoint' => ['token' => 'self_partner_pickpoint', 'changeName' => 'Сменить постамат', 'point_token' => 'self_partner_pickpoint'],
             ];
 
             // если недоступен заказ товара из магазина
@@ -295,7 +295,7 @@ class Action {
                         }
 
                         // если пикпоинт, то добавляем ид товара в соответствующий пикпоинт
-                        if ('pickpoint' === $deliveryMethod['token'] && !in_array($productId, $pickpointProductIds)) {
+                        if ('self_partner_pickpoint' === $deliveryMethod['token'] && !in_array($productId, $pickpointProductIds)) {
                             $pickpointProductIds[] = $productId;
                         }
                     }
@@ -405,7 +405,7 @@ class Action {
                 $deliveryRegions = [];
                 foreach ($result['products'] as $p) {
                     foreach ($p['delivery_methods'] as $deliveryMethod) {
-                        if ('pickpoint' !== $deliveryMethod['token']) continue;
+                        if ('self_partner_pickpoint' !== $deliveryMethod['token']) continue;
                         if (!$deliveryMethod['points']) continue;
 
                         foreach ($deliveryMethod['points'] as $pointItem) {
@@ -454,7 +454,7 @@ class Action {
                 unset($responseData['deliveryStates']['pickpoint']);
             } else {
                 foreach ($pickpoints as $pickpointItem) {
-                    $responseData['pickpoints'][] = [
+                    $responseData['self_partner_pickpoint'][] = [
                         'id'            => (string)$pickpointItem['Id'],
                         'number'        => (string)$pickpointItem['Number'], //  Передавать корректный id постамата, использовать не id точки, а номер постамата
                         'name'          => $pickpointItem['Name'] . '; ' . $pickpointItem['Address'],
@@ -467,7 +467,7 @@ class Action {
                         'products'      => $pickpointProductIds,
                         'point_name'    => $pickpointItem['Name'],
                         'pointImage'    => '/images/marker-pickpoint.png',
-                        'buttonName'    => \RepositoryManager::deliveryType()->getEntityByToken('pickpoint')->getButtonName(),
+                        'buttonName'    => \RepositoryManager::deliveryType()->getEntityByToken('self_partner_pickpoint')->getButtonName(),
                     ];
                 }
 
@@ -533,7 +533,7 @@ class Action {
                 foreach ($responseData['products'] as $keyPi => $productItem) {
                     if (empty($productItem['deliveries'])) continue;
                     foreach ($productItem['deliveries'] as $keyDi => $deliveryItem) {
-                        if ($keyDi !== 'pickpoint') continue;
+                        if ($keyDi !== 'self_partner_pickpoint') continue;
                         $dateData = reset($responseData['products'][$keyPi]['deliveries'][$keyDi]);
                         $responseData['products'][$keyPi]['deliveries'][$keyDi] = [];
                         foreach ($pickpoints as $keyPp => $pickpoint) {
