@@ -157,7 +157,7 @@ class RecommendedAction {
             if ('viewed' == $sender['type']) {
                 $cssClass = 'slideItem-viewed';
                 $namePosition = 'none';
-            } else if ('alsoViewed' == $sender['type']) {
+            } else if (in_array($sender['type'], ['alsoViewed'])) {
                 $cssClass = 'slideItem-7item';
             }
 
