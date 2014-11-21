@@ -126,4 +126,15 @@
 		return checksum == originalCheck;
 	}
 
+    utils.arrayUnique = function(array) {
+        var unique = [];
+        for (var i = 0; i < array.length; i++) {
+            if (unique.indexOf(array[i]) == -1) {
+                unique.push(array[i]);
+            }
+        }
+
+        return unique;
+    };
+
 }(window.ENTER));

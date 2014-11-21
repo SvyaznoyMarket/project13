@@ -332,9 +332,9 @@ $(document).ready(function() {
         ;
 
         if (productId) {
-            viewed = cookieValue ? cookieValue.split(',').unique() : [];
+            viewed = cookieValue ? ENTER.utils.arrayUnique(cookieValue.split(',')) : [];
             viewed.push(productId);
-            docCookies.setItem('product_viewed', viewed.join(','));
+            docCookies.setItem('product_viewed', viewed.join(','), 7 * 24 * 60 * 60, '/');
         }
     } catch (e) {
         console.error(e);

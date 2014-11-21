@@ -11,7 +11,10 @@ class RecommendedAction {
         $templating = \App::closureTemplating();
         $region = \App::user()->getRegion();
 
-        $productId = $request->get('productId') ?: null;
+        $productId = $request->get('productId');
+        if (empty($productId)) {
+            $productId = null;
+        }
 
         if ($test = \App::abTest()->getTest('recommended_product')) {
             if ($test->getEnabled() && $test->getChosenCase() && ('old_recommendation' == $test->getChosenCase()->getKey())) {
@@ -69,6 +72,9 @@ class RecommendedAction {
                     $data = $request->get('rrviewed');
                     if (is_string($data)) {
                         $data = explode(',', $data);
+                    }
+                    if (empty($data)) {
+                        $data = explode(',', (string)$request->cookies->get('product_viewed'));
                     }
                     if (is_array($data)) {
                         $data = array_filter($data);

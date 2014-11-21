@@ -11,7 +11,7 @@
                 ;
 
                 if (typeof rrviewed === 'string') {
-                    data['rrviewed'] = rrviewed.split(',').unique();
+                    data['rrviewed'] = ENTER.utils.arrayUnique(rrviewed.split(','));
                 }
 
                 $(el).data('slider', data);

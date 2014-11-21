@@ -2340,16 +2340,6 @@ String.prototype.addParameterToUrl = UpdateUrlString;
 		}
 	};
 }(window.ENTER));
-Array.prototype.unique = function() {
-    var unique = [];
-    for (var i = 0; i < this.length; i++) {
-        if (unique.indexOf(this[i]) == -1) {
-            unique.push(this[i]);
-        }
-    }
-
-    return unique;
-};
 ;(function(){
     var clone = docCookies.setItem;
     docCookies.setItem = function(){
@@ -3970,5 +3960,16 @@ if ( !Array.prototype.indexOf ) {
 		// Return the result
 		return checksum == originalCheck;
 	}
+
+    utils.arrayUnique = function(array) {
+        var unique = [];
+        for (var i = 0; i < array.length; i++) {
+            if (unique.indexOf(array[i]) == -1) {
+                unique.push(array[i]);
+            }
+        }
+
+        return unique;
+    };
 
 }(window.ENTER));
