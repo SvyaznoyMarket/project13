@@ -2,12 +2,10 @@
 .slidew {
     &-main {
         .bHeadSection {
-            border-bottom: 1px solid #474747;
             color: @white;
             font-family: "Enter type";
             font-size: 22px;
             font-weight: bold;
-            padding: 0 0 5px;
             text-align: center;
             text-transform: uppercase;
         }
@@ -195,16 +193,17 @@
     }
 	// слайдер на главной
     &-main {
-    	border-bottom: 1px solid #474747;
+    	border: 1px solid #474747;
+        .rounded(4px);
     	padding-bottom: 10px;
     	margin-bottom: 35px;
 
     	.slideItem_inn {
-		    width: 880px;
+		    width: 840px;
 		}
     	.slideItem_i {
     		width: 150px;
-    		margin: 10px 35px;
+    		margin: 10px 30px;
     	}
     	.slideItem_imgw {
     		width: 150px;
@@ -249,11 +248,11 @@
 		    margin-top: -5px;
 		    &-prv {
 			    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAcCAQAAAD/qpb3AAAAmElEQVQoz33SvxEBQRiG8TUkhORU4EowejCaoAuqoIrTAyEZFcgvldz8ZGZ8d7sbPu/O/nm+N6XOsnZXdfHMG4+IBy74WMZgD3YRVz6oI5544W0agzNaq4i34BDxQoOr4T8euaExj/uPYNNV0OLUr+BpHIN+BSmpc8E0c1T28sJzCx/MKilILGgvDCo72kIZCvXJFu5X0eUXASvDcmPvB3EAAAAASUVORK5CYII=") no-repeat 50% 50%;
-			    left: 0;
+			    left: 10px;
 			}
 			&-nxt {
 			    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAcCAQAAAD/qpb3AAAAlElEQVQoz43SsQ3CQBBEUSNIIMQ5VGBKQPSAaAK6gCqgCtMDhJBBBc6dOrEeBeytxKVfmt37O5XGy66KzxudOoLGgLtJREdwKsW1GGwiWOrwtYhoa8StFHcGhwimHuitI1rp8TSLaA8upUlXjAVF5j7oLDNFbeoui6r/G56sm3wwVZJITLSnh0pOm5QhrU9euE25oj+4MsNyCCfkfwAAAABJRU5ErkJggg==") no-repeat 50% 50%;
-			    right: 0;
+			    right: 10px;
 			}
 		}
 		.btnBuy {
