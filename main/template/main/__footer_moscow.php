@@ -131,7 +131,7 @@ $f = function(
         <? if (\App::config()->product['showRelated']): ?>
             <?= (new \Helper\TemplateHelper())->render('product/__slider', [
                 'type'           => 'main',
-                'title'          => 'Мы рекомендуем',
+                'title'          => 'Популярные товары',
                 'products'       => [],
                 'count'          => null,
                 'limit'          => \App::config()->product['itemsInSlider'],
