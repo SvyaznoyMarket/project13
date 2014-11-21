@@ -45,6 +45,7 @@ $helper = new \Helper\TemplateHelper();
         </div>
 
         <div class="errPage_cnt_b">
+            <div class="slidew slidew-br1">
             <? if (\App::config()->product['showRelated']): ?>
                 <?= $helper->render('product/__slider', [
                     'type'           => 'main',
@@ -54,13 +55,14 @@ $helper = new \Helper\TemplateHelper();
                     'limit'          => \App::config()->product['itemsInSlider'],
                     'page'           => 1,
                     'url'            => $page->url('main.recommended', [
-                        'class'  => 'slideItem-7item slideItem-br1',
+                        'class'  => 'slideItem-7item',
                         'sender' => [
                             'position' => '404',
                         ],
                     ]),
                 ]) ?>
             <? endif ?>
+            </div>
         </div>
     </div>
 </div>

@@ -9067,6 +9067,26 @@
 /*---END---СТИЛИ НОВОЙ КАРТОЧКИ ТОВАРА - НАБОРЫ И ЛИНЕЙКИ---*/
 /*------СТИЛИ СЛАЙДЕРА------*/
 @media all {
+  .slidew-main .bHeadSection {
+    border-bottom: 1px solid #474747;
+    color: #ffffff;
+    font-family: "Enter type";
+    font-size: 22px;
+    font-weight: bold;
+    padding: 0 0 5px;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .slidew-br1 {
+    border: 3px solid #ffa901;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    padding: 15px 10px 40px;
+  }
+  .slidew-br1 .bHeadSection {
+    margin-left: 10px;
+  }
   .slideItem {
     position: relative;
     z-index: 10;

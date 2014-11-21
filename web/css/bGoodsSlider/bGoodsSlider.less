@@ -1,4 +1,28 @@
 // product slider
+.slidew {
+    &-main {
+        .bHeadSection {
+            border-bottom: 1px solid #474747;
+            color: @white;
+            font-family: "Enter type";
+            font-size: 22px;
+            font-weight: bold;
+            padding: 0 0 5px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+    }
+    &-br1 {
+        border: 3px solid @firmOrange;
+        .rounded(10px);
+        padding: 15px 10px 40px;
+
+        .bHeadSection {
+            margin-left: 10px;
+        }
+    }
+}
+
 .slideItem {
     position: relative;
     z-index: 10;

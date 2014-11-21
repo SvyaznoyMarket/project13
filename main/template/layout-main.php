@@ -68,7 +68,8 @@
     </div><!--/ Шаблон -->
 
     <div class="footer__main">
-
+    
+        <div class="slidew slidew-main">
         <? if (\App::config()->product['showRelated']): ?>
             <?= (new \Helper\TemplateHelper())->render('product/__slider', [
                 'type'           => 'main',
@@ -86,6 +87,7 @@
                 ]),
             ]) ?>
         <? endif ?>
+        </div>
 
         <?= $page->slotFooter() ?>
         <a href="http://<?= \App::config()->mobileHost ?>/" class="siteVersionSwitcher js-siteVersionSwitcher" data-config="<?= $page->escape(json_encode(\App::config()->siteVersionSwitcher)) ?>">Мобильная версия</a>
