@@ -6,7 +6,7 @@ class Entity {
     const TYPE_STANDART = 'standart';
     const TYPE_SELF = 'self';
     const TYPE_NOW = 'now';
-    const TYPE_PICKPOINT = 'pickpoint';
+    const TYPE_PICKPOINT = 'self_partner_pickpoint';
     const TYPE_PICKPOINT_ID = 6;
 
     /** @var int */
