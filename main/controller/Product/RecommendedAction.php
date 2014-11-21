@@ -197,7 +197,7 @@ class RecommendedAction {
     public function getTitleByType($type) {
         $titlesByType = [
             'accessorize' => 'Аксессуары',
-            'alsoBought'  => 'С этим товаром также покупают',
+            'alsoBought'  => 'С этим товаром покупают',
             'similar'     => 'Похожие товары',
             'alsoViewed'  => 'С этим товаром также смотрят',
             'search'      => 'Возможно, вам подойдут',

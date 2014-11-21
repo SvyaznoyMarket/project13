@@ -55,7 +55,7 @@ $isKitPage = (bool)$product->getKit();
     <? if (\App::config()->product['showRelated'] && !$isTchibo): ?>
         <?= $helper->render('product/__slider', [
             'type'           => 'alsoBought',
-            'title'          => 'С этим товаром также покупают',
+            'title'          => 'С этим товаром покупают',
             'products'       => [],
             'count'          => null,
             'limit'          => \App::config()->product['itemsInSlider'],

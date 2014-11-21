@@ -70,6 +70,11 @@ class RecommendedAction {
 
         $products = array_slice($products, 0, 35);
 
+        $title = 'Мы рекомендуем';
+        if ('Main' == $sender['position']) {
+            $title = 'Популярные товары';
+        }
+
         /* Рендерим слайдер */
         $slider = \App::closureTemplating()->render('product/__slider', [
             'products'     => $products,
@@ -77,6 +82,7 @@ class RecommendedAction {
             'class'        => $cssClass,
             'namePosition' => $namePosition,
             'sender'       => $sender,
+            'title'        => $title,
         ]);
 
         $recommend = [];

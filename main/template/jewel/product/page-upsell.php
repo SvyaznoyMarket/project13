@@ -53,7 +53,7 @@
             'totalProducts' => count($product->getRelatedId()),
             'itemsInSlider' => \App::config()->product['itemsInSlider'],
             'page'          => 1,
-            'title'         => 'С этим товаром также покупают',
+            'title'         => 'С этим товаром покупают',
             'url'           => $page->url('product.related', ['productToken' => $product->getToken()]),
             'gaEvent'       => 'related',
         ]) ?>

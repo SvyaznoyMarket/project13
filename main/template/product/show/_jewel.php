@@ -110,16 +110,10 @@ $isNewRecommendation =
         ]) ?>
     <? endif ?>
 
-    <div class="bDescriptionProduct">
-        <?= $product->getDescription() ?>
-    </div>
-
-    <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'content']) ?>
-
     <? if (\App::config()->product['showRelated'] && !$isTchibo): ?>
         <?= $helper->render('product/__slider', [
             'type'           => 'alsoBought',
-            'title'          => 'С этим товаром также покупают',
+            'title'          => 'С этим товаром покупают',
             'products'       => [],
             'count'          => null,
             'limit'          => \App::config()->product['itemsInSlider'],
@@ -132,6 +126,12 @@ $isNewRecommendation =
             ],
         ]) ?>
     <? endif ?>
+
+    <div class="bDescriptionProduct">
+        <?= $product->getDescription() ?>
+    </div>
+
+    <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'content']) ?>
 
     <? if (!$showSimilarOnTop || !$isNewRecommendation): ?>
         <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
@@ -226,7 +226,7 @@ $isNewRecommendation =
 
 <div class="clear"></div>
 
-<? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
+<? if (false && \App::config()->product['pullRecommendation'] && !$isTchibo): ?>
     <?= $helper->render('product/__slider', [
         'type'     => 'alsoViewed',
         'title'    => 'С этим товаром также смотрят',

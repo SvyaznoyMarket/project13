@@ -72,7 +72,7 @@ class OldRecommendedAction {
                 \App::curl()->addQuery($queryUrl, [], function ($data) use (&$ids, &$allIds, $type, $product) {
                     $ids[$type] = $data;
 
-                    // для блока "С этим товаром также покупают" к $ids добавляем связные товары
+                    // для блока "С этим товаром покупают" к $ids добавляем связные товары
                     if ('alsoBought' === $type && is_array($ids[$type])) {
                         $ids[$type] = array_unique(array_merge($product->getRelatedId(), $ids[$type]));
                     }
@@ -159,7 +159,7 @@ class OldRecommendedAction {
                     continue;
                 }
                 if ('alsoBought' === $type && is_array($productsCollection[$type])) {
-                    // SITE-2818 Из блока "С этим товаром также покупают" убраем товары, которые есть только в магазинах ("Резерв" и витринные)
+                    // SITE-2818 Из блока "С этим товаром покупают" убраем товары, которые есть только в магазинах ("Резерв" и витринные)
                     foreach ($productsCollection[$type] as $key => $value) {
                         if (!$value instanceof \Model\Product\BasicEntity) continue;
                         if ($value->isInShopOnly() || $value->isInShopStockOnly() || !$value->getIsBuyable()) {
