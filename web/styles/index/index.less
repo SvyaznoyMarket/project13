@@ -33,8 +33,8 @@
 	}
 
 	&_b {
-		height: 80px; 
-		padding: 10px 10px 0;
+		height: 85px; 
+		padding: 5px 10px 0;
 		border-left: 1px solid #c7c7c7;
 		border-right: 1px solid #c7c7c7;
 	}
@@ -44,7 +44,6 @@
 	margin: 0 10px 0 0;
 	&_lk {
 		color: #808080;
-		text-decoration: underline;
 	}
 	&_phone {
 		color: #424242;
@@ -61,7 +60,6 @@
 	}
 	&_lk {
 		color: #424242;
-		text-decoration: underline;
 	}
 }
 // звонок с сайта
@@ -196,32 +194,65 @@
 		.table-cell();
 		text-align: center;
 		position: relative;
+		vertical-align: top;
+		padding: 0 5px;
 		&:hover {
 			.navsite2 {
 				display: block;
 			}
+			.navsite_lk {
+				&:after {
+					.pseudo-corner-top(6px, #292929, 74px);
+					left: 50%;
+					margin-left: -6px;
+				}
+			}
+		}
+		&:first-child {
+			&:hover {
+				.navsite2 {
+					left: -11px;
+				}
+			}
 		}
 	}
 	&_icon {
-		height: 40px;
-		margin: 0 0 10px;
+		font-size: 95px;
+	    height: 40px;
+	    line-height: 0.5;
+		margin: 0 0 10px -5px;
+		color: @black;
+		font-family: 'menuIconFont';
+	}
+	&_imgw {
+		height: 45px;
+	    margin: 5px 0 0;
+	    overflow: hidden;
+	}
+	&_img {
+		.inline-block();
 	}
 	&_tx {
 		text-transform: uppercase;
 		font-family: "Enter type";
 		font-size: 11px;
+		line-height: 1.1;
 	}
 	&_lk {
 		display: block;
-		height: 80px;
+		height: 85px;
+		line-height: 1;
+		&:hover {
+			text-decoration: none;
+		}
 	}
 }
 
 .navsite2 {
 	display: none;
 	position: absolute;
-	top: 74px;
-	left: 0;
+	top: 79px;
+	left: -50px;
 	z-index: 20;
 	border: 1px solid #292929;
 	border-top-width: 6px;
@@ -238,6 +269,15 @@
 				display: block;
 				.opacity(1);
 			}
+			.navsite2_lk {
+				background: #e3e3e3;
+				text-decoration: none;
+
+				&:after {
+					.pseudo-corner-right(8px, 8px, @white, 5px);
+					right: -3px;
+				}
+			}
 		}
 	}
 	&_lk {
@@ -248,15 +288,6 @@
 		display: block;
 		position: relative;
 		z-index: 2;
-		&:hover {
-			background: #e3e3e3;
-			text-decoration: none;
-
-			&:after {
-				.pseudo-corner-right(6px, 6px, @white, 6px);
-				right: 0;
-			}
-		}
 	}
 }
 
@@ -264,7 +295,7 @@
 	display: none;
 	border: 1px solid #292929;
 	border-top-width: 6px;
-	background: @white;
+	background: url("@{base-url}/index/img/nav-shadow.png") repeat-y 204px 0 @white;
 	left: -1px;
     min-height: 100%;
     padding-left: 215px;
@@ -274,6 +305,52 @@
     width: 195px;
     .transition(all .3s ease);
     .opacity(0);
+
+    &_i {
+    	padding: 5px 10px;
+    	&-tl {
+    		text-align: center;
+    		font-size: 14px;
+    		margin: 0 0 5px;
+    	}
+    }
+    &_lk {
+    	font-size: 12px;
+    	&:hover {
+    		border-bottom: 1px solid #a0a0a0;
+    		text-decoration: none;
+    	}
+    }
+}
+
+.navitem {
+	text-align: center;
+	margin: 5px 0 0;
+	&_tl {
+		font-size: 13px;
+		text-transform: uppercase;
+		font-weight: bold;
+		margin: 0 0 5px;
+	}
+	&_cnt {
+		display: block;
+		&:hover {
+			text-decoration: none;
+			.navitem_n {
+	    		border-bottom: 1px solid #a0a0a0;
+	    		text-decoration: none;
+	    	}
+    	}
+	}
+	&_img {
+		width: 120px;
+		height: 120px;
+		display: block;
+		margin: 0 auto 2px;
+	}
+	&_pr {
+		font-size: 21px;
+	}
 }
 
 // иконки в шапке
