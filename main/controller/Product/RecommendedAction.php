@@ -66,12 +66,13 @@ class RecommendedAction {
                     $sender['method'] = '';
 
                     //$ids = $request->cookies->get('rrviewed');
-                    $ids = $request->get('rrviewed');
-                    if (is_string($ids)) {
-                        $ids = explode(',', $ids);
+                    $data = $request->get('rrviewed');
+                    if (is_string($data)) {
+                        $data = explode(',', $data);
                     }
-                    if (is_array($ids)) {
-                        $sender['items'] = array_slice(array_unique($ids), 0, 50);
+                    if (is_array($data)) {
+                        $data = array_filter($data);
+                        $sender['items'] = array_slice(array_unique($data), 0, 50);
                         $productIds = array_merge($productIds, $sender['items']);
                     }
                 }
