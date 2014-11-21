@@ -84,7 +84,7 @@
 	background: url("@{base-url}/index/img/logo.png") no-repeat 0 50%;
 	width: 71px;
 	height: 60px;
-	margin: 0 70px 0 0;
+	margin: 0 85px 0 0;
 }
 
 // пользовательские контролы
@@ -153,17 +153,35 @@
 		line-height: 1;
     	margin: 0 0 3px;
 	}
+	&_itw {
+		position: relative;
+		.inline-block();
+		&:after {
+			background-position: -186px 4px;
+		    background-repeat: no-repeat;
+		    display: inline-block;
+		    height: 100%;
+		    vertical-align: top;
+		    width: 27px;
+		    top: 0;
+		    left: 8px;
+		    background-image: url("/styles/index/img/i-header.png");
+		    .pseudo-class();
+		}
+	}
 	&_it {
-		width: 480px;
-		border: 1px solid @firmOrange;
+		border: 1px solid #a0a0a0;
 		line-height: 1.2;
-    	padding: 5px 10px;
-		font-size: 16px;
+    	padding: 5px 10px 5px 35px;
+	    width: 450px;
+    	font-size: 16px;
 		margin: 0 5px 0 0;
 		background: @white;
 		.rounded(4px);
 		.inline-block();
-
+		&:focus {
+			border-color: @firmOrange;
+		}
 	}
 	&_btn {
 		font-size: 16px;
@@ -274,7 +292,7 @@
 				text-decoration: none;
 
 				&:after {
-					.pseudo-corner-right(8px, 8px, @white, 5px);
+					.pseudo-corner-right(8px, @white, 5px);
 					right: -3px;
 				}
 			}
@@ -409,58 +427,83 @@
 .i-shopinfo {
     background-image: url("@{base-url}/index/img/i-shopinfo.png");  
 
-    &.i-shopinfo-delivery1 {
+    &-delivery1 {
         .sprite-main(-10px, -10px, 101px, 87px);
     }
 
-    &.i-shopinfo-delivery2 {
+    &-delivery2 {
         .sprite-main(-131px, -10px, 100px, 64px);
     }
 
-    &.i-shopinfo-delivery3 {
+    &-delivery3 {
         .sprite-main(-160px, -106px, 120px, 113px);
     }
 
-    &.i-shopinfo-delivery4 {
+    &-delivery4 {
         .sprite-main(-10px, -227px, 87px, 88px);
     }
 
-    &.i-shopinfo-payment1 {
+    &-payment1 {
         .sprite-main(-117px, -227px, 88px, 72px);
     }
 
-    &.i-shopinfo-payment2 {
+    &-payment2 {
         .sprite-main(-251px, -10px, 92px, 64px);
     }
 
-    &.i-shopinfo-payment3 {
+    &-payment3 {
         .sprite-main(-225px, -227px, 62px, 78px);
     }
 
-    &.i-shopinfo-payment4 {
+    &-payment4 {
         .sprite-main(-363px, -10px, 67px, 77px);
     }
 
-    &.i-shopinfo-payment5 {
+    &-payment5 {
         .sprite-main(-339px, -107px, 60px, 77px);
     }
 
-    &.i-shopinfo-selfdelivery1 {
+    &-selfdelivery1 {
         .sprite-main(-339px, -204px, 86px, 72px);
     }
 
-    &.i-shopinfo-selfdelivery2 {
+    &-selfdelivery2 {
         .sprite-main(-307px, -296px, 76px, 68px);
     }
 
-    &.i-shopinfo-selfdelivery3 {
+    &-selfdelivery3 {
         .sprite-main(-10px, -384px, 85px, 54px);
     }
 
-    &.i-shopinfo-selfdelivery4 {
+    &-selfdelivery4 {
         .sprite-main(-115px, -384px, 60px, 60px);
     }
 }
+
+.i-share {
+    background-image: url("@{base-url}/index/img/i-share.png");
+
+    &-fb {
+        .sprite-main(0, 0, 28px, 28px);
+    }
+
+    &-od {
+        .sprite-main(-28px, 0, 28px, 28px);
+    }
+
+    &-tw {
+        .sprite-main(-56px, 0, 28px, 28px);
+    }
+
+    &-vk {
+        .sprite-main(-84px, 0, 28px, 28px);
+    }
+
+    &-yt {
+        .sprite-main(-112px, 0, 28px, 28px);
+    }
+}
+
 
 
 // слайдер вертикальный
@@ -866,4 +909,156 @@
 	&_n {
 		display: inline;
 	}
+}
+
+// подвал
+.footer {
+    width: 960px;
+    margin: -284px auto 0;
+    height: 284px;
+    border: 1px solid #e6e6e6;
+    position: relative;
+    &_t {
+        background: @white;
+    }
+    &_b {
+        width: 100%;
+        padding-bottom: 5px;
+    }
+    //копирайт
+    &_cpy {
+        width: 940px;
+        padding: 0 10px;
+        height: 20px;
+        line-height: 20px;
+        margin: 0 auto;
+        color: @white;
+        &_l {
+            float: left;
+        }
+        &_r {
+            float: right;
+            color: #c7c7c7;
+            text-decoration: none;
+            &:hover {
+                color: #c7c7c7;
+                text-decoration: underline;
+            }
+        }
+        &_c {
+            margin: 0 auto;
+            text-align: center;
+        }
+        &_mbl {
+            background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAMCAQAAAAXSy9vAAAAI0lEQVR4AWP8/58BDyAonYZfmgG/tDEBuymSNqbIaWm0cxoA/xwTLdo5eG4AAAAASUVORK5CYII") no-repeat 0 4px;
+            .inline-block();
+            text-decoration: underline;
+            color: @white;
+            padding: 0 0 0 22px;
+        }
+    }
+    // информация о компании
+    &_cmpn {
+        margin: 0 0 15px;
+        padding: 11px 10px;
+        background-color: #e6e6e6;
+        &_i {
+            float: left;
+            margin: 0 61px 0 0;
+            &:last-child,
+            &-last {
+                margin-right: 0;
+                float: right;
+            }
+        }
+    }
+    // правовая информация
+    &_inf {
+        float: left;
+        &_lst {
+            &_i {
+                .inline-block();
+                color: #515151;
+                margin-right: 35px;
+            }
+            &_lk {
+                color: #515151;
+            }
+        }
+        &_tx {
+            color: #929292;
+            margin: 3px 0 25px;
+            display: inline-block;
+            vertical-align: top;
+        }
+    }
+    // ссылки на соц сети
+    &_socnet {
+        float: right;
+        .inline-block();
+        margin: 5px 0 0;
+        &_i {
+            .inline-block();
+            color: #515151;
+            width: 26px;
+            height: 26px;
+            margin-right: 2px;
+        }
+        &_lk {
+            display: block;
+            width: 26px;
+            height: 26px;
+        }
+    }
+    // баннерки
+    &_bnnr {
+        float: left;
+        &_i {
+            float: left;
+            .opacity(0.5);
+            margin-right: 20px;
+            .transition(all .2s ease);
+            &:hover {
+                .opacity(1);
+            }
+            &:last-child {
+                margin-right: 0;
+            }
+            .teleportator {
+                width: 130px;
+            }
+        }
+    }
+    //ссылки на приложения
+    &_app {
+        float: right;
+        width: 360px;
+        &_i {
+            float: right;
+            margin: 0 0 5px 5px;
+            
+            &:hover {
+            	.footer_app_img {
+					.opacity(1);
+            	}
+            }
+            &-t {
+                width: 160px;
+                padding: 3px 5px 0;
+                .opacity(1);
+                color: #515151;
+                height: 37px;
+                line-height: 34px;
+                color: #515151;
+                background: #e6e6e6;
+                .rounded(4px);
+            }
+        }
+        &_img {
+            display: block;
+            .rounded(4px);
+            .opacity(0.5);
+        	.transition(opacity .2s ease);
+        }
+    }
 }
