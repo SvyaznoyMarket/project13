@@ -1,6 +1,7 @@
 ;(function() {
 
     $(document).ready(function() {
+        // Запоминает просмотренные товары
         try {
             $('.js-slider').each(function(i, el) {
                 var
@@ -19,6 +20,33 @@
             console.error(e);
         }
 
+        // попачик для слайдера
+
+        $('body').on('mouseenter', '.slideItem_i', function(e) {
+            var
+                $el = $(this),
+                $bubble = $el.parents('.js-slider').find('.slideItem_flt')
+            ;
+
+            if ($bubble.length) {
+                $bubble.find('.slideItem_flt_i').text($el.data('product').name);
+                $bubble.addClass('slideItem_flt-show');
+                console.info($el.offset());
+                $bubble.offset({left: $el.offset().left});
+            }
+        });
+
+        $('body').on('mouseleave', '.slideItem_i', function(e) {
+            var
+                $el = $(this),
+                $bubble = $el.parents('.js-slider').find('.slideItem_flt')
+            ;
+
+            if ($bubble.length) {
+                $bubble.find('.slideItem_flt_i').text('');
+                $bubble.removeClass('slideItem_flt-show');
+            }
+        });
     });
 
 }());
