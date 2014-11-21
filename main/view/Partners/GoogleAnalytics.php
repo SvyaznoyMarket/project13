@@ -152,8 +152,10 @@ class GoogleAnalytics {
             $categoryMain = end( $categories );
         }*/
 
-        if (strpos($_SERVER['HTTP_REFERER'],'search?q=') > 0) {
-            $this->sendData['afterSearch'] = 1;
+        if (!empty($_SERVER['HTTP_REFERER'])) {
+            if (strpos($_SERVER['HTTP_REFERER'], 'search?q=') > 0) {
+                $this->sendData['afterSearch'] = 1;
+            }
         }
 
         if ($product instanceof \Model\Product\Entity) {
