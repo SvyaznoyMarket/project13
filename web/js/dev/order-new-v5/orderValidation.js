@@ -304,7 +304,7 @@
 				console.log('choosePoint:');
 				console.log(choosePoint);
 
-				if ( 'pickpoint' === currentDeliveryBox.state ) {
+				if ( 'self_partner_pickpoint' === currentDeliveryBox.state ) {
 					console.log('Is PickPoint!');
 
 					// Передаём на сервер корректный id постамата, не id точки, а номер постамата
