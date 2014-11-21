@@ -504,7 +504,7 @@ table {
   padding-bottom: 0;
 }
 .content.mContentMain {
-  padding-bottom: 470px;
+  padding-bottom: 953px;
 }
 /**
  * Фикс однопиксельной картинки, которая выводится после футера.
@@ -1199,8 +1199,8 @@ img[height="0"] {
   .footer__main {
     width: 940px;
     padding: 0 10px;
-    margin: -470px auto 0;
-    height: 470px;
+    height: 923px;
+    margin: -923px auto 0;
     position: relative;
   }
   .footer__main .siteVersionSwitcher {
