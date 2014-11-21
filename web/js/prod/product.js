@@ -1231,7 +1231,7 @@ $(document).ready(function() {
         ;
 
         if (productId) {
-            viewed = cookieValue ? cookieValue.split(',') : [];
+            viewed = cookieValue ? cookieValue.split(',').unique() : [];
             viewed.push(productId);
             docCookies.setItem('product_viewed', viewed.join(','));
         }

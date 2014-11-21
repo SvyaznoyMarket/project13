@@ -36,7 +36,6 @@
 					.removeClass('jsBuyButton')
 					.attr('href', ENTER.utils.generateUrl('cart.oneClick.product.set', {productId: productId}));
 			} else if (ENTER.utils.getObjectWithElement(cart, 'id', productId) && !noUpdate) {
-                console.warn({noUpdate: noUpdate});
 				$elem
 					.text('В корзине')
 					.removeClass('mDisabled')
