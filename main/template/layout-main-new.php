@@ -33,475 +33,474 @@
 </head>
 
 <body class="main">
-    <div class="wrapper">
-        <!-- шапка -->
-        <div class="header">
-            <!-- топбар -->
-            <div class="header_t clearfix">
-                <div class="header_i hdcontacts">
-                    <a class="hdcontacts_lk undrl" href="">Набережные челны</a>
-                    <div class="hdcontacts_phone">+7 (495) 775-00-06</div>
-                </div>
-
-                <a class="header_i hdcall" href="">
-                    <i class="i-header i-header-phone"></i>
-                    <span class="hdcall_tx">Звонок<br/>с сайта</span>
-                </a>
-
-                <ul class="header_i hdlk">
-                    <li class="hdlk_i"><a href="" class="hdlk_lk undrl">Наши магазины</a></li>
-                    <li class="hdlk_i"><a href="" class="hdlk_lk undrl">Доставка</a></li>
-                </ul>
-
-                <menu class="header_i userbtn">
-                    <li class="userbtn_i userbtn_i-lk">
-                        <a class="userbtn_lk" href=""><span class="undrl">Войти</span></a>
-                    </li>
-
-                    <li class="userbtn_i">
-                        <span class="userbtn_lk">
-                            <i class="userbtn_icon i-header i-header-compare"></i> 
-                            <span class="userbtn_tx">Сравнение</span>
-                            <span class="userbtn_count">1</span>
-                        </span>
-                    </li>
-                    
-                    <li class="userbtn_i userbtn_i-act userbtn_i-cart">
-                        <a class="userbtn_lk userbtn_lk-cart" href="">
-                            <i class="userbtn_icon i-header i-header-cart"></i> 
-                            <span class="userbtn_tx">Корзина</span>
-                            <span class="userbtn_count">2</span>
-                        </a>
-                    </li>
-                </menu>
+    <!-- шапка -->
+    <div class="header">
+        <!-- топбар -->
+        <div class="header_t clearfix">
+            <div class="header_i hdcontacts">
+                <a class="hdcontacts_lk undrl" href="">Набережные челны</a>
+                <div class="hdcontacts_phone">+7 (495) 775-00-06</div>
             </div>
-            <!--/ топбар -->
-            
-            <!-- поиск -->
-            <div class="header_c clearfix">
-                <a href="/" class="header_i sitelogo"></a>
 
-                <form action="" class="header_i hdsearch">
-                    <label class="hdsearch_lbl" for="">Все товары для жизни по выгоным ценам!</label>
-                    <div class="hdsearch_itw"><input type="text" class="hdsearch_it" placeholder="Поиск по товарам..."></div>
-                    <button class="hdsearch_btn btn3">Найти</button>
-                </form>
+            <a class="header_i hdcall" href="">
+                <i class="i-header i-header-phone"></i>
+                <span class="hdcall_tx">Звонок<br/>с сайта</span>
+            </a>
 
-                <div class="header_i hdep">
-                    <div class="hdep_h">Больше скидок</div>
-                    <a href="" class="i-header i-header-ep"></a>
-                </div>
-            </div>
-            <!--/ поиск -->
-            
-            <!-- навигация -->
-            <nav class="header_b">
-                <ul class="navsite">
-                    <li class="navsite_i">
-                        <a href="" class="navsite_lk">
-                            <div class="navsite_icon">C</div>
-                            <span class="navsite_tx">МЕБЕЛЬ</span>
-                        </a>
-                        
-                        <ul class="navsite2">
-                            <li class="navsite2_i">
-                                <a href="" class="navsite2_lk">Планшетные компьютеры</a>
+            <ul class="header_i hdlk">
+                <li class="hdlk_i"><a href="" class="hdlk_lk undrl">Наши магазины</a></li>
+                <li class="hdlk_i"><a href="" class="hdlk_lk undrl">Доставка</a></li>
+            </ul>
 
-                                <ul class="navsite3">
-                                    <li class="navsite3_i navsite3_i-tl">Фото и видео</li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+            <menu class="header_i userbtn">
+                <li class="userbtn_i userbtn_i-lk">
+                    <a class="userbtn_lk" href=""><span class="undrl">Войти</span></a>
+                </li>
 
-                                    <li class="navsite3_i">
-                                        <div class="navitem">
-                                            <div class="navitem_tl">ТОВАР ДНЯ</div>
-
-                                            <a href="" class="navitem_cnt">
-                                                <img src="styles/index/img/pic/item.png" alt="" class="navitem_img">
-                                                <span class="navitem_n">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</span>
-                                            </a>
-
-                                            <div class="navitem_pr">
-                                                22 990 <span class="rubl">p</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="navsite2_i"><a href="" class="navsite2_lk">Ноутбуки и моноблоки</a>
-                                <ul class="navsite3">
-                                    <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                </ul>
-                            </li>
-                            <li class="navsite2_i"><a href="" class="navsite2_lk">Телефоны</a>
-                                <ul class="navsite3">
-                                    <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                </ul>
-                            </li>
-                            <li class="navsite2_i"><a href="" class="navsite2_lk">Телевизоры, аудио, видео</a>
-                                <ul class="navsite3">
-                                    <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                </ul>
-                            </li>
-                            <li class="navsite2_i"><a href="" class="navsite2_lk">Фото и видео</a>
-                                <ul class="navsite3">
-                                    <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="navsite_i">
-                        <a href="" class="navsite_lk">
-                            <div class="navsite_icon">A</div>
-                            <span class="navsite_tx">ТОВАРЫ ДЛЯ ДОМА</span>
-                        </a>
-                        
-                        <ul class="navsite2">
-                            <li class="navsite2_i">
-                                <a href="" class="navsite2_lk">Планшетные компьютеры</a>
-
-                                <ul class="navsite3">
-                                    <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                </ul>
-                            </li>
-                            <li class="navsite2_i"><a href="" class="navsite2_lk">Ноутбуки и моноблоки</a>
-                                <ul class="navsite3">
-                                    <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                </ul>
-                            </li>
-                            <li class="navsite2_i"><a href="" class="navsite2_lk">Телефоны</a>
-                                <ul class="navsite3">
-                                    <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                </ul>
-                            </li>
-                            <li class="navsite2_i"><a href="" class="navsite2_lk">Телевизоры, аудио, видео</a>
-                                <ul class="navsite3">
-                                    <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                </ul>
-                            </li>
-                            <li class="navsite2_i"><a href="" class="navsite2_lk">Фото и видео</a>
-                                <ul class="navsite3">
-                                    <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="navsite_i">
-                        <a href="" class="navsite_lk">
-                            <div class="navsite_icon">B</div>
-                            <span class="navsite_tx">БЫТОВАЯ ТЕХНИКА</span>
-                        </a>
-                        
-                        <ul class="navsite2">
-                            <li class="navsite2_i">
-                                <a href="" class="navsite2_lk">Планшетные компьютеры</a>
-
-                                <ul class="navsite3">
-                                    <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                </ul>
-                            </li>
-                            <li class="navsite2_i"><a href="" class="navsite2_lk">Ноутбуки и моноблоки</a>
-                                <ul class="navsite3">
-                                    <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                </ul>
-                            </li>
-                            <li class="navsite2_i"><a href="" class="navsite2_lk">Телефоны</a>
-                                <ul class="navsite3">
-                                    <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                </ul>
-                            </li>
-                            <li class="navsite2_i"><a href="" class="navsite2_lk">Телевизоры, аудио, видео</a>
-                                <ul class="navsite3">
-                                    <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                </ul>
-                            </li>
-                            <li class="navsite2_i"><a href="" class="navsite2_lk">Фото и видео</a>
-                                <ul class="navsite3">
-                                    <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="navsite_i">
-                        <a href="" class="navsite_lk">
-                            <div class="navsite_imgw"><img class="navsite_img" src="styles/index/img/pic/nax_img.png" alt=""></div>
-                            <span class="navsite_tx">ЗИМНИЕ ТОВАРЫ</span>
-                        </a>
-                        
-                        <ul class="navsite2">
-                            <li class="navsite2_i">
-                                <a href="" class="navsite2_lk">Планшетные компьютеры</a>
-
-                                <ul class="navsite3">
-                                    <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                </ul>
-                            </li>
-                            <li class="navsite2_i"><a href="" class="navsite2_lk">Ноутбуки и моноблоки</a>
-                                <ul class="navsite3">
-                                    <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                </ul>
-                            </li>
-                            <li class="navsite2_i"><a href="" class="navsite2_lk">Телефоны</a>
-                                <ul class="navsite3">
-                                    <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                </ul>
-                            </li>
-                            <li class="navsite2_i"><a href="" class="navsite2_lk">Телевизоры, аудио, видео</a>
-                                <ul class="navsite3">
-                                    <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                </ul>
-                            </li>
-                            <li class="navsite2_i"><a href="" class="navsite2_lk">Фото и видео</a>
-                                <ul class="navsite3">
-                                    <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
-                                    <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="navsite_i">
-                        <a href="" class="navsite_lk">
-                            <div class="navsite_icon">B</div>
-                            <span class="navsite_tx">БЫТОВАЯ ТЕХНИКА</span>
-                        </a>
-                    </li>
-
-                    <li class="navsite_i">
-                        <a href="" class="navsite_lk">
-                            <div class="navsite_icon">B</div>
-                            <span class="navsite_tx">БЫТОВАЯ ТЕХНИКА</span>
-                        </a>
-                    </li>
-
-                    <li class="navsite_i">
-                        <a href="" class="navsite_lk">
-                            <div class="navsite_icon">B</div>
-                            <span class="navsite_tx">БЫТОВАЯ ТЕХНИКА</span>
-                        </a>
-                    </li>
-
-                    <li class="navsite_i">
-                        <a href="" class="navsite_lk">
-                            <div class="navsite_icon">B</div>
-                            <span class="navsite_tx">БЫТОВАЯ ТЕХНИКА</span>
-                        </a>
-                    </li>
-
-                    <li class="navsite_i">
-                        <a href="" class="navsite_lk">
-                            <div class="navsite_icon">B</div>
-                            <span class="navsite_tx">БЫТОВАЯ ТЕХНИКА</span>
-                        </a>
-                    </li>
-
-                    <li class="navsite_i">
-                        <a href="" class="navsite_lk">
-                            <div class="navsite_icon">B</div>
-                            <span class="navsite_tx">БЫТОВАЯ ТЕХНИКА</span>
-                        </a>
-                    </li>
-
-                    <li class="navsite_i">
-                        <a href="" class="navsite_lk">
-                            <div class="navsite_icon">B</div>
-                            <span class="navsite_tx">БЫТОВАЯ ТЕХНИКА</span>
-                        </a>
-                    </li>
-
-                    <li class="navsite_i">
-                        <a href="" class="navsite_lk">
-                            <div class="navsite_icon">B</div>
-                            <span class="navsite_tx">БЫТОВАЯ ТЕХНИКА</span>
-                        </a>
-                    </li>
-
-                    <li class="navsite_i">
-                        <a href="" class="navsite_lk">
-                            <div class="navsite_icon">B</div>
-                            <span class="navsite_tx">БЫТОВАЯ ТЕХНИКА</span>
-                        </a>
-                    </li>
-
-                    <li class="navsite_i">
-                        <a href="" class="navsite_lk">
-                            <div class="navsite_icon">B</div>
-                            <span class="navsite_tx">БЫТОВАЯ ТЕХНИКА</span>
-                        </a>
-                    </li>
-
-                    <li class="navsite_i">
-                        <a href="" class="navsite_lk">
-                            <div class="navsite_icon">B</div>
-                            <span class="navsite_tx">БЫТОВАЯ ТЕХНИКА</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            <!-- навигация -->
+                <li class="userbtn_i">
+                    <span class="userbtn_lk">
+                        <i class="userbtn_icon i-header i-header-compare"></i> 
+                        <span class="userbtn_tx">Сравнение</span>
+                        <span class="userbtn_count">1</span>
+                    </span>
+                </li>
+                
+                <li class="userbtn_i userbtn_i-act userbtn_i-cart">
+                    <a class="userbtn_lk userbtn_lk-cart" href="">
+                        <i class="userbtn_icon i-header i-header-cart"></i> 
+                        <span class="userbtn_tx">Корзина</span>
+                        <span class="userbtn_count">2</span>
+                    </a>
+                </li>
+            </menu>
         </div>
-        <!--/ шапка -->
+        <!--/ топбар -->
+        
+        <!-- поиск -->
+        <div class="header_c clearfix">
+            <a href="/" class="header_i sitelogo"></a>
 
+            <form action="" class="header_i hdsearch">
+                <label class="hdsearch_lbl" for="">Все товары для жизни по выгоным ценам!</label>
+                <div class="hdsearch_itw"><input type="text" class="hdsearch_it" placeholder="Поиск по товарам..."></div>
+                <button class="hdsearch_btn btn3">Найти</button>
+            </form>
+
+            <div class="header_i hdep">
+                <div class="hdep_h">Больше скидок</div>
+                <a href="" class="i-header i-header-ep"></a>
+            </div>
+        </div>
+        <!--/ поиск -->
+        
+        <!-- навигация -->
+        <nav class="header_b">
+            <ul class="navsite">
+                <li class="navsite_i">
+                    <a href="" class="navsite_lk">
+                        <div class="navsite_icon">C</div>
+                        <span class="navsite_tx">МЕБЕЛЬ</span>
+                    </a>
+                    
+                    <ul class="navsite2">
+                        <li class="navsite2_i">
+                            <a href="" class="navsite2_lk">Планшетные компьютеры</a>
+
+                            <ul class="navsite3">
+                                <li class="navsite3_i navsite3_i-tl">Фото и видео</li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+
+                                <li class="navsite3_i">
+                                    <div class="navitem">
+                                        <div class="navitem_tl">ТОВАР ДНЯ</div>
+
+                                        <a href="" class="navitem_cnt">
+                                            <img src="styles/index/img/pic/item.png" alt="" class="navitem_img">
+                                            <span class="navitem_n">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</span>
+                                        </a>
+
+                                        <div class="navitem_pr">
+                                            22 990 <span class="rubl">p</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="navsite2_i"><a href="" class="navsite2_lk">Ноутбуки и моноблоки</a>
+                            <ul class="navsite3">
+                                <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                            </ul>
+                        </li>
+                        <li class="navsite2_i"><a href="" class="navsite2_lk">Телефоны</a>
+                            <ul class="navsite3">
+                                <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                            </ul>
+                        </li>
+                        <li class="navsite2_i"><a href="" class="navsite2_lk">Телевизоры, аудио, видео</a>
+                            <ul class="navsite3">
+                                <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                            </ul>
+                        </li>
+                        <li class="navsite2_i"><a href="" class="navsite2_lk">Фото и видео</a>
+                            <ul class="navsite3">
+                                <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="navsite_i">
+                    <a href="" class="navsite_lk">
+                        <div class="navsite_icon">A</div>
+                        <span class="navsite_tx">ТОВАРЫ ДЛЯ ДОМА</span>
+                    </a>
+                    
+                    <ul class="navsite2">
+                        <li class="navsite2_i">
+                            <a href="" class="navsite2_lk">Планшетные компьютеры</a>
+
+                            <ul class="navsite3">
+                                <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                            </ul>
+                        </li>
+                        <li class="navsite2_i"><a href="" class="navsite2_lk">Ноутбуки и моноблоки</a>
+                            <ul class="navsite3">
+                                <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                            </ul>
+                        </li>
+                        <li class="navsite2_i"><a href="" class="navsite2_lk">Телефоны</a>
+                            <ul class="navsite3">
+                                <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                            </ul>
+                        </li>
+                        <li class="navsite2_i"><a href="" class="navsite2_lk">Телевизоры, аудио, видео</a>
+                            <ul class="navsite3">
+                                <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                            </ul>
+                        </li>
+                        <li class="navsite2_i"><a href="" class="navsite2_lk">Фото и видео</a>
+                            <ul class="navsite3">
+                                <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="navsite_i">
+                    <a href="" class="navsite_lk">
+                        <div class="navsite_icon">B</div>
+                        <span class="navsite_tx">БЫТОВАЯ ТЕХНИКА</span>
+                    </a>
+                    
+                    <ul class="navsite2">
+                        <li class="navsite2_i">
+                            <a href="" class="navsite2_lk">Планшетные компьютеры</a>
+
+                            <ul class="navsite3">
+                                <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                            </ul>
+                        </li>
+                        <li class="navsite2_i"><a href="" class="navsite2_lk">Ноутбуки и моноблоки</a>
+                            <ul class="navsite3">
+                                <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                            </ul>
+                        </li>
+                        <li class="navsite2_i"><a href="" class="navsite2_lk">Телефоны</a>
+                            <ul class="navsite3">
+                                <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                            </ul>
+                        </li>
+                        <li class="navsite2_i"><a href="" class="navsite2_lk">Телевизоры, аудио, видео</a>
+                            <ul class="navsite3">
+                                <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                            </ul>
+                        </li>
+                        <li class="navsite2_i"><a href="" class="navsite2_lk">Фото и видео</a>
+                            <ul class="navsite3">
+                                <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="navsite_i">
+                    <a href="" class="navsite_lk">
+                        <div class="navsite_imgw"><img class="navsite_img" src="styles/index/img/pic/nax_img.png" alt=""></div>
+                        <span class="navsite_tx">ЗИМНИЕ ТОВАРЫ</span>
+                    </a>
+                    
+                    <ul class="navsite2">
+                        <li class="navsite2_i">
+                            <a href="" class="navsite2_lk">Планшетные компьютеры</a>
+
+                            <ul class="navsite3">
+                                <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                            </ul>
+                        </li>
+                        <li class="navsite2_i"><a href="" class="navsite2_lk">Ноутбуки и моноблоки</a>
+                            <ul class="navsite3">
+                                <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                            </ul>
+                        </li>
+                        <li class="navsite2_i"><a href="" class="navsite2_lk">Телефоны</a>
+                            <ul class="navsite3">
+                                <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                            </ul>
+                        </li>
+                        <li class="navsite2_i"><a href="" class="navsite2_lk">Телевизоры, аудио, видео</a>
+                            <ul class="navsite3">
+                                <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                            </ul>
+                        </li>
+                        <li class="navsite2_i"><a href="" class="navsite2_lk">Фото и видео</a>
+                            <ul class="navsite3">
+                                <li class="navsite3_i navsite3_i-tl">Планшетные компьютеры</li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Планшетные компьютеры</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Ноутбуки и моноблоки</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Телефоны</a></li>
+                                <li class="navsite3_i"><a href="" class="navsite3_lk">Фото и видео</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="navsite_i">
+                    <a href="" class="navsite_lk">
+                        <div class="navsite_icon">B</div>
+                        <span class="navsite_tx">БЫТОВАЯ ТЕХНИКА</span>
+                    </a>
+                </li>
+
+                <li class="navsite_i">
+                    <a href="" class="navsite_lk">
+                        <div class="navsite_icon">B</div>
+                        <span class="navsite_tx">БЫТОВАЯ ТЕХНИКА</span>
+                    </a>
+                </li>
+
+                <li class="navsite_i">
+                    <a href="" class="navsite_lk">
+                        <div class="navsite_icon">B</div>
+                        <span class="navsite_tx">БЫТОВАЯ ТЕХНИКА</span>
+                    </a>
+                </li>
+
+                <li class="navsite_i">
+                    <a href="" class="navsite_lk">
+                        <div class="navsite_icon">B</div>
+                        <span class="navsite_tx">БЫТОВАЯ ТЕХНИКА</span>
+                    </a>
+                </li>
+
+                <li class="navsite_i">
+                    <a href="" class="navsite_lk">
+                        <div class="navsite_icon">B</div>
+                        <span class="navsite_tx">БЫТОВАЯ ТЕХНИКА</span>
+                    </a>
+                </li>
+
+                <li class="navsite_i">
+                    <a href="" class="navsite_lk">
+                        <div class="navsite_icon">B</div>
+                        <span class="navsite_tx">БЫТОВАЯ ТЕХНИКА</span>
+                    </a>
+                </li>
+
+                <li class="navsite_i">
+                    <a href="" class="navsite_lk">
+                        <div class="navsite_icon">B</div>
+                        <span class="navsite_tx">БЫТОВАЯ ТЕХНИКА</span>
+                    </a>
+                </li>
+
+                <li class="navsite_i">
+                    <a href="" class="navsite_lk">
+                        <div class="navsite_icon">B</div>
+                        <span class="navsite_tx">БЫТОВАЯ ТЕХНИКА</span>
+                    </a>
+                </li>
+
+                <li class="navsite_i">
+                    <a href="" class="navsite_lk">
+                        <div class="navsite_icon">B</div>
+                        <span class="navsite_tx">БЫТОВАЯ ТЕХНИКА</span>
+                    </a>
+                </li>
+
+                <li class="navsite_i">
+                    <a href="" class="navsite_lk">
+                        <div class="navsite_icon">B</div>
+                        <span class="navsite_tx">БЫТОВАЯ ТЕХНИКА</span>
+                    </a>
+                </li>
+
+                <li class="navsite_i">
+                    <a href="" class="navsite_lk">
+                        <div class="navsite_icon">B</div>
+                        <span class="navsite_tx">БЫТОВАЯ ТЕХНИКА</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- навигация -->
+    </div>
+    <!--/ шапка -->
+    <div class="wrapper">
         <div class="content">
             <div class="slidesbnnr">
                 <ul class="slidesbnnr_lst">
@@ -1053,7 +1052,7 @@
     </div><!--/ Шаблон -->
 
     <div class="footer">
-        <div class="footer_t">
+        <div class="footer_t clearfix">
             <ul class="footer_cmpn clearfix">                                 
                 <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="/about_company">О компании</a></li>
                 <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="http://feedback.enter.ru/">Напишите нам</a></li>
@@ -1070,6 +1069,7 @@
                     <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/terms">Условия продажи</a></li>
                     <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/media_info">Информация о СМИ</a></li>
                     <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/refurbished-sale">Уцененные товары оптом</a></li>
+                    <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/refurbished-sale">Рекламные возможности</a></li>
                 </ul>
 
                 <p class="footer_inf_tx">Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.</p>
@@ -1084,20 +1084,13 @@
             </ul>
 
             <ul class="footer_bnnr">
-                <li class="footer_bnnr_i"><img src="/styles/footer/img/prava-potreb.gif" /></li>
-                <li class="footer_bnnr_i"><a href="/akit"><img src="/styles/footer/img/akita.png" /></a></li>
+                <li class="footer_bnnr_i"><img style="width: 160px;" src="/styles/footer/img/prava-potreb.gif" /></li>
+                <li class="footer_bnnr_i"><a href="/akit"><img style="width: 86px;" src="/styles/footer/img/akita.png" /></a></li>
                 <li class="footer_bnnr_i"><div class="teleportator" id="teleportator"></div></li>
             </ul>
 
             <ul class="footer_app">
-                <li class="footer_app_i footer_app_i-t">Мобильные приложения</li>
                 <li class="footer_app_i"><a target="_blank" href="https://itunes.apple.com/ru/app/enter/id486318342?mt=8"><img class="footer_app_img" src="/styles/footer/img/apple.png" /></a></li>
-                
-                <li class="footer_app_i">
-                    <a target="_blank" href="http://www.windowsphone.com/ru-ru/store/app/enter/6f4c5810-682f-47dc-87b2-aced84582787">
-                        <img class="footer_app_img" src="/styles/footer/img/wind.png" />
-                    </a>
-                </li>
 
                 <li class="footer_app_i">
                     <a target="_blank" href="https://play.google.com/store/apps/details?id=ru.enter">
