@@ -1597,7 +1597,7 @@ img[height="0"] {
     position: absolute;
     top: 85px;
     left: -50px;
-    z-mainpage: 20;
+    z-index: 20;
     border: 1px solid #292929;
     border-top-width: 6px;
     background: #ffffff;
@@ -1641,7 +1641,7 @@ img[height="0"] {
     line-height: 1.2;
     display: block;
     position: relative;
-    z-mainpage: 2;
+    z-index: 2;
   }
   .navsite3 {
     display: none;
@@ -1992,7 +1992,7 @@ img[height="0"] {
     margin: -195px auto 0;
     background: #000000;
     border-style: solid;
-    border-color: #bbbbbb;
+    border-color: #e6e6e6;
     border-width: 0 1px 0 1px;
     position: relative;
   }
