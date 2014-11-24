@@ -119,7 +119,7 @@ class ShowAction {
 
     private function getHoverImageUrl(\Model\Product\Entity $product, $imageSize) {
         $test = \App::abTest()->getTest('jewel_filter');
-        if ($test && 'new_filter_with_photo' === $test->getChosenCase()->getKey()) {
+        if ($test && in_array($test->getChosenCase()->getKey(), ['new_filter_with_photo_closed', 'new_filter_with_photo_opened'], true)) {
             foreach ($product->getPhoto() as $photo) {
                 if (40 == $photo->getPosition()) {
                     return $photo->getUrl($imageSize);
