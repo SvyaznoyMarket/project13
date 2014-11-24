@@ -1263,7 +1263,7 @@ class Action {
                         }
                     }
                 }
-            } else if ('new_filter_with_photo' === $testKey || 'new_filter_without_photo' === $testKey) {
+            } else if ('new_filter_with_photo_closed' === $testKey || 'new_filter_with_photo_opened' === $testKey) {
                 $isNewFilterPresent = false;
                 foreach ($productFilter->getFilterCollection() as $filter) {
                     if ('Металл' === $filter->getName() || 'Вставка' === $filter->getName()) {
