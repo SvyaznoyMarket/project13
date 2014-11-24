@@ -55,6 +55,7 @@ class RecommendedAction {
             'products'  => $products,
             'count'     => count($products),
             'class'     => 'slideItem-7item',
+            'title'     => count($cart->getProducts()) > 1 ? 'С этими товарами покупают' : 'С этим товаром покупают',
             'sender'    => [
                 'name'     => 'retailrocket',
                 'method'   => 'CrossSellItemToItems',
