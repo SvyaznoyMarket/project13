@@ -27,7 +27,7 @@
                         <div class="navitem_tl">ТОВАР ДНЯ</div>
 
                         <a href="" class="navitem_cnt">
-                            <img src="styles/index/img/pic/item.png" alt="" class="navitem_img">
+                            <img src="styles/mainpage/img/pic/item.png" alt="" class="navitem_img">
                             <span class="navitem_n">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</span>
                         </a>
 
@@ -249,7 +249,7 @@
 
 <li class="navsite_i">
     <a href="" class="navsite_lk">
-        <div class="navsite_imgw"><img class="navsite_img" src="styles/index/img/pic/nax_img.png" alt=""></div>
+        <div class="navsite_imgw"><img class="navsite_img" src="styles/mainpage/img/pic/nax_img.png" alt=""></div>
         <span class="navsite_tx">ЗИМНИЕ ТОВАРЫ</span>
     </a>
 

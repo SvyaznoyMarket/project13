@@ -1373,7 +1373,7 @@ img[height="0"] {
     line-height: 1.2;
   }
   .sitelogo {
-    background: url("/styles/index/img/logo.png") no-repeat 0 50%;
+    background: url("/styles/mainpage/img/logo.png") no-repeat 0 50%;
     width: 71px;
     height: 60px;
     margin: 0 85px 0 0;
@@ -1466,7 +1466,7 @@ img[height="0"] {
     width: 27px;
     top: 0;
     left: 8px;
-    background-image: url("/styles/index/img/i-header.png");
+    background-image: url("/styles/mainpage/img/i-header.png");
     content: "";
     position: absolute;
   }
@@ -1589,7 +1589,7 @@ img[height="0"] {
     position: absolute;
     top: 85px;
     left: -50px;
-    z-index: 20;
+    z-mainpage: 20;
     border: 1px solid #292929;
     border-top-width: 6px;
     background: #ffffff;
@@ -1633,13 +1633,13 @@ img[height="0"] {
     line-height: 1.2;
     display: block;
     position: relative;
-    z-index: 2;
+    z-mainpage: 2;
   }
   .navsite3 {
     display: none;
     border: 1px solid #292929;
     border-top-width: 6px;
-    background: url("/styles/index/img/nav-shadow.png") repeat-y 204px 0 #ffffff;
+    background: url("/styles/mainpage/img/nav-shadow.png") repeat-y 204px 0 #ffffff;
     left: -1px;
     min-height: 100%;
     padding-left: 215px;
@@ -1702,7 +1702,7 @@ img[height="0"] {
     font-size: 21px;
   }
   .i-header {
-    background-image: url("/styles/index/img/i-header.png");
+    background-image: url("/styles/mainpage/img/i-header.png");
   }
   .i-header-cart {
     background-position: -2px -2px;
@@ -2100,7 +2100,7 @@ img[height="0"] {
     border-radius: 4px;
   }
   .i-share {
-    background-image: url("/styles/index/img/i-share.png");
+    background-image: url("/styles/mainpage/img/i-share.png");
   }
   .i-share-fb {
     background-position: 0 0;
@@ -2285,7 +2285,7 @@ img[height="0"] {
     padding: 0 0 214px;
   }
   .i-shopInfo {
-    background-image: url("/styles/index/img/i-delivery.png");
+    background-image: url("/styles/mainpage/img/i-delivery.png");
   }
   .i-shopInfo-delivery {
     background-position: 0 0;
@@ -2332,7 +2332,7 @@ img[height="0"] {
     height: 33px;
   }
   .i-shopinfo {
-    background-image: url("/styles/index/img/i-shopinfo.png");
+    background-image: url("/styles/mainpage/img/i-shopinfo.png");
   }
   .i-shopinfo-delivery1 {
     background-position: -10px -10px;
