@@ -21,26 +21,28 @@ class RetailRocket
     public function transaction($orders)
     {
         $data = & $this->returnData['sendData'];
+        $data = [];
 
-        //$orderSum = 0;
         foreach ($orders as $order) {
-
-            //$orderSum += $order->getPaySum();
             if (!$order instanceof \Model\Order\Entity) {
                 continue;
             }
-            $data['transaction'] = $order->getNumber(); // count($orders) по идеее не может быть > 1.
-            // transaction — свойство $order и по смыслу у всего $orders должно быть одно
+
+            $items = [];
             foreach ($order->getProduct() as $prod) {
-                $data['items'][] = [
+                $items[] = [
                     //'id' => $prod->getArticle(), // несущeствующий метод! // see comment to task SITE-1572
                     'id' => $prod->getId(),
                     'qnt' => $prod->getQuantity(),
                     'price' => $prod->getPrice(),
                 ];
-            } // end of foreach (products)
+            }
 
-        } // end of foreach ($orders)
+            $data[] = [
+                'transaction' => $order->getNumber(),
+                'items' => $items,
+            ];
+        }
 
         return $this->returnData;
     }
@@ -55,7 +57,7 @@ class RetailRocket
         $data = & $this->returnData['sendData'];
 
         if ($product instanceof \Model\Product\Entity) {
-            $data = $product->getId();
+            $data = [$product->getId()];
         }
 
         return $this->returnData;
@@ -71,7 +73,7 @@ class RetailRocket
         $data = & $this->returnData['sendData'];
 
         if ($category instanceof \Model\Product\Category\Entity) {
-            $data = $category->getId();
+            $data = [$category->getId()];
         }
 
         return $this->returnData;
