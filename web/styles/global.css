@@ -1326,8 +1326,10 @@ img[height="0"] {
   .header_b {
     height: 85px;
     padding: 5px 10px 0;
-    border-left: 1px solid #c7c7c7;
-    border-right: 1px solid #c7c7c7;
+    border-left: 1px solid #bbbbbb;
+    border-right: 1px solid #bbbbbb;
+    position: relative;
+    z-index: 10;
   }
   .hdcontacts {
     margin: 0 10px 0 0;
@@ -1397,6 +1399,12 @@ img[height="0"] {
     background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAQAAABuBnYAAAAAOElEQVQIW2NgYDisdmDdgU9AuO6wGgOY+37/fwg88B4odGAdjAsWWsdw4BOKwCcsAuhaMAxFtxYAK6VexT+uZA8AAAAASUVORK5CYII=") no-repeat 0 50%;
     padding-left: 14px;
     height: 50px;
+  }
+  .userbtn_i-lk.userbtn_i-act .userbtn_lk {
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAR0lEQVQY02NgAIL/C5XUfs6WXfdrjswnEAaxQWIMMMlfc2Tf/5wt8x8Zg8TAikCq0SURWHYdA8RI7ApAcoQVELSCoCMJeRMAYK6XwUqCrYoAAAAASUVORK5CYII=") no-repeat 0 50%;
+  }
+  .userbtn_i-lk.userbtn_i-ep .userbtn_lk {
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAkUlEQVR4AX3KsQoBUBjF8VNCkcXsNZgtVp5GXoE3ICu7MljcjVLuC1gMUrfEAyj5/IdvuBnuqd9/Ovrfe9kZYgTlRBpQZoYplKmJBLQgt8UGcnXsRPY4ow3higuEJo4IIgsYIgb44oMuTjDMRSYwl2DuDnNjkT4MJT2RKl6FU0JFRIiF4wESEda4uYSne2AF/QDIMdnz26Xx7gAAAABJRU5ErkJggg==") no-repeat 0 50%;
   }
   .userbtn_i-cart .userbtn_count {
     background: #f99b1c;
@@ -1984,7 +1992,7 @@ img[height="0"] {
     margin: -195px auto 0;
     background: #000000;
     border-style: solid;
-    border-color: #e6e6e6;
+    border-color: #bbbbbb;
     border-width: 0 1px 0 1px;
     position: relative;
   }
@@ -2478,7 +2486,7 @@ img[height="0"] {
     height: 60px;
   }
   .slidesbnnr {
-    border: 1px solid #c7c7c7;
+    border: 1px solid #bbbbbb;
     border-top: none;
     position: relative;
     height: 299px;
@@ -2796,10 +2804,10 @@ img[height="0"] {
     float: left;
   }
   .slidesBox-bg2 {
-    border-color: #49c7ed;
+    border-color: #4fcbf4;
   }
   .slidesBox-bg2 .slidesBox_h {
-    background: #49c7ed;
+    background: #4fcbf4;
   }
   .slidesBox-bg3 {
     border-color: #292929;

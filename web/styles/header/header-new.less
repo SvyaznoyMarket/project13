@@ -7,8 +7,8 @@
 	width: 960px;
 	// верхний блок шапки
 	&_t {
-		background: #f4f4f4;
-		border-color: #bbbbbb;
+		background: @lightgrey8;
+		border-color: @darkgrey3;
 		border-style: solid;
 		height: @header-height;
 		border-width: 0 1px 0 1px;
@@ -28,8 +28,10 @@
 	&_b {
 		height: 85px;
 		padding: 5px 10px 0;
-		border-left: 1px solid #c7c7c7;
-		border-right: 1px solid #c7c7c7;
+		border-left: 1px solid @darkgrey3;
+		border-right: 1px solid @darkgrey3;
+		position: relative;
+		z-index: 10;
 	}
 }
 // контакты
@@ -58,9 +60,9 @@
 // звонок с сайта
 .hdcall {
 	padding: 2px 3px 2px 4px;
-	border: 1px solid #f99b1c;
+	border: 1px solid @orange-2;
 	.rounded(3px);
-	color: #f99b1c;
+	color: @orange-2;
 	font-weight: bold;
 	&:hover {
 		text-decoration: none;
@@ -86,7 +88,7 @@
 	&_i {
 		float: left;
 		padding: 0 10px;
-		border-left: 1px dotted #bbbbbb;
+		border-left: 1px dotted @darkgrey3;
 		&-lk {
 			.userbtn_lk {
 				.table-cell();
@@ -95,10 +97,20 @@
 				padding-left: 14px;
 				height: @header-height;
 			}
+			&.userbtn_i-act {
+				.userbtn_lk {
+					background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAR0lEQVQY02NgAIL/C5XUfs6WXfdrjswnEAaxQWIMMMlfc2Tf/5wt8x8Zg8TAikCq0SURWHYdA8RI7ApAcoQVELSCoCMJeRMAYK6XwUqCrYoAAAAASUVORK5CYII=") no-repeat 0 50%;
+				}
+			}
+			&.userbtn_i-ep {
+				.userbtn_lk {
+					background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAkUlEQVR4AX3KsQoBUBjF8VNCkcXsNZgtVp5GXoE3ICu7MljcjVLuC1gMUrfEAyj5/IdvuBnuqd9/Ovrfe9kZYgTlRBpQZoYplKmJBLQgt8UGcnXsRPY4ow3higuEJo4IIgsYIgb44oMuTjDMRSYwl2DuDnNjkT4MJT2RKl6FU0JFRIiF4wESEda4uYSne2AF/QDIMdnz26Xx7gAAAABJRU5ErkJggg==") no-repeat 0 50%;
+				}
+			}
 		}
 		&-cart {
 			.userbtn_count {
-				background: #f99b1c;
+				background: @orange-2;
 			}
 			.userbtn_icon {
 				margin-top: 9px;
@@ -181,7 +193,7 @@
 	    line-height: 1;
     	padding: 6px 20px 7px;
 	    .inline-block();
-	    border-color: #f99b1c;
+	    border-color: @orange-2;
 	}
 }
 
@@ -213,7 +225,7 @@
 			}
 			.navsite_lk {
 				&:after {
-					.pseudo-corner-top(6px, #292929, 80px);
+					.pseudo-corner-top(6px, @darkgrey4, 80px);
 					left: 50%;
 					margin-left: -6px;
 				}
@@ -265,7 +277,7 @@
 	top: 85px;
 	left: -50px;
 	z-mainpage: 20;
-	border: 1px solid #292929;
+	border: 1px solid @darkgrey4;
 	border-top-width: 6px;
 	background: @white;
 	width: 205px;
@@ -304,7 +316,7 @@
 
 .navsite3 {
 	display: none;
-	border: 1px solid #292929;
+	border: 1px solid @darkgrey4;
 	border-top-width: 6px;
 	background: url("@{base-url}/mainpage/img/nav-shadow.png") repeat-y 204px 0 @white;
 	left: -1px;
@@ -328,7 +340,7 @@
     &_lk {
     	font-size: 12px;
     	&:hover {
-    		border-bottom: 1px solid #a0a0a0;
+    		border-bottom: 1px solid @darkgrey5;
     		text-decoration: none;
     	}
     }
@@ -348,7 +360,7 @@
 		&:hover {
 			text-decoration: none;
 			.navitem_n {
-	    		border-bottom: 1px solid #a0a0a0;
+	    		border-bottom: 1px solid @darkgrey5;
 	    		text-decoration: none;
 	    	}
     	}
