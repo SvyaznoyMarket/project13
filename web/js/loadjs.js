@@ -626,18 +626,19 @@
         },
 
         'page404': function() {
-            $LAB
-                .queueWait( function() {
-                    $LAB.script( getWithVersion('jquery-plugins.js') )
-                        .script( getWithVersion('library.js') )
-                        .script('JsHttpRequest.min.js')
-                        .script( mustacheUrl )
-                        .script( knockoutUrl )
-                        .script( loadDebugPanel )
-                        .wait()
-                        .script( getWithVersion('common.js') )
-                        .script( getWithVersion('product.js') )
-                }).runQueue();
+            $LAB.queueWait( function() {
+                $LAB.script( getWithVersion('jquery-plugins.js') )
+                    .script( getWithVersion('library.js') )
+                    .script('JsHttpRequest.min.js')
+                    .script( mustacheUrl )
+                    .script( knockoutUrl )
+                    .script( loadDebugPanel )
+                    .wait()
+                    .script( getWithVersion('common.js') )
+                    .script( getWithVersion('product.js') )
+                    .wait()
+                    .script( getWithVersion('ports.js') )
+            }).runQueue();
         }
 	};
 
