@@ -1212,7 +1212,7 @@ if ( typeof Object.create !== 'function' ) {
 				//self.zoomContainer = $('<div/>').addClass('zoomContainer').css({"position":"relative", "height":self.nzHeight, "width":self.nzWidth});
 
 				if ( !self.options.disableZoom ) {
-					self.zoomContainer = $('<div class="zoomContainer" style="z-index: 9999;-webkit-transform: translateZ(0);position:absolute;left:'+self.nzOffset.left+'px;top:'+self.nzOffset.top+'px;height:'+self.nzHeight+'px;width:'+self.nzWidth+'px;"></div>');
+					self.zoomContainer = $('<div class="zoomContainer" style="z-index: 99;-webkit-transform: translateZ(0);position:absolute;left:'+self.nzOffset.left+'px;top:'+self.nzOffset.top+'px;height:'+self.nzHeight+'px;width:'+self.nzWidth+'px;"></div>');
 					$('body').append(self.zoomContainer);	
 
 
