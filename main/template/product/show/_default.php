@@ -146,6 +146,8 @@ $isNewRecommendation =
         <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getSecondaryGroupedProperties()]) // Характеристики ?>
     <? endif ?>
 
+    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent, 'sprosikupiReviews' => $sprosikupiReviews, 'shoppilotReviews' => $shoppilotReviews]) ?>
+
     <? if (!$showSimilarOnTop || !$isNewRecommendation): ?>
         <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
             <?= $helper->render('product/__slider', [
@@ -163,8 +165,6 @@ $isNewRecommendation =
             ]) ?>
         <? endif ?>
     <? endif ?>
-
-    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent, 'sprosikupiReviews' => $sprosikupiReviews, 'shoppilotReviews' => $shoppilotReviews]) ?>
 
 </div><!--/left section -->
 

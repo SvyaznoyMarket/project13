@@ -11,6 +11,10 @@
  */
 ?>
 
+<?
+$helper = new \Helper\TemplateHelper();
+?>
+
 <? if (\App::config()->adFox['enabled']): ?>
 <div class="adfoxWrapper" id="adfox683sub"></div>
 <? endif ?>
@@ -66,6 +70,26 @@
       'productVideosByProduct' => $productVideosByProduct,
       'isAddInfo'              => true,
   )) ?>
+
+  <div class="clear"></div>
+
+  <div style="margin: 0 auto 30px; width: 940px;">
+      <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
+          <?= $helper->render('product/__slider', [
+              'type'      => 'viewed',
+              'title'     => 'Вы смотрели',
+              'products'  => [],
+              'count'     => null,
+              'limit'     => \App::config()->product['itemsInSlider'],
+              'page'      => 1,
+              'url'       => $page->url('product.recommended'),
+              'sender'    => [
+                  'name'     => 'retailrocket',
+                  'position' => 'Viewed',
+              ],
+          ]) ?>
+      <? endif ?>
+  </div>
 
   <div class="clear"></div>
 
