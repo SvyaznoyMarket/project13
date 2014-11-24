@@ -188,6 +188,15 @@
   *zoom: 1;
 }
 
+// спрайт
+.sprite-temp(@x: 0, @y: 0, @width: 0, @height: 0) {
+    background-position: @x @y;
+    width: @width;
+    background-repeat: no-repeat;
+    .inline-block();
+    height: @height;
+}
+
 .pseudo-class() {
   content: "";
   position: absolute;

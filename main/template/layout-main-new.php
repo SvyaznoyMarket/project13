@@ -252,7 +252,7 @@
     </div><!--/ Шаблон -->
 
     <div class="footer">
-        <div class="footer_t">
+        <div class="footer_t clearfix">
             <ul class="footer_cmpn clearfix">                                 
                 <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="/about_company">О компании</a></li>
                 <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="http://feedback.enter.ru/">Напишите нам</a></li>
@@ -289,14 +289,7 @@
             </ul>
 
             <ul class="footer_app">
-                <li class="footer_app_i footer_app_i-t">Мобильные приложения</li>
                 <li class="footer_app_i"><a target="_blank" href="https://itunes.apple.com/ru/app/enter/id486318342?mt=8"><img class="footer_app_img" src="/styles/footer/img/apple.png" /></a></li>
-                
-                <li class="footer_app_i">
-                    <a target="_blank" href="http://www.windowsphone.com/ru-ru/store/app/enter/6f4c5810-682f-47dc-87b2-aced84582787">
-                        <img class="footer_app_img" src="/styles/footer/img/wind.png" />
-                    </a>
-                </li>
 
                 <li class="footer_app_i">
                     <a target="_blank" href="https://play.google.com/store/apps/details?id=ru.enter">

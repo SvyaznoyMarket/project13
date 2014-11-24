@@ -1,0 +1,140 @@
+// подвал
+.footer {
+    width: 960px;
+    height: 195px;
+    margin: -195px auto 0;
+    background: @black;
+    border-style: solid; 
+    border-color: #e6e6e6;
+    border-width: 0 1px 0 1px;
+    position: relative;
+    &_t {
+        background: @white;
+        padding-bottom: 5px;
+    }
+    &_b {
+        background: @black;
+        height: 20px;
+        line-height: 20px;
+    }
+    //копирайт
+    &_cpy {
+        padding: 0 10px;
+        color: #c7c7c7;
+        &_l {
+            float: left;
+        }
+        &_r {
+            float: right;
+            color: #c7c7c7;
+            &:hover {
+                text-decoration: none;
+            }
+        }
+        &_c {
+            margin: 0 auto;
+            text-align: center;
+        }
+        &_mbl {
+            .inline-block();
+            text-decoration: none;
+            padding: 0 0 0 22px;
+        }
+    }
+    // информация о компании
+    &_cmpn {
+        margin: 0 0 10px;
+        padding: 11px 10px;
+        background-color: #e6e6e6;
+        &_i {
+            float: left;
+            margin: 0 61px 0 0;
+            &:last-child,
+            &-last {
+                margin-right: 0;
+                float: right;
+            }
+        }
+    }
+    // правовая информация
+    &_inf {
+        float: left;
+        font-size: 11px;
+    	margin: 0 0 0 10px;
+        &_lst {
+            &_i {
+                .inline-block();
+                color: #515151;
+                margin-right: 35px;
+            }
+        }
+        &_tx {
+            color: #929292;
+            margin: 3px 0 25px;
+            display: inline-block;
+            vertical-align: top;
+        }
+    }
+    // ссылки на соц сети
+    &_socnet {
+        float: right;
+        margin: 0 10px;
+        &_i {
+            .inline-block();
+            color: #515151;
+            margin-right: 5px;
+        }
+    }
+    // баннерки
+    &_bnnr {
+        float: left;
+        margin: 0 10px;
+        &_i {
+            float: left;
+            margin-right: 20px;
+            &:last-child {
+                margin-right: 0;
+            }
+            .teleportator {
+                width: 130px;
+            }
+        }
+    }
+    //ссылки на приложения
+    &_app {
+        float: right;
+        margin: 0 10px;
+        &_i {
+            float: right;
+            margin: 0 0 5px 10px;
+        }
+        &_img {
+            display: block;
+            .rounded(4px);
+        }
+    }
+}
+
+.i-share {
+    background-image: url("@{base-url}/index/img/i-share.png");
+
+    &-fb {
+        .sprite-temp(0, 0, 28px, 28px);
+    }
+
+    &-od {
+        .sprite-temp(-28px, 0, 28px, 28px);
+    }
+
+    &-tw {
+        .sprite-temp(-56px, 0, 28px, 28px);
+    }
+
+    &-vk {
+        .sprite-temp(-84px, 0, 28px, 28px);
+    }
+
+    &-yt {
+        .sprite-temp(-112px, 0, 28px, 28px);
+    }
+}
