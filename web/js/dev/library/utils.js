@@ -40,6 +40,43 @@
 	};
 
 	/**
+	 * Добавляет get-параметр с именем paramName к url или заменяет существующий (удаляя указанный параметр, если paramValue равно null)
+	 *
+	 * @param 		{string}	paramName
+	 * @param 		{string}	paramValue
+	 * @param 		{string}	url
+	 * @returns 	{string}	Новый URL
+	 */
+	utils.setURLParam = function(paramName, paramValue, url) {
+		var regexp = new RegExp('([\\?&])(' + utils.escapeRegexp(encodeURIComponent(paramName)) + '=)[^&#]*');
+
+		if (regexp.exec(url) === null) {
+			if (url.indexOf('?') == -1) {
+				url += '?';
+			} else {
+				url += '&';
+			}
+
+			url += encodeURIComponent(paramName) + '=' + encodeURIComponent(paramValue);
+			return url;
+		} else if (paramValue === null) {
+			return url.replace(regexp, '$1').replace(/\?\&/, '?').replace(/[\?\&]$/, '');
+		} else {
+			return url.replace(regexp, '$1$2' + encodeURIComponent(paramValue));
+		}
+	};
+
+	/**
+	 * Экранирует спец. символы регулярного выражения в строке
+	 *
+	 * @param 		{string}	string
+	 * @returns 	{string}	Экранированная строка
+	 */
+	utils.escapeRegexp = function(string) {
+		return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+	};
+
+	/**
 	 * @param {string} routeName
 	 * @param {object} [params]
 	 * @return {string}

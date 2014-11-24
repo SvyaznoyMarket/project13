@@ -1881,10 +1881,23 @@ $(document).ready(function(){
 	};
 }());
 ;(function( ENTER ) {
+	function changeSocnetLinks(isSubscribe) {
+		$('.js-registerForm-socnetLink').each(function(index, link) {
+			var $link = $(link);
+			$link.attr('href', ENTER.utils.setURLParam('subscribe', isSubscribe ? '1' : null, $link.attr('href')));
+		});
+	}
+
+	changeSocnetLinks($('.js-registerForm-subscribe')[0].checked);
+
 	var
 		$authBlock = $('#auth-block'),
 
         init = function() {
+			$('.js-registerForm-subscribe').change(function(e) {
+				changeSocnetLinks(e.currentTarget.checked);
+			});
+
             // изменение состояния блока авторизации
             $authBlock.on('changeState', function(e, state) {
                 var

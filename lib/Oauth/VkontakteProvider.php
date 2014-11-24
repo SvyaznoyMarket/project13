@@ -17,13 +17,14 @@ class VkontakteProvider implements ProviderInterface {
 
     /**
      * @param string $redirect_to
+     * @param string $subscribe "1" - если пользователь подписался на рассылку, пустая строка в противном случае
      * @return string
      */
-    public function getLoginUrl($redirect_to = '') {
+    public function getLoginUrl($redirect_to = '', $subscribe = '') {
         return 'http://oauth.vk.com/authorize?' . http_build_query([
             'client_id'     => $this->config->clientId,
             'scope'         => 'email',//, offline для получения токена без срока годности
-            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME, 'redirect_to' => $redirect_to], true),
+            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME, 'subscribe' => $subscribe, 'redirect_to' => $redirect_to], true),
             'response_type' => 'code'
         ]);
     }
@@ -40,11 +41,11 @@ class VkontakteProvider implements ProviderInterface {
             return null;
         }
 
-        $response = $this->query($this->getAccessTokenUrl($code, $request->get('redirect_to')));
+        $response = $this->query($this->getAccessTokenUrl($code, $request->get('redirect_to'), $request->get('subscribe')));
 
 
         if (empty($response['access_token']) || empty($response['user_id'])) {
-            \App::logger()->warn(['provider' => self::NAME, 'url' => $this->getAccessTokenUrl($code), 'response' => $response], ['oauth']);
+            \App::logger()->warn(['provider' => self::NAME, 'url' => $this->getAccessTokenUrl($code, $request->get('redirect_to'), $request->get('subscribe')), 'response' => $response], ['oauth']);
             return null;
         }
         $userId = $response['user_id'];
@@ -69,14 +70,15 @@ class VkontakteProvider implements ProviderInterface {
     /**
      * @param $code
      * @param string $redirect_to
+     * @param string $subscribe "1" - если пользователь подписался на рассылку, пустая строка в противном случае
      * @return string
      */
-    private function getAccessTokenUrl($code, $redirect_to = '') {
+    private function getAccessTokenUrl($code, $redirect_to = '', $subscribe = '') {
         return 'https://oauth.vk.com/access_token?' . http_build_query([
             'client_id'     => $this->config->clientId,
             'client_secret' => $this->config->secretKey,
             'code'          => $code,
-            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME, 'redirect_to' => $redirect_to], true),
+            'redirect_uri'  => \App::router()->generate('user.login.external.response', ['providerName' => self::NAME, 'subscribe' => $subscribe, 'redirect_to' => $redirect_to], true),
         ]);
     }
 
