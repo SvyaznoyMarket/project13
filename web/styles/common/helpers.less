@@ -3,20 +3,20 @@
  */
 
 //отчистка потока
-.clearfix:before,
-.clearfix:after {
+.clearfix:before
+,
+.clearfix:after{
     display: table;
 
-    content: " ";
+    content: ' ';
 }
- 
-.clearfix:after {
+
+.clearfix:after{
     clear: both;
 }
- 
-/* IE6/7 support */
-.clearfix {
 
+/* IE6/7 support */
+.clearfix{
     *zoom: 1;
 }
 
@@ -25,10 +25,10 @@
  */
 
 //темно-серая кнопка в фильтрах и в фиксированной плашке
-.btnGrey {
-    .blackGrad();
-    .rounded(4px);
-    .inline-block();
+.btnGrey{
+    font-weight: bold;
+    line-height: 30px;
+
     width: 190px;
     padding-left: 15px;
 
@@ -37,10 +37,10 @@
     color: @white;
     border: 1px solid #a1a1a1;
 
-    font-weight: bold;
-    line-height: 30px;
-
-    &:hover {
+    .blackGrad();
+    .rounded(4px);
+    .inline-block();
+    &:hover{
         text-decoration: none;
 
         color: @white;
@@ -48,10 +48,7 @@
     }
 }
 
-.btnLightGrey {
-    .grayGradDark();
-    .rounded(4px);
-    .inline-block();
+.btnLightGrey{
     padding: 0 10px;
 
     text-align: center;
@@ -60,186 +57,189 @@
     color: @black;
     border: 1px solid @lightgreyBr;
 
-    &:hover {
+    .grayGradDark();
+    .rounded(4px);
+    .inline-block();
+    &:hover{
         text-decoration: none;
     }
 }
 
-//правила для плавающих блоков
-.fl-l {
-  float: left;
+// плавающие блоки
+.fl-l{
+    float: left;
 }
 
-.fl-r {
-  float: right;
+.fl-r{
+    float: right;
 }
 
 // размеры шрифта
-.xs {
+.xs{
     font-size: 11px;
 }
 
-.s {
+.s{
     font-size: 12px;
 }
 
-.m {
+.m{
     font-size: 14px;
 }
 
-.l {
+.l{
     font-size: 16px;
 }
 
-.dblock {
+.dblock{
     display: block;
 }
 
 // выравнивание текста
-.ta-c {
-  text-align: center;
+.ta-c{
+    text-align: center;
 }
 
-.ta-r {
+.ta-r{
     text-align: right;
 }
 
-.ta-l {
+.ta-l{
     text-align: left;
 }
 
-.va-t {
+.va-t{
     vertical-align: top;
 }
 
-.va-m {
+.va-m{
     vertical-align: middle;
 }
 
-.va-b {
+.va-b{
     vertical-align: bottom;
 }
 
 // text-decoration
-.td-lineth {
+.td-lineth{
     text-decoration: line-through;
 }
 
-.td-underl {
+.td-underl{
     text-decoration: underline;
 }
 
 // отступы
-.mb5 {
-  margin-bottom: 5px;
+.mb5{
+    margin-bottom: 5px;
 }
 
-.mb20 {
+.mb20{
     margin-bottom: 20px;
 }
 
-.mb10 {
+.mb10{
     margin-bottom: 10px;
 }
 
-.nomargin {
-  margin: 0;
+.nomargin{
+    margin: 0;
 }
 
-.m-auto {
+.m-auto{
     display: block;
 
     margin: 0 auto;
 }
 
-// цвета тестов 
-.colorGrey {
+// цвета тестов
+.colorGrey{
     color: @typGray;
-
-    a {
+    a{
         color: @typGray;
     }
 }
 
-.colorBrightGrey {
+.colorBrightGrey{
     color: @colorActiveGrey;
-
-    a {
+    a{
         color: @colorActiveGrey;
     }
 }
 
-.colorBlack {
+.colorBlack{
     color: @black;
-
-    a {
+    a{
         color: @black;
     }
 }
 
-.colorRed {
+.colorRed{
     color: @firmRed;
-
-    a {
+    a{
         color: @firmRed;
     }
 }
 
-// фоны блоков 
-.bgGrey {
+// фоны блоков
+.bgGrey{
     background: @lightgreyBg;
 }
 
 // бордеры
-.brb-dt {
+.brb-dt{
     border-bottom: 1px dotted;
-} 
+}
 
 // основные стили элементов форм
-.textfield {
-    .rounded(4px);
-    .box-sizing();
+.textfield{
+    line-height: 35px;
+
     display: block;
 
     height: 35px;
     margin: 0 0 15px;
-    padding-left: 10px;
     padding-right: 10px;
+    padding-left: 10px;
 
     border: 1px solid @lightgrey-2;
 
-    line-height: 35px;
-
-    &-err {
+    .rounded(4px);
+    .box-sizing();
+    &-err{
         border-color: #ec434f;
     }
 }
 
-.textfieldgrey {
-    .rounded(4px);
-    .box-sizing();
+.textfieldgrey{
+    line-height: 26px;
+
     height: 26px;
     margin: 0 0 10px;
     padding-left: 10px;
 
     border: 1px solid @typLightGray;
 
-    line-height: 26px;
+    .rounded(4px);
+    .box-sizing();
 }
 
-
-.errtx {
-    border-color: #ec434f;
-    border-style: solid;
-    border-width: 1px 1px 1px 6px;
-    color: #ec434f;
+.errtx{
     font-size: 16px;
+
     margin: 0 0 10px;
     padding: 10px;
+
+    color: #ec434f;
+    border-width: 1px 1px 1px 6px;
+    border-style: solid;
+    border-color: #ec434f;
 }
 
-.btnsubmit {
-    .rounded(4px);
+.btnsubmit{
+    font-size: 14px;
+    line-height: 33px;
+
     height: 33px;
     padding: 0 15px;
 
@@ -247,22 +247,19 @@
     border: 1px solid #ff6c00;
     background: @submitBg;
 
-    font-size: 14px;
-    line-height: 33px;
+    .rounded(4px);
 }
 
-.labeltext {
+.labeltext{
+    font-size: 12px;
+    line-height: 1.5;
+
     display: block;
 
     margin: 0 0 5px;
-
-    font-size: 12px;
-    line-height: 1.5;
 }
 
-.textarea {
-    .rounded(4px);
-    .box-sizing();
+.textarea{
     display: block;
 
     margin: 0 0 15px;
@@ -271,18 +268,21 @@
     resize: none;
 
     border: 1px solid @lightgrey-2;
-}
 
-.legend {
-    margin: 10px 0 15px;
-
-    font-size: 18px;
-}
-
-// кастомный селект 
-.customSel {
-    .inline-block();
     .rounded(4px);
+    .box-sizing();
+}
+
+.legend{
+    font-size: 18px;
+
+    margin: 10px 0 15px;
+}
+
+// кастомный селект
+.customSel{
+    font-size: 14px;
+
     position: relative;
 
     height: 26px;
@@ -294,31 +294,29 @@
     border: 1px solid @lightgrey-2;
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAYElEQVQIHWMMDw/fysDw34sBAzBuYwKKFQLxLzQ5EL+QacWKFbeYmBgnIkuC+GBxkCAnJ3czkHoBVfACymcAGcswd+7cz0xMzBUgNogG8UFshv///8MwI9Bxk4B8RpgYAKNoKpNJevrLAAAAAElFTkSuQmCC) no-repeat 95% 50%;
 
-    font-size: 14px;
-
-    &_def {
+    .inline-block();
+    .rounded(4px);
+    &_def{
         line-height: 26px;
     }
-
-    &_lst {
-        //display: none;
-        width: 100%;
+    &_lst{
         top: -1px;
         right: -1px;
-    }
+        //display: none;
 
-    &_i {
+        width: 100%;
+    }
+    &_i{
         padding: 4px 5px;
 
         cursor: pointer;
 
         border-bottom: 1px solid @lightgrey-2;
-
-        &:last-child {
+        &:last-child{
             border-bottom: none;
         }
     }
-    &_btn {
+    &_btn{
         font-size: 14px;
     }
 }
