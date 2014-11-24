@@ -1,0 +1,191 @@
+// информация о магазине - доставка, оплата...
+@full-size: 100%;
+@shopInfo-item-width: 235px;
+.shopInfo {
+	margin: 15px 10px;
+	&_i {
+		border: 1px dotted @black;
+		width: 205px;
+		height: 35px;
+		padding: 4px 6px;
+		margin: 0 8px;
+		float: left;
+		cursor: pointer;
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+	&_r {
+		.inline-block-middle();
+	}
+	&_l {
+		.inline-block-middle();
+		margin: 0 2px 0 0;
+	}
+	&_tx {
+		margin: 0;
+	}
+	&_tl {
+		font-size: 14px;
+		font-weight: bold;
+		line-height: 1.2;
+	}
+}
+
+@shopInfoTab-corner-left: @shopInfo-item-width/2 - 40;
+.shopInfoTab {
+	padding: 15px 15px 20px;
+	margin: 20px 0;
+	text-align: center;
+	border: 1px solid @black;
+	position: relative;
+	display: none;
+	&:before {
+		.pseudo-corner-top(12px, @black, -12px);
+		left: @shopInfoTab-corner-left;
+	}
+	&:after {
+		.pseudo-corner-top(10px, @white, -10px);
+		left: @shopInfoTab-corner-left + 2;
+	}
+	&-v2 {
+		&:before {
+			left: @shopInfo-item-width + @shopInfoTab-corner-left;
+		}
+		&:after {
+			left: @shopInfo-item-width + @shopInfoTab-corner-left + 2;
+		}
+	}
+	&-v3 {
+		&:before {
+			left: 2*@shopInfo-item-width + @shopInfoTab-corner-left;
+		}
+		&:after {
+			left: 2*@shopInfo-item-width + @shopInfoTab-corner-left + 2;
+		}
+	}
+	&-v4 {
+		&:before {
+			left: 3*@shopInfo-item-width + @shopInfoTab-corner-left;
+		}
+		&:after {
+			left: 3*@shopInfo-item-width + @shopInfoTab-corner-left + 2;
+		}
+	}
+	&_lst {
+		.table();
+		width: @full-size;
+		margin: 0 0 20px;
+	}
+	&_i {
+		.table-cell();
+		vertical-align: top;
+	}
+	&_iconw {
+		width: 120px;
+		margin: 0 auto;
+	}
+	&_icon {
+		border: 1px solid @black;
+		.rounded(50%);
+		width: 120px;
+		height: 120px;
+		overflow: hidden;
+		.table-cell();
+		vertical-align: middle;
+		text-align: center;
+	}
+	&_tx {
+		text-transform: uppercase;
+		margin: 10px 0 0;
+		text-align: center;
+	}
+
+	&_btn {
+		padding: 5px 20px;
+		line-height: 1;
+		border: 1px solid @black;
+		.rounded(3px);
+		.inline-block();
+		font-size: 14px;
+		&:hover {
+			text-decoration: none;
+		}
+	}
+}
+
+.i-shopInfo {
+    background-image: url("@{base-url}/mainpage/img/i-delivery.png");
+
+    &-delivery {
+        .sprite-temp(0, 0, 33px, 33px);
+    }
+
+    &-deliveryself {
+        .sprite-temp(-33px, 0, 33px, 33px);
+    }
+
+    &-payment {
+        .sprite-temp(0, -33px, 33px, 33px);
+    }
+
+    &-wow {
+        .sprite-temp(-33px, -33px, 33px, 33px);
+    }
+}
+
+.i-shopinfo {
+    background-image: url("@{base-url}/mainpage/img/i-shopinfo.png");
+
+    &-delivery1 {
+        .sprite-temp(-10px, -10px, 101px, 87px);
+    }
+
+    &-delivery2 {
+        .sprite-temp(-131px, -10px, 100px, 64px);
+    }
+
+    &-delivery3 {
+        .sprite-temp(-160px, -106px, 120px, 113px);
+    }
+
+    &-delivery4 {
+        .sprite-temp(-10px, -227px, 87px, 88px);
+    }
+
+    &-payment1 {
+        .sprite-temp(-117px, -227px, 88px, 72px);
+    }
+
+    &-payment2 {
+        .sprite-temp(-251px, -10px, 92px, 64px);
+    }
+
+    &-payment3 {
+        .sprite-temp(-225px, -227px, 62px, 78px);
+    }
+
+    &-payment4 {
+        .sprite-temp(-363px, -10px, 67px, 77px);
+    }
+
+    &-payment5 {
+        .sprite-temp(-339px, -107px, 60px, 77px);
+    }
+
+    &-selfdelivery1 {
+        .sprite-temp(-339px, -204px, 86px, 72px);
+    }
+
+    &-selfdelivery2 {
+        .sprite-temp(-307px, -296px, 76px, 68px);
+    }
+
+    &-selfdelivery3 {
+        .sprite-temp(-10px, -384px, 85px, 54px);
+    }
+
+    &-selfdelivery4 {
+        .sprite-temp(-115px, -384px, 60px, 60px);
+    }
+}
