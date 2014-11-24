@@ -28,28 +28,28 @@
         <ul class="slidesBox_lst clearfix">
             <li class="slidesBox_i">
                 <div class="item">
-                    <a href="" class="item_imgw"><img src="styles/index/img/pic/item.png" class="item_img" /></a>
+                    <a href="" class="item_imgw"><img src="styles/mainpage/img/pic/item.png" class="item_img" /></a>
                     <div class="item_n"><a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a></div>
                     <div class="item_pr">22 990 <span class="rubl">p</span></div>
                     <a class="item_btn btn5" href="">Купить</a>
                 </div>
 
                 <div class="item">
-                    <a href="" class="item_imgw"><img src="styles/index/img/pic/item.png" class="item_img" /></a>
+                    <a href="" class="item_imgw"><img src="styles/mainpage/img/pic/item.png" class="item_img" /></a>
                     <div class="item_n"><a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a></div>
                     <div class="item_pr">22 990 <span class="rubl">p</span></div>
                     <a class="item_btn btn5" href="">Купить</a>
                 </div>
 
                 <div class="item">
-                    <a href="" class="item_imgw"><img src="styles/index/img/pic/item.png" class="item_img" /></a>
+                    <a href="" class="item_imgw"><img src="styles/mainpage/img/pic/item.png" class="item_img" /></a>
                     <div class="item_n"><a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a></div>
                     <div class="item_pr">22 990 <span class="rubl">p</span></div>
                     <a class="item_btn btn5" href="">Купить</a>
                 </div>
 
                 <div class="item">
-                    <a href="" class="item_imgw"><img src="styles/index/img/pic/item.png" class="item_img" /></a>
+                    <a href="" class="item_imgw"><img src="styles/mainpage/img/pic/item.png" class="item_img" /></a>
                     <div class="item_n"><a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a></div>
                     <div class="item_pr">22 990 <span class="rubl">p</span></div>
                     <a class="item_btn btn5" href="">Купить</a>
@@ -58,28 +58,28 @@
 
             <li class="slidesBox_i">
                 <div class="item">
-                    <a href="" class="item_imgw"><img src="styles/index/img/pic/item.png" class="item_img" /></a>
+                    <a href="" class="item_imgw"><img src="styles/mainpage/img/pic/item.png" class="item_img" /></a>
                     <div class="item_n"><a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a></div>
                     <div class="item_pr">22 990 <span class="rubl">p</span></div>
                     <a class="item_btn btn5" href="">Купить</a>
                 </div>
 
                 <div class="item">
-                    <a href="" class="item_imgw"><img src="styles/index/img/pic/item.png" class="item_img" /></a>
+                    <a href="" class="item_imgw"><img src="styles/mainpage/img/pic/item.png" class="item_img" /></a>
                     <div class="item_n"><a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a></div>
                     <div class="item_pr">22 990 <span class="rubl">p</span></div>
                     <a class="item_btn btn5" href="">Купить</a>
                 </div>
 
                 <div class="item">
-                    <a href="" class="item_imgw"><img src="styles/index/img/pic/item.png" class="item_img" /></a>
+                    <a href="" class="item_imgw"><img src="styles/mainpage/img/pic/item.png" class="item_img" /></a>
                     <div class="item_n"><a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a></div>
                     <div class="item_pr">22 990 <span class="rubl">p</span></div>
                     <a class="item_btn btn5" href="">Купить</a>
                 </div>
 
                 <div class="item">
-                    <a href="" class="item_imgw"><img src="styles/index/img/pic/item.png" class="item_img" /></a>
+                    <a href="" class="item_imgw"><img src="styles/mainpage/img/pic/item.png" class="item_img" /></a>
                     <div class="item_n"><a href="">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</a></div>
                     <div class="item_pr">22 990 <span class="rubl">p</span></div>
                     <a class="item_btn btn5" href="">Купить</a>

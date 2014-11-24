@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page           \View\Main\IndexPage
+ * @var $page           \View\Main\mainpagePage
  */
 ?><!DOCTYPE html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -57,10 +57,10 @@
             <?= $page->render('main/_infoBlocks') ?>
 
             <?= $page->render('main/_slidesBox', ['class' => 'slidesBox slidesBox-items']) ?>
+
             <?= $page->render('main/_slidesBox', ['class' => 'slidesBox slidesBox-bg2 slidesBox-items fl-r']) ?>
 
             <?= $page->render('main/infoBox') ?>
-
 
             <div class="slidesBox slidesBox-bg3 slidesBox-full">
                 <div class="slidesBox_h">
@@ -77,38 +77,38 @@
                             <li class="slidesBox_dott_i"></li>
                         </ul>
                     </div>
-                    
+
                     <div class="slidesBox_btn slidesBox_btn-r"></div>
                 </div>
 
                 <div class="slidesBox_inn">
                     <ul class="slidesBox_lst clearfix">
                         <li class="slidesBox_i">
-                            <a href="" class="slidesBox_lk"><img src="styles/index/img/pic/banner2.png" alt="" class="slidesBox_img"></a>
+                            <a href="" class="slidesBox_lk"><img src="styles/mainpage/img/pic/banner2.png" alt="" class="slidesBox_img"></a>
 
                             <ul class="slidesBox_items">
                                 <li class="slidesBox_items_i">
-                                    <a href="" class="slidesBox_items_lk"><img src="styles/index/img/pic/item.png" alt="" class="slidesBox_items_img"></a>
+                                    <a href="" class="slidesBox_items_lk"><img src="styles/mainpage/img/pic/item.png" alt="" class="slidesBox_items_img"></a>
                                 </li>
 
                                 <li class="slidesBox_items_i">
-                                    <a href="" class="slidesBox_items_lk"><img src="styles/index/img/pic/item.png" alt="" class="slidesBox_items_img"></a>
+                                    <a href="" class="slidesBox_items_lk"><img src="styles/mainpage/img/pic/item.png" alt="" class="slidesBox_items_img"></a>
                                 </li>
 
                                 <li class="slidesBox_items_i">
-                                    <a href="" class="slidesBox_items_lk"><img src="styles/index/img/pic/item.png" alt="" class="slidesBox_items_img"></a>
+                                    <a href="" class="slidesBox_items_lk"><img src="styles/mainpage/img/pic/item.png" alt="" class="slidesBox_items_img"></a>
                                 </li>
 
                                 <li class="slidesBox_items_i">
-                                    <a href="" class="slidesBox_items_lk"><img src="styles/index/img/pic/item.png" alt="" class="slidesBox_items_img"></a>
+                                    <a href="" class="slidesBox_items_lk"><img src="styles/mainpage/img/pic/item.png" alt="" class="slidesBox_items_img"></a>
                                 </li>
 
                                 <li class="slidesBox_items_i">
-                                    <a href="" class="slidesBox_items_lk"><img src="styles/index/img/pic/item.png" alt="" class="slidesBox_items_img"></a>
+                                    <a href="" class="slidesBox_items_lk"><img src="styles/mainpage/img/pic/item.png" alt="" class="slidesBox_items_img"></a>
                                 </li>
 
                                 <li class="slidesBox_items_i">
-                                    <a href="" class="slidesBox_items_lk"><img src="styles/index/img/pic/item.png" alt="" class="slidesBox_items_img"></a>
+                                    <a href="" class="slidesBox_items_lk"><img src="styles/mainpage/img/pic/item.png" alt="" class="slidesBox_items_img"></a>
                                 </li>
                             </ul>
 
@@ -116,31 +116,31 @@
                         </li>
 
                         <li class="slidesBox_i">
-                            <a href="" class="slidesBox_lk"><img src="styles/index/img/pic/banner2.png" alt="" class="slidesBox_img"></a>
+                            <a href="" class="slidesBox_lk"><img src="styles/mainpage/img/pic/banner2.png" alt="" class="slidesBox_img"></a>
 
                             <ul class="slidesBox_items">
                                 <li class="slidesBox_items_i">
-                                    <a href="" class="slidesBox_items_lk"><img src="styles/index/img/pic/item.png" alt="" class="slidesBox_items_img"></a>
+                                    <a href="" class="slidesBox_items_lk"><img src="styles/mainpage/img/pic/item.png" alt="" class="slidesBox_items_img"></a>
                                 </li>
 
                                 <li class="slidesBox_items_i">
-                                    <a href="" class="slidesBox_items_lk"><img src="styles/index/img/pic/item.png" alt="" class="slidesBox_items_img"></a>
+                                    <a href="" class="slidesBox_items_lk"><img src="styles/mainpage/img/pic/item.png" alt="" class="slidesBox_items_img"></a>
                                 </li>
 
                                 <li class="slidesBox_items_i">
-                                    <a href="" class="slidesBox_items_lk"><img src="styles/index/img/pic/item.png" alt="" class="slidesBox_items_img"></a>
+                                    <a href="" class="slidesBox_items_lk"><img src="styles/mainpage/img/pic/item.png" alt="" class="slidesBox_items_img"></a>
                                 </li>
 
                                 <li class="slidesBox_items_i">
-                                    <a href="" class="slidesBox_items_lk"><img src="styles/index/img/pic/item.png" alt="" class="slidesBox_items_img"></a>
+                                    <a href="" class="slidesBox_items_lk"><img src="styles/mainpage/img/pic/item.png" alt="" class="slidesBox_items_img"></a>
                                 </li>
 
                                 <li class="slidesBox_items_i">
-                                    <a href="" class="slidesBox_items_lk"><img src="styles/index/img/pic/item.png" alt="" class="slidesBox_items_img"></a>
+                                    <a href="" class="slidesBox_items_lk"><img src="styles/mainpage/img/pic/item.png" alt="" class="slidesBox_items_img"></a>
                                 </li>
 
                                 <li class="slidesBox_items_i">
-                                    <a href="" class="slidesBox_items_lk"><img src="styles/index/img/pic/item.png" alt="" class="slidesBox_items_img"></a>
+                                    <a href="" class="slidesBox_items_lk"><img src="styles/mainpage/img/pic/item.png" alt="" class="slidesBox_items_img"></a>
                                 </li>
                             </ul>
 
@@ -158,92 +158,92 @@
                 <ul class="lstitem clearfix">
                     <li class="lstitem_i">
                         <a class="lstitem_lk" href="">
-                            <img src="styles/index/img/pic/brand.jpg" alt="" class="lstitem_img">
+                            <img src="styles/mainpage/img/pic/brand.jpg" alt="" class="lstitem_img">
                         </a>
                     </li>
                     <li class="lstitem_i">
                         <a class="lstitem_lk" href="">
-                            <img src="styles/index/img/pic/brand2.jpg" alt="" class="lstitem_img">
+                            <img src="styles/mainpage/img/pic/brand2.jpg" alt="" class="lstitem_img">
                         </a>
                     </li>
                     <li class="lstitem_i">
                         <a class="lstitem_lk" href="">
-                            <img src="styles/index/img/pic/brand3.jpg" alt="" class="lstitem_img">
+                            <img src="styles/mainpage/img/pic/brand3.jpg" alt="" class="lstitem_img">
                         </a>
                     </li>
                     <li class="lstitem_i">
                         <a class="lstitem_lk" href="">
-                            <img src="styles/index/img/pic/brand.jpg" alt="" class="lstitem_img">
+                            <img src="styles/mainpage/img/pic/brand.jpg" alt="" class="lstitem_img">
                         </a>
                     </li>
                     <li class="lstitem_i">
                         <a class="lstitem_lk" href="">
-                            <img src="styles/index/img/pic/brand2.jpg" alt="" class="lstitem_img">
+                            <img src="styles/mainpage/img/pic/brand2.jpg" alt="" class="lstitem_img">
                         </a>
                     </li>
                     <li class="lstitem_i">
                         <a class="lstitem_lk" href="">
-                            <img src="styles/index/img/pic/brand3.jpg" alt="" class="lstitem_img">
+                            <img src="styles/mainpage/img/pic/brand3.jpg" alt="" class="lstitem_img">
                         </a>
                     </li>
                     <li class="lstitem_i">
                         <a class="lstitem_lk" href="">
-                            <img src="styles/index/img/pic/brand.jpg" alt="" class="lstitem_img">
+                            <img src="styles/mainpage/img/pic/brand.jpg" alt="" class="lstitem_img">
                         </a>
                     </li>
                     <li class="lstitem_i">
                         <a class="lstitem_lk" href="">
-                            <img src="styles/index/img/pic/brand2.jpg" alt="" class="lstitem_img">
+                            <img src="styles/mainpage/img/pic/brand2.jpg" alt="" class="lstitem_img">
                         </a>
                     </li>
                     <li class="lstitem_i">
                         <a class="lstitem_lk" href="">
-                            <img src="styles/index/img/pic/brand3.jpg" alt="" class="lstitem_img">
+                            <img src="styles/mainpage/img/pic/brand3.jpg" alt="" class="lstitem_img">
                         </a>
                     </li>
                     <li class="lstitem_i">
                         <a class="lstitem_lk" href="">
-                            <img src="styles/index/img/pic/brand.jpg" alt="" class="lstitem_img">
+                            <img src="styles/mainpage/img/pic/brand.jpg" alt="" class="lstitem_img">
                         </a>
                     </li>
                     <li class="lstitem_i">
                         <a class="lstitem_lk" href="">
-                            <img src="styles/index/img/pic/brand2.jpg" alt="" class="lstitem_img">
+                            <img src="styles/mainpage/img/pic/brand2.jpg" alt="" class="lstitem_img">
                         </a>
                     </li>
                     <li class="lstitem_i">
                         <a class="lstitem_lk" href="">
-                            <img src="styles/index/img/pic/brand3.jpg" alt="" class="lstitem_img">
+                            <img src="styles/mainpage/img/pic/brand3.jpg" alt="" class="lstitem_img">
                         </a>
                     </li>
                     <li class="lstitem_i">
                         <a class="lstitem_lk" href="">
-                            <img src="styles/index/img/pic/brand.jpg" alt="" class="lstitem_img">
+                            <img src="styles/mainpage/img/pic/brand.jpg" alt="" class="lstitem_img">
                         </a>
                     </li>
                     <li class="lstitem_i">
                         <a class="lstitem_lk" href="">
-                            <img src="styles/index/img/pic/brand2.jpg" alt="" class="lstitem_img">
+                            <img src="styles/mainpage/img/pic/brand2.jpg" alt="" class="lstitem_img">
                         </a>
                     </li>
                     <li class="lstitem_i">
                         <a class="lstitem_lk" href="">
-                            <img src="styles/index/img/pic/brand3.jpg" alt="" class="lstitem_img">
+                            <img src="styles/mainpage/img/pic/brand3.jpg" alt="" class="lstitem_img">
                         </a>
                     </li>
                     <li class="lstitem_i">
                         <a class="lstitem_lk" href="">
-                            <img src="styles/index/img/pic/brand.jpg" alt="" class="lstitem_img">
+                            <img src="styles/mainpage/img/pic/brand.jpg" alt="" class="lstitem_img">
                         </a>
                     </li>
                     <li class="lstitem_i">
                         <a class="lstitem_lk" href="">
-                            <img src="styles/index/img/pic/brand2.jpg" alt="" class="lstitem_img">
+                            <img src="styles/mainpage/img/pic/brand2.jpg" alt="" class="lstitem_img">
                         </a>
                     </li>
                     <li class="lstitem_i">
                         <a class="lstitem_lk" href="">
-                            <img src="styles/index/img/pic/brand3.jpg" alt="" class="lstitem_img">
+                            <img src="styles/mainpage/img/pic/brand3.jpg" alt="" class="lstitem_img">
                         </a>
                     </li>
                 </ul>
@@ -252,8 +252,8 @@
     </div><!--/ Шаблон -->
 
     <div class="footer">
-        <div class="footer_t">
-            <ul class="footer_cmpn clearfix">                                 
+        <div class="footer_t clearfix">
+            <ul class="footer_cmpn clearfix">
                 <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="/about_company">О компании</a></li>
                 <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="http://feedback.enter.ru/">Напишите нам</a></li>
                 <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="/how_pay">Способы оплаты</a></li>
@@ -289,14 +289,7 @@
             </ul>
 
             <ul class="footer_app">
-                <li class="footer_app_i footer_app_i-t">Мобильные приложения</li>
                 <li class="footer_app_i"><a target="_blank" href="https://itunes.apple.com/ru/app/enter/id486318342?mt=8"><img class="footer_app_img" src="/styles/footer/img/apple.png" /></a></li>
-                
-                <li class="footer_app_i">
-                    <a target="_blank" href="http://www.windowsphone.com/ru-ru/store/app/enter/6f4c5810-682f-47dc-87b2-aced84582787">
-                        <img class="footer_app_img" src="/styles/footer/img/wind.png" />
-                    </a>
-                </li>
 
                 <li class="footer_app_i">
                     <a target="_blank" href="https://play.google.com/store/apps/details?id=ru.enter">

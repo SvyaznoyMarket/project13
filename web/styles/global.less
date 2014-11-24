@@ -2,26 +2,28 @@
 @base-url:"/styles";
 
 /*---БАЗОВЫЕ СТИЛИ---*/
-@import "main/reset.less";
+@import "common/reset.less";
 /*--END---БАЗОВЫЕ СТИЛИ---*/
 
 /*---ОСНОВНЫЕ ПРАВИЛА---*/
-@import "main/common.less";
+@import "common/common.less";
 /*--END---ОСНОВНЫЕ ПРАВИЛА---*/
 
 /*---ПРИМЕСИ---*/
-@import "main/mixins.less";
+@import "common/vars/mixins.less";
 /*--END---ПРИМЕСИ---*/
 
 /*---ОСНОВНЫЕ ЦВЕТА---*/
-@import "main/color.less";
+@import "common/vars/color.less";
 /*--END---ОСНОВНЫЕ ЦВЕТА---*/
 
 /*---------ШРИФТЫ----------*/
-@import "main/fonts.less";
+@import "common/fonts.less";
 /*---END----ШРИФТЫ---------*/
 
-@import "main/helpers.less" all;
+@import "common/helpers.less" all;
+
+@import "btn/btn.less" all;
 
 /*---------СТИЛИ ШАБЛОННЫХ ФОРМ----------*/
 @import "formDefault/formDefault.less";
@@ -29,15 +31,19 @@
 
 /*------СТИЛИ ШАПКИ------*/
 @import "header/header.less" all;
+@import "header/header-new.less" all;
 /*---END---СТИЛИ ШАПКИ---*/
 
 
 /*------СТИЛИ ПОДВАЛА------*/
 @import "footer/footer.less" all;
+@import "footer/footer-new.less" all;
 
 @import "footer/footer__order.less" all;
 /*---END---СТИЛИ ПОДВАЛА---*/
 
+/*---------Новая главная страница----------*/
+@import "mainpage/mainpage.less" all;
 
 
 /*---------КНОПКА НАВЕРХ----------*/
@@ -141,7 +147,7 @@
 //стили блоков с информацией о доставке .orderCol_delivrIn
 @import "order/orderDeliveryInfo.less" all;
 
-//блок товара в оформлении заказа .orderCol_cnt 
+//блок товара в оформлении заказа .orderCol_cnt
 @import "order/orderItem.less" all;
 
 //дополнительные пожелания .orderComment
@@ -187,11 +193,7 @@
 /*---------Личный кабинет пользователя----------*/
 @import "popup-auth/popup-auth.less" all;
 
-/*---------Личный кабинет пользователя----------*/
-@import "btn/btn.less" all;
 
-/*---------Личный кабинет пользователя----------*/
-@import "index/index.less" all;
 
 /*---------Сравнение----------*/
 @import "compare/compare.less" all;
@@ -205,4 +207,4 @@
 
 
 //стили для фикса старых правил и классов, в последствии, при полном переходе на новую верстку удалить
-@import "main/old__style__fix.less" all;
+@import "common/old__style__fix.less" all;
