@@ -63,7 +63,7 @@ $isNewRecommendation =
         <? endif ?>
 
         <? if ($showSimilarOnTop && $isNewRecommendation): ?>
-            <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
+            <? if (\App::config()->product['pullRecommendation']): ?>
                 <?= $helper->render('product/__slider', [
                     'type'     => 'similar',
                     'title'    => 'Похожие товары',
@@ -110,7 +110,7 @@ $isNewRecommendation =
         ]) ?>
     <? endif ?>
 
-    <? if (\App::config()->product['showRelated'] && !$isTchibo): ?>
+    <? if (\App::config()->product['showRelated']): ?>
         <?= $helper->render('product/__slider', [
             'type'           => 'alsoBought',
             'title'          => 'С этим товаром покупают',
@@ -134,7 +134,7 @@ $isNewRecommendation =
     <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'content']) ?>
 
     <? if (!$showSimilarOnTop || !$isNewRecommendation): ?>
-        <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
+        <? if (\App::config()->product['pullRecommendation']): ?>
             <?= $helper->render('product/__slider', [
                 'type'     => 'similar',
                 'title'    => 'Похожие товары',
@@ -226,7 +226,7 @@ $isNewRecommendation =
 
 <div class="clear"></div>
 
-<? if (false && \App::config()->product['pullRecommendation'] && !$isTchibo): ?>
+<? if (false && \App::config()->product['pullRecommendation']): ?>
     <?= $helper->render('product/__slider', [
         'type'     => 'alsoViewed',
         'title'    => 'С этим товаром также смотрят',
@@ -242,7 +242,7 @@ $isNewRecommendation =
     ]) ?>
 <? endif ?>
 
-<? if ($isNewRecommendation && \App::config()->product['pullRecommendation'] && !$isTchibo): ?>
+<? if ($isNewRecommendation && \App::config()->product['pullRecommendation']): ?>
     <?= $helper->render('product/__slider', [
         'type'      => 'viewed',
         'title'     => 'Вы смотрели',
