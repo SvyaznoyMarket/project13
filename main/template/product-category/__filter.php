@@ -90,12 +90,12 @@ return function(
     <form id="productCatalog-filter-form" class="bFilter clearfix js-filter <? if ($hasAlwaysShowFilters): ?>js-filter-hasAlwaysShowFilters<? endif ?>" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
         <? if ($hasAlwaysShowFilters): ?>
             <? foreach ($alwaysShowFilters as $filter): ?>
-                <div class="fltrSet js-filter-toggle-container <? if ('Металл' === $filter->getName()): ?>fltrSet-metall<? endif ?> <? if ('Вставка' === $filter->getName()): ?>fltrSet-insertion<? endif ?>">
-                    <div class="fltrSet_tggl fltrSet_tggl-dn js-filter-toggle-button">
+                <div class="fltrSet <? if ('new_filter_with_photo_closed' === \App::abTest()->getTest('jewel_filter')->getChosenCase()->getKey()): ?>fltrSet-close<? endif ?> js-filter-toggle-container <? if ('Металл' === $filter->getName()): ?>fltrSet-metall<? endif ?> <? if ('Вставка' === $filter->getName()): ?>fltrSet-insertion<? endif ?>">
+                    <div class="fltrSet_tggl <? if ('new_filter_with_photo_opened' === \App::abTest()->getTest('jewel_filter')->getChosenCase()->getKey()): ?>fltrSet_tggl-dn<? endif ?> js-filter-toggle-button">
                         <span class="fltrSet_tggl_tx"><?= $helper->escape($filter->getName()) ?></span>
                     </div>
 
-                    <div class="fltrSet_cnt js-filter-toggle-content">
+                    <div class="fltrSet_cnt js-filter-toggle-content" <? if ('new_filter_with_photo_closed' === \App::abTest()->getTest('jewel_filter')->getChosenCase()->getKey()): ?>style="display: none;"<? endif ?>>
                         <div class="fltrSet_inn clearfix">
                             <?= $helper->render('product-category/filter/__element', ['productFilter' => $productFilter, 'filter' => $filter, 'promoStyle' => $promoStyle]) ?>
                         </div>
