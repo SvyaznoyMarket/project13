@@ -2,26 +2,26 @@
 @base-url:"/styles";
 
 /*---БАЗОВЫЕ СТИЛИ---*/
-@import "main/reset.less";
+@import "common/reset.less";
 /*--END---БАЗОВЫЕ СТИЛИ---*/
 
 /*---ОСНОВНЫЕ ПРАВИЛА---*/
-@import "main/common.less";
+@import "common/common.less";
 /*--END---ОСНОВНЫЕ ПРАВИЛА---*/
 
 /*---ПРИМЕСИ---*/
-@import "main/mixins.less";
+@import "common/vars/mixins.less";
 /*--END---ПРИМЕСИ---*/
 
 /*---ОСНОВНЫЕ ЦВЕТА---*/
-@import "main/color.less";
+@import "common/vars/color.less";
 /*--END---ОСНОВНЫЕ ЦВЕТА---*/
 
 /*---------ШРИФТЫ----------*/
-@import "main/fonts.less";
+@import "common/fonts.less";
 /*---END----ШРИФТЫ---------*/
 
-@import "main/helpers.less" all;
+@import "common/helpers.less" all;
 
 /*---------СТИЛИ ШАБЛОННЫХ ФОРМ----------*/
 @import "formDefault/formDefault.less";
@@ -143,7 +143,7 @@
 //стили блоков с информацией о доставке .orderCol_delivrIn
 @import "order/orderDeliveryInfo.less" all;
 
-//блок товара в оформлении заказа .orderCol_cnt 
+//блок товара в оформлении заказа .orderCol_cnt
 @import "order/orderItem.less" all;
 
 //дополнительные пожелания .orderComment
@@ -193,7 +193,7 @@
 @import "btn/btn.less" all;
 
 /*---------Личный кабинет пользователя----------*/
-@import "index/index.less" all;
+@import "mainpage/mainpage.less" all;
 
 /*---------Сравнение----------*/
 @import "compare/compare.less" all;
