@@ -19,6 +19,33 @@
                     $('#jsOneClickContent').append(response.result.page);
 
                     $('body').trigger('trackUserAction', ['3_1 Оформить_успешно']);
+
+					(function() {
+						if (response.result.lastPartner != 'blackfridaysale') {
+							return '';
+						}
+
+						$.each(response.result.orders, function(index, order) {
+							var products = [];
+							var revenue = 0;
+							$.each(order.products, function(index, product) {
+								products.push({
+									id: product.id + '',
+									price: product.price + '',
+									quantity: parseInt(product.quantity)
+								});
+
+								revenue += parseFloat(product.price) * parseInt(product.quantity);
+							});
+
+							ENTER.counters.initGetIntentCounter({
+								type: "CONVERSION",
+								orderId: order.id + '',
+								orderProducts: products,
+								orderRevenue: revenue + ''
+							});
+						});
+					})();
                 }
 
                 var $orderContainer = $('#jsOrderV3OneClickOrder');

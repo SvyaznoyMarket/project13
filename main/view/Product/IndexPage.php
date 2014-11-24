@@ -384,5 +384,23 @@ class IndexPage extends \View\DefaultLayout {
         return $this->tryRender('_googleAnalytics', ['product' => $this->getParam('product')]);
     }
 
+    public function slotGetIntentJS() {
+        if (!\App::config()->partners['GetIntent']['enabled']) {
+            return '';
+        }
 
+        /** @var \Model\Product\Entity|null $product */
+        $product = $this->getParam('product');
+        if (!($product instanceof \Model\Product\Entity)) {
+            $product = null;
+        }
+
+        $data = [
+            'productId' => $product ? (string)$product->getId() : '',
+            'productPrice' => $product ? (string)$product->getPrice() : '',
+            'categoryId' => $product && $product->getLastCategory() ? (string)$product->getLastCategory()->getId() : '',
+        ];
+
+        return '<div id="GetIntentJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
+    }
 }

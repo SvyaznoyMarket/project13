@@ -253,6 +253,7 @@ $c->partners['Lamoda']['lamodaID'] = '11640775691088171491';
 $c->partners['TagMan']['enabled'] = false;
 $c->partners['Revolver']['enabled'] = true;
 $c->partners['Insider']['enabled'] = true;
+$c->partners['GetIntent']['enabled'] = true;
 
 $c->adFox['enabled'] = true;
 
@@ -513,15 +514,15 @@ $c->abTest = [
             'expireDate' => '2014-12-31',
             'cases' => [
                 'old' => [
-                    'traffic'  => 60,
+                    'traffic'  => 0,
                     'name'     => 'Старое оформление заказа',
                 ],
                 'new_1' => [
-                    'traffic'  => 20,
+                    'traffic'  => 0,
                     'name'     => 'Новое оформление заказа, версия 1',
                 ],
                 'new_2' => [
-                    'traffic'  => 20,
+                    'traffic'  => 100,
                     'name'     => 'Новое оформление заказа, версия 2',
                 ]
             ]
@@ -538,11 +539,11 @@ $c->abTest = [
                     'name'     => 'Старое оформление заказа',
                 ],
                 'new_1' => [
-                    'traffic'  => 50,
+                    'traffic'  => 0,
                     'name'     => 'Новое оформление заказа, версия 1',
                 ],
                 'new_2' => [
-                    'traffic'  => 50,
+                    'traffic'  => 100,
                     'name'     => 'Новое оформление заказа, версия 2',
                 ]
             ]
@@ -561,27 +562,6 @@ $c->abTest = [
                 'delivery_self_0' => [
                     'traffic'  => 50,
                     'name'     => 'Бесплатный самовывоз',
-                ]
-            ]
-        ],
-
-        'furniture_anzoli' => [
-            'name'  => 'Вид категории Anzoli в разделе Мебель',
-            'gaSlotNumber'        => 10,
-            'enabled' => true,
-            'expireDate' => '2014-12-31',
-            'cases' => [
-                'furniture_main1' => [
-                    'traffic'  => 33,
-                    'name'     => 'Широкий баннер',
-                ],
-                'furniture_main2' => [
-                    'traffic'  => 33,
-                    'name'     => 'Баннер из пяти частей',
-                ],
-                'furniture_main3' => [
-                    'traffic'  => 34,
-                    'name'     => 'Большой баннер',
                 ]
             ]
         ],
