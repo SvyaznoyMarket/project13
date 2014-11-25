@@ -244,7 +244,7 @@ class DefaultLayout extends Layout {
      * @return string
      */
     public function slotNavigation() {
-        return $this->render('common/_navigation', ['menu' => (new Menu())->generate_new(\App::user()->getRegion())]);
+        return $this->render($this->new_menu ? 'common/_navigation-new' : 'common/_navigation-old', ['menu' => (new Menu())->generate_new(\App::user()->getRegion())]);
     }
 
     public function slotUserbarContent() {
