@@ -365,7 +365,7 @@ class Repository {
      * @param Entity               $category
      * @param \Model\Region\Entity $region
      */
-    public function prepareEntityBranch(Entity $category, \Model\Region\Entity $region = null) {
+    public function prepareEntityBranch(Entity $category, \Model\Region\Entity $region = null, array $filters = []) {
         $params = [
             'root_id'         => $category->getHasChild() ? $category->getId() : $category->getParentId(),
             'max_level'       => 5,
@@ -373,6 +373,10 @@ class Repository {
         ];
         if ($region) {
             $params['region_id'] = $region->getId();
+        }
+
+        if (!empty($filters)) {
+            $params['filters'] = $filters;
         }
 
         // SITE-3524 Поддержка неактивных категорий для отладки страниц на preview.enter.ru

@@ -247,9 +247,6 @@ class Action {
 
         // подготовка 3-го пакета запросов
 
-        // запрашиваем дерево категорий
-        \RepositoryManager::productCategory()->prepareEntityBranch($category, $region);
-
         // получаем фильтры из http-запроса
         $filterUrl = $this->getFilterFromUrl($request);
 
@@ -268,6 +265,13 @@ class Action {
                     $filterParams[] = [$name, 1, $values];
                 }
             }
+        }
+
+        // запрашиваем дерево категорий
+        if ($category->isAppliancesRoot()) {
+            \RepositoryManager::productCategory()->prepareEntityBranch($category, $region, $filterParams);
+        } else {
+            \RepositoryManager::productCategory()->prepareEntityBranch($category, $region);
         }
 
         // запрашиваем фильтры
@@ -410,6 +414,19 @@ class Action {
 
         if (\App::abTest()->getTest('jewel_filter') && \App::abTest()->getTest('jewel_filter')->getEnabled()) {
             $this->ab_jewel_filter($category, $productFilter);
+        }
+
+        // TODO перенести на боевой сайт перед загрузкой картинок брендов
+        if (!$category->isAppliancesRoot()) {
+            foreach ($productFilter->getFilterCollection() as $filter) {
+                if ('Бренд' === $filter->getName()) {
+                    foreach ($filter->getOption() as $option) {
+                        $option->setImageUrl('');
+                    }
+
+                    break;
+                }
+            }
         }
 
         // получаем из json данные о горячих ссылках и content
@@ -676,8 +693,56 @@ class Action {
             throw new \Exception(sprintf('У категории "%s" отстутсвуют дочерние узлы', $category->getId()));
         }
 
+        if ($category->isAppliancesRoot() && $request->isXmlHttpRequest()) {
+            $data = [
+                'links' => $this->getRootCategoryLinks($category, $page),
+                'category' => ['name' => $category->getName()],
+            ];
+
+            return new \Http\JsonResponse($data);
+        }
+
+        $page->setParam('links', $this->getRootCategoryLinks($category, $page));
         $page->setParam('sidebarHotlinks', true);
         return new \Http\Response($page->show());
+    }
+
+    private function getRootCategoryLinks(\Model\Product\Category\Entity $category, \View\Layout $page) {
+        $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
+
+        /** @var $categories \Model\Product\Category\Entity[] */
+        $categories = $category->getChild();
+        if (!empty($relatedCategories)) {
+            $categories = array_merge($categories, $relatedCategories);
+        }
+
+        $links = [];
+        foreach ($categories as $child) {
+            $config = isset($categoryConfigById[$child->getId()]) ? $categoryConfigById[$child->getId()] : null;
+            $productCount = $child->getProductCount() ? : $child->getGlobalProductCount();
+            $totalText = '';
+
+            if ( $productCount > 0 ) {
+                $totalText = $productCount . ' ' . ($child->getHasLine()
+                        ? $page->helper->numberChoice($productCount, array('серия', 'серии', 'серий'))
+                        : $page->helper->numberChoice($productCount, array('товар', 'товара', 'товаров'))
+                    );
+            }
+
+            $linkUrl = $child->getLink();
+            $linkUrl .= \App::request()->getQueryString() ? (strpos('?', $linkUrl) === false ? '?' : '&') . \App::request()->getQueryString() : '';
+            $linkUrl .= \App::request()->get('instore') ? (strpos('?', $linkUrl) === false ? '?' : '&') . 'instore=1' : '';
+
+            $links[] = [
+                'name'          => isset($config['name']) ? $config['name'] : $child->getName(),
+                'url'           => $linkUrl,
+                'image'         => (is_array($config) && array_key_exists('image', $config)) ? $config['image'] : $child->getImageUrl('furniture' === $category_class ? 3 : 0),
+                'css'           => isset($config['css']) ? $config['css'] : null,
+                'totalText'     => $totalText,
+            ];
+        }
+
+        return $links;
     }
 
     /**
