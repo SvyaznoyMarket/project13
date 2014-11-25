@@ -17,7 +17,7 @@ $lastMenu1 = end($menu); // последний элемент главного �
                 </a>
             <? else : ?>
                 <a href="<?= $menu1->link ?>" class="navsite_lk">
-                    <div class="navsite_imgw"><img class="navsite_img" src="<?= $menu1->image ?>" alt="" width="40" height="40"></div>
+                    <div class="navsite_imgw"><img class="navsite_img" src="<?= $menu1->image ?>" alt=""></div>
                     <span class="navsite_tx"><?= $menu1->name?></span>
                 </a>
             <? endif; ?>
