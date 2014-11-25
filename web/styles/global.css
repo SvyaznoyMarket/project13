@@ -1325,7 +1325,7 @@ img[height="0"] {
   }
   .header_b {
     height: 85px;
-    padding: 5px 10px 0;
+    padding: 5px 5px 0;
     border-left: 1px solid #bbbbbb;
     border-right: 1px solid #bbbbbb;
     position: relative;
@@ -1520,6 +1520,66 @@ img[height="0"] {
     margin: 0 0 10px;
     line-height: 1;
   }
+  .i-header {
+    background-image: url("/styles/mainpage/img/i-header.png");
+  }
+  .i-header-cart {
+    background-position: -2px -2px;
+    width: 25px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    height: 33px;
+  }
+  .i-header-compare {
+    background-position: -31px -2px;
+    width: 25px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    height: 25px;
+  }
+  .i-header-ep {
+    background-position: -60px -2px;
+    width: 97px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    height: 24px;
+  }
+  .i-header-phone {
+    background-position: -161px -2px;
+    width: 21px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    height: 28px;
+  }
+  .i-header-search {
+    background-position: -186px -2px;
+    width: 27px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    height: 20px;
+  }
+}
+@media all {
   .navsite {
     display: table;
     /* IE6-8 */
@@ -1539,7 +1599,7 @@ img[height="0"] {
     text-align: center;
     position: relative;
     vertical-align: top;
-    padding: 0 5px;
+    padding: 0 1px;
   }
   .navsite_i:hover .navsite2 {
     display: block;
@@ -1560,10 +1620,10 @@ img[height="0"] {
     left: -11px;
   }
   .navsite_icon {
-    font-size: 95px;
+    font-size: 90px;
     height: 40px;
     line-height: 0.5;
-    margin: 0 0 10px -5px;
+    margin: 0 0 10px 0;
     color: #000000;
     font-family: 'menuIconFont';
   }
@@ -1578,6 +1638,8 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
+    width: 38px;
+    height: 38px;
   }
   .navsite_tx {
     text-transform: uppercase;
@@ -1608,9 +1670,6 @@ img[height="0"] {
     -moz-transition: all 0.3s ease;
     transition: all 0.3s ease;
   }
-  .navsite2:hover {
-    width: 415px;
-  }
   .navsite2_i:hover .navsite3 {
     display: block;
     -moz-opacity: 1;
@@ -1632,8 +1691,9 @@ img[height="0"] {
     border-top: 8px solid transparent;
     border-right: 8px solid #ffffff;
     border-bottom: 8px solid transparent;
-    top: 5px;
+    top: 50%;
     right: -3px;
+    margin-top: -8px;
   }
   .navsite2_lk {
     font-size: 14px;
@@ -1709,64 +1769,6 @@ img[height="0"] {
   }
   .navitem_pr {
     font-size: 21px;
-  }
-  .i-header {
-    background-image: url("/styles/mainpage/img/i-header.png");
-  }
-  .i-header-cart {
-    background-position: -2px -2px;
-    width: 25px;
-    background-repeat: no-repeat;
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    height: 33px;
-  }
-  .i-header-compare {
-    background-position: -31px -2px;
-    width: 25px;
-    background-repeat: no-repeat;
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    height: 25px;
-  }
-  .i-header-ep {
-    background-position: -60px -2px;
-    width: 97px;
-    background-repeat: no-repeat;
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    height: 24px;
-  }
-  .i-header-phone {
-    background-position: -161px -2px;
-    width: 21px;
-    background-repeat: no-repeat;
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    height: 28px;
-  }
-  .i-header-search {
-    background-position: -186px -2px;
-    width: 27px;
-    background-repeat: no-repeat;
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    height: 20px;
   }
 }
 /*---END---СТИЛИ ШАПКИ---*/
