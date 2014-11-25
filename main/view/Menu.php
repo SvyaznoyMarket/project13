@@ -111,6 +111,10 @@ class Menu {
                                     'type' => 'category-get',
                                     'id'   => $categoryItem['id'],
                                 ],
+                                'children' => [['source'=> [
+                                    'type' => 'category-tree',
+                                    'id'   => $categoryItem['id'],
+                                ],]]
                             ];
                         }
                         unset($categoryItem);
