@@ -62,11 +62,25 @@ $count = count($menu);
 
 <ul class="bMainMenuLevel-<?= $level ?>">
     <? if ((3 ==$level) && $parent instanceof \Model\Menu\Entity && $parent->image): ?>
+        <noscript>
         <li class="bMainMenuLevel-<?= $level ?>__eHead"><?= $parent->name ?></li>
         <li class="bMainMenuLevel-<?= $level ?>__eImageItem">
             <img class="bMainMenuLevel-<?= $level ?>__eImage lazyMenuImg" width="150" data-src="<?= $parent->image ?>" alt="<?= $helper->escape($parent->name) ?>" />
-            <noscript><img class="bMainMenuLevel-<?= $level ?>__eImage" width="150" src="<?= $parent->image ?>" alt="<?= $helper->escape($parent->name) ?>" /></noscript>
+            <img class="bMainMenuLevel-<?= $level ?>__eImage" width="150" src="<?= $parent->image ?>" alt="<?= $helper->escape($parent->name) ?>" />
         </li>
+        </noscript>
+
+       <li class="bMainMenuLevel-<?= $level ?>__eProd">
+            <div class="menuItem">
+                <div class="menuItem_t">Товар дня!</div>
+                <a class="menuItem_cnt" href="">
+                    <img src="http://fs05.enter.ru/1/1/200/1c/236998.jpg" alt="" class="menuItem_img">
+                    <span class="menuItem_n">Мобильный телефон Explay A240 черный</span>
+                </a>
+
+                <div class="menuItem_pr">22 290 <span class="rubl">p</span></div>
+            </div>
+       </li>
     <? endif ?>
 
     <? $i = 1; foreach ($menu as $iMenu): ?>
