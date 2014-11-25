@@ -46,11 +46,10 @@
         <?= $page->slotTopbar() ?>
         <!-- /Topbar -->
 
+        <?= $page->slotSearchBar() ?>
+
         <!-- Header -->
-        <div id="header" class="clearfix">
-            <a id="topLogo" href="/">Enter Связной</a>
-            <?= $page->slotNavigation() ?>
-        </div>
+        <?= $page->slotNavigation() ?>
         <!-- /Header -->
 
     </header>

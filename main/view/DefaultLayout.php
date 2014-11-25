@@ -237,7 +237,7 @@ class DefaultLayout extends Layout {
      * @return string
      */
     public function slotSearchBar() {
-        return $this->render('common/_searchbar');
+        return $this->new_menu ? $this->render('common/_searchbar') : '';
     }
 
     /** Строка поиска
