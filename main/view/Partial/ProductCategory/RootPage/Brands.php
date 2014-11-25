@@ -47,6 +47,7 @@ class Brands {
         return [
             'mainBrands' => $mainBrands,
             'otherBrands' => $otherBrands,
+            'otherBrandsCount' => count($otherBrands),
             'showOtherBrandsText' => 'Ещё ' . count($otherBrands) . ' ' . $helper->numberChoice(count($otherBrands), ['бренд', 'бренда', 'брендов']),
             'brandsCount' => count($mainBrands) + count($otherBrands),
             'selectedBrandsCount' => $selectedBrandsCount,

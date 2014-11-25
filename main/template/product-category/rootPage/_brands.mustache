@@ -9,11 +9,13 @@
         <a href="{{url}}" class="{{#active}}active{{/active}} js-productCategory-rootPage-brands-link"><img src="{{imageUrl}}" alt="{{name}}" /></a>
     {{/mainBrands}}
 
-    <a class="js-productCategory-rootPage-brands-else" href="#">{{showOtherBrandsText}}</a>
+    {{#otherBrandsCount}}
+        <a class="js-productCategory-rootPage-brands-else" href="#">{{showOtherBrandsText}}</a>
 
-    <div class="js-productCategory-rootPage-brands-other" style="display: none;">
-        {{#otherBrands}}
-            <a href="{{url}}" class="{{#active}}active{{/active}} js-productCategory-rootPage-brands-link"><img src="{{imageUrl}}" alt="{{name}}" /></a>
-        {{/otherBrands}}
-    </div>
+        <div class="js-productCategory-rootPage-brands-other" style="display: none;">
+            {{#otherBrands}}
+                <a href="{{url}}" class="{{#active}}active{{/active}} js-productCategory-rootPage-brands-link"><img src="{{imageUrl}}" alt="{{name}}" /></a>
+            {{/otherBrands}}
+        </div>
+    {{/otherBrandsCount}}
 </div>
