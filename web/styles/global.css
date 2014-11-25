@@ -1605,10 +1605,10 @@ img[height="0"] {
     display: block;
   }
   .navsite_i:first-child:hover .navsite2 {
-    left: -11px;
+    left: -6px;
   }
   .navsite_i:last-child:hover .navsite2 {
-    left: -160px;
+    left: -159px;
   }
   .navsite_i-child:hover .navsite_lk:after {
     position: absolute;
@@ -1631,8 +1631,8 @@ img[height="0"] {
     font-family: 'menuIconFont';
   }
   .navsite_imgw {
-    height: 45px;
-    margin: 5px 0 0;
+    height: 40px;
+    margin: 5px 0;
     overflow: hidden;
   }
   .navsite_img {
