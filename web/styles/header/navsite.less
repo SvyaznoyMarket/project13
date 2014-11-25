@@ -35,6 +35,13 @@
 				}
 			}
 		}
+		&-last {
+			&:hover {
+				.navsite2 {
+					right: 0;
+				}
+			}
+		}
 	}
 	&_icon {
 		font-size: 90px;
@@ -51,8 +58,8 @@
 	}
 	&_img {
 		.inline-block();
-		width: 38px;
-		height: 38px;
+		width: auto;
+		height: 100%;
 	}
 	&_tx {
 		text-transform: uppercase;
@@ -178,5 +185,92 @@
 	}
 	&_pr {
 		font-size: 21px;
+	}
+}
+
+// стили для сторой навигации - убить к чертям, после перехода на новый дизайн
+.header_nav {
+	float: right;
+	margin: 14px 0 0;
+    width: 840px;
+	.navsite {
+		&_i {
+			padding: 0 3px;
+			.navsite_lk {
+				color: @white;
+				&:hover {
+					color: #ffa901;
+					.navsite_icon {
+						color: #ffa901;
+					}
+				}
+			}
+			&-child {
+				&:hover {
+					.navsite_lk {
+						&:after {
+							.pseudo-corner-top(6px, #ffa901, 80px);
+						}
+					}
+				}
+			}
+		}
+		&_icon {
+		    color: @white;
+		    font-size: 78px;
+		    font-weight: normal;
+		    height: 40px;
+		    margin: 0 0 10px;
+		}
+		&_tx {
+		    font-size: 11px;
+		}
+
+		&_imgw {
+		    height: 45px;
+		    margin: 0 0 5px;
+		    overflow: hidden;
+		    width: auto;
+		}
+	}
+	.navsite2 {
+		border-color: #ffa901;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		.rounded(3px);
+		&_i {
+			&:hover {
+				.navsite2_lk {
+					background: #e6e6e6;
+				}
+			}
+			&-child {
+				.navsite2_lk {
+					&:hover {
+						&:after {
+							.pseudo-corner-right(8px, transparent, 50%);
+						}
+					}
+				}
+			}
+		}
+	}
+	.navsite3 {
+		border-color: #ffa901;
+		.rounded(3px);
+		background-image: url("/css/header/img/border.gif");
+		background-position: 205px 0;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		&_i {
+			&-tl {
+				color: #ffa901;
+			    font-family: "Enter";
+			    font-size: 18px;
+			    line-height: 1.1;
+			    text-align: left;
+			    text-transform: uppercase;
+			}
+		}
 	}
 }
