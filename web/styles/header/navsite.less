@@ -16,7 +16,7 @@
 			.navsite2 {
 				display: block;
 			}
-			.navsite_lk {
+			.navsite_lk-child {
 				&:after {
 					.pseudo-corner-top(6px, @darkgrey4, 80px);
 					left: 50%;
@@ -91,10 +91,12 @@
 				background: #e3e3e3;
 				text-decoration: none;
 
-				&:after {
-					.pseudo-corner-right(8px, @white, 50%);
-					right: -3px;
-					margin-top: -8px;
+				&-child {
+					&:after {
+						.pseudo-corner-right(8px, @white, 50%);
+						right: -3px;
+						margin-top: -8px;
+					}
 				}
 			}
 		}

@@ -1604,7 +1604,7 @@ img[height="0"] {
   .navsite_i:hover .navsite2 {
     display: block;
   }
-  .navsite_i:hover .navsite_lk:after {
+  .navsite_i:hover .navsite_lk-child:after {
     position: absolute;
     content: '';
     width: 0;
@@ -1683,7 +1683,7 @@ img[height="0"] {
     background: #e3e3e3;
     text-decoration: none;
   }
-  .navsite2_i:hover .navsite2_lk:after {
+  .navsite2_i:hover .navsite2_lk-child:after {
     position: absolute;
     content: '';
     width: 0;
