@@ -2,13 +2,14 @@
 /**
  * @var $menu \Model\Menu\Entity[]|\Model\Menu\BasicMenuEntity[]
  */
+$lastMenu1 = end($menu); // последний элемент главного меню
 ?>
 
 <!-- навигация -->
 <nav class="header_b">
     <ul class="navsite">
     <? foreach ($menu as $menu1) : ?>
-        <li class="navsite_i">
+        <li class="navsite_i <?= ((bool)$menu1->children) ? 'navsite_i-child' : '' ?> <?= $lastMenu1 == $menu1 ? 'navsite_i-last': '' ?>">
             <? if ($menu1->char) : ?>
                 <a href="<?= $menu1->link ?>" class="navsite_lk">
                     <div class="navsite_icon"><?= $menu1->char?></div>
@@ -26,7 +27,7 @@
             <ul class="navsite2">
 
                 <? foreach ($menu1->children as $menu2) : ?>
-                    <li class="navsite2_i">
+                    <li class="navsite2_i <?= ((bool)$menu1->children) ? 'navsite2_i-child' : '' ?>">
                         <a href="<?= $menu2->link ?>" class="navsite2_lk"><?= $menu2->name ?></a>
 
                         <? if (!empty($menu2->children)) : ?>
