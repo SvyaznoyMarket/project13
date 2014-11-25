@@ -21,14 +21,3 @@
         <a class="bSubscribeLightboxPopup__eNotNow fr" data-url="<?= $page->url('subscribe.cancel') ?>" href="#">Спасибо, не сейчас</a>
     </div>
 <? endif ?>
-
-<!-- Topbar -->
-<?= $page->slotTopbar() ?>
-<!-- /Topbar -->
-
-<!-- Header -->
-<div id="header" class="clearfix">
-    <a id="topLogo" href="/">Enter Связной</a>
-    <?= $page->slotMainMenu() ?>
-</div>
-<!-- /Header -->

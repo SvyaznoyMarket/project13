@@ -39,7 +39,20 @@
     <?= $page->slotAdFoxBground() ?>
 
     <header class="header">
+
         <?= $page->slotHeader() ?>
+        <!-- Topbar -->
+
+        <?= $page->slotTopbar() ?>
+        <!-- /Topbar -->
+
+        <!-- Header -->
+        <div id="header" class="clearfix">
+            <a id="topLogo" href="/">Enter Связной</a>
+            <?= $page->slotMainMenu() ?>
+        </div>
+        <!-- /Header -->
+
     </header>
 
     <div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>

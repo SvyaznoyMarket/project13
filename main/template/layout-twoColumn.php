@@ -40,6 +40,18 @@
     <div class="wrapper">
         <header class="header">
             <?= $page->slotHeader() ?>
+
+            <!-- Topbar -->
+            <?= $page->slotTopbar() ?>
+            <!-- /Topbar -->
+
+            <!-- Header -->
+            <div id="header" class="clearfix">
+                <a id="topLogo" href="/">Enter Связной</a>
+                <?= $page->slotMainMenu() ?>
+            </div>
+            <!-- /Header -->
+
         </header><!--/ Шапка-->
 
         <div class="content mContentOrder clearfix">
