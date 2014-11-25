@@ -3,6 +3,11 @@
 namespace Controller\Error;
 
 class NotFoundAction {
+    /**
+     * @param \Exception $e
+     * @param \Http\Request $request
+     * @return \Http\Response
+     */
     public function execute(\Exception $e, \Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
