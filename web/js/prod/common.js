@@ -3734,7 +3734,6 @@ $(document).ready(function() {
             if ($bubble.length) {
                 $bubble.find('.slideItem_flt_i').text($el.data('product').name);
                 $bubble.addClass('slideItem_flt-show');
-                console.info($el.offset());
                 $bubble.offset({left: $el.offset().left});
             }
         });
