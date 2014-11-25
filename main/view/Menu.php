@@ -2,6 +2,8 @@
 
 namespace View;
 
+use Model\Menu\BasicMenuEntity;
+
 class Menu {
     /** @var \Model\Menu\Repository */
     private $repository;
@@ -163,6 +165,7 @@ class Menu {
         try {
             $exception = false;
 
+            // Получаем главное меню из scms
             $this->repository->prepareCollection(
                 function($data) use (&$menuData) {
                     $menuData = $data;
@@ -178,7 +181,7 @@ class Menu {
                 $region, 3, 0,
                 function($data) use (&$categoriesTree) {
                     if (is_array($data) && !empty($data)) {
-                        foreach($data as $dataItem) $categoriesTree[$dataItem['id']] = new \Model\Menu\BasicMenuEntity($dataItem);
+                        foreach($data as $dataItem) $categoriesTree[$dataItem['id']] = new BasicMenuEntity($dataItem);
                     } else {
                         throw new \Exception('Не удалось получить категории');
                     }
@@ -228,7 +231,7 @@ class Menu {
             }
 
             if (@$item['source']['type'] == 'slice') {
-                $menuItem = new \Model\Menu\BasicMenuEntity([
+                $menuItem = new BasicMenuEntity([
                     'name'  => @$item['name'],
                     'link'  => \App::router()->generate('slice.show', ['sliceToken' => @$item['source']['url']])
                 ]);
@@ -238,15 +241,16 @@ class Menu {
 
         }
 
+        $this->limitCategories($menu);
         $this->setCategoryLogo($menu, $categoriesWithLogo);
 
         return $menu;
     }
 
-    /**
+    /** Рекурсивное получение категории из дерева категорий
      * @param $id
-     * @param $categoryTree \Model\Menu\BasicMenuEntity[]
-     * @return \Model\Menu\BasicMenuEntity|null
+     * @param $categoryTree BasicMenuEntity[]
+     * @return BasicMenuEntity|null
      */
     private function getMenuItemById($id, $categoryTree) {
         $innerResult = null;
@@ -258,7 +262,7 @@ class Menu {
         return null;
     }
 
-    private function getImageFromMedias(\Model\Menu\BasicMenuEntity &$menuEntity, array $medias) {
+    private function getImageFromMedias(BasicMenuEntity &$menuEntity, array $medias) {
         foreach ($medias as $item) {
             if (in_array('mdpi', (array)@$item['tags'])) {
                 $menuEntity->image = @$item['sources'][0]['url'];
@@ -266,8 +270,28 @@ class Menu {
         }
     }
 
+    /** Ограничение количества категорий в меню 3-го уровня
+     * @param $menu
+     * @param int $limit Максимальное количество категорий
+     */
+    private function limitCategories(&$menu, $limit = 10){
+        /** @var $menu BasicMenuEntity[] */
+        foreach ($menu as $menu1) {
+            if (empty($menu1->children)) continue;
+            foreach ($menu1->children as $menu2) {
+                if (count($menu2->children) > 10) {
+                    $menu2->children = array_slice($menu2->children, 0, $limit);
+                    $menu2->children[] = new BasicMenuEntity([
+                        'name'  => 'Все категории',
+                        'link'  => $menu2->link
+                    ]);
+                }
+            }
+        }
+    }
+
     private function setCategoryLogo(&$menu, array $categoriesWithLogo) {
-        /** @var $menu \Model\Menu\BasicMenuEntity[] */
+        /** @var $menu BasicMenuEntity[] */
         foreach ($menu as $menuItem) {
             if (isset($categoriesWithLogo[$menuItem->ui])) {
                 $menuItem->logo = @$categoriesWithLogo[$menuItem->ui]['properties']['appearance']['logo_path'];
