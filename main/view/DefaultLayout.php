@@ -462,29 +462,26 @@ class DefaultLayout extends Layout {
 
     public function slotRetailRocket() {
         $routeName = \App::request()->attributes->get('route');
+        if ('orderV3.complete' === $routeName) {
+            $routeName = 'order.complete';
+        }
+
         $rrObj = new \View\Partners\RetailRocket($routeName);
-        $return = '';
 
         $rrData = null;
         if ($routeName == 'product') {
-
-            $product = $this->getParam('product');
-            $rrData = $rrObj->product($product);
+            $rrData = $rrObj->product($this->getParam('product'));
         } elseif ($routeName == 'product.category') {
-
-           $category = $this->getParam('category');
-           $rrData = $rrObj->category($category);
-
+           $rrData = $rrObj->category($this->getParam('category'));
         } elseif ($routeName == 'order.complete') {
-
-            $orders = $this->getParam('orders');
-            $rrData = $rrObj->transaction($orders);
-
+            if (!$this->getParam('sessionIsReaded')) {
+                $rrData = $rrObj->transaction($this->getParam('orders'));
+            }
         }
-        $rrObj = null;
 
         $rrData['emailCookieName'] = \App::config()->partners['RetailRocket']['userEmail']['cookieName'];
 
+        $return = '';
         $return .= '<div id="RetailRocketJS" class="jsanalytics"';
         if ($rrData) {
             $return .= ' data-value="' . $this->json($rrData) . '"';
