@@ -259,7 +259,7 @@
                 <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="/how_pay">Способы оплаты</a></li>
                 <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="/credit">Покупка в кредит</a></li>
                 <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="http://my.enter.ru/community/job">Работа у нас</a></li>
-                <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="/shops">Корпоративным клиентам</a></li>
+                <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="/b2b">Корпоративным клиентам</a></li>
                 <li class="footer_cmpn_i footer_cmpn_i-last"><a class="footer_cmpn_lk" href="/research">ЦСИ</a></li>
             </ul>
 
@@ -269,6 +269,7 @@
                     <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/terms">Условия продажи</a></li>
                     <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/media_info">Информация о СМИ</a></li>
                     <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/refurbished-sale">Уцененные товары оптом</a></li>
+                    <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/adv">Рекламные возможности</a></li>
                 </ul>
 
                 <p class="footer_inf_tx">Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.</p>
