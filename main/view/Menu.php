@@ -157,6 +157,7 @@ class Menu {
 
         $menuData = [];
         $categoriesTree = [];
+        $categoriesWithLogo = [];
 
         // Получаем данные из ядра
         try {
@@ -172,6 +173,7 @@ class Menu {
                 }
             );
 
+            // Получаем дерево категорий
             \RepositoryManager::productCategory()->prepareTreeCollection(
                 $region, 3, 0,
                 function($data) use (&$categoriesTree) {
@@ -181,6 +183,21 @@ class Menu {
                         throw new \Exception('Не удалось получить категории');
                     }
                 });
+
+            // Получаем категории, для которых нужно показывать логотип вместо текста
+            \App::scmsClient()->addQuery('category/get-by-filters',
+                [   'filters' => ['appearance.use_logo' => 'true'],
+                    'geo_id' => $region->getId()
+                ],
+                [],
+                function($data) use (&$categoriesWithLogo) {
+                    if (is_array($data)) {
+                        foreach ($data as $item) {
+                            $categoriesWithLogo[@$item['uid']] = (array)$item;
+                        }
+                    }
+                }
+            );
 
             \App::coreClientV2()->execute();
 
@@ -221,6 +238,8 @@ class Menu {
 
         }
 
+        $this->setCategoryLogo($menu, $categoriesWithLogo);
+
         return $menu;
     }
 
@@ -244,6 +263,17 @@ class Menu {
             if (in_array('mdpi', (array)@$item['tags'])) {
                 $menuEntity->image = @$item['sources'][0]['url'];
             }
+        }
+    }
+
+    private function setCategoryLogo(&$menu, array $categoriesWithLogo) {
+        /** @var $menu \Model\Menu\BasicMenuEntity[] */
+        foreach ($menu as $menuItem) {
+            if (isset($categoriesWithLogo[$menuItem->ui])) {
+                $menuItem->logo = @$categoriesWithLogo[$menuItem->ui]['properties']['appearance']['logo_path'];
+                continue;
+            }
+            if (!empty($menuItem->children)) $this->setCategoryLogo($menuItem->children, $categoriesWithLogo);
         }
     }
 
