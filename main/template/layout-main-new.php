@@ -259,8 +259,8 @@
                 <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="/how_pay">Способы оплаты</a></li>
                 <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="/credit">Покупка в кредит</a></li>
                 <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="http://my.enter.ru/community/job">Работа у нас</a></li>
-                <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="/shops">Корпоративным клиентам </a></li>
-                <li class="footer_cmpn_i footer_cmpn_i-last"><a class="footer_cmpn_lk" href="/how_get_order">ЦСИ</a></li>
+                <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="/shops">Корпоративным клиентам</a></li>
+                <li class="footer_cmpn_i footer_cmpn_i-last"><a class="footer_cmpn_lk" href="/research">ЦСИ</a></li>
             </ul>
 
             <div class="footer_inf">
@@ -306,6 +306,29 @@
                 <div class="footer_cpy_c"><a href="" class="footer_cpy_mbl">Мобильный сайт</a></div>
             </div>
         </footer>
+
+        <!-- krible.ru Teleportator -->
+        <script type="text/javascript">
+        var kribleCode = '5e14662e854af6384a9a84af28874dd8';
+        var kribleTeleportParam = {'text': '#ffffff', 'button': '#f99b1c', 'link':'#000000'};
+        (function (d, w) {
+            var n = d.getElementsByTagName("script")[0],
+                s = d.createElement("script"),
+                f = function() {
+                    n.parentNode.insertBefore(s, n);
+                };
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = 'http://chat.krible.ru/arena/'+
+              kribleCode.substr(0,2)+'/'+kribleCode+'/teleport.js';
+            if (w.opera == "[object Opera]") {
+                d.addEventListener("DOMContentLoaded", f);
+            } else {
+                f();
+            }
+        })(document, window);
+        </script>
+        <!-- /krible.ru Teleportator end -->
     </div><!--/ Подвал -->
 
     <?= $page->slotRegionSelection() ?>
