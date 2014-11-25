@@ -17,7 +17,7 @@
         <i class="shopInfo_l i-shopInfo i-shopInfo-payment"></i>
         <div class="shopInfo_r">
             <span class="shopInfo_tl undrl">Удобно платить</span>
-            <p class="shopInfo_tx">Онлайн, кредит, карты, нал</p>
+            <p class="shopInfo_tx">Способ оплаты на твой вкус</p>
         </div>
     </li>
     <li class="shopInfo_i">
