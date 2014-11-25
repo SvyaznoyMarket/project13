@@ -236,7 +236,9 @@ $isNewRecommendation =
     <?//= $helper->render('product/__warranty', ['product' => $product]) ?>
     <?//= $helper->render('product/__service', ['product' => $product]) ?>
 
-    <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'right']) ?>
+    <? if ($product->isAvailable()): // SITE-4709 ?>
+        <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'right']) ?>
+    <? endif ?>
 </div><!--/right section -->
 
 <div class="clear"></div>
