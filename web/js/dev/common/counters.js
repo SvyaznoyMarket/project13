@@ -1,6 +1,6 @@
 (function() {
 	ENTER.counters = {
-		initGetIntentCounter: function(data) {
+		callGetIntentCounter: function(data) {
 			if (typeof __GetI === "undefined") {
 				__GetI = [];
 			}
@@ -46,6 +46,91 @@
 				var s = document.getElementsByTagName('script')[0];
 				s.parentNode.insertBefore(script, s);
 			})();
+		},
+
+		callRetailRocketCounter: function(routeName, data) {
+			var actions = {
+				'product': function (data, userData) {
+					console.info('RetailRocketJS product');
+
+					var rcAsyncInit = function() {
+						try {
+							rcApi.view(data, userData.userId ? userData : undefined);
+						}
+						catch (err) {}
+						console.log('Вызов счётчика RetailRocket', routeName, data, userData);
+					};
+
+					rrApiOnReady.push(rcAsyncInit);
+				},
+
+				'product.category': function (data, userData) {
+					console.info('RetailRocketJS product.category');
+
+					var rcAsyncInit = function() {
+						try {
+							rcApi.categoryView(data, userData.userId ? userData : undefined);
+						}
+						catch (err) {}
+						console.log('Вызов счётчика RetailRocket', routeName, data, userData);
+					};
+
+					rrApiOnReady.push(rcAsyncInit);
+				},
+
+				'order.complete': function (data, userData) {
+					console.info('RetailRocketJS order.complete');
+
+					if (userData.userId) {
+						data.userId = userData.userId;
+						data.hasUserEmail = userData.hasUserEmail;
+					}
+
+					var rcAsyncInit = function() {
+						try {
+							rcApi.order(data);
+						}
+						catch (err) {}
+						console.log('Вызов счётчика RetailRocket', routeName, data, userData);
+					};
+
+					rrApiOnReady.push(rcAsyncInit);
+				}
+			};
+
+			function callCounter(userInfo) {
+				try {
+					console.info('RetailRocketJS action');
+
+					if (userInfo && userInfo.id) {
+						rrPartnerUserId = userInfo.id; // rrPartnerUserId — по ТЗ должна быть глобальной
+					}
+
+					if (actions.hasOwnProperty(routeName)) {
+						var userData = {
+							userId: userInfo ? userInfo.id || false : null,
+							hasUserEmail: userInfo && userInfo.email ? true : false
+						};
+
+						actions[routeName](data, userData);
+					}
+				} catch (err) {}
+			}
+
+			if (ENTER.config.userInfo === false) {
+				callCounter();
+			} else if (!ENTER.config.userInfo) {
+				setTimeout(function() {
+					if (ENTER.config.userInfo) {
+						callCounter(ENTER.config.userInfo.user);
+					} else {
+						setTimeout(arguments.callee, 100);
+					}
+				}, 100);
+			} else {
+				console.warn(ENTER.config.userInfo);
+				callCounter(ENTER.config.userInfo.user);
+			}
 		}
 	};
 })();
