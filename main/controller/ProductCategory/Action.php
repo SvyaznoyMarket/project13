@@ -808,6 +808,12 @@ class Action {
                 }
 
                 $smartChoiceData = \App::coreClientV2()->query('listing/smart-choice', ['region_id' => $region->getId(), 'client_id' => 'site', 'filter' => ['filters' => $smartChoiceFilters]]);
+
+                // SITE-4715
+                $smartChoiceData = array_filter($smartChoiceData, function($a) {
+                    return isset($a['products']);
+                });
+
                 $smartChoiceProductsIds = array_map(function ($a) {
                     return $a['products'][0]['id'];
                 }, $smartChoiceData);
