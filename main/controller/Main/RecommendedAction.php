@@ -39,12 +39,7 @@ class RecommendedAction {
 
                     $product = new \Model\Product\Entity($item);
                     // если товар недоступен для покупки - пропустить
-                    if (
-                        !$product->getIsBuyable()
-                        && !$product->isInShopShowroomOnly()
-                    ) {
-                        continue;
-                    }
+                    if (!$product->isAvailable() || $product->isInShopShowroomOnly()) continue;
 
                     $products[] = $product;
                 }
