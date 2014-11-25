@@ -114,7 +114,6 @@ $f = function (
                 $category = $product->getParentCategory() ? $product->getParentCategory() : null;
             ?>
                 <li
-                    title = "<?= $helper->escape($product->getName()) ?>"
                     class="slideItem_i jsRecommendedItem"
                     data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>"
                     data-product="<?= $helper->json([
