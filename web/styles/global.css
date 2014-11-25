@@ -1607,6 +1607,9 @@ img[height="0"] {
   .navsite_i:first-child:hover .navsite2 {
     left: -11px;
   }
+  .navsite_i:last-child:hover .navsite2 {
+    left: -160px;
+  }
   .navsite_i-child:hover .navsite_lk:after {
     position: absolute;
     content: '';
@@ -1618,9 +1621,6 @@ img[height="0"] {
     top: 80px;
     left: 50%;
     margin-left: -6px;
-  }
-  .navsite_i-last:hover .navsite2 {
-    right: 0;
   }
   .navsite_icon {
     font-size: 90px;
