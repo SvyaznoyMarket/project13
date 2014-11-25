@@ -7,7 +7,7 @@ class DefaultLayout extends Layout {
     protected $breadcrumbsPath = null;
     protected $useTchiboAnalytics = false;
     /** @var bool АБ-тест новой главной страницы (и новое меню) */
-    protected $new_menu = false;
+    public $new_menu = false;
 
     public function __construct() {
         parent::__construct();
@@ -244,7 +244,7 @@ class DefaultLayout extends Layout {
      * @return string
      */
     public function slotNavigation() {
-        return $this->render('common/_navigation');
+        return $this->render('common/_navigation', ['menu' => (new Menu())->generate_new(\App::user()->getRegion())]);
     }
 
     public function slotUserbarContent() {

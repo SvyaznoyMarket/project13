@@ -18,7 +18,7 @@ class Entity {
     public $name;
     /** @var string */
     public $char;
-    /** @var string */
+    /** @var string|null */
     public $image;
     /** @var string */
     public $class;
@@ -77,12 +77,15 @@ class Entity {
             $this->firstItem = reset($this->item);
         }
 
-        $data += ['media' => []];
-        foreach ($data['media'] as $mediaItem) {
+        $data += ['medias' => []];
+        foreach ($data['medias'] as $mediaItem) {
             $mediaItem += ['provider' => null, 'sources' => []];
             if ('image' == $mediaItem['provider']) {
                 if ($sourceItem = reset($mediaItem['sources'])) {
-                    $this->image = @$sourceItem['url'];
+                    if (40 == @$sourceItem['width'] && 40 == @$sourceItem['height']) {
+                        $this->image = @$sourceItem['url'];
+                        continue;
+                    }
                 }
             }
         }

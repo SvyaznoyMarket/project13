@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page        \View\Layout
+ * @var $page        \View\DefaultLayout
  * @var $title       string|null
  * @var $breadcrumbs array('url' => null, 'name' => null)[]
  * @var $hasSearch   bool
@@ -16,7 +16,7 @@ if (!isset($titlePrefix)) $titlePrefix = null;
 <div itemscope itemtype="http://schema.org/Product" class="bProductSection clearfix<? if ('product.line' == \App::request()->attributes->get('route')): ?> mProductSectionSet<? endif ?>">
     
 
-    <? if ($hasSearch): ?>
+    <? if ($hasSearch && !$page->new_menu): ?>
     <noindex>
         <div class="searchbox">
             <?= $page->render('search/form-default') ?>

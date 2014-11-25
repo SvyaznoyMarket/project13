@@ -148,4 +148,99 @@ class Menu {
         return $menu;
     }
 
+    public function generate_new(\Model\Region\Entity $region = null){
+        $menu = [];
+
+        $menuData = [];
+        $categoriesTree = [];
+
+        // Получаем данные из ядра
+        try {
+            $exception = false;
+
+            $this->repository->prepareCollection(
+                function($data) use (&$menuData) {
+                    $menuData = $data;
+                },
+                function(\Exception $e) use (&$exception) {
+                    \App::logger()->error(new \Exception('Не удалось получить главное меню'), ['menu']);
+                    $exception = $e;
+                }
+            );
+
+            \RepositoryManager::productCategory()->prepareTreeCollection(
+                $region, 3, 0,
+                function($data) use (&$categoriesTree) {
+                    if (is_array($data) && !empty($data)) {
+                        foreach($data as $dataItem) $categoriesTree[$dataItem['id']] = new \Model\Menu\BasicMenuEntity($dataItem);
+                    } else {
+                        throw new \Exception('Не удалось получить категории');
+                    }
+                });
+
+            \App::coreClientV2()->execute();
+
+            if ($exception instanceof \Exception) {
+                throw $exception;
+            }
+        } catch (\Exception $e) {
+            $menuData = $this->repository->getCollection();
+        }
+
+        if (!isset($menuData['item'][0])) {
+            throw new \Exception('Пустое главное меню');
+        }
+
+        foreach ($menuData['item'] as $item) {
+
+            if (isset($item['source']['id']) && @$item['source']['type'] == 'category-get') {
+                $menuItem = $this->getMenuItemById($item['source']['id'], $categoriesTree);
+                if ($menuItem) {
+                    if ($item['char']) {
+                        $menuItem->char = $item['char'];
+                    } else {
+                        $this->getImageFromMedias($menuItem, (array)@$item['medias']);
+                    }
+                    if ($item['name']) $menuItem->name = $item['name'];
+                    $menu[] = $menuItem;
+                }
+            }
+
+            if (@$item['source']['type'] == 'slice') {
+                $menuItem = new \Model\Menu\BasicMenuEntity([
+                    'name'  => @$item['name'],
+                    'link'  => \App::router()->generate('slice.show', ['sliceToken' => @$item['source']['url']])
+                ]);
+                $this->getImageFromMedias($menuItem, (array)@$item['medias']);
+                $menu[] = $menuItem;
+            }
+
+        }
+
+        return $menu;
+    }
+
+    /**
+     * @param $id
+     * @param $categoryTree \Model\Menu\BasicMenuEntity[]
+     * @return \Model\Menu\BasicMenuEntity|null
+     */
+    private function getMenuItemById($id, $categoryTree) {
+        $innerResult = null;
+        foreach ($categoryTree as $key => $item) {
+            if ($innerResult) return $innerResult;
+            if ($key == (int)$id) return $item;
+            if ((bool)$item->children) $innerResult = $this->getMenuItemById($id, $item->children);
+        }
+        return null;
+    }
+
+    private function getImageFromMedias(\Model\Menu\BasicMenuEntity &$menuEntity, array $medias) {
+        foreach ($medias as $item) {
+            if (in_array('mdpi', (array)@$item['tags'])) {
+                $menuEntity->image = @$item['sources'][0]['url'];
+            }
+        }
+    }
+
 }
