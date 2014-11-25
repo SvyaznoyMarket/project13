@@ -1,0 +1,484 @@
+<section class="orderCnt" data-module-dep="order" data-master="{{masterDataJSON}}" data-prepared="{{preparedDataJSON}}">
+	{{^nullOrders}}
+		<h1 class="orderCnt_t">Самовывоз и доставка</h1>
+	{{/nullOrders}}
+	<!-- заголовок страницы -->
+
+	{{#needOrderWarning}}
+		<p class="orderInf">Товары будут оформлены как  <strong>{{ordersCount}} отдельных {{orderDecl}}</strong></p>
+	{{/needOrderWarning}}
+	{{#errors}}
+		<p class="orderInf">{{message}}</p>
+	{{/errors}}
+
+	{{#ordersArray}}
+		<!-- блок разбиения заказа -->
+		<div class="orderRow clearfix js-order" data-value="{{orderDataJson}}">
+			<div class="orderCol">
+				<div class="orderCol_h">
+                    <strong class="orderNumH">Заказ №{{block_count}}</strong>
+
+                    {{#seller}}
+                    	<span class="orderDetl">продавец: {{name}} <a class="orderDetl_lk js-show-offer">Информация и оферта</a></span>
+                    {{/seller}}
+				</div>
+
+				{{#products}}
+					<div class="orderCol_cnt clearfix">
+						<span class="orderCol_lk">
+							<img class="orderCol_img" src="{{image}}" alt="">
+						</span>
+
+						<span class="orderCol_n">
+							{{prefix}}<br/>
+							{{name_web}}
+						</span>
+
+						<span class="orderCol_data orderCol_data-summ">{{price}} <span class="rubl">p</span></span>
+						<span class="orderCol_data orderCol_data-count">{{quantity}} шт.</span>
+						<span class="orderCol_data orderCol_data-price">{{sum}} <span class="rubl">p</span></span>
+					</div>
+				{{/products}}
+
+				<div class="orderCol_f clearfix">
+					<div class="orderCol_f_r">
+						{{#delivery}}
+							{{^price}}
+								<span class="orderCol_summ">Бесплатно</span>
+							{{/price}}
+							{{#price}}
+								<span class="orderCol_summ">{{price}} <span class="rubl">p</span></span>
+							{{/price}}
+							<span class="orderCol_summt">Доставка:</span>
+						{{/delivery}}
+
+						{{#hasDiscountPrice}}
+							<span class="orderCol_summt orderCol_summt-sale"><span class="orderCol_summt_lth">{{total_original_cost}}</span> <span class="rubl">p</span></span>
+						{{/hasDiscountPrice}}
+						<span class="orderCol_summ">{{total_cost}} <span class="rubl">p</span></span>
+						<span class="orderCol_summt">Итого:</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- информация о доставке -->
+			<div class="orderCol orderCol-r">
+				<menu class="orderCol_delivrLst">
+					{{#blockDeliveries}}
+						<li class="orderCol_delivrLst_i js-change-delivery {{#isActive}}orderCol_delivrLst_i-act{{/isActive}}" data-id="{{id}}">{{groupName}}</li>
+					{{/blockDeliveries}}
+				</menu>
+
+				{{! информация по выбранному способу доставки }}
+				{{#delivery}}
+					<div class="orderCol_delivrIn clearfix">
+						<div class="orderCol_date js-show-calendar">{{choosenDate}}</div>
+
+						{{#interval}}
+						<div class="orderCol_seltm customSel {{^onlyOneInterval}}js-show-interval-list{{/onlyOneInterval}} {{#onlyOneInterval}}customSel_woList{{/onlyOneInterval}}">
+							<span class="customSel_def">{{from}}…{{to}}</span>
+
+							<ul class="customSel_lst popupFl js-intervals-list" style="display: none;">
+								{{#possibleIntervals}}
+									<li class="customSel_i js-change-interval" data-value="{{intervalDataJSON}}">{{from}}…{{to}}</li>
+								{{/possibleIntervals}}
+							</ul>
+						</div>
+						{{/interval}}
+
+						{{^hasntCalendar}}
+							{{! Календарь }}
+							<div class="celedr popupFl js-calendar" style="display: none">
+								<div class="clsr js-calendar-close"></div>
+
+								<div class="celedr_t">{{choosenDate}}</div>
+
+								{{! <button class="celedr_btn btn1">Хочу быстрее!</button> }}
+
+								<div class="celedr_tb">
+									<div class="celedr_row celedr_row-h clearfix">
+										<div class="celedr_col">Пн</div>
+										<div class="celedr_col">Вт</div>
+										<div class="celedr_col">Ср</div>
+										<div class="celedr_col">Чт</div>
+										<div class="celedr_col">Пт</div>
+										<div class="celedr_col">Сб</div>
+										<div class="celedr_col">Вс</div>
+									</div>
+
+									<div class="celedr_row clearfix">
+										{{#calendar}}
+											{{#isMonth}}
+												<div class="celedr_month">{{value}}</div>
+											{{/isMonth}}
+											{{^isMonth}}
+												<div class="celedr_col {{#avalible}}js-choose-date{{/avalible}} {{^avalible}}celedr_col-disbl{{/avalible}} {{#isCurrent}}celedr_curr{{/isCurrent}}" data-value="{{value}}">{{day}}</div>
+											{{/isMonth}}
+										{{/calendar}}
+									</div>
+								</div>
+							</div>
+							{{!  }}
+						{{/hasntCalendar}}
+
+					</div>
+
+					{{! Доставка }}
+					{{#use_user_address}}
+						<div class="orderCol_delivrIn orderCol_delivrIn-bg">
+							<div class="orderCol_ln">
+								<strong>Адрес</strong> <span class="colorBrightGrey">для всех заказов с доставкой</span>
+							</div>
+
+							{{#region}}
+								<div class="orderCol_ln s js-show-region-popup"><strong class="">{{name}}</strong>&emsp;<span class="bb-dt">Изменить</span></div>
+							{{/region}}
+
+							<form accept-charset="utf-8" method="" action="" class="orderU orderU-addrs clearfix">
+								<div class="orderU_fld orderU_fld-full">
+									<input id="order_address_street" type="text" placeholder="" value="{{userInfo.address.street}}" name="street" class="orderU_tx js-userinfo txfld">
+									<label for="order_address_street" class="orderU_lbl orderU_lbl-str">Улица</label>
+								</div>
+
+								<div class="orderU_fld orderU_fld-midi">
+								<input id="order_address_building" type="text" placeholder="" value="{{userInfo.address.building}}" name="building" class="orderU_tx js-userinfo txfld">
+									<label for="order_address_building" class="orderU_lbl orderU_lbl-str">Дом</label>
+								</div>
+
+								<div class="orderU_fld orderU_fld-midi">
+									<input id="order_address_number" type="text" placeholder="" value="{{userInfo.address.number}}" name="number" class="orderU_tx js-userinfo txfld">
+									<label for="order_address_number" class="orderU_lbl">Корпус</label>
+								</div>
+
+								<div class="orderU_fld orderU_fld-midi2">
+									<input id="order_address_apartment" type="text" placeholder="" value="{{userInfo.address.apartment}}" name="apartment" class="orderU_tx js-userinfo txfld">
+									<label for="order_address_apartment" class="orderU_lbl orderU_lbl-midi">Квартира</label>
+								</div>
+
+								<div class="orderU_fld orderU_fld-mini orderU_fld-mn">
+									<input id="order_address_floor" type="text" placeholder="" value="{{userInfo.address.floor}}" name="floor" class="orderU_tx js-userinfo txfld">
+									<label for="order_address_floor" class="orderU_lbl orderU_lbl-mini">Этаж</label>
+								</div>
+							</form>
+						</div>
+
+						{{#possiblePaymentMethods}}
+							{{#hasCard}}
+							<div class="orderCheck mb10">
+								<input type="checkbox" {{#choosenPaymentMethod_isCard}}checked{{/choosenPaymentMethod_isCard}} class="js-change-payment customInput customInput-checkbox" id="creditCardsPay_{{block_name}}" name="" value="" data-method="2"/>
+								<label  class="customLabel" for="creditCardsPay_{{block_name}}">
+									Оплата банковской картой
+									<span class="dblock colorBrightGrey s">Иначе курьер сможет принять только наличные</span>
+								</label>
+							</div>
+							{{/hasCard}}
+						{{/possiblePaymentMethods}}
+					{{/use_user_address}}
+
+					{{! Самовывоз }}
+					{{^use_user_address}}
+						{{^pointInfo}}
+							<div class="orderCol_delivrIn orderCol_delivrIn-pl clearfix js-change-point">
+								<div class="orderCol_delivrIn_t clearfix" style="margin: 0;">
+									<strong>Место самовывоза не выбрано</strong>
+
+									<span class="orderChange js-change-point">Выбрать место</span>
+								</div>
+							</div>
+						{{/pointInfo}}
+
+						{{#pointInfo}}
+							<div class="orderCol_delivrIn orderCol_delivrIn-pl js-change-point">
+								<div class="orderCol_delivrIn_t clearfix">
+									<strong>{{blockName}}</strong>
+
+									<span class="orderChange">изменить место</span>
+								</div>
+
+								<div class="orderCol_addrs" {{#subway}}{{#line}}style="background: {{color}};"{{/line}}{{/subway}}>
+									<span class="orderCol_addrs_tx">
+										{{#subway}}
+											{{name}}
+										{{/subway}}
+										{{#youAreHere}}
+											<span class="nowmark">Вы здесь</span>
+										{{/youAreHere}}
+										<br/>
+										<span class="colorBrightGrey">{{address}}</span>
+									</span>
+								</div>
+
+								<div class="orderCol_tm">
+									<span class="orderCol_tm_t">Режим работы:</span>
+
+									<span class="orderCol_tm_cnt">{{regtime}}</span>
+
+									{{#possiblePaymentMethods}}
+										<span class="orderCol_tm_t">Оплата при получении: </span>
+
+										<span class="orderCol_tm_cnt">
+											{{#hasCash}}
+												<img class="orderCol_tm_img" src="/images/order/cash.png" alt="" />
+											{{/hasCash}}
+											{{#hasCard}}
+												<img class="orderCol_tm_img" src="/images/order/cards.png" alt="">
+											{{/hasCard}}
+										</span>
+									{{/possiblePaymentMethods}}
+								</div>
+							</div>
+						{{/pointInfo}}
+					{{/use_user_address}}
+
+					{{!  Карта с магазинами }}
+						<div class="selShop popupFl js-point-map" style="display: none;">
+							<div class="clsr js-point-map-close"></div>
+
+							<div class="selShop_h">
+								{{#possiblePoints}}
+									<div class="js-point-group-tab selShop_tab {{#isActive}}selShop_tab-act{{/isActive}}" data-token="{{block_token}}">{{block_name}}</div>
+								{{/possiblePoints}}
+							</div>
+
+							{{#possiblePoints}}
+								<div class="js-point-list selShop_l {{#isActive}}selShop_l-act{{/isActive}}" data-token="{{block_token}}">
+									<ul class="shopLst">
+										{{#list}}
+											<li class="shopLst_i js-point-map-point" data-value="{{pointDataJSON}}">
+												<div {{#subway}}{{#line}}style="background: {{color}};"{{/line}}{{/subway}} class="shopLst_addrs {{^choosenPoint}}js-choose-point{{/choosenPoint}}" data-pointid="{{id}}" data-pointtype="{{pointType}}">
+													<span class="shopLst_addrs_tx">
+														{{#subway}}
+															{{name}}
+														{{/subway}}
+														{{#youAreHere}}
+															<span class="nowmark">Вы здесь</span>
+														{{/youAreHere}}
+														<br/>
+														<span class="colorBrightGrey">{{address}}</span>
+													</span>
+
+													<span class="shopLst_addrs_tm">{{regtime}}</span>
+												</div>
+											</li>
+										{{/list}}
+									</ul>
+
+								</div>
+							{{/possiblePoints}}
+
+							{{! контейнер для карты }}
+							<div class="selShop_r js-map-container"></div>
+						</div>
+					{{!  }}
+				{{/delivery}}
+			</div>
+			<!--/ информация о доставке -->
+		</div>
+	{{/ordersArray}}
+
+	{{! Шаблон балуна карты }}
+	<script id="mapInfoBlock" type="text/template" class="hidden">
+		<div class="bMapShops__ePopupRel">
+			<h3>$[properties.name]</h3>
+			<span>Работает </span>
+			<span>$[properties.regtime]</span>
+			<br/>
+			<button class="js-choose-point" data-pointid="$[properties.id]" data-pointtype="$[properties.pointType]">$[properties.action_name]</button>
+		</div>
+	</script>
+
+	{{^nullOrders}}
+		{{#isPhoneRequire}}
+			<form class="orderU orderU-mark clearfix" action="" method="" accept-charset="utf-8">
+
+				<fieldset class="orderU_flds">
+					<div class="orderU_fld">
+						<input tabindex="1" id="order_phone" class="js-userinfo orderU_tx txfld" type="text" name="phone" value="{{userInfo.phone}}" placeholder="+7" {{#isPhoneRequire}}data-required="true"{{/isPhoneRequire}} />
+						<label for="order_phone" class="orderU_lbl {{#isPhoneRequire}}orderU_lbl-str{{/isPhoneRequire}}">Телефон</label>
+
+						<span class="orderU_hint">Для смс о состоянии заказа</span>
+					</div>
+
+					<div class="orderU_fld">
+						<input tabindex="2" id="order_name" class="js-userinfo orderU_tx txfld" type="text" name="first_name" value="{{userInfo.first_name}}" placeholder="" data-kbd-shift="shift">
+						<label for="order_name" class="orderU_lbl">Имя</label>
+
+						<span class="orderU_hint">Как к вам обращаться?</span>
+					</div>
+
+					<div class="orderU_fld">
+						<input tabindex="3" id="order_email" class="js-userinfo orderU_tx txfld" type="text" name="email" value="{{userInfo.email}}" placeholder="">
+						<label for="order_email" class="orderU_lbl">E-mail</label>
+					</div>
+				</fieldset>
+
+				{{!
+				<fieldset class="orderU_flds">
+		            <div class="bonusCnt">
+		                <div class="bonusCnt_t">Начислить баллы</div>
+
+		                <div class="bonusCnt_lst">
+		                    <div class="bonusCnt_i bonusCnt_i-act">
+		                        <img class="bonusCnt_img" src="/images/order/sClub.png" alt="" />
+		                        <span class="bonusCnt_tx">Связной Клуб</span>
+		                    </div>
+
+		                    <div class="bonusCnt_i">
+		                        <img class="bonusCnt_img" src="/images/order/sBank.png" alt="" />
+		                        <span class="bonusCnt_tx">Спасибо от Сбербанка</span>
+		                    </div>
+		                </div>
+
+		                <div class="bonusCnt_it clearfix" style="display: block;">
+		                    <div class="fl-l">
+		                        <div class="orderU_fld">
+		                        	<input id="bonus-card-number" class="js-userinfo orderU_tx txfld" type="text" name="bonus_card_number" value="" placeholder="2 98xxxx xxxxx">
+		                            <label class="orderU_lbl" for="bonus-card-number">Карта</label>
+		                        </div>
+
+		                        <div class="bonusCnt_descr">Номер карты «Связной-Клуб» расположен на обороте, под штрихкодом.</div>
+		                    </div>
+
+		                    <img class="fl-r" src="/images/order/sClubBig.png" alt="" />
+		                </div>
+		            </div>
+		        </fieldset>
+		        }}
+			</form>
+
+			<div class="orderComment">
+				<div class="orderComment_t js-toggle-comment">Дополнительные пожелания</div>
+
+				<textarea class="orderComment_fld textarea js-order-comment" style="display: none;"></textarea>
+			</div>
+		{{/isPhoneRequire}}
+
+		{{^needSendSMS}}
+			<div class="orderComplSumm clearfix">
+				<div class="orderComplSumm_l">
+					Итого <strong>{{ordersCount}}</strong> {{orderDecl}} на общую сумму
+					<strong>{{formatedTotalCost}} <span class="rubl">p</span></strong>
+				</div>
+		    </div>
+		{{/needSendSMS}}
+
+		{{! покупка больше 100 000 }}
+		{{#needSendSMS}}
+			<div class="js-sms-confirm-wrap">
+				<div class="orderComplSumm clearfix">
+					<div class="orderComplSumm_l">
+						Итого <strong>{{ordersCount}}</strong> {{orderDecl}} на общую сумму
+						<strong>{{formatedTotalCost}} <span class="rubl">p</span></strong>, требуется подтвердить номер телефона
+					</div>
+
+					<div class="orderComplSumm_l orderComplSumm_editCode">
+						<input id="sms_code" class="js-userinfo txfld" type="text" name="sms_code" value="{{userInfo.sms_code}}" placeholder="Код из SMS" />
+					</div>
+
+					<div class="orderComplSumm_l orderComplSumm_getCode js-order-get-code-wrap">
+						<button class="btnsubmit js-order-get-code">Получить код</button>
+					</div>
+				</div>
+			</div>
+
+			{{={{{ }}}=}}
+		        <script type="text/template" id="tplOrderCodeResendBtn" class="hidden">
+		        	<span class="js-order-get-code btnCode-wait btnsubmit">Получить код повторно {{tick}}</span>
+		        </script>
+
+		        <script type="text/template" id="tplOrderCodeSendBtn" class="hidden">
+		        	<button class="btnsubmit js-order-get-code">Получить код</button>
+		        </script>
+			{{{={{ }}=}}}
+
+
+			<!--
+		    <div class="orderComplSumm clearfix">
+				<div class="orderComplSumm_l">
+					Итого <strong>{{ordersCount}}</strong> {{orderDecl}} на общую сумму
+					<strong>{{formatedTotalCost}} <span class="rubl">p</span></strong>, требуется подтвердить номер телефона
+				</div>
+
+				<div class="orderComplSumm_r orderComplSumm_getCode">
+					<span class="btnCode btnCode-wait">Получить код повторно 20</span>
+				</div>
+
+				<div class="orderComplSumm_r orderComplSumm_editCode">
+					<input class="txfld txfld-err" type="text" name="" value="34534" placeholder="Код из SMS" />
+					<div class="errtx">Неверный код</div>
+				</div>
+
+				<div class="orderComplSumm_r orderComplSumm_tx">
+					требуется подтвердить номер телефона<br/>
+					{{! Общая сумма превышает <strong>100 000 <span class="rubl">p</span></strong><br/> }}
+					<span class="s">Вам отправлено SMS с кодом подтверждения</span>
+				</div>
+		    </div>
+		    -->
+		{{/needSendSMS}}
+	    {{! покупка больше 100 000 }}
+
+	    <div class="orderCompl clearfix">
+	    	{{#isPhoneRequire}}
+		        <div class="orderCompl_l orderCompl_l-ln orderCheck orderCheck-str">
+		            <input type="checkbox" class="customInput customInput-checkbox" id="accept" name="" value="" />
+
+		            <label  class="customLabel" for="accept">
+		                <span class="customLabel_br">Я ознакомлен и согласен с информацией о продавце и его офертой</span>
+		            </label>
+		        </div>
+			{{/isPhoneRequire}}
+
+	        <button class="orderCompl_btn btnsubmit js-submit-order">Оформить</button>
+	    </div>
+
+		{{! Попап смены региона }}
+	    <div class="popup popupTop popup-city js-region-popup">
+	    	<div class="clsr js-region-popup-close"></div>
+			<div class="popup_t">Ваш регион</div>
+
+			<div class="slctBox">
+				<div class="slctBox_fld">
+					<div class="slctBox_itw">
+						<div class="slctBox_itinn">
+							<input type="search" name="" class="slctBox_it js-region-popup-input" id="" value="">
+						</div>
+					</div>
+					<button class="slctBox_btn btn3 js-region-popup-submit">Сохранить</button>
+				</div>
+
+				<div class="slctBox_ddw js-region-popup-dropdown" style="display: none">
+					<ul class="slctBox_dd js-region-popup-dropdown-wrapper">
+					</ul>
+				</div>
+			</div>
+		</div>
+	{{/nullOrders}}
+
+	{{! Если нет ни одного заказа }}
+	{{#nullOrders}}
+		<h1 class="xxxl ta-c">Невозможно оформить заказ</h1>
+
+		<div class="orderCompl clearfix" style="text-align: center;">
+            <a class="orderCompl_fin js-history-api" style="display: inline-block;" href="/">Вернуться к покупкам</a>
+        </div>
+	{{/nullOrders}}
+</section>
+
+{{={{{ }}}=}}
+	{{{! Элемент саджеста в попапе смены региона }}}
+	<script type="text/template" id="tplRegionPopupElement" class="hidden">
+		{{#findedRegions}}
+			<li class="slctBox_dd_i js-region-popup-select-region" data-regionid="{{attributes.id}}">{{attributes.name}}</li>
+		{{/findedRegions}}
+	</script>
+
+	{{{! Попап с офертой }}}
+    <script type="text/template" id="tplOrderOffer" class="hidden">
+		<div class="popup popup-offer">
+			<h2>Информация и оферта «{{sellerName}}»</h2>
+            <p class="popup-offer-text">{{&message}}</p>
+            <button class="js-offerpopup-close btn4">Продолжить</button>
+        </div>
+    </script>
+{{{={{ }}=}}}
