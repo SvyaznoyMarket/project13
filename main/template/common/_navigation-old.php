@@ -41,7 +41,10 @@
                                     <? if (!empty($menu2->children)) : ?>
                                         <ul class="navsite3">
                                             <li class="navsite3_i navsite3_i-tl"><?= $menu2->name ?></li>
-                                            <li class="navsite3_i navsite3_i-img"><img src="<?= $menu2->getImagePath() ?>" alt=""></li>
+                                            <li class="navsite3_i navsite3_i-img">
+                                                <img data-src="<?= $menu2->getImagePath() ?>" alt="<?= $menu2->name ?>" class="menuImgLazy">
+                                                <noscript><img src="<?= $menu2->getImagePath() ?>" alt="<?= $menu2->name ?>"></noscript>
+                                            </li>
                                             <? foreach ($menu2->children as $menu3) : ?>
                                                 <li class="navsite3_i"><a href="<?= $menu3->link ?>" class="navsite3_lk"><?= $menu3->name ?></a></li>
                                             <? endforeach; ?>
