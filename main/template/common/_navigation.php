@@ -27,7 +27,7 @@ $lastMenu1 = end($menu); // последний элемент главного �
             <ul class="navsite2">
 
                 <? foreach ($menu1->children as $menu2) : ?>
-                    <li class="navsite2_i <?= ((bool)$menu1->children) ? 'navsite2_i-child' : '' ?>">
+                    <li class="navsite2_i <?= ((bool)$menu2->children) ? 'navsite2_i-child' : '' ?>">
                         <a href="<?= $menu2->link ?>" class="navsite2_lk"><?= $menu2->name ?></a>
 
                         <? if (!empty($menu2->children)) : ?>

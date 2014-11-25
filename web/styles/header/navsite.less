@@ -16,18 +16,22 @@
 			.navsite2 {
 				display: block;
 			}
-			.navsite_lk-child {
-				&:after {
-					.pseudo-corner-top(6px, @darkgrey4, 80px);
-					left: 50%;
-					margin-left: -6px;
-				}
-			}
 		}
 		&:first-child {
 			&:hover {
 				.navsite2 {
 					left: -11px;
+				}
+			}
+		}
+		&-child {
+			&:hover {
+				.navsite_lk {
+					&:after {
+						.pseudo-corner-top(6px, @darkgrey4, 80px);
+						left: 50%;
+						margin-left: -6px;
+					}
 				}
 			}
 		}
@@ -90,8 +94,11 @@
 			.navsite2_lk {
 				background: #e3e3e3;
 				text-decoration: none;
-
-				&-child {
+			}
+		}
+		&-child {
+			.navsite2_lk {
+				&:hover {
 					&:after {
 						.pseudo-corner-right(8px, @white, 50%);
 						right: -3px;

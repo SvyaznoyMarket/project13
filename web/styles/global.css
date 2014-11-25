@@ -1604,7 +1604,10 @@ img[height="0"] {
   .navsite_i:hover .navsite2 {
     display: block;
   }
-  .navsite_i:hover .navsite_lk-child:after {
+  .navsite_i:first-child:hover .navsite2 {
+    left: -11px;
+  }
+  .navsite_i-child:hover .navsite_lk:after {
     position: absolute;
     content: '';
     width: 0;
@@ -1615,9 +1618,6 @@ img[height="0"] {
     top: 80px;
     left: 50%;
     margin-left: -6px;
-  }
-  .navsite_i:first-child:hover .navsite2 {
-    left: -11px;
   }
   .navsite_icon {
     font-size: 90px;
@@ -1683,7 +1683,7 @@ img[height="0"] {
     background: #e3e3e3;
     text-decoration: none;
   }
-  .navsite2_i:hover .navsite2_lk-child:after {
+  .navsite2_i-child .navsite2_lk:hover:after {
     position: absolute;
     content: '';
     width: 0;
