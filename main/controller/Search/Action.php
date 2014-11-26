@@ -355,6 +355,8 @@ class Action {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
+        if ($request->get('sender') == 'knockout') return $this->autocompleteForKnockout($request);
+
         $limit = 5;
         $keyword = trim(mb_strtolower($request->get('q')));
         $data = [
@@ -409,4 +411,70 @@ class Action {
         
         return new \Http\JsonResponse($responseData);
     }
+
+    private function autocompleteForKnockout(\Http\Request $request) {
+
+        $searchTerm = trim(mb_strtolower($request->query->get('q')));
+
+        $responseData['result'] = $this->coreRequest($searchTerm, $request->query->get('catId'));
+
+        return new \Http\JsonResponse($responseData);
+    }
+
+    private function coreRequest($searchQuery, $category = null) {
+
+        $data = [];
+        $productsIds = [];
+        $products = [];
+
+        // Параметры для автокомплита (забираем категории)
+
+        $params1 = ['letters' => $searchQuery];
+
+        if (\App::user()->getRegion()) $params1['region_id'] = \App::user()->getRegion()->getId();
+
+        // Параметры для сфинкса (забираем продукты)
+
+        $params2 = [
+            'filter'=> [
+                'filters' => [
+                    ['text', 3, $searchQuery]
+                ],
+                'limit' => 5
+            ]
+        ];
+
+        if ($category) $params2['filter']['filters'][] = ['category', 1, (int)$category];
+
+        // Параллельный запрос
+
+        \App::coreClientV2()->addQuery('search/autocomplete', $params1, [], function($result) use(&$data){
+            $data['categories'] = array_slice((array)@$result[3], 0, 5);
+        }, function ($e)  {
+            \App::exception()->remove($e);
+            \App::logger()->error($e);
+        });
+
+        \App::coreClientV2()->addQuery('listing/list', $params2, [], function ($result) use(&$productsIds){
+            $productsIds = (array)@$result['list'];
+        }, function ($e) {
+            \App::exception()->remove($e);
+            \App::logger()->error($e);
+        });
+
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['short'], \App::config()->coreV2['retryCount']);
+
+        if (!empty($productsIds)) $products = \RepositoryManager::product()->getCollectionById($productsIds, null, false);
+
+        foreach ($products as $product) {
+            $data['products'][] = [
+                'name'  => $product->getName(),
+                'link'  => $product->getLink(),
+                'image'   => $product->getImageUrl(0)
+            ];
+        }
+
+        return $data;
+    }
+
 }

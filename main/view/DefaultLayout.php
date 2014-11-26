@@ -12,6 +12,9 @@ class DefaultLayout extends Layout {
     public function __construct() {
         parent::__construct();
 
+        // Меню нужно в нескольких рендерингах, поэтому запрашиваем его сразу
+        $this->setGlobalParam('menu', (new Menu($this))->generate_new(\App::user()->getRegion()));
+
         $this->new_menu = \App::abTest()->getTest('main_page') && \App::abTest()->getTest('main_page')->getChosenCase()->getKey() == 'new';
 
         $this->setTitle('Enter - это выход!');
@@ -244,7 +247,7 @@ class DefaultLayout extends Layout {
      * @return string
      */
     public function slotNavigation() {
-        return $this->render($this->new_menu ? 'common/_navigation-new' : 'common/_navigation-old', ['menu' => (new Menu())->generate_new(\App::user()->getRegion())]);
+        return $this->render($this->new_menu ? 'common/_navigation-new' : 'common/_navigation-old', ['menu' => $this->getGlobalParam('menu')]);
     }
 
     public function slotUserbarContent() {

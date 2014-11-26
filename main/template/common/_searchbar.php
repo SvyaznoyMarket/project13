@@ -1,61 +1,77 @@
+<?
+/**
+ * @var $page \View\DefaultLayout
+ * @var $menu \Model\Menu\BasicMenuEntity[]|null
+ */
+$menu = $page->getGlobalParam('menu');
+?>
+
 <!-- поиск -->
 <div class="header_c clearfix">
     <a href="/" class="header_i sitelogo"></a>
 
     <!-- для АВ-теста строки поиска, к hdsearch подключить класс hdsearch-v2 -->
-    <div class="header_i hdsearch">
+    <div class="header_i hdsearch jsKnockoutSearch" data-bind="css: { 'hdsearch-v2': advancedSearch }">
         <form action="" class="hdsearch_f">
-            <label class="hdsearch_lbl" for="">Все товары для жизни по выгодным ценам!</label>
-            <div class="hdsearch_itw"><input type="text" class="hdsearch_it" placeholder="Поиск по товарам..."></div>
-            <?php /*
-            <div class="hdsearch_itw">
-                <div class="searchcat">
-                    <!-- нужно делать .toggleClass('searchcat_tl-act') при клике по - Все товары  -->
-                    <div class="searchcat_tl"><span class="searchcat_tl_tx">Все товары</span></div>
 
-                    <ul class="searchcat_dd">
-                        <li class="searchcat_dd_i">
-                            <a href="" class="searchcat_dd_lk"><span class="undrlh">Мебель</span></a>
+            <label class="hdsearch_lbl" for="">Все товары для жизни по выгодным ценам!</label>
+
+            <div class="hdsearch_itw">
+
+                <? if ($menu) : ?>
+
+                <div class="searchcat" style="display: none" data-bind="visible: advancedSearch">
+                    <!-- нужно делать .toggleClass('searchcat_tl-act') при клике по - Все товары  -->
+                    <div class="searchcat_tl" data-bind="css: { 'searchcat_tl-act': !searchCategoryVisible() }, click: toggleCategoryVisibility">
+                        <span class="searchcat_tl_tx" data-bind="text: currentCategory() == null ? 'Все товары' : currentCategory().name "></span>
+                    </div>
+
+                    <ul class="searchcat_dd" data-bind="visible: searchCategoryVisible()">
+
+                        <li class="searchcat_dd_i" data-bind="visible: currentCategory() != null">
+                            <span class="undrlh">
+                                <a href="" class="searchcat_dd_lk" data-bind="click: categoryReset, clickBubble: false">Все товары</a>
+                            </span>
                         </li>
+
+                        <? foreach ($menu as $item) : ?>
+
                         <li class="searchcat_dd_i">
-                            <a href="" class="searchcat_dd_lk"><span class="undrlh">Товары для дома</span></a>
+                            <span class="undrlh">
+                                <a href="" class="searchcat_dd_lk"
+                                   data-value="<?= $page->json(['id' => $item->id, 'name' => $item->name]) ?>"
+                                   data-bind="click: categoryClick, clickBubble: false"><?= $item->name ?></a>
+                            </span>
                         </li>
-                        <li class="searchcat_dd_i">
-                            <a href="" class="searchcat_dd_lk"><span class="undrlh">Электроника</span></a>
-                        </li>
-                        <li class="searchcat_dd_i">
-                            <a href="" class="searchcat_dd_lk"><span class="undrlh">Детские товары</span></a>
-                        </li>
-                        <li class="searchcat_dd_i">
-                            <a href="" class="searchcat_dd_lk"><span class="undrlh">Украшение и часы</span></a>
-                        </li>
+
+                        <? endforeach; ?>
                     </ul>
                 </div>
 
-                <input type="text" class="hdsearch_it" placeholder="Поиск по товарам...">
-            </div>
-            */?>
+                <? endif; ?>
+
+                <input type="text"
+                     class="hdsearch_it"
+                     placeholder="Поиск по товарам..."
+                     data-bind="value: searchInput, valueUpdate: ['input', 'afterkeydown'], hasFocus: searchFocus" /></div>
+
             <button class="hdsearch_btn btn3">Найти</button>
+
         </form>
 
         <!-- саджест поиска -->
-        <div class="searchdd" style="display: none;">
-            <div class="searchdd_t"><span class="searchdd_t_tx">Категории</span></div>
-            <a href="" class="searchdd_lk"><span class="undrlh">Планшеты (283)</span></a>
-            <a href="" class="searchdd_lk"><span class="undrlh">Графические планшеты (12)</span></a>
-
-            <div class="searchdd_t"><span class="searchdd_t_tx">Товары</span></div>
-            <a href="" class="searchdd_lk">
-                <img src="http://fs09.enter.ru/1/1/120/15/340081.jpg" alt="" class="searchdd_img">
-                <span class="searchdd_tx"><span class="undrlh">Планшетный компьютер EXEQ P-703 4ГБ WiFi черный</span></span>
-            </a>
-            <a href="" class="searchdd_lk">
-                <img src="http://fs09.enter.ru/1/1/120/15/340081.jpg" alt="" class="searchdd_img">
-                <span class="searchdd_tx"><span class="undrlh">Планшетный компьютер EXEQ P-703 4ГБ WiFi черный</span></span>
-            </a>
-            <a href="" class="searchdd_lk">
-                <img src="http://fs09.enter.ru/1/1/120/15/340081.jpg" alt="" class="searchdd_img">
-                <span class="searchdd_tx"><span class="undrlh">Планшетный компьютер EXEQ P-703 4ГБ WiFi черный</span></span>
+        <div class="searchdd" style="display: none;" data-bind="visible: searchFocus() && searchInput().length > 2">
+            <div class="searchdd_t" data-bind="visible: searchResultCategories().length > 0"><span class="searchdd_t_tx" >Категории</span></div>
+                <!-- ko foreach:  searchResultCategories -->
+                <a href="" class="searchdd_lk" data-bind="attr: { href: link }"><span class="undrlh" data-bind="text: name"></span></a>
+                <!-- /ko -->
+            <div class="searchdd_t" data-bind="visible: searchResultProducts().length > 0"><span class="searchdd_t_tx">Товары</span></div>
+                <!-- ko foreach:  searchResultProducts -->
+                <a href="" class="searchdd_lk" data-bind="attr: { href: link }">
+                    <img alt="" class="searchdd_img" data-bind="attr: { src: image }">
+                    <span class="searchdd_tx"><span class="undrlh" data-bind="text: name"></span></span>
+                </a>
+                <!-- /ko -->
             </a>
         </div>
         <!--/ саджест поиска -->

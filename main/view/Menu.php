@@ -9,10 +9,13 @@ class Menu {
     private $repository;
     /** @var \Routing\Router */
     private $router;
+    /** @var \View\DefaultLayout|null */
+    private $page;
 
-    public function __construct() {
+    public function __construct(&$page = null) {
         $this->router = \App::router();
         $this->repository = \RepositoryManager::menu();
+        if ($page instanceof \View\DefaultLayout) $this->page = $page;
     }
 
     /**
@@ -243,6 +246,8 @@ class Menu {
 
         $this->limitCategories($menu);
         $this->setCategoryLogo($menu, $categoriesWithLogo);
+
+        if ($this->page) $this->page->setGlobalParam('menu', $menu);
 
         return $menu;
     }
