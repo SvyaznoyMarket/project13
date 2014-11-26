@@ -1965,6 +1965,16 @@ img[height="0"] {
     border-bottom: 6px solid #ffa901;
     top: 80px;
   }
+  .header_nav .navsite_i:last-child:hover .navsite2_i-child .navsite2_lk:hover:before {
+    position: absolute;
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-left: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    top: 50%;
+  }
   .header_nav .navsite_icon {
     font-size: 78px;
     font-weight: normal;
@@ -3990,13 +4000,9 @@ img[height="0"] {
     border-bottom: none;
   }
   .topbarfix_cart {
-    float: right;
-    height: 50px;
     position: relative;
-    padding: 0 10px;
     z-index: 10;
     background: #ffffff;
-    min-width: 8.4em;
   }
   .topbarfix_cart.mEmpty {
     background: #f4f4f4;
@@ -4051,9 +4057,6 @@ img[height="0"] {
   }
   .topbarfix_log {
     background: #fff5e0;
-    border-left: 1px dashed #bbbbbb;
-    float: right;
-    padding: 0 10px 0 10px;
     max-width: 130px;
     position: relative;
     white-space: nowrap;
@@ -4108,10 +4111,6 @@ img[height="0"] {
   }
   .topbarfix_cmpr {
     background: #f4f4f4;
-    border-left: 1px dashed #bbbbbb;
-    border-right: 1px dashed #bbbbbb;
-    float: right;
-    padding: 0 10px 0;
     position: relative;
     z-index: 11;
   }

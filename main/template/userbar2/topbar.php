@@ -45,8 +45,8 @@
             </a>
         </li>-->
 
-        <?= $page->render('userbar/_usercart') ?>
-        <?= $page->render('userbar/_usercompare') ?>
         <?= $page->render('userbar/_userinfo') ?>
+        <?= $page->render('userbar/_usercompare') ?>
+        <?= $page->render('userbar/_usercart') ?>
     </menu>
 </div>

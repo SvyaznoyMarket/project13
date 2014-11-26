@@ -287,6 +287,23 @@
                     }
                 }
             }
+            &:last-child{
+                &:hover{
+                    .navsite2{
+                        &_i{
+                            &-child{
+                                .navsite2_lk{
+                                    &:hover{
+                                        &:before{
+                                            .pseudo-corner-left(8px, transparent, 50%);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
         &_icon{
             font-size: 78px;
