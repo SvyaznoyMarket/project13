@@ -474,6 +474,11 @@ class Action {
             ];
         }
 
+        // уберем слэши у категорий
+        array_walk($data['categories'], function(&$val) {
+            $val['link'] = preg_replace('/\/$/', '', (string)@$val['link']);
+        });
+
         return $data;
     }
 

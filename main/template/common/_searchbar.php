@@ -62,7 +62,7 @@ $menu = $page->getGlobalParam('menu');
         </form>
 
         <!-- саджест поиска -->
-        <div class="searchdd" style="display: none;" data-bind="visible: searchFocus() && searchInput().length > 2">
+        <div class="searchdd" style="display: none;" data-bind="visible: searchResultsVisibility() && searchInput().length > 2">
             <div class="searchdd_t" data-bind="visible: searchResultCategories().length > 0"><span class="searchdd_t_tx" >Категории</span></div>
                 <!-- ko foreach:  searchResultCategories -->
                 <a href="" class="searchdd_lk" data-bind="attr: { href: link }"><span class="undrlh" data-bind="text: name"></span></a>
@@ -70,7 +70,7 @@ $menu = $page->getGlobalParam('menu');
             <div class="searchdd_t" data-bind="visible: searchResultProducts().length > 0"><span class="searchdd_t_tx">Товары</span></div>
                 <!-- ko foreach:  searchResultProducts -->
                 <a href="" class="searchdd_lk" data-bind="attr: { href: link }">
-                    <img alt="" class="searchdd_img" data-bind="attr: { src: image }">
+                    <img alt="" class="searchdd_img" data-bind="attr: { src: image }" />
                     <span class="searchdd_tx"><span class="undrlh" data-bind="text: name"></span></span>
                 </a>
                 <!-- /ko -->
