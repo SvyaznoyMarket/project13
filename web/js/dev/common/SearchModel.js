@@ -29,7 +29,14 @@
 			self.toggleCategoryVisibility();
 		};
 
-		self.searchInput.subscribe(function (val) {
+		// задержка для скрытия результатов поиска
+		self.searchResultsVisibility = ko.computed(function(){
+			return self.searchFocus()
+		}).extend({throttle: 200});
+
+		// Throttled ajax query
+		ko.computed(function(){
+			var val = self.searchInput();
 			var params = {q: val, sender: 'knockout'};
 
 			if (self.currentCategory() != null) params.catId = self.currentCategory().id;
@@ -45,7 +52,8 @@
 				.fail(function () {
 					console.error("could not retrieve value from server");
 				});
-		});
+		}).extend({ throttle: 200 });
+
 
 		return self;
 	}
