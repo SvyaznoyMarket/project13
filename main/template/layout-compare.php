@@ -47,7 +47,7 @@
     </footer>
 
     <div class="compare-userbar">
-        <?= $page->render('_userbar') ?>
+        <?= $page->render('userbar/topbar') ?>
     </div>
     
     <?= $page->slotAuth() ?>
