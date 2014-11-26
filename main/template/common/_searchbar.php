@@ -16,7 +16,7 @@ $menu = $page->getGlobalParam('menu');
 
             <label class="hdsearch_lbl" for="">Все товары для жизни по выгодным ценам!</label>
 
-            <div class="hdsearch_itw">
+            <div class="hdsearch_itb">
 
                 <? if ($menu) : ?>
 
@@ -50,10 +50,12 @@ $menu = $page->getGlobalParam('menu');
 
                 <? endif; ?>
 
-                <input type="text"
-                     class="hdsearch_it"
-                     placeholder="Поиск по товарам..."
-                     data-bind="value: searchInput, valueUpdate: ['input', 'afterkeydown'], hasFocus: searchFocus" /></div>
+                <div class="hdsearch_itw" style="overflow:hidden;">
+                    <input type="text"
+                        class="hdsearch_it"
+                        placeholder="Поиск по товарам..."
+                        data-bind="value: searchInput, valueUpdate: ['input', 'afterkeydown'], hasFocus: searchFocus" /></div>
+                </div>
 
             <button class="hdsearch_btn btn3">Найти</button>
 
