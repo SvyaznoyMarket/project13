@@ -23,7 +23,7 @@ $helper = new \Helper\TemplateHelper();
 
 <div class="clear"></div>
 
-<? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
+<? if (\App::config()->product['pullRecommendation']): ?>
     <?= $helper->render('product/__slider', [
         'type'      => 'viewed',
         'title'     => 'Вы смотрели',
