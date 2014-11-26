@@ -1738,6 +1738,10 @@ img[height="0"] {
     position: relative;
     z-index: 2;
   }
+  .navsite2_lk:hover .navsite2_tx {
+    border-bottom: 1px solid #a0a0a0;
+    text-decoration: none;
+  }
   .navsite3 {
     display: none;
     border: 1px solid #292929;

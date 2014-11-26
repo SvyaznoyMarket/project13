@@ -32,16 +32,12 @@ $lastMenu1 = end($menu); // последний элемент главного �
                         <? if ($menu2->logo) : ?>
                             <a href="<?= $menu2->link ?>" class="navsite2_lk"><img src="<?= $menu2->logo ?>" alt="<?= $menu2->name ?>"/></a>
                         <? else : ?>
-                            <a href="<?= $menu2->link ?>" class="navsite2_lk"><?= $menu2->name ?></a>
+                            <a href="<?= $menu2->link ?>" class="navsite2_lk"><span class="navsite2_tx"><?= $menu2->name ?></span></a>
                         <? endif; ?>
 
                         <? if (!empty($menu2->children)) : ?>
                             <ul class="navsite3">
                                 <li class="navsite3_i navsite3_i-tl"><?= $menu2->name ?></li>
-                                <li class="navsite3_i navsite3_i-img">
-                                    <img data-src="<?= $menu2->getImagePath() ?>" alt="<?= $menu2->name ?>" class="menuImgLazy">
-                                    <noscript><img src="<?= $menu2->getImagePath() ?>" alt=""></noscript>
-                                </li>
                                 <? foreach ($menu2->children as $menu3) : ?>
                                     <li class="navsite3_i"><a href="<?= $menu3->link ?>" class="navsite3_lk"><?= $menu3->name ?></a></li>
                                 <? endforeach; ?>
