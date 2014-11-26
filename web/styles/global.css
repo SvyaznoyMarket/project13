@@ -1610,12 +1610,36 @@ img[height="0"] {
   .navsite_i:last-child:hover .navsite2 {
     left: -159px;
   }
+  .navsite_i:last-child:hover .navsite2_i-child .navsite2_lk:hover:before {
+    position: absolute;
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-left: 8px solid #ffffff;
+    border-bottom: 8px solid transparent;
+    top: 50%;
+    right: 198px;
+    margin-top: -8px;
+    z-index: 9;
+  }
+  .navsite_i:last-child:hover .navsite2_i-child .navsite2_lk:hover:after {
+    position: absolute;
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 0 solid transparent;
+    border-right: 0 solid transparent;
+    border-bottom: 0 solid transparent;
+    top: 50%;
+  }
   .navsite_i:last-child .navsite3 {
-    background: url("/styles/mainpage/img/nav-shadow.png") repeat-y scroll 198px 0 #ffffff;
-    border-style: solid none solid solid;
-    left: -201px;
+    background-position: 198px;
+    border-style: solid solid solid none;
+    left: -199px;
+    padding-left: 0;
+    padding-right: 209px;
     width: 195px;
-    padding-left: -215px;
   }
   .navsite_i-child:hover .navsite_lk:after {
     position: absolute;
