@@ -1610,6 +1610,13 @@ img[height="0"] {
   .navsite_i:last-child:hover .navsite2 {
     left: -159px;
   }
+  .navsite_i:last-child .navsite3 {
+    background: url("/styles/mainpage/img/nav-shadow.png") repeat-y scroll 198px 0 #ffffff;
+    border-style: solid none solid solid;
+    left: -201px;
+    width: 195px;
+    padding-left: -215px;
+  }
   .navsite_i-child:hover .navsite_lk:after {
     position: absolute;
     content: '';
