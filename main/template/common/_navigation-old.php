@@ -6,6 +6,8 @@
 
 
 <div id="header" class="clearfix">
+    <a id="topLogo" href="/">Enter Связной</a>
+
     <!-- навигация -->
     <nav class="header_nav">
         <ul class="navsite">
