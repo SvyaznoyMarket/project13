@@ -1574,14 +1574,14 @@ img[height="0"] {
   }
   .hdsearch_itw {
     overflow: hidden;
+    padding: 0 0 0 10px;
   }
   .hdsearch_it {
     font-size: 16px;
     line-height: 1.2;
-    border: none;
-    padding: 5px 0;
-    text-indent: 10px;
     width: 100%;
+    padding: 5px 0;
+    border: none;
     display: inline-block;
     vertical-align: middle;
     /* IE6-8 */
@@ -1623,8 +1623,8 @@ img[height="0"] {
   .searchcat_dd {
     position: absolute;
     z-index: 12;
-    left: -35px;
     top: 28px;
+    left: -35px;
     width: 198px;
     border: 1px solid #e3e3e3;
     background-color: #ffffff;

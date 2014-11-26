@@ -50,7 +50,7 @@ $menu = $page->getGlobalParam('menu');
 
                 <? endif; ?>
 
-                <div class="hdsearch_itw" style="overflow:hidden;">
+                <div class="hdsearch_itw">
                     <input type="text"
                         class="hdsearch_it"
                         placeholder="Поиск по товарам..."
