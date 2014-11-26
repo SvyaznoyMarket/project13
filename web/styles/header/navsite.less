@@ -3,305 +3,355 @@
 @full-size: 100%;
 
 // навигация по сайту
-.navsite {
-	.table();
-	height: @full-size;
-	&_i {
-		.table-cell();
-		text-align: center;
-		position: relative;
-		vertical-align: top;
-		padding: 0 1px;
-		&:hover {
-			.navsite2 {
-				display: block;
-			}
-		}
-		&:first-child {
-			&:hover {
-				.navsite2 {
-					left: -6px;
-				}
-			}
-		}
-		&:last-child {
-			&:hover {
-				.navsite2 {
-					left: -159px;
-					&_i {
-						&-child {
-							.navsite2_lk {
-								&:hover {
-									&:before {
-										.pseudo-corner-left(8px, @white, 50%);
-										right: 198px;
-										margin-top: -8px;
-										z-index: 9;
-									}
-									&:after {
-										.pseudo-corner-right(0, transparent, 50%);
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			.navsite3 {
-			    background-position: 198px;
-			    border-style: solid solid solid none;
-			    left: -199px;
-			    padding-left: 0;
-			    padding-right: 209px;
-			    width: 195px;
-			}
-		}
-		&-child {
-			&:hover {
-				.navsite_lk {
-					&:after {
-						.pseudo-corner-top(6px, @darkgrey4, 80px);
-						left: 50%;
-						margin-left: -6px;
-					}
-				}
-			}
-		}
-	}
-	&_icon {
-		font-size: 90px;
-	    height: 40px;
-	    line-height: 0.5;
-		margin: 0 0 10px 0;
-		color: @black;
-		font-family: 'menuIconFont';
-	}
-	&_imgw {
-		height: 40px;
-    	margin: 5px 0;
-	    overflow: hidden;
-	}
-	&_img {
-		.inline-block();
-		width: auto;
-		height: 100%;
-	}
-	&_tx {
-		text-transform: uppercase;
-		font-family: "Enter type";
-		font-size: 11px;
-		line-height: 1;
-	}
-	&_lk {
-		display: block;
-		height: 85px;
-		line-height: 1;
-		&:hover {
-			text-decoration: none;
-		}
-	}
+.navsite{
+    height: @full-size;
+
+    .table();
+    &_i{
+        position: relative;
+
+        padding: 0 1px;
+
+        text-align: center;
+        vertical-align: top;
+
+        .table-cell();
+        &:hover{
+            .navsite2{
+                display: block;
+            }
+        }
+        &:first-child{
+            &:hover{
+                .navsite2{
+                    left: -6px;
+                }
+            }
+        }
+        &:last-child{
+            &:hover{
+                .navsite2{
+                    left: -159px;
+                    &_i{
+                        &-child{
+                            .navsite2_lk{
+                                &:hover{
+                                    &:before{
+                                        z-index: 9;
+                                        right: 198px;
+
+                                        margin-top: -8px;
+
+                                        .pseudo-corner-left(8px, @white, 50%);
+                                    }
+                                    &:after{
+                                        .pseudo-corner-right(0, transparent, 50%);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .navsite3{
+                left: -199px;
+
+                width: 195px;
+                padding-right: 209px;
+                padding-left: 0;
+
+                border-style: solid solid solid none;
+                background-position: 198px;
+            }
+        }
+        &-child{
+            &:hover{
+                .navsite_lk{
+                    &:after{
+                        left: 50%;
+
+                        margin-left: -6px;
+
+                        .pseudo-corner-top(6px, @darkgrey4, 80px);
+                    }
+                }
+            }
+        }
+    }
+    &_icon{
+        font-family: 'menuIconFont';
+        font-size: 90px;
+        line-height: .5;
+
+        height: 40px;
+        margin: 0 0 10px 0;
+
+        color: @black;
+    }
+    &_imgw{
+        overflow: hidden;
+
+        height: 40px;
+        margin: 5px 0;
+    }
+    &_img{
+        width: auto;
+        height: 100%;
+
+        .inline-block();
+    }
+    &_tx{
+        font-family: 'Enter type';
+        font-size: 11px;
+        line-height: 1;
+
+        text-transform: uppercase;
+    }
+    &_lk{
+        line-height: 1;
+
+        display: block;
+
+        height: 85px;
+        &:hover{
+            text-decoration: none;
+        }
+    }
 }
 
-.navsite2 {
-	display: none;
-	position: absolute;
-	top: 85px;
-	left: -50px;
-	z-index: 20;
-	border: 1px solid @darkgrey4;
-	border-top-width: 6px;
-	background: @white;
-	width: 205px;
-	text-align: left;
-	.transition(all .3s ease);
-	// &:hover {
-	// 	width: 415px;
-	// }
-	&_i {
-		&:hover {
-			.navsite3 {
-				display: block;
-				.opacity(1);
-			}
-			.navsite2_lk {
-				background: #e3e3e3;
-				text-decoration: none;
-			}
-		}
-		&-child {
-			.navsite2_lk {
-				&:hover {
-					&:after {
-						.pseudo-corner-right(8px, @white, 50%);
-						right: -3px;
-						margin-top: -8px;
-					}
-				}
-			}
-		}
-	}
-	&_lk {
-		font-size: 14px;
-		padding: 5px 10px;
-		width: 185px;
-		line-height: 1.2;
-		display: block;
-		position: relative;
-		z-index: 2;
-		&:hover {
-			.navsite2_tx {
-				border-bottom: 1px solid @darkgrey5;
-    			text-decoration: none;
-			}
-    	}
-	}
+.navsite2{
+    position: absolute;
+    z-index: 20;
+    top: 85px;
+    left: -50px;
+
+    display: none;
+
+    width: 205px;
+
+    text-align: left;
+
+    border: 1px solid @darkgrey4;
+    border-top-width: 6px;
+    background: @white;
+
+    .transition(all .3s ease);
+    // &:hover {
+    // 	width: 415px;
+    // }
+    &_i{
+        &:hover{
+            .navsite3{
+                display: block;
+
+                .opacity(1);
+            }
+            .navsite2_lk{
+                text-decoration: none;
+
+                background: #e3e3e3;
+            }
+        }
+        &-child{
+            .navsite2_lk{
+                &:hover{
+                    &:after{
+                        right: -3px;
+
+                        margin-top: -8px;
+
+                        .pseudo-corner-right(8px, @white, 50%);
+                    }
+                }
+            }
+        }
+    }
+    &_lk{
+        font-size: 14px;
+        line-height: 1.2;
+
+        position: relative;
+        z-index: 2;
+
+        display: block;
+
+        width: 185px;
+        padding: 5px 10px;
+        &:hover{
+            .navsite2_tx{
+                text-decoration: none;
+
+                border-bottom: 1px solid @darkgrey5;
+            }
+        }
+    }
 }
 
-.navsite3 {
-	display: none;
-	border: 1px solid @darkgrey4;
-	border-top-width: 6px;
-	background: url("@{base-url}/mainpage/img/nav-shadow.png") repeat-y 204px 0 @white;
-	left: -1px;
-    min-height: 100%;
-    padding-left: 215px;
-    padding-right: 5px;
+.navsite3{
     position: absolute;
     top: -6px;
+    left: -1px;
+
+    display: none;
+
     width: 195px;
+    min-height: 100%;
+    padding-right: 5px;
+    padding-left: 215px;
+
+    border: 1px solid @darkgrey4;
+    border-top-width: 6px;
+    background: url('@{base-url}/mainpage/img/nav-shadow.png') repeat-y 204px 0 @white;
+
     .transition(all .3s ease);
     .opacity(0);
+    &_i{
+        padding: 5px 10px;
+        &-tl{
+            font-size: 14px;
 
-    &_i {
-    	padding: 5px 10px;
-    	&-tl {
-    		text-align: center;
-    		font-size: 14px;
-    		margin: 0 0 5px;
-    	}
+            margin: 0 0 5px;
+
+            text-align: center;
+        }
     }
-    &_lk {
-    	font-size: 12px;
-    	&:hover {
-    		border-bottom: 1px solid @darkgrey5;
-    		text-decoration: none;
-    	}
+    &_lk{
+        font-size: 12px;
+        &:hover{
+            text-decoration: none;
+
+            border-bottom: 1px solid @darkgrey5;
+        }
     }
 }
 
-.navitem {
-	text-align: center;
-	margin: 5px 0 0;
-	&_tl {
-		font-size: 13px;
-		text-transform: uppercase;
-		font-weight: bold;
-		margin: 0 0 5px;
-	}
-	&_cnt {
-		display: block;
-		&:hover {
-			text-decoration: none;
-			.navitem_n {
-	    		border-bottom: 1px solid @darkgrey5;
-	    		text-decoration: none;
-	    	}
-    	}
-	}
-	&_img {
-		width: 120px;
-		height: 120px;
-		display: block;
-		margin: 0 auto 2px;
-	}
-	&_pr {
-		font-size: 21px;
-	}
+.navitem{
+    margin: 5px 0 0;
+
+    text-align: center;
+    &_tl{
+        font-size: 13px;
+        font-weight: bold;
+
+        margin: 0 0 5px;
+
+        text-transform: uppercase;
+    }
+    &_cnt{
+        display: block;
+        &:hover{
+            text-decoration: none;
+            .navitem_n{
+                text-decoration: none;
+
+                border-bottom: 1px solid @darkgrey5;
+            }
+        }
+    }
+    &_img{
+        display: block;
+
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 2px;
+    }
+    &_pr{
+        font-size: 21px;
+    }
 }
 
 // стили для сторой навигации - убить к чертям, после перехода на новый дизайн
-.header_nav {
-	float: right;
-	margin: 14px 0 0;
-    width: 840px;
-	.navsite {
-		&_i {
-			padding: 0 3px;
-			.navsite_lk {
-				color: @white;
-				&:hover {
-					color: #ffa901;
-					.navsite_icon {
-						color: #ffa901;
-					}
-				}
-			}
-			&-child {
-				&:hover {
-					.navsite_lk {
-						&:after {
-							.pseudo-corner-top(6px, #ffa901, 80px);
-						}
-					}
-				}
-			}
-		}
-		&_icon {
-		    color: @white;
-		    font-size: 78px;
-		    font-weight: normal;
-		    height: 40px;
-		    margin: 0 0 10px;
-		}
-		&_tx {
-		    font-size: 11px;
-		}
+.header_nav{
+    float: right;
 
-		&_imgw {
-		    height: 45px;
-		    margin: 0 0 5px;
-		    overflow: hidden;
-		    width: auto;
-		}
-	}
-	.navsite2 {
-		border-color: #ffa901;
-		padding-top: 5px;
-		padding-bottom: 5px;
-		.rounded(3px);
-		&_i {
-			&:hover {
-				.navsite2_lk {
-					background: #e6e6e6;
-				}
-			}
-			&-child {
-				.navsite2_lk {
-					&:hover {
-						&:after {
-							.pseudo-corner-right(8px, transparent, 50%);
-						}
-					}
-				}
-			}
-		}
-	}
-	.navsite3 {
-		border-color: #ffa901;
-		.rounded(3px);
-		background-image: url("/css/header/img/border.gif");
-		background-position: 205px 0;
-		padding-top: 5px;
-		padding-bottom: 5px;
-		&_i {
-			&-tl {
-				color: #ffa901;
-			    font-family: "Enter";
-			    font-size: 18px;
-			    line-height: 1.1;
-			    text-align: left;
-			    text-transform: uppercase;
-			}
-		}
-	}
+    width: 840px;
+    margin: 14px 0 0;
+    .navsite{
+        &_i{
+            padding: 0 3px;
+            .navsite_lk{
+                color: @white;
+                &:hover{
+                    color: #ffa901;
+                    .navsite_icon{
+                        color: #ffa901;
+                    }
+                }
+            }
+            &-child{
+                &:hover{
+                    .navsite_lk{
+                        &:after{
+                            .pseudo-corner-top(6px, #ffa901, 80px);
+                        }
+                    }
+                }
+            }
+        }
+        &_icon{
+            font-size: 78px;
+            font-weight: normal;
+
+            height: 40px;
+            margin: 0 0 10px;
+
+            color: @white;
+        }
+        &_tx{
+            font-size: 11px;
+        }
+        &_imgw{
+            overflow: hidden;
+
+            width: auto;
+            height: 45px;
+            margin: 0 0 5px;
+        }
+    }
+    .navsite2{
+        padding-top: 5px;
+        padding-bottom: 5px;
+
+        border-color: #ffa901;
+
+        .rounded(3px);
+        &_i{
+            &:hover{
+                .navsite2_lk{
+                    background: #e6e6e6;
+                }
+            }
+            &-child{
+                .navsite2_lk{
+                    &:hover{
+                        &:after{
+                            .pseudo-corner-right(8px, transparent, 50%);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .navsite3{
+        padding-top: 5px;
+        padding-bottom: 5px;
+
+        border-color: #ffa901;
+        background-image: url('/css/header/img/border.gif');
+        background-position: 205px 0;
+
+        .rounded(3px);
+        &_i{
+            &-tl{
+                font-family: 'Enter';
+                font-size: 18px;
+                line-height: 1.1;
+
+                text-align: left;
+                text-transform: uppercase;
+
+                color: #ffa901;
+            }
+        }
+    }
 }
