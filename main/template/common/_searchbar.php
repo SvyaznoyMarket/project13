@@ -12,7 +12,7 @@ $menu = $page->getGlobalParam('menu');
 
     <!-- для АВ-теста строки поиска, к hdsearch подключить класс hdsearch-v2 -->
     <div class="header_i hdsearch jsKnockoutSearch" data-bind="css: { 'hdsearch-v2': advancedSearch }">
-        <form action="" class="hdsearch_f">
+        <form action="<?= $page->url('search')?>" class="hdsearch_f">
 
             <label class="hdsearch_lbl" for="">Все товары для жизни по выгодным ценам!</label>
 
@@ -53,6 +53,7 @@ $menu = $page->getGlobalParam('menu');
                 <div class="hdsearch_itw">
                     <input type="text"
                         class="hdsearch_it"
+                        name="q"
                         placeholder="Поиск по товарам..."
                         data-bind="value: searchInput, valueUpdate: ['input', 'afterkeydown'], hasFocus: searchFocus" /></div>
                 </div>
