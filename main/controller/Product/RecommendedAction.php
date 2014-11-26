@@ -88,7 +88,7 @@ class RecommendedAction {
 
         $client->execute(); // 1-й пакет запросов
 
-        $productIds = array_values(array_unique($productIds));
+        $productIds = array_filter(array_values(array_unique($productIds)));
 
         $productsById = [];
         foreach (array_chunk($productIds, \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
