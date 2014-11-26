@@ -87,7 +87,7 @@ $c->odnoklassnikiOauth->publicKey    = 'CBAQGMICEBABABABA';
 
 $c->reviewsStore['url']          = 'http://scms.enter.ru/reviews/';
 $c->reviewsStore['retryCount']   = 2;
-$c->reviewsStore['timeout']      = 0.36;
+$c->reviewsStore['timeout']      = 0.4;
 $c->reviewsStore['retryTimeout'] = [
     'default' => 0.18,
     'tiny'    => 0.18,
