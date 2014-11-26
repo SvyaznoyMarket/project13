@@ -133,6 +133,12 @@ $isNewRecommendation =
 
     <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'content']) ?>
 
+    <? if ($product->getSecondaryGroupedProperties()): // показываем все характеристики (сгруппированые), если ранее они не были показаны ?>
+        <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getSecondaryGroupedProperties()]); // Характеристики ?>
+    <? endif ?>
+
+    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent, 'sprosikupiReviews' => $sprosikupiReviews, 'shoppilotReviews' => $shoppilotReviews]) ?>
+
     <? if (!$showSimilarOnTop || !$isNewRecommendation): ?>
         <? if (\App::config()->product['pullRecommendation']): ?>
             <?= $helper->render('product/__slider', [
@@ -150,15 +156,6 @@ $isNewRecommendation =
             ]) ?>
         <? endif ?>
     <? endif ?>
-
-    <?
-    if ($product->getSecondaryGroupedProperties()) {
-        // показываем все характеристики (сгруппированые), если ранее они не были показаны
-        echo $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getSecondaryGroupedProperties()]); // Характеристики
-    }
-    ?>
-
-    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent, 'sprosikupiReviews' => $sprosikupiReviews, 'shoppilotReviews' => $shoppilotReviews]) ?>
 
 </div><!--/left section -->
 
