@@ -412,6 +412,17 @@ class Action {
             $this->ab_jewel_filter($category, $productFilter);
         }
 
+        // SITE-4658
+        foreach ($productFilter->getFilterCollection() as $filter) {
+            if ('Бренд' === $filter->getName()) {
+                foreach ($filter->getOption() as $option) {
+                    $option->setImageUrl('');
+                }
+
+                break;
+            }
+        }
+
         // получаем из json данные о горячих ссылках и content
         $hotlinks = [];
         $seoContent = '';
