@@ -1,6 +1,8 @@
 ;$(function($){
 	var $body = $(document.body),
-		searchUrl = '/search/autocomplete';
+		searchUrl = '/search/autocomplete',
+		switchCookie = JSON.parse(docCookies.getItem('switch')),
+		advSearchEnabled = switchCookie && switchCookie.adv_search == 'on';
 
 	function SearchModel(){
 		var self = this;
@@ -8,7 +10,7 @@
 		self.searchFocus = ko.observable(false);
 		self.searchResults = ko.observableArray();
 
-		self.advancedSearch = ko.observable(true);
+		self.advancedSearch = ko.observable(advSearchEnabled);
 		self.searchCategoryVisible = ko.observable(false);
 		self.currentCategory = ko.observable(null);
 
