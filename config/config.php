@@ -594,11 +594,11 @@ $c->abTest = [
             'expireDate'    => '2015-12-31',
             'cases' => [
                 'old_recommendation' => [
-                    'traffic' => 80,
+                    'traffic' => 50,
                     'name'    => 'Старые рекомендации',
                 ],
                 'new_recommendation' => [
-                    'traffic' => 20,
+                    'traffic' => 50,
                     'name'    => 'Новые рекомендации',
                 ],
             ]
