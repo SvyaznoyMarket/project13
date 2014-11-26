@@ -96,5 +96,16 @@ class IndexPage extends \View\DefaultLayout {
         return $result;
     }
 
+    public function slotRecommendations() {
+
+        $return = '';
+
+        if (!empty(@$this->getParam('rrProducts')['popular'])) {
+            $return .= $this->render('main/_slidesBox', ['class' => 'slidesBox slidesBox-items', 'productList' => $this->getParam('productList'), 'rrProducts' => (array)@$this->getParam('rrProducts')['popular']]);
+            $return .= $this->render('main/_slidesBox', ['class' => 'slidesBox slidesBox-bg2 slidesBox-items fl-r', 'productList' => $this->getParam('productList'), 'rrProducts' => (array)@$this->getParam('rrProducts')['personal']]);
+        }
+
+        return $return;
+    }
 
 }

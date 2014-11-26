@@ -367,6 +367,20 @@ class App {
     }
 
     /**
+     * @static
+     * @return \RetailRocket\RRClient
+     */
+    public static function rrClient() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \RetailRocket\RRClient(self::$config->partners['RetailRocket'], self::curl());
+        }
+
+        return $instance;
+    }
+
+    /**
      * @return \RetailRocket\Manager
      */
     public static function retailrocket() {

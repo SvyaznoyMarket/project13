@@ -56,9 +56,7 @@
 
             <?= $page->render('main/_infoBlocks') ?>
 
-            <?= $page->render('main/_slidesBox', ['class' => 'slidesBox slidesBox-items']) ?>
-
-            <?= $page->render('main/_slidesBox', ['class' => 'slidesBox slidesBox-bg2 slidesBox-items fl-r']) ?>
+            <?= $page->slotRecommendations() ?>
 
             <?= $page->render('main/infoBox') ?>
 

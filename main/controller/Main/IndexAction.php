@@ -3,7 +3,7 @@
 namespace Controller\Main;
 
 class IndexAction {
-    public function execute() {
+    public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $router = \App::router();
@@ -12,8 +12,6 @@ class IndexAction {
         $region = $user->getRegion();
 
         // подготовка 1-го пакета запросов
-
-        // TODO: запрашиваем меню
 
         // запрашиваем баннеры
         $itemsByBanner = [];
@@ -60,8 +58,6 @@ class IndexAction {
         // товары, услуги, категории
         /** @var $productsById \Model\Product\BasicEntity[] */
         $productsById = [];
-        /** @var $productsById \Model\Product\Service\Entity[] */
-        $servicesById = [];
         /** @var $productsById \Model\Product\Category\Entity[] */
         $categoriesById = [];
         foreach ($itemsByBanner as $items) {
@@ -71,6 +67,17 @@ class IndexAction {
                 if ($item->getServiceId()) $servicesById[$item->getServiceId()] = null;
                 if ($item->getProductCategoryId()) $categoriesById[$item->getProductCategoryId()] = null;
             }
+        }
+
+        // Запрашиваем рекомендации и добавляем ID продуктов в массив для product/get
+        if (\App::abTest()->getTest('main_page') && \App::abTest()->getTest('main_page')->getChosenCase()->getKey() == 'new') {
+            $productsIdsFromRR = $this->getProductIdsFromRR($request);
+            foreach ($productsIdsFromRR as $arr) {
+                foreach ($arr as $key => $val) {
+                    $productsById[(int)$val] = null;
+                }
+            }
+            unset($val, $key, $arr);
         }
 
         // подготовка 2-го пакета запросов
@@ -85,17 +92,7 @@ class IndexAction {
                 \App::logger()->error('Не удалось получить товары для баннеров');
             });
         }
-        // запрашиваем услуги
-        if ((bool)$servicesById) {
-            \RepositoryManager::service()->prepareCollectionById(array_keys($servicesById), $region, function($data) use (&$servicesById) {
-                foreach ($data as $item) {
-                    $servicesById[(int)$item['id']] = new \Model\Product\Service\Entity($item);
-                }
-            }, function(\Exception $e) {
-                \App::exception()->remove($e);
-                \App::logger()->error('Не удалось получить услуги для баннеров');
-            });
-        }
+
         // запрашиваем категории товаров
         if ((bool)$categoriesById) {
             \RepositoryManager::productCategory()->prepareCollectionById(array_keys($categoriesById), $region, function($data) use (&$categoriesById) {
@@ -108,7 +105,7 @@ class IndexAction {
             });
         }
 
-        if ((bool)$productsById || (bool)$servicesById || (bool)$categoriesById) {
+        if ((bool)$productsById || (bool)$categoriesById) {
             // выполнение 2-го пакета запросов
             $client->execute();
         }
@@ -159,12 +156,6 @@ class IndexAction {
                 }
             }
 
-            /*if (!$url && !$item['url']) {
-                \App::logger()->error(sprintf('Невалидный баннер %s', json_encode((array)$item, JSON_UNESCAPED_UNICODE)));
-                unset($bannerData[$i]);
-                continue;
-            }*/
-
             $item['url'] = $url;
         } if (isset($item)) unset($item);
 
@@ -185,7 +176,50 @@ class IndexAction {
         $page = new \View\Main\IndexPage();
         $page->setParam('bannerData', $bannerData);
         $page->setParam('seoPage', $seoPage);
+        $page->setParam('productList', $productsById);
+        $page->setParam('rrProducts', isset($productsIdsFromRR) ? $productsIdsFromRR : []);
 
         return new \Http\Response($page->show());
+    }
+
+    /** Возвращает массив рекомендаций (ids)
+     * @param \Http\Request $request
+     * @param float $timeout Таймаут для запроса к RR
+     * @return array
+     */
+    private function getProductIdsFromRR(\Http\Request $request, $timeout = 0.15) {
+        $rrClient = \App::rrClient();
+        $rrUserId = $request->cookies->get('rrpusid');
+        $ids = [
+            'popular' => [],
+            'personal' => []
+        ];
+
+        try {
+            $rrClient->addQuery('ItemsToMain',[],[],function($data) use (&$ids) {
+                $ids['popular'] = (array)$data;
+            },null, $timeout);
+            if ($rrUserId) $rrClient->addQuery('PersonalRecommendation',['rrUserId' => $rrUserId],[],function($data) use (&$ids) {
+                $ids['personal'] = (array)$data;
+            },null, $timeout);
+            $rrClient->execute();
+        } catch (\Exception $e) {
+            if ($e->getCode() == 28) {
+                \App::exception()->remove($e);
+            }
+        }
+
+        // если нет персональных рекомендаций, то выдадим половину популярных за персональные
+        if (empty($ids['personal']) && !empty($ids['popular'])) {
+            foreach ($ids['popular'] as $key => $item) {
+                if ($key % 2) {
+                    $ids['personal'][] = $item;
+                    unset($ids['popular'][$key]);
+                }
+            }
+        }
+
+        return $ids;
+
     }
 }
