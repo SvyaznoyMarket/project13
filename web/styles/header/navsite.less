@@ -28,7 +28,32 @@
 			&:hover {
 				.navsite2 {
 					left: -159px;
+					&_i {
+						&-child {
+							.navsite2_lk {
+								&:hover {
+									&:before {
+										.pseudo-corner-left(8px, @white, 50%);
+										right: 198px;
+										margin-top: -8px;
+										z-index: 9;
+									}
+									&:after {
+										.pseudo-corner-right(0, transparent, 50%);
+									}
+								}
+							}
+						}
+					}
 				}
+			}
+			.navsite3 {
+			    background-position: 198px;
+			    border-style: solid solid solid none;
+			    left: -199px;
+			    padding-left: 0;
+			    padding-right: 209px;
+			    width: 195px;
 			}
 		}
 		&-child {
@@ -123,6 +148,12 @@
 		display: block;
 		position: relative;
 		z-index: 2;
+		&:hover {
+			.navsite2_tx {
+				border-bottom: 1px solid @darkgrey5;
+    			text-decoration: none;
+			}
+    	}
 	}
 }
 
