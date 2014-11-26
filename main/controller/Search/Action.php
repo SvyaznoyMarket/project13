@@ -423,7 +423,13 @@ class Action {
 
     private function coreRequest($searchQuery, $category = null) {
 
-        $data = [];
+        // Структура выходных данных
+        $data = [
+            'categories' => [],
+            'products' => []
+        ];
+
+        // Локальные переменные
         $productsIds = [];
         $products = [];
 

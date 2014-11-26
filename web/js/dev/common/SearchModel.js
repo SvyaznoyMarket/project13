@@ -15,6 +15,10 @@
 		self.searchResultCategories = ko.observableArray();
 		self.searchResultProducts = ko.observableArray();
 
+		self.isNoSearchResult = ko.computed(function(){
+			return self.searchResultCategories().length == 0 && self.searchResultProducts().length == 0
+		});
+
 		self.toggleCategoryVisibility = function(){
 			self.searchCategoryVisible(!self.searchCategoryVisible());
 		};
