@@ -5,6 +5,14 @@ namespace View\Main;
 class IndexPage extends \View\DefaultLayout {
     protected $layout  = 'layout-main';
 
+    public function __construct() {
+        if (\App::request()->isXmlHttpRequest()) {
+            $this->engine = \App::templating();
+            return;
+        }
+        parent::__construct();
+    }
+
     protected function prepare() {
         $this->addMeta('viewport', 'width=960');
         $this->addMeta('mailru', 'b0645ac6fd99f8f2');

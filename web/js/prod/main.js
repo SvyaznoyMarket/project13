@@ -1,6 +1,7 @@
 ;(function($){
 	var $body = $(document.body);
-	$('.jsMainSlidesRetailRocket').on('click', '.jsMainSlidesButton', function(){
+
+	$body.on('click', '.jsMainSlidesButton', function(){
 		var step = 473,
 			$block = $(this).closest('.jsMainSlidesRetailRocket');
 		if ($(this).hasClass('jsMainSlidesLeftButton')) {
@@ -9,7 +10,15 @@
 			$block.find('.jsMainSlidesProductBlock').css('margin-left', '-='+step);
 		}
 
-	})
+	});
+
+	if ($('.jsMainSlidesRetailRocket').length == 0) {
+		$.get('/index/recommend').done(function(data){
+			if (data.result) {
+				$(data.result).insertBefore($('.infoBox'));
+			}
+		})
+	}
 }(jQuery));
 var addKISSmetricsEvent = function(eventName, bannerId, banner) {
     var

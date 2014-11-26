@@ -182,6 +182,28 @@ class IndexAction {
         return new \Http\Response($page->show());
     }
 
+    public function recommendations(\Http\Request $request) {
+        $rrProductsById = [];
+        $productsById = [];
+
+        // получаем продукты из RR
+        $rrProducts = $this->getProductIdsFromRR($request, 1);
+        foreach ($rrProducts as $collection) {
+            $rrProductsById = array_merge($rrProductsById, $collection);
+        }
+
+        // получаем продукты из ядра
+        $products = \RepositoryManager::product()->getCollectionById(array_unique($rrProductsById), null, false);
+        foreach ($products as $product) {
+            $productsById[$product->getId()] = $product;
+        }
+
+        $page = new \View\Main\IndexPage();
+        $page->setParam('productList', $productsById);
+        $page->setParam('rrProducts', isset($rrProducts) ? $rrProducts : []);
+        return new \Http\JsonResponse(['result' => $page->slotRecommendations()]);
+    }
+
     /** Возвращает массив рекомендаций (ids)
      * @param \Http\Request $request
      * @param float $timeout Таймаут для запроса к RR
