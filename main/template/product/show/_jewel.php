@@ -110,7 +110,7 @@ $isNewRecommendation =
         ]) ?>
     <? endif ?>
 
-    <? if (\App::config()->product['showRelated']): ?>
+    <? if (\App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
             'type'           => 'alsoBought',
             'title'          => 'С этим товаром покупают',

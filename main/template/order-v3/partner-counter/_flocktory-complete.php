@@ -5,7 +5,8 @@ return function (
     $products
 ) {
     /** @var $order \Model\Order\Entity */
-    $order = reset($orders);
+    $order = reset($orders) ?: null;
+    if (!$order) return '';
 
     $items = [];
     foreach ($order->getProduct() as $orderProduct) {

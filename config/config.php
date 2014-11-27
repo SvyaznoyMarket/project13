@@ -87,7 +87,7 @@ $c->odnoklassnikiOauth->publicKey    = 'CBAQGMICEBABABABA';
 
 $c->reviewsStore['url']          = 'http://scms.enter.ru/reviews/';
 $c->reviewsStore['retryCount']   = 2;
-$c->reviewsStore['timeout']      = 0.36;
+$c->reviewsStore['timeout']      = 0.4;
 $c->reviewsStore['retryTimeout'] = [
     'default' => 0.18,
     'tiny'    => 0.18,
@@ -322,7 +322,7 @@ $c->product['furnitureConstructor']   = true;
 // jewel
 $c->product['itemsPerPageJewel']      = 24;
 $c->product['itemsPerRowJewel']       = 4;
-$c->product['pullRecommendation']     = true;
+$c->product['pullRecommendation']     = false;
 $c->product['pushRecommendation']     = true;
 
 $c->productPhoto['url'] = [
@@ -594,11 +594,11 @@ $c->abTest = [
             'expireDate'    => '2015-12-31',
             'cases' => [
                 'old_recommendation' => [
-                    'traffic' => 80,
+                    'traffic' => 50,
                     'name'    => 'Старые рекомендации',
                 ],
                 'new_recommendation' => [
-                    'traffic' => 20,
+                    'traffic' => 50,
                     'name'    => 'Новые рекомендации',
                 ],
             ]

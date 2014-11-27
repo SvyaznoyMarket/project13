@@ -267,6 +267,9 @@ return function(
     </div>
 
     <div class="orderCompl orderCompl-v2 clearfix">
+
+        <?= \App::templating()->render('order-v3/common/_blackfriday', ['version' => 2]) ?>
+
         <form id="js-orderForm" action="<?= $helper->url('orderV3.create') ?>" method="post">
 
             <div class="orderCompl_l orderCompl_l-ln orderCheck orderCheck-str">
