@@ -9,17 +9,18 @@
 
 .fltrBtn{
 	&_hd {
-		margin: 0 0 15px;
-	}
-	&_r {
-		.inline-block();
-		margin: 5px 0 0 30px;
-		color: #424242;
-		& * {
+
+		&_r {
 			.inline-block();
-			line-height: 13px;
+			margin: 5px 0 0 30px;
+			color: #424242;
+			& * {
+				.inline-block();
+				line-height: 13px;
+			}
 		}
 	}
+
 	&_clr {
 		line-height: 13px;
 		margin: 0 0 0 15px;
@@ -57,6 +58,15 @@
 		&.opn {
 			background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAJCAQAAAChr3WYAAAAXElEQVQI11XKwQ0AERSE4YmrChShCSMUohAKUYg6FKECV9nN2rDre5eXPwMWc53HAqs5jjSsBsB8xIyHV+w7da/wMnEvIxYn2eauOYkPw4wBf0mwsiaBk/XWr/8G2pM8a8IWUVQAAAAASUVORK5CYII=');
 		}
+	}
+
+	&_kit {
+		width: 950px;
+		padding: 8px 0 0 10px;
+		max-height: 165px;
+		overflow: auto;
+		margin: 7px 0 10px -10px;
+		border-bottom: 1px solid #e6e6e6;
 	}
 
     &_i{
