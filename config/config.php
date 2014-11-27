@@ -322,11 +322,7 @@ $c->product['furnitureConstructor']   = true;
 // jewel
 $c->product['itemsPerPageJewel']      = 24;
 $c->product['itemsPerRowJewel']       = 4;
-$c->product['pullRecommendation']     = false
-
-
-
-;
+$c->product['pullRecommendation']     = false;
 $c->product['pushRecommendation']     = true;
 
 $c->productPhoto['url'] = [
