@@ -1,6 +1,8 @@
 ;(function($){
 	var $body = $(document.body);
 
+	if (!$body.hasClass('jsMainNew')) return;
+
 	$body.on('click', '.jsMainSlidesButton', function(){
 		var step = 473,
 			$block = $(this).closest('.jsMainSlidesRetailRocket');
