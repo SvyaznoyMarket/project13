@@ -1,26 +1,26 @@
 <ul class="shopInfo clearfix">
-    <li class="shopInfo_i">
+    <li class="shopInfo_i jsShopInfoPreview" data-id="1">
         <i class="shopInfo_l i-shopInfo i-shopInfo-delivery"></i>
         <div class="shopInfo_r">
             <span class="shopInfo_tl undrl">Доставка</span>
             <p class="shopInfo_tx">Доставляем по всей России</p>
         </div>
     </li>
-    <li class="shopInfo_i">
+    <li class="shopInfo_i jsShopInfoPreview" data-id="2">
         <i class="shopInfo_l i-shopInfo i-shopInfo-deliveryself"></i>
         <div class="shopInfo_r">
             <span class="shopInfo_tl undrl">Самовывоз</span>
             <p class="shopInfo_tx">Более 1000 пунктов выдачи</p>
         </div>
     </li>
-    <li class="shopInfo_i">
+    <li class="shopInfo_i jsShopInfoPreview" data-id="3">
         <i class="shopInfo_l i-shopInfo i-shopInfo-payment"></i>
         <div class="shopInfo_r">
             <span class="shopInfo_tl undrl">Удобно платить</span>
             <p class="shopInfo_tx">Способ оплаты на твой вкус</p>
         </div>
     </li>
-    <li class="shopInfo_i">
+    <li class="shopInfo_i jsShopInfoPreview">
         <i class="shopInfo_l i-shopInfo i-shopInfo-wow"></i>
         <div class="shopInfo_r">
             <span class="shopInfo_tl undrl">WOW Акции</span>
@@ -29,7 +29,7 @@
     </li>
 </ul>
 
-<div class="shopInfoTab" style="display: block;">
+<div class="shopInfoTab jsShopInfoBlock" data-id="1">
     <ul class="shopInfoTab_lst">
         <li class="shopInfoTab_i">
             <div class="shopInfoTab_iconw"><div class="shopInfoTab_icon"><i class="i-shopinfo i-shopinfo-delivery1"></i></div></div>
@@ -49,10 +49,10 @@
         </li>
     </ul>
 
-    <a href="" class="shopInfoTab_btn">Подробнее об условиях, стоимости, сроках и интервалах доставки</a>
+    <a href="/delivery_types#delivr_buy" class="shopInfoTab_btn">Подробнее об условиях, стоимости, сроках и интервалах доставки</a>
 </div>
 
-<div class="shopInfoTab shopInfoTab-v2">
+<div class="shopInfoTab shopInfoTab-v2 jsShopInfoBlock" data-id="2">
     <ul class="shopInfoTab_lst">
         <li class="shopInfoTab_i">
             <div class="shopInfoTab_iconw"><div class="shopInfoTab_icon"><i class="i-shopinfo i-shopinfo-selfdelivery1"></i></div></div>
@@ -71,10 +71,10 @@
             <div class="shopInfoTab_tx">ПОЛУЧЕНИЕ ТОВАРА<br/>В ПОСТАМАТАХ PICKPOINT</div>
         </li>
     </ul>
-    <a href="" class="shopInfoTab_btn">Подробнее об условиях, стоимости, сроках и интервалах доставки</a>
+    <a href="/delivery_types#delivr_self" class="shopInfoTab_btn">Подробнее об условиях, стоимости, сроках и интервалах доставки</a>
 </div>
 
-<div class="shopInfoTab shopInfoTab-v3">
+<div class="shopInfoTab shopInfoTab-v3 jsShopInfoBlock" data-id="3">
     <ul class="shopInfoTab_lst">
         <li class="shopInfoTab_i">
             <div class="shopInfoTab_iconw"><div class="shopInfoTab_icon"><i class="i-shopinfo i-shopinfo-payment1"></i></div></div>
@@ -98,5 +98,5 @@
         </li>
     </ul>
 
-    <a href="" class="shopInfoTab_btn">Подробнее об этих и других способах оплат</a>
+    <a href="/how_pay" class="shopInfoTab_btn">Подробнее об этих и других способах оплат</a>
 </div>

@@ -12,6 +12,11 @@
 
 	});
 
+	$body.on('click', '.jsShopInfoPreview', function(){
+		$('.jsShopInfoBlock').hide();
+		$('.jsShopInfoBlock[data-id='+ $(this).data('id')+']').toggle();
+	});
+
 	if ($('.jsMainSlidesRetailRocket').length == 0) {
 		$.get('/index/recommend').done(function(data){
 			if (data.result) {
@@ -19,6 +24,8 @@
 			}
 		})
 	}
+
+
 }(jQuery));
 var addKISSmetricsEvent = function(eventName, bannerId, banner) {
     var
