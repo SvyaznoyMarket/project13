@@ -47,7 +47,7 @@ $helper = new \Helper\TemplateHelper();
             <li class="slidesBox_i">
                 <? foreach ($block as $product) : ?>
                 <div class="item">
-                    <a href="<?= $product->getLink() ?>" class="item_imgw"><img src="<?= $product->getImageUrl() ?>" class="item_img" alt="<?= $product->getName() ?>"/></a>
+                    <a href="<?= $product->getLink() ?>" class="item_imgw"><img src="<?= $product->getImageUrl(2) ?>" class="item_img" alt="<?= $product->getName() ?>"/></a>
                     <div class="item_n"><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></div>
                     <div class="item_pr"><?= $helper->formatPrice($product->getPrice()) ?>&nbsp;<span class="rubl">p</span></div>
                     <a class="item_btn btn5" href="">Купить</a>
