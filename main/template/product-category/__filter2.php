@@ -91,12 +91,12 @@ return function(
     if (0 === $countInListFilters) return;
 ?>
 
-<div class="fltr">
-    <form id="productCatalog-filter-form" class="bFilter clearfix js-filter" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
+<div class="fltrBtn">
+    <form id="productCatalog-filter-form" class="js-filter" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
         <? foreach ($alwaysShowFilters as $filter): ?>
-            <div class="fltrSet js-filter-toggle-container <? if ('Металл' === $filter->getName()): ?>fltrSet-metall<? endif ?> <? if ('Вставка' === $filter->getName()): ?>fltrSet-insertion<? endif ?>">
-                <div class="fltrSet_tggl fltrSet_tggl-dn js-filter-toggle-button">
-                    <span class="fltrSet_tggl_tx"><?= $helper->escape($filter->getName()) ?></span>
+            <div class="fltrBtn_kit js-filter-toggle-container <? if ('Металл' === $filter->getName()): ?>fltrSet-metall<? endif ?> <? if ('Вставка' === $filter->getName()): ?>fltrSet-insertion<? endif ?>">
+                <div class="fltrBtn_tggl fltrSet_tggl-dn js-filter-toggle-button">
+                    <span class="fltrBtn_tggl_tx"><?= $helper->escape($filter->getName()) ?></span>
                 </div>
 
                 <div class="fltrSet_cnt js-filter-toggle-content">
@@ -107,23 +107,23 @@ return function(
             </div>
         <? endforeach ?>
 
-        <div class="flrtBox">
+        <div class="fltrBtn_kit clearfix">
             <? if ($priceFilter): ?>
-                <div class="js-productCategory-filter2-dropBox">
-                    <a href="#" class="js-productCategory-filter2-dropBox-open">
-                        <?= $priceFilter->getName() ?>
-                    </a>
+                <div class="fltrBtnBox fl-l js-productCategory-filter2-dropBox">
+                    <div class="fltrBtnBox_tggl js-productCategory-filter2-dropBox-open">
+                        <span class="fltrBtnBox_tggl_tx"><?= $priceFilter->getName() ?></span>
+                    </div>
 
-                    <ul style="display: none;" class="js-productCategory-filter2-dropBox-content">
+                    <ul style="display: none;" class="fltrBtnBox_dd fltrBtnBox_dd-l lstdotted js-productCategory-filter2-dropBox-content">
                         <? foreach ($priceFilter->getPriceRanges() as $range): ?>
-                            <li>
-                                <a href="<?= $helper->escape($range['url']) ?>">
+                            <li class="lstdotted_i">
+                                <a class="lstdotted_lk" href="<?= $helper->escape($range['url']) ?>">
                                     <? if (isset($range['from'])): ?>
-                                        от <?= $helper->escape($range['from']) ?>
+                                        <span class="txmark1">от</span> <?= $helper->escape($range['from']) ?>
                                     <? endif ?>
 
                                     <? if (isset($range['to'])): ?>
-                                        до <?= $helper->escape($range['to']) ?>
+                                        <span class="txmark1">до</span> <?= $helper->escape($range['to']) ?>
                                     <? endif ?>
                                 </a>
                             </li>
@@ -131,29 +131,29 @@ return function(
                     </ul>
                 </div>
 
-                <?= $helper->render('product-category/filter2/element/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter, 'promoStyle' => $promoStyle]) ?>
+                <div class="fl-l"><?= $helper->render('product-category/filter2/element/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter, 'promoStyle' => $promoStyle]) ?></div>
             <? endif ?>
 
             <? if ($saleFilter): ?>
-                <div class="js-productCategory-filter2-dropBox">
-                    <a href="#" class="js-productCategory-filter2-dropBox-open">
-                        <?= $saleFilter->getName() ?>
-                    </a>
+                <div class="fltrBtnBox fl-r js-productCategory-filter2-dropBox">
+                    <div class="fltrBtnBox_tggl js-productCategory-filter2-dropBox-open">
+                        <span class="fltrBtnBox_tggl_tx"><?= $saleFilter->getName() ?></span>
+                    </div>
 
-                    <div style="display: none;" class="js-productCategory-filter2-dropBox-content">
+                    <div style="display: none;" class="fltrBtnBox_dd fltrBtnBox_dd-r js-productCategory-filter2-dropBox-content">
                         <?= $helper->render('product-category/filter2/element/__list', ['productFilter' => $productFilter, 'filter' => $saleFilter, 'promoStyle' => $promoStyle]) ?>
                     </div>
                 </div>
             <? endif ?>
         </div>
 
-        <div class="flrtBox">
-            <div class="js-productCategory-filter2-dropBox">
-                <a href="#" class="js-productCategory-filter2-dropBox-open">
-                    Габариты
-                </a>
+        <div class="fltrBtn_kit">
+            <div class="fltrBtnBox js-productCategory-filter2-dropBox">
+                <div class="fltrBtnBox_tggl fltrBtnBox_tggl-mark js-productCategory-filter2-dropBox-open">
+                    <span class="fltrBtnBox_tggl_tx">Габариты</span>
+                </div>
 
-                <div style="display: none;" class="js-productCategory-filter2-dropBox-content">
+                <div style="display: none;" class="fltrBtnBox_dd js-productCategory-filter2-dropBox-content">
                     <div>
                         Ширина
                         <?= $helper->render('product-category/filter2/element/__number', ['productFilter' => $productFilter, 'filter' => $widthFilter]) ?>
@@ -174,6 +174,6 @@ return function(
             <?= $helper->render('product-category/__selectedFilter', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
         </div>
     </form>
-</div>    
+</div>
 
 <? };
