@@ -56,7 +56,9 @@
 
             <?= $page->render('main/_infoBlocks') ?>
 
-            <?= $page->slotRecommendations() ?>
+            <div class="clearfix">
+                <?= $page->slotRecommendations() ?>
+            </div>
 
             <?= $page->render('main/infoBox') ?>
 

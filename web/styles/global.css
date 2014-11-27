@@ -1772,11 +1772,10 @@ img[height="0"] {
     top: 50%;
   }
   .navsite_i:last-child .navsite3 {
-    left: -199px;
+    left: -200px;
     width: 195px;
     padding-right: 209px;
     padding-left: 0;
-    border-style: solid solid solid none;
     background-position: 198px;
   }
   .navsite_i-child:hover .navsite_lk:after {
@@ -1948,7 +1947,7 @@ img[height="0"] {
   }
   .header_nav {
     float: right;
-    width: 840px;
+    width: 850px;
     margin: 14px 0 0;
   }
   .header_nav .navsite_i {
@@ -2570,6 +2569,10 @@ img[height="0"] {
     display: block;
     text-align: center;
   }
+  .item_img {
+    width: 160px;
+    height: 160px;
+  }
   .item_n {
     overflow: hidden;
     height: 34px;
@@ -2644,6 +2647,16 @@ img[height="0"] {
   }
   .lstitem_n {
     display: inline;
+  }
+  .zoomIn {
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+  }
+  .zoomIn:hover {
+    -webkit-transform: scale(0.95);
+    -moz-transform: scale(0.95);
+    transform: scale(0.95);
   }
 }
 @media all {
@@ -3159,6 +3172,9 @@ img[height="0"] {
   .slidesBox_lst {
     position: relative;
     left: 0;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    transition: all 0.2s ease;
   }
   .slidesBox_i {
     float: left;
@@ -4293,6 +4309,9 @@ img[height="0"] {
     float: right;
     width: 108px;
     padding-left: 0;
+  }
+  .topbarfix-home .userbtn_i {
+    border: none;
   }
 }
 /*---END----ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК (ЛИСТИНГИ/КАРТОЧКА ТОВАРА)---------*/
