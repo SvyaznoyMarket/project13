@@ -603,7 +603,6 @@ $c->abTest = [
                 ],
             ]
         ],
-        ],
 
         'main_page' => [
             'name'          => 'Главная страница',
@@ -636,8 +635,10 @@ $c->abTest = [
                     'name'    => 'Нет фильтра',
                 ]
             ]
-        ]
-    ],
+        ],
+
+    ]
+
 ];
 
 $c->self_delivery['enabled'] = false;
