@@ -1046,7 +1046,7 @@ img[height="0"] {
     text-decoration: none;
   }
   .clsr2 {
-    background: url("/styles/popup-auth/img/closer.gif") no-repeat 50% 50%;
+    background: url("/styles/popup/img/closer.gif") no-repeat 50% 50%;
     height: 30px;
     width: 30px;
     position: absolute;
@@ -6398,7 +6398,7 @@ img[height="0"] {
     transition: all 0.5s ease;
   }
   .popup-simple .close {
-    background: url("/styles/popup-auth/img/closer.gif") no-repeat 50% 50% !important;
+    background: url("/styles/popup/img/closer.gif") no-repeat 50% 50% !important;
     height: 41px;
     width: 41px;
   }
@@ -8915,7 +8915,6 @@ img[height="0"] {
   }
 }
 /*---END----Личный кабинет пользователя---------*/
-/*---------Личный кабинет пользователя----------*/
 /*---------Личный кабинет пользователя----------*/
 /*---------Сравнение----------*/
 @media all {
