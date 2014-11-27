@@ -23,7 +23,7 @@ return function(
         $link = [
             'name'   => $child->getName(),
             'url'    => $child->getLink(),
-            'image'  => $child->getImageUrl($image_size),
+            'image'  => !$category->isAppliances() ? $child->getImageUrl($image_size) : null,
             'active' => false,
             'css'    => null,
         ];
@@ -42,7 +42,7 @@ return function(
                     $linkNew['image'] = "";
                 }
             }
-            if (array_key_exists('image', $config) && !empty($config['image'])) $linkNew['image'] = $config['image'];
+            if (array_key_exists('image', $config) && !empty($config['image']) && !$category->isAppliances()) $linkNew['image'] = $config['image'];
 
             $link = array_merge($link, $linkNew);
         }
