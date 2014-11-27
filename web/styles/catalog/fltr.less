@@ -1,0 +1,124 @@
+.inline-block-middle() {
+  display: inline-block;
+  vertical-align: middle;
+
+  /* IE6-8 */
+  *display: inline;
+  *zoom: 1;
+}
+
+.fltrBtn{
+	&_hd {
+		margin: 0 0 15px;
+	}
+	&_r {
+		.inline-block();
+		margin: 5px 0 0 30px;
+		color: #424242;
+		& * {
+			.inline-block();
+			line-height: 13px;
+		}
+	}
+	&_clr {
+		line-height: 13px;
+		margin: 0 0 0 15px;
+		cursor: pointer;
+
+		&_btn {
+			line-height: 12px;
+
+            width: 13px;
+            height: 13px;
+
+            text-align: center;
+
+            color: @white;
+            background: #7d7d7d;
+
+            .rounded(50%);
+		}
+		&_tx {
+			border-bottom: 1px dotted #424242;
+		}
+	}
+	&_tggl {
+		background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAKCAQAAADMDLw1AAAAQUlEQVQIW2Nw3uGiy4AKnP47/3We4y6JIgSCzl+c6t24UYTAws+ckxuYUITAwpdc3PELoWl0/uLSgGQ8hiMwnQoAAEs8bqiaIsoAAAAASUVORK5CYII=') no-repeat 0 50%;
+		color: @black;
+		font-size: 16px;
+		cursor: pointer;
+		.inline-block();
+
+		padding: 0 0 0 15px;
+		&_tx {
+			border-bottom: 1px dotted #515151;
+		}
+
+		&.opn {
+			background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAJCAQAAAChr3WYAAAAXElEQVQI11XKwQ0AERSE4YmrChShCSMUohAKUYg6FKECV9nN2rDre5eXPwMWc53HAqs5jjSsBsB8xIyHV+w7da/wMnEvIxYn2eauOYkPw4wBf0mwsiaBk/XWr/8G2pM8a8IWUVQAAAAASUVORK5CYII=');
+		}
+	}
+
+    &_i{
+        line-height: 40px;
+
+        position: relative;
+
+        width: 120px;
+        height: 43px;
+        margin: 0 5px 10px 0;
+
+        text-align: center;
+
+        border: 1px solid #e6e6e6;
+        background: @white;
+
+        .rounded(4px);
+        .inline-block();
+        &_img{
+            vertical-align: middle;
+        }
+        &-btn{
+            font-size: 14px;
+
+            color: #424242;
+            border-style: dashed;
+            .fltrBtn_i_tx{
+                border-bottom: 1px dotted #424242;
+            }
+            &:hover{
+                text-decoration: none;
+            }
+        }
+        &_clsr{
+            line-height: 15px;
+
+            position: absolute;
+            top: -7px;
+            right: -7px;
+
+            display: none;
+
+            width: 15px;
+            height: 15px;
+
+            text-align: center;
+
+            color: @white;
+            background: #f99b1c;
+
+            .rounded(50%);
+        }
+        &.act{
+            width: 118px;
+            height: 41px;
+            line-height: 38px;
+
+            border-width: 2px;
+            border-color: #f99b1c;
+            .fltrBtn_i_clsr{
+                display: block;
+            }
+        }
+    }
+}

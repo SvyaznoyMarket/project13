@@ -1,5 +1,8 @@
-<span>Выбраны {{selectedBrandsCount}} из {{brandsCount}}</span>
+<span class="fltrBtn_count">Выбраны {{selectedBrandsCount}} из {{brandsCount}}</span>
 
 {{#selectedBrandsCount}}
-    <a href="#" class="js-productCategory-rootPage-selectedBrands-clear">Очистить</a>
+    <span class="fltrBtn_clr js-productCategory-rootPage-selectedBrands-clear">
+    	<span class="fltrBtn_clr_btn">&#215;</span>
+    	<span class="fltrBtn_clr_tx">Очистить</span>
+    </span>
 {{/selectedBrandsCount}}

@@ -1,7 +1,7 @@
 ;$(function() {
 	var
-		brandLinkActiveClass = 'active',
-		brandTitleOpenedClass = 'opened',
+		brandLinkActiveClass = 'act',
+		brandTitleOpenedClass = 'opn',
 		$selectedBrandsWrapper = $('.js-productCategory-rootPage-brands-selectedBrandsWrapper'),
 		$brandLinks = $('.js-productCategory-rootPage-brands-link');
 
