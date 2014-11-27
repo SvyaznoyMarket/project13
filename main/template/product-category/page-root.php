@@ -83,9 +83,28 @@ foreach ($categories as $child) {
             </li>
         <? endforeach ?>
     </ul>
+    
+    <div style="margin: 0 0 30px;">
+        <? if (\App::config()->product['pullRecommendation']): ?>
+            <?= $helper->render('product/__slider', [
+                'type'      => 'viewed',
+                'title'     => 'Вы смотрели',
+                'products'  => [],
+                'count'     => null,
+                'limit'     => \App::config()->product['itemsInSlider'],
+                'page'      => 1,
+                'url'       => $page->url('product.recommended'),
+                'sender'    => [
+                    'name'     => 'retailrocket',
+                    'position' => 'Viewed',
+                ],
+            ]) ?>
+        <? endif ?>
+    </div>
+
     <? if(!empty($seoContent)): ?>
         <div class="bSeoText">
             <?= $seoContent ?>
         </div>
     <? endif ?>
-<? endif; ?>
+<? endif ?>

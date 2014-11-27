@@ -39,6 +39,10 @@ $isKitPage = (bool)$product->getKit();
             //'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
             'gaEvent'        => 'Accessorize',
             'additionalData' => $additionalData,
+            'sender'         => [
+                //'name'     => null,
+                'position' => 'ProductAccessoriesManual',
+            ],
         ]) ?>
     <? endif ?>
 
@@ -51,13 +55,17 @@ $isKitPage = (bool)$product->getKit();
     <? if (\App::config()->product['showRelated'] && !$isTchibo): ?>
         <?= $helper->render('product/__slider', [
             'type'           => 'alsoBought',
-            'title'          => 'С этим товаром также покупают',
+            'title'          => 'С этим товаром покупают',
             'products'       => [],
             'count'          => null,
             'limit'          => \App::config()->product['itemsInSlider'],
             'page'           => 1,
             'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
             'additionalData' => $additionalData,
+            'sender'         => [
+                'name'     => 'retailrocket',
+                'position' => 'ProductAccessories', // все правильно - так и надо!
+            ],
         ]) ?>
     <? endif ?>
 
@@ -70,24 +78,16 @@ $isKitPage = (bool)$product->getKit();
             'limit'    => \App::config()->product['itemsInSlider'],
             'page'     => 1,
             'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
+            'sender'   => [
+                'name'     => 'retailrocket',
+                'position' => 'ProductSimilar',
+            ],
         ]) ?>
     <? endif ?>
 
     <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getGroupedProperties()]) // Характеристики ?>
 
     <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent, 'sprosikupiReviews' => $sprosikupiReviews, 'shoppilotReviews' => $shoppilotReviews]) ?>
-
-    <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
-        <?= $helper->render('product/__slider', [
-            'type'     => 'alsoViewed',
-            'title'    => 'С этим товаром также смотрят',
-            'products' => [],
-            'count'    => null,
-            'limit'    => \App::config()->product['itemsInSlider'],
-            'page'     => 1,
-            'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
-        ]) ?>
-    <? endif ?>
 </div><!--/left section -->
 
 <div class="bProductSectionRightCol">
@@ -105,6 +105,7 @@ $isKitPage = (bool)$product->getKit();
         <?= $helper->render('cart/__button-product', [
             'product' => $product,
             'onClick' => isset($addToCartJS) ? $addToCartJS : null,
+            'sender'  => (array)$request->get('sender') + ['name' => null, 'method' => null, 'position'],
         ]) // Кнопка купить ?>
 
         <div class="js-showTopBar"></div>
@@ -122,8 +123,45 @@ $isKitPage = (bool)$product->getKit();
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
 
-    <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'right']) ?>
+    <? if ($product->isAvailable()): // SITE-4709 ?>
+        <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'right']) ?>
+    <? endif ?>
 </div><!--/right section -->
+
+<div class="clear"></div>
+
+<? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
+    <?= $helper->render('product/__slider', [
+        'type'     => 'alsoViewed',
+        'title'    => 'С этим товаром также смотрят',
+        'products' => [],
+        'count'    => null,
+        'limit'    => \App::config()->product['itemsInSlider'],
+        'page'     => 1,
+        'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
+        'sender'   => [
+            'name'     => 'retailrocket',
+            'position' => 'ProductUpSale',
+        ],
+    ]) ?>
+<? endif ?>
+
+<? if ($isNewRecommendation && \App::config()->product['pullRecommendation'] && !$isTchibo): ?>
+    <?= $helper->render('product/__slider', [
+        'type'      => 'viewed',
+        'title'     => 'Вы смотрели',
+        'products'  => [],
+        'count'     => null,
+        'limit'     => \App::config()->product['itemsInSlider'],
+        'page'      => 1,
+        'url'       => $page->url('product.recommended', ['productId' => $product->getId()]),
+        'sender'    => [
+            'name'     => 'retailrocket',
+            'position' => 'Viewed',
+        ],
+    ]) ?>
+<? endif ?>
+
 
 <div class="bBreadCrumbsBottom"><?= $page->render('_breadcrumbs', ['breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer']) ?></div>
 

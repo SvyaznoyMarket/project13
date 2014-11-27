@@ -733,7 +733,9 @@ window.ANALYTICS = {
 						for ( i = 0; i < count; i++ ) {
 							console.log('ecommerce:addItem', items[i]);
 							ga('ecommerce:addItem', items[i]);
-                            if (/Tchibo/.test(items[i].category) || /Tchibo/.test(items[i].name)) tchiboItems.push(items[i])
+                            if (/Tchibo/.test(items[i].category) || /Tchibo/.test(items[i].name)) tchiboItems.push(items[i]);
+							if (items[i].rr_viewed) body.trigger('trackGoogleEvent',['RR_покупка','Купил просмотренные', items[i].rr_block]);
+							if (items[i].rr_added) body.trigger('trackGoogleEvent',['RR_покупка','Купил добавленные', items[i].rr_block]);
 						}
 					}
 
@@ -794,7 +796,8 @@ window.ANALYTICS = {
 				console.error('GA: init error');
 				return false; // метод ga не определён, ошибка, нечего анализировать, выходим
 			}
-			ga( 'create', 'UA-25485956-5', 'enter.ru' );
+			ga('create', 'UA-25485956-5', 'enter.ru');
+			ga('require', 'displayfeatures');
 
 			if ( true === useTchiboAnalytics ) {
 				ga('create', 'UA-12345-6', 'auto', {'name': 'tchiboTracker'});
@@ -928,179 +931,68 @@ window.ANALYTICS = {
     RetailRocketJS : function() {
     	console.groupCollapsed('ports.js::RetailRocketJS');
 
-        window.rrPartnerId = "519c7f3c0d422d0fe0ee9775"; // rrPartnerId — по ТЗ должна быть глобальной
-        
-        window.rrApi = {};
-        window.rrApiOnReady = [];
-
+        rrPartnerId = "519c7f3c0d422d0fe0ee9775"; // rrPartnerId — по ТЗ должна быть глобальной
+        rrApi = {};
+        rrApiOnReady = [];
         rrApi.addToBasket = rrApi.order = rrApi.categoryView = rrApi.view = rrApi.recomMouseDown = rrApi.recomAddToCart = function() {};
 
-        window.RetailRocket = {
+		console.info('RetailRocketJS init');
 
-            'product': function ( data, userData ) {
-            	console.info('RetailRocketJS product');
+		(function (d) {
+			var
+				ref = d.getElementsByTagName( 'script' )[0],
+				apiJs,
+				apiJsId = 'rrApi-jssdk';
 
-                var rcAsyncInit = function () {
-                    try {
-                        rcApi.view(data, userData.userId ? userData : undefined); 
-                    }
-                    catch ( err ) {
-                        var dataToLog = {
-                                event: 'RR_error',
-                                type: 'ошибка в rcApi.view',
-                                err: err
-                            };
-                        // end of vars
+			if ( d.getElementById( apiJsId ) ) return;
+			apiJs = d.createElement( 'script' );
+			apiJs.id = apiJsId;
+			apiJs.async = true;
+			apiJs.src = "//cdn.retailrocket.ru/content/javascript/tracking.js";
+			ref.parentNode.insertBefore( apiJs, ref );
+		}( document ));
 
-                        ENTER.utils.logError(dataToLog);
-                    }
-                };
+		// SITE-3672. Передаем email пользователя для RetailRocket
+		(function() {
+			var
+				rr_data = $('#RetailRocketJS').data('value'),
+				email,
+				cookieName;
+			// end of vars
 
-                window.rrApiOnReady.push(rcAsyncInit);
-            },
-
-            'product.category': function ( data, userData ) {
-            	console.info('RetailRocketJS product.category');
-
-                var rcAsyncInit = function () {
-                    try {
-                        rcApi.categoryView(data, userData.userId ? userData : undefined);
-                    }
-                    catch ( err ) {
-                        var dataToLog = {
-                                event: 'RR_error',
-                                type:'ошибка в rcApi.categoryView',
-                                err: err
-                            };
-                        // end of vars
-
-                        ENTER.utils.logError(dataToLog);
-                    }
-                };
-
-                window.rrApiOnReady.push(rcAsyncInit);
-            },
-
-            'order.complete': function ( data, userData ) {
-            	console.info('RetailRocketJS order.complete');
-
-                if ( userData.userId ) {
-                    data.userId = userData.userId;
-                    data.hasUserEmail = userData.hasUserEmail;
-                }
-
-                var rcAsyncInit = function () {
-                    try {
-                        rcApi.order(data);
-                    }
-                    catch ( err ) {
-                        var dataToLog = {
-                                event: 'RR_error',
-                                type:'ошибка в rcApi.order',
-                                err: err
-                            };
-                        // end of vars
-
-                        ENTER.utils.logError(dataToLog);
-                    }
-                };
-
-                window.rrApiOnReady.push(rcAsyncInit);
-            },
-
-            action: function ( e, userInfo ) {
-				try {
-					console.info('RetailRocketJS action');
-					if ( userInfo && userInfo.id ) {
-						window.rrPartnerUserId = userInfo.id; // rrPartnerUserId — по ТЗ должна быть глобальной
-					}
-
-					var
-						rr_data = $('#RetailRocketJS').data('value'),
-						sendUserData = {
-							userId: ( userInfo ) ? ( userInfo.id || false ) : null,
-							hasUserEmail: ( userInfo && userInfo.email ) ? true : false
-						};
-					// end of vars
-
-					if ( rr_data && rr_data.routeName && rr_data.sendData && window.RetailRocket.hasOwnProperty(rr_data.routeName) ) {
-						window.RetailRocket[rr_data.routeName](rr_data.sendData, sendUserData);
-					}
-				} catch (err) {
-					ENTER.utils.logError({
-						event: 'RR_error',
-						type:'ошибка в action',
-						err: err
-					});
-				}
-            },
-
-            init: function () { // on load:
-            	console.info('RetailRocketJS init');
-
-				(function (d) {
-					var
-						ref = d.getElementsByTagName( 'script' )[0],
-						apiJs,
-						apiJsId = 'rrApi-jssdk';
-
-					if ( d.getElementById( apiJsId ) ) return;
-					apiJs = d.createElement( 'script' );
-					apiJs.id = apiJsId;
-					apiJs.async = true;
-					apiJs.src = "//cdn.retailrocket.ru/javascript/tracking.js";
-					ref.parentNode.insertBefore( apiJs, ref );
-				}( document ));
-            },
-
-			/**
-			 * SITE-3672. Передаем email пользователя
-			 */
-			userEmailSend: function () {
-				var
-					rr_data = $('#RetailRocketJS').data('value'),
-					email,
-					cookieName;
-				// end of vars
-
-				if ( 'object' != typeof(rr_data) || !rr_data.hasOwnProperty('emailCookieName') ) {
-					return;
-				}
-
-				cookieName = rr_data.emailCookieName;
-
-				email = window.docCookies.getItem(cookieName);
-				if ( !email ) {
-					return;
-				}
-
-				console.info('RetailRocketJS userEmailSend');
-				console.log(email);
-
-				rrApiOnReady.push(function () {
-					rrApi.setEmail(email);
-				});
-
-				window.docCookies.removeItem(cookieName, '/');
+			if ( 'object' != typeof(rr_data) || !rr_data.hasOwnProperty('emailCookieName') ) {
+				return;
 			}
 
-        }// end of window.RetailRocket object
+			cookieName = rr_data.emailCookieName;
 
-        RetailRocket.init();
+			email = window.docCookies.getItem(cookieName);
+			if ( !email ) {
+				return;
+			}
 
-		// Передаем email пользователя для RetailRocket
-		RetailRocket.userEmailSend();
+			console.info('RetailRocketJS userEmailSend');
+			console.log(email);
 
-		if ( ENTER.config.userInfo === false ) {
-			RetailRocket.action(null);
-		}
-		else if ( !ENTER.config.userInfo ) {
-			$("body").on("userLogged", function(e,data) {RetailRocket.action(null, data.user)} );
-		}
-		else {
-			console.warn(ENTER.config.userInfo);
-			RetailRocket.action(null, ENTER.config.userInfo);
-		}
+			rrApiOnReady.push(function () {
+				rrApi.setEmail(email);
+			});
+
+			window.docCookies.removeItem(cookieName, '/');
+		})();
+
+		// Вызываем счётчик для заданных в HTML коде параметров
+		(function() {
+			try {
+				var rr_data = $('#RetailRocketJS').data('value');
+
+				if (rr_data && rr_data.routeName && rr_data.sendData) {
+					$.each(rr_data.sendData, function(index, data) {
+						ENTER.counters.callRetailRocketCounter(rr_data.routeName, data);
+					});
+				}
+			} catch (err) {}
+		})();
 
 		console.groupEnd();
     },
@@ -2087,6 +1979,28 @@ window.ANALYTICS = {
 				window.spApiPaidProducts.push(new InsiderProduct(data.product));
 			}
 		})
+	},
+
+	GetIntentJS: function(){
+		var data = $('#GetIntentJS').data('value');
+
+		ENTER.counters.callGetIntentCounter({
+			type: "VIEW",
+			productId: data.productId,
+			productPrice: data.productPrice,
+			categoryId: data.categoryId
+		});
+
+		if (data.orders) {
+			$.each(data.orders, function(index, order) {
+				ENTER.counters.callGetIntentCounter({
+					type: "CONVERSION",
+					orderId: order.id,
+					orderProducts: order.products,
+					orderRevenue: order.revenue
+				});
+			});
+		}
 	},
 
 	enable : true

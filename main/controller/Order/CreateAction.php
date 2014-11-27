@@ -359,6 +359,18 @@ class CreateAction {
 
                                     \App::session()->set(\App::config()->product['recommendationSessionKey'], $recommendedProductIds);
                                 }
+
+                                // добавляем информацию о блоке рекомендаций, откуда был добавлен товар (используется корзина, которая очищается только на /order/complete)
+                                $cart = $user->getCart()->getProductsNC();
+                                if (isset($cart[$product->getId()]['sender'])) {
+                                    $senderData = $cart[$product->getId()]['sender'];
+                                    if (isset($senderData['name']))     $orderData['meta_data'][sprintf('product.%s.sender', $product->getUi())] = $senderData['name'];       // система рекомендаций
+                                    if (isset($senderData['position'])) $orderData['meta_data'][sprintf('product.%s.position', $product->getUi())] = $senderData['position']; // позиция блока на сайте
+                                    if (isset($senderData['method']))   $orderData['meta_data'][sprintf('product.%s.method', $product->getUi())] = $senderData['method'];     // метод рекомендаций
+                                    if (isset($senderData['from']) && !empty($senderData['from']))     $orderData['meta_data'][sprintf('product.%s.from', $product->getUi())] = $senderData['from'];         // откуда перешели на карточку товара
+                                    unset($senderData);
+                                }
+
                             } catch (\Exception $e) {
                                 \App::logger()->error(['error' => $e], ['order', 'partner']);
                             }

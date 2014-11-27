@@ -285,8 +285,7 @@ class OrderEntity {
         if (isset($arr['user_info']['bonus_card_number']) && $arr['user_info']['bonus_card_number'] !== '') $this->bonus_card_number = preg_replace('/\s+/','',(string)$arr['user_info']['bonus_card_number']);
 
         if ($this->shop_id === null && !empty($this->address_street)) {
-            $this->address = (string)$regionName;
-            if (!empty($this->address_street)) $this->address .= ', '.$this->address_street;
+            $this->address = $this->address_street;
             if (!empty($this->address_building)) $this->address .= ', д. '.$this->address_building;
             if (!empty($this->address_apartment)) $this->address .= ', кв. '.$this->address_apartment;
         }
@@ -307,6 +306,7 @@ class OrderEntity {
         $request = \App::request();
         $user = \App::user();
         $data = [];
+        $cart = $user->getCart()->getProductsNC();
         try {
             /** @var $products \Model\Product\Entity[] */
             $products = [];
@@ -348,6 +348,17 @@ class OrderEntity {
 
                         \App::session()->set(\App::config()->product['recommendationSessionKey'], $recommendedProductIds);
                     }
+
+                    // добавляем информацию о блоке рекомендаций, откуда был добавлен товар (используется корзина, которая очищается только на /order/complete)
+                    if (isset($cart[$product->getId()]['sender'])) {
+                        $senderData = $cart[$product->getId()]['sender'];
+                        if (isset($senderData['name']))     $data[sprintf('product.%s.sender', $product->getUi())] = $senderData['name'];       // система рекомендаций
+                        if (isset($senderData['position'])) $data[sprintf('product.%s.position', $product->getUi())] = $senderData['position']; // позиция блока на сайте
+                        if (isset($senderData['method']))   $data[sprintf('product.%s.method', $product->getUi())] = $senderData['method'];     // метод рекомендаций
+                        if (isset($senderData['from']) && !empty($senderData['from']))     $data[sprintf('product.%s.from', $product->getUi())] = $senderData['from'];         // откуда перешели на карточку товара
+                        unset($senderData);
+                    }
+
                 } catch (\Exception $e) {
                     \App::logger()->error(['error' => $e], ['order', 'partner']);
                 }
@@ -360,7 +371,6 @@ class OrderEntity {
                 $data['kiss_session'] = $request->request->get('kiss_session');
                 $data['last_partner'] = $request->cookies->get('last_partner');
             }
-            \App::logger()->info(sprintf('Создается заказ от партнеров %s', json_encode($data['partner'])), ['order', 'partner']);
         } catch (\Exception $e) {
             \App::logger()->error($e, ['order_v3', 'partner']);
         }

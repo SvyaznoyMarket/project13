@@ -19,6 +19,53 @@
                     $('#jsOneClickContent').append(response.result.page);
 
                     $('body').trigger('trackUserAction', ['3_1 Оформить_успешно']);
+
+					// Счётчик GetIntent (BlackFriday)
+					(function() {
+						if (response.result.lastPartner != 'blackfridaysale') {
+							return '';
+						}
+
+						$.each(response.result.orders, function(index, order) {
+							var products = [];
+							var revenue = 0;
+							$.each(order.products, function(index, product) {
+								products.push({
+									id: product.id + '',
+									price: product.price + '',
+									quantity: parseInt(product.quantity)
+								});
+
+								revenue += parseFloat(product.price) * parseInt(product.quantity);
+							});
+
+							ENTER.counters.callGetIntentCounter({
+								type: "CONVERSION",
+								orderId: order.id + '',
+								orderProducts: products,
+								orderRevenue: revenue + ''
+							});
+						});
+					})();
+
+					// Счётчик RetailRocket
+					(function() {
+						$.each(response.result.orders, function(index, order) {
+							var products = [];
+							$.each(order.products, function(index, product) {
+								products.push({
+									id: product.id,
+									qnt: product.quantity,
+									price: product.price
+								});
+							});
+
+							ENTER.counters.callRetailRocketCounter('order.complete', {
+								transaction: order.id,
+								items: products
+							});
+						});
+					})();
                 }
 
                 var $orderContainer = $('#jsOrderV3OneClickOrder');

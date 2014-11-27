@@ -264,37 +264,46 @@ class IndexPage extends \View\DefaultLayout {
 
     public function slotConfig() {
         $config = [];
-        $config['product.vFitting'] = false;
 
-        $productVideos =(array)$this->getParam('productVideos');
-        $productVideo = reset($productVideos);
-        if ($productVideo instanceof \Model\Product\Video\Entity) {
-            if ($productVideo->getImg3d()) {
-                $config['product.img3d'] = true;
-            }
-            if ($productVideo->getMaybe3d()) {
-                $config['product.maybe3d'] = true;
-            }
-            if ($productVideo->getPandra()) {
-                $config['product.vFitting'] = true;
-            }
-        }
-
+        /** @var \Model\Product\Entity|null $product */
         $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
-        if ($product instanceof \Model\Product\Entity) {
-            if ((bool)$product->getPhoto3d()) {
-                $config['product.native3d'] = true;
-            }
-        }
+        if ($product) {
+            $config = [
+                'product' => [
+                    'id' => $product->getId(),
+                ],
+            ];
+            $config['product.vFitting'] = false;
 
-        if ($config['product.vFitting']) {
-            $resourcesVF = $product->getPandraResources();
-            $config['product.name']         = $product->getName();
-            $config['product.article']      = $product->getArticle();
-            $config['product.resources']    = $resourcesVF['resources'];
-            $config['product.meshes']       = $resourcesVF['meshes'];
-            $config['product.textures']     = $resourcesVF['textures'];
-            $config['product.marker']       = $resourcesVF['marker'];
+            $productVideos =(array)$this->getParam('productVideos');
+            $productVideo = reset($productVideos);
+            if ($productVideo instanceof \Model\Product\Video\Entity) {
+                if ($productVideo->getImg3d()) {
+                    $config['product.img3d'] = true;
+                }
+                if ($productVideo->getMaybe3d()) {
+                    $config['product.maybe3d'] = true;
+                }
+                if ($productVideo->getPandra()) {
+                    $config['product.vFitting'] = true;
+                }
+            }
+
+            if ($product instanceof \Model\Product\Entity) {
+                if ((bool)$product->getPhoto3d()) {
+                    $config['product.native3d'] = true;
+                }
+            }
+
+            if ($config['product.vFitting']) {
+                $resourcesVF = $product->getPandraResources();
+                $config['product.name']         = $product->getName();
+                $config['product.article']      = $product->getArticle();
+                $config['product.resources']    = $resourcesVF['resources'];
+                $config['product.meshes']       = $resourcesVF['meshes'];
+                $config['product.textures']     = $resourcesVF['textures'];
+                $config['product.marker']       = $resourcesVF['marker'];
+            }
         }
 
         return $this->tryRender('_config', ['config' => $config]);
@@ -371,5 +380,23 @@ class IndexPage extends \View\DefaultLayout {
         return $this->tryRender('_googleAnalytics', ['product' => $this->getParam('product')]);
     }
 
+    public function slotGetIntentJS() {
+        if (!\App::config()->partners['GetIntent']['enabled']) {
+            return '';
+        }
 
+        /** @var \Model\Product\Entity|null $product */
+        $product = $this->getParam('product');
+        if (!($product instanceof \Model\Product\Entity)) {
+            $product = null;
+        }
+
+        $data = [
+            'productId' => $product ? (string)$product->getId() : '',
+            'productPrice' => $product ? (string)$product->getPrice() : '',
+            'categoryId' => $product && $product->getLastCategory() ? (string)$product->getLastCategory()->getId() : '',
+        ];
+
+        return '<div id="GetIntentJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
+    }
 }

@@ -18,6 +18,17 @@
  */
 
 $isKitPage = (bool)$product->getKit();
+
+$showSimilarOnTop = !$product->isAvailable();
+
+// АБ-тест рекомендаций
+$test = \App::abTest()->getTest('recommended_product');
+$isNewRecommendation =
+    $test->getEnabled()
+    && $test->getChosenCase()
+    && ('new_recommendation' == $test->getChosenCase()->getKey())
+;
+
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
@@ -25,7 +36,7 @@ $isKitPage = (bool)$product->getKit();
 <div class="bProductSectionLeftCol">
     <?= $helper->render('product/__photo', ['product' => $product, 'productVideos' => $productVideos, 'useLens' => $useLens]) ?>
 
-    <div class="bProductDesc<? if (!$creditData['creditIsAllowed'] || $user->getRegion()->getHasTransportCompany()): ?> mNoCredit<? endif ?>">
+    <div class="bProductDesc<? if (!$creditData['creditIsAllowed'] || $user->getRegion()->getHasTransportCompany()): ?> mNoCredit<? endif ?>" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
         <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>
 
         <?= $helper->render('product/__price', ['product' => $product]) // Цена ?>
@@ -44,19 +55,33 @@ $isKitPage = (bool)$product->getKit();
 
         <?
         // new Card Properties Begin {
-        if ($product->getTagline()) {
-        ?>
+        if ($product->getTagline()): ?>
             <div itemprop="description" class="bProductDescText">
                 <?= $product->getTagline() ?>
                 <? /* <div class="bTextMore"><a class="jsGoToId" data-goto="productspecification" href="">Характеристики</a></div> */ ?>
             </div>
-        <?
-        }
+        <? endif ?>
 
-        echo $helper->render('product/__reviewCount', ['product' => $product, 'reviewsData' => $reviewsData]);
-        echo $helper->render('product/__mainProperties', ['product' => $product]);
-        // } /end of new Card Properties
-        ?>
+        <? if ($showSimilarOnTop && $isNewRecommendation): ?>
+            <? if (\App::config()->product['pullRecommendation']): ?>
+                <?= $helper->render('product/__slider', [
+                    'type'     => 'similar',
+                    'title'    => 'Похожие товары',
+                    'products' => [],
+                    'count'    => null,
+                    'limit'    => \App::config()->product['itemsInSlider'],
+                    'page'     => 1,
+                    'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
+                    'sender'   => [
+                        'name'     => 'retailrocket',
+                        'position' => 'ProductMissing',
+                    ],
+                ]) ?>
+            <? endif ?>
+        <? endif ?>
+
+        <?= $helper->render('product/__reviewCount', ['product' => $product, 'reviewsData' => $reviewsData]) ?>
+        <?= $helper->render('product/__mainProperties', ['product' => $product]) ?>
 
         <?= $helper->render('product/__model', ['product' => $product]) // Модели ?>
     </div><!--/product shop description section -->
@@ -79,6 +104,26 @@ $isKitPage = (bool)$product->getKit();
             //'url'            => $page->url('product.accessory', ['productToken' => $product->getToken()]),
             'gaEvent'        => 'Accessorize',
             'additionalData' => $additionalData,
+            'sender'         => [
+                'position' => 'ProductAccessoriesManual',
+            ],
+        ]) ?>
+    <? endif ?>
+
+    <? if (\App::config()->product['showRelated']): ?>
+        <?= $helper->render('product/__slider', [
+            'type'           => 'alsoBought',
+            'title'          => 'С этим товаром покупают',
+            'products'       => [],
+            'count'          => null,
+            'limit'          => \App::config()->product['itemsInSlider'],
+            'page'           => 1,
+            'additionalData' => $additionalData,
+            'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
+            'sender'         => [
+                'name'     => 'retailrocket',
+                'position' => 'ProductAccessories', // все правильно - так и надо!
+            ],
         ]) ?>
     <? endif ?>
 
@@ -88,51 +133,30 @@ $isKitPage = (bool)$product->getKit();
 
     <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'content']) ?>
 
-    <? if (\App::config()->product['showRelated'] && !$isTchibo): ?>
-        <?= $helper->render('product/__slider', [
-            'type'           => 'alsoBought',
-            'title'          => 'С этим товаром также покупают',
-            'products'       => [],
-            'count'          => null,
-            'limit'          => \App::config()->product['itemsInSlider'],
-            'page'           => 1,
-            'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
-            'additionalData' => $additionalData,
-        ]) ?>
+    <? if ($product->getSecondaryGroupedProperties()): // показываем все характеристики (сгруппированые), если ранее они не были показаны ?>
+        <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getSecondaryGroupedProperties()]); // Характеристики ?>
     <? endif ?>
-
-    <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
-        <?= $helper->render('product/__slider', [
-            'type'     => 'similar',
-            'title'    => 'Похожие товары',
-            'products' => [],
-            'count'    => null,
-            'limit'    => \App::config()->product['itemsInSlider'],
-            'page'     => 1,
-            'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
-        ]) ?>
-    <? endif ?>
-
-    <?
-    if ($product->getSecondaryGroupedProperties()) {
-        // показываем все характеристики (сгруппированые), если ранее они не были показаны
-        echo $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getSecondaryGroupedProperties()]); // Характеристики
-    }
-    ?>
 
     <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent, 'sprosikupiReviews' => $sprosikupiReviews, 'shoppilotReviews' => $shoppilotReviews]) ?>
 
-    <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
-        <?= $helper->render('product/__slider', [
-            'type'     => 'alsoViewed',
-            'title'    => 'С этим товаром также смотрят',
-            'products' => [],
-            'count'    => null,
-            'limit'    => \App::config()->product['itemsInSlider'],
-            'page'     => 1,
-            'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
-        ]) ?>
+    <? if (!$showSimilarOnTop || !$isNewRecommendation): ?>
+        <? if (\App::config()->product['pullRecommendation']): ?>
+            <?= $helper->render('product/__slider', [
+                'type'     => 'similar',
+                'title'    => 'Похожие товары',
+                'products' => [],
+                'count'    => null,
+                'limit'    => \App::config()->product['itemsInSlider'],
+                'page'     => 1,
+                'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
+                'sender'   => [
+                    'name'     => 'retailrocket',
+                    'position' => 'ProductSimilar',
+                ],
+            ]) ?>
+        <? endif ?>
     <? endif ?>
+
 </div><!--/left section -->
 
 <div class="bProductSectionRightCol">
@@ -152,6 +176,7 @@ $isKitPage = (bool)$product->getKit();
             <?= $helper->render('cart/__button-product', [
                 'product' => $product,
                 'onClick' => isset($addToCartJS) ? $addToCartJS : null,
+                'sender'  => (array)$request->get('sender') + ['name' => null, 'method' => null, 'position'],
             ]) // Кнопка купить ?>
 
             <div class="js-showTopBar"></div>
@@ -181,7 +206,11 @@ $isKitPage = (bool)$product->getKit();
         <div class="js-showTopBar"></div>
     <? endif ?>
 
-    <?= $helper->render('cart/__form-oneClick', ['product' => $product, 'region' => \App::user()->getRegion()]) // Форма покупки в один клик ?>
+    <?= $helper->render('cart/__form-oneClick', [
+        'product' => $product,
+        'region'  => \App::user()->getRegion(),
+        'sender'  => (array)$request->get('sender') + ['name' => null, 'method' => null, 'position'],
+    ]) // Форма покупки в один клик ?>
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
 
@@ -189,10 +218,44 @@ $isKitPage = (bool)$product->getKit();
 
     <?//= $helper->render('product/__service', ['product' => $product]) ?>
 
-    <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'right']) ?>
+    <? if ($product->isAvailable()): // SITE-4709 ?>
+        <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'right']) ?>
+    <? endif ?>
 </div><!--/right section -->
 
 <div class="clear"></div>
+
+<? if (false && \App::config()->product['pullRecommendation']): ?>
+    <?= $helper->render('product/__slider', [
+        'type'     => 'alsoViewed',
+        'title'    => 'С этим товаром также смотрят',
+        'products' => [],
+        'count'    => null,
+        'limit'    => \App::config()->product['itemsInSlider'],
+        'page'     => 1,
+        'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
+        'sender'   => [
+            'name'     => 'retailrocket',
+            'position' => 'ProductUpSale',
+        ],
+    ]) ?>
+<? endif ?>
+
+<? if ($isNewRecommendation && \App::config()->product['pullRecommendation']): ?>
+    <?= $helper->render('product/__slider', [
+        'type'      => 'viewed',
+        'title'     => 'Вы смотрели',
+        'products'  => [],
+        'count'     => null,
+        'limit'     => \App::config()->product['itemsInSlider'],
+        'page'      => 1,
+        'url'       => $page->url('product.recommended', ['productId' => $product->getId()]),
+        'sender'    => [
+            'name'     => 'retailrocket',
+            'position' => 'Viewed',
+        ],
+    ]) ?>
+<? endif ?>
 
 <div class="bBreadCrumbsBottom"><?= $page->render('_breadcrumbs', ['breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer']) ?></div>
 

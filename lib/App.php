@@ -55,7 +55,7 @@ class App {
 
             if (E_NOTICE == $level) {
                 if ($logger = \App::logger()) {
-                    $logger->error(['message' => $message, 'senser' => $file . ' ' . $line], ['critical', 'error_handler']);
+                    $logger->error(['message' => $message, 'sender' => $file . ' ' . $line], ['critical', 'error_handler']);
                 }
 
                 return true;

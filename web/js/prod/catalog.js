@@ -29,6 +29,15 @@
 	console.info('Mustache is '+ typeof Mustache + ' (Catalog main config)');
 	console.info('enableHistoryAPI '+ catalog.enableHistoryAPI);
 
+    /**
+     * Подключение слайдера товаров
+     */
+    $('.bGoodsSlider').goodsSlider({
+        onLoad: function(goodsSlider) {
+            ko.applyBindings(ENTER.UserModel, goodsSlider);
+        }
+    });
+
 }(window.ENTER));
 /**
  * Filters

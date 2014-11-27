@@ -24,6 +24,7 @@ class IndexAction {
 
             foreach ($data as $i => $item) {
                 $bannerId = isset($item['id']) ? (int)$item['id'] : null;
+                if (isset($item['type_id']) && 3 == (int)$item['type_id']) continue; // Пропускаем "экслюзивные" баннеры (для новой главной)
                 $item = [
                     'id'    => $bannerId,
                     'name'  => isset($item['name']) ? (string)$item['name'] : null,

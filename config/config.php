@@ -87,7 +87,7 @@ $c->odnoklassnikiOauth->publicKey    = 'CBAQGMICEBABABABA';
 
 $c->reviewsStore['url']          = 'http://scms.enter.ru/reviews/';
 $c->reviewsStore['retryCount']   = 2;
-$c->reviewsStore['timeout']      = 0.36;
+$c->reviewsStore['timeout']      = 0.4;
 $c->reviewsStore['retryTimeout'] = [
     'default' => 0.18,
     'tiny'    => 0.18,
@@ -253,6 +253,7 @@ $c->partners['Lamoda']['lamodaID'] = '11640775691088171491';
 $c->partners['TagMan']['enabled'] = false;
 $c->partners['Revolver']['enabled'] = true;
 $c->partners['Insider']['enabled'] = true;
+$c->partners['GetIntent']['enabled'] = true;
 
 $c->adFox['enabled'] = true;
 
@@ -513,15 +514,15 @@ $c->abTest = [
             'expireDate' => '2014-12-31',
             'cases' => [
                 'old' => [
-                    'traffic'  => 60,
+                    'traffic'  => 0,
                     'name'     => 'Старое оформление заказа',
                 ],
                 'new_1' => [
-                    'traffic'  => 20,
+                    'traffic'  => 0,
                     'name'     => 'Новое оформление заказа, версия 1',
                 ],
                 'new_2' => [
-                    'traffic'  => 20,
+                    'traffic'  => 100,
                     'name'     => 'Новое оформление заказа, версия 2',
                 ]
             ]
@@ -538,11 +539,11 @@ $c->abTest = [
                     'name'     => 'Старое оформление заказа',
                 ],
                 'new_1' => [
-                    'traffic'  => 50,
+                    'traffic'  => 0,
                     'name'     => 'Новое оформление заказа, версия 1',
                 ],
                 'new_2' => [
-                    'traffic'  => 50,
+                    'traffic'  => 100,
                     'name'     => 'Новое оформление заказа, версия 2',
                 ]
             ]
@@ -555,33 +556,12 @@ $c->abTest = [
             'expireDate' => '2014-12-31',
             'cases' => [
                 'delivery_self_100' => [
-                    'traffic'  => 50,
+                    'traffic'  => 0,
                     'name'     => 'Платный самовывоз',
                 ],
                 'delivery_self_0' => [
-                    'traffic'  => 50,
+                    'traffic'  => 100,
                     'name'     => 'Бесплатный самовывоз',
-                ]
-            ]
-        ],
-
-        'furniture_anzoli' => [
-            'name'  => 'Вид категории Anzoli в разделе Мебель',
-            'gaSlotNumber'        => 10,
-            'enabled' => true,
-            'expireDate' => '2014-12-31',
-            'cases' => [
-                'furniture_main1' => [
-                    'traffic'  => 33,
-                    'name'     => 'Широкий баннер',
-                ],
-                'furniture_main2' => [
-                    'traffic'  => 33,
-                    'name'     => 'Баннер из пяти частей',
-                ],
-                'furniture_main3' => [
-                    'traffic'  => 34,
-                    'name'     => 'Большой баннер',
                 ]
             ]
         ],
@@ -596,15 +576,33 @@ $c->abTest = [
                     'traffic' => 50,
                     'name'    => 'Старый фильтр',
                 ],
-                'new_filter_with_photo' => [
+                'new_filter_with_photo_closed' => [
                     'traffic' => 25,
-                    'name'    => 'Новый фильтр и есть фото "как товар смотрится на модели"',
+                    'name'    => 'Новый свёрнутый фильтр и есть фото "как товар смотрится на модели"',
                 ],
-                'new_filter_without_photo' => [
+                'new_filter_with_photo_opened' => [
                     'traffic' => 25,
-                    'name'    => 'Новый фильтр и нет фото "как товар смотрится на модели"',
+                    'name'    => 'Новый развёнутый фильтр и есть фото "как товар смотрится на модели"',
                 ],
             ]
+        ],
+
+        'recommended_product' => [
+            'name'          => 'Рекомендации в карточке товара',
+            'gaSlotNumber'  => 13,
+            'enabled'       => true,
+            'expireDate'    => '2015-12-31',
+            'cases' => [
+                'old_recommendation' => [
+                    'traffic' => 50,
+                    'name'    => 'Старые рекомендации',
+                ],
+                'new_recommendation' => [
+                    'traffic' => 50,
+                    'name'    => 'Новые рекомендации',
+                ],
+            ]
+        ],
         ],
 
         'main_page' => [
@@ -642,6 +640,7 @@ $c->abTest = [
     ],
 ];
 
+$c->self_delivery['enabled'] = false;
 $c->self_delivery['limit'] = 500;
 $c->self_delivery['regions'] = [119623, 93746, 14974];
 

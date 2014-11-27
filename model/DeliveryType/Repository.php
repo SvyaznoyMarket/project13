@@ -65,13 +65,13 @@ class Repository {
             */
             [
                 'id'                     => 6,
-                'token'                  => 'pickpoint',
+                'token'                  => 'self_partner_pickpoint',
                 'short_name'             => 'PickPoint',
                 'name'                   => 'Самостоятельно забрать в постамате PickPoint',
                 'button_name'            => 'Забрать из этого постамата',
                 'description'            => 'Автоматический пункт выдачи заказов',
-                'methods'                => ['pickpoint'],
-                'possible_method_tokens' => ['pickpoint', 'now', 'self', 'self_pred_supplier', 'standart_furniture', 'standart_other', 'standart', 'standart_pred_supplier'],
+                'methods'                => ['self_partner_pickpoint'],
+                'possible_method_tokens' => ['self_partner_pickpoint', 'now', 'self', 'self_pred_supplier', 'standart_furniture', 'standart_other', 'standart', 'standart_pred_supplier'],
             ],
 /*            [
                 'id'                     => 7,

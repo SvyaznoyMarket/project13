@@ -80,7 +80,9 @@
 				inShopStockOnly = $elem.data('in-shop-stock-only'),
 				inShopShowroomOnly = $elem.data('in-shop-showroom-only'),
 				isBuyable = $elem.data('is-buyable'),
-				statusId = $elem.data('status-id');
+				statusId = $elem.data('status-id'),
+                noUpdate = $elem.data('noUpdate')
+            ;
 			
 			if (typeof isBuyable != 'undefined' && !isBuyable) {
 				$elem
@@ -106,7 +108,7 @@
 					.removeClass('mBought')
 					.removeClass('jsBuyButton')
 					.attr('href', ENTER.utils.generateUrl('cart.oneClick.product.set', {productId: productId}));
-			} else if (ENTER.utils.getObjectWithElement(cart, 'id', productId)) {
+			} else if (ENTER.utils.getObjectWithElement(cart, 'id', productId) && !noUpdate) {
 				$elem
 					.text('В корзине')
 					.removeClass('mDisabled')
@@ -1111,6 +1113,16 @@
 
 				productData.isUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_from_rec', productData.article]);
 				productData.fromUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_to_cart', productData.article]);
+
+                try {
+                    var sender = data.sender;
+                    console.info({sender: sender});
+                    if (sender && ('retailrocket' == sender.name)) {
+                        body.trigger('trackGoogleEvent',['RR_Взаимодействие', 'Добавил в корзину', sender.position]);
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
 			},
 
 
@@ -1539,6 +1551,142 @@
 		showRegionPopup();
 	}
 }(this));
+(function() {
+	ENTER.counters = {
+		callGetIntentCounter: function(data) {
+			if (typeof __GetI === "undefined") {
+				__GetI = [];
+			}
+
+			(function () {
+				var p = {
+					type: data.type,
+					site_id: "267"
+				};
+
+				if (data.productId !== undefined) {
+					p.product_id = data.productId;
+				}
+
+				if (data.productPrice !== undefined) {
+					p.product_price = data.productPrice;
+				}
+
+				if (data.categoryId !== undefined) {
+					p.category_id = data.categoryId;
+				}
+
+				if (data.orderId !== undefined) {
+					p.transaction_id = data.orderId;
+				}
+
+				if (data.orderProducts !== undefined) {
+					p.order = data.orderProducts;
+				}
+
+				if (data.orderRevenue !== undefined) {
+					p.revenue = data.orderRevenue;
+				}
+
+				console.log('Вызов счётчика GetIntent', p);
+
+				__GetI.push(p);
+				var domain = (typeof __GetI_domain) == "undefined" ? "px.adhigh.net" : __GetI_domain;
+				var src = ('https:' == document.location.protocol ? 'https://' : 'http://') + domain + '/p.js';
+				var script = document.createElement( 'script' );
+				script.type = 'text/javascript';
+				script.src = src;
+				var s = document.getElementsByTagName('script')[0];
+				s.parentNode.insertBefore(script, s);
+			})();
+		},
+
+		callRetailRocketCounter: function(routeName, data) {
+			var actions = {
+				'product': function (data, userData) {
+					console.info('RetailRocketJS product');
+
+					var rcAsyncInit = function() {
+						try {
+							rcApi.view(data, userData.userId ? userData : undefined);
+						}
+						catch (err) {}
+						console.log('Вызов счётчика RetailRocket', routeName, data, userData);
+					};
+
+					rrApiOnReady.push(rcAsyncInit);
+				},
+
+				'product.category': function (data, userData) {
+					console.info('RetailRocketJS product.category');
+
+					var rcAsyncInit = function() {
+						try {
+							rcApi.categoryView(data, userData.userId ? userData : undefined);
+						}
+						catch (err) {}
+						console.log('Вызов счётчика RetailRocket', routeName, data, userData);
+					};
+
+					rrApiOnReady.push(rcAsyncInit);
+				},
+
+				'order.complete': function (data, userData) {
+					console.info('RetailRocketJS order.complete');
+
+					if (userData.userId) {
+						data.userId = userData.userId;
+						data.hasUserEmail = userData.hasUserEmail;
+					}
+
+					var rcAsyncInit = function() {
+						try {
+							rcApi.order(data);
+						}
+						catch (err) {}
+						console.log('Вызов счётчика RetailRocket', routeName, data, userData);
+					};
+
+					rrApiOnReady.push(rcAsyncInit);
+				}
+			};
+
+			function callCounter(userInfo) {
+				try {
+					console.info('RetailRocketJS action');
+
+					if (userInfo && userInfo.id) {
+						rrPartnerUserId = userInfo.id; // rrPartnerUserId — по ТЗ должна быть глобальной
+					}
+
+					if (actions.hasOwnProperty(routeName)) {
+						var userData = {
+							userId: userInfo ? userInfo.id || false : null,
+							hasUserEmail: userInfo && userInfo.email ? true : false
+						};
+
+						actions[routeName](data, userData);
+					}
+				} catch (err) {}
+			}
+
+			if (ENTER.config.userInfo === false) {
+				callCounter();
+			} else if (!ENTER.config.userInfo) {
+				setTimeout(function() {
+					if (ENTER.config.userInfo) {
+						callCounter(ENTER.config.userInfo.user);
+					} else {
+						setTimeout(arguments.callee, 100);
+					}
+				}, 100);
+			} else {
+				console.warn(ENTER.config.userInfo);
+				callCounter(ENTER.config.userInfo.user);
+			}
+		}
+	};
+})();
 /**
  * Custom inputs
  *
@@ -3586,6 +3734,102 @@ $(document).ready(function() {
 	});
 }());
 
+;(function() {
+
+    $(document).ready(function() {
+        var $body = $('body');
+
+        /** Событие клика на товар в слайдере */
+        $body.on('click', '.jsRecommendedItem', function(event) {
+            console.log('jsRecommendedItem');
+
+            event.stopPropagation();
+
+            try {
+                var
+                    $el = $(this),
+                    link = $el.attr('href'),
+                    $slider = $el.parents('.js-slider'),
+                    sender = $slider.length ? $slider.data('slider').sender : null
+                    ;
+
+                $body.trigger('trackGoogleEvent', {
+                    category: 'RR_взаимодействие',
+                    action: 'Перешел на карточку товара',
+                    label: sender ? sender.position : null,
+                    hitCallback: function(){
+                        console.log({link: link});
+
+                        if (link) {
+                            setTimeout(function() { window.location.href = link; }, 90);
+                        }
+                    }
+                });
+
+            } catch (e) { console.error(e); }
+        });
+
+        /** Событие пролистывание в слайдере */
+        $body.on('click', '.jsRecommendedSliderNav', function(event) {
+            console.log('jsRecommendedSliderNav');
+
+            try {
+                var
+                    $el = $(this),
+                    $slider = $el.parents('.js-slider'),
+                    sender = $slider.length ? $slider.data('slider').sender : null
+                    ;
+
+                $body.trigger('trackGoogleEvent',['RR_Взаимодействие', 'Пролистывание', sender.position]);
+            } catch (e) { console.error(e); }
+        });
+
+        // Запоминает просмотренные товары
+        try {
+            $('.js-slider').each(function(i, el) {
+                var
+                    data = $(el).data('slider'),
+                    //rrviewed = docCookies.getItem('rrviewed')
+                    rrviewed = docCookies.getItem('product_viewed')
+                ;
+
+                if (typeof rrviewed === 'string') {
+                    data['rrviewed'] = ENTER.utils.arrayUnique(rrviewed.split(','));
+                }
+
+                $(el).data('slider', data);
+            });
+        } catch (e) {
+            console.error(e);
+        }
+
+        // попачик для слайдера
+        $body.on('mouseenter', '.slideItem_i', function(e) {
+            var
+                $el = $(this),
+                $bubble = $el.parents('.js-slider').find('.slideItem_flt')
+            ;
+
+            if ($bubble.length) {
+                $bubble.find('.slideItem_flt_i').text($el.data('product').name);
+                $bubble.addClass('slideItem_flt-show');
+                $bubble.offset({left: $el.offset().left});
+            }
+        });
+        $body.on('mouseleave', '.slideItem_i', function(e) {
+            var
+                $el = $(this),
+                $bubble = $el.parents('.js-slider').find('.slideItem_flt')
+            ;
+
+            if ($bubble.length) {
+                $bubble.find('.slideItem_flt_i').text('');
+                $bubble.removeClass('slideItem_flt-show');
+            }
+        });
+    });
+
+}());
 /**
  * Саджест для поля поиска
  * Нужен рефакторинг
@@ -4518,7 +4762,7 @@ $(document).ready(function() {
 	}
 
 	/**
-	 * Обновление блока с рекомендациями "С этим товаром также покупают"
+	 * Обновление блока с рекомендациями "С этим товаром покупают"
 	 *
 	 * @param	{Object}	data	Данные о покупке
 	 * @param	{Object}	upsale
@@ -4539,7 +4783,7 @@ $(document).ready(function() {
 				return;
 			}
 
-			console.info('Получены рекомендации "С этим товаром также покупают" от RetailRocket');
+			console.info('Получены рекомендации "С этим товаром покупают" от RetailRocket');
 
 			upsaleWrap.find('.bGoodsSlider').remove();
 

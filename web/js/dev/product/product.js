@@ -323,4 +323,20 @@ $(document).ready(function() {
 			}
 		);
 	}
+
+    try {
+        var
+            productId =ENTER.config.pageConfig.product ? ENTER.config.pageConfig.product.id : null,
+            cookieValue = docCookies.getItem('product_viewed') || '',
+            viewed = []
+        ;
+
+        if (productId) {
+            viewed = cookieValue ? ENTER.utils.arrayUnique(cookieValue.split(',')) : [];
+            viewed.push(productId);
+            docCookies.setItem('product_viewed', viewed.slice(-50).join(','), 7 * 24 * 60 * 60, '/');
+        }
+    } catch (e) {
+        console.error(e);
+    }
 });
