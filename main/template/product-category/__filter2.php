@@ -12,8 +12,6 @@ return function(
     array $categories = []
 ) {
 
-    /** @var \Model\Product\Filter\Entity[] $alwaysShowFilters */
-    $alwaysShowFilters = [];
     /** @var \Model\Product\Filter\Entity[] $otherFilters */
     $otherFilters = [];
     /** @var \Model\Product\Filter\Entity $priceFilter */
@@ -22,8 +20,12 @@ return function(
     $saleFilter = null;
     /** @var \Model\Product\Filter\Entity $widthFilter */
     $widthFilter = null;
-    /** @var \Model\Product\Filter\Entity $brandFilter */
-    $brandFilter = null;
+    /** @var \Model\Product\Filter\Entity $brandFilter1 */
+    $brandFilter1 = null;
+    /** @var \Model\Product\Filter\Entity $brandFilter2 */
+    $brandFilter2 = null;
+    /** @var \Model\Product\Filter\Entity $dryingFilter */
+    $dryingFilter = null;
     /** @var \Model\Product\Filter\Entity $classFilter */
     $classFilter = null;
 
@@ -62,16 +64,27 @@ return function(
             } else if ($filter->isPrice()) {
                 $priceFilter = $filter;
                 $priceFilter->setStepType('price');
-            } else if ('Бренд' === $filter->getName()) {
-                $brandFilter = $filter;
+            } else if ('brand' === $filter->getId()) {
+                $brandFilter1 = clone $filter;
+
+                $brandFilter2 = clone $filter;
+                $brandFilter2->deleteAllOptions();
+
+                while (true) {
+                    if (count($brandFilter1->getOption()) < 9) {
+                        break;
+                    }
+
+                    $brandFilter2->unshiftOption($brandFilter1->deleteLastOption());
+                }
             } else if ('Сушка' === $filter->getName()) {
+                $dryingFilter = $filter;
+            } else if ('Класс стирки' === $filter->getName()) {
                 $classFilter = $filter;
             } else if ('Ширина' === $filter->getName()) {
                 $widthFilter = $filter;
             } else if ($filter->isSale()) {
                 $saleFilter = $filter;
-            } else if ($filter->getIsAlwaysShow()) {
-                $alwaysShowFilters[] = $filter;
             } else {
                 $otherFilters[] = $filter;
                 $i++;
@@ -93,63 +106,70 @@ return function(
 
 <div class="fltrBtn">
     <form id="productCatalog-filter-form" class="js-filter" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
-        <? foreach ($alwaysShowFilters as $filter): ?>
-            <div class="fltrBtn_kit js-filter-toggle-container <? if ('Металл' === $filter->getName()): ?>fltrSet-metall<? endif ?> <? if ('Вставка' === $filter->getName()): ?>fltrSet-insertion<? endif ?>">
-                <div class="fltrBtn_tggl fltrSet_tggl-dn js-filter-toggle-button">
-                    <span class="fltrBtn_tggl_tx"><?= $helper->escape($filter->getName()) ?></span>
-                </div>
+        <? if ($brandFilter1): ?>
+            <div>
+                <a href="#" class="js-productCategory-filter2-brandTitle"><?= $brandFilter1->getName() ?></a>
 
-                <div class="fltrSet_cnt js-filter-toggle-content">
-                    <div class="fltrSet_inn clearfix">
-                        <?= $helper->render('product-category/filter2/__element', ['productFilter' => $productFilter, 'filter' => $filter, 'promoStyle' => $promoStyle]) ?>
-                    </div>
+                <div>
+                    <?= $helper->render('product-category/filter2/element/__list', ['productFilter' => $productFilter, 'filter' => $brandFilter1]) ?>
+                    <? if ($brandFilter2): ?>
+                        <a href="#" class="js-productCategory-filter2-otherBrandsOpener">Ещё <?= count($brandFilter2->getOption()) ?> <?= $helper->numberChoice(count($brandFilter2->getOption()), ['бренд', 'бренда', 'брендов']) ?></a>
+                    <? endif ?>
+
+                    <? if ($brandFilter2): ?>
+                        <span class="js-productCategory-filter2-otherBrands" style="display: none;">
+                            <?= $helper->render('product-category/filter2/element/__list', ['productFilter' => $productFilter, 'filter' => $brandFilter2]) ?>
+                        </span>
+                    <? endif ?>
                 </div>
             </div>
-        <? endforeach ?>
+        <? endif ?>
 
-        <div class="fltrBtn_kit clearfix">
-            <? if ($priceFilter): ?>
-                <div class="fltrBtnBox fl-l js-productCategory-filter2-dropBox">
-                    <div class="fltrBtnBox_tggl js-productCategory-filter2-dropBox-open">
-                        <span class="fltrBtnBox_tggl_tx"><?= $priceFilter->getName() ?></span>
+        <? if ($priceFilter || ($saleFilter && $saleFilter->getOption())): ?>
+            <div class="fltrBtn_kit clearfix">
+                <? if ($priceFilter): ?>
+                    <div class="fltrBtnBox fl-l js-productCategory-filter2-dropBox">
+                        <div class="fltrBtnBox_tggl js-productCategory-filter2-dropBox-opener">
+                            <span class="fltrBtnBox_tggl_tx"><?= $priceFilter->getName() ?></span>
+                        </div>
+    
+                        <ul style="display: none;" class="fltrBtnBox_dd fltrBtnBox_dd-l lstdotted js-productCategory-filter2-dropBox-content">
+                            <? foreach ($priceFilter->getPriceRanges() as $range): ?>
+                                <li class="lstdotted_i">
+                                    <a class="lstdotted_lk" href="<?= $helper->escape($range['url']) ?>">
+                                        <? if (isset($range['from'])): ?>
+                                            <span class="txmark1">от</span> <?= $helper->escape($range['from']) ?>
+                                        <? endif ?>
+    
+                                        <? if (isset($range['to'])): ?>
+                                            <span class="txmark1">до</span> <?= $helper->escape($range['to']) ?>
+                                        <? endif ?>
+                                    </a>
+                                </li>
+                            <? endforeach ?>
+                        </ul>
                     </div>
+    
+                    <div class="fl-l"><?= $helper->render('product-category/filter2/element/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter, 'promoStyle' => $promoStyle]) ?></div>
+                <? endif ?>
 
-                    <ul style="display: none;" class="fltrBtnBox_dd fltrBtnBox_dd-l lstdotted js-productCategory-filter2-dropBox-content">
-                        <? foreach ($priceFilter->getPriceRanges() as $range): ?>
-                            <li class="lstdotted_i">
-                                <a class="lstdotted_lk" href="<?= $helper->escape($range['url']) ?>">
-                                    <? if (isset($range['from'])): ?>
-                                        <span class="txmark1">от</span> <?= $helper->escape($range['from']) ?>
-                                    <? endif ?>
-
-                                    <? if (isset($range['to'])): ?>
-                                        <span class="txmark1">до</span> <?= $helper->escape($range['to']) ?>
-                                    <? endif ?>
-                                </a>
-                            </li>
-                        <? endforeach ?>
-                    </ul>
-                </div>
-
-                <div class="fl-l"><?= $helper->render('product-category/filter2/element/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter, 'promoStyle' => $promoStyle]) ?></div>
-            <? endif ?>
-
-            <? if ($saleFilter): ?>
-                <div class="fltrBtnBox fl-r js-productCategory-filter2-dropBox">
-                    <div class="fltrBtnBox_tggl js-productCategory-filter2-dropBox-open">
-                        <span class="fltrBtnBox_tggl_tx"><?= $saleFilter->getName() ?></span>
+                <? if ($saleFilter && $saleFilter->getOption()): ?>
+                    <div class="fltrBtnBox fl-r js-productCategory-filter2-dropBox">
+                        <div class="fltrBtnBox_tggl js-productCategory-filter2-dropBox-opener">
+                            <span class="fltrBtnBox_tggl_tx"><?= $saleFilter->getName() ?></span>
+                        </div>
+    
+                        <div style="display: none;" class="fltrBtnBox_dd fltrBtnBox_dd-r js-productCategory-filter2-dropBox-content">
+                            <?= $helper->render('product-category/filter2/element/__list', ['productFilter' => $productFilter, 'filter' => $saleFilter, 'promoStyle' => $promoStyle]) ?>
+                        </div>
                     </div>
-
-                    <div style="display: none;" class="fltrBtnBox_dd fltrBtnBox_dd-r js-productCategory-filter2-dropBox-content">
-                        <?= $helper->render('product-category/filter2/element/__list', ['productFilter' => $productFilter, 'filter' => $saleFilter, 'promoStyle' => $promoStyle]) ?>
-                    </div>
-                </div>
-            <? endif ?>
-        </div>
+                <? endif ?>
+            </div>
+        <? endif ?>
 
         <div class="fltrBtn_kit">
             <div class="fltrBtnBox js-productCategory-filter2-dropBox">
-                <div class="fltrBtnBox_tggl fltrBtnBox_tggl-mark js-productCategory-filter2-dropBox-open">
+                <div class="fltrBtnBox_tggl fltrBtnBox_tggl-mark js-productCategory-filter2-dropBox-opener">
                     <span class="fltrBtnBox_tggl_tx">Габариты</span>
                 </div>
 
@@ -160,18 +180,18 @@ return function(
                     </div>
                     <div>
                         Сушка
-                        <?= $helper->render('product-category/filter2/element/__choice', ['productFilter' => $productFilter, 'filter' => $classFilter]) ?>
+                        <?= $helper->render('product-category/filter2/element/__choice', ['productFilter' => $productFilter, 'filter' => $dryingFilter]) ?>
                     </div>
                     <div>
                         Класс стирки
-                        <?= $helper->render('product-category/filter2/element/__list', ['productFilter' => $productFilter, 'filter' => $brandFilter]) ?>
+                        <?= $helper->render('product-category/filter2/element/__list', ['productFilter' => $productFilter, 'filter' => $classFilter]) ?>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="fltrSet" style="padding-top: 0;">
-            <?= $helper->render('product-category/__selectedFilter', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
+            <?= $helper->render('product-category/__selectedFilter2', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
         </div>
     </form>
 </div>

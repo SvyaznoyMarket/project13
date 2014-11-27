@@ -9,14 +9,14 @@
 
     <div class="fltrBtn_kit">
         {{#mainBrands}}
-                <a href="{{url}}" class="fltrBtn_i {{#active}}act{{/active}} js-productCategory-rootPage-brands-link"><!--img class="fltrBtn_icon_img" src="{{imageUrl}}" alt="{{name}}" /-->
+            <a href="{{url}}" class="fltrBtn_i {{#active}}act{{/active}} js-productCategory-rootPage-brands-link"><!--img class="fltrBtn_icon_img" src="{{imageUrl}}" alt="{{name}}" /-->
                 <img class="fltrBtn_i_img" src="/styles/catalog/img/brand.png" alt="{{name}}" />
                 <span class="fltrBtn_i_clsr">&#215;</span>
             </a>
         {{/mainBrands}}
 
         {{#otherBrandsCount}}
-            <a class="fltrBtn_i fltrBtn_i-btn js-productCategory-rootPage-brands-else" href="#"><span class="fltrBtn_i_tx">{{showOtherBrandsText}}</span></a>
+            <a class="fltrBtn_i fltrBtn_i-btn js-productCategory-rootPage-brands-otherOpener" href="#"><span class="fltrBtn_i_tx">{{showOtherBrandsText}}</span></a>
 
             <span class="js-productCategory-rootPage-brands-other" style="display: none;">
                 {{#otherBrands}}

@@ -32,9 +32,15 @@ class Entity {
     private $min;
     /** @var float */
     private $max;
-    /** @var float */
+    /**
+     * @var float
+     * @deprecated
+     */
     private $minGlobal;
-    /** @var float */
+    /**
+     * @var float
+     * @deprecated
+     */
     private $maxGlobal;
     /** @var Option\Entity[] */
     private $option = [];
@@ -202,6 +208,20 @@ class Entity {
     }
 
     /**
+     * @return Option\Entity
+     */
+    public function deleteLastOption() {
+        return array_pop($this->option);
+    }
+
+    /**
+     * @return Option\Entity
+     */
+    public function deleteAllOptions() {
+        $this->option = [];
+    }
+
+    /**
      * @param Option\Entity $option
      */
     public function unshiftOption(Option\Entity $option) {
@@ -301,14 +321,31 @@ class Entity {
      * @return array
      */
     public function getPriceRanges() {
-        // TODO
-        $ranges = [
-            ['to' => 10000],
-            ['from' => 10001, 'to' => 20000],
-            ['from' => 20001, 'to' => 30000],
-            ['from' => 30001, 'to' => 40000],
-            ['from' => 40001],
-        ];
+        $ranges = [];
+        $max = $this->getMax();
+        $num = 0;
+        $previousNum = 0;
+        while ($num < $max) {
+            $num += ceil($max / 5);
+            $range = [];
+
+            if ($previousNum) {
+                $range['from'] = $previousNum + 1;
+            }
+
+            if ($num > 1000) {
+                $num = ceil($num / 100) * 100;
+            } else if ($num > 100) {
+                $num = ceil($num / 10) * 10;
+            }
+
+            if ($num < $max) {
+                $range['to'] = $num;
+            }
+
+            $previousNum = $num;
+            $ranges[] = $range;
+        }
 
         $helper = new Helper();
         foreach ($ranges as $key => $range) {
@@ -327,6 +364,7 @@ class Entity {
 
     /**
      * @param float $maxGlobal
+     * @deprecated
      */
     public function setMaxGlobal($maxGlobal) {
         $this->maxGlobal = $maxGlobal;
@@ -334,6 +372,7 @@ class Entity {
 
     /**
      * @return float
+     * @deprecated
      */
     public function getMaxGlobal() {
         return $this->maxGlobal;
@@ -341,6 +380,7 @@ class Entity {
 
     /**
      * @param float $minGlobal
+     * @deprecated
      */
     public function setMinGlobal($minGlobal) {
         $this->minGlobal = $minGlobal;
@@ -348,6 +388,7 @@ class Entity {
 
     /**
      * @return float
+     * @deprecated
      */
     public function getMinGlobal() {
         return $this->minGlobal;

@@ -412,11 +412,33 @@ class Action {
         if ($category->isAppliances()) {
             $this->createSaleFilter($filters);
 
+            // TODO remove
             $classFilter = new \Model\Product\Filter\Entity();
-            $classFilter->setId('class');
+            $classFilter->setId('drying');
             $classFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_BOOLEAN);
             $classFilter->setName('Сушка');
             $classFilter->getIsInList(true);
+
+            array_unshift($filters, $classFilter);
+
+            // TODO remove
+            $classFilter = new \Model\Product\Filter\Entity();
+            $classFilter->setId('class');
+            $classFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+            $classFilter->setName('Класс стирки');
+            $classFilter->getIsInList(true);
+
+            $option = new \Model\Product\Filter\Option\Entity();
+            $option->setId(1);
+            $option->setToken('a');
+            $option->setName('A');
+            $classFilter->addOption($option);
+
+            $option = new \Model\Product\Filter\Option\Entity();
+            $option->setId(2);
+            $option->setToken('b');
+            $option->setName('B');
+            $classFilter->addOption($option);
 
             array_unshift($filters, $classFilter);
         }
@@ -696,13 +718,13 @@ class Action {
 
         $option = new \Model\Product\Filter\Option\Entity();
         $option->setId(1);
-        $option->setToken('instore');
+        $option->setToken('instore2');
         $option->setName('Наличие на складе');
         $saleFilter->addOption($option);
 
         $option = new \Model\Product\Filter\Option\Entity();
         $option->setId(2);
-        $option->setToken('instore2');
+        $option->setToken('instore3');
         $option->setName('Товары со скидками');
         $saleFilter->addOption($option);
 

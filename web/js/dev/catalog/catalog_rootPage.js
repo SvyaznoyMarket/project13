@@ -1,9 +1,12 @@
 ;$(function() {
 	var
 		brandLinkActiveClass = 'act',
-		brandTitleOpenedClass = 'opn',
+		brandTitleOpenClass = 'opn',
 		$selectedBrandsWrapper = $('.js-productCategory-rootPage-brands-selectedBrandsWrapper'),
-		$brandLinks = $('.js-productCategory-rootPage-brands-link');
+		$brandLinks = $('.js-productCategory-rootPage-brands-link'),
+		$otherBrands = $('.js-productCategory-rootPage-brands-other'),
+		$otherBrandsOpener = $('.js-productCategory-rootPage-brands-otherOpener'),
+		$brandsTitle = $('.js-productCategory-rootPage-brands-title');
 
 	function renderSelectedBrandsTemplate() {
 		var $template = $('#root_page_selected_brands_tmpl');
@@ -45,22 +48,17 @@
 	});
 
 
-	$('.js-productCategory-rootPage-brands-else, .js-productCategory-rootPage-brands-title').click(function(e) {
+	$otherBrandsOpener.add($brandsTitle).click(function(e) {
 		e.preventDefault();
 
-		var
-			$other = $('.js-productCategory-rootPage-brands-other'),
-			$else = $('.js-productCategory-rootPage-brands-else'),
-			$title = $('.js-productCategory-rootPage-brands-title');
+		$otherBrands.toggle();
 
-		$other.toggle();
-
-		if ($other.css('display') == 'none') {
-			$else.show();
-			$title.removeClass(brandTitleOpenedClass);
+		if ($otherBrands.css('display') == 'none') {
+			$otherBrandsOpener.show();
+			$brandsTitle.removeClass(brandTitleOpenClass);
 		} else {
-			$else.hide();
-			$title.addClass(brandTitleOpenedClass);
+			$otherBrandsOpener.hide();
+			$brandsTitle.addClass(brandTitleOpenClass);
 		}
 	});
 
