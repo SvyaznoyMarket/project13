@@ -65,7 +65,6 @@ class IndexAction {
             foreach ($items as $item) {
                 /** @var $item \Model\Banner\Item\Entity */
                 if ($item->getProductId()) $productsById[$item->getProductId()] = null;
-                if ($item->getServiceId()) $servicesById[$item->getServiceId()] = null;
                 if ($item->getProductCategoryId()) $categoriesById[$item->getProductCategoryId()] = null;
             }
         }
@@ -112,7 +111,6 @@ class IndexAction {
         }
 
         // формируем ссылки для баннеров
-        // TODO: перенести код в метод репозитория
         foreach ($bannerData as &$item) {
             $url = $item['url'];
 
@@ -144,8 +142,6 @@ class IndexAction {
                             'productBarcodes' => implode(',', $barcodes),
                         ]);
                     }
-                } else if ($bannerItem->getServiceId()) {
-                    \App::logger()->error('Услуги для баннера еще не реализованы');
                 } else if ($bannerItem->getProductCategoryId()) {
                     $category = isset($categoriesById[$bannerItem->getProductCategoryId()]) ? $categoriesById[$bannerItem->getProductCategoryId()] : null;
                     if (!$category instanceof \Model\Product\Category\Entity) {
@@ -183,6 +179,10 @@ class IndexAction {
         return new \Http\Response($page->show());
     }
 
+    /** Рендер рекомендаций через ajax-запрос
+     * @param \Http\Request $request
+     * @return \Http\JsonResponse
+     */
     public function recommendations(\Http\Request $request) {
         $rrProductsById = [];
         $productsById = [];
