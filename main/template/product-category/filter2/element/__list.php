@@ -18,9 +18,9 @@ return function(
         $optionId = $option->getId();
         $viewId = \View\Id::productCategoryFilter($filter->getId()) . '-option-' . $optionId;
     ?>
-    <div class="<? if ($option->getImageUrl()): ?>bFilterValuesCol-gbox<? endif ?>">
+    <div class="fltrBtn_ln <? if ($option->getImageUrl()): ?>bFilterValuesCol-gbox<? endif ?>">
         <input
-            class="customInput customInput-defcheck jsCustomRadio js-customInput <?= $filter->isBrand() ? 'js-filter-brand' : '' ?>"
+            class="customInput customInput-defcheck2 jsCustomRadio js-customInput <?= $filter->isBrand() ? 'js-filter-brand' : '' ?>"
             type="<?= $filter->getIsMultiple() ? 'checkbox' : 'radio' ?>"
             id="<?= $viewId ?>"
             name="<?= \View\Name::productCategoryFilter($filter, $option) ?>"

@@ -1703,6 +1703,19 @@ img[height="0"] {
     background-repeat: no-repeat;
     background-position: 0 1px;
   }
+  .customInput-defcheck2 + .customLabel {
+    padding: 0 0 0 20px;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAQAAADY4iz3AAAAQ0lEQVQY09WQoREAIAwDq2D9JmOwCNt0Ay4IDHCA5yNf5a0kOAOax4CXZERV00pTFdwYuxiSYdAZ6AP1+uX3GvnWsAPviDOhfh4EggAAAABJRU5ErkJggg==);
+    background-repeat: no-repeat;
+    background-position: 0 1px;
+  }
+  .customInput-defcheck2:checked + .customLabel,
+  .customLabel-defcheck2.mChecked {
+    padding: 0 0 0 20px;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAAdklEQVQoz2NYtWoV28SJEydMmjTpHZD+jwtD5SeA1DMAOROPHz/+/+/fv//xAZA8SB1II0jTO0IakDWC1DOArIaBf4/3//+1zPT/z9kycAzig8RhAKQeRRO6BmSNODVh0wDDg0ATWX4iOvTIjacJ5KQIdlLTHgAgkx8Ti0sE8wAAAABJRU5ErkJggg==);
+    background-repeat: no-repeat;
+    background-position: 0 1px;
+  }
 }
 /*---END----КНОПКА НАВЕРХ---------*/
 /*---------ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК (ЛИСТИНГИ/КАРТОЧКА ТОВАРА)----------*/
@@ -7825,6 +7838,10 @@ img[height="0"] {
   .fltrBtn_i.act .fltrBtn_i_clsr {
     display: block;
   }
+  .fltrBtn_ln {
+    margin: 0 0 10px;
+    line-height: 14px;
+  }
   .txmark1 {
     color: #8a8a8a;
   }
@@ -7890,9 +7907,9 @@ img[height="0"] {
     border-radius: 0 0 3px 3px;
     padding: 10px 10px 0;
     min-width: 150px;
-    -webkit-box-shadow: 0 4px 5px rgba(0, 0, 0, 0.4);
-    -moz-box-shadow: 0 4px 5px rgba(0, 0, 0, 0.4);
-    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
   }
   .fltrBtnBox_dd-r {
     right: 0;
