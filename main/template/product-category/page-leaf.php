@@ -60,15 +60,25 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
 
         <?= $helper->render('product/__smartChoice', ['smartChoiceProducts' => $smartChoiceProducts]); ?>
 
-        <?= $helper->render('product-category/__filter', [
-            'baseUrl'       => $helper->url('product.category', ['categoryPath' => $category->getPath()]),
-            'countUrl'      => $helper->url('product.category.count', ['categoryPath' => $category->getPath()]),
-            'productFilter' => $productFilter,
-            'openFilter'    => false,
-            'promoStyle'    => $promoStyle,
-            'hasBanner'     => isset($hasBanner) ? (bool)$hasBanner : false,
-            'productPager'  => $productPager,
-        ]) // фильтры ?>
+        <? if ($category->isAppliances()): ?>
+            <?= $helper->render('product-category/__filter2', [
+                'baseUrl'       => $helper->url('product.category', ['categoryPath' => $category->getPath()]),
+                'countUrl'      => $helper->url('product.category.count', ['categoryPath' => $category->getPath()]),
+                'productFilter' => $productFilter,
+                'openFilter'    => false,
+                'promoStyle'    => $promoStyle
+            ]) // фильтры ?>
+        <? else: ?>
+            <?= $helper->render('product-category/__filter', [
+                'baseUrl'       => $helper->url('product.category', ['categoryPath' => $category->getPath()]),
+                'countUrl'      => $helper->url('product.category.count', ['categoryPath' => $category->getPath()]),
+                'productFilter' => $productFilter,
+                'openFilter'    => false,
+                'promoStyle'    => $promoStyle,
+                'hasBanner'     => isset($hasBanner) ? (bool)$hasBanner : false,
+                'productPager'  => $productPager,
+            ]) // фильтры ?>
+        <? endif ?>
         
 
         <?= $helper->render('product/__listAction', [

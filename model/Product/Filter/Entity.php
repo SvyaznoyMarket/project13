@@ -2,6 +2,8 @@
 
 namespace Model\Product\Filter;
 
+use Templating\Helper;
+
 class Entity {
     const TYPE_BOOLEAN = 1;
     const TYPE_DATE = 2;
@@ -288,6 +290,32 @@ class Entity {
      */
     public function isPrice() {
         return 'price' == $this->getId();
+    }
+
+    public function isSale() {
+        return 'sale' == $this->getId();
+    }
+
+    /**
+     * Возвращает диапазоны цен для нового фильтра
+     * @return array
+     */
+    public function getPriceRanges() {
+        // TODO
+        $ranges = [
+            ['to' => 10000],
+            ['from' => 10001, 'to' => 20000],
+            ['from' => 20001, 'to' => 30000],
+            ['from' => 30001, 'to' => 40000],
+            ['from' => 40001],
+        ];
+
+        $helper = new Helper();
+        foreach ($ranges as $key => $range) {
+            $ranges[$key]['url'] = $helper->replacedUrl(['f-price-from' => isset($range['from']) ? $range['from'] : null, 'f-price-to' => isset($range['to']) ? $range['to'] : null, 'page' => null, 'ajax' => null]);
+        }
+
+        return $ranges;
     }
 
     /**

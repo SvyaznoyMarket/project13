@@ -409,6 +409,18 @@ class Action {
             }
         }
 
+        if ($category->isAppliances()) {
+            $this->createSaleFilter($filters);
+
+            $classFilter = new \Model\Product\Filter\Entity();
+            $classFilter->setId('class');
+            $classFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_BOOLEAN);
+            $classFilter->setName('Сушка');
+            $classFilter->getIsInList(true);
+
+            array_unshift($filters, $classFilter);
+        }
+
         // фильтры
         $productFilter = $this->getFilter($filters, $category, $brand, $request, $shop);
 
@@ -416,7 +428,6 @@ class Action {
             $this->ab_jewel_filter($category, $productFilter);
         }
 
-        // TODO перенести на боевой сайт перед загрузкой картинок брендов
         if (!$category->isAppliancesRoot()) {
             foreach ($productFilter->getFilterCollection() as $filter) {
                 if ('Бренд' === $filter->getName()) {
@@ -674,6 +685,28 @@ class Action {
         $setPageParameters($page);
 
         return $this->leafCategory($category, $productFilter, $page, $request);
+    }
+
+    private function createSaleFilter(array &$filters) {
+        $saleFilter = new \Model\Product\Filter\Entity();
+        $saleFilter->setId('sale');
+        $saleFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+        $saleFilter->setName('Скидки');
+        $saleFilter->getIsInList(true);
+
+        $option = new \Model\Product\Filter\Option\Entity();
+        $option->setId(1);
+        $option->setToken('instore');
+        $option->setName('Наличие на складе');
+        $saleFilter->addOption($option);
+
+        $option = new \Model\Product\Filter\Option\Entity();
+        $option->setId(2);
+        $option->setToken('instore2');
+        $option->setName('Товары со скидками');
+        $saleFilter->addOption($option);
+
+        array_unshift($filters, $saleFilter);
     }
 
     /**
