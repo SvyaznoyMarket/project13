@@ -192,7 +192,7 @@ class DefaultLayout extends Layout {
 
             \App::config()->debug ? '/js/vendor/LAB.js' : '/js/prod/LAB.min.js',
 
-            \App::config()->debug ? '/js/vendor/modernizr.custom.js' : '/js/prod/modernizr.custom.js',
+            \App::config()->debug ? '/js/vendor/modernizr.custom.js' : '/js/prod/modernizr.custom.min.js',
 
         ] as $javascript) {
             $return .= '<script src="' . $javascript . '" type="text/javascript"></script>' . "\n";
