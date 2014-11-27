@@ -17,7 +17,7 @@ class RecommendedAction {
         }
 
         if ($test = \App::abTest()->getTest('recommended_product')) {
-            if ($test->getEnabled() && $test->getChosenCase() && ('old_recommendation' == $test->getChosenCase()->getKey())) {
+            if ($productId && $test->getEnabled() && $test->getChosenCase() && ('old_recommendation' == $test->getChosenCase()->getKey())) {
                 return (new \Controller\Product\OldRecommendedAction())->execute($request, $productId);
             }
         }
