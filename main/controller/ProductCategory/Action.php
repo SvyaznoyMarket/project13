@@ -268,7 +268,7 @@ class Action {
         }
 
         // запрашиваем дерево категорий
-        if ($category->isAppliancesRoot()) {
+        if ($category->isV2Root()) {
             \RepositoryManager::productCategory()->prepareEntityBranch($category, $region, $filterParams);
         } else {
             \RepositoryManager::productCategory()->prepareEntityBranch($category, $region);
@@ -409,7 +409,7 @@ class Action {
             }
         }
 
-        if ($category->isAppliances()) {
+        if ($category->isV2()) {
             $this->createSaleFilter($filters);
 
             // TODO remove
@@ -450,7 +450,7 @@ class Action {
             $this->ab_jewel_filter($category, $productFilter);
         }
 
-        if (!$category->isAppliancesRoot()) {
+        if (!$category->isV2Root()) {
             foreach ($productFilter->getFilterCollection() as $filter) {
                 if ('Бренд' === $filter->getName()) {
                     foreach ($filter->getOption() as $option) {
@@ -748,7 +748,7 @@ class Action {
             throw new \Exception(sprintf('У категории "%s" отстутсвуют дочерние узлы', $category->getId()));
         }
 
-        if ($category->isAppliancesRoot() && $request->isXmlHttpRequest()) {
+        if ($category->isV2Root() && $request->isXmlHttpRequest()) {
             $data = [
                 'links' => $this->getRootCategoryLinks($category, $page),
                 'category' => ['name' => $category->getName()],

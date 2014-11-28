@@ -13,7 +13,7 @@
 	var
 		utils = ENTER.utils,
 		catalog = utils.extendApp('ENTER.catalog'),
-		viewParamPanel = $('.bSortingLine'),
+		viewParamPanel = $('.js-category-sortingAndPagination'),
         bottomInfButton = $('.jsInfinityEnable').last();
 	// end of vars
 
@@ -69,9 +69,9 @@
 		enable: function() {
 
 			var activeClass = 'mActive',
-				infBtn = viewParamPanel.find('.mInfinity'),
-				pagingBtn = viewParamPanel.find('.mPaging'),
-				pageBtn = viewParamPanel.find('.bSortingList__eItem.mPage'),
+				infBtn = viewParamPanel.find('.js-category-pagination-infinity'),
+				pagingBtn = viewParamPanel.find('.js-category-pagination-paging'),
+				pageBtn = viewParamPanel.find('.js-category-pagination-page'),
 				url = catalog.filter.getFilterUrl(),
 				hasPaging = document.location.search.match('page=');
 			// end of vars
@@ -123,7 +123,7 @@
 
 	var infBtnHandler = function infBtnHandler() {
 			var activeClass = 'mActive',
-				infBtn = viewParamPanel.find('.mInfinity'),
+				infBtn = viewParamPanel.find('.js-category-pagination-infinity'),
 				isActiveTab = infBtn.hasClass(activeClass);
 			// end of vars
 			
@@ -139,7 +139,7 @@
 		paginationBtnHandler = function paginationBtnHandler() {
 			console.info('paginationBtnHandler');
 			var activeClass = 'mActive',
-				infBtn = viewParamPanel.find('.mInfinity'),
+				infBtn = viewParamPanel.find('.js-category-pagination-infinity'),
 				isActiveTab = infBtn.hasClass(activeClass);
 			// end of vars
 			

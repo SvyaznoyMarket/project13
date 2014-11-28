@@ -1,0 +1,14 @@
+<!-- Категории товаров -->
+<ul class="bCatalogList clearfix"{{#promoStyle.bCatalogList}} style="{{promoStyle.bCatalogList}}"{{/promoStyle.bCatalogList}}>
+    {{#links}}
+    <!--li class="bCatalogList__eItem mBannerItem"></li-->
+    <!-- Место для баннера, если баннер то addClass mBannerItem -->
+
+    <li class="bCatalogList__eItem{{#active}} mActive{{/active}}"{{#bCatalogList__eItemStyle}} style="{{bCatalogList__eItemStyle}}"{{/bCatalogList__eItemStyle}}>
+        <a class="bCatalogList__eLink" {{#css.link}} style="{{css.link}}" {{/css.link}} href="{{url}}">
+            <span class="bCategoriesName"{{#css.name}} style="{{css.name}}" {{/css.name}}>{{&name}}</span>
+        </a>
+    </li>
+    {{/links}}
+</ul>
+<!-- /Категории товаров -->

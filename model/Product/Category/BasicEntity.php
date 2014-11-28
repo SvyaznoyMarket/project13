@@ -254,11 +254,11 @@ class BasicEntity {
         }
     }
 
-    public function isAppliancesRoot() {
+    public function isV2Root() {
         return ('616e6afd-fd4d-4ff4-9fe1-8f78236d9be6' === $this->getUi());
     }
 
-    public function isAppliances() {
+    public function isV2() {
         $root = $this->getRoot();
         if ($root) {
             return ('616e6afd-fd4d-4ff4-9fe1-8f78236d9be6' === $root->getUi());

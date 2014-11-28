@@ -16,13 +16,13 @@
 $helper = new \Helper\TemplateHelper();
 ?>
 
-<form class="bFilter clearfix hidden" action="<?= \App::request()->getRequestUri() ?>" method="GET"></form>
+<form class="bFilter clearfix hidden js-category-filter" action="<?= \App::request()->getRequestUri() ?>" method="GET"></form>
 
 <div class="bCatalog" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
 
     <?= $helper->render('slice/__breadcrumbs', ['category' => $category, 'slice' => $slice]) // хлебные крошки ?>
 
-    <h1 class="bTitlePage"><?= $slice->getName() ?></h1>
+    <h1 class="bTitlePage js-pageTitle"><?= $slice->getName() ?></h1>
 
     <? if (!empty($promoContent)): ?>
         <?= $promoContent ?>
@@ -51,7 +51,7 @@ $helper = new \Helper\TemplateHelper();
         'showState'              => $slice->getShowProductState(),
     ]) // листинг ?>
 
-    <div class="bSortingLine mPagerBottom clearfix">
+    <div class="bSortingLine mPagerBottom clearfix js-category-sortingAndPagination">
         <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
     </div>
 

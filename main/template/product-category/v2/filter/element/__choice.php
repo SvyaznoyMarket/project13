@@ -5,15 +5,12 @@ return function(
     \Model\Product\Filter $productFilter,
     \Model\Product\Filter\Entity $filter
 ) {
-
     $values = $productFilter->getValue($filter);
 ?>
 
 
     <? foreach ([1 => 'да', 0 => 'нет'] as $value => $name): ?>
-    <?
-        $viewId = \View\Id::productCategoryFilter($filter->getId()) . '-option-' . $value;
-    ?>
+        <? $viewId = \View\Id::productCategoryFilter($filter->getId()) . '-option-' . $value; ?>
         <div class="fltrBtn_ln">
             <input
                 class="customInput customInput-defcheck2 jsCustomRadio js-customInput"

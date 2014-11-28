@@ -23,7 +23,7 @@ return function(
         $link = [
             'name'   => $child->getName(),
             'url'    => $child->getLink(),
-            'image'  => !$category->isAppliances() ? $child->getImageUrl($image_size) : null,
+            'image'  => $child->getImageUrl($image_size),
             'active' => false,
             'css'    => null,
         ];
@@ -42,16 +42,24 @@ return function(
                     $linkNew['image'] = "";
                 }
             }
-            if (array_key_exists('image', $config) && !empty($config['image']) && !$category->isAppliances()) $linkNew['image'] = $config['image'];
+            if (array_key_exists('image', $config) && !empty($config['image'])) $linkNew['image'] = $config['image'];
 
             $link = array_merge($link, $linkNew);
         }
 
         $links[] = $link;
     }
+
+    if ($category->isV2()) {
+        $templatePath = 'product-category/v2/_listInFilter';
+    } else if ('furniture' === $category_class) {
+        $templatePath = 'furniture/product-category/_listInFilter';
+    } else {
+        $templatePath = 'product-category/_listInFilter';
+    }
 ?>
 
-    <?= $helper->renderWithMustache(('furniture' === $category_class ? 'furniture/' : '') . 'product-category/_listInFilter', [
+    <?= $helper->renderWithMustache($templatePath, [
         'links' => $links,
         'promoStyle' => !empty($promoStyle) ? $promoStyle : '',
     ]) ?>

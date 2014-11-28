@@ -1,0 +1,41 @@
+<div class="fltrBtn fltrBtn-mb10">
+    <div class="fltrBtn_hd">
+        <div class="fltrBtn_tggl js-category-v2-root-brands-title"><span class="fltrBtn_tggl_tx">Популярные бренды</span></div>
+
+        <div class="fltrBtn_hd_r js-category-v2-root-brands-selectedBrandsWrapper">
+            {{>product-category/root/_selectedBrands}}
+        </div>
+    </div>
+
+    <div class="fltrBtn_kit fltrBtn_kit-ovrflw">
+        {{#mainBrands}}
+            <div class="fltrBtn_i">
+                <a href="{{url}}" class="fltrBtn_btn {{#active}}act{{/active}} js-category-v2-root-brands-link"><!--img class="fltrBtn_icon_img" src="{{imageUrl}}" alt="{{name}}" /-->
+                    {{#imageUrl}}
+                        <img class="fltrBtn_btn_img" src="/styles/catalog/img/brand.png" alt="{{name}}" />
+                        <span class="fltrBtn_btn_clsr btn-closer1">&#215;</span>
+                    {{/imageUrl}}
+
+                    {{^imageUrl}}
+                        {{name}}
+                    {{/imageUrl}}
+                </a>
+            </div>
+        {{/mainBrands}}
+
+        {{#otherBrandsCount}}
+            <div class="fltrBtn_btn fltrBtn_btn-btn js-category-v2-root-brands-otherOpener"><span class="fltrBtn_btn_tx">{{showOtherBrandsText}}</span></div>
+
+            <span class="js-category-v2-root-brands-other">
+                {{#otherBrands}}
+                    <div class="fltrBtn_i">
+                        <a href="{{url}}" class="fltrBtn_btn {{#active}}fltrBtn_icon-act{{/active}} js-category-v2-root-brands-link">
+                            <img class="fltrBtn_btn_img" src="{{imageUrl}}" alt="{{name}}" />
+                            <span class="fltrBtn_btn_clsr btn-closer1">&#215;</span>
+                        </a>
+                    </div>
+                {{/otherBrands}}
+            </span>
+        {{/otherBrandsCount}}
+    </div>
+</div>

@@ -315,8 +315,8 @@
 	body.on('click', '.jsEnterprizeAuthLink', openAuth);
 
 	// Подключение слайдера товаров
-	if ( $('.bGoodsSlider').length ) {
-		$('.bGoodsSlider').goodsSlider();
+	if ( $('.js-slider').length ) {
+		$('.js-slider').goodsSlider();
 	}
 
 	$(document).ready(function() {

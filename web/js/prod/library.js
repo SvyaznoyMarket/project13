@@ -3869,9 +3869,12 @@ if ( !Array.prototype.indexOf ) {
 	 * @returns 	{string}	{*}
 	 */
 	utils.getURLParam = function getURLParam(paramName, url) {
-		return decodeURI(
-			( RegExp( '[\\?&]' + paramName + '=([^&#]*)' ).exec( url ) || [, null] )[1]
-		);
+		var result = new RegExp('[\\?&]' + paramName + '=([^&#]*)').exec(url);
+		if (result) {
+			return decodeURIComponent(result[1]);
+		}
+
+		return null;
 	};
 
 	/**

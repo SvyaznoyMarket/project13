@@ -87,15 +87,15 @@ return function(
 ?>
 
 <div class="fltr <? if ($hasAlwaysShowFilters): ?>fltr-hasAlwaysShowFilters<? endif ?>">
-    <form id="productCatalog-filter-form" class="bFilter clearfix js-filter <? if ($hasAlwaysShowFilters): ?>js-filter-hasAlwaysShowFilters<? endif ?>" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
+    <form id="productCatalog-filter-form" class="bFilter clearfix js-category-filter <? if ($hasAlwaysShowFilters): ?>js-category-filter-hasAlwaysShowFilters<? endif ?>" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
         <? if ($hasAlwaysShowFilters): ?>
             <? foreach ($alwaysShowFilters as $filter): ?>
-                <div class="fltrSet js-filter-toggle-container <? if ('Металл' === $filter->getName()): ?>fltrSet-metall<? endif ?> <? if ('Вставка' === $filter->getName()): ?>fltrSet-insertion<? endif ?>">
-                    <div class="fltrSet_tggl fltrSet_tggl-dn js-filter-toggle-button">
+                <div class="fltrSet js-category-filter-toggle-container <? if ('Металл' === $filter->getName()): ?>fltrSet-metall<? endif ?> <? if ('Вставка' === $filter->getName()): ?>fltrSet-insertion<? endif ?>">
+                    <div class="fltrSet_tggl fltrSet_tggl-dn js-category-filter-toggle-button">
                         <span class="fltrSet_tggl_tx"><?= $helper->escape($filter->getName()) ?></span>
                     </div>
 
-                    <div class="fltrSet_cnt js-filter-toggle-content">
+                    <div class="fltrSet_cnt js-category-filter-toggle-content">
                         <div class="fltrSet_inn clearfix">
                             <?= $helper->render('product-category/filter/__element', ['productFilter' => $productFilter, 'filter' => $filter, 'promoStyle' => $promoStyle]) ?>
                         </div>
@@ -111,7 +111,7 @@ return function(
 
             <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
                 <? if ($showParamsButton): ?>
-                    <div class="fltrSet_tggl <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-filter-otherParamsToggleButton">
+                    <div class="fltrSet_tggl <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-category-filter-otherParamsToggleButton">
                         <span class="fltrSet_tggl_tx">Ещё параметры</span>
                     </div>
                 <? endif ?>
@@ -119,7 +119,7 @@ return function(
         <? else: ?>
             <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
                 <? if ($showParamsButton): ?>
-                    <a class="bFilterToggle btnGrey <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-filter-otherParamsToggleButton" href="#"><span class="bToggleText">Бренды и параметры</span></a>
+                    <a class="bFilterToggle btnGrey <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-category-filter-otherParamsToggleButton" href="#"><span class="bToggleText">Бренды и параметры</span></a>
                 <? endif ?>
 
                 <? if ($priceFilter && $productFilter): ?>
@@ -127,19 +127,19 @@ return function(
                 <? endif ?>
 
                 <div class="bBtnPick clearfix">
-                    <button type="submit" class="bBtnPick__eLink mBtnGrey">Подобрать<?= $countProducts ? " ($countProducts)" : '' ?></button>
+                    <button type="submit" class="bBtnPick__eLink mBtnGrey js-category-filter-submit">Подобрать<?= $countProducts ? " ($countProducts)" : '' ?></button>
                 </div>
             </div>
         <? endif; ?>
 
         <div class="fltrSet" style="padding-top: 0;">
             <!-- Фильтр по выбранным параметрам -->
-            <div class="bFilterCont clearfix js-filter-otherParamsContent" <? if (!$openFilter): ?>style="display: none"<? endif ?>>
+            <div class="bFilterCont clearfix js-category-filter-otherParamsContent" <? if (!$openFilter): ?>style="display: none"<? endif ?>>
                 <!-- Список названий параметров -->
                 <ul class="bFilterParams">
                     <? $i = 0; foreach ($otherFilters as $filter): ?>
                     <? $viewId = \View\Id::productCategoryFilter($filter->getTypeId() . '-' . $filter->getId()); ?>
-                        <li class="bFilterParams__eItem<? if (0 == $i): ?> mActive<? endif ?> js-filter-param" data-ref="<?= $viewId ?>">
+                        <li class="bFilterParams__eItem<? if (0 == $i): ?> mActive<? endif ?> js-category-filter-param" data-ref="<?= $viewId ?>">
                             <span class="bParamName"><?= $filter->getName() ?></span>
                         </li>
                     <? $i++; endforeach ?>
@@ -150,7 +150,7 @@ return function(
                 <div class="bFilterValues clearfix">
                     <? $i = 0; ?>
                     <? foreach ($otherFilters as $filter): ?>
-                        <div class="bFilterValuesItem clearfix<? if ($i > 0): ?> hf<? endif ?><? if (in_array($filter->getId(), ['shop', 'category'])): ?> mLineItem<? endif ?> js-filter-element" id="<?= \View\Id::productCategoryFilter($filter->getTypeId() . '-' . $filter->getId()) ?>">
+                        <div class="bFilterValuesItem clearfix<? if ($i > 0): ?> hf<? endif ?><? if (in_array($filter->getId(), ['shop', 'category'])): ?> mLineItem<? endif ?> js-category-filter-element" id="<?= \View\Id::productCategoryFilter($filter->getTypeId() . '-' . $filter->getId()) ?>">
                             <?= $helper->render('product-category/filter/__element', ['productFilter' => $productFilter, 'filter' => $filter, 'promoStyle' => $promoStyle]) ?>
                         </div>
                         <? $i++; ?>

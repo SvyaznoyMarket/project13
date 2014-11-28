@@ -4590,7 +4590,7 @@ $(document).ready(function() {
 
 			console.info('Получены рекомендации "С этим товаром покупают" от RetailRocket');
 
-			upsaleWrap.find('.bGoodsSlider').remove();
+			upsaleWrap.find('.js-slider').remove();
 
 			slider = $(response.content)[0];
 			upsaleWrap.append(slider);

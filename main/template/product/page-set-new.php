@@ -34,7 +34,7 @@ foreach ( $categoriesById as $subCategory ) {
 
 
     <? if (!empty($pageTitle)): ?>
-        <h1 class="bTitlePage"><?= $pageTitle ?></h1>
+        <h1 class="bTitlePage js-pageTitle"><?= $pageTitle ?></h1>
     <? endif; ?>
 
     <?= $helper->render( 'product/__listAction', [
@@ -55,7 +55,7 @@ foreach ( $categoriesById as $subCategory ) {
         </div>
     <? endif ?>
 
-    <div class="bSortingLine mPagerBottom clearfix">
+    <div class="bSortingLine mPagerBottom clearfix js-category-sortingAndPagination">
         <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
     </div>
 </div>

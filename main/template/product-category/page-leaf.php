@@ -33,7 +33,7 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
     <?= $helper->render('product-category/__breadcrumbs', ['category' => $category, 'isBrand' => isset($brand)]) // хлебные крошки ?>
 
     <div class="bCustomFilter"<? if(!empty($promoStyle['promo_image'])): ?> style="<?= $promoStyle['promo_image'] ?>"<? endif ?>>
-        <h1 class="bTitlePage"<? if(!empty($promoStyle['title'])): ?> style="<?= $promoStyle['title'] ?>"<? endif ?>><?= $title ?></h1>
+        <h1 class="bTitlePage js-pageTitle"<? if(!empty($promoStyle['title'])): ?> style="<?= $promoStyle['title'] ?>"<? endif ?>><?= $title ?></h1>
 
         <? if (\App::config()->adFox['enabled']): ?>
         <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
@@ -60,13 +60,11 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
 
         <?= $helper->render('product/__smartChoice', ['smartChoiceProducts' => $smartChoiceProducts]); ?>
 
-        <? if ($category->isAppliances()): ?>
-            <?= $helper->render('product-category/__filter2', [
+        <? if ($category->isV2()): ?>
+            <?= $helper->render('product-category/v2/__filter', [
                 'baseUrl'       => $helper->url('product.category', ['categoryPath' => $category->getPath()]),
                 'countUrl'      => $helper->url('product.category.count', ['categoryPath' => $category->getPath()]),
                 'productFilter' => $productFilter,
-                'openFilter'    => false,
-                'promoStyle'    => $promoStyle
             ]) // фильтры ?>
         <? else: ?>
             <?= $helper->render('product-category/__filter', [
@@ -81,10 +79,17 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
         <? endif ?>
         
 
-        <?= $helper->render('product/__listAction', [
-            'pager'          => $productPager,
-            'productSorting' => $productSorting,
-        ]) // сортировка, режим просмотра, режим листания ?>
+        <? if ($category->isV2()): ?>
+            <?= $helper->render('product-category/v2/__listAction', [
+                'pager'          => $productPager,
+                'productSorting' => $productSorting,
+            ]) // сортировка, режим просмотра, режим листания ?>
+        <? else: ?>
+            <?= $helper->render('product/__listAction', [
+                'pager'          => $productPager,
+                'productSorting' => $productSorting,
+            ]) // сортировка, режим просмотра, режим листания ?>
+        <? endif ?>
     </div>
 
     <?= $helper->render('product/__list', [
@@ -96,7 +101,7 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
         'columnCount'            => isset($columnCount) ? $columnCount : 4,
     ]) // листинг ?>
 
-    <div class="bSortingLine mPagerBottom clearfix">
+    <div class="bSortingLine mPagerBottom clearfix js-category-sortingAndPagination">
         <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
     </div>
 

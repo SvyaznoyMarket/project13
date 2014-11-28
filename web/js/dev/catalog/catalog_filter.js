@@ -16,16 +16,16 @@
 		utils = ENTER.utils,
 		catalog = utils.extendApp('ENTER.catalog'),
 
-		filterBlock = $('.js-filter'),
-		hasAlwaysShowFilters = filterBlock.hasClass('js-filter-hasAlwaysShowFilters'),
+		filterBlock = $('.js-category-filter'),
+		hasAlwaysShowFilters = filterBlock.hasClass('js-category-filter-hasAlwaysShowFilters'),
 
-		filterOtherParamsToggleButton = filterBlock.find('.js-filter-otherParamsToggleButton'),
-		filterOtherParamsContent = filterBlock.find('.js-filter-otherParamsContent'),
-		filterSliders = filterBlock.find('.js-filter-rangeSlider'),
-		filterMenuItem = filterBlock.find('.js-filter-param'),
-		filterCategoryBlocks = filterBlock.find('.js-filter-element'),
+		filterOtherParamsToggleButton = filterBlock.find('.js-category-filter-otherParamsToggleButton'),
+		filterOtherParamsContent = filterBlock.find('.js-category-filter-otherParamsContent'),
+		filterSliders = filterBlock.find('.js-category-filter-rangeSlider'),
+		filterMenuItem = filterBlock.find('.js-category-filter-param'),
+		filterCategoryBlocks = filterBlock.find('.js-category-filter-element'),
 
-		viewParamPanel = $('.bSortingLine'),
+		viewParamPanel = $('.js-category-sortingAndPagination'),
 		filterOpenClass = 'fltrSet_tggl-dn',
 
 		tID;
@@ -45,9 +45,9 @@
 		 * @return	{String}	Текущий режим просмотра
 		 */
 		getViewType: function() {
-			var changeViewItemsBtns = viewParamPanel.find('.mViewer .mSortItem');
+			var changeViewItemsBtns = viewParamPanel.find('.js-category-viewer .js-category-viewer-item');
 
-			return changeViewItemsBtns.filter('.mActive').data('type');
+			return changeViewItemsBtns.filter('.js-category-viewer-activeItem').data('type');
 		},
 
 		applyTemplate: {
@@ -58,28 +58,28 @@
 			},
 
 			selectedFilter: function( html ) {
-				var filterFooterWrap = filterBlock.find('.js-productCategory-filter-selected');
+				var filterFooterWrap = filterBlock.find('.js-category-filter-selected'); // TODO
 
 				filterFooterWrap.empty();
 				filterFooterWrap.html(html);
 			},
 
 			sorting: function( html ) {
-				var sortingWrap = viewParamPanel.find('.bSortingList.mSorting');
+				var sortingWrap = viewParamPanel.find('.js-category-sorting');
 
 				sortingWrap.empty();
 				sortingWrap.html(html);
 			},
 
 			pagination: function( html ) {
-				var paginationWrap = $('.bSortingList.mPager');
+				var paginationWrap = $('.js-category-pagination');
 
 				paginationWrap.empty();
 				paginationWrap.html(html);
 			},
 
 			page: function( html ) {
-				var title = $('.bTitlePage');
+				var title = $('.js-pageTitle');
 
 				title.empty();
 				title.html(html);
@@ -87,7 +87,7 @@
 
 			countProducts: function ( html ) {
 				var
-					subminBtn = $('.bBtnPick__eLink', '.bFilter'),
+					subminBtn = $('.js-category-filter-submit', '.js-category-filter'),
 					count = html ? parseInt(html) : -1;
 
 				if ( count >= 0 && subminBtn.length ) {
@@ -248,10 +248,10 @@
 
 			var sortSliders = function sortSliders() {
 				var sliderWrap = $(this),
-					slider = sliderWrap.find('.js-filter-rangeSlider-slider'),
+					slider = sliderWrap.find('.js-category-filter-rangeSlider-slider'),
 					sliderConfig = slider.data('config'),
-					sliderFromInput = sliderWrap.find('.mFromRange'),
-					sliderToInput = sliderWrap.find('.mToRange'),
+					sliderFromInput = sliderWrap.find('.js-category-filter-rangeSlider-from'),
+					sliderToInput = sliderWrap.find('.js-category-filter-rangeSlider-to'),
 
 					min = sliderConfig.min,
 					max = sliderConfig.max;
@@ -289,7 +289,7 @@
 			var formData = filterBlock.serializeArray(),
 				url = filterBlock.attr('action') || '',
 				slidersInputState = catalog.filter.getSlidersInputState(),
-				activeSort = viewParamPanel.find('.mSortItem.mActive').find('.jsSorting'),
+				activeSort = viewParamPanel.find('.js-category-sorting-activeItem').find('.jsSorting'),
 				sortUrl = activeSort.data('sort'),
 				formSerizalizeData,
 				urlParams = catalog.filter.getUrlParams(),
@@ -297,7 +297,7 @@
 			// end of vars
 
 			for ( var i = formData.length - 1; i >= 0; i-- ) {
-				if ( slidersInputState.unchangedSliders.indexOf(formData[i].name) !== -1 ) {
+				if ( slidersInputState.unchangedSliders.indexOf(formData[i].name) !== -1 || formData[i].value == '') {
 					console.log('slider input '+formData[i].name+' unchanged');
 
 					formData.splice(i,1);
@@ -401,7 +401,7 @@
 			else if ( typeof e === 'object' && catalog.enableHistoryAPI ) {
 				console.warn('it\'s true event and HistoryAPI enable');
 
-				$.scrollTo(filterBlock.find('.js-productCategory-filter-selected'), 500);
+				$.scrollTo(filterBlock.find('.js-category-filter-selected'), 500);
 			}
 
 			return false;
@@ -433,10 +433,10 @@
 
 				resetSliders = function resetSliders() {
 					var sliderWrap = $(this),
-						slider = sliderWrap.find('.js-filter-rangeSlider-slider'),
+						slider = sliderWrap.find('.js-category-filter-rangeSlider-slider'),
 						sliderConfig = slider.data('config'),
-						sliderFromInput = sliderWrap.find('.mFromRange'),
-						sliderToInput = sliderWrap.find('.mToRange'),
+						sliderFromInput = sliderWrap.find('.js-category-filter-rangeSlider-from'),
+						sliderToInput = sliderWrap.find('.js-category-filter-rangeSlider-to'),
 
 						min = sliderConfig.min,
 						max = sliderConfig.max;
@@ -509,9 +509,9 @@
 		openFilter: function() {
 			toggleFilterViewHandler( true );
 
-			$('.js-filter-toggle-container', filterBlock).each(function() {
-				$('.js-filter-toggle-button', this).addClass(filterOpenClass);
-				$('.js-filter-toggle-content', this).slideDown(400);
+			$('.js-category-filter-toggle-container', filterBlock).each(function() {
+				$('.js-category-filter-toggle-button', this).addClass(filterOpenClass);
+				$('.js-category-filter-toggle-content', this).slideDown(400);
 			});
 		}
 	};
@@ -522,10 +522,10 @@
 		 */
 	var initSliderRange = function initSliderRange() {
 			var sliderWrap = $(this),
-				slider = sliderWrap.find('.js-filter-rangeSlider-slider'),
+				slider = sliderWrap.find('.js-category-filter-rangeSlider-slider'),
 				sliderConfig = slider.data('config'),
-				sliderFromInput = sliderWrap.find('.mFromRange'),
-				sliderToInput = sliderWrap.find('.mToRange'),
+				sliderFromInput = sliderWrap.find('.js-category-filter-rangeSlider-from'),
+				sliderToInput = sliderWrap.find('.js-category-filter-rangeSlider-to'),
 
 				min = sliderConfig.min,
 				max = sliderConfig.max,
@@ -624,18 +624,18 @@
 		toggleHandler = function(e) {
 			var $self = $(this),
 				$button = $(e.currentTarget),
-				$container = $('.js-filter-toggle-container'),
-				$content = $('.js-filter-toggle-content', $button.closest('.js-filter-toggle-container'));
+				$container = $('.js-category-filter-toggle-container'),
+				$content = $('.js-category-filter-toggle-content', $button.closest('.js-category-filter-toggle-container'));
 			// end of vars
 
 			if ($button.hasClass(filterOpenClass)) {
 				$button.removeClass(filterOpenClass);
 				$content.slideUp(400);
-				$self.parent('.js-filter-toggle-container').addClass('fltrSet-close');
+				$self.parent('.js-category-filter-toggle-container').addClass('fltrSet-close');
 			} else {
 				$button.addClass(filterOpenClass);
 				$content.slideDown(400);
-				$self.parent('.js-filter-toggle-container').removeClass('fltrSet-close');
+				$self.parent('.js-category-filter-toggle-container').removeClass('fltrSet-close');
 			}
 
 			return false;
@@ -703,7 +703,7 @@
 				url = self.attr('href'),
 				activeClass = 'mActive',
 				parentItem = self.parent(),
-				changeViewItemsBtns = viewParamPanel.find('.mViewer .mSortItem'),
+				changeViewItemsBtns = viewParamPanel.find('.js-category-viewer .js-category-viewer-item'),
 				isActiveTab = parentItem.hasClass(activeClass);
 			// end of vars
 
@@ -733,7 +733,7 @@
 				url = self.attr('href'),
 				activeClass = 'mActive',
 				parentItem = self.parent(),
-				sortingItemsBtns = viewParamPanel.find('.mSorting .mSortItem'),
+				sortingItemsBtns = viewParamPanel.find('.js-category-sorting-item'),
 				isActiveTab = parentItem.hasClass(activeClass);
 			// end of vars
 
@@ -751,7 +751,7 @@
 
 
 	// Handlers
-	filterBlock.on('click', '.js-filter-toggle-button', toggleHandler);
+	filterBlock.on('click', '.js-category-filter-toggle-button', toggleHandler);
 	filterOtherParamsToggleButton.on('click', toggleFilterViewHandler);
 	filterMenuItem.on('click', selectFilterCategoryHandler);
 	$('input, select, textarea', filterBlock).on('change', catalog.filter.changeFilterHandler);

@@ -27,7 +27,7 @@ $siblingCategories = $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : [];
 <? endif ?>
 
 <? if (false): ?>
-    <h1 class="bTitlePage"><?= $category->getName() ?></h1>
+    <h1 class="bTitlePage js-pageTitle"><?= $category->getName() ?></h1>
 <? endif ?>
 
 

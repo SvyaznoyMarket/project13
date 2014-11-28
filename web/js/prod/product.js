@@ -993,7 +993,7 @@ $(document).ready(function() {
 	/**
 	 * Подключение слайдера товаров
 	 */
-	$('.bGoodsSlider').goodsSlider({
+	$('.js-slider').goodsSlider({
 		onLoad: function(goodsSlider) {
 			ko.applyBindings(ENTER.UserModel, goodsSlider);
 		}
@@ -1349,7 +1349,7 @@ $(document).ready(function() {
 		sliderAnalytics = function sliderAnalytics() {
 			console.info('click!');
 
-			var sliderData = $(this).parents('.bGoodsSlider').data('slider'),
+			var sliderData = $(this).parents('.js-slider').data('slider'),
 				sliderType = sliderData.type,
 
 				productData = $(this).data('product');
@@ -1364,7 +1364,7 @@ $(document).ready(function() {
 		};
 	// end of functions
 
-	$('.bGoodsSlider').on('click', '.bSliderAction__eItem', sliderAnalytics);
+	$('.js-slider').on('click', '.bSliderAction__eItem', sliderAnalytics);
 }());
 ;(function() {
 	// текущая страница для каждой вкладки

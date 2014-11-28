@@ -11,7 +11,7 @@
 $helper = new \Helper\TemplateHelper();
 $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
 ?>
-<h1 class="bTitlePage"><?= $category->getName() ?></h1>
+<h1 class="bTitlePage js-pageTitle"><?= $category->getName() ?></h1>
 
 <!-- Баннер --><div id="adfox683" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
 
@@ -21,20 +21,20 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
         'promoStyle' => !empty($promoStyle) ? $promoStyle : '',
     ]) ?>
 <? elseif (count($links)): ?>
-    <? if ($category->isAppliancesRoot()): ?>
-        <?= $helper->renderWithMustache('product-category/rootPage/_brands', (new View\Partial\ProductCategory\RootPage\Brands)->execute($productFilter)) ?>
+    <? if ($category->isV2Root()): ?>
+        <?= $helper->renderWithMustache('product-category/root/_brands', (new View\Partial\ProductCategory\RootPage\Brands)->execute($productFilter)) ?>
     <? endif ?>
 
-    <div class="js-productCategory-rootPage-linksWrapper">
-        <?= $helper->renderWithMustache('product-category/rootPage/_links', (new View\Partial\ProductCategory\RootPage\Links)->execute($links, $category)) ?>
+    <div class="js-category-v2-root-linksWrapper">
+        <?= $helper->renderWithMustache('product-category/root/_links', (new View\Partial\ProductCategory\RootPage\Links)->execute($links, $category)) ?>
     </div>
 
     <script id="root_page_links_tmpl" type="text/html" data-partial="{}">
-        <?= file_get_contents(\App::config()->templateDir . '/product-category/rootPage/_links.mustache') ?>
+        <?= file_get_contents(\App::config()->templateDir . '/product-category/root/_links.mustache') ?>
     </script>
 
     <script id="root_page_selected_brands_tmpl" type="text/html" data-partial="{}">
-        <?= file_get_contents(\App::config()->templateDir . '/product-category/rootPage/_selectedBrands.mustache') ?>
+        <?= file_get_contents(\App::config()->templateDir . '/product-category/root/_selectedBrands.mustache') ?>
     </script>
 
     <div class="margin: 0 0 30px;">

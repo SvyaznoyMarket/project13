@@ -2,15 +2,29 @@
 	var
 		brandLinkActiveClass = 'act',
 		brandTitleOpenClass = 'opn',
-		$selectedBrandsWrapper = $('.js-productCategory-rootPage-brands-selectedBrandsWrapper'),
-		$brandLinks = $('.js-productCategory-rootPage-brands-link'),
-		$otherBrands = $('.js-productCategory-rootPage-brands-other'),
-		$otherBrandsOpener = $('.js-productCategory-rootPage-brands-otherOpener'),
-		$brandsTitle = $('.js-productCategory-rootPage-brands-title');
+		$selectedBrandsWrapper = $('.js-category-v2-root-brands-selectedBrandsWrapper'),
+		$brandLinks = $('.js-category-v2-root-brands-link'),
+		$otherBrands = $('.js-category-v2-root-brands-other'),
+		$otherBrandsOpener = $('.js-category-v2-root-brands-otherOpener'),
+		$brandsTitle = $('.js-category-v2-root-brands-title'),
+		$linksWrapper = $('.js-category-v2-root-linksWrapper');
 
 	function renderSelectedBrandsTemplate() {
 		var $template = $('#root_page_selected_brands_tmpl');
 		$selectedBrandsWrapper.html(Mustache.render($template.html(), {brandsCount: $brandLinks.length, selectedBrandsCount: $brandLinks.filter('.' + brandLinkActiveClass).length}, $template.data('partial')));
+	}
+
+	function updateLinks(url) {
+		history.pushState({}, document.title, url);
+
+		$.ajax({
+			url: url,
+			type: 'GET',
+			success: function(result){
+				var $template = $('#root_page_links_tmpl');
+				$linksWrapper.html(Mustache.render($template.html(), {links: result.links, category: result.category}, $template.data('partial')));
+			}
+		});
 	}
 
 	$brandLinks.click(function(e) {
@@ -31,24 +45,12 @@
 			url = ENTER.utils.setURLParam(brandLinkUrlParamName, brandLinkUrlParamValue, url);
 		}
 
-		history.pushState({}, document.title, url);
 		renderSelectedBrandsTemplate();
-
-		$.ajax({
-			url: url,
-			type: 'GET',
-			success: function(result){
-				var
-					$template = $('#root_page_links_tmpl'),
-					$linksWrapper = $('.js-productCategory-rootPage-linksWrapper');
-
-				$linksWrapper.html(Mustache.render($template.html(), {links: result.links, category: result.category}, $template.data('partial')));
-			}
-		});
+		updateLinks(url);
 	});
 
 
-	$otherBrandsOpener.add($brandsTitle).click(function(e) {
+	$brandsTitle.add($otherBrandsOpener).click(function(e) {
 		e.preventDefault();
 
 		$otherBrands.toggle();
@@ -62,11 +64,11 @@
 		}
 	});
 
-	$selectedBrandsWrapper.on('click', '.js-productCategory-rootPage-selectedBrands-clear', function(e) {
+	$selectedBrandsWrapper.on('click', '.js-category-v2-root-selectedBrands-clear', function(e) {
 		e.preventDefault();
 
 		$brandLinks.removeClass(brandLinkActiveClass);
-		history.pushState({}, document.title, '?');
 		renderSelectedBrandsTemplate();
+		updateLinks('?');
 	});
 });

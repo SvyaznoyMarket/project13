@@ -14,7 +14,7 @@
 		pageConfig = ENTER.config.pageConfig,
 		utils = ENTER.utils,
 		catalog = utils.extendApp('ENTER.catalog'),
-		filterSubminBtn = $('.bBtnPick__eLink', '.bFilter');
+		filterSubminBtn = $('.js-category-filter-submit', '.js-category-filter');
 	// end of vars
 
 	console.info('Mustache is '+ typeof Mustache);
