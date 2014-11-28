@@ -47,6 +47,36 @@
 
         float: right;
     }
+
+    .btnBuy {
+        .inline-block();
+        float: right;
+        .rounded(3px);
+
+        &__eLink {
+            background: #f99b1c;
+            border: 1px solid #f08a00;
+            color: @white;
+            .rounded(3px);
+            .inline-block();
+            padding: 4px 10px;
+            line-height: 1;
+            font-size: 14px;
+            width: auto;
+
+            &.mBought {
+                background: none repeat scroll 0 0 #fff;
+                border: 1px solid #b3b3b3;
+                color: #000;
+            }
+
+            &.mShopsOnly {
+                .blackGrad();
+
+                border: 1px solid #a1a1a1;
+            }
+        }
+    }
 }
 
 // блок главной страницы
