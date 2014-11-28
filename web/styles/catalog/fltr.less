@@ -7,6 +7,8 @@
   *zoom: 1;
 }
 
+@full-size: 100%;
+
 .fltrBtn{
 	&_hd {
 
@@ -43,6 +45,7 @@
 			border-bottom: 1px dotted #424242;
 		}
 	}
+
 	&_tggl {
 		background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAKCAQAAADMDLw1AAAAQUlEQVQIW2Nw3uGiy4AKnP47/3We4y6JIgSCzl+c6t24UYTAws+ckxuYUITAwpdc3PELoWl0/uLSgGQ8hiMwnQoAAEs8bqiaIsoAAAAASUVORK5CYII=') no-repeat 0 50%;
 		color: @black;
@@ -61,11 +64,11 @@
 	}
 
 	&_kit {
-		width: 950px;
-		padding: 8px 0 0 10px;
+		margin: 0 0 0 -10px;
+        padding: 10px;
+        width: 940px;
 		//max-height: 165px;
 		//overflow: auto;
-		margin: 7px 0 10px -10px;
 		border-bottom: 1px solid #e6e6e6;
 	}
 
@@ -136,7 +139,77 @@
         margin: 0 0 10px;
         line-height: 14px;
     }
+
+    &_range {
+
+    }
+
+    &_param {
+        border-bottom: 1px solid #c7c7c7;
+        margin-bottom: 8px;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        &_n {
+            font-size: 14px;
+            margin: 0 0 8px;
+        }
+
+        &_lbl {
+            font-size: 14px;
+            .inline-block-middle();
+        }
+
+        &_it {
+            font-size: 14px;
+            color: #8a8a8a;
+            border: 1px solid #c7c7c7;
+            width: 45px;
+            padding: 4px 10px;
+            line-height: 1;
+            .rounded(3px);
+            .inline-block-middle();
+        }
+
+        &-2col {
+            .fltrBtn_ln {
+                .inline-block-middle();
+                width: @full-size/2 - 1%;
+            }
+        }
+    }
 }
+
+.fltrRange {
+    .ui-slider-handle {
+        height: 8px;
+        margin-left: -5px;
+        top: 3px;
+        width: 9px;
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAICAQAAACBxB0+AAAAU0lEQVQIW2NggILyPhgLJhBR+r88AklgEnvZ/dL/ZfcnsSPUVJT+B8HyCqhAg1jpR4hQ6ccGMbBQ6QyoAAjOAGnSLv2DJPSnXJuhbAeSABCW7QAA6R05Rnwz+kMAAAAASUVORK5CYII=');
+    }
+
+    .ui-slider-range {
+        background: #757575;
+    }
+
+    .bRangeSlider__eInput {
+        border-color: #c7c7c7;
+    }
+
+    .bRangeSlider {
+        width: auto;
+        height: auto;
+        margin: 0 0 0 98px;
+    }
+
+    .bFilterSlider {
+        width: 370px;
+    }
+}
+
 .txmark1 {
     color: #8a8a8a;
 }

@@ -107,8 +107,11 @@ return function(
 <div class="fltrBtn">
     <form id="productCatalog-filter-form" class="js-filter" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
         <? if ($brandFilter1): ?>
-            <div>
-                <a href="#" class="js-productCategory-filter2-brandTitle"><?= $brandFilter1->getName() ?></a>
+            <div class="fltrBtn_kit">
+                <div class="fltrBtnBox_tggl">
+                    <span class="fltrBtnBox_tggl_tx js-productCategory-filter2-brandTitle"><?= $brandFilter1->getName() ?></span>
+                </div>
+
 
                 <div>
                     <?= $helper->render('product-category/filter2/element/__list', ['productFilter' => $productFilter, 'filter' => $brandFilter1]) ?>
@@ -132,7 +135,7 @@ return function(
                         <div class="fltrBtnBox_tggl js-productCategory-filter2-dropBox-opener">
                             <span class="fltrBtnBox_tggl_tx"><?= $priceFilter->getName() ?></span>
                         </div>
-    
+
                         <ul style="display: none;" class="fltrBtnBox_dd fltrBtnBox_dd-l lstdotted js-productCategory-filter2-dropBox-content">
                             <? foreach ($priceFilter->getPriceRanges() as $range): ?>
                                 <li class="lstdotted_i">
@@ -140,7 +143,7 @@ return function(
                                         <? if (isset($range['from'])): ?>
                                             <span class="txmark1">от</span> <?= $helper->escape($range['from']) ?>
                                         <? endif ?>
-    
+
                                         <? if (isset($range['to'])): ?>
                                             <span class="txmark1">до</span> <?= $helper->escape($range['to']) ?>
                                         <? endif ?>
@@ -149,16 +152,16 @@ return function(
                             <? endforeach ?>
                         </ul>
                     </div>
-    
-                    <div class="fl-l"><?= $helper->render('product-category/filter2/element/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter, 'promoStyle' => $promoStyle]) ?></div>
+
+                    <div class="fltrRange fltrBtn_range fl-l"><?= $helper->render('product-category/filter2/element/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter, 'promoStyle' => $promoStyle]) ?></div>
                 <? endif ?>
 
                 <? if ($saleFilter && $saleFilter->getOption()): ?>
                     <div class="fltrBtnBox fl-r js-productCategory-filter2-dropBox">
-                        <div class="fltrBtnBox_tggl js-productCategory-filter2-dropBox-opener">
+                        <div class="fltrBtnBox_tggl fltrBtnBox_tggl-mark js-productCategory-filter2-dropBox-opener">
                             <span class="fltrBtnBox_tggl_tx"><?= $saleFilter->getName() ?></span>
                         </div>
-    
+
                         <div style="display: none;" class="fltrBtnBox_dd fltrBtnBox_dd-r js-productCategory-filter2-dropBox-content">
                             <?= $helper->render('product-category/filter2/element/__list', ['productFilter' => $productFilter, 'filter' => $saleFilter, 'promoStyle' => $promoStyle]) ?>
                         </div>
@@ -169,21 +172,23 @@ return function(
 
         <div class="fltrBtn_kit">
             <div class="fltrBtnBox js-productCategory-filter2-dropBox">
-                <div class="fltrBtnBox_tggl fltrBtnBox_tggl-mark js-productCategory-filter2-dropBox-opener">
+                <div class="fltrBtnBox_tggl js-productCategory-filter2-dropBox-opener">
                     <span class="fltrBtnBox_tggl_tx">Габариты</span>
                 </div>
 
                 <div style="display: none;" class="fltrBtnBox_dd js-productCategory-filter2-dropBox-content">
-                    <div>
-                        Ширина
+                    <div class="fltrBtn_param">
+                        <div class="fltrBtn_param_n">Ширина</div>
                         <?= $helper->render('product-category/filter2/element/__number', ['productFilter' => $productFilter, 'filter' => $widthFilter]) ?>
                     </div>
-                    <div>
-                        Сушка
+
+                    <div class="fltrBtn_param fltrBtn_param-2col">
+                        <div class="fltrBtn_param_n">Сушка</div>
                         <?= $helper->render('product-category/filter2/element/__choice', ['productFilter' => $productFilter, 'filter' => $dryingFilter]) ?>
                     </div>
-                    <div>
-                        Класс стирки
+
+                    <div class="fltrBtn_param fltrBtn_param-2col">
+                        <div class="fltrBtn_param_n">Класс стирки</div>
                         <?= $helper->render('product-category/filter2/element/__list', ['productFilter' => $productFilter, 'filter' => $classFilter]) ?>
                     </div>
                 </div>
