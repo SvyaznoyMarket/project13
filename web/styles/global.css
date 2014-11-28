@@ -7284,12 +7284,12 @@ img[height="0"] {
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
-    height: 13px;
-    width: 13px;
+    height: 14px;
+    width: 14px;
     background: #f99b1c;
     color: #ffffff;
     font-size: 12px;
-    line-height: 13px;
+    line-height: 12px;
     text-align: center;
     display: inline-block;
     vertical-align: baseline;
@@ -8231,17 +8231,12 @@ img[height="0"] {
   }
 }
 @media all {
-  .fltrBtn_hd_r {
-    margin: 5px 0 0 30px;
-    color: #424242;
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
+  .fltrBtn-mb10 {
+    margin: 0 0 10px;
   }
-  .fltrBtn_hd_r * {
-    line-height: 13px;
+  .fltrBtn_hd_r {
+    margin: 5px 0 8px 30px;
+    color: #424242;
     display: inline-block;
     vertical-align: top;
     /* IE6-8 */
@@ -8284,14 +8279,22 @@ img[height="0"] {
     padding: 0 10px;
     border-bottom: none;
   }
+  .fltrBtn_kit-ovrflw {
+    max-height: 165px;
+    overflow: auto;
+    padding: 7px 10px 0;
+  }
   .fltrBtn_kit_l {
     float: left;
     width: 100px;
-    margin-left: 10px;
+    margin: 15px 0 0 10px;
   }
   .fltrBtn_kit_r {
     float: right;
     width: 810px;
+    overflow: auto;
+    padding-top: 7px;
+    max-height: 200px;
   }
   .fltrBtn_i {
     display: inline-block;

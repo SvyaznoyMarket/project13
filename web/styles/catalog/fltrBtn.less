@@ -1,17 +1,16 @@
 .fltrBtn{
+    &-mb10 {
+        margin: 0 0 10px;
+    }
+    //
     // шапка фильтров в рутовых категориях
     &_hd{
         &_r{
-            margin: 5px 0 0 30px;
+            margin: 5px 0 8px 30px;
 
             color: #424242;
 
             .inline-block();
-            & *{
-                line-height: 13px;
-
-                .inline-block();
-            }
         }
     }
     // отчисть фильтры в рутовых категориях
@@ -49,25 +48,33 @@
         width: 940px;
         margin: 0 0 0 -10px;
         padding: 10px;
-        //max-height: 165px;
-        //overflow: auto;
 
         border-bottom: 1px solid #e6e6e6;
+
         &-nptb{
             padding: 0 10px;
 
             border-bottom: none;
         }
 
+        &-ovrflw {
+            max-height: 165px;
+            overflow: auto;
+            padding: 7px 10px 0;
+        }
+
         &_l {
             float: left;
             width: 100px;
-            margin-left: 10px;
+            margin: 15px 0 0 10px;
         }
 
         &_r {
             float: right;
             width: 810px;
+            overflow: auto;
+            padding-top: 7px;
+            max-height: 200px;
         }
     }
     // ссекция кнопки фильтрации
