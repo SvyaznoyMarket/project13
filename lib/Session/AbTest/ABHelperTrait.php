@@ -16,4 +16,11 @@ trait ABHelperTrait {
         return \App::abTest()->getTest('main_page') && \App::abTest()->getTest('main_page')->getChosenCase()->getKey() == 'new';
     }
 
+    /** Поиск с возможностью фильтрации по категориям?
+     * @return bool
+     */
+    public function isAdvancedSearch(){
+        return \App::abTest()->getTest('adv_search') && \App::abTest()->getTest('adv_search')->getChosenCase()->getKey() == 'on';
+    }
+
 } 

@@ -10,7 +10,6 @@ $menu = $page->getGlobalParam('menu');
 <div class="header_c clearfix">
     <a href="/" class="header_i sitelogo"></a>
 
-    <!-- для АВ-теста строки поиска, к hdsearch подключить класс hdsearch-v2 -->
     <div class="header_i hdsearch jsKnockoutSearch" data-bind="css: { 'hdsearch-v2': advancedSearch }">
         <form action="<?= $page->url('search')?>" class="hdsearch_f">
 
@@ -21,7 +20,7 @@ $menu = $page->getGlobalParam('menu');
                 <? if ($menu) : ?>
 
                 <div class="searchcat" style="display: none" data-bind="visible: advancedSearch">
-                    <!-- нужно делать .toggleClass('searchcat_tl-act') при клике по - Все товары  -->
+
                     <div class="searchcat_tl" data-bind="css: { 'searchcat_tl-act': !searchCategoryVisible() }, click: toggleCategoryVisibility">
                         <span class="searchcat_tl_tx" data-bind="text: currentCategory() == null ? 'Все товары' : currentCategory().name "></span>
                     </div>
@@ -35,6 +34,7 @@ $menu = $page->getGlobalParam('menu');
                         </li>
 
                         <? foreach ($menu as $item) : ?>
+                        <?  if ($item->id == null) continue; ?>
 
                         <li class="searchcat_dd_i">
                             <span class="undrlh">
@@ -57,6 +57,8 @@ $menu = $page->getGlobalParam('menu');
                         placeholder="Поиск по товарам..."
                         data-bind="value: searchInput, valueUpdate: ['input', 'afterkeydown'], hasFocus: searchFocus" /></div>
                 </div>
+
+                <?= $page->blockInputCategory() ?>
 
             <button class="hdsearch_btn btn3">Найти</button>
 
