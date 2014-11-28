@@ -2304,17 +2304,29 @@ img[height="0"] {
   }
   .footer_cmpn {
     margin: 0 0 10px;
-    padding: 11px 10px;
+    padding: 11px 0;
+    display: table;
+    /* IE6-8 */
+    *display: block;
+    *float: left;
+    *overflow: hidden;
+    *position: relative;
+    width: 100%;
     background-color: #e6e6e6;
   }
   .footer_cmpn_i {
-    float: left;
-    margin: 0 61px 0 0;
+    display: table-cell;
+    /* IE6-8 */
+    *display: block;
+    *float: left;
+    *clear: right;
+    *zoom: 1;
+    padding: 0 10px;
   }
   .footer_cmpn_i:last-child,
   .footer_cmpn_i-last {
-    margin-right: 0;
-    float: right;
+    text-align: right;
+    padding-left: 0;
   }
   .footer_inf {
     float: left;
