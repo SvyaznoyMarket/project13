@@ -107,15 +107,15 @@ return function(
 <div class="fltrBtn">
     <form id="productCatalog-filter-form" class="js-filter" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
         <? if ($brandFilter1): ?>
-            <div class="fltrBtn_kit">
-                <div class="fltrBtn_tggl js-productCategory-filter2-brandTitle">
+            <div class="fltrBtn_kit clearfix">
+                <div class="fltrBtn_tggl fltrBtn_kit_l js-productCategory-filter2-brandTitle">
                     <span class="fltrBtn_tggl_tx"><?= $brandFilter1->getName() ?></span>
                 </div>
 
-                <div>
+                <div class="fltrBtn_kit_r">
                     <?= $helper->render('product-category/filter2/element/__brand', ['productFilter' => $productFilter, 'filter' => $brandFilter1]) ?>
                     <? if ($brandFilter2): ?>
-                        <a href="#" class="js-productCategory-filter2-otherBrandsOpener">Ещё <?= count($brandFilter2->getOption()) ?> <?= $helper->numberChoice(count($brandFilter2->getOption()), ['бренд', 'бренда', 'брендов']) ?></a>
+                        <a href="#" class="fltrBtn_btn fltrBtn_btn-mini fltrBtn_btn-btn js-productCategory-filter2-otherBrandsOpener"><span class="fltrBtn_btn_tx">Ещё <?= count($brandFilter2->getOption()) ?></span></a>
                     <? endif ?>
 
                     <? if ($brandFilter2): ?>

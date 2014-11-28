@@ -1,0 +1,263 @@
+.fltrBtn{
+    // шапка фильтров в рутовых категориях
+    &_hd{
+        &_r{
+            margin: 5px 0 0 30px;
+
+            color: #424242;
+
+            .inline-block();
+            & *{
+                line-height: 13px;
+
+                .inline-block();
+            }
+        }
+    }
+    // отчисть фильтры в рутовых категориях
+    &_clr{
+        line-height: 13px;
+
+        margin: 0 0 0 15px;
+
+        cursor: pointer;
+        &_tx{
+            border-bottom: 1px dotted #424242;
+        }
+    }
+    // название фильтра
+    &_tggl{
+        font-size: 16px;
+
+        padding: 0 0 0 15px;
+
+        cursor: pointer;
+
+        color: @black;
+        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAKCAQAAADMDLw1AAAAQUlEQVQIW2Nw3uGiy4AKnP47/3We4y6JIgSCzl+c6t24UYTAws+ckxuYUITAwpdc3PELoWl0/uLSgGQ8hiMwnQoAAEs8bqiaIsoAAAAASUVORK5CYII=') no-repeat 0 50%;
+
+        .inline-block();
+        &_tx{
+            border-bottom: 1px dotted #515151;
+        }
+        &.opn{
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAJCAQAAAChr3WYAAAAXElEQVQI11XKwQ0AERSE4YmrChShCSMUohAKUYg6FKECV9nN2rDre5eXPwMWc53HAqs5jjSsBsB8xIyHV+w7da/wMnEvIxYn2eauOYkPw4wBf0mwsiaBk/XWr/8G2pM8a8IWUVQAAAAASUVORK5CYII=');
+        }
+    }
+    // секция фильтра
+    &_kit{
+        width: 940px;
+        margin: 0 0 0 -10px;
+        padding: 10px;
+        //max-height: 165px;
+        //overflow: auto;
+
+        border-bottom: 1px solid #e6e6e6;
+        &-nptb{
+            padding: 0 10px;
+
+            border-bottom: none;
+        }
+
+        &_l {
+            float: left;
+            width: 100px;
+            margin-left: 10px;
+        }
+
+        &_r {
+            float: right;
+            width: 810px;
+        }
+    }
+    // ссекция кнопки фильтрации
+    &_i {
+        .inline-block();
+    }
+    // кнопка фильтра
+    &_btn{
+        line-height: 40px;
+
+        position: relative;
+
+        width: 120px;
+        height: 43px;
+        margin: 0 5px 10px 0;
+        cursor: pointer;
+
+        text-align: center;
+
+        border: 1px solid #e6e6e6;
+        background: @white;
+
+        .rounded(4px);
+        .inline-block();
+        &_img{
+            vertical-align: middle;
+        }
+        // кнопка - ещё бренды
+        &-btn{
+            font-size: 14px;
+            margin-right: 0;
+
+            color: #424242;
+            cursor: pointer;
+            border-style: dashed;
+            .fltrBtn_btn_tx{
+                border-bottom: 1px dotted #424242;
+            }
+            &:hover{
+                text-decoration: none;
+            }
+        }
+        &-mini {
+            line-height: 33px;
+
+            width: 80px;
+            height: 35px;
+        }
+        // отметить фильтр по бренду
+        &_clsr{
+            position: absolute;
+            top: -7px;
+            right: -7px;
+
+            display: none;
+        }
+        &.act{
+            line-height: 38px;
+
+            width: 118px;
+            height: 41px;
+
+            border-width: 2px;
+            border-color: #f99b1c;
+            .fltrBtn_btn_clsr{
+                display: block;
+            }
+        }
+    }
+    // строка с параметрами
+    &_ln{
+        line-height: 14px;
+
+        margin: 0 0 10px;
+    }
+    // параметры фильтрации
+    &_param{
+        margin-bottom: 8px;
+
+        border-bottom: 1px solid #c7c7c7;
+        &:last-child{
+            margin-bottom: 0;
+
+            border-bottom: none;
+        }
+        &_n{
+            font-size: 14px;
+
+            margin: 0 0 8px;
+        }
+        &_lbl{
+            font-size: 14px;
+
+            .inline-block-middle();
+        }
+        &_it{
+            font-size: 14px;
+            line-height: 1;
+
+            width: 45px;
+            padding: 4px 10px;
+
+            color: #8a8a8a;
+            border: 1px solid #c7c7c7;
+
+            .rounded(3px);
+            .inline-block-middle();
+        }
+        &-2col{
+            .fltrBtn_ln{
+                width: @full-size/2 - 1%;
+
+                .inline-block-middle();
+            }
+        }
+    }
+}
+
+// блок филььтра с параметрами
+.fltrBtnBox{
+    position: relative;
+    &_tggl{
+        font-size: 16px;
+
+        position: relative;
+
+        padding: 2px 22px 4px 10px;
+
+        cursor: pointer;
+
+        border: 1px solid @white;
+        border-bottom: none;
+        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAQAAAClB0z9AAAAQElEQVQI12Nw2ur0Hw63MjirOf+EcJx/OqsxMDA4d0G5XQwg4Mfr9BzIfe7HywABzvFAuXgGGPjP6DTpPyOIBQCDch5A9YNPpAAAAABJRU5ErkJggg==') no-repeat right 10px center;
+        background-color: @white;
+
+        .inline-block();
+        .rounded(3px 3px 0 0);
+        &_tx{
+            border-bottom: 1px dotted #515151;
+        }
+        &.opn{
+            z-index: 16;
+
+            border-color: #c7c7c7;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAQAAAClB0z9AAAAP0lEQVQI12NgAIL/jE6T/jMywIBTgtN/pwQox4/X6TmQ+9yPF8x17gJygNC5C8RRc/4J5f50VmNw2grhgOFWABRpHkDXZMHuAAAAAElFTkSuQmCC');
+            .fltrBtnBox_tggl_tx{
+                border: none;
+            }
+        }
+        &.act{
+            padding: 2px 22px 4px 10px;
+
+            border: 2px solid #f99b1c;
+
+            .rounded(3px);
+            .fltrBtnBox_tggl_tx{
+                border: none;
+            }
+        }
+        //скидки - красная выпадашка
+        &-mark{
+            color: #ef404a;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAAVUlEQVQI12P44Oi99b2D1390DBJn+OQcqAZk/EST+AkSZwCBD44+XaiSPl0MMPDfz4/3g4P3c7AEkAbxGZDBJwfveJAkiGZAB////2d87+g9CUTDxAB+g0Sgd+vg2AAAAABJRU5ErkJggg==');
+            .fltrBtnBox_tggl_tx{
+                border-color: #ef404a;
+            }
+            &.opn{
+                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAAV0lEQVQIW2NggIL///8zvnf0ngSiYWJw8N7JK+G9g9d/EI0i8d/Pj/eDg/dzkCSIBvHhkh8cfbrAuqAYxAdLfHIOVPvg6P0TVdL7J0gcqMt7K7IEkoKtAD3ERJ5C4w0pAAAAAElFTkSuQmCC');
+            }
+        }
+    }
+    // выпадашка с параметрами фильтрации
+    &_dd{
+        position: absolute;
+        z-index: 15;
+        top: 27px;
+
+        min-width: 150px;
+        padding: 10px 10px 0;
+
+        border: 1px solid #c7c7c7;
+        background: @white;
+
+        .rounded(0 0 3px 3px);
+        .drop-shadow(0, 3px, 5px, .3);
+        &-r{
+            right: 0;
+        }
+        &-l{
+            left: 0;
+        }
+    }
+}
