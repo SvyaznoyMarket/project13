@@ -1,15 +1,19 @@
 ;(function($){
 	var $body = $(document.body),
+		timeoutId,
 
 		// БАННЕРЫ
 		$bannerHolder = $('.jsMainBannerHolder'),
 		bannerHeight = 299,
-		$banners = $('.jsMainBannerImage'), // баннеры
+//		$banners = $('.jsMainBannerImage'), // баннеры
 		$bannerThumbs = $('.jsMainBannerThumb'), // превью баннеров
 		activeThumbClass = 'slidesbnnr_thmbs_img-act',
 
+		slidesWidth = 473,
+		slidesDotClass = 'slidesBox_dott_i',
+
 		// НИЖНИЕ СЛАЙДЕРЫ
-		slidesWideActiveDotClass = 'slidesBox_dott_i-act',
+		slidesDotActiveClass = 'slidesBox_dott_i-act',
 		slidesWideWidth = 958,
 		$jsSlidesWideHolder = $('.jsSlidesWideHolder').first(),
 		$jsSlidesWideItems = $('.jsSlidesWideItem');
@@ -19,14 +23,47 @@
 
 	// Слайдеры рекомендаций
 	$body.on('click', '.jsMainSlidesButton', function(){
-		var step = 473,
-			$block = $(this).closest('.jsMainSlidesRetailRocket');
+		var step = slidesWidth,
+			$block = $(this).closest('.jsMainSlidesRetailRocket'), // родительский блок
+			$dots = $block.find('.' + slidesDotClass), // точки навигации
+			index = $dots.index($block.find('.' + slidesDotActiveClass).first()),
+			nextIndex = $(this).hasClass('jsMainSlidesLeftButton') ? index - 1 : index + 1
+			;
+
+		if (nextIndex == $block.find('.jsMainSlidesProductBlock').data('count') || nextIndex < 0) return;
+
+
+
 		if ($(this).hasClass('jsMainSlidesLeftButton')) {
 			$block.find('.jsMainSlidesProductBlock').css('margin-left', '+='+step);
+			$dots.removeClass(slidesDotActiveClass);
+			$dots.eq(index - 1).addClass(slidesDotActiveClass)
 		} else {
 			$block.find('.jsMainSlidesProductBlock').css('margin-left', '-='+step);
+			$dots.removeClass(slidesDotActiveClass);
+			console.log(index, $dots.eq(index + 1));
+			$dots.eq(index + 1).addClass(slidesDotActiveClass)
 		}
 
+	});
+
+	// Клик по навигации в слайдерах рекомендаций
+	$body.on('click', '.jsMainSlidesRetailRocket .slidesBox_dott_i', function(){
+
+		var $this = $(this),
+			$block = $(this).closest('.jsMainSlidesRetailRocket'),
+			$dots = $block.find('.slidesBox_dott_i'),
+			index = $dots.index($this),
+			margin = index * slidesWidth;
+
+		$block.find('.jsMainSlidesProductBlock').animate({
+			'margin-left': - margin
+		},{
+			complete: function(){
+				$dots.removeClass(slidesDotActiveClass);
+				$this.addClass(slidesDotActiveClass);
+			}
+		})
 	});
 
 	// Маленькие блоки с информацией под баннерами
@@ -40,6 +77,9 @@
 		var $this = $(this),
 			index = $bannerThumbs.index($this);
 
+		clearTimeout(timeoutId); // очистим при клике
+		autoSlide($this.find('img').data('timeout'));
+
 		$bannerHolder.animate({
 			'margin-top': -(index * bannerHeight)
 		},{
@@ -51,11 +91,43 @@
 		})
 	});
 
+	// запускаем листалку при загрузке
+	autoSlide($bannerThumbs.find('img.'+activeThumbClass).data('timeout'));
+
+	// Автоматическая листалка
+	function autoSlide( timeout) {
+	 	timeoutId = setTimeout(showNextSlide, parseInt(timeout, 10))
+	}
+
+	function showNextSlide() {
+		var index = $bannerThumbs.find('img').index($bannerThumbs.find('img.'+activeThumbClass)),
+			bannersLength = $bannerThumbs.length,
+			nextIndex = index + 1 == bannersLength ? 0 : index + 1;
+
+		$bannerHolder.animate({
+			'margin-top': -(nextIndex * bannerHeight)
+		},{
+			duration: 200,
+			complete: function(){
+				$bannerThumbs.find('img').removeClass(activeThumbClass);
+				$bannerThumbs.find('img').eq(nextIndex).addClass(activeThumbClass);
+				autoSlide($bannerThumbs.find('img').eq(nextIndex).data('timeout'));
+			}
+		})
+	}
+
+
+	// Установка корректной ширины блоков со слайдерами
 	$jsSlidesWideHolder.css('width', slidesWideWidth * $jsSlidesWideItems.length);
+
+	$('.jsMainSlidesProductBlock').each(function(){
+		var $this = $(this);
+		$this.css('width', $this.data('count') * slidesWidth)
+	});
 
 	// Листалка нижнего слайдера
 	$body.on('click', '.jsSlidesWideLeft, .jsSlidesWideRight', function(){
-		var index = $('.jsSlidesWide .slidesBox_dott_i').index($('.jsSlidesWide .'+slidesWideActiveDotClass)),
+		var index = $('.jsSlidesWide .slidesBox_dott_i').index($('.jsSlidesWide .'+slidesDotActiveClass)),
 			nextIndex = $(this).hasClass('jsSlidesWideLeft') ? index - 1: index + 1,
 			margin = - nextIndex * slidesWideWidth;
 
@@ -65,7 +137,7 @@
 			'margin-left': margin
 		},{
 			complete: function(){
-				$('.jsSlidesWide .slidesBox_dott_i').removeClass(slidesWideActiveDotClass).eq(nextIndex).addClass(slidesWideActiveDotClass);
+				$('.jsSlidesWide .slidesBox_dott_i').removeClass(slidesDotActiveClass).eq(nextIndex).addClass(slidesDotActiveClass);
 			}
 		});
 	});
@@ -80,8 +152,8 @@
 			'margin-left': - margin
 		},{
 			complete: function(){
-				$('.jsSlidesWide .slidesBox_dott_i').removeClass(slidesWideActiveDotClass);
-				$this.addClass(slidesWideActiveDotClass);
+				$('.jsSlidesWide .slidesBox_dott_i').removeClass(slidesDotActiveClass);
+				$this.addClass(slidesDotActiveClass);
 			}
 		});
 	});

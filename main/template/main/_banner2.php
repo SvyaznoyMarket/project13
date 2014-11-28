@@ -17,7 +17,11 @@
     <ul class="slidesbnnr_thmbs">
         <? foreach ($banners as $key => $banner) : ?>
         <li class="slidesbnnr_thmbs_i jsMainBannerThumb">
-            <img class="slidesbnnr_thmbs_img <?= $key == 0 ? 'slidesbnnr_thmbs_img-act' : '' ?>" src="<?= @$banner['imgs'] ?>" alt="" />
+            <img class="slidesbnnr_thmbs_img <?= $key == 0 ? 'slidesbnnr_thmbs_img-act' : '' ?>"
+                 src="<?= @$banner['imgs'] ?>"
+                 alt=""
+                 data-timeout="<?= (int)@$banner['t'] ?>"
+                />
         </li>
         <? endforeach; ?>
     </ul>

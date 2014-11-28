@@ -41,7 +41,7 @@ $helper = new \Helper\TemplateHelper();
     </div>
 
     <div class="slidesBox_inn">
-        <ul class="slidesBox_lst clearfix jsMainSlidesProductBlock">
+        <ul class="slidesBox_lst clearfix jsMainSlidesProductBlock" data-count="<?= count($blocks) ?>">
 
             <? foreach ($blocks as $key => $block) : ?>
             <li class="slidesBox_i">
