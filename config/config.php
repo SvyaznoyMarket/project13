@@ -235,7 +235,7 @@ $c->partners['criteo']['account'] = 10442;
 // RetailRocket
 $c->partners['RetailRocket']['account'] = '519c7f3c0d422d0fe0ee9775';
 $c->partners['RetailRocket']['apiUrl'] = 'http://api.retailrocket.ru/api/';
-$c->partners['RetailRocket']['timeout'] = 0.5; //в секундах;
+$c->partners['RetailRocket']['timeout'] = 0.33; //в секундах;
 $c->partners['RetailRocket']['cookieLifetime'] = 2592000; // 30 дней
 $c->partners['RetailRocket']['userEmail']['cookieName'] = 'user_email';
 
