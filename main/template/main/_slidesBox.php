@@ -50,7 +50,14 @@ $helper = new \Helper\TemplateHelper();
                     <a href="<?= $product->getLink() ?>" class="item_imgw"><img src="<?= $product->getImageUrl(2) ?>" class="item_img" alt="<?= $product->getName() ?>"/></a>
                     <div class="item_n"><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></div>
                     <div class="item_pr"><?= $helper->formatPrice($product->getPrice()) ?>&nbsp;<span class="rubl">p</span></div>
-                    <a class="item_btn btn5" href="">Купить</a>
+                    <?= $helper->render('cart/__button-product', [
+                        'product'        => $product,
+//                        'onClick'        => $addToCartJS ? $addToCartJS : null,
+                        'isRetailRocket' => true, // TODO: удалить
+//                        'sender'         => $sender,
+//                        'noUpdate'       => true,
+                    ]) // Кнопка купить ?>
+<!--                    <a class="item_btn btn5" href="">Купить</a>-->
                 </div>
                 <? endforeach ?>
             </li>
