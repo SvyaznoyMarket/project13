@@ -2,7 +2,11 @@
 
 namespace View;
 
+use Session\AbTest\ABHelperTrait;
+
 class DefaultLayout extends Layout {
+    use ABHelperTrait;
+
     protected $layout  = 'layout-twoColumn';
     protected $breadcrumbsPath = null;
     protected $useTchiboAnalytics = false;
@@ -15,7 +19,7 @@ class DefaultLayout extends Layout {
         // Меню нужно в нескольких рендерингах, поэтому запрашиваем его сразу
         $this->setGlobalParam('menu', (new Menu($this))->generate_new(\App::user()->getRegion()));
 
-        $this->new_menu = \App::abTest()->getTest('main_page') && \App::abTest()->getTest('main_page')->getChosenCase()->getKey() == 'new';
+        $this->new_menu = $this->isNewMainPage();
 
         $this->setTitle('Enter - это выход!');
         $this->addMeta('yandex-verification', '623bb356993d4993');

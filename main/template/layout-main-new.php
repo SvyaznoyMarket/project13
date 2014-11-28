@@ -52,7 +52,7 @@
 
         <div class="content">
 
-            <?= $page->render('main/_banner2') ?>
+            <?= $page->render('main/_banner2', ['banners' => (array)$page->getParam('bannerData')]) ?>
 
             <?= $page->render('main/_infoBlocks') ?>
 

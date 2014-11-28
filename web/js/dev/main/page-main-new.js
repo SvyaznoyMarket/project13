@@ -22,7 +22,7 @@
 	if ($('.jsMainSlidesRetailRocket').length == 0) {
 		$.get('/index/recommend').done(function(data){
 			if (data.result) {
-				$(data.result).insertBefore($('.infoBox'));
+				$(data.result).insertBefore($('.jsDivBeforeRecommend'));
 			}
 		})
 	}

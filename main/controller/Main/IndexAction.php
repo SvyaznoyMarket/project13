@@ -2,7 +2,12 @@
 
 namespace Controller\Main;
 
+use Session\AbTest\ABHelperTrait;
+
 class IndexAction {
+
+    use ABHelperTrait;
+
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
@@ -22,9 +27,13 @@ class IndexAction {
             $host = reset($hosts);
             $urls = \App::config()->banner['url'];
 
+            // Фильтруем баннеры для новой и старой главной
+            $data = array_filter($data, function($item) {
+                return ($this->isNewMainPage() ? 3 : 1) == (int)@$item['type_id'];
+            });
+
             foreach ($data as $i => $item) {
                 $bannerId = isset($item['id']) ? (int)$item['id'] : null;
-                if (isset($item['type_id']) && 3 == (int)$item['type_id']) continue; // Пропускаем "экслюзивные" баннеры (для новой главной)
                 $item = [
                     'id'    => $bannerId,
                     'name'  => isset($item['name']) ? (string)$item['name'] : null,
@@ -38,8 +47,8 @@ class IndexAction {
                 $bannerData[] = [
                     'id'    => $bannerId,
                     'alt'   => $item['name'],
-                    'imgs'  => $item['image'] ? ($host . $urls[0] . $item['image']) : null,
-                    'imgb'  => $item['image'] ? ($host . $urls[1] . $item['image']) : null,
+                    'imgs'  => $item['image'] ? ($host . $urls[$this->isNewMainPage() ? 4 : 0] . $item['image']) : null,
+                    'imgb'  => $item['image'] ? ($host . $urls[$this->isNewMainPage() ? 3 : 1] . $item['image']) : null,
                     'url'   => $item['url'],
                     't'     => $i > 0 ? $timeout : $timeout + 4000,
                     'ga'    => $bannerId . ' - ' . $item['name'],
