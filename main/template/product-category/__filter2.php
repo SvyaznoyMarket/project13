@@ -113,14 +113,14 @@ return function(
                 </div>
 
                 <div>
-                    <?= $helper->render('product-category/filter2/element/__list', ['productFilter' => $productFilter, 'filter' => $brandFilter1]) ?>
+                    <?= $helper->render('product-category/filter2/element/__brand', ['productFilter' => $productFilter, 'filter' => $brandFilter1]) ?>
                     <? if ($brandFilter2): ?>
                         <a href="#" class="js-productCategory-filter2-otherBrandsOpener">Ещё <?= count($brandFilter2->getOption()) ?> <?= $helper->numberChoice(count($brandFilter2->getOption()), ['бренд', 'бренда', 'брендов']) ?></a>
                     <? endif ?>
 
                     <? if ($brandFilter2): ?>
                         <span class="js-productCategory-filter2-otherBrands" style="display: none;">
-                            <?= $helper->render('product-category/filter2/element/__list', ['productFilter' => $productFilter, 'filter' => $brandFilter2]) ?>
+                            <?= $helper->render('product-category/filter2/element/__brand', ['productFilter' => $productFilter, 'filter' => $brandFilter2]) ?>
                         </span>
                     <? endif ?>
                 </div>
