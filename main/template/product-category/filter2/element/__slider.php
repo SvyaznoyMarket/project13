@@ -12,20 +12,20 @@ return function(
         'step' => $filter->isPrice() ? 10 : $filter->getStepByFilter()
     ];
     ?>
-    <div class="bRangeSlider js-filter-rangeSlider"<? if(!empty($promoStyle['bRangeSlider'])): ?> style="<?= $promoStyle['bRangeSlider'] ?>"<? endif ?>>
-        <input class="bRangeSlider__eInput mFromRange" name="<?= \View\Name::productCategoryFilter($filter, 'from') ?>" value="<?= $helper->clearZeroValue($productFilter->getValueMin($filter)) ?>" type="text" />
+    <div class="fltrRange fltrRange-v3 js-filter-rangeSlider"<? if(!empty($promoStyle['bRangeSlider'])): ?> style="<?= $promoStyle['bRangeSlider'] ?>"<? endif ?>>
+        <input class="fltrRange_it mFromRange" name="<?= \View\Name::productCategoryFilter($filter, 'from') ?>" value="<?= $helper->clearZeroValue($productFilter->getValueMin($filter)) ?>" type="text" />
 
-        <div class="bFilterSlider" data-config="<?= $helper->json($data) ?>">
+        <div class="fltrRange_sldr js-filter-rangeSlider-slider" data-config="<?= $helper->json($data) ?>">
             <a class="ui-slider-handle ui-state-default ui-corner-all" href="#"></a>
             <a class="ui-slider-handle ui-state-default ui-corner-all" href="#"></a>
         </div>
 
-        <input class="bRangeSlider__eInput mLast mToRange" name="<?= \View\Name::productCategoryFilter($filter, 'to') ?>" value="<?= $helper->clearZeroValue($productFilter->getValueMax($filter)) ?>" type="text" />
+        <input class="fltrRange_it mLast mToRange" name="<?= \View\Name::productCategoryFilter($filter, 'to') ?>" value="<?= $helper->clearZeroValue($productFilter->getValueMax($filter)) ?>" type="text" />
 
         <? if ($filter->isPrice()): ?>
-            <span class="bRangeSlider__eRub rubl">p</span>
+            <span class="fltrRange_val rubl">p</span>
         <? else: ?>
-            <span class="bRangeSlider__eRub"><?= $filter->getUnit() ?></span>
+            <span class="fltrRange_val"><?= $filter->getUnit() ?></span>
         <? endif ?>
     </div>
 <? };

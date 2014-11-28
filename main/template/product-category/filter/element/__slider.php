@@ -5,7 +5,7 @@ return function(
     \Model\Product\Filter $productFilter,
     \Model\Product\Filter\Entity $filter,
     array $promoStyle = []
-) { 
+) {
     $data = [
         'min'  => $helper->clearZeroValue($filter->getMin()),
         'max'  => $helper->clearZeroValue($filter->getMax()),
@@ -20,7 +20,7 @@ return function(
         <? endif ?>
         <input class="bRangeSlider__eInput mFromRange" name="<?= \View\Name::productCategoryFilter($filter, 'from') ?>" value="<?= $helper->clearZeroValue($productFilter->getValueMin($filter)) ?>" type="text" />
 
-        <div class="bFilterSlider" data-config="<?= $helper->json($data) ?>">
+        <div class="bFilterSlider js-filter-rangeSlider-slider" data-config="<?= $helper->json($data) ?>">
             <a class="ui-slider-handle ui-state-default ui-corner-all" href="#"></a>
             <a class="ui-slider-handle ui-state-default ui-corner-all" href="#"></a>
         </div>

@@ -108,10 +108,9 @@ return function(
     <form id="productCatalog-filter-form" class="js-filter" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
         <? if ($brandFilter1): ?>
             <div class="fltrBtn_kit">
-                <div class="fltrBtnBox_tggl">
-                    <span class="fltrBtnBox_tggl_tx js-productCategory-filter2-brandTitle"><?= $brandFilter1->getName() ?></span>
+                <div class="fltrBtn_tggl js-productCategory-filter2-brandTitle">
+                    <span class="fltrBtn_tggl_tx"><?= $brandFilter1->getName() ?></span>
                 </div>
-
 
                 <div>
                     <?= $helper->render('product-category/filter2/element/__list', ['productFilter' => $productFilter, 'filter' => $brandFilter1]) ?>
@@ -153,7 +152,7 @@ return function(
                         </ul>
                     </div>
 
-                    <div class="fltrRange fltrBtn_range fl-l"><?= $helper->render('product-category/filter2/element/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter, 'promoStyle' => $promoStyle]) ?></div>
+                    <div class="fltrBtn_range fl-l"><?= $helper->render('product-category/filter2/element/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter, 'promoStyle' => $promoStyle]) ?></div>
                 <? endif ?>
 
                 <? if ($saleFilter && $saleFilter->getOption()): ?>
@@ -195,7 +194,7 @@ return function(
             </div>
         </div>
 
-        <div class="fltrSet" style="padding-top: 0;">
+        <div class="fltrBtn_kit fltrBtn_kit-nptb clearfix js-productCategory-filter-selected">
             <?= $helper->render('product-category/__selectedFilter2', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
         </div>
     </form>

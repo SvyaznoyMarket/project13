@@ -7,14 +7,14 @@ return function(
 ) {
     $useBaseUrl = true;
 ?>
-    <div class="bFilterFoot">
-        <?= $helper->renderWithMustache('product-category/_selectedFilter2', (new \View\ProductCategory\SelectedFilterAction())->execute(
-            $helper,
-            $productFilter,
-            $baseUrl,
-            $useBaseUrl
-        )) ?>
-    </div>
+
+    <?= $helper->renderWithMustache('product-category/_selectedFilter2', (new \View\ProductCategory\SelectedFilterAction())->execute(
+        $helper,
+        $productFilter,
+        $baseUrl,
+        $useBaseUrl
+    )) ?>
+
     <script id="tplSelectedFilter" type="text/html" data-partial="<?= $helper->json([]) ?>">
         <?= file_get_contents(\App::config()->templateDir . '/product-category/_selectedFilter2.mustache') ?>
     </script>

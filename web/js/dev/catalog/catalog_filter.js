@@ -2,7 +2,7 @@
  * Filters
  *
  * @requires jQuery, Mustache, ENTER.utils, ENTER.config, ENTER.catalog.history
- * 
+ *
  * @author	Zaytsev Alexandr
  *
  * @param	{Object}	ENTER	Enter namespace
@@ -30,18 +30,18 @@
 
 		tID;
 	// end of vars
-	
+
 	catalog.filter = {
 		/**
 		 * Последние загруженные данные
-		 * 
+		 *
 		 * @type	{Object}
 		 */
 		lastRes: null,
 
 		/**
 		 * Получение текущего режима просмотра
-		 * 
+		 *
 		 * @return	{String}	Текущий режим просмотра
 		 */
 		getViewType: function() {
@@ -58,7 +58,7 @@
 			},
 
 			selectedFilter: function( html ) {
-				var filterFooterWrap = filterBlock.find('.bFilterFoot');
+				var filterFooterWrap = filterBlock.find('.js-productCategory-filter-selected');
 
 				filterFooterWrap.empty();
 				filterFooterWrap.html(html);
@@ -126,7 +126,7 @@
 
 				if ( !data ) {
 					console.warn('nothing to render');
-					
+
 					return;
 				}
 
@@ -135,7 +135,7 @@
 					partials = template.data('partial'),
 					html;
 				// end of vars
-				
+
 				html = Mustache.render(filterTemplate, data, partials);
 
 				if ( data.hasOwnProperty('values') ) {
@@ -158,7 +158,7 @@
 					partials = template.data('partial'),
 					html;
 				// end of vars
-				
+
 				html = Mustache.render(sortingTemplate, data, partials);
 
 				console.log('end of render sorting');
@@ -175,7 +175,7 @@
 					partials = template.data('partial'),
 					html;
 				// end of vars
-				
+
 				html = Mustache.render(paginationTemplate, data, partials);
 
 				console.log('end of render paginaton');
@@ -197,12 +197,12 @@
 
 		/**
 		 * Отрисовка шаблона продуктов
-		 * 
+		 *
 		 * @param	{Object}	res		Данные для шаблона
 		 */
 		renderCatalogPage: function( res ) {
 			console.info('renderCatalogPage');
-			
+
 			var dataToRender = ( res ) ? res : catalog.filter.lastRes,
 				key,
 				template,
@@ -232,7 +232,7 @@
 
 		/**
 		 * Получение изменненых и неизменненых полей слайдеров
-		 * 
+		 *
 		 * @return	{Object}	res
 		 * @return	{Array}		res.changedSliders		Массив имен измененных полей
 		 * @return	{Array}		res.unchangedSliders	Массив имен неизмененных полей
@@ -248,7 +248,7 @@
 
 			var sortSliders = function sortSliders() {
 				var sliderWrap = $(this),
-					slider = sliderWrap.find('.bFilterSlider'),
+					slider = sliderWrap.find('.js-filter-rangeSlider-slider'),
 					sliderConfig = slider.data('config'),
 					sliderFromInput = sliderWrap.find('.mFromRange'),
 					sliderToInput = sliderWrap.find('.mToRange'),
@@ -256,7 +256,7 @@
 					min = sliderConfig.min,
 					max = sliderConfig.max;
 				// end of vars
-				
+
 
 				if ( sliderFromInput.val() * 1 === min ) {
 					res.unchangedSliders.push(sliderFromInput.attr('name'));
@@ -280,7 +280,7 @@
 
 		/**
 		 * Формирование URL для получения результатов фильтра
-		 * 
+		 *
 		 * @return	{String}	url
 		 */
 		getFilterUrl: function() {
@@ -397,11 +397,11 @@
 			if ( e.isTrigger ) {
 				console.warn('it\'s trigger');
 			}
-			
+
 			else if ( typeof e === 'object' && catalog.enableHistoryAPI ) {
 				console.warn('it\'s true event and HistoryAPI enable');
 
-				$.scrollTo(filterBlock.find('.bFilterFoot'), 500);
+				$.scrollTo(filterBlock.find('.js-productCategory-filter-selected'), 500);
 			}
 
 			return false;
@@ -433,7 +433,7 @@
 
 				resetSliders = function resetSliders() {
 					var sliderWrap = $(this),
-						slider = sliderWrap.find('.bFilterSlider'),
+						slider = sliderWrap.find('.js-filter-rangeSlider-slider'),
 						sliderConfig = slider.data('config'),
 						sliderFromInput = sliderWrap.find('.mFromRange'),
 						sliderToInput = sliderWrap.find('.mToRange'),
@@ -441,7 +441,7 @@
 						min = sliderConfig.min,
 						max = sliderConfig.max;
 					// end of vars
-					
+
 					sliderFromInput.val(min).trigger('change');
 					sliderToInput.val(max).trigger('change');
 				};
@@ -477,7 +477,7 @@
 						id = self.attr('id'),
 						label = filterBlock.find('label[for="'+id+'"]');
 					// end of vars
-					
+
 					self.attr('checked', 'checked');
 					label.addClass('mChecked');
 				},
@@ -522,7 +522,7 @@
 		 */
 	var initSliderRange = function initSliderRange() {
 			var sliderWrap = $(this),
-				slider = sliderWrap.find('.bFilterSlider'),
+				slider = sliderWrap.find('.js-filter-rangeSlider-slider'),
 				sliderConfig = slider.data('config'),
 				sliderFromInput = sliderWrap.find('.mFromRange'),
 				sliderToInput = sliderWrap.find('.mToRange'),
@@ -531,7 +531,7 @@
 				max = sliderConfig.max,
 				step = sliderConfig.step;
 			// end of vars
-			
+
 			slider.slider({
 				range: true,
 				step: step,
@@ -651,7 +651,7 @@
 				parentItem = self.parent(),
 				isActiveTab = parentItem.hasClass(activeClass);
 			// end of vars
-			
+
 			if ( isActiveTab ) {
 				return false;
 			}
@@ -674,7 +674,7 @@
 				isActiveTab = self.hasClass(activeClass),
 				categoryId = self.data('ref');
 			// end of vars
-			
+
 			if ( isActiveTab ) {
 				return false;
 			}
@@ -706,7 +706,7 @@
 				changeViewItemsBtns = viewParamPanel.find('.mViewer .mSortItem'),
 				isActiveTab = parentItem.hasClass(activeClass);
 			// end of vars
-			
+
 			if ( isActiveTab ) {
 				return false;
 			}
@@ -724,7 +724,7 @@
 			return false;
 		},
 
-	
+
 		/**
 		 * Сортировка элементов
 		 */
@@ -736,11 +736,11 @@
 				sortingItemsBtns = viewParamPanel.find('.mSorting .mSortItem'),
 				isActiveTab = parentItem.hasClass(activeClass);
 			// end of vars
-			
+
 			if ( isActiveTab ) {
 				return false;
 			}
-			 
+
 			sortingItemsBtns.removeClass(activeClass);
 			parentItem.addClass(activeClass);
 			catalog.history.gotoUrl(url);
@@ -765,7 +765,7 @@
 
 	// Pagination
 	viewParamPanel.on('click', '.jsPagination', jsPaginationLinkHandler);
-	
+
 	// Other HistoryAPI link
 	body.on('click', '.jsHistoryLink', jsHistoryLinkHandler);
 

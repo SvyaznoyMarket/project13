@@ -23,7 +23,7 @@
 
     &_more {
     	margin: 7px 0 0 28px;
-		
+
 		&_lk {
 			.inline-block();
 			text-decoration: underline;
@@ -57,4 +57,33 @@
 		background-color: #fff5e0;
 		border-color: #fb9c00;
 	}
+}
+
+.inline-block-base() {
+	display: inline-block;
+	vertical-align: baseline;
+}
+
+.btn-closer(@height: 13px, @width: 13px, @background: #f99b1c, @color: @white, @font-size: 12px, @line-height: 13px)  {
+    .rounded(50%);
+    height: @height;
+    width: @width;
+    background: @background;
+    color: @color;
+    font-size: @font-size;
+    line-height: @line-height;
+    text-align: center;
+    .inline-block-base()
+}
+
+.btn-closer1 {
+	.btn-closer();
+}
+
+.btn-closer2 {
+	.btn-closer(13px, 13px, #c7c7c7, @white, 12px, 12px);
+}
+
+.btn-closer3 {
+	.btn-closer(13px, 13px, #7d7d7d, @white, 12px, 12px);
 }
