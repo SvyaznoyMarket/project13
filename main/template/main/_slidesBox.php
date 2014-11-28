@@ -1,6 +1,7 @@
 <?
 /**
  * @var $page           \View\Main\IndexPage
+ * @var $blockname      string
  * @var $class          string|null
  * @var $productList    \Model\Product\BasicEntity[]
  * @var $product        \Model\Product\BasicEntity
@@ -28,7 +29,7 @@ $helper = new \Helper\TemplateHelper();
         <div class="slidesBox_btn slidesBox_btn-l jsMainSlidesButton jsMainSlidesLeftButton"></div>
 
         <div class="slidesBox_h_c">
-            <div class="slidesBox_t">ПОПУЛЯРНЫЕ ТОВАРЫ</div>
+            <div class="slidesBox_t"><?= @$blockname ?></div>
 
             <ul class="slidesBox_dott">
                 <? foreach ($blocks as $key => $block) : ?>
