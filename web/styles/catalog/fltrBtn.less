@@ -80,25 +80,31 @@
     // ссекция кнопки фильтрации
     &_i {
         .inline-block();
+        margin: 0 5px 10px 0;
     }
     // кнопка фильтра
     &_btn{
-        line-height: 40px;
-
+        height: 43px;
         position: relative;
 
         width: 120px;
-        height: 43px;
+        vertical-align: middle;
+        .table-cell();
         margin: 0 5px 10px 0;
         cursor: pointer;
 
         text-align: center;
+        cursor: pointer;
 
         border: 1px solid #e6e6e6;
         background: @white;
 
         .rounded(4px);
-        .inline-block();
+
+        &:last-child {
+            margin-right: 0;
+        }
+
         &_img{
             vertical-align: middle;
         }
@@ -108,8 +114,8 @@
             margin-right: 0;
 
             color: #424242;
-            cursor: pointer;
             border-style: dashed;
+            .inline-block();
             .fltrBtn_btn_tx{
                 border-bottom: 1px dotted #424242;
             }
@@ -132,8 +138,6 @@
             display: none;
         }
         &.act{
-            line-height: 38px;
-
             width: 118px;
             height: 41px;
 

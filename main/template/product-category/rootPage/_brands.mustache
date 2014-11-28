@@ -9,10 +9,12 @@
 
     <div class="fltrBtn_kit fltrBtn_kit-ovrflw">
         {{#mainBrands}}
-            <a href="{{url}}" class="fltrBtn_btn {{#active}}act{{/active}} js-productCategory-rootPage-brands-link"><!--img class="fltrBtn_icon_img" src="{{imageUrl}}" alt="{{name}}" /-->
-                <img class="fltrBtn_btn_img" src="/styles/catalog/img/brand.png" alt="{{name}}" />
-                <span class="fltrBtn_btn_clsr btn-closer1">&#215;</span>
-            </a>
+            <div class="fltrBtn_i">
+                <a href="{{url}}" class="fltrBtn_btn {{#active}}act{{/active}} js-productCategory-rootPage-brands-link"><!--img class="fltrBtn_icon_img" src="{{imageUrl}}" alt="{{name}}" /-->
+                    <img class="fltrBtn_btn_img" src="/styles/catalog/img/brand.png" alt="{{name}}" />
+                    <span class="fltrBtn_btn_clsr btn-closer1">&#215;</span>
+                </a>
+            </div>
         {{/mainBrands}}
 
         {{#otherBrandsCount}}
@@ -20,10 +22,12 @@
 
             <span class="js-productCategory-rootPage-brands-other" style="display: none;">
                 {{#otherBrands}}
-                    <a href="{{url}}" class="fltrBtn_btn {{#active}}fltrBtn_icon-act{{/active}} js-productCategory-rootPage-brands-link">
-                        <img class="fltrBtn_btn_img" src="{{imageUrl}}" alt="{{name}}" />
-                        <span class="fltrBtn_btn_clsr btn-closer1">&#215;</span>
-                    </a>
+                    <div class="fltrBtn_i">
+                        <a href="{{url}}" class="fltrBtn_btn {{#active}}fltrBtn_icon-act{{/active}} js-productCategory-rootPage-brands-link">
+                            <img class="fltrBtn_btn_img" src="{{imageUrl}}" alt="{{name}}" />
+                            <span class="fltrBtn_btn_clsr btn-closer1">&#215;</span>
+                        </a>
+                    </div>
                 {{/otherBrands}}
             </span>
         {{/otherBrandsCount}}
