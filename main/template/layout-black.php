@@ -40,7 +40,7 @@
             <div class="adfoxWrapper" id="adfox980"></div>
         <? endif ?>
 
-        <header class="header">
+        <div class="header">
             <?= $page->slotHeader() ?>
 
             <!-- Topbar -->
@@ -54,7 +54,7 @@
             </div>
             <!-- /Header -->
 
-        </header><!--/ Шапка-->
+        </div><!--/ Шапка-->
 
         <?= $page->slotContent() ?>
     </div><!--/ Контент -->

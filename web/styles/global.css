@@ -1087,6 +1087,10 @@ img[height="0"] {
 /*---END----СТИЛИ ШАБЛОННЫХ ФОРМ---------*/
 /*------СТИЛИ ШАПКИ------*/
 @media all {
+  #mainPage .header,
+  .enterprize .header {
+    background: #000000;
+  }
   .topbar {
     border-bottom: none;
   }
@@ -1303,15 +1307,15 @@ img[height="0"] {
   }
 }
 @media all {
-  .main .header {
+  .main-new .header {
     padding-bottom: 0;
   }
-  .main .header_b {
+  .main-new .header_b {
     border-right: 1px solid #e8e8e8;
     border-left: 1px solid #e8e8e8;
     border-bottom: 1px solid #e8e8e8;
   }
-  .main .header_t {
+  .main-new .header_t {
     border-width: 0 1px 0 1px;
     border-style: solid;
     border-color: #bbbbbb;
@@ -1321,6 +1325,12 @@ img[height="0"] {
     margin: 0 auto;
     padding: 0 0 20px;
     background: #ffffff;
+  }
+  .header-new {
+    background: #ffffff;
+  }
+  .header-new .navsite_i {
+    min-width: 60px;
   }
   .header_t {
     height: 50px;
@@ -1736,7 +1746,6 @@ img[height="0"] {
   }
   .navsite_i {
     position: relative;
-    min-width: 60px;
     text-align: center;
     vertical-align: top;
     display: table-cell;
@@ -1753,7 +1762,7 @@ img[height="0"] {
     left: -6px;
   }
   .navsite_i:last-child:hover .navsite2 {
-    left: -159px;
+    left: -141px;
   }
   .navsite_i:last-child:hover .navsite2_i-child .navsite2_lk:hover:before {
     z-index: 9;
