@@ -1,14 +1,17 @@
 .fltrBtn{
     width: 960px;
     margin: 0 0 0 -10px;
-    border-top: 5px solid #e6e6e6;
 
     &-mb10 {
-        margin: 0 0 10px;
+        margin-bottom: 10px;
     }
-    //
+
+    &-bt {
+        border-top: 5px solid #e6e6e6;
+    }
     // шапка фильтров в рутовых категориях
     &_hd{
+        padding: 10px 10px 0;
         &_r{
             margin: 5px 0 8px 30px;
 
@@ -55,8 +58,6 @@
 
         &-nptb{
             padding: 0 10px;
-
-            border-bottom: none;
         }
 
         &-ovrflw {
@@ -75,7 +76,7 @@
             float: right;
             width: 810px;
             overflow: auto;
-            padding-top: 7px;
+            padding-top: 10px;
             max-height: 200px;
         }
     }
@@ -87,6 +88,7 @@
     // кнопка фильтра
     &_btn{
         height: 43px;
+        line-height: 43px;
         position: relative;
 
         width: 120px;

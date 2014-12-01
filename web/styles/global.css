@@ -8250,10 +8250,15 @@ img[height="0"] {
   .fltrBtn {
     width: 960px;
     margin: 0 0 0 -10px;
-    border-top: 5px solid #e6e6e6;
   }
   .fltrBtn-mb10 {
-    margin: 0 0 10px;
+    margin-bottom: 10px;
+  }
+  .fltrBtn-bt {
+    border-top: 5px solid #e6e6e6;
+  }
+  .fltrBtn_hd {
+    padding: 10px 10px 0;
   }
   .fltrBtn_hd_r {
     margin: 5px 0 8px 30px;
@@ -8296,7 +8301,6 @@ img[height="0"] {
   }
   .fltrBtn_kit-nptb {
     padding: 0 10px;
-    border-bottom: none;
   }
   .fltrBtn_kit-ovrflw {
     max-height: 165px;
@@ -8312,7 +8316,7 @@ img[height="0"] {
     float: right;
     width: 810px;
     overflow: auto;
-    padding-top: 7px;
+    padding-top: 10px;
     max-height: 200px;
   }
   .fltrBtn_i {
@@ -8325,6 +8329,7 @@ img[height="0"] {
   }
   .fltrBtn_btn {
     height: 43px;
+    line-height: 43px;
     position: relative;
     width: 120px;
     vertical-align: middle;

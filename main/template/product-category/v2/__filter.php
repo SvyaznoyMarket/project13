@@ -102,10 +102,10 @@ return function(
     if (0 === $countInListFilters) return;
     ?>
 
-    <div class="fltrBtn">
+    <div class="fltrBtn fltrBtn-bt">
         <form id="productCatalog-filter-form" class="js-category-filter" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
             <? if ($brandFilter1): ?>
-                <div class="fltrBtn_kit clearfix">
+                <div class="fltrBtn_kit fltrBtn_kit-nptb clearfix">
                     <div class="fltrBtn_tggl fltrBtn_kit_l js-category-v2-filter-brandTitle">
                         <span class="fltrBtn_tggl_tx"><?= $brandFilter1->getName() ?></span>
                     </div>
