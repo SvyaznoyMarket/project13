@@ -22,7 +22,7 @@
     </li>
     <li class="shopInfo_i jsShopInfoPreview">
         <i class="shopInfo_l i-shopInfo i-shopInfo-wow"></i>
-        <a href="/special_offers" class="shopInfo_r">
+        <a href="/special_offers"  target="_blank" class="shopInfo_r">
             <span class="shopInfo_tl undrl">WOW Акции</span>
             <p class="shopInfo_tx">Лучшие предложения</p>
         </a>
@@ -49,7 +49,7 @@
         </li>
     </ul>
 
-    <a href="/delivery_types#delivr_buy" class="shopInfoTab_btn">Подробнее об условиях, стоимости, сроках и интервалах доставки</a>
+    <a href="/delivery_types#delivr_buy" target="_blank" class="shopInfoTab_btn">Подробнее об условиях, стоимости, сроках и интервалах доставки</a>
 </div>
 
 <div class="shopInfoTab shopInfoTab-v2 jsShopInfoBlock" data-id="2">
@@ -71,7 +71,7 @@
             <div class="shopInfoTab_tx">ПОЛУЧЕНИЕ ТОВАРА<br/>В ПОСТАМАТАХ PICKPOINT</div>
         </li>
     </ul>
-    <a href="/delivery_types#delivr_self" class="shopInfoTab_btn">Подробнее об условиях, стоимости, сроках и интервалах доставки</a>
+    <a href="/delivery_types#delivr_self" target="_blank" class="shopInfoTab_btn">Подробнее об условиях, стоимости, сроках и интервалах доставки</a>
 </div>
 
 <div class="shopInfoTab shopInfoTab-v3 jsShopInfoBlock" data-id="3">
@@ -98,5 +98,5 @@
         </li>
     </ul>
 
-    <a href="/how_pay" class="shopInfoTab_btn">Подробнее об этих и других способах оплат</a>
+    <a href="/how_pay" target="_blank" class="shopInfoTab_btn">Подробнее об этих и других способах оплат</a>
 </div>
