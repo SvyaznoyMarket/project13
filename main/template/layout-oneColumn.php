@@ -38,7 +38,7 @@
 
     <?= $page->slotAdFoxBground() ?>
 
-    <header class="header">
+    <div class="header">
 
         <?= $page->slotHeader() ?>
         <!-- Topbar -->
@@ -52,7 +52,7 @@
         <?= $page->slotNavigation() ?>
         <!-- /Header -->
 
-    </header>
+    </div>
 
     <div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
 

@@ -2323,7 +2323,6 @@
     font-family: Tahoma, sans-serif;
     position: relative;
     width: 948px;
-    margin-left: -10px;
     padding-left: 10px;
     background: #f4f4f4;
     border: 1px solid #ddd;
@@ -2380,7 +2379,6 @@
     display: block;
     height: 100px;
     width: 960px;
-    margin: 0 0 0 -10px;
   }
   #topLogo {
     background: url('/css/header/img/headerLogo.gif') no-repeat center center;

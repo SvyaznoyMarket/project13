@@ -38,7 +38,7 @@
     <?= $page->slotAdFoxBground() ?>
 
     <div class="wrapper">
-        <header class="header">
+        <div class="header">
             <?= $page->slotHeader() ?>
 
             <!-- Topbar -->
@@ -52,7 +52,7 @@
             </div>
             <!-- /Header -->
 
-        </header><!--/ Шапка-->
+        </div><!--/ Шапка-->
 
         <div class="content mContentOrder clearfix">
             <?= $page->slotContentHead() ?>
@@ -66,7 +66,7 @@
             <div class="column215">
                 <?= $page->slotSidebar() ?>
             </div>
-            
+
             <?= $page->slotSeoContent() ?>
         </div><!--/ Контент -->
     </div><!--/ Шаблон -->
@@ -78,7 +78,7 @@
     <?= $page->slotUserbar() ?>
     <?= $page->slotRegionSelection() ?>
     <?= $page->slotAuth() ?>
-    
+
     <div style="position:absolute; height: 0; z-index:-1; top: 0;">
         <?= $page->slotBodyJavascript() ?>
         <?= $page->slotInnerJavascript() ?>
