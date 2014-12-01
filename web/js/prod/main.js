@@ -5,7 +5,6 @@
 		// БАННЕРЫ
 		$bannerHolder = $('.jsMainBannerHolder'),
 		bannerHeight = 300,
-//		$banners = $('.jsMainBannerImage'), // баннеры
 		$bannerThumbs = $('.jsMainBannerThumb'), // превью баннеров
 		activeThumbClass = 'slidesbnnr_thmbs_img-act',
 
@@ -31,18 +30,17 @@
 			nextIndex = $(this).hasClass('jsMainSlidesLeftButton') ? index - 1 : index + 1
 			;
 
-		if (nextIndex == $block.find('.jsMainSlidesProductBlock').data('count') || nextIndex < 0) return;
-
-
+		if (nextIndex == $block.find('.jsMainSlidesProductBlock').data('count')) nextIndex = 0;
+		if (nextIndex == -1) nextIndex = $block.find('.jsMainSlidesProductBlock').data('count') - 1;
 
 		if ($(this).hasClass('jsMainSlidesLeftButton')) {
-			$block.find('.jsMainSlidesProductBlock').css('margin-left', '+='+step);
+			$block.find('.jsMainSlidesProductBlock').css('margin-left', - nextIndex * step);
 			$dots.removeClass(slidesDotActiveClass);
-			$dots.eq(index - 1).addClass(slidesDotActiveClass)
+			$dots.eq(nextIndex).addClass(slidesDotActiveClass)
 		} else {
-			$block.find('.jsMainSlidesProductBlock').css('margin-left', '-='+step);
+			$block.find('.jsMainSlidesProductBlock').css('margin-left', - nextIndex * step);
 			$dots.removeClass(slidesDotActiveClass);
-			$dots.eq(index + 1).addClass(slidesDotActiveClass)
+			$dots.eq(nextIndex).addClass(slidesDotActiveClass)
 		}
 
 	});
@@ -131,9 +129,12 @@
 	$body.on('click', '.jsSlidesWideLeft, .jsSlidesWideRight', function(){
 		var index = $('.jsSlidesWide .slidesBox_dott_i').index($('.jsSlidesWide .'+slidesDotActiveClass)),
 			nextIndex = $(this).hasClass('jsSlidesWideLeft') ? index - 1: index + 1,
-			margin = - nextIndex * slidesWideWidth;
+			margin;
 
-		if (nextIndex == $jsSlidesWideItems.length || nextIndex < 0) return;
+		if (nextIndex == $jsSlidesWideItems.length) nextIndex = 0;
+		if (nextIndex == -1 ) nextIndex = $jsSlidesWideItems.length - 1;
+
+		margin = - nextIndex * slidesWideWidth;
 
 		$jsSlidesWideHolder.animate({
 			'margin-left': margin
@@ -158,7 +159,6 @@
 			complete: function(){
 				$('.jsSlidesWide .slidesBox_dott_i').removeClass(slidesDotActiveClass);
 				$this.addClass(slidesDotActiveClass);
-				console.log($jsSlidesWideName);
 				$jsSlidesWideName.text($this.data('name'));
 				$body.trigger('mainSlidesWideView', [index])
 			}
