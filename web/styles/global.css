@@ -1332,9 +1332,6 @@ img[height="0"] {
   .header-new {
     background: #ffffff;
   }
-  .header-new .navsite_i {
-    min-width: 60px;
-  }
   .header_t {
     height: 50px;
     padding: 0 0 0 10px;
@@ -1359,6 +1356,9 @@ img[height="0"] {
     padding: 5px 5px 0;
     background: #ffffff;
     border-bottom: 2px solid #e8e8e8;
+  }
+  .header_b .navsite_i {
+    min-width: 60px;
   }
   .hdcontacts {
     margin: 0 10px 0 0;
