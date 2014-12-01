@@ -3671,7 +3671,7 @@ img[height="0"] {
   .topbarfix_dd {
     position: absolute;
     display: none;
-    z-index: 15;
+    z-index: 25;
     top: 50px;
     right: -1px;
     background: #ffffff;
@@ -3724,8 +3724,8 @@ img[height="0"] {
   .topbarfix .hintDd {
     position: absolute;
     top: 50px;
-    width: 730px;
-    left: -838px;
+    width: 729px;
+    left: -839px;
     background: #fff;
     height: 0;
     /* Переход */
@@ -3775,7 +3775,6 @@ img[height="0"] {
   .quickOrder {
     border-top: 1px solid #ccc;
     padding: 10px;
-    width: 210px;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
@@ -4103,7 +4102,7 @@ img[height="0"] {
   }
   .topbarfix_cart {
     position: relative;
-    z-index: 15;
+    z-index: 25;
     background: #ffffff;
   }
   .topbarfix_cart.mEmpty {
