@@ -66,8 +66,7 @@ class Repository {
                         $products[] = $productsById[$id];
                     }
 
-                    if (1 == count($items)) {
-                        $product = reset($products);
+                    if (($product = reset($products)) && (1 == count($items))) {
                         $link = $router->generate('product', array('productPath' => $product->getPath()));;
                     } else {
                         $barcodes = array_map(function ($product) { /** @var $product \Model\Product\Entity */ return $product->getBarcode(); }, $products);
