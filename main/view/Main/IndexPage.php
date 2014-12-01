@@ -87,19 +87,22 @@ class IndexPage extends \View\DefaultLayout {
     public function slotRecommendations() {
 
         $return = '';
+        $sender = ['name' => 'retailrocket'];
 
         if (!empty(@$this->getParam('rrProducts')['popular'])) {
             $return .= $this->render('main/_slidesBox', [
                 'blockname' => 'ПОПУЛЯРНЫЕ ТОВАРЫ',
                 'class' => 'slidesBox slidesBox-items fl-l',
                 'productList' => $this->getParam('productList'),
-                'rrProducts' => (array)@$this->getParam('rrProducts')['popular']
+                'rrProducts' => (array)@$this->getParam('rrProducts')['popular'],
+                'sender' => $sender + ['position' => 'MainPopular', 'method' => 'ItemsToMain']
             ]);
             $return .= $this->render('main/_slidesBox', [
                 'blockname' => 'МЫ РЕКОМЕНДУЕМ',
                 'class' => 'slidesBox slidesBox-bg2 slidesBox-items fl-r',
                 'productList' => $this->getParam('productList'),
-                'rrProducts' => (array)@$this->getParam('rrProducts')['personal']
+                'rrProducts' => (array)@$this->getParam('rrProducts')['personal'],
+                'sender' => $sender + ['position' => 'MainRecommended', 'method' => 'Personal']
             ]);
         }
 

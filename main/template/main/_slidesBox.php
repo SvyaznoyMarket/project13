@@ -24,7 +24,7 @@ $helper = new \Helper\TemplateHelper();
 
 ?>
 
-<div class="<?= $class ?> jsMainSlidesRetailRocket">
+<div class="<?= $class ?> jsMainSlidesRetailRocket" data-block="<?= @$blockname == 'ПОПУЛЯРНЫЕ ТОВАРЫ' ? 'MainPopular' : 'MainRecommended' ?>">
     <div class="slidesBox_h">
         <div class="slidesBox_btn slidesBox_btn-l jsMainSlidesButton jsMainSlidesLeftButton"></div>
 
@@ -54,8 +54,8 @@ $helper = new \Helper\TemplateHelper();
                     <?= $helper->render('cart/__button-product', [
                         'product'        => $product,
 //                        'onClick'        => $addToCartJS ? $addToCartJS : null,
-                        'isRetailRocket' => true, // TODO: удалить
-//                        'sender'         => $sender,
+//                        'isRetailRocket' => true, // TODO: удалить
+                        'sender'         => $sender,
 //                        'noUpdate'       => true,
                     ]) // Кнопка купить ?>
 <!--                    <a class="item_btn btn5" href="">Купить</a>-->

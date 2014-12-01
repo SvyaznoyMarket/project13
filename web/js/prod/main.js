@@ -171,6 +171,7 @@
 	}
 
 	// АНАЛИТИКА
+	// переход по нижним категориям
 	$body.on('click', '.jsMainCategoryTracking a', function(e){
 		var categoryName = $(this).find('span').text(),
 			link = $(this).attr('href');
@@ -185,12 +186,34 @@
 		})
 	});
 
+	// просмотр коллекций
 	$body.on('mainSlidesWideView', function(e, index) {
 		$body.trigger('trackGoogleEvent',['slider view', 'main collections', index + 1 + ''])
 	});
 
+	// просмотр главного баннера
 	$body.on('mainBannerView', function(e, index) {
 		$body.trigger('trackGoogleEvent',['slider view', 'main banner', index + 1 + ''])
+	});
+
+	// пролистывание рекомендаций
+	$body.on('click', '.jsMainSlidesRetailRocket .jsMainSlidesButton, .jsMainSlidesRetailRocket .slidesBox_dott', function(){
+		var block = $(this).closest('.jsMainSlidesRetailRocket').data('block');
+		$body.trigger('trackGoogleEvent',['RR_взаимодействие', 'Пролистывание', block])
+	});
+
+	$body.on('click', '.jsMainSlidesRetailRocket a:not(.jsBuyButton)', function(e){
+		var block = $(this).closest('.jsMainSlidesRetailRocket').data('block'),
+			link = $(this).attr('href');
+		e.preventDefault();
+		$body.trigger('trackGoogleEvent', {
+			category: 'RR_взаимодействие',
+			action: 'Перешел на карточку товара',
+			label: block,
+			hitCallback: function(){
+				window.location.href = link
+			}
+		})
 	});
 
 }(jQuery));
