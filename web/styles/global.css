@@ -1589,6 +1589,9 @@ img[height="0"] {
     background-image: url('/styles/mainpage/img/i-header.png');
     background-repeat: no-repeat;
     background-position: -186px 4px;
+    -webkit-transition: all 0.2s ease-out;
+    -moz-transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
     content: "";
     position: absolute;
   }
@@ -1602,6 +1605,9 @@ img[height="0"] {
     opacity: 0.5;
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
     filter: alpha(opacity=50);
+    -webkit-transition: all 0.2s ease-out;
+    -moz-transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
   }
   .hdsearch_itw {
     overflow: hidden;
