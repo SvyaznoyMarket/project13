@@ -7,7 +7,7 @@ return function(
 ) { ?>
 
     <!-- Сортировка товаров на странице -->
-    <div class="bSortingLine clearfix js-category-sortingAndPagination">
+    <div class="sorting clearfix js-category-sortingAndPagination">
         <?= $helper->render('product-category/v2/__sorting', ['productSorting' => $productSorting]) // сортировка ?>
         <?= $helper->render('product-category/v2/__pagination', ['pager' => $pager]) // листалка ?>
     </div>

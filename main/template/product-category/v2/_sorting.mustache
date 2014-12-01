@@ -1,10 +1,10 @@
 <!-- Сортировка товаров по параметрам -->
-<ul class="bSortingList mSorting js-category-sorting">
-    <li class="bSortingList__eItem mTitle">Сортировать</li>
+<ul class="sorting_lst fl-l js-category-sorting">
+    <li class="sorting_i sorting_i-tl">Сортировать</li>
 
     {{#links}}
-        <li class="bSortingList__eItem mSortItem{{#active}} mActive js-category-sorting-activeItem{{/active}} js-category-sorting-item">
-            <a class="bSortingList__eLink jsSorting" data-sort="{{datasort}}" href="{{url}}">{{&title}}</a>
+        <li class="sorting_i sorting_i-btn{{#active}} mActive js-category-sorting-activeItem{{/active}} js-category-sorting-item">
+            <a class="sorting_lk jsSorting" data-sort="{{datasort}}" href="{{url}}">{{&title}}</a>
         </li>
     {{/links}}
 </ul>

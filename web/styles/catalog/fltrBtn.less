@@ -200,6 +200,23 @@
 // блок филььтра с параметрами
 .fltrBtnBox{
     position: relative;
+
+    &.opn {
+        .fltrBtnBox_tggl {
+            z-index: 16;
+
+            border-color: #c7c7c7;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAQAAAClB0z9AAAAP0lEQVQI12NgAIL/jE6T/jMywIBTgtN/pwQox4/X6TmQ+9yPF8x17gJygNC5C8RRc/4J5f50VmNw2grhgOFWABRpHkDXZMHuAAAAAElFTkSuQmCC');
+            .fltrBtnBox_tggl_tx{
+                border: none;
+            }
+        }
+
+        .fltrBtnBox_dd {
+            display: block;
+        }
+    }
+
     &_tggl{
         font-size: 16px;
 
@@ -218,15 +235,6 @@
         .rounded(3px 3px 0 0);
         &_tx{
             border-bottom: 1px dotted #515151;
-        }
-        &.opn{
-            z-index: 16;
-
-            border-color: #c7c7c7;
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAQAAAClB0z9AAAAP0lEQVQI12NgAIL/jE6T/jMywIBTgtN/pwQox4/X6TmQ+9yPF8x17gJygNC5C8RRc/4J5f50VmNw2grhgOFWABRpHkDXZMHuAAAAAElFTkSuQmCC');
-            .fltrBtnBox_tggl_tx{
-                border: none;
-            }
         }
         &.act{
             padding: 2px 22px 4px 10px;
@@ -261,6 +269,7 @@
 
         border: 1px solid #c7c7c7;
         background: @white;
+        display: none;
 
         .rounded(0 0 3px 3px);
         .drop-shadow(0, 3px, 5px, .3);
