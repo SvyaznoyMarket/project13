@@ -66,8 +66,9 @@
 
 	// Маленькие блоки с информацией под баннерами
 	$body.on('click', '.jsShopInfoPreview', function(){
-		$('.jsShopInfoBlock').hide();
-		$('.jsShopInfoBlock[data-id='+ $(this).data('id')+']').toggle();
+		var $block = $('.jsShopInfoBlock[data-id='+ $(this).data('id')+']');
+		$('.jsShopInfoBlock').not($block).hide();
+		$block.toggle();
 	});
 
 	// Листалка баннеров
