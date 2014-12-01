@@ -7,7 +7,7 @@
 	&_dd {
 		position: absolute;
 		display: none;
-		z-index: 25;
+		z-index: 101;
 		top: 50px;
 		right: -1px;
 		background: #ffffff;
@@ -137,7 +137,7 @@
 }
 
 .cartLst {
-	max-height: 213px;
+	max-height: 107px;
 	overflow: auto;
 
 	&_i {
@@ -152,13 +152,9 @@
 	}
 
 	&_lk {
-		display: inline-block;
+		.inline-block();
 		width: 30px;
 		margin: 0 5px 0 0;
-
-		vertical-align: top;
-		*display: inline;
-		zoom: 1;
 	}
 
 	&_img {
@@ -167,24 +163,16 @@
 	}
 
 	&_n {
-		display: inline-block;
+		.inline-block();
 		width: 110px;
 		line-height: 1.2;
 		height: 53px;
 		overflow: hidden;
-
-		vertical-align: top;
-		*display: inline;
-		zoom: 1;
 	}
 
 	&_inf {
-		display: inline-block;
+		.inline-block();
 		width: 50px;
-
-		vertical-align: middle;
-		*display: inline;
-		zoom: 1;
 
 		line-height: 1.2;
 	}

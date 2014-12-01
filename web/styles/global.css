@@ -1105,6 +1105,9 @@ img[height="0"] {
     text-align: center;
     display: block;
   }
+  .topbar_c .navsite_i {
+    min-width: 60px;
+  }
   .topbar_loc {
     color: #000000;
     display: inline-block;
@@ -3677,7 +3680,7 @@ img[height="0"] {
   .topbarfix_dd {
     position: absolute;
     display: none;
-    z-index: 25;
+    z-index: 101;
     top: 50px;
     right: -1px;
     background: #ffffff;
@@ -3789,7 +3792,7 @@ img[height="0"] {
     width: 100%;
   }
   .cartLst {
-    max-height: 213px;
+    max-height: 107px;
     overflow: auto;
   }
   .cartLst_i {
@@ -3803,11 +3806,12 @@ img[height="0"] {
   }
   .cartLst_lk {
     display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
     width: 30px;
     margin: 0 5px 0 0;
-    vertical-align: top;
-    *display: inline;
-    zoom: 1;
   }
   .cartLst_img {
     max-height: 40px;
@@ -3815,20 +3819,22 @@ img[height="0"] {
   }
   .cartLst_n {
     display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
     width: 110px;
     line-height: 1.2;
     height: 53px;
     overflow: hidden;
-    vertical-align: top;
-    *display: inline;
-    zoom: 1;
   }
   .cartLst_inf {
     display: inline-block;
-    width: 50px;
-    vertical-align: middle;
+    vertical-align: top;
+    /* IE6-8 */
     *display: inline;
-    zoom: 1;
+    *zoom: 1;
+    width: 50px;
     line-height: 1.2;
   }
   .cartLst .del {
@@ -4108,7 +4114,7 @@ img[height="0"] {
   }
   .topbarfix_cart {
     position: relative;
-    z-index: 25;
+    z-index: 101;
     background: #ffffff;
   }
   .topbarfix_cart.mEmpty {
