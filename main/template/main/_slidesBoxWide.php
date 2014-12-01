@@ -3,12 +3,12 @@
         <div class="slidesBox_btn slidesBox_btn-l jsSlidesWideLeft"></div>
 
         <div class="slidesBox_h_c">
-            <div class="slidesBox_t jsSlidesWideName">Новая коллекция Tchibo</div>
+            <div class="slidesBox_t jsSlidesWideName">Полезные подарки</div>
 
             <ul class="slidesBox_dott">
-                <li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Новая коллекция Tchibo"></li>
-                <li class="slidesBox_dott_i" data-name="Новая ювелирная коллекция"></li>
-                <li class="slidesBox_dott_i" data-name="Новая ювелирная коллекция"></li>
+                <li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Полезные подарки"></li>
+                <li class="slidesBox_dott_i" data-name="Guess"></li>
+                <li class="slidesBox_dott_i" data-name="Magic Moments"></li>
                 <li class="slidesBox_dott_i" data-name="Новая ювелирная коллекция"></li>
             </ul>
         </div>
