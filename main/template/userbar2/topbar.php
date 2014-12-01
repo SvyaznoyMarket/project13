@@ -25,26 +25,6 @@
 
     <menu class="header_i userbtn js-topbarfix">
 
-        <!--<li class="userbtn_i userbtn_i-lk userbtn_i-act userbtn_i-ep">
-            <a class="userbtn_lk" href=""><span class="undrl">Войти</span></a>
-        </li>
-
-        <li class="userbtn_i userbtn_i-act">
-            <span class="userbtn_lk">
-                <i class="userbtn_icon i-header i-header-compare"></i>
-                <span class="userbtn_tx">Сравнение</span>
-                <span class="userbtn_count">1</span>
-            </span>
-        </li>
-
-        <li class="userbtn_i userbtn_i-act userbtn_i-cart">
-            <a class="userbtn_lk userbtn_lk-cart" href="">
-                <i class="userbtn_icon i-header i-header-cart"></i>
-                <span class="userbtn_tx">Корзина</span>
-                <span class="userbtn_count">2</span>
-            </a>
-        </li>-->
-
         <?= $page->render('userbar/_userinfo') ?>
         <?= $page->render('userbar/_usercompare') ?>
         <?= $page->render('userbar/_usercart') ?>
