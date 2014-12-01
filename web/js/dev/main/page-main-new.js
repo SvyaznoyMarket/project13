@@ -16,7 +16,8 @@
 		slidesDotActiveClass = 'slidesBox_dott_i-act',
 		slidesWideWidth = 958,
 		$jsSlidesWideHolder = $('.jsSlidesWideHolder').first(),
-		$jsSlidesWideItems = $('.jsSlidesWideItem');
+		$jsSlidesWideItems = $('.jsSlidesWideItem'),
+		$jsSlidesWideName = $('.jsSlidesWideName');
 
 	// Ничего не выполняем, если у нас не новая главная
 	if (!$body.hasClass('jsMainNew')) return;
@@ -139,6 +140,7 @@
 		},{
 			complete: function(){
 				$('.jsSlidesWide .slidesBox_dott_i').removeClass(slidesDotActiveClass).eq(nextIndex).addClass(slidesDotActiveClass);
+				$jsSlidesWideName.text($('.jsSlidesWide .' + slidesDotActiveClass).data('name'));
 				$body.trigger('mainSlidesWideView', [nextIndex])
 			}
 		});
@@ -156,6 +158,8 @@
 			complete: function(){
 				$('.jsSlidesWide .slidesBox_dott_i').removeClass(slidesDotActiveClass);
 				$this.addClass(slidesDotActiveClass);
+				console.log($jsSlidesWideName);
+				$jsSlidesWideName.text($this.data('name'));
 				$body.trigger('mainSlidesWideView', [index])
 			}
 		});
