@@ -3792,7 +3792,7 @@ img[height="0"] {
     width: 100%;
   }
   .cartLst {
-    max-height: 107px;
+    max-height: 207px;
     overflow: auto;
   }
   .cartLst_i {
