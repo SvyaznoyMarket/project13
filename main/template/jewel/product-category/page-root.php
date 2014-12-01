@@ -29,7 +29,7 @@ $helper = new \Helper\TemplateHelper();
     <div class="clear"></div>
 
     <div style="margin: 0 auto 30px; width: 940px;">
-        <? if (\App::config()->product['pullRecommendation']): ?>
+        <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
             <?= $helper->render('product/__slider', [
                 'type'      => 'viewed',
                 'title'     => 'Вы смотрели',

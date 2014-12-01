@@ -55,7 +55,7 @@ $isNewRecommendation =
 
 <div class="clear"></div>
 
-<? if ($isNewRecommendation): ?>
+<? if ($isNewRecommendation && \App::config()->product['pullRecommendation']): ?>
     <div class="basketLine">
 
         <?= $helper->render('product/__slider', [

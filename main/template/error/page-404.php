@@ -47,7 +47,7 @@ $helper = new \Helper\TemplateHelper();
 
         <div class="errPage_cnt_b">
             <div class="slidew slidew-br1">
-            <? if (\App::config()->product['showRelated']): ?>
+            <? if (\App::config()->product['pullRecommendation']): ?>
                 <?= $helper->render('product/__slider', [
                     'type'           => 'main',
                     'title'          => 'Мы рекомендуем',

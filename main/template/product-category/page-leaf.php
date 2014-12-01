@@ -90,7 +90,7 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
         <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
     </div>
 
-    <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
+    <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
         <?= $helper->render('product/__slider', [
             'type'      => 'viewed',
             'title'     => 'Вы смотрели',
