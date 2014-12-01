@@ -15,7 +15,7 @@ $menu = $page->getGlobalParam('menu');
 
             <label class="hdsearch_lbl" for="">Все товары для жизни по выгодным ценам!</label>
 
-            <div class="hdsearch_itb">
+            <div class="hdsearch_itb" data-bind="css: { 'hdsearch_itb-focus': searchFocus() }">
 
                 <? if ($menu) : ?>
 
