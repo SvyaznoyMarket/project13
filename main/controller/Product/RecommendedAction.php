@@ -71,7 +71,7 @@ class RecommendedAction {
                     } else if ('viewed' == $sender['type']) {
                         $sender['method'] = '';
 
-                        //$ids = $request->cookies->get('rrviewed');
+                        //$data = $request->cookies->get('rrviewed');
                         $data = $request->get('rrviewed');
                         if (is_string($data)) {
                             $data = explode(',', $data);
@@ -122,7 +122,7 @@ class RecommendedAction {
 
             // ответ
             $responseData = [
-                'success'   => false,
+                'success'   => true,
                 'recommend' => [],
             ];
 
@@ -232,7 +232,7 @@ class RecommendedAction {
     public function getSendersIndexedByTypeByHttpRequest(\Http\Request $request) {
         // поставщик из http-запроса
         $sendersByType = [];
-        foreach ((array)$request->query->get('senders') as $sender) {
+        foreach ((array)$request->get('senders') as $sender) {
             if (!is_array($sender)) {
                 continue;
             }
