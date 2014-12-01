@@ -56,7 +56,7 @@ foreach ($gridCells as $cell) {
 <div class="clear"></div>
 
 <div style="margin: 0 0 30px;">
-    <? if (\App::config()->product['pullRecommendation']): ?>
+    <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
         <?= $helper->render('product/__slider', [
             'type'      => 'viewed',
             'title'     => 'Вы смотрели',

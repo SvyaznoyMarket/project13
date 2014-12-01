@@ -324,6 +324,7 @@ $c->product['itemsPerPageJewel']      = 24;
 $c->product['itemsPerRowJewel']       = 4;
 $c->product['pullRecommendation']     = true;
 $c->product['pushRecommendation']     = true;
+$c->product['viewedEnabled']          = false;
 
 $c->productPhoto['url'] = [
     0 => '/1/1/60/',
