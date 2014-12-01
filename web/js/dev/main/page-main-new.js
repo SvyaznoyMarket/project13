@@ -41,7 +41,6 @@
 		} else {
 			$block.find('.jsMainSlidesProductBlock').css('margin-left', '-='+step);
 			$dots.removeClass(slidesDotActiveClass);
-			console.log(index, $dots.eq(index + 1));
 			$dots.eq(index + 1).addClass(slidesDotActiveClass)
 		}
 
@@ -87,6 +86,7 @@
 			complete: function(){
 				$bannerThumbs.find('img').removeClass(activeThumbClass);
 				$this.find('img').addClass(activeThumbClass);
+				$body.trigger('mainBannerView', index)
 			}
 		})
 	});
@@ -112,6 +112,7 @@
 				$bannerThumbs.find('img').removeClass(activeThumbClass);
 				$bannerThumbs.find('img').eq(nextIndex).addClass(activeThumbClass);
 				autoSlide($bannerThumbs.find('img').eq(nextIndex).data('timeout'));
+				$body.trigger('mainBannerView', nextIndex)
 			}
 		})
 	}
@@ -138,6 +139,7 @@
 		},{
 			complete: function(){
 				$('.jsSlidesWide .slidesBox_dott_i').removeClass(slidesDotActiveClass).eq(nextIndex).addClass(slidesDotActiveClass);
+				$body.trigger('mainSlidesWideView', [nextIndex])
 			}
 		});
 	});
@@ -154,6 +156,7 @@
 			complete: function(){
 				$('.jsSlidesWide .slidesBox_dott_i').removeClass(slidesDotActiveClass);
 				$this.addClass(slidesDotActiveClass);
+				$body.trigger('mainSlidesWideView', [index])
 			}
 		});
 	});
@@ -167,5 +170,27 @@
 		})
 	}
 
+	// АНАЛИТИКА
+	$body.on('click', '.jsMainCategoryTracking a', function(e){
+		var categoryName = $(this).find('span').text(),
+			link = $(this).attr('href');
+		e.preventDefault();
+		$body.trigger('trackGoogleEvent', {
+			category: 'main category',
+			action: 'bottom menu',
+			label: categoryName,
+			hitCallback: function(){
+				window.location.href = link
+			}
+		})
+	});
+
+	$body.on('mainSlidesWideView', function(e, index) {
+		$body.trigger('trackGoogleEvent',['slider view', 'main collections', index + 1 + ''])
+	});
+
+	$body.on('mainBannerView', function(e, index) {
+		$body.trigger('trackGoogleEvent',['slider view', 'main banner', index + 1 + ''])
+	});
 
 }(jQuery));
