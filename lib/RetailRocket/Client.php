@@ -10,7 +10,7 @@ class Client {
         $this->config = array_merge([
             'apiUrl'         =>    \App::config()->partners['RetailRocket']['apiUrl'],
             'account'        =>    \App::config()->partners['RetailRocket']['account'],
-            'timeout'        =>    \App::config()->partners['RetailRocket']['timeout'], //в секундах
+            'timeout'        =>    \App::config()->partners['RetailRocket']['timeout'], // в секундах
         ], $config);
 
         $this->logger = $logger;
@@ -24,14 +24,15 @@ class Client {
     }
 
     /**
-     * @param string     $action
+     * @param string $action
      * @param string|null $itemId
-     * @param array      $params
-     * @param array      $data
+     * @param array $params
+     * @param array $data
      * @param float|null $timeout
+     * @param string $version
      * @return mixed
      */
-    public function query($action, $itemId = null, array $params = [], array $data = [], $timeout = null) {
+    public function query($action, $itemId = null, array $params = [], array $data = [], $timeout = null, $version = '') {
         \Debug\Timer::start('RetailRocket');
 
         if (null === $timeout) {
@@ -39,7 +40,7 @@ class Client {
         }
 
         $this->curl->addQuery(
-            $this->getUrl($action, $itemId, $params),
+            $this->getUrl($action, $itemId, $params, $version),
             $data,
             function($data) use (&$result) {
                 $result = $data;
@@ -66,9 +67,10 @@ class Client {
      * @param callback $successCallback
      * @param callback|null $failCallback
      * @param float|null $timeout
+     * @param string $version
      * @return bool
      */
-    public function addQuery($action, $itemId = null, array $params = [], array $data = [], $successCallback, $failCallback = null, $timeout = null) {
+    public function addQuery($action, $itemId = null, array $params = [], array $data = [], $successCallback, $failCallback = null, $timeout = null, $version = '') {
         \Debug\Timer::start('RetailRocket');
 
         if (null === $timeout) {
@@ -76,14 +78,15 @@ class Client {
         }
 
         $this->curl->addQuery(
-            $this->getUrl($action, $itemId, $params),
+            $this->getUrl($action, $itemId, $params, $version),
             $data,
             $successCallback,
             function($e) {
                 \App::exception()->remove($e);
                 \App::logger()->warn(['error' => $e], ['RetailRocket']);
             },
-            $timeout
+            $timeout,
+            $version
         );
 
         \Debug\Timer::stop('RetailRocket');
@@ -106,11 +109,13 @@ class Client {
      * @param string $action
      * @param string|null $itemId
      * @param array $params
+     * @param string $version
      * @return resource
      */
-    private function getUrl($action, $itemId = null, array $params = []) {
+    private function getUrl($action, $itemId = null, array $params = [], $version = '') {
         return
             $this->config['apiUrl']
+            . ($version ? ($version . '/') : '')
             . $action
             . '/' . $this->config['account']
             . ($itemId ? ('/' . $itemId) : '')
