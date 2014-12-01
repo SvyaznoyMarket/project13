@@ -146,7 +146,8 @@ window.Modernizr = (function( window, document, undefined ) {
         var target = this;
 
         if (typeof target != "function") {
-            throw new TypeError();
+			return;
+//            throw new TypeError(); // Ошибка в IE8, return как quickfix
         }
 
         var args = slice.call(arguments, 1),

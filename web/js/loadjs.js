@@ -189,7 +189,7 @@
 	/**
 	 * Определение debug режима
 	 */
-	if ( document.body.getAttribute('data-debug') === 'true') {
+	if ( document.body.getAttribute('data-debug') === 'true' && typeof console == 'function' && typeof console.warn == 'function') {
 		console.warn('Включен debug режим');
 
 		debug = true;
