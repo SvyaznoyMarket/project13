@@ -1284,18 +1284,18 @@ img[height="0"] {
     background: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, #000000 48%, #000000 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#000000', GradientType=1);
   }
-  .enterprize .topbarfix_cmpr {
+  .enterprize .topbar_r .topbarfix_cmpr {
     background: #000000;
     border: none;
   }
-  .enterprize .topbarfix_cmpr-full .topbarfix_cmpr_tl {
+  .enterprize .topbar_r .topbarfix_cmpr-full .topbarfix_cmpr_tl {
     background-position: 0 -323px;
   }
-  .enterprize .topbarfix_cmpr_tl {
+  .enterprize .topbar_r .topbarfix_cmpr_tl {
     color: #ffffff;
     background-position: 0 -285px;
   }
-  .enterprize .topbarfix_log:after {
+  .enterprize .topbar_r .topbarfix_log:after {
     background: rgba(0, 0, 0, 0);
     background: -moz-linear-gradient(left, rgba(0, 0, 0, 0) 17%, rgba(0, 0, 0, 0.58) 55%, #000000 82%, #000000 93%, #000000 100%);
     background: -webkit-gradient(left top, right top, color-stop(17%, rgba(0, 0, 0, 0)), color-stop(55%, rgba(0, 0, 0, 0.58)), color-stop(82%, #000000), color-stop(93%, #000000), color-stop(100%, #000000));
@@ -1639,7 +1639,7 @@ img[height="0"] {
   }
   .searchcat_dd {
     position: absolute;
-    z-index: 12;
+    z-index: 25;
     top: 28px;
     left: -35px;
     width: 198px;
@@ -4939,24 +4939,24 @@ img[height="0"] {
   .enterprize .topbar a {
     color: #ffffff;
   }
-  .enterprize .topbarfix-stc {
+  .enterprize .topbar_r .topbarfix-stc {
     border: none;
   }
-  .enterprize .topbarfix_cart,
-  .enterprize .topbarfix_log,
-  .enterprize .topbarfix_cmpr {
+  .enterprize .topbar_r .topbarfix_cart,
+  .enterprize .topbar_r .topbarfix_log,
+  .enterprize .topbar_r .topbarfix_cmpr {
     background: #000000;
     border: none;
   }
-  .enterprize .topbarfix_dd {
+  .enterprize .topbar_r .topbarfix_dd {
     background: #000000;
     border-color: #404040;
     color: #ffffff;
   }
-  .enterprize .topbarfix_logOutLink {
+  .enterprize .topbar_r .topbarfix_logOutLink {
     color: #ffffff;
   }
-  .enterprize .topbarfix_logOutLink {
+  .enterprize .topbar_r .topbarfix_logOutLink {
     border: 0 none;
     background: #000000;
     box-shadow: 0 0 10px 2px #444443;
