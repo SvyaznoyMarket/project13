@@ -31,7 +31,7 @@ class RecommendedAction {
 
                     $iProduct = new \Model\Product\Entity($item);
                     // если товар недоступен для покупки - пропустить
-                    if (!$iProduct->isAvailable() || $iProduct->isInShopShowroomOnly()) continue;
+                    if (!$iProduct->isAvailable() || $iProduct->isInShopShowroomOnly() || $iProduct->isInShopOnly()) continue;
                     $products[] = $iProduct;
                 }
             });
