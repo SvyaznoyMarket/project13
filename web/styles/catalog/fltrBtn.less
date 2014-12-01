@@ -52,12 +52,15 @@
     }
     // секция фильтра
     &_kit{
-        padding: 10px;
-
+        padding: 0 10px;
         border-bottom: 1px solid #e6e6e6;
 
-        &-nptb{
-            padding: 0 10px;
+        &-box{
+            padding: 10px;
+        }
+
+        &-nborder {
+            border-bottom: none;
         }
 
         &-ovrflw {
@@ -68,13 +71,13 @@
 
         &_l {
             float: left;
-            width: 100px;
+            width: 90px;
             margin: 15px 0 0 10px;
         }
 
         &_r {
             float: right;
-            width: 810px;
+            width: 820px;
             overflow: auto;
             padding-top: 10px;
             max-height: 200px;
@@ -88,7 +91,6 @@
     // кнопка фильтра
     &_btn{
         height: 43px;
-        line-height: 43px;
         position: relative;
 
         width: 120px;
@@ -116,6 +118,7 @@
         &-btn{
             font-size: 14px;
             margin-right: 0;
+            line-height: 43px;
 
             color: #424242;
             border-style: dashed;
@@ -128,10 +131,10 @@
             }
         }
         &-mini {
-            line-height: 33px;
+            line-height: 31px;
 
             width: 80px;
-            height: 35px;
+            height: 33px;
         }
         // отметить фильтр по бренду
         &_clsr{
@@ -204,6 +207,7 @@
 // блок филььтра с параметрами
 .fltrBtnBox{
     position: relative;
+    .inline-block();
 
     &.opn {
         .fltrBtnBox_tggl {
@@ -268,7 +272,7 @@
         z-index: 15;
         top: 27px;
 
-        min-width: 150px;
+        min-width: 190px;
         padding: 10px 10px 0;
 
         border: 1px solid #c7c7c7;

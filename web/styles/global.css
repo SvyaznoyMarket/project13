@@ -1692,11 +1692,11 @@ img[height="0"] {
   }
   .customInput-btn + .fltrBtn_btn {
     width: 80px;
-    height: 35px;
+    height: 33px;
   }
   .customInput-btn:checked + .fltrBtn_btn {
     width: 78px;
-    height: 33px;
+    height: 31px;
     border-width: 2px;
     border-color: #f99b1c;
   }
@@ -8162,7 +8162,7 @@ img[height="0"] {
     *zoom: 1;
     width: 65px;
     height: 24px;
-    margin: 0 10px;
+    margin: 0 2px;
     padding: 0 0 0 5px;
     vertical-align: top;
     border: 1px solid #a3a3a3;
@@ -8171,6 +8171,16 @@ img[height="0"] {
   }
   .fltrRange_it.mLast {
     margin-right: 5px;
+  }
+  .fltrRange_lbl {
+    line-height: 24px;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    font-size: 14px;
+    color: #8a8a8a;
   }
   .fltrRange_val.rubl {
     display: inline-block;
@@ -8206,7 +8216,7 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    margin: 12px 10px 0 10px;
+    margin: 12px 20px 0;
     width: 233px;
     height: 4px;
   }
@@ -8296,11 +8306,14 @@ img[height="0"] {
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAJCAQAAAChr3WYAAAAXElEQVQI11XKwQ0AERSE4YmrChShCSMUohAKUYg6FKECV9nN2rDre5eXPwMWc53HAqs5jjSsBsB8xIyHV+w7da/wMnEvIxYn2eauOYkPw4wBf0mwsiaBk/XWr/8G2pM8a8IWUVQAAAAASUVORK5CYII=');
   }
   .fltrBtn_kit {
-    padding: 10px;
+    padding: 0 10px;
     border-bottom: 1px solid #e6e6e6;
   }
-  .fltrBtn_kit-nptb {
-    padding: 0 10px;
+  .fltrBtn_kit-box {
+    padding: 10px;
+  }
+  .fltrBtn_kit-nborder {
+    border-bottom: none;
   }
   .fltrBtn_kit-ovrflw {
     max-height: 165px;
@@ -8309,12 +8322,12 @@ img[height="0"] {
   }
   .fltrBtn_kit_l {
     float: left;
-    width: 100px;
+    width: 90px;
     margin: 15px 0 0 10px;
   }
   .fltrBtn_kit_r {
     float: right;
-    width: 810px;
+    width: 820px;
     overflow: auto;
     padding-top: 10px;
     max-height: 200px;
@@ -8329,7 +8342,6 @@ img[height="0"] {
   }
   .fltrBtn_btn {
     height: 43px;
-    line-height: 43px;
     position: relative;
     width: 120px;
     vertical-align: middle;
@@ -8357,6 +8369,7 @@ img[height="0"] {
   .fltrBtn_btn-btn {
     font-size: 14px;
     margin-right: 0;
+    line-height: 43px;
     color: #424242;
     border-style: dashed;
     display: inline-block;
@@ -8372,9 +8385,9 @@ img[height="0"] {
     text-decoration: none;
   }
   .fltrBtn_btn-mini {
-    line-height: 33px;
+    line-height: 31px;
     width: 80px;
-    height: 35px;
+    height: 33px;
   }
   .fltrBtn_btn_clsr {
     position: absolute;
@@ -8441,6 +8454,11 @@ img[height="0"] {
   }
   .fltrBtnBox {
     position: relative;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
   }
   .fltrBtnBox.opn .fltrBtnBox_tggl {
     z-index: 16;
@@ -8498,7 +8516,7 @@ img[height="0"] {
     position: absolute;
     z-index: 15;
     top: 27px;
-    min-width: 150px;
+    min-width: 190px;
     padding: 10px 10px 0;
     border: 1px solid #c7c7c7;
     background: #ffffff;
@@ -8830,7 +8848,7 @@ img[height="0"] {
     padding: 10px;
     margin: 0 0 0 -10px;
     border-bottom: 1px solid #e6e6e6;
-    border-top: 2px solid #e6e6e6;
+    border-top: 1px solid #e6e6e6;
   }
   .sorting_i {
     display: inline-block;

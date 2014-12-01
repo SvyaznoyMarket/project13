@@ -105,7 +105,7 @@ return function(
     <div class="fltrBtn fltrBtn-bt">
         <form id="productCatalog-filter-form" class="js-category-filter" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
             <? if ($brandFilter1): ?>
-                <div class="fltrBtn_kit fltrBtn_kit-nptb clearfix">
+                <div class="fltrBtn_kit clearfix">
                     <div class="fltrBtn_tggl fltrBtn_kit_l js-category-v2-filter-brandTitle">
                         <span class="fltrBtn_tggl_tx"><?= $brandFilter1->getName() ?></span>
                     </div>
@@ -126,7 +126,7 @@ return function(
             <? endif ?>
 
             <? if ($priceFilter || ($saleFilter && $saleFilter->getOption())): ?>
-                <div class="fltrBtn_kit clearfix">
+                <div class="fltrBtn_kit fltrBtn_kit-box clearfix">
                     <? if ($priceFilter): ?>
                         <div class="fltrBtnBox fl-l js-category-v2-filter-dropBox">
                             <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener">
@@ -167,7 +167,7 @@ return function(
                 </div>
             <? endif ?>
 
-            <div class="fltrBtn_kit">
+            <div class="fltrBtn_kit fltrBtn_kit-box">
                 <div class="fltrBtnBox js-category-v2-filter-dropBox">
                     <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener">
                         <span class="fltrBtnBox_tggl_tx">Габариты</span>
@@ -192,7 +192,7 @@ return function(
                 </div>
             </div>
 
-            <div class="fltrBtn_kit fltrBtn_kit-nptb clearfix js-category-v2-filter-selected">
+            <div class="fltrBtn_kit fltrBtn_kit-nborder clearfix">
                 <?= $helper->render('product-category/v2/__selectedFilter', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
             </div>
         </form>
