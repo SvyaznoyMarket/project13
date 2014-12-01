@@ -1592,6 +1592,17 @@ img[height="0"] {
     content: "";
     position: absolute;
   }
+  .hdsearch_itb-focus {
+    border-color: #f99b1c;
+  }
+  .hdsearch_itb-focus.hdsearch_itb:after {
+    -moz-opacity: 0.5;
+    -khtml-opacity: 0.5;
+    -webkit-opacity: 0.5;
+    opacity: 0.5;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
+    filter: alpha(opacity=50);
+  }
   .hdsearch_itw {
     overflow: hidden;
     padding: 0 0 0 10px;
@@ -6629,7 +6640,7 @@ img[height="0"] {
   }
   .popup-auth#auth-block[data-state='default'] .authWrap,
   .popup-auth#auth-block.state_default .authWrap {
-    height: 324px;
+    height: 330px;
     margin-top: 0;
   }
   .popup-auth#auth-block[data-state='default'] .authForm_reset,
@@ -6664,8 +6675,8 @@ img[height="0"] {
   }
   .popup-auth#auth-block[data-state='register'] .authWrap,
   .popup-auth#auth-block.state_register .authWrap {
-    height: 845px;
-    margin-top: -324px;
+    height: 850px;
+    margin-top: -330px;
   }
   .popup-auth#auth-block[data-state='register'] .authForm_authLink,
   .popup-auth#auth-block.state_register .authForm_authLink {

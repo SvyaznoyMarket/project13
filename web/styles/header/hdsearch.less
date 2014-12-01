@@ -44,6 +44,16 @@
 
             .pseudo-class();
         }
+
+        &-focus {
+        	border-color: @orange-2;
+
+        	&.hdsearch_itb {
+        		&:after {
+        			.opacity(0.5);
+        		}
+        	}
+        }
     }
     &_itw{
         overflow: hidden;
