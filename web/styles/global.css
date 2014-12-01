@@ -1707,11 +1707,13 @@ img[height="0"] {
     display: block;
     padding: 5px 10px;
   }
-  .searchdd_lk:hover {
+  .searchdd_lk:hover,
+  .searchdd_lk_iact {
     text-decoration: none;
     background: #e6e6e6;
   }
-  .searchdd_lk:hover .undrlh {
+  .searchdd_lk:hover .undrlh,
+  .searchdd_lk_iact .undrlh {
     text-decoration: none;
     border-bottom: 1px solid #a0a0a0;
   }

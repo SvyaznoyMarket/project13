@@ -26,6 +26,33 @@
 			self.searchCategoryVisible(!self.searchCategoryVisible());
 		};
 
+		self.searchResultNavigation = function(data, e) {
+			var keycode = e.which,
+				$links = $('.jsSearchbarResults a'),
+				activeClass = 'searchdd_lk_iact',
+				index = $links.index($links.filter('.'+activeClass));
+
+			console.log(index);
+
+			if (!self.isNoSearchResult()) {
+				$links.removeClass(activeClass);
+				switch (keycode) {
+					case 13:
+						if (index > -1) window.location.href = $links.eq(index).attr('href');
+						return false;
+						break;
+					case 38:
+						$links.eq(index - 1).addClass(activeClass);
+						break;
+					case 40:
+						$links.eq(index + 1).addClass(activeClass);
+						break
+				}
+			}
+
+			return true;
+		};
+
 		self.categoryClick = function(data, event){
 			var category = $(event.target).data('value');
 			self.currentCategory(category);
