@@ -625,6 +625,7 @@ $c->abTest = [
 
         'adv_search' => [
             'name'          => 'Фильтр по разделам в строке поиска',
+            'gaSlotNumber'        => 15,
             'enabled'       => true,
             'expireDate'    => '2015-12-31',
             'cases' => [
