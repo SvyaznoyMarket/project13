@@ -2,6 +2,7 @@
 
 namespace Controller\ProductCategory;
 
+use Model\Product\Filter\Entity;
 use View\Product\FilterForm;
 
 class Action {
@@ -278,7 +279,17 @@ class Action {
         /** @var $filters \Model\Product\Filter\Entity[] */
         $filters = [];
         \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, $filterParams, function($data) use (&$filters) {
+            $i = 0; // TODO remove
             foreach ($data as $item) {
+                $i++;
+                if ($i <= 4) {
+                    $item['group']['uid'] = '1';
+                    $item['group']['name'] = 'Габариты';
+                } else {
+                    $item['group']['uid'] = '2';
+                    $item['group']['name'] = 'Дополнительно';
+                }
+
                 $filters[] = new \Model\Product\Filter\Entity($item);
             }
         });
@@ -368,79 +379,11 @@ class Action {
 
         // TODO SITE-2403 Вернуть фильтр instore
         if ($category->getIsFurniture()/* && 14974 === $user->getRegion()->getId()*/) {
-            $labelFilter = null;
-            $labelFilterKey = null;
-            foreach ($filters as $key => $filter) {
-                if ('label' === $filter->getId()) {
-                    $labelFilter = $filter;
-                    $labelFilterKey = $key;
-                }
-            }
-
-            // если нету блока фильтров "WOW-товары", то создаем
-            if (null === $labelFilter) {
-                $labelFilter = new \Model\Product\Filter\Entity();
-                $labelFilter->setId('label');
-                $labelFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-                $labelFilter->setName('WOW-товары');
-                $labelFilter->getIsInList(true);
-            }
-
-            // создаем фильтр "Товар за три дня"
-            $option = new \Model\Product\Filter\Option\Entity();
-            $option->setId(1);
-            $option->setToken('instore');
-            if (\App::config()->region['defaultId'] === $user->getRegion()->getId()) {
-                // Для Москвы, SITE-2850
-                //$option->setName('Товар за три дня');
-                $option->setName('Товар со склада'); // SITE-3131
-            } else {
-                // Для регионов (привозит быстрее, но не за три дня)
-                $option->setName('Товар со склада');
-            }
-
-            $labelFilter->unshiftOption($option);
-
-            // добавляем фильтр в массив фильтров
-            if (null !== $labelFilterKey) {
-                $filters[$labelFilterKey] = $labelFilter;
-            } else {
-                array_unshift($filters, $labelFilter);
-            }
+            $this->createInStoreFilter($filters);
         }
 
         if ($category->isV2()) {
-            $this->createSaleFilter($filters);
-
-            // TODO remove
-            $classFilter = new \Model\Product\Filter\Entity();
-            $classFilter->setId('drying');
-            $classFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_BOOLEAN);
-            $classFilter->setName('Сушка');
-            $classFilter->getIsInList(true);
-
-            array_unshift($filters, $classFilter);
-
-            // TODO remove
-            $classFilter = new \Model\Product\Filter\Entity();
-            $classFilter->setId('class');
-            $classFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-            $classFilter->setName('Класс стирки');
-            $classFilter->getIsInList(true);
-
-            $option = new \Model\Product\Filter\Option\Entity();
-            $option->setId(1);
-            $option->setToken('a');
-            $option->setName('A');
-            $classFilter->addOption($option);
-
-            $option = new \Model\Product\Filter\Option\Entity();
-            $option->setId(2);
-            $option->setToken('b');
-            $option->setName('B');
-            $classFilter->addOption($option);
-
-            array_unshift($filters, $classFilter);
+            $this->transformFilters($filters);
         }
 
         // фильтры
@@ -452,7 +395,7 @@ class Action {
 
         if (!$category->isV2Root()) {
             foreach ($productFilter->getFilterCollection() as $filter) {
-                if ('Бренд' === $filter->getName()) {
+                if ('brand' === $filter->getId()) {
                     foreach ($filter->getOption() as $option) {
                         $option->setImageUrl('');
                     }
@@ -709,26 +652,62 @@ class Action {
         return $this->leafCategory($category, $productFilter, $page, $request);
     }
 
-    private function createSaleFilter(array &$filters) {
-        $saleFilter = new \Model\Product\Filter\Entity();
-        $saleFilter->setId('sale');
-        $saleFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-        $saleFilter->setName('Скидки');
-        $saleFilter->getIsInList(true);
+    /**
+     * @param \Model\Product\Filter\Entity[] $filters
+     */
+    private function createInStoreFilter(array &$filters) {
+        $labelFilter = null;
+        $labelFilterKey = null;
+        foreach ($filters as $key => $filter) {
+            if ('label' === $filter->getId()) {
+                $labelFilter = $filter;
+                $labelFilterKey = $key;
+            }
+        }
 
+        // если нету блока фильтров "WOW-товары", то создаем
+        if (null === $labelFilter) {
+            $labelFilter = new \Model\Product\Filter\Entity();
+            $labelFilter->setId('label');
+            $labelFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+            $labelFilter->setName('WOW-товары');
+            $labelFilter->getIsInList(true);
+        }
+
+        // создаем фильтр "Товар за три дня"
         $option = new \Model\Product\Filter\Option\Entity();
         $option->setId(1);
-        $option->setToken('instore2');
-        $option->setName('Наличие на складе');
-        $saleFilter->addOption($option);
+        $option->setToken('instore');
+        if (\App::config()->region['defaultId'] === \App::user()->getRegion()->getId()) {
+            // Для Москвы, SITE-2850
+            //$option->setName('Товар за три дня');
+            $option->setName('Товар со склада'); // SITE-3131
+        } else {
+            // Для регионов (привозит быстрее, но не за три дня)
+            $option->setName('Товар со склада');
+        }
 
-        $option = new \Model\Product\Filter\Option\Entity();
-        $option->setId(2);
-        $option->setToken('instore3');
-        $option->setName('Товары со скидками');
-        $saleFilter->addOption($option);
+        $labelFilter->unshiftOption($option);
 
-        array_unshift($filters, $saleFilter);
+        // добавляем фильтр в массив фильтров
+        if (null !== $labelFilterKey) {
+            $filters[$labelFilterKey] = $labelFilter;
+        } else {
+            array_unshift($filters, $labelFilter);
+        }
+    }
+
+    /**
+     * @param \Model\Product\Filter\Entity[] $filters
+     */
+    private function transformFilters(array &$filters) {
+        foreach ($filters as $filter) {
+            if ('label' === $filter->getId()) {
+                $filter->setName('Скидки');
+            } else if ('shop' === $filter->getId()) {
+                $filter->setName('В магазине');
+            }
+        }
     }
 
     /**

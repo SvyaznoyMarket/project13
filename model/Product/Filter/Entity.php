@@ -21,6 +21,10 @@ class Entity {
     /** @var string */
     private $name;
     /** @var string */
+    public $groupUi;
+    /** @var string */
+    public $groupName;
+    /** @var string */
     private $unit;
     /** @var bool */
     private $isMultiple;
@@ -57,6 +61,8 @@ class Entity {
     public function __construct(array $data = []) {
         if (array_key_exists('filter_id', $data)) $this->setId($data['filter_id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
+        if (isset($data['group']['uid'])) $this->groupUi = $data['group']['uid'];
+        if (isset($data['group']['name'])) $this->groupName = $data['group']['name'];
         if (array_key_exists('type_id', $data)) $this->setTypeId($data['type_id']);
         if (array_key_exists('unit', $data)) $this->setUnit($data['unit']);
         if (array_key_exists('is_multiple', $data)) $this->setIsMultiple($data['is_multiple']);
@@ -210,6 +216,13 @@ class Entity {
     /**
      * @return Option\Entity
      */
+    public function deleteOption($key) {
+        unset($this->option[$key]);
+    }
+
+    /**
+     * @return Option\Entity
+     */
     public function deleteLastOption() {
         return array_pop($this->option);
     }
@@ -309,11 +322,15 @@ class Entity {
      * @return bool
      */
     public function isPrice() {
-        return 'price' == $this->getId();
+        return 'price' === $this->getId();
     }
 
-    public function isSale() {
-        return 'sale' == $this->getId();
+    public function isLabel() {
+        return 'label' === $this->getId();
+    }
+
+    public function isShop() {
+        return 'shop' === $this->getId();
     }
 
     /**

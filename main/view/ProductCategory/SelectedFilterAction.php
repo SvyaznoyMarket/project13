@@ -148,6 +148,12 @@ class SelectedFilterAction {
 
         $filterLinkData = array_values($filterLinkData);
 
+        $filterItem = end($filterLinkData);
+        if (is_array($filterItem)) {
+            $filterItem['last'][] = true;
+            $filterLinkData[key($filterLinkData)] = $filterItem;
+        }
+
         return [
             'baseUrl' => $baseUrl,
             'filters' => $filterLinkData,

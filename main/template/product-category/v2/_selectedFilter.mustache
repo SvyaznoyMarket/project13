@@ -10,12 +10,14 @@
             </li>
         {{/links}}
 
-        <li class="fltr_slctd_i fltr_slctd_i-clsr">
-            <a class="fltr_clsr jsHistoryLink" href="{{baseUrl}}">
-                <span class="btn-closer3">&#215;</span>
-                <span class="fltr_clr_tx">Очистить все</span>
-            </a>
-        </li>
+        {{#last}}
+            <li class="fltr_slctd_i fltr_slctd_i-clsr">
+                <a class="fltr_clsr jsHistoryLink" href="{{baseUrl}}">
+                    <span class="btn-closer3">&#215;</span>
+                    <span class="fltr_clr_tx">Очистить все</span>
+                </a>
+            </li>
+        {{/last}}
     </ul>
 {{/filters}}
 <!-- /Списки выбранных параметров -->

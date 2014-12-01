@@ -1,7 +1,9 @@
 $(function() {
 	var
 		dropBoxOpenClass = 'opn',
+		dropBoxSelectClass = 'selected',
 		brandTitleOpenClass = 'opn',
+		$filter = $('.js-category-filter'),
 		$otherBrands = $('.js-category-v2-filter-otherBrands'),
 		$otherBrandsOpener = $('.js-category-v2-filter-otherBrandsOpener'),
 		$brandTitle = $('.js-category-v2-filter-brandTitle'),
@@ -78,6 +80,30 @@ $(function() {
 		$to.change();
 
 		ENTER.catalog.filter.sendFilter();
+	});
+
+	$('input, select, textarea', $filter).on('change', function(e) {
+		var
+			$dropBox = $(e.currentTarget).closest('.js-category-v2-filter-dropBox'),
+			isSelected = false;
+
+		$('input, select, textarea', $dropBox).each(function(index, element) {
+			var $element = $(element);
+			if (
+				($element.is('input[type="text"], textarea') && ('' != $element.val() || (null != $element.data('min') && $element.val() != $element.data('min')) || (null != $element.data('max') && $element.val() != $element.data('max'))))
+				|| ($element.is('input[type="checkbox"], input[type="radio"]') && $element[0].checked)
+				|| ($element.is('select') && null != $element.val())
+			) {
+				isSelected = true;
+				return false;
+			}
+		});
+
+		if (isSelected) {
+			$dropBox.addClass(dropBoxSelectClass);
+		} else {
+			$dropBox.removeClass(dropBoxSelectClass);
+		}
 	});
 
 	$('.js-category-v2-filter-element-number input[type="text"]').placeholder();

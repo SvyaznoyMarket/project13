@@ -6,113 +6,101 @@ return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Filter $productFilter,
     $baseUrl,
-    $countUrl,
-    array $categories = []
+    $countUrl
 ) {
 
-    /** @var \Model\Product\Filter\Entity[] $otherFilters */
-    $otherFilters = [];
     /** @var \Model\Product\Filter\Entity $priceFilter */
     $priceFilter = null;
-    /** @var \Model\Product\Filter\Entity $saleFilter */
-    $saleFilter = null;
+    /** @var \Model\Product\Filter\Entity $labelFilter */
+    $labelFilter = null;
+    /** @var \Model\Product\Filter\Entity $shopFilter */
+    $shopFilter = null;
     /** @var \Model\Product\Filter\Entity $widthFilter */
-    $widthFilter = null;
-    /** @var \Model\Product\Filter\Entity $brandFilter1 */
     $brandFilter1 = null;
     /** @var \Model\Product\Filter\Entity $brandFilter2 */
     $brandFilter2 = null;
-    /** @var \Model\Product\Filter\Entity $dryingFilter */
-    $dryingFilter = null;
-    /** @var \Model\Product\Filter\Entity $classFilter */
-    $classFilter = null;
+    /** @var array $groups */
+    $groups = [];
+    $additionalGroup = null;
 
-    $insertCustomFilters = function() use (&$categories, &$otherFilters) {
-        // фильтр "Товары по категориям"
-        if ((bool)$categories) {
-            $categoryFilter = new \Model\Product\Filter\Entity();
-            $categoryFilter->setId('category');
-            $categoryFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-            $categoryFilter->setName('Товары по категориям');
-            $categoryFilter->getIsInList(true);
+    $countInListFilters = 0;
+    foreach ($productFilter->getFilterCollection() as $filter) {
+        if (!$filter->getIsInList()) {
+            continue;
+        } else if ($filter->isPrice()) {
+            $priceFilter = $filter;
+            $priceFilter->setStepType('price');
+        } else if ($filter->isLabel()) {
+            $labelFilter = $filter;
+        } else if ($filter->isShop()) {
+            $shopFilter = $filter;
+        } else if ($filter->isBrand()) {
+            $brandFilter1 = clone $filter;
 
-            foreach ($categories as $category) {
-                $option = new \Model\Product\Filter\Option\Entity();
-                $option->setId($category->getId());
-                $option->setName($category->getName());
-                $categoryFilter->addOption($option);
+            $brandFilter2 = clone $filter;
+            $brandFilter2->deleteAllOptions();
+
+            while (true) {
+                if (count($brandFilter1->getOption()) < 9) {
+                    break;
+                }
+
+                $brandFilter2->unshiftOption($brandFilter1->deleteLastOption());
+            }
+        } else if ($filter->groupUi) {
+            if (!isset($groups[$filter->groupUi])) {
+                $groups[$filter->groupUi] = ['name' => $filter->groupName, 'properties' => [], 'hasSelectedProperties' => false];
+
+                if ('Дополнительно' === $filter->groupName) {
+                    $additionalGroup = &$groups[$filter->groupUi];
+                }
             }
 
-            $otherFilters[] = $categoryFilter;
+            $groups[$filter->groupUi]['properties'][] = $filter;
+            if ($productFilter->getValue($filter)) {
+                $groups[$filter->groupUi]['hasSelectedProperties'] = true;
+            }
         }
 
-    };
+        $countInListFilters++;
+    }
 
-    $countFilters = count($productFilter->getFilterCollection());
-    $countInListFilters = null;
-    if (0 == $countFilters) {
-        $insertCustomFilters();
-    } else {
-        $insertIndex = $countFilters > 3 ? 3 : $countFilters;
-        $i = 1;
-        $countInListFilters = 0;
-        foreach ($productFilter->getFilterCollection() as $filter) {
-            if (!$filter->getIsInList()) {
-                continue;
-            } else if ($filter->isPrice()) {
-                $priceFilter = $filter;
-                $priceFilter->setStepType('price');
-            } else if ('brand' === $filter->getId()) {
-                $brandFilter1 = clone $filter;
+    if ($shopFilter) {
+        array_unshift($groups, ['name' => $shopFilter->getName(), 'properties' => [$shopFilter], 'hasSelectedProperties' => (bool)$productFilter->getValue($shopFilter)]);
+    }
 
-                $brandFilter2 = clone $filter;
-                $brandFilter2->deleteAllOptions();
+    if ($labelFilter) {
+        foreach ($labelFilter->getOption() as $key => $option) {
+            if ('instore' === $option->getToken()) {
+                $property = new \Model\Product\Filter\Entity();
+                $property->setId($option->getToken());
+                $property->setName($option->getName());
+                $property->setTypeId(\Model\Product\Filter\Entity::TYPE_BOOLEAN);
 
-                while (true) {
-                    if (count($brandFilter1->getOption()) < 9) {
-                        break;
-                    }
+                array_unshift($additionalGroup['properties'], $property);
+                $labelFilter->deleteOption($key);
 
-                    $brandFilter2->unshiftOption($brandFilter1->deleteLastOption());
-                }
-            } else if ('Сушка' === $filter->getName()) {
-                $dryingFilter = $filter;
-            } else if ('Класс стирки' === $filter->getName()) {
-                $classFilter = $filter;
-            } else if ('Ширина' === $filter->getName()) {
-                $widthFilter = $filter;
-            } else if ($filter->isSale()) {
-                $saleFilter = $filter;
-            } else {
-                $otherFilters[] = $filter;
-                $i++;
-            }
-
-            if ($insertIndex == $i) {
-                $insertCustomFilters();
-                $i++;
-            }
-
-            if ($filter->getIsInList()){
-                $countInListFilters++;
+                break;
             }
         }
     }
 
-    if (0 === $countInListFilters) return;
+    if (0 == $countInListFilters) {
+        return;
+    }
     ?>
 
     <div class="fltrBtn fltrBtn-bt">
         <form id="productCatalog-filter-form" class="js-category-filter" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
             <? if ($brandFilter1): ?>
                 <div class="fltrBtn_kit clearfix">
-                    <div class="fltrBtn_tggl fltrBtn_kit_l js-category-v2-filter-brandTitle">
+                    <div class="fltrBtn_tggl fltrBtn_kit_l <? if ($brandFilter2 && count($brandFilter2->getOption())): ?>js-category-v2-filter-brandTitle<? endif ?>">
                         <span class="fltrBtn_tggl_tx"><?= $brandFilter1->getName() ?></span>
                     </div>
 
                     <div class="fltrBtn_kit_r">
                         <?= $helper->render('product-category/v2/filter/element/__brand', ['productFilter' => $productFilter, 'filter' => $brandFilter1]) ?>
-                        <? if ($brandFilter2): ?>
+                        <? if ($brandFilter2 && count($brandFilter2->getOption())): ?>
                             <a href="#" class="fltrBtn_btn fltrBtn_btn-mini fltrBtn_btn-btn js-category-v2-filter-otherBrandsOpener"><span class="fltrBtn_btn_tx">Ещё <?= count($brandFilter2->getOption()) ?></span></a>
                         <? endif ?>
 
@@ -125,7 +113,7 @@ return function(
                 </div>
             <? endif ?>
 
-            <? if ($priceFilter || ($saleFilter && $saleFilter->getOption())): ?>
+            <? if ($priceFilter || ($labelFilter && $labelFilter->getOption())): ?>
                 <div class="fltrBtn_kit fltrBtn_kit-box clearfix">
                     <? if ($priceFilter): ?>
                         <div class="fltrBtnBox fl-l js-category-v2-filter-dropBox">
@@ -153,44 +141,44 @@ return function(
                         <div class="fltrBtn_range fl-l"><?= $helper->render('product-category/v2/filter/element/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?></div>
                     <? endif ?>
 
-                    <? if ($saleFilter && $saleFilter->getOption()): ?>
+                    <? if ($labelFilter && $labelFilter->getOption()): ?>
                         <div class="fltrBtnBox fl-r js-category-v2-filter-dropBox">
                             <div class="fltrBtnBox_tggl fltrBtnBox_tggl-mark js-category-v2-filter-dropBox-opener">
-                                <span class="fltrBtnBox_tggl_tx"><?= $saleFilter->getName() ?></span>
+                                <span class="fltrBtnBox_tggl_tx"><?= $labelFilter->getName() ?></span>
                             </div>
 
                             <div class="fltrBtnBox_dd fltrBtnBox_dd-r js-category-v2-filter-dropBox-content">
-                                <?= $helper->render('product-category/v2/filter/element/__list', ['productFilter' => $productFilter, 'filter' => $saleFilter]) ?>
+                                <?= $helper->render('product-category/v2/filter/element/__list', ['productFilter' => $productFilter, 'filter' => $labelFilter]) ?>
                             </div>
                         </div>
                     <? endif ?>
                 </div>
             <? endif ?>
 
-            <div class="fltrBtn_kit fltrBtn_kit-box">
-                <div class="fltrBtnBox js-category-v2-filter-dropBox">
-                    <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener">
-                        <span class="fltrBtnBox_tggl_tx">Габариты</span>
-                    </div>
+            <? if (count($groups)): ?>
+                <div class="fltrBtn_kit fltrBtn_kit-box">
+                    <? foreach ($groups as $group): ?>
+                        <div class="fltrBtnBox <? if ($group['hasSelectedProperties']): ?>selected<? endif ?> js-category-v2-filter-dropBox">
+                            <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener">
+                                <span class="fltrBtnBox_tggl_tx"><?= $group['name'] ?></span>
+                            </div>
 
-                    <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content">
-                        <div class="fltrBtn_param">
-                            <div class="fltrBtn_param_n">Ширина</div>
-                            <?= $helper->render('product-category/v2/filter/element/__number', ['productFilter' => $productFilter, 'filter' => $widthFilter]) ?>
-                        </div>
+                            <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content">
+                                <? foreach ($group['properties'] as $property): ?>
+                                    <? /** @var \Model\Product\Filter\Entity $property */?>
+                                    <div class="fltrBtn_param"> <!--fltrBtn_param-2col-->
+                                        <? if ('shop' !== $property->getId()): ?>
+                                            <div class="fltrBtn_param_n"><?= $property->getName() ?></div>
+                                        <? endif ?>
 
-                        <div class="fltrBtn_param fltrBtn_param-2col">
-                            <div class="fltrBtn_param_n">Сушка</div>
-                            <?= $helper->render('product-category/v2/filter/element/__choice', ['productFilter' => $productFilter, 'filter' => $dryingFilter]) ?>
+                                        <?= $helper->render('product-category/v2/filter/__element', ['productFilter' => $productFilter, 'filter' => $property]) ?>
+                                    </div>
+                                <? endforeach ?>
+                            </div>
                         </div>
-
-                        <div class="fltrBtn_param fltrBtn_param-2col">
-                            <div class="fltrBtn_param_n">Класс стирки</div>
-                            <?= $helper->render('product-category/v2/filter/element/__list', ['productFilter' => $productFilter, 'filter' => $classFilter]) ?>
-                        </div>
-                    </div>
+                    <? endforeach ?>
                 </div>
-            </div>
+            <? endif ?>
 
             <div class="fltrBtn_kit fltrBtn_kit-nborder clearfix">
                 <?= $helper->render('product-category/v2/__selectedFilter', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>

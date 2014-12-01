@@ -3,8 +3,7 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Filter $productFilter,
-    \Model\Product\Filter\Entity $filter,
-    array $promoStyle = []
+    \Model\Product\Filter\Entity $filter
 ) {
     $data = [
         'min'  => $helper->clearZeroValue($filter->getMin()),
@@ -12,7 +11,7 @@ return function(
         'step' => $filter->isPrice() ? 10 : $filter->getStepByFilter()
     ];
     ?>
-    <div class="fltrRange fltrRange-v3 js-category-filter-rangeSlider"<? if(!empty($promoStyle['bRangeSlider'])): ?> style="<?= $promoStyle['bRangeSlider'] ?>"<? endif ?>>
+    <div class="fltrRange fltrRange-v3 js-category-filter-rangeSlider">
         <span class="fltrRange_lbl">от</span>
         <input class="fltrRange_it mFromRange js-category-filter-rangeSlider-from <? if ($filter->isPrice()): ?>js-category-v2-filter-element-price-from<? endif ?>" name="<?= \View\Name::productCategoryFilter($filter, 'from') ?>" value="<?= $helper->clearZeroValue($productFilter->getValueMin($filter)) ?>" type="text" data-min="<?= $filter->getMin() ?>" />
 
