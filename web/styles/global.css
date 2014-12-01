@@ -1809,9 +1809,6 @@ img[height="0"] {
     border-bottom: 6px solid #292929;
     top: 80px;
   }
-  .navsite_i-child .navsite_lk {
-    height: 85px;
-  }
   .navsite_i-act .navsite_lk {
     border-bottom: 2px solid #000000;
   }
@@ -1825,8 +1822,8 @@ img[height="0"] {
   }
   .navsite_imgw {
     overflow: hidden;
-    height: 40px;
-    margin: 5px 0;
+    height: 45px;
+    margin: 0 0 5px;
   }
   .navsite_img {
     width: auto;
@@ -1846,7 +1843,7 @@ img[height="0"] {
   .navsite_lk {
     line-height: 1;
     display: block;
-    height: 80px;
+    height: 85px;
   }
   .navsite_lk:hover {
     text-decoration: none;
