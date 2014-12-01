@@ -33,6 +33,7 @@ class RedirectAction {
                     $redirectUrl = null;
                     \App::logger()->error(sprintf('Неправильный редирект %s -> %s', $uri, $redirectUrl), ['redirect']);
                 }
+                $redirectUrl = preg_replace('/\/$/','',(string)$redirectUrl);
             },
             function(\Exception $e) {
                 \App::exception()->remove($e);

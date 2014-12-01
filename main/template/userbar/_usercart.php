@@ -1,10 +1,10 @@
 <!-- При пустой корзине -->
-<div class="topbarfix_cart mEmpty" data-bind=" visible: cart().length == 0 ">
+<li class="userbtn_i topbarfix_cart mEmpty" data-bind=" visible: cart().length == 0 ">
     <a href="/cart" class="topbarfix_cart_tl">Корзина</a>
-</div>
+</li>
 
 <!-- При непустой корзине -->
-<div class="topbarfix_cart js-topbarfixNotEmptyCart" data-bind=" visible: cart().length > 0 " style="display: none">
+<li class="userbtn_i topbarfix_cart js-topbarfixNotEmptyCart" data-bind=" visible: cart().length > 0 " style="display: none">
 
     <a href="<?= $page->url('cart') ?>" class="topbarfix_cart_tl">
         <span class="topbarfix_cart_tx">Корзина</span>
@@ -23,7 +23,7 @@
                 </div>
             </li>
         </ul>
-        
+
         <!-- для кнопки с иконкой btnBuy-inf -->
         <div class="btnBuy quickOrder" data-bind="css: {'btnBuy-inf': infoIconVisible() }"><a href="<?= $page->url('order') ?>" class="btnBuy__eLink quickOrder__link">Оформить заказ</a></div>
 
@@ -41,4 +41,4 @@
     <div class="hintDd"><!-- если похожии товары есть то добавляем класс mhintDdOn -->
     </div>
 
-</div>
+</li>

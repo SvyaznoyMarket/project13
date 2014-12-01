@@ -7,6 +7,11 @@ return [
         'action'  => ['Main\IndexAction', 'execute'],
     ],
 
+    'homepage.recommendations' => [
+        'pattern' => '/index/recommend',
+        'action'  => ['Main\IndexAction', 'recommendations'],
+    ],
+
     'category.mainMenu' => [
         'pattern' => '/category/main_menu',
         'action'  => ['ProductCategory\MainMenuAction', 'execute'],

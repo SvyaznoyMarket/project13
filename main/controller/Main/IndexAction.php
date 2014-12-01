@@ -2,8 +2,13 @@
 
 namespace Controller\Main;
 
+use Session\AbTest\ABHelperTrait;
+
 class IndexAction {
-    public function execute() {
+
+    use ABHelperTrait;
+
+    public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $router = \App::router();
@@ -12,8 +17,6 @@ class IndexAction {
         $region = $user->getRegion();
 
         // подготовка 1-го пакета запросов
-
-        // TODO: запрашиваем меню
 
         // запрашиваем баннеры
         $itemsByBanner = [];
@@ -24,9 +27,15 @@ class IndexAction {
             $host = reset($hosts);
             $urls = \App::config()->banner['url'];
 
+            // Фильтруем баннеры для новой и старой главной
+            $data = array_filter($data, function($item) {
+                return ($this->isNewMainPage() ? 3 : 1) == (int)@$item['type_id'];
+            });
+
+            if ($this->isNewMainPage()) $data = array_slice((array)$data, 0, 5);
+
             foreach ($data as $i => $item) {
                 $bannerId = isset($item['id']) ? (int)$item['id'] : null;
-                if (isset($item['type_id']) && 3 == (int)$item['type_id']) continue; // Пропускаем "экслюзивные" баннеры (для новой главной)
                 $item = [
                     'id'    => $bannerId,
                     'name'  => isset($item['name']) ? (string)$item['name'] : null,
@@ -40,8 +49,8 @@ class IndexAction {
                 $bannerData[] = [
                     'id'    => $bannerId,
                     'alt'   => $item['name'],
-                    'imgs'  => $item['image'] ? ($host . $urls[0] . $item['image']) : null,
-                    'imgb'  => $item['image'] ? ($host . $urls[1] . $item['image']) : null,
+                    'imgs'  => $item['image'] ? ($host . $urls[$this->isNewMainPage() ? 4 : 0] . $item['image']) : null,
+                    'imgb'  => $item['image'] ? ($host . $urls[$this->isNewMainPage() ? 3 : 1] . $item['image']) : null,
                     'url'   => $item['url'],
                     't'     => $i > 0 ? $timeout : $timeout + 4000,
                     'ga'    => $bannerId . ' - ' . $item['name'],
@@ -61,17 +70,25 @@ class IndexAction {
         // товары, услуги, категории
         /** @var $productsById \Model\Product\BasicEntity[] */
         $productsById = [];
-        /** @var $productsById \Model\Product\Service\Entity[] */
-        $servicesById = [];
         /** @var $productsById \Model\Product\Category\Entity[] */
         $categoriesById = [];
         foreach ($itemsByBanner as $items) {
             foreach ($items as $item) {
                 /** @var $item \Model\Banner\Item\Entity */
                 if ($item->getProductId()) $productsById[$item->getProductId()] = null;
-                if ($item->getServiceId()) $servicesById[$item->getServiceId()] = null;
                 if ($item->getProductCategoryId()) $categoriesById[$item->getProductCategoryId()] = null;
             }
+        }
+
+        // Запрашиваем рекомендации и добавляем ID продуктов в массив для product/get
+        if (\App::abTest()->getTest('main_page') && \App::abTest()->getTest('main_page')->getChosenCase()->getKey() == 'new') {
+            $productsIdsFromRR = $this->getProductIdsFromRR($request);
+            foreach ($productsIdsFromRR as $arr) {
+                foreach ($arr as $key => $val) {
+                    $productsById[(int)$val] = null;
+                }
+            }
+            unset($val, $key, $arr);
         }
 
         // подготовка 2-го пакета запросов
@@ -86,17 +103,7 @@ class IndexAction {
                 \App::logger()->error('Не удалось получить товары для баннеров');
             });
         }
-        // запрашиваем услуги
-        if ((bool)$servicesById) {
-            \RepositoryManager::service()->prepareCollectionById(array_keys($servicesById), $region, function($data) use (&$servicesById) {
-                foreach ($data as $item) {
-                    $servicesById[(int)$item['id']] = new \Model\Product\Service\Entity($item);
-                }
-            }, function(\Exception $e) {
-                \App::exception()->remove($e);
-                \App::logger()->error('Не удалось получить услуги для баннеров');
-            });
-        }
+
         // запрашиваем категории товаров
         if ((bool)$categoriesById) {
             \RepositoryManager::productCategory()->prepareCollectionById(array_keys($categoriesById), $region, function($data) use (&$categoriesById) {
@@ -109,13 +116,12 @@ class IndexAction {
             });
         }
 
-        if ((bool)$productsById || (bool)$servicesById || (bool)$categoriesById) {
+        if ((bool)$productsById || (bool)$categoriesById) {
             // выполнение 2-го пакета запросов
             $client->execute();
         }
 
         // формируем ссылки для баннеров
-        // TODO: перенести код в метод репозитория
         foreach ($bannerData as &$item) {
             $url = $item['url'];
 
@@ -147,8 +153,6 @@ class IndexAction {
                             'productBarcodes' => implode(',', $barcodes),
                         ]);
                     }
-                } else if ($bannerItem->getServiceId()) {
-                    \App::logger()->error('Услуги для баннера еще не реализованы');
                 } else if ($bannerItem->getProductCategoryId()) {
                     $category = isset($categoriesById[$bannerItem->getProductCategoryId()]) ? $categoriesById[$bannerItem->getProductCategoryId()] : null;
                     if (!$category instanceof \Model\Product\Category\Entity) {
@@ -159,12 +163,6 @@ class IndexAction {
                     $url = $category->getLink();
                 }
             }
-
-            /*if (!$url && !$item['url']) {
-                \App::logger()->error(sprintf('Невалидный баннер %s', json_encode((array)$item, JSON_UNESCAPED_UNICODE)));
-                unset($bannerData[$i]);
-                continue;
-            }*/
 
             $item['url'] = $url;
         } if (isset($item)) unset($item);
@@ -186,7 +184,76 @@ class IndexAction {
         $page = new \View\Main\IndexPage();
         $page->setParam('bannerData', $bannerData);
         $page->setParam('seoPage', $seoPage);
+        $page->setParam('productList', $productsById);
+        $page->setParam('rrProducts', isset($productsIdsFromRR) ? $productsIdsFromRR : []);
 
         return new \Http\Response($page->show());
+    }
+
+    /** Рендер рекомендаций через ajax-запрос
+     * @param \Http\Request $request
+     * @return \Http\JsonResponse
+     */
+    public function recommendations(\Http\Request $request) {
+        $rrProductsById = [];
+        $productsById = [];
+
+        // получаем продукты из RR
+        $rrProducts = $this->getProductIdsFromRR($request, 1);
+        foreach ($rrProducts as $collection) {
+            $rrProductsById = array_merge($rrProductsById, $collection);
+        }
+
+        // получаем продукты из ядра
+        $products = \RepositoryManager::product()->getCollectionById(array_unique($rrProductsById), null, false);
+        foreach ($products as $product) {
+            $productsById[$product->getId()] = $product;
+        }
+
+        $page = new \View\Main\IndexPage();
+        $page->setParam('productList', $productsById);
+        $page->setParam('rrProducts', isset($rrProducts) ? $rrProducts : []);
+        return new \Http\JsonResponse(['result' => $page->slotRecommendations()]);
+    }
+
+    /** Возвращает массив рекомендаций (ids)
+     * @param \Http\Request $request
+     * @param float $timeout Таймаут для запроса к RR
+     * @return array
+     */
+    private function getProductIdsFromRR(\Http\Request $request, $timeout = 0.15) {
+        $rrClient = \App::rrClient();
+        $rrUserId = $request->cookies->get('rrpusid');
+        $ids = [
+            'popular' => [],
+            'personal' => []
+        ];
+
+        try {
+            $rrClient->addQuery('ItemsToMain',[],[],function($data) use (&$ids) {
+                $ids['popular'] = (array)$data;
+            },null, $timeout);
+            if ($rrUserId) $rrClient->addQuery('PersonalRecommendation',['rrUserId' => $rrUserId],[],function($data) use (&$ids) {
+                $ids['personal'] = (array)$data;
+            },null, $timeout);
+            $rrClient->execute();
+        } catch (\Exception $e) {
+            if ($e->getCode() == 28) {
+                \App::exception()->remove($e);
+            }
+        }
+
+        // если нет персональных рекомендаций, то выдадим половину популярных за персональные
+        if (empty($ids['personal']) && !empty($ids['popular'])) {
+            foreach ($ids['popular'] as $key => $item) {
+                if ($key % 2) {
+                    $ids['personal'][] = $item;
+                    unset($ids['popular'][$key]);
+                }
+            }
+        }
+
+        return $ids;
+
     }
 }

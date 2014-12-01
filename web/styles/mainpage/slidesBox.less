@@ -1,0 +1,187 @@
+//слайдеры рекомендаций, новинок
+@full-size: 100%;
+.slidesBox{
+    border: 1px solid #c1d837;
+    &-items{
+        width: 473px;
+        height: 533px;
+
+        .inline-block();
+        .slidesBox_inn{
+            width: 473px;
+            height: 483px;
+        }
+        .slidesBox_lst{
+            width: 2000px;
+        }
+        .slidesBox_i{
+            width: 473px;
+            height: 483px;
+            .item{
+                float: left;
+
+                width: 207px;
+                margin: 7px 19px 0 10px;
+            }
+        }
+    }
+    &_h{
+        height: 50px;
+
+        text-align: center;
+
+        background: #c1d837;
+        &_c{
+            height: 50px;
+            margin: 0 20px;
+
+            .inline-block-middle();
+        }
+    }
+    &_t{
+        font-size: 18px;
+
+        margin: 5px 0;
+
+        text-transform: uppercase;
+
+        color: @white;
+
+        .inline-block-middle();
+    }
+    &_btn{
+        width: 10px;
+        height: 22px;
+
+        cursor: pointer;
+
+        background-repeat: no-repeat;
+        background-position: 0 0;
+
+        .inline-block-middle();
+        &-l{
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAQAAABTL8XWAAAAoUlEQVQY02NgQAG/DP/t/SiEIvSY89+1f7+/y6EI/p3y7//fWhShP57//v87tooZSeiz6L/n/z79UEJR92/jv/9/ElG1pgK1rkER+qH678u/pyhO2c/y7+S/f79dUR3SBHRIP4rQd4V/f/5dvs2ORfA+B6p3IdonoAlitQjmpE/CaMJYHA/25gYMb0ID5DNagGANOngg16EJQqNDngFbxAEAZfV2DQiSf2EAAAAASUVORK5CYII=');
+        }
+        &-r{
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAQAAABTL8XWAAAAj0lEQVQY02P4KPRv7y9DBlTwXf7f73/XHnOiCf+t+/f/7xQ0wVXM/479+//HE034h9K/z/+efxZFE/6T+O//v40M6ODfGqARqWiCn4T/Pf335YcqmvBv13///p3cz4LuuH6g45rQBO9z/Lv87893BcKCfydgaMdiEVYnYXE82JsbCAUI1qDDEshYowNbxAEA2ud2F3hMdY8AAAAASUVORK5CYII=');
+        }
+    }
+    &_dott{
+        line-height: 7px;
+        &_i{
+            font-size: 7px;
+            line-height: 7px;
+
+            width: 7px;
+            height: 7px;
+            margin: 0 1px;
+
+            background: @white;
+
+            cursor: pointer;
+
+            .inline-block();
+            .rounded(50%);
+            .opacity(.5);
+            &-act{
+                .opacity(1);
+            }
+        }
+    }
+    &_inn{
+        overflow: hidden;
+    }
+    &_lst{
+        position: relative;
+        left: 0;
+        .transition(all .2s ease);
+    }
+    &_i{
+        float: left;
+    }
+    &-bg2{
+        border-color: @firmBlue;
+        .slidesBox_h{
+            background: @firmBlue;
+        }
+    }
+    // слайдер новинок
+    &-bg3{
+        border-color: @darkgrey4;
+        .slidesBox_h{
+            background: @darkgrey4;
+        }
+    }
+    // слайдер во всю ширину страницы
+    &-full{
+        width: @full-size;
+
+        .box-sizing();
+        .slidesBox_t{
+            text-transform: none;
+            min-width: 280px;
+        }
+        .slidesBox_inn{
+            height: 320px;
+        }
+        .slidesBox_lst{
+            width: 2000px;
+        }
+        .slidesBox_i{
+            position: relative;
+
+            height: 320px;
+        }
+    }
+    // превью товаров на слайдере
+    &_items{
+        position: absolute;
+        bottom: 20px;
+
+        width: @full-size;
+
+        text-align: center;
+        &_i{
+            margin: 0 7px;
+            padding: 5px;
+
+            background: @white;
+
+            .inline-block();
+            .opacity(.9);
+            .rounded(3px);
+            .transition(all .2s ease-in);
+            &:hover {
+                .opacity(1);
+            }
+        }
+        &_img{
+            width: 50px;
+            height: 50px;
+        }
+    }
+    &_btnview{
+        font-size: 14px;
+        line-height: 1.2;
+
+        position: absolute;
+        right: 40px;
+        bottom: 30px;
+
+        padding: 3px 25px 5px;
+
+        text-align: center;
+
+        color: @white;
+        background: @darkgrey4;
+
+        .opacity(.8);
+        .rounded(3px);
+        .transition(all .3s ease-out);
+        &:hover{
+            text-decoration: none;
+
+            .opacity(.9);
+        }
+    }
+}

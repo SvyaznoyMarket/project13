@@ -11,10 +11,6 @@ class LeafPage extends Layout {
         return $this->render('product-category/page-leaf', $this->params);
     }
 
-    public function slotUserbar() {
-        return $this->render('_userbar');
-    }
-
     public function slotUserbarContent() {
         $category = $this->getParam('category');
         $productFilter = $this->getParam('productFilter');

@@ -3,11 +3,11 @@
 namespace Model\Menu;
 
 class Repository {
-    /**
-     * @param \DataStore\Client $client
-     */
-    public function __construct(\DataStore\Client $client) {
-        $this->client = $client;
+    /** @var \Scms\Client */
+    private $client;
+
+    public function __construct() {
+        $this->client = \App::scmsClient();
     }
 
     /**
@@ -34,6 +34,6 @@ class Repository {
     public function prepareCollection($done, $fail = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery('main-menu.json', [], $done, $fail, \App::config()->dataStore['timeout'] * 2);
+        $this->client->addQuery('seo/main-menu', [], [], $done, $fail, \App::config()->scms['timeout'] * 2);
     }
 }
