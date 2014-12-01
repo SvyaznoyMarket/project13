@@ -4,7 +4,7 @@
 
 		// БАННЕРЫ
 		$bannerHolder = $('.jsMainBannerHolder'),
-		bannerHeight = 299,
+		bannerHeight = 300,
 //		$banners = $('.jsMainBannerImage'), // баннеры
 		$bannerThumbs = $('.jsMainBannerThumb'), // превью баннеров
 		activeThumbClass = 'slidesbnnr_thmbs_img-act',
