@@ -16,7 +16,7 @@ class SwitchView extends Layout {
     public function slotHeadJavascript()
     {
         return '
-        <script src="//yastatic.net/jquery/2.1.1/jquery.min.js" type="text/javascript" ></script>
+        <script src="//yastatic.net/jquery/1.11.1/jquery.min.js" type="text/javascript" ></script>
         <script src="//yastatic.net/jquery/cookie/1.0/jquery.cookie.min.js" type="text/javascript" ></script>
         ';
     }
