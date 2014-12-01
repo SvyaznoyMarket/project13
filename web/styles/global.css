@@ -95,7 +95,7 @@ html {
 }
 body {
   font: normal 75%/1.4 Tahoma, Geneva, sans-serif, helvetica, sans-serif;
-  background: #ffffff;
+  background: #e8e8e8;
   width: 100%;
   height: 100%;
 }
@@ -1304,18 +1304,27 @@ img[height="0"] {
 }
 @media all {
   .main .header {
-    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  .main .header_b {
+    border-right: 1px solid #e8e8e8;
+    border-left: 1px solid #e8e8e8;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  .main .header_t {
+    border-width: 0 1px 0 1px;
+    border-style: solid;
+    border-color: #bbbbbb;
   }
   .header {
     width: 960px;
-    margin: 0 auto 20px;
+    margin: 0 auto;
+    padding: 0 0 20px;
+    background: #ffffff;
   }
   .header_t {
     height: 50px;
     padding: 0 0 0 10px;
-    border-width: 0 1px 0 1px;
-    border-style: solid;
-    border-color: #bbbbbb;
     background: #f4f4f4;
   }
   .header_i {
@@ -1332,13 +1341,11 @@ img[height="0"] {
   }
   .header_b {
     position: relative;
-    z-index: 10;
+    z-index: 20;
     height: 85px;
     padding: 5px 5px 0;
-    border-right: 1px solid #bbbbbb;
-    border-left: 1px solid #bbbbbb;
-    border-bottom: 1px solid #bbbbbb;
     background: #ffffff;
+    border-bottom: 2px solid #e8e8e8;
   }
   .hdcontacts {
     margin: 0 10px 0 0;
@@ -1729,7 +1736,7 @@ img[height="0"] {
   }
   .navsite_i {
     position: relative;
-    padding: 0 1px;
+    min-width: 60px;
     text-align: center;
     vertical-align: top;
     display: table-cell;
@@ -2803,6 +2810,9 @@ img[height="0"] {
     *display: inline;
     *zoom: 1;
   }
+  .shopInfo_r:hover {
+    text-decoration: none;
+  }
   .shopInfo_l {
     margin: 0 2px 0 0;
     display: inline-block;
@@ -2910,6 +2920,7 @@ img[height="0"] {
   }
   .shopInfoTab_tx {
     margin: 10px 0 0;
+    line-height: 1.2;
     text-align: center;
     text-transform: uppercase;
   }
@@ -3198,7 +3209,6 @@ img[height="0"] {
   }
   .slidesBox_dott {
     line-height: 7px;
-    cursor: pointer;
   }
   .slidesBox_dott_i {
     font-size: 7px;
@@ -3207,6 +3217,7 @@ img[height="0"] {
     height: 7px;
     margin: 0 1px;
     background: #ffffff;
+    cursor: pointer;
     display: inline-block;
     vertical-align: top;
     /* IE6-8 */

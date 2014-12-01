@@ -22,10 +22,10 @@
     </li>
     <li class="shopInfo_i jsShopInfoPreview">
         <i class="shopInfo_l i-shopInfo i-shopInfo-wow"></i>
-        <div class="shopInfo_r">
+        <a href="/special_offers" class="shopInfo_r">
             <span class="shopInfo_tl undrl">WOW Акции</span>
             <p class="shopInfo_tx">Лучшие предложения</p>
-        </div>
+        </a>
     </li>
 </ul>
 

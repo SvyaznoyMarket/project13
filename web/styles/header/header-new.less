@@ -3,21 +3,32 @@
 @full-size: 100%;
 .main {
     .header {
-        margin-bottom: 0;
+        padding-bottom: 0;
+
+        &_b{
+            border-right: 1px solid #e8e8e8;
+            border-left: 1px solid #e8e8e8;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        &_t{
+            border-width: 0 1px 0 1px;
+            border-style: solid;
+            border-color: @darkgrey3;
+        }
     }
 }
 
 .header{
     width: 960px;
-    margin: 0 auto 20px;
+    margin: 0 auto;
+    padding: 0 0 20px;
+    background: @white;
     // верхний блок шапки
     &_t{
         height: @header-height;
         padding: 0 0 0 10px;
 
-        border-width: 0 1px 0 1px;
-        border-style: solid;
-        border-color: @darkgrey3;
         background: @lightgrey8;
     }
     &_i{
@@ -31,15 +42,13 @@
     }
     &_b{
         position: relative;
-        z-index: 10;
+        z-index: 20;
 
         height: 85px;
         padding: 5px 5px 0;
 
-        border-right: 1px solid @darkgrey3;
-        border-left: 1px solid @darkgrey3;
-        border-bottom: 1px solid @darkgrey3;
         background: @white;
+        border-bottom: 2px solid #e8e8e8;
     }
 }
 // контакты
