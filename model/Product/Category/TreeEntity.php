@@ -10,6 +10,8 @@ class TreeEntity extends BasicEntity {
     /** @var string */
     protected $image;
     /** @var string */
+    protected $image480x480;
+    /** @var string */
     protected $rootImage;
     /** @var bool */
     protected $hasLine;
@@ -43,6 +45,7 @@ class TreeEntity extends BasicEntity {
         if (array_key_exists('link', $data)) $this->setLink($data['link']);
         if (array_key_exists('token', $data)) $this->setToken($data['token']);
         if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
+        if (array_key_exists('media_image_480x480', $data)) $this->image480x480 = $data['media_image_480x480'];
         if (array_key_exists('has_line', $data)) $this->setHasLine($data['has_line']);
         if (array_key_exists('product_view_id', $data)) $this->setProductView($data['product_view_id']);
         if (array_key_exists('is_shown_in_menu', $data)) $this->setIsInMenu($data['is_shown_in_menu']);
@@ -297,9 +300,16 @@ class TreeEntity extends BasicEntity {
 
     public function getImageUrl($size = 0) {
         if ($this->image) {
-            $urls = \App::config()->productCategory['url'];
-
-            return $this->getHost() . $urls[$size] . $this->image;
+            if (preg_match('/^(https?|ftp)\:\/\//i', $this->image)) {
+                if (0 == $size) {
+                    return $this->image;
+                } else if (3 == $size) {
+                    return $this->image480x480;
+                }
+            } else {
+                $urls = \App::config()->productCategory['url'];
+                return $this->getHost() . $urls[0] . $this->image;
+            }
         } else {
             return null;
         }
