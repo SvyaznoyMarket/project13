@@ -417,7 +417,7 @@
 	$('.js-noProductsForCompareLink', userbarStatic).click(function(e) { showEmptyCompareNotice(e, 'static', userbarStatic); });
 
 	if ( userBarFixed.length ) {
-		body.on('addtocart', showBuyInfo);
+		if (window.location.pathname !== '/cart') body.on('addtocart', showBuyInfo);
 		userBarFixed.on('click', '.jsCartDelete', deleteProductHandler);
 		scrollTarget = $(userbarConfig.target);
 
