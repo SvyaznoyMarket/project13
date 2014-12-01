@@ -84,7 +84,7 @@ $menu = $page->getGlobalParam('menu');
 
     <div class="header_i hdep">
         <div class="hdep_h">Больше скидок</div>
-        <a href="" class="i-header i-header-ep"></a>
+        <a href="/enterprize" class="i-header i-header-ep"></a>
     </div>
 </div>
 <!--/ поиск -->
