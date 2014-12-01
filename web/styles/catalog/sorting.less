@@ -1,6 +1,6 @@
 .sorting {
 	width: 940px;
-	padding: 5px 10px;
+	padding: 10px;
 	margin: 0 0 0 -10px;
 	border-bottom: 1px solid #e6e6e6;
 	border-top: 2px solid #e6e6e6;
@@ -11,5 +11,40 @@
 
 	&_i {
 		.inline-block-middle();
+
+		&-tl {
+			color: #404040;
+			font-weight: bold;
+			margin-right: 5px;
+		}
+
+		&.act {
+			.sorting_lk {
+				border-color: #515151;
+				background: #404040;
+				color: @white;
+			}
+		}
+	}
+
+	&_lk {
+		border: 1px solid #c7c7c7;
+		padding: 3px 10px;
+		.rounded(3px);
+		.inline-block();
+		background: @white;
+		.transition(all .2s ease-out);
+
+		&:hover {
+			text-decoration: none;
+			background: #404040;
+			color: @white;
+		}
+
+		&-page {
+			width: 22px;
+			text-align: center;
+			padding: 3px 0;
+		}
 	}
 }

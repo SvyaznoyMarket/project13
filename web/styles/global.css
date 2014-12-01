@@ -7789,6 +7789,24 @@ img[height="0"] {
 }
 /*---------Каталог----------*/
 @media all {
+  .catLst {
+    margin: 0 0 10px;
+  }
+  .catLst_i {
+    width: 33.33333333%;
+    float: left;
+    margin: 0 0 10px;
+  }
+  .catLst_lk {
+    font-size: 14px;
+    color: #545454;
+    border-bottom: 1px solid #a8a8a8;
+  }
+  .catLst_lk:hover {
+    text-decoration: none;
+  }
+}
+@media all {
   .fltr_slctd {
     float: left;
     margin: 10px 25px 10px 0;
@@ -8229,6 +8247,11 @@ img[height="0"] {
   }
 }
 @media all {
+  .fltrBtn {
+    width: 960px;
+    margin: 0 0 0 -10px;
+    border-top: 5px solid #e6e6e6;
+  }
   .fltrBtn-mb10 {
     margin: 0 0 10px;
   }
@@ -8268,8 +8291,6 @@ img[height="0"] {
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAJCAQAAAChr3WYAAAAXElEQVQI11XKwQ0AERSE4YmrChShCSMUohAKUYg6FKECV9nN2rDre5eXPwMWc53HAqs5jjSsBsB8xIyHV+w7da/wMnEvIxYn2eauOYkPw4wBf0mwsiaBk/XWr/8G2pM8a8IWUVQAAAAASUVORK5CYII=');
   }
   .fltrBtn_kit {
-    width: 940px;
-    margin: 0 0 0 -10px;
     padding: 10px;
     border-bottom: 1px solid #e6e6e6;
   }
@@ -8801,7 +8822,7 @@ img[height="0"] {
 @media all {
   .sorting {
     width: 940px;
-    padding: 5px 10px;
+    padding: 10px;
     margin: 0 0 0 -10px;
     border-bottom: 1px solid #e6e6e6;
     border-top: 2px solid #e6e6e6;
@@ -8812,6 +8833,42 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
+  }
+  .sorting_i-tl {
+    color: #404040;
+    font-weight: bold;
+    margin-right: 5px;
+  }
+  .sorting_i.act .sorting_lk {
+    border-color: #515151;
+    background: #404040;
+    color: #ffffff;
+  }
+  .sorting_lk {
+    border: 1px solid #c7c7c7;
+    padding: 3px 10px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    background: #ffffff;
+    -webkit-transition: all 0.2s ease-out;
+    -moz-transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
+  }
+  .sorting_lk:hover {
+    text-decoration: none;
+    background: #404040;
+    color: #ffffff;
+  }
+  .sorting_lk-page {
+    width: 22px;
+    text-align: center;
+    padding: 3px 0;
   }
 }
 /*---------Страницы ошибок----------*/
