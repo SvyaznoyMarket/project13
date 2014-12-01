@@ -82,7 +82,7 @@
 
         // _addItem: Номер заказа, Артикул, Название товара, Категория товара, Стоимость 1 единицы товара, Количество товара
             <? foreach ($order->getProduct() as $orderProduct): ?>
-                <?
+            <?
                 /** @var $product \Model\Product\Entity */
                 $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
                 if (!$product) continue;
@@ -95,8 +95,9 @@
                 $categoryName = ($rootCategory && ($rootCategory->getId() != $category->getId()))
                     ? ($rootCategory->getName() . ' - ' . $category->getName())
                     : $category->getName();
-                    $productName = $order->isPartner ? $product->getName() . ' (marketplace)' : $product->getName();
-                ?>
+
+                $productName = $order->isPartner ? $product->getName() . ' (marketplace)' : $product->getName();
+            ?>
 
     _gaq.push(['_addItem', '<?= implode("','", array($order->getNumberErp(), $product->getArticle(), $page->escape($productName), $page->escape($categoryName), $orderProduct->getPrice(), $orderProduct->getQuantity())) ?>']);
             <?php endforeach ?>

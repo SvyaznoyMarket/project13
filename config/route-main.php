@@ -726,7 +726,6 @@ return [
     'product.recommended' => [
         'pattern' => '/product-recommended',
         'action' => ['Product\RecommendedAction', 'execute'],
-        'require' => ['productId' => '\d+'],
     ],
     'product.similar' => [
         'pattern' => '/ajax/product-similar/{productId}',

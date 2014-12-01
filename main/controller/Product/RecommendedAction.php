@@ -11,6 +11,8 @@ class RecommendedAction {
         $templating = \App::closureTemplating();
         $region = \App::user()->getRegion();
 
+        $productLimitInSlice = 15;
+
         $productId = $request->get('productId');
         if (empty($productId)) {
             $productId = null;
@@ -44,32 +46,32 @@ class RecommendedAction {
                 if ('retailrocket' == $sender['name']) {
                     if ('alsoBought' == $sender['type']) {
                         $sender['method'] = 'CrossSellItemToItems';
-                        $client->addQuery('Recomendation/' . $sender['method'], $productId, $queryParams, [], function($data) use (&$sender, &$productIds) {
+                        $client->addQuery('Recomendation/' . $sender['method'], $productId, $queryParams, [], function($data) use (&$sender, &$productIds, &$productLimitInSlice) {
                             if (!is_array($data)) return;
 
-                            $sender['items'] = array_slice($data, 0, 50);
+                            $sender['items'] = array_slice($data, 0, $productLimitInSlice);
                             $productIds = array_merge($productIds, $sender['items']);
                         });
                     } else if ('similar' == $sender['type']) {
                         $sender['method'] = 'UpSellItemToItems';
-                        $client->addQuery('Recomendation/' . $sender['method'], $productId, $queryParams, [], function($data) use (&$sender, &$productIds) {
+                        $client->addQuery('Recomendation/' . $sender['method'], $productId, $queryParams, [], function($data) use (&$sender, &$productIds, &$productLimitInSlice) {
                             if (!is_array($data)) return;
 
-                            $sender['items'] = array_slice($data, 0, 50);
+                            $sender['items'] = array_slice($data, 0, $productLimitInSlice);
                             $productIds = array_merge($productIds, $sender['items']);
                         });
                     } else if ('alsoViewed' == $sender['type']) {
                         $sender['method'] = 'ItemToItems';
-                        $client->addQuery('Recomendation/' . $sender['method'], $productId, $queryParams, [], function($data) use (&$sender, &$productIds) {
+                        $client->addQuery('Recomendation/' . $sender['method'], $productId, $queryParams, [], function($data) use (&$sender, &$productIds, &$productLimitInSlice) {
                             if (!is_array($data)) return;
 
-                            $sender['items'] = array_slice($data, 0, 50);
+                            $sender['items'] = array_slice($data, 0, $productLimitInSlice);
                             $productIds = array_merge($productIds, $sender['items']);
                         });
                     } else if ('viewed' == $sender['type']) {
                         $sender['method'] = '';
 
-                        //$ids = $request->cookies->get('rrviewed');
+                        //$data = $request->cookies->get('rrviewed');
                         $data = $request->get('rrviewed');
                         if (is_string($data)) {
                             $data = explode(',', $data);
@@ -79,7 +81,7 @@ class RecommendedAction {
                         }
                         if (is_array($data)) {
                             $data = array_reverse(array_filter($data));
-                            $sender['items'] = array_slice(array_unique($data), 0, 50);
+                            $sender['items'] = array_slice(array_unique($data), 0, $productLimitInSlice);
                             $productIds = array_merge($productIds, $sender['items']);
                         }
                     }
@@ -87,7 +89,7 @@ class RecommendedAction {
             }
             unset($sender);
 
-            $client->execute(); // 1-й пакет запросов
+            $client->execute(null, 1); // 1-й пакет запросов
 
             $productIds = array_filter(array_values(array_unique($productIds)));
 
@@ -120,7 +122,7 @@ class RecommendedAction {
 
             // ответ
             $responseData = [
-                'success'   => false,
+                'success'   => true,
                 'recommend' => [],
             ];
 
@@ -230,7 +232,7 @@ class RecommendedAction {
     public function getSendersIndexedByTypeByHttpRequest(\Http\Request $request) {
         // поставщик из http-запроса
         $sendersByType = [];
-        foreach ((array)$request->query->get('senders') as $sender) {
+        foreach ((array)$request->get('senders') as $sender) {
             if (!is_array($sender)) {
                 continue;
             }
