@@ -1,14 +1,34 @@
-<!-- Списки выбранных параметров -->
 {{#filters}}
-    <ul class="fltr_slctd {{#last}}fltr_slctd-last{{/last}}">
+    <ul class="fltr_slctd">
         <li class="fltr_slctd_i fltr_slctd_i-n">{{name}}:</li>
 
-        {{#links}}
-            <li class="fltr_slctd_i mParams">
-                <span>{{&name}}</span>
-                <a class="btn-closer2 jsHistoryLink" href="{{url}}">&#215;</a>
-            </li>
-        {{/links}}
+        {{^isGroup}}
+            {{#links}}
+                <li class="fltr_slctd_i mParams">
+                    <span>{{&name}}</span>
+                    <a class="btn-closer2 jsHistoryLink" href="{{url}}">&#215;</a>
+                </li>
+            {{/links}}
+        {{/isGroup}}
+
+        {{#isGroup}}
+            {{#properties}}
+                <li>
+                    <ul>
+                        {{#name}}
+                            <li>{{name}}</li>
+                        {{/name}}
+
+                        {{#links}}
+                            <li>
+                                <span>{{&name}}</span>
+                                <a class="btn-closer2 jsHistoryLink" href="{{url}}">&#215;</a>
+                            </li>
+                        {{/links}}
+                    </ul>
+                </li>
+            {{/properties}}
+        {{/isGroup}}
     </ul>
 {{/filters}}
 
@@ -16,4 +36,3 @@
     <span class="btn-closer3">&#215;</span>
     <span class="fltr_clr_tx">Очистить все</span>
 </a>
-<!-- /Списки выбранных параметров -->

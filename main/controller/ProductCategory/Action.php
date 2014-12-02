@@ -383,7 +383,7 @@ class Action {
         }
 
         if ($category->isV2()) {
-            $this->transformFilters($filters);
+            $this->transformFiltersV2($filters);
         }
 
         // фильтры
@@ -700,13 +700,34 @@ class Action {
     /**
      * @param \Model\Product\Filter\Entity[] $filters
      */
-    private function transformFilters(array &$filters) {
-        foreach ($filters as $filter) {
-            if ('label' === $filter->getId()) {
-                $filter->setName('Скидки');
-            } else if ('shop' === $filter->getId()) {
-                $filter->setName('В магазине');
+    private function transformFiltersV2(array &$filters) {
+        $newProperties = [];
+
+        foreach ($filters as $property) {
+            if ('label' === $property->getId()) {
+                $property->setName('Скидки');
+
+                foreach ($property->getOption() as $key => $option) {
+                    if ('instore' === $option->getToken()) {
+                        $labelProperty = new \Model\Product\Filter\Entity();
+                        $labelProperty->setId($option->getToken());
+                        $labelProperty->setName($option->getName());
+                        $labelProperty->setTypeId(\Model\Product\Filter\Entity::TYPE_BOOLEAN);
+
+                        $newProperties[] = $labelProperty;
+
+                        $property->deleteOption($key);
+
+                        break;
+                    }
+                }
+            } else if ('shop' === $property->getId()) {
+                $property->setName('В магазине');
             }
+        }
+
+        foreach ($newProperties as $property) {
+            array_push($filters, $property);
         }
     }
 
@@ -1026,6 +1047,7 @@ class Action {
 
         // ajax
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
+            $selectedFilter = $category->isV2() ? new \View\Partial\ProductCategory\V2\SelectedFilter() : new \View\ProductCategory\SelectedFilterAction();
             $data = [
                 'list'           => (new \View\Product\ListAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
@@ -1037,7 +1059,7 @@ class Action {
                     $columnCount,
                     $productView
                 ),
-                'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
+                'selectedFilter' => $selectedFilter->execute(
                     \App::closureTemplating()->getParam('helper'),
                     $productFilter,
                     \App::router()->generate('product.category', ['categoryPath' => $category->getPath()])
