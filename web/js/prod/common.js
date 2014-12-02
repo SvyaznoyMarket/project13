@@ -2992,6 +2992,35 @@ $('nav').on('mouseenter', '.navsite_i', function(){
     }
 });
 
+// аналитика
+$('body').on('click', '.jsRecommendedItemInMenu', function(event) {
+    console.log('jsRecommendedItemInMenu');
+
+    event.stopPropagation();
+
+    try {
+        var
+            $el = $(this),
+            link = $el.attr('href'),
+            sender = $el.data('sender')
+        ;
+
+        $('body').trigger('trackGoogleEvent', {
+            category: 'RR_взаимодействие',
+            action: 'Перешел на карточку товара',
+            label: sender ? sender.position : null,
+            hitCallback: function(){
+                console.log({link: link});
+
+                if (link) {
+                    setTimeout(function() { window.location.href = link; }, 90);
+                }
+            }
+        });
+
+    } catch (e) { console.error(e); }
+});
+
 ;(function($){	
 	/*paginator*/
 	var EnterPaginator = function( domID,totalPages, visPages, activePage ) {
