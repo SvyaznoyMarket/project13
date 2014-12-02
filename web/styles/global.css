@@ -8612,8 +8612,9 @@ img[height="0"] {
     width: 960px;
   }
   .lstn_empty {
-    padding: 30px 10px;
-    font-size: 16px;
+    padding: 30px 0;
+    font-size: 14px;
+    text-align: center;
   }
   .lstn_i {
     float: left;
