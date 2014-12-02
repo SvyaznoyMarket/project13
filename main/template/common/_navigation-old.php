@@ -12,7 +12,7 @@
     <nav class="header_nav">
         <ul class="navsite">
             <? foreach ($menu as $menu1) : ?>
-                <li class="navsite_i <?= ((bool)$menu1->children) ? 'navsite_i-child' : '' ?> <?= $lastMenu1 == $menu1 ? 'navsite_i-last': '' ?>">
+                <li class="navsite_i <?= ((bool)$menu1->children) ? 'navsite_i-child' : '' ?> <?= $lastMenu1 == $menu1 ? 'navsite_i-last': '' ?>" <? if ($menu1->id): ?> data-recommend-url="<?= $page->url('mainMenu.recommendation', ['rootCategoryId' => $menu1->id]) ?>"<? endif ?>>
                     <? if ($menu1->char) : ?>
                         <a href="<?= $menu1->link ?>" class="navsite_lk">
                             <div class="navsite_icon"><?= $menu1->char?></div>

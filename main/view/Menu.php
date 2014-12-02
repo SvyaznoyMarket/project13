@@ -223,7 +223,7 @@ class Menu {
             if (isset($item['source']['id']) && @$item['source']['type'] == 'category-get') {
                 $menuItem = $this->getMenuItemById($item['source']['id'], $categoriesTree);
                 if ($menuItem) {
-                    if ($item['char']) {
+                    if (isset($item['char'])) {
                         $menuItem->char = $item['char'];
                     } else {
                         $this->getImageFromMedias($menuItem, (array)@$item['medias']);
