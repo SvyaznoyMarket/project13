@@ -9,7 +9,7 @@ return function(
 ?>
 
     <div class="js-category-filter-selected clearfix">
-        <?= $helper->renderWithMustache('product-category/v2/_selectedFilter', (new \View\ProductCategory\SelectedFilterAction())->execute(
+        <?= $helper->renderWithMustache('product-category/v2/_selectedFilter', (new \View\Partial\ProductCategory\V2\SelectedFilter())->execute(
             $helper,
             $productFilter,
             $baseUrl,
