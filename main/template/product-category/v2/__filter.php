@@ -142,8 +142,8 @@ return function(
                     <? endif ?>
 
                     <? if ($labelFilter && $labelFilter->getOption()): ?>
-                        <div class="fltrBtnBox fl-r js-category-v2-filter-dropBox">
-                            <div class="fltrBtnBox_tggl fltrBtnBox_tggl-mark js-category-v2-filter-dropBox-opener">
+                        <div class="fltrBtnBox fltrBtnBox-mark fl-r js-category-v2-filter-dropBox">
+                            <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener">
                                 <span class="fltrBtnBox_tggl_tx"><?= $labelFilter->getName() ?></span>
                             </div>
 
@@ -158,7 +158,7 @@ return function(
             <? if (count($groups)): ?>
                 <div class="fltrBtn_kit fltrBtn_kit-box">
                     <? foreach ($groups as $group): ?>
-                        <div class="fltrBtnBox <? if ($group['hasSelectedProperties']): ?>selected<? endif ?> js-category-v2-filter-dropBox">
+                        <div class="fltrBtnBox <? if ($group['hasSelectedProperties']): ?>actv<? endif ?> js-category-v2-filter-dropBox">
                             <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener">
                                 <span class="fltrBtnBox_tggl_tx"><?= $group['name'] ?></span>
                             </div>

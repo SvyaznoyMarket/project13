@@ -8459,6 +8459,10 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
+    border: 1px solid #fff;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
   }
   .fltrBtnBox.opn .fltrBtnBox_tggl {
     z-index: 16;
@@ -8466,44 +8470,48 @@ img[height="0"] {
     border-bottom: none;
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAQAAAClB0z9AAAAP0lEQVQI12NgAIL/jE6T/jMywIBTgtN/pwQox4/X6TmQ+9yPF8x17gJygNC5C8RRc/4J5f50VmNw2grhgOFWABRpHkDXZMHuAAAAAElFTkSuQmCC');
   }
-  .fltrBtnBox.opn .fltrBtnBox_tggl .fltrBtnBox_tggl_tx {
+  .fltrBtnBox.opn .fltrBtnBox_tggl_tx {
     border: none;
   }
-  .fltrBtnBox.opn .fltrBtnBox_tggl-mark {
+  .fltrBtnBox.opn.fltrBtnBox-mark .fltrBtnBox_tggl {
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAAV0lEQVQIW2NggIL///8zvnf0ngSiYWJw8N7JK+G9g9d/EI0i8d/Pj/eDg/dzkCSIBvHhkh8cfbrAuqAYxAdLfHIOVPvg6P0TVdL7J0gcqMt7K7IEkoKtAD3ERJ5C4w0pAAAAAElFTkSuQmCC');
   }
   .fltrBtnBox.opn .fltrBtnBox_dd {
     display: block;
   }
-  .fltrBtnBox.opn.actv .fltrBtnBox_tggl {
-    border-color: #c7c7c7;
+  .fltrBtnBox.opn.actv {
+    border-color: #fff;
     -webkit-box-shadow: 0 0 0 #ffffff, 0 0 0 #ffffff, 0 0 0 #ffffff;
     -moz-box-shadow: 0 0 0 #ffffff, 0 0 0 #ffffff, 0 0 0 #ffffff;
     box-shadow: 0 0 0 #ffffff, 0 0 0 #ffffff, 0 0 0 #ffffff;
-    -webkit-border-radius: 3px 3px 0 0;
-    -moz-border-radius: 3px 3px 0 0;
-    border-radius: 3px 3px 0 0;
   }
-  .fltrBtnBox.opn.actv .fltrBtnBox_tggl .fltrBtnBox_tggl_tx {
-    border: none;
+  .fltrBtnBox.opn.actv.fltrBtnBox-mark {
+    border-color: #fff;
+    -webkit-box-shadow: 0 0 0 #ffffff, 0 0 0 #ffffff, 0 0 0 #ffffff;
+    -moz-box-shadow: 0 0 0 #ffffff, 0 0 0 #ffffff, 0 0 0 #ffffff;
+    box-shadow: 0 0 0 #ffffff, 0 0 0 #ffffff, 0 0 0 #ffffff;
   }
-  .fltrBtnBox.actv .fltrBtnBox_tggl {
+  .fltrBtnBox.actv {
     border-color: #f99b1c;
     -webkit-box-shadow: 0 0 1px #f99b1c, 0 0 1px #f99b1c, 0 0 1px #f99b1c;
     -moz-box-shadow: 0 0 1px #f99b1c, 0 0 1px #f99b1c, 0 0 1px #f99b1c;
     box-shadow: 0 0 1px #f99b1c, 0 0 1px #f99b1c, 0 0 1px #f99b1c;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
   }
-  .fltrBtnBox.actv .fltrBtnBox_tggl .fltrBtnBox_tggl_tx {
+  .fltrBtnBox.actv .fltrBtnBox_tggl_tx {
     border: none;
   }
-  .fltrBtnBox.actv .fltrBtnBox_tggl-mark {
-    border-color: #ef404a;
+  .fltrBtnBox.actv.fltrBtnBox-mark {
+    border: 1px solid #ef404a;
     -webkit-box-shadow: 0 0 1px #ef404a, 0 0 1px #ef404a, 0 0 1px #ef404a;
     -moz-box-shadow: 0 0 1px #ef404a, 0 0 1px #ef404a, 0 0 1px #ef404a;
     box-shadow: 0 0 1px #ef404a, 0 0 1px #ef404a, 0 0 1px #ef404a;
+  }
+  .fltrBtnBox-mark .fltrBtnBox_tggl {
+    color: #ef404a;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAAVUlEQVQI12P44Oi99b2D1390DBJn+OQcqAZk/EST+AkSZwCBD44+XaiSPl0MMPDfz4/3g4P3c7AEkAbxGZDBJwfveJAkiGZAB////2d87+g9CUTDxAB+g0Sgd+vg2AAAAABJRU5ErkJggg==');
+  }
+  .fltrBtnBox-mark .fltrBtnBox_tggl_tx {
+    border-color: #ef404a;
   }
   .fltrBtnBox_tggl {
     font-size: 16px;
@@ -8511,6 +8519,7 @@ img[height="0"] {
     padding: 2px 22px 4px 10px;
     cursor: pointer;
     border: 1px solid #ffffff;
+    border-bottom: none;
     background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAQAAAClB0z9AAAAQElEQVQI12Nw2ur0Hw63MjirOf+EcJx/OqsxMDA4d0G5XQwg4Mfr9BzIfe7HywABzvFAuXgGGPjP6DTpPyOIBQCDch5A9YNPpAAAAABJRU5ErkJggg==') no-repeat right 10px center;
     background-color: #ffffff;
     display: inline-block;
@@ -8524,13 +8533,6 @@ img[height="0"] {
   }
   .fltrBtnBox_tggl_tx {
     border-bottom: 1px dotted #515151;
-  }
-  .fltrBtnBox_tggl-mark {
-    color: #ef404a;
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAAVUlEQVQI12P44Oi99b2D1390DBJn+OQcqAZk/EST+AkSZwCBD44+XaiSPl0MMPDfz4/3g4P3c7AEkAbxGZDBJwfveJAkiGZAB////2d87+g9CUTDxAB+g0Sgd+vg2AAAAABJRU5ErkJggg==');
-  }
-  .fltrBtnBox_tggl-mark .fltrBtnBox_tggl_tx {
-    border-color: #ef404a;
   }
   .fltrBtnBox_dd {
     position: absolute;
