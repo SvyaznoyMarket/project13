@@ -120,22 +120,23 @@ return function(
                             <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener">
                                 <span class="fltrBtnBox_tggl_tx"><?= $priceFilter->getName() ?></span>
                             </div>
+                            <div class="fltrBtnBox_dd fltrBtnBox_dd-l ">
+                                <ul class="fltrBtnBox_dd_inn lstdotted js-category-v2-filter-dropBox-content">
+                                    <? foreach ($priceFilter->getPriceRanges() as $range): ?>
+                                        <li class="lstdotted_i">
+                                            <a class="lstdotted_lk js-category-v2-filter-price-link" href="<?= $helper->escape($range['url']) ?>">
+                                                <? if (isset($range['from'])): ?>
+                                                    <span class="txmark1">от</span> <?= $helper->escape($range['from']) ?>
+                                                <? endif ?>
 
-                            <ul class="fltrBtnBox_dd fltrBtnBox_dd-l lstdotted js-category-v2-filter-dropBox-content">
-                                <? foreach ($priceFilter->getPriceRanges() as $range): ?>
-                                    <li class="lstdotted_i">
-                                        <a class="lstdotted_lk js-category-v2-filter-price-link" href="<?= $helper->escape($range['url']) ?>">
-                                            <? if (isset($range['from'])): ?>
-                                                <span class="txmark1">от</span> <?= $helper->escape($range['from']) ?>
-                                            <? endif ?>
-
-                                            <? if (isset($range['to'])): ?>
-                                                <span class="txmark1">до</span> <?= $helper->escape($range['to']) ?>
-                                            <? endif ?>
-                                        </a>
-                                    </li>
-                                <? endforeach ?>
-                            </ul>
+                                                <? if (isset($range['to'])): ?>
+                                                    <span class="txmark1">до</span> <?= $helper->escape($range['to']) ?>
+                                                <? endif ?>
+                                            </a>
+                                        </li>
+                                    <? endforeach ?>
+                                </ul>
+                            </div>
                         </div>
 
                         <div class="fltrBtn_range fl-l"><?= $helper->render('product-category/v2/filter/element/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?></div>
@@ -148,7 +149,9 @@ return function(
                             </div>
 
                             <div class="fltrBtnBox_dd fltrBtnBox_dd-r js-category-v2-filter-dropBox-content">
-                                <?= $helper->render('product-category/v2/filter/element/__list', ['productFilter' => $productFilter, 'filter' => $labelFilter]) ?>
+                                <div class="fltrBtnBox_dd_inn">
+                                    <?= $helper->render('product-category/v2/filter/element/__list', ['productFilter' => $productFilter, 'filter' => $labelFilter]) ?>
+                                </div>
                             </div>
                         </div>
                     <? endif ?>
@@ -164,16 +167,18 @@ return function(
                             </div>
 
                             <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content">
-                                <? foreach ($group['properties'] as $property): ?>
-                                    <? /** @var \Model\Product\Filter\Entity $property */?>
-                                    <div class="fltrBtn_param"> <!--fltrBtn_param-2col-->
-                                        <? if ('shop' !== $property->getId()): ?>
-                                            <div class="fltrBtn_param_n"><?= $property->getName() ?></div>
-                                        <? endif ?>
+                                <div class="fltrBtnBox_dd_inn">
+                                    <? foreach ($group['properties'] as $property): ?>
+                                        <? /** @var \Model\Product\Filter\Entity $property */?>
+                                        <div class="fltrBtn_param"> <!--fltrBtn_param-2col-->
+                                            <? if ('shop' !== $property->getId()): ?>
+                                                <div class="fltrBtn_param_n"><?= $property->getName() ?></div>
+                                            <? endif ?>
 
-                                        <?= $helper->render('product-category/v2/filter/__element', ['productFilter' => $productFilter, 'filter' => $property]) ?>
-                                    </div>
-                                <? endforeach ?>
+                                            <?= $helper->render('product-category/v2/filter/__element', ['productFilter' => $productFilter, 'filter' => $property]) ?>
+                                        </div>
+                                    <? endforeach ?>
+                                </div>
                             </div>
                         </div>
                     <? endforeach ?>

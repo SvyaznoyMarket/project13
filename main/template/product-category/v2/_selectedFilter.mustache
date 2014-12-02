@@ -1,6 +1,6 @@
 <!-- Списки выбранных параметров -->
 {{#filters}}
-    <ul class="fltr_slctd clearfix">
+    <ul class="fltr_slctd {{#last}}fltr_slctd-last{{/last}}">
         <li class="fltr_slctd_i fltr_slctd_i-n">{{name}}:</li>
 
         {{#links}}
@@ -9,15 +9,11 @@
                 <a class="btn-closer2 jsHistoryLink" href="{{url}}">&#215;</a>
             </li>
         {{/links}}
-
-        {{#last}}
-            <li class="fltr_slctd_i fltr_slctd_i-clsr">
-                <a class="fltr_clsr jsHistoryLink" href="{{baseUrl}}">
-                    <span class="btn-closer3">&#215;</span>
-                    <span class="fltr_clr_tx">Очистить все</span>
-                </a>
-            </li>
-        {{/last}}
     </ul>
 {{/filters}}
+
+<a class="fltr_clsr jsHistoryLink" href="{{baseUrl}}">
+    <span class="btn-closer3">&#215;</span>
+    <span class="fltr_clr_tx">Очистить все</span>
+</a>
 <!-- /Списки выбранных параметров -->
