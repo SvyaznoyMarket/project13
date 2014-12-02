@@ -24,7 +24,7 @@ return [
         ],
     ],
     'mainMenu.recommendation' => [
-        'pattern' => '/main_menu/recommendations/{rootCategoryId}',
+        'pattern' => '/main_menu/recommendations/{rootCategoryId}/{childIds}',
         'action'  => ['MainMenu\RecommendedAction', 'execute'],
         'require' => [
             'categoryId' => '\d+',

@@ -9,9 +9,10 @@ class RecommendedAction {
     /**
      * @param \Http\Request $request
      * @param string $rootCategoryId
+     * @param string $childIds
      * @return \Http\JsonResponse
      */
-    public function execute(\Http\Request $request, $rootCategoryId) {
+    public function execute(\Http\Request $request, $rootCategoryId, $childIds) {
         $templating = \App::closureTemplating();
         $client = \App::retailrocketClient();
         $region = \App::user()->getRegion();
@@ -22,6 +23,9 @@ class RecommendedAction {
             'position' => 'ItemOfDay',
         ];
 
+        $categoryIds = explode(',', $childIds);
+
+        /*
         $categoryIds = [];
         \RepositoryManager::productCategory()->prepareTreeCollectionByRoot(
             $rootCategoryId,
@@ -42,8 +46,9 @@ class RecommendedAction {
             }
         );
         \App::coreClientV2()->execute(null, 1); // нихай, пускай только один раз запросит, а то еще подвесит сфинкс своими ретраями
+        */
 
-        $categoryIds = array_values(array_unique($categoryIds));
+        $categoryIds = array_values(array_filter(array_unique($categoryIds)));
 
         // рекомендации для каждой категории
         $productIdsByCategoryId = [];
