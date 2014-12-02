@@ -81,7 +81,7 @@ class IndexAction {
         }
 
         // Запрашиваем рекомендации и добавляем ID продуктов в массив для product/get
-        if (\App::abTest()->getTest('main_page') && \App::abTest()->getTest('main_page')->getChosenCase()->getKey() == 'new') {
+        if ($this->isNewMainPage()) {
             $productsIdsFromRR = $this->getProductIdsFromRR($request);
             foreach ($productsIdsFromRR as $arr) {
                 foreach ($arr as $key => $val) {
