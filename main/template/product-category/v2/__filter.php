@@ -170,7 +170,7 @@ return function(
                                 <div class="fltrBtnBox_dd_inn">
                                     <? foreach ($group['properties'] as $property): ?>
                                         <? /** @var \Model\Product\Filter\Entity $property */?>
-                                        <div class="fltrBtn_param"> <!--fltrBtn_param-2col-->
+                                        <div class="fltrBtn_param">
                                             <? if ('shop' !== $property->getId()): ?>
                                                 <div class="fltrBtn_param_n"><?= $property->getName() ?></div>
                                             <? endif ?>

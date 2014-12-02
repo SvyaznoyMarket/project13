@@ -2,7 +2,7 @@
  * Catalog infinity scroll
  *
  * @requires jQuery, jquery.visible, Mustache, docCookies, ENTER.utils, ENTER.config, ENTER.catalog.history
- * 
+ *
  * @author	Zaytsev Alexandr
  *
  * @param	{Object}	ENTER	Enter namespace
@@ -17,7 +17,7 @@
         bottomInfButton = $('.jsInfinityEnable').last();
 	// end of vars
 
-	
+
 	catalog.infScroll = {
 		loading: false,
 
@@ -68,7 +68,7 @@
 
 		enable: function() {
 
-			var activeClass = 'mActive',
+			var activeClass = 'mActive act',
 				infBtn = viewParamPanel.find('.js-category-pagination-infinity'),
 				pagingBtn = viewParamPanel.find('.js-category-pagination-paging'),
 				pageBtn = viewParamPanel.find('.js-category-pagination-page'),
@@ -76,7 +76,7 @@
 				hasPaging = document.location.search.match('page=');
 			// end of vars
 
-			pagingBtn.show();
+			pagingBtn.css({'display':'inline-block'});
 			pageBtn.hide();
 			infBtn.addClass(activeClass);
 
@@ -126,7 +126,7 @@
 				infBtn = viewParamPanel.find('.js-category-pagination-infinity'),
 				isActiveTab = infBtn.hasClass(activeClass);
 			// end of vars
-			
+
 			if ( isActiveTab ) {
 				return false;
 			}
@@ -142,7 +142,7 @@
 				infBtn = viewParamPanel.find('.js-category-pagination-infinity'),
 				isActiveTab = infBtn.hasClass(activeClass);
 			// end of vars
-			
+
 			if ( isActiveTab ) {
 				catalog.infScroll.disable();
 			}

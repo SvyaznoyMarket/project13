@@ -114,6 +114,12 @@
         &_img{
             vertical-align: middle;
         }
+
+        &_tx {
+            .inline-block();
+            font-size: 11px;
+            line-height: 1.2;
+        }
         // кнопка - ещё бренды
         &-btn{
             font-size: 14px;
@@ -125,6 +131,8 @@
             .inline-block();
             .fltrBtn_btn_tx{
                 border-bottom: 1px dotted #424242;
+                font-size: 14px;
+                vertical-align: middle;
             }
             &:hover{
                 text-decoration: none;
@@ -145,8 +153,11 @@
             display: none;
         }
         &.act{
-            .box-shadow3(0 0 1px #f99b1c, 0 0 1px #f99b1c, 0 0 1px #f99b1c);
             border-color: #f99b1c;
+            border-width: 2px;
+            height: 41px;
+
+            width: 118px;
 
             .fltrBtn_btn_clsr{
                 display: block;
@@ -237,26 +248,34 @@
 
         &.actv {
             border-color: #fff;
-            .box-shadow3(0 0 0 #fff, 0 0 0 #fff, 0 0 0 #fff);
+            border-width: 1px;
+
+            .fltrBtnBox_tggl {
+                padding: 2px 22px 5px 10px;
+            }
 
             &.fltrBtnBox-mark {
                 border-color: #fff;
-                .box-shadow3(0 0 0 #fff, 0 0 0 #fff, 0 0 0 #fff);
+                border-width: 1px;
             }
         }
     }
 
     &.actv {
         border-color: #f99b1c;
-        .box-shadow3(0 0 1px #f99b1c, 0 0 1px #f99b1c, 0 0 1px #f99b1c);
+        border-width: 2px;
+
+        .fltrBtnBox_tggl {
+            padding: 1px 21px 4px 9px;
+        }
 
         .fltrBtnBox_tggl_tx{
             border: none;
         }
 
         &.fltrBtnBox-mark {
-            border: 1px solid #ef404a;
-            .box-shadow3(0 0 1px #ef404a, 0 0 1px #ef404a, 0 0 1px #ef404a);
+            border-color: #ef404a;
+            border-width: 2px;
         }
     }
 
@@ -274,10 +293,11 @@
 
     &_tggl{
         font-size: 16px;
+        line-height: 1;
 
         position: relative;
 
-        padding: 0 22px 2px 10px;
+        padding: 2px 22px 5px 10px;
 
         cursor: pointer;
 
@@ -299,6 +319,7 @@
         top: 23px;
 
         white-space: nowrap;
+        min-width: 140px;
 
         border: 1px solid #c7c7c7;
         background: @white;

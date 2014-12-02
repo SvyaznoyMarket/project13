@@ -37,7 +37,7 @@ return function(
 
                 <span class="fltrBtn_btn_clsr btn-closer1">&#215;</span>
 
-                <span class="customLabel_btx"><?= $option->getName() ?><?= ($showFasets && $option->getQuantity()) ? " ({$option->getQuantity()})" : '' ?></span>
+                <span class="fltrBtn_btn_tx"><?= $option->getName() ?><?= ($showFasets && $option->getQuantity()) ? " ({$option->getQuantity()})" : '' ?></span>
             </label>
         </div>
         <? $i++; endforeach ?>
