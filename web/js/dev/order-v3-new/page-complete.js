@@ -169,40 +169,7 @@
     }
 
     if ($jsOrder.length != 0) {
-        console.log('[Google Analytics] Start processing orders');
-        $.each($jsOrder.data('value').orders, function(i,o) {
-            var googleOrderTrackingData = {};
-            googleOrderTrackingData.transaction = {
-                'id': o.numberErp,
-                'affiliation': o.is_partner ? 'Партнер' : 'Enter',
-                'total': o.paySum,
-                'shipping': o.delivery[0].price,
-                'city': o.region.name
-            };
-            googleOrderTrackingData.products = $.map(o.products, function(p){
-				var productName = o.is_partner ? p.name + ' (marketplace)' : p.name;
-				/* SITE-4472 Аналитика по АБ-тесту платного самовывоза и рекомендаций из корзины */
-				if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.config.pageConfig.selfDeliveryLimit > parseInt(o.paySum, 10) - o.delivery[0].price) productName = productName + ' (paid pickup)';
-				// Аналитика по купленным товарам из рекомендаций
-				if (p.sender == 'retailrocket') {
-					if (p.position) productName += ' (RR_' + p.position + ')';
-					if (p.from) $body.trigger('trackGoogleEvent',['RR_покупка','Купил просмотренные', p.position ? p.position : null]);
-					else $body.trigger('trackGoogleEvent',['RR_покупка','Купил добавленные', p.position ? p.position : null]);
-				}
-
-				return {
-                    'id': p.id,
-                    'name': productName,
-                    'sku': p.article,
-                    'category': p.category[p.category.length -1].name,
-                    'price': p.price,
-                    'quantity': p.quantity
-                }
-            });
-            console.log(googleOrderTrackingData);
-            $body.trigger('trackGoogleTransaction',[googleOrderTrackingData])
-        });
-
+		if (typeof ENTER.utils.sendOrderToGA == 'function') ENTER.utils.sendOrderToGA($jsOrder.data('value'));
     }
 
 }(jQuery));
