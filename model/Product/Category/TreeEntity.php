@@ -308,7 +308,7 @@ class TreeEntity extends BasicEntity {
                 }
             } else {
                 $urls = \App::config()->productCategory['url'];
-                return $this->getHost() . $urls[0] . $this->image;
+                return $this->getHost() . $urls[$size] . $this->image;
             }
         } else {
             return null;
