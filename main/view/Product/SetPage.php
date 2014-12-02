@@ -42,10 +42,6 @@ class SetPage extends \View\DefaultLayout {
             . $this->render('_innerJavascript');
     }
 
-    public function slotUserbar() {
-        return $this->render('_userbar');
-    }
-
     public function slotUserbarContent() {
         return $this->render('slice/_userbarContent', [
             'category'  => $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null,

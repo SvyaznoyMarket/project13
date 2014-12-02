@@ -48,6 +48,7 @@ class Entity extends BasicEntity {
         if (array_key_exists('link', $data)) $this->setLink($data['link']);
         if (array_key_exists('token', $data)) $this->setToken($data['token']);
         if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
+        if (array_key_exists('media_image_480x480', $data)) $this->image480x480 = $data['media_image_480x480'];
         if (array_key_exists('has_line', $data)) $this->setHasLine($data['has_line']);
         if (array_key_exists('product_view_id', $data)) $this->setProductView($data['product_view_id']);
         if (array_key_exists('is_shown_in_menu', $data)) $this->setIsInMenu($data['is_shown_in_menu']);

@@ -7,7 +7,7 @@
 	&_dd {
 		position: absolute;
 		display: none;
-		z-index: 5;
+		z-index: 101;
 		top: 50px;
 		right: -1px;
 		background: #ffffff;
@@ -67,92 +67,11 @@
 		line-height: 25px;
 	}
 
-	.cartLst {
-		max-height: 209px;
-		overflow: auto;
-
-		&_i {
-			height: 55px;
-			padding: 5px 0 5px 5px;
-			overflow: hidden;
-			font-size: 11px;
-
-			&.mHover {
-				background: #fff7e6;
-			}
-		}
-
-		&_lk {
-			display: inline-block;
-			width: 30px;
-			margin: 0 5px 0 0;
-
-			vertical-align: top;
-			*display: inline;
-			zoom: 1;
-		}
-
-		&_img {
-			max-height: 40px;
-			max-width: 30px;
-		}
-
-		&_n {
-			display: inline-block;
-			width: 110px;
-			line-height: 1.2;
-			height: 53px;
-			overflow: hidden;
-
-			vertical-align: top;
-			*display: inline;
-			zoom: 1;
-		}
-
-		&_inf {
-			display: inline-block;
-			width: 50px;
-
-			vertical-align: middle;
-			*display: inline;
-			zoom: 1;
-
-			line-height: 1.2;
-		}
-
-		.del {
-			text-decoration: underline;
-		}
-
-		.price {
-			display: block;
-		}
-
-		.quan {
-			margin: 4px 0;
-			display: block;
-		}
-	}
-
-	.quickOrder {
-		border-top: 1px solid #ccc;
-		padding: 10px;
-		width: 210px;
-		.rounded(0);
-
-		&.btnBuy {
-
-			.btnBuy__eLink {
-				width: 100%;
-			}
-		}
-	}
-
 	.hintDd {
 		position: absolute;
 		top: 50px;
-		width: 730px;
-		left: -838px;
+		width: 729px;
+		left: -839px;
 		background: #fff;
 		height: 0;
 		/* Переход */
@@ -175,7 +94,7 @@
 			border-bottom: 1px solid #ccc;
 		}
 	}
-	
+
 	.slideItem {
 		width: 700px;
 		margin: 0 auto;
@@ -201,6 +120,74 @@
 		color: #f99b1c;
 		font-weight: bold;
 		font-size: 20px;
+	}
+}
+
+.quickOrder {
+	border-top: 1px solid #ccc;
+	padding: 10px;
+	.rounded(0);
+
+	&.btnBuy {
+
+		.btnBuy__eLink {
+			width: 100%;
+		}
+	}
+}
+
+.cartLst {
+	max-height: 207px;
+	overflow: auto;
+
+	&_i {
+		height: 55px;
+		padding: 5px 0 5px 5px;
+		overflow: hidden;
+		font-size: 11px;
+
+		&.mHover {
+			background: #fff7e6;
+		}
+	}
+
+	&_lk {
+		.inline-block();
+		width: 30px;
+		margin: 0 5px 0 0;
+	}
+
+	&_img {
+		max-height: 40px;
+		max-width: 30px;
+	}
+
+	&_n {
+		.inline-block();
+		width: 110px;
+		line-height: 1.2;
+		height: 53px;
+		overflow: hidden;
+	}
+
+	&_inf {
+		.inline-block();
+		width: 50px;
+
+		line-height: 1.2;
+	}
+
+	.del {
+		text-decoration: underline;
+	}
+
+	.price {
+		display: block;
+	}
+
+	.quan {
+		margin: 4px 0;
+		display: block;
 	}
 }
 

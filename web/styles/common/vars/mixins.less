@@ -150,6 +150,16 @@
   *zoom: 1;
 }
 
+.inline-block-middle() {
+  display: inline-block;
+  vertical-align: middle;
+
+  /* IE6-8 */
+  *display: inline;
+  *zoom: 1;
+}
+
+
 .table() {
   display: table;
 
@@ -178,3 +188,49 @@
   *zoom: 1;
 }
 
+// спрайты
+.sprite-temp(@x: 0, @y: 0, @width: 0, @height: 0) {
+  background-position: @x @y;
+  width: @width;
+  background-repeat: no-repeat;
+  .inline-block();
+  height: @height;
+}
+
+.pseudo-class() {
+  content: "";
+  position: absolute;
+}
+
+.pseudo-corner-top(@border-width, @border-color, @posTop) {
+  position: absolute;
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: @border-width solid transparent;
+  border-right: @border-width solid transparent;
+  border-bottom: @border-width solid @border-color;
+  top: @posTop;
+}
+
+.pseudo-corner-right(@border-width, @border-color, @posTop) {
+  position: absolute;
+  content: '';
+  width: 0;
+  height: 0;
+  border-top: @border-width solid transparent;
+  border-right: @border-width solid @border-color;
+  border-bottom: @border-width solid transparent;
+  top: @posTop;
+}
+
+.pseudo-corner-left(@border-width, @border-color, @posTop) {
+  position: absolute;
+  content: '';
+  width: 0;
+  height: 0;
+  border-top: @border-width solid transparent;
+  border-left: @border-width solid @border-color;
+  border-bottom: @border-width solid transparent;
+  top: @posTop;
+}

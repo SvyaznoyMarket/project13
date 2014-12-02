@@ -19,15 +19,17 @@ class AbTest {
                 $this->cookie = [];
             }
         }
-        else if ('' !== $cookie)
-            $this->cookie = ['reviews' => str_replace('reviews_', '', $cookie)]; // Новая версия АБ тестов запускалась в момент работы АБ теста для отзывов
-        else
-            $this->cookie = [];
+        else $this->cookie = [];
 
         if (isset($config->abTest['tests'])) {
             foreach ($config->abTest['tests'] as $testKey => $testData) {
                 $test = new Test(array_merge($testData, ['key' => $testKey]));
                 $test->chooseCase(isset($this->cookie[$test->getKey()]) && is_string($this->cookie[$test->getKey()]) ? $this->cookie[$test->getKey()] : null);
+
+                // Если у пользователя вариант АБ-теста, который стоит с трафиком 0, то перевыберем вариант (из актуальных с трафиком > 0)
+                // Для девелоперов оставим возможность выбора
+                if (!$config->debug && $test->getChosenCase()->getTraffic() == 0) $test->chooseCase();
+
                 if ($test->isActive()) {
                     $this->cookie[$test->getKey()] = $test->getChosenCase()->getKey();
                 }
