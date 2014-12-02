@@ -2827,6 +2827,7 @@ img[height="0"] {
   }
   .shopInfo_i {
     float: left;
+    white-space: nowrap;
     width: 205px;
     height: 35px;
     margin: 0 8px;
@@ -2844,6 +2845,7 @@ img[height="0"] {
     *display: inline;
     *zoom: 1;
     width: 165px;
+    white-space: nowrap;
   }
   .shopInfo_r:hover {
     text-decoration: none;
