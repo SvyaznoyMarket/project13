@@ -104,7 +104,10 @@ class Test {
         return $this->getEnabled() && strtotime($this->getExpireDate()) > time();
     }
 
-    public function chooseCase($chosenCase) {
+    /** Выбор варианта для АБ-теста
+     * @param string|null $chosenCase
+     */
+    public function chooseCase($chosenCase = null) {
         if (!$this->isActive()) {
             $this->chosenCase = $this->cases['default'];
             return;

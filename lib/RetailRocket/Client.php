@@ -119,7 +119,7 @@ class Client {
             . $action
             . '/' . $this->config['account']
             . ($itemId ? ('/' . $itemId) : '')
-            . '?' . http_build_query($params)
+            . ((bool)$params ? ('?' . http_build_query($params)) : '')
         ;
     }
 }

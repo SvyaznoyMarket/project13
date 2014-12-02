@@ -19,7 +19,7 @@ class BasicMenuEntity {
     public $image;
     public $logo;
     public $char;
-    public $children;
+    public $children = [];
 
     public function __construct(array $data = []) {
         if (isset($data['id'])) $this->id = (int)$data['id'];
