@@ -19,6 +19,25 @@ foreach ($rrProducts as &$value) {
     }
 }
 
+/* Сортируем блок "Популярные товары" */
+if (@$blockname == 'ПОПУЛЯРНЫЕ ТОВАРЫ') {
+    try {
+        usort($rrProducts, function (\Model\Product\BasicEntity $a, \Model\Product\BasicEntity $b) {
+            if ($b->getIsBuyable() != $a->getIsBuyable()) {
+                return ($b->getIsBuyable() ? 1 : -1) - ($a->getIsBuyable() ? 1 : -1); // сначала те, которые можно купить
+            } else if ($b->getPrice() != $a->getPrice()) {
+                return $b->getPrice() - $a->getPrice();
+            } else if ($b->isInShopOnly() != $a->isInShopOnly()) {
+                //return ($b->isInShopOnly() ? -1 : 1) - ($a->isInShopOnly() ? -1 : 1); // потом те, которые можно зарезервировать
+            } else if ($b->isInShopShowroomOnly() != $a->isInShopShowroomOnly()) {// потом те, которые есть на витрине
+                return ($b->isInShopShowroomOnly() ? -1 : 1) - ($a->isInShopShowroomOnly() ? -1 : 1);
+            } else {
+                return (int)rand(-1, 1);
+            }
+        });
+    } catch (\Exception $e) {}
+}
+
 $blocks = array_chunk($rrProducts, 4);
 $helper = new \Helper\TemplateHelper();
 
