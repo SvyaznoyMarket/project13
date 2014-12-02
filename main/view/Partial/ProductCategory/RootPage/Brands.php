@@ -3,6 +3,7 @@
 namespace View\Partial\ProductCategory\RootPage;
 
 use Helper\TemplateHelper;
+use Model\Product\Filter\Option\Entity;
 
 class Brands {
     /**
@@ -14,9 +15,11 @@ class Brands {
         $selectedBrandsCount = 0;
         $num = 0;
 
-        foreach ($productFilter->getFilterCollection() as $filter) {
-            if ('Бренд' === $filter->getName()) {
-                foreach ($filter->getOption() as $option) {
+        foreach ($productFilter->getFilterCollection() as $property) {
+            if ('Бренд' === $property->getName()) {
+                $this->sortOptionsByQuantity($property);
+
+                foreach ($property->getOption() as $option) {
                     $num++;
 
                     if ($num <= 6) {
@@ -25,7 +28,7 @@ class Brands {
                         $brands = &$otherBrands;
                     }
 
-                    $active = \App::request()->query->get(\View\Name::productCategoryFilter($filter, $option)) == $option->getId();
+                    $active = \App::request()->query->get(\View\Name::productCategoryFilter($property, $option)) == $option->getId();
 
                     if ($active) {
                         $selectedBrandsCount++;
@@ -35,7 +38,7 @@ class Brands {
                         'name' => $option->getName(),
                         'imageUrl' => $option->getImageUrl(),
                         'active' => $active,
-                        'url' => '?' . urlencode(\View\Name::productCategoryFilter($filter, $option)) . '=' . urlencode($option->getId()),
+                        'url' => '?' . urlencode(\View\Name::productCategoryFilter($property, $option)) . '=' . urlencode($option->getId()),
                     ];
                 }
 
@@ -52,5 +55,19 @@ class Brands {
             'brandsCount' => count($mainBrands) + count($otherBrands),
             'selectedBrandsCount' => $selectedBrandsCount,
         ];
+    }
+
+    private function sortOptionsByQuantity(\Model\Product\Filter\Entity $property) {
+        $options = $property->getOption();
+
+        usort($options, function(Entity $a, Entity $b) {
+            if ($a->getQuantity() == $b->getQuantity()) {
+                return 0;
+            }
+
+            return ($a->getQuantity() > $b->getQuantity()) ? -1 : 1;
+        });
+
+        $property->setOption($options);
     }
 }

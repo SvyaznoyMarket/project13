@@ -41,7 +41,10 @@ class SelectedFilter {
                 continue;
             }
 
-            $filterGroups[] = ['name' => $property->getName(), 'isGroup' => false, 'links' => $this->getPropertyLinks($helper, $productFilter, $property, $baseUrl, $useBaseUrl)];
+            $links = $this->getPropertyLinks($helper, $productFilter, $property, $baseUrl, $useBaseUrl);
+            if ($links) {
+                $filterGroups[] = ['name' => $property->getName(), 'isGroup' => false, 'links' => $links];
+            }
         }
 
         foreach ($productFilter->getGroupedPropertiesV2() as $group) {
@@ -75,8 +78,13 @@ class SelectedFilter {
     }
 
     private function getPropertyLinks(\Helper\TemplateHelper $helper, \Model\Product\Filter $productFilter, \Model\Product\Filter\Entity $property, $baseUrl, $useBaseUrl) {
-        $value = $productFilter->getValue($property);
         $isPrice = $property->isPrice();
+
+        if ($property->isBrand() || $isPrice) {
+            return [];
+        }
+
+        $value = $productFilter->getValue($property);
 
         $links = [];
         switch ($property->getTypeId()) {
