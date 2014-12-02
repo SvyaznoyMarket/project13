@@ -1,15 +1,17 @@
 <?
 /**
+ * @var $page \View\DefaultLayout
  * @var $menu \Model\Menu\Entity[]|\Model\Menu\BasicMenuEntity[]
  */
 $lastMenu1 = end($menu); // последний элемент главного меню
+$helper = new \Helper\TemplateHelper();
 ?>
 
 <!-- навигация -->
 <nav class="header_b">
     <ul class="navsite">
     <? foreach ($menu as $menu1) : ?>
-        <li class="navsite_i <?= ((bool)$menu1->children) ? 'navsite_i-child' : '' ?> <?= $lastMenu1 == $menu1 ? 'navsite_i-last': '' ?>" data-id="<?= $menu1->id ?>">
+        <li class="navsite_i <?= ((bool)$menu1->children) ? 'navsite_i-child' : '' ?> <?= $lastMenu1 == $menu1 ? 'navsite_i-last': '' ?>" <? if ($menu1->id): ?> data-recommend-url="<?= $page->url('mainMenu.recommendation', ['rootCategoryId' => $menu1->id]) ?>"<? endif ?>>
             <? if ($menu1->char) : ?>
                 <a href="<?= $menu1->link ?>" class="navsite_lk">
                     <div class="navsite_icon"><?= $menu1->char?></div>
@@ -42,18 +44,7 @@ $lastMenu1 = end($menu); // последний элемент главного �
                                     <li class="navsite3_i"><a href="<?= $menu3->link ?>" class="navsite3_lk"><?= $menu3->name ?></a></li>
                                 <? endforeach; ?>
 
-                                <li class="navsite3_i">
-                                    <div class="navitem">
-                                        <div class="navitem_tl">ТОВАР ДНЯ</div>
-                                        <a href="" class="navitem_cnt">
-                                            <img src="http://fs09.enter.ru/6/1/163/59/240911.jpg" alt="" class="navitem_img">
-                                            <span class="navitem_n">Чехол-книжка для Nokia Lumia 930 Cellularline (21543)</span>
-                                        </a>
-                                        <div class="navitem_pr">
-                                            22 990 <span class="rubl">p</span>
-                                        </div>
-                                    </div>
-                                </li>
+                                <li class="navsite3_i jsMenuRecommendation"<? if ($menu2->id): ?> data-parent-category-id="<?= $menu2->id ?>"<? endif ?>></li>
                             </ul>
                         <? endif; ?>
 

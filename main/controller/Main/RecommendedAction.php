@@ -11,7 +11,7 @@ class RecommendedAction {
      * @return \Http\JsonResponse
      */
     public function execute(\Http\Request $request) {
-        $client = \App::retailrocketClient('2.0');
+        $client = \App::retailrocketClient();
         $region = \App::user()->getRegion();
 
         $cssClass = $request->query->get('class') ?: 'slideItem-main';
@@ -42,7 +42,7 @@ class RecommendedAction {
             },
             null,
             null,
-            '2.0'
+            '2.0' // version
         );
         $client->execute(null, 2);
 

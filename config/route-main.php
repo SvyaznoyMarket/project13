@@ -12,16 +12,22 @@ return [
         'action'  => ['Main\IndexAction', 'recommendations'],
     ],
 
-    'category.mainMenu' => [
+    'category.mainMenu' => [ // TODO: переименовать в mainMenu
         'pattern' => '/category/main_menu',
         'action'  => ['ProductCategory\MainMenuAction', 'execute'],
     ],
-
-    'category.mainMenu.region' => [
+    'category.mainMenu.region' => [ // TODO: переименовать в mainMenu.region
         'pattern' => '/category/main_menu/{regionId}',
         'action'  => ['ProductCategory\MainMenuAction', 'execute'],
         'require' => [
-            'regionId'   => '\d+',
+            'regionId' => '\d+',
+        ],
+    ],
+    'mainMenu.recommendation' => [
+        'pattern' => '/main_menu/recommendations/{rootCategoryId}',
+        'action'  => ['MainMenu\RecommendedAction', 'execute'],
+        'require' => [
+            'categoryId' => '\d+',
         ],
     ],
 
