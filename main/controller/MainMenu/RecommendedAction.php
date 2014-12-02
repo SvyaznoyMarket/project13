@@ -16,6 +16,12 @@ class RecommendedAction {
         $client = \App::retailrocketClient();
         $region = \App::user()->getRegion();
 
+        $sender = [
+            'name'     => 'retailrocket',
+            'method'   => 'CategoryToItems',
+            'position' => 'ItemOfDay',
+        ];
+
         $categoryIds = [];
         \RepositoryManager::productCategory()->prepareTreeCollectionByRoot(
             $rootCategoryId,
@@ -43,7 +49,7 @@ class RecommendedAction {
         $productIdsByCategoryId = [];
         foreach ($categoryIds as $categoryId) {
             $client->addQuery(
-                'Recomendation/CategoryToItems',
+                'Recomendation/' . $sender['method'],
                 $categoryId,
                 [],
                 [],
@@ -56,9 +62,6 @@ class RecommendedAction {
             );
         }
         $client->execute(null, 1); // нихай, пускай только один раз запрашивает
-
-        $sender['name'] = 'retailrocket';
-        $sender['method'] = 'CategoryToItems';
 
         $productsById = [];
         foreach (array_chunk(array_values($productIdsByCategoryId), \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
@@ -92,6 +95,7 @@ class RecommendedAction {
                 'categoryId' => $categoryId,
                 'content'    => $templating->render('common/__navigation-recommend', [
                     'product' => $product,
+                    'sender'  => $sender,
                 ]),
             ];
         }
