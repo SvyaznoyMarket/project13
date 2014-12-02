@@ -250,15 +250,10 @@
 
 @full-size: 100%;
 
-.btn-closer(@height: 14px, @width: 14px, @background: #f99b1c, @color: @white, @font-size: 12px, @line-height: 12px)  {
-    .rounded(50%);
-    height: @height;
-    width: @width;
-    background: @background;
-    color: @color;
-    font-size: @font-size;
-    line-height: @line-height;
+.btn-closer() {
+    height: 13px;
+    width: 13px;
     text-align: center;
-    .inline-block-base();
+    .inline-block();
     cursor: pointer;
 }

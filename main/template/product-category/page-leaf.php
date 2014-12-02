@@ -77,7 +77,7 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
                 'productPager'  => $productPager,
             ]) // фильтры ?>
         <? endif ?>
-        
+
 
         <? if ($category->isV2()): ?>
             <?= $helper->render('product-category/v2/__listAction', [
@@ -102,7 +102,7 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
     ]) // листинг ?>
 
     <? if ($category->isV2()): ?>
-        <div class="bSortingLine mPagerBottom clearfix js-category-sortingAndPagination">
+        <div class="sorting clearfix js-category-sortingAndPagination">
             <?= $helper->render('product-category/v2/__pagination', ['pager' => $productPager]) // листалка ?>
         </div>
     <? else: ?>
