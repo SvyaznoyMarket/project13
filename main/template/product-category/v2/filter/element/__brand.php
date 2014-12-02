@@ -35,7 +35,7 @@ return function(
                     <?= $helper->escape($option->getImageUrl()) ?>
                 <? endif ?>
 
-                <span class="fltrBtn_btn_clsr btn-closer1">&#215;</span>
+                <i class="fltrBtn_btn_clsr btn-closer1"></i>
 
                 <span class="fltrBtn_btn_tx"><?= $option->getName() ?><?= ($showFasets && $option->getQuantity()) ? " ({$option->getQuantity()})" : '' ?></span>
             </label>
