@@ -1,4 +1,4 @@
-<div class="infoBox jsDivBeforeRecommend jsMainCategoryTracking">
+<div class="infoBox jsMainCategoryTracking">
     <div class="infoBox_tl">
         А ЕЩЕ У НАС ПОКУПАЮТ
     </div>

@@ -170,7 +170,7 @@
 	if ($('.jsMainSlidesRetailRocket').length == 0) {
 		$.get('/index/recommend').done(function(data){
 			if (data.result) {
-				$(data.result).insertBefore($('.jsDivBeforeRecommend'));
+				$('.jsDivForRecommend').append($(data.result))
 			}
 		})
 	}

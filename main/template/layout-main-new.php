@@ -56,7 +56,7 @@
 
             <?= $page->render('main/_infoBlocks') ?>
 
-            <div class="clearfix">
+            <div class="clearfix jsDivForRecommend">
                 <?= $page->slotRecommendations() ?>
             </div>
 
