@@ -22,7 +22,7 @@ $helper = new \Helper\TemplateHelper();
                     <div class="navsite_imgw"><img class="navsite_img" src="<?= $menu1->image ?>" alt=""></div>
                     <span class="navsite_tx"><?= $menu1->name?></span>
                 </a>
-            <? endif; ?>
+            <? endif ?>
 
             <? if (!empty($menu1->children)) : ?>
 
@@ -35,28 +35,28 @@ $helper = new \Helper\TemplateHelper();
                             <a href="<?= $menu2->link ?>" class="navsite2_lk"><img src="<?= $menu2->logo ?>" alt="<?= $menu2->name ?>"/></a>
                         <? else : ?>
                             <a href="<?= $menu2->link ?>" class="navsite2_lk"><span class="navsite2_tx"><?= $menu2->name ?></span></a>
-                        <? endif; ?>
+                        <? endif ?>
 
                         <? if (!empty($menu2->children)) : ?>
                             <ul class="navsite3">
                                 <li class="navsite3_i navsite3_i-tl"><?= $menu2->name ?></li>
                                 <? foreach ($menu2->children as $menu3) : ?>
                                     <li class="navsite3_i"><a href="<?= $menu3->link ?>" class="navsite3_lk"><?= $menu3->name ?></a></li>
-                                <? endforeach; ?>
+                                <? endforeach ?>
 
                                 <li class="navsite3_i jsMenuRecommendation"<? if ($menu2->id): ?> data-parent-category-id="<?= $menu2->id ?>"<? endif ?>></li>
                             </ul>
-                        <? endif; ?>
+                        <? endif ?>
 
                     </li>
-                <? endforeach; ?>
+                <? endforeach ?>
 
             </ul>
 
-            <? endif; ?>
+            <? endif ?>
 
         </li>
-    <? endforeach; ?>
+    <? endforeach ?>
     </ul>
 </nav>
 <!-- /навигация -->
