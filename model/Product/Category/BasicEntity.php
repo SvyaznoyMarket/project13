@@ -23,6 +23,8 @@ class BasicEntity {
     protected $token;
     /** @var string */
     protected $image;
+    /** @var string */
+    protected $image480x480;
     /** @var int */
     protected $level;
     /** @var BasicEntity[] */
@@ -43,6 +45,7 @@ class BasicEntity {
         if (array_key_exists('link', $data)) $this->setLink($data['link']);
         if (array_key_exists('token', $data)) $this->setToken($data['token']);
         if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
+        if (array_key_exists('media_image_480x480', $data)) $this->image480x480 = $data['media_image_480x480'];
         if (array_key_exists('level', $data)) $this->setLevel($data['level']);
         if (array_key_exists('children', $data) && is_array($data['children'])) foreach ($data['children'] as $childData) {
             $this->addChild(new BasicEntity($childData));
@@ -246,9 +249,16 @@ class BasicEntity {
 
     public function getImageUrl($size = 0) {
         if ($this->image) {
-            $urls = \App::config()->productCategory['url'];
-
-            return $this->getHost() . $urls[$size] . $this->image;
+            if (preg_match('/^(https?|ftp)\:\/\//i', $this->image)) {
+                if (0 == $size) {
+                    return $this->image;
+                } else if (3 == $size) {
+                    return $this->image480x480;
+                }
+            } else {
+                $urls = \App::config()->productCategory['url'];
+                return $this->getHost() . $urls[$size] . $this->image;
+            }
         } else {
             return null;
         }

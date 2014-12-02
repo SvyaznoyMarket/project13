@@ -62,7 +62,7 @@ $isNewRecommendation =
         <? endif // } /end of new Card Properties ?>
 
         <? if ($showSimilarOnTop && $isNewRecommendation): ?>
-            <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
+            <? if (\App::config()->product['pullRecommendation']): ?>
                 <?= $helper->render('product/__slider', [
                     'type'     => 'similar',
                     'title'    => 'Похожие товары',
@@ -119,7 +119,7 @@ $isNewRecommendation =
         ]) ?>
     <? endif ?>
 
-    <? if (\App::config()->product['showRelated'] && !$isTchibo): ?>
+    <? if (\App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
             'type'           => 'alsoBought',
             'title'          => 'С этим товаром покупают',
@@ -146,8 +146,10 @@ $isNewRecommendation =
         <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getSecondaryGroupedProperties()]) // Характеристики ?>
     <? endif ?>
 
+    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent, 'sprosikupiReviews' => $sprosikupiReviews, 'shoppilotReviews' => $shoppilotReviews]) ?>
+
     <? if (!$showSimilarOnTop || !$isNewRecommendation): ?>
-        <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
+        <? if (\App::config()->product['pullRecommendation']): ?>
             <?= $helper->render('product/__slider', [
                 'type'     => 'similar',
                 'title'    => 'Похожие товары',
@@ -163,8 +165,6 @@ $isNewRecommendation =
             ]) ?>
         <? endif ?>
     <? endif ?>
-
-    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent, 'sprosikupiReviews' => $sprosikupiReviews, 'shoppilotReviews' => $shoppilotReviews]) ?>
 
 </div><!--/left section -->
 
@@ -236,12 +236,14 @@ $isNewRecommendation =
     <?//= $helper->render('product/__warranty', ['product' => $product]) ?>
     <?//= $helper->render('product/__service', ['product' => $product]) ?>
 
-    <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'right']) ?>
+    <? if ($product->isAvailable()): // SITE-4709 ?>
+        <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'right']) ?>
+    <? endif ?>
 </div><!--/right section -->
 
 <div class="clear"></div>
 
-<? if (false && \App::config()->product['pullRecommendation'] && !$isTchibo): ?>
+<? if (false && \App::config()->product['pullRecommendation']): ?>
     <?= $helper->render('product/__slider', [
         'type'     => 'alsoViewed',
         'title'    => 'С этим товаром также смотрят',
@@ -257,7 +259,7 @@ $isNewRecommendation =
     ]) ?>
 <? endif ?>
 
-<? if ($isNewRecommendation && \App::config()->product['pullRecommendation'] && !$isTchibo): ?>
+<? if ($isNewRecommendation && \App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
     <?= $helper->render('product/__slider', [
         'type'      => 'viewed',
         'title'     => 'Вы смотрели',

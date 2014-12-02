@@ -2,10 +2,18 @@
 
 namespace View\Main;
 
-use View\Menu;
-
 class IndexPage extends \View\DefaultLayout {
     protected $layout  = 'layout-main';
+
+    public function __construct() {
+        // Неправильная обертка для ajax-запроса /index/recommend
+        // Для правильной обертки нужно выносить slotRecommendations() в отдельный layout более верхнего уровня
+        if (\App::request()->isXmlHttpRequest()) {
+            $this->engine = \App::templating();
+            return;
+        }
+        parent::__construct();
+    }
 
     protected function prepare() {
         $this->addMeta('viewport', 'width=960');
@@ -21,6 +29,8 @@ class IndexPage extends \View\DefaultLayout {
                 $this->addMeta($key, $val);
             }
         }
+
+        if ($this->new_menu) $this->layout = 'layout-main-new';
     }
 
     public function slotBanner() {
@@ -28,32 +38,6 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotFooter() {
-        $client = \App::contentClient();
-
-        /*
-        $response = null;
-        $client->addQuery(
-            (14974 == \App::user()->getRegion()->getId() || 83 == \App::user()->getRegion()->getParentId())
-                ? 'footer_main_moscow'
-                : 'footer_main_v2'
-            ,
-            [],
-            function($data) use (&$response) {
-                $response = $data;
-            },
-            function(\Exception $e) {
-                \App::exception()->add($e);
-            }
-        );
-        $client->execute();
-
-        $response = array_merge(['content' => ''], (array)$response);
-
-        $response['content'] = str_replace('8 (800) 700-00-09', \App::config()->company['phone'], $response['content']);
-
-        return $response['content'];
-        */
-
         return (new \Helper\TemplateHelper())->render('main/__footer');
     }
 
@@ -100,5 +84,29 @@ class IndexPage extends \View\DefaultLayout {
         return $result;
     }
 
+    public function slotRecommendations() {
+
+        $return = '';
+        $sender = ['name' => 'retailrocket'];
+
+        if (!empty(@$this->getParam('rrProducts')['popular'])) {
+            $return .= $this->render('main/_slidesBox', [
+                'blockname' => 'ПОПУЛЯРНЫЕ ТОВАРЫ',
+                'class' => 'slidesBox slidesBox-items fl-l',
+                'productList' => $this->getParam('productList'),
+                'rrProducts' => (array)@$this->getParam('rrProducts')['popular'],
+                'sender' => $sender + ['position' => 'MainPopular', 'method' => 'ItemsToMain']
+            ]);
+            $return .= $this->render('main/_slidesBox', [
+                'blockname' => 'МЫ РЕКОМЕНДУЕМ',
+                'class' => 'slidesBox slidesBox-bg2 slidesBox-items fl-r',
+                'productList' => $this->getParam('productList'),
+                'rrProducts' => (array)@$this->getParam('rrProducts')['personal'],
+                'sender' => $sender + ['position' => 'MainRecommended', 'method' => 'Personal']
+            ]);
+        }
+
+        return $return;
+    }
 
 }

@@ -84,10 +84,6 @@ class LinePage extends \View\DefaultLayout {
             . $this->render('_innerJavascript');
     }
 
-    public function slotUserbar() {
-        return $this->render('_userbar');
-    }
-
     public function slotUserbarContent() {
         $product = $this->getParam('mainProduct') instanceof \Model\Product\Entity ? $this->getParam('mainProduct') : null;
         if (!$product) {

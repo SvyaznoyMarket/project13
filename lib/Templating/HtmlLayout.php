@@ -4,7 +4,7 @@ namespace Templating;
 
 class HtmlLayout {
     /** @var \Templating\PhpEngine */
-    private $engine;
+    public $engine;
     /** @var string */
     private $templateDir;
     /** @var array */

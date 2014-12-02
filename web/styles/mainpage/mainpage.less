@@ -1,0 +1,149 @@
+@full-size: 100%;
+.main{
+    background: @white;
+    .wrapper{
+        width: 960px;
+        padding: 0;
+    }
+}
+
+.content{
+    padding: 0 0 214px;
+}
+
+// блок товара
+.item{
+    margin: 0 0 10px;
+    &_imgw{
+        display: block;
+
+        text-align: center;
+    }
+    &_img {
+        width: 160px;
+        height: 160px;
+    }
+    &_n{
+        overflow: hidden;
+
+        height: 34px;
+        margin: 0 0 7px;
+        a{
+            &:hover{
+                text-decoration: none;
+
+                border-bottom: 1px solid @darkgrey5;
+            }
+        }
+    }
+    &_pr{
+        font-size: 21px;
+        line-height: 24px;
+
+        .inline-block();
+    }
+    &_btn{
+        font-size: 14px;
+
+        float: right;
+    }
+
+    .btnBuy {
+        .inline-block();
+        float: right;
+        .rounded(3px);
+
+        &__eLink {
+            background: #f99b1c;
+            border: 1px solid #f08a00;
+            color: @white;
+            .rounded(3px);
+            .inline-block();
+            padding: 4px 10px;
+            line-height: 1;
+            font-size: 14px;
+            width: auto;
+
+            &.mBought {
+                background: none repeat scroll 0 0 #fff;
+                border: 1px solid #b3b3b3;
+                color: #000;
+            }
+
+            &.mShopsOnly {
+                .blackGrad();
+
+                border: 1px solid #a1a1a1;
+            }
+        }
+    }
+}
+
+// блок главной страницы
+.infoBox{
+    margin: 15px 20px;
+    &_tl{
+        font-size: 18px;
+
+        margin: 0 0 20px;
+
+        text-transform: uppercase;
+    }
+}
+
+// простой каталог - картинка с названием категориии/товара или без него
+.lstitem{
+    margin: 0 0 20px;
+    &_i{
+        margin: 0 15px 10px 0;
+
+        .inline-block-middle();
+    }
+    &-7i{
+        .lstitem_i{
+            display: block;
+            float: left;
+
+            width: @full-size/7;
+            margin: 0;
+        }
+    }
+    &-10i{
+        .lstitem_i{
+            display: block;
+            float: left;
+
+            width: @full-size/10;
+            margin: 0 0 10px;
+        }
+    }
+    &-center{
+        text-align: center;
+        *{
+            display: block;
+        }
+        .lstitem_img{
+            width: 120px;
+            margin: 0 0 10px;
+        }
+    }
+    &_lk{
+        font-size: 14px;
+        &:hover{
+            text-decoration: none;
+            .lstitem_n{
+                border-bottom: 1px solid @darkgrey5;
+            }
+        }
+    }
+    &_n{
+        display: inline;
+    }
+}
+
+.zoomIn {
+    .transition(all .3s ease-out);
+    &:hover {
+        .scale(0.95);
+    }
+}

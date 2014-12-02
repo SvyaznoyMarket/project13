@@ -79,10 +79,6 @@ class IndexPage extends \View\DefaultLayout {
             . $this->render('_innerJavascript');
     }
 
-    public function slotUserbar() {
-        return '';
-    }
-
     public function slotСpaexchangeJS () {
         if ( !\App::config()->partners['Сpaexchange']['enabled'] ) {
            return;

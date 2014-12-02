@@ -393,7 +393,7 @@ class Action {
             $this->ab_jewel_filter($category, $productFilter);
         }
 
-        if (!$category->isV2Root()) {
+        if (!$category->isV2()) {
             foreach ($productFilter->getFilterCollection() as $filter) {
                 if ('brand' === $filter->getId()) {
                     foreach ($filter->getOption() as $option) {
@@ -931,6 +931,12 @@ class Action {
                 }
 
                 $smartChoiceData = \App::coreClientV2()->query('listing/smart-choice', ['region_id' => $region->getId(), 'client_id' => 'site', 'filter' => ['filters' => $smartChoiceFilters]]);
+
+                // SITE-4715
+                $smartChoiceData = array_filter($smartChoiceData, function($a) {
+                    return isset($a['products']);
+                });
+
                 $smartChoiceProductsIds = array_map(function ($a) {
                     return $a['products'][0]['id'];
                 }, $smartChoiceData);
@@ -1387,7 +1393,7 @@ class Action {
                         }
                     }
                 }
-            } else if ('new_filter_with_photo' === $testKey || 'new_filter_without_photo' === $testKey) {
+            } else if ('new_filter_with_photo_closed' === $testKey || 'new_filter_with_photo_opened' === $testKey) {
                 $isNewFilterPresent = false;
                 foreach ($productFilter->getFilterCollection() as $filter) {
                     if ('Металл' === $filter->getName() || 'Вставка' === $filter->getName()) {

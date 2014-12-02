@@ -7,6 +7,11 @@ return [
         'action'  => ['Main\IndexAction', 'execute'],
     ],
 
+    'homepage.recommendations' => [
+        'pattern' => '/index/recommend',
+        'action'  => ['Main\IndexAction', 'recommendations'],
+    ],
+
     'category.mainMenu' => [
         'pattern' => '/category/main_menu',
         'action'  => ['ProductCategory\MainMenuAction', 'execute'],
@@ -726,7 +731,6 @@ return [
     'product.recommended' => [
         'pattern' => '/product-recommended',
         'action' => ['Product\RecommendedAction', 'execute'],
-        'require' => ['productId' => '\d+'],
     ],
     'product.similar' => [
         'pattern' => '/ajax/product-similar/{productId}',

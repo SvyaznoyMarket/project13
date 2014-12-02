@@ -4,7 +4,7 @@
  * @var $exception \Exception
  */
 
-$page = new \View\DefaultLayout();
+$page = new \View\Error\IndexPage();
 $helper = new \Helper\TemplateHelper();
 
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -19,10 +19,11 @@ $helper = new \Helper\TemplateHelper();
     <script src="http://yandex.st/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
     <script src="/js/prod/LAB.min.js" type="text/javascript"></script>
     <script src="/js/prod/html5.min.js" type="text/javascript"></script>
-    <?= $page->render('_headJavascript') ?>
+    <?= $page->slotHeadJavascript() ?>
+    <?= $page->slotGoogleAnalytics() ?>
 </head>
 <body class='b404' data-template="page404" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
-<?= $page->render('_config'); ?>
+<?= $page->slotConfig() ?>
 
 
 <div class="errPage">
@@ -46,7 +47,7 @@ $helper = new \Helper\TemplateHelper();
 
         <div class="errPage_cnt_b">
             <div class="slidew slidew-br1">
-            <? if (\App::config()->product['showRelated']): ?>
+            <? if (\App::config()->product['pullRecommendation']): ?>
                 <?= $helper->render('product/__slider', [
                     'type'           => 'main',
                     'title'          => 'Мы рекомендуем',
@@ -67,6 +68,9 @@ $helper = new \Helper\TemplateHelper();
     </div>
 </div>
 
+
+<?= $page->slotBodyJavascript() ?>
+<?= $page->slotInnerJavascript() ?>
 
 <script type="text/javascript">
     var _gaq = _gaq || [];
@@ -118,6 +122,5 @@ $helper = new \Helper\TemplateHelper();
     }
 </script>
 
-<script src="/js/loadjs.js?t=<?= uniqid() //t90 ?>" type="text/javascript"></script>
 </body>
 </html>

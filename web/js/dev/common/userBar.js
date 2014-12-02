@@ -411,13 +411,13 @@
 	userBar.show = showUserbar;
 
 	body.on('click', '.jsUpsaleProduct', upsaleProductClick);
-	userbarStatic.on('click', '.jsCartDelete', deleteProductHandler);
+	body.on('click', '.jsCartDelete', deleteProductHandler);
 
 	$('.js-noProductsForCompareLink', userBarFixed).click(function(e) { showEmptyCompareNotice(e, 'fixed', userBarFixed); });
 	$('.js-noProductsForCompareLink', userbarStatic).click(function(e) { showEmptyCompareNotice(e, 'static', userbarStatic); });
 
 	if ( userBarFixed.length ) {
-		body.on('addtocart', showBuyInfo);
+		if (window.location.pathname !== '/cart') body.on('addtocart', showBuyInfo);
 		userBarFixed.on('click', '.jsCartDelete', deleteProductHandler);
 		scrollTarget = $(userbarConfig.target);
 

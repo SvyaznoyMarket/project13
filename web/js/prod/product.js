@@ -1233,7 +1233,7 @@ $(document).ready(function() {
         if (productId) {
             viewed = cookieValue ? ENTER.utils.arrayUnique(cookieValue.split(',')) : [];
             viewed.push(productId);
-            docCookies.setItem('product_viewed', viewed.join(','), 7 * 24 * 60 * 60, '/');
+            docCookies.setItem('product_viewed', viewed.slice(-20).join(','), 7 * 24 * 60 * 60, '/');
         }
     } catch (e) {
         console.error(e);

@@ -122,7 +122,7 @@ $f = function(
     <div class="clear"></div>
 
     <div class="slidew slidew-main">
-        <? if (\App::config()->product['showRelated']): ?>
+        <? if (\App::config()->product['pullRecommendation']): ?>
             <?= (new \Helper\TemplateHelper())->render('product/__slider', [
                'type'           => 'main',
                'title'          => 'Популярные товары',

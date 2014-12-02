@@ -1,0 +1,201 @@
+// информация о магазине - доставка, оплата...
+@full-size: 100%;
+@shopInfo-item-width: 235px;
+.shopInfo{
+    margin: 15px 10px;
+    &_i{
+        float: left;
+        white-space: nowrap;
+
+        width: 205px;
+        height: 35px;
+        margin: 0 8px;
+        padding: 4px 6px;
+
+        cursor: pointer;
+
+        border: 1px dotted @black;
+        &:last-child{
+            margin-right: 0;
+        }
+    }
+    &_r{
+        .inline-block-middle();
+        width: 165px;
+        white-space: nowrap;
+        &:hover {
+            text-decoration: none;
+        }
+    }
+    &_l{
+        margin: 0 2px 0 0;
+
+        .inline-block-middle();
+    }
+    &_tx{
+        margin: 0;
+    }
+    &_tl{
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 1.2;
+    }
+}
+
+@shopInfoTab-corner-left: @shopInfo-item-width/2 - 40;
+.shopInfoTab{
+    position: relative;
+
+    display: none;
+
+    margin: 20px 0;
+    padding: 15px 15px 20px;
+
+    text-align: center;
+
+    border: 1px solid @black;
+    &:before{
+        left: @shopInfoTab-corner-left;
+
+        .pseudo-corner-top(12px, @black, -12px);
+    }
+    &:after{
+        left: @shopInfoTab-corner-left + 2;
+
+        .pseudo-corner-top(10px, @white, -10px);
+    }
+    &-v2{
+        &:before{
+            left: @shopInfo-item-width + @shopInfoTab-corner-left;
+        }
+        &:after{
+            left: @shopInfo-item-width + @shopInfoTab-corner-left + 2;
+        }
+    }
+    &-v3{
+        &:before{
+            left: 2*@shopInfo-item-width + @shopInfoTab-corner-left;
+        }
+        &:after{
+            left: 2*@shopInfo-item-width + @shopInfoTab-corner-left + 2;
+        }
+    }
+    &-v4{
+        &:before{
+            left: 3*@shopInfo-item-width + @shopInfoTab-corner-left;
+        }
+        &:after{
+            left: 3*@shopInfo-item-width + @shopInfoTab-corner-left + 2;
+        }
+    }
+    &_lst{
+        width: @full-size;
+        margin: 0 0 20px;
+
+        .table();
+    }
+    &_i{
+        vertical-align: top;
+
+        .table-cell();
+    }
+    &_iconw{
+        width: 120px;
+        margin: 0 auto;
+    }
+    &_icon{
+        overflow: hidden;
+        position: relative;
+
+        width: 120px;
+        height: 120px;
+
+        text-align: center;
+        vertical-align: middle;
+
+        border: 1px solid @black;
+
+        .rounded(50%);
+        .table-cell();
+    }
+    &_tx{
+        margin: 10px 0 0;
+        line-height: 1.2;
+
+        text-align: center;
+        text-transform: uppercase;
+    }
+    &_btn{
+        font-size: 14px;
+        line-height: 1;
+
+        padding: 5px 20px;
+
+        border: 1px solid @black;
+
+        .rounded(3px);
+        .inline-block();
+        &:hover{
+            text-decoration: none;
+        }
+    }
+}
+
+.i-shopInfo{
+    background-image: url('@{base-url}/mainpage/img/i-delivery.png');
+    &-delivery{
+        .sprite-temp(0, 0, 33px, 33px);
+    }
+    &-deliveryself{
+        .sprite-temp(-33px, 0, 33px, 33px);
+    }
+    &-payment{
+        .sprite-temp(0, -33px, 33px, 33px);
+    }
+    &-wow{
+        .sprite-temp(-33px, -33px, 33px, 33px);
+    }
+}
+
+.i-shopinfo{
+    background-image: url('@{base-url}/mainpage/img/i-shopinfo.png');
+    &-delivery1{
+        .sprite-temp(-10px, -10px, 101px, 87px);
+    }
+    &-delivery2{
+        .sprite-temp(-131px, -10px, 100px, 64px);
+    }
+    &-delivery3{
+        .sprite-temp(-160px, -106px, 120px, 113px);
+    }
+    &-delivery4{
+        .sprite-temp(-10px, -227px, 87px, 88px);
+    }
+    &-payment1{
+        .sprite-temp(-117px, -227px, 88px, 72px);
+    }
+    &-payment2{
+        .sprite-temp(-251px, -10px, 92px, 64px);
+    }
+    &-payment3{
+        .sprite-temp(-225px, -227px, 62px, 78px);
+    }
+    &-payment4{
+        .sprite-temp(-363px, -10px, 67px, 77px);
+    }
+    &-payment5{
+        .sprite-temp(-339px, -107px, 60px, 77px);
+    }
+    &-selfdelivery1{
+        .sprite-temp(-339px, -204px, 86px, 72px);
+    }
+    &-selfdelivery2{
+        .sprite-temp(-307px, -296px, 76px, 68px);
+    }
+    &-selfdelivery3{
+        .sprite-temp(-10px, -384px, 85px, 54px);
+    }
+    &-selfdelivery4{
+        .sprite-temp(-115px, -384px, 60px, 60px);
+    }
+}

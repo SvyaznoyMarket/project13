@@ -309,10 +309,6 @@ class IndexPage extends \View\DefaultLayout {
         return $this->tryRender('_config', ['config' => $config]);
     }
 
-    public function slotUserbar() {
-        return $this->render('_userbar');
-    }
-
     public function slotUserbarContent() {
         return $this->render('product/_userbarContent', [
             'product'   => $this->getParam('product') ? $this->getParam('product') : null,

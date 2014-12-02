@@ -49,9 +49,20 @@
                 <div class="adfoxWrapper" id="adfox980"></div>
             <? endif ?>
 
-            <header class="header">
+            <div class="header">
                 <?= $page->slotHeader() ?>
-            </header><!--/ Шапка-->
+
+                <!-- Topbar -->
+                <?= $page->slotTopbar() ?>
+                <!-- /Topbar -->
+
+                <!-- Header -->
+                <div id="header" class="clearfix">
+                    <?= $page->slotNavigation() ?>
+                </div>
+                <!-- /Header -->
+
+            </div><!--/ Шапка-->
 
             <?= $page->slotContentHead() ?>
 

@@ -37,8 +37,8 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
         <?= file_get_contents(\App::config()->templateDir . '/product-category/root/_selectedBrands.mustache') ?>
     </script>
 
-    <div class="margin: 0 0 30px;">
-        <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
+    <div style="margin: 0 0 30px;">
+        <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
             <?= $helper->render('product/__slider', [
                 'type'      => 'viewed',
                 'title'     => 'Вы смотрели',

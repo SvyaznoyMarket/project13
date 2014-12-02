@@ -205,6 +205,16 @@ class CreateAction {
                 }
             }
 
+            $isPickpoint = ( $deliveryType->getToken() === \Model\DeliveryType\Entity::TYPE_PICKPOINT ) ? true :false;
+
+            if ( $isPickpoint ) {
+                $orderData['id_pickpoint'] = $orderPart->getPointId();
+                $orderData['name_pickpoint'] = $orderPart->getPointName();
+                //$orderData['point_address'] = $orderPart->getPointAddress();
+                $orderData['address_street'] = $orderPart->getPointAddress()['street'];
+                $orderData['address_building'] = $orderPart->getPointAddress()['house'];
+            }
+
             // подарочный сертификат
             if (1 == count($form->getPart()) && $form->getPaymentMethodId() == \Model\PaymentMethod\Entity::CERTIFICATE_ID) {
                 $orderData['certificate'] = $form->getCertificateCardnumber();
@@ -221,7 +231,7 @@ class CreateAction {
 
                 $productData = [
                     'id'       => $cartProduct->getId(),
-                    'quantity' => $cartProduct->getQuantity(),
+                    'quantity' => $isPickpoint ? 1 : $cartProduct->getQuantity(),
 
                 ];
 
@@ -280,6 +290,7 @@ class CreateAction {
                             );
                             $orderData['meta_data']['user_agent'] = $request->server->get('HTTP_USER_AGENT');
                             $orderData['meta_data']['kiss_session'] = $request->request->get('kiss_session');
+                            $orderData['meta_data']['last_partner'] = $request->cookies->get('last_partner');
                         }
                         \App::logger()->info(sprintf('Создается заказ от партнеров %s', json_encode($orderData['meta_data']['partner'])), ['order', 'partner']);
                     } catch (\Exception $e) {

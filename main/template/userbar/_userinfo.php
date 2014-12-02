@@ -4,11 +4,11 @@
  */
 ?>
 
-<div class="topbarfix_log topbarfix_log-unlogin" data-bind="visible: !name()">
-    <a href="/login" class="topbarfix_log_lk bAuthLink">Личный кабинет</a>
-</div>
+<li class="userbtn_i topbarfix_log topbarfix_log-unlogin" data-bind="visible: !name()">
+    <a href="/login" class="topbarfix_log_lk bAuthLink"><?= $page->new_menu === true ? 'Вход' : 'Личный кабинет' ?></a>
+</li>
 
-<div class="topbarfix_log topbarfix_log-login js-topbarfixLogin" data-bind="visible: name(), css: {'enterprizeMember': isEnterprizeMember}" style="display: none">
+<li class="userbtn_i topbarfix_log topbarfix_log-login js-topbarfixLogin" data-bind="visible: name(), css: {'enterprizeMember': isEnterprizeMember}" style="display: none">
     <a href="" class="topbarfix_log_lk" data-bind="attr: { href: link }">
         <!--ko text: firstName--><!--/ko--><br />
         <!--ko text: lastName--><!--/ko-->
@@ -17,4 +17,4 @@
     <div class="topbarfix_dd topbarfix_logOut">
         <a class="mBtnGrey topbarfix_logOutLink" href="<?= $page->url('user.logout') ?>">Выйти</a>
     </div>
-</div>
+</li>

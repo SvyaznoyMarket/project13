@@ -10,23 +10,29 @@ class RecommendedAction {
         $region = \App::user()->getRegion();
 
         $cart = \App::user()->getCart();
+        $cartProductIds = [];
         $productIds = [];
         $recommendController = new \Controller\Product\BasicRecommendedAction();
 
         /* Для всех продуктов корзины получим рекомендации */
         /* Неплохо распараллелить запросы, ну да ладно */
         foreach ($cart->getProducts() as $product) {
+            $cartProductIds[] = $product->getId();
             $productIds = array_merge($productIds, (array)$recommendController->getProductsIdsFromRetailrocket($product, $request, 'CrossSellItemToItems'));
         }
 
         /* Получаем продукты из ядра */
         $products = [];
         foreach (array_chunk($productIds, \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
-            \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$products) {
+            \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$products, &$cartProductIds) {
                 foreach ($data as $item) {
                     if (empty($item['id'])) continue;
+                    if (in_array($item['id'], $cartProductIds)) continue;
 
-                    $products[] = new \Model\Product\Entity($item);
+                    $iProduct = new \Model\Product\Entity($item);
+                    // если товар недоступен для покупки - пропустить
+                    if (!$iProduct->isAvailable() || $iProduct->isInShopShowroomOnly() || $iProduct->isInShopOnly()) continue;
+                    $products[] = $iProduct;
                 }
             });
         }

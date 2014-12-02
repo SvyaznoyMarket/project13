@@ -371,7 +371,6 @@ class OrderEntity {
                 $data['kiss_session'] = $request->request->get('kiss_session');
                 $data['last_partner'] = $request->cookies->get('last_partner');
             }
-            \App::logger()->info(sprintf('Создается заказ от партнеров %s', json_encode($data['partner'])), ['order', 'partner']);
         } catch (\Exception $e) {
             \App::logger()->error($e, ['order_v3', 'partner']);
         }

@@ -18,6 +18,14 @@
  */
 
 $isKitPage = (bool)$product->getKit();
+
+// АБ-тест рекомендаций
+$test = \App::abTest()->getTest('recommended_product');
+$isNewRecommendation =
+    $test->getEnabled()
+    && $test->getChosenCase()
+    && ('new_recommendation' == $test->getChosenCase()->getKey())
+;
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
@@ -52,7 +60,7 @@ $isKitPage = (bool)$product->getKit();
 
     <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'content']) ?>
 
-    <? if (\App::config()->product['showRelated'] && !$isTchibo): ?>
+    <? if (\App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
             'type'           => 'alsoBought',
             'title'          => 'С этим товаром покупают',
@@ -69,7 +77,7 @@ $isKitPage = (bool)$product->getKit();
         ]) ?>
     <? endif ?>
 
-    <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
+    <? if (\App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
             'type'     => 'similar',
             'title'    => 'Похожие товары',
@@ -123,12 +131,14 @@ $isKitPage = (bool)$product->getKit();
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
 
-    <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'right']) ?>
+    <? if ($product->isAvailable()): // SITE-4709 ?>
+        <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'right']) ?>
+    <? endif ?>
 </div><!--/right section -->
 
 <div class="clear"></div>
 
-<? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
+<? if (\App::config()->product['pullRecommendation']): ?>
     <?= $helper->render('product/__slider', [
         'type'     => 'alsoViewed',
         'title'    => 'С этим товаром также смотрят',
@@ -144,7 +154,7 @@ $isKitPage = (bool)$product->getKit();
     ]) ?>
 <? endif ?>
 
-<? if ($isNewRecommendation && \App::config()->product['pullRecommendation'] && !$isTchibo): ?>
+<? if ($isNewRecommendation && \App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
     <?= $helper->render('product/__slider', [
         'type'      => 'viewed',
         'title'     => 'Вы смотрели',
