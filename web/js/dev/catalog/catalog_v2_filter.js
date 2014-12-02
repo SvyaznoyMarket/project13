@@ -1,7 +1,7 @@
 $(function() {
 	var
 		dropBoxOpenClass = 'opn',
-		dropBoxSelectClass = 'selected',
+		dropBoxSelectClass = 'actv',
 		brandTitleOpenClass = 'opn',
 		$filter = $('.js-category-filter'),
 		$otherBrands = $('.js-category-v2-filter-otherBrands'),

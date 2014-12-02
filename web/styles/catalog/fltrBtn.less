@@ -79,8 +79,8 @@
             float: right;
             width: 820px;
             overflow: auto;
-            padding-top: 10px;
-            max-height: 200px;
+            padding: 10px 0 0 1px;
+            max-height: 135px;
         }
     }
     // ссекция кнопки фильтрации
@@ -145,11 +145,9 @@
             display: none;
         }
         &.act{
-            width: 118px;
-            height: 41px;
-
-            border-width: 2px;
+            .box-shadow3(0 0 1px #f99b1c, 0 0 1px #f99b1c, 0 0 1px #f99b1c);
             border-color: #f99b1c;
+
             .fltrBtn_btn_clsr{
                 display: block;
             }
@@ -214,14 +212,47 @@
             z-index: 16;
 
             border-color: #c7c7c7;
+            border-bottom: none;
             background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAQAAAClB0z9AAAAP0lEQVQI12NgAIL/jE6T/jMywIBTgtN/pwQox4/X6TmQ+9yPF8x17gJygNC5C8RRc/4J5f50VmNw2grhgOFWABRpHkDXZMHuAAAAAElFTkSuQmCC');
             .fltrBtnBox_tggl_tx{
                 border: none;
             }
         }
 
+        .fltrBtnBox_tggl-mark {
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAAV0lEQVQIW2NggIL///8zvnf0ngSiYWJw8N7JK+G9g9d/EI0i8d/Pj/eDg/dzkCSIBvHhkh8cfbrAuqAYxAdLfHIOVPvg6P0TVdL7J0gcqMt7K7IEkoKtAD3ERJ5C4w0pAAAAAElFTkSuQmCC');
+        }
+
         .fltrBtnBox_dd {
             display: block;
+        }
+
+        &.actv {
+            .fltrBtnBox_tggl {
+
+                border-color: #c7c7c7;
+                .box-shadow3(0 0 0 #fff, 0 0 0 #fff, 0 0 0 #fff);
+                .rounded(3px 3px 0 0);
+                .fltrBtnBox_tggl_tx{
+                    border: none;
+                }
+            }
+        }
+    }
+
+    &.actv {
+        .fltrBtnBox_tggl {
+            border-color: #f99b1c;
+            .box-shadow3(0 0 1px #f99b1c, 0 0 1px #f99b1c, 0 0 1px #f99b1c);
+            .rounded(3px);
+            .fltrBtnBox_tggl_tx{
+                border: none;
+            }
+        }
+
+        .fltrBtnBox_tggl-mark {
+            border-color: #ef404a;
+            .box-shadow3(0 0 1px #ef404a, 0 0 1px #ef404a, 0 0 1px #ef404a);
         }
     }
 
@@ -235,7 +266,6 @@
         cursor: pointer;
 
         border: 1px solid @white;
-        border-bottom: none;
         background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAQAAAClB0z9AAAAQElEQVQI12Nw2ur0Hw63MjirOf+EcJx/OqsxMDA4d0G5XQwg4Mfr9BzIfe7HywABzvFAuXgGGPjP6DTpPyOIBQCDch5A9YNPpAAAAABJRU5ErkJggg==') no-repeat right 10px center;
         background-color: @white;
 
@@ -244,25 +274,13 @@
         &_tx{
             border-bottom: 1px dotted #515151;
         }
-        &.act{
-            padding: 2px 22px 4px 10px;
 
-            border: 2px solid #f99b1c;
-
-            .rounded(3px);
-            .fltrBtnBox_tggl_tx{
-                border: none;
-            }
-        }
         //скидки - красная выпадашка
         &-mark{
             color: #ef404a;
             background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAAVUlEQVQI12P44Oi99b2D1390DBJn+OQcqAZk/EST+AkSZwCBD44+XaiSPl0MMPDfz4/3g4P3c7AEkAbxGZDBJwfveJAkiGZAB////2d87+g9CUTDxAB+g0Sgd+vg2AAAAABJRU5ErkJggg==');
             .fltrBtnBox_tggl_tx{
                 border-color: #ef404a;
-            }
-            &.opn{
-                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAAV0lEQVQIW2NggIL///8zvnf0ngSiYWJw8N7JK+G9g9d/EI0i8d/Pj/eDg/dzkCSIBvHhkh8cfbrAuqAYxAdLfHIOVPvg6P0TVdL7J0gcqMt7K7IEkoKtAD3ERJ5C4w0pAAAAAElFTkSuQmCC');
             }
         }
     }
@@ -273,7 +291,9 @@
         top: 27px;
 
         min-width: 190px;
+        max-height: 250px;
         padding: 10px 10px 0;
+        overflow: auto;
 
         border: 1px solid #c7c7c7;
         background: @white;
