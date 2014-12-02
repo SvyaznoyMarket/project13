@@ -226,7 +226,11 @@ class MenuEntity {
         if (!$urls) $urls = \App::config()->productCategory['url'];
 
         if ($this->image) {
-            return $this->getHost() . $urls[$size] . $this->image;
+            if (preg_match('/^(https?|ftp)\:\/\//i', $this->image)) {
+                return $this->image;
+            } else {
+                return $this->getHost() . $urls[$size] . $this->image;
+            }
         } else {
             return null;
         }

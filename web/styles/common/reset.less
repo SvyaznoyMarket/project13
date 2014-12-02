@@ -10,8 +10,8 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
 	margin: 0;
@@ -25,9 +25,9 @@ html {
   height: 100%;
 }
 
-body { 
-  font: normal 75% Tahoma, Geneva, sans-serif, helvetica, sans-serif; 
-  background: #f6f1e9;
+body {
+  font: normal 75%/1.4 Tahoma, Geneva, sans-serif, helvetica, sans-serif;
+  background: #e8e8e8;
   width: 100%;
   height: 100%;
 }
@@ -48,7 +48,7 @@ q:before, q:after {
 
 
 /**
- * Доработанные reset стили normalize.css v2.1.3 git.io/normalize 
+ * Доработанные reset стили normalize.css v2.1.3 git.io/normalize
  */
 
 /**
@@ -148,6 +148,21 @@ a {
     }
 }
 
+.undrl {
+  text-decoration: none;
+  border-bottom: 1px solid #a0a0a0;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.undrlh {
+  &:hover {
+    text-decoration: none;
+    border-bottom: 1px solid #a0a0a0;
+  }
+}
+
 /* ==========================================================================
    Typography
    ========================================================================== */
@@ -159,7 +174,7 @@ a {
 
 h1 {
     font-size: 2em;
-    margin: 10px 0 20px; 
+    margin: 10px 0 20px;
     font-weight: normal;
 }
 
@@ -285,6 +300,14 @@ sup {
 
 sub {
     bottom: -0.25em;
+}
+
+menu {
+  padding: 0;
+  margin: 0;
+  li {
+    list-style-type: none;
+  }
 }
 
 /* ==========================================================================

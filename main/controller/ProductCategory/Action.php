@@ -412,6 +412,17 @@ class Action {
             $this->ab_jewel_filter($category, $productFilter);
         }
 
+        // SITE-4658
+        foreach ($productFilter->getFilterCollection() as $filter) {
+            if ('Бренд' === $filter->getName()) {
+                foreach ($filter->getOption() as $option) {
+                    $option->setImageUrl('');
+                }
+
+                break;
+            }
+        }
+
         // получаем из json данные о горячих ссылках и content
         $hotlinks = [];
         $seoContent = '';
@@ -808,6 +819,12 @@ class Action {
                 }
 
                 $smartChoiceData = \App::coreClientV2()->query('listing/smart-choice', ['region_id' => $region->getId(), 'client_id' => 'site', 'filter' => ['filters' => $smartChoiceFilters]]);
+
+                // SITE-4715
+                $smartChoiceData = array_filter($smartChoiceData, function($a) {
+                    return isset($a['products']);
+                });
+
                 $smartChoiceProductsIds = array_map(function ($a) {
                     return $a['products'][0]['id'];
                 }, $smartChoiceData);

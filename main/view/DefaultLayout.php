@@ -2,13 +2,24 @@
 
 namespace View;
 
+use Session\AbTest\ABHelperTrait;
+
 class DefaultLayout extends Layout {
+    use ABHelperTrait;
+
     protected $layout  = 'layout-twoColumn';
     protected $breadcrumbsPath = null;
     protected $useTchiboAnalytics = false;
+    /** @var bool АБ-тест новой главной страницы (и новое меню) */
+    public $new_menu = false;
 
     public function __construct() {
         parent::__construct();
+
+        // Меню нужно в нескольких рендерингах, поэтому запрашиваем его сразу
+        $this->setGlobalParam('menu', (new Menu($this))->generate_new(\App::user()->getRegion()));
+
+        $this->new_menu = $this->isNewMainPage();
 
         $this->setTitle('Enter - это выход!');
         $this->addMeta('yandex-verification', '623bb356993d4993');
@@ -185,8 +196,8 @@ class DefaultLayout extends Layout {
 
             \App::config()->debug ? '/js/vendor/LAB.js' : '/js/prod/LAB.min.js',
 
-            \App::config()->debug ? '/js/vendor/html5.js' : '/js/prod/html5.min.js',
-            
+            \App::config()->debug ? '/js/vendor/modernizr.custom.js' : '/js/prod/modernizr.custom.min.js',
+
         ] as $javascript) {
             $return .= '<script src="' . $javascript . '" type="text/javascript"></script>' . "\n";
         }
@@ -215,8 +226,32 @@ class DefaultLayout extends Layout {
 //        return ('user.login' != \App::request()->attributes->get('route')) ? $this->render('_auth') : '';
     }
 
+    /** Статичный юзербар (над меню)
+     * @return string
+     */
+    public function slotTopbar() {
+        return $this->render($this->new_menu ? 'userbar2/topbar' : 'userbar/topbar');
+    }
+
+    /** Всплывающий юзербар
+     * @return string
+     */
     public function slotUserbar() {
-        return '';
+        return $this->render('common/_userbar');
+    }
+
+    /** Панель поиска
+     * @return string
+     */
+    public function slotSearchBar() {
+        return $this->new_menu ? $this->render('common/_searchbar') : '';
+    }
+
+    /** Строка поиска
+     * @return string
+     */
+    public function slotNavigation() {
+        return $this->render($this->new_menu ? 'common/_navigation-new' : 'common/_navigation-old', ['menu' => $this->getGlobalParam('menu')]);
     }
 
     public function slotUserbarContent() {
@@ -278,11 +313,7 @@ class DefaultLayout extends Layout {
                 $content = $renderer->render('__mainMenu', ['menu' => (new Menu())->generate(\App::user()->getRegion())]);
             }
         } else {
-            \Debug\Timer::start('main-menu');
             $content = $renderer->render('__mainMenu', ['menu' => (new Menu())->generate(\App::user()->getRegion())]);
-            \Debug\Timer::stop('main-menu');
-
-            //\App::debug()->add('time.main-menu', round(\Debug\Timer::get('main-menu')['total'], 3) * 1000, 95);
         }
 
         return $content;
@@ -462,29 +493,26 @@ class DefaultLayout extends Layout {
 
     public function slotRetailRocket() {
         $routeName = \App::request()->attributes->get('route');
+        if ('orderV3.complete' === $routeName) {
+            $routeName = 'order.complete';
+        }
+
         $rrObj = new \View\Partners\RetailRocket($routeName);
-        $return = '';
 
         $rrData = null;
         if ($routeName == 'product') {
-
-            $product = $this->getParam('product');
-            $rrData = $rrObj->product($product);
+            $rrData = $rrObj->product($this->getParam('product'));
         } elseif ($routeName == 'product.category') {
-
-           $category = $this->getParam('category');
-           $rrData = $rrObj->category($category);
-
+           $rrData = $rrObj->category($this->getParam('category'));
         } elseif ($routeName == 'order.complete') {
-
-            $orders = $this->getParam('orders');
-            $rrData = $rrObj->transaction($orders);
-
+            if (!$this->getParam('sessionIsReaded')) {
+                $rrData = $rrObj->transaction($this->getParam('orders'));
+            }
         }
-        $rrObj = null;
 
         $rrData['emailCookieName'] = \App::config()->partners['RetailRocket']['userEmail']['cookieName'];
 
+        $return = '';
         $return .= '<div id="RetailRocketJS" class="jsanalytics"';
         if ($rrData) {
             $return .= ' data-value="' . $this->json($rrData) . '"';
@@ -960,5 +988,14 @@ class DefaultLayout extends Layout {
         }
 
         return '<div id="GetIntentJS" class="jsanalytics" data-value="' . $this->json([]) . '"></div>';
+    }
+
+    /** Дополнительный hidden-input с id-категории в форму поиска
+     * @return string
+     */
+    public function blockInputCategory() {
+        return $this->isAdvancedSearch()
+            ? '<input type="hidden" name="category" data-bind="value: currentCategory() == null ? 0 : currentCategory().id, disable: currentCategory() == null " />'
+            : null;
     }
 }

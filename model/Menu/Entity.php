@@ -5,14 +5,25 @@ namespace Model\Menu;
 class Entity {
     const ACTION_SEPARATOR = 'separator';
     const ACTION_LINK = 'link';
-    const ACTION_PRODUCT_CATEGORY = 'category';
-    const ACTION_PRODUCT_CATALOG = 'catalog';
+    const ACTION_PRODUCT_CATEGORY = 'category-get';
+    const ACTION_PRODUCT_CATALOG = 'category-tree';
     const ACTION_PRODUCT = 'product';
+    const ACTION_SLICE = 'slice';
 
+    /** @var string */
+    public $id;
+    /** @var string */
+    public $type;
     /** @var string */
     public $name;
     /** @var string */
+    public $char;
+    /** @var string|null */
     public $image;
+    /** @var string */
+    public $class;
+    /** @var int */
+    public $level;
     /** @var string */
     public $smallImage;
     /** @var bool|null */
@@ -46,6 +57,7 @@ class Entity {
 
     public function __construct(array $data = []) {
         if (isset($data['name'])) $this->name = (string)$data['name'];
+        if (isset($data['char'])) $this->char = (string)$data['char'];
         if (isset($data['image'])) $this->image = (string)$data['image'];
         if (isset($data['smallImage'])) $this->smallImage = (string)$data['smallImage'];
         if (isset($data['useLogo'])) $this->useLogo = (bool)$data['useLogo'];
@@ -63,6 +75,19 @@ class Entity {
             }
             $this->item = $data['item'];
             $this->firstItem = reset($this->item);
+        }
+
+        $data += ['medias' => []];
+        foreach ($data['medias'] as $mediaItem) {
+            $mediaItem += ['provider' => null, 'sources' => []];
+            if ('image' == $mediaItem['provider']) {
+                if ($sourceItem = reset($mediaItem['sources'])) {
+                    if (40 == @$sourceItem['width'] && 40 == @$sourceItem['height']) {
+                        $this->image = @$sourceItem['url'];
+                        continue;
+                    }
+                }
+            }
         }
     }
 }

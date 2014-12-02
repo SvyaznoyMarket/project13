@@ -1,3 +1,128 @@
+;$(function($){
+	var $body = $(document.body),
+		searchUrl = '/search/autocomplete',
+		switchCookie = JSON.parse(docCookies.getItem('switch')),
+		advSearchEnabled = switchCookie && switchCookie.adv_search == 'on';
+
+	function SearchModel(){
+		var self = this;
+		self.searchInput = ko.observable('');
+		self.searchFocus = ko.observable(false);
+		self.searchResults = ko.observableArray();
+
+		self.advancedSearch = ko.observable(advSearchEnabled);
+		self.searchCategoryVisible = ko.observable(false);
+		self.currentCategory = ko.observable(null);
+		self.previousCategory = ko.observable(null);
+
+		self.searchResultCategories = ko.observableArray();
+		self.searchResultProducts = ko.observableArray();
+
+		self.isNoSearchResult = ko.computed(function(){
+			return self.searchResultCategories().length == 0 && self.searchResultProducts().length == 0
+		});
+
+		self.toggleCategoryVisibility = function(){
+			self.searchCategoryVisible(!self.searchCategoryVisible());
+		};
+
+		self.searchResultNavigation = function(data, e) {
+			var keycode = e.which,
+				$links = $('.jsSearchbarResults a'),
+				activeClass = 'searchdd_lk_iact',
+				index = $links.index($links.filter('.'+activeClass));
+
+			console.log(index);
+
+			if (!self.isNoSearchResult()) {
+				$links.removeClass(activeClass);
+				switch (keycode) {
+					case 13:
+						if (index > -1) {
+							window.location.href = $links.eq(index).attr('href');
+							return false;
+						}
+						break;
+					case 38:
+						$links.eq(index - 1).addClass(activeClass);
+						break;
+					case 40:
+						$links.eq(index + 1).addClass(activeClass);
+						break
+				}
+			}
+
+			return true;
+		};
+
+		self.categoryClick = function(data, event){
+			var category = $(event.target).data('value');
+			self.currentCategory(category);
+			self.toggleCategoryVisibility();
+		};
+		self.categoryReset = function(){
+			self.currentCategory(null);
+			self.toggleCategoryVisibility();
+		};
+
+		// задержка для скрытия результатов поиска
+		self.searchResultsVisibility = ko.computed(function(){
+			return self.searchFocus()
+		}).extend({throttle: 200});
+
+		// Throttled ajax query
+		ko.computed(function(){
+			var val = self.searchInput();
+			var params = {q: val, sender: 'knockout'};
+
+			if (self.currentCategory() != null) params.catId = self.currentCategory().id;
+
+			if (val.length < 3) return;
+
+			// assuming jQuery
+			$.get(searchUrl, params)
+				.done(function (data) {
+					self.searchResultCategories(data.result.categories);
+					self.searchResultProducts(data.result.products);
+				})
+				.fail(function () {
+					console.error("could not retrieve value from server");
+				});
+		}).extend({ throttle: 200 });
+
+		// АНАЛИТИКА
+		// Предыдущее значение category
+		self.currentCategory.subscribe(function(val){
+			self.previousCategory(val);
+		}, self, 'beforeChange');
+
+		self.currentCategory.subscribe(function(val){
+			var previous = self.previousCategory() === null ? '' : self.previousCategory().name;
+
+			console.log(val, self.previousCategory());
+
+			if (val == null) {
+				$body.trigger('trackGoogleEvent',['search_scope', 'clear', previous])
+			} else {
+				if (self.previousCategory() == null) {
+					$body.trigger('trackGoogleEvent',['search_scope', 'change', val.name + '_' + 'Все товары'])
+				} else {
+					$body.trigger('trackGoogleEvent',['search_scope', 'change', val.name + '_' + previous])
+				}
+			}
+		});
+
+
+		return self;
+	}
+
+	// Биндинги на нужные элементы
+	// Топбар, кнопка Купить на странице продукта, листинги, слайдер аксессуаров
+	$body.find('.jsKnockoutSearch').each(function(){
+		ko.applyBindings(new SearchModel(), this);
+	});
+}(jQuery));
+
 ;(function($) {
 	ko.bindingHandlers.buyButtonBinding = {
 		update: function(element, valueAccessor) {
@@ -1480,7 +1605,7 @@
 }(this));
 (function() {
 	ENTER.counters = {
-		initGetIntentCounter: function(data) {
+		callGetIntentCounter: function(data) {
 			if (typeof __GetI === "undefined") {
 				__GetI = [];
 			}
@@ -1526,6 +1651,91 @@
 				var s = document.getElementsByTagName('script')[0];
 				s.parentNode.insertBefore(script, s);
 			})();
+		},
+
+		callRetailRocketCounter: function(routeName, data) {
+			var actions = {
+				'product': function (data, userData) {
+					console.info('RetailRocketJS product');
+
+					var rcAsyncInit = function() {
+						try {
+							rcApi.view(data, userData.userId ? userData : undefined);
+						}
+						catch (err) {}
+						console.log('Вызов счётчика RetailRocket', routeName, data, userData);
+					};
+
+					rrApiOnReady.push(rcAsyncInit);
+				},
+
+				'product.category': function (data, userData) {
+					console.info('RetailRocketJS product.category');
+
+					var rcAsyncInit = function() {
+						try {
+							rcApi.categoryView(data, userData.userId ? userData : undefined);
+						}
+						catch (err) {}
+						console.log('Вызов счётчика RetailRocket', routeName, data, userData);
+					};
+
+					rrApiOnReady.push(rcAsyncInit);
+				},
+
+				'order.complete': function (data, userData) {
+					console.info('RetailRocketJS order.complete');
+
+					if (userData.userId) {
+						data.userId = userData.userId;
+						data.hasUserEmail = userData.hasUserEmail;
+					}
+
+					var rcAsyncInit = function() {
+						try {
+							rcApi.order(data);
+						}
+						catch (err) {}
+						console.log('Вызов счётчика RetailRocket', routeName, data, userData);
+					};
+
+					rrApiOnReady.push(rcAsyncInit);
+				}
+			};
+
+			function callCounter(userInfo) {
+				try {
+					console.info('RetailRocketJS action');
+
+					if (userInfo && userInfo.id) {
+						rrPartnerUserId = userInfo.id; // rrPartnerUserId — по ТЗ должна быть глобальной
+					}
+
+					if (actions.hasOwnProperty(routeName)) {
+						var userData = {
+							userId: userInfo ? userInfo.id || false : null,
+							hasUserEmail: userInfo && userInfo.email ? true : false
+						};
+
+						actions[routeName](data, userData);
+					}
+				} catch (err) {}
+			}
+
+			if (ENTER.config.userInfo === false) {
+				callCounter();
+			} else if (!ENTER.config.userInfo) {
+				setTimeout(function() {
+					if (ENTER.config.userInfo) {
+						callCounter(ENTER.config.userInfo.user);
+					} else {
+						setTimeout(arguments.callee, 100);
+					}
+				}, 100);
+			} else {
+				console.warn(ENTER.config.userInfo);
+				callCounter(ENTER.config.userInfo.user);
+			}
 		}
 	};
 })();
@@ -2700,6 +2910,12 @@ $(document).ready(function() {
 			$(this).next('.enterPrizeListWrap').toggle('fast');
 	});
 });
+// Simple lazy loading
+;$('nav').on('mouseover', '.navsite2_i', function(){
+	$(this).find('.menuImgLazy').each(function(){
+		$(this).attr('src', $(this).data('src'))
+	});
+});
 ;(function($){	
 	/*paginator*/
 	var EnterPaginator = function( domID,totalPages, visPages, activePage ) {
@@ -3629,11 +3845,11 @@ $(document).ready(function() {
                     rrviewed = docCookies.getItem('product_viewed')
                 ;
 
-                if (typeof rrviewed === 'string') {
+                if (('viewed' == data.type) && typeof rrviewed === 'string') {
                     data['rrviewed'] = ENTER.utils.arrayUnique(rrviewed.split(','));
-                }
 
-                $(el).data('slider', data);
+                    $(el).data('slider', data);
+                }
             });
         } catch (e) {
             console.error(e);
@@ -3649,7 +3865,6 @@ $(document).ready(function() {
             if ($bubble.length) {
                 $bubble.find('.slideItem_flt_i').text($el.data('product').name);
                 $bubble.addClass('slideItem_flt-show');
-                console.info($el.offset());
                 $bubble.offset({left: $el.offset().left});
             }
         });
@@ -4733,13 +4948,13 @@ $(document).ready(function() {
 	userBar.show = showUserbar;
 
 	body.on('click', '.jsUpsaleProduct', upsaleProductClick);
-	userbarStatic.on('click', '.jsCartDelete', deleteProductHandler);
+	body.on('click', '.jsCartDelete', deleteProductHandler);
 
 	$('.js-noProductsForCompareLink', userBarFixed).click(function(e) { showEmptyCompareNotice(e, 'fixed', userBarFixed); });
 	$('.js-noProductsForCompareLink', userbarStatic).click(function(e) { showEmptyCompareNotice(e, 'static', userbarStatic); });
 
 	if ( userBarFixed.length ) {
-		body.on('addtocart', showBuyInfo);
+		if (window.location.pathname !== '/cart') body.on('addtocart', showBuyInfo);
 		userBarFixed.on('click', '.jsCartDelete', deleteProductHandler);
 		scrollTarget = $(userbarConfig.target);
 

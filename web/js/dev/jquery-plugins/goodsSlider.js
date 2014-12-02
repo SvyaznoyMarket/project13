@@ -22,7 +22,7 @@
 			 * @return bool
 			 */
 			isRecommendation = function isRecommendation( type ) {
-				return -1 != $.inArray(type, ['alsoBought', 'similar', 'alsoViewed', 'main', 'search', 'viewed']);
+				return -1 != $.inArray(type, ['alsoBought', 'similar', 'alsoViewed', 'main', 'search'/*, 'viewed'*/]);
 			};
 		// end of functions
 
@@ -45,7 +45,7 @@
             }
 
             if (sliderParams.rrviewed) {
-                urlData.rrviewed = sliderParams.rrviewed;
+                //urlData.rrviewed = sliderParams.rrviewed;
             }
 		});
 
@@ -57,8 +57,6 @@
 				});
 
 				if ( recommendArray.length === slidersRecommendation ) {
-                    urlData['rrviewed'] = urlData.rrviewed;
-
 					$.ajax({
 						type: 'GET',
 						url: url,
@@ -319,7 +317,17 @@
 
 			if ( sliderParams.url !== null ) {
 				if ( typeof window.ENTER.utils.packageReq === 'function' ) {
-					getSlidersData(sliderParams.url, sliderParams.type, authFromServer);
+                    try {
+                        if ('viewed' == sliderParams.type) {
+                            sliderParams.url += ((-1 != sliderParams.url.indexOf('?')) ? '&' : '?') + 'rrviewed=' + sliderParams.rrviewed + '&' + $.param({senders: [sliderParams.sender]});
+
+                            getSlidersData(sliderParams.url, sliderParams.type, function(res) {
+                                res.recommend && res.recommend.viewed && authFromServer(res.recommend.viewed);
+                            });
+                        } else {
+                            getSlidersData(sliderParams.url, sliderParams.type, authFromServer);
+                        }
+                    } catch (e) { console.error(e); }
 				}
 				else {
 					$.ajax({

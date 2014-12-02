@@ -29,7 +29,10 @@ class RecommendedAction {
                     if (empty($item['id'])) continue;
                     if (in_array($item['id'], $cartProductIds)) continue;
 
-                    $products[] = new \Model\Product\Entity($item);
+                    $iProduct = new \Model\Product\Entity($item);
+                    // если товар недоступен для покупки - пропустить
+                    if (!$iProduct->isAvailable() || $iProduct->isInShopShowroomOnly() || $iProduct->isInShopOnly()) continue;
+                    $products[] = $iProduct;
                 }
             });
         }

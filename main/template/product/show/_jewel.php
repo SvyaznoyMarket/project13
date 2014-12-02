@@ -110,7 +110,7 @@ $isNewRecommendation =
         ]) ?>
     <? endif ?>
 
-    <? if (\App::config()->product['showRelated']): ?>
+    <? if (\App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
             'type'           => 'alsoBought',
             'title'          => 'С этим товаром покупают',
@@ -133,6 +133,12 @@ $isNewRecommendation =
 
     <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'content']) ?>
 
+    <? if ($product->getSecondaryGroupedProperties()): // показываем все характеристики (сгруппированые), если ранее они не были показаны ?>
+        <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getSecondaryGroupedProperties()]); // Характеристики ?>
+    <? endif ?>
+
+    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent, 'sprosikupiReviews' => $sprosikupiReviews, 'shoppilotReviews' => $shoppilotReviews]) ?>
+
     <? if (!$showSimilarOnTop || !$isNewRecommendation): ?>
         <? if (\App::config()->product['pullRecommendation']): ?>
             <?= $helper->render('product/__slider', [
@@ -150,15 +156,6 @@ $isNewRecommendation =
             ]) ?>
         <? endif ?>
     <? endif ?>
-
-    <?
-    if ($product->getSecondaryGroupedProperties()) {
-        // показываем все характеристики (сгруппированые), если ранее они не были показаны
-        echo $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getSecondaryGroupedProperties()]); // Характеристики
-    }
-    ?>
-
-    <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent, 'sprosikupiReviews' => $sprosikupiReviews, 'shoppilotReviews' => $shoppilotReviews]) ?>
 
 </div><!--/left section -->
 
@@ -221,7 +218,9 @@ $isNewRecommendation =
 
     <?//= $helper->render('product/__service', ['product' => $product]) ?>
 
-    <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'right']) ?>
+    <? if ($product->isAvailable()): // SITE-4709 ?>
+        <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'right']) ?>
+    <? endif ?>
 </div><!--/right section -->
 
 <div class="clear"></div>
@@ -242,7 +241,7 @@ $isNewRecommendation =
     ]) ?>
 <? endif ?>
 
-<? if ($isNewRecommendation && \App::config()->product['pullRecommendation']): ?>
+<? if ($isNewRecommendation && \App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
     <?= $helper->render('product/__slider', [
         'type'      => 'viewed',
         'title'     => 'Вы смотрели',

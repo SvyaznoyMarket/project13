@@ -58,7 +58,11 @@ class RecommendedAction {
                 foreach ((array)$data as $item) {
                     if (empty($item['id'])) continue;
 
-                    $productsById[$item['id']] = new \Model\Product\Entity($item);
+                    $product = new \Model\Product\Entity($item);
+                    // если товар недоступен для покупки - пропустить
+                    if (!$product->isAvailable() || $product->isInShopShowroomOnly()) continue;
+
+                    $productsById[$item['id']] = $product;
                 }
             });
         }

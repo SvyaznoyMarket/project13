@@ -1,0 +1,229 @@
+// header var
+@header-height: 50px;
+@full-size: 100%;
+.main-new {
+    .header {
+        padding-bottom: 0;
+
+        &_b{
+            border-right: 1px solid #e8e8e8;
+            border-left: 1px solid #e8e8e8;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        &_t{
+            border-width: 0 1px 0 1px;
+            border-style: solid;
+            border-color: @darkgrey3;
+        }
+    }
+}
+
+.header{
+    width: 960px;
+    margin: 0 auto;
+    padding: 0 0 20px;
+    background: @white;
+
+    &-new {
+        background: @white;
+    }
+    // верхний блок шапки
+    &_t{
+        height: @header-height;
+        padding: 0 0 0 10px;
+
+        background: @lightgrey8;
+    }
+    &_i{
+        .inline-block-middle();
+    }
+    &_c{
+        height: 60px;
+        padding: 5px 10px;
+
+        background: @black;
+    }
+    &_b{
+        position: relative;
+        z-index: 100;
+
+        height: 85px;
+        padding: 5px 5px 0;
+
+        background: @white;
+        border-bottom: 2px solid #e8e8e8;
+
+        .navsite_i {
+            min-width: 60px;
+        }
+    }
+}
+// контакты
+.hdcontacts{
+    margin: 0 10px 0 0;
+    &_lk{
+        color: #808080;
+    }
+    &_phone{
+        font-size: 14px;
+        font-weight: bold;
+
+        color: #424242;
+    }
+}
+// ссылки в шапке
+.hdlk{
+    &_i{
+        line-height: @header-height;
+
+        margin: 0 0 0 20px;
+
+        .inline-block();
+    }
+    &_lk{
+        color: #424242;
+    }
+}
+// звонок с сайта
+.hdcall{
+    font-weight: bold;
+
+    padding: 2px 3px 2px 4px;
+
+    color: @orange-2;
+    border: 1px solid @orange-2;
+
+    .rounded(3px);
+    &:hover{
+        text-decoration: none;
+    }
+    &_tx{
+        line-height: 1.2;
+
+        .inline-block();
+    }
+}
+
+// логотип
+.sitelogo{
+    width: 71px;
+    height: 60px;
+    margin: 0 85px 0 0;
+
+    background: url('@{base-url}/mainpage/img/logo.png') no-repeat 0 50%;
+}
+
+// пользовательские контролы
+.userbtn{
+    float: right;
+    &_i{
+        float: left;
+
+        padding: 0 10px;
+
+        border-left: 1px dotted @darkgrey3;
+        &-lk{
+            .userbtn_lk{
+                height: @header-height;
+                padding-left: 14px;
+
+                vertical-align: middle;
+
+                background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAQAAABuBnYAAAAAOElEQVQIW2NgYDisdmDdgU9AuO6wGgOY+37/fwg88B4odGAdjAsWWsdw4BOKwCcsAuhaMAxFtxYAK6VexT+uZA8AAAAASUVORK5CYII=') no-repeat 0 50%;
+
+                .table-cell();
+            }
+            &.userbtn_i-act{
+                .userbtn_lk{
+                    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAR0lEQVQY02NgAIL/C5XUfs6WXfdrjswnEAaxQWIMMMlfc2Tf/5wt8x8Zg8TAikCq0SURWHYdA8RI7ApAcoQVELSCoCMJeRMAYK6XwUqCrYoAAAAASUVORK5CYII=') no-repeat 0 50%;
+                }
+            }
+            &.userbtn_i-ep{
+                .userbtn_lk{
+                    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAkUlEQVR4AX3KsQoBUBjF8VNCkcXsNZgtVp5GXoE3ICu7MljcjVLuC1gMUrfEAyj5/IdvuBnuqd9/Ovrfe9kZYgTlRBpQZoYplKmJBLQgt8UGcnXsRPY4ow3higuEJo4IIgsYIgb44oMuTjDMRSYwl2DuDnNjkT4MJT2RKl6FU0JFRIiF4wESEda4uYSne2AF/QDIMdnz26Xx7gAAAABJRU5ErkJggg==') no-repeat 0 50%;
+                }
+            }
+        }
+        &-cart{
+            .userbtn_count{
+                background: @orange-2;
+            }
+            .userbtn_icon{
+                margin-top: 9px;
+            }
+        }
+        &-act{
+            background: @white;
+        }
+    }
+    &_lk{
+        display: block;
+
+        height: 50px;
+        &:hover{
+            text-decoration: none;
+        }
+    }
+    &_tx{
+        line-height: 50px;
+
+        margin: 0 2px 0 0;
+
+        .inline-block();
+    }
+    &_count{
+        font-weight: bold;
+        line-height: 1.5;
+
+        width: 20px;
+        height: 20px;
+        margin: 15px 0 0;
+
+        text-align: center;
+
+        color: @white;
+        background: #797979;
+
+        .inline-block();
+        .rounded(3px);
+    }
+    &_icon{
+        margin: 15px 0 0;
+    }
+}
+
+// энтерпрайз
+.hdep{
+    float: right;
+
+    margin: 7px 0 0;
+
+    text-align: center;
+
+    color: #dbdbdb;
+    &_h{
+        line-height: 1;
+
+        margin: 0 0 10px;
+    }
+}
+
+.i-header{
+    background-image: url('@{base-url}/mainpage/img/i-header.png');
+    &-cart{
+        .sprite-temp(-2px, -2px, 25px, 33px);
+    }
+    &-compare{
+        .sprite-temp(-31px, -2px, 25px, 25px);
+    }
+    &-ep{
+        .sprite-temp(-60px, -2px, 97px, 24px);
+    }
+    &-phone{
+        .sprite-temp(-161px, -2px, 21px, 28px);
+    }
+    &-search{
+        .sprite-temp(-186px, -2px, 27px, 20px);
+    }
+}

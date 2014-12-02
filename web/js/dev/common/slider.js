@@ -57,11 +57,11 @@
                     rrviewed = docCookies.getItem('product_viewed')
                 ;
 
-                if (typeof rrviewed === 'string') {
+                if (('viewed' == data.type) && typeof rrviewed === 'string') {
                     data['rrviewed'] = ENTER.utils.arrayUnique(rrviewed.split(','));
-                }
 
-                $(el).data('slider', data);
+                    $(el).data('slider', data);
+                }
             });
         } catch (e) {
             console.error(e);
@@ -77,7 +77,6 @@
             if ($bubble.length) {
                 $bubble.find('.slideItem_flt_i').text($el.data('product').name);
                 $bubble.addClass('slideItem_flt-show');
-                console.info($el.offset());
                 $bubble.offset({left: $el.offset().left});
             }
         });

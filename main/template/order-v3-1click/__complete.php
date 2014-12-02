@@ -10,7 +10,8 @@ $f = function(
 ) {
 
     /** @var \Model\Order\CreatedEntity $order */
-    $order = reset($orders);
+    $order = reset($orders) ?: null;
+    if (!$order) return '';
 ?>
 
 <? foreach ($orders as $order): ?>

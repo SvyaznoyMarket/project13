@@ -11,6 +11,7 @@ class RecommendedAction {
      * @return \Http\JsonResponse
      */
     public function execute(\Http\Request $request) {
+        $client = \App::retailrocketClient('2.0');
         $region = \App::user()->getRegion();
 
         $cssClass = $request->query->get('class') ?: 'slideItem-main';
@@ -18,11 +19,35 @@ class RecommendedAction {
         $sender = (array)$request->query->get('sender') + ['name' => null, 'position' => null, 'action' => null];
 
         $productIds = [];
-        $recommendController = new \Controller\Product\BasicRecommendedAction();
+        $client->addQuery(
+            'Recommendation/Popular',
+            null,
+            [
+                'categoryIds' => 0,
+                //'$filter'     => 'Price gt 3000',
+            ],
+            [],
+            function($data) use (&$sender, &$productIds) {
+                if (!is_array($data)) return;
 
-        $productIds = array_merge($productIds, (array)$recommendController->getProductsIdsFromRetailrocket(null, $request, 'ItemsToMain'));
+                $ids = [];
+                foreach ($data as $item) {
+                    if (empty($item['ItemId'])) continue;
+
+                    $ids[] = $item['ItemId'];
+                }
+
+                $sender['items'] = array_slice($ids, 0, 15);
+                $productIds = array_merge($productIds, $sender['items']);
+            },
+            null,
+            null,
+            '2.0'
+        );
+        $client->execute(null, 2);
+
         $sender['name'] = 'retailrocket';
-        $sender['method'] = 'MainToMain';
+        $sender['method'] = 'Popular';
 
         /* Получаем продукты из ядра */
         $products = [];
@@ -39,12 +64,7 @@ class RecommendedAction {
 
                     $product = new \Model\Product\Entity($item);
                     // если товар недоступен для покупки - пропустить
-                    if (
-                        !$product->getIsBuyable()
-                        && !$product->isInShopShowroomOnly()
-                    ) {
-                        continue;
-                    }
+                    if (!$product->isAvailable() || $product->isInShopShowroomOnly()) continue;
 
                     $products[] = $product;
                 }
@@ -58,6 +78,8 @@ class RecommendedAction {
             usort($products, function(\Model\Product\Entity $a, \Model\Product\Entity $b) {
                 if ($b->getIsBuyable() != $a->getIsBuyable()) {
                     return ($b->getIsBuyable() ? 1 : -1) - ($a->getIsBuyable() ? 1 : -1); // сначала те, которые можно купить
+                } else if ($b->getPrice() != $a->getPrice()) {
+                    return $b->getPrice() - $a->getPrice();
                 } else if ($b->isInShopOnly() != $a->isInShopOnly()) {
                     //return ($b->isInShopOnly() ? -1 : 1) - ($a->isInShopOnly() ? -1 : 1); // потом те, которые можно зарезервировать
                 } else if ($b->isInShopShowroomOnly() != $a->isInShopShowroomOnly()) {// потом те, которые есть на витрине

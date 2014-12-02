@@ -85,7 +85,7 @@ foreach ($categories as $child) {
     </ul>
     
     <div style="margin: 0 0 30px;">
-        <? if (\App::config()->product['pullRecommendation'] && !$isTchibo): ?>
+        <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
             <?= $helper->render('product/__slider', [
                 'type'      => 'viewed',
                 'title'     => 'Вы смотрели',
