@@ -38,8 +38,10 @@
 				$links.removeClass(activeClass);
 				switch (keycode) {
 					case 13:
-						if (index > -1) window.location.href = $links.eq(index).attr('href');
-						return false;
+						if (index > -1) {
+							window.location.href = $links.eq(index).attr('href');
+							return false;
+						}
 						break;
 					case 38:
 						$links.eq(index - 1).addClass(activeClass);
