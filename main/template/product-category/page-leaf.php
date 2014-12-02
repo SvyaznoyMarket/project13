@@ -101,9 +101,15 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
         'columnCount'            => isset($columnCount) ? $columnCount : 4,
     ]) // листинг ?>
 
-    <div class="bSortingLine mPagerBottom clearfix js-category-sortingAndPagination">
-        <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
-    </div>
+    <? if ($category->isV2()): ?>
+        <div class="bSortingLine mPagerBottom clearfix js-category-sortingAndPagination">
+            <?= $helper->render('product-category/v2/__pagination', ['pager' => $productPager]) // листалка ?>
+        </div>
+    <? else: ?>
+        <div class="bSortingLine mPagerBottom clearfix js-category-sortingAndPagination">
+            <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
+        </div>
+    <? endif ?>
 
     <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
         <?= $helper->render('product/__slider', [
