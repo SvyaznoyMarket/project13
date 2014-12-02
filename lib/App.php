@@ -53,6 +53,14 @@ class App {
                 E_USER_DEPRECATED   => 'User Deprecated',
             ];
 
+            if (E_NOTICE == $level) {
+                if ($logger = \App::logger()) {
+                    $logger->error(['message' => $message, 'sender' => $file . ' ' . $line], ['critical', 'error_handler']);
+                }
+
+                return true;
+            }
+
             if (error_reporting() & $level) {
                 throw new \ErrorException(sprintf('%s: %s in %s line %d', isset($levels[$level]) ? $levels[$level] : $level, $message, $file, $line));
             }
@@ -353,6 +361,20 @@ class App {
 
         if (!$instance) {
             $instance = new \RetailRocket\Client(self::$config->partners['RetailRocket'], \App::logger());
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @static
+     * @return \RetailRocket\RRClient
+     */
+    public static function rrClient() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \RetailRocket\RRClient(self::$config->partners['RetailRocket'], self::curl());
         }
 
         return $instance;

@@ -189,7 +189,7 @@
 	/**
 	 * Определение debug режима
 	 */
-	if ( document.body.getAttribute('data-debug') === 'true') {
+	if ( document.body.getAttribute('data-debug') === 'true' && typeof console == 'object' && typeof console.warn == 'function') {
 		console.warn('Включен debug режим');
 
 		debug = true;
@@ -271,6 +271,7 @@
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('main.js') )
+                    .script( getWithVersion('product.js') )
 					.wait()
 					.script( optimizelyUrl )
 					.script('adfox.asyn.code.ver3.min.js')
@@ -468,7 +469,6 @@
                         .script( loadDebugPanel )
                         .wait()
                         .script( getWithVersion('common.js') )
-//                        .script( kladr )
                         .script( getWithVersion('order-v3.js') )
                         .wait()
                         .script( getWithVersion('ports.js') );
@@ -485,7 +485,6 @@
 						.script( loadDebugPanel )
 						.wait()
 						.script( getWithVersion('common.js') )
-//                        .script( kladr )
 						.script( getWithVersion('order-v3-new.js') )
 						.wait()
 						.script( getWithVersion('ports.js') );
@@ -623,6 +622,22 @@
                     .wait()
                     .script( getWithVersion('game/slots.js') )
 
+            }).runQueue();
+        },
+
+        'page404': function() {
+            $LAB.queueWait( function() {
+                $LAB.script( getWithVersion('jquery-plugins.js') )
+                    .script( getWithVersion('library.js') )
+                    .script('JsHttpRequest.min.js')
+                    .script( mustacheUrl )
+                    .script( knockoutUrl )
+                    .script( loadDebugPanel )
+                    .wait()
+                    .script( getWithVersion('common.js') )
+                    .script( getWithVersion('product.js') )
+                    .wait()
+                    .script( getWithVersion('ports.js') )
             }).runQueue();
         }
 	};

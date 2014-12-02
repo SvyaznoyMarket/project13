@@ -15,58 +15,28 @@ return function(
 $count = count($menu);
 ?>
 
-<? if (1 == $level): ?>
-    <style type="text/css">
-        <? $count = count($menu); $i = 1; foreach ($menu as $iMenu): ?>
-        .mId<?= $i ?> .bMainMenuLevel-1__eIcon {
-        <?= $iMenu->css ?>
-        }
-        .mId<?= $i ?>:hover .bMainMenuLevel-1__eIcon{
-        <?= $iMenu->cssHover ?>
-        }
-        <? if ($iMenu->color || $iMenu->titleCss): ?>
-        .mId<?= $i ?> .bMainMenuLevel-1__eTitle{
-            <? if ($iMenu->titleCss): ?>
-                <?= $iMenu->titleCss ?>
-            <? else: ?>
-                color: <?=$iMenu->color ?>;
-            <? endif ?>
-        }
-        <? endif ?>
-        <? if ($iMenu->colorHover || $iMenu->titleHoverCss): ?>
-        .mId<?= $i ?>:hover .bMainMenuLevel-1__eTitle{
-            <? if ($iMenu->titleHoverCss): ?>
-                <?= $iMenu->titleHoverCss ?>
-            <? else: ?>
-                color: <?=$iMenu->colorHover ?>;
-            <? endif ?>
-        }
-        <? endif ?>
-
-        <? if ($i == $count): ?>
-
-        <? $j = 1; foreach ($iMenu->child as $child): ?>
-        .mId<?= $iMenu->priority . '-' . $j ?> .bMainMenuLevel-2__eIcon {
-        <?= $child->css ?>
-        }
-        .mId<?= $iMenu->priority . '-' . $j ?>:hover .bMainMenuLevel-2__eIcon {
-        <?= $child->cssHover ?>
-        }
-        <? $j++; endforeach ?>
-        <? endif ?>
-        <? $i++; endforeach ?>
-    </style>
-<? endif ?>
-
 <? if (2 == $level): // SITE-3862 ?><!--noindex--><? endif ?>
 
 <ul class="bMainMenuLevel-<?= $level ?>">
-    <? if ((3 ==$level) && $parent instanceof \Model\Menu\Entity && $parent->image): ?>
+    <? if ((3 == $level) && $parent instanceof \Model\Menu\Entity && $parent->image): ?>
         <li class="bMainMenuLevel-<?= $level ?>__eHead"><?= $parent->name ?></li>
         <li class="bMainMenuLevel-<?= $level ?>__eImageItem">
             <img class="bMainMenuLevel-<?= $level ?>__eImage lazyMenuImg" width="150" data-src="<?= $parent->image ?>" alt="<?= $helper->escape($parent->name) ?>" />
-            <noscript><img class="bMainMenuLevel-<?= $level ?>__eImage" width="150" src="<?= $parent->image ?>" alt="<?= $helper->escape($parent->name) ?>" /></noscript>
+            <img class="bMainMenuLevel-<?= $level ?>__eImage" width="150" src="<?= $parent->image ?>" alt="<?= $helper->escape($parent->name) ?>" />
         </li>
+        </noscript>
+
+       <li class="bMainMenuLevel-<?= $level ?>__eProd">
+            <div class="menuItem">
+                <div class="menuItem_t">Товар дня!</div>
+                <a class="menuItem_cnt" href="">
+                    <img src="http://fs05.enter.ru/1/1/200/1c/236998.jpg" alt="" class="menuItem_img">
+                    <span class="menuItem_n">Мобильный телефон Explay A240 черный</span>
+                </a>
+
+                <div class="menuItem_pr">22 290 <span class="rubl">p</span></div>
+            </div>
+       </li>
     <? endif ?>
 
     <? $i = 1; foreach ($menu as $iMenu): ?>
@@ -111,6 +81,9 @@ $count = count($menu);
             <? elseif ($iMenu->name): ?>
                 <div class="bMainMenuLevel-<?= $level ?>__eLink">
                     <span class="bMainMenuLevel-<?= $level ?>__eIcon"></span>
+                    <? if ($iMenu->char): ?>
+                        <span class="bMainMenuLevel-<?= $level ?>__eChar"><?= $iMenu->char ?></span>
+                    <? endif ?>
                     <span class="bMainMenuLevel-<?= $level ?>__eTitle">
                     <? if ($iMenu->useLogo && $iMenu->logoPath != null): ?>
                             <img src="<?= $iMenu->logoPath ?>">

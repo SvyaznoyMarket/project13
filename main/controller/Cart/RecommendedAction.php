@@ -10,23 +10,29 @@ class RecommendedAction {
         $region = \App::user()->getRegion();
 
         $cart = \App::user()->getCart();
+        $cartProductIds = [];
         $productIds = [];
         $recommendController = new \Controller\Product\BasicRecommendedAction();
 
         /* Для всех продуктов корзины получим рекомендации */
         /* Неплохо распараллелить запросы, ну да ладно */
         foreach ($cart->getProducts() as $product) {
+            $cartProductIds[] = $product->getId();
             $productIds = array_merge($productIds, (array)$recommendController->getProductsIdsFromRetailrocket($product, $request, 'CrossSellItemToItems'));
         }
 
         /* Получаем продукты из ядра */
         $products = [];
         foreach (array_chunk($productIds, \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
-            \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$products) {
+            \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$products, &$cartProductIds) {
                 foreach ($data as $item) {
                     if (empty($item['id'])) continue;
+                    if (in_array($item['id'], $cartProductIds)) continue;
 
-                    $products[] = new \Model\Product\Entity($item);
+                    $iProduct = new \Model\Product\Entity($item);
+                    // если товар недоступен для покупки - пропустить
+                    if (!$iProduct->isAvailable() || $iProduct->isInShopShowroomOnly() || $iProduct->isInShopOnly()) continue;
+                    $products[] = $iProduct;
                 }
             });
         }
@@ -34,6 +40,7 @@ class RecommendedAction {
         \App::coreClientV2()->execute();
 
         try {
+            // TODO: вынести в репозиторий
             usort($products, function(\Model\Product\Entity $a, \Model\Product\Entity $b) {
                 if ($b->getIsBuyable() != $a->getIsBuyable()) {
                     return ($b->getIsBuyable() ? 1 : -1) - ($a->getIsBuyable() ? 1 : -1); // сначала те, которые можно купить
@@ -52,7 +59,14 @@ class RecommendedAction {
         /* Рендерим слайдер */
         $slider = \App::closureTemplating()->render('product/__slider', [
             'products'  => $products,
-            'class'     => 'bSlider-7item',
+            'count'     => count($products),
+            'class'     => 'slideItem-7item',
+            'title'     => count($cart->getProducts()) > 1 ? 'С этими товарами покупают' : 'С этим товаром покупают',
+            'sender'    => [
+                'name'     => 'retailrocket',
+                'method'   => 'CrossSellItemToItems',
+                'position' => 'Basket',
+            ],
         ]);
 
         $recommend = [];

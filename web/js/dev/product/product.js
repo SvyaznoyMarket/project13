@@ -180,7 +180,8 @@ $(document).ready(function() {
                     $orderContent = $('#js-order-content')
                 ; // end of vars
 
-                $('.jsOneClickCompletePage').remove();
+                $('.shopsPopup').find('.close').trigger('click'); // закрыть выбор магазинов
+                $('.jsOneClickCompletePage').remove(); // удалить ранее созданный контент с оформленным заказом
                 $('#jsOneClickContentPage').show();
 
                 // mask
@@ -322,4 +323,20 @@ $(document).ready(function() {
 			}
 		);
 	}
+
+    try {
+        var
+            productId =ENTER.config.pageConfig.product ? ENTER.config.pageConfig.product.id : null,
+            cookieValue = docCookies.getItem('product_viewed') || '',
+            viewed = []
+        ;
+
+        if (productId) {
+            viewed = cookieValue ? ENTER.utils.arrayUnique(cookieValue.split(',')) : [];
+            viewed.push(productId);
+            docCookies.setItem('product_viewed', viewed.slice(-20).join(','), 7 * 24 * 60 * 60, '/');
+        }
+    } catch (e) {
+        console.error(e);
+    }
 });

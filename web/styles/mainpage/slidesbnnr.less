@@ -1,0 +1,51 @@
+// слайдер баннеров
+.slidesbnnr{
+    position: relative;
+
+    overflow: hidden;
+
+    height: 300px;
+
+    border: 1px solid @darkgrey3;
+    border-top: none;
+    &_lst{
+        position: relative;
+        top: 0;
+    }
+    &_img{
+        display: block;
+    }
+    &_lk{
+        display: block;
+    }
+    &_thmbs{
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        &_i{
+            margin: 0 0 3px;
+        }
+        &_img{
+            display: block;
+            overflow: hidden;
+
+            width: 83px;
+            height: 53px;
+
+            cursor: pointer;
+
+            border: 1px solid transparent;
+
+            .opacity(.6);
+            .rounded(3px);
+            .transition(all .3s ease-out);
+            &-act
+            ,
+            &:hover{
+                border-color: @white;
+
+                .opacity(1);
+            }
+        }
+    }
+}

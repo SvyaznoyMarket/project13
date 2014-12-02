@@ -41,3 +41,4 @@
 <?= $page->slotMailRu() ?>
 <?= $page->slotRevolverJS() ?>
 <?= $page->slotInsiderJS() ?>
+<?= $page->slotGetIntentJS() ?>

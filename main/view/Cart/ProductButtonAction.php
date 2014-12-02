@@ -8,6 +8,8 @@ class ProductButtonAction {
      * @param \Model\Product\BasicEntity $product
      * @param null $onClick
      * @param bool $isRetailRocket
+     * @param array $sender Данные поставщика, например: {name: retailrocket, position: ProductSimilar, action: Переход в карточку товара}
+     * @param bool $noUpdate
      * @internal param null|string $url
      * @return array
      */
@@ -15,7 +17,9 @@ class ProductButtonAction {
         \Helper\TemplateHelper $helper,
         \Model\Product\BasicEntity $product,
         $onClick = null,
-        $isRetailRocket = false
+        $isRetailRocket = false,
+        array $sender = [],
+        $noUpdate = false // Не обновлять кнопку купить
     ) {
         $data = [
             'disabled'   => false,
@@ -26,10 +30,11 @@ class ProductButtonAction {
             'onClick'    => $onClick,
             'data'       => [
                 'productId' => $product->getId(),
-                'upsale' => json_encode([
-                    'url' => $helper->url('product.upsale', ['productId' => $product->getId()]),
+                'upsale'    => json_encode([
+                    'url'        => $helper->url('product.upsale', ['productId' => $product->getId()]),
                     'fromUpsale' => ($helper->hasParam('from') && 'cart_rec' === $helper->getParam('from')) ? true : false,
                 ]),
+                'noUpdate'  => $noUpdate,
             ],
         ];
 
@@ -65,6 +70,17 @@ class ProductButtonAction {
                 $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
             } else if ($isRetailRocket) {
                 $urlParams['sender'] = 'retailrocket';
+            }
+
+            if ($sender) {
+                $urlParams = array_merge($urlParams, [
+                    'sender' => [
+                        'name'      => isset($sender['name']) ? $sender['name'] : null,
+                        'position'  => isset($sender['position']) ? $sender['position'] : null,
+                        'method'    => isset($sender['method']) ? $sender['method'] : null,
+                        'from'      => isset($sender['from']) ? $sender['from'] : null,
+                    ],
+                ]);
             }
 
             $data['url'] = $helper->url('cart.product.set', $urlParams);

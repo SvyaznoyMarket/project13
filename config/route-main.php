@@ -7,16 +7,27 @@ return [
         'action'  => ['Main\IndexAction', 'execute'],
     ],
 
-    'category.mainMenu' => [
+    'homepage.recommendations' => [
+        'pattern' => '/index/recommend',
+        'action'  => ['Main\IndexAction', 'recommendations'],
+    ],
+
+    'category.mainMenu' => [ // TODO: переименовать в mainMenu
         'pattern' => '/category/main_menu',
         'action'  => ['ProductCategory\MainMenuAction', 'execute'],
     ],
-
-    'category.mainMenu.region' => [
+    'category.mainMenu.region' => [ // TODO: переименовать в mainMenu.region
         'pattern' => '/category/main_menu/{regionId}',
         'action'  => ['ProductCategory\MainMenuAction', 'execute'],
         'require' => [
-            'regionId'   => '\d+',
+            'regionId' => '\d+',
+        ],
+    ],
+    'mainMenu.recommendation' => [
+        'pattern' => '/main_menu/recommendations/{rootCategoryId}',
+        'action'  => ['MainMenu\RecommendedAction', 'execute'],
+        'require' => [
+            'categoryId' => '\d+',
         ],
     ],
 
@@ -38,6 +49,11 @@ return [
     'search.autocomplete' => [
         'pattern' => '/search/autocomplete',
         'action'  => ['Search\Action', 'autocomplete'],
+    ],
+    // рекомендации в поиске
+    'search.recommended' => [
+        'pattern' => '/search/recommended',
+        'action'  => ['Search\RecommendedAction', 'execute'],
     ],
 
     // инфо пользователя
@@ -719,9 +735,8 @@ return [
 
     // recommended products
     'product.recommended' => [
-        'pattern' => '/product-recommended/{productId}',
+        'pattern' => '/product-recommended',
         'action' => ['Product\RecommendedAction', 'execute'],
-        'require' => ['productId' => '\d+'],
     ],
     'product.similar' => [
         'pattern' => '/ajax/product-similar/{productId}',
@@ -737,6 +752,11 @@ return [
         'pattern' => '/ajax/upsale/{productId}',
         'action' => ['Product\UpsaleAction', 'execute'],
         'require' => ['productId' => '\d+'],
+    ],
+
+    'main.recommended' => [
+        'pattern' => '/main/recommended',
+        'action'  => ['Main\RecommendedAction', 'execute'],
     ],
 
     // smartchoice

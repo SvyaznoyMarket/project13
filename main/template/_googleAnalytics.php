@@ -27,22 +27,22 @@
     _gaq.push(['_addOrganic', 'ya.ru', 'q']);
     _gaq.push(['_addOrganic', 'm.yandex.ru','query']);
 
-    <? /* Слот 1 занят под abTestJson, а слоты 3, 4, 5 заняты под нужды сотрудников отдела аналитики */ ?>
+    <? /* Слот 1 занят под регион, а слоты 3, 4, 5 заняты под нужды сотрудников отдела аналитики */ ?>
     <? foreach (\App::abTest()->getTests() as $test): ?>
         <? if ($test->isActive() && $test->gaSlotNumber): ?>
             _gaq.push(['_setCustomVar', <?= $test->gaSlotNumber ?>, 'User segment', '<?= $test->getKey() ?>_<?= $test->getChosenCase()->getKey() ?>', <?= $test->gaSlotScope ?>]);
         <? endif ?>
     <? endforeach ?>
 
-    <? if (\App::abtestJson() && \App::abtestJson()->isActive()) : ?>
-        _gaq.push(['_setCustomVar', 1, 'User segment', '<?= \App::abTestJson()->getCase()->getGaEvent() ?>', 2]);
+    <? if (\App::user()->getRegion() && \App::user()->getRegion()->getName()) : ?>
+        _gaq.push(['_setCustomVar', 1, 'city', '<?= \App::user()->getRegion()->getName() ?>', 2]);
     <? endif ?>
 
     <? /* Маркировка продуктов Marketplace */ ?>
     <? if (isset($product) && $product instanceof \Model\Product\Entity) : ?>
         <? /*  Если товар ТОЛЬКО от партнеров или нет у нас, но есть у партнеров */
             if ($product->isOnlyFromPartner() || ($product->getPartnersOffer() && !$product->getIsBuyable())) : ?>
-            _gaq.push(['_setCustomVar', 11, 'shop_type', 'marketplace', 3]);
+            _gaq.push(['_setCustomVar', 12, 'shop_type', 'marketplace', 3]);
             if (console && typeof console.log == 'function') console.log('[Google Analytics] _setCustomVar 11 shop_type marketplace');
         <? endif; ?>
     <? endif; ?>
@@ -82,7 +82,7 @@
 
         // _addItem: Номер заказа, Артикул, Название товара, Категория товара, Стоимость 1 единицы товара, Количество товара
             <? foreach ($order->getProduct() as $orderProduct): ?>
-                <?
+            <?
                 /** @var $product \Model\Product\Entity */
                 $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
                 if (!$product) continue;
@@ -95,8 +95,9 @@
                 $categoryName = ($rootCategory && ($rootCategory->getId() != $category->getId()))
                     ? ($rootCategory->getName() . ' - ' . $category->getName())
                     : $category->getName();
-                    $productName = $order->isPartner ? $product->getName() . ' (marketplace)' : $product->getName();
-                ?>
+
+                $productName = $order->isPartner ? $product->getName() . ' (marketplace)' : $product->getName();
+            ?>
 
     _gaq.push(['_addItem', '<?= implode("','", array($order->getNumberErp(), $product->getArticle(), $page->escape($productName), $page->escape($categoryName), $orderProduct->getPrice(), $orderProduct->getQuantity())) ?>']);
             <?php endforeach ?>
@@ -105,12 +106,14 @@
             <? endforeach ?>
     <? endif ?>
 
+    /* Classic Google Analytics */
     (function()
     {   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
 
+    /* Universal Google Analytics */
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)

@@ -16,6 +16,13 @@ class ProductAction {
 
         $productId = (int)$productId;
         $quantity = (int)$request->get('quantity', 1);
+        $sender = $request->query->get('sender');
+        if (is_string($sender) && !empty($sender)) {
+            $sender = ['name' => $sender];
+        }
+        if (!is_array($sender)) {
+            $sender = null;
+        }
 
         try {
             if ($quantity < 0) {
@@ -32,8 +39,13 @@ class ProductAction {
                 throw new \Exception(sprintf('Товар #%s не найден', $productId));
             }
 
+            $params = [];
+            if ($sender) {
+                $params['sender'] = $sender;
+            }
+
             // не учитываем является ли товар набором или нет - за это отвечает ядро
-            $cart->setProduct($product, $quantity);
+            $cart->setProduct($product, $quantity, $params);
             $cartProduct = $cart->getProductById($product->getId());
             //$this->updateCartWarranty($product, $cartProduct, $quantity);
 
@@ -75,8 +87,8 @@ class ProductAction {
 
             if ($request->isXmlHttpRequest()) {
                 $response = new \Http\JsonResponse([
-                    'success' => true,
-                    'cart'    => [
+                    'success'    => true,
+                    'cart'       => [
                         'sum'           => $cartProduct ? $cartProduct->getSum() : 0,
                         'quantity'      => $quantity,
                         'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
@@ -84,9 +96,10 @@ class ProductAction {
                         'old_price'     => $cart->getOriginalSum(),
                         'link'          => \App::router()->generate('order'),
                     ],
-                    'product'  => $productInfo,
+                    'product'     => $productInfo,
                     'category_id' => $parentCategoryId,
-                    'regionId' => \App::user()->getRegionId(),
+                    'regionId'    => \App::user()->getRegionId(),
+                    'sender'      => $sender,
                 ]);
             } else {
                 $response = new \Http\RedirectResponse($returnRedirect);
@@ -99,7 +112,8 @@ class ProductAction {
             }
 
             try {
-                if (is_scalar($request->query->get('sender'))) {
+                if ($sender) {
+                    // старый метод запоминания рекомендаций
                     $recommendedProductIds = (array)\App::session()->get(\App::config()->product['recommendationSessionKey']);
                     $recommendedProductIds[] = $cartProduct->getId();
                     \App::session()->set(\App::config()->product['recommendationSessionKey'], $recommendedProductIds);

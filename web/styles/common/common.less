@@ -1,0 +1,74 @@
+ /**
+  * Стили шаблона
+  */
+.wrapper {
+	width: 940px;
+	height: auto !important;
+	height: 100%;
+	min-height: 100%;
+	margin: 0 auto;
+	padding: 0 10px;
+
+	background: @white;
+
+	//Стили шаблона главной страницы
+	&.mWrapperMain {
+		background: @black;
+	}
+}
+
+/**
+ * Шапка
+ */
+.header {
+	position: relative;
+}
+
+/**
+ * Контентная часть
+ */
+.content {
+	padding: 0 0 222px;
+
+	//Контентная часть страницы оформления заказа
+	// &.mContentOrder {
+	// 	padding-bottom: 390px;
+	// }
+	&.mContentOrder {
+		padding-bottom: 0;
+	}
+
+	//Контентная часть главной страницы
+	&.mContentMain {
+		padding-bottom: 953px;
+	}
+}
+
+/**
+ * Фикс однопиксельной картинки, которая выводится после футера.
+ */
+img[height="1"],
+img[height="0"] {
+	display: block;
+}
+
+/* fix заразы */
+#tndFrame, #market_context_headcrab {
+   display: none !important;
+   visibility: hidden !important;
+   overflow: hidden !important;
+
+   width: 0 !important;
+   height: 0 !important;
+
+   font-size: 0 !important;
+   line-height: 0 !important;
+}
+
+#RuTargetJS {
+	height: 0;
+	padding: 0;
+	position: absolute;
+	z-index: 0;
+	overflow: hidden;
+}

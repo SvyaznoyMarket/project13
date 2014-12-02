@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page            \View\Layout
+ * @var $page            \View\DefaultLayout
  * @var $title           string|null
  * @var $breadcrumbs     array('url' => null, 'name' => null)[]
  * @var $hasSearch       bool
@@ -17,7 +17,7 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
 
 <div class="pagehead">
 
-    <? if ($hasSearch): ?>
+    <? if ($hasSearch && !$page->new_menu): ?>
     <noindex>
         <div class="searchbox">
             <?= $page->render('search/form-default', ['searchQuery' => $page->getParam('searchQuery')]) ?>

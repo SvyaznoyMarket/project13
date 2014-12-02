@@ -10,6 +10,7 @@
 			slidersRecommendation = 0,
 			body = $('body'),
 			reqArray = [],
+            urlData = {senders: []},
 			recommendArray = [];
 		// end of vars
 
@@ -21,7 +22,7 @@
 			 * @return bool
 			 */
 			isRecommendation = function isRecommendation( type ) {
-				return -1 != $.inArray(type, ["alsoBought", "similar", "alsoViewed"]);
+				return -1 != $.inArray(type, ['alsoBought', 'similar', 'alsoViewed', 'main', 'search'/*, 'viewed'*/]);
 			};
 		// end of functions
 
@@ -29,7 +30,7 @@
 			var $self = $(this),
 				sliderParams = $self.data('slider');
 			// end of vars
-			
+
 			if ( sliderParams.url !== null ) {
 				slidersWithUrl++;
 			}
@@ -37,6 +38,15 @@
 			if ( sliderParams.type !== null && isRecommendation(sliderParams.type) ) {
 				slidersRecommendation++;
 			}
+
+            if (sliderParams.url && sliderParams.sender) {
+                sliderParams.sender.type = sliderParams.type;
+                urlData.senders.push(sliderParams.sender);
+            }
+
+            if (sliderParams.rrviewed) {
+                //urlData.rrviewed = sliderParams.rrviewed;
+            }
 		});
 
 		var getSlidersData = function getSlidersData( url, type, callback ) {
@@ -50,6 +60,7 @@
 					$.ajax({
 						type: 'GET',
 						url: url,
+                        data: urlData,
 						success: function( res ) {
 							var
 								i, type, callbF, data;
@@ -125,6 +136,7 @@
 			 * @var	{Object}	slider			Ссылка на контейнер с товарами
 			 * @var	{Object}	item			Ссылка на карточки товаров в слайдере
 			 * @var	{Object}	catItem			Ссылка на категории в слайдере
+			 * @var	{Object}	pageTitle   	Ссылка на заголовоклисталки в слайдере
 			 *
 			 * @var	{Number}	itemW			Ширина одной карточки товара в слайдере
 			 * @var	{Number}	elementOnSlide	Количество помещающихся карточек на один слайд
@@ -146,6 +158,7 @@
 				slider = $self.find(options.sliderSelector),
 				item = $self.find(options.itemSelector),
 				catItem = $self.find(options.categoryItemSelector),
+                pageTitle = $self.find(options.pageTitleSelector),
 
 				itemW = item.width() + parseInt(item.css('marginLeft'),10) + parseInt(item.css('marginRight'),10),
 				elementOnSlide = parseInt(wrap.width()/itemW, 10),
@@ -153,12 +166,15 @@
 				nowLeft = 0;
 			// end of vars
 
-			
+            if (sliderParams.count) {
+                //pageTitle.text('Страница ' + '1' +  ' из ' + Math.ceil(sliderParams.count / elementOnSlide));
+            }
+
 			var
 				/**
 				 * Переключение на следующий слайд. Проверка состояния кнопок.
 				 */
-				nextSlide = function nextSlide() {
+				nextSlide = function nextSlide(e) {
 					if ( $(this).hasClass('mDisabled') ) {
 						return false;
 					}
@@ -181,13 +197,16 @@
 
 					slider.animate({'left': -nowLeft });
 
-					return false;
+                    updatePageTitle(wrap.width(), nowLeft);
+
+                    e.preventDefault();
+                    //return false;
 				},
 
 				/**
 				 * Переключение на предыдущий слайд. Проверка состояния кнопок.
 				 */
-				prevSlide = function prevSlide() {
+				prevSlide = function prevSlide(e) {
 					if ( $(this).hasClass('mDisabled') ) {
 						return false;
 					}
@@ -205,8 +224,19 @@
 
 					slider.animate({'left': -nowLeft });
 
-					return false;
+                    updatePageTitle(wrap.width(), nowLeft);
+
+                    e.preventDefault();
+					//return false;
 				},
+
+                updatePageTitle = function updatePageTitle(width, left) {
+                    var pageNum = Math.floor(left / width) + 1;
+
+                    if (!sliderParams.count || !elementOnSlide || !pageNum) return;
+
+                    //pageTitle.text('Страница ' + pageNum +  ' goodsSliderиз ' + Math.ceil(sliderParams.count / elementOnSlide));
+                },
 
 				/**
 				 * Вычисление ширины слайдера
@@ -287,7 +317,17 @@
 
 			if ( sliderParams.url !== null ) {
 				if ( typeof window.ENTER.utils.packageReq === 'function' ) {
-					getSlidersData(sliderParams.url, sliderParams.type, authFromServer);
+                    try {
+                        if ('viewed' == sliderParams.type) {
+                            sliderParams.url += ((-1 != sliderParams.url.indexOf('?')) ? '&' : '?') + 'rrviewed=' + sliderParams.rrviewed + '&' + $.param({senders: [sliderParams.sender]});
+
+                            getSlidersData(sliderParams.url, sliderParams.type, function(res) {
+                                res.recommend && res.recommend.viewed && authFromServer(res.recommend.viewed);
+                            });
+                        } else {
+                            getSlidersData(sliderParams.url, sliderParams.type, authFromServer);
+                        }
+                    } catch (e) { console.error(e); }
 				}
 				else {
 					$.ajax({
@@ -325,12 +365,13 @@
 	};
 
 	$.fn.goodsSlider.defaults = {
-		leftArrowSelector: '.bSlider__eBtn.mPrev',
-		rightArrowSelector: '.bSlider__eBtn.mNext',
-		sliderWrapperSelector: '.bSlider__eInner',
-		sliderSelector: '.bSlider__eList',
-		itemSelector: '.bSlider__eItem',
-		categoryItemSelector: '.bGoodsSlider__eCatItem'
+		leftArrowSelector: '.slideItem_btn-prv',
+		rightArrowSelector: '.slideItem_btn-nxt',
+		sliderWrapperSelector: '.slideItem_inn',
+		sliderSelector: '.slideItem_lst',
+		itemSelector: '.slideItem_i',
+		categoryItemSelector: '.bGoodsSlider__eCatItem',
+        pageTitleSelector: '.slideItem_cntr'
 	};
 
 })(jQuery);

@@ -7,6 +7,10 @@ return function(
 
     if (!$smartChoiceProducts && !count($smartChoiceProducts) == 3) return '';
 
+    $smartChoiceProducts = array_filter($smartChoiceProducts, function($item) {
+        return !empty($item['product']);
+    });
+
     $smartChoiceIds = array_map(function($item){
         return $item['product']->getId();
     }, $smartChoiceProducts);

@@ -203,6 +203,7 @@
     // TODO вынести инициализацию трекера из ports.js
     try {
         if (typeof ga === 'function' && ga.getAll().length == 0) {
+			console.warn('Creating ga tracker');
             ga( 'create', 'UA-25485956-5', 'enter.ru' );
         }
     } catch (e) {

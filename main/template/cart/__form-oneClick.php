@@ -3,7 +3,8 @@
 $f = function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
-    \Model\Region\Entity $region
+    \Model\Region\Entity $region,
+    $sender = []
 ) { ?>
 
 <noindex>
@@ -17,6 +18,7 @@ $f = function(
         <div id="jsOneClickContentPage">
             <?= $helper->render('order-v3-1click/__form', [
                 'product' => $product,
+                'sender'  => $sender,
             ]) ?>
         </div>
     </div>

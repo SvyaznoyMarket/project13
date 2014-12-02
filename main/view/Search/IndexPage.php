@@ -22,7 +22,7 @@ class IndexPage extends \View\DefaultLayout {
 
         // seo: title
         if (!$this->hasParam('title')) {
-            $title = 'Вы искали “' . $this->escape($this->getParam('searchQuery')) . '”';
+            $title = 'Вы искали ' . $this->escape($this->getParam('searchQuery')) . '';
             if ($productPager && ($productPager->getPage() > 1)) {
                 $title .= ' – ' . $productPager->getPage();
             }
@@ -66,10 +66,6 @@ class IndexPage extends \View\DefaultLayout {
 
     public function slotSidebar() {
         return '';
-    }
-
-    public function slotUserbar() {
-        return $this->render('_userbar');
     }
 
     public function slotUserbarContent() {

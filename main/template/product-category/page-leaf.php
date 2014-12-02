@@ -17,15 +17,15 @@
 ?>
 
 <?
-    $helper = new \Helper\TemplateHelper();
-    if ($productFilter->getShop()) $page->setGlobalParam('shop', $productFilter->getShop());
+$helper = new \Helper\TemplateHelper();
+if ($productFilter->getShop()) $page->setGlobalParam('shop', $productFilter->getShop());
 
-    // получаем стиль листинга
-    $listingStyle = !empty($catalogJson['listing_style']) ? $catalogJson['listing_style'] : null;
+// получаем стиль листинга
+$listingStyle = !empty($catalogJson['listing_style']) ? $catalogJson['listing_style'] : null;
 
-    // получаем promo стили
-    $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? $catalogJson['promo_style'] : [];
-    $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
+// получаем promo стили
+$promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? $catalogJson['promo_style'] : [];
+$category_class = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
 ?>
 
 <div class="bCatalog <? if ($productFilter->hasAlwaysShowFilters()): ?>bCatalog-custom<? endif ?> <?= 'jewel' === $listingStyle ? 'mCustomCss' : '' ?>" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
@@ -89,6 +89,22 @@
     <div class="bSortingLine mPagerBottom clearfix">
         <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
     </div>
+
+    <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
+        <?= $helper->render('product/__slider', [
+            'type'      => 'viewed',
+            'title'     => 'Вы смотрели',
+            'products'  => [],
+            'count'     => null,
+            'limit'     => \App::config()->product['itemsInSlider'],
+            'page'      => 1,
+            'url'       => $page->url('product.recommended'),
+            'sender'    => [
+                'name'     => 'retailrocket',
+                'position' => 'Viewed',
+            ],
+        ]) ?>
+    <? endif ?>
 
     <? if (!empty($seoContent) || (bool)$hotlinks): ?>
         <div class="bSeoText">
