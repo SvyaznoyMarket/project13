@@ -170,53 +170,7 @@
     }
 
     if ($jsOrder.length != 0) {
-        console.log('[Google Analytics] Start processing orders');
-        $.each($jsOrder.data('value').orders, function(i,o) {
-            var googleOrderTrackingData = {};
-            googleOrderTrackingData.transaction = {
-                'id': o.numberErp,
-                'affiliation': o.is_partner ? 'Партнер' : 'Enter',
-                'total': o.paySum,
-                'shipping': o.delivery[0].price,
-                'city': o.region.name
-            };
-            googleOrderTrackingData.products = $.map(o.products, function(p){
-				var productName = o.is_partner ? p.name + ' (marketplace)' : p.name;
-				/* SITE-4472 Аналитика по АБ-тесту платного самовывоза и рекомендаций из корзины */
-				if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.config.pageConfig.selfDeliveryLimit > parseInt(o.paySum, 10) - o.delivery[0].price) productName = productName + ' (paid pickup)';
-				// Аналитика по купленным товарам из рекомендаций
-				if (p.sender == 'retailrocket') {
-					if (p.position) productName += ' (RR_' + p.position + ')';
-					if (p.from) $body.trigger('trackGoogleEvent',['RR_покупка','Купил просмотренные', p.position ? p.position : null]);
-					else $body.trigger('trackGoogleEvent',['RR_покупка','Купил добавленные', p.position ? p.position : null]);
-				}
-                return {
-                    'id': p.id,
-                    'name': productName,
-                    'sku': p.article,
-                    'category': p.category[p.category.length -1].name,
-                    'price': p.price,
-                    'quantity': p.quantity
-                }
-            });
-            console.log(googleOrderTrackingData);
-            $body.trigger('trackGoogleTransaction',[googleOrderTrackingData]);
-
-			/* SITE-4472 Аналитика по АБ-тесту платного самовывоза и рекомендаций из корзины */
-			$.each(o.products, function(i, p){
-				var cookieKey1 = 'enter_ab_self_delivery_products_1', //cookie, где содержатся артикулы товаров, добавленных в корзину из блока рекомендаций
-					cookieKey2 = 'enter_ab_self_delivery_products_2', //cookie, где содержатся артикулы товаров, на которые перешли из блока рекомендаций
-					products1 = docCookies.hasItem(cookieKey1) ? docCookies.getItem(cookieKey1).split(',') : [],
-					products2 = docCookies.hasItem(cookieKey2) ? docCookies.getItem(cookieKey2).split(',') : [];
-
-				if ($.inArray(p.article, products1) != -1) $body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + region, 'купил добавленный из рекомендации', 'статичная корзина']);
-				if ($.inArray(p.article, products2) != -1) $body.trigger('trackGoogleEvent', ['Платный_самовывоз_' + region, 'купил просмотренный из рекомендации', 'статичная корзина']);
-
-				docCookies.removeItem(cookieKey1);
-				docCookies.removeItem(cookieKey2);
-			});
-        });
-
+		if (typeof ENTER.utils.sendOrderToGA == 'function') ENTER.utils.sendOrderToGA($jsOrder.data('value'));
     }
 
 }(jQuery));
