@@ -712,7 +712,10 @@ class Action {
                         $labelProperty = new \Model\Product\Filter\Entity();
                         $labelProperty->setId($option->getToken());
                         $labelProperty->setName($option->getName());
-                        $labelProperty->setTypeId(\Model\Product\Filter\Entity::TYPE_BOOLEAN);
+                        $labelProperty->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+
+                        $option->setName('да');
+                        $labelProperty->addOption($option);
 
                         $newProperties[] = $labelProperty;
 

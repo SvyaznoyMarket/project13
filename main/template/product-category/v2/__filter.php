@@ -82,11 +82,11 @@ return function(
                                         <li class="lstdotted_i">
                                             <a class="lstdotted_lk js-category-v2-filter-price-link" href="<?= $helper->escape($range['url']) ?>">
                                                 <? if (isset($range['from'])): ?>
-                                                    <span class="txmark1">от</span> <?= $helper->escape($range['from']) ?>
+                                                    <span class="txmark1">от</span> <?= $helper->escape($helper->formatPrice($range['from'])) ?>
                                                 <? endif ?>
 
                                                 <? if (isset($range['to'])): ?>
-                                                    <span class="txmark1">до</span> <?= $helper->escape($range['to']) ?>
+                                                    <span class="txmark1">до</span> <?= $helper->escape($helper->formatPrice($range['to'])) ?>
                                                 <? endif ?>
                                             </a>
                                         </li>
