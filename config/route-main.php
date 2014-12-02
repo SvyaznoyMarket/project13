@@ -759,6 +759,12 @@ return [
         'action'  => ['Main\RecommendedAction', 'execute'],
     ],
 
+    // smartchoice
+    'product/smartchoice' => [
+        'pattern' => '/ajax/product-smartchoice',
+        'action' => ['Product\SmartChoiceAction', 'execute'],
+    ],
+
     // редактирование данных пользователя
     'user.edit' => [
         'pattern' => '/private/edit',
