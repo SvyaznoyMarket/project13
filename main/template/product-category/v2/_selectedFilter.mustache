@@ -4,7 +4,7 @@
 
         {{^isGroup}}
             {{#links}}
-                <li class="fltr_slctd_i mParams">
+                <li class="fltr_slctd_i">
                     <span>{{&name}}</span>
                     <a class="btn-closer2 jsHistoryLink" href="{{url}}">&#215;</a>
                 </li>
@@ -13,19 +13,15 @@
 
         {{#isGroup}}
             {{#properties}}
-                <li>
-                    <ul>
-                        {{#name}}
-                            <li>{{name}}</li>
-                        {{/name}}
+                <li class="fltr_slctd_i">
+                    {{#name}}
+                        {{name}}
+                    {{/name}}
 
-                        {{#links}}
-                            <li>
-                                <span>{{&name}}</span>
-                                <a class="btn-closer2 jsHistoryLink" href="{{url}}">&#215;</a>
-                            </li>
-                        {{/links}}
-                    </ul>
+                    {{#links}}
+                            <span>{{&name}}</span>
+                            <a class="btn-closer2 jsHistoryLink" href="{{url}}">&#215;</a>
+                    {{/links}}
                 </li>
             {{/properties}}
         {{/isGroup}}

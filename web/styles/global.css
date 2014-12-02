@@ -7809,7 +7809,7 @@ img[height="0"] {
 @media all {
   .fltr_slctd {
     float: left;
-    margin: 10px 10px 0 12px;
+    margin: 10px 5px 0 12px;
   }
   .fltr_slctd_i {
     display: inline-block;
@@ -7818,7 +7818,7 @@ img[height="0"] {
     *display: inline;
     *zoom: 1;
     color: #7d7d7d;
-    margin: 0 5px 0 0;
+    margin: 0 10px 0 0;
   }
   .fltr_slctd_i-n {
     font-weight: bold;
