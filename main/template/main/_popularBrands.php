@@ -86,7 +86,7 @@
         </li>
         <li class="lstitem_i">
             <a class="lstitem_lk" title="Leifheit" href="/search?q=Leifheit">
-                <img src="styles/mainpage/img/logo/Leifheitё.jpg" alt="Leifheit" class="lstitem_img">
+                <img src="styles/mainpage/img/logo/Leifheite.jpg" alt="Leifheit" class="lstitem_img">
             </a>
         </li>
         <li class="lstitem_i">
