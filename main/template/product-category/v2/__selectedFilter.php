@@ -8,7 +8,7 @@ return function(
     $useBaseUrl = true;
 ?>
 
-    <div class="js-category-filter-selected">
+    <div class="js-category-filter-selected clearfix">
         <?= $helper->renderWithMustache('product-category/v2/_selectedFilter', (new \View\ProductCategory\SelectedFilterAction())->execute(
             $helper,
             $productFilter,

@@ -180,7 +180,7 @@ return function(
                 </div>
             <? endif ?>
 
-            <div class="fltrBtn_kit fltrBtn_kit-nborder clearfix">
+            <div class="fltrBtn_kit fltrBtn_kit-nborder">
                 <?= $helper->render('product-category/v2/__selectedFilter', ['productFilter' => $productFilter, 'baseUrl' => $baseUrl]) ?>
             </div>
         </form>

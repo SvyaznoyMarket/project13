@@ -7809,7 +7809,7 @@ img[height="0"] {
 @media all {
   .fltr_slctd {
     float: left;
-    margin: 10px 25px 10px 0;
+    margin: 10px 10px 0 12px;
   }
   .fltr_slctd_i {
     display: inline-block;
@@ -7832,6 +7832,7 @@ img[height="0"] {
   }
   .fltr_clsr {
     float: right;
+    margin-bottom: 11px;
   }
   .fltr_clsr:hover {
     text-decoration: none;
@@ -8516,7 +8517,7 @@ img[height="0"] {
   .fltrBtnBox_tggl {
     font-size: 16px;
     position: relative;
-    padding: 2px 22px 4px 10px;
+    padding: 0 22px 2px 10px;
     cursor: pointer;
     border: 1px solid #ffffff;
     border-bottom: none;
@@ -8537,7 +8538,7 @@ img[height="0"] {
   .fltrBtnBox_dd {
     position: absolute;
     z-index: 15;
-    top: 27px;
+    top: 23px;
     min-width: 190px;
     max-height: 250px;
     padding: 10px 10px 0;
@@ -8870,9 +8871,9 @@ img[height="0"] {
   .sorting {
     width: 940px;
     padding: 10px;
-    margin: 0 0 0 -10px;
+    margin: -1px 0 0 -10px;
     border-bottom: 1px solid #e6e6e6;
-    border-top: 1px solid #e6e6e6;
+    border-top: 2px solid #e6e6e6;
   }
   .sorting_i {
     display: inline-block;
