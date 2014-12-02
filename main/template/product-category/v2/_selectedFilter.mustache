@@ -19,8 +19,8 @@
                     {{/name}}
 
                     {{#links}}
-                            <span>{{&name}}</span>
-                            <a class="btn-closer2 jsHistoryLink" href="{{url}}">&#215;</a>
+                        <span>{{&name}}</span>
+                        <a class="btn-closer2 jsHistoryLink" href="{{url}}">&#215;</a>
                     {{/links}}
                 </li>
             {{/properties}}
@@ -28,7 +28,9 @@
     </ul>
 {{/filters}}
 
-<a class="fltr_clsr jsHistoryLink" href="{{baseUrl}}">
-    <span class="btn-closer3">&#215;</span>
-    <span class="fltr_clr_tx">Очистить все</span>
-</a>
+{{#filtersCount}}
+    <a class="fltr_clsr jsHistoryLink" href="{{baseUrl}}">
+        <span class="btn-closer3">&#215;</span>
+        <span class="fltr_clr_tx">Очистить все</span>
+    </a>
+{{/filtersCount}}

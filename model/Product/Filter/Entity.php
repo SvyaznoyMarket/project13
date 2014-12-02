@@ -216,8 +216,12 @@ class Entity {
     /**
      * @return Option\Entity
      */
-    public function deleteOption($key) {
-        unset($this->option[$key]);
+    public function deleteOption($expectedOption) {
+        foreach ($this->option as $key => $option) {
+            if ($option === $expectedOption) {
+                unset($this->option[$key]);
+            }
+        }
     }
 
     /**

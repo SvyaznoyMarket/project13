@@ -87,6 +87,8 @@ $(function() {
 			$dropBox = $(e.currentTarget).closest('.js-category-v2-filter-dropBox'),
 			isSelected = false;
 
+		$dropBoxes.removeClass(dropBoxOpenClass);
+
 		$('input, select, textarea', $dropBox).each(function(index, element) {
 			var $element = $(element);
 			if (

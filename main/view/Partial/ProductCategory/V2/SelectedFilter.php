@@ -23,9 +23,12 @@ class SelectedFilter {
             $selected[] = reset($item);
         }
 
+        $filters = $this->getFilterLinks($helper, $productFilter, $selected, $baseUrl, $useBaseUrl);
+
         return [
             'baseUrl' => $baseUrl,
-            'filters' => $this->getFilterLinks($helper, $productFilter, $selected, $baseUrl, $useBaseUrl),
+            'filters' => $filters,
+            'filtersCount' => count($filters),
             'values'  => $this->getFilterValues($productFilter, $selected),
         ];
     }
@@ -52,7 +55,7 @@ class SelectedFilter {
                 $links = $this->getPropertyLinks($helper, $productFilter, $property, $baseUrl, $useBaseUrl);
                 if ($links) {
                     if ('shop' === $property->getId()) {
-                        $name = null;
+                        $name = '';
                     } else {
                         $name = $property->getName();
                     }
@@ -143,7 +146,7 @@ class SelectedFilter {
                     };
 
                     $links[] = [
-                        'name' => mb_strtoupper(mb_substr($option->getName(), 0, 1)) . mb_substr($option->getName(), 1),
+                        'name' => 'shop' === $property->getId() ? $option->getName() : mb_strtoupper(mb_substr($option->getName(), 0, 1)) . mb_substr($option->getName(), 1),
                         'url'  => $url,
                     ];
                 }

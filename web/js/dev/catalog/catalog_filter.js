@@ -425,6 +425,7 @@
 
 					self.removeAttr('checked');
 					label.removeClass('mChecked');
+					self.trigger('change');
 				},
 
 				resetCheckbox = function resetCheckbox( nf, input ) {
@@ -446,7 +447,6 @@
 					sliderToInput.val(max).trigger('change');
 				};
 			// end of functions
-
 
 			filterBlock.find(':input:radio:checked').each(resetRadio);
 			filterBlock.find(':input:checkbox:checked').each(resetCheckbox);
@@ -480,6 +480,7 @@
 
 					self.attr('checked', 'checked');
 					label.addClass('mChecked');
+					self.trigger('change');
 				},
 
 				'checkbox': function( input, val ) {

@@ -703,11 +703,11 @@ class Action {
     private function transformFiltersV2(array &$filters) {
         $newProperties = [];
 
-        foreach ($filters as $property) {
+        foreach ($filters as $key => $property) {
             if ('label' === $property->getId()) {
                 $property->setName('Скидки');
 
-                foreach ($property->getOption() as $key => $option) {
+                foreach ($property->getOption() as $option) {
                     if ('instore' === $option->getToken()) {
                         $labelProperty = new \Model\Product\Filter\Entity();
                         $labelProperty->setId($option->getToken());
@@ -719,13 +719,22 @@ class Action {
 
                         $newProperties[] = $labelProperty;
 
-                        $property->deleteOption($key);
+                        $property->deleteOption($option);
 
                         break;
                     }
                 }
             } else if ('shop' === $property->getId()) {
                 $property->setName('В магазине');
+                foreach ($property->getOption() as $option) {
+                    if (!$option->getQuantity()) {
+                        $property->deleteOption($option);
+                    }
+                }
+
+                if (!$property->getOption()) {
+                    unset($filters[$key]);
+                }
             }
         }
 
