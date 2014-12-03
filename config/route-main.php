@@ -24,7 +24,7 @@ return [
         ],
     ],
     'mainMenu.recommendation' => [
-        'pattern' => '/main_menu/recommendations/{rootCategoryId}',
+        'pattern' => '/main_menu/recommendations/{rootCategoryId}/{childIds}',
         'action'  => ['MainMenu\RecommendedAction', 'execute'],
         'require' => [
             'categoryId' => '\d+',
@@ -757,6 +757,12 @@ return [
     'main.recommended' => [
         'pattern' => '/main/recommended',
         'action'  => ['Main\RecommendedAction', 'execute'],
+    ],
+
+    // smartchoice
+    'product/smartchoice' => [
+        'pattern' => '/ajax/product-smartchoice',
+        'action' => ['Product\SmartChoiceAction', 'execute'],
     ],
 
     // редактирование данных пользователя
