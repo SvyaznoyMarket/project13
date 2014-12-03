@@ -22,6 +22,7 @@ class ProductButtonAction {
         $noUpdate = false // Не обновлять кнопку купить
     ) {
         $data = [
+            'id'         => 'id-buyButton-' . $product->getId() . '-'. uniqid(),
             'disabled'   => false,
             'url'        => null,
             'value'      => null,
