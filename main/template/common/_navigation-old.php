@@ -4,6 +4,9 @@
  */
 ?>
 
+<?
+if (!isset($lastMenu1)) $lastMenu1 = null;
+?>
 
 <div id="header" class="clearfix">
     <a id="topLogo" href="/">Enter Связной</a>

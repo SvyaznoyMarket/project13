@@ -55,7 +55,6 @@
     <? endif; ?>
 
     _gaq.push(['_trackPageview']);
-    _gaq.push(['_trackPageLoadTime']);
 
     <? if (isset($orders) && isset($productsById)): ?>
         <? foreach ($orders as $order): ?>

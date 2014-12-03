@@ -1398,17 +1398,8 @@
                     $.get($orderContainer.data('url')).done(function(response) {
                         $orderContainer.html(response.result.page);
 
-                        try {
-                            var gaPushData = $('.jsGoogleAnalytics-push').data('value') || [];
+						if (typeof ENTER.utils.sendOrderToGA == 'function') ENTER.utils.sendOrderToGA($('#jsOrder').data('value'));
 
-                            for (var i = 0; i < gaPushData.length; i++) {
-                                console.log('gaPush', gaPushData[i]);
-
-                                window._gaq.push(gaPushData[i]);
-                            }
-                        } catch (e) {
-                            console.error(e);
-                        }
                     });
                 }
             })

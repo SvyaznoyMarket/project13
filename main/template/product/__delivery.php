@@ -12,6 +12,9 @@ return function (
     $delivery = [];
     if (isset($deliveryData['product'][0]['delivery'])) {
         foreach ($deliveryData['product'][0]['delivery'] as $item) {
+            if ('self_partner_pickpoint' == $item['token']) {
+                $item['token'] = 'pickpoint';
+            }
 
             // Если есть самовывоз от Связного, то добавим его в результирующий список
             // Если еще есть и наш самовывоз, то наш потом затрет связновский

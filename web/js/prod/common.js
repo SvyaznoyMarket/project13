@@ -812,7 +812,49 @@
                 console.error('[Google Analytics Ecommerce] %s', exception)
             }
 
-        };
+		},
+
+		/**
+		 * Приготовление и отправка данных в GA, аналитика
+		 * @param orderData
+		 */
+		sendOrderToGA = function sendOrderF(orderData) {
+			var oData = orderData || { orders: [] };
+			console.log('[Google Analytics] Start processing orders');
+			$.each(oData.orders, function(i,o) {
+				var googleOrderTrackingData = {};
+				googleOrderTrackingData.transaction = {
+					'id': o.numberErp,
+					'affiliation': o.is_partner ? 'Партнер' : 'Enter',
+					'total': o.paySum,
+					'shipping': o.delivery[0].price,
+					'city': o.region.name
+				};
+				googleOrderTrackingData.products = $.map(o.products, function(p){
+					var productName = o.is_partner ? p.name + ' (marketplace)' : p.name;
+					// Аналитика по купленным товарам из рекомендаций
+					if (p.sender == 'retailrocket') {
+						if (p.position) productName += ' (RR_' + p.position + ')';
+						if (p.from) body.trigger('trackGoogleEvent',['RR_покупка','Купил просмотренные', p.position ? p.position : null]);
+						else body.trigger('trackGoogleEvent',['RR_покупка','Купил добавленные', p.position ? p.position : null]);
+					}
+					return {
+						'id': p.id,
+						'name': productName,
+						'sku': p.article,
+						'category': p.category[0].name +  ' - ' + p.category[p.category.length -1].name,
+						'price': p.price,
+						'quantity': p.quantity
+					}
+				});
+
+				console.log('[Google Analytics] Order', googleOrderTrackingData);
+				body.trigger('trackGoogleTransaction',[googleOrderTrackingData]);
+
+			});
+		};
+
+	ENTER.utils.sendOrderToGA = sendOrderToGA;
 
     if (typeof ga === 'undefined') ga = window[window['GoogleAnalyticsObject']]; // try to assign ga
 
@@ -2948,6 +2990,35 @@ $('nav').on('mouseenter', '.navsite_i', function(){
             //$el.data('recommendXhr', true);
         });
     }
+});
+
+// аналитика
+$('body').on('click', '.jsRecommendedItemInMenu', function(event) {
+    console.log('jsRecommendedItemInMenu');
+
+    event.stopPropagation();
+
+    try {
+        var
+            $el = $(this),
+            link = $el.attr('href'),
+            sender = $el.data('sender')
+        ;
+
+        $('body').trigger('trackGoogleEvent', {
+            category: 'RR_взаимодействие',
+            action: 'Перешел на карточку товара',
+            label: sender ? sender.position : null,
+            hitCallback: function(){
+                console.log({link: link});
+
+                if (link) {
+                    setTimeout(function() { window.location.href = link; }, 90);
+                }
+            }
+        });
+
+    } catch (e) { console.error(e); }
 });
 
 ;(function($){	
