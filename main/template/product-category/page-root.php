@@ -11,9 +11,9 @@
 $helper = new \Helper\TemplateHelper();
 $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
 ?>
-<h1 class="bTitlePage js-pageTitle"><?= $category->getName() ?></h1>
+    <h1 class="bTitlePage js-pageTitle"><?= $category->getName() ?></h1>
 
-<!-- Баннер --><div id="adfox683" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
+    <!-- Баннер --><div id="adfox683" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
 
 <? if ('furniture' === $category_class): ?>
     <?= $helper->renderWithMustache('furniture/product-category/_listInFilter', [

@@ -178,8 +178,7 @@ class HtmlLayout {
     public function addStylesheet($stylesheet) {
         try {
             if (0 === strpos($stylesheet, '/')) {
-                $timestamp = filectime(\App::config()->webDir . '/' . trim($stylesheet, '/'));
-                $stylesheet .= '?' . $timestamp;
+                $stylesheet .= '?t=' . \Util\Application::getVersion();
             }
         } catch (\Exception $e) {
             \App::logger()->error($e, ['view']);

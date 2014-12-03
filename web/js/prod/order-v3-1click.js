@@ -1325,25 +1325,25 @@
 })(jQuery);
 ;(function($) {
 
-    var
-        $form = $('.jsOrderV3OneClickForm')
-    ;
+	var
+		$form = $('.jsOrderV3OneClickForm')
+		;
 
 
-    // отслеживаем смену региона
-    $form.on('submit', function(e){
-        var
-            $el = $(this),
-            data = $el.serializeArray()
-        ;
+	// отслеживаем смену региона
+	$form.on('submit', function(e){
+		var
+			$el = $(this),
+			data = $el.serializeArray()
+			;
 
-        $.post($el.attr('action'), data)
-            .done(function(response) {
-                if (typeof response.result !== 'undefined') {
-                    $('#jsOneClickContentPage').hide();
-                    $('#jsOneClickContent').append(response.result.page);
+		$.post($el.attr('action'), data)
+			.done(function(response) {
+				if (typeof response.result !== 'undefined') {
+					$('#jsOneClickContentPage').hide();
+					$('#jsOneClickContent').append(response.result.page);
 
-                    $('body').trigger('trackUserAction', ['3_1 Оформить_успешно']);
+					$('body').trigger('trackUserAction', ['3_1 Оформить_успешно']);
 
 					// Счётчик GetIntent (BlackFriday)
 					(function() {
@@ -1391,42 +1391,33 @@
 							});
 						});
 					})();
-                }
+				}
 
-                var $orderContainer = $('#jsOrderV3OneClickOrder');
-                if ($orderContainer.length) {
-                    $.get($orderContainer.data('url')).done(function(response) {
-                        $orderContainer.html(response.result.page);
+				var $orderContainer = $('#jsOrderV3OneClickOrder');
+				if ($orderContainer.length) {
+					$.get($orderContainer.data('url')).done(function(response) {
+						$orderContainer.html(response.result.page);
 
-                        try {
-                            var gaPushData = $('.jsGoogleAnalytics-push').data('value') || [];
+						if (typeof ENTER.utils.sendOrderToGA == 'function') ENTER.utils.sendOrderToGA($('#jsOrder').data('value'));
 
-                            for (var i = 0; i < gaPushData.length; i++) {
-                                console.log('gaPush', gaPushData[i]);
+					});
+				}
+			})
+			.fail(function(jqXHR){
+				var response = $.parseJSON(jqXHR.responseText);
 
-                                window._gaq.push(gaPushData[i]);
-                            }
-                        } catch (e) {
-                            console.error(e);
-                        }
-                    });
-                }
-            })
-            .fail(function(jqXHR){
-                var response = $.parseJSON(jqXHR.responseText);
+				if (response.result && response.result.errorContent) {
+					$('#OrderV3ErrorBlock').html($(response.result.errorContent).html()).show();
+				}
 
-                if (response.result && response.result.errorContent) {
-                    $('#OrderV3ErrorBlock').html($(response.result.errorContent).html()).show();
-                }
+				var error = (response.result && response.result.error) ? response.result.error : {};
 
-                var error = (response.result && response.result.error) ? response.result.error : {};
+				$('body').trigger('trackUserAction', ['3_2 Оформить_ошибка', 'Поле ошибки: '+ ((typeof error !== 'undefined') ? error.join(', ') : '')]);
+			})
+		;
 
-                $('body').trigger('trackUserAction', ['3_2 Оформить_ошибка', 'Поле ошибки: '+ ((typeof error !== 'undefined') ? error.join(', ') : '')]);
-            })
-        ;
-
-        e.preventDefault();
-    })
+		e.preventDefault();
+	})
 
 })(jQuery);
 ;(function($) {

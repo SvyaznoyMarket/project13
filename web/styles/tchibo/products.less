@@ -1,6 +1,7 @@
 .tchiboProducts{
     .productInner{
         z-index: 5;
+
         &-off{
             .productInner__hover{
                 .opacity(.5);
@@ -9,6 +10,7 @@
         &:hover{
             z-index: 10;
         }
+
         .bProductDescSticker{
             z-index: 102;
             top: 5px;
@@ -19,6 +21,7 @@
                 right: 5px;
             }
         }
+
         .stockSticker{
             position: absolute;
             top: 50%;
@@ -29,28 +32,34 @@
             .rounded(4px);
             .drop-shadow(0, 0, 10px, .2);
         }
+
         &__hover{
             width: 98%;
+
             &:hover{
                 z-index: 100;
 
                 background: @white;
 
                 .box-shadow(0 0 3px rgba(0,0,0,.5));
+
                 .bBtnLine,
                 .bOptionsSection{
                     display: block;
                 }
             }
         }
+
         &__imgbox{
             width: 100%;
         }
-        &__imglink{
+
+        &__imgLink{
             display: block;
 
             text-align: center;
         }
+
         &__img{
             position: relative;
 
@@ -58,6 +67,7 @@
 
             vertical-align: middle;
         }
+
         &__desc{
             position: relative;
 
@@ -107,6 +117,7 @@
             }
         }
     }
+
     .btnBuy{
         margin-right: 11px;
         .btnBuy__eLink{

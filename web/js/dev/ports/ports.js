@@ -1188,7 +1188,7 @@ window.ANALYTICS = {
 		// var fscr = document.getElementsByTagName('script')[0]; fscr.parentNode.insertBefore(mt, fscr);
 
 
-		$LAB.script( mt.src ).script( 'three.min.js' ).wait(callback);
+		$LAB.script( mt.src ).wait(callback);
 	},
 
 	marinLandingPageTagJS : function() {
