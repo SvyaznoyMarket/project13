@@ -33,8 +33,10 @@ return function(
             $brandFilter2 = clone $property;
             $brandFilter2->deleteAllOptions();
 
-            while (count($brandFilter1->getOption()) >= 9) {
-                $brandFilter2->unshiftOption($brandFilter1->deleteLastOption());
+            if (count($brandFilter1->getOption()) >= 10) {
+                while (count($brandFilter1->getOption()) >= 9) {
+                    $brandFilter2->unshiftOption($brandFilter1->deleteLastOption());
+                }
             }
         }
 

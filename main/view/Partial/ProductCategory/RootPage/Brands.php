@@ -16,10 +16,11 @@ class Brands {
 
         foreach ($productFilter->getFilterCollection() as $property) {
             if ('brand' === $property->getId()) {
+                $optionsCount = count($property->getOption());
                 foreach ($property->getOption() as $option) {
                     $num++;
 
-                    if ($num <= 6) {
+                    if ($num <= 6 || $optionsCount == 7) {
                         $brands = &$mainBrands;
                     } else {
                         $brands = &$otherBrands;
