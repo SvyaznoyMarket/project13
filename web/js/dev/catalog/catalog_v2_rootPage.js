@@ -15,6 +15,11 @@
 	}
 
 	function updateLinks(url) {
+		if (!ENTER.catalog.enableHistoryAPI) {
+			document.location.href = url;
+			return;
+		}
+
 		history.pushState({}, document.title, url);
 
 		$.ajax({
@@ -33,16 +38,15 @@
 		var
 			$brandLink = $(e.currentTarget),
 			url = document.location.href,
-			brandLinkUrlParam = e.currentTarget.href.replace(/^.*?\?([^#]+)(\#.*)?$/, '$1'),
-			brandLinkUrlParamName = decodeURIComponent(brandLinkUrlParam.replace(/^(.*?)\=.*$/, '$1')),
-			brandLinkUrlParamValue = decodeURIComponent(brandLinkUrlParam.replace(/^.*?\=(.*)$/, '$1'));
+			brandLinkParamName = $brandLink.data('paramName'),
+			brandLinkParamValue = $brandLink.data('paramValue');
 
 		if ($brandLink.hasClass(brandLinkActiveClass)) {
 			$brandLink.removeClass(brandLinkActiveClass);
-			url = ENTER.utils.setURLParam(brandLinkUrlParamName, null, url);
+			url = ENTER.utils.setURLParam(brandLinkParamName, null, url);
 		} else {
 			$brandLink.addClass(brandLinkActiveClass);
-			url = ENTER.utils.setURLParam(brandLinkUrlParamName, brandLinkUrlParamValue, url);
+			url = ENTER.utils.setURLParam(brandLinkParamName, brandLinkParamValue, url);
 		}
 
 		renderSelectedBrandsTemplate();

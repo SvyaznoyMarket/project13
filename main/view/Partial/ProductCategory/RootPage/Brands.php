@@ -3,6 +3,7 @@
 namespace View\Partial\ProductCategory\RootPage;
 
 use Helper\TemplateHelper;
+use Templating\Helper;
 
 class Brands {
     /**
@@ -13,6 +14,7 @@ class Brands {
         $otherBrands = [];
         $selectedBrandsCount = 0;
         $num = 0;
+        $helper = new Helper();
 
         foreach ($productFilter->getFilterCollection() as $property) {
             if ('brand' === $property->getId()) {
@@ -36,7 +38,9 @@ class Brands {
                         'name' => $option->getName(),
                         'imageUrl' => $option->getImageUrl(),
                         'active' => $active,
-                        'url' => '?' . urlencode(\View\Name::productCategoryFilter($property, $option)) . '=' . urlencode($option->getId()),
+                        'paramName' => \View\Name::productCategoryFilter($property, $option),
+                        'paramValue' => $option->getId(),
+                        'url' => $helper->replacedUrl([\View\Name::productCategoryFilter($property, $option) => $option->getId()]),
                     ];
                 }
 
