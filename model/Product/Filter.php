@@ -226,11 +226,12 @@ class Filter {
             if (!$property->getIsInList()) {
                 continue;
             } else if ($property->isPrice()) {
+            } else if ($property->isLabel()) {
+            } else if ($property->isBrand()) {
             } else if ('instore' === $property->getId()) {
                 $instoreProperty = $property;
             } else if ($property->isShop()) {
                 $shopProperty = $property;
-            } else if ($property->isBrand()) {
             } else if ($property->groupUi) {
                 if (isset($groups[$property->groupUi])) {
                     $group = $groups[$property->groupUi];
