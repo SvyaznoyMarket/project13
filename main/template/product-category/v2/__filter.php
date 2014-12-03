@@ -50,7 +50,7 @@ return function(
         <form id="productCatalog-filter-form" class="js-category-filter" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
             <? if ($brandFilter1): ?>
                 <div class="fltrBtn_kit clearfix">
-                    <div class="fltrBtn_tggl fltrBtn_kit_l <? if (!$brandFilter2 || !count($brandFilter2->getOption())): ?>text<? endif ?> <? if ($brandFilter2 && count($brandFilter2->getOption())): ?>js-category-v2-filter-brandTitle<? endif ?>">
+                    <div class="fltrBtn_tggl fltrBtn_kit_l <? if (!$brandFilter2 || !count($brandFilter2->getOption())): ?>fltrBtn_tggl-ncorner<? endif ?> <? if ($brandFilter2 && count($brandFilter2->getOption())): ?>js-category-v2-filter-brandTitle<? endif ?>">
                         <span class="fltrBtn_tggl_tx"><?= $brandFilter1->getName() ?></span>
                     </div>
 
@@ -75,6 +75,7 @@ return function(
                         <div class="fltrBtnBox fl-l js-category-v2-filter-dropBox">
                             <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener">
                                 <span class="fltrBtnBox_tggl_tx"><?= $priceFilter->getName() ?></span>
+                                <i class="fltrBtnBox_tggl_corner"></i>
                             </div>
                             <div class="fltrBtnBox_dd fltrBtnBox_dd-l ">
                                 <ul class="fltrBtnBox_dd_inn lstdotted js-category-v2-filter-dropBox-content">
@@ -102,6 +103,7 @@ return function(
                         <div class="fltrBtnBox fltrBtnBox-mark fl-r js-category-v2-filter-dropBox">
                             <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener">
                                 <span class="fltrBtnBox_tggl_tx"><?= $labelFilter->getName() ?></span>
+                                <i class="fltrBtnBox_tggl_corner"></i>
                             </div>
 
                             <div class="fltrBtnBox_dd fltrBtnBox_dd-r js-category-v2-filter-dropBox-content">
@@ -121,6 +123,7 @@ return function(
                             <div class="fltrBtnBox <? if ($group->hasSelectedProperties): ?>actv<? endif ?> js-category-v2-filter-dropBox">
                                 <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener">
                                     <span class="fltrBtnBox_tggl_tx"><?= $group->name ?></span>
+                                    <i class="fltrBtnBox_tggl_corner"></i>
                                 </div>
 
                                 <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content">

@@ -1,34 +1,43 @@
 .fltrBtn{
     width: 960px;
     margin: 0 0 0 -10px;
-
-    &-mb10 {
+    &-mb10{
         margin-bottom: 10px;
     }
-
-    &-bt {
-        border-top: 5px solid #e6e6e6;
+    &-bt{
+        border-top: 5px solid @typLightGray;
     }
     // шапка фильтров в рутовых категориях
     &_hd{
+        margin-bottom: 10px;
         padding: 10px 10px 0;
         &_r{
-            margin: 5px 0 8px 30px;
+            margin: 3px 0 0 30px;
 
-            color: #424242;
+            color: @darkgrey6;
 
             .inline-block();
         }
-    }
-    // отчисть фильтры в рутовых категориях
-    &_clr{
-        line-height: 13px;
+        &_count{
+            .inline-block-middle();
+        }
+        // отчисть фильтры в рутовых категориях
+        &_clr{
+            line-height: 13px;
 
-        margin: 0 0 0 15px;
+            margin: 0 0 0 15px;
 
-        cursor: pointer;
-        &_tx{
-            border-bottom: 1px dotted #424242;
+            cursor: pointer;
+
+            .inline-block-middle();
+            &_tx{
+                border-bottom: 1px dotted @darkgrey6;
+
+                .inline-block-middle();
+            }
+            &_btn{
+                .inline-block-middle();
+            }
         }
     }
     // название фильтра
@@ -49,96 +58,106 @@
         &.opn{
             background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAJCAQAAAChr3WYAAAAXElEQVQI11XKwQ0AERSE4YmrChShCSMUohAKUYg6FKECV9nN2rDre5eXPwMWc53HAqs5jjSsBsB8xIyHV+w7da/wMnEvIxYn2eauOYkPw4wBf0mwsiaBk/XWr/8G2pM8a8IWUVQAAAAASUVORK5CYII=');
         }
+        &-ncorner{
+            padding-left: 0;
+
+            background: none;
+            .fltrBtn_tggl_tx{
+                border: none;
+            }
+        }
     }
     // секция фильтра
     &_kit{
         padding: 0 10px;
-        border-bottom: 1px solid #e6e6e6;
 
+        border-bottom: 1px solid @typLightGray;
         &-box{
             padding: 10px;
         }
-
-        &-nborder {
+        &-nborder{
             border-bottom: none;
         }
-
-        &-ovrflw {
-            max-height: 165px;
+        &-ovrflw{
             overflow: auto;
+
+            max-height: 165px;
             padding: 7px 10px 0;
         }
-
-        &_l {
+        &_l{
             float: left;
-            width: 90px;
+
+            width: 80px;
             margin: 15px 0 0 10px;
         }
-
-        &_r {
+        &_r{
             float: right;
-            width: 820px;
             overflow: auto;
-            padding: 10px 0 0 1px;
+
+            width: 830px;
             max-height: 135px;
+            padding: 10px 0 0 1px;
         }
     }
     // ссекция кнопки фильтрации
-    &_i {
-        .inline-block();
+    &_i{
         margin: 0 5px 10px 0;
+
+        .inline-block();
     }
     // кнопка фильтра
     &_btn{
-        height: 43px;
         position: relative;
 
         width: 120px;
-        vertical-align: middle;
-        .table-cell();
+        height: 43px;
         margin: 0 5px 10px 0;
-        cursor: pointer;
 
+        cursor: pointer;
+        cursor: pointer;
         text-align: center;
-        cursor: pointer;
+        vertical-align: middle;
 
-        border: 1px solid #e6e6e6;
+        border: 1px solid @typLightGray;
         background: @white;
 
+        .table-cell();
         .rounded(4px);
-
-        &:last-child {
+        &:last-child{
             margin-right: 0;
         }
-
         &_img{
             vertical-align: middle;
         }
-
-        &_tx {
-            .inline-block();
+        &_tx{
             font-size: 11px;
             line-height: 1.2;
+
+            .inline-block();
         }
         // кнопка - ещё бренды
         &-btn{
             font-size: 14px;
-            margin-right: 0;
             line-height: 43px;
 
-            color: #424242;
+            margin-right: 0;
+
+            color: @darkgrey6;
             border-style: dashed;
+
             .inline-block();
             .fltrBtn_btn_tx{
-                border-bottom: 1px dotted #424242;
                 font-size: 14px;
+
                 vertical-align: middle;
+
+                border-bottom: 1px dotted @darkgrey6;
             }
             &:hover{
                 text-decoration: none;
             }
         }
-        &-mini {
+        &-mini{
             line-height: 31px;
 
             width: 80px;
@@ -153,12 +172,11 @@
             display: none;
         }
         &.act{
-            border-color: #f99b1c;
-            border-width: 2px;
+            width: 118px;
             height: 41px;
 
-            width: 118px;
-
+            border-width: 2px;
+            border-color: @orange-2;
             .fltrBtn_btn_clsr{
                 display: block;
             }
@@ -174,7 +192,7 @@
     &_param{
         margin-bottom: 8px;
 
-        border-bottom: 1px solid #c7c7c7;
+        border-bottom: 1px solid @lightgrey9;
         &:last-child{
             margin-bottom: 0;
 
@@ -198,7 +216,7 @@
             padding: 4px 10px;
 
             color: #8a8a8a;
-            border: 1px solid #c7c7c7;
+            border: 1px solid @lightgrey9;
 
             .rounded(3px);
             .inline-block-middle();
@@ -216,162 +234,170 @@
 // блок филььтра с параметрами
 .fltrBtnBox{
     position: relative;
-    .inline-block();
-    border: 1px solid #fff;
+
     margin: 0 5px 0 0;
+
+    border: 1px solid @white;
+
+    .inline-block();
     .rounded(3px);
-
-    &.opn {
-
-        .fltrBtnBox_tggl {
+    &.opn{
+        .fltrBtnBox_tggl{
             z-index: 16;
 
-            border-color: #c7c7c7;
-            border-bottom: none;
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAQAAAClB0z9AAAAP0lEQVQI12NgAIL/jE6T/jMywIBTgtN/pwQox4/X6TmQ+9yPF8x17gJygNC5C8RRc/4J5f50VmNw2grhgOFWABRpHkDXZMHuAAAAAElFTkSuQmCC');
+            padding-bottom: 5px;
 
+            border-color: @lightgrey9;
+            &_corner{
+                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAQAAAClB0z9AAAAP0lEQVQI12NgAIL/jE6T/jMywIBTgtN/pwQox4/X6TmQ+9yPF8x17gJygNC5C8RRc/4J5f50VmNw2grhgOFWABRpHkDXZMHuAAAAAElFTkSuQmCC');
+            }
             &_tx{
                 border: none;
             }
         }
-
-        &.fltrBtnBox-mark {
-
-            .fltrBtnBox_tggl {
+        &.fltrBtnBox-mark{
+            .fltrBtnBox_tggl_corner{
                 background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAAV0lEQVQIW2NggIL///8zvnf0ngSiYWJw8N7JK+G9g9d/EI0i8d/Pj/eDg/dzkCSIBvHhkh8cfbrAuqAYxAdLfHIOVPvg6P0TVdL7J0gcqMt7K7IEkoKtAD3ERJ5C4w0pAAAAAElFTkSuQmCC');
             }
         }
-
-        .fltrBtnBox_dd {
+        .fltrBtnBox_dd{
             display: block;
         }
-
-        &.actv {
-            border-color: #fff;
+        &.actv{
             border-width: 1px;
-
-            .fltrBtnBox_tggl {
-                padding: 2px 22px 5px 10px;
+            border-color: @white;
+            .fltrBtnBox_tggl{
+                padding: 5px 10px 5px 10px;
             }
-
-            &.fltrBtnBox-mark {
-                border-color: #fff;
+            &.fltrBtnBox-mark{
                 border-width: 1px;
+                border-color: @white;
             }
         }
     }
-
-    &.actv {
-        border-color: #f99b1c;
+    &.actv{
         border-width: 2px;
-
-        .fltrBtnBox_tggl {
-            padding: 1px 21px 4px 9px;
+        border-color: @orange-2;
+        .fltrBtnBox_tggl{
+            padding: 4px 9px 3px 9px;
         }
-
         .fltrBtnBox_tggl_tx{
             border: none;
         }
-
-        &.fltrBtnBox-mark {
-            border-color: #ef404a;
+        &.fltrBtnBox-mark{
             border-width: 2px;
+            border-color: #ef404a;
         }
     }
-
     //скидки - красная выпадашка
     &-mark{
-        .fltrBtnBox_tggl {
+        .fltrBtnBox_tggl{
             color: #ef404a;
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAAVUlEQVQI12P44Oi99b2D1390DBJn+OQcqAZk/EST+AkSZwCBD44+XaiSPl0MMPDfz4/3g4P3c7AEkAbxGZDBJwfveJAkiGZAB////2d87+g9CUTDxAB+g0Sgd+vg2AAAAABJRU5ErkJggg==');
-
+            &_corner{
+                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAAVUlEQVQI12P44Oi99b2D1390DBJn+OQcqAZk/EST+AkSZwCBD44+XaiSPl0MMPDfz4/3g4P3c7AEkAbxGZDBJwfveJAkiGZAB////2d87+g9CUTDxAB+g0Sgd+vg2AAAAABJRU5ErkJggg==');
+            }
             &_tx{
                 border-color: #ef404a;
             }
         }
     }
-
     &_tggl{
         font-size: 16px;
         line-height: 1;
 
         position: relative;
 
-        padding: 2px 22px 5px 10px;
+        padding: 5px 10px 4px 10px;
 
         cursor: pointer;
 
         border: 1px solid @white;
         border-bottom: none;
-        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAQAAAClB0z9AAAAQElEQVQI12Nw2ur0Hw63MjirOf+EcJx/OqsxMDA4d0G5XQwg4Mfr9BzIfe7HywABzvFAuXgGGPjP6DTpPyOIBQCDch5A9YNPpAAAAABJRU5ErkJggg==') no-repeat right center;
         background-color: @white;
 
-        .inline-block();
+        .inline-block-middle();
         .rounded(3px 3px 0 0);
         &_tx{
+            padding: 0 0 3px;
+
             border-bottom: 1px dotted #515151;
+
+            .inline-block();
+        }
+        &_corner{
+            width: 7px;
+            height: 6px;
+
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAQAAAClB0z9AAAAQElEQVQI12Nw2ur0Hw63MjirOf+EcJx/OqsxMDA4d0G5XQwg4Mfr9BzIfe7HywABzvFAuXgGGPjP6DTpPyOIBQCDch5A9YNPpAAAAABJRU5ErkJggg==') no-repeat 0 0;
+
+            .inline-block-middle();
         }
     }
     // выпадашка с параметрами фильтрации
     &_dd{
         position: absolute;
         z-index: 15;
-        top: 23px;
+        top: 29px;
 
-        white-space: nowrap;
+        display: none;
+
         min-width: 140px;
 
-        border: 1px solid #c7c7c7;
+        white-space: nowrap;
+
+        border: 1px solid @lightgrey9;
         background: @white;
-        display: none;
 
         .rounded(0 0 3px 3px);
         .drop-shadow(0, 3px, 5px, .3);
-
-        &:after {
-            background: rgba(255,255,255,1);
-            background: -moz-linear-gradient(top, rgba(255,255,255,1) 24%, rgba(255,255,255,0.17) 87%, rgba(255,255,255,0) 100%);
-            background: -webkit-gradient(left top, left bottom, color-stop(24%, rgba(255,255,255,1)), color-stop(87%, rgba(255,255,255,0.17)), color-stop(100%, rgba(255,255,255,0)));
-            background: -webkit-linear-gradient(top, rgba(255,255,255,1) 24%, rgba(255,255,255,0.17) 87%, rgba(255,255,255,0) 100%);
-            background: -o-linear-gradient(top, rgba(255,255,255,1) 24%, rgba(255,255,255,0.17) 87%, rgba(255,255,255,0) 100%);
-            background: -ms-linear-gradient(top, rgba(255,255,255,1) 24%, rgba(255,255,255,0.17) 87%, rgba(255,255,255,0) 100%);
-            background: linear-gradient(to bottom, rgba(255,255,255,1) 24%, rgba(255,255,255,0.17) 87%, rgba(255,255,255,0) 100%);
-            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=0 );
-            width: 100%;
-            height: 15px;
+        &:after{
             top: 0;
-            position: absolute;
             left: 0;
-            content: '';
-        }
 
-        &:before {
-            background: rgba(255,255,255,0);
-            background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,0.41) 35%, rgba(255,255,255,1) 86%, rgba(255,255,255,1) 100%);
-            background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,0)), color-stop(0%, rgba(255,255,255,0)), color-stop(35%, rgba(255,255,255,0.41)), color-stop(86%, rgba(255,255,255,1)), color-stop(100%, rgba(255,255,255,1)));
-            background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,0.41) 35%, rgba(255,255,255,1) 86%, rgba(255,255,255,1) 100%);
-            background: -o-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,0.41) 35%, rgba(255,255,255,1) 86%, rgba(255,255,255,1) 100%);
-            background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,0.41) 35%, rgba(255,255,255,1) 86%, rgba(255,255,255,1) 100%);
-            background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,0.41) 35%, rgba(255,255,255,1) 86%, rgba(255,255,255,1) 100%);
-            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=0 );
             width: 100%;
             height: 15px;
-            bottom: 0;
-            position: absolute;
-            left: 0;
-            content: '';
-        }
 
+            .pseudo-class();
+
+            background: rgba(255,255,255,1);
+            background:    -moz-linear-gradient(top, rgba(255,255,255,1) 24%, rgba(255,255,255,.17) 87%, rgba(255,255,255,0) 100%);
+            background: -webkit-gradient(left top, left bottom, color-stop(24%, rgba(255,255,255,1)), color-stop(87%, rgba(255,255,255,.17)), color-stop(100%, rgba(255,255,255,0)));
+            background: -webkit-linear-gradient(top, rgba(255,255,255,1) 24%, rgba(255,255,255,.17) 87%, rgba(255,255,255,0) 100%);
+            background:      -o-linear-gradient(top, rgba(255,255,255,1) 24%, rgba(255,255,255,.17) 87%, rgba(255,255,255,0) 100%);
+            background:     -ms-linear-gradient(top, rgba(255,255,255,1) 24%, rgba(255,255,255,.17) 87%, rgba(255,255,255,0) 100%);
+            background:         linear-gradient(to bottom, rgba(255,255,255,1) 24%, rgba(255,255,255,.17) 87%, rgba(255,255,255,0) 100%);
+
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=0 );
+        }
+        &:before{
+            bottom: 0;
+            left: 0;
+
+            width: 100%;
+            height: 15px;
+
+            .pseudo-class();
+
+            background: rgba(255,255,255,0);
+            background:    -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,.41) 35%, rgba(255,255,255,1) 86%, rgba(255,255,255,1) 100%);
+            background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,0)), color-stop(0%, rgba(255,255,255,0)), color-stop(35%, rgba(255,255,255,.41)), color-stop(86%, rgba(255,255,255,1)), color-stop(100%, rgba(255,255,255,1)));
+            background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,.41) 35%, rgba(255,255,255,1) 86%, rgba(255,255,255,1) 100%);
+            background:      -o-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,.41) 35%, rgba(255,255,255,1) 86%, rgba(255,255,255,1) 100%);
+            background:     -ms-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,.41) 35%, rgba(255,255,255,1) 86%, rgba(255,255,255,1) 100%);
+            background:         linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,.41) 35%, rgba(255,255,255,1) 86%, rgba(255,255,255,1) 100%);
+
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=0 );
+        }
         &-r{
             right: 0;
         }
         &-l{
             left: 0;
         }
-
-        &_inn {
-            max-height: 250px;
+        &_inn{
             overflow: auto;
+
+            max-height: 250px;
             padding: 15px 10px 5px;
         }
     }

@@ -164,6 +164,15 @@
   *zoom: 1;
 }
 
+.inline-block-base() {
+  display: inline-block;
+  vertical-align: baseline;
+
+  /* IE6-8 */
+  *display: inline;
+  *zoom: 1;
+}
+
 .table() {
   display: table;
 
@@ -237,15 +246,6 @@
   border-left: @border-width solid @border-color;
   border-bottom: @border-width solid transparent;
   top: @posTop;
-}
-
-.inline-block-base() {
-  display: inline-block;
-  vertical-align: baseline;
-
-  /* IE6-8 */
-  *display: inline;
-  *zoom: 1;
 }
 
 @full-size: 100%;
