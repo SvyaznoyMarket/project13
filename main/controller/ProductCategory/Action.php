@@ -279,15 +279,25 @@ class Action {
         /** @var $filters \Model\Product\Filter\Entity[] */
         $filters = [];
         \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, $filterParams, function($data) use (&$filters) {
-            $i = 0; // TODO remove
+            // TODO remove
+            if ($_SERVER['APPLICATION_ENV'] === 'local' || $_SERVER['APPLICATION_ENV'] === 'live') {
+                $i = 0;
+            }
+
             foreach ($data as $item) {
-                $i++;
-                if ($i <= 4) {
-                    $item['group']['uid'] = '1';
-                    $item['group']['name'] = 'Габариты';
-                } else {
-                    $item['group']['uid'] = '2';
-                    $item['group']['name'] = 'Дополнительно';
+                // TODO remove
+                if ($_SERVER['APPLICATION_ENV'] === 'local' || $_SERVER['APPLICATION_ENV'] === 'live') {
+                    $i++;
+                    if ($i <= 4) {
+                        $item['group']['uid'] = '1';
+                        $item['group']['name'] = 'Группа 1';
+                    } else if ($i <= 9) {
+                        $item['group']['uid'] = '2';
+                        $item['group']['name'] = 'Группа 2';
+                    } else {
+                        $item['group']['uid'] = '3';
+                        $item['group']['name'] = 'Дополнительно';
+                    }
                 }
 
                 $filters[] = new \Model\Product\Filter\Entity($item);
