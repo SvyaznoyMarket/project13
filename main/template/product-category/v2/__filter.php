@@ -62,8 +62,8 @@ return function(
 
                         <? if ($brandFilter2): ?>
                             <span class="js-category-v2-filter-otherBrands" style="display: none;">
-                            <?= $helper->render('product-category/v2/filter/element/__brand', ['productFilter' => $productFilter, 'filter' => $brandFilter2]) ?>
-                        </span>
+                                <?= $helper->render('product-category/v2/filter/element/__brand', ['productFilter' => $productFilter, 'filter' => $brandFilter2]) ?>
+                            </span>
                         <? endif ?>
                     </div>
                 </div>

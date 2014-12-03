@@ -3,7 +3,6 @@
 namespace View\Partial\ProductCategory\RootPage;
 
 use Helper\TemplateHelper;
-use Model\Product\Filter\Option\Entity;
 
 class Brands {
     /**
@@ -16,9 +15,7 @@ class Brands {
         $num = 0;
 
         foreach ($productFilter->getFilterCollection() as $property) {
-            if ('Бренд' === $property->getName()) {
-                $this->sortOptionsByQuantity($property);
-
+            if ('brand' === $property->getId()) {
                 foreach ($property->getOption() as $option) {
                     $num++;
 
@@ -55,19 +52,5 @@ class Brands {
             'brandsCount' => count($mainBrands) + count($otherBrands),
             'selectedBrandsCount' => $selectedBrandsCount,
         ];
-    }
-
-    private function sortOptionsByQuantity(\Model\Product\Filter\Entity $property) {
-        $options = $property->getOption();
-
-        usort($options, function(Entity $a, Entity $b) {
-            if ($a->getQuantity() == $b->getQuantity()) {
-                return 0;
-            }
-
-            return ($a->getQuantity() > $b->getQuantity()) ? -1 : 1;
-        });
-
-        $property->setOption($options);
     }
 }

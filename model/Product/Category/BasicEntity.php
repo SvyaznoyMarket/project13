@@ -274,18 +274,20 @@ class BasicEntity {
 
     public function isV2() {
         $root = $this->getRoot();
-        if ($root) {
-            if ($this->isNewMainPage()) {
-                // Бытовая техника
-                if ($root->getUi() === '616e6afd-fd4d-4ff4-9fe1-8f78236d9be6') {
-                    return true;
-                }
+        if (!$root) {
+            $root = $this;
+        }
 
-                // Мебель
-//                if ($root->getUi() === 'f7a2f781-c776-4342-81e8-ab2ebe24c51a') {
-//                    return true;
-//                }
+        if ($this->isNewMainPage()) {
+            // Бытовая техника
+            if ($root->getUi() === '616e6afd-fd4d-4ff4-9fe1-8f78236d9be6') {
+                return true;
             }
+
+            // Мебель
+//            if ($root->getUi() === 'f7a2f781-c776-4342-81e8-ab2ebe24c51a') {
+//                return true;
+//            }
         }
 
         return false;

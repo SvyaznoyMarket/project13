@@ -735,12 +735,28 @@ class Action {
                 if (!$property->getOption()) {
                     unset($filters[$key]);
                 }
+            } else if ('brand' === $property->getId()) {
+                $this->sortOptionsByQuantity($property);
             }
         }
 
         foreach ($newProperties as $property) {
             array_push($filters, $property);
         }
+    }
+
+    private function sortOptionsByQuantity(\Model\Product\Filter\Entity $property) {
+        $options = $property->getOption();
+
+        usort($options, function(\Model\Product\Filter\Option\Entity $a, \Model\Product\Filter\Option\Entity $b) {
+            if ($a->getQuantity() == $b->getQuantity()) {
+                return 0;
+            }
+
+            return ($a->getQuantity() > $b->getQuantity()) ? -1 : 1;
+        });
+
+        $property->setOption($options);
     }
 
     /**

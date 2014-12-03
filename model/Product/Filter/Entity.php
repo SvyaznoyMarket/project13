@@ -343,11 +343,12 @@ class Entity {
      */
     public function getPriceRanges() {
         $ranges = [];
+        $min = $this->getMin();
         $max = $this->getMax();
-        $num = 0;
+        $num = $min;
         $previousNum = 0;
         while ($num < $max) {
-            $num += ceil($max / 5);
+            $num += ceil(($max - $min) / 5);
             $range = [];
 
             if ($previousNum) {

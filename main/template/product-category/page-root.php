@@ -22,7 +22,7 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
     ]) ?>
 <? elseif (count($links)): ?>
     <? if ($category->isV2Root()): ?>
-        <?= $helper->renderWithMustache('product-category/root/_brands', (new View\Partial\ProductCategory\RootPage\Brands)->execute($productFilter)) ?>
+        <?= $helper->renderWithMustache('product-category/v2/root/_brands', (new View\Partial\ProductCategory\RootPage\Brands)->execute($productFilter)) ?>
     <? endif ?>
 
     <div class="js-category-v2-root-linksWrapper">
@@ -33,9 +33,11 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
         <?= file_get_contents(\App::config()->templateDir . '/product-category/root/_links.mustache') ?>
     </script>
 
-    <script id="root_page_selected_brands_tmpl" type="text/html" data-partial="{}">
-        <?= file_get_contents(\App::config()->templateDir . '/product-category/root/_selectedBrands.mustache') ?>
-    </script>
+    <? if ($category->isV2Root()): ?>
+        <script id="root_page_selected_brands_tmpl" type="text/html" data-partial="{}">
+            <?= file_get_contents(\App::config()->templateDir . '/product-category/v2/root/_selectedBrands.mustache') ?>
+        </script>
+    <? endif ?>
 
     <div style="margin: 0 0 30px;">
         <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>

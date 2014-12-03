@@ -8,8 +8,6 @@ return function(
     $values = $productFilter->getValue($filter);
     $category = $helper->getParam('selectedCategory');
     $categoryId = $category ? $category->getId() : null;
-
-    $showFasets = \App::config()->sphinx['showFacets'];
     ?>
 
 
@@ -37,7 +35,7 @@ return function(
 
                 <i class="fltrBtn_btn_clsr btn-closer1"></i>
 
-                <span class="fltrBtn_btn_tx"><?= $option->getName() ?><?= ($showFasets && $option->getQuantity()) ? " ({$option->getQuantity()})" : '' ?></span>
+                <span class="fltrBtn_btn_tx"><?= $option->getName() ?></span>
             </label>
         </div>
         <? $i++; endforeach ?>
