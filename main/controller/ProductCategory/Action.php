@@ -278,7 +278,7 @@ class Action {
         // запрашиваем фильтры
         /** @var $filters \Model\Product\Filter\Entity[] */
         $filters = [];
-        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, $filterParams, function($data) use (&$filters) {
+        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, [], function($data) use (&$filters) {
             // TODO remove
             if ($_SERVER['APPLICATION_ENV'] === 'local' || $_SERVER['APPLICATION_ENV'] === 'live') {
                 $i = 0;
