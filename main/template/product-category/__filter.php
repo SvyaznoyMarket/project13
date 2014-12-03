@@ -76,7 +76,7 @@ return function(
 
     $hasAlwaysShowFilters = count($alwaysShowFilters);
 
-    if (0 === $countInListFilters) return;
+    if (0 == $countInListFilters) return;
 
     $showParamsButton = (bool) ($countInListFilters > 1 || !$priceFilter);
 
