@@ -299,6 +299,7 @@
 					$self.before(newSlider);
 					$self.remove();
 					$(newSlider).goodsSlider();
+                    $(newSlider).trigger('TL_recommendation_loaded');
 
 					if (params.onLoad) {
 						params.onLoad(newSlider);
