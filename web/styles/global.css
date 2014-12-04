@@ -10487,7 +10487,7 @@ img[height="0"] {
   .fltrBtn_kit_l {
     float: left;
     width: 80px;
-    margin: 15px 0 0 10px;
+    margin: 15px 0 0 12px;
   }
   .fltrBtn_kit_r {
     float: right;
@@ -10585,6 +10585,7 @@ img[height="0"] {
   }
   .fltrBtn_param {
     margin-bottom: 8px;
+    padding-right: 10px;
     border-bottom: 1px solid #c7c7c7;
   }
   .fltrBtn_param:last-child {
@@ -10610,6 +10611,7 @@ img[height="0"] {
     padding: 4px 10px;
     color: #8a8a8a;
     border: 1px solid #c7c7c7;
+    color: #000000;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -10642,7 +10644,7 @@ img[height="0"] {
   }
   .fltrBtnBox.opn .fltrBtnBox_tggl {
     z-index: 16;
-    padding-bottom: 5px;
+    padding-bottom: 4px;
     border-color: #c7c7c7;
   }
   .fltrBtnBox.opn .fltrBtnBox_tggl_corner {
@@ -10662,7 +10664,7 @@ img[height="0"] {
     border-color: #ffffff;
   }
   .fltrBtnBox.opn.actv .fltrBtnBox_tggl {
-    padding: 5px 10px;
+    padding: 4px 10px 3px;
   }
   .fltrBtnBox.opn.actv.fltrBtnBox-mark {
     border-width: 1px;
@@ -10673,7 +10675,7 @@ img[height="0"] {
     border-color: #f99b1c;
   }
   .fltrBtnBox.actv .fltrBtnBox_tggl {
-    padding: 4px 9px 3px;
+    padding: 3px 9px 2px;
   }
   .fltrBtnBox.actv .fltrBtnBox_tggl_tx {
     border: none;
@@ -10692,10 +10694,10 @@ img[height="0"] {
     border-color: #ef404a;
   }
   .fltrBtnBox_tggl {
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1;
     position: relative;
-    padding: 5px 10px 4px;
+    padding: 4px 10px 3px;
     cursor: pointer;
     border: 1px solid #ffffff;
     border-bottom: none;
@@ -10731,9 +10733,11 @@ img[height="0"] {
   .fltrBtnBox_dd {
     position: absolute;
     z-index: 15;
-    top: 29px;
+    top: 24px;
     display: none;
     min-width: 140px;
+    overflow-y: auto;
+    overflow-x: hidden;
     white-space: nowrap;
     border: 1px solid #c7c7c7;
     background: #ffffff;
@@ -10783,9 +10787,11 @@ img[height="0"] {
     left: 0;
   }
   .fltrBtnBox_dd_inn {
-    overflow: auto;
     max-height: 250px;
-    padding: 15px 10px 5px;
+    padding: 15px 10px 5px 10px;
+    width: 100%;
+    overflow: visible;
+    box-sizing: border-box;
   }
 }
 /*---------Страницы ошибок----------*/

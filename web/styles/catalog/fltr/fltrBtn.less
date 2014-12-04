@@ -88,7 +88,7 @@
             float: left;
 
             width: 80px;
-            margin: 15px 0 0 10px;
+            margin: 15px 0 0 12px;
         }
         &_r{
             float: right;
@@ -191,6 +191,7 @@
     // параметры фильтрации
     &_param{
         margin-bottom: 8px;
+        padding-right: 10px;
 
         border-bottom: 1px solid @lightgrey9;
         &:last-child{
@@ -217,6 +218,7 @@
 
             color: #8a8a8a;
             border: 1px solid @lightgrey9;
+            color: @black;
 
             .rounded(3px);
             .inline-block-middle();
@@ -245,7 +247,7 @@
         .fltrBtnBox_tggl{
             z-index: 16;
 
-            padding-bottom: 5px;
+            padding-bottom: 4px;
 
             border-color: @lightgrey9;
             &_corner{
@@ -267,7 +269,7 @@
             border-width: 1px;
             border-color: @white;
             .fltrBtnBox_tggl{
-                padding: 5px 10px;
+                padding: 4px 10px 3px;
             }
             &.fltrBtnBox-mark{
                 border-width: 1px;
@@ -279,7 +281,7 @@
         border-width: 2px;
         border-color: @orange-2;
         .fltrBtnBox_tggl{
-            padding: 4px 9px 3px;
+            padding: 3px 9px 2px;
         }
         .fltrBtnBox_tggl_tx{
             border: none;
@@ -302,12 +304,12 @@
         }
     }
     &_tggl{
-        font-size: 16px;
+        font-size: 14px;
         line-height: 1;
 
         position: relative;
 
-        padding: 5px 10px 4px;
+        padding: 4px 10px 3px;
 
         cursor: pointer;
 
@@ -337,11 +339,13 @@
     &_dd{
         position: absolute;
         z-index: 15;
-        top: 29px;
+        top: 24px;
 
         display: none;
 
         min-width: 140px;
+        overflow-y:auto;
+        overflow-x:hidden;
 
         white-space: nowrap;
 
@@ -395,10 +399,12 @@
             left: 0;
         }
         &_inn{
-            overflow: auto;
 
             max-height: 250px;
-            padding: 15px 10px 5px;
+            padding: 15px 10px 5px 10px;
+            width:100%;
+            overflow:visible;
+            box-sizing:border-box;
         }
     }
 }
