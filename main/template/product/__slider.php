@@ -88,6 +88,8 @@ $f = function (
             <? foreach ($products as $product):
                 if (!$product instanceof \Model\Product\Entity) continue;
 
+                $elementId = 'productLink-' . $product->getId() . '-' . md5(json_encode([$sender]));
+
                 $urlParams = [];
                 if ($sender['name']) {
                     $urlParams['sender'] = $sender;
@@ -127,19 +129,19 @@ $f = function (
                     ]) ?>"
                 >
                     <? if ('top' == $namePosition): ?>
-                        <div class="slideItem_n"><a <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a></div>
+                        <div class="slideItem_n"><a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a></div>
                     <? endif ?>
 
                     <? if ((bool)$product->getLabel()): ?>
                         <img class="slideItem_stick" src="<?= $product->getLabel()->getImageUrl(0) ?>" alt="<?= $product->getLabel()->getName() ?>" />
                     <? endif ?>
 
-                    <a class="<? if ($isRetailrocketProduct): ?>jsRecommendedItem <? endif ?>slideItem_imgw<? if($product->getIsUpsale()): ?> jsUpsaleProduct<? endif; ?>" href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>>
+                    <a id="<?= $elementId . '-image' ?>" class="<? if ($isRetailrocketProduct): ?>jsRecommendedItem <? endif ?>slideItem_imgw<? if($product->getIsUpsale()): ?> jsUpsaleProduct<? endif; ?>" href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>>
                         <img class="slideItem_img" src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" />
                     </a>
 
                     <? if (('bottom' == $namePosition) && !$isCompact): ?>
-                        <div class="slideItem_n"><a <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a></div>
+                        <div class="slideItem_n"><a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a></div>
                     <? endif ?>
 
                     <? if (!$isCompact): ?>
