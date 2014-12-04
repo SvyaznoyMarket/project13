@@ -21,8 +21,12 @@ class ProductButtonAction {
         array $sender = [],
         $noUpdate = false // Не обновлять кнопку купить
     ) {
+        static $callsById = [];
+
+        $callsById[$product->getId()] ++;
+
         $data = [
-            'id'         => 'id-buyButton-' . $product->getId() . '-'. uniqid(),
+            'id'         => 'id-buyButton-' . $product->getId() . '-'. md5(json_encode($product->getId(), $callsById[$product->getId()])),
             'disabled'   => false,
             'url'        => null,
             'value'      => null,
