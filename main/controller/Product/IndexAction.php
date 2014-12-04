@@ -68,9 +68,9 @@ class IndexAction {
         /** @var $product \Model\Product\Entity */
         $product = null;
         $repository->prepareEntityByToken($productToken, $region, function($data) use (&$product) {
-            $data = reset($data);
+            if (!is_array($data)) return;
 
-            if ((bool)$data) {
+            if ($data = reset($data)) {
                 $product = new \Model\Product\Entity($data);
             }
         });

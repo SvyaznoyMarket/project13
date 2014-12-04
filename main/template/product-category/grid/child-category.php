@@ -66,7 +66,7 @@ foreach ($gridCells as $cell) {
             'page'      => 1,
             'url'       => $page->url('product.recommended'),
             'sender'    => [
-                'name'     => 'retailrocket',
+                'name'     => 'enter',
                 'position' => 'Viewed',
             ],
         ]) ?>

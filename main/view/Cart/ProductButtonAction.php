@@ -24,7 +24,7 @@ class ProductButtonAction {
         $location = null // местоположение кнопки купить: userbar, product-card, ...
     ) {
         $data = [
-            'id'         => 'buyButton-' . $product->getId() . '-'. md5(json_encode([$product->getId(), $location, isset($sender['position']) ? $sender['position'] : null])),
+            'id'         => 'buyButton-' . $product->getId() . '-'. md5(json_encode([$location, isset($sender['position']) ? $sender['position'] : null])),
             'disabled'   => false,
             'url'        => null,
             'value'      => null,

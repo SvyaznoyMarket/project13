@@ -42,8 +42,11 @@ $f = function (
     unset($sender['items']);
 
     $sliderId = 'slider-' . uniqid();
+
+    $id = 'slider-' . md5(json_encode([$url, $sender, $type]));
 ?>
 <div
+    id="<?= $id ?>"
     class="bGoodsSlider js-slider clearfix<? if ((bool)$categories): ?> mWithCategory<? endif ?><? if ($url && !(bool)$products): ?> <? endif ?><? if (!(bool)$url && !(bool)$products): ?> hf<? endif ?>"
     data-slider="<?= $helper->json([
         'count'  => $count,
@@ -71,7 +74,7 @@ $f = function (
     <? endif ?>
 
     <div class="slideItem<? if ($class): ?> <?= $class ?><? endif ?>">
-        <div class="slideItem_cntr"><!--Страница 2 из 8--></div>
+        <div class="slideItem_cntr"><? if (false): ?>Страница 2 из 8<? endif ?></div>
 
         <? if ($isCompact): ?>
             <div class="slideItem_flt">
