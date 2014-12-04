@@ -3040,6 +3040,8 @@ $('body').on('click', '.jsRecommendedItemInMenu', function(event) {
             }
         });
 
+        $el.trigger('TL_recommendation_clicked');
+
     } catch (e) { console.error(e); }
 });
 
