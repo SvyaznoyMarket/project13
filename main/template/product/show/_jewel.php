@@ -170,7 +170,11 @@ $isNewRecommendation =
     <? if (!$product->isInShopStockOnly() && $product->getIsBuyable()): ?>
         <div class="bWidgetBuy mWidget js-WidgetBuy">
             <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId())): ?>
-                <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'productId' => $product->getId()]) ?>
+                <?= $helper->render('__spinner', [
+                    'id'        => \View\Id::cartButtonForProduct($product->getId()),
+                    'productId' => $product->getId(),
+                    'location'  => 'product-card',
+                ]) ?>
             <? endif ?>
 
             <?= $helper->render('cart/__button-product', [
