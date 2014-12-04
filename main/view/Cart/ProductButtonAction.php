@@ -26,7 +26,7 @@ class ProductButtonAction {
         $callsById[$product->getId()] ++;
 
         $data = [
-            'id'         => 'id-buyButton-' . $product->getId() . '-'. md5(json_encode($product->getId(), $callsById[$product->getId()])),
+            'id'         => 'buyButton-' . $product->getId() . '-'. md5(json_encode($product->getId(), $callsById[$product->getId()])),
             'disabled'   => false,
             'url'        => null,
             'value'      => null,
