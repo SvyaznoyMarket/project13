@@ -10,6 +10,7 @@ class ProductButtonAction {
      * @param bool $isRetailRocket
      * @param array $sender Данные поставщика, например: {name: retailrocket, position: ProductSimilar, action: Переход в карточку товара}
      * @param bool $noUpdate
+     * @param string|null $location
      * @internal param null|string $url
      * @return array
      */
@@ -19,14 +20,11 @@ class ProductButtonAction {
         $onClick = null,
         $isRetailRocket = false,
         array $sender = [],
-        $noUpdate = false // Не обновлять кнопку купить
+        $noUpdate = false, // Не обновлять кнопку купить
+        $location = null // местоположение кнопки купить: userbar, product-card, ...
     ) {
-        static $callsById = [];
-
-        $callsById[$product->getId()] ++;
-
         $data = [
-            'id'         => 'buyButton-' . $product->getId() . '-'. md5(json_encode($product->getId(), $callsById[$product->getId()])),
+            'id'         => 'buyButton-' . $product->getId() . '-'. md5(json_encode([$product->getId(), $location, isset($sender['position']) ? $sender['position'] : null])),
             'disabled'   => false,
             'url'        => null,
             'value'      => null,

@@ -183,14 +183,18 @@ $isNewRecommendation =
             <? endif ?>
 
             <? if ($isKitPage && !$product->getIsKitLocked()): ?>
-                <?= $helper->render('cart/__button-product-kit', ['product' => $product]) // Кнопка купить для набора продуктов ?>
+                <?= $helper->render('cart/__button-product-kit', [
+                    'product'  => $product,
+                    'location' => 'product-card',
+                ]) // Кнопка купить для набора продуктов ?>
             <? else: ?>
                 <?= $helper->render('cart/__button-product', [
-                    'product' => $product,
-                    'onClick' => isset($addToCartJS) ? $addToCartJS : null,
-                    'sender'  => (array)$request->get('sender') + [
+                    'product'  => $product,
+                    'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
+                    'sender'   => (array)$request->get('sender') + [
                         'from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) // удаляем из REFERER параметры
                     ],
+                    'location' => 'product-card',
                 ]) // Кнопка купить ?>
             <? endif ?>
 

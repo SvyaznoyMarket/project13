@@ -111,9 +111,10 @@ $isNewRecommendation =
         </div>
 
         <?= $helper->render('cart/__button-product', [
-            'product' => $product,
-            'onClick' => isset($addToCartJS) ? $addToCartJS : null,
-            'sender'  => (array)$request->get('sender') + ['name' => null, 'method' => null, 'position'],
+            'product'  => $product,
+            'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
+            'sender'   => (array)$request->get('sender') + ['name' => null, 'method' => null, 'position' => null],
+            'location' => 'product-card',
         ]) // Кнопка купить ?>
 
         <div class="js-showTopBar"></div>

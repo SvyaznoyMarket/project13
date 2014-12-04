@@ -24,12 +24,16 @@ if ($product) {
 
     <? if (!$product->getKit() || $product->getIsKitLocked()): ?>
         <?= $helper->render('cart/__button-product', [
-            'product' => $product,
-            'onClick' => $addToCartJS ? $addToCartJS : null,
-            'sender'  => (array)$request->get('sender') + ['name' => null, 'method' => null, 'position'],
+            'product'  => $product,
+            'onClick'  => $addToCartJS ? $addToCartJS : null,
+            'sender'   => (array)$request->get('sender') + ['name' => null, 'method' => null, 'position' => null],
+            'location' => 'userbar',
         ]) // Кнопка купить ?>
     <? else: ?>
-        <?= $helper->render('cart/__button-product-kit', ['product' => $product]) // Кнопка купить ?>
+        <?= $helper->render('cart/__button-product-kit', [
+            'product'  => $product,
+            'location' => 'userbar',
+        ]) // Кнопка купить ?>
     <? endif ?>
 
     <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && (!$product->getKit()) || $product->getIsKitLocked()): ?>

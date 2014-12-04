@@ -152,6 +152,7 @@ $f = function (
                                 'isRetailRocket' => $isRetailrocketProduct, // TODO: удалить
                                 'sender'         => $sender,
                                 'noUpdate'       => true,
+                                'location'       => 'slider',
                             ]) // Кнопка купить ?>
                         <? endif ?>
                     <? endif ?>
