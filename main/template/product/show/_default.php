@@ -269,7 +269,7 @@ $isNewRecommendation =
         'page'      => 1,
         'url'       => $page->url('product.recommended', ['productId' => $product->getId()]),
         'sender'    => [
-            'name'     => 'retailrocket',
+            'name'     => 'enter',
             'position' => 'Viewed',
         ],
     ]) ?>

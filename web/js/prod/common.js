@@ -820,7 +820,7 @@
 		 */
 		sendOrderToGA = function sendOrderF(orderData) {
 			var oData = orderData || { orders: [] };
-			console.log('[Google Analytics] Start processing orders');
+			console.log('[Google Analytics] Start processing orders', oData.orders);
 			$.each(oData.orders, function(i,o) {
 				var googleOrderTrackingData = {};
 				googleOrderTrackingData.transaction = {
@@ -835,8 +835,8 @@
 					// Аналитика по купленным товарам из рекомендаций
 					if (p.sender == 'retailrocket') {
 						if (p.position) productName += ' (RR_' + p.position + ')';
-						if (p.from) body.trigger('trackGoogleEvent',['RR_покупка','Купил просмотренные', p.position ? p.position : null]);
-						else body.trigger('trackGoogleEvent',['RR_покупка','Купил добавленные', p.position ? p.position : null]);
+						if (p.from) body.trigger('trackGoogleEvent',['RR_покупка','Купил просмотренные', p.position ? p.position : '']);
+						else body.trigger('trackGoogleEvent',['RR_покупка','Купил добавленные', p.position ? p.position : '']);
 					}
 					return {
 						'id': p.id,
