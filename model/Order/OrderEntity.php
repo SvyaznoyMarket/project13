@@ -323,31 +323,7 @@ class OrderEntity {
                     $partners[] = \App::partner()->getName();
                 }
 
-                // FIXME: похоже, не работает
-                /*
-                foreach (\Controller\Product\BasicRecommendedAction::$recomendedPartners as $recomPartnerName) {
-                    if ($viewedAt = \App::user()->getRecommendedProductByParams($product->getId(), $recomPartnerName, 'viewed_at')) {
-                        if ((time() - $viewedAt) <= 30 * 24 * 60 * 60) { // 30days
-                            $partners[] = $recomPartnerName;
-                        } else {
-                            \App::user()->deleteRecommendedProductByParams($product->getId(), $recomPartnerName, 'viewed_at');
-                        }
-                    }
-                }
-                */
-
                 try {
-                    $recommendedProductIds = (array)\App::session()->get(\App::config()->product['recommendationSessionKey']);
-                    if ((bool)$recommendedProductIds) {
-                        foreach ($recommendedProductIds as $recommendedIndex => $recommendedProductId) {
-                            if ($product->getId() == $recommendedProductId) {
-                                $data['product.'. $product->getUi() . '.' . 'sender'] = 'retailrocket'; // FIXME: поправить в будущем - не все рекомендации от rr
-                                unset($recommendedProductIds[$recommendedIndex]);
-                            }
-                        }
-
-                        \App::session()->set(\App::config()->product['recommendationSessionKey'], $recommendedProductIds);
-                    }
 
                     // добавляем информацию о блоке рекомендаций, откуда был добавлен товар (используется корзина, которая очищается только на /order/complete)
                     if (isset($cart[$product->getId()]['sender'])) {
