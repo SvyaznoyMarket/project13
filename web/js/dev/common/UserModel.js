@@ -184,6 +184,7 @@
 		}
 
 		e.preventDefault();
+
 		$.ajax({
 			url: url,
 			success: function(data) {

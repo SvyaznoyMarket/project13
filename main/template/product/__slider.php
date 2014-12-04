@@ -47,6 +47,7 @@ $f = function (
 ?>
 <div
     id="<?= $id ?>"
+    data-position="<?= $sender['position'] ?>"
     class="bGoodsSlider js-slider clearfix<? if ((bool)$categories): ?> mWithCategory<? endif ?><? if ($url && !(bool)$products): ?> <? endif ?><? if (!(bool)$url && !(bool)$products): ?> hf<? endif ?>"
     data-slider="<?= $helper->json([
         'count'  => $count,
