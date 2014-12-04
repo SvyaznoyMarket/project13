@@ -3930,7 +3930,7 @@ $('body').on('click', '.jsRecommendedItemInMenu', function(event) {
                     link = $el.attr('href'),
                     $slider = $el.parents('.js-slider'),
                     sender = $slider.length ? $slider.data('slider').sender : null
-                    ;
+                ;
 
                 $body.trigger('trackGoogleEvent', {
                     category: 'RR_взаимодействие',
@@ -3944,6 +3944,8 @@ $('body').on('click', '.jsRecommendedItemInMenu', function(event) {
                         }
                     }
                 });
+
+                $slider.trigger('TL_recommendation_clicked');
 
             } catch (e) { console.error(e); }
         });
