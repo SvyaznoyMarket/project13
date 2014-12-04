@@ -68,22 +68,24 @@ class RecommendedAction {
                             $sender['items'] = array_slice($data, 0, $productLimitInSlice);
                             $productIds = array_merge($productIds, $sender['items']);
                         });
-                    } else if ('viewed' == $sender['type']) {
-                        $sender['method'] = '';
+                    }
+                }
 
-                        //$data = $request->cookies->get('rrviewed');
-                        $data = $request->get('rrviewed');
-                        if (is_string($data)) {
-                            $data = explode(',', $data);
-                        }
-                        if (empty($data)) {
-                            $data = explode(',', (string)$request->cookies->get('product_viewed'));
-                        }
-                        if (is_array($data)) {
-                            $data = array_reverse(array_filter($data));
-                            $sender['items'] = array_slice(array_unique($data), 0, $productLimitInSlice);
-                            $productIds = array_merge($productIds, $sender['items']);
-                        }
+                if ('viewed' == $sender['type']) {
+                    $sender['method'] = '';
+
+                    //$data = $request->cookies->get('rrviewed');
+                    $data = $request->get('rrviewed');
+                    if (is_string($data)) {
+                        $data = explode(',', $data);
+                    }
+                    if (empty($data)) {
+                        $data = explode(',', (string)$request->cookies->get('product_viewed'));
+                    }
+                    if (is_array($data)) {
+                        $data = array_reverse(array_filter($data));
+                        $sender['items'] = array_slice(array_unique($data), 0, $productLimitInSlice);
+                        $productIds = array_merge($productIds, $sender['items']);
                     }
                 }
             }
