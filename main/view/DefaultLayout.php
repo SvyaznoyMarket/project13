@@ -2,10 +2,9 @@
 
 namespace View;
 
-use Session\AbTest\ABHelperTrait;
+use Session\AbTest\AbTest;
 
 class DefaultLayout extends Layout {
-    use ABHelperTrait;
 
     protected $layout  = 'layout-twoColumn';
     protected $breadcrumbsPath = null;
@@ -19,7 +18,7 @@ class DefaultLayout extends Layout {
         // Меню нужно в нескольких рендерингах, поэтому запрашиваем его сразу
         $this->setGlobalParam('menu', (new Menu($this))->generate_new(\App::user()->getRegion()));
 
-        $this->new_menu = $this->isNewMainPage();
+        $this->new_menu = \Session\AbTest\AbTest::isNewMainPage();
 
         $this->setTitle('Enter - это выход!');
         $this->addMeta('yandex-verification', '623bb356993d4993');
@@ -994,7 +993,7 @@ class DefaultLayout extends Layout {
      * @return string
      */
     public function blockInputCategory() {
-        return $this->isAdvancedSearch()
+        return AbTest::isAdvancedSearch()
             ? '<input type="hidden" name="category" data-bind="value: currentCategory() == null ? 0 : currentCategory().id, disable: currentCategory() == null " />'
             : null;
     }
