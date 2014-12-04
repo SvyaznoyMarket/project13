@@ -2,11 +2,9 @@
 
 namespace Controller\Main;
 
-use Session\AbTest\ABHelperTrait;
+use Session\AbTest\AbTest;
 
 class IndexAction {
-
-    use ABHelperTrait;
 
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
@@ -29,10 +27,10 @@ class IndexAction {
 
             // Фильтруем баннеры для новой и старой главной
             $data = array_filter($data, function($item) {
-                return ($this->isNewMainPage() ? 3 : 1) == (int)@$item['type_id'];
+                return (AbTest::isNewMainPage() ? 3 : 1) == (int)@$item['type_id'];
             });
 
-            if ($this->isNewMainPage()) $data = array_slice((array)$data, 0, 5);
+            if (AbTest::isNewMainPage()) $data = array_slice((array)$data, 0, 5);
 
             foreach ($data as $i => $item) {
                 $bannerId = isset($item['id']) ? (int)$item['id'] : null;
@@ -49,8 +47,8 @@ class IndexAction {
                 $bannerData[] = [
                     'id'    => $bannerId,
                     'alt'   => $item['name'],
-                    'imgs'  => $item['image'] ? ($host . $urls[$this->isNewMainPage() ? 4 : 0] . $item['image']) : null,
-                    'imgb'  => $item['image'] ? ($host . $urls[$this->isNewMainPage() ? 3 : 1] . $item['image']) : null,
+                    'imgs'  => $item['image'] ? ($host . $urls[AbTest::isNewMainPage() ? 4 : 0] . $item['image']) : null,
+                    'imgb'  => $item['image'] ? ($host . $urls[AbTest::isNewMainPage() ? 3 : 1] . $item['image']) : null,
                     'url'   => $item['url'],
                     't'     => $i > 0 ? $timeout : $timeout + 4000,
                     'ga'    => $bannerId . ' - ' . $item['name'],
@@ -81,7 +79,7 @@ class IndexAction {
         }
 
         // Запрашиваем рекомендации и добавляем ID продуктов в массив для product/get
-        if ($this->isNewMainPage()) {
+        if (AbTest::isNewMainPage()) {
             $productsIdsFromRR = $this->getProductIdsFromRR($request);
             foreach ($productsIdsFromRR as $arr) {
                 foreach ($arr as $key => $val) {
