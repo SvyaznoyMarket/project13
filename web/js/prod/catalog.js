@@ -433,6 +433,20 @@
 				}
 
 				catalog.history.gotoUrl(url);
+
+				// Устанавливаем фильтры в ссылки списка дочерних категорий
+				$('.js-category-children-link').each(function(index, link) {
+					var
+						$link = $(link),
+						hrefWithoutQueryString = $link.attr('href').slice(0, $link.attr('href').indexOf('?')),
+						filterQueryString = url.slice(url.indexOf('?') + 1).replace(/(^|&)page=[^&]+/, '').replace(/^&/, '');
+
+					if (filterQueryString != '') {
+						filterQueryString = '?' + filterQueryString;
+					}
+
+					$link.attr('href', hrefWithoutQueryString + filterQueryString);
+				});
 			}
 
 			if ( e.isTrigger ) {
@@ -486,11 +500,15 @@
 
 					sliderFromInput.val(min).trigger('change');
 					sliderToInput.val(max).trigger('change');
+				},
+				resetText = function( nf, input ) {
+					$(input).val('').trigger('change');
 				};
 			// end of functions
 
 			filterBlock.find(':input:radio:checked').each(resetRadio);
 			filterBlock.find(':input:checkbox:checked').each(resetCheckbox);
+			filterBlock.find(':input:text:not(.js-category-filter-rangeSlider-from):not(.js-category-filter-rangeSlider-to)').each(resetText);
 			filterSliders.each(resetSliders);
 		},
 
@@ -1379,7 +1397,8 @@ $(function() {
 		$dropBoxes = $('.js-category-v2-filter-dropBox'),
 		$dropBoxOpeners = $('.js-category-v2-filter-dropBox-opener'),
 		$dropBoxContents = $('.js-category-v2-filter-dropBox-content'),
-		$priceLinks = $('.js-category-v2-filter-price-link');
+		$priceLinks = $('.js-category-v2-filter-price-link'),
+		$radio = $('.js-category-v2-filter-element-list-radio');
 
 	(function() {
 		$dropBoxOpeners.click(function(e) {
@@ -1456,8 +1475,6 @@ $(function() {
 			$dropBox = $(e.currentTarget).closest('.js-category-v2-filter-dropBox'),
 			isSelected = false;
 
-		$dropBoxes.removeClass(dropBoxOpenClass);
-
 		$('input, select, textarea', $dropBox).each(function(index, element) {
 			var $element = $(element);
 			if (
@@ -1476,6 +1493,23 @@ $(function() {
 			$dropBox.removeClass(dropBoxSelectClass);
 		}
 	});
+
+	// Снятие radio "В магазине"
+	(function() {
+		$radio.each(function(index, radio) {
+			$(radio).data('previous-checked', radio.checked);
+		});
+
+		$radio.click(function(e) {
+			if ($(e.currentTarget).data('previous-checked')) {
+				e.currentTarget.checked = false;
+				$(e.currentTarget).data('previous-checked', false).change();
+				ENTER.catalog.filter.sendFilter();
+			} else {
+				$(e.currentTarget).data('previous-checked', true);
+			}
+		});
+	})();
 
 	$('.js-category-v2-filter-element-number input[type="text"]').placeholder();
 });
