@@ -408,7 +408,6 @@ class User {
         return $this->params;
     }
 
-
     /**
      * @param $response
      */
@@ -443,7 +442,6 @@ class User {
         */
     }
 
-
     /**
      * @param $response
      */
@@ -476,5 +474,34 @@ class User {
             $response->headers->setCookie($cookie);
         }
         */
+    }
+
+
+    /** Подписан пользователь на канал?
+     * @param   $channelId int ID канала (по умолчанию - 1)
+     * @return  bool
+     */
+    public function isSubscribed($channelId = 1) {
+        $userEntity = \App::user()->getEntity();
+        $isSubscribed = false;
+        // Если мы определили юзера
+        if ($userEntity) {
+            $subscriptions = $userEntity->getSubscriptions();
+            foreach ($subscriptions as $sub) {
+                if ($sub->getChannelId() == $channelId && $sub->getIsConfirmed() == true) {
+                    $isSubscribed = true;
+                    break;
+                }
+            }
+        } else {
+            $subscriptionsCookie = \App::request()->cookies->get(\App::config()->subscribe['cookieName2']);
+            if ($subscriptionsCookie == null) {
+                return false;
+            } else {
+                $subscriptions = (array)json_decode($subscriptionsCookie, true);
+                $isSubscribed = (bool)@$subscriptions[$channelId];
+            }
+        }
+        return $isSubscribed;
     }
 }
