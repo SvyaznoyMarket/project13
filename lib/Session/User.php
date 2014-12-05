@@ -196,7 +196,7 @@ class User {
     }
 
     /**
-     * @return \Model\Region\Entity|null
+     * @return \Model\Region\Entity
      * @throws \RuntimeException
      */
     public function getRegion() {
