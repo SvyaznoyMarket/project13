@@ -63,6 +63,7 @@
 		filterOtherParamsToggleButton = filterBlock.find('.js-category-filter-otherParamsToggleButton'),
 		filterOtherParamsContent = filterBlock.find('.js-category-filter-otherParamsContent'),
 		filterSliders = filterBlock.find('.js-category-filter-rangeSlider'),
+		filterNumbers = filterBlock.find('.js-category-v2-filter-element-number input'),
 		filterMenuItem = filterBlock.find('.js-category-filter-param'),
 		filterCategoryBlocks = filterBlock.find('.js-category-filter-element'),
 
@@ -319,6 +320,19 @@
 			return res;
 		},
 
+		getUnchangedNumberFieldNames: function() {
+			var unchangedNumbers = [];
+			filterNumbers.each(function(index, input) {
+				var $input = $(input);
+				// В IE <= 9 класс placeholder добавляется к полям, в которых введено значение, которое не надо передавать на сервер
+				if ($input.hasClass('placeholder')) {
+					unchangedNumbers.push(input.name);
+				}
+			});
+
+			return unchangedNumbers;
+		},
+
 		/**
 		 * Формирование URL для получения результатов фильтра
 		 *
@@ -330,6 +344,7 @@
 			var formData = filterBlock.serializeArray(),
 				url = filterBlock.attr('action') || '',
 				slidersInputState = catalog.filter.getSlidersInputState(),
+				unchangedNumberFieldNames = catalog.filter.getUnchangedNumberFieldNames(),
 				activeSort = viewParamPanel.find('.js-category-sorting-activeItem').find('.jsSorting'),
 				sortUrl = activeSort.data('sort'),
 				formSerizalizeData,
@@ -338,7 +353,7 @@
 			// end of vars
 
 			for ( var i = formData.length - 1; i >= 0; i-- ) {
-				if ( slidersInputState.unchangedSliders.indexOf(formData[i].name) !== -1 || formData[i].value == '') {
+				if ( slidersInputState.unchangedSliders.indexOf(formData[i].name) !== -1 || unchangedNumberFieldNames.indexOf(formData[i].name) != -1 || formData[i].value == '') {
 					console.log('slider input '+formData[i].name+' unchanged');
 
 					formData.splice(i,1);
