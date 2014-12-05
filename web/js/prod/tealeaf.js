@@ -8237,6 +8237,8 @@ TLT.init({
         }
     ;
 
+    console.warn('Warnnnnn', $);
+
     $body.on('TLT_logCustomEvent', TLT_logCustomEvent);
     $body.on('TLT_processDOMEvent', TLT_processDOMEvent);
 
