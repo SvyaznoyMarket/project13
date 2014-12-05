@@ -303,6 +303,8 @@
 					if (params.onLoad) {
 						params.onLoad(newSlider);
 					}
+
+                    $(newSlider).trigger('TL_recommendation_loaded');
 				},
 
 				/**

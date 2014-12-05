@@ -42,8 +42,12 @@ $f = function (
     unset($sender['items']);
 
     $sliderId = 'slider-' . uniqid();
+
+    $id = 'slider-' . md5(json_encode([$url, $sender, $type]));
 ?>
 <div
+    id="<?= $id ?>"
+    data-position="<?= $sender['position'] ?>"
     class="bGoodsSlider js-slider clearfix<? if ((bool)$categories): ?> mWithCategory<? endif ?><? if ($url && !(bool)$products): ?> <? endif ?><? if (!(bool)$url && !(bool)$products): ?> hf<? endif ?>"
     data-slider="<?= $helper->json([
         'count'  => $count,
@@ -71,7 +75,7 @@ $f = function (
     <? endif ?>
 
     <div class="slideItem<? if ($class): ?> <?= $class ?><? endif ?>">
-        <div class="slideItem_cntr"><!--Страница 2 из 8--></div>
+        <div class="slideItem_cntr"><? if (false): ?>Страница 2 из 8<? endif ?></div>
 
         <? if ($isCompact): ?>
             <div class="slideItem_flt">
@@ -83,6 +87,8 @@ $f = function (
             <ul class="slideItem_lst clearfix">
             <? foreach ($products as $product):
                 if (!$product instanceof \Model\Product\Entity) continue;
+
+                $elementId = 'productLink-' . $product->getId() . '-' . md5(json_encode([$sender]));
 
                 $urlParams = [];
                 if ($sender['name']) {
@@ -123,19 +129,19 @@ $f = function (
                     ]) ?>"
                 >
                     <? if ('top' == $namePosition): ?>
-                        <div class="slideItem_n"><a <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a></div>
+                        <div class="slideItem_n"><a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a></div>
                     <? endif ?>
 
                     <? if ((bool)$product->getLabel()): ?>
                         <img class="slideItem_stick" src="<?= $product->getLabel()->getImageUrl(0) ?>" alt="<?= $product->getLabel()->getName() ?>" />
                     <? endif ?>
 
-                    <a class="<? if ($isRetailrocketProduct): ?>jsRecommendedItem <? endif ?>slideItem_imgw<? if($product->getIsUpsale()): ?> jsUpsaleProduct<? endif; ?>" href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>>
+                    <a id="<?= $elementId . '-image' ?>" class="<? if ($isRetailrocketProduct): ?>jsRecommendedItem <? endif ?>slideItem_imgw<? if($product->getIsUpsale()): ?> jsUpsaleProduct<? endif; ?>" href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>>
                         <img class="slideItem_img" src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" />
                     </a>
 
                     <? if (('bottom' == $namePosition) && !$isCompact): ?>
-                        <div class="slideItem_n"><a <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a></div>
+                        <div class="slideItem_n"><a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a></div>
                     <? endif ?>
 
                     <? if (!$isCompact): ?>
@@ -152,6 +158,7 @@ $f = function (
                                 'isRetailRocket' => $isRetailrocketProduct, // TODO: удалить
                                 'sender'         => $sender,
                                 'noUpdate'       => true,
+                                'location'       => 'slider',
                             ]) // Кнопка купить ?>
                         <? endif ?>
                     <? endif ?>

@@ -6,7 +6,19 @@ return function (
     $onClick = null,
     $isRetailRocket = null,
     $sender = [],
-    $noUpdate = false
+    $noUpdate = false,
+    $location = null
 ) {
-    echo $helper->renderWithMustache('cart/_button-product', (new \View\Cart\ProductButtonAction())->execute(new \Helper\TemplateHelper(), $product, $onClick, $isRetailRocket, $sender, $noUpdate));
-};
+?>
+    <?= $helper->renderWithMustache('cart/_button-product', (
+        new \View\Cart\ProductButtonAction())->execute(
+            new \Helper\TemplateHelper(),
+            $product,
+            $onClick,
+            $isRetailRocket,
+            $sender,
+            $noUpdate,
+            $location
+        )
+    ) ?>
+<? };

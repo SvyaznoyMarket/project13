@@ -246,7 +246,8 @@ $(document).ready(function() {
                         $('body').trigger('trackUserAction', ['0 Вход']);
                     });
 
-                    return false;
+                    //return false;
+                    e.preventDefault();
                 }
             },
 

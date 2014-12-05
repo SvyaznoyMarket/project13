@@ -19,11 +19,12 @@ $f = function(
         ],
     ]);
 
+    $id = 'productLink-' . $product->getId() . '-' . md5(json_encode($sender));
 ?>
 
 <div class="navitem">
     <div class="navitem_tl">ТОВАР ДНЯ</div>
-    <a href="<?= $link ?>" class="navitem_cnt jsRecommendedItemInMenu" data-sender="<?= $helper->json($sender)?>">
+    <a id="<?= $id ?>" href="<?= $link ?>" class="navitem_cnt jsRecommendedItemInMenu" data-sender="<?= $helper->json($sender)?>">
         <img src="<?= $product->getImageUrl(3) ?>" alt="<?= $helper->escape($product->getName()) ?>" class="navitem_img">
         <span class="navitem_n"><?= $product->getName() ?></span>
     </a>
