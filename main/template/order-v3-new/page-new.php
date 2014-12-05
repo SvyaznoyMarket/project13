@@ -37,10 +37,13 @@ return function(
                         <label class="orderU_lbl" for="">E-mail</label>
                         <span class="errTx" style="display: none">Неверный формат email</span>
                         <? if (!$user->isSubscribed()) : ?>
-                        <span class="orderU_hint">
-                            <input type="checkbox" name="" id="subscribe" class="customInput customInput-defcheck jsOrderV3SubscribeCheckbox" checked>
-                            <label for="subscribe" class="customLabel">Подписаться на рассылку, получить 300 рублей</label>
-                        </span>
+                            <? if ($userEntity && $userEntity->isEnterprizeMember()) : ?>
+                            <? else : ?>
+                            <span class="orderU_hint">
+                                <input type="checkbox" name="" id="subscribe" class="customInput customInput-defcheck jsOrderV3SubscribeCheckbox" checked>
+                                <label for="subscribe" class="customLabel">Подписаться на рассылку, получить 300 рублей</label>
+                            </span>
+                            <? endif ?>
                         <? endif ?>
                     </div>
 
