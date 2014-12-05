@@ -1019,8 +1019,10 @@ class Action {
             $products = [];
             if ((bool)$productIds) {
                 $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
-                    foreach ($data as $item) {
-                        $products[] = new \Model\Product\Entity($item);
+                    if (is_array($data)) {
+                        foreach ($data as $item) {
+                            $products[] = new \Model\Product\Entity($item);
+                        }
                     }
                 });
             }
