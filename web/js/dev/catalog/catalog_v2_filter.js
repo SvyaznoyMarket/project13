@@ -88,7 +88,7 @@ $(function() {
 	});
 
 	// Нажатие на слайдер цены
-	$priceFilter.on('mousedown', '.js-category-filter-rangeSlider-slider', function() {
+	$('.js-category-filter-rangeSlider-slider', $priceFilter).mousedown(function() {
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter_bt',
 			action: 'listing',

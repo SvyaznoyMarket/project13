@@ -122,7 +122,7 @@ return function(
             <? else: ?>
                 <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
                     <? if ($showParamsButton): ?>
-                        <a class="bFilterToggle btnGrey <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-category-filter-otherParamsToggleButton" href="#"><span class="bToggleText">Бренды и параметры</span></a>
+                        <a class="bFilterToggle btnGrey <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-category-filter-otherParamsToggleButton js-category-v1-filter-otherParamsToggleButton" href="#"><span class="bToggleText">Бренды и параметры</span></a>
                     <? endif ?>
 
                     <? if ($priceFilter && $productFilter): ?>
@@ -130,12 +130,12 @@ return function(
                     <? endif ?>
 
                     <div class="bBtnPick clearfix">
-                        <button type="submit" class="bBtnPick__eLink mBtnGrey js-category-filter-submit">Подобрать<?= $countProducts ? " ($countProducts)" : '' ?></button>
+                        <button type="submit" class="bBtnPick__eLink mBtnGrey js-category-filter-submit js-category-v1-filter-submit">Подобрать<?= $countProducts ? " ($countProducts)" : '' ?></button>
                     </div>
                 </div>
             <? endif; ?>
 
-            <div class="fltrSet" style="padding-top: 0;">
+            <div class="fltrSet js-category-v1-filter-otherParams" style="padding-top: 0;">
                 <!-- Фильтр по выбранным параметрам -->
                 <div class="bFilterCont clearfix js-category-filter-otherParamsContent" <? if (!$openFilter): ?>style="display: none"<? endif ?>>
                     <!-- Список названий параметров -->

@@ -12,8 +12,8 @@
 
 	var
 		body = $('body'),
-		pageConfig = ENTER.config.pageConfig,
 		utils = ENTER.utils,
+		catalogPath = document.location.pathname.replace(/^\/catalog\/([^\/]*).*$/i, '$1'),
 		catalog = utils.extendApp('ENTER.catalog'),
 
 		filterBlock = $('.js-category-filter'),
@@ -25,6 +25,8 @@
 		filterNumbers = filterBlock.find('.js-category-v2-filter-element-number input'),
 		filterMenuItem = filterBlock.find('.js-category-filter-param'),
 		filterCategoryBlocks = filterBlock.find('.js-category-filter-element'),
+		$priceFilter = $('.js-category-v1-filter-element-price'),
+		$otherParams = $('.js-category-v1-filter-otherParams'),
 
 		viewParamPanel = $('.js-category-sortingAndPagination'),
 		filterOpenClass = 'fltrSet_tggl-dn',
@@ -783,6 +785,78 @@
 		};
 	// end of functions
 
+
+	// Фокус ввода на поля цены
+	$('input', $priceFilter).focus(function() {
+		body.trigger('trackGoogleEvent', {
+			category: 'filter_old',
+			action: 'cost',
+			label: catalogPath
+		});
+	});
+
+	// Нажатие на слайдер цены
+	$('.js-category-filter-rangeSlider-slider', $priceFilter).mousedown(function() {
+		body.trigger('trackGoogleEvent', {
+			category: 'filter_old',
+			action: 'cost',
+			label: catalogPath
+		});
+	});
+
+	// Нажатие на кнопку "Бренды и параметры"
+	$('.js-category-v1-filter-otherParamsToggleButton').click(function() {
+		body.trigger('trackGoogleEvent', {
+			category: 'filter_old',
+			action: 'brand_parameters',
+			label: catalogPath
+		});
+	});
+
+	// Нажатие на ссылки разделов фильтра
+	$('.js-category-filter-param', $otherParams).click(function() {
+		body.trigger('trackGoogleEvent', {
+			category: 'filter_old',
+			action: 'using_brand_parameters',
+			label: catalogPath
+		});
+	});
+
+	// Использование элементов фильтра
+	(function() {
+		$('input[type="checkbox"], input[type="radio"]', $otherParams).click(function() {
+			body.trigger('trackGoogleEvent', {
+				category: 'filter_old',
+				action: 'using_brand_parameters',
+				label: catalogPath
+			});
+		});
+
+		$('input[type="text"]', $otherParams).focus(function() {
+			body.trigger('trackGoogleEvent', {
+				category: 'filter_old',
+				action: 'using_brand_parameters',
+				label: catalogPath
+			});
+		});
+
+		$('.js-category-filter-rangeSlider-slider', $otherParams).mousedown(function() {
+			body.trigger('trackGoogleEvent', {
+				category: 'filter_old',
+				action: 'using_brand_parameters',
+				label: catalogPath
+			});
+		});
+	})();
+
+	// Нажатие на кнопку "Подобрать"
+	$('.js-category-v1-filter-submit').click(function() {
+		body.trigger('trackGoogleEvent', {
+			category: 'filter_old',
+			action: 'find',
+			label: catalogPath
+		});
+	});
 
 	// Handlers
 	filterBlock.on('click', '.js-category-filter-toggle-button', toggleHandler);
