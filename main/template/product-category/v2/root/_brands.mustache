@@ -7,7 +7,7 @@
         </div>
     </div>
 
-    <div class="fltrBtn_kit fltrBtn_kit-ovrflw">
+    <div class="fltrBtn_kit clearfix fltrBtn_kit-ovrflw">
         {{#mainBrands}}
             <div class="fltrBtn_i">
                 <a href="{{url}}" class="fltrBtn_btn {{#active}}act{{/active}} js-category-v2-root-brands-link" data-param-name="{{paramName}}" data-param-value="{{paramValue}}">
@@ -27,7 +27,7 @@
         {{#otherBrandsCount}}
             <div class="fltrBtn_btn fltrBtn_btn-btn js-category-v2-root-brands-otherOpener"><span class="fltrBtn_btn_tx">{{showOtherBrandsText}}</span></div>
 
-            <span class="js-category-v2-root-brands-other" style="display: none;">
+            <div class="js-category-v2-root-brands-other" style="display: none;">
                 {{#otherBrands}}
                     <div class="fltrBtn_i">
                         <a href="{{url}}" class="fltrBtn_btn {{#active}}fltrBtn_icon-act{{/active}} js-category-v2-root-brands-link" data-param-name="{{paramName}}" data-param-value="{{paramValue}}">
@@ -43,7 +43,8 @@
                         </a>
                     </div>
                 {{/otherBrands}}
-            </span>
+                <div class="clearfix"></div>
+            </div>
         {{/otherBrandsCount}}
     </div>
 </div>

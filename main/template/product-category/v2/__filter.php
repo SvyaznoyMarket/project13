@@ -59,7 +59,7 @@ return function(
                         <span class="fltrBtn_tggl_tx"><?= $brandFilter1->getName() ?></span>
                     </div>
 
-                    <div class="fltrBtn_kit_r">
+                    <div class="fltrBtn_kit_r clearfix">
                         <?= $helper->render('product-category/v2/filter/element/__brand', ['productFilter' => $productFilter, 'filter' => $brandFilter1]) ?>
                         <? if ($brandFilter2 && count($brandFilter2->getOption())): ?>
                             <a href="#" class="fltrBtn_btn fltrBtn_btn-mini fltrBtn_btn-btn js-category-v2-filter-otherBrandsOpener"><span class="fltrBtn_btn_tx">Ещё <?= count($brandFilter2->getOption()) ?></span></a>
