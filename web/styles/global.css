@@ -9938,11 +9938,11 @@ img[height="0"] {
 @media all {
   .fltr_slctd {
     float: left;
-    margin: 10px 5px 0 12px;
+    margin: 10px 0 0 12px;
   }
   .fltr_slctd_i {
     line-height: 1;
-    margin: 0 10px 0 0;
+    margin: 0 10px 5px 0;
     color: #7d7d7d;
     display: inline-block;
     vertical-align: top;
