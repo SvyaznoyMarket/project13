@@ -1405,16 +1405,20 @@ $(function() {
 		dropBoxOpenClass = 'opn',
 		dropBoxSelectClass = 'actv',
 		brandTitleOpenClass = 'opn',
+		$body = $(document.body),
 		$filter = $('.js-category-filter'),
 		$otherBrands = $('.js-category-v2-filter-otherBrands'),
 		$otherBrandsOpener = $('.js-category-v2-filter-otherBrandsOpener'),
 		$brandTitle = $('.js-category-v2-filter-brandTitle'),
+		$brandFilter = $('.js-category-v2-filter-brand'),
+		$priceFilter = $('.js-category-v2-filter-element-price'),
 		$dropBoxes = $('.js-category-v2-filter-dropBox'),
 		$dropBoxOpeners = $('.js-category-v2-filter-dropBox-opener'),
 		$dropBoxContents = $('.js-category-v2-filter-dropBox-content'),
 		$priceLinks = $('.js-category-v2-filter-price-link'),
 		$radio = $('.js-category-v2-filter-element-list-radio');
 
+	// Открытие и закрытие выпадающих списков
 	(function() {
 		$dropBoxOpeners.click(function(e) {
 			e.preventDefault();
@@ -1438,6 +1442,7 @@ $(function() {
 			e.stopPropagation();
 		});
 
+		// Закрытие по нажати/ на Esc
 		$(document).keyup(function(e) {
 			if (e.keyCode == 27) {
 				$dropBoxes.removeClass(dropBoxOpenClass);
@@ -1445,6 +1450,7 @@ $(function() {
 		});
 	})();
 
+	// Сворачивание/разворачивание брендов
 	$brandTitle.add($otherBrandsOpener).click(function(e) {
 		e.preventDefault();
 
@@ -1457,8 +1463,85 @@ $(function() {
 			$otherBrandsOpener.hide();
 			$brandTitle.addClass(brandTitleOpenClass);
 		}
+
+		$body.trigger('trackGoogleEvent', {
+			category: 'filter_bt',
+			action: 'listing',
+			label: 'brand'
+		});
 	});
 
+	// Нажатие на один из брендов
+	$brandFilter.click(function() {
+		$body.trigger('trackGoogleEvent', {
+			category: 'filter_bt',
+			action: 'listing',
+			label: 'brand'
+		});
+	});
+
+	// Фокус ввода на поля цены
+	$('input', $priceFilter).focus(function() {
+		$body.trigger('trackGoogleEvent', {
+			category: 'filter_bt',
+			action: 'listing',
+			label: 'cost'
+		});
+	});
+
+	// Нажатие на слайдер цены
+	$priceFilter.on('mousedown', '.js-category-filter-rangeSlider-slider', function() {
+		$body.trigger('trackGoogleEvent', {
+			category: 'filter_bt',
+			action: 'listing',
+			label: 'cost'
+		});
+	});
+
+	// Нажатие на ссылки открытия выпадающих списков "Цена" и "Скидки"
+	$('.js-category-v2-filter-dropBox-price .js-category-v2-filter-dropBox-opener, .js-category-v2-filter-dropBox-labels .js-category-v2-filter-dropBox-opener').click(function() {
+		$body.trigger('trackGoogleEvent', {
+			category: 'filter_bt',
+			action: 'listing',
+			label: 'cost'
+		});
+	});
+
+	// Нажатие на диапазоны цен
+	$('.js-category-v2-filter-dropBox-price .js-category-v2-filter-price-link').click(function() {
+		$body.trigger('trackGoogleEvent', {
+			category: 'filter_bt',
+			action: 'listing',
+			label: 'cost_var'
+		});
+	});
+
+	// Нажатие на диапазоны цен
+	$('.js-category-v2-filter-dropBox-labels .js-customInput').click(function() {
+		$body.trigger('trackGoogleEvent', {
+			category: 'filter_bt',
+			action: 'listing',
+			label: 'cost_sale'
+		});
+	});
+
+	$('.js-category-v2-filter-otherGroups .js-category-v2-filter-dropBox-opener').click(function() {
+		$body.trigger('trackGoogleEvent', {
+			category: 'filter_bt',
+			action: 'listing',
+			label: 'other'
+		});
+	});
+
+	$('.js-category-v2-filter-element-shop-input').click(function() {
+		$body.trigger('trackGoogleEvent', {
+			category: 'filter_bt',
+			action: 'listing',
+			label: 'other_shops'
+		});
+	});
+
+	// Диапазоны цен
 	$priceLinks.on('click', function(e) {
 		e.preventDefault();
 
@@ -1485,6 +1568,7 @@ $(function() {
 		ENTER.catalog.filter.sendFilter();
 	});
 
+	// Выделение групп при изменении фильтра
 	$('input, select, textarea', $filter).on('change', function(e) {
 		var
 			$dropBox = $(e.currentTarget).closest('.js-category-v2-filter-dropBox'),
@@ -1526,12 +1610,14 @@ $(function() {
 		});
 	})();
 
+	// Placeholder'ы для IE9
 	$('.js-category-v2-filter-element-number input[type="text"]').placeholder();
 });
 ;$(function() {
 	var
 		brandLinkActiveClass = 'act',
 		brandTitleOpenClass = 'opn',
+		$body = $(document.body),
 		$selectedBrandsWrapper = $('.js-category-v2-root-brands-selectedBrandsWrapper'),
 		$brandLinks = $('.js-category-v2-root-brands-link'),
 		$otherBrands = $('.js-category-v2-root-brands-other'),
@@ -1544,6 +1630,7 @@ $(function() {
 		$selectedBrandsWrapper.html(Mustache.render($template.html(), {brandsCount: $brandLinks.length, selectedBrandsCount: $brandLinks.filter('.' + brandLinkActiveClass).length}, $template.data('partial')));
 	}
 
+	// Обновление списка категорий
 	function updateLinks(url) {
 		if (!ENTER.catalog.enableHistoryAPI) {
 			document.location.href = url;
@@ -1562,6 +1649,7 @@ $(function() {
 		});
 	}
 
+	// Нажатие на ссылки брендов
 	$brandLinks.click(function(e) {
 		e.preventDefault();
 
@@ -1580,10 +1668,17 @@ $(function() {
 		}
 
 		renderSelectedBrandsTemplate();
+
+		$body.trigger('trackGoogleEvent', {
+			category: 'filter_bt',
+			action: 'main',
+			label: 'brand'
+		});
+
 		updateLinks(url);
 	});
 
-
+	// Сворачивание/разворачивание брендов
 	$brandsTitle.add($otherBrandsOpener).click(function(e) {
 		e.preventDefault();
 
@@ -1596,13 +1691,27 @@ $(function() {
 			$otherBrandsOpener.hide();
 			$brandsTitle.addClass(brandTitleOpenClass);
 		}
+
+		$body.trigger('trackGoogleEvent', {
+			category: 'filter_bt',
+			action: 'main',
+			label: 'brand'
+		});
 	});
 
+	// Очистка выбранных брендов
 	$selectedBrandsWrapper.on('click', '.js-category-v2-root-selectedBrands-clear', function(e) {
 		e.preventDefault();
 
 		$brandLinks.removeClass(brandLinkActiveClass);
 		renderSelectedBrandsTemplate();
+
+		$body.trigger('trackGoogleEvent', {
+			category: 'filter_bt',
+			action: 'main',
+			label: 'brand'
+		});
+
 		updateLinks('?');
 	});
 });

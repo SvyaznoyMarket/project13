@@ -2,6 +2,7 @@
 	var
 		brandLinkActiveClass = 'act',
 		brandTitleOpenClass = 'opn',
+		$body = $(document.body),
 		$selectedBrandsWrapper = $('.js-category-v2-root-brands-selectedBrandsWrapper'),
 		$brandLinks = $('.js-category-v2-root-brands-link'),
 		$otherBrands = $('.js-category-v2-root-brands-other'),
@@ -14,6 +15,7 @@
 		$selectedBrandsWrapper.html(Mustache.render($template.html(), {brandsCount: $brandLinks.length, selectedBrandsCount: $brandLinks.filter('.' + brandLinkActiveClass).length}, $template.data('partial')));
 	}
 
+	// Обновление списка категорий
 	function updateLinks(url) {
 		if (!ENTER.catalog.enableHistoryAPI) {
 			document.location.href = url;
@@ -32,6 +34,7 @@
 		});
 	}
 
+	// Нажатие на ссылки брендов
 	$brandLinks.click(function(e) {
 		e.preventDefault();
 
@@ -50,10 +53,17 @@
 		}
 
 		renderSelectedBrandsTemplate();
+
+		$body.trigger('trackGoogleEvent', {
+			category: 'filter_bt',
+			action: 'main',
+			label: 'brand'
+		});
+
 		updateLinks(url);
 	});
 
-
+	// Сворачивание/разворачивание брендов
 	$brandsTitle.add($otherBrandsOpener).click(function(e) {
 		e.preventDefault();
 
@@ -66,13 +76,27 @@
 			$otherBrandsOpener.hide();
 			$brandsTitle.addClass(brandTitleOpenClass);
 		}
+
+		$body.trigger('trackGoogleEvent', {
+			category: 'filter_bt',
+			action: 'main',
+			label: 'brand'
+		});
 	});
 
+	// Очистка выбранных брендов
 	$selectedBrandsWrapper.on('click', '.js-category-v2-root-selectedBrands-clear', function(e) {
 		e.preventDefault();
 
 		$brandLinks.removeClass(brandLinkActiveClass);
 		renderSelectedBrandsTemplate();
+
+		$body.trigger('trackGoogleEvent', {
+			category: 'filter_bt',
+			action: 'main',
+			label: 'brand'
+		});
+
 		updateLinks('?');
 	});
 });

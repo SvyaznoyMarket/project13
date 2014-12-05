@@ -77,7 +77,7 @@ return function(
             <? if ($priceFilter || ($labelFilter && $labelFilter->getOption())): ?>
                 <div class="fltrBtn_kit fltrBtn_kit-box clearfix">
                     <? if ($priceFilter): ?>
-                        <div class="fltrBtnBox fl-l js-category-v2-filter-dropBox">
+                        <div class="fltrBtnBox fl-l js-category-v2-filter-dropBox js-category-v2-filter-dropBox-price">
                             <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener">
                                 <span class="fltrBtnBox_tggl_tx"><?= $priceFilter->getName() ?></span>
                                 <i class="fltrBtnBox_tggl_corner"></i>
@@ -105,7 +105,7 @@ return function(
                     <? endif ?>
 
                     <? if ($labelFilter && $labelFilter->getOption()): ?>
-                        <div class="fltrBtnBox fltrBtnBox-mark fl-r js-category-v2-filter-dropBox">
+                        <div class="fltrBtnBox fltrBtnBox-mark fl-r js-category-v2-filter-dropBox js-category-v2-filter-dropBox-labels">
                             <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener">
                                 <span class="fltrBtnBox_tggl_tx"><?= $labelFilter->getName() ?></span>
                                 <i class="fltrBtnBox_tggl_corner"></i>
@@ -122,7 +122,7 @@ return function(
             <? endif ?>
 
             <? if ($productFilter->hasInListGroupedProperties()): ?>
-                <div class="fltrBtn_kit fltrBtn_kit-box">
+                <div class="fltrBtn_kit fltrBtn_kit-box js-category-v2-filter-otherGroups">
                     <? foreach ($productFilter->getGroupedPropertiesV2() as $group): ?>
                         <? if ($group->hasInListProperties()): ?>
                             <div class="fltrBtnBox <? if ($group->hasSelectedProperties): ?>actv<? endif ?> js-category-v2-filter-dropBox">
