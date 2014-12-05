@@ -304,7 +304,7 @@
 						params.onLoad(newSlider);
 					}
 
-                    $(newSlider).trigger('TL_recommendation_loaded');
+                    body.trigger('TLT_logCustomEvent', ['recommendation_loaded', $(newSlider).data('position')]);
 				},
 
 				/**

@@ -171,6 +171,11 @@ module.exports = function (grunt, options) {
             tasks: ['concat:serviceHaJS', 'uglify:serviceHaJS']
         },
 
+        tealeaf:{
+            files: [ pathDev + 'tealeaf/*.js'],
+            tasks: ['concat:tealeaf', 'uglify:tealeaf']
+        },
+
         loadJS:{
             files: [ pathRoot + 'loadjs.js'],
             tasks: ['uglify:loadJS']

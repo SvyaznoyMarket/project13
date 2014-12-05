@@ -30,7 +30,7 @@
                     }
                 });
 
-                $slider.trigger('TL_recommendation_clicked');
+                body.trigger('TLT_processDOMEvent', [event]);
 
             } catch (e) { console.error(e); }
         });

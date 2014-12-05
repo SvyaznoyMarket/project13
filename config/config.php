@@ -679,4 +679,6 @@ $c->siteVersionSwitcher['cookieLifetime'] = 20 * 365 * 24 * 60 * 60;
 
 $c->bandit['enabled'] = false;
 
+$c->tealeaf['enabled'] = true;
+
 return $c;

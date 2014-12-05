@@ -79,6 +79,8 @@
 	var global = window,
 		jsStartTime = new Date().getTime(),
 
+        pageConfig = $('#page-config').data('value'),
+
 		knockoutUrl = '',
 		optimizelyUrl = '//cdn.optimizely.com/js/204544654.js',
 		yandexMapUrl = '',
@@ -87,9 +89,9 @@
 		historyUrl = '',
 		kladr = '',
 		directCreditUrl = 'http://direct-credit.ru/widget/api_script_utf.js',
+        tealeafUrl = pageConfig.tealeafUrl,
 
 		debug = false,
-		pageConfig = $('#page-config').data('value'),
 		templateType = document.body.getAttribute('data-template') || '',
 		templSep = templateType.indexOf(' ')
 	; // end of vars
@@ -254,6 +256,7 @@
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
+                    .script( tealeafUrl)
 					.wait()
 					.script( getWithVersion('common.js') )
                     .wait()
@@ -268,6 +271,7 @@
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
+                    .script( tealeafUrl)
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('main.js') )
@@ -289,6 +293,7 @@
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
+                    .script( tealeafUrl)
 					.wait()
 					.script( getWithVersion('common.js') )
 					.wait()
@@ -311,6 +316,7 @@
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
+                    .script( tealeafUrl)
 					.wait()
 					.script( getWithVersion('common.js') )
 					.wait()
@@ -328,6 +334,7 @@
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
+                    .script( tealeafUrl)
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('infopage.js') )
@@ -346,6 +353,7 @@
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
+                    .script( tealeafUrl)
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('infopage.js') )
@@ -367,6 +375,7 @@
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
+                    .script( tealeafUrl)
 					.wait()
 					.script( getWithVersion('common.js') )
 					.wait()
@@ -387,6 +396,7 @@
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
+                    .script( tealeafUrl)
 					.wait()
 					.script( getWithVersion('common.js') )
 					.wait()
@@ -406,6 +416,7 @@
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
+                    .script( tealeafUrl)
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('lk.js') )
@@ -427,6 +438,7 @@
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.script( loadDebugPanel )
+                        .script( tealeafUrl)
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('order-new.js') )
@@ -449,6 +461,7 @@
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.script( loadDebugPanel )
+                        .script( tealeafUrl)
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('order-new-v5.js') )
@@ -467,6 +480,7 @@
                         .script( mustacheUrl )
                         .script( knockoutUrl )
                         .script( loadDebugPanel )
+                        .script( tealeafUrl)
                         .wait()
                         .script( getWithVersion('common.js') )
                         .script( getWithVersion('order-v3.js') )
@@ -483,6 +497,7 @@
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.script( loadDebugPanel )
+                        .script( tealeafUrl)
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('order-v3-new.js') )
@@ -498,6 +513,7 @@
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.script( loadDebugPanel )
+                        .script( tealeafUrl)
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('order-v3-lifegift.js') )
@@ -513,6 +529,7 @@
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
+                    .script( tealeafUrl)
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('order.js') )
@@ -532,6 +549,7 @@
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
+                    .script( tealeafUrl)
 					.wait()
 					.script( getWithVersion('common.js') )
                     .script( getWithVersion('infopage.js') )
@@ -556,6 +574,7 @@
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.script( loadDebugPanel )
+                        .script( tealeafUrl)
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('product.js') )
@@ -577,6 +596,7 @@
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
+                    .script( tealeafUrl)
 					.wait()
 					.script( getWithVersion('common.js') )
 					.wait()
@@ -595,6 +615,7 @@
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.script( loadDebugPanel )
+                        .script( tealeafUrl)
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('shop.js') )
@@ -614,6 +635,7 @@
                     .script( mustacheUrl )
                     .script( knockoutUrl )
                     .script( loadDebugPanel )
+                    .script( tealeafUrl)
                     .wait()
                     .script( getWithVersion('common.js') )
                     .script( getWithVersion('infopage.js') )
@@ -633,6 +655,7 @@
                     .script( mustacheUrl )
                     .script( knockoutUrl )
                     .script( loadDebugPanel )
+                    .script( tealeafUrl)
                     .wait()
                     .script( getWithVersion('common.js') )
                     .script( getWithVersion('product.js') )
