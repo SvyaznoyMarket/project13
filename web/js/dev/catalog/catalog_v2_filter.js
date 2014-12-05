@@ -10,7 +10,8 @@ $(function() {
 		$dropBoxes = $('.js-category-v2-filter-dropBox'),
 		$dropBoxOpeners = $('.js-category-v2-filter-dropBox-opener'),
 		$dropBoxContents = $('.js-category-v2-filter-dropBox-content'),
-		$priceLinks = $('.js-category-v2-filter-price-link');
+		$priceLinks = $('.js-category-v2-filter-price-link'),
+		$radio = $('.js-category-v2-filter-element-list-radio');
 
 	(function() {
 		$dropBoxOpeners.click(function(e) {
@@ -87,8 +88,6 @@ $(function() {
 			$dropBox = $(e.currentTarget).closest('.js-category-v2-filter-dropBox'),
 			isSelected = false;
 
-		$dropBoxes.removeClass(dropBoxOpenClass);
-
 		$('input, select, textarea', $dropBox).each(function(index, element) {
 			var $element = $(element);
 			if (
@@ -107,6 +106,23 @@ $(function() {
 			$dropBox.removeClass(dropBoxSelectClass);
 		}
 	});
+
+	// Снятие radio "В магазине"
+	(function() {
+		$radio.each(function(index, radio) {
+			$(radio).data('previous-checked', radio.checked);
+		});
+
+		$radio.click(function(e) {
+			if ($(e.currentTarget).data('previous-checked')) {
+				e.currentTarget.checked = false;
+				$(e.currentTarget).data('previous-checked', false).change();
+				ENTER.catalog.filter.sendFilter();
+			} else {
+				$(e.currentTarget).data('previous-checked', true);
+			}
+		});
+	})();
 
 	$('.js-category-v2-filter-element-number input[type="text"]').placeholder();
 });

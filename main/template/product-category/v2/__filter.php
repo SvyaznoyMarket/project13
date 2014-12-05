@@ -51,6 +51,9 @@ return function(
     <div class="fltrBtn fltrBtn-bt">
         <form id="productCatalog-filter-form" class="js-category-filter" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
             <? if ($brandFilter1): ?>
+                <? // Для IE9 (чтобы он отправлял форму при нажатии на клавишу enter в текстовом поле ввода) ?>
+                <div style="overflow: hidden; position: absolute; top: 0; left: 0; width: 0; height: 0;"><input type="submit" /></div>
+
                 <div class="fltrBtn_kit clearfix">
                     <div class="fltrBtn_tggl fltrBtn_kit_l <? if (!$brandFilter2 || !count($brandFilter2->getOption())): ?>fltrBtn_tggl-ncorner<? endif ?> <? if ($brandFilter2 && count($brandFilter2->getOption())): ?>js-category-v2-filter-brandTitle<? endif ?>">
                         <span class="fltrBtn_tggl_tx"><?= $brandFilter1->getName() ?></span>

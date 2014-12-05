@@ -111,17 +111,6 @@ class ProductAction {
 //                \Session\User::disableInfoCookie($response); // SITE-3926
             }
 
-            try {
-                if ($sender) {
-                    // старый метод запоминания рекомендаций
-                    $recommendedProductIds = (array)\App::session()->get(\App::config()->product['recommendationSessionKey']);
-                    $recommendedProductIds[] = $cartProduct->getId();
-                    \App::session()->set(\App::config()->product['recommendationSessionKey'], $recommendedProductIds);
-                }
-            } catch (\Exception $e) {
-                \App::logger()->error(['error' => $e], ['cart']);
-            }
-
             return $response;
 
         } catch (\Exception $e) {
