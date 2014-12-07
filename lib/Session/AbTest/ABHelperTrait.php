@@ -28,6 +28,8 @@ trait ABHelperTrait {
      */
     public static function isSelfPaidDelivery(){
         if (\App::config()->self_delivery['enabled'] == false) return false;
+        // если нет магазинов в регионе пользователя
+        if (\App::user()->getRegion() && !\App::user()->getRegion()->getHasShop()) return false;
         /* Область -> parent_id
          * --------------------
          * Воронежская - 76
