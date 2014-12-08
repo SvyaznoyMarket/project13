@@ -17,6 +17,8 @@
                     sender = $slider.length ? $slider.data('slider').sender : null
                 ;
 
+                body.trigger('TLT_processDOMEvent', [event]);
+
                 $body.trigger('trackGoogleEvent', {
                     category: 'RR_взаимодействие',
                     action: 'Перешел на карточку товара',
@@ -29,8 +31,6 @@
                         }
                     }
                 });
-
-                body.trigger('TLT_processDOMEvent', [event]);
 
             } catch (e) { console.error(e); }
         });

@@ -51,6 +51,8 @@ $('body').on('click', '.jsRecommendedItemInMenu', function(event) {
             sender = $el.data('sender')
         ;
 
+        body.trigger('TLT_processDOMEvent', [event]);
+
         $('body').trigger('trackGoogleEvent', {
             category: 'RR_взаимодействие',
             action: 'Перешел на карточку товара',
