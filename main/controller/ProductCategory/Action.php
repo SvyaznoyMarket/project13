@@ -1216,6 +1216,7 @@ class Action {
 
         // добывание фильтров из http-запроса
         $values = $this->getFilterFromUrl($request);
+        $values = $this->deleteNotExistsValues($values, $filters);
 
         if ($isGlobal) {
             $values['global'] = 1;
@@ -1304,6 +1305,38 @@ class Action {
         $productFilter->setValues($values);
 
         return $productFilter;
+    }
+
+    /**
+     * @param array $values
+     * @param \Model\Product\Filter\Entity[] $filters
+     * @return array
+     */
+    private function deleteNotExistsValues(array $values, array $filters) {
+        foreach ($values as $propertyId => $propertyValues) {
+            foreach ($filters as $property) {
+                if ($property->getId() === $propertyId) {
+                    $optionIds = [];
+                    foreach ($property->getOption() as $option) {
+                        $optionIds[] = (string)$option->getId();
+                    }
+
+                    foreach ($propertyValues as $i => $value) {
+                        if (!in_array((string)$value, $optionIds, true)) {
+                            unset($values[$propertyId][$i]);
+                        }
+                    }
+
+                    if (!count($values[$propertyId])) {
+                        unset($values[$propertyId]);
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        return $values;
     }
 
     /**
