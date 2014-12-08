@@ -466,7 +466,7 @@
 				});
 			}
 
-			if ( e.isTrigger ) {
+			if ( e && e.isTrigger ) {
 				console.warn('it\'s trigger');
 			}
 
