@@ -11,7 +11,7 @@
      data-id="<?= $id ?>"
      data-type-id="<?= $typeId ?>">
 
-    <a class="btnCmpr_lk jsCompareLink" href="<?= \App::router()->generate('compare.add', ['productId' => $id]) ?>">
+    <a id="<?= 'compareButton-' . $id ?>" class="btnCmpr_lk jsCompareLink" href="<?= \App::router()->generate('compare.add', ['productId' => $id]) ?>">
         <span class="btnCmpr_tx">Добавить к сравнению</span>
     </a>
 

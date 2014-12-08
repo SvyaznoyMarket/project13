@@ -672,6 +672,10 @@ class AppConfig {
         'regions'   => []
     ];
 
+    public $tealeaf = [
+        'enabled' => null,
+    ];
+
     public function __construct() {
 
         $this->vkontakteOauth = new OAuth\VkontakteConfig();

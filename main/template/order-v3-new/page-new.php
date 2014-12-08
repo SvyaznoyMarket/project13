@@ -54,8 +54,8 @@ return function(
                                     <div class="bonusCnt_i" data-eq="<?= $key ?>">
                                         <img class="bonusCnt_img" src="/styles/order/img/sClub.png" alt="" />
                                         <span class="bonusCnt_tx">
-                                            <span class="brb-dt">Карта <?= $card->getName() ?></span><!-- что бы урать бордер можно удалить класс brb-dt -->
-                                            <span class="bonusCnt_tx_code"><span class="brb-dt"></span></span>
+                                            <span id="bonusCardLink-<?= md5(json_encode([$card->getName()])) ?>" class="brb-dt">Карта <?= $card->getName() ?></span><!-- что бы урать бордер можно удалить класс brb-dt -->
+                                            <span id="bonusCardCode-<?= md5(json_encode([$card->getName()])) ?>" class="bonusCnt_tx_code"><span class="brb-dt"></span></span>
                                         </span>
                                     </div>
                                 <? endforeach ?>

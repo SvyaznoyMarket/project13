@@ -170,13 +170,18 @@ $isNewRecommendation =
     <? if (!$product->isInShopStockOnly() && $product->getIsBuyable()): ?>
         <div class="bWidgetBuy mWidget js-WidgetBuy">
             <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId())): ?>
-                <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'productId' => $product->getId()]) ?>
+                <?= $helper->render('__spinner', [
+                    'id'        => \View\Id::cartButtonForProduct($product->getId()),
+                    'productId' => $product->getId(),
+                    'location'  => 'product-card',
+                ]) ?>
             <? endif ?>
 
             <?= $helper->render('cart/__button-product', [
-                'product' => $product,
-                'onClick' => isset($addToCartJS) ? $addToCartJS : null,
-                'sender'  => (array)$request->get('sender') + ['name' => null, 'method' => null, 'position'],
+                'product'  => $product,
+                'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
+                'sender'   => (array)$request->get('sender') + ['name' => null, 'method' => null, 'position' => null],
+                'location' => 'product-card',
             ]) // Кнопка купить ?>
 
             <div class="js-showTopBar"></div>

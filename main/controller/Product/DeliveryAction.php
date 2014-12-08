@@ -154,10 +154,14 @@ class DeliveryAction {
 
                         if (in_array($delivery['token'], ['self', 'now'])) {
                             foreach ($dateItem['shop_list'] as $shopItem) {
+                                if (!isset($shopItem['id']) || !isset($shopData[$shopItem['id']])) continue;
+
+                                /*
                                 $address = $shopData[$shopItem['id']]['address'];
-                                if (($regionId != $shopData[$shopItem['id']]['geo_id']) && isset($regionData[$shopData[$shopItem['id']]['geo_id']]['name'])) {
+                                if (isset($shopData[$shopItem['id']]) && ($regionId != $shopData[$shopItem['id']]['geo_id']) && isset($regionData[$shopData[$shopItem['id']]['geo_id']]['name'])) {
                                     $address = $regionData[$shopData[$shopItem['id']]['geo_id']]['name'] . ', ' . $address;
                                 }
+                                */
 
                                 $shop = [
                                     'id'        => (int)$shopItem['id'],

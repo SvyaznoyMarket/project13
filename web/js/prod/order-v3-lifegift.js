@@ -86,8 +86,12 @@
 				if (data.form) {
 					$form = $(data.form);
 					$body.append($form);
-					if ($form.attr('method') == 'get') window.location.href = $form.attr('action');
-					else $form.submit();
+					if ($form.hasClass('jsPaymentFormPaypal') && typeof $form.attr('action') != 'undefined') {
+						window.location.href = $form.attr('action');
+					} else {
+						$body.append($form);
+						$form.submit();
+					}
 				}
 			})
 			.fail(function(data){

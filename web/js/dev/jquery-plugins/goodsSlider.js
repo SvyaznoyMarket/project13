@@ -303,6 +303,8 @@
 					if (params.onLoad) {
 						params.onLoad(newSlider);
 					}
+
+                    body.trigger('TLT_logCustomEvent', ['recommendation_loaded', $(newSlider).data('position')]);
 				},
 
 				/**

@@ -36,3 +36,5 @@ $reviewsPresent = !(empty($reviewsData['review_list']));
 <? endif ?>
 
 <?= $page->tryRender('product/_tag', ['product' => $product]) ?>
+
+<?= $helper->render('product/__event', ['product' => $product]) ?>

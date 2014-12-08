@@ -179,18 +179,26 @@ $isNewRecommendation =
     <? if (!$product->isInShopStockOnly() && $product->getIsBuyable() && 5 != $product->getStatusId()): ?>
         <div class="bWidgetBuy mWidget js-WidgetBuy">
             <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && 0 == count($kitProducts)): ?>
-                <?= $helper->render('__spinner', ['id' => \View\Id::cartButtonForProduct($product->getId()), 'productId' => $product->getId()]) ?>
+                <?= $helper->render('__spinner', [
+                    'id'        => \View\Id::cartButtonForProduct($product->getId()),
+                    'productId' => $product->getId(),
+                    'location'  => 'product-card',
+                ]) ?>
             <? endif ?>
 
             <? if ($isKitPage && !$product->getIsKitLocked()): ?>
-                <?= $helper->render('cart/__button-product-kit', ['product' => $product]) // Кнопка купить для набора продуктов ?>
+                <?= $helper->render('cart/__button-product-kit', [
+                    'product'  => $product,
+                    'location' => 'product-card',
+                ]) // Кнопка купить для набора продуктов ?>
             <? else: ?>
                 <?= $helper->render('cart/__button-product', [
-                    'product' => $product,
-                    'onClick' => isset($addToCartJS) ? $addToCartJS : null,
-                    'sender'  => (array)$request->get('sender') + [
+                    'product'  => $product,
+                    'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
+                    'sender'   => (array)$request->get('sender') + [
                         'from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) // удаляем из REFERER параметры
                     ],
+                    'location' => 'product-card',
                 ]) // Кнопка купить ?>
             <? endif ?>
 
