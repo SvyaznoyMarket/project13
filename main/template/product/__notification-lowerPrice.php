@@ -18,10 +18,13 @@ return function(
         : 0;
 
     $uEmail = $user->getEntity() ? $user->getEntity()->getEmail() : null;
+
+
+    $id = 'priceNotifier-' . $product->getId();
 ?>
 
     <div class="priceSale">
-        <span class="dotted jsLowPriceNotifer">Узнать о снижении цены</span>
+        <span id="<?= $id ?>" class="dotted jsLowPriceNotifer">Узнать о снижении цены</span>
         <div class="bLowPriceNotiferPopup popup">
             <i class="close"></i>
             <div class="uEntered">

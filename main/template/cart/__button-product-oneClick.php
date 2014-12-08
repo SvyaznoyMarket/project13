@@ -68,10 +68,12 @@ return function (
     if ($isNewOneClick && (false !== strpos($class, ' jsOneClickButton '))) {
         $class = str_replace(' jsOneClickButton ', ' jsOneClickButton-new ', $class);
     }
+
+    $id = 'quickBuyButton-' . $product->getId();
 ?>
 
     <div class="btnOneClickBuy">
-        <a class="btnOneClickBuy__eLink <?= $class ?>" data-target="#jsOneClickContent" data-title="<?= $shop ? 'Резерв товара' : 'Купить быстро в 1 клик' ?>" data-shop="<?= $shop ? $shop->getId() : null ?>" href="<?= $url ?>"><?= $value ?></a>
+        <a id="<?= $id ?>" class="btnOneClickBuy__eLink <?= $class ?>" data-target="#jsOneClickContent" data-title="<?= $shop ? 'Резерв товара' : 'Купить быстро в 1 клик' ?>" data-shop="<?= $shop ? $shop->getId() : null ?>" href="<?= $url ?>"><?= $value ?></a>
     </div>
 
 <? };

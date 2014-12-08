@@ -135,5 +135,10 @@ module.exports = {
     serviceHaJS : {
         src: ['<%= pathDev %>service_ha/*.js'],
         dest: '<%= pathProd %>service_ha.js'
+    },
+
+    tealeaf : {
+        src: ['<%= pathDev %>tealeaf/*.js'],
+        dest: '<%= pathProd %>tealeaf.js'
     }
 };

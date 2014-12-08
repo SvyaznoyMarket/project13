@@ -5,16 +5,20 @@
 	var body = $('body');
 
 	// Обработчик для кнопок купить
-	body.on('click', '.jsBuyButton', function() {
+	body.on('click', '.jsBuyButton', function(event) {
 		var button = $(this);
 
+        body.trigger('TL_buyButton_clicked');
+
 		if ( button.hasClass('mDisabled') ) {
-			return false;
+			//return false;
+            event.preventDefault();
 		}
 
 		if ( button.hasClass('mBought') ) {
 			document.location.href(button.attr('href'));
-			return false;
+			//return false;
+            event.preventDefault();
 		}
 
 		button.addClass('mLoading');
@@ -46,7 +50,8 @@
 			}
 		});
 
-		return false;
+		//return false;
+        event.preventDefault();
 	});
 
 	// analytics

@@ -426,6 +426,7 @@
 		}
 
 		e.preventDefault();
+
 		$.ajax({
 			url: url,
 			success: function(data) {
@@ -820,7 +821,7 @@
 		 */
 		sendOrderToGA = function sendOrderF(orderData) {
 			var oData = orderData || { orders: [] };
-			console.log('[Google Analytics] Start processing orders');
+			console.log('[Google Analytics] Start processing orders', oData.orders);
 			$.each(oData.orders, function(i,o) {
 				var googleOrderTrackingData = {};
 				googleOrderTrackingData.transaction = {
@@ -835,8 +836,8 @@
 					// Аналитика по купленным товарам из рекомендаций
 					if (p.sender == 'retailrocket') {
 						if (p.position) productName += ' (RR_' + p.position + ')';
-						if (p.from) body.trigger('trackGoogleEvent',['RR_покупка','Купил просмотренные', p.position ? p.position : null]);
-						else body.trigger('trackGoogleEvent',['RR_покупка','Купил добавленные', p.position ? p.position : null]);
+						if (p.from) body.trigger('trackGoogleEvent',['RR_покупка','Купил просмотренные', p.position ? p.position : '']);
+						else body.trigger('trackGoogleEvent',['RR_покупка','Купил добавленные', p.position ? p.position : '']);
 					}
 					return {
 						'id': p.id,
@@ -1061,16 +1062,20 @@
 	var body = $('body');
 
 	// Обработчик для кнопок купить
-	body.on('click', '.jsBuyButton', function() {
+	body.on('click', '.jsBuyButton', function(event) {
 		var button = $(this);
 
+        body.trigger('TL_buyButton_clicked');
+
 		if ( button.hasClass('mDisabled') ) {
-			return false;
+			//return false;
+            event.preventDefault();
 		}
 
 		if ( button.hasClass('mBought') ) {
 			document.location.href(button.attr('href'));
-			return false;
+			//return false;
+            event.preventDefault();
 		}
 
 		button.addClass('mLoading');
@@ -1102,7 +1107,8 @@
 			}
 		});
 
-		return false;
+		//return false;
+        event.preventDefault();
 	});
 
 	// analytics
@@ -2064,6 +2070,22 @@ $(document).ready(function(){
 	}
 
 });
+;$(function(){
+    var
+        $body = $('body')
+    ;
+
+    $('.jsEvent_documentReady').each(function(i, el) {
+        var
+            event = $(el).data('value')
+        ;
+
+        if (!event.name) return;
+        
+        $body.trigger(event.name, event.data || []);
+        console.info('event', event.name, event.data);
+    });
+});
 /**
  * Перемотка к Id
  *
@@ -3018,6 +3040,8 @@ $('body').on('click', '.jsRecommendedItemInMenu', function(event) {
             sender = $el.data('sender')
         ;
 
+        body.trigger('TLT_processDOMEvent', [event]);
+
         $('body').trigger('trackGoogleEvent', {
             category: 'RR_взаимодействие',
             action: 'Перешел на карточку товара',
@@ -3030,6 +3054,8 @@ $('body').on('click', '.jsRecommendedItemInMenu', function(event) {
                 }
             }
         });
+
+        $el.trigger('TL_recommendation_clicked');
 
     } catch (e) { console.error(e); }
 });
@@ -3921,7 +3947,9 @@ $('body').on('click', '.jsRecommendedItemInMenu', function(event) {
                     link = $el.attr('href'),
                     $slider = $el.parents('.js-slider'),
                     sender = $slider.length ? $slider.data('slider').sender : null
-                    ;
+                ;
+
+                $body.trigger('TLT_processDOMEvent', [event]);
 
                 $body.trigger('trackGoogleEvent', {
                     category: 'RR_взаимодействие',
