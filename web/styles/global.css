@@ -10619,6 +10619,9 @@ img[height="0"] {
     *display: inline;
     *zoom: 1;
   }
+  .fltrBtn_param_it:-ms-input-placeholder {
+    color: #8a8a8a;
+  }
   .fltrBtn_param-2col .fltrBtn_ln {
     width: 49%;
     display: inline-block;
