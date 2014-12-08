@@ -129,6 +129,21 @@ class AppConfig {
         'retryTimeout' => [],
         'retryCount'   => null,
     ];
+
+    /**
+     * @var array
+     */
+    public $searchClient = [
+        'url'          => null,
+        'client_id'    => null,
+        'timeout'      => null,
+        'hugeTimeout'  => null,
+        'retryTimeout' => [],
+        'retryCount'   => null,
+        'debug'        => null,
+        'chunk_size'   => null,
+    ];
+
     /** @var array */
     public $wordpress = [
         'url'            => null,

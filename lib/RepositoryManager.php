@@ -60,7 +60,7 @@ class RepositoryManager {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Model\Product\Filter\Repository(\App::coreClientV2());
+            $instance = new \Model\Product\Filter\Repository(\App::searchClient());
         }
 
         return $instance;

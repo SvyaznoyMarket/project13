@@ -256,6 +256,20 @@ class App {
 
     /**
      * @static
+     * @return \Search\Client
+     */
+    public static function searchClient() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Search\Client(self::$config->searchClient, self::curl());
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @static
      * @return \ReviewsStore\Client
      */
     public static function reviewsClient() {
