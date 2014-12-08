@@ -41,7 +41,9 @@ class IndexAction {
         // запрашиваем список регионов для выбора
         $regionsToSelect = [];
         \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
-            foreach ($data as $item) {
+            foreach ((array)$data as $item) {
+                if (empty($item['id'])) continue;
+
                 $regionsToSelect[] = new \Model\Region\Entity($item);
             }
         });
