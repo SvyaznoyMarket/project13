@@ -3936,7 +3936,7 @@ $('body').on('click', '.jsRecommendedItemInMenu', function(event) {
                     sender = $slider.length ? $slider.data('slider').sender : null
                 ;
 
-                body.trigger('TLT_processDOMEvent', [event]);
+                $body.trigger('TLT_processDOMEvent', [event]);
 
                 $body.trigger('trackGoogleEvent', {
                     category: 'RR_взаимодействие',
