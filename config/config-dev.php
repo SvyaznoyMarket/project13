@@ -7,47 +7,18 @@ $c->debug = true;
 
 // $c->coreV2['url'] = 'http://tester.core.ent3.ru/v2/';
 
-$c->coreV2['timeout']      *= 3;
-$c->coreV2['retryTimeout'] = [
-    'default' => 1,
-    'tiny'    => 0.6,
-    'short'   => 1,
-    'medium'  => 1.4,
-    'long'    => 2,
-    'huge'    => 3,
-    'forever' => 0,
-];
+$c->coreV2['timeout']      *= 1.5;
 $c->coreV2['debug']        = false;
+$c->corePrivate['timeout']      *= 1.5;
 
-$c->corePrivate['timeout']      *= 3;
-$c->corePrivate['retryTimeout'] = [
-    'default' => 1,
-    'tiny'    => 0.2,
-    'short'   => 0.4,
-    'medium'  => 0.6,
-    'long'    => 1,
-    'huge'    => 1.5,
-    'forever' => 0,
-];
+$c->reviewsStore['timeout']      *= 1.5;
 
-$c->reviewsStore['timeout']      *= 5;
-$c->reviewsStore['retryCount']   = 3;
-$c->reviewsStore['retryTimeout'] = [
-    'default' => 1,
-    'tiny'    => 0.1,
-    'short'   => 0.4,
-    'medium'  => 1,
-    'long'    => 1.6,
-    'huge'    => 3,
-    'forever' => 0,
-];
-
-$c->wordpress['timeout']        *= 6;
+$c->wordpress['timeout']        *= 1.5;
 $c->wordpress['throwException'] = false;
 
-$c->dataStore['timeout'] *= 3;
+$c->dataStore['timeout'] *= 1.5;
 
-$c->shopScript['timeout'] *= 3;
+$c->shopScript['timeout'] *= 1.5;
 
 $c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/apitest/';
 
