@@ -104,7 +104,7 @@ namespace Model\OrderDelivery {
 
             // идиотский АБ-тест TODO remove
             // суммируем общую стоимость заказов заново
-            if (\Controller\Delivery\Action::isPaidSelfDelivery()) {
+            if (\Session\AbTest\AbTest::isSelfPaidDelivery()) {
                 $this->total_cost = 0;
                 foreach ($this->orders as $order) $this->total_cost += $order->total_cost;
             }
@@ -402,7 +402,7 @@ namespace Model\OrderDelivery\Entity {
             }
 
             // идиотский АБ-тест TODO remove
-            if (\Controller\Delivery\Action::isPaidSelfDelivery() && $this->total_cost < \App::config()->self_delivery['limit'] && $this->delivery->delivery_method_token == 'self') {
+            if (\Session\AbTest\AbTest::isSelfPaidDelivery() && $this->total_cost < \App::config()->self_delivery['limit'] && $this->delivery->delivery_method_token == 'self') {
                 $this->delivery->price = 100;
                 $this->total_cost = $this->total_cost + $this->delivery->price;
             }
