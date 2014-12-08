@@ -18,6 +18,8 @@ return function(
     /** @var \Model\Product\Filter\Entity $brandFilter2 */
     $brandFilter2 = null;
 
+    $hasSelectedOtherBrands = false;
+
     $countInListFilters = 0;
     foreach ($productFilter->getUngroupedPropertiesV2() as $property) {
         if (!$property->getIsInList()) {
@@ -34,8 +36,14 @@ return function(
             $brandFilter2->deleteAllOptions();
 
             if (count($brandFilter1->getOption()) >= 10) {
+                $values = $productFilter->getValue($property);
                 while (count($brandFilter1->getOption()) >= 9) {
-                    $brandFilter2->unshiftOption($brandFilter1->deleteLastOption());
+                    $option = $brandFilter1->deleteLastOption();
+                    if (in_array($option->getId(), $values)) {
+                        $hasSelectedOtherBrands = true;
+                    }
+
+                    $brandFilter2->unshiftOption($option);
                 }
             }
         }
@@ -55,18 +63,18 @@ return function(
                 <div style="overflow: hidden; position: absolute; top: 0; left: 0; width: 0; height: 0;"><input type="submit" /></div>
 
                 <div class="fltrBtn_kit clearfix">
-                    <div class="fltrBtn_tggl fltrBtn_kit_l <? if (!$brandFilter2 || !count($brandFilter2->getOption())): ?>fltrBtn_tggl-ncorner<? endif ?> <? if ($brandFilter2 && count($brandFilter2->getOption())): ?>js-category-v2-filter-brandTitle<? endif ?>">
+                    <div class="fltrBtn_tggl fltrBtn_kit_l <? if (!$brandFilter2 || !count($brandFilter2->getOption())): ?>fltrBtn_tggl-ncorner<? endif ?> <? if ($hasSelectedOtherBrands): ?>opn<? endif ?> <? if ($brandFilter2 && count($brandFilter2->getOption())): ?>js-category-v2-filter-brandTitle<? endif ?>">
                         <span class="fltrBtn_tggl_tx"><?= $brandFilter1->getName() ?></span>
                     </div>
 
                     <div class="fltrBtn_kit_r clearfix">
                         <?= $helper->render('product-category/v2/filter/element/__brand', ['productFilter' => $productFilter, 'filter' => $brandFilter1]) ?>
                         <? if ($brandFilter2 && count($brandFilter2->getOption())): ?>
-                            <a href="#" class="fltrBtn_btn fltrBtn_btn-mini fltrBtn_btn-btn js-category-v2-filter-otherBrandsOpener"><span class="fltrBtn_btn_tx">Ещё <?= count($brandFilter2->getOption()) ?></span></a>
+                            <a href="#" class="fltrBtn_btn fltrBtn_btn-mini fltrBtn_btn-btn js-category-v2-filter-otherBrandsOpener" <? if ($hasSelectedOtherBrands): ?>style="display: none;"<? endif ?>><span class="fltrBtn_btn_tx">Ещё <?= count($brandFilter2->getOption()) ?></span></a>
                         <? endif ?>
 
                         <? if ($brandFilter2): ?>
-                            <span class="js-category-v2-filter-otherBrands" style="display: none;">
+                            <span class="js-category-v2-filter-otherBrands" <? if (!$hasSelectedOtherBrands): ?>style="display: none;"<? endif ?>>
                                 <?= $helper->render('product-category/v2/filter/element/__brand', ['productFilter' => $productFilter, 'filter' => $brandFilter2]) ?>
                             </span>
                         <? endif ?>
