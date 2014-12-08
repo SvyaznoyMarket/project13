@@ -455,7 +455,7 @@
 				$('.js-category-children-link').each(function(index, link) {
 					var
 						$link = $(link),
-						hrefWithoutQueryString = $link.attr('href').slice(0, $link.attr('href').indexOf('?')),
+						hrefWithoutQueryString = $link.attr('href').indexOf('?') == -1 ? $link.attr('href') : $link.attr('href').slice(0, $link.attr('href').indexOf('?')),
 						filterQueryString = url.slice(url.indexOf('?') + 1).replace(/(^|&)page=[^&]+/, '').replace(/^&/, '');
 
 					if (filterQueryString != '') {
