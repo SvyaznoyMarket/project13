@@ -1313,26 +1313,36 @@ class Action {
      * @return array
      */
     private function deleteNotExistsValues(array $values, array $filters) {
+        // SITE-4818 Не учитывать фильтр при переходе в подкатегорию, если такового не существует
         foreach ($values as $propertyId => $propertyValues) {
+            $isPropertyExistsInFilter = false;
+
             foreach ($filters as $property) {
                 if ($property->getId() === $propertyId) {
-                    $optionIds = [];
-                    foreach ($property->getOption() as $option) {
-                        $optionIds[] = (string)$option->getId();
-                    }
-
-                    foreach ($propertyValues as $i => $value) {
-                        if (!in_array((string)$value, $optionIds, true)) {
-                            unset($values[$propertyId][$i]);
+                    $isPropertyExistsInFilter = true;
+                    if ($property->getTypeId() === \Model\Product\Filter\Entity::TYPE_LIST) {
+                        $optionIds = [];
+                        foreach ($property->getOption() as $option) {
+                            $optionIds[] = (string)$option->getId();
                         }
-                    }
 
-                    if (!count($values[$propertyId])) {
-                        unset($values[$propertyId]);
+                        foreach ($propertyValues as $i => $value) {
+                            if (!in_array((string)$value, $optionIds, true)) {
+                                unset($values[$propertyId][$i]);
+                            }
+                        }
+
+                        if (!count($values[$propertyId])) {
+                            unset($values[$propertyId]);
+                        }
                     }
 
                     break;
                 }
+            }
+
+            if (!$isPropertyExistsInFilter) {
+                unset($values[$propertyId]);
             }
         }
 
