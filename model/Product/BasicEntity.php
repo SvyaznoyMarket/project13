@@ -54,6 +54,8 @@ class BasicEntity {
     /** @var bool */
     protected $isOnlyFromPartner;
     /** @var bool */
+    protected $hasPartnerStock;
+    /** @var bool */
     protected $isUpsale = false;
     /** @var Model\Entity */
     protected $model;
@@ -444,7 +446,7 @@ class BasicEntity {
      * @return bool
      */
     public function isInShopStockOnly() {
-        return $this->isInShopsOnly;
+        return $this->isInShopsOnly && !$this->hasPartnerStock;
     }
 
     /**
@@ -472,18 +474,17 @@ class BasicEntity {
         }
 
         $this->isOnlyFromPartner = false;
-        if (!(bool)$this->getStock()) {
-            foreach ($this->getPartnersOffer() as $partnerOffer) {
-                if (!isset($partnerOffer['stock'][0])) continue;
+        foreach ($this->getPartnersOffer() as $partnerOffer) {
+            if (!isset($partnerOffer['stock'][0])) continue;
 
-                foreach ($partnerOffer['stock'] as $partnerStock) {
-                    if (!empty($partnerStock['quantity'])) {
-                        $this->isOnlyFromPartner = true;
-                        break;
-                    }
+            foreach ($partnerOffer['stock'] as $partnerStock) {
+                if (!empty($partnerStock['quantity'])) {
+                    $this->hasPartnerStock = true;
+                    break;
                 }
             }
         }
+        $this->isOnlyFromPartner = !(bool)$this->getStock() && $this->hasPartnerStock;
 
         $this->isInShopsOnly = !$inStore && $inShop;
         $this->isInShowroomsOnly = !$inStore && !$inShop && $inShowroom;
