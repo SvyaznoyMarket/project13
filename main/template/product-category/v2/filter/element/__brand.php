@@ -30,12 +30,10 @@ return function(
                 <? if ($option->getImageUrl()): ?>
                     <img class="fltrBtn_btn_img" src="<?= $helper->escape($option->getImageUrl()) ?>">
                 <? else: ?>
-                    <?= $helper->escape($option->getImageUrl()) ?>
+                    <span class="fltrBtn_btn_tx"><?= $option->getName() ?></span>
                 <? endif ?>
 
                 <i class="fltrBtn_btn_clsr btn-closer1"></i>
-
-                <span class="fltrBtn_btn_tx"><?= $option->getName() ?></span>
             </label>
         </div>
         <? $i++; endforeach ?>
