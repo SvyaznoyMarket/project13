@@ -7,8 +7,6 @@
         $body.on('click', '.jsRecommendedItem', function(event) {
             console.log('jsRecommendedItem');
 
-            event.stopPropagation();
-
             try {
                 var
                     $el = $(this),
@@ -32,6 +30,7 @@
                     }
                 });
 
+                event.stopPropagation();
             } catch (e) { console.error(e); }
         });
 
