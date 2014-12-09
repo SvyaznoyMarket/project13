@@ -114,6 +114,8 @@ class CreateAction extends OrderV3 {
                     'phone'         => (string)$splitResult['user_info']['phone'],
                     'pay_sum'       => $createdOrder->getPaySum(),
                     'access_token'  => $createdOrder->getAccessToken(),
+                    'payment_url'   => $createdOrder->getPaymentUrl(),
+                    'payment_id'    => $createdOrder->getPaymentId(),
                 ];
             }, $createdOrders));
         }
