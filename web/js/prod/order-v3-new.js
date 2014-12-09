@@ -1962,7 +1962,12 @@
 
         // Доставка
         if ($('.orderCol_delivrLst_i-act').text().indexOf('Доставка') != -1) {
-//            if (!ENTER.OrderV3.address || !ENTER.OrderV3.address.building.name) error.push('Укажите адрес доставки');
+            if (!ENTER.OrderV3.address || !ENTER.OrderV3.address.buildingName()) {
+				$('.jsSmartAddressBlock').addClass('orderCol_delivrIn-err');
+				error.push('Укажите адрес доставки');
+			} else {
+				$('.jsSmartAddressBlock').removeClass('orderCol_delivrIn-err');
+			}
         }
 
         $('.orderCol_addrs_tx').each(function(i,val){
