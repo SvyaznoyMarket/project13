@@ -49,7 +49,7 @@ class CompleteAction extends OrderV3 {
                 if (!isset($sessionOrder['number'])) continue;
 
                 // сами заказы
-                if (\App::config()->order['tinyInfoOnComplete']) { // SITE-4828
+                if (\App::config()->order['sessionInfoOnComplete']) { // SITE-4828
                     $orders[$sessionOrder['number']] = new Entity($sessionOrder);
                 } else {
                     $this->client->addQuery('order/get-by-mobile', ['number' => $sessionOrder['number'], 'mobile' => $sessionOrder['phone']], [], function ($data) use (&$orders, $sessionOrder) {

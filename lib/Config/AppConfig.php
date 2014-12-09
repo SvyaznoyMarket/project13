@@ -489,7 +489,7 @@ class AppConfig {
         'maxSumOnline'            => null,
         'splitSessionKey'         => null,
         'oneClickSplitSessionKey' => null,
-        'tinyInfoOnComplete'      => null, // краткая инфа о заказе на странице order.complete
+        'sessionInfoOnComplete'   => null, // краткая инфа о заказе на странице order.complete
     ];
     /** @var bool */
     public $newDeliveryCalc;
