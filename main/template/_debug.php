@@ -192,8 +192,8 @@
         color: #cdcdcd;
         font: normal 13px Courier New;
         opacity: 0.95;
-        max-height: 280px;
-        overflow: auto;
+        /*max-height: 280px;*/
+        /*overflow: auto;*/
     }
 
     .debug-panel a, .debug-panel a:hover {
