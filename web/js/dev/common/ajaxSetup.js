@@ -6,7 +6,7 @@
 	 * @requires	jQuery, ENTER.utils.logError
 	 */
 	$.ajaxSetup({
-		timeout: 10000,
+		timeout: 20000,
 		statusCode: {
 			404: function() { 
 				var ajaxUrl = this.url,
