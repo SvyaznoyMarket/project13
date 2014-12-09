@@ -1071,7 +1071,7 @@ $(document).ready(function() {
 				return false;
             },
 
-            handleOneClick = function() {
+            handleOneClick = function(e) {
                 console.info('show one click form');
 
                 var button = $(this),
