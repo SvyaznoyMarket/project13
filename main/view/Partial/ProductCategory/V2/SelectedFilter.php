@@ -29,7 +29,8 @@ class SelectedFilter {
             'baseUrl' => $baseUrl,
             'filters' => $filters,
             'filtersCount' => count($filters),
-            'values'  => $this->getFilterValues($productFilter, $selected),
+            // SITE-4825
+//            'values'  => $this->getFilterValues($productFilter, $selected),
         ];
     }
 

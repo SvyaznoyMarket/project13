@@ -157,7 +157,8 @@ class SelectedFilterAction {
         return [
             'baseUrl' => $baseUrl,
             'filters' => $filterLinkData,
-            'values'  => $filterValueData,
+            // SITE-4825
+//            'values'  => $filterValueData,
         ];
     }
 }

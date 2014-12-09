@@ -144,7 +144,8 @@
 				if ( data.hasOwnProperty('values') ) {
 					console.info('run update filter!');
 
-					catalog.filter.updateFilter( data['values'] );
+					// SITE-4825
+//					catalog.filter.updateFilter( data['values'] );
 				}
 
 				console.log('end of render selectedFilter');
@@ -212,7 +213,8 @@
 				lastPage = res['pagination'] ? res['pagination']['lastPage'] : false;
 			// end of vars
 
-			catalog.filter.resetForm();
+			// SITE-4825
+//			catalog.filter.resetForm();
 
 			for ( key in dataToRender ) {
 				if ( catalog.filter.render.hasOwnProperty(key) ) {
