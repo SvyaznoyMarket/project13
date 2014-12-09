@@ -50,7 +50,6 @@ class CreateAction extends OrderV3 {
                 $ordersData,
                 \App::config()->coreV2['hugeTimeout']
             );
-
         } catch (\Curl\Exception $e) {
             \App::logger()->error($e->getMessage(), ['curl', 'order/create']);
             \App::exception()->remove($e);
@@ -112,7 +111,9 @@ class CreateAction extends OrderV3 {
                     'number'        => $createdOrder->getNumber(),
                     'number_erp'    => $createdOrder->numberErp,
                     'id'            => $createdOrder->getId(),
-                    'phone'         => (string)$splitResult['user_info']['phone']
+                    'phone'         => (string)$splitResult['user_info']['phone'],
+                    'pay_sum'       => $createdOrder->getPaySum(),
+                    'access_token'  => $createdOrder->getAccessToken(),
                 ];
             }, $createdOrders));
         }

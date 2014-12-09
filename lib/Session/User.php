@@ -263,7 +263,7 @@ class User {
         if (\App::request()->cookies->has($cookieName)) {
             return (int)\App::request()->cookies->get($cookieName);
         } else {
-            return null;
+            return \App::config()->region['defaultId'];
         }
     }
 

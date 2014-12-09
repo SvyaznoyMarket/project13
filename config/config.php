@@ -434,6 +434,7 @@ $c->order['prepayment'] = [
 ];
 $c->order['splitSessionKey'] = 'order_split';
 $c->order['oneClickSplitSessionKey'] = $c->order['splitSessionKey'] . '-1click';
+$c->order['tinyInfoOnComplete'] = true; // краткая инфа о заказе
 
 $c->newDeliveryCalc = true;
 

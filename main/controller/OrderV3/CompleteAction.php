@@ -46,19 +46,23 @@ class CompleteAction extends OrderV3 {
             // забираем заказы и доступные методы оплаты
             foreach ($this->sessionOrders as $sessionOrder) {
 
-                if (!is_array($sessionOrder)) continue;
+                if (!isset($sessionOrder['number'])) continue;
 
                 // сами заказы
-                $this->client->addQuery('order/get-by-mobile', ['number' => $sessionOrder['number'], 'mobile' => $sessionOrder['phone']], [], function ($data) use (&$orders, $sessionOrder) {
-                    $data = reset($data);
-                    $orders[$sessionOrder['number']] = $data ? new Entity($data) : null;
-                });
+                if (\App::config()->order['tinyInfoOnComplete']) { // SITE-4828
+                    $orders[$sessionOrder['number']] = new Entity($sessionOrder);
+                } else {
+                    $this->client->addQuery('order/get-by-mobile', ['number' => $sessionOrder['number'], 'mobile' => $sessionOrder['phone']], [], function ($data) use (&$orders, $sessionOrder) {
+                        $data = reset($data);
+                        $orders[$sessionOrder['number']] = $data ? new Entity($data) : null;
+                    });
+                }
 
                 // методы оплаты для заказа
                 $this->client->addQuery(
                     'payment-method/get-for-order',
                     [
-                        'geo_id'     => $this->user->getRegionId(),
+                        'geo_id'     => $this->user->getRegion()->getId(),
                         'client_id'  => 'site',
                         'number_erp' => $sessionOrder['number_erp']
                     ],
