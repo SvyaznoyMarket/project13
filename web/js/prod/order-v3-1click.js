@@ -1706,6 +1706,7 @@
 	$form.on('submit', function(e){
 
 		var	$el = $(this),
+			$submitBtn = $el.find('.orderCompl_btn'),
 			data = $el.serializeArray(),
 			error = validate(),
 			errorHtml = '';
@@ -1718,7 +1719,17 @@
 			return;
 		}
 
-		$.post($el.attr('action'), data)
+		$.ajax({
+			type: 'POST',
+			url: $el.attr('action'),
+			data: data,
+			beforeSend: function(){
+				$submitBtn.attr('disabled', true)
+			}
+			})
+			.always(function(){
+				$submitBtn.attr('disabled', false)
+			})
 			.done(function(response) {
 				if (typeof response.result !== 'undefined') {
 					$('#jsOneClickContentPage').hide();
