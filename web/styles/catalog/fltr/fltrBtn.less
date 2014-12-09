@@ -124,6 +124,10 @@
         border: 1px solid @typLightGray;
         background: @white;
 
+        &:hover {
+            text-decoration: none;
+        }
+
         .table-cell();
         .rounded(4px);
         &:last-child{
@@ -132,6 +136,7 @@
         &_img{
             vertical-align: middle;
             width: 100%;
+            pointer-events: none;
             //max-width: 100px;
         }
         &_tx{

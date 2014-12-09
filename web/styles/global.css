@@ -3595,6 +3595,15 @@ img[height="0"] {
   .customInput-btn:checked + .fltrBtn_btn .btn-closer1 {
     display: block;
   }
+  .customInput-btn.mChecked {
+    width: 58px;
+    height: 31px;
+    border-width: 2px;
+    border-color: #f99b1c;
+  }
+  .customInput-btn.mChecked .btn-closer1 {
+    display: block;
+  }
   /* Размер 13х13 */
   .customInput-defradio2 + .customLabel {
     padding: 0 0 0 20px;
@@ -10523,12 +10532,16 @@ img[height="0"] {
     -moz-border-radius: 4px;
     border-radius: 4px;
   }
+  .fltrBtn_btn:hover {
+    text-decoration: none;
+  }
   .fltrBtn_btn:last-child {
     margin-right: 0;
   }
   .fltrBtn_btn_img {
     vertical-align: middle;
     width: 100%;
+    pointer-events: none;
   }
   .fltrBtn_btn_tx {
     font-size: 11px;
