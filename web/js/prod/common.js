@@ -3939,8 +3939,6 @@ $('body').on('click', '.jsRecommendedItemInMenu', function(event) {
         $body.on('click', '.jsRecommendedItem', function(event) {
             console.log('jsRecommendedItem');
 
-            event.stopPropagation();
-
             try {
                 var
                     $el = $(this),
@@ -3964,6 +3962,7 @@ $('body').on('click', '.jsRecommendedItemInMenu', function(event) {
                     }
                 });
 
+                event.stopPropagation();
             } catch (e) { console.error(e); }
         });
 
