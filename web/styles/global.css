@@ -3595,13 +3595,13 @@ img[height="0"] {
   .customInput-btn:checked + .fltrBtn_btn .btn-closer1 {
     display: block;
   }
-  .customInput-btn.mChecked {
+  .fltrBtn_btn.mChecked {
     width: 58px;
     height: 31px;
     border-width: 2px;
     border-color: #f99b1c;
   }
-  .customInput-btn.mChecked .btn-closer1 {
+  .fltrBtn_btn.mChecked .btn-closer1 {
     display: block;
   }
   /* Размер 13х13 */
