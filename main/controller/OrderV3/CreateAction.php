@@ -22,6 +22,7 @@ class CreateAction extends OrderV3 {
 
         $coreResponse = null;   // ответ о ядра
         $ordersData = [];       // данные для отправки на ядро
+        /** @var \Model\Order\Entity[] $createdOrders */
         $createdOrders = [];    // созданные заказы
         $params = [];           // параметры запроса на ядро
 
@@ -81,6 +82,7 @@ class CreateAction extends OrderV3 {
 
         \App::logger()->info(['action' => __METHOD__, 'core.response' => $coreResponse], ['order']);
 
+        $sessionData = [];
         if ((bool)$coreResponse) {
 
             foreach ($coreResponse as $orderData) {
@@ -88,36 +90,32 @@ class CreateAction extends OrderV3 {
                     \App::logger()->error(['message' => 'Получены неверные данные для созданного заказа', 'orderData' => $orderData], ['order']);
                     continue;
                 }
-                $createdOrder = new \Model\Order\CreatedEntity($orderData);
+                $orderData += ['confirmed' => null];
+
+                // если заказ не подтвержден
+                if (!$orderData['confirmed']) {
+                    \App::logger()->error(['message' => 'Заказ не подтвержден', 'orderData' => $orderData], ['order']);
+                }
+
+                $createdOrder = new \Model\Order\Entity($orderData);
 
                 // если не получен номер заказа
                 if (!$createdOrder->getNumber()) {
                     \App::logger()->error(['message' => 'Не получен номер заказа', 'orderData' => $orderData], ['order']);
                     continue;
                 }
-                // если заказ не подтвержден
-                if (!$createdOrder->getConfirmed()) {
-                    \App::logger()->error(['message' => 'Заказ не подтвержден', 'orderData' => $orderData], ['order']);
-                }
 
                 $createdOrders[] = $createdOrder;
                 \App::logger()->info(['message' => 'Заказ успешно создан', 'orderData' => $orderData], ['order']);
+
+                $sessionData[] = array_merge($orderData, [
+                    'phone' => (string)$splitResult['user_info']['phone'],
+                ]);
             }
         }
 
-        if ((bool)$createdOrders) {
-            $this->session->set(\App::config()->order['sessionName'] ?: 'lastOrder', array_map(function(\Model\Order\CreatedEntity $createdOrder) use ($splitResult) {
-                return [
-                    'number'        => $createdOrder->getNumber(),
-                    'number_erp'    => $createdOrder->numberErp,
-                    'id'            => $createdOrder->getId(),
-                    'phone'         => (string)$splitResult['user_info']['phone'],
-                    'pay_sum'       => $createdOrder->getPaySum(),
-                    'access_token'  => $createdOrder->getAccessToken(),
-                    'payment_url'   => $createdOrder->getPaymentUrl(),
-                    'payment_id'    => $createdOrder->getPaymentId(),
-                ];
-            }, $createdOrders));
+        if ((bool)$sessionData) {
+            $this->session->set(\App::config()->order['sessionName'] ?: 'lastOrder', $sessionData);
         }
 
         // удаляем предыдущее разбиение
