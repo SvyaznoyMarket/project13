@@ -35,13 +35,13 @@ return function(
                             <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>"><?= $order->getNumberErp()?></a></div>
                         <? else : ?>
                             <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <?= $order->getNumberErp()?></div>
-                        <? endif; ?>
+                        <? endif ?>
 
                         <ul class="orderLn_lst">
                             <? foreach ($order->getProduct() as $key => $product): ?>
                             <? /** @var $product \Model\Order\Product\Entity */?>
                                 <? if (isset($products[$product->getId()])) : ?>
-                                    <li class="orderLn_lst_i"><?= $products[$product->getId()]->getPrefix() == '' ? mb_strimwidth($products[$product->getId()]->getName(), 0, 40, '…') :  mb_strimwidth($products[$product->getId()]->getPrefix(), 0, 40, '…'); ?> <?= $product->getQuantity() ?> шт.</li>
+                                    <li class="orderLn_lst_i"><?= $products[$product->getId()]->getPrefix() == '' ? mb_strimwidth($products[$product->getId()]->getName(), 0, 40, '…') :  mb_strimwidth($products[$product->getId()]->getPrefix(), 0, 40, '…') ?> <?= $product->getQuantity() ?> шт.</li>
                                 <? endif ?>
                                 <? if ($key == 2) : ?>
                                     <? $orderProductsString = $helper->numberChoiceWithCount(count($order->getProduct()) - 2, ['товар', 'товара', 'товаров']) ?>
@@ -49,8 +49,8 @@ return function(
                                         <li class="orderLn_lst_i"><a class="orderLn_lst_lk" href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>">и ещё <?= $orderProductsString ?></a></li>
                                     <? else : ?>
                                         <li class="orderLn_lst_i">и ещё <?= $orderProductsString ?></li>
-                                    <? endif; ?>
-                                <? break; endif; ?>
+                                    <? endif ?>
+                                <? break; endif ?>
                             <? endforeach ?>
                         </ul>
 
@@ -60,19 +60,21 @@ return function(
 
                     <div class="orderLn_c">
                         <div><?= \RepositoryManager::deliveryType()->getEntityById($order->deliveryTypeId)->getShortName() ?>
-                            <? if ($order->deliveredAt) : ?><?= strftime('%e %b %Y', $order->deliveredAt->getTimestamp()) ?><? endif; ?>
-                            <? if ($order->interval) : ?><?= $order->interval->getStart()?>…<?= $order->interval->getEnd() ?><? endif; ?>
+                            <? if ($order->deliveredAt) : ?><?= strftime('%e %b %Y', $order->deliveredAt->getTimestamp()) ?><? endif ?>
+                            <? if ($order->interval) : ?><?= $order->interval->getStart()?>…<?= $order->interval->getEnd() ?><? endif ?>
                         </div>
                         <!--<div>Оплата при получении: наличные, банковская карта</div>-->
                     </div>
 
-                    <? endif; ?>
+                    <? endif ?>
 
                     <div class="orderLn_r">
-                        <div class="orderLn_row orderLn_row-summ">
-                            <span class="summT">Сумма заказа:</span>
-                            <span class="summP"><?= $helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span></span>
-                        </div>
+                        <? if ($order->getPaySum()): ?>
+                            <div class="orderLn_row orderLn_row-summ">
+                                <span class="summT">Сумма заказа:</span>
+                                <span class="summP"><?= $helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span></span>
+                            </div>
+                        <? endif ?>
 
                         <? if ($order->paymentStatusId == \Model\Order\Entity::PAYMENT_STATUS_PAID) : ?>
 
@@ -101,18 +103,18 @@ return function(
                                     <ul style="display: none;" class="customSel_lst popupFl customSel_lst-pay jsCreditList">
                                         <? foreach ($banks as $bank) : ?>
                                             <? /** @var $bank \Model\CreditBank\Entity */?>
-                                            <li class="customSel_i jsPaymentMethod" data-value="<?= $bank->getId(); ?>" data-bank-provider-id="<?= $bank->getProviderId() ?>">
+                                            <li class="customSel_i jsPaymentMethod" data-value="<?= $bank->getId() ?>" data-bank-provider-id="<?= $bank->getProviderId() ?>">
                                                 <img src="<?= $bank->getImage() ?>" />
-<!--                                                <strong>--><?//= $bank->getName(); ?><!--</strong><br/>-->
-<!--                                                --><?//= $bank->getDescription(); ?><!--<br/>-->
+<!--                                                <strong>--><?//= $bank->getName() ?><!--</strong><br/>-->
+<!--                                                --><?//= $bank->getDescription() ?><!--<br/>-->
                                                 <a href="<?= $bank->getLink() ?>" target="_blank" style="float: right">Условия кредитования</a>
                                             </li>
-                                        <? endforeach; ?>
+                                        <? endforeach ?>
                                     </ul>
 
                                     <? if (isset($creditData[$order->getNumber()])) : ?>
                                         <div class="credit-widget" data-value="<?= $helper->json($creditData[$order->getNumber()]) ?>"></div>
-                                    <? endif; ?>
+                                    <? endif ?>
 
                                 <? elseif (isset($paymentEntity->groups[\Model\PaymentMethod\PaymentGroup\PaymentGroupEntity::PAYMENT_NOW])) : ?>
                                 <? $paymentMethods = array_filter($paymentEntity->methods, function (\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity $method) use ($paymentEntity) {return $method->paymentGroup === $paymentEntity->groups[\Model\PaymentMethod\PaymentGroup\PaymentGroupEntity::PAYMENT_NOW]; }) ?>
@@ -125,17 +127,17 @@ return function(
                                         <div class="orderLn_box jsOnlinePaymentBlock">
                                             <a href="" class="orderLn_btn btnLightGrey">
                                                 <? foreach ($paymentMethods as $method) : ?>
-                                                    <img src="<?= $method->icon; ?>" alt="" />
-                                                <? endforeach; ?>
+                                                    <img src="<?= $method->icon ?>" alt="" />
+                                                <? endforeach ?>
                                             </a>
                                         </div>
                                         <ul style="display: none;" class="customSel_lst popupFl jsOnlinePaymentList">
                                             <? foreach ($paymentMethods as $method) : ?>
-                                                <li class="customSel_i jsPaymentMethod" data-value="<?= $method->id; ?>">
-                                                    <strong><?= $method->name; ?></strong><br/>
-                                                    <?= $method->description; ?>
+                                                <li class="customSel_i jsPaymentMethod" data-value="<?= $method->id ?>">
+                                                    <strong><?= $method->name ?></strong><br/>
+                                                    <?= $method->description ?>
                                                 </li>
-                                            <? endforeach; ?>
+                                            <? endforeach ?>
                                         </ul>
 
                                     <? else : ?>
@@ -143,33 +145,33 @@ return function(
                                         <div class="payT">Можно <span class="payBtn btn4 jsOnlinePaymentSpan"><span class="brb-dt">оплатить онлайн</span></span></div>
 
                                         <? foreach ($paymentMethods as $method) : ?>
-                                            <img src="<?= $method->icon; ?>" alt="" />
-                                        <? endforeach; ?>
+                                            <img src="<?= $method->icon ?>" alt="" />
+                                        <? endforeach ?>
 
                                         <ul style="display: none;" class="customSel_lst popupFl jsOnlinePaymentList">
                                         <? foreach ($paymentMethods as $method) : ?>
-                                            <li class="customSel_i jsPaymentMethod" data-value="<?= $method->id; ?>">
-                                                <strong><?= $method->name; ?></strong><br/>
-                                                <?= $method->description; ?>
+                                            <li class="customSel_i jsPaymentMethod" data-value="<?= $method->id ?>">
+                                                <strong><?= $method->name ?></strong><br/>
+                                                <?= $method->description ?>
                                             </li>
-                                        <? endforeach; ?>
+                                        <? endforeach ?>
                                         </ul>
 
-                                    <? endif; ?>
+                                    <? endif ?>
 
-                                <? endif; ?>
+                                <? endif ?>
 
                             </div>
 
-                            <? endif; ?>
+                            <? endif ?>
 
-                        <? endif; ?>
+                        <? endif ?>
 
-                        <? endif; ?>
+                        <? endif ?>
                     </div>
                 </div>
 
-            <? endforeach; ?>
+            <? endforeach ?>
 
         </div>
 

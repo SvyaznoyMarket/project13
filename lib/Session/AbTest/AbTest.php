@@ -3,6 +3,10 @@
 namespace Session\AbTest;
 
 class AbTest {
+
+    /* хелперы для определения варианта АБ-теста у пользователя */
+    use ABHelperTrait;
+
     /** @var Test[] */
     private $tests = [];
 
