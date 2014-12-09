@@ -1,4 +1,4 @@
-<? if (\Controller\Delivery\Action::isPaidSelfDelivery()) : ?>
+<? if (Session\AbTest\AbTest::isSelfPaidDelivery()) : ?>
     <div class="cartInfo"
          data-bind="visible: cartSum() != 0 && cartSum() < ENTER.config.pageConfig.selfDeliveryLimit"
          style="display: <?= \App::config()->self_delivery['limit'] > $cart->getSum() ? 'block' : 'none' ?>">

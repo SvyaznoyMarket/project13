@@ -65,7 +65,11 @@ class ActionPay {
                     break;
 
                 case "order":
-                case "order.complete":
+                case "orderV3":
+                case "orderV3.delivery":
+                    $this->routeOrderNew();
+                    break;
+
                 case "orderV3.complete":
                     $this->routeOrderComplete();
                     break;
@@ -90,11 +94,11 @@ class ActionPay {
      */
     private function basketInfo() {
         $this->sendData['basketProducts'] = [];
-        foreach ($this->cart->getProducts() as $product) {
+        foreach ($this->cart->getProductsNC() as $product) {
             $this->sendData['basketProducts'][] = array(
-                'id' => $product->getId(),
-                'price' => $product->getPrice(),
-                'quantity' => $product->getQuantity(),
+                'id' => @$product['id'],
+                'price' => @$product['price'],
+                'quantity' => @$product['quantity'],
             );
         }
     }
@@ -196,6 +200,10 @@ class ActionPay {
     }
 
 
+    private function routeOrderNew() {
+        // оформление заказа
+        $this->sendData['pageType'] = 5;
+    }
 
     /**
      * Вызывается на страницАХ заказа
@@ -239,7 +247,7 @@ class ActionPay {
         if (!$orders) return false;
         /** @var $orders \Model\Order\Entity **/
 
-        $productsById = $this->getParam('productsById');
+        $productsById = $this->getParam('products');
 
         //купленные товары
         $purchasedProducts = [];

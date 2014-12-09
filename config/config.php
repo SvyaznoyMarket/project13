@@ -452,6 +452,7 @@ $c->order['prepayment'] = [
 ];
 $c->order['splitSessionKey'] = 'order_split';
 $c->order['oneClickSplitSessionKey'] = $c->order['splitSessionKey'] . '-1click';
+$c->order['sessionInfoOnComplete'] = false; // краткая инфа о заказе
 
 $c->newDeliveryCalc = true;
 
@@ -570,18 +571,18 @@ $c->abTest = [
             ]
         ],
 
-        'order_delivery_price' => [
+        'order_delivery_price_2' => [
             'name'  => 'Платный самовывоз',
             'gaSlotNumber'        => 9,
             'enabled' => true,
             'expireDate' => '2014-12-31',
             'cases' => [
                 'delivery_self_100' => [
-                    'traffic'  => 0,
+                    'traffic'  => 50,
                     'name'     => 'Платный самовывоз',
                 ],
                 'delivery_self_0' => [
-                    'traffic'  => 100,
+                    'traffic'  => 50,
                     'name'     => 'Бесплатный самовывоз',
                 ]
             ]
@@ -663,7 +664,7 @@ $c->abTest = [
 
 ];
 
-$c->self_delivery['enabled'] = false;
+$c->self_delivery['enabled'] = true;
 $c->self_delivery['limit'] = 500;
 $c->self_delivery['regions'] = [119623, 93746, 14974];
 

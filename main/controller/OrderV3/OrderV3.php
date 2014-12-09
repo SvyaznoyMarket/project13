@@ -53,7 +53,7 @@ class OrderV3 {
         $commonData = [
             'sessionId' => $this->session->getId(),
             'userAuth' => $this->user->getEntity() !== null,
-            'regionId' => $this->user->getRegionId(),
+            'regionId' => $this->user->getRegion()->getId(),
             'time' =>strftime('%Y-%m-%d %H:%M:%S'),
             'userPhone' => $userPhone
         ];

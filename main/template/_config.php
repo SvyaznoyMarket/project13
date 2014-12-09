@@ -50,7 +50,7 @@ $config = array_merge([
         'orderV3OneClick.delivery'  => ['pattern' => $routerRules['orderV3OneClick.delivery']['pattern']],
         'product.category'          => ['pattern' => $routerRules['product.category']['pattern']],
     ],
-    'selfDeliveryTest'    => \Controller\Delivery\Action::isPaidSelfDelivery(), // удалять осторожно, поломается JS
+    'selfDeliveryTest'    => \Session\AbTest\AbTest::isSelfPaidDelivery(), // удалять осторожно, поломается JS
     'selfDeliveryLimit'    => $appConfig->self_delivery['limit'] // стоимость платного самовывоза, удалять осторожно, поломается JS
 ], isset($config) ? (array)$config : []);
 ?>

@@ -44,7 +44,7 @@ return function (
         }
     }
 
-    if (isset($delivery['self']) && \Controller\Delivery\Action::isPaidSelfDelivery()) {
+    if (isset($delivery['self']) && \Session\AbTest\AbTest::isSelfPaidDelivery()) {
         $delivery['self']['limit'] = App::config()->self_delivery['limit'];
         $delivery['self']['ab_paid_delivery'] = true;
     }
