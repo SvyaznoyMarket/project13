@@ -31,7 +31,7 @@ class Layout extends \View\DefaultLayout {
         if (!\App::config()->analytics['enabled']) return '';
 
         $html = '';
-//        $routeName = \App::request()->attributes->get('route');
+        $routeName = \App::request()->attributes->get('route');
         $routeToken = \App::request()->attributes->get('token');
 
         if ('subscribe_friends' == $routeToken) {
@@ -48,6 +48,12 @@ class Layout extends \View\DefaultLayout {
 
         // SociaPlus
         $html .= '<div id="sociaPlusJs" class="jsanalytics"></div>';
+
+        if (\App::partner()->getName() == 'actionpay') {
+            $html .= '<div id="ActionPayJS" data-vars="' .
+                $this->json((new \View\Partners\ActionPay($routeName, $this->params))->execute()) .
+                '" class="jsanalytics"></div>';
+        }
 
         return $html;
     }
