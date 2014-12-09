@@ -72,7 +72,7 @@ return function(
                         <? if ($order->getPaySum()): ?>
                             <div class="orderLn_row orderLn_row-summ">
                                 <span class="summT">Сумма заказа:</span>
-                                <span class="summP"><?= $helper->formatPrice($order->getSum()) ?> <span class="rubl">p</span></span>
+                                <span class="summP"><?= $helper->formatPrice($order->getPaySum()) ?> <span class="rubl">p</span></span>
                             </div>
                         <? endif ?>
 
