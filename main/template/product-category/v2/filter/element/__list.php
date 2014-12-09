@@ -28,7 +28,7 @@ return function(
             <? if ($filter->isBrand()) { echo 'data-name="',$option->getName(),'"'; } ?>
             <? if (in_array($optionId, $values) || $optionId === $categoryId) { ?> checked="checked"<? } ?>
         />
-        <label class="customLabel<? if (!$filter->getIsMultiple()) { ?> mCustomLabelRadio<? } ?>" for="<?= $viewId ?>">
+        <label class="customLabel <?= $filter->getIsMultiple() ? 'customLabel-defcheck2' : 'customLabel-defradio2' ?>" for="<?= $viewId ?>">
             <? if ($option->getImageUrl()): ?>
                 <span class="customLabel_wimg"></span>
                 <img class="customLabel_bimg" src="<?= $helper->escape($option->getImageUrl()) ?>">
