@@ -7182,6 +7182,11 @@ img[height="0"] {
     -moz-border-radius: 4px;
     border-radius: 4px;
   }
+  .orderCol-v2 .orderCol_delivrIn-err {
+    border-color: #ED404D;
+    border-width: 2px;
+    border-style: solid;
+  }
   .orderCol-v2 .orderCol_delivrIn .textfield-err {
     border-color: #ED404D;
     border-width: 2px;
