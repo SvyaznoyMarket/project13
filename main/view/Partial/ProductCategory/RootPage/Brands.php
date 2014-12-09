@@ -13,6 +13,7 @@ class Brands {
         $mainBrands = [];
         $otherBrands = [];
         $selectedBrandsCount = 0;
+        $selectedOtherBrandsCount = 0;
         $num = 0;
         $helper = new Helper();
 
@@ -22,16 +23,20 @@ class Brands {
                 foreach ($property->getOption() as $option) {
                     $num++;
 
-                    if ($num <= 6 || $optionsCount == 7) {
-                        $brands = &$mainBrands;
-                    } else {
-                        $brands = &$otherBrands;
-                    }
-
                     $active = \App::request()->query->get(\View\Name::productCategoryFilter($property, $option)) == $option->getId();
 
                     if ($active) {
                         $selectedBrandsCount++;
+                    }
+
+                    if ($num <= 6 || $optionsCount == 7) {
+                        $brands = &$mainBrands;
+                    } else {
+                        $brands = &$otherBrands;
+
+                        if ($active) {
+                            $selectedOtherBrandsCount++;
+                        }
                     }
 
                     $brands[] = [
@@ -56,6 +61,7 @@ class Brands {
             'showOtherBrandsText' => 'Ещё ' . count($otherBrands) . ' ' . $helper->numberChoice(count($otherBrands), ['бренд', 'бренда', 'брендов']),
             'brandsCount' => count($mainBrands) + count($otherBrands),
             'selectedBrandsCount' => $selectedBrandsCount,
+            'selectedOtherBrandsCount' => $selectedOtherBrandsCount,
         ];
     }
 }

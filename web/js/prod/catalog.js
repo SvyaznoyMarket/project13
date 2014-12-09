@@ -669,8 +669,6 @@
 				url = self.attr('href');
 			// end of vars
 
-
-
 			catalog.filter.resetForm();
 			catalog.filter.updateFilter(parseUrlParams(url));
 			catalog.history.gotoUrl(url);
@@ -1817,5 +1815,13 @@ $(function() {
 		});
 
 		updateLinks('?');
+	});
+
+	// Выделение брендов, присутствующих в URL адресе
+	$brandLinks.each(function(index, link) {
+		var $brandLink = $(link);
+		if (ENTER.utils.getURLParam($brandLink.data('paramName'), document.location.href) == $brandLink.data('paramValue')) {
+			$brandLink.addClass(brandLinkActiveClass);
+		}
 	});
 });

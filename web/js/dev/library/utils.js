@@ -34,7 +34,7 @@
 	 * @returns 	{string}	{*}
 	 */
 	utils.getURLParam = function getURLParam(paramName, url) {
-		var result = new RegExp('[\\?&]' + paramName + '=([^&#]*)').exec(url);
+		var result = new RegExp('[\\?&]' + utils.escapeRegexp(encodeURIComponent(paramName)) + '=([^&#]*)').exec(url);
 		if (result) {
 			return decodeURIComponent(result[1]);
 		}

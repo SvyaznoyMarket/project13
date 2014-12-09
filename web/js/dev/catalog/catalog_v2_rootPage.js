@@ -99,4 +99,12 @@
 
 		updateLinks('?');
 	});
+
+	// Выделение брендов, присутствующих в URL адресе
+	$brandLinks.each(function(index, link) {
+		var $brandLink = $(link);
+		if (ENTER.utils.getURLParam($brandLink.data('paramName'), document.location.href) == $brandLink.data('paramValue')) {
+			$brandLink.addClass(brandLinkActiveClass);
+		}
+	});
 });
