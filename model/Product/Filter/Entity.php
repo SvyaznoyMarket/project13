@@ -24,6 +24,8 @@ class Entity {
     public $groupUi;
     /** @var string */
     public $groupName;
+    /** @var int */
+    public $groupPosition;
     /** @var string */
     private $unit;
     /** @var bool */
@@ -63,6 +65,7 @@ class Entity {
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (isset($data['group']['uid'])) $this->groupUi = $data['group']['uid'];
         if (isset($data['group']['name'])) $this->groupName = $data['group']['name'];
+        if (isset($data['group']['position'])) $this->groupPosition = (int)$data['group']['position'];
         if (array_key_exists('type_id', $data)) $this->setTypeId($data['type_id']);
         if (array_key_exists('unit', $data)) $this->setUnit($data['unit']);
         if (array_key_exists('is_multiple', $data)) $this->setIsMultiple($data['is_multiple']);

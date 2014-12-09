@@ -239,6 +239,7 @@ class Filter {
                     $group = new Group();
                     $group->ui = $property->groupUi;
                     $group->name = $property->groupName;
+                    $group->position = $property->groupPosition;
                     $groups[$property->groupUi] = $group;
 
                     if ('Дополнительно' === $property->groupName) {
@@ -252,6 +253,14 @@ class Filter {
                 }
             }
         }
+
+        usort($groups, function(Group $a, Group $b) {
+            if ($a->position == $b->position) {
+                return 0;
+            }
+
+            return $a->position < $b->position ? -1 : 1;
+        });
 
         if ($shopProperty) {
             $group = new Group();
