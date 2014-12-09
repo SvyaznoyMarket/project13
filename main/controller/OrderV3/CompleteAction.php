@@ -85,13 +85,13 @@ class CompleteAction extends OrderV3 {
 
             // получаем продукты для заказов
             foreach ($orders as $order) {
-
-                /** @var $order \Model\Order\Entity */
-                \RepositoryManager::product()->prepareCollectionById(array_map(function(\Model\Order\Product\Entity $product) { return $product->getId(); }, $order->getProduct()), null, function ($data) use ($order, &$products) {
-                    foreach ($data as $productData) {
-                        $products[$productData['id']] = new \Model\Product\Entity($productData);
-                    }
-                } );
+                if (!\App::config()->order['sessionInfoOnComplete']) { // SITE-4828
+                    \RepositoryManager::product()->prepareCollectionById(array_map(function(\Model\Order\Product\Entity $product) { return $product->getId(); }, $order->getProduct()), null, function ($data) use ($order, &$products) {
+                        foreach ($data as $productData) {
+                            $products[$productData['id']] = new \Model\Product\Entity($productData);
+                        }
+                    });
+                }
 
                 // Нужны ли нам кредитные банки?
                 if ($order->paymentId == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT) $needCreditBanksData = true;
