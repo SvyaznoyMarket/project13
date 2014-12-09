@@ -669,11 +669,39 @@
 				url = self.attr('href');
 			// end of vars
 
+
+
+			catalog.filter.resetForm();
+			catalog.filter.updateFilter(parseUrlParams(url));
 			catalog.history.gotoUrl(url);
 
 			return false;
 		},
 
+		parseUrlParams = function(url) {
+			var
+				result = {},
+				params = url.replace(/^[^?]*\?|\#.*$/g, '').split('&');
+
+			for (var i = 0; i < params.length; i++) {
+				var param = params[i].split('=');
+
+				if (!param[0]) {
+					param[0] = '';
+				}
+
+				if (!param[1]) {
+					param[1] = '';
+				}
+
+				param[0] = decodeURIComponent(param[0]);
+				param[1] = decodeURIComponent(param[1]);
+
+				result[param[0]] = param[1];
+			}
+
+			return result;
+		},
 
 		/**
 		 * Обработчик кнопки переключения между расширенным и компактным видом фильтра
