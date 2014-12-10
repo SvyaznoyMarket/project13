@@ -648,7 +648,7 @@
 	if ( loadScripts.hasOwnProperty(templateType) ) {
 		console.log('Загрузка скриптов. Шаблон %s', templateType);
 		loadScripts[templateType]();
-		if (pageConfig.tealeaf === true) $LAB.script( getWithVersion(tealeafUrl) );
+		if (pageConfig.tealeaf === true) $LAB.script( getWithVersion('tealeaf.js') );
 	}
 	else {
 		console.log('Шаблон %s не найден. Загрузка стандартного набора скриптов', templateType);

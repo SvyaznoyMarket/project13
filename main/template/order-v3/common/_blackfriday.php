@@ -5,7 +5,7 @@
 $style = $version == 1 ? "margin: 0 0 0px 20px; color: #6E6E6E" : "margin: 0 0 10px 2px; color: #6E6E6E";
 $time = time();
 // временной промежуток для показа
-$isActiveTime = $time < 1417910400;
+$isActiveTime = $time < 1418342400;
 
 if ($isActiveTime) :
 ?>

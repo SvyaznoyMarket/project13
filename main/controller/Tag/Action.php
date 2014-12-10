@@ -146,7 +146,16 @@ class Action {
             $productFilter->setCategory($selectedCategory);
         }
 
+        // SITE-4734
+        foreach ($productFilter->getFilterCollection() as $filter) {
+            if ('brand' === $filter->getId()) {
+                foreach ($filter->getOption() as $option) {
+                    $option->setImageUrl('');
+                }
 
+                break;
+            }
+        }
 
 
         // сортировка
