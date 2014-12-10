@@ -2835,6 +2835,10 @@ img[height="0"] {
   }
   .slidesbnnr_thmbs_i {
     margin: 0 0 3px;
+    background: #ffffff;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
   }
   .slidesbnnr_thmbs_img {
     display: block;
