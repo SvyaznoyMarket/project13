@@ -1801,21 +1801,20 @@
 		body = $('body');
 	// end of vars
 
-	var updateState = function updateState() {
-		if ( !$(this).is('[type=checkbox]') && !$(this).is('[type=radio]') ) {
+	function updateInput($input) {
+		if ( !$input.is('[type=checkbox]') && !$input.is('[type=radio]') ) {
 			return;
 		}
 
-		var $self = $(this),
-			id = $self.attr('id'),
-			type = ( $self.is('[type=checkbox]') ) ? 'checkbox' : 'radio',
-			groupName = $self.attr('name') || '',
+		var id = $input.attr('id'),
+			type = ( $input.is('[type=checkbox]') ) ? 'checkbox' : 'radio',
+			groupName = $input.attr('name') || '',
 			label = $('label[for="'+id+'"]');
 		// end of vars
 
 		if ( type === 'checkbox' ) {
 
-			if ( $self.is(':checked') ) {
+			if ( $input.is(':checked') ) {
 				label.addClass('mChecked');
 			}
 			else {
@@ -1824,26 +1823,30 @@
 		}
 
 
-		if ( type === 'radio' && $self.is(':checked') ) {
-			$('input[name="'+groupName+'"]').each(function() {
-				var currElement = $(this),
-					currId = currElement.attr('id');
+		if ( type === 'radio' ) {
+			if ( $input.is(':checked') ) {
+				$('input[name="'+groupName+'"]').each(function() {
+					var currElement = $(this),
+						currId = currElement.attr('id');
 
-				$('label[for="'+currId+'"]').removeClass('mChecked');
-			});
+					$('label[for="'+currId+'"]').removeClass('mChecked');
+				});
 
-			label.addClass('mChecked');
+				label.addClass('mChecked');
+			} else {
+				label.removeClass('mChecked');
+			}
 		}
-	};
+	}
 
 
-	body.on('updateState', '.bCustomInput, .js-customInput', updateState);
-
-	body.on( 'change', '.bCustomInput, .js-customInput', function() {
-		$(this).trigger('updateState');
+	body.on('change', '.bCustomInput, .js-customInput', function(e) {
+		updateInput($(e.currentTarget));
 	});
 
-	inputs.trigger('updateState');
+	inputs.each(function(index, input) {
+		updateInput($(input));
+	});
 }());
 $(document).ready(function(){
 	// var carturl = $('.lightboxinner .point2').attr('href')
