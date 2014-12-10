@@ -1627,6 +1627,11 @@
         $body.trigger('trackUserAction',['1_2 Имя'])
     });
 
+	$body.on('click', '.jsOrderOneClickClose', function(e){
+		e.preventDefault();
+		$(this).closest('#jsOneClickContent').trigger('close');
+	});
+
     // отслеживаем смену региона
     /*
     $body.on('click', 'a.jsChangeRegionAnalytics', function(e){

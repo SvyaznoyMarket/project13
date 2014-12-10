@@ -23,7 +23,7 @@ $f = function(
 	<div class="orderU_fldsbottom ta-c orderOneClick_cmpl">
     	<p class="orderOneClick_cmpl_t"><strong>Заявка</strong> <?= $order->getNumber() ?> <strong>оформлена!</strong></p>
     	<p style="margin-bottom: 20px;">Наш сотрудник позвонит Вам для уточнения деталей<br/> и зарегистрирует заказ.</p>
-    	<a href="" class="orderCompl_btn btnsubmit">Продолжить покупки</a>
+    	<a href="" class="orderCompl_btn btnsubmit jsOrderOneClickClose">Продолжить покупки</a>
     </div>
 </div>
 <? endforeach ?>
