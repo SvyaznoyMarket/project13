@@ -91,13 +91,16 @@ class SelectedFilter {
         switch ($property->getTypeId()) {
             case \Model\Product\Filter\Entity::TYPE_SLIDER:
             case \Model\Product\Filter\Entity::TYPE_NUMBER:
-                if (empty($value['from']) && empty($value['to'])) {
+                $from = isset($value['from']) ? $value['from'] : '';
+                $to = isset($value['to']) ? $value['to'] : '';
+                
+                if ($from == '' && $to == '') {
                     continue;
                 }
 
-                if (!empty($value['from'])) { // SITE-4114 if (isset($value['from']) && !($isEqualNumeric($value['from'], $filter->getMin()))) {
+                if ($from != '') { // SITE-4114 if (isset($from) && !($isEqualNumeric($from, $filter->getMin()))) {
                     $links[] = [
-                        'name' => $isPrice ? sprintf('от %sр', $helper->formatPrice($value['from'])) : sprintf('от %s', round($value['from'], 1)),
+                        'name' => $isPrice ? sprintf('от %sр', $helper->formatPrice($from)) : sprintf('от %s', round($from, 1)),
                         'url'  => $helper->replacedUrl([
                             \View\Name::productCategoryFilter($property, 'from') => null,
                             'ajax'     => null,
@@ -106,9 +109,9 @@ class SelectedFilter {
                     ];
                 }
 
-                if (!empty($value['to'])) { // SITE-4114 if (isset($value['to']) && !($isEqualNumeric($value['to'], $filter->getMax()))) {
+                if ($to != '') { // SITE-4114 if (isset($to) && !($isEqualNumeric($to, $filter->getMax()))) {
                     $links[] = [
-                        'name' => $isPrice ? sprintf('до %sр', $helper->formatPrice($value['to'])) : sprintf('до %s', round($value['to'], 1)),
+                        'name' => $isPrice ? sprintf('до %sр', $helper->formatPrice($to)) : sprintf('до %s', round($to, 1)),
                         'url'  => $helper->replacedUrl([
                             \View\Name::productCategoryFilter($property, 'to') => null,
                             'ajax'     => null,
