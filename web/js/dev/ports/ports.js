@@ -294,6 +294,24 @@ window.ANALYTICS = {
 		})();
 	},
 
+	// финальная страница оформления заказа
+	sociomanticOrderCompleteJS: function() {
+		var basket = {products: [], transaction: '', amount: 0.0, currency: 'RUB'};
+		// пройдем по заказам
+		$.each($('#jsOrder').data('value'), function(i,order){
+			// пройдем по продуктам
+			$.each(order.products, function(ii,pr) {
+				basket.products.push({identifier: pr.id, amount: pr.price, currency: 'RUB', quantity: pr.quantity})
+			});
+			// если несколько заказов, то пишем их через дефис
+			basket.transaction += i == 0 ? order.number_erp : ' - ' + order.number_erp;
+			// если несколько заказов, то суммируем сумму
+			basket.amount += parseInt(order.sum, 10);
+		});
+		window.basket = basket;
+		$LAB.script('//eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru');
+	},
+
 	smanticPageJS: function() {
 		(function(){
 			console.log('smanticPageJS');
