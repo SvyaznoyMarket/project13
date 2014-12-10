@@ -371,20 +371,13 @@
 		/**
 		 * Изменение параметров фильтра
 		 */
-		changeFilterHandler: function( e, needUpdate ) {
+		changeFilterHandler: function( e ) {
 			console.info('change filter');
 			console.log(e);
-			console.log(needUpdate);
 
 			var sendUpdate = function sendUpdate() {
 				filterBlock.trigger('submit');
 			};
-
-			if ( typeof e === 'object' && e.isTrigger && !needUpdate ) {
-				console.warn('it\'s trigger event!');
-
-				return;
-			}
 
 			console.info('need update from server...');
 
@@ -427,11 +420,7 @@
 				});
 			}
 
-			if ( e && e.isTrigger ) {
-				console.warn('it\'s trigger');
-			}
-
-			else if ( typeof e === 'object' && catalog.enableHistoryAPI ) {
+			if ( catalog.enableHistoryAPI ) {
 				console.warn('it\'s true event and HistoryAPI enable');
 
 				$.scrollTo(filterBlock.find('.js-category-filter-selected'), 500);
@@ -589,8 +578,8 @@
 					console.log('change slider');
 
 					if ( e.originalEvent ) {
-						sliderFromInput.trigger('change', [true]);
-						sliderToInput.trigger('change', [true]);
+						sliderFromInput.trigger('change');
+						sliderToInput.trigger('change');
 					}
 				}
 			});
