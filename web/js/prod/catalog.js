@@ -1701,6 +1701,27 @@ $(function() {
 		});
 	})();
 
+
+	// Корректировка введённого значения в числовое поле
+	(function() {
+		var correctNumber = function(e) {
+			var
+				$input = $(e.currentTarget),
+				val = parseFloat(($input.val() + '').replace(/[^\d\.\,]/g, '').replace(',', '.'));
+
+			if (isNaN(val)) {
+				val = '';
+			} else if (val % 1 != 0) {
+				val = Math.floor(val * 10) / 10;
+			}
+
+			$input.val(val);
+		};
+
+		$('.js-category-v2-filter-element-number-from').on('change', correctNumber);
+		$('.js-category-v2-filter-element-number-to').on('change', correctNumber);
+	})();
+
 	// Placeholder'ы для IE9
 	$('.js-category-v2-filter-element-number input[type="text"]').placeholder();
 });
