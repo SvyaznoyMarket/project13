@@ -260,8 +260,8 @@ class User {
     public function getRegionId() {
         $cookieName = \App::config()->region['cookieName'];
 
-        if (\App::request()->cookies->has($cookieName)) {
-            return (int)\App::request()->cookies->get($cookieName);
+        if ($cookieValue = \App::request()->cookies->has($cookieName)) {
+            return (int)$cookieValue ?: \App::config()->region['defaultId'];
         } else {
             return \App::config()->region['defaultId'];
         }
