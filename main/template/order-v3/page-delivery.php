@@ -173,7 +173,6 @@ return function(
 
             <!-- дата доставки -->
             <div class="orderCol_delivrIn clearfix">
-                <!--<div class="orderCol_date">15 сентября 2014, воскресенье</div>-->
                 <? if ($order->delivery->date): ?>
                     <div class="orderCol_date" data-content="#id-order-changeDate-content-<?= $order->id ?>"><?= mb_strtolower(\Util\Date::strftimeRu('%e %B2 %G, %A', $order->delivery->date->format('U'))) ?></div>
                 <? endif ?>
