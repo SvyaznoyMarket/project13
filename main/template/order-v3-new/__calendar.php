@@ -25,7 +25,7 @@ return function(
 
         <? if (\App::request()->cookies->get('enter_order_v3_wanna') != '1') : ?>
 
-        <button class="celedr_btn btn2 jsWanna">Хочу быстрее!</button>
+<!--        <button class="celedr_btn btn2 jsWanna">Хочу быстрее!</button>-->
 
         <? endif; ?>
 
