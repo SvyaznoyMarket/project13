@@ -145,9 +145,9 @@ try {
         $response = (new \Controller\MobileRedirectAction())->execute($request);
     }
 
-    // проверка редиректа из cms
+    // проверка редиректа из scms
     if (!$response instanceof \Http\Response && \App::config()->redirect301['enabled']) {
-        $response = (new \Controller\RedirectAction())->execute($request);
+        $response = (new \Controller\PreAction())->execute($request);
     }
 
     // если предыдущие контроллеры не вернули Response, ...

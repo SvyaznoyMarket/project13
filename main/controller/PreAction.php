@@ -2,8 +2,10 @@
 
 namespace Controller;
 
-class RedirectAction {
+class PreAction {
     /**
+     * Запрашивает редирект и АБ-тесты
+     *
      * @param \Http\Request $request
      * @throws \Exception\NotFoundException
      * @return \Http\Response|null
