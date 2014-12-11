@@ -1577,7 +1577,6 @@
 
 		changeRegionAnalytics = function changeRegionAnalytics( regionName ) {
 			if ( typeof _gaq !== 'undefined' ) {
-				_gaq.push(['_setCustomVar', 1, 'city', regionName, 2]);
 				_gaq.push(['_trackEvent', 'citySelector', 'selected', regionName]);
 			}
 
