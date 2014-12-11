@@ -2834,7 +2834,7 @@ img[height="0"] {
     right: 5px;
   }
   .slidesbnnr_thmbs_i {
-    margin: 0 0 3px;
+    margin: 0 0 6px;
     background: #ffffff;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -2846,7 +2846,6 @@ img[height="0"] {
     width: 83px;
     height: 53px;
     cursor: pointer;
-    border: 1px solid transparent;
     -moz-opacity: 0.6;
     -khtml-opacity: 0.6;
     -webkit-opacity: 0.6;
@@ -2856,13 +2855,12 @@ img[height="0"] {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    -webkit-transition: all 0.3s ease-out;
-    -moz-transition: all 0.3s ease-out;
-    transition: all 0.3s ease-out;
   }
   .slidesbnnr_thmbs_img-act,
   .slidesbnnr_thmbs_img:hover {
-    border-color: #ffffff;
+    border: 1px solid #ffffff;
+    width: 81px;
+    height: 51px;
     -moz-opacity: 1;
     -khtml-opacity: 1;
     -webkit-opacity: 1;

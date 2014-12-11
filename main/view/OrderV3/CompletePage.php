@@ -99,6 +99,8 @@ class CompletePage extends Layout {
         // ActionPay
         $html .= $this->tryRender('partner-counter/_actionpay', ['routeName' => 'order.complete'] );
 
+        if (\App::partner()->getName() == 'sociomantic') $html .= '<div id="sociomanticOrderCompleteJS" class="jsanalytics" ></div>';
+
         return $html;
     }
 

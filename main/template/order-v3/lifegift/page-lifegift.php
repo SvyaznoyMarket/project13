@@ -85,7 +85,7 @@ return function(
                             <img class="customLabel_img" src="/styles/order/img/icon_visa.png" alt="">
                             <img class="customLabel_img" src="/styles/order/img/icon_mc.png" alt="">
                         </label>
-                        <p class="onpay_lst_desc">Visa, MasterCard, Maestro, Diners Club, JCB.</p>
+                        <p class="onpay_lst_desc">Visa, MasterCard</p>
                     </li>
 
                     <li class="onpay_lst_i">

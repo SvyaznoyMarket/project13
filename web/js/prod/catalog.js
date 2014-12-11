@@ -461,12 +461,6 @@
 				});
 			}
 
-			if ( catalog.enableHistoryAPI ) {
-				console.warn('it\'s true event and HistoryAPI enable');
-
-				$.scrollTo(filterBlock.find('.js-category-filter-selected'), 500);
-			}
-
 			return false;
 		},
 
@@ -909,6 +903,8 @@
 
 	// Нажатие на кнопку "Подобрать"
 	$('.js-category-v1-filter-submit').click(function() {
+		$.scrollTo(filterBlock.find('.js-category-filter-selected'), 500);
+
 		body.trigger('trackGoogleEvent', {
 			category: 'filter_old',
 			action: 'find',
