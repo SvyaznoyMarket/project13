@@ -89,7 +89,7 @@
 		historyUrl = '',
 		kladr = '',
 		directCreditUrl = 'http://direct-credit.ru/widget/api_script_utf.js',
-        tealeafUrl = pageConfig.tealeaf ? 'tealeaf.js' : null,
+        tealeafUrl = '',
 
 		debug = false,
 		templateType = document.body.getAttribute('data-template') || '',
@@ -244,6 +244,7 @@
 	mustacheUrl = ( debug ) ? '/js/vendor/mustache.js' : '/js/prod/mustache.min.js';
 	historyUrl = ( debug ) ? '/js/vendor/history.js' : '/js/prod/history.min.js';
 	kladr = ( debug ) ? '/js/vendor/jquery.kladr.js' : '/js/prod/jquery.kladr.min.js';
+	tealeafUrl = ( debug ) ? '/js/prod/tealeaf.js' : '/js/prod/tealeaf.min.js';
 
 	/**
 	 * Загрузка скриптов по шаблону
@@ -256,7 +257,6 @@
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
-                    .script( getWithVersion(tealeafUrl) )
 					.wait()
 					.script( getWithVersion('common.js') )
                     .wait()
@@ -271,7 +271,6 @@
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
-                    .script( getWithVersion(tealeafUrl) )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('main.js') )
@@ -293,7 +292,6 @@
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
-                    .script( getWithVersion(tealeafUrl) )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.wait()
@@ -316,7 +314,6 @@
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
-                    .script( getWithVersion(tealeafUrl) )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.wait()
@@ -334,7 +331,6 @@
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
-                    .script( getWithVersion(tealeafUrl) )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('infopage.js') )
@@ -353,7 +349,6 @@
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
-                    .script( getWithVersion(tealeafUrl) )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('infopage.js') )
@@ -375,7 +370,6 @@
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
-                    .script( getWithVersion(tealeafUrl) )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.wait()
@@ -396,7 +390,6 @@
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
-                    .script( getWithVersion(tealeafUrl) )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.wait()
@@ -416,7 +409,6 @@
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
-                    .script( getWithVersion(tealeafUrl) )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('lk.js') )
@@ -438,7 +430,6 @@
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.script( loadDebugPanel )
-                        .script( getWithVersion(tealeafUrl) )
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('order-new.js') )
@@ -461,7 +452,6 @@
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.script( loadDebugPanel )
-                        .script( getWithVersion(tealeafUrl) )
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('order-new-v5.js') )
@@ -480,7 +470,6 @@
                         .script( mustacheUrl )
                         .script( knockoutUrl )
                         .script( loadDebugPanel )
-                        .script( getWithVersion(tealeafUrl) )
                         .wait()
                         .script( getWithVersion('common.js') )
                         .script( getWithVersion('order-v3.js') )
@@ -497,7 +486,6 @@
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.script( loadDebugPanel )
-                        .script( getWithVersion(tealeafUrl) )
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('order-v3-new.js') )
@@ -513,7 +501,6 @@
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.script( loadDebugPanel )
-                        .script( getWithVersion(tealeafUrl) )
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('order-v3-lifegift.js') )
@@ -529,7 +516,6 @@
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
-                    .script( getWithVersion(tealeafUrl) )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('order.js') )
@@ -549,7 +535,6 @@
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
-                    .script( getWithVersion(tealeafUrl))
 					.wait()
 					.script( getWithVersion('common.js') )
                     .script( getWithVersion('infopage.js') )
@@ -574,7 +559,6 @@
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.script( loadDebugPanel )
-                        .script( getWithVersion(tealeafUrl) )
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('product.js') )
@@ -596,7 +580,6 @@
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
-                    .script( getWithVersion(tealeafUrl) )
 					.wait()
 					.script( getWithVersion('common.js') )
 					.wait()
@@ -615,7 +598,6 @@
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.script( loadDebugPanel )
-                        .script( getWithVersion(tealeafUrl) )
 						.wait()
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('shop.js') )
@@ -635,7 +617,6 @@
                     .script( mustacheUrl )
                     .script( knockoutUrl )
                     .script( loadDebugPanel )
-                    .script( getWithVersion(tealeafUrl) )
                     .wait()
                     .script( getWithVersion('common.js') )
                     .script( getWithVersion('infopage.js') )
@@ -655,7 +636,6 @@
                     .script( mustacheUrl )
                     .script( knockoutUrl )
                     .script( loadDebugPanel )
-                    .script( getWithVersion(tealeafUrl) )
                     .wait()
                     .script( getWithVersion('common.js') )
                     .script( getWithVersion('product.js') )
@@ -668,6 +648,7 @@
 	if ( loadScripts.hasOwnProperty(templateType) ) {
 		console.log('Загрузка скриптов. Шаблон %s', templateType);
 		loadScripts[templateType]();
+		if (pageConfig.tealeaf === true) $LAB.script( getWithVersion('tealeaf.js') );
 	}
 	else {
 		console.log('Шаблон %s не найден. Загрузка стандартного набора скриптов', templateType);

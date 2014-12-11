@@ -14,7 +14,7 @@
 	 */
 	var showPackageSetPopup = function showPackageSetPopup() {
 			packageSetWindow.lightbox_me({
-				autofocus: true,
+				autofocus: true
 			});
 		};
 

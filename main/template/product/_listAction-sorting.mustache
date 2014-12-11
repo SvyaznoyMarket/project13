@@ -1,9 +1,9 @@
 <!-- Сортировка товаров по параметрам -->
-<ul class="bSortingList mSorting">
+<ul class="bSortingList mSorting js-category-sorting">
     <li class="bSortingList__eItem mTitle">Сортировать</li>
 
     {{#links}}
-        <li class="bSortingList__eItem mSortItem{{#active}} mActive{{/active}}">
+        <li class="bSortingList__eItem mSortItem{{#active}} mActive js-category-sorting-activeItem{{/active}} js-category-sorting-item">
             <a class="bSortingList__eLink jsSorting" data-sort="{{datasort}}" href="{{url}}">{{&title}}</a>
         </li>
     {{/links}}

@@ -1,0 +1,24 @@
+<ul class="bCatalogRoot clearfix">
+    {{!
+        <li class="bCatalogRoot__eItem mBannerItem" style="width: 0px;"><-div class="adfoxWrapper" id="adfox215"></div></li>
+        место для баннеры 460х260, при этом родительский элемент имеет ширину 240
+    }}
+
+    {{#links}}
+        <li class="bCatalogRoot__eItem">
+            <a class="bCatalogRoot__eItemLink" href="{{url}}" {{#css.link}}style="{{css.link}}"{{/css.link}} title="{{name}} - {{category.name}}">
+                <div class="bCatalogRoot__eImgLink">
+                    <img class="bCatalogRoot__eImg" src="{{image}}" alt="{{name}} - {{category.name}}"/>
+                </div>
+
+                <div class="bCatalogRoot__eNameLink">
+                    {{name}}
+                </div>
+
+                <div class="bCatalogRoot__eCount" {{#css.name}}style="{{css.name}}"{{/css.name}}>
+                    {{totalText}}
+                </div>
+            </a>
+        </li>
+    {{/links}}
+</ul>

@@ -1,0 +1,52 @@
+{{#brandsCount}}
+    <div class="fltrBtn fltrBtn-mb10">
+        <div class="fltrBtn_hd">
+            <div class="fltrBtn_tggl js-category-v2-root-brands-title  {{#selectedOtherBrandsCount}}opn{{/selectedOtherBrandsCount}}"><span class="fltrBtn_tggl_tx">Популярные бренды</span></div>
+
+            <div class="fltrBtn_hd_r js-category-v2-root-brands-selectedBrandsWrapper">
+                {{>product-category/v2/root/_selectedBrands}}
+            </div>
+        </div>
+
+        <div class="fltrBtn_kit clearfix fltrBtn_kit-ovrflw">
+            {{#mainBrands}}
+                <div class="fltrBtn_i">
+                    <a href="{{url}}" class="fltrBtn_btn {{#active}}act{{/active}} js-category-v2-root-brands-link" data-param-name="{{paramName}}" data-param-value="{{paramValue}}">
+                        {{#imageUrl}}
+                            <img class="fltrBtn_btn_img" src="{{imageUrl}}" alt="{{name}}" />
+                        {{/imageUrl}}
+
+                        {{^imageUrl}}
+                            {{name}}
+                        {{/imageUrl}}
+
+                        <i class="fltrBtn_btn_clsr btn-closer1"></i>
+                    </a>
+                </div>
+            {{/mainBrands}}
+
+            {{#otherBrandsCount}}
+                <div class="fltrBtn_btn fltrBtn_btn-btn js-category-v2-root-brands-otherOpener" {{#selectedOtherBrandsCount}}style="display: none;"{{/selectedOtherBrandsCount}}><span class="fltrBtn_btn_tx">{{showOtherBrandsText}}</span></div>
+
+                <div class="js-category-v2-root-brands-other" {{^selectedOtherBrandsCount}}style="display: none;"{{/selectedOtherBrandsCount}}>
+                    {{#otherBrands}}
+                        <div class="fltrBtn_i">
+                            <a href="{{url}}" class="fltrBtn_btn {{#active}}fltrBtn_icon-act{{/active}} js-category-v2-root-brands-link" data-param-name="{{paramName}}" data-param-value="{{paramValue}}">
+                                {{#imageUrl}}
+                                    <img class="fltrBtn_btn_img" src="{{imageUrl}}" alt="{{name}}" />
+                                    <i class="fltrBtn_btn_clsr btn-closer1"></i>
+                                {{/imageUrl}}
+
+                                {{^imageUrl}}
+                                    {{name}}
+                                    <i class="fltrBtn_btn_clsr btn-closer1"></i>
+                                {{/imageUrl}}
+                            </a>
+                        </div>
+                    {{/otherBrands}}
+                    <div class="clearfix"></div>
+                </div>
+            {{/otherBrandsCount}}
+        </div>
+    </div>
+{{/brandsCount}}

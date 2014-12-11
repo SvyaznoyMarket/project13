@@ -35,56 +35,56 @@ foreach ($menu as $menu1) {
 <!-- навигация -->
 <nav class="header_b">
     <ul class="navsite">
-    <? foreach ($menu as $menu1): ?>
-    <?
-        $recommendUrl = ($menu1->id && !empty($recommendUrlsByMenuId[$menu1->id])) ? $recommendUrlsByMenuId[$menu1->id] : null;
-    ?>
-        <li class="navsite_i <?= ((bool)$menu1->children) ? 'navsite_i-child' : '' ?> <?= $lastMenu1 == $menu1 ? 'navsite_i-last': '' ?>" <? if ($recommendUrl): ?> data-recommend-url="<?= $recommendUrl ?>"<? endif ?>>
-            <? if ($menu1->char) : ?>
-                <a href="<?= $menu1->link ?>" class="navsite_lk">
-                    <div class="navsite_icon"><?= $menu1->char?></div>
-                    <span class="navsite_tx"><?= $menu1->name?></span>
-                </a>
-            <? else : ?>
-                <a href="<?= $menu1->link ?>" class="navsite_lk">
-                    <div class="navsite_imgw"><img class="navsite_img" src="<?= $menu1->image ?>" alt=""></div>
-                    <span class="navsite_tx"><?= $menu1->name?></span>
-                </a>
-            <? endif ?>
+        <? foreach ($menu as $menu1): ?>
+            <?
+            $recommendUrl = ($menu1->id && !empty($recommendUrlsByMenuId[$menu1->id])) ? $recommendUrlsByMenuId[$menu1->id] : null;
+            ?>
+            <li class="navsite_i <?= ((bool)$menu1->children) ? 'navsite_i-child' : '' ?> <?= $lastMenu1 == $menu1 ? 'navsite_i-last': '' ?>" <? if ($recommendUrl): ?> data-recommend-url="<?= $recommendUrl ?>"<? endif ?>>
+                <? if ($menu1->char) : ?>
+                    <a href="<?= $menu1->link ?>" class="navsite_lk">
+                        <div class="navsite_icon"><?= $menu1->char?></div>
+                        <span class="navsite_tx"><?= $menu1->name?></span>
+                    </a>
+                <? else : ?>
+                    <a href="<?= $menu1->link ?>" class="navsite_lk">
+                        <div class="navsite_imgw"><img class="navsite_img" src="<?= $menu1->image ?>" alt=""></div>
+                        <span class="navsite_tx"><?= $menu1->name?></span>
+                    </a>
+                <? endif ?>
 
-            <? if (!empty($menu1->children)) : ?>
+                <? if (!empty($menu1->children)) : ?>
 
-            <ul class="navsite2">
+                    <ul class="navsite2">
 
-                <? foreach ((array)$menu1->children as $menu2) : ?>
-                    <li class="navsite2_i <?= ((bool)$menu2->children) ? 'navsite2_i-child' : '' ?>">
+                        <? foreach ((array)$menu1->children as $menu2) : ?>
+                            <li class="navsite2_i <?= ((bool)$menu2->children) ? 'navsite2_i-child' : '' ?>">
 
-                        <? if ($menu2->logo) : ?>
-                            <a href="<?= $menu2->link ?>" class="navsite2_lk"><img src="<?= $menu2->logo ?>" alt="<?= $menu2->name ?>"/></a>
-                        <? else : ?>
-                            <a href="<?= $menu2->link ?>" class="navsite2_lk"><span class="navsite2_tx"><?= $menu2->name ?></span></a>
-                        <? endif ?>
+                                <? if ($menu2->logo) : ?>
+                                    <a href="<?= $menu2->link ?>" class="navsite2_lk"><img src="<?= $menu2->logo ?>" alt="<?= $menu2->name ?>"/></a>
+                                <? else : ?>
+                                    <a href="<?= $menu2->link ?>" class="navsite2_lk"><span class="navsite2_tx"><?= $menu2->name ?></span></a>
+                                <? endif ?>
 
-                        <? if (true || !empty($menu2->children)) : ?>
-                            <ul class="navsite3">
-                                <li class="navsite3_i navsite3_i-tl"><?= $menu2->name ?></li>
-                                <? foreach ((array)$menu2->children as $menu3) : ?>
-                                    <li class="navsite3_i"><a href="<?= $menu3->link ?>" class="navsite3_lk"><?= $menu3->name ?></a></li>
-                                <? endforeach ?>
+                                <? if (true || !empty($menu2->children)) : ?>
+                                    <ul class="navsite3">
+                                        <li class="navsite3_i navsite3_i-tl"><?= $menu2->name ?></li>
+                                        <? foreach ((array)$menu2->children as $menu3) : ?>
+                                            <li class="navsite3_i"><a href="<?= $menu3->link ?>" class="navsite3_lk"><?= $menu3->name ?></a></li>
+                                        <? endforeach ?>
 
-                                <li class="navsite3_i jsMenuRecommendation"<? if ($menu2->id): ?> data-parent-category-id="<?= $menu2->id ?>"<? endif ?>></li>
-                            </ul>
-                        <? endif ?>
+                                        <li class="navsite3_i jsMenuRecommendation"<? if ($menu2->id): ?> data-parent-category-id="<?= $menu2->id ?>"<? endif ?>></li>
+                                    </ul>
+                                <? endif ?>
 
-                    </li>
-                <? endforeach ?>
+                            </li>
+                        <? endforeach ?>
 
-            </ul>
+                    </ul>
 
-            <? endif ?>
+                <? endif ?>
 
-        </li>
-    <? endforeach ?>
+            </li>
+        <? endforeach ?>
     </ul>
 </nav>
 <!-- /навигация -->

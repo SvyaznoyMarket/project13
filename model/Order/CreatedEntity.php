@@ -23,6 +23,8 @@ class CreatedEntity {
     private $accessToken;
     /** @var string */
     public $numberErp;
+    /** @var int */
+    public $paymentId;
 
     /**
      * @param array $data
@@ -36,6 +38,7 @@ class CreatedEntity {
         if (array_key_exists('price', $data)) $this->setSum($data['price']);
         if (array_key_exists('pay_sum', $data)) $this->setPaySum($data['pay_sum']);
         if (array_key_exists('payment_url', $data)) $this->setPaymentUrl($data['payment_url']);
+        if (array_key_exists('payment_id', $data)) $this->setPaymentId($data['payment_id']);
         if (array_key_exists('delivery_date', $data) && $data['delivery_date'] && ('0000-00-00' != $data['delivery_date'])) {
             try {
                 $this->setDeliveredAt(new \DateTime($data['delivery_date']));
@@ -128,6 +131,20 @@ class CreatedEntity {
      */
     public function getPaymentUrl() {
         return $this->paymentUrl;
+    }
+
+    /**
+     * @param int $paymentId
+     */
+    public function setPaymentId($paymentId) {
+        $this->paymentId = $paymentId ? (int)$paymentId : null;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPaymentId() {
+        return $this->paymentId;
     }
 
     /**

@@ -72,8 +72,14 @@ if (!isset($paymentUrl)) $paymentUrl = null;
         <p class="font16">Дата доставки: <?= $order->getDeliveredAt()->format('d.m.Y') ?></p>
     <? endif ?>
 
-    <p class="font16">Сумма заказа: <span class="mBold"><?= $page->helper->formatPrice($order->getSum()) ?></span> <span class="rubl">p</span></p>
-    <p class="font16">Сумма для оплаты: <span class="mBold" id="paymentWithCard"><?= $page->helper->formatPrice($order->getPaySum()) ?></span> <span class="rubl">p</span></p>
+    <? if ($order->getSum()): ?>
+        <p class="font16">Сумма заказа: <span class="mBold"><?= $page->helper->formatPrice($order->getSum()) ?></span> <span class="rubl">p</span></p>
+    <? endif ?>
+
+    <? if ($order->getPaySum()): ?>
+        <p class="font16">Сумма для оплаты: <span class="mBold" id="paymentWithCard"><?= $page->helper->formatPrice($order->getPaySum()) ?></span> <span class="rubl">p</span></p>
+    <? endif ?>
+
     <? if ($paymentMethod): ?>
         <p class="font16" style="border-bottom: 1px solid #e6e6e6; margin: 0 0 30px; padding-bottom: 10px;">Способ оплаты: <span class="mBold"><?= $paymentMethod->getName() ?></span></p>
     <? endif ?>

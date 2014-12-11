@@ -42,14 +42,15 @@ $config = array_merge([
         ],
     ],
     'routes' => [
-        'cart'             => ['pattern' => $routerRules['cart']['pattern']],
-        'cart.product.set' => ['pattern' => $routerRules['cart.product.set']['pattern']],
+        'cart'                      => ['pattern' => $routerRules['cart']['pattern']],
+        'cart.product.set'          => ['pattern' => $routerRules['cart.product.set']['pattern']],
         'cart.oneClick.product.set' => ['pattern' => $routerRules['cart.oneClick.product.set']['pattern']],
-        'compare.add'      => ['pattern' => $routerRules['compare.add']['pattern']],
-        'compare.delete'   => ['pattern' => $routerRules['compare.delete']['pattern']],
+        'compare.add'               => ['pattern' => $routerRules['compare.add']['pattern']],
+        'compare.delete'            => ['pattern' => $routerRules['compare.delete']['pattern']],
         'orderV3OneClick.delivery'  => ['pattern' => $routerRules['orderV3OneClick.delivery']['pattern']],
+        'product.category'          => ['pattern' => $routerRules['product.category']['pattern']],
     ],
-    'selfDeliveryTest'    => \Controller\Delivery\Action::isPaidSelfDelivery(), // удалять осторожно, поломается JS
+    'selfDeliveryTest'    => \Session\AbTest\AbTest::isSelfPaidDelivery(), // удалять осторожно, поломается JS
     'selfDeliveryLimit'    => $appConfig->self_delivery['limit'] // стоимость платного самовывоза, удалять осторожно, поломается JS
 ], isset($config) ? (array)$config : []);
 ?>

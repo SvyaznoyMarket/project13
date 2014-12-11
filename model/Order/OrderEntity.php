@@ -202,7 +202,7 @@ class OrderEntity {
 
         $this->type_id = self::TYPE_ORDER;
 
-        $this->geo_id = \App::user()->getRegionId();
+        $this->geo_id = \App::user()->getRegion()->getId();
         if ($this->geo_id === null) throw new \Exception('Невозможно определить регион пользователя');
 
         if (isset($arr['order']['payment_method_id']) && $arr['order']['payment_method_id'] !== null) {
@@ -262,7 +262,7 @@ class OrderEntity {
         }
 
         // идиотский АБ-тест TODO remove
-        if (\Controller\Delivery\Action::isPaidSelfDelivery() && $arr['total_cost'] < \App::config()->self_delivery['limit'] && $this->delivery_type_id == 3) {
+        if (\Session\AbTest\AbTest::isSelfPaidDelivery() && $arr['total_cost'] < \App::config()->self_delivery['limit'] && $this->delivery_type_id == 3) {
             $this->delivery_price = 100;
         }
 

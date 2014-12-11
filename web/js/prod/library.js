@@ -3869,9 +3869,12 @@ if ( !Array.prototype.indexOf ) {
 	 * @returns 	{string}	{*}
 	 */
 	utils.getURLParam = function getURLParam(paramName, url) {
-		return decodeURI(
-			( RegExp( '[\\?&]' + paramName + '=([^&#]*)' ).exec( url ) || [, null] )[1]
-		);
+		var result = new RegExp('[\\?&]' + utils.escapeRegexp(encodeURIComponent(paramName)) + '=([^&#]*)').exec(url);
+		if (result) {
+			return decodeURIComponent(result[1]);
+		}
+
+		return null;
 	};
 
 	/**
@@ -3888,14 +3891,14 @@ if ( !Array.prototype.indexOf ) {
 		if (regexp.exec(url) === null) {
 			if (url.indexOf('?') == -1) {
 				url += '?';
-			} else {
+			} else if (url.indexOf('?') < url.length - 1) {
 				url += '&';
 			}
 
 			url += encodeURIComponent(paramName) + '=' + encodeURIComponent(paramValue);
 			return url;
 		} else if (paramValue === null) {
-			return url.replace(regexp, '$1').replace(/\?\&/, '?').replace(/[\?\&]$/, '');
+			return url.replace(regexp, '$1').replace(/\?\&/, '?').replace(/\&\&/, '&').replace(/[\?\&]$/, '');
 		} else {
 			return url.replace(regexp, '$1$2' + encodeURIComponent(paramValue));
 		}

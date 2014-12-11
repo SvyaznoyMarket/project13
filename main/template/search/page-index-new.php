@@ -67,7 +67,7 @@
         'bannerPlaceholder'      => !empty($bannerPlaceholder) ? $bannerPlaceholder : [],
     ]) // листинг ?>
 
-    <div class="bSortingLine mPagerBottom clearfix">
+    <div class="bSortingLine mPagerBottom clearfix js-category-sortingAndPagination">
         <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
     </div>
 

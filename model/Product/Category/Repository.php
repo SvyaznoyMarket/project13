@@ -236,7 +236,7 @@ class Repository {
     public function getRootCollection() {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $client = clone $this->client;
+        $client = clone \App::searchClient();
         $entityClass = $this->entityClass;
 
         // TODO: добавить регион
@@ -274,7 +274,7 @@ class Repository {
             $params['region_id'] = $region->getId();
         }
 
-        $this->client->addQuery('category/tree', $params, [], $callback);
+        \App::searchClient()->addQuery('category/tree', $params, [], $callback);
     }
 
     /**
@@ -285,7 +285,7 @@ class Repository {
     public function getTreeCollection(\Model\Region\Entity $region = null, $maxLevel = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $client = clone $this->client;
+        $client = clone \App::searchClient();
         $entityClass = $this->entityClass;
 
         $params = [
@@ -305,7 +305,7 @@ class Repository {
             }
         });
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['long'], 2);
+        $client->execute(\App::config()->searchClient['retryTimeout']['long'], 2);
 
         return $collection;
     }
@@ -331,7 +331,7 @@ class Repository {
             $params['region_id'] = $region->getId();
         }
 
-        $this->client->addQuery('category/tree', $params, [], $done, $fail);
+        \App::searchClient()->addQuery('category/tree', $params, [], $done, $fail);
     }
 
     /**
@@ -358,14 +358,14 @@ class Repository {
         // SITE-3524 Поддержка неактивных категорий для отладки страниц на preview.enter.ru
         if (\App::config()->preview === true) $params = array_merge($params, ['load_inactive' => 1, 'load_empty' => 1]);
 
-        $this->client->addQuery('category/tree', $params, [], $done, $fail);
+        \App::searchClient()->addQuery('category/tree', $params, [], $done, $fail);
     }
 
     /**
      * @param Entity               $category
      * @param \Model\Region\Entity $region
      */
-    public function prepareEntityBranch(Entity $category, \Model\Region\Entity $region = null) {
+    public function prepareEntityBranch(Entity $category, \Model\Region\Entity $region = null, array $filters = []) {
         $params = [
             'root_id'         => $category->getHasChild() ? $category->getId() : $category->getParentId(),
             'max_level'       => 5,
@@ -375,10 +375,14 @@ class Repository {
             $params['region_id'] = $region->getId();
         }
 
+        if (!empty($filters)) {
+            $params['filters'] = $filters;
+        }
+
         // SITE-3524 Поддержка неактивных категорий для отладки страниц на preview.enter.ru
         if (\App::config()->preview === true) $params = array_merge($params, ['load_inactive' => 1, 'load_empty' => 1]);
 
-        $this->client->addQuery('category/tree', $params, [], function($data) use (&$category, &$region) {
+        \App::searchClient()->addQuery('category/tree', $params, [], function($data) use (&$category, &$region) {
             /**
              * Загрузка дочерних и родительских узлов категории
              *

@@ -68,6 +68,24 @@ $c->corePrivate['retryTimeout'] = [
     'huge'    => 1.5,
     'forever' => 0,
 ];
+
+$c->searchClient['url']          = 'http://search.enter.ru/';
+$c->searchClient['client_id']    = 'site';
+$c->searchClient['timeout']      = 5;
+$c->searchClient['hugeTimeout']  = 90;
+$c->searchClient['retryCount']   = 2;
+$c->searchClient['retryTimeout'] = [
+    'default' => 0.5,
+    'tiny'    => 0.05,
+    'short'   => 0.2,
+    'medium'  => 0.5,
+    'long'    => 0.8,
+    'huge'    => 1.5,
+    'forever' => 0,
+];
+$c->searchClient['chunk_size']   = 50;
+$c->searchClient['debug']        = false;
+
 $c->oauthEnabled['vkontakte'] = true;
 $c->oauthEnabled['facebook'] = true;
 
@@ -434,6 +452,7 @@ $c->order['prepayment'] = [
 ];
 $c->order['splitSessionKey'] = 'order_split';
 $c->order['oneClickSplitSessionKey'] = $c->order['splitSessionKey'] . '-1click';
+$c->order['sessionInfoOnComplete'] = false; // краткая инфа о заказе
 
 $c->newDeliveryCalc = true;
 
@@ -552,18 +571,18 @@ $c->abTest = [
             ]
         ],
 
-        'order_delivery_price' => [
+        'order_delivery_price_2' => [
             'name'  => 'Платный самовывоз',
             'gaSlotNumber'        => 9,
             'enabled' => true,
             'expireDate' => '2014-12-31',
             'cases' => [
                 'delivery_self_100' => [
-                    'traffic'  => 0,
+                    'traffic'  => 50,
                     'name'     => 'Платный самовывоз',
                 ],
                 'delivery_self_0' => [
-                    'traffic'  => 100,
+                    'traffic'  => 50,
                     'name'     => 'Бесплатный самовывоз',
                 ]
             ]
@@ -645,7 +664,7 @@ $c->abTest = [
 
 ];
 
-$c->self_delivery['enabled'] = false;
+$c->self_delivery['enabled'] = true;
 $c->self_delivery['limit'] = 500;
 $c->self_delivery['regions'] = [119623, 93746, 14974];
 
