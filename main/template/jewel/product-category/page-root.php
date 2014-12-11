@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page     \View\ProductCategory\RootPage
+ * @var $page     \View\Jewel\ProductCategory\RootPage
  * @var $category \Model\Product\Category\Entity
  */
 ?>

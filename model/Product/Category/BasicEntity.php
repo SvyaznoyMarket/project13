@@ -2,7 +2,11 @@
 
 namespace Model\Product\Category;
 
+use Session\AbTest\ABHelperTrait;
+
 class BasicEntity {
+    use ABHelperTrait;
+
     const PRODUCT_VIEW_COMPACT = 'compact';
     const PRODUCT_VIEW_LIGHT_WITH_BOTTOM_DESCRIPTION = 'light_with_bottom_description';
     const PRODUCT_VIEW_LIGHT_WITH_HOVER_BOTTOM_DESCRIPTION = 'light_with_hover_bottom_description';
@@ -262,5 +266,30 @@ class BasicEntity {
         } else {
             return null;
         }
+    }
+
+    public function isV2Root() {
+        return ($this->isNewMainPage() && '616e6afd-fd4d-4ff4-9fe1-8f78236d9be6' === $this->getUi()); // Корневая бытовой техники
+    }
+
+    public function isV2() {
+        $root = $this->getRoot();
+        if (!$root) {
+            $root = $this;
+        }
+
+        if ($this->isNewMainPage()) {
+            // Бытовая техника
+            if ($root->getUi() === '616e6afd-fd4d-4ff4-9fe1-8f78236d9be6') {
+                return true;
+            }
+
+            // Мебель
+//            if ($root->getUi() === 'f7a2f781-c776-4342-81e8-ab2ebe24c51a') {
+//                return true;
+//            }
+        }
+
+        return false;
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Model\Product\Filter;
 
+use Templating\Helper;
+
 class Entity {
     const TYPE_BOOLEAN = 1;
     const TYPE_DATE = 2;
@@ -19,6 +21,12 @@ class Entity {
     /** @var string */
     private $name;
     /** @var string */
+    public $groupUi;
+    /** @var string */
+    public $groupName;
+    /** @var int */
+    public $groupPosition;
+    /** @var string */
     private $unit;
     /** @var bool */
     private $isMultiple;
@@ -30,9 +38,15 @@ class Entity {
     private $min;
     /** @var float */
     private $max;
-    /** @var float */
+    /**
+     * @var float
+     * @deprecated
+     */
     private $minGlobal;
-    /** @var float */
+    /**
+     * @var float
+     * @deprecated
+     */
     private $maxGlobal;
     /** @var Option\Entity[] */
     private $option = [];
@@ -49,6 +63,9 @@ class Entity {
     public function __construct(array $data = []) {
         if (array_key_exists('filter_id', $data)) $this->setId($data['filter_id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
+        if (isset($data['group']['uid'])) $this->groupUi = $data['group']['uid'];
+        if (isset($data['group']['name'])) $this->groupName = $data['group']['name'];
+        if (isset($data['group']['position'])) $this->groupPosition = (int)$data['group']['position'];
         if (array_key_exists('type_id', $data)) $this->setTypeId($data['type_id']);
         if (array_key_exists('unit', $data)) $this->setUnit($data['unit']);
         if (array_key_exists('is_multiple', $data)) $this->setIsMultiple($data['is_multiple']);
@@ -200,6 +217,31 @@ class Entity {
     }
 
     /**
+     * @return Option\Entity
+     */
+    public function deleteOption($expectedOption) {
+        foreach ($this->option as $key => $option) {
+            if ($option === $expectedOption) {
+                unset($this->option[$key]);
+            }
+        }
+    }
+
+    /**
+     * @return Option\Entity
+     */
+    public function deleteLastOption() {
+        return array_pop($this->option);
+    }
+
+    /**
+     * @return Option\Entity
+     */
+    public function deleteAllOptions() {
+        $this->option = [];
+    }
+
+    /**
      * @param Option\Entity $option
      */
     public function unshiftOption(Option\Entity $option) {
@@ -287,7 +329,55 @@ class Entity {
      * @return bool
      */
     public function isPrice() {
-        return 'price' == $this->getId();
+        return 'price' === $this->getId();
+    }
+
+    public function isLabel() {
+        return 'label' === $this->getId();
+    }
+
+    public function isShop() {
+        return 'shop' === $this->getId();
+    }
+
+    /**
+     * Возвращает диапазоны цен для нового фильтра
+     * @return array
+     */
+    public function getPriceRanges() {
+        $ranges = [];
+        $min = $this->getMin();
+        $max = $this->getMax();
+        $num = $min;
+        $previousNum = 0;
+        while ($num < $max) {
+            $num += ceil(($max - $min) / 5);
+            $range = [];
+
+            if ($previousNum) {
+                $range['from'] = $previousNum + 1;
+            }
+
+            if ($num > 1000) {
+                $num = ceil($num / 100) * 100;
+            } else if ($num > 100) {
+                $num = ceil($num / 10) * 10;
+            }
+
+            if ($num < $max) {
+                $range['to'] = $num;
+            }
+
+            $previousNum = $num;
+            $ranges[] = $range;
+        }
+
+        $helper = new Helper();
+        foreach ($ranges as $key => $range) {
+            $ranges[$key]['url'] = $helper->replacedUrl(['f-price-from' => isset($range['from']) ? $range['from'] : null, 'f-price-to' => isset($range['to']) ? $range['to'] : null, 'page' => null, 'ajax' => null]);
+        }
+
+        return $ranges;
     }
 
     /**
@@ -299,6 +389,7 @@ class Entity {
 
     /**
      * @param float $maxGlobal
+     * @deprecated
      */
     public function setMaxGlobal($maxGlobal) {
         $this->maxGlobal = $maxGlobal;
@@ -306,6 +397,7 @@ class Entity {
 
     /**
      * @return float
+     * @deprecated
      */
     public function getMaxGlobal() {
         return $this->maxGlobal;
@@ -313,6 +405,7 @@ class Entity {
 
     /**
      * @param float $minGlobal
+     * @deprecated
      */
     public function setMinGlobal($minGlobal) {
         $this->minGlobal = $minGlobal;
@@ -320,6 +413,7 @@ class Entity {
 
     /**
      * @return float
+     * @deprecated
      */
     public function getMinGlobal() {
         return $this->minGlobal;

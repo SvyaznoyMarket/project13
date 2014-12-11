@@ -22,7 +22,7 @@ $f = function(
     $deliveries = $order->getDelivery();
     /** @var \Model\Order\Delivery\Entity|null $delivery */
     $delivery = reset($deliveries);
-?>
+    ?>
 
     <div class="orderCol_cnt clearfix">
         <div class="orderCol_lk">
@@ -46,10 +46,10 @@ $f = function(
             <div class="orderCol_f_r">
                 <span class="orderCol_summ">
                     <? if ($delivery->getPrice()): ?>
-                        <?= $helper->formatPrice($delivery->getPrice()) ?> <span class="rubl">p</span></span>
-                    <? else: ?>
-                        Бесплатно
-                    <? endif ?>
+                    <?= $helper->formatPrice($delivery->getPrice()) ?> <span class="rubl">p</span></span>
+                <? else: ?>
+                    Бесплатно
+                <? endif ?>
                 </span>
                 <span class="orderCol_summt">
                     <? if ('1' == $delivery->getTypeId()): ?>

@@ -28,8 +28,8 @@ $oauthEnabled = \App::config()->oauthEnabled;
                 <input type="text" class="authForm_it textfield js-phoneField" name="register[phone]" value="" placeholder="Телефон" />
 
                 <div class="authForm_sbscr">
-                    <input class="customInput customInput-defcheck jsCustomRadio" type="checkbox" name="subscribe" id="subscribe" checked="checked" />
-                    <label class="customLabel" for="subscribe">Подписаться на рассылку,<br/> получить скидку 300 рублей </label>
+                    <input class="customInput customInput-defcheck jsCustomRadio js-registerForm-subscribe" type="checkbox" name="subscribe" id="subscribe" checked="checked" />
+                    <label class="customLabel" for="subscribe">Подписаться на email-рассылку,<br/> получить скидку 300 рублей </label>
                 </div>
 
                 <input type="submit" class="authForm_is btnsubmit" name="" value="Регистрация" />
@@ -42,13 +42,13 @@ $oauthEnabled = \App::config()->oauthEnabled;
                     <ul class="authForm_socn_lst">
                         <? if ($oauthEnabled['facebook']): ?>
                             <li class="authForm_socn_i">
-                                <a class="authForm_socn_lk authForm_socn_lk-fb" href="<?= $page->url('user.login.external', ['providerName' => 'facebook' ]) ?>" >Войти через FB</a>
+                                <a class="authForm_socn_lk authForm_socn_lk-fb js-registerForm-socnetLink" href="<?= $page->url('user.login.external', ['providerName' => 'facebook' ]) ?>" >Войти через FB</a>
                             </li>
                         <? endif ?>
 
                         <? if ($oauthEnabled['vkontakte']): ?>
                             <li class="authForm_socn_i">
-                                <a class="authForm_socn_lk authForm_socn_lk-vk" href="<?= $page->url('user.login.external', ['providerName' => 'vkontakte' ]) ?>" >Войти через VK</a>
+                                <a class="authForm_socn_lk authForm_socn_lk-vk js-registerForm-socnetLink" href="<?= $page->url('user.login.external', ['providerName' => 'vkontakte' ]) ?>" >Войти через VK</a>
                             </li>
                         <? endif ?>
                     </ul>

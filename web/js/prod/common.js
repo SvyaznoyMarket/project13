@@ -1801,21 +1801,20 @@
 		body = $('body');
 	// end of vars
 
-	var updateState = function updateState() {
-		if ( !$(this).is('[type=checkbox]') && !$(this).is('[type=radio]') ) {
+	function updateInput($input) {
+		if ( !$input.is('[type=checkbox]') && !$input.is('[type=radio]') ) {
 			return;
 		}
 
-		var $self = $(this),
-			id = $self.attr('id'),
-			type = ( $self.is('[type=checkbox]') ) ? 'checkbox' : 'radio',
-			groupName = $self.attr('name') || '',
+		var id = $input.attr('id'),
+			type = ( $input.is('[type=checkbox]') ) ? 'checkbox' : 'radio',
+			groupName = $input.attr('name') || '',
 			label = $('label[for="'+id+'"]');
 		// end of vars
 
 		if ( type === 'checkbox' ) {
 
-			if ( $self.is(':checked') ) {
+			if ( $input.is(':checked') ) {
 				label.addClass('mChecked');
 			}
 			else {
@@ -1824,26 +1823,30 @@
 		}
 
 
-		if ( type === 'radio' && $self.is(':checked') ) {
-			$('input[name="'+groupName+'"]').each(function() {
-				var currElement = $(this),
-					currId = currElement.attr('id');
+		if ( type === 'radio' ) {
+			if ( $input.is(':checked') ) {
+				$('input[name="'+groupName+'"]').each(function() {
+					var currElement = $(this),
+						currId = currElement.attr('id');
 
-				$('label[for="'+currId+'"]').removeClass('mChecked');
-			});
+					$('label[for="'+currId+'"]').removeClass('mChecked');
+				});
 
-			label.addClass('mChecked');
+				label.addClass('mChecked');
+			} else {
+				label.removeClass('mChecked');
+			}
 		}
-	};
+	}
 
 
-	body.on('updateState', '.bCustomInput, .js-customInput', updateState);
-
-	body.on( 'change', '.bCustomInput, .js-customInput', function() {
-		$(this).trigger('updateState');
+	body.on('change', '.bCustomInput, .js-customInput', function(e) {
+		updateInput($(e.currentTarget));
 	});
 
-	inputs.trigger('updateState');
+	inputs.each(function(index, input) {
+		updateInput($(input));
+	});
 }());
 $(document).ready(function(){
 	// var carturl = $('.lightboxinner .point2').attr('href')
@@ -2157,10 +2160,23 @@ $(document).ready(function(){
 	};
 }());
 ;(function( ENTER ) {
+	function changeSocnetLinks(isSubscribe) {
+		$('.js-registerForm-socnetLink').each(function(index, link) {
+			var $link = $(link);
+			$link.attr('href', ENTER.utils.setURLParam('subscribe', isSubscribe ? '1' : null, $link.attr('href')));
+		});
+	}
+
+	changeSocnetLinks($('.js-registerForm-subscribe')[0].checked);
+
 	var
 		$authBlock = $('#auth-block'),
 
         init = function() {
+			$('.js-registerForm-subscribe').change(function(e) {
+				changeSocnetLinks(e.currentTarget.checked);
+			});
+
             // изменение состояния блока авторизации
             $authBlock.on('changeState', function(e, state) {
                 var
@@ -2984,69 +3000,69 @@ $(document).ready(function() {
 });
 
 $('nav').on('mouseenter', '.navsite_i', function(){
-    var
-        $el = $(this),
-        url = $el.data('recommendUrl'),
-        xhr = $el.data('recommendXhr')
-    ;
+	var
+		$el = $(this),
+		url = $el.data('recommendUrl'),
+		xhr = $el.data('recommendXhr')
+		;
 
-    if (url && !xhr) {
-        xhr = $.get(url);
-        $el.data('recommendXhr', xhr);
+	if (url && !xhr) {
+		xhr = $.get(url);
+		$el.data('recommendXhr', xhr);
 
-        xhr.done(function(response) {
-            if (!response.productBlocks) return;
+		xhr.done(function(response) {
+			if (!response.productBlocks) return;
 
-            var $containers = $el.find('.jsMenuRecommendation');
+			var $containers = $el.find('.jsMenuRecommendation');
 
-            $.each(response.productBlocks, function(i, block) {
-                try {
-                    if (!block.categoryId) return;
+			$.each(response.productBlocks, function(i, block) {
+				try {
+					if (!block.categoryId) return;
 
-                    var $container = $containers.filter('[data-parent-category-id="' + block.categoryId + '"]');
-                    $container.html(block.content);
-                } catch (e) { console.error(e); }
-            });
-        });
+					var $container = $containers.filter('[data-parent-category-id="' + block.categoryId + '"]');
+					$container.html(block.content);
+				} catch (e) { console.error(e); }
+			});
+		});
 
-        xhr.fail(function() {
-            $el.data('recommendXhr', false);
-            //$el.data('recommendXhr', true);
-        });
-    }
+		xhr.fail(function() {
+			$el.data('recommendXhr', false);
+			//$el.data('recommendXhr', true);
+		});
+	}
 });
 
 // аналитика
 $('body').on('click', '.jsRecommendedItemInMenu', function(event) {
-    console.log('jsRecommendedItemInMenu');
+	console.log('jsRecommendedItemInMenu');
 
-    event.stopPropagation();
+	event.stopPropagation();
 
-    try {
-        var
-            $el = $(this),
-            link = $el.attr('href'),
-            sender = $el.data('sender')
-        ;
+	try {
+		var
+			$el = $(this),
+			link = $el.attr('href'),
+			sender = $el.data('sender')
+			;
 
-        body.trigger('TLT_processDOMEvent', [event]);
+		body.trigger('TLT_processDOMEvent', [event]);
 
-        $('body').trigger('trackGoogleEvent', {
-            category: 'RR_взаимодействие',
-            action: 'Перешел на карточку товара',
-            label: sender ? sender.position : null,
-            hitCallback: function(){
-                console.log({link: link});
+		$('body').trigger('trackGoogleEvent', {
+			category: 'RR_взаимодействие',
+			action: 'Перешел на карточку товара',
+			label: sender ? sender.position : null,
+			hitCallback: function(){
+				console.log({link: link});
 
-                if (link) {
-                    setTimeout(function() { window.location.href = link; }, 90);
-                }
-            }
-        });
+				if (link) {
+					setTimeout(function() { window.location.href = link; }, 90);
+				}
+			}
+		});
 
-        $el.trigger('TL_recommendation_clicked');
+		$el.trigger('TL_recommendation_clicked');
 
-    } catch (e) { console.error(e); }
+	} catch (e) { console.error(e); }
 });
 
 ;(function($){	
@@ -4971,7 +4987,7 @@ $('body').on('click', '.jsRecommendedItemInMenu', function(event) {
 
 			console.info('Получены рекомендации "С этим товаром покупают" от RetailRocket');
 
-			upsaleWrap.find('.bGoodsSlider').remove();
+			upsaleWrap.find('.js-slider').remove();
 
 			slider = $(response.content)[0];
 			upsaleWrap.append(slider);

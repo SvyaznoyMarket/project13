@@ -22,7 +22,7 @@ return function(
 
         $link = [
             'name'   => $child->getName(),
-            'url'    => $child->getLink(),
+            'url'    => $child->getLink() . ($category->isV2() && \App::request()->getQueryString() ? '?' . \App::request()->getQueryString() : ''),
             'image'  => $child->getImageUrl($image_size),
             'active' => false,
             'css'    => null,
@@ -49,9 +49,17 @@ return function(
 
         $links[] = $link;
     }
+
+    if ($category->isV2()) {
+        $templatePath = 'product-category/v2/_children';
+    } else if ('furniture' === $category_class) {
+        $templatePath = 'furniture/product-category/_listInFilter';
+    } else {
+        $templatePath = 'product-category/_listInFilter';
+    }
 ?>
 
-    <?= $helper->renderWithMustache(('furniture' === $category_class ? 'furniture/' : '') . 'product-category/_listInFilter', [
+    <?= $helper->renderWithMustache($templatePath, [
         'links' => $links,
         'promoStyle' => !empty($promoStyle) ? $promoStyle : '',
     ]) ?>

@@ -22,9 +22,10 @@ class LeafPage extends Layout {
     }
 
     public function slotUserbarContentData() {
+        $category = $this->getParam('category');
         $productFilter = $this->getParam('productFilter');
         return [
-            'target' => $productFilter instanceof \Model\Product\Filter && $productFilter->hasAlwaysShowFilters() ? '.js-listing' : '#productCatalog-filter-form',
+            'target' => $productFilter instanceof \Model\Product\Filter && $productFilter->hasAlwaysShowFilters() || $category instanceof \Model\Product\Category\Entity && $category->isV2() ? '.js-listing' : '#productCatalog-filter-form',
             'filterTarget' => '#productCatalog-filter-form',
         ];
     }

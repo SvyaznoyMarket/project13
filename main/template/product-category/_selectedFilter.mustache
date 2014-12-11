@@ -5,17 +5,16 @@
             <li class="bFilterCheckedParams__eItem mTitle">{{name}}</li>
 
             {{#links}}
-                {{^last}}
-                    <li class="bFilterCheckedParams__eItem mParams">
-                        <a class="bDelete jsHistoryLink" href="{{url}}">&#215;</a><span class="bParamsName">{{&name}}</span>
-                    </li>
-                {{/last}}
-                {{#last}}
-                    <li class="bFilterCheckedParams__eItem mParams mClearAll">
-                        <a class="jsHistoryLink" href="{{url}}"><span class="bDelete">&#215;</span><strong class="bParamsName">Очистить все</strong></a>
-                    </li>
-                {{/last}}
+                <li class="bFilterCheckedParams__eItem mParams">
+                    <a class="bDelete jsHistoryLink" href="{{url}}">&#215;</a><span class="bParamsName">{{&name}}</span>
+                </li>
             {{/links}}
+
+            {{#last}}
+                <li class="bFilterCheckedParams__eItem mParams mClearAll">
+                    <a class="jsHistoryLink" href="{{baseUrl}}"><span class="bDelete">&#215;</span><strong class="bParamsName">Очистить все</strong></a>
+                </li>
+            {{/last}}
         </ul>
     </div>
 {{/filters}}

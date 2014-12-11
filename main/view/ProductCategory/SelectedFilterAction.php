@@ -148,20 +148,17 @@ class SelectedFilterAction {
 
         $filterLinkData = array_values($filterLinkData);
 
-        // TODO: убрать отсюда - рисовать всегда в шаблоне
         $filterItem = end($filterLinkData);
         if (is_array($filterItem)) {
-            $filterItem['links'][] = [
-                'name' => 'Очистить все',
-                'url'  => $baseUrl,
-                'last' => true,
-            ];
+            $filterItem['last'][] = true;
             $filterLinkData[key($filterLinkData)] = $filterItem;
         }
 
         return [
+            'baseUrl' => $baseUrl,
             'filters' => $filterLinkData,
-            'values'  => $filterValueData,
+            // SITE-4825
+//            'values'  => $filterValueData,
         ];
     }
 }

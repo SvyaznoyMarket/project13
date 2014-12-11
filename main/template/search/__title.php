@@ -12,7 +12,7 @@ return function(
     <? if ($count) { // если товары найдены ?>
 
         <? if (!$forceMean) { // если принудительный поиск не был использован ?>
-        <h1 class="bTitlePage">
+        <h1 class="bTitlePage js-pageTitle">
             Нашли <span class="orange">&quot;<?= $helper->escape($searchQuery) ?>&quot;</span>
             <? if ($category): ?>
                 в категории "<?= $category->getName() ?>"
@@ -21,7 +21,7 @@ return function(
         </h1>
 
         <? } else { // ...иначе, если принудительный поиск использован ?>
-        <h1 class="bTitlePage">
+        <h1 class="bTitlePage js-pageTitle">
             Вы искали <span class="orange">&quot;<?= $helper->escape($meanQuery) ?>&quot;</span> ?<br />
             Мы нашли <?= $count . ' ' . $helper->numberChoice($count, ['товар', 'товара', 'товаров']) ?> :)
 

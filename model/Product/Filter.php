@@ -4,6 +4,7 @@ namespace Model\Product;
 
 use \Model\Product\Category\Entity as CategoryEntity;
 use \Model\Product\Filter\Entity as FilterEntity;
+use Model\Product\Filter\Group;
 
 class Filter {
     /** @var CategoryEntity */
@@ -201,5 +202,105 @@ class Filter {
         }
 
         return false;
+    }
+
+    public function hasInListGroupedProperties() {
+        foreach ($this->filters as $property) {
+            if ($property->groupUi && $property->getIsInList()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return Group[]
+     */
+    public function getGroupedPropertiesV2() {
+        $groups = [];
+        $shopProperty = null;
+        $instoreProperty = null;
+        $additionalGroup = null;
+        foreach ($this->filters as $property) {
+            if (!$property->getIsInList()) {
+                continue;
+            } else if ($property->isPrice()) {
+            } else if ($property->isLabel()) {
+            } else if ($property->isBrand()) {
+            } else if ('instore' === $property->getId()) {
+                $instoreProperty = $property;
+            } else if ($property->isShop()) {
+                $shopProperty = $property;
+            } else if ($property->groupUi) {
+                if (isset($groups[$property->groupUi])) {
+                    $group = $groups[$property->groupUi];
+                } else {
+                    $group = new Group();
+                    $group->ui = $property->groupUi;
+                    $group->name = $property->groupName;
+                    $group->position = $property->groupPosition;
+                    $groups[$property->groupUi] = $group;
+
+                    if ('Дополнительно' === $property->groupName) {
+                        $additionalGroup = $group;
+                    }
+                }
+
+                $group->properties[] = $property;
+                if ($this->getValue($property)) {
+                    $group->hasSelectedProperties = true;
+                }
+            }
+        }
+
+        usort($groups, function(Group $a, Group $b) {
+            if ($a->position == $b->position) {
+                return 0;
+            }
+
+            return $a->position < $b->position ? -1 : 1;
+        });
+
+        if ($shopProperty) {
+            $group = new Group();
+            $group->name = $shopProperty->getName();
+            $group->properties[] = $shopProperty;
+            $group->hasSelectedProperties = (bool)$this->getValue($shopProperty);
+            array_unshift($groups, $group);
+        }
+
+        if ($instoreProperty) {
+            if (!$additionalGroup) {
+                $additionalGroup = new Group();
+                $additionalGroup->name = 'Дополнительно';
+                $groups[] = $additionalGroup;
+            }
+
+            array_unshift($additionalGroup->properties, $instoreProperty);
+        }
+
+        return $groups;
+    }
+
+    /**
+     * @return Filter\Entity[]
+     */
+    public function getUngroupedPropertiesV2() {
+        $properties = [];
+
+        foreach ($this->filters as $property) {
+            if (!$property->getIsInList()) {
+                continue;
+            } else if ($property->isPrice()) {
+                $properties[] = $property;
+            } else if ($property->isLabel()) {
+                $properties[] = $property;
+            } else if ($property->isBrand()) {
+                $properties[] = $property;
+            }
+        }
+
+        return $properties;
     }
 }

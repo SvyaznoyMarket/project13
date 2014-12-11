@@ -7,9 +7,9 @@ class Repository {
     private $client;
 
     /**
-     * @param \Core\ClientInterface $client
+     * @param \Search\Client $client
      */
-    public function __construct(\Core\ClientInterface $client) {
+    public function __construct(\Search\Client $client) {
         $this->client = $client;
     }
 

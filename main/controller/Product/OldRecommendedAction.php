@@ -146,6 +146,11 @@ class OldRecommendedAction {
             foreach ($productsCollection as $type => $item) {
                 if (!isset($ids[$type]) || !is_array($ids[$type])) continue;
                 foreach ($ids[$type] as $id) {
+                    if (
+                        !isset($productsCollection[$type])
+                        || !isset($collection[$id])
+                    ) continue;
+
                     $productsCollection[$type][] = $collection[$id];
                 }
             }

@@ -77,7 +77,7 @@ class Action {
             $queryParams['region_id'] = $region->getId();
         }
 
-        $client->addQuery('category/tree', $queryParams, [],
+        \App::searchClient()->addQuery('category/tree', $queryParams, [],
             function ($data) use (&$categories, &$tagCategoriesNumbers) {
                 foreach ($data as $catFields) {
                     $category = new \Model\Product\Category\Entity($catFields);
@@ -146,7 +146,16 @@ class Action {
             $productFilter->setCategory($selectedCategory);
         }
 
+        // SITE-4734
+        foreach ($productFilter->getFilterCollection() as $filter) {
+            if ('brand' === $filter->getId()) {
+                foreach ($filter->getOption() as $option) {
+                    $option->setImageUrl('');
+                }
 
+                break;
+            }
+        }
 
 
         // сортировка

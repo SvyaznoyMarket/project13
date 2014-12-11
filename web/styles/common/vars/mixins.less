@@ -101,6 +101,11 @@
   -moz-box-shadow: @arguments;
   box-shadow: @arguments;
 }
+.box-shadow3(@arguments, @arguments, @arguments) {
+  -webkit-box-shadow: @arguments, @arguments, @arguments;
+  -moz-box-shadow: @arguments, @arguments, @arguments;
+  box-shadow: @arguments, @arguments, @arguments;;
+}
 .text-shadow(@arguments) {
   -webkit-text-shadow: @arguments;
   -moz-text-shadow: @arguments;
@@ -159,6 +164,14 @@
   *zoom: 1;
 }
 
+.inline-block-base() {
+  display: inline-block;
+  vertical-align: baseline;
+
+  /* IE6-8 */
+  *display: inline;
+  *zoom: 1;
+}
 
 .table() {
   display: table;
@@ -233,4 +246,14 @@
   border-left: @border-width solid @border-color;
   border-bottom: @border-width solid transparent;
   top: @posTop;
+}
+
+@full-size: 100%;
+
+.btn-closer() {
+    height: 13px;
+    width: 13px;
+    text-align: center;
+    .inline-block();
+    cursor: pointer;
 }

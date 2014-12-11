@@ -566,7 +566,7 @@ window.ANALYTICS = {
 			ga_category = function ga_category() {
 				console.info( 'gaJS product catalog' );
 				/** Событие выбора фильтра */
-				$('.js-filter-brand:not(:checked)').click(function ga_filterBrand(){
+				$('.js-category-filter-brand:not(:checked)').click(function ga_filterBrand(){
 					var
 						input = $(this),
 						name = input.data('name');
@@ -684,7 +684,7 @@ window.ANALYTICS = {
 				});
 
 				/** Событие клика по рекомендуемому товару из подборки. Не забывать, что .bSlider ajax-ом наполняется */
-				$('.bProductSectionLeftCol').delegate('div.bGoodsSlider a', 'click', function() {
+				$('.bProductSectionLeftCol').delegate('.js-slider a', 'click', function() {
 					var
 						link = this,
 						url = link.href,

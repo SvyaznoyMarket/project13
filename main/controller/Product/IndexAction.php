@@ -141,7 +141,9 @@ class IndexAction {
 
             foreach ($chunckedIds as $i => $chunk) {
                 $repository->prepareCollectionById($chunk, $region, function($data) use(&$productsCollection, $i) {
-                    foreach ($data as $item) {
+                    foreach ((array)$data as $item) {
+                        if (empty($item['id'])) continue;
+
                         $productsCollection[$i][] = new \Model\Product\Entity($item);
                     }
                 });

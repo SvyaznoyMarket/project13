@@ -94,7 +94,7 @@ $(document).ready(function() {
 	/**
 	 * Подключение слайдера товаров
 	 */
-	$('.bGoodsSlider').goodsSlider({
+	$('.js-slider').goodsSlider({
 		onLoad: function(goodsSlider) {
 			ko.applyBindings(ENTER.UserModel, goodsSlider);
 		}
