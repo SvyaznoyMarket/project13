@@ -2846,7 +2846,7 @@ img[height="0"] {
     width: 83px;
     height: 53px;
     cursor: pointer;
-    border: 1px solid transparent;
+    border: 1px solid #333;
     -moz-opacity: 0.6;
     -khtml-opacity: 0.6;
     -webkit-opacity: 0.6;
