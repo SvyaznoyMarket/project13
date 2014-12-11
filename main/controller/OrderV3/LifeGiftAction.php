@@ -149,7 +149,8 @@ class LifeGiftAction {
             ));
         } else {
             $form = (new \Templating\HtmlLayout())->render('order/payment/form-paypal', array(
-                'url' => $coreResponse['url']
+                'url'           => $coreResponse['url'],
+                'url_params'    => isset($coreResponse['url_params']) && !empty($coreResponse['url_params']) ? $coreResponse['url_params'] : null
             ));
         }
 

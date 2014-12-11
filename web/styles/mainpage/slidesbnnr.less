@@ -24,6 +24,8 @@
         right: 5px;
         &_i{
             margin: 0 0 3px;
+            background: @white;
+            .rounded(3px);
         }
         &_img{
             display: block;
@@ -34,13 +36,12 @@
 
             cursor: pointer;
 
-            border: 1px solid transparent;
+            border: 1px solid #333;
 
             .opacity(.6);
             .rounded(3px);
             .transition(all .3s ease-out);
-            &-act
-            ,
+            &-act,
             &:hover{
                 border-color: @white;
 

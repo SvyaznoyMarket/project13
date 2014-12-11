@@ -108,7 +108,7 @@
 		sliderAnalytics = function sliderAnalytics() {
 			console.info('click!');
 
-			var sliderData = $(this).parents('.bGoodsSlider').data('slider'),
+			var sliderData = $(this).parents('.js-slider').data('slider'),
 				sliderType = sliderData.type,
 
 				productData = $(this).data('product');
@@ -123,5 +123,5 @@
 		};
 	// end of functions
 
-	$('.bGoodsSlider').on('click', '.bSliderAction__eItem', sliderAnalytics);
+	$('.js-slider').on('click', '.bSliderAction__eItem', sliderAnalytics);
 }());

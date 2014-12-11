@@ -46,19 +46,23 @@ class CompleteAction extends OrderV3 {
             // забираем заказы и доступные методы оплаты
             foreach ($this->sessionOrders as $sessionOrder) {
 
-                if (!is_array($sessionOrder)) continue;
+                if (!isset($sessionOrder['number'])) continue;
 
                 // сами заказы
-                $this->client->addQuery('order/get-by-mobile', ['number' => $sessionOrder['number'], 'mobile' => $sessionOrder['phone']], [], function ($data) use (&$orders, $sessionOrder) {
-                    $data = reset($data);
-                    $orders[$sessionOrder['number']] = $data ? new Entity($data) : null;
-                });
+                if (\App::config()->order['sessionInfoOnComplete']) { // SITE-4828
+                    $orders[$sessionOrder['number']] = new Entity($sessionOrder);
+                } else {
+                    $this->client->addQuery('order/get-by-mobile', ['number' => $sessionOrder['number'], 'mobile' => $sessionOrder['phone']], [], function ($data) use (&$orders, $sessionOrder) {
+                        $data = reset($data);
+                        $orders[$sessionOrder['number']] = $data ? new Entity($data) : null;
+                    });
+                }
 
                 // методы оплаты для заказа
                 $this->client->addQuery(
                     'payment-method/get-for-order',
                     [
-                        'geo_id'     => $this->user->getRegionId(),
+                        'geo_id'     => $this->user->getRegion()->getId(),
                         'client_id'  => 'site',
                         'number_erp' => $sessionOrder['number_erp']
                     ],
@@ -81,13 +85,13 @@ class CompleteAction extends OrderV3 {
 
             // получаем продукты для заказов
             foreach ($orders as $order) {
-
-                /** @var $order \Model\Order\Entity */
-                \RepositoryManager::product()->prepareCollectionById(array_map(function(\Model\Order\Product\Entity $product) { return $product->getId(); }, $order->getProduct()), null, function ($data) use ($order, &$products) {
-                    foreach ($data as $productData) {
-                        $products[$productData['id']] = new \Model\Product\Entity($productData);
-                    }
-                } );
+                if (!\App::config()->order['sessionInfoOnComplete']) { // SITE-4828
+                    \RepositoryManager::product()->prepareCollectionById(array_map(function(\Model\Order\Product\Entity $product) { return $product->getId(); }, $order->getProduct()), null, function ($data) use ($order, &$products) {
+                        foreach ($data as $productData) {
+                            $products[$productData['id']] = new \Model\Product\Entity($productData);
+                        }
+                    });
+                }
 
                 // Нужны ли нам кредитные банки?
                 if ($order->paymentId == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT) $needCreditBanksData = true;

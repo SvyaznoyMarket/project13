@@ -2,6 +2,7 @@
 
 namespace Controller\ProductCategory;
 
+use Model\Product\Filter\Entity;
 use View\Product\FilterForm;
 
 class Action {
@@ -247,9 +248,6 @@ class Action {
 
         // подготовка 3-го пакета запросов
 
-        // запрашиваем дерево категорий
-        \RepositoryManager::productCategory()->prepareEntityBranch($category, $region);
-
         // получаем фильтры из http-запроса
         $filterUrl = $this->getFilterFromUrl($request);
 
@@ -270,10 +268,17 @@ class Action {
             }
         }
 
+        // запрашиваем дерево категорий
+        if ($category->isV2Root()) {
+            \RepositoryManager::productCategory()->prepareEntityBranch($category, $region, $filterParams);
+        } else {
+            \RepositoryManager::productCategory()->prepareEntityBranch($category, $region);
+        }
+
         // запрашиваем фильтры
         /** @var $filters \Model\Product\Filter\Entity[] */
         $filters = [];
-        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, $filterParams, function($data) use (&$filters) {
+        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, [], function($data) use (&$filters) {
             foreach ($data as $item) {
                 $filters[] = new \Model\Product\Filter\Entity($item);
             }
@@ -364,45 +369,11 @@ class Action {
 
         // TODO SITE-2403 Вернуть фильтр instore
         if ($category->getIsFurniture()/* && 14974 === $user->getRegion()->getId()*/) {
-            $labelFilter = null;
-            $labelFilterKey = null;
-            foreach ($filters as $key => $filter) {
-                if ('label' === $filter->getId()) {
-                    $labelFilter = $filter;
-                    $labelFilterKey = $key;
-                }
-            }
+            $this->createInStoreFilter($filters);
+        }
 
-            // если нету блока фильтров "WOW-товары", то создаем
-            if (null === $labelFilter) {
-                $labelFilter = new \Model\Product\Filter\Entity();
-                $labelFilter->setId('label');
-                $labelFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-                $labelFilter->setName('WOW-товары');
-                $labelFilter->getIsInList(true);
-            }
-
-            // создаем фильтр "Товар за три дня"
-            $option = new \Model\Product\Filter\Option\Entity();
-            $option->setId(1);
-            $option->setToken('instore');
-            if (\App::config()->region['defaultId'] === $user->getRegion()->getId()) {
-                // Для Москвы, SITE-2850
-                //$option->setName('Товар за три дня');
-                $option->setName('Товар со склада'); // SITE-3131
-            } else {
-                // Для регионов (привозит быстрее, но не за три дня)
-                $option->setName('Товар со склада');
-            }
-
-            $labelFilter->unshiftOption($option);
-
-            // добавляем фильтр в массив фильтров
-            if (null !== $labelFilterKey) {
-                $filters[$labelFilterKey] = $labelFilter;
-            } else {
-                array_unshift($filters, $labelFilter);
-            }
+        if ($category->isV2()) {
+            $this->transformFiltersV2($filters);
         }
 
         // фильтры
@@ -412,14 +383,15 @@ class Action {
             $this->ab_jewel_filter($category, $productFilter);
         }
 
-        // SITE-4658
-        foreach ($productFilter->getFilterCollection() as $filter) {
-            if ('Бренд' === $filter->getName()) {
-                foreach ($filter->getOption() as $option) {
-                    $option->setImageUrl('');
-                }
+        if (!$category->isV2()) {
+            foreach ($productFilter->getFilterCollection() as $filter) {
+                if ('brand' === $filter->getId()) {
+                    foreach ($filter->getOption() as $option) {
+                        $option->setImageUrl('');
+                    }
 
-                break;
+                    break;
+                }
             }
         }
 
@@ -671,6 +643,113 @@ class Action {
     }
 
     /**
+     * @param \Model\Product\Filter\Entity[] $filters
+     */
+    private function createInStoreFilter(array &$filters) {
+        $labelFilter = null;
+        $labelFilterKey = null;
+        foreach ($filters as $key => $filter) {
+            if ('label' === $filter->getId()) {
+                $labelFilter = $filter;
+                $labelFilterKey = $key;
+            }
+        }
+
+        // если нету блока фильтров "WOW-товары", то создаем
+        if (null === $labelFilter) {
+            $labelFilter = new \Model\Product\Filter\Entity();
+            $labelFilter->setId('label');
+            $labelFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+            $labelFilter->setName('WOW-товары');
+            $labelFilter->getIsInList(true);
+        }
+
+        // создаем фильтр "Товар за три дня"
+        $option = new \Model\Product\Filter\Option\Entity();
+        $option->setId(1);
+        $option->setToken('instore');
+        if (\App::config()->region['defaultId'] === \App::user()->getRegion()->getId()) {
+            // Для Москвы, SITE-2850
+            //$option->setName('Товар за три дня');
+            $option->setName('Товар со склада'); // SITE-3131
+        } else {
+            // Для регионов (привозит быстрее, но не за три дня)
+            $option->setName('Товар со склада');
+        }
+
+        $labelFilter->unshiftOption($option);
+
+        // добавляем фильтр в массив фильтров
+        if (null !== $labelFilterKey) {
+            $filters[$labelFilterKey] = $labelFilter;
+        } else {
+            array_unshift($filters, $labelFilter);
+        }
+    }
+
+    /**
+     * @param \Model\Product\Filter\Entity[] $filters
+     */
+    private function transformFiltersV2(array &$filters) {
+        $newProperties = [];
+
+        foreach ($filters as $key => $property) {
+            if ('label' === $property->getId()) {
+                $property->setName('Скидки');
+
+                foreach ($property->getOption() as $option) {
+                    if ('instore' === $option->getToken()) {
+                        $labelProperty = new \Model\Product\Filter\Entity();
+                        $labelProperty->setId($option->getToken());
+                        $labelProperty->setName($option->getName());
+                        $labelProperty->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+
+                        $option->setName('да');
+                        $labelProperty->addOption($option);
+
+                        $newProperties[] = $labelProperty;
+
+                        $property->deleteOption($option);
+
+                        break;
+                    }
+                }
+            } else if ('shop' === $property->getId()) {
+                $property->setName('В магазине');
+                foreach ($property->getOption() as $option) {
+                    if (!$option->getQuantity()) {
+                        $property->deleteOption($option);
+                    }
+                }
+
+                if (!$property->getOption()) {
+                    unset($filters[$key]);
+                }
+            } else if ('brand' === $property->getId()) {
+                $this->sortOptionsByQuantity($property);
+            }
+        }
+
+        foreach ($newProperties as $property) {
+            array_push($filters, $property);
+        }
+    }
+
+    private function sortOptionsByQuantity(\Model\Product\Filter\Entity $property) {
+        $options = $property->getOption();
+
+        usort($options, function(\Model\Product\Filter\Option\Entity $a, \Model\Product\Filter\Option\Entity $b) {
+            if ($a->getQuantity() == $b->getQuantity()) {
+                return 0;
+            }
+
+            return ($a->getQuantity() > $b->getQuantity()) ? -1 : 1;
+        });
+
+        $property->setOption($options);
+    }
+
+    /**
      * @param \Model\Product\Category\Entity $category
      * @param \Model\Product\Filter          $productFilter
      * @param \View\Layout                   $page
@@ -687,8 +766,56 @@ class Action {
             throw new \Exception(sprintf('У категории "%s" отстутсвуют дочерние узлы', $category->getId()));
         }
 
+        if ($category->isV2Root() && $request->isXmlHttpRequest()) {
+            $data = [
+                'links' => $this->getRootCategoryLinks($category, $page),
+                'category' => ['name' => $category->getName()],
+            ];
+
+            return new \Http\JsonResponse($data);
+        }
+
+        $page->setParam('links', $this->getRootCategoryLinks($category, $page));
         $page->setParam('sidebarHotlinks', true);
         return new \Http\Response($page->show());
+    }
+
+    private function getRootCategoryLinks(\Model\Product\Category\Entity $category, \View\Layout $page) {
+        $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
+
+        /** @var $categories \Model\Product\Category\Entity[] */
+        $categories = $category->getChild();
+        if (!empty($relatedCategories)) {
+            $categories = array_merge($categories, $relatedCategories);
+        }
+
+        $links = [];
+        foreach ($categories as $child) {
+            $config = isset($categoryConfigById[$child->getId()]) ? $categoryConfigById[$child->getId()] : null;
+            $productCount = $child->getProductCount() ? : $child->getGlobalProductCount();
+            $totalText = '';
+
+            if ( $productCount > 0 ) {
+                $totalText = $productCount . ' ' . ($child->getHasLine()
+                        ? $page->helper->numberChoice($productCount, array('серия', 'серии', 'серий'))
+                        : $page->helper->numberChoice($productCount, array('товар', 'товара', 'товаров'))
+                    );
+            }
+
+            $linkUrl = $child->getLink();
+            $linkUrl .= \App::request()->getQueryString() ? (strpos('?', $linkUrl) === false ? '?' : '&') . \App::request()->getQueryString() : '';
+            $linkUrl .= \App::request()->get('instore') ? (strpos('?', $linkUrl) === false ? '?' : '&') . 'instore=1' : '';
+
+            $links[] = [
+                'name'          => isset($config['name']) ? $config['name'] : $child->getName(),
+                'url'           => $linkUrl,
+                'image'         => (is_array($config) && array_key_exists('image', $config)) ? $config['image'] : $child->getImageUrl('furniture' === $category_class ? 3 : 0),
+                'css'           => isset($config['css']) ? $config['css'] : null,
+                'totalText'     => $totalText,
+            ];
+        }
+
+        return $links;
     }
 
     /**
@@ -872,8 +999,10 @@ class Action {
             $products = [];
             if ((bool)$productIds) {
                 $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
-                    foreach ($data as $item) {
-                        $products[] = new \Model\Product\Entity($item);
+                    if (is_array($data)) {
+                        foreach ($data as $item) {
+                            $products[] = new \Model\Product\Entity($item);
+                        }
                     }
                 });
             }
@@ -944,6 +1073,7 @@ class Action {
 
         // ajax
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
+            $selectedFilter = $category->isV2() ? new \View\Partial\ProductCategory\V2\SelectedFilter() : new \View\ProductCategory\SelectedFilterAction();
             $data = [
                 'list'           => (new \View\Product\ListAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
@@ -955,7 +1085,7 @@ class Action {
                     $columnCount,
                     $productView
                 ),
-                'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
+                'selectedFilter' => $selectedFilter->execute(
                     \App::closureTemplating()->getParam('helper'),
                     $productFilter,
                     \App::router()->generate('product.category', ['categoryPath' => $category->getPath()])
@@ -1066,6 +1196,7 @@ class Action {
 
         // добывание фильтров из http-запроса
         $values = $this->getFilterFromUrl($request);
+        $values = $this->deleteNotExistsValues($values, $filters);
 
         if ($isGlobal) {
             $values['global'] = 1;
@@ -1154,6 +1285,48 @@ class Action {
         $productFilter->setValues($values);
 
         return $productFilter;
+    }
+
+    /**
+     * @param array $values
+     * @param \Model\Product\Filter\Entity[] $filters
+     * @return array
+     */
+    private function deleteNotExistsValues(array $values, array $filters) {
+        // SITE-4818 Не учитывать фильтр при переходе в подкатегорию, если такового не существует
+        foreach ($values as $propertyId => $propertyValues) {
+            $isPropertyExistsInFilter = false;
+
+            foreach ($filters as $property) {
+                if ($property->getId() === $propertyId) {
+                    $isPropertyExistsInFilter = true;
+                    if ($property->getTypeId() === \Model\Product\Filter\Entity::TYPE_LIST) {
+                        $optionIds = [];
+                        foreach ($property->getOption() as $option) {
+                            $optionIds[] = (string)$option->getId();
+                        }
+
+                        foreach ($propertyValues as $i => $value) {
+                            if (!in_array((string)$value, $optionIds, true)) {
+                                unset($values[$propertyId][$i]);
+                            }
+                        }
+
+                        if (!count($values[$propertyId])) {
+                            unset($values[$propertyId]);
+                        }
+                    }
+
+                    break;
+                }
+            }
+
+            if (!$isPropertyExistsInFilter) {
+                unset($values[$propertyId]);
+            }
+        }
+
+        return $values;
     }
 
     /**

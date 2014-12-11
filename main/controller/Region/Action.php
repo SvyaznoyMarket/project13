@@ -34,7 +34,7 @@ class Action {
         } else if ($request->query->count()) {
             $link = \App::router()->generate('homepage', $request->query->all());
         } else {
-            $link = parse_url($referer ?: \App::router()->generate('homepage'));
+            $link = parse_url($referer ?: \App::router()->generate('homepage')) + ['host'];
 
             if ($link['host'] !== \App::config()->mainHost) {
                 $link = \App::router()->generate('homepage');

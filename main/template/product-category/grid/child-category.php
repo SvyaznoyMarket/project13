@@ -27,7 +27,7 @@ $siblingCategories = $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : [];
 <? endif ?>
 
 <? if (false): ?>
-    <h1 class="bTitlePage"><?= $category->getName() ?></h1>
+    <h1 class="bTitlePage js-pageTitle"><?= $category->getName() ?></h1>
 <? endif ?>
 
 
@@ -66,7 +66,7 @@ foreach ($gridCells as $cell) {
             'page'      => 1,
             'url'       => $page->url('product.recommended'),
             'sender'    => [
-                'name'     => 'retailrocket',
+                'name'     => 'enter',
                 'position' => 'Viewed',
             ],
         ]) ?>

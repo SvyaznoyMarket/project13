@@ -1,0 +1,348 @@
+.lstn {
+	margin: 0 0 0 -10px;
+	width: 960px;
+
+	&_empty {
+		padding: 30px 0;
+		font-size: 14px;
+		text-align: center;
+	}
+
+	&_i {
+		float: left;
+		width: 241px;
+		position: relative;
+		height: 344px;
+		margin: -1px -1px 0 0;
+		z-index: 2;
+
+		&_inn {
+			border: 1px solid #e6e6e6;
+			width: 199px;
+			position: relative;
+			height: 312px;
+			padding: 20px 20px 10px;
+			background-color: @white;
+			z-index: 2;
+		}
+
+		&:hover {
+			z-index: 10;
+
+			.lstn_i_inn {
+				border-color: #a0a0a0;
+			}
+
+			.lstn_btn {
+				.opacity(1);
+			}
+
+			.lstn_n {
+				.opacity(1);
+			}
+
+			.notBuying {
+				display: block;
+			}
+
+			.lstn_imglk-default {
+				display: none;
+			}
+
+			.lstn_imglk-hover {
+				display: block;
+			}
+		}
+
+		&-hover {
+			height: 281px;
+			overflow: hidden;
+
+			.lstn_i_inn {
+				height: 249px;
+			}
+
+			.lstn_desc,
+			.bSimplyDescReviews {
+				display: none;
+			}
+
+			&.lstn_i-banner {
+
+				&:hover {
+
+					.lstn_btn {
+						.opacity(1);
+					}
+
+					.lstn_i_inn {
+						height: auto;
+					}
+				}
+			}
+
+			&:hover {
+				overflow: visible;
+
+				.lstn_i_inn {
+					height: auto;
+					z-index: 5;
+				}
+
+				.lstn_btn {
+					.opacity(1);
+				}
+
+				.bSimplyDescReviews {
+					display: block;
+				}
+
+				.lstn_desc {
+					display: table-cell;
+				}
+			}
+		}
+
+		&-banner {
+			background-position: 50% 50%;
+
+			.lstn_i_inn {
+				background-color: transparent;
+				min-height: 249px;
+			}
+
+			.adfoxWrapper {
+				left: 50%;
+			    line-height: 100%;
+			    margin: -129px 0 0 -107.5px;
+			    position: absolute;
+			    top: 50%;
+			}
+		}
+	}
+
+	&_n {
+		.opacity(0);
+		display: block;
+	}
+
+	.notBuying {
+		display: none;
+	}
+
+	&_imglk {
+		display: block;
+		width: 200px;
+		height: 200px;
+		margin: 0 auto 8px;
+
+		&-hover {
+			display: none;
+		}
+	}
+
+	&_img {
+		display: block;
+		width: 200px;
+		height: 200px;
+	}
+
+	&_pr {
+		display: table-cell;
+		min-width: 80px;
+		vertical-align: middle;
+
+		&_old {
+			color: #9c9c9c;
+			display: block;
+		}
+
+		&_now {
+			color: #404040;
+			font-size: 14px;
+		}
+	}
+
+	&_btn {
+		display: table-cell;
+		vertical-align: middle;
+		text-align: right;
+		.opacity(0);
+
+		.btnBuy {
+			.inline-block();
+			margin-left: 5px;
+			.rounded(3px);
+
+			&__eLink {
+				background: #404040;
+				border: 1px solid @black;
+				height: auto;
+				font-size: 12px;
+				.rounded(3px);
+				line-height: 1;
+				padding: 6px 10px 7px;
+	    		width: auto;
+
+	    		&.mBought {
+				    background: none repeat scroll 0 0 #fff;
+				    border: 1px solid #b3b3b3;
+				    box-shadow: none;
+				    color: #000;
+				}
+			}
+		}
+
+		.btnCmprb {
+			vertical-align: middle;
+		}
+
+		&_not {
+			.inline-block();
+			vertical-align: middle;
+			color: #9c9c9c;
+			margin-left: 3px;
+		}
+
+		&_ftn {
+			color: #9c9c9c;
+			display: block;
+			margin: 3px 0 0;
+		}
+	}
+
+	&_desc {
+	    display: table-cell;
+	    height: 41px;
+	    line-height: 1.1;
+	    overflow: hidden;
+	    padding: 5px 0 8px;
+	    text-align: center;
+	    vertical-align: middle;
+	    width: 218px;
+
+	    a {
+			color: #404040;
+	    }
+	}
+
+	.bSimplyDescReviews {
+		text-align: center;
+	}
+
+	&-light {
+
+		.lstn_i {
+			height: 281px;
+
+			&_inn {
+				height: 249px;
+			}
+		}
+	}
+
+	&-jewel {
+		margin-left: 0;
+
+		.stickLst {
+			top: 45px;
+		}
+
+		.lstn {
+
+			&_i {
+				height: 240px;
+
+				&:hover {
+
+					.lstn_i_inn {
+						height: 228px;
+					}
+				}
+
+				&_inn {
+					border-color: #f9f9f9;
+					padding: 10px 10px 0;
+    				width: 219px;
+    				height: 228px;
+				}
+			}
+
+			&_img {
+				width: 160px;
+				height: 160px;
+			}
+
+			&_imglk {
+			    height: 160px;
+			    width: 160px;
+			}
+
+			&_pr {
+				position: absolute;
+				bottom: 10px;
+				left: 10px;
+			}
+
+			&_btn {
+				position: absolute;
+				bottom: 10px;
+				right: 10px;
+			}
+		}
+
+		&-3col {
+
+			.lstn {
+
+				&_i {
+					width: 321px;
+					height: 340px;
+
+					&:hover {
+						.lstn_i_inn {
+							height: 328px;
+						}
+					}
+
+					&_inn {
+						width: 299px;
+						height: 328px;
+					}
+				}
+
+				&_img,
+				&_imglk {
+				    height: 260px;
+				    width: 260px;
+				}
+
+				&_pr {
+		            width: 180px;
+		        }
+			}
+		}
+	}
+}
+
+.stickLst {
+	left: 10px;
+    padding: 0;
+    position: absolute;
+    top: 10px;
+    width: 200px;
+    z-index: 2;
+
+    &_i {
+    	float: left;
+    	margin-right: 5px;
+
+    	&-l {
+    		float: left;
+    	}
+
+    	&-r {
+    		float: right;
+    	}
+    }
+}

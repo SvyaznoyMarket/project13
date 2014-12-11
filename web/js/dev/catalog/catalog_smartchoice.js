@@ -16,7 +16,7 @@
 						$('.smartChoiceSliderToggle-'+i).show();
 					});
 
-					var goodsSlider = $('.bGoodsSlider');
+					var goodsSlider = $('.js-slider');
 					goodsSlider.goodsSlider();
 					goodsSlider.each(function() {
 						ko.applyBindings(ENTER.UserModel, this);
@@ -37,7 +37,7 @@
 		if (!$link.hasClass('mActive')) {
 			$specialPriceItemFoot_links.removeClass('mActive');
 			$link.addClass('mActive');
-			$('.bGoodsSlider').hide();
+			$('.js-slider').hide();
 			$('.specialBorderBox').addClass('specialBorderBox_render');
 			$('.smartChoiceId-' + id).parent().show();
 		} else {

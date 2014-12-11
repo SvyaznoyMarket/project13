@@ -233,7 +233,7 @@ class ShowAction {
         if ($region) {
             $params['region_id'] = $region->getId();
         }
-        $client->addQuery('category/tree', $params, [], function($data) use (&$category, &$region, $sliceToken, $helper) {
+        \App::searchClient()->addQuery('category/tree', $params, [], function($data) use (&$category, &$region, $sliceToken, $helper) {
             /**
              * Загрузка дочерних и родительских узлов категории
              *

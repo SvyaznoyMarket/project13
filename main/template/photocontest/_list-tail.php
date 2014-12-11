@@ -35,16 +35,16 @@ if(!function_exists('routeParams')) {
 	<?=($title?'<h2>'.$title.'</h2>':null)?>
 
 	<?php if ($filter): ?>
-	<div class="bSortingLine clearfix">
+	<div class="bSortingLine clearfix js-category-sortingAndPagination">
 		<?=$page->render('photocontest/_repostCode')?>
-		<ul class="bSortingList mSorting">
+		<ul class="bSortingList mSorting js-category-sorting">
 			<li class="bSortingList__eItem mTitle">Показать сначала:</li>
-			<li class="bSortingList__eItem mSortItem<?=$list->order==='d'?' mActive':null?>">
+			<li class="bSortingList__eItem mSortItem<?=$list->order==='d'?' mActive js-category-sorting-activeItem':null?> js-category-sorting-item">
 				<a href="<?=\App::router()->generate($route, routeParams($list, ['order'=>'d']))?>#<?=$id?>" class="bSortingList__eLink jsSorting">
 					Свежие
 				</a>
 			</li>
-			<li class="bSortingList__eItem mSortItem<?=$list->order==='r'?' mActive':null?>">
+			<li class="bSortingList__eItem mSortItem<?=$list->order==='r'?' mActive js-category-sorting-activeItem':null?> js-category-sorting-item">
 				<a href="<?=\App::router()->generate($route,routeParams($list, ['order'=>'r']))?>#<?=$id?>" class="bSortingList__eLink jsSorting">
 					Популярные
 				</a>
@@ -74,13 +74,13 @@ if(!function_exists('routeParams')) {
 	 */
 	if($pagination && $list->total>$list->limit): 
 	?>
-	<div class="bSortingLine mPagerBottom clearfix">
-		<div class="bSortingList mPager">
+	<div class="bSortingLine mPagerBottom clearfix js-category-sortingAndPagination">
+		<div class="bSortingList mPager js-category-pagination">
 			<ul class="bSortingList">
 				<li class="bSortingList__eItem mTitle">Страницы</li>
 
 				<?php for($i=0,$k=0; $i<$list->total; $i+=$list->limit,$k++): ?>
-				<li class="bSortingList__eItem mPage<?=$list->page==$k?' mActive':null?>">
+				<li class="bSortingList__eItem mPage<?=$list->page==$k?' mActive':null?> js-category-pagination-page">
 					<?php if($k>0):?>
 					<a href="<?=\App::router()->generate($route,routeParams($list, ['page'=>$k]))?>#<?=$id?>" class="bSortingList__eLink jsPagination"><?=($k+1)?></a>
 					<?php else: ?>

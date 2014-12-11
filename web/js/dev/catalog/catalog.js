@@ -18,7 +18,7 @@
 
 
 	catalog.enableHistoryAPI = ( typeof Mustache === 'object' ) && ( History.enabled );
-	catalog.listingWrap = $('.bListing');
+	catalog.listingWrap = $('.js-listing');
 	catalog.liveScroll = false;
 	catalog.lastPage = null;
 
@@ -32,7 +32,7 @@
     /**
      * Подключение слайдера товаров
      */
-    $('.bGoodsSlider').goodsSlider({
+    $('.js-slider').goodsSlider({
         onLoad: function(goodsSlider) {
             ko.applyBindings(ENTER.UserModel, goodsSlider);
         }

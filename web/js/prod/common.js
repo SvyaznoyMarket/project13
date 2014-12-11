@@ -426,6 +426,7 @@
 		}
 
 		e.preventDefault();
+
 		$.ajax({
 			url: url,
 			success: function(data) {
@@ -526,7 +527,7 @@
 	 * @requires	jQuery, ENTER.utils.logError
 	 */
 	$.ajaxSetup({
-		timeout: 10000,
+		timeout: 20000,
 		statusCode: {
 			404: function() { 
 				var ajaxUrl = this.url,
@@ -832,6 +833,8 @@
 				};
 				googleOrderTrackingData.products = $.map(o.products, function(p){
 					var productName = o.is_partner ? p.name + ' (marketplace)' : p.name;
+					/* SITE-4472 Аналитика по АБ-тесту платного самовывоза и рекомендаций из корзины */
+					if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.config.pageConfig.selfDeliveryLimit > parseInt(o.paySum, 10) - o.delivery[0].price) productName = productName + ' (paid pickup)';
 					// Аналитика по купленным товарам из рекомендаций
 					if (p.sender == 'retailrocket') {
 						if (p.position) productName += ' (RR_' + p.position + ')';
@@ -1061,16 +1064,20 @@
 	var body = $('body');
 
 	// Обработчик для кнопок купить
-	body.on('click', '.jsBuyButton', function() {
+	body.on('click', '.jsBuyButton', function(event) {
 		var button = $(this);
 
+        body.trigger('TL_buyButton_clicked');
+
 		if ( button.hasClass('mDisabled') ) {
-			return false;
+			//return false;
+            event.preventDefault();
 		}
 
 		if ( button.hasClass('mBought') ) {
 			document.location.href(button.attr('href'));
-			return false;
+			//return false;
+            event.preventDefault();
 		}
 
 		button.addClass('mLoading');
@@ -1102,7 +1109,8 @@
 			}
 		});
 
-		return false;
+		//return false;
+        event.preventDefault();
 	});
 
 	// analytics
@@ -1793,21 +1801,20 @@
 		body = $('body');
 	// end of vars
 
-	var updateState = function updateState() {
-		if ( !$(this).is('[type=checkbox]') && !$(this).is('[type=radio]') ) {
+	function updateInput($input) {
+		if ( !$input.is('[type=checkbox]') && !$input.is('[type=radio]') ) {
 			return;
 		}
 
-		var $self = $(this),
-			id = $self.attr('id'),
-			type = ( $self.is('[type=checkbox]') ) ? 'checkbox' : 'radio',
-			groupName = $self.attr('name') || '',
+		var id = $input.attr('id'),
+			type = ( $input.is('[type=checkbox]') ) ? 'checkbox' : 'radio',
+			groupName = $input.attr('name') || '',
 			label = $('label[for="'+id+'"]');
 		// end of vars
 
 		if ( type === 'checkbox' ) {
 
-			if ( $self.is(':checked') ) {
+			if ( $input.is(':checked') ) {
 				label.addClass('mChecked');
 			}
 			else {
@@ -1816,26 +1823,30 @@
 		}
 
 
-		if ( type === 'radio' && $self.is(':checked') ) {
-			$('input[name="'+groupName+'"]').each(function() {
-				var currElement = $(this),
-					currId = currElement.attr('id');
+		if ( type === 'radio' ) {
+			if ( $input.is(':checked') ) {
+				$('input[name="'+groupName+'"]').each(function() {
+					var currElement = $(this),
+						currId = currElement.attr('id');
 
-				$('label[for="'+currId+'"]').removeClass('mChecked');
-			});
+					$('label[for="'+currId+'"]').removeClass('mChecked');
+				});
 
-			label.addClass('mChecked');
+				label.addClass('mChecked');
+			} else {
+				label.removeClass('mChecked');
+			}
 		}
-	};
+	}
 
 
-	body.on('updateState', '.bCustomInput, .js-customInput', updateState);
-
-	body.on( 'change', '.bCustomInput, .js-customInput', function() {
-		$(this).trigger('updateState');
+	body.on('change', '.bCustomInput, .js-customInput', function(e) {
+		updateInput($(e.currentTarget));
 	});
 
-	inputs.trigger('updateState');
+	inputs.each(function(index, input) {
+		updateInput($(input));
+	});
 }());
 $(document).ready(function(){
 	// var carturl = $('.lightboxinner .point2').attr('href')
@@ -2063,6 +2074,22 @@ $(document).ready(function(){
 		kissForSearchResultPage();
 	}
 
+});
+;$(function(){
+    var
+        $body = $('body')
+    ;
+
+    $('.jsEvent_documentReady').each(function(i, el) {
+        var
+            event = $(el).data('value')
+        ;
+
+        if (!event.name) return;
+        
+        $body.trigger(event.name, event.data || []);
+        console.info('event', event.name, event.data);
+    });
 });
 /**
  * Перемотка к Id
@@ -2973,65 +3000,69 @@ $(document).ready(function() {
 });
 
 $('nav').on('mouseenter', '.navsite_i', function(){
-    var
-        $el = $(this),
-        url = $el.data('recommendUrl'),
-        xhr = $el.data('recommendXhr')
-    ;
+	var
+		$el = $(this),
+		url = $el.data('recommendUrl'),
+		xhr = $el.data('recommendXhr')
+		;
 
-    if (url && !xhr) {
-        xhr = $.get(url);
-        $el.data('recommendXhr', xhr);
+	if (url && !xhr) {
+		xhr = $.get(url);
+		$el.data('recommendXhr', xhr);
 
-        xhr.done(function(response) {
-            if (!response.productBlocks) return;
+		xhr.done(function(response) {
+			if (!response.productBlocks) return;
 
-            var $containers = $el.find('.jsMenuRecommendation');
+			var $containers = $el.find('.jsMenuRecommendation');
 
-            $.each(response.productBlocks, function(i, block) {
-                try {
-                    if (!block.categoryId) return;
+			$.each(response.productBlocks, function(i, block) {
+				try {
+					if (!block.categoryId) return;
 
-                    var $container = $containers.filter('[data-parent-category-id="' + block.categoryId + '"]');
-                    $container.html(block.content);
-                } catch (e) { console.error(e); }
-            });
-        });
+					var $container = $containers.filter('[data-parent-category-id="' + block.categoryId + '"]');
+					$container.html(block.content);
+				} catch (e) { console.error(e); }
+			});
+		});
 
-        xhr.fail(function() {
-            $el.data('recommendXhr', false);
-            //$el.data('recommendXhr', true);
-        });
-    }
+		xhr.fail(function() {
+			$el.data('recommendXhr', false);
+			//$el.data('recommendXhr', true);
+		});
+	}
 });
 
 // аналитика
 $('body').on('click', '.jsRecommendedItemInMenu', function(event) {
-    console.log('jsRecommendedItemInMenu');
+	console.log('jsRecommendedItemInMenu');
 
-    event.stopPropagation();
+	event.stopPropagation();
 
-    try {
-        var
-            $el = $(this),
-            link = $el.attr('href'),
-            sender = $el.data('sender')
-        ;
+	try {
+		var
+			$el = $(this),
+			link = $el.attr('href'),
+			sender = $el.data('sender')
+			;
 
-        $('body').trigger('trackGoogleEvent', {
-            category: 'RR_взаимодействие',
-            action: 'Перешел на карточку товара',
-            label: sender ? sender.position : null,
-            hitCallback: function(){
-                console.log({link: link});
+		body.trigger('TLT_processDOMEvent', [event]);
 
-                if (link) {
-                    setTimeout(function() { window.location.href = link; }, 90);
-                }
-            }
-        });
+		$('body').trigger('trackGoogleEvent', {
+			category: 'RR_взаимодействие',
+			action: 'Перешел на карточку товара',
+			label: sender ? sender.position : null,
+			hitCallback: function(){
+				console.log({link: link});
 
-    } catch (e) { console.error(e); }
+				if (link) {
+					setTimeout(function() { window.location.href = link; }, 90);
+				}
+			}
+		});
+
+		$el.trigger('TL_recommendation_clicked');
+
+	} catch (e) { console.error(e); }
 });
 
 ;(function($){	
@@ -3913,15 +3944,15 @@ $('body').on('click', '.jsRecommendedItemInMenu', function(event) {
         $body.on('click', '.jsRecommendedItem', function(event) {
             console.log('jsRecommendedItem');
 
-            event.stopPropagation();
-
             try {
                 var
                     $el = $(this),
                     link = $el.attr('href'),
                     $slider = $el.parents('.js-slider'),
                     sender = $slider.length ? $slider.data('slider').sender : null
-                    ;
+                ;
+
+                $body.trigger('TLT_processDOMEvent', [event]);
 
                 $body.trigger('trackGoogleEvent', {
                     category: 'RR_взаимодействие',
@@ -3936,6 +3967,7 @@ $('body').on('click', '.jsRecommendedItemInMenu', function(event) {
                     }
                 });
 
+                event.stopPropagation();
             } catch (e) { console.error(e); }
         });
 
@@ -4955,7 +4987,7 @@ $('body').on('click', '.jsRecommendedItemInMenu', function(event) {
 
 			console.info('Получены рекомендации "С этим товаром покупают" от RetailRocket');
 
-			upsaleWrap.find('.bGoodsSlider').remove();
+			upsaleWrap.find('.js-slider').remove();
 
 			slider = $(response.content)[0];
 			upsaleWrap.append(slider);

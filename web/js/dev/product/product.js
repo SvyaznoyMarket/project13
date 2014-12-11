@@ -94,7 +94,7 @@ $(document).ready(function() {
 	/**
 	 * Подключение слайдера товаров
 	 */
-	$('.bGoodsSlider').goodsSlider({
+	$('.js-slider').goodsSlider({
 		onLoad: function(goodsSlider) {
 			ko.applyBindings(ENTER.UserModel, goodsSlider);
 		}
@@ -172,7 +172,7 @@ $(document).ready(function() {
 				return false;
             },
 
-            handleOneClick = function() {
+            handleOneClick = function(e) {
                 console.info('show one click form');
 
                 var button = $(this),
@@ -246,7 +246,8 @@ $(document).ready(function() {
                         $('body').trigger('trackUserAction', ['0 Вход']);
                     });
 
-                    return false;
+                    //return false;
+                    e.preventDefault();
                 }
             },
 

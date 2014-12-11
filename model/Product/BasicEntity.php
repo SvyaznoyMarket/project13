@@ -54,6 +54,8 @@ class BasicEntity {
     /** @var bool */
     protected $isOnlyFromPartner;
     /** @var bool */
+    protected $hasPartnerStock;
+    /** @var bool */
     protected $isUpsale = false;
     /** @var Model\Entity */
     protected $model;
@@ -89,7 +91,7 @@ class BasicEntity {
         if (array_key_exists('is_upsale', $data)) $this->setIsUpsale($data['is_upsale']);
         if (array_key_exists('model', $data) && $data['model']) $this->setModel(new Model\Entity($data['model']));
 
-        $this->calculateState();
+        $this->calculateState($data);
     }
 
     /**
@@ -444,7 +446,7 @@ class BasicEntity {
      * @return bool
      */
     public function isInShopStockOnly() {
-        return $this->isInShopsOnly;
+        return $this->isInShopsOnly && !$this->hasPartnerStock;
     }
 
     /**
@@ -454,36 +456,39 @@ class BasicEntity {
         return $this->isInShopStockOnly() || $this->isInShopShowroomOnly();
     }
 
-    public function calculateState() {
+    public function calculateState($data = []) {
 
-        $inStore = false;
+        //$inStore = false;
+        $inStore = isset($data['is_store']) ? (bool)$data['is_store'] : null; // SITE-4659
+        //$inShop = false;
+        $inShop = isset($data['is_shop']) ? (bool)$data['is_shop'] : null; // SITE-4659
         $inShowroom = false;
-        $inShop = false;
         foreach ($this->getStock() as $stock) {
+            /*
             if ($stock->getStoreId() && $stock->getQuantity()) {
                 $inStore = true;
             }
             if ($stock->getShopId() && $stock->getQuantity()) { // есть на складе магазина
                 $inShop = true;
             }
+            */
             if ($stock->getShopId() && $stock->getQuantityShowroom()) { // есть на витрине магазина
                 $inShowroom = true;
             }
         }
 
         $this->isOnlyFromPartner = false;
-        if (!(bool)$this->getStock()) {
-            foreach ($this->getPartnersOffer() as $partnerOffer) {
-                if (!isset($partnerOffer['stock'][0])) continue;
+        foreach ($this->getPartnersOffer() as $partnerOffer) {
+            if (!isset($partnerOffer['stock'][0])) continue;
 
-                foreach ($partnerOffer['stock'] as $partnerStock) {
-                    if (!empty($partnerStock['quantity'])) {
-                        $this->isOnlyFromPartner = true;
-                        break;
-                    }
+            foreach ($partnerOffer['stock'] as $partnerStock) {
+                if (!empty($partnerStock['quantity'])) {
+                    $this->hasPartnerStock = true;
+                    break;
                 }
             }
         }
+        $this->isOnlyFromPartner = !(bool)$this->getStock() && $this->hasPartnerStock;
 
         $this->isInShopsOnly = !$inStore && $inShop;
         $this->isInShowroomsOnly = !$inStore && !$inShop && $inShowroom;

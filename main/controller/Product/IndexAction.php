@@ -41,7 +41,9 @@ class IndexAction {
         // запрашиваем список регионов для выбора
         $regionsToSelect = [];
         \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
-            foreach ($data as $item) {
+            foreach ((array)$data as $item) {
+                if (empty($item['id'])) continue;
+
                 $regionsToSelect[] = new \Model\Region\Entity($item);
             }
         });
@@ -68,9 +70,9 @@ class IndexAction {
         /** @var $product \Model\Product\Entity */
         $product = null;
         $repository->prepareEntityByToken($productToken, $region, function($data) use (&$product) {
-            $data = reset($data);
+            if (!is_array($data)) return;
 
-            if ((bool)$data) {
+            if ($data = reset($data)) {
                 $product = new \Model\Product\Entity($data);
             }
         });
@@ -139,7 +141,9 @@ class IndexAction {
 
             foreach ($chunckedIds as $i => $chunk) {
                 $repository->prepareCollectionById($chunk, $region, function($data) use(&$productsCollection, $i) {
-                    foreach ($data as $item) {
+                    foreach ((array)$data as $item) {
+                        if (empty($item['id'])) continue;
+
                         $productsCollection[$i][] = new \Model\Product\Entity($item);
                     }
                 });

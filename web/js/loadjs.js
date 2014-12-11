@@ -79,6 +79,8 @@
 	var global = window,
 		jsStartTime = new Date().getTime(),
 
+        pageConfig = $('#page-config').data('value'),
+
 		knockoutUrl = '',
 		optimizelyUrl = '//cdn.optimizely.com/js/204544654.js',
 		yandexMapUrl = '',
@@ -87,9 +89,9 @@
 		historyUrl = '',
 		kladr = '',
 		directCreditUrl = 'http://direct-credit.ru/widget/api_script_utf.js',
+        tealeafUrl = '',
 
 		debug = false,
-		pageConfig = $('#page-config').data('value'),
 		templateType = document.body.getAttribute('data-template') || '',
 		templSep = templateType.indexOf(' ')
 	; // end of vars
@@ -242,6 +244,7 @@
 	mustacheUrl = ( debug ) ? '/js/vendor/mustache.js' : '/js/prod/mustache.min.js';
 	historyUrl = ( debug ) ? '/js/vendor/history.js' : '/js/prod/history.min.js';
 	kladr = ( debug ) ? '/js/vendor/jquery.kladr.js' : '/js/prod/jquery.kladr.min.js';
+	tealeafUrl = ( debug ) ? '/js/prod/tealeaf.js' : '/js/prod/tealeaf.min.js';
 
 	/**
 	 * Загрузка скриптов по шаблону
@@ -645,6 +648,7 @@
 	if ( loadScripts.hasOwnProperty(templateType) ) {
 		console.log('Загрузка скриптов. Шаблон %s', templateType);
 		loadScripts[templateType]();
+		if (pageConfig.tealeaf === true) $LAB.script( getWithVersion('tealeaf.js') );
 	}
 	else {
 		console.log('Шаблон %s не найден. Загрузка стандартного набора скриптов', templateType);

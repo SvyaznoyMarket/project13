@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page     \View\ProductCategory\RootPage
+ * @var $page     \View\Jewel\ProductCategory\RootPage
  * @var $category \Model\Product\Category\Entity
  */
 ?>
@@ -39,7 +39,7 @@ $helper = new \Helper\TemplateHelper();
                 'page'      => 1,
                 'url'       => $page->url('product.recommended'),
                 'sender'    => [
-                    'name'     => 'retailrocket',
+                    'name'     => 'enter',
                     'position' => 'Viewed',
                 ],
             ]) ?>

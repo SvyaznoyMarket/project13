@@ -7,7 +7,7 @@ return function(
 ) { ?>
 
     <!-- Сортировка товаров на странице -->
-    <div class="bSortingLine clearfix">
+    <div class="bSortingLine clearfix js-category-sortingAndPagination">
         <?= $helper->render('product/__listAction-sorting', ['productSorting' => $productSorting]) // сортировка ?>
 
         <? if (false): ?>
@@ -16,7 +16,7 @@ return function(
 
         <? if (false): ?>
         <!-- Выбор вывода товаров на странице страницами/простыней -->
-        <ul class="bSortingList mPager">
+        <ul class="bSortingList mPager js-category-pagination">
             <li class="bSortingList__eItem mTitle">Страницы</li>
 
             <li class="bSortingList__eItem mSortItem mActive"><a class="bSortingList__eLink" href="">123</a></li>

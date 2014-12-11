@@ -66,6 +66,7 @@ $helper = new \Helper\TemplateHelper();
             <? foreach ($blocks as $key => $block) : ?>
             <li class="slidesBox_i">
                 <? foreach ($block as $product) : ?>
+                <? if (!$product) continue ?>
                 <div class="item">
                     <a href="<?= $product->getLink() ?>" class="item_imgw"><img src="<?= $product->getImageUrl(2) ?>" class="item_img" alt="<?= $product->getName() ?>"/></a>
                     <div class="item_n"><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></div>

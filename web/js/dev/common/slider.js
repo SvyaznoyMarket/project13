@@ -7,15 +7,15 @@
         $body.on('click', '.jsRecommendedItem', function(event) {
             console.log('jsRecommendedItem');
 
-            event.stopPropagation();
-
             try {
                 var
                     $el = $(this),
                     link = $el.attr('href'),
                     $slider = $el.parents('.js-slider'),
                     sender = $slider.length ? $slider.data('slider').sender : null
-                    ;
+                ;
+
+                $body.trigger('TLT_processDOMEvent', [event]);
 
                 $body.trigger('trackGoogleEvent', {
                     category: 'RR_взаимодействие',
@@ -30,6 +30,7 @@
                     }
                 });
 
+                event.stopPropagation();
             } catch (e) { console.error(e); }
         });
 
