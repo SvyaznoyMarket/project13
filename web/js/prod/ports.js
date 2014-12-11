@@ -296,15 +296,19 @@ window.ANALYTICS = {
 
 	// финальная страница оформления заказа
 	sociomanticOrderCompleteJS: function() {
-		var basket = {products: [], transaction: '', amount: 0.0, currency: 'RUB'};
+		var basket = {products: [], transaction: '', amount: 0.0, currency: 'RUB'},
+			ordersData = $('#jsOrder').data('value');
+
+		if (!ordersData) return;
+
 		// пройдем по заказам
-		$.each($('#jsOrder').data('value'), function(i,order){
+		$.each(ordersData.orders, function(i,order){
 			// пройдем по продуктам
 			$.each(order.products, function(ii,pr) {
 				basket.products.push({identifier: pr.id, amount: pr.price, currency: 'RUB', quantity: pr.quantity})
 			});
 			// если несколько заказов, то пишем их через дефис
-			basket.transaction += i == 0 ? order.number_erp : ' - ' + order.number_erp;
+			basket.transaction += i == 0 ? order.numberErp : ' - ' + order.numberErp;
 			// если несколько заказов, то суммируем сумму
 			basket.amount += parseInt(order.sum, 10);
 		});
