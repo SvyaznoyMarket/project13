@@ -82,9 +82,10 @@ class CreateAction extends OrderV3 {
 
         \App::logger()->info(['action' => __METHOD__, 'core.response' => $coreResponse], ['order']);
 
+        $this->logOrderResults($coreResponse);
+
         $sessionData = [];
         if ((bool)$coreResponse) {
-        $this->logOrderResults($coreResponse);
 
             foreach ($coreResponse as $orderData) {
                 if (!is_array($orderData)) {
@@ -126,5 +127,58 @@ class CreateAction extends OrderV3 {
         $this->session->set(self::SESSION_IS_READED_KEY, false);
 
         return new \Http\RedirectResponse(\App::router()->generate('orderV3.complete'));
+    }
+
+    /** Добавление запроса на подписку
+     * @param $subscribeResult
+     * @param $email
+     */
+    private function addSubscribeRequest(&$subscribeResult, $email) {
+
+        $subscribeParams = [
+            'email'      => $email,
+            'geo_id'     => $this->user->getRegion()->getId(),
+            'channel_id' => 1,
+        ];
+
+        if ($userEntity = $this->user->getEntity()) {
+            $subscribeParams['token'] = $userEntity->getToken();
+        }
+
+        $this->client->addQuery('subscribe/create', $subscribeParams, [], function($data) use (&$subscribeResult) {
+            if (isset($data['subscribe_id']) && isset($data['subscribe_id'])) $subscribeResult = true;
+        }, function(\Exception $e) use (&$subscribeResult) {
+            \App::exception()->remove($e);
+            // "code":910,"message":"Не удается добавить подписку, указанный email уже подписан на этот канал рассылок"
+            if ($e->getCode() == 910) $subscribeResult = true;
+        });
+    }
+
+    /** Логируем ответ от ядра в случае успешного запроса
+     * @param $coreResponse
+     */
+    private function logOrderResults($coreResponse) {
+        if ((bool)$coreResponse) {
+            foreach ($coreResponse as $orderData) {
+                if (!is_array($orderData)) {
+                    \App::logger()->error(['message' => 'Получены неверные данные для созданного заказа', 'orderData' => $orderData], ['order']);
+                    continue;
+                }
+                $createdOrder = new \Model\Order\CreatedEntity($orderData);
+
+                // если не получен номер заказа
+                if (!$createdOrder->getNumber()) {
+                    \App::logger()->error(['message' => 'Не получен номер заказа', 'orderData' => $orderData], ['order']);
+                    continue;
+                }
+                // если заказ не подтвержден
+                if (!$createdOrder->getConfirmed()) {
+                    \App::logger()->error(['message' => 'Заказ не подтвержден', 'orderData' => $orderData], ['order']);
+                }
+
+                $createdOrders[] = $createdOrder;
+                \App::logger()->info(['message' => 'Заказ успешно создан', 'orderData' => $orderData], ['order']);
+            }
+        }
     }
 }
