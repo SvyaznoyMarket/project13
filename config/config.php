@@ -590,8 +590,8 @@ $c->abTest = [
 
         'jewel_filter' => [
             'name'          => 'Графические фильтры для ювелирки',
-            'gaSlotNumber'        => 11,
-            'enabled'       => true,
+            'gaSlotNumber'  => 11,
+            'enabled'       => false,
             'expireDate'    => '2015-12-31',
             'cases' => [
                 'old_filter' => [
