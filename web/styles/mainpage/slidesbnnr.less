@@ -26,6 +26,8 @@
             margin: 0 0 6px;
             background: @white;
             .rounded(3px);
+            width: 83px;
+            height: 53px;
         }
         &_img{
             display: block;
@@ -36,14 +38,14 @@
 
             cursor: pointer;
 
-
             .opacity(.6);
             .rounded(3px);
             &-act,
             &:hover{
                 border: 1px solid @white;
-                width: 81px;
-                height: 51px;
+                position: relative;
+                top: -1px;
+                left: -1px;
 
                 .opacity(1);
             }
