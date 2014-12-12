@@ -3905,6 +3905,36 @@ if ( !Array.prototype.indexOf ) {
 	};
 
 	/**
+	 * Извлекает строку запроса из URL адреса и преобразует её в объект (который и возвращает).
+	 * @param {string} url
+	 * @returns {{}}
+	 */
+	utils.parseUrlParams = function(url) {
+		var
+			result = {},
+			params = url.replace(/^[^?]*\?|\#.*$/g, '').split('&');
+
+		for (var i = 0; i < params.length; i++) {
+			var param = params[i].split('=');
+
+			if (!param[0]) {
+				param[0] = '';
+			}
+
+			if (!param[1]) {
+				param[1] = '';
+			}
+
+			param[0] = decodeURIComponent(param[0]);
+			param[1] = decodeURIComponent(param[1]);
+
+			result[param[0]] = param[1];
+		}
+
+		return result;
+	};
+
+	/**
 	 * Экранирует спец. символы регулярного выражения в строке
 	 *
 	 * @param 		{string}	string

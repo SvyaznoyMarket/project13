@@ -36,6 +36,13 @@
 
 	catalog.filter = {
 		/**
+		 * Выполнять ли обновление фильтров при изменении свойства
+		 *
+		 * @type	{boolean}
+		 */
+		updateOnChange: true,
+
+		/**
 		 * Последние загруженные данные
 		 *
 		 * @type	{Object}
@@ -375,6 +382,10 @@
 			console.info('change filter');
 			console.log(e);
 
+			if (!catalog.filter.updateOnChange) {
+				return;
+			}
+
 			var sendUpdate = function sendUpdate() {
 				filterBlock.trigger('submit');
 			};
@@ -612,35 +623,10 @@
 			// end of vars
 
 			catalog.filter.resetForm();
-			catalog.filter.updateFilter(parseUrlParams(url));
+			catalog.filter.updateFilter(utils.parseUrlParams(url));
 			catalog.history.gotoUrl(url);
 
 			return false;
-		},
-
-		parseUrlParams = function(url) {
-			var
-				result = {},
-				params = url.replace(/^[^?]*\?|\#.*$/g, '').split('&');
-
-			for (var i = 0; i < params.length; i++) {
-				var param = params[i].split('=');
-
-				if (!param[0]) {
-					param[0] = '';
-				}
-
-				if (!param[1]) {
-					param[1] = '';
-				}
-
-				param[0] = decodeURIComponent(param[0]);
-				param[1] = decodeURIComponent(param[1]);
-
-				result[param[0]] = param[1];
-			}
-
-			return result;
 		},
 
 		/**
