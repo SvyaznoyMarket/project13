@@ -1087,8 +1087,7 @@ class Action {
                 ),
                 'selectedFilter' => $selectedFilter->execute(
                     \App::closureTemplating()->getParam('helper'),
-                    $productFilter,
-                    \App::router()->generate('product.category', ['categoryPath' => $category->getPath()])
+                    $productFilter
                 ),
                 'pagination'     => (new \View\PaginationAction())->execute(
                     \App::closureTemplating()->getParam('helper'),

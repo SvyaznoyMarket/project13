@@ -308,8 +308,8 @@
 				url = filterBlock.attr('action') || '',
 				slidersInputState = catalog.filter.getSlidersInputState(),
 				unchangedNumberFieldNames = catalog.filter.getUnchangedNumberFieldNames(),
-				activeSort = viewParamPanel.find('.js-category-sorting-activeItem').find('.jsSorting'),
-				sortUrl = activeSort.data('sort'),
+				activeSort = viewParamPanel.find('.js-category-sorting-activeItem:not(.js-category-sorting-defaultItem)').find('.jsSorting'),
+				sortUrl = activeSort.length ? activeSort.data('sort') : null,
 				formSerizalizeData,
 				urlParams = catalog.filter.getUrlParams(),
 				hasCategory = false;
@@ -345,7 +345,9 @@
 
 			console.log(url);
 
-			url = url.addParameterToUrl('sort', sortUrl);
+			if (sortUrl) {
+				url = url.addParameterToUrl('sort', sortUrl);
+			}
 
 			return url;
 		},

@@ -35,10 +35,12 @@ class TemplateHelper {
      * @param array $replaces
      * @param array $excluded
      * @param null $route
+     * @param bool|array $keepQueryStringParams
+     * @param null|string $baseUrl
      * @return mixed
      * @throws \RuntimeException
      */
-    public function replacedUrl(array $replaces, array $excluded = null, $route = null) {
+    public function replacedUrl(array $replaces, array $excluded = null, $route = null, $keepQueryStringParams = true, $baseUrl = null) {
         $request = \App::request();
 
         if (null == $route) {
@@ -55,8 +57,13 @@ class TemplateHelper {
         foreach (array_diff(array_keys($request->attributes->all()), ['pattern', 'method', 'action', 'route', 'require']) as $k) {
             $params[$k] = $request->attributes->get($k);
         }
-        foreach ($request->query->all() as $k => $v) {
-            $params[$k] = $v;
+
+        if ($keepQueryStringParams) {
+            foreach ($request->query->all() as $k => $v) {
+                if (!is_array($keepQueryStringParams) || in_array($k, $keepQueryStringParams, true)) {
+                    $params[$k] = $v;
+                }
+            }
         }
 
         foreach ($replaces as $k => $v) {
@@ -82,7 +89,36 @@ class TemplateHelper {
 
         $params = array_diff_assoc($params, $excluded);
 
-        return \App::router()->generate($route, $params);
+        $url = \App::router()->generate($route, $params);
+
+        if ($baseUrl) {
+            $urlQueryString = $this->getQueryString($url);
+            if ($urlQueryString) {
+                $baseUrlQueryString = $this->getQueryString($baseUrl);
+                parse_str($urlQueryString, $urlParams);
+                parse_str($baseUrlQueryString, $baseUrlParams);
+                $resultParams = array_merge($baseUrlParams, $urlParams);
+
+                if ($baseUrlQueryString) {
+                    $baseUrl = substr($baseUrl, 0, -(strlen($baseUrlQueryString) + 1));
+                }
+
+                $url = $baseUrl . ($resultParams ? '?' . http_build_query($resultParams) : '');
+            } else {
+                $url = $baseUrl;
+            }
+        }
+
+        return $url;
+    }
+
+    private function getQueryString($url) {
+        $pos = strpos($url, '?');
+        if ($pos === false) {
+            return '';
+        } else {
+            return substr($url, $pos + 1);
+        }
     }
 
     /**
