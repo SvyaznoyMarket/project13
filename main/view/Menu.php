@@ -18,7 +18,7 @@ class Menu {
         if ($page instanceof \View\DefaultLayout) $this->page = $page;
     }
 
-    /**
+    /** Умная рекурсивная функция Егора для построения меню, но пока не используемая
      * @param \Model\Region\Entity $region
      * @throws \Exception
      * @return \Model\Menu\Entity[]
@@ -157,6 +157,11 @@ class Menu {
         return $menu;
     }
 
+    /** Текущая функция для построения меню
+     * @param \Model\Region\Entity $region
+     * @return array
+     * @throws \Exception
+     */
     public function generate_new(\Model\Region\Entity $region = null){
         $menu = [];
 
@@ -220,6 +225,7 @@ class Menu {
 
         foreach ($menuData['item'] as $item) {
 
+            // источник - категория
             if (isset($item['source']['id']) && @$item['source']['type'] == 'category-get') {
                 $menuItem = $this->getMenuItemById($item['source']['id'], $categoriesTree);
                 if ($menuItem) {
@@ -233,10 +239,21 @@ class Menu {
                 }
             }
 
+            // источник - слайс
             if (@$item['source']['type'] == 'slice') {
                 $menuItem = new BasicMenuEntity([
                     'name'  => @$item['name'],
                     'link'  => \App::router()->generate('slice.show', ['sliceToken' => @$item['source']['url']])
+                ]);
+                $this->getImageFromMedias($menuItem, (array)@$item['medias']);
+                $menu[] = $menuItem;
+            }
+
+            // источник - ссылка
+            if (@$item['source']['type'] == 'reference') {
+                $menuItem = new BasicMenuEntity([
+                    'name'  => @$item['name'],
+                    'link'  => $this->prepareLink(@$item['source']['url'])
                 ]);
                 $this->getImageFromMedias($menuItem, (array)@$item['medias']);
                 $menu[] = $menuItem;
@@ -267,9 +284,21 @@ class Menu {
         return null;
     }
 
+    /** Возвращает относительный путь вместо полного
+     * @param $link string|null
+     * @return string
+     */
+    private function prepareLink($link) {
+        return (string)preg_replace('/^\s*http:\/\/(www\.)?enter\.ru/', '', (string)$link);
+    }
+
+    /** Присваивает изображение для пункта меню
+     * @param BasicMenuEntity $menuEntity
+     * @param array $medias
+     */
     private function getImageFromMedias(BasicMenuEntity &$menuEntity, array $medias) {
         foreach ($medias as $item) {
-            if (in_array('mdpi', (array)@$item['tags'])) {
+            if (in_array('site-web', (array)@$item['tags'])) {
                 $menuEntity->image = @$item['sources'][0]['url'];
             }
         }
@@ -295,6 +324,10 @@ class Menu {
         }
     }
 
+    /** Установка картинки вместо текста для категории второго уровня
+     * @param $menu
+     * @param array $categoriesWithLogo
+     */
     private function setCategoryLogo(&$menu, array $categoriesWithLogo) {
         /** @var $menu BasicMenuEntity[] */
         foreach ($menu as $menuItem) {

@@ -122,6 +122,7 @@
 			minLength: 1,
 			select: function( event, ui ) {
 				this.value = '';
+				$input.val('');
 				address.update(ui.item.value);
 				return false;
 			},
@@ -143,16 +144,16 @@
 			keypress: function(e){
 				// Нажатие ENTER означает ручной ввод улицы, дома, квартиры
 				if (e.which == 13) {
-					if ($input.val().length > 0) {
-						address.update($input.val()); // обновляем
-						$input.val(''); // очищаем поле ввода
+					if ($(this).val().length > 0) {
+						address.update($(this).val()); // обновляем
+						$input.val(''); // очищаем поля ввода
 					}
 				}
 			},
 			keydown: function(e){
 				// Обработка Backspace
 				var key = e.keyCode || e.charCode;
-				if (key === 8 && $input.val().length === 0) {
+				if (key === 8 && $(this).val().length === 0) {
 					if (address.inputPrefix() == 'дом:') {
 						$input.val(address.streetName());
 						address.clearBuilding().clearStreet();
@@ -165,7 +166,7 @@
 				}
 			},
 			blur: function(){
-				address.update($input.val()); // обновляем
+				address.update($(this).val()); // обновляем
 				$input.val(''); // очищаем поле ввода
 				saveAddress(address);
 			}

@@ -1076,6 +1076,7 @@
 			minLength: 1,
 			select: function( event, ui ) {
 				this.value = '';
+				$input.val('');
 				address.update(ui.item.value);
 				return false;
 			},
@@ -1097,16 +1098,16 @@
 			keypress: function(e){
 				// Нажатие ENTER означает ручной ввод улицы, дома, квартиры
 				if (e.which == 13) {
-					if ($input.val().length > 0) {
-						address.update($input.val()); // обновляем
-						$input.val(''); // очищаем поле ввода
+					if ($(this).val().length > 0) {
+						address.update($(this).val()); // обновляем
+						$input.val(''); // очищаем поля ввода
 					}
 				}
 			},
 			keydown: function(e){
 				// Обработка Backspace
 				var key = e.keyCode || e.charCode;
-				if (key === 8 && $input.val().length === 0) {
+				if (key === 8 && $(this).val().length === 0) {
 					if (address.inputPrefix() == 'дом:') {
 						$input.val(address.streetName());
 						address.clearBuilding().clearStreet();
@@ -1119,7 +1120,7 @@
 				}
 			},
 			blur: function(){
-				address.update($input.val()); // обновляем
+				address.update($(this).val()); // обновляем
 				$input.val(''); // очищаем поле ввода
 				saveAddress(address);
 			}
@@ -1481,7 +1482,9 @@
                 console.log("Model:", data.result.OrderDeliveryModel);
                 $orderContent.empty().html($(data.result.page).find('#js-order-content').html());
 				if ($orderContent.find('.jsAddressRootNode').length > 0) {
-					ko.applyBindings(ENTER.OrderV3.address, $orderContent.find('.jsAddressRootNode')[0]);
+					$.each($orderContent.find('.jsAddressRootNode'), function(i,val){
+						ko.applyBindings(ENTER.OrderV3.address, val);
+					});
 					if (typeof ENTER.OrderV3.constructors.smartAddressInit == 'function') ENTER.OrderV3.constructors.smartAddressInit();
 				}
             }).always(function(){
@@ -1586,7 +1589,13 @@
     });
 
 	$orderContent.on('click', '.jsAddressRootNode', function() {
+		$(this).find('.jsSmartAddressInput').focus();
+
 		ENTER.OrderV3.address.inputFocus(true);
+	});
+
+	$orderContent.on('blur', '.jsSmartAddressInput', function() {
+		ENTER.OrderV3.address.inputFocus(false);
 	});
 
     // клик по "изменить дату" и "изменить место"
