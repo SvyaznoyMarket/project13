@@ -379,9 +379,7 @@ class Action {
         // фильтры
         $productFilter = $this->getFilter($filters, $category, $brand, $request, $shop);
 
-        if (\App::abTest()->getTest('jewel_filter') && \App::abTest()->getTest('jewel_filter')->getEnabled()) {
-            $this->ab_jewel_filter($category, $productFilter);
-        }
+        $this->correctFilterForJewel($category, $productFilter);
 
         if (!$category->isV2()) {
             foreach ($productFilter->getFilterCollection() as $filter) {
@@ -1410,10 +1408,8 @@ class Action {
     }
 
 
-    private function ab_jewel_filter(\Model\Product\Category\Entity &$category, \Model\Product\Filter &$productFilter) {
-        $test = \App::abTest()->getTest('jewel_filter');
-
-        $testCategoryUis = [
+    private function correctFilterForJewel(\Model\Product\Category\Entity &$category, \Model\Product\Filter &$productFilter) {
+        $categoryUis = [
             '633c0d73-d9f5-4984-a679-e8154be71c6a', // ЗОЛОТЫЕ УКРАШЕНИЯ
             '3835654e-0b7c-4ce8-9006-f042fdb9676a', // Золотые серьги
             '152aacd2-b43c-4b48-ac16-a95045ad8083', // Золотые кольца
@@ -1442,27 +1438,24 @@ class Action {
             'f2ffa700-0ac7-4125-867b-1a114b5f20b6', // Подвески из серебра
         ];
 
-        if ($test && in_array($category->getUi(), $testCategoryUis, true)) {
-            $testKey = $test->getChosenCase()->getKey();
-            if ('old_filter' === $testKey) {
-                foreach ($productFilter->getFilterCollection() as $filter) {
-                    if ('Металл' === $filter->getName() || 'Вставка' === $filter->getName()) {
-                        $filter->setIsAlwaysShow(false);
-                        foreach ($filter->getOption() as $option) {
-                            $option->setImageUrl('');
-                        }
-                    }
+        if (in_array($category->getUi(), $categoryUis, true)) {
+            $isNewFilterPresent = false;
+            foreach ($productFilter->getFilterCollection() as $filter) {
+                if ('Металл' === $filter->getName() || 'Вставка' === $filter->getName()) {
+                    $isNewFilterPresent = true;
+                    $filter->setIsAlwaysShow(true);
                 }
-            } else if ('new_filter_with_photo_closed' === $testKey || 'new_filter_with_photo_opened' === $testKey) {
-                $isNewFilterPresent = false;
-                foreach ($productFilter->getFilterCollection() as $filter) {
-                    if ('Металл' === $filter->getName() || 'Вставка' === $filter->getName()) {
-                        $isNewFilterPresent = true;
-                        $filter->setIsAlwaysShow(true);
-                    }
-                }
+            }
 
-                if ($isNewFilterPresent) {
+            if ($isNewFilterPresent) {
+                $view3CategoryUis = [
+                    '5505db94-143c-4c28-adb9-b608d39afe26', // КОЛЬЦА
+                    'd7b951ed-7b94-4ece-a3ae-c685cf77e0dd', // СЕРЬГИ
+                ];
+
+                if (in_array($category->getUi(), $view3CategoryUis, true)) {
+                    $category->setProductView(3);
+                } else {
                     $category->setProductView(4);
                 }
             }
