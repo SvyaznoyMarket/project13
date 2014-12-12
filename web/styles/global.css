@@ -2839,6 +2839,8 @@ img[height="0"] {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
+    width: 83px;
+    height: 53px;
   }
   .slidesbnnr_thmbs_img {
     display: block;
@@ -2859,8 +2861,9 @@ img[height="0"] {
   .slidesbnnr_thmbs_img-act,
   .slidesbnnr_thmbs_img:hover {
     border: 1px solid #ffffff;
-    width: 81px;
-    height: 51px;
+    position: relative;
+    top: -1px;
+    left: -1px;
     -moz-opacity: 1;
     -khtml-opacity: 1;
     -webkit-opacity: 1;
