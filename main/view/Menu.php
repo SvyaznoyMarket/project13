@@ -298,10 +298,7 @@ class Menu {
      */
     private function getImageFromMedias(BasicMenuEntity &$menuEntity, array $medias) {
         foreach ($medias as $item) {
-            if (
-                in_array('web-site', (array)@$item['tags']) // TODO: убрать как только, так сразу
-                || in_array('site-web', (array)@$item['tags'])
-            ) {
+            if (in_array('site-web', (array)@$item['tags'])) {
                 $menuEntity->image = @$item['sources'][0]['url'];
             }
         }
