@@ -147,6 +147,11 @@ module.exports = function (grunt, options) {
             dest: pathProd + 'catalog.min.js'
         },
 
+		giftJS: {
+			src: pathDev + 'gift/*.js',
+			dest: pathProd + 'gift.min.js'
+		},
+
         productJS: {
             src: pathDev + 'product/*.js',
             dest: pathProd + 'product.min.js'

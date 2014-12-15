@@ -1811,6 +1811,10 @@
 			label = $('label[for="'+id+'"]');
 		// end of vars
 
+		if (!label.length) {
+			label = $input.closest('label');
+		}
+
 		if ( type === 'checkbox' ) {
 
 			if ( $input.is(':checked') ) {
@@ -1826,9 +1830,14 @@
 			if ( $input.is(':checked') ) {
 				$('input[name="'+groupName+'"]').each(function() {
 					var currElement = $(this),
-						currId = currElement.attr('id');
+						currId = currElement.attr('id'),
+						currLabel = $('label[for="'+currId+'"]');
 
-					$('label[for="'+currId+'"]').removeClass('mChecked');
+					if (!currLabel.length) {
+						currLabel = currElement.closest('label');
+					}
+
+					currLabel.removeClass('mChecked');
 				});
 
 				label.addClass('mChecked');
