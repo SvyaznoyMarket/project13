@@ -6249,10 +6249,10 @@
     padding: 5px 7px;
   }
   .bMapShops__eMapCityList_city .shopInCity {
-    padding: 1px 10px 1px 20px;
+    padding: 1px 10px;
   }
   .bMapShops__eMapCityList_city .shopInCity p {
-    margin: 8px 0 5px;
+    margin: 8px 0 0;
   }
   .bMapShops__eMapCityList_city .shopInCity:hover {
     background-color: #fff7e6;
@@ -6371,6 +6371,14 @@
   #region_map-container {
     float: right;
     width: 700px;
+  }
+  .shopInStock {
+    color: #5aa055;
+    margin: 0 0 5px;
+  }
+  .shopInStock-mb {
+    font-size: 19px;
+    margin: -20px 0 0;
   }
 }
 @media print {

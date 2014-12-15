@@ -27,13 +27,14 @@ $shopCount = count($markers);
     <h2 class='bMapShops__eTitle'>Магазины Enter на карте</h2>
     <script type="text/html" id="shopInCity">
         <li class="shopInCity" ref="<%=id%>"><p><%=name%></p>
+            <div class="shopInStock">1234 товара можно забрать сегодня</div>
             <span><%=regtime%></span><br>
             <a href="<%=link%>" class="bGrayButton shopchoose">Перейти к магазину</a>
         </li>
     </script>
     <div class='bMapShops__eContent'>
         <? if ((bool)$shopAvailableRegions): ?>
-        <ul style="width: 218px;" class="bMapShops__eMapCityList fl">
+        <ul style="width: 225px;" class="bMapShops__eMapCityList fl">
             <? foreach ($shopAvailableRegions as $region): ?>
             <li class="font16 bMapShops__eMapCityList_city" ref="<?=$region->getId()?>">
                 <p class="cityName"><?= $region->getName() ?></p class="cityName">
