@@ -6619,22 +6619,90 @@ img[height="0"] {
   .popup_inn {
     padding: 10px 10px 30px;
   }
+  .popup_hd {
+    border-bottom: 1px solid #c7c7c7;
+    padding: 0 5px;
+  }
+  .popup_hd_tl {
+    font-size: 22px;
+  }
+  .popup_hd_tx {
+    font-size: 14px;
+    color: #4f4f4f;
+    margin: 0 0 8px;
+  }
+  .shopsPopup {
+    padding: 10px 10px 0;
+    width: 640px;
+  }
 }
 @media all {
-  .markerList-table {
-    display: table;
-    width: 605px;
+  .markerList {
+    position: relative;
+  }
+  .markerList:after {
+    background: rgba(255, 255, 255, 0);
+    background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.15) 14%, #ffffff 91%);
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(0%, rgba(255, 255, 255, 0)), color-stop(14%, rgba(255, 255, 255, 0.15)), color-stop(91%, #ffffff));
+    background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.15) 14%, #ffffff 91%);
+    background: -o-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.15) 14%, #ffffff 91%);
+    background: -ms-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.15) 14%, #ffffff 91%);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.15) 14%, #ffffff 91%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ffffff', GradientType=0);
+    bottom: 0;
+    left: 0;
+    height: 10px;
+    width: 100%;
+    content: "";
+    position: absolute;
+  }
+  .markerList:before {
+    background: #ffffff;
+    background: -moz-linear-gradient(top, #ffffff 11%, rgba(255, 255, 255, 0.1) 91%, rgba(255, 255, 255, 0) 100%);
+    background: -webkit-gradient(left top, left bottom, color-stop(11%, #ffffff), color-stop(91%, rgba(255, 255, 255, 0.1)), color-stop(100%, rgba(255, 255, 255, 0)));
+    background: -webkit-linear-gradient(top, #ffffff 11%, rgba(255, 255, 255, 0.1) 91%, rgba(255, 255, 255, 0) 100%);
+    background: -o-linear-gradient(top, #ffffff 11%, rgba(255, 255, 255, 0.1) 91%, rgba(255, 255, 255, 0) 100%);
+    background: -ms-linear-gradient(top, #ffffff 11%, rgba(255, 255, 255, 0.1) 91%, rgba(255, 255, 255, 0) 100%);
+    background: linear-gradient(to bottom, #ffffff 11%, rgba(255, 255, 255, 0.1) 91%, rgba(255, 255, 255, 0) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ffffff', GradientType=0);
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 10px;
+    width: 100%;
+  }
+  .markerList_lst {
+    max-height: 515px;
+    overflow: auto;
+  }
+  .markerList_lst .btnBuy__eLink {
+    width: 80px;
+    padding: 3px 0;
+    text-decoration: none;
+    font-size: 14px;
+  }
+  .markerList_lst .btnOneClickBuy {
+    margin: 5px 0 0;
   }
   .markerList_row {
-    display: table-row;
     font-size: 14px;
+    border-bottom: 1px solid #d3d3d3;
   }
   .markerList_row:hover {
     background: #fff7e6;
   }
+  .markerList_row:last-child {
+    border-bottom: none;
+  }
   .markerList_col {
     display: table-cell;
-    padding: 5px;
+    /* IE6-8 */
+    *display: block;
+    *float: left;
+    *clear: right;
+    *zoom: 1;
+    padding: 10px 5px;
     vertical-align: middle;
   }
   .markerList_col-left {
@@ -6649,39 +6717,23 @@ img[height="0"] {
     text-align: right;
   }
   .markerList_col-right {
-    min-width: 80px;
-    text-align: center;
-    color: #929292;
-    font-size: 12px;
+    min-width: 90px;
+    text-align: right;
   }
-  .markerList .markColor {
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    border-radius: 50%;
+  .markerList_light {
+    color: #616161;
+  }
+  .markerList .btnOneClickBuy {
+    margin: 0;
     display: inline-block;
     vertical-align: top;
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    width: 10px;
-    height: 10px;
-    vertical-align: middle;
-  }
-  .markerList_light {
-    display: block;
-    color: #616161;
-  }
-  .markerList .btnOneClickBuy {
-    margin: 0;
-  }
-  .markerList .btnBuy__eLink {
-    width: 66px;
-    padding: 5px 0;
-    text-decoration: none;
-    font-size: 12px;
   }
   .markerList .btnText {
-    text-transform: lowercase;
+    color: #616161;
+    font-size: 14px;
     font-weight: bold;
   }
   .markerList-left .markColor {
@@ -6698,10 +6750,28 @@ img[height="0"] {
   }
   .markerList-left .markerList_light {
     margin: 0 0 5px 16px;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
   }
   .markerList-left .btnBuy {
     text-align: center;
     height: auto;
+  }
+  .markColor {
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    width: 10px;
+    height: 10px;
+    vertical-align: middle;
   }
 }
 @media all {
