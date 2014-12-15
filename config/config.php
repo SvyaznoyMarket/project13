@@ -276,6 +276,7 @@ $c->partners['GetIntent']['enabled'] = true;
 $c->adFox['enabled'] = true;
 
 $c->partner['cookieName'] = 'last_partner';
+$c->partner['secondClickCookieName'] = 'last_partner_sec_click'; // SITE-4834
 $c->partner['cookieLifetime'] = 2592000; // 30 дней
 
 $c->onlineCall['enabled'] = true;
