@@ -9,7 +9,7 @@ return function (
 
     ?>
 
-    <? if (count($shopStates) == 1) : $shop = $shopStates[0]->getShop() ?>
+    <? if (false/* && count($shopStates) == 1*/) : $shop = $shopStates[0]->getShop() ?>
         <div class="shopsVar">
 
             <span class="shopsVar_title"><?= $shopStates[0]->getQuantity() ? 'Есть в магазине' : 'Сегодня есть на витрине магазина' ?></span>
@@ -35,7 +35,7 @@ return function (
         </div>
     <? endif ?>
 
-    <? if (count($shopStates) > 1) : ?>
+    <? if (true/* || count($shopStates) > 1*/) : ?>
         <div class="shopsVar shopsVar-center">
             <span class="shopsVar_title">Есть в <?= count($shopStates) ?> магазинах</span>
             <input type="button" class="button whitebutton js-show-shops" id="whitebutton" value="Забрать сегодня" />
