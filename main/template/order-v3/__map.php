@@ -59,7 +59,9 @@ return function(
                         </div>
                     <? endif ?>
 
-                    <div class="shopLst_stick">Послезавтра</div>
+                    <? if (false): ?>
+                        <div class="shopLst_stick">Послезавтра</div>
+                    <? endif ?>
 
                     <div class="shopLst_ln"><?= $point->address ?></div>
                     <div class="shopLst_ln"><?= $point->regtime ?></div>
