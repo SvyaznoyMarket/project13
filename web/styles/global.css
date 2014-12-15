@@ -2809,11 +2809,22 @@ img[height="0"] {
     -moz-transform: scale(0.95);
     transform: scale(0.95);
   }
-  .main.main-new {
+  .main-new {
     background: #ffffff url('/styles/mainpage/img/fon1600.jpg') no-repeat top left;
     background-attachment: fixed;
     background-size: cover;
     -moz-background-size: cover;
+  }
+  .main-new .wrapper {
+    /* Fallback for web browsers that doesn't support RGBa */
+    background: #ffffff;
+    /* RGBa with 0.6 opacity */
+    background: rgba(255, 255, 255, 0.5);
+    /* For IE 5.5 - 7*/
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff, endColorstr=#ffffff);
+    /* For IE 8*/
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff, endColorstr=#ffffff)";
+    zoom: 1;
   }
 }
 @media all {
