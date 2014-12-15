@@ -211,6 +211,10 @@ $isNewRecommendation =
         <div class="js-showTopBar"></div>
     <? endif ?>
 
+    <? if ($lifeGiftProduct): ?>
+        <?= $helper->render('cart/__button-product-lifeGift', ['product' => $lifeGiftProduct]) // Кнопка "Подари жизнь" ?>
+    <? endif ?>
+
     <?= $helper->render('cart/__form-oneClick', [
         'product' => $product,
         'region'  => \App::user()->getRegion(),

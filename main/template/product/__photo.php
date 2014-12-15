@@ -129,7 +129,7 @@ return function(
              alt="<?= $helper->escape($product->getName()) ?>"
         />
 
-        <? if (!$product->isAvailable()): ?>
+        <? if (!$product->isAvailable() && (!$product->getLabel() || mb_strtolower($product->getLabel()->getName()) !== 'подари жизнь')): ?>
             <div class="bProductDescImgBig_none">Нет в наличии</div>
         <? endif ?>
     </div><!--/product big image section -->
