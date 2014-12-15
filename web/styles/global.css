@@ -1409,6 +1409,11 @@ img[height="0"] {
   .header_b .navsite_i {
     min-width: 60px;
   }
+  .header.header-new {
+    -webkit-box-shadow: 0px 0px 26px 0px rgba(50, 50, 50, 0.25);
+    -moz-box-shadow: 0px 0px 26px 0px rgba(50, 50, 50, 0.25);
+    box-shadow: 0px 0px 26px 0px rgba(50, 50, 50, 0.25);
+  }
   .hdcontacts {
     margin: 0 10px 0 0;
   }
@@ -2813,13 +2818,16 @@ img[height="0"] {
     transform: scale(0.95);
   }
   .main-new {
-    background: #ffffff url('/styles/mainpage/img/fon1600.jpg') no-repeat top center;
+    background: #ffffff url('/styles/mainpage/img/fon1600.jpg') no-repeat 50% 95%;
     background-attachment: fixed;
   }
   .main-new .wrapper {
     background: #ffffff;
     background: transparent\9;
     background: rgba(255, 255, 255, 0.6);
+    -webkit-box-shadow: 0px 0px 26px 0px rgba(50, 50, 50, 0.25);
+    -moz-box-shadow: 0px 0px 26px 0px rgba(50, 50, 50, 0.25);
+    box-shadow: 0px 0px 26px 0px rgba(50, 50, 50, 0.25);
   }
   .main-new .wrapper:nth-child(n) {
     filter: none;
@@ -2838,6 +2846,9 @@ img[height="0"] {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
+    -webkit-box-shadow: 0px 0px 2px 0 rgba(50, 50, 50, 0.25);
+    -moz-box-shadow: 0px 0px 2px 0 rgba(50, 50, 50, 0.25);
+    box-shadow: 0px 0px 2px 0 rgba(50, 50, 50, 0.25);
   }
   .main-new .shopInfoTab:before {
     border-bottom-color: #F2F2F2;
