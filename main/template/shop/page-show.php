@@ -56,7 +56,9 @@
             <?= $shop->getAddress() ?>
         </h2>
 
-        <div class="shopInStock shopInStock-mb">1234 товара можно забрать сегодня</div>
+        <? if ($productCount = $shop->getProductCount()): ?>
+            <div class="shopInStock shopInStock-mb"><?= $productCount ?> <?= $page->helper->numberChoice($productCount, ['товар', 'товара', 'товаров'])?> можно забрать сегодня</div>
+        <? endif ?>
 
         <p class='bMapInfo__eP'>
             <span class='bMapInfo__eSpan mBig'>

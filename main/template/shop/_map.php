@@ -27,7 +27,7 @@ $shopCount = count($markers);
     <h2 class='bMapShops__eTitle'>Магазины Enter на карте</h2>
     <script type="text/html" id="shopInCity">
         <li class="shopInCity" ref="<%=id%>"><p><%=name%></p>
-            <div class="shopInStock">1234 товара можно забрать сегодня</div>
+            <div class="shopInStock"><%=product_count_text%></div>
             <span><%=regtime%></span><br>
             <a href="<%=link%>" class="bGrayButton shopchoose">Перейти к магазину</a>
         </li>
