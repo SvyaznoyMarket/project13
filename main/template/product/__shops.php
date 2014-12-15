@@ -9,7 +9,7 @@ return function (
 
     ?>
 
-    <? if (count($shopStates) == 1) : $shop = $shopStates[0]->getShop(); ?>
+    <? if (count($shopStates) == 1) : $shop = $shopStates[0]->getShop() ?>
         <div class="shopsVar">
 
             <span class="shopsVar_title"><?= $shopStates[0]->getQuantity() ? 'Есть в магазине' : 'Сегодня есть на витрине магазина' ?></span>
@@ -18,8 +18,8 @@ return function (
                 <? if ((bool)$shop->getSubway()) : ?>
                     <!--  Метро  -->
                     <i class="markColor" style="background-color: <?= $shop->getSubway()[0]->getLine()->getColor() ?>"></i>
-                    <span class="markDesc">м. <?= $shop->getSubway()[0]->getName(); ?></span>
-                <? endif; ?>
+                    <span class="markDesc">м. <?= $shop->getSubway()[0]->getName() ?></span>
+                <? endif ?>
 
                 <!--  Адрес  -->
                 <a class="markerList_light td-underl" target="_blank" href="<?= $helper->url('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()]) ?>"><?= $shop->getAddress() ?></a>
@@ -30,10 +30,10 @@ return function (
                 <? if ($shopStates[0]->getQuantity()) : ?>
                     <!--  Кнопка Резерв -->
                     <?= $helper->render('cart/__button-product-oneClick',['product' => $product, 'shop' => $shop, 'url' => $helper->url('cart.oneClick.product.set', ['productId' => $product->getId(), 'shopId' => $shop->getId()]), 'class' => 'btnBuy__eLink mShopsOnly', 'value' => 'Резерв']) ?>
-                <? endif; ?>
+                <? endif ?>
             </div>
         </div>
-    <? endif; ?>
+    <? endif ?>
 
     <? if (count($shopStates) > 1) : ?>
         <div class="shopsVar shopsVar-center">
@@ -47,20 +47,20 @@ return function (
 
             <!--  Магазины  -->
             <ul class="markerList markerList-table">
-            <? foreach ($shopStates as $shopState) : $shop = $shopState->getShop(); ?>
+            <? foreach ($shopStates as $shopState) : $shop = $shopState->getShop() ?>
 
                 <!--  Магазин -->
                 <li class="markerList_row">
                     <span class="markerList_col markerList_col-mark">
-                        <? if ($shop->getSubway()) : ?><i class="markColor" style="background-color: <?= ($shop->getSubway()[0] ? $shop->getSubway()[0]->getLine()->getColor() : '') ?>"></i><? endif; ?>
+                        <? if ($shop->getSubway()) : ?><i class="markColor" style="background-color: <?= ($shop->getSubway()[0] ? $shop->getSubway()[0]->getLine()->getColor() : '') ?>"></i><? endif ?>
                     </span>
 
                     <!--  Адрес  -->
                     <span class="markerList_col markerList_col-left">
                         <? if ((bool)$shop->getSubway()) : ?>
                             <!--  Метро  -->
-                            м. <?= $shop->getSubway()[0]->getName(); ?>
-                        <? endif; ?>
+                            м. <?= $shop->getSubway()[0]->getName() ?>
+                        <? endif ?>
                         <a class="markerList_light" href="<?= $helper->url('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()]) ?>"><?= $shop->getAddress() ?></a>
                     </span>
 
@@ -72,14 +72,21 @@ return function (
                     <!--  Кнопка "Резерв" или "На витрине"  -->
                     <span class="markerList_col markerList_col-right">
                         <? if ( $shopState->getQuantity() > 0 ) : ?>
-                            <?= $helper->render('cart/__button-product-oneClick',['product' => $product, 'shop' => $shop, 'url' => $helper->url('cart.oneClick.product.set', ['productId' => $product->getId(), 'shopId' => $shop->getId()]), 'class' => 'btnBuy__eLink mShopsOnly', 'value' => 'Резерв']); ?>
-                        <? else : ?>
+                            <?= $helper->render('cart/__button-product-oneClick', [
+                                'product' => $product,
+                                'shop'    => $shop,
+                                'url'     => $helper->url('cart.oneClick.product.set', ['productId' => $product->getId(), 'shopId' => $shop->getId()]),
+                                //'class'   => 'btnBuy__eLink mShopsOnly',
+                                'class'   => 'btnBuy__eLink',
+                                'value'   => 'Купить'
+                            ]) ?>
+                        <? else: ?>
                             <span class="btnText">На витрине</span>
-                        <? endif; ?>
+                        <? endif ?>
                     </span>
                 </li>
-            <? endforeach; ?>
+            <? endforeach ?>
             </ul>
         </div>
-    <? endif; ?>
+    <? endif ?>
 <?};
