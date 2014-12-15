@@ -1369,6 +1369,9 @@ img[height="0"] {
     border-style: solid;
     border-color: #c7c7c7;
   }
+  .main-new .i-header {
+    background: url('/styles/mainpage/img/enterprize_logo.png') no-repeat 0 0;
+  }
   .header {
     width: 960px;
     margin: 0 auto;
@@ -2810,21 +2813,50 @@ img[height="0"] {
     transform: scale(0.95);
   }
   .main-new {
-    background: #ffffff url('/styles/mainpage/img/fon1600.jpg') no-repeat top left;
+    background: #ffffff url('/styles/mainpage/img/fon1600.jpg') no-repeat top center;
     background-attachment: fixed;
-    background-size: cover;
-    -moz-background-size: cover;
   }
   .main-new .wrapper {
-    /* Fallback for web browsers that doesn't support RGBa */
     background: #ffffff;
-    /* RGBa with 0.6 opacity */
-    background: rgba(255, 255, 255, 0.5);
-    /* For IE 5.5 - 7*/
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff, endColorstr=#ffffff);
-    /* For IE 8*/
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff, endColorstr=#ffffff)";
-    zoom: 1;
+    background: transparent\9;
+    background: rgba(255, 255, 255, 0.6);
+  }
+  .main-new .wrapper:nth-child(n) {
+    filter: none;
+  }
+  .main-new .shopInfoTab,
+  .main-new .shopInfo_i,
+  .main-new .slidesBox-items .slidesBox_i {
+    background: #ffffff;
+  }
+  .main-new .shopInfoTab,
+  .main-new .shopInfo_i {
+    border-top: solid 1px #eeeeee;
+    border-left: solid 1px #eeeeee;
+    border-right: solid 1px #eeeeee;
+    border-bottom: solid 1px #eeeeee;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+  }
+  .main-new .shopInfoTab:before {
+    border-bottom-color: #F2F2F2;
+  }
+  .main-new .shopInfoTab {
+    margin: 20px 10px;
+  }
+  .main-new .slidesBox-items {
+    width: 464px;
+  }
+  .main-new .slidesBox-items.fl-l {
+    margin-left: 10px;
+  }
+  .main-new .slidesBox-items.fl-r {
+    margin-right: 10px;
+  }
+  .main-new .slidesBox-items .slidesBox_inn {
+    width: 464px;
+    height: 483px;
   }
 }
 @media all {
