@@ -8649,7 +8649,7 @@ img[height="0"] {
 }
 @media all {
   .selShop {
-    width: 850px;
+    width: 875px;
     max-height: 510px;
     padding: 10px;
     font-size: 16px;
@@ -8660,7 +8660,8 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    width: 275px;
+    width: 300px;
+    font-size: 14px;
   }
   .selShop_r {
     display: inline-block;
@@ -8690,17 +8691,13 @@ img[height="0"] {
     *zoom: 1;
     width: 48%;
     padding: 5px 0 5px 10px;
+    color: #616161;
     border-right: 1px solid #d3d3d3;
     font-size: 18px;
     cursor: pointer;
   }
   .selShop_tab-act {
-    -moz-opacity: 0.5;
-    -khtml-opacity: 0.5;
-    -webkit-opacity: 0.5;
-    opacity: 0.5;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
-    filter: alpha(opacity=50);
+    color: #000000;
     cursor: default;
   }
   .selShop_tab:last-child {
@@ -8718,13 +8715,23 @@ img[height="0"] {
     border-bottom: 1px solid #d3d3d3;
   }
   .shopLst_i:last-child {
+    border-bottom: none;
     margin-bottom: 10px;
   }
   .shopLst_addrs {
     position: relative;
     margin: 0 0 5px 15px;
   }
-  .shopLst_addrs:after {
+  .shopLst_metro {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    width: 192px;
+  }
+  .shopLst_metro:after {
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
@@ -8736,23 +8743,45 @@ img[height="0"] {
     content: '';
     background: inherit;
   }
-  .shopLst_addrs_tx {
-    display: block;
+  .shopLst_metro_inn {
     background: #ffffff;
   }
-  .shopLst_addrs_tm {
-    display: block;
-    background: #ffffff;
-    font-size: 14px;
+  .shopLst_ln {
+    color: #616161;
+  }
+  .shopLst_stick {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    width: 78px;
+    text-align: center;
+    font-size: 12px;
+    background: #feeed5;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    line-height: 1;
+    padding: 1px 0 2px;
+    margin: 4px 0 0;
+    color: #424242;
   }
   .shopLst:after {
+    content: "";
     position: absolute;
+    background: rgba(255, 255, 255, 0);
+    background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.15) 14%, #ffffff 91%);
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(0%, rgba(255, 255, 255, 0)), color-stop(14%, rgba(255, 255, 255, 0.15)), color-stop(91%, #ffffff));
+    background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.15) 14%, #ffffff 91%);
+    background: -o-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.15) 14%, #ffffff 91%);
+    background: -ms-linear-gradient(top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.15) 14%, #ffffff 91%);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.15) 14%, #ffffff 91%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ffffff', GradientType=0);
     bottom: 0;
     left: 0;
-    width: 285px;
-    height: 35px;
-    content: "";
-    background: url("/styles/order/img/transGradWhBot.png") repeat-x 0 0;
+    width: 100%;
+    height: 25px;
   }
 }
 /*---------Хиты продаж/Выгодное предложение/Самым разборчивым----------*/
