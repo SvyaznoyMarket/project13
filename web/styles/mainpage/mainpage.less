@@ -147,3 +147,42 @@
         .scale(0.95);
     }
 }
+// новая главная страница
+.main-new{
+    background: @white url('@{base-url}/mainpage/img/fon1600.jpg') no-repeat top center;
+    background-attachment: fixed;
+    .wrapper{
+        background:rgb(255,255,255);
+        background: transparent\9;
+        background:rgba(255,255,255,0.6);
+        &:nth-child(n) {
+            filter: none;
+        }
+    }
+    .shopInfoTab, .shopInfo_i, .slidesBox-items .slidesBox_i{
+        background: @white;
+    }
+    .shopInfoTab, .shopInfo_i,{
+        .bordered();
+        .rounded(@radius:4px);
+    }
+    .shopInfoTab:before{
+        border-bottom-color: #F2F2F2;
+    }
+    .shopInfoTab{
+        margin: 20px 10px;
+    }
+    .slidesBox-items{
+        width: 464px;
+    }
+    .slidesBox-items.fl-l{
+        margin-left:10px;
+    }
+    .slidesBox-items.fl-r{
+    margin-right: 10px;
+    }
+    .slidesBox-items .slidesBox_inn {
+            width: 464px;
+            height: 483px;
+    }
+}
