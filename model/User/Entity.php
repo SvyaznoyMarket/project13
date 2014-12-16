@@ -515,7 +515,7 @@ class Entity {
      * @return string
      */
     public function getName() {
-        return implode(' ', array($this->getFirstName(), $this->getLastName()));
+        return trim(implode(' ', [$this->getFirstName(), $this->getLastName()]), ' ');
     }
 
     /**
