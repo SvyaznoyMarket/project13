@@ -109,9 +109,7 @@ $f = function(
     </script>
     <!-- End of VisualDNA Audience Analytics API Import -->
 
-    <!--div style="text-align: left; margin-top: 30px; margin-left: 95px;" class="bIndexLinks2__eBan bIndexLinks2__mBan bIndexLinks2__mBanLast"><a href="/how_choose_product"><img src="http://content.enter.ru/wp-content/uploads/2013/12/howchoose.png" /></a></div-->
-
-    <div style="text-align: left; margin-top: 30px; margin-left: 95px;" class="bIndexLinks2__eBan bIndexLinks2__mBan bIndexLinks2__mBanLast"><a href="/life_gift2014"><img src="http://content.enter.ru/wp-content/uploads/2014/11/first.jpg" /></a></div>
+    <div style="text-align: left; margin-top: 30px; margin-left: 95px;" class="bIndexLinks2__eBan bIndexLinks2__mBan bIndexLinks2__mBanLast"><a href="/how_choose_product"><img src="http://content.enter.ru/wp-content/uploads/2013/12/howchoose.png" /></a></div>
 
     <div class="bIndexLinks2__eBan bIndexLinks2__mBan" style="margin-right: 15px;"><a style="padding-left: 21px;" href="/take_credit"><img src='http://content.enter.ru/wp-content/uploads/2013/10/imgCreditFooter1.jpg'></a></div>
 
