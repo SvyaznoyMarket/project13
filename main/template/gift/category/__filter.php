@@ -29,20 +29,25 @@ return function(
     }
     ?>
 
-    <div class="fltrBtn fltrBtn-bt">
+    <div class="fltrBtn fltrBtn-gift" style="background-image: url('/styles/catalog/img/bg-ny-gift.jpg')">
         <form id="productCatalog-filter-form" class="js-category-filter" action="<?= $baseUrl ?>" method="GET">
+            <div class="fltrBtnLn">
+                <? foreach ($tagProperties as $property): ?>
+                    <?= $helper->render('gift/category/filter/property/__dropBox', ['productFilter' => $productFilter, 'property' => $property]) ?>
+                <? endforeach ?>
+            </div>
 
-            <? if ($priceProperty): ?>
-                <?= $helper->render('gift/category/filter/property/__slider', ['productFilter' => $productFilter, 'property' => $priceProperty]) ?>
-            <? endif ?>
+            <div class="fltrBtnLn fltrBtnLn-bg">
+                <? if ($priceProperty): ?>
+                    <?= $helper->render('gift/category/filter/property/__slider', ['productFilter' => $productFilter, 'property' => $priceProperty]) ?>
+                <? endif ?>
+            </div>
 
-            <? if ($categoryProperty): ?>
-                <?= $helper->render('gift/category/filter/property/__list', ['productFilter' => $productFilter, 'property' => $categoryProperty]) ?>
-            <? endif ?>
-
-            <? foreach ($tagProperties as $property): ?>
-                <?= $helper->render('gift/category/filter/property/__dropBox', ['productFilter' => $productFilter, 'property' => $property]) ?>
-            <? endforeach ?>
+            <div class="fltrBtnLn fltrBtnLn-npb fltrBtnLn-lst fltrBtnLn-bg">
+                <? if ($categoryProperty): ?>
+                    <?= $helper->render('gift/category/filter/property/__list', ['productFilter' => $productFilter, 'property' => $categoryProperty]) ?>
+                <? endif ?>
+            </div>
         </form>
     </div>
 

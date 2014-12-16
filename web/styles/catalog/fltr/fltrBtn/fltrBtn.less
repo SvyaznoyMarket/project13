@@ -247,9 +247,38 @@
             }
         }
     }
+
+    &-gift {
+        background-position: 0 0;
+        background-repeat: no-repeat;
+        margin: -20px 0 0 -10px;
+        padding: 160px 0 1px;
+        position: relative;
+
+        .fltrBtn_ln {
+
+            &-col {
+                .inline-block();
+                width: 180px;
+            }
+        }
+
+    }
 }
 
 .fltrBtnLn {
-    .inline-block();
-    margin: 0 auto;
+    max-width: 920px;
+    .table();
+    margin: 0 auto 20px;
+    .rounded(3px);
+
+    &-bg {
+        background: rgba(255, 255, 255, .75);
+        padding: 10px;
+        .drop-shadow();
+    }
+
+    &-npb {
+        padding-bottom: 0;
+    }
 }

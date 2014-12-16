@@ -12,8 +12,7 @@ $helper = new \Helper\TemplateHelper();
 ?>
 
 <div class="bCatalog" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
-    <div class="bCustomFilter">
-        <h1>ПОДАРКИ!</h1>
+    <div class="bCustomFilter" styles="background-image: url('/styles/catalog/img/bg-ny-gift.jpg')">
 
         <?= $helper->render('gift/category/__filter', [
             'productFilter' => $productFilter,

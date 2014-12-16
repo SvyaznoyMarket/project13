@@ -11,20 +11,22 @@ return function(
     ];
 ?>
 
-    <div class="bRangeSlider js-category-filter-rangeSlider">
-        <input class="bRangeSlider__eInput mFromRange js-category-filter-rangeSlider-from" name="<?= \View\Name::productCategoryFilter($property, 'from') ?>" value="<?= $helper->clearZeroValue($productFilter->getValueMin($property)) ?>" type="text" />
+    <div class="fltrRange fltrRange-v3 js-category-filter-rangeSlider">
+        <span class="fltrRange_lbl">от</span>
+        <input class="fltrRange_it mFromRange js-category-filter-rangeSlider-from" name="<?= \View\Name::productCategoryFilter($property, 'from') ?>" value="<?= $helper->clearZeroValue($productFilter->getValueMin($property)) ?>" type="text" />
 
-        <div class="bFilterSlider js-category-filter-rangeSlider-slider" data-config="<?= $helper->json($data) ?>">
+        <div class="fltrRange_sldr js-category-filter-rangeSlider-slider" data-config="<?= $helper->json($data) ?>">
             <a class="ui-slider-handle ui-state-default ui-corner-all" href="#"></a>
             <a class="ui-slider-handle ui-state-default ui-corner-all" href="#"></a>
         </div>
 
-        <input class="bRangeSlider__eInput mLast mToRange js-category-filter-rangeSlider-to" name="<?= \View\Name::productCategoryFilter($property, 'to') ?>" value="<?= $helper->clearZeroValue($productFilter->getValueMax($property)) ?>" type="text" />
+        <span class="fltrRange_lbl">до</span>
+        <input class="fltrRange_it mLast mToRange js-category-filter-rangeSlider-to" name="<?= \View\Name::productCategoryFilter($property, 'to') ?>" value="<?= $helper->clearZeroValue($productFilter->getValueMax($property)) ?>" type="text" />
 
         <? if ($property->isPrice()): ?>
-            <span class="bRangeSlider__eRub rubl">p</span>
+            <span class="fltrRange_val rubl">p</span>
         <? else: ?>
-            <span class="bRangeSlider__eRub"><?= $property->getUnit() ?></span>
+            <span class="fltrRange_val"><?= $property->getUnit() ?></span>
         <? endif ?>
     </div>
 

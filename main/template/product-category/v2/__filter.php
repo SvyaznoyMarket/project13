@@ -90,7 +90,7 @@ return function(
                                 <span class="fltrBtnBox_tggl_tx"><?= $priceFilter->getName() ?></span>
                                 <i class="fltrBtnBox_tggl_corner"></i>
                             </div>
-                            <div class="fltrBtnBox_dd fltrBtnBox_dd-l ">
+                            <div class="fltrBtnBox_dd fltrBtnBox_dd-l">
                                 <ul class="fltrBtnBox_dd_inn lstdotted js-category-v2-filter-dropBox-content">
                                     <? foreach ($priceFilter->getPriceRanges() as $range): ?>
                                         <li class="lstdotted_i">

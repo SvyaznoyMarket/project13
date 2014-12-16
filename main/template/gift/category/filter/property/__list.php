@@ -8,19 +8,22 @@ return function(
 ?>
 
     <? foreach ($property->getOption() as $option): ?>
-        <label class=" <? if (!$property->getIsMultiple()): ?>mCustomLabelRadio<? endif ?>">
-            <input
-                class="customInput js-customInput"
-                type="checkbox"
-                name="<?= \View\Name::productCategoryFilter($property, $option, true) ?>"
-                value="<?= $option->getId() ?>"
-                <? if (in_array($option->getId(), $values)): ?>
-                    checked="checked"
-                <? endif ?>
-            />
+    <div class="fltrBtn_ln fltrBtn_ln-col">
+        <input
+            class="customInput customInput-defcheck3 js-customInput"
+            type="checkbox"
+            id="<?= $option->getId() ?>"
+            name="<?= \View\Name::productCategoryFilter($property, $option, true) ?>"
+            value="<?= $option->getId() ?>"
+            <? if (in_array($option->getId(), $values)): ?>
+                checked="checked"
+            <? endif ?>
+        />
 
-            <span class="customLabel_btx"><?= $option->getName() ?></span>
+        <label class="customLabel" for="<?= $option->getId() ?>">
+            <?= $option->getName() ?>
         </label>
+    </div>
     <? endforeach ?>
 
 <? };

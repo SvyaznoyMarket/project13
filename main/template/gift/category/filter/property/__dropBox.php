@@ -18,30 +18,36 @@ return function(
     }
 ?>
 
-    <div class="js-gift-category-filter-property-dropBox <? if ('sex' === $property->getName()): ?>js-gift-category-filter-property-dropBox-sex<? endif ?> <? if ('status-woman' === $property->getName()): ?>js-gift-category-filter-property-dropBox-status-woman<? endif ?> <? if ('status-man' === $property->getName()): ?>js-gift-category-filter-property-dropBox-status-man<? endif ?>">
-        <a href="#" class="js-gift-category-filter-property-dropBox-opener"><?= $helper->escape($selectedOption->getName()) ?></a>
+    <div class="fltrBtnBox fltrBtnBox-gift js-gift-category-filter-property-dropBox <? if ('sex' === $property->getName()): ?>js-gift-category-filter-property-dropBox-sex<? endif ?> <? if ('status-woman' === $property->getName()): ?>js-gift-category-filter-property-dropBox-status-woman<? endif ?> <? if ('status-man' === $property->getName()): ?>js-gift-category-filter-property-dropBox-status-man<? endif ?>">
+        <div class="fltrBtnBox_tggl">
+            <span class="js-gift-category-filter-property-dropBox-opener">
+                <?= $helper->escape($selectedOption->getName()) ?>
+            </span>
+            <i class="fltrBtnBox_tggl_corner"></i>
+        </div>
 
-        <ul class="js-gift-category-filter-property-dropBox-content">
-            <? foreach ($property->getOption() as $option): ?>
-                <li>
-                    <label class="js-gift-category-filter-property-dropBox-content-item">
+        <div class="fltrBtnBox_dd">
+            <ul class="fltrBtnBox_dd_inn lstdotted js-gift-category-filter-property-dropBox-content">
+                <? foreach ($property->getOption() as $option): ?>
+                    <li class="lstdotted_i">
                         <input
-                            class="customInput js-gift-category-filter-property-list-radio"
+                            class="customInput customInput-gift js-gift-category-filter-property-list-radio"
                             type="radio"
+                            id="<?= $option->getId() ?>"
                             name="<?= \View\Name::productCategoryFilter($property, $option) ?>"
                             value="<?= $option->getId() ?>"
                             <? if ($option === $selectedOption): ?>
                                 checked="checked"
                             <? endif ?>
                         />
-
-                        <span class="js-gift-category-filter-property-dropBox-content-item-title">
-                            <?= $helper->escape($option->getName()) ?>
-                        </span>
-                    </label>
-                </li>
-            <? endforeach ?>
-        </ul>
+                        <label for="<?= $option->getId() ?>" class="customLabel js-gift-category-filter-property-dropBox-content-item">
+                            <span class="js-gift-category-filter-property-dropBox-content-item-title">
+                                <?= $helper->escape($option->getName()) ?>
+                            </span>
+                        </label>
+                    </li>
+                <? endforeach ?>
+            </ul>
+        </div>
     </div>
-
 <? };
