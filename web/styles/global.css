@@ -2542,6 +2542,11 @@ img[height="0"] {
     *zoom: 1;
     height: 28px;
   }
+  .footer_cpy_mbl {
+    color: #c7c7c7;
+    display: inline-block;
+    zoom: 1;
+  }
 }
 @media all {
   /**
@@ -2817,6 +2822,16 @@ img[height="0"] {
     -moz-transform: scale(0.95);
     transform: scale(0.95);
   }
+  .zoomOut {
+    -webkit-transition: all 0.25s ease-out;
+    -moz-transition: all 0.25s ease-out;
+    transition: all 0.25s ease-out;
+  }
+  .zoomOut:hover {
+    -webkit-transform: scale(1.05);
+    -moz-transform: scale(1.05);
+    transform: scale(1.05);
+  }
   .main-new {
     background: #ffffff url('/styles/mainpage/img/fon1600.jpg') no-repeat 50% 95%;
     background-attachment: fixed;
@@ -2868,6 +2883,7 @@ img[height="0"] {
   .main-new .slidesBox-items .slidesBox_inn {
     width: 464px;
     height: 483px;
+  }
 }
 @media all {
   .slidesbnnr {
@@ -7582,7 +7598,7 @@ img[height="0"] {
 }
 @media all {
   /*---------Оформление заказа 3.0 ----------*/
-  /*
+  /* 
     orderCol
         orderCol_cnt
         orderCol_t
@@ -7694,7 +7710,7 @@ img[height="0"] {
 }
 @media all {
   /*---------Оформление заказа 3.0 -> строка перехода к следующему шагу .orderCompl ----------*/
-  /*
+  /* 
     orderCompl
         orderCompl_l
         orderCompl_btn
