@@ -1221,7 +1221,8 @@
             //console.log(address.getNextType());
             if (e.which == 13) {
                 //console.log('Enter pressed, address: ', address);
-                if ($(this).val().length > 0) address.update({type: address.getNextType(), name: $(this).val()})
+                if ($(this).val().length > 0) address.update({type: address.getNextType(), name: $(this).val()});
+                e.preventDefault();
             }
         });
 

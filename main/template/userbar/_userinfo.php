@@ -10,8 +10,7 @@
 
 <li class="userbtn_i topbarfix_log topbarfix_log-login js-topbarfixLogin" data-bind="visible: name(), css: {'enterprizeMember': isEnterprizeMember}" style="display: none">
     <a href="" class="topbarfix_log_lk" data-bind="attr: { href: link }">
-        <!--ko text: firstName--><!--/ko--><br />
-        <!--ko text: lastName--><!--/ko-->
+        <!--ko text: firstName--><!--/ko--> <!--ko text: lastName--><!--/ko-->
     </a>
 
     <div class="topbarfix_dd topbarfix_logOut">

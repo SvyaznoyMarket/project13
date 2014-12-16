@@ -1577,7 +1577,6 @@
 
 		changeRegionAnalytics = function changeRegionAnalytics( regionName ) {
 			if ( typeof _gaq !== 'undefined' ) {
-				_gaq.push(['_setCustomVar', 1, 'city', regionName, 2]);
 				_gaq.push(['_trackEvent', 'citySelector', 'selected', regionName]);
 			}
 
@@ -2159,6 +2158,21 @@ $(document).ready(function(){
 		}
 	};
 }());
+;$(document).ready(function(){
+	// при любом клике на странице
+	$(document.body).on('click', function(){
+		// ставим куку last_partner на 30 дней, если есть кука last_partner_sec_click
+		// осторожно, названия кук захардкожены :(
+		if (docCookies.hasItem('last_partner_sec_click')) {
+			docCookies.setItem(
+				'last_partner',
+				docCookies.getItem('last_partner_sec_click'),
+				60 * 60 *24 *30,
+				'/'
+			);
+		}
+	})
+});
 ;(function( ENTER ) {
 	function changeSocnetLinks(isSubscribe) {
 		$('.js-registerForm-socnetLink').each(function(index, link) {
@@ -4327,6 +4341,38 @@ $('body').on('click', '.jsRecommendedItemInMenu', function(event) {
     }
 
 }());
+;(function($) {
+
+    var
+        $body = $('body'),
+
+        TLT = (typeof this.TLT === 'object') ? this.TLT : null,
+
+        TLT_logCustomEvent = function(event, TLT_eventName, TLT_eventData) {
+            try {
+                console.info('TLT_logCustomEvent', TLT_eventName, TLT_eventData);
+
+                TLT.logCustomEvent(TLT_eventName, TLT_eventData);
+            } catch (e) {
+                console.error(e);
+            }
+        },
+
+        TLT_processDOMEvent = function(event, originalEvent) {
+            try {
+                console.info('TLT_processDOMEvent', originalEvent);
+
+                TLT.processDOMEvent(originalEvent);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    ;
+
+    //$body.on('TLT_logCustomEvent', TLT_logCustomEvent);
+    $body.on('TLT_processDOMEvent', TLT_processDOMEvent);
+
+})(jQuery);
 /* Top Menu */
 (function(){
 	var menuDelayLvl1 = 300; //ms

@@ -847,91 +847,21 @@ class Cart {
                 $blackcards = $this->getBlackcards();
                 $blackcard = is_array($blackcards) ? reset($blackcards) : null;
 
-                if (
-                    (\App::config()->f1Certificate['enabled'] && $certificate instanceof \Model\Cart\Certificate\Entity)
-                    || (\App::config()->coupon['enabled'] && $coupon instanceof \Model\Cart\Coupon\Entity)
-                    || (\App::config()->blackcard['enabled'] && $blackcard instanceof \Model\Cart\Blackcard\Entity)
-                ) {
-                    $data = [
-                        'user_id'       => \App::user()->getEntity() ? \App::user()->getEntity()->getId() : 0,
-                        'timestamp'     => time(),
+                \App::coreClientV2()->addQuery(
+                    'cart/get-price',
+                    ['geo_id' => \App::user()->getRegion()->getId()],
+                    [
                         'product_list'  => $this->getProductData(),
                         'service_list'  => $this->getServiceData(),
                         'warranty_list' => $this->getWarrantyData(),
-                        'card_f1_list'  =>
-                        $certificate
-                            ? [
-                                ['number' => $certificate->getNumber()],
-                            ]
-                            : [],
-                        'coupon_list'   =>
-                            $coupon
-                            ? [
-                                ['number' => $coupon->getNumber()],
-                            ]
-                            : [],
-                        'blackcard_list' =>
-                            $blackcard
-                            ? [
-                                ['number' => $blackcard->getNumber()],
-                            ]
-                            : [],
-                    ];
-
-                    $isFailed = false;
-                    \App::coreClientV2()->addQuery(
-                        'cart/get-price-new',
-                        [
-                            'geo_id'    => \App::user()->getRegion()->getId(),
-                        ],
-                        $data,
-                        function ($data) use (&$response) {
-                            if ((bool)$data) {
-                                $response = $data;
-                            }
-                        },
-                        function(\Exception $e) use (&$isFailed) {
-                            $isFailed = true;
+                    ],
+                    function ($data) use (&$response) {
+                        if ((bool)$data) {
+                            $response = $data;
                         }
-                    );
-                    \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['long']);
-                    \App::logger()->info(['core.response' => $response], ['cart']);
-
-                    // если запрос со скидками провалился, используем обычный запрос
-                    if ($isFailed) {
-                        \App::coreClientV2()->addQuery(
-                            'cart/get-price',
-                            ['geo_id' => \App::user()->getRegion()->getId()],
-                            [
-                                'product_list'  => $this->getProductData(),
-                                'service_list'  => $this->getServiceData(),
-                                'warranty_list' => $this->getWarrantyData(),
-                            ],
-                            function ($data) use (&$response) {
-                                if ((bool)$data) {
-                                    $response = $data;
-                                }
-                            }
-                        );
-                        \App::coreClientV2()->execute();
                     }
-                } else {
-                    \App::coreClientV2()->addQuery(
-                        'cart/get-price',
-                        ['geo_id' => \App::user()->getRegion()->getId()],
-                        [
-                            'product_list'  => $this->getProductData(),
-                            'service_list'  => $this->getServiceData(),
-                            'warranty_list' => $this->getWarrantyData(),
-                        ],
-                        function ($data) use (&$response) {
-                            if ((bool)$data) {
-                                $response = $data;
-                            }
-                        }
-                    );
-                    \App::coreClientV2()->execute();
-                }
+                );
+                \App::coreClientV2()->execute();
             }
         } catch(\Exception $e) {
             \App::logger()->error($e, ['session', 'cart']);

@@ -276,6 +276,7 @@ $c->partners['GetIntent']['enabled'] = true;
 $c->adFox['enabled'] = true;
 
 $c->partner['cookieName'] = 'last_partner';
+$c->partner['secondClickCookieName'] = 'last_partner_sec_click'; // SITE-4834
 $c->partner['cookieLifetime'] = 2592000; // 30 дней
 
 $c->onlineCall['enabled'] = true;
@@ -454,7 +455,7 @@ $c->order['prepayment'] = [
 ];
 $c->order['splitSessionKey'] = 'order_split';
 $c->order['oneClickSplitSessionKey'] = $c->order['splitSessionKey'] . '-1click';
-$c->order['sessionInfoOnComplete'] = false; // краткая инфа о заказе
+$c->order['sessionInfoOnComplete'] = true; // краткая инфа о заказе
 
 $c->newDeliveryCalc = true;
 
@@ -477,7 +478,7 @@ $c->tag['numSidebarCategoriesShown'] = 3;
 $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
 
-$c->lifeGift['enabled'] = true;
+$c->lifeGift['enabled'] = false;
 $c->lifeGift['regionId'] = 151021;
 $c->lifeGift['labelId'] = 17;
 $c->lifeGift['deliveryTypeId'] = 1077;
@@ -592,8 +593,8 @@ $c->abTest = [
 
         'jewel_filter' => [
             'name'          => 'Графические фильтры для ювелирки',
-            'gaSlotNumber'        => 11,
-            'enabled'       => true,
+            'gaSlotNumber'  => 11,
+            'enabled'       => false,
             'expireDate'    => '2015-12-31',
             'cases' => [
                 'old_filter' => [
@@ -618,11 +619,11 @@ $c->abTest = [
             'expireDate'    => '2015-12-31',
             'cases' => [
                 'old_recommendation' => [
-                    'traffic' => 50,
+                    'traffic' => 0,
                     'name'    => 'Старые рекомендации',
                 ],
                 'new_recommendation' => [
-                    'traffic' => 50,
+                    'traffic' => 100,
                     'name'    => 'Новые рекомендации',
                 ],
             ]

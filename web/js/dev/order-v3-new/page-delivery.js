@@ -109,7 +109,9 @@
                 console.log("Model:", data.result.OrderDeliveryModel);
                 $orderContent.empty().html($(data.result.page).find('#js-order-content').html());
 				if ($orderContent.find('.jsAddressRootNode').length > 0) {
-					ko.applyBindings(ENTER.OrderV3.address, $orderContent.find('.jsAddressRootNode')[0]);
+					$.each($orderContent.find('.jsAddressRootNode'), function(i,val){
+						ko.applyBindings(ENTER.OrderV3.address, val);
+					});
 					if (typeof ENTER.OrderV3.constructors.smartAddressInit == 'function') ENTER.OrderV3.constructors.smartAddressInit();
 				}
             }).always(function(){
@@ -214,7 +216,12 @@
     });
 
 	$orderContent.on('click', '.jsAddressRootNode', function() {
+		$(this).find('.jsSmartAddressInput').focus();
 		ENTER.OrderV3.address.inputFocus(true);
+	});
+
+	$orderContent.on('blur', '.jsSmartAddressInput', function() {
+		ENTER.OrderV3.address.inputFocus(false);
 	});
 
     // клик по "изменить дату" и "изменить место"

@@ -106,23 +106,14 @@ $helper = new \Helper\TemplateHelper();
     <? endif ?>
 
     <section class="epHead">
-        <!-- <h2 class="epHead_title">УПРАВЛЯЙТЕ ЦЕНОЙ С ФИШКАМИ ENTER PRIZE</h2>
+        <h2 class="epHead_title">ВЫБИРАЙ СВОЮ СКИДКУ</h2>
 
         <ul class="epHead_list">
             <li class="epHead_list_item">Выберите фишку — получите <strong>код скидки</strong>. Используйте его при заказе.</li>
             <li class="epHead_list_item">Каждый месяц появляются <strong>новые фишки</strong> в ограниченном количестве.</li>
             <li class="epHead_list_item">О самых интересных скидках мы сообщаем по <strong>e-mail</strong> и в соцсетях.</li>
             <li class="epHead_list_item">Получить и применить фишку можно  <strong>один раз</strong>.</li>
-        </ul> -->
-
-        <h2 class="epHead_title" style="color:#f5ecc0;">ТОЛЬКО 12 ДЕКАБРЯ! ПОЛУЧИ ФИШКУ СО СКИДКОЙ 5000 РУБЛЕЙ!</h2>
-
-        <ul class="epHead_list">
-            <li class="epHead_list_item">Ты еще не в Enter Prize? Выбери<strong> любую фишку</strong>, чтобы начать регистрацию!</li>
-            <li class="epHead_list_item"><strong>12 декабря</strong> войди в личный кабинет и следи за этой страницей.</li>
-            <li class="epHead_list_item">Золотая фишка появится один раз в день<strong> только для участников Enter Prize</strong>.</li>
-            <li class="epHead_list_item">Будь внимателен! Фишек будет <strong>всего 5 штук</strong>.</li>
-        </ul>
+        </ul>>
     </section>
 
     <? /* if ((bool)$isCouponSent): ?>
