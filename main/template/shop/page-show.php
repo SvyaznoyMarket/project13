@@ -52,7 +52,13 @@
 <div class='bMapInfo'>
     <div class='bMapInfo__eIco mShop'></div>
     <div class='bMapInfo__eText'>
-        <h2 class='bMapInfo__eTitle mShop'><?= $shop->getAddress() ?></h2>
+        <h2 class='bMapInfo__eTitle mShop'>
+            <?= $shop->getAddress() ?>
+        </h2>
+
+        <? if ($productCount = $shop->getProductCount()): ?>
+            <div class="shopInStock shopInStock-mb"><?= $productCount ?> <?= $page->helper->numberChoice($productCount, ['товар', 'товара', 'товаров'])?> можно забрать сегодня</div>
+        <? endif ?>
 
         <p class='bMapInfo__eP'>
             <span class='bMapInfo__eSpan mBig'>

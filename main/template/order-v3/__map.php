@@ -52,15 +52,19 @@ return function(
             <? $subway = (isset($point->subway) && isset($point->subway[0])) ? $point->subway[0] : null ?>
 
             <li class="shopLst_i jsChangePoint" data-id="<?= $point->id ?>" data-token="<?= $token ?>">
-                <div<? if ($subway && $subway->line): ?> style="background: <?= $subway->line->color ?>;"<? endif ?> class="shopLst_addrs">
-                    <span class="shopLst_addrs_tx">
-                        <? if ($subway): ?>
-                            <?= $subway->name ?><br>
-                        <? endif ?>
-                        <span class="colorBrightGrey"><?= $point->address ?></span>
-                    </span>
+                <div class="shopLst_addrs">
+                    <? if ($subway): ?>
+                        <div class="shopLst_metro" <? if ($subway && $subway->line): ?> style="background: <?= $subway->line->color ?>;"<? endif ?>>
+                            <div class="shopLst_metro_inn">м. <?= $subway->name ?></div>
+                        </div>
+                    <? endif ?>
 
-                    <span class="shopLst_addrs_tm"><?= $point->regtime ?></span>
+                    <? if (false): ?>
+                        <div class="shopLst_stick">Послезавтра</div>
+                    <? endif ?>
+
+                    <div class="shopLst_ln"><?= $point->address ?></div>
+                    <div class="shopLst_ln"><?= $point->regtime ?></div>
                 </div>
             </li>
         <? endforeach ?>
