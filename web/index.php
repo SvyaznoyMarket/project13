@@ -146,7 +146,7 @@ try {
     }
 
     // проверка редиректа из scms
-    if (!$response instanceof \Http\Response && \App::config()->redirect301['enabled']) {
+    if (!$response instanceof \Http\Response) {
         $response = (new \Controller\PreAction())->execute($request);
     }
 

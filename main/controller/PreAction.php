@@ -22,24 +22,40 @@ class PreAction {
         if (\App::config()->preview) {
             return null;
         }
-        // если ajax-запрос, то игнорируем
-        if ($request->isXmlHttpRequest()) {
+        // если ajax-запрос или POST-запрос, то игнорируем
+        if ($request->isXmlHttpRequest() || ('POST' == $request->getMethod())) {
             return null;
         }
 
         $redirectUrl = null;
-        \App::scmsSeoClient()->addQuery(
-            'redirect',
-            ['from_url' => $uri],
-            [],
-            function($data) use(&$uri, &$redirectUrl) {
-                $redirectUrl = isset($data['to_url']) ? trim($data['to_url']) : null;
 
-                if ($redirectUrl && (0 !== strpos($redirectUrl, '/'))) {
-                    $redirectUrl = null;
-                    \App::logger()->error(sprintf('Неправильный редирект %s -> %s', $uri, $redirectUrl), ['redirect']);
+        if (\App::config()->redirect301['enabled']) {
+            \App::scmsSeoClient()->addQuery(
+                'redirect',
+                ['from_url' => $uri],
+                [],
+                function($data) use(&$uri, &$redirectUrl) {
+                    $redirectUrl = isset($data['to_url']) ? trim($data['to_url']) : null;
+
+                    if ($redirectUrl && (0 !== strpos($redirectUrl, '/'))) {
+                        $redirectUrl = null;
+                        \App::logger()->error(sprintf('Неправильный редирект %s -> %s', $uri, $redirectUrl), ['redirect']);
+                    }
+                    $redirectUrl = preg_replace('/\/$/','',(string)$redirectUrl);
+                },
+                function(\Exception $e) {
+                    \App::exception()->remove($e);
                 }
-                $redirectUrl = preg_replace('/\/$/','',(string)$redirectUrl);
+            );
+        }
+
+        $abTestData = null;
+        \App::scmsClient()->addQuery(
+            'ab_test/get-active',
+            [],
+            [],
+            function($data) use(&$abTestData) {
+                $abTestData = $data;
             },
             function(\Exception $e) {
                 \App::exception()->remove($e);
