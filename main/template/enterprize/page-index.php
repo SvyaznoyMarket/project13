@@ -106,9 +106,7 @@ $helper = new \Helper\TemplateHelper();
     <? endif ?>
 
     <section class="epHead">
-        <!-- <h2 class="epHead_title">УПРАВЛЯЙТЕ ЦЕНОЙ С ФИШКАМИ ENTER PRIZE</h2-->
-
-        <h2 class="epHead_title" style="color:#f5ecc0;">Раздача золотых фишек окончена!<br/>Поздравляем победителей!</h2>
+        <h2 class="epHead_title">ВЫБИРАЙ СВОЮ СКИДКУ</h2>
 
         <ul class="epHead_list">
             <li class="epHead_list_item">Выберите фишку — получите <strong>код скидки</strong>. Используйте его при заказе.</li>
