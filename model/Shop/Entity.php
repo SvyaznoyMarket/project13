@@ -43,6 +43,8 @@ class Entity {
     private $subway = [];
     /* @var array */
     private $workingTime = [];
+    /** @var int|null */
+    private $productCount;
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -386,5 +388,17 @@ class Entity {
         }
     }
 
+    /**
+     * @param int|null $productCount
+     */
+    public function setProductCount($productCount) {
+        $this->productCount = (null === $productCount) ? $productCount : (int)$productCount;
+    }
 
+    /**
+     * @return int|null
+     */
+    public function getProductCount() {
+        return $this->productCount;
+    }
 }

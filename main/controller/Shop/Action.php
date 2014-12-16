@@ -11,6 +11,7 @@ class Action {
 
         $client = \App::coreClientV2();
         $user = \App::user();
+        $helper = new \Helper\TemplateHelper();
 
         // подготовка 1-го пакета запросов
 
@@ -80,6 +81,26 @@ class Action {
         // маркеры
         $markers = [];
         foreach ($shops as $shop) {
+            if ($shop->getRegion() && in_array($shop->getId(), [194])) {
+                \RepositoryManager::product()->prepareIteratorByFilter(
+                    [
+                    ['shop', 1, [$shop->getId()]],
+                    ['is_view_list', 1, [true]],
+                    ],
+                    [],
+                    null,
+                    null,
+                    new \Model\Region\Entity(['id' => $shop->getRegion()->getId()]),
+                    function($data) use (&$shop) {
+                        $shop->setProductCount(isset($data['count']) ? $data['count'] : null);
+                    },
+                    function(\Exception $e) {
+                        \App::exception()->remove($e);
+                    }
+                );
+                \App::coreClientV2()->execute();
+            }
+
             $markers[$shop->getId()] = array(
                 'id'                => $shop->getId(),
                 'region_id'         => $shop->getRegion()->getId(),
@@ -91,6 +112,7 @@ class Action {
                 'longitude'         => $shop->getLongitude(),
                 'is_reconstruction' => $shop->getIsReconstructed(),
                 'subway_name'       => $shop->getSubwayName(),
+                'product_count_text' => $shop->getProductCount() ? ($shop->getProductCount() . ' ' .$helper->numberChoice($shop->getProductCount(), ['товар', 'товара', 'товаров']) . ' можно забрать сегодня') : null,
             );
         }
 
@@ -202,6 +224,27 @@ class Action {
             )));
         }
 
+        if (in_array($shop->getId(), [194])) {
+            \RepositoryManager::product()->prepareIteratorByFilter(
+                [
+                    ['shop', 1, [$shop->getId()]],
+                    ['is_view_list', 1, [true]],
+                ],
+                [],
+                null,
+                null,
+                $currentRegion,
+                function($data) use (&$shop) {
+                    $shop->setProductCount(isset($data['count']) ? $data['count'] : null);
+                },
+                function(\Exception $e) {
+                    \App::exception()->remove($e);
+                }
+            );
+
+        }
+        \App::curl()->execute();
+
         $page = new \View\Shop\ShowPage();
         $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('currentRegion', $currentRegion);
@@ -261,12 +304,19 @@ class Action {
     private function sortMarkersBySubways(&$markers)
     {
         usort($markers, function($a, $b) {
-            if (
+            if (194 == $a['id']) {
+                return -1;
+            } else if (194 == $b['id']) {
+                return 1;
+            } else if (
                 empty($a['subway_name']) &&
                 empty($b['subway_name'])
-            ) return 0;
+            ) {
+                return 0;
+            }
 
             if ($a['subway_name'] == $b['subway_name']) return 0;
+
             return $a['subway_name'] < $b['subway_name'] ? -1 : 1;
         });
     }
