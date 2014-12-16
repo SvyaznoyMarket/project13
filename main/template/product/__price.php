@@ -21,6 +21,7 @@ return function(
 
     	<label for="price" class="bCustomLabel mCustomLabelRadioBig mChecked">
 	    	<strong itemprop="price" class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong>
+            <meta itemprop="priceCurrency" content="RUB" />
 	    	<span class="rubl">p</span>
 	    </label>
     </div>

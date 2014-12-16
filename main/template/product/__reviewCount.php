@@ -12,7 +12,7 @@ return function(
         : (!empty($reviewsData['review_list']) ? count($reviewsData['review_list']) : 0);
 ?>
 
-<div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating" class="bReviewSection clearfix">
+<div class="bReviewSection clearfix">
     <? switch (\App::abTest()->getTest('reviews')->getChosenCase()->getKey()):
         case 'sprosikupi': ?>
             <div class="sprosikupiRating clearfix">
@@ -27,13 +27,6 @@ return function(
             <div class="bReviewSection__eStar">
                 <?= empty($rating) ? '' : $helper->render('product/__rating', ['score' => $rating]) ?>
             </div>
-
-            <? if ($reviewCount > 0) : ?>
-                <? /* Микроразметка для отзывов */?>
-                <span itemprop="ratingValue" style="display:none"><?= $rating != 0 ? $rating : ''  ?></span>
-                <meta itemprop="reviewCount" content="<?= $reviewCount ?>">
-                <meta itemprop="bestRating" content="5">
-            <? endif; ?>
 
             <? if (empty($rating) && 0 == $reviewCount): ?>
                 <span style="float: left;">Отзывов нет</span>

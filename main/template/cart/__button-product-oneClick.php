@@ -37,11 +37,13 @@ return function (
         $class = \View\Id::cartButtonForProduct($product->getId() . '-oneClick') . ' jsOneClickButton ' . $class;
     }
 
+    /*
     if ($product->isInShopStockOnly()) {
         $class .= ' mShopsOnly';
     } elseif ($product->isInShopShowroomOnly()) {
         $class .= ' mShopsOnly';
     }
+    */
 
     if (!$product->getIsBuyable()) {
         $url = '#';

@@ -276,6 +276,7 @@ $c->partners['GetIntent']['enabled'] = true;
 $c->adFox['enabled'] = true;
 
 $c->partner['cookieName'] = 'last_partner';
+$c->partner['secondClickCookieName'] = 'last_partner_sec_click'; // SITE-4834
 $c->partner['cookieLifetime'] = 2592000; // 30 дней
 
 $c->onlineCall['enabled'] = true;
@@ -433,6 +434,8 @@ $c->queue['maxLockTime'] = 600;
 
 $c->subscribe['enabled'] = true;
 $c->subscribe['cookieName'] = 'subscribed';
+$c->subscribe['cookieName2'] = 'enter_subscribed_ch';   // кука вида {channelId:status}
+$c->subscribe['cookieName3'] = 'enter_wanna_subscribe'; // кука о желании подписки в новом ОЗ
 
 $c->requestMainMenu = true;
 
@@ -475,7 +478,7 @@ $c->tag['numSidebarCategoriesShown'] = 3;
 $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
 
-$c->lifeGift['enabled'] = true;
+$c->lifeGift['enabled'] = false;
 $c->lifeGift['regionId'] = 151021;
 $c->lifeGift['labelId'] = 17;
 $c->lifeGift['deliveryTypeId'] = 1077;
@@ -616,11 +619,11 @@ $c->abTest = [
             'expireDate'    => '2015-12-31',
             'cases' => [
                 'old_recommendation' => [
-                    'traffic' => 50,
+                    'traffic' => 0,
                     'name'    => 'Старые рекомендации',
                 ],
                 'new_recommendation' => [
-                    'traffic' => 50,
+                    'traffic' => 100,
                     'name'    => 'Новые рекомендации',
                 ],
             ]
