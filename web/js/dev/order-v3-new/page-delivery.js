@@ -217,7 +217,6 @@
 
 	$orderContent.on('click', '.jsAddressRootNode', function() {
 		$(this).find('.jsSmartAddressInput').focus();
-
 		ENTER.OrderV3.address.inputFocus(true);
 	});
 

@@ -964,10 +964,22 @@
 		var self = this,
 			streetTypeDefault = 'Улица';
 
+		// сокращенные названия улиц из КЛАДРА (для автосогласования в 1C)
+		self.streetShortToLong = {
+			'пр-кт': 'Проспект',
+			'ш': 'Шоссе',
+			'ул.': 'Улица',
+			'ул': 'Улица',
+			'пер': 'Переулок',
+			'пл': 'Площадь',
+			'дор': 'Дорога'
+		};
+
 		self.cityName = ko.observable('');
 		self.cityId = ko.observable(0);
 		self.streetName = ko.observable('');
 		self.streetType = ko.observable(streetTypeDefault);
+		self.streetTypeShort = ko.observable('');
 		self.streetId = ko.observable(0);
 		self.buildingName = ko.observable('');
 		self.buildingId = ko.observable(0);
@@ -991,14 +1003,17 @@
 		self.update = function(val) {
 			// обработка ручного ввода
 			if (typeof val == 'string') {
-				if (self.streetName() == '') self.streetName(val);
+				if (self.streetName() == '') {
+					self.streetName(val);
+					self.streetTypeShort('');
+				}
 				else if (self.buildingName() == '') self.buildingName(val);
 				else if (self.apartmentName() == '') self.apartmentName(val);
 			}
 			// обработка автодополнения
 			else if (typeof val == 'object') {
 				if (val.contentType == 'street') {
-					self.streetName(val.name).streetId(val.id).streetType(val.type)
+					self.streetName(val.name).streetId(val.id).streetType(val.type).streetTypeShort(val.typeShort)
 				}
 				else if (val.contentType == 'building') {
 					self.buildingName(val.name).buildingId(val.id)
@@ -1021,7 +1036,8 @@
 			data: {
 				'action' : 'changeAddress',
 				'params' : {
-					street: address.streetType() + ' ' + address.streetName(),
+					// сохраняем улицу в формате "Название + сокращенный тип" для автосогласования в 1С
+					street: address.streetName() + ' ' + (address.streetTypeShort() == '' ? address.streetType() : address.streetTypeShort()),
 					building: address.buildingName(),
 					apartment: address.apartmentName(),
 					kladr_id: address.buildingId() != 0 ? address.buildingId() : address.streetId() != 0 ? address.streetId() : address.cityId() != 0 ? address.cityId() : '' }
@@ -1032,8 +1048,8 @@
 				console.error(response.result);
 			}
 		}).done(function(data){
-			console.log("Query: %s", data.result.OrderDeliveryRequest);
-			console.log("Model:", data.result.OrderDeliveryModel);
+//			console.log("Query: %s", data.result.OrderDeliveryRequest);
+			console.log("Saved address:", data.result.OrderDeliveryModel.user_info.address);
 		})
 	}
 
@@ -1101,6 +1117,7 @@
 					if ($(this).val().length > 0) {
 						address.update($(this).val()); // обновляем
 						$input.val(''); // очищаем поля ввода
+						$input.autocomplete('close'); // скрываем автокомплит
 					}
 				}
 			},
@@ -1133,7 +1150,10 @@
 				$input.val(address[dataType]()); // записываем значение в поле ввода
 				if (dataType == 'apartmentName') address.clearApartment();
 				if (dataType == 'buildingName') address.clearBuilding().clearApartment();
-				if (dataType == 'streetName') address.clearStreet().clearBuilding().clearApartment();
+				if (dataType == 'streetName') {
+					address.clearStreet().clearBuilding().clearApartment();
+					if (address.streetTypeShort() != '') $input.val($input.val() + ' ' + address.streetTypeShort()); // дописываем сокращенное название
+				}
 			}
 		});
 
@@ -1154,10 +1174,15 @@
 	// Заполняем модель данными при загрузке или рефреше страницы
 	if (typeof initialAddressData == 'object') {
 		if (initialAddressData.street) {
-			var regexResult = initialAddressData.street.match(/(.+?)\s+(.+)/);
+			var regexResult = initialAddressData.street.match(/(.+)\s+(.+)$/);
 			if (regexResult) {
-				address.streetType(regexResult[1]);
-				address.streetName(regexResult[2]);
+				if (address.streetShortToLong.hasOwnProperty(regexResult[2])) {
+					address.streetType(address.streetShortToLong[regexResult[2]]);
+					address.streetTypeShort(regexResult[2]);
+				} else {
+					address.streetType(regexResult[2]);
+				}
+				address.streetName(regexResult[1]);
 			}
 		}
 		if (initialAddressData.building) address.buildingName(initialAddressData.building);
@@ -1590,7 +1615,6 @@
 
 	$orderContent.on('click', '.jsAddressRootNode', function() {
 		$(this).find('.jsSmartAddressInput').focus();
-
 		ENTER.OrderV3.address.inputFocus(true);
 	});
 
