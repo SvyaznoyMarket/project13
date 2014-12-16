@@ -25,7 +25,7 @@ class CreateAction extends OrderV3 {
         /** @var \Model\Order\Entity[] $createdOrders */
         $createdOrders = [];    // созданные заказы
         $params = [];           // параметры запроса на ядро
-        $subscribeResult = [];  // ответ на подписку
+        $subscribeResult = false;  // ответ на подписку
 
         $splitResult = $this->session->get($this->splitSessionKey);
 
@@ -46,9 +46,7 @@ class CreateAction extends OrderV3 {
             }
             if (isset($splitOrder)) unset($splitOrder);
 
-            $this->client->addQuery('order/create-packet2', $params, $ordersData,
-                function($data) use (&$coreResponse) {$coreResponse = $data; } ,null, \App::config()->coreV2['hugeTimeout']
-            );
+            $coreResponse = $this->client->query('order/create-packet2', $params, $ordersData, \App::config()->coreV2['hugeTimeout']);
 
             // Если стоит галка "подписаться на рассылку"
             if ((bool)$request->cookies->get(\App::config()->subscribe['cookieName3']) && !empty(@$ordersData[0]['email'])) {
@@ -126,7 +124,18 @@ class CreateAction extends OrderV3 {
         // устанавливаем флаг первичного просмотра страницы
         $this->session->set(self::SESSION_IS_READED_KEY, false);
 
-        return new \Http\RedirectResponse(\App::router()->generate('orderV3.complete'));
+        $response = new \Http\RedirectResponse(\App::router()->generate('orderV3.complete'));
+
+        // сохраняем результаты подписки в куку
+        if ($subscribeResult === true) {
+            $response->headers->setCookie(new \Http\Cookie(
+                \App::config()->subscribe['cookieName2'],
+                json_encode(['1' => true]), strtotime('+30 days' ), '/',
+                \App::config()->session['cookie_domain'], false, false
+            ));
+        }
+
+        return $response;
     }
 
     /** Добавление запроса на подписку
