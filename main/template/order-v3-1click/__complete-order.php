@@ -22,7 +22,7 @@ $f = function(
     $deliveries = $order->getDelivery();
     /** @var \Model\Order\Delivery\Entity|null $delivery */
     $delivery = reset($deliveries);
-    ?>
+?>
 
     <div class="orderCol_cnt clearfix">
         <div class="orderCol_lk">
@@ -52,7 +52,7 @@ $f = function(
                 <? endif ?>
                 </span>
                 <span class="orderCol_summt">
-                    <? if ('1' == $delivery->getTypeId()): ?>
+                    <? if (in_array($delivery->getTypeId(), [1, 2])): ?>
                         Доставка
                     <? else: ?>
                         Самовывоз:

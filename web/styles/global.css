@@ -1360,14 +1360,14 @@ img[height="0"] {
     padding-bottom: 0;
   }
   .main-new .header_b {
-    border-right: 1px solid #e8e8e8;
-    border-left: 1px solid #e8e8e8;
-    border-bottom: 1px solid #e8e8e8;
+    border-right: 1px solid #c7c7c7;
+    border-left: 1px solid #c7c7c7;
+    border-bottom: 1px solid #c7c7c7;
   }
   .main-new .header_t {
     border-width: 0 1px 0 1px;
     border-style: solid;
-    border-color: #bbbbbb;
+    border-color: #c7c7c7;
   }
   .header {
     width: 960px;

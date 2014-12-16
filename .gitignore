@@ -29,3 +29,4 @@ erase_barcode.cmd
 /node_modules
 /web/version.txt
 *.map
+sftp-config.json
