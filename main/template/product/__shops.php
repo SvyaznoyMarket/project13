@@ -10,7 +10,7 @@ return function (
     ?>
 
     <div class="shopsVar shopsVar-center">
-        <span class="shopsVar_title">Есть в <?= count($shopStates) ?> магазинах</span>
+        <span class="shopsVar_title">Есть в <?= count($shopStates) ?> <?= $helper->numberChoice(count($shopStates), ['магазине', 'магазинах', 'магазинах'])?></span>
         <input type="button" class="button whitebutton js-show-shops" id="whitebutton" value="Забрать сегодня" />
     </div>
 
