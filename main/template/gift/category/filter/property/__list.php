@@ -8,22 +8,23 @@ return function(
 ?>
 
     <? foreach ($property->getOption() as $option): ?>
-    <div class="fltrBtn_ln fltrBtn_ln-col">
-        <input
-            class="customInput customInput-defcheck3 js-customInput"
-            type="checkbox"
-            id="<?= $option->getId() ?>"
-            name="<?= \View\Name::productCategoryFilter($property, $option, true) ?>"
-            value="<?= $option->getId() ?>"
-            <? if (in_array($option->getId(), $values)): ?>
-                checked="checked"
-            <? endif ?>
-        />
-
-        <label class="customLabel" for="<?= $option->getId() ?>">
-            <?= $option->getName() ?>
-        </label>
-    </div>
+        <? $id = \View\Id::productCategoryFilter($property->getId()) . '-option-' . $option->getId(); ?>
+        <div class="fltrBtn_ln fltrBtn_ln-col">
+            <input
+                class="customInput customInput-defcheck3 js-customInput"
+                type="checkbox"
+                id="<?= $helper->escape($id) ?>"
+                name="<?= \View\Name::productCategoryFilter($property, $option) ?>"
+                value="<?= $option->getId() ?>"
+                <? if (in_array($option->getId(), $values)): ?>
+                    checked="checked"
+                <? endif ?>
+            />
+    
+            <label class="customLabel" for="<?= $helper->escape($id) ?>">
+                <?= $option->getName() ?>
+            </label>
+        </div>
     <? endforeach ?>
 
 <? };

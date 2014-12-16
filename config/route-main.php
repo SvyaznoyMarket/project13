@@ -268,7 +268,7 @@ return [
 
     // каталог товаров
     'product.gift' => [
-        'pattern' => '/gift',
+        'pattern' => '/podbor_podarkov',
         'action'  => ['Gift\ProductCategory\Action', 'category'],
     ],
 

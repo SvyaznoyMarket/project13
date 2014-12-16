@@ -78,7 +78,7 @@ class Action {
 
         \RepositoryManager::productCategory()->prepareRootCollection(\App::user()->getRegion(), function ($data) use ($categoryProperty) {
             foreach ($data as $item) {
-                $categoryProperty->addOption(new \Model\Product\Filter\Option\Entity(['id' => $item['id'], 'name' => $item['name']]));
+                $categoryProperty->addOption(new \Model\Product\Filter\Option\Entity(['id' => $item['id'], 'name' => 'Tchibo' === $item['name'] ? 'Tchibo shop' : $item['name']]));
             }
         });
 
@@ -162,89 +162,77 @@ class Action {
 
     private function createTagFilterProperties(array &$filters) {
         $property = new \Model\Product\Filter\Entity();
-        $property->setId('tag');
+        $property->setId('holiday');
         $property->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
         $property->setIsMultiple(false);
         $property->setOption([
-            new \Model\Product\Filter\Option\Entity(['id' => 1, 'name' => 'Новый Год']),
-            new \Model\Product\Filter\Option\Entity(['id' => 2, 'name' => 'День рождения']),
-            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => 'Юбилей']),
-            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => 'День свадьбы']),
-            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => 'Новоселье']),
-            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => 'Благодарность']),
-            new \Model\Product\Filter\Option\Entity(['id' => '', 'name' => 'Любой праздник']),
+            new \Model\Product\Filter\Option\Entity(['id' => 706, 'name' => 'Новый Год']),
+            new \Model\Product\Filter\Option\Entity(['id' => 707, 'name' => 'День рождения']),
+            new \Model\Product\Filter\Option\Entity(['id' => 708, 'name' => 'Юбилей']),
+            new \Model\Product\Filter\Option\Entity(['id' => 709, 'name' => 'День свадьбы']),
+            new \Model\Product\Filter\Option\Entity(['id' => 710, 'name' => 'Новоселье']),
+            new \Model\Product\Filter\Option\Entity(['id' => 711, 'name' => 'Благодарность']),
+            new \Model\Product\Filter\Option\Entity(['id' => 712, 'name' => 'Любой праздник']),
         ]);
         $filters[] = $property;
 
         $property = new \Model\Product\Filter\Entity();
-        $property->setId('tag');
-        $property->setName('sex');
+        $property->setId('sex');
         $property->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
         $property->setIsMultiple(false);
         $property->setOption([
-            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => 'Женщине']),
-            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => 'Мужчине']),
+            new \Model\Product\Filter\Option\Entity(['id' => 687, 'name' => 'Женщине']),
+            new \Model\Product\Filter\Option\Entity(['id' => 688, 'name' => 'Мужчине']),
         ]);
         $filters[] = $property;
 
         $property = new \Model\Product\Filter\Entity();
-        $property->setId('tag');
-        $property->setName('status-woman');
+        $property->setId('status');
         $property->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
         $property->setIsMultiple(false);
         $property->setOption([
-            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => 'Коллеге']),
-            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => 'Боссу']),
-            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => 'Подруге']),
-            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => 'Девочке']),
-            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => 'Маме']),
-            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => 'Бабушке']),
-            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => 'Себе']),
+            new \Model\Product\Filter\Option\Entity(['id' => 690, 'name' => 'Коллеге']),
+            new \Model\Product\Filter\Option\Entity(['id' => 692, 'name' => 'Боссу']),
+            new \Model\Product\Filter\Option\Entity(['id' => 693, 'name' => 'Подруге']),
+            new \Model\Product\Filter\Option\Entity(['id' => 694, 'name' => 'Девочке']),
+            new \Model\Product\Filter\Option\Entity(['id' => 695, 'name' => 'Маме']),
+            new \Model\Product\Filter\Option\Entity(['id' => 696, 'name' => 'Бабушке']),
+            new \Model\Product\Filter\Option\Entity(['id' => 697, 'name' => 'Себе']),
+            
+            new \Model\Product\Filter\Option\Entity(['id' => 698, 'name' => 'Любимому']),
+            new \Model\Product\Filter\Option\Entity(['id' => 690, 'name' => 'Коллеге']),
+            new \Model\Product\Filter\Option\Entity(['id' => 692, 'name' => 'Боссу']),
+            new \Model\Product\Filter\Option\Entity(['id' => 699, 'name' => 'Другу']),
+            new \Model\Product\Filter\Option\Entity(['id' => 700, 'name' => 'Мальчику']),
+            new \Model\Product\Filter\Option\Entity(['id' => 703, 'name' => 'Папе']),
+            new \Model\Product\Filter\Option\Entity(['id' => 705, 'name' => 'Дедушке']),
         ]);
         $filters[] = $property;
-
-//        $property = new \Model\Product\Filter\Entity();
-//        $property->setId('tag');
-//        $property->setName('status-man');
-//        $property->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-//        $property->setIsMultiple(false);
-//        $property->setOption([
-//            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => 'Любимому']),
-//            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => 'Коллеге']),
-//            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => 'Боссу']),
-//            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => 'Другу']),
-//            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => 'Мальчику']),
-//            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => 'Папе']),
-//            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => 'Дедушке']),
-//        ]);
-//        $filters[] = $property;
-
+        
         $property = new \Model\Product\Filter\Entity();
-        $property->setId('tag');
+        $property->setId('age');
         $property->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
         $property->setIsMultiple(false);
         $property->setOption([
-            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => '0 - 1 год']),
-            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => '1 - 3 года']),
-            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => '4 - 7 лет']),
-            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => '8 - 12 лет']),
-            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => '13 - 16 лет']),
-            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => '17 - 23 года']),
-            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => '24 - 35 лет']),
-            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => '36 - 60 лет']),
-            new \Model\Product\Filter\Option\Entity(['id' => 3, 'name' => 'Старше 60']),
-            new \Model\Product\Filter\Option\Entity(['id' => '', 'name' => 'Возраст не имеет значения']),
+            new \Model\Product\Filter\Option\Entity(['id' => 713, 'name' => '0 - 1 год']),
+            new \Model\Product\Filter\Option\Entity(['id' => 716, 'name' => '1 - 3 года']),
+            new \Model\Product\Filter\Option\Entity(['id' => 717, 'name' => '4 - 7 лет']),
+            new \Model\Product\Filter\Option\Entity(['id' => 718, 'name' => '8 - 12 лет']),
+            new \Model\Product\Filter\Option\Entity(['id' => 719, 'name' => '13 - 16 лет']),
+            new \Model\Product\Filter\Option\Entity(['id' => 720, 'name' => '17 - 23 года']),
+            new \Model\Product\Filter\Option\Entity(['id' => 721, 'name' => '24 - 35 лет']),
+            new \Model\Product\Filter\Option\Entity(['id' => 722, 'name' => '36 - 60 лет']),
+            new \Model\Product\Filter\Option\Entity(['id' => 723, 'name' => 'Старше 60']),
+            new \Model\Product\Filter\Option\Entity(['id' => 724, 'name' => 'Возраст не имеет значения']),
         ]);
         $filters[] = $property;
     }
 
     /**
-     * @param \Model\Product\Filter $productFilter
-     * @param \Model\Product\Sorting $productSorting
      * @param int $pageNum
      * @return \Iterator\EntityPager
      */
-    private function getProductPager($productFilter, $productSorting, $pageNum) {
+    private function getProductPager(\Model\Product\Filter $productFilter, \Model\Product\Sorting $productSorting, $pageNum) {
         $itemsPerPage = \App::config()->product['itemsPerPage'];
         $limit = $itemsPerPage;
         $offset = ($pageNum - 1) * $limit;
@@ -253,11 +241,11 @@ class Action {
 
         $repository = \RepositoryManager::product();
         $repository->setEntityClass('\\Model\\Product\\Entity');
-
+        
         $productIds = [];
         $productCount = 0;
         $repository->prepareIteratorByFilter(
-            $productFilter->dump(),
+            $this->getProductFilterDump($productFilter),
             $productSorting->dump(),
             $offset,
             $limit,
@@ -310,6 +298,22 @@ class Action {
         $productPager->setMaxPerPage($itemsPerPage);
         return $productPager;
     }
+    
+    private function getProductFilterDump(\Model\Product\Filter $productFilter) {
+        $tagDump = ['tag', 1, []];
+        $filterDump = $productFilter->dump();
+        for ($i = count($filterDump) - 1; $i >= 0; $i--) {
+            if (in_array($filterDump[$i][0], ['holiday', 'sex', 'status', 'age'], true)) {
+                $tagDump[2] = array_merge($tagDump[2], $filterDump[$i][2]);
+                unset($filterDump[$i]);
+            }
+        }
+        
+        $filterDump = array_values($filterDump);
+        $filterDump[] = $tagDump;
+        
+        return $filterDump;
+    }
 
     /**
      * @return array
@@ -352,8 +356,14 @@ class Action {
             $requestData = $request->request;
         } else {
             $requestData = $request->query;
-            if (!$requestData) {
-                $requestData = new \Http\ParameterBag([]); // TODO
+            if (!$requestData->all()) {
+                // Значения по умолчанию
+                $requestData = new \Http\ParameterBag([
+                    'f-holiday' => 706,
+                    'f-sex' => 687,
+                    'f-status' => 690,
+                    'f-age' => 724,
+                ]);
             }
         }
 

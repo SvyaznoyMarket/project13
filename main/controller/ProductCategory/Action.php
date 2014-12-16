@@ -382,6 +382,7 @@ class Action {
         $this->correctFilterForJewel($category, $productFilter);
 
         if (!$category->isV2()) {
+            // SITE-4734
             foreach ($productFilter->getFilterCollection() as $filter) {
                 if ('brand' === $filter->getId()) {
                     foreach ($filter->getOption() as $option) {
@@ -1282,6 +1283,14 @@ class Action {
         $productFilter->setCategory($category);
         $productFilter->setValues($values);
 
+        foreach ($productFilter->getFilterCollection() as $property) {
+            if (\Model\Product\Filter\Entity::TYPE_LIST == $property->getTypeId() && !in_array($property->getId(), ['shop', 'category'])) {
+                $property->setIsMultiple(true);
+            } else {
+                $property->setIsMultiple(false);
+            }
+        }
+        
         return $productFilter;
     }
 

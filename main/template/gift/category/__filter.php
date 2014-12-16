@@ -12,8 +12,14 @@ return function(
     $priceProperty = null;
     /** @var \Model\Product\Filter\Entity $categoryProperty */
     $categoryProperty = null;
-    /** @var \Model\Product\Filter\Entity[] $tagProperties */
-    $tagProperties = [];
+    /** @var \Model\Product\Filter\Entity $holidayProperty */
+    $holidayProperty = null;
+    /** @var \Model\Product\Filter\Entity $sexProperty */
+    $sexProperty = null;
+    /** @var \Model\Product\Filter\Entity $statusProperty */
+    $statusProperty = null;
+    /** @var \Model\Product\Filter\Entity $ageProperty */
+    $ageProperty = null;
 
     foreach ($productFilter->getFilterCollection() as $property) {
         if (!$property->getIsInList()) {
@@ -23,8 +29,14 @@ return function(
             $priceProperty->setStepType('price');
         } else if ('category' === $property->getId()) {
             $categoryProperty = $property;
-        } else if ('tag' === $property->getId()) {
-            $tagProperties[] = $property;
+        } else if ('holiday' === $property->getId()) {
+            $holidayProperty = $property;
+        } else if ('sex' === $property->getId()) {
+            $sexProperty = $property;
+        } else if ('status' === $property->getId()) {
+            $statusProperty = $property;
+        } else if ('age' === $property->getId()) {
+            $ageProperty = $property;
         }
     }
     ?>
@@ -32,9 +44,21 @@ return function(
     <div class="fltrBtn fltrBtn-gift" style="background-image: url('/styles/catalog/img/bg-ny-gift.jpg')">
         <form id="productCatalog-filter-form" class="js-category-filter" action="<?= $baseUrl ?>" method="GET">
             <div class="fltrBtnLn">
-                <? foreach ($tagProperties as $property): ?>
-                    <?= $helper->render('gift/category/filter/property/__dropBox', ['productFilter' => $productFilter, 'property' => $property]) ?>
-                <? endforeach ?>
+                <? if ($holidayProperty): ?>
+                    <?= $helper->render('gift/category/filter/property/__dropBox', ['productFilter' => $productFilter, 'property' => $holidayProperty]) ?>
+                <? endif ?>
+                
+                <? if ($sexProperty): ?>
+                    <?= $helper->render('gift/category/filter/property/__dropBox', ['productFilter' => $productFilter, 'property' => $sexProperty]) ?>
+                <? endif ?>
+                
+                <? if ($statusProperty): ?>
+                    <?= $helper->render('gift/category/filter/property/__dropBox', ['productFilter' => $productFilter, 'property' => $statusProperty, 'sexProperty' => $sexProperty]) ?>
+                <? endif ?>
+                
+                <? if ($ageProperty): ?>
+                    <?= $helper->render('gift/category/filter/property/__dropBox', ['productFilter' => $productFilter, 'property' => $ageProperty, 'initialValue' => 'Возраст']) ?>
+                <? endif ?>
             </div>
 
             <div class="fltrBtnLn fltrBtnLn-bg">
