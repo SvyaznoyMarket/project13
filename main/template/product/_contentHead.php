@@ -5,6 +5,7 @@
  * @var $breadcrumbs array('url' => null, 'name' => null)[]
  * @var $hasSearch   bool
  * @var $product     \Model\Product\Entity
+ * @var $reviewsData []|null
  */
 ?>
 
@@ -13,7 +14,7 @@ $hasSearch = isset($hasSearch) ? (bool)$hasSearch : true;
 if (!isset($titlePrefix)) $titlePrefix = null;
 ?>
 
-<div itemscope itemtype="http://schema.org/Product" class="bProductSection clearfix<? if ('product.line' == \App::request()->attributes->get('route')): ?> mProductSectionSet<? endif ?>">
+<div class="bProductSection clearfix<? if ('product.line' == \App::request()->attributes->get('route')): ?> mProductSectionSet<? endif ?>">
     
 
     <? if ($hasSearch && !$page->new_menu): ?>
@@ -34,7 +35,7 @@ if (!isset($titlePrefix)) $titlePrefix = null;
         <div class="bPageHead__eTitle clearfix">
             <h1 itemprop="name"><?= $product->getWebName() ?></h1>
             <? if (isset($trustfactors)): ?>
-                <?= \App::closureTemplating()->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'top']) ?>
+                <?= $page->render('product/__trustfactor-top', ['trustfactors' => $trustfactors, 'reviewsData' => @$reviewsData]) ?>
             <? endif ?>
         </div>
         <span class="bPageHead__eArticle">Артикул: <?= $product->getArticle() ?></span>
