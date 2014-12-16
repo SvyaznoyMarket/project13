@@ -11,7 +11,7 @@
 $helper = new \Helper\TemplateHelper();
 ?>
 
-<div class="bCatalog" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
+<div class="bCatalog js-gift-category" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
     <div class="bCustomFilter" styles="background-image: url('/styles/catalog/img/bg-ny-gift.jpg')">
 
         <?= $helper->render('gift/category/__filter', [

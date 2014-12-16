@@ -18,13 +18,14 @@ class LeafPage extends \View\DefaultLayout {
 
         return $this->render('product-category/_userbarContent', [
             'productFilter'  => $productFilter instanceof \Model\Product\Filter ? $productFilter : null,
+            'v2' => true
         ]);
     }
 
     public function slotUserbarContentData() {
         return [
             'target' => '.js-listing',
-            'filterTarget' => '#productCatalog-filter-form',
+            'filterTarget' => '.js-gift-category',
         ];
     }
 }
