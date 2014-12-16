@@ -2868,7 +2868,6 @@ img[height="0"] {
   .main-new .slidesBox-items .slidesBox_inn {
     width: 464px;
     height: 483px;
-  }
 }
 @media all {
   .slidesbnnr {
@@ -7583,7 +7582,7 @@ img[height="0"] {
 }
 @media all {
   /*---------Оформление заказа 3.0 ----------*/
-  /* 
+  /*
     orderCol
         orderCol_cnt
         orderCol_t
@@ -7695,7 +7694,7 @@ img[height="0"] {
 }
 @media all {
   /*---------Оформление заказа 3.0 -> строка перехода к следующему шагу .orderCompl ----------*/
-  /* 
+  /*
     orderCompl
         orderCompl_l
         orderCompl_btn
