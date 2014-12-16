@@ -13,7 +13,7 @@ $helper = new \Helper\TemplateHelper();
 ?>
 
 <div class="enterPrize">
-    
+
     <header class="epHeader clearfix">
         <h1 class="epHeader_logo">Enter Prize</h1>
 
@@ -81,7 +81,7 @@ $helper = new \Helper\TemplateHelper();
                     </div>
                 </div>
             </div>
-            
+
             <div class="epSelectFishka_right">
                 <div class="epSelectFishka_desc">
                     Мы отправили код фишки на Ваш e-mail и мобильный.<br/>
@@ -91,7 +91,7 @@ $helper = new \Helper\TemplateHelper();
                 <? if (isset($products) && !empty($products) && is_array($products)): ?>
                     <div class="epSelectFishka_slider">
                         <a class="epSelectFishka_slider_link" href="<?= $enterpizeCoupon->getLink() ?: '#' ?>">Выбрать товары с этой скидкой</a>
-                        
+
                         <?= $helper->render('product/__slider', [
                             'type'     => 'enterprize',
                             'title'    => '',
@@ -106,20 +106,20 @@ $helper = new \Helper\TemplateHelper();
     <? endif ?>
 
     <section class="epHead">
-        <h2 class="epHead_title">УПРАВЛЯЙТЕ ЦЕНОЙ С ФИШКАМИ ENTER PRIZE</h2>
+        <h2 class="epHead_title">ВЫБИРАЙ СВОЮ СКИДКУ</h2>
 
         <ul class="epHead_list">
             <li class="epHead_list_item">Выберите фишку — получите <strong>код скидки</strong>. Используйте его при заказе.</li>
             <li class="epHead_list_item">Каждый месяц появляются <strong>новые фишки</strong> в ограниченном количестве.</li>
             <li class="epHead_list_item">О самых интересных скидках мы сообщаем по <strong>e-mail</strong> и в соцсетях.</li>
             <li class="epHead_list_item">Получить и применить фишку можно  <strong>один раз</strong>.</li>
-        </ul>
+        </ul>>
     </section>
 
     <? /* if ((bool)$isCouponSent): ?>
         <?= $page->render('enterprize/_contentComplete') ?>
     <? endif  */ ?>
-    
+
     <? if (!$user->getEntity()): ?>
         <h3 class="epListTitle">Выбирайте вашу первую фишку</h3>
     <? endif ?>

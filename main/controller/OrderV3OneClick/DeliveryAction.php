@@ -138,7 +138,7 @@ class DeliveryAction {
         $orderDeliveryData = $this->client->query(
             'cart/split',
             [
-                'geo_id'     => $this->user->getRegionId(),
+                'geo_id'     => $this->user->getRegion()->getId(),
                 'request_id' => \App::$id, // SITE-4445
             ],
             $splitData,

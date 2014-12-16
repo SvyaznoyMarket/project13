@@ -1,25 +1,59 @@
 .markerList {
+	position: relative;
 
-	&-table {
-		display: table;
+	&:after {
+		.whiteBottomTranspGrad();
+		bottom: 0;
+		left: 0;
+		height: 10px;
+		width: 100%;
+		.pseudo-class();
+	}
 
-		width: 605px;
+	&:before {
+		.whiteTopTranspGrad();
+		.pseudo-class();
+		top: 0;
+		left: 0;
+		height: 10px;
+		width: 100%;
+	}
+
+	&_lst {
+		max-height: 515px;
+		overflow: auto;
+
+		.btnBuy__eLink {
+		    width: 80px;
+		    padding: 3px 0;
+
+		    text-decoration: none;
+
+		    font-size: 14px;
+		}
+
+		.btnOneClickBuy {
+			margin: 5px 0 0;
+		}
 	}
 
 	&_row {
-		display: table-row;
-
 		font-size: 14px;
+		border-bottom: 1px solid #d3d3d3;
 
 		&:hover {
 			background: #fff7e6;
 		}
+
+		&:last-child {
+			border-bottom: none;
+		}
 	}
 
 	&_col {
-		display: table-cell;
+		.table-cell();
 
-		padding: 5px;
+		padding: 10px 5px;
 
 		vertical-align: middle;
 
@@ -39,46 +73,23 @@
 		}
 
 		&-right {
-			min-width: 80px;
- 
-			text-align: center;
-
-			color: #929292;
-
-			font-size: 12px;
+			min-width: 90px;
+    		text-align: right;
 		}
 	}
 
-	.markColor {
-		.rounded(50%);
-	    .inline-block();
-	    width: 10px;
-	    height: 10px;
-
-		vertical-align: middle;
-	}
-
 	&_light {
-    	display: block;
-
 		color: #616161;
 	}
 
 	.btnOneClickBuy {
 	    margin: 0;
-	}
-
-	.btnBuy__eLink {
-	    width: 66px;
-	    padding: 5px 0;
-
-	    text-decoration: none;
-
-	    font-size: 12px;
+	    .inline-block();
 	}
 
 	.btnText {
-		text-transform: lowercase;
+		color: #616161;
+		font-size: 14px;
 
 		font-weight: bold;
 	}
@@ -97,6 +108,7 @@
 
 		.markerList_light {
 		    margin: 0 0 5px 16px;
+		    .inline-block();
 		}
 
 		.btnBuy {
@@ -104,4 +116,13 @@
 		    height: auto;
 		}
 	}
+}
+
+.markColor {
+	.rounded(50%);
+    .inline-block();
+    width: 10px;
+    height: 10px;
+
+	vertical-align: middle;
 }
