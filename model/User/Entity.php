@@ -70,6 +70,8 @@ class Entity {
     private $isEmailConfirmed;
     /** @var bool */
     private $isPhoneConfirmed;
+    /** @var \Model\User\SubscriptionEntity[]|null */
+    public $subscriptions;
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -621,5 +623,31 @@ class Entity {
         }
 
         return $this->isPhoneConfirmed;
+    }
+
+    /** Получение подписок пользователя
+     * @return \Model\User\SubscriptionEntity[]|[]
+     */
+    public function getSubscriptions(){
+        $userChannels = [];
+        if ($this->subscriptions == null) {
+            $client = \App::coreClientV2();
+            $client->addQuery(
+                'subscribe/get',
+                ['token' => $this->token],
+                [],
+                function ($data) use (&$userChannels) {
+                    foreach ($data as $channel) {
+                        $userChannels[] = new \Model\User\SubscriptionEntity($channel);
+                    }
+                },
+                function(\Exception $e) {
+                    \App::exception()->remove($e);
+                }
+            );
+            $client->execute(\App::config()->coreV2['retryTimeout']['short']);
+        }
+        $this->subscriptions = $userChannels;
+        return $this->subscriptions;
     }
 }

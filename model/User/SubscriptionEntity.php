@@ -36,7 +36,7 @@ class SubscriptionEntity {
     }
 
     /**
-     * @return mixed
+     * @return int|null
      */
     public function getChannelId()
     {
@@ -52,7 +52,7 @@ class SubscriptionEntity {
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getEmail()
     {
@@ -68,7 +68,7 @@ class SubscriptionEntity {
     }
 
     /**
-     * @return mixed
+     * @return bool|null
      */
     public function getIsConfirmed()
     {
