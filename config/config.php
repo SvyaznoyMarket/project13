@@ -475,7 +475,7 @@ $c->tag['numSidebarCategoriesShown'] = 3;
 $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
 
-$c->lifeGift['enabled'] = true;
+$c->lifeGift['enabled'] = false;
 $c->lifeGift['regionId'] = 151021;
 $c->lifeGift['labelId'] = 17;
 $c->lifeGift['deliveryTypeId'] = 1077;
@@ -616,11 +616,11 @@ $c->abTest = [
             'expireDate'    => '2015-12-31',
             'cases' => [
                 'old_recommendation' => [
-                    'traffic' => 50,
+                    'traffic' => 0,
                     'name'    => 'Старые рекомендации',
                 ],
                 'new_recommendation' => [
-                    'traffic' => 50,
+                    'traffic' => 100,
                     'name'    => 'Новые рекомендации',
                 ],
             ]
