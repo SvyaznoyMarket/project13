@@ -1369,6 +1369,9 @@ img[height="0"] {
     border-style: solid;
     border-color: #c7c7c7;
   }
+  .main-new .i-header {
+    background: url('/styles/mainpage/img/enterprize_logo.png') no-repeat 0 0;
+  }
   .header {
     width: 960px;
     margin: 0 auto;
@@ -1405,6 +1408,11 @@ img[height="0"] {
   }
   .header_b .navsite_i {
     min-width: 60px;
+  }
+  .header.header-new {
+    -webkit-box-shadow: 0px 0px 26px 0px rgba(50, 50, 50, 0.25);
+    -moz-box-shadow: 0px 0px 26px 0px rgba(50, 50, 50, 0.25);
+    box-shadow: 0px 0px 26px 0px rgba(50, 50, 50, 0.25);
   }
   .hdcontacts {
     margin: 0 10px 0 0;
@@ -2808,6 +2816,58 @@ img[height="0"] {
     -webkit-transform: scale(0.95);
     -moz-transform: scale(0.95);
     transform: scale(0.95);
+  }
+  .main-new {
+    background: #ffffff url('/styles/mainpage/img/fon1600.jpg') no-repeat 50% 95%;
+    background-attachment: fixed;
+  }
+  .main-new .wrapper {
+    background: #ffffff;
+    background: transparent\9;
+    background: rgba(255, 255, 255, 0.6);
+    -webkit-box-shadow: 0px 0px 26px 0px rgba(50, 50, 50, 0.25);
+    -moz-box-shadow: 0px 0px 26px 0px rgba(50, 50, 50, 0.25);
+    box-shadow: 0px 0px 26px 0px rgba(50, 50, 50, 0.25);
+  }
+  .main-new .wrapper:nth-child(n) {
+    filter: none;
+  }
+  .main-new .shopInfoTab,
+  .main-new .shopInfo_i,
+  .main-new .slidesBox-items .slidesBox_i {
+    background: #ffffff;
+  }
+  .main-new .shopInfoTab,
+  .main-new .shopInfo_i {
+    border-top: solid 1px #eeeeee;
+    border-left: solid 1px #eeeeee;
+    border-right: solid 1px #eeeeee;
+    border-bottom: solid 1px #eeeeee;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-shadow: 0px 0px 2px 0 rgba(50, 50, 50, 0.25);
+    -moz-box-shadow: 0px 0px 2px 0 rgba(50, 50, 50, 0.25);
+    box-shadow: 0px 0px 2px 0 rgba(50, 50, 50, 0.25);
+  }
+  .main-new .shopInfoTab:before {
+    border-bottom-color: #F2F2F2;
+  }
+  .main-new .shopInfoTab {
+    margin: 20px 10px;
+  }
+  .main-new .slidesBox-items {
+    width: 464px;
+  }
+  .main-new .slidesBox-items.fl-l {
+    margin-left: 10px;
+  }
+  .main-new .slidesBox-items.fl-r {
+    margin-right: 10px;
+  }
+  .main-new .slidesBox-items .slidesBox_inn {
+    width: 464px;
+    height: 483px;
   }
 }
 @media all {
@@ -4281,7 +4341,7 @@ img[height="0"] {
     top: 0;
     right: 0;
     height: 50px;
-    width: 15px;
+    width: 10px;
     background: rgba(255, 245, 224, 0);
     background: -moz-linear-gradient(left, rgba(255, 245, 224, 0) 0%, rgba(255, 245, 224, 0.62) 41%, #fff5e0 66%, #fff5e0 100%);
     background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255, 245, 224, 0)), color-stop(41%, rgba(255, 245, 224, 0.62)), color-stop(66%, #fff5e0), color-stop(100%, #fff5e0));
@@ -7836,6 +7896,12 @@ img[height="0"] {
     color: #5e5e5e;
     font-size: 14px;
     line-height: 33px;
+  }
+  .orderU_hint .customLabel {
+    background-position: 0 50%;
+  }
+  .orderU_hint .customInput-defcheck:checked + .customLabel {
+    background-position: 0 50%;
   }
   .orderU-v2 .orderU_tx {
     line-height: 14px;
