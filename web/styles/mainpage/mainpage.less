@@ -147,6 +147,12 @@
         .scale(0.95);
     }
 }
+.zoomOut{
+    .transition(all .25s ease-out);
+    &:hover {
+        .scale(1.05);
+    }
+}
 // новая главная страница
 .main-new{
     background: @white url('@{base-url}/mainpage/img/fon1600.jpg') no-repeat 50% 95%;
@@ -175,21 +181,16 @@
         margin: 20px 10px;
     }
     .slidesBox-items{
-        &.slidesBox {
+        width: 464px;
+    }
+    .slidesBox-items.fl-l{
+        margin-left:10px;
+    }
+    .slidesBox-items.fl-r{
+    margin-right: 10px;
+    }
+    .slidesBox-items .slidesBox_inn {
             width: 464px;
-            &-l{
-                float: left;
-                margin-left:10px;
-            }
-            &-r{
-                float: right;
-                margin-right:10px;
-            }
-        }
-        .slidesBox_inn {
-                width: 464px;
-                height: 483px;
-        }
-
+            height: 483px;
     }
 }
