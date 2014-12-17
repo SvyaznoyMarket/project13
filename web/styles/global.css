@@ -2822,16 +2822,6 @@ img[height="0"] {
     -moz-transform: scale(0.95);
     transform: scale(0.95);
   }
-  .zoomOut {
-    -webkit-transition: all 0.25s ease-out;
-    -moz-transition: all 0.25s ease-out;
-    transition: all 0.25s ease-out;
-  }
-  .zoomOut:hover {
-    -webkit-transform: scale(1.05);
-    -moz-transform: scale(1.05);
-    transform: scale(1.05);
-  }
   .main-new {
     background: #ffffff url('/styles/mainpage/img/fon1600.jpg') no-repeat 50% 95%;
     background-attachment: fixed;
@@ -2871,13 +2861,15 @@ img[height="0"] {
   .main-new .shopInfoTab {
     margin: 20px 10px;
   }
-  .main-new .slidesBox-items {
+  .main-new .slidesBox-items.slidesBox {
     width: 464px;
   }
-  .main-new .slidesBox-items.fl-l {
+  .main-new .slidesBox-items.slidesBox-l {
+    float: left;
     margin-left: 10px;
   }
-  .main-new .slidesBox-items.fl-r {
+  .main-new .slidesBox-items.slidesBox-r {
+    float: right;
     margin-right: 10px;
   }
   .main-new .slidesBox-items .slidesBox_inn {
