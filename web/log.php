@@ -155,7 +155,7 @@ try {
                     $color = '#686868';
                 }
             } else if (in_array('router', $line['_tag'])) {
-                $title = urldecode($line['uri']);
+                $title = $line['message'] . ' ' . $line['route'];
                 $icon = 'globe';
             } else if (isset($line['core.response'])) {
                 $title = 'Ответ от ядра';
