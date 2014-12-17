@@ -77,9 +77,13 @@ class Action {
         $categoryProperty->setIsMultiple(true);
         $filters[] = $categoryProperty;
 
-        \RepositoryManager::productCategory()->prepareRootCollection(\App::user()->getRegion(), function ($data) use ($categoryProperty) {
-            foreach ($data as $item) {
-                $categoryProperty->addOption(new \Model\Product\Filter\Option\Entity(['id' => $item['id'], 'name' => 'Tchibo' === $item['name'] ? 'Tchibo shop' : $item['name']]));
+        \RepositoryManager::menu()->prepareCollection(function ($data) use ($categoryProperty) {
+            if (isset($data['item']) && is_array($data['item'])) {
+                foreach ($data['item'] as $item) {
+                    if ($item['source']['id']) {
+                        $categoryProperty->addOption(new \Model\Product\Filter\Option\Entity(['id' => $item['source']['id'], 'name' => $item['name']]));
+                    }
+                }
             }
         });
 
