@@ -459,9 +459,9 @@ class BasicEntity {
     public function calculateState($data = []) {
 
         //$inStore = false;
-        $inStore = isset($data['is_store']) ? (bool)$data['is_store'] : null; // SITE-4659
+        $inStore = isset($data['state']['is_store']) ? (bool)$data['state']['is_store'] : null; // SITE-4659
         //$inShop = false;
-        $inShop = isset($data['is_shop']) ? (bool)$data['is_shop'] : null; // SITE-4659
+        $inShop = isset($data['state']['is_shop']) ? (bool)$data['state']['is_shop'] : null; // SITE-4659
         $inShowroom = false;
         foreach ($this->getStock() as $stock) {
             /*
