@@ -2,10 +2,11 @@
 
 namespace Controller\Gift\ProductCategory;
 
-use Model\Product\Filter\Entity;
-use View\Product\FilterForm;
+use Session\AbTest\ABHelperTrait;
 
 class Action {
+    use ABHelperTrait;
+    
     protected $pageTitle;
 
     /**
@@ -155,6 +156,7 @@ class Action {
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setParam('columnCount', $columnCount);
+        $page->setParam('isNewMainPage', $this->isNewMainPage());
         $page->setGlobalParam('shop', $shop);
 
         return new \Http\Response($page->show());
