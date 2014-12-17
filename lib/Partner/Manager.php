@@ -4,6 +4,7 @@ namespace Partner;
 
 class Manager {
     private $cookieName;
+    private $secondClickCookieName;
     private $cookieLifetime;
     private $cookieDomain;
     private $cookieArray = [];
@@ -19,9 +20,11 @@ class Manager {
     ];
 
     public function __construct() {
-        $this->cookieName = \App::config()->partner['cookieName'];
-        $this->cookieLifetime = \App::config()->partner['cookieLifetime'];
-        $this->cookieDomain = \App::config()->session['cookie_domain'];
+        $c = \App::config();
+        $this->cookieName = $c->partner['cookieName'];
+        $this->secondClickCookieName = $c->partner['secondClickCookieName'];
+        $this->cookieLifetime = $c->partner['cookieLifetime'];
+        $this->cookieDomain = $c->session['cookie_domain'];
     }
 
     /**
@@ -86,14 +89,9 @@ class Manager {
                         }
 
                         // если нет utm_source cookie или же она была проставлена не этим партнером
+                        // SITE-4834 ставим js-переменную last_partner_second_click, кука last_partner будет проставлена позже через common/last_partner.js
                         if ($request->cookies->get($this->cookieName) != $lastPartner) {
-                            $this->cookieArray[] = new \Http\Cookie(
-                                $this->cookieName,
-                                $lastPartner,
-                                time() + $this->cookieLifetime,
-                                '/',
-                                $this->cookieDomain
-                            );
+                            $response->setContent(str_replace('<!-- last_partner_second_click -->', "<script type='text/javascript'>var last_partner_second_click = '$lastPartner';</script>", $response->getContent()));
                         }
 
                     }

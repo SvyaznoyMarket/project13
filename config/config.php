@@ -276,6 +276,7 @@ $c->partners['GetIntent']['enabled'] = true;
 $c->adFox['enabled'] = true;
 
 $c->partner['cookieName'] = 'last_partner';
+$c->partner['secondClickCookieName'] = 'last_partner_sec_click'; // SITE-4834
 $c->partner['cookieLifetime'] = 2592000; // 30 дней
 
 $c->onlineCall['enabled'] = true;
@@ -475,7 +476,7 @@ $c->tag['numSidebarCategoriesShown'] = 3;
 $c->sphinx['showFacets'] = false;
 $c->sphinx['showListingSearchBar'] = false;
 
-$c->lifeGift['enabled'] = true;
+$c->lifeGift['enabled'] = false;
 $c->lifeGift['regionId'] = 151021;
 $c->lifeGift['labelId'] = 17;
 $c->lifeGift['deliveryTypeId'] = 1077;
@@ -616,11 +617,11 @@ $c->abTest = [
             'expireDate'    => '2015-12-31',
             'cases' => [
                 'old_recommendation' => [
-                    'traffic' => 50,
+                    'traffic' => 0,
                     'name'    => 'Старые рекомендации',
                 ],
                 'new_recommendation' => [
-                    'traffic' => 50,
+                    'traffic' => 100,
                     'name'    => 'Новые рекомендации',
                 ],
             ]
@@ -628,16 +629,16 @@ $c->abTest = [
 
         'main_page' => [
             'name'          => 'Главная страница',
-            'gaSlotNumber'        => 16,
+            'gaSlotNumber'  => 16,
             'enabled'       => true,
             'expireDate'    => '2015-12-31',
             'cases' => [
                 'old' => [
-                    'traffic' => 95,
+                    'traffic' => 80,
                     'name'    => 'Старая главная страница',
                 ],
                 'new' => [
-                    'traffic' => 5,
+                    'traffic' => 20,
                     'name'    => 'Новая главная страница',
                 ]
             ]
@@ -650,11 +651,11 @@ $c->abTest = [
             'expireDate'    => '2015-12-31',
             'cases' => [
                 'on' => [
-                    'traffic' => 50,
+                    'traffic' => 0,
                     'name'    => 'Есть фильтр',
                 ],
                 'off' => [
-                    'traffic' => 50,
+                    'traffic' => 100,
                     'name'    => 'Нет фильтра',
                 ]
             ]
