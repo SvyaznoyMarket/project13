@@ -904,7 +904,7 @@
 	filterBlock.on('click', '.js-category-filter-toggle-button', toggleHandler);
 	filterOtherParamsToggleButton.on('click', toggleFilterViewHandler);
 	filterMenuItem.on('click', selectFilterCategoryHandler);
-	$('input, select, textarea', filterBlock).on('change', catalog.filter.changeFilterHandler);
+	filterBlock.on('change', 'input, select, textarea', catalog.filter.changeFilterHandler);
 	filterBlock.on('submit', catalog.filter.sendFilter);
 
 	// Sorting items

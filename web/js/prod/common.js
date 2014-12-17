@@ -1795,7 +1795,7 @@
  *
  * @author	Zaytsev Alexandr
  */
-;(function() {
+;$(function() {
 	var inputs = $('input.bCustomInput, .js-customInput'),
 		body = $('body');
 	// end of vars
@@ -1810,6 +1810,10 @@
 			groupName = $input.attr('name') || '',
 			label = $('label[for="'+id+'"]');
 		// end of vars
+
+		if (!label.length) {
+			label = $input.closest('label');
+		}
 
 		if ( type === 'checkbox' ) {
 
@@ -1826,9 +1830,14 @@
 			if ( $input.is(':checked') ) {
 				$('input[name="'+groupName+'"]').each(function() {
 					var currElement = $(this),
-						currId = currElement.attr('id');
+						currId = currElement.attr('id'),
+						currLabel = $('label[for="'+currId+'"]');
 
-					$('label[for="'+currId+'"]').removeClass('mChecked');
+					if (!currLabel.length) {
+						currLabel = currElement.closest('label');
+					}
+
+					currLabel.removeClass('mChecked');
 				});
 
 				label.addClass('mChecked');
@@ -1846,7 +1855,7 @@
 	inputs.each(function(index, input) {
 		updateInput($(input));
 	});
-}());
+});
 $(document).ready(function(){
 	// var carturl = $('.lightboxinner .point2').attr('href')
 

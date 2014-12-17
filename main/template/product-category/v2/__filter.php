@@ -90,7 +90,7 @@ return function(
                                 <span class="fltrBtnBox_tggl_tx"><?= $priceFilter->getName() ?></span>
                                 <i class="fltrBtnBox_tggl_corner"></i>
                             </div>
-                            <div class="fltrBtnBox_dd fltrBtnBox_dd-l ">
+                            <div class="fltrBtnBox_dd fltrBtnBox_dd-l">
                                 <ul class="fltrBtnBox_dd_inn lstdotted js-category-v2-filter-dropBox-content">
                                     <? foreach ($priceFilter->getPriceRanges() as $range): ?>
                                         <li class="lstdotted_i">
@@ -109,22 +109,22 @@ return function(
                             </div>
                         </div>
 
-                        <div class="fltrBtn_range fl-l"><?= $helper->render('product-category/v2/filter/element/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?></div>
-                    <? endif ?>
+                        <? if ($labelFilter && $labelFilter->getOption()): ?>
+                            <div class="fltrBtnBox fltrBtnBox-mark fl-r js-category-v2-filter-dropBox js-category-v2-filter-dropBox-labels">
+                                <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener">
+                                    <span class="fltrBtnBox_tggl_tx"><?= $labelFilter->getName() ?></span>
+                                    <i class="fltrBtnBox_tggl_corner"></i>
+                                </div>
 
-                    <? if ($labelFilter && $labelFilter->getOption()): ?>
-                        <div class="fltrBtnBox fltrBtnBox-mark fl-r js-category-v2-filter-dropBox js-category-v2-filter-dropBox-labels">
-                            <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener">
-                                <span class="fltrBtnBox_tggl_tx"><?= $labelFilter->getName() ?></span>
-                                <i class="fltrBtnBox_tggl_corner"></i>
-                            </div>
-
-                            <div class="fltrBtnBox_dd fltrBtnBox_dd-r js-category-v2-filter-dropBox-content">
-                                <div class="fltrBtnBox_dd_inn">
-                                    <?= $helper->render('product-category/v2/filter/element/__list', ['productFilter' => $productFilter, 'filter' => $labelFilter]) ?>
+                                <div class="fltrBtnBox_dd fltrBtnBox_dd-r js-category-v2-filter-dropBox-content">
+                                    <div class="fltrBtnBox_dd_inn">
+                                        <?= $helper->render('product-category/v2/filter/element/__list', ['productFilter' => $productFilter, 'filter' => $labelFilter]) ?>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        <? endif ?>
+
+                        <div class="fltrBtn_range"><?= $helper->render('product-category/v2/filter/element/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter]) ?></div>
                     <? endif ?>
                 </div>
             <? endif ?>

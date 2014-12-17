@@ -1,0 +1,98 @@
+.newLayout {
+
+    .fltrBtn-gift {
+        margin-top: -20px;
+    }
+}
+
+.fltrBtn{
+
+    &-gift {
+        background-position: 0 0;
+        background-repeat: no-repeat;
+        height: 380px;
+        position: relative;
+
+        .fltrBtn_ln {
+            margin: 6px 0;
+
+            &-col {
+                .inline-block();
+                width: 222px;
+            }
+        }
+
+        .customLabel {
+            font-size: 14px;
+        }
+    }
+}
+
+.fltrBtnPosBottom {
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+}
+
+.fltrBtnLn {
+    max-width: 900px;
+    .table();
+    margin: 0 auto 20px;
+    .rounded(3px);
+
+    &-bg {
+        background: @white;
+        background: rgba(255, 255, 255, .75);
+        padding: 10px;
+        .drop-shadow();
+    }
+}
+
+// блок фильтра с параметрами
+.fltrBtnBox{
+
+    &-gift {
+        border: none;
+        background: @white;
+        background: rgba(255, 255, 255, .75);
+        padding: 8px 10px;
+        .drop-shadow();
+
+        .fltrBtnBox_tggl {
+            font-size: 20px;
+            padding: 0;
+            border: none;
+            background: none;
+        }
+
+        &.opn {
+            background: @white;
+            background: rgba(255, 255, 255, 1);
+            .fltrBtnBox_tggl {
+                padding: 0;
+            }
+        }
+
+        .fltrBtnBox_dd {
+            top: 46px;
+            min-width: 100%;
+            left: 0;
+            border: none;
+            .drop-shadow();
+            .rounded(3px);
+            font-size: 14px;
+
+            &:before {
+                .rounded(0 0 3px 3px);
+            }
+
+            &:after {
+                .rounded(3px 3px 0 0);
+            }
+        }
+
+        .fltrBtnBox_dd_inn {
+            padding: 10px 10px 0;
+        }
+    }
+}
