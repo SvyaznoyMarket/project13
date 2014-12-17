@@ -35,7 +35,7 @@
             border-width: 1px;
             border-color: @white;
             .fltrBtnBox_tggl{
-                padding: 4px 10px 3px;
+                padding: 4px 10px;
             }
             &.fltrBtnBox-mark{
                 border-width: 1px;
@@ -56,51 +56,6 @@
         &.fltrBtnBox-mark{
             border-width: 2px;
             border-color: #ef404a;
-        }
-    }
-
-    &-gift {
-        border: none;
-        background: @white;
-        background: rgba(255, 255, 255, .75);
-        padding: 8px 10px;
-        .drop-shadow();
-
-        .fltrBtnBox_tggl {
-            font-size: 20px;
-            padding: 0;
-            border: none;
-            background: none;
-        }
-
-        &.opn {
-            background: @white;
-            background: rgba(255, 255, 255, 1);
-            .fltrBtnBox_tggl {
-                padding: 0;
-            }
-        }
-
-        .fltrBtnBox_dd {
-            top: 46px;
-            min-width: 100%;
-            left: 0;
-            border: none;
-            .drop-shadow();
-            .rounded(3px);
-            font-size: 14px;
-
-            &:before {
-                .rounded(0 0 3px 3px);
-            }
-
-            &:after {
-                .rounded(3px 3px 0 0);
-            }
-        }
-
-        .fltrBtnBox_dd_inn {
-            padding: 10px 10px 0;
         }
     }
 
@@ -133,6 +88,7 @@
 
         .inline-block-middle();
         .rounded(3px 3px 0 0);
+
         &_tx{
             padding: 0 0 3px;
 
@@ -140,6 +96,7 @@
 
             .inline-block();
         }
+
         &_corner{
             width: 7px;
             height: 6px;
@@ -154,7 +111,7 @@
     &_dd{
         position: absolute;
         z-index: 15;
-        top: 24px;
+        top: 25px;
 
         display: none;
 
