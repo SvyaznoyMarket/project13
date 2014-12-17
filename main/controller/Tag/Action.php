@@ -247,8 +247,7 @@ class Action {
         $helper = $templating->getParam('helper');
         $selectedFilter = (new \View\ProductCategory\SelectedFilterAction())->execute(
             $helper,
-            $productFilter,
-            \App::router()->generate('product.category', ['categoryPath' => $selectedCategory ? $selectedCategory->getPath() : null])
+            $productFilter
         );
 
         // ajax

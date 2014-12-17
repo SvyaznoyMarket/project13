@@ -5,14 +5,12 @@ return function(
     \Model\Product\Filter $productFilter,
     $baseUrl
 ) {
-    $useBaseUrl = true;
 ?>
     <div class="bFilterFoot js-category-filter-selected">
         <?= $helper->renderWithMustache('product-category/_selectedFilter', (new \View\ProductCategory\SelectedFilterAction())->execute(
             $helper,
             $productFilter,
-            $baseUrl,
-            $useBaseUrl
+            $baseUrl
         )) ?>
     </div>
     <script id="tplSelectedFilter" type="text/html" data-partial="<?= $helper->json([]) ?>">
