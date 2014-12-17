@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Debug</title>
+    <title>Log <?= date('m.d H:i:s') ?></title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <script src="http://yastatic.net/jquery/2.1.1/jquery.min.js"></script>
@@ -77,7 +77,7 @@ try {
 
     $offset = isset($_GET['offset']) ? (int)$_GET['offset'] : 100000;
 
-    $before = isset($_GET['before']) ? (int)$_GET['before'] : 100;
+    $before = isset($_GET['before']) ? (int)$_GET['before'] : null;
 
     // Проверка доступности файлов журналов
     $logFiles = [];
@@ -90,6 +90,8 @@ try {
 
         $logFiles[] = $logFile;
     }
+
+    $parentLink = null;
 
     // Поиск строк журнала по ид
     $messages = [];
@@ -108,26 +110,84 @@ try {
             $line = json_decode($line, true);
             if (!$line) continue;
 
-            $icon = '';
+            $line += ['message' => null];
+
+            // Игнорировать
+            if (
+                'Create curl' == $line['message']
+                || 'Curl execute' == $line['message']
+                || 'End curl executing' == $line['message']
+                || (bool)array_intersect(['view'], $line['_tag'])
+            ) {
+                continue;
+            }
+
+
+            $icon = 'comment';
 
             // query
             if (isset($line['query']['response'])) {
                 $line['query']['response'] = json_decode($line['query']['response']);
             }
 
-            if (isset($line['url'])) {
-                $title = urldecode($line['url']);
-                $icon = 'comment';
-            } else {
-                $title = $line['_id'];
+            if (!$parentLink && ($id == $line['_id']) && $line['_parent']) {
+                $parentLink = '?' . http_build_query([
+                    'id'   => $line['_parent'],
+                    'file' => $logFilenames,
+                ]);
             }
 
+            $title = $line['_id'];
+            $color = '#ABABAB';
+            if (isset($line['url'])) {
+                $url = parse_url($line['url']) + ['host' => null, 'path' => null];
+
+                $title = $url['host'] . $url['path'];
+                $icon = 'volume-up';
+
+                if (0 === strpos($url['host'], 'scms')) {
+                    $color = '#FF9933';
+                } else if (0 === strpos($url['host'], 'search')) {
+                    $color = '#3366FF';
+                } else if (0 === strpos($url['host'], 'api')) {
+                    $color = '#66CC33';
+                } else {
+                    $color = '#686868';
+                }
+            } else if (in_array('router', $line['_tag'])) {
+                $title = urldecode($line['uri']);
+                $icon = 'globe';
+            } else if (isset($line['core.response'])) {
+                $title = 'Ответ от ядра';
+            } else if ($line['message']) {
+                $title = $line['message'];
+            } else {
+                $color = '#EDEDED';
+            }
+
+            if ('error' == $line['_type']) {
+                $icon = 'fire';
+            }
+
+            $parentId = $line['_parent'];
+
+            $value = $line;
+            unset(
+                //$value['_id'],
+                $value['_parent'],
+                //$value['_time'],
+                $value['_type'],
+                $value['_tag']
+            );
+
             $messages[] = [
-                'id'    => $lineId,
-                'title' => $title,
-                'type'  => $line['_type'],
-                'icon'  => $icon,
-                'value' => json_encode($line, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT),
+                'id'     => $lineId,
+                'parent' => $parentId,
+                'title'  => $title,
+                'type'   => $line['_type'],
+                'icon'   => $icon,
+                'color'  => $color,
+                'value'  => json_encode($value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT),
             ];
         }
     }
@@ -145,6 +205,29 @@ try {
 
 <body>
 
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <span class="navbar-brand">Log</span>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <? if ($parentLink): ?>
+                    <li><a href="<?= $parentLink ?>">Parent</a></li>
+                <? endif ?>
+            </ul>
+            <form class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default" disabled>Search</button>
+            </form>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+
 <div class="container" id="content">
     <? foreach ($errors as $error): ?>
         <div class="alert alert-<?= in_array($error->getSeverity(), [2, 8]) ? 'warning' : 'danger' ?>" role="alert">
@@ -158,8 +241,8 @@ try {
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="h-<?= $message['id'] ?>">
                     <h4 class="panel-title">
+                        <a id="log-<?= $message['id'] ?>" href="#log-<?= $message['id'] ?>"><span aria-hidden="true" class="glyphicon glyphicon-<?= $message['icon'] ?>"<? if ($message['color']): ?> style="color: <?= $message['color'] ?>" <? endif ?>></span></a>
                         <a data-toggle="collapse" data-parent="#accordion" href="#c-<?= $message['id'] ?>" aria-expanded="false" aria-controls="c-<?= $message['id'] ?>">
-                            <span aria-hidden="true" class="glyphicon glyphicon-<?= $message['icon'] ?>"<? if ('error' == $message['_type']): ?> style="color: #ff0000" <? endif ?>></span>
                             <?= $message['title'] ?>
                         </a>
                     </h4>
