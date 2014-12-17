@@ -18,11 +18,16 @@ return function(
         $selectedOption = $property->getSelectedOption($productFilter);
     }
 
+    /** @var \Model\Product\Filter\Option\Entity[] $manSexStatusOptions */
     $manSexStatusOptions = [];
+    /** @var \Model\Product\Filter\Option\Entity[] $womanSexStatusOptions */
     $womanSexStatusOptions = [];
     $selectedSexOptionToken = null;
+    $statusOptionGroups = [];
+    $options = null;
     if ($sexProperty && 'status' === $property->getId()) {
-        $selectedSexOptionToken = $sexProperty->getSelectedOption($productFilter)->getId() == 687 ? 'woman' : 'man';
+        $sexSelectedOption = $sexProperty->getSelectedOption($productFilter);
+        $selectedSexOptionToken = $sexSelectedOption && $sexSelectedOption->getId() == 687 ? 'woman' : 'man';
 
         $startManSexOptions = false;
         foreach ($property->getOption() as $option) {
@@ -44,24 +49,52 @@ return function(
                 $selectedOption = reset($womanSexStatusOptions);
             }
         }
+        
+        if ('man' === $selectedSexOptionToken) {
+            $options = $manSexStatusOptions;
+        } else if ('woman' === $selectedSexOptionToken) {
+            $options = $womanSexStatusOptions;
+        }
+        
+        foreach ($manSexStatusOptions as $option) {
+            $statusOptionGroups['man'][] = [
+                'id' => \View\Id::productCategoryFilter($property->getId()) . '-option-' . $option->getId(),
+                'name' => \View\Name::productCategoryFilter($property, $option),
+                'value' => $option->getId(),
+                'title' => $option->getName(),
+            ];
+        }
+        
+        foreach ($womanSexStatusOptions as $option) {
+            $statusOptionGroups['woman'][] = [
+                'id' => \View\Id::productCategoryFilter($property->getId()) . '-option-' . $option->getId(),
+                'name' => \View\Name::productCategoryFilter($property, $option),
+                'value' => $option->getId(),
+                'title' => $option->getName(),
+            ];
+        }
+    }
+    
+    if (!$options) {
+        $options = $property->getOption();
     }
 ?>
 
-    <div class="fltrBtnBox fltrBtnBox-gift js-gift-category-filter-property-dropBox <? if ('sex' === $property->getId()): ?>js-gift-category-filter-property-dropBox-sex<? endif ?> <? if ('status' === $property->getId()): ?>js-gift-category-filter-property-dropBox-status<? endif ?>">
+    <div class="fltrBtnBox fltrBtnBox-gift js-gift-category-filter-property-dropBox <? if ('sex' === $property->getId()): ?>js-gift-category-filter-property-dropBox-sex<? endif ?> <? if ('status' === $property->getId()): ?>js-gift-category-filter-property-dropBox-status<? endif ?>" data-option-groups="<?= $helper->json($statusOptionGroups) ?>">
         <div class="fltrBtnBox_tggl <?= $initialValue ? 'initial' : ''?>">
             <span class="js-gift-category-filter-property-dropBox-opener">
-                <?= $helper->escape($initialValue ? $initialValue : $selectedOption->getName()) ?>
+                <?= $helper->escape($initialValue ? $initialValue : ($selectedOption ? $selectedOption->getName() : '')) ?>
             </span>
             <i class="fltrBtnBox_tggl_corner"></i>
         </div>
 
-        <div class="fltrBtnBox_dd">
-            <ul class="fltrBtnBox_dd_inn lstdotted js-gift-category-filter-property-dropBox-content">
-                <? foreach ($property->getOption() as $option): ?>
+        <div class="fltrBtnBox_dd js-gift-category-filter-property-dropBox-content">
+            <ul class="fltrBtnBox_dd_inn lstdotted">
+                <? foreach ($options as $option): ?>
                     <? $id = \View\Id::productCategoryFilter($property->getId()) . '-option-' . $option->getId(); ?>
-                    <li class="lstdotted_i js-gift-category-filter-property-dropBox-content-item" <? if ('man' === $selectedSexOptionToken && !in_array($option, $manSexStatusOptions, true) || 'woman' === $selectedSexOptionToken && !in_array($option, $womanSexStatusOptions, true)): ?>style="display: none;"<? endif ?>>
+                    <li class="lstdotted_i js-gift-category-filter-property-dropBox-content-item">
                         <input
-                            class="customInput customInput-gift js-customInput js-gift-category-filter-property-list-radio"
+                            class="customInput customInput-gift js-customInput"
                             type="radio"
                             id="<?= $helper->escape($id) ?>"
                             name="<?= \View\Name::productCategoryFilter($property, $option) ?>"
@@ -70,10 +103,8 @@ return function(
                                 checked="checked"
                             <? endif ?>
                         />
-                        <label for="<?= $helper->escape($id) ?>" class="customLabel customLabel-gift js-gift-category-filter-property-dropBox-content-item-clicker">
-                            <span class="js-gift-category-filter-property-dropBox-content-item-title">
-                                <?= $helper->escape($option->getName()) ?>
-                            </span>
+                        <label for="<?= $helper->escape($id) ?>" class="customLabel customLabel-gift js-gift-category-filter-property-dropBox-content-item-clicker js-gift-category-filter-property-dropBox-content-item-title">
+                            <?= $helper->escape($option->getName()) ?>
                         </label>
                     </li>
                 <? endforeach ?>

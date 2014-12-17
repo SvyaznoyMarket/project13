@@ -5,7 +5,7 @@
  *
  * @author	Zaytsev Alexandr
  */
-;(function() {
+;$(function() {
 	var inputs = $('input.bCustomInput, .js-customInput'),
 		body = $('body');
 	// end of vars
@@ -65,4 +65,4 @@
 	inputs.each(function(index, input) {
 		updateInput($(input));
 	});
-}());
+});

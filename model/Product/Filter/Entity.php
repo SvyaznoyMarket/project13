@@ -267,10 +267,6 @@ class Entity {
             }
         }
 
-        if (!$selectedOption && isset($this->getOption()[0])) {
-            $selectedOption = $this->getOption()[0];
-        }
-        
         return $selectedOption;
     }
 

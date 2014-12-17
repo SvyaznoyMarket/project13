@@ -163,71 +163,73 @@ class Action {
     }
 
     private function createTagFilterProperties(array &$filters) {
-        $property = new \Model\Product\Filter\Entity();
-        $property->setId('holiday');
-        $property->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-        $property->setIsMultiple(false);
-        $property->setOption([
-            new \Model\Product\Filter\Option\Entity(['id' => 706, 'name' => 'Новый Год']),
-            new \Model\Product\Filter\Option\Entity(['id' => 707, 'name' => 'День рождения']),
-            new \Model\Product\Filter\Option\Entity(['id' => 708, 'name' => 'Юбилей']),
-            new \Model\Product\Filter\Option\Entity(['id' => 709, 'name' => 'День свадьбы']),
-            new \Model\Product\Filter\Option\Entity(['id' => 710, 'name' => 'Новоселье']),
-            new \Model\Product\Filter\Option\Entity(['id' => 711, 'name' => 'Благодарность']),
-            new \Model\Product\Filter\Option\Entity(['id' => 712, 'name' => 'Любой праздник']),
-        ]);
-        $filters[] = $property;
-
-        $property = new \Model\Product\Filter\Entity();
-        $property->setId('sex');
-        $property->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-        $property->setIsMultiple(false);
-        $property->setOption([
-            new \Model\Product\Filter\Option\Entity(['id' => 687, 'name' => 'Женщине']),
-            new \Model\Product\Filter\Option\Entity(['id' => 688, 'name' => 'Мужчине']),
-        ]);
-        $filters[] = $property;
-
-        $property = new \Model\Product\Filter\Entity();
-        $property->setId('status');
-        $property->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-        $property->setIsMultiple(false);
-        $property->setOption([
-            new \Model\Product\Filter\Option\Entity(['id' => 690, 'name' => 'Коллеге']),
-            new \Model\Product\Filter\Option\Entity(['id' => 692, 'name' => 'Боссу']),
-            new \Model\Product\Filter\Option\Entity(['id' => 693, 'name' => 'Подруге']),
-            new \Model\Product\Filter\Option\Entity(['id' => 694, 'name' => 'Девочке']),
-            new \Model\Product\Filter\Option\Entity(['id' => 695, 'name' => 'Маме']),
-            new \Model\Product\Filter\Option\Entity(['id' => 696, 'name' => 'Бабушке']),
-            new \Model\Product\Filter\Option\Entity(['id' => 697, 'name' => 'Себе']),
-            
-            new \Model\Product\Filter\Option\Entity(['id' => 698, 'name' => 'Любимому']),
-            new \Model\Product\Filter\Option\Entity(['id' => 690, 'name' => 'Коллеге']),
-            new \Model\Product\Filter\Option\Entity(['id' => 692, 'name' => 'Боссу']),
-            new \Model\Product\Filter\Option\Entity(['id' => 699, 'name' => 'Другу']),
-            new \Model\Product\Filter\Option\Entity(['id' => 700, 'name' => 'Мальчику']),
-            new \Model\Product\Filter\Option\Entity(['id' => 703, 'name' => 'Папе']),
-            new \Model\Product\Filter\Option\Entity(['id' => 705, 'name' => 'Дедушке']),
-        ]);
-        $filters[] = $property;
+        foreach ($this->getTagFilterPropertyValues() as $id => $values) {
+            $property = new \Model\Product\Filter\Entity();
+            $property->setId($id);
+            $property->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+            $property->setIsMultiple(false);
+            foreach ($values as $value) {
+                $property->addOption(new \Model\Product\Filter\Option\Entity(['id' => $value['id'], 'name' => $value['name']]));
+            }
+            $filters[] = $property;
+        }
+    }
+    
+    private function getTagFilterPropertyValues() {
+        return [
+            'holiday' => [
+                ['id' => 706, 'name' => 'Новый Год'],
+                ['id' => 707, 'name' => 'День рождения'],
+                ['id' => 708, 'name' => 'Юбилей'],
+                ['id' => 709, 'name' => 'День свадьбы'],
+                ['id' => 710, 'name' => 'Новоселье'],
+                ['id' => 711, 'name' => 'Благодарность'],
+                ['id' => 712, 'name' => 'Любой праздник'],
+            ],
+            'sex' => [
+                ['id' => 687, 'name' => 'Женщине'],
+                ['id' => 688, 'name' => 'Мужчине'],
+            ],
+            'status' => [
+                ['id' => 690, 'name' => 'Коллеге'],
+                ['id' => 692, 'name' => 'Боссу'],
+                ['id' => 693, 'name' => 'Подруге'],
+                ['id' => 694, 'name' => 'Девочке'],
+                ['id' => 695, 'name' => 'Маме'],
+                ['id' => 696, 'name' => 'Бабушке'],
+                ['id' => 697, 'name' => 'Себе'],
+                
+                ['id' => 698, 'name' => 'Любимому'],
+                ['id' => 690, 'name' => 'Коллеге'],
+                ['id' => 692, 'name' => 'Боссу'],
+                ['id' => 699, 'name' => 'Другу'],
+                ['id' => 700, 'name' => 'Мальчику'],
+                ['id' => 703, 'name' => 'Папе'],
+                ['id' => 705, 'name' => 'Дедушке'],
+            ],
+            'age' => [
+                ['id' => 713, 'name' => '0—1 год'],
+                ['id' => 716, 'name' => '1—3 года'],
+                ['id' => 717, 'name' => '4—7 лет'],
+                ['id' => 718, 'name' => '8—12 лет'],
+                ['id' => 719, 'name' => '13—16 лет'],
+                ['id' => 720, 'name' => '17—23 года'],
+                ['id' => 721, 'name' => '24—35 лет'],
+                ['id' => 722, 'name' => '36—60 лет'],
+                ['id' => 723, 'name' => 'Старше 60'],
+                ['id' => 724, 'name' => 'Возраст не имеет значения'],
+            ],
+        ];
+    }
+    
+    private function hasTagFilterPropertyValue($propertyName, $valueId) {
+        foreach ($this->getTagFilterPropertyValues()[$propertyName] as $value) {
+            if ($value['id'] == $valueId) {
+                return true;
+            }
+        }
         
-        $property = new \Model\Product\Filter\Entity();
-        $property->setId('age');
-        $property->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-        $property->setIsMultiple(false);
-        $property->setOption([
-            new \Model\Product\Filter\Option\Entity(['id' => 713, 'name' => '0 - 1 год']),
-            new \Model\Product\Filter\Option\Entity(['id' => 716, 'name' => '1 - 3 года']),
-            new \Model\Product\Filter\Option\Entity(['id' => 717, 'name' => '4 - 7 лет']),
-            new \Model\Product\Filter\Option\Entity(['id' => 718, 'name' => '8 - 12 лет']),
-            new \Model\Product\Filter\Option\Entity(['id' => 719, 'name' => '13 - 16 лет']),
-            new \Model\Product\Filter\Option\Entity(['id' => 720, 'name' => '17 - 23 года']),
-            new \Model\Product\Filter\Option\Entity(['id' => 721, 'name' => '24 - 35 лет']),
-            new \Model\Product\Filter\Option\Entity(['id' => 722, 'name' => '36 - 60 лет']),
-            new \Model\Product\Filter\Option\Entity(['id' => 723, 'name' => 'Старше 60']),
-            new \Model\Product\Filter\Option\Entity(['id' => 724, 'name' => 'Возраст не имеет значения']),
-        ]);
-        $filters[] = $property;
+        return false;
     }
 
     /**
@@ -355,20 +357,31 @@ class Action {
     private function getFilterFromUrl(\Http\Request $request) {
         // добывание фильтров из http-запроса
         if ('POST' == $request->getMethod()) {
-            $requestData = $request->request;
+            $requestData = clone $request->request;
         } else {
-            $requestData = $request->query;
-            if (!$requestData->all()) {
-                // Значения по умолчанию
-                $requestData = new \Http\ParameterBag([
-                    'f-holiday' => 706,
-                    'f-sex' => 687,
-                    'f-status' => 690,
-                    'f-age' => 724,
-                ]);
+            $requestData = clone $request->query;
+        }
+        
+        if (!$this->hasTagFilterPropertyValue('holiday', $requestData->get('f-holiday'))) {
+            $requestData->set('f-holiday', 706);
+        }
+        
+        if (!$this->hasTagFilterPropertyValue('sex', $requestData->get('f-sex'))) {
+            $requestData->set('f-sex', 687);
+        }
+        
+        if (!$this->hasTagFilterPropertyValue('status', $requestData->get('f-status'))) {
+            if ($requestData->get('f-sex') == 687) {
+                $requestData->set('f-status', 690);
+            } else {
+                $requestData->set('f-status', 698);
             }
         }
-
+        
+        if (!$this->hasTagFilterPropertyValue('age', $requestData->get('f-age'))) {
+            $requestData->set('f-age', 724);
+        }
+        
         $values = [];
         foreach ($requestData as $k => $v) {
             if (0 !== strpos($k, \View\Product\FilterForm::$name)) continue;
