@@ -20,8 +20,8 @@ return function(
                     checked="checked"
                 <? endif ?>
             />
-    
-            <label class="customLabel" for="<?= $helper->escape($id) ?>">
+
+            <label class="customLabel customLabel-defcheck3" for="<?= $helper->escape($id) ?>">
                 <?= $option->getName() ?>
             </label>
         </div>

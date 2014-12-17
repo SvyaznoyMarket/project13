@@ -12,7 +12,7 @@ return function(
             break;
         }
     }
-    
+
     $selectedOption = null;
     if (!$initialValue) {
         $selectedOption = $property->getSelectedOption($productFilter);
@@ -23,20 +23,20 @@ return function(
     $selectedSexOptionToken = null;
     if ($sexProperty && 'status' === $property->getId()) {
         $selectedSexOptionToken = $sexProperty->getSelectedOption($productFilter)->getId() == 687 ? 'woman' : 'man';
-        
+
         $startManSexOptions = false;
         foreach ($property->getOption() as $option) {
             if (698 == $option->getId()) {
                 $startManSexOptions = true;
             }
-            
+
             if ($startManSexOptions) {
                 $manSexStatusOptions[] = $option;
             } else {
                 $womanSexStatusOptions[] = $option;
             }
         }
-        
+
         if ($selectedOption) {
             if ('man' === $selectedSexOptionToken && !in_array($selectedOption, $manSexStatusOptions, true)) {
                 $selectedOption = reset($manSexStatusOptions);
@@ -61,7 +61,7 @@ return function(
                     <? $id = \View\Id::productCategoryFilter($property->getId()) . '-option-' . $option->getId(); ?>
                     <li class="lstdotted_i js-gift-category-filter-property-dropBox-content-item" <? if ('man' === $selectedSexOptionToken && !in_array($option, $manSexStatusOptions, true) || 'woman' === $selectedSexOptionToken && !in_array($option, $womanSexStatusOptions, true)): ?>style="display: none;"<? endif ?>>
                         <input
-                            class="customInput customInput-gift js-gift-category-filter-property-list-radio"
+                            class="customInput customInput-gift js-customInput js-gift-category-filter-property-list-radio"
                             type="radio"
                             id="<?= $helper->escape($id) ?>"
                             name="<?= \View\Name::productCategoryFilter($property, $option) ?>"
@@ -70,7 +70,7 @@ return function(
                                 checked="checked"
                             <? endif ?>
                         />
-                        <label for="<?= $helper->escape($id) ?>" class="customLabel js-gift-category-filter-property-dropBox-content-item-clicker">
+                        <label for="<?= $helper->escape($id) ?>" class="customLabel customLabel-gift js-gift-category-filter-property-dropBox-content-item-clicker">
                             <span class="js-gift-category-filter-property-dropBox-content-item-title">
                                 <?= $helper->escape($option->getName()) ?>
                             </span>

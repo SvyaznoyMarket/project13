@@ -42,20 +42,20 @@ return function(
     ?>
 
     <div class="fltrBtn fltrBtn-gift" style="background-image: url('/styles/catalog/img/bg-ny-gift.jpg')">
-        <form id="productCatalog-filter-form" class="js-category-filter" action="<?= $baseUrl ?>" method="GET">
+        <form id="productCatalog-filter-form" class="fltrBtnPosBottom js-category-filter" action="<?= $baseUrl ?>" method="GET">
             <div class="fltrBtnLn">
                 <? if ($holidayProperty): ?>
                     <?= $helper->render('gift/category/filter/property/__dropBox', ['productFilter' => $productFilter, 'property' => $holidayProperty]) ?>
                 <? endif ?>
-                
+
                 <? if ($sexProperty): ?>
                     <?= $helper->render('gift/category/filter/property/__dropBox', ['productFilter' => $productFilter, 'property' => $sexProperty]) ?>
                 <? endif ?>
-                
+
                 <? if ($statusProperty): ?>
                     <?= $helper->render('gift/category/filter/property/__dropBox', ['productFilter' => $productFilter, 'property' => $statusProperty, 'sexProperty' => $sexProperty]) ?>
                 <? endif ?>
-                
+
                 <? if ($ageProperty): ?>
                     <?= $helper->render('gift/category/filter/property/__dropBox', ['productFilter' => $productFilter, 'property' => $ageProperty, 'initialValue' => 'Возраст']) ?>
                 <? endif ?>
@@ -67,7 +67,7 @@ return function(
                 <? endif ?>
             </div>
 
-            <div class="fltrBtnLn fltrBtnLn-npb fltrBtnLn-lst fltrBtnLn-bg">
+            <div class="fltrBtnLn fltrBtnLn-lst fltrBtnLn-bg">
                 <? if ($categoryProperty): ?>
                     <?= $helper->render('gift/category/filter/property/__list', ['productFilter' => $productFilter, 'property' => $categoryProperty]) ?>
                 <? endif ?>

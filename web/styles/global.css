@@ -3677,6 +3677,9 @@ img[height="0"] {
   .customInput-gift:checked + .customLabel {
     background: url("/styles/customInput/img/i-presents.png") no-repeat 0 50%;
   }
+  .customLabel-gift.mChecked {
+    background: url("/styles/customInput/img/i-presents.png") no-repeat 0 50%;
+  }
 }
 /*---END----КНОПКА НАВЕРХ---------*/
 /*---------ФИКСИРОВАННЫЙ ВСПОМОГАТЕЛЬНЫЙ БЛОК (ЛИСТИНГИ/КАРТОЧКА ТОВАРА)----------*/
@@ -10691,8 +10694,11 @@ img[height="0"] {
     background-position: 0 0;
     background-repeat: no-repeat;
     margin: -20px 0 0 -10px;
-    padding: 160px 0 1px;
+    height: 380px;
     position: relative;
+  }
+  .fltrBtn-gift .fltrBtn_ln {
+    margin: 6px 0;
   }
   .fltrBtn-gift .fltrBtn_ln-col {
     display: inline-block;
@@ -10700,10 +10706,18 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    width: 180px;
+    width: 222px;
+  }
+  .fltrBtn-gift .customLabel {
+    font-size: 14px;
+  }
+  .fltrBtnPosBottom {
+    position: absolute;
+    bottom: 0;
+    left: 20px;
   }
   .fltrBtnLn {
-    max-width: 920px;
+    max-width: 900px;
     display: table;
     /* IE6-8 */
     *display: block;
@@ -10716,14 +10730,12 @@ img[height="0"] {
     border-radius: 3px;
   }
   .fltrBtnLn-bg {
+    background: #ffffff;
     background: rgba(255, 255, 255, 0.75);
     padding: 10px;
     -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  }
-  .fltrBtnLn-npb {
-    padding-bottom: 0;
   }
 }
 @media all {
@@ -10784,8 +10796,9 @@ img[height="0"] {
   }
   .fltrBtnBox-gift {
     border: none;
+    background: #ffffff;
     background: rgba(255, 255, 255, 0.75);
-    padding: 5px 10px;
+    padding: 8px 10px;
     -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -10803,7 +10816,7 @@ img[height="0"] {
     padding: 0;
   }
   .fltrBtnBox-gift .fltrBtnBox_dd {
-    top: 40px;
+    top: 46px;
     min-width: 100%;
     left: 0;
     border: none;
@@ -10814,6 +10827,16 @@ img[height="0"] {
     -moz-border-radius: 3px;
     border-radius: 3px;
     font-size: 14px;
+  }
+  .fltrBtnBox-gift .fltrBtnBox_dd:before {
+    -webkit-border-radius: 0 0 3px 3px;
+    -moz-border-radius: 0 0 3px 3px;
+    border-radius: 0 0 3px 3px;
+  }
+  .fltrBtnBox-gift .fltrBtnBox_dd:after {
+    -webkit-border-radius: 3px 3px 0 0;
+    -moz-border-radius: 3px 3px 0 0;
+    border-radius: 3px 3px 0 0;
   }
   .fltrBtnBox-gift .fltrBtnBox_dd_inn {
     padding: 10px 10px 0;

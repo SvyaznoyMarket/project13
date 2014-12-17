@@ -14,6 +14,7 @@ return function(
     <div class="fltrRange fltrRange-v3 js-category-filter-rangeSlider">
         <span class="fltrRange_lbl">от</span>
         <input class="fltrRange_it mFromRange js-category-filter-rangeSlider-from" name="<?= \View\Name::productCategoryFilter($property, 'from') ?>" value="<?= $helper->clearZeroValue($productFilter->getValueMin($property)) ?>" type="text" />
+        &nbsp;<span class="fltrRange_val rubl">p</span>
 
         <div class="fltrRange_sldr js-category-filter-rangeSlider-slider" data-config="<?= $helper->json($data) ?>">
             <a class="ui-slider-handle ui-state-default ui-corner-all" href="#"></a>
