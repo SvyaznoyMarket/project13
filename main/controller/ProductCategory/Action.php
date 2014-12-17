@@ -1086,8 +1086,7 @@ class Action {
                 ),
                 'selectedFilter' => $selectedFilter->execute(
                     \App::closureTemplating()->getParam('helper'),
-                    $productFilter,
-                    \App::router()->generate('product.category', ['categoryPath' => $category->getPath()])
+                    $productFilter
                 ),
                 'pagination'     => (new \View\PaginationAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
@@ -1466,6 +1465,14 @@ class Action {
                     $category->setProductView(3);
                 } else {
                     $category->setProductView(4);
+                }
+            }
+        } else {
+            foreach ($productFilter->getFilterCollection() as $filter) {
+                if ('Металл' === $filter->getName() || 'Вставка' === $filter->getName()) {
+                    foreach ($filter->getOption() as $option) {
+                        $option->setImageUrl('');
+                    }
                 }
             }
         }

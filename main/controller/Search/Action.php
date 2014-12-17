@@ -238,8 +238,7 @@ class Action {
                 ),
                 'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
                     $helper,
-                    $productFilter,
-                    \App::router()->generate('search', ['q' => $searchQuery])
+                    $productFilter
                 ),
                 'pagination'     => (new \View\PaginationAction())->execute(
                     $helper,
