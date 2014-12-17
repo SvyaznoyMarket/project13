@@ -1459,6 +1459,14 @@ class Action {
                     $category->setProductView(4);
                 }
             }
+        } else {
+            foreach ($productFilter->getFilterCollection() as $filter) {
+                if ('Металл' === $filter->getName() || 'Вставка' === $filter->getName()) {
+                    foreach ($filter->getOption() as $option) {
+                        $option->setImageUrl('');
+                    }
+                }
+            }
         }
     }
 }
