@@ -781,6 +781,7 @@ class Action {
 
     private function getRootCategoryLinks(\Model\Product\Category\Entity $category, \View\Layout $page) {
         $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
+        $relatedCategories = $page->getParam('relatedCategories');
 
         /** @var $categories \Model\Product\Category\Entity[] */
         $categories = $category->getChild();
