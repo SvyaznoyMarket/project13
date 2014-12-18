@@ -279,7 +279,7 @@ namespace Model\OrderDelivery\Entity {
          */
         public $possible_delivery_groups = [];
         /** Возможные методы оплаты
-         * @var array
+         * @var PaymentMethod[]
          */
         public $possible_payment_methods = [];
         /** Возможные дни доставки
