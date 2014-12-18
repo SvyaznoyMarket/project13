@@ -631,16 +631,16 @@ $c->abTest = [
 
         'main_page' => [
             'name'          => 'Главная страница',
-            'gaSlotNumber'        => 16,
+            'gaSlotNumber'  => 16,
             'enabled'       => true,
             'expireDate'    => '2015-12-31',
             'cases' => [
                 'old' => [
-                    'traffic' => 95,
+                    'traffic' => 80,
                     'name'    => 'Старая главная страница',
                 ],
                 'new' => [
-                    'traffic' => 5,
+                    'traffic' => 20,
                     'name'    => 'Новая главная страница',
                 ]
             ]
@@ -653,11 +653,11 @@ $c->abTest = [
             'expireDate'    => '2015-12-31',
             'cases' => [
                 'on' => [
-                    'traffic' => 50,
+                    'traffic' => 0,
                     'name'    => 'Есть фильтр',
                 ],
                 'off' => [
-                    'traffic' => 50,
+                    'traffic' => 100,
                     'name'    => 'Нет фильтра',
                 ]
             ]

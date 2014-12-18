@@ -141,6 +141,11 @@ module.exports = function (grunt, options) {
             tasks: ['jsmin-sourcemap:catalog']
         },
 
+		giftJS:{
+			files: [ pathDev + 'gift/*.js'],
+			tasks: ['concat:giftJS', 'uglify:giftJS']
+		},
+
         productJS:{
             files: [ pathDev + 'product/*.js'],
             tasks: ['concat:productJS', 'uglify:productJS']

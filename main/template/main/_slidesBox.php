@@ -35,6 +35,7 @@ if (@$blockname == 'ПОПУЛЯРНЫЕ ТОВАРЫ') {
                 return (int)rand(-1, 1);
             }
         });
+        $rrProducts = array_filter($rrProducts, function(\Model\Product\BasicEntity $p){ return $p->getIsBuyable() && !$p->isInShopShowroomOnly();});
     } catch (\Exception $e) {}
 }
 
