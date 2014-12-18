@@ -56,9 +56,11 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
                     'category_class'     => $category_class
                 ]
             ) // дочерние категории and relatedCategories ?>
-        <? endif; ?>
+        <? endif ?>
 
-        <?= $helper->render('product/__smartChoice', ['smartChoiceProducts' => $smartChoiceProducts]); ?>
+        <? if (!$category->isV2Furniture()): ?>
+            <?= $helper->render('product/__smartChoice', ['smartChoiceProducts' => $smartChoiceProducts]); ?>
+        <? endif ?>
 
         <? if ($category->isV2()): ?>
             <?= $helper->render('product-category/v2/__filter', [
