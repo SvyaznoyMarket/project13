@@ -15,6 +15,7 @@
 ini_set('display_errors', true);
 ini_set('short_open_tag', true);
 error_reporting(-1);
+mb_internal_encoding('UTF-8');
 
 try {
     /** @var \ErrorException[] $errors */
@@ -107,8 +108,13 @@ try {
 
         foreach (explode(PHP_EOL, $result) as $line) {
             $lineId = md5($line);
+
+            if ($pos = strpos($line, '{')) {
+                $line = mb_substr($line, $pos);
+            }
+
             $line = json_decode($line, true);
-            if (!$line) continue;
+            if (!isset($line['_id'])) continue;
 
             $line += ['message' => null];
 
