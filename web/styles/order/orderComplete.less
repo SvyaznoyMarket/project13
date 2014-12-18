@@ -1,6 +1,6 @@
 /*---------Оформление заказа 3.0 -> строка перехода к следующему шагу .orderCompl ----------*/
 
-/* 
+/*
     orderCompl
         orderCompl_l
         orderCompl_btn
@@ -27,7 +27,7 @@
 			padding: 8px 0 0 15px;
 			display: inline-block;
 			vertical-align: top;
-		} 
+		}
 	}
 
 	&_btn {
@@ -41,14 +41,15 @@
 	}
 
     &_continue_link {
-        font-size: 20px;
+        font-size: 18px;
         text-decoration: underline;
         padding: 10px 0;
         display: block;
     }
 
     &_final {
-       background: #f7f7f7;
+		text-align: center;
+		background: #fff;
     }
 
     &-v2 {
@@ -88,3 +89,48 @@
 	border-bottom: 1px solid @lightgrey-7;
 	background: @lightgreyBg;
 }
+/*===========================================================================
+ Оформление заказа: оплата
+============================================================================*/
+.orderPayment{
+	margin-top:50px;
+	&_block{
+		width: 380px;
+		padding: 20px 25px 20px;
+		margin:0 auto;
+		.bordered();
+		margin-top:45px;
+	}
+	&_head{
+		font-size: 30px;
+		text-align: center;
+	}
+	&_num, &_num:hover{
+		text-decoration: none;
+		border-bottom: 1px solid @lightgreyBr;
+	}
+	&_msg{
+		&_head{
+			font-size: 20px;
+		}
+		&_shop{
+			padding-left:20px;
+			line-height: 18px;
+			background-repeat: no-repeat;
+			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAfklEQVQYGYWQwQ2AIBRD/WUmwhS6i0cdQI/uolMAMwFSIgkxGnr5tDwCVFJKA+W9H2OMc/aaXkQ8gENrfRVP0Fq75bkweCsf2I0xqzjnxhDC+QZar5SawOva8GtNBvVNX0DNyKCa3gR/14OeBnD0QNYE9sQK/mDuFYY9Ur3Cb25DQ2sv9bp2AAAAAElFTkSuQmCC);
+			&_metro, &_addr{
+				display: block;
+			}
+		}
+		&_addr_link{
+			margin-top: 5px;
+			text-decoration: underline;
+			.inline-block();
+		}
+		&_info{
+			margin-top:14px;
+		}
+	}
+}
+
+

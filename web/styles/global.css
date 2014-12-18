@@ -7705,7 +7705,7 @@ img[height="0"] {
 }
 @media all {
   /*---------Оформление заказа 3.0 -> строка перехода к следующему шагу .orderCompl ----------*/
-  /* 
+  /*
     orderCompl
         orderCompl_l
         orderCompl_btn
@@ -7737,13 +7737,14 @@ img[height="0"] {
     line-height: 32px;
   }
   .orderCompl_continue_link {
-    font-size: 20px;
+    font-size: 18px;
     text-decoration: underline;
     padding: 10px 0;
     display: block;
   }
   .orderCompl_final {
-    background: #f7f7f7;
+    text-align: center;
+    background: #fff;
   }
   .orderCompl-v2 .orderCompl_btn {
     margin: 0;
@@ -7780,6 +7781,56 @@ img[height="0"] {
     border-top: 1px solid #a6a6a6;
     border-bottom: 1px solid #eaeaea;
     background: #f6f6f6;
+  }
+  /*===========================================================================
+ Оформление заказа: оплата
+============================================================================*/
+  .orderPayment {
+    margin-top: 50px;
+  }
+  .orderPayment_block {
+    width: 380px;
+    padding: 20px 25px 20px;
+    margin: 0 auto;
+    border-top: solid 1px #eeeeee;
+    border-left: solid 1px #eeeeee;
+    border-right: solid 1px #eeeeee;
+    border-bottom: solid 1px #eeeeee;
+    margin-top: 45px;
+  }
+  .orderPayment_head {
+    font-size: 30px;
+    text-align: center;
+  }
+  .orderPayment_num,
+  .orderPayment_num:hover {
+    text-decoration: none;
+    border-bottom: 1px solid #c7c7c7;
+  }
+  .orderPayment_msg_head {
+    font-size: 20px;
+  }
+  .orderPayment_msg_shop {
+    padding-left: 20px;
+    line-height: 18px;
+    background-repeat: no-repeat;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAfklEQVQYGYWQwQ2AIBRD/WUmwhS6i0cdQI/uolMAMwFSIgkxGnr5tDwCVFJKA+W9H2OMc/aaXkQ8gENrfRVP0Fq75bkweCsf2I0xqzjnxhDC+QZar5SawOva8GtNBvVNX0DNyKCa3gR/14OeBnD0QNYE9sQK/mDuFYY9Ur3Cb25DQ2sv9bp2AAAAAElFTkSuQmCC);
+  }
+  .orderPayment_msg_shop_metro,
+  .orderPayment_msg_shop_addr {
+    display: block;
+  }
+  .orderPayment_msg_addr_link {
+    margin-top: 5px;
+    text-decoration: underline;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+  }
+  .orderPayment_msg_info {
+    margin-top: 14px;
   }
 }
 @media all {
@@ -7836,6 +7887,12 @@ img[height="0"] {
     color: #5e5e5e;
     font-size: 14px;
     line-height: 33px;
+  }
+  .orderU_hint .customLabel {
+    background-position: 0 50%;
+  }
+  .orderU_hint .customInput-defcheck:checked + .customLabel {
+    background-position: 0 50%;
   }
   .orderU-v2 .orderU_tx {
     line-height: 14px;
