@@ -70,7 +70,7 @@ class SelectedFilter {
 
                 $links = $this->getPropertyLinks($helper, $productFilter, $property, $baseUrl, $sort);
                 if ($links) {
-                    if ('shop' === $property->getId()) {
+                    if ($property->isShop() || ($property->isBrand() && $productFilter->getCategory()->isV2Furniture())) {
                         $name = '';
                     } else {
                         $name = $property->getName();
@@ -93,7 +93,7 @@ class SelectedFilter {
     private function getPropertyLinks(\Helper\TemplateHelper $helper, \Model\Product\Filter $productFilter, \Model\Product\Filter\Entity $property, $baseUrl, $sort) {
         $isPrice = $property->isPrice();
 
-        if ($property->isBrand() || $isPrice) {
+        if (($property->isBrand() && !$productFilter->getCategory()->isV2Furniture()) || $isPrice) {
             return [];
         }
 
@@ -178,7 +178,7 @@ class SelectedFilter {
                     }
 
                     $links[] = [
-                        'name' => 'shop' === $property->getId() ? $option->getName() : mb_strtoupper(mb_substr($option->getName(), 0, 1)) . mb_substr($option->getName(), 1),
+                        'name' => $property->isShop() ? $option->getName() : mb_strtoupper(mb_substr($option->getName(), 0, 1)) . mb_substr($option->getName(), 1),
                         'url'  => $helper->replacedUrl(
                             [
                                 \View\Name::productCategoryFilter($property, $option) => null,
