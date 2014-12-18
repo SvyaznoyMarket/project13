@@ -64,7 +64,7 @@ $(function() {
 		}
 
 		$body.trigger('trackGoogleEvent', {
-			category: 'filter_bt',
+			category: 'filter',
 			action: 'brand',
 			label: catalogPath
 		});
@@ -73,7 +73,7 @@ $(function() {
 	// Нажатие на один из брендов
 	$brandFilter.click(function() {
 		$body.trigger('trackGoogleEvent', {
-			category: 'filter_bt',
+			category: 'filter',
 			action: 'brand',
 			label: catalogPath
 		});
@@ -82,7 +82,7 @@ $(function() {
 	// Фокус ввода на поля цены
 	$('input', $priceFilter).focus(function() {
 		$body.trigger('trackGoogleEvent', {
-			category: 'filter_bt',
+			category: 'filter',
 			action: 'cost',
 			label: catalogPath
 		});
@@ -91,7 +91,7 @@ $(function() {
 	// Нажатие на слайдер цены
 	$('.js-category-filter-rangeSlider-slider', $priceFilter).mousedown(function() {
 		$body.trigger('trackGoogleEvent', {
-			category: 'filter_bt',
+			category: 'filter',
 			action: 'cost',
 			label: catalogPath
 		});
@@ -100,7 +100,7 @@ $(function() {
 	// Нажатие на ссылки открытия выпадающих списков "Цена" и "Скидки"
 	$('.js-category-v2-filter-dropBox-price .js-category-v2-filter-dropBox-opener, .js-category-v2-filter-dropBox-labels .js-category-v2-filter-dropBox-opener').click(function() {
 		$body.trigger('trackGoogleEvent', {
-			category: 'filter_bt',
+			category: 'filter',
 			action: 'cost',
 			label: catalogPath
 		});
@@ -109,7 +109,7 @@ $(function() {
 	// Нажатие на диапазоны цен
 	$('.js-category-v2-filter-dropBox-price .js-category-v2-filter-price-link').click(function() {
 		$body.trigger('trackGoogleEvent', {
-			category: 'filter_bt',
+			category: 'filter',
 			action: 'cost_var',
 			label: catalogPath
 		});
@@ -118,7 +118,7 @@ $(function() {
 	// Нажатие на диапазоны цен
 	$('.js-category-v2-filter-dropBox-labels .js-customInput').click(function() {
 		$body.trigger('trackGoogleEvent', {
-			category: 'filter_bt',
+			category: 'filter',
 			action: 'cost_sale',
 			label: catalogPath
 		});
@@ -126,7 +126,7 @@ $(function() {
 
 	$('.js-category-v2-filter-otherGroups .js-category-v2-filter-dropBox-opener').click(function() {
 		$body.trigger('trackGoogleEvent', {
-			category: 'filter_bt',
+			category: 'filter',
 			action: 'other',
 			label: catalogPath
 		});
@@ -134,7 +134,7 @@ $(function() {
 
 	$('.js-category-v2-filter-element-shop-input').click(function() {
 		$body.trigger('trackGoogleEvent', {
-			category: 'filter_bt',
+			category: 'filter',
 			action: 'other_shops',
 			label: catalogPath
 		});
