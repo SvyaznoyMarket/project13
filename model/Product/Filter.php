@@ -205,8 +205,8 @@ class Filter {
     }
 
     public function hasInListGroupedProperties() {
-        foreach ($this->filters as $property) {
-            if ($property->groupUi && $property->getIsInList()) {
+        foreach ($this->getGroupedPropertiesV2() as $group) {
+            if ($group->hasInListProperties()) {
                 return true;
             }
         }
@@ -220,14 +220,14 @@ class Filter {
     public function getGroupedPropertiesV2() {
         $groups = [];
         $shopProperty = null;
+        $brandProperty = null;
         $instoreProperty = null;
         $additionalGroup = null;
         foreach ($this->filters as $property) {
-            if (!$property->getIsInList()) {
-                continue;
-            } else if ($property->isPrice()) {
+            if ($property->isPrice()) {
             } else if ($property->isLabel()) {
             } else if ($property->isBrand()) {
+                $brandProperty = $property;
             } else if ('instore' === $property->getId()) {
                 $instoreProperty = $property;
             } else if ($property->isShop()) {
@@ -270,6 +270,14 @@ class Filter {
             array_unshift($groups, $group);
         }
 
+        if ($brandProperty && $this->getCategory()->isV2Furniture()) {
+            $group = new Group();
+            $group->name = $brandProperty->getName();
+            $group->properties[] = $brandProperty;
+            $group->hasSelectedProperties = (bool)$this->getValue($brandProperty);
+            array_unshift($groups, $group);
+        }
+
         if ($instoreProperty) {
             if (!$additionalGroup) {
                 $additionalGroup = new Group();
@@ -290,13 +298,11 @@ class Filter {
         $properties = [];
 
         foreach ($this->filters as $property) {
-            if (!$property->getIsInList()) {
-                continue;
-            } else if ($property->isPrice()) {
+            if ($property->isPrice()) {
                 $properties[] = $property;
             } else if ($property->isLabel()) {
                 $properties[] = $property;
-            } else if ($property->isBrand()) {
+            } else if ($property->isBrand() && !$this->getCategory()->isV2Furniture()) {
                 $properties[] = $property;
             }
         }

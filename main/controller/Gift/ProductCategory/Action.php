@@ -134,7 +134,8 @@ class Action {
                     [],
                     null,
                     true,
-                    $columnCount
+                    $columnCount,
+                    'light_with_bottom_description'
                 ),
                 'selectedFilter' => [],
                 'pagination'     => (new \View\PaginationAction())->execute(

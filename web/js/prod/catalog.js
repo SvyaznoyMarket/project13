@@ -54,7 +54,7 @@
 	var
 		body = $('body'),
 		utils = ENTER.utils,
-		catalogPath = document.location.pathname.replace(/^\/catalog\/([^\/]*).*$/i, '$1'),
+		catalogPath = document.location.pathname.replace(/^\/catalog\/([^\/]*).*$/i, '$1'), // Используем значение URL адреса на момент загрузки страницы, т.к. на данный момент при выполнении поиска URL страницы изменяется на URL формы, в которой задан URL из метода http://admin.enter.ru/v2/category/get-seo (в котором содержится некорректный URL; без средней части - "/catalog/holodilniki-i-morozilniki-1096" вместо "/catalog/appliances/holodilniki-i-morozilniki-1096")
 		catalog = utils.extendApp('ENTER.catalog'),
 
 		filterBlock = $('.js-category-filter'),
@@ -1502,7 +1502,8 @@ $(function() {
 		$dropBoxOpeners = $('.js-category-v2-filter-dropBox-opener'),
 		$dropBoxContents = $('.js-category-v2-filter-dropBox-content'),
 		$priceLinks = $('.js-category-v2-filter-price-link'),
-		$radio = $('.js-category-v2-filter-element-list-radio');
+		$radio = $('.js-category-v2-filter-element-list-radio'),
+		catalogPath = document.location.pathname.replace(/^\/catalog\/([^\/]*).*$/i, '$1'); // Используем значение URL адреса на момент загрузки страницы, т.к. на данный момент при выполнении поиска URL страницы изменяется на URL формы, в которой задан URL из метода http://admin.enter.ru/v2/category/get-seo (в котором содержится некорректный URL; без средней части - "/catalog/holodilniki-i-morozilniki-1096" вместо "/catalog/appliances/holodilniki-i-morozilniki-1096")
 
 	// Открытие и закрытие выпадающих списков
 	(function() {
@@ -1552,8 +1553,8 @@ $(function() {
 
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter_bt',
-			action: 'listing',
-			label: 'brand'
+			action: 'brand',
+			label: catalogPath
 		});
 	});
 
@@ -1561,8 +1562,8 @@ $(function() {
 	$brandFilter.click(function() {
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter_bt',
-			action: 'listing',
-			label: 'brand'
+			action: 'brand',
+			label: catalogPath
 		});
 	});
 
@@ -1570,8 +1571,8 @@ $(function() {
 	$('input', $priceFilter).focus(function() {
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter_bt',
-			action: 'listing',
-			label: 'cost'
+			action: 'cost',
+			label: catalogPath
 		});
 	});
 
@@ -1579,8 +1580,8 @@ $(function() {
 	$('.js-category-filter-rangeSlider-slider', $priceFilter).mousedown(function() {
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter_bt',
-			action: 'listing',
-			label: 'cost'
+			action: 'cost',
+			label: catalogPath
 		});
 	});
 
@@ -1588,8 +1589,8 @@ $(function() {
 	$('.js-category-v2-filter-dropBox-price .js-category-v2-filter-dropBox-opener, .js-category-v2-filter-dropBox-labels .js-category-v2-filter-dropBox-opener').click(function() {
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter_bt',
-			action: 'listing',
-			label: 'cost'
+			action: 'cost',
+			label: catalogPath
 		});
 	});
 
@@ -1597,8 +1598,8 @@ $(function() {
 	$('.js-category-v2-filter-dropBox-price .js-category-v2-filter-price-link').click(function() {
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter_bt',
-			action: 'listing',
-			label: 'cost_var'
+			action: 'cost_var',
+			label: catalogPath
 		});
 	});
 
@@ -1606,24 +1607,24 @@ $(function() {
 	$('.js-category-v2-filter-dropBox-labels .js-customInput').click(function() {
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter_bt',
-			action: 'listing',
-			label: 'cost_sale'
+			action: 'cost_sale',
+			label: catalogPath
 		});
 	});
 
 	$('.js-category-v2-filter-otherGroups .js-category-v2-filter-dropBox-opener').click(function() {
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter_bt',
-			action: 'listing',
-			label: 'other'
+			action: 'other',
+			label: catalogPath
 		});
 	});
 
 	$('.js-category-v2-filter-element-shop-input').click(function() {
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter_bt',
-			action: 'listing',
-			label: 'other_shops'
+			action: 'other_shops',
+			label: catalogPath
 		});
 	});
 

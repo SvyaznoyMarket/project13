@@ -87,7 +87,7 @@ $(function() {
 				$dropBox = $(e.currentTarget).closest('.js-gift-category-filter-property-dropBox'),
 				$item = $(e.currentTarget).closest('.js-gift-category-filter-property-dropBox-content-item');
 			
-			$('.js-gift-category-filter-property-dropBox-opener', $dropBox).text($('.js-gift-category-filter-property-dropBox-content-item-title', $item).text());
+			$('.js-gift-category-filter-property-dropBox-title', $dropBox).text($('.js-gift-category-filter-property-dropBox-content-item-title', $item).text());
 			
 			setTimeout(function() { // setTimeout для IE8 (иначе не посылается событие change)
 				$dropBox.removeClass(dropBoxOpenClass);
