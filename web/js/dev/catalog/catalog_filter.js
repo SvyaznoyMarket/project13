@@ -13,7 +13,7 @@
 	var
 		body = $('body'),
 		utils = ENTER.utils,
-		catalogPath = document.location.pathname.replace(/^\/catalog\/([^\/]*).*$/i, '$1'),
+		catalogPath = document.location.pathname.replace(/^\/catalog\/([^\/]*).*$/i, '$1'), // Используем значение URL адреса на момент загрузки страницы, т.к. на данный момент при выполнении поиска URL страницы изменяется на URL формы, в которой задан URL из метода http://admin.enter.ru/v2/category/get-seo (в котором содержится некорректный URL; без средней части - "/catalog/holodilniki-i-morozilniki-1096" вместо "/catalog/appliances/holodilniki-i-morozilniki-1096")
 		catalog = utils.extendApp('ENTER.catalog'),
 
 		filterBlock = $('.js-category-filter'),
