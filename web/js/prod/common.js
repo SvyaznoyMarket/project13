@@ -243,7 +243,7 @@
 ;$(function(){
 	var $body = $(document.body),
 		region = ENTER.config.pageConfig.user.region.name,
-		userInfoURL = ENTER.config.pageConfig.userUrl + '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000),
+		userInfoURL = ENTER.config.pageConfig.userUrl.addParameterToUrl('ts', new Date().getTime() + Math.floor(Math.random() * 1000)),
 		authorized_cookie = '_authorized',
 		startTime, endTime, spendTime, $compareNotice, compareNoticeTimeout;
 
@@ -1795,7 +1795,7 @@
  *
  * @author	Zaytsev Alexandr
  */
-;(function() {
+;$(function() {
 	var inputs = $('input.bCustomInput, .js-customInput'),
 		body = $('body');
 	// end of vars
@@ -1810,6 +1810,10 @@
 			groupName = $input.attr('name') || '',
 			label = $('label[for="'+id+'"]');
 		// end of vars
+
+		if (!label.length) {
+			label = $input.closest('label');
+		}
 
 		if ( type === 'checkbox' ) {
 
@@ -1826,9 +1830,14 @@
 			if ( $input.is(':checked') ) {
 				$('input[name="'+groupName+'"]').each(function() {
 					var currElement = $(this),
-						currId = currElement.attr('id');
+						currId = currElement.attr('id'),
+						currLabel = $('label[for="'+currId+'"]');
 
-					$('label[for="'+currId+'"]').removeClass('mChecked');
+					if (!currLabel.length) {
+						currLabel = currElement.closest('label');
+					}
+
+					currLabel.removeClass('mChecked');
 				});
 
 				label.addClass('mChecked');
@@ -1846,7 +1855,7 @@
 	inputs.each(function(index, input) {
 		updateInput($(input));
 	});
-}());
+});
 $(document).ready(function(){
 	// var carturl = $('.lightboxinner .point2').attr('href')
 
@@ -2161,12 +2170,12 @@ $(document).ready(function(){
 ;$(document).ready(function(){
 	// при любом клике на странице
 	$(document.body).on('click', function(){
-		// ставим куку last_partner на 30 дней, если есть кука last_partner_sec_click
-		// осторожно, названия кук захардкожены :(
-		if (docCookies.hasItem('last_partner_sec_click')) {
+		var last_p = window.last_partner_second_click;
+		// ставим куку last_partner на 30 дней, если есть переменная window.last_partner_second_click
+		if (typeof last_p != 'undefined') {
 			docCookies.setItem(
 				'last_partner',
-				docCookies.getItem('last_partner_sec_click'),
+				last_p,
 				60 * 60 *24 *30,
 				'/'
 			);

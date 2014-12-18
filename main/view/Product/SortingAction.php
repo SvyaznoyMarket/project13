@@ -18,7 +18,7 @@ class SortingAction {
         $active = $productSorting->getActive();
         $active['url'] = $helper->replacedUrl(['sort' => implode('-', [$active['name'], $active['direction']]), 'ajax' => null]);
 
-        if ($active['name'] == 'default' && !empty($inSearch)) {
+        if ($active['name'] == 'default') {
             $active['url'] = $helper->replacedUrl(['sort' => null, 'ajax' => null]);
         }
 
@@ -32,8 +32,9 @@ class SortingAction {
             $item['url'] = $helper->replacedUrl(['page' => '1', 'sort' => implode('-', [$item['name'], $item['direction']]), 'ajax' => null]);
             $item['datasort'] = implode('-', [$item['name'], $item['direction']]);
 
-            if ($item['name'] == 'default' && !empty($inSearch)) {
+            if ($item['name'] == 'default') {
                 $item['url'] = $helper->replacedUrl(['sort' => null, 'ajax' => null]);
+                $item['default'] = true;
             }
 
             if ($active['name'] == $item['name'] && $active['direction'] == $item['direction']) {

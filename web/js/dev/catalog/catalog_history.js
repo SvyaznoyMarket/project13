@@ -10,7 +10,8 @@
 ;(function( ENTER ) {
 	var
 		utils = ENTER.utils,
-		catalog = utils.extendApp('ENTER.catalog');
+		catalog = utils.extendApp('ENTER.catalog'),
+		updateState = true;
 	// end of vars
 
 	console.info('New catalog history module');
@@ -58,6 +59,7 @@
 			catalog.history._customCallback = (customCallback) ? customCallback : null;
 
 			console.info('link handler. push state new url: ' + state.url);
+			updateState = false;
 			History.pushState(state, state.title, state.url);
 
 			return;
@@ -143,11 +145,20 @@
 				data = state.data.data,
 				callback = ( typeof catalog.history._customCallback === 'function' ) ? catalog.history._customCallback : catalog.history._defaultCallback;
 			// end of vars
-			
+
 			console.info('statechange');
 			console.log(state);
 
-			if ( data._onlychange ) {
+			if (updateState) {
+				ENTER.catalog.filter.updateOnChange = false;
+				catalog.filter.resetForm();
+				catalog.filter.updateFilter(utils.parseUrlParams(url));
+				ENTER.catalog.filter.updateOnChange = true;
+			}
+
+			updateState = true;
+
+			if ( data && data._onlychange ) {
 				console.info('only update url ' + url);
 
 				callback();

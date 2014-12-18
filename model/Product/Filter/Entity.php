@@ -124,9 +124,7 @@ class Entity {
      * @return bool
      */
     public function getIsMultiple() {
-        // TODO: осторожно, костыль
-        return (self::TYPE_LIST == $this->typeId) && !in_array($this->id, ['shop', 'category']);
-        //return $this->isMultiple;
+        return $this->isMultiple;
     }
 
     /**
@@ -253,6 +251,23 @@ class Entity {
      */
     public function getOption() {
         return $this->option;
+    }
+    
+    /**
+     * @return Option\Entity|null
+     */
+    public function getSelectedOption(\Model\Product\Filter $productFilter) {
+        $selectedOption = null;
+        
+        $values = $productFilter->getValue($this);
+        foreach ($this->getOption() as $option) {
+            if (in_array($option->getId(), $values)) {
+                $selectedOption = $option;
+                break;
+            }
+        }
+
+        return $selectedOption;
     }
 
     /**

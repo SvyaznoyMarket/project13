@@ -17,6 +17,13 @@ module.exports = function (grunt, options) {
             srcRoot: '/js',
             cwd: 'web/js'
         },
+		gift: {
+			src: ['dev/gift/*.js'],
+			dest: 'prod/gift.js',
+			destMap: 'prod/gift.js.map',
+			srcRoot: '/js',
+			cwd: 'web/js'
+		},
         ports: {
             src: ['dev/ports/*.js'],
             dest: 'prod/ports.js',

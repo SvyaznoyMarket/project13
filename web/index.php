@@ -161,7 +161,7 @@ try {
 
     // если предыдущие контроллеры не вернули Response, ...
     if (!$response instanceof \Http\Response) {
-        \App::logger()->info(['message' => 'Match route', 'route' => $request->attributes->get('route'), 'uri' => $request->getRequestUri(), 'method' => $request->getMethod()]);
+        \App::logger()->info(['message' => 'Match route', 'route' => $request->attributes->get('route'), 'uri' => $request->getRequestUri(), 'method' => $request->getMethod()], ['router']);
 
         if (\App::config()->mobileRedirect['enabled']) {
             $response = (new \Controller\MobileRedirectAction())->execute($request);

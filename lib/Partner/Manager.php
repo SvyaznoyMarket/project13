@@ -89,18 +89,9 @@ class Manager {
                         }
 
                         // если нет utm_source cookie или же она была проставлена не этим партнером
-                        // SITE-4834 ставим куку secondClick, last_partner будет проставлена позже через common/last_partner.js
-                        if ($request->cookies->get($this->cookieName) != $lastPartner
-                            && !$request->cookies->has($this->cookieName)) {
-                            $this->cookieArray[] = new \Http\Cookie(
-                                $this->secondClickCookieName,
-                                $lastPartner,
-                                0,
-                                '/',
-                                $this->cookieDomain,
-                                false,
-                                false // important!
-                            );
+                        // SITE-4834 ставим js-переменную last_partner_second_click, кука last_partner будет проставлена позже через common/last_partner.js
+                        if ($request->cookies->get($this->cookieName) != $lastPartner) {
+                            $response->setContent(str_replace('<!-- last_partner_second_click -->', "<script type='text/javascript'>var last_partner_second_click = '$lastPartner';</script>", $response->getContent()));
                         }
 
                     }
