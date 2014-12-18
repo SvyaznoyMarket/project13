@@ -44,4 +44,8 @@ trait ABHelperTrait {
         return false;
     }
 
+    public function isOnlineMotivation(){
+        return \App::abTest()->getTest('online_motivation') && \App::abTest()->getTest('online_motivation')->getChosenCase()->getKey() == 'on';
+    }
+
 } 

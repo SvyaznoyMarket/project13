@@ -663,6 +663,22 @@ $c->abTest = [
             ]
         ],
 
+        'online_motivation' => [
+            'name'          => 'Мотивация онлайн-оплаты заказа',
+            'enabled'       => true,
+            'expireDate'    => '2015-12-31',
+            'cases' => [
+                'on' => [
+                    'traffic' => 100,
+                    'name'    => 'Включена',
+                ],
+                'off' => [
+                    'traffic' => 0,
+                    'name'    => 'Выключена',
+                ]
+            ]
+        ],
+
     ]
 
 ];
