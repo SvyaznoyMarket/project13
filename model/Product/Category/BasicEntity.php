@@ -285,9 +285,25 @@ class BasicEntity {
             }
 
             // Мебель
-//            if ($root->getUi() === 'f7a2f781-c776-4342-81e8-ab2ebe24c51a') {
-//                return true;
-//            }
+            if ($root->getUi() === 'f7a2f781-c776-4342-81e8-ab2ebe24c51a') {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function isV2Furniture() {
+        $root = $this->getRoot();
+        if (!$root) {
+            $root = $this;
+        }
+
+        if ($this->isNewMainPage()) {
+            // Мебель
+            if ($root->getUi() === 'f7a2f781-c776-4342-81e8-ab2ebe24c51a') {
+                return true;
+            }
         }
 
         return false;
