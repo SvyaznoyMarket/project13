@@ -49,13 +49,13 @@ return function(
                 $selectedOption = reset($womanSexStatusOptions);
             }
         }
-        
+
         if ('man' === $selectedSexOptionToken) {
             $options = $manSexStatusOptions;
         } else if ('woman' === $selectedSexOptionToken) {
             $options = $womanSexStatusOptions;
         }
-        
+
         foreach ($manSexStatusOptions as $option) {
             $statusOptionGroups['man'][] = [
                 'id' => \View\Id::productCategoryFilter($property->getId()) . '-option-' . $option->getId(),
@@ -64,7 +64,7 @@ return function(
                 'title' => $option->getName(),
             ];
         }
-        
+
         foreach ($womanSexStatusOptions as $option) {
             $statusOptionGroups['woman'][] = [
                 'id' => \View\Id::productCategoryFilter($property->getId()) . '-option-' . $option->getId(),
@@ -74,17 +74,15 @@ return function(
             ];
         }
     }
-    
+
     if (!$options) {
         $options = $property->getOption();
     }
 ?>
 
     <div class="fltrBtnBox fltrBtnBox-gift js-gift-category-filter-property-dropBox <? if ('sex' === $property->getId()): ?>js-gift-category-filter-property-dropBox-sex<? endif ?> <? if ('status' === $property->getId()): ?>js-gift-category-filter-property-dropBox-status<? endif ?>" data-option-groups="<?= $helper->json($statusOptionGroups) ?>">
-        <div class="fltrBtnBox_tggl <?= $initialValue ? 'initial' : ''?>">
-            <span class="js-gift-category-filter-property-dropBox-opener">
-                <?= $helper->escape($initialValue ? $initialValue : ($selectedOption ? $selectedOption->getName() : '')) ?>
-            </span>
+        <div class="fltrBtnBox_tggl js-gift-category-filter-property-dropBox-opener <?= $initialValue ? 'initial' : ''?>">
+            <?= $helper->escape($initialValue ? $initialValue : ($selectedOption ? $selectedOption->getName() : '')) ?>
             <i class="fltrBtnBox_tggl_corner"></i>
         </div>
 
