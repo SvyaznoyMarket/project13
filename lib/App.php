@@ -53,12 +53,19 @@ class App {
                 E_USER_DEPRECATED   => 'User Deprecated',
             ];
 
-            if (E_NOTICE == $level) {
-                if ($logger = \App::logger()) {
-                    $logger->error(['message' => $message, 'sender' => $file . ' ' . $line], ['critical', 'error_handler']);
-                }
+            switch ($level) {
+                case E_USER_ERROR:
+                case E_WARNING:
+                case E_NOTICE:
+                case E_DEPRECATED:
+                case E_USER_DEPRECATED:
+                case E_USER_WARNING:
+                case E_USER_NOTICE:
+                    if ($logger = \App::logger()) {
+                        $logger->error(['message' => $message, 'sender' => $file . ' ' . $line], ['critical', 'error_handler']);
+                    }
 
-                return true;
+                    return true;
             }
 
             if (error_reporting() & $level) {
