@@ -391,9 +391,10 @@ namespace Model\OrderDelivery\Entity {
             if (isset($data['possible_point_data']) && is_array($data['possible_point_data'])) {
                 foreach ($data['possible_point_data'] as $pointsType => $points) {
                     if (is_array($points)) {
-                        array_walk($points, function ($point) use (&$orderDelivery, $pointsType) {
-                            if (isset($orderDelivery->points[$pointsType]->list[$point['id']])) $this->possible_point_data[$pointsType][] = &$orderDelivery->points[$pointsType]->list[$point['id']];
-                        });
+                        foreach ($points as $point) {
+                            if (!isset($point['id'])) continue;
+                            $this->possible_point_data[$pointsType][] = $point;
+                        }
                     }
                 }
             }
