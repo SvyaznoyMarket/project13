@@ -290,10 +290,17 @@ namespace Model\OrderDelivery\Entity {
          * @var array
          */
         public $possible_intervals = [];
-        /** Возможные точки самовывоза (id)
+        /**
+         * @deprecated
+         * Возможные точки самовывоза (id)
          * @var array
          */
         public $possible_points = [];
+        /**
+         * Возможные точки самовывоза
+         * @var array
+         */
+        public $possible_point_data = [];
         /** Возможные точки самовывоза (ссылка на Point)
          * @var Point
          */
@@ -376,6 +383,16 @@ namespace Model\OrderDelivery\Entity {
                     if (is_array($points)) {
                         array_walk($points, function ($point) use (&$orderDelivery, $pointsType) {
                             if (isset($orderDelivery->points[$pointsType]->list[$point])) $this->possible_points[$pointsType][] = &$orderDelivery->points[$pointsType]->list[$point];
+                        });
+                    }
+                }
+            }
+
+            if (isset($data['possible_point_data']) && is_array($data['possible_point_data'])) {
+                foreach ($data['possible_point_data'] as $pointsType => $points) {
+                    if (is_array($points)) {
+                        array_walk($points, function ($point) use (&$orderDelivery, $pointsType) {
+                            if (isset($orderDelivery->points[$pointsType]->list[$point['id']])) $this->possible_point_data[$pointsType][] = &$orderDelivery->points[$pointsType]->list[$point['id']];
                         });
                     }
                 }
