@@ -34,7 +34,7 @@ class Client {
      */
     public function query($path) {
         \Debug\Timer::start('data-store');
-        \App::logger()->info('Start data-store request ' . $path, ['data-store']);
+        //\App::logger()->info('Start data-store request ' . $path, ['data-store']);
 
         $response = null;
         // локальный файл

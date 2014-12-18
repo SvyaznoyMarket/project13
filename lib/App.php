@@ -119,8 +119,12 @@ class App {
         }
 
         if (!isset($instances[$name])) {
+            $globalParams = [];
+            if (\App::config()->debug) {
+                $globalParams['parent_ri'] = \App::$id;
+            }
             $rules = require self::$config->configDir . '/route-' . $name . '.php';
-            $instances[$name] = new \Routing\Router($rules, self::$config->routePrefix);
+            $instances[$name] = new \Routing\Router($rules, self::$config->routePrefix, $globalParams);
         }
 
         return $instances[$name];

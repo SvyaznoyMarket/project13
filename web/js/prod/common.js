@@ -243,7 +243,7 @@
 ;$(function(){
 	var $body = $(document.body),
 		region = ENTER.config.pageConfig.user.region.name,
-		userInfoURL = ENTER.config.pageConfig.userUrl + '?ts=' + new Date().getTime() + Math.floor(Math.random() * 1000),
+		userInfoURL = ENTER.config.pageConfig.userUrl.addParameterToUrl('ts', new Date().getTime() + Math.floor(Math.random() * 1000)),
 		authorized_cookie = '_authorized',
 		startTime, endTime, spendTime, $compareNotice, compareNoticeTimeout;
 

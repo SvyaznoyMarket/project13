@@ -10,6 +10,8 @@ class DefaultLogger implements LoggerInterface {
 
     /** @var string */
     protected $id;
+    /** @var string */
+    protected $parentId;
     /** @var \Logger\Appender\AppenderInterface */
     protected $appender;
     /** @var string */
@@ -31,6 +33,7 @@ class DefaultLogger implements LoggerInterface {
 
     public function __construct(\Logger\Appender\AppenderInterface $appender, $name, $level, $immediatelyDump = false) {
         $this->id = \App::$id;
+        $this->parentId = \App::request() ? \App::request()->query->get('parent_ri') : null;
         $this->appender = $appender;
         $this->name = (string)$name;
         $this->level = (int)$level;
@@ -71,6 +74,7 @@ class DefaultLogger implements LoggerInterface {
 
         $item = [
             '_id'           => $this->id,
+            '_parent'       => $this->parentId,
             '_time'         => date('M d H:i:s'),
             '_type'         => $this->levelNames[$level],
             '_tag'          => $tags,
