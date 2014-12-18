@@ -81,7 +81,7 @@ return function(
 ?>
 
     <div class="fltrBtnBox fltrBtnBox-gift js-gift-category-filter-property-dropBox <? if ('sex' === $property->getId()): ?>js-gift-category-filter-property-dropBox-sex<? endif ?> <? if ('status' === $property->getId()): ?>js-gift-category-filter-property-dropBox-status<? endif ?>" data-option-groups="<?= $helper->json($statusOptionGroups) ?>">
-        <div class="fltrBtnBox_tggl js-gift-category-filter-property-dropBox-opener <?= $initialValue ? 'initial' : ''?>">
+        <div class="fltrBtnBox_tggl js-gift-category-filter-property-dropBox-opener js-gift-category-filter-property-dropBox-title <?= $initialValue ? 'initial' : ''?>">
             <?= $helper->escape($initialValue ? $initialValue : ($selectedOption ? $selectedOption->getName() : '')) ?>
             <i class="fltrBtnBox_tggl_corner"></i>
         </div>
