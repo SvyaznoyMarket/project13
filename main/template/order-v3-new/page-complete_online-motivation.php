@@ -47,13 +47,92 @@ return function(
                 </div>
             </div>
         </div>
+         <div class="orderCompl orderCompl_final clearfix">
+            <a class="orderCompl_continue_link" href="<?= $helper->url('homepage') ?>">Вернуться на главную</a>
+        </div>
+<!-- Блок оплата в кредит -->
+        <div class="orderPayment orderPaymentCr">
+            <!-- Заголовок -->
+            <div class="orderPayment_head">
+                    Оформлен заказ № <a href="#" class="orderPayment_num">COXD-305127</a>
+            </div>
+            <!-- Блок в обводке -->
+            <div class="orderPayment_block orderPayment_noOnline">
 
+                <div class="orderPayment_msg orderPayment_noOnline_msg">
+                    <div class="orderPayment_msg_head">
+                        Заявка на кредит
+                    </div>
+                    <ul class="orderPaymentCr_list clearfix">
+                        <li>
+                            <img class="orderPaymentCr_list_bank-logo" src="">
+                            <a class="orderPaymentCr_list_bank" href="#">Банк Тинькофф
+                                <span class="pb-small">Условия кредитования</span>
+                            </a>
+                        </li>
+                        <li>
+                            <img class="orderPaymentCr_list_bank-logo" src="">
+                            <a class="orderPaymentCr_list_bank" href="#">Ренессанс кредит
+                                <span class="pb-small">Условия кредитования</span>
+                            </a>
+                        </li>
+                        <li>
+                            <img class="orderPaymentCr_list_bank-logo" src="">
+                                <a class="orderPaymentCr_list_bank" href="#">ОТР Банк
+                            <span class="pb-small">Условия кредитования</span></a>
+                        </li>
+                    </ul>
+                    <div class="orderPayment_msg_info">
+                        <a href="" class="orderPaymentCr_other_link">
+                            Не оформлять кредит
+                            <span class="pb-small">оплатить онлайн или при получении</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="orderCompl orderCompl_final clearfix">
+            <a class="orderCompl_continue_link" href="<?= $helper->url('homepage') ?>">Вернуться на главную</a>
+        </div>
+<!-- Блок оплата платежные системы -->
+        <div class="orderPayment orderPaymentWeb">
+            <!-- Заголовок -->
+            <div class="orderPayment_head">
+                    Оформлен заказ № <a href="#" class="orderPayment_num">COXD-305127</a>
+            </div>
+            <!-- Блок в обводке -->
+            <div class="orderPayment_block orderPayment_noOnline">
 
-
-
-
-
-
+                <div class="orderPayment_msg orderPayment_noOnline_msg">
+                    <div class="orderPayment_msg_head">
+                        Заявка на кредит
+                    </div>
+                    <ul class="orderPaymentWeb_list clearfix">
+                        <li>
+                            <img class="orderPaymentWeb_list_sys-logo" src="">
+                            <a class="orderPaymentWeb_list_sys" href="#">Банковская карта
+                            </a>
+                        </li>
+                        <li>
+                            <img class="orderPaymentWeb_list_sys-logo" src="">
+                            <a class="orderPaymentWeb_list_sys" href="#">PayPal
+                            </a>
+                        </li>
+                        <li>
+                            <img class="orderPaymentWeb_list_sys-logo" src="">
+                            <a class="orderPaymentWeb_list_sys" href="#">Яндекс.Деньги
+                        </li>
+                        <li>
+                            <img class="orderPaymentWeb_list_sys-logo" src="">
+                            <a class="orderPaymentWeb_list_sys" href="#">Интернет-банк Промсвязьбанка</a>
+                        </li>
+                    </ul>
+                    <div class="orderPayment_msg_info">
+                        Вы будете перенаправлены на сайт платежной системы
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="orderCompl orderCompl_final clearfix">
             <a class="orderCompl_continue_link" href="<?= $helper->url('homepage') ?>">Вернуться на главную</a>
         </div>

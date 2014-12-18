@@ -7791,7 +7791,7 @@ img[height="0"] {
   .orderPayment_block {
     width: 380px;
     padding: 20px 25px 20px;
-    margin: 0 auto;
+    margin: 0 auto 10px;
     border-top: solid 1px #eeeeee;
     border-left: solid 1px #eeeeee;
     border-right: solid 1px #eeeeee;
@@ -7813,8 +7813,10 @@ img[height="0"] {
   .orderPayment_msg_shop {
     padding-left: 20px;
     line-height: 18px;
+    margin-top: 10px;
     background-repeat: no-repeat;
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAfklEQVQYGYWQwQ2AIBRD/WUmwhS6i0cdQI/uolMAMwFSIgkxGnr5tDwCVFJKA+W9H2OMc/aaXkQ8gENrfRVP0Fq75bkweCsf2I0xqzjnxhDC+QZar5SawOva8GtNBvVNX0DNyKCa3gR/14OeBnD0QNYE9sQK/mDuFYY9Ur3Cb25DQ2sv9bp2AAAAAElFTkSuQmCC);
+    background-position: 0px 4px;
   }
   .orderPayment_msg_shop_metro,
   .orderPayment_msg_shop_addr {
@@ -7831,6 +7833,58 @@ img[height="0"] {
   }
   .orderPayment_msg_info {
     margin-top: 14px;
+  }
+  .orderPayment.orderPaymentCr .orderPayment_block,
+  .orderPayment.orderPaymentWeb .orderPayment_block {
+    border: 1px solid #ffa901;
+  }
+  .orderPayment.orderPaymentCr .orderPayment_msg_info {
+    border-top: 1px solid #c7c7c7;
+    padding: 15px 20px 0px;
+  }
+  .orderPaymentCr_list {
+    margin: 10px 0;
+    padding: 0 20px;
+  }
+  .orderPaymentCr_list li {
+    margin-top: 25px;
+  }
+  .orderPaymentCr_list_bank {
+    text-decoration: underline;
+    display: block;
+  }
+  .orderPaymentCr_list_bank-logo {
+    float: right;
+    width: 125px;
+    height: 42px;
+  }
+  .orderPaymentCr_other_link {
+    text-decoration: underline;
+    color: #5e5e5e;
+  }
+  .orderPaymentCr .pb-small {
+    font-size: 12px;
+    line-height: 1em;
+    display: block;
+    color: #5e5e5e;
+  }
+  .orderPaymentWeb_list {
+    margin: 15px 0;
+    padding: 0 20px;
+  }
+  .orderPaymentWeb_list li {
+    margin-top: 10px;
+    overflow: hidden;
+    line-height: 24px;
+  }
+  .orderPaymentWeb_list_sys {
+    text-decoration: underline;
+    display: block;
+  }
+  .orderPaymentWeb_list_sys-logo {
+    float: right;
+    width: 125px;
+    height: 24px;
   }
 }
 @media all {

@@ -97,7 +97,7 @@
 	&_block{
 		width: 380px;
 		padding: 20px 25px 20px;
-		margin:0 auto;
+		margin:0 auto 10px;
 		.bordered();
 		margin-top:45px;
 	}
@@ -116,8 +116,10 @@
 		&_shop{
 			padding-left:20px;
 			line-height: 18px;
+			margin-top: 10px;
 			background-repeat: no-repeat;
 			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAfklEQVQYGYWQwQ2AIBRD/WUmwhS6i0cdQI/uolMAMwFSIgkxGnr5tDwCVFJKA+W9H2OMc/aaXkQ8gENrfRVP0Fq75bkweCsf2I0xqzjnxhDC+QZar5SawOva8GtNBvVNX0DNyKCa3gR/14OeBnD0QNYE9sQK/mDuFYY9Ur3Cb25DQ2sv9bp2AAAAAElFTkSuQmCC);
+			background-position: 0px 4px;
 			&_metro, &_addr{
 				display: block;
 			}
@@ -131,6 +133,63 @@
 			margin-top:14px;
 		}
 	}
+	&.orderPaymentCr &_block,
+	&.orderPaymentWeb &_block{
+		border:1px solid @firmOrange;
+	}
+	&.orderPaymentCr &_msg_info{
+		border-top:1px solid @lightgreyBr;
+		padding: 15px 20px 0px;
+	}
 }
+.orderPaymentCr{
+	&_list{
+		margin:10px 0;
+		padding: 0 20px;
+		li{
+			margin-top:25px;
+		}
+		&_bank{
+			text-decoration: underline;
+			display: block;
+			&-logo{
+				float:right;
+				width:125px;
+				height:42px;
+			}
+		}
 
+	}
+	&_other_link{
+			text-decoration: underline;
+			color: @lightgrey-5;
+	}
+	.pb-small{
+				font-size: 12px;
+				line-height: 1em;
+				display: block;
+				color: @lightgrey-5;
+			}
+}
+.orderPaymentWeb{
+	&_list{
+		margin:15px 0;
+		padding: 0 20px;
+		li{
+			margin-top:10px;
+			overflow: hidden;
+			line-height: 24px;
+		}
+		&_sys{
+			text-decoration: underline;
+			display:block;
+			&-logo{
+					float:right;
+					width:125px;
+					height:24px;
+				}
+		}
+
+	}
+}
 
