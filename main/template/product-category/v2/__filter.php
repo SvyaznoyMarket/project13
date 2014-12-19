@@ -141,7 +141,7 @@ return function(
                                         <? foreach ($group->properties as $property): ?>
                                             <? if ($property->getIsInList()): ?>
                                                 <div class="fltrBtn_param"> <!--fltrBtn_param-2col-->
-                                                    <? if (!$property->isShop() && !($property->isBrand() && $productFilter->getCategory()->isV2Furniture())): ?>
+                                                    <? if (!$property->isShop() && !($property->isBrand() && $productFilter->getCategory()->isV2Furniture()) && 'instore' !== $property->getId()): ?>
                                                         <div class="fltrBtn_param_n"><?= $property->getName() ?></div>
                                                     <? endif ?>
 
