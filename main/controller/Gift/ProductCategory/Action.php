@@ -309,7 +309,7 @@ class Action {
     }
     
     private function getProductFilterDump(\Model\Product\Filter $productFilter) {
-        $tagDump = ['tag', 1, []];
+        $tagDump = ['tag_and', 1, []];
         $filterDump = $productFilter->dump();
         for ($i = count($filterDump) - 1; $i >= 0; $i--) {
             if (in_array($filterDump[$i][0], ['holiday', 'sex', 'status', 'age'], true)) {
