@@ -11119,6 +11119,9 @@ img[height="0"] {
     -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   }
+  .fltrBtnBox-gift:last-child {
+    margin-right: 0;
+  }
   .fltrBtnBox-gift .fltrBtnBox_tggl {
     font-size: 20px;
     padding: 0;
