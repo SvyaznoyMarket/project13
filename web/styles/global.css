@@ -11008,6 +11008,9 @@ img[height="0"] {
     *display: inline;
     *zoom: 1;
   }
+  .fltrBtnBox_tggl-dsbld {
+    color: #828282;
+  }
   .fltrBtnBox_dd {
     position: absolute;
     z-index: 15;
