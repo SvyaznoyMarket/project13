@@ -89,7 +89,7 @@ $menu = $page->getGlobalParam('menu');
     </div>
 
     <div class="hdgift">
-        <a href=""><img src="/styles/header/img/icon-gift.png" alt=""></a>
+        <a href="/gift"><img src="/styles/header/img/icon-gift.png" alt=""></a>
     </div>
 </div>
 <!--/ поиск -->
