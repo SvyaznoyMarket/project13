@@ -1369,9 +1369,6 @@ img[height="0"] {
     border-style: solid;
     border-color: #c7c7c7;
   }
-  .main-new .i-header-ep {
-    background: url('/styles/mainpage/img/enterprize_logo.png') no-repeat 0 0;
-  }
   .header {
     width: 960px;
     margin: 0 auto;
@@ -1548,14 +1545,35 @@ img[height="0"] {
     line-height: 1;
     margin: 0 0 2px;
   }
+  .hdep .i-header-ep {
+    background: url('/styles/mainpage/img/enterprize_logo.png') no-repeat 0 0;
+  }
   .hdgift {
     float: right;
     border-right: 1px dotted #ffffff;
     margin: 14px 10px 0 0;
-    padding: 1px 20px 2px 0;
+    padding: 1px 15px 2px 0;
   }
-  .hdgift img {
-    display: block;
+  .hdgift_i {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+  }
+  .hdgift_img {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+  }
+  .hdgift_tx {
+    color: #dbdbdb;
+    font-size: 12px;
+    width: 55px;
+    line-height: 1.1;
+    margin: 2px 0 0 3px;
   }
   .i-header {
     background-image: url('/styles/mainpage/img/i-header.png');
