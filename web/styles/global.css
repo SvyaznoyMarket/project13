@@ -11084,12 +11084,8 @@ img[height="0"] {
     margin: 6px 0;
   }
   .fltrBtn-gift .fltrBtn_ln-col {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    width: 222px;
+    float: left;
+    width: 205px;
   }
   .fltrBtn-gift .customLabel {
     font-size: 14px;
@@ -11097,7 +11093,8 @@ img[height="0"] {
   .fltrBtnPosBottom {
     position: absolute;
     bottom: 0;
-    left: 20px;
+    left: 0;
+    width: 100%;
   }
   .fltrBtnLn {
     display: table;
@@ -11120,7 +11117,8 @@ img[height="0"] {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   }
   .fltrBtnLn-lst {
-    width: 900px;
+    width: 822px;
+    padding: 5px 0 5px 10px;
   }
   .fltrBtnBox-gift {
     border: none;

@@ -67,7 +67,7 @@ return function(
                 <? endif ?>
             </div>
 
-            <div class="fltrBtnLn fltrBtnLn-lst fltrBtnLn-bg">
+            <div class="fltrBtnLn fltrBtnLn-lst fltrBtnLn-bg clearfix">
                 <? if ($categoryProperty): ?>
                     <?= $helper->render('gift/category/filter/property/__list', ['productFilter' => $productFilter, 'property' => $categoryProperty]) ?>
                 <? endif ?>
