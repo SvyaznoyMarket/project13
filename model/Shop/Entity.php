@@ -8,6 +8,8 @@ class Entity {
     /* @var int */
     private $id;
     /* @var string */
+    private $ui;
+    /* @var string */
     private $token;
     /* @var string */
     private $name;
@@ -48,12 +50,18 @@ class Entity {
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
-        if (array_key_exists('token', $data)) $this->setToken($data['token']);
+        if (array_key_exists('uid', $data)) $this->setUi($data['uid']);
+        //if (array_key_exists('token', $data)) $this->setToken($data['token']);
+        if (array_key_exists('slug', $data)) $this->setToken($data['slug']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('working_time', $data)) $this->setRegime($data['working_time']);
         if (array_key_exists('address', $data)) $this->setAddress($data['address']);
-        if (array_key_exists('coord_lat', $data)) $this->setLatitude($data['coord_lat']);
-        if (array_key_exists('coord_long', $data)) $this->setLongitude($data['coord_long']);
+
+        //if (array_key_exists('coord_lat', $data)) $this->setLatitude($data['coord_lat']);
+        //if (array_key_exists('coord_long', $data)) $this->setLongitude($data['coord_long']);
+        if (isset($data['location']['longitude'])) $this->setLongitude($data['location']['longitude']);
+        if (isset($data['location']['latitude'])) $this->setLatitude($data['location']['latitude']);
+
         if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
         if (array_key_exists('phone', $data)) $this->setPhone($data['phone']);
         if (array_key_exists('way_walk', $data)) $this->setWayWalk($data['way_walk']);
@@ -68,7 +76,13 @@ class Entity {
         }
         if (array_key_exists('geo', $data)) $this->setRegion(new Region\Entity($data['geo']));
         if (array_key_exists('subway', $data)) {
-            foreach ($data['subway'] as $subwayData) $this->setSubway(new Subway\Entity($subwayData));
+            if (isset($data['subway'][0])) {
+                foreach ($data['subway'] as $subwayData) {
+                    $this->setSubway(new Subway\Entity($subwayData));
+                }
+            } else if (isset($data['subway']['name'])) {
+                $this->setSubway(new Subway\Entity($data['subway']));
+            }
         }
     }
 
@@ -146,7 +160,15 @@ class Entity {
      * @param string $regime
      */
     public function setRegime($regime) {
-        $this->regime = (string)$regime;
+        $this->regime =
+            isset($regime['common'])
+            ? $regime['common']
+            : (
+                is_scalar($regime)
+                ? (string)$regime
+                : null
+            )
+        ;
     }
 
     /**
@@ -400,5 +422,19 @@ class Entity {
      */
     public function getProductCount() {
         return $this->productCount;
+    }
+
+    /**
+     * @param string $ui
+     */
+    public function setUi($ui) {
+        $this->ui = (string)$ui;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUi() {
+        return $this->ui;
     }
 }

@@ -65,11 +65,12 @@ class Action {
         // магазины
         /** @var $shops \Model\Shop\Entity[] */
         $shops = [];
-        \RepositoryManager::shop()->prepareCollectionByRegion(null, function($data) use (&$shops) {
+        \App::scmsClient()->addQuery('shop/get', [], [], function($data) use (&$shops) {
             foreach ($data as $item) {
-                if (empty($item['coord_long']) || empty($item['coord_lat'])) continue;
+                $shop = new \Model\Shop\Entity($item);
+                if (!$shop->getLatitude() || !$shop->getLongitude()) continue;
 
-                $shops[] = new \Model\Shop\Entity($item);
+                $shops[] = $shop;
             }
         });
 
@@ -108,7 +109,7 @@ class Action {
                 'id'                => $shop->getId(),
                 'region_id'         => $shop->getRegion()->getId(),
                 'link'              => \App::router()->generate('shop.show', array('regionToken' => $shop->getRegion()->getToken(), 'shopToken' => $shop->getToken())),
-                'name'              => ($subway ? ('м.' . $subway->getName() . ', ') : '') . $shop->getName(),
+                'name'              => $shop->getName(),
                 'address'           => $shop->getAddress(),
                 'regtime'           => $shop->getRegime(),
                 'latitude'          => $shop->getLatitude(),
