@@ -2,7 +2,6 @@
 
 namespace Payment\SvyaznoyClub;
 
-use \Payment\SvyaznoyClub\Form;
 use \Model\Order\Entity as Order;
 
 class Provider implements \Payment\ProviderInterface {
@@ -13,7 +12,6 @@ class Provider implements \Payment\ProviderInterface {
 
     /**
      * @param Form      $form
-     * @param string    $payUrl
      */
     public function __construct(Form $form) {
         $this->form = $form;

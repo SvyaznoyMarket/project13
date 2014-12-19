@@ -59,7 +59,12 @@
         background: @white;
         background: rgba(255, 255, 255, .75);
         padding: 8px 10px;
+        margin: 0 10px 0 0;
         .drop-shadow();
+
+        &:last-child {
+            margin-right: 0;
+        }
 
         .fltrBtnBox_tggl {
             font-size: 20px;
@@ -96,6 +101,7 @@
 
         .fltrBtnBox_dd_inn {
             padding: 10px 20px 0 10px;
+            max-height: 217px;
         }
     }
 }

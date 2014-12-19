@@ -8,7 +8,8 @@
 		$otherBrands = $('.js-category-v2-root-brands-other'),
 		$otherBrandsOpener = $('.js-category-v2-root-brands-otherOpener'),
 		$brandsTitle = $('.js-category-v2-root-brands-title'),
-		$linksWrapper = $('.js-category-v2-root-linksWrapper');
+		$linksWrapper = $('.js-category-v2-root-linksWrapper'),
+		catalogPath = document.location.pathname.replace(/^\/catalog\/([^\/]*).*$/i, '$1'); // Используем значение URL адреса на момент загрузки страницы, т.к. на данный момент при выполнении поиска URL страницы изменяется на URL формы, в которой задан URL из метода http://admin.enter.ru/v2/category/get-seo (в котором содержится некорректный URL; без средней части - "/catalog/holodilniki-i-morozilniki-1096" вместо "/catalog/appliances/holodilniki-i-morozilniki-1096")
 
 	function renderSelectedBrandsTemplate() {
 		var $template = $('#root_page_selected_brands_tmpl');
@@ -55,9 +56,9 @@
 		renderSelectedBrandsTemplate();
 
 		$body.trigger('trackGoogleEvent', {
-			category: 'filter_bt',
-			action: 'main',
-			label: 'brand'
+			category: 'filter',
+			action: 'brand',
+			label: catalogPath
 		});
 
 		updateLinks(url);
@@ -78,9 +79,9 @@
 		}
 
 		$body.trigger('trackGoogleEvent', {
-			category: 'filter_bt',
-			action: 'main',
-			label: 'brand'
+			category: 'filter',
+			action: 'brand',
+			label: catalogPath
 		});
 	});
 
@@ -92,9 +93,9 @@
 		renderSelectedBrandsTemplate();
 
 		$body.trigger('trackGoogleEvent', {
-			category: 'filter_bt',
-			action: 'main',
-			label: 'brand'
+			category: 'filter',
+			action: 'brand',
+			label: catalogPath
 		});
 
 		updateLinks('?');

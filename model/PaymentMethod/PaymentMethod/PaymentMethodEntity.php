@@ -64,6 +64,7 @@ class PaymentMethodEntity {
             case 11: $this->icon = '/styles/order/img/webmoney.png'; break;
             case 12: $this->icon = '/styles/order/img/qiwi.png'; break;
             case 13: $this->icon = '/styles/order/img/paypal.png'; break;
+            case 14: $this->icon = '/styles/order/img/svyaznoy.png'; break;
         }
 
     }
