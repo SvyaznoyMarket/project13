@@ -654,16 +654,12 @@ class Action {
             }
         }
 
-        // если нету блока фильтров "WOW-товары", то создаем
+        // если нету блока фильтров "WOW-товары"
         if (null === $labelFilter) {
-            $labelFilter = new \Model\Product\Filter\Entity();
-            $labelFilter->setId('label');
-            $labelFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-            $labelFilter->setName('WOW-товары');
-            $labelFilter->getIsInList(true);
+            return;
         }
 
-        // создаем фильтр "Товар за три дня"
+        // создаем фильтр
         $option = new \Model\Product\Filter\Option\Entity();
         $option->setId(1);
         $option->setToken('instore');
