@@ -115,7 +115,7 @@ class Action {
                 'latitude'          => $shop->getLatitude(),
                 'longitude'         => $shop->getLongitude(),
                 'is_reconstruction' => $shop->getIsReconstructed(),
-                'subway_name'       => $shop->getSubwayName(),
+                'subway_name'       => $subway ? $subway->getName() : null,
                 'product_count_text' => $shop->getProductCount() ? ($shop->getProductCount() . ' ' .$helper->numberChoice($shop->getProductCount(), ['товар', 'товара', 'товаров']) . ' можно забрать сегодня') : null,
             );
         }
