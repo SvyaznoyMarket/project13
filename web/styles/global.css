@@ -11015,6 +11015,11 @@ img[height="0"] {
     position: absolute;
     z-index: 15;
     top: 25px;
+    min-width: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
     display: none;
     white-space: nowrap;
     border: 1px solid #c7c7c7;
@@ -11172,7 +11177,7 @@ img[height="0"] {
     border-radius: 3px 3px 0 0;
   }
   .fltrBtnBox-gift .fltrBtnBox_dd_inn {
-    padding: 10px 20px 0 10px;
+    padding: 10px 25px 0 10px;
     max-height: 200px;
   }
 }
