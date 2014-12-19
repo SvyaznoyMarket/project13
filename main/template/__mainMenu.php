@@ -1,9 +1,15 @@
 <?php
 
-return function(
+/**
+ * @param \Helper\TemplateHelper $helper
+ * @param array $menu
+ * @param \Model\Menu\Entity|\Model\Menu\BasicMenuEntity $parent
+ * @param int $level
+ */
+$f = function(
     \Helper\TemplateHelper $helper,
     array $menu,
-    \Model\Menu\Entity $parent = null,
+    $parent = null,
     $level = 1
 ) {
 
@@ -108,4 +114,4 @@ $count = count($menu);
 
 <? if (2 == $level): // SITE-3862 ?><!--/noindex--><? endif ?>
 
-<? };
+<? }; return $f;

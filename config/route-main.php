@@ -266,6 +266,11 @@ return [
         'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+', 'brandToken' => '[\w\d-_]+'],
     ],
 
+    // каталог товаров
+    'product.gift' => [
+        'pattern' => '/podbor_podarkov',
+        'action'  => ['Gift\ProductCategory\Action', 'category'],
+    ],
 
     // карточка товара
     'product' => [

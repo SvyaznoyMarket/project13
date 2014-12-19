@@ -7,10 +7,13 @@ class Router {
     private $rules;
     /** @var string|null */
     private $prefix;
+    /** @var array */
+    private $globalParams = [];
 
-    public function __construct(array $rules, $prefix = null) {
+    public function __construct(array $rules, $prefix = null, $globalParams = []) {
         $this->rules = $rules;
         $this->prefix = $prefix ? ('/' . trim($prefix, '/')) : '';
+        $this->globalParams = $globalParams;
     }
 
     /**
@@ -86,6 +89,10 @@ class Router {
     public function generate($name, array $params = [], $absolute = false) {
         if (!isset($this->rules[$name])) {
             throw new \RuntimeException(sprintf('Неизвестный маршрут "%s".', $name));
+        }
+
+        if ((bool)$this->globalParams) {
+            $params += $this->globalParams;
         }
 
         $rule = $this->rules[$name];

@@ -3,7 +3,7 @@
     <li class="sorting_i sorting_i-tl">Сортировать</li>
 
     {{#links}}
-        <li class="sorting_i {{#active}} act js-category-sorting-activeItem{{/active}} js-category-sorting-item">
+        <li class="sorting_i {{#active}}act js-category-sorting-activeItem{{/active}} {{#default}}js-category-sorting-defaultItem{{/default}} js-category-sorting-item">
             <a class="sorting_lk jsSorting" data-sort="{{datasort}}" href="{{url}}">{{&title}}</a>
         </li>
     {{/links}}

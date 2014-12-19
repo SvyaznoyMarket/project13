@@ -104,6 +104,11 @@ module.exports = {
         dest: '<%= pathProd %>catalog.js'
     },
 
+	giftJS : {
+		src: ['<%= pathDev %>gift/*.js'],
+		dest: '<%= pathProd %>gift.js'
+	},
+
     productJS : {
         src: ['<%= pathDev %>product/*.js'],
         dest: '<%= pathProd %>product.js'

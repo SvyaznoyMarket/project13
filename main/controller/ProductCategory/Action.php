@@ -382,6 +382,7 @@ class Action {
         $this->correctFilterForJewel($category, $productFilter);
 
         if (!$category->isV2()) {
+            // SITE-4734
             foreach ($productFilter->getFilterCollection() as $filter) {
                 if ('brand' === $filter->getId()) {
                     foreach ($filter->getOption() as $option) {
@@ -780,6 +781,7 @@ class Action {
 
     private function getRootCategoryLinks(\Model\Product\Category\Entity $category, \View\Layout $page) {
         $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
+        $relatedCategories = $page->getParam('relatedCategories');
 
         /** @var $categories \Model\Product\Category\Entity[] */
         $categories = $category->getChild();
@@ -1085,8 +1087,7 @@ class Action {
                 ),
                 'selectedFilter' => $selectedFilter->execute(
                     \App::closureTemplating()->getParam('helper'),
-                    $productFilter,
-                    \App::router()->generate('product.category', ['categoryPath' => $category->getPath()])
+                    $productFilter
                 ),
                 'pagination'     => (new \View\PaginationAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
@@ -1282,6 +1283,14 @@ class Action {
         $productFilter->setCategory($category);
         $productFilter->setValues($values);
 
+        foreach ($productFilter->getFilterCollection() as $property) {
+            if (\Model\Product\Filter\Entity::TYPE_LIST == $property->getTypeId() && !in_array($property->getId(), ['shop', 'category'])) {
+                $property->setIsMultiple(true);
+            } else {
+                $property->setIsMultiple(false);
+            }
+        }
+        
         return $productFilter;
     }
 
@@ -1457,6 +1466,14 @@ class Action {
                     $category->setProductView(3);
                 } else {
                     $category->setProductView(4);
+                }
+            }
+        } else {
+            foreach ($productFilter->getFilterCollection() as $filter) {
+                if ('Металл' === $filter->getName() || 'Вставка' === $filter->getName()) {
+                    foreach ($filter->getOption() as $option) {
+                        $option->setImageUrl('');
+                    }
                 }
             }
         }
