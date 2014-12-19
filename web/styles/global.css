@@ -5772,11 +5772,6 @@ img[height="0"] {
     padding: 0 0 5px 16px;
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAOCAYAAAD9lDaoAAAAPklEQVQoz2NgAAGtKH0g9mfACSAK3gDxHyCOx6WoF6rgDyGFc8lV6E+Mwjdg95KvkKD76KKAiMAkKlqIiGAAqY1MkbmMuo4AAAAASUVORK5CYII=) no-repeat 0 6px;
   }
-  .tchiboCatalog__list .new {
-    background: url('/styles/tchibo/img/shild_new_left.png') no-repeat 0px 4px;
-    margin-left: -17px;
-    padding-left: 43px;
-  }
   .tchiboCatalog__list .link {
     color: #002a5a;
     font-size: 14px;
