@@ -96,6 +96,7 @@ return function(
                     <ul class="orderPaymentCr_list clearfix">
                         <li><a href="#">
                                 <img class="orderPaymentCr_list_bank-logo" src="/styles/order/img/tks-logo.jpg">
+                                <button class="orderPayment_btn orderPayment_btn-toggle btn3 btn3-shadow">Заполнить</button>
                                 <span class="orderPaymentCr_list_bank">Банк Тинькофф
                                     <span class="pb-small">Условия кредитования</span>
                                 </span>
@@ -103,6 +104,7 @@ return function(
                         </li>
                         <li><a href="#">
                                 <img class="orderPaymentCr_list_bank-logo" src="/styles/order/img/renessance-logo.jpg">
+                                <button class="orderPayment_btn orderPayment_btn-toggle btn3 btn3-shadow">Заполнить</button>
                                 <span class="orderPaymentCr_list_bank">Ренессанс кредит
                                     <span class="pb-small">Условия кредитования</span>
                                 </span>
@@ -110,6 +112,7 @@ return function(
                         </li>
                         <li><a href="#">
                                 <img class="orderPaymentCr_list_bank-logo" src="/styles/order/img/otp-logo.jpg">
+                                <button class="orderPayment_btn orderPayment_btn-toggle btn3 btn3-shadow">Заполнить</button>
                                 <span class="orderPaymentCr_list_bank" >ОТР Банк
                                 <span class="pb-small">Условия кредитования</span></span>
                             </a>
@@ -125,6 +128,44 @@ return function(
             </div>
         </div>
 
+<!-- Блок оплата в кредит -->
+        <div class="orderPayment orderPaymentCr">
+            <!-- Заголовок-->
+            <!-- Блок в обводке -->
+            <div class="orderPayment_block orderPayment_noOnline">
+
+                <div class="orderPayment_msg orderPayment_noOnline_msg">
+                    <div class="orderPayment_msg_head">
+                        Заявка на кредит
+                    </div>
+                    <ul class="orderPaymentCr_list clearfix">
+                        <li><a href="#">
+                                <img class="orderPaymentCr_list_bank-logo" src="/styles/order/img/tks-logo.jpg">
+                                <button class="orderPayment_btn orderPayment_btn-toggle btn3 btn3-shadow">Заполнить</button>
+                                <span class="orderPaymentCr_list_bank">Банк Тинькофф
+                                    <span class="pb-small">Условия кредитования</span>
+                                </span>
+                            </a>
+                        </li>
+                        <li><a href="#">
+                                <img class="orderPaymentCr_list_bank-logo" src="/styles/order/img/renessance-logo.jpg">
+                                <button class="orderPayment_btn orderPayment_btn-toggle btn3 btn3-shadow">Заполнить</button>
+                                <span class="orderPaymentCr_list_bank">Ренессанс кредит
+                                    <span class="pb-small">Условия кредитования</span>
+                                </span>
+                            </a>
+                        </li>
+                        <li><a href="#">
+                                <img class="orderPaymentCr_list_bank-logo" src="/styles/order/img/otp-logo.jpg">
+                                <button class="orderPayment_btn orderPayment_btn-toggle btn3 btn3-shadow">Заполнить</button>
+                                <span class="orderPaymentCr_list_bank" >ОТР Банк
+                                <span class="pb-small">Условия кредитования</span></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 <!-- Блок оплата платежные системы -->
         <div class="orderPayment orderPaymentWeb">
             <!-- Заголовок-->
