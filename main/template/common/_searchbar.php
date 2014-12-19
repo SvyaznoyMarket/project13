@@ -61,7 +61,7 @@ $menu = $page->getGlobalParam('menu');
 
                 <?= $page->blockInputCategory() ?>
 
-            <button class="hdsearch_btn btn3">Найти</button>
+            <button class="hdsearch_btn btn3" data-bind="enable: searchInput().length > 1">Найти</button>
 
         </form>
 
