@@ -171,7 +171,7 @@ class Menu {
 
         // Получаем данные из ядра
         try {
-            $exception = false;
+            $exception = null;
 
             // Получаем главное меню из scms
             $this->repository->prepareCollection(
@@ -214,6 +214,10 @@ class Menu {
 
             if ($exception instanceof \Exception) {
                 throw $exception;
+            }
+
+            if (!(bool)$menuData) {
+                throw new \Exception('Не удалось получить главное меню');
             }
         } catch (\Exception $e) {
             $menuData = $this->repository->getCollection();

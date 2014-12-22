@@ -46,4 +46,6 @@ $c->paymentPsbInvoice['payUrl']       = 'https://retail-tst.payment.ru/dn/Invoic
 
 $c->requestMainMenu = false;
 
+$c->tealeaf['enabled'] = false;
+
 return $c;

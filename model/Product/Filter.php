@@ -262,6 +262,14 @@ class Filter {
             return $a->position < $b->position ? -1 : 1;
         });
 
+        if ($instoreProperty) {
+            $group = new Group();
+            $group->name = $instoreProperty->getName();
+            $group->properties[] = $instoreProperty;
+            $group->hasSelectedProperties = (bool)$this->getValue($instoreProperty);
+            array_unshift($groups, $group);
+        }
+
         if ($shopProperty) {
             $group = new Group();
             $group->name = $shopProperty->getName();
@@ -276,16 +284,6 @@ class Filter {
             $group->properties[] = $brandProperty;
             $group->hasSelectedProperties = (bool)$this->getValue($brandProperty);
             array_unshift($groups, $group);
-        }
-
-        if ($instoreProperty) {
-            if (!$additionalGroup) {
-                $additionalGroup = new Group();
-                $additionalGroup->name = 'Дополнительно';
-                $groups[] = $additionalGroup;
-            }
-
-            array_unshift($additionalGroup->properties, $instoreProperty);
         }
 
         return $groups;
