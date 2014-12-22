@@ -207,10 +207,9 @@ class Action {
         // магазин
         /** @var $shop \Model\Shop\Entity */
         $shop = null;
-        \RepositoryManager::shop()->prepareEntityByToken($shopToken, function($data) use (&$shop) {
-            $data = reset($data);
-            if ((bool)$data) {
-                $shop = new \Model\Shop\Entity($data);
+        \App::scmsClient()->addQuery('shop/get', ['slug' => $shopToken], [], function($data) use (&$shop) {
+            if (isset($data[0]['name'])) {
+                $shop = new \Model\Shop\Entity($data[0]);
             }
         });
 
