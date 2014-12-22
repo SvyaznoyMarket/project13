@@ -35,20 +35,25 @@ class Test {
 
     public function __construct(array $data = []) {
         if (array_key_exists('name', $data)) $this->name = $data['name'];
-        if (array_key_exists('gaSlotNumber', $data) && !empty($data['gaSlotNumber'])) $this->gaSlotNumber = (int)$data['gaSlotNumber'];
-        if (array_key_exists('gaSlotScope', $data) && !empty($data['gaSlotScope'])) $this->gaSlotScope = (int)$data['gaSlotScope'];
-        if (array_key_exists('key', $data)) $this->key = $data['key'];
-        if (array_key_exists('enabled', $data)) $this->enabled = $data['enabled'];
-        if (array_key_exists('expireDate', $data)) $this->expireDate = $data['expireDate'];
+        if (array_key_exists('ga_slot_number', $data) && !empty($data['ga_slot_number'])) $this->gaSlotNumber = (int)$data['ga_slot_number'];
+        if (array_key_exists('ga_slot_scope', $data) && !empty($data['ga_slot_scope'])) $this->gaSlotScope = (int)$data['ga_slot_scope'];
+        if (array_key_exists('token', $data)) $this->key = $data['token'];
+        if (array_key_exists('active', $data)) $this->enabled = $data['active'];
+        if (array_key_exists('expires_at', $data)) $this->expireDate = $data['expires_at'];
         if (array_key_exists('cases', $data)) {
-            foreach ($data['cases'] as $caseKey => $caseData) {
-                $case = new TestCase(array_merge($caseData, ['key' => $caseKey]));
+            foreach ($data['cases'] as $caseData) {
+                $case = new TestCase($caseData);
                 $this->cases[$case->getKey()] = $case;
             }
         }
 
-        if (!isset($this->cases['default']))
+        if (!isset($this->cases['default'])) {
             $this->cases['default'] = $this->getDefaultCase();
+        }
+
+        if (!$this->chosenCase) {
+            $this->chosenCase = reset($this->cases);
+        }
     }
 
     /**
@@ -56,9 +61,9 @@ class Test {
      */
     private function getDefaultCase() {
         return new TestCase([
-            'key'      => 'default',
-            'name'     => 'пусто',
-            'traffic'  => '*',
+            'token'   => 'default',
+            'name'    => 'пусто',
+            'traffic' => '*',
         ]);
     }
 

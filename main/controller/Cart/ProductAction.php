@@ -51,7 +51,7 @@ class ProductAction {
 
             $returnRedirect = $request->headers->get('referer') ?: ($product->getLink() ?: \App::router()->generate('homepage'));
             if (\App::abTest()->getTest('other')) {
-                switch (\App::abTest()->getTest('other')->getChosenCase()->getKey()) {
+                switch (\App::abTest()->getTest('other') && \App::abTest()->getTest('other')->getChosenCase()->getKey()) {
                     case 'upsell':
                         $returnRedirect = \App::router()->generate('product.upsell', ['productToken' => $product->getToken()]);
                         break;

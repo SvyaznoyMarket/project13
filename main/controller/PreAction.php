@@ -14,22 +14,15 @@ class PreAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $uri = $request->getPathInfo();
-        // если главная страница, то игнорируем
-        if ('/' == $uri) {
-            return null;
-        }
-        // если preview.enter.ru, то редиректы тоже не нужны
-        if (\App::config()->preview) {
-            return null;
-        }
-        // если ajax-запрос или POST-запрос, то игнорируем
-        if ($request->isXmlHttpRequest() || ('POST' == $request->getMethod())) {
-            return null;
-        }
-
         $redirectUrl = null;
 
-        if (\App::config()->redirect301['enabled']) {
+        if (
+            \App::config()->redirect301['enabled']
+            && ('/' != $uri) // если не главная страница, ...
+            && !\App::config()->preview // ...если не preview.enter.ru
+            && !$request->isXmlHttpRequest() // ...если не ajax-запрос
+            && ('POST' != $request->getMethod()) // ... если не POST-запрос
+        ) {
             \App::scmsSeoClient()->addQuery(
                 'redirect',
                 ['from_url' => $uri],
@@ -49,13 +42,24 @@ class PreAction {
             );
         }
 
-        $abTestData = null;
         \App::scmsClient()->addQuery(
-            'ab_test/get-active',
+            'api/ab_test/get-active',
             [],
             [],
-            function($data) use(&$abTestData) {
-                $abTestData = $data;
+            function($data) {
+                if (isset($data[0])) {
+                    // FIXME: сомнительно
+                    $tests = [];
+                    foreach ($data as $item) {
+                        if (empty($item['token'])) {
+                            continue;
+                        }
+
+                        $tests[$item['token']] = $item;
+                    }
+
+                    \App::config()->abTest['tests'] = $tests;
+                }
             },
             function(\Exception $e) {
                 \App::exception()->remove($e);

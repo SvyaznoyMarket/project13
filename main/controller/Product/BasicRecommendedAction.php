@@ -51,8 +51,6 @@ class BasicRecommendedAction {
 
             $key = \App::abTest()->getTest('other') ? \App::abTest()->getTest('other')->getChosenCase()->getKey() : null;
 
-            \App::logger()->info(sprintf('abTest.key=%s, response.cookie.switch=%s', $key, $request->cookies->get(\App::config()->abTest['cookieName'])));
-
             /*if ('retailrocket' == $key) {
                 $products = $this->getProductsFromRetailrocket($product, $request, $this->retailrocketMethodName);
             } elseif ('hybrid' == $key) {

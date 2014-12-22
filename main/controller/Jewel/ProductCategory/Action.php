@@ -179,7 +179,7 @@ class Action extends \Controller\ProductCategory\Action {
         }
 
         /*
-        switch (\App::abTest()->getTest('jewel_items')->getChosenCase()->getKey()) {
+        switch (\App::abTest()->getTest('jewel_items') && \App::abTest()->getTest('jewel_items')->getChosenCase()->getKey()) {
             case 'jewelItems3':
                 $itemsPerRow = 3;
                 break;
