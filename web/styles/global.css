@@ -9835,7 +9835,7 @@ img[height="0"] {
     float: left;
     width: 241px;
     position: relative;
-    height: 344px;
+    height: 350px;
     margin: -1px -1px 0 0;
     z-index: 2;
   }
@@ -9844,7 +9844,7 @@ img[height="0"] {
     width: 199px;
     position: relative;
     height: 312px;
-    padding: 20px 20px 10px;
+    padding: 20px 20px 16px;
     background-color: #ffffff;
     z-index: 2;
   }
@@ -10038,7 +10038,7 @@ img[height="0"] {
     height: 41px;
     line-height: 1.1;
     overflow: hidden;
-    padding: 5px 0 8px;
+    padding: 5px 0;
     text-align: center;
     vertical-align: middle;
     width: 218px;
@@ -10054,6 +10054,17 @@ img[height="0"] {
   }
   .lstn-light .lstn_i_inn {
     height: 249px;
+  }
+  .lstn-btn2 .btnBuy__eLink {
+    background: #f99b1c;
+    border-color: #f99b1c;
+  }
+  .lstn-btn2 .btnBuy__eLink.mShopsOnly {
+    background: #404040;
+    border: 1px solid #000000;
+  }
+  .lstn-btn2 .btnBuy__eLink.mShopsOnly:hover {
+    background: #000000;
   }
   .lstn-jewel {
     margin-left: 0;
