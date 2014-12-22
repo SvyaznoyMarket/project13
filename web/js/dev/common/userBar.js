@@ -97,6 +97,8 @@
 			upsaleWrap = wrap.find('.hintDd');
 		// end of vars
 
+		$body.trigger('closeBuyInfo');
+
 		/**
 		 * Удаление выпадающей плашки для корзины
 		 */
@@ -154,6 +156,8 @@
 	 */
 	function showBuyInfo( e, data, upsale ) {
 		console.info('userbar::showBuyInfo');
+
+		$body.trigger('showBuyInfo');
 
 		$.each(emptyCompareNoticeElements, function(){
 			this.removeClass(emptyCompareNoticeShowClass);
@@ -435,6 +439,7 @@
 			w.on('scroll', function(){ checkScroll(true); });
 		}
 
+		// Если showWhenFullCartOnly = true, то проверку надо выполнять лишь после того, как станут доступны данные корзины (которые становятся доступны после userLogged)
 		$body.on('userLogged', function(){
 			checkScroll();
 		});

@@ -72,6 +72,7 @@
 
     <?= $page->render('common/_footer-new') ?>
 
+    <?= $page->slotUpper() ?>
     <?= $page->slotUserbar() ?>
     <?= $page->slotRegionSelection() ?>
     <?= $page->slotAuth() ?>

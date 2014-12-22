@@ -4712,33 +4712,45 @@ $('body').on('click', '.jsRecommendedItemInMenu', function(event) {
  * @author		Zaytsev Alexandr
  */
 ;(function(){
-	var upper = $('#upper'),
-		trigger = false;	//сработало ли появление языка
-	// end of vars
-	
-	
-	var pageScrolling = function pageScrolling()  {
-			if ( $(window).scrollTop() > 600 && !trigger ) {
-				//появление языка
-				trigger = true;
-				upper.animate({'marginTop':'0'}, 400);
-			}
-			else if ( $(window).scrollTop() < 600 && trigger ) {
-				//исчезновение
-				trigger = false;
-				upper.animate({'marginTop':'-55px'}, 400);
-			}
-		},
+	var
+		$body = $('body'),
+		$window = $(window),
+		$upper = $('.js-upper'),
+		visible = false,
+		offset = $upper.data('offset'),
+		showWhenFullCartOnly = $upper.data('showWhenFullCartOnly');
 
-		goUp = function goUp() {
-			$(window).scrollTo('0px',400);
+	if (typeof offset == 'string') {
+		var $offset = $(offset);
+		if ($offset.length) {
+			offset = $offset.offset().top;
+		}
+	}
 
-			return false;
-		};
-	//end of functions
+	function checkScroll() {
+		var cartLength = ENTER.UserModel.cart().length;
+		if (!visible && $window.scrollTop() > offset && (!showWhenFullCartOnly || cartLength)) {
+			//появление
+			visible = true;
+			$upper.animate({marginTop: '0'}, 400);
+		} else if (visible && ($window.scrollTop() < offset || showWhenFullCartOnly && !cartLength)) {
+			//исчезновение
+			visible = false;
+			$upper.animate({marginTop: '-55px'}, 400);
+		}
+	}
 
-	$(window).scroll(pageScrolling);
-	upper.bind('click',goUp);
+	$upper.bind('click', function() {
+		$window.scrollTo('0px',400);
+		return false;
+	});
+
+	$window.scroll(checkScroll);
+
+	// Если showWhenFullCartOnly = true, то проверку надо выполнять лишь после того, как станут доступны данные корзины (которые становятся доступны после userLogged)
+	$body.on('userLogged closeBuyInfo showBuyInfo', function(){
+		checkScroll();
+	});
 }());
 /**
  * White floating user bar
@@ -4839,6 +4851,8 @@ $('body').on('click', '.jsRecommendedItemInMenu', function(event) {
 			upsaleWrap = wrap.find('.hintDd');
 		// end of vars
 
+		$body.trigger('closeBuyInfo');
+
 		/**
 		 * Удаление выпадающей плашки для корзины
 		 */
@@ -4896,6 +4910,8 @@ $('body').on('click', '.jsRecommendedItemInMenu', function(event) {
 	 */
 	function showBuyInfo( e, data, upsale ) {
 		console.info('userbar::showBuyInfo');
+
+		$body.trigger('showBuyInfo');
 
 		$.each(emptyCompareNoticeElements, function(){
 			this.removeClass(emptyCompareNoticeShowClass);
@@ -5177,6 +5193,7 @@ $('body').on('click', '.jsRecommendedItemInMenu', function(event) {
 			w.on('scroll', function(){ checkScroll(true); });
 		}
 
+		// Если showWhenFullCartOnly = true, то проверку надо выполнять лишь после того, как станут доступны данные корзины (которые становятся доступны после userLogged)
 		$body.on('userLogged', function(){
 			checkScroll();
 		});

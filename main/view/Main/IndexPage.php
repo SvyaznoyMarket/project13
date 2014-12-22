@@ -46,6 +46,12 @@ class IndexPage extends \View\DefaultLayout {
         ];
     }
 
+    public function slotUpper() {
+        if ($this->new_menu) {
+            return (new \Helper\TemplateHelper())->render('common/__upper', ['offset' => '.js-showTopBar', 'showWhenFullCartOnly' => true]);
+        }
+    }
+
     public function slotBanner() {
         return $this->render('main/_banner', $this->params);
     }
