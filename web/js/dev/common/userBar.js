@@ -13,21 +13,22 @@
 
 		userBar = utils.extendApp('ENTER.userBar'),
 
-		userBarFixed = userBar.userBarFixed = $('.topbarfix-fx'),
-		userbarStatic = userBar.userBarStatic = $('.topbarfix-stc'),
+		userBarFixed = userBar.userBarFixed = $('.js-topbar-fixed'),
+		userbarStatic = userBar.userBarStatic = $('.js-topbar-static'),
 
 		emptyCompareNoticeElements = {},
 		emptyCompareNoticeShowClass = 'topbarfix_cmpr_popup-show',
 
 		topBtn = userBarFixed.find('.js-userbar-upLink'),
 		userbarConfig = userBarFixed.data('value'),
-		body = $('body'),
+		$body = $('body'),
 		w = $(window),
 		buyInfoShowing = false,
 		overlay = $('<div>').css({ position: 'fixed', display: 'none', width: '100%', height:'100%', top: 0, left: 0, zIndex: 900, background: 'black', opacity: 0.4 }),
 
 		scrollTarget,
-		filterTarget;
+		filterTarget,
+		showWhenFullCartOnly = userbarConfig && userbarConfig.showWhenFullCartOnly;
 	// end of vars
 
 	userBar.showOverlay = false;
@@ -36,7 +37,6 @@
 	 * Показ юзербара
 	 */
 	function showUserbar(disableAnimation, onOpen) {
-
 		$.each(emptyCompareNoticeElements, function(){
 			this.removeClass(emptyCompareNoticeShowClass);
 		});
@@ -68,7 +68,7 @@
 			return;
 		}
 
-		if (scrollTarget && scrollTarget.length && w.scrollTop() >= scrollTarget.offset().top && !hideOnly) {
+		if (scrollTarget && scrollTarget.length && w.scrollTop() >= scrollTarget.offset().top && !hideOnly && (!showWhenFullCartOnly || ENTER.UserModel.cart().length)) {
 			showUserbar();
 		}
 		else {
@@ -119,6 +119,7 @@
 		 */
 		function removeOverlay() {
 			if (!overlay || !userBar.showOverlay) {
+				checkScroll();
 				return;
 			}
 
@@ -161,7 +162,7 @@
 		var	buyInfo = $('.topbarfix_cartOn');
 
 		if ( !userBar.showOverlay && overlay ) {
-			body.append(overlay);
+			$body.append(overlay);
 			overlay.fadeIn(300);
 			userBar.showOverlay = true;
 			overlay.on('click', closeBuyInfo);
@@ -240,9 +241,12 @@
 				deleteFromRetailRocket(data);
 				deleteFromRutarget(data);
 				deleteFromLamoda(data);
-			},
+			};
 
-			authFromServer = function authFromServer( res, data ) {
+		$.ajax({
+			type: 'GET',
+			url: btn.attr('href'),
+			success: function( res, data ) {
 				console.warn( res );
 				if ( !res.success ) {
 					console.warn('удаление не получилось :(');
@@ -254,23 +258,18 @@
 				deleteProductAnalytics(res);
 
 				ENTER.UserModel.cart.remove(function(item){ return item.id == res.product.id});
-				
+
 				// Удаляем товар на странице корзины
 				$('.js-basketLineDeleteLink-' + res.product.id).click();
 
-				if ( ENTER.UserModel.cart().length == 0 ) {
+				if (ENTER.UserModel.cart().length == 0) {
 					closeBuyInfo();
 				} else {
 					showBuyInfo();
 				}
 
-				body.trigger('removeFromCart', [res.product]);
-			};
-
-		$.ajax({
-			type: 'GET',
-			url: btn.attr('href'),
-			success: authFromServer
+				$body.trigger('removeFromCart', [res.product]);
+			}
 		});
 
 		return false;
@@ -410,15 +409,14 @@
 
 	userBar.show = showUserbar;
 
-	body.on('click', '.jsUpsaleProduct', upsaleProductClick);
-	body.on('click', '.jsCartDelete', deleteProductHandler);
+	$body.on('click', '.jsUpsaleProduct', upsaleProductClick);
+	$body.on('click', '.jsCartDelete', deleteProductHandler);
 
 	$('.js-noProductsForCompareLink', userBarFixed).click(function(e) { showEmptyCompareNotice(e, 'fixed', userBarFixed); });
 	$('.js-noProductsForCompareLink', userbarStatic).click(function(e) { showEmptyCompareNotice(e, 'static', userbarStatic); });
 
 	if ( userBarFixed.length ) {
-		if (window.location.pathname !== '/cart') body.on('addtocart', showBuyInfo);
-		userBarFixed.on('click', '.jsCartDelete', deleteProductHandler);
+		if (window.location.pathname !== '/cart') $body.on('addtocart', showBuyInfo);
 		scrollTarget = $(userbarConfig.target);
 
 		if (userbarConfig.filterTarget) {
@@ -436,6 +434,10 @@
 		} else {
 			w.on('scroll', function(){ checkScroll(true); });
 		}
+
+		$body.on('userLogged', function(){
+			checkScroll();
+		});
 	}
 	else {
 		overlay.remove();
