@@ -13,7 +13,7 @@
 	var
 		body = $('body'),
 		utils = ENTER.utils,
-		catalogPath = document.location.pathname.replace(/^\/catalog\/([^\/]*).*$/i, '$1'),
+		catalogPath = document.location.pathname.replace(/^\/catalog\/([^\/]*).*$/i, '$1'), // Используем значение URL адреса на момент загрузки страницы, т.к. на данный момент при выполнении поиска URL страницы изменяется на URL формы, в которой задан URL из метода http://admin.enter.ru/v2/category/get-seo (в котором содержится некорректный URL; без средней части - "/catalog/holodilniki-i-morozilniki-1096" вместо "/catalog/appliances/holodilniki-i-morozilniki-1096")
 		catalog = utils.extendApp('ENTER.catalog'),
 
 		filterBlock = $('.js-category-filter'),
@@ -35,6 +35,13 @@
 	// end of vars
 
 	catalog.filter = {
+		/**
+		 * Выполнять ли обновление фильтров при изменении свойства
+		 *
+		 * @type	{boolean}
+		 */
+		updateOnChange: true,
+
 		/**
 		 * Последние загруженные данные
 		 *
@@ -308,8 +315,8 @@
 				url = filterBlock.attr('action') || '',
 				slidersInputState = catalog.filter.getSlidersInputState(),
 				unchangedNumberFieldNames = catalog.filter.getUnchangedNumberFieldNames(),
-				activeSort = viewParamPanel.find('.js-category-sorting-activeItem').find('.jsSorting'),
-				sortUrl = activeSort.data('sort'),
+				activeSort = viewParamPanel.find('.js-category-sorting-activeItem:not(.js-category-sorting-defaultItem)').find('.jsSorting'),
+				sortUrl = activeSort.length ? activeSort.data('sort') : null,
 				formSerizalizeData,
 				urlParams = catalog.filter.getUrlParams(),
 				hasCategory = false;
@@ -345,7 +352,9 @@
 
 			console.log(url);
 
-			url = url.addParameterToUrl('sort', sortUrl);
+			if (sortUrl) {
+				url = url.addParameterToUrl('sort', sortUrl);
+			}
 
 			return url;
 		},
@@ -374,6 +383,10 @@
 		changeFilterHandler: function( e ) {
 			console.info('change filter');
 			console.log(e);
+
+			if (!catalog.filter.updateOnChange) {
+				return;
+			}
 
 			var sendUpdate = function sendUpdate() {
 				filterBlock.trigger('submit');
@@ -612,35 +625,10 @@
 			// end of vars
 
 			catalog.filter.resetForm();
-			catalog.filter.updateFilter(parseUrlParams(url));
+			catalog.filter.updateFilter(utils.parseUrlParams(url));
 			catalog.history.gotoUrl(url);
 
 			return false;
-		},
-
-		parseUrlParams = function(url) {
-			var
-				result = {},
-				params = url.replace(/^[^?]*\?|\#.*$/g, '').split('&');
-
-			for (var i = 0; i < params.length; i++) {
-				var param = params[i].split('=');
-
-				if (!param[0]) {
-					param[0] = '';
-				}
-
-				if (!param[1]) {
-					param[1] = '';
-				}
-
-				param[0] = decodeURIComponent(param[0]);
-				param[1] = decodeURIComponent(param[1]);
-
-				result[param[0]] = param[1];
-			}
-
-			return result;
 		},
 
 		/**
@@ -875,7 +863,7 @@
 	filterBlock.on('click', '.js-category-filter-toggle-button', toggleHandler);
 	filterOtherParamsToggleButton.on('click', toggleFilterViewHandler);
 	filterMenuItem.on('click', selectFilterCategoryHandler);
-	$('input, select, textarea', filterBlock).on('change', catalog.filter.changeFilterHandler);
+	filterBlock.on('change', 'input, select, textarea', catalog.filter.changeFilterHandler);
 	filterBlock.on('submit', catalog.filter.sendFilter);
 
 	// Sorting items

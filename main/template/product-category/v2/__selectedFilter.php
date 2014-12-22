@@ -5,15 +5,13 @@ return function(
     \Model\Product\Filter $productFilter,
     $baseUrl
 ) {
-    $useBaseUrl = true;
 ?>
 
     <div class="js-category-filter-selected clearfix">
         <?= $helper->renderWithMustache('product-category/v2/_selectedFilter', (new \View\Partial\ProductCategory\V2\SelectedFilter())->execute(
             $helper,
             $productFilter,
-            $baseUrl,
-            $useBaseUrl
+            $baseUrl
         )) ?>
     </div>
 

@@ -89,19 +89,39 @@ class IndexPage extends \View\DefaultLayout {
         $return = '';
         $sender = ['name' => 'retailrocket'];
 
+        $products = $this->getParam('productList');
+        $personal = @$this->getParam('rrProducts')['personal'];
+        $personalForWalking = @$this->getParam('rrProducts')['personal'];
+        $personalForWalking = array_filter((array)$personalForWalking);
+        $names = [];
+
+        // Удаление продуктов с одинаковыми именами из массива персональных рекомендаций
+        array_walk ( $personalForWalking , function ($id, $key) use (&$personal, &$names, $products) {
+            /* @var $products \Model\Product\Entity[] */
+            // Имя продукта
+            $currentProductName = trim($products[$id]->getName());
+            if (array_search($currentProductName, $names) === false) {
+                // Если такого имени нет в массиве имён, то добавляем имя в массив
+                $names[$id] = $currentProductName;
+            } else {
+                // Если такое имя уже есть, то удаляем продукт из массива персональных рекомендаций
+                unset($personal[$key]);
+            }
+        } );
+
         if (!empty(@$this->getParam('rrProducts')['popular'])) {
             $return .= $this->render('main/_slidesBox', [
                 'blockname' => 'ПОПУЛЯРНЫЕ ТОВАРЫ',
-                'class' => 'slidesBox slidesBox-items fl-l',
+                'class' => 'slidesBox slidesBox-items slidesBox-items-l',
                 'productList' => $this->getParam('productList'),
                 'rrProducts' => (array)@$this->getParam('rrProducts')['popular'],
                 'sender' => $sender + ['position' => 'MainPopular', 'method' => 'ItemsToMain']
             ]);
             $return .= $this->render('main/_slidesBox', [
                 'blockname' => 'МЫ РЕКОМЕНДУЕМ',
-                'class' => 'slidesBox slidesBox-bg2 slidesBox-items fl-r',
+                'class' => 'slidesBox slidesBox-bg2 slidesBox-items slidesBox-items-r',
                 'productList' => $this->getParam('productList'),
-                'rrProducts' => (array)@$this->getParam('rrProducts')['personal'],
+                'rrProducts' => (array)$personal,
                 'sender' => $sender + ['position' => 'MainRecommended', 'method' => 'Personal']
             ]);
         }

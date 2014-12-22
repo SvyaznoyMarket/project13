@@ -145,7 +145,7 @@ $c->dataStore['retryTimeout'] = [
 
 $c->scms['url']          = 'http://scms.enter.ru/';
 $c->scms['retryCount']   = 2;
-$c->scms['timeout']      = 0.5;
+$c->scms['timeout']      = 1;
 $c->scms['retryTimeout'] = [
     'default' => 0.18,
     'tiny'    => 0.18,
@@ -158,7 +158,7 @@ $c->scms['retryTimeout'] = [
 
 $c->scmsV2['url']          = 'http://scms.enter.ru/v2/';
 $c->scmsV2['retryCount']   = 2;
-$c->scmsV2['timeout']      = 0.5;
+$c->scmsV2['timeout']      = 1;
 $c->scmsV2['retryTimeout'] = [
     'default' => 0.18,
     'tiny'    => 0.18,
@@ -171,7 +171,7 @@ $c->scmsV2['retryTimeout'] = [
 
 $c->scmsSeo['url']          = 'http://scms.enter.ru/seo/';
 $c->scmsSeo['retryCount']   = 2;
-$c->scmsSeo['timeout']      = 0.5;
+$c->scmsSeo['timeout']      = 1;
 $c->scmsSeo['retryTimeout'] = [
     'default' => 0.18,
     'tiny'    => 0.18,
@@ -434,6 +434,8 @@ $c->queue['maxLockTime'] = 600;
 
 $c->subscribe['enabled'] = true;
 $c->subscribe['cookieName'] = 'subscribed';
+$c->subscribe['cookieName2'] = 'enter_subscribed_ch';   // кука вида {channelId:status}
+$c->subscribe['cookieName3'] = 'enter_wanna_subscribe'; // кука о желании подписки в новом ОЗ
 
 $c->requestMainMenu = true;
 
@@ -629,16 +631,16 @@ $c->abTest = [
 
         'main_page' => [
             'name'          => 'Главная страница',
-            'gaSlotNumber'        => 16,
+            'gaSlotNumber'  => 16,
             'enabled'       => true,
             'expireDate'    => '2015-12-31',
             'cases' => [
                 'old' => [
-                    'traffic' => 95,
+                    'traffic' => 80,
                     'name'    => 'Старая главная страница',
                 ],
                 'new' => [
-                    'traffic' => 5,
+                    'traffic' => 20,
                     'name'    => 'Новая главная страница',
                 ]
             ]
@@ -651,11 +653,11 @@ $c->abTest = [
             'expireDate'    => '2015-12-31',
             'cases' => [
                 'on' => [
-                    'traffic' => 50,
+                    'traffic' => 0,
                     'name'    => 'Есть фильтр',
                 ],
                 'off' => [
-                    'traffic' => 50,
+                    'traffic' => 100,
                     'name'    => 'Нет фильтра',
                 ]
             ]

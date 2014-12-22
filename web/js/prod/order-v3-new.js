@@ -1349,6 +1349,10 @@
                 getForm(13, orderId, orderNumber);
                 body.trigger('trackUserAction', ['17_1 Оплатить_онлайн_PayPal_Оплата']);
                 break;
+			case 14:
+				getForm(14, orderId, orderNumber);
+				body.trigger('trackUserAction', ['17_1 Оплатить_онлайн_Связной_клуб_баллы']);
+				break;
         }
     });
 
@@ -1586,8 +1590,8 @@
             } else {
                 console.error('No map data for token = "%s"', token,  elem);
             }
-
 		},
+
 		showOfertaPopup = function showOfertaPopupF() {
 			$('.js-order-oferta-popup').lightbox_me();
 		},
@@ -1627,7 +1631,6 @@
         var elemId = $(this).data('content');
         e.stopPropagation();
         $('.popupFl').hide();
-        $(elemId).show();
 
         if ($(this).hasClass('js-order-changePlace-link')) {
             var token = $(elemId).find('.selShop_l:first').data('token');
@@ -1635,10 +1638,14 @@
             $(elemId).find('.selShop_l').hide().first().show();
             // первая вкладка активная
             $(elemId).find('.selShop_tab').removeClass('selShop_tab-act').first().addClass('selShop_tab-act');
+            $(elemId).lightbox_me({
+                centered: true,
+                closeSelector: '.jsCloseFl',
+            });
             showMap($(elemId), token);
             $body.trigger('trackUserAction', ['10 Место_самовывоза_Доставка_ОБЯЗАТЕЛЬНО']);
-            $(elemId).lightbox_me({centered: true, closeSelector: '.jsCloseFl'});
         } else {
+            $(elemId).show();
             log({'action':'view-date'});
             $body.trigger('trackUserAction', ['11 Срок_доставки_Доставка']);
         }
@@ -1910,7 +1917,17 @@
         $body.trigger('trackUserAction', ['1 Вход_Получатель_ОБЯЗАТЕЛЬНО']);
     }
 
-	$('.jsOrderV3PhoneField').focus()
+	// Если стоит галка на чекбоксе
+	if ($('.jsOrderV3SubscribeCheckbox').is(':checked')) {
+		docCookies.setItem('enter_wanna_subscribe', true, 0, '/'); // ставим куку на сессию
+	}
+
+	// Меняем куку по изменению "Подписаться на рассылку"
+	$body.on('change', '.jsOrderV3SubscribeCheckbox', function(){
+		docCookies.setItem('enter_wanna_subscribe', $(this).is(':checked'), 0);
+	});
+
+	$('.jsOrderV3PhoneField').focus();
 
 })(jQuery);
 ;(function($) {

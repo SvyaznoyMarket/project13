@@ -1,0 +1,165 @@
+// блок филььтра с параметрами
+.fltrBtnBox{
+    position: relative;
+
+    margin: 0 5px 0 0;
+
+    border: 1px solid @white;
+
+    .inline-block();
+    .rounded(3px);
+
+    &.opn{
+        .fltrBtnBox_tggl{
+            z-index: 16;
+
+            padding-bottom: 4px;
+
+            border-color: @lightgrey9;
+            &_corner{
+                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAQAAAClB0z9AAAAP0lEQVQI12NgAIL/jE6T/jMywIBTgtN/pwQox4/X6TmQ+9yPF8x17gJygNC5C8RRc/4J5f50VmNw2grhgOFWABRpHkDXZMHuAAAAAElFTkSuQmCC');
+            }
+            &_tx{
+                border: none;
+            }
+        }
+        &.fltrBtnBox-mark{
+            .fltrBtnBox_tggl_corner{
+                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAAV0lEQVQIW2NggIL///8zvnf0ngSiYWJw8N7JK+G9g9d/EI0i8d/Pj/eDg/dzkCSIBvHhkh8cfbrAuqAYxAdLfHIOVPvg6P0TVdL7J0gcqMt7K7IEkoKtAD3ERJ5C4w0pAAAAAElFTkSuQmCC');
+            }
+        }
+        .fltrBtnBox_dd{
+            display: block;
+        }
+        &.actv{
+            border-width: 1px;
+            border-color: @white;
+            .fltrBtnBox_tggl{
+                padding: 4px 10px;
+            }
+            &.fltrBtnBox-mark{
+                border-width: 1px;
+                border-color: @white;
+            }
+        }
+    }
+
+    &.actv{
+        border-width: 2px;
+        border-color: @orange-2;
+        .fltrBtnBox_tggl{
+            padding: 3px 9px 2px;
+        }
+        .fltrBtnBox_tggl_tx{
+            border: none;
+        }
+        &.fltrBtnBox-mark{
+            border-width: 2px;
+            border-color: #ef404a;
+        }
+    }
+
+    //скидки - красная выпадашка
+    &-mark{
+        .fltrBtnBox_tggl{
+            color: #ef404a;
+            &_corner{
+                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAAVUlEQVQI12P44Oi99b2D1390DBJn+OQcqAZk/EST+AkSZwCBD44+XaiSPl0MMPDfz4/3g4P3c7AEkAbxGZDBJwfveJAkiGZAB////2d87+g9CUTDxAB+g0Sgd+vg2AAAAABJRU5ErkJggg==');
+            }
+            &_tx{
+                border-color: #ef404a;
+            }
+        }
+    }
+
+    &_tggl{
+        font-size: 14px;
+        line-height: 1;
+
+        position: relative;
+
+        padding: 4px 10px 3px;
+
+        cursor: pointer;
+
+        border: 1px solid @white;
+        border-bottom: none;
+        background-color: @white;
+
+        .inline-block-middle();
+        .rounded(3px 3px 0 0);
+
+        &_tx{
+            padding: 0 0 3px;
+
+            border-bottom: 1px dotted #515151;
+
+            .inline-block();
+        }
+
+        &_corner{
+            width: 7px;
+            height: 6px;
+
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAQAAAClB0z9AAAAQElEQVQI12Nw2ur0Hw63MjirOf+EcJx/OqsxMDA4d0G5XQwg4Mfr9BzIfe7HywABzvFAuXgGGPjP6DTpPyOIBQCDch5A9YNPpAAAAABJRU5ErkJggg==') no-repeat 0 0;
+
+            .inline-block-middle();
+        }
+
+        &-dsbld {
+            color: #828282;
+        }
+    }
+
+    // выпадашка с параметрами фильтрации
+    &_dd{
+        position: absolute;
+        z-index: 15;
+        top: 25px;
+        min-width: 100%;
+        .box-sizing();
+
+        display: none;
+
+        white-space: nowrap;
+
+        border: 1px solid @lightgrey9;
+        background: @white;
+
+        .rounded(0 0 3px 3px);
+        .drop-shadow(0, 3px, 5px, .3);
+        &:after{
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 15px;
+            .pseudo-class();
+            .whiteTopTranspGrad();
+        }
+        &:before{
+            bottom: 0;
+            left: 0;
+
+            width: 100%;
+            height: 15px;
+            .pseudo-class();
+            .whiteBottomTranspGrad();
+        }
+        &-r{
+            right: 0;
+        }
+        &-l{
+            left: 0;
+        }
+        &_inn{
+            overflow-x: hidden;
+            overflow-y: auto;
+
+            box-sizing: border-box;
+            width: 100%;
+            max-height: 250px;
+            padding: 15px 10px 5px 10px;
+        }
+    }
+}

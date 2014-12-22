@@ -32,7 +32,7 @@
 
 </head>
 
-<body class="main main-new jsMainNew" data-template="main" data-debug=<?= $page->json(\App::config()->debug) ?>>
+<body class="main main-new jsMainNew" data-template="main" data-id="<?= \App::$id ?>" data-debug=<?= $page->json(\App::config()->debug) ?>>
 
 <?= $page->slotConfig() ?>
 
