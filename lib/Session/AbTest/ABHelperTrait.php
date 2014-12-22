@@ -38,8 +38,9 @@ trait ABHelperTrait {
          * Санкт-Петербург - 39
          */
         /* Если пользователь попадает в регион теста */
-        if (\App::user()->getRegion() && !in_array(\App::user()->getRegion()->getParentId(), [82,83,34,39])) {
-            return \App::abTest()->getTest('order_delivery_price_2') && \App::abTest()->getTest('order_delivery_price_2')->getChosenCase()->getKey() == 'delivery_self_100';
+        if (\App::user()->getRegion() && !in_array(\App::user()->getRegion()->getParentId(), [82,83,39])) {
+//            return \App::abTest()->getTest('order_delivery_price_2') && \App::abTest()->getTest('order_delivery_price_2')->getChosenCase()->getKey() == 'delivery_self_100';
+            return true; // 100% платный самовывоз
         }
         return false;
     }
