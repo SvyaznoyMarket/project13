@@ -7704,7 +7704,7 @@ img[height="0"] {
   .paymentMethods .paymentRow .customInput-defradio2 + .customLabel {
     background-position: 0 8px;
   }
-  .paymentMethods .paymentRow .orderPaymentWeb_list-sm {
+  .paymentMethods .paymentRow .orderPaymentWeb_lst-sm {
     margin-left: 5px;
   }
   .paymentMethods .paymentRow .customSel {
@@ -7714,7 +7714,7 @@ img[height="0"] {
     height: 20px;
     margin-top: 4px;
   }
-  .paymentMethods .paymentRow .customSel select {
+  .paymentMethods .paymentRow .customSel-inner {
     width: 140px;
     height: 100%;
     background: none;
@@ -8021,26 +8021,26 @@ img[height="0"] {
     width: 200px;
     margin-right: 14px;
   }
-  .orderPaymentCr_list {
+  .orderPaymentCr_lst {
     margin: 10px 0;
   }
-  .orderPaymentCr_list li {
+  .orderPaymentCr_lst-i {
     padding: 13px 20px;
   }
-  .orderPaymentCr_list li:hover {
+  .orderPaymentCr_lst-i:hover {
     background: #feebd2;
   }
-  .orderPaymentCr_list li:hover .orderPayment_btn-toggle {
+  .orderPaymentCr_lst-i:hover .orderPayment_btn-toggle {
     display: block;
   }
-  .orderPaymentCr_list li:hover .orderPaymentCr_list_bank-logo {
+  .orderPaymentCr_lst-i:hover .orderPaymentCr_lst_bank-logo {
     display: none;
   }
-  .orderPaymentCr_list_bank {
+  .orderPaymentCr_lst_bank {
     text-decoration: underline;
     display: block;
   }
-  .orderPaymentCr_list_bank-logo {
+  .orderPaymentCr_lst_bank-logo {
     float: right;
     width: 125px;
     height: 42px;
@@ -8055,40 +8055,40 @@ img[height="0"] {
     display: block;
     color: #5e5e5e;
   }
-  .orderPaymentWeb_list {
+  .orderPaymentWeb_lst {
     margin: 15px 0px;
   }
-  .orderPaymentWeb_list li {
+  .orderPaymentWeb_lst-i {
     padding: 10px 20px;
     overflow: hidden;
     height: 24px;
     line-height: 24px;
   }
-  .orderPaymentWeb_list li:hover {
+  .orderPaymentWeb_lst-i:hover {
     background: #feebd2;
   }
-  .orderPaymentWeb_list li:hover .orderPayment_btn-toggle {
+  .orderPaymentWeb_lst-i:hover .orderPayment_btn-toggle {
     display: block;
   }
-  .orderPaymentWeb_list li:hover .orderPaymentWeb_list_sys-logo {
+  .orderPaymentWeb_lst-i:hover .orderPaymentWeb_lst_sys-logo {
     display: none;
   }
-  .orderPaymentWeb_list_sys {
+  .orderPaymentWeb_lst_sys {
     text-decoration: underline;
     display: block;
   }
-  .orderPaymentWeb_list_sys-logo {
+  .orderPaymentWeb_lst_sys-logo {
     float: right;
     width: 125px;
     height: 24px;
     text-align: center;
     line-height: 24px;
   }
-  .orderPaymentWeb_list_sys-logo img {
+  .orderPaymentWeb_lst_sys-logo-img {
     max-height: 100%;
     max-width: 100%;
   }
-  .orderPaymentWeb_list_sys-logo.noFlnoWdt {
+  .orderPaymentWeb_lst_sys-logo.noFlnoWdt {
     width: auto;
     float: none;
     display: inline-block;
@@ -8097,7 +8097,7 @@ img[height="0"] {
     *display: inline;
     *zoom: 1;
   }
-  .orderPaymentWeb_list-sm {
+  .orderPaymentWeb_lst-sm {
     display: inline-block;
     vertical-align: top;
     /* IE6-8 */
@@ -8105,7 +8105,7 @@ img[height="0"] {
     *zoom: 1;
     margin-left: 25px;
   }
-  .orderPaymentWeb_list-sm li {
+  .orderPaymentWeb_lst-sm-i {
     display: inline-block;
     vertical-align: top;
     /* IE6-8 */
@@ -8128,7 +8128,7 @@ img[height="0"] {
     left: 50%;
     z-index: 1;
   }
-  .orderDelivery .orderPayment_msg_shop.markerList_row {
+  .orderDelivery .orderPayment_msg_shop.markerLst_row {
     border: none;
   }
   .orderDelivery .orderPayment_msg_info {

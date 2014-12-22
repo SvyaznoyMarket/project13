@@ -188,16 +188,16 @@
 	}
 }
 .orderPaymentCr{
-	&_list{
+	&_lst{
 		margin:10px 0;
-		li{
+		&-i{
 			padding:13px 20px;
 			&:hover{
 				background: #feebd2;
 				 & .orderPayment_btn-toggle{
 				 	display: block;
 				 }
-				 & .orderPaymentCr_list_bank-logo{
+				 & .orderPaymentCr_lst_bank-logo{
 				 	display: none;
 				 }
 			}
@@ -225,9 +225,9 @@
 			}
 }
 .orderPaymentWeb{
-	&_list{
+	&_lst{
 		margin: 15px 0px;
-		li{
+		&-i{
 			padding:10px 20px;
 			overflow: hidden;
 			height: 24px;
@@ -237,7 +237,7 @@
 				 & .orderPayment_btn-toggle{
 				 	display: block;
 				 }
-				 & .orderPaymentWeb_list_sys-logo{
+				 & .orderPaymentWeb_lst_sys-logo{
 				 	display: none;
 				 }
 			}
@@ -251,7 +251,7 @@
 					height:24px;
 					text-align: center;
 					line-height: 24px;
-					img{
+					&-img{
 						max-height:100%;
 						max-width: 100%;
 					}
@@ -266,7 +266,7 @@
 			.inline-block();
 
 			margin-left: 25px;
-				li{
+				&-i{
 					.inline-block();
 					line-height: 30px;
 					margin-right: 2px;
@@ -290,7 +290,7 @@
 	}
 }
 .orderDelivery{
-	.orderPayment_msg_shop.markerList_row{
+	.orderPayment_msg_shop.markerLst_row{
 		border:none;
 	}
 	.orderPayment_msg_info{

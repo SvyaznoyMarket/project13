@@ -14,7 +14,7 @@ $f = function (
                 <input id="payment-cash" type="radio" name="payment-type[]" value="" class="customInput customInput-radio customInput-defradio2">
                 <label for="payment-cash" class="customLabel customLabel-defradio2">При получении
                     <div class="customSel">
-                        <select>
+                        <select class="customSel-inner">
                             <option>наличными</option>
                         </select>
                     </div>
@@ -26,11 +26,11 @@ $f = function (
             <div class="paymentRow">
                 <input id="payment-online" type="radio" name="payment-type[]" value="" class="customInput customInput-radio customInput-defradio2">
                 <label for="payment-online" class="customLabel customLabel-defradio2">Онлайн-оплата:
-                <ul class="orderPaymentWeb_list-sm">
-                                <li><a href="#"><img src ="/styles/order/img/visa-logo-sm.jpg"></a></li>
-                                <li><a href="#"><img src ="/styles/order/img/yamoney-sm.jpg"></a></li>
-                                <li><a href="#"><img src ="/styles/order/img/paypal.png"></a></li>
-                                <li><a href="#"><img src ="/styles/order/img/psb.png"></a></li>
+                <ul class="orderPaymentWeb_lst-sm">
+                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/visa-logo-sm.jpg"></a></li>
+                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/yamoney-sm.jpg"></a></li>
+                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/paypal.png"></a></li>
+                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/psb.png"></a></li>
                             </ul>
                 </label>
             </div>
