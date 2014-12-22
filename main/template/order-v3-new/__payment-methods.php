@@ -8,17 +8,39 @@ $f = function (
 ) { ?>
 
     <div class="paymentMethods" style="background-color: white; margin: 0 -10px; padding: 10px;">
-
+        <strong>Способы оплаты</strong>
         <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH]) || isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY])) : ?>
-            <input type="radio" name="" value="">При получении<br>
+            <div class="paymentRow">
+                <input id="payment-cash" type="radio" name="payment-type[]" value="" class="customInput customInput-radio customInput-defradio2">
+                <label for="payment-cash" class="customLabel customLabel-defradio2">При получении
+                    <div class="customSel">
+                        <select>
+                            <option>наличными</option>
+                        </select>
+                    </div>
+                </label>
+            </div>
         <? endif ?>
 
         <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ONLINE])) : ?>
-            <input type="radio" name="" value="">Онлайн-оплата<br>
+            <div class="paymentRow">
+                <input id="payment-online" type="radio" name="payment-type[]" value="" class="customInput customInput-radio customInput-defradio2">
+                <label for="payment-online" class="customLabel customLabel-defradio2">Онлайн-оплата:
+                <ul class="orderPaymentWeb_list-sm">
+                                <li><a href="#"><img src ="/styles/order/img/visa-logo-sm.jpg"></a></li>
+                                <li><a href="#"><img src ="/styles/order/img/yamoney-sm.jpg"></a></li>
+                                <li><a href="#"><img src ="/styles/order/img/paypal.png"></a></li>
+                                <li><a href="#"><img src ="/styles/order/img/psb.png"></a></li>
+                            </ul>
+                </label>
+            </div>
         <? endif ?>
 
         <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CREDIT])) : ?>
-            <input type="radio" name="" value="">Купить в кредит<br>
+            <div class="paymentRow">
+                <input id="payment-credit" type="radio" name="payment-type[]" value="" class="customInput customInput-radio customInput-defradio2">
+                <label for="payment-credit" class="customLabel customLabel-defradio2">Купить в кредит</label><br>
+            </div>
         <? endif ?>
 
     </div>
