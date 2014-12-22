@@ -1813,6 +1813,22 @@
 		tabsOfertaAction(this)
 	});
 
+	// ДЛЯ АБ-ТЕСТА ПО МОТИВАЦИИ ОНЛАЙН-ОПЛАТЫ
+	$body.on('click', '.jsPaymentMethodRadio', function(){
+		var $this = $(this),
+			block_name = $this.closest('.orderRow').data('block_name'),
+			method = $this.val();
+		changePaymentMethod(block_name, method, 'true')
+	});
+
+	$body.on('change', '.jsPaymentMethodSelect', function(e){
+		var $this = $(this),
+			block_name = $this.closest('.orderRow').data('block_name'),
+			selectedMethod = $this.find(':selected').val();
+		changePaymentMethod(block_name, selectedMethod, 'true');
+		e.preventDefault();
+	});
+
     // АНАЛИТИКА
 
     if (/order\/delivery/.test(window.location.href)) {
