@@ -399,7 +399,7 @@ class Entity {
      * @return bool
      */
     public function isBrand() {
-        return 'brand' == $this->getId();
+        return 'brand' === $this->getId();
     }
 
     /**

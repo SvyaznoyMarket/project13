@@ -61,7 +61,7 @@ $menu = $page->getGlobalParam('menu');
 
                 <?= $page->blockInputCategory() ?>
 
-            <button class="hdsearch_btn btn3">Найти</button>
+            <button class="hdsearch_btn btn3" data-bind="enable: searchInput().length > 1">Найти</button>
 
         </form>
 
@@ -89,7 +89,10 @@ $menu = $page->getGlobalParam('menu');
     </div>
 
     <div class="hdgift">
-        <a href="/gift"><img src="/styles/header/img/icon-gift.png" alt=""></a>
+        <a class="hdgift_i hdgift_lk" href="/gift">
+            <img class="hdgift_i hdgift_img" src="/styles/header/img/icon-gift.png" alt="">
+            <span class="hdgift_i hdgift_tx">Выбери подарок!</span>
+        </a>
     </div>
 </div>
 <!--/ поиск -->

@@ -92,6 +92,7 @@ class IndexPage extends \View\DefaultLayout {
         $products = $this->getParam('productList');
         $personal = @$this->getParam('rrProducts')['personal'];
         $personalForWalking = @$this->getParam('rrProducts')['personal'];
+        $personalForWalking = array_filter((array)$personalForWalking);
         $names = [];
 
         // Удаление продуктов с одинаковыми именами из массива персональных рекомендаций
