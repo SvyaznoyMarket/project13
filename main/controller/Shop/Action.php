@@ -4,7 +4,7 @@ namespace Controller\Shop;
 
 class Action {
     /** @var array */
-    private $firstShoIds = [2, 194];
+    private $firstShopIds = [2, 194];
 
     /**
      * @return \Http\Response
@@ -310,9 +310,9 @@ class Action {
     private function sortMarkersBySubways(&$markers)
     {
         usort($markers, function($a, $b) {
-            if (in_array($a['id'], $this->firstShoIds)) {
+            if (in_array($a['id'], $this->firstShopIds)) {
                 return -1;
-            } else if (in_array($b['id'], $this->firstShoIds)) {
+            } else if (in_array($b['id'], $this->firstShopIds)) {
                 return 1;
             }
 
