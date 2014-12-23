@@ -1369,6 +1369,9 @@ img[height="0"] {
     border-style: solid;
     border-color: #c7c7c7;
   }
+  .userbar .header_t {
+    border: none;
+  }
   .header {
     width: 960px;
     margin: 0 auto;
@@ -4463,7 +4466,7 @@ img[height="0"] {
   .topbarfix_cmpr {
     background: #f4f4f4;
     position: relative;
-    z-index: 11;
+    z-index: 101;
   }
   .topbarfix_cmpr-full {
     background-color: #ffffff;
@@ -4517,6 +4520,7 @@ img[height="0"] {
     filter: alpha(opacity=0);
     overflow: hidden;
     top: 66px;
+    z-index: 101;
   }
   .topbarfix_cmpr_popup-add {
     color: #000000;
@@ -9763,9 +9767,6 @@ img[height="0"] {
   }
   .compare-userbar .userbar-fixed .topbar_l {
     padding-left: 10px;
-  }
-  .topbarfix:hover > div:last-child .topbarfix_cmpr_popup {
-    display: none !important;
   }
   .cmprEmpty {
     color: #808080;
