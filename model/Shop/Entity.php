@@ -57,8 +57,8 @@ class Entity {
         if (array_key_exists('working_time', $data)) $this->setRegime($data['working_time']);
         if (array_key_exists('address', $data)) $this->setAddress($data['address']);
 
-        //if (array_key_exists('coord_lat', $data)) $this->setLatitude($data['coord_lat']);
-        //if (array_key_exists('coord_long', $data)) $this->setLongitude($data['coord_long']);
+        if (array_key_exists('coord_lat', $data)) $this->setLatitude($data['coord_lat']);
+        if (array_key_exists('coord_long', $data)) $this->setLongitude($data['coord_long']);
         if (isset($data['location']['longitude'])) $this->setLongitude($data['location']['longitude']);
         if (isset($data['location']['latitude'])) $this->setLatitude($data['location']['latitude']);
 
