@@ -134,7 +134,8 @@ class Action {
                     [],
                     null,
                     true,
-                    $columnCount
+                    $columnCount,
+                    'light_with_bottom_description'
                 ),
                 'selectedFilter' => [],
                 'pagination'     => (new \View\PaginationAction())->execute(
@@ -195,6 +196,7 @@ class Action {
                 ['id' => 688, 'name' => 'Мужчине'],
             ],
             'status' => [
+                ['id' => 689, 'name' => 'Любимой'],
                 ['id' => 690, 'name' => 'Коллеге'],
                 ['id' => 692, 'name' => 'Боссу'],
                 ['id' => 693, 'name' => 'Подруге'],
@@ -210,16 +212,17 @@ class Action {
                 ['id' => 700, 'name' => 'Мальчику'],
                 ['id' => 703, 'name' => 'Папе'],
                 ['id' => 705, 'name' => 'Дедушке'],
+                ['id' => 697, 'name' => 'Себе'],
             ],
             'age' => [
-                ['id' => 713, 'name' => '0—1 год'],
-                ['id' => 716, 'name' => '1—3 года'],
-                ['id' => 717, 'name' => '4—7 лет'],
-                ['id' => 718, 'name' => '8—12 лет'],
-                ['id' => 719, 'name' => '13—16 лет'],
-                ['id' => 720, 'name' => '17—23 года'],
-                ['id' => 721, 'name' => '24—35 лет'],
-                ['id' => 722, 'name' => '36—60 лет'],
+                ['id' => 713, 'name' => '0–1 год'],
+                ['id' => 716, 'name' => '1–3 года'],
+                ['id' => 717, 'name' => '4–7 лет'],
+                ['id' => 718, 'name' => '8–12 лет'],
+                ['id' => 719, 'name' => '13–16 лет'],
+                ['id' => 720, 'name' => '17–23 года'],
+                ['id' => 721, 'name' => '24–35 лет'],
+                ['id' => 722, 'name' => '36–60 лет'],
                 ['id' => 723, 'name' => 'Старше 60'],
                 ['id' => 724, 'name' => 'Возраст не имеет значения'],
             ],
@@ -308,7 +311,7 @@ class Action {
     }
     
     private function getProductFilterDump(\Model\Product\Filter $productFilter) {
-        $tagDump = ['tag', 1, []];
+        $tagDump = ['tag_and', 1, []];
         $filterDump = $productFilter->dump();
         for ($i = count($filterDump) - 1; $i >= 0; $i--) {
             if (in_array($filterDump[$i][0], ['holiday', 'sex', 'status', 'age'], true)) {

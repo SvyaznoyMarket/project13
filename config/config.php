@@ -145,7 +145,7 @@ $c->dataStore['retryTimeout'] = [
 
 $c->scms['url']          = 'http://scms.enter.ru/';
 $c->scms['retryCount']   = 2;
-$c->scms['timeout']      = 0.5;
+$c->scms['timeout']      = 1;
 $c->scms['retryTimeout'] = [
     'default' => 0.18,
     'tiny'    => 0.18,
@@ -158,7 +158,7 @@ $c->scms['retryTimeout'] = [
 
 $c->scmsV2['url']          = 'http://scms.enter.ru/v2/';
 $c->scmsV2['retryCount']   = 2;
-$c->scmsV2['timeout']      = 0.5;
+$c->scmsV2['timeout']      = 1;
 $c->scmsV2['retryTimeout'] = [
     'default' => 0.18,
     'tiny'    => 0.18,
@@ -171,7 +171,7 @@ $c->scmsV2['retryTimeout'] = [
 
 $c->scmsSeo['url']          = 'http://scms.enter.ru/seo/';
 $c->scmsSeo['retryCount']   = 2;
-$c->scmsSeo['timeout']      = 0.5;
+$c->scmsSeo['timeout']      = 1;
 $c->scmsSeo['retryTimeout'] = [
     'default' => 0.18,
     'tiny'    => 0.18,

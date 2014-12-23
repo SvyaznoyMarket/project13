@@ -218,6 +218,16 @@ class CompleteAction extends OrderV3 {
                     'url_params'    => isset($result['url_params']) && !empty($result['url_params']) ? $result['url_params'] : null
                 ));
                 break;
+            case '14':
+                $form = new \Payment\SvyaznoyClub\Form();
+                $form->fromArray($result['detail']);
+                $provider = new \Payment\SvyaznoyClub\Provider($form);
+                $provider->setPayUrl($result['url']);
+                $form = (new \Templating\HtmlLayout())->render('order/payment/form-svyaznoyClub', array(
+                    'provider'  => $provider,
+                    'order'     => $order
+                ));
+                break;
         }
 
         $response = new \Http\JsonResponse(['result' => $result, 'form' => $form]);

@@ -126,6 +126,10 @@
                 getForm(13, orderId, orderNumber);
                 body.trigger('trackUserAction', ['17_1 Оплатить_онлайн_PayPal_Оплата']);
                 break;
+			case 14:
+				getForm(14, orderId, orderNumber);
+				body.trigger('trackUserAction', ['17_1 Оплатить_онлайн_Связной_клуб_баллы']);
+				break;
         }
     });
 

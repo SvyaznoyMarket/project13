@@ -17,8 +17,12 @@
             border-color: @lightgrey9;
         }
     }
-    .i-header-ep{
-        background: url('@{base-url}/mainpage/img/enterprize_logo.png') no-repeat 0 0;
+}
+
+.userbar {
+
+    .header_t {
+        border: none;
     }
 }
 
@@ -111,12 +115,16 @@
     }
 }
 
+.hdlogo {
+    float: left;
+    //margin: 0 85px 0 0;
+    margin: 0 35px 0 0;
+}
+
 // логотип
 .sitelogo{
     width: 71px;
     height: 60px;
-    margin: 0 85px 0 0;
-
     background: url('@{base-url}/mainpage/img/logo.png') no-repeat 0 50%;
 }
 
@@ -203,15 +211,43 @@
 .hdep{
     float: right;
 
-    margin: 7px 0 0;
+    margin: 11px 0 0;
 
     text-align: center;
 
     color: #dbdbdb;
+
     &_h{
         line-height: 1;
 
-        margin: 0 0 10px;
+        margin: 0 0 2px;
+    }
+
+    .i-header-ep{
+        background: url('@{base-url}/mainpage/img/enterprize_logo.png') no-repeat 0 0;
+    }
+}
+
+.hdgift {
+    float: right;
+    border-right: 1px dotted @white;
+    margin: 14px 10px 0 0;
+    padding: 1px 15px 2px 0;
+
+    &_i {
+        .inline-block();
+    }
+
+    &_img {
+        .inline-block();
+    }
+
+    &_tx {
+        color: #dbdbdb;
+        font-size: 12px;
+        width: 55px;
+        line-height: 1.1;
+        margin: 2px 0 0 3px;
     }
 }
 

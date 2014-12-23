@@ -54,7 +54,7 @@
 	var
 		body = $('body'),
 		utils = ENTER.utils,
-		catalogPath = document.location.pathname.replace(/^\/catalog\/([^\/]*).*$/i, '$1'),
+		catalogPath = document.location.pathname.replace(/^\/catalog\/([^\/]*).*$/i, '$1'), // Используем значение URL адреса на момент загрузки страницы, т.к. на данный момент при выполнении поиска URL страницы изменяется на URL формы, в которой задан URL из метода http://admin.enter.ru/v2/category/get-seo (в котором содержится некорректный URL; без средней части - "/catalog/holodilniki-i-morozilniki-1096" вместо "/catalog/appliances/holodilniki-i-morozilniki-1096")
 		catalog = utils.extendApp('ENTER.catalog'),
 
 		filterBlock = $('.js-category-filter'),
@@ -1502,7 +1502,8 @@ $(function() {
 		$dropBoxOpeners = $('.js-category-v2-filter-dropBox-opener'),
 		$dropBoxContents = $('.js-category-v2-filter-dropBox-content'),
 		$priceLinks = $('.js-category-v2-filter-price-link'),
-		$radio = $('.js-category-v2-filter-element-list-radio');
+		$radio = $('.js-category-v2-filter-element-list-radio'),
+		catalogPath = document.location.pathname.replace(/^\/catalog\/([^\/]*).*$/i, '$1'); // Используем значение URL адреса на момент загрузки страницы, т.к. на данный момент при выполнении поиска URL страницы изменяется на URL формы, в которой задан URL из метода http://admin.enter.ru/v2/category/get-seo (в котором содержится некорректный URL; без средней части - "/catalog/holodilniki-i-morozilniki-1096" вместо "/catalog/appliances/holodilniki-i-morozilniki-1096")
 
 	// Открытие и закрытие выпадающих списков
 	(function() {
@@ -1551,79 +1552,79 @@ $(function() {
 		}
 
 		$body.trigger('trackGoogleEvent', {
-			category: 'filter_bt',
-			action: 'listing',
-			label: 'brand'
+			category: 'filter',
+			action: 'brand',
+			label: catalogPath
 		});
 	});
 
 	// Нажатие на один из брендов
 	$brandFilter.click(function() {
 		$body.trigger('trackGoogleEvent', {
-			category: 'filter_bt',
-			action: 'listing',
-			label: 'brand'
+			category: 'filter',
+			action: 'brand',
+			label: catalogPath
 		});
 	});
 
 	// Фокус ввода на поля цены
 	$('input', $priceFilter).focus(function() {
 		$body.trigger('trackGoogleEvent', {
-			category: 'filter_bt',
-			action: 'listing',
-			label: 'cost'
+			category: 'filter',
+			action: 'cost',
+			label: catalogPath
 		});
 	});
 
 	// Нажатие на слайдер цены
 	$('.js-category-filter-rangeSlider-slider', $priceFilter).mousedown(function() {
 		$body.trigger('trackGoogleEvent', {
-			category: 'filter_bt',
-			action: 'listing',
-			label: 'cost'
+			category: 'filter',
+			action: 'cost',
+			label: catalogPath
 		});
 	});
 
 	// Нажатие на ссылки открытия выпадающих списков "Цена" и "Скидки"
 	$('.js-category-v2-filter-dropBox-price .js-category-v2-filter-dropBox-opener, .js-category-v2-filter-dropBox-labels .js-category-v2-filter-dropBox-opener').click(function() {
 		$body.trigger('trackGoogleEvent', {
-			category: 'filter_bt',
-			action: 'listing',
-			label: 'cost'
+			category: 'filter',
+			action: 'cost',
+			label: catalogPath
 		});
 	});
 
 	// Нажатие на диапазоны цен
 	$('.js-category-v2-filter-dropBox-price .js-category-v2-filter-price-link').click(function() {
 		$body.trigger('trackGoogleEvent', {
-			category: 'filter_bt',
-			action: 'listing',
-			label: 'cost_var'
+			category: 'filter',
+			action: 'cost_var',
+			label: catalogPath
 		});
 	});
 
 	// Нажатие на диапазоны цен
 	$('.js-category-v2-filter-dropBox-labels .js-customInput').click(function() {
 		$body.trigger('trackGoogleEvent', {
-			category: 'filter_bt',
-			action: 'listing',
-			label: 'cost_sale'
+			category: 'filter',
+			action: 'cost_sale',
+			label: catalogPath
 		});
 	});
 
 	$('.js-category-v2-filter-otherGroups .js-category-v2-filter-dropBox-opener').click(function() {
 		$body.trigger('trackGoogleEvent', {
-			category: 'filter_bt',
-			action: 'listing',
-			label: 'other'
+			category: 'filter',
+			action: 'other',
+			label: catalogPath
 		});
 	});
 
 	$('.js-category-v2-filter-element-shop-input').click(function() {
 		$body.trigger('trackGoogleEvent', {
-			category: 'filter_bt',
-			action: 'listing',
-			label: 'other_shops'
+			category: 'filter',
+			action: 'other_shops',
+			label: catalogPath
 		});
 	});
 
@@ -1730,7 +1731,8 @@ $(function() {
 		$otherBrands = $('.js-category-v2-root-brands-other'),
 		$otherBrandsOpener = $('.js-category-v2-root-brands-otherOpener'),
 		$brandsTitle = $('.js-category-v2-root-brands-title'),
-		$linksWrapper = $('.js-category-v2-root-linksWrapper');
+		$linksWrapper = $('.js-category-v2-root-linksWrapper'),
+		catalogPath = document.location.pathname.replace(/^\/catalog\/([^\/]*).*$/i, '$1'); // Используем значение URL адреса на момент загрузки страницы, т.к. на данный момент при выполнении поиска URL страницы изменяется на URL формы, в которой задан URL из метода http://admin.enter.ru/v2/category/get-seo (в котором содержится некорректный URL; без средней части - "/catalog/holodilniki-i-morozilniki-1096" вместо "/catalog/appliances/holodilniki-i-morozilniki-1096")
 
 	function renderSelectedBrandsTemplate() {
 		var $template = $('#root_page_selected_brands_tmpl');
@@ -1777,9 +1779,9 @@ $(function() {
 		renderSelectedBrandsTemplate();
 
 		$body.trigger('trackGoogleEvent', {
-			category: 'filter_bt',
-			action: 'main',
-			label: 'brand'
+			category: 'filter',
+			action: 'brand',
+			label: catalogPath
 		});
 
 		updateLinks(url);
@@ -1800,9 +1802,9 @@ $(function() {
 		}
 
 		$body.trigger('trackGoogleEvent', {
-			category: 'filter_bt',
-			action: 'main',
-			label: 'brand'
+			category: 'filter',
+			action: 'brand',
+			label: catalogPath
 		});
 	});
 
@@ -1814,9 +1816,9 @@ $(function() {
 		renderSelectedBrandsTemplate();
 
 		$body.trigger('trackGoogleEvent', {
-			category: 'filter_bt',
-			action: 'main',
-			label: 'brand'
+			category: 'filter',
+			action: 'brand',
+			label: catalogPath
 		});
 
 		updateLinks('?');

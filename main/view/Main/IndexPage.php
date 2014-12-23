@@ -33,6 +33,25 @@ class IndexPage extends \View\DefaultLayout {
         if ($this->new_menu) $this->layout = 'layout-main-new';
     }
 
+    public function slotUserbar() {
+        if ($this->new_menu) {
+            return $this->render('main/_userbar');
+        }
+    }
+
+    public function slotUserbarContentData() {
+        return [
+            'target' => '.js-showTopBar',
+            'showWhenFullCartOnly' => true,
+        ];
+    }
+
+    public function slotUpper() {
+        if ($this->new_menu) {
+            return (new \Helper\TemplateHelper())->render('common/__upper', ['offset' => '.js-showTopBar', 'showWhenFullCartOnly' => true]);
+        }
+    }
+
     public function slotBanner() {
         return $this->render('main/_banner', $this->params);
     }
@@ -92,6 +111,7 @@ class IndexPage extends \View\DefaultLayout {
         $products = $this->getParam('productList');
         $personal = @$this->getParam('rrProducts')['personal'];
         $personalForWalking = @$this->getParam('rrProducts')['personal'];
+        $personalForWalking = array_filter((array)$personalForWalking);
         $names = [];
 
         // Удаление продуктов с одинаковыми именами из массива персональных рекомендаций

@@ -1369,8 +1369,8 @@ img[height="0"] {
     border-style: solid;
     border-color: #c7c7c7;
   }
-  .main-new .i-header-ep {
-    background: url('/styles/mainpage/img/enterprize_logo.png') no-repeat 0 0;
+  .userbar .header_t {
+    border: none;
   }
   .header {
     width: 960px;
@@ -1457,10 +1457,13 @@ img[height="0"] {
     *display: inline;
     *zoom: 1;
   }
+  .hdlogo {
+    float: left;
+    margin: 0 35px 0 0;
+  }
   .sitelogo {
     width: 71px;
     height: 60px;
-    margin: 0 85px 0 0;
     background: url('/styles/mainpage/img/logo.png') no-repeat 0 50%;
   }
   .userbtn {
@@ -1537,13 +1540,43 @@ img[height="0"] {
   }
   .hdep {
     float: right;
-    margin: 7px 0 0;
+    margin: 11px 0 0;
     text-align: center;
     color: #dbdbdb;
   }
   .hdep_h {
     line-height: 1;
-    margin: 0 0 10px;
+    margin: 0 0 2px;
+  }
+  .hdep .i-header-ep {
+    background: url('/styles/mainpage/img/enterprize_logo.png') no-repeat 0 0;
+  }
+  .hdgift {
+    float: right;
+    border-right: 1px dotted #ffffff;
+    margin: 14px 10px 0 0;
+    padding: 1px 15px 2px 0;
+  }
+  .hdgift_i {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+  }
+  .hdgift_img {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+  }
+  .hdgift_tx {
+    color: #dbdbdb;
+    font-size: 12px;
+    width: 55px;
+    line-height: 1.1;
+    margin: 2px 0 0 3px;
   }
   .i-header {
     background-image: url('/styles/mainpage/img/i-header.png');
@@ -1607,6 +1640,8 @@ img[height="0"] {
 @media all {
   .hdsearch {
     position: relative;
+    float: left;
+    margin: 2px 0 0;
   }
   .hdsearch-v2 .searchdd {
     left: 112px;
@@ -3366,8 +3401,9 @@ img[height="0"] {
     width: 10px;
     height: 22px;
     cursor: pointer;
+    background-position: 50%;
     background-repeat: no-repeat;
-    background-position: 0 0;
+    padding: 10px;
     display: inline-block;
     vertical-align: middle;
     /* IE6-8 */
@@ -3375,10 +3411,10 @@ img[height="0"] {
     *zoom: 1;
   }
   .slidesBox_btn-l {
-    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAQAAABTL8XWAAAAoUlEQVQY02NgQAG/DP/t/SiEIvSY89+1f7+/y6EI/p3y7//fWhShP57//v87tooZSeiz6L/n/z79UEJR92/jv/9/ElG1pgK1rkER+qH678u/pyhO2c/y7+S/f79dUR3SBHRIP4rQd4V/f/5dvs2ORfA+B6p3IdonoAlitQjmpE/CaMJYHA/25gYMb0ID5DNagGANOngg16EJQqNDngFbxAEAZfV2DQiSf2EAAAAASUVORK5CYII=');
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAQAAABTL8XWAAAAoUlEQVQY02NgQAG/DP/t/SiEIvSY89+1f7+/y6EI/p3y7//fWhShP57//v87tooZSeiz6L/n/z79UEJR92/jv/9/ElG1pgK1rkER+qH678u/pyhO2c/y7+S/f79dUR3SBHRIP4rQd4V/f/5dvs2ORfA+B6p3IdonoAlitQjmpE/CaMJYHA/25gYMb0ID5DNagGANOngg16EJQqNDngFbxAEAZfV2DQiSf2EAAAAASUVORK5CYII=');
   }
   .slidesBox_btn-r {
-    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAQAAABTL8XWAAAAj0lEQVQY02P4KPRv7y9DBlTwXf7f73/XHnOiCf+t+/f/7xQ0wVXM/479+//HE034h9K/z/+efxZFE/6T+O//v40M6ODfGqARqWiCn4T/Pf335YcqmvBv13///p3cz4LuuH6g45rQBO9z/Lv87893BcKCfydgaMdiEVYnYXE82JsbCAUI1qDDEshYowNbxAEA2ud2F3hMdY8AAAAASUVORK5CYII=');
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAQAAABTL8XWAAAAj0lEQVQY02P4KPRv7y9DBlTwXf7f73/XHnOiCf+t+/f/7xQ0wVXM/479+//HE034h9K/z/+efxZFE/6T+O//v40M6ODfGqARqWiCn4T/Pf335YcqmvBv13///p3cz4LuuH6g45rQBO9z/Lv87893BcKCfydgaMdiEVYnYXE82JsbCAUI1qDDEshYowNbxAEA2ud2F3hMdY8AAAAASUVORK5CYII=');
   }
   .slidesBox_dott {
     line-height: 7px;
@@ -4430,7 +4466,7 @@ img[height="0"] {
   .topbarfix_cmpr {
     background: #f4f4f4;
     position: relative;
-    z-index: 11;
+    z-index: 101;
   }
   .topbarfix_cmpr-full {
     background-color: #ffffff;
@@ -4484,6 +4520,7 @@ img[height="0"] {
     filter: alpha(opacity=0);
     overflow: hidden;
     top: 66px;
+    z-index: 101;
   }
   .topbarfix_cmpr_popup-add {
     color: #000000;
@@ -5757,11 +5794,6 @@ img[height="0"] {
     margin: 0 10px 0 10px;
     padding: 0 0 5px 16px;
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAOCAYAAAD9lDaoAAAAPklEQVQoz2NgAAGtKH0g9mfACSAK3gDxHyCOx6WoF6rgDyGFc8lV6E+Mwjdg95KvkKD76KKAiMAkKlqIiGAAqY1MkbmMuo4AAAAASUVORK5CYII=) no-repeat 0 6px;
-  }
-  .tchiboCatalog__list .new {
-    background: url('/styles/tchibo/img/shild_new_left.png') no-repeat 0px 4px;
-    margin-left: -17px;
-    padding-left: 43px;
   }
   .tchiboCatalog__list .link {
     color: #002a5a;
@@ -9990,9 +10022,6 @@ img[height="0"] {
   .compare-userbar .userbar-fixed .topbar_l {
     padding-left: 10px;
   }
-  .topbarfix:hover > div:last-child .topbarfix_cmpr_popup {
-    display: none !important;
-  }
   .cmprEmpty {
     color: #808080;
     font-size: 16px;
@@ -10062,7 +10091,7 @@ img[height="0"] {
     float: left;
     width: 241px;
     position: relative;
-    height: 344px;
+    height: 350px;
     margin: -1px -1px 0 0;
     z-index: 2;
   }
@@ -10071,7 +10100,7 @@ img[height="0"] {
     width: 199px;
     position: relative;
     height: 312px;
-    padding: 20px 20px 10px;
+    padding: 20px 20px 16px;
     background-color: #ffffff;
     z-index: 2;
   }
@@ -10265,7 +10294,7 @@ img[height="0"] {
     height: 41px;
     line-height: 1.1;
     overflow: hidden;
-    padding: 5px 0 8px;
+    padding: 5px 0;
     text-align: center;
     vertical-align: middle;
     width: 218px;
@@ -10281,6 +10310,17 @@ img[height="0"] {
   }
   .lstn-light .lstn_i_inn {
     height: 249px;
+  }
+  .lstn-btn2 .btnBuy__eLink {
+    background: #f99b1c;
+    border-color: #f99b1c;
+  }
+  .lstn-btn2 .btnBuy__eLink.mShopsOnly {
+    background: #404040;
+    border: 1px solid #000000;
+  }
+  .lstn-btn2 .btnBuy__eLink.mShopsOnly:hover {
+    background: #000000;
   }
   .lstn-jewel {
     margin-left: 0;
@@ -11235,10 +11275,18 @@ img[height="0"] {
     *display: inline;
     *zoom: 1;
   }
+  .fltrBtnBox_tggl-dsbld {
+    color: #828282;
+  }
   .fltrBtnBox_dd {
     position: absolute;
     z-index: 15;
     top: 25px;
+    min-width: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
     display: none;
     white-space: nowrap;
     border: 1px solid #c7c7c7;
@@ -11311,12 +11359,8 @@ img[height="0"] {
     margin: 6px 0;
   }
   .fltrBtn-gift .fltrBtn_ln-col {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    width: 222px;
+    float: left;
+    width: 205px;
   }
   .fltrBtn-gift .customLabel {
     font-size: 14px;
@@ -11324,7 +11368,8 @@ img[height="0"] {
   .fltrBtnPosBottom {
     position: absolute;
     bottom: 0;
-    left: 20px;
+    left: 0;
+    width: 100%;
   }
   .fltrBtnLn {
     display: table;
@@ -11347,16 +11392,21 @@ img[height="0"] {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   }
   .fltrBtnLn-lst {
-    width: 900px;
+    width: 822px;
+    padding: 5px 0 5px 10px;
   }
   .fltrBtnBox-gift {
     border: none;
     background: #ffffff;
     background: rgba(255, 255, 255, 0.75);
     padding: 8px 10px;
+    margin: 0 10px 0 0;
     -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  .fltrBtnBox-gift:last-child {
+    margin-right: 0;
   }
   .fltrBtnBox-gift .fltrBtnBox_tggl {
     font-size: 20px;
@@ -11394,7 +11444,8 @@ img[height="0"] {
     border-radius: 3px 3px 0 0;
   }
   .fltrBtnBox-gift .fltrBtnBox_dd_inn {
-    padding: 10px 10px 0;
+    padding: 10px 25px 0 10px;
+    max-height: 200px;
   }
 }
 /*---------Страницы ошибок----------*/

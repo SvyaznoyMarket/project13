@@ -12,7 +12,7 @@
 		float: left;
 		width: 241px;
 		position: relative;
-		height: 344px;
+		height: 350px;
 		margin: -1px -1px 0 0;
 		z-index: 2;
 
@@ -21,7 +21,7 @@
 			width: 199px;
 			position: relative;
 			height: 312px;
-			padding: 20px 20px 10px;
+			padding: 20px 20px 16px;
 			background-color: @white;
 			z-index: 2;
 		}
@@ -216,7 +216,7 @@
 	    height: 41px;
 	    line-height: 1.1;
 	    overflow: hidden;
-	    padding: 5px 0 8px;
+	    padding: 5px 0;
 	    text-align: center;
 	    vertical-align: middle;
 	    width: 218px;
@@ -237,6 +237,22 @@
 
 			&_inn {
 				height: 249px;
+			}
+		}
+	}
+
+	&-btn2 {
+		.btnBuy__eLink {
+			background: @orange-2;
+			border-color: @orange-2;
+
+			&.mShopsOnly {
+				background: #404040;
+				border: 1px solid @black;
+
+				&:hover {
+					background: @black;
+				}
 			}
 		}
 	}

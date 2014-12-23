@@ -73,8 +73,7 @@
 
     <? if (!(bool)\App::exception()->all()) echo $page->render('order/_footer') ?>
 
-    <a class="upper" id="upper" href="#">Наверх</a>
-
+    <?= $page->slotUpper() ?>
     <?= $page->slotUserbar() ?>
     <?= $page->slotRegionSelection() ?>
     <?= $page->slotAuth() ?>

@@ -693,7 +693,7 @@ class Action {
         $newProperties = [];
 
         foreach ($filters as $key => $property) {
-            if ('label' === $property->getId()) {
+            if ($property->isLabel()) {
                 $property->setName('Скидки');
 
                 foreach ($property->getOption() as $option) {
@@ -713,7 +713,7 @@ class Action {
                         break;
                     }
                 }
-            } else if ('shop' === $property->getId()) {
+            } else if ($property->isShop()) {
                 $property->setName('В магазине');
                 foreach ($property->getOption() as $option) {
                     if (!$option->getQuantity()) {
@@ -724,7 +724,7 @@ class Action {
                 if (!$property->getOption()) {
                     unset($filters[$key]);
                 }
-            } else if ('brand' === $property->getId()) {
+            } else if ($property->isBrand()) {
                 $this->sortOptionsByQuantity($property);
             }
         }

@@ -8,9 +8,9 @@ $menu = $page->getGlobalParam('menu');
 
 <!-- поиск -->
 <div class="header_c clearfix">
-    <a href="/" class="header_i sitelogo"></a>
+    <a href="/" class="hdlogo sitelogo"></a>
 
-    <div class="header_i hdsearch jsKnockoutSearch" data-bind="css: { 'hdsearch-v2': advancedSearch }">
+    <div class="hdsearch jsKnockoutSearch" data-bind="css: { 'hdsearch-v2': advancedSearch }">
         <form action="<?= $page->url('search')?>" class="hdsearch_f">
 
             <label class="hdsearch_lbl" for="">Все товары для жизни по выгодным ценам!</label>
@@ -83,9 +83,16 @@ $menu = $page->getGlobalParam('menu');
         <!--/ саджест поиска -->
     </div>
 
-    <div class="header_i hdep">
+    <div class="hdep">
         <div class="hdep_h">Больше скидок</div>
         <a href="/enterprize" class="i-header i-header-ep"></a>
+    </div>
+
+    <div class="hdgift">
+        <a class="hdgift_i hdgift_lk" href="/gift">
+            <img class="hdgift_i hdgift_img" src="/styles/header/img/icon-gift.png" alt="">
+            <span class="hdgift_i hdgift_tx">Выбери подарок!</span>
+        </a>
     </div>
 </div>
 <!--/ поиск -->
