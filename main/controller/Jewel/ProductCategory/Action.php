@@ -179,7 +179,7 @@ class Action extends \Controller\ProductCategory\Action {
         }
 
         /*
-        switch (\App::abTest()->getTest('jewel_items')->getChosenCase()->getKey()) {
+        switch (\App::abTest()->getTest('jewel_items') && \App::abTest()->getTest('jewel_items')->getChosenCase()->getKey()) {
             case 'jewelItems3':
                 $itemsPerRow = 3;
                 break;
@@ -337,7 +337,9 @@ class Action extends \Controller\ProductCategory\Action {
             $products = [];
             if ((bool)$productIds) {
                 $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
-                    foreach ($data as $item) {
+                    foreach ((array)$data as $item) {
+                        if (!isset($item['id'])) continue;
+
                         $products[] = new \Model\Product\Entity($item);
                     }
                 });

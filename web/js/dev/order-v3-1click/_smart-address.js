@@ -81,7 +81,7 @@
                 $input.autocomplete('close').val('');
                 addAddressItem(item);
                 updatePrefix($('input:focus').eq(0));
-                if (item.contentType == 'apartment') $input.hide();
+                if (item.contentType == 'apartment') $input.parent().remove();
 
                 // немного аналитики
                 if (item.contentType == 'street') {
@@ -160,7 +160,6 @@
                     "data-item": JSON.stringify(item),
                     "data-type": item.contentType
                 });
-
 
             typeName = typeof item.id !== 'undefined' ? item.type : typeNames[item.contentType];
 
@@ -267,7 +266,13 @@
             //console.log(address.getNextType());
             if (e.which == 13) {
                 //console.log('Enter pressed, address: ', address);
-                if ($(this).val().length > 0) address.update({type: address.getNextType(), name: $(this).val()});
+                if ($(this).val().length > 0) {
+                    address.update({
+                        type: address.getNextType(),
+                        name: $(this).val()
+                    });
+                }
+
                 e.preventDefault();
             }
         });
@@ -279,7 +284,6 @@
                 address.clearLast(this);
                 e.preventDefault();
             }
-
         });
 
         /**

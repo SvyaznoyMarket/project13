@@ -3376,6 +3376,12 @@ img[height="0"] {
     height: 50px;
     text-align: center;
     background: #c1d837;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
   .slidesBox_h_c {
     height: 50px;
@@ -3396,6 +3402,12 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
+    -webkit-touch-callout: default;
+    -webkit-user-select: auto;
+    -khtml-user-select: auto;
+    -moz-user-select: auto;
+    -ms-user-select: auto;
+    user-select: auto;
   }
   .slidesBox_btn {
     width: 10px;

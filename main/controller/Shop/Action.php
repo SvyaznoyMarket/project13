@@ -101,11 +101,14 @@ class Action {
                 \App::coreClientV2()->execute();
             }
 
+            $subways = $shop->getSubway();
+            $subway = isset($subways[0]) ? $subways[0] : null;
+
             $markers[$shop->getId()] = array(
                 'id'                => $shop->getId(),
                 'region_id'         => $shop->getRegion()->getId(),
                 'link'              => \App::router()->generate('shop.show', array('regionToken' => $shop->getRegion()->getToken(), 'shopToken' => $shop->getToken())),
-                'name'              => $shop->getName(),
+                'name'              => ($subway ? ('м.' . $subway->getName() . ', ') : '') . $shop->getName(),
                 'address'           => $shop->getAddress(),
                 'regtime'           => $shop->getRegime(),
                 'latitude'          => $shop->getLatitude(),

@@ -1059,7 +1059,7 @@ class Action {
         }
         if ((bool)$productVideosByProduct) {
             \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
-                foreach ($data as $id => $items) {
+                foreach ((array)$data as $id => $items) {
                     if (!is_array($items)) continue;
                     foreach ($items as $item) {
                         $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);

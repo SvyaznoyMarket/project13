@@ -1035,7 +1035,7 @@
                 $input.autocomplete('close').val('');
                 addAddressItem(item);
                 updatePrefix($('input:focus').eq(0));
-                if (item.contentType == 'apartment') $input.hide();
+                if (item.contentType == 'apartment') $input.parent().remove();
 
                 // немного аналитики
                 if (item.contentType == 'street') {
@@ -1114,7 +1114,6 @@
                     "data-item": JSON.stringify(item),
                     "data-type": item.contentType
                 });
-
 
             typeName = typeof item.id !== 'undefined' ? item.type : typeNames[item.contentType];
 
@@ -1221,7 +1220,13 @@
             //console.log(address.getNextType());
             if (e.which == 13) {
                 //console.log('Enter pressed, address: ', address);
-                if ($(this).val().length > 0) address.update({type: address.getNextType(), name: $(this).val()});
+                if ($(this).val().length > 0) {
+                    address.update({
+                        type: address.getNextType(),
+                        name: $(this).val()
+                    });
+                }
+
                 e.preventDefault();
             }
         });
@@ -1233,7 +1238,6 @@
                 address.clearLast(this);
                 e.preventDefault();
             }
-
         });
 
         /**
@@ -1533,7 +1537,6 @@
         var elemId = $(this).data('content');
         e.stopPropagation();
         $('.popupFl').hide();
-        $(elemId).show();
 
         if ($(this).hasClass('js-order-changePlace-link')) {
             var token = $(elemId).find('.selShop_l:first').data('token');
@@ -1541,10 +1544,15 @@
             $(elemId).find('.selShop_l').hide().first().show();
             // первая вкладка активная
             $(elemId).find('.selShop_tab').removeClass('selShop_tab-act').first().addClass('selShop_tab-act');
+            $(elemId).lightbox_me({
+                centered: true,
+                closeSelector: '.jsCloseFl',
+                removeOtherOnCreate: false
+            });
             showMap($(elemId), token);
             $body.trigger('trackUserAction', ['2_1 Место_самовывоза|Адрес_доставки']);
-            $(elemId).lightbox_me({centered: true, closeSelector: '.jsCloseFl', removeOtherOnCreate: false});
         } else {
+            $(elemId).show();
             log({'action':'view-date'});
             //$body.trigger('trackUserAction', ['11 Срок_доставки_Доставка']);
         }
