@@ -12,7 +12,6 @@ return function (
     <div class="shopsVar shopsVar-center">
         <span class="shopsVar_title">Есть в <?= count($shopStates) ?> <?= $helper->numberChoice(count($shopStates), ['магазине', 'магазинах', 'магазинах'])?></span>
         <input type="button" class="button whitebutton js-show-shops" id="whitebutton" value="Забрать сегодня" />
-        <div style="margin-top: 8px">Самовывоз бесплатно</div>
     </div>
 
     <div style="display: none" class="popup shopsPopup">
