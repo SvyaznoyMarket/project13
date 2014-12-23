@@ -669,11 +669,11 @@ $c->abTest = [
             'expireDate'    => '2015-12-31',
             'cases' => [
                 'on' => [
-                    'traffic' => 100,
+                    'traffic' => 50,
                     'name'    => 'Включена',
                 ],
                 'off' => [
-                    'traffic' => 0,
+                    'traffic' => 50,
                     'name'    => 'Выключена',
                 ]
             ]

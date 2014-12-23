@@ -1333,7 +1333,7 @@
     // клик по методу онлайн-оплаты
     $orderContent.on('click', '.jsPaymentMethod', function(){
         var id = $(this).data('value'),
-            $order = $(this).closest('.orderLn'),
+            $order = $(this).closest('.orderLn').length > 0 ? $(this).closest('.orderLn') : $orderContent,
             orderId = $order.data('order-id'),
             orderNumber = $order.data('order-number');
         switch (id) {
@@ -1351,6 +1351,11 @@
                 break;
         }
     });
+
+	$orderContent.on('click', '.jsOnlinePaymentPossible', function(){
+		$(this).hide();
+		$orderContent.find('.jsOnlinePaymentBlock').show()
+	});
 
     // клик по "оплатить онлайн"
     $orderContent.on('click', '.jsOnlinePaymentSpan', function(e){
@@ -1377,9 +1382,12 @@
             bank_id = $(this).data('value'),
             creditData = $(this).parent().siblings('.credit-widget').data('value'),
             order_number_erp = $(this).closest('.orderLn').data('order-number-erp');
-//        e.preventDefault();
+
+		if (typeof order_number_erp == 'undefined') order_number_erp = $orderContent.data('order-number-erp');
+
+		e.preventDefault();
         e.stopPropagation();
-        $(this).parent().hide();
+        if (!$(this).closest('ul').hasClass('jsCreditListOnlineMotiv')) $(this).parent().hide();
         showCreditWidget(bankProviderId, creditData, order_number_erp, bank_id);
     });
 

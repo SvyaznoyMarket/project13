@@ -59,7 +59,9 @@ class CompletePage extends Layout {
     }
 
     public function slotContent() {
-        return \App::closureTemplating()->render('order-v3-new/page-complete_online-motivation', $this->params);
+        $template = 'page-complete';
+        if (\App::abTest()->isOnlineMotivation(count($this->getParam('orders')))) $template = 'page-complete_online-motivation';
+        return \App::closureTemplating()->render('order-v3-new/' . $template, $this->params);
     }
 
     public function slotBodyDataAttribute() {

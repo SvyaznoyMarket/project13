@@ -38,6 +38,8 @@ class CompleteAction extends OrderV3 {
         $needCreditBanksData = false;
         /** @var $banks \Model\CreditBank\Entity[] */
         $banks = [];
+        $shopIds = [];
+        $shops = [];
 
         try {
 
@@ -93,6 +95,8 @@ class CompleteAction extends OrderV3 {
 
                 // Нужны ли нам кредитные банки?
                 if ($order->paymentId == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT) $needCreditBanksData = true;
+                // и магазины
+                if ($order->getShopId()) $shopIds[] = $order->getShopId();
 
             }
 
@@ -104,6 +108,11 @@ class CompleteAction extends OrderV3 {
                     }
                 });
             }
+
+            // Запрашиваем магазины
+            if (!empty($shopIds)) \RepositoryManager::shop()->prepareCollectionById($shopIds, function($data) use (&$shops) {
+                foreach ((array)$data as $shopData) $shops[(int)@$shopData['id']] = new \Model\Shop\Entity($shopData);
+            });
 
             $this->client->execute();
             $privateClient->execute();
@@ -150,10 +159,11 @@ class CompleteAction extends OrderV3 {
         $page->setParam('userEntity', $this->user->getEntity());
         $page->setParam('paymentProviders', $paymentProviders);
         $page->setParam('banks', $banks);
+        $page->setParam('shops', $shops);
 
         $page->setParam('sessionIsReaded', $sessionIsReaded);
 
-        $response = new \Http\Response($page->show());
+        $response = (bool)$orders ? new \Http\Response($page->show()) : new \Http\RedirectResponse($page->url('homepage'));
         $response->headers->setCookie(new \Http\Cookie('enter_order_v3_wanna', 0, 0, '/order',\App::config()->session['cookie_domain'], false, false)); // кнопка "Хочу быстрее"
         return $response;
     }
