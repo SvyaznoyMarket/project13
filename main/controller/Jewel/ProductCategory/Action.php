@@ -337,7 +337,9 @@ class Action extends \Controller\ProductCategory\Action {
             $products = [];
             if ((bool)$productIds) {
                 $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
-                    foreach ($data as $item) {
+                    foreach ((array)$data as $item) {
+                        if (!isset($item['id'])) continue;
+
                         $products[] = new \Model\Product\Entity($item);
                     }
                 });
