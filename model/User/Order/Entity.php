@@ -46,11 +46,8 @@ class Entity extends \Model\Order\Entity {
      */
     public function getDeliveryTypeName() {
         $deliveryType = \RepositoryManager::deliveryType()->getEntityById($this->getDeliveryTypeId());
-        if ($deliveryType) {
-            return \RepositoryManager::deliveryType()->getEntityById($this->getDeliveryTypeId())->getShortName();
-        } else {
-            return '';
-        }
+
+        return $deliveryType ? $deliveryType->getShortName() : '';
     }
 
     /**
