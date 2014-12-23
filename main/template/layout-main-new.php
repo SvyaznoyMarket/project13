@@ -41,7 +41,6 @@
 
         <?= $page->slotTopbar() ?>
 
-        <span class="js-showTopBar"></span>
         <?= $page->slotSearchBar() ?>
 
         <?= $page->slotNavigation() ?>
@@ -57,7 +56,7 @@
 
             <?= $page->render('main/_infoBlocks') ?>
 
-            <div class="clearfix jsDivForRecommend">
+            <div class="clearfix jsDivForRecommend js-showTopBar">
                 <?= $page->slotRecommendations() ?>
             </div>
 

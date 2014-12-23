@@ -719,7 +719,7 @@ class Entity {
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getShopId() {
         return $this->shopId;

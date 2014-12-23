@@ -1,5 +1,7 @@
 <?php
 
+use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity as PaymentMethod;
+
 return function(
     \Helper\TemplateHelper $helper,
     \Model\OrderDelivery\Entity $orderDelivery,
@@ -206,11 +208,14 @@ return function(
                             <? if (isset($point)) : ?>
                                 <br />
                                 <span class="orderCol_tm_t">Оплата при получении: </span>
-                                <? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CASH])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt="">-->наличные<? endif; ?><? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt="">-->, банковская карта<? endif; ?>
+                                <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cash.png" alt="">-->наличные<? endif; ?><? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY])) : ?><!--<img class="orderCol_tm_img" src="/styles/order/img/cards.png" alt="">-->, банковская карта<? endif; ?>
                             <? endif; ?>
                         </div>
 
                 </div>
+
+                <?= \App::abTest()->isOnlineMotivation(count($orderDelivery->orders)) ? $helper->render('order-v3-new/__payment-methods', ['order' => $order]) : '' ?>
+
             <? else: ?>
                 <div class="orderCol_delivrIn orderCol_delivrIn-empty jsSmartAddressBlock">
                     <div class="orderCol_delivrIn_t clearfix">
@@ -223,10 +228,12 @@ return function(
 
                 </div>
 
-                <? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY])) : ?>
+                <?= \App::abTest()->isOnlineMotivation(count($orderDelivery->orders)) ? $helper->render('order-v3-new/__payment-methods', ['order' => $order]) : '' ?>
+
+                <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY]) && !\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) : ?>
 
                     <div class="orderCheck" style="margin-bottom: 0;">
-                        <input type="checkbox" class="customInput customInput-checkbox jsCreditCardPayment" id="creditCardsPay-<?= $order->block_name ?>" name="" value="" <?= $order->payment_method_id == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY  ? 'checked ' : '' ?>/>
+                        <input type="checkbox" class="customInput customInput-checkbox jsCreditCardPayment" id="creditCardsPay-<?= $order->block_name ?>" name="" value="" <?= $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY  ? 'checked ' : '' ?>/>
                         <label  class="customLabel" for="creditCardsPay-<?= $order->block_name ?>">
                             <span class="brb-dt" style="vertical-align: top;">Оплата курьеру банковской картой</span> <img class="orderCheck_img" src="/styles/order/img/i-visa.png" alt=""><img class="orderCheck_img" src="/styles/order/img/i-mc.png" alt="">
                         </label>
@@ -243,10 +250,10 @@ return function(
             ]) ?>
 
             <!--/ способ доставки -->
-            <? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT])) : ?>
+            <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CREDIT]) && !\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) : ?>
 
                 <div class="orderCheck orderCheck-credit clearfix">
-                    <input type="checkbox" class="customInput customInput-checkbox jsCreditPayment" id="credit-<?= $order->block_name ?>" name="" value="" <?= $order->payment_method_id == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT ? 'checked' : '' ?>>
+                    <input type="checkbox" class="customInput customInput-checkbox jsCreditPayment" id="credit-<?= $order->block_name ?>" name="" value="" <?= $order->payment_method_id == PaymentMethod::PAYMENT_CREDIT ? 'checked' : '' ?>>
                     <label class="customLabel" for="credit-<?= $order->block_name ?>"><span class="brb-dt">Купить в кредит</span><!--, от 2 223 <span class="rubl">p</span> в месяц--></label>
                 </div>
 
