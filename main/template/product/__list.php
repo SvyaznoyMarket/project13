@@ -9,7 +9,8 @@ return function(
     $view,
     $buyMethod = null,
     $showState = true,
-    $columnCount = 4
+    $columnCount = 4,
+    $class = ''
 ) {
     $partials = [
         'cart/_button-product' => file_get_contents(\App::config()->templateDir . '/cart/_button-product.mustache'),
@@ -39,7 +40,7 @@ return function(
             break;
     } ?>
 
-    <ul class="bListing<? if (3 === $columnCount): ?> bListing-3col<? endif ?> clearfix<? if ('jewel' === $listingStyle): ?> mPandora<? endif ?> <?= $listingClass ?> js-listing"><!-- mPandora если необходимо застилить листинги под пандору -->
+    <ul class="bListing<? if (3 === $columnCount): ?> bListing-3col<? endif ?> clearfix<? if ('jewel' === $listingStyle): ?> mPandora<? endif ?> <?= $listingClass ?> <?= $class ?> js-listing"><!-- mPandora если необходимо застилить листинги под пандору -->
         <?= $helper->renderWithMustache($templatePath, (new \View\Product\ListAction())->execute($helper, $pager, $productVideosByProduct, $bannerPlaceholder, $buyMethod, $showState, $columnCount, $view)) ?>
     </ul>
 

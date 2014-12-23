@@ -66,8 +66,7 @@
 
     <?= $page->render(!$page->new_menu ? 'common/_footer-old' : 'common/_footer-new') ?>
 
-    <a id="upper" class="upper" href="#">Наверх</a>
-
+    <?= $page->slotUpper() ?>
     <?= $page->slotUserbar() ?>
 
     <?= $page->slotAuth() ?>

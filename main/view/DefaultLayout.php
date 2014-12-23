@@ -261,6 +261,10 @@ class DefaultLayout extends Layout {
         return '';
     }
 
+    public function slotUpper() {
+        return (new \Helper\TemplateHelper())->render('common/__upper');
+    }
+
     public function slotYandexMetrika() {
 
         if (\App::config()->yandexMetrika['enabled']) {

@@ -39,13 +39,14 @@ $(function() {
 		function changeStatusDropBox($dropBox, $selectedItem) {
 			if ($dropBox.is('.js-gift-category-filter-property-dropBox-sex')) {
 				var
+					$statusDropBox = $('.js-gift-category-filter-property-dropBox-status'),
+					$statusDropBoxItems = $('.js-gift-category-filter-property-dropBox-content-item', $statusDropBox),
 					selectedSexValue = $('input:radio', $selectedItem).val(),
+					selectedStatusIndex = $statusDropBoxItems.index($('input:radio:checked', $statusDropBox).closest('.js-gift-category-filter-property-dropBox-content-item')),
 					previousSelectedSexValue = $('input:radio:checked', $dropBox).val();
 
 				if (selectedSexValue != previousSelectedSexValue) {
 					var
-						$statusDropBox = $('.js-gift-category-filter-property-dropBox-status'),
-						$statusDropBoxItems = $('.js-gift-category-filter-property-dropBox-content-item', $statusDropBox),
 						$prototypeItem = $($statusDropBoxItems[0]),
 						$prototypeItemParent = $prototypeItem.parent(),
 						optionGroups = $statusDropBox.data('optionGroups'),
@@ -77,7 +78,12 @@ $(function() {
 						$prototypeItemParent.append($prototypeItemClone);
 					});
 
-					$($('.js-gift-category-filter-property-dropBox-content-item-clicker', $statusDropBox)[0]).click();
+					var $statusDropBoxClickers = $('.js-gift-category-filter-property-dropBox-content-item-clicker', $statusDropBox);
+					if (!$statusDropBoxClickers[selectedStatusIndex]) {
+						selectedStatusIndex = 0;
+					}
+
+					$($statusDropBoxClickers[selectedStatusIndex]).click();
 				}
 			}
 		}

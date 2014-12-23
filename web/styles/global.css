@@ -1369,6 +1369,9 @@ img[height="0"] {
     border-style: solid;
     border-color: #c7c7c7;
   }
+  .userbar .header_t {
+    border: none;
+  }
   .header {
     width: 960px;
     margin: 0 auto;
@@ -4475,7 +4478,7 @@ img[height="0"] {
   .topbarfix_cmpr {
     background: #f4f4f4;
     position: relative;
-    z-index: 11;
+    z-index: 101;
   }
   .topbarfix_cmpr-full {
     background-color: #ffffff;
@@ -4529,6 +4532,7 @@ img[height="0"] {
     filter: alpha(opacity=0);
     overflow: hidden;
     top: 66px;
+    z-index: 101;
   }
   .topbarfix_cmpr_popup-add {
     color: #000000;
@@ -9782,9 +9786,6 @@ img[height="0"] {
   .compare-userbar .userbar-fixed .topbar_l {
     padding-left: 10px;
   }
-  .topbarfix:hover > div:last-child .topbarfix_cmpr_popup {
-    display: none !important;
-  }
   .cmprEmpty {
     color: #808080;
     font-size: 16px;
@@ -9854,7 +9855,7 @@ img[height="0"] {
     float: left;
     width: 241px;
     position: relative;
-    height: 344px;
+    height: 350px;
     margin: -1px -1px 0 0;
     z-index: 2;
   }
@@ -9863,7 +9864,7 @@ img[height="0"] {
     width: 199px;
     position: relative;
     height: 312px;
-    padding: 20px 20px 10px;
+    padding: 20px 20px 16px;
     background-color: #ffffff;
     z-index: 2;
   }
@@ -10057,7 +10058,7 @@ img[height="0"] {
     height: 41px;
     line-height: 1.1;
     overflow: hidden;
-    padding: 5px 0 8px;
+    padding: 5px 0;
     text-align: center;
     vertical-align: middle;
     width: 218px;
@@ -10073,6 +10074,17 @@ img[height="0"] {
   }
   .lstn-light .lstn_i_inn {
     height: 249px;
+  }
+  .lstn-btn2 .btnBuy__eLink {
+    background: #f99b1c;
+    border-color: #f99b1c;
+  }
+  .lstn-btn2 .btnBuy__eLink.mShopsOnly {
+    background: #404040;
+    border: 1px solid #000000;
+  }
+  .lstn-btn2 .btnBuy__eLink.mShopsOnly:hover {
+    background: #000000;
   }
   .lstn-jewel {
     margin-left: 0;

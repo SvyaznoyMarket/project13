@@ -4,16 +4,12 @@
  */
 ?>
 
-<menu class="userbar userbar-fixed topbarfix js-topbarfix topbarfix-fx <? if ('product' == \App::request()->attributes->get('route')): ?>mProdCard<? endif ?>" data-value="<?= $page->json($page->slotUserbarContentData()) ?>">
-
-
-	<menu class="userbtn">
+<div class="userbar userbar-fixed topbarfix topbarfix-fx js-topbar-fixed <? if ('product' == \App::request()->attributes->get('route')): ?>mProdCard<? endif ?>" data-value="<?= $page->json($page->slotUserbarContentData()) ?>">
+	<ul class="userbtn js-topbarfix">
 		<?= $page->render('userbar/_userinfo') ?>
-
 	    <?= $page->render('userbar/_usercompare') ?>
-
 	    <?= $page->render('userbar/_usercart') ?>
-	</menu>
+	</ul>
 
 	<?= $page->slotUserbarContent() ?>
-</menu>
+</div>

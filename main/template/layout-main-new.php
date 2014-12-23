@@ -41,6 +41,7 @@
 
         <?= $page->slotTopbar() ?>
 
+        <span class="js-showTopBar"></span>
         <?= $page->slotSearchBar() ?>
 
         <?= $page->slotNavigation() ?>
@@ -71,6 +72,8 @@
 
     <?= $page->render('common/_footer-new') ?>
 
+    <?= $page->slotUpper() ?>
+    <?= $page->slotUserbar() ?>
     <?= $page->slotRegionSelection() ?>
     <?= $page->slotAuth() ?>
     <?= $page->slotYandexMetrika() ?>
