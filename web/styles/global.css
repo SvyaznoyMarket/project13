@@ -7727,6 +7727,11 @@ img[height="0"] {
   .orderCol_warn_r a {
     text-decoration: underline;
   }
+  .paymentMethods {
+    background-color: white;
+    margin: 0 -10px;
+    padding: 10px;
+  }
   .paymentMethods .paymentRow {
     height: 30px;
     line-height: 30px;

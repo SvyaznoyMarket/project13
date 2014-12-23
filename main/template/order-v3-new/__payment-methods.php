@@ -7,7 +7,7 @@ $f = function (
     \Model\OrderDelivery\Entity\Order $order
 ) { ?>
 
-    <div class="paymentMethods" style="background-color: white; margin: 0 -10px; padding: 10px;">
+    <div class="paymentMethods">
         <strong>Способы оплаты</strong>
         <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CASH]) || isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY])) : ?>
             <div class="paymentRow">
