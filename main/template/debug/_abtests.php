@@ -4,7 +4,7 @@
  */
 ?>
 <h2>Переключение АБ-тестов</h2>
-<ul>
+<ul style="margin-bottom: 60px">
     <? foreach ($tests as $test) : ?>
 
     <li><span style="color: <?= $test->isActive() ? 'green' : 'red' ?>"><?= $test->name ?> (<?= $test->getKey() ?>)</span> <span style="color: gray;">(до <?= $test->getExpireDate() ?>)</span>

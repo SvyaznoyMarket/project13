@@ -59,21 +59,9 @@ class CompletePage extends Layout {
     }
 
     public function slotContent() {
-        $path = 'order-v3';
-
-        $region = \App::user()->getRegion();
-        if ($region && \App::config()->newOrder) {
-            $ordersNewTest = \App::abTest()->getTest('orders_new');
-            $ordersNewSomeRegionsTest = \App::abTest()->getTest('orders_new_some_regions');
-            if (
-                (!in_array($region->getId(), [93746, 119623]) && $ordersNewTest && in_array($ordersNewTest->getChosenCase()->getKey(), ['new_2'], true)) // АБ-тест для остальных регионов
-                || (in_array($region->getId(), [93746, 119623]) && $ordersNewSomeRegionsTest && in_array($ordersNewSomeRegionsTest->getChosenCase()->getKey(), ['new_2'], true)) // АБ-тест для Ярославля и Ростова-на-дону
-            ) {
-                $path = 'order-v3-new';
-            }
-        }
-
-        return \App::closureTemplating()->render( $path . '/page-complete', $this->params);
+        $template = 'page-complete';
+        if (\App::abTest()->isOnlineMotivation(count($this->getParam('orders')))) $template = 'page-complete_online-motivation';
+        return \App::closureTemplating()->render('order-v3-new/' . $template, $this->params);
     }
 
     public function slotBodyDataAttribute() {
