@@ -632,7 +632,7 @@ class Action {
             $page = new \View\ProductCategory\RootPage();
             $setPageParameters($page);
 
-            return $this->rootCategory($category, $productFilter, $page, $request);
+            return $this->rootCategory($category, $productFilter, $page, $request, $categoryConfigById);
         }
 
         $page = new \View\ProductCategory\LeafPage();
@@ -750,13 +750,14 @@ class Action {
 
     /**
      * @param \Model\Product\Category\Entity $category
-     * @param \Model\Product\Filter          $productFilter
-     * @param \View\Layout                   $page
-     * @param \Http\Request                  $request
-     * @return \Http\Response
+     * @param \Model\Product\Filter $productFilter
+     * @param \View\Layout $page
+     * @param \Http\Request $request
+     * @param array $categoryConfigById
      * @throws \Exception
+     * @return \Http\Response
      */
-    protected function rootCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
+    protected function rootCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request, array $categoryConfigById = []) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.rootCategory', 134);
@@ -774,12 +775,12 @@ class Action {
             return new \Http\JsonResponse($data);
         }
 
-        $page->setParam('links', $this->getRootCategoryLinks($category, $page));
+        $page->setParam('links', $this->getRootCategoryLinks($category, $page, $categoryConfigById));
         $page->setParam('sidebarHotlinks', true);
         return new \Http\Response($page->show());
     }
 
-    private function getRootCategoryLinks(\Model\Product\Category\Entity $category, \View\Layout $page) {
+    private function getRootCategoryLinks(\Model\Product\Category\Entity $category, \View\Layout $page, array $categoryConfigById = []) {
         $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
         $relatedCategories = $page->getParam('relatedCategories');
 
@@ -809,7 +810,7 @@ class Action {
             $links[] = [
                 'name'          => isset($config['name']) ? $config['name'] : $child->getName(),
                 'url'           => $linkUrl,
-                'image'         => (is_array($config) && array_key_exists('image', $config)) ? $config['image'] : $child->getImageUrl('furniture' === $category_class ? 3 : 0),
+                'image'         => (!empty($config['image'])) ? $config['image'] : $child->getImageUrl('furniture' === $category_class ? 3 : 0),
                 'css'           => isset($config['css']) ? $config['css'] : null,
                 'totalText'     => $totalText,
             ];
