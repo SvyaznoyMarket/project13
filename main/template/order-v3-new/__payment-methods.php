@@ -13,7 +13,6 @@ $f = function (
             <div class="paymentRow">
                 <input id="payment-cash" type="radio" name="payment-type[]" value="by_cash" class="customInput customInput-defradio2 jsPaymentMethodRadio" <?= $order->payment_method_id == PaymentMethod::PAYMENT_CASH || $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY ? 'checked' : '' ?>>
                 <label for="payment-cash" class="customLabel customLabel-defradio2">При получении
-                    <? if ($order->delivery_group_id != 1) : /* Скрываем выбор наличные/банковская карта при самовывозе */?>
                     <div class="customSel">
                         <select class="customSel-inner jsPaymentMethodSelect">
                             <? if (array_key_exists(PaymentMethod::PAYMENT_CASH, $order->possible_payment_methods)) : ?>
@@ -24,7 +23,6 @@ $f = function (
                             <? endif ?>
                         </select>
                     </div>
-                    <? endif ?>
                 </label>
             </div>
         <? endif ?>
@@ -33,20 +31,20 @@ $f = function (
             <div class="paymentRow">
                 <input id="payment-online" type="radio" name="payment-type[]" value="by_online" class="customInput customInput-defradio2 jsPaymentMethodRadio" <?= $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ONLINE ? 'checked' : '' ?>>
                 <label for="payment-online" class="customLabel customLabel-defradio2">Онлайн-оплата:
-                <ul class="orderPaymentWeb_lst-sm">
-                            <? if (array_key_exists(PaymentMethod::PAYMENT_CARD_ONLINE, $order->possible_payment_methods)) : ?>
-                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/visa-logo-sm.jpg"></a></li>
-                            <? endif ?>
-                            <? if (false) : /* Яндекс-денег пока вообще нет */ ?>
-                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/yamoney-sm.jpg"></a></li>
-                            <? endif ?>
-                            <? if (array_key_exists(PaymentMethod::PAYMENT_PAYPAL, $order->possible_payment_methods)) : ?>
-                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/paypal.png"></a></li>
-                            <? endif ?>
-                            <? if (array_key_exists(PaymentMethod::PAYMENT_PSB, $order->possible_payment_methods)) : ?>
-                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/psb.png"></a></li>
-                            <? endif ?>
-                            </ul>
+                    <ul class="orderPaymentWeb_lst-sm">
+                        <? if (array_key_exists(PaymentMethod::PAYMENT_CARD_ONLINE, $order->possible_payment_methods)) : ?>
+                            <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/visa-logo-sm.jpg"></a></li>
+                        <? endif ?>
+                        <? if (false) : /* Яндекс-денег пока вообще нет */ ?>
+                            <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/yamoney-sm.jpg"></a></li>
+                        <? endif ?>
+                        <? if (array_key_exists(PaymentMethod::PAYMENT_PAYPAL, $order->possible_payment_methods)) : ?>
+                            <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/paypal.png"></a></li>
+                        <? endif ?>
+                        <? if (array_key_exists(PaymentMethod::PAYMENT_PSB, $order->possible_payment_methods)) : ?>
+                            <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/psb.png"></a></li>
+                        <? endif ?>
+                    </ul>
                 </label>
             </div>
         <? endif ?>
