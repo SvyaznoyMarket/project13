@@ -78,6 +78,8 @@ return function(
                                 <? if ($order->isPaid()) : ?>
                                 Заказ оплачен
                                 <!--<div class="orderPaymentWeb_lst_sys-logo noFlnoWdt"><img src="/styles/order/img/logo-yamoney.jpg"></div>-->
+                                <? elseif (in_array($order->getPaymentId(), [PaymentMethodEntity::PAYMENT_PAYPAL, PaymentMethodEntity::PAYMENT_CARD_ONLINE, PaymentMethodEntity::PAYMENT_PSB])) : ?>
+                                Вы можете оплатить заказ при получении.
                                 <? else : ?>
                                 Оплата при получении — наличными или картой.
                                 <? endif ?>
