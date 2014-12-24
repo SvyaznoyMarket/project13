@@ -21,12 +21,14 @@ $f = function(
                     <? foreach ($banks as $bank) : ?>
                         <? /** @var $bank \Model\CreditBank\Entity */?>
                         <li class="orderPaymentCr_lst-i" data-value="<?= $bank->getId() ?>" data-bank-provider-id="<?= $bank->getProviderId() ?>">
-                            <a href="<?= $bank->getLink() ?>">
-                                <img class="orderPaymentCr_lst_bank-logo" src="<?= $bank->getImage() ?>">
-                                <button class="orderPayment_btn orderPayment_btn-toggle btn3">Заполнить</button>
+                            <a class="orderPaymentCr_lst_lk" href="<?= $bank->getLink() ?>">
+                                <span class="orderPaymentCr_lst_l"><span class="undrl"><?= $bank->getName() ?></span>
+                                    <span class="pb-small"><span class="undrl">Условия кредитования</span></span>
+                                </span>
 
-                                <span class="orderPaymentCr_lst_bank"><?= $bank->getName() ?>
-                                    <span class="pb-small">Условия кредитования</span>
+                                <span class="orderPaymentCr_lst_r">
+                                    <img class="orderPaymentCr_lst_bank-logo" src="<?= $bank->getImage() ?>">
+                                    <button class="orderPayment_btn orderPayment_btn-toggle btn3">Заполнить</button>
                                 </span>
                             </a>
                         </li>

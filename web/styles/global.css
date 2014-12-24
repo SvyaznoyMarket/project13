@@ -8065,7 +8065,6 @@ img[height="0"] {
   .orderPayment_btn-toggle {
     display: none;
     float: right;
-    margin: 3px 0 0;
   }
   .orderPayment_btn.btn3-shadow {
     margin: 2px 0;
@@ -8096,18 +8095,54 @@ img[height="0"] {
   .orderPaymentCr_lst {
     margin: 10px 0;
   }
+  .orderPaymentCr_lst_lk {
+    display: table;
+    /* IE6-8 */
+    *display: block;
+    *float: left;
+    *overflow: hidden;
+    *position: relative;
+    width: 100%;
+    padding: 5px 0;
+    height: 40px;
+  }
+  .orderPaymentCr_lst_lk:hover {
+    background: #feebd2;
+    text-decoration: none;
+  }
+  .orderPaymentCr_lst_lk:hover .orderPayment_btn-toggle {
+    display: inline-block;
+    vertical-align: middle;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+  }
+  .orderPaymentCr_lst_lk:hover .orderPaymentCr_lst_bank-logo {
+    display: none;
+  }
+  .orderPaymentCr_lst_l {
+    display: table-cell;
+    /* IE6-8 */
+    *display: block;
+    *float: left;
+    *clear: right;
+    *zoom: 1;
+    vertical-align: middle;
+    padding-left: 20px;
+  }
+  .orderPaymentCr_lst_r {
+    display: table-cell;
+    /* IE6-8 */
+    *display: block;
+    *float: left;
+    *clear: right;
+    *zoom: 1;
+    text-align: right;
+    vertical-align: middle;
+    padding-right: 20px;
+  }
   .orderPaymentCr_lst-i {
     margin: 5px 0;
-    padding: 5px 20px 10px;
-  }
-  .orderPaymentCr_lst-i:hover {
-    background: #feebd2;
-  }
-  .orderPaymentCr_lst-i:hover .orderPayment_btn-toggle {
-    display: block;
-  }
-  .orderPaymentCr_lst-i:hover .orderPaymentCr_lst_bank-logo {
-    display: none;
   }
   .orderPaymentCr_lst_bank {
     display: block;
@@ -8151,7 +8186,9 @@ img[height="0"] {
   }
   .orderPaymentWeb_lst_sys {
     display: block;
-    text-decoration: underline;
+  }
+  .orderPaymentWeb_lst_sys:hover {
+    text-decoration: none;
   }
   .orderPaymentWeb_lst_sys-logo {
     line-height: 24px;

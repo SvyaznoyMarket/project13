@@ -172,8 +172,6 @@
         &-toggle{
             display: none;
             float: right;
-
-            margin: 3px 0 0;
         }
         &.btn3-shadow{
             margin: 2px 0;
@@ -206,18 +204,40 @@
 .orderPaymentCr{
     &_lst{
         margin: 10px 0;
-        &-i{
-            margin: 5px 0;
-            padding: 5px 20px 10px;
+
+        &_lk {
+	    	.table();
+	    	width: 100%;
+	    	padding: 5px 0;
+	    	height: 40px;
             &:hover{
                 background: #feebd2;
+                text-decoration: none;
                 & .orderPayment_btn-toggle{
-                    display: block;
+                    .inline-block-middle();
                 }
                 & .orderPaymentCr_lst_bank-logo{
                     display: none;
                 }
             }
+	    }
+
+	    &_l {
+	    	.table-cell();
+	    	vertical-align: middle;
+	    	padding-left: 20px;
+	    }
+
+	    &_r {
+	    	.table-cell();
+	    	text-align: right;
+	    	vertical-align: middle;
+	    	padding-right: 20px;
+	    }
+
+        &-i{
+            margin: 5px 0;
+
         }
         &_bank{
             display: block;
@@ -272,7 +292,10 @@
         &_sys{
             display: block;
 
-            text-decoration: underline;
+            &:hover {
+            	text-decoration: none;
+            }
+
             &-logo{
                 line-height: 24px;
 
