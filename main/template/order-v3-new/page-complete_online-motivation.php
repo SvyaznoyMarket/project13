@@ -73,6 +73,9 @@ return function(
                                         Как добраться
                                     </a>
                                 </span>
+                                <? if ($order->comment) : ?>
+                                    <div class="orderPayment_msg_adding">Дополнительные пожелания:<br/> «<?= $order->comment ?>»</div>
+                                <? endif ?>
                             </div>
                             <div class="orderPayment_msg_info">
                                 <? if ($order->isPaid()) : ?>
@@ -114,7 +117,7 @@ return function(
                                 <!--<span class="orderPayment_msg_shop_metro">м. Пролетарская</span>-->
                                 <span class="orderPayment_msg_shop_addr"><?= $order->getAddress() ?></span>
                                 <? if ($order->comment) : ?>
-                                <div class="orderPayment_msg_adding">Дополнительные пожелания "<?= $order->comment ?>"</div>
+                                <div class="orderPayment_msg_adding">Дополнительные пожелания:<br/> «<?= $order->comment ?>»</div>
                                 <? endif ?>
                             </span>
 

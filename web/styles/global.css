@@ -8041,6 +8041,8 @@ img[height="0"] {
     line-height: 25px;
   }
   .orderPayment_msg_adding {
+    width: 370px;
+    overflow-x: hidden;
     margin-top: 20px;
   }
   .orderPayment.orderPaymentCr .orderPayment_block,
