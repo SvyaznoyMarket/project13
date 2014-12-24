@@ -80,7 +80,7 @@ class Action {
         \RepositoryManager::menu()->prepareCollection(function ($data) use ($categoryProperty) {
             if (isset($data['item']) && is_array($data['item'])) {
                 foreach ($data['item'] as $item) {
-                    if ($item['source']['id']) {
+                    if (isset($item['source']['id'])) {
                         $categoryProperty->addOption(new \Model\Product\Filter\Option\Entity(['id' => $item['source']['id'], 'name' => $item['name']]));
                     }
                 }

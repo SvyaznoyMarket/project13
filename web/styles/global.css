@@ -1091,6 +1091,41 @@ img[height="0"] {
   .btn5:hover {
     text-decoration: none;
   }
+  .btn6 {
+    background: #040404;
+    /* Old browsers */
+    background: -moz-linear-gradient(top, #505050 0%, #040404 100%);
+    /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #505050), color-stop(100%, #040404));
+    /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #505050 0%, #040404 100%);
+    /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #505050 0%, #040404 100%);
+    /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #505050 0%, #040404 100%);
+    /* IE10+ */
+    background: linear-gradient(to bottom, #505050 0%, #040404 100%);
+    /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#505050', endColorstr='#040404', GradientType=0);
+    /* IE6-9 */
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    color: #ffffff;
+    font-weight: bold;
+    line-height: 1;
+    padding: 6px 10px;
+    border: 1px solid #000000;
+  }
+  .btn6:hover,
+  .btn6:active {
+    background: #000000;
+  }
   .clsr2 {
     background: url("/styles/popup/img/closer.gif") no-repeat 50% 50%;
     height: 30px;
@@ -2729,7 +2764,7 @@ img[height="0"] {
   }
   .item_n {
     overflow: hidden;
-    height: 34px;
+    height: 35px;
     margin: 0 0 7px;
   }
   .item_n a:hover {
@@ -4434,7 +4469,7 @@ img[height="0"] {
     top: 0;
     right: 0;
     height: 50px;
-    width: 15px;
+    width: 10px;
     background: rgba(255, 245, 224, 0);
     background: -moz-linear-gradient(left, rgba(255, 245, 224, 0) 0%, rgba(255, 245, 224, 0.62) 41%, #fff5e0 66%, #fff5e0 100%);
     background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255, 245, 224, 0)), color-stop(41%, rgba(255, 245, 224, 0.62)), color-stop(66%, #fff5e0), color-stop(100%, #fff5e0));
@@ -7740,18 +7775,18 @@ img[height="0"] {
     text-decoration: underline;
   }
   .paymentMethods {
-    background-color: white;
     margin: 0 -10px;
     padding: 10px;
+    background-color: white;
   }
   .paymentMethods .paymentRow {
-    height: 30px;
     line-height: 30px;
     position: relative;
+    height: 30px;
     margin: 5px 0;
   }
   .paymentMethods .paymentRow .customInput-defradio2 + .customLabel {
-    background-position: 0 8px;
+    background-position: 0 50%;
   }
   .paymentMethods .paymentRow .orderPaymentWeb_lst-sm {
     margin-left: 5px;
@@ -7759,18 +7794,18 @@ img[height="0"] {
   .paymentMethods .paymentRow .customSel {
     position: relative;
     overflow: hidden;
-    width: 100px;
+    width: 130px;
     height: 20px;
     margin-top: 4px;
   }
   .paymentMethods .paymentRow .customSel-inner {
-    width: 140px;
+    position: absolute;
+    top: 0;
+    width: 170px;
     height: 100%;
-    background: none;
     border: none;
     outline: none;
-    top: 0px;
-    position: absolute;
+    background: none;
   }
 }
 @media all {
@@ -7893,68 +7928,68 @@ img[height="0"] {
         orderCompl_btn
 */
   .orderCompl {
+    clear: both;
     width: 940px;
     margin: 0 0 0 -10px;
     padding: 10px;
-    clear: both;
-    background: #FEEED5;
+    background: #feeed5;
   }
   .orderCompl_l {
+    font-size: 14px;
     width: 685px;
     margin: 0;
-    font-size: 14px;
   }
   .orderCompl_l-ln {
+    display: inline-block;
     margin: 2px 0 0;
     padding: 8px 0 0 15px;
-    display: inline-block;
     vertical-align: top;
   }
   .orderCompl_btn {
-    min-width: 220px;
-    height: 40px;
-    margin: 0 0 0 15px;
     font-size: 20px;
     font-weight: bold;
     line-height: 32px;
+    min-width: 220px;
+    height: 40px;
+    margin: 0 0 0 15px;
   }
   .orderCompl_continue_link {
     font-size: 18px;
-    text-decoration: underline;
-    padding: 10px 0;
     display: block;
+    padding: 10px 0;
+    text-decoration: underline;
   }
   .orderCompl_final {
     text-align: center;
     background: #fff;
   }
   .orderCompl-v2 .orderCompl_btn {
-    margin: 0;
     font-weight: normal;
+    margin: 0;
   }
   .orderCompl-v2 .orderCompl_l {
     width: auto;
-    margin: 0px 0 10px;
+    margin: 0 0 10px;
+    padding: 3px 10px 3px 20px;
+    border: 2px solid #fff;
     background-color: #fff;
+    background-position: 6px 7px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    padding: 3px 10px 3px 20px;
-    border: 2px solid #fff;
-    background-position: 6px 7px;
   }
   .orderCompl-v2 .orderCompl_l.accept-err {
-    border-color: #ED404D;
+    border-color: #ed404d;
   }
   .orderCompl-v2 .orderCompl_l_lk {
+    margin: 0 0 0 10px;
+    color: #777;
+    border-bottom: 1px solid #c2c2c2;
     display: inline-block;
     vertical-align: top;
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    color: #777777;
-    border-bottom: 1px solid #c2c2c2;
-    margin: 0 0 0 10px;
   }
   .orderComplSumm {
     width: 925px;
@@ -7967,18 +8002,15 @@ img[height="0"] {
   /*===========================================================================
  Оформление заказа: оплата
 ============================================================================*/
-  .orderPayment {
-    margin-top: 50px;
-  }
   .orderPayment_block {
     width: 380px;
+    margin: 30px auto 10px;
     padding: 20px 25px 20px;
-    margin: 0 auto 10px;
     border: 1px solid #ccc;
-    margin-top: 45px;
   }
   .orderPayment_head {
     font-size: 30px;
+    margin-top: 50px;
     text-align: center;
   }
   .orderPayment_num,
@@ -7988,15 +8020,6 @@ img[height="0"] {
   }
   .orderPayment_msg_head {
     font-size: 20px;
-  }
-  .orderPayment_msg_shop {
-    /*
-			padding-left:20px;
-			line-height: 18px;
-			margin-top: 10px;
-			background-repeat: no-repeat;
-			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAfklEQVQYGYWQwQ2AIBRD/WUmwhS6i0cdQI/uolMAMwFSIgkxGnr5tDwCVFJKA+W9H2OMc/aaXkQ8gENrfRVP0Fq75bkweCsf2I0xqzjnxhDC+QZar5SawOva8GtNBvVNX0DNyKCa3gR/14OeBnD0QNYE9sQK/mDuFYY9Ur3Cb25DQ2sv9bp2AAAAAElFTkSuQmCC);
-			background-position: 0px 4px;*/
   }
   .orderPayment_msg_shop_metro,
   .orderPayment_msg_shop_addr {
@@ -8018,6 +8041,8 @@ img[height="0"] {
     line-height: 25px;
   }
   .orderPayment_msg_adding {
+    width: 370px;
+    overflow-x: hidden;
     margin-top: 20px;
   }
   .orderPayment.orderPaymentCr .orderPayment_block,
@@ -8025,8 +8050,8 @@ img[height="0"] {
     border: 1px solid #ffa901;
   }
   .orderPayment.orderPaymentCr .orderPayment_msg_info {
+    padding: 15px 20px 0;
     border-top: 1px solid #c7c7c7;
-    padding: 15px 20px 0px;
   }
   .orderPayment .markerList_row:hover {
     background: none;
@@ -8034,65 +8059,101 @@ img[height="0"] {
   .orderPayment_btn {
     font-size: 16px;
     line-height: 1;
-    padding: 6px 20px 7px;
-    border-color: #f99b1c;
     display: inline-block;
+    padding: 6px 20px 7px;
     vertical-align: top;
+    border-color: #f99b1c;
   }
   .orderPayment_btn-toggle {
     display: none;
     float: right;
-    margin: -3px 0px;
   }
   .orderPayment_btn.btn3-shadow {
+    margin: 2px 0;
     -webkit-box-shadow: 0px 2px 0px 0px #bf6e35;
     -moz-box-shadow: 0px 2px 0px 0px #bf6e35;
     box-shadow: 0px 2px 0px 0px #bf6e35;
-    margin: 2px 0px;
   }
   .orderPayment_pay {
     margin-top: 20px;
   }
   .orderPayment .pr-dsc {
-    background: #ffa901;
-    border-radius: 4px;
-    color: #ffffff;
     font-size: 14px;
-    padding: 0px 4px;
     margin-left: 6px;
+    padding: 0 4px;
+    color: #ffffff;
+    border-radius: 4px;
+    background: #ffa901;
   }
   .orderPayment .orderSum-lbl {
+    width: 200px;
+    margin-right: 14px;
     display: inline-block;
     vertical-align: top;
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    width: 200px;
-    margin-right: 14px;
   }
   .orderPaymentCr_lst {
     margin: 10px 0;
   }
+  .orderPaymentCr_lst_l {
+    display: table-cell;
+    /* IE6-8 */
+    *display: block;
+    *float: left;
+    *clear: right;
+    *zoom: 1;
+    vertical-align: middle;
+    padding-left: 20px;
+    line-height: 1.2;
+  }
+  .orderPaymentCr_lst_r {
+    display: table-cell;
+    /* IE6-8 */
+    *display: block;
+    *float: left;
+    *clear: right;
+    *zoom: 1;
+    text-align: right;
+    vertical-align: middle;
+    padding-right: 20px;
+  }
   .orderPaymentCr_lst-i {
-    padding: 13px 20px;
+    margin: 5px 0;
+    display: table;
+    /* IE6-8 */
+    *display: block;
+    *float: left;
+    *overflow: hidden;
+    *position: relative;
+    width: 100%;
+    padding: 5px 0;
+    height: 40px;
+    cursor: pointer;
   }
   .orderPaymentCr_lst-i:hover {
     background: #feebd2;
+    text-decoration: none;
   }
   .orderPaymentCr_lst-i:hover .orderPayment_btn-toggle {
-    display: block;
+    display: inline-block;
+    vertical-align: middle;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
   }
   .orderPaymentCr_lst-i:hover .orderPaymentCr_lst_bank-logo {
     display: none;
   }
   .orderPaymentCr_lst_bank {
-    text-decoration: underline;
     display: block;
+    text-decoration: underline;
   }
   .orderPaymentCr_lst_bank-logo {
     float: right;
-    width: 125px;
-    height: 42px;
+    width: 110px;
+    height: auto;
   }
   .orderPaymentCr_other_link {
     text-decoration: underline;
@@ -8100,18 +8161,16 @@ img[height="0"] {
   }
   .orderPaymentCr .pb-small {
     font-size: 12px;
-    line-height: 1em;
-    display: block;
     color: #5e5e5e;
   }
   .orderPaymentWeb_lst {
-    margin: 15px 0px;
+    margin: 15px 0;
   }
   .orderPaymentWeb_lst-i {
-    padding: 10px 20px;
+    line-height: 24px;
     overflow: hidden;
     height: 24px;
-    line-height: 24px;
+    padding: 10px 20px;
   }
   .orderPaymentWeb_lst-i:hover {
     background: #feebd2;
@@ -8122,24 +8181,29 @@ img[height="0"] {
   .orderPaymentWeb_lst-i:hover .orderPaymentWeb_lst_sys-logo {
     display: none;
   }
+  .orderPaymentWeb_lst-i .orderPayment_btn {
+    margin: -3px 0;
+  }
   .orderPaymentWeb_lst_sys {
-    text-decoration: underline;
     display: block;
   }
+  .orderPaymentWeb_lst_sys:hover {
+    text-decoration: none;
+  }
   .orderPaymentWeb_lst_sys-logo {
+    line-height: 24px;
     float: right;
     width: 125px;
     height: 24px;
     text-align: center;
-    line-height: 24px;
   }
   .orderPaymentWeb_lst_sys-logo-img {
-    max-height: 100%;
     max-width: 100%;
+    max-height: 100%;
   }
   .orderPaymentWeb_lst_sys-logo.noFlnoWdt {
-    width: auto;
     float: none;
+    width: auto;
     display: inline-block;
     vertical-align: top;
     /* IE6-8 */
@@ -8147,41 +8211,41 @@ img[height="0"] {
     *zoom: 1;
   }
   .orderPaymentWeb_lst-sm {
+    margin-left: 25px;
     display: inline-block;
     vertical-align: top;
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    margin-left: 25px;
   }
   .orderPaymentWeb_lst-sm-i {
+    line-height: 30px;
+    margin-right: 2px;
     display: inline-block;
     vertical-align: top;
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    line-height: 30px;
-    margin-right: 2px;
   }
   .orderPaid {
-    padding-bottom: 70px;
     position: relative;
+    padding-bottom: 70px;
   }
   .orderPaid:before {
-    content: "";
-    background: url('/styles/order/img/paid-stamp.png') no-repeat;
+    position: absolute;
+    z-index: 1;
+    bottom: 0;
+    left: 50%;
     width: 176px;
     height: 118px;
-    position: absolute;
-    bottom: 0px;
-    left: 50%;
-    z-index: 1;
+    content: '';
+    background: url('/styles/order/img/paid-stamp.png') no-repeat;
   }
   .orderDelivery .orderPayment_msg_shop.markerLst_row {
     border: none;
   }
   .orderDelivery .orderPayment_msg_info {
-    margin-top: 0px;
+    margin-top: 0;
   }
 }
 @media all {
@@ -10157,7 +10221,7 @@ img[height="0"] {
     overflow: hidden;
   }
   .lstn_i-hover .lstn_i_inn {
-    height: 249px;
+    height: 243px;
   }
   .lstn_i-hover .lstn_desc,
   .lstn_i-hover .bSimplyDescReviews {

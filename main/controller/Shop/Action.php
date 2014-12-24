@@ -3,6 +3,9 @@
 namespace Controller\Shop;
 
 class Action {
+    /** @var array */
+    private $firstShopIds = [2, 194];
+
     /**
      * @return \Http\Response
      */
@@ -105,16 +108,16 @@ class Action {
             $subway = isset($subways[0]) ? $subways[0] : null;
 
             $markers[$shop->getId()] = array(
-                'id'                => $shop->getId(),
-                'region_id'         => $shop->getRegion()->getId(),
-                'link'              => \App::router()->generate('shop.show', array('regionToken' => $shop->getRegion()->getToken(), 'shopToken' => $shop->getToken())),
-                'name'              => ($subway ? ('м.' . $subway->getName() . ', ') : '') . $shop->getName(),
-                'address'           => $shop->getAddress(),
-                'regtime'           => $shop->getRegime(),
-                'latitude'          => $shop->getLatitude(),
-                'longitude'         => $shop->getLongitude(),
-                'is_reconstruction' => $shop->getIsReconstructed(),
-                'subway_name'       => $shop->getSubwayName(),
+                'id'                 => $shop->getId(),
+                'region_id'          => $shop->getRegion()->getId(),
+                'link'               => \App::router()->generate('shop.show', array('regionToken' => $shop->getRegion()->getToken(), 'shopToken' => $shop->getToken())),
+                'name'               => ($subway ? ('м.' . $subway->getName() . ', ') : '') . $shop->getName(),
+                'address'            => $shop->getAddress(),
+                'regtime'            => $shop->getRegime(),
+                'latitude'           => $shop->getLatitude(),
+                'longitude'          => $shop->getLongitude(),
+                'is_reconstruction'  => $shop->getIsReconstructed(),
+                'subway_name'        => $subway ? $subway->getName() : '',
                 'product_count_text' => $shop->getProductCount() ? ($shop->getProductCount() . ' ' .$helper->numberChoice($shop->getProductCount(), ['товар', 'товара', 'товаров']) . ' можно забрать сегодня') : null,
             );
         }
@@ -307,11 +310,13 @@ class Action {
     private function sortMarkersBySubways(&$markers)
     {
         usort($markers, function($a, $b) {
-            if (194 == $a['id']) {
+            if (in_array($a['id'], $this->firstShopIds)) {
                 return -1;
-            } else if (194 == $b['id']) {
+            } else if (in_array($b['id'], $this->firstShopIds)) {
                 return 1;
-            } else if (
+            }
+
+            if (
                 empty($a['subway_name']) &&
                 empty($b['subway_name'])
             ) {

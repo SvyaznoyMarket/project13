@@ -144,6 +144,24 @@
 	}
 }
 
+// темно-серая / резерв
+.btn6 {
+    .blackGrad();
+    .inline-block();
+    .rounded(4px);
+    color: @white;
+    font-weight: bold;
+    line-height: 1;
+    padding: 6px 10px;
+
+    border: 1px solid @black;
+
+    &:hover,
+    &:active {
+        background: @black;
+    }
+}
+
 // закрывашка попапов
 .clsr2 {
     background: url("/styles/popup/img/closer.gif") no-repeat 50% 50%;

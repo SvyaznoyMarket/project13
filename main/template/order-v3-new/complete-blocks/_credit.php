@@ -16,22 +16,22 @@ $f = function(
                 <div class="orderPayment_msg_head">
                     Заявка на кредит
                 </div>
-                <ul class="orderPaymentCr_lst clearfix jsCreditList jsCreditListOnlineMotiv">
 
+                <ul class="orderPaymentCr_lst clearfix jsCreditList jsCreditListOnlineMotiv">
                     <? foreach ($banks as $bank) : ?>
                         <? /** @var $bank \Model\CreditBank\Entity */?>
                         <li class="orderPaymentCr_lst-i" data-value="<?= $bank->getId() ?>" data-bank-provider-id="<?= $bank->getProviderId() ?>">
-                            <a href="<?= $bank->getLink() ?>">
+                            <div class="orderPaymentCr_lst_l">
+                                <div><span class="undrl"><?= $bank->getName() ?></span></div>
+                                <a href="<?= $bank->getLink() ?>" target="_blank" class="pb-small undrl jsCreditListOnlineMotivRules">Условия кредитования</a>
+                            </div>
+
+                            <div class="orderPaymentCr_lst_r">
                                 <img class="orderPaymentCr_lst_bank-logo" src="<?= $bank->getImage() ?>">
-                                <button class="orderPayment_btn orderPayment_btn-toggle btn3 btn3-shadow">Заполнить</button>
-                                    <span class="orderPaymentCr_lst_bank"><?= $bank->getName() ?>
-                                        <span class="pb-small">Условия кредитования</span>
-                                    </span>
-                            </a>
+                                <button class="orderPayment_btn orderPayment_btn-toggle btn3">Заполнить</button>
+                            </div>
                         </li>
-
                     <? endforeach ?>
-
                 </ul>
 
                 <? if (isset($creditData[$order->getNumber()])) : ?>
@@ -46,7 +46,4 @@ $f = function(
             </div>
         </div>
     </div>
-
-
-
 <? }; return $f;

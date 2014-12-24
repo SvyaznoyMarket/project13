@@ -257,6 +257,7 @@
             },
             blur: function(){
                 $inputPrefix.text('');
+				if ($(this).val().length > 0) address.update({type: address.getNextType(), name: $(this).val()});
                 saveAddressRequest()
             }
         });

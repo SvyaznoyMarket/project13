@@ -1389,8 +1389,13 @@
 
 		if (typeof order_number_erp == 'undefined') order_number_erp = $orderContent.data('order-number-erp');
 
+        if ( $(e.target).hasClass('jsCreditListOnlineMotivRules') ) {
+            return true;
+        }
+
 		e.preventDefault();
         e.stopPropagation();
+
         if (!$(this).closest('ul').hasClass('jsCreditListOnlineMotiv')) $(this).parent().hide();
         showCreditWidget(bankProviderId, creditData, order_number_erp, bank_id);
     });
@@ -1972,6 +1977,7 @@
 				$phoneInput = $('[name=user_info\\[phone\\]]'),
 				$emailInput = $('[name=user_info\\[email\\]]'),
 				$bonusCardInput =  $('[name=user_info\\[bonus_card_number\\]]'),
+				$subscribeInput = $('.jsOrderV3SubscribeCheckbox'),
 				phone = $phoneInput.val().replace(/\s+/g, '');
 
 			if (!/8\(\d{3}\)\d{3}-\d{2}-\d{2}/.test(phone)) {
@@ -1981,9 +1987,12 @@
 				$phoneInput.removeClass('textfield-err').siblings('.errTx').hide();
 			}
 
-			if ($emailInput.val().length != 0 && !validateEmail($emailInput.val())) {
+			if ($subscribeInput.is(':checked') && $emailInput.val().length == 0) {
+				error.push('Не указан email');
+				$emailInput.addClass('textfield-err').siblings('.errTx').text('Не указан email').show();
+			} else if ($emailInput.val().length != 0 && !validateEmail($emailInput.val())) {
 				error.push('Неверный формат E-mail');
-				$emailInput.addClass('textfield-err').siblings('.errTx').show();
+				$emailInput.addClass('textfield-err').siblings('.errTx').text('Неверный формат email').show();
 			} else {
 				$emailInput.removeClass('textfield-err').siblings('.errTx').hide();
 			}
@@ -2013,9 +2022,10 @@
 
     // проверка телефона и email
     $pageNew.find('form').on('submit', function (e) {
-        if (validate().length != 0) {
+		var error = validate();
+        if (error.length != 0) {
             e.preventDefault();
-            $body.trigger('trackUserAction', ['6_2 Далее_ошибка_Получатель', 'Поле ошибки: '+error.join(', ')])
+            $body.trigger('trackUserAction', ['6_2 Далее_ошибка_Получатель', 'Поле ошибки: '+ error.join(', ')])
         }
     });
 

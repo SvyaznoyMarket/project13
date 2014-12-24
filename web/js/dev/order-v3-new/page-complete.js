@@ -166,8 +166,13 @@
 
 		if (typeof order_number_erp == 'undefined') order_number_erp = $orderContent.data('order-number-erp');
 
+        if ( $(e.target).hasClass('jsCreditListOnlineMotivRules') ) {
+            return true;
+        }
+
 		e.preventDefault();
         e.stopPropagation();
+
         if (!$(this).closest('ul').hasClass('jsCreditListOnlineMotiv')) $(this).parent().hide();
         showCreditWidget(bankProviderId, creditData, order_number_erp, bank_id);
     });
