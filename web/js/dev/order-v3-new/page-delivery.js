@@ -8,6 +8,7 @@
         $body = $(body),
         $orderContent = $('#js-order-content'),
         comment = '',
+        region = $('.jsRegion').data('value'),
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
             length: 5, // The length of each line
@@ -238,7 +239,7 @@
             $(elemId).find('.selShop_tab').removeClass('selShop_tab-act').first().addClass('selShop_tab-act');
             $(elemId).lightbox_me({
                 centered: true,
-                closeSelector: '.jsCloseFl',
+                closeSelector: '.jsCloseFl'
             });
             showMap($(elemId), token);
             $body.trigger('trackUserAction', ['10 Место_самовывоза_Доставка_ОБЯЗАТЕЛЬНО']);
@@ -440,6 +441,21 @@
         $body.trigger('trackUserAction', ['6_1 Далее_успешно_Получатель_ОБЯЗАТЕЛЬНО']); // TODO перенести в validate.js
         $body.trigger('trackUserAction', ['7 Вход_Доставка_ОБЯЗАТЕЛЬНО', 'Количество заказов: ' + $('.orderRow').length]);
     }
+
+    $body.on('click', {
+        /* При клике купить в кредит */
+        '.jsDeliveryChooseCredit' : function() {
+            $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Кредит']);
+        },
+        /* При клике на онлайн-оплата */
+        '.jsDeliveryChooseOnline' : function() {
+            $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Онлайн-оплата']);
+        },
+        /* При клике оплата картой курьеру */
+        '.jsDeliveryChoosePlastic': function() {
+            $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Картой_курьеру']);
+        }
+    });
 
     // отслеживаем смену региона
     $body.on('click', 'a.jsChangeRegionAnalytics', function(e){

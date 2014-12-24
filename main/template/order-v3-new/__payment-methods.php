@@ -20,7 +20,7 @@ $f = function (
                                 <option value="by_cash" <?= $order->payment_method_id == PaymentMethod::PAYMENT_CASH ? 'selected' : '' ?>>наличными</option>
                             <? endif ?>
                             <? if (array_key_exists(PaymentMethod::PAYMENT_CARD_ON_DELIVERY, $order->possible_payment_methods)) : ?>
-                                <option value="by_credit_card" <?= $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY ? 'selected' : '' ?>>банковской картой</option>
+                                <option class="jsDeliveryChoosePlastic" value="by_credit_card" <?= $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY ? 'selected' : '' ?>>банковской картой</option>
                             <? endif ?>
                         </select>
                     </div>
@@ -30,7 +30,7 @@ $f = function (
         <? endif ?>
 
         <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ONLINE])) : ?>
-            <div class="paymentRow">
+            <div class="paymentRow jsDeliveryChooseOnline">
                 <input id="payment-online" type="radio" name="payment-type[]" value="by_online" class="customInput customInput-defradio2 jsPaymentMethodRadio" <?= $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ONLINE ? 'checked' : '' ?>>
                 <label for="payment-online" class="customLabel customLabel-defradio2">Онлайн-оплата:
                     <ul class="orderPaymentWeb_lst-sm">
@@ -52,7 +52,7 @@ $f = function (
         <? endif ?>
 
         <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CREDIT])) : ?>
-            <div class="paymentRow">
+            <div class="paymentRow jsDeliveryChooseCredit">
                 <input id="payment-credit" type="radio" name="payment-type[]" value="by_online_credit" class="customInput customInput-defradio2 jsPaymentMethodRadio" <?= $order->payment_method_id == PaymentMethod::PAYMENT_CREDIT ? 'checked' : '' ?>>
                 <label for="payment-credit" class="customLabel customLabel-defradio2">Купить в кредит</label><br>
             </div>

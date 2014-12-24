@@ -1226,6 +1226,8 @@
         $body = $(body),
         $orderContent = $('.orderCnt'),
         $jsOrder = $('#jsOrder'),
+        region = $('.jsRegion').data('value'),
+        isOnlineMotivPage = $('.jsNewOnlineCompletePage').length > 0,
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
             length: 5, // The length of each line
@@ -1279,7 +1281,12 @@
                     number_erp: number_erp,
                     bank_id: bank_id
                 }
-            })
+            });
+
+            /* При выборе варианта заявки на кредит */
+            if (bank_id == 1) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '19_1 Заявка_кредит_Оплата', 'Тинькофф']);
+            if (bank_id == 2) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '19_1 Заявка_кредит_Оплата', 'Ренесанс']);
+            if (bank_id == 3) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '19_1 Заявка_кредит_Оплата', 'ОТП-Банк']);
 
         },
 
@@ -1339,19 +1346,19 @@
         switch (id) {
             case 5:
                 getForm(5, orderId, orderNumber);
-                body.trigger('trackUserAction', ['17_2 Оплатить_онлайн_Онлайн_Оплата']);
+                $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '17_1 Оплатить_онлайн_Оплата', 'Онлайн-оплата']);
                 break;
             case 8:
                 getForm(8, orderId, orderNumber);
-                body.trigger('trackUserAction', ['17_3 Оплатить_онлайн_Электронный счёт PSB_Оплата']);
+                $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '17_1 Оплатить_онлайн_Оплата', 'Psb']);
                 break;
             case 13:
                 getForm(13, orderId, orderNumber);
-                body.trigger('trackUserAction', ['17_1 Оплатить_онлайн_PayPal_Оплата']);
+                $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '17_1 Оплатить_онлайн_Оплата', 'PayPal']);
                 break;
 			case 14:
 				getForm(14, orderId, orderNumber);
-				body.trigger('trackUserAction', ['17_1 Оплатить_онлайн_Связной_клуб_баллы']);
+				$body.trigger('trackUserAction', ['17_1 Оплатить_онлайн_Связной_клуб_баллы']);
 				break;
         }
     });
@@ -1375,12 +1382,15 @@
         e.stopPropagation();
     });
 
+    // клик на кнопке "Заполнить заявку"
     $orderContent.on('click', '.jsCreditButton', function(e){
         $(this).siblings('.jsCreditList').show();
         e.preventDefault();
         e.stopPropagation();
+        $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '19 Заявка_кредит_Оплата']);
     });
 
+    // клик по кредитному банку
     $orderContent.on('click', '.jsCreditList li', function(e){
         var bankProviderId = $(this).data('bank-provider-id'),
             bank_id = $(this).data('value'),
@@ -1389,7 +1399,9 @@
 
 		if (typeof order_number_erp == 'undefined') order_number_erp = $orderContent.data('order-number-erp');
 
+        /* При клике условия кредитования */
         if ( $(e.target).hasClass('jsCreditListOnlineMotivRules') ) {
+            $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '19_2 Условия_кредит_Оплата']);
             return true;
         }
 
@@ -1400,12 +1412,30 @@
         showCreditWidget(bankProviderId, creditData, order_number_erp, bank_id);
     });
 
-    $(body).on('click', function(){
+    $body.on('click', function(){
         if (window.location.pathname == '/order/complete') $('.popupFl').hide();
     });
 
+    // выполняем данный блок только на финальной странице
     if (/order\/complete/.test(window.location.href)) {
         $body.trigger('trackUserAction', ['16 Вход_Оплата_ОБЯЗАТЕЛЬНО']);
+
+        /* АНАЛИТИКА МОТИВАЦИИ ОНЛАЙН-ОПЛАТЫ */
+        if (isOnlineMotivPage) {
+            // если невозможна онлайн-оплата
+            if ($('.jsGAOnlinePaymentNotPossible').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '16 Вход_Оплата_ОБЯЗАТЕЛЬНО', 'нет онлайн оплаты']);
+            // Без мотиватора
+            if ($('.jsOnlinePaymentPossibleNoMotiv').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '16 Вход_Оплата_ОБЯЗАТЕЛЬНО', 'нет мотиватора']);
+            // При попадании пользователя на экран “Варианты оплаты онлайн”
+            if ($('.jsOnlinePaymentBlockVisible').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '17 Оплатить_онлайн_вход_Оплата']);
+            // При попадании на экран с вариантами заявок на кредит */
+            if ($('.jsCreditBlock').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '19 Заявка_кредит_Оплата']);
+            // При клике на ссылку “как добраться”
+            $body.on('click', '.jsCompleteOrderShowShop', function(){ $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '16_1 Как_добраться']); })
+        }
+
+        // При успешной онлайн-оплате
+        if ($('.jsOrderPaid').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '18 Успешная_Оплата']);
     }
 
     if ($jsOrder.length != 0) {
@@ -1423,6 +1453,7 @@
         $body = $(body),
         $orderContent = $('#js-order-content'),
         comment = '',
+        region = $('.jsRegion').data('value'),
         spinner = typeof Spinner == 'function' ? new Spinner({
             lines: 11, // The number of lines to draw
             length: 5, // The length of each line
@@ -1653,7 +1684,7 @@
             $(elemId).find('.selShop_tab').removeClass('selShop_tab-act').first().addClass('selShop_tab-act');
             $(elemId).lightbox_me({
                 centered: true,
-                closeSelector: '.jsCloseFl',
+                closeSelector: '.jsCloseFl'
             });
             showMap($(elemId), token);
             $body.trigger('trackUserAction', ['10 Место_самовывоза_Доставка_ОБЯЗАТЕЛЬНО']);
@@ -1855,6 +1886,21 @@
         $body.trigger('trackUserAction', ['6_1 Далее_успешно_Получатель_ОБЯЗАТЕЛЬНО']); // TODO перенести в validate.js
         $body.trigger('trackUserAction', ['7 Вход_Доставка_ОБЯЗАТЕЛЬНО', 'Количество заказов: ' + $('.orderRow').length]);
     }
+
+    $body.on('click', {
+        /* При клике купить в кредит */
+        '.jsDeliveryChooseCredit' : function() {
+            $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Кредит']);
+        },
+        /* При клике на онлайн-оплата */
+        '.jsDeliveryChooseOnline' : function() {
+            $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Онлайн-оплата']);
+        },
+        /* При клике оплата картой курьеру */
+        '.jsDeliveryChoosePlastic': function() {
+            $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Картой_курьеру']);
+        }
+    });
 
     // отслеживаем смену региона
     $body.on('click', 'a.jsChangeRegionAnalytics', function(e){
