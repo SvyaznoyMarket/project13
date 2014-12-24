@@ -23,7 +23,7 @@ $f = function(
                         <li class="orderPaymentCr_lst-i" data-value="<?= $bank->getId() ?>" data-bank-provider-id="<?= $bank->getProviderId() ?>">
                             <a href="<?= $bank->getLink() ?>">
                                 <img class="orderPaymentCr_lst_bank-logo" src="<?= $bank->getImage() ?>">
-                                <button class="orderPayment_btn orderPayment_btn-toggle btn3 btn3-shadow">Заполнить</button>
+                                <button class="orderPayment_btn orderPayment_btn-toggle btn3">Заполнить</button>
                                     <span class="orderPaymentCr_lst_bank"><?= $bank->getName() ?>
                                         <span class="pb-small">Условия кредитования</span>
                                     </span>
