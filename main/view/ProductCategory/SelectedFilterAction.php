@@ -75,7 +75,12 @@ class SelectedFilterAction {
                     if (!empty($value['from'])) { // SITE-4114 if (isset($value['from']) && !($isEqualNumeric($value['from'], $filter->getMin()))) {
                         $paramName = \View\Name::productCategoryFilter($filter, 'from');
                         $links[] = [
-                            'name' => $isPrice ? sprintf('от %sр', $helper->formatPrice($value['from'])) : sprintf('от %s', round($value['from'], 1)),
+                            'name' =>
+                                $isPrice
+                                ? sprintf('от %sр', $helper->formatPrice($value['from']))
+                                : sprintf('от %s', round($value['from'], 1))
+                            ,
+                            'unit' => !$isPrice ? $filter->getUnit() : null,
                             'url'  => $helper->replacedUrl(
                                 [
                                     $paramName => null,
@@ -94,7 +99,12 @@ class SelectedFilterAction {
                     if (!empty($value['to'])) { // SITE-4114 if (isset($value['to']) && !($isEqualNumeric($value['to'], $filter->getMax()))) {
                         $paramName = \View\Name::productCategoryFilter($filter, 'to');
                         $links[] = [
-                            'name' => $isPrice ? sprintf('до %sр', $helper->formatPrice($value['to'])) : sprintf('до %s', round($value['to'], 1)),
+                            'name' =>
+                                $isPrice
+                                ? sprintf('до %sр', $helper->formatPrice($value['to']))
+                                : sprintf('до %s', round($value['to'], 1))
+                            ,
+                            'unit' => !$isPrice ? $filter->getUnit() : null,
                             'url'  => $helper->replacedUrl(
                                 [
                                     $paramName => null,

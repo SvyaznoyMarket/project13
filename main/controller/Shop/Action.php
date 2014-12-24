@@ -54,8 +54,6 @@ class Action {
         // выполнение 1-го пакета запросов
         $client->execute();
 
-        $region = $user->getRegion();
-
         $regions = $shopAvailableRegions;
 
         // подготовка 2-го пакета запросов
@@ -120,7 +118,7 @@ class Action {
             );
         }
 
-        $this->sortMarkersBySubways($markers);
+        $markers = array_values($markers);
 
         $page = new \View\Shop\RegionPage();
         $page->setParam('shopAvailableRegions', $shopAvailableRegions);
@@ -299,29 +297,4 @@ class Action {
         if (empty($name)) return false;
         return $name;
     }
-
-
-    /**
-     * @param array $markers
-     */
-    private function sortMarkersBySubways(&$markers)
-    {
-        usort($markers, function($a, $b) {
-            if (194 == $a['id']) {
-                return -1;
-            } else if (194 == $b['id']) {
-                return 1;
-            } else if (
-                empty($a['subway_name']) &&
-                empty($b['subway_name'])
-            ) {
-                return 0;
-            }
-
-            if ($a['subway_name'] == $b['subway_name']) return 0;
-
-            return $a['subway_name'] < $b['subway_name'] ? -1 : 1;
-        });
-    }
-
 }

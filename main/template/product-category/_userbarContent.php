@@ -8,6 +8,8 @@
 $helper = new \Helper\TemplateHelper();
 $links = [];
 
+if (!isset($category)) $category = null;
+
 if ($category) {
     if ($count = count($category->getAncestor())) {
         $i = 1;

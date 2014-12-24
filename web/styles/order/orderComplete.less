@@ -6,295 +6,357 @@
         orderCompl_btn
 */
 
-.orderCompl {
-	width: 940px;
-	margin: 0 0 0 -10px;
-	padding: 10px;
-	clear: both;
+.orderCompl{
+    clear: both;
 
-	background: #FEEED5;
+    width: 940px;
+    margin: 0 0 0 -10px;
+    padding: 10px;
 
-	&_l {
-//		float: left;
+    background: #feeed5;
+    &_l{
+        font-size: 14px;
+        //		float: left;
 
-		width: 685px;
-		margin: 0;
+        width: 685px;
+        margin: 0;
+        &-ln{
+            display: inline-block;
 
-		font-size: 14px;
+            margin: 2px 0 0;
+            padding: 8px 0 0 15px;
 
-		&-ln {
-		    margin: 2px 0 0;
-			padding: 8px 0 0 15px;
-			display: inline-block;
-			vertical-align: top;
-		}
-	}
+            vertical-align: top;
+        }
+    }
+    &_btn{
+        font-size: 20px;
+        font-weight: bold;
+        line-height: 32px;
 
-	&_btn {
-		min-width: 220px;
-		height: 40px;
+        min-width: 220px;
+        height: 40px;
         margin: 0 0 0 15px;
-
-		font-size: 20px;
-		font-weight: bold;
-		line-height: 32px;
-	}
-
-    &_continue_link {
+    }
+    &_continue_link{
         font-size: 18px;
-        text-decoration: underline;
-        padding: 10px 0;
+
         display: block;
+
+        padding: 10px 0;
+
+        text-decoration: underline;
     }
+    &_final{
+        text-align: center;
 
-    &_final {
-		text-align: center;
-		background: #fff;
+        background: #fff;
     }
+    &-v2{
+        .orderCompl_btn{
+            font-weight: normal;
 
-    &-v2 {
-    	.orderCompl_btn {
-			margin: 0;
-			font-weight: normal;
-    	}
-    	.orderCompl_l {
-			width: auto;
-			margin: 0px 0 10px;
-			background-color: #fff;
-			.rounded(4px);
-			padding: 3px 10px 3px 20px;
-			border: 2px solid #fff;
-			background-position: 6px 7px;
+            margin: 0;
+        }
+        .orderCompl_l{
+            width: auto;
+            margin: 0 0 10px;
+            padding: 3px 10px 3px 20px;
 
-			&.accept-err {
-				border-color: #ED404D;
-			}
+            border: 2px solid #fff;
+            background-color: #fff;
+            background-position: 6px 7px;
 
-			&_lk {
-				.inline-block();
-				color: #777777;
-				border-bottom: 1px solid #c2c2c2;
-				margin: 0 0 0 10px;
-			}
-		}
+            .rounded(4px);
+            &.accept-err{
+                border-color: #ed404d;
+            }
+            &_lk{
+                margin: 0 0 0 10px;
+
+                color: #777;
+                border-bottom: 1px solid #c2c2c2;
+
+                .inline-block();
+            }
+        }
     }
 }
 
-.orderComplSumm {
-	width: 925px;
-	margin: 40px 0 0 -10px;
-	padding: 10px 10px 10px 25px;
+.orderComplSumm{
+    width: 925px;
+    margin: 40px 0 0 -10px;
+    padding: 10px 10px 10px 25px;
 
-	border-top: 1px solid @typGray;
-	border-bottom: 1px solid @lightgrey-7;
-	background: @lightgreyBg;
+    border-top: 1px solid @typGray;
+    border-bottom: 1px solid @lightgrey-7;
+    background: @lightgreyBg;
 }
 /*===========================================================================
  Оформление заказа: оплата
 ============================================================================*/
 .orderPayment{
-	margin-top:50px;
-	&_block{
-		width: 380px;
-		padding: 20px 25px 20px;
-		margin:0 auto 10px;
-		border:1px solid #ccc;
-		margin-top:45px;
-	}
-	&_head{
-		font-size: 30px;
-		text-align: center;
-	}
-	&_num, &_num:hover{
-		text-decoration: none;
-		border-bottom: 1px solid @lightgreyBr;
-	}
-	&_msg{
-		&_head{
-			font-size: 20px;
-		}
-		&_shop{
-			/*
-			padding-left:20px;
-			line-height: 18px;
-			margin-top: 10px;
-			background-repeat: no-repeat;
-			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAfklEQVQYGYWQwQ2AIBRD/WUmwhS6i0cdQI/uolMAMwFSIgkxGnr5tDwCVFJKA+W9H2OMc/aaXkQ8gENrfRVP0Fq75bkweCsf2I0xqzjnxhDC+QZar5SawOva8GtNBvVNX0DNyKCa3gR/14OeBnD0QNYE9sQK/mDuFYY9Ur3Cb25DQ2sv9bp2AAAAAElFTkSuQmCC);
-			background-position: 0px 4px;*/
-			&_metro, &_addr{
-				display: block;
-			}
-		}
-		&_addr_link{
-			margin-top: 5px;
-			text-decoration: underline;
-			.inline-block();
-		}
-		&_info{
-			margin-top:14px;
-			&_status{
-				line-height: 25px;
-			}
-		}
-		&_adding{
-				margin-top:20px;
-		}
-	}
-	&.orderPaymentCr &_block,
-	&.orderPaymentWeb &_block{
-		border:1px solid @firmOrange;
-	}
-	&.orderPaymentCr &_msg_info{
-		border-top:1px solid @lightgreyBr;
-		padding: 15px 20px 0px;
-	}
-	.markerList_row:hover{
-		background:none;
-	}
-	&_btn{
-		font-size: 16px;
-		line-height: 1;
-		padding: 6px 20px 7px;
-		border-color: #f99b1c;
-		display: inline-block;
-		vertical-align: top;
-		&-toggle{
-			display: none;
-			float:right;
-			margin: -3px 0px;
-		}
-		&.btn3-shadow{
-			.box-shadow(0px 2px 0px 0px #bf6e35);
-			margin:2px 0px;
-		}
-	}
-	&_pay{
-		margin-top: 20px;
-	}
-	.pr-dsc{
-		background: @firmOrange;
-		border-radius: 4px;
-		color: @white;
-		font-size: 14px;
-		padding: 0px 4px;
-		margin-left: 6px;
-	}
-	.orderSum{
-		&-lbl{
-			.inline-block();
-			width:200px;
-			margin-right: 14px;
-		}
-	}
+    &_block{
+        width: 380px;
+        margin: 30px auto 10px;
+        padding: 20px 25px 20px;
+
+        border: 1px solid #ccc;
+    }
+    &_head{
+        font-size: 30px;
+
+        margin-top: 50px;
+
+        text-align: center;
+    }
+    &_num
+    ,
+    &_num:hover{
+        text-decoration: none;
+
+        border-bottom: 1px solid @lightgreyBr;
+    }
+    &_msg{
+        &_head{
+            font-size: 20px;
+        }
+        &_shop{
+            &_metro
+            ,
+            &_addr{
+                display: block;
+            }
+        }
+        &_addr_link{
+            margin-top: 5px;
+
+            text-decoration: underline;
+
+            .inline-block();
+        }
+        &_info{
+            margin-top: 14px;
+            &_status{
+                line-height: 25px;
+            }
+        }
+        &_adding{
+            width: 370px;
+            overflow-x: hidden;
+            margin-top: 20px;
+        }
+    }
+    &.orderPaymentCr &_block
+    ,
+    &.orderPaymentWeb &_block{
+        border: 1px solid @firmOrange;
+    }
+    &.orderPaymentCr &_msg_info{
+        padding: 15px 20px 0;
+
+        border-top: 1px solid @lightgreyBr;
+    }
+    .markerList_row:hover{
+        background: none;
+    }
+    &_btn{
+        font-size: 16px;
+        line-height: 1;
+
+        display: inline-block;
+
+        padding: 6px 20px 7px;
+
+        vertical-align: top;
+
+        border-color: #f99b1c;
+        &-toggle{
+            display: none;
+            float: right;
+        }
+        &.btn3-shadow{
+            margin: 2px 0;
+
+            .box-shadow(0px 2px 0px 0px #bf6e35);
+        }
+    }
+    &_pay{
+        margin-top: 20px;
+    }
+    .pr-dsc{
+        font-size: 14px;
+
+        margin-left: 6px;
+        padding: 0 4px;
+
+        color: @white;
+        border-radius: 4px;
+        background: @firmOrange;
+    }
+    .orderSum{
+        &-lbl{
+            width: 200px;
+            margin-right: 14px;
+
+            .inline-block();
+        }
+    }
 }
 .orderPaymentCr{
-	&_lst{
-		margin:10px 0;
-		&-i{
-			padding:13px 20px;
-			&:hover{
-				background: #feebd2;
-				 & .orderPayment_btn-toggle{
-				 	display: block;
-				 }
-				 & .orderPaymentCr_lst_bank-logo{
-				 	display: none;
-				 }
-			}
-		}
-		&_bank{
-			text-decoration: underline;
-			display: block;
-			&-logo{
-				float:right;
-				width:125px;
-				height:42px;
-			}
-		}
+    &_lst{
+        margin: 10px 0;
 
-	}
-	&_other_link{
-			text-decoration: underline;
-			color: @lightgrey-5;
-	}
-	.pb-small{
-				font-size: 12px;
-				line-height: 1em;
-				display: block;
-				color: @lightgrey-5;
-			}
+	    &_l {
+	    	.table-cell();
+	    	vertical-align: middle;
+	    	padding-left: 20px;
+	    	line-height: 1.2;
+	    }
+
+	    &_r {
+	    	.table-cell();
+	    	text-align: right;
+	    	vertical-align: middle;
+	    	padding-right: 20px;
+	    }
+
+        &-i {
+            margin: 5px 0;
+			.table();
+	    	width: 100%;
+	    	padding: 5px 0;
+	    	height: 40px;
+	    	cursor: pointer;
+
+            &:hover {
+
+                background: #feebd2;
+                text-decoration: none;
+
+                & .orderPayment_btn-toggle {
+                    .inline-block-middle();
+                }
+
+                & .orderPaymentCr_lst_bank-logo {
+                    display: none;
+                }
+            }
+	    }
+
+        &_bank{
+            display: block;
+
+            text-decoration: underline;
+            &-logo{
+                float: right;
+
+                width: 110px;
+                height: auto;
+            }
+        }
+    }
+    &_other_link{
+        text-decoration: underline;
+
+        color: @lightgrey-5;
+    }
+    .pb-small{
+        font-size: 12px;
+
+        color: @lightgrey-5;
+    }
 }
 .orderPaymentWeb{
-	&_lst{
-		margin: 15px 0px;
-		&-i{
-			padding:10px 20px;
-			overflow: hidden;
-			height: 24px;
-			line-height: 24px;
-			&:hover{
-				background: #feebd2;
-				 & .orderPayment_btn-toggle{
-				 	display: block;
-				 }
-				 & .orderPaymentWeb_lst_sys-logo{
-				 	display: none;
-				 }
-			}
-		}
-		&_sys{
-			text-decoration: underline;
-			display:block;
-			&-logo{
-					float:right;
-					width:125px;
-					height:24px;
-					text-align: center;
-					line-height: 24px;
-					&-img{
-						max-height:100%;
-						max-width: 100%;
-					}
-					&.noFlnoWdt{
-						width:auto;
-						float:none;
-						.inline-block();
-					}
-				}
-		}
-		&-sm{
-			.inline-block();
+    &_lst{
+        margin: 15px 0;
+        &-i{
+            line-height: 24px;
 
-			margin-left: 25px;
-				&-i{
-					.inline-block();
-					line-height: 30px;
-					margin-right: 2px;
-				}
-			}
+            overflow: hidden;
 
-	}
+            height: 24px;
+            padding: 10px 20px;
+            &:hover{
+                background: #feebd2;
+                & .orderPayment_btn-toggle{
+                    display: block;
+                }
+                & .orderPaymentWeb_lst_sys-logo{
+                    display: none;
+                }
+            }
+
+            .orderPayment_btn {
+            	margin: -3px 0;
+            }
+        }
+        &_sys{
+            display: block;
+
+            &:hover {
+            	text-decoration: none;
+            }
+
+            &-logo{
+                line-height: 24px;
+
+                float: right;
+
+                width: 125px;
+                height: 24px;
+
+                text-align: center;
+                &-img{
+                    max-width: 100%;
+                    max-height: 100%;
+                }
+                &.noFlnoWdt{
+                    float: none;
+
+                    width: auto;
+
+                    .inline-block();
+                }
+            }
+        }
+        &-sm{
+            margin-left: 25px;
+
+            .inline-block();
+            &-i{
+                line-height: 30px;
+
+                margin-right: 2px;
+
+                .inline-block();
+            }
+        }
+    }
 }
 .orderPaid{
-	padding-bottom:70px;
-	position: relative;
-	&:before{
-		content:"";
-		background: url('@{base-url}/order/img/paid-stamp.png') no-repeat;
-		width: 176px;
-		height: 118px;
-		position: absolute;
-		bottom:0px;
-		left:50%;
-		z-index: 1;
-	}
+    position: relative;
+
+    padding-bottom: 70px;
+    &:before{
+        position: absolute;
+        z-index: 1;
+        bottom: 0;
+        left: 50%;
+
+        width: 176px;
+        height: 118px;
+
+        content: '';
+
+        background: url('@{base-url}/order/img/paid-stamp.png') no-repeat;
+    }
 }
 .orderDelivery{
-	.orderPayment_msg_shop.markerLst_row{
-		border:none;
-	}
-	.orderPayment_msg_info{
-		margin-top: 0px;
-	}
+    .orderPayment_msg_shop.markerLst_row{
+        border: none;
+    }
+    .orderPayment_msg_info{
+        margin-top: 0;
+    }
 }
-

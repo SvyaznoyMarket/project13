@@ -111,7 +111,12 @@ class IndexPage extends \View\DefaultLayout {
         $products = $this->getParam('productList');
         $personal = @$this->getParam('rrProducts')['personal'];
         $personalForWalking = @$this->getParam('rrProducts')['personal'];
-        $personalForWalking = array_filter((array)$personalForWalking);
+        $personalForWalking = array_filter((array)$personalForWalking, function($p) {
+            return
+                ($p instanceof \Model\Product\BasicEntity)
+                && $p->isAvailable() && !$p->isInShopShowroomOnly()
+            ;
+        });
         $names = [];
 
         // Удаление продуктов с одинаковыми именами из массива персональных рекомендаций
