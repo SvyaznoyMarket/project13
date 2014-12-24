@@ -50,6 +50,7 @@ return function(
 
                 <? if ($order->getDeliveryTypeId() == 3 || $order->getDeliveryTypeId() == 4) : ?>
 
+                <div class="orderPayment <?= $order->isPaid() ? 'orderPaid': '' ?>">
                     <!-- Блок в обводке -->
                     <div class="orderPayment_block orderPayment_noOnline">
 
@@ -68,13 +69,18 @@ return function(
                                 <span class="orderPayment_msg_shop_metro"><?= $shop->getSubway()[0]->getName() ?></span>
                                 <? endif ?>
                                 <span class="orderPayment_msg_shop_addr"><?= $shop->getAddress() ?></span>
-                                    <a href="<?= \App::router()->generate('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()])?>" class="orderPayment_msg_addr_link">
+                                    <a href="<?= \App::router()->generate('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()])?>" class="orderPayment_msg_addr_link" target="_blank">
                                         Как добраться
                                     </a>
                                 </span>
                             </div>
                             <div class="orderPayment_msg_info">
+                                <? if ($order->isPaid()) : ?>
+                                Заказ оплачен
+                                <!--<div class="orderPaymentWeb_lst_sys-logo noFlnoWdt"><img src="/styles/order/img/logo-yamoney.jpg"></div>-->
+                                <? else : ?>
                                 Оплата при получении — наличными или картой.
+                                <? endif ?>
                             </div>
                         </div>
 
@@ -82,12 +88,14 @@ return function(
 
                     </div>
 
+                </div>
+
                 <? endif ?>
 
                 <? if ($order->getDeliveryTypeId() == 1) : ?>
 
                     <!-- Блок доставка -->
-                    <div class="orderPayment orderDelivery">
+                    <div class="orderPayment orderDelivery <?= $order->isPaid() ? 'orderPaid': '' ?>">
                         <!-- Заголовок-->
                         <!-- Блок в обводке -->
                         <div class="orderPayment_block orderPayment_noOnline">
@@ -110,7 +118,12 @@ return function(
 
                                 </div>
                                 <div class="orderPayment_msg_info">
+                                    <? if ($order->isPaid()) : ?>
+                                    Заказ оплачен
+                                    <!--<div class="orderPaymentWeb_lst_sys-logo noFlnoWdt"><img src="/styles/order/img/logo-yamoney.jpg"></div>-->
+                                    <? else : ?>
                                     Оплата заказа <?= $order->getPaymentId() == PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY ? 'банковской картой' : 'наличными' ?> при получении.
+                                    <? endif ?>
                                 </div>
                             </div>
                         </div>
@@ -121,40 +134,6 @@ return function(
             <? endif ?>
 
         </div>
-
-        <? if ($order->isPaid()) : ?>
-
-            <!-- Блок заказ оплачен -->
-            <div class="orderPayment orderPaid">
-                <!-- Заголовок-->
-                <!-- Блок в обводке -->
-                <div class="orderPayment_block orderPayment_noOnline">
-
-                    <div class="orderPayment_msg orderPayment_noOnline_msg">
-                        <div class="orderPayment_msg_head">
-                            Ждем вас 27.12.2014 в магазине
-                        </div>
-                        <div class="orderPayment_msg_shop markerLst_row">
-                            <span class="markerList_col markerList_col-mark">
-                                <i class="markColor" style="background-color: #B61D8E"></i>
-                            </span>
-                            <span class="markerList_col">
-                                <span class="orderPayment_msg_shop_metro">м. Петровско-Разумовская</span>
-                                <span class="orderPayment_msg_shop_addr">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
-                                <a href="#" class="orderPayment_msg_addr_link">
-                                    Как добраться
-                                </a>
-                            </span>
-                        </div>
-                        <div class="orderPayment_msg_info">
-                            <span class="orderPayment_msg_info_status">Заказ оплачен</span>
-                            <div class="orderPaymentWeb_lst_sys-logo noFlnoWdt"><img src="/styles/order/img/logo-yamoney.jpg"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        <? endif ?>
 
         <? if ($order->getPaymentId() == PaymentMethodEntity::PAYMENT_CREDIT) : ?>
             <?= $helper->render('order-v3-new/complete-blocks/_credit', ['order' => $order, 'creditData' => $creditData, 'banks' => $banks]) ?>
@@ -178,10 +157,10 @@ return function(
                         <div class="orderPayment_msg_shop orderPayment_pay">
                             <button class="orderPayment_btn btn3">Оплатить</button>
                             <ul class="orderPaymentWeb_lst-sm">
-                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/visa-logo-sm.jpg"></a></li>
-                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/yamoney-sm.jpg"></a></li>
-                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/paypal.png"></a></li>
-                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/psb.png"></a></li>
+                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src="/styles/order/img/visa-logo-sm.jpg"></a></li>
+<!--                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/yamoney-sm.jpg"></a></li>-->
+                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src="/styles/order/img/paypal.png"></a></li>
+                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src="/styles/order/img/psb.png" /></a></li>
                             </ul>
                         </div>
                     </div>
@@ -194,6 +173,13 @@ return function(
             <a class="orderCompl_continue_link" href="<?= $helper->url('homepage') ?>">Вернуться на главную</a>
         </div>
     </section>
+
+    <? if ($order->isPaid()) : ?>
+        <?= $helper->render('order-v3/partner-counter/_flocktory-complete',[
+            'orders'    => $orders,
+            'products'  => $products,
+        ]); ?>
+    <? endif ?>
 
     <? if (!$sessionIsReaded) {
         // Если сесиия уже была прочитана, значит юзер обновляет страницу, не трекаем партнёров вторично
@@ -209,11 +195,6 @@ return function(
 
         echo $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $products]);
 
-        // Flocktory popup
-        echo $helper->render('order-v3/partner-counter/_flocktory-complete',[
-            'orders'    => $orders,
-            'products'  => $products,
-        ]);
     } ?>
 
 <? };

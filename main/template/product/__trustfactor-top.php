@@ -11,16 +11,16 @@ foreach ((array)$trustfactors as $t) {
     if (@$t['type'] === 'top') $trustfactor = $t; break;
 }
 
-$reviewCount = !empty(@$reviewsData['num_reviews'])
+$reviewCount = !empty($reviewsData['num_reviews'])
     ? $reviewsData['num_reviews']
-    : (!empty(@$reviewsData['review_list']) ? count($reviewsData['review_list']) : 0);
+    : (!empty($reviewsData['review_list']) ? count($reviewsData['review_list']) : 0);
 
 ?>
 <? if ($trustfactor !== null) : ?>
     <div class="trustfactor-top" <?= (int)@$reviewsData['num_reviews'] ? 'itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating"' : '' ?>>
         <? if ((int)@$reviewsData['num_reviews']) : ?>
             <? /* Микроразметка для отзывов */?>
-            <span itemprop="ratingValue" style="display:none"><?= !empty(@$reviewsData['avg_star_score']) ? $reviewsData['avg_star_score'] : '' ?></span>
+            <span itemprop="ratingValue" style="display:none"><?= !empty($reviewsData['avg_star_score']) ? $reviewsData['avg_star_score'] : '' ?></span>
             <meta itemprop="reviewCount" content="<?= $reviewCount ?>" />
             <meta itemprop="bestRating" content="5" />
         <? endif; ?>

@@ -4,12 +4,12 @@ return [
     // главная страница
     'homepage' => [
         'pattern' => '/',
-        'action'  => ['Main\IndexAction', 'execute'],
+        'action'  => ['Main\Action', 'index'],
     ],
 
     'homepage.recommendations' => [
         'pattern' => '/index/recommend',
-        'action'  => ['Main\IndexAction', 'recommendations'],
+        'action'  => ['Main\Action', 'recommendations'],
     ],
 
     'category.mainMenu' => [ // TODO: переименовать в mainMenu

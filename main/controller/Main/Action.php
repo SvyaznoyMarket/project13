@@ -4,9 +4,13 @@ namespace Controller\Main;
 
 use Session\AbTest\AbTest;
 
-class IndexAction {
+class Action {
 
-    public function execute(\Http\Request $request) {
+    /**
+     * @param \Http\Request $request
+     * @return \Http\Response
+     */
+    public function index(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $router = \App::router();

@@ -17,7 +17,7 @@ foreach ($rrProducts as &$value) {
     } else {
         unset($value);
     }
-}
+} if (isset($value)) unset($value);
 
 /* Сортируем блок "Популярные товары" */
 if (@$blockname == 'ПОПУЛЯРНЫЕ ТОВАРЫ') {
@@ -35,9 +35,10 @@ if (@$blockname == 'ПОПУЛЯРНЫЕ ТОВАРЫ') {
                 return (int)rand(-1, 1);
             }
         });
-        $rrProducts = array_filter($rrProducts, function(\Model\Product\BasicEntity $p){ return $p->getIsBuyable() && !$p->isInShopShowroomOnly();});
     } catch (\Exception $e) {}
 }
+
+$rrProducts = array_filter($rrProducts, function(\Model\Product\BasicEntity $p){ return $p->getIsBuyable() && !$p->isInShopShowroomOnly();});
 
 $blocks = array_chunk($rrProducts, 4);
 $helper = new \Helper\TemplateHelper();
