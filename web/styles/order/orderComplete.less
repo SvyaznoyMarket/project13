@@ -205,27 +205,11 @@
     &_lst{
         margin: 10px 0;
 
-        &_lk {
-	    	.table();
-	    	width: 100%;
-	    	padding: 5px 0;
-	    	height: 40px;
-            &:hover{
-                background: #feebd2;
-                text-decoration: none;
-                & .orderPayment_btn-toggle{
-                    .inline-block-middle();
-                }
-                & .orderPaymentCr_lst_bank-logo{
-                    display: none;
-                }
-            }
-	    }
-
 	    &_l {
 	    	.table-cell();
 	    	vertical-align: middle;
 	    	padding-left: 20px;
+	    	line-height: 1.2;
 	    }
 
 	    &_r {
@@ -235,10 +219,29 @@
 	    	padding-right: 20px;
 	    }
 
-        &-i{
+        &-i {
             margin: 5px 0;
+			.table();
+	    	width: 100%;
+	    	padding: 5px 0;
+	    	height: 40px;
+	    	cursor: pointer;
 
-        }
+            &:hover {
+
+                background: #feebd2;
+                text-decoration: none;
+
+                & .orderPayment_btn-toggle {
+                    .inline-block-middle();
+                }
+
+                & .orderPaymentCr_lst_bank-logo {
+                    display: none;
+                }
+            }
+	    }
+
         &_bank{
             display: block;
 
@@ -258,9 +261,6 @@
     }
     .pb-small{
         font-size: 12px;
-        line-height: 1em;
-
-        display: block;
 
         color: @lightgrey-5;
     }
