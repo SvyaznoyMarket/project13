@@ -312,8 +312,8 @@ window.ANALYTICS = {
 			// если несколько заказов, то суммируем сумму
 			basket.amount += parseInt(order.sum, 10);
 		});
-		window.basket = basket;
-		$LAB.script('//eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru');
+		window.sonar_basket = basket;
+//		$LAB.script('//eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru');
 	},
 
 	smanticPageJS: function() {
