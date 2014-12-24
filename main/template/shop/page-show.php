@@ -65,10 +65,8 @@
 
             <? if ($shop->getIsReconstructed()): ?>
                 <span class="red">На реконструкции</span><br/>
-
             <? elseif ($shop->getRegime()): ?>
                 Работаем <?= $shop->getRegime() ?><br/>
-
             <? endif ?>
 
             <? if ($shop->getPhone()): ?>
@@ -87,6 +85,7 @@
 </div>
 <!-- /bMapInfo -->
 
+<? if ($shop->getWayWalk() || $shop->getWayAuto()): ?>
 <!-- bMapInfo -->
 <div class='bMapInfo'>
     <div class='bMapInfo__eIco mCar'></div>
@@ -113,6 +112,8 @@
 
     </div>
 </div>
+<? endif ?>
+
 <!-- /bMapInfo -->
 <div class="clear"></div>
 

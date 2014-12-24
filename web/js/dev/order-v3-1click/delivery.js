@@ -207,7 +207,6 @@
         var elemId = $(this).data('content');
         e.stopPropagation();
         $('.popupFl').hide();
-        $(elemId).show();
 
         if ($(this).hasClass('js-order-changePlace-link')) {
             var token = $(elemId).find('.selShop_l:first').data('token');
@@ -215,10 +214,15 @@
             $(elemId).find('.selShop_l').hide().first().show();
             // первая вкладка активная
             $(elemId).find('.selShop_tab').removeClass('selShop_tab-act').first().addClass('selShop_tab-act');
+            $(elemId).lightbox_me({
+                centered: true,
+                closeSelector: '.jsCloseFl',
+                removeOtherOnCreate: false
+            });
             showMap($(elemId), token);
             $body.trigger('trackUserAction', ['2_1 Место_самовывоза|Адрес_доставки']);
-            $(elemId).lightbox_me({centered: true, closeSelector: '.jsCloseFl', removeOtherOnCreate: false});
         } else {
+            $(elemId).show();
             log({'action':'view-date'});
             //$body.trigger('trackUserAction', ['11 Срок_доставки_Доставка']);
         }

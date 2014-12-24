@@ -108,6 +108,7 @@ class Client {
     private function getUrl($action, array $params = []) {
         return $this->config['url']
             . $action
-            . '?' . http_build_query($params);
+            . ((bool)$params ? ('?' . http_build_query($params)) : '')
+        ;
     }
 }

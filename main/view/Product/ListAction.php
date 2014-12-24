@@ -86,7 +86,7 @@ class ListAction {
                 break;
         }
 
-        $chosenCaseKey = \App::abTest()->getTest('reviews')->getChosenCase()->getKey();
+        $chosenCaseKey = \App::abTest()->getTest('reviews') ? \App::abTest()->getTest('reviews')->getChosenCase()->getKey() : null;
         return [
             'products' => $productData,
             'productCount' => count($productData), // кол-во продуктов на странице с учётом смещений

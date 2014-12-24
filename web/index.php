@@ -122,15 +122,6 @@ $response = null;
             (new \Debug\ShowAction())->execute($request, $response);
         }
 
-        // SITE-4040 удаление старых сессионных кук
-        try {
-            $sessionParams = session_get_cookie_params();
-            //$response->headers->clearCookie(\App::session()->getName(), $sessionParams['path']);
-            //$response->headers->clearCookie(\App::config()->region['cookieName'], '/');
-        } catch (\Exception $e) {
-            \App::logger()->error($e, ['response']);
-        }
-
         $response->send();
     }
 
@@ -154,9 +145,9 @@ try {
         $response = (new \Controller\MobileRedirectAction())->execute($request);
     }
 
-    // проверка редиректа из cms
-    if (!$response instanceof \Http\Response && \App::config()->redirect301['enabled']) {
-        $response = (new \Controller\RedirectAction())->execute($request);
+    // проверка редиректа из scms
+    if (!$response instanceof \Http\Response) {
+        $response = (new \Controller\PreAction())->execute($request);
     }
 
     // если предыдущие контроллеры не вернули Response, ...

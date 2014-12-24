@@ -2,6 +2,8 @@
 
 namespace Controller\OrderV3;
 
+use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity;
+
 class DeliveryAction extends OrderV3 {
 
     /** Main function
@@ -201,9 +203,10 @@ class DeliveryAction extends OrderV3 {
                 $changes['orders'] = array(
                     $data['params']['block_name'] => $previousSplit['orders'][$data['params']['block_name']]
                 );
-                if (isset($data['params']['by_credit_card']) && $data['params']['by_credit_card'] == 'true') $paymentTypeId = \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY;
-                else if (isset($data['params']['by_online_credit']) && $data['params']['by_online_credit'] == 'true') $paymentTypeId = \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT;
-                else $paymentTypeId = \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CASH;
+                if (@$data['params']['by_credit_card'] == 'true') $paymentTypeId = PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY;
+                    else if (@$data['params']['by_online_credit']== 'true') $paymentTypeId = PaymentMethodEntity::PAYMENT_CREDIT;
+                    else if (@$data['params']['by_online'] == 'true') $paymentTypeId = PaymentMethodEntity::PAYMENT_CARD_ONLINE;
+                    else $paymentTypeId = PaymentMethodEntity::PAYMENT_CASH;
                 $changes['orders'][$data['params']['block_name']]['payment_method_id'] = $paymentTypeId;
                 break;
 

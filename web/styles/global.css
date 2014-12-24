@@ -1369,6 +1369,9 @@ img[height="0"] {
     border-style: solid;
     border-color: #c7c7c7;
   }
+  .userbar .header_t {
+    border: none;
+  }
   .header {
     width: 960px;
     margin: 0 auto;
@@ -3373,6 +3376,12 @@ img[height="0"] {
     height: 50px;
     text-align: center;
     background: #c1d837;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
   .slidesBox_h_c {
     height: 50px;
@@ -3393,13 +3402,20 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
+    -webkit-touch-callout: default;
+    -webkit-user-select: auto;
+    -khtml-user-select: auto;
+    -moz-user-select: auto;
+    -ms-user-select: auto;
+    user-select: auto;
   }
   .slidesBox_btn {
     width: 10px;
     height: 22px;
     cursor: pointer;
+    background-position: 50%;
     background-repeat: no-repeat;
-    background-position: 0 0;
+    padding: 10px;
     display: inline-block;
     vertical-align: middle;
     /* IE6-8 */
@@ -3407,10 +3423,10 @@ img[height="0"] {
     *zoom: 1;
   }
   .slidesBox_btn-l {
-    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAQAAABTL8XWAAAAoUlEQVQY02NgQAG/DP/t/SiEIvSY89+1f7+/y6EI/p3y7//fWhShP57//v87tooZSeiz6L/n/z79UEJR92/jv/9/ElG1pgK1rkER+qH678u/pyhO2c/y7+S/f79dUR3SBHRIP4rQd4V/f/5dvs2ORfA+B6p3IdonoAlitQjmpE/CaMJYHA/25gYMb0ID5DNagGANOngg16EJQqNDngFbxAEAZfV2DQiSf2EAAAAASUVORK5CYII=');
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAQAAABTL8XWAAAAoUlEQVQY02NgQAG/DP/t/SiEIvSY89+1f7+/y6EI/p3y7//fWhShP57//v87tooZSeiz6L/n/z79UEJR92/jv/9/ElG1pgK1rkER+qH678u/pyhO2c/y7+S/f79dUR3SBHRIP4rQd4V/f/5dvs2ORfA+B6p3IdonoAlitQjmpE/CaMJYHA/25gYMb0ID5DNagGANOngg16EJQqNDngFbxAEAZfV2DQiSf2EAAAAASUVORK5CYII=');
   }
   .slidesBox_btn-r {
-    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAQAAABTL8XWAAAAj0lEQVQY02P4KPRv7y9DBlTwXf7f73/XHnOiCf+t+/f/7xQ0wVXM/479+//HE034h9K/z/+efxZFE/6T+O//v40M6ODfGqARqWiCn4T/Pf335YcqmvBv13///p3cz4LuuH6g45rQBO9z/Lv87893BcKCfydgaMdiEVYnYXE82JsbCAUI1qDDEshYowNbxAEA2ud2F3hMdY8AAAAASUVORK5CYII=');
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAQAAABTL8XWAAAAj0lEQVQY02P4KPRv7y9DBlTwXf7f73/XHnOiCf+t+/f/7xQ0wVXM/479+//HE034h9K/z/+efxZFE/6T+O//v40M6ODfGqARqWiCn4T/Pf335YcqmvBv13///p3cz4LuuH6g45rQBO9z/Lv87893BcKCfydgaMdiEVYnYXE82JsbCAUI1qDDEshYowNbxAEA2ud2F3hMdY8AAAAASUVORK5CYII=');
   }
   .slidesBox_dott {
     line-height: 7px;
@@ -4462,7 +4478,7 @@ img[height="0"] {
   .topbarfix_cmpr {
     background: #f4f4f4;
     position: relative;
-    z-index: 11;
+    z-index: 101;
   }
   .topbarfix_cmpr-full {
     background-color: #ffffff;
@@ -4516,6 +4532,7 @@ img[height="0"] {
     filter: alpha(opacity=0);
     overflow: hidden;
     top: 66px;
+    z-index: 101;
   }
   .topbarfix_cmpr_popup-add {
     color: #000000;
@@ -7722,6 +7739,39 @@ img[height="0"] {
   .orderCol_warn_r a {
     text-decoration: underline;
   }
+  .paymentMethods {
+    background-color: white;
+    margin: 0 -10px;
+    padding: 10px;
+  }
+  .paymentMethods .paymentRow {
+    height: 30px;
+    line-height: 30px;
+    position: relative;
+    margin: 5px 0;
+  }
+  .paymentMethods .paymentRow .customInput-defradio2 + .customLabel {
+    background-position: 0 8px;
+  }
+  .paymentMethods .paymentRow .orderPaymentWeb_lst-sm {
+    margin-left: 5px;
+  }
+  .paymentMethods .paymentRow .customSel {
+    position: relative;
+    overflow: hidden;
+    width: 100px;
+    height: 20px;
+    margin-top: 4px;
+  }
+  .paymentMethods .paymentRow .customSel-inner {
+    width: 140px;
+    height: 100%;
+    background: none;
+    border: none;
+    outline: none;
+    top: 0px;
+    position: absolute;
+  }
 }
 @media all {
   /*---------Оформление заказа 3.0 ----------*/
@@ -7837,7 +7887,7 @@ img[height="0"] {
 }
 @media all {
   /*---------Оформление заказа 3.0 -> строка перехода к следующему шагу .orderCompl ----------*/
-  /* 
+  /*
     orderCompl
         orderCompl_l
         orderCompl_btn
@@ -7869,13 +7919,14 @@ img[height="0"] {
     line-height: 32px;
   }
   .orderCompl_continue_link {
-    font-size: 20px;
+    font-size: 18px;
     text-decoration: underline;
     padding: 10px 0;
     display: block;
   }
   .orderCompl_final {
-    background: #f7f7f7;
+    text-align: center;
+    background: #fff;
   }
   .orderCompl-v2 .orderCompl_btn {
     margin: 0;
@@ -7912,6 +7963,225 @@ img[height="0"] {
     border-top: 1px solid #a6a6a6;
     border-bottom: 1px solid #eaeaea;
     background: #f6f6f6;
+  }
+  /*===========================================================================
+ Оформление заказа: оплата
+============================================================================*/
+  .orderPayment {
+    margin-top: 50px;
+  }
+  .orderPayment_block {
+    width: 380px;
+    padding: 20px 25px 20px;
+    margin: 0 auto 10px;
+    border: 1px solid #ccc;
+    margin-top: 45px;
+  }
+  .orderPayment_head {
+    font-size: 30px;
+    text-align: center;
+  }
+  .orderPayment_num,
+  .orderPayment_num:hover {
+    text-decoration: none;
+    border-bottom: 1px solid #c7c7c7;
+  }
+  .orderPayment_msg_head {
+    font-size: 20px;
+  }
+  .orderPayment_msg_shop {
+    /*
+			padding-left:20px;
+			line-height: 18px;
+			margin-top: 10px;
+			background-repeat: no-repeat;
+			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAfklEQVQYGYWQwQ2AIBRD/WUmwhS6i0cdQI/uolMAMwFSIgkxGnr5tDwCVFJKA+W9H2OMc/aaXkQ8gENrfRVP0Fq75bkweCsf2I0xqzjnxhDC+QZar5SawOva8GtNBvVNX0DNyKCa3gR/14OeBnD0QNYE9sQK/mDuFYY9Ur3Cb25DQ2sv9bp2AAAAAElFTkSuQmCC);
+			background-position: 0px 4px;*/
+  }
+  .orderPayment_msg_shop_metro,
+  .orderPayment_msg_shop_addr {
+    display: block;
+  }
+  .orderPayment_msg_addr_link {
+    margin-top: 5px;
+    text-decoration: underline;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+  }
+  .orderPayment_msg_info {
+    margin-top: 14px;
+  }
+  .orderPayment_msg_info_status {
+    line-height: 25px;
+  }
+  .orderPayment_msg_adding {
+    margin-top: 20px;
+  }
+  .orderPayment.orderPaymentCr .orderPayment_block,
+  .orderPayment.orderPaymentWeb .orderPayment_block {
+    border: 1px solid #ffa901;
+  }
+  .orderPayment.orderPaymentCr .orderPayment_msg_info {
+    border-top: 1px solid #c7c7c7;
+    padding: 15px 20px 0px;
+  }
+  .orderPayment .markerList_row:hover {
+    background: none;
+  }
+  .orderPayment_btn {
+    font-size: 16px;
+    line-height: 1;
+    padding: 6px 20px 7px;
+    border-color: #f99b1c;
+    display: inline-block;
+    vertical-align: top;
+  }
+  .orderPayment_btn-toggle {
+    display: none;
+    float: right;
+    margin: -3px 0px;
+  }
+  .orderPayment_btn.btn3-shadow {
+    -webkit-box-shadow: 0px 2px 0px 0px #bf6e35;
+    -moz-box-shadow: 0px 2px 0px 0px #bf6e35;
+    box-shadow: 0px 2px 0px 0px #bf6e35;
+    margin: 2px 0px;
+  }
+  .orderPayment_pay {
+    margin-top: 20px;
+  }
+  .orderPayment .pr-dsc {
+    background: #ffa901;
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 14px;
+    padding: 0px 4px;
+    margin-left: 6px;
+  }
+  .orderPayment .orderSum-lbl {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    width: 200px;
+    margin-right: 14px;
+  }
+  .orderPaymentCr_lst {
+    margin: 10px 0;
+  }
+  .orderPaymentCr_lst-i {
+    padding: 13px 20px;
+  }
+  .orderPaymentCr_lst-i:hover {
+    background: #feebd2;
+  }
+  .orderPaymentCr_lst-i:hover .orderPayment_btn-toggle {
+    display: block;
+  }
+  .orderPaymentCr_lst-i:hover .orderPaymentCr_lst_bank-logo {
+    display: none;
+  }
+  .orderPaymentCr_lst_bank {
+    text-decoration: underline;
+    display: block;
+  }
+  .orderPaymentCr_lst_bank-logo {
+    float: right;
+    width: 125px;
+    height: 42px;
+  }
+  .orderPaymentCr_other_link {
+    text-decoration: underline;
+    color: #5e5e5e;
+  }
+  .orderPaymentCr .pb-small {
+    font-size: 12px;
+    line-height: 1em;
+    display: block;
+    color: #5e5e5e;
+  }
+  .orderPaymentWeb_lst {
+    margin: 15px 0px;
+  }
+  .orderPaymentWeb_lst-i {
+    padding: 10px 20px;
+    overflow: hidden;
+    height: 24px;
+    line-height: 24px;
+  }
+  .orderPaymentWeb_lst-i:hover {
+    background: #feebd2;
+  }
+  .orderPaymentWeb_lst-i:hover .orderPayment_btn-toggle {
+    display: block;
+  }
+  .orderPaymentWeb_lst-i:hover .orderPaymentWeb_lst_sys-logo {
+    display: none;
+  }
+  .orderPaymentWeb_lst_sys {
+    text-decoration: underline;
+    display: block;
+  }
+  .orderPaymentWeb_lst_sys-logo {
+    float: right;
+    width: 125px;
+    height: 24px;
+    text-align: center;
+    line-height: 24px;
+  }
+  .orderPaymentWeb_lst_sys-logo-img {
+    max-height: 100%;
+    max-width: 100%;
+  }
+  .orderPaymentWeb_lst_sys-logo.noFlnoWdt {
+    width: auto;
+    float: none;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+  }
+  .orderPaymentWeb_lst-sm {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    margin-left: 25px;
+  }
+  .orderPaymentWeb_lst-sm-i {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    line-height: 30px;
+    margin-right: 2px;
+  }
+  .orderPaid {
+    padding-bottom: 70px;
+    position: relative;
+  }
+  .orderPaid:before {
+    content: "";
+    background: url('/styles/order/img/paid-stamp.png') no-repeat;
+    width: 176px;
+    height: 118px;
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    z-index: 1;
+  }
+  .orderDelivery .orderPayment_msg_shop.markerLst_row {
+    border: none;
+  }
+  .orderDelivery .orderPayment_msg_info {
+    margin-top: 0px;
   }
 }
 @media all {
@@ -9769,9 +10039,6 @@ img[height="0"] {
   .compare-userbar .userbar-fixed .topbar_l {
     padding-left: 10px;
   }
-  .topbarfix:hover > div:last-child .topbarfix_cmpr_popup {
-    display: none !important;
-  }
   .cmprEmpty {
     color: #808080;
     font-size: 16px;
@@ -9841,7 +10108,7 @@ img[height="0"] {
     float: left;
     width: 241px;
     position: relative;
-    height: 344px;
+    height: 350px;
     margin: -1px -1px 0 0;
     z-index: 2;
   }
@@ -9850,7 +10117,7 @@ img[height="0"] {
     width: 199px;
     position: relative;
     height: 312px;
-    padding: 20px 20px 10px;
+    padding: 20px 20px 16px;
     background-color: #ffffff;
     z-index: 2;
   }
@@ -10044,7 +10311,7 @@ img[height="0"] {
     height: 41px;
     line-height: 1.1;
     overflow: hidden;
-    padding: 5px 0 8px;
+    padding: 5px 0;
     text-align: center;
     vertical-align: middle;
     width: 218px;
@@ -10060,6 +10327,17 @@ img[height="0"] {
   }
   .lstn-light .lstn_i_inn {
     height: 249px;
+  }
+  .lstn-btn2 .btnBuy__eLink {
+    background: #f99b1c;
+    border-color: #f99b1c;
+  }
+  .lstn-btn2 .btnBuy__eLink.mShopsOnly {
+    background: #404040;
+    border: 1px solid #000000;
+  }
+  .lstn-btn2 .btnBuy__eLink.mShopsOnly:hover {
+    background: #000000;
   }
   .lstn-jewel {
     margin-left: 0;

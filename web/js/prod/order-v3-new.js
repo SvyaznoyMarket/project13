@@ -1333,7 +1333,7 @@
     // клик по методу онлайн-оплаты
     $orderContent.on('click', '.jsPaymentMethod', function(){
         var id = $(this).data('value'),
-            $order = $(this).closest('.orderLn'),
+            $order = $(this).closest('.orderLn').length > 0 ? $(this).closest('.orderLn') : $orderContent,
             orderId = $order.data('order-id'),
             orderNumber = $order.data('order-number');
         switch (id) {
@@ -1355,6 +1355,11 @@
 				break;
         }
     });
+
+	$orderContent.on('click', '.jsOnlinePaymentPossible', function(){
+		$(this).hide();
+		$orderContent.find('.jsOnlinePaymentBlock').show()
+	});
 
     // клик по "оплатить онлайн"
     $orderContent.on('click', '.jsOnlinePaymentSpan', function(e){
@@ -1381,9 +1386,12 @@
             bank_id = $(this).data('value'),
             creditData = $(this).parent().siblings('.credit-widget').data('value'),
             order_number_erp = $(this).closest('.orderLn').data('order-number-erp');
-//        e.preventDefault();
+
+		if (typeof order_number_erp == 'undefined') order_number_erp = $orderContent.data('order-number-erp');
+
+		e.preventDefault();
         e.stopPropagation();
-        $(this).parent().hide();
+        if (!$(this).closest('ul').hasClass('jsCreditListOnlineMotiv')) $(this).parent().hide();
         showCreditWidget(bankProviderId, creditData, order_number_erp, bank_id);
     });
 
@@ -1590,8 +1598,8 @@
             } else {
                 console.error('No map data for token = "%s"', token,  elem);
             }
-
 		},
+
 		showOfertaPopup = function showOfertaPopupF() {
 			$('.js-order-oferta-popup').lightbox_me();
 		},
@@ -1631,7 +1639,6 @@
         var elemId = $(this).data('content');
         e.stopPropagation();
         $('.popupFl').hide();
-        $(elemId).show();
 
         if ($(this).hasClass('js-order-changePlace-link')) {
             var token = $(elemId).find('.selShop_l:first').data('token');
@@ -1639,10 +1646,14 @@
             $(elemId).find('.selShop_l').hide().first().show();
             // первая вкладка активная
             $(elemId).find('.selShop_tab').removeClass('selShop_tab-act').first().addClass('selShop_tab-act');
+            $(elemId).lightbox_me({
+                centered: true,
+                closeSelector: '.jsCloseFl',
+            });
             showMap($(elemId), token);
             $body.trigger('trackUserAction', ['10 Место_самовывоза_Доставка_ОБЯЗАТЕЛЬНО']);
-            $(elemId).lightbox_me({centered: true, closeSelector: '.jsCloseFl'});
         } else {
+            $(elemId).show();
             log({'action':'view-date'});
             $body.trigger('trackUserAction', ['11 Срок_доставки_Доставка']);
         }
@@ -1815,6 +1826,22 @@
 
 	$body.on('click', '.js-oferta-tab', function(){
 		tabsOfertaAction(this)
+	});
+
+	// ДЛЯ АБ-ТЕСТА ПО МОТИВАЦИИ ОНЛАЙН-ОПЛАТЫ
+	$body.on('click', '.jsPaymentMethodRadio', function(){
+		var $this = $(this),
+			block_name = $this.closest('.orderRow').data('block_name'),
+			method = $this.val();
+		changePaymentMethod(block_name, method, 'true')
+	});
+
+	$body.on('change', '.jsPaymentMethodSelect', function(e){
+		var $this = $(this),
+			block_name = $this.closest('.orderRow').data('block_name'),
+			selectedMethod = $this.find(':selected').val();
+		changePaymentMethod(block_name, selectedMethod, 'true');
+		e.preventDefault();
 	});
 
     // АНАЛИТИКА

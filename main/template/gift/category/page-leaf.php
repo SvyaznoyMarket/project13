@@ -33,6 +33,7 @@ $helper = new \Helper\TemplateHelper();
         'bannerPlaceholder'      => [],
         'listingStyle'           => null,
         'columnCount'            => $columnCount,
+        'class'                  => 'lstn-btn2'
     ]) ?>
 
     <div class="sorting clearfix js-category-sortingAndPagination">
