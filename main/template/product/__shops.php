@@ -9,9 +9,12 @@ return function (
 
     ?>
 
-    <div class="shopsVar shopsVar-center">
-        <span class="shopsVar_title">Есть в <?= count($shopStates) ?> <?= $helper->numberChoice(count($shopStates), ['магазине', 'магазинах', 'магазинах'])?></span>
-        <input type="button" class="button whitebutton js-show-shops" id="whitebutton" value="Забрать сегодня" />
+    <div class="dlvr-self dlvr-self__center">
+        <button class="dlvr-self_btn btn6 js-show-shops">Забрать сегодня</button>
+        <span class="dlvr-self_t">
+            Бесплатный самовывоз<br/>
+            из <?= count($shopStates) ?> <?= $helper->numberChoice(count($shopStates), ['магазина', 'магазинов', 'магазинов'])?>
+        </span>
     </div>
 
     <div style="display: none" class="popup shopsPopup">
