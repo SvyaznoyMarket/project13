@@ -40,7 +40,7 @@ return function(
                             <? if ($userEntity && $userEntity->isEnterprizeMember()) : ?>
                             <? else : ?>
                             <span class="orderU_hint">
-                                <input type="checkbox" name="" id="subscribe" class="customInput customInput-defcheck jsOrderV3SubscribeCheckbox" checked>
+                                <input type="checkbox" name="" id="subscribe" class="customInput customInput-defcheck jsOrderV3SubscribeCheckbox">
                                 <label for="subscribe" class="customLabel">Подписаться на рассылку, получить 300 рублей</label>
                             </span>
                             <? endif ?>
