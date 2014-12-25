@@ -21,7 +21,7 @@ $f = function (
                                 <option value="by_cash" <?= $order->payment_method_id == PaymentMethod::PAYMENT_CASH ? 'selected' : '' ?>>наличными</option>
                             <? endif ?>
                             <? if (array_key_exists(PaymentMethod::PAYMENT_CARD_ON_DELIVERY, $order->possible_payment_methods)) : ?>
-                                <option class="jsDeliveryChoosePlastic" value="by_credit_card" <?= $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY ? 'selected' : '' ?>>банковской картой</option>
+                                <option value="by_credit_card" <?= $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY ? 'selected' : '' ?>>банковской картой</option>
                             <? endif ?>
                         </select>
                     </div>

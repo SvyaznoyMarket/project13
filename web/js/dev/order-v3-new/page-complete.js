@@ -142,7 +142,8 @@
 
 	$orderContent.on('click', '.jsOnlinePaymentPossible', function(){
 		$(this).hide();
-		$orderContent.find('.jsOnlinePaymentBlock').show()
+		$orderContent.find('.jsOnlinePaymentBlock').show();
+        $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '17 Оплатить_онлайн_вход_Оплата']);
 	});
 
     // клик по "оплатить онлайн"

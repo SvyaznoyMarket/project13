@@ -1365,7 +1365,8 @@
 
 	$orderContent.on('click', '.jsOnlinePaymentPossible', function(){
 		$(this).hide();
-		$orderContent.find('.jsOnlinePaymentBlock').show()
+		$orderContent.find('.jsOnlinePaymentBlock').show();
+        $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '17 Оплатить_онлайн_вход_Оплата']);
 	});
 
     // клик по "оплатить онлайн"
@@ -1869,6 +1870,8 @@
 		var $this = $(this),
 			block_name = $this.closest('.orderRow').data('block_name'),
 			method = $this.val();
+        if (method == 'by_online_credit') $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Кредит']);
+        if (method == 'by_online') $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Онлайн-оплата']);
 		changePaymentMethod(block_name, method, 'true')
 	});
 
@@ -1877,6 +1880,8 @@
 			block_name = $this.closest('.orderRow').data('block_name'),
 			selectedMethod = $this.find(':selected').val();
 		changePaymentMethod(block_name, selectedMethod, 'true');
+        console.log('[G changed', e);
+        if (selectedMethod == 'by_credit_card') $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Картой_курьеру']);
 		e.preventDefault();
 	});
 
@@ -1886,21 +1891,6 @@
         $body.trigger('trackUserAction', ['6_1 Далее_успешно_Получатель_ОБЯЗАТЕЛЬНО']); // TODO перенести в validate.js
         $body.trigger('trackUserAction', ['7 Вход_Доставка_ОБЯЗАТЕЛЬНО', 'Количество заказов: ' + $('.orderRow').length]);
     }
-
-    $body.on('click', {
-        /* При клике купить в кредит */
-        '.jsDeliveryChooseCredit' : function() {
-            $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Кредит']);
-        },
-        /* При клике на онлайн-оплата */
-        '.jsDeliveryChooseOnline' : function() {
-            $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Онлайн-оплата']);
-        },
-        /* При клике оплата картой курьеру */
-        '.jsDeliveryChoosePlastic': function() {
-            $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Картой_курьеру']);
-        }
-    });
 
     // отслеживаем смену региона
     $body.on('click', 'a.jsChangeRegionAnalytics', function(e){
