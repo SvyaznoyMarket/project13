@@ -8303,12 +8303,11 @@ img[height="0"] {
     color: #5e5e5e;
     font-size: 14px;
     line-height: 33px;
+    width: 400px;
   }
   .orderU_hint .customLabel {
-    background-position: 0 50%;
-  }
-  .orderU_hint .customInput-defcheck:checked + .customLabel {
-    background-position: 0 50%;
+    background-position: 0 3px;
+    line-height: 1.2;
   }
   .orderU-v2 .orderU_tx {
     line-height: 14px;
