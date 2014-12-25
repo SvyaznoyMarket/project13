@@ -41,7 +41,7 @@ return function(
                             <? else : ?>
                             <span class="orderU_hint">
                                 <input type="checkbox" name="" id="subscribe" class="customInput customInput-defcheck jsOrderV3SubscribeCheckbox">
-                                <label for="subscribe" class="customLabel">Подписаться на рассылку, получить 300 рублей</label>
+                                <label for="subscribe" class="customLabel">Подписаться на рассылку и получить купон со скидкой 300 рублей на следующую покупку</label>
                             </span>
                             <? endif ?>
                         <? endif ?>
