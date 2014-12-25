@@ -196,7 +196,6 @@
 
     // выполняем данный блок только на финальной странице
     if (/order\/complete/.test(window.location.href)) {
-        $body.trigger('trackUserAction', ['16 Вход_Оплата_ОБЯЗАТЕЛЬНО']);
 
         /* АНАЛИТИКА МОТИВАЦИИ ОНЛАЙН-ОПЛАТЫ */
         if (isOnlineMotivPage) {
@@ -210,6 +209,8 @@
             if ($('.jsCreditBlock').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '19 Заявка_кредит_Оплата']);
             // При клике на ссылку “как добраться”
             $body.on('click', '.jsCompleteOrderShowShop', function(){ $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '16_1 Как_добраться']); })
+        } else {
+            $body.trigger('trackUserAction', ['16 Вход_Оплата_ОБЯЗАТЕЛЬНО']);
         }
 
         // При успешной онлайн-оплате
