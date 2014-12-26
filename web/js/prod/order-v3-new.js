@@ -2085,21 +2085,22 @@
 		}
 
         // Доставка
-        if ($('.orderCol_delivrLst_i-act').text().indexOf('Доставка') != -1) {
+        /*if ($('.orderCol_delivrLst_i-act').text().indexOf('Доставка') != -1) {
             if (!ENTER.OrderV3.address || !ENTER.OrderV3.address.buildingName()) {
 				$('.jsSmartAddressBlock').addClass('orderCol_delivrIn-err');
 				error.push('Укажите адрес доставки');
 			} else {
 				$('.jsSmartAddressBlock').removeClass('orderCol_delivrIn-err');
 			}
-        }
+        }*/
 
-        $('.orderCol_addrs_tx').each(function(i,val){
+        // Самовывоз
+        /*$('.orderCol_addrs_tx').each(function(i,val){
             if ($(val).text().replace(/\s+/, '').length == 0) {
 				$(this).closest('.orderCol_delivrIn-empty').addClass('orderCol_delivrIn-err');
 				error.push('Укажите адрес самовывоза');
 			}
-        });
+        });*/
 
         if (error.length != 0) {
             $errorBlock = $orderContent.find('#OrderV3ErrorBlock'); // TODO не очень хорошее поведение
