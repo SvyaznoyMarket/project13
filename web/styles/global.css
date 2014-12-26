@@ -1419,7 +1419,7 @@ img[height="0"] {
   .header_t {
     height: 50px;
     padding: 0 0 0 10px;
-    background: #f4f4f4;
+    background: #ffffff;
   }
   .header_i {
     display: inline-block;
@@ -1670,6 +1670,21 @@ img[height="0"] {
     *display: inline;
     *zoom: 1;
     height: 20px;
+  }
+  .body-new {
+    background: #e8e8e8;
+  }
+  .body-new .userbtn_i {
+    background: #ffffff;
+  }
+  .body-new .userbtn_i.mEmpty {
+    background: #ffffff;
+  }
+  .body-new .topbarfix_log {
+    background: #fff5e0;
+  }
+  .body-new .topbarfix_log-unlogin {
+    background: #ffffff;
   }
 }
 @media all {
