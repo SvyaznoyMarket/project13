@@ -393,23 +393,21 @@ class BasicEntity {
 
 
     /**
-     * @param int $shopId
+     * @param int|null $shopId
      * @return bool
      */
-    public function isInShopShowroom($shopId) {
-        $shopId = (int)$shopId;
-        if (!$shopId) return false;
-
-
-        $return = false;
+    public function isInShopShowroom($shopId = null) {
         foreach ($this->getStock() as $stock) {
-            if (($stock->getShopId() == $shopId) && $stock->getQuantityShowroom()) {
-                $return = true;
+            if ($shopId && ($stock->getShopId() != $shopId)) continue;
+
+            if ($stock->getQuantityShowroom()) {
+                return true;
+
                 break;
             }
         }
 
-        return $return;
+        return false;
     }
 
     /**

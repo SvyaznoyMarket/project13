@@ -21,7 +21,9 @@ return function (
         <i title="Закрыть" class="close">Закрыть</i>
         <div class="popup_hd">
             <div class="popup_hd_tl">Забрать сегодня</div>
+            <? if ($product->isInShopShowroom()): ?>
             <p class="popup_hd_tx">Чтобы купить товар с витрины, нужно приехать в магазин и обратиться к продавцу.</p>
+            <? endif ?>
         </div>
 
         <!--  Магазины  -->
