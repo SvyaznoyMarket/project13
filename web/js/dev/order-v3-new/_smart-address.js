@@ -136,7 +136,6 @@
 //            appendTo: '#kladrAutocomplete',
 			source: autoCompleteRequest,
 			minLength: 1,
-			position: { my : "left top", at: "left bottom" },
 			open: function( event, ui ) {
 				$('.ui-autocomplete').css({'position' : 'absolute', 'top' : 29, 'left' : 0});
 			},
