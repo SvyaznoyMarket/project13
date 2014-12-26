@@ -1697,7 +1697,7 @@
                 $emailInput.removeClass(errorClass).siblings('.errTx').hide();
             }
 
-			if ($deliveryMethod.text() == 'Самовывоз' && $('.orderCol_addrs_tx').text().replace(/\s/g, '') == '') {
+			/*if ($deliveryMethod.text() == 'Самовывоз' && $('.orderCol_addrs_tx').text().replace(/\s/g, '') == '') {
 				error.push('Не выбран адрес доставки или самовывоза');
 			}
 
@@ -1705,7 +1705,7 @@
 				if (!ENTER.OrderV3.address || !ENTER.OrderV3.address.building.name) {
 					error.push('Не выбран адрес доставки или самовывоза');
 				}
-			}
+			}*/
 
             return error;
         };
