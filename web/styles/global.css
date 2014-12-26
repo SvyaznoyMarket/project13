@@ -8022,9 +8022,15 @@ img[height="0"] {
   .orderPayment_msg_head {
     font-size: 20px;
   }
+  .orderPayment_msg_shop_addr {
+    margin-left: 15px;
+  }
   .orderPayment_msg_shop_metro,
   .orderPayment_msg_shop_addr {
     display: block;
+  }
+  .orderPayment_msg_shop_metro + .orderPayment_msg_shop_addr {
+    margin-left: 0px;
   }
   .orderPayment_msg_addr_link {
     margin-top: 5px;
