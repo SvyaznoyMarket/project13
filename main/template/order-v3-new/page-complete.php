@@ -43,8 +43,8 @@ return function(
                                 <? if (isset($products[$product->getId()])) : ?>
                                     <li class="orderLn_lst_i"><?= $products[$product->getId()]->getPrefix() == '' ? mb_strimwidth($products[$product->getId()]->getName(), 0, 40, '…') :  mb_strimwidth($products[$product->getId()]->getPrefix(), 0, 40, '…') ?> <?= $product->getQuantity() ?> шт.</li>
                                 <? endif ?>
-                                <? if ($key == 2) : ?>
-                                    <? $orderProductsString = $helper->numberChoiceWithCount(count($order->getProduct()) - 2, ['товар', 'товара', 'товаров']) ?>
+                                <? if ($key == 2 && count($order->getProduct()) > 3) : ?>
+                                    <? $orderProductsString = $helper->numberChoiceWithCount(count($order->getProduct()) - 3, ['товар', 'товара', 'товаров']) ?>
                                     <? if ($userEntity) : ?>
                                         <li class="orderLn_lst_i"><a class="orderLn_lst_lk" href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>">и ещё <?= $orderProductsString ?></a></li>
                                     <? else : ?>
