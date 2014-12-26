@@ -98,7 +98,7 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotBodyClassAttribute() {
-        return $this->hasParam('categoryClass') ? $this->getParam('categoryClass') : '';
+        return parent::slotBodyClassAttribute() . $this->hasParam('categoryClass') ? ' ' . $this->getParam('categoryClass') : '';
     }
 
     public function slotInnerJavascript() {

@@ -40,7 +40,7 @@
         height: @header-height;
         padding: 0 0 0 10px;
 
-        background: @lightgrey8;
+        background: @white;
     }
     &_i{
         .inline-block-middle();
@@ -267,5 +267,24 @@
     }
     &-search{
         .sprite-temp(-186px, -2px, 27px, 20px);
+    }
+}
+
+.body-new {
+    background: #e8e8e8;
+
+    .userbtn_i {
+        background: @white;
+
+        &.mEmpty {
+            background: @white;
+        }
+    }
+    .topbarfix_log {
+        background: #fff5e0;
+
+        &-unlogin {
+            background: @white;
+        }
     }
 }

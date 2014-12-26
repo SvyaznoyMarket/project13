@@ -83,8 +83,11 @@ class DefaultLayout extends Layout {
         return 'default';
     }
 
+    /** Класс у body
+     * @return string
+     */
     public function slotBodyClassAttribute() {
-        return '';
+        return \App::abTest()->isNewMainPage() ? ' body-new' : '';
     }
 
     public function slotHeader() {
