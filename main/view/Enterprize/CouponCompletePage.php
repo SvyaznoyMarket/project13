@@ -18,7 +18,7 @@ class CouponCompletePage extends \View\DefaultLayout {
     }
 
     public function slotBodyClassAttribute() {
-        return 'enterprize_user';
+        return parent::slotBodyClassAttribute() . ' enterprize_user';
     }
 
     public function slotContentHead() {
