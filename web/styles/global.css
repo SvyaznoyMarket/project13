@@ -7738,14 +7738,14 @@ img[height="0"] {
   .orderCol_addrs_fld {
     width: 100%;
     margin: 10px 0 5px;
-    padding: 0 0 0 15px;
+    padding: 5px 0 0 15px;
     min-height: 32px;
     background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAA4klEQVQY02NgQAJnZjKwfpslFfFttrQFAz7Q0MDA9HOW9O8fs2QmYUiuCmVgRuYDFT35OVOmAkP++2zpOKAp50H01QYGtp+zZE6B2N+nSyj8mCXdB9R4b38DAwvD91kyqSCFP2dL/wFKPP48XVznx0ypHBAfqOndj9ky24FuloFb+aJbnBtk0o9p4krfZ0kn/JwhoQUUZsRwK9iq2TLPgaZXAq2782O29EwMRZ+mSAsDJW4Arb4JCiIg7fNztsz/n7Ol6lEUfpkmowdyNBB7InwvvQ3oxrmgIENR/LiPgRMfHwCLw2/0EEX6NgAAAABJRU5ErkJggg==") no-repeat 2px 5px #ffffff;
   }
   .orderCol_addrs_fld_i {
     height: 24px;
     line-height: 24px;
-    margin: 5px 5px 5px 0;
+    margin: 0 5px 5px 0;
     float: left;
     position: relative;
   }
