@@ -218,6 +218,34 @@ class TemplateHelper {
      * @return string
      */
     public static function mbyte_ucfirst($text, $cp = 'UTF-8') {
-      return mb_strtoupper( mb_substr( $text, 0, 1, $cp ), $cp ) . mb_strtolower( mb_substr( $text, 1, mb_strlen( $text, $cp ) - 1, $cp ), $cp );
+        return mb_strtoupper( mb_substr( $text, 0, 1, $cp ), $cp ) . mb_strtolower( mb_substr( $text, 1, mb_strlen( $text, $cp ) - 1, $cp ), $cp );
+    }
+
+    /**
+     * @param \DateTime $date
+     * @return string
+     */
+    public function humanizeDate(\DateTime $date) {
+        $formatted = $date->format('d.m.Y');
+
+        $namesByDay = [
+            0 => 'Сегодня',
+            1 => 'Завтра',
+            2 => 'Послезавтра',
+        ];
+
+        $now = new \DateTime('now');
+
+        foreach ($namesByDay as $day => $name) {
+            if ($day > 0) {
+                $now->modify('+1 day');
+            }
+
+            if ($formatted == $now->format('d.m.Y')) {
+                return $name;
+            }
+        }
+
+        return $formatted;
     }
 }
