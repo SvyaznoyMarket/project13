@@ -305,7 +305,7 @@ window.ANALYTICS = {
 		$.each(ordersData.orders, function(i,order){
 			// пройдем по продуктам
 			$.each(order.products, function(ii,pr) {
-				basket.products.push({identifier: pr.id, amount: pr.price, currency: 'RUB', quantity: pr.quantity})
+				basket.products.push({identifier: pr.article + '_' + docCookies.getItem('geoshop'), amount: pr.price, currency: 'RUB', quantity: pr.quantity})
 			});
 			// если несколько заказов, то пишем их через дефис
 			basket.transaction += i == 0 ? order.numberErp : ' - ' + order.numberErp;

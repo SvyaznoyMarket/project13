@@ -7,7 +7,7 @@ $f = function(
 ) { ?>
 
     <!-- Блок оплата в кредит -->
-    <div class="orderPayment orderPaymentCr">
+    <div class="orderPayment orderPaymentCr jsCreditBlock">
         <!-- Заголовок-->
         <!-- Блок в обводке -->
         <div class="orderPayment_block orderPayment_noOnline">

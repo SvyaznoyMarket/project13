@@ -12,7 +12,7 @@ $f = function(
 ) { ?>
 
     <!-- Блок оплата платежные системы -->
-    <div class="orderPayment orderPaymentWeb jsOnlinePaymentBlock" style="display: <?= $blockVisible ? 'block' : 'none' ?>">
+    <div class="orderPayment orderPaymentWeb jsOnlinePaymentBlock <?= $blockVisible ? 'jsOnlinePaymentBlockVisible' : '' ?>" style="display: <?= $blockVisible ? 'block' : 'none' ?>">
         <!-- Заголовок-->
         <!-- Блок в обводке -->
         <div class="orderPayment_block orderPayment_noOnline">

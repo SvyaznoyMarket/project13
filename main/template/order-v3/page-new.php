@@ -36,7 +36,7 @@ return function(
                         <input class="orderU_tx textfield jsOrderV3EmailField" type="text" name="user_info[email]" value="<?= $userEntity ? $userEntity->getEmail() : '' ?>" placeholder="mail@domain.com">
                         <span class="orderU_hint">
                             <input type="checkbox" name="" id="subscribe" class="customInput customInput-defcheck">
-                            <label for="subscribe" class="customLabel">Подписаться на рассылку, получить 300 рублей</label>
+                            <label for="subscribe" class="customLabel">Подписаться на рассылку и получить купон со скидкой 300 рублей на следующую покупку</label>
                         </span>
                     </div>
 

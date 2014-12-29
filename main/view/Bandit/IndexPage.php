@@ -10,7 +10,7 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotBodyClassAttribute() {
-        return 'bandit';
+        return parent::slotBodyClassAttribute() . ' bandit';
     }
 
     protected function prepare() {

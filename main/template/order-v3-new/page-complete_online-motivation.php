@@ -29,9 +29,9 @@ return function(
 
     <?= $helper->render('order-v3-new/__head', ['step' => 3]) ?>
 
-    <section class="orderCnt" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
+    <section class="orderCnt jsNewOnlineCompletePage" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
 
-        <!-- Блок оплата (оплата онлайн невозможна) -->
+        <!-- Блок оплата -->
         <div class="orderPayment">
             <!-- Заголовок-->
             <div class="orderPayment_head">
@@ -50,7 +50,7 @@ return function(
 
                 <? if ($order->getDeliveryTypeId() == 3 || $order->getDeliveryTypeId() == 4) : ?>
 
-                <div class="orderPayment <?= $order->isPaid() ? 'orderPaid': '' ?>">
+                <div class="orderPayment <?= $order->isPaid() ? 'orderPaid jsOrderPaid': '' ?>">
                     <!-- Блок в обводке -->
                     <div class="orderPayment_block orderPayment_noOnline">
 
@@ -69,7 +69,7 @@ return function(
                                 <span class="orderPayment_msg_shop_metro"><?= $shop->getSubway()[0]->getName() ?></span>
                                 <? endif ?>
                                 <span class="orderPayment_msg_shop_addr"><?= $shop->getAddress() ?></span>
-                                    <a href="<?= \App::router()->generate('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()])?>" class="orderPayment_msg_addr_link" target="_blank">
+                                    <a href="<?= \App::router()->generate('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()])?>" class="orderPayment_msg_addr_link jsCompleteOrderShowShop" target="_blank">
                                         Как добраться
                                     </a>
                                 </span>
@@ -126,8 +126,10 @@ return function(
                                     <? if ($order->isPaid()) : ?>
                                     Заказ оплачен
                                     <!--<div class="orderPaymentWeb_lst_sys-logo noFlnoWdt"><img src="/styles/order/img/logo-yamoney.jpg"></div>-->
+                                    <? elseif ($order->getPaymentId() == PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY) : ?>
+                                    Оплата заказа банковской картой при получении.
                                     <? else : ?>
-                                    Оплата заказа <?= $order->getPaymentId() == PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY ? 'банковской картой' : 'наличными' ?> при получении.
+                                    Вы сможете оплатить заказ наличными при получении.
                                     <? endif ?>
                                 </div>
                             </div>
@@ -150,7 +152,7 @@ return function(
             <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'topMessage' => 'Онлайн-оплата в два клика']) ?>
 
             <!-- Блок оплата в два клика-->
-            <div class="orderPayment orderPaymentWeb jsOnlinePaymentPossible">
+            <div class="orderPayment orderPaymentWeb jsOnlinePaymentPossible jsOnlinePaymentPossibleNoMotiv">
                 <!-- Заголовок-->
                 <!-- Блок в обводке -->
                 <div class="orderPayment_block orderPayment_noOnline">
@@ -178,6 +180,11 @@ return function(
             <a class="orderCompl_continue_link" href="<?= $helper->url('homepage') ?>">Вернуться на главную</a>
         </div>
     </section>
+
+    <? if (!$isOnlinePaymentPossible) : ?>
+        <!--Аналитика-->
+        <div class="jsGAOnlinePaymentNotPossible"></div>
+    <? endif ?>
 
     <? if ($order->isPaid()) : ?>
         <?= $helper->render('order-v3/partner-counter/_flocktory-complete',[

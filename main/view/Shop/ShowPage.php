@@ -47,6 +47,6 @@ class ShowPage extends \View\DefaultLayout {
     }
 
     public function slotBodyClassAttribute() {
-        return 'shopPrintPage';
+        return parent::slotBodyClassAttribute() . ' shopPrintPage';
     }
 }

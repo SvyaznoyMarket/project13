@@ -188,7 +188,7 @@ class Entity {
      * @return int
      */
     public function getCategoryId() {
-        return reset($this->categoryIds);
+        return is_array($this->categoryIds) ? reset($this->categoryIds) : $this->categoryIds;
     }
 
     /**
