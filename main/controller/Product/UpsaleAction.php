@@ -114,8 +114,6 @@ class UpsaleAction extends BasicRecommendedAction {
             ];
 
         } catch (\Exception $e) {
-            \App::logger()->error($e, [$this->actionType]);
-
             $responseData = [
                 'success' => false,
                 'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],
