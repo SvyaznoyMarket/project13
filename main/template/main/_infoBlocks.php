@@ -60,7 +60,7 @@
         </li>
         <li class="shopInfoTab_i">
             <div class="shopInfoTab_iconw"><div class="shopInfoTab_icon"><i class="i-shopinfo i-shopinfo-selfdelivery2"></i></div></div>
-            <div class="shopInfoTab_tx">РЕЗЕРВ ТОВАРА НА 3 ДНЯ</div>
+            <div class="shopInfoTab_tx">РЕЗЕРВ ТОВАРА НА 2 ДНЯ</div>
         </li>
         <li class="shopInfoTab_i">
             <div class="shopInfoTab_iconw"><div class="shopInfoTab_icon"><i class="i-shopinfo i-shopinfo-selfdelivery3"></i></div></div>

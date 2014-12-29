@@ -21,6 +21,6 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotBodyClassAttribute() {
-        return 'friendship';
+        return parent::slotBodyClassAttribute() . ' friendship';
     }
 }

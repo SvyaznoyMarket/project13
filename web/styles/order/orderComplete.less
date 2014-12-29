@@ -16,7 +16,6 @@
     background: #feeed5;
     &_l{
         font-size: 14px;
-        //		float: left;
 
         width: 685px;
         margin: 0;
@@ -122,10 +121,18 @@
             font-size: 20px;
         }
         &_shop{
+            &_addr{
+                margin-left:15px;
+            }
             &_metro
             ,
             &_addr{
                 display: block;
+            }
+            &_metro
+            +
+            &_addr{
+                margin-left: 0px;
             }
         }
         &_addr_link{

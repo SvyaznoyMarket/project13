@@ -70,6 +70,7 @@ class InfoAction {
                 $responseData['user']['isSubscribed'] = $user->getEntity()->getIsSubscribed();
                 $responseData['user']['id'] = $userEntity->getId();
                 $responseData['user']['email'] = $userEntity->getEmail();
+                $responseData['user']['mobile'] = base64_encode($userEntity->getMobilePhone());
                 $responseData['user']['emailHash'] = md5($userEntity->getEmail());
                 $responseData['user']['sex'] = $userEntity->getSex(); // 1-мужской, 2-женский
 

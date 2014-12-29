@@ -28,7 +28,7 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotBodyClassAttribute() {
-        return 'enterprize';
+        return parent::slotBodyClassAttribute() . ' enterprize';
     }
 
     public function slotContentHead() {

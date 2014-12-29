@@ -107,7 +107,7 @@ class Layout extends \View\DefaultLayout {
     }
 
     public function slotBodyClassAttribute() {
-        return 'jewel';
+        return parent::slotBodyClassAttribute() . ' jewel';
     }
 
     public function slotContentHead() {
