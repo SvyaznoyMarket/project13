@@ -140,7 +140,7 @@ class RepositoryManager {
         static $instance;
 
         if (!$instance) {
-            $instance = new \Model\Shop\Repository(\App::coreClientV2());
+            $instance = new \Model\Shop\Repository(\App::scmsClient());
         }
 
         return $instance;

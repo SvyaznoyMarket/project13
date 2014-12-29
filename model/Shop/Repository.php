@@ -3,13 +3,13 @@
 namespace Model\Shop;
 
 class Repository {
-    /** @var \Core\ClientInterface */
+    /** @var \Scms\Client */
     private $client;
 
     /**
-     * @param \Core\ClientInterface $client
+     * @param \Scms\Client $client
      */
-    public function __construct(\Core\ClientInterface $client) {
+    public function __construct(\Scms\Client $client) {
         $this->client = $client;
     }
 
@@ -25,7 +25,7 @@ class Repository {
         $entity = null;
         $client->addQuery('shop/get',
             [
-                'id' => [$id],
+                'id' => $id,
             ],
             [],
             function ($data) use (&$entity) {
@@ -34,7 +34,7 @@ class Repository {
             }
         );
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+        $client->execute();
 
         return $entity;
     }
@@ -51,7 +51,7 @@ class Repository {
         $entity = null;
         $client->addQuery('shop/get',
             [
-                'slug' => [$token],
+                'slug' => $token,
             ],
             [],
             function ($data) use (&$entity) {
@@ -60,7 +60,7 @@ class Repository {
             }
         );
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+        $client->execute();
 
         return $entity;
     }
@@ -73,7 +73,7 @@ class Repository {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery('shop/get', array(
-            'slug' => array($token),
+            'slug' => $token,
         ), [], $callback);
     }
 
@@ -87,7 +87,7 @@ class Repository {
         $client = clone $this->client;
 
         $collection = [];
-        $client->addQuery('shop/get',
+        $client->addQuery('shop/gets',
             [
                 'geo_id' => $region->getId(),
             ],
@@ -99,7 +99,7 @@ class Repository {
             }
         );
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+        $client->execute();
 
         return $collection;
     }
@@ -116,7 +116,7 @@ class Repository {
             $params['geo_id'] = $region->getId();
         }
 
-        $this->client->addQuery('shop/get', $params, [], $callback);
+        $this->client->addQuery('shop/gets', $params, [], $callback);
     }
 
     /**
@@ -131,7 +131,7 @@ class Repository {
         $client = clone $this->client;
 
         $collection = [];
-        $client->addQuery('shop/get',
+        $client->addQuery('shop/gets',
             [
                 'id' => $ids,
             ],
@@ -143,7 +143,7 @@ class Repository {
             }
         );
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+        $client->execute();
 
         return $collection;
     }
@@ -159,7 +159,7 @@ class Repository {
 
         if (!(bool)$ids) return [];
 
-        $this->client->addQuery('shop/get',
+        $this->client->addQuery('shop/gets',
             [
                 'id' => $ids,
             ],
