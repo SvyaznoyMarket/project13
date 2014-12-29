@@ -51,14 +51,15 @@ class Entity {
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('uid', $data)) $this->setUi($data['uid']);
-        //if (array_key_exists('token', $data)) $this->setToken($data['token']);
+        if (array_key_exists('token', $data)) $this->setToken($data['token']);  // FIXME: deprecated
         if (array_key_exists('slug', $data)) $this->setToken($data['slug']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
-        if (array_key_exists('working_time', $data)) $this->setRegime($data['working_time']);
+        if (array_key_exists('working_time', $data)) $this->setRegime($data['working_time']); // FIXME: deprecated
+        if (isset($data['working_time']['common'])) $this->setRegime($data['working_time']['common']);
         if (array_key_exists('address', $data)) $this->setAddress($data['address']);
 
-        if (array_key_exists('coord_lat', $data)) $this->setLatitude($data['coord_lat']);
-        if (array_key_exists('coord_long', $data)) $this->setLongitude($data['coord_long']);
+        if (array_key_exists('coord_lat', $data)) $this->setLatitude($data['coord_lat']); // FIXME: deprecated
+        if (array_key_exists('coord_long', $data)) $this->setLongitude($data['coord_long']); // FIXME: deprecated
         if (isset($data['location']['longitude'])) $this->setLongitude($data['location']['longitude']);
         if (isset($data['location']['latitude'])) $this->setLatitude($data['location']['latitude']);
 
@@ -71,7 +72,7 @@ class Entity {
         if (array_key_exists('working_time_by_day', $data)) $this->setWorkingTime($data['working_time_by_day']);
         if (array_key_exists('images', $data) && is_array($data['images'])) {
             foreach ($data['images'] as $photoData) {
-                $this->addPhoto(new Photo\Entity($photoData));
+                //$this->addPhoto(new Photo\Entity($photoData)); // FIXME deprecated
             }
         }
         if (array_key_exists('geo', $data)) $this->setRegion(new Region\Entity($data['geo']));
@@ -82,6 +83,15 @@ class Entity {
                 }
             } else if (isset($data['subway']['name'])) {
                 $this->setSubway(new Subway\Entity($data['subway']));
+            }
+        }
+        if (isset($data['medias'][0])) {
+            foreach ($data['medias'] as $mediaItem) {
+                if (!isset($mediaItem['sources'][0])) continue;
+
+                if ('image' == $mediaItem['provider']) {
+                    $this->addPhoto(new \Model\Shop\Photo\Entity($mediaItem));
+                }
             }
         }
     }
@@ -274,16 +284,6 @@ class Entity {
      */
     public function getPanorama() {
         return $this->panorama;
-    }
-
-    /**
-     * @param Photo\Entity[] $photos
-     */
-    public function setPhoto(array $photos) {
-        $this->photo = [];
-        foreach ($photos as $photo) {
-            $this->addPhoto($photo);
-        }
     }
 
     /**

@@ -22,7 +22,7 @@
 
             <? $i = 0; $count = count($shop->getPhoto()); foreach ($shop->getPhoto() as $photo): $i++ ?>
             <div class="bMap__eContainer<? if (1 == $i) echo ' first' ?> map-image-link">
-                <img class="bMap__eImgSmall" src="<?= $photo->getUrl(2) ?>" alt="" data-value="<?= $photo->getUrl(4) ?>"/>
+                <img class="bMap__eImgSmall" src="<?= (1 == $i) ? $photo->getUrl('shop_middle'): $photo->getUrl('shop_small') ?>" alt="" data-value="<?= $photo->getUrl('shop_big') ?>" />
 
                 <? if ((1 == $i) && $shop->getPanorama()): ?>
                     <div class="bMap__e360 map-360-link"></div>
