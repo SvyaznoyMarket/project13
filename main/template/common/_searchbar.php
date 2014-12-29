@@ -52,7 +52,7 @@ $menu = $page->getGlobalParam('menu');
 
                 <div class="hdsearch_itw">
                     <input type="text"
-                        class="hdsearch_it"
+                        class="hdsearch_it jsSearchInput"
                         name="q"
                         placeholder="Поиск по товарам..."
                         autocomplete="off"
@@ -69,11 +69,11 @@ $menu = $page->getGlobalParam('menu');
         <div class="searchdd jsSearchbarResults" style="display: none;" data-bind="visible: searchResultsVisibility() && searchInput().length > 2 && !isNoSearchResult()">
             <div class="searchdd_t" data-bind="visible: searchResultCategories().length > 0"><span class="searchdd_t_tx" >Категории</span></div>
                 <!-- ko foreach:  searchResultCategories -->
-                <a href="" class="searchdd_lk" data-bind="attr: { href: link }"><span class="undrlh" data-bind="text: name"></span></a>
+                <a href="" class="searchdd_lk jsSearchSuggestCategory" data-bind="attr: { href: link }"><span class="undrlh" data-bind="text: name"></span></a>
                 <!-- /ko -->
             <div class="searchdd_t" data-bind="visible: searchResultProducts().length > 0"><span class="searchdd_t_tx">Товары</span></div>
                 <!-- ko foreach:  searchResultProducts -->
-                <a href="" class="searchdd_lk" data-bind="attr: { href: link }">
+                <a href="" class="searchdd_lk jsSearchSuggestProduct" data-bind="attr: { href: link }">
                     <img alt="" class="searchdd_img" data-bind="attr: { src: image }" />
                     <span class="searchdd_tx"><span class="undrlh" data-bind="text: name"></span></span>
                 </a>
