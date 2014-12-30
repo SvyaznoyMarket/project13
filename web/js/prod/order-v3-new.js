@@ -2075,7 +2075,8 @@
         var error = [],
 			$agreement = $('.jsAcceptAgreement'),
 			$form = $(this).closest('form'),
-			send15_3 = false;
+			send15_3 = false,
+			partnerOrders = $('.jsPartnerOrder');
 
         if (!$agreement.is(':checked')) {
             error.push('Необходимо согласие с информацией о продавце и его офертой');
@@ -2084,27 +2085,30 @@
 			$agreement.parent().removeClass('accept-err')
 		}
 
-        // Доставка
-        /*if ($('.orderCol_delivrLst_i-act').text().indexOf('Доставка') != -1) {
-            if (!ENTER.OrderV3.address || !ENTER.OrderV3.address.buildingName()) {
-				$('.jsSmartAddressBlock').addClass('orderCol_delivrIn-err');
-				error.push('Укажите адрес доставки');
-			} else {
-				$('.jsSmartAddressBlock').removeClass('orderCol_delivrIn-err');
+        // Проверяем заказы от партнеров
+		partnerOrders.each(function(){
+			// Доставка
+			if ($(this).find('.orderCol_delivrLst_i-act').text().indexOf('Доставка') != -1) {
+				if (!ENTER.OrderV3.address || !ENTER.OrderV3.address.buildingName()) {
+					$('.jsSmartAddressBlock').addClass('orderCol_delivrIn-err');
+					error.push('Укажите адрес доставки');
+				} else {
+					$('.jsSmartAddressBlock').removeClass('orderCol_delivrIn-err');
+				}
 			}
-        }*/
+			// Самовывоз
+			$(this).find('.orderCol_addrs_tx').each(function(i,val){
+				if ($(val).text().replace(/\s+/, '').length == 0) {
+					$(this).closest('.orderCol_delivrIn-empty').addClass('orderCol_delivrIn-err');
+					error.push('Укажите адрес самовывоза');
+				}
+			});
+		});
 
-        // Самовывоз
-        /*$('.orderCol_addrs_tx').each(function(i,val){
-            if ($(val).text().replace(/\s+/, '').length == 0) {
-				$(this).closest('.orderCol_delivrIn-empty').addClass('orderCol_delivrIn-err');
-				error.push('Укажите адрес самовывоза');
-			}
-        });*/
+		e.preventDefault();
 
         if (error.length != 0) {
             $errorBlock = $orderContent.find('#OrderV3ErrorBlock'); // TODO не очень хорошее поведение
-            e.preventDefault();
             $body.trigger('trackUserAction', ['15_2 Оформить_ошибка_Доставка', 'Поле ошибки: '+error.join(', ')]);
         } else {
 
@@ -2115,7 +2119,6 @@
 			if (send15_3) $body.trigger('trackUserAction', ['15_3 Оформить_успешно_КЦ']);
 
             $body.trigger('trackUserAction', ['15_1 Оформить_успешно_Доставка_ОБЯЗАТЕЛЬНО']);
-			e.preventDefault();
 			setTimeout(function() {	$form.submit(); }, 1000 ); // быстрая обертка для отправки аналитики, иногда не успевает отправляться
         }
 
