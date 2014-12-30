@@ -193,14 +193,7 @@ class Action {
 
         $region = $user->getRegion();
 
-        $currentRegion = $regionToken == $region->getToken() ? $region : \RepositoryManager::region()->getEntityByToken($regionToken);
-        if (!$currentRegion) {
-            throw new \Exception\NotFoundException(sprintf('Region @%s not found', $regionToken));
-        }
-
         // подготовка 2-го пакета запросов
-
-        // TODO: запрашиваем меню
 
         // магазин
         /** @var $shop \Model\Shop\Entity */
@@ -217,6 +210,9 @@ class Action {
         if (!$shop) {
             throw new \Exception\NotFoundException(sprintf('Shop @%s not found', $shopToken));
         }
+
+        $currentRegion = $shop->getRegion();
+
         // hardcode
         if (in_array($shop->getId(), array(1))) {
             $shop->setPanorama(new \Model\Shop\Panorama\Entity(array(
