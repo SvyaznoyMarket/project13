@@ -42,7 +42,7 @@ return function(
                 <? endif ?>
             </div>
 
-            <? if ($isOnlinePaymentChecked) : ?>
+            <? if ($isOnlinePaymentChecked && !$order->isPaid()) : ?>
                 <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
             <? endif ?>
 

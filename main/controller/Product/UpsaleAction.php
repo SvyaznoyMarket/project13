@@ -62,12 +62,6 @@ class UpsaleAction extends BasicRecommendedAction {
                         function($data) use(&$collection, $recommEngine) {
                             foreach ($data as $value) {
                                 if (!isset($value['id']) || !isset($value['link'])) continue;
-                                $id = $value['id'];
-                                if (isset($recommEngine[$id])) {
-                                    \Controller\Product\BasicRecommendedAction::prepareLink(
-                                        $value['link'], $recommEngine[$id]
-                                    );
-                                }
                                 $entity = new \Model\Product\Entity($value);
                                 $collection[$entity->getId()] = $entity;
                             }
@@ -114,8 +108,6 @@ class UpsaleAction extends BasicRecommendedAction {
             ];
 
         } catch (\Exception $e) {
-            \App::logger()->error($e, [$this->actionType]);
-
             $responseData = [
                 'success' => false,
                 'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage()],

@@ -69,16 +69,19 @@ $helper = new \Helper\TemplateHelper();
             <li class="slidesBox_i">
                 <? foreach ($block as $product) : ?>
                 <? if (!$product) continue ?>
+                <? $productLink = $product->getLink() . '?' . http_build_query([
+                            'sender[name]'      => 'retailrocket',
+                            'sender[position]'  => @$blockname == 'ПОПУЛЯРНЫЕ ТОВАРЫ' ? 'MainPopular' : 'MainRecommended',
+                            'sender[method]'    => @$blockname == 'ПОПУЛЯРНЫЕ ТОВАРЫ' ? 'ItemsToMain' : 'PersonalRecommendation',
+                            'sender[from]'      => 'MainPage'
+                        ]) ?>
                 <div class="item">
-                    <a href="<?= $product->getLink() ?>" class="item_imgw"><img src="<?= $product->getImageUrl(2) ?>" class="item_img" alt="<?= $product->getName() ?>"/></a>
-                    <div class="item_n"><a href="<?= $product->getLink() ?>"><?= $product->getName() ?></a></div>
+                    <a href="<?= $productLink ?>" class="item_imgw"><img src="<?= $product->getImageUrl(2) ?>" class="item_img" alt="<?= $product->getName() ?>"/></a>
+                    <div class="item_n"><a href="<?= $productLink ?>"><?= $product->getName() ?></a></div>
                     <div class="item_pr"><?= $helper->formatPrice($product->getPrice()) ?>&nbsp;<span class="rubl">p</span></div>
                     <?= $helper->render('cart/__button-product', [
                         'product'        => $product,
-//                        'onClick'        => $addToCartJS ? $addToCartJS : null,
-//                        'isRetailRocket' => true, // TODO: удалить
                         'sender'         => $sender,
-//                        'noUpdate'       => true,
                     ]) // Кнопка купить ?>
 <!--                    <a class="item_btn btn5" href="">Купить</a>-->
                 </div>
