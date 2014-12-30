@@ -160,6 +160,7 @@ class CompleteAction extends OrderV3 {
         $page->setParam('paymentProviders', $paymentProviders);
         $page->setParam('banks', $banks);
         $page->setParam('shops', $shops);
+        $page->setParam('subscribe', (bool)$request->cookies->get(\App::config()->subscribe['cookieName3']));
 
         $page->setParam('sessionIsReaded', $sessionIsReaded);
 
