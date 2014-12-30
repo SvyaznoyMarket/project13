@@ -17,7 +17,7 @@
                 <a class="cartLst_lk" data-bind="attr: { href: link }"><img class="cartLst_img" src="" data-bind="attr: { src: img }"/></a>
                 <div class="cartLst_n"><a data-bind="attr: { href: link }, text: name"></a></div>
                 <div class="cartLst_inf">
-                    <span class="price"><!--ko text: window.printPrice(price)--><!--/ko--> &nbsp;<span class="rubl">p</span></span>
+                    <span class="price"><span data-bind="html: window.printPrice(price)"></span> &nbsp;<span class="rubl">p</span></span>
                     <span class="quan"><!--ko text: quantity--><!--/ko--> шт.</span>
                     <a class="del jsCartDelete" data-bind="attr: { href: deleteUrl }">удалить</a>
                 </div>

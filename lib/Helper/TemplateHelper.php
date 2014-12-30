@@ -174,8 +174,14 @@ class TemplateHelper {
      * @param string $thousandsDelimiter
      * @return string
      */
-    public function formatPrice($price, $numDecimals = 0, $decimalsDelimiter = ',', $thousandsDelimiter = ' ') {
-        return number_format((float)$price, $numDecimals, $decimalsDelimiter, $thousandsDelimiter);
+    public function formatPrice($price, $numDecimals = 0) {
+        if (strlen((int)$price) >= 5) {
+            $thousandsSeparator = '&thinsp;';
+        } else {
+            $thousandsSeparator = '';
+        }
+
+        return number_format((float)$price, $numDecimals, '.', $thousandsSeparator);
     }
 
     /**
