@@ -66,12 +66,13 @@
                 universalEvent.eventAction = e.action;
                 if (e.label) universalEvent.eventLabel = e.label;
                 if (e.value) universalEvent.eventValue = e.value;
-                if (e.hitCallback) universalEvent.hitCallback = e.hitCallback;
+                if (typeof e.hitCallback == 'function') universalEvent.hitCallback = e.hitCallback;
+                else if (typeof e.hitCallback == 'string') universalEvent.hitCallback = function(){ window.location.href = e.hitCallback };
                 if (e.nonInteraction) ga('set', 'nonInteraction', true);
                 ga('send', universalEvent);
             } else {
                 console.warn('No Universal Google Analytics function found');
-                if (typeof e.hitCallback == 'function') e.hitCallback(); // если не удалось отправить, но callback необходим
+                if (typeof universalEvent.hitCallback == 'function') universalEvent.hitCallback(); // если не удалось отправить, но callback необходим
             }
 
             // log to console

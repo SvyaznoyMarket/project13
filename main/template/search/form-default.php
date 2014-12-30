@@ -29,7 +29,7 @@ foreach ($sHints as $key => $item) {
 ?>
 <form class="search-form clearfix" action="<?= $page->url('search') ?>" method="get">
     <span class="searchtextWrapper">
-      <input type="text" autofocus class="searchtext<? if ($isWide) { ?> width483<? } ?>" name="q" placeholder="Поиск среди десятков тысяч товаров" value="<?= $searchQuery ?>" autocomplete="off"/>
+      <input type="text" autofocus class="searchtext<? if ($isWide) { ?> width483<? } ?> jsSearchInput" name="q" placeholder="Поиск среди десятков тысяч товаров" value="<?= $searchQuery ?>" autocomplete="off"/>
     </span>
     <input type="submit" class="searchbutton" value="Найти" title="Найти" id="try-1"/>
 </form>

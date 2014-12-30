@@ -46,7 +46,7 @@ return function(
             <div class="jsOrderValidationErrors" data-value="<?= $helper->json($order->validationErrors) ?>"></div>
         <? endif; ?>
     <!-- блок разбиения заказа -->
-    <div class="orderRow clearfix" data-block_name="<?= $order->block_name ?>">
+    <div class="orderRow clearfix <?= $order->seller->id !== null ? 'jsPartnerOrder' : ''?>" data-block_name="<?= $order->block_name ?>">
         <!-- информация о заказе -->
         <div class="orderCol">
             <div class="orderCol_h">

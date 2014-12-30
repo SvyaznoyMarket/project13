@@ -27,16 +27,10 @@ class PaypalAction {
                 throw new \Exception('Не получена информация о заказе');
             }
 
-            $order = new \Model\Order\CreatedEntity($result['order']);
-
-            $orders = [
-                $order,
-            ];
-
             \App::debug()->add('core.response', json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 200, \Debug\Collector::TYPE_INFO);
 
-            $page = new \View\Order\PaypalSuccessPage();
-            $page->setParam('orders', $orders);
+            return new \Http\RedirectResponse(\App::router()->generate('orderV3.complete', ['refresh' => 1]));
+
         } catch(\Exception $e) {
             \App::debug()->add('core.response', $e, 200, \Debug\Collector::TYPE_ERROR);
 

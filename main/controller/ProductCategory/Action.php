@@ -506,7 +506,7 @@ class Action {
                     $client->execute();
 
                     if (!$promo) {
-                        throw new \Exception\NotFoundException(sprintf('Промо-каталог @%s не найден.', $promoCategoryToken));
+                        throw new \Exception\NotFoundException(sprintf('Промо-каталог @%s не найден для категории @%s', $promoCategoryToken, $categoryToken));
                     }
 
                     $products = [];

@@ -291,16 +291,10 @@ namespace Model\OrderDelivery\Entity {
          */
         public $possible_intervals = [];
         /**
-         * @deprecated
-         * Возможные точки самовывоза (id)
-         * @var array
-         */
-        public $possible_points = [];
-        /**
          * Возможные точки самовывоза
          * @var array
          */
-        public $possible_point_data = [];
+        public $possible_points = [];
         /** Возможные точки самовывоза (ссылка на Point)
          * @var Point
          */
@@ -379,24 +373,37 @@ namespace Model\OrderDelivery\Entity {
             if (isset($data['total_original_cost'])) $this->total_original_cost = (int)$data['total_original_cost'];
 
             if (isset($data['possible_points']) && is_array($data['possible_points'])) {
-                foreach ($data['possible_points'] as $pointsType => $points) {
+                foreach ($data['possible_points'] as $pointType => $points) {
                     if (is_array($points)) {
-                        array_walk($points, function ($point) use (&$orderDelivery, $pointsType) {
-                            if (isset($orderDelivery->points[$pointsType]->list[$point])) $this->possible_points[$pointsType][] = &$orderDelivery->points[$pointsType]->list[$point];
+                        array_walk($points, function ($point) use (&$orderDelivery, $pointType) {
+                            if (isset($orderDelivery->points[$pointType]->list[$point])) {
+                                $this->possible_points[$pointType][] = &$orderDelivery->points[$pointType]->list[$point];
+                            }
                         });
                     }
                 }
             }
 
-            if (isset($data['possible_point_data']) && is_array($data['possible_point_data'])) {
-                foreach ($data['possible_point_data'] as $pointsType => $points) {
-                    if (is_array($points)) {
-                        foreach ($points as $point) {
-                            if (!isset($point['id'])) continue;
-                            $this->possible_point_data[$pointsType][] = $point;
+            try {
+                if (isset($data['possible_point_data']) && is_array($data['possible_point_data'])) {
+                    foreach ($data['possible_point_data'] as $pointType => $points) {
+                        if (is_array($points)) {
+                            foreach ($points as $pointItem) {
+                                if (
+                                    !isset($pointItem['id'])
+                                    || empty($pointItem['nearest_day'])
+                                    || !isset($orderDelivery->points[$pointType]->list[$pointItem['id']])
+                                ) {
+                                    continue;
+                                }
+
+                                $orderDelivery->points[$pointType]->list[$pointItem['id']]->nearestDay = $pointItem['nearest_day'];
+                            }
                         }
                     }
                 }
+            } catch (\Exception $e) {
+                \App::logger()->error(['error' => $e]);
             }
 
             $possible_delivery_groups_ids = array_unique(array_map(function ($delivery) { return $delivery->group_id; }, $this->possible_deliveries));
@@ -544,6 +551,8 @@ namespace Model\OrderDelivery\Entity\Point {
         public $latitude;
         /** @var float */
         public $longitude;
+        /** @var string|null */
+        public $nearestDay;
 
         public function __construct(array $data = []) {
             if (isset($data['id'])) $this->id = (string)$data['id'];

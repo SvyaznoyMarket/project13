@@ -32,8 +32,6 @@
 				activeClass = 'searchdd_lk_iact',
 				index = $links.index($links.filter('.'+activeClass));
 
-			console.log(index);
-
 			if (!self.isNoSearchResult()) {
 				$links.removeClass(activeClass);
 				switch (keycode) {
@@ -99,8 +97,6 @@
 		self.currentCategory.subscribe(function(val){
 			var previous = self.previousCategory() === null ? '' : self.previousCategory().name;
 
-			console.log(val, self.previousCategory());
-
 			if (val == null) {
 				$body.trigger('trackGoogleEvent',['search_scope', 'clear', previous])
 			} else {
@@ -112,15 +108,41 @@
 			}
 		});
 
-
 		return self;
 	}
 
 	// Биндинги на нужные элементы
-	// Топбар, кнопка Купить на странице продукта, листинги, слайдер аксессуаров
 	$body.find('.jsKnockoutSearch').each(function(){
 		ko.applyBindings(new SearchModel(), this);
 	});
+
+	// Аналитика на фокусе строки поиска
+	$body.on('focus', '.jsSearchInput', function(){
+		$body.trigger('trackGoogleEvent',['search_string', 'string'])
+	});
+
+	// Клик по категории в подсказке
+	$body.on('click', '.jsSearchSuggestCategory', function(e){
+		e.preventDefault();
+		$body.trigger('trackGoogleEvent', [{
+			category: 'search_string',
+			action: 'suggest',
+			label: 'category',
+			hitCallback: $(this).attr('href')
+		}])
+	});
+
+	// Клик по продукте в подсказке
+	$body.on('click', '.jsSearchSuggestProduct', function(e){
+		e.preventDefault();
+		$body.trigger('trackGoogleEvent', [{
+			category: 'search_string',
+			action: 'suggest',
+			label: 'item',
+			hitCallback: $(this).attr('href')
+		}])
+	});
+
 }(jQuery));
 
 ;(function($) {
@@ -687,12 +709,13 @@
                 universalEvent.eventAction = e.action;
                 if (e.label) universalEvent.eventLabel = e.label;
                 if (e.value) universalEvent.eventValue = e.value;
-                if (e.hitCallback) universalEvent.hitCallback = e.hitCallback;
+                if (typeof e.hitCallback == 'function') universalEvent.hitCallback = e.hitCallback;
+                else if (typeof e.hitCallback == 'string') universalEvent.hitCallback = function(){ window.location.href = e.hitCallback };
                 if (e.nonInteraction) ga('set', 'nonInteraction', true);
                 ga('send', universalEvent);
             } else {
                 console.warn('No Universal Google Analytics function found');
-                if (typeof e.hitCallback == 'function') e.hitCallback(); // если не удалось отправить, но callback необходим
+                if (typeof universalEvent.hitCallback == 'function') universalEvent.hitCallback(); // если не удалось отправить, но callback необходим
             }
 
             // log to console

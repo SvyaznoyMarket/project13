@@ -133,11 +133,7 @@ class Actionpay {
                 }
             }
 
-            $link = strtr('actionpay={actionpayId}&apid={order.id}&price={sum}', [
-                '{actionpayId}' => $actionpayId,
-                '{order.id}'    => $order->getNumber(),
-                '{sum}'         => $orderSum,
-            ]);
+            $link = sprintf('actionpay=%s&apid=%s', $actionpayId, $order->getNumber());
         } catch (\Exception $e) {
             \App::logger()->error($e, ['partner', 'actionpay ' . __METHOD__]);
         }

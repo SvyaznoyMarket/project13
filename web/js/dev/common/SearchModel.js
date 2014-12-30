@@ -32,8 +32,6 @@
 				activeClass = 'searchdd_lk_iact',
 				index = $links.index($links.filter('.'+activeClass));
 
-			console.log(index);
-
 			if (!self.isNoSearchResult()) {
 				$links.removeClass(activeClass);
 				switch (keycode) {
@@ -99,8 +97,6 @@
 		self.currentCategory.subscribe(function(val){
 			var previous = self.previousCategory() === null ? '' : self.previousCategory().name;
 
-			console.log(val, self.previousCategory());
-
 			if (val == null) {
 				$body.trigger('trackGoogleEvent',['search_scope', 'clear', previous])
 			} else {
@@ -112,13 +108,39 @@
 			}
 		});
 
-
 		return self;
 	}
 
 	// Биндинги на нужные элементы
-	// Топбар, кнопка Купить на странице продукта, листинги, слайдер аксессуаров
 	$body.find('.jsKnockoutSearch').each(function(){
 		ko.applyBindings(new SearchModel(), this);
 	});
+
+	// Аналитика на фокусе строки поиска
+	$body.on('focus', '.jsSearchInput', function(){
+		$body.trigger('trackGoogleEvent',['search_string', 'string'])
+	});
+
+	// Клик по категории в подсказке
+	$body.on('click', '.jsSearchSuggestCategory', function(e){
+		e.preventDefault();
+		$body.trigger('trackGoogleEvent', [{
+			category: 'search_string',
+			action: 'suggest',
+			label: 'category',
+			hitCallback: $(this).attr('href')
+		}])
+	});
+
+	// Клик по продукте в подсказке
+	$body.on('click', '.jsSearchSuggestProduct', function(e){
+		e.preventDefault();
+		$body.trigger('trackGoogleEvent', [{
+			category: 'search_string',
+			action: 'suggest',
+			label: 'item',
+			hitCallback: $(this).attr('href')
+		}])
+	});
+
 }(jQuery));

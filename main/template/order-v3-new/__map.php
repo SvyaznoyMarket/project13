@@ -49,7 +49,11 @@ return function(
     <div class="selShop_l" data-token="<?= $token ?>">
         <ul class="shopLst">
         <? foreach ($points as $point): ?>
-            <? $subway = (isset($point->subway) && isset($point->subway[0])) ? $point->subway[0] : null ?>
+            <?
+                $subway = (isset($point->subway) && isset($point->subway[0])) ? $point->subway[0] : null;
+                $nearestDay = '';
+                try { $nearestDay = !empty($point->nearestDay) ? $helper->humanizeDate(new \DateTime($point->nearestDay)) : ''; } catch(\Exception $e) {}
+            ?>
 
             <li class="shopLst_i jsChangePoint" data-id="<?= $point->id ?>" data-token="<?= $token ?>">
                 <div class="shopLst_addrs">
@@ -59,8 +63,8 @@ return function(
                         </div>
                     <? endif ?>
 
-                    <? if (false): ?>
-                        <div class="shopLst_stick">Послезавтра</div>
+                    <? if ($nearestDay): ?>
+                        <div class="shopLst_stick"><?= $nearestDay ?></div>
                     <? endif ?>
 
                     <div class="shopLst_ln"><?= $point->address ?></div>

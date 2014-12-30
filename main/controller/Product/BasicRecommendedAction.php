@@ -309,10 +309,9 @@ class BasicRecommendedAction {
         return $this->name;
     }
 
-    /**
+    /** @deprecated
      * @param $link
-     * @param $id
-     * @param $senderName
+     * @param $params
      * @return string
      */
     static public function prepareLink(&$link, array $params) {
