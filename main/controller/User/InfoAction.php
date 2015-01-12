@@ -122,6 +122,7 @@ class InfoAction {
                         'cartButton'        => [ 'id' => \View\Id::cartButtonForProduct($cartProduct['id']), ],
                         'category'          => $cartProduct['category'],
                         'rootCategory'      => $cartProduct['rootCategory'],
+                        'isCredit'          => @$cartProduct['credit']['enabled'] === true
                     ];
 
                 }

@@ -13,7 +13,7 @@ return function(
 ?>
 
 <div class="creditbox bInputList">
-    <input id="creditinput" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" name="price_or_credit" autocomplete="off" />
+    <input id="creditinput" class="jsCustomRadio bCustomInput mCustomRadioBig jsProductCreditRadio" type="radio" name="product_credit_payment" autocomplete="off" value="on" />
 
     <label class="bCustomLabel mCustomLabelRadioBig" for="creditinput">
         В кредит
