@@ -11,7 +11,8 @@ return function(
     $sessionIsReaded,
     $banks,
     $shops,
-    $creditData
+    $creditData,
+    $subscribe
 ) {
     /** @var $products \Model\Product\Entity[] */
     $page = new \View\OrderV3\CompletePage();
@@ -193,7 +194,10 @@ return function(
         ]); ?>
     <? endif ?>
 
-    <? if (!$sessionIsReaded) {
+    <? if (!$sessionIsReaded): ?>
+        <span class="js-orderV3New-complete-subscribe" data-value="<?=$helper->json(['subscribe' => $subscribe, 'email' => isset($orders[0]->email) ? $orders[0]->email : null])?>"></span>
+
+        <?
         // Если сесиия уже была прочитана, значит юзер обновляет страницу, не трекаем партнёров вторично
         echo $page->render('order/_analytics', array(
             'orders'       => $orders,
@@ -206,8 +210,8 @@ return function(
         ]);
 
         echo $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $products]);
-
-    } ?>
+        ?>
+    <? endif ?>
 
 <? };
 
