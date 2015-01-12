@@ -1447,6 +1447,17 @@
 		if (typeof ENTER.utils.sendOrderToGA == 'function') ENTER.utils.sendOrderToGA($jsOrder.data('value'));
     }
 
+	$(function(){
+		var data = $('.js-orderV3New-complete-subscribe').data('value');
+
+		if (data && data.subscribe && data.email) {
+			$body.trigger('trackGoogleEvent', {
+				category: 'subscription',
+				action: 'subscribe_order_confirmation',
+				label: data.email
+			});
+		}
+	});
 }(jQuery));
 ;(function($) {
 
@@ -1993,7 +2004,7 @@
 
 	// Меняем куку по изменению "Подписаться на рассылку"
 	$body.on('change', '.jsOrderV3SubscribeCheckbox', function(){
-		docCookies.setItem('enter_wanna_subscribe', $(this).is(':checked'), 0);
+		docCookies.setItem('enter_wanna_subscribe', $(this).is(':checked'), 0, '/');
 	});
 
 	$('.jsOrderV3PhoneField').focus();
