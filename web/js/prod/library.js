@@ -616,9 +616,12 @@ String.prototype.isEmail = isTrueEmail; // добавляем методом д�
  */
 (function( global ) {
 	global.printPrice = function( num ) {
-		var str = (num || '').toString();
+		num = num + '';
+		if ((parseInt(num) + '').length >= 5) {
+			num = num.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1&thinsp;');
+		}
 
-		return str.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
+		return num;
 	};
 }(this));
 /*\
@@ -916,7 +919,7 @@ var DirectCredit = {
 				console.info('sendCredit', self.basketPull);
 
 				if ( result.payment > 0) {
-					self.output.text( window.printPrice( Math.ceil( result.payment ) ) );
+					self.output.html( window.printPrice( Math.ceil( result.payment ) ) );
 				}
 				else {
 					self.output.parent('.paymentWrap').hide();

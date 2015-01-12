@@ -180,7 +180,7 @@ var DirectCredit = {
 				console.info('sendCredit', self.basketPull);
 
 				if ( result.payment > 0) {
-					self.output.text( window.printPrice( Math.ceil( result.payment ) ) );
+					self.output.html( window.printPrice( Math.ceil( result.payment ) ) );
 				}
 				else {
 					self.output.parent('.paymentWrap').hide();
