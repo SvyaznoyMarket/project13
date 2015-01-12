@@ -11,7 +11,7 @@ return function(
     ];
 ?>
 
-    <div class="fltrRange fltrRange-v3 js-category-filter-rangeSlider">
+    <div class="fltrRange fltrRange-v3 js-category-filter-rangeSlider <? if ($property->isPrice()): ?>js-gift-category-filter-element-price<? endif ?>">
         <span class="fltrRange_lbl">от</span>
         <input class="fltrRange_it mFromRange js-category-filter-rangeSlider-from" name="<?= \View\Name::productCategoryFilter($property, 'from') ?>" value="<?= $helper->clearZeroValue($productFilter->getValueMin($property)) ?>" type="text" />
         &nbsp;<span class="fltrRange_val rubl">p</span>

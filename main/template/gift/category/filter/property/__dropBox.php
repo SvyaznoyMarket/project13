@@ -100,6 +100,7 @@ return function(
                             <? if ($option === $selectedOption): ?>
                                 checked="checked"
                             <? endif ?>
+                            data-id="<?= $helper->escape($property->getId()) ?>"
                         />
                         <label for="<?= $helper->escape($id) ?>" class="customLabel customLabel-gift js-gift-category-filter-property-dropBox-content-item-clicker js-gift-category-filter-property-dropBox-content-item-title">
                             <?= $helper->escape($option->getName()) ?>

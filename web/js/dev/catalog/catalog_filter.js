@@ -679,7 +679,7 @@
 		/**
 		 * Обработка пагинации
 		 */
-		jsPaginationLinkHandler = function jsPaginationLinkHandler() {
+		jsPaginationLinkHandler = function jsPaginationLinkHandler(e) {
 			var self = $(this),
 				url = self.attr('href'),
 				activeClass = 'mActive',
@@ -697,7 +697,7 @@
 				$.scrollTo(filterBlock, 500);
 			}
 
-			return false;
+			e.preventDefault();
 		},
 
 		/**
