@@ -38,7 +38,10 @@ if (@$blockname == 'ПОПУЛЯРНЫЕ ТОВАРЫ') {
     } catch (\Exception $e) {}
 }
 
-$rrProducts = array_filter($rrProducts, function(\Model\Product\BasicEntity $p){ return $p->getIsBuyable() && !$p->isInShopShowroomOnly();});
+$rrProducts = array_filter($rrProducts, function($p){
+    /** @var \Model\Product\BasicEntity $p */
+    return ($p instanceof \Model\Product\BasicEntity) && $p->getIsBuyable() && !$p->isInShopShowroomOnly(); // SITE-5000
+});
 
 $blocks = array_chunk($rrProducts, 4);
 $helper = new \Helper\TemplateHelper();
