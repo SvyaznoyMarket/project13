@@ -14,8 +14,8 @@ if ($region && \App::config()->newOrder) {
     $ordersNewTest = \App::abTest()->getTest('orders_new');
     $ordersNewSomeRegionsTest = \App::abTest()->getTest('orders_new_some_regions');
     if (
-        (!in_array($region->getId(), [93746, 119623]) && $ordersNewTest && in_array($ordersNewTest->getChosenCase()->getKey(), ['new_1', 'new_2'], true)) // АБ-тест для остальных регионов
-        || (in_array($region->getId(), [93746, 119623]) && $ordersNewSomeRegionsTest && in_array($ordersNewSomeRegionsTest->getChosenCase()->getKey(), ['new_1', 'new_2'], true)) // АБ-тест для Ярославля и Ростова-на-дону
+        (!in_array($region->getId(), [93746, 119623]) && $ordersNewTest && in_array($ordersNewTest->getChosenCase()->getKey(), ['new_1', 'new_2', 'default'], true)) // АБ-тест для остальных регионов
+        || (in_array($region->getId(), [93746, 119623]) && $ordersNewSomeRegionsTest && in_array($ordersNewSomeRegionsTest->getChosenCase()->getKey(), ['new_1', 'new_2', 'default'], true)) // АБ-тест для Ярославля и Ростова-на-дону
     ) {
         $backUrl = $page->url('order.complete', [], true);
     }

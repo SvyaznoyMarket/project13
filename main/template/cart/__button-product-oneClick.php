@@ -8,7 +8,23 @@ return function (
     $value = 'Купить быстро в 1 клик',
     \Model\Shop\Entity $shop = null
 ) {
-    $isNewOneClick = true;
+    $region = \App::user()->getRegion();
+
+    $isNewOneClick = false;
+    try {
+        $ordersNewTest = \App::abTest()->getTest('orders_new');
+        $ordersNewSomeRegionsTest = \App::abTest()->getTest('orders_new_some_regions');
+        if (true
+            //($region && in_array($region->getId(), \App::config()->self_delivery['regions']))
+            && \App::config()->newOrder
+            && (
+                (!in_array($region->getId(), [93746, 119623]) && $ordersNewTest && in_array($ordersNewTest->getChosenCase()->getKey(), ['new_1', 'new_2', 'default'], true)) // АБ-тест для остальных регионов
+                || (in_array($region->getId(), [93746, 119623]) && $ordersNewSomeRegionsTest && in_array($ordersNewSomeRegionsTest->getChosenCase()->getKey(), ['new_1', 'new_2', 'default'], true)) // АБ-тест для Ярославля и Ростова-на-дону
+            )
+        ) {
+            $isNewOneClick = true;
+        }
+    } catch (\Exception $e) {}
 
     if (
         !$product->getIsBuyable()
