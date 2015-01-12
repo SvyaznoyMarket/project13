@@ -397,18 +397,15 @@ class Entity {
      * @return null|array
      */
     public function getWorkingTimeToday() {
-        if ((bool)$this->getWorkingTime()) {
-            $workingTime = $this->getWorkingTime();
+        if ((bool)$workingTime = $this->getWorkingTime()) {
             $day = lcfirst(date('l'));
 
             if ($workingTime[$day][0] && $workingTime[$day][1]) {
                 return array_combine(['start_time', 'end_time'], $workingTime[$day]);
-            } else {
-                return null;
             }
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
