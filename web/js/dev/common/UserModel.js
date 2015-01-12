@@ -68,7 +68,20 @@
 
 		/* Удаление продукта по ID */
 		model.removeProductByID = function(product_id) {
-			model.cart.remove(function(item) { return item.id == product_id })
+			model.cart.remove(function(item) { return item.id == product_id });
+
+			(function() {
+				var giftBuyProducts = docCookies.getItem('giftBuyProducts') || '';
+				if (giftBuyProducts) {
+					docCookies.setItem(
+						'giftBuyProducts',
+						giftBuyProducts.replace(new RegExp('(^|\\s+)' + product_id + '(\\s+|$)', 'g'), ' ').replace(/^\s+|\s+$/g, ''),
+						30*24*60,
+						'/',
+						'enter.ru'
+					);
+				}
+			})();
 		};
 
 		/* АБ-тест платного самовывоза */

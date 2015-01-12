@@ -26,16 +26,18 @@ $helper = new \Helper\TemplateHelper();
         <?= $helper->render('gift/category/__pagination', ['pager' => $productPager]) ?>
     </div>
 
-    <?= $helper->render('product/__list', [
-        'pager'                  => $productPager,
-        'view'                   => 'light_with_bottom_description',
-        'productVideosByProduct' => $productVideosByProduct,
-        'bannerPlaceholder'      => [],
-        'listingStyle'           => null,
-        'columnCount'            => $columnCount,
-        'class'                  => 'lstn-btn2'
-    ]) ?>
-
+    <div class="js-gift-category-listing">
+        <?= $helper->render('product/__list', [
+            'pager'                  => $productPager,
+            'view'                   => 'light_with_bottom_description',
+            'productVideosByProduct' => $productVideosByProduct,
+            'bannerPlaceholder'      => [],
+            'listingStyle'           => null,
+            'columnCount'            => $columnCount,
+            'class'                  => 'lstn-btn2'
+        ]) ?>
+    </div>
+    
     <div class="sorting clearfix js-category-sortingAndPagination">
         <?= $helper->render('gift/category/__pagination', ['pager' => $productPager]) ?>
     </div>

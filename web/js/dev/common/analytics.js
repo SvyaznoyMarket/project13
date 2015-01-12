@@ -200,7 +200,12 @@
 		 * @param orderData
 		 */
 		sendOrderToGA = function sendOrderF(orderData) {
-			var oData = orderData || { orders: [] };
+			var
+				oData = orderData || { orders: [] },
+				giftBuyProducts = (docCookies.getItem('giftBuyProducts') || '').split(' ');
+
+			docCookies.setItem('giftBuyProducts', '', 0, '/', 'enter.ru');
+
 			console.log('[Google Analytics] Start processing orders', oData.orders);
 			$.each(oData.orders, function(i,o) {
 				var googleOrderTrackingData = {};
@@ -212,7 +217,22 @@
 					'city': o.region.name
 				};
 				googleOrderTrackingData.products = $.map(o.products, function(p){
-					var productName = o.is_partner ? p.name + ' (marketplace)' : p.name;
+					var
+						productName = p.name,
+						labels = [];
+
+					if (o.is_partner) {
+						labels.push('marketplace');
+					}
+
+					if (giftBuyProducts.indexOf(p.id + '') != -1) {
+						labels.push('gift');
+					}
+
+					if (labels.length) {
+						productName += ' (' + labels.join(', ') + ')';
+					}
+
 					/* SITE-4472 Аналитика по АБ-тесту платного самовывоза и рекомендаций из корзины */
 					if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.config.pageConfig.selfDeliveryLimit > parseInt(o.paySum, 10) - o.delivery[0].price) productName = productName + ' (paid pickup)';
 					// Аналитика по купленным товарам из рекомендаций

@@ -11,6 +11,7 @@
 	console.info('[Catalog] Init catalog_infinityScroll.js');
 
 	var
+		$body = $('body'),
 		utils = ENTER.utils,
 		catalog = utils.extendApp('ENTER.catalog'),
 		viewParamPanel = $('.js-category-sortingAndPagination'),
@@ -41,6 +42,7 @@
 				console.warn('checkscroll true. load');
 				catalog.infScroll.nowPage += 1;
 				catalog.infScroll.load();
+				$body.trigger('loadInfinityPage', [catalog.infScroll.nowPage]);
 			}
 		},
 

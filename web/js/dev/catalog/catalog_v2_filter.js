@@ -115,7 +115,7 @@ $(function() {
 		});
 	});
 
-	// Нажатие на диапазоны цен
+	// Нажатие на элементы блока "Скидки"
 	$('.js-category-v2-filter-dropBox-labels .js-customInput').click(function() {
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter',
