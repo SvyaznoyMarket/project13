@@ -88,10 +88,12 @@
             <div class="shopInfoTab_iconw"><div class="shopInfoTab_icon"><i class="i-shopinfo i-shopinfo-payment3"></i></div></div>
             <div class="shopInfoTab_tx">КРЕДИТ</div>
         </li>
+        <? if (false): ?>
         <li class="shopInfoTab_i">
             <div class="shopInfoTab_iconw"><div class="shopInfoTab_icon"><i class="i-shopinfo i-shopinfo-payment4"></i></div></div>
             <div class="shopInfoTab_tx">PAYPAL</div>
         </li>
+        <? endif ?>
         <li class="shopInfoTab_i">
             <div class="shopInfoTab_iconw"><div class="shopInfoTab_icon"><i class="i-shopinfo i-shopinfo-payment5"></i></div></div>
             <div class="shopInfoTab_tx">ОНЛАЙН-БАНК</div>

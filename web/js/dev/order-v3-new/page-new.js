@@ -75,7 +75,7 @@
 
 	// Меняем куку по изменению "Подписаться на рассылку"
 	$body.on('change', '.jsOrderV3SubscribeCheckbox', function(){
-		docCookies.setItem('enter_wanna_subscribe', $(this).is(':checked'), 0);
+		docCookies.setItem('enter_wanna_subscribe', $(this).is(':checked'), 0, '/');
 	});
 
 	$('.jsOrderV3PhoneField').focus();

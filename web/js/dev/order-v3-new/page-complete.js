@@ -221,4 +221,15 @@
 		if (typeof ENTER.utils.sendOrderToGA == 'function') ENTER.utils.sendOrderToGA($jsOrder.data('value'));
     }
 
+	$(function(){
+		var data = $('.js-orderV3New-complete-subscribe').data('value');
+
+		if (data && data.subscribe && data.email) {
+			$body.trigger('trackGoogleEvent', {
+				category: 'subscription',
+				action: 'subscribe_order_confirmation',
+				label: data.email
+			});
+		}
+	});
 }(jQuery));

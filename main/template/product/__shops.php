@@ -1,13 +1,17 @@
 <?php
 
-return function (
+/**
+ * @param \Helper\TemplateHelper $helper
+ * @param \Model\Product\ShopState\Entity[] $shopStates
+ * @param \Model\Product\Entity $product
+ */
+$f = function (
     \Helper\TemplateHelper $helper,
     array $shopStates = [],
     \Model\Product\Entity $product
 ) {
-    /** @var $shopStates \Model\Product\ShopState\Entity[]  */
-
-    ?>
+    $currentRegionId = \App::user()->getRegionId();
+?>
 
     <div class="dlvr-self dlvr-self__center">
         <button class="dlvr-self_btn btn6 js-show-shops">Забрать сегодня</button>
@@ -43,7 +47,15 @@ return function (
                             <!--  Метро  -->
                             м. <?= $shop->getSubway()[0]->getName() ?>
                         <? endif ?>
-                        <div><a class="markerList_light" href="<?= $helper->url('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()]) ?>"><?= $shop->getAddress() ?></a></div>
+                        <div>
+                            <a class="markerList_light" href="<?= $helper->url('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()]) ?>">
+                                <? if ($shop && $shop->getRegion() && ($currentRegionId != $shop->getRegion()->getId())): ?>
+                                    <?= $shop->getName() // $shop->getRegion()->getName() ?>
+                                <? else: ?>
+                                    <?= $shop->getAddress() ?>
+                                <? endif ?>
+                            </a>
+                        </div>
                     </span>
 
                     <!--  Время работы  -->
@@ -71,4 +83,5 @@ return function (
             </ul>
         </div>
     </div>
-<? };
+
+<? }; return $f;

@@ -26,7 +26,7 @@
     <!-- Заголовок-->
     <!-- Блок в обводке -->
     <div class="orderPayment_block orderPayment_noOnline">
-
+.ыцшеср
         <div class="orderPayment_msg orderPayment_noOnline_msg">
             <div class="orderPayment_msg_head">
                 Скидка 6% на следующий заказ<br/>при оплате онлайн
@@ -92,12 +92,14 @@
                     <a class="orderPaymentWeb_lst_sys" href="#">Банковская карта
                     </a>
                 </li>
+                <? if (false): ?>
                 <li class="orderPaymentWeb_lst-i">
                     <div class="orderPaymentWeb_lst_sys-logo"><img class="orderPaymentWeb_lst_sys-logo-img" src="/styles/order/img/logo-paypal.jpg"></div>
                     <button class="orderPayment_btn orderPayment_btn-toggle btn3">Оплатить</button>
                     <a class="orderPaymentWeb_lst_sys" href="#">PayPal
                     </a>
                 </li>
+                <? endif ?>
                 <li class="orderPaymentWeb_lst-i">
                     <div class="orderPaymentWeb_lst_sys-logo"><img class="orderPaymentWeb_lst_sys-logo-img" src="/styles/order/img/logo-yamoney.jpg"></div>
                     <button class="orderPayment_btn orderPayment_btn-toggle btn3">Оплатить</button>
