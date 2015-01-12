@@ -25,7 +25,7 @@ class Repository {
         $entity = null;
         $client->addQuery('shop/get',
             [
-                'id' => $id,
+                'id' => [$id],
             ],
             [],
             function ($data) use (&$entity) {
@@ -51,7 +51,7 @@ class Repository {
         $entity = null;
         $client->addQuery('shop/get',
             [
-                'slug' => $token,
+                'slug' => [$token],
             ],
             [],
             function ($data) use (&$entity) {
@@ -73,7 +73,7 @@ class Repository {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery('shop/get', array(
-            'slug' => $token,
+            'slug' => [$token],
         ), [], $callback);
     }
 
@@ -87,7 +87,7 @@ class Repository {
         $client = clone $this->client;
 
         $collection = [];
-        $client->addQuery('shop/gets',
+        $client->addQuery('shop/get',
             [
                 'geo_id' => $region->getId(),
             ],
@@ -116,7 +116,7 @@ class Repository {
             $params['geo_id'] = $region->getId();
         }
 
-        $this->client->addQuery('shop/gets', $params, [], $callback);
+        $this->client->addQuery('shop/get', $params, [], $callback);
     }
 
     /**
@@ -131,7 +131,7 @@ class Repository {
         $client = clone $this->client;
 
         $collection = [];
-        $client->addQuery('shop/gets',
+        $client->addQuery('shop/get',
             [
                 'id' => $ids,
             ],
@@ -159,7 +159,7 @@ class Repository {
 
         if (!(bool)$ids) return [];
 
-        $this->client->addQuery('shop/gets',
+        $this->client->addQuery('shop/get',
             [
                 'id' => $ids,
             ],
