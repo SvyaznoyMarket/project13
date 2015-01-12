@@ -332,7 +332,20 @@
 
 		/* Удаление продукта по ID */
 		model.removeProductByID = function(product_id) {
-			model.cart.remove(function(item) { return item.id == product_id })
+			model.cart.remove(function(item) { return item.id == product_id });
+
+			(function() {
+				var giftBuyProducts = docCookies.getItem('giftBuyProducts') || '';
+				if (giftBuyProducts) {
+					docCookies.setItem(
+						'giftBuyProducts',
+						giftBuyProducts.replace(new RegExp('(^|\\s+)' + product_id + '(\\s+|$)', 'g'), ' ').replace(/^\s+|\s+$/g, ''),
+						30*24*60,
+						'/',
+						'enter.ru'
+					);
+				}
+			})();
 		};
 
 		/* АБ-тест платного самовывоза */
@@ -843,7 +856,12 @@
 		 * @param orderData
 		 */
 		sendOrderToGA = function sendOrderF(orderData) {
-			var oData = orderData || { orders: [] };
+			var
+				oData = orderData || { orders: [] },
+				giftBuyProducts = (docCookies.getItem('giftBuyProducts') || '').split(' ');
+
+			docCookies.setItem('giftBuyProducts', '', 0, '/', 'enter.ru');
+
 			console.log('[Google Analytics] Start processing orders', oData.orders);
 			$.each(oData.orders, function(i,o) {
 				var googleOrderTrackingData = {};
@@ -855,7 +873,22 @@
 					'city': o.region.name
 				};
 				googleOrderTrackingData.products = $.map(o.products, function(p){
-					var productName = o.is_partner ? p.name + ' (marketplace)' : p.name;
+					var
+						productName = p.name,
+						labels = [];
+
+					if (o.is_partner) {
+						labels.push('marketplace');
+					}
+
+					if (giftBuyProducts.indexOf(p.id + '') != -1) {
+						labels.push('gift');
+					}
+
+					if (labels.length) {
+						productName += ' (' + labels.join(', ') + ')';
+					}
+
 					/* SITE-4472 Аналитика по АБ-тесту платного самовывоза и рекомендаций из корзины */
 					if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.config.pageConfig.selfDeliveryLimit > parseInt(o.paySum, 10) - o.delivery[0].price) productName = productName + ' (paid pickup)';
 					// Аналитика по купленным товарам из рекомендаций
@@ -5038,7 +5071,7 @@ $('body').on('click', '.jsRecommendedItemInMenu', function(event) {
 				// аналитика
 				deleteProductAnalytics(res);
 
-				ENTER.UserModel.cart.remove(function(item){ return item.id == res.product.id});
+				ENTER.UserModel.removeProductByID(res.product.id);
 
 				// Удаляем товар на странице корзины
 				$('.js-basketLineDeleteLink-' + res.product.id).click();

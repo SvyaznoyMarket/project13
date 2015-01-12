@@ -61,41 +61,54 @@
             $delivery = reset($deliveries);
             ?>
 
-    _gaq.push(['_addTrans',
-            '<?= $order->getNumberErp() ?>', // Номер заказа
-            '<?= $shop ? $page->escape($shop->getName()) : '' ?>', // Название магазина (Необязательно)
-            '<?= str_replace(',', '.', $order->getPaySum()) ?>', // Полная сумма заказа (дроби через точку)
-            '', // налог
-            '<?= 0 //$delivery ? $delivery->getPrice() : 0 ?>', // Стоимость доставки (дроби через точку)
-            '<?= $order->getCity() ? $page->escape($order->getCity()->getName()) : '' ?>', // Город доставки (Необязательно)
-            '', // Область (необязательно)
-            '' // Страна (нобязательно)
-        ]);
+            _gaq.push(['_addTrans',
+                '<?= $order->getNumberErp() ?>', // Номер заказа
+                '<?= $shop ? $page->escape($shop->getName()) : '' ?>', // Название магазина (Необязательно)
+                '<?= str_replace(',', '.', $order->getPaySum()) ?>', // Полная сумма заказа (дроби через точку)
+                '', // налог
+                '<?= 0 //$delivery ? $delivery->getPrice() : 0 ?>', // Стоимость доставки (дроби через точку)
+                '<?= $order->getCity() ? $page->escape($order->getCity()->getName()) : '' ?>', // Город доставки (Необязательно)
+                '', // Область (необязательно)
+                '' // Страна (нобязательно)
+            ]);
 
-        // _addItem: Номер заказа, Артикул, Название товара, Категория товара, Стоимость 1 единицы товара, Количество товара
+            // _addItem: Номер заказа, Артикул, Название товара, Категория товара, Стоимость 1 единицы товара, Количество товара
             <? foreach ($order->getProduct() as $orderProduct): ?>
-            <?
-                /** @var $product \Model\Product\Entity */
-                $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
-                if (!$product) continue;
+                <?
+                    /** @var $product \Model\Product\Entity */
+                    $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
+                    if (!$product) continue;
 
-                $categories = $product->getCategory();
-                $category = array_pop($categories);
-                $rootCategory = array_shift($categories);
-                if (!$category || !$rootCategory) continue;
+                    $categories = $product->getCategory();
+                    $category = array_pop($categories);
+                    $rootCategory = array_shift($categories);
+                    if (!$category || !$rootCategory) continue;
 
-                $categoryName = ($rootCategory && ($rootCategory->getId() != $category->getId()))
-                    ? ($rootCategory->getName() . ' - ' . $category->getName())
-                    : $category->getName();
+                    $categoryName = ($rootCategory && ($rootCategory->getId() != $category->getId()))
+                        ? ($rootCategory->getName() . ' - ' . $category->getName())
+                        : $category->getName();
 
-                $productName = $order->isPartner ? $product->getName() . ' (marketplace)' : $product->getName();
-            ?>
+                    $labels = [];
+                    if ($order->isPartner) {
+                        $labels[] = 'marketplace';
+                    }
 
-    _gaq.push(['_addItem', '<?= implode("','", array($order->getNumberErp(), $product->getArticle(), $page->escape($productName), $page->escape($categoryName), $orderProduct->getPrice(), $orderProduct->getQuantity())) ?>']);
+                    if (isset($giftBuyProducts) && in_array($orderProduct->getId(), $giftBuyProducts)) {
+                        $labels[] = 'gift';
+                    }
+
+                    $productName = $product->getName();
+
+                    if ($labels) {
+                        $productName .= ' (' . implode(', ', $labels) . ')';
+                    }
+                ?>
+
+                _gaq.push(['_addItem', '<?= implode("','", array($order->getNumberErp(), $product->getArticle(), $page->escape($productName), $page->escape($categoryName), $orderProduct->getPrice(), $orderProduct->getQuantity())) ?>']);
             <?php endforeach ?>
 
-    _gaq.push(['_trackTrans']);
-            <? endforeach ?>
+            _gaq.push(['_trackTrans']);
+        <? endforeach ?>
     <? endif ?>
 
     /* Classic Google Analytics */

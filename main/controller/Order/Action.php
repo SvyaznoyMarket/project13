@@ -259,6 +259,7 @@ class Action {
         $page->setParam('paymentUrl', $paymentUrl);
         $page->setParam('paymentPageType', 'complete');
         $page->setParam('sessionIsReaded', $this->sessionIsReaded);
+        $page->setParam('giftBuyProducts', explode(' ', \App::request()->cookies->get(\App::config()->gift['buyProducts']['cookie']['name'])));
         if ($this->sessionIsReaded) {
             $page->setParam('isOrderAnalytics', false);
         }
@@ -268,6 +269,8 @@ class Action {
         if ($cookie) {
             $response->headers->setCookie($cookie);
         }
+
+        $response->headers->setCookie(new \Http\Cookie(\App::config()->gift['buyProducts']['cookie']['name'], '', 0, '/', 'enter.ru', false, false));
 
         if ($form->getEmail() != '') {
             \App::retailrocket()->setUserEmail($response, $form->getEmail());
