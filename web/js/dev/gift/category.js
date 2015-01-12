@@ -1,9 +1,11 @@
 $(function() {
 	var
+		$body = $('body'),
 		dropBoxOpenClass = 'opn',
 		$dropBoxes = $('.js-gift-category-filter-property-dropBox'),
 		$dropBoxOpeners = $('.js-gift-category-filter-property-dropBox-opener'),
-		$dropBoxContents = $('.js-gift-category-filter-property-dropBox-content');
+		$dropBoxContents = $('.js-gift-category-filter-property-dropBox-content'),
+		$priceProperty = $('.js-gift-category-filter-element-price');
 
 	// Открытие и закрытие выпадающих списков
 	(function() {
@@ -91,9 +93,10 @@ $(function() {
 		$dropBoxContents.on('click', '.js-gift-category-filter-property-dropBox-content-item-clicker', function(e) {
 			var
 				$dropBox = $(e.currentTarget).closest('.js-gift-category-filter-property-dropBox'),
-				$item = $(e.currentTarget).closest('.js-gift-category-filter-property-dropBox-content-item');
+				$item = $(e.currentTarget).closest('.js-gift-category-filter-property-dropBox-content-item'),
+				title = $('.js-gift-category-filter-property-dropBox-content-item-title', $item).text();
 
-			$('.js-gift-category-filter-property-dropBox-title', $dropBox).text($('.js-gift-category-filter-property-dropBox-content-item-title', $item).text());
+			$('.js-gift-category-filter-property-dropBox-title', $dropBox).text(title);
 			$('.js-gift-category-filter-property-dropBox-opener', $dropBox).removeClass('fltrBtnBox_tggl-dsbld');
 
 			setTimeout(function() { // setTimeout для IE8 (иначе не посылается событие change)
@@ -101,6 +104,74 @@ $(function() {
 			}, 100);
 
 			changeStatusDropBox($dropBox, $item);
+
+			$body.trigger('trackGoogleEvent', {
+				category: 'gift',
+				action: 'sort_' + $('input', $item).data('id'),
+				label: (title + '').replace(/^\s+|\s+$/g, '')
+			});
 		});
 	})();
+
+	$('.js-gift-category-filter-category input[type="checkbox"]').click(function(e) {
+		if (e.currentTarget.checked) {
+			$body.trigger('trackGoogleEvent', {
+				category: 'gift',
+				action: 'category',
+				label: $(e.currentTarget).data('title') + ''
+			});
+		}
+	});
+
+	// Фокус ввода на поля цены
+	$('input', $priceProperty).focus(function() {
+		$body.trigger('trackGoogleEvent', {
+			category: 'gift',
+			action: 'price',
+			label: 'digits'
+		});
+	});
+
+	// Нажатие на слайдер цены
+	$('.js-category-filter-rangeSlider-slider', $priceProperty).mousedown(function() {
+		$body.trigger('trackGoogleEvent', {
+			category: 'gift',
+			action: 'price',
+			label: 'scale'
+		});
+	});
+
+	// Клик по ссылкам страниц
+	$body.on('click', '.js-gift-category-pagination-page-link', function(e) {
+		$body.trigger('trackGoogleEvent', {
+			category: 'gift',
+			action: 'scroll',
+			label: $(e.currentTarget).data('page') + ''
+		});
+	});
+
+	// Подгрузка страниц при бесконечной подгрузке
+	$body.on('loadInfinityPage', function(e, page) {
+		$body.trigger('trackGoogleEvent', {
+			category: 'gift',
+			action: 'scroll',
+			label: page + ''
+		});
+	});
+
+	// Сохраняем купленные товары в cookie для последующей отправки событий в ga
+	$body.on('click', '.js-gift-category-listing .jsBuyButton', function(e) {
+		var giftBuyProducts = docCookies.getItem('giftBuyProducts') || '';
+		if (giftBuyProducts) {
+			while (giftBuyProducts.length > 500) {
+				giftBuyProducts = giftBuyProducts.replace(/^\s*[^\s]+\s*/, '');
+			}
+
+			giftBuyProducts += ' ';
+		}
+
+		giftBuyProducts += $(e.currentTarget).data('productId');
+
+		docCookies.setItem('giftBuyProducts', giftBuyProducts, 30*24*60, '/', 'enter.ru');
+	});
 });

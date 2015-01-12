@@ -720,7 +720,7 @@
 		/**
 		 * Обработка пагинации
 		 */
-		jsPaginationLinkHandler = function jsPaginationLinkHandler() {
+		jsPaginationLinkHandler = function jsPaginationLinkHandler(e) {
 			var self = $(this),
 				url = self.attr('href'),
 				activeClass = 'mActive',
@@ -738,7 +738,7 @@
 				$.scrollTo(filterBlock, 500);
 			}
 
-			return false;
+			e.preventDefault();
 		},
 
 		/**
@@ -1113,6 +1113,7 @@
 	console.info('[Catalog] Init catalog_infinityScroll.js');
 
 	var
+		$body = $('body'),
 		utils = ENTER.utils,
 		catalog = utils.extendApp('ENTER.catalog'),
 		viewParamPanel = $('.js-category-sortingAndPagination'),
@@ -1143,6 +1144,7 @@
 				console.warn('checkscroll true. load');
 				catalog.infScroll.nowPage += 1;
 				catalog.infScroll.load();
+				$body.trigger('loadInfinityPage', [catalog.infScroll.nowPage]);
 			}
 		},
 
@@ -1603,7 +1605,7 @@ $(function() {
 		});
 	});
 
-	// Нажатие на диапазоны цен
+	// Нажатие на элементы блока "Скидки"
 	$('.js-category-v2-filter-dropBox-labels .js-customInput').click(function() {
 		$body.trigger('trackGoogleEvent', {
 			category: 'filter',

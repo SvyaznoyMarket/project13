@@ -19,6 +19,7 @@ return function(
                 <? if (in_array($option->getId(), $values)): ?>
                     checked="checked"
                 <? endif ?>
+                data-title="<?= $helper->escape($option->getName()) ?>"
             />
 
             <label class="customLabel customLabel-defcheck3" for="<?= $helper->escape($id) ?>">
