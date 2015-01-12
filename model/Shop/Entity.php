@@ -69,7 +69,8 @@ class Entity {
         if (array_key_exists('way_auto', $data)) $this->setWayAuto($data['way_auto']);
         if (array_key_exists('description', $data)) $this->setDescription($data['description']);
         if (array_key_exists('is_reconstruction', $data)) $this->setIsReconstructed($data['is_reconstruction']);
-        if (array_key_exists('working_time_by_day', $data)) $this->setWorkingTime($data['working_time_by_day']);
+        //if (array_key_exists('working_time_by_day', $data)) $this->setWorkingTime($data['working_time_by_day']);
+        if (array_key_exists('working_time', $data)) $this->setWorkingTime($data['working_time']);
         if (array_key_exists('images', $data) && is_array($data['images'])) {
             foreach ($data['images'] as $photoData) {
                 //$this->addPhoto(new Photo\Entity($photoData)); // FIXME deprecated
@@ -398,10 +399,10 @@ class Entity {
     public function getWorkingTimeToday() {
         if ((bool)$this->getWorkingTime()) {
             $workingTime = $this->getWorkingTime();
-            // date('w') =>  0 - воскресенье ... 6 - суббота
-            $map = [ 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat' ];
-            if ( isset($workingTime[ $map[date('w')] ]) && $workingTime[ $map[date('w')] ]['start_time'] && $workingTime[ $map[date('w')] ]['end_time']) {
-                return $workingTime[ $map[date('w')] ];
+            $day = lcfirst(date('l'));
+
+            if ($workingTime[$day][0] && $workingTime[$day][1]) {
+                return array_combine(['start_time', 'end_time'], $workingTime[$day]);
             } else {
                 return null;
             }
