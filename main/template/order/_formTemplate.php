@@ -108,7 +108,7 @@
                         <div class="bOrderDeliveryPrice">
                             <!-- ko if: dlvrPrice() > 0 -->
                             <span class="bOrderDeliveryPrice__eItem mTextColor">Стоимость доставки
-                                <span data-bind="text: printPrice( dlvrPrice() )"></span>
+                                <span data-bind="html: printPrice( dlvrPrice() )"></span>
                                 <span class="rubl">p</span>
                             </span>
                             <!-- /ko -->
@@ -172,7 +172,7 @@
 
                                     <div class="bItemsRow mItemRight"><a data-bind=" click: function(data, event) { $root.deleteItem($parent, data, event) }">удалить</a></div>
 
-                                    <div class="bItemsRow mItemRight"> <span data-bind="text: printPrice( $data.total )"></span> <span class="rubl">p</span></div>
+                                    <div class="bItemsRow mItemRight"> <span data-bind="html: printPrice( $data.total )"></span> <span class="rubl">p</span></div>
                                 </div>
                             </div>
                         </div>
@@ -181,7 +181,7 @@
                 </div>
 
                 <div class="bBuyingLineWrap__eSum" data-template="#order-delivery_total-template">Итого с доставкой:
-                    <b><span data-bind="text: printPrice( $data.totalPrice() )"></span> <span class="rubl">p</span></b>
+                    <b><span data-bind="html: printPrice( $data.totalPrice() )"></span> <span class="rubl">p</span></b>
                 </div>
             </div>
             <!-- /ko -->
@@ -204,7 +204,7 @@
                     Сумма всех заказов:
 
                     <span class="bTotalSumm__ePrice">
-                        <span data-bind="text: printPrice( totalSum() )"></span>
+                        <span data-bind="html: printPrice( totalSum() )"></span>
                         <span class="rubl">p</span>
                     </span>
                 </div>

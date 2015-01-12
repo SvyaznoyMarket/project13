@@ -37,13 +37,13 @@ $formData = array(
                                 </div>
                             </div>
                             <div class='bFast__ePrice'>Цена:
-                                <div><span data-bind="text: priceTxt"></span> <span class="rubl">p</span></div>
+                                <div><span data-bind="html: priceTxt"></span> <span class="rubl">p</span></div>
                             </div>
                             <div class='bFast__ePrice'>Доставка:
                                 <div><span data-bind="text: chosenDlvr().price"></span> <span class="rubl">p</span></div>
                             </div>
                             <div class='bFast__ePrice'>Итого:
-                                <div><span data-bind="text: total()"></span> <span class="rubl">p</span></div>
+                                <div><span data-bind="html: total()"></span> <span class="rubl">p</span></div>
                             </div>
                         </div>
                     </td>
