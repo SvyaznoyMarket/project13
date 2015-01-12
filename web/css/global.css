@@ -12564,6 +12564,7 @@
     margin-top: 5px;
     max-height: 96px;
     width: 96px;
+    vertical-align: middle;
   }
   .bCatalogList .bCategoriesName {
     display: table-cell;
