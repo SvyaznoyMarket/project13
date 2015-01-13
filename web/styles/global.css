@@ -1997,6 +1997,8 @@ img[height="0"] {
     font-size: 11px;
     line-height: 1;
     text-transform: uppercase;
+    max-width: 70px;
+    display: block;
   }
   .navsite_lk {
     line-height: 1;
@@ -2008,7 +2010,7 @@ img[height="0"] {
   }
   .navsite2 {
     position: absolute;
-    z-index: 20;
+    z-index: 100;
     top: 85px;
     left: -50px;
     display: none;
