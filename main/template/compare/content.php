@@ -72,13 +72,13 @@ return function (
 
                                             <!-- ko if: priceOld != '0' -->
                                                 <span class="cmprCnt_price cmprCnt_price-l">
-                                                    <!-- ko text: priceOld --><!-- /ko -->
+                                                    <span data-bind="html: priceOld"></span>
                                                     <span class="rubl">p</span>
                                                 </span>
                                             <!-- /ko -->
 
                                             <span class="cmprCnt_price">
-                                                <!-- ko text: price --><!-- /ko -->
+                                                <span data-bind="html: price"></span>
                                                 <span class="rubl">p</span>
                                             </span>
 

@@ -53,7 +53,7 @@ $f = function(
                 </span>
                 <span class="orderCol_summt">
                     <? if (in_array($order->getDeliveryTypeId(), [1, 2])): ?>
-                        Доставка
+                        Доставка:
                     <? else: ?>
                         Самовывоз:
                     <? endif ?>

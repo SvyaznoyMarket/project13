@@ -13,8 +13,7 @@ return function(
     $links = [];
     $categories = $category->getChild();
     if (!empty($relatedCategories))  {
-        if ($productPager && ($productPager->getLastPage() > 1)) $categories = array_merge($categories, $relatedCategories);
-        else $categories = $relatedCategories;
+        $categories = array_merge($categories, $relatedCategories);
     }
 
     foreach ($categories as $child) {

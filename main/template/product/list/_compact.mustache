@@ -47,7 +47,7 @@
             <div class="bPriceLine clearfix">
                 {{#oldPrice}}
                     <span class="bPriceOld">
-                        <strong class="bDecor">{{oldPrice}}</strong> <span class="rubl">p</span>
+                        <strong class="bDecor">{{&oldPrice}}</strong> <span class="rubl">p</span>
                         {{#priceSale}}
                             <span class="bPriceSale">-{{priceSale}}%</span>
                         {{/priceSale}}
@@ -59,7 +59,7 @@
             </div>
 
             <div class="bPriceLine clearfix">
-                <span class="bPrice{{#priceSale}} bHasSale{{/priceSale}}"><strong>{{price}}</strong> <span class="rubl">p</span></span>
+                <span class="bPrice{{#priceSale}} bHasSale{{/priceSale}}"><strong>{{&price}}</strong> <span class="rubl">p</span></span>
                 {{#hasVariations}}
                 <span class="bOptions"><span class="bDecor">Варианты</span></span>
                 {{/hasVariations}}

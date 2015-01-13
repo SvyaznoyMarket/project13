@@ -207,7 +207,7 @@ foreach ($productsById as $product) {
 									<a class="bDelItem" data-bind="attr: { href: product.deleteUrl }, text: 'удалить', click: $root.deleteItem"></a>
 								</div>
 
-								<div class="bItemsRow mItemRight"> <span data-bind="text: window.printPrice(product.price)"></span>&nbsp;<span class="rubl">p</span></div>
+								<div class="bItemsRow mItemRight"> <span data-bind="html: window.printPrice(product.price)"></span>&nbsp;<span class="rubl">p</span></div>
 							</div>
 						</div>
 					</div>
@@ -232,7 +232,7 @@ foreach ($productsById as $product) {
 					Итого с доставкой:&nbsp;&nbsp;
 
 					<span class="bDelivery"<? if (\App::config()->order['prepayment']['enabled']): ?> data-bind="css: { 'mSelect' : box.isExpensiveOrder() }"<? endif ?>>
-						<span data-bind="text: window.printPrice( box.totalBlockSum )"></span>&nbsp;<span class="rubl">p</span>
+						<span data-bind="html: window.printPrice( box.totalBlockSum )"></span>&nbsp;<span class="rubl">p</span>
 					</span>
 				</li>
 			</ul>
@@ -331,7 +331,7 @@ foreach ($productsById as $product) {
 
 			<div class="bTotalSumm">
 				Сумма всех заказов:
-				<span class="bTotalSumm__ePrice" data-bind="text: window.printPrice( totalSum() )"></span>&nbsp;<span class="rubl">p</span>
+				<span class="bTotalSumm__ePrice" data-bind="html: window.printPrice( totalSum() )"></span>&nbsp;<span class="rubl">p</span>
 			</div>
 		</div>
 	<? endif ?>
@@ -539,7 +539,7 @@ foreach ($productsById as $product) {
 				<h2 class="bBuyingSteps__eTitle mPaypal">Оплата</h2>
 
 				<div class="bPaypalTotal">
-					Итого к оплате: <span class="bPaypalTotal__eSum"><strong class="mr5" data-bind="text: window.printPrice( totalSum() )"></strong><span class="rubl">p</span></span>
+					Итого к оплате: <span class="bPaypalTotal__eSum"><strong class="mr5" data-bind="html: window.printPrice( totalSum() )"></strong><span class="rubl">p</span></span>
 
 					<div data-bind="visible: ( paypalECS() && ( cartSum !== undefined ) && ( totalSum() !== cartSum ) )" class="bPaypalTotalChanged"><strong>Сумма оплаты изменилась</strong></div>
 				</div>
