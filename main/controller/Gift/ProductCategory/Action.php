@@ -370,7 +370,7 @@ class Action {
         }
         
         if (!$this->hasTagFilterPropertyValue('holiday', $requestData->get('f-holiday'))) {
-            $requestData->set('f-holiday', 706);
+            $requestData->set('f-holiday', 707);
         }
         
         if (!$this->hasTagFilterPropertyValue('sex', $requestData->get('f-sex'))) {
@@ -379,7 +379,7 @@ class Action {
         
         if (!$this->hasTagFilterPropertyValue('status', $requestData->get('f-status'))) {
             if ($requestData->get('f-sex') == 687) {
-                $requestData->set('f-status', 690);
+                $requestData->set('f-status', 689);
             } else {
                 $requestData->set('f-status', 698);
             }
