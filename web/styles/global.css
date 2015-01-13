@@ -1149,6 +1149,22 @@ img[height="0"] {
   margin: 0 0 15px;
   width: 355px;
 }
+.formDefault__inputText--styled {
+  /* Firefox 19+ */
+  /* Firefox 18- */
+}
+.formDefault__inputText--styled::-webkit-input-placeholder {
+  color: #000;
+}
+.formDefault__inputText--styled::-moz-placeholder {
+  color: #000;
+}
+.formDefault__inputText--styled:-moz-placeholder {
+  color: #000;
+}
+.formDefault__inputText--styled:-ms-input-placeholder {
+  color: #000;
+}
 .formDefault__label {
   display: inline-block;
   margin: 0 0 7px;

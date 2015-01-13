@@ -13,6 +13,12 @@
 	    line-height: 28px;
 	    margin: 0 0 15px;
 	    width: 355px;
+	    &--styled{
+	    	&::-webkit-input-placeholder {color:#000;}
+			&::-moz-placeholder          {color:#000;}/* Firefox 19+ */
+			&:-moz-placeholder           {color:#000;}/* Firefox 18- */
+			&:-ms-input-placeholder      {color:#000;}
+	    }
 	}
 
 	&__label {
