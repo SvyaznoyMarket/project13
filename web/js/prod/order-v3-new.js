@@ -2130,6 +2130,7 @@
 			if (send15_3) $body.trigger('trackUserAction', ['15_3 Оформить_успешно_КЦ']);
 
             $body.trigger('trackUserAction', ['15_1 Оформить_успешно_Доставка_ОБЯЗАТЕЛЬНО']);
+			$(this).attr('disabled', true); // блокируем кнопку "Отправить"
 			setTimeout(function() {	$form.submit(); }, 1000 ); // быстрая обертка для отправки аналитики, иногда не успевает отправляться
         }
 
