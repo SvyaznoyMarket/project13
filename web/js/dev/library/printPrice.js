@@ -7,8 +7,11 @@
  */
 (function( global ) {
 	global.printPrice = function( num ) {
-		var str = (num || '').toString();
+		num = num + '';
+		if ((parseInt(num) + '').length >= 5) {
+			num = num.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1&thinsp;');
+		}
 
-		return str.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
+		return num;
 	};
 }(this));

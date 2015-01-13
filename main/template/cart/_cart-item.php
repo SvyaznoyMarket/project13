@@ -14,7 +14,7 @@
         <div class="basketLine__desc__info basketinfo">
             <div class="descPriceLine">
                 <div class="descPriceOne">
-                    <span class="price one" data-bind="text: window.printPrice(price)"></span>
+                    <span class="price one" data-bind="html: window.printPrice(price)"></span>
                     <span class="rubl">p</span>
                 </div>
                 <div class="descCount">
@@ -27,7 +27,7 @@
             </div>
 
             <div class="descPrice">
-                <span class="price sum" data-bind="text: window.printPrice(price * quantity())"></span> <span class="rubl">p</span>
+                <span class="price sum" data-bind="html: window.printPrice(price * quantity())"></span> <span class="rubl">p</span>
                 <a href="" class="button whitelink jsCartDeleteProduct" data-bind="attr: { href: '/cart/delete-product/' + id }">Удалить</a>
             </div>
         </div>

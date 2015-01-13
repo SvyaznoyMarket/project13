@@ -658,4 +658,18 @@ class App {
 
         return $instance;
     }
+
+    /**
+     * @static
+     * @return \Helper\TemplateHelper
+     */
+    public static function helper() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new \Helper\TemplateHelper();
+        }
+
+        return $instance;
+    }
 }

@@ -2441,9 +2441,6 @@ img[height="0"] {
     height: 195px;
     margin: -195px auto 0;
     background: #000000;
-    border-style: solid;
-    border-color: #e6e6e6;
-    border-width: 0 1px 0 1px;
     position: relative;
   }
   .footer_t {
