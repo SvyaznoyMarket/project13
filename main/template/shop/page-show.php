@@ -16,7 +16,9 @@
 <div class="bMap">
     <div id="map-container" class='bMap__eBody'></div>
     <div class='bMap__eImages'>
-        <h3 class='bMap__eImagesTitle'>Смотри как внутри</h3>
+        <? if (false): ?>
+            <h3 class='bMap__eImagesTitle'>Смотри как внутри</h3>
+        <? endif ?>
 
         <div class='bMap__eScrollWrap'>
 
