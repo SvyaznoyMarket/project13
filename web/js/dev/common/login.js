@@ -265,7 +265,7 @@
 
 				// устанавливаем маску для поля "Ваш мобильный телефон"
 				$.mask.definitions['n'] = '[0-9]';
-				registerMailPhoneField.mask('+7 (nnn) nnn-nn-nn');
+				registerMailPhoneField.mask('8 (nnn) nnn-nn-nn',{placeholder: '8 (___) ___-__-__'});
 			}
 			else {
 				label.html('Ваш e-mail:');
