@@ -885,17 +885,21 @@
 						labels.push('gift');
 					}
 
+                    if (p.sender && p.position) {
+                        labels.push('RR_' + p.position);
+                    }
+
 					if (labels.length) {
 						productName += ' (' + labels.join(', ') + ')';
 					}
 
 					/* SITE-4472 Аналитика по АБ-тесту платного самовывоза и рекомендаций из корзины */
 					if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.config.pageConfig.selfDeliveryLimit > parseInt(o.paySum, 10) - o.delivery[0].price) productName = productName + ' (paid pickup)';
+
 					// Аналитика по купленным товарам из рекомендаций
-					if (p.sender == 'retailrocket') {
-						if (p.position) productName += ' (RR_' + p.position + ')';
-						if (p.from) body.trigger('trackGoogleEvent',['RR_покупка','Купил просмотренные', p.position ? p.position : '']);
-						else body.trigger('trackGoogleEvent',['RR_покупка','Купил добавленные', p.position ? p.position : '']);
+					if (p.sender) {
+						if (p.from) body.trigger('trackGoogleEvent',['RR_покупка','Купил просмотренные', p.position || '']);
+						else body.trigger('trackGoogleEvent',['RR_покупка','Купил добавленные', p.position || '']);
 					}
 					return {
 						'id': p.id,

@@ -279,6 +279,7 @@ $isNewRecommendation =
         'sender'    => [
             'name'     => 'enter',
             'position' => 'Viewed',
+            'from'     => 'productPage'
         ],
     ]) ?>
 <? endif ?>
