@@ -12584,6 +12584,7 @@
   .bSearchCategoryRoot .bCatalogList .bCategoriesImg {
     width: 48px;
     height: 46px;
+    line-height: 46px;
   }
   .bSearchCategoryRoot .bCatalogList .bCategoriesImg__eImg {
     max-height: 46px;
