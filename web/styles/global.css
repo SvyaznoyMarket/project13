@@ -6838,6 +6838,9 @@ img[height="0"] {
   .popup_hd_tl {
     font-size: 22px;
   }
+  .popup_hd_tl:last-child {
+    margin-bottom: 10px;
+  }
   .popup_hd_tx {
     font-size: 14px;
     color: #4f4f4f;
