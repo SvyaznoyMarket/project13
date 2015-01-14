@@ -9047,6 +9047,7 @@ img[height="0"] {
     overflow: hidden;
     border: 1px solid #f5f5f5;
     background: #ffffff;
+    margin-bottom: 15px;
   }
   .popupFl_clsr {
     position: absolute;
