@@ -896,7 +896,7 @@
 
         // log to console
         if (typeof ga !== 'function') console.warn('Нет объекта ga');
-        if (typeof ga === 'function' && ga.getAll().length == 0) console.warn('Не установлен трекер для ga');
+        if (typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length == 0) console.warn('Не установлен трекер для ga');
         console.log('[Google Analytics] Send event: category: "Воронка_новая_v2_%s", action: "%s", label: "%s"', region, act, lbl);
     };
 
@@ -904,7 +904,7 @@
     body.on('trackUserAction.orderV3Tracking', sendAnalytic);
 
     // TODO вынести инициализацию трекера из ports.js
-    if (typeof ga === 'function' && ga.getAll().length == 0) {
+    if (typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length == 0) {
         ga( 'create', 'UA-25485956-5', 'enter.ru' );
     }
 
@@ -2130,6 +2130,7 @@
 			if (send15_3) $body.trigger('trackUserAction', ['15_3 Оформить_успешно_КЦ']);
 
             $body.trigger('trackUserAction', ['15_1 Оформить_успешно_Доставка_ОБЯЗАТЕЛЬНО']);
+			$(this).attr('disabled', true); // блокируем кнопку "Отправить"
 			setTimeout(function() {	$form.submit(); }, 1000 ); // быстрая обертка для отправки аналитики, иногда не успевает отправляться
         }
 
