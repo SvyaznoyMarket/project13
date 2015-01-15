@@ -10118,6 +10118,9 @@
   .bBrandCatalog .bNavLoader__eM p {
     color: #000;
   }
+  .bBrandCatalog .bBrandNavList {
+    margin-left: 0px;
+  }
   .pagehead {
     padding-bottom: 0;
   }

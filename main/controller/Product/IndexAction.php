@@ -190,20 +190,29 @@ class IndexAction {
         );
 
         $trustfactors = [];
-        \App::scmsClient()->addQuery('product/get-description', ['uid' => $product->getUi()], [], function($data) use(&$trustfactors, $product) {
-            if (isset($data['trustfactors']) && is_array($data['trustfactors'])) {
-                $trustfactors = $data['trustfactors'];
-            }
+        \App::scmsClient()->addQuery(
+            'product/get-description',
+            ['uid' => $product->getUi()],
+            [],
+            function($data) use(&$trustfactors, $product) {
+                if (isset($data['trustfactors']) && is_array($data['trustfactors'])) {
+                    $trustfactors = $data['trustfactors'];
+                }
 
-            // SITE-3982 Трастфактор "Спасибо от Сбербанка" не должен отображаться на карточке товара от Связного
-            if (is_array($product->getPartnersOffer()) && count($product->getPartnersOffer()) != 0) {
-                foreach ($trustfactors as $key => $trustfactor) {
-                    if ('right' === $trustfactor['type'] && 'ab3ca73c-6cc4-4820-b303-8165317420d5' === $trustfactor['uid']) {
-                        unset($trustfactors[$key]);
+                // SITE-3982 Трастфактор "Спасибо от Сбербанка" не должен отображаться на карточке товара от Связного
+                if (is_array($product->getPartnersOffer()) && count($product->getPartnersOffer()) != 0) {
+                    foreach ($trustfactors as $key => $trustfactor) {
+                        if ('right' === $trustfactor['type'] && 'ab3ca73c-6cc4-4820-b303-8165317420d5' === $trustfactor['uid']) {
+                            unset($trustfactors[$key]);
+                        }
                     }
                 }
+            },
+            function(\Exception $e) {
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['controller']);
+                \App::exception()->remove($e);
             }
-        });
+        );
 
         // выполнение 3-го пакета запросов
         \App::curl()->execute();

@@ -15,7 +15,7 @@ class Filter {
     private $values = [];
     private $isGlobal = false;
     private $inStore = false;
-    /** @var \Model\Shop\Entity[] */
+    /** @var \Model\Shop\Entity */
     private $shop;
 
     /**
@@ -68,9 +68,8 @@ class Filter {
                         if (!isset($value['from'])) {
                             $value['from'] = null;
                         }
-                        if ($filter->getMaxGlobal() != $value['to'] || $filter->getMinGlobal() != $value['from']) {
-                            $return[] = [$filter->getId(), 2, $value['from'], $value['to']];
-                        }
+
+                        $return[] = [$filter->getId(), 2, $value['from'], $value['to']];
                         break;
                     case FilterEntity::TYPE_STRING:
                         $return[] = [$filter->getId(), 3, $value];
@@ -178,6 +177,19 @@ class Filter {
      */
     public function getFilterCollection() {
         return $this->filters;
+    }
+
+    /**
+     * @return Filter\Entity|null
+     */
+    public function getPriceProperty() {
+        foreach ($this->filters as $property) {
+            if ($property->isPrice()) {
+                return $property;
+            }
+        }
+
+        return null;
     }
 
     /**
