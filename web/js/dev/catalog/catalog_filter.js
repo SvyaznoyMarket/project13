@@ -711,16 +711,16 @@
 		/**
 		 * Обработка нажатий на ссылки удаления фильтров
 		 */
-		jsHistoryLinkHandler = function jsHistoryLinkHandler() {
+		jsHistoryLinkHandler = function jsHistoryLinkHandler(e) {
 			var self = $(this),
 				url = self.attr('href');
 			// end of vars
 
+			e.preventDefault();
+
 			catalog.filter.resetForm();
 			catalog.filter.updateFilter(utils.parseUrlParams(url));
 			catalog.history.gotoUrl(url);
-
-			return false;
 		},
 
 		/**
@@ -779,8 +779,10 @@
 				isActiveTab = parentItem.hasClass(activeClass);
 			// end of vars
 
+			e.preventDefault();
+
 			if ( isActiveTab ) {
-				return false;
+				return;
 			}
 
 			catalog.history.gotoUrl(url);
@@ -788,8 +790,6 @@
 			if ( filterBlock.length ) {
 				$.scrollTo(filterBlock, 500);
 			}
-
-			e.preventDefault();
 		},
 
 		/**
@@ -825,7 +825,7 @@
 		/**
 		 * Смена отображения каталога
 		 */
-		changeViewItemsHandler = function changeViewItemsHandler() {
+		changeViewItemsHandler = function changeViewItemsHandler(e) {
 			var self = $(this),
 				url = self.attr('href'),
 				activeClass = 'mActive',
@@ -834,8 +834,10 @@
 				isActiveTab = parentItem.hasClass(activeClass);
 			// end of vars
 
+			e.preventDefault();
+
 			if ( isActiveTab ) {
-				return false;
+				return;
 			}
 
 			changeViewItemsBtns.removeClass(activeClass);
@@ -847,15 +849,13 @@
 			else {
 				catalog.history.gotoUrl(url);
 			}
-
-			return false;
 		},
 
 
 		/**
 		 * Сортировка элементов
 		 */
-		sortingItemsHandler = function sortingItemsHandler() {
+		sortingItemsHandler = function sortingItemsHandler(e) {
 			var self = $(this),
 				url = self.attr('href'),
 				activeClass = 'mActive',
@@ -864,15 +864,15 @@
 				isActiveTab = parentItem.hasClass(activeClass);
 			// end of vars
 
+			e.preventDefault();
+
 			if ( isActiveTab ) {
-				return false;
+				return;
 			}
 
 			sortingItemsBtns.removeClass(activeClass);
 			parentItem.addClass(activeClass);
 			catalog.history.gotoUrl(url);
-
-			return false;
 		};
 	// end of functions
 
