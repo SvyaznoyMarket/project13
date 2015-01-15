@@ -63,32 +63,21 @@ class Action {
         // запрашиваем фильтры
         /** @var $filters \Model\Product\Filter\Entity[] */
         $filters = [];
-        \RepositoryManager::productFilter()->prepareCollection([], function($data) use (&$filters) {
+        \RepositoryManager::productFilter()->prepareCollection($this->getFilterFromUrlDump($request), function($data) use (&$filters) {
             foreach ($data as $item) {
                 $filters[] = new \Model\Product\Filter\Entity($item);
             }
         });
 
-        $this->createTagFilterProperties($filters);
-
-        $categoryProperty = new \Model\Product\Filter\Entity();
-        $categoryProperty->setId('category');
-        $categoryProperty->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-        $categoryProperty->setIsMultiple(true);
-        $filters[] = $categoryProperty;
-
-        \RepositoryManager::menu()->prepareCollection(function ($data) use ($categoryProperty) {
-            if (isset($data['item']) && is_array($data['item'])) {
-                foreach ($data['item'] as $item) {
-                    if (isset($item['source']['id'])) {
-                        $categoryProperty->addOption(new \Model\Product\Filter\Option\Entity(['id' => $item['source']['id'], 'name' => $item['name']]));
-                    }
-                }
-            }
+        \RepositoryManager::menu()->prepareCollection(function($data) use (&$categories) {
+            $categories = $data;
         });
 
         // выполнение 2-го пакета запросов
         $client->execute();
+
+        $this->createTagFilterProperties($filters);
+        $this->createCategoryFilterProperties($filters, $categories);
 
         $shop = null;
         try {
@@ -100,7 +89,7 @@ class Action {
         }
 
         // фильтры
-        $productFilter = $this->getFilter($filters, $request, $shop);
+        $productFilter = $this->getProductFilter($filters, $request, $shop);
 
         $pageNum = (int)$request->get('page', 1);
         if ($pageNum < 1) {
@@ -127,6 +116,7 @@ class Action {
 
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
             $data = [
+                'filters'        => $this->getFiltersForAjaxResponse($productFilter),
                 'list'           => (new \View\Product\ListAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
                     $productPager,
@@ -167,19 +157,205 @@ class Action {
         return new \Http\Response($page->show());
     }
 
+    /**
+     * @return array
+     */
+    private function getFiltersForAjaxResponse(\Model\Product\Filter $productFilter) {
+        $filters = [];
+
+        $priceFilterProperty = $productFilter->getPriceProperty();
+        if ($priceFilterProperty) {
+            $filters['price'] = ['min' => $priceFilterProperty->getMin(), 'max' => $priceFilterProperty->getMax()];
+        }
+
+        return $filters;
+    }
+
     private function createTagFilterProperties(array &$filters) {
         foreach ($this->getTagFilterPropertyValues() as $id => $values) {
             $property = new \Model\Product\Filter\Entity();
             $property->setId($id);
             $property->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
             $property->setIsMultiple(false);
+
             foreach ($values as $value) {
                 $property->addOption(new \Model\Product\Filter\Option\Entity(['id' => $value['id'], 'name' => $value['name']]));
             }
+
             $filters[] = $property;
         }
     }
-    
+
+    private function createCategoryFilterProperties(array &$filters, $categories) {
+        $property = new \Model\Product\Filter\Entity();
+        $property->setId('category');
+        $property->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+        $property->setIsMultiple(true);
+
+        if (isset($categories['item']) && is_array($categories['item'])) {
+            foreach ($categories['item'] as $item) {
+                if (isset($item['source']['id']) && isset($item['name'])) {
+                    $property->addOption(new \Model\Product\Filter\Option\Entity(['id' => $item['source']['id'], 'name' => $item['name']]));
+                }
+            }
+        }
+
+        $filters[] = $property;
+    }
+
+    /**
+     * @param \Model\Product\Filter\Entity[] $filters
+     * @param \Http\Request $request
+     * @param \Model\Shop\Entity|null $shop
+     * @return \Model\Product\Filter
+     */
+    private function getProductFilter(array $filters, \Http\Request $request, $shop = null) {
+        // добывание фильтров из http-запроса
+        $values = $this->getFilterFromUrl($request);
+
+        // Пока не нужно
+//        $values = $this->deleteNotExistsValues($values, $filters);
+
+        //если есть фильтр по магазину
+        if ($shop) {
+            /** @var \Model\Shop\Entity $shop */
+            $values['shop'] = $shop->getId();
+        }
+
+        // проверяем есть ли в запросе фильтры
+        if ($values) {
+            // полнотекстовый поиск через сфинкс
+            if (\App::config()->sphinx['showListingSearchBar']) {
+                $sphinxFilter = isset($values['text']) ? $values['text'] : null;
+
+                if ($sphinxFilter) {
+                    $clientV2 = \App::coreClientV2();
+                    $result = null;
+                    $clientV2->addQuery('search/normalize', [], ['request' => $sphinxFilter], function ($data) use (&$result) {
+                        $result = $data;
+                    });
+                    $clientV2->execute();
+
+                    if(is_array($result)) {
+                        $values['text'] = implode(' ', $result);
+                    } else {
+                        unset($values['text']);
+                    }
+                }
+
+                $sphinxFilterData = [
+                    'filter_id'     => 'text',
+                    'type_id'       => \Model\Product\Filter\Entity::TYPE_STRING,
+                ];
+                $sphinxFilter = new \Model\Product\Filter\Entity($sphinxFilterData);
+                array_push($filters, $sphinxFilter);
+            }
+        }
+
+        $productFilter = new \Model\Product\Filter($filters, false, false, $shop);
+        $productFilter->setValues($values);
+
+        return $productFilter;
+    }
+
+    private function getProductFilterDump(\Model\Product\Filter $productFilter) {
+        $tagDump = ['tag_and', 1, []];
+        $filterDump = $productFilter->dump();
+        for ($i = count($filterDump) - 1; $i >= 0; $i--) {
+            if (in_array($filterDump[$i][0], ['holiday', 'sex', 'status', 'age'], true)) {
+                $tagDump[2] = array_merge($tagDump[2], $filterDump[$i][2]);
+                unset($filterDump[$i]);
+            }
+        }
+
+        $filterDump = array_values($filterDump);
+        $filterDump[] = $tagDump;
+
+        return $filterDump;
+    }
+
+    /**
+     * @return array
+     */
+    private function getFilterFromUrlDump(\Http\Request $request) {
+        $tagDump = ['tag_and', 1, []];
+        $filterDump = [];
+        foreach ($this->getFilterFromUrl($request) as $name => $values) {
+            if (in_array($name, ['holiday', 'sex', 'status', 'age'], true)) {
+                $tagDump[2] = array_merge($tagDump[2], $values);
+            } else if ('price' === $name) {
+                // Игнорируем фильтр по цене, т.к. для корректного рассчёта мин. и макс. цены методом listing/filter фильтр по цене не должет передаваться в данный метод (данное поведение метода listing/filter является недоработкой)
+            } else if (isset($values['from']) || isset($values['to'])) {
+                $filterDump[] = [
+                    $name,
+                    2,
+                    isset($values['from']) ? $values['from'] : null,
+                    isset($values['to']) ? $values['to'] : null
+                ];
+            } else {
+                $filterDump[] = [$name, 1, $values];
+            }
+        }
+
+        $filterDump[] = $tagDump;
+        $filterDump[] = ['is_view_list', 1, [true]];
+
+        return $filterDump;
+    }
+
+    /**
+     * @return array
+     */
+    private function getFilterFromUrl(\Http\Request $request) {
+        // добывание фильтров из http-запроса
+        if ('POST' == $request->getMethod()) {
+            $params = clone $request->request;
+        } else {
+            $params = clone $request->query;
+        }
+
+        $this->setDefaultValues($params);
+
+        $values = [];
+        foreach ($params as $k => $v) {
+            if (0 !== strpos($k, \View\Product\FilterForm::$name)) continue;
+            $parts = array_pad(explode('-', $k), 3, null);
+
+            if (!isset($values[$parts[1]])) {
+                $values[$parts[1]] = [];
+            }
+            if (('from' == $parts[2]) || ('to' == $parts[2])) {
+                $values[$parts[1]][$parts[2]] = $v;
+            } else {
+                $values[$parts[1]][] = $v;
+            }
+        }
+
+        return $values;
+    }
+
+    private function setDefaultValues(\Http\ParameterBag $params) {
+        if (!$this->hasTagFilterPropertyValue('holiday', $params->get('f-holiday'))) {
+            $params->set('f-holiday', 707);
+        }
+
+        if (!$this->hasTagFilterPropertyValue('sex', $params->get('f-sex'))) {
+            $params->set('f-sex', 687);
+        }
+
+        if (!$this->hasTagFilterPropertyValue('status', $params->get('f-status'))) {
+            if ($params->get('f-sex') == 687) {
+                $params->set('f-status', 689);
+            } else {
+                $params->set('f-status', 698);
+            }
+        }
+
+        if (!$this->hasTagFilterPropertyValue('age', $params->get('f-age'))) {
+            $params->set('f-age', 724);
+        }
+    }
+
     private function getTagFilterPropertyValues() {
         return [
             'holiday' => [
@@ -204,7 +380,7 @@ class Action {
                 ['id' => 695, 'name' => 'Маме'],
                 ['id' => 696, 'name' => 'Бабушке'],
                 ['id' => 697, 'name' => 'Себе'],
-                
+
                 ['id' => 698, 'name' => 'Любимому'],
                 ['id' => 690, 'name' => 'Коллеге'],
                 ['id' => 692, 'name' => 'Боссу'],
@@ -228,16 +404,60 @@ class Action {
             ],
         ];
     }
-    
+
     private function hasTagFilterPropertyValue($propertyName, $valueId) {
         foreach ($this->getTagFilterPropertyValues()[$propertyName] as $value) {
             if ($value['id'] == $valueId) {
                 return true;
             }
         }
-        
+
         return false;
     }
+
+    /**
+     * @param \Model\Product\Filter\Entity[] $filters
+     * @return array
+     */
+    // Пока данный метод не нужен
+    /*
+    private function deleteNotExistsValues(array $values, array $filters) {
+        // SITE-4818 Не учитывать фильтр при переходе в подкатегорию, если такового не существует
+        foreach ($values as $propertyId => $propertyValues) {
+            $isPropertyExistsInFilter = false;
+
+            foreach ($filters as $property) {
+                if ($property->getId() === $propertyId) {
+                    $isPropertyExistsInFilter = true;
+                    if ($property->getTypeId() === \Model\Product\Filter\Entity::TYPE_LIST) {
+                        $optionIds = [];
+                        foreach ($property->getOption() as $option) {
+                            $optionIds[] = (string)$option->getId();
+                        }
+
+                        foreach ($propertyValues as $i => $value) {
+                            if (!in_array((string)$value, $optionIds, true)) {
+                                unset($values[$propertyId][$i]);
+                            }
+                        }
+
+                        if (!count($values[$propertyId])) {
+                            unset($values[$propertyId]);
+                        }
+                    }
+
+                    break;
+                }
+            }
+
+            if (!$isPropertyExistsInFilter) {
+                unset($values[$propertyId]);
+            }
+        }
+
+        return $values;
+    }
+    */
 
     /**
      * @param int $pageNum
@@ -252,7 +472,7 @@ class Action {
 
         $repository = \RepositoryManager::product();
         $repository->setEntityClass('\\Model\\Product\\Entity');
-        
+
         $productIds = [];
         $productCount = 0;
         $repository->prepareIteratorByFilter(
@@ -309,22 +529,6 @@ class Action {
         $productPager->setMaxPerPage($itemsPerPage);
         return $productPager;
     }
-    
-    private function getProductFilterDump(\Model\Product\Filter $productFilter) {
-        $tagDump = ['tag_and', 1, []];
-        $filterDump = $productFilter->dump();
-        for ($i = count($filterDump) - 1; $i >= 0; $i--) {
-            if (in_array($filterDump[$i][0], ['holiday', 'sex', 'status', 'age'], true)) {
-                $tagDump[2] = array_merge($tagDump[2], $filterDump[$i][2]);
-                unset($filterDump[$i]);
-            }
-        }
-        
-        $filterDump = array_values($filterDump);
-        $filterDump[] = $tagDump;
-        
-        return $filterDump;
-    }
 
     /**
      * @return array
@@ -355,158 +559,5 @@ class Action {
         }
 
         return $productVideosByProduct;
-    }
-
-    /**
-     * @param \Http\Request $request
-     * @return array
-     */
-    private function getFilterFromUrl(\Http\Request $request) {
-        // добывание фильтров из http-запроса
-        if ('POST' == $request->getMethod()) {
-            $requestData = clone $request->request;
-        } else {
-            $requestData = clone $request->query;
-        }
-        
-        if (!$this->hasTagFilterPropertyValue('holiday', $requestData->get('f-holiday'))) {
-            $requestData->set('f-holiday', 707);
-        }
-        
-        if (!$this->hasTagFilterPropertyValue('sex', $requestData->get('f-sex'))) {
-            $requestData->set('f-sex', 687);
-        }
-        
-        if (!$this->hasTagFilterPropertyValue('status', $requestData->get('f-status'))) {
-            if ($requestData->get('f-sex') == 687) {
-                $requestData->set('f-status', 689);
-            } else {
-                $requestData->set('f-status', 698);
-            }
-        }
-        
-        if (!$this->hasTagFilterPropertyValue('age', $requestData->get('f-age'))) {
-            $requestData->set('f-age', 724);
-        }
-        
-        $values = [];
-        foreach ($requestData as $k => $v) {
-            if (0 !== strpos($k, \View\Product\FilterForm::$name)) continue;
-            $parts = array_pad(explode('-', $k), 3, null);
-
-            if (!isset($values[$parts[1]])) {
-                $values[$parts[1]] = [];
-            }
-            if (('from' == $parts[2]) || ('to' == $parts[2])) {
-                $values[$parts[1]][$parts[2]] = $v;
-            } else {
-                $values[$parts[1]][] = $v;
-            }
-        }
-
-        // filter values
-        if ($request->get('scrollTo')) {
-            // TODO: SITE-2218 сделать однотипные фильтры для ювелирки и неювелирки
-            $values = (array)$request->get(\View\Product\FilterForm::$name, []);
-        }
-
-        return $values;
-    }
-
-    /**
-     * @param \Model\Product\Filter\Entity[] $filters
-     * @param \Http\Request $request
-     * @param \Model\Shop\Entity|null $shop
-     * @return \Model\Product\Filter
-     */
-    private function getFilter(array $filters, \Http\Request $request, $shop = null) {
-        // добывание фильтров из http-запроса
-        $values = $this->getFilterFromUrl($request);
-
-        // Пока не нужно
-//        $values = $this->deleteNotExistsValues($values, $filters);
-
-        //если есть фильтр по магазину
-        if ($shop) {
-            /** @var \Model\Shop\Entity $shop */
-            $values['shop'] = $shop->getId();
-        }
-
-        // проверяем есть ли в запросе фильтры
-        if ($values) {
-            // полнотекстовый поиск через сфинкс
-            if (\App::config()->sphinx['showListingSearchBar']) {
-                $sphinxFilter = isset($values['text']) ? $values['text'] : null;
-
-                if ($sphinxFilter) {
-                    $clientV2 = \App::coreClientV2();
-                    $result = null;
-                    $clientV2->addQuery('search/normalize', [], ['request' => $sphinxFilter], function ($data) use (&$result) {
-                        $result = $data;
-                    });
-                    $clientV2->execute();
-
-                    if(is_array($result)) {
-                        $values['text'] = implode(' ', $result);
-                    } else {
-                        unset($values['text']);
-                    }
-                }
-
-                $sphinxFilterData = [
-                    'filter_id'     => 'text',
-                    'type_id'       => \Model\Product\Filter\Entity::TYPE_STRING,
-                ];
-                $sphinxFilter = new \Model\Product\Filter\Entity($sphinxFilterData);
-                array_push($filters, $sphinxFilter);
-            }
-        }
-
-        $productFilter = new \Model\Product\Filter($filters, false, false, $shop);
-        $productFilter->setValues($values);
-
-        return $productFilter;
-    }
-
-    /**
-     * @param array $values
-     * @param \Model\Product\Filter\Entity[] $filters
-     * @return array
-     */
-    private function deleteNotExistsValues(array $values, array $filters) {
-        // SITE-4818 Не учитывать фильтр при переходе в подкатегорию, если такового не существует
-        foreach ($values as $propertyId => $propertyValues) {
-            $isPropertyExistsInFilter = false;
-
-            foreach ($filters as $property) {
-                if ($property->getId() === $propertyId) {
-                    $isPropertyExistsInFilter = true;
-                    if ($property->getTypeId() === \Model\Product\Filter\Entity::TYPE_LIST) {
-                        $optionIds = [];
-                        foreach ($property->getOption() as $option) {
-                            $optionIds[] = (string)$option->getId();
-                        }
-
-                        foreach ($propertyValues as $i => $value) {
-                            if (!in_array((string)$value, $optionIds, true)) {
-                                unset($values[$propertyId][$i]);
-                            }
-                        }
-
-                        if (!count($values[$propertyId])) {
-                            unset($values[$propertyId]);
-                        }
-                    }
-
-                    break;
-                }
-            }
-
-            if (!$isPropertyExistsInFilter) {
-                unset($values[$propertyId]);
-            }
-        }
-
-        return $values;
     }
 }

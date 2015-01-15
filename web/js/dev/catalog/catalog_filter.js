@@ -26,10 +26,14 @@
 		filterMenuItem = filterBlock.find('.js-category-filter-param'),
 		filterCategoryBlocks = filterBlock.find('.js-category-filter-element'),
 		$priceFilter = $('.js-category-v1-filter-element-price'),
+		$priceForFacetSearch = $('.js-gift-category-filter-element-price'),
 		$otherParams = $('.js-category-v1-filter-otherParams'),
 
 		viewParamPanel = $('.js-category-sortingAndPagination'),
 		filterOpenClass = 'fltrSet_tggl-dn',
+
+		manualDefiledPriceFrom = utils.getURLParam('f-price-from', document.location.href),
+		manualDefiledPriceTo = utils.getURLParam('f-price-to', document.location.href),
 
 		tID;
 	// end of vars
@@ -223,6 +227,45 @@
 			// SITE-4825
 //			catalog.filter.resetForm();
 
+			(function() {
+				if (res.filters && res.filters.price && $priceForFacetSearch.length) {
+					var
+						$slider = $('.js-category-filter-rangeSlider-slider', $priceForFacetSearch),
+						$from = $('.js-category-filter-rangeSlider-from', $priceForFacetSearch),
+						$to = $('.js-category-filter-rangeSlider-to', $priceForFacetSearch),
+						from = parseFloat('0' + $from.val()),
+						to = parseFloat('0' + $to.val());
+
+					if (!manualDefiledPriceFrom || manualDefiledPriceFrom <= res.filters.price.max) {
+						$slider.slider('option', 'max', res.filters.price.max);
+
+						// Внимание: изменение данных значений не выполняет поиск заново, поэтому важно, чтобы данные изменения не влияли на возможный результат поиска
+						if (to > res.filters.price.max) {
+							$to.val(res.filters.price.max);
+							$slider.slider('values', 1, res.filters.price.max);
+						} else {
+							var newTo = manualDefiledPriceTo || res.filters.price.max;  // Если значение "до" не задавалось вручную, то значение "до" будет установлено в новое максимальное значение
+							$to.val(newTo);
+							$slider.slider('values', 1, newTo);
+						}
+					}
+
+					if (!manualDefiledPriceTo || manualDefiledPriceTo >= res.filters.price.min) {
+						$slider.slider('option', 'min', res.filters.price.min);
+
+						// Внимание: изменение данных значений не выполняет поиск заново, поэтому важно, чтобы данные изменения не влияли на возможный результат поиска
+						if (from < res.filters.price.min) {
+							$from.val(res.filters.price.min);
+							$slider.slider('values', 0, res.filters.price.min);
+						} else {
+							var newFrom = manualDefiledPriceFrom || res.filters.price.min; // Если значение "от" не задавалось вручную, то значение "от" будет установлено в новое минимальное значение
+							$from.val(newFrom);
+							$slider.slider('values', 0, newFrom);
+						}
+					}
+				}
+			})();
+
 			for ( key in dataToRender ) {
 				if ( catalog.filter.render.hasOwnProperty(key) ) {
 					template = catalog.filter.render[key]( dataToRender[key] );
@@ -261,23 +304,18 @@
 			var sortSliders = function sortSliders() {
 				var sliderWrap = $(this),
 					slider = sliderWrap.find('.js-category-filter-rangeSlider-slider'),
-					sliderConfig = slider.data('config'),
 					sliderFromInput = sliderWrap.find('.js-category-filter-rangeSlider-from'),
-					sliderToInput = sliderWrap.find('.js-category-filter-rangeSlider-to'),
-
-					min = sliderConfig.min,
-					max = sliderConfig.max;
-				// end of vars
+					sliderToInput = sliderWrap.find('.js-category-filter-rangeSlider-to');
 
 
-				if ( sliderFromInput.val() * 1 === min ) {
+				if ( sliderFromInput.val() * 1 == slider.slider('option', 'min') ) {
 					res.unchangedSliders.push(sliderFromInput.attr('name'));
 				}
 				else {
 					res.changedSliders.push(sliderFromInput.attr('name'));
 				}
 
-				if ( sliderToInput.val() * 1 === max ) {
+				if ( sliderToInput.val() * 1 == slider.slider('option', 'max') ) {
 					res.unchangedSliders.push(sliderToInput.attr('name'));
 				}
 				else {
@@ -384,6 +422,7 @@
 			console.info('change filter');
 			console.log(e);
 
+			// SITE-4894 Не изменяются выбранные фильтры при переходе назад
 			if (!catalog.filter.updateOnChange) {
 				return;
 			}
@@ -464,16 +503,11 @@
 				resetSliders = function resetSliders() {
 					var sliderWrap = $(this),
 						slider = sliderWrap.find('.js-category-filter-rangeSlider-slider'),
-						sliderConfig = slider.data('config'),
 						sliderFromInput = sliderWrap.find('.js-category-filter-rangeSlider-from'),
-						sliderToInput = sliderWrap.find('.js-category-filter-rangeSlider-to'),
+						sliderToInput = sliderWrap.find('.js-category-filter-rangeSlider-to');
 
-						min = sliderConfig.min,
-						max = sliderConfig.max;
-					// end of vars
-
-					sliderFromInput.val(min).trigger('change');
-					sliderToInput.val(max).trigger('change');
+					sliderFromInput.val(slider.slider('option', 'min')).trigger('change');
+					sliderToInput.val(slider.slider('option', 'max')).trigger('change');
 				},
 				resetText = function( nf, input ) {
 					$(input).val('').trigger('change');
@@ -559,18 +593,13 @@
 				slider = sliderWrap.find('.js-category-filter-rangeSlider-slider'),
 				sliderConfig = slider.data('config'),
 				sliderFromInput = sliderWrap.find('.js-category-filter-rangeSlider-from'),
-				sliderToInput = sliderWrap.find('.js-category-filter-rangeSlider-to'),
-
-				min = sliderConfig.min,
-				max = sliderConfig.max,
-				step = sliderConfig.step;
-			// end of vars
+				sliderToInput = sliderWrap.find('.js-category-filter-rangeSlider-to');
 
 			slider.slider({
 				range: true,
-				step: step,
-				min: min,
-				max: max,
+				step: sliderConfig.step,
+				min: sliderConfig.min,
+				max: sliderConfig.max,
 				values: [
 					sliderFromInput.val(),
 					sliderToInput.val()
@@ -579,6 +608,25 @@
 				slide: function( e, ui ) {
 					sliderFromInput.val( ui.values[ 0 ] );
 					sliderToInput.val( ui.values[ 1 ] );
+
+					if (sliderWrap.is($priceForFacetSearch)) {
+						if (manualDefiledPriceFrom != ui.values[0]) {
+							if (ui.values[0] == slider.slider('option', 'min')) {
+								manualDefiledPriceFrom = null;
+							} else {
+								manualDefiledPriceFrom = ui.values[0];
+							}
+						}
+
+						if (manualDefiledPriceTo != ui.values[1]) {
+
+							if (ui.values[1] == slider.slider('option', 'max')) {
+								manualDefiledPriceTo = null;
+							} else {
+								manualDefiledPriceTo = ui.values[1];
+							}
+						}
+					}
 				},
 
 				change: function( e, ui ) {
@@ -591,33 +639,61 @@
 				}
 			});
 
-			var inputUpdates = function inputUpdates() {
-				var val = '0' + $(this).val();
+			sliderFromInput.on('change', function() {
+				var
+					fromVal = '0' + $(this).val(),
+					min = slider.slider('option', 'min'),
+					max = slider.slider('option', 'max');
 
-				val = parseFloat(val);
-				console.info('inputUpdates');
-				console.log(val);
-				val =
-					( val > max ) ? max :
-					( val < min ) ? min :
-					val;
+				fromVal = parseFloat(fromVal);
 
-				$(this).val(val);
+				if (fromVal < min) {
+					fromVal = min;
+				} else if (fromVal > max) {
+					fromVal = max;
+				}
 
-				slider.slider({
-					values: [
-						sliderFromInput.val(),
-						sliderToInput.val()
-					]
-				});
-			};
+				$(this).val(fromVal);
+				slider.slider('values', 0, fromVal);
 
-			sliderToInput.on('change', inputUpdates);
-			sliderFromInput.on('change', inputUpdates);
+				if (sliderWrap.is($priceForFacetSearch) && manualDefiledPriceFrom != fromVal) {
+					if (fromVal == min) {
+						manualDefiledPriceFrom = null;
+					} else {
+						manualDefiledPriceFrom = fromVal;
+					}
+				}
+			});
+
+			sliderToInput.on('change', function() {
+				var
+					toVal = '0' + $(this).val(),
+					min = slider.slider('option', 'min'),
+					max = slider.slider('option', 'max');
+
+				toVal = parseFloat(toVal);
+
+				if (toVal < min) {
+					toVal = min;
+				} else if (toVal > max) {
+					toVal = max;
+				}
+
+				$(this).val(toVal);
+				slider.slider('values', 1, toVal);
+
+				if (sliderWrap.is($priceForFacetSearch) && manualDefiledPriceTo != toVal) {
+					if (toVal == max) {
+						manualDefiledPriceTo = null;
+					} else {
+						manualDefiledPriceTo = toVal;
+					}
+				}
+			});
 		},
 
 		/**
-		 * Обработка нажатий на ссылки завязанные на живую подгрузку данных
+		 * Обработка нажатий на ссылки удаления фильтров
 		 */
 		jsHistoryLinkHandler = function jsHistoryLinkHandler() {
 			var self = $(this),
