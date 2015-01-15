@@ -816,13 +816,12 @@
 			var self = $(this),
 				url = self.attr('href'),
 				activeClass = 'mActive',
-				parentItem = self.parent(),
-				isActiveTab = parentItem.hasClass(activeClass);
+				parentItem = self.parent();
 			// end of vars
 
 			e.preventDefault();
 
-			if ( isActiveTab ) {
+			if (parentItem.hasClass(activeClass) || parentItem.hasClass('js-category-pagination-activePage')) {
 				return;
 			}
 
@@ -839,11 +838,10 @@
 		selectFilterCategoryHandler = function selectFilterCategoryHandler() {
 			var self = $(this),
 				activeClass = 'mActive',
-				isActiveTab = self.hasClass(activeClass),
 				categoryId = self.data('ref');
 			// end of vars
 
-			if ( isActiveTab ) {
+			if ( self.hasClass(activeClass) ) {
 				return false;
 			}
 
@@ -900,19 +898,17 @@
 			var self = $(this),
 				url = self.attr('href'),
 				activeClass = 'mActive',
-				parentItem = self.parent(),
-				sortingItemsBtns = viewParamPanel.find('.js-category-sorting-item'),
-				isActiveTab = parentItem.hasClass(activeClass);
+				parentItem = self.parent();
 			// end of vars
 
 			e.preventDefault();
 
-			if ( isActiveTab ) {
+			if (parentItem.hasClass(activeClass) || parentItem.hasClass('js-category-sorting-activeItem')) {
 				return;
 			}
 
-			sortingItemsBtns.removeClass(activeClass);
-			parentItem.addClass(activeClass);
+			viewParamPanel.find('.js-category-sorting-item').removeClass(activeClass).removeClass('act').removeClass('js-category-sorting-activeItem');
+			parentItem.addClass(activeClass).addClass('act').addClass('js-category-sorting-activeItem');
 			catalog.history.gotoUrl(url);
 		};
 	// end of functions
