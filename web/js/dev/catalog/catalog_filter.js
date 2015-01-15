@@ -641,11 +641,13 @@
 
 			sliderFromInput.on('change', function() {
 				var
-					fromVal = '0' + $(this).val(),
+					fromVal = '0' + sliderFromInput.val(),
+					toVal = '0' + sliderToInput.val(),
 					min = slider.slider('option', 'min'),
 					max = slider.slider('option', 'max');
 
 				fromVal = parseFloat(fromVal);
+				toVal = parseFloat(toVal);
 
 				if (fromVal < min) {
 					fromVal = min;
@@ -653,7 +655,11 @@
 					fromVal = max;
 				}
 
-				$(this).val(fromVal);
+				if (fromVal > toVal) {
+					fromVal = toVal;
+				}
+
+				sliderFromInput.val(fromVal);
 				slider.slider('values', 0, fromVal);
 
 				if (sliderWrap.is($priceForFacetSearch) && manualDefiledPriceFrom != fromVal) {
@@ -667,10 +673,12 @@
 
 			sliderToInput.on('change', function() {
 				var
-					toVal = '0' + $(this).val(),
+					fromVal = '0' + sliderFromInput.val(),
+					toVal = '0' + sliderToInput.val(),
 					min = slider.slider('option', 'min'),
 					max = slider.slider('option', 'max');
 
+				fromVal = parseFloat(fromVal);
 				toVal = parseFloat(toVal);
 
 				if (toVal < min) {
@@ -679,7 +687,11 @@
 					toVal = max;
 				}
 
-				$(this).val(toVal);
+				if (fromVal > toVal) {
+					toVal = fromVal;
+				}
+
+				sliderToInput.val(toVal);
 				slider.slider('values', 1, toVal);
 
 				if (sliderWrap.is($priceForFacetSearch) && manualDefiledPriceTo != toVal) {

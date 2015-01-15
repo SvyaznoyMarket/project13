@@ -318,16 +318,24 @@ class Action {
 
         $values = [];
         foreach ($params as $k => $v) {
-            if (0 !== strpos($k, \View\Product\FilterForm::$name)) continue;
+            if (0 !== strpos($k, \View\Product\FilterForm::$name)) {
+                continue;
+            }
+
             $parts = array_pad(explode('-', $k), 3, null);
 
-            if (!isset($values[$parts[1]])) {
-                $values[$parts[1]] = [];
-            }
-            if (('from' == $parts[2]) || ('to' == $parts[2])) {
+            if ('from' == $parts[2] || 'to' == $parts[2]) {
                 $values[$parts[1]][$parts[2]] = $v;
             } else {
                 $values[$parts[1]][] = $v;
+            }
+        }
+
+        foreach ($values as $k => $v) {
+            if (isset($v['from']) && isset($v['to'])) {
+                if ($v['from'] > $v['to']) {
+                    $values[$k]['from'] = $v['to'];
+                }
             }
         }
 
