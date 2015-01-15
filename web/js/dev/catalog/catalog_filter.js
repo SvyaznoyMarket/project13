@@ -632,14 +632,12 @@
 				change: function( e, ui ) {
 					console.log('change slider');
 
-					if ( e.originalEvent ) {
-						sliderFromInput.trigger('change');
-						sliderToInput.trigger('change');
-					}
+					sliderFromInput.trigger('change', [true]);
+					sliderToInput.trigger('change', [true]);
 				}
 			});
 
-			sliderFromInput.on('change', function() {
+			sliderFromInput.on('change', function(e, disableSliderUpdate) {
 				var
 					fromVal = '0' + sliderFromInput.val(),
 					toVal = '0' + sliderToInput.val(),
@@ -660,7 +658,10 @@
 				}
 
 				sliderFromInput.val(fromVal);
-				slider.slider('values', 0, fromVal);
+
+				if (!disableSliderUpdate) {
+					slider.slider('values', 0, fromVal);
+				}
 
 				if (sliderWrap.is($priceForFacetSearch) && manualDefiledPriceFrom != fromVal) {
 					if (fromVal == min) {
@@ -671,7 +672,7 @@
 				}
 			});
 
-			sliderToInput.on('change', function() {
+			sliderToInput.on('change', function(e, disableSliderUpdate) {
 				var
 					fromVal = '0' + sliderFromInput.val(),
 					toVal = '0' + sliderToInput.val(),
@@ -692,7 +693,10 @@
 				}
 
 				sliderToInput.val(toVal);
-				slider.slider('values', 1, toVal);
+
+				if (!disableSliderUpdate) {
+					slider.slider('values', 1, toVal);
+				}
 
 				if (sliderWrap.is($priceForFacetSearch) && manualDefiledPriceTo != toVal) {
 					if (toVal == max) {
