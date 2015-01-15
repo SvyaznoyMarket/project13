@@ -405,6 +405,7 @@ $c->banner['url'] = [
 
 $c->cart['productLimit'] = 30;
 $c->cart['sessionName'] = 'userCart';
+$c->cart['checkStock'] = false;
 
 $c->payment['creditEnabled'] = true;
 $c->payment['paypalECS'] = false;
