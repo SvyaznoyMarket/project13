@@ -209,7 +209,7 @@ class IndexPage extends \View\DefaultLayout {
                 'title'       => null,
                 'description' => null,
                 'keywords'    => null,
-            ], $data);
+            ], (array)$data);
         });
 
         // данные для шаблона
