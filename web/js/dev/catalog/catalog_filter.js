@@ -632,14 +632,12 @@
 				change: function( e, ui ) {
 					console.log('change slider');
 
-					if ( e.originalEvent ) {
-						sliderFromInput.trigger('change');
-						sliderToInput.trigger('change');
-					}
+					sliderFromInput.trigger('change', [true]);
+					sliderToInput.trigger('change', [true]);
 				}
 			});
 
-			sliderFromInput.on('change', function() {
+			sliderFromInput.on('change', function(e, disableSliderUpdate) {
 				var
 					fromVal = '0' + sliderFromInput.val(),
 					toVal = '0' + sliderToInput.val(),
@@ -660,7 +658,10 @@
 				}
 
 				sliderFromInput.val(fromVal);
-				slider.slider('values', 0, fromVal);
+
+				if (!disableSliderUpdate) {
+					slider.slider('values', 0, fromVal);
+				}
 
 				if (sliderWrap.is($priceForFacetSearch) && manualDefiledPriceFrom != fromVal) {
 					if (fromVal == min) {
@@ -671,7 +672,7 @@
 				}
 			});
 
-			sliderToInput.on('change', function() {
+			sliderToInput.on('change', function(e, disableSliderUpdate) {
 				var
 					fromVal = '0' + sliderFromInput.val(),
 					toVal = '0' + sliderToInput.val(),
@@ -692,7 +693,10 @@
 				}
 
 				sliderToInput.val(toVal);
-				slider.slider('values', 1, toVal);
+
+				if (!disableSliderUpdate) {
+					slider.slider('values', 1, toVal);
+				}
 
 				if (sliderWrap.is($priceForFacetSearch) && manualDefiledPriceTo != toVal) {
 					if (toVal == max) {
@@ -707,16 +711,16 @@
 		/**
 		 * Обработка нажатий на ссылки удаления фильтров
 		 */
-		jsHistoryLinkHandler = function jsHistoryLinkHandler() {
+		jsHistoryLinkHandler = function jsHistoryLinkHandler(e) {
 			var self = $(this),
 				url = self.attr('href');
 			// end of vars
 
+			e.preventDefault();
+
 			catalog.filter.resetForm();
 			catalog.filter.updateFilter(utils.parseUrlParams(url));
 			catalog.history.gotoUrl(url);
-
-			return false;
 		},
 
 		/**
@@ -771,12 +775,13 @@
 			var self = $(this),
 				url = self.attr('href'),
 				activeClass = 'mActive',
-				parentItem = self.parent(),
-				isActiveTab = parentItem.hasClass(activeClass);
+				parentItem = self.parent();
 			// end of vars
 
-			if ( isActiveTab ) {
-				return false;
+			e.preventDefault();
+
+			if (parentItem.hasClass(activeClass) || parentItem.hasClass('js-category-pagination-activePage')) {
+				return;
 			}
 
 			catalog.history.gotoUrl(url);
@@ -784,8 +789,6 @@
 			if ( filterBlock.length ) {
 				$.scrollTo(filterBlock, 500);
 			}
-
-			e.preventDefault();
 		},
 
 		/**
@@ -794,11 +797,10 @@
 		selectFilterCategoryHandler = function selectFilterCategoryHandler() {
 			var self = $(this),
 				activeClass = 'mActive',
-				isActiveTab = self.hasClass(activeClass),
 				categoryId = self.data('ref');
 			// end of vars
 
-			if ( isActiveTab ) {
+			if ( self.hasClass(activeClass) ) {
 				return false;
 			}
 
@@ -821,7 +823,7 @@
 		/**
 		 * Смена отображения каталога
 		 */
-		changeViewItemsHandler = function changeViewItemsHandler() {
+		changeViewItemsHandler = function changeViewItemsHandler(e) {
 			var self = $(this),
 				url = self.attr('href'),
 				activeClass = 'mActive',
@@ -830,8 +832,10 @@
 				isActiveTab = parentItem.hasClass(activeClass);
 			// end of vars
 
+			e.preventDefault();
+
 			if ( isActiveTab ) {
-				return false;
+				return;
 			}
 
 			changeViewItemsBtns.removeClass(activeClass);
@@ -843,32 +847,28 @@
 			else {
 				catalog.history.gotoUrl(url);
 			}
-
-			return false;
 		},
 
 
 		/**
 		 * Сортировка элементов
 		 */
-		sortingItemsHandler = function sortingItemsHandler() {
+		sortingItemsHandler = function sortingItemsHandler(e) {
 			var self = $(this),
 				url = self.attr('href'),
 				activeClass = 'mActive',
-				parentItem = self.parent(),
-				sortingItemsBtns = viewParamPanel.find('.js-category-sorting-item'),
-				isActiveTab = parentItem.hasClass(activeClass);
+				parentItem = self.parent();
 			// end of vars
 
-			if ( isActiveTab ) {
-				return false;
+			e.preventDefault();
+
+			if (parentItem.hasClass(activeClass) || parentItem.hasClass('js-category-sorting-activeItem')) {
+				return;
 			}
 
-			sortingItemsBtns.removeClass(activeClass);
-			parentItem.addClass(activeClass);
+			viewParamPanel.find('.js-category-sorting-item').removeClass(activeClass).removeClass('act').removeClass('js-category-sorting-activeItem');
+			parentItem.addClass(activeClass).addClass('act').addClass('js-category-sorting-activeItem');
 			catalog.history.gotoUrl(url);
-
-			return false;
 		};
 	// end of functions
 

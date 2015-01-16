@@ -2,15 +2,16 @@
 
 namespace Controller\ProductCategory\Grid;
 
+use Model\Product\Category\Entity;
+
 class ChildAction {
     /**
      * @param \Http\Request $request
      * @param \Model\Product\Category\Entity $category
      * @param array $catalogConfig
-     * @param array $shopScriptSeo
      * @return \Http\Response
      */
-    public function executeByEntity(\Http\Request $request, \Model\Product\Category\Entity $category, $catalogConfig = [], $shopScriptSeo = []) {
+    public function executeByEntity(\Http\Request $request, \Model\Product\Category\Entity $category, $catalogConfig = []) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $region = \App::user()->getRegion();
@@ -24,6 +25,8 @@ class ChildAction {
                     $rootCategoryInMenu = new \Model\Product\Category\TreeEntity($data);
                 }
             });
+
+            \App::searchClient()->execute();
         }
 
         $rootCategoryInMenuImage = null;
@@ -31,45 +34,16 @@ class ChildAction {
             $rootCategoryInMenuImage = $catalogConfig['root_category_menu']['image'];
         }
 
-        $gridResult = [];
-        \App::scmsClient()->addQuery(
-            'category/get',
-            [
-                'uid'    => $category->getUi(),
-                'geo_id' => $region->getId(),
-            ],
-            [],
-            function($data) use (&$gridResult) {
-                if (isset($data['grid'])) {
-                    $gridResult = $data['grid'];
-                }
-
-                if (!isset($gridResult['items'][0])) {
-                    \App::logger()->error(['message' => 'Не передан grid.items.0', 'scms.response' => $data, 'sender' => __FILE__ . ' ' .  __LINE__], ['tchibo']);
-                }
-            },
-            null,
-            \App::config()->scms['timeout'] * 1.5
-        );
-
-        \App::scmsClient()->execute();
-
-        $gridResult += ['items' => []];
-        if (!(bool)$gridResult['items']) {
+        if (!$category->grid) {
+            \App::logger()->error(['message' => 'Не передан grid.items', 'sender' => __FILE__ . ' ' .  __LINE__], ['tchibo']);
             \App::exception()->add(new \Exception('Проблема с гридстером'));
         }
 
         /** @var $productsByUi \Model\Product\Entity[] */
         $productsByUi = [];
-        /** @var $gridCells \Model\GridCell\Entity[] */
-        $gridCells = [];
-        foreach ((array)$gridResult['items'] as $item) {
-            if (!is_array($item)) continue;
-            $gridCell = new \Model\GridCell\Entity($item);
-            $gridCells[] = $gridCell;
-
-            if ((\Model\GridCell\Entity::TYPE_PRODUCT === $gridCell->getType()) && $gridCell->getObjectUi()) {
-                $productsByUi[$gridCell->getObjectUi()] = $gridCell->getObjectUi();
+        foreach ($category->grid as $item) {
+            if (\Model\GridCell\Entity::TYPE_PRODUCT === $item->getType() && $item->getObjectUi()) {
+                $productsByUi[$item->getObjectUi()] = $item->getObjectUi();
             }
         }
 
@@ -95,28 +69,6 @@ class ChildAction {
                 }
             );
         }
-
-        $catalogConfigsByCategoryUi = [];
-        // Шильдик is_new
-        \App::scmsClient()->addQuery(
-            'category/get-by-filters',
-            [
-                'filters' => ['appearance.is_new' => 'true'],
-                'geo_id'  => $region->getId(),
-            ],
-            [],
-            function($data) use(&$catalogConfigsByCategoryUi) {
-                if (isset($data[0]['uid'])) {
-                    foreach ($data as $item) {
-                        if (!isset($item['uid'])) continue;
-                        $catalogConfigsByCategoryUi[$item['uid']] = $item;
-                    }
-                }
-            },
-            function(\Exception $e) {
-                \App::exception()->remove($e);
-            }
-        );
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
@@ -152,24 +104,15 @@ class ChildAction {
             $tchiboMenuCategoryNameStyles = $catalogConfig['tchibo_menu']['style']['name'];
         }
 
-        // SITE-3970
-        // Стили для названий категорий tchibo
-        $tchiboMenuCategoryNameStyles = [];
-        if (isset($catalogConfig['tchibo_menu']['style']['name']) && is_array($catalogConfig['tchibo_menu']['style']['name'])) {
-            $tchiboMenuCategoryNameStyles = $catalogConfig['tchibo_menu']['style']['name'];
-        }
-
         $page = new \View\ProductCategory\Grid\ChildCategoryPage();
-        $page->setParam('gridCells', $gridCells);
+        $page->setParam('gridCells', $category->grid);
         $page->setParam('category', $category);
         $page->setParam('catalogConfig', $catalogConfig);
         $page->setParam('productsByUi', $productsByUi);
         $page->setParam('rootCategoryInMenu', $rootCategoryInMenu);
-        $page->setParam('shopScriptSeo', $shopScriptSeo);
         $page->setGlobalParam('tchiboMenuCategoryNameStyles', $tchiboMenuCategoryNameStyles);
         $page->setGlobalParam('rootCategoryInMenuImage', $rootCategoryInMenuImage);
         $page->setGlobalParam('isTchibo', ($category->getRoot() && 'Tchibo' === $category->getRoot()->getName()));
-        $page->setGlobalParam('catalogConfigsByCategoryUi', $catalogConfigsByCategoryUi);
 
         return new \Http\Response($page->show());
     }

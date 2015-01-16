@@ -18,6 +18,7 @@ class Entity {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('token', $data)) $this->setToken($data['token']);
+        if (array_key_exists('slug', $data)) $this->setToken($data['slug']);
         if (array_key_exists('coord_long', $data)) $this->setLongitude($data['coord_long']);
         if (array_key_exists('coord_lat', $data)) $this->setLatitude($data['coord_lat']);
     }

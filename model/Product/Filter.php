@@ -290,7 +290,7 @@ class Filter {
             array_unshift($groups, $group);
         }
 
-        if ($brandProperty && $this->getCategory()->isV2Furniture()) {
+        if ($brandProperty && $this->getCategory() instanceof \Model\Product\Category\Entity && $this->getCategory()->isV2Furniture()) {
             $group = new Group();
             $group->name = $brandProperty->getName();
             $group->properties[] = $brandProperty;
@@ -312,7 +312,7 @@ class Filter {
                 $properties[] = $property;
             } else if ($property->isLabel()) {
                 $properties[] = $property;
-            } else if ($property->isBrand() && !$this->getCategory()->isV2Furniture()) {
+            } else if ($property->isBrand() && $this->getCategory() instanceof \Model\Product\Category\Entity && !$this->getCategory()->isV2Furniture()) {
                 $properties[] = $property;
             }
         }

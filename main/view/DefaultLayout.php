@@ -780,8 +780,8 @@ class DefaultLayout extends Layout {
             return $this->breadcrumbsPath;
         }
 
-        $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
-        if (!$category) {
+        $category = $this->getParam('category');
+        if (!($category instanceof \Model\Product\Category\Entity)) {
             return false;
         }
 

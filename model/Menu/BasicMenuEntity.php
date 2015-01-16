@@ -27,6 +27,7 @@ class BasicMenuEntity {
         if (isset($data['name'])) $this->name = (string)$data['name'];
         if (isset($data['link'])) $this->link = preg_replace('/\/$/', '', (string)$data['link']);
         if (isset($data['media_image'])) $this->image = (string)$data['media_image'];
+        if (isset($data['logo_path']) && isset($data['use_logo']) && $data['use_logo']) $this->logo = (string)$data['logo_path'];
 
         if (isset($data['children']) && is_array($data['children'])) {
             foreach ($data['children'] as $item) $this->children[$item['id']] = new BasicMenuEntity($item);

@@ -117,7 +117,7 @@ $c->reviewsStore['retryTimeout'] = [
 ];
 
 $c->wordpress['url'] = 'http://content.enter.ru/';
-$c->wordpress['timeout'] = 1.8;
+$c->wordpress['timeout'] = 2;
 $c->wordpress['throwException'] = true;
 $c->wordpress['retryCount'] = 2;
 $c->wordpress['retryTimeout'] = [
@@ -131,7 +131,7 @@ $c->wordpress['retryTimeout'] = [
 ];
 
 $c->dataStore['url'] = 'http://cms.enter.ru/v1/';
-$c->dataStore['timeout'] = 0.8;
+$c->dataStore['timeout'] = 2;
 $c->dataStore['retryCount'] = 2;
 $c->dataStore['retryTimeout'] = [
     'default' => 0.04,
@@ -145,7 +145,7 @@ $c->dataStore['retryTimeout'] = [
 
 $c->scms['url']          = 'http://scms.enter.ru/';
 $c->scms['retryCount']   = 2;
-$c->scms['timeout']      = 1;
+$c->scms['timeout']      = 3;
 $c->scms['retryTimeout'] = [
     'default' => 0.18,
     'tiny'    => 0.18,
@@ -158,7 +158,7 @@ $c->scms['retryTimeout'] = [
 
 $c->scmsV2['url']          = 'http://scms.enter.ru/v2/';
 $c->scmsV2['retryCount']   = 2;
-$c->scmsV2['timeout']      = 1;
+$c->scmsV2['timeout']      = 3;
 $c->scmsV2['retryTimeout'] = [
     'default' => 0.18,
     'tiny'    => 0.18,
@@ -171,7 +171,7 @@ $c->scmsV2['retryTimeout'] = [
 
 $c->scmsSeo['url']          = 'http://scms.enter.ru/seo/';
 $c->scmsSeo['retryCount']   = 2;
-$c->scmsSeo['timeout']      = 1;
+$c->scmsSeo['timeout']      = 3;
 $c->scmsSeo['retryTimeout'] = [
     'default' => 0.18,
     'tiny'    => 0.18,
@@ -184,7 +184,7 @@ $c->scmsSeo['retryTimeout'] = [
 
 $c->crm['url'] = 'http://crm.enter.ru/';
 $c->crm['client_id'] = 'site';
-$c->crm['timeout'] = 1;
+$c->crm['timeout'] = 3;
 $c->crm['hugeTimeout'] = 5;
 $c->crm['retryCount'] = 2;
 $c->crm['retryTimeout'] = [
@@ -228,23 +228,6 @@ $c->pickpoint['retryTimeout'] = [
     'huge'    => 1,
     'forever' => 0,
 ];
-
-$c->shopScript['enabled'] = true;
-$c->shopScript['url'] = 'http://admin.enter.ru/v2/';
-//$c->shopScript['user'] = 'admin';
-//$c->shopScript['password'] = 'booToo9x';
-$c->shopScript['timeout'] = 3;
-$c->shopScript['retryCount'] = 2;
-$c->shopScript['retryTimeout'] = [
-    'default' => 0.3,
-    'tiny'    => 0.1,
-    'short'   => 0.2,
-    'medium'  => 0.3,
-    'long'    => 0.5,
-    'huge'    => 1,
-    'forever' => 0,
-];
-
 
 // TODO: Вынести сюда же настройки для sociomantic and get4click
 $c->partners['criteo']['enabled'] = true;
