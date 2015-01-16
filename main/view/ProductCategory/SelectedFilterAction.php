@@ -40,7 +40,10 @@ class SelectedFilterAction {
             $filterLinkData['shop'] = [
                 'name'  => 'Наличие в магазинах',
                 'links' => [
-                    ['name' => sprintf('Только товары из магазина <strong>%s</strong>', $shop->getAddress()), 'url' => $helper->replacedUrl(['shop' => null, 'page' => null, 'ajax' => null, 'sort' => $sort], null, null, true, $baseUrl)],
+                    [
+                        'name' => sprintf('Только товары из магазина <strong>%s</strong>', $shop->getName()),
+                        'url' => $helper->replacedUrl(['shop' => null, 'page' => null, 'ajax' => null, 'sort' => $sort], null, null, true, $baseUrl)
+                    ],
                 ],
             ];
             $filterValueData['shop'] = $shop->getId();
