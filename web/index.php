@@ -67,7 +67,7 @@ $response = null;
 
         $spend = \Debug\Timer::stop('app');
 
-        \App::logger()->info([
+        \App::logger()->error([
             'message' => 'Fail app',
             'error'   => $error,
             'env'     => \App::$env,
