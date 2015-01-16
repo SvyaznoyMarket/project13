@@ -256,7 +256,7 @@ class Action {
                     $helper,
                     $productPager,
                     $productVideosByProduct,
-                    !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : []
+                    []
                 ),
                 'selectedFilter' => $selectedFilter,
                 'pagination'     => (new \View\PaginationAction())->execute(
