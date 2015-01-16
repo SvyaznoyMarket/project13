@@ -4,58 +4,6 @@ namespace Controller\Slice;
 
 class ShowAction {
     private static $globalCookieName = 'global';
-    protected $pageTitle;
-
-    /**
-     * @param \Http\Request $request
-     * @param string        $sliceToken
-     * @throws \Exception\NotFoundException
-     * @return \Http\Response
-     */
-    public function execute(\Http\Request $request, $sliceToken) {
-        return $this->category($request, $sliceToken, null);
-    }
-
-
-    /**
-     * @param string        $categoryPath
-     * @param \Http\Request $request
-     * @return \Http\RedirectResponse
-     */
-    public function setGlobal($categoryPath, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
-
-        $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('product.category', ['categoryPath' => $categoryPath]));
-
-        if ($request->query->has('global')) {
-            if ($request->query->get('global')) {
-                $cookie = new \Http\Cookie(self::$globalCookieName, 1, strtotime('+7 days' ));
-                $response->headers->clearCookie(\App::config()->shop['cookieName']);
-                $response->headers->setCookie($cookie);
-            } else {
-                $response->headers->clearCookie(self::$globalCookieName);
-            }
-        }
-
-        return $response;
-    }
-
-    /**
-     * @param string        $categoryPath
-     * @param \Http\Request $request
-     * @return \Http\RedirectResponse
-     */
-    public function setInstore($categoryPath, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
-
-        $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('product.category', [
-            'categoryPath' => $categoryPath,
-            'instore'      => 1,
-        ]));
-
-        return $response;
-    }
-
 
     /**
      * @param \Http\Request $request
@@ -64,7 +12,7 @@ class ShowAction {
      * @throws \Exception\NotFoundException
      * @return \Http\Response
      */
-    public function category(\Http\Request $request, $sliceToken, $categoryToken) {
+    public function execute(\Http\Request $request, $sliceToken, $categoryToken = null) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $region = \App::user()->getRegion();
@@ -104,17 +52,14 @@ class ShowAction {
         // фильтры среза
         $filterData = $this->getSliceFilters($slice);
 
-        // если в слайсе задан category_id, то отображаем листинг данной категории
-        if ($slice->getCategoryId()) {
+        // если в слайсе задан category_uid, то отображаем листинг данной категории
+        if ($slice->categoryUid) {
             $productCategoryRepository = \RepositoryManager::productCategory();
-            $productCategoryRepository->setEntityClass('\Model\Product\Category\Entity');
-
-            $categoryId = $slice->getCategoryId();
-            $category = $categoryId ? $productCategoryRepository->getEntityById($categoryId) : null;
+            $category = $productCategoryRepository->getEntityByUid($slice->categoryUid);
 
             if ($category) {
                 // запрашиваем дерево категорий
-                $productCategoryRepository->prepareEntityBranch($category, $region);
+                $productCategoryRepository->prepareEntityBranch($category->getId(), $category, $region);
 
                 $page = new \View\Slice\ShowPage();
                 $page->setParam('category', $category);
@@ -146,76 +91,21 @@ class ShowAction {
             $region = null;
         }
 
+        $category = new \Model\Product\Category\Entity();
+        if ($categoryToken) {
+            \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
+                if ($data) {
+                    $category = new \Model\Product\Category\Entity($data);
+                }
+            });
+        }
+
         // подготовка 2-го пакета запросов
 
         // TODO: запрашиваем меню
 
-        /** @var $category \Model\Product\Category\Entity */
-        $category = null;
-
-        $shopScriptException = null;
-        $shopScriptSeo = [];
-        if ($categoryToken && \App::config()->shopScript['enabled']) {
-            try {
-                $shopScript = \App::shopScriptClient();
-                $shopScript->addQuery(
-                    'category/get-seo',
-                    [
-                        'slug' => $categoryToken,
-                        'geo_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-                    ],
-                    [],
-                    function ($data) use (&$shopScriptSeo) {
-                        if ($data && is_array($data)) $shopScriptSeo = reset($data);
-                    },
-                    function (\Exception $e) use (&$shopScriptException) {
-                        $shopScriptException = $e;
-                    }
-                );
-                $shopScript->execute();
-                if ($shopScriptException instanceof \Exception) {
-                    throw $shopScriptException;
-                }
-
-                if (empty($shopScriptSeo['ui'])) {
-                    throw new \Exception\NotFoundException(sprintf('Не получен ui для категории товара @%s', $categoryToken));
-                }
-
-                // запрашиваем категорию по ui
-                \RepositoryManager::productCategory()->prepareEntityByUi($shopScriptSeo['ui'], $region, function($data) use (&$category) {
-                    $data = reset($data);
-                    if ((bool)$data) {
-                        $category = new \Model\Product\Category\Entity($data);
-                    }
-                });
-            } catch (\Exception $e) { // если не плучилось добыть seo-данные или категорию по ui, пробуем старый добрый способ
-                \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
-                    $data = reset($data);
-                    if ((bool)$data) {
-                        $category = new \Model\Product\Category\Entity($data);
-                    }
-                });
-            }
-
-        } elseif (!is_null($categoryToken)) {
-            \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
-                $data = reset($data);
-                if ((bool)$data) {
-                    $category = new \Model\Product\Category\Entity($data);
-                }
-            });
-        } else {
-            $category = new \Model\Product\Category\Entity();
-        }
-
         // выполнение 2-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);
-
-        if (!$category) {
-            throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена', $categoryToken));
-        }
-
-        // подготовка 3-го пакета запросов
 
         // запрашиваем дерево категорий
         //\RepositoryManager::productCategory()->prepareEntityBranch($category, $region);
@@ -224,7 +114,7 @@ class ShowAction {
         }
 
         $params = [
-            'root_id'         => $category->getHasChild() ? $category->getId() : ($category->getParentId() ? $category->getParentId() : 0),
+            'root_id'         => $category->getId() ? $category->getId() : ($category->getParentId() ? $category->getParentId() : 0),
             'max_level'       => $category->getId() ? $category->getLevel() + 1 : 1,
             'is_load_parents' => true,
             'filter' => ['filters' => $filterData],
@@ -233,6 +123,7 @@ class ShowAction {
         if ($region) {
             $params['region_id'] = $region->getId();
         }
+
         \App::searchClient()->addQuery('category/tree', $params, [], function($data) use (&$category, &$region, $sliceToken, $helper) {
             /**
              * Загрузка дочерних и родительских узлов категории
@@ -284,6 +175,10 @@ class ShowAction {
              * @use $category     Текущая категория каталога
              */
             $iterateLevel = function($data) use(&$iterateLevel, &$loadBranch, $category) {
+                if (!is_array($data)) {
+                    return;
+                }
+
                 $item = reset($data);
                 if (!(bool)$item) return;
 
@@ -318,20 +213,8 @@ class ShowAction {
             $iterateLevel($data);
         });
 
-        // запрашиваем фильтры
-        /** @var $filters \Model\Product\Filter\Entity[] */
-//        $filters = [];
-//        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, function($data) use (&$filters) {
-//            foreach ($data as $item) {
-//                $filters[] = new \Model\Product\Filter\Entity($item);
-//            }
-//        });
-
         // выполнение 3-го пакета запросов
         $client->execute();
-
-        // получаем catalog json для категории (например, тип раскладки)
-        //$catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
 
         $promoContent = '';
         if (!empty($catalogJson['promo_token'])) {
@@ -368,17 +251,10 @@ class ShowAction {
             \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
         }
 
-        // фильтры
-//        $productFilter = $this->getFilter($filters, $category, $request, $shop);
-
         // получаем из json данные о горячих ссылках и content
         try {
-            $seoCatalogJson = \Model\Product\Category\Repository::getSeoJson($category, null, $shopScriptSeo);
-            // получаем горячие ссылки
-            $hotlinks = \RepositoryManager::productCategory()->getHotlinksBySeoCatalogJson($seoCatalogJson);
-
-            // в json-файле в свойстве content содержится массив
-            $seoContent = empty($seoCatalogJson['content']) ? '' : implode('<br />', $seoCatalogJson['content']);
+            $hotlinks = $category->getSeoHotlinks();
+            $seoContent = $category->getSeoContent();
         } catch (\Exception $e) {
             $hotlinks = [];
             $seoContent = '';
@@ -396,72 +272,41 @@ class ShowAction {
 
         // переделываем url для breadcrumbs
         foreach ($category->getAncestor() as $ancestor) {
-            $url = explode('/', $ancestor->getLink());
-            $url = $helper->url('slice.category', ['sliceToken' => $sliceToken, 'categoryToken' => end($url)]);
-            $ancestor->setLink($url);
+            $this->changeCategoryUrlToSliceUrl($ancestor, $sliceToken);
         }
+
+        $this->changeCategoryUrlToSliceUrl($category, $sliceToken);
 
         $setPageParameters = function(\View\Layout $page) use (
             &$category,
             &$regionsToSelect,
-//            &$productFilter,
             &$hotlinks,
             &$seoContent,
             &$catalogJson,
             &$promoContent,
-            &$shopScriptSeo,
             &$shop,
             &$slice
         ) {
             $page->setParam('category', $category);
             $page->setParam('regionsToSelect', $regionsToSelect);
-//            $page->setParam('productFilter', $productFilter);
             $page->setParam('hotlinks', $hotlinks);
             $page->setParam('seoContent', $seoContent);
             $page->setParam('catalogJson', $catalogJson);
             $page->setParam('promoContent', $promoContent);
-            $page->setParam('shopScriptSeo', $shopScriptSeo);
             $page->setParam('slice', $slice);
             $page->setGlobalParam('shop', $shop);
         };
 
-        // полнотекстовый поиск через сфинкс
-        $textSearched = false;
-        if (\App::config()->sphinx['showListingSearchBar']) {
-//            $filterValues = $productFilter->getValues();
-            if(!empty($filterValues['text'])) {
-                $textSearched = true;
-            }
-        }
-
-        // если категория содержится во внешнем узле дерева
-        /*if ($category->isLeaf() || $textSearched) {
-            $page = new \View\ProductCategory\LeafPage();
-            $setPageParameters($page);
-
-            return $this->leafCategory($category, $productFilter, $page, $request);
-        }
-        // иначе, если в запросе есть фильтрация
-        else if ($request->get(\View\Product\FilterForm::$name)) {
-            $page = new \View\ProductCategory\LeafPage();
-            $page->setParam('forceSliders', true);
-            $setPageParameters($page);
-
-            return $this->leafCategory($category, $productFilter, $page, $request);
-        }
-        // иначе, если категория самого верхнего уровня
-        else if ($category->isRoot()) {
-            $page = new \View\ProductCategory\RootPage();
-            $setPageParameters($page);
-
-            return $this->rootCategory($category, $productFilter, $page, $request);
-        }*/
-
-        //$page = new \View\ProductCategory\LeafPage();
         $page = new \View\Slice\ShowPage();
         $setPageParameters($page);
 
-        return $this->leafCategory($category, /*$productFilter,*/ $page, $request, $filterData, $region, $slice);
+        return $this->leafCategory($category, $page, $request, $filterData, $region, $slice);
+    }
+
+    private function changeCategoryUrlToSliceUrl(\Model\Product\Category\Entity $category, $sliceToken) {
+        $url = explode('/', $category->getLink());
+        $url = (new \Helper\TemplateHelper())->url('slice.category', ['sliceToken' => $sliceToken, 'categoryToken' => end($url)]);
+        $category->setLink($url);
     }
 
     /**
@@ -475,7 +320,7 @@ class ShowAction {
      * @internal param \Model\Product\Filter $productFilter
      * @return \Http\Response
      */
-    protected function leafCategory(\Model\Product\Category\Entity $category, /*\Model\Product\Filter $productFilter,*/ \View\Layout $page, \Http\Request $request, $filterData, \Model\Region\Entity $region = null, \Model\Slice\Entity $slice) {
+    protected function leafCategory(\Model\Product\Category\Entity $category, \View\Layout $page, \Http\Request $request, $filterData, \Model\Region\Entity $region = null, \Model\Slice\Entity $slice) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.leafCategory', 134);
@@ -670,11 +515,6 @@ class ShowAction {
                     $slice->getProductBuyMethod(),
                     $slice->getShowProductState()
                 ),
-//                'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
-//                    \App::closureTemplating()->getParam('helper'),
-//                    $productFilter,
-//                    \App::router()->generate('product.category', ['categoryPath' => $category->getPath()])
-//                ),
                 'pagination'     => (new \View\PaginationAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
                     $productPager
@@ -693,7 +533,6 @@ class ShowAction {
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
-        $page->setParam('sidebarHotlinks', true);
         $page->setParam('hasCategoryChildren', in_array($request->get('route'), ['slice.show', 'slice.category']));
 
         return new \Http\Response($page->show());
@@ -708,12 +547,6 @@ class ShowAction {
         && (bool)(\App::request()->cookies->get(self::$globalCookieName, false));
     }
 
-    /**
-     * @return bool
-     */
-    public static function inStore() {
-        return (bool)\App::request()->get('instore');
-    }
 
     /**
      * Получение фильтров среза

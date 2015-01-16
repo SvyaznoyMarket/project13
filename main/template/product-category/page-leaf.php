@@ -36,7 +36,7 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
         <h1 class="bTitlePage js-pageTitle"<? if(!empty($promoStyle['title'])): ?> style="<?= $promoStyle['title'] ?>"<? endif ?>><?= $title ?></h1>
 
         <? if (\App::config()->adFox['enabled']): ?>
-        <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
+            <!-- Баннер --><div id="adfox683sub" class="adfoxWrapper bBannerBox"></div><!--/ Баннер -->
         <? endif ?>
 
         <? if((bool)$slideData): ?>

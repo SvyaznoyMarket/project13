@@ -229,7 +229,6 @@ $.fn.slots = function (slot_config, animations_config) {
                         {"name": "analytics", "value": "{\u0022enabled\u0022:false,\u0022optimizelyEnabled\u0022:false}"},
                         {"name": "kissmentrics", "value": "{\u0022enabled\u0022:true,\u0022cookieName\u0022:{\u0022needUpdate\u0022:\u0022kissNeedUpdate\u0022}}"},
                         {"name": "pickpoint", "value": "{\u0022url\u0022:\u0022http:\/\/e-solution.pickpoint.ru\/apitest\/\u0022,\u0022timeout\u0022:60,\u0022retryTimeout\u0022:{\u0022default\u0022:0.04,\u0022tiny\u0022:0.04,\u0022short\u0022:0.08,\u0022medium\u0022:0.1,\u0022long\u0022:0.5,\u0022huge\u0022:1,\u0022forever\u0022:0},\u0022retryCount\u0022:3}"},
-                        {"name": "shopScript", "value": "{\u0022enabled\u0022:true,\u0022url\u0022:\u0022http:\/\/admin.enter.ru\/v2\/\u0022,\u0022timeout\u0022:9,\u0022retryTimeout\u0022:{\u0022default\u0022:0.3,\u0022tiny\u0022:0.1,\u0022short\u0022:0.2,\u0022medium\u0022:0.3,\u0022long\u0022:0.5,\u0022huge\u0022:1,\u0022forever\u0022:0},\u0022retryCount\u0022:2,\u0022user\u0022:null,\u0022password\u0022:null}"},
                         {"name": "jsonLog", "value": "{\u0022enabled\u0022:false}"},
                         {"name": "googleAnalytics", "value": "{\u0022enabled\u0022:false}"},
                         {"name": "yandexMetrika", "value": "{\u0022enabled\u0022:false}"},

@@ -20,6 +20,4 @@ $c = require __DIR__ . '/config-dev.php';
 
 //$c->reviewsStore['url'] = 'http://admin.enter.ru/reviews/';
 
-//$c->shopScript['url'] = 'http://cr1.admin.ent3.ru/v2/';
-
 return $c;

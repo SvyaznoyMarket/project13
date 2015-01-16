@@ -17,8 +17,6 @@ $c->wordpress['timeout']        *= 1.5;
 $c->wordpress['throwException'] = false;
 
 $c->dataStore['timeout'] *= 1.5;
-
-$c->shopScript['timeout'] *= 1.5;
 */
 
 $c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/apitest/';

@@ -120,7 +120,6 @@ class SitemapAction {
 
     private function fillProductCategory() {
         $productCategoryRepository = \RepositoryManager::productCategory();
-        $productCategoryRepository->setEntityClass('\Model\Product\Category\TreeEntity');
 
         $defaultRegion = \RepositoryManager::region()->getDefaultEntity();
 
@@ -169,7 +168,6 @@ class SitemapAction {
 
     private function fillProduct() {
         $productCategoryRepository = \RepositoryManager::productCategory();
-        $productCategoryRepository->setEntityClass('\Model\Product\Category\TreeEntity');
 
         $productRepository = \RepositoryManager::product();
         $productRepository->setEntityClass('\Model\Product\BasicEntity');
