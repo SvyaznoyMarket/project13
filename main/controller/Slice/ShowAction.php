@@ -562,26 +562,34 @@ class ShowAction {
         if (!empty($pagerAll)) {
             $productPager = $pagerAll;
         } else {
+            $productIds = [];
+            $productCount = 0;
+
+            // проверка наличия ид товаров
+            if (!(bool)$filterData && (false !== strpos($slice->getFilterQuery(), 'product'))) {
+                parse_str($slice->getFilterQuery(), $productIds);
+                $productIds = isset($productIds['product'][0]) ? $productIds['product'] : [];
+            }
+
             // добавляем фильтр по категории
             if ($category->getId()) {
-                $filterData[] = ["category",1,[$category->getId()]];
+                $filterData[] = ['category', 1, [$category->getId()]];
             }
 
             $productPager = null;
 
-            $productIds = [];
-            $productCount = 0;
-            $repository->prepareIteratorByFilter(
-                $filterData,
-                $sort,
-                ($pageNum - 1) * $limit,
-                $limit,
-                $region,
-                function($data) use (&$productIds, &$productCount) {
-                    if (isset($data['list'][0])) $productIds = $data['list'];
-                    if (isset($data['count'])) $productCount = (int)$data['count'];
-                }
-            );
+            // если есть баркоды товаров, то
+            if ((bool)$productIds) {
+                $productCount = count($productIds);
+            } else {
+                $repository->prepareIteratorByFilter($filterData, $sort, ($pageNum - 1) * $limit, $limit, $region,
+                    function ($data) use (&$productIds, &$productCount) {
+                        if (isset($data['list'][0])) $productIds = $data['list'];
+                        if (isset($data['count'])) $productCount = (int)$data['count'];
+                    }
+                );
+            }
+
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
             $products = [];
