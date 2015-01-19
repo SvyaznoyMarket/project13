@@ -9245,7 +9245,7 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    width: 180px;
+    width: 175px;
   }
   .shopLst_metro:after {
     -webkit-border-radius: 50%;
@@ -9264,6 +9264,7 @@ img[height="0"] {
   }
   .shopLst_ln {
     color: #616161;
+    clear: both;
   }
   .shopLst_stick {
     display: inline-block;
@@ -9272,6 +9273,7 @@ img[height="0"] {
     *display: inline;
     *zoom: 1;
     width: 75px;
+    float: right;
     text-align: center;
     font-size: 12px;
     background: #feeed5;
