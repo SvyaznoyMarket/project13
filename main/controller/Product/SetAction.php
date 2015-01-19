@@ -8,10 +8,11 @@ class SetAction {
     /**
      * @param string        $productBarcodes Например, '2070903000023,2070903000054,2070902000000'
      * @param \Http\Request $request
+     * @param string|null $setTitle Название сета
      * @return \Http\Response
      * @throws \Exception\NotFoundException
      */
-    public function execute($productBarcodes, \Http\Request $request) {
+    public function execute($productBarcodes, \Http\Request $request, $setTitle = null) {
         \App::logger()->debug('Exec ' . __METHOD__);
         $limit = \App::config()->product['itemsPerPage'];
         $pageNum = (int)$request->get('page', 1);
@@ -128,6 +129,7 @@ class SetAction {
         $page->setParam('productView', $productView);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
+        $page->setParam('pageTitle', (string)$setTitle);
 
         return new \Http\Response($page->show());
     }
