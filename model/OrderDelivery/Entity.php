@@ -462,8 +462,8 @@ namespace Model\OrderDelivery\Entity {
         public function __construct($arr) {
 
             if (isset($arr['phone']) && $arr['phone'] != '') {
-                $phone = preg_replace('/\s+/', '', $arr['phone']);
-                if (preg_match('/8\(\d{3}\)\d{3}-\d{2}-\d{2}/', $phone) === 0 ) throw new ValidateException('Неправильный формат номера телефона');
+                $phone = preg_replace('/[^0-9]/', '', $arr['phone']);
+                if (strlen($phone) != 11 ) throw new ValidateException('Неправильный формат номера телефона');
                 $this->phone = $phone;
             } else {
                 //throw new ValidateException('Отсуствует номер телефона');
