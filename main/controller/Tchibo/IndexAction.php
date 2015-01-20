@@ -32,7 +32,7 @@ class IndexAction {
         $category = null;
         $catalogJson = [];
         \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category, &$catalogJson) {
-            if ($data) {
+            if ($data && is_array($data)) {
                 $category = new \Model\Product\Category\Entity($data);
                 $catalogJson = $category->catalogJson;
             }

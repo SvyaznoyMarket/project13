@@ -208,7 +208,9 @@ class IndexAction {
     
                 if (isset($data['trustfactors']) && is_array($data['trustfactors'])) {
                     foreach ($data['trustfactors'] as $trustfactor) {
-                        $trustfactors[] = new Trustfactor($trustfactor);
+                        if (is_array($trustfactor)) {
+                            $trustfactors[] = new Trustfactor($trustfactor);
+                        }
                     }
                 }
     

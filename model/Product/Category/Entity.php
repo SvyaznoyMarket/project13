@@ -48,7 +48,7 @@ class Entity extends BasicEntity {
     /** @var Entity[] */
     protected $child = [];
 
-    public function __construct($data = []) {
+    public function __construct(array $data = []) {
         $data['price_change_trigger_enabled'] = true;
         $data['price_change_percent_trigger'] = 90;
 
@@ -74,7 +74,9 @@ class Entity extends BasicEntity {
         // Берётся из https://scms.enter.ru/category/get/v1, https://scms.enter.ru/category/gets
         if (isset($data['medias']) && is_array($data['medias'])) {
             foreach ($data['medias'] as $media) {
-                $this->medias[] = new Media($media);
+                if (is_array($media)) {
+                    $this->medias[] = new Media($media);
+                }
             }
         }
 
