@@ -40,7 +40,7 @@ class Action {
 
             // запрос сделаем, если токен указан, u не полученна категория выбранная
             \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function ($data) use (&$selectedCategory) {
-                if ($data) {
+                if ($data && is_array($data)) {
                     $selectedCategory = new \Model\Product\Category\Entity($data);
                 }
             });
@@ -70,9 +70,12 @@ class Action {
 
         \App::searchClient()->addQuery('category/tree', $queryParams, [],
             function ($data) use (&$categories, &$tagCategoriesNumbers) {
-                foreach ($data as $catFields) {
-                    $category = new \Model\Product\Category\Entity($catFields);
-                    $categories[] = $category;
+                if (is_array($data)) {
+                    foreach ($data as $catFields) {
+                        if (is_array($catFields)) {
+                            $categories[] = new \Model\Product\Category\Entity($catFields);
+                        }
+                    }
                 }
             }
         );
@@ -349,7 +352,7 @@ class Action {
 
             // запрос сделаем, если токен указан, u не полученна категория выбранная
             \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function ($data) use (&$selectedCategory) {
-                if ($data) {
+                if ($data && is_array($data)) {
                     $selectedCategory = new \Model\Product\Category\Entity($data);
                 }
             });

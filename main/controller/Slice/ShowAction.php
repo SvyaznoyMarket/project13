@@ -101,7 +101,7 @@ class ShowAction {
         $category = new \Model\Product\Category\Entity();
         if ($categoryToken) {
             \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
-                if ($data) {
+                if ($data && is_array($data)) {
                     $category = new \Model\Product\Category\Entity($data);
                 }
             });
@@ -147,25 +147,29 @@ class ShowAction {
                 // добавляем дочерние узлы
                 if (isset($data['children']) && is_array($data['children'])) {
                     foreach ($data['children'] as $childData) {
-                        $child = new \Model\Product\Category\Entity($childData);
-                        // переделываем url для дочерних категорий
+                        if (is_array($childData)) {
+                            $child = new \Model\Product\Category\Entity($childData);
+                            // переделываем url для дочерних категорий
+                            $url = explode('/', $child->getLink());
+                            $url = $helper->url('slice.category', ['sliceToken' => $sliceToken, 'categoryToken' => end($url)]);
+                            $child->setLink($url);
+
+                            $category->addChild($child);
+                        }
+                    }
+                }
+
+                // если категория не выбрана, выводим рутовые категории
+                if (!$category->getId()) {
+                    if (is_array($data)) {
+                        $child = new \Model\Product\Category\Entity($data);
+                        // переделываем url для категорий
                         $url = explode('/', $child->getLink());
                         $url = $helper->url('slice.category', ['sliceToken' => $sliceToken, 'categoryToken' => end($url)]);
                         $child->setLink($url);
 
                         $category->addChild($child);
                     }
-                }
-
-                // если категория не выбрана, выводим рутовые категории
-                if (!$category->getId()) {
-                    $child = new \Model\Product\Category\Entity($data);
-                    // переделываем url для категорий
-                    $url = explode('/', $child->getLink());
-                    $url = $helper->url('slice.category', ['sliceToken' => $sliceToken, 'categoryToken' => end($url)]);
-                    $child->setLink($url);
-
-                    $category->addChild($child);
                 }
             };
 

@@ -26,7 +26,7 @@ class TreeEntity extends BasicEntity {
     /** @var bool|null */
     public $isNew;
 
-    public function __construct($data = []) {
+    public function __construct(array $data = []) {
         if (isset($data['id'])) $this->setId($data['id']);
         if (isset($data['uid'])) $this->setUi($data['uid']);
         if (isset($data['parent_id'])) $this->setParentId($data['parent_id']);
@@ -44,8 +44,12 @@ class TreeEntity extends BasicEntity {
         if (isset($data['has_children'])) $this->setHasChild($data['has_children']);
         if (isset($data['is_new'])) $this->isNew = $data['is_new'];
 
-        if (isset($data['children']) && is_array($data['children'])) foreach ($data['children'] as $childData) {
-            $this->addChild(new TreeEntity($childData));
+        if (isset($data['children']) && is_array($data['children'])) {
+            foreach ($data['children'] as $childData) {
+                if (is_array($childData)) {
+                    $this->addChild(new TreeEntity($childData));
+                }
+            }
         }
     }
 

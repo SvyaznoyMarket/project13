@@ -372,38 +372,27 @@ namespace Model\OrderDelivery\Entity {
             if (isset($data['total_cost'])) $this->total_cost = (int)$data['total_cost'];
             if (isset($data['total_original_cost'])) $this->total_original_cost = (int)$data['total_original_cost'];
 
-            if (isset($data['possible_points']) && is_array($data['possible_points'])) {
-                foreach ($data['possible_points'] as $pointType => $points) {
+            if (isset($data['possible_point_data']) && is_array($data['possible_point_data'])) {
+                foreach ($data['possible_point_data'] as $pointType => $points) {
                     if (is_array($points)) {
-                        array_walk($points, function ($point) use (&$orderDelivery, $pointType) {
-                            if (isset($orderDelivery->points[$pointType]->list[$point])) {
-                                $this->possible_points[$pointType][] = &$orderDelivery->points[$pointType]->list[$point];
+                        foreach ($points as $pointItem) {
+                            if (
+                                !isset($pointItem['id'])
+                                || empty($pointItem['nearest_day'])
+                                || !isset($orderDelivery->points[$pointType]->list[$pointItem['id']])
+                            ) {
+                                continue;
                             }
-                        });
-                    }
-                }
-            }
 
-            try {
-                if (isset($data['possible_point_data']) && is_array($data['possible_point_data'])) {
-                    foreach ($data['possible_point_data'] as $pointType => $points) {
-                        if (is_array($points)) {
-                            foreach ($points as $pointItem) {
-                                if (
-                                    !isset($pointItem['id'])
-                                    || empty($pointItem['nearest_day'])
-                                    || !isset($orderDelivery->points[$pointType]->list[$pointItem['id']])
-                                ) {
-                                    continue;
-                                }
+                            $point = [
+                                'point'         => &$orderDelivery->points[$pointType]->list[$pointItem['id']],
+                                'nearestDay'    => $pointItem['nearest_day']
+                            ];
 
-                                $orderDelivery->points[$pointType]->list[$pointItem['id']]->nearestDay = $pointItem['nearest_day'];
-                            }
+                            $this->possible_points[$pointType][] =  $point;
                         }
                     }
                 }
-            } catch (\Exception $e) {
-                \App::logger()->error(['error' => $e]);
             }
 
             $possible_delivery_groups_ids = array_unique(array_map(function ($delivery) { return $delivery->group_id; }, $this->possible_deliveries));
