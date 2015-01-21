@@ -2,6 +2,8 @@
 
 namespace Controller\Slice;
 
+use Controller\Product\SetAction;
+
 class ShowAction {
     private static $globalCookieName = 'global';
 
@@ -43,6 +45,11 @@ class ShowAction {
         // добывание фильтров из среза
         $requestData = [];
         parse_str($slice->getFilterQuery(), $requestData);
+
+        // Если в слайсе только список баркодов
+        if (count(array_keys($requestData)) == 1 && array_keys($requestData)[0] == 'barcode') {
+            return (new SetAction())->execute(join(',',$requestData['barcode']), $request, $slice->getName());
+        }
 
         // region
         if (!empty($requestData['region'])) {
@@ -87,22 +94,18 @@ class ShowAction {
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
 
         /** @var $region \Model\Region\Entity|null */
-        if (self::isGlobal()) {
-            $region = null;
-        }
+        if (self::isGlobal()) $region = null;
+
+        // подготовка 2-го пакета запросов
 
         $category = new \Model\Product\Category\Entity();
         if ($categoryToken) {
             \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
-                if ($data) {
+                if ($data && is_array($data)) {
                     $category = new \Model\Product\Category\Entity($data);
                 }
             });
         }
-
-        // подготовка 2-го пакета запросов
-
-        // TODO: запрашиваем меню
 
         // выполнение 2-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);
@@ -144,25 +147,29 @@ class ShowAction {
                 // добавляем дочерние узлы
                 if (isset($data['children']) && is_array($data['children'])) {
                     foreach ($data['children'] as $childData) {
-                        $child = new \Model\Product\Category\Entity($childData);
-                        // переделываем url для дочерних категорий
+                        if (is_array($childData)) {
+                            $child = new \Model\Product\Category\Entity($childData);
+                            // переделываем url для дочерних категорий
+                            $url = explode('/', $child->getLink());
+                            $url = $helper->url('slice.category', ['sliceToken' => $sliceToken, 'categoryToken' => end($url)]);
+                            $child->setLink($url);
+
+                            $category->addChild($child);
+                        }
+                    }
+                }
+
+                // если категория не выбрана, выводим рутовые категории
+                if (!$category->getId()) {
+                    if (is_array($data)) {
+                        $child = new \Model\Product\Category\Entity($data);
+                        // переделываем url для категорий
                         $url = explode('/', $child->getLink());
                         $url = $helper->url('slice.category', ['sliceToken' => $sliceToken, 'categoryToken' => end($url)]);
                         $child->setLink($url);
 
                         $category->addChild($child);
                     }
-                }
-
-                // если категория не выбрана, выводим рутовые категории
-                if (!$category->getId()) {
-                    $child = new \Model\Product\Category\Entity($data);
-                    // переделываем url для категорий
-                    $url = explode('/', $child->getLink());
-                    $url = $helper->url('slice.category', ['sliceToken' => $sliceToken, 'categoryToken' => end($url)]);
-                    $child->setLink($url);
-
-                    $category->addChild($child);
                 }
             };
 
@@ -216,24 +223,6 @@ class ShowAction {
         // выполнение 3-го пакета запросов
         $client->execute();
 
-        $promoContent = '';
-        if (!empty($catalogJson['promo_token'])) {
-            \App::contentClient()->addQuery(
-                trim((string)$catalogJson['promo_token']),
-                [],
-                function($data) use (&$promoContent) {
-                    if (!empty($data['content'])) {
-                        $promoContent = $data['content'];
-                    }
-                },
-                function(\Exception $e) {
-                    \App::logger()->error(sprintf('Не получено содержимое для промо-страницы %s', \App::request()->getRequestUri()));
-                    \App::exception()->add($e);
-                }
-            );
-            \App::contentClient()->execute();
-        }
-
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
         $categoryClass = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
 
@@ -265,10 +254,6 @@ class ShowAction {
         if ($pageNum > 1) {
             $seoContent = '';
         }
-        // промо-контент не показываем на страницах пагинации, брэнда, фильтров
-        if ($pageNum > 1 || (bool)((array)$request->get(\View\Product\FilterForm::$name, []))) {
-            $promoContent = '';
-        }
 
         // переделываем url для breadcrumbs
         foreach ($category->getAncestor() as $ancestor) {
@@ -283,7 +268,6 @@ class ShowAction {
             &$hotlinks,
             &$seoContent,
             &$catalogJson,
-            &$promoContent,
             &$shop,
             &$slice
         ) {
@@ -292,7 +276,6 @@ class ShowAction {
             $page->setParam('hotlinks', $hotlinks);
             $page->setParam('seoContent', $seoContent);
             $page->setParam('catalogJson', $catalogJson);
-            $page->setParam('promoContent', $promoContent);
             $page->setParam('slice', $slice);
             $page->setGlobalParam('shop', $shop);
         };
@@ -334,27 +317,18 @@ class ShowAction {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
         }
 
-        $catalogJson = $page->getParam('catalogJson');
-
         // сортировка
         $productSorting = new \Model\Product\Sorting();
         list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
         $productSorting->setActive($sortingName, $sortingDirection);
 
-        // если сортировка по умолчанию и в json заданы настройки сортировок,
-        // то применяем их
-        if(!empty($catalogJson['sort']) && $productSorting->isDefault()) {
-            $sort = $catalogJson['sort'];
-        } else {
-            $sort = $productSorting->dump();
-        }
+        $sort = $productSorting->dump();
 
         // вид товаров
         $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
         // листалка
         $limit = \App::config()->product['itemsPerPage'];
         $repository = \RepositoryManager::product();
-        $repository->setEntityClass('\\Model\\Product\\Entity');
 
         if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
             $productIds = [];
