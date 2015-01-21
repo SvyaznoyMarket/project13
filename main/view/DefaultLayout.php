@@ -292,7 +292,7 @@ class DefaultLayout extends Layout {
     public function slotMainMenu() {
         $renderer = \App::closureTemplating();
 
-        if (\App::config()->requestMainMenu) {
+        if (\App::config()->mainMenu['requestMenu']) {
             $client = \App::curl();
 
             $isFailed = false;
