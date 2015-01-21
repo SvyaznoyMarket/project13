@@ -8808,12 +8808,6 @@
   .bPhotoViewer__eItem.mGrad360 .bPhotoLink:hover {
     background-position: 5px -50px;
   }
-  .bPhotoViewer__eItem.vFitting .bPhotoLink {
-    background-position: 9px -106px;
-  }
-  .bPhotoViewer__eItem.vFitting .bPhotoLink:hover {
-    background-position: 8px -107px;
-  }
   .bPhotoViewer .bPhotoLink {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
