@@ -1031,6 +1031,9 @@
 	}
 
 	function saveAddress(address) {
+
+		if (address.streetName() == '') return;
+
 		$.ajax({
 			type: 'POST',
 			data: {
@@ -1678,8 +1681,8 @@
     });
 
 	$orderContent.on('click', '.jsAddressRootNode', function() {
-		$(this).find('.jsSmartAddressInput').focus();
 		ENTER.OrderV3.address.inputFocus(true);
+        $(this).find('.jsSmartAddressInput').focus();
 	});
 
 	$orderContent.on('blur', '.jsSmartAddressInput', function() {
