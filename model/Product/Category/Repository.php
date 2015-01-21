@@ -117,6 +117,8 @@ class Repository {
                 if ($data && is_array($data)) {
                     $entity = new \Model\Product\Category\Entity($data);
                 }
+            }, function($e) {
+                \App::exception()->remove($e);
             }
         );
 
