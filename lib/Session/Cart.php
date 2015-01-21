@@ -241,6 +241,17 @@ class Cart {
         return array_key_exists($productId, $data['productList']);
     }
 
+    /** Возвращает массив id продуктов, добавленных в кредит (или пустой массив)
+     * @return array
+     */
+    public function getCreditProductIds(){
+        $ids = [];
+        foreach ((array)$this->getProductsNC() as $product) {
+            if (@$product['credit']['enabled'] == true) $ids[] = $product['id'];
+        }
+        return $ids;
+    }
+
     public function shiftProduct() {
         $data = $this->storage->get($this->sessionName);
         reset($data['productList']);

@@ -40,9 +40,9 @@ class ProductAction {
             }
 
             $params = [];
-            if ($sender) {
-                $params['sender'] = $sender;
-            }
+
+            if ($sender) $params['sender'] = $sender;
+            if ($request->query->get('credit') == 'on') $params['credit'] = ['enabled' => true];
 
             // не учитываем является ли товар набором или нет - за это отвечает ядро
             $cart->setProduct($product, $quantity, $params);
