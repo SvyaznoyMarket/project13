@@ -12,7 +12,7 @@ $categoryImg = false;
 $i = 0;
 
 if ($category) {
-    if ($count = count($category->getAncestor())) {
+    if ($category instanceof \Model\Product\Category\Entity && $count = count($category->getAncestor())) {
         $i = 1;
         foreach ($category->getAncestor() as $ancestor) {
             $links[] = ['name' => $ancestor->getName(), 'url'  => $ancestor->getLink(), 'last' => $i == $count];

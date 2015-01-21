@@ -61,7 +61,7 @@
             }
 
             // Universal Tracking Code
-            if (typeof ga === 'function' && ga.getAll().length != 0) {
+            if (typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length != 0) {
                 universalEvent.eventCategory = e.category;
                 universalEvent.eventAction = e.action;
                 if (e.label) universalEvent.eventLabel = e.label;
@@ -70,13 +70,13 @@
                 else if (typeof e.hitCallback == 'string') universalEvent.hitCallback = function(){ window.location.href = e.hitCallback };
                 if (e.nonInteraction) ga('set', 'nonInteraction', true);
                 ga('send', universalEvent);
+                console.info('[Google Analytics] Send event:', e);
             } else {
-                console.warn('No Universal Google Analytics function found');
-                if (typeof universalEvent.hitCallback == 'function') universalEvent.hitCallback(); // если не удалось отправить, но callback необходим
+                console.warn('No Universal Google Analytics function found', typeof universalEvent.hitCallback, e.hitCallback);
+                if (typeof e.hitCallback == 'function') e.hitCallback(); // если не удалось отправить, но callback необходим
+                else if (typeof e.hitCallback == 'string') window.location.href = e.hitCallback;
             }
 
-            // log to console
-            console.info('[Google Analytics] Send event:', e);
         },
         /**
          * Объект транзакции

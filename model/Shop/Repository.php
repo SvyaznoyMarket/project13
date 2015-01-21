@@ -3,13 +3,13 @@
 namespace Model\Shop;
 
 class Repository {
-    /** @var \Core\ClientInterface */
+    /** @var \Scms\Client */
     private $client;
 
     /**
-     * @param \Core\ClientInterface $client
+     * @param \Scms\Client $client
      */
-    public function __construct(\Core\ClientInterface $client) {
+    public function __construct(\Scms\Client $client) {
         $this->client = $client;
     }
 
@@ -34,7 +34,7 @@ class Repository {
             }
         );
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+        $client->execute();
 
         return $entity;
     }
@@ -60,7 +60,7 @@ class Repository {
             }
         );
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+        $client->execute();
 
         return $entity;
     }
@@ -73,7 +73,7 @@ class Repository {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery('shop/get', array(
-            'slug' => array($token),
+            'slug' => [$token],
         ), [], $callback);
     }
 
@@ -99,7 +99,7 @@ class Repository {
             }
         );
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+        $client->execute();
 
         return $collection;
     }
@@ -143,7 +143,7 @@ class Repository {
             }
         );
 
-        $client->execute(\App::config()->coreV2['retryTimeout']['default']);
+        $client->execute();
 
         return $collection;
     }

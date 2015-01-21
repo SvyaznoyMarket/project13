@@ -422,11 +422,9 @@ class FormAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
-        $shopScript = \App::shopScriptClient();
         $region = \App::user()->getRegion();
 
         $productCategoryRepository = \RepositoryManager::productCategory();
-        $productCategoryRepository->setEntityClass('\\Model\\Product\\Category\\Entity');
 
         $productRepository = \RepositoryManager::product();
         $productRepository->setEntityClass('\\Model\\Product\\Entity');
@@ -484,7 +482,6 @@ class FormAction {
 
                     case 'slices':
                         $sliceToken = $linkParts[1];
-                        $categoryToken = isset($linkParts[2]) ? $linkParts[2] : null;
 
                         // получение среза
                         /** @var $slice \Model\Slice\Entity|null */
@@ -504,51 +501,10 @@ class FormAction {
                                 $filters[] = $filter;
                             }
 
-                            // если у среза задана category_id, то запрашиваем категорию
-                            if ($categoryId = $slice->getCategoryId()) {
-                                $category = $categoryId ? $productCategoryRepository->getEntityById($categoryId) : null;
-
-                                // пытаемся получить категорию от shopScript
-                            } elseif ($categoryToken) {
-                                $shopScriptException = null;
-                                $shopScriptSeo = [];
-                                if ($categoryToken && \App::config()->shopScript['enabled']) {
-                                    try {
-                                        $shopScript->addQuery(
-                                            'category/get-seo',
-                                            [
-                                                'slug' => $categoryToken,
-                                                'geo_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
-                                            ],
-                                            [],
-                                            function ($data) use (&$shopScriptSeo) {
-                                                if ($data && is_array($data)) $shopScriptSeo = reset($data);
-                                            },
-                                            function (\Exception $e) use (&$shopScriptException) {
-                                                $shopScriptException = $e;
-                                            }
-                                        );
-                                        $shopScript->execute();
-
-                                        if ($shopScriptException instanceof \Exception) {
-                                            throw $shopScriptException;
-                                        }
-
-                                        if (empty($shopScriptSeo['ui'])) {
-                                            throw new \Exception\NotFoundException(sprintf('Не получен ui для категории товара @%s', $categoryToken));
-                                        }
-
-                                        // запрашиваем категорию по ui
-                                        $category = $productCategoryRepository->getEntityByUi($shopScriptSeo['ui']);
-                                    } catch (\Exception $e) { // если не плучилось добыть seo-данные или категорию по ui, пробуем старый добрый способ
-                                        $category = $productCategoryRepository->getEntityByToken($categoryToken);
-                                    }
-                                } elseif (!empty($categoryToken)) {
-                                    $category = $productCategoryRepository->getEntityByToken($categoryToken);
-                                }
-
-                                // токена категории нету, пытаемся получить листинг по фильтрам среза
-                            } else {
+                            // если у среза задана category_uid, то запрашиваем категорию
+                            if ($categoryUid = $slice->categoryUid) {
+                                $category = $categoryUid ? $productCategoryRepository->getEntityByUid($categoryUid) : null;
+                            } else { // id категории нету, пытаемся получить листинг по фильтрам среза
                                 $productRepository->prepareIteratorByFilter($sliceFilters, [], null, $limit*3, $region,
                                     function($data) use (&$productIds, &$productCount) {
                                         if (isset($data['list'][0])) $productIds = $data['list'];

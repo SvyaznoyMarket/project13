@@ -20,21 +20,24 @@ class ChildCategoryPage extends \View\DefaultLayout {
     }
 
     public function prepare() {
-        $shopScriptSeo = $this->getParam('shopScriptSeo');
-        if (!$shopScriptSeo) {
+        $category = $this->getParam('category');
+        if (!($category instanceof \Model\Product\Category\Entity)) {
             return;
         }
 
-        if (!empty($shopScriptSeo['title'])) {
-            $this->setTitle($shopScriptSeo['title']);
+        $title = $category->getSeoTitle();
+        if (!empty($title)) {
+            $this->setTitle($title);
         }
 
-        if (!empty($shopScriptSeo['description'])) {
-            $this->addMeta('description', $shopScriptSeo['description']);
+        $description = $category->getSeoDescription();
+        if (!empty($description)) {
+            $this->addMeta('description', $description);
         }
 
-        if (!empty($shopScriptSeo['keywords'])) {
-            $this->addMeta('keywords', $shopScriptSeo['keywords']);
+        $keywords = $category->getSeoKeywords();
+        if (!empty($keywords)) {
+            $this->addMeta('keywords', $keywords);
         }
     }
 }

@@ -16,6 +16,7 @@ $isGlobal = $productFilter->isGlobal();
 $regionInflectedName = $user->getRegion()->getInflectedName(5);
 
 // список категорий
+/** @var \Model\Product\Category\Entity[] $categories */
 $categories = [];
 
 // включить в список категорию, если она не рутовая (root) и внутренняя (inner)

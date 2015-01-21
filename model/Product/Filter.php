@@ -15,7 +15,7 @@ class Filter {
     private $values = [];
     private $isGlobal = false;
     private $inStore = false;
-    /** @var \Model\Shop\Entity[] */
+    /** @var \Model\Shop\Entity */
     private $shop;
 
     /**
@@ -68,9 +68,8 @@ class Filter {
                         if (!isset($value['from'])) {
                             $value['from'] = null;
                         }
-                        if ($filter->getMaxGlobal() != $value['to'] || $filter->getMinGlobal() != $value['from']) {
-                            $return[] = [$filter->getId(), 2, $value['from'], $value['to']];
-                        }
+
+                        $return[] = [$filter->getId(), 2, $value['from'], $value['to']];
                         break;
                     case FilterEntity::TYPE_STRING:
                         $return[] = [$filter->getId(), 3, $value];
@@ -181,6 +180,19 @@ class Filter {
     }
 
     /**
+     * @return Filter\Entity|null
+     */
+    public function getPriceProperty() {
+        foreach ($this->filters as $property) {
+            if ($property->isPrice()) {
+                return $property;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @return bool
      */
     public function isGlobal() {
@@ -278,7 +290,7 @@ class Filter {
             array_unshift($groups, $group);
         }
 
-        if ($brandProperty && $this->getCategory()->isV2Furniture()) {
+        if ($brandProperty && $this->getCategory() instanceof \Model\Product\Category\Entity && $this->getCategory()->isV2Furniture()) {
             $group = new Group();
             $group->name = $brandProperty->getName();
             $group->properties[] = $brandProperty;
@@ -300,7 +312,7 @@ class Filter {
                 $properties[] = $property;
             } else if ($property->isLabel()) {
                 $properties[] = $property;
-            } else if ($property->isBrand() && !$this->getCategory()->isV2Furniture()) {
+            } else if ($property->isBrand() && $this->getCategory() instanceof \Model\Product\Category\Entity && !$this->getCategory()->isV2Furniture()) {
                 $properties[] = $property;
             }
         }

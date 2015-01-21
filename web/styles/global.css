@@ -1149,6 +1149,22 @@ img[height="0"] {
   margin: 0 0 15px;
   width: 355px;
 }
+.formDefault__inputText--styled {
+  /* Firefox 19+ */
+  /* Firefox 18- */
+}
+.formDefault__inputText--styled::-webkit-input-placeholder {
+  color: #000;
+}
+.formDefault__inputText--styled::-moz-placeholder {
+  color: #000;
+}
+.formDefault__inputText--styled:-moz-placeholder {
+  color: #000;
+}
+.formDefault__inputText--styled:-ms-input-placeholder {
+  color: #000;
+}
 .formDefault__label {
   display: inline-block;
   margin: 0 0 7px;
@@ -1997,6 +2013,8 @@ img[height="0"] {
     font-size: 11px;
     line-height: 1;
     text-transform: uppercase;
+    max-width: 70px;
+    display: block;
   }
   .navsite_lk {
     line-height: 1;
@@ -2008,7 +2026,7 @@ img[height="0"] {
   }
   .navsite2 {
     position: absolute;
-    z-index: 20;
+    z-index: 100;
     top: 85px;
     left: -50px;
     display: none;
@@ -4518,9 +4536,12 @@ img[height="0"] {
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAhElEQVQYGYWQUQ5AMBBEZ5crOQZnkDiBTw6gn04gnIFjuFJZ3RIkFd2PZjvzkk6HRAQ620Q5dtQQZF4grGD0SSmL3klBO1Dn9sYD4WHSSlqyI3LZMIf+o1CCgv1zj/a9uUh8Z/pGTtXl5j//7TH0d7FxDGsFMU4ZvnoyP7BRxveoUKzwA+X6MCjSOJRiAAAAAElFTkSuQmCC) no-repeat 0 50%;
     overflow: hidden;
     text-decoration: underline;
-    white-space: nowrap;
     vertical-align: middle;
     padding-left: 15px;
+    max-width: 200px;
+  }
+  .topbarfix_log_tx {
+    white-space: nowrap;
   }
   .topbarfix_cmpr {
     background: #f4f4f4;
@@ -6822,6 +6843,9 @@ img[height="0"] {
   .popup_hd_tl {
     font-size: 22px;
   }
+  .popup_hd_tl:last-child {
+    margin-bottom: 15px;
+  }
   .popup_hd_tx {
     font-size: 14px;
     color: #4f4f4f;
@@ -9031,6 +9055,7 @@ img[height="0"] {
     overflow: hidden;
     border: 1px solid #f5f5f5;
     background: #ffffff;
+    margin-bottom: 15px;
   }
   .popupFl_clsr {
     position: absolute;
@@ -9220,7 +9245,7 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    width: 192px;
+    width: 175px;
   }
   .shopLst_metro:after {
     -webkit-border-radius: 50%;
@@ -9239,6 +9264,7 @@ img[height="0"] {
   }
   .shopLst_ln {
     color: #616161;
+    clear: both;
   }
   .shopLst_stick {
     display: inline-block;
@@ -9246,7 +9272,8 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    width: 78px;
+    width: 75px;
+    float: right;
     text-align: center;
     font-size: 12px;
     background: #feeed5;

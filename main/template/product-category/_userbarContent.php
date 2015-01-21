@@ -3,7 +3,7 @@
  * @var $page \View\Layout
  * @var $category \Model\Product\Category\Entity|null
  * @var $productFilter \Model\Product\Filter|null
- * @var $v2 bool
+ * @var $v2 bool|null
  */
 $helper = new \Helper\TemplateHelper();
 $links = [];
@@ -11,7 +11,7 @@ $links = [];
 if (!isset($category)) $category = null;
 
 if ($category) {
-    if ($count = count($category->getAncestor())) {
+    if ($category instanceof \Model\Product\Category\Entity && $count = count($category->getAncestor())) {
         $i = 1;
         foreach ($category->getAncestor() as $ancestor) {
             $links[] = ['name' => $ancestor->getName(), 'url'  => $ancestor->getLink(), 'last' => $i == $count];

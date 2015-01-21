@@ -3,41 +3,44 @@
 namespace Model\Slice;
 
 class Entity {
-    /** @var string */
+    /** @var string|null */
     private $token;
-    /** @var string */
+    /** @var string|null */
     private $name;
-    /** @var string */
+    /** @var string|null */
     private $filterQuery;
-    /** @var string */
+    /** @var string|null */
     private $title;
-    /** @var string */
+    /** @var string|null */
     private $metaKeywords;
-    /** @var string */
+    /** @var string|null */
     private $metaDescription;
-    /** @var array */
+    /** @var string|null */
     private $description;
-    /** @var string */
+    /** @var string|null */
     private $productBuyMethod;
-    /** @var bool */
+    /** @var bool|null */
     private $showProductState;
-    /** @var int */
+    /** @var int|null */
     private $categoryIds;
-    /** @var string */
+    /** @var string|null */
+    public $categoryUid;
+    /** @var string|null */
     private $content;
 
     public function __construct(array $data = []) {
-        if (array_key_exists('token', $data)) $this->setToken($data['token']);
-        if (array_key_exists('name', $data)) $this->setName($data['name']);
-        if (array_key_exists('filter', $data)) $this->setFilterQuery($data['filter']);
-        if (array_key_exists('title', $data)) $this->setTitle($data['title']);
-        if (array_key_exists('meta_keywords', $data)) $this->setMetaKeywords($data['meta_keywords']);
-        if (array_key_exists('meta_description', $data)) $this->setMetaDescription($data['meta_description']);
-        if (array_key_exists('description', $data)) $this->setDescription($data['description']);
-        if (array_key_exists('productBuyMethod', $data)) $this->setProductBuyMethod($data['productBuyMethod']);
-        if (array_key_exists('category_id', $data)) $this->setCategoryIds($data['category_id']);
-        if (array_key_exists('content', $data)) $this->setContent($data['content']);
-        if (array_key_exists('show_state', $data)) {
+        if (isset($data['token'])) $this->setToken($data['token']);
+        if (isset($data['name'])) $this->setName($data['name']);
+        if (isset($data['filter'])) $this->setFilterQuery($data['filter']);
+        if (isset($data['title'])) $this->setTitle($data['title']);
+        if (isset($data['meta_keywords'])) $this->setMetaKeywords($data['meta_keywords']);
+        if (isset($data['meta_description'])) $this->setMetaDescription($data['meta_description']);
+        if (isset($data['description'])) $this->setDescription($data['description']);
+        if (isset($data['productBuyMethod'])) $this->setProductBuyMethod($data['productBuyMethod']);
+        if (isset($data['category_id'])) $this->setCategoryIds($data['category_id']);
+        if (isset($data['category_uid'])) $this->categoryUid = $data['category_uid'];
+        if (isset($data['content'])) $this->setContent($data['content']);
+        if (isset($data['show_state'])) {
             $this->setShowProductState($data['show_state']);
         } else {
             $this->setShowProductState(true);
@@ -45,14 +48,14 @@ class Entity {
     }
 
     /**
-     * @param array $description
+     * @param string $description
      */
     public function setDescription($description) {
         $this->description = (string)$description;
     }
 
     /**
-     * @return array
+     * @return string
      */
     public function getDescription() {
         return $this->description;

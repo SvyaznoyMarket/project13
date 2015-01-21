@@ -193,16 +193,6 @@ class AppConfig {
         'retryTimeout' => [],
         'retryCount'   => null,
     ];
-    /** @var array */
-    public $shopScript = [
-        'enabled'      => null,
-        'url'          => null,
-        'timeout'      => null,
-        'retryTimeout' => [],
-        'retryCount'   => null,
-        'user'         => null,
-        'password'     => null,
-    ];
     /** @var array  */
     public $jsonLog = [
         'enabled' => null,
@@ -493,7 +483,10 @@ class AppConfig {
     ];
 
     /** @var bool */
-    public $requestMainMenu = null;
+    public $mainMenu = [
+        'requestMenu'               => null, // запрос главного меню из
+        'recommendationsEnabled'    => null
+    ];
     /** @var bool */
     public $newOrder;
     /** @var array  */

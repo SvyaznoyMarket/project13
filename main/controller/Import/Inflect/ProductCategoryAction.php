@@ -18,7 +18,6 @@ class ProductCategoryAction {
         }
 
         $productCategoryRepository = \RepositoryManager::productCategory();
-        $productCategoryRepository->setEntityClass('\Model\Product\Category\TreeEntity');
 
         $walk = function($categories) use (&$walk, $inflectDir) {
             foreach ($categories as $category) {

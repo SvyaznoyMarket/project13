@@ -372,38 +372,27 @@ namespace Model\OrderDelivery\Entity {
             if (isset($data['total_cost'])) $this->total_cost = (int)$data['total_cost'];
             if (isset($data['total_original_cost'])) $this->total_original_cost = (int)$data['total_original_cost'];
 
-            if (isset($data['possible_points']) && is_array($data['possible_points'])) {
-                foreach ($data['possible_points'] as $pointType => $points) {
+            if (isset($data['possible_point_data']) && is_array($data['possible_point_data'])) {
+                foreach ($data['possible_point_data'] as $pointType => $points) {
                     if (is_array($points)) {
-                        array_walk($points, function ($point) use (&$orderDelivery, $pointType) {
-                            if (isset($orderDelivery->points[$pointType]->list[$point])) {
-                                $this->possible_points[$pointType][] = &$orderDelivery->points[$pointType]->list[$point];
+                        foreach ($points as $pointItem) {
+                            if (
+                                !isset($pointItem['id'])
+                                || empty($pointItem['nearest_day'])
+                                || !isset($orderDelivery->points[$pointType]->list[$pointItem['id']])
+                            ) {
+                                continue;
                             }
-                        });
-                    }
-                }
-            }
 
-            try {
-                if (isset($data['possible_point_data']) && is_array($data['possible_point_data'])) {
-                    foreach ($data['possible_point_data'] as $pointType => $points) {
-                        if (is_array($points)) {
-                            foreach ($points as $pointItem) {
-                                if (
-                                    !isset($pointItem['id'])
-                                    || empty($pointItem['nearest_day'])
-                                    || !isset($orderDelivery->points[$pointType]->list[$pointItem['id']])
-                                ) {
-                                    continue;
-                                }
+                            $point = [
+                                'point'         => &$orderDelivery->points[$pointType]->list[$pointItem['id']],
+                                'nearestDay'    => $pointItem['nearest_day']
+                            ];
 
-                                $orderDelivery->points[$pointType]->list[$pointItem['id']]->nearestDay = $pointItem['nearest_day'];
-                            }
+                            $this->possible_points[$pointType][] =  $point;
                         }
                     }
                 }
-            } catch (\Exception $e) {
-                \App::logger()->error(['error' => $e]);
             }
 
             $possible_delivery_groups_ids = array_unique(array_map(function ($delivery) { return $delivery->group_id; }, $this->possible_deliveries));
@@ -473,8 +462,8 @@ namespace Model\OrderDelivery\Entity {
         public function __construct($arr) {
 
             if (isset($arr['phone']) && $arr['phone'] != '') {
-                $phone = preg_replace('/\s+/', '', $arr['phone']);
-                if (preg_match('/8\(\d{3}\)\d{3}-\d{2}-\d{2}/', $phone) === 0 ) throw new ValidateException('Неправильный формат номера телефона');
+                $phone = preg_replace('/[^0-9]/', '', $arr['phone']);
+                if (strlen($phone) != 11 ) throw new ValidateException('Неправильный формат номера телефона');
                 $this->phone = $phone;
             } else {
                 //throw new ValidateException('Отсуствует номер телефона');

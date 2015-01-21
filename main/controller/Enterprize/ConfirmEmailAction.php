@@ -211,8 +211,8 @@ class ConfirmEmailAction {
 
                 // если в хранилище присутствует флаг Enterprize регистрации, оставляем его
                 if (array_key_exists('isRegistration', $storageData) && (bool)$storageData['isRegistration']) {
-                    $storagePostResult = \App::coreClientPrivate()->query('storage/post', ['user_id' => $result['user_id']], ['isRegistration' => $storageData['isRegistration']]);
-
+                    //$storagePostResult = \App::coreClientPrivate()->query('storage/post', ['user_id' => $result['user_id']], ['isRegistration' => $storageData['isRegistration']]);
+                    $storagePostResult = \App::coreClientPrivate()->query('storage/post', ['user_id' => $result['user_id']], array_merge($storageData, ['email' => $email]));
                 // иначе чистим хранилище
                 } else {
                     $delete = \App::coreClientPrivate()->query('storage/delete', ['user_id' => $result['user_id']]);

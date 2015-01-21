@@ -5,58 +5,35 @@ namespace Model\Shop\Photo;
 class Entity {
     use \Model\MediaHostTrait;
 
-    /** @var string */
-    private $source;
-    /** @var int */
-    private $position;
+    /** @var string[] */
+    private $urlsByType = [];
 
     /**
      * @param array $data
      */
     public function __construct(array $data = []) {
-        if (array_key_exists('source', $data)) $this->setSource($data['source']);
-        if (array_key_exists('position', $data)) $this->setPosition($data['position']);
-    }
+        if (isset($data['sources'][0])) {
+            foreach ($data['sources'] as $sourceItem) {
+                if (
+                    !@$sourceItem['url']
+                    || !@$sourceItem['type']
+                ) continue;
 
-    /**
-     * @param int $position
-     */
-    public function setPosition($position) {
-        $this->position = (int)$position;
-    }
+                $this->urlsByType[(string)$sourceItem['type']] = (string)$sourceItem['url'];
+            }
 
-    /**
-     * @return int
-     */
-    public function getPosition() {
-        return $this->position;
-    }
-
-    /**
-     * @param string $source
-     */
-    public function setSource($source) {
-        $this->source = (string)$source;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSource() {
-        return $this->source;
+        }
     }
 
     /**
      * @param int $size
      * @return null|string
      */
-    public function getUrl($size = 1) {
-        if ($this->source) {
-            $urls = \App::config()->shopPhoto['url'];
-
-            return $this->getHost() . $urls[$size] . $this->source;
-        } else {
-            return null;
+    public function getUrl($size = null) {
+        if (null === $size) {
+            $size = key($this->urlsByType);
         }
+
+        return isset($this->urlsByType[$size]) ? $this->urlsByType[$size] : null;
     }
 }
