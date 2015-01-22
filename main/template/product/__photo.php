@@ -149,22 +149,22 @@ return function(
         </ul><!--/view product section -->
 
         <? if (count($product->getPhoto()) > 1): ?>
-            <div class="bPhotoSlider">
-                <div class="bPhotoSliderWrap">
-                    <ul id="productImgGallery" class="bPhotoSliderGallery clearfix">
+                <div class="prod-photoslider js-photoslider">
+                <div class="prod-photoslider__wrap">
+                    <ul id="productImgGallery" class="prod-photoslider__gal clearfix js-photoslider-gal">
                         <? $i = 0; foreach ($product->getPhoto() as $photo):
                             $zoomDisable = ($photo->getHeight() > 750 || $photo->getWidth() > 750) ? false : true; ?>
-                            <li class="bPhotoSliderGallery__eItem">
-                                <a class="bPhotoGalleryLink jsPhotoGalleryLink<? if (0 == $i): ?> mActive<? endif ?>" data-zoom-image="<?= $photo->getUrl(5) ?>" data-image="<?= $photo->getUrl(3) ?>" href="#" data-zoom-disable="<?= $zoomDisable ?>">
-                                    <img class="bPhotoGalleryImg" src="<?= $photo->getUrl(0) ?>" alt="<?= $helper->escape($product->getName()) ?>" />
+                            <li class="prod-photoslider__gal__i js-photoslider-gal-i">
+                                <a class="prod-photoslider__gal__link jsPhotoGalleryLink<? if (0 == $i): ?> prod-photoslider__gal__link--active<? endif ?>" data-zoom-image="<?= $photo->getUrl(5) ?>" data-image="<?= $photo->getUrl(3) ?>" href="#" data-zoom-disable="<?= $zoomDisable ?>">
+                                    <img class="prod-photoslider__gal__img" src="<?= $photo->getUrl(0) ?>" alt="<?= $helper->escape($product->getName()) ?>" />
                                 </a>
                             </li>
                             <? $i++; endforeach ?>
                     </ul>
                 </div>
 
-                <div class="bPhotoSlider__eBtn mPrev"><span class="bArrow"></span></div>
-                <div class="bPhotoSlider__eBtn mNext"><span class="bArrow"></span></div>
+                <div class="prod-photoslider__btn prod-photoslider__btn--prev js-photoslider-btn-prev"><span class="prod-photoslider__btn__arw"></span></div>
+                <div class="prod-photoslider__btn prod-photoslider__btn--next js-photoslider-btn-next"><span class="prod-photoslider__btn__arw"></span></div>
             </div><!--/slider mini product images -->
         <? endif ?>
     </div>
