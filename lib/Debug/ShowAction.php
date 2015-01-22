@@ -171,20 +171,6 @@ class ShowAction {
 
         $debug->add('abTest', $abTestData, 89);
 
-        // ab test json
-        $abTestJsonData = [];
-        if (\App::abTestJson() && (bool)\App::abTestJson()->isActive() && \App::abTestJson()->hasEnoughData()) {
-            $abTestJsonData['endAt'] = date('d-m-Y H:i', strtotime(\App::abTestJson()->getConfig()['bestBefore']));
-            foreach (\App::abTestJson()->getOption() as $option) {
-                $abTestJsonData[$option->getKey()] = [
-                    'name'    => $option->getName(),
-                    'traffic' => $option->getTraffic(),
-                    'chosen'  => $option->getKey() == \App::abTestJson()->getCase()->getKey(),
-                ];
-            }
-        }
-        $debug->add('abTestJson', $abTestJsonData, 88);
-
         // log
         if ('live' != \App::$env) {
             //$debug->add('log', \App::logger()->dump(), 87);

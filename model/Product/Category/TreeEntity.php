@@ -5,63 +5,51 @@ namespace Model\Product\Category;
 class TreeEntity extends BasicEntity {
     use \Model\MediaHostTrait;
 
-    /** @var bool */
+    /** @var bool|null */
     protected $isFurniture;
-    /** @var string */
+    /** @var string|null */
     protected $image;
-    /** @var string */
+    /** @var string|null */
     protected $image480x480;
-    /** @var string */
-    protected $rootImage;
-    /** @var bool */
+    /** @var bool|null */
     protected $hasLine;
-    /** @var string */
+    /** @var string|null */
     protected $productView;
-    /** @var bool */
-    protected $isInMenu;
-    /** @var string */
-    protected $seoTitle;
-    /** @var string */
-    protected $seoKeywords;
-    /** @var string */
-    protected $seoDescription;
-    /** @var string */
-    protected $seoHeader;
-    /** @var string */
-    protected $seoText;
-    /** @var int */
+    /** @var int|null */
     protected $productCount;
-    /** @var int */
+    /** @var int|null */
     protected $globalProductCount;
-    /** @var bool */
+    /** @var bool|null */
     protected $hasChild;
+    /** @var TreeEntity[] */
+    protected $child = [];
+    /** @var bool|null */
+    public $isNew;
 
     public function __construct(array $data = []) {
-        if (array_key_exists('id', $data)) $this->setId($data['id']);
-        if (array_key_exists('ui', $data)) $this->setUi($data['ui']);
-        if (array_key_exists('parent_id', $data)) $this->setParentId($data['parent_id']);
-        if (array_key_exists('is_furniture', $data)) $this->setIsFurniture($data['is_furniture']);
-        if (array_key_exists('name', $data)) $this->setName($data['name']);
-        if (array_key_exists('link', $data)) $this->setLink($data['link']);
-        if (array_key_exists('token', $data)) $this->setToken($data['token']);
-        if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
-        if (array_key_exists('media_image_480x480', $data)) $this->image480x480 = $data['media_image_480x480'];
-        if (array_key_exists('has_line', $data)) $this->setHasLine($data['has_line']);
-        if (array_key_exists('product_view_id', $data)) $this->setProductView($data['product_view_id']);
-        if (array_key_exists('is_shown_in_menu', $data)) $this->setIsInMenu($data['is_shown_in_menu']);
-        if (array_key_exists('level', $data)) $this->setLevel($data['level']);
-        if (array_key_exists('seo_title', $data)) $this->setSeoTitle($data['seo_title']);
-        if (array_key_exists('seo_keywords', $data)) $this->setSeoKeywords($data['seo_keywords']);
-        if (array_key_exists('seo_description', $data)) $this->setSeoDescription($data['seo_description']);
-        if (array_key_exists('seo_header', $data)) $this->setSeoHeader($data['seo_header']);
-        if (array_key_exists('seo_text', $data)) $this->setSeoText($data['seo_text']);
-        if (array_key_exists('root_category_image', $data)) $this->setRootImage($data['root_category_image']);
-        if (array_key_exists('product_count', $data)) $this->setProductCount($data['product_count']);
-        if (array_key_exists('product_count_global', $data)) $this->setGlobalProductCount($data['product_count_global']);
-        if (array_key_exists('has_children', $data)) $this->setHasChild($data['has_children']);
+        if (isset($data['id'])) $this->setId($data['id']);
+        if (isset($data['uid'])) $this->setUi($data['uid']);
+        if (isset($data['parent_id'])) $this->setParentId($data['parent_id']);
+        if (isset($data['is_furniture'])) $this->setIsFurniture($data['is_furniture']);
+        if (isset($data['name'])) $this->setName($data['name']);
+        if (isset($data['link'])) $this->setLink($data['link']);
+        if (isset($data['token'])) $this->setToken($data['token']);
+        if (isset($data['media_image'])) $this->setImage($data['media_image']);
+        if (isset($data['media_image_480x480'])) $this->image480x480 = $data['media_image_480x480'];
+        if (isset($data['has_line'])) $this->setHasLine($data['has_line']);
+        if (isset($data['product_view_id'])) $this->setProductView($data['product_view_id']);
+        if (isset($data['level'])) $this->setLevel($data['level']);
+        if (isset($data['product_count'])) $this->setProductCount($data['product_count']);
+        if (isset($data['product_count_global'])) $this->setGlobalProductCount($data['product_count_global']);
+        if (isset($data['has_children'])) $this->setHasChild($data['has_children']);
+        if (isset($data['is_new'])) $this->isNew = $data['is_new'];
 
-        if (array_key_exists('children', $data) && is_array($data['children'])) foreach ($data['children'] as $childData) {
-            $this->addChild(new TreeEntity($childData));
+        if (isset($data['children']) && is_array($data['children'])) {
+            foreach ($data['children'] as $childData) {
+                if (is_array($childData)) {
+                    $this->addChild(new TreeEntity($childData));
+                }
+            }
         }
     }
 
@@ -135,20 +123,6 @@ class TreeEntity extends BasicEntity {
     }
 
     /**
-     * @param boolean $isInMenu
-     */
-    public function setIsInMenu($isInMenu) {
-        $this->isInMenu = (bool)$isInMenu;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsInMenu() {
-        return $this->isInMenu;
-    }
-
-    /**
      * @param int $productCount
      */
     public function setProductCount($productCount)
@@ -201,90 +175,6 @@ class TreeEntity extends BasicEntity {
     }
 
     /**
-     * @param string $rootImage
-     */
-    public function setRootImage($rootImage) {
-        $this->rootImage = (string)$rootImage;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRootImage() {
-        return $this->rootImage;
-    }
-
-    /**
-     * @param string $seoDescription
-     */
-    public function setSeoDescription($seoDescription) {
-        $this->seoDescription = (string)$seoDescription;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSeoDescription() {
-        return $this->seoDescription;
-    }
-
-    /**
-     * @param string $seoHeader
-     */
-    public function setSeoHeader($seoHeader) {
-        $this->seoHeader = (string)$seoHeader;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSeoHeader() {
-        return $this->seoHeader;
-    }
-
-    /**
-     * @param string $seoKeywords
-     */
-    public function setSeoKeywords($seoKeywords) {
-        $this->seoKeywords = (string)$seoKeywords;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSeoKeywords() {
-        return $this->seoKeywords;
-    }
-
-    /**
-     * @param string $seoText
-     */
-    public function setSeoText($seoText) {
-        $this->seoText = (string)$seoText;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSeoText() {
-        return $this->seoText;
-    }
-
-    /**
-     * @param string $seoTitle
-     */
-    public function setSeoTitle($seoTitle) {
-        $this->seoTitle = (string)$seoTitle;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSeoTitle() {
-        return $this->seoTitle;
-    }
-
-    /**
      * @param bool $hasChild
      */
     public function setHasChild($hasChild) {
@@ -313,5 +203,19 @@ class TreeEntity extends BasicEntity {
         } else {
             return null;
         }
+    }
+
+    /**
+     * @param TreeEntity $child
+     */
+    public function addChild(TreeEntity $child) {
+        $this->child[] = $child;
+    }
+
+    /**
+     * @return TreeEntity[]
+     */
+    public function getChild() {
+        return $this->child;
     }
 }

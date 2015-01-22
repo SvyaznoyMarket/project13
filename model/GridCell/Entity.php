@@ -7,25 +7,25 @@ class Entity {
     const TYPE_IMAGE = 'media';
     const TYPE_EMPTY = 'empty';
 
-    /** @var int */
+    /** @var int|null */
     private $objectId;
-    /** @var string */
+    /** @var string|null */
     private $objectUi;
-    /** @var int */
+    /** @var int|null */
     private $column;
-    /** @var int */
+    /** @var int|null */
     private $row;
-    /** @var int */
+    /** @var int|null */
     private $sizeX;
-    /** @var int */
+    /** @var int|null */
     private $sizeY;
-    /** @var string */
+    /** @var string|null */
     private $type;
-    /** @var string */
+    /** @var string|null */
     private $url;
-    /** @var string */
+    /** @var string|null */
     private $imageUrl;
-    /** @var string */
+    /** @var string|null */
     private $name;
 
     /**
@@ -36,7 +36,7 @@ class Entity {
         if (isset($data['row'])) $this->setRow($data['row']);
         if (isset($data['sizex'])) $this->setSizeX($data['sizex']);
         if (isset($data['sizey'])) $this->setSizeY($data['sizey']);
-        if (isset($data['type'])) $this->setType($data['type']);
+        if (isset($data['object']['type'])) $this->setType($data['object']['type']);
 
         switch ($this->type) {
             case self::TYPE_PRODUCT:

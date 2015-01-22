@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $page           \View\Main\IndexPage
+ * @var $page           \View\Bandit\IndexPage
  */
 ?><!DOCTYPE html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->

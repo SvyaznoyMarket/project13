@@ -185,7 +185,7 @@ return [
     // срезы. каталог товаров
     'product.category.slice' => [
         'pattern' => '/catalog/slice/{sliceToken}',
-        'action'  => ['ProductCategory\SliceAction', 'execute'],
+        'action'  => ['Slice\ShowAction', 'execute'],
         'require' => ['sliceToken' => '[\w\d-_]+'],
     ],
 
@@ -730,7 +730,7 @@ return [
     'slice.category' => [
         'pattern' => '/slices/{sliceToken}/{categoryToken}',
         'require' => ['sliceToken' => '[\w\d-_]+', 'categoryToken' => '[\w\d-_]+'],
-        'action'  => ['Slice\ShowAction', 'category'],
+        'action'  => ['Slice\ShowAction', 'execute'],
     ],
     'slice.show' => [
         'pattern' => '/slices/{sliceToken}',

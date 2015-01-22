@@ -524,22 +524,6 @@ class App {
     }
 
     /**
-     * @param array|null $catalogJson
-     * @return \Session\AbtestJson|null
-     */
-    public static function abTestJson($catalogJson = null) {
-        static $instance;
-
-        if (!$instance && $catalogJson) {
-            $instance = new \Session\AbtestJson($catalogJson);
-        } elseif(!$instance && !$catalogJson) {
-            return null;
-        }
-
-        return $instance;
-    }
-
-    /**
      * @return \Partner\Manager
      */
     public static function partner() {
@@ -588,20 +572,6 @@ class App {
 
         return $instance;
     }    
-
-    /**
-     * @static
-     * @return \ShopScript\Client
-     */
-    public static function shopScriptClient() {
-        static $instance;
-
-        if (!$instance) {
-            $instance = new \ShopScript\Client(self::config()->shopScript, self::curl());
-        }
-
-        return $instance;
-    }
 
     /**
      * @return \Coupon\CouponManager
