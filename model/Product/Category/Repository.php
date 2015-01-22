@@ -33,6 +33,11 @@ class Repository {
                 if ($data && is_array($data)) {
                     $entity = new \Model\Product\Category\Entity($data);
                 }
+            },
+            function(\Exception $e) {
+                if (404 == $e->getCode()) {
+                    \App::exception()->remove($e);
+                }
             }
         );
 
@@ -66,7 +71,11 @@ class Repository {
             $params['load_inactive'] = 1;
         }
 
-        \App::scmsClient()->addQuery('category/get/v1', $params, [], $callback);
+        \App::scmsClient()->addQuery('category/get/v1', $params, [], $callback, function(\Exception $e) {
+            if (404 == $e->getCode()) {
+                \App::exception()->remove($e);
+            }
+        });
     }
 
     /**
@@ -88,6 +97,11 @@ class Repository {
             function ($data) use (&$entity) {
                 if ($data && is_array($data)) {
                     $entity = new \Model\Product\Category\Entity($data);
+                }
+            },
+            function(\Exception $e) {
+                if (404 == $e->getCode()) {
+                    \App::exception()->remove($e);
                 }
             }
         );
@@ -116,6 +130,11 @@ class Repository {
             function ($data) use (&$entity) {
                 if ($data && is_array($data)) {
                     $entity = new \Model\Product\Category\Entity($data);
+                }
+            },
+            function(\Exception $e) {
+                if (404 == $e->getCode()) {
+                    \App::exception()->remove($e);
                 }
             }
         );
