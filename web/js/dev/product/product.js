@@ -237,7 +237,7 @@ $(document).ready(function() {
                         console.log("Model:", data.result.OrderDeliveryModel);
                         $orderContent.empty().html($(data.result.page).html());
 
-                        ENTER.OrderV3.constructors.smartAddress();
+                        ENTER.OrderV3.constructors.smartAddressInit();
                         $orderContent.find('input[name=address]').focus();
                     }).always(function(){
                         $orderContent.stop(true, true).fadeIn(200);
@@ -258,7 +258,7 @@ $(document).ready(function() {
 
             		button.toggleClass('orderU_lgnd-tggl-cur');
             		$toggleBox.toggle();
-            		$toggleNote.toggleClass('orderU_lgnd_tgglnote-cur')
+            		$toggleNote.toggleClass('orderU_lgnd_tgglnote-cur');
 
                 $('body').trigger('trackUserAction', ['2 Способ получения']);
             };
