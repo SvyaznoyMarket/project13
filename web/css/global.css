@@ -10298,6 +10298,9 @@
     padding-left: 0;
     border: 1px solid #aeaeae;
     background: #ffffff;
+    max-height: 400px;
+    overflow-y: scroll;
+    padding-right: 10px;
   }
   .bBrandSortingOption__eDropDown .bDropDownItem {
     float: none;
