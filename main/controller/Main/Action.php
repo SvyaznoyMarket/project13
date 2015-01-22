@@ -109,8 +109,13 @@ class Action {
         // запрашиваем категории товаров
         if ((bool)$categoriesById) {
             \RepositoryManager::productCategory()->prepareCollectionById(array_keys($categoriesById), $region, function($data) use (&$categoriesById) {
-                foreach ($data as $item) {
-                    $categoriesById[(int)$item['id']] = new \Model\Product\Category\Entity($item);
+                if (is_array($data)) {
+                    foreach ($data as $item) {
+                        if ($item && is_array($item)) {
+                            $category = new \Model\Product\Category\Entity($item);
+                            $categoriesById[$category->getId()] = $category;
+                        }
+                    }
                 }
             }, function(\Exception $e) {
                 \App::exception()->remove($e);
@@ -171,21 +176,8 @@ class Action {
 
         $bannerData = array_values($bannerData);
 
-        $seoPageJson = \Model\Page\Repository::getSeoJson();
-        $seoPage = [];
-        foreach ($seoPageJson as $key => $val){
-            if ($key == 'title') {
-                $seoPage['title'] = $val;
-            }else if ($key == 'content') {
-                $seoPage['content'] = $val;
-            }else{
-                $seoPage['metas'][$key] = $val;
-            }
-        }
-
         $page = new \View\Main\IndexPage();
         $page->setParam('bannerData', $bannerData);
-        $page->setParam('seoPage', $seoPage);
         $page->setParam('productList', $productsById);
         $page->setParam('rrProducts', isset($productsIdsFromRR) ? $productsIdsFromRR : []);
 

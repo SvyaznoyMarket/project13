@@ -2,6 +2,8 @@
 
 namespace Controller\Search;
 
+use Model\Product\Category\Entity;
+
 class Action {
     /**
      * @param \Http\Request $request
@@ -28,7 +30,7 @@ class Action {
         $offset = intval($pageNum - 1) * $limit - (1 === $pageNum ? 0 : 1);
         $categoryId = $request->get('category');
 
-        $selectedCategory = $categoryId == null ? \RepositoryManager::productCategory()->getEntityById((int)$categoryId) : null;
+        $selectedCategory = $categoryId ? \RepositoryManager::productCategory()->getEntityById((int)$categoryId) : null;
 
         // запрашиваем фильтры
         /** @var $filters \Model\Product\Filter\Entity[] */
@@ -128,7 +130,7 @@ class Action {
         $categoriesFound = [];
         foreach ($categoriesFoundTmp as $category) {
             $tokenPrefix = str_replace('-'.$category->getId(), '', $category->getToken());
-            $doubleFound = (bool)array_filter($categoriesFound, function($cat) use (&$tokenPrefix) {
+            $doubleFound = (bool)array_filter($categoriesFound, function(\Model\Product\Category\Entity $cat) use (&$tokenPrefix) {
                 return $tokenPrefix == str_replace('-'.$cat->getId(), '', $cat->getToken());
             });
             if(!$doubleFound) {
@@ -154,9 +156,15 @@ class Action {
             ]);
         }
         \RepositoryManager::productCategory()->prepareCollectionById(array_keys($categoriesById), \App::user()->getRegion(), function($data) use (&$categoriesById) {
-            foreach ($data as $item) {
-                if (!isset($categoriesById[$item['id']])) continue;
-                $categoriesById[$item['id']]->setImage($item['media_image']);
+            if (is_array($data)) {
+                foreach ($data as $item) {
+                    if ($item && is_array($item)) {
+                        $category = new Entity($item);
+                        if (isset($categoriesById[$category->getId()])) {
+                            $categoriesById[$category->getId()]->medias = $category->medias;
+                        }
+                    }
+                }
             }
         });
 
@@ -213,10 +221,12 @@ class Action {
 
         // bannerPlaceholder
         $bannerPlaceholder = [];
-        \App::scmsClient()->addQuery('category/get', ['uid' => \App::config()->rootCategoryUi, 'geo_id' => \App::user()->getRegion()->getId()], [], function($data) use (&$bannerPlaceholder) {
-            $data = \RepositoryManager::productCategory()->convertScmsDataToOldCmsData($data);
-            if (isset($data['bannerPlaceholder'])) {
-                $bannerPlaceholder = $data['bannerPlaceholder'];
+        \App::scmsClient()->addQuery('category/get/v1', ['uid' => \App::config()->rootCategoryUi, 'geo_id' => \App::user()->getRegion()->getId(), 'load_inactive' => 1], [], function($data) use (&$bannerPlaceholder) {
+            if ($data && is_array($data)) {
+                $category = new Entity($data);
+                if (isset($category->catalogJson['bannerPlaceholder'])) {
+                    $bannerPlaceholder = $category->catalogJson['bannerPlaceholder'];
+                }
             }
         });
         \App::scmsClient()->execute();

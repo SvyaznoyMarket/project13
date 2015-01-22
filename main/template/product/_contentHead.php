@@ -35,7 +35,7 @@ if (!isset($titlePrefix)) $titlePrefix = null;
         <div class="bPageHead__eTitle clearfix">
             <h1 itemprop="name"><?= $product->getWebName() ?></h1>
             <? if (isset($trustfactors)): ?>
-                <?= $page->render('product/__trustfactor-top', ['trustfactors' => $trustfactors, 'reviewsData' => @$reviewsData]) ?>
+                <?= \App::closureTemplating()->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'top', 'reviewsData' => @$reviewsData]) ?>
             <? endif ?>
         </div>
         <span class="bPageHead__eArticle">Артикул: <?= $product->getArticle() ?></span>

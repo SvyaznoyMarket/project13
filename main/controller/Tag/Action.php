@@ -25,14 +25,6 @@ class Action {
             throw new \Exception\NotFoundException(sprintf('Тег "%s" не связан ни с одной категорией', $tag->getToken()));
         }
 
-        // получаем из json данные о горячих ссылках и content
-        $seoTagJson = \Model\Tag\Repository::getSeoJson($tag);
-        $hotlinks = empty($seoTagJson['hotlinks']) ? [] : $seoTagJson['hotlinks'];
-        // в json-файле в свойстве content содержится массив
-        $seoContent = empty($seoTagJson['content']) ? '' : implode('<br>', $seoTagJson['content']);
-        // на страницах пагинации сео-контент не показываем
-        if ($pageNum > 1) $seoContent = '';
-
         // категории
         /** @var $tagCategoriesById \Model\Tag\Category\Entity[] */
         $tagCategoriesById = [];
@@ -48,8 +40,7 @@ class Action {
 
             // запрос сделаем, если токен указан, u не полученна категория выбранная
             \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function ($data) use (&$selectedCategory) {
-                $data = reset($data);
-                if ((bool)$data) {
+                if ($data && is_array($data)) {
                     $selectedCategory = new \Model\Product\Category\Entity($data);
                 }
             });
@@ -79,12 +70,20 @@ class Action {
 
         \App::searchClient()->addQuery('category/tree', $queryParams, [],
             function ($data) use (&$categories, &$tagCategoriesNumbers) {
-                foreach ($data as $catFields) {
-                    $category = new \Model\Product\Category\Entity($catFields);
-                    $categories[] = $category;
+                if (is_array($data)) {
+                    foreach ($data as $catFields) {
+                        if (is_array($catFields)) {
+                            $categories[] = new \Model\Product\Category\Entity($catFields);
+                        }
+                    }
                 }
             }
         );
+
+        if ($selectedCategory) {
+            $catalogJson = $selectedCategory->catalogJson;
+        }
+
         $client->execute();
 
 
@@ -260,7 +259,7 @@ class Action {
                     $helper,
                     $productPager,
                     $productVideosByProduct,
-                    !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : []
+                    []
                 ),
                 'selectedFilter' => $selectedFilter,
                 'pagination'     => (new \View\PaginationAction())->execute(
@@ -278,22 +277,6 @@ class Action {
             ]);
         }
 
-
-        // seo из shopscript
-        $shopScriptSeo = [];
-        if ($selectedCategory && \App::config()->shopScript['enabled']) {
-            $shopScript = \App::shopScriptClient();
-            $shopScript->addQuery('category/get-seo', [
-                'slug' => $selectedCategory->getToken(),
-                'geo_id' => \App::user()->getRegion()->getId(),
-            ], [], function ($data) use (&$shopScriptSeo) {
-                if($data && is_array($data)) $shopScriptSeo = reset($data);
-            });
-            $shopScript->execute();
-        }
-
-
-
         // new
         $page = new \View\Tag\IndexPage();
         $page->setParam('productPager', $productPager);
@@ -307,36 +290,9 @@ class Action {
         $page->setParam('productView', $productView);
         $page->setParam('selectedCategory', $selectedCategory);
         $page->setParam('categories', array_values($categoriesByToken));
-        $page->setParam('hotlinks', $hotlinks);
-        $page->setParam('seoContent', $seoContent);
-        $page->setParam('sidebarHotlinks', true);
         $page->setParam('categoriesByToken', $categoriesByToken);
         $page->setParam('productView', $productView);
-        $page->setParam('shopScriptSeo', $shopScriptSeo);
         return new \Http\Response($page->show());
-    }
-
-    /**
-     * @param string        $categoryPath
-     * @param \Http\Request $request
-     * @return \Http\RedirectResponse
-     */
-    public function setGlobal($categoryPath, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
-
-        $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('product.category', ['categoryPath' => $categoryPath]));
-
-        if ($request->query->has('global')) {
-            if ($request->query->get('global')) {
-                $cookie = new \Http\Cookie(self::$globalCookieName, 1, strtotime('+7 days' ));
-                $response->headers->clearCookie(\App::config()->shop['cookieName']);
-                $response->headers->setCookie($cookie);
-            } else {
-                $response->headers->clearCookie(self::$globalCookieName);
-            }
-        }
-
-        return $response;
     }
 
     /**
@@ -396,8 +352,7 @@ class Action {
 
             // запрос сделаем, если токен указан, u не полученна категория выбранная
             \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function ($data) use (&$selectedCategory) {
-                $data = reset($data);
-                if ((bool)$data) {
+                if ($data && is_array($data)) {
                     $selectedCategory = new \Model\Product\Category\Entity($data);
                 }
             });

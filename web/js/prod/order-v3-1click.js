@@ -405,7 +405,7 @@
 
         // log to console
         if (typeof ga !== 'function') console.warn('Нет объекта ga');
-        if (typeof ga === 'function' && ga.getAll().length == 0) console.warn('Не установлен трекер для ga');
+        if (typeof ga === 'function' && typeof ga.getAll === 'function' &&  ga.getAll().length == 0) console.warn('Не установлен трекер для ga');
         console.log('[Google Analytics] Send event: category: "Воронка_1 клик_%s", action: "%s", label: "%s"', region, act, lbl);
     };
 
@@ -413,7 +413,7 @@
     body.on('trackUserAction.orderV3Tracking', sendAnalytic);
 
     // TODO вынести инициализацию трекера из ports.js
-    if (typeof ga === 'function' && ga.getAll().length == 0) {
+    if (typeof ga === 'function' && typeof ga.getAll === 'function' && ga.getAll().length == 0) {
         ga( 'create', 'UA-25485956-5', 'enter.ru' );
     }
 
@@ -1077,9 +1077,7 @@
 })(jQuery);
 ;(function($) {
 
-    var $body = $(document.body),
-        $orderContent = $('.orderCnt'),
-        $pageNew = $('#jsOneClickContentPage'),
+    var $pageNew = $('#jsOneClickContentPage'),
         $validationErrors = $('.jsOrderValidationErrors'),
 		$form = $('.jsOrderV3OneClickForm'),
         errorClass = 'textfield-err',
@@ -1091,7 +1089,7 @@
             var error = [],
                 $phoneInput = $('[name=user_info\\[mobile\\]]'),
                 $emailInput = $('[name=user_info\\[email\\]]'),
-				$deliveryMethod = $('.orderCol_delivrLst_i-act span'),
+//				$deliveryMethod = $('.orderCol_delivrLst_i-act span'),
                 phone = $phoneInput.val().replace(/\s+/g, '');
 
             if (!/8\(\d{3}\)\d{3}-\d{2}-\d{2}/.test(phone)) {
@@ -1125,9 +1123,13 @@
         console.warn('Validation errors', $validationErrors);
     }
 
-    $pageNew.on('blur', 'input',function(){
+    $pageNew.on('blur', 'input', function(){
         validate()
-    });
+    }).on('keyup', '.jsOrderV3PhoneField', function(){
+		var val = $(this).val();
+		if (val[val.length-1] != '_') validate();
+	});
+
 
 	$form.on('submit', function(e){
 

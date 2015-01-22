@@ -205,7 +205,9 @@ class GoogleAnalytics {
         $category = $this->getParam('category');
         if ($category instanceof \Model\Product\Category\Entity) {
             $categories = $category->getAncestor();
+            /** @var \Model\Product\Category\Entity $categoryUpper */
             $categoryUpper = reset($categories);
+            /** @var \Model\Product\Category\Entity $categoryUpper */
             $categoryDown = end($categories);
 
             if ($categoryUpper) {

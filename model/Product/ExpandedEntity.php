@@ -3,30 +3,28 @@
 namespace Model\Product;
 
 class ExpandedEntity extends BasicEntity {
-    /** @var int */
+    /** @var int|null */
     protected $labelId;
-    /** @var float */
+    /** @var float|null */
     protected $rating;
-    /** @var int */
+    /** @var int|null */
     protected $ratingCount;
     /** @var Label\Entity|null */
     protected $label;
-    /** @var string */
-    protected $article;
     /** @var Property\Entity[] */
     protected $property = [];
-    /** @var int */
+    /** @var int|null */
     protected $priceAverage;
-    /** @var int */
+    /** @var int|null */
     protected $priceOld;
 
     public function __construct(array $data = []) {
         parent::__construct($data);
 
-        if (array_key_exists('label_id', $data)) $this->setLabelId($data['label_id']);
-        if (array_key_exists('rating', $data)) $this->setRating($data['rating']);
-        if (array_key_exists('rating_count', $data)) $this->setRatingCount($data['rating_count']);
-        if (array_key_exists('property', $data) && (bool)$data['property']) {
+        if (isset($data['label_id'])) $this->setLabelId($data['label_id']);
+        if (isset($data['rating'])) $this->setRating($data['rating']);
+        if (isset($data['rating_count'])) $this->setRatingCount($data['rating_count']);
+        if (isset($data['property']) && (bool)$data['property']) {
             usort($data['property'], function(array $a, array $b) {
                 return $a['position'] - $b['position'];
             });
@@ -40,29 +38,15 @@ class ExpandedEntity extends BasicEntity {
                 $this->addProperty($property);
             }
         }
-        if (array_key_exists('label', $data)) {
+        if (isset($data['label'])) {
             if (isset($data['label'][0]) && (bool)$data['label'][0]) {
                 $this->setLabel(new Label\Entity($data['label'][0]));
             } elseif ((bool)$data['label']) {
                 $this->setLabel(new Label\Entity($data['label']));
             }
         }
-        if (array_key_exists('price_average', $data)) $this->setPriceAverage($data['price_average']);
-        if (array_key_exists('price_old', $data)) $this->setPriceOld($data['price_old']);
-    }
-
-    /**
-     * @param string $article
-     */
-    public function setArticle($article) {
-        $this->article = (string)$article;
-    }
-
-    /**
-     * @return string
-     */
-    public function getArticle() {
-        return $this->article;
+        if (isset($data['price_average'])) $this->setPriceAverage($data['price_average']);
+        if (isset($data['price_old'])) $this->setPriceOld($data['price_old']);
     }
 
     /**

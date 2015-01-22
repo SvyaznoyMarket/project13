@@ -19,15 +19,18 @@ class IndexPage extends \View\DefaultLayout {
         $this->addMeta('viewport', 'width=960');
         $this->addMeta('mailru', 'b0645ac6fd99f8f2');
 
-        // Seo-теги загружаем из json (для главной страницы, например)
-        if ( $this->hasParam('seoPage') ) {
-            $seoPage = $this->getParam('seoPage');
-            if ( isset($seoPage['title']) and !empty($seoPage['title']) ) $this->setTitle( $seoPage['title'] );
+        $seo = \Model\Page\Repository::getSeo();
 
-            if ( isset($seoPage['metas']) and is_array($seoPage['metas']) )
-            foreach( $seoPage['metas'] as $key => $val){
-                $this->addMeta($key, $val);
-            }
+        if (isset($seo['title']) && !empty($seo['title'])) {
+            $this->setTitle($seo['title']);
+        }
+
+        if (isset($seo['description']) && $seo['description']) {
+            $this->addMeta('description', $seo['description']);
+        }
+
+        if (isset($seo['keywords']) && $seo['keywords']) {
+            $this->addMeta('keywords', $seo['keywords']);
         }
 
         if ($this->new_menu) $this->layout = 'layout-main-new';

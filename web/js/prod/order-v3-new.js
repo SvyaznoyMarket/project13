@@ -381,7 +381,7 @@
 
         // log to console
         if (typeof ga !== 'function') console.warn('Нет объекта ga');
-        if (typeof ga === 'function' && ga.getAll().length == 0) console.warn('Не установлен трекер для ga');
+        if (typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length == 0) console.warn('Не установлен трекер для ga');
         console.log('[Google Analytics] Send event: category: "Воронка_новая_v2_%s", action: "%s", label: "%s"', region, act, lbl);
     };
 
@@ -389,7 +389,7 @@
     body.on('trackUserAction.orderV3Tracking', sendAnalytic);
 
     // TODO вынести инициализацию трекера из ports.js
-    if (typeof ga === 'function' && ga.getAll().length == 0) {
+    if (typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length == 0) {
         ga( 'create', 'UA-25485956-5', 'enter.ru' );
     }
 
@@ -516,6 +516,9 @@
 	}
 
 	function saveAddress(address) {
+
+		if (address.streetName() == '') return;
+
 		$.ajax({
 			type: 'POST',
 			data: {
@@ -1163,8 +1166,8 @@
     });
 
 	$orderContent.on('click', '.jsAddressRootNode', function() {
-		$(this).find('.jsSmartAddressInput').focus();
 		ENTER.OrderV3.address.inputFocus(true);
+        $(this).find('.jsSmartAddressInput').focus();
 	});
 
 	$orderContent.on('blur', '.jsSmartAddressInput', function() {
@@ -1523,7 +1526,7 @@
 				$phoneInput.removeClass('textfield-err').siblings('.errTx').hide();
 			}
 
-			if ($subscribeInput.is(':checked') && $emailInput.val().length == 0) {
+			if (($subscribeInput.is(':checked') || $emailInput.hasClass('jsOrderV3EmailRequired')) && $emailInput.val().length == 0) {
 				error.push('Не указан email');
 				$emailInput.addClass('textfield-err').siblings('.errTx').text('Не указан email').show();
 			} else if ($emailInput.val().length != 0 && !validateEmail($emailInput.val())) {
@@ -1564,6 +1567,17 @@
             $body.trigger('trackUserAction', ['6_2 Далее_ошибка_Получатель', 'Поле ошибки: '+ error.join(', ')])
         }
     });
+
+	$pageNew.on('change', '.jsOrderV3SubscribeCheckbox', function(){
+		if (!$(this).is(':checked')) $body.trigger('trackGoogleEvent', ['Email_checkout', 'unsubscribe', 'email']);
+	});
+
+	$pageNew.on('blur', '.jsOrderV3EmailField', function(){
+		var $this = $(this);
+		validateEmail($this.val())
+			? $body.trigger('trackGoogleEvent', ['Email_checkout', 'success_validation', 'email'])
+			: $body.trigger('trackGoogleEvent', ['Email_checkout', 'fail_prevalidation', 'email'])
+	});
 
     // PAGE DELIVERY
 
@@ -1615,6 +1629,7 @@
 			if (send15_3) $body.trigger('trackUserAction', ['15_3 Оформить_успешно_КЦ']);
 
             $body.trigger('trackUserAction', ['15_1 Оформить_успешно_Доставка_ОБЯЗАТЕЛЬНО']);
+			$(this).attr('disabled', true); // блокируем кнопку "Отправить"
 			setTimeout(function() {	$form.submit(); }, 1000 ); // быстрая обертка для отправки аналитики, иногда не успевает отправляться
         }
 

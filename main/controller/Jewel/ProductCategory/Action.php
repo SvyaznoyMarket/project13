@@ -3,149 +3,15 @@
 namespace Controller\Jewel\ProductCategory;
 
 class Action extends \Controller\ProductCategory\Action {
-    private static $globalCookieName = 'global';
-
-    /**
-     * Сейчас categoryDirect() вызывается из \Controller\ProductCategory\Action напрямую
-     * Чтобы вызывать через роутинг, надо обращаться к этой функции
-     *
-     * @param \Http\Request $request
-     * @param string        $categoryPath
-     * @param string|null   $brandToken
-     * @throws \Exception\NotFoundException
-     * @return \Http\Response
-     */
-    public function prepareCategory(\Http\Request $request, $categoryPath, $brandToken = null) {
-
-        \App::logger()->debug('Exec ' . __METHOD__);
-
-        $client = \App::coreClientV2();
-        $user = \App::user();
-
-        $categoryToken = explode('/', $categoryPath);
-        $categoryToken = end($categoryToken);
-
-        // подготовка 1-го пакета запросов
-
-        // запрашиваем текущий регион, если есть кука региона
-        $regionConfig = [];
-        if ($user->getRegionId()) {
-            \App::dataStoreClient()->addQuery("region/{$user->getRegionId()}.json", [], function($data) use (&$regionConfig) {
-                if((bool)$data) {
-                    $regionConfig = $data;
-                }
-            });
-
-            \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
-                $data = reset($data);
-                if ((bool)$data) {
-                    \App::user()->setRegion(new \Model\Region\Entity($data));
-                }
-            });
-        }
-
-        // запрашиваем список регионов для выбора
-        $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
-            foreach ($data as $item) {
-                $regionsToSelect[] = new \Model\Region\Entity($item);
-            }
-        });
-
-        // выполнение 1-го пакета запросов
-        $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
-
-        $regionEntity = \App::user()->getRegion();
-        if ($regionEntity instanceof \Model\Region\Entity) {
-            if (array_key_exists('reserve_as_buy', $regionConfig)) {
-                $regionEntity->setForceDefaultBuy(false == $regionConfig['reserve_as_buy']);
-            }
-            \App::user()->setRegion($regionEntity);
-        }
-
-        /** @var $region \Model\Region\Entity|null */
-        $region = self::isGlobal() ? null : \App::user()->getRegion();
-
-        // подготовка 2-го пакета запросов
-
-        // TODO: запрашиваем меню
-
-        // запрашиваем категорию по токену
-        /** @var $category \Model\Product\Category\Entity */
-        $category = null;
-        \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
-            $data = reset($data);
-            if ((bool)$data) {
-                $category = new \Model\Product\Category\Entity($data);
-            }
-        });
-
-        // запрашиваем бренд по токену
-        /** @var $brand \Model\Brand\Entity */
-        $brand = null;
-        if ($brandToken) {
-            \RepositoryManager::brand()->prepareEntityByToken($brandToken, $region, function($data) use (&$brand) {
-                $data = reset($data);
-                if ((bool)$data) {
-                    $brand = new \Model\Brand\Entity($data);
-                }
-            });
-        }
-
-        // выполнение 2-го пакета запросов
-        $client->execute(\App::config()->coreV2['retryTimeout']['short']);
-
-        $shopScriptSeo = [];
-        if(\App::config()->shopScript['enabled']) {
-            $shopScript = \App::shopScriptClient();
-            $shopScript->addQuery('category/get-seo', [
-                    'slug' => $categoryToken,
-                    'geo_id' => \App::user()->getRegion()->getId(),
-                ], [], function ($data) use (&$shopScriptSeo) {
-                if($data && is_array($data)) $shopScriptSeo = reset($data);
-            });
-            $shopScript->execute();
-        }
-
-        if (!$category) {
-            throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена', $categoryToken));
-        }
-
-        // подготовка 3-го пакета запросов
-
-        // запрашиваем дерево категорий
-        \RepositoryManager::productCategory()->prepareEntityBranch($category, $region);
-
-        // запрашиваем фильтры
-        /** @var $filters \Model\Product\Filter\Entity[] */
-        $filters = [];
-        \RepositoryManager::productFilter()->prepareCollectionByCategory($category, $region, function($data) use (&$filters) {
-            foreach ($data as $item) {
-                $filters[] = new \Model\Product\Filter\Entity($item);
-            }
-        });
-
-        // выполнение 3-го пакета запросов
-        $client->execute();
-
-        // получаем catalog json для категории (например, тип раскладки)
-        $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
-
-        return $this->category($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent, $shopScriptSeo);
-    }
-
-
     /**
      * @param \Model\Product\Filter\Entity[]  $filters
-     * @param \Model\Product\Category\Entity  $category
      * @param \Model\Brand\Entity|null        $brand
      * @param \Http\Request                   $request
      * @param \Model\Region\Entity[]          $regionsToSelect
-     * @param array                           $shopScriptSeo
      * @throws \Exception\NotFoundException
      * @return \Http\Response
      */
-    public function categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent, $shopScriptSeo) {
+    public function categoryDirect($filters, \Model\Product\Category\Entity $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         // фильтры
@@ -153,15 +19,8 @@ class Action extends \Controller\ProductCategory\Action {
 
         // получаем из json данные о горячих ссылках и content
         try {
-            $seoCatalogJson = \Model\Product\Category\Repository::getSeoJson($category, null, $shopScriptSeo);
-            $hotlinks = empty($seoCatalogJson['hotlinks']) ? [] : $seoCatalogJson['hotlinks'];
-            // в json-файле в свойстве content содержится массив
-            if (empty($brand)) {
-                $seoContent = empty($seoCatalogJson['content']) ? '' : implode('<br />', $seoCatalogJson['content']);
-            } else {
-                $seoBrandJson = \Model\Product\Category\Repository::getSeoJson($category, $brand);
-                $seoContent = empty($seoBrandJson['content']) ? '' : implode('<br />', $seoBrandJson['content']);
-            }
+            $hotlinks = $category->getSeoHotlinks();
+            $seoContent = $category->getSeoContent();
         } catch (\Exception $e) {
             $hotlinks = [];
             $seoContent = '';
@@ -191,7 +50,7 @@ class Action extends \Controller\ProductCategory\Action {
         }
         */
         // Pandora, Guess - по 3, остальные - по 4
-        $itemsPerRow = (bool)array_intersect(array_map(function(\Model\Product\Category\BasicEntity $category) { return $category->getId(); }, $category->getAncestor()), [1320, 4649]) ? 3 : 4;
+        $itemsPerRow = (bool)array_intersect(array_map(function(\Model\Product\Category\Entity $category) { return $category->getId(); }, $category->getAncestor()), [1320, 4649]) ? 3 : 4;
 
         $setPageParameters = function(\View\Layout $page) use (
             &$category,
@@ -202,7 +61,6 @@ class Action extends \Controller\ProductCategory\Action {
             &$seoContent,
             &$catalogJson,
             &$promoContent,
-            &$shopScriptSeo,
             &$itemsPerRow
         ) {
             $page->setParam('category', $category);
@@ -215,7 +73,6 @@ class Action extends \Controller\ProductCategory\Action {
             $page->setParam('promoContent', $promoContent);
             $page->setParam('itemsPerRow', $itemsPerRow);
             $page->setParam('scrollTo', 'smalltabs');
-            $page->setParam('shopScriptSeo', $shopScriptSeo);
             $page->setParam('searchHints', $this->getSearchHints($catalogJson));
             $page->setParam('viewParams', [
                 'showSideBanner' => \Controller\ProductCategory\Action::checkAdFoxBground($catalogJson)
@@ -458,7 +315,6 @@ class Action extends \Controller\ProductCategory\Action {
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
         $page->setParam('productVideosByProduct', $productVideosByProduct);
-        $page->setParam('sidebarHotlinks', true);
 
         return new \Http\Response($page->show());
     }

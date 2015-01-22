@@ -63,7 +63,7 @@ if ($productVideo instanceof \Model\Product\Video\Entity) {
         <div class="lstn_pr">
             <? if ($product->getPriceOld()): ?>
                 <span class="lstn_pr_old">
-                    <?= $helper->formatPrice($product->getPriceOld()) ?> <span class="rubl">p</span>
+                    <span class="td-lineth"><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span>
 
                     <? if ($priceSale): ?>
                         &nbsp;<span class="lstn_pr_sale">-<?= $priceSale ?>%</span>

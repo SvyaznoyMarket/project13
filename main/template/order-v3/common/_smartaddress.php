@@ -17,7 +17,7 @@
         </li>
 
         <li class="orderCol_addrs_fld_i orderCol_addrs_fld_i-edit ui-front">
-            <span id="addressInputPrefix" class="addrsAutocmpltLbl" data-bind="text: inputPrefix, visible: inputFocus() && apartmentName() == ''"></span><input class="jsSmartAddressInput" name="address" type="text" data-bind="visible: inputFocus() && apartmentName() == '', uniqueName: true" />
+            <span id="addressInputPrefix" class="addrsAutocmpltLbl" data-bind="text: inputPrefix, visible: apartmentName() == ''"></span><input class="jsSmartAddressInput" name="address" type="text" data-bind="visible: inputFocus() && apartmentName() == '', uniqueName: true" />
         </li>
     </ul>
 

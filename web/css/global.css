@@ -8808,12 +8808,6 @@
   .bPhotoViewer__eItem.mGrad360 .bPhotoLink:hover {
     background-position: 5px -50px;
   }
-  .bPhotoViewer__eItem.vFitting .bPhotoLink {
-    background-position: 9px -106px;
-  }
-  .bPhotoViewer__eItem.vFitting .bPhotoLink:hover {
-    background-position: 8px -107px;
-  }
   .bPhotoViewer .bPhotoLink {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -10304,6 +10298,9 @@
     padding-left: 0;
     border: 1px solid #aeaeae;
     background: #ffffff;
+    max-height: 400px;
+    overflow-y: scroll;
+    padding-right: 10px;
   }
   .bBrandSortingOption__eDropDown .bDropDownItem {
     float: none;
@@ -12422,9 +12419,9 @@
   .bBtnLine .btnView {
     float: right;
     font-size: 12px;
-    height: 27px;
+    height: 29px;
     line-height: 26px;
-    padding: 0;
+    padding: 1px 0;
     width: 79px;
   }
   .btnView {
@@ -12587,6 +12584,7 @@
   .bSearchCategoryRoot .bCatalogList .bCategoriesImg {
     width: 48px;
     height: 46px;
+    line-height: 46px;
   }
   .bSearchCategoryRoot .bCatalogList .bCategoriesImg__eImg {
     max-height: 46px;
