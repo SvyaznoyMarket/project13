@@ -1,8 +1,6 @@
 ;(function($) {
 
-    var $body = $(document.body),
-        $orderContent = $('.orderCnt'),
-        $pageNew = $('#jsOneClickContentPage'),
+    var $pageNew = $('#jsOneClickContentPage'),
         $validationErrors = $('.jsOrderValidationErrors'),
 		$form = $('.jsOrderV3OneClickForm'),
         errorClass = 'textfield-err',
@@ -14,7 +12,7 @@
             var error = [],
                 $phoneInput = $('[name=user_info\\[mobile\\]]'),
                 $emailInput = $('[name=user_info\\[email\\]]'),
-				$deliveryMethod = $('.orderCol_delivrLst_i-act span'),
+//				$deliveryMethod = $('.orderCol_delivrLst_i-act span'),
                 phone = $phoneInput.val().replace(/\s+/g, '');
 
             if (!/8\(\d{3}\)\d{3}-\d{2}-\d{2}/.test(phone)) {
@@ -48,9 +46,13 @@
         console.warn('Validation errors', $validationErrors);
     }
 
-    $pageNew.on('blur', 'input',function(){
+    $pageNew.on('blur', 'input', function(){
         validate()
-    });
+    }).on('keyup', '.jsOrderV3PhoneField', function(){
+		var val = $(this).val();
+		if (val[val.length-1] != '_') validate();
+	});
+
 
 	$form.on('submit', function(e){
 
