@@ -9229,8 +9229,7 @@
   }
   .slideItem_flt {
     margin: 0px auto;
-    position: relative;
-    width: 900px;
+    position: absolute;
     -webkit-transition: all 0.2s ease;
     -moz-transition: all 0.2s ease;
     transition: all 0.2s ease;
@@ -9241,6 +9240,7 @@
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     filter: alpha(opacity=0);
     overflow: hidden;
+    left: 0;
   }
   .slideItem_flt-show {
     -moz-opacity: 1;
