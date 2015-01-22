@@ -12416,9 +12416,9 @@
   .bBtnLine .btnView {
     float: right;
     font-size: 12px;
-    height: 27px;
+    height: 29px;
     line-height: 26px;
-    padding: 0;
+    padding: 1px 0;
     width: 79px;
   }
   .btnView {
