@@ -623,8 +623,7 @@ img[height="0"] {
   .btnGrey {
     font-weight: bold;
     line-height: 30px;
-    width: 190px;
-    padding-left: 15px;
+    padding: 0 25px;
     color: #ffffff;
     border: 1px solid #a1a1a1;
     background: #040404;
@@ -4331,15 +4330,6 @@ img[height="0"] {
     *zoom: 1;
     float: left;
     padding-right: 5px;
-  }
-  .topbarfix_upLink {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    padding-right: 15px;
-    width: auto;
   }
   .topbarfix_upLink-custom {
     font-size: 16px;
