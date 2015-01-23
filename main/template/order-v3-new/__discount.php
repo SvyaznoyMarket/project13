@@ -4,6 +4,8 @@ return function(
     \Model\OrderDelivery\Entity\Order $order
 ) {
 
+    if ($order->isPartnerOffer()) return;
+
     $couponNumber = null;
 
     if ((bool)array_filter($order->errors, function( \Model\OrderDelivery\Error $error) { return $error->code == 404 && isset($error->details['coupon_number']); })) {

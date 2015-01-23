@@ -158,7 +158,7 @@ class Action {
         \RepositoryManager::productCategory()->prepareCollectionById(array_keys($categoriesById), \App::user()->getRegion(), function($data) use (&$categoriesById) {
             if (is_array($data)) {
                 foreach ($data as $item) {
-                    if ($item) {
+                    if ($item && is_array($item)) {
                         $category = new Entity($item);
                         if (isset($categoriesById[$category->getId()])) {
                             $categoriesById[$category->getId()]->medias = $category->medias;
@@ -222,7 +222,7 @@ class Action {
         // bannerPlaceholder
         $bannerPlaceholder = [];
         \App::scmsClient()->addQuery('category/get/v1', ['uid' => \App::config()->rootCategoryUi, 'geo_id' => \App::user()->getRegion()->getId(), 'load_inactive' => 1], [], function($data) use (&$bannerPlaceholder) {
-            if ($data) {
+            if ($data && is_array($data)) {
                 $category = new Entity($data);
                 if (isset($category->catalogJson['bannerPlaceholder'])) {
                     $bannerPlaceholder = $category->catalogJson['bannerPlaceholder'];

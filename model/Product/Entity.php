@@ -420,22 +420,6 @@ class Entity extends BasicEntity {
     }
 
     /**
-     * @param   string      $resourcesPath
-     * @return  array|bool
-     */
-    public function getPandraResources() {
-        $resourcesLink = "http://" . \App::config()->mainHost;
-        $resourcesLink .= '/styles/ARPlugin';
-
-        return [
-            'resources'     => $resourcesLink . '/resources/',
-            'meshes'        => $resourcesLink . '/meshes/',
-            'textures'      => $resourcesLink . '/textures/',
-            'marker'        => 'http://pandragames.ru/enter_marker.pdf',
-        ];
-    }
-
-    /**
      * @param int $modelId
      */
     public function setModelId($modelId = null) {

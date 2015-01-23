@@ -130,11 +130,11 @@
 	 * @param	{Number}	nowLeft		Текущий отступ слева
 	 */
 	var initFotoSlider = function(){
-		var slider = $('.bPhotoSlider');
-		var fotoBox = slider.find('.bPhotoSliderGallery');
-		var leftArr = slider.find('.bPhotoSlider__eBtn.mPrev');
-		var rightArr = slider.find('.bPhotoSlider__eBtn.mNext');
-		var photos = fotoBox.find('.bPhotoSliderGallery__eItem');
+		var slider = $('.js-photoslider');
+		var fotoBox = slider.find('.js-photoslider-gal');
+		var leftArr = slider.find('.js-photoslider-btn-prev');
+		var rightArr = slider.find('.js-photoslider-btn-next');
+		var photos = fotoBox.find('.js-photoslider-gal-i');
 
 		if (!photos.length){
 			return false;
@@ -152,7 +152,7 @@
 				leftArr.show();
 			}
 			else {
-				leftArr.hide();	
+				leftArr.hide();
 			}
 
 			if (nowLeft < fotoBox.width()-slider.width()){
@@ -190,7 +190,7 @@
 	};
 
 	$(document).ready(function() {
-		if ( $('.bPhotoSlider').length){
+		if ( $('.js-photoslider').length){
 			initFotoSlider();
 		}
 	});
@@ -640,61 +640,11 @@
 		};
 
 		loadWithSWF(afterLoad);
-	},
-	loadFitting = function loadFitting() {
-		console.log('### LoadFitting BEGIN');
-		var
-			f_afterLoad = function f_afterLoad()
-			{
-				var
-					ARPluginLoad = function ARPluginLoad() {
-						if ( 'undefined' === typeof(/*utils.*/ARPlugin) ) {
-							console.warn('ARPlugin is not defined');
-							$('li.vFitting' ).hide();
-							return false;
-						}
-						console.log('ARPlugin is defined');
-						/*utils.*/ARPlugin.init({
-							//type:"advanced",
-							type:"simple",
-							js:"/js/prod/",
-							css:"/styles/ARPlugin/",
-							img:"/styles/ARPlugin/img/",
-							swf:"/styles/ARPlugin/swf/",
-							resources:		pageConfig['product.resources'],
-							meshes_path:	pageConfig['product.meshes'],
-							textures_path:	pageConfig['product.textures'],
-							marker_path:	pageConfig['product.marker']
-						});
-
-						fittingPopupShow = function( e ) {
-							e.preventDefault();
-							if ( typeof _gaq !== 'undefined' ) {
-								_gaq.push(['_trackEvent', '3D-primerochnaya', pageConfig['product.name'], 'click']);
-							}
-							/*utils.*/ARPlugin.show(
-								pageConfig['product.article'] + '.obj',
-								pageConfig['product.article'] + '.png'
-							);
-						};
-
-						$('.vFitting').bind('click', fittingPopupShow);
-					};
-
-				$LAB.script('ARPluginOrigin.js').wait(ARPluginLoad);
-
-			};
-
-		loadWithSWF(f_afterLoad);
 	};
 
 	$(document).ready(function() {
 		if ( pageConfig['product.maybe3d'] ) {
 			loadMaybe3D();
-		}
-
-		if ( pageConfig['product.vFitting'] ) {
-			loadFitting();
 		}
 	});
 }(this));
@@ -1136,7 +1086,7 @@ $(document).ready(function() {
                         console.log("Model:", data.result.OrderDeliveryModel);
                         $orderContent.empty().html($(data.result.page).html());
 
-                        ENTER.OrderV3.constructors.smartAddress();
+                        ENTER.OrderV3.constructors.smartAddressInit();
                         $orderContent.find('input[name=address]').focus();
                     }).always(function(){
                         $orderContent.stop(true, true).fadeIn(200);
@@ -1157,7 +1107,7 @@ $(document).ready(function() {
 
             		button.toggleClass('orderU_lgnd-tggl-cur');
             		$toggleBox.toggle();
-            		$toggleNote.toggleClass('orderU_lgnd_tgglnote-cur')
+            		$toggleNote.toggleClass('orderU_lgnd_tgglnote-cur');
 
                 $('body').trigger('trackUserAction', ['2 Способ получения']);
             };

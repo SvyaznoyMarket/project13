@@ -204,7 +204,6 @@ class IndexPage extends \View\DefaultLayout {
                     'id' => $product->getId(),
                 ],
             ];
-            $config['product.vFitting'] = false;
 
             $productVideos =(array)$this->getParam('productVideos');
             $productVideo = reset($productVideos);
@@ -215,25 +214,12 @@ class IndexPage extends \View\DefaultLayout {
                 if ($productVideo->getMaybe3d()) {
                     $config['product.maybe3d'] = true;
                 }
-                if ($productVideo->getPandra()) {
-                    $config['product.vFitting'] = true;
-                }
             }
 
             if ($product instanceof \Model\Product\Entity) {
                 if ((bool)$product->getPhoto3d()) {
                     $config['product.native3d'] = true;
                 }
-            }
-
-            if ($config['product.vFitting']) {
-                $resourcesVF = $product->getPandraResources();
-                $config['product.name']         = $product->getName();
-                $config['product.article']      = $product->getArticle();
-                $config['product.resources']    = $resourcesVF['resources'];
-                $config['product.meshes']       = $resourcesVF['meshes'];
-                $config['product.textures']     = $resourcesVF['textures'];
-                $config['product.marker']       = $resourcesVF['marker'];
             }
         }
 
