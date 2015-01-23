@@ -59,7 +59,7 @@ class UpsaleAction extends BasicRecommendedAction {
                 $chunckedIds = array_chunk($relatedId, \App::config()->coreV2['chunk_size']);
                 foreach ($chunckedIds as $chunk) {
                     \RepositoryManager::product()->prepareCollectionById($chunk, \App::user()->getRegion(),
-                        function($data) use(&$collection, $recommEngine) {
+                        function($data) use(&$collection) {
                             foreach ($data as $value) {
                                 if (!isset($value['id']) || !isset($value['link'])) continue;
                                 $entity = new \Model\Product\Entity($value);
@@ -82,6 +82,17 @@ class UpsaleAction extends BasicRecommendedAction {
                     unset($products[$key]);
                 }
             }
+
+            // SITE-4710 Рекомендации выдают несколько размеров одного и того же товара
+            $modelIds = [];
+            $products = array_filter($products, function (\Model\Product\Entity $product) use (&$modelIds) {
+                if (is_null($product->getModelId())) return true;
+                if (!in_array($product->getModelId(), $modelIds)) {
+                    $modelIds[] = $product->getModelId();
+                } else return false;
+                return true;
+            });
+
             $products = array_slice($products, 0, \App::config()->product['itemsInSlider'] * 2);
 
             if ( !(bool)$products ) {

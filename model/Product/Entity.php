@@ -427,7 +427,7 @@ class Entity extends BasicEntity {
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getModelId() {
         return $this->modelId;
