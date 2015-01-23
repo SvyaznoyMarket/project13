@@ -2,10 +2,14 @@
 
 namespace Controller\Product;
 
+use Model\Product\Entity;
+
 class UpsaleAction extends BasicRecommendedAction {
     protected $retailrocketMethodName = 'CrossSellItemToItems';
     protected $actionTitle = 'С этим товаром покупают';
     protected $name = 'upsale';
+
+    use ProductHelperTrait;
 
     /**
      * @param string        $productId
@@ -14,7 +18,6 @@ class UpsaleAction extends BasicRecommendedAction {
      * @throws \Exception\NotFoundException
      */
     public function getResponseData($productId, \Http\Request $request) {
-        $responseData = [];
 
         try {
             $product = \RepositoryManager::product()->getEntityById($productId);
@@ -78,20 +81,14 @@ class UpsaleAction extends BasicRecommendedAction {
 
             // SITE-2818 Из блока "С этим товаром покупают" убраем товары, которые есть только в магазинах ("Резерв" и витринные)
             foreach ($products as $key => $item) {
+                /** @var Entity $item */
                 if ($item->isInShopOnly() || $item->isInShopStockOnly() || !$item->getIsBuyable()) {
                     unset($products[$key]);
                 }
             }
 
             // SITE-4710 Рекомендации выдают несколько размеров одного и того же товара
-            $modelIds = [];
-            $products = array_filter($products, function (\Model\Product\Entity $product) use (&$modelIds) {
-                if (is_null($product->getModelId())) return true;
-                if (!in_array($product->getModelId(), $modelIds)) {
-                    $modelIds[] = $product->getModelId();
-                } else return false;
-                return true;
-            });
+            $products = $this->filterByModelId($products);
 
             $products = array_slice($products, 0, \App::config()->product['itemsInSlider'] * 2);
 
