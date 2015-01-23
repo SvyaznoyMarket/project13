@@ -30,7 +30,7 @@ $shopCount = count($markers);
             <div>
                 <% if(subway_name) { %>
                     <div class="shop-addr" style="background-color: <%=subway_color%>">
-                        <span class="shop-addr__subway">м.<%=subway_name%></span>
+                        <span class="shop-addr__subway">м. <%=subway_name%></span>
                     </div>
                 <% } %>
                 <%=name%>
