@@ -26,7 +26,13 @@ $shopCount = count($markers);
     <? if ((bool)$markers): ?>
     <h2 class='bMapShops__eTitle'>Магазины Enter на карте</h2>
     <script type="text/html" id="shopInCity">
-        <li class="shopInCity" ref="<%=id%>"><p><%=name%></p>
+        <li class="shopInCity" ref="<%=id%>">
+            <p>
+                <% if(subway_name) { %>
+                    <span style="background-color: <%=subway_color%>">м.<%=subway_name%></span><br />
+                <% } %>
+                <%=name%>
+            </p>
             <div class="shopInStock"><%=product_count_text%></div>
             <span><%=regtime%></span><br>
             <a href="<%=link%>" class="bGrayButton shopchoose">Перейти к магазину</a>

@@ -114,6 +114,7 @@ class Action {
                 'longitude'         => $shop->getLongitude(),
                 'is_reconstruction' => $shop->getIsReconstructed(),
                 'subway_name'       => $subway ? $subway->getName() : null,
+                'subway_color'      => ($subway && $subway->getLine()) ? $subway->getLine()->getColor() : null,
                 'product_count_text' => $shop->getProductCount() ? ($shop->getProductCount() . ' ' .$helper->numberChoice($shop->getProductCount(), ['товар', 'товара', 'товаров']) . ' можно забрать сегодня') : null,
             );
         }

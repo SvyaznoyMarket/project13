@@ -14,6 +14,7 @@ class Entity {
 
     public function __construct(array $data = []) {
         if (array_key_exists('ui', $data)) $this->setUi($data['ui']);
+        if (array_key_exists('uid', $data)) $this->setUi($data['uid']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('line', $data)) {
             $this->setLine(new LineEntity($data['line']));
