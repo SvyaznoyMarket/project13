@@ -3,10 +3,9 @@
         <div class="slidesBox_btn slidesBox_btn-l jsSlidesWideLeft"></div>
 
         <div class="slidesBox_h_c">
-            <div class="slidesBox_t jsSlidesWideName">Полезные подарки</div>
+            <div class="slidesBox_t jsSlidesWideName">Guess</div>
 
             <ul class="slidesBox_dott">
-                <li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Полезные подарки"></li>
                 <li class="slidesBox_dott_i" data-name="Guess"></li>
                 <li class="slidesBox_dott_i" data-name="Magic Moments"></li>
                 <li class="slidesBox_dott_i" data-name="Новая ювелирная коллекция"></li>
@@ -18,25 +17,6 @@
 
     <div class="slidesBox_inn">
         <ul class="slidesBox_lst clearfix jsSlidesWideHolder">
-            <li class="slidesBox_i jsSlidesWideItem">
-                <a href="/catalog/tchibo/podarki-c1b8" class="slidesBox_lk"><img src="styles/mainpage/img/tchibo/tchibo-b.jpg" alt="" class="slidesBox_img"></a>
-
-                <ul class="slidesBox_items">
-                    <li class="slidesBox_items_i">
-                        <a href="/product/tchibo/budilnik-na-kolesah-tchibo-2200601000258" class="slidesBox_items_lk"><img src="styles/mainpage/img/tchibo/t-1.png" alt="" class="slidesBox_items_img"></a>
-                    </li>
-
-                    <li class="slidesBox_items_i">
-                        <a href="/product/tchibo/pult-upravleniya-semkoy-dlya-smartfona-tchibo-2200701050252" class="slidesBox_items_lk"><img src="styles/mainpage/img/tchibo/t-2.png" alt="" class="slidesBox_items_img"></a>
-                    </li>
-
-                    <li class="slidesBox_items_i">
-                        <a href="/product/tchibo/perchatki-dlya-sensornih-ekranov-tchibo-2200702000034" class="slidesBox_items_lk"><img src="styles/mainpage/img/tchibo/t-3.png" alt="" class="slidesBox_items_img"></a>
-                    </li>
-                </ul>
-
-                <a href="/catalog/tchibo/podarki-c1b8" class="slidesBox_btnview">Посмотреть<br/>коллекцию</a>
-            </li>
 
             <li class="slidesBox_i jsSlidesWideItem">
                 <a href="/catalog/jewel/guess-5ec8?from=jewel">
