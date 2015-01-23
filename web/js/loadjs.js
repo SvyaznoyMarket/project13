@@ -81,20 +81,14 @@
 
         pageConfig = $('#page-config').data('value'),
 
-		knockoutUrl = '',
 		optimizelyUrl = '//cdn.optimizely.com/js/204544654.js',
-		yandexMapUrl = '',
-        yandexMapUrlv2_1 = '',
-		mustacheUrl = '',
-		historyUrl = '',
-		kladr = '',
 		directCreditUrl = 'http://direct-credit.ru/widget/api_script_utf.js',
-        tealeafUrl = '',
+        adfoxUrl = 'adfox_lib_ff.min.js', // 'adfox.asyn.code.ver3.min.js',
+		yandexMapUrl, yandexMapUrlv2_1, mustacheUrl, historyUrl, kladr, knockoutUrl, tealeafUrl,
 
 		debug = false,
 		templateType = document.body.getAttribute('data-template') || '',
-		templSep = templateType.indexOf(' ')
-	; // end of vars
+		templSep = templateType.indexOf(' ');
 
 	if ( templSep > 0 ) {
 		templateType = templateType.substring(0, templSep);
@@ -277,7 +271,7 @@
                     .script( getWithVersion('product.js') )
 					.wait()
 					.script( optimizelyUrl )
-					.script('adfox.asyn.code.ver3.min.js')
+					.script( adfoxUrl )
 					.wait()
 					.script( getWithVersion('ports.js') )
 					.wait()
@@ -296,7 +290,7 @@
 					.script( getWithVersion('common.js') )
 					.wait()
 					.script( optimizelyUrl )
-					.script('adfox.asyn.code.ver3.min.js')
+					.script( adfoxUrl )
 					.wait()
 					.script( getWithVersion('enterprize.js') )
 					.script( getWithVersion('game/slots.js') )
@@ -318,7 +312,7 @@
 					.script( getWithVersion('common.js') )
 					.wait()
 					.script( optimizelyUrl )
-					.script('adfox.asyn.code.ver3.min.js')
+					.script( adfoxUrl )
 					.wait()
 					.script( getWithVersion('ports.js') )
 			}).runQueue();
@@ -336,7 +330,7 @@
 					.script( getWithVersion('infopage.js') )
 					.wait()
 					.script( optimizelyUrl )
-					.script('adfox.asyn.code.ver3.min.js')
+					.script( adfoxUrl )
 					.wait()
 					.script( getWithVersion('ports.js') )
 			}).runQueue();
@@ -355,7 +349,7 @@
 					.script( getWithVersion('enterprize.js') )
 					.wait()
 					.script( optimizelyUrl )
-					.script('adfox.asyn.code.ver3.min.js')
+					.script( adfoxUrl )
 					.wait()
 					.script( getWithVersion('ports.js') )
 			}).runQueue();
@@ -376,7 +370,7 @@
 					.script( getWithVersion('cart.js') )
 					.wait()
 					.script( optimizelyUrl )
-					.script('adfox.asyn.code.ver3.min.js')
+					.script( adfoxUrl )
 					.wait()
 					.script( getWithVersion('ports.js') )
 			}).runQueue();
@@ -396,7 +390,7 @@
 					.script( getWithVersion('compare.js') )
 					.wait()
 					.script( optimizelyUrl )
-					.script('adfox.asyn.code.ver3.min.js')
+					.script( adfoxUrl )
 					.wait()
 					.script( getWithVersion('ports.js') )
 			}).runQueue();
@@ -414,7 +408,7 @@
 					.script( getWithVersion('lk.js') )
 					.wait()
 					.script( optimizelyUrl )
-					.script('adfox.asyn.code.ver3.min.js')
+					.script( adfoxUrl )
 					.wait()
 					.script( getWithVersion('ports.js') )
 			}).runQueue();
@@ -435,7 +429,7 @@
 						.script( getWithVersion('order-new.js') )
 						.wait()
 						.script( optimizelyUrl )
-						.script('adfox.asyn.code.ver3.min.js')
+						.script( adfoxUrl )
 						.wait()
 						.script( getWithVersion('ports.js') )
 				}).runQueue();
@@ -456,7 +450,7 @@
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('order-new-v5.js') )
 						.wait()
-						.script('adfox.asyn.code.ver3.min.js')
+						.script( adfoxUrl )
 						.wait()
 						.script( getWithVersion('ports.js') );
 				}).runQueue();
@@ -521,7 +515,7 @@
 					.script( getWithVersion('order.js') )
 					.wait()
 					.script( optimizelyUrl )
-					.script('adfox.asyn.code.ver3.min.js')
+					.script( adfoxUrl )
 					.wait()
 					.script( getWithVersion('ports.js') )
 			}).runQueue();
@@ -543,7 +537,7 @@
 					.script( getWithVersion('pandora.js') )
 					.wait()
 					.script( optimizelyUrl )
-					.script('adfox.asyn.code.ver3.min.js')
+					.script( adfoxUrl )
 					.wait()
 					.script( getWithVersion('ports.js') )
 			}).runQueue();
@@ -567,7 +561,7 @@
                         .wait()
                         .script( getWithVersion('order-v3-1click.js') )
 						.script( optimizelyUrl )
-						.script('adfox.asyn.code.ver3.min.js')
+						.script( adfoxUrl )
 						.wait()
 						.script( getWithVersion('ports.js') )
 				}).runQueue();
@@ -588,7 +582,7 @@
 					.script( getWithVersion('gift.js') )
 					.wait()
 					.script( optimizelyUrl )
-					.script('adfox.asyn.code.ver3.min.js')
+					.script( adfoxUrl )
 					.wait()
 					.script( getWithVersion('ports.js') )
 			}).runQueue();
@@ -605,7 +599,7 @@
 					.script( getWithVersion('common.js') )
 					.wait()
 					.script( optimizelyUrl )
-					.script('adfox.asyn.code.ver3.min.js')
+					.script( adfoxUrl )
 					.wait()
 					.script( getWithVersion('ports.js') )
 			}).runQueue();
