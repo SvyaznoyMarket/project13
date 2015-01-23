@@ -12077,15 +12077,17 @@
     font-weight: normal;
   }
   .bListing .bPriceLine .bAvailible {
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
     float: right;
     padding: 2px 0 3px;
-    width: 116px;
     border: 1px solid;
-    text-align: right;
     text-align: center;
+    width: 90px;
+    border-color: #c7c7c7;
+    color: #424242;
+    font-size: 11px;
   }
   .bListing .bPriceLine .bPrice {
     float: left;
