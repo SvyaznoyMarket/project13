@@ -258,7 +258,10 @@ class ShowAction {
         // получаем из json данные о горячих ссылках и content
         try {
             $hotlinks = $category->getSeoHotlinks();
-            $seoContent = $category->getSeoContent();
+            $seoContent = $slice->getContent();
+            if (!$seoContent) {
+                $seoContent = $category->getSeoContent();
+            }
         } catch (\Exception $e) {
             $hotlinks = [];
             $seoContent = '';

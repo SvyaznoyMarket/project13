@@ -640,61 +640,11 @@
 		};
 
 		loadWithSWF(afterLoad);
-	},
-	loadFitting = function loadFitting() {
-		console.log('### LoadFitting BEGIN');
-		var
-			f_afterLoad = function f_afterLoad()
-			{
-				var
-					ARPluginLoad = function ARPluginLoad() {
-						if ( 'undefined' === typeof(/*utils.*/ARPlugin) ) {
-							console.warn('ARPlugin is not defined');
-							$('li.vFitting' ).hide();
-							return false;
-						}
-						console.log('ARPlugin is defined');
-						/*utils.*/ARPlugin.init({
-							//type:"advanced",
-							type:"simple",
-							js:"/js/prod/",
-							css:"/styles/ARPlugin/",
-							img:"/styles/ARPlugin/img/",
-							swf:"/styles/ARPlugin/swf/",
-							resources:		pageConfig['product.resources'],
-							meshes_path:	pageConfig['product.meshes'],
-							textures_path:	pageConfig['product.textures'],
-							marker_path:	pageConfig['product.marker']
-						});
-
-						fittingPopupShow = function( e ) {
-							e.preventDefault();
-							if ( typeof _gaq !== 'undefined' ) {
-								_gaq.push(['_trackEvent', '3D-primerochnaya', pageConfig['product.name'], 'click']);
-							}
-							/*utils.*/ARPlugin.show(
-								pageConfig['product.article'] + '.obj',
-								pageConfig['product.article'] + '.png'
-							);
-						};
-
-						$('.vFitting').bind('click', fittingPopupShow);
-					};
-
-				$LAB.script('ARPluginOrigin.js').wait(ARPluginLoad);
-
-			};
-
-		loadWithSWF(f_afterLoad);
 	};
 
 	$(document).ready(function() {
 		if ( pageConfig['product.maybe3d'] ) {
 			loadMaybe3D();
-		}
-
-		if ( pageConfig['product.vFitting'] ) {
-			loadFitting();
 		}
 	});
 }(this));

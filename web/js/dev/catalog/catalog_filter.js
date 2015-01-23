@@ -32,11 +32,31 @@
 		viewParamPanel = $('.js-category-sortingAndPagination'),
 		filterOpenClass = 'fltrSet_tggl-dn',
 
-		manualDefiledPriceFrom = utils.getURLParam('f-price-from', document.location.href),
-		manualDefiledPriceTo = utils.getURLParam('f-price-to', document.location.href),
+		manualDefinedPriceFrom = utils.getURLParam('f-price-from', document.location.href),
+		manualDefinedPriceTo = utils.getURLParam('f-price-to', document.location.href),
 
 		tID;
 	// end of vars
+
+	function setManualDefinedPriceFrom(from, min) {
+		if (manualDefinedPriceFrom != from) {
+			if (from == min) {
+				manualDefinedPriceFrom = null;
+			} else {
+				manualDefinedPriceFrom = from;
+			}
+		}
+	}
+
+	function setManualDefinedPriceTo(to, max) {
+		if (manualDefinedPriceTo != to) {
+			if (to == max) {
+				manualDefinedPriceTo = null;
+			} else {
+				manualDefinedPriceTo = to;
+			}
+		}
+	}
 
 	catalog.filter = {
 		/**
@@ -236,7 +256,7 @@
 						from = parseFloat('0' + $from.val()),
 						to = parseFloat('0' + $to.val());
 
-					if (!manualDefiledPriceFrom || manualDefiledPriceFrom <= res.filters.price.max) {
+					if ((!manualDefinedPriceFrom || manualDefinedPriceFrom <= res.filters.price.max) && res.filters.price.max) {
 						$slider.slider('option', 'max', res.filters.price.max);
 
 						// Внимание: изменение данных значений не выполняет поиск заново, поэтому важно, чтобы данные изменения не влияли на возможный результат поиска
@@ -244,13 +264,13 @@
 							$to.val(res.filters.price.max);
 							$slider.slider('values', 1, res.filters.price.max);
 						} else {
-							var newTo = manualDefiledPriceTo || res.filters.price.max;  // Если значение "до" не задавалось вручную, то значение "до" будет установлено в новое максимальное значение
+							var newTo = manualDefinedPriceTo || res.filters.price.max;  // Если значение "до" не задавалось вручную, то значение "до" будет установлено в новое максимальное значение
 							$to.val(newTo);
 							$slider.slider('values', 1, newTo);
 						}
 					}
 
-					if (!manualDefiledPriceTo || manualDefiledPriceTo >= res.filters.price.min) {
+					if (!manualDefinedPriceTo || manualDefinedPriceTo >= res.filters.price.min) {
 						$slider.slider('option', 'min', res.filters.price.min);
 
 						// Внимание: изменение данных значений не выполняет поиск заново, поэтому важно, чтобы данные изменения не влияли на возможный результат поиска
@@ -258,7 +278,7 @@
 							$from.val(res.filters.price.min);
 							$slider.slider('values', 0, res.filters.price.min);
 						} else {
-							var newFrom = manualDefiledPriceFrom || res.filters.price.min; // Если значение "от" не задавалось вручную, то значение "от" будет установлено в новое минимальное значение
+							var newFrom = manualDefinedPriceFrom || res.filters.price.min; // Если значение "от" не задавалось вручную, то значение "от" будет установлено в новое минимальное значение
 							$from.val(newFrom);
 							$slider.slider('values', 0, newFrom);
 						}
@@ -584,10 +604,9 @@
 		}
 	};
 
-
-		/**
-		 * Слайдеры в фильтре
-		 */
+	/**
+	 * Слайдеры в фильтре
+	 */
 	var initSliderRange = function initSliderRange() {
 			var sliderWrap = $(this),
 				slider = sliderWrap.find('.js-category-filter-rangeSlider-slider'),
@@ -609,101 +628,70 @@
 					sliderFromInput.val( ui.values[ 0 ] );
 					sliderToInput.val( ui.values[ 1 ] );
 
-					if (sliderWrap.is($priceForFacetSearch)) {
-						if (manualDefiledPriceFrom != ui.values[0]) {
-							if (ui.values[0] == slider.slider('option', 'min')) {
-								manualDefiledPriceFrom = null;
-							} else {
-								manualDefiledPriceFrom = ui.values[0];
-							}
-						}
-
-						if (manualDefiledPriceTo != ui.values[1]) {
-
-							if (ui.values[1] == slider.slider('option', 'max')) {
-								manualDefiledPriceTo = null;
-							} else {
-								manualDefiledPriceTo = ui.values[1];
-							}
-						}
-					}
-				},
-
-				change: function( e, ui ) {
-					console.log('change slider');
-
 					sliderFromInput.trigger('change', [true]);
 					sliderToInput.trigger('change', [true]);
 				}
 			});
 
-			sliderFromInput.on('change', function(e, disableSliderUpdate) {
+			sliderFromInput.on('change', function(e, fromSliderChange) {
 				var
-					fromVal = '0' + sliderFromInput.val(),
-					toVal = '0' + sliderToInput.val(),
+					from = '0' + sliderFromInput.val(),
+					to = '0' + sliderToInput.val(),
 					min = slider.slider('option', 'min'),
 					max = slider.slider('option', 'max');
 
-				fromVal = parseFloat(fromVal);
-				toVal = parseFloat(toVal);
+				from = parseFloat(from);
+				to = parseFloat(to);
 
-				if (fromVal < min) {
-					fromVal = min;
-				} else if (fromVal > max) {
-					fromVal = max;
+				if (from < min) {
+					from = min;
+				} else if (from > max) {
+					from = max;
 				}
 
-				if (fromVal > toVal) {
-					fromVal = toVal;
+				if (from > to) {
+					from = to;
 				}
 
-				sliderFromInput.val(fromVal);
+				sliderFromInput.val(from);
 
-				if (!disableSliderUpdate) {
-					slider.slider('values', 0, fromVal);
+				if (!fromSliderChange) {
+					slider.slider('values', 0, from);
 				}
 
-				if (sliderWrap.is($priceForFacetSearch) && manualDefiledPriceFrom != fromVal) {
-					if (fromVal == min) {
-						manualDefiledPriceFrom = null;
-					} else {
-						manualDefiledPriceFrom = fromVal;
-					}
+				if ((e.originalEvent || fromSliderChange) && sliderWrap.is($priceForFacetSearch)) {
+					setManualDefinedPriceFrom(from, min);
 				}
 			});
 
-			sliderToInput.on('change', function(e, disableSliderUpdate) {
+			sliderToInput.on('change', function(e, fromSliderChange) {
 				var
-					fromVal = '0' + sliderFromInput.val(),
-					toVal = '0' + sliderToInput.val(),
+					from = '0' + sliderFromInput.val(),
+					to = '0' + sliderToInput.val(),
 					min = slider.slider('option', 'min'),
 					max = slider.slider('option', 'max');
 
-				fromVal = parseFloat(fromVal);
-				toVal = parseFloat(toVal);
+				from = parseFloat(from);
+				to = parseFloat(to);
 
-				if (toVal < min) {
-					toVal = min;
-				} else if (toVal > max) {
-					toVal = max;
+				if (to < min) {
+					to = min;
+				} else if (to > max) {
+					to = max;
 				}
 
-				if (fromVal > toVal) {
-					toVal = fromVal;
+				if (from > to) {
+					to = from;
 				}
 
-				sliderToInput.val(toVal);
+				sliderToInput.val(to);
 
-				if (!disableSliderUpdate) {
-					slider.slider('values', 1, toVal);
+				if (!fromSliderChange) {
+					slider.slider('values', 1, to);
 				}
 
-				if (sliderWrap.is($priceForFacetSearch) && manualDefiledPriceTo != toVal) {
-					if (toVal == max) {
-						manualDefiledPriceTo = null;
-					} else {
-						manualDefiledPriceTo = toVal;
-					}
+				if ((e.originalEvent || fromSliderChange) && sliderWrap.is($priceForFacetSearch)) {
+					setManualDefinedPriceTo(to, max);
 				}
 			});
 		},
