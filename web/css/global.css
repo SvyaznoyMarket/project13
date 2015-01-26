@@ -8753,6 +8753,7 @@
     height: 400px;
     text-align: center;
     vertical-align: bottom;
+    position: relative;
   }
   .bProductDescImg .bProductDescImgBig__eImg {
     width: 400px;
