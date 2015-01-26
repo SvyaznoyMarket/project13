@@ -516,6 +516,8 @@
 					url = url.replace(/\#.*$|$/, '#productCatalog-filter-form');
 				}
 
+				// SITE-5063 Дублирование товаров в листинге
+				$(window).off('scroll', catalog.infScroll.checkScroll);
 				catalog.history.gotoUrl(url);
 
 				// Устанавливаем фильтры в ссылки списка дочерних категорий
