@@ -113,8 +113,8 @@ $isNewRecommendation =
             'additionalData' => $additionalData,
             'class'          => (bool)$accessoryCategory ? 'slideItem-3item' : 'slideItem-5item',
             'sender'         => [
-                //'name'     => null,
-                'position' => 'ProductAccessoriesManual',
+                'name'      => 'enter',
+                'position'  => 'ProductAccessoriesManual',
             ],
         ]) ?>
     <? endif ?>
@@ -279,6 +279,7 @@ $isNewRecommendation =
         'sender'    => [
             'name'     => 'enter',
             'position' => 'Viewed',
+            'from'     => 'productPage'
         ],
     ]) ?>
 <? endif ?>

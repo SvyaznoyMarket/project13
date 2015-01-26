@@ -214,11 +214,11 @@ class Action {
         $currentRegion = $shop->getRegion();
 
         // hardcode
-        if (in_array($shop->getId(), array(1))) {
-            $shop->setPanorama(new \Model\Shop\Panorama\Entity(array(
+        if (in_array($shop->getId(), [1])) {
+            $shop->setPanorama(new \Model\Shop\Panorama\Entity([
                 'swf' => '/panoramas/shops/' . $shop->getId() . '/tour.swf',
                 'xml' => '/panoramas/shops/' . $shop->getId() . '/tour.xml',
-            )));
+            ]));
         }
 
         if (in_array($shop->getId(), [194])) {

@@ -37,6 +37,7 @@ class Entity {
         if (array_key_exists('parent_id', $data)) $this->setParentId($data['parent_id']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('token', $data)) $this->setToken($data['token']);
+        if (array_key_exists('slug', $data)) $this->setToken($data['slug']);
         if (array_key_exists('is_main', $data)) $this->setIsMain($data['is_main']);
         if (array_key_exists('has_shop', $data)) $this->setHasShop($data['has_shop']);
         if (array_key_exists('has_delivery', $data)) $this->setHasDelivery($data['has_delivery']);

@@ -12,9 +12,6 @@ class Entity {
     /** @var array */
     private $img3d;
 
-    /** @var bool */
-    private $pandra;
-
     /**
      * @param array $data
      */
@@ -22,7 +19,6 @@ class Entity {
         if (array_key_exists('content', $data)) $this->setContent($data['content']);
         if (array_key_exists('maybe3d', $data)) $this->setMaybe3d($data['maybe3d']);
         if (array_key_exists('img3d', $data)) $this->setImg3d($data['img3d']);
-        if (array_key_exists('pandra', $data)) $this->setPandra($data['pandra']);
     }
 
     /**
@@ -69,21 +65,5 @@ class Entity {
     public function getMaybe3d()
     {
         return $this->maybe3d;
-    }
-
-    /**
-     * @param $pandra
-     */
-    public function setPandra($pandra)
-    {
-        $this->pandra = (bool) $pandra;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getPandra()
-    {
-        return $this->pandra;
     }
 }

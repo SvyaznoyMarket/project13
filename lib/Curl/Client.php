@@ -66,7 +66,7 @@ class Client {
             $info = curl_getinfo($connection);
 
             if ($info['http_code'] >= 300) {
-                throw new \RuntimeException('Invalid http code: ' . $info['http_code']);
+                throw new \RuntimeException('Invalid http code: ' . $info['http_code'], (int)$info['http_code']);
             }
 
             if (null === $response) {
@@ -223,7 +223,7 @@ class Client {
                         }
 
                         if ($info['http_code'] >= 300) {
-                            throw new \RuntimeException('Invalid http code ' . $info['http_code']);
+                            throw new \RuntimeException('Invalid http code ' . $info['http_code'], (int)$info['http_code']);
                         }
 
                         $decodedResponse = $this->decode($content);

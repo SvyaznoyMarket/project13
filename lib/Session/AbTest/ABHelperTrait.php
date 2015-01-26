@@ -39,7 +39,8 @@ trait ABHelperTrait {
          */
         /* Если пользователь попадает в регион теста */
         if (\App::user()->getRegion() && !in_array(\App::user()->getRegion()->getParentId(), [82,83,34,39])) {
-            return \App::abTest()->getTest('order_delivery_price_2') && \App::abTest()->getTest('order_delivery_price_2')->getChosenCase()->getKey() == 'delivery_self_100';
+//            return \App::abTest()->getTest('order_delivery_price_2') && \App::abTest()->getTest('order_delivery_price_2')->getChosenCase()->getKey() == 'delivery_self_100';
+            return true;
         }
         return false;
     }
@@ -50,6 +51,13 @@ trait ABHelperTrait {
      */
     public static function isOnlineMotivation($ordersCount = 0){
         return (int)$ordersCount == 1 && \App::abTest()->getTest('online_motivation') && \App::abTest()->getTest('online_motivation')->getChosenCase()->getKey() == 'on';
+    }
+
+    /** Обязательный email при оформлении заказа?
+     * @return bool
+     */
+    public static function isEmailRequired(){
+        return \App::abTest()->getTest('order_email') && \App::abTest()->getTest('order_email')->getChosenCase()->getKey() == 'required';
     }
 
 } 

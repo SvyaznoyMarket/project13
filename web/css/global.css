@@ -8753,6 +8753,7 @@
     height: 400px;
     text-align: center;
     vertical-align: bottom;
+    position: relative;
   }
   .bProductDescImg .bProductDescImgBig__eImg {
     width: 400px;
@@ -8807,12 +8808,6 @@
   }
   .bPhotoViewer__eItem.mGrad360 .bPhotoLink:hover {
     background-position: 5px -50px;
-  }
-  .bPhotoViewer__eItem.vFitting .bPhotoLink {
-    background-position: 9px -106px;
-  }
-  .bPhotoViewer__eItem.vFitting .bPhotoLink:hover {
-    background-position: 8px -107px;
   }
   .bPhotoViewer .bPhotoLink {
     -webkit-border-radius: 4px;
@@ -9235,8 +9230,7 @@
   }
   .slideItem_flt {
     margin: 0px auto;
-    position: relative;
-    width: 900px;
+    position: absolute;
     -webkit-transition: all 0.2s ease;
     -moz-transition: all 0.2s ease;
     transition: all 0.2s ease;
@@ -9247,6 +9241,7 @@
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     filter: alpha(opacity=0);
     overflow: hidden;
+    left: 0;
   }
   .slideItem_flt-show {
     -moz-opacity: 1;
@@ -10304,6 +10299,9 @@
     padding-left: 0;
     border: 1px solid #aeaeae;
     background: #ffffff;
+    max-height: 400px;
+    overflow-y: scroll;
+    padding-right: 10px;
   }
   .bBrandSortingOption__eDropDown .bDropDownItem {
     float: none;
@@ -12461,9 +12459,9 @@
   .bBtnLine .btnView {
     float: right;
     font-size: 12px;
-    height: 27px;
+    height: 29px;
     line-height: 26px;
-    padding: 0;
+    padding: 1px 0;
     width: 79px;
   }
   .btnView {

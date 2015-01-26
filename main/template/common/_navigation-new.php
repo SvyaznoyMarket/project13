@@ -9,6 +9,7 @@ $helper = new \Helper\TemplateHelper();
 // ссылки на получение рекомендаций для каждого элемента меню 1-го уровня
 $recommendUrlsByMenuId = [];
 foreach ($menu as $menu1) {
+    if (!\App::config()->mainMenu['recommendationsEnabled']) break;
     if (!$menu1->id || !(bool)$menu1->children) continue;
 
     try {

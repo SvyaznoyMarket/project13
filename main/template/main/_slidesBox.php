@@ -20,7 +20,7 @@ foreach ($rrProducts as &$value) {
 } if (isset($value)) unset($value);
 
 /* Сортируем блок "Популярные товары" */
-if (@$blockname == 'ПОПУЛЯРНЫЕ ТОВАРЫ') {
+if (false && @$blockname == 'ПОПУЛЯРНЫЕ ТОВАРЫ') {
     try {
         usort($rrProducts, function (\Model\Product\BasicEntity $a, \Model\Product\BasicEntity $b) {
             if ($b->getIsBuyable() != $a->getIsBuyable()) {
@@ -37,6 +37,8 @@ if (@$blockname == 'ПОПУЛЯРНЫЕ ТОВАРЫ') {
         });
     } catch (\Exception $e) {}
 }
+
+if (@$blockname == 'МЫ РЕКОМЕНДУЕМ') $rrProducts = \Controller\Product\ProductHelperTrait::filterByModelId($rrProducts);
 
 $rrProducts = array_filter($rrProducts, function($p){
     /** @var \Model\Product\BasicEntity $p */
