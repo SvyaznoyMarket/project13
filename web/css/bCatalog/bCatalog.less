@@ -191,17 +191,15 @@
 		}
 
 		.bAvailible {
-			.rounded(3px);
+			.rounded(4px);
 			float: right;
 			padding: 2px 0 3px;
 
+			width: 116px;
 			border: 1px solid;
 
 			text-align: center;
-			width: 90px;
-			border-color: #c7c7c7;
-			color: #424242;
-			font-size: 11px;
+
 		}
 
 		.bPrice {
@@ -214,6 +212,50 @@
         .bPrice.bHasSale{
             color: #e62b34;
         }
+	}
+	.bPriceCol{
+		float: left;
+		max-width: 100px;
+		height: 50px;
+		margin-bottom: 10px;
+		.bPriceOld {
+			.bDecor {
+				text-decoration: line-through;
+
+				font-weight: normal;
+			}
+		}
+		.bPrice {
+			width: 112px;
+			font-size: 20px;
+			margin-left: 0;
+			&:first-child{
+				margin-top: 18px;
+				display: block;
+			}
+		}
+
+        .bPrice.bHasSale{
+            color: #e62b34;
+        }
+	}
+	.bPricesBlock{
+		position: relative;
+		width:100%;
+		.bAvailible {
+			.rounded(4px);
+			padding: 2px 0 3px;
+
+			width: 90px;
+			border: 1px solid;
+
+			text-align: center;
+			border-color: #c7c7c7;
+			color: #424242;
+			position: absolute;
+			right: 0px;
+			bottom: 17px;
+		}
 	}
 
 	.bSimplyDescReviews {

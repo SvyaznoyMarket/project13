@@ -12077,17 +12077,14 @@
     font-weight: normal;
   }
   .bListing .bPriceLine .bAvailible {
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
     float: right;
     padding: 2px 0 3px;
+    width: 116px;
     border: 1px solid;
     text-align: center;
-    width: 90px;
-    border-color: #c7c7c7;
-    color: #424242;
-    font-size: 11px;
   }
   .bListing .bPriceLine .bPrice {
     float: left;
@@ -12097,6 +12094,46 @@
   }
   .bListing .bPriceLine .bPrice.bHasSale {
     color: #e62b34;
+  }
+  .bListing .bPriceCol {
+    float: left;
+    max-width: 100px;
+    height: 50px;
+    margin-bottom: 10px;
+  }
+  .bListing .bPriceCol .bPriceOld .bDecor {
+    text-decoration: line-through;
+    font-weight: normal;
+  }
+  .bListing .bPriceCol .bPrice {
+    width: 112px;
+    font-size: 20px;
+    margin-left: 0;
+  }
+  .bListing .bPriceCol .bPrice:first-child {
+    margin-top: 18px;
+    display: block;
+  }
+  .bListing .bPriceCol .bPrice.bHasSale {
+    color: #e62b34;
+  }
+  .bListing .bPricesBlock {
+    position: relative;
+    width: 100%;
+  }
+  .bListing .bPricesBlock .bAvailible {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding: 2px 0 3px;
+    width: 90px;
+    border: 1px solid;
+    text-align: center;
+    border-color: #c7c7c7;
+    color: #424242;
+    position: absolute;
+    right: 0px;
+    bottom: 17px;
   }
   .bListing .bSimplyDescReviews {
     margin: 0 0 5px;
