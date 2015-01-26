@@ -68,7 +68,7 @@ foreach ($menu as $menu1) {
 
                                 <? if (true || !empty($menu2->children)) : ?>
                                     <ul class="navsite3 js-mainmenu-level3">
-                                        <li class="navsite3_i navsite3_i-tl js-mainmenu-level3-item"><?= $menu2->name ?></li>
+                                        <li class="navsite3_i navsite3_i-tl"><?= $menu2->name ?></li>
                                         <? foreach ((array)$menu2->children as $menu3) : ?>
                                             <li class="navsite3_i"><a href="<?= $menu3->link ?>" class="navsite3_lk"><?= $menu3->name ?></a></li>
                                         <? endforeach ?>
