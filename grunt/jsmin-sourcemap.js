@@ -92,6 +92,7 @@ module.exports = function (grunt, options) {
         },
         jqueryPlugins: {
             src: [
+                'dev/jquery-plugins/jquery.menuaim.js',
                 'dev/jquery-plugins/jquery.kladr.js',
                 'dev/jquery-plugins/smart-address.js',
                 'dev/jquery-plugins/jquery.lightbox_me.js',
