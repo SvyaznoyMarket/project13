@@ -4,7 +4,8 @@
 
 	$menu.menuAim({
 		activate: activateSubmenu,
-		deactivate: deactivateSubmenu
+		deactivate: deactivateSubmenu,
+		exitOnMouseOut: true
 	});
 
 	function activateSubmenu(row) {

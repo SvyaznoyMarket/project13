@@ -69,8 +69,9 @@
  *
  * https://github.com/kamens/jQuery-menu-aim
 */
- ;(function( $ ) {
-    $.fn.menuAim = function( opts ) {
+(function($) {
+
+    $.fn.menuAim = function(opts) {
         // Initialize menu-aim for all elements in jQuery collection
         this.each(function() {
             init.call(this, opts);
@@ -94,7 +95,8 @@
                 exit: $.noop,
                 activate: $.noop,
                 deactivate: $.noop,
-                exitMenu: $.noop
+                exitMenu: $.noop,
+                exitOnMouseOut: false // added to deactivate menu when mouse leaves menu entirely
             }, opts);
 
         var MOUSE_LOCS_TRACKED = 3,  // number of past mouse locations to track
@@ -121,7 +123,7 @@
 
                 // If exitMenu is supplied and returns true, deactivate the
                 // currently active row on menu exit.
-                if (options.exitMenu(this)) {
+                if (options.exitMenu(this) || options.exitOnMouseOut) {
                     if (activeRow) {
                         options.deactivate(activeRow);
                     }
