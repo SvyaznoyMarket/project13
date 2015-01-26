@@ -20,7 +20,8 @@ $helper = new \Helper\TemplateHelper();
         <? if (!$user->getEntity()): ?>
             <ul class="epHeader_controls">
                 <li class="epHeader_controls_item epHeader_controls_item-colors"><a href="<?= \App::router()->generate('user.login') ?>" class="jsEnterprizeAuthLink">Войти</a></li>
-                <li class="epHeader_controls_item epHeader_controls_item-border js-ep-btn-hint-popup">Правила участия</li>
+                <!--li class="epHeader_controls_item epHeader_controls_item-border js-ep-btn-hint-popup">Правила участия</li-->
+                <p class="rulesEP"><a href="/reklamnaya-akcia-enterprize">Правила участия в ENTER PRIZE</a></p>
             </ul>
 
             <div class="epHintPopup js-ep-hint-popup">
@@ -213,6 +214,4 @@ $helper = new \Helper\TemplateHelper();
             <? endif ?>
         <? endforeach ?>
     </ul>
-
-    <p class="rulesEP"><a href="/reklamnaya-akcia-enterprize">Правила участия в ENTER PRIZE</a></p>
 </div>
