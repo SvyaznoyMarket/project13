@@ -9336,7 +9336,7 @@ img[height="0"] {
     font-size: 12px;
   }
   .personalTable-border .personalTable_row-head:hover .personalTable_cell {
-    background: none;
+    background: none!important;
   }
   .personalTable-border .personalTable_cell {
     height: 50px;
