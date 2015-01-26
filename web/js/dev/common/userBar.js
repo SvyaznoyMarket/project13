@@ -198,25 +198,6 @@
 		// end of vars
 
 		var
-			deleteFromRutarget = function deleteFromRutarget( data ) {
-				var
-					region = $('.jsChangeRegion'),
-					regionId = region.length ? region.data('region-id') : false,
-					result,
-					_rutarget = window._rutarget || [];
-				// end of vars
-
-				if ( !regionId || !data.hasOwnProperty('product') || !data.product.hasOwnProperty('id') ) {
-					return;
-				}
-
-				result = {'event': 'removeFromCart', 'sku': data.product.id, 'regionId': regionId};
-
-				console.info('RuTarget removeFromCart');
-				console.log(result);
-				_rutarget.push(result);
-			},
-
 			deleteFromLamoda = function deleteFromLamoda( data ) {
 				if ('undefined' == typeof(JSREObject) || !data.hasOwnProperty('product') || !data.product.hasOwnProperty('id') ) {
 					return;
@@ -243,7 +224,6 @@
 				}
 
 				deleteFromRetailRocket(data);
-				deleteFromRutarget(data);
 				deleteFromLamoda(data);
 			};
 

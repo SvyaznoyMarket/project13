@@ -250,10 +250,6 @@ class AppConfig {
             'enabled' => null,
             'lamodaID' => null,
         ],
-        'RuTarget' => [
-            'enabled' => null,
-            'containerId' => null,
-        ],
         'TagMan' => [
             'enabled' => null,
         ],

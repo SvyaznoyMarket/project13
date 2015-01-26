@@ -542,13 +542,6 @@ img[height="0"] {
   font-size: 0 !important;
   line-height: 0 !important;
 }
-#RuTargetJS {
-  height: 0;
-  padding: 0;
-  position: absolute;
-  z-index: 0;
-  overflow: hidden;
-}
 /*--END---ОСНОВНЫЕ ПРАВИЛА---*/
 /*---ПРИМЕСИ---*/
 /*--END---ПРИМЕСИ---*/

@@ -220,23 +220,6 @@ class IndexPage extends \View\DefaultLayout {
         ];
     }
 
-    public function slotRuTargetProductJS() {
-        if (!\App::config()->partners['RuTarget']['enabled']) return;
-
-        /** @var $product \Model\Product\Entity */
-        $product = $this->getParam('product');
-        if (!$product) {
-            return;
-        }
-
-        $data = [
-            'id' => $product->getId(),
-            'regionId' => \App::user()->getRegionId(),
-        ];
-
-        return "<div id=\"RuTargetProductJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
-    }
-
     public function slotLamodaProductJS() {
         if (!\App::config()->partners['Lamoda']['enabled']) return;
 

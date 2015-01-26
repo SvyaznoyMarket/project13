@@ -1335,30 +1335,6 @@
 			 * @param event
 			 * @param data
 			 */
-				addToRuTarget = function addToRuTarget( event, data ) {
-				var
-					product = data.product,
-					regionId = data.regionId,
-					result,
-					_rutarget = window._rutarget || [];
-				// end of vars
-
-				if ( !product || !regionId ) {
-					return;
-				}
-
-				result = {'event': 'addToCart', 'sku': product.id, 'qty': product.quantity, 'regionId': regionId};
-
-				console.info('RuTarget addToCart');
-				console.log(result);
-				_rutarget.push(result);
-			},
-
-			/**
-			 * Аналитика при нажатии кнопки "купить"
-			 * @param event
-			 * @param data
-			 */
 				addToLamoda = function addToLamoda( event, data ) {
 				var
 					product = data.product;
@@ -1414,7 +1390,6 @@
 				console.groupEnd();
 			}
 			//addToVisualDNA(event, data);
-			addToRuTarget(event, data);
 			addToLamoda(event, data);
 		}
 		catch( e ) {
@@ -4772,25 +4747,6 @@ $(document).ready(function() {
 		// end of vars
 
 		var
-			deleteFromRutarget = function deleteFromRutarget( data ) {
-				var
-					region = $('.jsChangeRegion'),
-					regionId = region.length ? region.data('region-id') : false,
-					result,
-					_rutarget = window._rutarget || [];
-				// end of vars
-
-				if ( !regionId || !data.hasOwnProperty('product') || !data.product.hasOwnProperty('id') ) {
-					return;
-				}
-
-				result = {'event': 'removeFromCart', 'sku': data.product.id, 'regionId': regionId};
-
-				console.info('RuTarget removeFromCart');
-				console.log(result);
-				_rutarget.push(result);
-			},
-
 			deleteFromLamoda = function deleteFromLamoda( data ) {
 				if ('undefined' == typeof(JSREObject) || !data.hasOwnProperty('product') || !data.product.hasOwnProperty('id') ) {
 					return;
@@ -4817,7 +4773,6 @@ $(document).ready(function() {
 				}
 
 				deleteFromRetailRocket(data);
-				deleteFromRutarget(data);
 				deleteFromLamoda(data);
 			};
 
