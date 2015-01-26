@@ -4,7 +4,6 @@
  * @var $pager                  \Iterator\EntityPager
  * @var $product                \Model\Product\Entity
  * @var $isAjax                 bool
- * @var $productVideosByProduct array
  * @var $isAddInfo              bool
  **/
 ?>
@@ -21,7 +20,6 @@ $hasLastLine = isset($hasLastLine) ? $hasLastLine : true;
     <? $i = 0; foreach ($pager as $product): $i++ ?>
         <?= $page->render('product/show/_compact', [
             'product'       => $product,
-            'productVideos' => isset($productVideosByProduct[$product->getId()]) ? $productVideosByProduct[$product->getId()] : [],
             'addInfo'       => \Kissmetrics\Manager::getProductSearchEvent($product, $i, $pager->getPage())
         ]) ?>
         <? if (!($i % $itemsPerRow) && ($i == $pager->count() ? $hasLastLine : true)): ?>

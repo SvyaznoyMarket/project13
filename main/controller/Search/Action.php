@@ -188,7 +188,23 @@ class Action {
         // товары
         $productRepository = \RepositoryManager::product();
         $productRepository->setEntityClass('\\Model\\Product\\Entity');
+
         $products = $productRepository->getCollectionById($result['data']);
+
+        $productRepository->prepareProductsMedias($products);
+
+        $bannerPlaceholder = [];
+        \App::scmsClient()->addQuery('category/get/v1', ['uid' => \App::config()->rootCategoryUi, 'geo_id' => \App::user()->getRegion()->getId(), 'load_inactive' => 1], [], function($data) use (&$bannerPlaceholder) {
+            if ($data && is_array($data)) {
+                $category = new Entity($data);
+                if (isset($category->catalogJson['bannerPlaceholder'])) {
+                    $bannerPlaceholder = $category->catalogJson['bannerPlaceholder'];
+                }
+            }
+        });
+
+        \App::scmsClient()->execute();
+
         $productPager = new \Iterator\EntityPager($products, $productCount);
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage(\App::config()->product['itemsPerPage']);
@@ -200,36 +216,6 @@ class Action {
                 'page' => $productPager->getLastPage(),
             ]));
         }
-
-        // video
-        $productVideosByProduct = [];
-        foreach ($productPager as $product) {
-            /** @var $product \Model\Product\Entity */
-            $productVideosByProduct[$product->getId()] = [];
-        }
-        if ((bool)$productVideosByProduct) {
-            \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
-                foreach ($data as $id => $items) {
-                    if (!is_array($items)) continue;
-                    foreach ($items as $item) {
-                        $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);
-                    }
-                }
-            });
-            \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
-        }
-
-        // bannerPlaceholder
-        $bannerPlaceholder = [];
-        \App::scmsClient()->addQuery('category/get/v1', ['uid' => \App::config()->rootCategoryUi, 'geo_id' => \App::user()->getRegion()->getId(), 'load_inactive' => 1], [], function($data) use (&$bannerPlaceholder) {
-            if ($data && is_array($data)) {
-                $category = new Entity($data);
-                if (isset($category->catalogJson['bannerPlaceholder'])) {
-                    $bannerPlaceholder = $category->catalogJson['bannerPlaceholder'];
-                }
-            }
-        });
-        \App::scmsClient()->execute();
 
         // ajax
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
@@ -243,7 +229,6 @@ class Action {
                 'list'           => (new \View\Product\ListAction())->execute(
                     $helper,
                     $productPager,
-                    $productVideosByProduct,
                     !empty($bannerPlaceholder) ? $bannerPlaceholder : []
                 ),
                 'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
@@ -275,9 +260,6 @@ class Action {
             return new \Http\Response($page->show());
         }
 
-
-        $productVideosByProduct =  \RepositoryManager::productVideo()->getVideoByProductPager( $productPager );
-
         // страница
         $page = new \View\Search\IndexPage();
         $page->setParam('searchQuery', $searchQuery);
@@ -291,7 +273,6 @@ class Action {
         $page->setGlobalParam('selectedCategory', $selectedCategory);
         $page->setParam('productView', $productView);
         $page->setParam('productCount', $selectedCategory && !is_null($selectedCategory->getProductCount()) ? $selectedCategory->getProductCount() : $result['count']);
-        $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setGlobalParam('shop', $shop);
         $page->setParam('bannerPlaceholder', $bannerPlaceholder);
 

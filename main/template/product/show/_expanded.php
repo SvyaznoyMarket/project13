@@ -4,7 +4,6 @@
  * @var $product       \Model\Product\ExpandedEntity
  * @var $isHidden      bool
  * @var $kit           \Model\Product\Kit\Entity
- * @var $productVideos \Model\Product\Video\Entity[]
  * @var $addInfo       array
  **/
 ?>
@@ -12,23 +11,20 @@
 <?php
 $isHidden = isset($isHidden) && $isHidden;
 $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty();
-if (!isset($productVideos)) $productVideos = [];
 $addInfo = isset($addInfo)?$addInfo:[];
-
-/** @var $productVideo \Model\Product\Video\Entity|null */
-$productVideo = reset($productVideos);
-/** @var string $model3dExternalUrl */
-$model3dExternalUrl = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getMaybe3d() : null;
-/** @var string $model3dImg */
-$model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getImg3d() : null;
-
 ?>
 
 <div class="goodsbox goodsline bNewGoodsBox <? echo ($isHidden)? 'hidden': '' ?> js-goodsbox">
     <div class="goodsboxlink" <? if ($product->getIsBuyable()): ?> data-cid="<?= $product->getId() ?>" <? endif ?> <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
         <div class="photo">
-            <? if ($productVideo && $productVideo->getContent()): ?><a class="goodsphoto_eVideoShield goodsphoto_eVideoShield_small" href="<?= $product->getLink() ?>"></a><? endif ?>
-            <? if ($model3dExternalUrl || $model3dImg): ?><a style="right:<?= $productVideo && $productVideo->getContent() ? '42' : '0' ?>px;" class="goodsphoto_eGrad360 goodsphoto_eGrad360_small" href="<?= $product->getLink() ?>"></a><? endif ?>
+            <? if ($product->hasVideo()): ?>
+                <a class="goodsphoto_eVideoShield goodsphoto_eVideoShield_small" href="<?= $product->getLink() ?>"></a>
+            <? endif ?>
+
+            <? if ($product->has3d()): ?>
+                <a style="right:<?= $product->hasVideo() ? '42' : '0' ?>px;" class="goodsphoto_eGrad360 goodsphoto_eGrad360_small" href="<?= $product->getLink() ?>"></a>
+            <? endif ?>
+
             <a href="<?= $product->getLink() ?>">
                 <? if ($label = $product->getLabel()): ?>
                     <img class="bLabels" src="<?= $label->getImageUrl() ?>" alt="<?= $page->escape($label->getName()) ?>"/>

@@ -968,6 +968,9 @@ class Action {
                     }
                 });
             }
+
+            $repository->prepareProductsMedias($products);
+
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
             \RepositoryManager::review()->addScores($products, $scoreData);
@@ -997,24 +1000,6 @@ class Action {
             ]));
         }
 
-        // video
-        $productVideosByProduct = [];
-        foreach ($productPager as $product) {
-            /** @var $product \Model\Product\Entity */
-            $productVideosByProduct[$product->getId()] = [];
-        }
-        if ((bool)$productVideosByProduct) {
-            \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
-                foreach ((array)$data as $id => $items) {
-                    if (!is_array($items)) continue;
-                    foreach ($items as $item) {
-                        $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);
-                    }
-                }
-            });
-            \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
-        }
-
         $columnCount = (bool)array_intersect(array_map(function(\Model\Product\Category\Entity $category) { return $category->getId(); }, $category->getAncestor()), [1320, 4649]) ? 3 : 4;
 
         // ajax
@@ -1024,7 +1009,6 @@ class Action {
                 'list'           => (new \View\Product\ListAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
                     $productPager,
-                    $productVideosByProduct,
                     !empty($catalogJson['bannerPlaceholder']) && $hasBanner ? $catalogJson['bannerPlaceholder'] : [],
                     null,
                     true,
@@ -1064,7 +1048,6 @@ class Action {
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
-        $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setParam('hasBanner', $hasBanner);
         $page->setParam('columnCount', $columnCount);
 

@@ -1,3 +1,75 @@
+;$(function() {
+	$('.js-product-3d-swf-opener').bind('click', function(e) {
+		e.preventDefault();
+
+		$LAB.script('swfobject.min.js').wait(function() {
+			try {
+				if (!$('#js-product-3d-swf-popup-placeholder').length) {
+					$('.js-product-3d-swf-popup-container').append('<div id="js-product-3d-swf-popup-placeholder"></div>');
+				}
+
+				var
+					swfId = 'js-product-3d-swf-popup-object',
+					$popup = $('.js-product-3d-swf-popup');
+
+				swfobject.embedSWF(
+					$popup.data('url'),
+					'js-product-3d-swf-popup-placeholder',
+					'700px',
+					'500px',
+					'10.0.0',
+					'js/vendor/expressInstall.swf',
+					{
+						language: 'auto'
+					},
+					{
+						menu: 'false',
+						scale: 'noScale',
+						allowFullscreen: 'true',
+						allowScriptAccess: 'always',
+						wmode: 'direct'
+					},
+					{
+						id: swfId
+					}
+				);
+
+				$popup.lightbox_me({
+					centered: true,
+					closeSelector: '.close',
+					onClose: function() {
+						swfobject.removeSWF(swfId);
+					}
+				});
+			}
+			catch (err) {}
+		});
+	});
+
+	// 3D для мебели
+	$('.js-product-3d-img-opener').bind('click', function(e) {
+		e.preventDefault();
+
+		$LAB.script('DAnimFramePlayer.min.js').wait(function() {
+			var
+				$element = $('.js-product-3d-img-popup'),
+				data = $element.data('value'),
+				host = $element.data('host');
+
+			try {
+				if (!$('#js-product-3d-img-container').length) {
+					(new DAnimFramePlayer($element[0], host)).DoLoadModel(data);
+
+					$element.lightbox_me({
+						centered: true,
+						closeSelector: '.close'
+					});
+				}
+			}
+			catch (err) {}
+		});
+	});
+});
 /**
  * Кредит для карточки товара
  *
@@ -195,64 +267,6 @@
 		}
 	});
 })();
-/**
- * 3D для мебели
- *
- * @requires jQuery, ENTER.utils.logError, ENTER.config
- */
-;(function( global ) {
-	var pageConfig = global.ENTER.config.pageConfig,
-		utils = global.ENTER.utils;
-	// end of vars
-	
-	var loadFurniture3D = function loadFurniture3D() {
-		var furnitureAfterLoad = function furnitureAfterLoad() {
-
-			var object = $('#3dModelImg'),
-				data = object.data('value'),
-				host = object.data('host'),
-
-				AnimFramePlayer = null;
-			// end of vars
-
-			var furniture3dPopupShow = function furniture3dPopupShow() {
-				$('#3dModelImg').lightbox_me({
-					centered: true,
-					closeSelector: '.close'
-				});
-
-				return false;
-			};
-
-			try {
-				if ( !$('#3dImgContainer').length ) {
-					AnimFramePlayer = new DAnimFramePlayer(document.getElementById('3dModelImg'), host);
-
-					AnimFramePlayer.DoLoadModel(data);
-					$('.mGrad360.3dimg').bind('click', furniture3dPopupShow);
-				}
-			}
-			catch ( err ) {
-				var dataToLog = {
-						event: '3dimg',
-						type: 'ошибка загрузки 3dimg для мебели',
-						err: err
-					};
-				// end of vars
-
-				utils.logError(dataToLog);
-			}
-		};
-
-		$LAB.script( 'DAnimFramePlayer.min.js' ).wait(furnitureAfterLoad);
-	};
-
-	$(document).ready(function() {
-		if ( pageConfig['product.img3d'] ) {
-			loadFurniture3D();
-		}
-	});
-}(this));
 /**
  * Подсказки к характеристикам
  *
@@ -576,78 +590,6 @@
 		}
 	});
 }());
-/**
- * Maybe3D
- *
- * @requires jQuery, ENTER.utils.logError, ENTER.config
- */
-;(function( global ) {
-	var pageConfig = global.ENTER.config.pageConfig,
-		utils = global.ENTER.utils,
-		swfobjectLoaded = false;
-	// end of vars
-
-	var
-		loadWithSWF = function( functionName ) {
-			if ( 'function' !== typeof(functionName) ) return false;
-			if ( !swfobjectLoaded ) {
-				$LAB.script('swfobject.min.js').wait(functionName);
-				swfobjectLoaded = true;
-			}
-			else{
-				functionName();
-			}
-			return true;
-		},
-		loadMaybe3D = function() {
-		var
-			data = $('#maybe3dModelPopup').data('value');
-
-		var
-			afterLoad = function() {
-			var
-				maybe3dPopupShow = function( e ) {
-				e.stopPropagation();
-				try {
-					if ( !$('#maybe3dModel').length ) {
-						$('#maybe3dModelPopup_inner').append('<div id="maybe3dModel"></div>');
-					}
-
-					swfobject.embedSWF(data.init.swf, data.init.container, data.init.width, data.init.height, data.init.version, data.init.install, data.flashvars, data.params, data.attributes);
-					$('#maybe3dModelPopup').lightbox_me({
-						centered: true,
-						closeSelector: '.close',
-						onClose: function() {
-							swfobject.removeSWF(data.attributes.id);
-						}
-					});
-				}
-				catch ( err ) {
-					var
-						dataToLog = {
-							event: 'swfobject_error',
-							type:'ошибка загрузки swf maybe3d',
-							err: err
-						};
-					// end of vars
-
-					utils.logError(dataToLog);
-				}
-				return false;
-			};
-
-			$('.mGrad360.maybe3d').bind('click', maybe3dPopupShow);
-		};
-
-		loadWithSWF(afterLoad);
-	};
-
-	$(document).ready(function() {
-		if ( pageConfig['product.maybe3d'] ) {
-			loadMaybe3D();
-		}
-	});
-}(this));
 /**
  * Kit JS
  *
@@ -1119,44 +1061,6 @@ $(document).ready(function() {
         $('.jsOneClickButton-new').bind('click', handleOneClick);
 		$('.js-order-oneclick-delivery-toggle-btn').on('click', toggleOneClickDelivery);
 	})();
-
-
-
-	/**
-	 * Media library
-	 *
-	 * Для вызова нашего старого лампового 3D
-	 */
-	//var lkmv = null
-	// var api = {
-	// 	'makeLite' : '#turnlite',
-	// 	'makeFull' : '#turnfull',
-	// 	'loadbar'  : '#percents',
-	// 	'zoomer'   : '#bigpopup .scale',
-	// 	'rollindex': '.scrollbox div b',
-	// 	'propriate': ['.versioncontrol','.scrollbox']
-	// }
-
-	// if( typeof( product_3d_small ) !== 'undefined' && typeof( product_3d_big ) !== 'undefined' )
-	// 	lkmv = new likemovie('#photobox', api, product_3d_small, product_3d_big )
-	// if( $('#bigpopup').length )
-	// 	var mLib = new mediaLib( $('#bigpopup') )
-
-	// $('.viewme').click( function(){
-	// 	if ($(this).hasClass('maybe3d')){
-
-	// 		return false
-	// 	}
-	// 	if ($(this).hasClass('3dimg')){
-
-	// 	}
-
-	// 	if( mLib )
-	// 		mLib.show( $(this).attr('ref') , $(this).attr('href'))
-	// 	return false
-	// });
-
-
 
 	// карточка товара - характеристики товара краткие/полные
 	if ( $('#productDescriptionToggle').length ) {
@@ -1850,53 +1754,48 @@ $(function() {
  * @author		Zaytsev Alexandr
  * @requires	jQuery, jQuery.lightbox_me
  */
-;(function() {
-	var initVideo = function() {
-		if ( !$('#productVideo').length ) {
-			return false;
-		}
+;$(function() {
+	var $video = $('.js-product-video');
+	if (!$video.length || !$('.js-product-video-container').length) {
+		return;
+	}
 
-		var videoStartTime = 0,
-			videoEndTime = 0,
-			productUrl = document.location.href,
-			shield = $('.mVideo'),
-			iframe = $('#productVideo .productVideo_iframe').html();
-		// end of vars
+	var
+		videoStartTime = 0,
+		videoEndTime = 0,
+		productUrl = document.location.href,
+		$iframeContainer = $('.js-product-video-iframeContainer'),
+		iframeHtml = $iframeContainer.html();
 
-		var openVideo = function() {
-			$('#productVideo .productVideo_iframe').append(iframe);
-			$('.productVideo_iframe iframe').attr('src', $('.productVideo_iframe iframe').attr('src')+'?autoplay=1');
-			$('#productVideo').lightbox_me({ 
-				centered: true,
-				onLoad: function() {
-					videoStartTime = new Date().getTime();
+	$iframeContainer.empty();
 
-					if (typeof(_gaq) !== 'undefined') {
-						_gaq.push(['_trackEvent', 'Video', 'Play', productUrl]);
-					}
-				},
-				onClose: function() {
-					$('#productVideo .productVideo_iframe').empty();
-					videoEndTime = new Date().getTime();
-					var videoSpent = videoEndTime - videoStartTime;
+	$video.bind('click', function() {
+		var $iframeContainer = $('.js-product-video-iframeContainer');
+		$iframeContainer.append(iframeHtml);
 
-					if ( typeof _gaq !== 'undefined' ) {
-						_gaq.push(['_trackEvent', 'Video', 'Stop', productUrl, videoSpent]);
-					}
+		var $iframe = $('iframe', $iframeContainer);
+		$iframe.attr('src', $iframe.attr('src') + '?autoplay=1');
+
+		$('.js-product-video-container').lightbox_me({
+			centered: true,
+			onLoad: function() {
+				videoStartTime = new Date().getTime();
+
+				if (typeof(_gaq) !== 'undefined') {
+					_gaq.push(['_trackEvent', 'Video', 'Play', productUrl]);
 				}
-			});
+			},
+			onClose: function() {
+				$('.js-product-video-iframeContainer').empty();
+				videoEndTime = new Date().getTime();
+				var videoSpent = videoEndTime - videoStartTime;
 
-			return false;
-		};
+				if (typeof _gaq !== 'undefined') {
+					_gaq.push(['_trackEvent', 'Video', 'Stop', productUrl, videoSpent]);
+				}
+			}
+		});
 
-		$('#productVideo .productVideo_iframe').empty();
-
-		shield.bind('click', openVideo);
-	};
-
-	$(document).ready(function() {
-		if ( $('.mVideo').length ) {
-			initVideo();
-		}
+		return false;
 	});
-}());
+});

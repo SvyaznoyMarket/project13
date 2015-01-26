@@ -6,7 +6,6 @@
  * @var $pager                  \Iterator\EntityPager
  * @var $product                \Model\Product\Entity
  * @var $itemsInSlider          int
- * @var $productVideosByProduct array
  */
 ?>
 
@@ -54,7 +53,6 @@ if (\App::request()->get('instore')) {
             'index'         => $i,
             'product'       => $product,
             'isHidden'      => $i > $itemsInSlider,
-            'productVideos' => isset($productVideosByProduct[$product->getId()]) ? $productVideosByProduct[$product->getId()] : [],
         )) ?>
     <? } ?>
 </div>

@@ -271,44 +271,6 @@ $(document).ready(function() {
 		$('.js-order-oneclick-delivery-toggle-btn').on('click', toggleOneClickDelivery);
 	})();
 
-
-
-	/**
-	 * Media library
-	 *
-	 * Для вызова нашего старого лампового 3D
-	 */
-	//var lkmv = null
-	// var api = {
-	// 	'makeLite' : '#turnlite',
-	// 	'makeFull' : '#turnfull',
-	// 	'loadbar'  : '#percents',
-	// 	'zoomer'   : '#bigpopup .scale',
-	// 	'rollindex': '.scrollbox div b',
-	// 	'propriate': ['.versioncontrol','.scrollbox']
-	// }
-
-	// if( typeof( product_3d_small ) !== 'undefined' && typeof( product_3d_big ) !== 'undefined' )
-	// 	lkmv = new likemovie('#photobox', api, product_3d_small, product_3d_big )
-	// if( $('#bigpopup').length )
-	// 	var mLib = new mediaLib( $('#bigpopup') )
-
-	// $('.viewme').click( function(){
-	// 	if ($(this).hasClass('maybe3d')){
-
-	// 		return false
-	// 	}
-	// 	if ($(this).hasClass('3dimg')){
-
-	// 	}
-
-	// 	if( mLib )
-	// 		mLib.show( $(this).attr('ref') , $(this).attr('href'))
-	// 	return false
-	// });
-
-
-
 	// карточка товара - характеристики товара краткие/полные
 	if ( $('#productDescriptionToggle').length ) {
 		$('#productDescriptionToggle').toggle(

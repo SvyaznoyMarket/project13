@@ -4,7 +4,6 @@
  * @var \Model\Product\Filter $productFilter
  * @var \Iterator\EntityPager $productPager
  * @var \Model\Product\Sorting $productSorting
- * @var array $productVideosByProduct
  * @var int $columnCount
  * @var bool $isNewMainPage
  */
@@ -30,7 +29,6 @@ $helper = new \Helper\TemplateHelper();
         <?= $helper->render('product/__list', [
             'pager'                  => $productPager,
             'view'                   => 'light_with_bottom_description',
-            'productVideosByProduct' => $productVideosByProduct,
             'bannerPlaceholder'      => [],
             'listingStyle'           => null,
             'columnCount'            => $columnCount,

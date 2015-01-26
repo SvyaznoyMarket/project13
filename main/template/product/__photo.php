@@ -3,71 +3,75 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
-    array $productVideos,
     $useLens = true
 ) {
-    /** @var  $productVideo \Model\Product\Video\Entity|null */
-    $productVideo = reset($productVideos);
-
     // TODO: SITE-1822
     //$useLens = true;
 
-    /** @var string $model3dExternalUrl */
-    $model3dExternalUrl = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getMaybe3d() : null;
-    /** @var string $model3dImg */
-    $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getImg3d() : null;
-    /** @var array $photo3dList */
-    $photo3dList = [];
-    /** @var array $p3d_res_small */
-    $p3d_res_small = [];
-    /** @var array $p3d_res_big */
-    $p3d_res_big = [];
+    $videoHtml = '';
+    $megavisor3dUrl = '';
+    $swf3dUrl = '';
+    $maybe3dUrl = '';
+    foreach ($product->medias as $media) {
+        switch ($media->provider) {
+            case 'vimeo':
+                $source = $media->getSourceByType('reference');
+                if ($source) {
+                    $width = 700;
+                    $height = ceil($width / ($source->width / $source->height));
+                    $videoHtml = '<iframe src="' . $helper->escape($source->url) . '" width="' . $width . '" height="' . $height . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+                }
 
-    if (!$model3dExternalUrl && !$model3dImg) {
-        $photo3dList = $product->getPhoto3d();
-        foreach ($photo3dList as $photo3d) {
-            $p3d_res_small[] = $photo3d->getUrl(0);
-            $p3d_res_big[] = $photo3d->getUrl(1);
+                break;
+            case 'youtube':
+                $source = $media->getSourceByType('reference');
+                if ($source) {
+                    $width = 700;
+                    $height = ceil($width / ($source->width / $source->height));
+                    $videoHtml = '<iframe src="//www.youtube.com/embed/' . $helper->escape($source->id) . '" width="' . $width . '" height="' . $height . '" frameborder="0" allowfullscreen></iframe>';
+                }
+
+                break;
+            case 'megavisor':
+                $source = $media->getSourceByType('reference');
+                if ($source) {
+                    $megavisor3dUrl = 'http://media.megavisor.com/player/player.swf?uuid=' . urlencode($source->id);
+                }
+
+                break;
+            case 'swf':
+                $source = $media->getSourceByType('reference');
+                if ($source) {
+                    $swf3dUrl = $source->url;
+                }
+
+                break;
+            case 'maybe3d':
+                $source = $media->getSourceByType('swf');
+                if ($source) {
+                    $maybe3dUrl = $source->url;
+                }
+
+                break;
         }
-    } elseif ($model3dExternalUrl) {
-        $model3dName = preg_replace('/\.swf|\.swf$/iu', '', basename($model3dExternalUrl));
-        if (!strlen($model3dName)) $model3dExternalUrl = false;
     }
 
-    $maybe3dData = $model3dExternalUrl
-        ? [
-            'init' => [
-                'swf'       => $model3dExternalUrl,
-                'container' => 'maybe3dModel',
-                'width'     => '700px',
-                'height'    => '500px',
-                'version'   => '10.0.0',
-                'install'   => 'js/vendor/expressInstall.swf',
-            ],
-            'params' => [
-                'menu'              => 'false',
-                'scale'             => 'noScale',
-                'allowFullscreen'   => 'true',
-                'allowScriptAccess' => 'always',
-                'wmode'             => 'direct',
-            ],
-            'attributes' => [
-                'id' => $model3dName,
-            ],
-            'flashvars' => [
-                'language' => "auto",
-            ]
-
-        ]
-        : null
-    ;
+    if ($maybe3dUrl) {
+        $model3dUrl = $maybe3dUrl;
+    } else if ($megavisor3dUrl) {
+        $model3dUrl = $megavisor3dUrl;
+    } else if ($swf3dUrl) {
+        $model3dUrl = $swf3dUrl;
+    } else {
+        $model3dUrl = '';
+    }
 ?>
 
-<? if ((bool)$maybe3dData): ?>
-    <div id="maybe3dModelPopup" class="popup" data-value="<?= $helper->json($maybe3dData); ?>">
+<? if ($model3dUrl): ?>
+    <div id="maybe3dModelPopup" class="popup js-product-3d-swf-popup" data-url="<?= $helper->escape($model3dUrl); ?>">
         <i class="close" title="Закрыть">Закрыть</i>
-        <div id="maybe3dModelPopup_inner" style="position: relative;">
-            <div id="maybe3dModel">
+        <div class="js-product-3d-swf-popup-container" style="position: relative;">
+            <div id="js-product-3d-swf-popup-placeholder">
                 <a href="http://www.adobe.com/go/getflashplayer">
                     <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
                 </a>
@@ -76,24 +80,13 @@ return function(
     </div>
 <? endif ?>
 
-<? if ($model3dImg) : ?>
-    <div id="3dModelImg" class="popup" data-value="<?= $helper->json($model3dImg); ?>" data-host="<?= $helper->json(['http://'.App::request()->getHost()]) ?>">
+<? if ($product->json3d) : ?>
+    <div class="popup js-product-3d-img-popup" data-value="<?= $helper->json($product->json3d); ?>" data-host="<?= $helper->json(['http://' . App::request()->getHost()]) ?>">
         <i class="close" title="Закрыть">Закрыть</i>
     </div>
 <? endif ?>
 
-<script type="text/javascript">
-<? if ($model3dExternalUrl) : ?>
-    product_3d_url = <?= json_encode($model3dExternalUrl) ?>;
-<? elseif (count($photo3dList) > 0) : ?>
-    product_3d_small = <?= json_encode($p3d_res_small) ?>;
-    product_3d_big = <?= json_encode($p3d_res_big) ?>;
-<? endif ?>
-</script>
-
-
 <div class="bProductDescImg">
-
     <? if ($product->getLabel()): ?>
         <div class="bProductDescSticker mLeft">
             <img src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $helper->escape($product->getLabel()->getName()) ?>" />
@@ -123,26 +116,24 @@ return function(
 
     <div class="bPhotoAction clearfix">
         <ul class="bPhotoViewer">
-            <? if ($productVideo && $productVideo->getContent()): ?>
-                <li class="bPhotoViewer__eItem mVideo">
+            <? if ($videoHtml): ?>
+                <li class="bPhotoViewer__eItem mVideo js-product-video">
                     <a class="bPhotoLink" href="#"></a>
-                    <div id="productVideo" class="blackPopup blackPopupVideo">
+                    <div class="blackPopup blackPopupVideo js-product-video-container">
                         <div class="close"></div>
-                        <div class="productVideo_iframe"><?= $productVideo->getContent() ?></div>
+                        <div class="productVideo_iframe js-product-video-iframeContainer"><?= $videoHtml ?></div>
                     </div>
                 </li>
             <? endif ?>
-            <? if ($model3dExternalUrl || $model3dImg):  ?>
-                <?
-                if ($model3dExternalUrl) {
-                    $class3D = 'maybe3d';
-                } else if ($model3dImg) {
-                    $class3D = '3dimg';
-                } else {
-                    $class3D = 'our3d';
-                }
-                ?>
-                <li class="bPhotoActionOtherAction__eGrad360 bPhotoViewer__eItem mGrad360 <?= $class3D ?>">
+
+            <? if ($model3dUrl): ?>
+                <li class="bPhotoActionOtherAction__eGrad360 bPhotoViewer__eItem mGrad360 js-product-3d-swf-opener">
+                    <a class="bPhotoLink" href=""></a>
+                </li>
+            <? endif ?>
+
+            <? if ($product->json3d): ?>
+                <li class="bPhotoActionOtherAction__eGrad360 bPhotoViewer__eItem mGrad360 js-product-3d-img-opener">
                     <a class="bPhotoLink" href=""></a>
                 </li>
             <? endif ?>
@@ -159,7 +150,7 @@ return function(
                                     <img class="prod-photoslider__gal__img" src="<?= $photo->getUrl(0) ?>" alt="<?= $helper->escape($product->getName()) ?>" />
                                 </a>
                             </li>
-                            <? $i++; endforeach ?>
+                        <? $i++; endforeach ?>
                     </ul>
                 </div>
 

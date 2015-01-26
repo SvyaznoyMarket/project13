@@ -26,7 +26,6 @@ class SetAction {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s"', $pageNum));
         }
 
-        $productVideosByProduct = [];
         $productView = \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT; // вид товаров
         $client = \App::coreClientV2();
 
@@ -35,7 +34,7 @@ class SetAction {
 
         /** @var $categoriesById \Model\Product\Category\Entity[] */
         $categoriesById = [];
-        /** @var $products \Model\Product\ExpandedEntity */
+        /** @var $products \Model\Product\Entity[] */
         $products = [];
 
         \RepositoryManager::product()->prepareCollectionByBarcode($productBarcodes, \App::user()->getRegion(), function($data) use (&$products, &$categoriesById) {
@@ -55,6 +54,9 @@ class SetAction {
         });
 
         // выполнение 1-го запроса
+        $client->execute();
+
+        \RepositoryManager::product()->prepareProductsMedias($products);
         $client->execute();
 
         // сортировка
@@ -78,12 +80,10 @@ class SetAction {
             $limit = $productCount;
         }
 
-
         // productPager Entity
         $productPager = new \Iterator\EntityPager($products, $productCount);
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage($limit);
-
 
         // проверка на максимально допустимый номер страницы
         if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
@@ -101,7 +101,6 @@ class SetAction {
                 'list'           => (new \View\Product\ListAction())->execute(
                         $helper,
                         $productPager,
-                        $productVideosByProduct,
                         !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : []
                     ),
                 //'selectedFilter' => $selectedFilter,
@@ -119,8 +118,6 @@ class SetAction {
             ]);
         }
 
-        $productVideosByProduct =  \RepositoryManager::productVideo()->getVideoByProductPager( $productPager );
-
         // страница
         $page = new \View\Product\SetPage();
         $page->setParam('productPager', $productPager);
@@ -128,7 +125,6 @@ class SetAction {
         $page->setParam('categoriesById', $categoriesById);
         $page->setParam('productView', $productView);
         $page->setParam('productSorting', $productSorting);
-        $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setParam('pageTitle', (string)$setTitle);
 
         return new \Http\Response($page->show());
