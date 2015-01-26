@@ -2053,19 +2053,6 @@ img[height="0"] {
     text-decoration: none;
     background: #e3e3e3;
   }
-  .navsite2_i:hover .navsite2_lk:after,
-  .navsite2_i.hover .navsite2_lk:after {
-    right: -3px;
-    margin-top: -8px;
-    position: absolute;
-    content: '';
-    width: 0;
-    height: 0;
-    border-top: 8px solid transparent;
-    border-right: 8px solid #ffffff;
-    border-bottom: 8px solid transparent;
-    top: 50%;
-  }
   .navsite2_lk {
     font-size: 14px;
     line-height: 1.2;
@@ -2078,6 +2065,19 @@ img[height="0"] {
   .navsite2_lk:hover .navsite2_tx {
     text-decoration: none;
     border-bottom: 1px solid #a0a0a0;
+  }
+  .navsite2-new .navsite2_i:hover .navsite2_lk:after,
+  .navsite2-new .navsite2_i.hover .navsite2_lk:after {
+    right: -3px;
+    margin-top: -8px;
+    position: absolute;
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-right: 8px solid #ffffff;
+    border-bottom: 8px solid transparent;
+    top: 50%;
   }
   .navsite3 {
     position: absolute;
@@ -2206,10 +2206,12 @@ img[height="0"] {
     -moz-border-radius: 3px;
     border-radius: 3px;
   }
-  .header_nav .navsite2_i:hover .navsite2_lk {
+  .header_nav .navsite2_i:hover .navsite2_lk,
+  .header_nav .navsite2_i .hover .navsite2_lk {
     background: #e6e6e6;
   }
-  .header_nav .navsite2_i-child .navsite2_lk:hover:after {
+  .header_nav .navsite2_i:hover .navsite2_lk:after,
+  .header_nav .navsite2_i .hover .navsite2_lk:after {
     position: absolute;
     content: '';
     width: 0;

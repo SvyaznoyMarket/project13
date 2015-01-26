@@ -55,7 +55,7 @@ foreach ($menu as $menu1) {
 
                 <? if (!empty($menu1->children)) : ?>
 
-                    <ul class="navsite2 js-mainmenu-level2">
+                    <ul class="navsite2 navsite2-new js-mainmenu-level2">
 
                         <? foreach ((array)$menu1->children as $menu2) : ?>
                             <li class="navsite2_i <?= ((bool)$menu2->children) ? 'navsite2_i-child' : '' ?> js-mainmenu-level2-item">
