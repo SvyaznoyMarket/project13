@@ -5535,7 +5535,6 @@ img[height="0"] {
   .epHead {
     margin: 0 0 20px;
     padding: 15px 0;
-    background: url("/styles/enterPrize/img/bgFishki.png") no-repeat 100% 0;
   }
   .epHead_title {
     margin: 5px 0 25px;
@@ -5547,10 +5546,10 @@ img[height="0"] {
   .epHead_list {
     margin: 0 0 0 68px;
     color: #c7c7c7;
-    font-size: 16px;
+    font-size: 14px;
   }
   .epHead_list_item {
-    margin: 0 0 10px;
+    margin: 0px;
   }
   .epHead_list_item strong {
     color: #ffffff;
