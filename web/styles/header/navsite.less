@@ -26,7 +26,7 @@
                 }
             }
         }
-        &:last-child, &:nth-last-child(2){
+        &:last-child{
             &:hover{
                 .navsite2{
                     left: -141px;
@@ -145,7 +145,8 @@
     // 	width: 415px;
     // }
     &_i{
-        &:hover{
+        &:hover,
+        &.hover {
             .navsite3{
                 display: block;
 
@@ -156,21 +157,15 @@
 
                 background: #e3e3e3;
             }
-        }
-        &-child{
+
             .navsite2_lk{
-                &:hover{
-                    &:after{
-                        right: -3px;
+                &:after{
+                    right: -3px;
 
-                        margin-top: -8px;
+                    margin-top: -8px;
 
-                        .pseudo-corner-right(8px, @white, 50%);
-                    }
+                    .pseudo-corner-right(8px, @white, 50%);
                 }
-            }
-            .navsite3 {
-
             }
         }
     }
