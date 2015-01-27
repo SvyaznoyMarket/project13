@@ -2027,13 +2027,13 @@ img[height="0"] {
     border: 1px solid #292929;
     border-top-width: 6px;
     background: #ffffff;
-    -webkit-transition: all 0.3s ease;
-    -moz-transition: all 0.3s ease;
-    transition: all 0.3s ease;
   }
   .navsite2_i:hover .navsite3,
   .navsite2_i.hover .navsite3 {
+    transition-property: visibility;
+    transition-delay: 100ms;
     display: block;
+    visibility: visible;
     -moz-opacity: 1;
     -khtml-opacity: 1;
     -webkit-opacity: 1;
@@ -2045,6 +2045,18 @@ img[height="0"] {
   .navsite2_i.hover .navsite2_lk {
     text-decoration: none;
     background: #e3e3e3;
+  }
+  .navsite2-new .navsite2_i:hover .navsite2_lk:after {
+    right: -3px;
+    margin-top: -8px;
+    position: absolute;
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-right: 8px solid #ffffff;
+    border-bottom: 8px solid transparent;
+    top: 50%;
   }
   .navsite2_lk {
     font-size: 14px;
@@ -2059,24 +2071,12 @@ img[height="0"] {
     text-decoration: none;
     border-bottom: 1px solid #a0a0a0;
   }
-  .navsite2-new .navsite2_i:hover .navsite2_lk:after,
-  .navsite2-new .navsite2_i.hover .navsite2_lk:after {
-    right: -3px;
-    margin-top: -8px;
-    position: absolute;
-    content: '';
-    width: 0;
-    height: 0;
-    border-top: 8px solid transparent;
-    border-right: 8px solid #ffffff;
-    border-bottom: 8px solid transparent;
-    top: 50%;
-  }
   .navsite3 {
     position: absolute;
     top: -6px;
     left: -1px;
-    display: none;
+    display: block;
+    visibility: hidden;
     width: 195px;
     min-height: 100%;
     padding-right: 5px;
@@ -2084,15 +2084,14 @@ img[height="0"] {
     border: 1px solid #292929;
     border-top-width: 6px;
     background: url('/styles/mainpage/img/nav-shadow.png') repeat-y 204px 0 #ffffff;
-    -webkit-transition: all 0.3s ease;
-    -moz-transition: all 0.3s ease;
-    transition: all 0.3s ease;
-    -moz-opacity: 0;
-    -khtml-opacity: 0;
-    -webkit-opacity: 0;
-    opacity: 0;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
-    filter: alpha(opacity=0);
+    transition-property: visibility;
+    transition-delay: 110ms;
+    -moz-opacity: 100;
+    -khtml-opacity: 100;
+    -webkit-opacity: 100;
+    opacity: 100;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=10000);
+    filter: alpha(opacity=10000);
   }
   .navsite3_i {
     padding: 5px 10px;
@@ -2199,12 +2198,10 @@ img[height="0"] {
     -moz-border-radius: 3px;
     border-radius: 3px;
   }
-  .header_nav .navsite2_i:hover .navsite2_lk,
-  .header_nav .navsite2_i .hover .navsite2_lk {
+  .header_nav .navsite2_i:hover .navsite2_lk {
     background: #e6e6e6;
   }
-  .header_nav .navsite2_i:hover .navsite2_lk:after,
-  .header_nav .navsite2_i .hover .navsite2_lk:after {
+  .header_nav .navsite2_i-child .navsite2_lk:hover:after {
     position: absolute;
     content: '';
     width: 0;

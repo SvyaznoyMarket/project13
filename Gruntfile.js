@@ -21,8 +21,7 @@ module.exports = function(grunt) {
                 jsDevPath+'jquery-plugins/goodsSlider.js',
                 jsDevPath+'jquery-plugins/jquery-ui-1.10.3.custom.js',
                 jsDevPath+'jquery-plugins/rimages.js',
-                jsDevPath+'jquery-plugins/jquery.kladr.js',
-                jsDevPath+'jquery-plugins/jquery.menuaim.js'
+                jsDevPath+'jquery-plugins/jquery.kladr.js'
             ],
             libraryFiles: [
                 jsDevPath+'library/cloneObject.js',

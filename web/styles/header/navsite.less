@@ -140,15 +140,18 @@
     border-top-width: 6px;
     background: @white;
 
-    .transition(all .3s ease);
+//    .transition(all .3s ease);
     // &:hover {
-    // 	width: 415px;
+    //  width: 415px;
     // }
     &_i{
         &:hover,
         &.hover {
             .navsite3{
+                transition-property: visibility;
+                transition-delay: 100ms;
                 display: block;
+                visibility: visible;
 
                 .opacity(1);
             }
@@ -156,6 +159,22 @@
                 text-decoration: none;
 
                 background: #e3e3e3;
+            }
+        }
+    }
+
+    &-new {
+        .navsite2_i {
+            &:hover {
+                .navsite2_lk{
+                    &:after{
+                        right: -3px;
+
+                        margin-top: -8px;
+
+                        .pseudo-corner-right(8px, @white, 50%);
+                    }
+                }
             }
         }
     }
@@ -179,24 +198,6 @@
             }
         }
     }
-
-    &-new {
-        .navsite2_i{
-            &:hover,
-            &.hover {
-                .navsite2_lk{
-
-                    &:after{
-                        right: -3px;
-
-                        margin-top: -8px;
-
-                        .pseudo-corner-right(8px, @white, 50%);
-                    }
-                }
-            }
-        }
-    }
 }
 
 .navsite3{
@@ -204,7 +205,8 @@
     top: -6px;
     left: -1px;
 
-    display: none;
+    display: block;
+    visibility: hidden;
 
     width: 195px;
     min-height: 100%;
@@ -215,8 +217,11 @@
     border-top-width: 6px;
     background: url('@{base-url}/mainpage/img/nav-shadow.png') repeat-y 204px 0 @white;
 
-    .transition(all .3s ease);
-    .opacity(0);
+    transition-property: visibility;
+    transition-delay: 110ms;
+
+//    .transition(all .3s ease);
+    .opacity(100);
     &_i{
         padding: 5px 10px;
         &-tl{
@@ -344,16 +349,18 @@
         border-color: #ffa901;
 
         .rounded(3px);
-
         &_i{
-            &:hover,
-            .hover {
-
+            &:hover{
                 .navsite2_lk{
                     background: #e6e6e6;
-
-                    &:after{
-                        .pseudo-corner-right(8px, transparent, 50%);
+                }
+            }
+            &-child{
+                .navsite2_lk{
+                    &:hover{
+                        &:after{
+                            .pseudo-corner-right(8px, transparent, 50%);
+                        }
                     }
                 }
             }
