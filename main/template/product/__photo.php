@@ -9,9 +9,11 @@ return function(
     //$useLens = true;
 
     $videoHtml = '';
+    $maybe3dHtml5Source = null;
+
     $megavisor3dUrl = '';
     $swf3dUrl = '';
-    $maybe3dUrl = '';
+    $maybe3dSwfUrl = '';
     foreach ($product->medias as $media) {
         switch ($media->provider) {
             case 'vimeo':
@@ -47,44 +49,26 @@ return function(
 
                 break;
             case 'maybe3d':
-                $source = $media->getSourceByType('swf');
-                if ($source) {
-                    $maybe3dUrl = $source->url;
+                if ($source = $media->getSourceByType('html5')) {
+                    $maybe3dHtml5Source = $source;
+                } else if ($source = $media->getSourceByType('swf')) {
+                    $maybe3dSwfUrl = $source->url;
                 }
 
                 break;
         }
     }
 
-    if ($maybe3dUrl) {
-        $model3dUrl = $maybe3dUrl;
+    if ($maybe3dSwfUrl) {
+        $model3dSwfUrl = $maybe3dSwfUrl;
     } else if ($megavisor3dUrl) {
-        $model3dUrl = $megavisor3dUrl;
+        $model3dSwfUrl = $megavisor3dUrl;
     } else if ($swf3dUrl) {
-        $model3dUrl = $swf3dUrl;
+        $model3dSwfUrl = $swf3dUrl;
     } else {
-        $model3dUrl = '';
+        $model3dSwfUrl = '';
     }
 ?>
-
-<? if ($model3dUrl): ?>
-    <div id="maybe3dModelPopup" class="popup js-product-3d-swf-popup" data-url="<?= $helper->escape($model3dUrl); ?>">
-        <i class="close" title="Закрыть">Закрыть</i>
-        <div class="js-product-3d-swf-popup-container" style="position: relative;">
-            <div id="js-product-3d-swf-popup-placeholder">
-                <a href="http://www.adobe.com/go/getflashplayer">
-                    <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
-                </a>
-            </div>
-        </div>
-    </div>
-<? endif ?>
-
-<? if ($product->json3d) : ?>
-    <div class="popup js-product-3d-img-popup" data-value="<?= $helper->json($product->json3d); ?>" data-host="<?= $helper->json(['http://' . App::request()->getHost()]) ?>">
-        <i class="close" title="Закрыть">Закрыть</i>
-    </div>
-<? endif ?>
 
 <div class="bProductDescImg">
     <? if ($product->getLabel()): ?>
@@ -126,15 +110,36 @@ return function(
                 </li>
             <? endif ?>
 
-            <? if ($model3dUrl): ?>
+            <? if ($maybe3dHtml5Source): ?>
+                <li class="bPhotoActionOtherAction__eGrad360 bPhotoViewer__eItem mGrad360 js-product-3d-html5-opener">
+                    <a class="bPhotoLink" href=""></a>
+                    <div id="maybe3dModelPopup" class="popup js-product-3d-html5-popup" data-url="<?= $helper->escape($maybe3dHtml5Source->url); ?>" data-id="<?= $helper->escape($maybe3dHtml5Source->id); ?>">
+                        <i class="close" title="Закрыть">Закрыть</i>
+                        <div class="js-product-3d-html5-popup-container" style="position: relative;">
+                            <div id="js-product-3d-html5-popup-model" class="model"></div>
+                        </div>
+                    </div>
+                </li>
+            <? elseif ($model3dSwfUrl): ?>
                 <li class="bPhotoActionOtherAction__eGrad360 bPhotoViewer__eItem mGrad360 js-product-3d-swf-opener">
                     <a class="bPhotoLink" href=""></a>
+                    <div id="maybe3dModelPopup" class="popup js-product-3d-swf-popup" data-url="<?= $helper->escape($model3dSwfUrl); ?>">
+                        <i class="close" title="Закрыть">Закрыть</i>
+                        <div class="js-product-3d-swf-popup-container" style="position: relative;">
+                            <div id="js-product-3d-swf-popup-model">
+                                <a href="http://www.adobe.com/go/getflashplayer">
+                                    <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </li>
-            <? endif ?>
-
-            <? if ($product->json3d): ?>
+            <? elseif ($product->json3d): ?>
                 <li class="bPhotoActionOtherAction__eGrad360 bPhotoViewer__eItem mGrad360 js-product-3d-img-opener">
                     <a class="bPhotoLink" href=""></a>
+                    <div class="popup js-product-3d-img-popup" data-value="<?= $helper->json($product->json3d); ?>" data-host="<?= $helper->json(['http://' . App::request()->getHost()]) ?>">
+                        <i class="close" title="Закрыть">Закрыть</i>
+                    </div>
                 </li>
             <? endif ?>
         </ul><!--/view product section -->

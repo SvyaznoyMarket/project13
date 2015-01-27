@@ -1,11 +1,30 @@
 ;$(function() {
+	$('.js-product-3d-html5-opener').bind('click', function(e) {
+		e.preventDefault();
+
+		$LAB.script('/maybe3dPlayer/player.min.js').wait(function() {
+			$('.js-product-3d-html5-popup').lightbox_me({
+				centered: true,
+				closeSelector: '.close',
+				onLoad: function() {
+					var $popup = $('.js-product-3d-html5-popup');
+					Maybe3D.Starter.setModelPathHTML5($popup.data('url'));
+					Maybe3D.Starter.embed($popup.data('id'), 'js-product-3d-html5-popup-model');
+				},
+				onClose: function() {
+					$('#js-product-3d-html5-popup-model').empty();
+				}
+			});
+		});
+	});
+
 	$('.js-product-3d-swf-opener').bind('click', function(e) {
 		e.preventDefault();
 
 		$LAB.script('swfobject.min.js').wait(function() {
 			try {
-				if (!$('#js-product-3d-swf-popup-placeholder').length) {
-					$('.js-product-3d-swf-popup-container').append('<div id="js-product-3d-swf-popup-placeholder"></div>');
+				if (!$('#js-product-3d-swf-popup-model').length) {
+					$('.js-product-3d-swf-popup-container').append('<div id="js-product-3d-swf-popup-model"></div>');
 				}
 
 				var
@@ -14,7 +33,7 @@
 
 				swfobject.embedSWF(
 					$popup.data('url'),
-					'js-product-3d-swf-popup-placeholder',
+					'js-product-3d-swf-popup-model',
 					'700px',
 					'500px',
 					'10.0.0',
