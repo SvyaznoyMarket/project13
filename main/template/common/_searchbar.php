@@ -4,10 +4,12 @@
  * @var $menu \Model\Menu\BasicMenuEntity[]|null
  */
 $menu = $page->getGlobalParam('menu');
+// $menuVar = 0, 1 или 3
+$menuVar = \Session\AbTest\ABHelperTrait::getNewMainPageVar();
 ?>
 
 <!-- поиск -->
-<div class="header_c clearfix">
+<div class="header_c clearfix <?= 'header_c_'.$menuVar ?>">
     <a href="/" class="hdlogo sitelogo"></a>
 
     <div class="hdsearch jsKnockoutSearch" data-bind="css: { 'hdsearch-v2': advancedSearch }">
