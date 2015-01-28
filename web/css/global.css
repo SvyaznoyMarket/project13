@@ -6255,15 +6255,37 @@
   .bMapShops__eMapCityList_city .shopInCity {
     padding: 1px 10px;
   }
-  .bMapShops__eMapCityList_city .shopInCity p {
+  .bMapShops__eMapCityList_city .shopInCity p,
+  .bMapShops__eMapCityList_city .shopInCity div {
     margin: 8px 0 0;
-  }
-  .bMapShops__eMapCityList_city .shopInCity:hover {
-    background-color: #fff7e6;
   }
   .bMapShops__eMapCityList_city .shopInCity .shopchoose {
     font-size: 12px;
     margin: 8px 0 5px;
+  }
+  .bMapShops__eMapCityList_city .shopInCity .shop-addr {
+    margin-left: 13px;
+    position: relative;
+  }
+  .bMapShops__eMapCityList_city .shopInCity .shop-addr__subway {
+    background-color: #fff;
+    display: block;
+  }
+  .bMapShops__eMapCityList_city .shopInCity .shop-addr:after {
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    position: absolute;
+    top: 5px;
+    left: -13px;
+    width: 8px;
+    height: 8px;
+    content: '';
+    background: inherit;
+  }
+  .bMapShops__eMapCityList_city .shopInCity:hover,
+  .bMapShops__eMapCityList_city .shopInCity:hover .shop-addr__subway {
+    background-color: #fff7e6;
   }
   .bMapShops__eMapCityList_city.chosedCity {
     position: relative;

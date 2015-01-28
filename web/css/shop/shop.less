@@ -55,15 +55,35 @@
     }
     .shopInCity{
       padding: 1px 10px;
-      p{
+      p,div{
         margin: 8px 0 0;
       }
-      &:hover{
-        background-color: lighten(@firmOrange, 45%);
-      }
+
       .shopchoose{
         font-size: 12px;
         margin: 8px 0 5px;
+      }
+      .shop-addr{
+        margin-left: 13px;
+        position: relative;
+        &__subway{
+          background-color: #fff;
+          display: block;
+        }
+        &:after{
+          .rounded(50%);
+          position: absolute;
+          top: 5px;
+          left: -13px;
+          width: 8px;
+          height: 8px;
+          content: '';
+          background: inherit;
+        }
+
+      }
+      &:hover, &:hover .shop-addr__subway{
+        background-color: lighten(@firmOrange, 45%);
       }
     }
     &.chosedCity{
