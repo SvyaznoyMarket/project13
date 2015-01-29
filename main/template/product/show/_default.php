@@ -34,7 +34,7 @@ $region = \App::user()->getRegion();
 if (!$lifeGiftProduct) $lifeGiftProduct = null;
 $isKitPage = (bool)$product->getKit();
 
-$isProductAvailable = false; //$product->isAvailable();
+$isProductAvailable = $product->isAvailable();
 
 ?>
 
