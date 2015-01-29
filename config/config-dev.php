@@ -31,6 +31,16 @@ $c->analytics['optimizelyEnabled'] = false;
 $c->googleAnalytics['enabled'] = false;
 $c->yandexMetrika['enabled'] = false;
 $c->adFox['enabled'] = false;
+$c->googleTagManager['enabled'] = false;
+
+$c->partners['RuTarget']['enabled'] = false;
+$c->partners['Revolver']['enabled'] = false;
+$c->partners['GetIntent']['enabled'] = false;
+$c->partners['Сpaexchange']['enabled'] = false;
+$c->partners['criteo']['enabled'] = false;
+$c->partners['sociomantic']['enabled'] = false;
+$c->partners['marin']['enabled'] = false;
+$c->partners['alexa']['enabled'] = false;
 
 $c->paymentPsb['terminal']     = '79036768';
 $c->paymentPsb['merchant']     = '790367686219999';

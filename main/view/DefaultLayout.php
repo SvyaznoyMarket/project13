@@ -379,7 +379,9 @@ class DefaultLayout extends Layout {
                 '" class="jsanalytics"></div>';
 
             // вызов JS Alexa-кода
-            $return .= '<div id="AlexaJS" class="jsanalytics"></div><noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=mPO9i1acVE000x" style="display:none" height="1" width="1" alt="" /></noscript>';
+            if (\App::config()->partners['alexa']['enabled']) {
+                $return .= '<div id="AlexaJS" class="jsanalytics"></div><noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=mPO9i1acVE000x" style="display:none" height="1" width="1" alt="" /></noscript>';
+            }
 
             // new Google Analytics Code
             $useTchiboAnalytics = false;
@@ -412,6 +414,7 @@ class DefaultLayout extends Layout {
 
 
     public function slotSociomantic() {
+        if (!\App::config()->partners['sociomantic']['enabled']) return '';
         $smantic_path = 'partner-counter/sociomantic/';
         $routeName = \App::request()->attributes->get('route');
         $breadcrumbs = $this->getBreadcrumbsPath();
@@ -590,6 +593,7 @@ class DefaultLayout extends Layout {
 
 
     public function slotMarinLandingPageTagJS() {
+        if (!\App::config()->partners['marin']['enabled']) return '';
         return '<div id="marinLandingPageTagJS" class="jsanalytics">
             <noscript><img src="https://tracker.marinsm.com/tp?act=1&cid=7saq97byg0&script=no" ></noscript></div>';
     }
