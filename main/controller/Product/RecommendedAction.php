@@ -167,6 +167,7 @@ class RecommendedAction {
 
                 $cssClass = '';
                 $namePosition = null;
+                $showPageCounter = false;
                 if ('viewed' == $sender['type']) {
                     $cssClass = 'slideItem-viewed';
                     $namePosition = 'none';
@@ -176,6 +177,7 @@ class RecommendedAction {
 
                 if (('similar' == $sender['type']) && ('ProductMissing' == $sender['position'])) {
                     $cssClass = 'slideItem-3item';
+                    $showPageCounter = true;
                 }
 
                 $recommendData[$type] = [
@@ -186,6 +188,7 @@ class RecommendedAction {
                         'count'          => count($products),
                         'sender'         => $sender,
                         'class'          => $cssClass,
+                        'showPageCounter'=> $showPageCounter,
                         'namePosition'   => $namePosition,
                         'isCompact'      => in_array($sender['type'], ['viewed']),
                         'containerStyle' => (in_array($sender['type'], ['similar']) && !$product->isAvailable()) ? 'width: 430px;' : '',

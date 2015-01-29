@@ -13,6 +13,7 @@
  * @param string $namePosition
  * @param array $sender
  * @param bool $isCompact
+ * @param bool $showPageCounter         Показывать "Страница n из N"
  * @param string|null $containerStyle
  */
 $f = function (
@@ -28,6 +29,7 @@ $f = function (
     $namePosition = null,
     array $sender = [],
     $isCompact = false,
+    $showPageCounter = false,
     $containerStyle = '' // вот это хардкод
 ) {
     if (null === $namePosition) {
@@ -75,7 +77,7 @@ $f = function (
     <? endif ?>
 
     <div class="slideItem<? if ($class): ?> <?= $class ?><? endif ?>">
-        <div class="slideItem_cntr"><? if (false): ?>Страница 2 из 8<? endif ?></div>
+        <div class="slideItem_cntr"><? if ($showPageCounter): ?>Страница 1 из 8<? endif ?></div>
 
         <? if ($isCompact): ?>
             <div class="slideItem_flt">
@@ -150,7 +152,7 @@ $f = function (
 
                     <? if (!$isCompact): ?>
                         <? if ($product->getKit() && !$product->getIsKitLocked()) : ?>
-                            <a class="btnView mBtnGrey" href="<?= $product->getLink() ?>">Посмотреть</a> <!--TODO-zra стиль для кнопки "Посмотреть" -->
+                            <a class="btnView mBtnGrey" href="<?= $product->getLink() ?>">Посмотреть</a>
                         <? else: ?>
                             <?= $helper->render('cart/__button-product', [
                                 'product'        => $product,
