@@ -662,7 +662,9 @@
 	var product = $('#jsProductCard').data('value'),
         packageSetBtn = $('.jsChangePackageSet'),
 		packageSetWindow = $('.jsPackageSetPopup'),
-        packageProducts = $('.mPackageSetEdit').data('value');
+		data = $('.js-packageSetEdit').data('value'),
+        sender = data.sender,
+        packageProducts = data.products;
 
 	/**
 	 * Показ окна с изменение комплекта 
@@ -803,12 +805,16 @@
             self.buyLink = ko.computed(function(){
                 var link = '/cart/set-products?',
                     id = 0;
+
                 ko.utils.arrayForEach(self.products(), function(item){
                     if (item.count() > 0 ) {
                         link += 'product['+id+'][id]=' + item.id + '&product['+id+'][quantity]=' + item.count() + '&';
                         id += 1;
                     }
                 });
+
+				link += $.param({sender: sender});
+
                 return link;
             });
 

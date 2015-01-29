@@ -31,13 +31,13 @@ class OneClick {
      * @param \Model\Product\Entity $product
      * @param int $quantity
      */
-    public function setProduct(\Model\Product\Entity $product, $quantity = 1) {
+    public function setProduct(\Model\Product\Entity $product, $quantity = 1, array $params = []) {
         $sessionData = $this->storage->get($this->sessionName);
 
         if ($quantity < 1) {
             $this->deleteProduct($product->getId());
         } else {
-            $sessionData['product'][$product->getId()] = ['quantity' => (int)$quantity];
+            $sessionData['product'][$product->getId()] = ['quantity' => (int)$quantity] + $params;
         }
 
         $this->storage->set($this->sessionName, $sessionData);
@@ -73,9 +73,9 @@ class OneClick {
      * @param \Model\Product\Entity $product
      * @param int $quantity
      */
-    public function addProduct(\Model\Product\Entity $product, $quantity = 1) {
+    public function addProduct(\Model\Product\Entity $product, $quantity = 1, array $params = []) {
         $sessionData = $this->storage->get($this->sessionName);
-        $sessionData['product'][$product->getId()] = ['quantity' => $quantity];
+        $sessionData['product'][$product->getId()] = ['quantity' => $quantity] + $params;
         $this->storage->set($this->sessionName, $sessionData);
         $this->calculate();
     }
@@ -86,6 +86,13 @@ class OneClick {
      */
     public function getProducts() {
         return $this->productsById;
+    }
+
+    /**
+     * @return array
+     */
+    public function getProductSourceData() {
+        return $this->storage->get($this->sessionName);
     }
 
     /**

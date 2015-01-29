@@ -23,10 +23,34 @@ class ProductButtonAction {
         $noUpdate = false, // Не обновлять кнопку купить
         $location = null // местоположение кнопки купить: userbar, product-card, ...
     ) {
+        $urlParams = [
+            'productId' => $product->getId(),
+        ];
+
+        if ($helper->hasParam('sender')) {
+            $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
+        } else if ($isRetailRocket) {
+            $urlParams['sender'] = 'retailrocket';
+        }
+
+        if ($sender) {
+            $urlParams = array_merge($urlParams, [
+                'sender' => [
+                    'name'      => isset($sender['name']) ? $sender['name'] : null,
+                    'position'  => isset($sender['position']) ? $sender['position'] : null,
+                    'method'    => isset($sender['method']) ? $sender['method'] : null,
+                    'from'      => isset($sender['from']) ? $sender['from'] : null,
+                ],
+            ]);
+        }
+
+        $buyUrl = $helper->url('cart.product.set', $urlParams);
+
         $data = [
             'id'         => 'buyButton-' . $product->getId() . '-'. md5(json_encode([$location, isset($sender['position']) ? $sender['position'] : null])),
             'disabled'   => false,
             'url'        => null,
+            'buyUrl'     => $buyUrl,
             'value'      => null,
             'inShopOnly' => false,
             'class'      => \View\Id::cartButtonForProduct($product->getId()),
@@ -65,28 +89,7 @@ class ProductButtonAction {
             $data['class'] .= ' mBought';
             $data['value'] = 'В корзине';
         } else {
-            $urlParams = [
-                'productId' => $product->getId(),
-            ];
-
-            if ($helper->hasParam('sender')) {
-                $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
-            } else if ($isRetailRocket) {
-                $urlParams['sender'] = 'retailrocket';
-            }
-
-            if ($sender) {
-                $urlParams = array_merge($urlParams, [
-                    'sender' => [
-                        'name'      => isset($sender['name']) ? $sender['name'] : null,
-                        'position'  => isset($sender['position']) ? $sender['position'] : null,
-                        'method'    => isset($sender['method']) ? $sender['method'] : null,
-                        'from'      => isset($sender['from']) ? $sender['from'] : null,
-                    ],
-                ]);
-            }
-
-            $data['url'] = $helper->url('cart.product.set', $urlParams);
+            $data['url'] = $buyUrl;
             $data['class'] .= ' jsBuyButton';
             $data['value'] = 'Купить';
         }

@@ -175,7 +175,8 @@
 				inShopShowroomOnly = $elem.data('in-shop-showroom-only'),
 				isBuyable = $elem.data('is-buyable'),
 				statusId = $elem.data('status-id'),
-                noUpdate = $elem.data('noUpdate')
+                noUpdate = $elem.data('noUpdate'),
+				buyUrl = $elem.data('buy-url')
             ;
 			
 			if (typeof isBuyable != 'undefined' && !isBuyable) {
@@ -217,7 +218,7 @@
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
 					.addClass('jsBuyButton')
-					.attr('href', ENTER.utils.generateUrl('cart.product.set', {productId: productId}));
+					.attr('href', buyUrl ? buyUrl : ENTER.utils.generateUrl('cart.product.set', {productId: productId}));
 			}
 		}
 	};
@@ -353,19 +354,7 @@
 		/* Удаление продукта по ID */
 		model.removeProductByID = function(product_id) {
 			model.cart.remove(function(item) { return item.id == product_id });
-
-			(function() {
-				var giftBuyProducts = docCookies.getItem('giftBuyProducts') || '';
-				if (giftBuyProducts) {
-					docCookies.setItem(
-						'giftBuyProducts',
-						giftBuyProducts.replace(new RegExp('(^|\\s+)' + product_id + '(\\s+|$)', 'g'), ' ').replace(/^\s+|\s+$/g, ''),
-						30*24*60,
-						'/',
-						'enter.ru'
-					);
-				}
-			})();
+			ENTER.utils.gift.deleteProductIdFromCookie(product_id);
 		};
 
 		/* АБ-тест платного самовывоза */
@@ -878,9 +867,9 @@
 		sendOrderToGA = function sendOrderF(orderData) {
 			var
 				oData = orderData || { orders: [] },
-				giftBuyProducts = (docCookies.getItem('giftBuyProducts') || '').split(' ');
+				giftBuyProducts = ENTER.utils.gift.getProductIdsFromCookie();
 
-			docCookies.setItem('giftBuyProducts', '', 0, '/', 'enter.ru');
+			ENTER.utils.gift.deleteAllProductIdsFromCookie();
 
 			console.log('[Google Analytics] Start processing orders', oData.orders);
 			$.each(oData.orders, function(i,o) {
@@ -901,8 +890,10 @@
 						labels.push('marketplace');
 					}
 
-					if (giftBuyProducts.indexOf(p.id + '') != -1) {
-						labels.push('gift');
+					if (p.sender) {
+						labels.push(p.sender);
+					} else if (giftBuyProducts.indexOf(p.id + '') != -1) {
+						labels.push('gift'); // Данный код является рудиментом и его можно будет удалить после 1.3.2015
 					}
 
 					if (labels.length) {
@@ -1263,8 +1254,7 @@
 			 */
 				googleAnalytics = function googleAnalytics( event, data ) {
 				var
-					productData = data.product,
-					ga_action;
+					productData = data.product;
 				// end of vars
 
 				var
@@ -1285,8 +1275,16 @@
 				tchiboGA();
 
 				if (productData.article) {
-					ga_action = typeof productData.price != 'undefined' && parseInt(productData.price, 10) < 500 ? 'product-500' : 'product';
-					body.trigger('trackGoogleEvent',['Add2Basket', ga_action, productData.article]);
+					var ga_action;
+					if (data.sender.name == 'gift') {
+						ga_action = 'product-gift';
+					} else if (typeof productData.price != 'undefined' && parseInt(productData.price, 10) < 500) {
+						ga_action = 'product-500';
+					} else {
+						ga_action = 'product';
+					}
+
+					body.trigger('trackGoogleEvent', ['Add2Basket', ga_action, productData.article]);
 				}
 
 				productData.isUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_from_rec', productData.article]);
@@ -1422,10 +1420,6 @@
 				for (var i in data.products) {
 					/* Google Analytics */
 					googleAnalytics(event, { product: data.products[i] });
-					if (typeof window.ga != 'undefined') {
-						console.log("GA: send event Add2Basket product %s", data.products[i].article);
-						window.ga('send', 'event', 'Add2Basket', 'product', data.products[i].article);
-					}
 				}
 				console.groupEnd();
 			}

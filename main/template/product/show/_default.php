@@ -36,6 +36,7 @@ $isNewRecommendation =
     && ('new_recommendation' == $test->getChosenCase()->getKey())
 ;
 
+$buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
@@ -92,7 +93,11 @@ $isNewRecommendation =
     <div class="clear"></div>
 
     <? if ( $isKitPage ): // если это набор пакет ?>
-        <?= $helper->render('product/__baseKit',['products' => $kitProducts, 'product' => $product]) ?>
+        <?= $helper->render('product/__baseKit', [
+            'products' => $kitProducts,
+            'product' => $product,
+            'sender'  => $buySender,
+        ]) ?>
     <? endif ?>
 
     <? if ( (bool)$relatedKits ) : // если есть родительские пакеты ?>
@@ -189,13 +194,13 @@ $isNewRecommendation =
             <? if ($isKitPage && !$product->getIsKitLocked()): ?>
                 <?= $helper->render('cart/__button-product-kit', [
                     'product'  => $product,
-                    'location' => 'product-card',
+                    'sender'  => $buySender,
                 ]) // Кнопка купить для набора продуктов ?>
             <? else: ?>
                 <?= $helper->render('cart/__button-product', [
                     'product'  => $product,
                     'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
-                    'sender'   => (array)$request->get('sender') + [
+                    'sender'   => $buySender + [
                         'from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) // удаляем из REFERER параметры
                     ],
                     'location' => 'product-card',
@@ -205,7 +210,7 @@ $isNewRecommendation =
             <div class="js-showTopBar"></div>
 
             <? if (!$hasFurnitureConstructor && !count($product->getPartnersOffer()) && (!$isKitPage || $product->getIsKitLocked())): ?>
-                <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
+                <?= $helper->render('cart/__button-product-oneClick', ['product' => $product, 'sender'  => $buySender]) // Покупка в один клик ?>
             <? endif ?>
 
             <? if (!$isKitPage || $product->getIsKitLocked()) : ?>
@@ -232,7 +237,7 @@ $isNewRecommendation =
     <?= $helper->render('cart/__form-oneClick', [
         'product' => $product,
         'region'  => $region,
-        'sender'  => (array)$request->get('sender') + ['name' => null, 'method' => null, 'position'],
+        'sender'  => $buySender,
     ]) // Форма покупки в один клик ?>
 
     <? if ($lifeGiftProduct): ?>
