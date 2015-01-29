@@ -5175,7 +5175,7 @@ img[height="0"] {
     margin: 8px 0 0;
   }
   .enterPrize .rulesEP {
-    margin: 20px 0 12px 31px;
+    margin: 20px 0 12px 0px;
     color: #ffffff;
     font-size: 14px;
   }
@@ -5470,8 +5470,8 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    width: 264px;
-    height: 76px;
+    width: 273px;
+    height: 70px;
     vertical-align: top;
     text-indent: -9999px;
     background: url("/styles/enterPrize/img/logo_3D.png") no-repeat 0 0;
@@ -5544,9 +5544,9 @@ img[height="0"] {
     font-size: 28px;
   }
   .epHead_list {
-    margin: 0 0 0 68px;
+    margin: 0px;
     color: #c7c7c7;
-    font-size: 14px;
+    font-size: 15px;
   }
   .epHead_list_item {
     margin: 0px;
@@ -5556,10 +5556,12 @@ img[height="0"] {
   }
   .epListTitle {
     margin-top: 25px;
-    text-transform: uppercase;
     color: #ffffff;
     font-family: "Enter";
-    font-size: 25px;
+    font-size: 28px;
+  }
+  .epListTitle .orange {
+    color: #ffa901;
   }
   .epSelectFishka {
     -webkit-border-radius: 4px;
