@@ -5701,6 +5701,7 @@ img[height="0"] {
   .epHead {
     margin: 0 0 20px;
     padding: 15px 0;
+    background: url("/styles/enterPrize/img/bgFishki.png") no-repeat 100% 0;
   }
   .epHead_title {
     margin: 5px 0 25px;
