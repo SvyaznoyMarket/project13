@@ -8679,7 +8679,7 @@ img[height="0"] {
   }
   .bonusCnt-v2 .bonusCnt_popup {
     position: absolute;
-    background: #fff;
+    background: #ffffff;
     border: 1px solid #d3d3d3;
     border-radius: 0 4px 4px 0;
     box-shadow: 0 2px 5px #939393;
@@ -8689,23 +8689,23 @@ img[height="0"] {
     padding: 10px;
   }
   .bonusCnt-v2 .bonusCnt_popup:after {
-    position: absolute;
     bottom: 44px;
     left: -13px;
     width: 0;
     height: 0;
-    content: '';
+    content: "";
+    position: absolute;
     border-top: 13px solid transparent;
-    border-right: 13px solid #fff;
+    border-right: 13px solid #ffffff;
     border-bottom: 13px solid transparent;
   }
   .bonusCnt-v2 .bonusCnt_popup:before {
-    position: absolute;
     bottom: 42px;
     left: -15px;
     width: 0;
     height: 0;
-    content: '';
+    content: "";
+    position: absolute;
     border-top: 15px solid transparent;
     border-right: 15px solid #d3d3d3;
     border-bottom: 15px solid transparent;

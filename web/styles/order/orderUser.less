@@ -153,10 +153,6 @@
 
 		font-size: 12px;
 
-		// &:last-child {
-		// 	border-left: none;
-		// }
-
 		&-act {
 			background: @lightgreyBg;
 			cursor: default;
@@ -181,7 +177,6 @@
 	&_it {
 		margin-top: -1px;
 		padding: 10px;
-		//width: 485px;
 
 		border: 1px solid @lightgrey-7;
 		background: @lightgreyBg;
@@ -253,7 +248,7 @@
 
 			&_popup {
 				position: absolute;
-				background: #fff;
+				background: @white;
 				border: 1px solid #d3d3d3;
 				border-radius: 0 4px 4px 0;
 				box-shadow: 0 2px 5px #939393;
@@ -263,29 +258,27 @@
 				padding: 10px;
 
 				&:after{
-				    position: absolute;
 				    bottom: 44px;
 				    left: -13px;
 
 				    width: 0;
 				    height: 0;
 
-				    content: '';
+				    .pseudo-class();
 
 				    border-top: 13px solid transparent;
-				    border-right: 13px solid #fff;
+				    border-right: 13px solid @white;
 				    border-bottom: 13px solid transparent;
 				}
 
 				&:before{
-				    position: absolute;
 				    bottom: 42px;
 				    left: -15px;
 
 				    width: 0;
 				    height: 0;
 
-				    content: '';
+				    .pseudo-class();
 
 				    border-top: 15px solid transparent;
 				    border-right: 15px solid #d3d3d3;
