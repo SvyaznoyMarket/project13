@@ -20,7 +20,8 @@ $helper = new \Helper\TemplateHelper();
         <? if (!$user->getEntity()): ?>
             <ul class="epHeader_controls">
                 <li class="epHeader_controls_item epHeader_controls_item-colors"><a href="<?= \App::router()->generate('user.login') ?>" class="jsEnterprizeAuthLink">Войти</a></li>
-                <li class="epHeader_controls_item epHeader_controls_item-border js-ep-btn-hint-popup">Как стать участником?</li>
+                <!--li class="epHeader_controls_item epHeader_controls_item-border js-ep-btn-hint-popup">Правила участия</li-->
+                <p class="rulesEP"><a href="/reklamnaya-akcia-enterprize">Правила участия в ENTER PRIZE</a></p>
             </ul>
 
             <div class="epHintPopup js-ep-hint-popup">
@@ -109,10 +110,9 @@ $helper = new \Helper\TemplateHelper();
         <h2 class="epHead_title">ВЫБИРАЙ СВОЮ СКИДКУ</h2>
 
         <ul class="epHead_list">
-            <li class="epHead_list_item">Выберите фишку — получите <strong>код скидки</strong>. Используйте его при заказе.</li>
-            <li class="epHead_list_item">Каждый месяц появляются <strong>новые фишки</strong> в ограниченном количестве.</li>
-            <li class="epHead_list_item">О самых интересных скидках мы сообщаем по <strong>e-mail</strong> и в соцсетях.</li>
-            <li class="epHead_list_item">Получить и применить фишку можно  <strong>один раз</strong>.</li>
+            <li class="epHead_list_item"><strong>Нажми на фишку</strong>, чтобы узнать условия и срок действия скидки. </li>
+            <li class="epHead_list_item">Укажи email и мобильный, получи уникальный код и <strong>используй его в заказе.</strong></li>
+            <li class="epHead_list_item">Воспользоваться каждой фишкой можно <strong>один раз</strong>.</li>
         </ul>>
     </section>
 
@@ -214,6 +214,4 @@ $helper = new \Helper\TemplateHelper();
             <? endif ?>
         <? endforeach ?>
     </ul>
-
-    <p class="rulesEP"><a href="/reklamnaya-akcia-enterprize">Правила участия в ENTER PRIZE</a></p>
 </div>
