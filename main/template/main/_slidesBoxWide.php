@@ -25,14 +25,26 @@
 
                 <ul class="slidesBox_items">
                     <li class="slidesBox_items_i">
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Серьги Guess UBE31304</div>
+                        </div>
+
                         <a href="/product/jewel/sergi-guess-ube31304-2033200002961" class="slidesBox_items_lk"><img src="styles/mainpage/img/guess/g-1.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Браслет Guess UBS91309</div>
+                        </div>
+
                         <a href="/product/jewel/braslet-guess-ubs91309-2033200004330" class="slidesBox_items_lk"><img src="styles/mainpage/img/guess/g-2.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Серьги Guess UBE91305</div>
+                        </div>
+
                         <a href="/product/jewel/sergi-guess-ube91305-2033200004361" class="slidesBox_items_lk"><img src="styles/mainpage/img/guess/g-3.png" alt="" class="slidesBox_items_img"></a>
                     </li>
                 </ul>
@@ -47,14 +59,26 @@
 
                 <ul class="slidesBox_items">
                     <li class="slidesBox_items_i">
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Золотые серьги с фианитами Magic Moments</div>
+                        </div>
+
                         <a href="/product/jewel/zolotie-sergi-s-fianitami-magic-moments-2030000208210" class="slidesBox_items_lk"><img src="styles/mainpage/img/Mmoment/mm-1.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Золотые серьги с фианитами Magic Moments</div>
+                        </div>
+
                         <a href="/product/jewel/zolotie-sergi-s-fianitami-magic-moments-2030000208234" class="slidesBox_items_lk"><img src="styles/mainpage/img/Mmoment/mm-2.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Золотое кольцо с фианитами Magic Moments</div>
+                        </div>
+
                         <a href="/product/jewel/zolotoe-koltso-s-fianitami-magic-moments-2030000207909" class="slidesBox_items_lk"><img src="styles/mainpage/img/Mmoment/mm-3.png" alt="" class="slidesBox_items_img"></a>
                     </li>
                 </ul>
@@ -69,14 +93,26 @@
 
                 <ul class="slidesBox_items">
                     <li class="slidesBox_items_i">
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Серебряное кольцо с кубическим цирконием и кристаллами Pandora 190915NBC-54</div>
+                        </div>
+
                         <a href="/product/jewel/serebryanoe-koltso-s-kubicheskim-tsirkoniem-i-kristallami-pandora-190915nbc-54-2034000002212" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pandora-1.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Подвеска-шармPandora 791382CZ</div>
+                        </div>
+
                         <a href="/product/jewel/podveska-sharm-pandora-791382cz-2034000002540" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pandora-2.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Серебряные серьги с кубическим цирконием Pandora 290560CZ</div>
+                        </div>
+
                         <a href="/product/jewel/serebryanie-sergi-s-kubicheskim-tsirkoniem-pandora-290560cz-2034000002397" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pandora-3.png" alt="" class="slidesBox_items_img"></a>
                     </li>
                 </ul>
