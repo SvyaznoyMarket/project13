@@ -6,7 +6,7 @@
             <div class="slidesBox_t jsSlidesWideName">Guess</div>
 
             <ul class="slidesBox_dott">
-                <li class="slidesBox_dott_i" data-name="Guess"></li>
+                <li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Guess"></li>
                 <li class="slidesBox_dott_i" data-name="Magic Moments"></li>
                 <li class="slidesBox_dott_i" data-name="Новая ювелирная коллекция"></li>
             </ul>
