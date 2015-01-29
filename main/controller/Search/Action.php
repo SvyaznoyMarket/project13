@@ -394,8 +394,11 @@ class Action {
             }
             \App::coreClientV2()->addQuery('search/autocomplete', $params, [], function($result) use(&$data, $limit, $mapData){
                 foreach ($mapData as $key => $value) {
+                    if (!is_array($result[$key])) continue;
+
                     $i = 0;
                     $entity = '\\Model\\Search\\'.ucfirst($value).'\\Entity';
+
                     foreach ($result[$key] as $item) {
                         if ($i >= $limit) break;
 
