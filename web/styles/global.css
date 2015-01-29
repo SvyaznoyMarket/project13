@@ -8682,33 +8682,33 @@ img[height="0"] {
     background: #fff;
     border: 1px solid #d3d3d3;
     border-radius: 0 4px 4px 0;
-    box-shadow: 0px 2px 5px #939393;
-    bottom: -30px;
-    right: -75px;
+    box-shadow: 0 2px 5px #939393;
+    top: -158px;
+    left: 320px;
     width: 222px;
     padding: 10px;
   }
   .bonusCnt-v2 .bonusCnt_popup:after {
-    width: 0;
-    height: 0;
-    content: '';
-    border-top: 10px solid transparent;
-    border-right: 15px solid #fff;
-    border-bottom: 10px solid transparent;
     position: absolute;
-    bottom: 45px;
-    left: -15px;
-  }
-  .bonusCnt-v2 .bonusCnt_popup:before {
+    bottom: 44px;
+    left: -13px;
     width: 0;
     height: 0;
     content: '';
     border-top: 13px solid transparent;
-    border-right: 17px solid #d3d3d3;
+    border-right: 13px solid #fff;
     border-bottom: 13px solid transparent;
+  }
+  .bonusCnt-v2 .bonusCnt_popup:before {
     position: absolute;
     bottom: 42px;
-    left: -17px;
+    left: -15px;
+    width: 0;
+    height: 0;
+    content: '';
+    border-top: 15px solid transparent;
+    border-right: 15px solid #d3d3d3;
+    border-bottom: 15px solid transparent;
   }
 }
 @media all {
