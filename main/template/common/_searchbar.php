@@ -4,10 +4,12 @@
  * @var $menu \Model\Menu\BasicMenuEntity[]|null
  */
 $menu = $page->getGlobalParam('menu');
+// $menuVar = 0, 1 или 2
+$menuVar = \Session\AbTest\ABHelperTrait::getNewMainPageVar();
 ?>
 
 <!-- поиск -->
-<div class="header_c clearfix">
+<div class="header_c clearfix <?= 'header_c-v'.$menuVar ?>">
     <a href="/" class="hdlogo sitelogo"></a>
 
     <div class="hdsearch jsKnockoutSearch" data-bind="css: { 'hdsearch-v2': advancedSearch }">
@@ -85,11 +87,11 @@ $menu = $page->getGlobalParam('menu');
 
     <div class="hdep">
         <div class="hdep_h">Больше скидок</div>
-        <a href="/enterprize" class="i-header i-header-ep"></a>
+        <a href="<?= \App::router()->generate('enterprize') ?>" class="i-header i-header-ep jsEnterprizeInSearchBarButton"></a>
     </div>
 
     <div class="hdgift">
-        <a class="hdgift_i hdgift_lk" href="/gift">
+        <a class="hdgift_i hdgift_lk jsGiftInSearchBarButton" href="<?= \App::router()->generate('product.gift') ?>">
             <img class="hdgift_i hdgift_img" src="/styles/header/img/icon-gift.png" alt="">
             <span class="hdgift_i hdgift_tx">Выбери подарок!</span>
         </a>

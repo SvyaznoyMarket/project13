@@ -143,4 +143,24 @@
 		}])
 	});
 
+	// Клик по значку Enterprize в строке поиска
+	$body.on('click', '.jsEnterprizeInSearchBarButton', function(e){
+		e.preventDefault();
+		$body.trigger('trackGoogleEvent', [{
+			category: 'search_enterprize',
+			action: 'click',
+			hitCallback: $(this).attr('href')
+		}])
+	});
+
+	// Клик по значку "Выбери подарки" в строке поиска
+	$body.on('click', '.jsGiftInSearchBarButton', function(e){
+		e.preventDefault();
+		$body.trigger('trackGoogleEvent', [{
+			category: 'search_present',
+			action: 'click',
+			hitCallback: $(this).attr('href')
+		}])
+	});
+
 }(jQuery));
