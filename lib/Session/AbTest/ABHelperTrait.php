@@ -13,7 +13,25 @@ trait ABHelperTrait {
      * @return bool
      */
     public static function isNewMainPage() {
-        return \App::abTest()->getTest('main_page') && \App::abTest()->getTest('main_page')->getChosenCase()->getKey() == 'new';
+        return \App::abTest()->getTest('main_page') && in_array(\App::abTest()->getTest('main_page')->getChosenCase()->getKey(), ['new', 'search_new_1', 'search_new_2']);
+    }
+
+    /** Возвращает вариант новой главной страницы
+     * @return bool|int
+     */
+    public static function getNewMainPageVar(){
+        if (\App::abTest()->getTest('main_page')) {
+            switch (\App::abTest()->getTest('main_page')->getChosenCase()->getKey()) {
+                case 'search_new_1':
+                    return 1;
+                case 'search_new_2':
+                    return 2;
+                default:
+                    return 0;
+            }
+        } else {
+            return false;
+        }
     }
 
     /** Поиск с возможностью фильтрации по категориям?
