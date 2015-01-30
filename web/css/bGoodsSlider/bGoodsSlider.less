@@ -47,6 +47,10 @@
         margin: 10px 5px;
         width: 120px;
         position: relative;
+        &__child{
+            margin-bottom: 7px;
+            display: block;
+        }
     }
     &_imgw {
         display: table-cell;
@@ -115,11 +119,11 @@
 
     &_flt {
         margin: 0px auto;
-        position: relative;
-        width: 900px;
+        position: absolute;
         .transition(all .2s ease);
         .opacity(0);
         overflow: hidden;
+        left: 0;
         &-show {
             .opacity(1);
             overflow: visible;
@@ -177,6 +181,16 @@
             width: 390px;
         }
     }
+    //6 товаров
+    &-6item{
+        .slideItem_inn {
+            width: 390px;
+        }
+        .slideItem_i{
+
+        }
+    }
+
 	// слайдер с бордером (404)
     &-br1 {
         border: 3px solid @firmOrange;

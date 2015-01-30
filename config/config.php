@@ -255,6 +255,7 @@ $c->partners['TagMan']['enabled'] = false;
 $c->partners['Revolver']['enabled'] = true;
 $c->partners['Insider']['enabled'] = true;
 $c->partners['GetIntent']['enabled'] = true;
+$c->partners['AddThis']['enabled'] = true;
 
 $c->adFox['enabled'] = true;
 

@@ -18,6 +18,14 @@
  * @var $addToCartJS     string
  * @var $isUserSubscribedToEmailActions boolean
  * @var $actionChannelName string
+ * @var $kitProducts            array   Продукты кита
+ * @var $useLens                bool    Показывать лупу
+ * @var $reviewsData            array   Данные отзывов
+ * @var $breadcrumbs            array   Хлебные крошки
+ * @var $trustfactors           array   Трастфакторы
+ * @var $reviewsDataSummary     array   Данные отзывов
+ * @var $sprosikupiReviews      array   Данные отзывов
+ * @var $shoppilotReviews       array   Данные отзывов
  */
 ?>
 
@@ -26,15 +34,7 @@ $region = \App::user()->getRegion();
 if (!$lifeGiftProduct) $lifeGiftProduct = null;
 $isKitPage = (bool)$product->getKit();
 
-$showSimilarOnTop = !$product->isAvailable();
-
-// АБ-тест рекомендаций
-$test = \App::abTest()->getTest('recommended_product');
-$isNewRecommendation =
-    $test->getEnabled()
-    && $test->getChosenCase()
-    && ('new_recommendation' == $test->getChosenCase()->getKey())
-;
+$isProductAvailable = $product->isAvailable();
 
 ?>
 
@@ -44,24 +44,29 @@ $isNewRecommendation =
     <?= $helper->render('product/__photo', ['product' => $product, 'productVideos' => $productVideos, 'useLens' => $useLens]) ?>
 
     <div class="bProductDesc<? if (!$creditData['creditIsAllowed'] || $user->getRegion()->getHasTransportCompany()): ?> mNoCredit<? endif ?>" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-        <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>
 
-        <?= $helper->render('product/__price', ['product' => $product]) // Цена ?>
+        <? if ($isProductAvailable): ?>
 
-        <?= $helper->render('product/__notification-lowerPrice', ['product' => $product, 'isUserSubscribedToEmailActions' => $isUserSubscribedToEmailActions, 'actionChannelName' => $actionChannelName]) // Узнать о снижении цены ?>
+            <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>
 
-        <? if (count($product->getPartnersOffer()) == 0) : ?>
-            <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Купи в кредит ?>
-        <? endif; ?>
+            <?= $helper->render('product/__price', ['product' => $product]) // Цена ?>
 
-        <? if ($product->getTagline()): // new Card Properties Begin { ?>
-            <div itemprop="description" class="bProductDescText">
-                <?= $product->getTagline() ?>
-                <? /* <div class="bTextMore"><a class="jsGoToId" data-goto="productspecification" href="">Характеристики</a></div> */ ?>
-            </div>
-        <? endif // } /end of new Card Properties ?>
+            <?= $helper->render('product/__notification-lowerPrice', ['product' => $product, 'isUserSubscribedToEmailActions' => $isUserSubscribedToEmailActions, 'actionChannelName' => $actionChannelName]) // Узнать о снижении цены ?>
 
-        <? if ($showSimilarOnTop && $isNewRecommendation): ?>
+            <? if (count($product->getPartnersOffer()) == 0) : ?>
+                <?= $helper->render('product/__credit', ['product' => $product, 'creditData' => $creditData]) // Купи в кредит ?>
+            <? endif; ?>
+
+            <? if ($product->getTagline()): // new Card Properties Begin { ?>
+                <div itemprop="description" class="bProductDescText">
+                    <?= $product->getTagline() ?>
+                    <? /* <div class="bTextMore"><a class="jsGoToId" data-goto="productspecification" href="">Характеристики</a></div> */ ?>
+                </div>
+            <? endif // } /end of new Card Properties ?>
+
+        <? endif ?>
+
+        <? if (!$isProductAvailable): ?>
             <? if (\App::config()->product['pullRecommendation']): ?>
                 <?= $helper->render('product/__slider', [
                     'type'     => 'similar',
@@ -79,10 +84,14 @@ $isNewRecommendation =
             <? endif ?>
         <? endif ?>
 
-        <?= $helper->render('product/__reviewCount', ['product' => $product, 'reviewsData' => $reviewsData]) ?>
-        <?= $helper->render('product/__mainProperties', ['product' => $product]) ?>
+        <? if ($isProductAvailable): ?>
 
-        <?= $helper->render('product/__model', ['product' => $product]) // Модели ?>
+            <?= $helper->render('product/__reviewCount', ['product' => $product, 'reviewsData' => $reviewsData]) ?>
+            <?= $helper->render('product/__mainProperties', ['product' => $product]) ?>
+            <?= $helper->render('product/__model', ['product' => $product]) // Модели ?>
+
+        <? endif; ?>
+
     </div><!--/product shop description section -->
 
     <div class="clear"></div>
@@ -148,27 +157,27 @@ $isNewRecommendation =
 
     <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent, 'sprosikupiReviews' => $sprosikupiReviews, 'shoppilotReviews' => $shoppilotReviews]) ?>
 
-    <? if (!$showSimilarOnTop || !$isNewRecommendation): ?>
-        <? if (\App::config()->product['pullRecommendation']): ?>
-            <?= $helper->render('product/__slider', [
-                'type'     => 'similar',
-                'title'    => 'Похожие товары',
-                'products' => [],
-                'count'    => null,
-                'limit'    => \App::config()->product['itemsInSlider'],
-                'page'     => 1,
-                'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
-                'sender'   => [
-                    'name'     => 'retailrocket',
-                    'position' => 'ProductSimilar',
-                ],
-            ]) ?>
-        <? endif ?>
+    <? if ($isProductAvailable && \App::config()->product['pullRecommendation']): ?>
+        <?= $helper->render('product/__slider', [
+            'type'     => 'similar',
+            'title'    => 'Похожие товары',
+            'products' => [],
+            'count'    => null,
+            'limit'    => \App::config()->product['itemsInSlider'],
+            'page'     => 1,
+            'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
+            'sender'   => [
+                'name'     => 'retailrocket',
+                'position' => 'ProductSimilar',
+            ],
+        ]) ?>
     <? endif ?>
 
 </div><!--/left section -->
 
 <div class="bProductSectionRightCol">
+
+    <? if ($isProductAvailable): ?>
 
     <? if (5 !== $product->getStatusId() && (bool)$shopStates): // SITE-3109 ?>
         <div class="bWidgetBuy bWidgetBuy-shops mWidget js-WidgetBuy">
@@ -229,6 +238,10 @@ $isNewRecommendation =
         <div class="js-showTopBar"></div>
     <? endif ?>
 
+    <? else: ?>
+    <div class="js-showTopBar"></div>
+    <? endif ?>
+
     <?= $helper->render('cart/__form-oneClick', [
         'product' => $product,
         'region'  => $region,
@@ -241,10 +254,7 @@ $isNewRecommendation =
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
 
-    <?//= $helper->render('product/__warranty', ['product' => $product]) ?>
-    <?//= $helper->render('product/__service', ['product' => $product]) ?>
-
-    <? if ($product->isAvailable()): // SITE-4709 ?>
+    <? if ($isProductAvailable): // SITE-4709 ?>
         <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'right']) ?>
     <? endif ?>
 </div><!--/right section -->
@@ -267,7 +277,7 @@ $isNewRecommendation =
     ]) ?>
 <? endif ?>
 
-<? if ($isNewRecommendation && \App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
+<? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
     <?= $helper->render('product/__slider', [
         'type'      => 'viewed',
         'title'     => 'Вы смотрели',
