@@ -74,8 +74,6 @@ return function(
         }
     }
 
-    $hasAlwaysShowFilters = count($alwaysShowFilters);
-
     if (0 == $countInListFilters) return;
 
     $showParamsButton = (bool) ($countInListFilters > 1 || !$priceFilter);
@@ -84,11 +82,13 @@ return function(
     if ($productPager && (bool)$productFilter->getValues()) {
         $countProducts = $hasBanner ? ($productPager->count() - 1) : $productPager->count();
     }
+
+    $isV3 = $productFilter->getCategory()->isV3();
     ?>
 
-    <div class="fltr <? if ($hasAlwaysShowFilters): ?>fltr-hasAlwaysShowFilters<? endif ?>">
-        <form id="productCatalog-filter-form" class="bFilter clearfix js-category-filter <? if ($hasAlwaysShowFilters): ?>js-category-filter-hasAlwaysShowFilters<? endif ?>" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
-            <? if ($hasAlwaysShowFilters): ?>
+    <div class="fltr <? if ($isV3): ?>fltr-hasAlwaysShowFilters<? endif ?>">
+        <form id="productCatalog-filter-form" class="bFilter clearfix js-category-filter <? if ($isV3): ?>js-category-filter-v3<? endif ?>" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
+            <? if ($isV3): ?>
                 <? // Для IE9 (чтобы он отправлял форму при нажатии на клавишу enter в текстовом поле ввода) ?>
                 <div style="overflow: hidden; position: absolute; top: 0; left: 0; width: 0; height: 0;"><input type="submit" /></div>
 

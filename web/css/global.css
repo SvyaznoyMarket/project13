@@ -9174,6 +9174,10 @@
     width: 120px;
     position: relative;
   }
+  .slideItem_i__child {
+    margin-bottom: 7px;
+    display: block;
+  }
   .slideItem_imgw {
     display: table-cell;
     width: 110px;
@@ -9321,6 +9325,9 @@
     width: 910px;
   }
   .slideItem-3item .slideItem_inn {
+    width: 390px;
+  }
+  .slideItem-6item .slideItem_inn {
     width: 390px;
   }
   .slideItem-br1 {

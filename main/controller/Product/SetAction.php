@@ -99,19 +99,19 @@ class SetAction {
 
             return new \Http\JsonResponse([
                 'list'           => (new \View\Product\ListAction())->execute(
-                        $helper,
-                        $productPager,
-                        !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : []
-                    ),
+                    $helper,
+                    $productPager,
+                    !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : []
+                ),
                 //'selectedFilter' => $selectedFilter,
                 'pagination'     => (new \View\PaginationAction())->execute(
-                        $helper,
-                        $productPager
-                    ),
+                    $helper,
+                    $productPager
+                ),
                 'sorting'        => (new \View\Product\SortingAction())->execute(
-                        $helper,
-                        $productSorting
-                    ),
+                    $helper,
+                    $productSorting
+                ),
                 /*'page'           => [
                     //'title'      => 'Тег «'.$tag->getName() . '»' . ( $selectedCategory ? ( ' — ' . $selectedCategory->getName() ) : '' )
                 ],*/
