@@ -9169,6 +9169,10 @@
     width: 120px;
     position: relative;
   }
+  .slideItem_i__child {
+    margin-bottom: 7px;
+    display: block;
+  }
   .slideItem_imgw {
     display: table-cell;
     width: 110px;
@@ -9250,8 +9254,7 @@
   }
   .slideItem_flt {
     margin: 0px auto;
-    position: relative;
-    width: 900px;
+    position: absolute;
     -webkit-transition: all 0.2s ease;
     -moz-transition: all 0.2s ease;
     transition: all 0.2s ease;
@@ -9262,6 +9265,7 @@
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     filter: alpha(opacity=0);
     overflow: hidden;
+    left: 0;
   }
   .slideItem_flt-show {
     -moz-opacity: 1;
@@ -9316,6 +9320,9 @@
     width: 910px;
   }
   .slideItem-3item .slideItem_inn {
+    width: 390px;
+  }
+  .slideItem-6item .slideItem_inn {
     width: 390px;
   }
   .slideItem-br1 {
