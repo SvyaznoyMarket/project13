@@ -50,7 +50,7 @@
             </a>
         </li>
         <li class="lstitem_i">
-            <a class="lstitem_lk" title="Hasbro" href="/slices/brands-hasbro">
+            <a class="lstitem_lk" title="Hasbro" href="/search?q=hasbro">
                 <img src="styles/mainpage/img/logo/hasHasbrobro.jpg" alt="Hasbro" class="lstitem_img">
             </a>
         </li>
