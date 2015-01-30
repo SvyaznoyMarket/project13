@@ -140,7 +140,7 @@ $f = function (
                     ]) ?>"
                 >
                 <? endif ?>
-                <div>
+                <div class="slideItem_i__child">
                     <? if ('top' == $namePosition): ?>
                         <div class="slideItem_n">
                             <a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a>
