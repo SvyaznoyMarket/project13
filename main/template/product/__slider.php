@@ -48,6 +48,7 @@ $f = function (
     $sliderId = 'slider-' . uniqid();
 
     $id = 'slider-' . md5(json_encode([$url, $sender, $type]));
+    $products = array_filter($products, function($product) { return $product instanceof \Model\Product\Entity; });
 ?>
 <div
     id="<?= $id ?>"
@@ -90,13 +91,19 @@ $f = function (
         <div class="slideItem_inn mLoader">
             <ul class="slideItem_lst clearfix">
             <? foreach ($products as $index => $product):
-                if (!$product instanceof \Model\Product\Entity) continue;
+
+                /** @var $product \Model\Product\Entity */
 
                 // разбиение слайдера на несколько строк
-                $i1 = $index % $rowsCount;
-                $needStartLiTag = 0 == $i1;
-                $needCloseLiTag = 0 == $rowsCount - $i1 - 1;
-                if ($count == $index + 1) $needCloseLiTag = true;
+                if ($rowsCount == 1) {
+                    $needStartLiTag = true;
+                    $needCloseLiTag = true;
+                } else {
+                    $i1 = $index % $rowsCount;
+                    $needStartLiTag = 0 == $i1;
+                    $needCloseLiTag = 0 == $rowsCount - $i1 - 1;
+                    if (count($products) == $index + 1) $needCloseLiTag = true;
+                }
 
                 $elementId = 'productLink-' . $product->getId() . '-' . md5(json_encode([$sender]));    // для tealeaf
 
