@@ -14,6 +14,7 @@
  * @param array $sender
  * @param bool $isCompact
  * @param bool $showPageCounter         Показывать "Страница n из N"
+ * @param int  $rowsCount               Количество строк в слайдере
  * @param string|null $containerStyle
  */
 $f = function (
@@ -30,6 +31,7 @@ $f = function (
     array $sender = [],
     $isCompact = false,
     $showPageCounter = false,
+    $rowsCount = 1,
     $containerStyle = '' // вот это хардкод
 ) {
     if (null === $namePosition) {
@@ -87,10 +89,16 @@ $f = function (
 
         <div class="slideItem_inn mLoader">
             <ul class="slideItem_lst clearfix">
-            <? foreach ($products as $product):
+            <? foreach ($products as $index => $product):
                 if (!$product instanceof \Model\Product\Entity) continue;
 
-                $elementId = 'productLink-' . $product->getId() . '-' . md5(json_encode([$sender]));
+                // разбиение слайдера на несколько строк
+                $i1 = $index % $rowsCount;
+                $needStartLiTag = 0 == $i1;
+                $needCloseLiTag = 0 == $rowsCount - $i1 - 1;
+                if ($count == $index + 1) $needCloseLiTag = true;
+
+                $elementId = 'productLink-' . $product->getId() . '-' . md5(json_encode([$sender]));    // для tealeaf
 
                 $urlParams = [];
                 if ($sender['name']) {
@@ -121,6 +129,7 @@ $f = function (
 
                 $category = $product->getParentCategory() ? $product->getParentCategory() : null;
             ?>
+                <? if ($needStartLiTag) : ?>
                 <li
                     class="slideItem_i jsRecommendedItem jsSliderItem"
                     data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>"
@@ -130,8 +139,12 @@ $f = function (
                         'isUpsale' => $product->getIsUpsale(),
                     ]) ?>"
                 >
+                <? endif ?>
+                <div>
                     <? if ('top' == $namePosition): ?>
-                        <div class="slideItem_n"><a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a></div>
+                        <div class="slideItem_n">
+                            <a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a>
+                        </div>
                     <? endif ?>
 
                     <? if ((bool)$product->getLabel()): ?>
@@ -142,15 +155,16 @@ $f = function (
                         <img class="slideItem_img" src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" />
                     </a>
 
-                    <? if (('bottom' == $namePosition) && !$isCompact): ?>
-                        <div class="slideItem_n"><a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a></div>
-                    <? endif ?>
-
                     <? if (!$isCompact): ?>
+
+                        <? if ('bottom' == $namePosition) : ?>
+                            <div class="slideItem_n">
+                                <a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a>
+                            </div>
+                        <? endif ?>
+
                         <div class="slideItem_pr"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
-                    <? endif ?>
 
-                    <? if (!$isCompact): ?>
                         <? if ($product->getKit() && !$product->getIsKitLocked()) : ?>
                             <a class="btnView mBtnGrey" href="<?= $product->getLink() ?>">Посмотреть</a>
                         <? else: ?>
@@ -164,7 +178,8 @@ $f = function (
                             ]) // Кнопка купить ?>
                         <? endif ?>
                     <? endif ?>
-                </li>
+                </div>
+            <? if ($needCloseLiTag) : ?></li><? endif ?>
             <? endforeach ?>
             </ul>
         </div>
