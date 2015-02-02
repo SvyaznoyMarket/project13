@@ -5,6 +5,8 @@ namespace View\Product;
 class IndexPage extends \View\DefaultLayout {
     /** @var string */
     protected $layout  = 'layout-oneColumn';
+    /** @var \Model\Product\Entity|null */
+    protected $product;
 
     public function prepare() {
         /** @var $product \Model\Product\Entity */
@@ -12,6 +14,7 @@ class IndexPage extends \View\DefaultLayout {
         if (!$product) {
             return;
         }
+        $this->product = $product;
 
         // if (is_array($this->getParam('productVideos'))) {
         //     $productVideos = $this->getParam('productVideos');
@@ -276,6 +279,34 @@ class IndexPage extends \View\DefaultLayout {
         ];
 
         return "<div id=\"LamodaProductJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
+    }
+
+    public function slotAdvMakerJS() {
+        if (!\App::config()->partners['AdvMaker']['enabled'] || empty($this->product)) return '';
+        $product = [
+            'id'        => $this->product->getId(),
+            'vendor'    => $this->product->getBrand(),
+            'price'     => $this->product->getPrice(),
+            'url'       => \App::router()->generate('product', ['productPath' => $this->product->getToken()], true),
+            'picture'   => $this->product->getImageUrl(),
+            'name'      => $this->product->getName(),
+            'category'  => $this->product->getLastCategory() ? $this->product->getLastCategory()->getId() : null
+        ];
+        return '<!-- AdvMaker -->
+            <script type="text/javascript" defer="defer">
+                $(window).load(function() {
+                    window.advm_product = '. $this->json($product, false) .';
+                    window.advm_ret = window.advm_ret || [];
+                    window.advm_ret.push({code: "543e17ea03935", level: 3});
+                    (function () {
+                        var sc = document.createElement("script");
+                        sc.async = true;
+                        sc.src = (document.location.protocol == "https:" ? "https:" : "http:") + "//rt.am15.net/retag/core/retag.js";
+                        var tn = document.getElementsByTagName("script")[0];
+                        tn.parentNode.insertBefore(sc, tn);
+                    })()
+                });
+            </script>';
     }
 
     public function slotMailRu() {
