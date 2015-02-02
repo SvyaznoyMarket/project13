@@ -13,6 +13,8 @@
  * @param string $namePosition
  * @param array $sender
  * @param bool $isCompact
+ * @param bool $showPageCounter         Показывать "Страница n из N"
+ * @param int  $rowsCount               Количество строк в слайдере
  * @param string|null $containerStyle
  */
 $f = function (
@@ -28,6 +30,8 @@ $f = function (
     $namePosition = null,
     array $sender = [],
     $isCompact = false,
+    $showPageCounter = false,
+    $rowsCount = 1,
     $containerStyle = '' // вот это хардкод
 ) {
     if (null === $namePosition) {
@@ -44,6 +48,7 @@ $f = function (
     $sliderId = 'slider-' . uniqid();
 
     $id = 'slider-' . md5(json_encode([$url, $sender, $type]));
+    $products = array_filter($products, function($product) { return $product instanceof \Model\Product\Entity; });
 ?>
 <div
     id="<?= $id ?>"
@@ -75,7 +80,7 @@ $f = function (
     <? endif ?>
 
     <div class="slideItem<? if ($class): ?> <?= $class ?><? endif ?>">
-        <div class="slideItem_cntr"><? if (false): ?>Страница 2 из 8<? endif ?></div>
+        <div class="slideItem_cntr"><? if ($showPageCounter): ?>Страница 1 из 8<? endif ?></div>
 
         <? if ($isCompact): ?>
             <div class="slideItem_flt">
@@ -85,10 +90,22 @@ $f = function (
 
         <div class="slideItem_inn mLoader">
             <ul class="slideItem_lst clearfix">
-            <? foreach ($products as $product):
-                if (!$product instanceof \Model\Product\Entity) continue;
+            <? foreach ($products as $index => $product):
 
-                $elementId = 'productLink-' . $product->getId() . '-' . md5(json_encode([$sender]));
+                /** @var $product \Model\Product\Entity */
+
+                // разбиение слайдера на несколько строк
+                if ($rowsCount == 1) {
+                    $needStartLiTag = true;
+                    $needCloseLiTag = true;
+                } else {
+                    $i1 = $index % $rowsCount;
+                    $needStartLiTag = 0 == $i1;
+                    $needCloseLiTag = 0 == $rowsCount - $i1 - 1;
+                    if (count($products) == $index + 1) $needCloseLiTag = true;
+                }
+
+                $elementId = 'productLink-' . $product->getId() . '-' . md5(json_encode([$sender]));    // для tealeaf
 
                 $urlParams = [];
                 if ($sender['name']) {
@@ -119,6 +136,7 @@ $f = function (
 
                 $category = $product->getParentCategory() ? $product->getParentCategory() : null;
             ?>
+                <? if ($needStartLiTag) : ?>
                 <li
                     class="slideItem_i jsRecommendedItem jsSliderItem"
                     data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>"
@@ -128,8 +146,12 @@ $f = function (
                         'isUpsale' => $product->getIsUpsale(),
                     ]) ?>"
                 >
+                <? endif ?>
+                <div class="slideItem_i__child">
                     <? if ('top' == $namePosition): ?>
-                        <div class="slideItem_n"><a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a></div>
+                        <div class="slideItem_n">
+                            <a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a>
+                        </div>
                     <? endif ?>
 
                     <? if ((bool)$product->getLabel()): ?>
@@ -140,17 +162,18 @@ $f = function (
                         <img class="slideItem_img" src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" />
                     </a>
 
-                    <? if (('bottom' == $namePosition) && !$isCompact): ?>
-                        <div class="slideItem_n"><a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a></div>
-                    <? endif ?>
-
                     <? if (!$isCompact): ?>
+
+                        <? if ('bottom' == $namePosition) : ?>
+                            <div class="slideItem_n">
+                                <a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a>
+                            </div>
+                        <? endif ?>
+
                         <div class="slideItem_pr"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
-                    <? endif ?>
 
-                    <? if (!$isCompact): ?>
                         <? if ($product->getKit() && !$product->getIsKitLocked()) : ?>
-                            <a class="btnView mBtnGrey" href="<?= $product->getLink() ?>">Посмотреть</a> <!--TODO-zra стиль для кнопки "Посмотреть" -->
+                            <a class="btnView mBtnGrey" href="<?= $product->getLink() ?>">Посмотреть</a>
                         <? else: ?>
                             <?= $helper->render('cart/__button-product', [
                                 'product'        => $product,
@@ -162,7 +185,8 @@ $f = function (
                             ]) // Кнопка купить ?>
                         <? endif ?>
                     <? endif ?>
-                </li>
+                </div>
+            <? if ($needCloseLiTag) : ?></li><? endif ?>
             <? endforeach ?>
             </ul>
         </div>
