@@ -117,7 +117,13 @@
 	utils.generateUrl = function(routeName, params) {
 		var url = ENTER.config.pageConfig.routes[routeName]['pattern'];
 		$.each((params || {}), function(paramName, paramValue){
-			url = url.replace('{' + paramName + '}', paramValue);
+			if (url.indexOf('{' + paramName + '}') != -1) {
+				url = url.replace('{' + paramName + '}', paramValue);
+			} else {
+				var params = {};
+				params[paramName] = paramValue;
+				url += (url.indexOf('?') == -1 ? '?' : '&') + $.param(params);
+			}
 		});
 
 		return url;

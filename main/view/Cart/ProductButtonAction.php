@@ -21,7 +21,8 @@ class ProductButtonAction {
         $isRetailRocket = false,
         array $sender = [],
         $noUpdate = false, // Не обновлять кнопку купить
-        $location = null // местоположение кнопки купить: userbar, product-card, ...
+        $location = null, // местоположение кнопки купить: userbar, product-card, ...
+        $reserveAsBuy = false
     ) {
         $urlParams = [
             'productId' => $product->getId(),
@@ -55,6 +56,8 @@ class ProductButtonAction {
             'inShopOnly' => false,
             'class'      => \View\Id::cartButtonForProduct($product->getId()),
             'onClick'    => $onClick,
+            'sender'     => $helper->json($sender),
+            'productUi'  => $product->getUi(),
             'data'       => [
                 'productId' => $product->getId(),
                 'upsale'    => json_encode([
@@ -80,10 +83,18 @@ class ProductButtonAction {
             $data['class'] .= ' mDisabled jsBuyButton';
             $data['value'] = 'Нет';
         } else if ($product->isInShopStockOnly() && $forceDefaultBuy) {
-            $data['inShopOnly'] = true;
-            $data['url'] = $helper->url('cart.oneClick.product.set', ['productId' => $product->getId()]);
-            $data['class'] .= ' mShopsOnly jsOneClickButton';
-            $data['value'] = 'Резерв';
+            if ($reserveAsBuy) {
+                $data['id'] = 'quickBuyButton-' . $product->getId();
+                $data['url'] = $helper->url('cart.oneClick.product.set', array_merge($urlParams, ['productId' => $product->getId()]));
+                $data['class'] .= ' jsOneClickButton-new';
+                $data['value'] = 'Купить';
+                $data['title'] = 'Резерв товара';
+            } else {
+                $data['inShopOnly'] = true;
+                $data['url'] = $helper->url('cart.oneClick.product.set', array_merge($urlParams, ['productId' => $product->getId()]));
+                $data['class'] .= ' mShopsOnly jsOneClickButton';
+                $data['value'] = 'Резерв';
+            }
 		} else if (\App::user()->getCart()->hasProduct($product->getId())) {
             $data['url'] = $helper->url('cart');
             $data['class'] .= ' mBought';

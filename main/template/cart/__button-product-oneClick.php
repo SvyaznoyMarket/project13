@@ -101,7 +101,7 @@ return function (
 ?>
 
     <div class="btnOneClickBuy">
-        <a id="<?= $id ?>" class="btnOneClickBuy__eLink <?= $class ?>" data-target="#jsOneClickContent" data-title="<?= $shop ? 'Резерв товара' : 'Купить быстро в 1 клик' ?>" data-shop="<?= $shop ? $shop->getId() : null ?>" href="<?= $url ?>"><?= $value ?></a>
+        <a href="<?= $url ?>" id="<?= $id ?>" class="btnOneClickBuy__eLink <?= $class ?>" data-title="<?= $shop ? 'Резерв товара' : 'Купить быстро в 1 клик' ?>" data-shop="<?= $shop ? $shop->getId() : null ?>" data-product-ui="<?= $helper->escape($product->getUi()) ?>" data-sender="<?= $helper->json($sender) ?>"><?= $value ?></a>
     </div>
 
 <? };
