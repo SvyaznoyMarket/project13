@@ -2077,10 +2077,12 @@ img[height="0"] {
   .navsite_i:first-child:hover .navsite2 {
     left: -6px;
   }
-  .navsite_i:last-child:hover .navsite2 {
+  .navsite_i:last-child:hover .navsite2,
+  .navsite_i:nth-last-child(2):hover .navsite2 {
     left: -141px;
   }
-  .navsite_i:last-child:hover .navsite2_i-child .navsite2_lk:hover:before {
+  .navsite_i:last-child:hover .navsite2_i-child .navsite2_lk:hover:before,
+  .navsite_i:nth-last-child(2):hover .navsite2_i-child .navsite2_lk:hover:before {
     z-index: 9;
     right: 198px;
     margin-top: -8px;
@@ -2093,7 +2095,8 @@ img[height="0"] {
     border-bottom: 8px solid transparent;
     top: 50%;
   }
-  .navsite_i:last-child:hover .navsite2_i-child .navsite2_lk:hover:after {
+  .navsite_i:last-child:hover .navsite2_i-child .navsite2_lk:hover:after,
+  .navsite_i:nth-last-child(2):hover .navsite2_i-child .navsite2_lk:hover:after {
     position: absolute;
     content: '';
     width: 0;
@@ -2103,7 +2106,8 @@ img[height="0"] {
     border-bottom: 0 solid transparent;
     top: 50%;
   }
-  .navsite_i:last-child .navsite3 {
+  .navsite_i:last-child .navsite3,
+  .navsite_i:nth-last-child(2) .navsite3 {
     left: -200px;
     width: 195px;
     padding-right: 209px;
