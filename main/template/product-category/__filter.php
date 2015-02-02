@@ -83,7 +83,7 @@ return function(
         $countProducts = $hasBanner ? ($productPager->count() - 1) : $productPager->count();
     }
 
-    $isV3 = $productFilter->getCategory()->isV3();
+    $isV3 = $productFilter->getCategory() && $productFilter->getCategory()->isV3();
     ?>
 
     <div class="fltr <? if ($isV3): ?>fltr-hasAlwaysShowFilters<? endif ?>">

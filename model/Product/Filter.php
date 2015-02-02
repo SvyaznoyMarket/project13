@@ -7,7 +7,7 @@ use \Model\Product\Filter\Entity as FilterEntity;
 use Model\Product\Filter\Group;
 
 class Filter {
-    /** @var CategoryEntity */
+    /** @var CategoryEntity|null */
     private $category;
     /** @var FilterEntity[] */
     private $filters = [];
@@ -44,7 +44,7 @@ class Filter {
     }
 
     /**
-     * @return \Model\Product\Category\Entity
+     * @return \Model\Product\Category\Entity|null
      */
     public function getCategory() {
         return $this->category;
