@@ -216,11 +216,11 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
         <?= $helper->render('cart/__button-product-lifeGift', ['product' => $lifeGiftProduct]) // Кнопка "Подари жизнь" ?>
     <? endif ?>
 
-    <?= $helper->render('cart/__form-oneClick', [
+    <?/*= $helper->render('cart/__form-oneClick', [
         'product' => $product,
         'region'  => \App::user()->getRegion(),
         'sender'  => $buySender,
-    ]) // Форма покупки в один клик ?>
+    ])*/ // Форма покупки в один клик ?>
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
 

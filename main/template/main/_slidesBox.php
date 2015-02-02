@@ -85,6 +85,7 @@ $helper = new \Helper\TemplateHelper();
                     <?= $helper->render('cart/__button-product', [
                         'product'        => $product,
                         'sender'         => $sender,
+                        'reserveAsBuy'   => true,
                     ]) // Кнопка купить ?>
 <!--                    <a class="item_btn btn5" href="">Купить</a>-->
                 </div>

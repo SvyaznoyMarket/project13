@@ -1,6 +1,6 @@
 ;(function($) {
 
-    function inputAddress(){
+	ENTER.OrderV31Click.functions.initAddress = function(){
         var $body = $(document.body),
 			$orderContent = $('#js-order-content'),
             config = $('#kladr-config').data('value'),
@@ -91,7 +91,7 @@
                 }
 
                 //console.log('Address update: address, item', this, item);
-                ENTER.OrderV3.address = this;
+                ENTER.OrderV31Click.address = this;
             };
 
             this.clear = function(til, elem) {
@@ -318,8 +318,8 @@
          * Инициализация: запрос города для дальнейшего поиска адреса
          */
         init = function initF() {
-            if (typeof ENTER.OrderV3.address === 'object') {
-                address = ENTER.OrderV3.address;
+            if (typeof ENTER.OrderV31Click.address === 'object') {
+                address = ENTER.OrderV31Click.address;
                 fillAddressBlock(address);
                 $input.hide();
 
@@ -338,12 +338,5 @@
         };
 
         init();
-    }
-
-    ENTER.OrderV3.constructors.smartAddress = inputAddress;
-
-    inputAddress();
-
-    //$(document).ajaxComplete(inputAddress);
-
+    };
 }(jQuery));
