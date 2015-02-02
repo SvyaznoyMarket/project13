@@ -45,7 +45,6 @@ $helper = new \Helper\TemplateHelper();
     <?= $helper->render('product/__list', [
         'pager'                  => $productPager,
         'view'                   => $productView,
-        'productVideosByProduct' => [], //$productVideosByProduct,
         'bannerPlaceholder'      => !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : [],
         'buyMethod'              => $slice->getProductBuyMethod(),
         'showState'              => $slice->getShowProductState(),

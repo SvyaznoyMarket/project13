@@ -334,7 +334,7 @@ class Action {
         // фильтры
         $productFilter = $this->getFilter($filters, $category, $brand, $request, $shop);
 
-        $this->correctFilterForJewel($category, $productFilter);
+        $this->correctFilterAndCategoryForJewel($category, $productFilter);
 
         if (!$category->isV2()) {
             // SITE-4734
@@ -968,6 +968,9 @@ class Action {
                     }
                 });
             }
+
+            $repository->prepareProductsMedias($products);
+
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
             \RepositoryManager::review()->addScores($products, $scoreData);
@@ -997,24 +1000,6 @@ class Action {
             ]));
         }
 
-        // video
-        $productVideosByProduct = [];
-        foreach ($productPager as $product) {
-            /** @var $product \Model\Product\Entity */
-            $productVideosByProduct[$product->getId()] = [];
-        }
-        if ((bool)$productVideosByProduct) {
-            \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
-                foreach ((array)$data as $id => $items) {
-                    if (!is_array($items)) continue;
-                    foreach ($items as $item) {
-                        $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);
-                    }
-                }
-            });
-            \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
-        }
-
         $columnCount = (bool)array_intersect(array_map(function(\Model\Product\Category\Entity $category) { return $category->getId(); }, $category->getAncestor()), [1320, 4649]) ? 3 : 4;
 
         // ajax
@@ -1024,7 +1009,6 @@ class Action {
                 'list'           => (new \View\Product\ListAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
                     $productPager,
-                    $productVideosByProduct,
                     !empty($catalogJson['bannerPlaceholder']) && $hasBanner ? $catalogJson['bannerPlaceholder'] : [],
                     null,
                     true,
@@ -1064,7 +1048,6 @@ class Action {
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
-        $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setParam('hasBanner', $hasBanner);
         $page->setParam('columnCount', $columnCount);
 
@@ -1334,56 +1317,26 @@ class Action {
     }
 
 
-    private function correctFilterForJewel(\Model\Product\Category\Entity &$category, \Model\Product\Filter &$productFilter) {
-        $categoryUis = [
-            '633c0d73-d9f5-4984-a679-e8154be71c6a', // ЗОЛОТЫЕ УКРАШЕНИЯ
-            '3835654e-0b7c-4ce8-9006-f042fdb9676a', // Золотые серьги
-            '152aacd2-b43c-4b48-ac16-a95045ad8083', // Золотые кольца
-            '1c0c96a5-6fcb-4b00-9616-8c41fae9f0c0', // Золотые колье и подвески
-            '759d26d8-96de-4960-8ca9-8a7a0633ff8c', // Золотые цепи и браслеты
-            '5e97747a-31d7-4f4e-9031-3b7122e53b66', // Золотой пирсинг
-
-            '06aaa4e1-1546-4364-a9a5-68d0f9a39fae', // СЕРЕБРЯНЫЕ УКРАШЕНИЯ
-            '6e6c8154-5ee6-437a-bb74-644c1b67a096', // Серебряные серьги
-            'a6018a60-da37-49f6-b195-58e4a651f914', // Серебряные кольца
-            'd869c0e2-958c-4919-b6e8-0f9159b74204', // Серебряные колье и подвески
-            '0423bec4-a8a7-4e85-a334-71089a2baf9f', // Серебряные цепи и браслеты
-
-            '5505db94-143c-4c28-adb9-b608d39afe26', // КОЛЬЦА
-            'd7b951ed-7b94-4ece-a3ae-c685cf77e0dd', // СЕРЬГИ
-            '8b21a199-4c0a-4eba-91e8-6833b4b7a443', // КОЛЬЕ И ПОДВЕСКИ
-            'fb4788dd-25fb-49dd-a3a0-9da170b28d70', // ДЕТСКИЕ УКРАШЕНИЯ
-            '35386cba-037b-4db1-b3f1-64d5ba2e492a', // Детские серьги
-            '3d5785ba-e2bf-4450-a0e1-938b4447dfdb', // Детские кольца
-            'a1acc4d6-0a63-411d-ba82-696a9600402f', // Детские цепочки
-            '968c7510-d174-434c-8fd5-0a4941280792', // Детские подвески
-
-            '5f80bd78-df8e-4f8f-b8a0-9258479484bd', // УКРАШЕНИЯ ИЗ СЕРЕБРА
-            '9a4758ad-bc74-4c3b-a113-dcf76e61c35d', // Кольца из серебра
-            'e0b806a4-bd2b-4360-869d-9c078dadd6c3', // Серьги из серебра
-            'f2ffa700-0ac7-4125-867b-1a114b5f20b6', // Подвески из серебра
-        ];
-
-        if (in_array($category->getUi(), $categoryUis, true)) {
-            $isNewFilterPresent = false;
+    private function correctFilterAndCategoryForJewel(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter) {
+        if ($category->isV3()) {
             foreach ($productFilter->getFilterCollection() as $filter) {
                 if ('Металл' === $filter->getName() || 'Вставка' === $filter->getName()) {
-                    $isNewFilterPresent = true;
                     $filter->setIsAlwaysShow(true);
                 }
             }
 
-            if ($isNewFilterPresent) {
-                $view3CategoryUis = [
-                    '5505db94-143c-4c28-adb9-b608d39afe26', // КОЛЬЦА
-                    'd7b951ed-7b94-4ece-a3ae-c685cf77e0dd', // СЕРЬГИ
-                ];
+            if (in_array($category->getUi(), [
+                '0dd8ef4e-7eb3-4281-95f3-0cf2f1d469e9', // Raganella princess
+                '9cbeabe3-0a06-4368-8e16-1e617fb74d7b', // Браслеты Raganella Princess
+                'c61f0526-ad96-41e6-8c83-b49b4cb06a7d', // Колье Raganella Princess
+                'd2a5feac-110c-4c08-9d49-b69abf9f8861', // Серьги Raganella Princess
 
-                if (in_array($category->getUi(), $view3CategoryUis, true)) {
-                    $category->setProductView(3);
-                } else {
-                    $category->setProductView(4);
-                }
+                '5505db94-143c-4c28-adb9-b608d39afe26', // КОЛЬЦА
+                'd7b951ed-7b94-4ece-a3ae-c685cf77e0dd', // СЕРЬГИ
+            ], true)) {
+                $category->setProductView(3);
+            } else {
+                $category->setProductView(4);
             }
         } else {
             foreach ($productFilter->getFilterCollection() as $filter) {

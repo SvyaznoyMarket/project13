@@ -2158,6 +2158,10 @@
     width: 700px;
     height: 500px;
   }
+  #maybe3dModelPopup .model {
+    width: 700px;
+    height: 500px;
+  }
 }
 /*оставить отзыв*/
 @media all {
@@ -2355,7 +2359,6 @@
   }
   #mainPage #header {
     margin: 0 0 10px 0;
-    width: 950px;
   }
   #mainPage .bMainMenuLevel-1 {
     width: 830px;
@@ -2381,11 +2384,11 @@
     width: 960px;
   }
   #topLogo {
-    background: url('/css/header/img/headerLogo.gif') no-repeat center center;
+    background: url('/css/header/img/headerLogo.gif') no-repeat 50% 50%;
     display: block;
     float: left;
     height: 60px;
-    padding: 20px 10px 20px 0;
+    padding: 20px 0 20px 10px;
     position: relative;
     width: 90px;
     text-indent: -10000px;
@@ -6251,15 +6254,37 @@
   .bMapShops__eMapCityList_city .shopInCity {
     padding: 1px 10px;
   }
-  .bMapShops__eMapCityList_city .shopInCity p {
+  .bMapShops__eMapCityList_city .shopInCity p,
+  .bMapShops__eMapCityList_city .shopInCity div {
     margin: 8px 0 0;
-  }
-  .bMapShops__eMapCityList_city .shopInCity:hover {
-    background-color: #fff7e6;
   }
   .bMapShops__eMapCityList_city .shopInCity .shopchoose {
     font-size: 12px;
     margin: 8px 0 5px;
+  }
+  .bMapShops__eMapCityList_city .shopInCity .shop-addr {
+    margin-left: 13px;
+    position: relative;
+  }
+  .bMapShops__eMapCityList_city .shopInCity .shop-addr__subway {
+    background-color: #fff;
+    display: block;
+  }
+  .bMapShops__eMapCityList_city .shopInCity .shop-addr:after {
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    position: absolute;
+    top: 5px;
+    left: -13px;
+    width: 8px;
+    height: 8px;
+    content: '';
+    background: inherit;
+  }
+  .bMapShops__eMapCityList_city .shopInCity:hover,
+  .bMapShops__eMapCityList_city .shopInCity:hover .shop-addr__subway {
+    background-color: #fff7e6;
   }
   .bMapShops__eMapCityList_city.chosedCity {
     position: relative;
@@ -8753,6 +8778,7 @@
     height: 400px;
     text-align: center;
     vertical-align: bottom;
+    position: relative;
   }
   .bProductDescImg .bProductDescImgBig__eImg {
     width: 400px;
@@ -8807,12 +8833,6 @@
   }
   .bPhotoViewer__eItem.mGrad360 .bPhotoLink:hover {
     background-position: 5px -50px;
-  }
-  .bPhotoViewer__eItem.vFitting .bPhotoLink {
-    background-position: 9px -106px;
-  }
-  .bPhotoViewer__eItem.vFitting .bPhotoLink:hover {
-    background-position: 8px -107px;
   }
   .bPhotoViewer .bPhotoLink {
     -webkit-border-radius: 4px;
@@ -9154,6 +9174,10 @@
     width: 120px;
     position: relative;
   }
+  .slideItem_i__child {
+    margin-bottom: 7px;
+    display: block;
+  }
   .slideItem_imgw {
     display: table-cell;
     width: 110px;
@@ -9235,8 +9259,7 @@
   }
   .slideItem_flt {
     margin: 0px auto;
-    position: relative;
-    width: 900px;
+    position: absolute;
     -webkit-transition: all 0.2s ease;
     -moz-transition: all 0.2s ease;
     transition: all 0.2s ease;
@@ -9247,6 +9270,7 @@
     -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
     filter: alpha(opacity=0);
     overflow: hidden;
+    left: 0;
   }
   .slideItem_flt-show {
     -moz-opacity: 1;
@@ -9301,6 +9325,9 @@
     width: 910px;
   }
   .slideItem-3item .slideItem_inn {
+    width: 390px;
+  }
+  .slideItem-6item .slideItem_inn {
     width: 390px;
   }
   .slideItem-br1 {
@@ -10304,6 +10331,9 @@
     padding-left: 0;
     border: 1px solid #aeaeae;
     background: #ffffff;
+    max-height: 400px;
+    overflow-y: scroll;
+    padding-right: 10px;
   }
   .bBrandSortingOption__eDropDown .bDropDownItem {
     float: none;
@@ -12077,15 +12107,17 @@
     font-weight: normal;
   }
   .bListing .bPriceLine .bAvailible {
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
     float: right;
     padding: 2px 0 3px;
-    width: 116px;
     border: 1px solid;
-    text-align: right;
     text-align: center;
+    width: 90px;
+    border-color: #c7c7c7;
+    color: #424242;
+    font-size: 11px;
   }
   .bListing .bPriceLine .bPrice {
     float: left;
@@ -12422,9 +12454,9 @@
   .bBtnLine .btnView {
     float: right;
     font-size: 12px;
-    height: 27px;
+    height: 29px;
     line-height: 26px;
-    padding: 0;
+    padding: 1px 0;
     width: 79px;
   }
   .btnView {

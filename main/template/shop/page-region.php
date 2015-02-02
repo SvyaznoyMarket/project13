@@ -47,7 +47,7 @@
                     <p class='bShopCard__eDescription'>Работаем <?= $shop->getRegime() ?></p>
                 <? endif ?>
 
-                <a href="<?= $page->url('shop.show', array('regionToken' => $currentRegion ? $currentRegion->getToken() : $shop->getRegion()->getToken(), 'shopToken' => $shop->getToken())) ?>" class="bShopCard__eView">Подробнее о магазине</a>
+                <a href="<?= $page->url('shop.show', ['regionToken' => $currentRegion ? $currentRegion->getToken() : $shop->getRegion()->getToken(), 'shopToken' => $shop->getToken()]) ?>" class="bShopCard__eView">Подробнее о магазине</a>
             </div>
             <!-- /__eCard -->
         <? endforeach ?>

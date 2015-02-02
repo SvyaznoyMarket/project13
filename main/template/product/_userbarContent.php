@@ -10,7 +10,10 @@ if (!isset($line)) $line = false;
 if ($product) {
     $links[] = ['name' => $product->getParentCategory() ? $product->getParentCategory()->getName() : '', 'url' => $product->getParentCategory() ? $product->getParentCategory()->getLink() : null, 'last' => false];
     $links[] = ['name' => $product->getName(), 'url' => null, 'last' => true];
-} ?>
+}
+
+$productPageSender = \Session\ProductPageSenders::get($product->getUi());
+?>
 
 <div class="topbarfix_crumbs">
     <div class="topbarfix_crumbsImg"><img class="crumbsImg" src="<?= $product ? $product->getImageUrl() : '' ?>" /></div>
@@ -26,13 +29,13 @@ if ($product) {
         <?= $helper->render('cart/__button-product', [
             'product'  => $product,
             'onClick'  => $addToCartJS ? $addToCartJS : null,
-            'sender'   => (array)$request->get('sender') + ['name' => null, 'method' => null, 'position' => null],
+            'sender'   => ($request->get('sender') ? (array)$request->get('sender') : $productPageSender) + ['name' => null, 'method' => null, 'position' => null],
             'location' => 'userbar',
         ]) // Кнопка купить ?>
     <? else: ?>
         <?= $helper->render('cart/__button-product-kit', [
             'product'  => $product,
-            'location' => 'userbar',
+            'sender'   => ($request->get('sender') ? (array)$request->get('sender') : $productPageSender) + ['name' => null, 'method' => null, 'position' => null],
         ]) // Кнопка купить ?>
     <? endif ?>
 

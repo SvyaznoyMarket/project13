@@ -8,7 +8,6 @@
  * @var $productSorting         \Model\Product\Sorting
  * @var $productFilter          \Model\Product\Filter
  * @var $category               \Model\Product\Category\Entity|null
- * @var $productVideosByProduct array
  * @var $isAddInfo              bool                                Показывать ли дополнительную информацию
  */
 
@@ -17,7 +16,6 @@ $hasListView = isset($hasListView) && (bool)$hasListView ? true : false;
 if (!isset($productSorting)) $productSorting = null;
 if (!isset($category)) $category = null;
 $filterData = isset($productFilter) ? http_build_query(array(\View\Product\FilterForm::$name => $productFilter->getValues())) : '';
-if (!isset($productVideosByProduct)) $productVideosByProduct = [];
 if (!isset($isAddInfo)) $isAddInfo = false;
 ?>
 
@@ -44,7 +42,6 @@ if (!isset($isAddInfo)) $isAddInfo = false;
 <?= $page->render('jewel/product/_list', [
     'pager' => $pager,
     'view' => $view,
-    'productVideosByProduct' => $productVideosByProduct,
     'isAddInfo' => $isAddInfo,
     'itemsPerRow' => $page->getParam('itemsPerRow')
 ]) ?>

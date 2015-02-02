@@ -17,7 +17,7 @@ class Media {
     /** @var Source[] */
     public $sources = [];
 
-    public function __construct($data = null) {
+    public function __construct(array $data = []) {
         if (isset($data['uid'])) $this->uid = $data['uid'];
         if (isset($data['name'])) $this->name = $data['name'];
         if (isset($data['content_type'])) $this->contentType = $data['content_type'];
@@ -26,8 +26,24 @@ class Media {
 
         if (isset($data['sources']) && is_array($data['sources'])) {
             foreach ($data['sources'] as $source) {
-                $this->sources[] = new Source($source);
+                if (is_array($source)) {
+                    $this->sources[] = new Source($source);
+                }
             }
         }
+    }
+
+    /**
+     * @param string $type
+     * @return Source|null
+     */
+    public function getSourceByType($type) {
+        foreach ($this->sources as $source) {
+            if ($source->type === $type) {
+                return $source;
+            }
+        }
+
+        return null;
     }
 }

@@ -37,7 +37,7 @@ class Entity {
     private $photo = [];
     /* @var Panorama\Entity */
     private $panorama;
-    /* @var Region\Entity */
+    /* @var \Model\Region\Entity|null */
     private $region;
     /* @var string */
     private $subwayName;
@@ -76,7 +76,7 @@ class Entity {
                 //$this->addPhoto(new Photo\Entity($photoData)); // FIXME deprecated
             }
         }
-        if (array_key_exists('geo', $data)) $this->setRegion(new Region\Entity($data['geo']));
+        if (array_key_exists('geo', $data)) $this->setRegion(new \Model\Region\Entity($data['geo']));
         if (array_key_exists('subway', $data)) {
             if (isset($data['subway'][0])) {
                 foreach ($data['subway'] as $subwayData) {
@@ -330,15 +330,15 @@ class Entity {
     }
 
     /**
-     * @param \Model\Shop\Region\Entity $region
+     * @param \Model\Region\Entity $region
      */
-    public function setRegion(Region\Entity $region)
+    public function setRegion(\Model\Region\Entity $region)
     {
         $this->region = $region;
     }
 
     /**
-     * @return \Model\Shop\Region\Entity
+     * @return \Model\Region\Entity
      */
     public function getRegion()
     {

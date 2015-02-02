@@ -8,10 +8,11 @@ class SetAction {
     /**
      * @param string        $productBarcodes Например, '2070903000023,2070903000054,2070902000000'
      * @param \Http\Request $request
+     * @param string|null $setTitle Название сета
      * @return \Http\Response
      * @throws \Exception\NotFoundException
      */
-    public function execute($productBarcodes, \Http\Request $request) {
+    public function execute($productBarcodes, \Http\Request $request, $setTitle = null) {
         \App::logger()->debug('Exec ' . __METHOD__);
         $limit = \App::config()->product['itemsPerPage'];
         $pageNum = (int)$request->get('page', 1);
@@ -25,7 +26,6 @@ class SetAction {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s"', $pageNum));
         }
 
-        $productVideosByProduct = [];
         $productView = \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT; // вид товаров
         $client = \App::coreClientV2();
 
@@ -34,7 +34,7 @@ class SetAction {
 
         /** @var $categoriesById \Model\Product\Category\Entity[] */
         $categoriesById = [];
-        /** @var $products \Model\Product\ExpandedEntity */
+        /** @var $products \Model\Product\Entity[] */
         $products = [];
 
         \RepositoryManager::product()->prepareCollectionByBarcode($productBarcodes, \App::user()->getRegion(), function($data) use (&$products, &$categoriesById) {
@@ -54,6 +54,9 @@ class SetAction {
         });
 
         // выполнение 1-го запроса
+        $client->execute();
+
+        \RepositoryManager::product()->prepareProductsMedias($products);
         $client->execute();
 
         // сортировка
@@ -77,12 +80,10 @@ class SetAction {
             $limit = $productCount;
         }
 
-
         // productPager Entity
         $productPager = new \Iterator\EntityPager($products, $productCount);
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage($limit);
-
 
         // проверка на максимально допустимый номер страницы
         if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
@@ -98,27 +99,24 @@ class SetAction {
 
             return new \Http\JsonResponse([
                 'list'           => (new \View\Product\ListAction())->execute(
-                        $helper,
-                        $productPager,
-                        $productVideosByProduct,
-                        !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : []
-                    ),
+                    $helper,
+                    $productPager,
+                    !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : []
+                ),
                 //'selectedFilter' => $selectedFilter,
                 'pagination'     => (new \View\PaginationAction())->execute(
-                        $helper,
-                        $productPager
-                    ),
+                    $helper,
+                    $productPager
+                ),
                 'sorting'        => (new \View\Product\SortingAction())->execute(
-                        $helper,
-                        $productSorting
-                    ),
+                    $helper,
+                    $productSorting
+                ),
                 /*'page'           => [
                     //'title'      => 'Тег «'.$tag->getName() . '»' . ( $selectedCategory ? ( ' — ' . $selectedCategory->getName() ) : '' )
                 ],*/
             ]);
         }
-
-        $productVideosByProduct =  \RepositoryManager::productVideo()->getVideoByProductPager( $productPager );
 
         // страница
         $page = new \View\Product\SetPage();
@@ -127,7 +125,7 @@ class SetAction {
         $page->setParam('categoriesById', $categoriesById);
         $page->setParam('productView', $productView);
         $page->setParam('productSorting', $productSorting);
-        $page->setParam('productVideosByProduct', $productVideosByProduct);
+        $page->setParam('pageTitle', (string)$setTitle);
 
         return new \Http\Response($page->show());
     }

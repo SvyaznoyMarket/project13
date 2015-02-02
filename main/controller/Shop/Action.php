@@ -114,6 +114,7 @@ class Action {
                 'longitude'         => $shop->getLongitude(),
                 'is_reconstruction' => $shop->getIsReconstructed(),
                 'subway_name'       => $subway ? $subway->getName() : null,
+                'subway_color'      => ($subway && $subway->getLine()) ? $subway->getLine()->getColor() : null,
                 'product_count_text' => $shop->getProductCount() ? ($shop->getProductCount() . ' ' .$helper->numberChoice($shop->getProductCount(), ['товар', 'товара', 'товаров']) . ' можно забрать сегодня') : null,
             );
         }
@@ -214,11 +215,11 @@ class Action {
         $currentRegion = $shop->getRegion();
 
         // hardcode
-        if (in_array($shop->getId(), array(1))) {
-            $shop->setPanorama(new \Model\Shop\Panorama\Entity(array(
+        if (in_array($shop->getId(), [1])) {
+            $shop->setPanorama(new \Model\Shop\Panorama\Entity([
                 'swf' => '/panoramas/shops/' . $shop->getId() . '/tour.swf',
                 'xml' => '/panoramas/shops/' . $shop->getId() . '/tour.xml',
-            )));
+            ]));
         }
 
         if (in_array($shop->getId(), [194])) {

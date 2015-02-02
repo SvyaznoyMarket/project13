@@ -16,6 +16,20 @@ class ProductAction {
 
         $productId = (int)$productId;
         $quantity = (int)$request->get('quantity', 1);
+        $sender = $request->query->get('sender');
+        $params = [];
+
+        if (is_string($sender) && !empty($sender)) {
+            $sender = ['name' => $sender];
+        }
+
+        if (!is_array($sender)) {
+            $sender = null;
+        }
+
+        if ($sender) {
+            $params['sender'] = $sender;
+        }
 
         /** @var $product \Model\Product\Entity|null */
         $product = null;
@@ -44,7 +58,7 @@ class ProductAction {
             ]);
 
             $cart->clear();
-            $cart->setProduct($product, $quantity);
+            $cart->setProduct($product, $quantity, $params);
             if ($request->get('shopId')) $cart->setShop($request->get('shopId'));
 
             $parentCategoryId = $product->getParentCategory() ? $product->getParentCategory()->getId() : null;
@@ -84,6 +98,20 @@ class ProductAction {
     public function setList(\Http\Request $request) {
         $region = \App::user()->getRegion();
         $cart = \App::user()->getOneClickCart();
+        $sender = $request->query->get('sender');
+        $params = [];
+
+        if (is_string($sender) && !empty($sender)) {
+            $sender = ['name' => $sender];
+        }
+
+        if (!is_array($sender)) {
+            $sender = null;
+        }
+
+        if ($sender) {
+            $params['sender'] = $sender;
+        }
 
         try {
             $productData = (array)$request->get('product');
@@ -121,11 +149,11 @@ class ProductAction {
             $cart->clear();
 
             foreach (array_chunk(array_keys($productQuantitiesById), \App::config()->coreV2['chunk_size'], true) as $productsInChunk) {
-                \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$productQuantitiesById, $cart) {
+                \RepositoryManager::product()->prepareCollectionById($productsInChunk, $region, function($data) use (&$productQuantitiesById, $cart, $params) {
                     foreach ($data as $item) {
                         $product = new \Model\Cart\Product\Entity($item);
                         $product->setQuantity($productQuantitiesById[$product->getId()]);
-                        $cart->addProduct($product);
+                        $cart->addProduct($product, 1, $params);
                     }
                 });
             }

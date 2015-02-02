@@ -2,7 +2,8 @@
 
 return function (
     \Helper\TemplateHelper $helper,
-    \Model\Product\BasicEntity $product
+    \Model\Product\BasicEntity $product,
+    array $sender = []
 ) {
     /** @var $region \Model\Region\Entity|null */
     $region = \App::user()->getRegion();
@@ -25,6 +26,18 @@ return function (
         foreach ($product->getKit() as $kitItem) {
             $urlParams['product'][] = ['id' => $kitItem->getId(), 'quantity' => $kitItem->getCount()];
         }
+
+        if ($sender) {
+            $urlParams = array_merge($urlParams, [
+                'sender' => [
+                    'name'      => isset($sender['name']) ? $sender['name'] : null,
+                    'position'  => isset($sender['position']) ? $sender['position'] : null,
+                    'method'    => isset($sender['method']) ? $sender['method'] : null,
+                    'from'      => isset($sender['from']) ? $sender['from'] : null,
+                ],
+            ]);
+        }
+
         $url = $helper->url('cart.product.setList', $urlParams);
     }
 

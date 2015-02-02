@@ -6,35 +6,27 @@ class ShowAction {
     /**
      * @param \Helper\TemplateHelper $helper
      * @param \Model\Product\BasicEntity $product
-     * @param array $productVideosByProduct
      * @param null $buyMethod
      * @param bool $showState
      * @param \View\Cart\ProductButtonAction $cartButtonAction
      * @param \View\Product\ReviewCompactAction $reviewtAction
      * @param int $imageSize
+     * @param array $cartButtonSender
      * @return array
      */
     public function execute(
         \Helper\TemplateHelper $helper,
         \Model\Product\BasicEntity $product,
-        array $productVideosByProduct,
         $buyMethod = null,
         $showState = true,
         $cartButtonAction = null,
         $reviewtAction = null,
-        $imageSize = 2
+        $imageSize = 2,
+        array $cartButtonSender = []
     ) {
         /** @var $product \Model\Product\Entity */
 
         $user = \App::user();
-
-        $productVideos = isset($productVideosByProduct[$product->getId()]) ? $productVideosByProduct[$product->getId()] : [];
-        /** @var $productVideo \Model\Product\Video\Entity|null */
-        $productVideo = reset($productVideos);
-        /** @var string $model3dExternalUrl */
-        $model3dExternalUrl = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getMaybe3d() : null;
-        /** @var string $model3dImg */
-        $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getImg3d() : null;
 
         $stateLabel = null;
         if ($product->isInShopOnly()) {
@@ -88,8 +80,8 @@ class ShowAction {
                 ? true
                 : null
             ,
-            'hasVideo' => $productVideo && $productVideo->getContent(),
-            'has360'   => $model3dExternalUrl || $model3dImg,
+            'hasVideo' => $product->hasVideo(),
+            'has360'   => $product->has3d(),
             'review'   => $reviewtAction ? $reviewtAction->execute($helper, $product) : null,
             'isBanner' => false,
             'line'     =>
@@ -111,7 +103,7 @@ class ShowAction {
         if ($buyMethod && in_array(strtolower($buyMethod), ['none', 'false'])) {
             $productItem['cartButton'] = null;
         } else {
-            $productItem['cartButton'] = $cartButtonAction ? $cartButtonAction->execute($helper, $product) : null;
+            $productItem['cartButton'] = $cartButtonAction ? $cartButtonAction->execute($helper, $product, null, false, $cartButtonSender) : null;
         }
 
         return $productItem;

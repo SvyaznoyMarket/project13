@@ -17,11 +17,18 @@ class ProductAction {
         $productId = (int)$productId;
         $quantity = (int)$request->get('quantity', 1);
         $sender = $request->query->get('sender');
+        $params = [];
+
         if (is_string($sender) && !empty($sender)) {
             $sender = ['name' => $sender];
         }
+
         if (!is_array($sender)) {
             $sender = null;
+        }
+
+        if ($sender) {
+            $params['sender'] = $sender;
         }
 
         try {
@@ -37,11 +44,6 @@ class ProductAction {
             $product = \RepositoryManager::product()->getEntityById($productId);
             if (!$product) {
                 throw new \Exception(sprintf('Товар #%s не найден', $productId));
-            }
-
-            $params = [];
-            if ($sender) {
-                $params['sender'] = $sender;
             }
 
             // не учитываем является ли товар набором или нет - за это отвечает ядро
@@ -128,6 +130,20 @@ class ProductAction {
         $region = \App::user()->getRegion();
         $cart = \App::user()->getCart();
         $client = \App::coreClientV2();
+        $sender = $request->query->get('sender');
+        $params = [];
+
+        if (is_string($sender) && !empty($sender)) {
+            $sender = ['name' => $sender];
+        }
+
+        if (!is_array($sender)) {
+            $sender = null;
+        }
+
+        if ($sender) {
+            $params['sender'] = $sender;
+        }
 
         $responseData = [];
 
@@ -179,7 +195,7 @@ class ProductAction {
                 $productQuantity = isset($productQuantitiesById[$productId]) ? $productQuantitiesById[$productId] : null;
                 if (!$productQuantity) continue;
 
-                $cart->setProduct($product, $productQuantity + $cart->getQuantityByProduct($productId));
+                $cart->setProduct($product, $productQuantity + $cart->getQuantityByProduct($productId), $params);
                 $cartProduct = $cart->getProductById($product->getId());
                 //$this->updateCartWarranty($product, $cartProduct, $productQuantity);
 
@@ -251,6 +267,7 @@ class ProductAction {
                     'link'          => \App::router()->generate('order'),
                 ],
                 'products'  => $productsInfo,
+                'sender'    => $sender,
             ];
 
             $response = new \Http\JsonResponse($responseData);

@@ -32,6 +32,9 @@ $c->googleAnalytics['enabled'] = false;
 $c->yandexMetrika['enabled'] = false;
 $c->adFox['enabled'] = false;
 
+$c->partners['AddThis']['enabled'] = false;
+$c->partners['AdvMaker']['enabled'] = false;
+
 $c->paymentPsb['terminal']     = '79036768';
 $c->paymentPsb['merchant']     = '790367686219999';
 $c->paymentPsb['merchantName'] = 'Enter';
@@ -42,7 +45,8 @@ $c->paymentPsbInvoice['contractorId'] = 14;
 $c->paymentPsbInvoice['key']          = $c->dataDir . '/key/privkey.pem';
 $c->paymentPsbInvoice['payUrl']       = 'https://retail-tst.payment.ru/dn/Invoices/ReceiveUniversalInvoices.aspx';
 
-$c->requestMainMenu = false;
+$c->mainMenu['requestMenu'] = false;
+$c->mainMenu['recommendationsEnabled'] = false;
 
 $c->tealeaf['enabled'] = false;
 

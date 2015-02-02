@@ -90,6 +90,8 @@ class IndexAction {
             return new \Http\RedirectResponse($product->getLink() . ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), 302);
         }
 
+        \Session\ProductPageSenders::add($product->getUi(), $request->query->get('sender'));
+
         // подготовка 3-го пакета запросов
         $lifeGiftProduct = null;
         if ($product->getLabel() && (\App::config()->lifeGift['labelId'] === $product->getLabel()->getId())) {
@@ -197,7 +199,7 @@ class IndexAction {
         $trustfactors = [];
         \App::scmsClient()->addQuery(
             'product/get-description/v1',
-            ['uids' => [$product->getUi()], 'trustfactor' => 1, 'seo' => 1],
+            ['uids' => [$product->getUi()], 'trustfactor' => 1, 'seo' => 1, 'media' => 1],
             [],
             function($data) use(&$trustfactors, $product) {
                 if (!isset($data['products'][$product->getUi()])) {
@@ -208,7 +210,9 @@ class IndexAction {
     
                 if (isset($data['trustfactors']) && is_array($data['trustfactors'])) {
                     foreach ($data['trustfactors'] as $trustfactor) {
-                        $trustfactors[] = new Trustfactor($trustfactor);
+                        if (is_array($trustfactor)) {
+                            $trustfactors[] = new Trustfactor($trustfactor);
+                        }
                     }
                 }
     
@@ -224,13 +228,25 @@ class IndexAction {
                 if (isset($data['title'])) {
                     $product->setSeoTitle($data['title']);
                 }
-    
+
                 if (isset($data['meta_keywords'])) {
                     $product->setSeoKeywords($data['meta_keywords']);
                 }
     
                 if (isset($data['meta_description'])) {
                     $product->setSeoDescription($data['meta_description']);
+                }
+
+                if (isset($data['medias']) && is_array($data['medias'])) {
+                    foreach ($data['medias'] as $media) {
+                        if (is_array($media)) {
+                            $product->medias[] = new \Model\Media($media);
+                        }
+                    }
+                }
+
+                if (isset($data['json3d']) && is_array($data['json3d'])) {
+                    $product->json3d = $data['json3d'];
                 }
             },
             function(\Exception $e) {
@@ -445,13 +461,6 @@ class IndexAction {
             );
         }
 
-        try {
-            $productVideos = \RepositoryManager::productVideo()->getCollectionByProduct($product);
-        } catch (\Exception $e) {
-            \App::logger()->error($e);
-            $productVideos = [];
-        }
-
         // на товар перешли с блока рекомендаций
         $addToCartJS = null;
         if ('cart_rec' === $request->get('from')) {
@@ -484,7 +493,6 @@ class IndexAction {
         $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('product', $product);
         $page->setParam('lifeGiftProduct', $lifeGiftProduct);
-        $page->setParam('productVideos', $productVideos);
         $page->setParam('title', $product->getName());
         $page->setParam('accessories', $accessories);
         $page->setParam('accessoryCategory', $accessoryCategory);

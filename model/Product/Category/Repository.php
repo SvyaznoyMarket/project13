@@ -30,8 +30,13 @@ class Repository {
             ],
             [],
             function ($data) use (&$entity) {
-                if ($data) {
+                if ($data && is_array($data)) {
                     $entity = new \Model\Product\Category\Entity($data);
+                }
+            },
+            function(\Exception $e) {
+                if (404 == $e->getCode()) {
+                    \App::exception()->remove($e);
                 }
             }
         );
@@ -66,7 +71,11 @@ class Repository {
             $params['load_inactive'] = 1;
         }
 
-        \App::scmsClient()->addQuery('category/get/v1', $params, [], $callback);
+        \App::scmsClient()->addQuery('category/get/v1', $params, [], $callback, function(\Exception $e) {
+            if (404 == $e->getCode()) {
+                \App::exception()->remove($e);
+            }
+        });
     }
 
     /**
@@ -86,8 +95,13 @@ class Repository {
             ],
             [],
             function ($data) use (&$entity) {
-                if ($data) {
+                if ($data && is_array($data)) {
                     $entity = new \Model\Product\Category\Entity($data);
+                }
+            },
+            function(\Exception $e) {
+                if (404 == $e->getCode()) {
+                    \App::exception()->remove($e);
                 }
             }
         );
@@ -114,8 +128,13 @@ class Repository {
             ],
             [],
             function ($data) use (&$entity) {
-                if ($data) {
+                if ($data && is_array($data)) {
                     $entity = new \Model\Product\Category\Entity($data);
+                }
+            },
+            function(\Exception $e) {
+                if (404 == $e->getCode()) {
+                    \App::exception()->remove($e);
                 }
             }
         );
@@ -144,7 +163,7 @@ class Repository {
             function ($data) use (&$collection) {
                 if (isset($data['categories']) && is_array($data['categories'])) {
                     foreach ($data['categories'] as $item) {
-                        if ($item) {
+                        if ($item && is_array($item)) {
                             $collection[] = new \Model\Product\Category\Entity($item);
                         }
                     }
@@ -214,7 +233,9 @@ class Repository {
             [],
             function ($data) use (&$collection) {
                 foreach ($data as $item) {
-                    $collection[] = new \Model\Product\Category\Entity($item);
+                    if (is_array($item)) {
+                        $collection[] = new \Model\Product\Category\Entity($item);
+                    }
                 }
             }
         );
@@ -246,8 +267,12 @@ class Repository {
 
         $collection = [];
         $client->addQuery('category/tree', $params, [], function ($data) use (&$collection) {
-            foreach ($data as $item) {
-                $collection[] = new \Model\Product\Category\TreeEntity($item);
+            if (is_array($data)) {
+                foreach ($data as $item) {
+                    if (is_array($item)) {
+                        $collection[] = new \Model\Product\Category\TreeEntity($item);
+                    }
+                }
             }
         });
 
@@ -348,7 +373,9 @@ class Repository {
                 // добавляем дочерние узлы
                 if (isset($data['children']) && is_array($data['children'])) {
                     foreach ($data['children'] as $childData) {
-                        $category->addChild(new \Model\Product\Category\Entity($childData));
+                        if (is_array($childData)) {
+                            $category->addChild(new \Model\Product\Category\Entity($childData));
+                        }
                     }
                 }
             };
@@ -367,7 +394,7 @@ class Repository {
                 }
 
                 $item = reset($data);
-                if (!(bool)$item) return;
+                if (!$item || !is_array($item)) return;
 
                 $level = (int)$item['level'];
                 if ($level < $category->getLevel()) {

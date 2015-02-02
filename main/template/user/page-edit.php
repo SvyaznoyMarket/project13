@@ -51,7 +51,7 @@
 
                 <? $selectedYear = $form->getBirthday() ? $form->getBirthday()->format('Y') : '' ?>
                 <select id="user_birthday_year" name="user[birthday][year]">
-                    <? foreach (array_merge(array(''), range(2005, 1930)) as $year): ?>
+                    <? foreach (array_merge(array(''), range(date("Y")-6, 1930)) as $year): ?>
                         <option value="<?= $year ?>"<? if ((int)$year == (int)$selectedYear): ?> selected="selected"<? endif ?>><?= $year ?></option>
                     <? endforeach ?>
                 </select>

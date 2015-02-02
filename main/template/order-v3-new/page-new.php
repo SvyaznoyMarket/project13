@@ -11,6 +11,8 @@ return function(
 
     $userBonusCards = $userEntity ? $userEntity->getBonusCard() : null;
     $userBonusCard = null;
+
+    $emailRequiredTest = \App::abTest()->isEmailRequired();
 ?>
 
 <?= $helper->render('order-v3-new/__head', ['step' => 1]) ?>
@@ -33,14 +35,14 @@ return function(
                     </div>
 
                     <div class="orderU_fld">
-                        <input class="orderU_tx textfield jsOrderV3EmailField" type="text" name="user_info[email]" value="<?= $userEntity ? $userEntity->getEmail() : '' ?>" placeholder="mail@domain.com">
-                        <label class="orderU_lbl" for="">E-mail</label>
+                        <input class="orderU_tx textfield jsOrderV3EmailField <?= $emailRequiredTest ? 'jsOrderV3EmailRequired' : '' ?>" type="text" name="user_info[email]" value="<?= $userEntity ? $userEntity->getEmail() : '' ?>" placeholder="mail@domain.com">
+                        <label class="orderU_lbl <?= $emailRequiredTest ? 'orderU_lbl-str' : '' ?>" for="">E-mail</label>
                         <span class="errTx" style="display: none">Неверный формат email</span>
                         <? if (!$user->isSubscribed()) : ?>
                             <? if ($userEntity && $userEntity->isEnterprizeMember()) : ?>
                             <? else : ?>
                             <span class="orderU_hint">
-                                <input type="checkbox" name="" id="subscribe" class="customInput customInput-defcheck jsOrderV3SubscribeCheckbox">
+                                <input type="checkbox" name="" id="subscribe" class="customInput customInput-defcheck jsOrderV3SubscribeCheckbox" <?= \App::abTest()->getTest('order_email') ? 'checked' : '' ?>>
                                 <label for="subscribe" class="customLabel">Подписаться на рассылку и получить купон со скидкой 300 рублей на следующую покупку</label>
                             </span>
                             <? endif ?>

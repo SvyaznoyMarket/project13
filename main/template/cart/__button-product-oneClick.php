@@ -6,7 +6,8 @@ return function (
     $url = null,
     $class = null,
     $value = 'Купить быстро в 1 клик',
-    \Model\Shop\Entity $shop = null
+    \Model\Shop\Entity $shop = null,
+    array $sender = []
 ) {
     $region = \App::user()->getRegion();
 
@@ -53,9 +54,22 @@ return function (
         $urlParams = [
             'productId' => $product->getId(),
         ];
+
         if ($helper->hasParam('sender')) {
             $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
         }
+
+        if ($sender) {
+            $urlParams = array_merge($urlParams, [
+                'sender' => [
+                    'name'      => isset($sender['name']) ? $sender['name'] : null,
+                    'position'  => isset($sender['position']) ? $sender['position'] : null,
+                    'method'    => isset($sender['method']) ? $sender['method'] : null,
+                    'from'      => isset($sender['from']) ? $sender['from'] : null,
+                ],
+            ]);
+        }
+
         $url = $helper->url('cart.oneClick.product.set', $urlParams);
     }
 
@@ -64,6 +78,18 @@ return function (
         foreach ($product->getKit() as $kitItem) {
             $urlParams['product'][] = ['id' => $kitItem->getId(), 'quantity' => $kitItem->getCount()];
         }
+
+        if ($sender) {
+            $urlParams = array_merge($urlParams, [
+                'sender' => [
+                    'name'      => isset($sender['name']) ? $sender['name'] : null,
+                    'position'  => isset($sender['position']) ? $sender['position'] : null,
+                    'method'    => isset($sender['method']) ? $sender['method'] : null,
+                    'from'      => isset($sender['from']) ? $sender['from'] : null,
+                ],
+            ]);
+        }
+
         $url = $helper->url('cart.oneClick.product.setList', $urlParams);
     }
 
@@ -75,7 +101,7 @@ return function (
 ?>
 
     <div class="btnOneClickBuy">
-        <a id="<?= $id ?>" class="btnOneClickBuy__eLink <?= $class ?>" data-target="#jsOneClickContent" data-title="<?= $shop ? 'Резерв товара' : 'Купить быстро в 1 клик' ?>" data-shop="<?= $shop ? $shop->getId() : null ?>" href="<?= $url ?>"><?= $value ?></a>
+        <a href="<?= $url ?>" id="<?= $id ?>" class="btnOneClickBuy__eLink <?= $class ?>" data-title="<?= $shop ? 'Резерв товара' : 'Купить быстро в 1 клик' ?>" data-shop="<?= $shop ? $shop->getId() : null ?>" data-product-ui="<?= $helper->escape($product->getUi()) ?>" data-sender="<?= $helper->json($sender) ?>"><?= $value ?></a>
     </div>
 
 <? };

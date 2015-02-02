@@ -140,14 +140,18 @@
     border-top-width: 6px;
     background: @white;
 
-    .transition(all .3s ease);
+//    .transition(all .3s ease);
     // &:hover {
-    // 	width: 415px;
+    //  width: 415px;
     // }
     &_i{
-        &:hover{
+        &:hover,
+        &.hover {
             .navsite3{
+                transition-property: visibility;
+                transition-delay: 100ms;
                 display: block;
+                visibility: visible;
 
                 .opacity(1);
             }
@@ -157,9 +161,12 @@
                 background: #e3e3e3;
             }
         }
-        &-child{
-            .navsite2_lk{
-                &:hover{
+    }
+
+    &-new {
+        .navsite2_i {
+            &:hover {
+                .navsite2_lk{
                     &:after{
                         right: -3px;
 
@@ -169,11 +176,9 @@
                     }
                 }
             }
-            .navsite3 {
-
-            }
         }
     }
+
     &_lk{
         font-size: 14px;
         line-height: 1.2;
@@ -200,7 +205,8 @@
     top: -6px;
     left: -1px;
 
-    display: none;
+    display: block;
+    visibility: hidden;
 
     width: 195px;
     min-height: 100%;
@@ -211,8 +217,11 @@
     border-top-width: 6px;
     background: url('@{base-url}/mainpage/img/nav-shadow.png') repeat-y 204px 0 @white;
 
-    .transition(all .3s ease);
-    .opacity(0);
+    transition-property: visibility;
+    transition-delay: 110ms;
+
+//    .transition(all .3s ease);
+    .opacity(100);
     &_i{
         padding: 5px 10px;
         &-tl{
@@ -273,7 +282,7 @@
     float: right;
 
     width: 850px;
-    margin: 14px 0 0;
+    margin: 14px 5px 0 0;
     .navsite{
         &_i{
             padding: 0 3px;
@@ -390,3 +399,4 @@
     }
 
 }
+

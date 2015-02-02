@@ -247,14 +247,14 @@ $c->partners['AdLens']['enabled'] = true;
 $c->partners['Сpaexchange']['enabled'] = true;
 $c->partners['Admitad']['enabled'] = false;
 $c->partners['Revolvermarketing']['enabled'] = true;
-$c->partners['RuTarget']['enabled'] = true;
-$c->partners['RuTarget']['containerId'] = 'GTM-4SJX';
 $c->partners['Lamoda']['enabled'] = false;
 $c->partners['Lamoda']['lamodaID'] = '11640775691088171491';
 $c->partners['TagMan']['enabled'] = false;
 $c->partners['Revolver']['enabled'] = true;
 $c->partners['Insider']['enabled'] = true;
 $c->partners['GetIntent']['enabled'] = true;
+$c->partners['AddThis']['enabled'] = true;
+$c->partners['AdvMaker']['enabled'] = true;
 
 $c->adFox['enabled'] = true;
 
@@ -312,7 +312,8 @@ $c->product['itemsInCategorySlider']    = 3;
 $c->product['itemsInAccessorySlider']   = 4;
 $c->product['minCreditPrice']           = 3000;
 $c->product['totalCount']               = 55000;
-$c->product['recommendationSessionKey'] = 'recommendationProductIds';
+$c->product['recommendationSessionKey']     = 'recommendationProductIds';
+$c->product['productPageSendersSessionKey'] = 'productPageSenders';
 // глобальный (без учета региона) список товаров
 $c->product['globalListEnabled']      = true;
 $c->product['showAveragePrice']       = false;
@@ -420,7 +421,8 @@ $c->subscribe['cookieName'] = 'subscribed';
 $c->subscribe['cookieName2'] = 'enter_subscribed_ch';   // кука вида {channelId:status}
 $c->subscribe['cookieName3'] = 'enter_wanna_subscribe'; // кука о желании подписки в новом ОЗ
 
-$c->requestMainMenu = true;
+$c->mainMenu['requestMenu'] = true;
+$c->mainMenu['recommendationsEnabled'] = true;
 
 $c->newOrder = true;
 $c->order['cookieName'] = 'last_order';

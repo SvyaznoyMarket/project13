@@ -38,23 +38,22 @@
 
     <?= $page->slotAdFoxBground() ?>
 
-    <div class="header">
-
-        <?= $page->slotHeader() ?>
-        <!-- Topbar -->
-
-        <?= $page->slotTopbar() ?>
-        <!-- /Topbar -->
-
-        <?= $page->slotSearchBar() ?>
-
-        <!-- Header -->
-        <?= $page->slotNavigation() ?>
-        <!-- /Header -->
-
-    </div>
-
     <div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
+        <div class="header">
+
+            <?= $page->slotHeader() ?>
+            <!-- Topbar -->
+
+            <?= $page->slotTopbar() ?>
+            <!-- /Topbar -->
+
+            <?= $page->slotSearchBar() ?>
+
+            <!-- Header -->
+            <?= $page->slotNavigation() ?>
+            <!-- /Header -->
+
+        </div>
 
         <div class="content clearfix">
             <?= $page->slotContentHead() ?>

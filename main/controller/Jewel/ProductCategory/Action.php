@@ -145,116 +145,101 @@ class Action extends \Controller\ProductCategory\Action {
 
         // TODO: после правки аякса для 
         // if ($request->isXmlHttpRequest()) {
-            $pageNum = (int)$request->get('page', 1);
-            if ($pageNum < 1) {
-                throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
+        $pageNum = (int)$request->get('page', 1);
+        if ($pageNum < 1) {
+            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
+        }
+
+        $productFilter = $page->getParam('productFilter');
+        // был нажат фильтр или сортировка
+        $scrollTo = $page->getParam('scrollTo');
+
+        $catalogJson = $page->getParam('catalogJson');
+
+         // сортировка
+        $productSorting = new \Model\Product\Sorting();
+        list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
+        $productSorting->setActive($sortingName, $sortingDirection);
+
+        // если сортировка по умолчанию и в json заданы настройки сортировок,
+        // то применяем их
+        if(!empty($catalogJson['sort']) && $productSorting->isDefault()) {
+            $sort = $catalogJson['sort'];
+        } else {
+            $sort = $productSorting->dump();
+        }
+
+        // вид товаров
+        $productView = $category->getHasLine() ? 'line' : $category->getProductView();
+        // листалка
+        $limit = \App::config()->product['itemsPerPageJewel'];
+        $repository = \RepositoryManager::product();
+        $repository->setEntityClass('\Model\Product\Entity');
+
+        $productIds = [];
+        $productCount = 0;
+        $repository->prepareIteratorByFilter(
+            $productFilter->dump(),
+            $sort,
+            ($pageNum - 1) * $limit,
+            $limit,
+            $region,
+            function($data) use (&$productIds, &$productCount) {
+                if (isset($data['list'][0])) $productIds = $data['list'];
+                if (isset($data['count'])) $productCount = (int)$data['count'];
             }
+        );
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-            $productFilter = $page->getParam('productFilter');
-            // был нажат фильтр или сортировка
-            $scrollTo = $page->getParam('scrollTo');
+        $products = [];
+        if ((bool)$productIds) {
+            $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
+                foreach ((array)$data as $item) {
+                    if (!isset($item['id'])) continue;
 
-            $catalogJson = $page->getParam('catalogJson');
-
-             // сортировка
-            $productSorting = new \Model\Product\Sorting();
-            list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
-            $productSorting->setActive($sortingName, $sortingDirection);
-
-            // если сортировка по умолчанию и в json заданы настройки сортировок,
-            // то применяем их
-            if(!empty($catalogJson['sort']) && $productSorting->isDefault()) {
-                $sort = $catalogJson['sort'];
-            } else {
-                $sort = $productSorting->dump();
-            }
-
-            // вид товаров
-            $productView = $category->getHasLine() ? 'line' : $category->getProductView();
-            // листалка
-            $limit = \App::config()->product['itemsPerPageJewel'];
-            $repository = \RepositoryManager::product();
-            $repository->setEntityClass('\Model\Product\Entity');
-
-            $productIds = [];
-            $productCount = 0;
-            $repository->prepareIteratorByFilter(
-                $productFilter->dump(),
-                $sort,
-                ($pageNum - 1) * $limit,
-                $limit,
-                $region,
-                function($data) use (&$productIds, &$productCount) {
-                    if (isset($data['list'][0])) $productIds = $data['list'];
-                    if (isset($data['count'])) $productCount = (int)$data['count'];
+                    $products[] = new \Model\Product\Entity($item);
                 }
-            );
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+            });
+        }
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-            $products = [];
-            if ((bool)$productIds) {
-                $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
-                    foreach ((array)$data as $item) {
-                        if (!isset($item['id'])) continue;
-
-                        $products[] = new \Model\Product\Entity($item);
-                    }
-                });
+        $scoreData = [];
+        if ((bool)$products) {
+            $productUIs = [];
+            foreach ($products as $product) {
+                if (!$product instanceof \Model\Product\BasicEntity) continue;
+                $productUIs[] = $product->getUi();
             }
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-            $scoreData = [];
-            if ((bool)$products) {
-                $productUIs = [];
-                foreach ($products as $product) {
-                    if (!$product instanceof \Model\Product\BasicEntity) continue;
-                    $productUIs[] = $product->getUi();
+            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
+                if (isset($data['product_scores'][0])) {
+                    $scoreData = $data;
                 }
+            });
+        }
 
-                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
-                    if (isset($data['product_scores'][0])) {
-                        $scoreData = $data;
-                    }
-                });
-            }
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+        $repository->prepareProductsMedias($products);
 
-            \RepositoryManager::review()->addScores($products, $scoreData);
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-            $productPager = new \Iterator\EntityPager($products, $productCount);
-            $productPager->setPage($pageNum);
-            $productPager->setMaxPerPage($limit);
-            if (self::isGlobal()) {
-                $category->setGlobalProductCount($productPager->count());
-            } else {
-                $category->setProductCount($productPager->count());
-            }
+        \RepositoryManager::review()->addScores($products, $scoreData);
 
-            // проверка на максимально допустимый номер страницы
-            if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
-                //throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
-                return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
-                    'page' => $productPager->getLastPage(),
-                ]));
-            }
+        $productPager = new \Iterator\EntityPager($products, $productCount);
+        $productPager->setPage($pageNum);
+        $productPager->setMaxPerPage($limit);
+        if (self::isGlobal()) {
+            $category->setGlobalProductCount($productPager->count());
+        } else {
+            $category->setProductCount($productPager->count());
+        }
 
-            // video
-            $productVideosByProduct = [];
-            foreach ($productPager as $product) {
-                /** @var $product \Model\Product\Entity */
-                $productVideosByProduct[$product->getId()] = [];
-            }
-            if ((bool)$productVideosByProduct) {
-                \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
-                    foreach ($data as $id => $items) {
-                        if (!is_array($items)) continue;
-                        foreach ($items as $item) {
-                            $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);
-                        }
-                    }
-                });
-                \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
-            }
+        // проверка на максимально допустимый номер страницы
+        if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
+            //throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
+            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
+                'page' => $productPager->getLastPage(),
+            ]));
+        }
 
         if ($request->isXmlHttpRequest()) {
             $responseData = [];
@@ -262,7 +247,6 @@ class Action extends \Controller\ProductCategory\Action {
                 'page'                   => new \View\Layout(),
                 'pager'                  => $productPager,
                 'view'                   => $productView,
-                'productVideosByProduct' => $productVideosByProduct,
                 'isAjax'                 => true,
                 'isAddInfo'              => true,
                 'itemsPerRow'            => $page->getParam('itemsPerRow'),
@@ -301,7 +285,6 @@ class Action extends \Controller\ProductCategory\Action {
                     'productSorting'            => $productSorting,
                     'hasListView'               => true,
                     'category'                  => $page->getParam('category'),
-                    'productVideosByProduct'    => $productVideosByProduct,
                     'view'                      => $productView,
                     'isAddInfo'                 => true,
                 ]);
@@ -314,7 +297,6 @@ class Action extends \Controller\ProductCategory\Action {
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
-        $page->setParam('productVideosByProduct', $productVideosByProduct);
 
         return new \Http\Response($page->show());
     }
