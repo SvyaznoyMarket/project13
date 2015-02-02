@@ -11,7 +11,8 @@ class ListAction {
      * @param null $buyMethod
      * @param bool $showState
      * @param int $columnCount
-     * @param array $view
+     * @param string $view
+     * @param array $cartButtonSender
      * @return array
      */
     public function execute(
@@ -22,7 +23,8 @@ class ListAction {
         $buyMethod = null,
         $showState = true,
         $columnCount = 4,
-        $view = 'compact'
+        $view = 'compact',
+        array $cartButtonSender = []
     ) {
         /** @var \Model\Product\Entity $product */
 
@@ -49,7 +51,8 @@ class ListAction {
                 $showState,
                 $cartButtonAction,
                 $reviewAction,
-                (3 === $columnCount) ? 6 : 7
+                (3 === $columnCount) ? 6 : 7,
+                $cartButtonSender
             );
         }
 
