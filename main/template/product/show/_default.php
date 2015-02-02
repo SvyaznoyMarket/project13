@@ -186,7 +186,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
 
     <? if (5 !== $product->getStatusId() && (bool)$shopStates): // SITE-3109 ?>
         <div class="bWidgetBuy bWidgetBuy-shops mWidget js-WidgetBuy">
-            <?= $helper->render('product/__shops', ['shopStates' => $shopStates, 'product' => $product]) // Доставка ?>
+            <?= $helper->render('product/__shops', ['shopStates' => $shopStates, 'product' => $product, 'sender'  => $buySender]) // Доставка ?>
         </div>
     <? endif ?>
 
@@ -247,11 +247,11 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
     <div class="js-showTopBar"></div>
     <? endif ?>
 
-    <?= $helper->render('cart/__form-oneClick', [
+    <?/*= $helper->render('cart/__form-oneClick', [
         'product' => $product,
         'region'  => $region,
         'sender'  => $buySender,
-    ]) // Форма покупки в один клик ?>
+    ])*/ // Форма покупки в один клик ?>
 
     <? if ($lifeGiftProduct): ?>
         <?= $helper->render('cart/__button-product-lifeGift', ['product' => $lifeGiftProduct]) // Кнопка "Подари жизнь" ?>

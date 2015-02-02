@@ -3,7 +3,6 @@
         <ul class="aboutList clearfix">
             <li class="aboutList__item"><a class="aboutList__link" href="/about_company">О компании</a></li>
             <li class="aboutList__item"><a class="aboutList__link" href="/shops">Магазины Enter</a></li>
-            <li class="aboutList__item"><a class="aboutList__link" href="http://feedback.enter.ru/">Напишите нам</a></li>
             <li class="aboutList__item"><a class="aboutList__link" href="/how_get_order">Условия доставки</a></li>
             <li class="aboutList__item"><a class="aboutList__link" href="/how_pay">Способы оплаты</a></li>
             <li class="aboutList__item"><a class="aboutList__link" href="/credit">Покупка в кредит</a></li>

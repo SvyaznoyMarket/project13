@@ -4,8 +4,11 @@
         href="{{url}}"
         class="{{class}} btnBuy__eLink{{#disabled}} mDisabled{{/disabled}}{{#inShopOnly}} mShopsOnly{{/inShopOnly}}"
         data-product-id="{{data.productId}}"
+        data-product-ui="{{productUi}}"
         data-upsale="{{data.upsale}}"
         data-buy-url="{{buyUrl}}"
+        data-title="{{title}}"
+        data-sender="{{&sender}}"
         {{#data.noUpdate}}data-no-update="{{data.noUpdate}}"{{/data.noUpdate}}
         {{#onClick}}onclick="{{onClick}}"{{/onClick}}
         data-bind="buyButtonBinding: cart"
