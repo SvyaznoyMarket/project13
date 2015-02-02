@@ -1409,6 +1409,7 @@ img[height="0"] {
 @media all {
   .main-new .header {
     padding-bottom: 0;
+    margin-left: 0;
   }
   .main-new .header_b {
     border-right: 1px solid #c7c7c7;
@@ -1425,8 +1426,8 @@ img[height="0"] {
   }
   .header {
     width: 960px;
-    margin: 0 auto;
     padding: 0 0 20px;
+    margin: 0 0 0 -10px;
     background: #ffffff;
   }
   .header-new {
