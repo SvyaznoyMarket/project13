@@ -259,7 +259,6 @@ class Action {
         $page->setParam('paymentUrl', $paymentUrl);
         $page->setParam('paymentPageType', 'complete');
         $page->setParam('sessionIsReaded', $this->sessionIsReaded);
-        $page->setParam('giftBuyProducts', explode(' ', \App::request()->cookies->get(\App::config()->gift['buyProducts']['cookie']['name'])));
         if ($this->sessionIsReaded) {
             $page->setParam('isOrderAnalytics', false);
         }

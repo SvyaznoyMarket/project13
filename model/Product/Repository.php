@@ -67,6 +67,20 @@ class Repository {
     }
 
     /**
+     * @param string $uid
+     * @param        $successCallback
+     */
+    public function prepareEntityByUid($uid, $successCallback) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+
+        $this->client->addQuery('product/get', [
+            'select_type' => 'ui',
+            'ui'        => [$uid],
+            'geo_id'      => \App::user()->getRegion()->getId(),
+        ], [], $successCallback);
+    }
+
+    /**
      * @param string               $token
      * @param \Model\Region\Entity $region
      * @param                      $callback

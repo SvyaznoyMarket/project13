@@ -1401,6 +1401,7 @@ img[height="0"] {
 @media all {
   .main-new .header {
     padding-bottom: 0;
+    margin-left: 0;
   }
   .main-new .header_b {
     border-right: 1px solid #c7c7c7;
@@ -1417,8 +1418,8 @@ img[height="0"] {
   }
   .header {
     width: 960px;
-    margin: 0 auto;
     padding: 0 0 20px;
+    margin: 0 0 0 -10px;
     background: #ffffff;
   }
   .header-new {
@@ -2656,12 +2657,12 @@ img[height="0"] {
     *float: left;
     *clear: right;
     *zoom: 1;
-    padding: 0 10px;
+    padding: 0 65px 0 10px;
   }
   .footer_cmpn_i:last-child,
   .footer_cmpn_i-last {
     text-align: right;
-    padding-left: 0;
+    padding: 0 10px 0 0;
   }
   .footer_inf {
     float: left;

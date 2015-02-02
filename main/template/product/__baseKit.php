@@ -5,7 +5,8 @@
 return function (
     \Helper\TemplateHelper $helper,
     array $products,
-    \Model\Product\Entity $product
+    \Model\Product\Entity $product,
+    array $sender = []
 ) {
 
 ?>
@@ -103,7 +104,7 @@ return function (
     <div class="packageSetMainImg"><img src="<?= $product->getImageUrl(3) ?>" /></div>
 
     <!-- Состав комплекта -->
-    <div class="packageSet mPackageSetEdit" data-value="<?= $helper->json($products) ?>">
+    <div class="packageSet mPackageSetEdit js-packageSetEdit" data-value="<?= $helper->json(['products' => $products, 'sender' => $sender]) ?>">
 
         <div class="packageSetHead cleared">
             <span class="packageSetHead_title">Уточните комплектацию</span>

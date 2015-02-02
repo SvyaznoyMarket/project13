@@ -643,9 +643,6 @@ window.ANALYTICS = {
 
 				/** Событие нажатия кнопки «Купить» или «Резерв» */
 				$('body').on('click', 'a.btnBuy__eLink', function ga_btnBuy() {
-					var
-						butType = $(this).hasClass('mShopsOnly') ? 'reserve' : 'add2basket';
-
 					if ( 'undefined' !== product ) {
 
                         /* На наборах выполняется другой трекинговый код */
@@ -656,7 +653,9 @@ window.ANALYTICS = {
                         }
 
 						console.log('GA: btn Buy');
-						ga('send', 'event', butType, product.name, product.article, product.price);
+						if ($(this).hasClass('mShopsOnly')) {
+							ga('send', 'event', 'reserve', product.name, product.article, product.price);
+						}
 					}
 
 				});

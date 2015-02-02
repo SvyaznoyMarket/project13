@@ -29,3 +29,4 @@
 <?= $page->slotRevolverJS() ?>
 <?= $page->slotInsiderJS() ?>
 <?= $page->slotGetIntentJS() ?>
+<?= $page->slotAdvMakerJS() ?>

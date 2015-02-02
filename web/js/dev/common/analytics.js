@@ -202,9 +202,9 @@
 		sendOrderToGA = function sendOrderF(orderData) {
 			var
 				oData = orderData || { orders: [] },
-				giftBuyProducts = (docCookies.getItem('giftBuyProducts') || '').split(' ');
+				giftBuyProducts = ENTER.utils.gift.getProductIdsFromCookie();
 
-			docCookies.setItem('giftBuyProducts', '', 0, '/', 'enter.ru');
+			ENTER.utils.gift.deleteAllProductIdsFromCookie();
 
 			console.log('[Google Analytics] Start processing orders', oData.orders);
 			$.each(oData.orders, function(i,o) {
@@ -225,8 +225,10 @@
 						labels.push('marketplace');
 					}
 
-					if (giftBuyProducts.indexOf(p.id + '') != -1) {
-						labels.push('gift');
+					if (p.sender) {
+						labels.push(p.sender);
+					} else if (giftBuyProducts.indexOf(p.id + '') != -1) {
+						labels.push('gift'); // Данный код является рудиментом и его можно будет удалить после 1.3.2015
 					}
 
                     if (p.sender && p.position) {

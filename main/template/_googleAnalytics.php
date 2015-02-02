@@ -91,10 +91,6 @@
                 $labels[] = 'marketplace';
             }
 
-            if (isset($giftBuyProducts) && in_array($orderProduct->getId(), $giftBuyProducts)) {
-                $labels[] = 'gift';
-            }
-
             $productName = $product->getName();
 
             if ($labels) {

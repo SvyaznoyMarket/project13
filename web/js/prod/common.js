@@ -175,7 +175,8 @@
 				inShopShowroomOnly = $elem.data('in-shop-showroom-only'),
 				isBuyable = $elem.data('is-buyable'),
 				statusId = $elem.data('status-id'),
-                noUpdate = $elem.data('noUpdate')
+                noUpdate = $elem.data('noUpdate'),
+				buyUrl = $elem.data('buy-url')
             ;
 			
 			if (typeof isBuyable != 'undefined' && !isBuyable) {
@@ -217,7 +218,7 @@
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
 					.addClass('jsBuyButton')
-					.attr('href', ENTER.utils.generateUrl('cart.product.set', {productId: productId}));
+					.attr('href', buyUrl ? buyUrl : ENTER.utils.generateUrl('cart.product.set', {productId: productId}));
 			}
 		}
 	};
@@ -353,19 +354,7 @@
 		/* Удаление продукта по ID */
 		model.removeProductByID = function(product_id) {
 			model.cart.remove(function(item) { return item.id == product_id });
-
-			(function() {
-				var giftBuyProducts = docCookies.getItem('giftBuyProducts') || '';
-				if (giftBuyProducts) {
-					docCookies.setItem(
-						'giftBuyProducts',
-						giftBuyProducts.replace(new RegExp('(^|\\s+)' + product_id + '(\\s+|$)', 'g'), ' ').replace(/^\s+|\s+$/g, ''),
-						30*24*60,
-						'/',
-						'enter.ru'
-					);
-				}
-			})();
+			ENTER.utils.gift.deleteProductIdFromCookie(product_id);
 		};
 
 		/* АБ-тест платного самовывоза */
@@ -878,9 +867,9 @@
 		sendOrderToGA = function sendOrderF(orderData) {
 			var
 				oData = orderData || { orders: [] },
-				giftBuyProducts = (docCookies.getItem('giftBuyProducts') || '').split(' ');
+				giftBuyProducts = ENTER.utils.gift.getProductIdsFromCookie();
 
-			docCookies.setItem('giftBuyProducts', '', 0, '/', 'enter.ru');
+			ENTER.utils.gift.deleteAllProductIdsFromCookie();
 
 			console.log('[Google Analytics] Start processing orders', oData.orders);
 			$.each(oData.orders, function(i,o) {
@@ -901,8 +890,10 @@
 						labels.push('marketplace');
 					}
 
-					if (giftBuyProducts.indexOf(p.id + '') != -1) {
-						labels.push('gift');
+					if (p.sender) {
+						labels.push(p.sender);
+					} else if (giftBuyProducts.indexOf(p.id + '') != -1) {
+						labels.push('gift'); // Данный код является рудиментом и его можно будет удалить после 1.3.2015
 					}
 
                     if (p.sender && p.position) {
@@ -1267,8 +1258,7 @@
 			 */
 				googleAnalytics = function googleAnalytics( event, data ) {
 				var
-					productData = data.product,
-					ga_action;
+					productData = data.product;
 				// end of vars
 
 				var
@@ -1289,8 +1279,16 @@
 				tchiboGA();
 
 				if (productData.article) {
-					ga_action = typeof productData.price != 'undefined' && parseInt(productData.price, 10) < 500 ? 'product-500' : 'product';
-					body.trigger('trackGoogleEvent',['Add2Basket', ga_action, productData.article]);
+					var ga_action;
+					if (data.sender.name == 'gift') {
+						ga_action = 'product-gift';
+					} else if (typeof productData.price != 'undefined' && parseInt(productData.price, 10) < 500) {
+						ga_action = 'product-500';
+					} else {
+						ga_action = 'product';
+					}
+
+					body.trigger('trackGoogleEvent', ['Add2Basket', ga_action, productData.article]);
 				}
 
 				productData.isUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_from_rec', productData.article]);
@@ -1402,10 +1400,6 @@
 				for (var i in data.products) {
 					/* Google Analytics */
 					googleAnalytics(event, { product: data.products[i] });
-					if (typeof window.ga != 'undefined') {
-						console.log("GA: send event Add2Basket product %s", data.products[i].article);
-						window.ga('send', 'event', 'Add2Basket', 'product', data.products[i].article);
-					}
 				}
 				console.groupEnd();
 			}
@@ -2245,7 +2239,8 @@ $(document).ready(function(){
 		});
 	}
 
-	changeSocnetLinks($('.js-registerForm-subscribe')[0].checked);
+	var $subscribe = $('.js-registerForm-subscribe');
+	changeSocnetLinks($subscribe.length && $subscribe[0].checked);
 
 	var
 		$authBlock = $('#auth-block'),
@@ -3199,6 +3194,140 @@ $(document).ready(function() {
 		} catch (e) { console.error(e); }
 	})
 })(jQuery);
+(function() {
+	var oneClickOpening = false;
+	$('body').on('click', '.jsOneClickButton-new', function(e) {
+		console.info('show one click form');
+
+		e.preventDefault();
+
+		if (oneClickOpening) {
+			return;
+		}
+
+		var
+			button = $(e.currentTarget),
+			$target = $('#jsOneClickContent');
+
+		if ($target.length) {
+			openPopup(false);
+			init();
+		} else {
+			oneClickOpening = true;
+			$.ajax({
+				url: ENTER.utils.generateUrl('orderV3OneClick.form', {productUid: button.data('product-ui'), sender: button.data('sender')}),
+				type: 'POST',
+				dataType: 'json',
+				closeClick: false,
+				success: function(result) {
+					$('body').append(result.form);
+					$target = $('#jsOneClickContent');
+					openPopup(true);
+					init();
+				},
+				complete: function() {
+					oneClickOpening = false;
+				}
+			})
+		}
+
+		function init() {
+			ENTER.OrderV31Click.functions.initAddress();
+			ENTER.OrderV31Click.functions.initYandexMaps();
+			ENTER.OrderV31Click.functions.initDelivery();
+			ENTER.OrderV31Click.functions.initValidate();
+		}
+
+		function openPopup(removeOnClose) {
+			$('.js-order-oneclick-delivery-toggle-btn').on('click', function(e) {
+				var button = $(e.currentTarget),
+					$toggleNote = $('.js-order-oneclick-delivery-toggle-btn-note'),
+					$toggleBox = $('.js-order-oneclick-delivery-toggle');
+
+				button.toggleClass('orderU_lgnd-tggl-cur');
+				$toggleBox.toggle();
+				$toggleNote.toggleClass('orderU_lgnd_tgglnote-cur');
+
+				$('body').trigger('trackUserAction', ['2 Способ получения']);
+			});
+
+			var $orderContent = $('#js-order-content');
+
+			$('.shopsPopup').find('.close').trigger('click'); // закрыть выбор магазинов
+			$('.jsOneClickCompletePage').remove(); // удалить ранее созданный контент с оформленным заказом
+			$('#jsOneClickContentPage').show();
+
+			// mask
+			$.mask.definitions['x']='[0-9]';
+			$.mask.placeholder= "_";
+			$.mask.autoclear= false;
+			$.map($('#jsOneClickContent').find('input'), function(elem, i) {
+				if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
+			});
+
+			console.warn($target.length);
+			if ($target.length) {
+				var data = $.parseJSON($orderContent.data('param'));
+				data.quantity = button.data('quantity');
+				data.shopId = button.data('shop');
+				$orderContent.data('shop', data.shopId);
+
+				if (button.data('title')) {
+					$target.find('.jsOneClickTitle').text(button.data('title'));
+				}
+
+				$target.lightbox_me({
+					centered: true,
+					sticky: false,
+					closeSelector: '.close',
+					removeOtherOnCreate: false,
+					closeClick: false,
+					closeEsc: false,
+					onLoad: function() {
+						$('#OrderV3ErrorBlock').empty().hide();
+						$('.jsOrderV3PhoneField').focus();
+					},
+					onClose: function() {
+						if (removeOnClose) {
+							$target.remove();
+							$('.jsOneClickForm').remove();
+						}
+					}
+				});
+
+				$.ajax({
+					url: $orderContent.data('url'),
+					type: 'POST',
+					data: data,
+					dataType: 'json',
+					beforeSend: function() {
+						$orderContent.fadeOut(500);
+						//if (spinner) spinner.spin(body)
+					},
+					closeClick: false
+				}).fail(function(jqXHR){
+					var response = $.parseJSON(jqXHR.responseText);
+
+					if (response.result && response.result.errorContent) {
+						$('#OrderV3ErrorBlock').html($(response.result.errorContent).html()).show();
+					}
+				}).done(function(data) {
+					console.log("Query: %s", data.result.OrderDeliveryRequest);
+					console.log("Model:", data.result.OrderDeliveryModel);
+					$orderContent.empty().html($(data.result.page).html());
+
+					ENTER.OrderV31Click.functions.initAddress();
+					$orderContent.find('input[name=address]').focus();
+				}).always(function(){
+					$orderContent.stop(true, true).fadeIn(200);
+					//if (spinner) spinner.stop();
+
+					$('body').trigger('trackUserAction', ['0 Вход']);
+				});
+			}
+		}
+	});
+})();
 ;(function($){	
 	/*paginator*/
 	var EnterPaginator = function( domID,totalPages, visPages, activePage ) {

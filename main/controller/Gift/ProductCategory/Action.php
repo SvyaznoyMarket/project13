@@ -111,6 +111,7 @@ class Action {
         }
 
         $columnCount = 4;
+        $cartButtonSender = ['name' => 'gift'];
 
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
             $data = [
@@ -122,7 +123,8 @@ class Action {
                     null,
                     true,
                     $columnCount,
-                    'light_with_bottom_description'
+                    'light_with_bottom_description',
+                    $cartButtonSender
                 ),
                 'selectedFilter' => [],
                 'pagination'     => (new \View\PaginationAction())->execute(
@@ -148,6 +150,7 @@ class Action {
         $page->setParam('productSorting', $productSorting);
         $page->setParam('columnCount', $columnCount);
         $page->setParam('isNewMainPage', $this->isNewMainPage());
+        $page->setParam('cartButtonSender', $cartButtonSender);
         $page->setGlobalParam('shop', $shop);
 
         return new \Http\Response($page->show());
@@ -502,7 +505,9 @@ class Action {
             $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
                 if (is_array($data)) {
                     foreach ($data as $item) {
-                        $products[] = new \Model\Product\Entity($item);
+                        $product = new \Model\Product\Entity($item);
+                        $product->setLink($product->getLink() . (strpos($product->getLink(), '?') === false ? '?' : '&') . http_build_query(['sender' => ['name' => 'gift']]));
+                        $products[] = $product;
                     }
                 }
             });
@@ -511,7 +516,6 @@ class Action {
 
         $repository->prepareProductsMedias($products);
 
-        $scoreData = [];
         if ($products) {
             $productUIs = [];
             foreach ($products as $product) {
@@ -519,16 +523,14 @@ class Action {
                 $productUIs[] = $product->getUi();
             }
 
-            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
+            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) {
                 if (isset($data['product_scores'][0])) {
-                    $scoreData = $data;
+                    \RepositoryManager::review()->addScores($products, $data);
                 }
             });
         }
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-        \RepositoryManager::review()->addScores($products, $scoreData);
 
         $productPager = new \Iterator\EntityPager($products, $productCount);
         $productPager->setPage($pageNum);

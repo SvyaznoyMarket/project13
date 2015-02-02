@@ -4,6 +4,7 @@ namespace Controller\OrderV3;
 
 use Model\Order\Entity;
 use Model\PaymentMethod\PaymentEntity;
+use Session\ProductPageSenders;
 
 class CompleteAction extends OrderV3 {
 
@@ -27,6 +28,8 @@ class CompleteAction extends OrderV3 {
 //        }
 
         \App::logger()->debug('Exec ' . __METHOD__);
+
+        ProductPageSenders::clean();
 
         /** @var \Model\Order\Entity[] $orders */
         $orders = [];

@@ -254,6 +254,7 @@ $c->partners['Revolver']['enabled'] = true;
 $c->partners['Insider']['enabled'] = true;
 $c->partners['GetIntent']['enabled'] = true;
 $c->partners['AddThis']['enabled'] = true;
+$c->partners['AdvMaker']['enabled'] = true;
 
 $c->adFox['enabled'] = true;
 
@@ -311,7 +312,8 @@ $c->product['itemsInCategorySlider']    = 3;
 $c->product['itemsInAccessorySlider']   = 4;
 $c->product['minCreditPrice']           = 3000;
 $c->product['totalCount']               = 55000;
-$c->product['recommendationSessionKey'] = 'recommendationProductIds';
+$c->product['recommendationSessionKey']     = 'recommendationProductIds';
+$c->product['productPageSendersSessionKey'] = 'productPageSenders';
 // глобальный (без учета региона) список товаров
 $c->product['globalListEnabled']      = true;
 $c->product['showAveragePrice']       = false;

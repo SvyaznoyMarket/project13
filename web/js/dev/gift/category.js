@@ -158,20 +158,4 @@ $(function() {
 			label: page + ''
 		});
 	});
-
-	// Сохраняем купленные товары в cookie для последующей отправки событий в ga
-	$body.on('click', '.js-gift-category-listing .jsBuyButton', function(e) {
-		var giftBuyProducts = docCookies.getItem('giftBuyProducts') || '';
-		if (giftBuyProducts) {
-			while (giftBuyProducts.length > 500) {
-				giftBuyProducts = giftBuyProducts.replace(/^\s*[^\s]+\s*/, '');
-			}
-
-			giftBuyProducts += ' ';
-		}
-
-		giftBuyProducts += $(e.currentTarget).data('productId');
-
-		docCookies.setItem('giftBuyProducts', giftBuyProducts, 30*24*60, '/', 'enter.ru');
-	});
 });
