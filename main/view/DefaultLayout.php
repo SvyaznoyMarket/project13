@@ -933,6 +933,10 @@ class DefaultLayout extends Layout {
         return '';
     }
 
+    public function slotHubrusJS() {
+        return \App::config()->partners['Hubrus']['enabled'] ? '<div id="hubrusJS" class="jsanalytics"></div>' :  '';
+    }
+
     public function slotMailRu() {
         return $this->render('_mailRu', [
             'pageType' => 'other',
