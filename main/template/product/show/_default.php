@@ -130,8 +130,8 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
             'additionalData' => $additionalData,
             'class'          => (bool)$accessoryCategory ? 'slideItem-3item' : 'slideItem-5item',
             'sender'         => [
-                //'name'     => null,
-                'position' => 'ProductAccessoriesManual',
+                'name'     => 'enter',
+                'position' => $isProductAvailable ? 'ProductAccessoriesManual' : 'ProductMissing',
             ],
         ]) ?>
     <? endif ?>
@@ -148,7 +148,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
             'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
             'sender'         => [
                 'name'     => 'retailrocket',
-                'position' => 'ProductAccessories', // все правильно - так и надо!
+                'position' => $isProductAvailable ? 'ProductAccessories' : 'ProductMissing', // все правильно - так и надо!
             ],
         ]) ?>
     <? endif ?>
@@ -296,7 +296,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
         'url'       => $page->url('product.recommended', ['productId' => $product->getId()]),
         'sender'    => [
             'name'     => 'enter',
-            'position' => 'Viewed',
+            'position' => $isProductAvailable ? 'Viewed' : 'ProductMissing',
         ],
     ]) ?>
 <? endif ?>
