@@ -436,6 +436,7 @@ class AppConfig {
     public $cart = [
         'productLimit' => null, // максимальное количество товаров в корзине, при котором добавляемый товар не будет вытеснять первый товар из корзины
         'sessionName'  => null,
+        'checkStock'   => null, // проверять количество товара при добавлении в корзину
     ];
     /** @var array */
     public $user = [
@@ -534,7 +535,7 @@ class AppConfig {
     ];
 
     /**
-     * @name Enterprize SITE-2622
+     * @name Enterprize array SITE-2622
      * @var array
      */
     public $enterprize = [

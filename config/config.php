@@ -254,7 +254,7 @@ $c->partners['Revolver']['enabled'] = true;
 $c->partners['Insider']['enabled'] = true;
 $c->partners['GetIntent']['enabled'] = true;
 $c->partners['AddThis']['enabled'] = true;
-$c->partners['AdvMaker']['enabled'] = true;
+$c->partners['AdvMaker']['enabled'] = false;
 
 $c->adFox['enabled'] = true;
 
@@ -389,6 +389,7 @@ $c->banner['url'] = [
 
 $c->cart['productLimit'] = 30;
 $c->cart['sessionName'] = 'userCart';
+$c->cart['checkStock'] = false;
 
 $c->payment['creditEnabled'] = true;
 $c->payment['paypalECS'] = false;

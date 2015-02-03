@@ -34,6 +34,9 @@ if (!$lifeGiftProduct) $lifeGiftProduct = null;
 $isKitPage = (bool)$product->getKit();
 
 $isProductAvailable = $product->isAvailable();
+if (\App::config()->preview) {
+    $isProductAvailable = true;
+}
 
 $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
 ?>

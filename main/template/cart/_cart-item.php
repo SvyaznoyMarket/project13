@@ -21,7 +21,7 @@
 
                     <div class="numerbox">
                         <a href="" data-bind="attr: { href: '/cart/add-product/' + id + '?quantity=' + (quantity() - 1) }" class="ajaxLess"><b class="ajaless" title="Уменьшить"></b></a>
-                        <input maxlength="2" class="ajaquant" value="" data-bind="value: quantity()" disabled>
+                        <input maxlength="2" class="ajaquant" value="" data-bind="value: quantity(), attr: {'data-url': '/cart/add-product/' + id }">
                         <a href="" data-bind="attr: { href: '/cart/add-product/' + id + '?quantity=' + (quantity() + 1) }" class="ajaxMore"><b class="ajamore" title="Увеличить"></b></a>
                     </div>                    </div>
             </div>

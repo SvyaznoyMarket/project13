@@ -3,6 +3,7 @@
 namespace Controller\Cart;
 
 class ProductAction {
+
     /**
      * @param int           $productId
      * @param \Http\Request $request
@@ -46,10 +47,15 @@ class ProductAction {
                 throw new \Exception(sprintf('Товар #%s не найден', $productId));
             }
 
+            if (\App::config()->cart['checkStock'] && !empty($product->getStock())) {
+                if ($quantity > $product->getStockWithMaxQuantity()->getQuantity()) {
+                    throw new \Exception('Нет запрошенного количества товара');
+                }
+            }
+
             // не учитываем является ли товар набором или нет - за это отвечает ядро
             $cart->setProduct($product, $quantity, $params);
             $cartProduct = $cart->getProductById($product->getId());
-            //$this->updateCartWarranty($product, $cartProduct, $quantity);
 
             $returnRedirect = $request->headers->get('referer') ?: ($product->getLink() ?: \App::router()->generate('homepage'));
             if (\App::abTest()->getTest('other')) {
@@ -93,7 +99,7 @@ class ProductAction {
                     'cart'       => [
                         'sum'           => $cartProduct ? $cartProduct->getSum() : 0,
                         'quantity'      => $quantity,
-                        'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
+                        'full_quantity' => $cart->getProductsQuantity(),
                         'full_price'    => $cart->getSum(),
                         'old_price'     => $cart->getOriginalSum(),
                         'link'          => \App::router()->generate('order'),
@@ -145,8 +151,6 @@ class ProductAction {
             $params['sender'] = $sender;
         }
 
-        $responseData = [];
-
         try {
             $productData = (array)$request->get('product');
             if (!(bool)$productData) {
@@ -195,9 +199,8 @@ class ProductAction {
                 $productQuantity = isset($productQuantitiesById[$productId]) ? $productQuantitiesById[$productId] : null;
                 if (!$productQuantity) continue;
 
+
                 $cart->setProduct($product, $productQuantity + $cart->getQuantityByProduct($productId), $params);
-                $cartProduct = $cart->getProductById($product->getId());
-                //$this->updateCartWarranty($product, $cartProduct, $productQuantity);
 
                 $quantity += $cart->getQuantityByProduct($productId);
             }
@@ -261,7 +264,7 @@ class ProductAction {
                 'cart'    => [
                     'sum'           => $result['sum'],
                     'quantity'      => $quantity,
-                    'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
+                    'full_quantity' => $cart->getProductsQuantity(),
                     'full_price'    => $cart->getSum(),
                     'old_price'     => $cart->getOriginalSum(),
                     'link'          => \App::router()->generate('order'),
@@ -301,54 +304,8 @@ class ProductAction {
      */
     public function delete(\Http\Request $request, $productId) {
         \App::logger()->debug('Exec ' . __METHOD__);
-
-        /*
-        $quantity = (int)$request->get('quantity', 1); // какое кол-во товаров нужно удалить
-        $cart = \App::user()->getCart();
-
-        if ( $cart && $quantity ) {
-            $cartProduct = $cart->getProductById($productId);
-            if ( $cartProduct ) {
-                // Если такой товар уже есть в корзине, уменьшим его количество
-                $quantity = $cartProduct->getQuantity() - $quantity;
-                if ( $quantity < 0 ) $quantity = 0;
-            }
-        }
-        $request->query->set('quantity', $quantity);
-        */
-
-        //p($request,'','f');
         $request->query->set('quantity', 0);
-
         return $this->set($productId, $request);
     }
 
-    protected function updateCartWarranty(\Model\Product\Entity $product, \Model\Cart\Product\Entity $cartProduct = null) {
-        // обновить количество гарантий для товара
-        if ($cartProduct && (bool)$cartProduct->getWarranty()) {
-            try {
-                $cartWarranties = $cartProduct->getWarranty();
-                /** @var $cartWarranty \Model\Cart\Warranty\Entity|null */
-                $cartWarranty = reset($cartWarranties);
-                if (!$cartWarranty) {
-                    throw new \Exception(sprintf('Не найдена расширенная гарантия на товар #%s', $product->getId()));
-                }
-
-                $warranty = null;
-                foreach ($product->getWarranty() as $iWarranty) {
-                    if ($iWarranty->getId() == $cartWarranty->getId()) {
-                        $warranty = $iWarranty;
-                        break;
-                    }
-                }
-                if (!$warranty) {
-                    throw new \Exception(sprintf('Не найдена расширенная гарантия #%s на товар #%s', $cartWarranty->getId(), $product->getId()));
-                }
-
-                \App::user()->getCart()->setWarranty($warranty, $product->getId());
-            } catch (\Exception $e) {
-                \App::logger()->error($e);
-            }
-        }
-    }
 }

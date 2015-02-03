@@ -343,8 +343,26 @@ class BasicEntity {
         $this->stock[] = $stock;
     }
 
+    /**
+     * @return Stock\Entity[]
+     */
     public function getStock() {
         return $this->stock;
+    }
+
+    /** Возвращает сток с максимальным количеством товара
+     * @return Stock\Entity|null
+     */
+    public function getStockWithMaxQuantity(){
+
+        if (empty($this->stock)) return null;
+
+        $maxStock = $this->stock[0];
+        foreach ($this->stock as $stock) {
+            if ($stock->getQuantity() > $maxStock->getQuantity()) $maxStock = $stock;
+        }
+
+        return $maxStock;
     }
 
     /**
