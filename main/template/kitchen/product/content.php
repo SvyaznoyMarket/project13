@@ -53,7 +53,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
         <span class="bPageHead__eArticle">Артикул: <?= $product->getArticle() ?></span>
     </div>
 
-    <?= $helper->render('product/__photo', ['product' => $product, 'useLens' => $useLens]) ?>
+    <?= $helper->render('kitchen/product/__photo', ['product' => $product, 'useLens' => $useLens]) ?>
 </div>
 
 <div class="bProductSectionRightCol">
