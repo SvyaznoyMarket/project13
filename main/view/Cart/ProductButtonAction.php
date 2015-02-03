@@ -82,6 +82,12 @@ class ProductButtonAction {
             $data['url'] = '#';
             $data['class'] .= ' mDisabled jsBuyButton';
             $data['value'] = 'Нет';
+        } else if ($_SERVER['APPLICATION_ENV'] === 'local') {
+            $data['class'] .= ' js-kitchenBuyButton';
+            $data['value'] = 'product-card' === $location ? 'Отправить заявку' : 'Как купить?';
+            $data['full'] = 'product-card' === $location ? '0' : '1';
+            $data['productUrl'] = $product->getLink();
+            $data['partner'] = 'ООО МЕГАЭЛАТОН';
         } else if ($product->isInShopStockOnly() && $forceDefaultBuy) {
             if ($reserveAsBuy) {
                 $data['id'] = 'quickBuyButton-' . $product->getId();

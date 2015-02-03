@@ -488,7 +488,12 @@ class IndexAction {
             }
         }
 
-        $page = new \View\Product\IndexPage();
+        if ($_SERVER['APPLICATION_ENV'] === 'local') {
+            $page = new \View\Kitchen\Product();
+        } else {
+            $page = new \View\Product\IndexPage();
+        }
+
         $page->setParam('renderer', \App::closureTemplating());
         $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('product', $product);

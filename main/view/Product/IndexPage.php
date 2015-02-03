@@ -85,15 +85,6 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotContentHead() {
-        // заголовок контента страницы
-        if (!$this->hasParam('title')) {
-            $this->setParam('title', null);
-        }
-        // навигация
-        if (!$this->hasParam('breadcrumbs')) {
-            $this->setParam('breadcrumbs', []);
-        }
-
         return $this->render('product/_contentHead', $this->params);
     }
 
