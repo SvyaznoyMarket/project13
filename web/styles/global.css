@@ -2315,14 +2315,29 @@ img[height="0"] {
     border-bottom: 6px solid #ffa901;
     top: 80px;
   }
-  .header_nav .navsite_i:last-child:hover .navsite2_i-child .navsite2_lk:hover:before {
+  .header_nav .navsite_i:last-child:hover .navsite2_i-child .navsite2_lk:hover:before,
+  .header_nav .navsite_i:nth-last-child(2):hover .navsite2_i-child .navsite2_lk:hover:before {
+    z-index: 9;
+    right: 198px;
+    margin-top: -8px;
     position: absolute;
     content: '';
     width: 0;
     height: 0;
-    border-top: 8px solid transparent;
-    border-left: 8px solid transparent;
-    border-bottom: 8px solid transparent;
+    border-top: 0 solid transparent;
+    border-left: 0 solid transparent;
+    border-bottom: 0 solid transparent;
+    top: 50%;
+  }
+  .header_nav .navsite_i:last-child:hover .navsite2_i-child .navsite2_lk:hover:after,
+  .header_nav .navsite_i:nth-last-child(2):hover .navsite2_i-child .navsite2_lk:hover:after {
+    position: absolute;
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 0 solid transparent;
+    border-right: 0 solid transparent;
+    border-bottom: 0 solid transparent;
     top: 50%;
   }
   .header_nav .navsite_icon {
