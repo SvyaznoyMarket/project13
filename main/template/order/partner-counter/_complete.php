@@ -9,19 +9,26 @@
 
 <? if (\App::config()->analytics['enabled']): ?>
     <?
+    $orderParams = [
+        'orders' => $orders,
+        'productsById' => $productsById
+    ];
     switch (\App::partner()->getName()) {
         /*case \Partner\Counter\Admitad::NAME:
         case \Partner\Counter\Admitad::NAME_SYNONYM:
             echo $page->tryRender('order/partner-counter/_admitad-complete', array('orders' => $orders, 'productsById' => $productsById));
             break;*/
         case \Partner\Counter\Actionpay::NAME:
-            echo $page->tryRender('order/partner-counter/_actionpay-complete', array('orders' => $orders, 'productsById' => $productsById));
+            echo $page->tryRender('order/partner-counter/_actionpay-complete', $orderParams);
             break;
         case \Partner\Counter\CityAds::NAME:
-            echo $page->tryRender('order/partner-counter/_cityads-complete-pixel', array('orders' => $orders, 'productsById' => $productsById));
+            echo $page->tryRender('order/partner-counter/_cityads-complete-pixel', $orderParams);
             break;
         case 'hubrus':
-            echo $page->tryRender('order/partner-counter/_hubrus-complete', array('orders' => $orders, 'productsById' => $productsById));
+            echo $page->tryRender('order/partner-counter/_hubrus-complete', $orderParams);
+            break;
+        case 'advmaker':
+            echo $page->tryRender('order/partner-counter/_advmaker', $orderParams);
             break;
         /*
         case \Partner\Counter\Reactive::NAME:

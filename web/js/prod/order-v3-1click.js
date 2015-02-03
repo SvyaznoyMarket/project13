@@ -1742,13 +1742,21 @@
 							if (response.result.lastPartner != 'hubrus' || !window.smartPixel1) return;
 							product = response.result.orders[0].products[0];
 							orderId = response.result.orders[0].id;
-							console.log('Hubrus', product, orderId);
 							smartPixel1.trackState('oneclick_complete', {
 								cart_items: [{
 									price: product.price,
 									id: product.id
 								}],
 								order_id: orderId
+							});
+						})();
+
+						/* AdvMaker */
+						(function(){
+							if (response.result.lastPartner != 'advmaker') return;
+							$.get('http://am15.net/s2s.php', {
+								'ams2s': docCookies.get('ams2s'),
+								'orders': response.result.orders[0].id
 							});
 						})();
 
