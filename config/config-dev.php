@@ -32,6 +32,9 @@ $c->googleAnalytics['enabled'] = false;
 $c->yandexMetrika['enabled'] = false;
 $c->adFox['enabled'] = false;
 
+$c->partners['AddThis']['enabled'] = false;
+$c->partners['AdvMaker']['enabled'] = false;
+
 $c->paymentPsb['terminal']     = '79036768';
 $c->paymentPsb['merchant']     = '790367686219999';
 $c->paymentPsb['merchantName'] = 'Enter';

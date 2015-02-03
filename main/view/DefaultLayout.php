@@ -929,6 +929,10 @@ class DefaultLayout extends Layout {
         return '';
     }
 
+    public function slotAdvMakerJS() {
+        return '';
+    }
+
     public function slotMailRu() {
         return $this->render('_mailRu', [
             'pageType' => 'other',

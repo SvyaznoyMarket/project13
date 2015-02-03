@@ -1,6 +1,6 @@
 <?php
 return function () {
-
+if (!\App::config()->partners['AddThis']['enabled']) return ''
 ?>
 
 <? /* // LikeButtons (www.addthis.com)

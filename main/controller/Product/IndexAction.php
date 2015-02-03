@@ -90,6 +90,8 @@ class IndexAction {
             return new \Http\RedirectResponse($product->getLink() . ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), 302);
         }
 
+        \Session\ProductPageSenders::add($product->getUi(), $request->query->get('sender'));
+
         // подготовка 3-го пакета запросов
         $lifeGiftProduct = null;
         if ($product->getLabel() && (\App::config()->lifeGift['labelId'] === $product->getLabel()->getId())) {

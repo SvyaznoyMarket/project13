@@ -12,6 +12,7 @@ class ShowAction {
      * @param \View\Cart\ProductButtonAction $cartButtonAction
      * @param \View\Product\ReviewCompactAction $reviewtAction
      * @param int $imageSize
+     * @param array $cartButtonSender
      * @return array
      */
     public function execute(
@@ -22,7 +23,8 @@ class ShowAction {
         $showState = true,
         $cartButtonAction = null,
         $reviewtAction = null,
-        $imageSize = 2
+        $imageSize = 2,
+        array $cartButtonSender = []
     ) {
         /** @var $product \Model\Product\Entity */
 
@@ -111,7 +113,7 @@ class ShowAction {
         if ($buyMethod && in_array(strtolower($buyMethod), ['none', 'false'])) {
             $productItem['cartButton'] = null;
         } else {
-            $productItem['cartButton'] = $cartButtonAction ? $cartButtonAction->execute($helper, $product) : null;
+            $productItem['cartButton'] = $cartButtonAction ? $cartButtonAction->execute($helper, $product, null, false, $cartButtonSender) : null;
         }
 
         return $productItem;

@@ -662,7 +662,9 @@
 	var product = $('#jsProductCard').data('value'),
         packageSetBtn = $('.jsChangePackageSet'),
 		packageSetWindow = $('.jsPackageSetPopup'),
-        packageProducts = $('.mPackageSetEdit').data('value');
+		data = $('.js-packageSetEdit').data('value'),
+        sender = data.sender,
+        packageProducts = data.products;
 
 	/**
 	 * Показ окна с изменение комплекта 
@@ -803,12 +805,16 @@
             self.buyLink = ko.computed(function(){
                 var link = '/cart/set-products?',
                     id = 0;
+
                 ko.utils.arrayForEach(self.products(), function(item){
                     if (item.count() > 0 ) {
                         link += 'product['+id+'][id]=' + item.id + '&product['+id+'][quantity]=' + item.count() + '&';
                         id += 1;
                     }
                 });
+
+				link += $.param({sender: sender});
+
                 return link;
             });
 
@@ -1019,105 +1025,12 @@ $(document).ready(function() {
 				$.get(url, data, successHandler);
 
 				return false;
-            },
-
-            handleOneClick = function(e) {
-                console.info('show one click form');
-
-                var button = $(this),
-                    $target = $(button.data('target')),
-                    $orderContent = $('#js-order-content')
-                ; // end of vars
-
-                $('.shopsPopup').find('.close').trigger('click'); // закрыть выбор магазинов
-                $('.jsOneClickCompletePage').remove(); // удалить ранее созданный контент с оформленным заказом
-                $('#jsOneClickContentPage').show();
-
-                // mask
-                $.mask.definitions['x']='[0-9]';
-                $.mask.placeholder= "_";
-                $.mask.autoclear= false;
-                $.map($('#jsOneClickContent').find('input'), function(elem, i) {
-                    if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
-                });
-
-                console.warn($target.length);
-                if ($target.length) {
-                    var data = $.parseJSON($orderContent.data('param'));
-                    data.quantity = button.data('quantity');
-                    data.shopId = button.data('shop');
-                    $orderContent.data('shop', data.shopId);
-
-                    if (button.data('title')) {
-                        $target.find('.jsOneClickTitle').text(button.data('title'));
-                    }
-
-                    $target.lightbox_me({
-                        centered: true,
-						sticky: '#jsOneClickContent' != button.data('target'),
-                        closeSelector: '.close',
-                        removeOtherOnCreate: false,
-                        closeClick: false,
-                        closeEsc: false,
-                        onLoad: function() {
-                            $('#OrderV3ErrorBlock').empty().hide();
-							$('.jsOrderV3PhoneField').focus();
-                        }
-                    });
-
-                    $.ajax({
-                        url: $orderContent.data('url'),
-                        type: 'POST',
-                        data: data,
-                        dataType: 'json',
-                        beforeSend: function() {
-                            $orderContent.fadeOut(500);
-                            //if (spinner) spinner.spin(body)
-                        },
-                        closeClick: false
-                    }).fail(function(jqXHR){
-                        var response = $.parseJSON(jqXHR.responseText);
-
-                        if (response.result && response.result.errorContent) {
-                            $('#OrderV3ErrorBlock').html($(response.result.errorContent).html()).show();
-                        }
-                    }).done(function(data) {
-                        console.log("Query: %s", data.result.OrderDeliveryRequest);
-                        console.log("Model:", data.result.OrderDeliveryModel);
-                        $orderContent.empty().html($(data.result.page).html());
-
-                        ENTER.OrderV3.constructors.smartAddress();
-                        $orderContent.find('input[name=address]').focus();
-                    }).always(function(){
-                        $orderContent.stop(true, true).fadeIn(200);
-                        //if (spinner) spinner.stop();
-
-                        $('body').trigger('trackUserAction', ['0 Вход']);
-                    });
-
-                    //return false;
-                    e.preventDefault();
-                }
-            },
-
-            toggleOneClickDelivery = function toggleOneClickDelivery() {
-            	var button = $(this),
-            		$toggleNote = $('.js-order-oneclick-delivery-toggle-btn-note'),
-            		$toggleBox = $('.js-order-oneclick-delivery-toggle');
-
-            		button.toggleClass('orderU_lgnd-tggl-cur');
-            		$toggleBox.toggle();
-            		$toggleNote.toggleClass('orderU_lgnd_tgglnote-cur')
-
-                $('body').trigger('trackUserAction', ['2 Способ получения']);
             };
 		// end of functions
 
 		$('.jsPayPalButton').bind('click', buyOneClickAndRedirect);
 		$('.jsLifeGiftButton').bind('click', buyOneClickAndRedirect);
 		$('.jsOneClickButton').bind('click', buyOneClickAndRedirect);
-        $('.jsOneClickButton-new').bind('click', handleOneClick);
-		$('.js-order-oneclick-delivery-toggle-btn').on('click', toggleOneClickDelivery);
 	})();
 
 
