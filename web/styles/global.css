@@ -1409,6 +1409,7 @@ img[height="0"] {
 @media all {
   .main-new .header {
     padding-bottom: 0;
+    margin-left: 0;
   }
   .main-new .header_b {
     border-right: 1px solid #c7c7c7;
@@ -1425,8 +1426,8 @@ img[height="0"] {
   }
   .header {
     width: 960px;
-    margin: 0 auto;
     padding: 0 0 20px;
+    margin: 0 0 0 -10px;
     background: #ffffff;
   }
   .header-new {
@@ -2084,10 +2085,12 @@ img[height="0"] {
   .navsite_i:first-child:hover .navsite2 {
     left: -6px;
   }
-  .navsite_i:last-child:hover .navsite2 {
+  .navsite_i:last-child:hover .navsite2,
+  .navsite_i:nth-last-child(2):hover .navsite2 {
     left: -141px;
   }
-  .navsite_i:last-child:hover .navsite2_i-child .navsite2_lk:hover:before {
+  .navsite_i:last-child:hover .navsite2_i-child .navsite2_lk:hover:before,
+  .navsite_i:nth-last-child(2):hover .navsite2_i-child .navsite2_lk:hover:before {
     z-index: 9;
     right: 198px;
     margin-top: -8px;
@@ -2100,7 +2103,8 @@ img[height="0"] {
     border-bottom: 8px solid transparent;
     top: 50%;
   }
-  .navsite_i:last-child:hover .navsite2_i-child .navsite2_lk:hover:after {
+  .navsite_i:last-child:hover .navsite2_i-child .navsite2_lk:hover:after,
+  .navsite_i:nth-last-child(2):hover .navsite2_i-child .navsite2_lk:hover:after {
     position: absolute;
     content: '';
     width: 0;
@@ -2110,7 +2114,8 @@ img[height="0"] {
     border-bottom: 0 solid transparent;
     top: 50%;
   }
-  .navsite_i:last-child .navsite3 {
+  .navsite_i:last-child .navsite3,
+  .navsite_i:nth-last-child(2) .navsite3 {
     left: -200px;
     width: 195px;
     padding-right: 209px;
@@ -2316,14 +2321,29 @@ img[height="0"] {
     border-bottom: 6px solid #ffa901;
     top: 80px;
   }
-  .header_nav .navsite_i:last-child:hover .navsite2_i-child .navsite2_lk:hover:before {
+  .header_nav .navsite_i:last-child:hover .navsite2_i-child .navsite2_lk:hover:before,
+  .header_nav .navsite_i:nth-last-child(2):hover .navsite2_i-child .navsite2_lk:hover:before {
+    z-index: 9;
+    right: 198px;
+    margin-top: -8px;
     position: absolute;
     content: '';
     width: 0;
     height: 0;
-    border-top: 8px solid transparent;
-    border-left: 8px solid transparent;
-    border-bottom: 8px solid transparent;
+    border-top: 0 solid transparent;
+    border-left: 0 solid transparent;
+    border-bottom: 0 solid transparent;
+    top: 50%;
+  }
+  .header_nav .navsite_i:last-child:hover .navsite2_i-child .navsite2_lk:hover:after,
+  .header_nav .navsite_i:nth-last-child(2):hover .navsite2_i-child .navsite2_lk:hover:after {
+    position: absolute;
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 0 solid transparent;
+    border-right: 0 solid transparent;
+    border-bottom: 0 solid transparent;
     top: 50%;
   }
   .header_nav .navsite_icon {
@@ -2662,12 +2682,12 @@ img[height="0"] {
     *float: left;
     *clear: right;
     *zoom: 1;
-    padding: 0 10px;
+    padding: 0 65px 0 10px;
   }
   .footer_cmpn_i:last-child,
   .footer_cmpn_i-last {
     text-align: right;
-    padding-left: 0;
+    padding: 0 10px 0 0;
   }
   .footer_inf {
     float: left;
@@ -8680,36 +8700,36 @@ img[height="0"] {
   }
   .bonusCnt-v2 .bonusCnt_popup {
     position: absolute;
-    background: #fff;
+    background: #ffffff;
     border: 1px solid #d3d3d3;
     border-radius: 0 4px 4px 0;
-    box-shadow: 0px 2px 5px #939393;
-    bottom: -30px;
-    right: -75px;
+    box-shadow: 0 2px 5px #939393;
+    top: -158px;
+    left: 320px;
     width: 222px;
     padding: 10px;
   }
   .bonusCnt-v2 .bonusCnt_popup:after {
+    bottom: 44px;
+    left: -13px;
     width: 0;
     height: 0;
-    content: '';
-    border-top: 10px solid transparent;
-    border-right: 15px solid #fff;
-    border-bottom: 10px solid transparent;
+    content: "";
     position: absolute;
-    bottom: 45px;
-    left: -15px;
+    border-top: 13px solid transparent;
+    border-right: 13px solid #ffffff;
+    border-bottom: 13px solid transparent;
   }
   .bonusCnt-v2 .bonusCnt_popup:before {
+    bottom: 42px;
+    left: -15px;
     width: 0;
     height: 0;
-    content: '';
-    border-top: 13px solid transparent;
-    border-right: 17px solid #d3d3d3;
-    border-bottom: 13px solid transparent;
+    content: "";
     position: absolute;
-    bottom: 42px;
-    left: -17px;
+    border-top: 15px solid transparent;
+    border-right: 15px solid #d3d3d3;
+    border-bottom: 15px solid transparent;
   }
 }
 @media all {

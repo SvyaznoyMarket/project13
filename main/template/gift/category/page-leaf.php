@@ -7,6 +7,7 @@
  * @var array $productVideosByProduct
  * @var int $columnCount
  * @var bool $isNewMainPage
+ * @var array $cartButtonSender
  */
 
 $helper = new \Helper\TemplateHelper();
@@ -34,7 +35,8 @@ $helper = new \Helper\TemplateHelper();
             'bannerPlaceholder'      => [],
             'listingStyle'           => null,
             'columnCount'            => $columnCount,
-            'class'                  => 'lstn-btn2'
+            'class'                  => 'lstn-btn2',
+            'cartButtonSender'    => $cartButtonSender
         ]) ?>
     </div>
     

@@ -26,6 +26,8 @@ $isNewRecommendation =
     && $test->getChosenCase()
     && ('new_recommendation' == $test->getChosenCase()->getKey())
 ;
+
+$buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
@@ -113,7 +115,7 @@ $isNewRecommendation =
         <?= $helper->render('cart/__button-product', [
             'product'  => $product,
             'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
-            'sender'   => (array)$request->get('sender') + ['name' => null, 'method' => null, 'position' => null],
+            'sender'   => $buySender,
             'location' => 'product-card',
         ]) // Кнопка купить ?>
 
@@ -122,13 +124,19 @@ $isNewRecommendation =
         <div id="coupeError" class="red" style="display:none"></div>
 
         <? if (!$isKitPage || $product->getIsKitLocked()): ?>
-            <?= $helper->render('cart/__button-product-oneClick', ['product' => $product]) // Покупка в один клик ?>
+            <?= $helper->render('cart/__button-product-oneClick', ['product' => $product, 'sender'  => $buySender]) // Покупка в один клик ?>
         <? endif ?>
 
         <? if (5 !== $product->getStatusId()): // SITE-3109 ?>
             <?= $helper->render('product/__delivery', ['product' => $product, 'deliveryData' => $deliveryData, 'shopStates' => $shopStates]) // Доставка ?>
         <? endif ?>
     </div><!--/widget delivery -->
+
+    <?/*= $helper->render('cart/__form-oneClick', [
+        'product' => $product,
+        'region'  => \App::user()->getRegion(),
+        'sender'  => $buySender,
+    ])*/ // Форма покупки в один клик ?>
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
 

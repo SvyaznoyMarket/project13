@@ -6,7 +6,8 @@
 		});
 	}
 
-	changeSocnetLinks($('.js-registerForm-subscribe')[0].checked);
+	var $subscribe = $('.js-registerForm-subscribe');
+	changeSocnetLinks($subscribe.length && $subscribe[0].checked);
 
 	var
 		$authBlock = $('#auth-block'),
