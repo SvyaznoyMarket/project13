@@ -20,6 +20,9 @@
         case \Partner\Counter\CityAds::NAME:
             echo $page->tryRender('order/partner-counter/_cityads-complete-pixel', array('orders' => $orders, 'productsById' => $productsById));
             break;
+        case 'hubrus':
+            echo $page->tryRender('order/partner-counter/_hubrus-complete', array('orders' => $orders, 'productsById' => $productsById));
+            break;
         /*
         case \Partner\Counter\Reactive::NAME:
             echo $page->tryRender('order/partner-counter/_reactive-complete', array('orders' => $orders));

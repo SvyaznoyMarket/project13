@@ -16,6 +16,7 @@ class CompareAction {
     }
 
     public function execute(\Http\Request $request) {
+        $products = [];
         $compareProducts = $this->session->get($this->compareSessionKey);
         if ($compareProducts && is_array($compareProducts)) {
             $productData = null;
@@ -31,8 +32,11 @@ class CompareAction {
                     'geo_id'      => \App::user()->getRegion()->getId(),
                 ],
                 [],
-                function($data) use(&$productData) {
+                function($data) use(&$productData, &$products) {
                     $productData = $data;
+                    foreach ($data as $d) {
+                        if (isset($d['id'])) $products[$d['id']] = new \Model\Product\Entity($d);
+                    }
                 }
             );
             
@@ -42,18 +46,19 @@ class CompareAction {
             
             $client->execute();
 
-            $compareGroups = $this->getCompareGroups($compareProducts, $productData, $reviewsData);
+            $compareGroups = $this->getCompareGroups($compareProducts, $products, $reviewsData);
         } else {
             $compareGroups = [];
         }
 
         $page = new \View\Compare\CompareLayout();
+        $page->setParam('products', $products);
         $page->setParam('compareGroups', $compareGroups);
         $page->setParam('activeCompareGroupIndex', $this->getActiveCompareGroupIndex($compareGroups, $request->get('typeId')));
         return new \Http\Response($page->show());
     }
 
-    private function getCompareGroups(array $compareProducts, $productData, $reviewsData) {
+    private function getCompareGroups(array $compareProducts, $products, $reviewsData) {
         $compareGroups = [];
         
         $reviews = [];
@@ -63,13 +68,8 @@ class CompareAction {
             }
         }
         
-        if (is_array($productData)) {
-            $products = [];
-            foreach ($productData as $item) {
-                $product = new \Model\Product\Entity($item);
-                $products[$product->getId()] = $product;
-            }
-            
+        if (is_array($products)) {
+
             foreach ($compareProducts as $compareProduct) {
                 /** @var \Model\Product\Entity $product */
                 $product = $products[$compareProduct['id']];

@@ -2,7 +2,7 @@
 
 return function(
     \Helper\TemplateHelper $helper,
-    \Model\Product\BasicEntity $product
+    \Model\Product\Entity $product
 ) {
     $data = [
         'id'      => $product->getId(),
@@ -14,7 +14,8 @@ return function(
             'default' => $product->getImageUrl(3),
             'big'     => $product->getImageUrl(2),
         ],
-        'isSupplied'  => $product->getState() ? $product->getState()->getIsSupplier() : false,
+        'category'  => $product->getCategory(),
+        'isSupplied'  => $product->getState() ? $product->getState()->getIsSupplier() : false, // @deprecated ?
         'stockState'  =>
             $product->getIsBuyable()
             ? 'in stock'

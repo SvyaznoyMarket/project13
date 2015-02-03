@@ -1654,14 +1654,14 @@
 				}
 
 				/*if ($deliveryMethod.text() == 'Самовывоз' && $('.orderCol_addrs_tx').text().replace(/\s/g, '') == '') {
-					error.push('Не выбран адрес доставки или самовывоза');
-				}
+				 error.push('Не выбран адрес доставки или самовывоза');
+				 }
 
-				if ($deliveryMethod.text() == 'Доставка') {
-					if (!ENTER.OrderV31Click.address || !ENTER.OrderV31Click.address.building.name) {
-						error.push('Не выбран адрес доставки или самовывоза');
-					}
-				}*/
+				 if ($deliveryMethod.text() == 'Доставка') {
+				 if (!ENTER.OrderV31Click.address || !ENTER.OrderV31Click.address.building.name) {
+				 error.push('Не выбран адрес доставки или самовывоза');
+				 }
+				 }*/
 
 				return error;
 			};
@@ -1697,7 +1697,7 @@
 				beforeSend: function(){
 					$submitBtn.attr('disabled', true)
 				}
-				})
+			})
 				.always(function(){
 					$submitBtn.attr('disabled', false)
 				})
@@ -1733,6 +1733,22 @@
 									orderProducts: products,
 									orderRevenue: revenue + ''
 								});
+							});
+						})();
+
+						/* Hubrus order complete code */
+						(function(){
+							var product, orderId;
+							if (response.result.lastPartner != 'hubrus' || !window.smartPixel1) return;
+							product = response.result.orders[0].products[0];
+							orderId = response.result.orders[0].id;
+							console.log('Hubrus', product, orderId);
+							smartPixel1.trackState('oneclick_complete', {
+								cart_items: [{
+									price: product.price,
+									id: product.id
+								}],
+								order_id: orderId
 							});
 						})();
 
