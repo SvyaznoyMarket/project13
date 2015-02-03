@@ -2970,11 +2970,7 @@ img[height="0"] {
   .item_pr {
     font-size: 21px;
     line-height: 24px;
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
+    float: left;
   }
   .item_btn {
     font-size: 14px;
