@@ -3,7 +3,6 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Iterator\EntityPager $pager,
-    array $productVideosByProduct,
     array $bannerPlaceholder = [],
     $listingStyle = null,
     $view,
