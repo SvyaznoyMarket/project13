@@ -53,6 +53,8 @@ class ProductAction {
                 }
             }
 
+            if ($request->query->get('credit') == 'on') $params['credit'] = ['enabled' => true];
+
             // не учитываем является ли товар набором или нет - за это отвечает ядро
             $cart->setProduct($product, $quantity, $params);
             $cartProduct = $cart->getProductById($product->getId());

@@ -96,53 +96,33 @@
  * @requires	jQuery, printPrice, docCookies, JsHttpRequest.js
  */
 ;(function() {
-	if( $('.creditbox').length ) {
-		console.log('## Product has creditbox');
-		var
-			creditBoxNode = $('.creditbox'),
+
+	var creditBoxNode = $('.creditbox');
+
+	if( creditBoxNode.length > 0 ) {
+
+		var	$body = $(document.body),
 			priceNode = creditBoxNode.find('.creditbox__sum strong');
-		// end of vars
 
 		window.creditBox = {
-			cookieTimeout: null,
-			
-			toggleCookie: function( state ) {
-				clearTimeout( this.cookieTimeout );
-				this.cookieTimeout = setTimeout( function(){
-					window.docCookies.setItem('credit_on', state ? 1 : 0 , 60*60, '/');
-				}, 200 );
-			},
 
 			init: function() {
-				var
-					self = this,
-					creditd = $('input[name=dc_buy_on_credit]').data('model'),
-					label = $('.creditbox label');
-				// end of vars
 
-				$('input[type=radio][name=price_or_credit]').change(function( e ) {
-					e.preventDefault();
+				var	creditd = $('input[name=dc_buy_on_credit]').data('model'),
+					label = creditBoxNode.find('label');
 
-					if ( !label.length ) {
-						return;
-					}
+				$('.jsProductCreditRadio').on('change', function() {
+					var status = $(this).val(), // 'on'|'off'
+						$link = $('.js-WidgetBuy .jsBuyButton');
 
-					label.toggleClass('checked');
-					self.toggleCookie( label.hasClass('checked') );
+					if ($link.length > 0) $link.attr('href', ENTER.utils.setURLParam('credit', status, $link.attr('href')));
 				});
 
-				if ( this.getState() === 1 ) {
-					$('.creditbox label').addClass('checked');
-				}
-
-				creditd.count = 1;
-				creditd.cart = '/cart';
-
-				dc_getCreditForTheProduct(
+				if (typeof window.dc_getCreditForTheProduct == 'function') dc_getCreditForTheProduct(
 					4427,
 					window.docCookies.getItem('enter_auth'),
 					'getPayment',
-					{ price : creditd.price, count : creditd.count, type : creditd.product_type },
+					{ price : creditd.price, count : 1, type : creditd.product_type },
 					function( result ) {
 						if( ! 'payment' in result ){
 							return;
@@ -153,23 +133,26 @@
 						}
 					}
 				);
-			},
-			
-			getState: function() {
-				if( ! window.docCookies.hasItem('credit_on') ) {
-					return 0;
-				}
-
-				return window.docCookies.getItem('credit_on');
 			}
+
 		};
+
+		$body.on('userLogged', function(e, data) {
+			if ($.isArray(data.cartProducts)) {
+				var product_id = $('#jsProductCard').data('value')['id'];
+				$.each(data.cartProducts, function(i, val) {
+					if (val['isCredit'] && val['id'] == product_id) {
+						$('#creditinput').attr('checked', true).trigger('change')
+					}
+				})
+			}
+		});
 		
 		creditBox.init();
 	}
 	else {
-		console.log('## Product does not have creditbox');
-		var
-			productDesc = $('.bProductDesc');
+
+		var	productDesc = $('.bProductDesc');
 
 		if ( productDesc.length && !productDesc.hasClass('mNoCredit') ) {
 			productDesc.addClass('mNoCredit'); // добавим класс, дабы скрыть кредитный чекбокс

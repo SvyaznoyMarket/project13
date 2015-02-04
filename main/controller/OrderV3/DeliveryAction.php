@@ -131,6 +131,8 @@ class DeliveryAction extends OrderV3 {
             ];
 
             if ($shopId) $splitData['shop_id'] = (int)$shopId;
+            // Проверка метода getCreditProductIds необходима, т.к. Cart/OneClickCart не имеет этого метода
+            if (method_exists($this->cart, 'getCreditProductIds') && !empty($this->cart->getCreditProductIds())) $splitData['payment_method_id'] = \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT;
         }
 
         $orderDeliveryData = $this->client->query(
