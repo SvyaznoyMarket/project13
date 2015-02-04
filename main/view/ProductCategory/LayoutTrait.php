@@ -5,9 +5,8 @@ namespace View\ProductCategory;
 trait LayoutTrait {
 
     public function slotBodyDataAttribute() {
-        $category = $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null;
-        if ($category) {
-            /** @var $category \Model\Product\Category\Entity */
+        $category = $this->getParam('category');
+        if ($category instanceof \Model\Product\Category\Entity) {
             if ($category->isRoot()) {
                 return 'product_catalog root';
             }
@@ -17,8 +16,10 @@ trait LayoutTrait {
 
 
     public function slotInnerJavascript() {
-        /** @var \Model\Product\Category\Entity $category */
         $category = $this->getParam('category');
+        if (!($category instanceof \Model\Product\Category\Entity)) {
+            return;
+        }
 
         $tag_params = [
             'pagetype' => 'category',

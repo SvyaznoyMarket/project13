@@ -3,11 +3,10 @@
         <div class="slidesBox_btn slidesBox_btn-l jsSlidesWideLeft"></div>
 
         <div class="slidesBox_h_c">
-            <div class="slidesBox_t jsSlidesWideName">Полезные подарки</div>
+            <div class="slidesBox_t jsSlidesWideName">Guess</div>
 
             <ul class="slidesBox_dott">
-                <li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Полезные подарки"></li>
-                <li class="slidesBox_dott_i" data-name="Guess"></li>
+                <li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Guess"></li>
                 <li class="slidesBox_dott_i" data-name="Magic Moments"></li>
                 <li class="slidesBox_dott_i" data-name="Новая ювелирная коллекция"></li>
             </ul>
@@ -18,25 +17,6 @@
 
     <div class="slidesBox_inn">
         <ul class="slidesBox_lst clearfix jsSlidesWideHolder">
-            <li class="slidesBox_i jsSlidesWideItem">
-                <a href="/catalog/tchibo/podarki-c1b8" class="slidesBox_lk"><img src="styles/mainpage/img/tchibo/tchibo-b.jpg" alt="" class="slidesBox_img"></a>
-
-                <ul class="slidesBox_items">
-                    <li class="slidesBox_items_i">
-                        <a href="/product/tchibo/budilnik-na-kolesah-tchibo-2200601000258" class="slidesBox_items_lk"><img src="styles/mainpage/img/tchibo/t-1.png" alt="" class="slidesBox_items_img"></a>
-                    </li>
-
-                    <li class="slidesBox_items_i">
-                        <a href="/product/tchibo/pult-upravleniya-semkoy-dlya-smartfona-tchibo-2200701050252" class="slidesBox_items_lk"><img src="styles/mainpage/img/tchibo/t-2.png" alt="" class="slidesBox_items_img"></a>
-                    </li>
-
-                    <li class="slidesBox_items_i">
-                        <a href="/product/tchibo/perchatki-dlya-sensornih-ekranov-tchibo-2200702000034" class="slidesBox_items_lk"><img src="styles/mainpage/img/tchibo/t-3.png" alt="" class="slidesBox_items_img"></a>
-                    </li>
-                </ul>
-
-                <a href="/catalog/tchibo/podarki-c1b8" class="slidesBox_btnview">Посмотреть<br/>коллекцию</a>
-            </li>
 
             <li class="slidesBox_i jsSlidesWideItem">
                 <a href="/catalog/jewel/guess-5ec8?from=jewel">
@@ -45,15 +25,43 @@
 
                 <ul class="slidesBox_items">
                     <li class="slidesBox_items_i">
-                        <a href="/product/jewel/sergi-guess-ube31304-2033200002961" class="slidesBox_items_lk"><img src="styles/mainpage/img/guess/g-1.png" alt="" class="slidesBox_items_img"></a>
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Браслет Guess UBS91308 </div>
+                        </div>
+
+                        <a href="/product/jewel/braslet-guess-ubs91308-2033200004323" class="slidesBox_items_lk"><img src="http://fs06.enter.ru/1/1/120/3a/335199.jpg" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
-                        <a href="/product/jewel/braslet-guess-ubs91309-2033200004330" class="slidesBox_items_lk"><img src="styles/mainpage/img/guess/g-2.png" alt="" class="slidesBox_items_img"></a>
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Браслет Guess UBB51420 </div>
+                        </div>
+
+                        <a href="/product/jewel/braslet-guess-ubb51420-2033200007409" class="slidesBox_items_lk"><img src="http://fs02.enter.ru/1/1/120/4d/345245.jpg" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
-                        <a href="/product/jewel/sergi-guess-ube91305-2033200004361" class="slidesBox_items_lk"><img src="styles/mainpage/img/guess/g-3.png" alt="" class="slidesBox_items_img"></a>
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Серьги Guess UBE11410 </div>
+                        </div>
+
+                        <a href="/product/jewel/sergi-guess-ube11410-2033200004415" class="slidesBox_items_lk"><img src="http://fs09.enter.ru/1/1/120/26/335016.jpg" alt="" class="slidesBox_items_img"></a>
+                    </li>
+
+                    <li class="slidesBox_items_i">
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Колье Guess UBN81001</div>
+                        </div>
+
+                        <a href="/product/jewel/kole-guess-ubn81001-2033200008246" class="slidesBox_items_lk"><img src="http://fs04.enter.ru/1/1/120/0a/345499.jpg" alt="" class="slidesBox_items_img"></a>
+                    </li>
+
+                    <li class="slidesBox_items_i">
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Кольцо Guess UBR51419</div>
+                        </div>
+
+                        <a href="/product/jewel/koltso-guess-ubr51419-2033200008543" class="slidesBox_items_lk"><img src="http://fs01.enter.ru/1/1/120/f7/353755.jpg" alt="" class="slidesBox_items_img"></a>
                     </li>
                 </ul>
 
@@ -67,14 +75,26 @@
 
                 <ul class="slidesBox_items">
                     <li class="slidesBox_items_i">
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Золотые серьги с фианитами Magic Moments</div>
+                        </div>
+
                         <a href="/product/jewel/zolotie-sergi-s-fianitami-magic-moments-2030000208210" class="slidesBox_items_lk"><img src="styles/mainpage/img/Mmoment/mm-1.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Золотые серьги с фианитами Magic Moments</div>
+                        </div>
+
                         <a href="/product/jewel/zolotie-sergi-s-fianitami-magic-moments-2030000208234" class="slidesBox_items_lk"><img src="styles/mainpage/img/Mmoment/mm-2.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Золотое кольцо с фианитами Magic Moments</div>
+                        </div>
+
                         <a href="/product/jewel/zolotoe-koltso-s-fianitami-magic-moments-2030000207909" class="slidesBox_items_lk"><img src="styles/mainpage/img/Mmoment/mm-3.png" alt="" class="slidesBox_items_img"></a>
                     </li>
                 </ul>
@@ -89,15 +109,43 @@
 
                 <ul class="slidesBox_items">
                     <li class="slidesBox_items_i">
-                        <a href="/product/jewel/serebryanoe-koltso-s-kubicheskim-tsirkoniem-i-kristallami-pandora-190915nbc-54-2034000002212" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pandora-1.png" alt="" class="slidesBox_items_img"></a>
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Подвеска-шарм Мешочек денег Pandora 790332</div>
+                        </div>
+
+                        <a href="/product/jewel/podveska-sharm-meshochek-deneg-pandora-790332-2030000062652" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pandora-2.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
-                        <a href="/product/jewel/podveska-sharm-pandora-791382cz-2034000002540" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pandora-2.png" alt="" class="slidesBox_items_img"></a>
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Серебряные серьги-пуссеты с опалом Pandora 290543POP</div>
+                        </div>
+
+                        <a href="/product/jewel/serebryanie-sergi-pusseti-s-opalom-pandora-290543pop-2030000189533" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pandora-1.png" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                     <li class="slidesBox_items_i">
-                        <a href="/product/jewel/serebryanie-sergi-s-kubicheskim-tsirkoniem-pandora-290560cz-2034000002397" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pandora-3.png" alt="" class="slidesBox_items_img"></a>
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Серебряный браслет с кубическим цирконием Pandora 590720CZ-20</div>
+                        </div>
+
+                        <a href="/product/jewel/pandora-serebryaniy-braslet-s-kubicheskim-tsirkoniem-pandora-590720cz-17-2034000002472-21" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pandora-4.png" alt="" class="slidesBox_items_img"></a>
+                    </li>
+
+                    <li class="slidesBox_items_i">
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Серебряное кольцо с кубическим цирконием, жемчугом и эмалью Pandora 190924P-50</div>
+                        </div>
+
+                        <a href="/product/jewel/pandora-serebryanoe-koltso-s-kubicheskim-tsirkoniem-gemchugom-i-emalyu-pandora-190924p-54-2034000000997-16" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pandora-3.png" alt="" class="slidesBox_items_img"></a>
+                    </li>
+
+                    <li class="slidesBox_items_i">
+                        <div class="slideItem_flt">
+                            <div class="slideItem_flt_i">Серебряная подвеска на цепи с кубическим цирконием, жемчугом и эмалью Pandora 390363P-45</div>
+                        </div>
+
+                        <a href="/product/jewel/serebryanaya-podveska-na-tsepi-s-kubicheskim-tsirkoniem-gemchugom-i-emalyu-pandora-390363p-45-2034000001222" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pandora-5.png" alt="" class="slidesBox_items_img"></a>
                     </li>
                 </ul>
 

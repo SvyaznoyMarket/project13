@@ -14,7 +14,6 @@
 $helper = new \Helper\TemplateHelper();
 $tagCategoryTokens = null;
 $categoriesLinks = []; // дочерние категории для тегов:
-$hotlinks = [];
 
 $tagCategoryTokens = ['tagToken' => $tag->getToken()];
 
@@ -64,7 +63,6 @@ foreach ( $categories as $subCategory ) {
     $helper->render( 'product/__list', [
         'pager' => $productPager,
         'view' => $productView,
-        'productVideosByProduct' => [],
         'bannerPlaceholder' => !empty($bannerPlaceholder) ? $bannerPlaceholder : [],
     ] ) // листинг
     ?>
@@ -72,13 +70,4 @@ foreach ( $categories as $subCategory ) {
     <div class="bSortingLine mPagerBottom clearfix js-category-sortingAndPagination">
         <?= $helper->render('product/__pagination', ['pager' => $productPager]) // листалка ?>
     </div>
-
-    <? if (!empty($seoContent) || (bool)$hotlinks): ?>
-        <div class="bSeoText">
-            <?= $seoContent ?>
-
-            <?= $helper->render('product-category/__hotlink', ['hotlinks' => $hotlinks, 'promoStyle' => []]) // hotlinks ?>
-        </div>
-    <? endif ?>
-
 </div>

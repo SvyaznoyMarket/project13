@@ -5,7 +5,8 @@
 return function (
     \Helper\TemplateHelper $helper,
     array $products,
-    \Model\Product\Entity $product
+    \Model\Product\Entity $product,
+    array $sender = []
 ) {
 
 ?>
@@ -103,7 +104,7 @@ return function (
     <div class="packageSetMainImg"><img src="<?= $product->getImageUrl(3) ?>" /></div>
 
     <!-- Состав комплекта -->
-    <div class="packageSet mPackageSetEdit" data-value="<?= $helper->json($products) ?>">
+    <div class="packageSet mPackageSetEdit js-packageSetEdit" data-value="<?= $helper->json(['products' => $products, 'sender' => $sender]) ?>">
 
         <div class="packageSetHead cleared">
             <span class="packageSetHead_title">Уточните комплектацию</span>
@@ -117,7 +118,7 @@ return function (
                 <div class="packageSetBodyItem_desc">
                     <div class="name"><a class="" href="" data-bind="text: name, attr: { href : url }"></a></div><!--/ название товара -->
 
-                    <div class="price"><span data-bind="text: prettyItemPrice"></span>&nbsp;<span class="rubl">p</span></div> <!-- Цена за единицу товара -->
+                    <div class="price"><span data-bind="html: prettyItemPrice"></span>&nbsp;<span class="rubl">p</span></div> <!-- Цена за единицу товара -->
 
                     <!-- размеры товара -->
                     <div class="column dimantion">
@@ -165,7 +166,7 @@ return function (
                 </div>
 
                 <div class="packageSetBodyItem_price">
-                    <span data-bind="text: prettyPrice"></span>&nbsp;<span class="rubl">p</span>
+                    <span data-bind="html: prettyPrice"></span>&nbsp;<span class="rubl">p</span>
                 </div><!--/ цена -->
             </div>
 
@@ -177,7 +178,7 @@ return function (
                 <label for="defaultSet" class="packageSetLabel" data-bind="css: { mChecked : isBaseKit }, click: resetToBaseKit">Базовый комплект</label>
             </div>
 
-            <div class="packageSetPrice">Итого за <span data-bind="text: totalCount"></span> предметов: <strong data-bind="text: totalPrice"></strong> <span class="rubl">p</span></div>
+            <div class="packageSetPrice">Итого за <span data-bind="text: totalCount"></span> предметов: <strong data-bind="html: totalPrice"></strong> <span class="rubl">p</span></div>
 
             <div class="packageSetBuy btnBuy">
                 <a class="btnBuy__eLink jsBuyButton" href="" data-bind="css: { mDisabled: totalCount() == 0 }, attr: { href: buyLink, 'data-upsale': dataUpsale(<?= $product->getId() ?>) }">Купить</a>

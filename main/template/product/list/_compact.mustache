@@ -19,10 +19,10 @@
                     <div class="shoppilot-category-container" data-product-id="{{id}}"></div>
                 {{/abtestKeys.shoppilot}}
 
+                <p class="bSimplyDesc__eText"><a href="{{link}}">{{name}}</a></p>
                 {{#abtestKeys.default}}
                     {{#review}}{{> product/_review-compact }}{{/review}}
                 {{/abtestKeys.default}}
-                <p class="bSimplyDesc__eText"><a href="{{link}}">{{name}}</a></p>
                 <ul class="bSimplyDescStikers clearfix">
                     {{#label}}
                         <li class="bSimplyDescStikers__eItem mLeftStiker"><img class="SimplyDescStikers__eImg" src="{{image}}" alt="{{name}}" /></li>
@@ -47,7 +47,7 @@
             <div class="bPriceLine clearfix">
                 {{#oldPrice}}
                     <span class="bPriceOld">
-                        <strong class="bDecor">{{oldPrice}}</strong> <span class="rubl">p</span>
+                        <strong class="bDecor">{{&oldPrice}}</strong> <span class="rubl">p</span>
                         {{#priceSale}}
                             <span class="bPriceSale">-{{priceSale}}%</span>
                         {{/priceSale}}
@@ -59,7 +59,7 @@
             </div>
 
             <div class="bPriceLine clearfix">
-                <span class="bPrice{{#priceSale}} bHasSale{{/priceSale}}"><strong>{{price}}</strong> <span class="rubl">p</span></span>
+                <span class="bPrice{{#priceSale}} bHasSale{{/priceSale}}"><strong>{{&price}}</strong> <span class="rubl">p</span></span>
                 {{#hasVariations}}
                 <span class="bOptions"><span class="bDecor">Варианты</span></span>
                 {{/hasVariations}}

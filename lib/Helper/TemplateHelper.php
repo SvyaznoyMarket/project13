@@ -174,8 +174,14 @@ class TemplateHelper {
      * @param string $thousandsDelimiter
      * @return string
      */
-    public function formatPrice($price, $numDecimals = 0, $decimalsDelimiter = ',', $thousandsDelimiter = ' ') {
-        return number_format((float)$price, $numDecimals, $decimalsDelimiter, $thousandsDelimiter);
+    public function formatPrice($price, $numDecimals = 0) {
+        if (strlen((int)$price) >= 5) {
+            $thousandSeparator = '&thinsp;';
+        } else {
+            $thousandSeparator = '';
+        }
+
+        return number_format((float)$price, $numDecimals, '.', $thousandSeparator);
     }
 
     /**
@@ -248,4 +254,17 @@ class TemplateHelper {
 
         return $formatted;
     }
+
+    /** Возвращает номер телефона в зависимости от региона
+     * @return string
+     */
+    public function regionalPhone() {
+        $config = \App::config();
+        $region = \App::user()->getRegion();
+        if (!$region) return $config->company['phone'];
+        if ($region->getId() == 108136) return $config->company['spbPhone'];
+        if ($region->getId() == 14974) return $config->company['moscowPhone'];
+        return $config->company['phone'];
+    }
+
 }

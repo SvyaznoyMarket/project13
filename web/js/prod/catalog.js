@@ -58,7 +58,7 @@
 		catalog = utils.extendApp('ENTER.catalog'),
 
 		filterBlock = $('.js-category-filter'),
-		hasAlwaysShowFilters = filterBlock.hasClass('js-category-filter-hasAlwaysShowFilters'),
+		isV3 = filterBlock.hasClass('js-category-filter-v3'),
 
 		filterOtherParamsToggleButton = filterBlock.find('.js-category-filter-otherParamsToggleButton'),
 		filterOtherParamsContent = filterBlock.find('.js-category-filter-otherParamsContent'),
@@ -67,13 +67,37 @@
 		filterMenuItem = filterBlock.find('.js-category-filter-param'),
 		filterCategoryBlocks = filterBlock.find('.js-category-filter-element'),
 		$priceFilter = $('.js-category-v1-filter-element-price'),
+		$priceForFacetSearch = $('.js-gift-category-filter-element-price'),
 		$otherParams = $('.js-category-v1-filter-otherParams'),
 
 		viewParamPanel = $('.js-category-sortingAndPagination'),
 		filterOpenClass = 'fltrSet_tggl-dn',
 
+		manualDefinedPriceFrom = utils.getURLParam('f-price-from', document.location.href),
+		manualDefinedPriceTo = utils.getURLParam('f-price-to', document.location.href),
+
 		tID;
 	// end of vars
+
+	function setManualDefinedPriceFrom(from, min) {
+		if (manualDefinedPriceFrom != from) {
+			if (from == min) {
+				manualDefinedPriceFrom = null;
+			} else {
+				manualDefinedPriceFrom = from;
+			}
+		}
+	}
+
+	function setManualDefinedPriceTo(to, max) {
+		if (manualDefinedPriceTo != to) {
+			if (to == max) {
+				manualDefinedPriceTo = null;
+			} else {
+				manualDefinedPriceTo = to;
+			}
+		}
+	}
 
 	catalog.filter = {
 		/**
@@ -264,6 +288,45 @@
 			// SITE-4825
 //			catalog.filter.resetForm();
 
+			(function() {
+				if (res.filters && res.filters.price && $priceForFacetSearch.length) {
+					var
+						$slider = $('.js-category-filter-rangeSlider-slider', $priceForFacetSearch),
+						$from = $('.js-category-filter-rangeSlider-from', $priceForFacetSearch),
+						$to = $('.js-category-filter-rangeSlider-to', $priceForFacetSearch),
+						from = parseFloat('0' + $from.val()),
+						to = parseFloat('0' + $to.val());
+
+					if ((!manualDefinedPriceFrom || manualDefinedPriceFrom <= res.filters.price.max) && res.filters.price.max) {
+						$slider.slider('option', 'max', res.filters.price.max);
+
+						// Внимание: изменение данных значений не выполняет поиск заново, поэтому важно, чтобы данные изменения не влияли на возможный результат поиска
+						if (to > res.filters.price.max) {
+							$to.val(res.filters.price.max);
+							$slider.slider('values', 1, res.filters.price.max);
+						} else {
+							var newTo = manualDefinedPriceTo || res.filters.price.max;  // Если значение "до" не задавалось вручную, то значение "до" будет установлено в новое максимальное значение
+							$to.val(newTo);
+							$slider.slider('values', 1, newTo);
+						}
+					}
+
+					if (!manualDefinedPriceTo || manualDefinedPriceTo >= res.filters.price.min) {
+						$slider.slider('option', 'min', res.filters.price.min);
+
+						// Внимание: изменение данных значений не выполняет поиск заново, поэтому важно, чтобы данные изменения не влияли на возможный результат поиска
+						if (from < res.filters.price.min) {
+							$from.val(res.filters.price.min);
+							$slider.slider('values', 0, res.filters.price.min);
+						} else {
+							var newFrom = manualDefinedPriceFrom || res.filters.price.min; // Если значение "от" не задавалось вручную, то значение "от" будет установлено в новое минимальное значение
+							$from.val(newFrom);
+							$slider.slider('values', 0, newFrom);
+						}
+					}
+				}
+			})();
+
 			for ( key in dataToRender ) {
 				if ( catalog.filter.render.hasOwnProperty(key) ) {
 					template = catalog.filter.render[key]( dataToRender[key] );
@@ -302,23 +365,18 @@
 			var sortSliders = function sortSliders() {
 				var sliderWrap = $(this),
 					slider = sliderWrap.find('.js-category-filter-rangeSlider-slider'),
-					sliderConfig = slider.data('config'),
 					sliderFromInput = sliderWrap.find('.js-category-filter-rangeSlider-from'),
-					sliderToInput = sliderWrap.find('.js-category-filter-rangeSlider-to'),
-
-					min = sliderConfig.min,
-					max = sliderConfig.max;
-				// end of vars
+					sliderToInput = sliderWrap.find('.js-category-filter-rangeSlider-to');
 
 
-				if ( sliderFromInput.val() * 1 === min ) {
+				if ( sliderFromInput.val() * 1 == slider.slider('option', 'min') ) {
 					res.unchangedSliders.push(sliderFromInput.attr('name'));
 				}
 				else {
 					res.changedSliders.push(sliderFromInput.attr('name'));
 				}
 
-				if ( sliderToInput.val() * 1 === max ) {
+				if ( sliderToInput.val() * 1 == slider.slider('option', 'max') ) {
 					res.unchangedSliders.push(sliderToInput.attr('name'));
 				}
 				else {
@@ -425,6 +483,7 @@
 			console.info('change filter');
 			console.log(e);
 
+			// SITE-4894 Не изменяются выбранные фильтры при переходе назад
 			if (!catalog.filter.updateOnChange) {
 				return;
 			}
@@ -457,6 +516,8 @@
 					url = url.replace(/\#.*$|$/, '#productCatalog-filter-form');
 				}
 
+				// SITE-5063 Дублирование товаров в листинге
+				$(window).off('scroll', catalog.infScroll.checkScroll);
 				catalog.history.gotoUrl(url);
 
 				// Устанавливаем фильтры в ссылки списка дочерних категорий
@@ -505,16 +566,11 @@
 				resetSliders = function resetSliders() {
 					var sliderWrap = $(this),
 						slider = sliderWrap.find('.js-category-filter-rangeSlider-slider'),
-						sliderConfig = slider.data('config'),
 						sliderFromInput = sliderWrap.find('.js-category-filter-rangeSlider-from'),
-						sliderToInput = sliderWrap.find('.js-category-filter-rangeSlider-to'),
+						sliderToInput = sliderWrap.find('.js-category-filter-rangeSlider-to');
 
-						min = sliderConfig.min,
-						max = sliderConfig.max;
-					// end of vars
-
-					sliderFromInput.val(min).trigger('change');
-					sliderToInput.val(max).trigger('change');
+					sliderFromInput.val(slider.slider('option', 'min')).trigger('change');
+					sliderToInput.val(slider.slider('option', 'max')).trigger('change');
 				},
 				resetText = function( nf, input ) {
 					$(input).val('').trigger('change');
@@ -591,27 +647,21 @@
 		}
 	};
 
-
-		/**
-		 * Слайдеры в фильтре
-		 */
+	/**
+	 * Слайдеры в фильтре
+	 */
 	var initSliderRange = function initSliderRange() {
 			var sliderWrap = $(this),
 				slider = sliderWrap.find('.js-category-filter-rangeSlider-slider'),
 				sliderConfig = slider.data('config'),
 				sliderFromInput = sliderWrap.find('.js-category-filter-rangeSlider-from'),
-				sliderToInput = sliderWrap.find('.js-category-filter-rangeSlider-to'),
-
-				min = sliderConfig.min,
-				max = sliderConfig.max,
-				step = sliderConfig.step;
-			// end of vars
+				sliderToInput = sliderWrap.find('.js-category-filter-rangeSlider-to');
 
 			slider.slider({
 				range: true,
-				step: step,
-				min: min,
-				max: max,
+				step: sliderConfig.step,
+				min: sliderConfig.min,
+				max: sliderConfig.max,
 				values: [
 					sliderFromInput.val(),
 					sliderToInput.val()
@@ -620,56 +670,88 @@
 				slide: function( e, ui ) {
 					sliderFromInput.val( ui.values[ 0 ] );
 					sliderToInput.val( ui.values[ 1 ] );
-				},
 
-				change: function( e, ui ) {
-					console.log('change slider');
-
-					if ( e.originalEvent ) {
-						sliderFromInput.trigger('change');
-						sliderToInput.trigger('change');
-					}
+					sliderFromInput.trigger('change', [true]);
+					sliderToInput.trigger('change', [true]);
 				}
 			});
 
-			var inputUpdates = function inputUpdates() {
-				var val = '0' + $(this).val();
+			sliderFromInput.on('change', function(e, fromSliderChange) {
+				var
+					from = '0' + sliderFromInput.val(),
+					to = '0' + sliderToInput.val(),
+					min = slider.slider('option', 'min'),
+					max = slider.slider('option', 'max');
 
-				val = parseFloat(val);
-				console.info('inputUpdates');
-				console.log(val);
-				val =
-					( val > max ) ? max :
-					( val < min ) ? min :
-					val;
+				from = parseFloat(from);
+				to = parseFloat(to);
 
-				$(this).val(val);
+				if (from < min) {
+					from = min;
+				} else if (from > max) {
+					from = max;
+				}
 
-				slider.slider({
-					values: [
-						sliderFromInput.val(),
-						sliderToInput.val()
-					]
-				});
-			};
+				if (from > to) {
+					from = to;
+				}
 
-			sliderToInput.on('change', inputUpdates);
-			sliderFromInput.on('change', inputUpdates);
+				sliderFromInput.val(from);
+
+				if (!fromSliderChange) {
+					slider.slider('values', 0, from);
+				}
+
+				if ((e.originalEvent || fromSliderChange) && sliderWrap.is($priceForFacetSearch)) {
+					setManualDefinedPriceFrom(from, min);
+				}
+			});
+
+			sliderToInput.on('change', function(e, fromSliderChange) {
+				var
+					from = '0' + sliderFromInput.val(),
+					to = '0' + sliderToInput.val(),
+					min = slider.slider('option', 'min'),
+					max = slider.slider('option', 'max');
+
+				from = parseFloat(from);
+				to = parseFloat(to);
+
+				if (to < min) {
+					to = min;
+				} else if (to > max) {
+					to = max;
+				}
+
+				if (from > to) {
+					to = from;
+				}
+
+				sliderToInput.val(to);
+
+				if (!fromSliderChange) {
+					slider.slider('values', 1, to);
+				}
+
+				if ((e.originalEvent || fromSliderChange) && sliderWrap.is($priceForFacetSearch)) {
+					setManualDefinedPriceTo(to, max);
+				}
+			});
 		},
 
 		/**
-		 * Обработка нажатий на ссылки завязанные на живую подгрузку данных
+		 * Обработка нажатий на ссылки удаления фильтров
 		 */
-		jsHistoryLinkHandler = function jsHistoryLinkHandler() {
+		jsHistoryLinkHandler = function jsHistoryLinkHandler(e) {
 			var self = $(this),
 				url = self.attr('href');
 			// end of vars
 
+			e.preventDefault();
+
 			catalog.filter.resetForm();
 			catalog.filter.updateFilter(utils.parseUrlParams(url));
 			catalog.history.gotoUrl(url);
-
-			return false;
 		},
 
 		/**
@@ -724,12 +806,13 @@
 			var self = $(this),
 				url = self.attr('href'),
 				activeClass = 'mActive',
-				parentItem = self.parent(),
-				isActiveTab = parentItem.hasClass(activeClass);
+				parentItem = self.parent();
 			// end of vars
 
-			if ( isActiveTab ) {
-				return false;
+			e.preventDefault();
+
+			if (parentItem.hasClass(activeClass) || parentItem.hasClass('js-category-pagination-activePage')) {
+				return;
 			}
 
 			catalog.history.gotoUrl(url);
@@ -737,8 +820,6 @@
 			if ( filterBlock.length ) {
 				$.scrollTo(filterBlock, 500);
 			}
-
-			e.preventDefault();
 		},
 
 		/**
@@ -747,11 +828,10 @@
 		selectFilterCategoryHandler = function selectFilterCategoryHandler() {
 			var self = $(this),
 				activeClass = 'mActive',
-				isActiveTab = self.hasClass(activeClass),
 				categoryId = self.data('ref');
 			// end of vars
 
-			if ( isActiveTab ) {
+			if ( self.hasClass(activeClass) ) {
 				return false;
 			}
 
@@ -763,7 +843,7 @@
 				$('#'+categoryId).fadeIn(300);
 			});
 
-			if (!hasAlwaysShowFilters) {
+			if (!isV3) {
 				$.scrollTo(filterBlock, 500);
 			}
 
@@ -774,7 +854,7 @@
 		/**
 		 * Смена отображения каталога
 		 */
-		changeViewItemsHandler = function changeViewItemsHandler() {
+		changeViewItemsHandler = function changeViewItemsHandler(e) {
 			var self = $(this),
 				url = self.attr('href'),
 				activeClass = 'mActive',
@@ -783,8 +863,10 @@
 				isActiveTab = parentItem.hasClass(activeClass);
 			// end of vars
 
+			e.preventDefault();
+
 			if ( isActiveTab ) {
-				return false;
+				return;
 			}
 
 			changeViewItemsBtns.removeClass(activeClass);
@@ -796,32 +878,28 @@
 			else {
 				catalog.history.gotoUrl(url);
 			}
-
-			return false;
 		},
 
 
 		/**
 		 * Сортировка элементов
 		 */
-		sortingItemsHandler = function sortingItemsHandler() {
+		sortingItemsHandler = function sortingItemsHandler(e) {
 			var self = $(this),
 				url = self.attr('href'),
 				activeClass = 'mActive',
-				parentItem = self.parent(),
-				sortingItemsBtns = viewParamPanel.find('.js-category-sorting-item'),
-				isActiveTab = parentItem.hasClass(activeClass);
+				parentItem = self.parent();
 			// end of vars
 
-			if ( isActiveTab ) {
-				return false;
+			e.preventDefault();
+
+			if (parentItem.hasClass(activeClass) || parentItem.hasClass('js-category-sorting-activeItem')) {
+				return;
 			}
 
-			sortingItemsBtns.removeClass(activeClass);
-			parentItem.addClass(activeClass);
+			viewParamPanel.find('.js-category-sorting-item').removeClass(activeClass).removeClass('act').removeClass('js-category-sorting-activeItem');
+			parentItem.addClass(activeClass).addClass('act').addClass('js-category-sorting-activeItem');
 			catalog.history.gotoUrl(url);
-
-			return false;
 		};
 	// end of functions
 
@@ -1074,6 +1152,7 @@
 			console.info('statechange');
 			console.log(state);
 
+			// SITE-4894 Не изменяются выбранные фильтры при переходе назад
 			if (updateState) {
 				ENTER.catalog.filter.updateOnChange = false;
 				catalog.filter.resetForm();
@@ -1225,33 +1304,33 @@
 		}
 	};
 
-	var infBtnHandler = function infBtnHandler() {
+	var infBtnHandler = function infBtnHandler(e) {
 			var activeClass = 'mActive',
 				infBtn = viewParamPanel.find('.js-category-pagination-infinity'),
 				isActiveTab = infBtn.hasClass(activeClass);
 			// end of vars
 
+			e.preventDefault();
+
 			if ( isActiveTab ) {
-				return false;
+				return;
 			}
 
 			catalog.infScroll.enable();
-
-			return false;
 		},
 
-		paginationBtnHandler = function paginationBtnHandler() {
+		paginationBtnHandler = function paginationBtnHandler(e) {
 			console.info('paginationBtnHandler');
 			var activeClass = 'mActive',
 				infBtn = viewParamPanel.find('.js-category-pagination-infinity'),
 				isActiveTab = infBtn.hasClass(activeClass);
 			// end of vars
 
+			e.preventDefault();
+
 			if ( isActiveTab ) {
 				catalog.infScroll.disable();
 			}
-
-			return false;
 		};
 	// end of functions
 

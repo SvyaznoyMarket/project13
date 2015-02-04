@@ -4,6 +4,7 @@
 .main-new {
     .header {
         padding-bottom: 0;
+        margin-left: 0;
 
         &_b{
             border-right: 1px solid @lightgrey9;
@@ -28,8 +29,8 @@
 
 .header{
     width: 960px;
-    margin: 0 auto;
     padding: 0 0 20px;
+    margin: 0 0 0 -10px;
     background: @white;
 
     &-new {
@@ -50,7 +51,174 @@
         padding: 5px 10px;
 
         background: @black;
+
+        // поиск вариант 2
+        &-v1 {
+
+            .hdsearch {
+                margin: 14px 0 0;
+                background: @white;
+                .rounded(4px);
+                .box-shadow(1px 1px 2px rgba(0,0,0,0.4) inset);
+
+                &_lbl {
+                    display: none;
+                }
+
+                &_it {
+                    padding: 7px 0;
+                    background: transparent;
+                }
+
+                &_itb {
+                    border: none;
+                    width: 463px;
+                    margin: 0;
+                    background: transparent;
+
+                    &:after {
+                        background-position: -186px 5px;
+                    }
+                }
+
+                &_f {
+                    position: relative;
+                }
+
+                &_btn {
+                    background: @black;
+                    border-color: @black;
+                    .rounded(3px);
+                    font-size: 14px;
+                    padding: 5px 13px 6px;
+                    right: 3px;
+                    top: 3px;
+                    position: absolute;
+                    z-index: 2;
+                }
+            }
+
+            .hdlogo {
+                margin: 0 30px 0 10px;
+            }
+
+            .hdgift {
+                background: url("@{base-url}/mainpage/img/enter_presents_v2.png") no-repeat 0 -7px;
+                border-right: medium none;
+                float: left;
+                height: 70px;
+                margin: -5px 0 0 60px;
+                overflow: hidden;
+                padding: 0;
+                text-align: center;
+                width: 85px;
+
+                &_tx {
+                    color: @black;
+                    font-family: "Enter type";
+                    font-size: 11px;
+                    line-height: 1.2;
+                    margin: 2px 0 0 3px;
+                    text-transform: uppercase;
+                    width: 55px;
+                }
+
+                &_img {
+                    display: block;
+                    margin: 4px auto 5px;
+                }
+            }
+
+            .hdep {
+                float: right;
+                margin: 11px 10px 0 0;
+                text-align: center;
+            }
+        }
+
+        // поиск вариант 3
+        &-v2 {
+
+            .hdsearch {
+                margin: 14px 0 0;
+                background: @white;
+                .rounded(4px);
+                .box-shadow(1px 1px 2px rgba(0,0,0,0.4) inset);
+
+                &_lbl {
+                    display: none;
+                }
+
+                &_it {
+                    padding: 7px 0;
+                    background: transparent;
+                }
+
+                &_itb {
+                    border: none;
+                    width: 463px;
+                    background: transparent;
+                    margin: 0;
+
+                    &:after {
+                        background-position: -186px 5px;
+                    }
+                }
+
+                &_f {
+                    position: relative;
+                }
+
+                &_btn {
+                    background: @black;
+                    border-color: @black;
+                    border-bottom: 2px solid #7f7f7f;
+                    .rounded(3px);
+                    font-size: 14px;
+                    padding: 5px 13px 6px;
+                    right: 3px;
+                    top: 3px;
+                    position: absolute;
+                    z-index: 2;
+                }
+            }
+
+            .hdlogo {
+                margin: 0 30px 0 10px;
+            }
+
+            .hdgift {
+                background: url("@{base-url}/mainpage/img/enter_presents_v3.png") no-repeat 0 0;
+                border-right: medium none;
+                float: left;
+                height: 39px;
+                margin: 6px 0 0 30px;
+                overflow: hidden;
+                padding: 0 0 0;
+                text-align: center;
+                width: 133px;
+
+                &_tx,
+                &_img {
+                    display: none;
+                }
+
+                &_lk {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+
+            .hdep {
+                float: right;
+                margin: 11px 10px 0 0;
+                text-align: center;
+            }
+        }
     }
+
+
     &_b{
         position: relative;
         z-index: 100;
@@ -62,7 +230,8 @@
         border-bottom: 2px solid #e8e8e8;
 
         .navsite_i {
-            min-width: 60px;
+            min-width: 50px;
+            padding: 0 4px;
         }
     }
     &.header-new{
@@ -220,11 +389,7 @@
     &_h{
         line-height: 1;
 
-        margin: 0 0 2px;
-    }
-
-    .i-header-ep{
-        background: url('@{base-url}/mainpage/img/enterprize_logo.png') no-repeat 0 0;
+        margin: 0 0 5px;
     }
 }
 
@@ -260,7 +425,7 @@
         .sprite-temp(-31px, -2px, 25px, 25px);
     }
     &-ep{
-        .sprite-temp(-60px, -2px, 97px, 24px);
+        .sprite-temp(-216px, -2px, 108px, 24px);
     }
     &-phone{
         .sprite-temp(-161px, -2px, 21px, 28px);

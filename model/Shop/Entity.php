@@ -8,6 +8,8 @@ class Entity {
     /* @var int */
     private $id;
     /* @var string */
+    private $ui;
+    /* @var string */
     private $token;
     /* @var string */
     private $name;
@@ -35,7 +37,7 @@ class Entity {
     private $photo = [];
     /* @var Panorama\Entity */
     private $panorama;
-    /* @var Region\Entity */
+    /* @var \Model\Region\Entity|null */
     private $region;
     /* @var string */
     private $subwayName;
@@ -48,27 +50,50 @@ class Entity {
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
-        if (array_key_exists('token', $data)) $this->setToken($data['token']);
+        if (array_key_exists('uid', $data)) $this->setUi($data['uid']);
+        if (array_key_exists('token', $data)) $this->setToken($data['token']);  // FIXME: deprecated
+        if (array_key_exists('slug', $data)) $this->setToken($data['slug']);
         if (array_key_exists('name', $data)) $this->setName($data['name']);
-        if (array_key_exists('working_time', $data)) $this->setRegime($data['working_time']);
+        if (array_key_exists('working_time', $data)) $this->setRegime($data['working_time']); // FIXME: deprecated
+        if (isset($data['working_time']['common'])) $this->setRegime($data['working_time']['common']);
         if (array_key_exists('address', $data)) $this->setAddress($data['address']);
-        if (array_key_exists('coord_lat', $data)) $this->setLatitude($data['coord_lat']);
-        if (array_key_exists('coord_long', $data)) $this->setLongitude($data['coord_long']);
+
+        if (array_key_exists('coord_lat', $data)) $this->setLatitude($data['coord_lat']); // FIXME: deprecated
+        if (array_key_exists('coord_long', $data)) $this->setLongitude($data['coord_long']); // FIXME: deprecated
+        if (isset($data['location']['longitude'])) $this->setLongitude($data['location']['longitude']);
+        if (isset($data['location']['latitude'])) $this->setLatitude($data['location']['latitude']);
+
         if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
         if (array_key_exists('phone', $data)) $this->setPhone($data['phone']);
         if (array_key_exists('way_walk', $data)) $this->setWayWalk($data['way_walk']);
         if (array_key_exists('way_auto', $data)) $this->setWayAuto($data['way_auto']);
         if (array_key_exists('description', $data)) $this->setDescription($data['description']);
         if (array_key_exists('is_reconstruction', $data)) $this->setIsReconstructed($data['is_reconstruction']);
-        if (array_key_exists('working_time_by_day', $data)) $this->setWorkingTime($data['working_time_by_day']);
+        //if (array_key_exists('working_time_by_day', $data)) $this->setWorkingTime($data['working_time_by_day']);
+        if (array_key_exists('working_time', $data)) $this->setWorkingTime($data['working_time']);
         if (array_key_exists('images', $data) && is_array($data['images'])) {
             foreach ($data['images'] as $photoData) {
-                $this->addPhoto(new Photo\Entity($photoData));
+                //$this->addPhoto(new Photo\Entity($photoData)); // FIXME deprecated
             }
         }
-        if (array_key_exists('geo', $data)) $this->setRegion(new Region\Entity($data['geo']));
+        if (array_key_exists('geo', $data)) $this->setRegion(new \Model\Region\Entity($data['geo']));
         if (array_key_exists('subway', $data)) {
-            foreach ($data['subway'] as $subwayData) $this->setSubway(new Subway\Entity($subwayData));
+            if (isset($data['subway'][0])) {
+                foreach ($data['subway'] as $subwayData) {
+                    $this->setSubway(new Subway\Entity($subwayData));
+                }
+            } else if (isset($data['subway']['name'])) {
+                $this->setSubway(new Subway\Entity($data['subway']));
+            }
+        }
+        if (isset($data['medias'][0])) {
+            foreach ($data['medias'] as $mediaItem) {
+                if (!isset($mediaItem['sources'][0])) continue;
+
+                if ('image' == $mediaItem['provider']) {
+                    $this->addPhoto(new \Model\Shop\Photo\Entity($mediaItem));
+                }
+            }
         }
     }
 
@@ -146,7 +171,15 @@ class Entity {
      * @param string $regime
      */
     public function setRegime($regime) {
-        $this->regime = (string)$regime;
+        $this->regime =
+            isset($regime['common'])
+            ? $regime['common']
+            : (
+                is_scalar($regime)
+                ? (string)$regime
+                : null
+            )
+        ;
     }
 
     /**
@@ -255,16 +288,6 @@ class Entity {
     }
 
     /**
-     * @param Photo\Entity[] $photos
-     */
-    public function setPhoto(array $photos) {
-        $this->photo = [];
-        foreach ($photos as $photo) {
-            $this->addPhoto($photo);
-        }
-    }
-
-    /**
      * @param Photo\Entity $photo
      */
     public function addPhoto(Photo\Entity $photo) {
@@ -307,15 +330,15 @@ class Entity {
     }
 
     /**
-     * @param \Model\Shop\Region\Entity $region
+     * @param \Model\Region\Entity $region
      */
-    public function setRegion(Region\Entity $region)
+    public function setRegion(\Model\Region\Entity $region)
     {
         $this->region = $region;
     }
 
     /**
-     * @return \Model\Shop\Region\Entity
+     * @return \Model\Region\Entity
      */
     public function getRegion()
     {
@@ -374,18 +397,15 @@ class Entity {
      * @return null|array
      */
     public function getWorkingTimeToday() {
-        if ((bool)$this->getWorkingTime()) {
-            $workingTime = $this->getWorkingTime();
-            // date('w') =>  0 - воскресенье ... 6 - суббота
-            $map = [ 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat' ];
-            if ( isset($workingTime[ $map[date('w')] ]) && $workingTime[ $map[date('w')] ]['start_time'] && $workingTime[ $map[date('w')] ]['end_time']) {
-                return $workingTime[ $map[date('w')] ];
-            } else {
-                return null;
+        if ((bool)$workingTime = $this->getWorkingTime()) {
+            $day = lcfirst(date('l'));
+
+            if ($workingTime[$day][0] && $workingTime[$day][1]) {
+                return array_combine(['start_time', 'end_time'], $workingTime[$day]);
             }
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
@@ -400,5 +420,19 @@ class Entity {
      */
     public function getProductCount() {
         return $this->productCount;
+    }
+
+    /**
+     * @param string $ui
+     */
+    public function setUi($ui) {
+        $this->ui = (string)$ui;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUi() {
+        return $this->ui;
     }
 }

@@ -193,16 +193,6 @@ class AppConfig {
         'retryTimeout' => [],
         'retryCount'   => null,
     ];
-    /** @var array */
-    public $shopScript = [
-        'enabled'      => null,
-        'url'          => null,
-        'timeout'      => null,
-        'retryTimeout' => [],
-        'retryCount'   => null,
-        'user'         => null,
-        'password'     => null,
-    ];
     /** @var array  */
     public $jsonLog = [
         'enabled' => null,
@@ -259,10 +249,6 @@ class AppConfig {
         'Lamoda' => [
             'enabled' => null,
             'lamodaID' => null,
-        ],
-        'RuTarget' => [
-            'enabled' => null,
-            'containerId' => null,
         ],
         'TagMan' => [
             'enabled' => null,
@@ -450,6 +436,7 @@ class AppConfig {
     public $cart = [
         'productLimit' => null, // максимальное количество товаров в корзине, при котором добавляемый товар не будет вытеснять первый товар из корзины
         'sessionName'  => null,
+        'checkStock'   => null, // проверять количество товара при добавлении в корзину
     ];
     /** @var array */
     public $user = [
@@ -493,7 +480,10 @@ class AppConfig {
     ];
 
     /** @var bool */
-    public $requestMainMenu = null;
+    public $mainMenu = [
+        'requestMenu'               => null, // запрос главного меню из
+        'recommendationsEnabled'    => null
+    ];
     /** @var bool */
     public $newOrder;
     /** @var array  */
@@ -545,7 +535,7 @@ class AppConfig {
     ];
 
     /**
-     * @name Enterprize SITE-2622
+     * @name Enterprize array SITE-2622
      * @var array
      */
     public $enterprize = [

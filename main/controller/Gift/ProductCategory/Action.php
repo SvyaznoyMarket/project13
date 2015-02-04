@@ -63,32 +63,21 @@ class Action {
         // запрашиваем фильтры
         /** @var $filters \Model\Product\Filter\Entity[] */
         $filters = [];
-        \RepositoryManager::productFilter()->prepareCollection([], function($data) use (&$filters) {
+        \RepositoryManager::productFilter()->prepareCollection($this->getFilterFromUrlDump($request), function($data) use (&$filters) {
             foreach ($data as $item) {
                 $filters[] = new \Model\Product\Filter\Entity($item);
             }
         });
 
-        $this->createTagFilterProperties($filters);
-
-        $categoryProperty = new \Model\Product\Filter\Entity();
-        $categoryProperty->setId('category');
-        $categoryProperty->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-        $categoryProperty->setIsMultiple(true);
-        $filters[] = $categoryProperty;
-
-        \RepositoryManager::menu()->prepareCollection(function ($data) use ($categoryProperty) {
-            if (isset($data['item']) && is_array($data['item'])) {
-                foreach ($data['item'] as $item) {
-                    if (isset($item['source']['id'])) {
-                        $categoryProperty->addOption(new \Model\Product\Filter\Option\Entity(['id' => $item['source']['id'], 'name' => $item['name']]));
-                    }
-                }
-            }
+        \RepositoryManager::menu()->prepareCollection(function($data) use (&$categories) {
+            $categories = $data;
         });
 
         // выполнение 2-го пакета запросов
         $client->execute();
+
+        $this->createTagFilterProperties($filters);
+        $this->createCategoryFilterProperties($filters, $categories);
 
         $shop = null;
         try {
@@ -100,7 +89,7 @@ class Action {
         }
 
         // фильтры
-        $productFilter = $this->getFilter($filters, $request, $shop);
+        $productFilter = $this->getProductFilter($filters, $request, $shop);
 
         $pageNum = (int)$request->get('page', 1);
         if ($pageNum < 1) {
@@ -121,21 +110,21 @@ class Action {
             ]));
         }
 
-        $productVideosByProduct = $this->getProductVideosByProduct($productPager);
-
         $columnCount = 4;
+        $cartButtonSender = ['name' => 'gift'];
 
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
             $data = [
+                'filters'        => $this->getFiltersForAjaxResponse($productFilter),
                 'list'           => (new \View\Product\ListAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
                     $productPager,
-                    $productVideosByProduct,
                     [],
                     null,
                     true,
                     $columnCount,
-                    'light_with_bottom_description'
+                    'light_with_bottom_description',
+                    $cartButtonSender
                 ),
                 'selectedFilter' => [],
                 'pagination'     => (new \View\PaginationAction())->execute(
@@ -159,12 +148,26 @@ class Action {
         $page->setParam('productFilter', $productFilter);
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);
-        $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setParam('columnCount', $columnCount);
         $page->setParam('isNewMainPage', $this->isNewMainPage());
+        $page->setParam('cartButtonSender', $cartButtonSender);
         $page->setGlobalParam('shop', $shop);
 
         return new \Http\Response($page->show());
+    }
+
+    /**
+     * @return array
+     */
+    private function getFiltersForAjaxResponse(\Model\Product\Filter $productFilter) {
+        $filters = [];
+
+        $priceFilterProperty = $productFilter->getPriceProperty();
+        if ($priceFilterProperty) {
+            $filters['price'] = ['min' => $priceFilterProperty->getMin(), 'max' => $priceFilterProperty->getMax()];
+        }
+
+        return $filters;
     }
 
     private function createTagFilterProperties(array &$filters) {
@@ -173,244 +176,30 @@ class Action {
             $property->setId($id);
             $property->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
             $property->setIsMultiple(false);
+
             foreach ($values as $value) {
                 $property->addOption(new \Model\Product\Filter\Option\Entity(['id' => $value['id'], 'name' => $value['name']]));
             }
+
             $filters[] = $property;
         }
     }
-    
-    private function getTagFilterPropertyValues() {
-        return [
-            'holiday' => [
-                ['id' => 706, 'name' => 'Новый Год'],
-                ['id' => 707, 'name' => 'День рождения'],
-                ['id' => 708, 'name' => 'Юбилей'],
-                ['id' => 709, 'name' => 'День свадьбы'],
-                ['id' => 710, 'name' => 'Новоселье'],
-                ['id' => 711, 'name' => 'Благодарность'],
-                ['id' => 712, 'name' => 'Любой праздник'],
-            ],
-            'sex' => [
-                ['id' => 687, 'name' => 'Женщине'],
-                ['id' => 688, 'name' => 'Мужчине'],
-            ],
-            'status' => [
-                ['id' => 689, 'name' => 'Любимой'],
-                ['id' => 690, 'name' => 'Коллеге'],
-                ['id' => 692, 'name' => 'Боссу'],
-                ['id' => 693, 'name' => 'Подруге'],
-                ['id' => 694, 'name' => 'Девочке'],
-                ['id' => 695, 'name' => 'Маме'],
-                ['id' => 696, 'name' => 'Бабушке'],
-                ['id' => 697, 'name' => 'Себе'],
-                
-                ['id' => 698, 'name' => 'Любимому'],
-                ['id' => 690, 'name' => 'Коллеге'],
-                ['id' => 692, 'name' => 'Боссу'],
-                ['id' => 699, 'name' => 'Другу'],
-                ['id' => 700, 'name' => 'Мальчику'],
-                ['id' => 703, 'name' => 'Папе'],
-                ['id' => 705, 'name' => 'Дедушке'],
-                ['id' => 697, 'name' => 'Себе'],
-            ],
-            'age' => [
-                ['id' => 713, 'name' => '0–1 год'],
-                ['id' => 716, 'name' => '1–3 года'],
-                ['id' => 717, 'name' => '4–7 лет'],
-                ['id' => 718, 'name' => '8–12 лет'],
-                ['id' => 719, 'name' => '13–16 лет'],
-                ['id' => 720, 'name' => '17–23 года'],
-                ['id' => 721, 'name' => '24–35 лет'],
-                ['id' => 722, 'name' => '36–60 лет'],
-                ['id' => 723, 'name' => 'Старше 60'],
-                ['id' => 724, 'name' => 'Возраст не имеет значения'],
-            ],
-        ];
-    }
-    
-    private function hasTagFilterPropertyValue($propertyName, $valueId) {
-        foreach ($this->getTagFilterPropertyValues()[$propertyName] as $value) {
-            if ($value['id'] == $valueId) {
-                return true;
-            }
-        }
-        
-        return false;
-    }
 
-    /**
-     * @param int $pageNum
-     * @return \Iterator\EntityPager
-     */
-    private function getProductPager(\Model\Product\Filter $productFilter, \Model\Product\Sorting $productSorting, $pageNum) {
-        $itemsPerPage = \App::config()->product['itemsPerPage'];
-        $limit = $itemsPerPage;
-        $offset = ($pageNum - 1) * $limit;
+    private function createCategoryFilterProperties(array &$filters, $categories) {
+        $property = new \Model\Product\Filter\Entity();
+        $property->setId('category');
+        $property->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+        $property->setIsMultiple(true);
 
-        $region = \App::user()->getRegion();
-
-        $repository = \RepositoryManager::product();
-        $repository->setEntityClass('\\Model\\Product\\Entity');
-        
-        $productIds = [];
-        $productCount = 0;
-        $repository->prepareIteratorByFilter(
-            $this->getProductFilterDump($productFilter),
-            $productSorting->dump(),
-            $offset,
-            $limit,
-            $region,
-            function($data) use (&$productIds, &$productCount) {
-                if (isset($data['list'][0])) {
-                    $productIds = $data['list'];
-                }
-
-                if (isset($data['count'])) {
-                    $productCount = (int)$data['count'];
+        if (isset($categories['item']) && is_array($categories['item'])) {
+            foreach ($categories['item'] as $item) {
+                if (isset($item['source']['id']) && isset($item['name'])) {
+                    $property->addOption(new \Model\Product\Filter\Option\Entity(['id' => $item['source']['id'], 'name' => $item['name']]));
                 }
             }
-        );
-        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-        $products = [];
-        if ($productIds) {
-            $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
-                if (is_array($data)) {
-                    foreach ($data as $item) {
-                        $products[] = new \Model\Product\Entity($item);
-                    }
-                }
-            });
-        }
-        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-        $scoreData = [];
-        if ($products) {
-            $productUIs = [];
-            foreach ($products as $product) {
-                if (!$product instanceof \Model\Product\BasicEntity) continue;
-                $productUIs[] = $product->getUi();
-            }
-
-            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
-                if (isset($data['product_scores'][0])) {
-                    $scoreData = $data;
-                }
-            });
         }
 
-        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-        \RepositoryManager::review()->addScores($products, $scoreData);
-
-        $productPager = new \Iterator\EntityPager($products, $productCount);
-        $productPager->setPage($pageNum);
-        $productPager->setMaxPerPage($itemsPerPage);
-        return $productPager;
-    }
-    
-    private function getProductFilterDump(\Model\Product\Filter $productFilter) {
-        $tagDump = ['tag_and', 1, []];
-        $filterDump = $productFilter->dump();
-        for ($i = count($filterDump) - 1; $i >= 0; $i--) {
-            if (in_array($filterDump[$i][0], ['holiday', 'sex', 'status', 'age'], true)) {
-                $tagDump[2] = array_merge($tagDump[2], $filterDump[$i][2]);
-                unset($filterDump[$i]);
-            }
-        }
-        
-        $filterDump = array_values($filterDump);
-        $filterDump[] = $tagDump;
-        
-        return $filterDump;
-    }
-
-    /**
-     * @return array
-     */
-    private function getProductVideosByProduct(\Iterator\EntityPager $productPager) {
-        $productVideosByProduct = [];
-        foreach ($productPager as $product) {
-            /** @var $product \Model\Product\Entity */
-            $productVideosByProduct[$product->getId()] = [];
-        }
-
-        if ($productVideosByProduct) {
-            \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
-                if (is_array($data)) {
-                    foreach ($data as $id => $items) {
-                        if (!is_array($items)) {
-                            continue;
-                        }
-
-                        foreach ($items as $item) {
-                            $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);
-                        }
-                    }
-                }
-            });
-
-            \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
-        }
-
-        return $productVideosByProduct;
-    }
-
-    /**
-     * @param \Http\Request $request
-     * @return array
-     */
-    private function getFilterFromUrl(\Http\Request $request) {
-        // добывание фильтров из http-запроса
-        if ('POST' == $request->getMethod()) {
-            $requestData = clone $request->request;
-        } else {
-            $requestData = clone $request->query;
-        }
-        
-        if (!$this->hasTagFilterPropertyValue('holiday', $requestData->get('f-holiday'))) {
-            $requestData->set('f-holiday', 706);
-        }
-        
-        if (!$this->hasTagFilterPropertyValue('sex', $requestData->get('f-sex'))) {
-            $requestData->set('f-sex', 687);
-        }
-        
-        if (!$this->hasTagFilterPropertyValue('status', $requestData->get('f-status'))) {
-            if ($requestData->get('f-sex') == 687) {
-                $requestData->set('f-status', 690);
-            } else {
-                $requestData->set('f-status', 698);
-            }
-        }
-        
-        if (!$this->hasTagFilterPropertyValue('age', $requestData->get('f-age'))) {
-            $requestData->set('f-age', 724);
-        }
-        
-        $values = [];
-        foreach ($requestData as $k => $v) {
-            if (0 !== strpos($k, \View\Product\FilterForm::$name)) continue;
-            $parts = array_pad(explode('-', $k), 3, null);
-
-            if (!isset($values[$parts[1]])) {
-                $values[$parts[1]] = [];
-            }
-            if (('from' == $parts[2]) || ('to' == $parts[2])) {
-                $values[$parts[1]][$parts[2]] = $v;
-            } else {
-                $values[$parts[1]][] = $v;
-            }
-        }
-
-        // filter values
-        if ($request->get('scrollTo')) {
-            // TODO: SITE-2218 сделать однотипные фильтры для ювелирки и неювелирки
-            $values = (array)$request->get(\View\Product\FilterForm::$name, []);
-        }
-
-        return $values;
+        $filters[] = $property;
     }
 
     /**
@@ -419,7 +208,7 @@ class Action {
      * @param \Model\Shop\Entity|null $shop
      * @return \Model\Product\Filter
      */
-    private function getFilter(array $filters, \Http\Request $request, $shop = null) {
+    private function getProductFilter(array $filters, \Http\Request $request, $shop = null) {
         // добывание фильтров из http-запроса
         $values = $this->getFilterFromUrl($request);
 
@@ -468,11 +257,177 @@ class Action {
         return $productFilter;
     }
 
+    private function getProductFilterDump(\Model\Product\Filter $productFilter) {
+        $tagDump = ['tag_and', 1, []];
+        $filterDump = $productFilter->dump();
+        for ($i = count($filterDump) - 1; $i >= 0; $i--) {
+            if (in_array($filterDump[$i][0], ['holiday', 'sex', 'status', 'age'], true)) {
+                $tagDump[2] = array_merge($tagDump[2], $filterDump[$i][2]);
+                unset($filterDump[$i]);
+            }
+        }
+
+        $filterDump = array_values($filterDump);
+        $filterDump[] = $tagDump;
+
+        return $filterDump;
+    }
+
     /**
-     * @param array $values
+     * @return array
+     */
+    private function getFilterFromUrlDump(\Http\Request $request) {
+        $tagDump = ['tag_and', 1, []];
+        $filterDump = [];
+        foreach ($this->getFilterFromUrl($request) as $name => $values) {
+            if (in_array($name, ['holiday', 'sex', 'status', 'age'], true)) {
+                $tagDump[2] = array_merge($tagDump[2], $values);
+            } else if ('price' === $name) {
+                // Игнорируем фильтр по цене, т.к. для корректного рассчёта мин. и макс. цены методом listing/filter фильтр по цене не должет передаваться в данный метод (данное поведение метода listing/filter является недоработкой)
+            } else if (isset($values['from']) || isset($values['to'])) {
+                $filterDump[] = [
+                    $name,
+                    2,
+                    isset($values['from']) ? $values['from'] : null,
+                    isset($values['to']) ? $values['to'] : null
+                ];
+            } else {
+                $filterDump[] = [$name, 1, $values];
+            }
+        }
+
+        $filterDump[] = $tagDump;
+        $filterDump[] = ['is_view_list', 1, [true]];
+
+        return $filterDump;
+    }
+
+    /**
+     * @return array
+     */
+    private function getFilterFromUrl(\Http\Request $request) {
+        // добывание фильтров из http-запроса
+        if ('POST' == $request->getMethod()) {
+            $params = clone $request->request;
+        } else {
+            $params = clone $request->query;
+        }
+
+        $this->setDefaultValues($params);
+
+        $values = [];
+        foreach ($params as $k => $v) {
+            if (0 !== strpos($k, \View\Product\FilterForm::$name)) {
+                continue;
+            }
+
+            $parts = array_pad(explode('-', $k), 3, null);
+
+            if ('from' == $parts[2] || 'to' == $parts[2]) {
+                $values[$parts[1]][$parts[2]] = $v;
+            } else {
+                $values[$parts[1]][] = $v;
+            }
+        }
+
+        foreach ($values as $k => $v) {
+            if (isset($v['from']) && isset($v['to'])) {
+                if ($v['from'] > $v['to']) {
+                    $values[$k]['from'] = $v['to'];
+                }
+            }
+        }
+
+        return $values;
+    }
+
+    private function setDefaultValues(\Http\ParameterBag $params) {
+        if (!$this->hasTagFilterPropertyValue('holiday', $params->get('f-holiday'))) {
+            $params->set('f-holiday', 707);
+        }
+
+        if (!$this->hasTagFilterPropertyValue('sex', $params->get('f-sex'))) {
+            $params->set('f-sex', 687);
+        }
+
+        if (!$this->hasTagFilterPropertyValue('status', $params->get('f-status'))) {
+            if ($params->get('f-sex') == 687) {
+                $params->set('f-status', 689);
+            } else {
+                $params->set('f-status', 698);
+            }
+        }
+
+        if (!$this->hasTagFilterPropertyValue('age', $params->get('f-age'))) {
+            $params->set('f-age', 724);
+        }
+    }
+
+    private function getTagFilterPropertyValues() {
+        return [
+            'holiday' => [
+                ['id' => 706, 'name' => 'Новый Год'],
+                ['id' => 707, 'name' => 'День рождения'],
+                ['id' => 708, 'name' => 'Юбилей'],
+                ['id' => 709, 'name' => 'День свадьбы'],
+                ['id' => 710, 'name' => 'Новоселье'],
+                ['id' => 711, 'name' => 'Благодарность'],
+                ['id' => 712, 'name' => 'Любой праздник'],
+            ],
+            'sex' => [
+                ['id' => 687, 'name' => 'Женщине'],
+                ['id' => 688, 'name' => 'Мужчине'],
+            ],
+            'status' => [
+                ['id' => 689, 'name' => 'Любимой'],
+                ['id' => 690, 'name' => 'Коллеге'],
+                ['id' => 692, 'name' => 'Боссу'],
+                ['id' => 693, 'name' => 'Подруге'],
+                ['id' => 694, 'name' => 'Девочке'],
+                ['id' => 695, 'name' => 'Маме'],
+                ['id' => 696, 'name' => 'Бабушке'],
+                ['id' => 697, 'name' => 'Себе'],
+
+                ['id' => 698, 'name' => 'Любимому'],
+                ['id' => 690, 'name' => 'Коллеге'],
+                ['id' => 692, 'name' => 'Боссу'],
+                ['id' => 699, 'name' => 'Другу'],
+                ['id' => 700, 'name' => 'Мальчику'],
+                ['id' => 703, 'name' => 'Папе'],
+                ['id' => 705, 'name' => 'Дедушке'],
+                ['id' => 697, 'name' => 'Себе'],
+            ],
+            'age' => [
+                ['id' => 713, 'name' => '0–1 год'],
+                ['id' => 716, 'name' => '1–3 года'],
+                ['id' => 717, 'name' => '4–7 лет'],
+                ['id' => 718, 'name' => '8–12 лет'],
+                ['id' => 719, 'name' => '13–16 лет'],
+                ['id' => 720, 'name' => '17–23 года'],
+                ['id' => 721, 'name' => '24–35 лет'],
+                ['id' => 722, 'name' => '36–60 лет'],
+                ['id' => 723, 'name' => 'Старше 60'],
+                ['id' => 724, 'name' => 'Возраст не имеет значения'],
+            ],
+        ];
+    }
+
+    private function hasTagFilterPropertyValue($propertyName, $valueId) {
+        foreach ($this->getTagFilterPropertyValues()[$propertyName] as $value) {
+            if ($value['id'] == $valueId) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * @param \Model\Product\Filter\Entity[] $filters
      * @return array
      */
+    // Пока данный метод не нужен
+    /*
     private function deleteNotExistsValues(array $values, array $filters) {
         // SITE-4818 Не учитывать фильтр при переходе в подкатегорию, если такового не существует
         foreach ($values as $propertyId => $propertyValues) {
@@ -508,5 +463,78 @@ class Action {
         }
 
         return $values;
+    }
+    */
+
+    /**
+     * @param int $pageNum
+     * @return \Iterator\EntityPager
+     */
+    private function getProductPager(\Model\Product\Filter $productFilter, \Model\Product\Sorting $productSorting, $pageNum) {
+        $itemsPerPage = \App::config()->product['itemsPerPage'];
+        $limit = $itemsPerPage;
+        $offset = ($pageNum - 1) * $limit;
+
+        $region = \App::user()->getRegion();
+
+        $repository = \RepositoryManager::product();
+        $repository->setEntityClass('\\Model\\Product\\Entity');
+
+        $productIds = [];
+        $productCount = 0;
+        $repository->prepareIteratorByFilter(
+            $this->getProductFilterDump($productFilter),
+            $productSorting->dump(),
+            $offset,
+            $limit,
+            $region,
+            function($data) use (&$productIds, &$productCount) {
+                if (isset($data['list'][0])) {
+                    $productIds = $data['list'];
+                }
+
+                if (isset($data['count'])) {
+                    $productCount = (int)$data['count'];
+                }
+            }
+        );
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+        $products = [];
+        if ($productIds) {
+            $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
+                if (is_array($data)) {
+                    foreach ($data as $item) {
+                        $product = new \Model\Product\Entity($item);
+                        $product->setLink($product->getLink() . (strpos($product->getLink(), '?') === false ? '?' : '&') . http_build_query(['sender' => ['name' => 'gift']]));
+                        $products[] = $product;
+                    }
+                }
+            });
+        }
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+        $repository->prepareProductsMedias($products);
+
+        if ($products) {
+            $productUIs = [];
+            foreach ($products as $product) {
+                if (!$product instanceof \Model\Product\BasicEntity) continue;
+                $productUIs[] = $product->getUi();
+            }
+
+            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) {
+                if (isset($data['product_scores'][0])) {
+                    \RepositoryManager::review()->addScores($products, $data);
+                }
+            });
+        }
+
+        \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+
+        $productPager = new \Iterator\EntityPager($products, $productCount);
+        $productPager->setPage($pageNum);
+        $productPager->setMaxPerPage($itemsPerPage);
+        return $productPager;
     }
 }

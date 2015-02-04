@@ -5,6 +5,8 @@ namespace View\Product;
 class IndexPage extends \View\DefaultLayout {
     /** @var string */
     protected $layout  = 'layout-oneColumn';
+    /** @var \Model\Product\Entity|null */
+    protected $product;
 
     public function prepare() {
         /** @var $product \Model\Product\Entity */
@@ -12,14 +14,7 @@ class IndexPage extends \View\DefaultLayout {
         if (!$product) {
             return;
         }
-
-        // if (is_array($this->getParam('productVideos'))) {
-        //     $productVideos = $this->getParam('productVideos');
-        //     $productVideos = reset($productVideos);
-        //     if ($productVideos instanceof \Model\Product\Video\Entity) {
-        //         $this->addJavascript('/js/swfobject.js');
-        //     }
-        // }
+        $this->product = $product;
 
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
@@ -39,22 +34,7 @@ class IndexPage extends \View\DefaultLayout {
             $this->setParam('breadcrumbs', $breadcrumbs);
         }
 
-        // seo
         $page = new \Model\Page\Entity();
-
-        $page->setTitle(sprintf(
-            '%s - купить по цене %s руб. в Москве, %s - характеристиками и описанием и фото от интернет-магазина Enter.ru',
-            $product->getName(),
-            $product->getPrice(),
-            $product->getName()
-        ));
-        $page->setDescription(sprintf(
-            'Интернет магазин Enter.ru предлагает купить: %s по цене %s руб. На нашем сайте Вы найдете подробное описание и характеристики товара %s с фото. Заказать понравившийся товар с доставкой по Москве можно у нас на сайте или по телефону ' . \App::config()->company['phone'] . '.',
-            $product->getName(),
-            $product->getPrice(),
-            $product->getName()
-        ));
-        $page->setKeywords(sprintf('%s Москва интернет магазин купить куплю заказать продажа цены', $product->getName()));
 
         try {
             $this->applySeoPattern($page);
@@ -62,15 +42,49 @@ class IndexPage extends \View\DefaultLayout {
             \App::logger()->error($e);
         }
 
+        if (!$page->getTitle()) {
+            $page->setTitle(sprintf(
+                '%s - купить по цене %s руб. в Москве, %s - характеристиками и описанием и фото от интернет-магазина Enter.ru',
+                $product->getName(),
+                $product->getPrice(),
+                $product->getName()
+            ));
+        }
+
+        if (!$page->getDescription()) {
+            $page->setDescription(sprintf(
+                'Интернет магазин Enter.ru предлагает купить: %s по цене %s руб. На нашем сайте Вы найдете подробное описание и характеристики товара %s с фото. Заказать понравившийся товар с доставкой по Москве можно у нас на сайте или по телефону ' . \App::config()->company['phone'] . '.',
+                $product->getName(),
+                $product->getPrice(),
+                $product->getName()
+            ));
+        }
+
+        if (!$page->getKeywords()) {
+            $page->setKeywords(sprintf('%s Москва интернет магазин купить куплю заказать продажа цены', $product->getName()));
+        }
+
         $this->setTitle($page->getTitle());
         $this->addMeta('description', $page->getDescription());
         $this->addMeta('keywords', $page->getKeywords());
     }
 
-    public function slotContentHead() {
-        /** @var $product \Model\Product\Entity */
+    private function applySeoPattern(\Model\Page\Entity $page) {
         $product = $this->getParam('product');
+        if (!($product instanceof \Model\Product\Entity)) {
+            return;
+        }
 
+        $replacer = new \Util\InflectReplacer([
+            'цена' => $product->getPrice() . ' руб',
+        ]);
+
+        $page->setTitle($replacer->get($product->getSeoTitle()));
+        $page->setDescription($replacer->get($product->getSeoDescription()));
+        $page->setKeywords($replacer->get($product->getSeoKeywords()));
+    }
+
+    public function slotContentHead() {
         // заголовок контента страницы
         if (!$this->hasParam('title')) {
             $this->setParam('title', null);
@@ -81,12 +95,6 @@ class IndexPage extends \View\DefaultLayout {
         }
 
         return $this->render('product/_contentHead', $this->params);
-        /*
-        return $this->render('product/_contentHead', array_merge($this->params, [
-            'titlePrefix' => $product->getPrefix(),
-            'title'       => $product->getWebName(),
-        ]));
-        */
     }
 
     public function slotContent() {
@@ -140,11 +148,11 @@ class IndexPage extends \View\DefaultLayout {
         }
 
         return "<meta property=\"og:title\" content=\"" . $this->escape($product->getName()) . "\"/>\r\n" .
-                "<meta property=\"og:description\" content=\"" . $this->escape($description) . "\"/>\r\n" .
-                "<meta property=\"og:image\" content=\"" . $this->escape($product->getImageUrl(3).'?'.time()) . "\"/>\r\n".
-                "<meta property=\"og:site_name\" content=\"ENTER\"/>\r\n".
-                "<meta property=\"og:type\" content=\"website\"/>\r\n".
-                "<link rel=\"image_src\" href=\"". $this->escape($product->getImageUrl(3)). "\" />\r\n";
+            "<meta property=\"og:description\" content=\"" . $this->escape($description) . "\"/>\r\n" .
+            "<meta property=\"og:image\" content=\"" . $this->escape($product->getImageUrl(3).'?'.time()) . "\"/>\r\n".
+            "<meta property=\"og:site_name\" content=\"ENTER\"/>\r\n".
+            "<meta property=\"og:type\" content=\"website\"/>\r\n".
+            "<link rel=\"image_src\" href=\"". $this->escape($product->getImageUrl(3)). "\" />\r\n";
     }
 
     public function slotAdvanceSeoCounter() {
@@ -180,88 +188,6 @@ class IndexPage extends \View\DefaultLayout {
         return \App::config()->analytics['enabled'] ? "<div id=\"adriverProduct\" data-vars='".json_encode( $data )."' class=\"jsanalytics\"></div>\r\n" : '';
     }
 
-    private function applySeoPattern(\Model\Page\Entity $page) {
-        $dataStore = \App::dataStoreClient();
-
-        /** @var $product \Model\Product\Entity */
-        $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
-        if (!$product) {
-            return;
-        }
-        /** @var $categories \Model\Product\Category\Entity[] */
-        $categories = $product->getCategory();
-        if (!(bool)$categories) {
-            return;
-        }
-
-        $region = \App::user()->getRegion();
-
-        $seoTemplate = null;
-        $categoryTokens = [];
-        foreach ($categories as $iCategory) {
-            $categoryTokens[] = $iCategory->getToken();
-        }
-        /** @var $category \Model\Product\Category\Entity */
-        $category = end($categories);
-
-        $dataStore->addQuery(sprintf('seo/product/%s/%s.json', implode('/', $categoryTokens), $product->getToken()), [], function ($data) use (&$seoTemplate) {
-            $seoTemplate = array_merge([
-                'title'       => null,
-                'description' => null,
-                'keywords'    => null,
-            ], $data);
-        });
-
-        // данные для шаблона
-        $patterns = [
-            'категория' => [$category->getName()],
-            'город'     => [$region->getName()],
-            'сайт'      => null,
-            'товар'     => $product->getName(),
-            'анонс товара'     => $product->getAnnounce(),
-            'цена'      => $product->getPrice() . ' руб',
-            'префикс'     => $product->getPrefix(),
-            'web_name'     => $product->getWebName(),
-        ];
-        $dataStore->addQuery(sprintf('inflect/product-category/%s.json', $category->getId()), [], function($data) use (&$patterns) {
-            if ($data) $patterns['категория'] = $data;
-        });
-        $dataStore->addQuery(sprintf('inflect/region/%s.json', $region->getId()), [], function($data) use (&$patterns) {
-            if ($data) $patterns['город'] = $data;
-        });
-        $patterns['сайт'] = $dataStore->query('/inflect/сайт.json');
-
-        $dataStore->execute();
-
-        // переменные для характеристик товара
-        $properties = $product->getProperty();
-        foreach ($properties as $property) {
-            if($property->getValue() == 'true') {
-                $value = 'да';
-            } elseif($property->getValue() == 'false') {
-                $value = 'нет';
-            } elseif($property->getValue()) {
-                $value = $property->getValue();
-            } else {
-                $value = 'не указано';
-            }
-            $patterns[mb_strtolower($property->getName())] = $value;
-        }
-
-        if (!$seoTemplate) return;
-
-        $replacer = new \Util\InflectReplacer($patterns);
-        if ($value = $replacer->get($seoTemplate['title'])) {
-            $page->setTitle($value);
-        }
-        if ($value = $replacer->get($seoTemplate['description'])) {
-            $page->setDescription($value);
-        }
-        if ($value = $replacer->get($seoTemplate['keywords'])) {
-            $page->setKeywords($value);
-        }
-    }
-
     public function slotConfig() {
         $config = [];
 
@@ -273,37 +199,6 @@ class IndexPage extends \View\DefaultLayout {
                     'id' => $product->getId(),
                 ],
             ];
-            $config['product.vFitting'] = false;
-
-            $productVideos =(array)$this->getParam('productVideos');
-            $productVideo = reset($productVideos);
-            if ($productVideo instanceof \Model\Product\Video\Entity) {
-                if ($productVideo->getImg3d()) {
-                    $config['product.img3d'] = true;
-                }
-                if ($productVideo->getMaybe3d()) {
-                    $config['product.maybe3d'] = true;
-                }
-                if ($productVideo->getPandra()) {
-                    $config['product.vFitting'] = true;
-                }
-            }
-
-            if ($product instanceof \Model\Product\Entity) {
-                if ((bool)$product->getPhoto3d()) {
-                    $config['product.native3d'] = true;
-                }
-            }
-
-            if ($config['product.vFitting']) {
-                $resourcesVF = $product->getPandraResources();
-                $config['product.name']         = $product->getName();
-                $config['product.article']      = $product->getArticle();
-                $config['product.resources']    = $resourcesVF['resources'];
-                $config['product.meshes']       = $resourcesVF['meshes'];
-                $config['product.textures']     = $resourcesVF['textures'];
-                $config['product.marker']       = $resourcesVF['marker'];
-            }
         }
 
         return $this->tryRender('_config', ['config' => $config]);
@@ -328,23 +223,6 @@ class IndexPage extends \View\DefaultLayout {
         ];
     }
 
-    public function slotRuTargetProductJS() {
-        if (!\App::config()->partners['RuTarget']['enabled']) return;
-
-        /** @var $product \Model\Product\Entity */
-        $product = $this->getParam('product');
-        if (!$product) {
-            return;
-        }
-
-        $data = [
-            'id' => $product->getId(),
-            'regionId' => \App::user()->getRegionId(),
-        ];
-
-        return "<div id=\"RuTargetProductJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
-    }
-
     public function slotLamodaProductJS() {
         if (!\App::config()->partners['Lamoda']['enabled']) return;
 
@@ -359,6 +237,41 @@ class IndexPage extends \View\DefaultLayout {
         ];
 
         return "<div id=\"LamodaProductJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
+    }
+
+    public function slotAdvMakerJS() {
+        if (!\App::config()->partners['AdvMaker']['enabled'] || empty($this->product)) return '';
+        $product = [
+            'id'        => $this->product->getId(),
+            'vendor'    => $this->product->getBrand(),
+            'price'     => $this->product->getPrice(),
+            'url'       => \App::router()->generate('product', ['productPath' => $this->product->getToken()], true),
+            'picture'   => $this->product->getImageUrl(),
+            'name'      => $this->product->getName(),
+            'category'  => $this->product->getLastCategory() ? $this->product->getLastCategory()->getId() : null
+        ];
+        return '<!-- AdvMaker -->
+            <script type="text/javascript" defer="defer">
+                $(window).load(function() {
+                    window.advm_product = '. $this->json($product, false) .';
+                    window.advm_ret = window.advm_ret || [];
+                    window.advm_ret.push({code: "543e17ea03935", level: 3});
+                    (function () {
+                        var sc = document.createElement("script");
+                        sc.async = true;
+                        sc.src = (document.location.protocol == "https:" ? "https:" : "http:") + "//rt.am15.net/retag/core/retag.js";
+                        var tn = document.getElementsByTagName("script")[0];
+                        tn.parentNode.insertBefore(sc, tn);
+                    })()
+                });
+            </script>';
+    }
+
+    public function slotHubrusJS() {
+        $html = parent::slotHubrusJS();
+        if (!empty($html)) {
+            return $html . \View\Partners\Hubrus::addProductData($this->product);
+        }
     }
 
     public function slotMailRu() {

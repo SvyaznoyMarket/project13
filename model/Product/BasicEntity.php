@@ -7,27 +7,27 @@ class BasicEntity {
 
     const LABEL_ID_PODARI_ZHIZN = 17;
 
-    /** @var string */
+    /** @var string|null */
     protected $ui;
-    /** @var int */
+    /** @var int|null */
     protected $id;
-    /** @var string */
+    /** @var string|null */
     protected $barcode;
-    /** @var string */
+    /** @var string|null */
     protected $article;
-    /** @var string */
+    /** @var string|null */
     protected $name;
-    /** @var string */
+    /** @var string|null */
     protected $link;
-    /** @var string */
+    /** @var string|null */
     protected $token;
-    /** @var string */
+    /** @var string|null */
     protected $image;
-    /** @var int */
+    /** @var int|null */
     protected $price;
-    /** @var State\Entity */
+    /** @var State\Entity|null */
     protected $state;
-    /** @var int */
+    /** @var int|null */
     protected $statusId;
     /** @var Line\Entity */
     protected $line;
@@ -40,56 +40,69 @@ class BasicEntity {
     /** $var array */
     protected $partnersOffer = [];
     /** @var array */
-    protected $ean;
-    /** @var float */
+    protected $ean = [];
+    /** @var float|null */
     protected $avgScore;
-    /** @var float */
+    /** @var float|null */
     protected $avgStarScore;
-    /** @var int */
+    /** @var int|null */
     protected $numReviews;
-    /** @var bool */
+    /** @var bool|null */
     protected $isInShowroomsOnly;
-    /** @var bool */
+    /** @var bool|null */
     protected $isInShopsOnly;
-    /** @var bool */
+    /** @var bool|null */
     protected $isOnlyFromPartner;
-    /** @var bool */
+    /** @var bool|null */
     protected $hasPartnerStock;
-    /** @var bool */
+    /** @var bool|null */
     protected $isUpsale = false;
-    /** @var Model\Entity */
+    /** @var Model\Entity|null */
     protected $model;
+    /** @var string|null */
+    protected $seoTitle;
+    /** @var string|null */
+    protected $seoKeywords;
+    /** @var string|null */
+    protected $seoDescription;
+    /** @var \Model\Media[] */
+    public $medias = [];
+    /** @var array */
+    public $json3d = [];
 
     public function __construct(array $data = []) {
-        if (array_key_exists('id', $data)) $this->setId($data['id']);
-        if (array_key_exists('ui', $data)) $this->setUi($data['ui']);
-        if (array_key_exists('status_id', $data)) $this->setStatusId($data['status_id']);
-        if (array_key_exists('name', $data)) $this->setName($data['name']);
-        if (array_key_exists('link', $data)) $this->setLink($data['link']);
-        if (array_key_exists('token', $data)) $this->setToken($data['token']);
-        if (array_key_exists('article', $data)) $this->setArticle($data['article']);
-        if (array_key_exists('bar_code', $data)) $this->setBarcode($data['bar_code']);
-        if (array_key_exists('media_image', $data)) $this->setImage($data['media_image']);
-        if (array_key_exists('category', $data) && (bool)$data['category']) {
+        if (isset($data['id'])) $this->setId($data['id']);
+        if (isset($data['ui'])) $this->setUi($data['ui']);
+        if (isset($data['status_id'])) $this->setStatusId($data['status_id']);
+        if (isset($data['name'])) $this->setName($data['name']);
+        if (isset($data['link'])) $this->setLink($data['link']);
+        if (isset($data['token'])) $this->setToken($data['token']);
+        if (isset($data['article'])) $this->setArticle($data['article']);
+        if (isset($data['bar_code'])) $this->setBarcode($data['bar_code']);
+        if (isset($data['media_image'])) $this->setImage($data['media_image']);
+        if (isset($data['category']) && (bool)$data['category']) {
             $categoryData = reset($data['category']);
             if ((bool)$categoryData) $this->setMainCategory(new Category\Entity($categoryData));
 
             $categoryData = end($data['category']);
             if ((bool)$categoryData) $this->setParentCategory(new Category\Entity($categoryData));
         };
-        if (array_key_exists('price', $data)) $this->setPrice($data['price']);
-        if (array_key_exists('state', $data) && (bool)$data['state']) $this->setState(new State\Entity($data['state']));
-        if (array_key_exists('line', $data) && (bool)$data['line']) $this->setLine(new Line\Entity($data['line']));
-        if (array_key_exists('stock', $data) && is_array($data['stock'])) $this->setStock(array_map(function($data) {
+        if (isset($data['price'])) $this->setPrice($data['price']);
+        if (isset($data['state']) && (bool)$data['state']) $this->setState(new State\Entity($data['state']));
+        if (isset($data['line']) && (bool)$data['line']) $this->setLine(new Line\Entity($data['line']));
+        if (isset($data['stock']) && is_array($data['stock'])) $this->setStock(array_map(function($data) {
             return new Stock\Entity($data);
         }, $data['stock']));
-        if (array_key_exists('partners_offer', $data)) $this->setPartnersOffer(array_map(function($v) { return $v; }, $data['partners_offer']));
-        if (array_key_exists('ean', $data)) $this->setEan($data['ean']);
-        if (array_key_exists('avg_score', $data)) $this->setAvgScore($data['avg_score']);
-        if (array_key_exists('avg_star_score', $data)) $this->setAvgStarScore($data['avg_star_score']);
-        if (array_key_exists('num_reviews', $data)) $this->setNumReviews($data['num_reviews']);
-        if (array_key_exists('is_upsale', $data)) $this->setIsUpsale($data['is_upsale']);
-        if (array_key_exists('model', $data) && $data['model']) $this->setModel(new Model\Entity($data['model']));
+        if (isset($data['partners_offer'])) $this->setPartnersOffer(array_map(function($v) { return $v; }, $data['partners_offer']));
+        if (isset($data['ean'])) $this->setEan($data['ean']);
+        if (isset($data['avg_score'])) $this->setAvgScore($data['avg_score']);
+        if (isset($data['avg_star_score'])) $this->setAvgStarScore($data['avg_star_score']);
+        if (isset($data['num_reviews'])) $this->setNumReviews($data['num_reviews']);
+        if (isset($data['is_upsale'])) $this->setIsUpsale($data['is_upsale']);
+        if (isset($data['model']) && $data['model']) $this->setModel(new Model\Entity($data['model']));
+        if (isset($data['title'])) $this->setSeoTitle($data['title']);
+        if (isset($data['meta_keywords'])) $this->setSeoKeywords($data['meta_keywords']);
+        if (isset($data['meta_description'])) $this->setSeoDescription($data['meta_description']);
 
         $this->calculateState($data);
     }
@@ -207,15 +220,12 @@ class BasicEntity {
         return $this->price;
     }
 
-    /**
-     * @param State\Entity $state
-     */
     public function setState(State\Entity $state = null) {
         $this->state = $state;
     }
 
     /**
-     * @return State\Entity
+     * @return State\Entity|null
      */
     public function getState() {
         return $this->state;
@@ -333,8 +343,26 @@ class BasicEntity {
         $this->stock[] = $stock;
     }
 
+    /**
+     * @return Stock\Entity[]
+     */
     public function getStock() {
         return $this->stock;
+    }
+
+    /** Возвращает сток с максимальным количеством товара
+     * @return Stock\Entity|null
+     */
+    public function getStockWithMaxQuantity(){
+
+        if (empty($this->stock)) return null;
+
+        $maxStock = $this->stock[0];
+        foreach ($this->stock as $stock) {
+            if ($stock->getQuantity() > $maxStock->getQuantity()) $maxStock = $stock;
+        }
+
+        return $maxStock;
     }
 
     /**
@@ -532,18 +560,57 @@ class BasicEntity {
         return $this->isOnlyFromPartner;
     }
 
-    /**
-     * @param Model\Entity $model
-     */
     public function setModel(Model\Entity $model = null) {
         $this->model = $model;
     }
 
     /**
-     * @return Model\Entity
+     * @return Model\Entity|null
      */
     public function getModel() {
         return $this->model;
+    }
+
+    /**
+     * @param string $seoTitle
+     */
+    public function setSeoTitle($seoTitle) {
+        $this->seoTitle = (string)$seoTitle;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSeoTitle() {
+        return $this->seoTitle;
+    }
+
+    /**
+     * @param string $seoKeywords
+     */
+    public function setSeoKeywords($seoKeywords) {
+        $this->seoKeywords = (string)$seoKeywords;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSeoKeywords() {
+        return $this->seoKeywords;
+    }
+
+    /**
+     * @param string $seoDescription
+     */
+    public function setSeoDescription($seoDescription) {
+        $this->seoDescription = (string)$seoDescription;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSeoDescription() {
+        return $this->seoDescription;
     }
 
     /**
@@ -580,5 +647,29 @@ class BasicEntity {
             && !$this->isAvailable()
             && !$this->hasAvailableModels()
         ;
+    }
+
+    public function hasVideo() {
+        foreach ($this->medias as $media) {
+            if (in_array($media->provider, ['vimeo', 'youtube'], true)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function has3d() {
+        if ($this->json3d) {
+            return true;
+        }
+
+        foreach ($this->medias as $media) {
+            if (in_array($media->provider, ['megavisor', 'maybe3d', 'swf'], true)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

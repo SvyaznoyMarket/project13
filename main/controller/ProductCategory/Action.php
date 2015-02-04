@@ -172,67 +172,15 @@ class Action {
             });
         }
 
-        /** @var $category \Model\Product\Category\Entity */
+        /** @var $category \Model\Product\Category\Entity|null */
         $category = null;
-
-        $shopScriptException = null;
-        $shopScriptSeo = [];
-        if (\App::config()->shopScript['enabled']) {
-            try {
-                $shopScript = \App::shopScriptClient();
-                $shopScript->addQuery(
-                    'category/get-seo',
-                    [
-                        'slug'   => $categoryToken,
-                        'geo_id' => \App::user()->getRegion()->getId(),
-                    ],
-                    [],
-                    function ($data) use (&$shopScriptSeo) {
-                        if ($data && is_array($data)) $shopScriptSeo = reset($data);
-                    },
-                    function (\Exception $e) use (&$shopScriptException) {
-                        $shopScriptException = $e;
-                    }
-                );
-                $shopScript->execute();
-                if ($shopScriptException instanceof \Exception) {
-                    throw $shopScriptException;
-                }
-
-                if (empty($shopScriptSeo['ui'])) {
-                    throw new \Exception\NotFoundException(sprintf('Не получен ui для категории товара @%s', $categoryToken));
-                }
-
-                // запрашиваем категорию по ui
-                \RepositoryManager::productCategory()->prepareEntityByUi($shopScriptSeo['ui'], $region, function($data) use (&$category, &$shopScriptSeo) {
-                    $data = reset($data);
-                    if ((bool)$data) {
-                        $category = new \Model\Product\Category\Entity($data);
-                        if (isset($shopScriptSeo['token'])) {
-                            $category->setToken($shopScriptSeo['token']);
-                        }
-                        if (isset($shopScriptSeo['link'])) {
-                            $category->setLink($shopScriptSeo['link']);
-                        }
-                    }
-                });
-            } catch (\Exception $e) { // если не плучилось добыть seo-данные или категорию по ui, пробуем старый добрый способ
-                \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
-                    $data = reset($data);
-                    if ((bool)$data) {
-                        $category = new \Model\Product\Category\Entity($data);
-                    }
-                });
+        $catalogJson = [];
+        \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category, &$catalogJson) {
+            if ($data) {
+                $category = new \Model\Product\Category\Entity($data);
+                $catalogJson = $category->catalogJson;
             }
-
-        } else {
-            \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
-                $data = reset($data);
-                if ((bool)$data) {
-                    $category = new \Model\Product\Category\Entity($data);
-                }
-            });
-        }
+        }, $brandToken);
 
         // выполнение 2-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);
@@ -243,36 +191,42 @@ class Action {
 
         // SITE-3381
         if (!$request->isXmlHttpRequest() && ($category->getLevel() > 1) && false === strpos($categoryPath, '/')) {
-            //throw new \Exception\NotFoundException(sprintf('Не передана родительская категория для категории @%s', $categoryToken));
+            throw new \Exception\NotFoundException(sprintf('Не передана родительская категория для категории @%s', $categoryToken));
         }
 
         // подготовка 3-го пакета запросов
 
-        // получаем фильтры из http-запроса
-        $filterUrl = $this->getFilterFromUrl($request);
+        \RepositoryManager::productCategory()->prepareEntityHasChildren($category);
 
-        // заполняем параметр filters для запроса к ядру
-        $filterParams = [];
-        if (!empty($filterUrl)) {
-            foreach ($filterUrl as $name => $values) {
-                if (isset($values['from']) || isset($values['to'])) {
-                    $filterParams[] = [
-                        $name,
-                        2,
-                        isset($values['from']) ? $values['from'] : null,
-                        isset($values['to']) ? $values['to'] : null
-                    ];
-                } else {
-                    $filterParams[] = [$name, 1, $values];
-                }
-            }
-        }
+        $client->execute();
 
         // запрашиваем дерево категорий
         if ($category->isV2Root()) {
-            \RepositoryManager::productCategory()->prepareEntityBranch($category, $region, $filterParams);
+            // получаем фильтры из http-запроса
+            $filterUrl = $this->getFilterFromUrl($request);
+
+            // заполняем параметр filters для запроса к ядру
+            $filterParams = [];
+            if (!empty($filterUrl)) {
+                foreach ($filterUrl as $name => $values) {
+                    if (isset($values['from']) || isset($values['to'])) {
+                        $filterParams[] = [
+                            $name,
+                            2,
+                            isset($values['from']) ? $values['from'] : null,
+                            isset($values['to']) ? $values['to'] : null
+                        ];
+                    } else {
+                        $filterParams[] = [$name, 1, $values];
+                    }
+                }
+            }
+
+            // Необходимо запросить сестринские категории, т.к. они используется в гридстере (/main/template/product-category/__sibling-list.php) и в ювелирке (/main/template/jewel/product-category/_branch.php)
+            \RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region, $filterParams);
         } else {
-            \RepositoryManager::productCategory()->prepareEntityBranch($category, $region);
+            // Необходимо запросить сестринские категории, т.к. они используется в гридстере (/main/template/product-category/__sibling-list.php) и в ювелирке (/main/template/jewel/product-category/_branch.php)
+            \RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region);
         }
 
         // запрашиваем фильтры
@@ -284,11 +238,7 @@ class Action {
             }
         });
 
-        // выполнение 3-го пакета запросов
         $client->execute();
-
-        // получаем catalog json для категории (например, тип раскладки)
-        $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
 
         $promoContent = '';
         if (!empty($catalogJson['promo_token'])) {
@@ -311,6 +261,20 @@ class Action {
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
         $categoryClass = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
 
+        if ($categoryClass && ('default' !== $categoryClass)) {
+            if ('jewel' == $categoryClass) {
+                if (\App::config()->debug) \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\Action.categoryDirect', 134);
+
+                return (new \Controller\Jewel\ProductCategory\Action())->categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent);
+            } else if ('grid' == $categoryClass) {
+                if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\Grid\ChildAction.executeByEntity', 134);
+
+                return (new \Controller\ProductCategory\Grid\ChildAction())->executeByEntity($request, $category, $catalogJson);
+            }
+
+            \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $categoryClass));
+        }
+
         $relatedCategories = [];
         $categoryConfigById = [];
         if (!empty($catalogJson['related_categories']) && is_array($catalogJson['related_categories'])) {
@@ -329,32 +293,23 @@ class Action {
                 }
             }
 
-            if ((bool)$categoryConfigById) {
+            if ($categoryConfigById) {
                 \RepositoryManager::productCategory()->prepareCollectionById(
                     array_keys($categoryConfigById),
                     $region,
-                    function($data) use (&$relatedCategories, &$categoryConfigById) {
-                        foreach ($data as $item) {
-                            if (!isset($item['id'])) continue;
-                            $relatedCategories[] = new \Model\Product\Category\Entity($item);
+                    function($data) use (&$relatedCategories) {
+                        if (is_array($data)) {
+                            foreach ($data as $item) {
+                                if ($item) {
+                                    $relatedCategories[] = new \Model\Product\Category\Entity($item);
+                                }
+                            }
                         }
                     }
                 );
+
+                \App::scmsClient()->execute();
             }
-        }
-
-        if ($categoryClass && ('default' !== $categoryClass)) {
-            if ('jewel' == $categoryClass) {
-                if (\App::config()->debug) \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\categoryDirect', 134);
-
-                return (new \Controller\Jewel\ProductCategory\Action())->categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent, $shopScriptSeo);
-            } else if ('grid' == $categoryClass) {
-                if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Grid.child', 134);
-
-                return (new \Controller\ProductCategory\Grid\ChildAction())->executeByEntity($request, $category, $catalogJson, $shopScriptSeo);
-            }
-
-            \App::logger()->error(sprintf('Контроллер для категории @%s класса %s не найден или не активирован', $category->getToken(), $categoryClass));
         }
 
 
@@ -379,7 +334,7 @@ class Action {
         // фильтры
         $productFilter = $this->getFilter($filters, $category, $brand, $request, $shop);
 
-        $this->correctFilterForJewel($category, $productFilter);
+        $this->correctFilterAndCategoryForJewel($category, $productFilter);
 
         if (!$category->isV2()) {
             // SITE-4734
@@ -398,16 +353,9 @@ class Action {
         $hotlinks = [];
         $seoContent = '';
         try {
-            $seoCatalogJson = \Model\Product\Category\Repository::getSeoJson($category, null, $shopScriptSeo);
-            // получаем горячие ссылки
-            $hotlinks = \RepositoryManager::productCategory()->getHotlinksBySeoCatalogJson($seoCatalogJson);
-
-            // в json-файле в свойстве content содержится массив
-            if (empty($brand)) {
-                $seoContent = empty($seoCatalogJson['content']) ? '' : implode('<br />', (array) $seoCatalogJson['content']);
-            } else {
-                $seoBrandJson = \Model\Product\Category\Repository::getSeoJson($category, $brand);
-                $seoContent = empty($seoBrandJson['content']) ? '' : implode('<br />', (array) $seoBrandJson['content']);
+            $seoContent = $category->getSeoContent();
+            if ($category) {
+                $hotlinks = $category->getSeoHotlinks();
             }
         } catch (\Exception $e) {
             \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['controller']);
@@ -417,7 +365,7 @@ class Action {
         try {
             // если у категории нет дочерних узлов
             if ($category && (!$category->getHasChild() || in_array($category->getId(), [1096]))) {
-                //$hotlinks = array_filter($hotlinks, function($item) { return isset($item['group_name']) ? (bool)$item['group_name'] : false; }); // TODO: временная заглушка
+//                $hotlinks = array_filter($hotlinks, function(\Model\Seo\Hotlink\Entity $item) { return (bool)$item->getGroupName(); }); // TODO: временная заглушка
                 // опции брендов
                 $brandOptions = [];
                 foreach ($filters as $filter) {
@@ -453,14 +401,14 @@ class Action {
                     \App::coreClientV2()->execute();
 
                     foreach ($brands as $iBrand) {
-                        $hotlinks[] = [
-                            'group_name' => '',
-                            'title'      => $iBrand->getName(),
-                            'url'        => \App::router()->generate('product.category.brand', [
+                        $hotlinks[] = new \Model\Seo\Hotlink\Entity([
+                            'group' => '',
+                            'name' => $iBrand->getName(),
+                            'url' => \App::router()->generate('product.category.brand', [
                                 'categoryPath' => $categoryPath,
                                 'brandToken'   => $iBrand->getToken(),
                             ]),
-                        ];
+                        ]);
                     }
                 }
             }
@@ -572,7 +520,6 @@ class Action {
             &$seoContent,
             &$catalogJson,
             &$promoContent,
-            &$shopScriptSeo,
             &$shop,
             &$relatedCategories,
             &$categoryConfigById,
@@ -587,7 +534,6 @@ class Action {
             $page->setParam('seoContent', $seoContent);
             $page->setParam('catalogJson', $catalogJson);
             $page->setParam('promoContent', $promoContent);
-            $page->setParam('shopScriptSeo', $shopScriptSeo);
             $page->setGlobalParam('shop', $shop);
             $page->setParam('searchHints', $this->getSearchHints($catalogJson));
             $page->setParam('relatedCategories', $relatedCategories);
@@ -776,7 +722,6 @@ class Action {
         }
 
         $page->setParam('links', $this->getRootCategoryLinks($category, $page, $categoryConfigById));
-        $page->setParam('sidebarHotlinks', true);
         return new \Http\Response($page->show());
     }
 
@@ -1023,6 +968,9 @@ class Action {
                     }
                 });
             }
+
+            $repository->prepareProductsMedias($products);
+
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
             \RepositoryManager::review()->addScores($products, $scoreData);
@@ -1052,25 +1000,7 @@ class Action {
             ]));
         }
 
-        // video
-        $productVideosByProduct = [];
-        foreach ($productPager as $product) {
-            /** @var $product \Model\Product\Entity */
-            $productVideosByProduct[$product->getId()] = [];
-        }
-        if ((bool)$productVideosByProduct) {
-            \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
-                foreach ((array)$data as $id => $items) {
-                    if (!is_array($items)) continue;
-                    foreach ($items as $item) {
-                        $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);
-                    }
-                }
-            });
-            \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
-        }
-
-        $columnCount = (bool)array_intersect(array_map(function(\Model\Product\Category\BasicEntity $category) { return $category->getId(); }, $category->getAncestor()), [1320, 4649]) ? 3 : 4;
+        $columnCount = (bool)array_intersect(array_map(function(\Model\Product\Category\Entity $category) { return $category->getId(); }, $category->getAncestor()), [1320, 4649]) ? 3 : 4;
 
         // ajax
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
@@ -1079,7 +1009,6 @@ class Action {
                 'list'           => (new \View\Product\ListAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
                     $productPager,
-                    $productVideosByProduct,
                     !empty($catalogJson['bannerPlaceholder']) && $hasBanner ? $catalogJson['bannerPlaceholder'] : [],
                     null,
                     true,
@@ -1098,10 +1027,10 @@ class Action {
                     \App::closureTemplating()->getParam('helper'),
                     $productSorting
                 ),
-                'page'          => [
-                    'title'     => $this->getPageTitle()
+                'page'           => [
+                    'title'      => $this->getPageTitle()
                 ],
-                'countProducts' => ($hasBanner) ? ( $productPager->count() - 1 ) : $productPager->count(),
+                'countProducts'  => ($hasBanner) ? ( $productPager->count() - 1 ) : $productPager->count(),
             ];
 
             // если установлена настройка что бы показывать фасеты, то в ответ добавляем "disabledFilter"
@@ -1119,28 +1048,8 @@ class Action {
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
-        $page->setParam('productVideosByProduct', $productVideosByProduct);
-        $page->setParam('sidebarHotlinks', true);
         $page->setParam('hasBanner', $hasBanner);
         $page->setParam('columnCount', $columnCount);
-
-        return new \Http\Response($page->show());
-    }
-
-    /**
-     * @param \Model\Product\Category\Entity $category
-     * @param \Model\Brand\Entity            $brand
-     * @param \Model\Product\Filter          $productFilter
-     * @param \View\Layout                   $page
-     * @param \Http\Request                  $request
-     * @return \Http\Response
-     */
-    public function brand(\Model\Product\Category\Entity $category, \Model\Brand\Entity $brand, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
-
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.brand', 134);
-
-        $page->setParam('brand', $brand);
 
         return new \Http\Response($page->show());
     }
@@ -1155,16 +1064,24 @@ class Action {
 
         $values = [];
         foreach ($requestData as $k => $v) {
-            if (0 !== strpos($k, \View\Product\FilterForm::$name)) continue;
+            if (0 !== strpos($k, \View\Product\FilterForm::$name)) {
+                continue;
+            }
+
             $parts = array_pad(explode('-', $k), 3, null);
 
-            if (!isset($values[$parts[1]])) {
-                $values[$parts[1]] = [];
-            }
-            if (('from' == $parts[2]) || ('to' == $parts[2])) {
+            if ('from' == $parts[2] || 'to' == $parts[2]) {
                 $values[$parts[1]][$parts[2]] = $v;
             } else {
                 $values[$parts[1]][] = $v;
+            }
+        }
+
+        foreach ($values as $k => $v) {
+            if (isset($v['from']) && isset($v['to'])) {
+                if ($v['from'] > $v['to']) {
+                    $values[$k]['from'] = $v['to'];
+                }
             }
         }
 
@@ -1291,7 +1208,7 @@ class Action {
                 $property->setIsMultiple(false);
             }
         }
-        
+
         return $productFilter;
     }
 
@@ -1356,33 +1273,15 @@ class Action {
     /**
      * @return mixed
      */
-    protected function getPageTitle() {
+    private function getPageTitle() {
         return $this->pageTitle;
     }
 
-
-    /**
-     * @param $category         \Model\Product\Category\Entity|null
-     * @param $brand            \Model\Brand\Entity|null
-     * @param bool|string       $defaultTitle
-     * @return bool
-     */
-    protected function setPageTitle($category, $brand, $defaultTitle = false)
-    {
-        if ( $category ) {
-            /**@var $category \Model\Product\Category\Entity **/
-            $this->pageTitle = $category->getName();
-            if ( $brand ) {
-                /**@var $brand \Model\Brand\Entity **/
-                $this->pageTitle .= ' ' . $brand->getName();
-            }
-            return true;
+    private function setPageTitle(\Model\Product\Category\Entity $category, \Model\Brand\Entity $brand = null) {
+        $this->pageTitle = $category->getName();
+        if ($brand) {
+            $this->pageTitle .= ' ' . $brand->getName();
         }
-
-        if ( $defaultTitle ) {
-            return $this->pageTitle = $defaultTitle;
-        }
-        return false;
     }
 
 
@@ -1418,56 +1317,26 @@ class Action {
     }
 
 
-    private function correctFilterForJewel(\Model\Product\Category\Entity &$category, \Model\Product\Filter &$productFilter) {
-        $categoryUis = [
-            '633c0d73-d9f5-4984-a679-e8154be71c6a', // ЗОЛОТЫЕ УКРАШЕНИЯ
-            '3835654e-0b7c-4ce8-9006-f042fdb9676a', // Золотые серьги
-            '152aacd2-b43c-4b48-ac16-a95045ad8083', // Золотые кольца
-            '1c0c96a5-6fcb-4b00-9616-8c41fae9f0c0', // Золотые колье и подвески
-            '759d26d8-96de-4960-8ca9-8a7a0633ff8c', // Золотые цепи и браслеты
-            '5e97747a-31d7-4f4e-9031-3b7122e53b66', // Золотой пирсинг
-
-            '06aaa4e1-1546-4364-a9a5-68d0f9a39fae', // СЕРЕБРЯНЫЕ УКРАШЕНИЯ
-            '6e6c8154-5ee6-437a-bb74-644c1b67a096', // Серебряные серьги
-            'a6018a60-da37-49f6-b195-58e4a651f914', // Серебряные кольца
-            'd869c0e2-958c-4919-b6e8-0f9159b74204', // Серебряные колье и подвески
-            '0423bec4-a8a7-4e85-a334-71089a2baf9f', // Серебряные цепи и браслеты
-
-            '5505db94-143c-4c28-adb9-b608d39afe26', // КОЛЬЦА
-            'd7b951ed-7b94-4ece-a3ae-c685cf77e0dd', // СЕРЬГИ
-            '8b21a199-4c0a-4eba-91e8-6833b4b7a443', // КОЛЬЕ И ПОДВЕСКИ
-            'fb4788dd-25fb-49dd-a3a0-9da170b28d70', // ДЕТСКИЕ УКРАШЕНИЯ
-            '35386cba-037b-4db1-b3f1-64d5ba2e492a', // Детские серьги
-            '3d5785ba-e2bf-4450-a0e1-938b4447dfdb', // Детские кольца
-            'a1acc4d6-0a63-411d-ba82-696a9600402f', // Детские цепочки
-            '968c7510-d174-434c-8fd5-0a4941280792', // Детские подвески
-
-            '5f80bd78-df8e-4f8f-b8a0-9258479484bd', // УКРАШЕНИЯ ИЗ СЕРЕБРА
-            '9a4758ad-bc74-4c3b-a113-dcf76e61c35d', // Кольца из серебра
-            'e0b806a4-bd2b-4360-869d-9c078dadd6c3', // Серьги из серебра
-            'f2ffa700-0ac7-4125-867b-1a114b5f20b6', // Подвески из серебра
-        ];
-
-        if (in_array($category->getUi(), $categoryUis, true)) {
-            $isNewFilterPresent = false;
+    private function correctFilterAndCategoryForJewel(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter) {
+        if ($category->isV3()) {
             foreach ($productFilter->getFilterCollection() as $filter) {
                 if ('Металл' === $filter->getName() || 'Вставка' === $filter->getName()) {
-                    $isNewFilterPresent = true;
                     $filter->setIsAlwaysShow(true);
                 }
             }
 
-            if ($isNewFilterPresent) {
-                $view3CategoryUis = [
-                    '5505db94-143c-4c28-adb9-b608d39afe26', // КОЛЬЦА
-                    'd7b951ed-7b94-4ece-a3ae-c685cf77e0dd', // СЕРЬГИ
-                ];
+            if (in_array($category->getUi(), [
+                '0dd8ef4e-7eb3-4281-95f3-0cf2f1d469e9', // Raganella princess
+                '9cbeabe3-0a06-4368-8e16-1e617fb74d7b', // Браслеты Raganella Princess
+                'c61f0526-ad96-41e6-8c83-b49b4cb06a7d', // Колье Raganella Princess
+                'd2a5feac-110c-4c08-9d49-b69abf9f8861', // Серьги Raganella Princess
 
-                if (in_array($category->getUi(), $view3CategoryUis, true)) {
-                    $category->setProductView(3);
-                } else {
-                    $category->setProductView(4);
-                }
+                '5505db94-143c-4c28-adb9-b608d39afe26', // КОЛЬЦА
+                'd7b951ed-7b94-4ece-a3ae-c685cf77e0dd', // СЕРЬГИ
+            ], true)) {
+                $category->setProductView(3);
+            } else {
+                $category->setProductView(4);
             }
         } else {
             foreach ($productFilter->getFilterCollection() as $filter) {

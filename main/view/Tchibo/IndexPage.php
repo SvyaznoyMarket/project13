@@ -14,25 +14,6 @@ class IndexPage extends \View\DefaultLayout {
         return $this->render('tchibo/page-index', $this->params);
     }
 
-    public function prepare() {
-        $shopScriptSeo = $this->getParam('shopScriptSeo');
-        if (!$shopScriptSeo) {
-            return;
-        }
-
-        if (!empty($shopScriptSeo['title'])) {
-            $this->setTitle($shopScriptSeo['title']);
-        }
-
-        if (!empty($shopScriptSeo['description'])) {
-            $this->addMeta('description', $shopScriptSeo['description']);
-        }
-
-        if (!empty($shopScriptSeo['keywords'])) {
-            $this->addMeta('keywords', $shopScriptSeo['keywords']);
-        }
-    }
-
     public function slotUserbarContent() {
         return $this->render('jewel/product-category/_userbarContent', [
             'category'  => $this->getGlobalParam('rootCategoryInMenu'),

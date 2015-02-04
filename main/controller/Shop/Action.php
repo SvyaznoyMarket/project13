@@ -3,9 +3,6 @@
 namespace Controller\Shop;
 
 class Action {
-    /** @var array */
-    private $firstShopIds = [2, 194];
-
     /**
      * @return \Http\Response
      */
@@ -57,8 +54,6 @@ class Action {
         // выполнение 1-го пакета запросов
         $client->execute();
 
-        $region = $user->getRegion();
-
         $regions = $shopAvailableRegions;
 
         // подготовка 2-го пакета запросов
@@ -68,11 +63,12 @@ class Action {
         // магазины
         /** @var $shops \Model\Shop\Entity[] */
         $shops = [];
-        \RepositoryManager::shop()->prepareCollectionByRegion(null, function($data) use (&$shops) {
+        \App::scmsClient()->addQuery('shop/get', [], [], function($data) use (&$shops) {
             foreach ($data as $item) {
-                if (empty($item['coord_long']) || empty($item['coord_lat'])) continue;
+                $shop = new \Model\Shop\Entity($item);
+                if (!$shop->getLatitude() || !$shop->getLongitude()) continue;
 
-                $shops[] = new \Model\Shop\Entity($item);
+                $shops[] = $shop;
             }
         });
 
@@ -108,21 +104,22 @@ class Action {
             $subway = isset($subways[0]) ? $subways[0] : null;
 
             $markers[$shop->getId()] = array(
-                'id'                 => $shop->getId(),
-                'region_id'          => $shop->getRegion()->getId(),
-                'link'               => \App::router()->generate('shop.show', array('regionToken' => $shop->getRegion()->getToken(), 'shopToken' => $shop->getToken())),
-                'name'               => ($subway ? ('м.' . $subway->getName() . ', ') : '') . $shop->getName(),
-                'address'            => $shop->getAddress(),
-                'regtime'            => $shop->getRegime(),
-                'latitude'           => $shop->getLatitude(),
-                'longitude'          => $shop->getLongitude(),
-                'is_reconstruction'  => $shop->getIsReconstructed(),
-                'subway_name'        => $subway ? $subway->getName() : '',
+                'id'                => $shop->getId(),
+                'region_id'         => $shop->getRegion()->getId(),
+                'link'              => \App::router()->generate('shop.show', array('regionToken' => $shop->getRegion()->getToken(), 'shopToken' => $shop->getToken())),
+                'name'              => $shop->getName(),
+                'address'           => $shop->getAddress(),
+                'regtime'           => $shop->getRegime(),
+                'latitude'          => $shop->getLatitude(),
+                'longitude'         => $shop->getLongitude(),
+                'is_reconstruction' => $shop->getIsReconstructed(),
+                'subway_name'       => $subway ? $subway->getName() : null,
+                'subway_color'      => ($subway && $subway->getLine()) ? $subway->getLine()->getColor() : null,
                 'product_count_text' => $shop->getProductCount() ? ($shop->getProductCount() . ' ' .$helper->numberChoice($shop->getProductCount(), ['товар', 'товара', 'товаров']) . ' можно забрать сегодня') : null,
             );
         }
 
-        $this->sortMarkersBySubways($markers);
+        $markers = array_values($markers);
 
         $page = new \View\Shop\RegionPage();
         $page->setParam('shopAvailableRegions', $shopAvailableRegions);
@@ -197,22 +194,14 @@ class Action {
 
         $region = $user->getRegion();
 
-        $currentRegion = $regionToken == $region->getToken() ? $region : \RepositoryManager::region()->getEntityByToken($regionToken);
-        if (!$currentRegion) {
-            throw new \Exception\NotFoundException(sprintf('Region @%s not found', $regionToken));
-        }
-
         // подготовка 2-го пакета запросов
-
-        // TODO: запрашиваем меню
 
         // магазин
         /** @var $shop \Model\Shop\Entity */
         $shop = null;
-        \RepositoryManager::shop()->prepareEntityByToken($shopToken, function($data) use (&$shop) {
-            $data = reset($data);
-            if ((bool)$data) {
-                $shop = new \Model\Shop\Entity($data);
+        \App::scmsClient()->addQuery('shop/get', ['slug' => [$shopToken]], [], function($data) use (&$shop) {
+            if (isset($data[0]['name'])) {
+                $shop = new \Model\Shop\Entity($data[0]);
             }
         });
 
@@ -222,12 +211,15 @@ class Action {
         if (!$shop) {
             throw new \Exception\NotFoundException(sprintf('Shop @%s not found', $shopToken));
         }
+
+        $currentRegion = $shop->getRegion();
+
         // hardcode
-        if (in_array($shop->getId(), array(1))) {
-            $shop->setPanorama(new \Model\Shop\Panorama\Entity(array(
+        if (in_array($shop->getId(), [1])) {
+            $shop->setPanorama(new \Model\Shop\Panorama\Entity([
                 'swf' => '/panoramas/shops/' . $shop->getId() . '/tour.swf',
                 'xml' => '/panoramas/shops/' . $shop->getId() . '/tour.xml',
-            )));
+            ]));
         }
 
         if (in_array($shop->getId(), [194])) {
@@ -302,31 +294,4 @@ class Action {
         if (empty($name)) return false;
         return $name;
     }
-
-
-    /**
-     * @param array $markers
-     */
-    private function sortMarkersBySubways(&$markers)
-    {
-        usort($markers, function($a, $b) {
-            if (in_array($a['id'], $this->firstShopIds)) {
-                return -1;
-            } else if (in_array($b['id'], $this->firstShopIds)) {
-                return 1;
-            }
-
-            if (
-                empty($a['subway_name']) &&
-                empty($b['subway_name'])
-            ) {
-                return 0;
-            }
-
-            if ($a['subway_name'] == $b['subway_name']) return 0;
-
-            return $a['subway_name'] < $b['subway_name'] ? -1 : 1;
-        });
-    }
-
 }

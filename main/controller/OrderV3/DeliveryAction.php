@@ -34,11 +34,16 @@ class DeliveryAction extends OrderV3 {
                     'changes'        => $this->formatChanges($request->request->all(), $previousSplit)
                 ];
 
-                $result['OrderDeliveryRequest'] = json_encode($splitData, JSON_UNESCAPED_UNICODE);
-                $result['OrderDeliveryModel'] = $this->getSplit($request->request->all());
+                $orderDeliveryModel = $this->getSplit($request->request->all());
+
+                if (\App::debug()) {
+                    $result['OrderDeliveryRequest'] = json_encode($splitData, JSON_UNESCAPED_UNICODE);
+                    $result['OrderDeliveryModel'] = $orderDeliveryModel;
+                }
+
 
                 $page = new \View\OrderV3\DeliveryPage();
-                $page->setParam('orderDelivery', $result['OrderDeliveryModel']);
+                $page->setParam('orderDelivery', $orderDeliveryModel);
                 $result['page'] = $page->show();
 
             } catch (\Curl\Exception $e) {

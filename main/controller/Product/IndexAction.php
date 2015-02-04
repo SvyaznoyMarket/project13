@@ -2,6 +2,8 @@
 
 namespace Controller\Product;
 
+use Model\Product\Trustfactor;
+
 class IndexAction {
     /**
      * @param string        $productPath
@@ -88,6 +90,8 @@ class IndexAction {
             return new \Http\RedirectResponse($product->getLink() . ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), 302);
         }
 
+        \Session\ProductPageSenders::add($product->getUi(), $request->query->get('sender'));
+
         // подготовка 3-го пакета запросов
         $lifeGiftProduct = null;
         if ($product->getLabel() && (\App::config()->lifeGift['labelId'] === $product->getLabel()->getId())) {
@@ -104,8 +108,10 @@ class IndexAction {
         // получаем catalog json
         $catalogJson = [];
         if ($product->getLastCategory() && $product->getLastCategory()->getUi()) {
-            \App::scmsClient()->addQuery('category/get', ['uid' => $product->getLastCategory()->getUi(), 'geo_id' => $user->getRegion()->getId()], [], function ($data) use (&$catalogJson) {
-                $catalogJson = \RepositoryManager::productCategory()->convertScmsDataToOldCmsData($data);
+            \App::scmsClient()->addQuery('category/get/v1', ['uid' => $product->getLastCategory()->getUi(), 'geo_id' => $user->getRegion()->getId()], [], function ($data) use (&$catalogJson) {
+                if ($data) {
+                    $catalogJson = (new \Model\Product\Category\Entity($data))->catalogJson;
+                }
             });
         }
 
@@ -189,24 +195,96 @@ class IndexAction {
             }
         );
 
+        /** @var Trustfactor[] $trustfactors */
         $trustfactors = [];
-        \App::scmsClient()->addQuery('product/get-description', ['uid' => $product->getUi()], [], function($data) use(&$trustfactors, $product) {
-            if (isset($data['trustfactors']) && is_array($data['trustfactors'])) {
-                $trustfactors = $data['trustfactors'];
+        \App::scmsClient()->addQuery(
+            'product/get-description/v1',
+            ['uids' => [$product->getUi()], 'trustfactor' => 1, 'seo' => 1, 'media' => 1],
+            [],
+            function($data) use(&$trustfactors, $product) {
+                if (!isset($data['products'][$product->getUi()])) {
+                    return;
+                }
+    
+                $data = $data['products'][$product->getUi()];
+    
+                if (isset($data['trustfactors']) && is_array($data['trustfactors'])) {
+                    foreach ($data['trustfactors'] as $trustfactor) {
+                        if (is_array($trustfactor)) {
+                            $trustfactors[] = new Trustfactor($trustfactor);
+                        }
+                    }
+                }
+    
+                // SITE-3982 Трастфактор "Спасибо от Сбербанка" не должен отображаться на карточке товара от Связного
+                if (is_array($product->getPartnersOffer()) && count($product->getPartnersOffer()) != 0) {
+                    foreach ($trustfactors as $key => $trustfactor) {
+                        if ('right' === $trustfactor->type && 'ab3ca73c-6cc4-4820-b303-8165317420d5' === $trustfactor->uid) {
+                            unset($trustfactors[$key]);
+                        }
+                    }
+                }
+    
+                if (isset($data['title'])) {
+                    $product->setSeoTitle($data['title']);
+                }
+
+                if (isset($data['meta_keywords'])) {
+                    $product->setSeoKeywords($data['meta_keywords']);
+                }
+    
+                if (isset($data['meta_description'])) {
+                    $product->setSeoDescription($data['meta_description']);
+                }
+
+                if (isset($data['medias']) && is_array($data['medias'])) {
+                    foreach ($data['medias'] as $media) {
+                        if (is_array($media)) {
+                            $product->medias[] = new \Model\Media($media);
+                        }
+                    }
+                }
+
+                if (isset($data['json3d']) && is_array($data['json3d'])) {
+                    $product->json3d = $data['json3d'];
+                }
+            },
+            function(\Exception $e) {
+                \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['controller']);
+                \App::exception()->remove($e);
+            }
+        );
+
+        $queryParams = [];
+        if ($rrUserId = $request->cookies->get('rrpusid')) {
+            $queryParams['rrUserId'] = $rrUserId;
+        }
+
+        $similarProductIds = [];
+        \App::retailrocketClient()->addQuery('Recomendation/UpSellItemToItems', $product->getId(), $queryParams, [], function($data) use (&$similarProductIds) {
+            if (is_array($data)) {
+                $similarProductIds = array_slice($data, 0, 10);
+            }
+        }, null, 0.15);
+
+        // выполнение 3-го пакета запросов
+        \App::curl()->execute();
+
+        $similarProducts = [];
+        $repository->prepareCollectionById($similarProductIds, $region, function($data) use ($similarProductIds, &$similarProducts) {
+            if (!is_array($data)) {
+                $data = [];
             }
 
-            // SITE-3982 Трастфактор "Спасибо от Сбербанка" не должен отображаться на карточке товара от Связного
-            if (is_array($product->getPartnersOffer()) && count($product->getPartnersOffer()) != 0) {
-                foreach ($trustfactors as $key => $trustfactor) {
-                    if ('right' === $trustfactor['type'] && 'ab3ca73c-6cc4-4820-b303-8165317420d5' === $trustfactor['uid']) {
-                        unset($trustfactors[$key]);
-                    }
+            foreach ($data as $item) {
+                if (is_array($item)) {
+                    $similarProducts[] = new \Model\Product\Entity($item);
                 }
             }
         });
 
-        // выполнение 3-го пакета запросов
         \App::curl()->execute();
+
         $catalogJson = array_merge_recursive($catalogJson, $productConfig);
 
         // получаем рейтинги
@@ -411,13 +489,6 @@ class IndexAction {
             );
         }
 
-        try {
-            $productVideos = \RepositoryManager::productVideo()->getCollectionByProduct($product);
-        } catch (\Exception $e) {
-            \App::logger()->error($e);
-            $productVideos = [];
-        }
-
         // на товар перешли с блока рекомендаций
         $addToCartJS = null;
         if ('cart_rec' === $request->get('from')) {
@@ -450,7 +521,6 @@ class IndexAction {
         $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('product', $product);
         $page->setParam('lifeGiftProduct', $lifeGiftProduct);
-        $page->setParam('productVideos', $productVideos);
         $page->setParam('title', $product->getName());
         $page->setParam('accessories', $accessories);
         $page->setParam('accessoryCategory', $accessoryCategory);
@@ -476,7 +546,8 @@ class IndexAction {
         ]);
         $page->setGlobalParam('isTchibo', ($product->getMainCategory() && 'Tchibo' === $product->getMainCategory()->getName()));
         $page->setGlobalParam('addToCartJS', $addToCartJS);
-        
+        $page->setGlobalParam('similarProducts', $similarProducts);
+
         $page->setParam('sprosikupiReviews', null);
         $page->setParam('shoppilotReviews', null);
         switch (\App::abTest()->getTest('reviews')->getChosenCase()->getKey()) {

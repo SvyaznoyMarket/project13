@@ -62,8 +62,13 @@ class IndexAction {
         // запрашиваем категории товаров
         if ((bool)$categoriesById) {
             \RepositoryManager::productCategory()->prepareCollectionById(array_keys($categoriesById), $region, function($data) use (&$categoriesById) {
-                foreach ($data as $item) {
-                    $categoriesById[(int)$item['id']] = new \Model\Product\Category\Entity($item);
+                if (is_array($data)) {
+                    foreach ($data as $item) {
+                        if ($item) {
+                            $category = new \Model\Product\Category\Entity($item);
+                            $categoriesById[$category->getId()] = $category;
+                        }
+                    }
                 }
             }, function(\Exception $e) {
                 \App::exception()->remove($e);

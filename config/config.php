@@ -117,7 +117,7 @@ $c->reviewsStore['retryTimeout'] = [
 ];
 
 $c->wordpress['url'] = 'http://content.enter.ru/';
-$c->wordpress['timeout'] = 1.8;
+$c->wordpress['timeout'] = 2;
 $c->wordpress['throwException'] = true;
 $c->wordpress['retryCount'] = 2;
 $c->wordpress['retryTimeout'] = [
@@ -131,7 +131,7 @@ $c->wordpress['retryTimeout'] = [
 ];
 
 $c->dataStore['url'] = 'http://cms.enter.ru/v1/';
-$c->dataStore['timeout'] = 0.8;
+$c->dataStore['timeout'] = 2;
 $c->dataStore['retryCount'] = 2;
 $c->dataStore['retryTimeout'] = [
     'default' => 0.04,
@@ -145,7 +145,7 @@ $c->dataStore['retryTimeout'] = [
 
 $c->scms['url']          = 'http://scms.enter.ru/';
 $c->scms['retryCount']   = 2;
-$c->scms['timeout']      = 1;
+$c->scms['timeout']      = 3;
 $c->scms['retryTimeout'] = [
     'default' => 0.18,
     'tiny'    => 0.18,
@@ -158,7 +158,7 @@ $c->scms['retryTimeout'] = [
 
 $c->scmsV2['url']          = 'http://scms.enter.ru/v2/';
 $c->scmsV2['retryCount']   = 2;
-$c->scmsV2['timeout']      = 1;
+$c->scmsV2['timeout']      = 3;
 $c->scmsV2['retryTimeout'] = [
     'default' => 0.18,
     'tiny'    => 0.18,
@@ -171,7 +171,7 @@ $c->scmsV2['retryTimeout'] = [
 
 $c->scmsSeo['url']          = 'http://scms.enter.ru/seo/';
 $c->scmsSeo['retryCount']   = 2;
-$c->scmsSeo['timeout']      = 1;
+$c->scmsSeo['timeout']      = 3;
 $c->scmsSeo['retryTimeout'] = [
     'default' => 0.18,
     'tiny'    => 0.18,
@@ -184,7 +184,7 @@ $c->scmsSeo['retryTimeout'] = [
 
 $c->crm['url'] = 'http://crm.enter.ru/';
 $c->crm['client_id'] = 'site';
-$c->crm['timeout'] = 1;
+$c->crm['timeout'] = 3;
 $c->crm['hugeTimeout'] = 5;
 $c->crm['retryCount'] = 2;
 $c->crm['retryTimeout'] = [
@@ -229,23 +229,6 @@ $c->pickpoint['retryTimeout'] = [
     'forever' => 0,
 ];
 
-$c->shopScript['enabled'] = true;
-$c->shopScript['url'] = 'http://admin.enter.ru/v2/';
-//$c->shopScript['user'] = 'admin';
-//$c->shopScript['password'] = 'booToo9x';
-$c->shopScript['timeout'] = 3;
-$c->shopScript['retryCount'] = 2;
-$c->shopScript['retryTimeout'] = [
-    'default' => 0.3,
-    'tiny'    => 0.1,
-    'short'   => 0.2,
-    'medium'  => 0.3,
-    'long'    => 0.5,
-    'huge'    => 1,
-    'forever' => 0,
-];
-
-
 // TODO: Вынести сюда же настройки для sociomantic and get4click
 $c->partners['criteo']['enabled'] = true;
 $c->partners['criteo']['account'] = 10442;
@@ -264,14 +247,15 @@ $c->partners['AdLens']['enabled'] = true;
 $c->partners['Сpaexchange']['enabled'] = true;
 $c->partners['Admitad']['enabled'] = false;
 $c->partners['Revolvermarketing']['enabled'] = true;
-$c->partners['RuTarget']['enabled'] = true;
-$c->partners['RuTarget']['containerId'] = 'GTM-4SJX';
 $c->partners['Lamoda']['enabled'] = false;
 $c->partners['Lamoda']['lamodaID'] = '11640775691088171491';
 $c->partners['TagMan']['enabled'] = false;
 $c->partners['Revolver']['enabled'] = true;
 $c->partners['Insider']['enabled'] = true;
 $c->partners['GetIntent']['enabled'] = true;
+$c->partners['AddThis']['enabled'] = true;
+$c->partners['AdvMaker']['enabled'] = true;
+$c->partners['Hubrus']['enabled'] = true;
 
 $c->adFox['enabled'] = true;
 
@@ -329,7 +313,8 @@ $c->product['itemsInCategorySlider']    = 3;
 $c->product['itemsInAccessorySlider']   = 4;
 $c->product['minCreditPrice']           = 3000;
 $c->product['totalCount']               = 55000;
-$c->product['recommendationSessionKey'] = 'recommendationProductIds';
+$c->product['recommendationSessionKey']     = 'recommendationProductIds';
+$c->product['productPageSendersSessionKey'] = 'productPageSenders';
 // глобальный (без учета региона) список товаров
 $c->product['globalListEnabled']      = true;
 $c->product['showAveragePrice']       = false;
@@ -405,6 +390,7 @@ $c->banner['url'] = [
 
 $c->cart['productLimit'] = 30;
 $c->cart['sessionName'] = 'userCart';
+$c->cart['checkStock'] = false;
 
 $c->payment['creditEnabled'] = true;
 $c->payment['paypalECS'] = false;
@@ -437,7 +423,8 @@ $c->subscribe['cookieName'] = 'subscribed';
 $c->subscribe['cookieName2'] = 'enter_subscribed_ch';   // кука вида {channelId:status}
 $c->subscribe['cookieName3'] = 'enter_wanna_subscribe'; // кука о желании подписки в новом ОЗ
 
-$c->requestMainMenu = true;
+$c->mainMenu['requestMenu'] = true;
+$c->mainMenu['recommendationsEnabled'] = true;
 
 $c->newOrder = true;
 $c->order['cookieName'] = 'last_order';

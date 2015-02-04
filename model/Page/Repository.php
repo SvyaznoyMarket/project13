@@ -12,32 +12,24 @@ namespace Model\Page;
 
 class Repository
 {
-
     /**
-     * Получает seo-теги для страницы
-     * Возвращает массив
-     *
+     * Получает seo данные для главной страницы
      * @param $page
      * @return array
      */
-    public static function getSeoJson($page = "main-page")
+    public static function getSeo()
     {
-        // формируем запрос к апи и получаем json с seo-тегами для страницы
+        $data = \App::scmsClient()->query('api/parameter/get-by-keys', ['keys' => ['title', 'description', 'keywords']]);
 
-        $seoJson = [];
+        if (is_array($data)) {
+            $result = [];
+            foreach ($data as $item) {
+                $result[$item['key']] = $item['value'];
+            }
 
-        $dataStore = \App::dataStoreClient();
+            return $result;
+        }
 
-        $query = 'seo/' . $page . '.json';
-
-        $dataStore->addQuery($query, [], function ($data) use (&$seoJson) {
-            if($data) $seoJson = $data;
-        });
-
-        $dataStore->execute();
-
-        return empty($seoJson) ? [] : $seoJson;
+        return [];
     }
-
-
 }

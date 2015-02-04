@@ -49,7 +49,7 @@ class CreateAction extends OrderV3 {
             $coreResponse = $this->client->query('order/create-packet2', $params, $ordersData, \App::config()->coreV2['hugeTimeout']);
 
             // Если стоит галка "подписаться на рассылку"
-            if ((bool)$request->cookies->get(\App::config()->subscribe['cookieName3']) && !empty(@$ordersData[0]['email'])) {
+            if ((bool)$request->cookies->get(\App::config()->subscribe['cookieName3']) && !empty($ordersData[0]['email'])) {
                 $this->addSubscribeRequest($subscribeResult, $ordersData[0]['email']);
             }
 

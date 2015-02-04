@@ -3,7 +3,6 @@
         <ul class="aboutList clearfix">
             <li class="aboutList__item"><a class="aboutList__link" href="/about_company">О компании</a></li>
             <li class="aboutList__item"><a class="aboutList__link" href="/shops">Магазины Enter</a></li>
-            <li class="aboutList__item"><a class="aboutList__link" href="http://feedback.enter.ru/">Напишите нам</a></li>
             <li class="aboutList__item"><a class="aboutList__link" href="/how_get_order">Условия доставки</a></li>
             <li class="aboutList__item"><a class="aboutList__link" href="/how_pay">Способы оплаты</a></li>
             <li class="aboutList__item"><a class="aboutList__link" href="/credit">Покупка в кредит</a></li>
@@ -54,7 +53,7 @@
     </div>
 
     <div class="footer__insert">
-        <p class="footer__copy clearfix">&copy; ООО «Энтер» 2011–2014. ENTER® ЕНТЕР® Enter®. Все права защищены. <a id="jira" class="footer__copy__link" href="javascript:void(0)">Сообщить об ошибке</a></p>
+        <p class="footer__copy clearfix">&copy; ООО «Энтер» 2011–2015. ENTER® ЕНТЕР® Enter®. Все права защищены. <a id="jira" class="footer__copy__link" href="javascript:void(0)">Сообщить об ошибке</a></p>
     </div>
 
     <?= $page->render('common/__script-krible') ?>

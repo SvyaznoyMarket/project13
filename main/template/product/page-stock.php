@@ -42,7 +42,7 @@ $json = array('jsref' => $product->getToken(), 'jstitle' => $product->getName(),
                 <td class='bInShop__eItemInfo'>
                     <div>
                         <h3>Артикул #<span data-bind="text: shortcut"></span>,
-                            <span data-bind="text: priceTxt"></span> <span class="rubl">p</span>
+                            <span data-bind="html: priceTxt"></span> <span class="rubl">p</span>
                         </h3>
                         Выберите магазин для резервирования товара, а мы подготовим его к вашему приезду
                     </div>

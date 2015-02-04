@@ -8,7 +8,8 @@
 				inShopShowroomOnly = $elem.data('in-shop-showroom-only'),
 				isBuyable = $elem.data('is-buyable'),
 				statusId = $elem.data('status-id'),
-                noUpdate = $elem.data('noUpdate')
+                noUpdate = $elem.data('noUpdate'),
+				buyUrl = $elem.data('buy-url')
             ;
 			
 			if (typeof isBuyable != 'undefined' && !isBuyable) {
@@ -50,7 +51,7 @@
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
 					.addClass('jsBuyButton')
-					.attr('href', ENTER.utils.generateUrl('cart.product.set', {productId: productId}));
+					.attr('href', buyUrl ? buyUrl : ENTER.utils.generateUrl('cart.product.set', {productId: productId}));
 			}
 		}
 	};

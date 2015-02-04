@@ -40,13 +40,13 @@
                 <div class="lstn_pr">
                     {{#oldPrice}}
                         <span class="lstn_pr_old">
-                            <span class="td-lineth">{{oldPrice}}</span> <span class="rubl">p</span>
+                            <span class="td-lineth">{{&oldPrice}}</span> <span class="rubl">p</span>
                             {{#priceSale}}
                                 &nbsp;<span class="lstn_pr_sale">-{{priceSale}}%</span>
                             {{/priceSale}}
                         </span>
                     {{/oldPrice}}
-                    <span class="lstn_pr_now{{#priceSale}} lstn_pr_now-sale{{/priceSale}}"><strong>{{price}}</strong> <span class="rubl">p</span></span>
+                    <span class="lstn_pr_now{{#priceSale}} lstn_pr_now-sale{{/priceSale}}"><strong>{{&price}}</strong> <span class="rubl">p</span></span>
                 </div>
 
                 {{#view.extraContent}}

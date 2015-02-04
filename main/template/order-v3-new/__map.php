@@ -20,13 +20,14 @@ return function(
     /** @var \Model\OrderDelivery\Entity\Point\Shop[]|\Model\OrderDelivery\Entity\Point\Pickpoint[]|\Model\OrderDelivery\Entity\Point\Svyaznoy[] $points */
     foreach ($order->possible_points as $token => $points) {
         foreach ($points as $point) {
+            $p = $point['point'];
             $dataValue['points'][$token][] = [
-                'id' => $point->id,
-                'name' => $point->name,
-                'address' => $point->address,
-                'regtime' => $point->regtime,
-                'latitude' => $point->latitude,
-                'longitude' => $point->longitude,
+                'id' => $p->id,
+                'name' => $p->name,
+                'address' => $p->address,
+                'regtime' => $p->regtime,
+                'latitude' => $p->latitude,
+                'longitude' => $p->longitude,
                 'marker'    => $orderDelivery->points[$token]->marker
             ];
         }
@@ -50,12 +51,13 @@ return function(
         <ul class="shopLst">
         <? foreach ($points as $point): ?>
             <?
-                $subway = (isset($point->subway) && isset($point->subway[0])) ? $point->subway[0] : null;
+                $p = $point['point'];
+                $subway = (isset($p->subway) && isset($p->subway[0])) ? $p->subway[0] : null;
                 $nearestDay = '';
-                try { $nearestDay = !empty($point->nearestDay) ? $helper->humanizeDate(new \DateTime($point->nearestDay)) : ''; } catch(\Exception $e) {}
+                try { $nearestDay = !empty($point['nearestDay']) ? $helper->humanizeDate(new \DateTime($point['nearestDay'])) : ''; } catch(\Exception $e) {}
             ?>
 
-            <li class="shopLst_i jsChangePoint" data-id="<?= $point->id ?>" data-token="<?= $token ?>">
+            <li class="shopLst_i jsChangePoint" data-id="<?= $p->id ?>" data-token="<?= $token ?>">
                 <div class="shopLst_addrs">
                     <? if ($subway): ?>
                         <div class="shopLst_metro" <? if ($subway && $subway->line): ?> style="background: <?= $subway->line->color ?>;"<? endif ?>>
@@ -67,8 +69,8 @@ return function(
                         <div class="shopLst_stick"><?= $nearestDay ?></div>
                     <? endif ?>
 
-                    <div class="shopLst_ln"><?= $point->address ?></div>
-                    <div class="shopLst_ln"><?= $point->regtime ?></div>
+                    <div class="shopLst_ln"><?= $p->address ?></div>
+                    <div class="shopLst_ln"><?= $p->regtime ?></div>
                 </div>
             </li>
         <? endforeach ?>

@@ -3,6 +3,7 @@
 namespace View;
 
 use Model\Menu\BasicMenuEntity;
+use Model\Product\Category\TreeEntity;
 
 class Menu {
     /** @var \Model\Menu\Repository */
@@ -167,7 +168,6 @@ class Menu {
 
         $menuData = [];
         $categoriesTree = [];
-        $categoriesWithLogo = [];
 
         // Получаем данные из ядра
         try {
@@ -189,23 +189,12 @@ class Menu {
                 $region, 3, 0,
                 function($data) use (&$categoriesTree) {
                     if (is_array($data) && !empty($data)) {
-                        foreach($data as $dataItem) $categoriesTree[$dataItem['id']] = new BasicMenuEntity($dataItem);
+                        foreach($data as $dataItem) {
+                            $menuEntity = new BasicMenuEntity($dataItem);
+                            $categoriesTree[$menuEntity->id] = $menuEntity;
+                        }
                     } else {
                         throw new \Exception('Не удалось получить категории');
-                    }
-                });
-
-            // Получаем категории, для которых нужно показывать логотип вместо текста
-            \App::scmsClient()->addQuery('category/get-by-filters',
-                [   'filters' => ['appearance.use_logo' => 'true'],
-                    'geo_id' => $region->getId()
-                ],
-                [],
-                function($data) use (&$categoriesWithLogo) {
-                    if (is_array($data)) {
-                        foreach ($data as $item) {
-                            $categoriesWithLogo[@$item['uid']] = (array)$item;
-                        }
                     }
                 }
             );
@@ -266,7 +255,6 @@ class Menu {
         }
 
         $this->limitCategories($menu);
-        $this->setCategoryLogo($menu, $categoriesWithLogo);
 
         if ($this->page) $this->page->setGlobalParam('menu', $menu);
 
@@ -327,20 +315,4 @@ class Menu {
             }
         }
     }
-
-    /** Установка картинки вместо текста для категории второго уровня
-     * @param $menu
-     * @param array $categoriesWithLogo
-     */
-    private function setCategoryLogo(&$menu, array $categoriesWithLogo) {
-        /** @var $menu BasicMenuEntity[] */
-        foreach ($menu as $menuItem) {
-            if (isset($categoriesWithLogo[$menuItem->ui])) {
-                $menuItem->logo = @$categoriesWithLogo[$menuItem->ui]['properties']['appearance']['logo_path'];
-                continue;
-            }
-            if (!empty($menuItem->children)) $this->setCategoryLogo($menuItem->children, $categoriesWithLogo);
-        }
-    }
-
 }

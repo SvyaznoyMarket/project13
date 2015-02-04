@@ -61,7 +61,7 @@
             }
 
             // Universal Tracking Code
-            if (typeof ga === 'function' && ga.getAll().length != 0) {
+            if (typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length != 0) {
                 universalEvent.eventCategory = e.category;
                 universalEvent.eventAction = e.action;
                 if (e.label) universalEvent.eventLabel = e.label;
@@ -70,13 +70,13 @@
                 else if (typeof e.hitCallback == 'string') universalEvent.hitCallback = function(){ window.location.href = e.hitCallback };
                 if (e.nonInteraction) ga('set', 'nonInteraction', true);
                 ga('send', universalEvent);
+                console.info('[Google Analytics] Send event:', e);
             } else {
-                console.warn('No Universal Google Analytics function found');
-                if (typeof universalEvent.hitCallback == 'function') universalEvent.hitCallback(); // если не удалось отправить, но callback необходим
+                console.warn('No Universal Google Analytics function found', typeof universalEvent.hitCallback, e.hitCallback);
+                if (typeof e.hitCallback == 'function') e.hitCallback(); // если не удалось отправить, но callback необходим
+                else if (typeof e.hitCallback == 'string') window.location.href = e.hitCallback;
             }
 
-            // log to console
-            console.info('[Google Analytics] Send event:', e);
         },
         /**
          * Объект транзакции
@@ -202,9 +202,9 @@
 		sendOrderToGA = function sendOrderF(orderData) {
 			var
 				oData = orderData || { orders: [] },
-				giftBuyProducts = (docCookies.getItem('giftBuyProducts') || '').split(' ');
+				giftBuyProducts = ENTER.utils.gift.getProductIdsFromCookie();
 
-			docCookies.setItem('giftBuyProducts', '', 0, '/', 'enter.ru');
+			ENTER.utils.gift.deleteAllProductIdsFromCookie();
 
 			console.log('[Google Analytics] Start processing orders', oData.orders);
 			$.each(oData.orders, function(i,o) {
@@ -225,9 +225,15 @@
 						labels.push('marketplace');
 					}
 
-					if (giftBuyProducts.indexOf(p.id + '') != -1) {
-						labels.push('gift');
+					if (p.sender) {
+						labels.push(p.sender);
+					} else if (giftBuyProducts.indexOf(p.id + '') != -1) {
+						labels.push('gift'); // Данный код является рудиментом и его можно будет удалить после 1.3.2015
 					}
+
+                    if (p.sender && p.position) {
+                        labels.push('RR_' + p.position);
+                    }
 
 					if (labels.length) {
 						productName += ' (' + labels.join(', ') + ')';
@@ -235,11 +241,11 @@
 
 					/* SITE-4472 Аналитика по АБ-тесту платного самовывоза и рекомендаций из корзины */
 					if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.config.pageConfig.selfDeliveryLimit > parseInt(o.paySum, 10) - o.delivery[0].price) productName = productName + ' (paid pickup)';
+
 					// Аналитика по купленным товарам из рекомендаций
-					if (p.sender == 'retailrocket') {
-						if (p.position) productName += ' (RR_' + p.position + ')';
-						if (p.from) body.trigger('trackGoogleEvent',['RR_покупка','Купил просмотренные', p.position ? p.position : '']);
-						else body.trigger('trackGoogleEvent',['RR_покупка','Купил добавленные', p.position ? p.position : '']);
+					if (p.sender) {
+						if (p.from) body.trigger('trackGoogleEvent',['RR_покупка','Купил просмотренные', p.position || '']);
+						else body.trigger('trackGoogleEvent',['RR_покупка','Купил добавленные', p.position || '']);
 					}
 					return {
 						'id': p.id,
@@ -267,7 +273,7 @@
 
     // TODO вынести инициализацию трекера из ports.js
     try {
-        if (typeof ga === 'function' && ga.getAll().length == 0) {
+        if (typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length == 0) {
 			console.warn('Creating ga tracker');
             ga( 'create', 'UA-25485956-5', 'enter.ru' );
         }

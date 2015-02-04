@@ -56,16 +56,19 @@ class OrderAction {
         $order = null;
         $currentOrdersCount = 0;
 
-        \RepositoryManager::order()->prepareCollectionByUserToken($user->getToken(), function($data) use(&$order, &$orderId, &$currentOrdersCount) {
-            if (empty($data['orders'][0])) return;
-            foreach ($data['orders'] as $item) {
-                if (empty($item['id'])) continue;
+        \RepositoryManager::order()->prepareCollectionByUserToken(
+            $user->getToken(),
+            function($data) use(&$order, &$orderId, &$currentOrdersCount) {
+                if (empty($data['orders'][0])) return;
+                foreach ($data['orders'] as $item) {
+                    if (empty($item['id'])) continue;
 
-                $orderItem = new \Model\User\Order\Entity($item);
-                if ($orderId == $item['id']) $order = $orderItem;
-                if (!$orderItem->isCompleted()) $currentOrdersCount++;
+                    $orderItem = new \Model\User\Order\Entity($item);
+                    if ($orderId == $item['id']) $order = $orderItem;
+                    if (!$orderItem->isCompleted()) $currentOrdersCount++;
+                }
             }
-        });
+        );
 
         // выполнение 1-го пакета запросов
         $client->execute();
@@ -74,19 +77,31 @@ class OrderAction {
 
         // подготовка 2-го пакета запросов (продукты)
         $products =  [];
-        \RepositoryManager::product()->prepareCollectionById($order->getAllProductsIds(), $user->getRegion(), function ($data) use (&$products) {
-            foreach ($data as $item) {
-                $products[] = new \Model\Product\Entity($item);
+        \RepositoryManager::product()->prepareCollectionById(
+            $order->getAllProductsIds(),
+            $user->getRegion(),
+            function ($data) use (&$products) {
+                foreach ($data as $item) {
+                    $products[] = new \Model\Product\Entity($item);
+                }
             }
-        });
+        );
 
         $delivery = $order->getDelivery() ? \RepositoryManager::deliveryType()->getEntityById($order->getDelivery()->getTypeId()) : null;
 
+        // если не удалось получить доставку через одно значение, то попробуем через другое
+        if ($delivery == null) {
+            $delivery = \RepositoryManager::deliveryType()->getEntityById($order->getDeliveryTypeId());
+        }
+
         $shop = null;
         if ($delivery && in_array($delivery->getToken(), ['now', 'self'])) {
-            \RepositoryManager::shop()->prepareCollectionById([$order->getShopId()], function ($data) use (&$shop) {
-                if (isset($data[0])) $shop = new \Model\Shop\Entity($data[0]);
-            });
+            \RepositoryManager::shop()->prepareCollectionById(
+                [$order->getShopId()],
+                function ($data) use (&$shop) {
+                    if (isset($data[0])) $shop = new \Model\Shop\Entity($data[0]);
+                }
+            );
         }
 
         // выполнение 2-го пакета запросов

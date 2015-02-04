@@ -149,6 +149,7 @@
 			console.info('statechange');
 			console.log(state);
 
+			// SITE-4894 Не изменяются выбранные фильтры при переходе назад
 			if (updateState) {
 				ENTER.catalog.filter.updateOnChange = false;
 				catalog.filter.resetForm();

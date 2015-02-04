@@ -167,7 +167,7 @@ return function(
                             <ul class="orderPaymentWeb_lst-sm">
                                 <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src="/styles/order/img/visa-logo-sm.jpg"></a></li>
 <!--                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/yamoney-sm.jpg"></a></li>-->
-                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src="/styles/order/img/paypal.png"></a></li>
+<!--                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src="/styles/order/img/paypal.png"></a></li>-->
                                 <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src="/styles/order/img/psb.png" /></a></li>
                             </ul>
                         </div>

@@ -16,12 +16,14 @@ class CompareAction {
     }
 
     public function execute(\Http\Request $request) {
+        $products = [];
         $compareProducts = $this->session->get($this->compareSessionKey);
+        $lastProduct = null;
         if ($compareProducts && is_array($compareProducts)) {
-            $productData = null;
             $reviewsData = null;
             $productIds = array_keys($compareProducts);
-            
+            $lastProduct = end($compareProducts);
+
             $client = \App::coreClientV2();
             $client->addQuery(
                 'product/get',
@@ -31,45 +33,43 @@ class CompareAction {
                     'geo_id'      => \App::user()->getRegion()->getId(),
                 ],
                 [],
-                function($data) use(&$productData) {
-                    $productData = $data;
+                function($data) use(&$products) {
+                    foreach ($data as $d) {
+                        if (isset($d['id'])) $products[$d['id']] = new \Model\Product\Entity($d);
+                    }
                 }
             );
-            
+
             \RepositoryManager::review()->prepareScoreCollection($productIds, function($data) use(&$reviewsData){
                 $reviewsData = $data;
             });
-            
+
             $client->execute();
 
-            $compareGroups = $this->getCompareGroups($compareProducts, $productData, $reviewsData);
+            $compareGroups = $this->getCompareGroups($compareProducts, $products, $reviewsData);
         } else {
             $compareGroups = [];
         }
 
         $page = new \View\Compare\CompareLayout();
+        $page->setParam('products', $products);
         $page->setParam('compareGroups', $compareGroups);
-        $page->setParam('activeCompareGroupIndex', $this->getActiveCompareGroupIndex($compareGroups, $request->get('typeId')));
+        $page->setParam('activeCompareGroupIndex', $this->getActiveCompareGroupIndex($compareGroups, $request->get('typeId') !== null ? $request->get('typeId') : (isset($lastProduct['typeId']) ? $lastProduct['typeId'] : null)));
         return new \Http\Response($page->show());
     }
 
-    private function getCompareGroups(array $compareProducts, $productData, $reviewsData) {
+    private function getCompareGroups(array $compareProducts, $products, $reviewsData) {
         $compareGroups = [];
-        
+
         $reviews = [];
         if (isset($reviewsData['product_scores']) && is_array($reviewsData['product_scores'])) {
             foreach ($reviewsData['product_scores'] as $item) {
                 $reviews[$item['product_id']] = $item;
             }
         }
-        
-        if (is_array($productData)) {
-            $products = [];
-            foreach ($productData as $item) {
-                $product = new \Model\Product\Entity($item);
-                $products[$product->getId()] = $product;
-            }
-            
+
+        if (is_array($products)) {
+
             foreach ($compareProducts as $compareProduct) {
                 /** @var \Model\Product\Entity $product */
                 $product = $products[$compareProduct['id']];
@@ -97,7 +97,7 @@ class CompareAction {
             foreach ($compareGroups as $key => $compareGroup) {
                 foreach ($compareGroup['products'] as $key2 => $product) {
                     $starCount = isset($reviews[$product->getId()]['star_score']) ? $reviews[$product->getId()]['star_score'] : 0;
-                    
+
                     $compareGroups[$key]['products'][$key2] = [
                         'id' => $product->getId(),
                         'prefix' => $product->getPrefix(),
@@ -128,7 +128,7 @@ class CompareAction {
 
             $compareGroups = array_values($compareGroups);
         }
-        
+
         return $compareGroups;
     }
 
@@ -205,9 +205,11 @@ class CompareAction {
         return $propertyGroups;
     }
 
-    private function getActiveCompareGroupIndex(array $compareGroups, $defaultTypeId) {
+    private function getActiveCompareGroupIndex(array $compareGroups, $typeId) {
+        $typeId = (string)$typeId;
+
         foreach ($compareGroups as $i => $compareGroup) {
-            if ((string)$compareGroup['type']['id'] === $defaultTypeId) {
+            if ((string)$compareGroup['type']['id'] === $typeId) {
                 return $i;
             }
         }

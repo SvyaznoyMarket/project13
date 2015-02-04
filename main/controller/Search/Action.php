@@ -2,6 +2,8 @@
 
 namespace Controller\Search;
 
+use Model\Product\Category\Entity;
+
 class Action {
     /**
      * @param \Http\Request $request
@@ -28,7 +30,7 @@ class Action {
         $offset = intval($pageNum - 1) * $limit - (1 === $pageNum ? 0 : 1);
         $categoryId = $request->get('category');
 
-        $selectedCategory = $categoryId == null ? \RepositoryManager::productCategory()->getEntityById((int)$categoryId) : null;
+        $selectedCategory = $categoryId ? \RepositoryManager::productCategory()->getEntityById((int)$categoryId) : null;
 
         // запрашиваем фильтры
         /** @var $filters \Model\Product\Filter\Entity[] */
@@ -128,7 +130,7 @@ class Action {
         $categoriesFound = [];
         foreach ($categoriesFoundTmp as $category) {
             $tokenPrefix = str_replace('-'.$category->getId(), '', $category->getToken());
-            $doubleFound = (bool)array_filter($categoriesFound, function($cat) use (&$tokenPrefix) {
+            $doubleFound = (bool)array_filter($categoriesFound, function(\Model\Product\Category\Entity $cat) use (&$tokenPrefix) {
                 return $tokenPrefix == str_replace('-'.$cat->getId(), '', $cat->getToken());
             });
             if(!$doubleFound) {
@@ -154,9 +156,15 @@ class Action {
             ]);
         }
         \RepositoryManager::productCategory()->prepareCollectionById(array_keys($categoriesById), \App::user()->getRegion(), function($data) use (&$categoriesById) {
-            foreach ($data as $item) {
-                if (!isset($categoriesById[$item['id']])) continue;
-                $categoriesById[$item['id']]->setImage($item['media_image']);
+            if (is_array($data)) {
+                foreach ($data as $item) {
+                    if ($item && is_array($item)) {
+                        $category = new Entity($item);
+                        if (isset($categoriesById[$category->getId()])) {
+                            $categoriesById[$category->getId()]->medias = $category->medias;
+                        }
+                    }
+                }
             }
         });
 
@@ -180,7 +188,23 @@ class Action {
         // товары
         $productRepository = \RepositoryManager::product();
         $productRepository->setEntityClass('\\Model\\Product\\Entity');
+
         $products = $productRepository->getCollectionById($result['data']);
+
+        $productRepository->prepareProductsMedias($products);
+
+        $bannerPlaceholder = [];
+        \App::scmsClient()->addQuery('category/get/v1', ['uid' => \App::config()->rootCategoryUi, 'geo_id' => \App::user()->getRegion()->getId(), 'load_inactive' => 1], [], function($data) use (&$bannerPlaceholder) {
+            if ($data && is_array($data)) {
+                $category = new Entity($data);
+                if (isset($category->catalogJson['bannerPlaceholder'])) {
+                    $bannerPlaceholder = $category->catalogJson['bannerPlaceholder'];
+                }
+            }
+        });
+
+        \App::scmsClient()->execute();
+
         $productPager = new \Iterator\EntityPager($products, $productCount);
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage(\App::config()->product['itemsPerPage']);
@@ -192,34 +216,6 @@ class Action {
                 'page' => $productPager->getLastPage(),
             ]));
         }
-
-        // video
-        $productVideosByProduct = [];
-        foreach ($productPager as $product) {
-            /** @var $product \Model\Product\Entity */
-            $productVideosByProduct[$product->getId()] = [];
-        }
-        if ((bool)$productVideosByProduct) {
-            \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
-                foreach ($data as $id => $items) {
-                    if (!is_array($items)) continue;
-                    foreach ($items as $item) {
-                        $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);
-                    }
-                }
-            });
-            \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
-        }
-
-        // bannerPlaceholder
-        $bannerPlaceholder = [];
-        \App::scmsClient()->addQuery('category/get', ['uid' => \App::config()->rootCategoryUi, 'geo_id' => \App::user()->getRegion()->getId()], [], function($data) use (&$bannerPlaceholder) {
-            $data = \RepositoryManager::productCategory()->convertScmsDataToOldCmsData($data);
-            if (isset($data['bannerPlaceholder'])) {
-                $bannerPlaceholder = $data['bannerPlaceholder'];
-            }
-        });
-        \App::scmsClient()->execute();
 
         // ajax
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
@@ -233,7 +229,6 @@ class Action {
                 'list'           => (new \View\Product\ListAction())->execute(
                     $helper,
                     $productPager,
-                    $productVideosByProduct,
                     !empty($bannerPlaceholder) ? $bannerPlaceholder : []
                 ),
                 'selectedFilter' => (new \View\ProductCategory\SelectedFilterAction())->execute(
@@ -265,9 +260,6 @@ class Action {
             return new \Http\Response($page->show());
         }
 
-
-        $productVideosByProduct =  \RepositoryManager::productVideo()->getVideoByProductPager( $productPager );
-
         // страница
         $page = new \View\Search\IndexPage();
         $page->setParam('searchQuery', $searchQuery);
@@ -281,7 +273,6 @@ class Action {
         $page->setGlobalParam('selectedCategory', $selectedCategory);
         $page->setParam('productView', $productView);
         $page->setParam('productCount', $selectedCategory && !is_null($selectedCategory->getProductCount()) ? $selectedCategory->getProductCount() : $result['count']);
-        $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setGlobalParam('shop', $shop);
         $page->setParam('bannerPlaceholder', $bannerPlaceholder);
 
@@ -384,8 +375,11 @@ class Action {
             }
             \App::coreClientV2()->addQuery('search/autocomplete', $params, [], function($result) use(&$data, $limit, $mapData){
                 foreach ($mapData as $key => $value) {
+                    if (!is_array($result[$key])) continue;
+
                     $i = 0;
                     $entity = '\\Model\\Search\\'.ucfirst($value).'\\Entity';
+
                     foreach ($result[$key] as $item) {
                         if ($i >= $limit) break;
 

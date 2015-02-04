@@ -13,7 +13,25 @@ trait ABHelperTrait {
      * @return bool
      */
     public static function isNewMainPage() {
-        return \App::abTest()->getTest('main_page') && \App::abTest()->getTest('main_page')->getChosenCase()->getKey() == 'new';
+        return \App::abTest()->getTest('main_page') && in_array(\App::abTest()->getTest('main_page')->getChosenCase()->getKey(), ['new', 'search_new_1', 'search_new_2']);
+    }
+
+    /** Возвращает вариант новой главной страницы
+     * @return bool|int
+     */
+    public static function getNewMainPageVar(){
+        if (\App::abTest()->getTest('main_page')) {
+            switch (\App::abTest()->getTest('main_page')->getChosenCase()->getKey()) {
+                case 'search_new_1':
+                    return 1;
+                case 'search_new_2':
+                    return 2;
+                default:
+                    return 0;
+            }
+        } else {
+            return false;
+        }
     }
 
     /** Поиск с возможностью фильтрации по категориям?
@@ -39,7 +57,8 @@ trait ABHelperTrait {
          */
         /* Если пользователь попадает в регион теста */
         if (\App::user()->getRegion() && !in_array(\App::user()->getRegion()->getParentId(), [82,83,34,39])) {
-            return \App::abTest()->getTest('order_delivery_price_2') && \App::abTest()->getTest('order_delivery_price_2')->getChosenCase()->getKey() == 'delivery_self_100';
+//            return \App::abTest()->getTest('order_delivery_price_2') && \App::abTest()->getTest('order_delivery_price_2')->getChosenCase()->getKey() == 'delivery_self_100';
+            return true;
         }
         return false;
     }
@@ -50,6 +69,13 @@ trait ABHelperTrait {
      */
     public static function isOnlineMotivation($ordersCount = 0){
         return (int)$ordersCount == 1 && \App::abTest()->getTest('online_motivation') && \App::abTest()->getTest('online_motivation')->getChosenCase()->getKey() == 'on';
+    }
+
+    /** Обязательный email при оформлении заказа?
+     * @return bool
+     */
+    public static function isEmailRequired(){
+        return \App::abTest()->getTest('order_email') && \App::abTest()->getTest('order_email')->getChosenCase()->getKey() == 'required';
     }
 
 } 

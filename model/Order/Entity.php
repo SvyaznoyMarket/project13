@@ -159,7 +159,6 @@ class Entity {
         if (array_key_exists('certificate_price', $data)) $this->setCertificatePrice($data['certificate_price']);
         if (array_key_exists('certificate_pin', $data)) $this->setCertificatePin($data['certificate_pin']);
         if (array_key_exists('sum', $data)) $this->setSum($data['sum']);
-        if (array_key_exists('is_delivery', $data)) $this->setIsDelivery($data['is_delivery']);
         if (array_key_exists('is_paid_delivery', $data)) $this->setIsPaidDelivery($data['is_paid_delivery']);
         if (array_key_exists('delivery_type_id', $data)) $this->setDeliveryTypeId($data['delivery_type_id']);
         if (array_key_exists('delivery_date', $data) && $data['delivery_date'] && ('0000-00-00' != $data['delivery_date'])) {
@@ -451,20 +450,6 @@ class Entity {
      */
     public function getIpAddress() {
         return $this->ipAddress;
-    }
-
-    /**
-     * @param bool $isDelivery
-     */
-    public function setIsDelivery($isDelivery) {
-        $this->isDelivery = (bool)$isDelivery;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getIsDelivery() {
-        return $this->isDelivery;
     }
 
     /**

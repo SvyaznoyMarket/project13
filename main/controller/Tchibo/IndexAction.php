@@ -28,62 +28,15 @@ class IndexAction {
             }
         });
 
-        // получим данные category
         /** @var $category \Model\Product\Category\Entity */
         $category = null;
-
-        $shopScriptException = null;
-        $shopScriptSeo = [];
-        if (\App::config()->shopScript['enabled']) {
-            try {
-                $shopScript = \App::shopScriptClient();
-                $shopScript->addQuery(
-                    'category/get-seo',
-                    [
-                        'slug' => $categoryToken,
-                        'geo_id' => \App::user()->getRegion()->getId(),
-                    ],
-                    [],
-                    function ($data) use (&$shopScriptSeo) {
-                        if ($data && is_array($data)) $shopScriptSeo = reset($data);
-                    },
-                    function (\Exception $e) use (&$shopScriptException) {
-                        $shopScriptException = $e;
-                    }
-                );
-                $shopScript->execute();
-                if ($shopScriptException instanceof \Exception) {
-                    throw $shopScriptException;
-                }
-
-                if (empty($shopScriptSeo['ui'])) {
-                    throw new \Exception\NotFoundException(sprintf('Не получен ui для категории товара @%s', $categoryToken));
-                }
-
-                // запрашиваем категорию по ui
-                \RepositoryManager::productCategory()->prepareEntityByUi($shopScriptSeo['ui'], $region, function($data) use (&$category) {
-                    $data = reset($data);
-                    if ((bool)$data) {
-                        $category = new \Model\Product\Category\Entity($data);
-                    }
-                });
-            } catch (\Exception $e) { // если не плучилось добыть seo-данные или категорию по ui, пробуем старый добрый способ
-                \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
-                    $data = reset($data);
-                    if ((bool)$data) {
-                        $category = new \Model\Product\Category\Entity($data);
-                    }
-                });
+        $catalogJson = [];
+        \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category, &$catalogJson) {
+            if ($data && is_array($data)) {
+                $category = new \Model\Product\Category\Entity($data);
+                $catalogJson = $category->catalogJson;
             }
-
-        } else {
-            \RepositoryManager::productCategory()->prepareEntityByToken($categoryToken, $region, function($data) use (&$category) {
-                $data = reset($data);
-                if ((bool)$data) {
-                    $category = new \Model\Product\Category\Entity($data);
-                }
-            });
-        }
+        });
 
         \RepositoryManager::productCategory()->prepareTreeCollection($region, 1, 1, function($data) use (&$categoryTree) {
             $categoryTree = $data;
@@ -111,16 +64,11 @@ class IndexAction {
             return new \Http\RedirectResponse(\App::router()->generate('tchibo.where_buy', $request->query->all()));
         }
 
-        if (!empty($shopScriptSeo['link'])) {
-            $category->setLink($shopScriptSeo['link']);
-        }
-
-        // получаем catalog json для категории
-        $catalogJson = \RepositoryManager::productCategory()->getCatalogJson($category);
-
         // подготовка для 2-го пакета запросов в ядро
         // получим данные для меню
         $rootCategoryIdInMenu = null;
+        /** @var \Model\Product\Category\TreeEntity $rootCategoryInMenu */
+        $rootCategoryInMenu = null;
         \RepositoryManager::productCategory()->prepareTreeCollectionByRoot($category->getId(), $region, 3, function($data) use (&$rootCategoryInMenu) {
             $data = is_array($data) ? reset($data) : [];
             if (isset($data['id'])) {
@@ -144,28 +92,6 @@ class IndexAction {
                 }
             });
         }
-
-        $catalogConfigsByCategoryUi = [];
-        // Шильдик is_new
-        \App::scmsClient()->addQuery(
-            'category/get-by-filters',
-            [
-                'filters' => ['appearance.is_new' => 'true'],
-                'geo_id'  => $region->getId(),
-            ],
-            [],
-            function($data) use(&$catalogConfigsByCategoryUi) {
-                if (isset($data[0]['uid'])) {
-                    foreach ($data as $item) {
-                        if (!isset($item['uid'])) continue;
-                        $catalogConfigsByCategoryUi[$item['uid']] = $item;
-                    }
-                }
-            },
-            function(\Exception $e) {
-                \App::exception()->remove($e);
-            }
-        );
 
         // выполнение 2-го пакета запросов в ядро
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);
@@ -255,11 +181,8 @@ class IndexAction {
         $page->setParam('catalogCategories', $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : []);
         $page->setGlobalParam('rootCategoryInMenu', $rootCategoryInMenu);
         $page->setGlobalParam('bannerBottom', $bannerBottom);
-        $page->setParam('shopScriptSeo', $shopScriptSeo);
-        //$page->setGlobalParam('products', $products);
         $page->setGlobalParam('tchiboMenuCategoryNameStyles', $tchiboMenuCategoryNameStyles);
         $page->setGlobalParam('promoContent', $promoContent);
-        $page->setGlobalParam('catalogConfigsByCategoryUi', $catalogConfigsByCategoryUi);
 
         return new \Http\Response($page->show());
     }

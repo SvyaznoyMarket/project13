@@ -14,20 +14,20 @@
         <div class="basketLine__desc__info basketinfo">
             <div class="descPriceLine">
                 <div class="descPriceOne">
-                    <span class="price one" data-bind="text: window.printPrice(price)"></span>
+                    <span class="price one" data-bind="html: window.printPrice(price)"></span>
                     <span class="rubl">p</span>
                 </div>
                 <div class="descCount">
 
                     <div class="numerbox">
                         <a href="" data-bind="attr: { href: '/cart/add-product/' + id + '?quantity=' + (quantity() - 1) }" class="ajaxLess"><b class="ajaless" title="Уменьшить"></b></a>
-                        <input maxlength="2" class="ajaquant" value="" data-bind="value: quantity()" disabled>
+                        <input maxlength="2" class="ajaquant" value="" data-bind="value: quantity(), attr: {'data-url': '/cart/add-product/' + id }">
                         <a href="" data-bind="attr: { href: '/cart/add-product/' + id + '?quantity=' + (quantity() + 1) }" class="ajaxMore"><b class="ajamore" title="Увеличить"></b></a>
                     </div>                    </div>
             </div>
 
             <div class="descPrice">
-                <span class="price sum" data-bind="text: window.printPrice(price * quantity())"></span> <span class="rubl">p</span>
+                <span class="price sum" data-bind="html: window.printPrice(price * quantity())"></span> <span class="rubl">p</span>
                 <a href="" class="button whitelink jsCartDeleteProduct" data-bind="attr: { href: '/cart/delete-product/' + id }">Удалить</a>
             </div>
         </div>

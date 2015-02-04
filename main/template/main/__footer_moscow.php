@@ -163,7 +163,7 @@ $f = function(
     </div>
     <div class="clear"></div>
 
-    <div class="bIndexLinks2__eLinks"><a href="/about_company">О компании</a><a href="/service_ha">Подключение и сборка </a><a href="/credit">Покупка в кредит</a><a href="http://my.enter.ru/community/job#gsc.tab=0" target="_blank">Работать у нас</a><a href="/shops">Наши магазины</a><a href="/how_make_order">Как сделать заказ</a><a href="/mobile_apps">Мобильные приложения</a><a href="http://feedback.enter.ru/">Обратная связь</a></div>
+    <div class="bIndexLinks2__eLinks"><a href="/about_company">О компании</a><a href="/service_ha">Подключение и сборка </a><a href="/credit">Покупка в кредит</a><a href="http://my.enter.ru/community/job#gsc.tab=0" target="_blank">Работать у нас</a><a href="/shops">Наши магазины</a><a href="/how_make_order">Как сделать заказ</a><a href="/mobile_apps">Мобильные приложения</a></div>
     <div class="copy clearfix">
         <div class="clearfix">
             <div class="pb20 fl" style="">Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.<br />
@@ -173,7 +173,7 @@ $f = function(
 
         </div>
         <br />
-        <noindex><span class="rights fl"> &copy; ООО «Энтер» 2011&ndash;2014<!--?php echo date("Y") ?-->. <span style="font-size: 11px;"> ENTER<sup>&reg;</sup> ЕНТЕР<sup>&reg;</sup> Enter<sup>&reg;</sup>.</span> Все права защищены. <img src="http://content.enter.ru/wp-content/uploads/2013/03/18-e1362236103519.png"></span></noindex>
+        <noindex><span class="rights fl"> &copy; ООО «Энтер» 2011&ndash;2015<!--?php echo date("Y") ?-->. <span style="font-size: 11px;"> ENTER<sup>&reg;</sup> ЕНТЕР<sup>&reg;</sup> Enter<sup>&reg;</sup>.</span> Все права защищены. <img src="http://content.enter.ru/wp-content/uploads/2013/03/18-e1362236103519.png"></span></noindex>
         <a href="/akit"><img src="http://content.enter.ru/wp-content/uploads/2012/09/image001.png" class="fr" style="margin: -25px 0px 0px;"></a>
         <div class="social_network" style="margin: 0 50px; width: 230px;"><span class="gray font11">Посетите нас</span> <a target="_blank" title="twitter" href="http://twitter.com/#!/enter_ru"></a><a target="_blank" title="facebook" href="http://www.facebook.com/enter.ru"></a><a target="_blank" title="vkontakte" href="http://vkontakte.ru/public31456119"></a><a target="_blank" title="youtube" href="https://www.youtube.com/user/EnterLLC"> <a target="_blank" title="odnoklassniki" href="http://www.odnoklassniki.ru/group/53202890129511"></a>
         </div>

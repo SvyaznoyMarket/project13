@@ -123,33 +123,33 @@
 		}
 	};
 
-	var infBtnHandler = function infBtnHandler() {
+	var infBtnHandler = function infBtnHandler(e) {
 			var activeClass = 'mActive',
 				infBtn = viewParamPanel.find('.js-category-pagination-infinity'),
 				isActiveTab = infBtn.hasClass(activeClass);
 			// end of vars
 
+			e.preventDefault();
+
 			if ( isActiveTab ) {
-				return false;
+				return;
 			}
 
 			catalog.infScroll.enable();
-
-			return false;
 		},
 
-		paginationBtnHandler = function paginationBtnHandler() {
+		paginationBtnHandler = function paginationBtnHandler(e) {
 			console.info('paginationBtnHandler');
 			var activeClass = 'mActive',
 				infBtn = viewParamPanel.find('.js-category-pagination-infinity'),
 				isActiveTab = infBtn.hasClass(activeClass);
 			// end of vars
 
+			e.preventDefault();
+
 			if ( isActiveTab ) {
 				catalog.infScroll.disable();
 			}
-
-			return false;
 		};
 	// end of functions
 

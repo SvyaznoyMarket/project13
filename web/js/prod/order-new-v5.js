@@ -3363,28 +3363,6 @@
 
 				var
 					/**
-					 * RuTarget analytics
-					 *
-					 * @param {Object}	data	Данные, пришедшие с ответа от сервера
-					 */
-					spinnerAnalytics = function spinnerAnalytics( data ) {
-						var
-							_rutarget = window._rutarget || [],
-							result;
-						// end of vars
-
-						if ( !data.product || !data.regionId ) {
-							return;
-						}
-
-						result = {'event': 'updateInCart', 'sku': data.product.id, 'qty': data.product.quantity, 'regionId': data.regionId};
-
-						console.info('RuTarget updateInCart. Клики кнопок увеличения/уменьшения кол-ва товара.');
-						console.log(result);
-						_rutarget.push(result);
-					},
-
-					/**
 					 * Обработка ответа измеения количества товаров
 					 * 
 					 * @param	{Object}	res		Ответ от сервера
@@ -3398,8 +3376,6 @@
 						}
 
 						ENTER.OrderModel.couponNumber('');
-
-						spinnerAnalytics(res);
 					};
 				// end of functions
 
@@ -4040,9 +4016,7 @@
 						totalPrice = 0,
 						totalQuan = 0,
 
-						toKISS = {},
-						_rutarget = window._rutarget || [],
-						result;
+						toKISS = {};
 					// end of vars
 
 					if ( !data.product ) {
@@ -4065,15 +4039,6 @@
 
 					if ( typeof _gaq !== 'undefined' ) {
 						_gaq.push(['_trackEvent', 'Order card', 'Item deleted']);
-					}
-
-					/* RuTarget */
-					if ( data.regionId ) {
-						result = {'event': 'removeFromCart', 'sku': data.product.id, 'regionId': data.regionId}
-
-						console.info('RuTarget removeFromCart');
-						console.log(result);
-						_rutarget.push(result);
 					}
 
 					if ( data.hasOwnProperty('product') && data.product.hasOwnProperty('id') ) {

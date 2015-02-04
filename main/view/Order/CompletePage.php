@@ -39,7 +39,7 @@ class CompletePage extends Layout {
         $isOrderAnalytics = (null !== $isOrderAnalytics) ? $isOrderAnalytics : true;
 
 
-        return $isOrderAnalytics ? $this->render('_googleAnalytics', ['orders' => $orders, 'productsById' => $productsById, 'servicesById' => $servicesById, 'isOrderAnalytics' => $isOrderAnalytics, 'giftBuyProducts' => $this->getParam('giftBuyProducts')]) : $this->render('_googleAnalytics');
+        return $isOrderAnalytics ? $this->render('_googleAnalytics', ['orders' => $orders, 'productsById' => $productsById, 'servicesById' => $servicesById, 'isOrderAnalytics' => $isOrderAnalytics]) : $this->render('_googleAnalytics');
     }
 
     public function slotInnerJavascript() {
@@ -188,36 +188,6 @@ class CompletePage extends Layout {
     public function slotAdblender() {
         // For ports.js analytics
         return \App::config()->analytics['enabled'] ? '<div id="adblenderCommon" class="jsanalytics" data-vars="'.$this->json(['layout' => 'layout-order-complete']).'"></div>' : '';
-    }
-
-    public function slotRuTargetOrderCompleteJS() {
-        if (!\App::config()->partners['RuTarget']['enabled']) return;
-
-        /** @var $orders Order[] */
-        $orders = $this->getParam('orders');
-        if (!$orders || empty($orders) || !is_array($orders)) return;
-
-        $productList = [];
-        foreach ($orders as $order) {
-            if (!$order instanceof Order) continue;
-
-            foreach ($order->getProduct() as $product) {
-                if (!$product instanceof OrderProduct) continue;
-
-                $productList[] = [
-                    'qty' => $product->getQuantity(),
-                    'sku' => $product->getId(),
-                ];
-            }
-        }
-
-        $data = [
-            'products' => $productList,
-            'regionId' => \App::user()->getRegionId(),
-        ];
-
-        return "<div id=\"RuTargetOrderCompleteJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
-
     }
 
     public function slotLamodaCompleteJS() {
