@@ -7007,7 +7007,9 @@ img[height="0"] {
     width: 41px;
   }
   .popup_inn {
-    padding: 10px 10px 30px;
+    padding: 10px 20px 30px 10px;
+    max-height: 600px;
+    overflow-y: scroll;
   }
   .popup_hd {
     border-bottom: 1px solid #c7c7c7;
