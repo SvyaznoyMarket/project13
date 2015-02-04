@@ -41,7 +41,9 @@ class Layout extends \View\DefaultLayout {
         }
 
         // Alexa
-        $html .= '<div id="AlexaJS" class="jsanalytics"></div><noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=mPO9i1acVE000x" style="display:none" height="1" width="1" alt="" /></noscript>';
+        if (\App::config()->partners['alexa']['enabled']) {
+            $html .= '<div id="AlexaJS" class="jsanalytics"></div><noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=mPO9i1acVE000x" style="display:none" height="1" width="1" alt="" /></noscript>';
+        }
 
         // Livetex chat
         $html .= $this->tryRender('partner-counter/livetex/_slot_liveTex');

@@ -185,7 +185,7 @@ class IndexPage extends \View\DefaultLayout {
             );
         }
 
-        return \App::config()->analytics['enabled'] ? "<div id=\"adriverProduct\" data-vars='".json_encode( $data )."' class=\"jsanalytics\"></div>\r\n" : '';
+        return \App::config()->partners['Adriver']['enabled'] ? sprintf('<div id="adriverProduct" data-vars="%s" class="jsanalytics"></div>', $this->json($data)) : '';
     }
 
     public function slotConfig() {

@@ -4,6 +4,8 @@
  * @var $product \Model\Product\Entity
  */
 
+if (!\App::config()->partners['SmartLeads']['enabled']) return '';
+
 // стр. товара
 $data = [
     'page'              => 'product',

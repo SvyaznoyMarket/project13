@@ -88,6 +88,8 @@ $f = function(
 </style>
 <div id="mainPageFooter">
 
+    <? if (\App::config()->partners['alexa']['enabled']) : ?>
+
     <!-- Start Alexa Certify Javascript -->
     <script type="text/javascript">
         _atrk_opts = { atrk_acct:"mPO9i1acVE000x", domain:"enter.ru",dynamic: true};
@@ -96,24 +98,7 @@ $f = function(
     <noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=mPO9i1acVE000x" style="display:none" height="1" width="1" alt="" /></noscript>
     <!-- End Alexa Certify Javascript -->
 
-    <!-- VisualDNA Audience Analytics API Import -->
-    <script type="text/javascript">
-        (function(){
-            var b, a;
-            b=document.createElement("script");
-            b.src="//a1.vdna-assets.com/analytics.js";
-            b.async=true;
-            a=document.getElementsByTagName("head")[0];
-            a.insertBefore(b,a.firstChild);
-            this.VDNA=this.VDNA||{};
-            this.VDNA.queue=this.VDNA.queue||[];
-        }());
-        VDNA.queue.push({
-            apiKey : "Enter.ru",
-            method : "reportPageView"
-        });
-    </script>
-    <!-- End of VisualDNA Audience Analytics API Import -->
+    <? endif ?>
 
     <!--div style="text-align: left; margin-top: 30px; margin-left: 95px;" class="bIndexLinks2__eBan bIndexLinks2__mBan bIndexLinks2__mBanLast"><a href="/how_choose_product"><img src="http://content.enter.ru/wp-content/uploads/2013/12/howchoose.png" /></a></div-->
 

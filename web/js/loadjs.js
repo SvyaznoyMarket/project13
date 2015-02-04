@@ -94,6 +94,11 @@
 		templateType = templateType.substring(0, templSep);
 	}
 
+	if (pageConfig) {
+		if (pageConfig.optimizelyEnabled == false) optimizelyUrl = '';
+		if (pageConfig.adfoxEnabled == false) adfoxUrl = '';
+	}
+
 	var
 		/**
 		 * Версионность файлов и загрузка неминифицированных скриптов в debug режиме

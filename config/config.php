@@ -229,9 +229,13 @@ $c->pickpoint['retryTimeout'] = [
     'forever' => 0,
 ];
 
-// TODO: Вынести сюда же настройки для sociomantic and get4click
+// TODO: Вынести сюда же настройки для get4click
 $c->partners['criteo']['enabled'] = true;
 $c->partners['criteo']['account'] = 10442;
+
+$c->partners['sociomantic']['enabled'] = true;
+$c->partners['marin']['enabled'] = true;
+$c->partners['alexa']['enabled'] = true;
 
 // RetailRocket
 $c->partners['RetailRocket']['account'] = '519c7f3c0d422d0fe0ee9775';
@@ -256,6 +260,13 @@ $c->partners['GetIntent']['enabled'] = true;
 $c->partners['AddThis']['enabled'] = true;
 $c->partners['AdvMaker']['enabled'] = true;
 $c->partners['Hubrus']['enabled'] = true;
+$c->partners['Adriver']['enabled'] = true;
+$c->partners['Mailru']['enabled'] = true;
+$c->partners['SmartLeads']['enabled'] = true;
+$c->partners['Sociaplus']['enabled'] = true;
+$c->partners['AdBlender']['enabled'] = true;
+$c->partners['ActionpayRetargeting']['enabled'] = true;
+$c->partners['Optimizely']['enabled'] = true;
 
 $c->adFox['enabled'] = true;
 

@@ -1,4 +1,4 @@
-<? if (\App::config()->analytics['enabled']): ?>
+<? if (\App::config()->kissmentrics['enabled']): ?>
     <script type="text/javascript">
         if ( typeof(_kmq) !== 'undefined' ) {
         }
