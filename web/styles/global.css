@@ -593,6 +593,13 @@ img[height="0"] {
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: 'fontello-arrows';
+  src: url('/styles/common/fonts/fontello/fontello-arrows.eot?6989503');
+  src: url('/styles/common/fonts/fontello/fontello-arrows.eot?6989503#iefix') format('embedded-opentype'), url('/styles/common/fonts/fontello/fontello-arrows.woff?6989503') format('woff'), url('/styles/common/fonts/fontello/fontello-arrows.ttf?6989503') format('truetype'), url('/styles/common/fonts/fontello/fontello-arrows.svg?6989503#arrow') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
 /*---END----ШРИФТЫ---------*/
 @media all {
   /**
@@ -10377,6 +10384,72 @@ img[height="0"] {
   }
 }
 /*---------Карточка товара----------*/
+@media all {
+  .product-container {
+    background-color: #ffffff;
+  }
+  .product-container .bBreadcrumbs__eItem {
+    background: none;
+    position: relative;
+  }
+  .product-container .bBreadcrumbs__eItem:after {
+    font-family: "fontello-arrows";
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    margin-right: .2em;
+    text-align: center;
+    /* For safety - reset parent styles, that can break glyph codes*/
+    font-variant: normal;
+    text-transform: none;
+    /* fix buttons height, for twitter bootstrap */
+    line-height: 1em;
+    content: '\e801';
+  }
+  .product-container .bBreadcrumbs__eLink {
+    border-bottom: 1px dotted;
+  }
+  .product-card__section-left {
+    display: inline-block;
+    float: left;
+    margin: 15px 0 0;
+    width: 700px;
+  }
+  .product-card__section-right {
+    float: right;
+    margin: 15px 0 0 16px;
+    width: 220px;
+    zoom: 1;
+  }
+  .icon-arrow {
+    font-family: "fontello-arrows";
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    margin-right: .2em;
+    text-align: center;
+    /* For safety - reset parent styles, that can break glyph codes*/
+    font-variant: normal;
+    text-transform: none;
+    /* fix buttons height, for twitter bootstrap */
+    line-height: 1em;
+  }
+}
+/*---------Карточка товара: кухни ----------*/
+@media all {
+  .product-container--kitchen .bBreadcrumbs__eItem {
+    color: #d3d3d3;
+  }
+  .product-container--kitchen .bBreadcrumbs__eLink {
+    color: #d3d3d3;
+  }
+}
 /*---------Карточка товара: слайдер превьюшек----------*/
 @media all {
   /*---------------Слайдер превьюшек----------------*/

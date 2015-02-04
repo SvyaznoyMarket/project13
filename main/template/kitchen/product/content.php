@@ -42,21 +42,21 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
 
-<div class="bProductSectionLeftCol">
-    <div class="bPageHead">
+<div class="product-card__section-left bProductSectionLeftCol">
+    <div class="product-card__head">
         <? if ($product->getPrefix()): ?>
-            <div class="bPageHead__eSubtitle"><?= $product->getPrefix() ?></div>
+            <div class="product-card__head__subtitle"><?= $product->getPrefix() ?></div>
         <? endif ?>
-        <div class="bPageHead__eTitle clearfix">
+        <div class="product-card__head__title clearfix">
             <h1 itemprop="name"><?= $product->getWebName() ?></h1>
         </div>
-        <span class="bPageHead__eArticle">Артикул: <?= $product->getArticle() ?></span>
+        <span class="product-card__head__article">Артикул: <?= $product->getArticle() ?></span>
     </div>
 
-    <?= $helper->render('kitchen/product/__photo', ['product' => $product, 'useLens' => $useLens]) ?>
+    <?= $helper->render('product/__photo', ['product' => $product, 'useLens' => $useLens]) ?>
 </div>
 
-<div class="bProductSectionRightCol">
+<div class="product-card__section-right">
     <? if ($isProductAvailable): ?>
         <p>Продавец-партнёр: ООО МЕГАЭЛАТОН</p>
         <?= $helper->render('kitchen/product/__price', ['product' => $product]) // Цена ?>
@@ -74,7 +74,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
             'location' => 'product-card',
         ]) ?>
 
-        <div class="bProductDesc" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        <div class="product-card__specify" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
             <?= $helper->render('product/__mainProperties', ['product' => $product]) ?>
         </div>
 
@@ -109,7 +109,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
     ]) ?>
 <? endif ?>
 
-<div class="bDescriptionProduct">
+<div class="product-card__desc">
     <?= $product->getDescription() ?>
 </div>
 
@@ -151,7 +151,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
     ]) ?>
 <? endif ?>
 
-<div class="bBreadCrumbsBottom"><?= $page->render('_breadcrumbs', ['breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer']) ?></div>
+<div class="product-containter__brcr-bottom"><?= $page->render('_breadcrumbs', ['breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer']) ?></div>
 
 <? if (\App::config()->analytics['enabled']): ?>
     <?= $page->tryRender('product/partner-counter/_cityads', ['product' => $product]) ?>

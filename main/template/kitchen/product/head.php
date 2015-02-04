@@ -22,8 +22,8 @@ $hasSearch = isset($hasSearch) ? (bool)$hasSearch : true;
 if (!isset($titlePrefix)) $titlePrefix = null;
 ?>
 
-<div class="bProductSection clearfix<? if ('product.line' == \App::request()->attributes->get('route')): ?> mProductSectionSet<? endif ?>">
-    
+<div class="product-container product-container--kitchen clearfix">
+
 
     <? if ($hasSearch && !$page->new_menu): ?>
     <noindex>

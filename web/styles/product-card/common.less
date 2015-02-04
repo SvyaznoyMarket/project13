@@ -1,0 +1,56 @@
+.product-container{
+	background-color: @white;
+	&__brcr-bottom{
+
+	}
+	.bBreadcrumbs{
+
+			&__eItem{
+				background: none;
+				position: relative;
+				&:after{
+					.icon-arrow();
+					content: '\e801';
+				}
+			}
+			&__eLink{
+				border-bottom: 1px dotted;
+
+			}
+		}
+}
+.product-card{
+	&__section-left{
+		display: inline-block;
+		float: left;
+		margin: 15px 0 0;
+
+		width: 700px;
+	}
+	&__section-right{
+		float: right;
+		margin: 15px 0 0 16px;
+
+		width: 220px;
+		zoom: 1;
+	}
+}
+.icon-arrow{
+	font-family: "fontello-arrows";
+	font-style: normal;
+	font-weight: normal;
+	speak: none;
+
+	display: inline-block;
+	text-decoration: inherit;
+	width: 1em;
+	margin-right: .2em;
+	text-align: center;
+
+	/* For safety - reset parent styles, that can break glyph codes*/
+	font-variant: normal;
+	text-transform: none;
+
+	/* fix buttons height, for twitter bootstrap */
+	line-height: 1em;
+}
