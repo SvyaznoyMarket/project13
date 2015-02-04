@@ -43,3 +43,4 @@
 <?= $page->slotInsiderJS() ?>
 <?= $page->slotGetIntentJS() ?>
 <?= $page->slotAdvMakerJS() ?>
+<?= $page->slotHubrusJS() ?>

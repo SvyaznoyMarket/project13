@@ -309,6 +309,13 @@ class IndexPage extends \View\DefaultLayout {
             </script>';
     }
 
+    public function slotHubrusJS() {
+        $html = parent::slotHubrusJS();
+        if (!empty($html)) {
+            return $html . \View\Partners\Hubrus::addProductData($this->product);
+        }
+    }
+
     public function slotMailRu() {
         /** @var \Model\Product\Entity $product */
         $product = $this->getParam('product');
