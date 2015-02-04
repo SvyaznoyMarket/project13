@@ -98,72 +98,74 @@ $postBuyOffer = $product->getPostBuyOffer();
 </div>
 
 <div class="clear"></div>
+<div class="product-card__foot">
+    <? if ($isProductAvailable && \App::config()->product['pullRecommendation']): ?>
+        <?= $helper->render('product/__slider', [
+            'type'     => 'similar',
+            'title'    => 'Похожие товары',
+            'products' => [],
+            'count'    => null,
+            'limit'    => \App::config()->product['itemsInSlider'],
+            'page'     => 1,
+            'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
+            'sender'   => [
+                'name'     => 'retailrocket',
+                'position' => 'ProductSimilar',
+            ],
+        ]) ?>
+    <? endif ?>
 
-<? if ($isProductAvailable && \App::config()->product['pullRecommendation']): ?>
-    <?= $helper->render('product/__slider', [
-        'type'     => 'similar',
-        'title'    => 'Похожие товары',
-        'products' => [],
-        'count'    => null,
-        'limit'    => \App::config()->product['itemsInSlider'],
-        'page'     => 1,
-        'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
-        'sender'   => [
-            'name'     => 'retailrocket',
-            'position' => 'ProductSimilar',
-        ],
-    ]) ?>
-<? endif ?>
+    <div class="product-card__desc">
+        <?= $product->getDescription() ?>
+    </div>
 
-<div class="product-card__desc">
-    <?= $product->getDescription() ?>
+    <? if ($product->getSecondaryGroupedProperties()): // показываем все характеристики (сгруппированые), если ранее они не были показаны ?>
+        <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getSecondaryGroupedProperties()]) // Характеристики ?>
+    <? endif ?>
+
+    <? if (\App::config()->product['pullRecommendation']): ?>
+        <?= $helper->render('product/__slider', [
+            'type'           => 'alsoBought',
+            'title'          => 'С этим товаром покупают',
+            'products'       => [],
+            'count'          => null,
+            'limit'          => \App::config()->product['itemsInSlider'],
+            'page'           => 1,
+            'additionalData' => $additionalData,
+            'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
+            'sender'         => [
+                'name'     => 'retailrocket',
+                'position' => 'ProductAccessories', // все правильно - так и надо!
+            ],
+        ]) ?>
+    <? endif ?>
+
+    <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
+        <?= $helper->render('product/__slider', [
+            'type'      => 'viewed',
+            'title'     => 'Вы смотрели',
+            'products'  => [],
+            'count'     => null,
+            'limit'     => \App::config()->product['itemsInSlider'],
+            'page'      => 1,
+            'url'       => $page->url('product.recommended', ['productId' => $product->getId()]),
+            'sender'    => [
+                'name'     => 'enter',
+                'position' => 'Viewed',
+                'from'     => 'productPage'
+            ],
+        ]) ?>
+    <? endif ?>
+
+    <div class="product-containter__brcr-bottom"><?= $page->render('_breadcrumbs', ['breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer']) ?></div>
+
+    <? if (\App::config()->analytics['enabled']): ?>
+        <?= $page->tryRender('product/partner-counter/_cityads', ['product' => $product]) ?>
+        <?//= $page->tryRender('product/partner-counter/_recreative', ['product' => $product]) ?>
+    <? endif ?>
+
+    <?= $page->tryRender('product/_tag', ['product' => $product]) ?>
+
+    <?= $helper->render('product/__event', ['product' => $product]) ?>
+    </div>
 </div>
-
-<? if ($product->getSecondaryGroupedProperties()): // показываем все характеристики (сгруппированые), если ранее они не были показаны ?>
-    <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getSecondaryGroupedProperties()]) // Характеристики ?>
-<? endif ?>
-
-<? if (\App::config()->product['pullRecommendation']): ?>
-    <?= $helper->render('product/__slider', [
-        'type'           => 'alsoBought',
-        'title'          => 'С этим товаром покупают',
-        'products'       => [],
-        'count'          => null,
-        'limit'          => \App::config()->product['itemsInSlider'],
-        'page'           => 1,
-        'additionalData' => $additionalData,
-        'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
-        'sender'         => [
-            'name'     => 'retailrocket',
-            'position' => 'ProductAccessories', // все правильно - так и надо!
-        ],
-    ]) ?>
-<? endif ?>
-
-<? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
-    <?= $helper->render('product/__slider', [
-        'type'      => 'viewed',
-        'title'     => 'Вы смотрели',
-        'products'  => [],
-        'count'     => null,
-        'limit'     => \App::config()->product['itemsInSlider'],
-        'page'      => 1,
-        'url'       => $page->url('product.recommended', ['productId' => $product->getId()]),
-        'sender'    => [
-            'name'     => 'enter',
-            'position' => 'Viewed',
-            'from'     => 'productPage'
-        ],
-    ]) ?>
-<? endif ?>
-
-<div class="product-containter__brcr-bottom"><?= $page->render('_breadcrumbs', ['breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer']) ?></div>
-
-<? if (\App::config()->analytics['enabled']): ?>
-    <?= $page->tryRender('product/partner-counter/_cityads', ['product' => $product]) ?>
-    <?//= $page->tryRender('product/partner-counter/_recreative', ['product' => $product]) ?>
-<? endif ?>
-
-<?= $page->tryRender('product/_tag', ['product' => $product]) ?>
-
-<?= $helper->render('product/__event', ['product' => $product]) ?>

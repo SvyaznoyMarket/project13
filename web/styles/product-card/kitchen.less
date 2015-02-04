@@ -1,12 +1,11 @@
 .textcolor{
-	color: @lightgrey-2;
+	color: #919191;
 }
 .product-container{
 
 
 	&--kitchen{
 
-		padding-left:10px;
 		//остатки старого именования хлебных крошек. переименовать при рефакторинге.
 		.bBreadcrumbs{
 
@@ -45,9 +44,9 @@
 			&__section-left{
 				display: inline-block;
 				float: left;
-				margin: 15px 0 0;
+				margin: 15px 0 0 15px;
 
-				width: 640px;
+				width: 625px;
 			}
 			&__section-right{
 				float: right;
@@ -55,7 +54,7 @@
 				padding: 15px 10px 0 15px;
 
 				width: 260px;
-				border-left:1px solid @lightgrey-7;
+				border-left:1px dotted @lightgrey-4;
 				zoom: 1;
 			}
 			&__vendor{
@@ -93,14 +92,68 @@
 					}
 				}
 			}
+			&__specify{
+			//старые классы
+			.bSpecifications.mSimpleProperty {
+			    margin: 25px 0 25px;
 
+				color: #6E6E6E;
 
-		}//product-card
-		//остаток старых стилей
-			.bInputList{
-				margin-left: 0px;
-				font-size: 36px;
-				text-align: center;
+			    font-size: 12px;
+
+			    .bSpecificationsList {
+			    	margin: 0 0 15px;
+					.textcolor();
+
+				    &__eName {
+				      width: 140px;
+				      margin: 0 0 15px;
+
+				      border: none;
+				      background: none;
+				        .bName {
+					    	top: 0;
+					    }
+				    }
+
+				    &__eValue {
+				      width: 110px;
+				      margin: 0 0 15px;
+				      padding: 0;
+
+				      word-wrap: break-word;
+				    }
+				}
+				.bTextMore{
+					text-decoration: underline;
+					}
+				}
 			}
+			&__foot{
+				padding: 0 10px;
+				margin: 10px -10px 0;
+				border-top: 1px solid #000;
+			}
+		}//product-card
+		//остаток старых классов
+		.bInputList{
+			margin-left: 0px;
+			font-size: 36px;
+			text-align: center;
+		}
+		.bWidgetBuy{
+			border-bottom: 0px;
+			border-bottom-left-radius: 0px;
+			border-bottom-right-radius: 0px;
+			margin-bottom: 0px;
+		}
+		.bProductDescImg{
+			width:600px;
+			&Big{
+				width: 600px;
+				height: 500px;
+			}
+		}
+
 	}//kitchen wrap
 }
