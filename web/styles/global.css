@@ -10391,6 +10391,9 @@ img[height="0"] {
   .product-container .bBreadcrumbs__eItem {
     background: none;
     position: relative;
+    float: left;
+    margin: 0px;
+    padding: 0px;
   }
   .product-container .bBreadcrumbs__eItem:after {
     font-family: "fontello-arrows";
@@ -10408,6 +10411,11 @@ img[height="0"] {
     /* fix buttons height, for twitter bootstrap */
     line-height: 1em;
     content: '\e801';
+    padding-left: 3px;
+  }
+  .product-container .bBreadcrumbs__eItem:last-child:after {
+    content: "";
+    padding: 0px;
   }
   .product-container .bBreadcrumbs__eLink {
     border-bottom: 1px dotted;
@@ -10416,12 +10424,12 @@ img[height="0"] {
     display: inline-block;
     float: left;
     margin: 15px 0 0;
-    width: 700px;
+    width: 660px;
   }
   .product-card__section-right {
     float: right;
     margin: 15px 0 0 16px;
-    width: 220px;
+    width: 260px;
     zoom: 1;
   }
   .icon-arrow {
@@ -10443,11 +10451,88 @@ img[height="0"] {
 }
 /*---------Карточка товара: кухни ----------*/
 @media all {
+  .textcolor {
+    color: #d3d3d3;
+  }
+  .product-container--kitchen {
+    padding-left: 10px;
+  }
   .product-container--kitchen .bBreadcrumbs__eItem {
     color: #d3d3d3;
   }
   .product-container--kitchen .bBreadcrumbs__eLink {
     color: #d3d3d3;
+  }
+  .product-container--kitchen .product-card__head {
+    margin: 21px 0 10px;
+    padding: 0;
+    font-size: 16px;
+  }
+  .product-container--kitchen .product-card__head__subtitle {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+  }
+  .product-container--kitchen .product-card__head__title {
+    line-height: 16px;
+  }
+  .product-container--kitchen .product-card__head__article {
+    line-height: 16px;
+    color: #d3d3d3;
+  }
+  .product-container--kitchen .product-card__section-left {
+    display: inline-block;
+    float: left;
+    margin: 15px 0 0;
+    width: 640px;
+  }
+  .product-container--kitchen .product-card__section-right {
+    float: right;
+    margin: 0px;
+    padding: 15px 10px 0 15px;
+    width: 260px;
+    border-left: 1px solid #eaeaea;
+    zoom: 1;
+  }
+  .product-container--kitchen .product-card__vendor {
+    color: #d3d3d3;
+    font-size: 14px;
+    padding-left: 5px;
+    text-align: center;
+  }
+  .product-container--kitchen .product-card__info--price {
+    display: block;
+    color: #d3d3d3;
+    font-size: 14px;
+    text-align: center;
+  }
+  .product-container--kitchen .product-card__info--deliv-period {
+    display: block;
+    font-size: 12px;
+    text-align: center;
+    margin-top: 5px;
+  }
+  .product-container--kitchen .product-card__info--recall {
+    display: block;
+    font-size: 14px;
+    margin: 10px 0 30px 0;
+  }
+  .product-container--kitchen .product-card__info--recall ul li {
+    list-style: none;
+    padding-left: 18px;
+    position: relative;
+  }
+  .product-container--kitchen .product-card__info--recall ul li:before {
+    content: "\2014";
+    position: absolute;
+    left: 0px;
+  }
+  .product-container--kitchen .bInputList {
+    margin-left: 0px;
+    font-size: 36px;
+    text-align: center;
   }
 }
 /*---------Карточка товара: слайдер превьюшек----------*/

@@ -1,16 +1,20 @@
+.textcolor{
+	color: @lightgrey-2;
+}
 .product-container{
 
 
 	&--kitchen{
 
+		padding-left:10px;
 		//остатки старого именования хлебных крошек. переименовать при рефакторинге.
 		.bBreadcrumbs{
 
 			&__eItem{
-				color: @lightgrey-2;
+				.textcolor();
 			}
 			&__eLink{
-				color: @lightgrey-2;
+				.textcolor();
 
 				&:after{
 
@@ -20,6 +24,83 @@
 
 		.product-card{
 
-		}
-	}
+			&__head{
+				margin: 21px 0 10px;
+				padding: 0;
+
+				font-size: 16px;
+				&__subtitle{
+					.inline-block();
+				}
+				&__title{
+					line-height: 16px;
+				}
+				&__article{
+					line-height: 16px;
+
+					.textcolor();
+				}
+			}
+
+			&__section-left{
+				display: inline-block;
+				float: left;
+				margin: 15px 0 0;
+
+				width: 640px;
+			}
+			&__section-right{
+				float: right;
+				margin: 0px;
+				padding: 15px 10px 0 15px;
+
+				width: 260px;
+				border-left:1px solid @lightgrey-7;
+				zoom: 1;
+			}
+			&__vendor{
+				.textcolor();
+				font-size: 14px;
+				padding-left: 5px;
+				text-align: center;
+			}
+			&__info{
+				&--price{
+					display: block;
+					.textcolor();
+					font-size: 14px;
+					text-align: center;
+				}
+				&--deliv-period{
+					display: block;
+					font-size: 12px;
+					text-align: center;
+					margin-top:5px;
+				}
+				&--recall{
+					display: block;
+					font-size: 14px;
+					margin: 10px 0 30px 0;
+					ul li{
+						list-style: none;
+						padding-left: 18px;
+						position: relative;
+						&:before{
+							content: "\2014";
+							position: absolute;
+							left: 0px;
+						}
+					}
+				}
+			}
+
+
+		}//product-card
+		//остаток старых стилей
+			.bInputList{
+				margin-left: 0px;
+				font-size: 36px;
+				text-align: center;
+			}
+	}//kitchen wrap
 }

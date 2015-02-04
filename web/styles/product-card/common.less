@@ -3,14 +3,22 @@
 	&__brcr-bottom{
 
 	}
-	.bBreadcrumbs{
 
+	.bBreadcrumbs{
 			&__eItem{
 				background: none;
 				position: relative;
+				float: left;
+				margin: 0px;
+				padding: 0px;
 				&:after{
 					.icon-arrow();
 					content: '\e801';
+					padding-left: 3px;
+				}
+				&:last-child:after {
+					content: "";
+					padding: 0px;
 				}
 			}
 			&__eLink{
@@ -24,14 +32,12 @@
 		display: inline-block;
 		float: left;
 		margin: 15px 0 0;
-
-		width: 700px;
+		width: 660px;
 	}
 	&__section-right{
 		float: right;
 		margin: 15px 0 0 16px;
-
-		width: 220px;
+		width: 260px;
 		zoom: 1;
 	}
 }

@@ -44,11 +44,13 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
 
 <div class="product-card__section-left bProductSectionLeftCol">
     <div class="product-card__head">
-        <? if ($product->getPrefix()): ?>
-            <div class="product-card__head__subtitle"><?= $product->getPrefix() ?></div>
-        <? endif ?>
         <div class="product-card__head__title clearfix">
-            <h1 itemprop="name"><?= $product->getWebName() ?></h1>
+            <h1 itemprop="name">
+                <? if ($product->getPrefix()): ?>
+                    <div class="product-card__head__subtitle"><?= $product->getPrefix() ?></div>
+                <? endif ?>
+                <?= $product->getWebName() ?>
+            </h1>
         </div>
         <span class="product-card__head__article">Артикул: <?= $product->getArticle() ?></span>
     </div>
@@ -58,16 +60,18 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
 
 <div class="product-card__section-right">
     <? if ($isProductAvailable): ?>
-        <p>Продавец-партнёр: ООО МЕГАЭЛАТОН</p>
+        <div class="product-card__vendor">Продавец-партнёр: ООО МЕГАЭЛАТОН</div>
         <?= $helper->render('kitchen/product/__price', ['product' => $product]) // Цена ?>
-        <p>Цена базового комплекта</p>
-        <p>Срок доставки базового комплекта 3 дня</p>
-        <p>Закажите обратный звонок и уточните</p>
-        <ul>
-            <li>Состав мебели и техники</li>
-            <li>Условия доставки, сборки и оплаты</li>
-        </ul>
 
+        <span class="product-card__info--price">Цена базового комплекта</span>
+        <span class="product-card__info--deliv-period">Срок доставки базового комплекта 3 дня</span>
+        <div class="product-card__info--recall">
+            <span>Закажите обратный звонок и уточните</span>
+            <ul>
+                <li>Состав мебели и техники</li>
+                <li>Условия доставки, сборки и оплаты</li>
+            </ul>
+        </div>
         <?= $helper->render('cart/__button-product', [
             'product'  => $product,
             'sender'   => $buySender,
