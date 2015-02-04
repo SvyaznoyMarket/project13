@@ -10,6 +10,7 @@
  * @var $shopStates         \Model\Product\ShopState\Entity[]
  * @var $creditData         array
  * @var $deliveryDataResponse   array
+ * @var $similarProducts    \Model\Product\Entity[]
  */
 
 $helper = new \Helper\TemplateHelper();
@@ -35,5 +36,7 @@ $reviewsPresent = !(empty($reviewsData['review_list']));
 <? endif ?>
 
 <?= $page->tryRender('product/_tag', ['product' => $product]) ?>
+
+<?= $page->tryRender('product/_similarProducts', ['products' => $similarProducts]) ?>
 
 <?= $helper->render('product/__event', ['product' => $product]) ?>

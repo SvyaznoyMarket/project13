@@ -40,4 +40,14 @@ class DeliveryPage extends Layout {
 
         return 'order-v3';
     }
+
+    public function slotHubrusJS() {
+        $html = parent::slotHubrusJS();
+        if (!empty($html)) {
+            $products = \App::user()->getCart()->getProductsNC();
+            return $html . \View\Partners\Hubrus::addHubrusData('cart_items', $products);
+        } else {
+            return '';
+        }
+    }
 }

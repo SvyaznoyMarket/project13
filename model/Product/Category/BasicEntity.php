@@ -14,13 +14,13 @@ abstract class BasicEntity {
     const PRODUCT_VIEW_EXPANDED = 'expanded';
 
     /** @var int|null */
-    protected $id;
+    public $id;
     /** @var string|null */
-    protected $ui;
+    public $ui;
     /** @var int|null */
     protected $parentId;
     /** @var string|null */
-    protected $name;
+    public $name;
     /** @var string|null */
     protected $link;
     /** @var string|null */

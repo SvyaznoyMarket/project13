@@ -254,7 +254,8 @@ $c->partners['Revolver']['enabled'] = true;
 $c->partners['Insider']['enabled'] = true;
 $c->partners['GetIntent']['enabled'] = true;
 $c->partners['AddThis']['enabled'] = true;
-$c->partners['AdvMaker']['enabled'] = false;
+$c->partners['AdvMaker']['enabled'] = true;
+$c->partners['Hubrus']['enabled'] = true;
 
 $c->adFox['enabled'] = true;
 
