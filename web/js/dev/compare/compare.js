@@ -434,23 +434,28 @@
 
 
 		function updateElements(){
-			var scrollY = $window.scrollTop();
+			var
+				documentHeight = $document.height(),
+				windowHeight = $window.height(),
+				scrollTop = $window.scrollTop(),
+				footerFixedTop = windowHeight - $footer.outerHeight(false),
+				footerTop = footerFixedTop + (documentHeight - windowHeight - scrollTop);
 
 			$content.css({
 				'padding-top': $topbar.outerHeight(false) + $header.outerHeight(false)
 			});
 
 			$topbar.css({
-				'margin-top': -scrollY + 'px'
+				'margin-top': (scrollTop >= 0 ? -scrollTop : 0) + 'px'
 			});
 
 			$header.css({
 				'top': $topbar.outerHeight(false) + 'px',
-				'margin-top': -scrollY + 'px'
+				'margin-top': (scrollTop >= 0 ? -scrollTop : 0) + 'px'
 			});
 
 			$footer.css({
-				'top': $window.height() - $footer.outerHeight(false) + ($document.height() - $window.height() - $window.scrollTop()) + 'px'
+				'top': (footerTop > footerFixedTop ? footerTop : footerFixedTop) + 'px'
 			});
 		}
 
