@@ -3351,6 +3351,7 @@ $(document).ready(function() {
 
 				'<form action="' + ENTER.utils.generateUrl('order.postBuy') + '" method="post">' +
 					'<input type="hidden" name="productId" value="{{productId}}" />' +
+					'<input type="hidden" name="sender" value="{{sender}}" />' +
 
 					'{{#full}}' +
 						'<h1>Закажите обратный звонок и уточните</h1>' +
@@ -3433,6 +3434,7 @@ $(document).ready(function() {
 				partnerName: $button.data('partner-name'),
 				productUrl: $button.data('product-url'),
 				productId: $button.data('product-id'),
+				sender: $button.attr('data-sender'),
 				userPhone: ENTER.utils.Base64.decode(ENTER.config.userInfo.user.mobile || ''),
 				userEmail: ENTER.config.userInfo.user.email || '',
 				userName: ENTER.config.userInfo.user.name || ''
