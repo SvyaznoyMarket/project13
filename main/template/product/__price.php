@@ -17,7 +17,7 @@ return function(
 <? endif ?>
 <span>
     <div class="bPrice5321a13ebb1e5 bInputList">
-    	<input class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="price" name="price_or_credit" />
+    	<input class="jsCustomRadio bCustomInput mCustomRadioBig jsProductCreditRadio" type="radio" id="price" name="product_credit_payment" value="off" checked />
 
     	<label for="price" class="bCustomLabel mCustomLabelRadioBig mChecked">
 	    	<strong itemprop="price" class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong>
