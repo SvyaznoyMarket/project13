@@ -38,6 +38,7 @@ $isKitPage = (bool)$product->getKit();
 $isProductAvailable = $product->isAvailable();
 
 $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
+$postBuyOffer = $product->getPostBuyOffer();
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
@@ -58,7 +59,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
 
 <div class="bProductSectionRightCol">
     <? if ($isProductAvailable): ?>
-        <p>Продавец-партнёр: ООО МЕГАЭЛАТОН</p>
+        <p>Продавец-партнёр: <?= $helper->escape($postBuyOffer['name']) ?></p>
         <?= $helper->render('kitchen/product/__price', ['product' => $product]) // Цена ?>
         <p>Цена базового комплекта</p>
         <p>Срок доставки базового комплекта 3 дня</p>

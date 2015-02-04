@@ -488,8 +488,8 @@ class IndexAction {
             }
         }
 
-        if ($_SERVER['APPLICATION_ENV'] === 'local') {
-            $page = new \View\Kitchen\Product();
+        if ($product->getPostBuyOffer()) {
+            $page = new \View\Product\PostBuyPage();
         } else {
             $page = new \View\Product\IndexPage();
         }

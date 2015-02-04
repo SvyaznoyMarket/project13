@@ -1,8 +1,8 @@
 <?php
 
-namespace View\Kitchen;
+namespace View\Product;
 
-class Product extends \View\Product\IndexPage {
+class PostBuyPage extends \View\Product\IndexPage {
     public function slotContentHead() {
         return $this->render('kitchen/product/head', $this->params);
     }

@@ -542,6 +542,28 @@ class BasicEntity {
         return $this->isOnlyFromPartner;
     }
 
+    /**
+     * @return array|null
+     */
+    public function getPostBuyOffer()
+    {
+        // TODO удалить временную заглушку
+        if ($_SERVER['APPLICATION_ENV'] === 'local') {
+            return [
+                'name' => 'ООО МЕГАЭЛАТОН',
+                'type' => '2',
+            ];
+        }
+
+        foreach ($this->partnersOffer as $offer) {
+            if (isset($offer['type']) && 2 == $offer['type']) {
+                return $offer + ['name' => null];
+            }
+        }
+
+        return null;
+    }
+
     public function setModel(Model\Entity $model = null) {
         $this->model = $model;
     }

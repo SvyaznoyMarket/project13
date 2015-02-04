@@ -707,6 +707,12 @@ return [
         'method'  => ['GET'],
     ],
 
+    'order.postBuy' => [
+        'pattern' => '/orders/post-buy',
+        'action'  => ['OrderPostBuy\Action', 'execute'],
+        'method'  => ['POST'],
+    ],
+
     // услуги
     'service' => [
         'pattern' => '/f1',
