@@ -73,6 +73,8 @@ return function(
                 <? endif ?>
             </div>
         </form>
+
+        <a href="" class="fltrBtn_anim-item" target="_blank"><img class="fltrBtn_anim-item_img" src="/styles/catalog/img/gift-card.png" alt=""></a>
     </div>
 
 <? };
