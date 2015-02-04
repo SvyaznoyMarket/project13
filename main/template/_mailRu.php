@@ -7,7 +7,7 @@
  */
 ?>
 
-<? if (\App::config()->analytics['enabled']): ?>
+<? if (\App::config()->partners['Mailru']['enabled']): ?>
     <!-- Rating@Mail.ru counter -->
     <script type="text/javascript">
         var _tmr = _tmr || [];

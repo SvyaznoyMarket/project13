@@ -62,6 +62,7 @@ class DefaultLayout extends Layout {
     }
 
     public function slotKissMetrics() {
+        if (!\App::config()->kissmentrics['enabled']) return '';
         $cookie = \App::request()->cookies;
         $cookieName = \App::config()->kissmentrics['cookieName']['needUpdate'];
 
@@ -73,7 +74,7 @@ class DefaultLayout extends Layout {
                 'entity_id' => \App::user()->getToken(),
                 'cookieName' => $cookieName
             ];
-            $return .= "<div id=\"kissUpdateJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
+            $return .= sprintf('<div id="kissUpdateJS" class="jsanalytics" data-value="%s"></div>', $this->json($data));
         }
 
         return $return;
@@ -286,7 +287,7 @@ class DefaultLayout extends Layout {
     }
 
     public function slotAdriver() {
-        return \App::config()->analytics['enabled'] ? "<div id=\"adriverCommon\"  class=\"jsanalytics\"></div>\r\n" : '';
+        return \App::config()->partners['Adriver']['enabled'] ? '<div id="adriverCommon" class="jsanalytics"></div>' : '';
     }
 
     public function slotMainMenu() {
@@ -348,7 +349,7 @@ class DefaultLayout extends Layout {
                 'order.complete',
                 'cart',
             ])) {
-                $return .= "\n\n" . '<div id="xcntmyAsync" class="jsanalytics"></div>';
+                if (\App::config()->partners['SmartLeads']['enabled']) $return .= "\n\n" . '<div id="xcntmyAsync" class="jsanalytics"></div>';
             }
 
             // на всех страницах сайта, кроме shop.*
@@ -374,9 +375,8 @@ class DefaultLayout extends Layout {
             }
 
             // ActionPay ретаргетинг
-            $return .= '<div id="ActionPayJS" data-vars="' .
-                $this->json( (new \View\Partners\ActionPay($routeName, $this->params))->execute() ) .
-                '" class="jsanalytics"></div>';
+            if (\App::config()->partners['ActionpayRetargeting']['enabled']) $return .= '<div id="ActionPayJS" data-vars="' .
+                $this->json( (new \View\Partners\ActionPay($routeName, $this->params))->execute() ) . '" class="jsanalytics"></div>';
 
             // вызов JS Alexa-кода
             if (\App::config()->partners['alexa']['enabled']) {
@@ -532,7 +532,7 @@ class DefaultLayout extends Layout {
     }
 
     public function slotSociaPlus() {
-        return '<div id="sociaPlusJs" class="jsanalytics"></div>';
+        return \App::config()->partners['Sociaplus']['enabled'] ? '<div id="sociaPlusJs" class="jsanalytics"></div>' : '';
     }
 
     public function slotAdmitad() {
@@ -688,7 +688,7 @@ class DefaultLayout extends Layout {
     }
 
     public function slotAdblender() {
-        return \App::config()->analytics['enabled'] ? '<div id="adblenderCommon" class="jsanalytics" data-vars="'.$this->json(['layout' =>$this->layout]).'"></div>' : '';
+        return \App::config()->partners['AdBlender']['enabled'] ? '<div id="adblenderCommon" class="jsanalytics" data-vars="'.$this->json(['layout' =>$this->layout]).'"></div>' : '';
     }
 
     /**
