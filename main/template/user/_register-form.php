@@ -28,8 +28,8 @@ $oauthEnabled = \App::config()->oauthEnabled;
                 <input type="text" class="authForm_it textfield js-phoneField" name="register[phone]" value="" placeholder="Телефон" />
 
                 <div class="authForm_sbscr">
-                    <input class="customInput customInput-defcheck jsCustomRadio js-registerForm-subscribe" type="checkbox" name="subscribe" id="subscribe" <? if (!App::user()->isSubscribed()) : ?> checked="checked" <? endif ?> />
-                    <label class="customLabel" for="subscribe">Подписаться на email-рассылку,<br/> получить скидку 300 рублей </label>
+                    <input class="customInput customInput-defcheck jsCustomRadio js-customInput js-registerForm-subscribe" type="checkbox" name="subscribe" id="subscribe" <? if (!App::user()->isSubscribed()) : ?> checked="checked" <? endif ?> />
+                    <label class="customLabel customLabel-defcheck" for="subscribe">Подписаться на email-рассылку,<br/> получить скидку 300 рублей </label>
                 </div>
 
                 <input type="submit" class="authForm_is btnsubmit" name="" value="Регистрация" />
