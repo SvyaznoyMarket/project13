@@ -9,7 +9,8 @@
 				isBuyable = $elem.data('is-buyable'),
 				statusId = $elem.data('status-id'),
                 noUpdate = $elem.data('noUpdate'),
-				buyUrl = $elem.data('buy-url')
+				buyUrl = $elem.data('buy-url'),
+				isPostBuy = $elem.data('is-post-buy')
             ;
 			
 			if (typeof isBuyable != 'undefined' && !isBuyable) {
@@ -22,11 +23,20 @@
 					.attr('href', '#');
 			} else if (typeof statusId != 'undefined' && 5 == statusId) { // SITE-2924
 				$elem
-					.text('Купить')
+					.text('Нет')
 					.addClass('mDisabled')
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
 					.addClass('jsBuyButton')
+					.attr('href', '#');
+			} else if (typeof isPostBuy != 'undefined' && isPostBuy) {
+				$elem
+					.text('Как купить?')
+					.removeClass('mDisabled')
+					.removeClass('mShopsOnly')
+					.removeClass('mBought')
+					.addClass('btn--post-buy')
+					.addClass('js-postBuyButton')
 					.attr('href', '#');
 			} else if (typeof inShopStockOnly != 'undefined' && inShopStockOnly && ENTER.config.pageConfig.user.region.forceDefaultBuy) {
 				$elem

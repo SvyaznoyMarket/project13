@@ -19,10 +19,6 @@ if (!isset($categoryClass)) $categoryClass = null;
 $hasFurnitureConstructor = \App::config()->product['furnitureConstructor'] && $product->getLine() && (256 == $product->getLine()->getId()); // Серия Байкал
 
 $reviewsPresent = !(empty($reviewsData['review_list']));
-
-if ($_SERVER['APPLICATION_ENV'] === 'local') {
-    $categoryClass = 'kitchen';
-}
 ?>
 
 <? if ($hasFurnitureConstructor): ?>

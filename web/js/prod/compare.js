@@ -27,6 +27,8 @@
 			model.reviews = product.reviews;
 			model.deleteFromCompareUrl = product.deleteFromCompareUrl;
 			model.upsale = product.upsale;
+			model.partnerName = product.partnerName;
+			model.isPostBuy = product.isPostBuy;
 			return model;
 		}
 
