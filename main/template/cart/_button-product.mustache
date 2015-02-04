@@ -2,7 +2,7 @@
     <a
         {{#id}}id="{{id}}"{{/id}}
         href="{{url}}"
-        class="{{class}} btnBuy__eLink{{#disabled}} mDisabled{{/disabled}}{{#inShopOnly}} mShopsOnly{{/inShopOnly}}"
+        class="{{class}} {{#disabled}}mDisabled{{/disabled}} {{#inShopOnly}}mShopsOnly{{/inShopOnly}}"
         data-product-id="{{data.productId}}"
         data-product-ui="{{productUi}}"
         data-upsale="{{data.upsale}}"

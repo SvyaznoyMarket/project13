@@ -75,12 +75,12 @@ class ProductButtonAction {
         if (!$product->getIsBuyable()) {
             $data['disabled'] = true;
             $data['url'] = '#';
-            $data['class'] .= ' mDisabled jsBuyButton';
+            $data['class'] .= ' btnBuy__eLink mDisabled jsBuyButton';
             $data['value'] = $product->isInShopShowroomOnly() ? 'На витрине' : 'Нет';
         } else if (5 == $product->getStatusId()) { // SITE-2924
             $data['disabled'] = true;
             $data['url'] = '#';
-            $data['class'] .= ' mDisabled jsBuyButton';
+            $data['class'] .= ' btnBuy__eLink mDisabled jsBuyButton';
             $data['value'] = 'Нет';
         } else if ($postBuyOffer = $product->getPostBuyOffer()) {
             $data['url'] = '#';
@@ -93,22 +93,22 @@ class ProductButtonAction {
             if ($reserveAsBuy) {
                 $data['id'] = 'quickBuyButton-' . $product->getId();
                 $data['url'] = $helper->url('cart.oneClick.product.set', array_merge($urlParams, ['productId' => $product->getId()]));
-                $data['class'] .= ' jsOneClickButton-new';
+                $data['class'] .= ' btnBuy__eLink jsOneClickButton-new';
                 $data['value'] = 'Купить';
                 $data['title'] = 'Резерв товара';
             } else {
                 $data['inShopOnly'] = true;
                 $data['url'] = $helper->url('cart.oneClick.product.set', array_merge($urlParams, ['productId' => $product->getId()]));
-                $data['class'] .= ' mShopsOnly jsOneClickButton';
+                $data['class'] .= ' btnBuy__eLink mShopsOnly jsOneClickButton';
                 $data['value'] = 'Резерв';
             }
 		} else if (\App::user()->getCart()->hasProduct($product->getId())) {
             $data['url'] = $helper->url('cart');
-            $data['class'] .= ' mBought';
+            $data['class'] .= ' btnBuy__eLink mBought';
             $data['value'] = 'В корзине';
         } else {
             $data['url'] = $buyUrl;
-            $data['class'] .= ' jsBuyButton';
+            $data['class'] .= ' btnBuy__eLink jsBuyButton';
             $data['value'] = 'Купить';
         }
 
