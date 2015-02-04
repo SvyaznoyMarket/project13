@@ -3,7 +3,6 @@
  * @var $page                   \View\Layout
  * @var $pager                  \Iterator\EntityPager
  * @var $isAjax                 bool
- * @var $productVideosByProduct array
  * @var $isAddInfo              bool
  * @var $itemsPerRow            int
  **/
@@ -19,7 +18,6 @@
         'product' => $product,
         'addInfo' => $isAddInfo ? \Kissmetrics\Manager::getProductSearchEvent($product, $i, $pager->getPage()) : [],
         'itemsPerRow' => $itemsPerRow,
-        'productVideo' => isset($productVideosByProduct[$product->getId()]) ? reset($productVideosByProduct[$product->getId()]) : null,
     ]) ?>
 <? endforeach ?>
 

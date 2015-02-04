@@ -643,9 +643,6 @@ window.ANALYTICS = {
 
 				/** Событие нажатия кнопки «Купить» или «Резерв» */
 				$('body').on('click', 'a.btnBuy__eLink', function ga_btnBuy() {
-					var
-						butType = $(this).hasClass('mShopsOnly') ? 'reserve' : 'add2basket';
-
 					if ( 'undefined' !== product ) {
 
                         /* На наборах выполняется другой трекинговый код */
@@ -656,7 +653,9 @@ window.ANALYTICS = {
                         }
 
 						console.log('GA: btn Buy');
-						ga('send', 'event', butType, product.name, product.article, product.price);
+						if ($(this).hasClass('mShopsOnly')) {
+							ga('send', 'event', 'reserve', product.name, product.article, product.price);
+						}
 					}
 
 				});
@@ -1185,7 +1184,7 @@ window.ANALYTICS = {
 
 			document.writeln = function() {
 				anNode.html( arguments[0] );
-			}
+			};
 
 			if ( this.id+'' in self ) {
 				self[this.id]( $(this).data('vars') );
@@ -1196,7 +1195,7 @@ window.ANALYTICS = {
 
 		document.writeln = function() {
 			$('body').append( $(arguments[0] + '') );
-		}
+		};
 		console.groupEnd();
 	},
 
@@ -1457,207 +1456,6 @@ window.ANALYTICS = {
 			'function' === typeof(effp) && effp();
 		}
 	},
-
-	RuTargetJS: function() {
-		var
-			rutarget = $('#RuTargetJS'),
-			containerId;
-		// end of vars
-
-		if ( !rutarget.length ) {
-			return;
-		}
-
-		containerId = rutarget.data('id');
-		if ( 'undefined' == typeof(containerId) ) {
-			return;
-		}
-
-		(function(w,d,s,l,i){
-			w[l]=w[l]||[];
-			w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
-			var 
-				f=d.getElementsByTagName(s)[0],
-				j=d.createElement(s),
-				dl=l!='dataLayer'?'&l='+l:'';
-
-			j.async=true;
-			j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;
-			f.parentNode.insertBefore(j,f);
-		})(window,document,'script','_rutarget', containerId);
-	},
-
-	RuTargetProductJS: function() {
-		var
-			rutarget = $('#RuTargetProductJS'),
-			data = rutarget.data('value'),
-			result,
-			_rutarget = window._rutarget || [];
-		// end of vars
-
-		if ( !data.id || !data.regionId ) {
-			return;
-		}
-
-		result = {'event': 'showOffer', 'sku': data.id, 'regionId': data.regionId};
-
-		console.info('RuTargetProduct');
-		console.log(result);
-		_rutarget.push(result);
-	},
-
-	RuTargetProductCategoryJS: function() {
-		var
-			rutarget = $('#RuTargetProductCategoryJS'),
-			data = rutarget.data('value'),
-			result,
-			_rutarget = window._rutarget || [];
-		// end of vars
-
-		if ( !data.id || !data.regionId || !data.name ) {
-			return;
-		}
-
-		result = {'event': 'showCategory','categoryCodes': data.id, 'categoryNames': data.name, 'regionId': data.regionId};
-
-		console.info('RuTargetProductCategory');
-		console.log(result);
-		_rutarget.push(result);
-	},
-
-	RuTargetCartJS: function() {
-		var
-			rutarget = $('#RuTargetCartJS'),
-			data = rutarget.data('value'),
-			result,
-			_rutarget = window._rutarget || [];
-		// end of vars
-
-		if ( !data.products || !data.regionId ) {
-			return;
-		}
-
-		result = {'event': 'cart','products': data.products, 'regionId': data.regionId};
-
-		console.info('RuTargetCart');
-		console.log(result);
-		_rutarget.push(result);
-	},
-
-	RuTargetOrderOneClickJS: function() {
-		var
-			rutarget = $('#RuTargetOrderOneClickJS'),
-			data = rutarget.data('value'),
-			result,
-			_rutarget = window._rutarget || [];
-		// end of vars
-
-		if ( !data.product || !data.regionId ) {
-			return;
-		}
-
-		result = {'event': 'confirmOrder', 'products': [{'qty': data.product.quantity, 'sku': data.product.id}], 'regionId': data.regionId};
-
-		console.info('RuTargetOrderOneClick');
-		console.log(result);
-		_rutarget.push(result);
-	},
-
-	RuTargetOrderJS: function() {
-		var
-			rutarget = $('#RuTargetOrderJS'),
-			data = rutarget.data('value'),
-			result,
-			_rutarget = window._rutarget || [];
-		// end of vars
-
-		if ( !data.products || !data.regionId ) {
-			return;
-		}
-
-		result = {'event': 'confirmOrder', 'products': data.products, 'regionId': data.regionId};
-
-		console.info('RuTargetOrder');
-		console.log(result);
-		_rutarget.push(result);
-	},
-
-	RuTargetOrderCompleteJS: function() {
-		var
-			rutarget = $('#RuTargetOrderCompleteJS'),
-			data = rutarget.data('value'),
-			result,
-			_rutarget = window._rutarget || [];
-		// end of vars
-
-		if ( !data.products || !data.regionId ) {
-			return;
-		}
-
-		result = {'event': 'thankYou', 'products': data.products, 'regionId': data.regionId};
-
-		console.info('RuTargetOrderComplete');
-		console.log(result);
-		_rutarget.push(result);
-	},
-
-	RuTargetSearchJS: function() {
-		var
-			rutarget = $('#RuTargetSearchJS'),
-			data = rutarget.data('value'),
-			result,
-			_rutarget = window._rutarget || [];
-		// end of vars
-
-		if ( !data.regionId ) {
-			return;
-		}
-
-		result = {'event': 'otherPage', 'regionId': data.regionId};
-
-		console.info('RuTargetSearch');
-		console.log(result);
-		_rutarget.push(result);
-	},
-
-	RuTargetHomepageJS: function() {
-		var
-			rutarget = $('#RuTargetHomepageJS'),
-			data = rutarget.data('value'),
-			result,
-			_rutarget = window._rutarget || [];
-		// end of vars
-
-		if ( !data.regionId ) {
-			return;
-		}
-
-		result = {'event': 'otherPage', 'regionId': data.regionId};
-
-		console.info('RuTargetHomepage');
-		console.log(result);
-		_rutarget.push(result);
-	},
-
-	RuTargetOtherPageJS: function() {
-		var
-			rutarget = $('#RuTargetOtherPageJS'),
-			data = rutarget.data('value'),
-			result,
-			_rutarget = window._rutarget || [];
-		// end of vars
-
-		if ( !data.regionId ) {
-			return;
-		}
-
-		result = {'event': 'otherPage', 'regionId': data.regionId};
-
-		console.info('RuTargetOtherPage');
-		console.log(result);
-		_rutarget.push(result);
-	},
-
 
 	LamodaJS: function () {
 		(function() {
@@ -2023,6 +1821,68 @@ window.ANALYTICS = {
 				});
 			});
 		}
+	},
+
+	hubrusJS: function() {
+		var productData = $('.hubrusProductData').data('value'),
+			hubrusDataDiv = $('.hubrusData'),
+			hubrusProperty = hubrusDataDiv.data('property'),
+			hubrusValue = hubrusDataDiv.data('value'),
+			lsCacheKey = 'hubrus_viewed_items',
+			viewedItems, hubrusVars = {};
+
+		// Если есть данные по продукту на странице (пользователь открыл страницу продукта)
+		if (productData) {
+			viewedItems = lscache.get(lsCacheKey) ? lscache.get(lsCacheKey) : [];
+			// проверка на уникальность
+			if ($.grep(viewedItems, function(p){ return productData.id == p.id }).length == 0) viewedItems.unshift(productData);
+			hubrusVars.viewed_items = viewedItems.splice(0,10);
+			lscache.set(lsCacheKey, hubrusVars.viewed_items);
+		}
+
+		if (hubrusProperty && hubrusValue) {
+			hubrusVars[hubrusProperty] = hubrusValue
+		}
+
+		/** Событие добавления в корзину */
+		body.on('addtocart removeFromCart', function hubrusAddToCart(event) {
+			var	smpix = window.smartPixel1,
+				type = event.type;
+
+			if (!smpix || typeof smpix['trackState'] !== 'function') return;
+
+			smpix.trackState(type == 'addtocart' ? 'add_to_cart' : 'remove_from_cart',
+				{ cart_items: $.map(ENTER.UserModel.cart(), function(e){
+					return {
+						id: e.id,
+						price: e.price,
+						category: e.rootCategory ? e.rootCategory.id : 0
+					}
+				})
+			});
+		});
+
+		body.on('click', '.jsOneClickButton-new', function(){
+			var smpix = window.smartPixel1,
+				product = $('#jsProductCard').data('value'),
+				categoryId = 0;
+
+			if (!smpix || typeof smpix['trackState'] !== 'function' || !product) return;
+			if ($.isArray(product.category) && product.category.length > 0) categoryId = product.category[product.category.length - 1].id;
+
+			smpix.trackState('oneclick',
+				{ oneclick_item: [{
+					id: product.id,
+					price: product.price,
+					category: categoryId
+				}]
+				});
+
+		});
+
+		window.smCustomVars = hubrusVars;
+
+		$LAB.script('http://pixel.hubrus.com/containers/enter/dist/smartPixel.min.js');
 	},
 
 	enable : true

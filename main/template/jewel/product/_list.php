@@ -4,7 +4,6 @@
  * @var $pager                  \Iterator\EntityPager
  * @var $view                   string
  * @var $isAjax                 bool
- * @var $productVideosByProduct array
  * @var $isAddInfo              bool
  * @var $itemsPerRow            int
  **/
@@ -24,7 +23,6 @@ if (!isset($isAddInfo)) $isAddInfo = false;
             print $page->render('jewel/product/list/_expanded', [
                 'pager' => $pager,
                 'isAjax' => $isAjax,
-                'productVideosByProduct' => $productVideosByProduct,
                 'isAddInfo' => $isAddInfo,
                 'itemsPerRow' => $itemsPerRow,
             ]);
@@ -33,7 +31,6 @@ if (!isset($isAddInfo)) $isAddInfo = false;
             print $page->render('jewel/product/list/_line', [
                 'pager' => $pager,
                 'isAjax' => $isAjax,
-                'productVideosByProduct' => $productVideosByProduct,
                 'isAddInfo' => $isAddInfo,
                 'itemsPerRow' => $itemsPerRow,
             ]);
@@ -42,7 +39,6 @@ if (!isset($isAddInfo)) $isAddInfo = false;
             print $page->render('jewel/product/list/_compact', [
                 'pager' => $pager,
                 'isAjax' => $isAjax,
-                'productVideosByProduct' => $productVideosByProduct,
                 'isAddInfo' => $isAddInfo,
                 'itemsPerRow' => $itemsPerRow,
             ]);

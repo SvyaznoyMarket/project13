@@ -38,6 +38,8 @@ if (false && @$blockname == 'ПОПУЛЯРНЫЕ ТОВАРЫ') {
     } catch (\Exception $e) {}
 }
 
+if (@$blockname == 'МЫ РЕКОМЕНДУЕМ') $rrProducts = \Controller\Product\ProductHelperTrait::filterByModelId($rrProducts);
+
 $rrProducts = array_filter($rrProducts, function($p){
     /** @var \Model\Product\BasicEntity $p */
     return ($p instanceof \Model\Product\BasicEntity) && $p->getIsBuyable() && !$p->isInShopShowroomOnly(); // SITE-5000
@@ -85,6 +87,7 @@ $helper = new \Helper\TemplateHelper();
                     <?= $helper->render('cart/__button-product', [
                         'product'        => $product,
                         'sender'         => $sender,
+                        'reserveAsBuy'   => true,
                     ]) // Кнопка купить ?>
 <!--                    <a class="item_btn btn5" href="">Купить</a>-->
                 </div>

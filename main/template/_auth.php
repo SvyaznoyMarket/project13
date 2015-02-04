@@ -6,6 +6,10 @@
  */
 
 if (!isset($form)) $form = new \View\User\LoginForm();
+$req = \App::request();
+$redirect_to = $req->getPathInfo();
+// SITE-4576 Пустая фраза поиска при входе в личный кабинет
+if ($req->attributes->get('route') == 'search') $redirect_to .= '?' . $req->getQueryString();
 ?>
 
 <noindex>
@@ -14,7 +18,7 @@ if (!isset($form)) $form = new \View\User\LoginForm();
         <span class="close close-auth">Закрыть</span>
         
         <div class="authWrap">
-            <?= $page->render('user/_login-form', ['redirect_to' => \App::request()->getPathInfo()]) ?>
+            <?= $page->render('user/_login-form', ['redirect_to' => $redirect_to]) ?>
             <?= $page->render('user/_register-form') ?>
         </div>
 

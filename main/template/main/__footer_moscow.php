@@ -148,7 +148,7 @@ $f = function(
     </div>
     <div class="clear"></div>
 
-    <div class="bIndexLinks2__eLinks"><a href="/about_company">О компании</a><a href="/service_ha">Подключение и сборка </a><a href="/credit">Покупка в кредит</a><a href="http://my.enter.ru/community/job#gsc.tab=0" target="_blank">Работать у нас</a><a href="/shops">Наши магазины</a><a href="/how_make_order">Как сделать заказ</a><a href="/mobile_apps">Мобильные приложения</a><a href="http://feedback.enter.ru/">Обратная связь</a></div>
+    <div class="bIndexLinks2__eLinks"><a href="/about_company">О компании</a><a href="/service_ha">Подключение и сборка </a><a href="/credit">Покупка в кредит</a><a href="http://my.enter.ru/community/job#gsc.tab=0" target="_blank">Работать у нас</a><a href="/shops">Наши магазины</a><a href="/how_make_order">Как сделать заказ</a><a href="/mobile_apps">Мобильные приложения</a></div>
     <div class="copy clearfix">
         <div class="clearfix">
             <div class="pb20 fl" style="">Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.<br />

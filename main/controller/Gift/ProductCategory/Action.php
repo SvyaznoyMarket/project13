@@ -110,9 +110,8 @@ class Action {
             ]));
         }
 
-        $productVideosByProduct = $this->getProductVideosByProduct($productPager);
-
         $columnCount = 4;
+        $cartButtonSender = ['name' => 'gift'];
 
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
             $data = [
@@ -120,12 +119,12 @@ class Action {
                 'list'           => (new \View\Product\ListAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
                     $productPager,
-                    $productVideosByProduct,
                     [],
                     null,
                     true,
                     $columnCount,
-                    'light_with_bottom_description'
+                    'light_with_bottom_description',
+                    $cartButtonSender
                 ),
                 'selectedFilter' => [],
                 'pagination'     => (new \View\PaginationAction())->execute(
@@ -149,9 +148,9 @@ class Action {
         $page->setParam('productFilter', $productFilter);
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);
-        $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setParam('columnCount', $columnCount);
         $page->setParam('isNewMainPage', $this->isNewMainPage());
+        $page->setParam('cartButtonSender', $cartButtonSender);
         $page->setGlobalParam('shop', $shop);
 
         return new \Http\Response($page->show());
@@ -506,14 +505,17 @@ class Action {
             $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
                 if (is_array($data)) {
                     foreach ($data as $item) {
-                        $products[] = new \Model\Product\Entity($item);
+                        $product = new \Model\Product\Entity($item);
+                        $product->setLink($product->getLink() . (strpos($product->getLink(), '?') === false ? '?' : '&') . http_build_query(['sender' => ['name' => 'gift']]));
+                        $products[] = $product;
                     }
                 }
             });
         }
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        $scoreData = [];
+        $repository->prepareProductsMedias($products);
+
         if ($products) {
             $productUIs = [];
             foreach ($products as $product) {
@@ -521,51 +523,18 @@ class Action {
                 $productUIs[] = $product->getUi();
             }
 
-            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
+            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) {
                 if (isset($data['product_scores'][0])) {
-                    $scoreData = $data;
+                    \RepositoryManager::review()->addScores($products, $data);
                 }
             });
         }
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        \RepositoryManager::review()->addScores($products, $scoreData);
-
         $productPager = new \Iterator\EntityPager($products, $productCount);
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage($itemsPerPage);
         return $productPager;
-    }
-
-    /**
-     * @return array
-     */
-    private function getProductVideosByProduct(\Iterator\EntityPager $productPager) {
-        $productVideosByProduct = [];
-        foreach ($productPager as $product) {
-            /** @var $product \Model\Product\Entity */
-            $productVideosByProduct[$product->getId()] = [];
-        }
-
-        if ($productVideosByProduct) {
-            \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
-                if (is_array($data)) {
-                    foreach ($data as $id => $items) {
-                        if (!is_array($items)) {
-                            continue;
-                        }
-
-                        foreach ($items as $item) {
-                            $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);
-                        }
-                    }
-                }
-            });
-
-            \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
-        }
-
-        return $productVideosByProduct;
     }
 }

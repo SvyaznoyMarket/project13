@@ -3,14 +3,14 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Iterator\EntityPager $pager,
-    array $productVideosByProduct,
     array $bannerPlaceholder = [],
     $listingStyle = null,
     $view,
     $buyMethod = null,
     $showState = true,
     $columnCount = 4,
-    $class = ''
+    $class = '',
+    array $cartButtonSender = []
 ) {
     $partials = [
         'cart/_button-product' => file_get_contents(\App::config()->templateDir . '/cart/_button-product.mustache'),
@@ -41,7 +41,7 @@ return function(
     } ?>
 
     <ul class="bListing<? if (3 === $columnCount): ?> bListing-3col<? endif ?> clearfix<? if ('jewel' === $listingStyle): ?> mPandora<? endif ?> <?= $listingClass ?> <?= $class ?> js-listing"><!-- mPandora если необходимо застилить листинги под пандору -->
-        <?= $helper->renderWithMustache($templatePath, (new \View\Product\ListAction())->execute($helper, $pager, $productVideosByProduct, $bannerPlaceholder, $buyMethod, $showState, $columnCount, $view)) ?>
+        <?= $helper->renderWithMustache($templatePath, (new \View\Product\ListAction())->execute($helper, $pager, $bannerPlaceholder, $buyMethod, $showState, $columnCount, $view, $cartButtonSender)) ?>
     </ul>
 
     <script id="listing_compact_tmpl" type="text/html" data-partial="<?= $helper->json($partials) ?>">

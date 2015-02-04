@@ -2,6 +2,8 @@
 
 namespace Controller\Slice;
 
+use Controller\Product\SetAction;
+
 class ShowAction {
     private static $globalCookieName = 'global';
 
@@ -43,6 +45,15 @@ class ShowAction {
         // добывание фильтров из среза
         $requestData = [];
         parse_str($slice->getFilterQuery(), $requestData);
+
+        // Если в слайсе только список баркодов
+        if ((count(array_keys($requestData)) == 1) && !empty($requestData['barcode'])) {
+            return (new SetAction())->execute(
+                (is_array($requestData['barcode']) && isset($requestData['barcode'][1])) ? join(',', $requestData['barcode']) : $requestData['barcode'], // поддержка как barcode=2060103001326,2060103001814 так и barcode[]=2060103001326&barcode[]=2060103001814
+                $request,
+                $slice->getName()
+            );
+        }
 
         // region
         if (!empty($requestData['region'])) {
@@ -87,9 +98,9 @@ class ShowAction {
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
 
         /** @var $region \Model\Region\Entity|null */
-        if (self::isGlobal()) {
-            $region = null;
-        }
+        if (self::isGlobal()) $region = null;
+
+        // подготовка 2-го пакета запросов
 
         $category = new \Model\Product\Category\Entity();
         if ($categoryToken) {
@@ -99,10 +110,6 @@ class ShowAction {
                 }
             });
         }
-
-        // подготовка 2-го пакета запросов
-
-        // TODO: запрашиваем меню
 
         // выполнение 2-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['short']);
@@ -220,24 +227,6 @@ class ShowAction {
         // выполнение 3-го пакета запросов
         $client->execute();
 
-        $promoContent = '';
-        if (!empty($catalogJson['promo_token'])) {
-            \App::contentClient()->addQuery(
-                trim((string)$catalogJson['promo_token']),
-                [],
-                function($data) use (&$promoContent) {
-                    if (!empty($data['content'])) {
-                        $promoContent = $data['content'];
-                    }
-                },
-                function(\Exception $e) {
-                    \App::logger()->error(sprintf('Не получено содержимое для промо-страницы %s', \App::request()->getRequestUri()));
-                    \App::exception()->add($e);
-                }
-            );
-            \App::contentClient()->execute();
-        }
-
         // если в catalogJson'e указан category_class, то обрабатываем запрос соответствующим контроллером
         $categoryClass = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
 
@@ -272,10 +261,6 @@ class ShowAction {
         if ($pageNum > 1) {
             $seoContent = '';
         }
-        // промо-контент не показываем на страницах пагинации, брэнда, фильтров
-        if ($pageNum > 1 || (bool)((array)$request->get(\View\Product\FilterForm::$name, []))) {
-            $promoContent = '';
-        }
 
         // переделываем url для breadcrumbs
         foreach ($category->getAncestor() as $ancestor) {
@@ -290,7 +275,6 @@ class ShowAction {
             &$hotlinks,
             &$seoContent,
             &$catalogJson,
-            &$promoContent,
             &$shop,
             &$slice
         ) {
@@ -299,7 +283,6 @@ class ShowAction {
             $page->setParam('hotlinks', $hotlinks);
             $page->setParam('seoContent', $seoContent);
             $page->setParam('catalogJson', $catalogJson);
-            $page->setParam('promoContent', $promoContent);
             $page->setParam('slice', $slice);
             $page->setGlobalParam('shop', $shop);
         };
@@ -341,27 +324,18 @@ class ShowAction {
             throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
         }
 
-        $catalogJson = $page->getParam('catalogJson');
-
         // сортировка
         $productSorting = new \Model\Product\Sorting();
         list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
         $productSorting->setActive($sortingName, $sortingDirection);
 
-        // если сортировка по умолчанию и в json заданы настройки сортировок,
-        // то применяем их
-        if(!empty($catalogJson['sort']) && $productSorting->isDefault()) {
-            $sort = $catalogJson['sort'];
-        } else {
-            $sort = $productSorting->dump();
-        }
+        $sort = $productSorting->dump();
 
         // вид товаров
         $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
         // листалка
         $limit = \App::config()->product['itemsPerPage'];
         $repository = \RepositoryManager::product();
-        $repository->setEntityClass('\\Model\\Product\\Entity');
 
         if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
             $productIds = [];
@@ -389,7 +363,6 @@ class ShowAction {
             }
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-            $scoreData = [];
             if ((bool)$products) {
                 $productUIs = [];
                 foreach ($products as $product) {
@@ -397,15 +370,16 @@ class ShowAction {
                     $productUIs[] = $product->getUi();
                 }
 
-                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
+                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) {
                     if (isset($data['product_scores'][0])) {
-                        $scoreData = $data;
+                        \RepositoryManager::review()->addScores($products, $data);
                     }
                 });
             }
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-            \RepositoryManager::review()->addScores($products, $scoreData);
+            $repository->prepareProductsMedias($products);
+
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
             $pagerAll = new \Iterator\EntityPager($products, $productCount);
             $page->setGlobalParam('allCount', $pagerAll->count());
@@ -456,7 +430,6 @@ class ShowAction {
             }
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-            $scoreData = [];
             if ((bool)$products) {
                 $productUIs = [];
                 foreach ($products as $product) {
@@ -464,15 +437,16 @@ class ShowAction {
                     $productUIs[] = $product->getUi();
                 }
 
-                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
+                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) {
                     if (isset($data['product_scores'][0])) {
-                        $scoreData = $data;
+                        \RepositoryManager::review()->addScores($products, $data);
                     }
                 });
             }
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-            \RepositoryManager::review()->addScores($products, $scoreData);
+            $repository->prepareProductsMedias($products);
+
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
             $productPager = new \Iterator\EntityPager($products, $productCount);
         }
@@ -493,31 +467,12 @@ class ShowAction {
             ]));
         }
 
-        // video
-        $productVideosByProduct = [];
-        foreach ($productPager as $product) {
-            /** @var $product \Model\Product\Entity */
-            $productVideosByProduct[$product->getId()] = [];
-        }
-        if ((bool)$productVideosByProduct) {
-            \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
-                foreach ($data as $id => $items) {
-                    if (!is_array($items)) continue;
-                    foreach ($items as $item) {
-                        $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);
-                    }
-                }
-            });
-            \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
-        }
-
         // ajax
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
             return new \Http\JsonResponse([
                 'list'           => (new \View\Product\ListAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
                     $productPager,
-                    $productVideosByProduct,
                     !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : [],
                     $slice->getProductBuyMethod(),
                     $slice->getShowProductState()
@@ -539,7 +494,6 @@ class ShowAction {
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
-        $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setParam('hasCategoryChildren', in_array($request->get('route'), ['slice.show', 'slice.category']));
 
         return new \Http\Response($page->show());

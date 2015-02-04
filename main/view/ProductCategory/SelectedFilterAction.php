@@ -2,8 +2,6 @@
 
 namespace View\ProductCategory;
 
-use Model\Product\Sorting;
-
 class SelectedFilterAction {
     /**
      * @param \Helper\TemplateHelper $helper
@@ -23,12 +21,12 @@ class SelectedFilterAction {
             $selected[] = reset($item);
         }
 
-        $isEqualNumeric = function ($first, $second) use (&$helper) {
+        /*$isEqualNumeric = function ($first, $second) use (&$helper) {
             $first = $helper->clearZeroValue((float)$first);
             $second = $helper->clearZeroValue((float)$second);
 
             return $first == $second;
-        };
+        };*/
 
         $sort = \App::request()->query->get('sort');
 
@@ -40,7 +38,10 @@ class SelectedFilterAction {
             $filterLinkData['shop'] = [
                 'name'  => 'Наличие в магазинах',
                 'links' => [
-                    ['name' => sprintf('Только товары из магазина <strong>%s</strong>', $shop->getAddress()), 'url' => $helper->replacedUrl(['shop' => null, 'page' => null, 'ajax' => null, 'sort' => $sort], null, null, true, $baseUrl)],
+                    [
+                        'name' => sprintf('Только товары из магазина <strong>%s</strong>', $shop->getName()),
+                        'url' => $helper->replacedUrl(['shop' => null, 'page' => null, 'ajax' => null, 'sort' => $sort], null, null, true, $baseUrl)
+                    ],
                 ],
             ];
             $filterValueData['shop'] = $shop->getId();
@@ -77,7 +78,7 @@ class SelectedFilterAction {
                         $links[] = [
                             'name' =>
                                 $isPrice
-                                ? sprintf('от %sр', $helper->formatPrice($value['from']))
+                                ? sprintf('от %s&nbsp&nbsp<span class="rubl">p</span>', $helper->formatPrice($value['from']))
                                 : sprintf('от %s', round($value['from'], 1))
                             ,
                             'unit' => !$isPrice ? $filter->getUnit() : null,
@@ -101,7 +102,7 @@ class SelectedFilterAction {
                         $links[] = [
                             'name' =>
                                 $isPrice
-                                ? sprintf('до %sр', $helper->formatPrice($value['to']))
+                                ? sprintf('до %s&nbsp&nbsp<span class="rubl">p</span>', $helper->formatPrice($value['to']))
                                 : sprintf('до %s', round($value['to'], 1))
                             ,
                             'unit' => !$isPrice ? $filter->getUnit() : null,

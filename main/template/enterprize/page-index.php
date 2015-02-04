@@ -20,8 +20,7 @@ $helper = new \Helper\TemplateHelper();
         <? if (!$user->getEntity()): ?>
             <ul class="epHeader_controls">
                 <li class="epHeader_controls_item epHeader_controls_item-colors"><a href="<?= \App::router()->generate('user.login') ?>" class="jsEnterprizeAuthLink">Войти</a></li>
-                <!--li class="epHeader_controls_item epHeader_controls_item-border js-ep-btn-hint-popup">Правила участия</li-->
-                <p class="rulesEP"><a href="/reklamnaya-akcia-enterprize">Правила участия в ENTER PRIZE</a></p>
+                <li class="epHeader_controls_item epHeader_controls_item-border js-ep-btn-hint-popup">Как стать участником?</li>
             </ul>
 
             <div class="epHintPopup js-ep-hint-popup">
@@ -110,10 +109,11 @@ $helper = new \Helper\TemplateHelper();
         <h2 class="epHead_title">ВЫБИРАЙ СВОЮ СКИДКУ</h2>
 
         <ul class="epHead_list">
-            <li class="epHead_list_item"><strong>Нажми на фишку</strong>, чтобы узнать условия и срок действия скидки. </li>
-            <li class="epHead_list_item">Укажи email и мобильный, получи уникальный код и <strong>используй его в заказе.</strong></li>
+            <li class="epHead_list_item">Выбери фишку — получи <strong>код скидки</strong>. Используй его при оформлении заказа.</li>
+            <li class="epHead_list_item">Нажми на фишку, чтобы узнать <strong>условия и срок действия</strong> скидки. </li>
             <li class="epHead_list_item">Воспользоваться каждой фишкой можно <strong>один раз</strong>.</li>
-        </ul>>
+        </ul>
+        <p class="rulesEP"><a href="/reklamnaya-akcia-enterprize">Правила участия в ENTER PRIZE</a></p>
     </section>
 
     <? /* if ((bool)$isCouponSent): ?>
@@ -121,7 +121,7 @@ $helper = new \Helper\TemplateHelper();
     <? endif  */ ?>
 
     <? if (!$user->getEntity()): ?>
-        <h3 class="epListTitle">Выбирайте вашу первую фишку</h3>
+        <h3 class="epListTitle">ФИШКИ <span class="orange">Enter</span> Prize</h3>
     <? endif ?>
 
     <? if ($isEnterprizeMember): ?>

@@ -6,23 +6,23 @@ class ListAction {
     /**
      * @param \Helper\TemplateHelper $helper
      * @param \Iterator\EntityPager $pager
-     * @param array $productVideosByProduct
      * @param array $bannerPlaceholder
      * @param null $buyMethod
      * @param bool $showState
      * @param int $columnCount
-     * @param array $view
+     * @param string $view
+     * @param array $cartButtonSender
      * @return array
      */
     public function execute(
         \Helper\TemplateHelper $helper,
         \Iterator\EntityPager $pager,
-        array $productVideosByProduct,
         array $bannerPlaceholder,
         $buyMethod = null,
         $showState = true,
         $columnCount = 4,
-        $view = 'compact'
+        $view = 'compact',
+        array $cartButtonSender = []
     ) {
         /** @var \Model\Product\Entity $product */
 
@@ -44,12 +44,12 @@ class ListAction {
             $productData[] = $showAction->execute(
                 $helper,
                 $product,
-                $productVideosByProduct,
                 $buyMethod,
                 $showState,
                 $cartButtonAction,
                 $reviewAction,
-                (3 === $columnCount) ? 6 : 7
+                (3 === $columnCount) ? 6 : 7,
+                $cartButtonSender
             );
         }
 

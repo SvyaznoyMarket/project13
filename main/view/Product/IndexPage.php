@@ -5,6 +5,8 @@ namespace View\Product;
 class IndexPage extends \View\DefaultLayout {
     /** @var string */
     protected $layout  = 'layout-oneColumn';
+    /** @var \Model\Product\Entity|null */
+    protected $product;
 
     public function prepare() {
         /** @var $product \Model\Product\Entity */
@@ -12,14 +14,7 @@ class IndexPage extends \View\DefaultLayout {
         if (!$product) {
             return;
         }
-
-        // if (is_array($this->getParam('productVideos'))) {
-        //     $productVideos = $this->getParam('productVideos');
-        //     $productVideos = reset($productVideos);
-        //     if ($productVideos instanceof \Model\Product\Video\Entity) {
-        //         $this->addJavascript('/js/swfobject.js');
-        //     }
-        // }
+        $this->product = $product;
 
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
@@ -204,23 +199,6 @@ class IndexPage extends \View\DefaultLayout {
                     'id' => $product->getId(),
                 ],
             ];
-
-            $productVideos =(array)$this->getParam('productVideos');
-            $productVideo = reset($productVideos);
-            if ($productVideo instanceof \Model\Product\Video\Entity) {
-                if ($productVideo->getImg3d()) {
-                    $config['product.img3d'] = true;
-                }
-                if ($productVideo->getMaybe3d()) {
-                    $config['product.maybe3d'] = true;
-                }
-            }
-
-            if ($product instanceof \Model\Product\Entity) {
-                if ((bool)$product->getPhoto3d()) {
-                    $config['product.native3d'] = true;
-                }
-            }
         }
 
         return $this->tryRender('_config', ['config' => $config]);
@@ -245,23 +223,6 @@ class IndexPage extends \View\DefaultLayout {
         ];
     }
 
-    public function slotRuTargetProductJS() {
-        if (!\App::config()->partners['RuTarget']['enabled']) return;
-
-        /** @var $product \Model\Product\Entity */
-        $product = $this->getParam('product');
-        if (!$product) {
-            return;
-        }
-
-        $data = [
-            'id' => $product->getId(),
-            'regionId' => \App::user()->getRegionId(),
-        ];
-
-        return "<div id=\"RuTargetProductJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
-    }
-
     public function slotLamodaProductJS() {
         if (!\App::config()->partners['Lamoda']['enabled']) return;
 
@@ -276,6 +237,41 @@ class IndexPage extends \View\DefaultLayout {
         ];
 
         return "<div id=\"LamodaProductJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
+    }
+
+    public function slotAdvMakerJS() {
+        if (!\App::config()->partners['AdvMaker']['enabled'] || empty($this->product)) return '';
+        $product = [
+            'id'        => $this->product->getId(),
+            'vendor'    => $this->product->getBrand(),
+            'price'     => $this->product->getPrice(),
+            'url'       => \App::router()->generate('product', ['productPath' => $this->product->getToken()], true),
+            'picture'   => $this->product->getImageUrl(),
+            'name'      => $this->product->getName(),
+            'category'  => $this->product->getLastCategory() ? $this->product->getLastCategory()->getId() : null
+        ];
+        return '<!-- AdvMaker -->
+            <script type="text/javascript" defer="defer">
+                $(window).load(function() {
+                    window.advm_product = '. $this->json($product, false) .';
+                    window.advm_ret = window.advm_ret || [];
+                    window.advm_ret.push({code: "543e17ea03935", level: 3});
+                    (function () {
+                        var sc = document.createElement("script");
+                        sc.async = true;
+                        sc.src = (document.location.protocol == "https:" ? "https:" : "http:") + "//rt.am15.net/retag/core/retag.js";
+                        var tn = document.getElementsByTagName("script")[0];
+                        tn.parentNode.insertBefore(sc, tn);
+                    })()
+                });
+            </script>';
+    }
+
+    public function slotHubrusJS() {
+        $html = parent::slotHubrusJS();
+        if (!empty($html)) {
+            return $html . \View\Partners\Hubrus::addProductData($this->product);
+        }
     }
 
     public function slotMailRu() {

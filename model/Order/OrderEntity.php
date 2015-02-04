@@ -187,9 +187,10 @@ class OrderEntity {
 
     /**
      * @param array $arr
+     * @param array|null $sender
      * @throws \Exception
      */
-    public function __construct($arr) {
+    public function __construct($arr, $sender = null) {
 
         $request = \App::request();
         $region = \App::user()->getRegion();
@@ -294,7 +295,7 @@ class OrderEntity {
 
         if (isset($arr['order']['actions']) && is_array($arr['order']['actions']) && (bool)$arr['order']['actions']) $this->action = $arr['order']['actions'];
 
-        if (\App::config()->order['enableMetaTag']) $this->meta_data = $this->getMetaData();
+        if (\App::config()->order['enableMetaTag']) $this->meta_data = $this->getMetaData($sender);
 
 
     }
@@ -302,11 +303,13 @@ class OrderEntity {
     /** Возвращает мета-данные для партнеров
      * @return array|null
      */
-    private function getMetaData() {
+    private function getMetaData($sender) {
         $request = \App::request();
         $user = \App::user();
         $data = [];
         $cart = $user->getCart()->getProductsNC();
+        $oneClickCart = $user->getOneClickCart()->getProductSourceData();
+
         try {
             /** @var $products \Model\Product\Entity[] */
             $products = [];
@@ -328,6 +331,18 @@ class OrderEntity {
                     // добавляем информацию о блоке рекомендаций, откуда был добавлен товар (используется корзина, которая очищается только на /order/complete)
                     if (isset($cart[$product->getId()]['sender'])) {
                         $senderData = $cart[$product->getId()]['sender'];
+                        if (isset($senderData['name']))     $data[sprintf('product.%s.sender', $product->getUi())] = $senderData['name'];       // система рекомендаций
+                        if (isset($senderData['position'])) $data[sprintf('product.%s.position', $product->getUi())] = $senderData['position']; // позиция блока на сайте
+                        if (isset($senderData['method']))   $data[sprintf('product.%s.method', $product->getUi())] = $senderData['method'];     // метод рекомендаций
+                        if (isset($senderData['from']) && !empty($senderData['from']))     $data[sprintf('product.%s.from', $product->getUi())] = $senderData['from'];         // откуда перешели на карточку товара
+                        unset($senderData);
+                    } else if ($sender) {
+                        if (isset($sender['name']))     $data[sprintf('product.%s.sender', $product->getUi())] = $sender['name'];       // система рекомендаций
+                        if (isset($sender['position'])) $data[sprintf('product.%s.position', $product->getUi())] = $sender['position']; // позиция блока на сайте
+                        if (isset($sender['method']))   $data[sprintf('product.%s.method', $product->getUi())] = $sender['method'];     // метод рекомендаций
+                        if (isset($sender['from']) && !empty($sender['from']))     $data[sprintf('product.%s.from', $product->getUi())] = $sender['from'];         // откуда перешели на карточку товара
+                    } else if (isset($oneClickCart['product'][$product->getId()]['sender'])) {
+                        $senderData = $oneClickCart['product'][$product->getId()]['sender'];
                         if (isset($senderData['name']))     $data[sprintf('product.%s.sender', $product->getUi())] = $senderData['name'];       // система рекомендаций
                         if (isset($senderData['position'])) $data[sprintf('product.%s.position', $product->getUi())] = $senderData['position']; // позиция блока на сайте
                         if (isset($senderData['method']))   $data[sprintf('product.%s.method', $product->getUi())] = $senderData['method'];     // метод рекомендаций
