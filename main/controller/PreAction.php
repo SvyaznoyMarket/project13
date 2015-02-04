@@ -13,6 +13,16 @@ class PreAction {
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        // cache
+        $route = $request->attributes->get('route');
+        $repositoriesByRoute = [
+            'product' => 'ProductCard',
+        ];
+        $repositoryClass = isset($repositoriesByRoute[$route]) ? ('\\EnterLab\\Repository\\' . $repositoriesByRoute[$route]) : null;
+        if ($repositoryClass) {
+            (new $repositoryClass)->get();
+        }
+
         $uri = $request->getPathInfo();
         $redirectUrl = null;
 
