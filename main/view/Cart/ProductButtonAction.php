@@ -84,7 +84,7 @@ class ProductButtonAction {
             $data['value'] = 'Нет';
         } else if ($postBuyOffer = $product->getPostBuyOffer()) {
             $data['url'] = '#';
-            $data['class'] .= ' btn--post-buy js-postBuyButton';
+            $data['class'] .= ' btn btn--post-buy js-postBuyButton';
             $data['value'] = 'product-card' === $location ? 'Отправить заявку' : 'Как купить?';
             $data['full'] = 'product-card' === $location ? '0' : '1';
             $data['productUrl'] = $product->getLink();

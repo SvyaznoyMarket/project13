@@ -10448,6 +10448,35 @@ img[height="0"] {
     /* fix buttons height, for twitter bootstrap */
     line-height: 1em;
   }
+  .btn {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    overflow: visible;
+    text-align: center;
+  }
+  .btn--post-buy {
+    display: block;
+    width: auto;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    background-color: #cbdf59;
+    -webkit-box-shadow: 0 4px 0 #b8c64b, 0 4px 0 #b8c64b;
+    -moz-box-shadow: 0 4px 0 #b8c64b, 0 4px 0 #b8c64b;
+    box-shadow: 0 4px 0 #b8c64b, 0 4px 0 #b8c64b;
+    padding: 7px 23px;
+    border: 0px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 18px;
+  }
 }
 /*---------Карточка товара: кухни ----------*/
 @media all {
@@ -10571,10 +10600,27 @@ img[height="0"] {
   }
   .product-container--kitchen .bProductDescImg {
     width: 600px;
+    position: relative;
   }
   .product-container--kitchen .bProductDescImgBig {
     width: 600px;
     height: 500px;
+  }
+  .product-container--kitchen .bPhotoAction {
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    bottom: 15px;
+    left: 0px;
+  }
+  .product-container--kitchen .bPhotoAction .prod-photoslider {
+    float: none;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    width: 280px;
   }
 }
 /*---------Карточка товара: слайдер превьюшек----------*/
