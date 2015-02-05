@@ -1507,17 +1507,13 @@ $(function() {
 			function(data){
 				if (data.success) {
 					$.each(data.result, function(i, value){
-						$slider = $.parseHTML(value.content);
+						var $slider = $.parseHTML(value.content);
 						$($slider).hide();
 						$('.specialBorderBox').append($slider);
 						$('.smartChoiceSliderToggle-'+i).show();
 					});
 
-					var goodsSlider = $('.js-slider');
-					goodsSlider.goodsSlider();
-					goodsSlider.each(function() {
-						ko.applyBindings(ENTER.UserModel, this);
-					});
+					$('.js-slider').goodsSlider();
 
 					console.info('smartchoice ajax: ', data.result);
 				}
