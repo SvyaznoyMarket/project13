@@ -45,6 +45,7 @@
 					title: document.title,
 					url: url,
 					data: {
+						scrollTop: $(window).scrollTop(),
 						_onlychange: (onlychange) ? true : false
 					}
 				};
@@ -148,6 +149,13 @@
 
 			console.info('statechange');
 			console.log(state);
+
+			// SITE-4941
+			setTimeout(function() {
+				if (data.scrollTop) {
+					$(window).scrollTop(data.scrollTop);
+				}
+			}, 0);
 
 			// SITE-4894 Не изменяются выбранные фильтры при переходе назад
 			if (updateState) {
