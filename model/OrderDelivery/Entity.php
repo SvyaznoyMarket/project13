@@ -202,30 +202,33 @@ namespace Model\OrderDelivery\Entity {
                     if (!isset($item['id'])) continue;
 
                     switch ($this->token) {
-                        case 'shops':
-                            $this->list[(string)$item['id']] = new Point\Shop($item);
-                            break;
+                        case 'self_partner_pickpoint_pred_supplier':
                         case 'self_partner_pickpoint':
                             $this->list[(string)$item['id']] = new Point\Pickpoint($item);
                             break;
+                        case 'self_partner_svyaznoy_pred_supplier':
                         case 'self_partner_svyaznoy':
                         case 'shops_svyaznoy':
                             $this->list[(string)$item['id']] = new Point\Svyaznoy($item);
+                            break;
+                        default:
+                            $this->list[(string)$item['id']] = new Point\Shop($item);
                     }
                 }
             }
             if ($this->token) {
                 switch ($this->token) {
-                    case 'shops':
-                        $this->marker['iconImageHref'] = '/images/map/marker-shop.png';
-                        break;
+                    case 'self_partner_pickpoint_pred_supplier':
                     case 'self_partner_pickpoint':
                         $this->marker['iconImageHref'] = '/images/map/marker-pickpoint.png';
                         break;
+                    case 'self_partner_svyaznoy_pred_supplier':
                     case 'self_partner_svyaznoy':
                     case 'shops_svyaznoy':
                         $this->marker['iconImageHref'] = '/images/map/marker-svyaznoy.png';
                         break;
+                    default:
+                        $this->marker['iconImageHref'] = '/images/map/marker-shop.png';
                 }
             }
         }
