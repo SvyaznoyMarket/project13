@@ -420,7 +420,7 @@
 
 	// Биндинги на нужные элементы
 	// Топбар, кнопка Купить на странице продукта, листинги, слайдер аксессуаров
-	$('.js-topbarfix, .js-WidgetBuy, .js-listing, .js-jewelListing, .js-gridListing, .js-lineListing, .js-slider, .jsKnockoutCart').each(function(){
+	$('.js-topbarfix, .js-topbarfixBuy, .js-WidgetBuy, .js-listing, .js-jewelListing, .js-gridListing, .js-lineListing, .js-slider, .jsKnockoutCart').each(function(){
 		ko.applyBindings(ENTER.UserModel, this);
 	});
 
@@ -492,20 +492,9 @@
 			document.location.href = data.redirect;
 		} else {
 
-			var products = data.products || [],
-				cart = ENTER.UserModel.cart();
-
-			if (data.product) {
-				products.push(data.product);
-			}
-
-			$.each(products, function(key, value){
-				var productInCart = ENTER.utils.getObjectWithElement(cart, 'id', value.id);
-				if (productInCart) {
-					productInCart.quantity(value.quantity);
-				} else {
-					ENTER.UserModel.cart.unshift(createCartModel(value));
-				}
+			ENTER.UserModel.cart.removeAll();
+			$.each(data.cart.products, function(key, value){
+				ENTER.UserModel.cart.unshift(createCartModel(value));
 			});
 		}
 	});

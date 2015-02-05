@@ -95,7 +95,7 @@ class ProductButtonAction {
                 $data['class'] .= ' mShopsOnly jsOneClickButton';
                 $data['value'] = 'Резерв';
             }
-		} else if (\App::user()->getCart()->hasProduct($product->getId())) {
+		} else if (\App::user()->getCart()->hasProduct($product->getId()) && !$noUpdate) {
             $data['url'] = $helper->url('cart');
             $data['class'] .= ' mBought';
             $data['value'] = 'В корзине';

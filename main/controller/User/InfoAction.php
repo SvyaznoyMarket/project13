@@ -101,33 +101,7 @@ class InfoAction {
                     $cart->updateProductNC($product);
                 }
 
-                $cartProductData = [];
-                foreach ($cart->getProductsNC() as $cartProduct) {
-
-                    if (!$cartProduct) { // SITE-4400
-                        \App::logger()->error(['Товар не найден', 'product' => ['id' => $cartProduct['id']], 'sender' => __FILE__ . ' ' .  __LINE__], ['cart']);
-
-                        continue;
-                    }
-
-                    $cartProductData[] = [
-                        'id'                => $cartProduct['id'],
-                        'name'              => $cartProduct['name'],
-                        'price'             => $cartProduct['price'],
-                        'formattedPrice'    => $helper->formatPrice($cartProduct['price']),
-                        'quantity'          => $cartProduct['quantity'],
-                        'deleteUrl'         => $helper->url('cart.product.delete', ['productId' => $cartProduct['id']]),
-                        'link'              => $cartProduct['url'],
-                        'img'               => $cartProduct['image'],
-                        'cartButton'        => [ 'id' => \View\Id::cartButtonForProduct($cartProduct['id']), ],
-                        'category'          => $cartProduct['category'],
-                        'rootCategory'      => $cartProduct['rootCategory'],
-                        'isCredit'          => @$cartProduct['credit']['enabled'] === true
-                    ];
-
-                }
-
-                $responseData['cartProducts'] = $cartProductData;
+                $responseData['cartProducts'] = $cart->getProductsDumpNC();
             }
 
         } catch (\Exception $e) {
