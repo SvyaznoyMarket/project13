@@ -110,6 +110,9 @@
     font-size: 12px;
     padding: 5px 0 6px;
     margin: 0px;
+    color: @white;
+    background: #80c342;
+    border-color: #548d1e;
 }
 .topbarfix_buy .btn--post-buy {
     width: 86px;
@@ -118,9 +121,12 @@
 .cmprCnt_buy .btn--post-buy {
     box-shadow: none;
     background: none;
-    background-color: #cbdf59!important;
+    background-color: #80c342;
+	border-color: #6b9b39;
     color: @white;
+    font-weight: normal;
     font-size: 16px;
+    padding: 4px 6px;
 }
 //popup
 .popup {
@@ -131,6 +137,7 @@
         padding: 30px 45px 45px;
         .box-shadow(0 0 141px 10px rgba(0, 0, 0, 0.50));
         position: relative;
+        .rounded(3px);
         &__close {
             position: absolute;
             top: 8px;
@@ -146,7 +153,7 @@
             	font-size: 16px;
             	font-weight: bold;
             }
-            .msg--send{
+            &.msg--send{
 				margin-bottom: 45px;
 			}
         }

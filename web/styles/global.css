@@ -10507,6 +10507,9 @@ img[height="0"] {
     font-size: 12px;
     padding: 5px 0 6px;
     margin: 0px;
+    color: #ffffff;
+    background: #80c342;
+    border-color: #548d1e;
   }
   .topbarfix_buy .btn--post-buy {
     width: 86px;
@@ -10515,9 +10518,12 @@ img[height="0"] {
   .cmprCnt_buy .btn--post-buy {
     box-shadow: none;
     background: none;
-    background-color: #cbdf59!important;
+    background-color: #80c342;
+    border-color: #6b9b39;
     color: #ffffff;
+    font-weight: normal;
     font-size: 16px;
+    padding: 4px 6px;
   }
   .popup--request {
     background-color: #ffffff;
@@ -10531,6 +10537,9 @@ img[height="0"] {
     -moz-box-shadow: 0 0 141px 10px rgba(0, 0, 0, 0.5);
     box-shadow: 0 0 141px 10px rgba(0, 0, 0, 0.5);
     position: relative;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
   }
   .popup--request__close {
     position: absolute;
@@ -10548,7 +10557,7 @@ img[height="0"] {
     font-size: 16px;
     font-weight: bold;
   }
-  .popup--request__head .msg--send {
+  .popup--request__head.msg--send {
     margin-bottom: 45px;
   }
   .popup--request .recall-list {

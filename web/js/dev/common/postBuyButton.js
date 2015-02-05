@@ -61,11 +61,9 @@
 			'</div>',
 
 		popupResultTemplate =
-			'<div class="popup--request">'
-				'<div class="popup--request__head msg--send">Ваша заявка № {{orderNumber}} отправлена</div>' +
-				'<div class="btn--container">' +
-					'<button type="submit" class="js-postBuyButton-popup-okButton btn btn--submit">Ок</button>' +
-				'</div>' +
+			'<div class="popup--request__head msg--send">Ваша заявка № {{orderNumber}} отправлена</div>' +
+			'<div class="btn--container">' +
+				'<button type="submit" class="js-postBuyButton-popup-okButton btn btn--submit">Ок</button>' +
 			'</div>',
 
 		validate = function($form){
