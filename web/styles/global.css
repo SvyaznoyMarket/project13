@@ -10509,6 +10509,24 @@ img[height="0"] {
     color: #ffffff;
     font-size: 16px;
   }
+  .popup--request {
+    background-color: #ffffff;
+    width: 480px;
+    padding: 20px 10px 10px;
+    position: relative;
+  }
+  .popup--request__close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 15px;
+    height: 15px;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAABDElEQVQoFZWTPY7CMBBG40iRs1BR7RkQiVIQQUHFERaJCwDH4gYr7RW22pIiShBnoKICYqUweUhBxjhB6yae8ffmx+N4Xr0mabqO43jA/t1Chx6dYCOE2HpaH85lOS+K4tgWIIqiz34Y/npCDLXWG/+q1A8gDg4QuGATRA/n53l+ImNXABtEDyeaLC4BLbT54R4whi0sq2oZBsE3Lbnu5Am2A9SXourLlC4Q7QuMM0mSkQyCHSABVFWNsyzbc2Yu3zTYUzqlNiBfbPy29gm2eyZj1xQesA0yDkrtGuO9ZxdovrS2c8Fb7Un51zaOpk87wEWpmf8h5eIdSAAqMVuoE37dA0/TdPWfvwo94A1nGOFbgEoGigAAAABJRU5ErkJggg==');
+  }
+  .popup--request__head {
+    text-align: center;
+    font-size: 18px;
+  }
 }
 /*---------Карточка товара: кухни ----------*/
 @media all {

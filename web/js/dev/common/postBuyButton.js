@@ -6,8 +6,8 @@
 		$body = $('body'),
 		errorCssClass = 'textfield-err',
 		popupTemplate =
-			'<div class="js-postBuyButton-popup">' +
-				'<a href="#" class="js-postBuyButton-popup-close" title="Закрыть">Закрыть</a>' +
+			'<div class="js-postBuyButton-popup popup--request">' +
+				'<a href="#" class="js-postBuyButton-popup-close popup--request__close" title="Закрыть"></a>' +
 
 				'<form action="' + ENTER.utils.generateUrl('order.postBuy') + '" method="post">' +
 					'<input type="hidden" name="productId" value="{{productId}}" />' +
@@ -22,7 +22,7 @@
 					'{{/full}}' +
 
 					'{{^full}}' +
-						'<h1>Отравить заявку</h1>' +
+						'<div class="popup--request__head">Отправить заявку</div>' +
 					'{{/full}}' +
 
 					'<div class="js-postBuyButton-popup-errors" style="display: none;">' +
@@ -39,7 +39,7 @@
 						'<input type="text" name="email" value="{{userEmail}}" placeholder="mail@domain.com" />' +
 						'<span class="js-postBuyButton-popup-error" style="display: none">Неверный формат email</span>' +
 					'</p>' +
-		
+
 					'<p>' +
 						'<span>Имя</span>' +
 						'<input type="text" name="name" value="{{userName}}" />' +
