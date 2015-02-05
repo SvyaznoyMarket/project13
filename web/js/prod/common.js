@@ -1435,22 +1435,14 @@
 		autoFocus: true,
 		appendTo: '#jscities',
 		source: function( request, response ) {
-			$.ajax({
-				url: inputRegion.data('url-autocomplete'),
-				dataType: 'json',
-				data: {
-					q: request.term
-				},
-				success: function( data ) {
-					var res = data.data.slice(0, 15);
-					response( $.map( res, function( item ) {
-						return {
-							label: item.name,
-							value: item.name,
-							url: item.url
-						};
-					}));
-				}
+			queryAutocompleteVariants(request.term, function(res) {
+				response( $.map( res, function( item ) {
+					return {
+						label: item.name,
+						value: item.name,
+						url: item.url
+					};
+				}));
 			});
 		},
 		minLength: 2,
@@ -1465,6 +1457,21 @@
 			$( this ).removeClass( 'ui-corner-top' ).addClass( 'ui-corner-all' );
 		}
 	});
+
+	function queryAutocompleteVariants(term, onSuccess) {
+		$.ajax({
+			url: inputRegion.data('url-autocomplete'),
+			dataType: 'json',
+			data: {
+				q: term
+			},
+			success: function( data ) {
+				if (onSuccess) {
+					onSuccess(data.data.slice(0, 15));
+				}
+			}
+		});
+	}
 
 	
 		/**
@@ -1635,7 +1642,8 @@
 		 * Обработчик сохранения введенного региона
 		 */
 		submitCityHandler = function submitCityHandler() {
-			var url = $(this).data('url'),
+			var
+				url = $(this).data('url'),
 				regionName = inputRegion.val();
 			// end of vars
 
@@ -1645,6 +1653,14 @@
 				global.location = url;
 			}
 			else {
+				if (ENTER.utils.trim(inputRegion[0].defaultValue) != ENTER.utils.trim(regionName)) {
+					queryAutocompleteVariants(regionName, function(res) {
+						if (res[0] && res[0].url) {
+							global.location = res[0].url;
+						}
+					});
+				}
+
 				regionWindow.trigger('close');
 			}
 
