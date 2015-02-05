@@ -109,7 +109,7 @@
                             <div class="slideItem_flt_i">Золотые серьги с фианитами Magic Moments</div>
                         </div>
 
-                        <a href="/product/jewel/zolotie-sergi-s-fianitami-magic-moments-2030000208128" class="slidesBox_items_lk"><img src="styles/mainpage/img/Mmoment/mm-4.png" alt="" class="slidesBox_items_img"></a>
+                        <a href="/product/jewel/zolotie-sergi-s-fianitami-magic-moments-2030000208128" class="slidesBox_items_lk"><img src="styles/mainpage/img/Mmoment/mm-4.jpg" alt="" class="slidesBox_items_img"></a>
                     </li>
 
                 </ul>
