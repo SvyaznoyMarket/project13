@@ -73,9 +73,10 @@ class Helper {
     /**
      * @param $price
      * @return string
+     * @deprecated Используйте \Helper\TemplateHelper::formatPrice
      */
-    public function formatPrice($price, $numDecimals = 0) {
-        return \App::helper()->formatPrice($price, $numDecimals);
+    public function formatPrice($price) {
+        return \App::helper()->formatPrice($price);
     }
 
     /**
