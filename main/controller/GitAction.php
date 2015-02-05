@@ -21,6 +21,8 @@ class GitAction {
             $result = (string)$e;
         }
 
+        $result = str_replace('On branch', '<b>On branch</b>', $result);
+
 
         return new \Http\Response('<pre>' . $result . '</pre>');
     }
