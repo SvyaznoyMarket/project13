@@ -10491,16 +10491,16 @@ img[height="0"] {
     padding: 2px 0px 3px;
     margin-top: 3px;
   }
+  .bBtnLine .btn--post-buy,
   .topbarfix_buy .btn--post-buy {
-    width: 86px;
-    font-size: 12px;
-    margin: 0px;
-  }
-  .bBtnLine .btn--post-buy {
-    width: 74px;
+    width: 72px;
     font-size: 12px;
     padding: 5px 0 6px;
     margin: 0px;
+  }
+  .topbarfix_buy .btn--post-buy {
+    width: 86px;
+    padding: 4px 0px;
   }
   .cmprCnt_buy .btn--post-buy {
     box-shadow: none;
@@ -10663,7 +10663,7 @@ img[height="0"] {
     text-align: center;
   }
   .product-container--kitchen .slideItem_inn {
-    width: 910px;
+    width: 900px;
   }
   .product-container--kitchen .slideItem_pr {
     width: 100%;

@@ -120,10 +120,11 @@ $postBuyOffer = $product->getPostBuyOffer();
     <div class="product-card__desc">
         <?= $product->getDescription() ?>
     </div>
-
-    <? if ($product->getSecondaryGroupedProperties()): // показываем все характеристики (сгруппированые), если ранее они не были показаны ?>
-        <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getSecondaryGroupedProperties()]) // Характеристики ?>
-    <? endif ?>
+    <div class="product-card__props">
+        <? if ($product->getSecondaryGroupedProperties()): // показываем все характеристики (сгруппированые), если ранее они не были показаны ?>
+            <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getSecondaryGroupedProperties()]) // Характеристики ?>
+        <? endif ?>
+    </div>
 
     <? if (\App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
