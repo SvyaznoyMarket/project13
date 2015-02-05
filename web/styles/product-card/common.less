@@ -75,14 +75,47 @@
         .inline-block();
 
 		background-color: #cbdf59;
-		.box-shadow2(0 4px 0 #b8c64b, 0 6px #feffbe);
-        padding: 7px 23px;
-		border:0px;
+		.box-shadow2(0 3px 0 #b8c64b, 0 5px #feffbe);
+        padding: 4px 23px 3px;
+		border:1px solid #ccd594;
 
         text-align: center;
+        text-decoration: none;
 
-        color: #ffffff;
+        color: #000;
 
         font-size: 18px;
+        &:hover{
+        	text-decoration: none;
+        }
 	}
+	&--short{
+		background: #c1d837;
+		border-color: #9cb214;
+		box-shadow: none;
+		width: 74px;
+		font-size: 11px;
+		text-align: center;
+		padding: 2px 0px 3px;
+		margin-top: 3px;
+	}
+
+}
+.topbarfix_buy .btn--post-buy{
+		width: 86px;
+		font-size: 12px;
+		margin:0px;
+	}
+.bBtnLine .btn--post-buy{
+	width: 74px;
+	font-size: 12px;
+	padding: 5px 0 6px;
+	margin: 0px;
+}
+.cmprCnt_buy .btn--post-buy{
+	box-shadow: none;
+	background: none;
+	background-color: #cbdf59!important;
+	color: @white;
+	font-size: 16px;
 }

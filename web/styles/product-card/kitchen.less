@@ -51,7 +51,7 @@
 			&__section-right{
 				float: right;
 				margin: 0px;
-				padding: 15px 10px 0 15px;
+				padding: 0 10px 0 15px;
 
 				width: 260px;
 				border-left:1px dotted @lightgrey-4;
@@ -79,16 +79,23 @@
 				&--recall{
 					display: block;
 					font-size: 14px;
-					margin: 10px 0 30px 0;
-					ul li{
-						list-style: none;
-						padding-left: 18px;
-						position: relative;
-						&:before{
-							content: "\2014";
-							position: absolute;
-							left: 0px;
+					padding: 20px;
+					margin:15px -20px 0 -15px;
+					background-color: #f9f9f9;
+					&__list{
+						margin-bottom:30px;
+
+						li{
+							list-style: none;
+							padding-left: 18px;
+							position: relative;
+							&:before{
+								content: "\2014";
+								position: absolute;
+								left: 0px;
+							}
 						}
+
 					}
 				}
 			}
@@ -129,10 +136,13 @@
 					}
 				}
 			}
-			&__foot{
+			&__bordered{
 				padding: 0 10px;
 				margin: 10px -10px 0;
 				border-top: 1px solid #000;
+			}
+			&__desc{
+				margin-top: 10px;
 			}
 		}//product-card
 		//остаток старых классов
@@ -142,10 +152,7 @@
 			text-align: center;
 		}
 		.bWidgetBuy{
-			border-bottom: 0px;
-			border-bottom-left-radius: 0px;
-			border-bottom-right-radius: 0px;
-			margin-bottom: 0px;
+
 		}
 		.bProductDescImg{
 			width:600px;
@@ -168,7 +175,17 @@
 			}
 		}
 		.btnBuy{
-
+			overflow: visible;
+			width:auto;
+			width: 100%;
+			text-align: center;
+		}
+		.slideItem_inn{
+			width:910px;
+		}
+		.slideItem_pr{
+			width:100%;
+			text-align: center;
 		}
 
 	}//kitchen wrap

@@ -69,16 +69,17 @@ $postBuyOffer = $product->getPostBuyOffer();
         <span class="product-card__info--deliv-period">Срок доставки базового комплекта 3 дня</span>
         <div class="product-card__info--recall">
             <span>Закажите обратный звонок и уточните</span>
-            <ul>
+            <ul class="product-card__info--recall__list">
                 <li>Состав мебели и техники</li>
                 <li>Условия доставки, сборки и оплаты</li>
             </ul>
-        </div>
         <?= $helper->render('cart/__button-product', [
             'product'  => $product,
             'sender'   => $buySender,
             'location' => 'product-card',
         ]) ?>
+
+        </div>
 
         <div class="product-card__specify" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
             <?= $helper->render('product/__mainProperties', ['product' => $product]) ?>
@@ -98,7 +99,7 @@ $postBuyOffer = $product->getPostBuyOffer();
 </div>
 
 <div class="clear"></div>
-<div class="product-card__foot">
+<div class="product-card__bordered">
     <? if ($isProductAvailable && \App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
             'type'     => 'similar',
@@ -114,7 +115,8 @@ $postBuyOffer = $product->getPostBuyOffer();
             ],
         ]) ?>
     <? endif ?>
-
+</div>
+<div class="product-card__bordered">
     <div class="product-card__desc">
         <?= $product->getDescription() ?>
     </div>
