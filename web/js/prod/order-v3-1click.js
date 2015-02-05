@@ -1007,21 +1007,21 @@
 				return re.test(email);
 			},
 			validate = function validateF(){
-				var error = [],
+				var isValid = true,
 					$phoneInput = $('[name=user_info\\[mobile\\]]'),
 					$emailInput = $('[name=user_info\\[email\\]]'),
 					$deliveryMethod = $('.orderCol_delivrLst_i-act span'),
 					phone = $phoneInput.val().replace(/\s+/g, '');
 
 				if (!/8\(\d{3}\)\d{3}-\d{2}-\d{2}/.test(phone)) {
-					error.push('Неверный формат телефона');
+					isValid = false;
 					$phoneInput.addClass(errorClass).siblings('.errTx').show();
 				} else {
 					$phoneInput.removeClass(errorClass).siblings('.errTx').hide();
 				}
 
 				if ($emailInput.val().length != 0 && !validateEmail($emailInput.val())) {
-					error.push('Неверный формат E-mail');
+					isValid = false;
 					$emailInput.addClass(errorClass).siblings('.errTx').show();
 				} else {
 					$emailInput.removeClass(errorClass).siblings('.errTx').hide();
@@ -1037,7 +1037,7 @@
 				 }
 				 }*/
 
-				return error;
+				return isValid;
 			};
 
 		if ($validationErrors.length) {
@@ -1052,18 +1052,13 @@
         });
 
 		$form.on('submit', function(e){
+			e.preventDefault();
 
 			var	$el = $(this),
 				$submitBtn = $el.find('.orderCompl_btn'),
-				data = $el.serializeArray(),
-				error = validate(),
-				errorHtml = '';
+				data = $el.serializeArray();
 
-			if (error.length != 0) {
-				console.warn('Ошибки валидации', error);
-				$.each(error, function(i,val){ errorHtml += val + '<br/>'});
-				$('#OrderV3ErrorBlock').html(errorHtml).show();
-				e.preventDefault();
+			if (!validate()) {
 				return;
 			}
 
@@ -1179,8 +1174,6 @@
 					$('body').trigger('trackUserAction', ['3_2 Оформить_ошибка', 'Поле ошибки: '+ ((typeof error !== 'undefined') ? error.join(', ') : '')]);
 				})
 			;
-
-			e.preventDefault();
 		})
 	};
 
