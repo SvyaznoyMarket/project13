@@ -40,7 +40,10 @@ class SetAction {
         \RepositoryManager::product()->prepareCollectionByBarcode($productBarcodes, \App::user()->getRegion(), function($data) use (&$products, &$categoriesById) {
             foreach ($data as $item) {
                 //$products[] = new \Model\Product\ExpandedEntity($item);
-                $products[] = new \Model\Product\Entity($item);
+                $product = new \Model\Product\Entity($item);
+                if (!$product->isAvailable()) continue;
+
+                $products[] = $product;
                 //$productsForRetargeting[] = new \Model\Product\Entity($item);
 
                 /* // SITE-2886 — В подборках не выводить список категорий товаров
