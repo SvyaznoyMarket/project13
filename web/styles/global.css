@@ -11759,6 +11759,7 @@ img[height="0"] {
     bottom: 0;
     left: 0;
     width: 100%;
+    z-index: 2;
   }
   .fltrBtnLn {
     display: table;
