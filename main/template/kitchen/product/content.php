@@ -45,14 +45,12 @@ $postBuyOffer = $product->getPostBuyOffer();
 
 <div class="product-card__section-left bProductSectionLeftCol">
     <div class="product-card__head">
-        <div class="product-card__head__title clearfix">
-            <h1 itemprop="name">
+        <h1 class="product-card__head__title clearfix" itemprop="name">
                 <? if ($product->getPrefix()): ?>
                     <div class="product-card__head__subtitle"><?= $product->getPrefix() ?></div>
                 <? endif ?>
                 <?= $product->getWebName() ?>
-            </h1>
-        </div>
+        </h1>
         <span class="product-card__head__article">Артикул: <?= $product->getArticle() ?></span>
     </div>
 

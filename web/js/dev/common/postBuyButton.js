@@ -14,8 +14,8 @@
 					'<input type="hidden" name="sender" value="{{sender}}" />' +
 
 					'{{#full}}' +
-						'<h1>Закажите обратный звонок и уточните</h1>' +
-						'<ul>' +
+						'<div class="popup--request__head msg--recall">Закажите обратный звонок и уточните</div>' +
+						'<ul class="recall-list">' +
 							'<li>Состав мебели и техники</li>' +
 							'<li>Условия доставки, сборки и оплаты</li>' +
 						'</ul>' +
@@ -28,57 +28,69 @@
 					'<div class="js-postBuyButton-popup-errors" style="display: none;">' +
 					'</div>' +
 
-					'<p>' +
-						'<span>*Телефон</span>' +
+					'<div class="popup__form-group">' +
+						'<label class="label-for-input">*Телефон</label>' +
 						'<input type="text" name="phone" value="{{userPhone}}" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" />' +
-						'<span class="js-postBuyButton-popup-error" style="display: none">Неверный формат телефона</span>' +
-					'</p>' +
+						'<span class="js-postBuyButton-popup-error popup__form-group__error" style="display: none">Неверный формат телефона</span>' +
+					'</div>' +
 
-					'<p>' +
-						'<span>E-mail</span>' +
+					'<div class="popup__form-group">' +
+						'<label class="label-for-input">E-mail</label>' +
 						'<input type="text" name="email" value="{{userEmail}}" placeholder="mail@domain.com" />' +
-						'<span class="js-postBuyButton-popup-error" style="display: none">Неверный формат email</span>' +
-					'</p>' +
+						'<span class="js-postBuyButton-popup-error popup__form-group__error" style="display: none">Неверный формат email</span>' +
+					'</div>' +
 
-					'<p>' +
-						'<span>Имя</span>' +
+					'<div class="popup__form-group">' +
+						'<label class="label-for-input">Имя</label>' +
 						'<input type="text" name="name" value="{{userName}}" />' +
-					'</p>' +
+					'</div>' +
 
-					'<p><label><input type="checkbox" name="confirm" value="1" /> Я ознакомлен и согласен с информацией о продавце и его офертой</label></p>' +
-					'<p>Продавец-партнёр: {{partnerName}}</p>' +
+					'<div class="popup__form-group checkbox-group"><label><input type="checkbox" name="confirm" value="1" /><i></i> Я ознакомлен и согласен с информацией о продавце и его офертой</label></div>' +
+					'<div class="popup__form-group vendor">Продавец-партнёр: {{partnerName}}</div>' +
 
-					'<button type="submit" class="js-postBuyButton-popup-submitButton">Отправить заявку</button>' +
+					'<div class="btn--container">' +
+						'<button type="submit" class="js-postBuyButton-popup-submitButton btn btn--submit">Отправить заявку</button>' +
+					'</div>' +
 
 					'{{#full}}' +
-						'<p><a href="{{productUrl}}">Перейти в карточку товара</a></p>' +
+						'<div class="popup__form-group msg--goto-card">' +
+							'<a href="{{productUrl}}" class="lnk--goto-card">Перейти в карточку товара</a>' +
+						'</div>' +
 					'{{/full}}' +
 				'</form>' +
 			'</div>',
 
 		popupResultTemplate =
-			'<div>' +
-				'<p>Ваша заявка № {{orderNumber}} отправлена</p>' +
-				'<button type="submit" class="js-postBuyButton-popup-okButton">Ок</button>' +
+			'<div class="popup--request">'
+				'<div class="popup--request__head msg--send">Ваша заявка № {{orderNumber}} отправлена</div>' +
+				'<div class="btn--container">' +
+					'<button type="submit" class="js-postBuyButton-popup-okButton btn btn--submit">Ок</button>' +
+				'</div>' +
 			'</div>',
 
 		validate = function($form){
 			var isValid = true,
 				$phoneInput = $('[name="phone"]', $form),
-				$emailInput = $('[name="email"]', $form);
+				$emailInput = $('[name="email"]', $form),
+				parentClass = '.popup__form-group',
+				labelClass = '.label-for-input';
 
 			if (!/8\(\d{3}\)\d{3}-\d{2}-\d{2}/.test($phoneInput.val().replace(/\s+/g, ''))) {
 				isValid = false;
 				$phoneInput.addClass(errorCssClass).siblings('.js-postBuyButton-popup-error').show();
+				$phoneInput.parents(parentClass).children(labelClass).addClass('lbl-error');
 			} else {
 				$phoneInput.removeClass(errorCssClass).siblings('.js-postBuyButton-popup-error').hide();
+				$phoneInput.parents(parentClass).children(labelClass).removeClass('lbl-error');
 			}
 
 			if ($emailInput.val().length != 0 && !ENTER.utils.validateEmail($emailInput.val())) {
 				isValid = false;
 				$emailInput.addClass(errorCssClass).siblings('.js-postBuyButton-popup-error').show();
+				$emailInput.parents(parentClass).children(labelClass).addClass('lbl-error');
 			} else {
 				$emailInput.removeClass(errorCssClass).siblings('.js-postBuyButton-popup-error').hide();
+				$emailInput.parents(parentClass).children(labelClass).removeClass('lbl-error');
 			}
 
 			return isValid;
@@ -104,7 +116,7 @@
 
 		$popup.lightbox_me({
 			centered: true,
-			sticky: false,
+			sticky: true,
 			closeClick: false,
 			closeEsc: false,
 			closeSelector: '.js-postBuyButton-popup-close',
