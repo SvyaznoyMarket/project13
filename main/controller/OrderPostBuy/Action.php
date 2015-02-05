@@ -13,6 +13,10 @@ class Action {
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        if ($_SERVER['APPLICATION_ENV'] === 'local') {
+            return new \Http\JsonResponse(['orderNumber' => 123456]);
+        }
+
         $referer = $request->headers->get('referer') ?: '/';
         $user = \App::user();
         $orderCreatePacketResponse = null;   // ответ о ядра
