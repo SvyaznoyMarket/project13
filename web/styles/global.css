@@ -10701,6 +10701,11 @@ img[height="0"] {
   .popup__form-group.msg--goto-card .lnk--goto-card {
     text-decoration: underline;
   }
+  .h1 {
+    font-size: 2em;
+    margin: 10px 0 20px;
+    font-weight: normal;
+  }
 }
 /*---------Карточка товара: кухни ----------*/
 @media all {
