@@ -10393,7 +10393,7 @@ img[height="0"] {
     position: relative;
     float: left;
     margin: 0px;
-    padding: 0px;
+    padding: 0px 18px 0 0;
   }
   .product-container .bBreadcrumbs__eItem:after {
     font-family: "icons";
@@ -10409,8 +10409,11 @@ img[height="0"] {
     text-transform: none;
     /* fix buttons height, for twitter bootstrap */
     line-height: 1em;
+    font-size: 1em;
     content: '\e803';
-    padding-left: 3px;
+    position: absolute;
+    right: 2px;
+    top: 6px;
   }
   .product-container .bBreadcrumbs__eItem:last-child:after {
     content: "";
@@ -10418,6 +10421,7 @@ img[height="0"] {
   }
   .product-container .bBreadcrumbs__eLink {
     border-bottom: 1px dotted;
+    padding-bottom: 1px;
   }
   .product-card__section-left {
     display: inline-block;
@@ -10582,84 +10586,70 @@ img[height="0"] {
   .popup__form-group {
     margin: 20px 0px;
     position: relative;
+    text-align: center;
   }
-  .popup__form-group .label-for-input {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    width: 90px;
+  .popup__form-group .input-group {
+    width: 410px;
+    overflow: hidden;
+    position: relative;
+  }
+  .popup__form-group .input-group .label-for-input {
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    width: 66px;
     padding: 0px 5px 0 15px;
-    height: 35px;
-    line-height: 35px;
+    height: 33px;
+    line-height: 33px;
     color: #a0a0a0;
-    background-color: #f7f7f7;
-    border: 1px solid #a0a0a0;
-    border-right: 0px;
-    -webkit-border-top-right-radius: 0;
-    -webkit-border-bottom-right-radius: 0;
-    -webkit-border-bottom-left-radius: 3px;
-    -webkit-border-top-left-radius: 3px;
-    -moz-border-radius-topright: 0;
-    -moz-border-radius-bottomright: 0;
-    -moz-border-radius-bottomleft: 3px;
-    -moz-border-radius-topleft: 3px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 3px;
-    border-top-left-radius: 3px;
+    background-color: #efefef;
+    border-right: 1px solid #d3d3d3;
+    font-size: 14px;
+    color: #000;
   }
-  .popup__form-group .label-for-input.label-phone {
+  .popup__form-group .input-group .label-for-input.label-phone {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAA4klEQVQY02NgQAJnZjKwfpslFfFttrQFAz7Q0MDA9HOW9O8fs2QmYUiuCmVgRuYDFT35OVOmAkP++2zpOKAp50H01QYGtp+zZE6B2N+nSyj8mCXdB9R4b38DAwvD91kyqSCFP2dL/wFKPP48XVznx0ypHBAfqOndj9ky24FuloFb+aJbnBtk0o9p4krfZ0kn/JwhoQUUZsRwK9iq2TLPgaZXAq2782O29EwMRZ+mSAsDJW4Arb4JCiIg7fNztsz/n7Ol6lEUfpkmowdyNBB7InwvvQ3oxrmgIENR/LiPgRMfHwCLw2/0EEX6NgAAAABJRU5ErkJggg==");
     background-repeat: no-repeat;
-    background-position: 3px 5px;
+    background-position: 5px 6px;
   }
-  .popup__form-group input[type="text"] {
-    width: 320px;
+  .popup__form-group .input-group input[type="text"] {
+    width: 410px;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -ms-box-sizing: border-box;
-    padding: 0 5px;
+    padding: 0 5px 0 90px;
     height: 35px;
     line-height: 35px;
     font-size: 14px;
+    border: 0px;
+    float: right;
     border: 1px solid #a0a0a0;
-    -webkit-border-top-right-radius: 3px;
-    -webkit-border-bottom-right-radius: 3px;
-    -webkit-border-bottom-left-radius: 0;
-    -webkit-border-top-left-radius: 0;
-    -moz-border-radius-topright: 3px;
-    -moz-border-radius-bottomright: 3px;
-    -moz-border-radius-bottomleft: 0;
-    -moz-border-radius-topleft: 0;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
-    border-bottom-left-radius: 0;
-    border-top-left-radius: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
   }
-  .popup__form-group input[type="text"].textfield-err {
-    border-color: #ed404d;
-    border-width: 2px;
+  .popup__form-group .input-group input[type="text"]:focus {
+    border: 1px solid #f89b1c;
+  }
+  .popup__form-group .input-group.lbl-error input[type="text"],
+  .popup__form-group .input-group.lbl-error input[type="text"]:focus {
+    border: 2px solid #ED404D;
+    padding-left: 89px;
+  }
+  .popup__form-group .input-group.lbl-error .label-for-input {
+    color: #ffffff;
+    background-color: #ED404D;
+    border: none;
+  }
+  .popup__form-group .input-group.lbl-error .label-for-input.label-phone {
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAQAAAAnOwc2AAAAg0lEQVQI12NgAIP/rP8j/lswoIL/TP9//5+E4DJD6Sf/K+D8/3H/zwMx2/9TQFLhf9//e/9ZGP6nAgX//H/8X+d/DpB+93/7fxmIVm6gKqX/Cf+1/jMizFX4//x/5f87/2cihIT/3/h/E+gon////9fDBPWAhnuCWdv+z/3PBBPmRKUBoUVQWgkTFHYAAAAASUVORK5CYII=");
   }
   .popup__form-group__error {
     position: absolute;
     color: #ED404D;
     bottom: -16px;
     left: 15px;
-  }
-  .popup__form-group .lbl-error {
-    background-color: #ED404D;
-    border-color: #ED404D;
-    color: #ffffff;
-  }
-  .popup__form-group .lbl-error.label-phone {
-    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAQAAAAnOwc2AAAAg0lEQVQI12NgAIP/rP8j/lswoIL/TP9//5+E4DJD6Sf/K+D8/3H/zwMx2/9TQFLhf9//e/9ZGP6nAgX//H/8X+d/DpB+93/7fxmIVm6gKqX/Cf+1/jMizFX4//x/5f87/2cihIT/3/h/E+gon////9fDBPWAhnuCWdv+z/3PBBPmRKUBoUVQWgkTFHYAAAAASUVORK5CYII=");
   }
   .popup__form-group.vendor {
     margin: 5px 0px 25px 20px;
@@ -10719,13 +10709,13 @@ img[height="0"] {
 /*---------Карточка товара: кухни ----------*/
 @media all {
   .textcolor {
-    color: #919191;
+    color: #a0a0a0;
   }
   .product-container--kitchen .bBreadcrumbs__eItem {
-    color: #919191;
+    color: #a0a0a0;
   }
   .product-container--kitchen .bBreadcrumbs__eLink {
-    color: #919191;
+    color: #a0a0a0;
   }
   .product-container--kitchen .product-card__head {
     margin: 21px 0 10px;
@@ -10744,7 +10734,7 @@ img[height="0"] {
   }
   .product-container--kitchen .product-card__head__article {
     line-height: 16px;
-    color: #919191;
+    color: #a0a0a0;
   }
   .product-container--kitchen .product-card__section-left {
     display: inline-block;
@@ -10761,14 +10751,14 @@ img[height="0"] {
     zoom: 1;
   }
   .product-container--kitchen .product-card__vendor {
-    color: #919191;
+    color: #a0a0a0;
     font-size: 14px;
     padding-left: 5px;
     text-align: center;
   }
   .product-container--kitchen .product-card__info--price {
     display: block;
-    color: #919191;
+    color: #a0a0a0;
     font-size: 14px;
     text-align: center;
   }
@@ -10805,7 +10795,7 @@ img[height="0"] {
   }
   .product-container--kitchen .product-card__specify .bSpecifications.mSimpleProperty .bSpecificationsList {
     margin: 0 0 15px;
-    color: #919191;
+    color: #a0a0a0;
   }
   .product-container--kitchen .product-card__specify .bSpecifications.mSimpleProperty .bSpecificationsList__eName {
     width: 140px;
