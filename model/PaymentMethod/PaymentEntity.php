@@ -34,6 +34,14 @@ namespace Model\PaymentMethod {
             }
         }
 
+
+        /**
+         * @return \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity[]|[]
+         */
+        public function getOnlineMethods(){
+            return array_values(array_filter($this->methods, function(PaymentMethodEntity $methodEntity){ return $methodEntity->isOnline; }));
+        }
+
     }
 
 }

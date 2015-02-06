@@ -1,3 +1,5 @@
+<? $f  = function () { ?>
+
 <!-- Блок оплата в два клика(VIP)-->
 <div class="orderPayment orderPaymentWeb">
     <!-- Заголовок-->
@@ -26,7 +28,7 @@
     <!-- Заголовок-->
     <!-- Блок в обводке -->
     <div class="orderPayment_block orderPayment_noOnline">
-.ыцшеср
+
         <div class="orderPayment_msg orderPayment_noOnline_msg">
             <div class="orderPayment_msg_head">
                 Скидка 6% на следующий заказ<br/>при оплате онлайн
@@ -118,3 +120,5 @@
         </div>
     </div>
 </div>
+
+<? }; return $f; ?>

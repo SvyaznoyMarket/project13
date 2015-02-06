@@ -12,7 +12,8 @@ return function(
     $banks,
     $shops,
     $creditData,
-    $subscribe
+    $subscribe,
+    $motivationAction
 ) {
     /** @var $products \Model\Product\Entity[] */
     $page = new \View\OrderV3\CompletePage();
@@ -30,7 +31,12 @@ return function(
 
     <?= $helper->render('order-v3-new/__head', ['step' => 3]) ?>
 
-    <section class="orderCnt jsNewOnlineCompletePage" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
+    <section class="orderCnt jsNewOnlineCompletePage"
+             data-order-id="<?= $order->getId() ?>"
+             data-order-number="<?= $order->getNumber() ?>"
+             data-order-number-erp="<?= $order->getNumberErp() ?>"
+             data-order-action="<?= $motivationAction ?>"
+        >
 
         <!-- Блок оплата -->
         <div class="orderPayment">
@@ -148,9 +154,9 @@ return function(
         <? endif ?>
 
 
-        <? if ($isOnlinePaymentPossible && !$isOnlinePaymentChecked && $order->getPaymentId() != PaymentMethodEntity::PAYMENT_CREDIT) : ?>
+        <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'topMessage' => 'Онлайн-оплата в два клика']) ?>
 
-            <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'topMessage' => 'Онлайн-оплата в два клика']) ?>
+        <? if ($isOnlinePaymentPossible && !$isOnlinePaymentChecked && $order->getPaymentId() != PaymentMethodEntity::PAYMENT_CREDIT && !$motivationAction) : ?>
 
             <!-- Блок оплата в два клика-->
             <div class="orderPayment orderPaymentWeb jsOnlinePaymentPossible jsOnlinePaymentPossibleNoMotiv">
@@ -176,6 +182,8 @@ return function(
             </div>
 
         <? endif ?>
+
+        <?= $motivationAction ? $helper->render('order-v3-new/complete-blocks/_online_motivation_action', ['order' => $order, 'orderPayment' => $orderPayment, 'action' => $motivationAction]) : '' ?>
 
         <div class="orderCompl orderCompl_final clearfix">
             <a class="orderCompl_continue_link" href="<?= $helper->url('homepage') ?>">Вернуться на главную</a>
