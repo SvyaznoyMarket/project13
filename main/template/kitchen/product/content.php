@@ -43,39 +43,43 @@ $postBuyOffer = $product->getPostBuyOffer();
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
 
-<div class="bProductSectionLeftCol">
-    <div class="bPageHead">
-        <? if ($product->getPrefix()): ?>
-            <div class="bPageHead__eSubtitle"><?= $product->getPrefix() ?></div>
-        <? endif ?>
-        <div class="bPageHead__eTitle clearfix">
-            <h1 itemprop="name"><?= $product->getWebName() ?></h1>
-        </div>
-        <span class="bPageHead__eArticle">Артикул: <?= $product->getArticle() ?></span>
+<div class="product-card__section-left bProductSectionLeftCol">
+    <div class="product-card__head">
+        <h1 class="product-card__head__title clearfix" itemprop="name">
+                <? if ($product->getPrefix()): ?>
+                    <div class="product-card__head__subtitle"><?= $product->getPrefix() ?></div>
+                <? endif ?>
+                <?= $product->getWebName() ?>
+        </h1>
+        <span class="product-card__head__article">Артикул: <?= $product->getArticle() ?></span>
     </div>
 
-    <?= $helper->render('kitchen/product/__photo', ['product' => $product, 'useLens' => $useLens]) ?>
+    <?= $helper->render('product/__photo', ['product' => $product, 'useLens' => $useLens]) ?>
 </div>
 
-<div class="bProductSectionRightCol">
+<div class="product-card__section-right">
     <? if ($isProductAvailable): ?>
-        <p>Продавец-партнёр: <?= $helper->escape($postBuyOffer['name']) ?></p>
-        <?= $helper->render('kitchen/product/__price', ['product' => $product]) // Цена ?>
-        <p>Цена базового комплекта</p>
-        <p>Срок доставки базового комплекта 3 дня</p>
-        <p>Закажите обратный звонок и уточните</p>
-        <ul>
-            <li>Состав мебели и техники</li>
-            <li>Условия доставки, сборки и оплаты</li>
-        </ul>
+        <div class="product-card__vendor">Продавец-партнёр: <?= $helper->escape($postBuyOffer['name']) ?></div>
 
+        <?= $helper->render('kitchen/product/__price', ['product' => $product]) // Цена ?>
+
+        <span class="product-card__info--price">Цена базового комплекта</span>
+        <span class="product-card__info--deliv-period">Срок доставки базового комплекта 3 дня</span>
+        <div class="product-card__info--recall">
+            <span>Закажите обратный звонок и уточните</span>
+            <ul class="product-card__info--recall__list">
+                <li>Состав мебели и техники</li>
+                <li>Условия доставки, сборки и оплаты</li>
+            </ul>
         <?= $helper->render('cart/__button-product', [
             'product'  => $product,
             'sender'   => $buySender,
             'location' => 'product-card',
         ]) ?>
 
-        <div class="bProductDesc" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        </div>
+
+        <div class="product-card__specify" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
             <?= $helper->render('product/__mainProperties', ['product' => $product]) ?>
         </div>
 
@@ -93,72 +97,76 @@ $postBuyOffer = $product->getPostBuyOffer();
 </div>
 
 <div class="clear"></div>
-
-<? if ($isProductAvailable && \App::config()->product['pullRecommendation']): ?>
-    <?= $helper->render('product/__slider', [
-        'type'     => 'similar',
-        'title'    => 'Похожие товары',
-        'products' => [],
-        'count'    => null,
-        'limit'    => \App::config()->product['itemsInSlider'],
-        'page'     => 1,
-        'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
-        'sender'   => [
-            'name'     => 'retailrocket',
-            'position' => 'ProductSimilar',
-        ],
-    ]) ?>
-<? endif ?>
-
-<div class="bDescriptionProduct">
-    <?= $product->getDescription() ?>
+<div class="product-card__bordered">
+    <? if ($isProductAvailable && \App::config()->product['pullRecommendation']): ?>
+        <?= $helper->render('product/__slider', [
+            'type'     => 'similar',
+            'title'    => 'Похожие товары',
+            'products' => [],
+            'count'    => null,
+            'limit'    => \App::config()->product['itemsInSlider'],
+            'page'     => 1,
+            'url'      => $page->url('product.recommended', ['productId' => $product->getId()]),
+            'sender'   => [
+                'name'     => 'retailrocket',
+                'position' => 'ProductSimilar',
+            ],
+        ]) ?>
+    <? endif ?>
 </div>
+<div class="product-card__bordered">
+    <div class="product-card__desc">
+        <?= $product->getDescription() ?>
+    </div>
+    <div class="product-card__props">
+        <? if ($product->getSecondaryGroupedProperties()): // показываем все характеристики (сгруппированые), если ранее они не были показаны ?>
+            <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getSecondaryGroupedProperties()]) // Характеристики ?>
+        <? endif ?>
+    </div>
 
-<? if ($product->getSecondaryGroupedProperties()): // показываем все характеристики (сгруппированые), если ранее они не были показаны ?>
-    <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getSecondaryGroupedProperties()]) // Характеристики ?>
-<? endif ?>
+    <? if (\App::config()->product['pullRecommendation']): ?>
+        <?= $helper->render('product/__slider', [
+            'type'           => 'alsoBought',
+            'title'          => 'С этим товаром покупают',
+            'products'       => [],
+            'count'          => null,
+            'limit'          => \App::config()->product['itemsInSlider'],
+            'page'           => 1,
+            'additionalData' => $additionalData,
+            'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
+            'sender'         => [
+                'name'     => 'retailrocket',
+                'position' => 'ProductAccessories', // все правильно - так и надо!
+            ],
+        ]) ?>
+    <? endif ?>
 
-<? if (\App::config()->product['pullRecommendation']): ?>
-    <?= $helper->render('product/__slider', [
-        'type'           => 'alsoBought',
-        'title'          => 'С этим товаром покупают',
-        'products'       => [],
-        'count'          => null,
-        'limit'          => \App::config()->product['itemsInSlider'],
-        'page'           => 1,
-        'additionalData' => $additionalData,
-        'url'            => $page->url('product.recommended', ['productId' => $product->getId()]),
-        'sender'         => [
-            'name'     => 'retailrocket',
-            'position' => 'ProductAccessories', // все правильно - так и надо!
-        ],
-    ]) ?>
-<? endif ?>
+    <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
+        <?= $helper->render('product/__slider', [
+            'type'      => 'viewed',
+            'title'     => 'Вы смотрели',
+            'products'  => [],
+            'count'     => null,
+            'limit'     => \App::config()->product['itemsInSlider'],
+            'page'      => 1,
+            'url'       => $page->url('product.recommended', ['productId' => $product->getId()]),
+            'sender'    => [
+                'name'     => 'enter',
+                'position' => 'Viewed',
+                'from'     => 'productPage'
+            ],
+        ]) ?>
+    <? endif ?>
 
-<? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
-    <?= $helper->render('product/__slider', [
-        'type'      => 'viewed',
-        'title'     => 'Вы смотрели',
-        'products'  => [],
-        'count'     => null,
-        'limit'     => \App::config()->product['itemsInSlider'],
-        'page'      => 1,
-        'url'       => $page->url('product.recommended', ['productId' => $product->getId()]),
-        'sender'    => [
-            'name'     => 'enter',
-            'position' => 'Viewed',
-            'from'     => 'productPage'
-        ],
-    ]) ?>
-<? endif ?>
+    <div class="product-containter__brcr-bottom"><?= $page->render('_breadcrumbs', ['breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer']) ?></div>
 
-<div class="bBreadCrumbsBottom"><?= $page->render('_breadcrumbs', ['breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs-footer']) ?></div>
+    <? if (\App::config()->analytics['enabled']): ?>
+        <?= $page->tryRender('product/partner-counter/_cityads', ['product' => $product]) ?>
+        <?//= $page->tryRender('product/partner-counter/_recreative', ['product' => $product]) ?>
+    <? endif ?>
 
-<? if (\App::config()->analytics['enabled']): ?>
-    <?= $page->tryRender('product/partner-counter/_cityads', ['product' => $product]) ?>
-    <?//= $page->tryRender('product/partner-counter/_recreative', ['product' => $product]) ?>
-<? endif ?>
+    <?= $page->tryRender('product/_tag', ['product' => $product]) ?>
 
-<?= $page->tryRender('product/_tag', ['product' => $product]) ?>
-
-<?= $helper->render('product/__event', ['product' => $product]) ?>
+    <?= $helper->render('product/__event', ['product' => $product]) ?>
+    </div>
+</div>

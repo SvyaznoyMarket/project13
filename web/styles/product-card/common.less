@@ -1,0 +1,250 @@
+.product-container {
+    background-color: @white;
+    .bBreadcrumbs {
+        &__eItem {
+            background: none;
+            position: relative;
+            float: left;
+            margin: 0px;
+            padding: 0px;
+            &:after {
+                .fontello-icon();
+                content: '\e803';
+                padding-left: 3px;
+            }
+            &:last-child:after {
+                content: "";
+                padding: 0px;
+            }
+        }
+        &__eLink {
+            border-bottom: 1px dotted;
+        }
+    }
+}
+.product-card {
+    &__section-left {
+        display: inline-block;
+        float: left;
+        margin: 15px 0 0;
+        width: 660px;
+    }
+    &__section-right {
+        float: right;
+        margin: 15px 0 0 16px;
+        width: 260px;
+        zoom: 1;
+    }
+    &__specify {}
+    &__props{
+    	//старые классы
+                .bSpecifications {
+
+                    .bSpecificationsList {
+
+                        &__eValue {
+                        	float:left;
+   						}
+                    }
+                }
+    }
+}
+.fontello-icon {
+    font-family: "icons";
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    text-align: center;
+    /* For safety - reset parent styles, that can break glyph codes*/
+
+    font-variant: normal;
+    text-transform: none;
+    /* fix buttons height, for twitter bootstrap */
+
+    line-height: 1em;
+}
+.btn {
+	&--container{
+		width:100%;
+		text-align: center;
+	}
+    .rounded(5px);
+    overflow: visible;
+    text-align: center;
+    &--post-buy,&--submit {
+        display: block;
+        width: auto;
+        .box-sizing();
+        .inline-block();
+        background-color: #cbdf59;
+        .box-shadow2(0 3px 0 #b8c64b, 0 5px #feffbe);
+        padding: 4px 23px 3px;
+        border: 1px solid #ccd594;
+        text-align: center;
+        text-decoration: none;
+        color: #000;
+        font-size: 18px;
+        &:hover {
+            text-decoration: none;
+        }
+    }
+    &--submit{
+    	min-width: 145px;
+    }
+    &--short {
+        background: #c1d837;
+        border-color: #9cb214;
+        box-shadow: none;
+        width: 74px;
+        font-size: 11px;
+        text-align: center;
+        padding: 2px 0px 3px;
+        margin-top: 3px;
+    }
+}
+.bBtnLine .btn--post-buy, .topbarfix_buy .btn--post-buy {
+    width: 72px;
+    font-size: 12px;
+    padding: 5px 0 6px;
+    margin: 0px;
+    color: @white;
+    background: #80c342;
+    border-color: #548d1e;
+}
+.topbarfix_buy .btn--post-buy {
+    width: 86px;
+    padding: 4px 0px;
+}
+.cmprCnt_buy .btn--post-buy {
+    box-shadow: none;
+    background: none;
+    background-color: #80c342;
+	border-color: #6b9b39;
+    color: @white;
+    font-weight: normal;
+    font-size: 16px;
+    padding: 4px 6px;
+}
+//popup
+.popup {
+    &--request {
+        background-color: @white;
+        width: 500px;
+        .box-sizing();
+        padding: 30px 45px 45px;
+        .box-shadow(0 0 141px 10px rgba(0, 0, 0, 0.50));
+        position: relative;
+        .rounded(3px);
+        &__close {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 15px;
+            height: 15px;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAABDElEQVQoFZWTPY7CMBBG40iRs1BR7RkQiVIQQUHFERaJCwDH4gYr7RW22pIiShBnoKICYqUweUhBxjhB6yae8ffmx+N4Xr0mabqO43jA/t1Chx6dYCOE2HpaH85lOS+K4tgWIIqiz34Y/npCDLXWG/+q1A8gDg4QuGATRA/n53l+ImNXABtEDyeaLC4BLbT54R4whi0sq2oZBsE3Lbnu5Am2A9SXourLlC4Q7QuMM0mSkQyCHSABVFWNsyzbc2Yu3zTYUzqlNiBfbPy29gm2eyZj1xQesA0yDkrtGuO9ZxdovrS2c8Fb7Un51zaOpk87wEWpmf8h5eIdSAAqMVuoE37dA0/TdPWfvwo94A1nGOFbgEoGigAAAABJRU5ErkJggg==');
+        }
+        &__head {
+            text-align: center;
+            font-size: 18px;
+            &.msg--recall{
+            	font-size: 16px;
+            	font-weight: bold;
+            }
+            &.msg--send{
+				margin-bottom: 45px;
+			}
+        }
+        .recall-list{
+			text-align: center;
+	    	li{
+	    		list-style: none;
+	    		padding-left: 18px;
+	            position: relative;
+	            font-size: 14px;
+	            .inline-block();
+	            &:before {
+	                content: "\2014";
+	                position: absolute;
+	                left: 0px;
+	            }
+	    	}
+    	}
+    }
+    &__form-group {
+        margin: 20px 0px;
+        position: relative;
+        .label-for-input {
+            .inline-block();
+            .box-sizing();
+            width: 90px;
+
+            padding:0px 5px;
+
+            height: 35px;
+            line-height: 35px;
+            color: #a0a0a0;
+            background-color: #f7f7f7;
+            border: 1px solid #a0a0a0;
+            border-right:0px;
+            .border-radius(0,0,3px,3px);
+        }
+        input[type="text"] {
+            width: 320px;
+            .box-sizing();
+            padding: 0 5px;
+            height: 35px;
+            line-height: 35px;
+            font-size: 14px;
+            border: 1px solid #a0a0a0;
+            .border-radius(3px,3px,0,0);
+            &.textfield-err {
+                border-color: #ef404a;
+            }
+        }
+        &__error {
+            position: absolute;
+            color: #ED404D;
+            bottom: -16px;
+            left: 15px;
+        }
+        .lbl-error {
+            border-color: #ef404a;
+            background-color: #ef404a;
+            color: @white;
+        }
+        &.vendor {
+            margin: 5px 0px 25px 20px;
+        }
+        &.checkbox-group {
+            margin-bottom: 5px;
+            i {
+                .inline-block();
+                margin-top: -2px;
+                width: 18px;
+                height: 18px;
+                .rounded(3px);
+                border: 1px solid #a0a0a0;
+                position: relative;
+                margin-right: 5px;
+                text-align: center;
+                background: @white;
+            }
+            input[type="checkbox"] {
+                display: none;
+            }
+            input[type="checkbox"]:checked + i:after {
+                .fontello-icon();
+                content: '\e804';
+            }
+        }
+        &.msg--goto-card{
+        	text-align: center;
+        	.lnk--goto-card{
+        		text-decoration: underline;
+        	}
+        }
+    }
+}
