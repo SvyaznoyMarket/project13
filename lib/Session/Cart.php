@@ -153,11 +153,11 @@ class Cart {
      * @param int $quantity
      * @param array $params Дополнительные параметры товара в корзине
      */
-    public function setProduct(\Model\Product\Entity $product, $quantity = 1, array $params = []) {
+    public function setProduct(\Model\Product\Entity $product, $quantity = 1, array $params = [], $moveProductToUp = false) {
         if ($quantity < 0) $quantity = 0;
 
         $data = $this->storage->get($this->sessionName, []);
-        $data['productList'][$product->getId()] = $quantity;
+        $data['productList'][$product->getId()] = (int)$quantity;
 
         $this->storage->set($this->sessionName, $data);
         $this->clearEmpty();
@@ -171,6 +171,11 @@ class Cart {
             $item = array_merge($data['product'][$product->getId()], $item);
         }
         $item += $params;
+
+        // SITE-5022
+        if ($moveProductToUp) {
+            unset($data['product'][$product->getId()]);
+        }
 
         $data['product'][$product->getId()] = $item;
 
@@ -212,7 +217,7 @@ class Cart {
         return [
             'id'            => $product->getId(),
             'ui'            => $product->getUi(),
-            'quantity'      => $quantity,
+            'quantity'      => (int)$quantity,
             'name'          => $product->getName(),
             'price'         => $product->getPrice(),
             'image'         => $product->getImageUrl(),
@@ -241,6 +246,36 @@ class Cart {
     public function getProductsNC(){
         $data = $this->storage->get($this->sessionNameNC);
         return isset($data['product']) ? $data['product'] : null;
+    }
+
+    public function getProductsDumpNC() {
+        $products = [];
+        $helper = \App::helper();
+        foreach ($this->getProductsNC() as $cartProduct) {
+
+            if (!$cartProduct) { // SITE-4400
+                \App::logger()->error(['Товар не найден', 'product' => ['id' => $cartProduct['id']], 'sender' => __FILE__ . ' ' .  __LINE__], ['cart']);
+
+                continue;
+            }
+
+            $products[] = [
+                'id'                => $cartProduct['id'],
+                'name'              => $cartProduct['name'],
+                'price'             => $cartProduct['price'],
+                'formattedPrice'    => $helper->formatPrice($cartProduct['price']),
+                'quantity'          => $cartProduct['quantity'],
+                'deleteUrl'         => $helper->url('cart.product.delete', ['productId' => $cartProduct['id']]),
+                'link'              => $cartProduct['url'],
+                'img'               => $cartProduct['image'],
+                'cartButton'        => [ 'id' => \View\Id::cartButtonForProduct($cartProduct['id']), ],
+                'category'          => $cartProduct['category'],
+                'rootCategory'      => $cartProduct['rootCategory'],
+                'isCredit'          => @$cartProduct['credit']['enabled'] === true
+            ];
+        }
+
+        return $products;
     }
 
     /**

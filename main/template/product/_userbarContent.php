@@ -23,7 +23,7 @@ $productPageSender = \Session\ProductPageSenders::get($product->getUi());
     </div>
 </div>
 
-<div class="topbarfix_buy <?= $line ? 'hidden' : 'none' ?>">
+<div class="topbarfix_buy js-topbarfixBuy <?= $line ? 'hidden' : 'none' ?>">
 
     <? if (!$product->getKit() || $product->getIsKitLocked()): ?>
         <?= $helper->render('cart/__button-product', [

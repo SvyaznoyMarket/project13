@@ -16,9 +16,10 @@ class ProductAction {
         $cart = \App::user()->getCart();
 
         $productId = (int)$productId;
-        $quantity = (int)$request->get('quantity', 1);
+        $quantity = $request->get('quantity');
         $sender = $request->query->get('sender');
         $params = [];
+        $moveProductToUp = false;
 
         if (is_string($sender) && !empty($sender)) {
             $sender = ['name' => $sender];
@@ -33,13 +34,21 @@ class ProductAction {
         }
 
         try {
+            if (!$productId) {
+                throw new \Exception('Не получен ид товара');
+            }
+
+            if ($quantity === null) {
+                // SITE-5022
+                $quantity = $cart->getQuantityByProduct($productId) + 1;
+                $moveProductToUp = true;
+            } else {
+                $quantity = (int)$quantity;
+            }
+
             if ($quantity < 0) {
                 $quantity = 0;
                 \App::logger()->warn(['message' => 'Указано неверное количество товаров', 'request' => $request->request->all()]);
-            }
-
-            if (!$productId) {
-                throw new \Exception('Не получен ид товара');
             }
 
             $product = \RepositoryManager::product()->getEntityById($productId);
@@ -56,7 +65,7 @@ class ProductAction {
             if ($request->query->get('credit') == 'on') $params['credit'] = ['enabled' => true];
 
             // не учитываем является ли товар набором или нет - за это отвечает ядро
-            $cart->setProduct($product, $quantity, $params);
+            $cart->setProduct($product, $quantity, $params, $moveProductToUp);
             $cartProduct = $cart->getProductById($product->getId());
 
             $returnRedirect = $request->headers->get('referer') ?: ($product->getLink() ?: \App::router()->generate('homepage'));
@@ -105,6 +114,7 @@ class ProductAction {
                         'full_price'    => $cart->getSum(),
                         'old_price'     => $cart->getOriginalSum(),
                         'link'          => \App::router()->generate('order'),
+                        'products'      => $cart->getProductsDumpNC(),
                     ],
                     'product'     => $productInfo,
                     'category_id' => $parentCategoryId,
@@ -202,7 +212,7 @@ class ProductAction {
                 if (!$productQuantity) continue;
 
 
-                $cart->setProduct($product, $productQuantity + $cart->getQuantityByProduct($productId), $params);
+                $cart->setProduct($product, $productQuantity + $cart->getQuantityByProduct($productId), $params, true);
 
                 $quantity += $cart->getQuantityByProduct($productId);
             }
@@ -270,6 +280,7 @@ class ProductAction {
                     'full_price'    => $cart->getSum(),
                     'old_price'     => $cart->getOriginalSum(),
                     'link'          => \App::router()->generate('order'),
+                    'products'      => $cart->getProductsDumpNC(),
                 ],
                 'products'  => $productsInfo,
                 'sender'    => $sender,

@@ -53,8 +53,6 @@ $helper = new \Helper\TemplateHelper();
 
     <? if ((bool)$isCouponSent && (bool)$enterpizeCoupon): ?>
 
-        <? $priceNumDecimals = false === strpos((string)$enterpizeCoupon->getPrice(), '.') ? 0 : 2 ?>
-
         <div class="epSelectFishka clearfix">
             <div class="epSelectFishka_left enterPrize__list">
                 <div class="enterPrize__list__item mOrange">
@@ -70,7 +68,7 @@ $helper = new \Helper\TemplateHelper();
                                 <? endif ?>
 
                                 <? if ($enterpizeCoupon->getPrice()): ?>
-                                    <span class="cuponPrice"><?= $page->helper->formatPrice($enterpizeCoupon->getPrice(), $priceNumDecimals) . (!$enterpizeCoupon->getIsCurrency() ? '%' : '') ?>
+                                    <span class="cuponPrice"><?= $page->helper->formatPrice($enterpizeCoupon->getPrice()) . (!$enterpizeCoupon->getIsCurrency() ? '%' : '') ?>
                                         <? if ($enterpizeCoupon->getIsCurrency()): ?>
                                             <span class="rubl">p</span>
                                         <? endif ?>
@@ -133,8 +131,6 @@ $helper = new \Helper\TemplateHelper();
         <? $i = 0; foreach ($enterpizeCoupons as $coupon): $i++ ?>
 
             <?
-            $priceNumDecimals = false === strpos((string)$coupon->getPrice(), '.') ? 0 : 2;
-
             $itemClass = 'enterPrize__list__item';
             if (!($i % 4)) {
                 $itemClass .= ' mLast';
@@ -168,7 +164,7 @@ $helper = new \Helper\TemplateHelper();
                                 <? endif ?>
 
                                 <? if ($coupon->getPrice()): ?>
-                                    <span class="cuponPrice"><?= $page->helper->formatPrice($coupon->getPrice(), $priceNumDecimals) . (!$coupon->getIsCurrency() ? '%' : '') ?>
+                                    <span class="cuponPrice"><?= $page->helper->formatPrice($coupon->getPrice()) . (!$coupon->getIsCurrency() ? '%' : '') ?>
                                         <? if ($coupon->getIsCurrency()): ?>
                                             <span class="rubl">p</span>
                                         <? endif ?>
@@ -197,7 +193,7 @@ $helper = new \Helper\TemplateHelper();
                                 <? endif ?>
 
                                 <? if ($coupon->getPrice()): ?>
-                                    <span class="cuponPrice"><?= $page->helper->formatPrice($coupon->getPrice(), $priceNumDecimals) . (!$coupon->getIsCurrency() ? '%' : '') ?>
+                                    <span class="cuponPrice"><?= $page->helper->formatPrice($coupon->getPrice()) . (!$coupon->getIsCurrency() ? '%' : '') ?>
                                         <? if ($coupon->getIsCurrency()): ?>
                                             <span class="rubl">p</span>
                                         <? endif ?>

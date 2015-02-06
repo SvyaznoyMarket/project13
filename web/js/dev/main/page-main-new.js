@@ -166,22 +166,13 @@
 		});
 	});
 
-	function bindUserModel() {
-		$('.jsDivForRecommend').each(function(index, element){
-			ko.applyBindings(ENTER.UserModel, element);
-		});
-	}
-
 	// Если нет блоков RR, то загрузим их через AJAX, там таймаут побольше на ответ от RR поставлен
 	if ($('.jsMainSlidesRetailRocket').length == 0) {
 		$.get('/index/recommend').done(function(data){
 			if (data.result) {
 				$('.jsDivForRecommend').append($(data.result));
-				bindUserModel();
 			}
 		})
-	} else {
-		bindUserModel();
 	}
 
 	// АНАЛИТИКА

@@ -46,7 +46,7 @@ $routeName = \App::request()->attributes->get('route'); ?>
             $url = $enterpizeCoupon->getPartnerUrl();
         }
 
-        $priceNumDecimals = false === strpos((string)$enterpizeCoupon->getPrice(), '.') ? 0 : 2; ?>
+        ?>
 
         <div class="enterPrize mPrivate <?= isset($limit) && $limit === 0 ? 'mDisabled' : ''?>">
             <a class="enterPrize__logo" href="<?= $page->url('enterprize') ?>"></a>
@@ -66,7 +66,7 @@ $routeName = \App::request()->attributes->get('route'); ?>
 
                                 <? if ($enterpizeCoupon->getPrice()): ?>
                                     <span class="cuponPrice">
-                                        <?= $page->helper->formatPrice($enterpizeCoupon->getPrice(), $priceNumDecimals) . (!$enterpizeCoupon->getIsCurrency() ? '%' : '') ?>
+                                        <?= $page->helper->formatPrice($enterpizeCoupon->getPrice()) . (!$enterpizeCoupon->getIsCurrency() ? '%' : '') ?>
                                         <? if ($enterpizeCoupon->getIsCurrency()): ?>
                                             <span class="rubl">p</span>
                                         <? endif ?>
@@ -86,7 +86,7 @@ $routeName = \App::request()->attributes->get('route'); ?>
                 <? endif; ?>
 
                 <div class="rulesText">
-                    Фишка со скидкой <strong><?= $page->helper->formatPrice($enterpizeCoupon->getPrice(), $priceNumDecimals) ?><?= !$enterpizeCoupon->getIsCurrency() ? '%' : ' <span class="rubl">p</span>' ?></strong>
+                    Фишка со скидкой <strong><?= $page->helper->formatPrice($enterpizeCoupon->getPrice()) ?><?= !$enterpizeCoupon->getIsCurrency() ? '%' : ' <span class="rubl">p</span>' ?></strong>
                     <? if ($linkName): ?>
                         <?= ' на ' ?><strong><a target="_blank" style="text-decoration: underline;" href="<?= $url ?>"><?= $linkName ?></a></strong>
                     <? endif ?>

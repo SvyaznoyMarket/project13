@@ -6,12 +6,20 @@
  * @return	{string}			отформатированное число
  */
 (function( global ) {
-	global.printPrice = function( num ) {
-		num = num + '';
-		if ((parseInt(num) + '').length >= 5) {
-			num = num.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1&thinsp;');
+	global.printPrice = function(price) {
+		price = price + '';
+		price = price.replace(',', '.');
+		price = price.replace(/\s/g, '');
+		price = price.split('.');
+
+		if (price[0].length >= 5) {
+			price[0] = price[0].replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1&thinsp;');
 		}
 
-		return num;
+		if (price[1] == 0) {
+			price = price.slice(0, 1);
+		}
+
+		return price.join('.');
 	};
 }(this));

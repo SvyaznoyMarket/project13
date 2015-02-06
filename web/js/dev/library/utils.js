@@ -3,6 +3,9 @@
 		utils = ENTER.utils;
 	// end of vars
 
+	utils.trim = function(string) {
+		return ((string || '') + '').replace(/^\s+|\s+$/g, '');
+	};
 
 	/**
 	 * Возвращает колчество свойств в объекте.

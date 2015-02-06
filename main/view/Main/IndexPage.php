@@ -130,7 +130,7 @@ class IndexPage extends \View\DefaultLayout {
             }
         } );
 
-        if (!empty(@$this->getParam('rrProducts')['popular'])) {
+        if (!empty($this->getParam('rrProducts')['popular'])) {
             $return .= $this->render('main/_slidesBox', [
                 'blockname' => 'ПОПУЛЯРНЫЕ ТОВАРЫ',
                 'class' => 'slidesBox slidesBox-items slidesBox-items-l',

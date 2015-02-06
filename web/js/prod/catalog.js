@@ -1048,6 +1048,7 @@
 					title: document.title,
 					url: url,
 					data: {
+						scrollTop: $(window).scrollTop(),
 						_onlychange: (onlychange) ? true : false
 					}
 				};
@@ -1151,6 +1152,13 @@
 
 			console.info('statechange');
 			console.log(state);
+
+			// SITE-4941
+			setTimeout(function() {
+				if (data.scrollTop) {
+					$(window).scrollTop(data.scrollTop);
+				}
+			}, 0);
 
 			// SITE-4894 Не изменяются выбранные фильтры при переходе назад
 			if (updateState) {
@@ -1499,17 +1507,13 @@ $(function() {
 			function(data){
 				if (data.success) {
 					$.each(data.result, function(i, value){
-						$slider = $.parseHTML(value.content);
+						var $slider = $.parseHTML(value.content);
 						$($slider).hide();
 						$('.specialBorderBox').append($slider);
 						$('.smartChoiceSliderToggle-'+i).show();
 					});
 
-					var goodsSlider = $('.js-slider');
-					goodsSlider.goodsSlider();
-					goodsSlider.each(function() {
-						ko.applyBindings(ENTER.UserModel, this);
-					});
+					$('.js-slider').goodsSlider();
 
 					console.info('smartchoice ajax: ', data.result);
 				}

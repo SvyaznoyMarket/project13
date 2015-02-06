@@ -168,20 +168,23 @@ class TemplateHelper {
     }
 
     /**
-     * @param float $price
-     * @param int $numDecimals
-     * @param string $decimalsDelimiter
-     * @param string $thousandsDelimiter
+     * @param float|int|string $price
      * @return string
      */
-    public function formatPrice($price, $numDecimals = 0) {
-        if (strlen((int)$price) >= 5) {
-            $thousandSeparator = '&thinsp;';
-        } else {
-            $thousandSeparator = '';
+    public function formatPrice($price) {
+        $price = str_replace(',', '.', $price);
+        $price = preg_replace('/\s/', '', $price);
+        $price = explode('.', $price);
+
+        if (strlen($price[0]) >= 5) {
+            $price[0] = preg_replace('/(\d)(?=(\d\d\d)+([^\d]|$))/', '$1&thinsp;', $price[0]);
         }
 
-        return number_format((float)$price, $numDecimals, '.', $thousandSeparator);
+        if (isset($price[1]) && $price[1] == 0) {
+            unset($price[1]);
+        }
+
+        return implode('.', $price);
     }
 
     /**

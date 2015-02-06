@@ -2397,7 +2397,10 @@ jQuery(function($, undefined) {
  */
 ;(function( $ ) {
 	$.fn.goodsSlider = function( params ) {
-		var slidersWithUrl = 0,
+		params = params || {};
+
+		var
+			slidersWithUrl = 0,
 			slidersRecommendation = 0,
 			body = $('body'),
 			reqArray = [],
@@ -2551,17 +2554,16 @@ jQuery(function($, undefined) {
 				catItem = $self.find(options.categoryItemSelector),
                 pageTitle = $self.find(options.pageTitleSelector),
 
-				itemW = item.width() + parseInt(item.css('marginLeft'),10) + parseInt(item.css('marginRight'),10),
-				elementOnSlide = parseInt(wrap.width()/itemW, 10),
-
 				nowLeft = 0;
 			// end of vars
 
-            if (sliderParams.count) {
-                //pageTitle.text('Страница ' + '1' +  ' из ' + Math.ceil(sliderParams.count / elementOnSlide));
-            }
-
 			var
+				calculateItemWidth = function() {
+					return item.width() + parseInt(item.css('marginLeft'),10) + parseInt(item.css('marginRight'),10);
+				},
+				calculateElementOnSlideCount = function(itemW) {
+					return parseInt(wrap.width()/itemW, 10);
+				},
 				/**
 				 * Переключение на следующий слайд. Проверка состояния кнопок.
 				 */
@@ -2569,6 +2571,10 @@ jQuery(function($, undefined) {
 					if ( $(this).hasClass('mDisabled') ) {
 						return false;
 					}
+
+					var
+						itemW = calculateItemWidth(),
+						elementOnSlide = calculateElementOnSlideCount(itemW);
 
 					leftBtn.removeClass('mDisabled');
 
@@ -2602,6 +2608,10 @@ jQuery(function($, undefined) {
 						return false;
 					}
 
+					var
+						itemW = calculateItemWidth(),
+						elementOnSlide = calculateElementOnSlideCount(itemW);
+
 					rightBtn.removeClass('mDisabled');
 
 					if ( nowLeft - elementOnSlide * itemW <= 0 ) {
@@ -2622,7 +2632,10 @@ jQuery(function($, undefined) {
 				},
 
                 updatePageTitle = function updatePageTitle(width, left) {
-                    var pageNum = Math.floor(left / width) + 1;
+                    var
+						pageNum = Math.floor(left / width) + 1,
+						itemW = calculateItemWidth(),
+						elementOnSlide = calculateElementOnSlideCount(itemW);
 
                     if (!sliderParams.count || !elementOnSlide || !pageNum) return;
 
@@ -2635,6 +2648,10 @@ jQuery(function($, undefined) {
 				 * @param	{Object}	nowItems	Текущие элементы слайдера
 				 */
 				reWidthSlider = function reWidthSlider( nowItems ) {
+					var
+						itemW = calculateItemWidth(),
+						elementOnSlide = calculateElementOnSlideCount(itemW);
+
 					leftBtn.addClass('mDisabled');
 					rightBtn.addClass('mDisabled');
 
@@ -2707,6 +2724,15 @@ jQuery(function($, undefined) {
 					$self.remove();
 				};
 			// end of function
+
+// SITE-4612
+//            if (sliderParams.count) {
+//				var
+//					itemW = calculateItemWidth(),
+//					elementOnSlide = calculateElementOnSlideCount(itemW);
+//
+//                pageTitle.text('Страница ' + '1' +  ' из ' + Math.ceil(sliderParams.count / elementOnSlide));
+//            }
 
 			if ( sliderParams.url !== null ) {
 				if ( typeof window.ENTER.utils.packageReq === 'function' ) {

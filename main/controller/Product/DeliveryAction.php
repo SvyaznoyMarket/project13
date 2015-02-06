@@ -136,7 +136,7 @@ class DeliveryAction {
                     $delivery = [
                         'id'    => $deliveryItem['id'],
                         'token' => $deliveryItem['token'],
-                        'price' => (new \Helper\TemplateHelper())->formatPrice($deliveryItem['price'], 2),
+                        'price' => (new \Helper\TemplateHelper())->formatPrice($deliveryItem['price']),
                         'shop'  => [],
                     ];
 
