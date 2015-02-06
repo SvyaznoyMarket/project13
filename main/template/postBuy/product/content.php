@@ -47,7 +47,7 @@ $postBuyOffer = $product->getPostBuyOffer();
     <div class="product-card__head">
         <h1 class="product-card__head__title clearfix" itemprop="name">
                 <? if ($product->getPrefix()): ?>
-                    <div class="product-card__head__subtitle"><?= $product->getPrefix() ?></div>
+                    <?= $product->getPrefix() ?>
                 <? endif ?>
                 <?= $product->getWebName() ?>
         </h1>
