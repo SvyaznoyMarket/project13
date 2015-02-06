@@ -13,13 +13,7 @@
 
             $body.trigger('TLT_processDOMEvent', [event]);
 
-            if ($target.hasClass('jsBuyButton')) {
-                $body.trigger('trackGoogleEvent', {
-                    category: 'RR_взаимодействие',
-                    action: 'Добавил в корзину',
-                    label: sender ? sender.position : null
-                });
-            } else {
+            if (!$target.hasClass('jsBuyButton')) {
                 $body.trigger('trackGoogleEvent', {
                     category: 'RR_взаимодействие',
                     action: 'Перешел на карточку товара',
