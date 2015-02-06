@@ -61,7 +61,7 @@ $postBuyOffer = $product->getPostBuyOffer();
     <? if ($isProductAvailable): ?>
         <div class="product-card__vendor">Продавец-партнёр: <?= $helper->escape($postBuyOffer['name']) ?></div>
 
-        <?= $helper->render('kitchen/product/__price', ['product' => $product]) // Цена ?>
+        <?= $helper->render('postBuy/product/__price', ['product' => $product]) // Цена ?>
 
         <span class="product-card__info--price">Цена базового комплекта</span>
         <span class="product-card__info--deliv-period">Срок доставки базового комплекта 3 дня</span>
