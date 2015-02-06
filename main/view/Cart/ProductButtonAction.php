@@ -82,14 +82,15 @@ class ProductButtonAction {
             $data['url'] = '#';
             $data['class'] .= ' btnBuy__eLink mDisabled jsBuyButton';
             $data['value'] = 'Нет';
-        } else if ($postBuyOffer = $product->getPostBuyOffer()) {
+        } else if ($slotPartnerOffer = $product->getSlotPartnerOffer()) {
             $data['url'] = '#';
-            $data['class'] .= ' btn btn--post-buy js-postBuyButton ' . ('product-card' !== $location ? 'btn--short' : '');
+            $data['class'] .= ' btn btn--slot js-slotButton ' . ('product-card' !== $location ? 'btn--short' : '');
             $data['value'] = 'product-card' === $location ? 'Отправить заявку' : 'Как купить?';
             $data['full'] = 'product-card' === $location ? '0' : '1';
             $data['productUrl'] = $product->getLink();
-            $data['partnerName'] = $postBuyOffer['name'];
-            $data['partnerOffer'] = $postBuyOffer['offer'];
+            $data['partnerName'] = $slotPartnerOffer['name'];
+            $data['partnerOffer'] = $slotPartnerOffer['offer'];
+            $data['isSlotPartnerOffer'] = true;
         } else if ($product->isInShopStockOnly() && $forceDefaultBuy) {
             if ($reserveAsBuy) {
                 $data['id'] = 'quickBuyButton-' . $product->getId();

@@ -545,7 +545,7 @@ class BasicEntity {
     /**
      * @return array|null
      */
-    public function getPostBuyOffer()
+    public function getSlotPartnerOffer()
     {
         // TODO удалить временную заглушку
         if ($_SERVER['APPLICATION_ENV'] === 'local') {

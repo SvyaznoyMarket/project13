@@ -1,6 +1,6 @@
 <?php
 
-namespace Controller\OrderPostBuy;
+namespace Controller\OrderSlot;
 
 use Model\Order\OrderEntity;
 
@@ -159,7 +159,7 @@ class Action {
                     'first_name' => $name
                 ],
                 (new OrderEntity(array_merge($cartSplitResponse, ['order' => $order]), json_decode($sender, true)))->getOrderData(),
-                ['type_id' => $_SERVER['APPLICATION_ENV'] === 'local' ? \Model\Order\Entity::TYPE_1CLICK : \Model\Order\Entity::TYPE_POST_BUY]
+                ['type_id' => $_SERVER['APPLICATION_ENV'] === 'local' ? \Model\Order\Entity::TYPE_1CLICK : \Model\Order\Entity::TYPE_SLOT]
             );
         }
 

@@ -1,5 +1,5 @@
 <?php
 
-namespace Controller\OrderPostBuy;
+namespace Controller\OrderSlot;
 
 class Exception extends \Exception {}

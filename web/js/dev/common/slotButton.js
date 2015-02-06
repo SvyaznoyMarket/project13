@@ -6,10 +6,10 @@
 		$body = $('body'),
 		errorCssClass = 'textfield-err',
 		popupTemplate =
-			'<div class="js-postBuyButton-popup popup--request">' +
-				'<a href="#" class="js-postBuyButton-popup-close popup--request__close" title="Закрыть"></a>' +
+			'<div class="js-slotButton-popup popup--request">' +
+				'<a href="#" class="js-slotButton-popup-close popup--request__close" title="Закрыть"></a>' +
 
-				'<form action="' + ENTER.utils.generateUrl('order.postBuy') + '" method="post">' +
+				'<form action="' + ENTER.utils.generateUrl('order.slot') + '" method="post">' +
 					'<input type="hidden" name="productId" value="{{productId}}" />' +
 					'<input type="hidden" name="sender" value="{{sender}}" />' +
 
@@ -25,7 +25,7 @@
 						'<div class="popup--request__head">Отправить заявку</div>' +
 					'{{/full}}' +
 
-					'<div class="js-postBuyButton-popup-errors" style="display: none;">' +
+					'<div class="js-slotButton-popup-errors" style="display: none;">' +
 					'</div>' +
 
 					'<div class="popup__form-group">' +
@@ -33,7 +33,7 @@
 							'<label class="label-for-input label-phone">Телефон</label>' +
 							'<input type="text" name="phone" value="{{userPhone}}" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" />' +
 						'</div>' +
-						'<span class="js-postBuyButton-popup-error popup__form-group__error" style="display: none">Неверный формат телефона</span>' +
+						'<span class="js-slotButton-popup-error popup__form-group__error" style="display: none">Неверный формат телефона</span>' +
 					'</div>' +
 
 					'<div class="popup__form-group">' +
@@ -41,7 +41,7 @@
 							'<label class="label-for-input">E-mail</label>' +
 							'<input type="text" name="email" value="{{userEmail}}" placeholder="mail@domain.com" />' +
 						'</div>' +
-						'<span class="js-postBuyButton-popup-error popup__form-group__error" style="display: none">Неверный формат email</span>' +
+						'<span class="js-slotButton-popup-error popup__form-group__error" style="display: none">Неверный формат email</span>' +
 					'</div>' +
 
 					'<div class="popup__form-group">' +
@@ -55,7 +55,7 @@
 					'<div class="popup__form-group vendor">Продавец-партнёр: {{partnerName}}</div>' +
 
 					'<div class="btn--container">' +
-						'<button type="submit" class="js-postBuyButton-popup-submitButton btn btn--submit">Отправить заявку</button>' +
+						'<button type="submit" class="js-slotButton-popup-submitButton btn btn--submit">Отправить заявку</button>' +
 					'</div>' +
 
 					'{{#full}}' +
@@ -69,7 +69,7 @@
 		popupResultTemplate =
 			'<div class="popup--request__head msg--send">Ваша заявка № {{orderNumber}} отправлена</div>' +
 			'<div class="btn--container">' +
-				'<button type="submit" class="js-postBuyButton-popup-okButton btn btn--submit">Ок</button>' +
+				'<button type="submit" class="js-slotButton-popup-okButton btn btn--submit">Ок</button>' +
 			'</div>',
 
 		validate = function($form){
@@ -81,26 +81,26 @@
 
 			if (!/8\(\d{3}\)\d{3}-\d{2}-\d{2}/.test($phoneInput.val().replace(/\s+/g, ''))) {
 				isValid = false;
-				$phoneInput.addClass(errorCssClass).siblings('.js-postBuyButton-popup-error').show();
+				$phoneInput.addClass(errorCssClass).siblings('.js-slotButton-popup-error').show();
 				$phoneInput.parents(parentClass).children(labelClass).addClass('lbl-error');
 			} else {
-				$phoneInput.removeClass(errorCssClass).siblings('.js-postBuyButton-popup-error').hide();
+				$phoneInput.removeClass(errorCssClass).siblings('.js-slotButton-popup-error').hide();
 				$phoneInput.parents(parentClass).children(labelClass).removeClass('lbl-error');
 			}
 
 			if ($emailInput.val().length != 0 && !ENTER.utils.validateEmail($emailInput.val())) {
 				isValid = false;
-				$emailInput.addClass(errorCssClass).siblings('.js-postBuyButton-popup-error').show();
+				$emailInput.addClass(errorCssClass).siblings('.js-slotButton-popup-error').show();
 				$emailInput.parents(parentClass).children(labelClass).addClass('lbl-error');
 			} else {
-				$emailInput.removeClass(errorCssClass).siblings('.js-postBuyButton-popup-error').hide();
+				$emailInput.removeClass(errorCssClass).siblings('.js-slotButton-popup-error').hide();
 				$emailInput.parents(parentClass).children(labelClass).removeClass('lbl-error');
 			}
 
 			return isValid;
 		};
 
-	$body.on('click', '.js-postBuyButton', function(e) {
+	$body.on('click', '.js-slotButton', function(e) {
 		e.preventDefault();
 
 		var
@@ -117,14 +117,14 @@
 				userName: ENTER.config.userInfo.user.name || ''
 			})),
 			$form = $('form', $popup),
-			$errors = $('.js-postBuyButton-popup-errors', $form);
+			$errors = $('.js-slotButton-popup-errors', $form);
 
 		$popup.lightbox_me({
 			centered: true,
 			sticky: true,
 			closeClick: false,
 			closeEsc: false,
-			closeSelector: '.js-postBuyButton-popup-close',
+			closeSelector: '.js-slotButton-popup-close',
 			destroyOnClose: true
 		});
 
@@ -156,7 +156,7 @@
 				return;
 			}
 
-			var $submitButton = $('.js-postBuyButton-popup-submitButton', $form);
+			var $submitButton = $('.js-slotButton-popup-submitButton', $form);
 
 			$submitButton.attr('disabled', 'disabled');
 			$.ajax({
@@ -175,7 +175,7 @@
 
 					$form.remove();
 
-					$('.js-postBuyButton-popup-okButton', $popup).click(function() {
+					$('.js-slotButton-popup-okButton', $popup).click(function() {
 						$popup.trigger('close');
 					});
 

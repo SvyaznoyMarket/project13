@@ -38,7 +38,6 @@ $isKitPage = (bool)$product->getKit();
 $isProductAvailable = $product->isAvailable();
 
 $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
-$postBuyOffer = $product->getPostBuyOffer();
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
@@ -59,9 +58,9 @@ $postBuyOffer = $product->getPostBuyOffer();
 
 <div class="product-card__section-right">
     <? if ($isProductAvailable): ?>
-        <div class="product-card__vendor">Продавец-партнёр: <?= $helper->escape($postBuyOffer['name']) ?></div>
+        <div class="product-card__vendor">Продавец-партнёр: <?= $helper->escape($product->getSlotPartnerOffer()['name']) ?></div>
 
-        <?= $helper->render('postBuy/product/__price', ['product' => $product]) // Цена ?>
+        <?= $helper->render('product/slot/__price', ['product' => $product]) // Цена ?>
 
         <span class="product-card__info--price">Цена базового комплекта</span>
         <span class="product-card__info--deliv-period">Срок доставки базового комплекта 3 дня</span>

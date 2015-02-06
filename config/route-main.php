@@ -707,9 +707,9 @@ return [
         'method'  => ['GET'],
     ],
 
-    'order.postBuy' => [
-        'pattern' => '/orders/post-buy',
-        'action'  => ['OrderPostBuy\Action', 'execute'],
+    'order.slot' => [
+        'pattern' => '/orders/slot',
+        'action'  => ['OrderSlot\Action', 'execute'],
         'method'  => ['POST'],
     ],
 

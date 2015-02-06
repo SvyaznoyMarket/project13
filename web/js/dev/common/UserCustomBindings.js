@@ -10,7 +10,7 @@
 				statusId = $elem.data('status-id'),
                 noUpdate = $elem.data('noUpdate'),
 				buyUrl = $elem.data('buy-url'),
-				isPostBuy = $elem.data('is-post-buy')
+				isSlotPartnerOffer = $elem.data('is-slot-partner-offer')
             ;
 			
 			if (typeof isBuyable != 'undefined' && !isBuyable) {
@@ -29,13 +29,13 @@
 					.removeClass('mBought')
 					.addClass('jsBuyButton')
 					.attr('href', '#');
-			} else if (typeof isPostBuy != 'undefined' && isPostBuy) {
+			} else if (typeof isSlotPartnerOffer != 'undefined' && isSlotPartnerOffer) {
 				$elem
 					.text('Как купить?')
 					.removeClass('mDisabled')
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
-					.addClass('btn btn--post-buy js-postBuyButton')
+					.addClass('btn btn--slot js-slotButton')
 					.attr('href', '#');
 			} else if (typeof inShopStockOnly != 'undefined' && inShopStockOnly && ENTER.config.pageConfig.user.region.forceDefaultBuy) {
 				$elem

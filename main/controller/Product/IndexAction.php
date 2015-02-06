@@ -488,8 +488,8 @@ class IndexAction {
             }
         }
 
-        if ($product->getPostBuyOffer()) {
-            $page = new \View\Product\PostBuyPage();
+        if ($product->getSlotPartnerOffer()) {
+            $page = new \View\Product\SlotPage();
         } else {
             $page = new \View\Product\IndexPage();
         }

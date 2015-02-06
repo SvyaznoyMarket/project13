@@ -99,7 +99,7 @@ class CompareAction {
             foreach ($compareGroups as $key => $compareGroup) {
                 foreach ($compareGroup['products'] as $key2 => $product) {
                     $starCount = isset($reviews[$product->getId()]['star_score']) ? $reviews[$product->getId()]['star_score'] : 0;
-                    $postBuyOffer = $product->getPostBuyOffer();
+                    $slotPartnerOffer = $product->getSlotPartnerOffer();
 
                     $compareGroups[$key]['products'][$key2] = [
                         'id' => $product->getId(),
@@ -113,8 +113,8 @@ class CompareAction {
                         'isBuyable' => $product->getIsBuyable(),
                         'statusId' => $product->getStatusId(),
                         'imageUrl' => $product->getImageUrl(1),
-                        'partnerName' => $postBuyOffer ? $postBuyOffer['name'] : '',
-                        'isPostBuy' => (bool)$postBuyOffer,
+                        'partnerName' => $slotPartnerOffer ? $slotPartnerOffer['name'] : '',
+                        'isSlotPartnerOffer' => (bool)$slotPartnerOffer,
                         'reviews' => [
                             'stars' => [
                                 'notEmpty' => array_pad([], $starCount, null),

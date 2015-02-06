@@ -10455,7 +10455,7 @@ img[height="0"] {
     width: 100%;
     text-align: center;
   }
-  .btn--post-buy,
+  .btn--slot,
   .btn--submit {
     display: block;
     width: auto;
@@ -10479,7 +10479,7 @@ img[height="0"] {
     color: #000;
     font-size: 18px;
   }
-  .btn--post-buy:hover,
+  .btn--slot:hover,
   .btn--submit:hover {
     text-decoration: none;
   }
@@ -10496,8 +10496,8 @@ img[height="0"] {
     padding: 2px 0px 3px;
     margin-top: 3px;
   }
-  .bBtnLine .btn--post-buy,
-  .topbarfix_buy .btn--post-buy {
+  .bBtnLine .btn--slot,
+  .topbarfix_buy .btn--slot {
     width: 72px;
     font-size: 12px;
     padding: 5px 0 6px;
@@ -10506,11 +10506,11 @@ img[height="0"] {
     background: #80c342;
     border-color: #548d1e;
   }
-  .topbarfix_buy .btn--post-buy {
+  .topbarfix_buy .btn--slot {
     width: 86px;
     padding: 4px 0px;
   }
-  .cmprCnt_buy .btn--post-buy {
+  .cmprCnt_buy .btn--slot {
     box-shadow: none;
     background: none;
     background-color: #80c342;

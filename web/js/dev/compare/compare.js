@@ -29,7 +29,7 @@
 			model.upsale = product.upsale;
 			model.partnerName = product.partnerName;
 			model.partnerOffer = product.partnerOffer;
-			model.isPostBuy = product.isPostBuy;
+			model.isSlotPartnerOffer = product.isSlotPartnerOffer;
 			return model;
 		}
 
