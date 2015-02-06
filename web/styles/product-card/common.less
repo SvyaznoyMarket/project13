@@ -181,7 +181,7 @@
             .box-sizing();
             width: 90px;
 
-            padding:0px 5px;
+            padding:0px 5px 0 15px;
 
             height: 35px;
             line-height: 35px;
@@ -190,6 +190,12 @@
             border: 1px solid #a0a0a0;
             border-right:0px;
             .border-radius(0,0,3px,3px);
+
+            &.label-phone{
+            		background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAA4klEQVQY02NgQAJnZjKwfpslFfFttrQFAz7Q0MDA9HOW9O8fs2QmYUiuCmVgRuYDFT35OVOmAkP++2zpOKAp50H01QYGtp+zZE6B2N+nSyj8mCXdB9R4b38DAwvD91kyqSCFP2dL/wFKPP48XVznx0ypHBAfqOndj9ky24FuloFb+aJbnBtk0o9p4krfZ0kn/JwhoQUUZsRwK9iq2TLPgaZXAq2782O29EwMRZ+mSAsDJW4Arb4JCiIg7fNztsz/n7Ol6lEUfpkmowdyNBB7InwvvQ3oxrmgIENR/LiPgRMfHwCLw2/0EEX6NgAAAABJRU5ErkJggg==");
+					background-repeat: no-repeat;
+					background-position: 3px 5px;
+			}
         }
         input[type="text"] {
             width: 320px;
@@ -201,7 +207,8 @@
             border: 1px solid #a0a0a0;
             .border-radius(3px,3px,0,0);
             &.textfield-err {
-                border-color: #ef404a;
+                border-color: #ed404d;
+                border-width: 2px;
             }
         }
         &__error {
@@ -211,9 +218,12 @@
             left: 15px;
         }
         .lbl-error {
-            border-color: #ef404a;
-            background-color: #ef404a;
+			background-color: #ED404D;
+			border-color: #ED404D;
             color: @white;
+            &.label-phone{
+				background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAQAAAAnOwc2AAAAg0lEQVQI12NgAIP/rP8j/lswoIL/TP9//5+E4DJD6Sf/K+D8/3H/zwMx2/9TQFLhf9//e/9ZGP6nAgX//H/8X+d/DpB+93/7fxmIVm6gKqX/Cf+1/jMizFX4//x/5f87/2cihIT/3/h/E+gon////9fDBPWAhnuCWdv+z/3PBBPmRKUBoUVQWgkTFHYAAAAASUVORK5CYII=");
+            }
         }
         &.vendor {
             margin: 5px 0px 25px 20px;
