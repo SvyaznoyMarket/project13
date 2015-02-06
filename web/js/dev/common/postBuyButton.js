@@ -29,20 +29,26 @@
 					'</div>' +
 
 					'<div class="popup__form-group">' +
-						'<label class="label-for-input label-phone">Телефон</label>' +
-						'<input type="text" name="phone" value="{{userPhone}}" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" />' +
+						'<div class="input-group">' +
+							'<label class="label-for-input label-phone">Телефон</label>' +
+							'<input type="text" name="phone" value="{{userPhone}}" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" />' +
+						'</div>' +
 						'<span class="js-postBuyButton-popup-error popup__form-group__error" style="display: none">Неверный формат телефона</span>' +
 					'</div>' +
 
 					'<div class="popup__form-group">' +
-						'<label class="label-for-input">E-mail</label>' +
-						'<input type="text" name="email" value="{{userEmail}}" placeholder="mail@domain.com" />' +
+						'<div class="input-group">' +
+							'<label class="label-for-input">E-mail</label>' +
+							'<input type="text" name="email" value="{{userEmail}}" placeholder="mail@domain.com" />' +
+						'</div>' +
 						'<span class="js-postBuyButton-popup-error popup__form-group__error" style="display: none">Неверный формат email</span>' +
 					'</div>' +
 
 					'<div class="popup__form-group">' +
-						'<label class="label-for-input">Имя</label>' +
-						'<input type="text" name="name" value="{{userName}}" />' +
+						'<div class="input-group">' +
+							'<label class="label-for-input">Имя</label>' +
+							'<input type="text" name="name" value="{{userName}}" />' +
+						'</div>' +
 					'</div>' +
 
 					'<div class="popup__form-group checkbox-group"><label><input type="checkbox" name="confirm" value="1" /><i></i> Я ознакомлен и согласен с информацией о продавце и его офертой</label></div>' +
@@ -71,7 +77,7 @@
 				$phoneInput = $('[name="phone"]', $form),
 				$emailInput = $('[name="email"]', $form),
 				parentClass = '.popup__form-group',
-				labelClass = '.label-for-input';
+				labelClass = '.input-group';
 
 			if (!/8\(\d{3}\)\d{3}-\d{2}-\d{2}/.test($phoneInput.val().replace(/\s+/g, ''))) {
 				isValid = false;
