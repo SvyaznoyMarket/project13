@@ -29,7 +29,7 @@
 					'</div>' +
 
 					'<div class="popup__form-group">' +
-						'<label class="label-for-input">*Телефон</label>' +
+						'<label class="label-for-input label-phone">Телефон</label>' +
 						'<input type="text" name="phone" value="{{userPhone}}" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" />' +
 						'<span class="js-postBuyButton-popup-error popup__form-group__error" style="display: none">Неверный формат телефона</span>' +
 					'</div>' +
