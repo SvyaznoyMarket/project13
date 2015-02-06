@@ -10577,7 +10577,6 @@ img[height="0"] {
   .popup__form-group {
     margin: 20px 0px;
     position: relative;
-    text-align: center;
   }
   .popup__form-group .input-group {
     width: 410px;
@@ -10588,8 +10587,8 @@ img[height="0"] {
     position: absolute;
     top: 1px;
     left: 1px;
-    width: 66px;
-    padding: 0px 5px 0 15px;
+    width: 65px;
+    padding: 0px 0px 0 15px;
     height: 33px;
     line-height: 33px;
     color: #a0a0a0;
@@ -10601,7 +10600,7 @@ img[height="0"] {
   .popup__form-group .input-group .label-for-input.label-phone {
     background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAA4klEQVQY02NgQAJnZjKwfpslFfFttrQFAz7Q0MDA9HOW9O8fs2QmYUiuCmVgRuYDFT35OVOmAkP++2zpOKAp50H01QYGtp+zZE6B2N+nSyj8mCXdB9R4b38DAwvD91kyqSCFP2dL/wFKPP48XVznx0ypHBAfqOndj9ky24FuloFb+aJbnBtk0o9p4krfZ0kn/JwhoQUUZsRwK9iq2TLPgaZXAq2782O29EwMRZ+mSAsDJW4Arb4JCiIg7fNztsz/n7Ol6lEUfpkmowdyNBB7InwvvQ3oxrmgIENR/LiPgRMfHwCLw2/0EEX6NgAAAABJRU5ErkJggg==");
     background-repeat: no-repeat;
-    background-position: 5px 6px;
+    background-position: 3px 4px;
   }
   .popup__form-group .input-group input[type="text"] {
     width: 410px;
@@ -10612,10 +10611,9 @@ img[height="0"] {
     padding: 0 5px 0 90px;
     height: 35px;
     line-height: 35px;
-    font-size: 14px;
     border: 0px;
     float: right;
-    border: 1px solid #a0a0a0;
+    border: 1px solid #d3d3d3;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -10643,7 +10641,7 @@ img[height="0"] {
     left: 15px;
   }
   .popup__form-group.vendor {
-    margin: 5px 0px 25px 20px;
+    margin: 5px 0px 25px 28px;
   }
   .popup__form-group.checkbox-group {
     margin-bottom: 5px;
