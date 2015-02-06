@@ -28,6 +28,7 @@
 			model.deleteFromCompareUrl = product.deleteFromCompareUrl;
 			model.upsale = product.upsale;
 			model.partnerName = product.partnerName;
+			model.partnerOffer = product.partnerOffer;
 			model.isPostBuy = product.isPostBuy;
 			return model;
 		}

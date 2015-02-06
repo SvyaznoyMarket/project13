@@ -35,8 +35,7 @@
 					.removeClass('mDisabled')
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
-					.addClass('btn--post-buy')
-					.addClass('js-postBuyButton')
+					.addClass('btn btn--post-buy js-postBuyButton')
 					.attr('href', '#');
 			} else if (typeof inShopStockOnly != 'undefined' && inShopStockOnly && ENTER.config.pageConfig.user.region.forceDefaultBuy) {
 				$elem

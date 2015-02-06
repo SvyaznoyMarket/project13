@@ -51,7 +51,7 @@
 						'</div>' +
 					'</div>' +
 
-					'<div class="popup__form-group checkbox-group"><label><input type="checkbox" name="confirm" value="1" /><i></i> Я ознакомлен и согласен с информацией о продавце и его офертой</label></div>' +
+					'<div class="popup__form-group checkbox-group"><label><input type="checkbox" name="confirm" value="1" /><i></i> Я ознакомлен и согласен с информацией о продавце и его {{#partnerOffer}}<a href="{{partnerOffer}}" target="_blank">{{/partnerOffer}}офертой{{#partnerOffer}}</a>{{/partnerOffer}}</label></div>' +
 					'<div class="popup__form-group vendor">Продавец-партнёр: {{partnerName}}</div>' +
 
 					'<div class="btn--container">' +
@@ -108,6 +108,7 @@
 			$popup = $(Mustache.render(popupTemplate, {
 				full: $button.data('full'),
 				partnerName: $button.data('partner-name'),
+				partnerOffer: $button.data('partner-offer'),
 				productUrl: $button.data('product-url'),
 				productId: $button.data('product-id'),
 				sender: $button.attr('data-sender'),
@@ -157,14 +158,14 @@
 
 			var $submitButton = $('.js-postBuyButton-popup-submitButton', $form);
 
-			$submitButton.attr('disabled', true);
+			$submitButton.attr('disabled', 'disabled');
 			$.ajax({
 				type: 'POST',
 				url: $form.attr('action'),
 				data: $form.serializeArray(),
 				success: function(result){
 					if (result.error) {
-						$errors.html(result.error).show();
+						$errors.text(result.error).show();
 						return;
 					}
 
@@ -177,12 +178,16 @@
 					$('.js-postBuyButton-popup-okButton', $popup).click(function() {
 						$popup.trigger('close');
 					});
+
+					if (typeof ENTER.utils.sendOrderToGA == 'function' && result.orderAnalytics) {
+						ENTER.utils.sendOrderToGA(result.orderAnalytics);
+					}
 				},
 				fail: function(){
 					$errors.html('Ошибка при создании заявки').show();
 				},
 				complete: function(){
-					$submitButton.attr('disabled', false);
+					$submitButton.removeAttr('disabled');
 				}
 			})
 		});

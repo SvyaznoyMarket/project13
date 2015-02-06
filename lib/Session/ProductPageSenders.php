@@ -2,6 +2,9 @@
 
 namespace Session;
 
+/**
+ * SITE-5062
+ */
 class ProductPageSenders {
     /**
      * @param string $productUid

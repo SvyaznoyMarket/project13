@@ -84,11 +84,12 @@ class ProductButtonAction {
             $data['value'] = 'Нет';
         } else if ($postBuyOffer = $product->getPostBuyOffer()) {
             $data['url'] = '#';
-            $data['class'] .= ' btn btn--post-buy js-postBuyButton '.( 'product-card' !== $location ? 'btn--short' : '');
+            $data['class'] .= ' btn btn--post-buy js-postBuyButton ' . ('product-card' !== $location ? 'btn--short' : '');
             $data['value'] = 'product-card' === $location ? 'Отправить заявку' : 'Как купить?';
             $data['full'] = 'product-card' === $location ? '0' : '1';
             $data['productUrl'] = $product->getLink();
             $data['partnerName'] = $postBuyOffer['name'];
+            $data['partnerOffer'] = $postBuyOffer['offer'];
         } else if ($product->isInShopStockOnly() && $forceDefaultBuy) {
             if ($reserveAsBuy) {
                 $data['id'] = 'quickBuyButton-' . $product->getId();
