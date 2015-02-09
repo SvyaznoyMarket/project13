@@ -51,7 +51,7 @@
 						'</div>' +
 					'</div>' +
 
-					'<div class="popup__form-group checkbox-group"><label><input type="checkbox" name="confirm" value="1" /><i></i> Я ознакомлен и согласен с информацией о продавце и его {{#partnerOffer}}<a href="{{partnerOffer}}" target="_blank">{{/partnerOffer}}офертой{{#partnerOffer}}</a>{{/partnerOffer}}</label></div>' +
+					'<div class="popup__form-group checkbox-group"><label><input type="checkbox" name="confirm" value="1" /><i></i> Я ознакомлен и согласен с информацией о продавце и его {{#partnerOffer}}<a class="underline" href="{{partnerOffer}}" target="_blank">{{/partnerOffer}}офертой{{#partnerOffer}}</a>{{/partnerOffer}}</label></div>' +
 					'<div class="popup__form-group vendor">Продавец-партнёр: {{partnerName}}</div>' +
 
 					'<div class="btn--container">' +

@@ -542,6 +542,9 @@ img[height="0"] {
   font-size: 0 !important;
   line-height: 0 !important;
 }
+.underline {
+  text-decoration: underline;
+}
 /*--END---ОСНОВНЫЕ ПРАВИЛА---*/
 /*---ПРИМЕСИ---*/
 /*--END---ПРИМЕСИ---*/
