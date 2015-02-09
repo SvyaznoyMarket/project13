@@ -41,7 +41,7 @@ return function(
     }
     ?>
 
-    <div class="fltrBtn fltrBtn-gift" style="background-image: url('/styles/catalog/img/bg-ny-gift.jpg')">
+    <div class="fltrBtn fltrBtn-gift" style="background-image: url('/styles/catalog/img/bg-ny-gift.jpg?2')">
         <form id="productCatalog-filter-form" class="fltrBtnPosBottom js-category-filter" action="<?= $baseUrl ?>" method="GET">
             <div class="fltrBtnLn">
                 <? if ($holidayProperty): ?>
