@@ -11226,7 +11226,7 @@ img[height="0"] {
     border-color: #c7c7c7;
   }
   .fltrRange-v3 .fltrRange_sldr {
-    width: 370px;
+    width: 307px;
   }
 }
 @media all {
@@ -11486,7 +11486,7 @@ img[height="0"] {
   .fltrBtn_anim-item {
     position: absolute;
     right: -25px;
-    top: 100px;
+    top: 150px;
     display: block;
     animation: animPuls 9s ease-in-out 3s infinite;
     -webkit-animation: animPuls 9s ease-in-out 3s infinite;
@@ -11775,6 +11775,8 @@ img[height="0"] {
     -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 2;
   }
   .fltrBtnLn-lst {
     width: 822px;
