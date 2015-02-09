@@ -11771,8 +11771,6 @@ img[height="0"] {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    position: relative;
-    z-index: 2;
   }
   .fltrBtnLn-bg {
     background: #ffffff;
@@ -11781,6 +11779,8 @@ img[height="0"] {
     -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 2;
   }
   .fltrBtnLn-lst {
     width: 822px;
