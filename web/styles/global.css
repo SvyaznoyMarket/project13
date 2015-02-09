@@ -11759,7 +11759,6 @@ img[height="0"] {
     bottom: 0;
     left: 0;
     width: 100%;
-    z-index: 2;
   }
   .fltrBtnLn {
     display: table;
@@ -11772,6 +11771,8 @@ img[height="0"] {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
+    position: relative;
+    z-index: 2;
   }
   .fltrBtnLn-bg {
     background: #ffffff;
