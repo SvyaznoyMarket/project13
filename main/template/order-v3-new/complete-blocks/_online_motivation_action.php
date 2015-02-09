@@ -10,7 +10,7 @@
 
 <? if ($action == 'online_motivation_coupon') : ?>
         <!-- Блок в обводке -->
-        <div class="orderPayment_block orderPayment_noOnline">
+        <div class="orderPayment_block orderPayment_noOnline orderPayment_block--border">
 
             <div class="orderPayment_msg orderPayment_noOnline_msg">
                 <div class="orderPayment_msg_head">
@@ -24,6 +24,7 @@
                             <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/visa-logo-sm.jpg"></a></li>
                             <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/psb.png"></a></li>
                         </ul>
+                        <a class="orderPayment_msg_link orderPayment_msg_link--mid" href="/how_use_chip">Подробнее</a>
                     </div>
                 </div>
                 <!-- А этот потом -->
@@ -34,7 +35,7 @@
                     <div class="orderPayment_msg_info">
                         Вы будете перемещены на сайт платежной системы.<br/><br/>
                         Код скидки будет распечатан на чеке.<br/>
-                        <a href="/how_use_chip" target="_blank">Как применить скидку</a>
+                        <a class="orderPayment_msg_link" href="/how_use_chip" target="_blank">Как применить скидку</a>
                     </div>
                 </div>
             </div>
@@ -43,7 +44,7 @@
 
 <? if ($action == 'online_motivation_discount') : ?>
 
-        <div class="orderPayment_block orderPayment_noOnline jsOnlinePaymentPossible">
+        <div class="orderPayment_block orderPayment_noOnline jsOnlinePaymentPossible orderPayment_block--border">
 
             <div class="orderPayment_msg orderPayment_noOnline_msg">
                 <div class="orderPayment_msg_head">
