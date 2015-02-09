@@ -271,7 +271,6 @@ class CompleteAction extends OrderV3 {
      * @return  string|null
      */
     private function getMotivationAction($orders, $ordersPayment) {
-        return 'online_motivation_discount';
         if (count($orders) != 1 || count($ordersPayment) != 1 || !\App::abTest()->getTest('online_motivation')) return null;
         // достанем список методов из первого возможного метода "прямо сейчас"
         $orderPayment = reset($ordersPayment);
