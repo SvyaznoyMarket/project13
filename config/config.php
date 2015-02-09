@@ -257,7 +257,7 @@ $c->partners['Insider']['enabled'] = true;
 $c->partners['GetIntent']['enabled'] = true;
 $c->partners['AddThis']['enabled'] = true;
 $c->partners['AdvMaker']['enabled'] = true;
-$c->partners['Hubrus']['enabled'] = true;
+$c->partners['Hubrus']['enabled'] = false;
 
 $c->adFox['enabled'] = true;
 
