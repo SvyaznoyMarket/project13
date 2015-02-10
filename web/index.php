@@ -67,23 +67,26 @@ $response = null;
 
         $spend = \Debug\Timer::stop('app');
 
-        \App::logger()->error([
-            'message' => 'Fail app',
-            'error'   => $error,
-            'env'     => \App::$env,
-            'spend'   => $spend,
-            'memory'  => round(memory_get_peak_usage() / 1048576, 2) . 'Mb',
-            'server'  => array_map(function($name) use (&$request) { return $request->server->get($name); }, [
-                'REQUEST_METHOD',
-                'REQUEST_URI',
-                'QUERY_STRING',
-                'HTTP_X_REQUESTED_WITH',
-                'HTTP_COOKIE',
-                'HTTP_USER_AGENT',
-                'HTTP_REFERER',
-                'REQUEST_TIME_FLOAT',
-            ]),
-        ]);
+        \App::logger()->error(
+            [
+                'message' => 'Fail app',
+                'error'   => $error,
+                'env'     => \App::$env,
+                'spend'   => $spend,
+                'memory'  => round(memory_get_peak_usage() / 1048576, 2) . 'Mb',
+                'server'  => array_map(function($name) use (&$request) { return $request->server->get($name); }, [
+                    'REQUEST_METHOD',
+                    'REQUEST_URI',
+                    'QUERY_STRING',
+                    'HTTP_X_REQUESTED_WITH',
+                    'HTTP_COOKIE',
+                    'HTTP_USER_AGENT',
+                    'HTTP_REFERER',
+                    'REQUEST_TIME_FLOAT',
+                ]),
+            ],
+            ['fatal']
+        );
 
         // очищаем буфер вывода
         $previous = null;

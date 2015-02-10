@@ -4,6 +4,8 @@ namespace View\Cart;
 
 class IndexPage extends \View\DefaultLayout {
     protected $layout  = 'layout-oneColumn';
+    /** @var $products \Model\Product\Entity[]|null */
+    protected $products;
 
     public function prepare() {
         // TODO - Костыль для IE10. SITE-1919
@@ -14,8 +16,8 @@ class IndexPage extends \View\DefaultLayout {
         $backlink = $this->url('homepage');
 
         if ($this->hasParam('products')) {
-            $products = $this->getParam('products');
-            foreach (array_reverse($products) as $product) {
+            $this->products = $this->getParam('products');
+            foreach (array_reverse($this->products) as $product) {
                 /** @var $product \Model\Product\Entity */
                 if ($product->getMainCategory() instanceof \Model\Product\Category\Entity) {
                     $backlink = $product->getMainCategory()->getLink();
@@ -81,7 +83,7 @@ class IndexPage extends \View\DefaultLayout {
 
     public function slotСpaexchangeJS () {
         if ( !\App::config()->partners['Сpaexchange']['enabled'] ) {
-           return;
+           return '';
         }
 
         return '<div id="cpaexchangeJS" class="jsanalytics" data-value="' . $this->json(['id' => 25013]) . '"></div>';
@@ -103,5 +105,14 @@ class IndexPage extends \View\DefaultLayout {
             'productIds' => $productIds,
             'price' => \App::user()->getCart()->getSum(),
         ]);
+    }
+
+    public function slotHubrusJS() {
+        $html = parent::slotHubrusJS();
+        if (!empty($html)) {
+            return $html . \View\Partners\Hubrus::addHubrusData('cart_items', $this->products);
+        } else {
+            return '';
+        }
     }
 }

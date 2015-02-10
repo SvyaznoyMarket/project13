@@ -90,6 +90,8 @@ class IndexAction {
             return new \Http\RedirectResponse($product->getLink() . ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), 302);
         }
 
+        \Session\ProductPageSenders::add($product->getUi(), $request->query->get('sender'));
+
         // подготовка 3-го пакета запросов
         $lifeGiftProduct = null;
         if ($product->getLabel() && (\App::config()->lifeGift['labelId'] === $product->getLabel()->getId())) {
@@ -253,8 +255,38 @@ class IndexAction {
             }
         );
 
+        // SITE-5035
+//        $queryParams = [];
+//        if ($rrUserId = $request->cookies->get('rrpusid')) {
+//            $queryParams['rrUserId'] = $rrUserId;
+//        }
+//
+//        $similarProductIds = [];
+//        \App::retailrocketClient()->addQuery('Recomendation/UpSellItemToItems', $product->getId(), $queryParams, [], function($data) use (&$similarProductIds) {
+//            if (is_array($data)) {
+//                $similarProductIds = array_slice($data, 0, 10);
+//            }
+//        }, null, 0.15);
+
         // выполнение 3-го пакета запросов
         \App::curl()->execute();
+
+        // SITE-5035
+        $similarProducts = [];
+//        $repository->prepareCollectionById($similarProductIds, $region, function($data) use ($similarProductIds, &$similarProducts) {
+//            if (!is_array($data)) {
+//                $data = [];
+//            }
+//
+//            foreach ($data as $item) {
+//                if (is_array($item)) {
+//                    $similarProducts[] = new \Model\Product\Entity($item);
+//                }
+//            }
+//        });
+//
+//        \App::curl()->execute();
+
         $catalogJson = array_merge_recursive($catalogJson, $productConfig);
 
         // получаем рейтинги
@@ -516,6 +548,7 @@ class IndexAction {
         ]);
         $page->setGlobalParam('isTchibo', ($product->getMainCategory() && 'Tchibo' === $product->getMainCategory()->getName()));
         $page->setGlobalParam('addToCartJS', $addToCartJS);
+        $page->setGlobalParam('similarProducts', $similarProducts);
 
         $page->setParam('sprosikupiReviews', null);
         $page->setParam('shoppilotReviews', null);

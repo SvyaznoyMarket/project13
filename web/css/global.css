@@ -2359,7 +2359,6 @@
   }
   #mainPage #header {
     margin: 0 0 10px 0;
-    width: 950px;
   }
   #mainPage .bMainMenuLevel-1 {
     width: 830px;
@@ -2385,11 +2384,11 @@
     width: 960px;
   }
   #topLogo {
-    background: url('/css/header/img/headerLogo.gif') no-repeat center center;
+    background: url('/css/header/img/headerLogo.gif') no-repeat 50% 50%;
     display: block;
     float: left;
     height: 60px;
-    padding: 20px 10px 20px 0;
+    padding: 20px 0 20px 10px;
     position: relative;
     width: 90px;
     text-indent: -10000px;
@@ -9175,6 +9174,10 @@
     width: 120px;
     position: relative;
   }
+  .slideItem_i__child {
+    margin-bottom: 7px;
+    display: block;
+  }
   .slideItem_imgw {
     display: table-cell;
     width: 110px;
@@ -9322,6 +9325,9 @@
     width: 910px;
   }
   .slideItem-3item .slideItem_inn {
+    width: 390px;
+  }
+  .slideItem-6item .slideItem_inn {
     width: 390px;
   }
   .slideItem-br1 {
@@ -12105,10 +12111,10 @@
     -moz-border-radius: 3px;
     border-radius: 3px;
     float: right;
-    padding: 2px 0 3px;
+    padding: 2px 3px 3px;
     border: 1px solid;
     text-align: center;
-    width: 90px;
+    max-width: 110px;
     border-color: #c7c7c7;
     color: #424242;
     font-size: 11px;
@@ -12449,8 +12455,8 @@
     float: right;
     font-size: 12px;
     height: 29px;
-    line-height: 26px;
-    padding: 1px 0;
+    line-height: 27px;
+    padding: 0px;
     width: 79px;
   }
   .btnView {

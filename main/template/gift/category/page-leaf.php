@@ -6,13 +6,14 @@
  * @var \Model\Product\Sorting $productSorting
  * @var int $columnCount
  * @var bool $isNewMainPage
+ * @var array $cartButtonSender
  */
 
 $helper = new \Helper\TemplateHelper();
 ?>
 
 <div class="bCatalog js-gift-category <?= $isNewMainPage ? 'newLayout' : '' ?>" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
-    <div class="bCustomFilter" styles="background-image: url('/styles/catalog/img/bg-ny-gift.jpg')">
+    <div class="bCustomFilter" styles="background-image: url('/styles/catalog/img/bg-ny-gift.jpg?2')">
 
         <?= $helper->render('gift/category/__filter', [
             'productFilter' => $productFilter,
@@ -32,7 +33,8 @@ $helper = new \Helper\TemplateHelper();
             'bannerPlaceholder'      => [],
             'listingStyle'           => null,
             'columnCount'            => $columnCount,
-            'class'                  => 'lstn-btn2'
+            'class'                  => 'lstn-btn2',
+            'cartButtonSender'    => $cartButtonSender
         ]) ?>
     </div>
     

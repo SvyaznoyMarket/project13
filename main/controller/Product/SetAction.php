@@ -40,7 +40,10 @@ class SetAction {
         \RepositoryManager::product()->prepareCollectionByBarcode($productBarcodes, \App::user()->getRegion(), function($data) use (&$products, &$categoriesById) {
             foreach ($data as $item) {
                 //$products[] = new \Model\Product\ExpandedEntity($item);
-                $products[] = new \Model\Product\Entity($item);
+                $product = new \Model\Product\Entity($item);
+                if (!$product->isAvailable()) continue;
+
+                $products[] = $product;
                 //$productsForRetargeting[] = new \Model\Product\Entity($item);
 
                 /* // SITE-2886 — В подборках не выводить список категорий товаров
@@ -99,19 +102,19 @@ class SetAction {
 
             return new \Http\JsonResponse([
                 'list'           => (new \View\Product\ListAction())->execute(
-                        $helper,
-                        $productPager,
-                        !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : []
-                    ),
+                    $helper,
+                    $productPager,
+                    !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : []
+                ),
                 //'selectedFilter' => $selectedFilter,
                 'pagination'     => (new \View\PaginationAction())->execute(
-                        $helper,
-                        $productPager
-                    ),
+                    $helper,
+                    $productPager
+                ),
                 'sorting'        => (new \View\Product\SortingAction())->execute(
-                        $helper,
-                        $productSorting
-                    ),
+                    $helper,
+                    $productSorting
+                ),
                 /*'page'           => [
                     //'title'      => 'Тег «'.$tag->getName() . '»' . ( $selectedCategory ? ( ' — ' . $selectedCategory->getName() ) : '' )
                 ],*/

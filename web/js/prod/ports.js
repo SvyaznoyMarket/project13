@@ -643,9 +643,6 @@ window.ANALYTICS = {
 
 				/** Событие нажатия кнопки «Купить» или «Резерв» */
 				$('body').on('click', 'a.btnBuy__eLink', function ga_btnBuy() {
-					var
-						butType = $(this).hasClass('mShopsOnly') ? 'reserve' : 'add2basket';
-
 					if ( 'undefined' !== product ) {
 
                         /* На наборах выполняется другой трекинговый код */
@@ -656,7 +653,9 @@ window.ANALYTICS = {
                         }
 
 						console.log('GA: btn Buy');
-						ga('send', 'event', butType, product.name, product.article, product.price);
+						if ($(this).hasClass('mShopsOnly')) {
+							ga('send', 'event', 'reserve', product.name, product.article, product.price);
+						}
 					}
 
 				});
@@ -1185,7 +1184,7 @@ window.ANALYTICS = {
 
 			document.writeln = function() {
 				anNode.html( arguments[0] );
-			}
+			};
 
 			if ( this.id+'' in self ) {
 				self[this.id]( $(this).data('vars') );
@@ -1196,7 +1195,7 @@ window.ANALYTICS = {
 
 		document.writeln = function() {
 			$('body').append( $(arguments[0] + '') );
-		}
+		};
 		console.groupEnd();
 	},
 
@@ -1822,6 +1821,68 @@ window.ANALYTICS = {
 				});
 			});
 		}
+	},
+
+	hubrusJS: function() {
+		var productData = $('.hubrusProductData').data('value'),
+			hubrusDataDiv = $('.hubrusData'),
+			hubrusProperty = hubrusDataDiv.data('property'),
+			hubrusValue = hubrusDataDiv.data('value'),
+			lsCacheKey = 'hubrus_viewed_items',
+			viewedItems, hubrusVars = {};
+
+		// Если есть данные по продукту на странице (пользователь открыл страницу продукта)
+		if (productData) {
+			viewedItems = lscache.get(lsCacheKey) ? lscache.get(lsCacheKey) : [];
+			// проверка на уникальность
+			if ($.grep(viewedItems, function(p){ return productData.id == p.id }).length == 0) viewedItems.unshift(productData);
+			hubrusVars.viewed_items = viewedItems.splice(0,10);
+			lscache.set(lsCacheKey, hubrusVars.viewed_items);
+		}
+
+		if (hubrusProperty && hubrusValue) {
+			hubrusVars[hubrusProperty] = hubrusValue
+		}
+
+		/** Событие добавления в корзину */
+		body.on('addtocart removeFromCart', function hubrusAddToCart(event) {
+			var	smpix = window.smartPixel1,
+				type = event.type;
+
+			if (!smpix || typeof smpix['trackState'] !== 'function') return;
+
+			smpix.trackState(type == 'addtocart' ? 'add_to_cart' : 'remove_from_cart',
+				{ cart_items: $.map(ENTER.UserModel.cart(), function(e){
+					return {
+						id: e.id,
+						price: e.price,
+						category: e.rootCategory ? e.rootCategory.id : 0
+					}
+				})
+			});
+		});
+
+		body.on('click', '.jsOneClickButton-new', function(){
+			var smpix = window.smartPixel1,
+				product = $('#jsProductCard').data('value'),
+				categoryId = 0;
+
+			if (!smpix || typeof smpix['trackState'] !== 'function' || !product) return;
+			if ($.isArray(product.category) && product.category.length > 0) categoryId = product.category[product.category.length - 1].id;
+
+			smpix.trackState('oneclick',
+				{ oneclick_item: [{
+					id: product.id,
+					price: product.price,
+					category: categoryId
+				}]
+				});
+
+		});
+
+		window.smCustomVars = hubrusVars;
+
+		$LAB.script('http://pixel.hubrus.com/containers/enter/dist/smartPixel.min.js');
 	},
 
 	enable : true

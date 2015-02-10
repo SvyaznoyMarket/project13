@@ -4,6 +4,7 @@ namespace Controller\OrderV3OneClick;
 
 use Http\Response;
 use Model\Order\OrderEntity;
+use Session\ProductPageSenders;
 
 class CreateAction {
     public function __construct() {
@@ -55,7 +56,7 @@ class CreateAction {
             }
 
             foreach ($splitResult['orders'] as &$splitOrder) {
-                $orderItem = array_merge($userInfo, (new OrderEntity(array_merge($splitResult, ['order' => $splitOrder])))->getOrderData());
+                $orderItem = array_merge($userInfo, (new OrderEntity(array_merge($splitResult, ['order' => $splitOrder]), json_decode($request->request->get('sender'), true)))->getOrderData());
                 $orderItem['type_id'] = \Model\Order\Entity::TYPE_1CLICK;
 
                 $ordersData[] = $orderItem;
@@ -140,6 +141,8 @@ class CreateAction {
                     'phone'         => (string)$splitResult['user_info']['phone']
                 ];
             }, $createdOrders));
+
+            ProductPageSenders::clean();
         }
 
         // удаляем предыдущее разбиение

@@ -39,7 +39,7 @@ class CompletePage extends Layout {
         $isOrderAnalytics = (null !== $isOrderAnalytics) ? $isOrderAnalytics : true;
 
 
-        return $isOrderAnalytics ? $this->render('_googleAnalytics', ['orders' => $orders, 'productsById' => $productsById, 'servicesById' => $servicesById, 'isOrderAnalytics' => $isOrderAnalytics, 'giftBuyProducts' => $this->getParam('giftBuyProducts')]) : $this->render('_googleAnalytics');
+        return $isOrderAnalytics ? $this->render('_googleAnalytics', ['orders' => $orders, 'productsById' => $productsById, 'servicesById' => $servicesById, 'isOrderAnalytics' => $isOrderAnalytics]) : $this->render('_googleAnalytics');
     }
 
     public function slotInnerJavascript() {

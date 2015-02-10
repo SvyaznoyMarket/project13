@@ -128,8 +128,7 @@
 			 */
 				googleAnalytics = function googleAnalytics( event, data ) {
 				var
-					productData = data.product,
-					ga_action;
+					productData = data.product;
 				// end of vars
 
 				var
@@ -150,8 +149,16 @@
 				tchiboGA();
 
 				if (productData.article) {
-					ga_action = typeof productData.price != 'undefined' && parseInt(productData.price, 10) < 500 ? 'product-500' : 'product';
-					body.trigger('trackGoogleEvent',['Add2Basket', ga_action, productData.article]);
+					var ga_action;
+					if (data.sender.name == 'gift') {
+						ga_action = 'product-gift';
+					} else if (typeof productData.price != 'undefined' && parseInt(productData.price, 10) < 500) {
+						ga_action = 'product-500';
+					} else {
+						ga_action = 'product';
+					}
+
+					body.trigger('trackGoogleEvent', ['Add2Basket', ga_action, productData.article]);
 				}
 
 				productData.isUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_from_rec', productData.article]);
@@ -263,10 +270,6 @@
 				for (var i in data.products) {
 					/* Google Analytics */
 					googleAnalytics(event, { product: data.products[i] });
-					if (typeof window.ga != 'undefined') {
-						console.log("GA: send event Add2Basket product %s", data.products[i].article);
-						window.ga('send', 'event', 'Add2Basket', 'product', data.products[i].article);
-					}
 				}
 				console.groupEnd();
 			}

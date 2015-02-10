@@ -47,8 +47,12 @@ class ShowAction {
         parse_str($slice->getFilterQuery(), $requestData);
 
         // Если в слайсе только список баркодов
-        if (count(array_keys($requestData)) == 1 && array_keys($requestData)[0] == 'barcode') {
-            return (new SetAction())->execute(join(',',$requestData['barcode']), $request, $slice->getName());
+        if ((count(array_keys($requestData)) == 1) && !empty($requestData['barcode'])) {
+            return (new SetAction())->execute(
+                (is_array($requestData['barcode']) && isset($requestData['barcode'][1])) ? join(',', $requestData['barcode']) : $requestData['barcode'], // поддержка как barcode=2060103001326,2060103001814 так и barcode[]=2060103001326&barcode[]=2060103001814
+                $request,
+                $slice->getName()
+            );
         }
 
         // region

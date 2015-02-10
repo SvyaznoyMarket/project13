@@ -109,11 +109,11 @@ $helper = new \Helper\TemplateHelper();
         <h2 class="epHead_title">ВЫБИРАЙ СВОЮ СКИДКУ</h2>
 
         <ul class="epHead_list">
-            <li class="epHead_list_item">Выберите фишку — получите <strong>код скидки</strong>. Используйте его при заказе.</li>
-            <li class="epHead_list_item">Каждый месяц появляются <strong>новые фишки</strong> в ограниченном количестве.</li>
-            <li class="epHead_list_item">О самых интересных скидках мы сообщаем по <strong>e-mail</strong> и в соцсетях.</li>
-            <li class="epHead_list_item">Получить и применить фишку можно  <strong>один раз</strong>.</li>
-        </ul>>
+            <li class="epHead_list_item">Выбери фишку — получи <strong>код скидки</strong>. Используй его при оформлении заказа.</li>
+            <li class="epHead_list_item">Нажми на фишку, чтобы узнать <strong>условия и срок действия</strong> скидки. </li>
+            <li class="epHead_list_item">Воспользоваться каждой фишкой можно <strong>один раз</strong>.</li>
+        </ul>
+        <p class="rulesEP"><a href="/reklamnaya-akcia-enterprize">Правила участия в ENTER PRIZE</a></p>
     </section>
 
     <? /* if ((bool)$isCouponSent): ?>
@@ -121,7 +121,7 @@ $helper = new \Helper\TemplateHelper();
     <? endif  */ ?>
 
     <? if (!$user->getEntity()): ?>
-        <h3 class="epListTitle">Выбирайте вашу первую фишку</h3>
+        <h3 class="epListTitle">ФИШКИ <span class="orange">Enter</span> Prize</h3>
     <? endif ?>
 
     <? if ($isEnterprizeMember): ?>
@@ -214,6 +214,4 @@ $helper = new \Helper\TemplateHelper();
             <? endif ?>
         <? endforeach ?>
     </ul>
-
-    <p class="rulesEP"><a href="/reklamnaya-akcia-enterprize">Правила участия в ENTER PRIZE</a></p>
 </div>

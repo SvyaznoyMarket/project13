@@ -7,7 +7,8 @@ return function (
     $isRetailRocket = null,
     $sender = [],
     $noUpdate = false,
-    $location = null
+    $location = null,
+    $reserveAsBuy = false
 ) {
 ?>
     <?= $helper->renderWithMustache('cart/_button-product', (
@@ -18,7 +19,8 @@ return function (
             $isRetailRocket,
             $sender,
             $noUpdate,
-            $location
+            $location,
+            $reserveAsBuy
         )
     ) ?>
 <? };

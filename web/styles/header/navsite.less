@@ -26,7 +26,7 @@
                 }
             }
         }
-        &:last-child{
+        &:last-child, &:nth-last-child(2){
             &:hover{
                 .navsite2{
                     left: -141px;
@@ -43,12 +43,13 @@
                                         .pseudo-corner-left(8px, @white, 50%);
                                     }
                                     &:after{
-                                        .pseudo-corner-right(0, transparent, 50%);
+                                        .pseudo-corner-right(0, transparent, 100%);
                                     }
                                 }
                             }
                         }
                     }
+
                 }
             }
             .navsite3{
@@ -199,6 +200,27 @@
         }
     }
 }
+.navsite_i {
+    &:last-child, &:nth-last-child(2) {
+        .navsite2.navsite2-new {
+            .navsite2_i {
+                &:hover {
+                    .navsite2_lk {
+                        &:after {
+                            .pseudo-corner-right(0px, transparent, 100%);
+                        }
+                        &:before {
+                            left: -3px;
+                            margin-top: -8px;
+                            .pseudo-corner-left(8px, @white, 50%);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 .navsite3{
     position: absolute;
@@ -282,7 +304,7 @@
     float: right;
 
     width: 850px;
-    margin: 14px 0 0;
+    margin: 14px 5px 0 0;
     .navsite{
         &_i{
             padding: 0 3px;
@@ -304,18 +326,27 @@
                     }
                 }
             }
-            &:last-child{
+
+            &:last-child, &:nth-last-child(2){
                 &:hover{
                     .navsite2{
                         &_i{
                             &-child{
-                                .navsite2_lk{
+                                //.navsite2_lk{
                                     &:hover{
                                         &:before{
-                                            .pseudo-corner-left(8px, transparent, 50%);
+                                            z-index: 9;
+                                            right: 198px;
+
+                                            margin-top: -8px;
+
+                                            .pseudo-corner-left(8px, @white, 50%);
+                                        }
+                                        &:after{
+                                            .pseudo-corner-right(8px, transparent, 100%);
                                         }
                                     }
-                                }
+                              //  }
                             }
                         }
                     }
@@ -388,4 +419,6 @@
             }
         }
     }
+
 }
+

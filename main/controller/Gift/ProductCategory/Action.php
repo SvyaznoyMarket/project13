@@ -111,6 +111,7 @@ class Action {
         }
 
         $columnCount = 4;
+        $cartButtonSender = ['name' => 'gift'];
 
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
             $data = [
@@ -122,7 +123,8 @@ class Action {
                     null,
                     true,
                     $columnCount,
-                    'light_with_bottom_description'
+                    'light_with_bottom_description',
+                    $cartButtonSender
                 ),
                 'selectedFilter' => [],
                 'pagination'     => (new \View\PaginationAction())->execute(
@@ -148,6 +150,7 @@ class Action {
         $page->setParam('productSorting', $productSorting);
         $page->setParam('columnCount', $columnCount);
         $page->setParam('isNewMainPage', $this->isNewMainPage());
+        $page->setParam('cartButtonSender', $cartButtonSender);
         $page->setGlobalParam('shop', $shop);
 
         return new \Http\Response($page->show());
@@ -339,12 +342,18 @@ class Action {
     }
 
     private function setDefaultValues(\Http\ParameterBag $params) {
+        $isSubmitted = (bool)$params->get('f-holiday');
+
         if (!$this->hasTagFilterPropertyValue('holiday', $params->get('f-holiday'))) {
-            $params->set('f-holiday', 707);
+            $params->set('f-holiday', 737);
         }
 
         if (!$this->hasTagFilterPropertyValue('sex', $params->get('f-sex'))) {
-            $params->set('f-sex', 687);
+            if ($params->get('f-holiday') == 738) {
+                $params->set('f-sex', 688);
+            } else {
+                $params->set('f-sex', 687);
+            }
         }
 
         if (!$this->hasTagFilterPropertyValue('status', $params->get('f-status'))) {
@@ -358,11 +367,29 @@ class Action {
         if (!$this->hasTagFilterPropertyValue('age', $params->get('f-age'))) {
             $params->set('f-age', 724);
         }
+
+        if (!$this->hasCategoryInQueryParams($params) && !$isSubmitted && $params->get('f-holiday') == 737 && $params->get('f-sex') == 687 && $params->get('f-status') == 689) {
+            $params->set('f-category-ukrasheniya_i_chasi', 923);
+            $params->set('f-category-parfyumeriya_i_kosmetika', 2545);
+        }
+    }
+
+    private function hasCategoryInQueryParams(\Http\ParameterBag $params) {
+        foreach ($params as $name => $value) {
+            if (strpos($name, 'f-category-') === 0) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function getTagFilterPropertyValues() {
         return [
             'holiday' => [
+                ['id' => 737, 'name' => '14 февраля'],
+                ['id' => 738, 'name' => '23 февраля'],
+                ['id' => 739, 'name' => '8 марта'],
                 ['id' => 706, 'name' => 'Новый Год'],
                 ['id' => 707, 'name' => 'День рождения'],
                 ['id' => 708, 'name' => 'Юбилей'],
@@ -502,7 +529,9 @@ class Action {
             $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
                 if (is_array($data)) {
                     foreach ($data as $item) {
-                        $products[] = new \Model\Product\Entity($item);
+                        $product = new \Model\Product\Entity($item);
+                        $product->setLink($product->getLink() . (strpos($product->getLink(), '?') === false ? '?' : '&') . http_build_query(['sender' => ['name' => 'gift']]));
+                        $products[] = $product;
                     }
                 }
             });
@@ -511,7 +540,6 @@ class Action {
 
         $repository->prepareProductsMedias($products);
 
-        $scoreData = [];
         if ($products) {
             $productUIs = [];
             foreach ($products as $product) {
@@ -519,16 +547,14 @@ class Action {
                 $productUIs[] = $product->getUi();
             }
 
-            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
+            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) {
                 if (isset($data['product_scores'][0])) {
-                    $scoreData = $data;
+                    \RepositoryManager::review()->addScores($products, $data);
                 }
             });
         }
 
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-        \RepositoryManager::review()->addScores($products, $scoreData);
 
         $productPager = new \Iterator\EntityPager($products, $productCount);
         $productPager->setPage($pageNum);

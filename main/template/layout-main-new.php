@@ -36,19 +36,18 @@
 
 <?= $page->slotConfig() ?>
 
-    <!-- шапка -->
-    <div class="header header-new">
-
-        <?= $page->slotTopbar() ?>
-
-        <?= $page->slotSearchBar() ?>
-
-        <?= $page->slotNavigation() ?>
-
-    </div>
-    <!--/ шапка -->
-
     <div class="wrapper">
+        <!-- шапка -->
+        <div class="header header-new">
+
+            <?= $page->slotTopbar() ?>
+
+            <?= $page->slotSearchBar() ?>
+
+            <?= $page->slotNavigation() ?>
+
+        </div>
+        <!--/ шапка -->
 
         <div class="content">
 

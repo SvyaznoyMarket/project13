@@ -25,7 +25,7 @@ class LeafPage extends Layout {
         $category = $this->getParam('category');
         $productFilter = $this->getParam('productFilter');
         return [
-            'target' => $productFilter instanceof \Model\Product\Filter && $productFilter->hasAlwaysShowFilters() || $category instanceof \Model\Product\Category\Entity && $category->isV2() ? '.js-listing' : '#productCatalog-filter-form',
+            'target' => $category instanceof \Model\Product\Category\Entity && ($category->isV2() || $category->isV3()) ? '.js-listing' : '#productCatalog-filter-form',
             'filterTarget' => '#productCatalog-filter-form',
         ];
     }
