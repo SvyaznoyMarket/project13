@@ -351,7 +351,11 @@ class Action {
         }
 
         if (!$this->hasTagFilterPropertyValue('sex', $params->get('f-sex'))) {
-            $params->set('f-sex', 687);
+            if ($params->get('f-holiday') == 738) {
+                $params->set('f-sex', 688);
+            } else {
+                $params->set('f-sex', 687);
+            }
         }
 
         if (!$this->hasTagFilterPropertyValue('status', $params->get('f-status'))) {
