@@ -11233,6 +11233,7 @@ img[height="0"] {
   .fltrBtn {
     width: 960px;
     margin: 0 0 0 -10px;
+    position: relative;
   }
   .fltrBtn-mb10 {
     margin-bottom: 10px;
@@ -11486,12 +11487,12 @@ img[height="0"] {
   .fltrBtn_anim-item {
     position: absolute;
     right: -25px;
-    top: 150px;
+    top: 100px;
     display: block;
-    animation: animPuls 9s ease-in-out 3s infinite;
-    -webkit-animation: animPuls 9s ease-in-out 3s infinite;
-    -moz-animation: animPuls 9s ease-in-out 3s infinite;
-    -o-animation: animPuls 9s ease-in-out 3s infinite;
+    animation: animPuls 6s ease-in-out 1s infinite;
+    -webkit-animation: animPuls 6s ease-in-out 1s infinite;
+    -moz-animation: animPuls 6s ease-in-out 1s infinite;
+    -o-animation: animPuls 6s ease-in-out 1s infinite;
   }
   .fltrBtn_anim-item:hover {
     -webkit-animation: none;
@@ -11499,11 +11500,11 @@ img[height="0"] {
     -o-animation: none;
     animation: none;
   }
-  .fltrBtn_anim-item:hover .fltrBtn_anim-item_img {
-    right: 4px;
-    top: 4px;
+  .fltrBtn_anim-item:hover img {
+    right: 7px;
+    top: 7px;
   }
-  .fltrBtn_anim-item_img {
+  .fltrBtn_anim-item img {
     transition: all .2s ease;
     display: block;
     position: absolute;
@@ -11511,46 +11512,45 @@ img[height="0"] {
     right: 0;
   }
   @keyframes animPuls {
-    0%,
-    4% {
+    0% {
       transform: scale3d(1, 1, 1);
     }
-    2%,
+    3%,
     6% {
-      transform: scale3d(1.03, 1.03, 1.03);
+      transform: scale3d(1.06, 1.06, 1.06);
     }
-    8% {
+    9% {
       transform: scale3d(1, 1, 1);
     }
   }
   @-webkit-keyframes animPuls {
     0%,
-    4% {
+    5% {
       -webkit-transform: scale3d(1, 1, 1);
       transform: scale3d(1, 1, 1);
     }
-    2%,
-    6% {
-      -webkit-transform: scale3d(1.03, 1.03, 1.03);
-      transform: scale3d(1.03, 1.03, 1.03);
+    3%,
+    7% {
+      -webkit-transform: scale3d(1.06, 1.06, 1.06);
+      transform: scale3d(1.06, 1.06, 1.06);
     }
-    8% {
+    9% {
       -webkit-transform: scale3d(1, 1, 1);
       transform: scale3d(1, 1, 1);
     }
   }
   @-moz-keyframes animPuls {
     0%,
-    4% {
+    5% {
       -moz-transform: scale3d(1, 1, 1);
       transform: scale3d(1, 1, 1);
     }
-    2%,
-    6% {
-      -moz-transform: scale3d(1.03, 1.03, 1.03);
-      transform: scale3d(1.03, 1.03, 1.03);
+    3%,
+    7% {
+      -moz-transform: scale3d(1.06, 1.06, 1.06);
+      transform: scale3d(1.06, 1.06, 1.06);
     }
-    8% {
+    9% {
       -moz-transform: scale3d(1, 1, 1);
       transform: scale3d(1, 1, 1);
     }
