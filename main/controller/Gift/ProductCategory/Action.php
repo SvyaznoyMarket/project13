@@ -369,6 +369,21 @@ class Action {
         if (!$this->hasTagFilterPropertyValue('age', $params->get('f-age'))) {
             $params->set('f-age', 724);
         }
+
+        if (!$this->hasCategoryInQueryParams($params) && $params->get('f-holiday') == 737 && $params->get('f-sex') == 687 && $params->get('f-status') == 689) {
+            $params->set('f-category-ukrasheniya_i_chasi', 923);
+            $params->set('f-category-parfyumeriya_i_kosmetika', 2545);
+        }
+    }
+
+    private function hasCategoryInQueryParams(\Http\ParameterBag $params) {
+        foreach ($params as $name => $value) {
+            if (strpos($name, 'f-category-') === 0) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function getTagFilterPropertyValues() {
