@@ -5,6 +5,12 @@
 ) {
 
     $helper = \App::helper();
+    // по идее в $orderPayment->methods уже только методы, которые содержат акцию, поэтому берем первый метод и смотрим на сумму
+    /** @var $method \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity */
+    $sumWithDiscount = $order->getSum();
+    $method = reset($orderPayment->methods);
+    $actionArr = !is_null($method) ? $method->getAction($action) : null;
+    if (is_array($actionArr)) $sumWithDiscount = $actionArr['payment_sum'];
 
     ?>
 
@@ -57,7 +63,7 @@
                 </div>
                 <div class="orderPayment_msg_head-row">
                     <label class="orderSum-lbl">При оплате онлайн:</label>
-                    <span class="orderSum"><?= $helper->formatPrice($order->sum - $order->sum * 0.05) ?> <span class="rubl">p</span></span>
+                    <span class="orderSum"><?= $helper->formatPrice($sumWithDiscount) ?> <span class="rubl">p</span></span>
                 </div>
 
 

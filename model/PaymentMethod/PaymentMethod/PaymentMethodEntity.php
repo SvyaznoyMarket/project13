@@ -70,8 +70,19 @@ class PaymentMethodEntity {
             case 14: $this->icon = '/styles/order/img/svyaznoy.png'; break;
         }
 
-        if (is_array($arr['available_action_aliases'])) $this->availableActions = $arr['available_action_aliases'];
+        if (is_array($arr['available_actions'])) $this->availableActions = $arr['available_actions'];
 
+    }
+
+    /** Возвращает discount-акцию
+     * @param $alias string
+     * @return array|null
+     */
+    public function getAction($alias) {
+        foreach ($this->availableActions as $arr) {
+            if (isset($arr['alias']) && $alias == $arr['alias']) return $arr;
+        }
+        return null;
     }
 
 } 

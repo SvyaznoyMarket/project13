@@ -271,13 +271,17 @@ class CompleteAction extends OrderV3 {
      * @return  string|null
      */
     private function getMotivationAction($orders, $ordersPayment) {
+        /** @var $order \Model\Order\Entity */
         if (count($orders) != 1 || count($ordersPayment) != 1 || !\App::abTest()->getTest('online_motivation')) return null;
+        $order = reset($orders);
+        // если пользователь выбрал что-то отличное от оплаты наличными, то не предлагаем ему акцию
+        if ($order->paymentId != \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CASH) return null;
         // достанем список методов из первого возможного метода "прямо сейчас"
         $orderPayment = reset($ordersPayment);
         $onlineMethods = $orderPayment instanceof \Model\PaymentMethod\PaymentEntity ? $orderPayment->getOnlineMethods() : null;
         if (empty($onlineMethods)) return null;
         $key = \App::abTest()->getTest('online_motivation')->getChosenCase()->getKey();
-        if (in_array($key, $onlineMethods[0]->availableActions)) return $key;
+        if ($onlineMethods[0]->getAction($key)) return $key;
         return null;
     }
 
