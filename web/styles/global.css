@@ -11487,7 +11487,7 @@ img[height="0"] {
   .fltrBtn_anim-item {
     position: absolute;
     right: -25px;
-    top: 100px;
+    top: 150px;
     display: block;
     animation: animPuls 6s ease-in-out 1s infinite;
     -webkit-animation: animPuls 6s ease-in-out 1s infinite;
