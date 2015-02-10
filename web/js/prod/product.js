@@ -78,12 +78,12 @@
 			try {
 				if (!$('#js-product-3d-img-container').length) {
 					(new DAnimFramePlayer($element[0], host)).DoLoadModel(data);
-
-					$element.lightbox_me({
-						centered: true,
-						closeSelector: '.close'
-					});
 				}
+
+				$element.lightbox_me({
+					centered: true,
+					closeSelector: '.close'
+				});
 			}
 			catch (err) {}
 		});
