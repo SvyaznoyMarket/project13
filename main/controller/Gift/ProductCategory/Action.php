@@ -343,11 +343,15 @@ class Action {
 
     private function setDefaultValues(\Http\ParameterBag $params) {
         if (!$this->hasTagFilterPropertyValue('holiday', $params->get('f-holiday'))) {
-            $params->set('f-holiday', 707);
+            $params->set('f-holiday', 737);
         }
 
         if (!$this->hasTagFilterPropertyValue('sex', $params->get('f-sex'))) {
-            $params->set('f-sex', 687);
+            if ($params->get('f-holiday') == 738) {
+                $params->set('f-sex', 688);
+            } else {
+                $params->set('f-sex', 687);
+            }
         }
 
         if (!$this->hasTagFilterPropertyValue('status', $params->get('f-status'))) {
@@ -366,6 +370,9 @@ class Action {
     private function getTagFilterPropertyValues() {
         return [
             'holiday' => [
+                ['id' => 737, 'name' => '14 февраля'],
+                ['id' => 738, 'name' => '23 февраля'],
+                ['id' => 739, 'name' => '8 марта'],
                 ['id' => 706, 'name' => 'Новый Год'],
                 ['id' => 707, 'name' => 'День рождения'],
                 ['id' => 708, 'name' => 'Юбилей'],

@@ -1,6 +1,7 @@
 .fltrBtn{
     width: 960px;
     margin: 0 0 0 -10px;
+
     &-mb10{
         margin-bottom: 10px;
     }
@@ -250,5 +251,94 @@
                 .inline-block-middle();
             }
         }
+    }
+
+    &_anim-item {
+        position: absolute;
+        right: -25px;
+        top: 150px;
+        display: block;
+        animation: animPuls 9s ease-in-out 3s infinite;
+        -webkit-animation: animPuls 9s ease-in-out 3s infinite;
+        -moz-animation: animPuls 9s ease-in-out 3s infinite;
+        -o-animation: animPuls 9s ease-in-out 3s infinite;
+
+        &:hover {
+            -webkit-animation: none;
+            -moz-animation: none;
+            -o-animation: none;
+            animation: none;
+
+            .fltrBtn_anim-item_img {
+                right: 4px;
+                top: 4px;
+            }
+        }
+
+        &_img {
+            transition: all .2s ease;
+            display: block;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+    }
+}
+
+// анимация карты на странице с подарками /gift
+@keyframes animPuls{
+    0%,
+    4%{
+        transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+
+    2%,
+    6%{
+        transform: scale3d(1.03, 1.03, 1.03);
+        transform: scale3d(1.03, 1.03, 1.03);
+    }
+
+    8%{
+        transform: scale3d(1, 1, 1);
+        transform: scale3d(1, 1, 1);
+    }
+}
+
+@-webkit-keyframes animPuls{
+    0%,
+    4%{
+        -webkit-transform: scale3d(1, 1, 1);
+                transform: scale3d(1, 1, 1);
+    }
+
+    2%,
+    6%{
+        -webkit-transform: scale3d(1.03, 1.03, 1.03);
+                transform: scale3d(1.03, 1.03, 1.03);
+    }
+
+    8%{
+        -webkit-transform: scale3d(1, 1, 1);
+                transform: scale3d(1, 1, 1);
+    }
+}
+
+@-moz-keyframes animPuls{
+    0%,
+    4%{
+        -moz-transform: scale3d(1, 1, 1);
+             transform: scale3d(1, 1, 1);
+    }
+
+    2%,
+    6%{
+        -moz-transform: scale3d(1.03, 1.03, 1.03);
+             transform: scale3d(1.03, 1.03, 1.03);
+    }
+
+    8%{
+        -moz-transform: scale3d(1, 1, 1);
+             transform: scale3d(1, 1, 1);
     }
 }
