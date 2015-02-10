@@ -12111,10 +12111,10 @@
     -moz-border-radius: 3px;
     border-radius: 3px;
     float: right;
-    padding: 2px 0 3px;
+    padding: 2px 3px 3px;
     border: 1px solid;
     text-align: center;
-    width: 90px;
+    max-width: 110px;
     border-color: #c7c7c7;
     color: #424242;
     font-size: 11px;
@@ -12455,8 +12455,8 @@
     float: right;
     font-size: 12px;
     height: 29px;
-    line-height: 26px;
-    padding: 1px 0;
+    line-height: 27px;
+    padding: 0px;
     width: 79px;
   }
   .btnView {
