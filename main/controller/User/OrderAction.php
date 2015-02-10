@@ -89,6 +89,11 @@ class OrderAction {
 
         $delivery = $order->getDelivery() ? \RepositoryManager::deliveryType()->getEntityById($order->getDelivery()->getTypeId()) : null;
 
+        // если не удалось получить доставку через одно значение, то попробуем через другое
+        if ($delivery == null) {
+            $delivery = \RepositoryManager::deliveryType()->getEntityById($order->getDeliveryTypeId());
+        }
+
         $shop = null;
         if ($delivery && in_array($delivery->getToken(), ['now', 'self'])) {
             \RepositoryManager::shop()->prepareCollectionById(

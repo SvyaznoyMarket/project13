@@ -67,6 +67,20 @@ class Repository {
     }
 
     /**
+     * @param string $uid
+     * @param        $successCallback
+     */
+    public function prepareEntityByUid($uid, $successCallback) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+
+        $this->client->addQuery('product/get', [
+            'select_type' => 'ui',
+            'ui'        => [$uid],
+            'geo_id'      => \App::user()->getRegion()->getId(),
+        ], [], $successCallback);
+    }
+
+    /**
      * @param string               $token
      * @param \Model\Region\Entity $region
      * @param                      $callback
@@ -524,6 +538,41 @@ class Repository {
         return $iterators;
     }
 
+    /**
+     * @param \Model\Product\Entity[] $products
+     */
+    public function prepareProductsMedias($products) {
+        if ($products) {
+            \App::scmsClient()->addQuery(
+                'product/get-description/v1',
+                ['uids' => array_map(function(\Model\Product\Entity $product) { return $product->getUi(); }, $products), 'media' => 1],
+                [],
+                function($data) use($products) {
+                    foreach ($products as $product) {
+                        if (isset($data['products'][$product->getUi()])) {
+                            $productData = $data['products'][$product->getUi()];
+
+                            if (isset($productData['medias']) && is_array($productData['medias'])) {
+                                foreach ($productData['medias'] as $media) {
+                                    if (is_array($media)) {
+                                        $product->medias[] = new \Model\Media($media);
+                                    }
+                                }
+                            }
+
+                            if (isset($productData['json3d']) && is_array($productData['json3d'])) {
+                                $product->json3d = $productData['json3d'];
+                            }
+                        }
+                    }
+                },
+                function(\Exception $e) {
+                    \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['controller']);
+                    \App::exception()->remove($e);
+                }
+            );
+        }
+    }
 
     /**
      * Фильтрует аксессуары согласно разрешенным в json категориям

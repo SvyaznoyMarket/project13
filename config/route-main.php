@@ -610,6 +610,10 @@ return [
         'pattern' => '/order-1click/get/{accessToken}',
         'action'  => ['OrderV3OneClick\GetAction', 'execute'],
     ],
+    'orderV3OneClick.form' => [
+        'pattern' => '/order-1click/form/{productUid}',
+        'action'  => ['OrderV3OneClick\FormAction', 'execute'],
+    ],
 
 
     // заказ

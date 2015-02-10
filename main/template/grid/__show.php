@@ -48,7 +48,6 @@ $f = function(
                     <?= $helper->renderWithMustache('product/show/__grid', $showAction->execute(
                         $helper,
                         $product,
-                        [],
                         null,
                         false,
                         $cartButtonAction,

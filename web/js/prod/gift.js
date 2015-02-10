@@ -38,6 +38,27 @@ $(function() {
 			}
 		});
 
+		function changeSexDropBox($dropBox, $selectedItem) {
+			if ($dropBox.is('.js-gift-category-filter-property-dropBox-holiday')) {
+				var
+					selectedHolidayValue = $('input:radio', $selectedItem).val(),
+					previousSelectedHolidayValue = $('input:radio:checked', $dropBox).val();
+
+				if (selectedHolidayValue != previousSelectedHolidayValue) {
+					var newSexValue;
+					if (selectedHolidayValue == '739') { // 8 марта
+						newSexValue = '687'; // Женщине
+					} else if (selectedHolidayValue == '738') { // 23 февраля
+						newSexValue = '688'; // Мужчине
+					}
+
+					if (newSexValue) {
+						$('.js-gift-category-filter-property-dropBox-sex .js-gift-category-filter-property-dropBox-content-item-input[value="' + newSexValue + '"]').closest('.js-gift-category-filter-property-dropBox-content-item').find('.js-gift-category-filter-property-dropBox-content-item-clicker').click();
+					}
+				}
+			}
+		}
+
 		function changeStatusDropBox($dropBox, $selectedItem) {
 			if ($dropBox.is('.js-gift-category-filter-property-dropBox-sex')) {
 				var
@@ -103,6 +124,7 @@ $(function() {
 				$dropBox.removeClass(dropBoxOpenClass);
 			}, 100);
 
+			changeSexDropBox($dropBox, $item);
 			changeStatusDropBox($dropBox, $item);
 
 			$body.trigger('trackGoogleEvent', {
@@ -157,21 +179,5 @@ $(function() {
 			action: 'scroll',
 			label: page + ''
 		});
-	});
-
-	// Сохраняем купленные товары в cookie для последующей отправки событий в ga
-	$body.on('click', '.js-gift-category-listing .jsBuyButton', function(e) {
-		var giftBuyProducts = docCookies.getItem('giftBuyProducts') || '';
-		if (giftBuyProducts) {
-			while (giftBuyProducts.length > 500) {
-				giftBuyProducts = giftBuyProducts.replace(/^\s*[^\s]+\s*/, '');
-			}
-
-			giftBuyProducts += ' ';
-		}
-
-		giftBuyProducts += $(e.currentTarget).data('productId');
-
-		docCookies.setItem('giftBuyProducts', giftBuyProducts, 30*24*60, '/', 'enter.ru');
 	});
 });

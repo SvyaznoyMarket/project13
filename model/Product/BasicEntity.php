@@ -65,6 +65,10 @@ class BasicEntity {
     protected $seoKeywords;
     /** @var string|null */
     protected $seoDescription;
+    /** @var \Model\Media[] */
+    public $medias = [];
+    /** @var array */
+    public $json3d = [];
 
     public function __construct(array $data = []) {
         if (isset($data['id'])) $this->setId($data['id']);
@@ -339,8 +343,26 @@ class BasicEntity {
         $this->stock[] = $stock;
     }
 
+    /**
+     * @return Stock\Entity[]
+     */
     public function getStock() {
         return $this->stock;
+    }
+
+    /** Возвращает сток с максимальным количеством товара
+     * @return Stock\Entity|null
+     */
+    public function getStockWithMaxQuantity(){
+
+        if (empty($this->stock)) return null;
+
+        $maxStock = $this->stock[0];
+        foreach ($this->stock as $stock) {
+            if ($stock->getQuantity() > $maxStock->getQuantity()) $maxStock = $stock;
+        }
+
+        return $maxStock;
     }
 
     /**
@@ -625,5 +647,29 @@ class BasicEntity {
             && !$this->isAvailable()
             && !$this->hasAvailableModels()
         ;
+    }
+
+    public function hasVideo() {
+        foreach ($this->medias as $media) {
+            if (in_array($media->provider, ['vimeo', 'youtube'], true)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function has3d() {
+        if ($this->json3d) {
+            return true;
+        }
+
+        foreach ($this->medias as $media) {
+            if (in_array($media->provider, ['megavisor', 'maybe3d', 'swf'], true)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

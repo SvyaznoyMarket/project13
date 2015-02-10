@@ -7,7 +7,7 @@
 <div class="header_t clearfix">
     <div class="header_i hdcontacts">
         <a class="hdcontacts_lk jsChangeRegion undrl" href="<?= $page->url('region.change', ['regionId' => $user->getRegion()->getId()]) ?>"><?= $user->getRegion()->getName() ?></a>
-        <div class="hdcontacts_phone">+7 (495) 775-00-06</div>
+        <div class="hdcontacts_phone"><?= \App::helper()->regionalPhone() ?></div>
     </div>
 
     <? if (\App::config()->onlineCall['enabled']): ?>

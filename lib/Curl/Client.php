@@ -5,8 +5,8 @@ namespace Curl;
 class Client {
     /** @var \Logger\LoggerInterface */
     private $logger;
-    /** @var resource */
-    private $isMultiple;
+    /** @var resource|null */
+    private $multiHandler;
     /** @var array */
     private $successCallbacks = [];
     /** @var array */
@@ -31,7 +31,7 @@ class Client {
     }
 
     public function __clone() {
-        $this->isMultiple = null;
+        $this->multiHandler = null;
         $this->successCallbacks = [];
         $this->failCallbacks = [];
         $this->resources = [];
@@ -66,7 +66,7 @@ class Client {
             $info = curl_getinfo($connection);
 
             if ($info['http_code'] >= 300) {
-                throw new \RuntimeException('Invalid http code: ' . $info['http_code']);
+                throw new \RuntimeException('Invalid http code: ' . $info['http_code'], (int)$info['http_code']);
             }
 
             if (null === $response) {
@@ -127,11 +127,11 @@ class Client {
     public function addQuery($url, array $data = [], $successCallback = null, $failCallback = null, $timeout = null) {
         $timeout = $timeout ? $timeout : $this->getDefaultTimeout();
 
-        if (!$this->isMultiple) {
-            $this->isMultiple = curl_multi_init();
+        if (!$this->multiHandler) {
+            $this->multiHandler = curl_multi_init();
         }
         $resource = $this->create($url, $data, $timeout);
-        if (0 !== curl_multi_add_handle($this->isMultiple, $resource)) {
+        if (0 !== curl_multi_add_handle($this->multiHandler, $resource)) {
             $this->logger->error(['message' => 'Fail query', 'error'   => curl_error($resource),], ['curl']);
 
             return false;
@@ -170,7 +170,7 @@ class Client {
      */
     public function execute($retryTimeout = null, $retryCount = 0) {
         $startedAt = \Debug\Timer::start('curl');
-        if (!$this->isMultiple) {
+        if (!$this->multiHandler) {
             $this->logger->warn(['message' => 'No query to execute'], ['curl']);
             return;
         }
@@ -186,12 +186,12 @@ class Client {
                     //$this->logger->debug(microtime(true) . ': Слудеющий таймаут должен сработать в ' . $absoluteTimeout, ['curl']);
                 }
                 do {
-                    $code = curl_multi_exec($this->isMultiple, $stillExecuting);
+                    $code = curl_multi_exec($this->multiHandler, $stillExecuting);
                     $this->stillExecuting = $stillExecuting;
                 } while ($code == CURLM_CALL_MULTI_PERFORM);
 
                 // if one or more descriptors is ready, read content and run callbacks
-                while ($done = curl_multi_info_read($this->isMultiple)) {
+                while ($done = curl_multi_info_read($this->multiHandler)) {
                     //$this->logger->debug('Curl response done: ' . print_r($done, 1), ['curl']);
                     $handler = $done['handle'];
 
@@ -201,7 +201,7 @@ class Client {
                     //удаляем запрос из массива запросов на исполнение и прерываем дублирующие запросы
                     foreach ($this->queries[$this->queryIndex[(string)$handler]]['resources'] as $resource) {
                         if ($resource !== $handler) {
-                            curl_multi_remove_handle($this->isMultiple, $resource);
+                            curl_multi_remove_handle($this->multiHandler, $resource);
                         }
                     }
 
@@ -223,7 +223,7 @@ class Client {
                         }
 
                         if ($info['http_code'] >= 300) {
-                            throw new \RuntimeException('Invalid http code ' . $info['http_code']);
+                            throw new \RuntimeException('Invalid http code ' . $info['http_code'], (int)$info['http_code']);
                         }
 
                         $decodedResponse = $this->decode($content);
@@ -250,6 +250,8 @@ class Client {
                         ], ['curl']);
 
                         if (isset($this->queries[$this->queryIndex[(string)$handler]])) {
+                            curl_multi_remove_handle($this->multiHandler, $handler);
+                            curl_close($handler);
                             unset($this->queries[$this->queryIndex[(string)$handler]]);
                         }
                     } catch (\Exception $e) {
@@ -276,6 +278,8 @@ class Client {
                         }
 
                         if (isset($this->queries[$this->queryIndex[(string)$handler]])) {
+                            curl_multi_remove_handle($this->multiHandler, $handler);
+                            curl_close($handler);
                             unset($this->queries[$this->queryIndex[(string)$handler]]);
                         }
                     }
@@ -295,10 +299,10 @@ class Client {
                     }
                     if ($isTryAvailable && 0 !== $retryTimeout) {
                         //$this->logger->debug(microtime(true) . ': ждем ответа или ' . $timeout . ' сек', ['curl']);
-                        $ready = curl_multi_select($this->isMultiple, $timeout);
+                        $ready = curl_multi_select($this->multiHandler, $timeout);
                     } else {
                         //$this->logger->debug(microtime(true) . ':' . (0 === $retryTimeout ? '' : ' все попытки исчерпаны,') . ' ждем ответа', ['curl']);
-                        $ready = curl_multi_select($this->isMultiple, $timeout);
+                        $ready = curl_multi_select($this->multiHandler, $timeout);
                     }
 
                     if (0 === $ready) {
@@ -329,10 +333,11 @@ class Client {
         }
         // clear multi container
         foreach ($this->resources as $resource) {
-            curl_multi_remove_handle($this->isMultiple, $resource);
+            curl_multi_remove_handle($this->multiHandler, $resource);
+            curl_close($resource);
         }
-        curl_multi_close($this->isMultiple);
-        $this->isMultiple = null;
+        curl_multi_close($this->multiHandler);
+        $this->multiHandler = null;
         $this->successCallbacks = [];
         $this->failCallbacks = [];
         $this->resources = [];

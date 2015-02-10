@@ -111,7 +111,7 @@ class Action {
             \RepositoryManager::productCategory()->prepareCollectionById(array_keys($categoriesById), $region, function($data) use (&$categoriesById) {
                 if (is_array($data)) {
                     foreach ($data as $item) {
-                        if ($item) {
+                        if ($item && is_array($item)) {
                             $category = new \Model\Product\Category\Entity($item);
                             $categoriesById[$category->getId()] = $category;
                         }

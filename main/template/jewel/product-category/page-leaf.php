@@ -6,7 +6,6 @@
  * @var $productPager           \Iterator\EntityPager
  * @var $productSorting         \Model\Product\Sorting
  * @var $productView            string
- * @var $productVideosByProduct array
  * @var $seoContent            string
  */
 ?>
@@ -67,7 +66,6 @@ $helper = new \Helper\TemplateHelper();
       'hasListView'            => true,
       'category'               => $category,
       'view'                   => $productView,
-      'productVideosByProduct' => $productVideosByProduct,
       'isAddInfo'              => true,
   )) ?>
 

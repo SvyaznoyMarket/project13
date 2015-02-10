@@ -21,16 +21,43 @@ class ProductButtonAction {
         $isRetailRocket = false,
         array $sender = [],
         $noUpdate = false, // Не обновлять кнопку купить
-        $location = null // местоположение кнопки купить: userbar, product-card, ...
+        $location = null, // местоположение кнопки купить: userbar, product-card, ...
+        $reserveAsBuy = false
     ) {
+        $urlParams = [
+            'productId' => $product->getId(),
+        ];
+
+        if ($helper->hasParam('sender')) {
+            $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
+        } else if ($isRetailRocket) {
+            $urlParams['sender'] = 'retailrocket';
+        }
+
+        if ($sender) {
+            $urlParams = array_merge($urlParams, [
+                'sender' => [
+                    'name'      => isset($sender['name']) ? $sender['name'] : null,
+                    'position'  => isset($sender['position']) ? $sender['position'] : null,
+                    'method'    => isset($sender['method']) ? $sender['method'] : null,
+                    'from'      => isset($sender['from']) ? $sender['from'] : null,
+                ],
+            ]);
+        }
+
+        $buyUrl = $helper->url('cart.product.set', $urlParams);
+
         $data = [
             'id'         => 'buyButton-' . $product->getId() . '-'. md5(json_encode([$location, isset($sender['position']) ? $sender['position'] : null])),
             'disabled'   => false,
             'url'        => null,
+            'buyUrl'     => $buyUrl,
             'value'      => null,
             'inShopOnly' => false,
             'class'      => \View\Id::cartButtonForProduct($product->getId()),
             'onClick'    => $onClick,
+            'sender'     => $helper->json($sender),
+            'productUi'  => $product->getUi(),
             'data'       => [
                 'productId' => $product->getId(),
                 'upsale'    => json_encode([
@@ -56,37 +83,24 @@ class ProductButtonAction {
             $data['class'] .= ' mDisabled jsBuyButton';
             $data['value'] = 'Нет';
         } else if ($product->isInShopStockOnly() && $forceDefaultBuy) {
-            $data['inShopOnly'] = true;
-            $data['url'] = $helper->url('cart.oneClick.product.set', ['productId' => $product->getId()]);
-            $data['class'] .= ' mShopsOnly jsOneClickButton';
-            $data['value'] = 'Резерв';
+            if ($reserveAsBuy) {
+                $data['id'] = 'quickBuyButton-' . $product->getId();
+                $data['url'] = $helper->url('cart.oneClick.product.set', array_merge($urlParams, ['productId' => $product->getId()]));
+                $data['class'] .= ' jsOneClickButton-new';
+                $data['value'] = 'Купить';
+                $data['title'] = 'Резерв товара';
+            } else {
+                $data['inShopOnly'] = true;
+                $data['url'] = $helper->url('cart.oneClick.product.set', array_merge($urlParams, ['productId' => $product->getId()]));
+                $data['class'] .= ' mShopsOnly jsOneClickButton';
+                $data['value'] = 'Резерв';
+            }
 		} else if (\App::user()->getCart()->hasProduct($product->getId())) {
             $data['url'] = $helper->url('cart');
             $data['class'] .= ' mBought';
             $data['value'] = 'В корзине';
         } else {
-            $urlParams = [
-                'productId' => $product->getId(),
-            ];
-
-            if ($helper->hasParam('sender')) {
-                $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
-            } else if ($isRetailRocket) {
-                $urlParams['sender'] = 'retailrocket';
-            }
-
-            if ($sender) {
-                $urlParams = array_merge($urlParams, [
-                    'sender' => [
-                        'name'      => isset($sender['name']) ? $sender['name'] : null,
-                        'position'  => isset($sender['position']) ? $sender['position'] : null,
-                        'method'    => isset($sender['method']) ? $sender['method'] : null,
-                        'from'      => isset($sender['from']) ? $sender['from'] : null,
-                    ],
-                ]);
-            }
-
-            $data['url'] = $helper->url('cart.product.set', $urlParams);
+            $data['url'] = $buyUrl;
             $data['class'] .= ' jsBuyButton';
             $data['value'] = 'Купить';
         }

@@ -79,12 +79,6 @@ class IndexPage extends \View\DefaultLayout {
         return '<div id="cpaexchangeJS" class="jsanalytics" data-value="' . $this->json(['id' => 22249]) . '"></div>';
     }
 
-    public function slotRuTargetHomepageJS() {
-        if (!\App::config()->partners['RuTarget']['enabled']) return;
-
-        return "<div id=\"RuTargetHomepageJS\" class=\"jsanalytics\" data-value=\"" . $this->json(['regionId' => \App::user()->getRegionId()]) . "\"></div>";
-    }
-
     public function slotMailRu() {
         return $this->render('_mailRu', [
             'pageType' => 'home',

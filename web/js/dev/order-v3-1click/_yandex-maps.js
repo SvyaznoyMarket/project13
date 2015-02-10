@@ -1,28 +1,28 @@
 (function($) {
+	ENTER.OrderV31Click.functions.initYandexMaps = function(){
+		var E = ENTER.OrderV31Click,
+			$mapContainer = $('#yandex-map-container');
 
-    var E = ENTER.OrderV3,
-        $mapContainer = $('#yandex-map-container');
+		var init = function() {
 
-    var init = function() {
+			var options = $mapContainer.data('options');
 
-        var options = $mapContainer.data('options');
+			E.map = new ymaps.Map("yandex-map-container", {
+				center: [options.latitude, options.longitude],
+				zoom: options.zoom
+			},{
+				autoFitToViewport: 'always'
+			});
 
-        E.map = new ymaps.Map("yandex-map-container", {
-            center: [options.latitude, options.longitude],
-            zoom: options.zoom
-        },{
-            autoFitToViewport: 'always'
-        });
+			E.map.controls.remove('searchControl')
 
-        E.map.controls.remove('searchControl')
+			E.mapOptions = options;
+			E.$map = $mapContainer;
 
-        E.mapOptions = options;
-        E.$map = $mapContainer;
+			console.info(E.map);
 
-        console.info(E.map);
+		};
 
-    };
-
-    if ($mapContainer.length) ymaps.ready(init);
-
+		if ($mapContainer.length) ymaps.ready(init);
+	};
 })(jQuery);

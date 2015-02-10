@@ -55,8 +55,6 @@ class Entity extends BasicEntity {
     protected $tag = [];
     /** @var Media\Entity[] */
     protected $photo = [];
-    /** @var Media\Entity[] */
-    protected $photo3d = [];
     /** @var \Model\Brand\Entity|null */
     protected $brand;
     /** @var Label\Entity|null */
@@ -121,9 +119,16 @@ class Entity extends BasicEntity {
         if (array_key_exists('tag', $data) && is_array($data['tag'])) $this->setTag(array_map(function($data) {
             return new \Model\Tag\Entity($data);
         }, $data['tag']));
-        if (array_key_exists('media', $data) && is_array($data['media'])) $this->setMedia(array_map(function($data) {
-            return new Media\Entity($data);
-        }, $data['media']));
+
+        if (array_key_exists('media', $data) && is_array($data['media'])) {
+            foreach ($data['media'] as $media) {
+                $media = new Media\Entity($media);
+                if ($media->getTypeId() == 1) {
+                    $this->photo[] = $media;
+                }
+            }
+        }
+
         if (array_key_exists('brand', $data) && (bool)$data['brand']) $this->setBrand(new \Model\Brand\Entity($data['brand']));
         if (array_key_exists('label', $data)) {
             if (isset($data['label'][0]) && (bool)$data['label'][0]) {
@@ -392,47 +397,8 @@ class Entity extends BasicEntity {
         return $this->labelId;
     }
 
-    public function setMedia(array $mediaList) {
-        $this->photo = [];
-        $this->photo3d = [];
-        foreach ($mediaList as $media) {
-            $this->addMedia($media);
-        }
-    }
-
-    public function addMedia(Media\Entity $media) {
-        switch ($media->getTypeId()) {
-            case 1:
-                $this->photo[] = $media;
-            break;
-            case 2:
-                $this->photo3d[] = $media;
-            break;
-        }
-    }
-
     public function getPhoto() {
         return $this->photo;
-    }
-
-    public function getPhoto3d() {
-        return $this->photo3d;
-    }
-
-    /**
-     * @param   string      $resourcesPath
-     * @return  array|bool
-     */
-    public function getPandraResources() {
-        $resourcesLink = "http://" . \App::config()->mainHost;
-        $resourcesLink .= '/styles/ARPlugin';
-
-        return [
-            'resources'     => $resourcesLink . '/resources/',
-            'meshes'        => $resourcesLink . '/meshes/',
-            'textures'      => $resourcesLink . '/textures/',
-            'marker'        => 'http://pandragames.ru/enter_marker.pdf',
-        ];
     }
 
     /**
@@ -443,7 +409,7 @@ class Entity extends BasicEntity {
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getModelId() {
         return $this->modelId;
@@ -955,6 +921,4 @@ class Entity extends BasicEntity {
     {
         return $this->isKitLocked;
     }
-
-
 }

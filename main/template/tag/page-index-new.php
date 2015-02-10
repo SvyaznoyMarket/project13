@@ -63,7 +63,6 @@ foreach ( $categories as $subCategory ) {
     $helper->render( 'product/__list', [
         'pager' => $productPager,
         'view' => $productView,
-        'productVideosByProduct' => [],
         'bannerPlaceholder' => !empty($bannerPlaceholder) ? $bannerPlaceholder : [],
     ] ) // листинг
     ?>

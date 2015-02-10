@@ -3,110 +3,74 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
-    array $productVideos,
     $useLens = true
 ) {
-    /** @var  $productVideo \Model\Product\Video\Entity|null */
-    $productVideo = reset($productVideos);
-
     // TODO: SITE-1822
     //$useLens = true;
 
-    /** @var string $model3dExternalUrl */
-    $model3dExternalUrl = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getMaybe3d() : null;
-    /** @var string $model3dImg */
-    $model3dImg = ($productVideo instanceof \Model\Product\Video\Entity) ? $productVideo->getImg3d() : null;
-    /** @var array $photo3dList */
-    $photo3dList = [];
-    /** @var array $p3d_res_small */
-    $p3d_res_small = [];
-    /** @var array $p3d_res_big */
-    $p3d_res_big = [];
+    $videoHtml = '';
+    $maybe3dHtml5Source = null;
 
-    if (!$model3dExternalUrl && !$model3dImg) {
-        $photo3dList = $product->getPhoto3d();
-        foreach ($photo3dList as $photo3d) {
-            $p3d_res_small[] = $photo3d->getUrl(0);
-            $p3d_res_big[] = $photo3d->getUrl(1);
+    $megavisor3dUrl = '';
+    $swf3dUrl = '';
+    $maybe3dSwfUrl = '';
+    foreach ($product->medias as $media) {
+        switch ($media->provider) {
+            case 'vimeo':
+                $source = $media->getSourceByType('reference');
+                if ($source) {
+                    $width = 700;
+                    $height = ceil($width / ($source->width / $source->height));
+                    $videoHtml = '<iframe src="' . $helper->escape($source->url) . '" width="' . $width . '" height="' . $height . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+                }
+
+                break;
+            case 'youtube':
+                $source = $media->getSourceByType('reference');
+                if ($source) {
+                    $width = 700;
+                    $height = ceil($width / ($source->width / $source->height));
+                    $videoHtml = '<iframe src="//www.youtube.com/embed/' . $helper->escape($source->id) . '" width="' . $width . '" height="' . $height . '" frameborder="0" allowfullscreen></iframe>';
+                }
+
+                break;
+            case 'megavisor':
+                $source = $media->getSourceByType('reference');
+                if ($source) {
+                    $megavisor3dUrl = 'http://media.megavisor.com/player/player.swf?uuid=' . urlencode($source->id);
+                }
+
+                break;
+            case 'swf':
+                $source = $media->getSourceByType('reference');
+                if ($source) {
+                    $swf3dUrl = $source->url;
+                }
+
+                break;
+            case 'maybe3d':
+                if ($source = $media->getSourceByType('html5')) {
+                    $maybe3dHtml5Source = $source;
+                } else if ($source = $media->getSourceByType('swf')) {
+                    $maybe3dSwfUrl = $source->url;
+                }
+
+                break;
         }
-    } elseif ($model3dExternalUrl) {
-        $model3dName = preg_replace('/\.swf|\.swf$/iu', '', basename($model3dExternalUrl));
-        if (!strlen($model3dName)) $model3dExternalUrl = false;
     }
 
-    $maybe3dData = $model3dExternalUrl
-        ? [
-            'init' => [
-                'swf'       => $model3dExternalUrl,
-                'container' => 'maybe3dModel',
-                'width'     => '700px',
-                'height'    => '500px',
-                'version'   => '10.0.0',
-                'install'   => 'js/vendor/expressInstall.swf',
-            ],
-            'params' => [
-                'menu'              => 'false',
-                'scale'             => 'noScale',
-                'allowFullscreen'   => 'true',
-                'allowScriptAccess' => 'always',
-                'wmode'             => 'direct',
-            ],
-            'attributes' => [
-                'id' => $model3dName,
-            ],
-            'flashvars' => [
-                'language' => "auto",
-            ]
-
-        ]
-        : null
-    ;
+    if ($maybe3dSwfUrl) {
+        $model3dSwfUrl = $maybe3dSwfUrl;
+    } else if ($megavisor3dUrl) {
+        $model3dSwfUrl = $megavisor3dUrl;
+    } else if ($swf3dUrl) {
+        $model3dSwfUrl = $swf3dUrl;
+    } else {
+        $model3dSwfUrl = '';
+    }
 ?>
 
-<? if ((bool)$maybe3dData): ?>
-    <div id="maybe3dModelPopup" class="popup" data-value="<?= $helper->json($maybe3dData); ?>">
-        <i class="close" title="Закрыть">Закрыть</i>
-        <div id="maybe3dModelPopup_inner" style="position: relative;">
-            <div id="maybe3dModel">
-                <a href="http://www.adobe.com/go/getflashplayer">
-                    <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
-                </a>
-            </div>
-        </div>
-    </div>
-<? endif ?>
-
-    <? if ((bool)true): ?>
-        <div id="vFittingModelPopup" class="popup" data-value="<?= $helper->json($maybe3dData); ?>">
-            <i class="close" title="Закрыть">Закрыть</i>
-            <div id="vFittingModelPopup_inner" style="position: relative;">
-                <div id="vFittingModel">
-                    <a href="http://www.adobe.com/go/getflashplayer">
-                        <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
-                    </a>
-                </div>
-            </div>
-        </div>
-    <? endif ?>
-
-<? if ($model3dImg) : ?>
-    <div id="3dModelImg" class="popup" data-value="<?= $helper->json($model3dImg); ?>" data-host="<?= $helper->json(['http://'.App::request()->getHost()]) ?>">
-        <i class="close" title="Закрыть">Закрыть</i>
-    </div>
-<? endif ?>
-
-<script type="text/javascript">
-<? if ($model3dExternalUrl) : ?>
-    product_3d_url = <?= json_encode($model3dExternalUrl) ?>;
-<? elseif (count($photo3dList) > 0) : ?>
-    product_3d_small = <?= json_encode($p3d_res_small) ?>;
-    product_3d_big = <?= json_encode($p3d_res_big) ?>;
-<? endif ?>
-</script>
-
-
 <div class="bProductDescImg">
-
     <? if ($product->getLabel()): ?>
         <div class="bProductDescSticker mLeft">
             <img src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $helper->escape($product->getLabel()->getName()) ?>" />
@@ -136,53 +100,67 @@ return function(
 
     <div class="bPhotoAction clearfix">
         <ul class="bPhotoViewer">
-            <? if ($productVideo && $productVideo->getContent()): ?>
-                <li class="bPhotoViewer__eItem mVideo">
+            <? if ($videoHtml): ?>
+                <li class="bPhotoViewer__eItem mVideo js-product-video">
                     <a class="bPhotoLink" href="#"></a>
-                    <div id="productVideo" class="blackPopup blackPopupVideo">
+                    <div class="blackPopup blackPopupVideo js-product-video-container">
                         <div class="close"></div>
-                        <div class="productVideo_iframe"><?= $productVideo->getContent() ?></div>
+                        <div class="productVideo_iframe js-product-video-iframeContainer"><?= $videoHtml ?></div>
                     </div>
                 </li>
             <? endif ?>
-            <? if ($model3dExternalUrl || $model3dImg):  ?>
-                <?
-                if ($model3dExternalUrl) {
-                    $class3D = 'maybe3d';
-                } else if ($model3dImg) {
-                    $class3D = '3dimg';
-                } else {
-                    $class3D = 'our3d';
-                }
-                ?>
-                <li class="bPhotoActionOtherAction__eGrad360 bPhotoViewer__eItem mGrad360 <?= $class3D ?>">
+
+            <? if ($maybe3dHtml5Source): ?>
+                <li class="bPhotoActionOtherAction__eGrad360 bPhotoViewer__eItem mGrad360 js-product-3d-html5-opener">
                     <a class="bPhotoLink" href=""></a>
+                    <div id="maybe3dModelPopup" class="popup js-product-3d-html5-popup" data-url="<?= $helper->escape($maybe3dHtml5Source->url); ?>" data-id="<?= $helper->escape($maybe3dHtml5Source->id); ?>">
+                        <i class="close" title="Закрыть">Закрыть</i>
+                        <div class="js-product-3d-html5-popup-container" style="position: relative;">
+                            <div id="js-product-3d-html5-popup-model" class="model"></div>
+                        </div>
+                    </div>
+                </li>
+            <? elseif ($model3dSwfUrl): ?>
+                <li class="bPhotoActionOtherAction__eGrad360 bPhotoViewer__eItem mGrad360 js-product-3d-swf-opener">
+                    <a class="bPhotoLink" href=""></a>
+                    <div id="maybe3dModelPopup" class="popup js-product-3d-swf-popup" data-url="<?= $helper->escape($model3dSwfUrl); ?>">
+                        <i class="close" title="Закрыть">Закрыть</i>
+                        <div class="js-product-3d-swf-popup-container" style="position: relative;">
+                            <div id="js-product-3d-swf-popup-model">
+                                <a href="http://www.adobe.com/go/getflashplayer">
+                                    <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            <? elseif ($product->json3d): ?>
+                <li class="bPhotoActionOtherAction__eGrad360 bPhotoViewer__eItem mGrad360 js-product-3d-img-opener">
+                    <a class="bPhotoLink" href=""></a>
+                    <div class="popup js-product-3d-img-popup" data-value="<?= $helper->json($product->json3d); ?>" data-host="<?= $helper->json(['http://' . App::request()->getHost()]) ?>">
+                        <i class="close" title="Закрыть">Закрыть</i>
+                    </div>
                 </li>
             <? endif ?>
-            <? if ($productVideo && $productVideo->getPandra()): ?>
-                <li class="bPhotoActionOtherAction bPhotoViewer__eItem vFitting">
-                    <a class="bPhotoLink" href="#"></a>
-                </li>
-            <? endif  ?>
         </ul><!--/view product section -->
 
         <? if (count($product->getPhoto()) > 1): ?>
-            <div class="bPhotoSlider">
-                <div class="bPhotoSliderWrap">
-                    <ul id="productImgGallery" class="bPhotoSliderGallery clearfix">
+                <div class="prod-photoslider js-photoslider">
+                <div class="prod-photoslider__wrap">
+                    <ul id="productImgGallery" class="prod-photoslider__gal clearfix js-photoslider-gal">
                         <? $i = 0; foreach ($product->getPhoto() as $photo):
                             $zoomDisable = ($photo->getHeight() > 750 || $photo->getWidth() > 750) ? false : true; ?>
-                            <li class="bPhotoSliderGallery__eItem">
-                                <a class="bPhotoGalleryLink jsPhotoGalleryLink<? if (0 == $i): ?> mActive<? endif ?>" data-zoom-image="<?= $photo->getUrl(5) ?>" data-image="<?= $photo->getUrl(3) ?>" href="#" data-zoom-disable="<?= $zoomDisable ?>">
-                                    <img class="bPhotoGalleryImg" src="<?= $photo->getUrl(0) ?>" alt="<?= $helper->escape($product->getName()) ?>" />
+                            <li class="prod-photoslider__gal__i js-photoslider-gal-i">
+                                <a class="prod-photoslider__gal__link jsPhotoGalleryLink<? if (0 == $i): ?> prod-photoslider__gal__link--active<? endif ?>" data-zoom-image="<?= $photo->getUrl(5) ?>" data-image="<?= $photo->getUrl(3) ?>" href="#" data-zoom-disable="<?= $zoomDisable ?>">
+                                    <img class="prod-photoslider__gal__img" src="<?= $photo->getUrl(0) ?>" alt="<?= $helper->escape($product->getName()) ?>" />
                                 </a>
                             </li>
-                            <? $i++; endforeach ?>
+                        <? $i++; endforeach ?>
                     </ul>
                 </div>
 
-                <div class="bPhotoSlider__eBtn mPrev"><span class="bArrow"></span></div>
-                <div class="bPhotoSlider__eBtn mNext"><span class="bArrow"></span></div>
+                <div class="prod-photoslider__btn prod-photoslider__btn--prev js-photoslider-btn-prev"><span class="prod-photoslider__btn__arw"></span></div>
+                <div class="prod-photoslider__btn prod-photoslider__btn--next js-photoslider-btn-next"><span class="prod-photoslider__btn__arw"></span></div>
             </div><!--/slider mini product images -->
         <? endif ?>
     </div>

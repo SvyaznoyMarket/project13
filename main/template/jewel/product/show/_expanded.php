@@ -2,18 +2,13 @@
 /**
  * @var $page          \View\Layout
  * @var $product       \Model\Product\ExpandedEntity
- * @var $productVideos \Model\Product\Video\Entity[]
  * @var $addInfo       array
  **/
 ?>
 
 <?php
 $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty();
-if (!isset($productVideos)) $productVideos = [];
 $addInfo = isset($addInfo)?$addInfo:[];
-
-/** @var $productVideo \Model\Product\Video\Entity|null */
-$productVideo = reset($productVideos);
 ?>
 
 <style type="text/css">
@@ -30,7 +25,10 @@ $productVideo = reset($productVideos);
 <div class="goodsbox goodsline bNewGoodsBox js-goodsbox">
     <div class="goodsboxlink" <? if ($product->getIsBuyable()): ?> data-cid="<?= $product->getId() ?>" <? endif ?> <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
         <div class="photo">
-            <? if ($productVideo && $productVideo->getContent()): ?><a class="goodsphoto_eVideoShield goodsphoto_eVideoShield_small" href="<?= $product->getLink() ?>"></a><? endif ?>
+            <? if ($product->hasVideo()): ?>
+                <a class="goodsphoto_eVideoShield goodsphoto_eVideoShield_small" href="<?= $product->getLink() ?>"></a>
+            <? endif ?>
+
             <a href="<?= $product->getLink() ?>">
                 <? if ($label = $product->getLabel()): ?>
                     <img class="bLabels" src="<?= $label->getImageUrl() ?>" alt="<?= $page->escape($label->getName()) ?>"/>

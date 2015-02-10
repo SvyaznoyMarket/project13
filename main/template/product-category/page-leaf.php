@@ -7,7 +7,6 @@
  * @var $productPager           \Iterator\EntityPager
  * @var $productSorting         \Model\Product\Sorting
  * @var $productView            string
- * @var $productVideosByProduct array
  * @var $hotlinks               array
  * @var $seoContent             string
  * @var $relatedCategories      array
@@ -28,7 +27,7 @@ $promoStyle = 'jewel' === $listingStyle && isset($catalogJson['promo_style']) ? 
 $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((string)$catalogJson['category_class'])) : null;
 ?>
 
-<div class="bCatalog <? if ($productFilter->hasAlwaysShowFilters()): ?>bCatalog-custom<? endif ?> <?= 'jewel' === $listingStyle ? 'mCustomCss' : '' ?>" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
+<div class="bCatalog <? if ($category->isV3()): ?>bCatalog-custom<? endif ?> <?= 'jewel' === $listingStyle ? 'mCustomCss' : '' ?>" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
 
     <?= $helper->render('product-category/__breadcrumbs', ['category' => $category, 'isBrand' => isset($brand)]) // хлебные крошки ?>
 
@@ -97,7 +96,6 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
     <?= $helper->render('product/__list', [
         'pager'                  => $productPager,
         'view'                   => $productView,
-        'productVideosByProduct' => $productVideosByProduct,
         'bannerPlaceholder'      => !empty($catalogJson['bannerPlaceholder']) && 'jewel' !== $listingStyle ? $catalogJson['bannerPlaceholder'] : [],
         'listingStyle'           => $listingStyle,
         'columnCount'            => isset($columnCount) ? $columnCount : 4,

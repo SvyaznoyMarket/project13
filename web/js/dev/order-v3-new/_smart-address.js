@@ -77,6 +77,9 @@
 	}
 
 	function saveAddress(address) {
+
+		if (address.streetName() == '') return;
+
 		$.ajax({
 			type: 'POST',
 			data: {
