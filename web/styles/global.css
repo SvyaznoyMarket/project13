@@ -11317,7 +11317,7 @@ img[height="0"] {
     border-color: #c7c7c7;
   }
   .fltrRange-v3 .fltrRange_sldr {
-    width: 370px;
+    width: 307px;
   }
 }
 @media all {
@@ -11574,6 +11574,78 @@ img[height="0"] {
     *display: inline;
     *zoom: 1;
   }
+  .fltrBtn_anim-item {
+    position: absolute;
+    right: -25px;
+    top: 150px;
+    display: block;
+    animation: animPuls 9s ease-in-out 3s infinite;
+    -webkit-animation: animPuls 9s ease-in-out 3s infinite;
+    -moz-animation: animPuls 9s ease-in-out 3s infinite;
+    -o-animation: animPuls 9s ease-in-out 3s infinite;
+  }
+  .fltrBtn_anim-item:hover {
+    -webkit-animation: none;
+    -moz-animation: none;
+    -o-animation: none;
+    animation: none;
+  }
+  .fltrBtn_anim-item:hover .fltrBtn_anim-item_img {
+    right: 4px;
+    top: 4px;
+  }
+  .fltrBtn_anim-item_img {
+    transition: all .2s ease;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  @keyframes animPuls {
+    0%,
+    4% {
+      transform: scale3d(1, 1, 1);
+    }
+    2%,
+    6% {
+      transform: scale3d(1.03, 1.03, 1.03);
+    }
+    8% {
+      transform: scale3d(1, 1, 1);
+    }
+  }
+  @-webkit-keyframes animPuls {
+    0%,
+    4% {
+      -webkit-transform: scale3d(1, 1, 1);
+      transform: scale3d(1, 1, 1);
+    }
+    2%,
+    6% {
+      -webkit-transform: scale3d(1.03, 1.03, 1.03);
+      transform: scale3d(1.03, 1.03, 1.03);
+    }
+    8% {
+      -webkit-transform: scale3d(1, 1, 1);
+      transform: scale3d(1, 1, 1);
+    }
+  }
+  @-moz-keyframes animPuls {
+    0%,
+    4% {
+      -moz-transform: scale3d(1, 1, 1);
+      transform: scale3d(1, 1, 1);
+    }
+    2%,
+    6% {
+      -moz-transform: scale3d(1.03, 1.03, 1.03);
+      transform: scale3d(1.03, 1.03, 1.03);
+    }
+    8% {
+      -moz-transform: scale3d(1, 1, 1);
+      transform: scale3d(1, 1, 1);
+    }
+  }
 }
 @media all {
   .fltrBtnBox {
@@ -11750,6 +11822,8 @@ img[height="0"] {
 @media all {
   .newLayout .fltrBtn-gift {
     margin-top: -20px;
+    position: relative;
+    overflow: hidden;
   }
   .fltrBtn-gift {
     background-position: 0 0;
@@ -11792,6 +11866,8 @@ img[height="0"] {
     -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 2;
   }
   .fltrBtnLn-lst {
     width: 822px;

@@ -80,7 +80,7 @@ return function(
     }
 ?>
 
-    <div class="fltrBtnBox fltrBtnBox-gift js-gift-category-filter-property-dropBox <? if ('sex' === $property->getId()): ?>js-gift-category-filter-property-dropBox-sex<? endif ?> <? if ('status' === $property->getId()): ?>js-gift-category-filter-property-dropBox-status<? endif ?>" data-option-groups="<?= $helper->json($statusOptionGroups) ?>">
+    <div class="fltrBtnBox fltrBtnBox-gift js-gift-category-filter-property-dropBox <? if ('holiday' === $property->getId()): ?>js-gift-category-filter-property-dropBox-holiday<? endif ?> <? if ('sex' === $property->getId()): ?>js-gift-category-filter-property-dropBox-sex<? endif ?> <? if ('status' === $property->getId()): ?>js-gift-category-filter-property-dropBox-status<? endif ?>" data-option-groups="<?= $helper->json($statusOptionGroups) ?>">
         <div class="fltrBtnBox_tggl js-gift-category-filter-property-dropBox-opener <?= $initialValue ? 'fltrBtnBox_tggl-dsbld' : ''?>">
             <span class="js-gift-category-filter-property-dropBox-title"><?= $helper->escape($initialValue ? $initialValue : ($selectedOption ? $selectedOption->getName() : '')) ?></span>
             <i class="fltrBtnBox_tggl_corner"></i>
@@ -92,7 +92,7 @@ return function(
                     <? $id = \View\Id::productCategoryFilter($property->getId()) . '-option-' . $option->getId(); ?>
                     <li class="lstdotted_i js-gift-category-filter-property-dropBox-content-item">
                         <input
-                            class="customInput customInput-gift js-customInput"
+                            class="customInput customInput-gift js-customInput js-gift-category-filter-property-dropBox-content-item-input"
                             type="radio"
                             id="<?= $helper->escape($id) ?>"
                             name="<?= \View\Name::productCategoryFilter($property, $option) ?>"
