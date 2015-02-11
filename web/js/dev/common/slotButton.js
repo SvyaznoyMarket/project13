@@ -31,7 +31,7 @@
 					'<div class="popup__form-group">' +
 						'<div class="input-group">' +
 							'<label class="label-for-input label-phone">Телефон</label>' +
-							'<input type="text" name="phone" value="{{userPhone}}" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" />' +
+							'<input type="text" name="phone" value="{{userPhone}}" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" class="js-slotButton-popup-phone" />' +
 						'</div>' +
 						'<span class="js-slotButton-popup-error popup__form-group__error" style="display: none">Неверный формат телефона</span>' +
 					'</div>' +
@@ -137,6 +137,8 @@
 				$elem.mask($elem.data('mask'));
 			}
 		});
+
+		$('.js-slotButton-popup-phone', $form).focus();
 
 		$('input', $popup).blur(function(){
 			validate($form);
