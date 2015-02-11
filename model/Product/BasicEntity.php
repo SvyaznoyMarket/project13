@@ -665,7 +665,9 @@ class BasicEntity {
         }
 
         foreach ($this->medias as $media) {
-            if (in_array($media->provider, ['megavisor', 'maybe3d', 'swf'], true)) {
+            // Временно отключаем maybe3d html5 модели из-за проблем, описанных в SITE-3783
+//            if (in_array($media->provider, ['megavisor', 'maybe3d', 'swf'], true)) {
+            if (in_array($media->provider, ['megavisor', 'swf'], true) || ($media->provider === 'maybe3d' && $media->getSourceByType('swf'))) {
                 return true;
             }
         }

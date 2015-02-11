@@ -49,9 +49,10 @@ return function(
 
                 break;
             case 'maybe3d':
-                if ($source = $media->getSourceByType('html5')) {
+                // Временно отключаем maybe3d html5 модели из-за проблем, описанных в SITE-3783
+                /*if ($source = $media->getSourceByType('html5')) {
                     $maybe3dHtml5Source = $source;
-                } else if ($source = $media->getSourceByType('swf')) {
+                } else*/ if ($source = $media->getSourceByType('swf')) {
                     $maybe3dSwfUrl = $source->url;
                 }
 
