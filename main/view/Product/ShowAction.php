@@ -38,10 +38,10 @@ class ShowAction {
             if (\App::config()->region['defaultId'] === $user->getRegion()->getId()) {
                 // Для Москвы, SITE-2850
                 //$stateLabel = ['name' => 'Товар за три дня'];
-                $stateLabel = ['name' => 'Товар со склада']; // SITE-3131
+                $stateLabel = ['name' => 'Товар со склада', 'inStore' => true]; // SITE-3131
             } else {
                 // Для регионов (привозит быстрее, но не за три дня)
-                $stateLabel = ['name' => 'Товар со склада'];
+                $stateLabel = ['name' => 'Товар со склада', 'inStore' => true];
             }
             //$showState = true; // включаем отображение шильдика для всех
         }
