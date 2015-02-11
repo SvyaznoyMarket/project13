@@ -7020,6 +7020,7 @@ img[height="0"] {
     background: url("/styles/popup/img/closer.gif") no-repeat 50% 50% !important;
     height: 41px;
     width: 41px;
+    right: 10px;
   }
   .popup_inn {
     padding: 10px 20px 30px 10px;
