@@ -281,7 +281,7 @@ class Client {
                         }
 
                         if (isset($this->queries[$this->queryIndex[(string)$handler]])) {
-                            if ($handler) {
+                            if (is_resource($handler)) {
                                 curl_multi_remove_handle($this->multiHandler, $handler);
                                 curl_close($handler);
                             }
