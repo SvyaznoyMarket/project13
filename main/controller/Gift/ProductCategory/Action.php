@@ -547,7 +547,7 @@ class Action {
                 $productUIs[] = $product->getUi();
             }
 
-            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) {
+            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use(&$products) {
                 if (isset($data['product_scores'][0])) {
                     \RepositoryManager::review()->addScores($products, $data);
                 }
