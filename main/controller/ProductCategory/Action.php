@@ -331,10 +331,12 @@ class Action {
             $this->transformFiltersV2($filters);
         }
 
+        $this->correctFiltersForJewel($filters, $category);
+
         // фильтры
         $productFilter = $this->getFilter($filters, $category, $brand, $request, $shop);
 
-        $this->correctFilterAndCategoryForJewel($category, $productFilter);
+        $this->correctProductFilterAndCategoryForJewel($category, $productFilter);
 
         if (!$category->isV2()) {
             // SITE-4734
@@ -1316,8 +1318,27 @@ class Action {
         return true;
     }
 
+    /**
+     * @param \Model\Product\Filter\Entity[] $filters
+     */
+    private function correctFiltersForJewel(array &$filters, \Model\Product\Category\Entity $category) {
+        foreach ($filters as $key => $filter) {
+            if ($filter->isPrice() && in_array($category->getUi(), [
+                'd792f833-f6fa-4158-83f6-2ac657077076', // Кольца Бронницкий Ювелир
+                '4caf66a4-f1c4-4b79-a6e4-1f2e6a1700cc', // Подвески Бронницкий Ювелир
+                'd4bc284a-9a1f-4614-a3d0-ec690d7e1b78', // Серьги Бронницкий Ювелир
+                'ae6975b8-f6e3-46b3-baba-a85305213dea', // Цепи Бронницкий Ювелир
+                'cd2c06d0-a087-47c2-a043-7ca02317424a', // Танцующие бриллианты
+            ], true)) {
+                unset($filters[$key]);
+                break;
+            }
+        }
 
-    private function correctFilterAndCategoryForJewel(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter) {
+        $filters = array_values($filters);
+    }
+
+    private function correctProductFilterAndCategoryForJewel(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter) {
         if ($category->isV3()) {
             foreach ($productFilter->getFilterCollection() as $filter) {
                 if ('Металл' === $filter->getName() || 'Вставка' === $filter->getName()) {
