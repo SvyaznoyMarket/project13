@@ -12948,6 +12948,8 @@
     margin: 12px 10px 0 10px;
     width: 233px;
     height: 4px;
+    height: 3px\0;
+    /* ie8,ie9 hack*/
     *display: inline;
     zoom: 1;
   }
