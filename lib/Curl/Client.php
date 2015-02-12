@@ -200,7 +200,7 @@ class Client {
 
                     //удаляем запрос из массива запросов на исполнение и прерываем дублирующие запросы
                     foreach ($this->queries[$this->queryIndex[(string)$handler]]['resources'] as $resource) {
-                        if ($resource !== $handler) {
+                        if (is_resource($resource) && ($resource !== $handler)) {
                             curl_multi_remove_handle($this->multiHandler, $resource);
                             curl_close($resource);
                         }
