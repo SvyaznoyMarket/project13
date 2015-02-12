@@ -93,12 +93,12 @@ return function(
                 <div style="overflow: hidden; position: absolute; top: 0; left: 0; width: 0; height: 0;"><input type="submit" /></div>
 
                 <? foreach ($alwaysShowFilters as $filter): ?>
-                    <div class="fltrSet fltrSet-close js-category-filter-toggle-container <? if ('Металл' === $filter->getName()): ?>fltrSet-metall<? endif ?> <? if ('Вставка' === $filter->getName()): ?>fltrSet-insertion<? endif ?>">
-                        <div class="fltrSet_tggl js-category-filter-toggle-button">
+                    <div class="fltrSet <? if (!$filter->isOpenByDefault): ?>fltrSet-close<? endif ?> js-category-filter-toggle-container <? if ('Металл' === $filter->getName()): ?>fltrSet-metall<? endif ?> <? if ('Вставка' === $filter->getName()): ?>fltrSet-insertion<? endif ?>">
+                        <div class="fltrSet_tggl <? if ($filter->isOpenByDefault): ?>fltrSet_tggl-dn<? endif ?> js-category-filter-toggle-button">
                             <span class="fltrSet_tggl_tx"><?= $helper->escape($filter->getName()) ?></span>
                         </div>
 
-                        <div class="fltrSet_cnt js-category-filter-toggle-content" style="display: none;">
+                        <div class="fltrSet_cnt js-category-filter-toggle-content" <? if (!$filter->isOpenByDefault): ?>style="display: none;"<? endif ?>>
                             <div class="fltrSet_inn clearfix">
                                 <?= $helper->render('product-category/filter/__element', ['productFilter' => $productFilter, 'filter' => $filter, 'promoStyle' => $promoStyle]) ?>
                             </div>
@@ -106,19 +106,19 @@ return function(
                     </div>
                 <? endforeach ?>
 
-                <div class="flrtBox">
-                    <? if ($priceFilter && $productFilter): ?>
+                <? if ($priceFilter && $productFilter): ?>
+                    <div class="flrtBox">
                         <?= $helper->render('product-category/filter/element/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter, 'promoStyle' => $promoStyle]) ?>
-                    <? endif ?>
-                </div>
+                    </div>
+                <? endif ?>
 
-                <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
-                    <? if ($showParamsButton): ?>
+                <? if ($otherFilters): ?>
+                    <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
                         <div class="fltrSet_tggl <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-category-filter-otherParamsToggleButton">
                             <span class="fltrSet_tggl_tx">Ещё параметры</span>
                         </div>
-                    <? endif ?>
-                </div>
+                    </div>
+                <? endif ?>
             <? else: ?>
                 <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
                     <? if ($showParamsButton): ?>
