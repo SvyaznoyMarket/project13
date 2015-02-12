@@ -140,7 +140,7 @@ class DeliveryAction extends OrderV3 {
                 'request_id' => \App::$id, // SITE-4445
             ],
             $splitData,
-            3 * \App::config()->coreV2['timeout']
+            4 * \App::config()->coreV2['timeout']
         );
 
         $orderDelivery = new \Model\OrderDelivery\Entity($orderDeliveryData);
