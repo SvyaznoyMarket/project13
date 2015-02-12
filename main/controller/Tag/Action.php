@@ -207,7 +207,6 @@ class Action {
         }
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-        $scoreData = [];
         if ((bool)$products) {
             $productUIs = [];
             foreach ($products as $product) {
@@ -215,15 +214,13 @@ class Action {
                 $productUIs[] = $product->getUi();
             }
 
-            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
+            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use(&$products) {
                 if (isset($data['product_scores'][0])) {
-                    $scoreData = $data;
+                    \RepositoryManager::review()->addScores($products, $data);
                 }
             });
         }
         \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-        \RepositoryManager::review()->addScores($products, $scoreData);
 
         $productPager = new \Iterator\EntityPager($products, $productCount);
         $productPager->setPage($pageNum);
@@ -251,14 +248,10 @@ class Action {
 
         // ajax
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
-
-            $productVideosByProduct = [];
-
             return new \Http\JsonResponse([
                 'list'           => (new \View\Product\ListAction())->execute(
                     $helper,
                     $productPager,
-                    $productVideosByProduct,
                     []
                 ),
                 'selectedFilter' => $selectedFilter,
@@ -495,7 +488,6 @@ class Action {
             }
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-            $scoreData = [];
             if ((bool)$products) {
                 $productUIs = [];
                 foreach ($products as $product) {
@@ -503,15 +495,16 @@ class Action {
                     $productUIs[] = $product->getUi();
                 }
 
-                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
+                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use(&$products) {
                     if (isset($data['product_scores'][0])) {
-                        $scoreData = $data;
+                        \RepositoryManager::review()->addScores($products, $data);
                     }
                 });
             }
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-            \RepositoryManager::review()->addScores($products, $scoreData);
+            $repository->prepareProductsMedias($products);
+
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
             $pagerAll = new \Iterator\EntityPager($products, $productCount);
             $page->setGlobalParam('allCount', $pagerAll->count());
@@ -547,7 +540,6 @@ class Action {
             }
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-            $scoreData = [];
             if ((bool)$products) {
                 $productUIs = [];
                 foreach ($products as $product) {
@@ -555,15 +547,16 @@ class Action {
                     $productUIs[] = $product->getUi();
                 }
 
-                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
+                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use(&$products) {
                     if (isset($data['product_scores'][0])) {
-                        $scoreData = $data;
+                        \RepositoryManager::review()->addScores($products, $data);
                     }
                 });
             }
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-            \RepositoryManager::review()->addScores($products, $scoreData);
+            $repository->prepareProductsMedias($products);
+
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
             $productPager = new \Iterator\EntityPager($products, $productCount);
         }
@@ -584,31 +577,12 @@ class Action {
             ]));
         }
 
-        // video
-        $productVideosByProduct = [];
-        foreach ($productPager as $product) {
-            /** @var $product \Model\Product\Entity */
-            $productVideosByProduct[$product->getId()] = [];
-        }
-        if ((bool)$productVideosByProduct) {
-            \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
-                foreach ($data as $id => $items) {
-                    if (!is_array($items)) continue;
-                    foreach ($items as $item) {
-                        $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);
-                    }
-                }
-            });
-            \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
-        }
-
         // ajax
         if ($request->isXmlHttpRequest()) {
             return new \Http\Response(\App::templating()->render('product/_list', array(
                 'page'                   => new \View\Layout(),
                 'pager'                  => $productPager,
                 'view'                   => $productView,
-                'productVideosByProduct' => $productVideosByProduct,
                 'isAjax'                 => true,
             )));
         }
@@ -616,7 +590,6 @@ class Action {
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
-        $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setParam('sidebarHotlinks', true);
 
         return new \Http\Response($page->show());

@@ -22,7 +22,9 @@
                 {{#abtestKeys.default}}
                     {{#review}}{{> product/_review-compact }}{{/review}}
                 {{/abtestKeys.default}}
+
                 <p class="bSimplyDesc__eText"><a href="{{link}}">{{name}}</a></p>
+
                 <ul class="bSimplyDescStikers clearfix">
                     {{#label}}
                         <li class="bSimplyDescStikers__eItem mLeftStiker"><img class="SimplyDescStikers__eImg" src="{{image}}" alt="{{name}}" /></li>
@@ -54,7 +56,7 @@
                     </span>
                 {{/oldPrice}}
                 {{#stateLabel}}
-                    <span class="bAvailible">{{name}}</span>
+                    <span class="bAvailible" {{#inStore}}{{/inStore}}>{{name}}</span>
                 {{/stateLabel}}
             </div>
 

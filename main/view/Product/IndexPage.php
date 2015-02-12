@@ -16,14 +16,6 @@ class IndexPage extends \View\DefaultLayout {
         }
         $this->product = $product;
 
-        // if (is_array($this->getParam('productVideos'))) {
-        //     $productVideos = $this->getParam('productVideos');
-        //     $productVideos = reset($productVideos);
-        //     if ($productVideos instanceof \Model\Product\Video\Entity) {
-        //         $this->addJavascript('/js/swfobject.js');
-        //     }
-        // }
-
         // breadcrumbs
         if (!$this->hasParam('breadcrumbs')) {
             $breadcrumbs = [];
@@ -207,23 +199,6 @@ class IndexPage extends \View\DefaultLayout {
                     'id' => $product->getId(),
                 ],
             ];
-
-            $productVideos =(array)$this->getParam('productVideos');
-            $productVideo = reset($productVideos);
-            if ($productVideo instanceof \Model\Product\Video\Entity) {
-                if ($productVideo->getImg3d()) {
-                    $config['product.img3d'] = true;
-                }
-                if ($productVideo->getMaybe3d()) {
-                    $config['product.maybe3d'] = true;
-                }
-            }
-
-            if ($product instanceof \Model\Product\Entity) {
-                if ((bool)$product->getPhoto3d()) {
-                    $config['product.native3d'] = true;
-                }
-            }
         }
 
         return $this->tryRender('_config', ['config' => $config]);
@@ -246,23 +221,6 @@ class IndexPage extends \View\DefaultLayout {
             'target' => '.js-showTopBar',
             'productId' => $product->getId(),
         ];
-    }
-
-    public function slotRuTargetProductJS() {
-        if (!\App::config()->partners['RuTarget']['enabled']) return;
-
-        /** @var $product \Model\Product\Entity */
-        $product = $this->getParam('product');
-        if (!$product) {
-            return;
-        }
-
-        $data = [
-            'id' => $product->getId(),
-            'regionId' => \App::user()->getRegionId(),
-        ];
-
-        return "<div id=\"RuTargetProductJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
     }
 
     public function slotLamodaProductJS() {

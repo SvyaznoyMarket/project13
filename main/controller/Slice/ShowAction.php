@@ -363,7 +363,6 @@ class ShowAction {
             }
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-            $scoreData = [];
             if ((bool)$products) {
                 $productUIs = [];
                 foreach ($products as $product) {
@@ -371,15 +370,16 @@ class ShowAction {
                     $productUIs[] = $product->getUi();
                 }
 
-                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
+                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use(&$products) {
                     if (isset($data['product_scores'][0])) {
-                        $scoreData = $data;
+                        \RepositoryManager::review()->addScores($products, $data);
                     }
                 });
             }
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-            \RepositoryManager::review()->addScores($products, $scoreData);
+            $repository->prepareProductsMedias($products);
+
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
             $pagerAll = new \Iterator\EntityPager($products, $productCount);
             $page->setGlobalParam('allCount', $pagerAll->count());
@@ -430,7 +430,6 @@ class ShowAction {
             }
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-            $scoreData = [];
             if ((bool)$products) {
                 $productUIs = [];
                 foreach ($products as $product) {
@@ -438,15 +437,16 @@ class ShowAction {
                     $productUIs[] = $product->getUi();
                 }
 
-                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use (&$scoreData) {
+                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use(&$products) {
                     if (isset($data['product_scores'][0])) {
-                        $scoreData = $data;
+                        \RepositoryManager::review()->addScores($products, $data);
                     }
                 });
             }
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
-            \RepositoryManager::review()->addScores($products, $scoreData);
+            $repository->prepareProductsMedias($products);
+
+            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
             $productPager = new \Iterator\EntityPager($products, $productCount);
         }
@@ -467,31 +467,12 @@ class ShowAction {
             ]));
         }
 
-        // video
-        $productVideosByProduct = [];
-        foreach ($productPager as $product) {
-            /** @var $product \Model\Product\Entity */
-            $productVideosByProduct[$product->getId()] = [];
-        }
-        if ((bool)$productVideosByProduct) {
-            \RepositoryManager::productVideo()->prepareCollectionByProductIds(array_keys($productVideosByProduct), function($data) use (&$productVideosByProduct) {
-                foreach ($data as $id => $items) {
-                    if (!is_array($items)) continue;
-                    foreach ($items as $item) {
-                        $productVideosByProduct[$id][] = new \Model\Product\Video\Entity((array)$item);
-                    }
-                }
-            });
-            \App::dataStoreClient()->execute(\App::config()->dataStore['retryTimeout']['tiny'], \App::config()->dataStore['retryCount']);
-        }
-
         // ajax
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
             return new \Http\JsonResponse([
                 'list'           => (new \View\Product\ListAction())->execute(
                     \App::closureTemplating()->getParam('helper'),
                     $productPager,
-                    $productVideosByProduct,
                     !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : [],
                     $slice->getProductBuyMethod(),
                     $slice->getShowProductState()
@@ -513,7 +494,6 @@ class ShowAction {
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productView', $productView);
-        $page->setParam('productVideosByProduct', $productVideosByProduct);
         $page->setParam('hasCategoryChildren', in_array($request->get('route'), ['slice.show', 'slice.category']));
 
         return new \Http\Response($page->show());

@@ -65,6 +65,10 @@ class BasicEntity {
     protected $seoKeywords;
     /** @var string|null */
     protected $seoDescription;
+    /** @var \Model\Media[] */
+    public $medias = [];
+    /** @var array */
+    public $json3d = [];
 
     public function __construct(array $data = []) {
         if (isset($data['id'])) $this->setId($data['id']);
@@ -643,5 +647,31 @@ class BasicEntity {
             && !$this->isAvailable()
             && !$this->hasAvailableModels()
         ;
+    }
+
+    public function hasVideo() {
+        foreach ($this->medias as $media) {
+            if (in_array($media->provider, ['vimeo', 'youtube'], true)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function has3d() {
+        if ($this->json3d) {
+            return true;
+        }
+
+        foreach ($this->medias as $media) {
+            // Временно отключаем maybe3d html5 модели из-за проблем, описанных в SITE-3783
+//            if (in_array($media->provider, ['megavisor', 'maybe3d', 'swf'], true)) {
+            if (in_array($media->provider, ['megavisor', 'swf'], true) || ($media->provider === 'maybe3d' && $media->getSourceByType('swf'))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

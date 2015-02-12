@@ -424,6 +424,13 @@ namespace Model\OrderDelivery\Entity {
                 $this->total_cost = $this->total_cost + $this->delivery->price;
             }
         }
+
+        /** Это заказ партнерский?
+         * @return bool
+         */
+        public function isPartnerOffer() {
+            return $this->seller instanceof Order\Seller && $this->seller->ui != Order\Seller::UI_ENTER;
+        }
     }
 
     class PaymentMethod {
@@ -596,17 +603,23 @@ namespace Model\OrderDelivery\Entity\Order {
     use Model\OrderDelivery\ValidateException;
 
     class Seller {
+
+        const UI_ENTER = '24594081-6c68-11e2-a300-e83935c0a4d4';
+
         /** @var string */
         public $name;
         /** @var string|null */
         public $offer;
         /** @var int|null */
         public $id;
+        /** @var string|null */
+        public $ui;
 
         public function __construct(array $data = []) {
             if (isset($data['name'])) $this->name = (string)$data['name'];
             if (isset($data['offer'])) $this->offer = (string)$data['offer'];
             if (isset($data['id'])) $this->id = (int)$data['id'];
+            if (isset($data['ui'])) $this->ui = (string)$data['ui'];
         }
     }
 

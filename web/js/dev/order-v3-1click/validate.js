@@ -1,9 +1,7 @@
 ;(function($) {
 
 	ENTER.OrderV31Click.functions.initValidate = function() {
-		var $body = $(document.body),
-			$orderContent = $('.orderCnt'),
-			$pageNew = $('#jsOneClickContentPage'),
+		var $pageNew = $('#jsOneClickContentPage'),
 			$validationErrors = $('.jsOrderValidationErrors'),
 			$form = $('.jsOrderV3OneClickForm'),
 			errorClass = 'textfield-err',
@@ -49,9 +47,12 @@
 			console.warn('Validation errors', $validationErrors);
 		}
 
-		$pageNew.on('blur', 'input',function(){
+		$pageNew.on('blur', 'input', function(){
 			validate()
-		});
+		}).on('keyup', '.jsOrderV3PhoneField', function(){
+            var val = $(this).val();
+            if (val[val.length-1] != '_') validate();
+        });
 
 		$form.on('submit', function(e){
 

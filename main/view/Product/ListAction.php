@@ -6,7 +6,6 @@ class ListAction {
     /**
      * @param \Helper\TemplateHelper $helper
      * @param \Iterator\EntityPager $pager
-     * @param array $productVideosByProduct
      * @param array $bannerPlaceholder
      * @param null $buyMethod
      * @param bool $showState
@@ -18,7 +17,6 @@ class ListAction {
     public function execute(
         \Helper\TemplateHelper $helper,
         \Iterator\EntityPager $pager,
-        array $productVideosByProduct,
         array $bannerPlaceholder,
         $buyMethod = null,
         $showState = true,
@@ -46,7 +44,6 @@ class ListAction {
             $productData[] = $showAction->execute(
                 $helper,
                 $product,
-                $productVideosByProduct,
                 $buyMethod,
                 $showState,
                 $cartButtonAction,

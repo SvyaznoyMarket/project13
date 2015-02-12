@@ -34,11 +34,16 @@ class DeliveryAction extends OrderV3 {
                     'changes'        => $this->formatChanges($request->request->all(), $previousSplit)
                 ];
 
-                $result['OrderDeliveryRequest'] = json_encode($splitData, JSON_UNESCAPED_UNICODE);
-                $result['OrderDeliveryModel'] = $this->getSplit($request->request->all());
+                $orderDeliveryModel = $this->getSplit($request->request->all());
+
+                if (\App::debug()) {
+                    $result['OrderDeliveryRequest'] = json_encode($splitData, JSON_UNESCAPED_UNICODE);
+                    $result['OrderDeliveryModel'] = $orderDeliveryModel;
+                }
+
 
                 $page = new \View\OrderV3\DeliveryPage();
-                $page->setParam('orderDelivery', $result['OrderDeliveryModel']);
+                $page->setParam('orderDelivery', $orderDeliveryModel);
                 $result['page'] = $page->show();
 
             } catch (\Curl\Exception $e) {
@@ -128,15 +133,26 @@ class DeliveryAction extends OrderV3 {
             if ($shopId) $splitData['shop_id'] = (int)$shopId;
         }
 
-        $orderDeliveryData = $this->client->query(
-            'cart/split',
-            [
-                'geo_id'     => $this->user->getRegion()->getId(),
-                'request_id' => \App::$id, // SITE-4445
-            ],
-            $splitData,
-            3 * \App::config()->coreV2['timeout']
-        );
+
+        $orderDeliveryData = null;
+        foreach ([1, 3] as $i) { // две попытки на расчет доставки: 1*5 и 4*5 секунды
+            try {
+                $orderDeliveryData = $this->client->query(
+                    'cart/split',
+                    [
+                        'geo_id'     => $this->user->getRegion()->getId(),
+                        'request_id' => \App::$id, // SITE-4445
+                    ],
+                    $splitData,
+                    $i * \App::config()->coreV2['timeout']
+                );
+            } catch (\Exception $e) {}
+
+            if ($orderDeliveryData) break; // если получен ответ прекращаем попытки
+        }
+        if (!$orderDeliveryData) {
+            throw new \Exception('Не удалось расчитать доставку. Повторите попытку позже.');
+        }
 
         $orderDelivery = new \Model\OrderDelivery\Entity($orderDeliveryData);
         if (!(bool)$orderDelivery->orders) {

@@ -2,7 +2,6 @@
 /**
  * @var $page              \View\Product\IndexPage
  * @var $product           \Model\Product\Entity
- * @var $productVideos     \Model\Product\Video\Entity[]
  * @var $user              \Session\User
  * @var $accessories       \Model\Product\Entity[]
  * @var $accessoryCategory \Model\Product\Category\Entity[]
@@ -35,7 +34,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
 <?= $helper->render('product/__data', ['product' => $product]) ?>
 
 <div class="bProductSectionLeftCol">
-    <?= $helper->render('product/__photo', ['product' => $product, 'productVideos' => $productVideos, 'useLens' => $useLens]) ?>
+    <?= $helper->render('product/__photo', ['product' => $product, 'useLens' => $useLens]) ?>
 
     <div class="bProductDesc<? if (!$creditData['creditIsAllowed'] || $user->getRegion()->getHasTransportCompany()): ?> mNoCredit<? endif ?>" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
         <?= $helper->render('product/__state', ['product' => $product]) // Есть в наличии ?>

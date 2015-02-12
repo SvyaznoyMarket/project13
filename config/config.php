@@ -49,7 +49,6 @@ $c->coreV2['retryTimeout'] = [
     'medium'  => 0.5,
     'long'    => 0.8,
     'huge'    => 1.5,
-    'forever' => 0,
 ];
 $c->coreV2['chunk_size']   = 50;
 $c->coreV2['debug']        = false;
@@ -66,7 +65,6 @@ $c->corePrivate['retryTimeout'] = [
     'medium'  => 0.5,
     'long'    => 0.8,
     'huge'    => 1.5,
-    'forever' => 0,
 ];
 
 $c->searchClient['url']          = 'http://search.enter.ru/';
@@ -81,7 +79,6 @@ $c->searchClient['retryTimeout'] = [
     'medium'  => 0.5,
     'long'    => 0.8,
     'huge'    => 1.5,
-    'forever' => 0,
 ];
 $c->searchClient['chunk_size']   = 50;
 $c->searchClient['debug']        = false;
@@ -113,7 +110,6 @@ $c->reviewsStore['retryTimeout'] = [
     'medium'  => 0.5,
     'long'    => 1,
     'huge'    => 2,
-    'forever' => 0,
 ];
 
 $c->wordpress['url'] = 'http://content.enter.ru/';
@@ -127,7 +123,6 @@ $c->wordpress['retryTimeout'] = [
     'medium'  => 0.3,
     'long'    => 0.5,
     'huge'    => 1,
-    'forever' => 0,
 ];
 
 $c->dataStore['url'] = 'http://cms.enter.ru/v1/';
@@ -140,7 +135,6 @@ $c->dataStore['retryTimeout'] = [
     'medium'  => 0.1,
     'long'    => 0.5,
     'huge'    => 1,
-    'forever' => 0,
 ];
 
 $c->scms['url']          = 'http://scms.enter.ru/';
@@ -153,7 +147,6 @@ $c->scms['retryTimeout'] = [
     'medium'  => 0.5,
     'long'    => 1,
     'huge'    => 2,
-    'forever' => 0,
 ];
 
 $c->scmsV2['url']          = 'http://scms.enter.ru/v2/';
@@ -166,7 +159,6 @@ $c->scmsV2['retryTimeout'] = [
     'medium'  => 0.5,
     'long'    => 1,
     'huge'    => 2,
-    'forever' => 0,
 ];
 
 $c->scmsSeo['url']          = 'http://scms.enter.ru/seo/';
@@ -179,7 +171,6 @@ $c->scmsSeo['retryTimeout'] = [
     'medium'  => 0.5,
     'long'    => 1,
     'huge'    => 2,
-    'forever' => 0,
 ];
 
 $c->crm['url'] = 'http://crm.enter.ru/';
@@ -194,7 +185,6 @@ $c->crm['retryTimeout'] = [
     'medium'  => 0.5,
     'long'    => 0.8,
     'huge'    => 1.5,
-    'forever' => 0,
 ];
 $c->crm['debug'] = false;
 
@@ -226,7 +216,6 @@ $c->pickpoint['retryTimeout'] = [
     'medium'  => 0.1,
     'long'    => 0.5,
     'huge'    => 1,
-    'forever' => 0,
 ];
 
 // TODO: Вынести сюда же настройки для sociomantic and get4click
@@ -247,8 +236,6 @@ $c->partners['AdLens']['enabled'] = true;
 $c->partners['Сpaexchange']['enabled'] = true;
 $c->partners['Admitad']['enabled'] = false;
 $c->partners['Revolvermarketing']['enabled'] = true;
-$c->partners['RuTarget']['enabled'] = true;
-$c->partners['RuTarget']['containerId'] = 'GTM-4SJX';
 $c->partners['Lamoda']['enabled'] = false;
 $c->partners['Lamoda']['lamodaID'] = '11640775691088171491';
 $c->partners['TagMan']['enabled'] = false;
@@ -425,7 +412,8 @@ $c->subscribe['cookieName'] = 'subscribed';
 $c->subscribe['cookieName2'] = 'enter_subscribed_ch';   // кука вида {channelId:status}
 $c->subscribe['cookieName3'] = 'enter_wanna_subscribe'; // кука о желании подписки в новом ОЗ
 
-$c->requestMainMenu = true;
+$c->mainMenu['requestMenu'] = true;
+$c->mainMenu['recommendationsEnabled'] = true;
 
 $c->newOrder = true;
 $c->order['cookieName'] = 'last_order';

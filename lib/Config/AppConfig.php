@@ -250,10 +250,6 @@ class AppConfig {
             'enabled' => null,
             'lamodaID' => null,
         ],
-        'RuTarget' => [
-            'enabled' => null,
-            'containerId' => null,
-        ],
         'TagMan' => [
             'enabled' => null,
         ],
@@ -484,7 +480,10 @@ class AppConfig {
     ];
 
     /** @var bool */
-    public $requestMainMenu = null;
+    public $mainMenu = [
+        'requestMenu'               => null, // запрос главного меню из
+        'recommendationsEnabled'    => null
+    ];
     /** @var bool */
     public $newOrder;
     /** @var array  */

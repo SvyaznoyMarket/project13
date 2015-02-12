@@ -117,25 +117,6 @@ $(document).ready(function() {
 	 */
 	(function() {
 		var
-			oneClickAnalytics = function oneClickAnalytics( data ) {
-				var
-					product = data.product,
-					regionId = data.regionId,
-					result,
-					_rutarget = window._rutarget || [];
-				// end of vars
-
-				if ( !product || !regionId ) {
-					return;
-				}
-
-				result = {'event': 'buyNow', 'sku': product.id, 'qty': product.quantity,'regionId': regionId};
-
-				console.info('RuTarget buyNow');
-				console.log(result);
-				_rutarget.push(result);
-			},
-
 			successHandler = function successHandler( res ) {
 				console.info('payPal ajax complete');
 
@@ -144,9 +125,6 @@ $(document).ready(function() {
 
 					return;
 				}
-
-				// analytics
-				oneClickAnalytics(res);
 
 				document.location.href = res.redirect;
 			},
@@ -177,44 +155,6 @@ $(document).ready(function() {
 		$('.jsLifeGiftButton').bind('click', buyOneClickAndRedirect);
 		$('.jsOneClickButton').bind('click', buyOneClickAndRedirect);
 	})();
-
-
-
-	/**
-	 * Media library
-	 *
-	 * Для вызова нашего старого лампового 3D
-	 */
-	//var lkmv = null
-	// var api = {
-	// 	'makeLite' : '#turnlite',
-	// 	'makeFull' : '#turnfull',
-	// 	'loadbar'  : '#percents',
-	// 	'zoomer'   : '#bigpopup .scale',
-	// 	'rollindex': '.scrollbox div b',
-	// 	'propriate': ['.versioncontrol','.scrollbox']
-	// }
-
-	// if( typeof( product_3d_small ) !== 'undefined' && typeof( product_3d_big ) !== 'undefined' )
-	// 	lkmv = new likemovie('#photobox', api, product_3d_small, product_3d_big )
-	// if( $('#bigpopup').length )
-	// 	var mLib = new mediaLib( $('#bigpopup') )
-
-	// $('.viewme').click( function(){
-	// 	if ($(this).hasClass('maybe3d')){
-
-	// 		return false
-	// 	}
-	// 	if ($(this).hasClass('3dimg')){
-
-	// 	}
-
-	// 	if( mLib )
-	// 		mLib.show( $(this).attr('ref') , $(this).attr('href'))
-	// 	return false
-	// });
-
-
 
 	// карточка товара - характеристики товара краткие/полные
 	if ( $('#productDescriptionToggle').length ) {

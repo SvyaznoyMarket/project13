@@ -30,5 +30,4 @@
     'isAddInfo'              => true,
     'showPagerHeader'        => true,
     'inSearch'               => true,
-    'productVideosByProduct' => $productVideosByProduct,
 ]) ?>

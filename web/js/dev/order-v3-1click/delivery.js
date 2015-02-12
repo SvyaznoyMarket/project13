@@ -3,7 +3,7 @@
 		body = document.getElementsByTagName('body')[0],
 		$body = $(body);
 
-    //console.log('Model', $('#initialOrderModel').data('value'));
+	//console.log('Model', $('#initialOrderModel').data('value'));
 	ENTER.OrderV31Click.functions.initDelivery = function() {
 		var $orderContent = $('#js-order-content'),
 			comment = '',
@@ -66,17 +66,17 @@
 						pin: '0000'
 					}
 				}).done(function(data){
-					if (data.error_code == 742) {
-						// 742 - Неверный пин
-						//console.log('Сертификат найден');
-						$('[data-block_name='+block_name+']').find('.cuponPin').show();
-					} else if (data.error_code == 743) {
-						// 743 - Сертификат не найден
-						sendChanges('applyDiscount',{'block_name': block_name, 'number':code})
-					}
-				}).always(function(data){
-					//console.log('Certificate check response',data);
-				})
+						if (data.error_code == 742) {
+							// 742 - Неверный пин
+							//console.log('Сертификат найден');
+							$('[data-block_name='+block_name+']').find('.cuponPin').show();
+						} else if (data.error_code == 743) {
+							// 743 - Сертификат не найден
+							sendChanges('applyDiscount',{'block_name': block_name, 'number':code})
+						}
+					}).always(function(data){
+						//console.log('Certificate check response',data);
+					})
 			},
 			applyCertificate = function applyCertificateF(block_name, code, pin) {
 				sendChanges('applyCertificate', {'block_name': block_name, 'code': code, 'pin': pin})
@@ -105,21 +105,21 @@
 						if (spinner) spinner.spin(body)
 					}
 				}).fail(function(jqXHR){
-					var response = $.parseJSON(jqXHR.responseText);
+						var response = $.parseJSON(jqXHR.responseText);
 
-					if (response.result && response.result.errorContent) {
-						$('#OrderV3ErrorBlock').html($(response.result.errorContent).html()).show();
-					}
-				}).done(function(data) {
-					//console.log("Query: %s", data.result.OrderDeliveryRequest);
-					//console.log("Model:", data.result.OrderDeliveryModel);
-					$orderContent.empty().html($(data.result.page).html());
-					ENTER.OrderV31Click.functions.initAddress();
-					$orderContent.find('input[name=address]').focus();
-				}).always(function(){
-					$orderContent.stop(true, true).fadeIn(200);
-					if (spinner) spinner.stop();
-				});
+						if (response.result && response.result.errorContent) {
+							$('#OrderV3ErrorBlock').html($(response.result.errorContent).html()).show();
+						}
+					}).done(function(data) {
+						//console.log("Query: %s", data.result.OrderDeliveryRequest);
+						//console.log("Model:", data.result.OrderDeliveryModel);
+						$orderContent.empty().html($(data.result.page).html());
+						ENTER.OrderV31Click.functions.initAddress();
+						$orderContent.find('input[name=address]').focus();
+					}).always(function(){
+						$orderContent.stop(true, true).fadeIn(200);
+						if (spinner) spinner.stop();
+					});
 
 			},
 			log = function logF(data){
@@ -160,10 +160,10 @@
 
 						// кнопка "Выбрать магазин"
 						balloonContent += '<br />' + $('<button />', {
-							'text':'Выбрать магазин',
-							'class': 'btnLightGrey jsChangePoint',
-							'data-id': point.id,
-							'data-token': token
+								'text':'Выбрать магазин',
+								'class': 'btnLightGrey jsChangePoint',
+								'data-id': point.id,
+								'data-token': token
 							}
 						)[0].outerHTML;
 
@@ -213,7 +213,7 @@
 					changePoint($(this).closest('.selShop').data('block_name'), id, token);
 				}
 			}
-		;
+			;
 
 		// TODO change all selectors to .jsMethod
 
@@ -270,11 +270,11 @@
 		$orderContent.on('click', '.orderCol_delivrLst li', function() {
 			var $elem = $(this);
 			if (!$elem.hasClass('orderCol_delivrLst_i-act')) {
-	//            if ($elem.data('delivery_group_id') == 1) {
-	//                showMap($elem.parent().siblings('.selShop').first());
-	//            } else {
-					changeDelivery($(this).closest('.orderRow').data('block_name'), $(this).data('delivery_method_token'));
-	//            }
+				//            if ($elem.data('delivery_group_id') == 1) {
+				//                showMap($elem.parent().siblings('.selShop').first());
+				//            } else {
+				changeDelivery($(this).closest('.orderRow').data('block_name'), $(this).data('delivery_method_token'));
+				//            }
 			}
 		});
 

@@ -32,4 +32,18 @@ class Media {
             }
         }
     }
+
+    /**
+     * @param string $type
+     * @return Source|null
+     */
+    public function getSourceByType($type) {
+        foreach ($this->sources as $source) {
+            if ($source->type === $type) {
+                return $source;
+            }
+        }
+
+        return null;
+    }
 }

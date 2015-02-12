@@ -18,7 +18,7 @@ var DAnimFramePlayer = function (ParentItem, Host) {
     var progDAnim=null;
 
     var MainDiv=document.createElement( 'DIV');
-    MainDiv.setAttribute('id', '3dImgContainer');
+    MainDiv.setAttribute('id', 'js-product-3d-img-container');
     MainDiv.style.position='relative';
     ParentItem.appendChild(MainDiv);
 

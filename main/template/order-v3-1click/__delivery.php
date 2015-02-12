@@ -85,12 +85,8 @@ return function(
                         <strong>Адрес</strong> <span class="colorBrightGrey">для всех заказов с доставкой</span>
                     </div>
 
-                    <div class="orderCol_addrs">
-                        <ul class="orderCol_addrs_fld textfield clearfix" style="height: inherit">
-                            <li class="orderCol_addrs_fld_i orderCol_addrs_fld_i-edit ui-front">
-                                <span id="addressInputPrefix" class="addrsAutocmpltLbl"></span><input name="address" type="text" />
-                            </li>
-                        </ul>
+                    <div class="orderCol_addrs" style="margin-left: 0;">
+                        <?= $helper->render('order-v3/common/_smartaddress') ?>
                     </div>
 
                 </div>

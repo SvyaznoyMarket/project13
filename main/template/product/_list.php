@@ -4,7 +4,6 @@
  * @var $pager                  \Iterator\EntityPager
  * @var $view                   string
  * @var $isAjax                 bool
- * @var $productVideosByProduct array
  * @var $isAddInfo              bool
  **/
 ?>

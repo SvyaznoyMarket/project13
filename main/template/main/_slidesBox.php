@@ -38,6 +38,8 @@ if (false && @$blockname == 'ПОПУЛЯРНЫЕ ТОВАРЫ') {
     } catch (\Exception $e) {}
 }
 
+if (@$blockname == 'МЫ РЕКОМЕНДУЕМ') $rrProducts = \Controller\Product\ProductHelperTrait::filterByModelId($rrProducts);
+
 $rrProducts = array_filter($rrProducts, function($p){
     /** @var \Model\Product\BasicEntity $p */
     return ($p instanceof \Model\Product\BasicEntity) && $p->getIsBuyable() && !$p->isInShopShowroomOnly(); // SITE-5000
