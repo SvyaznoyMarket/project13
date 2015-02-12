@@ -11945,6 +11945,11 @@ img[height="0"] {
     padding: 10px 25px 0 10px;
     max-height: 200px;
   }
+  .fltrBtn-action-item {
+    position: absolute;
+    top: 0;
+    left: 12px;
+  }
 }
 /*---------Страницы ошибок----------*/
 @media all {
