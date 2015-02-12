@@ -2,60 +2,62 @@
  * @author		Zaytsev Alexandr
  */
 (function(ENTER) {
-	var body = $('body');
+	var $body = $('body');
 
 	// Обработчик для кнопок купить
-	body.on('click', '.jsBuyButton', function(event) {
-		var button = $(this);
+	$body.on('click', '.jsBuyButton', function(e) {
+		var $button = $(e.currentTarget);
 
-        body.trigger('TL_buyButton_clicked');
+        $body.trigger('TL_buyButton_clicked');
 
-		if ( button.hasClass('mDisabled') ) {
+		if ( $button.hasClass('mDisabled') ) {
 			//return false;
-            event.preventDefault();
+            e.preventDefault();
 		}
 
-		if ( button.hasClass('mBought') ) {
-			document.location.href(button.attr('href'));
+		if ( $button.hasClass('mBought') ) {
+			document.location.href($button.attr('href'));
 			//return false;
-            event.preventDefault();
+            e.preventDefault();
 		}
 
-		button.addClass('mLoading');
+		$button.addClass('mLoading');
 
 		// Добавление в корзину на сервере. Получение данных о покупке и состоянии корзины. Маркировка кнопок.
 		$.ajax({
-			url: button.attr('href'),
+			url: $button.attr('href'),
 			type: 'GET',
 			success: function(data) {
 				var
-					upsale = button.data('upsale') ? button.data('upsale') : null,
-					product = button.parents('.jsSliderItem').data('product');
+					upsale = $button.data('upsale') ? $button.data('upsale') : null,
+					product = $button.parents('.jsSliderItem').data('product');
 
 				if (!data.success) {
 					return;
 				}
 
-				button.removeClass('mLoading');
+				$button.removeClass('mLoading');
 
 				if (data.product) {
 					data.product.isUpsale = product && product.isUpsale ? true : false;
 					data.product.fromUpsale = upsale && upsale.fromUpsale ? true : false;
 				}
 
-				body.trigger('addtocart', [data, upsale]);
+				data.location = $button.data('location');
+
+				$body.trigger('addtocart', [data, upsale]);
 			},
 			error: function() {
-				button.removeClass('mLoading');
+				$button.removeClass('mLoading');
 			}
 		});
 
 		//return false;
-        event.preventDefault();
+        e.preventDefault();
 	});
 
 	// analytics
-	body.on('addtocart', function(event, data){
+	$body.on('addtocart', function(event, data){
 		var
 			/**
 			 * KISS Аналитика для добавления в корзину
@@ -127,9 +129,7 @@
 			 * Google Analytics аналитика добавления в корзину
 			 */
 				googleAnalytics = function googleAnalytics( event, data ) {
-				var
-					productData = data.product;
-				// end of vars
+				var productData = data.product;
 
 				var
 					tchiboGA = function() {
@@ -148,18 +148,7 @@
 
 				tchiboGA();
 
-				if (productData.article) {
-					var ga_action;
-					if (data.sender.name == 'gift') {
-						ga_action = 'product-gift';
-					} else if (typeof productData.price != 'undefined' && parseInt(productData.price, 10) < 500) {
-						ga_action = 'product-500';
-					} else {
-						ga_action = 'product';
-					}
-
-					body.trigger('trackGoogleEvent', ['Add2Basket', ga_action, productData.article]);
-				}
+				ENTER.utils.sendAdd2BasketGaEvent(productData.article, productData.price, productData.isOnlyFromPartner, productData.isSlot, data.sender ? data.sender.name : '');
 
 				productData.isUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_from_rec', productData.article]);
 				productData.fromUpsale && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_added_to_cart', productData.article]);
@@ -168,7 +157,16 @@
                     var sender = data.sender;
                     console.info({sender: sender});
                     if (sender && ('retailrocket' == sender.name)) {
-                        body.trigger('trackGoogleEvent',['RR_Взаимодействие', 'Добавил в корзину', sender.position]);
+						var rrEventLabel = '';
+						if (ENTER.config.pageConfig.product) {
+							if (ENTER.config.pageConfig.product.isSlot) {
+								rrEventLabel = ' (marketplace-slot)';
+							} else if (ENTER.config.pageConfig.product.isOnlyFromPartner) {
+								rrEventLabel = ' (marketplace)';
+							}
+						}
+
+                        $body.trigger('trackGoogleEvent',['RR_Взаимодействие' + rrEventLabel, 'Добавил в корзину', sender.position]);
                     }
                 } catch (e) {
                     console.error(e);
@@ -265,11 +263,12 @@
 				adAdriver(event, data);
 				addToRetailRocket(event, data);
 			}
+
 			if (data.products) {
 				console.groupCollapsed('Аналитика для набора продуктов');
 				for (var i in data.products) {
 					/* Google Analytics */
-					googleAnalytics(event, { product: data.products[i] });
+					googleAnalytics(event, $.extend({}, data, {product: data.products[i]}));
 				}
 				console.groupEnd();
 			}

@@ -1,8 +1,10 @@
 <?php
 /**
- * @var $id     int
- * @var $typeId int
+ * @var \Model\Product\Entity $product
  */
+
+$id = $product->getId();
+$typeId = $product->getType() ? $product->getType()->getId() : null;
 ?>
 
 <!-- кнопка сравнения -->
@@ -11,7 +13,7 @@
      data-id="<?= $id ?>"
      data-type-id="<?= $typeId ?>">
 
-    <a id="<?= 'compareButton-' . $id ?>" class="btnCmpr_lk jsCompareLink" href="<?= \App::router()->generate('compare.add', ['productId' => $id]) ?>">
+    <a id="<?= 'compareButton-' . $id ?>" class="btnCmpr_lk jsCompareLink" href="<?= \App::router()->generate('compare.add', ['productId' => $id, 'location' => 'product']) ?>" data-is-slot="<?= (bool)$product->getSlotPartnerOffer() ?>" data-is-only-from-partner="<?= $product->isOnlyFromPartner() ?>">
         <span class="btnCmpr_tx">Добавить к сравнению</span>
     </a>
 

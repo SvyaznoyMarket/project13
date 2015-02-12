@@ -103,6 +103,7 @@ class CompareAction {
 
                     $compareGroups[$key]['products'][$key2] = [
                         'id' => $product->getId(),
+                        'article' => $product->getArticle(),
                         'prefix' => $product->getPrefix(),
                         'webName' => $product->getWebName(),
                         'link' => $product->getLink(),
@@ -114,7 +115,8 @@ class CompareAction {
                         'statusId' => $product->getStatusId(),
                         'imageUrl' => $product->getImageUrl(1),
                         'partnerName' => $slotPartnerOffer ? $slotPartnerOffer['name'] : '',
-                        'isSlotPartnerOffer' => (bool)$slotPartnerOffer,
+                        'partnerOfferUrl' => $slotPartnerOffer ? $slotPartnerOffer['offer'] : '',
+                        'isSlot' => (bool)$slotPartnerOffer,
                         'reviews' => [
                             'stars' => [
                                 'notEmpty' => array_pad([], $starCount, null),
@@ -231,6 +233,7 @@ class CompareAction {
                 'id'     => $product->getId(),
                 'ui'     => $product->getUi(),
                 'typeId' => $product->getType() ? $product->getType()->getId() : null,
+                'location' => $request->query->get('location'),
             ];
             $this->session->set($this->compareSessionKey, $this->data);
         }

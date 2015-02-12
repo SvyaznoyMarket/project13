@@ -10,34 +10,30 @@ class Action {
      * @param \Http\Request $request
      * @return \Http\Response
      */
-    public function execute(\Http\Request $request) {
+    public function create(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        if ($_SERVER['APPLICATION_ENV'] === 'local') {
-            return new \Http\JsonResponse(['orderNumber' => 123456]);
-        }
-
         $referer = $request->headers->get('referer') ?: '/';
-        $orderCreatePacketResponse = null;   // ответ о ядра
-        $data = [];       // данные для отправки на ядро
-        $params = [];
+        $orderCreatePacketParams = [];
+        $orderCreatePacketData = [];
+        $orderCreatePacketResponse = null;
 
         try {
-            $phone = $this->getValidatedPhone($request->get('phone'));
+            $phone = $this->getValidatedPhone($request->request->get('phone'));
 
-            if ($request->get('confirm') != '1') {
+            if ($request->request->get('confirm') != '1') {
                 throw new Exception('Подтвердите согласие с офертой');
             }
 
-            $cartSplitResponse = $this->queryCartSplit($request->get('productId'));
+            $cartSplitResponse = $this->queryCartSplit($request->request->get('productId'));
 
-            $params = $this->getOrderCreatePacketParams();
-            $data = $this->getOrderCreatePacketData($cartSplitResponse, $phone, $request->get('email'), $request->get('name'), $request->request->get('sender'));
+            $orderCreatePacketParams = $this->getOrderCreatePacketParams();
+            $orderCreatePacketData = $this->getOrderCreatePacketData($cartSplitResponse, $phone, $request->request->get('email'), $request->request->get('name'), $request->request->get('sender'));
 
             $orderCreatePacketResponse = \App::coreClientV2()->query(
                 (\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet'),
-                $params,
-                $data,
+                $orderCreatePacketParams,
+                $orderCreatePacketData,
                 \App::config()->coreV2['hugeTimeout']
             );
         } catch (Exception $e) {
@@ -46,16 +42,12 @@ class Action {
             \App::logger()->error($e->getMessage(), ['curl', 'order/create']);
             \App::exception()->remove($e);
             return $request->isXmlHttpRequest() ? new \Http\JsonResponse(['error' => 708 == $e->getCode() ? 'Товара нет в наличии' : (\App::config()->debug ? $e->getMessage() : 'Ошибка при создании заявки')]) : new \Http\RedirectResponse($referer);
-        } catch (\RuntimeException $e) {
-            \App::logger()->error($e->getMessage(), ['curl', 'order/create']);
-            \App::exception()->remove($e);
-            return $request->isXmlHttpRequest() ? new \Http\JsonResponse(['error' => \App::config()->debug ? $e->getMessage() : 'Ошибка при создании заявки']) : new \Http\RedirectResponse($referer);
         } catch (\Exception $e) {
             if (!in_array($e->getCode(), \App::config()->order['excludedError'])) {
                 \App::logger('order')->error([
-                    'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage(), 'detail' => $e instanceof \Curl\Exception ? $e->getContent() : null, 'trace' => $e->getTraceAsString()],
-                    'url'     => (\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet') . ($params ? ('?' . http_build_query($params)) : ''),
-                    'data'    => $data,
+                    'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage(), 'trace' => $e->getTraceAsString()],
+                    'url'     => (\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet') . ($orderCreatePacketParams ? ('?' . http_build_query($orderCreatePacketParams)) : ''),
+                    'data'    => $orderCreatePacketData,
                     'server'  => array_map(function($name) use (&$request) { return $request->server->get($name); }, [
                         'HTTP_USER_AGENT',
                         'HTTP_X_REQUESTED_WITH',
@@ -68,7 +60,7 @@ class Action {
                 ]);
             }
 
-            return $request->isXmlHttpRequest() ? new \Http\JsonResponse(['error' => \App::config()->debug ? $e->getMessage() : 'Ошибка при создании заявки']) : new \Http\RedirectResponse($referer);
+            throw $e;
         }
 
         \App::logger()->info(['action' => __METHOD__, 'core.response' => $orderCreatePacketResponse], ['order']);
@@ -129,7 +121,7 @@ class Action {
                 }
             }
 
-            throw new Exception('Отстуствуют данные по заказам');
+            throw new \Exception('Отстуствуют данные по заказам');
         }
 
         return $cartSplitResponse;
@@ -153,13 +145,13 @@ class Action {
 
         foreach ($cartSplitResponse['orders'] as $order) {
             $data[] = array_merge(
+                (new OrderEntity(array_merge($cartSplitResponse, ['order' => $order]), json_decode($sender, true)))->getOrderData(),
                 [
                     'mobile' => $phone,
                     'email' => $email,
-                    'first_name' => $name
-                ],
-                (new OrderEntity(array_merge($cartSplitResponse, ['order' => $order]), json_decode($sender, true)))->getOrderData(),
-                ['type_id' => $_SERVER['APPLICATION_ENV'] === 'local' ? \Model\Order\Entity::TYPE_1CLICK : \Model\Order\Entity::TYPE_SLOT]
+                    'first_name' => $name,
+                    'type_id' => \Model\Order\Entity::TYPE_SLOT,
+                ]
             );
         }
 

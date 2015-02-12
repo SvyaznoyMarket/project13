@@ -180,15 +180,15 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotConfig() {
-        $config = [];
+        $config = ['location' => ['product']];
 
         /** @var \Model\Product\Entity|null $product */
         $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
         if ($product) {
-            $config = [
-                'product' => [
-                    'id' => $product->getId(),
-                ],
+            $config['product'] = [
+                'id' => $product->getId(),
+                'isSlot' => (bool)$product->getSlotPartnerOffer(),
+                'isOnlyFromPartner' => $product->isOnlyFromPartner(),
             ];
         }
 

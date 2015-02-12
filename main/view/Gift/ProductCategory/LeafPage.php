@@ -28,4 +28,10 @@ class LeafPage extends \View\DefaultLayout {
             'filterTarget' => '.js-gift-category',
         ];
     }
+
+    public function slotConfig() {
+        return $this->tryRender('_config', ['config' => [
+            'location' => ['listing'],
+        ]]);
+    }
 }

@@ -38,11 +38,13 @@
 
         <? /* Маркировка продуктов Marketplace */ ?>
         <? if (isset($product) && $product instanceof \Model\Product\Entity): ?>
-            <? /*  Если товар ТОЛЬКО от партнеров или нет у нас, но есть у партнеров */
-            if ($product->isOnlyFromPartner() || ($product->getPartnersOffer() && !$product->getIsBuyable())) : ?>
+            <? if ($product->getSlotPartnerOffer()): ?>
+                _gaq.push(['_setCustomVar', 12, 'shop_type', 'marketplace-slot', 3]);
+            <? elseif ($product->isOnlyFromPartner() || ($product->getPartnersOffer() && !$product->getIsBuyable())): ?>
+                /*  Если товар ТОЛЬКО от партнеров или нет у нас, но есть у партнеров */
                 _gaq.push(['_setCustomVar', 12, 'shop_type', 'marketplace', 3]);
                 if (console && typeof console.log == 'function') console.log('[Google Analytics] _setCustomVar 11 shop_type marketplace');
-            <? endif; ?>
+            <? endif ?>
         <? endif ?>
 
         _gaq.push(['_trackPageview']);
@@ -94,7 +96,7 @@
                         $productName = $product->getName();
 
                         if ($labels) {
-                            $productName .= ' (' . implode(', ', $labels) . ')';
+                            $productName .= ' (' . implode(')(', $labels) . ')';
                         }
                     ?>
 

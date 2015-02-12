@@ -1340,6 +1340,24 @@
 	viewParamPanel.on('click', '.jsInfinityEnable', infBtnHandler);
 
 }(window.ENTER));
+$(function() {
+	var $body = $('body');
+
+	$body.on('click', '.js-listing-item-img, .js-listing-item-viewButton', function(e) {
+		var
+			$target = $(e.currentTarget),
+			$item = $target.closest('.js-listing-item');
+
+		var action = 'listing';
+		if ($item.data('is-slot')) {
+			action = 'listing-marketplace-slot';
+		} else if ($item.data('is-only-from-partner')) {
+			action = 'listing-marketplace';
+		}
+
+		$body.trigger('trackGoogleEvent', ['View', action, $target.is('.js-listing-item-img') ? 'image' : 'button']);
+	});
+});
 /**
  * Catalog loader
  *
@@ -1584,7 +1602,7 @@ $(function() {
 		$dropBoxContents = $('.js-category-v2-filter-dropBox-content'),
 		$priceLinks = $('.js-category-v2-filter-price-link'),
 		$radio = $('.js-category-v2-filter-element-list-radio'),
-		catalogPath = document.location.pathname.replace(/^\/catalog\/([^\/]*).*$/i, '$1'); // Используем значение URL адреса на момент загрузки страницы, т.к. на данный момент при выполнении поиска URL страницы изменяется на URL формы, в которой задан URL из метода http://admin.enter.ru/v2/category/get-seo (в котором содержится некорректный URL; без средней части - "/catalog/holodilniki-i-morozilniki-1096" вместо "/catalog/appliances/holodilniki-i-morozilniki-1096")
+		catalogPath = ENTER.utils.getCategoryPath();
 
 	// Открытие и закрытие выпадающих списков
 	(function() {
@@ -1813,7 +1831,7 @@ $(function() {
 		$otherBrandsOpener = $('.js-category-v2-root-brands-otherOpener'),
 		$brandsTitle = $('.js-category-v2-root-brands-title'),
 		$linksWrapper = $('.js-category-v2-root-linksWrapper'),
-		catalogPath = document.location.pathname.replace(/^\/catalog\/([^\/]*).*$/i, '$1'); // Используем значение URL адреса на момент загрузки страницы, т.к. на данный момент при выполнении поиска URL страницы изменяется на URL формы, в которой задан URL из метода http://admin.enter.ru/v2/category/get-seo (в котором содержится некорректный URL; без средней части - "/catalog/holodilniki-i-morozilniki-1096" вместо "/catalog/appliances/holodilniki-i-morozilniki-1096")
+		catalogPath = ENTER.utils.getCategoryPath();
 
 	function renderSelectedBrandsTemplate() {
 		var $template = $('#root_page_selected_brands_tmpl');

@@ -88,9 +88,10 @@ class ProductButtonAction {
             $data['value'] = 'product-card' === $location ? 'Отправить заявку' : 'Как купить?';
             $data['full'] = 'product-card' === $location ? '0' : '1';
             $data['productUrl'] = $product->getLink();
+            $data['productArticle'] = $product->getArticle();
+            $data['productPrice'] = $product->getPrice();
             $data['partnerName'] = $slotPartnerOffer['name'];
-            $data['partnerOffer'] = $slotPartnerOffer['offer'];
-            $data['isSlotPartnerOffer'] = true;
+            $data['partnerOfferUrl'] = $slotPartnerOffer['offer'];
         } else if ($product->isInShopStockOnly() && $forceDefaultBuy) {
             if ($reserveAsBuy) {
                 $data['id'] = 'quickBuyButton-' . $product->getId();

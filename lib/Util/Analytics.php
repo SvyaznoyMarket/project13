@@ -73,6 +73,7 @@ class Analytics {
                 'products'      => [],
                 'coupon_number' => $order->getCouponNumber(),
                 'is_partner'    => $order->getIsPartner(),
+                'isSlot'        => $order->getTypeId() == \Model\Order\Entity::TYPE_SLOT,
             ];
 
             foreach ($order->getProduct() as $orderProduct) {
@@ -81,6 +82,8 @@ class Analytics {
                     \App::logger()->error(sprintf('Товар #%s не найден', $orderProduct->getId()), ['order']);
                     continue;
                 }
+
+                $compareProduct = static::getCompareProduct($product->getUi());
 
                 $productData = [
                     'quantity' => $orderProduct->getQuantity(),
@@ -103,6 +106,10 @@ class Analytics {
                             'link'  => $category->getLink(),
                         ];
                     }, $product->getCategory()),
+                    'isSlot' => (bool)$product->getSlotPartnerOffer(),
+                    'isOnlyFromPartner' => $product->isOnlyFromPartner(),
+                    'inCompare' => (bool)$compareProduct,
+                    'compareLocation' => isset($compareProduct['location']) ? $compareProduct['location'] : '',
                 ];
 
                 if (isset($order->meta_data[sprintf('product.%s.sender', $product->getUi())])) $productData['sender'] = $order->meta_data[sprintf('product.%s.sender', $product->getUi())][0];
@@ -124,5 +131,18 @@ class Analytics {
         $data['isUsedCartRecommendation'] = $isUsedCartRecommendation;
 
         return $data;
+    }
+
+    private static function getCompareProduct($productUi) {
+        $compareProducts = \App::session()->get(\App::config()->session['compareKey']);
+        if (is_array($compareProducts)) {
+            foreach ($compareProducts as $compareProduct) {
+                if ($compareProduct['ui'] === $productUi) {
+                    return $compareProduct;
+                }
+            }
+        }
+
+        return null;
     }
 }

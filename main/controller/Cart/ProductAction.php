@@ -65,6 +65,7 @@ class ProductAction {
 
             $productInfo = [
                 'id'        => $product->getId(),
+                'article'   => $product->getArticle(),
                 'name'      => $product->getName(),
                 'img'       => $product->getImageUrl(),
                 'link'      => $product->getLink(),
@@ -75,6 +76,8 @@ class ProductAction {
                     'id' => \View\Id::cartButtonForProduct($product->getId()),
                 ],
                 'isTchiboProduct' => $product->getMainCategory() && 'Tchibo' === $product->getMainCategory()->getName(),
+                'isSlot' => (bool)$product->getSlotPartnerOffer(),
+                'isOnlyFromPartner' => $product->isOnlyFromPartner(),
             ];
             if (\App::config()->kissmentrics['enabled']) {
                 try {

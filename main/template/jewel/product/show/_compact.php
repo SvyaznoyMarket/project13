@@ -66,7 +66,7 @@ if ($product->getPriceOld()) {
         </div>
 
         <div class="lstn_btn">
-            <a href="" class="btnCmprb jsCompareListLink" data-id="<?= $page->escape($product->getId()) ?>" data-bind="compareListBinding: compare"></a>
+            <a href="" class="btnCmprb jsCompareListLink" data-id="<?= $page->escape($product->getId()) ?>" data-bind="compareListBinding: compare" data-is-slot="<?= (bool)$product->getSlotPartnerOffer() ?>" data-is-only-from-partner="<?= $product->isOnlyFromPartner() ?>"></a>
 
             <? if ($product->getIsBuyable()): ?>
                 <?= $helper->render('cart/__button-product', ['product' => $product]) // Кнопка купить ?>

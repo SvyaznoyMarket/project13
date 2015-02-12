@@ -53,7 +53,7 @@ $hasModel = (isset($hasModel) ? $hasModel : true) && $product->getModel() && (bo
         <div class="bBtnLine clearfix">
             <? if (!$product->getKit() || $product->getIsKitLocked()) : ?>
                 <?= $page->render('cart/_button', ['product' => $product]) ?>
-                <a href="" class="btnCmprb jsCompareListLink" data-id="<?= $page->escape($product->getId()) ?>" data-bind="compareListBinding: compare"></a>
+                <a href="" class="btnCmprb jsCompareListLink" data-id="<?= $page->escape($product->getId()) ?>" data-bind="compareListBinding: compare" data-is-slot="<?= (bool)$product->getSlotPartnerOffer() ?>" data-is-only-from-partner="<?= $product->isOnlyFromPartner() ?>"></a>
             <? endif; ?>
 
             <a class="btnView btn1" href="<?= $product->getLink() ?>">Посмотреть</a>

@@ -90,7 +90,9 @@ class ShowAction {
                 : null,
             'hasKit'       => (bool)$product->getKit(),
             'isKitLocked'   => (bool)$product->getIsKitLocked(),
-            'brandImage'    => $product->getBrand() && $product->getBrand()->getImage() ? $product->getBrand()->getImage() : null
+            'brandImage'    => $product->getBrand() && $product->getBrand()->getImage() ? $product->getBrand()->getImage() : null,
+            'isSlot' => (bool)$product->getSlotPartnerOffer(),
+            'isOnlyFromPartner' => $product->isOnlyFromPartner(),
         ];
 
         // oldPrice and priceSale
@@ -103,7 +105,7 @@ class ShowAction {
         if ($buyMethod && in_array(strtolower($buyMethod), ['none', 'false'])) {
             $productItem['cartButton'] = null;
         } else {
-            $productItem['cartButton'] = $cartButtonAction ? $cartButtonAction->execute($helper, $product, null, false, $cartButtonSender) : null;
+            $productItem['cartButton'] = $cartButtonAction ? $cartButtonAction->execute($helper, $product, null, false, $cartButtonSender, false) : null;
         }
 
         return $productItem;
