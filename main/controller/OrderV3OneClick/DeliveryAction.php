@@ -135,18 +135,24 @@ class DeliveryAction {
             $splitData['shop_id'] = (int)$shopId;
         }
 
-        try {
-            $orderDeliveryData = $this->client->query(
-                'cart/split',
-                [
-                    'geo_id'     => $this->user->getRegion()->getId(),
-                    'request_id' => \App::$id, // SITE-4445
-                ],
-                $splitData,
-                4 * \App::config()->coreV2['timeout']
-            );
-        } catch (\Exception $e) {
-            throw new \Exception('Не удалось расчитать доставку. Попробуйте повторить попытку.');
+        $orderDeliveryData = null;
+        foreach ([1, 4] as $i) { // две попытки на расчет доставки: 1*5 и 4*5 секунды
+            try {
+                $orderDeliveryData = $this->client->query(
+                    'cart/split',
+                    [
+                        'geo_id'     => $this->user->getRegion()->getId(),
+                        'request_id' => \App::$id, // SITE-4445
+                    ],
+                    $splitData,
+                    $i * \App::config()->coreV2['timeout']
+                );
+            } catch (\Exception $e) {}
+
+            if ($orderDeliveryData) break; // если получен ответ прекращаем попытки
+        }
+        if (!$orderDeliveryData) {
+            throw new \Exception('Не удалось расчитать доставку. Повторите попытку позже.');
         }
 
         $orderDelivery = new \Model\OrderDelivery\Entity($orderDeliveryData);
