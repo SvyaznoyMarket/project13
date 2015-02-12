@@ -133,15 +133,19 @@ class DeliveryAction extends OrderV3 {
             if ($shopId) $splitData['shop_id'] = (int)$shopId;
         }
 
-        $orderDeliveryData = $this->client->query(
-            'cart/split',
-            [
-                'geo_id'     => $this->user->getRegion()->getId(),
-                'request_id' => \App::$id, // SITE-4445
-            ],
-            $splitData,
-            4 * \App::config()->coreV2['timeout']
-        );
+        try {
+            $orderDeliveryData = $this->client->query(
+                'cart/split',
+                [
+                    'geo_id'     => $this->user->getRegion()->getId(),
+                    'request_id' => \App::$id, // SITE-4445
+                ],
+                $splitData,
+                4 * \App::config()->coreV2['timeout']
+            );
+        } catch (\Exception $e) {
+            throw new \Exception('Не удалось расчитать доставку. Попробуйте повторить попытку.');
+        }
 
         $orderDelivery = new \Model\OrderDelivery\Entity($orderDeliveryData);
         if (!(bool)$orderDelivery->orders) {
