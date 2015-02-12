@@ -1344,6 +1344,16 @@ class Action {
                 if ('Металл' === $filter->getName() || 'Вставка' === $filter->getName()) {
                     $filter->setIsAlwaysShow(true);
                 }
+
+                if ('Металл' === $filter->getName() && in_array($category->getUi(), [
+                    'd792f833-f6fa-4158-83f6-2ac657077076', // Кольца Бронницкий Ювелир
+                    '4caf66a4-f1c4-4b79-a6e4-1f2e6a1700cc', // Подвески Бронницкий Ювелир
+                    'd4bc284a-9a1f-4614-a3d0-ec690d7e1b78', // Серьги Бронницкий Ювелир
+                    'ae6975b8-f6e3-46b3-baba-a85305213dea', // Цепи Бронницкий Ювелир
+                    'cd2c06d0-a087-47c2-a043-7ca02317424a', // Танцующие бриллианты
+                ], true)) {
+                    $filter->isOpenByDefault = true;
+                }
             }
 
             if (in_array($category->getUi(), [
