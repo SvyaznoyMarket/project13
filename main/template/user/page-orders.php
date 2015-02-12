@@ -150,7 +150,7 @@ $showStatus = \App::user()->getEntity() && in_array(\App::user()->getEntity()->g
                                     <? $productEntity = isset($products_by_id[$product->getId()]) ? $products_by_id[$product->getId()] : null ?>
                                     <? if (!$productEntity) continue ?>
                                     <? if ($i != 2) : ?>
-                                        <li><?= strlen($productEntity->getName()) > 25 ? mb_substr($productEntity->getName(), 0, 25).'...' : $productEntity->getName() ?> <?= $product->getQuantity()?> шт.</li>
+                                        <li><a href="<?= $page->url('user.order', ['orderId' => $order->getId() ]) ?>"><?= strlen($productEntity->getName()) > 25 ? mb_substr($productEntity->getName(), 0, 25).'...' : $productEntity->getName() ?> <?= $product->getQuantity()?> шт.</a></li>
                                     <? else : ?>
                                         <li><a href="<?= $page->url('user.order', ['orderId' => $order->getId() ]) ?>">и ещё <?= $helper->numberChoiceWithCount(count($order->getProduct()) - 2, ['товар', 'товара', 'товаров']) ?></a></li>
                                         <? break ?>
