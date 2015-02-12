@@ -251,7 +251,9 @@ class Client {
 
                         if (isset($this->queries[$this->queryIndex[(string)$handler]])) {
                             curl_multi_remove_handle($this->multiHandler, $handler);
-                            curl_close($handler);
+                            if (is_resource($handler)) {
+                                curl_close($handler);
+                            }
                             unset($this->queries[$this->queryIndex[(string)$handler]]);
                         }
                     } catch (\Exception $e) {
@@ -336,7 +338,7 @@ class Client {
         // clear multi container
         foreach ($this->resources as $resource) {
             curl_multi_remove_handle($this->multiHandler, $resource);
-            if ($resource) {
+            if (is_resource($resource)) {
                 curl_close($resource);
             }
         }
