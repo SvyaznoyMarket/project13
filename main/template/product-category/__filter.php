@@ -112,13 +112,13 @@ return function(
                     </div>
                 <? endif ?>
 
-                <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
-                    <? if ($showParamsButton): ?>
+                <? if ($otherFilters): ?>
+                    <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
                         <div class="fltrSet_tggl <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-category-filter-otherParamsToggleButton">
                             <span class="fltrSet_tggl_tx">Ещё параметры</span>
                         </div>
-                    <? endif ?>
-                </div>
+                    </div>
+                <? endif ?>
             <? else: ?>
                 <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
                     <? if ($showParamsButton): ?>
