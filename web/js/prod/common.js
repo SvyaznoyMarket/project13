@@ -4435,7 +4435,7 @@ $(document).ready(function() {
 			validate($form);
 		});
 
-		$('[name="phone"]', $popup).keyup(function(e){
+		$phone.keyup(function(e){
 			var val = $(e.currentTarget).val();
 			if (val[val.length - 1] != '_') {
 				validate($form);
