@@ -202,6 +202,7 @@ class Client {
                     foreach ($this->queries[$this->queryIndex[(string)$handler]]['resources'] as $resource) {
                         if ($resource !== $handler) {
                             curl_multi_remove_handle($this->multiHandler, $resource);
+                            curl_close($resource);
                         }
                     }
 
