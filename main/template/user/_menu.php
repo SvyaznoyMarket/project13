@@ -24,7 +24,7 @@ $activeMenuCss = 'personalControl_item-active';
     </li>
 
     <li class="personalControl_item personalControl_item-text fl-r td-underl">
-        <a href="http://my.enter.ru/community/pravo">cEnter защиты прав потребителей</a>
+        <a href="http://my.enter.ru/pravo">cEnter защиты прав потребителей</a>
     </li>
 </nav>
 <!-- /навигация по личному кабинету -->
