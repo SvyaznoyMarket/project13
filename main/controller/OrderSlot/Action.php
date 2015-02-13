@@ -13,6 +13,14 @@ class Action {
     public function create(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
+        if ($_SERVER['APPLICATION_ENV'] === 'local') {
+            if ($request->request->get('email')) {
+                return new \Http\JsonResponse(['error' => 'Ошибка при создании заявки']);
+            } else {
+                return new \Http\JsonResponse(['orderNumber' => 123456]);
+            }
+        }
+
         $referer = $request->headers->get('referer') ?: '/';
         $orderCreatePacketParams = [];
         $orderCreatePacketData = [];

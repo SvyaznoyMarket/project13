@@ -565,6 +565,14 @@ class BasicEntity {
      */
     public function getSlotPartnerOffer()
     {
+        if ($_SERVER['APPLICATION_ENV'] === 'local') {
+            return [
+                'name' => 'ООО МЕГАЭЛАТОН',
+                'type' => '2',
+                'offer' => 'http://www.enter.ru/terms_megaetalon',
+            ];
+        }
+
         foreach ($this->partnersOffer as $offer) {
             if (isset($offer['type']) && 2 == $offer['type']) {
                 return $offer + ['name' => null, 'offer' => null];

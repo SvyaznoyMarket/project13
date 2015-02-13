@@ -10724,6 +10724,9 @@ img[height="0"] {
     line-height: 1em;
     content: '\e804';
   }
+  .popup__form-group.checkbox-group .lbl-error i {
+    border-color: #ED404D;
+  }
   .popup__form-group.msg--goto-card {
     text-align: center;
   }
