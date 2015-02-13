@@ -3,7 +3,7 @@
 namespace View\Enterprize;
 
 class IndexPage extends \View\DefaultLayout {
-    protected $layout  = 'layout-oneColumn';
+    protected $layout  = 'layout-enterprize';
 
     public function prepare() {
         $this->setParam('title', '');
