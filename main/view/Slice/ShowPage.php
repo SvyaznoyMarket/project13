@@ -53,4 +53,10 @@ class ShowPage extends \View\DefaultLayout {
             'price' => '',
         ]);
     }
+
+    public function slotConfig() {
+        return $this->tryRender('_config', ['config' => [
+            'location' => ['listing'],
+        ]]);
+    }
 }

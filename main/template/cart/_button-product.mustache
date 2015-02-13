@@ -2,13 +2,19 @@
     <a
         {{#id}}id="{{id}}"{{/id}}
         href="{{url}}"
-        class="{{class}} btnBuy__eLink{{#disabled}} mDisabled{{/disabled}}{{#inShopOnly}} mShopsOnly{{/inShopOnly}}"
+        class="{{class}} {{#disabled}}mDisabled{{/disabled}} {{#inShopOnly}}mShopsOnly{{/inShopOnly}}"
         data-product-id="{{data.productId}}"
         data-product-ui="{{productUi}}"
         data-upsale="{{data.upsale}}"
         data-buy-url="{{buyUrl}}"
         data-title="{{title}}"
         data-sender="{{&sender}}"
+        {{#full}}data-full="{{full}}"{{/full}}
+        {{#productUrl}}data-product-url="{{productUrl}}"{{/productUrl}}
+        {{#productArticle}}data-product-article="{{productArticle}}"{{/productArticle}}
+        {{#productPrice}}data-product-price="{{productPrice}}"{{/productPrice}}
+        {{#partnerName}}data-partner-name="{{partnerName}}"{{/partnerName}}
+        {{#partnerOfferUrl}}data-partner-offer-url="{{partnerOfferUrl}}"{{/partnerOfferUrl}}
         {{#data.noUpdate}}data-no-update="{{data.noUpdate}}"{{/data.noUpdate}}
         {{#onClick}}onclick="{{onClick}}"{{/onClick}}
         data-bind="buyButtonBinding: cart"

@@ -14,4 +14,10 @@ class LeafPage extends Layout {
             'category'  => $this->getParam('category') instanceof \Model\Product\Category\Entity ? $this->getParam('category') : null,
         ]);
     }
+
+    public function slotConfig() {
+        return $this->tryRender('_config', ['config' => [
+            'location' => ['listing'],
+        ]]);
+    }
 }

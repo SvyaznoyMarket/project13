@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2015 by original authors @ fontello.com</metadata>
+<defs>
+<font id="icons" horiz-adv-x="1000" >
+<font-face font-family="icons" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="left-open-mini" unicode="&#xe800;" d="m252 180q26-26 0-48-26-26-48 0l-192 194q-24 24 0 50l192 194q22 26 48 0 26-22 0-48l-156-172z" horiz-adv-x="265" />
+<glyph glyph-name="right-open-mini" unicode="&#xe801;" d="m13 180l158 170-158 172q-26 26 0 48 26 26 48 0l192-194q24-26 0-50l-192-194q-22-26-48 0-26 22 0 48z" horiz-adv-x="265" />
+<glyph glyph-name="left-open-big" unicode="&#xe802;" d="m452-20q26-26 0-48-26-26-48 0l-392 394q-24 24 0 50l392 394q22 26 48 0 26-22 0-48l-358-372z" horiz-adv-x="465" />
+<glyph glyph-name="right-open-big" unicode="&#xe803;" d="m13-20l358 370-358 372q-26 26 0 48 26 26 48 0l392-394q24-26 0-50l-392-394q-22-26-48 0-26 22 0 48z" horiz-adv-x="465" />
+<glyph glyph-name="check" unicode="&#xe804;" d="m249 0q-34 0-56 28l-180 236q-16 24-12 52t26 46 51 14 47-28l118-154 296 474q16 24 43 30t53-8q24-16 30-43t-8-53l-350-560q-20-32-56-32z" horiz-adv-x="667" />
+</font>
+</defs>
+</svg>

@@ -542,6 +542,9 @@ img[height="0"] {
   font-size: 0 !important;
   line-height: 0 !important;
 }
+.underline {
+  text-decoration: underline;
+}
 /*--END---ОСНОВНЫЕ ПРАВИЛА---*/
 /*---ПРИМЕСИ---*/
 /*--END---ПРИМЕСИ---*/
@@ -590,6 +593,13 @@ img[height="0"] {
   font-family: 'menuIconFont';
   src: url('/styles/common/fonts/iconFont/entericon-regular-webfont.eot');
   src: local('menuIconFont'), url('/styles/common/fonts/iconFont/entericon-regular-webfont.woff') format('woff'), url('/styles/common/fonts/iconFont/entericon-regular-webfont.ttf') format('truetype'), url('/styles/common/fonts/iconFont/entericon-regular-webfont.svg#menuIconFont') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'icons';
+  src: url('/styles/common/fonts/fontello/icons.eot?6989503');
+  src: url('/styles/common/fonts/fontello/icons.eot?6989503#iefix') format('embedded-opentype'), url('/styles/common/fonts/fontello/icons.woff?6989503') format('woff'), url('/styles/common/fonts/fontello/icons.ttf?6989503') format('truetype'), url('/styles/common/fonts/fontello/icons.svg?6989503#arrow') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -10415,6 +10425,474 @@ img[height="0"] {
   }
 }
 /*---------Карточка товара----------*/
+@media all {
+  .product-container {
+    background-color: #ffffff;
+  }
+  .product-container .bBreadcrumbs {
+    margin-left: 15px;
+    /*&__eItem {
+            background: none;
+            position: relative;
+            float: left;
+            margin: 0px;
+            padding: 0px 18px 0 0;
+            &:after {
+                .fontello-icon();
+                font-size: 1em;
+                content: '\e803';
+                position: absolute;
+				right: 2px;
+				top: 6px;
+            }
+            &:last-child:after {
+                content: "";
+                padding: 0px;
+            }
+        }
+        &__eLink {
+            border-bottom: 1px dotted;
+            padding-bottom: 1px;
+        }*/
+  }
+  .product-card__section-left {
+    display: inline-block;
+    float: left;
+    margin: 15px 0 0;
+    width: 660px;
+  }
+  .product-card__section-right {
+    float: right;
+    margin: 15px 0 0 16px;
+    width: 260px;
+    zoom: 1;
+  }
+  .product-card__props .bSpecifications .bSpecificationsList__eValue {
+    float: left;
+  }
+  .fontello-icon {
+    font-family: "icons";
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    text-align: center;
+    /* For safety - reset parent styles, that can break glyph codes*/
+    font-variant: normal;
+    text-transform: none;
+    /* fix buttons height, for twitter bootstrap */
+    line-height: 1em;
+  }
+  .btn {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    overflow: visible;
+    text-align: center;
+  }
+  .btn--container {
+    width: 100%;
+    text-align: center;
+  }
+  .btn--slot,
+  .btn--submit {
+    display: block;
+    width: auto;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    background-color: #cbdf59;
+    -webkit-box-shadow: 0 3px 0 #b8c64b, 0 3px 0 #b8c64b;
+    -moz-box-shadow: 0 3px 0 #b8c64b, 0 3px 0 #b8c64b;
+    box-shadow: 0 3px 0 #b8c64b, 0 3px 0 #b8c64b;
+    padding: 4px 23px 3px;
+    border: 1px solid #ccd594;
+    text-align: center;
+    text-decoration: none;
+    color: #000;
+    font-size: 18px;
+  }
+  .btn--slot:hover,
+  .btn--submit:hover {
+    text-decoration: none;
+  }
+  .btn--submit {
+    min-width: 145px;
+  }
+  .btn--short {
+    background: #c1d837;
+    border-color: #9cb214;
+    box-shadow: none;
+    width: 74px;
+    font-size: 11px;
+    text-align: center;
+    padding: 2px 0px 3px;
+    margin-top: 3px;
+  }
+  .bBtnLine .btn--slot,
+  .topbarfix_buy .btn--slot {
+    width: 72px;
+    font-size: 12px;
+    padding: 5px 0 6px;
+    margin: 0px;
+    color: #ffffff;
+    background: #80c342;
+    border-color: #548d1e;
+  }
+  .topbarfix_buy .btn--slot {
+    width: 86px;
+    padding: 4px 0px;
+  }
+  .cmprCnt_buy .btn--slot {
+    box-shadow: none;
+    background: none;
+    background-color: #80c342;
+    border-color: #6b9b39;
+    color: #ffffff;
+    font-weight: normal;
+    font-size: 16px;
+    padding: 4px 6px;
+  }
+  .popup--request {
+    background-color: #ffffff;
+    width: 500px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    padding: 30px 45px 45px;
+    -webkit-box-shadow: 0 0 141px 10px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 0 141px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 141px 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+  }
+  .popup--request__close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 15px;
+    height: 15px;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAABDElEQVQoFZWTPY7CMBBG40iRs1BR7RkQiVIQQUHFERaJCwDH4gYr7RW22pIiShBnoKICYqUweUhBxjhB6yae8ffmx+N4Xr0mabqO43jA/t1Chx6dYCOE2HpaH85lOS+K4tgWIIqiz34Y/npCDLXWG/+q1A8gDg4QuGATRA/n53l+ImNXABtEDyeaLC4BLbT54R4whi0sq2oZBsE3Lbnu5Am2A9SXourLlC4Q7QuMM0mSkQyCHSABVFWNsyzbc2Yu3zTYUzqlNiBfbPy29gm2eyZj1xQesA0yDkrtGuO9ZxdovrS2c8Fb7Un51zaOpk87wEWpmf8h5eIdSAAqMVuoE37dA0/TdPWfvwo94A1nGOFbgEoGigAAAABJRU5ErkJggg==');
+  }
+  .popup--request__head {
+    text-align: center;
+    font-size: 18px;
+  }
+  .popup--request__head.msg--recall {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .popup--request__head.msg--send {
+    margin-bottom: 45px;
+  }
+  .popup--request .recall-list {
+    text-align: center;
+  }
+  .popup--request .recall-list li {
+    list-style: none;
+    padding-left: 18px;
+    position: relative;
+    font-size: 14px;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+  }
+  .popup--request .recall-list li:before {
+    content: "\2014";
+    position: absolute;
+    left: 0px;
+  }
+  .popup__form-group {
+    margin: 20px 0px;
+    position: relative;
+  }
+  .popup__form-group .input-group {
+    width: 410px;
+    overflow: hidden;
+    position: relative;
+  }
+  .popup__form-group .input-group .label-for-input {
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    width: 65px;
+    padding: 0px 0px 0 15px;
+    height: 33px;
+    line-height: 33px;
+    color: #a0a0a0;
+    background-color: #efefef;
+    border-right: 1px solid #d3d3d3;
+    font-size: 14px;
+    color: #000;
+  }
+  .popup__form-group .input-group .label-for-input.label-phone {
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAA4klEQVQY02NgQAJnZjKwfpslFfFttrQFAz7Q0MDA9HOW9O8fs2QmYUiuCmVgRuYDFT35OVOmAkP++2zpOKAp50H01QYGtp+zZE6B2N+nSyj8mCXdB9R4b38DAwvD91kyqSCFP2dL/wFKPP48XVznx0ypHBAfqOndj9ky24FuloFb+aJbnBtk0o9p4krfZ0kn/JwhoQUUZsRwK9iq2TLPgaZXAq2782O29EwMRZ+mSAsDJW4Arb4JCiIg7fNztsz/n7Ol6lEUfpkmowdyNBB7InwvvQ3oxrmgIENR/LiPgRMfHwCLw2/0EEX6NgAAAABJRU5ErkJggg==");
+    background-repeat: no-repeat;
+    background-position: 3px 4px;
+  }
+  .popup__form-group .input-group input[type="text"] {
+    width: 410px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    padding: 0 5px 0 90px;
+    height: 35px;
+    line-height: 35px;
+    border: 0px;
+    float: right;
+    border: 1px solid #d3d3d3;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+  }
+  .popup__form-group .input-group input[type="text"]:focus {
+    border: 1px solid #f89b1c;
+  }
+  .popup__form-group .input-group.lbl-error input[type="text"],
+  .popup__form-group .input-group.lbl-error input[type="text"]:focus {
+    border: 2px solid #ED404D;
+    padding-left: 89px;
+  }
+  .popup__form-group .input-group.lbl-error .label-for-input {
+    color: #ffffff;
+    background-color: #ED404D;
+    border: none;
+  }
+  .popup__form-group .input-group.lbl-error .label-for-input.label-phone {
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAQAAAAnOwc2AAAAg0lEQVQI12NgAIP/rP8j/lswoIL/TP9//5+E4DJD6Sf/K+D8/3H/zwMx2/9TQFLhf9//e/9ZGP6nAgX//H/8X+d/DpB+93/7fxmIVm6gKqX/Cf+1/jMizFX4//x/5f87/2cihIT/3/h/E+gon////9fDBPWAhnuCWdv+z/3PBBPmRKUBoUVQWgkTFHYAAAAASUVORK5CYII=");
+  }
+  .popup__form-group__error {
+    position: absolute;
+    color: #ED404D;
+    bottom: -16px;
+    left: 15px;
+  }
+  .popup__form-group.vendor {
+    margin: 5px 0px 25px 28px;
+  }
+  .popup__form-group.checkbox-group {
+    margin-bottom: 5px;
+  }
+  .popup__form-group.checkbox-group i {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    margin-top: -2px;
+    width: 18px;
+    height: 18px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid #a0a0a0;
+    position: relative;
+    margin-right: 5px;
+    text-align: center;
+    background: #ffffff;
+  }
+  .popup__form-group.checkbox-group input[type="checkbox"] {
+    display: none;
+  }
+  .popup__form-group.checkbox-group input[type="checkbox"]:checked + i:after {
+    font-family: "icons";
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    text-align: center;
+    /* For safety - reset parent styles, that can break glyph codes*/
+    font-variant: normal;
+    text-transform: none;
+    /* fix buttons height, for twitter bootstrap */
+    line-height: 1em;
+    content: '\e804';
+  }
+  .popup__form-group.msg--goto-card {
+    text-align: center;
+  }
+  .popup__form-group.msg--goto-card .lnk--goto-card {
+    text-decoration: underline;
+  }
+  .h1 {
+    font-size: 2em;
+    margin: 10px 0 20px;
+    font-weight: normal;
+  }
+}
+/*---------Карточка товара: кухни ----------*/
+@media all {
+  .textcolor {
+    color: #a0a0a0;
+  }
+  .product-container--kitchen .product-card__head {
+    margin: 21px 0 10px;
+    padding: 0;
+    font-size: 16px;
+  }
+  .product-container--kitchen .product-card__head__subtitle {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+  }
+  .product-container--kitchen .product-card__head__title {
+    line-height: 1em;
+  }
+  .product-container--kitchen .product-card__head__article {
+    line-height: 16px;
+    color: #a0a0a0;
+  }
+  .product-container--kitchen .product-card__section-left {
+    display: inline-block;
+    float: left;
+    margin: 15px 0 0 15px;
+    width: 625px;
+  }
+  .product-container--kitchen .product-card__section-right {
+    float: right;
+    margin: 0px;
+    padding: 0 10px 0 15px;
+    width: 260px;
+    border-left: 1px dotted #e0e0e0;
+    zoom: 1;
+  }
+  .product-container--kitchen .product-card__vendor {
+    color: #a0a0a0;
+    font-size: 14px;
+    padding-left: 5px;
+    text-align: center;
+  }
+  .product-container--kitchen .product-card__info--price {
+    display: block;
+    color: #a0a0a0;
+    font-size: 14px;
+    text-align: center;
+  }
+  .product-container--kitchen .product-card__info--deliv-period {
+    display: block;
+    font-size: 12px;
+    text-align: center;
+    margin-top: 5px;
+  }
+  .product-container--kitchen .product-card__info--recall {
+    display: block;
+    font-size: 14px;
+    padding: 20px;
+    margin: 15px -20px 0 -15px;
+    background-color: #f9f9f9;
+  }
+  .product-container--kitchen .product-card__info--recall__list {
+    margin-bottom: 30px;
+  }
+  .product-container--kitchen .product-card__info--recall__list li {
+    list-style: none;
+    padding-left: 18px;
+    position: relative;
+  }
+  .product-container--kitchen .product-card__info--recall__list li:before {
+    content: "\2014";
+    position: absolute;
+    left: 0px;
+  }
+  .product-container--kitchen .product-card__specify .bSpecifications.mSimpleProperty {
+    margin: 25px 0 25px;
+    color: #6E6E6E;
+    font-size: 12px;
+  }
+  .product-container--kitchen .product-card__specify .bSpecifications.mSimpleProperty .bSpecificationsList {
+    margin: 0 0 15px;
+    color: #a0a0a0;
+  }
+  .product-container--kitchen .product-card__specify .bSpecifications.mSimpleProperty .bSpecificationsList__eName {
+    width: 140px;
+    margin: 0 0 15px;
+    border: none;
+    background: none;
+  }
+  .product-container--kitchen .product-card__specify .bSpecifications.mSimpleProperty .bSpecificationsList__eName .bName {
+    top: 0;
+  }
+  .product-container--kitchen .product-card__specify .bSpecifications.mSimpleProperty .bSpecificationsList__eValue {
+    width: 110px;
+    margin: 0 0 15px;
+    padding: 0;
+    word-wrap: break-word;
+  }
+  .product-container--kitchen .product-card__specify .bSpecifications.mSimpleProperty .bTextMore {
+    text-decoration: underline;
+  }
+  .product-container--kitchen .product-card__bordered {
+    padding: 0 10px;
+    margin: 10px -10px 0;
+    border-top: 1px solid #000;
+  }
+  .product-container--kitchen .product-card__desc {
+    margin-top: 10px;
+  }
+  .product-container--kitchen .bInputList {
+    margin-left: 0px;
+    font-size: 36px;
+    text-align: center;
+  }
+  .product-container--kitchen .bProductDescImg {
+    width: 600px;
+    position: relative;
+  }
+  .product-container--kitchen .bProductDescImgBig {
+    width: 600px;
+    height: 500px;
+  }
+  .product-container--kitchen .bPhotoAction {
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    bottom: 15px;
+    left: 0px;
+  }
+  .product-container--kitchen .bPhotoAction .prod-photoslider {
+    float: none;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    width: 280px;
+  }
+  .product-container--kitchen .bPhotoAction .prod-photoslider__wrap {
+    width: 280px;
+  }
+  .product-container--kitchen .btnBuy {
+    overflow: visible;
+    width: auto;
+    width: 100%;
+    text-align: center;
+  }
+  .product-container--kitchen .slideItem_inn {
+    width: 900px;
+  }
+  .product-container--kitchen .slideItem_pr {
+    width: 100%;
+    text-align: center;
+  }
+}
 /*---------Карточка товара: слайдер превьюшек----------*/
 @media all {
   /*---------------Слайдер превьюшек----------------*/

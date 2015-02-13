@@ -706,6 +706,12 @@ return [
         'method'  => ['GET'],
     ],
 
+    'order.slot.create' => [
+        'pattern' => '/orders/slot/create',
+        'action'  => ['OrderSlot\Action', 'create'],
+        'method'  => ['POST'],
+    ],
+
     // услуги
     'service' => [
         'pattern' => '/f1',

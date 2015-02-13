@@ -6,6 +6,7 @@ class Entity {
     const TYPE_ORDER = 1;
     const TYPE_PREORDER = 2;
     const TYPE_CUSTOM = 3;
+    const TYPE_SLOT = 4;
     const TYPE_1CLICK = 9;
 
     const STATUS_FORMED = 1;

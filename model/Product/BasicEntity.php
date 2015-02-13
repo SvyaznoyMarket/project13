@@ -560,6 +560,20 @@ class BasicEntity {
         return $this->isOnlyFromPartner;
     }
 
+    /**
+     * @return array|null
+     */
+    public function getSlotPartnerOffer()
+    {
+        foreach ($this->partnersOffer as $offer) {
+            if (isset($offer['type']) && 2 == $offer['type']) {
+                return $offer + ['name' => null, 'offer' => null];
+            }
+        }
+
+        return null;
+    }
+
     public function setModel(Model\Entity $model = null) {
         $this->model = $model;
     }

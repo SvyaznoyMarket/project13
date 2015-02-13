@@ -225,7 +225,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
             <? endif ?>
 
             <? if (!$isKitPage || $product->getIsKitLocked()) : ?>
-                <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'typeId' => $product->getType() ? $product->getType()->getId() : null]) ?>
+                <?= $page->render('compare/_button-product-compare', ['product' => $product]) ?>
             <? endif ?>
 
             <? if (5 !== $product->getStatusId()): // SITE-3109 ?>
@@ -239,7 +239,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
     <? elseif (!$isKitPage || $product->getIsKitLocked()): ?>
         <div class="bWidgetBuy mWidget js-WidgetBuy">
             <div class="js-showTopBar"></div>
-            <?= $page->render('compare/_button-product-compare', ['id' => $product->getId(), 'typeId' => $product->getType() ? $product->getType()->getId() : null]) ?>
+            <?= $page->render('compare/_button-product-compare', ['product' => $product]) ?>
         </div>
     <? else: ?>
         <div class="js-showTopBar"></div>

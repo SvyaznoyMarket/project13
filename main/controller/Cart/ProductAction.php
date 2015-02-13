@@ -96,6 +96,8 @@ class ProductAction {
                 'category'        => $this->getCategories($product),
                 'quantity'        => $cartProduct ? $cartProduct->getQuantity() : 0,
                 'serviceQuantity' => $cart->getServicesQuantityByProduct($product->getId()),
+                'isSlot' => (bool)$product->getSlotPartnerOffer(),
+                'isOnlyFromPartner' => $product->isOnlyFromPartner(),
             ];
             if (\App::config()->kissmentrics['enabled']) {
                 try {

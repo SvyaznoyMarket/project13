@@ -5,7 +5,7 @@
       <li class="bListingItem mBannerItem" style="background-image: url('{{image}}'); background-repeat: no-repeat;"><div class="adfoxWrapper" id="adfox215"></div></li>
     {{/isBanner}}
     {{^isBanner}}
-    <li class="bListingItem">
+    <li class="bListingItem js-listing-item" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}>
         <div class="bListingItem__eInner">
             <!-- Блок с именем продукта и иконками доп. просмотра товара -->
             <div class="bSimplyDesc">
@@ -43,7 +43,7 @@
             </div>
             <!-- /Блок с именем продукта и иконками доп. просмотра товара -->
 
-            <a href="{{link}}" class="bProductImg"><img class="bProductImg__eImg" src="{{image}}" alt="" /></a>
+            <a href="{{link}}" class="bProductImg js-listing-item-img"><img class="bProductImg__eImg" src="{{image}}" alt="" /></a>
 
             <div class="bPriceLine clearfix">
                 {{#oldPrice}}
@@ -84,14 +84,14 @@
                     {{^isPodariZhiznProduct}}
                         {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
                     {{/isPodariZhiznProduct}}
-                    <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare"></a>
+                    <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}></a>
                 {{/hasKit}}
                 {{#isKitLocked}}
                     {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
-                    <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare"></a>
+                    <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}></a>
                 {{/isKitLocked}}
 
-                <a class="btnView btn1" href="{{link}}">Посмотреть</a>
+                <a class="btnView btn1 js-listing-item-viewButton" href="{{link}}">Посмотреть</a>
             </div>
         </div>
     </li>

@@ -146,7 +146,7 @@
 		return object;
 	};
 
-	utils.validateEmail = function validateEmailF(email) {
+	utils.validateEmail = function(email) {
 		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		return re.test(email);
 	};
@@ -239,6 +239,137 @@
 		deleteAllProductIdsFromCookie: function() {
 			docCookies.setItem('giftBuyProducts', '', 0, '/', 'enter.ru');
 		}
+	};
+
+	/**
+	 * Приготовление и отправка данных в GA, аналитика
+	 * @param orderData
+	 */
+	utils.sendOrderToGA = function(orderData) {
+		var
+			$body = $('body'),
+			oData = orderData || { orders: [] },
+			giftBuyProducts = ENTER.utils.gift.getProductIdsFromCookie();
+
+		ENTER.utils.gift.deleteAllProductIdsFromCookie();
+
+		console.log('[Google Analytics] Start processing orders', oData.orders);
+		$.each(oData.orders, function(i,o) {
+			var googleOrderTrackingData = {};
+			googleOrderTrackingData.transaction = {
+				'id': o.numberErp,
+				'affiliation': o.is_partner ? 'Партнер' : 'Enter',
+				'total': o.paySum,
+				'shipping': o.delivery[0].price,
+				'city': o.region.name
+			};
+			googleOrderTrackingData.products = $.map(o.products, function(p){
+				var
+					productName = p.name,
+					labels = [];
+
+				if (o.isSlot) {
+					labels.push('marketplace-slot');
+				} else if (o.is_partner) {
+					labels.push('marketplace');
+				}
+
+				if (p.sender) {
+					labels.push(p.sender);
+				} else if (giftBuyProducts.indexOf(p.id + '') != -1) {
+					labels.push('gift'); // Данный код является рудиментом и его можно будет удалить после 1.3.2015
+				}
+
+				if (p.sender && p.position) {
+					labels.push('RR_' + p.position);
+				}
+
+				if (labels.length) {
+					productName += ' (' + labels.join(')(') + ')';
+				}
+
+				/* SITE-4472 Аналитика по АБ-тесту платного самовывоза и рекомендаций из корзины */
+				if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.config.pageConfig.selfDeliveryLimit > parseInt(o.paySum, 10) - o.delivery[0].price) productName = productName + ' (paid pickup)';
+
+				// Аналитика по купленным товарам из рекомендаций
+				// Отправляем RR_покупка не только для retailrocket товаров
+				if (p.sender) {
+					var rrEventLabel = '';
+					if (o.isSlot) {
+						rrEventLabel = '_marketplace-slot';
+					} else if (o.is_partner) {
+						rrEventLabel = '_marketplace';
+					}
+
+					if (p.from) $body.trigger('trackGoogleEvent',['RR_покупка' + rrEventLabel,'Купил просмотренные', p.position || '']);
+					else $body.trigger('trackGoogleEvent',['RR_покупка' + rrEventLabel,'Купил добавленные', p.position || '']);
+				}
+
+				if (p.inCompare) {
+					(function() {
+						var action;
+						if (p.isSlot) {
+							action = 'marketplace-slot';
+						} else if (p.isOnlyFromPartner) {
+							action = 'marketplace';
+						} else {
+							action = 'enter';
+						}
+
+						$('body').trigger('trackGoogleEvent', ['Compare_покупка', action, p.compareLocation]);
+					})();
+				}
+
+				return {
+					'id': p.id,
+					'name': productName,
+					'sku': p.article,
+					'category': p.category[0].name +  ' - ' + p.category[p.category.length -1].name,
+					'price': p.price,
+					'quantity': p.quantity
+				}
+			});
+
+			console.log('[Google Analytics] Order', googleOrderTrackingData);
+			$body.trigger('trackGoogleTransaction', [googleOrderTrackingData]);
+		});
+	};
+
+	utils.sendAdd2BasketGaEvent = function(productArticle, productPrice, isOnlyFromPartner, isSlot, senderName) {
+		if (productArticle) {
+			var location;
+			if (ENTER.config.pageConfig.location.indexOf('listing') != -1) {
+				location = 'listing';
+			} else if (ENTER.config.pageConfig.location.indexOf('product') != -1) {
+				location = 'product';
+			}
+
+			if (location) {
+				var actions = [];
+
+				if (senderName == 'gift') {
+					actions.push(location + '-gift');
+				}
+
+				if (typeof productPrice != 'undefined' && parseInt(productPrice, 10) < 500) {
+					actions.push(location + '-500');
+				}
+
+				if (isSlot) {
+					actions.push(location + '-marketplace-slot');
+				} else if (isOnlyFromPartner) {
+					actions.push(location + '-marketplace');
+				} else {
+					actions.push(location);
+				}
+
+				$('body').trigger('trackGoogleEvent', ['Add2Basket', '(' + actions.join(')(') + ')', productArticle]);
+			}
+		}
+	};
+
+	utils.getCategoryPath = function() {
+		return document.location.pathname.replace(/^\/(?:catalog|product)\/([^\/]*).*$/i, '$1');
 	};
 
 }(window.ENTER));
