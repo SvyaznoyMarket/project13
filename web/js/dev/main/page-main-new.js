@@ -5,7 +5,7 @@
 		// БАННЕРЫ
 		$bannerWrapper = $('.jsMainBannerWrapper'),
 		$bannerHolder = $('.jsMainBannerHolder'),
-		bannerHeight = 300,
+		bannerHeight = 240,
 		$bannerThumbs = $('.jsMainBannerThumb'), // превью баннеров
 		activeThumbClass = 'slidesbnnr_thmbs_img-act',
 
@@ -95,23 +95,9 @@
 	// запускаем листалку при загрузке
 	autoSlide($bannerThumbs.find('img.'+activeThumbClass).data('timeout'));
 
-	// прекращаем листать при наведении на крутилку
-	$body.on('mouseenter', '.jsMainBannerWrapper', function() {
-		stopSlide();
-	});
-
-	$body.on('mouseout', '.jsMainBannerWrapper', function() {
-		autoSlide($bannerThumbs.find('img.'+activeThumbClass).data('timeout'));
-	});
-
 	// Автоматическая листалка
 	function autoSlide( timeout) {
 	 	timeoutId = setTimeout(showNextSlide, parseInt(timeout, 10))
-	}
-
-	function stopSlide( timeout ) {
-		console.log('slidesStop');
-		clearTimeout(timeoutId);
 	}
 
 	function showNextSlide() {
