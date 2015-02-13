@@ -8240,6 +8240,15 @@ img[height="0"] {
     padding: 20px 25px 20px;
     border: 1px solid #ccc;
   }
+  .orderPayment_block--border {
+    border-color: #ffa901;
+  }
+  .orderPayment_block--border .orderPaymentWeb_lst-i {
+    padding: 10px;
+  }
+  .orderPayment_block--border .orderPayment_msg_head {
+    color: #ffa901;
+  }
   .orderPayment_head {
     font-size: 30px;
     margin-top: 50px;
@@ -8282,6 +8291,14 @@ img[height="0"] {
     width: 370px;
     overflow-x: hidden;
     margin-top: 20px;
+  }
+  .orderPayment_msg_link {
+    text-decoration: underline;
+  }
+  .orderPayment_msg_link--mid {
+    line-height: 31px;
+    text-decoration: underline;
+    margin-left: 10px;
   }
   .orderPayment.orderPaymentCr .orderPayment_block,
   .orderPayment.orderPaymentWeb .orderPayment_block {
@@ -8408,7 +8425,7 @@ img[height="0"] {
     line-height: 24px;
     overflow: hidden;
     height: 24px;
-    padding: 10px 20px;
+    padding: 10px;
   }
   .orderPaymentWeb_lst-i:hover {
     background: #feebd2;

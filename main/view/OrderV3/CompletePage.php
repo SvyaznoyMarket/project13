@@ -56,6 +56,20 @@ class CompletePage extends Layout {
             }
         }
         $this->setParam('creditData', $creditData);
+
+        // в случае онлайн-мотивации отфильтруем методы оплаты
+        if (is_string($this->getParam('motivationAction'))) {
+            /** @var $methods \Model\PaymentMethod\PaymentEntity[] */
+            $methods = $this->getParam('ordersPayment');
+            foreach ($methods as $paymentKey => $payment) {
+                foreach ($payment->methods as $methodKey => $method) {
+                    // убираем все, в которых нет мотивирующей акции
+                    if (is_null($method->getAction($this->getParam('motivationAction')))) unset($methods[$paymentKey]->methods[$methodKey]);
+                }
+            }
+            $this->setParam('ordersPayment', $methods);
+        }
+
     }
 
     public function slotContent() {

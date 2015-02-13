@@ -30,6 +30,9 @@ class PaymentMethodEntity {
     public $isAvailableToPickpoint;
     /** @var  \Model\PaymentMethod\PaymentGroup\PaymentGroupEntity */
     public $paymentGroup;
+    /** Возможные маркетинговые акции
+     * @var array */
+    public $availableActions = [];
 
     /** @var string|null */
     public $icon;
@@ -67,6 +70,19 @@ class PaymentMethodEntity {
             case 14: $this->icon = '/styles/order/img/svyaznoy.png'; break;
         }
 
+        if (is_array($arr['available_actions'])) $this->availableActions = $arr['available_actions'];
+
+    }
+
+    /** Возвращает discount-акцию
+     * @param $alias string
+     * @return array|null
+     */
+    public function getAction($alias) {
+        foreach ($this->availableActions as $arr) {
+            if (isset($arr['alias']) && $alias == $arr['alias']) return $arr;
+        }
+        return null;
     }
 
 } 

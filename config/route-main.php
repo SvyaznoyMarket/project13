@@ -567,8 +567,7 @@ return [
         'action'  => ['OrderV3\CompleteAction', 'execute'],
     ],
     'orderV3.paymentForm' => [
-        'pattern' => '/order/getPaymentForm/{methodId}/order/{orderId}/number/{orderNumber}',
-        'require' => ['methodId' => '\d+', 'orderId' => '\d+', 'orderNumber'=>'\w+'],
+        'pattern' => '/order/getPaymentForm',
         'action'  => ['OrderV3\CompleteAction', 'getPaymentForm'],
     ],
     // ошибки

@@ -24,9 +24,17 @@
             left: '50%' // Left position relative to parent
         }) : null,
 
-        getForm = function getFormF(methodId, orderId, orderNumber) {
+        getForm = function getFormF(methodId, orderId, orderNumber, action) {
+            var data = {
+                'method' : methodId,
+                'order': orderId,
+                'number': orderNumber
+            };
+            if (typeof action !== 'undefined' && action != '') data.action = action;
             $.ajax({
-                'url': 'getPaymentForm/'+methodId+'/order/'+orderId+'/number/'+orderNumber,
+                'url': 'getPaymentForm',
+                'type': 'POST',
+                'data': data,
                 'success': function(data) {
                     var $form;
                     if (data.form != '') {
@@ -119,32 +127,40 @@
         var id = $(this).data('value'),
             $order = $(this).closest('.orderLn').length > 0 ? $(this).closest('.orderLn') : $orderContent,
             orderId = $order.data('order-id'),
-            orderNumber = $order.data('order-number');
+            orderNumber = $order.data('order-number'),
+            action = $order.data('order-action');
         switch (id) {
             case 5:
-                getForm(5, orderId, orderNumber);
+                getForm(5, orderId, orderNumber, action);
                 $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '17_1 Оплатить_онлайн_Оплата', 'Онлайн-оплата']);
                 break;
             case 8:
-                getForm(8, orderId, orderNumber);
+                getForm(8, orderId, orderNumber, action);
                 $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '17_1 Оплатить_онлайн_Оплата', 'Psb']);
                 break;
             case 13:
-                getForm(13, orderId, orderNumber);
+                getForm(13, orderId, orderNumber, action);
                 $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '17_1 Оплатить_онлайн_Оплата', 'PayPal']);
                 break;
 			case 14:
-				getForm(14, orderId, orderNumber);
+				getForm(14, orderId, orderNumber, action);
 				$body.trigger('trackUserAction', ['17_1 Оплатить_онлайн_Связной_клуб_баллы']);
 				break;
         }
     });
 
-	$orderContent.on('click', '.jsOnlinePaymentPossible', function(){
+	// Мотивация онлайн-оплаты
+    $orderContent.on('click', '.jsOnlinePaymentPossible', function(){
 		$(this).hide();
 		$orderContent.find('.jsOnlinePaymentBlock').show();
         $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '17 Оплатить_онлайн_вход_Оплата']);
 	});
+
+    // Мотивация онлайн-оплаты (купон)
+    $orderContent.on('click', '.jsOrderCouponInitial', function(){
+        $(this).hide();
+        $('.jsOrderCouponExpanded').show();
+    });
 
     // клик по "оплатить онлайн"
     $orderContent.on('click', '.jsOnlinePaymentSpan', function(e){

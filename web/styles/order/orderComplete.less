@@ -101,6 +101,15 @@
         padding: 20px 25px 20px;
 
         border: 1px solid #ccc;
+        &--border{
+            border-color: @firmOrange;
+            .orderPaymentWeb_lst-i{
+                padding:10px;
+            }
+            .orderPayment_msg_head{
+                color: @firmOrange;
+            }
+        }
     }
     &_head{
         font-size: 30px;
@@ -152,6 +161,14 @@
             width: 370px;
             overflow-x: hidden;
             margin-top: 20px;
+        }
+        &_link{
+            text-decoration: underline;
+            &--mid{
+                line-height: 31px;
+                text-decoration: underline;
+                margin-left: 10px;
+            }
         }
     }
     &.orderPaymentCr &_block
@@ -283,7 +300,7 @@
             overflow: hidden;
 
             height: 24px;
-            padding: 10px 20px;
+            padding: 10px;
             &:hover{
                 background: #feebd2;
                 & .orderPayment_btn-toggle{

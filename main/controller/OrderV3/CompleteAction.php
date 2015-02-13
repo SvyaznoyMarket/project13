@@ -18,6 +18,7 @@ class CompleteAction extends OrderV3 {
     }
 
     /**
+     * @param $request \Http\Request
      * @return \Http\Response
      * @throws \Exception
      */
@@ -158,6 +159,7 @@ class CompleteAction extends OrderV3 {
         $page = new \View\OrderV3\CompletePage();
         $page->setParam('orders', $orders);
         $page->setParam('ordersPayment', $ordersPayment);
+        $page->setParam('motivationAction', $this->getMotivationAction($orders, $ordersPayment));
         $page->setParam('products', $products);
         $page->setParam('userEntity', $this->user->getEntity());
         $page->setParam('paymentProviders', $paymentProviders);
@@ -172,8 +174,14 @@ class CompleteAction extends OrderV3 {
         return $response;
     }
 
-    public function getPaymentForm(\Http\Request $request, $methodId, $orderId, $orderNumber) {
+    public function getPaymentForm(\Http\Request $request) {
         $form = '';
+
+        $methodId = $request->request->get('method');
+        $orderId = $request->request->get('order');
+        $orderNumber = $request->request->get('number');
+        $action = $request->request->get('action'); // акция по мотивации онлайн-оплаты
+
         $privateClient = \App::coreClientPrivate();
 
         if (!(bool)$this->sessionOrders) throw new \Exception('В сессии нет заказов');
@@ -184,11 +192,15 @@ class CompleteAction extends OrderV3 {
             $order = new \Model\Order\Entity($sessionOrder);
         }
 
+        $data = [
+            'method_id' => $methodId,
+            'order_id'  => $orderId,
+        ];
+
+        if ($action !== null) $data['action_alias'] = (string)$action;
+
         $result = $privateClient->query('site-integration/payment-config',
-            [
-                'method_id' => $methodId,
-                'order_id'  => $orderId,
-            ],
+            $data,
             [
                 'back_ref'    => \App::router()->generate('orderV3.complete', ['refresh' => 1], true), // обратная ссылка
                 'email'       => $order->getUser() ? $order->getUser()->getEmail() : '',
@@ -254,4 +266,26 @@ class CompleteAction extends OrderV3 {
         return new \Http\JsonResponse($result);
 
     }
+
+    /** Возвращает акцию по мотивации к покупке онлайн на основании АБ-теста и возможных акций из ядра
+     *  Для тестирования первой строкой вписать return 'online_motivation_discount'; или return 'online_motivation_coupon';
+     * @param   $orders         \Model\Order\Entity[]
+     * @param   $ordersPayment  \Model\PaymentMethod\PaymentEntity[]
+     * @return  string|null
+     */
+    private function getMotivationAction($orders, $ordersPayment) {
+        /** @var $order \Model\Order\Entity */
+        if (count($orders) != 1 || count($ordersPayment) != 1 || !\App::abTest()->getTest('online_motivation')) return null;
+        $order = reset($orders);
+        // если пользователь выбрал что-то отличное от оплаты наличными, то не предлагаем ему акцию
+        if ($order->paymentId != \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CASH) return null;
+        // достанем список методов из первого возможного метода "прямо сейчас"
+        $orderPayment = reset($ordersPayment);
+        $onlineMethods = $orderPayment instanceof \Model\PaymentMethod\PaymentEntity ? $orderPayment->getOnlineMethods() : null;
+        if (empty($onlineMethods)) return null;
+        $key = \App::abTest()->getTest('online_motivation')->getChosenCase()->getKey();
+        if ($onlineMethods[0]->getAction($key)) return $key;
+        return null;
+    }
+
 }
