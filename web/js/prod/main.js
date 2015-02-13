@@ -3,6 +3,7 @@
 		timeoutId,
 
 		// БАННЕРЫ
+		$bannerWrapper = $('.jsMainBannerWrapper'),
 		$bannerHolder = $('.jsMainBannerHolder'),
 		bannerHeight = 300,
 		$bannerThumbs = $('.jsMainBannerThumb'), // превью баннеров
@@ -82,7 +83,7 @@
 		$bannerHolder.animate({
 			'margin-top': -(index * bannerHeight)
 		},{
-			duration: 200,
+			duration: 400,
 			complete: function(){
 				$bannerThumbs.find('img').removeClass(activeThumbClass);
 				$this.find('img').addClass(activeThumbClass);
@@ -94,9 +95,23 @@
 	// запускаем листалку при загрузке
 	autoSlide($bannerThumbs.find('img.'+activeThumbClass).data('timeout'));
 
+	// прекращаем листать при наведении на крутилку
+	$body.on('mouseenter', '.jsMainBannerWrapper', function() {
+		stopSlide();
+	});
+
+	$body.on('mouseout', '.jsMainBannerWrapper', function() {
+		autoSlide($bannerThumbs.find('img.'+activeThumbClass).data('timeout'));
+	});
+
 	// Автоматическая листалка
 	function autoSlide( timeout) {
 	 	timeoutId = setTimeout(showNextSlide, parseInt(timeout, 10))
+	}
+
+	function stopSlide( timeout ) {
+		console.log('slidesStop');
+		clearTimeout(timeoutId);
 	}
 
 	function showNextSlide() {
@@ -107,7 +122,7 @@
 		$bannerHolder.animate({
 			'margin-top': -(nextIndex * bannerHeight)
 		},{
-			duration: 200,
+			duration: 400,
 			complete: function(){
 				$bannerThumbs.find('img').removeClass(activeThumbClass);
 				$bannerThumbs.find('img').eq(nextIndex).addClass(activeThumbClass);
@@ -116,7 +131,6 @@
 			}
 		})
 	}
-
 
 	// Установка корректной ширины блоков со слайдерами
 	$jsSlidesWideHolder.css('width', slidesWideWidth * $jsSlidesWideItems.length);

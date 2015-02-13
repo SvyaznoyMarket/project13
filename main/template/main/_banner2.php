@@ -5,7 +5,7 @@
 ?>
 
 <? if (!empty($banners)) : ?>
-<div class="slidesbnnr">
+<div class="slidesbnnr jsMainBannerWrapper">
     <ul class="slidesbnnr_lst jsMainBannerHolder">
         <? foreach ($banners as $key => $banner) : ?>
         <li class="slidesbnnr_i jsMainBannerImage">
