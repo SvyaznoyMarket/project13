@@ -430,7 +430,8 @@ class Repository {
         $params = [
             'root_id' => $category->getId(),
             'is_load_parents' => false,
-            'max_level' => $category->getLevel(), // Не выбираем дочерние категории
+//            'max_level' => $category->getLevel(), // Не выбираем дочерние категории
+            'max_level' => $category->getLevel() + 1, // TODO: временный хак
             'region_id' => \App::user()->getRegion()->getId(),
         ];
 
@@ -443,8 +444,13 @@ class Repository {
         \App::searchClient()->addQuery('category/tree', $params, [], function($data) use (&$category) {
             if (is_array($data)) {
                 $data = reset($data);
-                if (isset($data['has_children'])) {
-                    $category->setHasChild($data['has_children']);
+//                if (isset($data['has_children'])) {
+//                    $category->setHasChild($data['has_children']);
+//                }
+
+                // TODO: временный хак
+                if (isset($data['children'][0])) {
+                    $category->setHasChild(true);
                 }
             }
         });

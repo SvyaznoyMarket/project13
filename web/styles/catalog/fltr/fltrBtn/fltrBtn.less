@@ -1,254 +1,345 @@
 .fltrBtn{
-    width: 960px;
-    margin: 0 0 0 -10px;
-    &-mb10{
-        margin-bottom: 10px;
-    }
-    &-bt{
-        border-top: 5px solid @typLightGray;
-    }
-    // шапка фильтров в рутовых категориях
-    &_hd{
-        margin-bottom: 10px;
-        padding: 10px 10px 0;
-        &_r{
-            margin: 3px 0 0 30px;
+	width: 960px;
+	margin: 0 0 0 -10px;
+	position: relative;
 
-            color: @darkgrey6;
+	&-mb10{
+		margin-bottom: 10px;
+	}
+	&-bt{
+		border-top: 5px solid @typLightGray;
+	}
+	// шапка фильтров в рутовых категориях
+	&_hd{
+		margin-bottom: 10px;
+		padding: 10px 10px 0;
+		&_r{
+			margin: 3px 0 0 30px;
 
-            .inline-block();
-        }
-        &_count{
-            .inline-block-middle();
-        }
-        // отчисть фильтры в рутовых категориях
-        &_clr{
-            line-height: 13px;
+			color: @darkgrey6;
 
-            margin: 0 0 0 15px;
+			.inline-block();
+		}
+		&_count{
+			.inline-block-middle();
+		}
+		// отчисть фильтры в рутовых категориях
+		&_clr{
+			line-height: 13px;
 
-            cursor: pointer;
+			margin: 0 0 0 15px;
 
-            .inline-block-middle();
-            &_tx{
-                border-bottom: 1px dotted @darkgrey6;
+			cursor: pointer;
 
-                .inline-block-middle();
-            }
-            &_btn{
-                .inline-block-middle();
-            }
-        }
-    }
-    // название фильтра
-    &_tggl{
-        font-size: 16px;
+			.inline-block-middle();
+			&_tx{
+				border-bottom: 1px dotted @darkgrey6;
 
-        padding: 0 0 0 15px;
+				.inline-block-middle();
+			}
+			&_btn{
+				.inline-block-middle();
+			}
+		}
+	}
+	// название фильтра
+	&_tggl{
+		font-size: 16px;
 
-        cursor: pointer;
+		padding: 0 0 0 15px;
 
-        color: @black;
-        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAKCAQAAADMDLw1AAAAQUlEQVQIW2Nw3uGiy4AKnP47/3We4y6JIgSCzl+c6t24UYTAws+ckxuYUITAwpdc3PELoWl0/uLSgGQ8hiMwnQoAAEs8bqiaIsoAAAAASUVORK5CYII=') no-repeat 0 50%;
+		cursor: pointer;
 
-        .inline-block();
-        &_tx{
-            border-bottom: 1px dotted #515151;
-        }
-        &.opn{
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAJCAQAAAChr3WYAAAAXElEQVQI11XKwQ0AERSE4YmrChShCSMUohAKUYg6FKECV9nN2rDre5eXPwMWc53HAqs5jjSsBsB8xIyHV+w7da/wMnEvIxYn2eauOYkPw4wBf0mwsiaBk/XWr/8G2pM8a8IWUVQAAAAASUVORK5CYII=');
-        }
-        &-ncorner{
-            padding-left: 0;
-            cursor: default;
+		color: @black;
+		background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAKCAQAAADMDLw1AAAAQUlEQVQIW2Nw3uGiy4AKnP47/3We4y6JIgSCzl+c6t24UYTAws+ckxuYUITAwpdc3PELoWl0/uLSgGQ8hiMwnQoAAEs8bqiaIsoAAAAASUVORK5CYII=') no-repeat 0 50%;
 
-            background: none;
-            .fltrBtn_tggl_tx{
-                border: none;
-            }
-        }
-    }
-    // секция фильтра
-    &_kit{
-        padding: 0 10px;
+		.inline-block();
+		&_tx{
+			border-bottom: 1px dotted #515151;
+		}
+		&.opn{
+			background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAJCAQAAAChr3WYAAAAXElEQVQI11XKwQ0AERSE4YmrChShCSMUohAKUYg6FKECV9nN2rDre5eXPwMWc53HAqs5jjSsBsB8xIyHV+w7da/wMnEvIxYn2eauOYkPw4wBf0mwsiaBk/XWr/8G2pM8a8IWUVQAAAAASUVORK5CYII=');
+		}
+		&-ncorner{
+			padding-left: 0;
+			cursor: default;
 
-        border-bottom: 1px solid @typLightGray;
-        &-box{
-            padding: 10px;
-        }
-        &-nborder{
-            border-bottom: none;
-        }
-        &-ovrflw{
-            overflow: auto;
+			background: none;
+			.fltrBtn_tggl_tx{
+				border: none;
+			}
+		}
+	}
+	// секция фильтра
+	&_kit{
+		padding: 0 10px;
 
-            max-height: 165px;
-            padding: 7px 10px 0;
-        }
-        &_l{
-            float: left;
+		border-bottom: 1px solid @typLightGray;
+		&-box{
+			padding: 10px;
+		}
+		&-nborder{
+			border-bottom: none;
+		}
+		&-ovrflw{
+			overflow: auto;
 
-            width: 80px;
-            margin: 15px 0 0 12px;
-        }
-        &_r{
-            float: right;
-            overflow-y:auto;
-            overflow-x:hidden;
+			max-height: 165px;
+			padding: 7px 10px 0;
+		}
+		&_l{
+			float: left;
 
-            width: 830px;
-            max-height: 135px;
-            padding: 10px 0 0 1px;
-        }
-    }
-    &_range {
-        text-align: center;
-        width: 100%;
-    }
-    // ссекция кнопки фильтрации
-    &_i{
-        margin: 0 9px 9px 0;
+			width: 80px;
+			margin: 15px 0 0 12px;
+		}
+		&_r{
+			float: right;
+			overflow-y:auto;
+			overflow-x:hidden;
 
-        float: left;
-    }
-    // кнопка фильтра
-    &_btn{
-        position: relative;
+			width: 830px;
+			max-height: 135px;
+			padding: 10px 0 0 1px;
+		}
+	}
+	&_range {
+		text-align: center;
+		width: 100%;
+	}
+	// ссекция кнопки фильтрации
+	&_i{
+		margin: 0 9px 9px 0;
 
-        width: 100px;
-        height: 43px;
-        padding: 0 10px;
-        margin: 0 5px 10px 0;
+		float: left;
+	}
+	// кнопка фильтра
+	&_btn{
+		position: relative;
 
-        cursor: pointer;
-        cursor: pointer;
-        text-align: center;
-        vertical-align: middle;
+		width: 100px;
+		height: 43px;
+		padding: 0 10px;
+		margin: 0 5px 10px 0;
 
-        border: 1px solid @typLightGray;
-        background: @white;
+		cursor: pointer;
+		cursor: pointer;
+		text-align: center;
+		vertical-align: middle;
 
-        &:hover {
-            text-decoration: none;
-        }
+		border: 1px solid @typLightGray;
+		background: @white;
 
-        .table-cell();
-        .rounded(4px);
-        &:last-child{
-            margin-right: 0;
-        }
-        &_img{
-            vertical-align: middle;
-            width: 100%;
-            pointer-events: none;
-            //max-width: 100px;
-        }
-        &_tx{
-            font-size: 11px;
-            line-height: 1.2;
+		&:hover {
+			text-decoration: none;
+		}
 
-            .inline-block();
-        }
-        // кнопка - ещё бренды
-        &-btn{
-            font-size: 14px;
-            line-height: 40px;
-            width: 120px;
-            padding: 0;
+		.table-cell();
+		.rounded(4px);
+		&:last-child{
+			margin-right: 0;
+		}
+		&_img{
+			vertical-align: middle;
+			width: 100%;
+			pointer-events: none;
+			//max-width: 100px;
+		}
+		&_tx{
+			font-size: 11px;
+			line-height: 1.2;
 
-            margin-right: 0;
+			.inline-block();
+		}
+		// кнопка - ещё бренды
+		&-btn{
+			font-size: 14px;
+			line-height: 40px;
+			width: 120px;
+			padding: 0;
 
-            color: @darkgrey6;
-            border-style: dashed;
+			margin-right: 0;
 
-            .inline-block();
-            .fltrBtn_btn_tx{
-                font-size: 14px;
+			color: @darkgrey6;
+			border-style: dashed;
 
-                vertical-align: middle;
+			.inline-block();
+			.fltrBtn_btn_tx{
+				font-size: 14px;
 
-                border-bottom: 1px dotted @darkgrey6;
-            }
-            &:hover{
-                text-decoration: none;
-            }
-        }
-        &-mini{
-            line-height: 31px;
+				vertical-align: middle;
 
-            width: 80px;
-            height: 33px;
-        }
-        // отметить фильтр по бренду
-        &_clsr{
-            position: absolute;
-            top: -7px;
-            right: -7px;
+				border-bottom: 1px dotted @darkgrey6;
+			}
+			&:hover{
+				text-decoration: none;
+			}
+		}
+		&-mini{
+			line-height: 31px;
 
-            display: none;
-        }
-        &.act{
-            width: 98px;
-            height: 41px;
+			width: 80px;
+			height: 33px;
+		}
+		// отметить фильтр по бренду
+		&_clsr{
+			position: absolute;
+			top: -7px;
+			right: -7px;
 
-            border-width: 2px;
-            border-color: @orange-2;
-            .fltrBtn_btn_clsr{
-                display: block;
-            }
-        }
-    }
-    // строка с параметрами
-    &_ln{
-        line-height: 14px;
+			display: none;
+		}
+		&.act{
+			width: 98px;
+			height: 41px;
 
-        margin: 0 0 10px;
-    }
-    // параметры фильтрации
-    &_param{
-        margin-bottom: 8px;
-        padding-right: 10px;
+			border-width: 2px;
+			border-color: @orange-2;
+			.fltrBtn_btn_clsr{
+				display: block;
+			}
+		}
+	}
+	// строка с параметрами
+	&_ln{
+		line-height: 14px;
 
-        border-bottom: 1px solid @lightgrey9;
-        &:last-child{
-            margin-bottom: 0;
+		margin: 0 0 10px;
+	}
+	// параметры фильтрации
+	&_param{
+		margin-bottom: 8px;
+		padding-right: 10px;
 
-            border-bottom: none;
-        }
-        &_n{
-            font-size: 14px;
+		border-bottom: 1px solid @lightgrey9;
+		&:last-child{
+			margin-bottom: 0;
 
-            margin: 0 0 8px;
-        }
-        &_lbl{
-            font-size: 14px;
+			border-bottom: none;
+		}
+		&_n{
+			font-size: 14px;
 
-            .inline-block-middle();
-        }
-        &_it{
-            font-size: 14px;
-            line-height: 1;
+			margin: 0 0 8px;
+		}
+		&_lbl{
+			font-size: 14px;
 
-            width: 45px;
-            padding: 4px 10px;
+			.inline-block-middle();
+		}
+		&_it{
+			font-size: 14px;
+			line-height: 1;
 
-            color: #8a8a8a;
-            color: @black;
-            border: 1px solid @lightgrey9;
+			width: 45px;
+			padding: 4px 10px;
 
-            .rounded(3px);
-            .inline-block-middle();
+			color: #8a8a8a;
+			color: @black;
+			border: 1px solid @lightgrey9;
 
-            &:-ms-input-placeholder {
-                color: #8a8a8a;
-            }
-        }
-        &-2col{
-            .fltrBtn_ln{
-                width: @full-size/2 - 1%;
+			.rounded(3px);
+			.inline-block-middle();
 
-                .inline-block-middle();
-            }
-        }
-    }
+			&:-ms-input-placeholder {
+				color: #8a8a8a;
+			}
+		}
+		&-2col{
+			   .fltrBtn_ln{
+				   width: @full-size/2 - 1%;
+
+				   .inline-block-middle();
+			   }
+		   }
+	}
+
+&_anim-item {
+	position: absolute;
+	right: -25px;
+	top: 150px;
+	display: block;
+	animation: animPuls 7s ease-in-out 1s infinite;
+	-webkit-animation: animPuls 7s ease-in-out 1s infinite;
+	-moz-animation: animPuls 7s ease-in-out 1s infinite;
+	-o-animation: animPuls 7s ease-in-out 1s infinite;
+
+	&:hover {
+		-webkit-animation: none;
+		-moz-animation: none;
+		-o-animation: none;
+		animation: none;
+
+		img {
+			right: 7px;
+			top: 7px;
+		}
+	}
+
+	img {
+		transition: all .2s ease;
+		display: block;
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+}
+	}
+
+// анимация карты на странице с подарками /gift
+@keyframes animPuls{
+	0%,
+    5%{
+		transform: scale3d(1, 1, 1);
+		transform: scale3d(1, 1, 1);
+	}
+
+	3%,
+	7%{
+		transform: scale3d(1.06, 1.06, 1.06);
+		transform: scale3d(1.06, 1.06, 1.06);
+	}
+
+	9%{
+		transform: scale3d(1, 1, 1);
+		transform: scale3d(1, 1, 1);
+	}
+}
+
+@-webkit-keyframes animPuls{
+	0%,
+	5%{
+		-webkit-transform: scale3d(1, 1, 1);
+		transform: scale3d(1, 1, 1);
+	}
+
+	3%,
+	7%{
+		-webkit-transform: scale3d(1.06, 1.06, 1.06);
+		transform: scale3d(1.06, 1.06, 1.06);
+	}
+
+	9%{
+		-webkit-transform: scale3d(1, 1, 1);
+		transform: scale3d(1, 1, 1);
+	}
+}
+
+@-moz-keyframes animPuls{
+	0%,
+	5%{
+		-moz-transform: scale3d(1, 1, 1);
+		transform: scale3d(1, 1, 1);
+	}
+
+	3%,
+	7%{
+		-moz-transform: scale3d(1.06, 1.06, 1.06);
+		transform: scale3d(1.06, 1.06, 1.06);
+	}
+
+	9%{
+		-moz-transform: scale3d(1, 1, 1);
+		transform: scale3d(1, 1, 1);
+	}
 }

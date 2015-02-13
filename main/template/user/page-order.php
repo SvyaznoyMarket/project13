@@ -140,21 +140,6 @@
             Скидки
         </div>
 
-<!--        <div class="personalTable_row">
-            <div class="personalTable_cell personalTable_cell-mini">
-                <img class="imgProd" src="/styles/personal-page/img/fishka.png" alt="" />
-            </div>
-
-            <div class="personalTable_cell">
-                Фишка со скидкой 2% на категорию Электроника<br/>
-                Минимальная сумма заказа 6999 руб
-            </div>
-
-            <div class="personalTable_cell personalTable_cell-right l colorRed ta-r">
-                - 400 <span class="rubl">p</span><br/>
-            </div>
-        </div>-->
-
         <? if ($order->getCertificateNumber()) : ?>
 
             <div class="personalTable_row">

@@ -95,7 +95,7 @@ class OrderAction {
         }
 
         $shop = null;
-        if ($delivery && in_array($delivery->getToken(), ['now', 'self'])) {
+        if ($delivery && in_array($delivery->getToken(), ['now', 'self']) && !is_null($order->getShopId())) {
             \RepositoryManager::shop()->prepareCollectionById(
                 [$order->getShopId()],
                 function ($data) use (&$shop) {

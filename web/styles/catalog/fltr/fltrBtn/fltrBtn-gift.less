@@ -2,6 +2,8 @@
 
     .fltrBtn-gift {
         margin-top: -20px;
+        position: relative;
+        overflow: hidden;
     }
 }
 
@@ -45,6 +47,8 @@
         background: rgba(255, 255, 255, .75);
         padding: 10px;
         .drop-shadow();
+        position: relative;
+        z-index: 2;
     }
 
     &-lst {
@@ -106,4 +110,10 @@
             max-height: 200px;
         }
     }
+}
+
+.fltrBtn-action-item {
+    position: absolute;
+    top: 0;
+    left: 12px;
 }

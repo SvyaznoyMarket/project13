@@ -66,7 +66,7 @@ $showStatus = \App::user()->getEntity() && in_array(\App::user()->getEntity()->g
                             <? $productEntity = isset($products_by_id[$product->getId()]) ? $products_by_id[$product->getId()] : null ?>
                             <? if (!$productEntity) continue ?>
                             <? if ($i != 2) : ?>
-                                <li><a href="<?= $page->url('product', ['productPath' => $productEntity->getPath() ]) ?>"><?= strlen($productEntity->getName()) > 25 ? mb_substr($productEntity->getName(), 0, 25).'...' : $productEntity->getName() ?></a> <?= $product->getQuantity()?> шт.</li>
+                                <li><a href="<?= $page->url('user.order', ['orderId' => $order->getId() ]) ?>"><?= strlen($productEntity->getName()) > 25 ? mb_substr($productEntity->getName(), 0, 25).'...' : $productEntity->getName() ?></a> <?= $product->getQuantity()?> шт.</li>
                             <? else : ?>
                                 <li><a href="<?= $page->url('user.order', ['orderId' => $order->getId() ]) ?>">и ещё <?= $helper->numberChoiceWithCount(count($order->getProduct()) - 2, ['товар', 'товара', 'товаров']) ?></a></li>
                                 <? break ?>
@@ -140,7 +140,7 @@ $showStatus = \App::user()->getEntity() && in_array(\App::user()->getEntity()->g
 
                     <div class="personalTable_row <?= $order->getStatusId() == 100 ? 'colorGrey' : '' ?>">
                         <div class="personalTable_cell ta-c">
-                            <a href="<?= $page->url('user.order', ['orderId' => $order->getId() ]) ?>"><?= str_replace('-','-<br />',$order->getNumberErp()) ?></a>
+                            <a href="<?= $page->url('user.order', ['orderId' => $order->getId() ]) ?>"><?= str_replace('-','-',$order->getNumberErp()) ?></a>
                             <span class="s dblock"><?= strftime('%e %b %y', $order->getCreatedAt()->getTimestamp())?></span>
                         </div>
 
@@ -150,7 +150,7 @@ $showStatus = \App::user()->getEntity() && in_array(\App::user()->getEntity()->g
                                     <? $productEntity = isset($products_by_id[$product->getId()]) ? $products_by_id[$product->getId()] : null ?>
                                     <? if (!$productEntity) continue ?>
                                     <? if ($i != 2) : ?>
-                                        <li><?= strlen($productEntity->getName()) > 25 ? mb_substr($productEntity->getName(), 0, 25).'...' : $productEntity->getName() ?> <?= $product->getQuantity()?> шт.</li>
+                                        <li><a href="<?= $page->url('user.order', ['orderId' => $order->getId() ]) ?>"><?= strlen($productEntity->getName()) > 25 ? mb_substr($productEntity->getName(), 0, 25).'...' : $productEntity->getName() ?> <?= $product->getQuantity()?> шт.</a></li>
                                     <? else : ?>
                                         <li><a href="<?= $page->url('user.order', ['orderId' => $order->getId() ]) ?>">и ещё <?= $helper->numberChoiceWithCount(count($order->getProduct()) - 2, ['товар', 'товара', 'товаров']) ?></a></li>
                                         <? break ?>
