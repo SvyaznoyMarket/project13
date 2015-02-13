@@ -82,6 +82,7 @@ class ProductAction {
 
             $productInfo = [
                 'id'        => $product->getId(),
+                'article'   => $product->getArticle(),
                 'name'      => $product->getName(),
                 'img'       => $product->getImageUrl(),
                 'link'      => $product->getLink(),
@@ -92,6 +93,9 @@ class ProductAction {
                     'id' => \View\Id::cartButtonForProduct($product->getId()),
                 ],
                 'isTchiboProduct' => $product->getMainCategory() && 'Tchibo' === $product->getMainCategory()->getName(),
+                'category'        => $this->getCategories($product),
+                'quantity'        => $cartProduct ? $cartProduct->getQuantity() : 0,
+                'serviceQuantity' => $cart->getServicesQuantityByProduct($product->getId()),
             ];
             if (\App::config()->kissmentrics['enabled']) {
                 try {
@@ -141,6 +145,18 @@ class ProductAction {
                 ])
                 : new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('homepage'));
         }
+    }
+
+    private function getCategories(\Model\Product\Entity $product) {
+        $categories = [];
+        foreach ($product->getCategory() as $category) {
+            $categories[] = [
+                'id'   => $category->getId(),
+                'name' => $category->getName(),
+            ];
+        }
+
+        return $categories;
     }
 
 
