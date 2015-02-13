@@ -106,11 +106,11 @@ return function(
                     </div>
                 <? endforeach ?>
 
-                <div class="flrtBox">
-                    <? if ($priceFilter && $productFilter): ?>
+                <? if ($priceFilter && $productFilter): ?>
+                    <div class="flrtBox">
                         <?= $helper->render('product-category/filter/element/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter, 'promoStyle' => $promoStyle]) ?>
-                    <? endif ?>
-                </div>
+                    </div>
+                <? endif ?>
 
                 <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
                     <? if ($showParamsButton): ?>
