@@ -12,202 +12,374 @@ $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMemb
 $helper = new \Helper\TemplateHelper();
 ?>
 
-<div class="enterPrize">
+<div class="ep-head clearfix">
+    <h1 class="ep-logo">Enter Prize</h1>
 
-    <header class="epHeader clearfix">
-        <h1 class="epHeader_logo">Enter Prize</h1>
+    <ul class="ep-head__desc">
+        <li class="ep-head__desc__i">Выбери фишку — получи код скидки. Используй его при оформлении заказа.</li>
+        <li class="ep-head__desc__i">Нажми на фишку, чтобы узнать условия и срок действия скидки. </li>
+        <li class="ep-head__desc__i">Воспользоваться каждой фишкой можно один раз.</li>
+    </ul>
 
-        <? if (!$user->getEntity()): ?>
-            <ul class="epHeader_controls">
-                <li class="epHeader_controls_item epHeader_controls_item-colors"><a href="<?= \App::router()->generate('user.login') ?>" class="jsEnterprizeAuthLink">Войти</a></li>
-                <li class="epHeader_controls_item epHeader_controls_item-border js-ep-btn-hint-popup">Как стать участником?</li>
-            </ul>
+    <? if (!$user->getEntity()): ?>
+        <ul class="ep-head__control">
+            <li class="ep-head__control__i"><a href="<?= \App::router()->generate('user.login') ?>" class="ep-head__control__i__log jsEnterprizeAuthLink">Войти</a></li>
+            <li class="ep-head__control__i js-ep-btn-hint-popup"><span class="ep-head__control__i__hint">Как стать участником?</span></li>
+            <li class="ep-head__control__i"><a class="ep-head__control__i__lk" href="/reklamnaya-akcia-enterprize">Правила участия в ENTER PRIZE</a></li>
+        </ul>
 
-            <div class="epHintPopup js-ep-hint-popup">
-                <div class="epHintPopup_close js-ep-hint-popup-close"></div>
+        <div class="epHintPopup js-ep-hint-popup">
+            <div class="epHintPopup_close js-ep-hint-popup-close"></div>
 
-                <ol class="epHintPopup_list">
-                    <li class="epHintPopup_list_item">Выберите фишку на этой странице.</li>
-                    <li class="epHintPopup_list_item">Заполните анкету.</li>
-                    <li class="epHintPopup_list_item">Ловите Вашу первую фишку и подтверждение участия в e-mail и SMS.</li>
-                </ol>
-            </div>
-        <? endif ?>
-
-        <? if ($isEnterprizeMember): ?>
-            <ul class="epHeader_controls">
-                <li class="epHeader_controls_item epHeader_controls_item-colors">Вы — игрок <span class="epTextLogo">Enter <span class="epTextLogo_colors">Prize</span></span></li>
-                <li class="epHeader_controls_item">Теперь любые фишки со скидками - Ваши!</li>
-            </ul>
-        <? endif ?>
-
-        <? if ((bool)$isCouponSent): ?>
-            <div class="popup" id="enterprize-info-block">
-                <div class="popupbox">
-                    <div class="font18 pb18">Вы можете заказать прямо сейчас любой товар Enter c фишкой, которую Вы получили по e-mail и в SMS. Или выбрать еще фишки <a href="#" class="closePopup">ЗДЕСЬ!</a></div>
-                </div>
-                <p style="text-align:center"><a href="#" class="closePopup bBigOrangeButton">OK</a></p>
-            </div>
-        <? endif ?>
-    </header>
-
-    <? if ((bool)$isCouponSent && (bool)$enterpizeCoupon): ?>
-
-        <div class="epSelectFishka clearfix">
-            <div class="epSelectFishka_left enterPrize__list">
-                <div class="enterPrize__list__item mOrange">
-                    <div class="enterPrize__list__link">
-                        <span <? if ($enterpizeCoupon->getBackgroundImage()): ?> style="background-image: url(<?= $enterpizeCoupon->getBackgroundImage() ?>);"<? endif ?> class="cuponImg">
-                            <span class="cuponImg__inner">
-                                <? if ($enterpizeCoupon->getImage()): ?>
-                                    <span class="cuponIco"><img src="<?= $enterpizeCoupon->getImage() ?>" /></span>
-                                <? endif ?>
-
-                                <? if ($enterpizeCoupon->getName()): ?>
-                                    <span class="cuponDesc"><?= $enterpizeCoupon->getName() ?></span>
-                                <? endif ?>
-
-                                <? if ($enterpizeCoupon->getPrice()): ?>
-                                    <span class="cuponPrice"><?= $page->helper->formatPrice($enterpizeCoupon->getPrice()) . (!$enterpizeCoupon->getIsCurrency() ? '%' : '') ?>
-                                        <? if ($enterpizeCoupon->getIsCurrency()): ?>
-                                            <span class="rubl">p</span>
-                                        <? endif ?>
-                                    </span>
-                                <? endif ?>
-                            </span>
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="epSelectFishka_right">
-                <div class="epSelectFishka_desc">
-                    Мы отправили код фишки на Ваш e-mail и мобильный.<br/>
-                    При заказе введите код в поле Код фишки, купон, промокод
-                </div>
-
-                <? if (isset($products) && !empty($products) && is_array($products)): ?>
-                    <div class="epSelectFishka_slider">
-                        <a class="epSelectFishka_slider_link" href="<?= $enterpizeCoupon->getLink() ?: '#' ?>">Выбрать товары с этой скидкой</a>
-
-                        <?= $helper->render('product/__slider', [
-                            'type'     => 'enterprize',
-                            'title'    => '',
-                            'products' => $products,
-                            'count'    => null,
-                            'limit'    => \App::config()->enterprize['itemsInSlider'],
-                        ]) ?>
-                    </div>
-                <? endif ?>
-            </div>
+            <ol class="epHintPopup_list">
+                <li class="epHintPopup_list_i">Выберите фишку на этой странице.</li>
+                <li class="epHintPopup_list_i">Заполните анкету.</li>
+                <li class="epHintPopup_list_i">Ловите Вашу первую фишку и подтверждение участия в e-mail и SMS.</li>
+            </ol>
         </div>
     <? endif ?>
 
-    <section class="epHead">
-        <h2 class="epHead_title">ВЫБИРАЙ СВОЮ СКИДКУ</h2>
-
-        <ul class="epHead_list">
-            <li class="epHead_list_item">Выбери фишку — получи <strong>код скидки</strong>. Используй его при оформлении заказа.</li>
-            <li class="epHead_list_item">Нажми на фишку, чтобы узнать <strong>условия и срок действия</strong> скидки. </li>
-            <li class="epHead_list_item">Воспользоваться каждой фишкой можно <strong>один раз</strong>.</li>
-        </ul>
-        <p class="rulesEP"><a href="/reklamnaya-akcia-enterprize">Правила участия в ENTER PRIZE</a></p>
-    </section>
-
-    <? /* if ((bool)$isCouponSent): ?>
-        <?= $page->render('enterprize/_contentComplete') ?>
-    <? endif  */ ?>
-
-    <? if (!$user->getEntity()): ?>
-        <h3 class="epListTitle">ФИШКИ <span class="orange">Enter</span> Prize</h3>
-    <? endif ?>
-
     <? if ($isEnterprizeMember): ?>
-        <h3 class="epListTitle">выбирайте еще фишки</h3>
+        <ul class="ep-head__control">
+            <li class="ep-head__control__i ep-head_control__i--color">Вы — игрок <span class="epTextLogo">Enter <span class="epTextLogo_colors">Prize</span></span></li>
+            <li class="ep-head__control__i">Теперь любые фишки со скидками - Ваши!</li>
+        </ul>
     <? endif ?>
 
-    <ul class="enterPrize__list clearfix">
+    <? if ((bool)$isCouponSent): ?>
+        <div class="popup" id="enterprize-info-block">
+            <div class="popupbox">
+                <div class="font18 pb18">Вы можете заказать прямо сейчас любой товар Enter c фишкой, которую Вы получили по e-mail и в SMS. Или выбрать еще фишки <a href="#" class="closePopup">ЗДЕСЬ!</a></div>
+            </div>
+            <p style="text-align:center"><a href="#" class="closePopup bBigOrangeButton">OK</a></p>
+        </div>
+    <? endif ?>
+</div>
 
-        <? $i = 0; foreach ($enterpizeCoupons as $coupon): $i++ ?>
+<? if ((bool)$isCouponSent && (bool)$enterpizeCoupon): ?>
 
-            <?
-            $itemClass = 'enterPrize__list__item';
-            if (!($i % 4)) {
-                $itemClass .= ' mLast';
-            }
-            if (!$coupon->getImage()) {
-                $itemClass .= ' mNoIco';
-            }
+    <div class="epSelectFishka clearfix">
+        <div class="epSelectFishka_left ep-list">
+            <div class="ep-list__i">
+                <div class="ep-list__lk">
+                    <span <? if ($enterpizeCoupon->getBackgroundImage()): ?> style="background-image: url(<?= $enterpizeCoupon->getBackgroundImage() ?>);"<? endif ?> class="ep-coupon">
+                        <span class="ep-coupon__inner">
+                            <? if ($enterpizeCoupon->getImage()): ?>
+                                <span class="ep-coupon__ico"><img src="<?= $enterpizeCoupon->getImage() ?>" /></span>
+                            <? endif ?>
 
-            $couponLink = $page->url('enterprize.form.show', ['enterprizeToken' => $coupon->getToken()]);
-            if ($isEnterprizeMember) {
-                $couponLink = $page->url('enterprize.show', ['enterprizeToken' => $coupon->getToken()]);
-            }
-            if ($coupon->isInformationOnly()) {
-                $couponLink = $coupon->getDescriptionToken()
-                    ? $page->url('content', ['token' => $coupon->getDescriptionToken()])
-                    : null;
-            } ?>
+                            <? if ($enterpizeCoupon->getName()): ?>
+                                <span class="ep-coupon__desc"><?= $enterpizeCoupon->getName() ?></span>
+                            <? endif ?>
 
-
-            <? if (!$coupon->isForNotMember() && !$isEnterprizeMember): // Только для игроков EnterPrize  ?>
-                <li class="<?= !empty($itemClass) ? "$itemClass " : '' ?>mMembers">
-                    <div class="enterPrize__list__link">
-                        <span class="cuponImg"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
-                            <span class="cuponImg__inner">
-                                <? if ($coupon->getImage()): ?>
-                                    <span class="cuponIco"><img src="<?= $coupon->getImage() ?>" /></span>
-                                <? endif ?>
-
-                                <? if ($coupon->getName()): ?>
-                                    <span class="cuponDesc"><?= $coupon->getName() ?></span>
-                                <? endif ?>
-
-                                <? if ($coupon->getPrice()): ?>
-                                    <span class="cuponPrice"><?= $page->helper->formatPrice($coupon->getPrice()) . (!$coupon->getIsCurrency() ? '%' : '') ?>
-                                        <? if ($coupon->getIsCurrency()): ?>
-                                            <span class="rubl">p</span>
-                                        <? endif ?>
-                                    </span>
-                                <? endif ?>
-                            </span>
+                            <? if ($enterpizeCoupon->getPrice()): ?>
+                                <span class="ep-coupon__price"><?= $page->helper->formatPrice($enterpizeCoupon->getPrice()) . (!$enterpizeCoupon->getIsCurrency() ? '%' : '') ?>
+                                    <? if ($enterpizeCoupon->getIsCurrency()): ?>
+                                        <span class="rubl">p</span>
+                                    <? endif ?>
+                                </span>
+                            <? endif ?>
                         </span>
+                    </span>
+                </div>
+            </div>
+        </div>
 
-                        <span class="cuponImgHover">
-                            <span class="cuponText">Только<br/> для игроков<br/> <span class="epTextLogo">Enter <span class="epTextLogo_colors">Prize</span></span></span>
-                        </span>
-                    </div>
-                </li>
+        <div class="epSelectFishka_right">
+            <div class="epSelectFishka_desc">
+                Мы отправили код фишки на Ваш e-mail и мобильный.<br/>
+                При заказе введите код в поле Код фишки, купон, промокод
+            </div>
 
-            <? else: ?>
-                <li class="<?= $itemClass ?>">
-                    <a class="enterPrize__list__link" href="<?= $couponLink ? $couponLink : '#' ?>">
-                        <span class="cuponImg"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
-                            <span class="cuponImg__inner">
-                                <? if ($coupon->getImage()): ?>
-                                    <span class="cuponIco"><img src="<?= $coupon->getImage() ?>" /></span>
-                                <? endif ?>
+            <? if (isset($products) && !empty($products) && is_array($products)): ?>
+                <div class="epSelectFishka_slider">
+                    <a class="epSelectFishka_slider_link" href="<?= $enterpizeCoupon->getLink() ?: '#' ?>">Выбрать товары с этой скидкой</a>
 
-                                <? if ($coupon->getName()): ?>
-                                    <span class="cuponDesc"><?= $coupon->getName() ?></span>
-                                <? endif ?>
-
-                                <? if ($coupon->getPrice()): ?>
-                                    <span class="cuponPrice"><?= $page->helper->formatPrice($coupon->getPrice()) . (!$coupon->getIsCurrency() ? '%' : '') ?>
-                                        <? if ($coupon->getIsCurrency()): ?>
-                                            <span class="rubl">p</span>
-                                        <? endif ?>
-                                    </span>
-                                <? endif ?>
-                            </span>
-                        </span>
-
-                        <span class="cuponImgHover">
-                            <span class="cuponBtn">Получить</span>
-                        </span>
-                    </a>
-                </li>
+                    <?= $helper->render('product/__slider', [
+                        'type'     => 'enterprize',
+                        'title'    => '',
+                        'products' => $products,
+                        'count'    => null,
+                        'limit'    => \App::config()->enterprize['itemsInSlider'],
+                    ]) ?>
+                </div>
             <? endif ?>
-        <? endforeach ?>
-    </ul>
+        </div>
+    </div>
+<? endif ?>
+
+<h2 class="ep-tl">ВЫБЕРИТЕ ФИШКУ <span class="orange">Enter</span> Prize</h2>
+
+<? /* if ((bool)$isCouponSent): ?>
+    <?= $page->render('enterprize/_contentComplete') ?>
+<? endif  */ ?>
+
+<? /* if (!$user->getEntity()): ?>
+    <h3 class="epListTitle">ФИШКИ <span class="orange">Enter</span> Prize</h3>
+<? endif ?>
+
+<? if ($isEnterprizeMember): ?>
+    <h3 class="epListTitle">выбирайте еще фишки</h3>
+<? endif */?>
+
+<div class="ep-list clearfix">
+
+    <? $i = 0; foreach ($enterpizeCoupons as $coupon): $i++ ?>
+
+        <?
+        $itemClass = 'ep-list__i';
+        if (!($i % 4)) {
+            $itemClass .= ' ep-list__i--last';
+        }
+        if (!$coupon->getImage()) {
+            $itemClass .= ' ep-list__i--noico';
+        }
+
+        $couponLink = $page->url('enterprize.form.show', ['enterprizeToken' => $coupon->getToken()]);
+        if ($isEnterprizeMember) {
+            $couponLink = $page->url('enterprize.show', ['enterprizeToken' => $coupon->getToken()]);
+        }
+        if ($coupon->isInformationOnly()) {
+            $couponLink = $coupon->getDescriptionToken()
+                ? $page->url('content', ['token' => $coupon->getDescriptionToken()])
+                : null;
+        } ?>
+
+        <? if (!$coupon->isForNotMember() && !$isEnterprizeMember): // Только для игроков EnterPrize  ?>
+            <div class="<?= !empty($itemClass) ? "$itemClass " : '' ?>mMembers">
+                <div class="ep-list__lk">
+                    <span class="ep-coupon"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
+                        <span class="ep-coupon__inner">
+                            <? if ($coupon->getImage()): ?>
+                                <span class="ep-coupon__ico"><img src="<?= $coupon->getImage() ?>" /></span>
+                            <? endif ?>
+
+                            <? if ($coupon->getName()): ?>
+                                <span class="ep-coupon__desc"><?= $coupon->getName() ?></span>
+                            <? endif ?>
+
+                            <? if ($coupon->getPrice()): ?>
+                                <span class="ep-coupon__price"><?= $page->helper->formatPrice($coupon->getPrice()) . (!$coupon->getIsCurrency() ? '%' : '') ?>
+                                    <? if ($coupon->getIsCurrency()): ?>
+                                        <span class="rubl">p</span>
+                                    <? endif ?>
+                                </span>
+                            <? endif ?>
+                        </span>
+                    </span>
+
+                    <span class="ep-coupon-hover">
+                        <span class="couponText">Только<br/> для игроков<br/> <span class="epTextLogo">Enter <span class="epTextLogo_colors">Prize</span></span></span>
+                    </span>
+                </div>
+            </div>
+
+        <? else: ?>
+            <div class="<?= $itemClass ?>">
+                <a class="ep-list__lk" href="<?= $couponLink ? $couponLink : '#' ?>">
+                    <span class="ep-coupon"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
+                        <span class="ep-coupon__inner">
+                            <? if ($coupon->getImage()): ?>
+                                <span class="ep-coupon__ico"><img src="<?= $coupon->getImage() ?>" /></span>
+                            <? endif ?>
+
+                            <? if ($coupon->getName()): ?>
+                                <span class="ep-coupon__desc"><?= $coupon->getName() ?></span>
+                            <? endif ?>
+
+                            <? if ($coupon->getPrice()): ?>
+                                <span class="ep-coupon__price"><?= $page->helper->formatPrice($coupon->getPrice()) . (!$coupon->getIsCurrency() ? '%' : '') ?>
+                                    <? if ($coupon->getIsCurrency()): ?>
+                                        <span class="rubl">p</span>
+                                    <? endif ?>
+                                </span>
+                            <? endif ?>
+                        </span>
+                    </span>
+
+                    <span class="ep-coupon-hover">
+                        <span class="ep-coupon__btn">Получить</span>
+                    </span>
+                </a>
+            </div>
+        <? endif ?>
+    <? endforeach ?>
+</div>
+
+ <div class="ep-hint ep-hint--2col">
+    <div class="ep-hint__row clearfix">
+        <div class="ep-hint__col">
+            <p class="ep-hint__lvl1">Фишка со скидкой <strong>10%</strong> на <strong>Товары Tchibo</strong></p>
+
+            <p class="ep-hint__lvl2">Действует c 02.02.2015 по 27.02.2015</p>
+
+            <p class="ep-hint__lvl3">Скидка по акции не суммируется со скидками<br/>
+            по другим акциям ООО "Энтер"<br/>
+            Фишка не действует на кофе и кофемашины<br/>
+            Минимальная сумма заказа 1 <span class="rubl">p</span></p>
+
+            <p class="ep-hint__lvl4 m"><a href="" class="undrl">Как воспользоваться кодом фишки и получить скидку?</a></p>
+        </div>
+
+        <div class="ep-hint__col ep-hint__col--r">
+            <form class="form-reg" action="" method="get" accept-charset="utf-8">
+                <fieldset class="form-reg__fld">
+                    <div class="form-reg__tl">МЫ ОТПРАВИМ КОД НА СКИДКУ В SMS И E-MAIL</div>
+
+                    <div class="txFld-w">
+                        <input class="txFld-it" type="text" name="" id="">
+                        <label class="txFld-lbl" for="">Имя</label>
+                    </div>
+
+                    <div class="txFld-w">
+                        <input class="txFld-it" type="text" placeholder="name@domain.ru" name="" id="">
+                        <label class="txFld-lbl" for="">E-mail</label>
+                    </div>
+
+                    <div class="txFld-w">
+                        <input class="txFld-it" type="text" placeholder="8 (___) ___-__-__" name="" id="">
+                        <label class="txFld-lbl" for="">Телефон</label>
+                    </div>
+                </fieldset>
+
+                <fieldset class="form-reg__fld form-reg__sbsrb clearfix">
+                    <input type="checkbox" disabled="disabled" checked="checked" id="isSubscribe" class="customInput customInput-orangecheck jsCustomRadio">
+                    <label for="subscribe" class="customLabel mChecked">Получить<br/> рекламную рассылку</label>
+
+                    <input type="checkbox" id="agree" name="user[agree]" class="customInput customInput-orangecheck jsCustomRadio">
+                    <label for="agree" class="customLabel fl-r">Согласен<br/> <a class="agree-lk" target="_blank" href="/reklamnaya-akcia-enterprize">с условиями оферты</a></label>
+                </fieldset>
+
+                <fieldset class="form-reg__fld form-reg__btn clearfix">
+                    <div class="form-reg__login">
+                        У Вас есть логин и пароль?<br/>
+                        <span class="form-reg__login__lk">Войти</span>
+                    </div>
+
+                    <button type="submit" class="btn-def fl-r">Зарегистрироваться</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+    <div class="ep-hint__row ep-hint__row--cut">
+        <div class="m ta-c mb10"><strong>Фишка действует на все товары из раздела Товары для дома, например:</strong></div>
+
+        <div class="slideItem slideItem-7item">
+            <div class="slideItem_inn">
+                <ul class="slideItem_lst clearfix" style="width: 1430px; left: 0px;">
+                    <li class="slideItem_i jsSliderItem" style="display: list-item;">
+                         <div class="slideItem_i__child">
+                            <div class="slideItem_imgw">
+                                <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
+                            </div>
+
+                            <div class="slideItem_n">
+                                Держатель для планшетов Liberty Project C65H41
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="slideItem_i jsSliderItem" style="display: list-item;">
+                         <div class="slideItem_i__child">
+                            <div class="slideItem_imgw">
+                                <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
+                            </div>
+
+                            <div class="slideItem_n">
+                                Держатель для планшетов Liberty Project C65H41
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="slideItem_i jsSliderItem" style="display: list-item;">
+                         <div class="slideItem_i__child">
+                            <div class="slideItem_imgw">
+                                <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
+                            </div>
+
+                            <div class="slideItem_n">
+                                Держатель для планшетов Liberty Project C65H41
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="slideItem_i jsSliderItem" style="display: list-item;">
+                         <div class="slideItem_i__child">
+                            <div class="slideItem_imgw">
+                                <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
+                            </div>
+
+                            <div class="slideItem_n">
+                                Держатель для планшетов Liberty Project C65H41
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="slideItem_i jsSliderItem" style="display: list-item;">
+                         <div class="slideItem_i__child">
+                            <div class="slideItem_imgw">
+                                <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
+                            </div>
+
+                            <div class="slideItem_n">
+                                Держатель для планшетов Liberty Project C65H41
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="slideItem_i jsSliderItem" style="display: list-item;">
+                         <div class="slideItem_i__child">
+                            <a href="" class="slideItem_imgw" id="">
+                                <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
+                            </a>
+
+                            <div class="slideItem_n">
+                                Держатель для планшетов Liberty Project C65H41
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="slideItem_i jsSliderItem" style="display: list-item;">
+                         <div class="slideItem_i__child">
+                            <div class="slideItem_imgw">
+                                <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
+                            </div>
+
+                            <div class="slideItem_n">
+                                Держатель для планшетов Liberty Project C65H41
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="slideItem_i jsSliderItem" style="display: list-item;">
+                         <div class="slideItem_i__child">
+                            <div class="slideItem_imgw">
+                                <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
+                            </div>
+
+                            <div class="slideItem_n">
+                                Держатель для планшетов Liberty Project C65H41
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="slideItem_i jsSliderItem" style="display: list-item;">
+                         <div class="slideItem_i__child">
+                            <div class="slideItem_imgw">
+                                <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
+                            </div>
+
+                            <div class="slideItem_n">
+                                Держатель для планшетов Liberty Project C65H41
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="slideItem_btn slideItem_btn-prv mDisabled jsRecommendedSliderNav"></div>
+            <div class="slideItem_btn slideItem_btn-nxt jsRecommendedSliderNav"></div>
+        </div>
+    </div>
 </div>

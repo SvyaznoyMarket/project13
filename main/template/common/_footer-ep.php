@@ -1,4 +1,4 @@
-<div class="footer">
+<div class="footer footer--ep">
     <div class="footer_t clearfix">
         <ul class="footer_cmpn clearfix">
             <li class="footer_cmpn_i"><a class="footer_cmpn_lk" href="/about_company">О компании</a></li>
@@ -28,22 +28,6 @@
             <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" href="https://www.youtube.com/user/EnterLLC"><i class="i-share i-share-yt"></i></a></li>
             <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" href="http://www.odnoklassniki.ru/group/53202890129511"><i class="i-share i-share-od"></i></a></li>
         </ul>
-
-        <ul class="footer_bnnr">
-            <li class="footer_bnnr_i"><img src="/styles/footer/img/prava-potreb.gif" /></li>
-            <li class="footer_bnnr_i"><a href="/akit"><img src="/styles/footer/img/akita.png" /></a></li>
-            <li class="footer_bnnr_i"><div class="teleportator" id="teleportator"></div></li>
-        </ul>
-
-        <ul class="footer_app">
-            <li class="footer_app_i"><a target="_blank" href="https://itunes.apple.com/ru/app/enter/id486318342?mt=8"><img class="footer_app_img" src="/styles/footer/img/apple.png" /></a></li>
-
-            <li class="footer_app_i">
-                <a target="_blank" href="https://play.google.com/store/apps/details?id=ru.enter">
-                    <img class="footer_app_img" alt="Get it on Google Play" src="/styles/footer/img/google.png" />
-                </a>
-            </li>
-        </ul>
     </div>
 
     <footer class="footer_b">
@@ -53,6 +37,4 @@
             <div class="footer_cpy_c"><a href="http://<?= \App::config()->mobileHost ?>" class="footer_cpy_mbl js-siteVersionSwitcher" data-config="{&quot;cookieName&quot;:&quot;mobile&quot;,&quot;cookieLifetime&quot;:630720000}">Мобильная версия</a></div>
         </div>
     </footer>
-
-    <?= $page->render('common/__script-krible') ?>
 </div><!--/ Подвал -->
