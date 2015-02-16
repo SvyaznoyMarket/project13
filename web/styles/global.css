@@ -11612,8 +11612,8 @@ img[height="0"] {
     animation: none;
   }
   .fltrBtn_anim-item:hover img {
-    right: 7px;
-    top: 7px;
+    right: 5px;
+    top: 5px;
   }
   .fltrBtn_anim-item img {
     transition: all .2s ease;
@@ -11880,7 +11880,7 @@ img[height="0"] {
     border-bottom-left-radius: 3px;
     border-top-left-radius: 0;
     position: absolute;
-    left: 35px;
+    left: 5px;
     top: 122px;
     text-decoration: none;
     padding: 2px 0px;
