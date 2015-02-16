@@ -4,6 +4,13 @@ namespace View\OrderV3;
 
 class CompletePage extends Layout {
 
+    public function slotInnerJavascript() {
+        return ''
+        . $this->render('_remarketingGoogle', ['tag_params' => ['pagetype' => 'purchase']])
+        . "\n\n"
+        . $this->render('_innerJavascript');
+    }
+
     public function prepare() {
         $this->setTitle('Оформление заказа - Enter');
 
