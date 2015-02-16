@@ -134,7 +134,7 @@ class RecommendedAction {
                 foreach ($sender['items'] as $id) {
                     /** @var \Model\Product\Entity|null $iProduct */
                     $iProduct = isset($productsById[$id]) ? $productsById[$id] : null;
-                    if (!$iProduct || !$iProduct->isAvailable() || $iProduct->isInShopShowroomOnly()) continue;
+                    if (!$iProduct || !$iProduct->isAvailable() || $iProduct->isInShopShowroomOnly() || (5 == $iProduct->getStatusId())) continue;
 
                     $products[] = $iProduct;
                 }
