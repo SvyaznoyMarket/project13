@@ -67,8 +67,8 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
         <div class="product-card__info--recall">
             <span>Закажите обратный звонок и уточните</span>
             <ul class="product-card__info--recall__list">
-                <li>Состав мебели и техники</li>
-                <li>Условия доставки, сборки и оплаты</li>
+                <li>комплектность мебели и техники</li>
+                <li>условия доставки, сборки и оплаты</li>
             </ul>
         <?= $helper->render('cart/__button-product', [
             'product'  => $product,

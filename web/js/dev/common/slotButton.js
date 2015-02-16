@@ -15,8 +15,8 @@
 					'{{#full}}' +
 						'<div class="popup--request__head msg--recall">Закажите обратный звонок и уточните</div>' +
 						'<ul class="recall-list">' +
-							'<li>Состав мебели и техники</li>' +
-							'<li>Условия доставки, сборки и оплаты</li>' +
+							'<li>комплектность мебели и техники</li>' +
+							'<li>условия доставки, сборки и оплаты</li>' +
 						'</ul>' +
 					'{{/full}}' +
 
@@ -24,7 +24,7 @@
 						'<div class="popup--request__head">Отправить заявку</div>' +
 					'{{/full}}' +
 
-					'<div class="js-slotButton-popup-errors" style="display: none;"></div>' +
+					'<div class="js-slotButton-popup-errors errtx" style="display: none;"></div>' +
 
 					'<div class="popup__form-group js-slotButton-popup-element">' +
 						'<div class="input-group js-slotButton-popup-element-field">' +
@@ -50,8 +50,8 @@
 					'</div>' +
 
 					'<div class="popup__form-group checkbox-group js-slotButton-popup-element">' +
-						'<div class="js-slotButton-popup-element-field">' +
-							'<label><input type="checkbox" name="confirm" value="1" class="js-slotButton-popup-confirm" /><i></i> Я ознакомлен и согласен с информацией о продавце и его {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</label>' +
+						'<div class="checkbox-inner js-slotButton-popup-element-field">' +
+							'<input type="checkbox" name="confirm" value="1" id="accept" class="customInput customInput-checkbox js-slotButton-popup-confirm" /><label class="customLabel jsAcceptTerms" for="accept">Я ознакомлен и согласен с информацией о продавце и его {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</label>' +
 						'</div>' +
 					'</div>' +
 					'<div class="popup__form-group vendor">Продавец-партнёр: {{partnerName}}</div>' +
