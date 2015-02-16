@@ -125,7 +125,7 @@ $helper = new \Helper\TemplateHelper();
 <div class="ep-list clearfix">
     <? $i = 0; foreach(array_chunk($enterpizeCoupons, 4) as $couponsInChunk): ?>
         <div>
-        <? foreach ($couponsInChunk as $coupon): $i++ ?>
+        <? foreach ($couponsInChunk as $columnNum => $coupon): $i++ ?>
 
             <?
             $itemClass = 'ep-list__i';
@@ -147,7 +147,7 @@ $helper = new \Helper\TemplateHelper();
             } ?>
 
             <? if (!$coupon->isForNotMember() && !$isEnterprizeMember): // Только для игроков EnterPrize  ?>
-                <div class="<?= !empty($itemClass) ? "$itemClass " : '' ?>mMembers">
+                <div data-column="<?= $columnNum + 1 ?>" class="<?= !empty($itemClass) ? "$itemClass " : '' ?>mMembers">
                     <div class="ep-list__lk">
                         <span class="ep-coupon"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
                             <span class="ep-coupon__inner">
@@ -176,7 +176,7 @@ $helper = new \Helper\TemplateHelper();
                 </div>
 
             <? else: ?>
-                <div class="<?= $itemClass ?>">
+                <div data-column="<?= $columnNum + 1 ?>" class="<?= $itemClass ?>">
                     <a class="ep-list__lk" href="<?= $couponLink ? $couponLink : '#' ?>">
                         <span class="ep-coupon"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
                             <span class="ep-coupon__inner">
