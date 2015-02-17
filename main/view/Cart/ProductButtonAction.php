@@ -83,6 +83,7 @@ class ProductButtonAction {
             $data['class'] .= ' btnBuy__eLink mDisabled jsBuyButton';
             $data['value'] = 'Нет';
         } else if ($slotPartnerOffer = $product->getSlotPartnerOffer()) {
+            $data['isSlot'] = true;
             $data['url'] = '#';
             $data['class'] .= ' btn btn--slot js-slotButton ' . ('product-card' !== $location ? 'btn--short' : '');
             $data['value'] = 'product-card' === $location ? 'Отправить заявку' : 'Как купить?';
