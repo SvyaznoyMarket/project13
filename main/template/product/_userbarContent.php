@@ -39,7 +39,7 @@ $productPageSender = \Session\ProductPageSenders::get($product->getUi());
         ]) // Кнопка купить ?>
     <? endif ?>
 
-    <? if (!$product->getSlotPartnerOffer() && $product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && (!$product->getKit()) || $product->getIsKitLocked()): ?>
+    <? if (!$product->getSlotPartnerOffer() && $product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && (!$product->getKit() || $product->getIsKitLocked())): ?>
         <?= $helper->render('__spinner', [
             'id'        => \View\Id::cartButtonForProduct($product->getId()),
             'productId' => $product->getId(),
