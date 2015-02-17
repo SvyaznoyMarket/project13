@@ -251,40 +251,40 @@
 
 				   .inline-block-middle();
 			   }
-		   }
-	}
-
-&_anim-item {
-	position: absolute;
-	right: -25px;
-	top: 150px;
-	display: block;
-	animation: animPuls 7s ease-in-out 1s infinite;
-	-webkit-animation: animPuls 7s ease-in-out 1s infinite;
-	-moz-animation: animPuls 7s ease-in-out 1s infinite;
-	-o-animation: animPuls 7s ease-in-out 1s infinite;
-
-	&:hover {
-		-webkit-animation: none;
-		-moz-animation: none;
-		-o-animation: none;
-		animation: none;
-
-		img {
-			right: 7px;
-			top: 7px;
 		}
 	}
 
-	img {
-		transition: all .2s ease;
-		display: block;
+	&_anim-item {
 		position: absolute;
-		top: 0;
-		right: 0;
+		right: -25px;
+		top: 5px;
+		display: block;
+		animation: animPuls 7s ease-in-out 1s infinite;
+		-webkit-animation: animPuls 7s ease-in-out 1s infinite;
+		-moz-animation: animPuls 7s ease-in-out 1s infinite;
+		-o-animation: animPuls 7s ease-in-out 1s infinite;
+
+		&:hover {
+			-webkit-animation: none;
+			-moz-animation: none;
+			-o-animation: none;
+			animation: none;
+
+			img {
+				right: 5px;
+				top: 5px;
+			}
+		}
+
+		img {
+			transition: all .2s ease;
+			display: block;
+			position: absolute;
+			top: 0;
+			right: 0;
+		}
 	}
 }
-	}
 
 // анимация карты на странице с подарками /gift
 @keyframes animPuls{

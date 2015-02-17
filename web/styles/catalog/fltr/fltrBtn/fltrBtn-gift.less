@@ -2,7 +2,6 @@
 
     .fltrBtn-gift {
         margin-top: -20px;
-        position: relative;
         overflow: hidden;
     }
 }
@@ -27,6 +26,21 @@
         .customLabel {
             font-size: 14px;
         }
+        .fltrBtn-action-item__detail{
+            background: #fff url('@{base-url}/catalog/img/detail-bg.jpg') repeat-x top left;
+            width:94px;
+            text-align: center;
+            color: #ef404a;
+            font-size: 12px;
+            font-family: 'Enter Type';
+            .border-radius(0, 3px, 3px, 0);
+            position: absolute;
+            left: 5px;
+            top: 122px;
+            text-decoration: none;
+            padding: 2px 0px;
+            z-index: 1;
+        }
     }
 }
 
@@ -39,7 +53,7 @@
 
 .fltrBtnLn {
     .table();
-    margin: 0 auto 20px;
+    margin: 0 auto 17px;
     .rounded(3px);
 
     &-bg {
@@ -47,8 +61,6 @@
         background: rgba(255, 255, 255, .75);
         padding: 10px;
         .drop-shadow();
-        position: relative;
-        z-index: 2;
     }
 
     &-lst {
@@ -110,10 +122,4 @@
             max-height: 200px;
         }
     }
-}
-
-.fltrBtn-action-item {
-    position: absolute;
-    top: 0;
-    left: 12px;
 }

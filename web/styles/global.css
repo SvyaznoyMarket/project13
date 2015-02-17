@@ -12096,7 +12096,7 @@ img[height="0"] {
   .fltrBtn_anim-item {
     position: absolute;
     right: -25px;
-    top: 150px;
+    top: 5px;
     display: block;
     animation: animPuls 7s ease-in-out 1s infinite;
     -webkit-animation: animPuls 7s ease-in-out 1s infinite;
@@ -12110,8 +12110,8 @@ img[height="0"] {
     animation: none;
   }
   .fltrBtn_anim-item:hover img {
-    right: 7px;
-    top: 7px;
+    right: 5px;
+    top: 5px;
   }
   .fltrBtn_anim-item img {
     transition: all .2s ease;
@@ -12341,7 +12341,6 @@ img[height="0"] {
 @media all {
   .newLayout .fltrBtn-gift {
     margin-top: -20px;
-    position: relative;
     overflow: hidden;
   }
   .fltrBtn-gift {
@@ -12360,6 +12359,32 @@ img[height="0"] {
   .fltrBtn-gift .customLabel {
     font-size: 14px;
   }
+  .fltrBtn-gift .fltrBtn-action-item__detail {
+    background: #ffffff url('/styles/catalog/img/detail-bg.jpg') repeat-x top left;
+    width: 94px;
+    text-align: center;
+    color: #ef404a;
+    font-size: 12px;
+    font-family: 'Enter Type';
+    -webkit-border-top-right-radius: 0;
+    -webkit-border-bottom-right-radius: 3px;
+    -webkit-border-bottom-left-radius: 3px;
+    -webkit-border-top-left-radius: 0;
+    -moz-border-radius-topright: 0;
+    -moz-border-radius-bottomright: 3px;
+    -moz-border-radius-bottomleft: 3px;
+    -moz-border-radius-topleft: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top-left-radius: 0;
+    position: absolute;
+    left: 5px;
+    top: 122px;
+    text-decoration: none;
+    padding: 2px 0px;
+    z-index: 1;
+  }
   .fltrBtnPosBottom {
     position: absolute;
     bottom: 0;
@@ -12373,7 +12398,7 @@ img[height="0"] {
     *float: left;
     *overflow: hidden;
     *position: relative;
-    margin: 0 auto 20px;
+    margin: 0 auto 17px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -12385,8 +12410,6 @@ img[height="0"] {
     -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    position: relative;
-    z-index: 2;
   }
   .fltrBtnLn-lst {
     width: 822px;
@@ -12443,11 +12466,6 @@ img[height="0"] {
   .fltrBtnBox-gift .fltrBtnBox_dd_inn {
     padding: 10px 25px 0 10px;
     max-height: 200px;
-  }
-  .fltrBtn-action-item {
-    position: absolute;
-    top: 0;
-    left: 12px;
   }
 }
 /*---------Страницы ошибок----------*/

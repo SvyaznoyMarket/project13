@@ -65,13 +65,13 @@
             </a>
         </li>
         <li class="lstitem_i">
-            <a class="lstitem_lk" title="Royal Canin" href="/slices/brands-royal-canin">
-                <img src="styles/mainpage/img/logo/Royal-Canin.jpg" alt="Royal Canin" class="lstitem_img">
+            <a class="lstitem_lk" title="Анзоли" href="/slices/brands-anzoli">
+                <img src="styles/mainpage/img/logo/anzoli.jpg" alt="Anzoli" class="lstitem_img">
             </a>
         </li>
         <li class="lstitem_i">
-            <a class="lstitem_lk" title="Pro Plan" href="/slices/brands-pro-plan">
-                <img src="styles/mainpage/img/logo/proplan.jpg" alt="Pro Plan" class="lstitem_img">
+            <a class="lstitem_lk" title="Шатура" href="/slices/brands-shatura">
+                <img src="styles/mainpage/img/logo/shatura.jpg" alt="Шатура" class="lstitem_img">
             </a>
         </li>
         <li class="lstitem_i">
@@ -85,8 +85,8 @@
             </a>
         </li>
         <li class="lstitem_i">
-            <a class="lstitem_lk" title="Leifheit" href="/slices/brands-leifheit">
-                <img src="styles/mainpage/img/logo/Leifheite.jpg" alt="Leifheit" class="lstitem_img">
+            <a class="lstitem_lk" title="Аскона" href="/slices/brands-askona">
+                <img src="styles/mainpage/img/logo/askona.jpg" alt="Askona" class="lstitem_img">
             </a>
         </li>
         <li class="lstitem_i">

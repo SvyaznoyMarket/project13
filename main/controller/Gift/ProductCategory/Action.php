@@ -345,7 +345,7 @@ class Action {
         $isSubmitted = (bool)$params->get('f-holiday');
 
         if (!$this->hasTagFilterPropertyValue('holiday', $params->get('f-holiday'))) {
-            $params->set('f-holiday', 737);
+            $params->set('f-holiday', 738);
         }
 
         if (!$this->hasTagFilterPropertyValue('sex', $params->get('f-sex'))) {
