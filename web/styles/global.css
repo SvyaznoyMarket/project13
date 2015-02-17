@@ -903,7 +903,7 @@ img[height="0"] {
 }
 @media all {
   .btnCmpr {
-    margin: 0 0 0 13px;
+    margin: 0;
   }
   .btnCmpr_lk {
     display: inline-block;
@@ -912,14 +912,14 @@ img[height="0"] {
     *display: inline;
     *zoom: 1;
     min-height: 18px;
-    background: url("/styles/btn/img/icon_compare.png") no-repeat 0 2px;
-    padding: 0 0 4px 28px;
+    background: url("/styles/btn/img/icon_compare.png") no-repeat 0 -111px;
+    padding: 3px 0 4px 35px;
   }
   .btnCmpr_lk:hover {
     text-decoration: none;
   }
   .btnCmpr_lk-act {
-    background-position: 0 -31px;
+    background-position: 0 -141px;
   }
   .btnCmpr_tx {
     border-bottom: 1px dotted;
@@ -953,6 +953,9 @@ img[height="0"] {
     line-height: 20px;
     text-align: center;
     width: 25px;
+  }
+  .bWidgetBuy {
+    text-align: center;
   }
   .btnCmprb {
     display: inline-block;
@@ -10455,6 +10458,15 @@ img[height="0"] {
             padding-bottom: 1px;
         }*/
   }
+  .product-container .zoomWindowContainer {
+    width: 400px;
+  }
+  .product-container .zoomWindowContainer .zoomWindow {
+    width: 400px;
+  }
+  .product-container .zoomLens {
+    width: 107px;
+  }
   .product-card__section-left {
     display: inline-block;
     float: left;
@@ -10496,8 +10508,7 @@ img[height="0"] {
     width: 100%;
     text-align: center;
   }
-  .btn--slot,
-  .btn--submit {
+  .btn--slot {
     display: block;
     width: auto;
     box-sizing: border-box;
@@ -10519,13 +10530,15 @@ img[height="0"] {
     text-decoration: none;
     color: #000;
     font-size: 18px;
+    min-width: 145px;
   }
-  .btn--slot:hover,
-  .btn--submit:hover {
+  .btn--slot:hover {
     text-decoration: none;
   }
-  .btn--submit {
-    min-width: 145px;
+  .btn--slot--container {
+    width: 100%;
+    text-align: center;
+    overflow: visible;
   }
   .btn--short {
     background: #c1d837;
@@ -10536,6 +10549,7 @@ img[height="0"] {
     text-align: center;
     padding: 2px 0px 3px;
     margin-top: 3px;
+    min-width: 0px;
   }
   .bBtnLine .btn--slot,
   .topbarfix_buy .btn--slot {
@@ -10547,9 +10561,19 @@ img[height="0"] {
     background: #80c342;
     border-color: #548d1e;
   }
-  .topbarfix_buy .btn--slot {
+  .topbarfix_buy .btn--slot--container {
+    width: 86px;
+    float: right;
+    margin: 0 5px;
+  }
+  .topbarfix_buy .btn--slot--container .btn--slot {
     width: 86px;
     padding: 4px 0px;
+  }
+  .bBtnLine .btn--slot--container {
+    float: left;
+    margin-right: 10px;
+    width: auto;
   }
   .cmprCnt_buy .btn--slot {
     box-shadow: none;
@@ -10836,7 +10860,7 @@ img[height="0"] {
     color: #a0a0a0;
   }
   .product-container--kitchen .product-card__specify .bSpecifications.mSimpleProperty .bSpecificationsList__eName {
-    width: 140px;
+    width: 137px;
     margin: 0 0 15px;
     border: none;
     background: none;
@@ -10856,7 +10880,7 @@ img[height="0"] {
   .product-container--kitchen .product-card__bordered {
     padding: 0 10px;
     margin: 10px -10px 0;
-    border-top: 1px solid #000;
+    border-top: 1px solid #c7c7c7;
   }
   .product-container--kitchen .product-card__desc {
     margin-top: 10px;
@@ -10893,16 +10917,10 @@ img[height="0"] {
   .product-container--kitchen .bPhotoAction .prod-photoslider__wrap {
     width: 280px;
   }
-  .product-container--kitchen .btnBuy {
-    overflow: visible;
-    width: auto;
-    width: 100%;
-    text-align: center;
-  }
   .product-container--kitchen .slideItem_inn {
     width: 900px;
   }
-  .product-container--kitchen .slideItem_pr {
+  .product-container--kitchen .slot--centered .slideItem_pr {
     width: 100%;
     text-align: center;
   }

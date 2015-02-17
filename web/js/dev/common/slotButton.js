@@ -13,10 +13,10 @@
 					'<input type="hidden" name="sender" value="{{sender}}" />' +
 
 					'{{#full}}' +
-						'<div class="popup--request__head msg--recall">Закажите обратный звонок и уточните:</div>' +
+						'<div class="popup--request__head msg--recall">Закажите обратный звонок и уточните</div>' +
 						'<ul class="recall-list">' +
-							'<li>комплектность мебели и техники;</li>' +
-							'<li>условия доставки, сборки и оплаты.</li>' +
+							'<li>комплектность мебели и техники</li>' +
+							'<li>условия доставки, сборки и оплаты</li>' +
 						'</ul>' +
 					'{{/full}}' +
 
@@ -56,8 +56,8 @@
 					'</div>' +
 					'<div class="popup__form-group vendor">Продавец-партнёр: {{partnerName}}</div>' +
 
-					'<div class="btn--container">' +
-						'<button type="submit" class="js-slotButton-popup-submitButton btn btn--submit">Отправить заявку</button>' +
+					'<div class="btn--slot--container">' +
+						'<button type="submit" class="js-slotButton-popup-submitButton btn btn--slot">Отправить заявку</button>' +
 					'</div>' +
 
 					'{{#full}}' +
