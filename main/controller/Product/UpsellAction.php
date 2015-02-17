@@ -47,8 +47,8 @@ class UpsellAction {
         /** @var $product \Model\Product\Entity */
         $product = null;
         \RepositoryManager::product()->prepareEntityByToken($productToken, $region, function($data) use (&$product) {
-            $data = reset($data);
-            if ((bool)$data) {
+            $data = is_array($data) ? reset($data) : null;
+            if ($data) {
                 $product = new \Model\Product\Entity($data);
             }
         });
