@@ -903,7 +903,7 @@ img[height="0"] {
 }
 @media all {
   .btnCmpr {
-    margin: 0;
+    margin: 0 0 0 13px;
   }
   .btnCmpr_lk {
     display: inline-block;
@@ -953,9 +953,6 @@ img[height="0"] {
     line-height: 20px;
     text-align: center;
     width: 25px;
-  }
-  .bWidgetBuy {
-    text-align: center;
   }
   .btnCmprb {
     display: inline-block;
@@ -10466,6 +10463,12 @@ img[height="0"] {
   }
   .product-container .zoomLens {
     width: 107px;
+  }
+  .product-container .compare--slot {
+    text-align: center;
+  }
+  .product-container .compare--slot .btnCmpr {
+    margin: 0px;
   }
   .product-card__section-left {
     display: inline-block;
