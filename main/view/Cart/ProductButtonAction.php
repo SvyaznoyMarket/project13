@@ -86,7 +86,7 @@ class ProductButtonAction {
             $data['url'] = '#';
             $data['class'] .= ' btn btn--slot js-slotButton ' . ('product-card' !== $location ? 'btn--short' : '');
             $data['value'] = 'product-card' === $location ? 'Отправить заявку' : 'Как купить?';
-            $data['full'] = 'product-card' === $location ? '0' : '1';
+            $data['full'] = 'userbar' === $location || 'product-card' === $location ? '0' : '1';
             $data['productUrl'] = $product->getLink();
             $data['productArticle'] = $product->getArticle();
             $data['productPrice'] = $product->getPrice();
