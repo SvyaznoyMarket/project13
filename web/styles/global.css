@@ -10768,6 +10768,10 @@ img[height="0"] {
     padding-top: 5px;
     padding-bottom: 5px;
   }
+  .slot--centered .slideItem_pr {
+    width: 100%;
+    text-align: center;
+  }
   .h1 {
     font-size: 2em;
     margin: 10px 0 20px;
@@ -10919,10 +10923,6 @@ img[height="0"] {
   }
   .product-container--kitchen .slideItem_inn {
     width: 900px;
-  }
-  .product-container--kitchen .slot--centered .slideItem_pr {
-    width: 100%;
-    text-align: center;
   }
 }
 /*---------Карточка товара: слайдер превьюшек----------*/
