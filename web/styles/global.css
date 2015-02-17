@@ -94,7 +94,7 @@ html {
   height: 100%;
 }
 body {
-  font: normal 75%/1.4 Tahoma, Geneva, sans-serif, helvetica, sans-serif;
+  font: normal 75%/1.4 Tahoma, Geneva, 'DejaVu Sans Condensed', helvetica, sans-serif;
   background: #e8e8e8;
   width: 100%;
   height: 100%;
@@ -503,9 +503,6 @@ table {
   padding: 0 10px;
   background: #ffffff;
 }
-.wrapper.mWrapperMain {
-  background: #000000;
-}
 /**
  * Шапка
  */
@@ -515,14 +512,8 @@ table {
 /**
  * Контентная часть
  */
-.content {
-  padding: 0 0 222px;
-}
 .content.mContentOrder {
   padding-bottom: 0;
-}
-.content.mContentMain {
-  padding-bottom: 953px;
 }
 /**
  * Фикс однопиксельной картинки, которая выводится после футера.
@@ -5119,10 +5110,10 @@ img[height="0"] {
   }
   .ep-head__control__i__lk {
     color: #ffffff;
-    border-bottom: 1px solid #a0a0a0;
+    border-bottom-color: #a0a0a0;
   }
   .ep-head__control__i__log {
-    border-bottom: 1px solid #ffa901;
+    border-color: #ffa901;
     color: #ffa901;
     font-size: 18px;
   }
@@ -5211,6 +5202,7 @@ img[height="0"] {
   }
   .ep-list__lk {
     display: block;
+    cursor: pointer;
   }
   .ep-coupon {
     position: relative;
@@ -5396,11 +5388,18 @@ img[height="0"] {
   .ep-hint--2col .ep-hint__col--r {
     float: right;
   }
+  .ep-hint--2col .ep-hint__lvl3 {
+    margin: 0 0 55px;
+  }
+  .ep-hint--2col .ep-hint__lvl1 {
+    margin-bottom: 10px;
+  }
   .ep-hint__row {
     padding: 15px 20px 10px 20px;
   }
   .ep-hint__row--cut {
     position: relative;
+    padding-bottom: 0;
   }
   .ep-hint__row--cut:after {
     content: "";
@@ -5411,14 +5410,19 @@ img[height="0"] {
     height: 1px;
     border-top: 1px dotted;
   }
+  .ep-hint__col {
+    text-align: center;
+  }
   .ep-hint__lvl1 {
     font-size: 18px;
+    margin-bottom: 0;
   }
   .ep-hint__lvl2 {
     font-size: 14px;
+    margin-top: 0;
   }
-  .ep-hint__lvl3 {
-    margin: 0 0 55px;
+  .ep-hint__lvl4 {
+    margin: 10px 0 0;
   }
   .epHintPopup {
     -webkit-border-radius: 4px;
