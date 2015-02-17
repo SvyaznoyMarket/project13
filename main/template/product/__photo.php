@@ -85,13 +85,14 @@ return function(
     <? endif ?>
 
     <div class="bProductDescImgBig">
-        <img itemprop="image" class="bProductDescImgBig__eImg bZoomedImg"
+        <img itemprop="image" class="bProductDescImgBig__eImg bZoomedImg js-photo-zoomedImg"
              src="<?= $product->getImageUrl(3) ?>"
              <? if ($useLens): ?>
                 data-zoom-image="<?= $product->getImageUrl(5) ?>"
              <? endif ?>
              data-zoom-disable="<?= $useLens ? false : true ?>"
              alt="<?= $helper->escape($product->getName()) ?>"
+             <? if ($product->getSlotPartnerOffer()): ?>data-is-slot="true"<? endif ?>
         />
 
         <? if (!$product->isAvailable() && (!$product->getLabel() || mb_strtolower($product->getLabel()->getName()) !== 'подари жизнь')): ?>
