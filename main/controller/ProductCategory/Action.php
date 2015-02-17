@@ -954,7 +954,11 @@ class Action {
                     }
                 });
             }
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+            \App::coreClientV2()->execute();
+
+            if (!$products && ('true' == $request->get('ajax'))) {
+                throw new \Exception('Товары не найдены');
+            }
 
             $scoreData = [];
             if ((bool)$products) {
@@ -973,7 +977,7 @@ class Action {
 
             $repository->prepareProductsMedias($products);
 
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+            \App::coreClientV2()->execute();
 
             \RepositoryManager::review()->addScores($products, $scoreData);
 

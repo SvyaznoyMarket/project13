@@ -96,7 +96,8 @@
 			var errorHandler = function errorHandler() {
 					// utils.blockScreen.unblock();
 					if ( catalog.loader ) {
-						catalog.loader.complete();
+						catalog.infScroll.loading = false;
+						catalog.loader.error();
 					}
 				},
 

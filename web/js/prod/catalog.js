@@ -1099,7 +1099,8 @@
 			var errorHandler = function errorHandler() {
 					// utils.blockScreen.unblock();
 					if ( catalog.loader ) {
-						catalog.loader.complete();
+						catalog.infScroll.loading = false;
+						catalog.loader.error();
 					}
 				},
 
@@ -1414,6 +1415,15 @@ $(function() {
 			}
 			filterSubminBtn.removeClass('mButLoader');
 			$('body').trigger('catalogLoadingComplete');
+		},
+
+		error: function() {
+			console.warn('error');
+
+			if ( catalog.loader._loader ) {
+				catalog.loader._loader.remove();
+				catalog.loader._loader = null;
+			}
 		}
 	};
 
