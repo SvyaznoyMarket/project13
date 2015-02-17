@@ -86,7 +86,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
 
         <div class="js-showTopBar"></div>
 
-        <div class="bWidgetBuy mWidget js-WidgetBuy">
+        <div class="bWidgetBuy mWidget compare--slot js-WidgetBuy">
             <?= $page->render('compare/_button-product-compare', ['product' => $product]) ?>
         </div>
 
