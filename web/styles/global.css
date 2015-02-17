@@ -5122,13 +5122,20 @@ img[height="0"] {
     border-bottom: 1px dotted #ffffff;
   }
   .ep-tl {
-    margin: 5px 0 25px;
+    margin: 5px 0 25px 15px;
     color: #ffffff;
     font-family: "Enter";
     font-size: 30px;
   }
   .ep-list {
-    margin: 25px 0 0 2px;
+    margin: 25px 0 0 0;
+    width: 960px;
+  }
+  .ep-list--member {
+    background: #272727;
+    padding: 8px 0 0;
+    margin: 0 0 30px;
+    position: relative;
   }
   .ep-list__i {
     position: relative;
@@ -5136,7 +5143,7 @@ img[height="0"] {
     float: left;
     width: 210px;
     height: 236px;
-    margin: 0 13px;
+    margin: 0 15px;
   }
   .ep-list__i:hover {
     z-index: 20;
@@ -5203,6 +5210,54 @@ img[height="0"] {
   .ep-list__lk {
     display: block;
     cursor: pointer;
+  }
+  .ep-finish {
+    background: #ef404a;
+    padding: 5px 7px 5px 10px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    position: absolute;
+    left: 50%;
+    bottom: 13px;
+    width: 155px;
+    margin-left: -89px;
+    color: #ffffff;
+    font-size: 11px;
+    z-index: 25;
+    white-space: nowrap;
+  }
+  .ep-finish__tl {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    text-align: right;
+  }
+  .ep-finish__num {
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    background: none repeat scroll 0 0 #fff;
+    border-radius: 2px;
+    color: #ef404a;
+    display: inline-block;
+    font-size: 27px;
+    line-height: 1;
+    margin: 0 2px 0 5px;
+    padding: 0 6px 1px;
+    vertical-align: middle;
+  }
+  .ep-finish__day {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
   }
   .ep-coupon {
     position: relative;
@@ -5393,6 +5448,16 @@ img[height="0"] {
   }
   .ep-hint--2col .ep-hint__lvl1 {
     margin-bottom: 10px;
+  }
+  .ep-hint--position {
+    left: 0;
+    margin: 0;
+    position: absolute;
+    top: 285px;
+    z-index: 26;
+  }
+  .ep-hint--position .ep-hint__row {
+    padding: 5px 20px 10px;
   }
   .ep-hint__row {
     padding: 15px 20px 10px 20px;

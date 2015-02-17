@@ -74,7 +74,7 @@
 }
 
 .ep-tl {
-	margin: 5px 0 25px;
+	margin: 5px 0 25px 15px;
 
 	color: @white;
 
@@ -83,7 +83,15 @@
 }
 
 .ep-list {
-	margin: 25px 0 0 2px;
+	margin: 25px 0 0 0;
+	width: 960px;
+
+	&--member {
+		background: #272727;
+		padding: 8px 0 0;
+    	margin: 0 0 30px;
+    	position: relative;
+	}
 
 	&__i {
 		position: relative;
@@ -93,7 +101,7 @@
 
 		width: 210px;
 		height: 236px;
-		margin: 0 13px;
+		margin: 0 15px;
 
 		&:hover {
 			z-index: 20;
@@ -159,6 +167,45 @@
 	&__lk {
 		display: block;
 		cursor: pointer;
+	}
+}
+
+.ep-finish {
+	background: #ef404a;
+	padding: 5px 7px 5px 10px;
+	.rounded(3px);
+	position: absolute;
+	left: 50%;
+	bottom: 13px;
+	width: 155px;
+	margin-left: -89px;
+	color: @white;
+	font-size: 11px;
+	z-index: 25;
+	white-space: nowrap;
+
+	&__tl {
+		.inline-block();
+		vertical-align: middle;
+		text-align: right;
+	}
+
+	&__num {
+		.inline-block();
+		background: none repeat scroll 0 0 #fff;
+	    border-radius: 2px;
+	    color: #ef404a;
+	    display: inline-block;
+	    font-size: 27px;
+	    line-height: 1;
+	    margin: 0 2px 0 5px;
+	    padding: 0 6px 1px;
+	    vertical-align: middle;
+	}
+
+	&__day {
+		.inline-block();
+		vertical-align: middle;
 	}
 }
 
@@ -381,6 +428,18 @@
 
 		.ep-hint__lvl1 {
 			margin-bottom: 10px;
+		}
+	}
+
+	&--position {
+		left: 0;
+	    margin: 0;
+	    position: absolute;
+	    top: 285px;
+	    z-index: 26;
+
+	    .ep-hint__row {
+		    padding: 5px 20px 10px;
 		}
 	}
 
