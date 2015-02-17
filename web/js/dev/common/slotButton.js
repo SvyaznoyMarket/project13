@@ -56,8 +56,8 @@
 					'</div>' +
 					'<div class="popup__form-group vendor">Продавец-партнёр: {{partnerName}}</div>' +
 
-					'<div class="btn--container">' +
-						'<button type="submit" class="js-slotButton-popup-submitButton btn btn--submit">Отправить заявку</button>' +
+					'<div class="btn--slot--container">' +
+						'<button type="submit" class="js-slotButton-popup-submitButton btn btn--slot">Отправить заявку</button>' +
 					'</div>' +
 
 					'{{#full}}' +

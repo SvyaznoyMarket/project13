@@ -83,7 +83,7 @@
                         margin: 0 0 15px;
                         .textcolor();
                         &__eName {
-                            width: 140px;
+                            width: 137px;
                             margin: 0 0 15px;
                             border: none;
                             background: none;
@@ -107,7 +107,7 @@
             &__bordered {
                 padding: 0 10px;
                 margin: 10px -10px 0;
-                border-top: 1px solid #000;
+                border-top: 1px solid @lightgreyBr;
             }
             &__desc {
                 margin-top: 10px;
@@ -119,7 +119,7 @@
             font-size: 36px;
             text-align: center;
         }
-        .bWidgetBuy {} .bProductDescImg {
+        .bProductDescImg {
             width: 600px;
             position: relative;
             &Big {
@@ -142,18 +142,15 @@
                 }
             }
         }
-        .btnBuy {
-            overflow: visible;
-            width: auto;
-            width: 100%;
-            text-align: center;
-        }
         .slideItem_inn {
-            width: 900px;
+                width: 900px;
+            }
+        .slot--centered{
+            .slideItem_pr {
+                width: 100%;
+                text-align: center;
+            }
         }
-        .slideItem_pr {
-            width: 100%;
-            text-align: center;
-        }
+
     } //kitchen wrap
 }
