@@ -5059,6 +5059,71 @@ img[height="0"] {
   }
 }
 @media all {
+  .epLand {
+    width: 940px;
+    margin-left: -10px;
+    padding: 25px 10px;
+    background: url("/styles/enterPrize/img/fishka/bg.jpg") no-repeat 0 0;
+  }
+  .epLand_logo {
+    width: 285px;
+    height: 73px;
+    margin: 0;
+    margin: 0 0 170px;
+    text-indent: -9999px;
+    background: url("/styles/enterPrize/img/fishka/logo.png") no-repeat 0 0;
+  }
+  .epLand_form {
+    width: 265px;
+    margin: 0 0 265px 342px;
+    text-align: center;
+  }
+  .epLand_form_title {
+    margin: 0 auto 10px;
+    text-transform: uppercase;
+    color: #ffffff;
+    font-size: 38px;
+  }
+  .epLand_form_field {
+    display: block;
+    width: 195px;
+    height: 41px;
+    margin: 0 auto 20px;
+    padding: 0 10px;
+    border: 1px solid #9a9a9b;
+    background: #ffffff;
+    font-size: 20px;
+    line-height: 41px;
+  }
+  .epLand_form_error {
+    color: #ff6464;
+    font-size: 16px;
+    margin: -15px 0 20px;
+  }
+  .epLand_form_btn {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    width: 100%;
+    height: 40px;
+    text-align: center;
+    color: #ffffff;
+    border: 1px solid #ee8900;
+    font-size: 20px;
+    line-height: 38px;
+  }
+  .epLand_promo_wow {
+    float: left;
+    font-family: 'Enter Type';
+    font-size: 20px;
+    padding: 15px 0 10px;
+  }
+  .epLand_promo_wow a {
+    color: #49c7ed;
+    text-decoration: none;
+  }
+}
+@media all {
   .epTextLogo {
     color: #ffa901;
     font-family: "Enter";
@@ -5127,245 +5192,6 @@ img[height="0"] {
     font-family: "Enter";
     font-size: 30px;
   }
-  .ep-list {
-    margin: 25px 0 0 0;
-    width: 960px;
-  }
-  .ep-list--member {
-    background: #272727;
-    padding: 8px 0 0;
-    margin: 0 0 30px;
-    position: relative;
-  }
-  .ep-list__i {
-    position: relative;
-    z-index: 1;
-    float: left;
-    width: 210px;
-    height: 236px;
-    margin: 0 15px;
-  }
-  .ep-list__i:hover {
-    z-index: 20;
-  }
-  .ep-list__i:hover .ep-coupon-hover {
-    -moz-opacity: 1;
-    -khtml-opacity: 1;
-    -webkit-opacity: 1;
-    opacity: 1;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
-    filter: alpha(opacity=100);
-  }
-  .ep-list__i:hover .ep-coupon__btn {
-    -moz-opacity: 1;
-    -khtml-opacity: 1;
-    -webkit-opacity: 1;
-    opacity: 1;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
-    filter: alpha(opacity=100);
-  }
-  .ep-list__i--last {
-    margin-right: 0;
-  }
-  .ep-list__i--noico .ep-coupon__desc {
-    top: 45px;
-    height: 66px;
-  }
-  .ep-list__i.mMembers .ep-coupon {
-    -moz-opacity: 0.45;
-    -khtml-opacity: 0.45;
-    -webkit-opacity: 0.45;
-    opacity: 0.45;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=45);
-    filter: alpha(opacity=45);
-  }
-  .ep-list__i.mMembers .ep-coupon-hover {
-    -moz-opacity: 0;
-    -khtml-opacity: 0;
-    -webkit-opacity: 0;
-    opacity: 0;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
-    filter: alpha(opacity=0);
-    z-index: 18;
-    top: 60px;
-    left: -13px;
-    width: 235px;
-    height: 115px;
-    text-align: center;
-    background: none;
-  }
-  .ep-list__i.mMembers .ep-coupon-hover .epTextLogo {
-    font-size: 25px;
-  }
-  .ep-list__i.mMembers:hover .ep-coupon-hover {
-    -moz-opacity: 1;
-    -khtml-opacity: 1;
-    -webkit-opacity: 1;
-    opacity: 1;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
-    filter: alpha(opacity=100);
-    z-index: 18;
-    background: none;
-  }
-  .ep-list__lk {
-    display: block;
-    cursor: pointer;
-  }
-  .ep-finish {
-    background: #ef404a;
-    padding: 5px 7px 5px 10px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    position: absolute;
-    left: 50%;
-    bottom: 13px;
-    width: 155px;
-    margin-left: -89px;
-    color: #ffffff;
-    font-size: 11px;
-    z-index: 25;
-    white-space: nowrap;
-  }
-  .ep-finish__tl {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    vertical-align: middle;
-    text-align: right;
-  }
-  .ep-finish__num {
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    background: none repeat scroll 0 0 #fff;
-    border-radius: 2px;
-    color: #ef404a;
-    display: inline-block;
-    font-size: 27px;
-    line-height: 1;
-    margin: 0 2px 0 5px;
-    padding: 0 6px 1px;
-    vertical-align: middle;
-  }
-  .ep-finish__day {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    vertical-align: middle;
-  }
-  .ep-coupon {
-    position: relative;
-    z-index: 17;
-    display: block;
-    width: 209px;
-    height: 206px;
-    text-align: center;
-    background: url("/styles/enterPrize/img/bgOrange.png") no-repeat 0 0;
-  }
-  .ep-coupon__inner {
-    position: relative;
-    top: 6px;
-    left: 7px;
-    display: block;
-    width: 190px;
-    height: 188px;
-  }
-  .ep-coupon__btn {
-    background: #ffc000;
-    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ffaa01), color-stop(1, #ffc000));
-    background: -ms-linear-gradient(bottom, #ffaa01, #ffc000);
-    background: -moz-linear-gradient(center bottom, #ffaa01 0%, #ffc000 100%);
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    -moz-opacity: 0;
-    -khtml-opacity: 0;
-    -webkit-opacity: 0;
-    opacity: 0;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
-    filter: alpha(opacity=0);
-    -webkit-transition: opacity 0.2s ease-in-out;
-    -moz-transition: opacity 0.2s ease-in-out;
-    transition: opacity 0.2s ease-in-out;
-    position: absolute;
-    bottom: 15px;
-    left: 92px;
-    display: block;
-    width: 94px;
-    height: 25px;
-    text-align: center;
-    color: #ffffff;
-    border: 1px solid #fb9c00;
-    outline: none;
-    font-size: 14px;
-    line-height: 25px;
-    -webkit-perspective: 1000;
-    -webkit-backface-visibility: hidden;
-    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
-  }
-  .ep-coupon__btn:hover {
-    background: #ffa200;
-    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #f79200), color-stop(1, #ffa200));
-    background: -ms-linear-gradient(bottom, #f79200, #ffa200);
-    background: -moz-linear-gradient(center bottom, #f79200 0%, #ffa200 100%);
-  }
-  .ep-coupon__ico {
-    position: absolute;
-    top: 33px;
-    left: 0;
-    width: 100%;
-    height: 43px;
-    text-align: center;
-  }
-  .ep-coupon__ico img {
-    max-width: 75px;
-    max-height: 55px;
-  }
-  .ep-coupon__desc {
-    position: absolute;
-    top: 86px;
-    left: 23px;
-    width: 143px;
-    text-align: center;
-    line-height: 1.1;
-  }
-  .ep-coupon__price {
-    position: absolute;
-    top: 115px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    font-family: "Enter Type";
-    font-size: 27px;
-  }
-  .ep-coupon-hover {
-    -moz-opacity: 0.3;
-    -khtml-opacity: 0.3;
-    -webkit-opacity: 0.3;
-    opacity: 0.3;
-    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=30);
-    filter: alpha(opacity=30);
-    -webkit-transition: opacity 0.4s ease-in-out;
-    -moz-transition: opacity 0.4s ease-in-out;
-    transition: opacity 0.4s ease-in-out;
-    position: absolute;
-    z-index: 15;
-    top: -41px;
-    left: -38px;
-    width: 281px;
-    height: 280px;
-    outline: none;
-    background: url("/styles/enterPrize/img/luchi.png") no-repeat 50% 0;
-    -webkit-perspective: 1000;
-    -webkit-backface-visibility: hidden;
-    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
-  }
   .ep-box {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -5429,65 +5255,6 @@ img[height="0"] {
   .ep-rules__img img {
     width: 100%;
     height: auto;
-  }
-  .ep-hint {
-    background: #ffffff;
-    margin: 0 0 0 -10px;
-    width: 960px;
-  }
-  .ep-hint--2col .ep-hint__col {
-    float: left;
-    max-width: 50%;
-    text-align: left;
-  }
-  .ep-hint--2col .ep-hint__col--r {
-    float: right;
-  }
-  .ep-hint--2col .ep-hint__lvl3 {
-    margin: 0 0 55px;
-  }
-  .ep-hint--2col .ep-hint__lvl1 {
-    margin-bottom: 10px;
-  }
-  .ep-hint--position {
-    left: 0;
-    margin: 0;
-    position: absolute;
-    top: 285px;
-    z-index: 26;
-  }
-  .ep-hint--position .ep-hint__row {
-    padding: 5px 20px 10px;
-  }
-  .ep-hint__row {
-    padding: 15px 20px 10px 20px;
-  }
-  .ep-hint__row--cut {
-    position: relative;
-    padding-bottom: 0;
-  }
-  .ep-hint__row--cut:after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 0;
-    height: 1px;
-    border-top: 1px dotted;
-  }
-  .ep-hint__col {
-    text-align: center;
-  }
-  .ep-hint__lvl1 {
-    font-size: 18px;
-    margin-bottom: 0;
-  }
-  .ep-hint__lvl2 {
-    font-size: 14px;
-    margin-top: 0;
-  }
-  .ep-hint__lvl4 {
-    margin: 10px 0 0;
   }
   .epHintPopup {
     -webkit-border-radius: 4px;
@@ -5567,71 +5334,6 @@ img[height="0"] {
     color: #3f3f3f;
     font-size: 14px;
     font-weight: bold;
-  }
-}
-@media all {
-  .epLand {
-    width: 940px;
-    margin-left: -10px;
-    padding: 25px 10px;
-    background: url("/styles/enterPrize/img/fishka/bg.jpg") no-repeat 0 0;
-  }
-  .epLand_logo {
-    width: 285px;
-    height: 73px;
-    margin: 0;
-    margin: 0 0 170px;
-    text-indent: -9999px;
-    background: url("/styles/enterPrize/img/fishka/logo.png") no-repeat 0 0;
-  }
-  .epLand_form {
-    width: 265px;
-    margin: 0 0 265px 342px;
-    text-align: center;
-  }
-  .epLand_form_title {
-    margin: 0 auto 10px;
-    text-transform: uppercase;
-    color: #ffffff;
-    font-size: 38px;
-  }
-  .epLand_form_field {
-    display: block;
-    width: 195px;
-    height: 41px;
-    margin: 0 auto 20px;
-    padding: 0 10px;
-    border: 1px solid #9a9a9b;
-    background: #ffffff;
-    font-size: 20px;
-    line-height: 41px;
-  }
-  .epLand_form_error {
-    color: #ff6464;
-    font-size: 16px;
-    margin: -15px 0 20px;
-  }
-  .epLand_form_btn {
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    width: 100%;
-    height: 40px;
-    text-align: center;
-    color: #ffffff;
-    border: 1px solid #ee8900;
-    font-size: 20px;
-    line-height: 38px;
-  }
-  .epLand_promo_wow {
-    float: left;
-    font-family: 'Enter Type';
-    font-size: 20px;
-    padding: 15px 0 10px;
-  }
-  .epLand_promo_wow a {
-    color: #49c7ed;
-    text-decoration: none;
   }
 }
 @media all {
@@ -5811,6 +5513,313 @@ img[height="0"] {
     padding: 0 10px;
     text-align: center;
     border: none;
+  }
+}
+@media all {
+  .ep-list {
+    margin: 25px 0 0 0;
+    width: 960px;
+  }
+  .ep-list--member {
+    background: #272727;
+    padding: 8px 0 0;
+    margin: 0 0 30px;
+    position: relative;
+  }
+  .ep-list__i {
+    position: relative;
+    z-index: 1;
+    float: left;
+    width: 210px;
+    height: 236px;
+    margin: 0 15px;
+  }
+  .ep-list__i:hover {
+    z-index: 20;
+  }
+  .ep-list__i:hover .ep-coupon-hover {
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    -webkit-opacity: 1;
+    opacity: 1;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
+    filter: alpha(opacity=100);
+  }
+  .ep-list__i:hover .ep-coupon__btn {
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    -webkit-opacity: 1;
+    opacity: 1;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
+    filter: alpha(opacity=100);
+  }
+  .ep-list__i--last {
+    margin-right: 0;
+  }
+  .ep-list__i--noico .ep-coupon__desc {
+    top: 45px;
+    height: 66px;
+  }
+  .ep-list__i.mMembers .ep-coupon {
+    -moz-opacity: 0.45;
+    -khtml-opacity: 0.45;
+    -webkit-opacity: 0.45;
+    opacity: 0.45;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=45);
+    filter: alpha(opacity=45);
+  }
+  .ep-list__i.mMembers .ep-coupon-hover {
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    -webkit-opacity: 0;
+    opacity: 0;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    filter: alpha(opacity=0);
+    z-index: 18;
+    top: 60px;
+    left: -13px;
+    width: 235px;
+    height: 115px;
+    text-align: center;
+    background: none;
+  }
+  .ep-list__i.mMembers .ep-coupon-hover .epTextLogo {
+    font-size: 25px;
+  }
+  .ep-list__i.mMembers:hover .ep-coupon-hover {
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    -webkit-opacity: 1;
+    opacity: 1;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
+    filter: alpha(opacity=100);
+    z-index: 18;
+    background: none;
+  }
+  .ep-list__lk {
+    display: block;
+    cursor: pointer;
+  }
+  .ep-finish {
+    background: #ef404a;
+    padding: 5px 7px 5px 10px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 0 6px #000000;
+    -moz-box-shadow: 0 0 6px #000000;
+    box-shadow: 0 0 6px #000000;
+    position: absolute;
+    left: 50%;
+    bottom: 13px;
+    width: 155px;
+    margin-left: -89px;
+    color: #ffffff;
+    font-size: 11px;
+    z-index: 25;
+    white-space: nowrap;
+  }
+  .ep-finish__tl {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    text-align: right;
+  }
+  .ep-finish__num {
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    background: none repeat scroll 0 0 #fff;
+    border-radius: 2px;
+    color: #ef404a;
+    display: inline-block;
+    font-size: 27px;
+    line-height: 1;
+    margin: 0 2px 0 5px;
+    padding: 0 6px 1px;
+    vertical-align: middle;
+  }
+  .ep-finish__day {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+  }
+}
+@media all {
+  .ep-coupon {
+    position: relative;
+    z-index: 17;
+    display: block;
+    width: 209px;
+    height: 206px;
+    text-align: center;
+    background: url("/styles/enterPrize/img/bgOrange.png") no-repeat 0 0;
+  }
+  .ep-coupon__inner {
+    position: relative;
+    top: 6px;
+    left: 7px;
+    display: block;
+    width: 190px;
+    height: 188px;
+  }
+  .ep-coupon__btn {
+    background: #ffc000;
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ffaa01), color-stop(1, #ffc000));
+    background: -ms-linear-gradient(bottom, #ffaa01, #ffc000);
+    background: -moz-linear-gradient(center bottom, #ffaa01 0%, #ffc000 100%);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    -webkit-opacity: 0;
+    opacity: 0;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    filter: alpha(opacity=0);
+    -webkit-transition: opacity 0.2s ease-in-out;
+    -moz-transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
+    position: absolute;
+    bottom: 15px;
+    left: 92px;
+    display: block;
+    width: 94px;
+    height: 25px;
+    text-align: center;
+    color: #ffffff;
+    border: 1px solid #fb9c00;
+    outline: none;
+    font-size: 14px;
+    line-height: 25px;
+    -webkit-perspective: 1000;
+    -webkit-backface-visibility: hidden;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  }
+  .ep-coupon__btn:hover {
+    background: #ffa200;
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #f79200), color-stop(1, #ffa200));
+    background: -ms-linear-gradient(bottom, #f79200, #ffa200);
+    background: -moz-linear-gradient(center bottom, #f79200 0%, #ffa200 100%);
+  }
+  .ep-coupon__ico {
+    position: absolute;
+    top: 33px;
+    left: 0;
+    width: 100%;
+    height: 43px;
+    text-align: center;
+  }
+  .ep-coupon__ico img {
+    max-width: 75px;
+    max-height: 55px;
+  }
+  .ep-coupon__desc {
+    position: absolute;
+    top: 86px;
+    left: 23px;
+    width: 143px;
+    text-align: center;
+    line-height: 1.1;
+  }
+  .ep-coupon__price {
+    position: absolute;
+    top: 115px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-family: "Enter Type";
+    font-size: 27px;
+  }
+  .ep-coupon-hover {
+    -moz-opacity: 0.3;
+    -khtml-opacity: 0.3;
+    -webkit-opacity: 0.3;
+    opacity: 0.3;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=30);
+    filter: alpha(opacity=30);
+    -webkit-transition: opacity 0.4s ease-in-out;
+    -moz-transition: opacity 0.4s ease-in-out;
+    transition: opacity 0.4s ease-in-out;
+    position: absolute;
+    z-index: 15;
+    top: -41px;
+    left: -38px;
+    width: 281px;
+    height: 280px;
+    outline: none;
+    background: url("/styles/enterPrize/img/luchi.png") no-repeat 50% 0;
+    -webkit-perspective: 1000;
+    -webkit-backface-visibility: hidden;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  }
+}
+@media all {
+  .ep-hint {
+    background: #ffffff;
+    margin: 0 0 0 -10px;
+    width: 960px;
+  }
+  .ep-hint--2col .ep-hint__col {
+    float: left;
+    max-width: 50%;
+    text-align: left;
+  }
+  .ep-hint--2col .ep-hint__col--r {
+    float: right;
+  }
+  .ep-hint--2col .ep-hint__lvl3 {
+    margin: 0 0 55px;
+  }
+  .ep-hint--2col .ep-hint__lvl1 {
+    margin-bottom: 10px;
+  }
+  .ep-hint--position {
+    left: 0;
+    margin: 0;
+    position: absolute;
+    top: 285px;
+    z-index: 26;
+  }
+  .ep-hint--position .ep-hint__row {
+    padding: 5px 20px 10px;
+  }
+  .ep-hint__row {
+    padding: 15px 20px 10px 20px;
+  }
+  .ep-hint__row--cut {
+    position: relative;
+    padding-bottom: 0;
+  }
+  .ep-hint__row--cut:after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: 1px;
+    border-top: 1px dotted;
+  }
+  .ep-hint__col {
+    text-align: center;
+  }
+  .ep-hint__lvl1 {
+    font-size: 18px;
+    margin-bottom: 0;
+  }
+  .ep-hint__lvl2 {
+    font-size: 14px;
+    margin-top: 0;
+  }
+  .ep-hint__lvl4 {
+    margin: 10px 0 0;
   }
 }
 /*---END----Enter Prize---------*/
