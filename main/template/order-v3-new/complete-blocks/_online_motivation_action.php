@@ -30,7 +30,7 @@
                             <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/visa-logo-sm.jpg"></a></li>
                             <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/psb.png"></a></li>
                         </ul>
-                        <a class="orderPayment_msg_link orderPayment_msg_link--mid" href="/how_use_chip">Подробнее</a>
+                        <a class="orderPayment_msg_link orderPayment_msg_link--mid" href="/how_use_chip" target="_blank">Подробнее</a>
                     </div>
                 </div>
                 <!-- А этот потом -->
