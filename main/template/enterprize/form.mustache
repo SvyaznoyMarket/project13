@@ -1,7 +1,17 @@
 <div class="ep-hint {{^user.isMember}}ep-hint--2col{{/user.isMember}} js-enterprize-coupon-hint">
     <div class="ep-hint__row clearfix">
         <div class="ep-hint__col">
-            <p class="ep-hint__lvl1">Фишка со скидкой <strong>10%</strong> на <strong>Товары Tchibo</strong></p>
+            <p class="ep-hint__lvl1">
+                Фишка со скидкой <strong>{{&discount}}</strong>
+                {{#link}}
+                    {{#link.url}}
+                        на <strong><a href="{{link.url}}">{{link.name}}</a></strong>
+                    {{/link.url}}
+                    {{^link.url}}
+                        на <strong>{{link.name}}</strong>
+                    {{/link.url}}
+                {{/link}}
+            </p>
 
             <p class="ep-hint__lvl2">Действует
                 {{#start}}c {{start}}{{/start}}
@@ -9,8 +19,8 @@
             </p>
 
             <p class="ep-hint__lvl3">
-                {{description}}<br/>
-                Минимальная сумма заказа {{minOrderSum}} <span class="rubl">p</span></p>
+                {{&description}}<br/>
+                Минимальная сумма заказа {{&minOrderSum}} <span class="rubl">p</span></p>
 
             <p class="ep-hint__lvl4 m"><a href="" class="undrl">Как воспользоваться кодом фишки и получить скидку?</a></p>
         </div>

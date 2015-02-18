@@ -438,14 +438,19 @@ $helper = new \Helper\TemplateHelper();
             $isNotMember = !$coupon->isForNotMember() && !$isEnterprizeMember;
 
             $dataValue = [
-                'discount'    => [
-                    'value' => $helper->formatPrice($coupon->getPrice()),
-                    'unit'  => $coupon->getIsCurrency() ? 'р' : '%',
-                ],
+                'name'        => $coupon->getName(),
+                'discount'    => $helper->formatPrice($coupon->getPrice()) . ($coupon->getIsCurrency() ? ' <span class="rubl">p</span>' : '%'),
                 'start'       => $coupon->getStartDate() instanceof \DateTime ? $coupon->getStartDate()->format('d.m.Y') : null,
                 'end'         => $coupon->getEndDate() instanceof \DateTime ? $coupon->getEndDate()->format('d.m.Y') : null,
                 'description' => $coupon->getSegmentDescription(),
-                'minOrderSum' => $coupon->getMinOrderSum(),
+                'minOrderSum' => $helper->formatPrice($coupon->getMinOrderSum()),
+                'link'        =>
+                    $coupon->getLinkName() && $coupon->getLink()
+                    ? [
+                        'name' => $coupon->getLinkName(),
+                        'url'  => $coupon->getLink(),
+                    ]
+                    : null,
                 'user'        => [
                     'isMember' => $user->getEntity() && $user->getEntity()->isEnterprizeMember(),
                 ],
