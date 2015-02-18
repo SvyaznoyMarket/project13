@@ -445,9 +445,9 @@ $helper = new \Helper\TemplateHelper();
                 'description' => $coupon->getSegmentDescription(),
                 'minOrderSum' => $helper->formatPrice($coupon->getMinOrderSum()),
                 'link'        =>
-                    $coupon->getLinkName() && $coupon->getLink()
+                    $coupon->getName() && $coupon->getLink()
                     ? [
-                        'name' => $coupon->getLinkName(),
+                        'name' => $coupon->getName(),
                         'url'  => $coupon->getLink(),
                     ]
                     : null,
