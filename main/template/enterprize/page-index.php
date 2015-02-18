@@ -3,6 +3,7 @@
  * @var $page             \View\DefaultLayout
  * @var $user             \Session\User
  * @var $enterpizeCoupons \Model\EnterprizeCoupon\Entity[]
+ * @var $enterpizeCoupon  \Model\EnterprizeCoupon\Entity
  * @var $coupon           \Model\EnterprizeCoupon\Entity
  * @var $isCouponSent     bool
  * @var $products         \Model\Product\Entity[]
@@ -411,88 +412,9 @@ $helper = new \Helper\TemplateHelper();
 <? endif */?>
 
 <div class="ep-list ep-list--width">
-    <? $i = 0; foreach(array_chunk($enterpizeCoupons, 4) as $couponsInChunk): ?>
-        <div class="ep-list__row clearfix js-enterprize-coupon-parent">
-        <? foreach ($couponsInChunk as $columnNum => $coupon): $i++ ?>
-
-            <?
-            /** @var \Model\EnterprizeCoupon\Entity[] $couponsInChunk */
-            $itemClass = 'ep-list__i js-enterprize-coupon';
-            if (!($i % 4)) {
-                $itemClass .= ' ep-list__i--last';
-            }
-            if (!$coupon->getImage()) {
-                $itemClass .= ' ep-list__i--noico';
-            }
-
-            $couponLink = $page->url('enterprize.form.show', ['enterprizeToken' => $coupon->getToken()]);
-            if ($isEnterprizeMember) {
-                $couponLink = $page->url('enterprize.show', ['enterprizeToken' => $coupon->getToken()]);
-            }
-            if ($coupon->isInformationOnly()) {
-                $couponLink = $coupon->getDescriptionToken()
-                    ? $page->url('content', ['token' => $coupon->getDescriptionToken()])
-                    : null;
-            }
-
-            $isNotMember = !$coupon->isForNotMember() && !$isEnterprizeMember;
-
-            $dataValue = [
-                'name'        => $coupon->getName(),
-                'discount'    => $helper->formatPrice($coupon->getPrice()) . ($coupon->getIsCurrency() ? ' <span class="rubl">p</span>' : '%'),
-                'start'       => $coupon->getStartDate() instanceof \DateTime ? $coupon->getStartDate()->format('d.m.Y') : null,
-                'end'         => $coupon->getEndDate() instanceof \DateTime ? $coupon->getEndDate()->format('d.m.Y') : null,
-                'description' => $coupon->getSegmentDescription(),
-                'minOrderSum' => $helper->formatPrice($coupon->getMinOrderSum()),
-                'link'        =>
-                    $coupon->getName() && $coupon->getLink()
-                    ? [
-                        'name' => $coupon->getName(),
-                        'url'  => $coupon->getLink(),
-                    ]
-                    : null,
-                'user'        => [
-                    'isMember' => $user->getEntity() && $user->getEntity()->isEnterprizeMember(),
-                ],
-            ];
-            ?>
-
-            <div data-value="<?= $helper->json($dataValue) ?>" data-column="col-<?= $columnNum + 1 ?>" class="<?= $itemClass . ($isNotMember ? ' mMembers' : '') ?>">
-                <div class="ep-list__lk">
-                    <span class="ep-coupon"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
-                        <span class="ep-coupon__inner">
-                            <? if ($coupon->getImage()): ?>
-                                <span class="ep-coupon__ico"><img src="<?= $coupon->getImage() ?>" /></span>
-                            <? endif ?>
-
-                            <? if ($coupon->getName()): ?>
-                                <span class="ep-coupon__desc"><?= $coupon->getName() ?></span>
-                            <? endif ?>
-
-                            <? if ($coupon->getPrice()): ?>
-                                <span class="ep-coupon__price"><?= $page->helper->formatPrice($coupon->getPrice()) . (!$coupon->getIsCurrency() ? '%' : '') ?>
-                                    <? if ($coupon->getIsCurrency()): ?>
-                                        <span class="rubl">p</span>
-                                    <? endif ?>
-                                </span>
-                            <? endif ?>
-                        </span>
-                    </span>
-
-                    <? if ($isNotMember): // Только для игроков EnterPrize  ?>
-                        <span class="ep-coupon-hover">
-                            <span class="couponText">Только<br/> для игроков<br/> <span class="epTextLogo">Enter <span class="epTextLogo_colors">Prize</span></span></span>
-                        </span>
-                    <? else:?>
-                        <span class="ep-coupon-hover"></span>
-                    <? endif ?>
-                </div>
-            </div>
-        <? endforeach ?>
-        </div>
-    <? endforeach // end chunk ?>
-
-    <script id="tplEnterprizeForm" type="text/html" data-partial="<?= $helper->json([]) ?>">
-        <?= file_get_contents(\App::config()->templateDir . '/enterprize/form.mustache') ?>
-    </script>
+    <?= $helper->render('enterprize/_list', ['enterpizeCoupons' => $enterpizeCoupons, 'user' => $user]) ?>
 </div>
+
+<script id="tplEnterprizeForm" type="text/html" data-partial="<?= $helper->json([]) ?>">
+    <?= file_get_contents(\App::config()->templateDir . '/enterprize/form.mustache') ?>
+</script>

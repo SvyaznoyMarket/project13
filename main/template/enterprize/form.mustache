@@ -5,7 +5,7 @@
                 Фишка со скидкой <strong>{{&discount}}</strong>
                 {{#link}}
                     {{#link.url}}
-                        на <strong><a href="{{link.url}}">{{link.name}}</a></strong>
+                        на <strong><a href="{{link.url}}" target="_blank">{{link.name}}</a></strong>
                     {{/link.url}}
                     {{^link.url}}
                         на <strong>{{link.name}}</strong>
@@ -72,7 +72,7 @@
         <div class="m ta-c mb10">
             <strong>Фишка действует на все товары из раздела
                 {{^user.isMember}}{{link.name}},{{/user.isMember}}
-                {{#user.isMember}}<a href="{{link.url}}" class="undrl">{{link.name}}</a>,{{/user.isMember}}
+                {{#user.isMember}}<a href="{{link.url}}" class="undrl" target="_blank">{{link.name}}</a>,{{/user.isMember}}
                 например:
             </strong>
         </div>
