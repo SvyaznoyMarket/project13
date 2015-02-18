@@ -1,0 +1,127 @@
+.ep-list {
+	margin: 25px 0 0 0;
+	width: 960px;
+
+	&--member {
+		background: #272727;
+		padding: 8px 0 0;
+    	margin: 0 0 30px;
+    	position: relative;
+	}
+
+	&__i {
+		position: relative;
+		z-index: 1;
+
+		float: left;
+
+		width: 210px;
+		height: 236px;
+		margin: 0 15px;
+
+		&:hover {
+			z-index: 20;
+
+			.ep-coupon-hover {
+				.opacity(1);
+			}
+
+			.ep-coupon__btn {
+				.opacity(1);
+			}
+		}
+
+		&--last {
+			margin-right: 0;
+		}
+
+		&--noico {
+
+			.ep-coupon__desc {
+				top: 45px;
+
+				height: 66px;
+			}
+		}
+
+		&.mMembers {
+
+			.ep-coupon {
+				.opacity(0.45);
+			}
+
+			.ep-coupon-hover {
+				.opacity(0);
+			    z-index: 18;
+			    top: 60px;
+			    left: -13px;
+
+			    width: 235px;
+				height: 115px;
+
+			    text-align: center;
+
+				background: none;
+
+				.epTextLogo {
+					font-size: 25px;
+				}
+			}
+
+			&:hover {
+
+				.ep-coupon-hover {
+					.opacity(1);
+					z-index: 18;
+
+					background: none;
+				}
+			}
+		}
+	}
+
+	&__lk {
+		display: block;
+		cursor: pointer;
+	}
+}
+
+.ep-finish {
+	background: #ef404a;
+	padding: 5px 7px 5px 10px;
+	.rounded(3px);
+	.box-shadow(0 0 6px #000);
+	position: absolute;
+	left: 50%;
+	bottom: 13px;
+	width: 155px;
+	margin-left: -89px;
+	color: @white;
+	font-size: 11px;
+	z-index: 25;
+	white-space: nowrap;
+
+	&__tl {
+		.inline-block();
+		vertical-align: middle;
+		text-align: right;
+	}
+
+	&__num {
+		.inline-block();
+		background: none repeat scroll 0 0 #fff;
+	    border-radius: 2px;
+	    color: #ef404a;
+	    display: inline-block;
+	    font-size: 27px;
+	    line-height: 1;
+	    margin: 0 2px 0 5px;
+	    padding: 0 6px 1px;
+	    vertical-align: middle;
+	}
+
+	&__day {
+		.inline-block();
+		vertical-align: middle;
+	}
+}
