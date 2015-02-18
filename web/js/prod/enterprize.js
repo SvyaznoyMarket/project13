@@ -320,17 +320,30 @@
 
 	// показываем описание фишки
 	body.on('click', '.js-enterprize-coupon', function() {
-		var template = $('#tplEnterprizeForm'),
+		var $self = $(this),
+			template = $('#tplEnterprizeForm'),
 			templateHint = template.html(),
+
+			activeClass = 'act',
+
 			partials,
 			html;
 
 		$('.js-enterprize-coupon-hint').remove();
 
-		partials = $(this).data('value');
+		partials = $self.data('value');
 		html = Mustache.render( templateHint, partials );
 
-		$(this).closest('.js-enterprize-coupon-parent').after( html );
+		if ( $self.hasClass( activeClass ) ) {
+			$self.removeClass( activeClass );
+			$('.js-enterprize-coupon-hint').remove();
+
+		} else {
+			$('.js-enterprize-coupon').removeClass( activeClass );
+			$self.addClass( activeClass );
+			$self.closest('.js-enterprize-coupon-parent').after( html );
+		}
+
 	});
 
 	$(document).ready(function() {
