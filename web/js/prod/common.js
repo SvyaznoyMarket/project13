@@ -4362,7 +4362,7 @@ $(document).ready(function() {
 		popupResultTemplate =
 			'<div class="popup--request__head msg--send">Ваша заявка № {{orderNumber}} отправлена</div>' +
 			'<div class="btn--container">' +
-				'<button type="submit" class="js-slotButton-popup-okButton btn btn--submit">Ок</button>' +
+				'<button type="submit" class="js-slotButton-popup-okButton btn btn--slot">Ок</button>' +
 			'</div>',
 
 		showError = function($input) {
