@@ -71,6 +71,7 @@ class IndexAction {
 
         // получаем купоны ренее выданные пользователю
         $userCouponSeries = [];
+        /** @var \Model\EnterprizeCoupon\DiscountCoupon\Entity[] $userCoupons */
         $userCoupons = [];
         if (\App::user()->getToken()) {
             try {
@@ -179,6 +180,7 @@ class IndexAction {
         $page = new \View\Enterprize\IndexPage();
         $page->setParam('enterpizeCoupons', $enterpizeCoupons);
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
+        $page->setParam('userCoupons', $userCoupons);
         $page->setParam('viewParams', ['showSideBanner' => false]);
         $page->setParam('isCouponSent', $isCouponSent);
         $page->setParam('isRegistration', $isRegistration);

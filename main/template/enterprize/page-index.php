@@ -4,6 +4,7 @@
  * @var $user             \Session\User
  * @var $enterpizeCoupons \Model\EnterprizeCoupon\Entity[]
  * @var $enterpizeCoupon  \Model\EnterprizeCoupon\Entity
+ * @var $userCoupons      \Model\EnterprizeCoupon\DiscountCoupon\Entity[]
  * @var $coupon           \Model\EnterprizeCoupon\Entity
  * @var $isCouponSent     bool
  * @var $products         \Model\Product\Entity[]
