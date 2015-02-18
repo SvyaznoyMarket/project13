@@ -412,12 +412,12 @@ $helper = new \Helper\TemplateHelper();
 
 <div class="ep-list ep-list--width">
     <? $i = 0; foreach(array_chunk($enterpizeCoupons, 4) as $couponsInChunk): ?>
-        <div class="ep-list__row clearfix">
+        <div class="ep-list__row clearfix js-enterprize-coupon-parent">
         <? foreach ($couponsInChunk as $columnNum => $coupon): $i++ ?>
 
             <?
             /** @var \Model\EnterprizeCoupon\Entity[] $couponsInChunk */
-            $itemClass = 'ep-list__i';
+            $itemClass = 'ep-list__i js-enterprize-coupon';
             if (!($i % 4)) {
                 $itemClass .= ' ep-list__i--last';
             }
@@ -487,9 +487,7 @@ $helper = new \Helper\TemplateHelper();
         </div>
     <? endforeach // end chunk ?>
 
-
     <script id="tplEnterprizeForm" type="text/html" data-partial="<?= $helper->json([]) ?>">
-        <?= file_get_contents(\App::config()->templateDir . '/enterprize/_selectedFilter.mustache') ?>
+        <?= file_get_contents(\App::config()->templateDir . '/enterprize/form.mustache') ?>
     </script>
-
 </div>

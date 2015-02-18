@@ -238,7 +238,6 @@
 
 			var
 				showHintPopup = function showHintPopup() {
-					console.log('hint show');
 					hintPopup.fadeIn(100);
 
 					return false;
@@ -318,6 +317,21 @@
 	if ( $('.js-slider').length ) {
 		$('.js-slider').goodsSlider();
 	}
+
+	// показываем описание фишки
+	body.on('click', '.js-enterprize-coupon', function() {
+		var template = $('#tplEnterprizeForm'),
+			templateHint = template.html(),
+			partials,
+			html;
+
+		$('.js-enterprize-coupon-hint').remove();
+
+		partials = $(this).data('value');
+		html = Mustache.render( templateHint, partials );
+
+		$(this).closest('.js-enterprize-coupon-parent').after( html );
+	});
 
 	$(document).ready(function() {
 		if ( $('.epHintPopup').length ) {
