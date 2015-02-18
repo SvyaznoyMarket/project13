@@ -212,7 +212,7 @@
 		});
 
 		$confirm.click(function() {
-			validateConfirm($form);
+			validateConfirm($form, true);
 		});
 
 		$form.submit(function(e) {
