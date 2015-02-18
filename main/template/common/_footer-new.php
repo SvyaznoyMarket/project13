@@ -49,7 +49,7 @@
     <footer class="footer_b">
         <div class="footer_cpy clearfix">
             <a id="jira" class="footer_cpy_r" href="javascript:void(0)">Сообщить об ошибке</a>
-            <div class="footer_cpy_l">&copy; ООО «Энтер» 2011–2015. ENTER® ЕНТЕР® Enter®. Все права защищены.</div>
+            <div class="footer_cpy_l">&copy; ООО «Энтер» 2011–<?=date(Y);?>. ENTER® ЕНТЕР® Enter®. Все права защищены.</div>
             <div class="footer_cpy_c"><a href="http://<?= \App::config()->mobileHost ?>" class="footer_cpy_mbl js-siteVersionSwitcher" data-config="{&quot;cookieName&quot;:&quot;mobile&quot;,&quot;cookieLifetime&quot;:630720000}">Мобильная версия</a></div>
         </div>
     </footer>
