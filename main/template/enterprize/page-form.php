@@ -18,7 +18,7 @@ $products = !empty($products) && is_array($products) ? $products : [];
     <? endforeach ?>
 <? endif ?>
 
-<?=$page->render('enterprize/form-registration',[
+<?= $page->render('enterprize/form-registration',[
     'form'      => $form->setSubmit('Получить скидку >'),
     'authSource'=> $authSource,
 ])?>
