@@ -10551,10 +10551,10 @@ img[height="0"] {
   }
   .btn--slot.btn--big:active {
     background-color: #cee062;
-    padding-bottom: 5px;
     -webkit-box-shadow: 0 1px 0 #b8c64b;
     -moz-box-shadow: 0 1px 0 #b8c64b;
     box-shadow: 0 1px 0 #b8c64b;
+    margin-top: 2px;
     margin-bottom: -2px;
   }
   .btn--short {
