@@ -22,6 +22,7 @@
 }
 
 .ep-head {
+	padding: 0 10px;
 
 	&__desc {
 		.inline-block();
@@ -39,7 +40,7 @@
 	}
 
 	&__control {
-		.inline-block();
+		float: right;
 		width: 210px;
 		text-align: right;
 
@@ -215,14 +216,13 @@
     }
 }
 
-.epSelectFishka {
-	.rounded(4px);
+.ep-selected-coupon {
 	margin: 0 0 30px;
-	padding: 10px;
+	padding: 10px 10px 10px 0;
 
-	background: #707070;
+	background: #272727;
 
-	&_left {
+	&__l {
 		float: left;
 
 		margin: 0;
@@ -232,13 +232,13 @@
 		}
 	}
 
-	&_right {
+	&__r {
 		float: right;
 
 		width: 680px;
 	}
 
-	&_desc {
+	&__desc {
     	margin: 0 0 10px;
 
 		color: @white;
@@ -247,13 +247,13 @@
 		line-height: 1.5;
 	}
 
-	&_slider {
+	&__slider {
 		.rounded(4px);
 		padding: 10px;
 
 		background: @white;
 
-		&_link {
+		&__lk {
 			text-decoration: underline;
 
 			color: #3f3f3f;

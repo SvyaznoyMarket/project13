@@ -5144,6 +5144,9 @@ img[height="0"] {
     text-indent: -9999px;
     background: url("/styles/enterPrize/img/logo_3D.png") no-repeat 0 0;
   }
+  .ep-head {
+    padding: 0 10px;
+  }
   .ep-head__desc {
     display: inline-block;
     vertical-align: top;
@@ -5159,11 +5162,7 @@ img[height="0"] {
     margin: 0 0 5px;
   }
   .ep-head__control {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
+    float: right;
     width: 210px;
     text-align: right;
     color: #ffffff;
@@ -5297,39 +5296,36 @@ img[height="0"] {
   .epListTitle .orange {
     color: #ffa901;
   }
-  .epSelectFishka {
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
+  .ep-selected-coupon {
     margin: 0 0 30px;
-    padding: 10px;
-    background: #707070;
+    padding: 10px 10px 10px 0;
+    background: #272727;
   }
-  .epSelectFishka_left {
+  .ep-selected-coupon__l {
     float: left;
     margin: 0;
   }
-  .epSelectFishka_left .enterPrize__list__item {
+  .ep-selected-coupon__l .enterPrize__list__item {
     margin-right: 0;
   }
-  .epSelectFishka_right {
+  .ep-selected-coupon__r {
     float: right;
     width: 680px;
   }
-  .epSelectFishka_desc {
+  .ep-selected-coupon__desc {
     margin: 0 0 10px;
     color: #ffffff;
     font-size: 14px;
     line-height: 1.5;
   }
-  .epSelectFishka_slider {
+  .ep-selected-coupon__slider {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
     padding: 10px;
     background: #ffffff;
   }
-  .epSelectFishka_slider_link {
+  .ep-selected-coupon__slider__lk {
     text-decoration: underline;
     color: #3f3f3f;
     font-size: 14px;
@@ -5387,8 +5383,8 @@ img[height="0"] {
   }
   .content--ep {
     margin: 0 0 0 -10px;
-    padding: 25px 10px 120px;
-    width: 940px;
+    padding: 25px 0 120px;
+    width: 960px;
   }
   .footer--ep {
     color: #f7f7f7;
@@ -5518,13 +5514,16 @@ img[height="0"] {
 @media all {
   .ep-list {
     margin: 25px 0 0 0;
-    width: 960px;
   }
   .ep-list--member {
     background: #272727;
     padding: 8px 0 0;
     margin: 0 0 30px;
     position: relative;
+    width: 960px;
+  }
+  .ep-list--width {
+    width: 960px;
   }
   .ep-list__i {
     position: relative;
