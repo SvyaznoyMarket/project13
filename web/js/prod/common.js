@@ -4348,7 +4348,7 @@ $(document).ready(function() {
 					'<div class="popup__form-group vendor">Продавец-партнёр: {{partnerName}}</div>' +
 
 					'<div class="btn--slot--container">' +
-						'<button type="submit" class="js-slotButton-popup-submitButton btn btn--slot">Отправить заявку</button>' +
+						'<button type="submit" class="js-slotButton-popup-submitButton btn btn--slot btn--big">Отправить заявку</button>' +
 					'</div>' +
 
 					'{{#full}}' +
@@ -4362,7 +4362,7 @@ $(document).ready(function() {
 		popupResultTemplate =
 			'<div class="popup--request__head msg--send">Ваша заявка № {{orderNumber}} отправлена</div>' +
 			'<div class="btn--container">' +
-				'<button type="submit" class="js-slotButton-popup-okButton btn btn--slot">Ок</button>' +
+				'<button type="submit" class="js-slotButton-popup-okButton btn btn--slot btn--big">Ок</button>' +
 			'</div>',
 
 		showError = function($input) {
