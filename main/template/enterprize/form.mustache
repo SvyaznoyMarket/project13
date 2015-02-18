@@ -69,7 +69,13 @@
     </div>
 
     <div class="ep-hint__row ep-hint__row--cut">
-        <div class="m ta-c mb10"><strong>Фишка действует на все товары из раздела {{^user.isMember}}Товары для дома{{/user.isMember}}{{#user.isMember}}<a href="" class="undrl">Товары для дома</a>{{/user.isMember}}, например:</strong></div>
+        <div class="m ta-c mb10">
+            <strong>Фишка действует на все товары из раздела
+                {{^user.isMember}}{{link.name}},{{/user.isMember}}
+                {{#user.isMember}}<a href="{{link.url}}" class="undrl">{{link.name}}</a>,{{/user.isMember}}
+                например:
+            </strong>
+        </div>
 
         <div class="slideItem slideItem-7item slideItem--sale">
             <div class="slideItem_inn">
