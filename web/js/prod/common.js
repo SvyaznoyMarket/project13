@@ -4292,7 +4292,7 @@ $(document).ready(function() {
 ;$(function() {
 	var
 		$body = $('body'),
-		errorCssClass = 'textfield-err',
+		errorCssClass = 'lbl-error',
 		region = ENTER.config.pageConfig.user.region.name,
 		catalogPath = ENTER.utils.getCategoryPath(),
 		popupTemplate =
@@ -4304,10 +4304,10 @@ $(document).ready(function() {
 					'<input type="hidden" name="sender" value="{{sender}}" />' +
 
 					'{{#full}}' +
-						'<div class="popup--request__head msg--recall">Закажите обратный звонок и уточните</div>' +
+						'<div class="popup--request__head msg--recall">Закажите обратный звонок и уточните:</div>' +
 						'<ul class="recall-list">' +
-							'<li>Состав мебели и техники</li>' +
-							'<li>Условия доставки, сборки и оплаты</li>' +
+							'<li>комплектность мебели и техники;</li>' +
+							'<li>условия доставки, сборки и оплаты.</li>' +
 						'</ul>' +
 					'{{/full}}' +
 
@@ -4315,23 +4315,22 @@ $(document).ready(function() {
 						'<div class="popup--request__head">Отправить заявку</div>' +
 					'{{/full}}' +
 
-					'<div class="js-slotButton-popup-errors" style="display: none;">' +
-					'</div>' +
+					'<div class="js-slotButton-popup-errors errtx" style="display: none;"></div>' +
 
-					'<div class="popup__form-group">' +
-						'<div class="input-group">' +
+					'<div class="popup__form-group js-slotButton-popup-element">' +
+						'<div class="input-group js-slotButton-popup-element-field">' +
 							'<label class="label-for-input label-phone">Телефон</label>' +
 							'<input type="text" name="phone" value="{{userPhone}}" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" class="js-slotButton-popup-phone" />' +
 						'</div>' +
-						'<span class="js-slotButton-popup-error popup__form-group__error" style="display: none">Неверный формат телефона</span>' +
+						'<span class="js-slotButton-popup-element-error popup__form-group__error" style="display: none">Неверный формат телефона</span>' +
 					'</div>' +
 
-					'<div class="popup__form-group">' +
-						'<div class="input-group">' +
+					'<div class="popup__form-group js-slotButton-popup-element">' +
+						'<div class="input-group js-slotButton-popup-element-field">' +
 							'<label class="label-for-input">E-mail</label>' +
 							'<input type="text" name="email" value="{{userEmail}}" placeholder="mail@domain.com" class="js-slotButton-popup-email" />' +
 						'</div>' +
-						'<span class="js-slotButton-popup-error popup__form-group__error" style="display: none">Неверный формат email</span>' +
+						'<span class="js-slotButton-popup-element-error popup__form-group__error" style="display: none">Неверный формат email</span>' +
 					'</div>' +
 
 					'<div class="popup__form-group">' +
@@ -4341,11 +4340,15 @@ $(document).ready(function() {
 						'</div>' +
 					'</div>' +
 
-					'<div class="popup__form-group checkbox-group"><label><input type="checkbox" name="confirm" value="1" class="js-slotButton-popup-confirm" /><i></i> Я ознакомлен и согласен с информацией о продавце и его {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</label></div>' +
+					'<div class="popup__form-group checkbox-group js-slotButton-popup-element">' +
+						'<div class="checkbox-inner js-slotButton-popup-element-field">' +
+							'<input type="checkbox" name="confirm" value="1" id="accept" class="customInput customInput-checkbox js-slotButton-popup-confirm" /><label class="customLabel jsAcceptTerms" for="accept">Я ознакомлен и согласен с информацией о продавце и его {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</label>' +
+						'</div>' +
+					'</div>' +
 					'<div class="popup__form-group vendor">Продавец-партнёр: {{partnerName}}</div>' +
 
-					'<div class="btn--container">' +
-						'<button type="submit" class="js-slotButton-popup-submitButton btn btn--submit">Отправить заявку</button>' +
+					'<div class="btn--slot--container">' +
+						'<button type="submit" class="js-slotButton-popup-submitButton btn btn--slot btn--big">Отправить заявку</button>' +
 					'</div>' +
 
 					'{{#full}}' +
@@ -4359,32 +4362,79 @@ $(document).ready(function() {
 		popupResultTemplate =
 			'<div class="popup--request__head msg--send">Ваша заявка № {{orderNumber}} отправлена</div>' +
 			'<div class="btn--container">' +
-				'<button type="submit" class="js-slotButton-popup-okButton btn btn--submit">Ок</button>' +
+				'<button type="submit" class="js-slotButton-popup-okButton btn btn--slot btn--big">Ок</button>' +
 			'</div>',
 
-		validate = function($form) {
-			var isValid = true,
-				$phoneInput = $('[name="phone"]', $form),
-				$emailInput = $('[name="email"]', $form),
-				parentClass = '.popup__form-group',
-				labelClass = '.input-group';
+		showError = function($input) {
+			var $element = $input.closest('.js-slotButton-popup-element');
+			$element.find('.js-slotButton-popup-element-field').addClass(errorCssClass);
+			$element.find('.js-slotButton-popup-element-error').show();
+		},
+
+		hideError = function($input) {
+			var $element = $input.closest('.js-slotButton-popup-element');
+			$element.find('.js-slotButton-popup-element-field').removeClass(errorCssClass);
+			$element.find('.js-slotButton-popup-element-error').hide();
+		},
+
+		validatePhone = function($form, disableFail) {
+			var $phoneInput = $('.js-slotButton-popup-phone', $form);
 
 			if (!/8\(\d{3}\)\d{3}-\d{2}-\d{2}/.test($phoneInput.val().replace(/\s+/g, ''))) {
-				isValid = false;
-				$phoneInput.addClass(errorCssClass).siblings('.js-slotButton-popup-error').show();
-				$phoneInput.parents(parentClass).children(labelClass).addClass('lbl-error');
+				if (!disableFail) {
+					showError($phoneInput);
+				}
+
+				return false;
 			} else {
-				$phoneInput.removeClass(errorCssClass).siblings('.js-slotButton-popup-error').hide();
-				$phoneInput.parents(parentClass).children(labelClass).removeClass('lbl-error');
+				hideError($phoneInput);
+				return true;
 			}
+		},
+
+		validateEmail = function($form, disableFail) {
+			var $emailInput = $('.js-slotButton-popup-email', $form);
 
 			if ($emailInput.val().length != 0 && !ENTER.utils.validateEmail($emailInput.val())) {
-				isValid = false;
-				$emailInput.addClass(errorCssClass).siblings('.js-slotButton-popup-error').show();
-				$emailInput.parents(parentClass).children(labelClass).addClass('lbl-error');
+				if (!disableFail) {
+					showError($emailInput);
+				}
+
+				return false;
 			} else {
-				$emailInput.removeClass(errorCssClass).siblings('.js-slotButton-popup-error').hide();
-				$emailInput.parents(parentClass).children(labelClass).removeClass('lbl-error');
+				hideError($emailInput);
+				return true;
+			}
+		},
+
+		validateConfirm = function($form, disableFail) {
+			var $confirmInput = $('.js-slotButton-popup-confirm', $form);
+
+			if (!$confirmInput[0].checked) {
+				if (!disableFail) {
+					showError($confirmInput);
+				}
+
+				return false;
+			} else {
+				hideError($confirmInput);
+				return true;
+			}
+		},
+
+		validate = function($form) {
+			var isValid = true;
+
+			if (!validatePhone($form)) {
+				isValid = false;
+			}
+
+			if (!validateEmail($form)) {
+				isValid = false;
+			}
+
+			if (!validateConfirm($form)) {
+				isValid = false;
 			}
 
 			return isValid;
@@ -4436,19 +4486,30 @@ $(document).ready(function() {
 			}
 		});
 
-		$('input', $popup).blur(function(){
-			validate($form);
+		$phone.blur(function() {
+			validatePhone($form);
 		});
 
-		$phone.keyup(function(e){
-			var val = $(e.currentTarget).val();
-			if (val[val.length - 1] != '_') {
-				validate($form);
-			}
+		$phone.keyup(function() {
+			validatePhone($form, true);
+		});
+
+		$email.blur(function() {
+			validateEmail($form);
+		});
+
+		$email.keyup(function() {
+			validateEmail($form, true);
+		});
+
+		$confirm.click(function() {
+			validateConfirm($form, true);
 		});
 
 		$form.submit(function(e) {
 			e.preventDefault();
+
+			$errors.empty().hide();
 
 			if (!validate($form)) {
 				return;

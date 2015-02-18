@@ -65,10 +65,10 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
         <span class="product-card__info--price">Цена базового комплекта</span>
         <span class="product-card__info--deliv-period">Срок доставки базового комплекта 3 дня</span>
         <div class="product-card__info--recall">
-            <span>Закажите обратный звонок и уточните</span>
+            <span>Закажите обратный звонок и уточните:</span>
             <ul class="product-card__info--recall__list">
-                <li>Состав мебели и техники</li>
-                <li>Условия доставки, сборки и оплаты</li>
+                <li>комплектность мебели и техники;</li>
+                <li>условия доставки, сборки и оплаты.</li>
             </ul>
         <?= $helper->render('cart/__button-product', [
             'product'  => $product,
@@ -86,7 +86,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
 
         <div class="js-showTopBar"></div>
 
-        <div class="bWidgetBuy mWidget js-WidgetBuy">
+        <div class="bWidgetBuy mWidget compare--slot js-WidgetBuy">
             <?= $page->render('compare/_button-product-compare', ['product' => $product]) ?>
         </div>
 

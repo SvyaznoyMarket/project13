@@ -1132,6 +1132,12 @@ return [
         'action'  => ['Compare\CompareAction', 'clear'],
     ],
 
+    // Внешние ссылки на карточку товара
+    'product.internal' => [
+        'pattern'   => '/internal/product',
+        'action'    => ['Product\ShowInternalAction', 'execute'],
+    ],
+
     // Переключение АБ-тестов
     'switch' => [
         'pattern'   => '/switch',

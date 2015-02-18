@@ -3,8 +3,12 @@
 use \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity;
 
 $f = function(
-    \Model\PaymentMethod\PaymentEntity $orderPayment
-) { ?>
+    \Model\PaymentMethod\PaymentEntity $orderPayment = null
+) {
+
+    if (!$orderPayment) return '';
+
+?>
 
     <? if (array_key_exists(PaymentMethodEntity::PAYMENT_CARD_ONLINE ,$orderPayment->methods)) : ?>
         <li class="orderPaymentWeb_lst-i jsPaymentMethod" data-value="<?= PaymentMethodEntity::PAYMENT_CARD_ONLINE ?>">
