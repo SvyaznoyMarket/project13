@@ -3,7 +3,7 @@
  * @var $page             \View\DefaultLayout
  * @var $user             \Session\User
  * @var $enterpizeCoupons \Model\EnterprizeCoupon\Entity[]
- * @var $enterpizeCoupon  \Model\EnterprizeCoupon\Entity
+ * @var $coupon           \Model\EnterprizeCoupon\Entity
  * @var $isCouponSent     bool
  * @var $products         \Model\Product\Entity[]
  */
@@ -416,6 +416,7 @@ $helper = new \Helper\TemplateHelper();
         <? foreach ($couponsInChunk as $columnNum => $coupon): $i++ ?>
 
             <?
+            /** @var \Model\EnterprizeCoupon\Entity[] $couponsInChunk */
             $itemClass = 'ep-list__i';
             if (!($i % 4)) {
                 $itemClass .= ' ep-list__i--last';
@@ -435,10 +436,24 @@ $helper = new \Helper\TemplateHelper();
             }
 
             $isNotMember = !$coupon->isForNotMember() && !$isEnterprizeMember;
+
+            $dataValue = [
+                'discount'    => [
+                    'value' => $helper->formatPrice($coupon->getPrice()),
+                    'unit'  => $coupon->getIsCurrency() ? 'р' : '%',
+                ],
+                'start'       => $coupon->getStartDate() instanceof \DateTime ? $coupon->getStartDate()->format('d.m.Y') : null,
+                'end'         => $coupon->getEndDate() instanceof \DateTime ? $coupon->getEndDate()->format('d.m.Y') : null,
+                'description' => $coupon->getSegmentDescription(),
+                'minOrderSum' => $coupon->getMinOrderSum(),
+                'user'        => [
+                    'isMember' => $user->getEntity() && $user->getEntity()->isEnterprizeMember(),
+                ],
+            ];
             ?>
 
-            <div data-column="col-<?= $columnNum + 1 ?>" class="<?= $itemClass . ($isNotMember ? ' mMembers' : '') ?>">
-                <a href="<?= $couponLink ? $couponLink : '#' ?>" class="ep-list__lk">
+            <div data-value="<?= $helper->json($dataValue) ?>" data-column="col-<?= $columnNum + 1 ?>" class="<?= $itemClass . ($isNotMember ? ' mMembers' : '') ?>">
+                <div class="ep-list__lk">
                     <span class="ep-coupon"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
                         <span class="ep-coupon__inner">
                             <? if ($coupon->getImage()): ?>
@@ -466,387 +481,15 @@ $helper = new \Helper\TemplateHelper();
                     <? else:?>
                         <span class="ep-coupon-hover"></span>
                     <? endif ?>
-                </a>
+                </div>
             </div>
         <? endforeach ?>
         </div>
     <? endforeach // end chunk ?>
 
-    <div class="ep-hint ep-hint--2col">
-        <div class="ep-hint__row clearfix">
-            <div class="ep-hint__col">
-                <p class="ep-hint__lvl1">Фишка со скидкой <strong>10%</strong> на <strong>Товары Tchibo</strong></p>
 
-                <p class="ep-hint__lvl2">Действует c 02.02.2015 по 27.02.2015</p>
+    <script id="tplEnterprizeForm" type="text/html" data-partial="<?= $helper->json([]) ?>">
+        <?= file_get_contents(\App::config()->templateDir . '/enterprize/_selectedFilter.mustache') ?>
+    </script>
 
-                <p class="ep-hint__lvl3">Скидка по акции не суммируется со скидками
-                по другим акциям ООО "Энтер"<br/>
-                Фишка не действует на кофе и кофемашины<br/>
-                Минимальная сумма заказа 1 <span class="rubl">p</span></p>
-
-                <p class="ep-hint__lvl4 m"><a href="" class="undrl">Как воспользоваться кодом фишки и получить скидку?</a></p>
-            </div>
-
-            <div class="ep-hint__col ep-hint__col--r">
-                <form class="form-reg" action="" method="get" accept-charset="utf-8">
-                    <fieldset class="form-reg__fld">
-                        <div class="form-reg__tl">МЫ ОТПРАВИМ КОД НА СКИДКУ В SMS И E-MAIL</div>
-
-                        <div class="txFld-w">
-                            <input class="txFld-it" type="text" name="" id="">
-                            <label class="txFld-lbl" for="">Имя</label>
-                        </div>
-
-                        <div class="txFld-w">
-                            <input class="txFld-it" type="text" placeholder="name@domain.ru" name="" id="">
-                            <label class="txFld-lbl" for="">E-mail</label>
-                        </div>
-
-                        <div class="txFld-w">
-                            <input class="txFld-it" type="text" placeholder="8 (___) ___-__-__" name="" id="">
-                            <label class="txFld-lbl" for="">Телефон</label>
-                        </div>
-                    </fieldset>
-
-                    <fieldset class="form-reg__fld form-reg__sbsrb clearfix">
-                        <input type="checkbox" disabled="disabled" checked="checked" id="isSubscribe" class="customInput customInput-orangecheck jsCustomRadio">
-                        <label for="subscribe" class="customLabel mChecked">Получить<br/> рекламную рассылку</label>
-
-                        <input type="checkbox" id="agree" name="user[agree]" class="customInput customInput-orangecheck jsCustomRadio">
-                        <label for="agree" class="customLabel fl-r">Согласен<br/> <a class="agree-lk undrl" target="_blank" href="/reklamnaya-akcia-enterprize">с условиями оферты</a></label>
-                    </fieldset>
-
-                    <fieldset class="form-reg__fld form-reg__btn clearfix">
-                        <div class="form-reg__login">
-                            У Вас есть логин и пароль?<br/>
-                            <span class="form-reg__login__lk">Войти</span>
-                        </div>
-
-                        <button type="submit" class="btn-def fl-r">Зарегистрироваться</button>
-                    </fieldset>
-                </form>
-            </div>
-        </div>
-
-        <div class="ep-hint__row ep-hint__row--cut">
-            <div class="m ta-c mb10"><strong>Фишка действует на все товары из раздела Товары для дома, например:</strong></div>
-
-            <div class="slideItem slideItem-7item">
-                <div class="slideItem_inn">
-                    <ul class="slideItem_lst clearfix" style="width: 1430px; left: 0px;">
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                             <div class="slideItem_i__child">
-                                <div class="slideItem_imgw">
-                                    <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
-                                </div>
-
-                                <div class="slideItem_n">
-                                    Держатель для планшетов Liberty Project C65H41
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                             <div class="slideItem_i__child">
-                                <div class="slideItem_imgw">
-                                    <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
-                                </div>
-
-                                <div class="slideItem_n">
-                                    Держатель для планшетов Liberty Project C65H41
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                             <div class="slideItem_i__child">
-                                <div class="slideItem_imgw">
-                                    <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
-                                </div>
-
-                                <div class="slideItem_n">
-                                    Держатель для планшетов Liberty Project C65H41
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                             <div class="slideItem_i__child">
-                                <div class="slideItem_imgw">
-                                    <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
-                                </div>
-
-                                <div class="slideItem_n">
-                                    Держатель для планшетов Liberty Project C65H41
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                             <div class="slideItem_i__child">
-                                <div class="slideItem_imgw">
-                                    <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
-                                </div>
-
-                                <div class="slideItem_n">
-                                    Держатель для планшетов Liberty Project C65H41
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                             <div class="slideItem_i__child">
-                                <a href="" class="slideItem_imgw" id="">
-                                    <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
-                                </a>
-
-                                <div class="slideItem_n">
-                                    Держатель для планшетов Liberty Project C65H41
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                             <div class="slideItem_i__child">
-                                <div class="slideItem_imgw">
-                                    <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
-                                </div>
-
-                                <div class="slideItem_n">
-                                    Держатель для планшетов Liberty Project C65H41
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                             <div class="slideItem_i__child">
-                                <div class="slideItem_imgw">
-                                    <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
-                                </div>
-
-                                <div class="slideItem_n">
-                                    Держатель для планшетов Liberty Project C65H41
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                             <div class="slideItem_i__child">
-                                <div class="slideItem_imgw">
-                                    <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
-                                </div>
-
-                                <div class="slideItem_n">
-                                    Держатель для планшетов Liberty Project C65H41
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="slideItem_btn slideItem_btn-prv mDisabled jsRecommendedSliderNav"></div>
-                <div class="slideItem_btn slideItem_btn-nxt jsRecommendedSliderNav"></div>
-            </div>
-        </div>
-    </div>
-
-        <br/>
-        <br/>
-        <br/>
-
-    <div class="ep-hint">
-        <div class="ep-hint__row clearfix">
-            <div class="ep-hint__col">
-                <p class="ep-hint__lvl1">Фишка со скидкой <strong>10%</strong> на <strong>Товары Tchibo</strong></p>
-
-                <p class="ep-hint__lvl2">Действует c 02.02.2015 по 27.02.2015</p>
-
-                <p class="ep-hint__lvl3">Скидка по акции не суммируется со скидками
-                по другим акциям ООО "Энтер"<br/>
-                Фишка не действует на кофе и кофемашиныr<br/>
-                Минимальная сумма заказа 1 <span class="rubl">p</span></p>
-
-                <button class="btn-def">Получить код фишки</button>
-
-                <p class="ep-hint__lvl4 m"><a href="" class="undrl">Как воспользоваться кодом фишки и получить скидку?</a></p>
-            </div>
-        </div>
-
-        <div class="ep-hint__row ep-hint__row--cut">
-            <div class="m ta-c mb10"><strong>Фишка действует на все товары из раздела <a href="" class="undrl">Товары для дома</a>, например:</strong></div>
-
-            <div class="slideItem slideItem-7item slideItem--sale">
-                <div class="slideItem_inn">
-                    <ul class="slideItem_lst clearfix" style="width: 1430px; left: 0px;">
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                             <div class="slideItem_i__child">
-                                <div class="slideItem_imgw">
-                                    <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
-                                </div>
-
-                                <div class="slideItem_n">
-                                    Держатель для планшетов Liberty Project C65H41
-                                </div>
-
-                                <a class="slideItem__ep-price" href="">
-                                    <span class="slideItem__ep-price__inn">
-                                        <span class="slideItem__ep-price__i">
-                                            Обычная цена<br>
-                                            <span class="td-lineth">950</span> <span class="rubl">p</span>
-                                        </span>
-
-                                        <span class="slideItem__ep-price__i">
-                                            <strong>Цена по фишке</strong><br>
-                                            <span class="slideItem__ep-price__sale"><strong>950</strong> <span class="rubl">p</span></span>
-                                        </span>
-                                    </span>
-                                </a>
-                            </div>
-                        </li>
-
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                             <div class="slideItem_i__child">
-                                <div class="slideItem_imgw">
-                                    <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
-                                </div>
-
-                                <div class="slideItem_n">
-                                    Держатель для планшетов Liberty Project C65H41
-                                </div>
-
-                                <a class="slideItem__ep-price" href="">
-                                    <span class="slideItem__ep-price__inn">
-                                        <span class="slideItem__ep-price__i">
-                                            Обычная цена<br>
-                                            <span class="td-lineth">950</span> <span class="rubl">p</span>
-                                        </span>
-
-                                        <span class="slideItem__ep-price__i">
-                                            <strong>Цена по фишке</strong><br>
-                                            <span class="slideItem__ep-price__sale"><strong>950</strong> <span class="rubl">p</span></span>
-                                        </span>
-                                    </span>
-                                </a>
-                            </div>
-                        </li>
-
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                             <div class="slideItem_i__child">
-                                <div class="slideItem_imgw">
-                                    <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
-                                </div>
-
-                                <div class="slideItem_n">
-                                    Держатель для планшетов Liberty Project C65H41
-                                </div>
-
-                                <a class="slideItem__ep-price" href="">
-                                    <span class="slideItem__ep-price__inn">
-                                        <span class="slideItem__ep-price__i">
-                                            Обычная цена<br>
-                                            <span class="td-lineth">950</span> <span class="rubl">p</span>
-                                        </span>
-
-                                        <span class="slideItem__ep-price__i">
-                                            <strong>Цена по фишке</strong><br>
-                                            <span class="slideItem__ep-price__sale"><strong>950</strong> <span class="rubl">p</span></span>
-                                        </span>
-                                    </span>
-                                </a>
-                            </div>
-                        </li>
-
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                             <div class="slideItem_i__child">
-                                <div class="slideItem_imgw">
-                                    <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
-                                </div>
-
-                                <div class="slideItem_n">
-                                    Держатель для планшетов Liberty Project C65H41
-                                </div>
-
-                                <a class="slideItem__ep-price" href="">
-                                    <span class="slideItem__ep-price__inn">
-                                        <span class="slideItem__ep-price__i">
-                                            Обычная цена<br>
-                                            <span class="td-lineth">950</span> <span class="rubl">p</span>
-                                        </span>
-
-                                        <span class="slideItem__ep-price__i">
-                                            <strong>Цена по фишке</strong><br>
-                                            <span class="slideItem__ep-price__sale"><strong>950</strong> <span class="rubl">p</span></span>
-                                        </span>
-                                    </span>
-                                </a>
-                            </div>
-                        </li>
-
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                             <div class="slideItem_i__child">
-                                <div class="slideItem_imgw">
-                                    <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
-                                </div>
-
-                                <div class="slideItem_n">
-                                    Держатель для планшетов Liberty Project C65H41
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                             <div class="slideItem_i__child">
-                                <a href="" class="slideItem_imgw" id="">
-                                    <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
-                                </a>
-
-                                <div class="slideItem_n">
-                                    Держатель для планшетов Liberty Project C65H41
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                             <div class="slideItem_i__child">
-                                <div class="slideItem_imgw">
-                                    <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
-                                </div>
-
-                                <div class="slideItem_n">
-                                    Держатель для планшетов Liberty Project C65H41
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                             <div class="slideItem_i__child">
-                                <div class="slideItem_imgw">
-                                    <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
-                                </div>
-
-                                <div class="slideItem_n">
-                                    Держатель для планшетов Liberty Project C65H41
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="slideItem_i jsSliderItem" style="display: list-item;">
-                             <div class="slideItem_i__child">
-                                <div class="slideItem_imgw">
-                                    <img alt="Держатель для планшетов Liberty Project C65H41" src="http://fs05.enter.ru/1/1/120/ff/269512.jpg" class="slideItem_img">
-                                </div>
-
-                                <div class="slideItem_n">
-                                    Держатель для планшетов Liberty Project C65H41
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="slideItem_btn slideItem_btn-prv mDisabled jsRecommendedSliderNav"></div>
-                <div class="slideItem_btn slideItem_btn-nxt jsRecommendedSliderNav"></div>
-            </div>
-        </div>
-    </div>
 </div>
