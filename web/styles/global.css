@@ -912,14 +912,14 @@ img[height="0"] {
     *display: inline;
     *zoom: 1;
     min-height: 18px;
-    background: url("/styles/btn/img/icon_compare.png") no-repeat 0 -111px;
-    padding: 3px 0 4px 35px;
+    background: url("/styles/btn/img/icon_compare.png") no-repeat 0 2px;
+    padding: 0 0 4px 28px;
   }
   .btnCmpr_lk:hover {
     text-decoration: none;
   }
   .btnCmpr_lk-act {
-    background-position: 0 -141px;
+    background-position: 0 -31px;
   }
   .btnCmpr_tx {
     border-bottom: 1px dotted;
@@ -10469,6 +10469,13 @@ img[height="0"] {
   }
   .product-container .compare--slot .btnCmpr {
     margin: 0px;
+  }
+  .product-container .compare--slot .btnCmpr_lk {
+    background-position: 0 -111px;
+    padding: 3px 0 4px 35px;
+  }
+  .product-container .compare--slot .btnCmpr_lk-act {
+    background-position: 0 -141px;
   }
   .product-card__section-left {
     display: inline-block;
