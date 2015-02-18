@@ -85,7 +85,7 @@ class ProductButtonAction {
         } else if ($slotPartnerOffer = $product->getSlotPartnerOffer()) {
             $data['isSlot'] = true;
             $data['url'] = '#';
-            $data['class'] .= ' btn btn--slot js-slotButton ' . ('product-card' !== $location ? 'btn--short' : '');
+            $data['class'] .= ' btn btn--slot js-slotButton ' . ('product-card' !== $location ? 'btn--short' : 'btn--big');
             $data['value'] = 'product-card' === $location ? 'Отправить заявку' : 'Как купить?';
             $data['full'] = 'userbar' === $location || 'product-card' === $location ? '0' : '1';
             $data['productUrl'] = $product->getLink();

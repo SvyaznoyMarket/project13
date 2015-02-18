@@ -100,15 +100,7 @@
         width: auto;
         .box-sizing();
         .inline-block();
-        background-color: #cbdf59;
-        .box-shadow2(0 3px 0 #b8c64b, 0 5px #feffbe);
-        padding: 4px 23px 3px;
-        border: 1px solid #ccd594;
-        text-align: center;
-        text-decoration: none;
-        color: #000;
-        font-size: 18px;
-        min-width: 145px;
+        border: 1px solid;
         &:hover {
             text-decoration: none;
         }
@@ -117,13 +109,34 @@
             text-align: center;
             overflow: visible;
         }
+
+    }
+    &--slot&--big{
+        background-color: #cbdf59;
+        .box-shadow2(0 3px 0 #b8c64b, 0 5px #feffbe);
+        padding: 4px 23px 3px;
+        border-color: #ccd594;
+        text-align: center;
+        text-decoration: none;
+        color: #000;
+        font-size: 18px;
+        min-width: 145px;
+        &:hover{
+            background-color: #cee062;
+        }
+        &:active{
+            background-color: #cee062;
+            padding-bottom: 5px;
+           .box-shadow(0 1px 0 #b8c64b);
+           margin-bottom: -2px;
+        }
     }
     &--short {
         background: #c1d837;
         border-color: #9cb214;
         box-shadow: none;
         width: 74px;
-        font-size: 11px;
+        font-size: 12px;
         text-align: center;
         padding: 2px 0px 3px;
         margin-top: 3px;
@@ -133,7 +146,6 @@
 .bBtnLine .btn--slot,
 .topbarfix_buy .btn--slot {
     width: 72px;
-    font-size: 12px;
     padding: 5px 0 6px;
     margin: 0px;
     color: @white;
@@ -339,6 +351,11 @@
     .slideItem_pr {
         width: 100%;
         text-align: center;
+    }
+    .btn--slot{
+        .rounded(3px);
+        width: auto;
+        padding: 0 4px;
     }
 }
 .h1{
