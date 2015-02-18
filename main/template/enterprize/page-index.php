@@ -432,66 +432,44 @@ $helper = new \Helper\TemplateHelper();
                 $couponLink = $coupon->getDescriptionToken()
                     ? $page->url('content', ['token' => $coupon->getDescriptionToken()])
                     : null;
-            } ?>
+            }
 
-            <? if (!$coupon->isForNotMember() && !$isEnterprizeMember): // Только для игроков EnterPrize  ?>
-                <div data-column="col-<?= $columnNum + 1 ?>" class="<?= !empty($itemClass) ? "$itemClass " : '' ?>mMembers">
-                    <div class="ep-list__lk">
-                        <span class="ep-coupon"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
-                            <span class="ep-coupon__inner">
-                                <? if ($coupon->getImage()): ?>
-                                    <span class="ep-coupon__ico"><img src="<?= $coupon->getImage() ?>" /></span>
-                                <? endif ?>
+            $isNotMember = !$coupon->isForNotMember() && !$isEnterprizeMember;
+            ?>
 
-                                <? if ($coupon->getName()): ?>
-                                    <span class="ep-coupon__desc"><?= $coupon->getName() ?></span>
-                                <? endif ?>
+            <div data-column="col-<?= $columnNum + 1 ?>" class="<?= $itemClass . ($isNotMember ? ' mMembers' : '') ?>">
+                <div class="ep-list__lk">
+                    <span class="ep-coupon"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
+                        <span class="ep-coupon__inner">
+                            <? if ($coupon->getImage()): ?>
+                                <span class="ep-coupon__ico"><img src="<?= $coupon->getImage() ?>" /></span>
+                            <? endif ?>
 
-                                <? if ($coupon->getPrice()): ?>
-                                    <span class="ep-coupon__price"><?= $page->helper->formatPrice($coupon->getPrice()) . (!$coupon->getIsCurrency() ? '%' : '') ?>
-                                        <? if ($coupon->getIsCurrency()): ?>
-                                            <span class="rubl">p</span>
-                                        <? endif ?>
-                                    </span>
-                                <? endif ?>
-                            </span>
+                            <? if ($coupon->getName()): ?>
+                                <span class="ep-coupon__desc"><?= $coupon->getName() ?></span>
+                            <? endif ?>
+
+                            <? if ($coupon->getPrice()): ?>
+                                <span class="ep-coupon__price"><?= $page->helper->formatPrice($coupon->getPrice()) . (!$coupon->getIsCurrency() ? '%' : '') ?>
+                                    <? if ($coupon->getIsCurrency()): ?>
+                                        <span class="rubl">p</span>
+                                    <? endif ?>
+                                </span>
+                            <? endif ?>
                         </span>
+                    </span>
 
+                    <? if ($isNotMember): // Только для игроков EnterPrize  ?>
                         <span class="ep-coupon-hover">
                             <span class="couponText">Только<br/> для игроков<br/> <span class="epTextLogo">Enter <span class="epTextLogo_colors">Prize</span></span></span>
                         </span>
-                    </div>
-                </div>
-
-            <? else: ?>
-                <div data-column="col-<?= $columnNum + 1 ?>" class="<?= $itemClass ?>">
-                    <div class="ep-list__lk">
-                        <span class="ep-coupon"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
-                            <span class="ep-coupon__inner">
-                                <? if ($coupon->getImage()): ?>
-                                    <span class="ep-coupon__ico"><img src="<?= $coupon->getImage() ?>" /></span>
-                                <? endif ?>
-
-                                <? if ($coupon->getName()): ?>
-                                    <span class="ep-coupon__desc"><?= $coupon->getName() ?></span>
-                                <? endif ?>
-
-                                <? if ($coupon->getPrice()): ?>
-                                    <span class="ep-coupon__price"><?= $page->helper->formatPrice($coupon->getPrice()) . (!$coupon->getIsCurrency() ? '%' : '') ?>
-                                        <? if ($coupon->getIsCurrency()): ?>
-                                            <span class="rubl">p</span>
-                                        <? endif ?>
-                                    </span>
-                                <? endif ?>
-                            </span>
-                        </span>
-
+                    <? else:?>
                         <span class="ep-coupon-hover">
                             <!-- <span class="ep-coupon__btn">Получить</span> -->
                         </span>
-                    </div>
+                    <? endif ?>
                 </div>
-            <? endif ?>
+            </div>
         <? endforeach ?>
         </div>
     <? endforeach // end chunk ?>
