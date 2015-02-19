@@ -81,7 +81,7 @@ $f = function(
             ];
             ?>
 
-            <div data-value="<?= $helper->json($dataValue) ?>" data-column="col-<?= $columnNum + 1 ?>" class="<?= $itemClass . ($isNotMember ? ' mMembers' : '') ?>" title="<?= ((null !== $expiredDays) ? sprintf('Может быть применена в течении %s %s', $expiredDays, $helper->numberChoice($expiredDays, ['день', 'дня', 'дней'])) : '') ?>">
+            <div class="<?= $itemClass . ($isNotMember ? ' mMembers' : '') ?>" data-value="<?= $helper->json($dataValue) ?>" data-column="col-<?= $columnNum + 1 ?>" title="<?= ((null !== $expiredDays) ? sprintf('Может быть применена в течении %s %s', $expiredDays, $helper->numberChoice($expiredDays, ['день', 'дня', 'дней'])) : '') ?>">
                 <div class="ep-list__lk">
                     <span class="ep-coupon"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
                         <span class="ep-coupon__inner">
