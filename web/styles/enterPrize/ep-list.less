@@ -27,7 +27,7 @@
 			z-index: 20;
 
 			.ep-coupon-hover {
-				.opacity(1);
+				.opacity(.6);
 			}
 
 			.ep-coupon__btn {
@@ -40,6 +40,12 @@
 			&:after {
 				.pseudo-corner-top( 16px, @white, 197px);
 				left: 87px;
+				z-index: 30;
+			}
+
+			.ep-finish {
+				.opacity(0.3);
+				z-index: 15;
 			}
 		}
 
@@ -83,7 +89,7 @@
 			&:hover {
 
 				.ep-coupon-hover {
-					.opacity(1);
+					.opacity(.6);
 					z-index: 18;
 
 					background: none;
