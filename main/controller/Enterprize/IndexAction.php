@@ -71,16 +71,16 @@ class IndexAction {
 
         // получаем купоны ренее выданные пользователю
         $userCouponSeries = [];
-        /** @var \Model\EnterprizeCoupon\DiscountCoupon\Entity[] $userCoupons */
-        $userCoupons = [];
+        /** @var \Model\EnterprizeCoupon\DiscountCoupon\Entity[] $userDiscounts */
+        $userDiscounts = [];
         if (\App::user()->getToken()) {
             try {
-                $client->addQuery('user/get-discount-coupons', ['token' => \App::user()->getToken(), 'extended' => false], [],
-                    function ($data) use (&$userCoupons, &$userCouponSeries) {
+                $client->addQuery('user/get-discount-coupons', ['token' => \App::user()->getToken()], [],
+                    function ($data) use (&$userDiscounts, &$userCouponSeries) {
                         if (isset($data['detail']) && is_array($data['detail'])) {
                             foreach ($data['detail'] as $item) {
                                 $entity = new \Model\EnterprizeCoupon\DiscountCoupon\Entity($item);
-                                $userCoupons[] = $entity;
+                                $userDiscounts[] = $entity;
                                 $userCouponSeries[] = $entity->getSeries();
                             }
                         }
@@ -180,7 +180,7 @@ class IndexAction {
         $page = new \View\Enterprize\IndexPage();
         $page->setParam('enterpizeCoupons', $enterpizeCoupons);
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
-        $page->setParam('userCoupons', $userCoupons);
+        $page->setParam('userDiscounts', $userDiscounts);
         $page->setParam('viewParams', ['showSideBanner' => false]);
         $page->setParam('isCouponSent', $isCouponSent);
         $page->setParam('isRegistration', $isRegistration);

@@ -3,16 +3,23 @@
 /**
  * @param \Helper\TemplateHelper $helper
  * @param \Model\EnterprizeCoupon\Entity[] $enterpizeCoupons
+ * @param \Model\EnterprizeCoupon\DiscountCoupon\Entity[] $userDiscounts
  * @param \Session\User $user
  */
 $f = function(
     \Helper\TemplateHelper $helper,
-    $enterpizeCoupons,
+    array $enterpizeCoupons,
+    array $userDiscounts = [],
     \Session\User $user
 ) {
     /** @var $coupon \Model\EnterprizeCoupon\Entity **/
 
     $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMember();
+
+    $userSeries = [];
+    foreach ($userDiscounts as $userDiscount) {
+        $userSeries[$userDiscount->getSeries()] = true;
+    }
 ?>
 
 <? $i = 0; foreach(array_chunk($enterpizeCoupons, 4) as $couponsInChunk): ?>
@@ -41,7 +48,7 @@ $f = function(
 
             $isNotMember = !$coupon->isForNotMember() && !$isEnterprizeMember;
 
-            $userCoupon = true;
+            $userCoupon = isset($userSeries[$coupon->getToken()]);
 
             $dataValue = [
                 'name'        => $coupon->getName(),

@@ -4,7 +4,7 @@
  * @var $user             \Session\User
  * @var $enterpizeCoupons \Model\EnterprizeCoupon\Entity[]
  * @var $enterpizeCoupon  \Model\EnterprizeCoupon\Entity
- * @var $userCoupons      \Model\EnterprizeCoupon\DiscountCoupon\Entity[]
+ * @var $userDiscounts    \Model\EnterprizeCoupon\DiscountCoupon\Entity[]
  * @var $coupon           \Model\EnterprizeCoupon\Entity
  * @var $isCouponSent     bool
  * @var $products         \Model\Product\Entity[]
@@ -413,7 +413,7 @@ $helper = new \Helper\TemplateHelper();
 <? endif */?>
 
 <div class="ep-list ep-list--width">
-    <?= $helper->render('enterprize/_list', ['enterpizeCoupons' => $enterpizeCoupons, 'user' => $user]) ?>
+    <?= $helper->render('enterprize/_list', ['enterpizeCoupons' => $enterpizeCoupons, 'userDiscounts' => $userDiscounts, 'user' => $user]) ?>
 </div>
 
 <script id="tplEnterprizeForm" type="text/html" data-partial="<?= $helper->json([]) ?>">
