@@ -8259,11 +8259,11 @@ img[height="0"] {
   .orderPayment_block--border .orderPayment_msg_head {
     color: #ffa901;
   }
-  .orderPayment_block--border .orderPayment_msg_head-row {
-    margin-left: 24px;
-  }
   .orderPayment_block--border .orderPayment_msg_head + .orderPayment_msg_head-row {
     margin-top: 10px;
+  }
+  .orderPayment_block--border .orderSum-lbl {
+    padding-left: 24px;
   }
   .orderPayment_block .orderSum-lbl {
     width: 200px;
@@ -8273,6 +8273,10 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
   }
   .orderPayment_head {
     font-size: 30px;
