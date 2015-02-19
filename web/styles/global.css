@@ -8258,10 +8258,12 @@ img[height="0"] {
   }
   .orderPayment_block--border .orderPayment_msg_head {
     color: #ffa901;
-    margin-bottom: 10px;
   }
   .orderPayment_block--border .orderPayment_msg_head-row {
     margin-left: 24px;
+  }
+  .orderPayment_block--border .orderPayment_msg_head + .orderPayment_msg_head-row {
+    margin-top: 10px;
   }
   .orderPayment_block .orderSum-lbl {
     width: 200px;
