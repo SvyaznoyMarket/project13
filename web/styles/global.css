@@ -10492,6 +10492,18 @@ img[height="0"] {
     margin: 15px 0 0;
     width: 660px;
   }
+  .product-card__section-left .bProductDescImg {
+    width: 600px;
+    position: relative;
+  }
+  .product-card__section-left .bProductDescImgBig {
+    width: 600px;
+    height: 500px;
+  }
+  .product-card__section-left .bProductDescImgBig .bProductDescImgBig__eImg {
+    min-width: 500px;
+    height: 500px;
+  }
   .product-card__section-right {
     float: right;
     margin: 15px 0 0 16px;
@@ -10942,14 +10954,6 @@ img[height="0"] {
     margin-left: 0px;
     font-size: 36px;
     text-align: center;
-  }
-  .product-container--kitchen .bProductDescImg {
-    width: 600px;
-    position: relative;
-  }
-  .product-container--kitchen .bProductDescImgBig {
-    width: 600px;
-    height: 500px;
   }
   .product-container--kitchen .bPhotoAction {
     width: 100%;
