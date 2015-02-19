@@ -4,11 +4,13 @@
  * @param \Helper\TemplateHelper $helper
  * @param \Model\EnterprizeCoupon\Entity[] $enterpizeCoupons
  * @param \Session\User $user
+ * @param \View\Enterprize\Form $form
  */
 $f = function(
     \Helper\TemplateHelper $helper,
     array $enterpizeCoupons,
-    \Session\User $user
+    \Session\User $user,
+    \View\Enterprize\Form $form
 ) {
     /** @var $coupon \Model\EnterprizeCoupon\Entity **/
 
@@ -56,6 +58,7 @@ $f = function(
 
             $dataValue = [
                 'name'        => $coupon->getName(),
+                'token'       => $coupon->getToken(),
                 'discount'    => $helper->formatPrice($coupon->getPrice()) . ($coupon->getIsCurrency() ? ' <span class="rubl">p</span>' : '%'),
                 'start'       => $coupon->getStartDate() instanceof \DateTime ? $coupon->getStartDate()->format('d.m.Y') : null,
                 'end'         => $coupon->getEndDate() instanceof \DateTime ? $coupon->getEndDate()->format('d.m.Y') : null,
@@ -70,6 +73,9 @@ $f = function(
                         : null,
                 'user'        => [
                     'isMember' => $user->getEntity() && $user->getEntity()->isEnterprizeMember(),
+                ],
+                'form'        => [
+                    'action' => \App::router()->generate($form->getRoute()),
                 ],
             ];
             ?>

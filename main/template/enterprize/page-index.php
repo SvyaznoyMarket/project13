@@ -8,6 +8,7 @@
  * @var $coupon           \Model\EnterprizeCoupon\Entity
  * @var $isCouponSent     bool
  * @var $products         \Model\Product\Entity[]
+ * @var $form             \View\Enterprize\Form
  */
 
 $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMember();
@@ -115,7 +116,7 @@ $helper = new \Helper\TemplateHelper();
     <div class="ep-list ep-list--member">
         <h2 class="ep-tl">ВАШИ ФИШКИ <span class="orange">Enter</span> Prize</h2>
 
-        <?= $helper->render('enterprize/_list', ['enterpizeCoupons' => $userCoupons, 'user' => $user]) ?>
+        <?= $helper->render('enterprize/_list', ['enterpizeCoupons' => $userCoupons, 'user' => $user, 'form' => $form]) ?>
 
         <div class="ep-hint ep-hint--position" style="display: none;">
             <div class="ep-hint__row">
@@ -359,7 +360,7 @@ $helper = new \Helper\TemplateHelper();
 <? endif */?>
 
 <div class="ep-list ep-list--width">
-    <?= $helper->render('enterprize/_list', ['enterpizeCoupons' => $enterpizeCoupons, 'user' => $user]) ?>
+    <?= $helper->render('enterprize/_list', ['enterpizeCoupons' => $enterpizeCoupons, 'user' => $user, 'form' => $form]) ?>
 </div>
 
 <script id="tplEnterprizeForm" type="text/html" data-partial="<?= $helper->json([]) ?>">

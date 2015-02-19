@@ -204,6 +204,7 @@ class IndexAction {
         $page->setParam('viewParams', ['showSideBanner' => false]);
         $page->setParam('isCouponSent', $isCouponSent);
         $page->setParam('isRegistration', $isRegistration);
+        $page->setParam('form', (new \Controller\Enterprize\FormAction())->getForm());
         $page->setParam('products', $products);
         $page->setParam('hasFlocktoryPopup', (bool)$request->get('flocktory_popup'));
         $page->setParam('enterprizeData', $enterprizeData);
