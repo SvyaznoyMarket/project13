@@ -1,4 +1,5 @@
-<div class="ep-hint {{^user.isMember}}ep-hint--2col{{/user.isMember}} js-enterprize-coupon-hint">
+<div class="ep-hint {{^user.isMember}}ep-hint--2col{{/user.isMember}} {{#isUserOwner}}ep-hint--position{{/isUserOwner}} js-enterprize-coupon-hint">
+    {{^isUserOwner}}
     <div class="ep-hint__row clearfix">
         <div class="ep-hint__col">
             <p class="ep-hint__lvl1">
@@ -83,8 +84,11 @@
 
         <p class="ep-hint__cmplt-tx">Для завершения регистрации, пожалуйста, перейдите по ссылке в письме, отправленном на Ваш почтовый адрес.</p>
     </div>
+    {{/isUserOwner}}
 
-    <div class="ep-hint__row ep-hint__row--cut">
+    <div class="ep-hint__row {{^isUserOwner}}ep-hint__row--cut{{/isUserOwner}}">
+        <div class="ta-r"><a href="" class="undrl" title="">Посмотреть все товары с фишкой</a></div>
+        {{^isUserOwner}}
         <div class="m ta-c mb10">
             <strong>Фишка действует на все товары из раздела
                 {{^user.isMember}}{{link.name}},{{/user.isMember}}
@@ -92,6 +96,7 @@
                 например:
             </strong>
         </div>
+        {{/isUserOwner}}
 
         <div class="slideItem slideItem-7item slideItem--sale">
             <div class="slideItem_inn">

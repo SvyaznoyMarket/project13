@@ -64,6 +64,7 @@ $f = function(
                 'end'         => $coupon->getEndDate() instanceof \DateTime ? $coupon->getEndDate()->format('d.m.Y') : null,
                 'description' => $coupon->getSegmentDescription(),
                 'minOrderSum' => $helper->formatPrice($coupon->getMinOrderSum()),
+                'isUserOwner' => true,
                 'link'        =>
                     $coupon->getName() && $coupon->getLink()
                         ? [
@@ -115,7 +116,7 @@ $f = function(
                         <span class="couponText">Только<br/> для игроков<br/> <span class="epTextLogo">Enter <span class="epTextLogo_colors">Prize</span></span></span>
                     </span>
                     <? else:?>
-                        <span class="ep-coupon-hover"></span>
+                        <? if ($isUserOwner): // Только для игроков EnterPrize  ?><span class="ep-coupon-hover"></span><? endif ?>
                     <? endif ?>
                 </div>
             </div>
