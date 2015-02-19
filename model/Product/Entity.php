@@ -63,9 +63,9 @@ class Entity extends BasicEntity {
     protected $type;
     /** @var int */
     protected $commentCount;
-    /** @var int */
+    /** @var float */
     protected $priceAverage;
-    /** @var int */
+    /** @var float */
     protected $priceOld;
     /** @var Service\Entity[] */
     protected $service = [];
@@ -430,42 +430,28 @@ class Entity extends BasicEntity {
     }
 
     /**
-     * @param int $price
-     */
-    public function setPrice($price) {
-        $this->price = (int)$price;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPrice() {
-        return $this->price;
-    }
-
-    /**
-     * @param int $priceAverage
+     * @param float $priceAverage
      */
     public function setPriceAverage($priceAverage) {
-        $this->priceAverage = (int)$priceAverage;
+        $this->priceAverage = (float)$priceAverage;
     }
 
     /**
-     * @return int
+     * @return float
      */
     public function getPriceAverage() {
         return $this->priceAverage;
     }
 
     /**
-     * @param int $priceOld
+     * @param float $priceOld
      */
     public function setPriceOld($priceOld) {
-        $this->priceOld = (int)$priceOld;
+        $this->priceOld = (float)$priceOld;
     }
 
     /**
-     * @return int
+     * @return float
      */
     public function getPriceOld() {
         return $this->priceOld;

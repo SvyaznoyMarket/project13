@@ -23,7 +23,7 @@ class BasicEntity {
     protected $token;
     /** @var string|null */
     protected $image;
-    /** @var int|null */
+    /** @var float|null */
     protected $price;
     /** @var State\Entity|null */
     protected $state;
@@ -207,14 +207,14 @@ class BasicEntity {
     }
 
     /**
-     * @param int $price
+     * @param float $price
      */
     public function setPrice($price) {
-        $this->price = (int)$price;
+        $this->price = (float)$price;
     }
 
     /**
-     * @return int
+     * @return float
      */
     public function getPrice() {
         return $this->price;
