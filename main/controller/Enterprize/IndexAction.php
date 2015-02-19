@@ -95,15 +95,20 @@ class IndexAction {
         // выполнение пакета запросов
         \App::curl()->execute();
 
+        /** @var \Model\EnterprizeCoupon\Entity[] $userCoupons */
+        $userCoupons = [];
         // отфильтровываем ненужные купоны
-        $enterpizeCoupons = array_filter($enterpizeCoupons, function($coupon) use ($limits, $userCouponSeries, $user) {
+        $enterpizeCoupons = array_filter($enterpizeCoupons, function($coupon) use ($limits, $userCouponSeries, &$userCoupons, $user) {
             if (!$coupon instanceof \Model\EnterprizeCoupon\Entity || !array_key_exists($coupon->getToken(), $limits)) return false;
 
-            // убераем купоны с кол-вом <= 0
-            if ($limits[$coupon->getToken()] <= 0) return false;
+            // убираем купоны ренее выданные пользователю
+            if (in_array($coupon->getToken(), $userCouponSeries)) {
+                $userCoupons[] = $coupon;
+                return false;
+            }
 
-            // убераем купоны ренее выданные пользователю
-            if (in_array($coupon->getToken(), $userCouponSeries)) return false;
+            // убираем купоны с кол-вом <= 0
+            if ($limits[$coupon->getToken()] <= 0) return false;
 
             if (!(bool)$coupon->isForMember() && !(bool)$coupon->isForNotMember()) return false;
 
@@ -181,6 +186,7 @@ class IndexAction {
         $page->setParam('enterpizeCoupons', $enterpizeCoupons);
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
         $page->setParam('userDiscounts', $userDiscounts);
+        $page->setParam('userCoupons', $userCoupons);
         $page->setParam('viewParams', ['showSideBanner' => false]);
         $page->setParam('isCouponSent', $isCouponSent);
         $page->setParam('isRegistration', $isRegistration);

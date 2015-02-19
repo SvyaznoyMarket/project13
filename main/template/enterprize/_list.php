@@ -36,6 +36,7 @@ $f = function(
                 $itemClass .= ' ep-list__i--noico';
             }
 
+            /*
             $couponLink = $helper->url('enterprize.form.show', ['enterprizeToken' => $coupon->getToken()]);
             if ($isEnterprizeMember) {
                 $couponLink = $helper->url('enterprize.show', ['enterprizeToken' => $coupon->getToken()]);
@@ -45,6 +46,7 @@ $f = function(
                     ? $helper->url('content', ['token' => $coupon->getDescriptionToken()])
                     : null;
             }
+            */
 
             $isNotMember = !$coupon->isForNotMember() && !$isEnterprizeMember;
 
