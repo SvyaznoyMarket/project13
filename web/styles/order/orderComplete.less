@@ -108,7 +108,23 @@
             }
             .orderPayment_msg_head{
                 color: @firmOrange;
+
+                &-row{
+                    margin-left:24px;
+                }
             }
+            .orderPayment_msg_head+.orderPayment_msg_head-row{
+                margin-top: 10px;
+            }
+            .orderSum-lbl{
+
+            }
+        }
+        .orderSum-lbl{
+            width: 200px;
+            margin-right: 14px;
+
+            .inline-block();
         }
     }
     &_head{
@@ -217,14 +233,6 @@
         color: @white;
         border-radius: 4px;
         background: @firmOrange;
-    }
-    .orderSum{
-        &-lbl{
-            width: 200px;
-            margin-right: 14px;
-
-            .inline-block();
-        }
     }
 }
 .orderPaymentCr{

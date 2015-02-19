@@ -8259,6 +8259,21 @@ img[height="0"] {
   .orderPayment_block--border .orderPayment_msg_head {
     color: #ffa901;
   }
+  .orderPayment_block--border .orderPayment_msg_head-row {
+    margin-left: 24px;
+  }
+  .orderPayment_block--border .orderPayment_msg_head + .orderPayment_msg_head-row {
+    margin-top: 10px;
+  }
+  .orderPayment_block .orderSum-lbl {
+    width: 200px;
+    margin-right: 14px;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+  }
   .orderPayment_head {
     font-size: 30px;
     margin-top: 50px;
@@ -8349,15 +8364,6 @@ img[height="0"] {
     color: #ffffff;
     border-radius: 4px;
     background: #ffa901;
-  }
-  .orderPayment .orderSum-lbl {
-    width: 200px;
-    margin-right: 14px;
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
   }
   .orderPaymentCr_lst {
     margin: 10px 0;
