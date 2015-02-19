@@ -343,7 +343,13 @@
 			$self.addClass( activeClass );
 			$self.closest('.js-enterprize-coupon-parent').after( html );
 		}
+	});
 
+	body.on('focus', '.js-phone-mask', function() {
+		var $self = $(this);
+
+		$.mask.definitions['n'] = '[0-9]';
+		$self.length && $self.mask('8 (nnn) nnn-nn-nn');
 	});
 
 	$(document).ready(function() {
