@@ -5564,7 +5564,7 @@ img[height="0"] {
     filter: alpha(opacity=100);
   }
   .ep-list__i.act {
-    z-index: 27;
+    z-index: 31;
   }
   .ep-list__i.act:after {
     position: absolute;
@@ -5576,7 +5576,7 @@ img[height="0"] {
     border-bottom: 16px solid #ffffff;
     top: 197px;
     left: 87px;
-    z-index: 27;
+    z-index: 31;
   }
   .ep-list__i.act .ep-finish {
     -moz-opacity: 0.3;

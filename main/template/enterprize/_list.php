@@ -64,7 +64,7 @@ $f = function(
                 'end'         => $coupon->getEndDate() instanceof \DateTime ? $coupon->getEndDate()->format('d.m.Y') : null,
                 'description' => $coupon->getSegmentDescription(),
                 'minOrderSum' => $helper->formatPrice($coupon->getMinOrderSum()),
-                'isUserOwner' => true,
+                'isUserOwner' => false,
                 'link'        =>
                     $coupon->getName() && $coupon->getLink()
                         ? [
