@@ -5,7 +5,6 @@
  * @var $enterpizeCoupons \Model\EnterprizeCoupon\Entity[]
  * @var $enterpizeCoupon  \Model\EnterprizeCoupon\Entity
  * @var $userCoupons      \Model\EnterprizeCoupon\Entity[]
- * @var $userDiscounts    \Model\EnterprizeCoupon\DiscountCoupon\Entity[]
  * @var $coupon           \Model\EnterprizeCoupon\Entity
  * @var $isCouponSent     bool
  * @var $products         \Model\Product\Entity[]
@@ -112,11 +111,11 @@ $helper = new \Helper\TemplateHelper();
     </div>
 <? endif ?>
 
-<? if ($isEnterprizeMember): ?>
+<? if ($isEnterprizeMember && $userCoupons): ?>
     <div class="ep-list ep-list--member">
         <h2 class="ep-tl">ВАШИ ФИШКИ <span class="orange">Enter</span> Prize</h2>
 
-        <?= $helper->render('enterprize/_list', ['enterpizeCoupons' => $userCoupons, 'userDiscounts' => $userDiscounts, 'user' => $user]) ?>
+        <?= $helper->render('enterprize/_list', ['enterpizeCoupons' => $userCoupons, 'user' => $user]) ?>
 
         <div class="ep-hint ep-hint--position" style="display: none;">
             <div class="ep-hint__row">

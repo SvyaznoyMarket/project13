@@ -95,15 +95,30 @@ class IndexAction {
         // выполнение пакета запросов
         \App::curl()->execute();
 
+        /** @var \Model\EnterprizeCoupon\Entity[] $enterpizeCouponsByToken */
+        $enterpizeCouponsByToken = [];
+        foreach ($enterpizeCoupons as $coupon) {
+            $enterpizeCouponsByToken[$coupon->getToken()] = $coupon;
+        }
+
         /** @var \Model\EnterprizeCoupon\Entity[] $userCoupons */
         $userCoupons = [];
+        foreach ($userDiscounts as $userDiscount) {
+            $coupon = isset($enterpizeCouponsByToken[$userDiscount->getSeries()]) ? $enterpizeCouponsByToken[$userDiscount->getSeries()] : null;
+            if (!$userDiscount->getSeries() || !$coupon) continue;
+
+            $coupon->setDiscount($userDiscount);
+
+            $userCoupons[] = $coupon;
+        }
+
+
         // отфильтровываем ненужные купоны
-        $enterpizeCoupons = array_filter($enterpizeCoupons, function($coupon) use ($limits, $userCouponSeries, &$userCoupons, $user) {
+        $enterpizeCoupons = array_filter($enterpizeCoupons, function($coupon) use ($limits, $userCouponSeries, $user) {
             if (!$coupon instanceof \Model\EnterprizeCoupon\Entity || !array_key_exists($coupon->getToken(), $limits)) return false;
 
             // убираем купоны ренее выданные пользователю
             if (in_array($coupon->getToken(), $userCouponSeries)) {
-                $userCoupons[] = $coupon;
                 return false;
             }
 
@@ -185,7 +200,6 @@ class IndexAction {
         $page = new \View\Enterprize\IndexPage();
         $page->setParam('enterpizeCoupons', $enterpizeCoupons);
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
-        $page->setParam('userDiscounts', $userDiscounts);
         $page->setParam('userCoupons', $userCoupons);
         $page->setParam('viewParams', ['showSideBanner' => false]);
         $page->setParam('isCouponSent', $isCouponSent);

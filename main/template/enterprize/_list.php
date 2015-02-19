@@ -3,23 +3,17 @@
 /**
  * @param \Helper\TemplateHelper $helper
  * @param \Model\EnterprizeCoupon\Entity[] $enterpizeCoupons
- * @param \Model\EnterprizeCoupon\DiscountCoupon\Entity[] $userDiscounts
  * @param \Session\User $user
  */
 $f = function(
     \Helper\TemplateHelper $helper,
     array $enterpizeCoupons,
-    array $userDiscounts = [],
     \Session\User $user
 ) {
     /** @var $coupon \Model\EnterprizeCoupon\Entity **/
 
     $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMember();
 
-    $userSeries = [];
-    foreach ($userDiscounts as $userDiscount) {
-        $userSeries[$userDiscount->getSeries()] = true;
-    }
 ?>
 
 <? $i = 0; foreach(array_chunk($enterpizeCoupons, 4) as $couponsInChunk): ?>
@@ -50,7 +44,15 @@ $f = function(
 
             $isNotMember = !$coupon->isForNotMember() && !$isEnterprizeMember;
 
-            $userCoupon = isset($userSeries[$coupon->getToken()]);
+            $expiredDays = null;
+            $discount = $coupon->getDiscount();
+            if ($discount && $discount->getTo()) {
+                try {
+                    if ($expiredDate = \DateTime::createFromFormat('Y-m-d H:i:s', $discount->getTo())) {
+                        $expiredDays = $expiredDate->diff(new \DateTime())->days;
+                    }
+                } catch (\Exception $e) {}
+            }
 
             $dataValue = [
                 'name'        => $coupon->getName(),
@@ -72,7 +74,7 @@ $f = function(
             ];
             ?>
 
-            <div data-value="<?= $helper->json($dataValue) ?>" data-column="col-<?= $columnNum + 1 ?>" class="<?= $itemClass . ($isNotMember ? ' mMembers' : '') ?>">
+            <div data-value="<?= $helper->json($dataValue) ?>" data-column="col-<?= $columnNum + 1 ?>" class="<?= $itemClass . ($isNotMember ? ' mMembers' : '') ?>" title="<?= ((null !== $expiredDays) ? sprintf('Может быть применена в течении %s %s', $expiredDays, $helper->numberChoice($expiredDays, ['день', 'дня', 'дней'])) : '') ?>">
                 <div class="ep-list__lk">
                     <span class="ep-coupon"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
                         <span class="ep-coupon__inner">
@@ -94,11 +96,11 @@ $f = function(
                         </span>
                     </span>
 
-                    <? if ($userCoupon): ?>
+                    <? if ((null !== $expiredDays) && ($expiredDays <= 3)): ?>
                         <div class="ep-finish">
                             <span class="ep-finish__tl">До конца действия<br/>фишки осталось </span>
-                            <span class="ep-finish__num">3</span>
-                            <div class="ep-finish__day">дня</div>
+                            <span class="ep-finish__num"><?= $expiredDays ?></span>
+                            <div class="ep-finish__day"><?= $helper->numberChoice($expiredDays, ['день', 'дня', 'дней']) ?></div>
                         </div>
                     <? endif ?>
 
