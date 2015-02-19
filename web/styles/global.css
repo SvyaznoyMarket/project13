@@ -5851,14 +5851,12 @@ img[height="0"] {
     text-align: center;
   }
   .ep-hint__cmplt-tl {
-    font-size: 36px;
+    font-size: 28px;
     color: #f99b1c;
     margin-bottom: 10px;
-    font-family: "Enter type";
   }
   .ep-hint__cmplt-tx {
-    font-size: 18px;
-    font-family: "Enter type";
+    font-size: 16px;
   }
   .ep-hint__col {
     text-align: center;
