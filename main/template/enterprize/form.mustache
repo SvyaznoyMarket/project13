@@ -29,28 +29,30 @@
 
         {{^user.isMember}}
         <div class="ep-hint__col ep-hint__col--r">
-            <form class="form-reg" action="" method="get" accept-charset="utf-8">
+            <form class="jsEnterprizeForm form-reg" action="{{form.action}}" method="post">
+                <input type="hidden" name="user[guid]" value="{{token}}" />
+
                 <fieldset class="form-reg__fld">
                     <div class="form-reg__tl">МЫ ОТПРАВИМ КОД НА СКИДКУ В SMS И E-MAIL</div>
 
                     <div class="txFld-w">
-                        <input class="txFld-it" type="text" name="" id="">
+                        <input class="txFld-it" type="text" name="user[name]" id="">
                         <label class="txFld-lbl" for="">Имя</label>
                     </div>
 
                     <div class="txFld-w">
-                        <input class="txFld-it" type="text" placeholder="name@domain.ru" name="" id="">
+                        <input class="txFld-it" type="text" placeholder="name@domain.ru" name="user[email]" id="">
                         <label class="txFld-lbl" for="">E-mail</label>
                     </div>
 
                     <div class="txFld-w">
-                        <input class="txFld-it" type="text" placeholder="8 (___) ___-__-__" name="" id="">
+                        <input class="txFld-it" type="text" placeholder="8 (___) ___-__-__" name="user[mobile]" id="">
                         <label class="txFld-lbl" for="">Телефон</label>
                     </div>
                 </fieldset>
 
                 <fieldset class="form-reg__fld form-reg__sbsrb clearfix">
-                    <input type="checkbox" disabled="disabled" checked="checked" id="isSubscribe" class="customInput customInput-orangecheck jsCustomRadio">
+                    <input type="checkbox" name="user[isSubscribe]" checked="checked" id="isSubscribe" class="customInput customInput-orangecheck jsCustomRadio">
                     <label for="subscribe" class="customLabel mChecked">Получить<br/> рекламную рассылку</label>
 
                     <input type="checkbox" id="agree" name="user[agree]" class="customInput customInput-orangecheck jsCustomRadio">

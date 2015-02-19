@@ -4,10 +4,11 @@
  * @var $user             \Session\User
  * @var $enterpizeCoupons \Model\EnterprizeCoupon\Entity[]
  * @var $enterpizeCoupon  \Model\EnterprizeCoupon\Entity
- * @var $userDiscounts    \Model\EnterprizeCoupon\DiscountCoupon\Entity[]
+ * @var $userCoupons      \Model\EnterprizeCoupon\Entity[]
  * @var $coupon           \Model\EnterprizeCoupon\Entity
  * @var $isCouponSent     bool
  * @var $products         \Model\Product\Entity[]
+ * @var $form             \View\Enterprize\Form
  */
 
 $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMember();
@@ -111,65 +112,11 @@ $helper = new \Helper\TemplateHelper();
     </div>
 <? endif ?>
 
-<? if ($isEnterprizeMember): ?>
+<? if ($isEnterprizeMember && $userCoupons): ?>
     <div class="ep-list ep-list--member">
         <h2 class="ep-tl">ВАШИ ФИШКИ <span class="orange">Enter</span> Prize</h2>
 
-        <div class="ep-list__row clearfix">
-            <div class="ep-list__i">
-                <div class="ep-list__lk">
-                    <span style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_orange_b1.png);" class="ep-coupon">
-                        <span class="ep-coupon__inner">
-                            <span class="ep-coupon__ico"><img src="http://content.enter.ru/wp-content/uploads/2014/03/enterprize-icon-tchibo.jpg"></span>
-                            <span class="ep-coupon__desc">Товары Tchibo</span>
-                            <span class="ep-coupon__price">10%</span>
-                        </span>
-                    </span>
-                </div>
-
-                <div class="ep-finish">
-                    <span class="ep-finish__tl">До конца действия<br/>фишки осталось </span>
-                    <span class="ep-finish__num">3</span>
-                    <div class="ep-finish__day">дня</div>
-                </div>
-            </div>
-
-            <div class="ep-list__i">
-                <div class="ep-list__lk">
-                    <span style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_orange_b1.png);" class="ep-coupon">
-                        <span class="ep-coupon__inner">
-                            <span class="ep-coupon__ico"><img src="http://content.enter.ru/wp-content/uploads/2014/03/enterprize-icon-tchibo.jpg"></span>
-                            <span class="ep-coupon__desc">Товары Tchibo</span>
-                            <span class="ep-coupon__price">10%</span>
-                        </span>
-                    </span>
-                </div>
-            </div>
-
-            <div class="ep-list__i">
-                <div class="ep-list__lk">
-                    <span style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_orange_b1.png);" class="ep-coupon">
-                        <span class="ep-coupon__inner">
-                            <span class="ep-coupon__ico"><img src="http://content.enter.ru/wp-content/uploads/2014/03/enterprize-icon-tchibo.jpg"></span>
-                            <span class="ep-coupon__desc">Товары Tchibo</span>
-                            <span class="ep-coupon__price">10%</span>
-                        </span>
-                    </span>
-                </div>
-            </div>
-
-            <div class="ep-list__i">
-                <div class="ep-list__lk">
-                    <span style="background-image: url(http://content.enter.ru/wp-content/uploads/2014/03/fishka_orange_b1.png);" class="ep-coupon">
-                        <span class="ep-coupon__inner">
-                            <span class="ep-coupon__ico"><img src="http://content.enter.ru/wp-content/uploads/2014/03/enterprize-icon-tchibo.jpg"></span>
-                            <span class="ep-coupon__desc">Товары Tchibo</span>
-                            <span class="ep-coupon__price">10%</span>
-                        </span>
-                    </span>
-                </div>
-            </div>
-        </div>
+        <?= $helper->render('enterprize/_list', ['enterpizeCoupons' => $userCoupons, 'user' => $user, 'form' => $form]) ?>
 
         <div class="ep-hint ep-hint--position" style="display: none;">
             <div class="ep-hint__row">
@@ -413,7 +360,7 @@ $helper = new \Helper\TemplateHelper();
 <? endif */?>
 
 <div class="ep-list ep-list--width">
-    <?= $helper->render('enterprize/_list', ['enterpizeCoupons' => $enterpizeCoupons, 'userDiscounts' => $userDiscounts, 'user' => $user]) ?>
+    <?= $helper->render('enterprize/_list', ['enterpizeCoupons' => $enterpizeCoupons, 'user' => $user, 'form' => $form]) ?>
 </div>
 
 <script id="tplEnterprizeForm" type="text/html" data-partial="<?= $helper->json([]) ?>">
