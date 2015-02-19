@@ -56,12 +56,25 @@
         float: left;
         margin: 15px 0 0;
         width: 660px;
+        .bProductDescImg {
+            width: 600px;
+            position: relative;
+            &Big {
+                width: 600px;
+                height: 500px;
+                .bProductDescImgBig__eImg{
+                    min-width: 500px;
+                    height: 500px;
+                }
+            }
+        }
     }
     &__section-right {
         float: right;
         margin: 15px 0 0 16px;
         width: 260px;
         zoom: 1;
+
     }
     &__specify {}
     &__props{
