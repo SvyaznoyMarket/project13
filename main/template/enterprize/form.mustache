@@ -52,11 +52,15 @@
                 </fieldset>
 
                 <fieldset class="form-reg__fld form-reg__sbsrb clearfix">
-                    <input type="checkbox" name="user[isSubscribe]" checked="checked" id="isSubscribe" class="customInput customInput-orangecheck jsCustomRadio">
-                    <label for="subscribe" class="customLabel mChecked">Получить<br/> рекламную рассылку</label>
+                    <div class="form-reg__sbsrb__i">
+                        <input type="checkbox" name="user[isSubscribe]" checked="checked" id="isSubscribe" class="customInput customInput-orangecheck jsCustomRadio">
+                        <label for="subscribe" class="customLabel mChecked">Получить<br/> рекламную рассылку</label>
+                    </div>
 
-                    <input type="checkbox" id="agree" name="user[agree]" class="customInput customInput-orangecheck jsCustomRadio">
-                    <label for="agree" class="customLabel fl-r">Согласен<br/> <a class="agree-lk undrl" target="_blank" href="/reklamnaya-akcia-enterprize">с условиями оферты</a></label>
+                    <div class="form-reg__sbsrb__i fl-r">
+                        <input type="checkbox" id="agree" name="user[agree]" class="customInput customInput-orangecheck jsCustomRadio">
+                        <label for="agree" class="customLabel">Согласен<br/> <a class="agree-lk undrl" target="_blank" href="/reklamnaya-akcia-enterprize">с условиями оферты</a></label>
+                    </div>
                 </fieldset>
 
                 <fieldset class="form-reg__fld form-reg__btn clearfix">
@@ -70,6 +74,14 @@
             </form>
         </div>
         {{/user.isMember}}
+    </div>
+
+    <div class="ep-hint__row ep-hint__row--cmplt">
+        <div class="ep-hint__cmplt-tl">
+            <strong>Спасибо!</strong>
+        </div>
+
+        <p class="ep-hint__cmplt-tx">Для завершения регистрации, пожалуйста, перейдите по ссылке в письме, отправленном на Ваш почтовый адрес.</p>
     </div>
 
     <div class="ep-hint__row ep-hint__row--cut">
