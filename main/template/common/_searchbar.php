@@ -4,6 +4,11 @@
  * @var $menu \Model\Menu\BasicMenuEntity[]|null
  */
 $menu = $page->getGlobalParam('menu');
+$btnTypes = array(
+        1 => "hdgift--old",
+        2 => "hdgift--new",
+        3 => "hdgift--new hdgift--new-cursive"
+    );
 ?>
 
 <!-- поиск -->
@@ -88,10 +93,10 @@ $menu = $page->getGlobalParam('menu');
         <a href="<?= \App::router()->generate('enterprize') ?>" class="i-header i-header-ep jsEnterprizeInSearchBarButton"></a>
     </div>
 
-    <div class="hdgift<?= $page->escape(\Session\AbTest\ABHelperTrait::getGiftButtonNumber()) ?>">
+    <div class="hdgift <?= $btnTypes[ $page->escape(\Session\AbTest\ABHelperTrait::getGiftButtonNumber()) ] ?>">
         <a class="hdgift_i hdgift_lk jsGiftInSearchBarButton" href="<?= \App::router()->generate('product.gift') ?>">
             <img class="hdgift_i hdgift_img" src="/styles/header/img/icon-gift.png" alt="">
-            <span class="hdgift_i hdgift_tx">Выбери подарок!</span>
+            <span class="hdgift_i hdgift_tx">Выбери подарки!</span>
         </a>
     </div>
 </div>
