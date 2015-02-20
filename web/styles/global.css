@@ -10689,7 +10689,6 @@ img[height="0"] {
   .popup__form-group {
     margin: 20px 0px;
     position: relative;
-    overflow: hidden;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -10697,6 +10696,7 @@ img[height="0"] {
   }
   .popup__form-group .input-group {
     width: 440px;
+    overflow: hidden;
     position: relative;
   }
   .popup__form-group .input-group .label-for-input {
