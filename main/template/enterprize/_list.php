@@ -120,7 +120,7 @@ $f = function(
                         <span class="couponText">Только<br/> для игроков<br/> <span class="epTextLogo">Enter <span class="epTextLogo_colors">Prize</span></span></span>
                     </span>
                     <? else:?>
-                        <? if ($isEnterprizeMember): // Только для игроков EnterPrize  ?><span class="ep-coupon-hover"></span><? endif ?>
+                        <? if ( !$dataValue[isUserOwner] ): // Только для игроков EnterPrize  ?><span class="ep-coupon-hover"></span><? endif ?>
                     <? endif ?>
                 </div>
             </div>

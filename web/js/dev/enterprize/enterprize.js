@@ -334,6 +334,7 @@
 		partials = $self.data('value');
 		html = Mustache.render( templateHint, partials );
 
+		// показываем окно с описанием фишки
 		if ( $self.hasClass( activeClass ) ) {
 			$self.removeClass( activeClass );
 			$('.js-enterprize-coupon-hint').remove();

@@ -5849,6 +5849,7 @@ img[height="0"] {
   }
   .ep-hint__row--cmplt {
     text-align: center;
+    display: none;
   }
   .ep-hint__cmplt-tl {
     font-size: 28px;
