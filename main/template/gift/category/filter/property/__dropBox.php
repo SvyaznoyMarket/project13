@@ -48,6 +48,11 @@ return function(
             $options = $womanSexStatusOptions;
         }
 
+        // Из-за присутствия одинаковых статусов как у мужчины так и у женщине, необходимо  искать $selectedOption в соответствующих выбранному полу статусах
+        if (!$initialValue) {
+            $selectedOption = $property->getSelectedOption($productFilter, $options);
+        }
+
         foreach ($manSexStatusOptions as $option) {
             $statusOptionGroups['man'][] = [
                 'id' => \View\Id::productCategoryFilter($property->getId()) . '-option-' . $option->getId(),
