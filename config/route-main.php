@@ -1004,6 +1004,11 @@ return [
         'action'  => ['Enterprize\ShowAction', 'execute'],
     ],
 
+    'enterprize.slider' => [
+        'pattern' => '/enterprize-slider/{enterprizeToken}',
+        'action'  => ['Enterprize\SliderAction', 'execute'],
+    ],
+
     'mobidengi' => [
         'pattern' => '/tele2',
         'action'  => ['Mobidengi\IndexAction', 'execute'],

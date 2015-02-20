@@ -64,14 +64,18 @@ $f = function(
                 'end'         => $coupon->getEndDate() instanceof \DateTime ? $coupon->getEndDate()->format('d.m.Y') : null,
                 'description' => $coupon->getSegmentDescription(),
                 'minOrderSum' => $helper->formatPrice($coupon->getMinOrderSum()),
-                'isUserOwner' => false,
+                'isUserOwner' => (bool)$coupon->getDiscount(),
                 'link'        =>
                     $coupon->getName() && $coupon->getLink()
-                        ? [
+                    ? [
                         'name' => $coupon->getName(),
                         'url'  => $coupon->getLink(),
                     ]
-                        : null,
+                    : null
+                ,
+                'slider'      => [
+                    'url' => \App::router()->generate('enterprize.slider', ['enterprizeToken' => $coupon->getToken()]),
+                ],
                 'user'        => [
                     'isMember' => $user->getEntity() && $user->getEntity()->isEnterprizeMember(),
                 ],
@@ -116,7 +120,7 @@ $f = function(
                         <span class="couponText">Только<br/> для игроков<br/> <span class="epTextLogo">Enter <span class="epTextLogo_colors">Prize</span></span></span>
                     </span>
                     <? else:?>
-                        <? if ($isUserOwner): // Только для игроков EnterPrize  ?><span class="ep-coupon-hover"></span><? endif ?>
+                        <? if ($isEnterprizeMember): // Только для игроков EnterPrize  ?><span class="ep-coupon-hover"></span><? endif ?>
                     <? endif ?>
                 </div>
             </div>
