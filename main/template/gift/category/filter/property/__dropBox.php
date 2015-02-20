@@ -42,14 +42,6 @@ return function(
             }
         }
 
-        if ($selectedOption) {
-            if ('man' === $selectedSexOptionToken && !in_array($selectedOption, $manSexStatusOptions, true)) {
-                $selectedOption = reset($manSexStatusOptions);
-            } else if ('woman' === $selectedSexOptionToken && !in_array($selectedOption, $womanSexStatusOptions, true)) {
-                $selectedOption = reset($womanSexStatusOptions);
-            }
-        }
-
         if ('man' === $selectedSexOptionToken) {
             $options = $manSexStatusOptions;
         } else if ('woman' === $selectedSexOptionToken) {
