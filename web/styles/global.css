@@ -4359,7 +4359,7 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    width: 50px;
+    width: 66px;
     line-height: 1.2;
   }
   .cartLst .del {
@@ -7651,7 +7651,7 @@ img[height="0"] {
   .orderCol_summ {
     float: right;
     clear: right;
-    width: 90px;
+    width: 92px;
     font-size: 16px;
   }
   .orderCol-r {
