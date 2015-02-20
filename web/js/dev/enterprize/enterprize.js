@@ -326,13 +326,13 @@
 
 			activeClass = 'act',
 
-			partials,
-			html;
+			html,
+			dataValue = $self.data('value')
+		;
 
 		$('.js-enterprize-coupon-hint').remove();
 
-		partials = $self.data('value');
-		html = Mustache.render( templateHint, partials );
+		html = Mustache.render( templateHint, dataValue );
 
 		// показываем окно с описанием фишки
 		if ( $self.hasClass( activeClass ) ) {
@@ -343,6 +343,33 @@
 			$('.js-enterprize-coupon').removeClass( activeClass );
 			$self.addClass( activeClass );
 			$self.closest('.js-enterprize-coupon-parent').after( html );
+		}
+
+		if (dataValue.slider.url) {
+			var $sliderContainer = $('.js-enterprize-slider-container');
+
+			$sliderContainer.empty();
+			if (body.data('enterprizeSliderXhr')) { // если до этого была загрузка слайдера - прибиваем
+				try {
+					body.data('enterprizeSliderXhr').abort();
+				} catch (error) {
+					console.error(error);
+				}
+			}
+
+			var xhr = $.get(dataValue.slider.url);
+
+			xhr.done(function(response) {
+				console.warn(response);
+				if (response.content) {
+					$sliderContainer.html(response.content);
+				}
+			});
+			xhr.always(function() {
+				body.data('enterprizeSliderXhr', null);
+			});
+
+			body.data('enterprizeSliderXhr', xhr);
 		}
 	});
 
