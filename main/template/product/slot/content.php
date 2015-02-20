@@ -58,7 +58,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
 
 <div class="product-card__section-right">
     <? if ($isProductAvailable): ?>
-        <div class="product-card__vendor">Продавец-партнёр: <?= $helper->escape($product->getSlotPartnerOffer()['name']) ?></div>
+        <div class="product-card__vendor">Продавец-партнёр: <nobr><?= $helper->escape($product->getSlotPartnerOffer()['name']) ?></nobr></div>
 
         <?= $helper->render('product/slot/__price', ['product' => $product]) // Цена ?>
 

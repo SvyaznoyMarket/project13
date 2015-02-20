@@ -10510,6 +10510,9 @@ img[height="0"] {
     width: 260px;
     zoom: 1;
   }
+  .product-card__props {
+    margin-bottom: 15px;
+  }
   .product-card__props .bSpecifications .bSpecificationsList__eValue {
     float: left;
   }
