@@ -4359,7 +4359,7 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    width: 50px;
+    width: 66px;
     line-height: 1.2;
   }
   .cartLst .del {
@@ -7651,7 +7651,7 @@ img[height="0"] {
   .orderCol_summ {
     float: right;
     clear: right;
-    width: 90px;
+    width: 92px;
     font-size: 16px;
   }
   .orderCol-r {
@@ -10503,6 +10503,12 @@ img[height="0"] {
   .product-card__section-left .bProductDescImgBig .bProductDescImgBig__eImg {
     min-width: 500px;
     height: 500px;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    float: none;
   }
   .product-card__section-right {
     float: right;
@@ -10964,6 +10970,7 @@ img[height="0"] {
     text-align: center;
     bottom: 15px;
     left: 0px;
+    z-index: 9999;
   }
   .product-container--kitchen .bPhotoAction .prod-photoslider {
     float: none;
