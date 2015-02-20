@@ -951,6 +951,8 @@ class Action {
                         foreach ($data as $item) {
                             $products[] = new \Model\Product\Entity($item);
                         }
+                    } else {
+                        \App::logger()->error(['error' => 'Товары не получены', 'core.response' => $data, 'sender' => __FILE__ . ' ' .  __LINE__], ['controller']);
                     }
                 });
             }
