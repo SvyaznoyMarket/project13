@@ -1,12 +1,12 @@
 <?php
 
-namespace EnterLab\Repository;
+namespace EnterLab\Action\ProductCard;
 
-class ProductCard
+class Get
 {
     use \EnterLab\Application\CurlTrait;
 
-    public function get()
+    public function execute()
     {
         $startAt = microtime(true);
 
@@ -106,6 +106,7 @@ class ProductCard
     protected function pushQuery($url, $data = [], &$result, &$error = null, $callback = null)
     {
         $query = $this->getCurl()->createQuery();
+
         $startingResponse = false;
         $query->request->options = [
             CURLOPT_HEADER         => false,
@@ -139,7 +140,7 @@ class ProductCard
         }
         $query->resolveCallback = function() use (&$query, &$result, &$callback) {
             if ($query->response->error instanceof \EnterLab\Curl\Exception\ConnectException) {
-                var_dump('Timeout reached');
+                var_dump(sprintf('Timeout reached for %s', $query->request->options[CURLOPT_URL]));
             }
 
             $result = json_decode($query->response->body, true);

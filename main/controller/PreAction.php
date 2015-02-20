@@ -16,11 +16,11 @@ class PreAction {
         // cache
         $route = $request->attributes->get('route');
         $repositoriesByRoute = [
-            'product' => 'ProductCard',
+            'product' => 'ProductCard\\Get',
         ];
-        $repositoryClass = isset($repositoriesByRoute[$route]) ? ('\\EnterLab\\Repository\\' . $repositoriesByRoute[$route]) : null;
+        $repositoryClass = isset($repositoriesByRoute[$route]) ? ('\\EnterLab\\Action\\' . $repositoriesByRoute[$route]) : null;
         if ($repositoryClass) {
-            (new $repositoryClass)->get();
+            (new $repositoryClass)->execute();
         }
 
         $uri = $request->getPathInfo();

@@ -64,8 +64,9 @@ class Client
         $request = $query->request;
 
         $handle = curl_init();
-        if (!$id = (int)$handle) {
-            throw new \RuntimeException(sprintf('Не удалось инициализировать запрос %s', (string)$request));
+        $id = (int)$handle;
+        if (!$id) {
+            throw new \RuntimeException(sprintf('Не удалось инициализировать запрос %s', $request));
         }
         curl_setopt_array($handle, $request->options);
         $this->handlesById[$id] = $handle;
@@ -170,7 +171,7 @@ class Client
             $response->statusCode = $query->response->info['http_code'];
             $response->body = curl_multi_getcontent($done['handle']);
 
-            $callback = (($query->resolveCallback instanceof \Closure) || is_callable($query->resolveCallback)) ? $query->resolveCallback : null;
+            $callback = is_callable($query->resolveCallback) ? $query->resolveCallback : null;
 
             $this->removeRequest($id);
 
