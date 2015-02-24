@@ -1,6 +1,6 @@
 <?php
 
-namespace EnterLab\Application;
+namespace EnterApplication;
 
 class Service
 {

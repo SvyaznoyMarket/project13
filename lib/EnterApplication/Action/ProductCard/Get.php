@@ -1,10 +1,10 @@
 <?php
 
-namespace EnterLab\Action\ProductCard;
+namespace EnterApplication\Action\ProductCard;
 
 class Get
 {
-    use \EnterLab\Application\CurlTrait;
+    use \EnterApplication\CurlTrait;
 
     public function execute()
     {
@@ -100,7 +100,7 @@ class Get
         var_dump($menu);
         */
 
-        //die(microtime(true) - $startAt);
+        die(microtime(true) - $startAt);
     }
 
     protected function pushQuery($url, $data = [], &$result, &$error = null, $callback = null)

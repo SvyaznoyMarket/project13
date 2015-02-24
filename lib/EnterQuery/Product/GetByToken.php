@@ -1,70 +1,63 @@
 <?php
 
 namespace EnterQuery\Product {
-    use EnterLab\Query;
-    use EnterLab\Curl;
-    use EnterQuery\CoreQueryTrait;
-    use EnterQuery\Product\GetByToken\Parameter;
-    use EnterQuery\Product\GetByToken\Result;
 
-    class GetByToken extends Query\Query implements Query\CurlQueryInterface
-    {
-        use CoreQueryTrait;
+    use EnterQuery\Product\GetByToken\Response;
 
-        /** @var Parameter */
-        public $parameter;
-        /** @var Result */
-        private $result;
+    class GetByToken {
+        use \EnterQuery\CurlQueryTrait, \EnterQuery\JsonTrait;
 
-        public function __construct()
+        /** @var string */
+        public $token;
+        /** @var string|null */
+        public $regionId;
+        /** @var Response */
+        public $response;
+
+        public function __construct($token, $regionId = null)
         {
-            $this->result = new Result();
-            $this->parameter = new Parameter();
+            $this->response = new Response();
+
+            $this->token = $token;
+            $this->regionId = $regionId;
         }
 
-        /**
-         * @return Curl\Request
-         * @throws \Exception
-         */
-        public function getRequest()
+        public function prepare($callback = null, \Exception &$error = null)
         {
-            if (!$this->parameter->token) {
-                throw new \Exception('Не задан параметр token');
-            }
-            if (!$this->parameter->regionId) {
-                throw new \Exception('Не задан параметр regionId');
-            }
+            $config = (array)\App::config()->coreV2 + [
+                'url'       => null,
+                'timeout'   => null,
+                'client_id' => null,
+            ];
 
-            $request = $this->createRequest(
-                '/v2/product/get',
-                [
-                    'select_type' => 'slug',
-                    'slug'        => $this->parameter->token,
-                    'geo_id'      => $this->parameter->regionId,
-                ],
-                []
+            $this->pushCurlQuery(
+                $this->buildUrl(
+                    preg_replace('/\/v2\/$/', '/', $config['url']),
+                    '/v2/product/get',
+                    [
+                        'select_type' => 'slug',
+                        'slug'        => $this->token,
+                        'geo_id'      => $this->regionId,
+                    ]
+                ),
+                [], // data
+                $config['timeout'] * 1000 * 1, // timeout
+                $callback,
+                $error,
+                [$this, 'decode']
             );
-
-            return $request;
         }
 
-        public function parseResponse($response)
+        private function decode($response)
         {
-
+            $this->response->products = $this->jsonToArray($response)['result'];
         }
     }
 }
 
 namespace EnterQuery\Product\GetByToken {
-    class Parameter
+    class Response
     {
-        /** @var string */
-        public $token;
-        /** @var string */
-        public $regionId;
-    }
-
-    class Result {
         /** @var array */
         public $products = [];
     }

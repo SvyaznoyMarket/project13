@@ -60,7 +60,7 @@ if ('main' == \App::$name) {
 $response = null;
 
 // сервис EnterLab !новинка
-$GLOBALS['enter/service'] = new \EnterLab\Application\Service();
+$GLOBALS['enter/service'] = new EnterApplication\Service();
 
 \App::init($env, $config, function() use (&$response) {
     $request = \App::request();

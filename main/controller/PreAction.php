@@ -18,7 +18,7 @@ class PreAction {
         $repositoriesByRoute = [
             'product' => 'ProductCard\\Get',
         ];
-        $repositoryClass = isset($repositoriesByRoute[$route]) ? ('\\EnterLab\\Action\\' . $repositoriesByRoute[$route]) : null;
+        $repositoryClass = isset($repositoriesByRoute[$route]) ? ('\\EnterApplication\\Action\\' . $repositoriesByRoute[$route]) : null;
         if ($repositoryClass) {
             (new $repositoryClass)->execute();
         }
