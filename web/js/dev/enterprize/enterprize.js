@@ -373,9 +373,7 @@
 		}
 	});
 
-	$('.js-ep-form-reg').on('submit', function( e ) {
-		e.preventDefault();
-
+	body.on('submit', '.js-ep-form-reg', function( e ) {
 		var
             $el = $(e.target),
             action = $el.attr('action'),
@@ -391,6 +389,8 @@
         };
 
         $.post(action, formData, responseFrom, 'json');
+
+		e.preventDefault();
 	});
 
 	body.on('focus', '.js-phone-mask', function() {
