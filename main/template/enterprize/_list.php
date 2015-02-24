@@ -80,7 +80,11 @@ $f = function(
                     'isMember' => $user->getEntity() && $user->getEntity()->isEnterprizeMember(),
                 ],
                 'form'        => [
-                    'action' => $isNotMember ? \App::router()->generate($form->getRoute()) : \App::router()->generate('enterprize.form.show', ['enterprizeToken' => $coupon->getToken()]),
+                    'action' =>
+                        ($user->getEntity() && $user->getEntity()->isEnterprizeMember())
+                        ? \App::router()->generate('enterprize.form.show', ['enterprizeToken' => $coupon->getToken()])
+                        : \App::router()->generate('enterprize.form.update', ['enterprizeToken' => $coupon->getToken()])
+                    ,
                 ],
             ];
             ?>
