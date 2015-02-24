@@ -360,7 +360,6 @@
 			var xhr = $.get(dataValue.slider.url);
 
 			xhr.done(function(response) {
-				console.warn(response);
 				if (response.content) {
 					$sliderContainer.html(response.content);
 				}
