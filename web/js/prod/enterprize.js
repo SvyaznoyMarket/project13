@@ -373,6 +373,26 @@
 		}
 	});
 
+	$('.js-ep-form-reg').on('submit', function( e ) {
+		e.preventDefault();
+
+		var
+            $el = $(e.target),
+            action = $el.attr('action'),
+            formData = $el.serializeArray();
+
+        var responseFrom = function( response ) {
+            var message = response.notice.message;
+
+            if ( message ) {
+                $el.closest('.ep-hint__row').hide();
+                $('.ep-hint__row--cmplt').show().find('.ep-hint__cmplt-tx').html(message);
+            }
+        };
+
+        $.post(action, formData, responseFrom, 'json');
+	});
+
 	body.on('focus', '.js-phone-mask', function() {
 		var $self = $(this);
 

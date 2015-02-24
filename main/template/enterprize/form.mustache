@@ -34,7 +34,7 @@
 
         {{^user.isMember}}
         <div class="ep-hint__col ep-hint__col--r">
-            <form class="jsEnterprizeForm form-reg" action="{{form.action}}" method="post">
+            <form class="form-reg js-ep-form-reg" action="{{form.action}}" method="post">
                 <input type="hidden" name="user[guid]" value="{{token}}" />
 
                 <fieldset class="form-reg__fld">
@@ -85,8 +85,9 @@
         <div class="ep-hint__cmplt-tl">
             Спасибо!
         </div>
+        <p class="ep-hint__cmplt-tx"></p>
 
-        <p class="ep-hint__cmplt-tx">Для завершения регистрации, пожалуйста, перейдите по ссылке в письме, отправленном на Ваш почтовый адрес.</p>
+        {{! <p class="ep-hint__cmplt-tx">Для завершения регистрации, пожалуйста, перейдите по ссылке в письме, отправленном на Ваш почтовый адрес.</p> }}
     </div>
     {{/isUserOwner}}
 

@@ -177,8 +177,8 @@
         color: @white;
         height: 100%;
         width: 100%;
-        //padding: 0 0 5px;
-        left: 0;
+        padding: 0 2px;
+        left: -2px;
         position: absolute;
         text-align: center;
         top: 0;
@@ -244,6 +244,14 @@
                 }
             }
         }
+
+        .slideItem_btn-prv {
+            left: -10px;
+        }
+
+        .slideItem_btn-nxt {
+            right: -10px;
+        }
     }
 
     &--center {
@@ -257,6 +265,10 @@
                 font-size: 16px;
                 padding-left: 5px;
             }
+        }
+
+        .slideItem_i {
+            margin-bottom: 5px;
         }
 
         .btnBuy__eLink {
