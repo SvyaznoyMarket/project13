@@ -366,6 +366,7 @@
 			});
 			xhr.always(function() {
 				body.data('enterprizeSliderXhr', null);
+				$('.js-slider').goodsSlider();
 			});
 
 			body.data('enterprizeSliderXhr', xhr);
