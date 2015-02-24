@@ -17,20 +17,20 @@
 
                 {{#user.isMember}}
                     {{^isUserOwner}}
-                        <a class="slideItem__ep-price" href="">
-                            <span class="slideItem__ep-price__inn">
-                                <span class="slideItem__ep-price__i">
-                                    Обычная цена<br>
-                                    <span class="td-lineth">950</span> <span class="rubl">p</span>
-                                </span>
-
-                                <span class="slideItem__ep-price__i">
-                                    <strong>Цена по фишке</strong><br>
-                                    <span class="slideItem__ep-price__sale"><strong>950</strong> <span class="rubl">p</span></span>
-                                </span>
+                    <a class="slideItem__ep-price" href="">
+                        <span class="slideItem__ep-price__inn">
+                            <span class="slideItem__ep-price__i">
+                                Обычная цена<br>
+                                <span class="td-lineth">{{&price}}</span> <span class="rubl">p</span>
                             </span>
-                        </a>
-                {{/isUserOwner}}
+
+                            <span class="slideItem__ep-price__i">
+                                <strong>Цена по фишке</strong><br>
+                                <span class="slideItem__ep-price__sale"><strong>{{&discountPrice}}</strong> <span class="rubl">p</span></span>
+                            </span>
+                        </span>
+                    </a>
+                    {{/isUserOwner}}
                 {{/user.isMember}}
 
                 {{#cartButton}}
