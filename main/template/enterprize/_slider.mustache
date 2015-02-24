@@ -1,19 +1,21 @@
-<div class="js-slider slideItem slideItem-7item slideItem--sale" data-slider="{{&dataSlider}}">
+<div class="js-slider slideItem slideItem-7item {{#user.isMember}}slideItem--sale{{/user.isMember}}" data-slider="{{&dataSlider}}">
     <div class="slideItem_inn">
         <ul class="slideItem_lst clearfix">
             {{#products}}
             <li class="slideItem_i jsSliderItem" style="display: list-item;">
                 <div class="slideItem_i__child">
-                    <div class="slideItem_imgw">
-                        <img alt="{{name}}" src="{{image}}" class="slideItem_img">
-                    </div>
+                    {{#isUserOwner}}<a href="">{{/isUserOwner}}
+                        <div class="slideItem_imgw">
+                            <img alt="{{name}}" src="{{image}}" class="slideItem_img">
+                        </div>
 
-                    <div class="slideItem_n">
-                        {{name}}
-                    </div>
+                        <div class="slideItem_n">
+                            {{name}}
+                        </div>
+                    {{#isUserOwner}}</a>{{/isUserOwner}}
                 </div>
 
-                {{#user.isMember}}
+                {{#user.isMember}}{{^isUserOwner}}
                     <a class="slideItem__ep-price" href="">
                         <span class="slideItem__ep-price__inn">
                             <span class="slideItem__ep-price__i">
@@ -27,7 +29,11 @@
                             </span>
                         </span>
                     </a>
-                {{/user.isMember}}
+                {{/isUserOwner}}{{/user.isMember}}
+
+                {{#isUserOwner}}
+                    qqq
+                {{/isUserOwner}}
             </li>
             {{/products}}
         </ul>

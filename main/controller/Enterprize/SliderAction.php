@@ -43,9 +43,11 @@ class SliderAction {
                 'user'        => [
                     'isMember' => $user->getEntity() && $user->getEntity()->isEnterprizeMember(),
                 ],
+                'isUserOwner' => true,
                 'dataSlider'   => $helper->json([
                     'count'  => count($products),
                     'limit'  => 7,
+                    'url'    => $url,
                     'sender' => [
                         'name'     => 'enter',
                         'position' => 'Enterprize',
