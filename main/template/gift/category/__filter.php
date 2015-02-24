@@ -75,7 +75,7 @@ return function(
             </div>
         </form>
 
-        <a href="<?= $helper->url('product.category', ['categoryPath' => 'gifthobby/podarochnie-sertifikati-enter-2287']) ?>" class="fltrBtn_anim-item" target="_blank"><img class="fltrBtn_anim-item_img" src="/styles/catalog/img/gift-card.png" alt=""></a>
+        <a href="<?= $helper->url('product.category', ['categoryPath' => 'gifthobby/podarochnie-sertifikati-enter-2287']) ?>" class="fltrBtn_anim-item" target="_blank"><img class="fltrBtn_anim-item_img" src="/styles/catalog/img/gift-card-8m.png" alt=""></a>
     </div>
 
 <? };
