@@ -342,7 +342,7 @@
 		} else {
 			$('.js-enterprize-coupon').removeClass( activeClass );
 			$self.addClass( activeClass );
-			$self.closest('.js-enterprize-coupon-parent').after( html );
+			$self.closest('.js-enterprize-coupon-parent').append( html );
 		}
 
 		if (dataValue.slider.url) {

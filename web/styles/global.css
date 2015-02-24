@@ -5564,7 +5564,7 @@ img[height="0"] {
     filter: alpha(opacity=100);
   }
   .ep-list__i.act {
-    z-index: 31;
+    z-index: 25;
   }
   .ep-list__i.act:after {
     position: absolute;
@@ -5576,7 +5576,7 @@ img[height="0"] {
     border-bottom: 16px solid #ffffff;
     top: 197px;
     left: 87px;
-    z-index: 31;
+    z-index: 25;
   }
   .ep-list__i.act .ep-finish {
     -moz-opacity: 0.3;
@@ -5633,6 +5633,9 @@ img[height="0"] {
   .ep-list__lk {
     display: block;
     cursor: pointer;
+  }
+  .ep-list__row {
+    position: relative;
   }
   .ep-finish {
     background: #ef404a;
@@ -5800,12 +5803,13 @@ img[height="0"] {
     background: #ffffff;
     margin: 0 0 10px 0;
     position: relative;
-    -webkit-box-shadow: 0 0 15px #333333;
-    -moz-box-shadow: 0 0 15px #333333;
-    box-shadow: 0 0 15px #333333;
+    -webkit-box-shadow: 0px 6px 6px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0px 6px 6px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 6px 6px rgba(0, 0, 0, 0.5);
     top: -25px;
     width: 960px;
     z-index: 30;
+    clear: both;
   }
   .ep-hint--2col .ep-hint__col {
     float: left;
@@ -5825,7 +5829,7 @@ img[height="0"] {
     left: 0;
     margin: 0;
     position: absolute;
-    top: 293px;
+    top: 213px;
     z-index: 26;
   }
   .ep-hint--position .ep-hint__row {
