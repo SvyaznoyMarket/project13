@@ -20,8 +20,9 @@
 
             <div class="orderPayment_msg orderPayment_noOnline_msg">
                 <div class="orderPayment_msg_head">
-                    Скидка 10% на следующий заказ<br/>при оплате онлайн
+                    Скидка 10%
                 </div>
+                <div class="orderPayment_msg_title">на следующий заказ при оплате онлайн</div>
                 <!-- Этот блок показывается сразу -->
                 <div class="jsOrderCouponInitial">
                     <div class="orderPayment_msg_shop orderPayment_pay">
@@ -30,7 +31,7 @@
                             <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/visa-logo-sm.jpg"></a></li>
                             <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/psb.png"></a></li>
                         </ul>
-                        <a class="orderPayment_msg_link orderPayment_msg_link--mid" href="/how_use_chip" target="_blank">Подробнее</a>
+                        <a class="orderPayment_msg_link orderPayment_msg_link--mid" href="/how_use_chip">Подробнее</a>
                     </div>
                 </div>
                 <!-- А этот потом -->

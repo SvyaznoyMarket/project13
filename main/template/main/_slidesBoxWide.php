@@ -7,8 +7,11 @@
 
             <ul class="slidesBox_dott">
                 <li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Guess"></li>
+                <li class="slidesBox_dott_i" data-name="Guess"></li>
                 <li class="slidesBox_dott_i" data-name="Magic Moments"></li>
+                <li class="slidesBox_dott_i" data-name="Суперароматы для настоящих мужчин"></li>
                 <li class="slidesBox_dott_i" data-name="Новая ювелирная коллекция"></li>
+                <li class="slidesBox_dott_i" data-name="Stroili"></li>
             </ul>
         </div>
 
@@ -69,6 +72,12 @@
             </li>
 
             <li class="slidesBox_i jsSlidesWideItem">
+                <a href="http://www.enter.ru/slices/brands-guess?from=enter_internal_940x240_Guess_sale" class="slidesBox_lk">
+                    <img src="styles/mainpage/img/collection-guess-sale70.jpg" alt="" class="slidesBox_img">
+                </a>
+            </li>
+
+            <li class="slidesBox_i jsSlidesWideItem">
                 <a href="/products/set/2030000207725,2030000207749,2030000207756,2030000207763,2030000207794,2030000207862,2030000207930,2030000207961,2030000208081,2030000208104,2030000207732,2030000207800,2030000207695,2030000208173,2030000207886,2030000207701,2030000207718,2030000207909,2030000207916,2030000208197,2030000207770,2030000207923,2030000207992,2030000208234,2030000208241,2030000207787,2030000208029,2030000208043,2030000207831,2030000207879,2030000208050,2030000207893,2030000207985,2030000208067,2030000208111,2030000208227,2030000208128,2030000208135,2030000208159,2030000208166,2030000208180,2030000208203,2030000207817,2030000207824,2030000207848,2030000207855,2030000207947,2030000207954,2030000207978,2030000208005,2030000208012,2030000208036,2030000208074,2030000208098,2030000208142,2030000208210" class="slidesBox_lk">
                     <img src="styles/mainpage/img/Mmoment/MMoment-b.jpg" alt="" class="slidesBox_img">
                 </a>
@@ -115,6 +124,12 @@
                 </ul>
 
                 <a href="/products/set/2030000207725,2030000207749,2030000207756,2030000207763,2030000207794,2030000207862,2030000207930,2030000207961,2030000208081,2030000208104,2030000207732,2030000207800,2030000207695,2030000208173,2030000207886,2030000207701,2030000207718,2030000207909,2030000207916,2030000208197,2030000207770,2030000207923,2030000207992,2030000208234,2030000208241,2030000207787,2030000208029,2030000208043,2030000207831,2030000207879,2030000208050,2030000207893,2030000207985,2030000208067,2030000208111,2030000208227,2030000208128,2030000208135,2030000208159,2030000208166,2030000208180,2030000208203,2030000207817,2030000207824,2030000207848,2030000207855,2030000207947,2030000207954,2030000207978,2030000208005,2030000208012,2030000208036,2030000208074,2030000208098,2030000208142,2030000208210" class="slidesBox_btnview">Посмотреть<br/>коллекцию</a>
+            </li>
+
+            <li class="slidesBox_i jsSlidesWideItem">
+                <a href="http://www.enter.ru/catalog/parfyumeriya-i-kosmetika/parfyumeriya-mugskaya-parfyumeriya-2600" class="slidesBox_lk">
+                    <img src="styles/mainpage/img/collection-parf23.jpg" alt="" class="slidesBox_img">
+                </a>
             </li>
 
             <li class="slidesBox_i jsSlidesWideItem">
@@ -165,6 +180,12 @@
                 </ul>
 
                 <a href="/catalog/jewel/pandora-1320" class="slidesBox_btnview">Посмотреть<br/>коллекцию</a>
+            </li>
+
+            <li class="slidesBox_i jsSlidesWideItem">
+                <a href="http://www.enter.ru/catalog/ukrasheniya-i-chasi/stroili-ee73" class="slidesBox_lk">
+                    <img src="styles/mainpage/img/collection-stroili40.jpg" alt="" class="slidesBox_img">
+                </a>
             </li>
         </ul>
     </div>
