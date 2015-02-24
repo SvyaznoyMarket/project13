@@ -476,6 +476,31 @@ class FormAction {
                     $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
                 }
             } else {
+                /** @var $slice \Model\Slice\Entity|null */
+                $slice = null;
+                if ('slices' === $linkParts[0]) {
+                    $sliceToken = $linkParts[1];
+
+                    // получение среза
+                    \RepositoryManager::slice()->prepareEntityByToken($sliceToken, function($data) use (&$slice, $sliceToken) {
+                        if (is_array($data) && (bool)$data) {
+                            $data['token'] = $sliceToken;
+                            $slice = new \Model\Slice\Entity($data);
+                        }
+                    });
+                    \App::scmsClient()->execute();
+
+                    if ($slice) {
+                        // проверка на срез с баркодами
+                        $requestData = [];
+                        parse_str($slice->getFilterQuery(), $requestData);
+                        if (isset($requestData['barcode'])) {
+                            $linkParts[0] = 'products';
+                            $linkParts[2] = is_array($requestData['barcode']) ? implode(',', $requestData['barcode']) : $requestData['barcode'];
+                        }
+                    }
+                }
+
                 switch ($linkParts[0]) {
                     case 'catalog':
                         $categoryToken = end($linkParts);
@@ -483,22 +508,9 @@ class FormAction {
                         break;
 
                     case 'slices':
-                        $sliceToken = $linkParts[1];
-
-                        // получение среза
-                        /** @var $slice \Model\Slice\Entity|null */
-                        $slice = null;
-                        \RepositoryManager::slice()->prepareEntityByToken($sliceToken, function($data) use (&$slice, $sliceToken) {
-                            if (is_array($data) && (bool)$data) {
-                                $data['token'] = $sliceToken;
-                                $slice = new \Model\Slice\Entity($data);
-                            }
-                        });
-                        \App::dataStoreClient()->execute();
-
                         if ($slice) {
-                            // добавляем фильтры среза к общему списку фильтров
                             $sliceFilters = \Controller\Slice\ShowAction::getSliceFilters($slice);
+                            // добавляем фильтры среза к общему списку фильтров
                             foreach ($sliceFilters as $filter) {
                                 $filters[] = $filter;
                             }
