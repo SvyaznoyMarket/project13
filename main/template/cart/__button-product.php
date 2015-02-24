@@ -11,8 +11,8 @@ return function (
     $reserveAsBuy = false
 ) {
 ?>
-    <?= $helper->renderWithMustache('cart/_button-product', (
-        new \View\Cart\ProductButtonAction())->execute(
+    <?= $helper->renderWithMustache('cart/_button-product',
+        (new \View\Cart\ProductButtonAction())->execute(
             new \Helper\TemplateHelper(),
             $product,
             $onClick,

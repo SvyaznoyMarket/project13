@@ -31,9 +31,9 @@
                     </a>
                 {{/isUserOwner}}{{/user.isMember}}
 
-                {{#isUserOwner}}
-                    qqq
-                {{/isUserOwner}}
+                {{#cartButton}}
+                    {{>cart/_button-product}}
+                {{/cartButton}}
             </li>
             {{/products}}
         </ul>
