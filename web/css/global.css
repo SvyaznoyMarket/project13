@@ -9322,6 +9322,8 @@
     z-index: 2;
   }
   .slideItem__ep-price {
+    background: #000000;
+    background: rgba(0, 0, 0, 0.65);
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -9391,7 +9393,7 @@
     margin: 0 0 10px;
   }
   .slideItem--center .slideItem_pr__sale {
-    font-size: 18px;
+    font-size: 16px;
     padding-left: 5px;
   }
   .slideItem--center .btnBuy__eLink {

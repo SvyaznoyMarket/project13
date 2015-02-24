@@ -15,6 +15,13 @@
                     {{#isUserOwner}}</a>{{/isUserOwner}}
                 </div>
 
+                {{#isUserOwner}}
+                    <div class="slideItem_pr">
+                        <span class="td-lineth">{{&price}}</span> <span class="rubl">p</span>
+                        <span class="slideItem_pr__sale">{{&discountPrice}} <span class="rubl">p</span></span>
+                    </div>
+                {{/isUserOwner}}
+
                 {{#user.isMember}}
                     {{^isUserOwner}}
                     <a class="slideItem__ep-price" href="">
