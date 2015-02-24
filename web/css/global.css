@@ -9322,14 +9322,12 @@
     z-index: 2;
   }
   .slideItem__ep-price {
-    background: #000000;
-    background: rgba(0, 0, 0, 0.65);
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
     color: #ffffff;
     height: 100%;
-    padding: 0 0 5px;
+    width: 100%;
     left: 0;
     position: absolute;
     text-align: center;

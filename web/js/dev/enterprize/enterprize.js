@@ -361,7 +361,7 @@
 
 			xhr.done(function(response) {
 				if (response.content) {
-					$sliderContainer.html(response.content);
+					$sliderContainer.removeClass('mLoader').html(response.content);
 				}
 			});
 			xhr.always(function() {
