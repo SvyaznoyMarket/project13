@@ -29,15 +29,28 @@ class SliderAction {
 
         $products = \Controller\Enterprize\FormAction::getProducts($enterpizeCoupon);
 
+        $helper = new \Helper\TemplateHelper();
+
         return new \Http\JsonResponse([
             'success' => true,
-            'content' => \App::closureTemplating()->render('product/__slider', [
-                'products'     => $products,
-                'count'        => count($products),
-                'class'        => 'slideItem-7item',
-                'namePosition' => '',
-                'sender'       => [],
-                'title'        => '',
+            'content' => $helper->renderWithMustache('enterprize/_slider', [
+                'products'     => array_map(function(\Model\Product\Entity $product) {
+                    return [
+                        'name'  => $product->getName(),
+                        'image' => $product->getImageUrl(),
+                    ];
+                }, $products),
+                'user'        => [
+                    'isMember' => $user->getEntity() && $user->getEntity()->isEnterprizeMember(),
+                ],
+                'dataSlider'   => $helper->json([
+                    'count'  => count($products),
+                    'limit'  => 7,
+                    'sender' => [
+                        'name'     => 'enter',
+                        'position' => 'Enterprize',
+                    ],
+                ]),
             ]),
         ]);
     }
