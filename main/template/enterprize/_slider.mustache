@@ -1,4 +1,4 @@
-<div class="js-slider slideItem slideItem-7item {{#user.isMember}}slideItem--sale{{/user.isMember}}" data-slider="{{&dataSlider}}">
+<div class="js-slider slideItem slideItem-7item {{#user.isMember}}slideItem--sale{{/user.isMember}} {{#isUserOwner}}slideItem--center{{/isUserOwner}}" data-slider="{{&dataSlider}}">
     <div class="slideItem_inn">
         <ul class="slideItem_lst clearfix">
             {{#products}}
