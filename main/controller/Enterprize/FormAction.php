@@ -339,7 +339,8 @@ class FormAction {
                     'success' => true,
                     'error'   => null,
                     'notice'  => ['message' => 'Поздравляем с регистрацией в Enter Prize!', 'type' => 'info'],
-                    'data'    => ['link' => $link],
+                    //'data'    => ['link' => $link],
+                    'data'    => [],
                 ])
                 : new \Http\RedirectResponse($link);
 
