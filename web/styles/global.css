@@ -12192,8 +12192,8 @@ img[height="0"] {
     animation: none;
   }
   .fltrBtn_anim-item:hover img {
-    right: 25px;
-    top: 290px;
+    right: 0;
+    top: -10px;
   }
   .fltrBtn_anim-item img {
     transition: all .2s ease;
@@ -12473,12 +12473,6 @@ img[height="0"] {
   }
   .fltrBtn-action-item {
     display: block;
-    width: 186px;
-    height: 146px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 22;
   }
   .fltrBtnBox-gift {
     border: none;
