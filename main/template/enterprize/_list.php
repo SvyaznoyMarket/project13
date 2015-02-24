@@ -80,12 +80,12 @@ $f = function(
                     'isMember' => $user->getEntity() && $user->getEntity()->isEnterprizeMember(),
                 ],
                 'form'        => [
-                    'action' => \App::router()->generate($form->getRoute()),
+                    'action' => $isNotMember ? \App::router()->generate($form->getRoute()) : \App::router()->generate('enterprize.form.show', ['enterprizeToken' => $coupon->getToken()]),
                 ],
             ];
             ?>
 
-            <div class="<?= $itemClass . ($isNotMember ? ' mMembers' : '') ?>" data-value="<?= $helper->json($dataValue) ?>" data-column="col-<?= $columnNum + 1 ?>" title="<?= ((null !== $expiredDays) ? sprintf('Может быть применена в течении %s %s', $expiredDays, $helper->numberChoice($expiredDays, ['день', 'дня', 'дней'])) : '') ?>">
+            <div class="<?= $itemClass . ($isNotMember ? ' mMembers' : '') ?>" data-value="<?= $helper->json($dataValue) ?>" data-column="col-<?= $columnNum + 1 ?>" title="<?= ((null !== $expiredDays) ? sprintf('Может быть применена в течении %s %s', $expiredDays, $helper->numberChoice($expiredDays, ['дня', 'дней', 'дней'])) : '') ?>">
                 <div class="ep-list__lk">
                     <span class="ep-coupon"<? if ($coupon->getBackgroundImage()): ?> style="background-image: url(<?= $coupon->getBackgroundImage() ?>);"<? endif ?>>
                         <span class="ep-coupon__inner">
