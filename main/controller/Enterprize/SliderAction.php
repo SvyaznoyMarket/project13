@@ -34,7 +34,7 @@ class SliderAction {
             'content' => \App::closureTemplating()->render('product/__slider', [
                 'products'     => $products,
                 'count'        => count($products),
-                'class'        => '',
+                'class'        => 'slideItem-7item',
                 'namePosition' => '',
                 'sender'       => [],
                 'title'        => '',
