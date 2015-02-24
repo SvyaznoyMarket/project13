@@ -64,11 +64,17 @@ class SliderAction {
         return new \Http\JsonResponse([
             'success' => true,
             'content' => $helper->renderWithMustache('enterprize/_slider', [
-                'products'     => array_map(function(\Model\Product\Entity $product) use (&$enterpizeCoupon, &$cartButtonAction) {
+                'products'     => array_map(function(\Model\Product\Entity $product) use (&$helper, &$enterpizeCoupon, &$cartButtonAction) {
                     return [
-                        'name'  => $product->getName(),
-                        'image' => $product->getImageUrl(),
-                        'cartButton'  =>
+                        'price'         => $helper->formatPrice($product->getPrice()),
+                        'discountPrice' => $helper->formatPrice(
+                            $enterpizeCoupon->getIsCurrency()
+                            ? ($product->getPrice() - $enterpizeCoupon->getPrice())
+                            : ceil($product->getPrice() - $product->getPrice() * $enterpizeCoupon->getPrice() / 100)
+                        ),
+                        'name'          => $product->getName(),
+                        'image'         => $product->getImageUrl(),
+                        'cartButton'    =>
                             $enterpizeCoupon->getDiscount()
                             ? $cartButtonAction->execute(
                                 new \Helper\TemplateHelper(),
