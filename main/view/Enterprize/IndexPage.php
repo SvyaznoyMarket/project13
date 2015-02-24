@@ -35,6 +35,10 @@ class IndexPage extends \View\DefaultLayout {
         return parent::slotContentHead() . $this->render('enterprize/_auth');
     }
 
+    public function slotAuth() {
+        return $this->render('_auth', ['oauthEnabled' => \App::config()->oauthEnabled, 'showRegisterForm' => false]);
+    }
+
     public function slotFlocktoryEnterprizeJs() {
         $return = '';
         if ((bool)$this->getParam('hasFlocktoryPopup')) {

@@ -10,6 +10,8 @@ $req = \App::request();
 $redirect_to = $req->getPathInfo();
 // SITE-4576 Пустая фраза поиска при входе в личный кабинет
 if ($req->attributes->get('route') == 'search') $redirect_to .= '?' . $req->getQueryString();
+
+if (!isset($showRegisterForm)) $showRegisterForm = true;
 ?>
 
 <noindex>
@@ -24,6 +26,7 @@ if ($req->attributes->get('route') == 'search') $redirect_to .= '?' . $req->getQ
 
         <?= $page->render('user/_reset-form') ?>
 
+        <? if ($showRegisterForm): ?>
         <!-- показываем этот текст в окне входа на сайт -->
         <div class="authAct">
             <span
@@ -35,6 +38,7 @@ if ($req->attributes->get('route') == 'search') $redirect_to .= '?' . $req->getQ
                 data-value="<?= $page->json(['target' => '#auth-block', 'state' => 'default']) ?>"
             >Войти</span>
         </div>
+        <? endif ?>
 
         <!-- показываем этот текст в окне регистрации -->
         <!-- div class="authAct"><span class="brb-dt">Вход в Enter</span></div-->
