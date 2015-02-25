@@ -20,6 +20,6 @@ class Request {
     ];
 
     public function __toString() {
-        return sprintf('%s (%s ms)', $this->options[CURLOPT_URL], $this->options[CURLOPT_TIMEOUT_MS]);
+        return sprintf('%s (%s ms)', urldecode($this->options[CURLOPT_URL]), $this->options[CURLOPT_TIMEOUT_MS]);
     }
 }

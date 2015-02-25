@@ -28,22 +28,50 @@ namespace EnterApplication\Action\ProductCard {
             $productQuery->prepare($productError, function() use (
                 &$productQuery,
                 &$deliveryError,
-                &$deliveryQuery
+                &$paymentGroupError
+                //&$deliveryQuery,
             ) {
                 $productId = (string)$productQuery->response->product['id'];
                 if (!$productId) {
                     return;
                 }
 
-                $deliveryQuery = new Query\Product\Delivery\GetByCart();
-                // корзина
-                $cart = $deliveryQuery->createCart();
-                $product = $cart->createProduct($productId, 1);
-                $cart->products[] = $product;
-                $deliveryQuery->cart = $cart;
-                $deliveryQuery->regionId = $productQuery->regionId;
+                // доставка
+                try {
+                    $deliveryQuery = new Query\Delivery\GetByCart();
+                    // корзина
+                    $cart = $deliveryQuery->createCart();
+                    $product = $cart->createProduct($productId, 1);
+                    $cart->products[] = $product;
+                    $deliveryQuery->cart = $cart;
+                    // регион
+                    $deliveryQuery->regionId = $productQuery->regionId;
 
-                $deliveryQuery->prepare($deliveryError);
+                    $deliveryQuery->prepare($deliveryError);
+                } catch (\Exception $e) {
+                    $deliveryError = $e;
+                }
+
+                // методы оплаты
+                try {
+                    $paymentGroupQuery = new Query\PaymentGroup\GetByCart();
+                    // корзина
+                    $cart = $paymentGroupQuery->createCart();
+                    $product = $cart->createProduct($productId, 1);
+                    $cart->products[] = $product;
+                    $paymentGroupQuery->cart = $cart;
+                    // регион
+                    $paymentGroupQuery->regionId = $productQuery->regionId;
+                    // фильтер
+                    $filter = $paymentGroupQuery->createFilter();
+                    $filter->isCorporative = false;
+                    $filter->isCredit = true;
+                    $paymentGroupQuery->filter = $filter;
+
+                    $paymentGroupQuery->prepare($paymentGroupError);
+                } catch (\Exception $e) {
+                    $paymentGroupError = $e;
+                }
             });
 
             // редирект
@@ -58,7 +86,7 @@ namespace EnterApplication\Action\ProductCard {
             // выполнение запросов
             $curl->execute();
 
-            var_dump($deliveryQuery);
+            //var_dump($paymentGroupError);
 
             die(microtime(true) - $startAt);
         }

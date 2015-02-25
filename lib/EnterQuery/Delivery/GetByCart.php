@@ -1,16 +1,15 @@
 <?php
 
-namespace EnterQuery\Product\Delivery
-{
+namespace EnterQuery\Delivery {
 
-    use EnterQuery\Product\Delivery\GetByCart\Response;
-    use EnterQuery\Product\Delivery\GetByCart\Cart;
+    use EnterQuery\Delivery\GetByCart\Response;
+    use EnterQuery\Delivery\GetByCart\Cart;
 
     class GetByCart {
         use \EnterQuery\CurlQueryTrait;
         use \EnterQuery\CoreQueryTrait;
 
-        /** @var string */
+        /** @var Cart */
         public $cart;
         /** @var string|null */
         public $regionId;
@@ -56,7 +55,7 @@ namespace EnterQuery\Product\Delivery
                         $this->cart->products
                     ),
                 ], // data
-                2, // timeout multiplier
+                1, // timeout multiplier
                 $callback,
                 $error,
                 function($response) {
@@ -82,7 +81,7 @@ namespace EnterQuery\Product\Delivery
     }
 }
 
-namespace EnterQuery\Product\Delivery\GetByCart
+namespace EnterQuery\Delivery\GetByCart
 {
     class Response
     {
@@ -117,7 +116,7 @@ namespace EnterQuery\Product\Delivery\GetByCart
     }
 }
 
-namespace EnterQuery\Product\Delivery\GetByCart\Cart
+namespace EnterQuery\Delivery\GetByCart\Cart
 {
     class Product
     {
