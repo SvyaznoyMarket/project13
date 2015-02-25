@@ -338,7 +338,7 @@ class FormAction {
                 ? new \Http\JsonResponse([
                     'success' => true,
                     'error'   => null,
-                    'notice'  => ['message' => 'Поздравляем с регистрацией в Enter Prize!', 'type' => 'info'],
+                    'notice'  => ['message' => 'Для завершения регистрации, пожалуйста, перейдите по ссылке в письме, отправленном на Ваш почтовый адрес.', 'type' => 'info'],
                     //'data'    => ['link' => $link],
                     'data'    => [],
                 ])
