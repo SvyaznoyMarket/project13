@@ -142,9 +142,6 @@ class CreateAction {
                     'phone'         => (string)$splitResult['user_info']['phone']
                 ];
             }, $createdOrders));
-
-            ProductPageSenders::clean();
-            ProductPageSendersForMarketplace::clean();
         }
 
         // удаляем предыдущее разбиение
