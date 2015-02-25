@@ -42,19 +42,19 @@
                     <div class="form-reg__tl">МЫ ОТПРАВИМ КОД НА СКИДКУ В SMS И E-MAIL</div>
 
                     <div class="txFld-w">
-                        <input class="txFld-it" type="text" name="user[name]" id="">
+                        <input class="txFld-it" type="text" name="user[name]" id="" value="{{user.name}}">
                         <label class="txFld-lbl" for=""><span class="txFld-lbl__str">*</span> Имя</label>
                     </div>
 
                     <div class="txFld-w">
-                        <input class="txFld-it" type="text" placeholder="name@domain.ru" name="user[email]" id="">
+                        <input class="txFld-it" type="text" placeholder="name@domain.ru" name="user[email]" id="" value="{{user.email}}">
                         <label class="txFld-lbl" for=""><span class="txFld-lbl__str">*</span> E-mail</label>
                     </div>
 
                     <div class="txFld-hint">Получи номер фишки в смс</div>
 
                     <div class="txFld-w">
-                        <input class="txFld-it js-phone-mask" type="text" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" name="user[mobile]" />
+                        <input class="txFld-it js-phone-mask" type="text" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" name="user[mobile]" value="{{user.mobile}}" />
                         <label class="txFld-lbl" for=""><span class="txFld-lbl__str"></span> Телефон</label>
                     </div>
                 </fieldset>

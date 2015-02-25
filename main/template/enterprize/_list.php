@@ -14,7 +14,8 @@ $f = function(
 ) {
     /** @var $coupon \Model\EnterprizeCoupon\Entity **/
 
-    $isEnterprizeMember = $user->getEntity() && $user->getEntity()->isEnterprizeMember();
+    $userEntity = $user->getEntity();
+    $isEnterprizeMember = $userEntity && $userEntity->isEnterprizeMember();
 
 ?>
 
@@ -76,9 +77,21 @@ $f = function(
                 'slider'      => [
                     'url' => \App::router()->generate('enterprize.slider', ['enterprizeToken' => $coupon->getToken()]),
                 ],
-                'user'        => [
-                    'isMember' => $user->getEntity() && $user->getEntity()->isEnterprizeMember(),
-                ],
+                'user'        =>
+                    [
+                        'isMember' => $userEntity && $userEntity->isEnterprizeMember(),
+                    ]
+                    + (
+                        $userEntity
+                        ? [
+                            'mobile' => $userEntity->getMobilePhone(),
+                            'name'   => $userEntity->getFirstName(),
+                            'email'  => $userEntity->getEmail(),
+                        ]
+                        :
+                        []
+                    )
+                ,
                 'form'        => [
                     'action' =>
                         ($user->getEntity() && $user->getEntity()->isEnterprizeMember())
