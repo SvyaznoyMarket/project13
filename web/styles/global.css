@@ -5837,6 +5837,12 @@ img[height="0"] {
   .ep-hint .mLoader {
     float: none !important;
   }
+  .ep-hint .slideItem_btn-prv {
+    left: -10px;
+  }
+  .ep-hint .slideItem_btn-nxt {
+    right: -10px;
+  }
   .ep-hint--2col .ep-hint__col {
     float: left;
     max-width: 50%;
