@@ -231,7 +231,7 @@ class Repository {
                 'is_load_parents' => false,
                 'filter' => [
                     'filters' => [
-                        ['exclude_partner_type', 1, \Model\Product\BasicEntity::TYPE_SLOT], // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
+                        ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT], // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
                     ],
                 ],
             ],
@@ -271,7 +271,7 @@ class Repository {
         }
 
         // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
-        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::TYPE_SLOT];
+        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT];
 
         $collection = [];
         $client->addQuery('category/tree', $params, [], function ($data) use (&$collection) {
@@ -311,7 +311,7 @@ class Repository {
         }
 
         // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
-        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::TYPE_SLOT];
+        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT];
 
         \App::searchClient()->addQuery('category/tree', $params, [], $done, $fail);
     }
@@ -341,7 +341,7 @@ class Repository {
         if (\App::config()->preview === true) $params = array_merge($params, ['load_inactive' => 1, 'load_empty' => 1]);
 
         // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
-        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::TYPE_SLOT];
+        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT];
 
         \App::searchClient()->addQuery('category/tree', $params, [], $done, $fail);
     }
@@ -368,7 +368,7 @@ class Repository {
         if (\App::config()->preview === true) $params = array_merge($params, ['load_inactive' => 1, 'load_empty' => 1]);
 
         // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
-        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::TYPE_SLOT];
+        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT];
 
         \App::searchClient()->addQuery('category/tree', $params, [], function($data) use (&$category, &$region) {
             /**
@@ -459,7 +459,7 @@ class Repository {
         }
 
         // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
-        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::TYPE_SLOT];
+        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT];
 
         \App::searchClient()->addQuery('category/tree', $params, [], function($data) use (&$category) {
             if (is_array($data)) {

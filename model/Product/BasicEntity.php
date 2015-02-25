@@ -6,7 +6,7 @@ class BasicEntity {
     use \Model\MediaHostTrait;
 
     const LABEL_ID_PODARI_ZHIZN = 17;
-    const TYPE_SLOT = 2;
+    const PARTNER_OFFER_TYPE_SLOT = 2;
 
     /** @var string|null */
     protected $ui;
@@ -567,7 +567,7 @@ class BasicEntity {
     public function getSlotPartnerOffer()
     {
         foreach ($this->partnersOffer as $offer) {
-            if (isset($offer['type']) && self::TYPE_SLOT == $offer['type']) {
+            if (isset($offer['type']) && self::PARTNER_OFFER_TYPE_SLOT == $offer['type']) {
                 return $offer + ['name' => null, 'offer' => null];
             }
         }

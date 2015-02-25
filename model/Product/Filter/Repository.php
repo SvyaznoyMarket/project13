@@ -31,7 +31,7 @@ class Repository {
         }
 
         // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
-        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::TYPE_SLOT];
+        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT];
 
         $collection = [];
         $client->addQuery('listing/filter', $params, [], function ($data) use (&$collection) {
@@ -64,7 +64,7 @@ class Repository {
         }
 
         // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
-        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::TYPE_SLOT];
+        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT];
 
         $this->client->addQuery('listing/filter', $params, [], $done, $fail);
     }
@@ -91,7 +91,7 @@ class Repository {
         }
 
         // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
-        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::TYPE_SLOT];
+        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT];
 
         $this->client->addQuery('listing/filter', $params, [], $done, $fail);
     }
@@ -117,7 +117,7 @@ class Repository {
         }
 
         // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
-        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::TYPE_SLOT];
+        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT];
 
         $this->client->addQuery('listing/filter', $params, [], $done, $fail);
     }
@@ -145,7 +145,7 @@ class Repository {
         }
 
         // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
-        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::TYPE_SLOT];
+        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT];
 
         $this->client->addQuery('listing/filter', $params, [], $done, $fail);
     }

@@ -121,7 +121,7 @@ class ShowAction {
         }
 
         // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
-        $filterData[] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::TYPE_SLOT];
+        $filterData[] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT];
 
         $params = [
             'root_id'         => $category->getId() ? $category->getId() : ($category->getParentId() ? $category->getParentId() : 0),
