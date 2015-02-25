@@ -86,7 +86,11 @@ trait CurlQueryTrait
             }
 
             if (!$error && is_callable($callback)) {
-                call_user_func($callback);
+                try {
+                    call_user_func($callback);
+                } catch(\Exception $e) {
+                    var_dump($e);
+                }
             }
         };
 

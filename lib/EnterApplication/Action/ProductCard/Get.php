@@ -24,13 +24,26 @@ namespace EnterApplication\Action\ProductCard {
             }
 
             // доставка и способы оплаты
-            $productQuery->prepare($productError, function() use (&$productQuery) {
+            $deliveryError = null;
+            $productQuery->prepare($productError, function() use (
+                &$productQuery,
+                &$deliveryError,
+                &$deliveryQuery
+            ) {
                 $productId = (string)$productQuery->response->product['id'];
                 if (!$productId) {
                     return;
                 }
 
-                
+                $deliveryQuery = new Query\Product\Delivery\GetByCart();
+                // корзина
+                $cart = $deliveryQuery->createCart();
+                $product = $cart->createProduct($productId, 1);
+                $cart->products[] = $product;
+                $deliveryQuery->cart = $cart;
+                $deliveryQuery->regionId = $productQuery->regionId;
+
+                $deliveryQuery->prepare($deliveryError);
             });
 
             // редирект
@@ -44,6 +57,8 @@ namespace EnterApplication\Action\ProductCard {
 
             // выполнение запросов
             $curl->execute();
+
+            var_dump($deliveryQuery);
 
             die(microtime(true) - $startAt);
         }

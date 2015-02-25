@@ -80,6 +80,7 @@ class Client
         } else {
             curl_multi_add_handle($this->mh, $handle);
         }
+        var_dump((string)$query->request);
 
         // принудительно отправить запросы на выполнение
         if (count($this->handlesById) >= $this->handleLimit) {

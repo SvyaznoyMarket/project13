@@ -1,6 +1,7 @@
 <?php
 
-namespace EnterQuery\Redirect {
+namespace EnterQuery\Redirect
+{
 
     use EnterQuery\Redirect\GetByUrl\Response;
 
@@ -13,7 +14,7 @@ namespace EnterQuery\Redirect {
         /** @var Response */
         public $response;
 
-        public function __construct($fromUrl)
+        public function __construct($fromUrl = null)
         {
             $this->response = new Response();
 

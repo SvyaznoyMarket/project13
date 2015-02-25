@@ -1,6 +1,7 @@
 <?php
 
-namespace EnterQuery\Product {
+namespace EnterQuery\Product
+{
 
     use EnterQuery\Product\GetByToken\Response;
 
@@ -15,7 +16,7 @@ namespace EnterQuery\Product {
         /** @var Response */
         public $response;
 
-        public function __construct($token, $regionId = null)
+        public function __construct($token = null, $regionId = null)
         {
             $this->response = new Response();
 

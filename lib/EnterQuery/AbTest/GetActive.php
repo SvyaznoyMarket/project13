@@ -1,6 +1,7 @@
 <?php
 
-namespace EnterQuery\AbTest {
+namespace EnterQuery\AbTest
+{
 
     use EnterQuery\AbTest\GetActive\Response;
 

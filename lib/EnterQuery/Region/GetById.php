@@ -1,6 +1,7 @@
 <?php
 
-namespace EnterQuery\Region {
+namespace EnterQuery\Region
+{
 
     use EnterQuery\Region\GetById\Response;
 
@@ -13,7 +14,7 @@ namespace EnterQuery\Region {
         /** @var Response */
         public $response;
 
-        public function __construct($id)
+        public function __construct($id = null)
         {
             $this->response = new Response();
 
