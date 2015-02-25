@@ -119,6 +119,7 @@ class FormAction {
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
         $data = $session->get($sessionName, []);
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : $userData['guid'];
+        $data['enterprizeToken'] = $enterprizeToken;
 
         if (!$enterprizeToken) {
             $link = \App::router()->generate('enterprize');
