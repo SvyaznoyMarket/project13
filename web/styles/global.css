@@ -5156,6 +5156,7 @@ img[height="0"] {
   }
   .ep-head {
     padding: 0 10px;
+    position: relative;
   }
   .ep-head__desc {
     display: inline-block;
@@ -5270,7 +5271,7 @@ img[height="0"] {
     -moz-border-radius: 4px;
     border-radius: 4px;
     position: absolute;
-    top: 61px;
+    top: 78px;
     right: 0;
     display: none;
     padding: 15px 10px;
