@@ -1,6 +1,6 @@
 <div class="ep-hint {{^user.isMember}}ep-hint--2col{{/user.isMember}} {{#isUserOwner}}ep-hint--position{{/isUserOwner}} js-enterprize-coupon-hint">
     {{^isUserOwner}}
-    <div class="ep-hint__row clearfix">
+    <div class="ep-hint__row clearfix js-ep-reg-form">
         <div class="ep-hint__col">
             <p class="ep-hint__lvl1">
                 Фишка со скидкой <strong>{{&discount}}</strong>
@@ -34,7 +34,7 @@
 
         {{^user.isMember}}
         <div class="ep-hint__col ep-hint__col--r">
-            <form class="form-reg jsEnterprizeForm js-ep-form-reg" action="{{form.action}}" method="post">
+            <form class="form-reg jsEnterprizeForm" data-form="new-form" action="{{form.action}}" method="post">
                 <input type="hidden" name="user[guid]" value="{{token}}" />
 
                 <fieldset class="form-reg__fld">
@@ -81,11 +81,11 @@
         {{/user.isMember}}
     </div>
 
-    <div class="ep-hint__row ep-hint__row--cmplt">
+    <div class="ep-hint__row ep-hint__row--cmplt js-ep-reg-complete">
         <div class="ep-hint__cmplt-tl">
             Спасибо!
         </div>
-        <p class="ep-hint__cmplt-tx"></p>
+        <p class="ep-hint__cmplt-tx js-ep-reg-complete-text"></p>
 
         {{! <p class="ep-hint__cmplt-tx">Для завершения регистрации, пожалуйста, перейдите по ссылке в письме, отправленном на Ваш почтовый адрес.</p> }}
     </div>
