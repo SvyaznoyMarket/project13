@@ -4,28 +4,35 @@ namespace EnterQuery;
 
 trait CurlQueryTrait
 {
-    use \EnterApplication\CurlTrait, JsonTrait;
+    use \EnterApplication\CurlTrait;
 
     /**
-     * @param string $prefix
-     * @param string $action
-     * @param string array $query
-     * @return string
+     * @param $url
+     * @param array $data
+     * @param int|null $timeoutMultiplier
+     * @param callable|null $callback
+     * @param \Exception $error
+     * @param callable|null $decoder
+     * @return \EnterLab\Curl\Query
      */
-    public function buildUrl($prefix, $action, $query = [])
-    {
-        return $prefix . $action . ($query ? http_build_query($query) : '');
-    }
-
-
-    public function pushCurlQuery(
+    public function prepareCurlQuery(
         $url,
         $data = [],
-        $timeout = null,
+        $timeoutMultiplier = null,
         $callback = null,
         \Exception &$error = null,
         $decoder = null
     ) {
+        if ($timeoutMultiplier < 0) {
+            throw new \InvalidArgumentException();
+        }
+
+        $timeout = \App::config()->coreV2['timeout'] * 1000; // таймаут, мс
+        if (!$timeout || $timeout > 90000) {
+            $timeout = 5000;
+        }
+        $timeout *= $timeoutMultiplier;
+
         $query = $this->getCurl()->createQuery();
 
         $startingResponse = false;
@@ -51,10 +58,11 @@ trait CurlQueryTrait
 
             CURLOPT_URL            => $url,
             CURLOPT_TIMEOUT_MS     => $timeout,
+            CURLOPT_HTTPHEADER     => ['X-Request-Id: ' . \App::$id, 'Expect:'], // TODO: customize
         ];
         if ($data) {
+            $query->request->options[CURLOPT_HTTPHEADER][] = 'Content-Type: application/json'; // TODO: customize
             $query->request->options += [
-                CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
                 CURLOPT_POST       => true,
                 CURLOPT_POSTFIELDS => json_encode($data),
             ];

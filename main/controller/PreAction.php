@@ -14,14 +14,8 @@ class PreAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         // cache
-        $route = $request->attributes->get('route');
-        $repositoriesByRoute = [
-            'product' => 'ProductCard\\Get',
-        ];
-        $repositoryClass = isset($repositoriesByRoute[$route]) ? ('\\EnterApplication\\Action\\' . $repositoriesByRoute[$route]) : null;
-        if ($repositoryClass) {
-            (new $repositoryClass)->execute();
-        }
+        (new \Controller\CacheAction())->execute($request);
+
 
         $uri = $request->getPathInfo();
         $redirectUrl = null;

@@ -1,26 +1,23 @@
 <?php
 
-namespace EnterQuery\Product {
+namespace EnterQuery\Redirect {
 
-    use EnterQuery\Product\GetByToken\Response;
+    use EnterQuery\Redirect\GetByUrl\Response;
 
-    class GetByToken {
+    class GetByUrl {
         use \EnterQuery\CurlQueryTrait;
-        use \EnterQuery\CoreQueryTrait;
+        use \EnterQuery\ScmsQueryTrait;
 
         /** @var string */
-        public $token;
-        /** @var string|null */
-        public $regionId;
+        public $fromUrl;
         /** @var Response */
         public $response;
 
-        public function __construct($token, $regionId = null)
+        public function __construct($fromUrl)
         {
             $this->response = new Response();
 
-            $this->token = $token;
-            $this->regionId = $regionId;
+            $this->fromUrl = $fromUrl;
         }
 
         /**
@@ -32,11 +29,9 @@ namespace EnterQuery\Product {
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
-                    'v2/product/get',
+                    'seo/redirect',
                     [
-                        'select_type' => 'slug',
-                        'slug'        => $this->token,
-                        'geo_id'      => $this->regionId,
+                        'from_url' => $this->fromUrl,
                     ]
                 ),
                 [], // data
@@ -44,7 +39,7 @@ namespace EnterQuery\Product {
                 $callback,
                 $error,
                 function($response) {
-                    $this->response->product = $this->decodeResponse($response)['result'][0];
+                    $this->response->toUrl = $this->decodeResponse($response)['to_url'];
                 }
             );
 
@@ -53,11 +48,13 @@ namespace EnterQuery\Product {
     }
 }
 
-namespace EnterQuery\Product\GetByToken
+namespace EnterQuery\Redirect\GetByUrl
 {
     class Response
     {
         /** @var array|null */
-        public $product;
+        public $toUrl;
+        /** @var string */
+        //public $reason;
     }
 }

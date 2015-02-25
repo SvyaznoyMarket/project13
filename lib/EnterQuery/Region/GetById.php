@@ -1,26 +1,23 @@
 <?php
 
-namespace EnterQuery\Product {
+namespace EnterQuery\Region {
 
-    use EnterQuery\Product\GetByToken\Response;
+    use EnterQuery\Region\GetById\Response;
 
-    class GetByToken {
+    class GetById {
         use \EnterQuery\CurlQueryTrait;
         use \EnterQuery\CoreQueryTrait;
 
         /** @var string */
-        public $token;
-        /** @var string|null */
-        public $regionId;
+        public $id;
         /** @var Response */
         public $response;
 
-        public function __construct($token, $regionId = null)
+        public function __construct($id)
         {
             $this->response = new Response();
 
-            $this->token = $token;
-            $this->regionId = $regionId;
+            $this->id = $id;
         }
 
         /**
@@ -32,11 +29,9 @@ namespace EnterQuery\Product {
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
-                    'v2/product/get',
+                    'v2/geo/get',
                     [
-                        'select_type' => 'slug',
-                        'slug'        => $this->token,
-                        'geo_id'      => $this->regionId,
+                        'id' => [$this->id],
                     ]
                 ),
                 [], // data
@@ -44,7 +39,7 @@ namespace EnterQuery\Product {
                 $callback,
                 $error,
                 function($response) {
-                    $this->response->product = $this->decodeResponse($response)['result'][0];
+                    $this->response->region = $this->decodeResponse($response)['result'][0];
                 }
             );
 
@@ -53,11 +48,11 @@ namespace EnterQuery\Product {
     }
 }
 
-namespace EnterQuery\Product\GetByToken
+namespace EnterQuery\Region\GetById
 {
     class Response
     {
         /** @var array|null */
-        public $product;
+        public $region;
     }
 }
