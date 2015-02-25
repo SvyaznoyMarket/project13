@@ -19,9 +19,10 @@
                 {{#end}}по {{end}}{{/end}}
             </p>
 
-            <p class="ep-hint__lvl3">
-                {{&description}}<br/>
-                Минимальная сумма заказа {{&minOrderSum}} <span class="rubl">p</span></p>
+            <div class="ep-hint__lvl3">
+                {{&description}}
+                <div>Минимальная сумма заказа {{&minOrderSum}} <span class="rubl">p</span></div>
+            </div>
 
             {{#user.isMember}}
                 <form action="{{form.action}}">
