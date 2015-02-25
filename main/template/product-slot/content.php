@@ -58,41 +58,37 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 </div>
 
 <div class="product-card__section-right">
-    <? if ($isProductAvailable): ?>
-        <div class="product-card__vendor">Продавец-партнёр: <nobr><?= $helper->escape($product->getSlotPartnerOffer()['name']) ?></nobr></div>
+    <div class="product-card__vendor">Продавец-партнёр: <nobr><?= $helper->escape($product->getSlotPartnerOffer()['name']) ?></nobr></div>
 
-        <?= $helper->render('product/slot/__price', ['product' => $product]) // Цена ?>
+    <?= $helper->render('product-slot/__price', ['product' => $product]) // Цена ?>
 
-        <span class="product-card__info--price">Цена базового комплекта</span>
-        <span class="product-card__info--deliv-period">Срок доставки базового комплекта 3 дня</span>
-        <div class="product-card__info--recall">
-            <span>Закажите обратный звонок и уточните:</span>
-            <ul class="product-card__info--recall__list">
-                <li>комплектность мебели и техники;</li>
-                <li>условия доставки, сборки и оплаты.</li>
-            </ul>
-            <?= $helper->render('cart/__button-product', [
-                'product'  => $product,
-                'sender'   => $buySender,
-                'sender2'  => $buySender2,
-                'location' => 'product-card',
-            ]) ?>
-        </div>
+    <span class="product-card__info--price">Цена базового комплекта</span>
+    <span class="product-card__info--deliv-period">Срок доставки базового комплекта 3 дня</span>
+    <div class="product-card__info--recall">
+        <span>Закажите обратный звонок и уточните:</span>
+        <ul class="product-card__info--recall__list">
+            <li>комплектность мебели и техники;</li>
+            <li>условия доставки, сборки и оплаты.</li>
+        </ul>
+        <?= $helper->render('cart/__button-product', [
+            'product'  => $product,
+            'sender'   => $buySender,
+            'sender2'  => $buySender2,
+            'location' => 'product-card',
+        ]) ?>
+    </div>
 
-        <div class="product-card__specify" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-            <?= $helper->render('product/__mainProperties', ['product' => $product]) ?>
-        </div>
+    <div class="product-card__specify" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        <?= $helper->render('product/__mainProperties', ['product' => $product]) ?>
+    </div>
 
-        <div class="clear"></div>
+    <div class="clear"></div>
 
-        <div class="js-showTopBar"></div>
+    <div class="js-showTopBar"></div>
 
-        <div class="bWidgetBuy mWidget compare--slot js-WidgetBuy">
-            <?= $page->render('compare/_button-product-compare', ['product' => $product]) ?>
-        </div>
-    <? else: ?>
-        <div class="js-showTopBar"></div>
-    <? endif ?>
+    <div class="bWidgetBuy mWidget compare--slot js-WidgetBuy">
+        <?= $page->render('compare/_button-product-compare', ['product' => $product]) ?>
+    </div>
 </div>
 
 <div class="clear"></div>
