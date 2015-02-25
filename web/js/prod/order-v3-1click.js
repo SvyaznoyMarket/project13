@@ -1169,7 +1169,7 @@
 						$('#OrderV3ErrorBlock').html($(response.result.errorContent).html()).show();
 					}
 
-					var error = (response.result && response.result.error) ? response.result.error : {};
+					var error = (response.result && response.result.error) ? response.result.error : [];
 
 					$('body').trigger('trackUserAction', ['3_2 Оформить_ошибка', 'Поле ошибки: '+ ((typeof error !== 'undefined') ? error.join(', ') : '')]);
 				})

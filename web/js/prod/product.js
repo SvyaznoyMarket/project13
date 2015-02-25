@@ -608,6 +608,7 @@
 		packageSetWindow = $('.jsPackageSetPopup'),
 		data = $('.js-packageSetEdit').data('value'),
         sender = data.sender,
+        sender2 = data.sender2,
         packageProducts = data.products;
 
 	/**
@@ -758,6 +759,10 @@
                 });
 
 				link += $.param({sender: sender});
+
+				if (sender2) {
+					link += '&' + $.param({sender2: sender2});
+				}
 
                 return link;
             });

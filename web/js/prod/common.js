@@ -3199,7 +3199,7 @@ $(document).ready(function() {
 		} else {
 			oneClickOpening = true;
 			$.ajax({
-				url: ENTER.utils.generateUrl('orderV3OneClick.form', {productUid: button.data('product-ui'), sender: button.data('sender')}),
+				url: ENTER.utils.generateUrl('orderV3OneClick.form', {productUid: button.data('product-ui'), sender: button.data('sender'), sender2: button.data('sender2')}),
 				type: 'POST',
 				dataType: 'json',
 				closeClick: false,
@@ -4302,6 +4302,7 @@ $(document).ready(function() {
 				'<form action="' + ENTER.utils.generateUrl('order.slot.create') + '" method="post">' +
 					'<input type="hidden" name="productId" value="{{productId}}" />' +
 					'<input type="hidden" name="sender" value="{{sender}}" />' +
+					'<input type="hidden" name="sender2" value="{{sender2}}" />' +
 
 					'{{#full}}' +
 						'<div class="popup--request__head msg--recall">Закажите обратный звонок и уточните:</div>' +
@@ -4455,6 +4456,7 @@ $(document).ready(function() {
 				productUrl: $button.data('product-url'),
 				productId: $button.data('product-id'),
 				sender: $button.attr('data-sender'),
+				sender2: $button.data('sender2') || '',
 				userPhone: ENTER.utils.Base64.decode(ENTER.config.userInfo.user.mobile || ''),
 				userEmail: ENTER.config.userInfo.user.email || '',
 				userName: ENTER.config.userInfo.user.name || ''
@@ -4512,6 +4514,7 @@ $(document).ready(function() {
 			$errors.empty().hide();
 
 			if (!validate($form)) {
+				$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '7_1 Оформить ошибка', catalogPath]);
 				return;
 			}
 
@@ -4525,6 +4528,7 @@ $(document).ready(function() {
 				success: function(result){
 					if (result.error) {
 						$errors.text(result.error).show();
+						$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '7_1 Оформить ошибка', catalogPath]);
 						return;
 					}
 
@@ -4538,12 +4542,15 @@ $(document).ready(function() {
 						$popup.trigger('close');
 					});
 
+					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '7 Оформить успешно', catalogPath]);
+
 					if (typeof ENTER.utils.sendOrderToGA == 'function' && result.orderAnalytics) {
 						ENTER.utils.sendOrderToGA(result.orderAnalytics);
 					}
 				},
 				error: function(){
 					$errors.text('Ошибка при создании заявки').show();
+					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '7_1 Оформить ошибка', catalogPath]);
 				},
 				complete: function(){
 					$submitButton.removeAttr('disabled');
@@ -5309,9 +5316,25 @@ $(document).ready(function() {
 			return;
 		}
 
+		var
+			url = upsale.url,
+			sender2 = '';
+		
+		if (ENTER.config.pageConfig.product) {
+			if (ENTER.config.pageConfig.product.isSlot) {
+				sender2 = 'slot';
+			} else if (ENTER.config.pageConfig.product.isOnlyFromPartner) {
+				sender2 = 'marketplace';
+			}
+		}
+
+		if (sender2) {
+			url = ENTER.utils.setURLParam('sender2', sender2, url);
+		}
+
 		$.ajax({
 			type: 'GET',
-			url: upsale.url,
+			url: url,
 			success: responseFromServer
 		});
 	}

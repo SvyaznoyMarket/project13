@@ -28,7 +28,7 @@ class Action {
             $cartSplitResponse = $this->queryCartSplit($request->request->get('productId'));
 
             $orderCreatePacketParams = $this->getOrderCreatePacketParams();
-            $orderCreatePacketData = $this->getOrderCreatePacketData($cartSplitResponse, $phone, $request->request->get('email'), $request->request->get('name'), $request->request->get('sender'));
+            $orderCreatePacketData = $this->getOrderCreatePacketData($cartSplitResponse, $phone, $request->request->get('email'), $request->request->get('name'), $request->request->get('sender'), (string)$request->request->get('sender2'));
 
             $orderCreatePacketResponse = \App::coreClientV2()->query(
                 (\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet'),
@@ -140,12 +140,12 @@ class Action {
         return $params;
     }
 
-    private function getOrderCreatePacketData($cartSplitResponse, $phone, $email, $name, $sender) {
+    private function getOrderCreatePacketData($cartSplitResponse, $phone, $email, $name, $sender, $sender2) {
         $data = [];
 
         foreach ($cartSplitResponse['orders'] as $order) {
             $data[] = array_merge(
-                (new OrderEntity(array_merge($cartSplitResponse, ['order' => $order]), json_decode($sender, true)))->getOrderData(),
+                (new OrderEntity(array_merge($cartSplitResponse, ['order' => $order]), json_decode($sender, true), $sender2))->getOrderData(),
                 [
                     'mobile' => $phone,
                     'email' => $email,

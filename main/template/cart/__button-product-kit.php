@@ -3,7 +3,8 @@
 return function (
     \Helper\TemplateHelper $helper,
     \Model\Product\BasicEntity $product,
-    array $sender = []
+    array $sender = [],
+    $sender2 = ''
 ) {
     /** @var $region \Model\Region\Entity|null */
     $region = \App::user()->getRegion();
@@ -36,6 +37,10 @@ return function (
                     'from'      => isset($sender['from']) ? $sender['from'] : null,
                 ],
             ]);
+        }
+
+        if ($sender2) {
+            $urlParams['sender2'] = $sender2;
         }
 
         $url = $helper->url('cart.product.setList', $urlParams);

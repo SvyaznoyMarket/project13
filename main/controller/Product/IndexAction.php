@@ -91,6 +91,7 @@ class IndexAction {
         }
 
         \Session\ProductPageSenders::add($product->getUi(), $request->query->get('sender'));
+        \Session\ProductPageSendersForMarketplace::add($product->getUi(), (string)$request->query->get('sender2'));
 
         // подготовка 3-го пакета запросов
         $lifeGiftProduct = null;

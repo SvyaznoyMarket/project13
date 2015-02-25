@@ -107,6 +107,7 @@ class UpsaleAction extends BasicRecommendedAction {
                         'position' => 'AddBasket',
                         'method'   => $this->retailrocketMethodName,
                     ],
+                    'sender2'      => (string)$request->get('sender2'),
                 ]),
                 'data' => [
                     'id'              => $product->getId(),//идентификатор товара (или категории, пользователя или поисковая фраза) к которому были отображены рекомендации

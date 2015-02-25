@@ -38,6 +38,7 @@ $isKitPage = (bool)$product->getKit();
 $isProductAvailable = $product->isAvailable();
 
 $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
+$buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
@@ -70,12 +71,12 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
                 <li>комплектность мебели и техники;</li>
                 <li>условия доставки, сборки и оплаты.</li>
             </ul>
-        <?= $helper->render('cart/__button-product', [
-            'product'  => $product,
-            'sender'   => $buySender,
-            'location' => 'product-card',
-        ]) ?>
-
+            <?= $helper->render('cart/__button-product', [
+                'product'  => $product,
+                'sender'   => $buySender,
+                'sender2'  => $buySender2,
+                'location' => 'product-card',
+            ]) ?>
         </div>
 
         <div class="product-card__specify" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
@@ -89,7 +90,6 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
         <div class="bWidgetBuy mWidget compare--slot js-WidgetBuy">
             <?= $page->render('compare/_button-product-compare', ['product' => $product]) ?>
         </div>
-
     <? else: ?>
         <div class="js-showTopBar"></div>
     <? endif ?>
@@ -110,6 +110,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
                 'name'     => 'retailrocket',
                 'position' => 'ProductSimilar',
             ],
+            'sender2'  => 'slot',
         ]) ?>
     <? endif ?>
 </div>
@@ -137,6 +138,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
                 'name'     => 'retailrocket',
                 'position' => 'ProductAccessories', // все правильно - так и надо!
             ],
+            'sender2'  => 'slot',
         ]) ?>
     <? endif ?>
 
@@ -154,6 +156,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
                 'position' => 'Viewed',
                 'from'     => 'productPage'
             ],
+            'sender2'  => 'slot',
         ]) ?>
     <? endif ?>
 
