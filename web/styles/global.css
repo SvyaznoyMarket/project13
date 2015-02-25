@@ -10259,10 +10259,11 @@ img[height="0"] {
     height: 100px;
   }
   .cmprCnt_pt {
-    height: 54px;
+    height: 50px;
     overflow: hidden;
     padding-right: 25px;
     line-height: 1.2;
+    margin-bottom: 4px;
   }
   .cmprCnt_cat {
     font-size: 12px;
