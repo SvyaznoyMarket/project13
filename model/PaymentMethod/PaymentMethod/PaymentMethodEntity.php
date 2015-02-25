@@ -70,7 +70,7 @@ class PaymentMethodEntity {
             case 14: $this->icon = '/styles/order/img/svyaznoy.png'; break;
         }
 
-        if (is_array($arr['available_actions'])) $this->availableActions = $arr['available_actions'];
+        if (isset($arr['available_actions']) && is_array($arr['available_actions'])) $this->availableActions = $arr['available_actions'];
 
     }
 

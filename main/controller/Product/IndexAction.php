@@ -518,7 +518,12 @@ class IndexAction {
             }
         }
 
-        $page = new \View\Product\IndexPage();
+        if ($product->getSlotPartnerOffer()) {
+            $page = new \View\Product\SlotPage();
+        } else {
+            $page = new \View\Product\IndexPage();
+        }
+
         $page->setParam('renderer', \App::closureTemplating());
         $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('product', $product);

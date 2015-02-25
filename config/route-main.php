@@ -706,6 +706,12 @@ return [
         'method'  => ['GET'],
     ],
 
+    'order.slot.create' => [
+        'pattern' => '/orders/slot/create',
+        'action'  => ['OrderSlot\Action', 'create'],
+        'method'  => ['POST'],
+    ],
+
     // услуги
     'service' => [
         'pattern' => '/f1',
@@ -1129,6 +1135,12 @@ return [
     'compare.clear' => [
         'pattern' => '/compare/clear',
         'action'  => ['Compare\CompareAction', 'clear'],
+    ],
+
+    // Внешние ссылки на карточку товара
+    'product.internal' => [
+        'pattern'   => '/internal/product',
+        'action'    => ['Product\ShowInternalAction', 'execute'],
     ],
 
     // Переключение АБ-тестов

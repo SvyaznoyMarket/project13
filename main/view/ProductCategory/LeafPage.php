@@ -37,4 +37,10 @@ class LeafPage extends Layout {
             'price' => '',
         ]);
     }
+
+    public function slotConfig() {
+        return $this->tryRender('_config', ['config' => [
+            'location' => ['listing'],
+        ]]);
+    }
 }

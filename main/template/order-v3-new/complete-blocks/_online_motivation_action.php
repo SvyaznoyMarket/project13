@@ -20,8 +20,9 @@
 
             <div class="orderPayment_msg orderPayment_noOnline_msg">
                 <div class="orderPayment_msg_head">
-                    Скидка 10% на следующий заказ<br/>при оплате онлайн
+                    Скидка 10%
                 </div>
+                <div class="orderPayment_msg_title">на следующий заказ при оплате онлайн</div>
                 <!-- Этот блок показывается сразу -->
                 <div class="jsOrderCouponInitial">
                     <div class="orderPayment_msg_shop orderPayment_pay">

@@ -951,10 +951,16 @@ class Action {
                         foreach ($data as $item) {
                             $products[] = new \Model\Product\Entity($item);
                         }
+                    } else {
+                        \App::logger()->error(['error' => 'Товары не получены', 'core.response' => $data, 'sender' => __FILE__ . ' ' .  __LINE__], ['controller']);
                     }
                 });
             }
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+            \App::coreClientV2()->execute();
+
+            if (!$products && ('true' == $request->get('ajax'))) {
+                throw new \Exception('Товары не найдены');
+            }
 
             $scoreData = [];
             if ((bool)$products) {
@@ -973,7 +979,7 @@ class Action {
 
             $repository->prepareProductsMedias($products);
 
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+            \App::coreClientV2()->execute();
 
             \RepositoryManager::review()->addScores($products, $scoreData);
 

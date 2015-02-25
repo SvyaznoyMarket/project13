@@ -7,21 +7,22 @@ $(document).ready(function() {
 	 * @requires jQuery, jQuery.elevateZoom
 	 */
 	(function () {
-		if ( !$('.bZoomedImg').length ) {
+		var image = $('.js-photo-zoomedImg');
+
+		if ( !image.length ) {
 			console.warn('Нет изображения для elevateZoom');
 
 			return;
 		}
 
 		var
-			image = $('.bZoomedImg'),
 			zoomDisable = ( image.data('zoom-disable') !== undefined ) ? image.data('zoom-disable') : true,
 			zoomConfig = {
 				gallery: 'productImgGallery',
 				galleryActiveClass: 'prod-photoslider__gal__link--active',
 				zoomWindowOffety: 0,
 				zoomWindowOffetx: 19,
-				zoomWindowWidth: 519,
+				zoomWindowWidth: image.data('is-slot') ? 404 : 519,
 				borderSize: 1,
 				borderColour: '#C7C7C7',
 				disableZoom: zoomDisable

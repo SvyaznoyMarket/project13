@@ -10,6 +10,14 @@
 ?>
 
 <?
+if (!isset($title)) {
+    $title = null;
+}
+
+if (!isset($breadcrumbs)) {
+    $breadcrumbs = [];
+}
+
 $hasSearch = isset($hasSearch) ? (bool)$hasSearch : true;
 if (!isset($titlePrefix)) $titlePrefix = null;
 ?>

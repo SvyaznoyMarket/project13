@@ -9,7 +9,8 @@
 				isBuyable = $elem.data('is-buyable'),
 				statusId = $elem.data('status-id'),
                 noUpdate = $elem.data('noUpdate'),
-				buyUrl = $elem.data('buy-url')
+				buyUrl = $elem.data('buy-url'),
+				isSlot = $elem.data('is-slot')
             ;
 			
 			if (typeof isBuyable != 'undefined' && !isBuyable) {
@@ -22,11 +23,19 @@
 					.attr('href', '#');
 			} else if (typeof statusId != 'undefined' && 5 == statusId) { // SITE-2924
 				$elem
-					.text('Купить')
+					.text('Нет')
 					.addClass('mDisabled')
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
 					.addClass('jsBuyButton')
+					.attr('href', '#');
+			} else if (typeof isSlot != 'undefined' && isSlot) {
+				$elem
+					.text('Как купить?')
+					.removeClass('mDisabled')
+					.removeClass('mShopsOnly')
+					.removeClass('mBought')
+					.addClass('btn btn--slot js-slotButton')
 					.attr('href', '#');
 			} else if (typeof inShopStockOnly != 'undefined' && inShopStockOnly && ENTER.config.pageConfig.user.region.forceDefaultBuy) {
 				$elem
@@ -78,6 +87,13 @@
 				productId = $elem.data('id'),
 				typeId = $elem.data('type-id'),
 				comparableProducts;
+
+			var location = '';
+			if (ENTER.config.pageConfig.location.indexOf('listing') != -1) {
+				location = 'listing';
+			} else if (ENTER.config.pageConfig.location.indexOf('product') != -1) {
+				location = 'product';
+			}
 			
 			if (ENTER.utils.getObjectWithElement(compare, 'id', productId)) {
 				$elem
@@ -87,7 +103,7 @@
 			} else {
 				$elem
 					.removeClass('btnCmpr-act')
-					.find('a.btnCmpr_lk').removeClass('btnCmpr_lk-act').attr('href', ENTER.utils.generateUrl('compare.add', {productId: productId}))
+					.find('a.btnCmpr_lk').removeClass('btnCmpr_lk-act').attr('href', ENTER.utils.generateUrl('compare.add', {productId: productId, location: location}))
 					.find('span').text('Добавить к сравнению');
 			}
 	
@@ -107,11 +123,18 @@
 			var compare = ko.unwrap(valueAccessor()),
 				$elem = $(element),
 				productId = $elem.data('id');
-	
+
+			var location = '';
+			if (ENTER.config.pageConfig.location.indexOf('listing') != -1) {
+				location = 'listing';
+			} else if (ENTER.config.pageConfig.location.indexOf('product') != -1) {
+				location = 'product';
+			}
+
 			if (ENTER.utils.getObjectWithElement(compare, 'id', productId)) {
 				$elem.addClass('btnCmprb-act').attr('href', ENTER.utils.generateUrl('compare.delete', {productId: productId}));
 			} else {
-				$elem.removeClass('btnCmprb-act').attr('href', ENTER.utils.generateUrl('compare.add', {productId: productId}));
+				$elem.removeClass('btnCmprb-act').attr('href', ENTER.utils.generateUrl('compare.add', {productId: productId, location: location}));
 			}
 		}
 	};

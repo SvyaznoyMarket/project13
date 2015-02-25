@@ -23,7 +23,7 @@ class BasicEntity {
     protected $token;
     /** @var string|null */
     protected $image;
-    /** @var int|null */
+    /** @var float|null */
     protected $price;
     /** @var State\Entity|null */
     protected $state;
@@ -207,14 +207,14 @@ class BasicEntity {
     }
 
     /**
-     * @param int $price
+     * @param float $price
      */
     public function setPrice($price) {
-        $this->price = (int)$price;
+        $this->price = (float)$price;
     }
 
     /**
-     * @return int
+     * @return float
      */
     public function getPrice() {
         return $this->price;
@@ -558,6 +558,20 @@ class BasicEntity {
      */
     public function isOnlyFromPartner() {
         return $this->isOnlyFromPartner;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getSlotPartnerOffer()
+    {
+        foreach ($this->partnersOffer as $offer) {
+            if (isset($offer['type']) && 2 == $offer['type']) {
+                return $offer + ['name' => null, 'offer' => null];
+            }
+        }
+
+        return null;
     }
 
     public function setModel(Model\Entity $model = null) {

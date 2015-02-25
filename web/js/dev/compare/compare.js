@@ -12,22 +12,7 @@
 			fixedTableCells = null;
 
 		function createProductModel(product) {
-			var model = {};
-			model.id = product.id;
-			model.prefix = product.prefix;
-			model.webName = product.webName;
-			model.link = product.link;
-			model.price = product.price;
-			model.priceOld = product.priceOld;
-			model.inShopStockOnly = product.inShopStockOnly;
-			model.inShopShowroomOnly = product.inShopShowroomOnly;
-			model.isBuyable = product.isBuyable;
-			model.statusId = product.statusId;
-			model.imageUrl = product.imageUrl;
-			model.reviews = product.reviews;
-			model.deleteFromCompareUrl = product.deleteFromCompareUrl;
-			model.upsale = product.upsale;
-			return model;
+			return product;
 		}
 
 		function createTypeModel(type) {
