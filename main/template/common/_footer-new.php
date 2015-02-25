@@ -11,9 +11,9 @@
 
 
         <ul class="footer-discounts clearfix">
-            <li><a class="footer-discounts__link" href="#"><i class="i-discount i-discount-sb"></i></a></li>
-            <li><a class="footer-discounts__link" href="#"><i class="i-discount i-discount-mnogoru"></i></a></li>
-            <li><a class="footer-discounts__link" href="#"><i class="i-discount i-discount-svyaznoy"></i></a></li>
+            <li><a class="footer-discounts__link" href="http://www.enter.ru/sberbank_spasibo"><i class="i-discount i-discount-sb"></i></a></li>
+            <li><a class="footer-discounts__link" href="http://www.enter.ru/mnogo-ru"><i class="i-discount i-discount-mnogoru"></i></a></li>
+            <li><a class="footer-discounts__link" href="http://www.enter.ru/sclub"><i class="i-discount i-discount-svyaznoy"></i></a></li>
         </ul>
         <ul class="footer_socnet clearfix">
             <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" href="https://www.facebook.com/enter.ru"><i class="i-share i-share-fb"></i></a></li>
