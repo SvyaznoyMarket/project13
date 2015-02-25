@@ -66,6 +66,7 @@ class SliderAction {
             'content' => $helper->renderWithMustache('enterprize/_slider', [
                 'products'     => array_map(function(\Model\Product\Entity $product) use (&$helper, &$enterpizeCoupon, &$cartButtonAction) {
                     return [
+                        'url'           => $product->getLink(),
                         'price'         => $helper->formatPrice($product->getPrice()),
                         'discountPrice' => $helper->formatPrice(
                             $enterpizeCoupon->getIsCurrency()
