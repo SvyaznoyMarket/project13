@@ -9,19 +9,13 @@
             <li class="footer_cmpn_i footer_cmpn_i-last"><a class="footer_cmpn_lk" href="/research">ЦСИ</a></li>
         </ul>
 
-        <div class="footer_inf">
-            <ul class="footer_inf_lst">
-                <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/legal">Правовая информация</a></li>
-                <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/terms">Условия продажи</a></li>
-                <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/media_info">Информация о СМИ</a></li>
-                <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/refurbished-sale">Уцененные товары оптом</a></li>
-                <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/adv">Рекламные возможности</a></li>
-            </ul>
 
-            <p class="footer_inf_tx">Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.</p>
-        </div>
-
-        <ul class="footer_socnet">
+        <ul class="footer-discounts clearfix">
+            <li><a class="footer-discounts__link" href="#"><i class="i-discount i-discount-sb"></i></a></li>
+            <li><a class="footer-discounts__link" href="#"><i class="i-discount i-discount-mnogoru"></i></a></li>
+            <li><a class="footer-discounts__link" href="#"><i class="i-discount i-discount-svyaznoy"></i></a></li>
+        </ul>
+        <ul class="footer_socnet clearfix">
             <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" href="https://www.facebook.com/enter.ru"><i class="i-share i-share-fb"></i></a></li>
             <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" href="https://twitter.com/enter_ru"><i class="i-share i-share-tw"></i></a></li>
             <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" href="http://vk.com/public31456119"><i class="i-share i-share-vk"></i></a></li>
@@ -29,9 +23,9 @@
             <li class="footer_socnet_i"><a class="footer_socnet_lk" target="_blank" href="http://www.odnoklassniki.ru/group/53202890129511"><i class="i-share i-share-od"></i></a></li>
         </ul>
 
-        <ul class="footer_bnnr">
-            <li class="footer_bnnr_i"><img src="/styles/footer/img/prava-potreb.gif" /></li>
-            <li class="footer_bnnr_i"><a href="/akit"><img src="/styles/footer/img/akita.png" /></a></li>
+        <ul class="footer_bnnr clearfix">
+            <li class="footer_bnnr_i"><img src="/styles/footer/img/prava-potreb.png" /></li>
+            <li class="footer_bnnr_i"><a href="/akit"><img src="/styles/footer/img/akit.png" /></a></li>
             <li class="footer_bnnr_i"><div class="teleportator" id="teleportator"></div></li>
         </ul>
 
@@ -44,7 +38,20 @@
                 </a>
             </li>
         </ul>
+        <div class="footer_inf">
+            <ul class="footer_inf_lst">
+                <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/legal">Правовая информация</a></li>
+                <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/terms">Условия продажи</a></li>
+                <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/media_info">Информация о СМИ</a></li>
+                <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/refurbished-sale">Уцененные товары оптом</a></li>
+                <li class="footer_inf_lst_i"><a class="footer_inf_lst_lk" href="/adv">Рекламные возможности</a></li>
+            </ul>
+
+            <p class="footer_inf_tx">Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.</p>
+        </div>
     </div>
+
+
 
     <footer class="footer_b">
         <div class="footer_cpy clearfix">
