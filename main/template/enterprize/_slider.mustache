@@ -4,7 +4,7 @@
             {{#products}}
             <li class="slideItem_i jsSliderItem" style="display: list-item;">
                 <div class="slideItem_i__child">
-                    {{#isUserOwner}}<a href="">{{/isUserOwner}}
+                    {{#isUserOwner}}<a href="{{url}}">{{/isUserOwner}}
                         <div class="slideItem_imgw">
                             <img alt="{{name}}" src="{{image}}" class="slideItem_img">
                         </div>
@@ -24,7 +24,7 @@
 
                 {{#user.isMember}}
                     {{^isUserOwner}}
-                    <a class="slideItem__ep-price" href="">
+                    <a class="slideItem__ep-price" href="{{url}}">
                         <span class="slideItem__ep-price__inn">
                             <span class="slideItem__ep-price__i">
                                 Обычная цена<br>
