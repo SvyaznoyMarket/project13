@@ -8659,7 +8659,7 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    margin: 0 0 40px;
+    margin: 0 0 20px;
   }
   .orderU_fld {
     position: relative;
@@ -8693,6 +8693,7 @@ img[height="0"] {
     width: 300px;
     margin: 0 10px 25px 0;
     text-indent: 80px;
+    line-height: 32px;
   }
   .orderU_hint {
     display: inline-block;
@@ -8708,9 +8709,6 @@ img[height="0"] {
   .orderU_hint .customLabel {
     background-position: 0 3px;
     line-height: 1.2;
-  }
-  .orderU-v2 .orderU_tx {
-    line-height: 14px;
   }
   .orderU-v2 .orderU_tx:focus {
     border-color: #f89b1c;
@@ -8823,13 +8821,9 @@ img[height="0"] {
     padding-left: 10px;
   }
   .bonusCnt-v2 .bonusCnt_i {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
+    display: block;
     height: auto;
-    margin: 5px 0;
+    margin: 5px 0 12px;
     min-width: 300px;
     padding: 0;
     text-align: left;
