@@ -105,7 +105,7 @@ class IndexAction {
         $userCoupons = [];
         foreach ($userDiscounts as $userDiscount) {
             $coupon = isset($enterpizeCouponsByToken[$userDiscount->getSeries()]) ? $enterpizeCouponsByToken[$userDiscount->getSeries()] : null;
-            if (!$userDiscount->getSeries() || !$coupon) continue;
+            if (!$userDiscount->getSeries() || !$coupon || $userDiscount->getUsed()) continue;
 
             $coupon->setDiscount($userDiscount);
 
