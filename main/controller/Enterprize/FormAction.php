@@ -119,6 +119,7 @@ class FormAction {
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
         $data = $session->get($sessionName, []);
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : $userData['guid'];
+        $data['enterprizeToken'] = $enterprizeToken;
 
         if (!$enterprizeToken) {
             $link = \App::router()->generate('enterprize');
@@ -252,9 +253,24 @@ class FormAction {
         if ($form->isValid()) {
             $userToken = $data['token'];
             $data = $session->get($sessionName, []);
-            if ($data['isPhoneConfirmed'] && $data['isEmailConfirmed']) {
+            //if ($data['isPhoneConfirmed'] && $data['isEmailConfirmed']) {
+            if ($data['isEmailConfirmed']) {
                 // пользователь все подтвердил, пробуем создать купон
                 $link = \App::router()->generate('enterprize.create');
+            } elseif (!$data['isEmailConfirmed']) {
+                $confirm = $client->query(
+                    'confirm/email',
+                    [
+                        'client_id' => \App::config()->coreV2['client_id'],
+                        'token'     =>  $userToken,
+                    ],
+                    [
+                        'email'    => $data['email'],
+                        'template' => 'enter_prize',
+                    ],
+                    \App::config()->coreV2['hugeTimeout']
+                );
+                \App::logger()->info(['core.response' => $confirm], ['coupon', 'confirm/email']);
             } elseif ($data['isPhoneConfirmed']) {
                 // просим подтвердит email
                 $link = \App::router()->generate('enterprize.confirmEmail.show');
