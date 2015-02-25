@@ -28,7 +28,8 @@ class ConfirmEmailAction {
         }
 
         if ($this->isEmailConfirmed()) {
-            return (new \Controller\Enterprize\ConfirmPhoneAction())->create($request);
+            //return (new \Controller\Enterprize\ConfirmPhoneAction())->create($request);
+            return (new \Controller\Enterprize\CouponAction())->create($request);
         }
 
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
