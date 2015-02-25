@@ -117,26 +117,41 @@
 }
 
 .i-share {
-    background-image: url("@{base-url}/mainpage/img/i-share.png");
+    background-image: url("@{base-url}/footer/img/sharing/sharing-sprite.png");
 
     &-fb {
-        .sprite-temp(0, 0, 28px, 28px);
+        .sprite-temp(-28px, 0, 28px, 28px);
+        &:hover{
+            .sprite-temp(0, 0, 28px, 28px);
+        }
     }
 
     &-od {
-        .sprite-temp(-28px, 0, 28px, 28px);
+        .sprite-temp(-84px, 0, 28px, 28px);
+        &:hover{
+            .sprite-temp(-56px, 0, 28px, 28px);
+        }
     }
 
     &-tw {
-        .sprite-temp(-56px, 0, 28px, 28px);
+        .sprite-temp(-140px, 0, 28px, 28px);
+        &:hover{
+            .sprite-temp(-112px, 0, 28px, 28px);
+        }
     }
 
     &-vk {
-        .sprite-temp(-84px, 0, 28px, 28px);
+         .sprite-temp(-196px, 0, 28px, 28px);
+        &:hover{
+            .sprite-temp(-168px, 0, 28px, 28px);
+        }
     }
 
     &-yt {
-        .sprite-temp(-112px, 0, 28px, 28px);
+        .sprite-temp(-252px, 0, 28px, 28px);
+        &:hover{
+            .sprite-temp(-224px, 0, 28px, 28px);
+        }
     }
 }
 .footer_cpy_mbl{

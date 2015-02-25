@@ -2782,9 +2782,20 @@ img[height="0"] {
     border-radius: 4px;
   }
   .i-share {
-    background-image: url("/styles/mainpage/img/i-share.png");
+    background-image: url("/styles/footer/img/sharing/sharing-sprite.png");
   }
   .i-share-fb {
+    background-position: -28px 0;
+    width: 28px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    height: 28px;
+  }
+  .i-share-fb:hover {
     background-position: 0 0;
     width: 28px;
     background-repeat: no-repeat;
@@ -2796,28 +2807,6 @@ img[height="0"] {
     height: 28px;
   }
   .i-share-od {
-    background-position: -28px 0;
-    width: 28px;
-    background-repeat: no-repeat;
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    height: 28px;
-  }
-  .i-share-tw {
-    background-position: -56px 0;
-    width: 28px;
-    background-repeat: no-repeat;
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    height: 28px;
-  }
-  .i-share-vk {
     background-position: -84px 0;
     width: 28px;
     background-repeat: no-repeat;
@@ -2828,8 +2817,74 @@ img[height="0"] {
     *zoom: 1;
     height: 28px;
   }
-  .i-share-yt {
+  .i-share-od:hover {
+    background-position: -56px 0;
+    width: 28px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    height: 28px;
+  }
+  .i-share-tw {
+    background-position: -140px 0;
+    width: 28px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    height: 28px;
+  }
+  .i-share-tw:hover {
     background-position: -112px 0;
+    width: 28px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    height: 28px;
+  }
+  .i-share-vk {
+    background-position: -196px 0;
+    width: 28px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    height: 28px;
+  }
+  .i-share-vk:hover {
+    background-position: -168px 0;
+    width: 28px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    height: 28px;
+  }
+  .i-share-yt {
+    background-position: -252px 0;
+    width: 28px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    height: 28px;
+  }
+  .i-share-yt:hover {
+    background-position: -224px 0;
     width: 28px;
     background-repeat: no-repeat;
     display: inline-block;
