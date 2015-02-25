@@ -37,6 +37,7 @@ $config = array_merge([
     'prepayment'            => $appConfig->order['prepayment'],
     'isMobile'              => $isMobile,
     'currentRoute'          => \App::request()->attributes->get('route'),
+    'location'              => [],
     'user' => [
         'region' => [
             'forceDefaultBuy' => \App::user()->getRegion()->getForceDefaultBuy(),
@@ -52,6 +53,7 @@ $config = array_merge([
         'orderV3OneClick.delivery'  => ['pattern' => $routerRules['orderV3OneClick.delivery']['pattern']],
         'product.category'          => ['pattern' => $routerRules['product.category']['pattern']],
         'orderV3OneClick.form'      => ['pattern' => $routerRules['orderV3OneClick.form']['pattern']],
+        'order.slot.create'         => ['pattern' => $routerRules['order.slot.create']['pattern']],
     ],
     'selfDeliveryTest'    => \Session\AbTest\AbTest::isSelfPaidDelivery(), // удалять осторожно, поломается JS
     'selfDeliveryLimit'    => $appConfig->self_delivery['limit'] // стоимость платного самовывоза, удалять осторожно, поломается JS

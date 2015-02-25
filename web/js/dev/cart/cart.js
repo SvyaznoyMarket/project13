@@ -14,10 +14,12 @@
 			$.ajax({
 				url: href,
 				success: function(data){
-					if (data.success && data.product && typeof data.product.quantity != 'undefined') {
-						UserModel.productQuantityUpdate(data.product.id, data.product.quantity);
-					} else if (data.success && data.product && typeof data.product.quantity == 'undefined') {
-						UserModel.removeProductByID(data.product.id);
+					if (data.success && data.product) {
+						if (typeof data.product.quantity != 'undefined' && data.product.quantity > 0) {
+							UserModel.productQuantityUpdate(data.product.id, data.product.quantity);
+						} else {
+							UserModel.removeProductByID(data.product.id);
+						}
 					}
 				}
 			})

@@ -40,4 +40,10 @@ class ChildCategoryPage extends \View\DefaultLayout {
             $this->addMeta('keywords', $keywords);
         }
     }
+
+    public function slotConfig() {
+        return $this->tryRender('_config', ['config' => [
+            'location' => ['listing'],
+        ]]);
+    }
 }

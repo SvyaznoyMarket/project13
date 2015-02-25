@@ -157,9 +157,11 @@
 	});
 
     // Мотивация онлайн-оплаты (купон)
-    $orderContent.on('click', '.jsOrderCouponInitial', function(){
+    $orderContent.on('click', '.jsOrderCouponInitial', function(event){
         $(this).hide();
         $('.jsOrderCouponExpanded').show();
+
+        event.preventDefault();
     });
 
     // клик по "оплатить онлайн"

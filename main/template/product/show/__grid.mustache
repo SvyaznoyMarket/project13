@@ -1,6 +1,6 @@
-<div class="productInner__hover">
+<div class="productInner__hover js-listing-item" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}>
     <div class="productInner__imgBox">
-        <a class="productInner__imgLink" href="{{link}}">
+        <a class="productInner__imgLink js-listing-item-img" href="{{link}}">
             <img class="productInner__img" src="{{image}}" alt="{{name}}" />
         </a>
     </div><!--/ картинка продукта -->
@@ -32,8 +32,8 @@
 
             <div class="bBtnLine clearfix">
                 {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
-                <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare"></a>
-                <a class="btnView btn1" href="{{link}}">Посмотреть</a>
+                <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}></a>
+                <a class="btnView btn1 js-listing-item-viewButton" href="{{link}}">Посмотреть</a>
             </div>
         </div>
     </div><!--/ описание продукта -->

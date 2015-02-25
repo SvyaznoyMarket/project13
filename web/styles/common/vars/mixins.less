@@ -101,10 +101,15 @@
   -moz-box-shadow: @arguments;
   box-shadow: @arguments;
 }
+.box-shadow2(@arguments, @arguments) {
+  -webkit-box-shadow: @arguments, @arguments;
+  -moz-box-shadow: @arguments, @arguments;
+  box-shadow: @arguments, @arguments;
+}
 .box-shadow3(@arguments, @arguments, @arguments) {
   -webkit-box-shadow: @arguments, @arguments, @arguments;
   -moz-box-shadow: @arguments, @arguments, @arguments;
-  box-shadow: @arguments, @arguments, @arguments;;
+  box-shadow: @arguments, @arguments, @arguments;
 }
 .text-shadow(@arguments) {
   -webkit-text-shadow: @arguments;

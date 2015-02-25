@@ -341,11 +341,14 @@ class Action {
         return $values;
     }
 
+    /** Начальные параметры фильтров
+     * @param \Http\ParameterBag $params
+     */
     private function setDefaultValues(\Http\ParameterBag $params) {
         $isSubmitted = (bool)$params->get('f-holiday');
 
         if (!$this->hasTagFilterPropertyValue('holiday', $params->get('f-holiday'))) {
-            $params->set('f-holiday', 737);
+            $params->set('f-holiday', 739);
         }
 
         if (!$this->hasTagFilterPropertyValue('sex', $params->get('f-sex'))) {

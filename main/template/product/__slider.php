@@ -138,7 +138,7 @@ $f = function (
             ?>
                 <? if ($needStartLiTag) : ?>
                 <li
-                    class="slideItem_i jsRecommendedItem jsSliderItem"
+                    class="slideItem_i jsRecommendedItem jsSliderItem <? if ($product->getSlotPartnerOffer()): ?>slot--centered<? endif ?>"
                     data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>"
                     data-product="<?= $helper->json([
                         'article'  => $product->getArticle(),
