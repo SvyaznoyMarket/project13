@@ -361,6 +361,11 @@ class OrderEntity {
                 $data['user_agent'] = $request->server->get('HTTP_USER_AGENT');
                 $data['kiss_session'] = $request->request->get('kiss_session');
                 $data['last_partner'] = $request->cookies->get('last_partner');
+
+                // Много.ру
+                if (\App::config()->partners['MnogoRu']['enabled'] && !empty($request->cookies->get(\App::config()->partners['MnogoRu']['cookieName']))) {
+                    $data['mnogo_ru_card'] = $request->cookies->get(\App::config()->partners['MnogoRu']['cookieName']);
+                }
             }
         } catch (\Exception $e) {
             \App::logger()->error($e, ['order_v3', 'partner']);

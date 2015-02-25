@@ -1529,11 +1529,15 @@
             var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(email);
         },
+		validateMnogoRu = function validateMnogoRuF(val){
+			return val.length == 0 || /\d{4}\s\d{4}/.test(val)
+		},
         validate = function validateF(){
 			var error = [],
 				$phoneInput = $('[name=user_info\\[phone\\]]'),
 				$emailInput = $('[name=user_info\\[email\\]]'),
 				$bonusCardInput =  $('[name=user_info\\[bonus_card_number\\]]'),
+				$mnogoRuInput = $('.jsOrderV3MnogoRuCardField'),
 				$subscribeInput = $('.jsOrderV3SubscribeCheckbox'),
 				phone = $phoneInput.val().replace(/\s+/g, '');
 
@@ -1555,12 +1559,21 @@
 			}
 
 			$bonusCardInput.mask($bonusCardInput.data('mask')); // еще раз, т.к. событие blur и последующий validate проскакивает раньше обновления значения инпута плагином
+			$mnogoRuInput.mask($mnogoRuInput.data('mask')); // еще раз, т.к. событие blur и последующий validate проскакивает раньше обновления значения инпута плагином
 
 			if ($bonusCardInput.val().length != 0 && !ENTER.utils.checkEan($bonusCardInput.val())) {
 				error.push('Неверный код карты лояльности');
 				$bonusCardInput.addClass(errorClass).siblings('.errTx').show();
 			} else {
 				$bonusCardInput.removeClass('textfield-err').siblings('.errTx').hide();
+			}
+
+			// Много.ру
+			if ($mnogoRuInput && !validateMnogoRu($mnogoRuInput.val())) {
+				error.push('Неверный код карты Много.ру');
+				$mnogoRuInput.addClass(errorClass).siblings('.errTx').show();
+			} else {
+				$mnogoRuInput.removeClass('textfield-err').siblings('.errTx').hide();
 			}
 
 			return error;
@@ -1579,11 +1592,15 @@
 
     // проверка телефона и email
     $pageNew.find('form').on('submit', function (e) {
-		var error = validate();
+		var error = validate(),
+			$mnogoRuInput = $('.jsOrderV3MnogoRuCardField');
         if (error.length != 0) {
             e.preventDefault();
             $body.trigger('trackUserAction', ['6_2 Далее_ошибка_Получатель', 'Поле ошибки: '+ error.join(', ')])
-        }
+        } else {
+			// запоминаем значение номера карты Много.ру
+			if ($mnogoRuInput) docCookies.setItem('enter_mnogo_ru', $mnogoRuInput.val(), 31536e3, '/');
+		}
     });
 
 	$pageNew.on('change', '.jsOrderV3SubscribeCheckbox', function(){
@@ -1596,6 +1613,12 @@
 			? $body.trigger('trackGoogleEvent', ['Email_checkout', 'success_validation', 'email'])
 			: $body.trigger('trackGoogleEvent', ['Email_checkout', 'fail_prevalidation', 'email'])
 	});
+
+	// добавляем сохраненное значение карты Много.ру
+	if ($pageNew && docCookies.getItem('enter_mnogo_ru') != null) {
+		$pageNew.find('.jsOrderV3MnogoRuCardField').val(docCookies.getItem('enter_mnogo_ru'));
+		$pageNew.find('.jsMnogoRuSpan').text(docCookies.getItem('enter_mnogo_ru'));
+	}
 
     // PAGE DELIVERY
 

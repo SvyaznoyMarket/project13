@@ -216,7 +216,7 @@ class IndexAction {
                     }
                 }
     
-                // SITE-3982 Трастфактор "Спасибо от Сбербанка" не должен отображаться на карточке товара от Связного
+                // Трастфакторы "Спасибо от Сбербанка" и Много.ру не должны отображаться на партнерских товарах
                 if (is_array($product->getPartnersOffer()) && count($product->getPartnersOffer()) != 0) {
                     foreach ($trustfactors as $key => $trustfactor) {
                         if ('right' === $trustfactor->type && 'ab3ca73c-6cc4-4820-b303-8165317420d5' === $trustfactor->uid) {

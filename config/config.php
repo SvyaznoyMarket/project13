@@ -256,6 +256,8 @@ $c->partners['Sociaplus']['enabled'] = true;
 $c->partners['AdBlender']['enabled'] = true;
 $c->partners['ActionpayRetargeting']['enabled'] = true;
 $c->partners['Optimizely']['enabled'] = true;
+$c->partners['MnogoRu']['enabled'] = true;
+$c->partners['MnogoRu']['cookieName'] = 'enter_mnogo_ru';
 
 $c->adFox['enabled'] = true;
 
