@@ -5479,6 +5479,15 @@ img[height="0"] {
     border-radius: 3px 0 0 3px;
     background: none repeat scroll 0 0 #f7f7f7;
   }
+  .txFld-lbl__str {
+    width: 5px;
+    color: #f99b1c;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+  }
   .txFld-it {
     line-height: 35px;
     position: absolute;
@@ -5505,6 +5514,10 @@ img[height="0"] {
     height: 35px;
     padding: 0 0 0 9px;
     border-right: 2px solid #f99b1c;
+  }
+  .txFld-hint {
+    color: #a0a0a0;
+    margin: 0 0 3px 2px;
   }
   .btn-def {
     background-color: #f99b1c;
