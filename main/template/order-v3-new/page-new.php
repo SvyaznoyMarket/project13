@@ -115,7 +115,7 @@ return function(
                                     <span class="orderU_inf jsShowBonusCardHint"></span>
                                 </div>
 
-                                <div class="bonusCnt_popup" style="display: none">
+                                <div class="bonusCnt_popup bonusCnt_popup--mnogoru" style="display: none">
                                     <div class="bonusCnt_descr">Получайте бонусы Много.ру за покупки в Enter (1 бонус за 33 руб.).<br/>
                                         Для этого введите восьмизначный номер, указанный на лицевой стороне карты и в письмах от Клуба Много.ру.</div>
                                     <img src="/css/skin/img/mnogo_ru.png" alt="mnogo.ru" />
