@@ -389,21 +389,11 @@
         }
     });
 
-    $('.js-ep-form-reg').on('submit', function(e) {
-        e.preventDefault();
-        var $el = $(e.target),
-            action = $el.attr('action'),
-            formData = $el.serializeArray();
+    body.on('click', '.js-ep-hint-closer', function(e) {
+    	e.preventDefault();
 
-        var responseFrom = function(response) {
-            var message = response.notice.message;
-            if (message) {
-                $el.closest('.ep-hint__row').hide();
-                $('.js-ep-reg-complete').show().find('.js-ep-reg-complete-text').html(message);
-            }
-        };
-
-        $.post(action, formData, responseFrom, 'json');
+    	$(this).closest('.js-enterprize-coupon-hint').remove();
+    	$('.js-enterprize-coupon').removeClass('act');
     });
 
     body.on('focus', '.js-phone-mask', function() {

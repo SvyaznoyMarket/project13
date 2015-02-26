@@ -46,7 +46,7 @@ $helper = new \Helper\TemplateHelper();
         <ul class="ep-head__control">
             <li class="ep-head__control__i ep-head__control__i--color"><span class="ep-head__control__i__log">Вы — игрок <span class="epTextLogo">Enter <span class="epTextLogo_colors">Prize</span></span></span></li>
             <!--<li class="ep-head__control__i js-ep-btn-hint-popup"><span class="ep-head__control__i__hint">Как стать участником?</span></li>-->
-            <li class="ep-head__control__i"><a class="ep-head__control__i__lk undrl" href="/reklamnaya-akcia-enterprize">Правила участия в ENTER PRIZE</a></li>
+            <li class="ep-head__control__i"><a class="ep-head__control__i__lk undrl" target="_blank" href="/reklamnaya-akcia-enterprize">Правила участия в ENTER PRIZE</a></li>
         </ul>
     <? endif ?>
 

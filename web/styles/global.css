@@ -676,6 +676,16 @@ img[height="0"] {
   .btnLightGrey:hover {
     text-decoration: none;
   }
+  .clsr-light {
+    background: url("/styles/popup/img/closer.gif") no-repeat 50% 50%;
+    height: 41px;
+    width: 41px;
+    cursor: pointer;
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
   .fl-l {
     float: left;
   }
@@ -5157,6 +5167,7 @@ img[height="0"] {
   .ep-head {
     padding: 0 10px;
     position: relative;
+    margin: 0 0 30px;
   }
   .ep-head__desc {
     display: inline-block;
@@ -5851,6 +5862,7 @@ img[height="0"] {
   }
   .ep-hint--2col .ep-hint__col--r {
     float: right;
+    margin-right: 10px;
   }
   .ep-hint--2col .ep-hint__lvl3 {
     margin: 0 0 55px;
@@ -5865,8 +5877,8 @@ img[height="0"] {
     top: 213px;
     z-index: 26;
   }
-  .ep-hint--position .ep-hint__row {
-    padding: 5px 20px 10px;
+  .ep-hint--position .ta-r.mb10 {
+    margin-right: 20px;
   }
   .ep-hint__row {
     padding: 15px 20px 10px 20px;
@@ -5907,6 +5919,9 @@ img[height="0"] {
   .ep-hint__lvl2 {
     font-size: 14px;
     margin-top: 0;
+  }
+  .ep-hint__lvl3 {
+    margin: 0 0 20px;
   }
   .ep-hint__lvl4 {
     margin: 10px 0 0;
