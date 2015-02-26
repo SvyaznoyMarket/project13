@@ -12198,8 +12198,8 @@ img[height="0"] {
   }
   .fltrBtn_anim-item {
     position: absolute;
-    right: -25px;
-    top: 5px;
+    right: -8px;
+    top: 300px;
     display: block;
     animation: animPuls 7s ease-in-out 1s infinite;
     -webkit-animation: animPuls 7s ease-in-out 1s infinite;
@@ -12213,8 +12213,8 @@ img[height="0"] {
     animation: none;
   }
   .fltrBtn_anim-item:hover img {
-    right: 5px;
-    top: 5px;
+    right: 0;
+    top: -10px;
   }
   .fltrBtn_anim-item img {
     transition: all .2s ease;
@@ -12462,32 +12462,6 @@ img[height="0"] {
   .fltrBtn-gift .customLabel {
     font-size: 14px;
   }
-  .fltrBtn-gift .fltrBtn-action-item__detail {
-    background: #ffffff url('/styles/catalog/img/detail-bg.jpg') repeat-x top left;
-    width: 94px;
-    text-align: center;
-    color: #ef404a;
-    font-size: 12px;
-    font-family: 'Enter Type';
-    -webkit-border-top-right-radius: 0;
-    -webkit-border-bottom-right-radius: 3px;
-    -webkit-border-bottom-left-radius: 3px;
-    -webkit-border-top-left-radius: 0;
-    -moz-border-radius-topright: 0;
-    -moz-border-radius-bottomright: 3px;
-    -moz-border-radius-bottomleft: 3px;
-    -moz-border-radius-topleft: 0;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 3px;
-    border-bottom-left-radius: 3px;
-    border-top-left-radius: 0;
-    position: absolute;
-    left: 5px;
-    top: 122px;
-    text-decoration: none;
-    padding: 2px 0px;
-    z-index: 1;
-  }
   .fltrBtnPosBottom {
     position: absolute;
     bottom: 0;
@@ -12517,6 +12491,13 @@ img[height="0"] {
   .fltrBtnLn-lst {
     width: 822px;
     padding: 5px 0 5px 10px;
+  }
+  .fltrBtn-action-item {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
   }
   .fltrBtnBox-gift {
     border: none;

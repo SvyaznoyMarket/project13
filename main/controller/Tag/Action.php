@@ -51,6 +51,7 @@ class Action {
         $queryParams = [
             'filter' => ['filters' => [
                 ['tag', 1, $tag->getId()],
+                ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT], // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
             ]],
             'client_id' => 'site',
             //'is_load_parents' => false,

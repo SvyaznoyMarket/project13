@@ -5319,7 +5319,7 @@ $(document).ready(function() {
 		var
 			url = upsale.url,
 			sender2 = '';
-		
+
 		if (ENTER.config.pageConfig.product) {
 			if (ENTER.config.pageConfig.product.isSlot) {
 				sender2 = 'slot';
