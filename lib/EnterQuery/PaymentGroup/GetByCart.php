@@ -23,9 +23,9 @@ namespace EnterQuery\PaymentGroup {
         {
             $this->response = new Response();
 
-            $this->cart = $cart;
+            $this->cart = $cart ?: new Cart();
             $this->regionId = $regionId;
-            $this->filter = $filter;
+            $this->filter = $filter ?: new Filter();
         }
 
         /**
@@ -80,22 +80,6 @@ namespace EnterQuery\PaymentGroup {
             );
 
             return $this;
-        }
-
-        /**
-         * @return Cart
-         */
-        public function createCart()
-        {
-            return new Cart();
-        }
-
-        /**
-         * @return Filter
-         */
-        public function createFilter()
-        {
-            return new Filter();
         }
     }
 }

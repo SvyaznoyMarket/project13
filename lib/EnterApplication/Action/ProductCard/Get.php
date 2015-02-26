@@ -40,10 +40,7 @@ namespace EnterApplication\Action\ProductCard {
                 try {
                     $deliveryQuery = new Query\Delivery\GetByCart();
                     // корзина
-                    $cart = $deliveryQuery->createCart();
-                    $product = $cart->createProduct($productId, 1);
-                    $cart->products[] = $product;
-                    $deliveryQuery->cart = $cart;
+                    $deliveryQuery->cart->products[] = $deliveryQuery->cart->createProduct($productId, 1);
                     // регион
                     $deliveryQuery->regionId = $productQuery->regionId;
 
@@ -56,17 +53,12 @@ namespace EnterApplication\Action\ProductCard {
                 try {
                     $paymentGroupQuery = new Query\PaymentGroup\GetByCart();
                     // корзина
-                    $cart = $paymentGroupQuery->createCart();
-                    $product = $cart->createProduct($productId, 1);
-                    $cart->products[] = $product;
-                    $paymentGroupQuery->cart = $cart;
+                    $paymentGroupQuery->cart->products[] = $paymentGroupQuery->cart->createProduct($productId, 1);
                     // регион
                     $paymentGroupQuery->regionId = $productQuery->regionId;
                     // фильтер
-                    $filter = $paymentGroupQuery->createFilter();
-                    $filter->isCorporative = false;
-                    $filter->isCredit = true;
-                    $paymentGroupQuery->filter = $filter;
+                    $paymentGroupQuery->filter->isCorporative = false;
+                    $paymentGroupQuery->filter->isCredit = true;
 
                     $paymentGroupQuery->prepare($paymentGroupError);
                 } catch (\Exception $e) {

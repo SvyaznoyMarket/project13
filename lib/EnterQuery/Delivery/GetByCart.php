@@ -20,7 +20,7 @@ namespace EnterQuery\Delivery {
         {
             $this->response = new Response();
 
-            $this->cart = $cart;
+            $this->cart = $cart ?: new Cart();
             $this->regionId = $regionId;
         }
 
@@ -69,14 +69,6 @@ namespace EnterQuery\Delivery {
             );
 
             return $this;
-        }
-
-        /**
-         * @return Cart
-         */
-        public function createCart()
-        {
-            return new Cart();
         }
     }
 }
