@@ -5,7 +5,8 @@ namespace EnterQuery\AbTest
 
     use EnterQuery\AbTest\GetActive\Response;
 
-    class GetActive {
+    class GetActive
+    {
         use \EnterQuery\CurlQueryTrait;
         use \EnterQuery\ScmsQueryTrait;
 

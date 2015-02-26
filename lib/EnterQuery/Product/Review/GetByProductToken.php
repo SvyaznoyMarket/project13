@@ -5,7 +5,8 @@ namespace EnterQuery\Product\Review
 
     use EnterQuery\Product\Review\GetByProductToken\Response;
 
-    class GetByProductToken {
+    class GetByProductToken
+    {
         use \EnterQuery\CurlQueryTrait;
         use \EnterQuery\ScmsQueryTrait;
 

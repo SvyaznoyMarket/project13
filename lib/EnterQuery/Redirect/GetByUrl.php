@@ -5,7 +5,8 @@ namespace EnterQuery\Redirect
 
     use EnterQuery\Redirect\GetByUrl\Response;
 
-    class GetByUrl {
+    class GetByUrl
+    {
         use \EnterQuery\CurlQueryTrait;
         use \EnterQuery\ScmsQueryTrait;
 

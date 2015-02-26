@@ -5,7 +5,8 @@ namespace EnterQuery\Product
 
     use EnterQuery\Product\GetByToken\Response;
 
-    class GetByToken {
+    class GetByToken
+    {
         use \EnterQuery\CurlQueryTrait;
         use \EnterQuery\CoreQueryTrait;
 

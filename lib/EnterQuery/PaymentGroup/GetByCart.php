@@ -6,7 +6,8 @@ namespace EnterQuery\PaymentGroup {
     use EnterQuery\PaymentGroup\GetByCart\Cart;
     use EnterQuery\PaymentGroup\GetByCart\Filter;
 
-    class GetByCart {
+    class GetByCart
+    {
         use \EnterQuery\CurlQueryTrait;
         use \EnterQuery\CoreQueryTrait;
 

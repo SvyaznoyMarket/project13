@@ -5,7 +5,8 @@ namespace EnterQuery\Region
 
     use EnterQuery\Region\GetById\Response;
 
-    class GetById {
+    class GetById
+    {
         use \EnterQuery\CurlQueryTrait;
         use \EnterQuery\CoreQueryTrait;
 

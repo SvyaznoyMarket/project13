@@ -5,7 +5,8 @@ namespace EnterQuery\Delivery {
     use EnterQuery\Delivery\GetByCart\Response;
     use EnterQuery\Delivery\GetByCart\Cart;
 
-    class GetByCart {
+    class GetByCart
+    {
         use \EnterQuery\CurlQueryTrait;
         use \EnterQuery\CoreQueryTrait;
 

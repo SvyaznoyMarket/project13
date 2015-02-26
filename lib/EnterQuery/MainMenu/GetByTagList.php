@@ -5,7 +5,8 @@ namespace EnterQuery\MainMenu
 
     use EnterQuery\MainMenu\GetByTagList\Response;
 
-    class GetByTagList {
+    class GetByTagList
+    {
         use \EnterQuery\CurlQueryTrait;
         use \EnterQuery\ScmsQueryTrait;
 
@@ -14,7 +15,7 @@ namespace EnterQuery\MainMenu
         /** @var string[] */
         public $tags = [];
 
-        public function __construct(array $tags)
+        public function __construct(array $tags = [])
         {
             $this->response = new Response();
 

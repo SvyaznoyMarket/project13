@@ -84,6 +84,9 @@ namespace EnterApplication\Action\ProductCard {
             // регион
             $regionQuery = (new Query\Region\GetById($request->regionId))->prepare($abTestError);
 
+            // дерево категорий для меню
+            $categoryTreeQuery = (new Query\Product\Category\GetTree(null, 3, null, null, true))->prepare($categoryTreeError);
+
             // главное меню
             $menuQuery = (new Query\MainMenu\GetByTagList(['site-web']))->prepare($menuError);
 
@@ -91,7 +94,6 @@ namespace EnterApplication\Action\ProductCard {
             $curl->execute();
 
             //var_dump($paymentGroupError);
-            //var_dump($menuError);
 
             //die(microtime(true) - $startAt);
         }
