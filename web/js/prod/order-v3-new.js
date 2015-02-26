@@ -1598,8 +1598,8 @@
 				$emailInput.removeClass('textfield-err').siblings('.errTx').hide();
 			}
 
-			$bonusCardInput.mask($bonusCardInput.data('mask')); // еще раз, т.к. событие blur и последующий validate проскакивает раньше обновления значения инпута плагином
-			$mnogoRuInput.mask($mnogoRuInput.data('mask')); // еще раз, т.к. событие blur и последующий validate проскакивает раньше обновления значения инпута плагином
+			if ($bonusCardInput.length > 0) $bonusCardInput.mask($bonusCardInput.data('mask')); // еще раз, т.к. событие blur и последующий validate проскакивает раньше обновления значения инпута плагином
+			if ($mnogoRuInput.length > 0) $mnogoRuInput.mask($mnogoRuInput.data('mask')); // еще раз, т.к. событие blur и последующий validate проскакивает раньше обновления значения инпута плагином
 
 			if ($bonusCardInput.val().length != 0 && !ENTER.utils.checkEan($bonusCardInput.val())) {
 				error.push('Неверный код карты лояльности');
@@ -1609,7 +1609,7 @@
 			}
 
 			// Много.ру
-			if ($mnogoRuInput && !validateMnogoRu($mnogoRuInput.val())) {
+			if ($mnogoRuInput.length > 0 && !validateMnogoRu($mnogoRuInput.val())) {
 				error.push('Неверный код карты Много.ру');
 				$mnogoRuInput.addClass(errorClass).siblings('.errTx').show();
 			} else {
