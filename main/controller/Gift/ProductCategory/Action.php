@@ -25,11 +25,7 @@ class Action {
         // запрашиваем текущий регион, если есть кука региона
         $regionConfig = [];
         if ($user->getRegionId()) {
-            \App::dataStoreClient()->addQuery("region/{$user->getRegionId()}.json", [], function($data) use (&$regionConfig) {
-                if ($data) {
-                    $regionConfig = $data;
-                }
-            });
+            $regionConfig = (array)\App::dataStoreClient()->query("/region/{$user->getRegionId()}.json");
 
             \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
