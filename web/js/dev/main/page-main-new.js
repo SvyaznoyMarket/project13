@@ -3,8 +3,9 @@
 		timeoutId,
 
 		// БАННЕРЫ
+		$bannerWrapper = $('.jsMainBannerWrapper'),
 		$bannerHolder = $('.jsMainBannerHolder'),
-		bannerHeight = 300,
+		bannerHeight = 240,
 		$bannerThumbs = $('.jsMainBannerThumb'), // превью баннеров
 		activeThumbClass = 'slidesbnnr_thmbs_img-act',
 
@@ -82,7 +83,7 @@
 		$bannerHolder.animate({
 			'margin-top': -(index * bannerHeight)
 		},{
-			duration: 200,
+			duration: 400,
 			complete: function(){
 				$bannerThumbs.find('img').removeClass(activeThumbClass);
 				$this.find('img').addClass(activeThumbClass);
@@ -107,7 +108,7 @@
 		$bannerHolder.animate({
 			'margin-top': -(nextIndex * bannerHeight)
 		},{
-			duration: 200,
+			duration: 400,
 			complete: function(){
 				$bannerThumbs.find('img').removeClass(activeThumbClass);
 				$bannerThumbs.find('img').eq(nextIndex).addClass(activeThumbClass);
@@ -116,7 +117,6 @@
 			}
 		})
 	}
-
 
 	// Установка корректной ширины блоков со слайдерами
 	$jsSlidesWideHolder.css('width', slidesWideWidth * $jsSlidesWideItems.length);
