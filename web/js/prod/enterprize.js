@@ -341,6 +341,7 @@
             template = $('#tplEnterprizeForm'),
             templateHint = template.html(),
 
+            selectClass = $self.data('column'),
             activeClass = 'act',
 
             html,
@@ -359,6 +360,7 @@
             $('.js-enterprize-coupon').removeClass(activeClass);
             $self.addClass(activeClass);
             $self.closest('.js-enterprize-coupon-parent').append(html);
+            $('.js-enterprize-coupon-hint').addClass(selectClass);
         }
 
         if (dataValue.slider.url) {
@@ -403,9 +405,15 @@
         $self.length && $self.mask('8 (nnn) nnn-nn-nn');
     });
 
+    body.on('click', '.js-ep-rules-toggle', function(e) {
+    	e.preventDefault();
+
+    	$('.js-ep-rules-list').toggle();
+    })
+
     $(document).ready(function() {
-        if ($('.epHintPopup').length) {
-            epHintPopup();
+        if ( $('.epHintPopup').length ) {
+            epHintPopup('slow');
         }
     });
 

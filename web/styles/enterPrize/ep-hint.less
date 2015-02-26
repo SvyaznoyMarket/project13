@@ -2,7 +2,7 @@
 	background: @white;
 	margin: 0 0 10px 0;
     position: relative;
-    .box-shadow(0px 6px 6px rgba(0,0,0,0.5));
+    .box-shadow(0 0 10px rgba(0, 0, 0, 0.8));
     top: -25px;
     width: 960px;
     z-index: 30;
@@ -19,6 +19,37 @@
     .slideItem_btn-nxt {
         right: -10px;
     }
+
+    .ep-rules-lst {
+	    margin: 20px 0 0 233px;
+	}
+
+	&:after {
+		.pseudo-corner-top( 16px, @white, -16px);
+		left: 101px;
+		z-index: 25;
+	}
+
+	&.col-2 {
+
+		&:after {
+			left: 341px;
+		}
+	}
+
+	&.col-3 {
+
+		&:after {
+			left: 581px;
+		}
+	}
+
+	&.col-4 {
+
+		&:after {
+			left: 821px;
+		}
+	}
 
 	&--2col {
 

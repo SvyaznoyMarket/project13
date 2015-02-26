@@ -31,7 +31,7 @@ $(document).ready(function() {
 	$('.bMainMenuLevel-3__eLink').bind('click', 'Верхнее меню', categoriesSpy );
 	$('.breadcrumbs').first().find('a').bind( 'click', 'Хлебные крошки сверху', categoriesSpy );
 	$('.breadcrumbs-footer').find('a').bind( 'click', 'Хлебные крошки снизу', categoriesSpy );
-	
+
 	$('.bCtg__eMore').bind('click', function(e) {
 		e.preventDefault();
 		var el = $(this);
@@ -72,11 +72,4 @@ $(document).ready(function() {
 			}
 		});
 	}
-
-	
-
-	$('.enterPrizeDesc').click(
-		function() {
-			$(this).next('.enterPrizeListWrap').toggle('fast');
-	});
 });
