@@ -9394,8 +9394,8 @@
     margin: 0 0 10px;
   }
   .slideItem--center .slideItem_pr__sale {
-    font-size: 16px;
-    padding-left: 5px;
+    font-size: 18px;
+    display: block;
   }
   .slideItem--center .slideItem_i {
     margin-bottom: 5px;
