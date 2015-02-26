@@ -101,7 +101,8 @@ namespace EnterApplication\Action\ProductCard {
             $regionQuery = (new Query\Region\GetById($request->regionId))->prepare($abTestError);
 
             // дерево категорий для меню
-            $categoryTreeQuery = (new Query\Product\Category\GetTree(null, 3, null, null, true))->prepare($categoryTreeError);
+            //$categoryTreeQuery = (new Query\Product\Category\GetTree(null, 3, null, null, true))->prepare($categoryTreeError);
+            $categoryRootTreeQuery = (new Query\Product\Category\GetRootTree(3))->prepare($categoryRootTreeError);
 
             // главное меню
             $menuQuery = (new Query\MainMenu\GetByTagList(['site-web']))->prepare($menuError);
@@ -109,9 +110,7 @@ namespace EnterApplication\Action\ProductCard {
             // выполнение запросов
             $curl->execute();
 
-            var_dump($ratingError);
-
-            //die(microtime(true) - $startAt);
+            die(microtime(true) - $startAt);
         }
 
         /**
