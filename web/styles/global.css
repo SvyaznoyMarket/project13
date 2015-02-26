@@ -5877,8 +5877,8 @@ img[height="0"] {
     top: 213px;
     z-index: 26;
   }
-  .ep-hint--position .ta-r.mb10 {
-    margin-right: 20px;
+  .ep-hint--position .ep-hint__row--cut {
+    padding-bottom: 10px;
   }
   .ep-hint__row {
     padding: 15px 20px 10px 20px;
@@ -5925,6 +5925,32 @@ img[height="0"] {
   }
   .ep-hint__lvl4 {
     margin: 10px 0 0;
+  }
+  .ep-hint-number {
+    border: 1px dashed #999;
+    margin: 0 auto;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    padding: 8px 15px 5px;
+    position: relative;
+  }
+  .ep-hint-number__tl {
+    background: #ffffff;
+    font-size: 11px;
+    font-weight: bold;
+    left: 50%;
+    margin-left: -39px;
+    margin-top: -11px;
+    padding: 2px 6px;
+    position: absolute;
+    top: 0;
+  }
+  .ep-hint-number__val {
+    font-size: 20px;
+    font-weight: bold;
   }
 }
 /*---END----Enter Prize---------*/

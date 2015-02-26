@@ -1,6 +1,6 @@
 <div class="ep-hint {{^user.isMember}}ep-hint--2col{{/user.isMember}} {{#isUserOwner}}ep-hint--position{{/isUserOwner}} js-enterprize-coupon-hint">
     <div class="ep-hint__closer clsr-light js-ep-hint-closer"></div>
-    {{^isUserOwner}}
+
     <div class="ep-hint__row clearfix js-ep-reg-form">
         <div class="ep-hint__col">
             <p class="ep-hint__lvl1">
@@ -20,15 +20,25 @@
                 <div>Минимальная сумма заказа {{&minOrderSum}} <span class="rubl">p</span></div>
             </div>
 
-            {{#user.isMember}}
-                <form action="{{form.action}}">
-                    <button class="btn-def">Получить код фишки</button>
-                </form>
-            {{/user.isMember}}
+            {{#isUserOwner}}
+                <div class="ep-hint-number">
+                    <div class="ep-hint-number__tl">Код фишки</div>
+                    <div class="ep-hint-number__val">{{&number}}</div>
+                </div>
+            {{/isUserOwner}}
+
+            {{^isUserOwner}}
+                {{#user.isMember}}
+                    <form action="{{form.action}}">
+                        <button class="btn-def">Получить код фишки</button>
+                    </form>
+                {{/user.isMember}}
+            {{/isUserOwner}}
 
             <p class="ep-hint__lvl4 m"><a href="" class="undrl">Как воспользоваться кодом фишки и получить скидку?</a></p>
         </div>
 
+        {{^isUserOwner}}
         {{^user.isMember}}
         <div class="ep-hint__col ep-hint__col--r">
             <form class="form-reg jsEnterprizeForm" data-form="new-form" action="{{form.action}}" method="post">
@@ -78,8 +88,10 @@
             </form>
         </div>
         {{/user.isMember}}
+        {{/isUserOwner}}
     </div>
 
+    {{^isUserOwner}}
     <div class="ep-hint__row ep-hint__row--cmplt js-ep-reg-complete">
         <div class="ep-hint__cmplt-tl">
             Спасибо!
@@ -90,7 +102,7 @@
     </div>
     {{/isUserOwner}}
 
-    <div class="ep-hint__row {{^isUserOwner}}ep-hint__row--cut{{/isUserOwner}}">
+    <div class="ep-hint__row ep-hint__row--cut">
         <div class="ta-r mb10">
             {{#user.isMember}}
             <a target="_blank" href="{{link.url}}" class="undrl" title="">Посмотреть все товары с фишкой</a>
