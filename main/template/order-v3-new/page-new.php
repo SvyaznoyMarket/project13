@@ -73,16 +73,7 @@ return function(
 
                                 <? endforeach ?>
 
-                                <? if ($config->partners['MnogoRu']['enabled']) : ?>
-                                    <!-- Карта Много.ру -->
-                                    <div class="bonusCnt_i" data-eq="<?= count($bonusCards) ?>">
-                                        <img class="bonusCnt_img" src="/styles/order/img/mnogoru-mini.png" alt="" />
-                                            <span class="bonusCnt_tx">
-                                                <span id="bonusCardLink-<?= md5(json_encode(['mnogoru'])) ?>" class="brb-dt">Карта Много.ру</span> <!-- что бы убрать бордер можно удалить класс brb-dt -->
-                                                <span id="bonusCardCode-<?= md5(json_encode(['mnogoru'])) ?>" class="bonusCnt_tx_code"><span class="brb-dt jsMnogoRuSpan"></span></span>
-                                            </span>
-                                    </div>
-                                <? endif ?>
+
 
                             </div>
 
@@ -108,6 +99,14 @@ return function(
 
                         <? if ($config->partners['MnogoRu']['enabled']) : ?>
                             <!-- Карта Много.ру -->
+                            <div class="bonusCnt_i" data-eq="<?= count($bonusCards) ?>">
+                                <img class="bonusCnt_img" src="/styles/order/img/mnogoru-mini.png" alt="mnogo.ru" />
+                                <span class="bonusCnt_tx">
+                                    <span id="bonusCardLink-<?= md5(json_encode(['mnogoru'])) ?>" class="brb-dt">Карта Много.ру</span> <!-- что бы убрать бордер можно удалить класс brb-dt -->
+                                    <span id="bonusCardCode-<?= md5(json_encode(['mnogoru'])) ?>" class="bonusCnt_tx_code"><span class="brb-dt jsMnogoRuSpan"></span></span>
+                                </span>
+                            </div>
+
                             <div class="bonusCnt_it clearfix" style="display: none">
                                 <div class="orderU_fld">
                                     <input class="orderU_tx textfield jsOrderV3MnogoRuCardField" type="text" name="user_info[mnogo_ru_number]" value="" placeholder="xxxx xxxx" data-mask="xxxx xxxx">
@@ -117,10 +116,12 @@ return function(
                                 </div>
 
                                 <div class="bonusCnt_popup" style="display: none">
-                                    <div class="bonusCnt_descr"></div>
-                                    <img src="" alt="" />
+                                    <div class="bonusCnt_descr">Получайте 1 бонус Много.ру за каждые 33 рубля, потраченные на Enter.<br />
+                                        Для этого введите восьмизначный номер Вашей карты, который расположен на её лицевой стороне и указан в любом письме от Клуба Много.ру.</div>
+                                    <img src="/css/skin/img/mnogo_ru.png" alt="mnogo.ru" />
                                 </div>
                             </div>
+                            <!-- Карта Много.ру -->
                         <? endif ?>
 
                     </div>
