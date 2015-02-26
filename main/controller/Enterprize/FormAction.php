@@ -227,10 +227,10 @@ class FormAction {
                 }
             } elseif (409 == $e->getCode()) {
                 $error = 'Уже зарегистрирован в ENTER PRIZE. <a class="bAuthLink" href="'. \App::router()->generate('user.login') .'">Войти</a>';
-                if (isset($detail['mobile_in_enter_prize']) && $detail['mobile_in_enter_prize']) {
-                    $form->setError('mobile', $error);
-                } elseif (isset($detail['email_in_enter_prize']) && $detail['email_in_enter_prize']) {
+                if (isset($detail['email_in_enter_prize']) && $detail['email_in_enter_prize']) {
                     $form->setError('email', $error);
+                } else if (isset($detail['mobile_in_enter_prize']) && $detail['mobile_in_enter_prize']) {
+                    $form->setError('mobile', $error);
                 } else {
                     $form->setError('global', $error);
                 }
