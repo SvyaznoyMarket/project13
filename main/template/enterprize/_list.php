@@ -60,6 +60,7 @@ $f = function(
             $dataValue = [
                 'name'        => $coupon->getName(),
                 'token'       => $coupon->getToken(),
+                'number'      => $coupon->getDiscount() ? $coupon->getDiscount()->getNumber() : null,
                 'discount'    => $helper->formatPrice($coupon->getPrice()) . ($coupon->getIsCurrency() ? ' <span class="rubl">p</span>' : '%'),
                 'start'       => $coupon->getStartDate() instanceof \DateTime ? $coupon->getStartDate()->format('d.m.Y') : null,
                 'end'         => $coupon->getEndDate() instanceof \DateTime ? $coupon->getEndDate()->format('d.m.Y') : null,
