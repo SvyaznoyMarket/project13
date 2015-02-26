@@ -84,12 +84,16 @@ namespace EnterApplication\Action\ProductCard {
             // регион
             $regionQuery = (new Query\Region\GetById($request->regionId))->prepare($abTestError);
 
+            // главное меню
+            $menuQuery = (new Query\MainMenu\GetByTagList(['site-web']))->prepare($menuError);
+
             // выполнение запросов
             $curl->execute();
 
             //var_dump($paymentGroupError);
+            //var_dump($menuError);
 
-            die(microtime(true) - $startAt);
+            //die(microtime(true) - $startAt);
         }
 
         /**
