@@ -8904,6 +8904,9 @@ img[height="0"] {
     border-right: 15px solid #d3d3d3;
     border-bottom: 15px solid transparent;
   }
+  .bonusCnt-v2 .bonusCnt_popup--mnogoru {
+    top: -212px;
+  }
 }
 @media all {
   .orderLnSet {
