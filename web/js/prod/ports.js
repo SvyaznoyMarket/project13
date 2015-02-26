@@ -815,6 +815,7 @@ window.ANALYTICS = {
 		try{
 			if ( 'function' !== typeof(ga) ) {
 				console.error('GA: init error');
+				console.groupEnd();
 				return false; // метод ga не определён, ошибка, нечего анализировать, выходим
 			}
 			ga('create', 'UA-25485956-5', 'enter.ru');
