@@ -98,7 +98,7 @@ return function(
 
                 <? foreach ($order->discounts as $discount) : ?>
 
-                    <div class="orderCol_cnt clearfix">
+                    <div class="orderCol_cnt clearfix jsOrderV3Discount">
                         <a href="" class="orderCol_lk">
                             <img class="orderCol_img" src="/styles/order/img/fishka.png" alt="">
                         </a>
