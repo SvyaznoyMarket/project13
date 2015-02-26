@@ -81,7 +81,7 @@
                     }
                     else if (resp.success) {
                         $message.addClass(errorClass).css('color', 'green').text('Промокод принят').insertBefore($button.parent());
-                        docCookies.setItem('last_partner', 'actionpay', 60 * 60 *24 *30, '/'); // меняем партнера
+                        docCookies.setItem('enter_panda_pay', number, 60 * 60, '/'); // на час ставим этот промокод
                         $button.remove(); // пока только так... CORE-2738
                     }
                 }

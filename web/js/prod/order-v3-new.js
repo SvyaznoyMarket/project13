@@ -948,8 +948,9 @@
         // При успешной онлайн-оплате
         if ($('.jsOrderPaid').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '18 Успешная_Оплата']);
 
-        // Сбрасываем куку mnogo.ru
+        // Сбрасываем куку mnogo.ru и PandaPay
         if (docCookies.hasItem('enter_mnogo_ru')) docCookies.setItem('enter_mnogo_ru', '', 1, '/');
+        if (docCookies.hasItem('enter_panda_pay')) docCookies.setItem('enter_panda_pay', '', 1, '/');
     }
 
     if ($jsOrder.length != 0) {
@@ -1051,7 +1052,7 @@
                     }
                     else if (resp.success) {
                         $message.addClass(errorClass).css('color', 'green').text('Промокод принят').insertBefore($button.parent());
-                        docCookies.setItem('last_partner', 'actionpay', 60 * 60 *24 *30, '/'); // меняем партнера
+                        docCookies.setItem('enter_panda_pay', number, 60 * 60, '/'); // на час ставим этот промокод
                         $button.remove(); // пока только так... CORE-2738
                     }
                 }
