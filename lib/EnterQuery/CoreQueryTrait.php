@@ -33,9 +33,14 @@ trait CoreQueryTrait
      * @return array
      * @throws \Exception
      */
-    protected function decodeResponse(&$response)
+    protected function decodeResponse(&$response, $statusCode)
     {
         $result = $this->jsonToArray($response);
+
+        if ($statusCode >= 300) {
+            throw new \Exception(sprintf('Invalid http code %s', $statusCode), (int)$statusCode);
+        }
+
         if (array_key_exists('error', $result)) {
             $error = (array)$result['error'] + ['code' => null, 'message' => null];
 

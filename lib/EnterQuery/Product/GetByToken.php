@@ -44,8 +44,8 @@ namespace EnterQuery\Product
                 1, // timeout multiplier
                 $callback,
                 $error,
-                function($response) {
-                    $this->response->product = $this->decodeResponse($response)['result'][0];
+                function($response, $statusCode) {
+                    $this->response->product = $this->decodeResponse($response, $statusCode)['result'][0];
                 }
             );
 

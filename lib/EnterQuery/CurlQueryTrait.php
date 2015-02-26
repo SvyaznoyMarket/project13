@@ -77,7 +77,7 @@ trait CurlQueryTrait
             $result = null;
             if (is_callable($decoder)) {
                 try {
-                    $result = call_user_func($decoder, $query->response->body);
+                    $result = call_user_func($decoder, $query->response->body, $query->response->statusCode);
                 } catch (\Exception $e) {
                     $error = $e;
                 }

@@ -80,7 +80,6 @@ class Client
         } else {
             curl_multi_add_handle($this->mh, $handle);
         }
-        var_dump((string)$query->request);
 
         // принудительно отправить запросы на выполнение
         if (count($this->handlesById) >= $this->handleLimit) {
@@ -171,6 +170,7 @@ class Client
             $response->info = curl_getinfo($done['handle']);
             $response->statusCode = $query->response->info['http_code'];
             $response->body = curl_multi_getcontent($done['handle']);
+            var_dump($query->request . ' ' . $response->info['total_time'] * 1000);
 
             $callback = is_callable($query->resolveCallback) ? $query->resolveCallback : null;
 

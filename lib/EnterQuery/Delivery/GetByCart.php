@@ -58,8 +58,8 @@ namespace EnterQuery\Delivery {
                 1, // timeout multiplier
                 $callback,
                 $error,
-                function($response) {
-                    $result = $this->decodeResponse($response)['result'];
+                function($response, $statusCode) {
+                    $result = $this->decodeResponse($response, $statusCode)['result'];
 
                     $this->response->products = (isset($result['product_list']) && is_array($result['product_list'])) ? $result['product_list'] : [];
                     $this->response->intervals = (isset($result['interval_list']) && is_array($result['interval_list'])) ? $result['interval_list'] : [];

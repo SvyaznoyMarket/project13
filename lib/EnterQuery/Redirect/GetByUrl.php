@@ -39,8 +39,8 @@ namespace EnterQuery\Redirect
                 1, // timeout multiplier
                 $callback,
                 $error,
-                function($response) {
-                    $this->response->toUrl = $this->decodeResponse($response)['to_url'];
+                function($response, $statusCode) {
+                    $this->response->toUrl = $this->decodeResponse($response, $statusCode)['to_url'];
                 }
             );
 

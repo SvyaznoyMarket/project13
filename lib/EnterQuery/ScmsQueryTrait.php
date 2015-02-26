@@ -30,8 +30,13 @@ trait ScmsQueryTrait
      * @return array
      * @throws \Exception
      */
-    protected function decodeResponse(&$response)
+    protected function decodeResponse(&$response, $statusCode)
     {
-        return $this->jsonToArray($response);
+        $result = $this->jsonToArray($response);
+        if ($statusCode >= 300) {
+            throw new \Exception(sprintf('Invalid http code %s', $statusCode), (int)$statusCode);
+        }
+
+        return $result;
     }
 }

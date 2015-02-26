@@ -71,8 +71,8 @@ namespace EnterQuery\PaymentGroup {
                 1, // timeout multiplier
                 $callback,
                 $error,
-                function($response) {
-                    $result = $this->decodeResponse($response)['result'];
+                function($response, $statusCode) {
+                    $result = $this->decodeResponse($response, $statusCode)['result'];
 
                     $this->response->paymentGroups = isset($result['detail'][0]) ? $result['detail'] : [];
 

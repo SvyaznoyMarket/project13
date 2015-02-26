@@ -66,6 +66,15 @@ namespace EnterApplication\Action\ProductCard {
                 }
             });
 
+            // отзывы
+            $reviewQuery = null;
+            if ($request->productCriteria['token']) {
+                $reviewQuery = new Query\Product\Review\GetByProductToken($request->productCriteria['token'], 1, 7);
+            }
+            if ($reviewQuery) {
+                $reviewQuery->prepare($reviewError);
+            }
+
             // редирект
             $redirectQuery = (new Query\Redirect\GetByUrl($request->urlPath))->prepare($redirectError); // TODO: throw Exception
 
