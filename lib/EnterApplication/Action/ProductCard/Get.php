@@ -24,11 +24,11 @@ namespace EnterApplication\Action\ProductCard {
             }
 
             // доставка и способы оплаты
-            $deliveryError = null;
-            $productQuery->prepare($productError, function() use (
+            $productQuery->prepare($productError, function() use ( // TODO: сделать массив функций
                 &$productQuery,
                 &$deliveryError,
-                &$paymentGroupError
+                &$paymentGroupError,
+                &$ratingError
                 //&$deliveryQuery,
             ) {
                 $productId = (string)$productQuery->response->product['id'];
@@ -64,9 +64,25 @@ namespace EnterApplication\Action\ProductCard {
                 } catch (\Exception $e) {
                     $paymentGroupError = $e;
                 }
+
+                // рейтинг товаров
+                try {
+                    $ratingQuery = null;
+
+                    if ($accessoryIds = array_slice((array)$productQuery->response->product['accessories'], 0, \App::config()->product['itemsPerPage'])) {
+                        $ratingQuery = new Query\Product\Review\GetScoreByProductIdList();
+                        $ratingQuery->productIds = array_merge($ratingQuery->productIds, $accessoryIds);
+                    }
+
+                    if ($ratingQuery) {
+                        $ratingQuery->prepare($ratingError);
+                    }
+                } catch (\Exception $e) {
+                    $ratingError = $e;
+                }
             });
 
-            // отзывы
+            // отзывы о товаре
             $reviewQuery = null;
             if ($request->productCriteria['token']) {
                 $reviewQuery = new Query\Product\Review\GetByProductToken($request->productCriteria['token'], 1, 7);
@@ -93,7 +109,7 @@ namespace EnterApplication\Action\ProductCard {
             // выполнение запросов
             $curl->execute();
 
-            //var_dump($paymentGroupError);
+            var_dump($ratingError);
 
             //die(microtime(true) - $startAt);
         }
