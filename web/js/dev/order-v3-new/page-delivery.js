@@ -58,6 +58,37 @@
         deleteDiscount = function deleteDiscountF(block_name, number) {
             sendChanges('deleteDiscount',{'block_name': block_name, 'number':number})
         },
+        checkPandaPay = function checkPandaPayF($button, number) {
+            var errorClass = 'cuponErr',
+                $message = $('<div />', { 'class': 'jsPandaPayMessage' });
+
+            // блокируем кнопку отправки
+            $button.attr('disabled', true).css('opacity', '0.5');
+            // удаляем старые сообщения
+            $('.' + errorClass).remove();
+
+            $.ajax({
+                url: 'http://pandapay.ru/api/promocode/check',
+                data: {
+                    format: 'jsonp',
+                    code: number
+                },
+                dataType: 'jsonp',
+                jsonp: 'callback',
+                success: function(resp) {
+                    if (resp.error) {
+                        $message.addClass(errorClass).text(resp.message).insertBefore($button.parent());
+                    }
+                    else if (resp.success) {
+                        $message.addClass(errorClass).css('color', 'green').text('Промокод принят').insertBefore($button.parent());
+                        docCookies.setItem('last_partner', 'actionpay', 60 * 60 *24 *30, '/'); // меняем партнера
+                        $button.remove(); // пока только так... CORE-2738
+                    }
+                }
+            }).always(function(){
+                $button.attr('disabled', false).css('opacity', '1');
+            });
+        },
         checkCertificate = function checkCertificateF(block_name, code){
             $.ajax({
                 type: 'POST',
@@ -361,10 +392,15 @@
     // применить скидку
     $orderContent.on('click', '.jsApplyDiscount', function(e){
         var $this = $(this),
-            block_name = $this.closest('.orderRow').data('block_name'),
-            number = $this.parent().siblings('input').val();
-        // TODO mask
-        if (number != '') applyDiscount(block_name, number);
+            $orderBlock = $this.closest('.orderRow'),
+            block_name = $orderBlock.data('block_name'),
+            number = $this.parent().siblings('input').val().trim();
+
+        // проверяем код PandaPay если есть совпадение маски и нет применённых дискаунтов
+        if (/SN.{10}/.test(number) && $orderBlock.find('.jsOrderV3Discount').length == 0) checkPandaPay($this, number);
+        // иначе стандартный вариант
+        else if (number != '') applyDiscount(block_name, number);
+
         e.preventDefault();
     });
 
