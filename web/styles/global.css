@@ -5315,7 +5315,7 @@ img[height="0"] {
     text-align: left;
   }
   .ep-rules-lst__i {
-    margin: 0 0 15px 36px;
+    margin: 0 0 15px 0;
     border-left: 3px solid;
     padding-left: 10px;
     font-size: 12px;
@@ -5807,7 +5807,7 @@ img[height="0"] {
     right: -10px;
   }
   .ep-hint .ep-rules-lst {
-    margin: 20px 0 0 233px;
+    margin: 20px 0 0 269px;
   }
   .ep-hint:after {
     position: absolute;
@@ -5844,6 +5844,9 @@ img[height="0"] {
   }
   .ep-hint--2col .ep-hint__lvl1 {
     margin-bottom: 10px;
+  }
+  .ep-hint--2col .ep-rules-lst {
+    margin-left: 0;
   }
   .ep-hint--position {
     left: 0;

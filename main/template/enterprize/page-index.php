@@ -19,7 +19,7 @@ $helper = new \Helper\TemplateHelper();
     <h1 class="ep-logo">Enter Prize</h1>
 
     <ul class="ep-head__desc">
-        <li class="ep-head__desc__i">Выбери фишку — получи код скидки. Используй его при оформлении заказа.</li>
+        <li class="ep-head__desc__i">Выбери фишку — получи код скидки. Используй его<br/> при оформлении заказа.</li>
         <li class="ep-head__desc__i">Нажми на фишку, чтобы узнать условия и срок действия скидки. </li>
         <li class="ep-head__desc__i">Воспользоваться каждой фишкой можно один раз.</li>
     </ul>
