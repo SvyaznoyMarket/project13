@@ -41,7 +41,18 @@ class Action {
         } catch (\Curl\Exception $e) {
             \App::logger()->error($e->getMessage(), ['curl', 'order/create']);
             \App::exception()->remove($e);
-            return $request->isXmlHttpRequest() ? new \Http\JsonResponse(['error' => 708 == $e->getCode() ? 'Товара нет в наличии' : (\App::config()->debug ? $e->getMessage() : 'Ошибка при создании заявки')]) : new \Http\RedirectResponse($referer);
+
+            if (708 == $e->getCode()) {
+                $errorMessage = 'Товара нет в наличии';
+            } else if (720 == $e->getCode()) {
+                $errorMessage = 'Это дублирующий заказ';
+            } else if (\App::config()->debug) {
+                $errorMessage = $e->getMessage();
+            } else {
+                $errorMessage = 'Ошибка при создании заявки';
+            }
+
+            return $request->isXmlHttpRequest() ? new \Http\JsonResponse(['error' => $errorMessage]) : new \Http\RedirectResponse($referer);
         } catch (\Exception $e) {
             if (!in_array($e->getCode(), \App::config()->order['excludedError'])) {
                 \App::logger('order')->error([
