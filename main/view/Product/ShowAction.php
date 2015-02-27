@@ -31,10 +31,7 @@ class ShowAction {
         $stateLabel = null;
         if ($product->isInShopOnly()) {
             $stateLabel = ['name' => 'Только в магазинах'];
-        } else if (
-            $product->getMainCategory() && $product->getMainCategory()->getIsFurniture()
-            && $product->getState() && $product->getState()->getIsStore()
-        ) {
+        } else if ($product->getMainCategory() && $product->getMainCategory()->getIsFurniture() && $product->getState() && $product->getState()->getIsStore() && !$product->getSlotPartnerOffer()) {
             if (\App::config()->region['defaultId'] === $user->getRegion()->getId()) {
                 // Для Москвы, SITE-2850
                 //$stateLabel = ['name' => 'Товар за три дня'];
