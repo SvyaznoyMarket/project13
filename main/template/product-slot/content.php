@@ -92,6 +92,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 </div>
 
 <div class="clear"></div>
+<? /*
 <div class="product-card__bordered">
     <? if ($isProductAvailable && \App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
@@ -110,6 +111,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
         ]) ?>
     <? endif ?>
 </div>
+*/ ?>
 <div class="product-card__bordered">
     <div class="product-card__desc">
         <?= $product->getDescription() ?>
@@ -120,7 +122,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
         <? endif ?>
     </div>
 
-    <? if (\App::config()->product['pullRecommendation']): ?>
+    <? /* if (\App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
             'type'           => 'alsoBought',
             'title'          => 'С этим товаром покупают',
@@ -136,7 +138,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
             ],
             'sender2'  => 'slot',
         ]) ?>
-    <? endif ?>
+    <? endif */ ?>
 
     <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
         <?= $helper->render('product/__slider', [
