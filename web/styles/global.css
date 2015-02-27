@@ -4325,6 +4325,7 @@ img[height="0"] {
     padding: 5px 0 5px 5px;
     overflow: hidden;
     font-size: 11px;
+    min-width: 200px;
   }
   .cartLst_i.mHover {
     background: #fff7e6;
@@ -4359,7 +4360,7 @@ img[height="0"] {
     /* IE6-8 */
     *display: inline;
     *zoom: 1;
-    width: 66px;
+    width: 55px;
     line-height: 1.2;
   }
   .cartLst .del {
