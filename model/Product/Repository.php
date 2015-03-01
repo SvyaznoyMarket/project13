@@ -312,9 +312,6 @@ class Repository {
 
         $client = clone $this->client;
 
-        // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
-        $filter[] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT];
-
         $count = 0;
         $client->addQuery('listing/list',
             [
@@ -340,9 +337,6 @@ class Repository {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $offset = $this->correctOffset($offset, $limit);
-
-        // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
-        $filter[] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT];
 
         $this->client->addQuery('listing/list',
             [
@@ -374,9 +368,6 @@ class Repository {
         $client = clone $this->client;
 
         $offset = $this->correctOffset($offset, $limit);
-
-        // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
-        $filter[] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT];
 
         $response = [];
         $client->addQuery('listing/list',
@@ -437,9 +428,6 @@ class Repository {
         $client = clone $this->client;
 
         $offset = $this->correctOffset($offset, $limit);
-
-        // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
-        $filter[] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT];
 
         $response = [];
         $client->addQuery('listing/list',

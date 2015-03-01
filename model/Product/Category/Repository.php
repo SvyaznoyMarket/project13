@@ -229,11 +229,6 @@ class Repository {
             [
                 'max_level'       => 1,
                 'is_load_parents' => false,
-                'filter' => [
-                    'filters' => [
-                        ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT], // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
-                    ],
-                ],
             ],
             [],
             function ($data) use (&$collection) {
@@ -269,9 +264,6 @@ class Repository {
         if ($region instanceof \Model\Region\Entity) {
             $params['region_id'] = $region->getId();
         }
-
-        // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
-        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT];
 
         $collection = [];
         $client->addQuery('category/tree', $params, [], function ($data) use (&$collection) {
@@ -310,9 +302,6 @@ class Repository {
             $params['region_id'] = $region->getId();
         }
 
-        // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
-        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT];
-
         \App::searchClient()->addQuery('category/tree', $params, [], $done, $fail);
     }
 
@@ -340,9 +329,6 @@ class Repository {
         // SITE-3524 Поддержка неактивных категорий для отладки страниц на preview.enter.ru
         if (\App::config()->preview === true) $params = array_merge($params, ['load_inactive' => 1, 'load_empty' => 1]);
 
-        // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
-        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT];
-
         \App::searchClient()->addQuery('category/tree', $params, [], $done, $fail);
     }
 
@@ -366,9 +352,6 @@ class Repository {
 
         // SITE-3524 Поддержка неактивных категорий для отладки страниц на preview.enter.ru
         if (\App::config()->preview === true) $params = array_merge($params, ['load_inactive' => 1, 'load_empty' => 1]);
-
-        // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
-        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT];
 
         \App::searchClient()->addQuery('category/tree', $params, [], function($data) use (&$category, &$region) {
             /**
@@ -457,9 +440,6 @@ class Repository {
             $params['load_inactive'] = 1;
             $params['load_empty'] = 1;
         }
-
-        // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
-        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT];
 
         \App::searchClient()->addQuery('category/tree', $params, [], function($data) use (&$category) {
             if (is_array($data)) {

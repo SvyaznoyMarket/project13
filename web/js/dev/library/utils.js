@@ -295,9 +295,10 @@
 				// Отправляем RR_покупка не только для retailrocket товаров
 				if (p.sender) {
 					var rrEventLabel = '';
-					if (o.isSlot) {
+					// Если товар был куплен из рекомендаций с карточки товаров маркетплейс
+					if (p.sender2 == 'slot') {
 						rrEventLabel = '_marketplace-slot';
-					} else if (o.is_partner) {
+					} else if (p.sender2 == 'marketplace') {
 						rrEventLabel = '_marketplace';
 					}
 
@@ -324,7 +325,7 @@
 					'id': p.id,
 					'name': productName,
 					'sku': p.article,
-					'category': p.category[0].name +  ' - ' + p.category[p.category.length -1].name,
+					'category': p.category.length ? (p.category[0].name +  ' - ' + p.category[p.category.length -1].name) : '',
 					'price': p.price,
 					'quantity': p.quantity
 				}

@@ -63,6 +63,7 @@ class FormAction {
                 'product' => $product,
                 'region'  => $user->getRegion(),
                 'sender'  => (array)$request->get('sender') + ['name' => null, 'method' => null, 'position' => null],
+                'sender2' => (string)$request->get('sender2'),
             ])
         ]);
     }

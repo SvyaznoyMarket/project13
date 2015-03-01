@@ -86,9 +86,6 @@ class Action {
             ];
         }
 
-        // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
-        $params['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT];
-
         // сортировка
         $productSorting = new \Model\Product\Sorting();
         list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
@@ -475,9 +472,6 @@ class Action {
         ];
 
         if ($category) $params2['filter']['filters'][] = ['category', 1, (int)$category];
-
-        // SITE-5207 Временно исключить из выдачи сайта партнёрские товары-слоты
-        $params2['filter']['filters'][] = ['exclude_partner_type', 1, \Model\Product\BasicEntity::PARTNER_OFFER_TYPE_SLOT];
 
         // Параллельный запрос
 

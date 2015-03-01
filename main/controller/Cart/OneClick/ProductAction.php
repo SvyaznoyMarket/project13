@@ -17,6 +17,7 @@ class ProductAction {
         $productId = (int)$productId;
         $quantity = (int)$request->get('quantity', 1);
         $sender = $request->query->get('sender');
+        $sender2 = (string)$request->query->get('sender2');
         $params = [];
 
         if (is_string($sender) && !empty($sender)) {
@@ -29,6 +30,10 @@ class ProductAction {
 
         if ($sender) {
             $params['sender'] = $sender;
+        }
+
+        if ($sender2) {
+            $params['sender2'] = $sender2;
         }
 
         /** @var $product \Model\Product\Entity|null */
@@ -99,6 +104,7 @@ class ProductAction {
         $region = \App::user()->getRegion();
         $cart = \App::user()->getOneClickCart();
         $sender = $request->query->get('sender');
+        $sender2 = (string)$request->query->get('sender2');
         $params = [];
 
         if (is_string($sender) && !empty($sender)) {
@@ -111,6 +117,10 @@ class ProductAction {
 
         if ($sender) {
             $params['sender'] = $sender;
+        }
+
+        if ($sender2) {
+            $params['sender2'] = $sender2;
         }
 
         try {

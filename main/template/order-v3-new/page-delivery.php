@@ -35,7 +35,7 @@ return function(
     <? endif; ?>
 
     <div class="orderInf clearfix">
-        <div class="fl-l">Ваш регион: <strong><?= \App::user()->getRegion()->getName() ?></strong> <br/> 
+        <div class="fl-l">Ваш регион: <strong><?= \App::user()->getRegion()->getName() ?></strong> <br/>
         От региона зависят доступные способы получения и оплаты заказов.</div>
 
         <button class="btnLightGrey orderCnt_btn fl-r jsChangeRegion">Изменить регион</button>
@@ -281,9 +281,9 @@ return function(
         <form id="js-orderForm" action="<?= $helper->url('orderV3.create') ?>" method="post">
 
             <div class="orderCompl_l orderCompl_l-ln orderCheck orderCheck-str">
-                <input type="checkbox" class="customInput customInput-checkbox jsAcceptAgreement" id="accept" name="" value="" />
+                <input type="checkbox" class="customInput customInput-checkbox js-customInput jsAcceptAgreement" id="accept" name="" value="" />
 
-                <label  class="customLabel jsAcceptTerms" for="accept">
+                <label  class="customLabel customLabel-checkbox jsAcceptTerms" for="accept">
                     Я ознакомлен и согласен с информацией о продавце и его офертой
                     <? if ($orderCount == 1) : ?>
                         <span class="orderCompl_l_lk js-order-oferta-popup-btn" data-value="<?= $order->seller->offer ?>">Ознакомиться</span>
@@ -316,7 +316,7 @@ return function(
             <div class="orderOferta_tabcnt orderOferta_tabcnt-cur js-tab-oferta-content" id="tab-1">
                 <div class="orderOferta_tl">Условия продажи</div>
             </div>
-            
+
             <div class="orderOferta_tabcnt js-tab-oferta-content" id="tab-2">
                 <div class="orderOferta_tl">Правовая информация для пользователей сайта ООО «Энтер»</div>
 

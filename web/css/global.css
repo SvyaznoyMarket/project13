@@ -12125,7 +12125,7 @@
   }
   .bListing .bPriceLine .bPrice {
     float: left;
-    width: 112px;
+    min-width: 112px;
     font-size: 20px;
     margin-left: 0;
   }
