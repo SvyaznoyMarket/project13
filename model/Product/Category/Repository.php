@@ -347,7 +347,7 @@ class Repository {
         }
 
         if (!empty($filters)) {
-            $params['filters'] = $filters;
+            $params['filter']['filters'] = $filters;
         }
 
         // SITE-3524 Поддержка неактивных категорий для отладки страниц на preview.enter.ru

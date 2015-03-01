@@ -608,6 +608,7 @@
 		packageSetWindow = $('.jsPackageSetPopup'),
 		data = $('.js-packageSetEdit').data('value'),
         sender = data.sender,
+        sender2 = data.sender2,
         packageProducts = data.products;
 
 	/**
@@ -759,6 +760,10 @@
 
 				link += $.param({sender: sender});
 
+				if (sender2) {
+					link += '&' + $.param({sender2: sender2});
+				}
+
                 return link;
             });
 
@@ -821,7 +826,7 @@ $(document).ready(function() {
 				galleryActiveClass: 'prod-photoslider__gal__link--active',
 				zoomWindowOffety: 0,
 				zoomWindowOffetx: 19,
-				zoomWindowWidth: image.data('is-slot') ? 404 : 519,
+				zoomWindowWidth: image.data('is-slot') ? 344 : 519,
 				borderSize: 1,
 				borderColour: '#C7C7C7',
 				disableZoom: zoomDisable

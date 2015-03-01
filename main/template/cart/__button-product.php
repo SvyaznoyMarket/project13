@@ -8,7 +8,8 @@ return function (
     $sender = [],
     $noUpdate = false,
     $location = null,
-    $reserveAsBuy = false
+    $reserveAsBuy = false,
+    $sender2 = ''
 ) {
 ?>
     <?= $helper->renderWithMustache('cart/_button-product', (
@@ -20,7 +21,8 @@ return function (
             $sender,
             $noUpdate,
             $location,
-            $reserveAsBuy
+            $reserveAsBuy,
+            $sender2
         )
     ) ?>
 <? };

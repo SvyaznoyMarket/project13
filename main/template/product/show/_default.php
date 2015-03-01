@@ -39,6 +39,8 @@ if (\App::config()->preview) {
 }
 
 $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
+$buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
+$sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? 'marketplace' : '';
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
@@ -83,6 +85,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
                         'name'     => 'retailrocket',
                         'position' => 'ProductMissing',
                     ],
+                    'sender2' => $sender2,
                 ]) ?>
             <? endif ?>
         <? endif ?>
@@ -108,6 +111,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
             'products' => $kitProducts,
             'product' => $product,
             'sender'  => $buySender,
+            'sender2' => $buySender2,
         ]) ?>
     <? endif ?>
 
@@ -132,6 +136,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
                 'name'     => 'enter',
                 'position' => $isProductAvailable ? 'ProductAccessoriesManual' : 'ProductMissing',
             ],
+            'sender2' => $sender2,
         ]) ?>
     <? endif ?>
 
@@ -149,6 +154,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
                 'name'     => 'retailrocket',
                 'position' => $isProductAvailable ? 'ProductAccessories' : 'ProductMissing', // все правильно - так и надо!
             ],
+            'sender2' => $sender2,
         ]) ?>
     <? endif ?>
 
@@ -177,6 +183,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
                 'name'     => 'retailrocket',
                 'position' => 'ProductSimilar',
             ],
+            'sender2' => $sender2,
         ]) ?>
     <? endif ?>
 
@@ -188,7 +195,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
 
     <? if (5 !== $product->getStatusId() && (bool)$shopStates): // SITE-3109 ?>
         <div class="bWidgetBuy bWidgetBuy-shops mWidget js-WidgetBuy">
-            <?= $helper->render('product/__shops', ['shopStates' => $shopStates, 'product' => $product, 'sender'  => $buySender]) // Доставка ?>
+            <?= $helper->render('product/__shops', ['shopStates' => $shopStates, 'product' => $product, 'sender'  => $buySender, 'sender2'  => $buySender2]) // Доставка ?>
         </div>
     <? endif ?>
 
@@ -206,6 +213,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
                 <?= $helper->render('cart/__button-product-kit', [
                     'product'  => $product,
                     'sender'  => $buySender,
+                    'sender2' => $buySender2,
                 ]) // Кнопка купить для набора продуктов ?>
             <? else: ?>
                 <?= $helper->render('cart/__button-product', [
@@ -214,6 +222,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
                     'sender'   => $buySender + [
                         'from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) // удаляем из REFERER параметры
                     ],
+                    'sender2' => $buySender2,
                     'location' => 'product-card',
                 ]) // Кнопка купить ?>
             <? endif ?>
@@ -221,7 +230,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
             <div class="js-showTopBar"></div>
 
             <? if (!$hasFurnitureConstructor && !count($product->getPartnersOffer()) && (!$isKitPage || $product->getIsKitLocked())): ?>
-                <?= $helper->render('cart/__button-product-oneClick', ['product' => $product, 'sender'  => $buySender]) // Покупка в один клик ?>
+                <?= $helper->render('cart/__button-product-oneClick', ['product' => $product, 'sender'  => $buySender, 'sender2' => $buySender2]) // Покупка в один клик ?>
             <? endif ?>
 
             <? if (!$isKitPage || $product->getIsKitLocked()) : ?>
@@ -253,6 +262,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
         'product' => $product,
         'region'  => $region,
         'sender'  => $buySender,
+        'sender2' => $buySender2,
     ])*/ // Форма покупки в один клик ?>
 
     <? if ($lifeGiftProduct): ?>
@@ -281,6 +291,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
             'name'     => 'retailrocket',
             'position' => 'ProductUpSale',
         ],
+        'sender2' => $sender2,
     ]) ?>
 <? endif ?>
 
@@ -298,6 +309,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
             'from'     => 'productPage',
             'position' => $isProductAvailable ? 'Viewed' : 'ProductMissing',
         ],
+        'sender2' => $sender2,
     ]) ?>
 <? endif ?>
 

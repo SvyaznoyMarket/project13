@@ -13,6 +13,7 @@ if ($product) {
 }
 
 $productPageSender = \Session\ProductPageSenders::get($product->getUi());
+$productPageSender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 ?>
 
 <div class="topbarfix_crumbs">
@@ -31,11 +32,13 @@ $productPageSender = \Session\ProductPageSenders::get($product->getUi());
             'onClick'  => $addToCartJS ? $addToCartJS : null,
             'sender'   => ($request->get('sender') ? (array)$request->get('sender') : $productPageSender) + ['name' => null, 'method' => null, 'position' => null],
             'location' => 'userbar',
+            'sender2'  => $productPageSender2,
         ]) // Кнопка купить ?>
     <? else: ?>
         <?= $helper->render('cart/__button-product-kit', [
             'product'  => $product,
             'sender'   => ($request->get('sender') ? (array)$request->get('sender') : $productPageSender) + ['name' => null, 'method' => null, 'position' => null],
+            'sender2'  => $productPageSender2,
         ]) // Кнопка купить ?>
     <? endif ?>
 

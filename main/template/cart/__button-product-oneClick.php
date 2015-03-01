@@ -7,7 +7,8 @@ return function (
     $class = null,
     $value = 'Купить быстро в 1 клик',
     \Model\Shop\Entity $shop = null,
-    array $sender = []
+    array $sender = [],
+    $sender2 = ''
 ) {
     $region = \App::user()->getRegion();
 
@@ -70,6 +71,10 @@ return function (
             ]);
         }
 
+        if ($sender2) {
+            $urlParams['sender2'] = $sender2;
+        }
+
         $url = $helper->url('cart.oneClick.product.set', $urlParams);
     }
 
@@ -90,6 +95,10 @@ return function (
             ]);
         }
 
+        if ($sender2) {
+            $urlParams['sender2'] = $sender2;
+        }
+
         $url = $helper->url('cart.oneClick.product.setList', $urlParams);
     }
 
@@ -101,7 +110,7 @@ return function (
 ?>
 
     <div class="btnOneClickBuy">
-        <a href="<?= $url ?>" id="<?= $id ?>" class="btnOneClickBuy__eLink <?= $class ?>" data-title="<?= $shop ? 'Резерв товара' : 'Купить быстро в 1 клик' ?>" data-shop="<?= $shop ? $shop->getId() : null ?>" data-product-ui="<?= $helper->escape($product->getUi()) ?>" data-sender="<?= $helper->json($sender) ?>"><?= $value ?></a>
+        <a href="<?= $url ?>" id="<?= $id ?>" class="btnOneClickBuy__eLink <?= $class ?>" data-title="<?= $shop ? 'Резерв товара' : 'Купить быстро в 1 клик' ?>" data-shop="<?= $shop ? $shop->getId() : null ?>" data-product-ui="<?= $helper->escape($product->getUi()) ?>" data-sender="<?= $helper->json($sender) ?>" data-sender2="<?= $helper->escape($sender2) ?>"><?= $value ?></a>
     </div>
 
 <? };

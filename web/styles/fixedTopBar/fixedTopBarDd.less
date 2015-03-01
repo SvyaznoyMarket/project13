@@ -138,13 +138,15 @@
 
 .cartLst {
 	max-height: 207px;
-	overflow: auto;
+	overflow-y: auto;
+	overflow-x: hidden;
 
 	&_i {
 		height: 55px;
 		padding: 5px 0 5px 5px;
 		overflow: hidden;
 		font-size: 11px;
+		min-width: 210px;
 
 		&.mHover {
 			background: #fff7e6;
@@ -172,7 +174,7 @@
 
 	&_inf {
 		.inline-block();
-		width: 50px;
+		width: 55px;
 
 		line-height: 1.2;
 	}

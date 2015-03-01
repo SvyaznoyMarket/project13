@@ -9,7 +9,8 @@ $f = function (
     \Helper\TemplateHelper $helper,
     array $shopStates = [],
     \Model\Product\Entity $product,
-    array $sender = []
+    array $sender = [],
+    $sender2 = ''
 ) {
     $currentRegionId = \App::user()->getRegionId();
 ?>
@@ -70,11 +71,12 @@ $f = function (
                             <?= $helper->render('cart/__button-product-oneClick', [
                                 'product' => $product,
                                 'shop'    => $shop,
-                                'url'     => $helper->url('cart.oneClick.product.set', ['productId' => $product->getId(), 'shopId' => $shop->getId(), 'sender' => $sender]),
+                                'url'     => $helper->url('cart.oneClick.product.set', ['productId' => $product->getId(), 'shopId' => $shop->getId(), 'sender' => $sender, 'sender2' => $sender2]),
                                 //'class'   => 'btnBuy__eLink mShopsOnly',
                                 'class'   => 'btnBuy__eLink',
                                 'value'   => 'Купить',
-                                'sender'  => $sender
+                                'sender'  => $sender,
+                                'sender2' => $sender2,
                             ]) ?>
                         <? else: ?>
                             <span class="btnText">На витрине</span>
