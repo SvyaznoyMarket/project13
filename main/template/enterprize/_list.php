@@ -51,8 +51,11 @@ $f = function(
             $discount = $coupon->getDiscount();
             if ($discount && $discount->getTo()) {
                 try {
-                    if ($expiredDate = \DateTime::createFromFormat('Y-m-d H:i:s', $discount->getTo())) {
-                        $expiredDays = $expiredDate->diff(new \DateTime())->days;
+                    if ($discount->getEndDate()) {
+                        $expiredDays = $discount->getEndDate()->diff(new \DateTime())->days;
+                        if (0 === $expiredDays) {
+                            $expiredDays = 1;
+                        }
                     }
                 } catch (\Exception $e) {}
             }
@@ -135,7 +138,7 @@ $f = function(
 
                     <? if ((null !== $expiredDays) && ($expiredDays <= 3)): ?>
                         <div class="ep-finish">
-                            <span class="ep-finish__tl">До конца действия<br/>фишки осталось </span>
+                            <span class="ep-finish__tl">До конца действия<br/>фишки <?= $helper->numberChoice($expiredDays, ['остался', 'осталось', 'осталось']) ?></span>
                             <span class="ep-finish__num"><?= $expiredDays ?></span>
                             <div class="ep-finish__day"><?= $helper->numberChoice($expiredDays, ['день', 'дня', 'дней']) ?></div>
                         </div>
