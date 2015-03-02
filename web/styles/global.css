@@ -5335,6 +5335,53 @@ img[height="0"] {
   .enterprize {
     background: #000000;
   }
+  .enterprize .topbarfix-fx {
+    border: none;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    width: 960px;
+  }
+  .enterprize .topbarfix-fx,
+  .enterprize .topbarfix_log-unlogin,
+  .enterprize li.userbtn_i.topbarfix_cmpr,
+  .enterprize .userbtn_i,
+  .enterprize .topbarfix_dd {
+    background: #272727;
+  }
+  .enterprize .topbarfix_cmpr_tl,
+  .enterprize .topbarfix_log-unlogin a,
+  .enterprize .topbarfix_cart_tx {
+    color: #f7f7f7;
+  }
+  .enterprize .topbarfix_log_lk,
+  .enterprize .cartLst_i,
+  .enterprize .cartLst_i a {
+    color: #f7f7f7;
+  }
+  .enterprize .topbarfix_dd {
+    border: none;
+    right: 0;
+  }
+  .enterprize .quickOrder {
+    border-top: 1px solid #333;
+  }
+  .enterprize .topbarfix_log:after {
+    background: rgba(39, 39, 39, 0);
+    background: -moz-linear-gradient(left, rgba(39, 39, 39, 0) 0%, #272727 86%, #272727 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(39, 39, 39, 0)), color-stop(86%, #272727), color-stop(100%, #272727));
+    background: -webkit-linear-gradient(left, rgba(39, 39, 39, 0) 0%, #272727 86%, #272727 100%);
+    background: -o-linear-gradient(left, rgba(39, 39, 39, 0) 0%, #272727 86%, #272727 100%);
+    background: -ms-linear-gradient(left, rgba(39, 39, 39, 0) 0%, #272727 86%, #272727 100%);
+    background: linear-gradient(to right, rgba(39, 39, 39, 0) 0%, #272727 86%, #272727 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#272727', endColorstr='#272727', GradientType=1);
+  }
+  .enterprize .topbarfix_cmpr_tl {
+    background-position: 0 -286px;
+  }
+  .enterprize .topbarfix_cmpr-full .topbarfix_cmpr_tl {
+    background-position: 0 -323px;
+  }
   .wrapper--ep {
     background: #000000;
   }
@@ -5351,8 +5398,7 @@ img[height="0"] {
   .header--ep .topbarfix_cart_tl,
   .header--ep .topbarfix_log_lk,
   .header--ep .cartLst_i,
-  .header--ep .cartLst_i a,
-  .header--ep .topbarfix_cmpr_tl {
+  .header--ep .cartLst_i a {
     color: #f7f7f7;
   }
   .header--ep .userbtn_i {
@@ -5379,6 +5425,13 @@ img[height="0"] {
   }
   .header--ep .topbarfix_cmpr-full .topbarfix_cmpr_tl {
     background-position: 0 -323px;
+  }
+  .header--ep .topbarfix_dd {
+    border: none;
+    right: 0;
+  }
+  .header--ep .quickOrder {
+    border-top: 1px solid #333;
   }
   .content--ep {
     margin: 0 0 0 -10px;
