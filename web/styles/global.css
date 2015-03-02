@@ -8554,7 +8554,7 @@ img[height="0"] {
   .orderPayment_block--border .orderPayment_msg_head {
     color: #ffa901;
   }
-  .orderPayment_block--border .orderPayment_msg_head + .orderPayment_msg_head-row {
+  .orderPayment_block--border .orderPayment_msg_head-row:first-child {
     margin-top: 10px;
   }
   .orderPayment_block--border .orderSum-lbl {
