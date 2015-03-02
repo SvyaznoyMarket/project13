@@ -495,25 +495,26 @@ class FormAction {
                 /** @var $slice \Model\Slice\Entity|null */
                 $slice = null;
                 if ('slices' === $linkParts[0]) {
-                    $sliceToken = $linkParts[1];
+                    if ($sliceToken = (isset($linkParts[1]) ? $linkParts[1] : null)) {
+                        // получение среза
+                        \RepositoryManager::slice()->prepareEntityByToken($sliceToken, function($data) use (&$slice, $sliceToken) {
+                            if (is_array($data) && (bool)$data) {
+                                $data['token'] = $sliceToken;
+                                $slice = new \Model\Slice\Entity($data);
+                            }
+                        });
+                        \App::scmsClient()->execute();
 
-                    // получение среза
-                    \RepositoryManager::slice()->prepareEntityByToken($sliceToken, function($data) use (&$slice, $sliceToken) {
-                        if (is_array($data) && (bool)$data) {
-                            $data['token'] = $sliceToken;
-                            $slice = new \Model\Slice\Entity($data);
+                        if ($slice) {
+                            // проверка на срез с баркодами
+                            $requestData = [];
+                            parse_str($slice->getFilterQuery(), $requestData);
+                            if (isset($requestData['barcode'])) {
+                                $linkParts[0] = 'products';
+                                $linkParts[2] = is_array($requestData['barcode']) ? implode(',', $requestData['barcode']) : $requestData['barcode'];
+                            }
                         }
-                    });
-                    \App::scmsClient()->execute();
 
-                    if ($slice) {
-                        // проверка на срез с баркодами
-                        $requestData = [];
-                        parse_str($slice->getFilterQuery(), $requestData);
-                        if (isset($requestData['barcode'])) {
-                            $linkParts[0] = 'products';
-                            $linkParts[2] = is_array($requestData['barcode']) ? implode(',', $requestData['barcode']) : $requestData['barcode'];
-                        }
                     }
                 }
 

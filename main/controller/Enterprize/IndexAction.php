@@ -105,7 +105,14 @@ class IndexAction {
         $userCoupons = [];
         foreach ($userDiscounts as $userDiscount) {
             $coupon = isset($enterpizeCouponsByToken[$userDiscount->getSeries()]) ? $enterpizeCouponsByToken[$userDiscount->getSeries()] : null;
-            if (!$userDiscount->getSeries() || !$coupon || $userDiscount->getUsed()) continue;
+            if (
+                !$userDiscount->getSeries()
+                || !$coupon
+                || $userDiscount->getUsed()
+                || ($userDiscount->getEndDate() && ($userDiscount->getEndDate() < new \DateTime()))
+            ) {
+                continue;
+            }
 
             $coupon->setDiscount($userDiscount);
 
