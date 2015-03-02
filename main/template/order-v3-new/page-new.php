@@ -13,6 +13,7 @@ return function(
     $userBonusCard = null;
 
     $emailRequiredTest = \App::abTest()->isEmailRequired();
+    $config = \App::config();
 ?>
 
 <?= $helper->render('order-v3-new/__head', ['step' => 1]) ?>
@@ -65,11 +66,15 @@ return function(
                                     <div class="bonusCnt_i" data-eq="<?= $key ?>">
                                         <img class="bonusCnt_img" src="/styles/order/img/sClub.jpg" alt="" />
                                         <span class="bonusCnt_tx">
-                                            <span id="bonusCardLink-<?= md5(json_encode([$card->getName()])) ?>" class="brb-dt">Карта <?= $card->getName() ?></span><!-- что бы урать бордер можно удалить класс brb-dt -->
+                                            <span id="bonusCardLink-<?= md5(json_encode([$card->getName()])) ?>" class="brb-dt">Карта <?= $card->getName() ?></span><!-- что бы убрать бордер можно удалить класс brb-dt -->
                                             <span id="bonusCardCode-<?= md5(json_encode([$card->getName()])) ?>" class="bonusCnt_tx_code"><span class="brb-dt"></span></span>
                                         </span>
                                     </div>
+
                                 <? endforeach ?>
+
+
+
                             </div>
 
                         <? foreach ($bonusCards as $card) : ?>
@@ -91,6 +96,34 @@ return function(
                                 </div>
                             </div>
                         <? endforeach ; ?>
+
+                        <? if ($config->partners['MnogoRu']['enabled']) : ?>
+                            <!-- Карта Много.ру -->
+                            <div class="bonusCnt_i" data-eq="<?= count($bonusCards) ?>">
+                                <img class="bonusCnt_img" src="/styles/order/img/mnogoru-mini.png" alt="mnogo.ru" />
+                                <span class="bonusCnt_tx">
+                                    <span id="bonusCardLink-<?= md5(json_encode(['mnogoru'])) ?>" class="brb-dt">Карта Много.ру</span> <!-- что бы убрать бордер можно удалить класс brb-dt -->
+                                    <span id="bonusCardCode-<?= md5(json_encode(['mnogoru'])) ?>" class="bonusCnt_tx_code"><span class="brb-dt jsMnogoRuSpan"></span></span>
+                                </span>
+                            </div>
+
+                            <div class="bonusCnt_it clearfix" style="display: none">
+                                <div class="orderU_fld">
+                                    <input class="orderU_tx textfield jsOrderV3MnogoRuCardField" type="text" name="user_info[mnogo_ru_number]" value="" placeholder="xxxx xxxx" data-mask="xxxx xxxx">
+                                    <label class="orderU_lbl" for="">Номер</label>
+                                    <span class="errTx" style="display: none">Неверный код карты Много.ру</span>
+                                    <span class="orderU_inf jsShowBonusCardHint"></span>
+                                </div>
+
+                                <div class="bonusCnt_popup bonusCnt_popup--mnogoru" style="display: none">
+                                    <div class="bonusCnt_descr">Получайте бонусы Много.ру за покупки в Enter (1 бонус за 33 руб.).<br/>
+                                        Для этого введите восьмизначный номер, указанный на лицевой стороне карты и в письмах от Клуба Много.ру.</div>
+                                    <img src="/css/skin/img/mnogo_ru.png" alt="mnogo.ru" />
+                                </div>
+                            </div>
+                            <!-- Карта Много.ру -->
+                        <? endif ?>
+
                     </div>
                 </div>
                 <? endif ?>

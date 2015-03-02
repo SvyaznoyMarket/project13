@@ -123,7 +123,8 @@
 		}
 	};
 
-	var infBtnHandler = function infBtnHandler(e) {
+	var
+		infBtnHandler = function(e) {
 			var activeClass = 'mActive',
 				infBtn = viewParamPanel.find('.js-category-pagination-infinity'),
 				isActiveTab = infBtn.hasClass(activeClass);
@@ -131,14 +132,14 @@
 
 			e.preventDefault();
 
-			if ( isActiveTab ) {
+			if (isActiveTab) {
 				return;
 			}
 
 			catalog.infScroll.enable();
 		},
 
-		paginationBtnHandler = function paginationBtnHandler(e) {
+		paginationBtnHandler = function(e) {
 			console.info('paginationBtnHandler');
 			var activeClass = 'mActive',
 				infBtn = viewParamPanel.find('.js-category-pagination-infinity'),
@@ -147,9 +148,11 @@
 
 			e.preventDefault();
 
-			if ( isActiveTab ) {
-				catalog.infScroll.disable();
+			if (!isActiveTab) {
+				return;
 			}
+
+			catalog.infScroll.disable();
 		};
 	// end of functions
 

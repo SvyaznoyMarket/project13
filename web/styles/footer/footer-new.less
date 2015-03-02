@@ -2,13 +2,12 @@
 @full-size: 100%;
 .footer {
     width: 960px;
-    height: 195px;
-    margin: -195px auto 0;
+    height: 220px;
+    margin: -220px auto 0;
     background: @black;
     position: relative;
     &_t {
         background: @white;
-        padding-bottom: 5px;
     }
     &_b {
         background: @black;
@@ -66,12 +65,15 @@
             &_i {
                 .inline-block();
                 color: #515151;
-                margin-right: 30px;
+                margin-right: 90px;
+                &:last-child{
+                    margin-right: 0px;
+                }
             }
         }
         &_tx {
             color: #929292;
-            margin: 3px 0 25px;
+            margin: 3px 0 5px;
             .inline-block();
             vertical-align: top;
         }
@@ -89,7 +91,8 @@
     // баннерки
     &_bnnr {
         float: left;
-        margin: 0 10px;
+        margin: 20px 10px 15px;
+        clear: both;
         &_i {
             float: left;
             margin-right: 20px;
@@ -97,14 +100,14 @@
                 margin-right: 0;
             }
             .teleportator {
-                width: 130px;
+
             }
         }
     }
     //ссылки на приложения
     &_app {
         float: right;
-        margin: 0 10px;
+        margin: 20px 10px 15px;
         &_i {
             float: right;
             margin: 0 0 5px 10px;
@@ -114,29 +117,80 @@
             .rounded(4px);
         }
     }
+    &-discounts{
+        float: left;
+        margin: 0 10px;
+        li{
+            display: inline-block;
+            margin-right: 16px;
+        }
+        &__link{
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+
 }
 
 .i-share {
-    background-image: url("@{base-url}/mainpage/img/i-share.png");
+    background-image: url("@{base-url}/footer/img/sharing/sharing-sprite.png");
 
     &-fb {
-        .sprite-temp(0, 0, 28px, 28px);
+        .sprite-temp(-28px, 0, 28px, 28px);
+        &:hover{
+            .sprite-temp(0, 0, 28px, 28px);
+        }
     }
 
     &-od {
-        .sprite-temp(-28px, 0, 28px, 28px);
+        .sprite-temp(-84px, 0, 28px, 28px);
+        &:hover{
+            .sprite-temp(-56px, 0, 28px, 28px);
+        }
     }
 
     &-tw {
-        .sprite-temp(-56px, 0, 28px, 28px);
+        .sprite-temp(-140px, 0, 28px, 28px);
+        &:hover{
+            .sprite-temp(-112px, 0, 28px, 28px);
+        }
     }
 
     &-vk {
-        .sprite-temp(-84px, 0, 28px, 28px);
+         .sprite-temp(-196px, 0, 28px, 28px);
+        &:hover{
+            .sprite-temp(-168px, 0, 28px, 28px);
+        }
     }
 
     &-yt {
-        .sprite-temp(-112px, 0, 28px, 28px);
+        .sprite-temp(-252px, 0, 28px, 28px);
+        &:hover{
+            .sprite-temp(-224px, 0, 28px, 28px);
+        }
+    }
+}
+.i-discount{
+    background-image: url("@{base-url}/footer/img/discounts/disc-sprite.png");
+    &-mnogoru {
+        .sprite-temp(-73px, 0, 73px, 26px);
+        &:hover{
+            .sprite-temp(0, 0, 73px, 26px);
+        }
+    }
+
+    &-sb {
+        .sprite-temp(-207px, 0, 60px, 34px);
+        &:hover{
+            .sprite-temp(-147px, 0, 60px, 34px);
+        }
+    }
+
+    &-svyaznoy{
+        .sprite-temp(-384px, 0, 116px, 22px);
+        &:hover{
+            .sprite-temp(-268px, 0, 116px, 22px);
+        }
     }
 }
 .footer_cpy_mbl{

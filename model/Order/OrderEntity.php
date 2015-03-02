@@ -2,6 +2,7 @@
 
 
 namespace Model\Order;
+use Partner\Counter\Actionpay;
 
 
 /** Класс ля создания заказа на ядре
@@ -369,6 +370,16 @@ class OrderEntity {
                 $data['user_agent'] = $request->server->get('HTTP_USER_AGENT');
                 $data['kiss_session'] = $request->request->get('kiss_session');
                 $data['last_partner'] = $request->cookies->get('last_partner');
+
+                // Много.ру
+                if (\App::config()->partners['MnogoRu']['enabled'] && !empty($request->cookies->get(\App::config()->partners['MnogoRu']['cookieName']))) {
+                    $data['mnogo_ru_card'] = $request->cookies->get(\App::config()->partners['MnogoRu']['cookieName']);
+                }
+
+                // Присваиваем заказ actionpay, если активировали промокод через PandaPay
+                if (!empty($request->cookies->get(\App::config()->partners['PandaPay']['cookieName']))) {
+                    $data['last_partner'] = Actionpay::NAME;
+                }
             }
         } catch (\Exception $e) {
             \App::logger()->error($e, ['order_v3', 'partner']);

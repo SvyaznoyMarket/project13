@@ -23,14 +23,10 @@ class IndexAction {
 
         // подготовка 1-го пакета запросов
 
-        // запрашиваем текущий регион, если есть кука региона
         $regionConfig = [];
+        // запрашиваем текущий регион, если есть кука региона
         if ($user->getRegionId()) {
-            \App::dataStoreClient()->addQuery("region/{$user->getRegionId()}.json", [], function($data) use (&$regionConfig) {
-                if((bool)$data) {
-                    $regionConfig = $data;
-                }
-            });
+            $regionConfig = (array)\App::dataStoreClient()->query("/region/{$user->getRegionId()}.json");
 
             \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
@@ -217,10 +213,14 @@ class IndexAction {
                     }
                 }
     
-                // SITE-3982 Трастфактор "Спасибо от Сбербанка" не должен отображаться на карточке товара от Связного
+                // Трастфакторы "Спасибо от Сбербанка" и Много.ру не должны отображаться на партнерских товарах
                 if (is_array($product->getPartnersOffer()) && count($product->getPartnersOffer()) != 0) {
                     foreach ($trustfactors as $key => $trustfactor) {
-                        if ('right' === $trustfactor->type && 'ab3ca73c-6cc4-4820-b303-8165317420d5' === $trustfactor->uid) {
+                        if ('right' === $trustfactor->type
+                            && in_array($trustfactor->uid, [
+                                '10259a2e-ce37-49a7-8971-8366de3337d3', // много.ру
+                                'ab3ca73c-6cc4-4820-b303-8165317420d5'  // сбербанк
+                            ])) {
                             unset($trustfactors[$key]);
                         }
                     }
