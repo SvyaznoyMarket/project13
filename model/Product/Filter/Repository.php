@@ -57,7 +57,7 @@ class Repository {
         $params['region_id'] = \App::user()->getRegion()->getId();
 
         if (!empty($filters)) {
-            $params['filters'] = $filters;
+            $params['filter']['filters'] = $filters;
         }
 
         $this->client->addQuery('listing/filter', $params, [], $done, $fail);
@@ -81,8 +81,9 @@ class Repository {
         }
 
         if (!empty($filters)) {
-            $params['filters'] = $filters;
+            $params['filter']['filters'] = $filters;
         }
+
         $this->client->addQuery('listing/filter', $params, [], $done, $fail);
     }
 
@@ -105,6 +106,7 @@ class Repository {
         if ($region) {
             $params['region_id'] = $region->getId();
         }
+
         $this->client->addQuery('listing/filter', $params, [], $done, $fail);
     }
 
@@ -129,6 +131,7 @@ class Repository {
         if ($region) {
             $params['region_id'] = $region->getId();
         }
+
         $this->client->addQuery('listing/filter', $params, [], $done, $fail);
     }
 }

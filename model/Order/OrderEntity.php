@@ -188,9 +188,10 @@ class OrderEntity {
     /**
      * @param array $arr
      * @param array|null $sender
+     * @param string $sender2
      * @throws \Exception
      */
-    public function __construct($arr, $sender = null) {
+    public function __construct($arr, $sender = null, $sender2 = '') {
 
         $request = \App::request();
         $region = \App::user()->getRegion();
@@ -295,7 +296,7 @@ class OrderEntity {
 
         if (isset($arr['order']['actions']) && is_array($arr['order']['actions']) && (bool)$arr['order']['actions']) $this->action = $arr['order']['actions'];
 
-        if (\App::config()->order['enableMetaTag']) $this->meta_data = $this->getMetaData($sender);
+        if (\App::config()->order['enableMetaTag']) $this->meta_data = $this->getMetaData($sender, $sender2);
 
 
     }
@@ -303,7 +304,7 @@ class OrderEntity {
     /** Возвращает мета-данные для партнеров
      * @return array|null
      */
-    private function getMetaData($sender) {
+    private function getMetaData($sender, $sender2) {
         $request = \App::request();
         $user = \App::user();
         $data = [];
@@ -350,6 +351,13 @@ class OrderEntity {
                         unset($senderData);
                     }
 
+                    if (isset($cart[$product->getId()]['sender2']) && $cart[$product->getId()]['sender2']) {
+                        $data[sprintf('product.%s.sender2', $product->getUi())] = $cart[$product->getId()]['sender2'];
+                    } else if ($sender2) {
+                        $data[sprintf('product.%s.sender2', $product->getUi())] = $sender2;
+                    } else if (isset($oneClickCart['product'][$product->getId()]['sender2']) && $oneClickCart['product'][$product->getId()]['sender2']) {
+                        $data[sprintf('product.%s.sender2', $product->getUi())] = $oneClickCart['product'][$product->getId()]['sender2'];
+                    }
                 } catch (\Exception $e) {
                     \App::logger()->error(['error' => $e], ['order', 'partner']);
                 }

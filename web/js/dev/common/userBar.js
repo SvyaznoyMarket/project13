@@ -325,9 +325,25 @@
 			return;
 		}
 
+		var
+			url = upsale.url,
+			sender2 = '';
+
+		if (ENTER.config.pageConfig.product) {
+			if (ENTER.config.pageConfig.product.isSlot) {
+				sender2 = 'slot';
+			} else if (ENTER.config.pageConfig.product.isOnlyFromPartner) {
+				sender2 = 'marketplace';
+			}
+		}
+
+		if (sender2) {
+			url = ENTER.utils.setURLParam('sender2', sender2, url);
+		}
+
 		$.ajax({
 			type: 'GET',
-			url: upsale.url,
+			url: url,
 			success: responseFromServer
 		});
 	}

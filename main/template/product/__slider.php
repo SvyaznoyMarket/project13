@@ -16,6 +16,7 @@
  * @param bool $showPageCounter         Показывать "Страница n из N"
  * @param int  $rowsCount               Количество строк в слайдере
  * @param string|null $containerStyle
+ * @param string $sender2
  */
 $f = function (
     \Helper\TemplateHelper $helper,
@@ -32,7 +33,8 @@ $f = function (
     $isCompact = false,
     $showPageCounter = false,
     $rowsCount = 1,
-    $containerStyle = '' // вот это хардкод
+    $containerStyle = '', // вот это хардкод
+    $sender2 = ''
 ) {
     if (null === $namePosition) {
         $namePosition = 'bottom';
@@ -60,6 +62,7 @@ $f = function (
         'url'    => $url,
         'type'   => $type,
         'sender' => $sender,
+        'sender2' => $sender2,
     ]) ?>"
     <? if ($containerStyle): ?> style="<?= $containerStyle ?>" <? endif ?>
 >
@@ -113,6 +116,10 @@ $f = function (
                 }
                 if ('retailrocket' == $sender['name']) {
                     $urlParams['from'] = 'cart_rec';
+                }
+
+                if ($sender2) {
+                    $urlParams['sender2'] = $sender2;
                 }
 
                 $link = $helper->url(
@@ -183,6 +190,7 @@ $f = function (
                                 'noUpdate'       => true,
                                 'location'       => 'slider',
                                 'reserveAsBuy'   => true,
+                                'sender2'       => $sender2,
                             ]) // Кнопка купить ?>
                         <? endif ?>
                     <? endif ?>

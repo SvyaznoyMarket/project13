@@ -187,6 +187,7 @@ class RecommendedAction {
                         'products'       => $products,
                         'count'          => count($products),
                         'sender'         => $sender,
+                        'sender2'        => (string)$request->get('sender2'),
                         'class'          => $cssClass,
                         'rowsCount'      => $rowsCount,
                         'namePosition'   => $namePosition,

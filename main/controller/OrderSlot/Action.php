@@ -28,7 +28,7 @@ class Action {
             $cartSplitResponse = $this->queryCartSplit($request->request->get('productId'));
 
             $orderCreatePacketParams = $this->getOrderCreatePacketParams();
-            $orderCreatePacketData = $this->getOrderCreatePacketData($cartSplitResponse, $phone, $request->request->get('email'), $request->request->get('name'), $request->request->get('sender'));
+            $orderCreatePacketData = $this->getOrderCreatePacketData($cartSplitResponse, $phone, $request->request->get('email'), $request->request->get('name'), $request->request->get('sender'), (string)$request->request->get('sender2'));
 
             $orderCreatePacketResponse = \App::coreClientV2()->query(
                 (\App::config()->newDeliveryCalc ? 'order/create-packet2' : 'order/create-packet'),
@@ -41,7 +41,18 @@ class Action {
         } catch (\Curl\Exception $e) {
             \App::logger()->error($e->getMessage(), ['curl', 'order/create']);
             \App::exception()->remove($e);
-            return $request->isXmlHttpRequest() ? new \Http\JsonResponse(['error' => 708 == $e->getCode() ? 'Товара нет в наличии' : (\App::config()->debug ? $e->getMessage() : 'Ошибка при создании заявки')]) : new \Http\RedirectResponse($referer);
+
+            if (708 == $e->getCode()) {
+                $errorMessage = 'Товара нет в наличии';
+            } else if (720 == $e->getCode()) {
+                $errorMessage = 'Это дублирующий заказ';
+            } else if (\App::config()->debug) {
+                $errorMessage = $e->getMessage();
+            } else {
+                $errorMessage = 'Ошибка при создании заявки';
+            }
+
+            return $request->isXmlHttpRequest() ? new \Http\JsonResponse(['error' => $errorMessage]) : new \Http\RedirectResponse($referer);
         } catch (\Exception $e) {
             if (!in_array($e->getCode(), \App::config()->order['excludedError'])) {
                 \App::logger('order')->error([
@@ -140,12 +151,12 @@ class Action {
         return $params;
     }
 
-    private function getOrderCreatePacketData($cartSplitResponse, $phone, $email, $name, $sender) {
+    private function getOrderCreatePacketData($cartSplitResponse, $phone, $email, $name, $sender, $sender2) {
         $data = [];
 
         foreach ($cartSplitResponse['orders'] as $order) {
             $data[] = array_merge(
-                (new OrderEntity(array_merge($cartSplitResponse, ['order' => $order]), json_decode($sender, true)))->getOrderData(),
+                (new OrderEntity(array_merge($cartSplitResponse, ['order' => $order]), json_decode($sender, true), $sender2))->getOrderData(),
                 [
                     'mobile' => $phone,
                     'email' => $email,
