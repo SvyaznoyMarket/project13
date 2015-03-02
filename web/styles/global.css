@@ -5722,6 +5722,14 @@ img[height="0"] {
     text-align: center;
     border: none;
   }
+  .btn-def:hover {
+    background-color: #ffa224;
+  }
+  .btn-def:active {
+    -webkit-box-shadow: 0 1px 0 0 #ca7c00;
+    -moz-box-shadow: 0 1px 0 0 #ca7c00;
+    box-shadow: 0 1px 0 0 #ca7c00;
+  }
 }
 @media all {
   .ep-list {

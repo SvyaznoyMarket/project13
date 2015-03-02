@@ -340,6 +340,7 @@
         var $self = $(this),
             template = $('#tplEnterprizeForm'),
             templateHint = template.html(),
+            $hint = $('.js-enterprize-coupon-hint'),
 
             selectClass = $self.data('column'),
             activeClass = 'act',
@@ -347,14 +348,14 @@
             html,
             dataValue = $self.data('value');
 
-        $('.js-enterprize-coupon-hint').remove();
+        $hint.remove();
 
         html = Mustache.render(templateHint, dataValue);
 
         // показываем окно с описанием фишки
         if ($self.hasClass(activeClass)) {
             $self.removeClass(activeClass);
-            $('.js-enterprize-coupon-hint').remove();
+            $hint.remove();
 
         } else {
             $('.js-enterprize-coupon').removeClass(activeClass);
@@ -389,7 +390,7 @@
             });
 
             body.data('enterprizeSliderXhr', xhr);
-        }
+        };
     });
 
     body.on('click', '.js-ep-hint-closer', function(e) {

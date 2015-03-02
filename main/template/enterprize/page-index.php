@@ -91,8 +91,8 @@ $helper = new \Helper\TemplateHelper();
 
         <div class="ep-selected-coupon__r">
             <div class="ep-selected-coupon__desc">
-                Мы отправили код фишки на Ваш e-mail и мобильный.<br/>
-                При заказе введите код в поле Код фишки, купон, промокод
+                Мы отправили код фишки на Ваши e-mail и мобильный.<br/>
+                При заказе введите код в поле «Код скидки, подарочный сертификат».
             </div>
 
             <? if (isset($products) && !empty($products) && is_array($products)): ?>
