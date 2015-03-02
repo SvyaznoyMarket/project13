@@ -940,6 +940,9 @@ class Action {
             );
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
+            // HINT Можно добавлять ID неопубликованных продуктов для показа в листингах
+            // array_unshift($productIds, 201540);
+
             $products = [];
             if ((bool)$productIds) {
                 $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {

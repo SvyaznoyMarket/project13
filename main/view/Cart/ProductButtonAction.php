@@ -5,7 +5,7 @@ namespace View\Cart;
 class ProductButtonAction {
     /**
      * @param \Helper\TemplateHelper $helper
-     * @param \Model\Product\BasicEntity $product
+     * @param \Model\Product\Entity $product
      * @param null $onClick
      * @param bool $isRetailRocket
      * @param array $sender Данные поставщика, например: {name: retailrocket, position: ProductSimilar, action: Переход в карточку товара}
@@ -16,7 +16,7 @@ class ProductButtonAction {
      */
     public function execute(
         \Helper\TemplateHelper $helper,
-        \Model\Product\BasicEntity $product,
+        \Model\Product\Entity $product,
         $onClick = null,
         $isRetailRocket = false,
         array $sender = [],
@@ -99,6 +99,11 @@ class ProductButtonAction {
             $data['productPrice'] = $product->getPrice();
             $data['partnerName'] = $slotPartnerOffer['name'];
             $data['partnerOfferUrl'] = $slotPartnerOffer['offer'];
+        } else if ($product->isGifteryCertificate()) {
+            $data['isSlot'] = true;
+            $data['url'] = '#';
+            $data['class'] .= ' btn btn--slot giftery-show-widget ' . ('product-card' !== $location ? 'btn--short' : 'btn--big');
+            $data['value'] = 'Купить';
         } else if ($product->isInShopStockOnly() && $forceDefaultBuy) {
             if ($reserveAsBuy) {
                 $data['id'] = 'quickBuyButton-' . $product->getId();

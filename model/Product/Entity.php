@@ -4,10 +4,10 @@ namespace Model\Product;
 
 class Entity extends BasicEntity {
 
-    /**
-     * Дефолтное отображение связанных товаров - аксессуары сверху, смежные товары в футере
-     */
+    /** Дефолтное отображение связанных товаров - аксессуары сверху, смежные товары в футере */
     const DEFAULT_CONNECTED_PRODUCTS_VIEW_MODE = 1;
+    /** Электронный подарочный сертификат giftery.ru */
+    const GIFTERY_UID = '684fb825-ebf5-4e4f-be2b-96a81e938cb2';
 
     /** @var int */
     protected $viewId;
@@ -906,5 +906,10 @@ class Entity extends BasicEntity {
     public function getIsKitLocked()
     {
         return $this->isKitLocked;
+    }
+
+    /* Электронный сертификат от giftery.ru */
+    public function isGifteryCertificate() {
+        return $this->getUi() == $this::GIFTERY_UID;
     }
 }

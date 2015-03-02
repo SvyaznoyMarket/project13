@@ -521,6 +521,8 @@ class IndexAction {
 
         if ($product->getSlotPartnerOffer()) {
             $page = new \View\Product\SlotPage();
+        } else if ($product->isGifteryCertificate()) {
+            $page = new \View\Product\GifteryPage();
         } else {
             $page = new \View\Product\IndexPage();
         }
