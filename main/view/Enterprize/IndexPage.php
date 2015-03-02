@@ -3,7 +3,7 @@
 namespace View\Enterprize;
 
 class IndexPage extends \View\DefaultLayout {
-    protected $layout  = 'layout-oneColumn';
+    protected $layout  = 'layout-enterprize';
 
     public function prepare() {
         $this->setParam('title', '');
@@ -33,6 +33,10 @@ class IndexPage extends \View\DefaultLayout {
 
     public function slotContentHead() {
         return parent::slotContentHead() . $this->render('enterprize/_auth');
+    }
+
+    public function slotAuth() {
+        return $this->render('_auth', ['oauthEnabled' => \App::config()->oauthEnabled, 'showRegisterForm' => false]);
     }
 
     public function slotFlocktoryEnterprizeJs() {

@@ -62,5 +62,4 @@
     </footer>
 
     <?= $page->render('common/__script-krible') ?>
-
 </div><!--/ Подвал -->

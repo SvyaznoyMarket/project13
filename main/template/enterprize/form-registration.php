@@ -10,7 +10,7 @@ if (!isset($form)) {
 }
 ?>
 
-<form class="formDefault jsEnterprizeForm" action="<?=\App::router()->generate($form->getRoute()) ?>" method="post">
+<form class="formDefault jsEnterprizeForm" action="<?= \App::router()->generate($form->getRoute()) ?>" method="post">
     <input type="hidden" name="user[guid]" value="<?= $form->getEnterprizeCoupon() ?>" />
 
     <fieldset class="formDefault__fields">

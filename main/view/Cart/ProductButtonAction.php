@@ -11,7 +11,6 @@ class ProductButtonAction {
      * @param array $sender Данные поставщика, например: {name: retailrocket, position: ProductSimilar, action: Переход в карточку товара}
      * @param bool $noUpdate
      * @param string|null $location
-     * @internal param null|string $url
      * @return array
      */
     public function execute(
