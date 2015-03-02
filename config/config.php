@@ -256,6 +256,9 @@ $c->partners['Sociaplus']['enabled'] = true;
 $c->partners['AdBlender']['enabled'] = true;
 $c->partners['ActionpayRetargeting']['enabled'] = true;
 $c->partners['Optimizely']['enabled'] = true;
+$c->partners['MnogoRu']['enabled'] = true;
+$c->partners['MnogoRu']['cookieName'] = 'enter_mnogo_ru';
+$c->partners['PandaPay']['cookieName'] = 'enter_panda_pay';
 
 $c->adFox['enabled'] = true;
 
@@ -315,6 +318,7 @@ $c->product['minCreditPrice']           = 3000;
 $c->product['totalCount']               = 55000;
 $c->product['recommendationSessionKey']     = 'recommendationProductIds';
 $c->product['productPageSendersSessionKey'] = 'productPageSenders';
+$c->product['productPageSendersForMarketplaceSessionKey'] = 'productPageSendersForMarketplace';
 // глобальный (без учета региона) список товаров
 $c->product['globalListEnabled']      = true;
 $c->product['showAveragePrice']       = false;

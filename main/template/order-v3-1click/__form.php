@@ -3,7 +3,8 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
-    $sender = [] // Поставщик товара: обычно retail rocket
+    $sender = [], // Поставщик товара: обычно retail rocket
+    $sender2 = ''
 ) {
     $title = 'Купить быстро в 1 клик';
     $user = \App::user()->getEntity();
@@ -73,6 +74,7 @@ return function(
         
         <fieldset class="orderU_fldsbottom">
             <input type="hidden" name="sender" value="<?= $helper->json($sender) ?>" />
+            <input type="hidden" name="sender2" value="<?= $helper->escape($sender2) ?>" />
 
             <button type="submit" class="orderCompl_btn btnsubmit">Оформить</button>
         </fieldset>

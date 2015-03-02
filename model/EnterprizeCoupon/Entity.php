@@ -59,6 +59,8 @@ class Entity {
     private $partnerDescription;
     /** @var string */
     private $partnerKeyword;
+    /** @var \Model\EnterprizeCoupon\DiscountCoupon\Entity|null */
+    private $discount;
 
     /**
      * @param array $data
@@ -422,5 +424,19 @@ class Entity {
      */
     public function getSegmentDescription() {
         return $this->segmentDescription;
+    }
+
+    /**
+     * @return DiscountCoupon\Entity|null
+     */
+    public function getDiscount() {
+        return $this->discount;
+    }
+
+    /**
+     * @param DiscountCoupon\Entity|null $discount
+     */
+    public function setDiscount($discount) {
+        $this->discount = $discount;
     }
 }

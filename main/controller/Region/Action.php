@@ -48,12 +48,7 @@ class Action {
 
         $response = new \Http\RedirectResponse($link);
 
-        $regionConfig = [];
-        \App::dataStoreClient()->addQuery("region/{$regionId}.json", [], function($data) use (&$regionConfig) {
-            if((bool)$data) {
-                $regionConfig = $data;
-            }
-        });
+        $regionConfig = (array)\App::dataStoreClient()->query("/region/{$regionId}.json");
 
         $region = null;
         \RepositoryManager::region()->prepareEntityById($regionId, function($data) use (&$region) {

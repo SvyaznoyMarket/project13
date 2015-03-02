@@ -2433,10 +2433,14 @@ jQuery(function($, undefined) {
 				slidersRecommendation++;
 			}
 
-            if (sliderParams.url && sliderParams.sender) {
-                sliderParams.sender.type = sliderParams.type;
-                urlData.senders.push(sliderParams.sender);
-            }
+			if (sliderParams.url && sliderParams.sender) {
+				sliderParams.sender.type = sliderParams.type;
+				urlData.senders.push(sliderParams.sender);
+			}
+
+			if (sliderParams.sender2) {
+				urlData.sender2 = sliderParams.sender2;
+			}
 
             if (sliderParams.rrviewed) {
                 //urlData.rrviewed = sliderParams.rrviewed;
@@ -2738,7 +2742,7 @@ jQuery(function($, undefined) {
 				if ( typeof window.ENTER.utils.packageReq === 'function' ) {
                     try {
                         if ('viewed' == sliderParams.type) {
-                            sliderParams.url += ((-1 != sliderParams.url.indexOf('?')) ? '&' : '?') + 'rrviewed=' + sliderParams.rrviewed + '&' + $.param({senders: [sliderParams.sender]});
+                            sliderParams.url += ((-1 != sliderParams.url.indexOf('?')) ? '&' : '?') + 'rrviewed=' + sliderParams.rrviewed + '&' + $.param({senders: [sliderParams.sender]}) + (sliderParams.sender2 ? '&' + $.param({sender2: sliderParams.sender2}) : '');
 
                             getSlidersData(sliderParams.url, sliderParams.type, function(res) {
                                 res.recommend && res.recommend.viewed && authFromServer(res.recommend.viewed);

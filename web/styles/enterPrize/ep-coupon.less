@@ -1,0 +1,116 @@
+.ep-coupon {
+	position: relative;
+	z-index: 17;
+
+	display: block;
+
+	width: 209px;
+	height: 206px;
+
+	text-align: center;
+
+	background: url("@{base-url}/enterPrize/img/bgOrange.png") no-repeat 0 0;
+
+	&__inner {
+	    position: relative;
+	    top: 6px;
+	    left: 7px;
+
+		display: block;
+
+	    width: 190px;
+	    height: 188px;
+	}
+
+	&__btn {
+		.gradient(#ffc000, #ffaa01, #ffc000);
+        .rounded(5px);
+		.opacity(0);
+		.transition(opacity 0.2s ease-in-out);
+		position: absolute;
+        bottom: 15px;
+		left: 92px;
+
+        display: block;
+
+        width: 94px;
+        height: 25px;
+
+        text-align: center;
+
+        color: #ffffff;
+        border: 1px solid #fb9c00;
+		outline: none;
+
+        font-size: 14px;
+        line-height: 25px;
+
+		-webkit-perspective: 1000;
+		-webkit-backface-visibility: hidden;
+		-webkit-tap-highlight-color: rgba(255,255,255,0);
+
+		&:hover {
+			.gradient(#ffa200, #f79200, #ffa200);
+		}
+	}
+
+	&__ico {
+		position: absolute;
+		top: 33px;
+		left: 0;
+
+		width: 100%;
+		height: 43px;
+
+		text-align: center;
+
+		img {
+			max-width: 75px;
+			max-height: 55px;
+		}
+	}
+
+	&__desc {
+		position: absolute;
+		top: 86px;
+		left: 23px;
+
+		width: 143px;
+
+		text-align: center;
+
+		line-height: 1.1;
+	}
+
+	&__price {
+		position: absolute;
+		top: 115px;
+		left: 0;
+
+		width: 100%;
+
+		text-align: center;
+
+		font-family: "Enter Type";
+		font-size: 27px;
+	}
+}
+
+.ep-coupon-hover {
+	.opacity(0.3);
+	.transition(opacity 0.3s ease-in-out);
+	position: absolute;
+	z-index: 15;
+	top: -41px;
+	left: -38px;
+
+	width: 281px;
+	height: 280px;
+
+	outline: none;
+	background: url("@{base-url}/enterPrize/img/luchi.png") no-repeat 50% 0;
+
+	-webkit-perspective: 1000;
+	-webkit-backface-visibility: hidden;
+	-webkit-tap-highlight-color: rgba(255,255,255,0);
+}

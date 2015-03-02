@@ -418,7 +418,7 @@
 			ENTER.config.userInfo = data;
 
 			if (!docCookies.hasItem(authorized_cookie)) {
-				if (data && null !== data.id) {
+				if (data && data.user && typeof data.user.id != 'undefined') {
 					docCookies.setItem(authorized_cookie, 1, 60*60, '/'); // on
 				} else {
 					docCookies.setItem(authorized_cookie, 0, 60*60, '/'); // off
@@ -605,8 +605,36 @@
 ;(function($) {
 
     var body = $(document.body),
-        ga = this.ga,
-        _gaq = this._gaq,
+        ga = this.ga,       // Universal
+        _gaq = this._gaq,   // Classic
+
+        isUniversalAvailable = function isUniversalAvailableF (){
+            return typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length != 0;
+        },
+        isClassicAvailable = function isClassicAvailableF() {
+            return typeof _gaq === 'object';
+        },
+        /**
+         * Логирование просмотра страницы в Google Analytics (Classical + Universal)
+         * @link 'https://developers.google.com/analytics/devguides/collection/analyticsjs/pages'
+         * @link 'https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApiBasicConfiguration#_gat.GA_Tracker_._trackPageview'
+         * @param jQueryEvent event, который автоматически передается от jQuery.trigger()
+         * @param eventObject Параметры в следующем порядке: 'page', 'title'
+         */
+        trackGooglePageview = function trackGooglePageView (jQueryEvent, eventObject) {
+            var data = {};
+            if (arguments.length >= 2 && typeof eventObject == 'string') {
+                data.page = arguments[1];
+                if (typeof data.page == 'string' && data.page.substr(0,1) != '/') data.page = '/' + data.page;
+                if (arguments[2]) data.title = arguments[2]
+            }
+            if (isUniversalAvailable()) {
+                ga('send', 'pageview', data);
+            }
+            if (isClassicAvailable()) {
+                _gaq.push(['_trackPageview', data.page])
+            }
+        },
 
         /**
          * Логирование события в Google Analytics (Classical + Universal)
@@ -665,6 +693,7 @@
             }
 
             // Universal Tracking Code
+            // TODO refactor if statement
             if (typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length != 0) {
                 universalEvent.eventCategory = e.category;
                 universalEvent.eventAction = e.action;
@@ -803,6 +832,7 @@
     if (typeof ga === 'undefined') ga = window[window['GoogleAnalyticsObject']]; // try to assign ga
 
     // common listener for triggering from another files or functions
+    body.on('trackGooglePageview', trackGooglePageview);
     body.on('trackGoogleEvent', trackGoogleEvent);
     body.on('trackGoogleTransaction', trackGoogleTransaction);
 
@@ -3000,7 +3030,7 @@ $(document).ready(function() {
 	$('.bMainMenuLevel-3__eLink').bind('click', 'Верхнее меню', categoriesSpy );
 	$('.breadcrumbs').first().find('a').bind( 'click', 'Хлебные крошки сверху', categoriesSpy );
 	$('.breadcrumbs-footer').find('a').bind( 'click', 'Хлебные крошки снизу', categoriesSpy );
-	
+
 	$('.bCtg__eMore').bind('click', function(e) {
 		e.preventDefault();
 		var el = $(this);
@@ -3041,13 +3071,6 @@ $(document).ready(function() {
 			}
 		});
 	}
-
-	
-
-	$('.enterPrizeDesc').click(
-		function() {
-			$(this).next('.enterPrizeListWrap').toggle('fast');
-	});
 });
 ;(function($){
 
@@ -3199,7 +3222,7 @@ $(document).ready(function() {
 		} else {
 			oneClickOpening = true;
 			$.ajax({
-				url: ENTER.utils.generateUrl('orderV3OneClick.form', {productUid: button.data('product-ui'), sender: button.data('sender')}),
+				url: ENTER.utils.generateUrl('orderV3OneClick.form', {productUid: button.data('product-ui'), sender: button.data('sender'), sender2: button.data('sender2')}),
 				type: 'POST',
 				dataType: 'json',
 				closeClick: false,
@@ -4302,6 +4325,7 @@ $(document).ready(function() {
 				'<form action="' + ENTER.utils.generateUrl('order.slot.create') + '" method="post">' +
 					'<input type="hidden" name="productId" value="{{productId}}" />' +
 					'<input type="hidden" name="sender" value="{{sender}}" />' +
+					'<input type="hidden" name="sender2" value="{{sender2}}" />' +
 
 					'{{#full}}' +
 						'<div class="popup--request__head msg--recall">Закажите обратный звонок и уточните:</div>' +
@@ -4342,7 +4366,7 @@ $(document).ready(function() {
 
 					'<div class="popup__form-group checkbox-group js-slotButton-popup-element">' +
 						'<div class="checkbox-inner js-slotButton-popup-element-field">' +
-							'<input type="checkbox" name="confirm" value="1" id="accept" class="customInput customInput-checkbox js-slotButton-popup-confirm" /><label class="customLabel jsAcceptTerms" for="accept">Я ознакомлен и согласен с информацией о продавце и его {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</label>' +
+							'<input type="checkbox" name="confirm" value="1" id="accept" class="customInput customInput-checkbox js-customInput js-slotButton-popup-confirm" /><label class="customLabel customLabel-checkbox jsAcceptTerms" for="accept">Я ознакомлен и согласен с информацией {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}о продавце и его офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</label>' +
 						'</div>' +
 					'</div>' +
 					'<div class="popup__form-group vendor">Продавец-партнёр: {{partnerName}}</div>' +
@@ -4455,6 +4479,7 @@ $(document).ready(function() {
 				productUrl: $button.data('product-url'),
 				productId: $button.data('product-id'),
 				sender: $button.attr('data-sender'),
+				sender2: $button.data('sender2') || '',
 				userPhone: ENTER.utils.Base64.decode(ENTER.config.userInfo.user.mobile || ''),
 				userEmail: ENTER.config.userInfo.user.email || '',
 				userName: ENTER.config.userInfo.user.name || ''
@@ -4512,6 +4537,7 @@ $(document).ready(function() {
 			$errors.empty().hide();
 
 			if (!validate($form)) {
+				$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '7_1 Оформить ошибка', catalogPath]);
 				return;
 			}
 
@@ -4525,6 +4551,7 @@ $(document).ready(function() {
 				success: function(result){
 					if (result.error) {
 						$errors.text(result.error).show();
+						$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '7_1 Оформить ошибка', catalogPath]);
 						return;
 					}
 
@@ -4538,12 +4565,15 @@ $(document).ready(function() {
 						$popup.trigger('close');
 					});
 
+					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '7 Оформить успешно', catalogPath]);
+
 					if (typeof ENTER.utils.sendOrderToGA == 'function' && result.orderAnalytics) {
 						ENTER.utils.sendOrderToGA(result.orderAnalytics);
 					}
 				},
 				error: function(){
 					$errors.text('Ошибка при создании заявки').show();
+					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '7_1 Оформить ошибка', catalogPath]);
 				},
 				complete: function(){
 					$submitButton.removeAttr('disabled');
@@ -5309,9 +5339,25 @@ $(document).ready(function() {
 			return;
 		}
 
+		var
+			url = upsale.url,
+			sender2 = '';
+
+		if (ENTER.config.pageConfig.product) {
+			if (ENTER.config.pageConfig.product.isSlot) {
+				sender2 = 'slot';
+			} else if (ENTER.config.pageConfig.product.isOnlyFromPartner) {
+				sender2 = 'marketplace';
+			}
+		}
+
+		if (sender2) {
+			url = ENTER.utils.setURLParam('sender2', sender2, url);
+		}
+
 		$.ajax({
 			type: 'GET',
-			url: upsale.url,
+			url: url,
 			success: responseFromServer
 		});
 	}

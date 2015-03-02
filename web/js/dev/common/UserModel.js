@@ -110,7 +110,7 @@
 			ENTER.config.userInfo = data;
 
 			if (!docCookies.hasItem(authorized_cookie)) {
-				if (data && null !== data.id) {
+				if (data && data.user && typeof data.user.id != 'undefined') {
 					docCookies.setItem(authorized_cookie, 1, 60*60, '/'); // on
 				} else {
 					docCookies.setItem(authorized_cookie, 0, 60*60, '/'); // off

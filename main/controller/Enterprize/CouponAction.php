@@ -5,8 +5,9 @@ namespace Controller\Enterprize;
 class CouponAction {
     /**
      * @param \Http\Request $request
+     * @return \Http\RedirectResponse|null
      */
-    public function create(\Http\Request $request) {
+    public function create(\Http\Request $request, $data = []) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         if (!\App::config()->enterprize['enabled']) {
@@ -15,7 +16,7 @@ class CouponAction {
 
         $session = \App::session();
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
-        $data = $session->get($sessionName, []);
+        $data = array_merge($session->get($sessionName, []), $data);
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
         if (!$enterprizeToken) {
