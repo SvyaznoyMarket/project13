@@ -605,8 +605,36 @@
 ;(function($) {
 
     var body = $(document.body),
-        ga = this.ga,
-        _gaq = this._gaq,
+        ga = this.ga,       // Universal
+        _gaq = this._gaq,   // Classic
+
+        isUniversalAvailable = function isUniversalAvailableF (){
+            return typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length != 0;
+        },
+        isClassicAvailable = function isClassicAvailableF() {
+            return typeof _gaq === 'object';
+        },
+        /**
+         * Логирование просмотра страницы в Google Analytics (Classical + Universal)
+         * @link 'https://developers.google.com/analytics/devguides/collection/analyticsjs/pages'
+         * @link 'https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApiBasicConfiguration#_gat.GA_Tracker_._trackPageview'
+         * @param jQueryEvent event, который автоматически передается от jQuery.trigger()
+         * @param eventObject Параметры в следующем порядке: 'page', 'title'
+         */
+        trackGooglePageview = function trackGooglePageView (jQueryEvent, eventObject) {
+            var data = {};
+            if (arguments.length >= 2 && typeof eventObject == 'string') {
+                data.page = arguments[1];
+                if (typeof data.page == 'string' && data.page.substr(0,1) != '/') data.page = '/' + data.page;
+                if (arguments[2]) data.title = arguments[2]
+            }
+            if (isUniversalAvailable()) {
+                ga('send', 'pageview', data);
+            }
+            if (isClassicAvailable()) {
+                _gaq.push(['_trackPageview', data.page])
+            }
+        },
 
         /**
          * Логирование события в Google Analytics (Classical + Universal)
@@ -665,6 +693,7 @@
             }
 
             // Universal Tracking Code
+            // TODO refactor if statement
             if (typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length != 0) {
                 universalEvent.eventCategory = e.category;
                 universalEvent.eventAction = e.action;
@@ -803,6 +832,7 @@
     if (typeof ga === 'undefined') ga = window[window['GoogleAnalyticsObject']]; // try to assign ga
 
     // common listener for triggering from another files or functions
+    body.on('trackGooglePageview', trackGooglePageview);
     body.on('trackGoogleEvent', trackGoogleEvent);
     body.on('trackGoogleTransaction', trackGoogleTransaction);
 

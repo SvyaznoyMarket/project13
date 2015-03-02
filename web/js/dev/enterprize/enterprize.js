@@ -361,6 +361,7 @@
             $self.addClass(activeClass);
             $self.closest('.js-enterprize-coupon-parent').append(html);
             $('.js-enterprize-coupon-hint').addClass(selectClass);
+            body.trigger('trackGooglePageview', ['/enterprize/form/' + dataValue.token]);
         }
 
         if (dataValue.slider.url) {
