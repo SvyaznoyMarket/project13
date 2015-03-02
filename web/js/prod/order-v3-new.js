@@ -947,6 +947,10 @@
 
         // При успешной онлайн-оплате
         if ($('.jsOrderPaid').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '18 Успешная_Оплата']);
+
+        // Сбрасываем куку mnogo.ru и PandaPay
+        if (docCookies.hasItem('enter_mnogo_ru')) docCookies.setItem('enter_mnogo_ru', '', 1, '/');
+        if (docCookies.hasItem('enter_panda_pay')) docCookies.setItem('enter_panda_pay', '', 1, '/');
     }
 
     if ($jsOrder.length != 0) {
@@ -1048,7 +1052,7 @@
                     }
                     else if (resp.success) {
                         $message.addClass(errorClass).css('color', 'green').text('Промокод принят').insertBefore($button.parent());
-                        docCookies.setItem('last_partner', 'actionpay', 60 * 60 *24 *30, '/'); // меняем партнера
+                        docCookies.setItem('enter_panda_pay', number, 60 * 60, '/'); // на час ставим этот промокод
                         $button.remove(); // пока только так... CORE-2738
                     }
                 }
@@ -1510,7 +1514,7 @@
 	});
 
 	$('.jsOrderV3BonusCardField').each(function(i,elem){
-		$(elem).closest('.bonusCnt-v2').find('.bonusCnt_tx_code .brb-dt').text($(elem).val())
+		$(elem).closest('.bonusCnt-v2').find('.bonusCnt_tx_code .brb-dt').eq(i).text($(elem).val())
 	});
 
     // АНАЛИТИКА
@@ -1594,8 +1598,8 @@
 				$emailInput.removeClass('textfield-err').siblings('.errTx').hide();
 			}
 
-			$bonusCardInput.mask($bonusCardInput.data('mask')); // еще раз, т.к. событие blur и последующий validate проскакивает раньше обновления значения инпута плагином
-			$mnogoRuInput.mask($mnogoRuInput.data('mask')); // еще раз, т.к. событие blur и последующий validate проскакивает раньше обновления значения инпута плагином
+			if ($bonusCardInput.length > 0) $bonusCardInput.mask($bonusCardInput.data('mask')); // еще раз, т.к. событие blur и последующий validate проскакивает раньше обновления значения инпута плагином
+			if ($mnogoRuInput.length > 0) $mnogoRuInput.mask($mnogoRuInput.data('mask')); // еще раз, т.к. событие blur и последующий validate проскакивает раньше обновления значения инпута плагином
 
 			if ($bonusCardInput.val().length != 0 && !ENTER.utils.checkEan($bonusCardInput.val())) {
 				error.push('Неверный код карты лояльности');
@@ -1605,7 +1609,7 @@
 			}
 
 			// Много.ру
-			if ($mnogoRuInput && !validateMnogoRu($mnogoRuInput.val())) {
+			if ($mnogoRuInput.length > 0 && !validateMnogoRu($mnogoRuInput.val())) {
 				error.push('Неверный код карты Много.ру');
 				$mnogoRuInput.addClass(errorClass).siblings('.errTx').show();
 			} else {
