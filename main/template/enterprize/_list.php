@@ -51,8 +51,11 @@ $f = function(
             $discount = $coupon->getDiscount();
             if ($discount && $discount->getTo()) {
                 try {
-                    if ($expiredDate = \DateTime::createFromFormat('Y-m-d H:i:s', $discount->getTo())) {
-                        $expiredDays = $expiredDate->diff(new \DateTime())->days;
+                    if ($discount->getEndDate()) {
+                        $expiredDays = $discount->getEndDate()->diff(new \DateTime())->days;
+                        if (0 === $expiredDays) {
+                            $expiredDays = 1;
+                        }
                     }
                 } catch (\Exception $e) {}
             }
@@ -62,8 +65,16 @@ $f = function(
                 'token'       => $coupon->getToken(),
                 'number'      => $coupon->getDiscount() ? $coupon->getDiscount()->getNumber() : null,
                 'discount'    => $helper->formatPrice($coupon->getPrice()) . ($coupon->getIsCurrency() ? ' <span class="rubl">p</span>' : '%'),
-                'start'       => $coupon->getStartDate() instanceof \DateTime ? $coupon->getStartDate()->format('d.m.Y') : null,
-                'end'         => $coupon->getEndDate() instanceof \DateTime ? $coupon->getEndDate()->format('d.m.Y') : null,
+                'start'       =>
+                    $coupon->getDiscount()
+                    ? ($coupon->getDiscount()->getStartDate() instanceof \DateTime ? $coupon->getDiscount()->getStartDate()->format('d.m.Y') : null)
+                    : ($coupon->getStartDate() instanceof \DateTime ? $coupon->getStartDate()->format('d.m.Y') : null)
+                ,
+                'end'         =>
+                    $coupon->getDiscount()
+                    ? ($coupon->getDiscount()->getEndDate() instanceof \DateTime ? $coupon->getDiscount()->getEndDate()->format('d.m.Y') : null)
+                    : ($coupon->getEndDate() instanceof \DateTime ? $coupon->getEndDate()->format('d.m.Y') : null)
+                ,
                 'description' => $coupon->getSegmentDescription(),
                 'minOrderSum' => $helper->formatPrice($coupon->getMinOrderSum()),
                 'isUserOwner' => (bool)$coupon->getDiscount(),
@@ -127,7 +138,7 @@ $f = function(
 
                     <? if ((null !== $expiredDays) && ($expiredDays <= 3)): ?>
                         <div class="ep-finish">
-                            <span class="ep-finish__tl">До конца действия<br/>фишки осталось </span>
+                            <span class="ep-finish__tl">До конца действия<br/>фишки <?= $helper->numberChoice($expiredDays, ['остался', 'осталось', 'осталось']) ?></span>
                             <span class="ep-finish__num"><?= $expiredDays ?></span>
                             <div class="ep-finish__day"><?= $helper->numberChoice($expiredDays, ['день', 'дня', 'дней']) ?></div>
                         </div>
