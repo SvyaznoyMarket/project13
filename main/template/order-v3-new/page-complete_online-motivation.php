@@ -108,7 +108,6 @@ return function(
                                     <? if ($order->comment) : ?>
                                         <div class="orderPayment_msg_adding">Дополнительные пожелания:<br/> «<?= $order->comment ?>»</div>
                                     <? endif ?>
-                                </div>
                                 <div class="orderPayment_msg_info">
                                     <? if ($order->isPaid()) : ?>
                                         Заказ оплачен

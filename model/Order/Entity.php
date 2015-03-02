@@ -740,14 +740,14 @@ class Entity {
     }
 
     /**
-     * @param int $sum
+     * @param int|float $sum
      */
     public function setSum($sum) {
         $this->sum = $sum;
     }
 
     /**
-     * @return int
+     * @return int|float
      */
     public function getSum() {
         return $this->sum;

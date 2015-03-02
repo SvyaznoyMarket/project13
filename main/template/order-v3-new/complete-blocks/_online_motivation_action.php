@@ -7,10 +7,21 @@
     $helper = \App::helper();
     // по идее в $orderPayment->methods уже только методы, которые содержат акцию, поэтому берем первый метод и смотрим на сумму
     /** @var $method \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity */
-    $sumWithDiscount = $order->getSum();
     $method = reset($orderPayment->methods);
     $actionArr = !is_null($method) ? $method->getAction($action) : null;
-    if (is_array($actionArr)) $sumWithDiscount = $actionArr['payment_sum'];
+
+    // Форматируем цену SITE-5195
+    $prices = [
+        'initial' => $order->getSum(),
+        'discount' => is_array($actionArr) ? $actionArr['payment_sum'] :  $order->getSum()
+    ];
+    foreach ($prices as &$price) {
+        $price = $helper->formatPrice($price);
+        if (strpos($price, '.') === false) $price .= '.00';
+        $priceArr = explode('.', $price);
+        $priceArr[1] = '<span style="font-size: 10px; position: relative; bottom: 3px">'.$priceArr[1].'</span>';
+        $price = implode('.', $priceArr);
+    }
 
     ?>
 
@@ -60,11 +71,11 @@
 
                 <div class="orderPayment_msg_head-row">
                     <label class="orderSum-lbl">Сумма заказа:</label>
-                    <span class="orderSum"><?= $helper->formatPrice($order->sum) ?> <span class="rubl">p</span></span>
+                    <span class="orderSum"><?= $prices['initial'] ?> <span class="rubl">p</span></span>
                 </div>
                 <div class="orderPayment_msg_head-row">
                     <label class="orderSum-lbl">При оплате онлайн:</label>
-                    <span class="orderSum"><?= $helper->formatPrice($sumWithDiscount) ?> <span class="rubl">p</span></span>
+                    <span class="orderSum"><?= $prices['discount'] ?> <span class="rubl">p</span></span>
                 </div>
 
 
