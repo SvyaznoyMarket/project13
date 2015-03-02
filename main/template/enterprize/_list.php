@@ -52,7 +52,7 @@ $f = function(
             if ($discount && $discount->getTo()) {
                 try {
                     if ($discount->getEndDate()) {
-                        $expiredDays = $discount->getEndDate()->diff(new \DateTime())->days;
+                        $expiredDays = $discount->getEndDate()->diff(new \DateTime('now'))->days;
                         if (0 === $expiredDays) {
                             $expiredDays = 1;
                         }
