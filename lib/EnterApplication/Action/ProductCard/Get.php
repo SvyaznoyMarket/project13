@@ -100,6 +100,9 @@ namespace EnterApplication\Action\ProductCard {
             // регион
             $regionQuery = (new Query\Region\GetById($request->regionId))->prepare($abTestError);
 
+            // список регионов для выбора города
+            $mainRegionQuery = (new Query\Region\GetMain())->prepare($mainRegionError);
+
             // дерево категорий для меню
             //$categoryTreeQuery = (new Query\Product\Category\GetTree(null, 3, null, null, true))->prepare($categoryTreeError);
             $categoryRootTreeQuery = (new Query\Product\Category\GetRootTree(3))->prepare($categoryRootTreeError);
