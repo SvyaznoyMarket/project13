@@ -3085,7 +3085,7 @@ img[height="0"] {
     transform: scale(1.05);
   }
   .main-new {
-    background: #ffffff url('/styles/mainpage/img/fon2.jpg') no-repeat 50% 0;
+    background: #ffffff url('/styles/mainpage/img/spring-bg.jpg') no-repeat 50% 0;
     background-size: cover;
     background-attachment: fixed;
   }
