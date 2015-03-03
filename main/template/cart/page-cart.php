@@ -57,6 +57,26 @@ $isNewRecommendation =
 
 <? if ($isNewRecommendation && \App::config()->product['pullRecommendation']): ?>
     <div class="basketLine">
+    <? if (!$cart->isEmpty()): ?>
+        <?= $helper->render('product/__slider', [
+            'type'      => 'alsoBought',
+            'products'  => [],
+            'url'       => $page->url('cart.recommended', [
+                'sender' => [
+                    'position' => 'Basket',
+                ],
+            ]),
+        ]) ?>
+    <? else: ?>
+        <?= $helper->render('product/__slider', [
+            'type'      => 'main',
+            'products'  => [],
+            'url'       => $page->url('cart.recommended', [
+                'sender' => [
+                    'position' => 'Basket',
+                ],
+            ]),
+        ]) ?>
 
         <?= $helper->render('product/__slider', [
             'type'      => 'alsoBought',
@@ -67,6 +87,7 @@ $isNewRecommendation =
                 ],
             ]),
         ]) ?>
+    <? endif ?>
     </div>
 <? endif ?>
 
