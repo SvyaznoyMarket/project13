@@ -41,7 +41,11 @@ namespace EnterQuery\Redirect
                 $callback,
                 $error,
                 function($response, $statusCode) {
-                    $this->response->toUrl = $this->decodeResponse($response, $statusCode)['to_url'];
+                    $result = $this->decodeResponse($response, $statusCode);
+
+                    $this->response->toUrl = $result['to_url'];
+
+                    return $result; // for cache
                 }
             );
 

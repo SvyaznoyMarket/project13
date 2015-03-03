@@ -53,6 +53,8 @@ namespace EnterQuery\Product\Review
 
                     $this->response->reviews = isset($result['review_list'][0]) ? $result['review_list'] : [];
                     $this->response->reviewCount = isset($result['num_reviews']) ? $result['num_reviews'] : null;
+
+                    return $result; // for cache
                 }
             );
 

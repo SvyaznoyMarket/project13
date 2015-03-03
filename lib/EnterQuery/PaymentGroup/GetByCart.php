@@ -49,11 +49,11 @@ namespace EnterQuery\PaymentGroup {
                 'geo_id' => $this->regionId,
             ];
             if ($this->filter) {
-                if ($this->filter->isCredit) $urlQuery['is_credit'] = true;
-                if ($this->filter->isOnline) $urlQuery['is_online'] = true;
-                if ($this->filter->isPersonal) $urlQuery['is_personal'] = true;
-                if ($this->filter->isLegal) $urlQuery['is_legal'] = true;
-                if ($this->filter->isCorporative) $urlQuery['is_credit'] = true;
+                if (null !== $this->filter->isCredit) $urlQuery['is_credit'] = $this->filter->isCredit;
+                if (null !== $this->filter->isOnline) $urlQuery['is_online'] = $this->filter->isOnline;
+                if (null !== $this->filter->isPersonal) $urlQuery['is_personal'] = $this->filter->isPersonal;
+                if (null !== $this->filter->isLegal) $urlQuery['is_legal'] = $this->filter->isLegal;
+                if (null !== $this->filter->isCorporative) $urlQuery['is_corporative'] = $this->filter->isCorporative;
             }
 
             $this->prepareCurlQuery(
@@ -77,6 +77,7 @@ namespace EnterQuery\PaymentGroup {
 
                     $this->response->paymentGroups = isset($result['detail'][0]) ? $result['detail'] : [];
 
+                    return $result; // for cache
                 }
             );
 

@@ -44,6 +44,8 @@ namespace EnterQuery\MainMenu
                     $result = $this->decodeResponse($response, $statusCode);
 
                     $this->response->items = isset($result['item'][0]) ? $result['item'] : [];
+
+                    return $result; // for cache
                 }
             );
 

@@ -51,7 +51,10 @@ namespace EnterQuery\Delivery {
                 [
                     'product_list' => array_map(
                         function(Cart\Product $product) {
-                            return ['id' => $product->id, 'quantity' => $product->quantity];
+                            return [
+                                'id'       => (int)$product->id, // FIXME: int для кеша
+                                'quantity' => $product->quantity
+                            ];
                         },
                         $this->cart->products
                     ),
@@ -66,6 +69,8 @@ namespace EnterQuery\Delivery {
                     $this->response->intervals = (isset($result['interval_list']) && is_array($result['interval_list'])) ? $result['interval_list'] : [];
                     $this->response->shops = (isset($result['shop_list']) && is_array($result['shop_list'])) ? $result['shop_list'] : [];
                     $this->response->regions = (isset($result['geo_list']) && is_array($result['geo_list'])) ? $result['geo_list'] : [];
+
+                    return $result; // for cache
                 }
             );
 

@@ -41,7 +41,11 @@ namespace EnterQuery\Region
                 $callback,
                 $error,
                 function($response, $statusCode) {
-                    $this->response->region = $this->decodeResponse($response, $statusCode)['result'][0];
+                    $result = $this->decodeResponse($response, $statusCode)['result'];
+
+                    $this->response->region = $result[0];
+
+                    return $result; // for cache
                 }
             );
 

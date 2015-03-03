@@ -35,9 +35,11 @@ namespace EnterQuery\Region
                 $callback,
                 $error,
                 function($response, $statusCode) {
-                    $result = $this->decodeResponse($response, $statusCode);
+                    $result = $this->decodeResponse($response, $statusCode)['result'];
 
-                    $this->response->regions = isset($result['result'][0]) ? $result['result'] : [];
+                    $this->response->regions = isset($result[0]) ? $result : [];
+
+                    return $result; // for cache
                 }
             );
 

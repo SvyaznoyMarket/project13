@@ -37,6 +37,8 @@ namespace EnterQuery\AbTest
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
                     $this->response->tests = isset($result[0]) ? $result : [];
+
+                    return $result; // for cache
                 }
             );
 

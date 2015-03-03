@@ -44,6 +44,8 @@ namespace EnterQuery\Product\Review
                     $result = $this->decodeResponse($response, $statusCode);
 
                     $this->response->reviews = isset($result['product_scores'][0]) ? $result['product_scores'] : [];
+
+                    return $result; // for cache
                 }
             );
 

@@ -72,6 +72,7 @@ class ShowAction {
                         'timeout'    => isset($message['timeout']) ? $message['timeout'] : null,
                         'startAt'    => $startAt,
                         'count'      => isset($queryData[$index]['count']) ? ($queryData[$index]['count'] + 1) : 1,
+                        'cache'      => isset($message['cache']),
                     ];
                 } else if ((('Fail curl' == $message['message']) || ('End curl' == $message['message'])) && isset($queryData[$index])) {
                     if (isset($message['error'])) {
@@ -92,6 +93,7 @@ class ShowAction {
                     $queryData[$index]['retryCount'] = isset($message['retryCount']) ? $message['retryCount'] : null;
                     $queryData[$index]['retryTimeout'] = isset($message['retryTimeout']) ? $message['retryTimeout'] : null;
                     $queryData[$index]['header'] = isset($message['header']) ? $message['header'] : null;
+                    $queryData[$index]['cache'] = isset($message['cache']);
                 }
             } else if ($startAt && ('End curl executing' == $message['message'])) {
                 /*

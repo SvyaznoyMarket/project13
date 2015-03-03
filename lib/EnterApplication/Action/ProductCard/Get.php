@@ -31,8 +31,8 @@ namespace EnterApplication\Action\ProductCard {
                 &$ratingError
                 //&$deliveryQuery,
             ) {
-                $productId = (string)$productQuery->response->product['id'];
-                if (!$productId) {
+                $product = $productQuery->response->product;
+                if (!$product['id']) {
                     return;
                 }
 
@@ -40,7 +40,7 @@ namespace EnterApplication\Action\ProductCard {
                 try {
                     $deliveryQuery = new Query\Delivery\GetByCart();
                     // корзина
-                    $deliveryQuery->cart->products[] = $deliveryQuery->cart->createProduct($productId, 1);
+                    $deliveryQuery->cart->products[] = $deliveryQuery->cart->createProduct($product['id'], 1);
                     // регион
                     $deliveryQuery->regionId = $productQuery->regionId;
 
@@ -51,14 +51,16 @@ namespace EnterApplication\Action\ProductCard {
 
                 // методы оплаты
                 try {
+                    $cart = \App::user()->getCart(); // TODO: old usage
+
                     $paymentGroupQuery = new Query\PaymentGroup\GetByCart();
                     // корзина
-                    $paymentGroupQuery->cart->products[] = $paymentGroupQuery->cart->createProduct($productId, 1);
+                    $paymentGroupQuery->cart->products[] = $paymentGroupQuery->cart->createProduct($product['id'], 1);
                     // регион
                     $paymentGroupQuery->regionId = $productQuery->regionId;
                     // фильтер
                     $paymentGroupQuery->filter->isCorporative = false;
-                    $paymentGroupQuery->filter->isCredit = true;
+                    $paymentGroupQuery->filter->isCredit = (bool)(($product['price'] * (($cart->getQuantityByProduct($product['id']) > 0) ? $cart->getQuantityByProduct($product['id']) : 1)) >= \App::config()->product['minCreditPrice']);
 
                     $paymentGroupQuery->prepare($paymentGroupError);
                 } catch (\Exception $e) {
@@ -105,7 +107,7 @@ namespace EnterApplication\Action\ProductCard {
 
             // дерево категорий для меню
             //$categoryTreeQuery = (new Query\Product\Category\GetTree(null, 3, null, null, true))->prepare($categoryTreeError);
-            $categoryRootTreeQuery = (new Query\Product\Category\GetRootTree(3))->prepare($categoryRootTreeError);
+            $categoryRootTreeQuery = (new Query\Product\Category\GetRootTree($request->regionId, 3))->prepare($categoryRootTreeError);
 
             // главное меню
             $menuQuery = (new Query\MainMenu\GetByTagList(['site-web']))->prepare($menuError);
@@ -113,7 +115,8 @@ namespace EnterApplication\Action\ProductCard {
             // выполнение запросов
             $curl->execute();
 
-            die(microtime(true) - $startAt);
+            //die(microtime(true) - $startAt);
+            //die(var_dump($GLOBALS));
         }
 
         /**

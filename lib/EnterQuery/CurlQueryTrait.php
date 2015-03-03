@@ -5,6 +5,7 @@ namespace EnterQuery;
 trait CurlQueryTrait
 {
     use \EnterApplication\CurlTrait;
+    use QueryCacheTrait;
 
     /**
      * @param $url
@@ -28,10 +29,11 @@ trait CurlQueryTrait
         }
 
         $timeout = \App::config()->coreV2['timeout'] * 1000; // таймаут, мс
+        $timeout *= $timeoutMultiplier;
+        // ограничение таймаута
         if (!$timeout || $timeout > 90000) {
             $timeout = 5000;
         }
-        $timeout *= $timeoutMultiplier;
 
         $query = $this->getCurl()->createQuery();
 
@@ -67,7 +69,14 @@ trait CurlQueryTrait
                 CURLOPT_POSTFIELDS => json_encode($data),
             ];
         }
-        $query->resolveCallback = function() use (&$query, &$result, &$callback, &$decoder, &$error) {
+        $query->resolveCallback = function() use (
+            &$query,
+            &$result,
+            &$callback,
+            &$decoder,
+            &$error,
+            &$data
+        ) {
             if ($query->response->error) {
                 $error = $query->response->error;
 
@@ -78,6 +87,9 @@ trait CurlQueryTrait
             if (is_callable($decoder)) {
                 try {
                     $result = call_user_func($decoder, $query->response->body, $query->response->statusCode);
+
+                    $id = $this->getQueryCacheId($query->request->options[CURLOPT_URL], $data);
+                    $this->setQueryCache($id, $result);
                 } catch (\Exception $e) {
                     $error = $e;
                 }
