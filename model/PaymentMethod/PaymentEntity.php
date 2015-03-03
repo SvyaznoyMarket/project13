@@ -10,9 +10,9 @@ namespace Model\PaymentMethod {
     class PaymentEntity {
 
         /** @var PaymentGroupEntity[] */
-        public $groups;
+        public $groups = [];
         /** @var PaymentMethodEntity[] */
-        public $methods;
+        public $methods = [];
 
         public function __construct($arr) {
 
