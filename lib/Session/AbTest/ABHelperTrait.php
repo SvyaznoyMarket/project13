@@ -13,7 +13,9 @@ trait ABHelperTrait {
      * @return bool
      */
     public static function isNewMainPage() {
-        return \App::abTest()->getTest('main_page') && in_array(\App::abTest()->getTest('main_page')->getChosenCase()->getKey(), ['new', 'search_new_1', 'search_new_2']);
+        // TODO данный тест был отключен 03.03.2015. Через некоторое время следует удалить данный метод и его вызовы из кода
+        return true;
+//        return \App::abTest()->getTest('main_page') && in_array(\App::abTest()->getTest('main_page')->getChosenCase()->getKey(), ['new', 'search_new_1', 'search_new_2']);
     }
 
     /** Поиск с возможностью фильтрации по категориям?
