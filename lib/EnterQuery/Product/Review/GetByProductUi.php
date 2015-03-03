@@ -2,15 +2,15 @@
 
 namespace EnterQuery\Product\Review
 {
-    use EnterQuery\Product\Review\GetByProductToken\Response;
+    use EnterQuery\Product\Review\GetByProductUi\Response;
 
-    class GetByProductToken
+    class GetByProductUi
     {
         use \EnterQuery\CurlQueryTrait;
         use \EnterQuery\ScmsQueryTrait;
 
         /** @var string */
-        public $productToken;
+        public $productUi;
         /** @var int */
         public $pageNum;
         /** @var int */
@@ -18,11 +18,11 @@ namespace EnterQuery\Product\Review
         /** @var Response */
         public $response;
 
-        public function __construct($productToken = null, $pageNum = null, $pageSize = null)
+        public function __construct($productUi = null, $pageNum = null, $pageSize = null)
         {
             $this->response = new Response();
 
-            $this->productToken = $productToken;
+            $this->productUi = $productUi;
             $this->pageNum = $pageNum;
             $this->pageSize = $pageSize;
         }
@@ -38,9 +38,10 @@ namespace EnterQuery\Product\Review
                 $this->buildUrl(
                     'reviews/list',
                     [
-                        'product_slug' => $this->productToken,
+                        'product_ui'   => $this->productUi,
                         'current_page' => $this->pageNum,
                         'page_size'    => $this->pageSize,
+                        'type'         => 'user', // TODO: удалить
                     ]
                 ),
                 [], // data
@@ -62,7 +63,7 @@ namespace EnterQuery\Product\Review
     }
 }
 
-namespace EnterQuery\Product\Review\GetByProductToken
+namespace EnterQuery\Product\Review\GetByProductUi
 {
     class Response
     {

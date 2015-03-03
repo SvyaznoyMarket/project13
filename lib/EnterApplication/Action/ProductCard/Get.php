@@ -83,11 +83,18 @@ namespace EnterApplication\Action\ProductCard {
                     $ratingError = $e;
                 }
 
+                // отзывы товара
+                try {
+                    $reviewQuery = (new Query\Product\Review\GetByProductUi($product['ui'], 0, 7))->prepare($reviewError);
+                } catch (\Exception $e) {
+                    $reviewError = $e;
+                }
+
                 // категория товаров
                 try {
                     $categoryQuery = null;
                     if ($categoryUi = end($product['category'])['ui']) {
-                        $categoryQuery = (new Query\Product\Category\GetByUi($categoryUi, $productQuery->regionId))->prepare();
+                        $categoryQuery = (new Query\Product\Category\GetByUi($categoryUi, $productQuery->regionId))->prepare($categoryError);
                     }
                 } catch (\Exception $e) {
                     $categoryError = $e;
@@ -95,13 +102,15 @@ namespace EnterApplication\Action\ProductCard {
             });
 
             // отзывы о товаре
+            /*
             $reviewQuery = null;
             if ($request->productCriteria['token']) {
-                $reviewQuery = new Query\Product\Review\GetByProductToken($request->productCriteria['token'], 1, 7);
+                $reviewQuery = new Query\Product\Review\GetByProductToken($request->productCriteria['token'], 0, 7);
             }
             if ($reviewQuery) {
                 $reviewQuery->prepare($reviewError);
             }
+            */
 
             // редирект
             $redirectQuery = (new Query\Redirect\GetByUrl($request->urlPath))->prepare($redirectError); // TODO: throw Exception
