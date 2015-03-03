@@ -4,9 +4,7 @@ namespace Model\Product;
 
 class Entity extends BasicEntity {
 
-    /**
-     * Дефолтное отображение связанных товаров - аксессуары сверху, смежные товары в футере
-     */
+    /** Дефолтное отображение связанных товаров - аксессуары сверху, смежные товары в футере */
     const DEFAULT_CONNECTED_PRODUCTS_VIEW_MODE = 1;
 
     /** @var int */
@@ -907,4 +905,5 @@ class Entity extends BasicEntity {
     {
         return $this->isKitLocked;
     }
+
 }

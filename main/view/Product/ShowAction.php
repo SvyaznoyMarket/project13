@@ -105,6 +105,8 @@ class ShowAction {
             $productItem['cartButton'] = $cartButtonAction ? $cartButtonAction->execute($helper, $product, null, false, $cartButtonSender, false) : null;
         }
 
+        if ($product->isGifteryCertificate()) $productItem['price'] = 'от ' . \App::config()->partners['Giftery']['lowestPrice'];
+
         return $productItem;
     }
 

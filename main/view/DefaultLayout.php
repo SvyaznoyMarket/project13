@@ -878,4 +878,19 @@ class DefaultLayout extends Layout {
             ? '<input type="hidden" name="category" data-bind="value: currentCategory() == null ? 0 : currentCategory().id, disable: currentCategory() == null " />'
             : null;
     }
+
+    public function slotGifteryJS() {
+        if (!\App::config()->partners['Giftery']['enabled']) return '';
+        return <<<EOL
+        <!-- BEGIN GIFTERY CODE {literal} -->
+        <script type="text/javascript">
+        (function(){
+        var s = document.createElement('script');s.type = 'text/javascript';s.async = true;
+        s.src = '//widget.giftery.ru/js/114550/11456/';
+        var ss = document.getElementsByTagName('script')[0];ss.parentNode.insertBefore(s, ss);
+        })();
+        </script>
+        <!-- {/literal} END GIFTERY CODE -->
+EOL;
+    }
 }

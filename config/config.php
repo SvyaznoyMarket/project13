@@ -260,6 +260,9 @@ $c->partners['MnogoRu']['enabled'] = true;
 $c->partners['MnogoRu']['cookieName'] = 'enter_mnogo_ru';
 $c->partners['PandaPay']['cookieName'] = 'enter_panda_pay';
 
+$c->partners['Giftery']['enabled'] = true;
+$c->partners['Giftery']['lowestPrice'] = 500;
+
 $c->adFox['enabled'] = true;
 
 $c->partner['cookieName'] = 'last_partner';
