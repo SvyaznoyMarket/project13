@@ -2,7 +2,6 @@
 
 namespace EnterQuery\Product\Category
 {
-
     use EnterQuery\Product\Category\GetRootTree\Response;
 
     /**

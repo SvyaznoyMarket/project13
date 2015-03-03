@@ -2,7 +2,6 @@
 
 namespace EnterQuery\Product
 {
-
     use EnterQuery\Product\GetByToken\Response;
 
     class GetByToken

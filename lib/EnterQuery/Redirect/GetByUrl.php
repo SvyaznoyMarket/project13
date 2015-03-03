@@ -2,7 +2,6 @@
 
 namespace EnterQuery\Redirect
 {
-
     use EnterQuery\Redirect\GetByUrl\Response;
 
     class GetByUrl

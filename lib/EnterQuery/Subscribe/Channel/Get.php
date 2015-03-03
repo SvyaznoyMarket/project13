@@ -1,10 +1,10 @@
 <?php
 
-namespace EnterQuery\Region
+namespace EnterQuery\Subscribe\Channel
 {
-    use EnterQuery\Region\GetMain\Response;
+    use EnterQuery\Subscribe\Channel\Get\Response;
 
-    class GetMain
+    class Get
     {
         use \EnterQuery\CurlQueryTrait;
         use \EnterQuery\CoreQueryTrait;
@@ -26,7 +26,7 @@ namespace EnterQuery\Region
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
-                    'v2/geo/get-menu-cities',
+                    'v2/subscribe/get-channel',
                     []
                 ),
                 [], // data
@@ -36,7 +36,7 @@ namespace EnterQuery\Region
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
-                    $this->response->regions = isset($result[0]) ? $result : [];
+                    $this->response->channels = isset($result[0]) ? $result : [];
 
                     return $result; // for cache
                 }
@@ -47,11 +47,11 @@ namespace EnterQuery\Region
     }
 }
 
-namespace EnterQuery\Region\GetMain
+namespace EnterQuery\Subscribe\Channel\Get
 {
     class Response
     {
         /** @var array */
-        public $regions = [];
+        public $channels = [];
     }
 }

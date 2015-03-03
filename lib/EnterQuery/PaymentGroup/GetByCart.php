@@ -1,7 +1,7 @@
 <?php
 
-namespace EnterQuery\PaymentGroup {
-
+namespace EnterQuery\PaymentGroup
+{
     use EnterQuery\PaymentGroup\GetByCart\Response;
     use EnterQuery\PaymentGroup\GetByCart\Cart;
     use EnterQuery\PaymentGroup\GetByCart\Filter;

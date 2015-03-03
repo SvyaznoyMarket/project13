@@ -2,7 +2,6 @@
 
 namespace EnterQuery\MainMenu
 {
-
     use EnterQuery\MainMenu\GetByTagList\Response;
 
     class GetByTagList

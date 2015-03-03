@@ -2,7 +2,6 @@
 
 namespace EnterQuery\AbTest
 {
-
     use EnterQuery\AbTest\GetActive\Response;
 
     class GetActive

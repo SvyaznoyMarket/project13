@@ -2,7 +2,6 @@
 
 namespace EnterQuery\Product\Review
 {
-
     use EnterQuery\Product\Review\GetScoreByProductIdList\Response;
 
     class GetScoreByProductIdList

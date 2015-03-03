@@ -105,6 +105,9 @@ namespace EnterApplication\Action\ProductCard {
             // список регионов для выбора города
             $mainRegionQuery = (new Query\Region\GetMain())->prepare($mainRegionError);
 
+            // каналы подписок
+            $subscribeChannelQuery = (new Query\Subscribe\Channel\Get())->prepare($subscribeChannelError);
+
             // дерево категорий для меню
             //$categoryTreeQuery = (new Query\Product\Category\GetTree(null, 3, null, null, true))->prepare($categoryTreeError);
             $categoryRootTreeQuery = (new Query\Product\Category\GetRootTree($request->regionId, 3))->prepare($categoryRootTreeError);

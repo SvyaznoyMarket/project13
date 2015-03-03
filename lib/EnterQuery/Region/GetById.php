@@ -2,7 +2,6 @@
 
 namespace EnterQuery\Region
 {
-
     use EnterQuery\Region\GetById\Response;
 
     class GetById

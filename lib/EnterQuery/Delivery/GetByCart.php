@@ -1,7 +1,7 @@
 <?php
 
-namespace EnterQuery\Delivery {
-
+namespace EnterQuery\Delivery
+{
     use EnterQuery\Delivery\GetByCart\Response;
     use EnterQuery\Delivery\GetByCart\Cart;
 

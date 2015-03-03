@@ -2,7 +2,6 @@
 
 namespace EnterQuery\Product\Review
 {
-
     use EnterQuery\Product\Review\GetByProductToken\Response;
 
     class GetByProductToken
