@@ -2693,10 +2693,10 @@ img[height="0"] {
     height: 28px;
   }
   .i-discount {
-    background-image: url("/styles/footer/img/discounts/disc-sprite.png");
+    background-image: url("/styles/footer/img/discounts/disc-sprite.jpeg");
   }
   .i-discount-mnogoru {
-    background-position: -73px 0;
+    background-position: -74px 0;
     width: 73px;
     background-repeat: no-repeat;
     display: inline-block;
