@@ -176,8 +176,7 @@ class FormAction {
             if (401 == $e->getCode()) {
                 $form->setError('global', $e->getMessage());
                 $needAuth = true;
-
-            } elseif (600 == $e->getCode()) {
+            } else if (600 == $e->getCode()) {
                 $form->setError('global', $e->getMessage());
 
                 foreach ($detail as $fieldName => $errors) {
@@ -258,19 +257,31 @@ class FormAction {
                 // пользователь все подтвердил, пробуем создать купон
                 $link = \App::router()->generate('enterprize.create');
             } elseif (!$data['isEmailConfirmed']) {
-                $confirm = $client->query(
-                    'confirm/email',
-                    [
-                        'client_id' => \App::config()->coreV2['client_id'],
-                        'token'     =>  $userToken,
-                    ],
-                    [
-                        'email'    => $data['email'],
-                        'template' => 'enter_prize',
-                    ],
-                    \App::config()->coreV2['hugeTimeout']
-                );
-                \App::logger()->info(['core.response' => $confirm], ['coupon', 'confirm/email']);
+                try {
+                    $confirm = $client->query('confirm/email', [
+                            'client_id' => \App::config()->coreV2['client_id'],
+                            'token'     => $userToken,
+                        ], [
+                            'email'    => $data['email'],
+                            'template' => 'enter_prize',
+                        ], \App::config()->coreV2['hugeTimeout']
+                    );
+                    \App::logger()->info(['core.response' => $confirm], ['coupon', 'confirm/email']);
+                } catch (\Curl\Exception $e) {
+                    \App::exception()->remove($e);
+                    $form->setError('email', $e->getMessage());
+
+                    $formErrors = [];
+                    foreach ($form->getErrors() as $fieldName => $errorMessage) {
+                        $formErrors[] = ['code' => 0, 'message' => $errorMessage, 'field' => $fieldName];
+                    }
+
+                    return new \Http\JsonResponse([
+                        'error'    => ['code' => 0, 'message' => 'Не удалось сохранить форму'],
+                        'form'     => ['error' => $formErrors],
+                        'needAuth' => $needAuth && !\App::user()->getEntity() ? true : false,
+                    ]);
+                }
             } elseif ($data['isPhoneConfirmed']) {
                 // просим подтвердит email
                 $link = \App::router()->generate('enterprize.confirmEmail.show');
