@@ -14,7 +14,13 @@ class PreAction {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         // cache
-        (new \Controller\CacheAction())->execute($request);
+        try {
+            if (\App::config()->curlCache['enabled']) {
+                (new \Controller\CacheAction())->execute($request);
+            }
+        } catch (\Exception $e) {
+            \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['curl-cache', 'controller', 'critical']);
+        }
 
 
         $uri = $request->getPathInfo();
