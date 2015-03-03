@@ -57,7 +57,7 @@ namespace EnterQuery\Redirect\GetByUrl
 {
     class Response
     {
-        /** @var array|null */
+        /** @var string|null */
         public $toUrl;
         /** @var string */
         //public $reason;

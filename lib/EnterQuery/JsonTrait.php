@@ -44,7 +44,7 @@ trait JsonTrait {
      * @return \StdClass
      * @throws \Exception
      */
-    public static function toObject($value) {
+    public static function jsonToObject($value) {
         $data = json_decode($value, false);
 
         if ($code = json_last_error()) {

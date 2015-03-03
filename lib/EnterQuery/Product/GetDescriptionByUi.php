@@ -9,8 +9,8 @@ namespace EnterQuery\Product
         use \EnterQuery\CurlQueryTrait;
         use \EnterQuery\ScmsQueryTrait;
 
-        /** @var string */
-        public $uis;
+        /** @var string[] */
+        public $uis = [];
         /** @var Response */
         public $response;
 

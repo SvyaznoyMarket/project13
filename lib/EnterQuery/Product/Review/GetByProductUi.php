@@ -67,8 +67,8 @@ namespace EnterQuery\Product\Review\GetByProductUi
 {
     class Response
     {
-        /** @var array|null */
-        public $reviews;
+        /** @var array */
+        public $reviews = [];
         /** @var int */
         public $reviewCount;
     }
