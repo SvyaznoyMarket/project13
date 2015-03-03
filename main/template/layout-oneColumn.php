@@ -84,6 +84,7 @@
         <?= $page->slotKissMetrics() ?>
         <?= $page->slotFlocktoryEnterprizeJs() ?>
         <?= $page->slotEnterprizeRegJS() ?>
+        <?= $page->slotGifteryJS() ?>
     </div>
 </body>
 </html>

@@ -96,6 +96,27 @@ return function(
                             </div>
                         </div>
 
+                        <? else : ?>
+
+                            <div class="orderPayment_msg orderPayment_noOnline_msg">
+                                <div class="orderPayment_msg_head">
+                                    Время и место
+                                </div>
+                                <span class="markerList_col">
+                                    Адрес и дату доставки вашего заказа уточнит по&nbsp;телефону наш менеджер.
+                                </span>
+                                    <? if ($order->comment) : ?>
+                                        <div class="orderPayment_msg_adding">Дополнительные пожелания:<br/> «<?= $order->comment ?>»</div>
+                                    <? endif ?>
+                                <div class="orderPayment_msg_info">
+                                    <? if ($order->isPaid()) : ?>
+                                        Заказ оплачен
+                                    <? else : ?>
+                                        Вы сможете оплатить заказ при получении.
+                                    <? endif ?>
+                                </div>
+                            </div>
+
                         <? endif ?>
 
                     </div>
@@ -114,15 +135,19 @@ return function(
 
                             <div class="orderPayment_msg orderPayment_noOnline_msg">
                                 <div class="orderPayment_msg_head">
-                                    Доставка назначена на <?= $order->getDeliveredAt()->format('d.m.Y') ?>
+                                    <? if ($order->getAddress()) : ?>
+                                        Доставка назначена на <?= $order->getDeliveredAt()->format('d.m.Y') ?>
+                                    <? else : ?>
+                                        Время и место
+                                    <? endif ?>
                                 </div>
                                 <div class="orderPayment_msg_shop markerLst_row">
-                            <!--<span class="markerList_col markerList_col-mark">
-                                <i class="markColor" style="background-color: #B61D8E"></i>
-                            </span>-->
                             <span class="markerList_col">
-                                <!--<span class="orderPayment_msg_shop_metro">м. Пролетарская</span>-->
+                                <? if ($order->getAddress()) : ?>
                                 <span class="orderPayment_msg_shop_addr"><?= $order->getAddress() ?></span>
+                                <? else : ?>
+                                    Адрес и дату доставки вашего заказа уточнит по&nbsp;телефону наш менеджер.
+                                <? endif ?>
                                 <? if ($order->comment) : ?>
                                 <div class="orderPayment_msg_adding">Дополнительные пожелания:<br/> «<?= $order->comment ?>»</div>
                                 <? endif ?>
@@ -136,7 +161,7 @@ return function(
                                     <? elseif ($order->getPaymentId() == PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY) : ?>
                                     Оплата заказа банковской картой при получении.
                                     <? else : ?>
-                                    Вы сможете оплатить заказ наличными при получении.
+                                    Вы можете оплатить заказ при получении.
                                     <? endif ?>
                                 </div>
                             </div>
