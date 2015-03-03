@@ -558,7 +558,7 @@ class Entity {
         $this->number = (string)$number;
     }
 
-    /**
+    /** Возвращает номер вида XF719570
      * @return string
      */
     public function getNumber() {
@@ -572,7 +572,7 @@ class Entity {
         $this->numberErp = (string)$numberErp;
     }
 
-    /**
+    /** Возвращает номер вида COXF-719233
      * @return string
      */
     public function getNumberErp() {
