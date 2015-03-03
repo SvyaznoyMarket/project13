@@ -19,7 +19,14 @@ trait QueryCacheTrait
         //ksort($data);
         $data = array_keys(ksort($data));
 
-        $id = $urlParts['scheme'] . '://' . $urlParts['host'] . $urlParts['path'] . '?' . http_build_query($urlQuery) . '&' . json_encode($data);
+        $id =
+            $urlParts['scheme']
+            . '://'
+            . $urlParts['host']
+            . $urlParts['path']
+            . '?' . http_build_query($urlQuery)
+            . ($data ? ('&' . json_encode($data)) : null)
+        ;
 
         return $id;
     }

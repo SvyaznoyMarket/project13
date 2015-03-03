@@ -149,7 +149,7 @@ class Client {
 
             return true;
         } else {
-            //var_dump('warn: ' . $url);
+            var_dump('warn: ' . $url);
         }
 
         $timeout = $timeout ? $timeout : $this->getDefaultTimeout();

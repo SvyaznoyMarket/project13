@@ -25,11 +25,11 @@ namespace EnterApplication\Action\ProductCard {
 
             // доставка и способы оплаты
             $productQuery->prepare($productError, function() use ( // TODO: сделать массив функций
-                &$productQuery,
-                &$deliveryError,
-                &$paymentGroupError,
-                &$ratingError
-                //&$deliveryQuery,
+                &$productQuery //,
+                //&$deliveryError,
+                //&$paymentGroupError,
+                //&$ratingError
+                //&$categoryError
             ) {
                 $product = $productQuery->response->product;
                 if (!$product['id']) {
@@ -81,6 +81,16 @@ namespace EnterApplication\Action\ProductCard {
                     }
                 } catch (\Exception $e) {
                     $ratingError = $e;
+                }
+
+                // категория товаров
+                try {
+                    $categoryQuery = null;
+                    if ($categoryUi = end($product['category'])['ui']) {
+                        $categoryQuery = (new Query\Product\Category\GetByUi($categoryUi, $productQuery->regionId))->prepare();
+                    }
+                } catch (\Exception $e) {
+                    $categoryError = $e;
                 }
             });
 
