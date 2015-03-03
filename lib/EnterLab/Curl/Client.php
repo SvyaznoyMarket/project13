@@ -170,7 +170,7 @@ class Client
             $response->info = curl_getinfo($done['handle']);
             $response->statusCode = $query->response->info['http_code'];
             $response->body = curl_multi_getcontent($done['handle']);
-            //var_dump($query->request . ' ' . $response->info['total_time'] * 1000);
+            var_dump($query->request . ' ' . $response->info['total_time'] * 1000);
 
             $callback = is_callable($query->resolveCallback) ? $query->resolveCallback : null;
 
