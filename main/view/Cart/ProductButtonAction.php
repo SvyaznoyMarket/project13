@@ -5,7 +5,7 @@ namespace View\Cart;
 class ProductButtonAction {
     /**
      * @param \Helper\TemplateHelper $helper
-     * @param \Model\Product\Entity $product
+     * @param \Model\Product\BasicEntity $product
      * @param null $onClick
      * @param bool $isRetailRocket
      * @param array $sender Данные поставщика, например: {name: retailrocket, position: ProductSimilar, action: Переход в карточку товара}
@@ -16,7 +16,7 @@ class ProductButtonAction {
      */
     public function execute(
         \Helper\TemplateHelper $helper,
-        \Model\Product\Entity $product,
+        \Model\Product\BasicEntity $product,
         $onClick = null,
         $isRetailRocket = false,
         array $sender = [],
