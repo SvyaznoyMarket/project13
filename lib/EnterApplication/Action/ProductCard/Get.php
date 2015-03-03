@@ -99,6 +99,13 @@ namespace EnterApplication\Action\ProductCard {
                 } catch (\Exception $e) {
                     $categoryError = $e;
                 }
+
+                // описание товара из cms
+                try {
+                    $productDescriptionQuery = (new Query\Product\GetDescriptionByUi([$product['ui']]))->prepare($productDescriptionError);
+                } catch (\Exception $e) {
+                    $productDescriptionError = $e;
+                }
             });
 
             // отзывы о товаре
