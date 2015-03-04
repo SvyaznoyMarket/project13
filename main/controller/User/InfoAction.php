@@ -65,7 +65,7 @@ class InfoAction {
                 $responseData['user']['name'] = $userEntity->getName();
                 $responseData['user']['firstName'] = $userEntity->getFirstName();
                 $responseData['user']['lastName'] = $userEntity->getLastName();
-                $responseData['user']['link'] = \App::router()->generate('user.orders');
+                $responseData['user']['link'] = \App::router()->generate(\App::config()->user['defaultRoute'] ?: 'user.orders');
                 $responseData['user']['isEnterprizeMember'] = $user->getEntity()->isEnterprizeMember();
                 $responseData['user']['isSubscribed'] = $user->getEntity()->getIsSubscribed();
                 $responseData['user']['id'] = $userEntity->getId();
