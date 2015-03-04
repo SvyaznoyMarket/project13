@@ -128,8 +128,9 @@ class Client {
      */
     public function addQuery($url, array $data = [], $successCallback = null, $failCallback = null, $timeout = null) {
         // cache
-        $id = $this->getQueryCacheId($url, $data);
         if (\App::config()->curlCache['enabled']) {
+            $id = $this->getQueryCacheId($url, $data);
+
             $result = $this->getQueryCache($id);
             if ($result && is_callable($successCallback)) {
                 call_user_func($successCallback, $result);
