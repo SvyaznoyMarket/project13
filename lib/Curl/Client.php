@@ -150,7 +150,7 @@ class Client {
 
                 return true;
             } else {
-                var_dump('warn: ' . $url);
+                \App::logger()->error(['error' => sprintf('Запрос %s не попал в кеш', $url), 'sender' => __FILE__ . ' ' .  __LINE__], ['critical', 'curl-cache']);
             }
         }
 

@@ -39,6 +39,8 @@ class CacheAction {
 
         if ($route && isset($actionByRoute[$route])) {
             call_user_func($actionByRoute[$route], $request);
+        } else {
+            \App::config()->curlCache['enabled'] = false; // FIXME: динамическое переопределение конфига запрещено!
         }
     }
 }
