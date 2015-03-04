@@ -92,17 +92,7 @@ class DefaultLayout extends Layout {
     }
 
     public function slotHeader() {
-        $subscribeForm = [];
-
-        \App::dataStoreClient()->addQuery(
-            'subscribe-form.json', [],
-            function($data) use (&$subscribeForm) {
-                if ($data) $subscribeForm = (array) $data;
-            },
-            function(\Exception $e) {
-                \App::exception()->remove($e);
-            }
-        );
+        $subscribeForm = (array)\App::dataStoreClient()->query('/subscribe-form.json');
 
         \App::dataStoreClient()->execute();
 
