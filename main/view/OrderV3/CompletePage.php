@@ -87,8 +87,7 @@ class CompletePage extends Layout {
             $order = reset($orders);
             /* Если выбран самовывоз из определенной точки или выбрана доставка с адресом */
             /* Пикпоинт (6) пока исключим, т.к. для него не отдаётся адрес: CORE-2558 */
-            if ((in_array($order->getDeliveryTypeId(), [3,4]) && $order->getShopId())
-                || ($order->getDeliveryTypeId() == 1 && $order->getAddress())) $template = 'page-complete_online-motivation';
+            if (in_array($order->getDeliveryTypeId(), [3,4]) || $order->getDeliveryTypeId() == 1 ) $template = 'page-complete_online-motivation';
         }
         return \App::closureTemplating()->render('order-v3-new/' . $template, $this->params);
     }

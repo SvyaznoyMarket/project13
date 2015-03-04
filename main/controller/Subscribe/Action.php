@@ -31,11 +31,10 @@ class Action {
                 'email'      => $email,
                 'channel_id' => $channelId,
             ];
-            /* SITE-1374
+
             if ($userEntity = \App::user()->getEntity()) {
                 $params['token'] = $userEntity->getToken();
             }
-            */
 
             $result = $client->query('subscribe/create', $params, []);
 

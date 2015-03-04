@@ -129,8 +129,9 @@ class Client {
     public function addQuery($url, array $data = [], $successCallback = null, $failCallback = null, $timeout = null) {
         // cache
         $id = $this->getQueryCacheId($url, $data);
-        if ($result = $this->getQueryCache($id)) {
-            if (is_callable($successCallback)) {
+        if (\App::config()->curlCache['enabled']) {
+            $result = $this->getQueryCache($id);
+            if ($result && is_callable($successCallback)) {
                 call_user_func($successCallback, $result);
 
                 $this->logger->info([
@@ -145,11 +146,11 @@ class Client {
                     'endAt'   => 0,
                     'spend'   => 0,
                 ], ['curl']);
-            }
 
-            return true;
-        } else {
-            var_dump('warn: ' . $url);
+                return true;
+            } else {
+                var_dump('warn: ' . $url);
+            }
         }
 
         $timeout = $timeout ? $timeout : $this->getDefaultTimeout();

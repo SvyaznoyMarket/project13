@@ -36,7 +36,7 @@ namespace EnterQuery\Redirect
                     ]
                 ),
                 [], // data
-                1, // timeout multiplier
+                0.5, // timeout multiplier
                 $callback,
                 $error,
                 function($response, $statusCode) {
@@ -57,7 +57,7 @@ namespace EnterQuery\Redirect\GetByUrl
 {
     class Response
     {
-        /** @var array|null */
+        /** @var string|null */
         public $toUrl;
         /** @var string */
         //public $reason;

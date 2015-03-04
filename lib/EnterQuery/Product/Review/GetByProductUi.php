@@ -45,7 +45,7 @@ namespace EnterQuery\Product\Review
                     ]
                 ),
                 [], // data
-                1, // timeout multiplier
+                0.5, // timeout multiplier
                 $callback,
                 $error,
                 function($response, $statusCode) {
@@ -67,8 +67,8 @@ namespace EnterQuery\Product\Review\GetByProductUi
 {
     class Response
     {
-        /** @var array|null */
-        public $reviews;
+        /** @var array */
+        public $reviews = [];
         /** @var int */
         public $reviewCount;
     }

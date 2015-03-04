@@ -176,6 +176,7 @@ class TemplateHelper {
         $price = preg_replace('/\s/', '', $price);
         $price = explode('.', $price);
 
+        /* Маленькие пробелы между разрядами целой части цены */
         if (strlen($price[0]) >= 5) {
             $price[0] = preg_replace('/(\d)(?=(\d\d\d)+([^\d]|$))/', '$1&thinsp;', $price[0]);
         }

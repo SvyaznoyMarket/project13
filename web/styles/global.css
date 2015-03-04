@@ -1546,7 +1546,7 @@ img[height="0"] {
   }
   .header_c-v2 .hdsearch_itb {
     border: none;
-    width: 463px;
+    width: 479px;
     background: transparent;
     margin: 0;
   }
@@ -1572,26 +1572,6 @@ img[height="0"] {
   }
   .header_c-v2 .hdlogo {
     margin: 0 30px 0 10px;
-  }
-  .header_c-v2 .hdgift {
-    background: url("/styles/mainpage/img/enter_presents_v3.png") no-repeat 0 0;
-    border-right: medium none;
-    float: left;
-    height: 39px;
-    margin: 6px 0 0 30px;
-    overflow: hidden;
-    padding: 0 0 0;
-    text-align: center;
-    width: 133px;
-  }
-  .header_c-v2 .hdgift_tx,
-  .header_c-v2 .hdgift_img {
-    display: none;
-  }
-  .header_c-v2 .hdgift_lk {
-    display: block;
-    width: 100%;
-    height: 100%;
   }
   .header_c-v2 .hdep {
     float: right;
@@ -1775,6 +1755,59 @@ img[height="0"] {
     width: 55px;
     line-height: 1.1;
     margin: 2px 0 0 3px;
+  }
+  .hdgift--new {
+    border-right: medium none;
+    float: left;
+    margin: 18px 0 0 30px;
+    overflow: hidden;
+    padding: 0;
+    text-align: center;
+    width: 133px;
+    color: #fff;
+    background: #ef404a;
+    -webkit-box-shadow: 0 2px 0 #a91507;
+    -moz-box-shadow: 0 2px 0 #a91507;
+    box-shadow: 0 2px 0 #a91507;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    height: 25px;
+    width: 130px;
+  }
+  .hdgift--new_tx,
+  .hdgift--new_img {
+    display: none;
+  }
+  .hdgift--new_lk {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .hdgift--new .hdgift_tx {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    font-family: "Enter type";
+    color: #fff;
+    font-size: 16px;
+    width: auto;
+    line-height: 25px;
+    margin: 0px;
+  }
+  .hdgift--new .hdgift_img {
+    display: none;
+  }
+  .hdgift--new-cursive .hdgift_tx {
+    font-family: "Enter";
+    text-transform: uppercase;
+    font-size: 15px;
+  }
+  .hdgift--old {
+    border-right: medium none;
+    padding: 1px 29px 2px 0;
   }
   .i-header {
     background-image: url('/styles/mainpage/img/i-header.png');
@@ -2693,10 +2726,10 @@ img[height="0"] {
     height: 28px;
   }
   .i-discount {
-    background-image: url("/styles/footer/img/discounts/disc-sprite.png");
+    background-image: url("/styles/footer/img/discounts/disc-sprite.jpeg");
   }
   .i-discount-mnogoru {
-    background-position: -73px 0;
+    background-position: -74px 0;
     width: 73px;
     background-repeat: no-repeat;
     display: inline-block;
@@ -8521,7 +8554,7 @@ img[height="0"] {
   .orderPayment_block--border .orderPayment_msg_head {
     color: #ffa901;
   }
-  .orderPayment_block--border .orderPayment_msg_head + .orderPayment_msg_head-row {
+  .orderPayment_block--border .orderPayment_msg_head-row:first-child {
     margin-top: 10px;
   }
   .orderPayment_block--border .orderSum-lbl {

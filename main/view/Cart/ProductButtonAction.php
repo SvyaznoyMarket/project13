@@ -98,6 +98,11 @@ class ProductButtonAction {
             $data['productPrice'] = $product->getPrice();
             $data['partnerName'] = $slotPartnerOffer['name'];
             $data['partnerOfferUrl'] = $slotPartnerOffer['offer'];
+        } else if ($product->isGifteryCertificate()) {
+            $data['isSlot'] = true;
+            $data['url'] = '#';
+            $data['class'] .= ' btn btn--slot giftery-show-widget ' . ('product-card' !== $location ? 'btn--short' : 'btn--big');
+            $data['value'] = 'Купить';
         } else if ($product->isInShopStockOnly() && $forceDefaultBuy) {
             if ($reserveAsBuy) {
                 $data['id'] = 'quickBuyButton-' . $product->getId();

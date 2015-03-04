@@ -10,7 +10,7 @@ namespace EnterQuery\Product\Review
         use \EnterQuery\ScmsQueryTrait;
 
         /** @var string[] */
-        public $productIds;
+        public $productIds = [];
         /** @var Response */
         public $response;
 
@@ -36,7 +36,7 @@ namespace EnterQuery\Product\Review
                     ]
                 ),
                 [], // data
-                1, // timeout multiplier
+                0.5, // timeout multiplier
                 $callback,
                 $error,
                 function($response, $statusCode) {
@@ -57,7 +57,7 @@ namespace EnterQuery\Product\Review\GetScoreByProductIdList
 {
     class Response
     {
-        /** @var array|null */
-        public $reviews;
+        /** @var array */
+        public $reviews = [];
     }
 }
