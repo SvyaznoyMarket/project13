@@ -119,15 +119,16 @@
     </div>
     {{/isUserOwner}}
 
+    
     <div class="ep-hint__row ep-hint__row--cut">
         <div class="ta-r mb10">
             {{#user.isMember}}
-            <a target="_blank" href="{{link.url}}" class="undrl" title="">Посмотреть все товары с фишкой</a>
+            <a target="_blank" href="{{link.url}}" class="undrl" title="">Посмотреть товары с фишкой</a>
             {{/user.isMember}}
         </div>
         {{^isUserOwner}}
         <div class="m ta-c mb10">
-            <strong>Фишка действует на все товары из раздела
+            <strong class="js-ep-slides" style="display: none;">Фишка действует на товары из раздела
                 {{^user.isMember}}{{link.name}},{{/user.isMember}}
                 {{#user.isMember}}<a href="{{link.url}}" class="undrl" target="_blank">{{link.name}}</a>,{{/user.isMember}}
                 например:
@@ -136,5 +137,8 @@
         {{/isUserOwner}}
 
         <div class="mLoader js-enterprize-slider-container"></div>
+
+        {{#dataSlider}}{{&count}}{{/dataSlider}}
     </div>
+    
 </div>
