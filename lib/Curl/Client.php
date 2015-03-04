@@ -3,6 +3,8 @@
 namespace Curl;
 
 class Client {
+    use \EnterQuery\QueryCacheTrait;
+
     /** @var \Logger\LoggerInterface */
     private $logger;
     /** @var resource|null */
@@ -125,6 +127,33 @@ class Client {
      * @return bool
      */
     public function addQuery($url, array $data = [], $successCallback = null, $failCallback = null, $timeout = null) {
+        // cache
+        if (\App::config()->curlCache['enabled']) {
+            $id = $this->getQueryCacheId($url, $data);
+
+            $result = $this->getQueryCache($id);
+            if ($result && is_callable($successCallback)) {
+                call_user_func($successCallback, $result);
+
+                $this->logger->info([
+                    'message' => 'Create curl',
+                    'cache'   => true,
+                    'url'     => $url,
+                    'data'    => $data,
+                    'info'    => null,
+                    'header'  => null,
+                    'timeout' => $timeout,
+                    'startAt' => 0,
+                    'endAt'   => 0,
+                    'spend'   => 0,
+                ], ['curl']);
+
+                return true;
+            } else {
+                \App::logger()->error(['error' => sprintf('Запрос %s не попал в кеш', $url), 'sender' => __FILE__ . ' ' .  __LINE__], ['critical', 'curl-cache']);
+            }
+        }
+
         $timeout = $timeout ? $timeout : $this->getDefaultTimeout();
 
         if (!$this->multiHandler) {

@@ -49,7 +49,7 @@
                     <tbody>
                         {{#value}}
                             <tr>
-                                <td class="query-cell">{{info.total_time}}</td>
+                                <td class="query-cell">{{#cache}}<span style="color: #ffff00">*</span>{{/cache}} {{info.total_time}}</td>
                                 <td class="query-cell">{{retryCount}}</td>
                                 <td class="query-cell">{{header.X-Server-Name}} {{header.X-API-Mode}}</td>
                                 <td class="query-cell">
@@ -61,9 +61,7 @@
                                                 query-ok
                                             {{/url}}"
                                         href="/debug/query?data={{data}}&url={{url}}" target="_blank">{{&escapedUrl}}</a>
-                                    {{#data}}
-                                    {{data}}
-                                    {{/data}}
+                                    {{#data}}{{data}}{{/data}}
                                 </td>
                             </tr>
                         {{/value}}

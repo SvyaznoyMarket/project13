@@ -88,6 +88,10 @@ class AppConfig {
         'enabled' => null,
     ];
 
+    public $curlCache = [
+        'enabled' => null,
+    ];
+
     /**
      * @var array
      */
