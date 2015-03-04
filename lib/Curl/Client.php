@@ -135,19 +135,6 @@ class Client {
             if ($result && is_callable($successCallback)) {
                 call_user_func($successCallback, $result);
 
-                $this->logger->info([
-                    'message' => 'Create curl',
-                    'cache'   => true,
-                    'url'     => $url,
-                    'data'    => $data,
-                    'info'    => null,
-                    'header'  => null,
-                    'timeout' => $timeout,
-                    'startAt' => 0,
-                    'endAt'   => 0,
-                    'spend'   => 0,
-                ], ['curl']);
-
                 return true;
             } else {
                 \App::logger()->error(['error' => sprintf('Запрос %s не попал в кеш', $url), 'sender' => __FILE__ . ' ' .  __LINE__], ['critical', 'curl-cache']);

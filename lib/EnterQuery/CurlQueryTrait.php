@@ -35,12 +35,24 @@ trait CurlQueryTrait
             $timeout = 5000;
         }
 
+        // TODO: удалить; сейчас нужно для старого журнала
+        $startedAt = microtime(true);
+        \App::logger()->info([
+            'message' => 'Create curl',
+            'cache'   => true, // важно
+            'url'     => $url,
+            'data'    => $data,
+            'timeout' => $timeout,
+            'startAt' => $startedAt,
+        ], ['curl']);
+        // end
+
         $query = $this->getCurl()->createQuery();
 
         $startingResponse = false;
         $query->request->options = [
-            CURLOPT_HEADER         => false,
-            CURLOPT_HEADERFUNCTION => function ($ch, $h) use (&$query, &$startingResponse) {
+            CURLOPT_HEADER            => false,
+            CURLOPT_HEADERFUNCTION    => function ($ch, $h) use (&$query, &$startingResponse) {
                 $value = trim($h);
                 if ($value === '') {
                     $startingResponse = true;
@@ -53,14 +65,15 @@ trait CurlQueryTrait
 
                 return strlen($h);
             },
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_NOSIGNAL       => true,
-            CURLOPT_IPRESOLVE      => CURL_IPRESOLVE_V4,
-            CURLOPT_ENCODING       => 'gzip,deflate',
+            CURLOPT_RETURNTRANSFER    => true,
+            CURLOPT_NOSIGNAL          => true,
+            CURLOPT_IPRESOLVE         => CURL_IPRESOLVE_V4,
+            CURLOPT_ENCODING          => 'gzip,deflate',
 
-            CURLOPT_URL            => $url,
-            CURLOPT_TIMEOUT_MS     => $timeout,
-            CURLOPT_HTTPHEADER     => ['X-Request-Id: ' . \App::$id, 'Expect:'], // TODO: customize
+            CURLOPT_URL               => $url,
+            CURLOPT_TIMEOUT_MS        => $timeout,
+            CURLOPT_CONNECTTIMEOUT_MS => $timeout,
+            CURLOPT_HTTPHEADER        => ['X-Request-Id: ' . \App::$id, 'Expect:'], // TODO: customize
         ];
         if ($data) {
             $query->request->options[CURLOPT_HTTPHEADER][] = 'Content-Type: application/json'; // TODO: customize
@@ -75,7 +88,8 @@ trait CurlQueryTrait
             &$callback,
             &$decoder,
             &$error,
-            &$data
+            &$data,
+            &$startedAt
         ) {
             if ($query->response->error) {
                 $error = $query->response->error;
@@ -90,6 +104,32 @@ trait CurlQueryTrait
 
                     $id = $this->getQueryCacheId($query->request->options[CURLOPT_URL], $data);
                     $this->setQueryCache($id, $result);
+
+                    // TODO: удалить; сейчас нужно для старого журнала
+                    $endAt = microtime(true);
+                    $headers = [];
+                    foreach ($query->response->headers as $header) {
+                        if ($pos = strpos($header, ':')) {
+                            $key = substr($header, 0, $pos);
+                            $value = trim(substr($header, $pos + 1));
+                            $headers[$key] = $value;
+                        } else {
+                            $headers[] = $header;
+                        }
+                    }
+                    \App::logger()->info([
+                        'message' => 'End curl',
+                        'cache'   => true, // важно
+                        'url'     => $query->request->options[CURLOPT_URL],
+                        'data'    => $data,
+                        'info'    => $query->response->info,
+                        'header'  => $headers,
+                        'timeout' => $query->request->options[CURLOPT_TIMEOUT_MS],
+                        'startAt' => $startedAt,
+                        'endAt'   => $endAt,
+                        'spend'   => $endAt - $startedAt,
+                    ], ['curl']);
+                    // end
                 } catch (\Exception $e) {
                     $error = $e;
                 }
