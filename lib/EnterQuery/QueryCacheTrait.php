@@ -13,11 +13,12 @@ trait QueryCacheTrait
      */
     public function getQueryCacheId($url, $data = [])
     {
-        $urlParts = parse_url($url);
+        $urlParts = parse_url($url) + ['scheme' => null, 'host' => null, 'path' => null, 'query' => null];
         parse_str($urlParts['query'], $urlQuery);
         ksort($urlQuery);
         //ksort($data);
-        $data = array_keys(ksort($data));
+        ksort($data);
+        $data = array_keys($data);
 
         $id =
             $urlParts['scheme']

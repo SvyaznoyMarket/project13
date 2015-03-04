@@ -44,11 +44,14 @@ namespace EnterApplication\Action\ProductCard {
                     // регион
                     $deliveryQuery->regionId = $productQuery->regionId;
 
+                    $deliveryQuery->prepare($deliveryError);
+                    /*
                     $deliveryQuery->prepare($deliveryError, function() use (&$deliveryQuery, &$deliveryError) {
                         if ($deliveryError || !$deliveryQuery->response->shops) return;
 
                         $shopQuery = (new Query\Shop\GetById(array_keys($deliveryQuery->response->shops)))->prepare($shopError);
                     });
+                    */
                 } catch (\Exception $e) {
                     $deliveryError = $e;
                 }

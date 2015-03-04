@@ -46,7 +46,7 @@ namespace EnterQuery\Product\Category
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode);
 
-                    $this->response->category = $result[0];
+                    $this->response->category = isset($result['id']) ? $result : null;
 
                     return $result; // for cache
                 }
