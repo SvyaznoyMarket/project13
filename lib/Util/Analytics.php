@@ -49,11 +49,11 @@ class Analytics {
                 ],
                 'deliveredAt'  => $order->getDeliveredAt() instanceof \DateTime ? $order->getDeliveredAt()->format('Y-m-d') : null,
                 'createdAt'    => $order->getCreatedAt() instanceof \DateTime ? $order->getCreatedAt()->format('Y-m-d') : null,
-                'delivery'     => array_map(function(\Model\Order\Delivery\Entity $delivery) { return [
-                    'id'     => $delivery->getId(),
-                    'typeId' => $delivery->getTypeId(),
-                    'price'  => $delivery->getPrice(),
-                ];  }, $order->getDelivery()),
+                'delivery'     => [
+                    'id'     => $order->getDelivery()->getId(),
+                    'typeId' => $order->getDelivery()->getTypeId(),
+                    'price'  => $order->getDelivery()->getPrice(),
+                ],
                 //'firstName'    => $order->getFirstName(),
                 //'lastName'     => $order->getLastName(),
                 'interval'     => $order->getInterval() ? [

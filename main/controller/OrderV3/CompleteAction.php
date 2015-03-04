@@ -148,7 +148,7 @@ class CompleteAction extends OrderV3 {
                 $data['order-product-category'] = array_map(function(\Model\Product\Entity $product) { $category = $product->getMainCategory(); return $category ? $category->getName() : null; }, $productsForOrder);
                 $data['order-product-price'] = array_map(function(\Model\Product\Entity $product) { return $product->getPrice(); }, $productsForOrder);
                 $data['order-sum'] = $order->getSum();
-                $data['order-delivery-price'] = isset($order->getDelivery()[0]) ? $order->getDelivery()[0]->getPrice() : '';
+                $data['order-delivery-price'] = $order->getDelivery() ? $order->getDelivery()->getPrice() : '';
                 $data['user-phone'] = $order->getMobilePhone();
                 $this->logger($data);
             }
@@ -351,8 +351,7 @@ class CompleteAction extends OrderV3 {
 
         // если резерв сегодня, то не мотивируем
         foreach ($orders as $iOrder) {
-            /** @var \Model\Order\Delivery\Entity|null $delivery */
-            $delivery = reset($iOrder->delivery);
+            $delivery = $iOrder->getDelivery();
             if (!$delivery || !$delivery->getDeliveredAt() || $delivery->isShipping) continue;
 
             if ((new \DateTime())->format('d.m.Y') === $delivery->getDeliveredAt()->format('d.m.Y')) { // сегодня

@@ -56,9 +56,7 @@
                 /** @var $shop  \Model\Shop\Entity */
                 /** @var $page  \View\DefaultLayout */
                 $shop = $order->getShopId() && isset($shopsById[$order->getShopId()]) ? $shopsById[$order->getShopId()] : null;
-                $deliveries = $order->getDelivery();
-                /** @var $delivery \Model\Order\Delivery\Entity */
-                $delivery = reset($deliveries);
+//                $delivery = $order->getDelivery();
                 ?>
 
                 _gaq.push(['_addTrans',

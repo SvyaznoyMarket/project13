@@ -212,7 +212,6 @@ class Entity {
             }
         }
         if (array_key_exists('delivery', $data)) {
-            $this->delivery = [];
             foreach ((array)$data['delivery'] as $deliveryData) {
                 $this->addDelivery(new Delivery\Entity($deliveryData));
             }
@@ -347,16 +346,6 @@ class Entity {
     }
 
     /**
-     * @param \Model\Order\Delivery\Entity[] $deliveries
-     */
-    public function setDelivery(array $deliveries = []) {
-        $this->delivery = [];
-        foreach ($deliveries as $delivery) {
-            $this->addDelivery($delivery);
-        }
-    }
-
-    /**
      * @param Delivery\Entity $delivery
      */
     public function addDelivery(\Model\Order\Delivery\Entity $delivery) {
@@ -364,10 +353,10 @@ class Entity {
     }
 
     /**
-     * @return \Model\Order\Delivery\Entity[]
+     * @return \Model\Order\Delivery\Entity
      */
     public function getDelivery() {
-        return $this->delivery;
+        return reset($this->delivery);
     }
 
     /**
