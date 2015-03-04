@@ -4482,7 +4482,7 @@ $(document).ready(function() {
 				sender2: $button.data('sender2') || '',
 				userPhone: ENTER.utils.Base64.decode(ENTER.config.userInfo.user.mobile || ''),
 				userEmail: ENTER.config.userInfo.user.email || '',
-				userName: ENTER.config.userInfo.user.name || ''
+				userName: ENTER.config.userInfo.user.firstName || ''
 			})),
 			$form = $('form', $popup),
 			$errors = $('.js-slotButton-popup-errors', $form),
