@@ -44,15 +44,28 @@ namespace EnterApplication\Action\ProductCard {
                     // регион
                     $deliveryQuery->regionId = $productQuery->regionId;
 
-                    $deliveryQuery->prepare($deliveryError, function() use (&$deliveryQuery, $deliveryError) {
-                        if ($deliveryError) return;
+                    $deliveryQuery->prepare($deliveryError, function() use (&$deliveryQuery, &$deliveryError) {
+                        if ($deliveryError || !$deliveryQuery->response->shops) return;
 
-                        foreach (array_chunk(array_keys($deliveryQuery->response->shops), 7) as $shopIdsInChunk) {
-                            $shopQuery = (new Query\Shop\GetById($shopIdsInChunk))->prepare($shopError);
-                        }
+                        $shopQuery = (new Query\Shop\GetById(array_keys($deliveryQuery->response->shops)))->prepare($shopError);
                     });
                 } catch (\Exception $e) {
                     $deliveryError = $e;
+                }
+
+                // магазины на основе остатков
+                try {
+                    $shopQuery = new Query\Shop\GetById();
+                    foreach ($product['stock'] as $stock) {
+                        if (!$stock['shop_id'] || !($stock['quantity'] + $stock['quantity_showroom'])) continue;
+
+                        $shopQuery->ids[] = $stock['shop_id'];
+                    }
+                    if ($shopQuery->ids) {
+                        $shopQuery->prepare($shopError);
+                    }
+                } catch (\Exception $e) {
+                    $shopError = $e;
                 }
 
                 // методы оплаты
