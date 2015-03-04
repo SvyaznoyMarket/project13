@@ -411,7 +411,7 @@ $c->coupon['enabled'] = true;
 $c->blackcard['enabled'] = false;
 
 $c->user['corporateRegister'] = true;
-$c->user['defaultRoute'] = 'user.orders';
+$c->user['defaultRoute'] = 'user.recommend';
 
 $c->database['host']     = 'site-db';
 $c->database['name']     = 'enter';
