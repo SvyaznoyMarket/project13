@@ -3085,7 +3085,7 @@ img[height="0"] {
     transform: scale(1.05);
   }
   .main-new {
-    background: #ffffff url('/styles/mainpage/img/fon2.jpg') no-repeat 50% 0;
+    background: #ffffff url('/styles/mainpage/img/spring-bg.jpg') no-repeat 50% 0;
     background-size: cover;
     background-attachment: fixed;
   }
@@ -5022,6 +5022,38 @@ img[height="0"] {
   }
 }
 /*---END----КОРЗИНА (СТАРАЯ ВЕРСТКА)---------*/
+/*---------КОРЗИНА (НОВАЯ ВЕРСТКА)----------*/
+@media all {
+  .cart--empty {
+    background: url("/styles/cart/img/cart-roll.gif") no-repeat 0 0;
+    padding: 55px 0 0 200px;
+    margin: 25px 0 20px 94px;
+    min-height: 155px;
+  }
+  .cart--empty .cart-text {
+    font-size: 48px;
+    color: #bebebe;
+    float: left;
+  }
+  .cart--empty .cart-text--grey {
+    font: normal 16px/18px "Enter Type";
+    text-transform: none;
+  }
+  .cart--empty .cart-list {
+    float: right;
+    width: 250px;
+  }
+  .cart--empty .cart-list__e {
+    font: normal 22px/24px "Enter";
+    text-transform: uppercase;
+    margin: 0 0 20px;
+  }
+  .cart--ep {
+    text-align: center;
+    margin-bottom: 25px;
+  }
+}
+/*---END----КОРЗИНА (НОВАЯ ВЕРСТКА)---------*/
 /*---------Enter Prize----------*/
 @media all {
   .eprize__logo {
