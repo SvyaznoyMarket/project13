@@ -4,6 +4,7 @@ namespace Controller\OrderV3;
 
 use Model\Order\Entity;
 use Model\PaymentMethod\PaymentEntity;
+use Model\Point\PointEntity;
 use Session\ProductPageSenders;
 use Session\ProductPageSendersForMarketplace;
 
@@ -24,10 +25,6 @@ class CompleteAction extends OrderV3 {
      * @throws \Exception
      */
     public function execute(\Http\Request $request) {
-//        $controller = parent::execute($request);
-//        if ($controller) {
-//            return $controller;
-//        }
 
         $page = new \View\OrderV3\CompletePage();
         \App::logger()->debug('Exec ' . __METHOD__);
@@ -46,7 +43,7 @@ class CompleteAction extends OrderV3 {
         /** @var $banks \Model\CreditBank\Entity[] */
         $banks = [];
         $shopIds = [];
-        $shops = [];
+        $pointUis = [];
         $errors = [];
 
         try {
@@ -96,8 +93,6 @@ class CompleteAction extends OrderV3 {
 
             $this->client->execute();
 
-            sort($orders);
-
             // получаем продукты для заказов
             foreach ($orders as $order) {
                 \RepositoryManager::product()->prepareCollectionById(array_map(function(\Model\Order\Product\Entity $product) { return $product->getId(); }, $order->getProduct()), null, function ($data) use ($order, &$products) {
@@ -109,7 +104,8 @@ class CompleteAction extends OrderV3 {
                 // Нужны ли нам кредитные банки?
                 if ($order->paymentId == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT) $needCreditBanksData = true;
                 // и магазины
-                if ($order->getShopId()) $shopIds[] = $order->getShopId();
+                if ($order->getShopId()) $shopIds[$order->getShopId()] = $order->getNumber();
+                if ($order->getDelivery()->pointUi) $pointUis[$order->getDelivery()->pointUi] = $order->getNumber();
 
             }
 
@@ -122,9 +118,18 @@ class CompleteAction extends OrderV3 {
                 });
             }
 
-            // Запрашиваем магазины
-            if (!empty($shopIds)) \RepositoryManager::shop()->prepareCollectionById($shopIds, function($data) use (&$shops) {
-                foreach ((array)$data as $shopData) $shops[(int)@$shopData['id']] = new \Model\Shop\Entity($shopData);
+            // Запрашиваем магазины (они пока нужны для получения для ссылки "Как добраться")
+            if (!empty($shopIds)) \RepositoryManager::shop()->prepareCollectionById(array_keys($shopIds), function($data) use ($shopIds, &$orders) {
+                foreach ((array)$data as $shopData) {
+                    $orders[$shopIds[$shopData['id']]]->shop = new \Model\Shop\Entity($shopData);
+                }
+            });
+
+            // Запрашиваем точки
+            if (!empty($pointUis)) \RepositoryManager::shop()->preparePointCollectionByUi(array_keys($pointUis), function($data) use ($pointUis, &$orders) {
+                foreach ((array)$data as $point) {
+                    if (isset($orders[$pointUis[$point['ui']]])) $orders[$pointUis[$point['ui']]]->point = new PointEntity($point);
+                }
             });
 
             $this->client->execute();
@@ -172,7 +177,6 @@ class CompleteAction extends OrderV3 {
         $page->setParam('userEntity', $this->user->getEntity());
         $page->setParam('paymentProviders', $paymentProviders);
         $page->setParam('banks', $banks);
-        $page->setParam('shops', $shops);
         $page->setParam('subscribe', (bool)$request->cookies->get(\App::config()->subscribe['cookieName3']));
 
         $page->setParam('errors', array_merge( $page->getParam('errors', []), $errors));

@@ -168,4 +168,25 @@ class Repository {
             $fail
         );
     }
+
+    /**
+     * @param array $uids
+     * @param $done
+     * @param null $fail
+     * @return array
+     */
+    public function preparePointCollectionByUi(array $uids = [], $done, $fail = null) {
+        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+
+        if (!(bool)$uids) return [];
+
+        \App::coreClientV2()->addQuery('point/get',
+            [
+                'uids' => $uids,
+            ],
+            [],
+            $done,
+            $fail
+        );
+    }
 }

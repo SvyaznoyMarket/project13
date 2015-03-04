@@ -2,6 +2,9 @@
 
 namespace Model\Order;
 
+use Model\Point\PointEntity as Point;
+use Model\Shop\Entity as Shop;
+
 class Entity {
     const TYPE_ORDER = 1;
     const TYPE_PREORDER = 2;
@@ -136,6 +139,10 @@ class Entity {
     public $seller;
     /** @var string */
     private $accessToken;
+    /** @var Point|null */
+    public $point;
+    /** @var Shop|null */
+    public $shop;
 
     /**
      * @param array $data

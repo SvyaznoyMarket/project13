@@ -13,17 +13,11 @@ class CreateAction extends OrderV3 {
      * @throws \Exception
      */
     public function execute(\Http\Request $request) {
-//        $controller = parent::execute($request);
-//        if ($controller) {
-//            return $controller;
-//        }
 
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $coreResponse = null;   // ответ о ядра
         $ordersData = [];       // данные для отправки на ядро
-        /** @var \Model\Order\Entity[] $createdOrders */
-        $createdOrders = [];    // созданные заказы
         $params = [];           // параметры запроса на ядро
         $subscribeResult = false;  // ответ на подписку
 
@@ -83,40 +77,12 @@ class CreateAction extends OrderV3 {
         $this->logOrderResults($coreResponse);
 
         $sessionData = [];
-        if ((bool)$coreResponse) {
 
-            foreach ($coreResponse as $orderData) {
-                if (!is_array($orderData)) {
-                    \App::logger()->error(['message' => 'Получены неверные данные для созданного заказа', 'orderData' => $orderData], ['order']);
-                    continue;
-                }
-                $orderData += ['confirmed' => null];
-
-                // если заказ не подтвержден
-                if (!$orderData['confirmed']) {
-                    \App::logger()->error(['message' => 'Заказ не подтвержден', 'orderData' => $orderData], ['order']);
-                }
-
-                $createdOrder = new \Model\Order\Entity($orderData);
-
-                // если не получен номер заказа
-                if (!$createdOrder->getNumber()) {
-                    \App::logger()->error(['message' => 'Не получен номер заказа', 'orderData' => $orderData], ['order']);
-                    continue;
-                }
-
-                $createdOrders[] = $createdOrder;
-                \App::logger()->info(['message' => 'Заказ успешно создан', 'orderData' => $orderData], ['order']);
-
-                $sessionData[] = array_merge($orderData, [
-                    'phone' => (string)$splitResult['user_info']['phone'],
-                ]);
-            }
+        foreach ($coreResponse as $orderData) {
+            $sessionData[$orderData['number']] = $orderData += ['confirmed' => null, 'phone' => (string)$splitResult['user_info']['phone']];
         }
 
-        if ((bool)$sessionData) {
-            $this->session->set(\App::config()->order['sessionName'] ?: 'lastOrder', $sessionData);
-        }
+        $this->session->set(\App::config()->order['sessionName'] ?: 'lastOrder', $sessionData);
 
         // удаляем предыдущее разбиение
         $this->session->remove($this->splitSessionKey);

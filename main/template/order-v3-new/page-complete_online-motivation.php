@@ -10,7 +10,6 @@ return function(
     $userEntity,
     $sessionIsReaded,
     $banks,
-    $shops,
     $creditData,
     $subscribe,
     $motivationAction,
@@ -20,8 +19,6 @@ return function(
     $page = new \View\OrderV3\CompletePage();
     /** @var $order \Model\Order\Entity */
     $order = reset($orders);
-    /* @var $shop \Model\Shop\Entity|null */
-    $shop = @$shops[$order->getShopId()];
     /* @var $orderPayment \Model\PaymentMethod\PaymentEntity|null */
     $orderPayment = @$ordersPayment[$order->getNumber()];
     // Онлайн оплата возможна при существовании такой группы
@@ -58,8 +55,8 @@ return function(
 
             <? if ($order->getPaymentId() != PaymentMethodEntity::PAYMENT_CREDIT) : ?>
 
-                <? if ($order->getDeliveryTypeId() == 3 || $order->getDeliveryTypeId() == 4) : ?>
-                    <?= $helper->render('order-v3-new/complete-blocks/_point', ['order' => $order, 'point' => $shop]) ?>
+                <? if ($order->getDeliveryTypeId() == 3 || $order->getDeliveryTypeId() == 4 || $order->point) : ?>
+                    <?= $helper->render('order-v3-new/complete-blocks/_point', ['order' => $order]) ?>
                 <? endif ?>
 
                 <? if ($order->getDeliveryTypeId() == 1) : ?>

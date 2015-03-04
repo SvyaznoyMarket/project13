@@ -2,37 +2,41 @@
 
 <? $f  = function (
     \Helper\TemplateHelper $helper,
-    \Model\Order\Entity $order,
-    $point
+    \Model\Order\Entity $order
 ) {
-    /** @var $point \Model\Shop\Entity */
     ?>
 
 <div class="orderPayment <?= $order->isPaid() ? 'orderPaid jsOrderPaid': '' ?>">
     <div class="orderPayment_block orderPayment_noOnline">
 
-        <? if ((bool)$point) : ?>
+        <? if ((bool)$order->point) : ?>
 
             <div class="orderPayment_msg orderPayment_noOnline_msg">
                 <div class="orderPayment_msg_head">
-                    Ждем вас <?= $order->getDeliveredAt()->format('d.m.Y') ?> в магазине
+                    <? if ($order->point->isEnterShop() || $order->point->isSvyaznoyShop()) : ?>
+                        Ждем вас <?= $order->getDeliveredAt()->format('d.m.Y') ?> в магазине
+                    <? elseif ($order->point->isPickpoint()) : ?>
+                        Вы можете забрать заказ из постамата <?= $order->getDeliveredAt()->format('d.m.Y') ?>
+                    <? endif ?>
                 </div>
                 <div class="orderPayment_msg_shop markerLst_row">
 
-                    <? if ((bool)$point->getSubway()) : ?>
+                    <? if ((bool)$order->point->subway) : ?>
 
                         <span class="markerList_col markerList_col-mark">
-                            <i class="markColor" style="background-color: <?= $point->getSubway()[0]->getLine()->getColor() ?>"></i>
+                            <i class="markColor" style="background-color: <?= $order->point->subway->getLine()->getColor() ?>"></i>
                         </span>
                         <span class="markerList_col">
-                            <span class="orderPayment_msg_shop_metro"><?= $point->getSubway()[0]->getName() ?></span>
+                            <span class="orderPayment_msg_shop_metro"><?= $order->point->subway->getName() ?></span>
 
                     <? endif ?>
 
-                        <span class="orderPayment_msg_shop_addr"><?= $point->getAddress() ?></span>
-                        <a href="<?= \App::router()->generate('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $point->getToken()])?>" class="orderPayment_msg_addr_link jsCompleteOrderShowShop" target="_blank">
-                            Как добраться
-                        </a>
+                        <span class="orderPayment_msg_shop_addr"><?= $order->point->address ?></span>
+                            <? if ($order->shop) : ?>
+                                <a href="<?= \App::router()->generate('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $order->shop->getToken()])?>" class="orderPayment_msg_addr_link jsCompleteOrderShowShop" target="_blank">
+                                    Как добраться
+                                </a>
+                            <? endif ?>
                     </span>
 
                     <? if ($order->comment) : ?>
