@@ -43,6 +43,14 @@ $isNewRecommendation =
 
 </div>
 
+<div class="backShop fl mNoPrint jsKnockoutCart" data-bind="visible: isUpdated() && cartSum() > 0" style="display: none">&lt; <a class="underline" href="<?= $backlink ?>">Вернуться к покупкам</a></div>
+
+<div class="basketBuy mNoPrint jsKnockoutCart" data-bind="visible: isUpdated() && cartSum() > 0" style="display: none">
+    <a href="<?= $page->url('order') ?>" class="bBigOrangeButton">Оформить заказ</a>
+</div>
+
+<div class="clear"></div>
+
 <? if (!$isNewRecommendation): ?>
     <?= $page->render('cart/ab-self-delivery/_recommendSlider') ?>
 <? endif ?>
@@ -75,13 +83,6 @@ $isNewRecommendation =
 
     <div class="clear"></div>
 
-<div class="backShop fl mNoPrint jsKnockoutCart" data-bind="visible: isUpdated() && cartSum() > 0" style="display: none">&lt; <a class="underline" href="<?= $backlink ?>">Вернуться к покупкам</a></div>
-
-<div class="basketBuy mNoPrint jsKnockoutCart" data-bind="visible: isUpdated() && cartSum() > 0" style="display: none">
-    <a href="<?= $page->url('order') ?>" class="bBigOrangeButton">Оформить заказ</a>
-</div>
-
-<div class="clear"></div>
 
 <? if ($isNewRecommendation && \App::config()->product['pullRecommendation']): ?>
 
