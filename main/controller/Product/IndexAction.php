@@ -112,13 +112,6 @@ class IndexAction {
             });
         }
 
-        // настройки товара
-        $productConfig = [];
-        $dataStore = \App::dataStoreClient();
-        $dataStore->addQuery(sprintf('product/%s.json', $product->getToken()), [], function ($data) use (&$productConfig) {
-            if (is_array($data)) $productConfig = $data;
-        });
-
         // получаем отзывы для товара
         $reviewsData = [];
         if (\App::config()->product['reviewEnabled']) {
@@ -287,8 +280,6 @@ class IndexAction {
 //        });
 //
 //        \App::curl()->execute();
-
-        $catalogJson = array_merge_recursive($catalogJson, $productConfig);
 
         // получаем рейтинги
         $reviewsDataSummary = [];
