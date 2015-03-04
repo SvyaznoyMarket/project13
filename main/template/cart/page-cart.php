@@ -48,6 +48,7 @@ $isNewRecommendation =
 <? endif ?>
 
 <? if ($cart->isEmpty()): ?>
+    <div class="basketLine">
     <?= $helper->render('product/__slider', [
         'type'      => 'main',
         'products'  => [],
@@ -57,7 +58,8 @@ $isNewRecommendation =
             ],
         ]),
     ]) ?>
-
+    </div>
+    <div class="basketLine">
     <?= $helper->render('product/__slider', [
         'type'      => 'alsoBought',
         'products'  => [],
@@ -67,6 +69,8 @@ $isNewRecommendation =
             ],
         ]),
     ]) ?>
+    </div>
+    <div class="cart--ep"><a href="/enterprize" title=""><img src="/css/bEmptyCart/img/ep.jpg" alt="" /></a></div>
 <? endif ?>
 
     <div class="clear"></div>
@@ -80,8 +84,9 @@ $isNewRecommendation =
 <div class="clear"></div>
 
 <? if ($isNewRecommendation && \App::config()->product['pullRecommendation']): ?>
-    <div class="basketLine">
+
     <? if (!$cart->isEmpty()): ?>
+    <div class="basketLine">
         <?= $helper->render('product/__slider', [
             'type'      => 'alsoBought',
             'products'  => [],
@@ -91,8 +96,8 @@ $isNewRecommendation =
                 ],
             ]),
         ]) ?>
+        </div>
     <? endif ?>
-    </div>
 <? endif ?>
 
 <div class="clear"></div>
