@@ -23,7 +23,7 @@ namespace EnterApplication\Action\ProductCard {
                 throw new \InvalidArgumentException('Неверный критерий получения товара');
             }
 
-            // доставка и способы оплаты
+            // доставка, группы оплаты, магазины, отзывы и рейтинг товаров, ...
             $productQuery->prepare($productError, function() use ( // TODO: сделать массив функций
                 &$productQuery //,
                 //&$deliveryError,
@@ -71,7 +71,7 @@ namespace EnterApplication\Action\ProductCard {
                     $shopError = $e;
                 }
 
-                // методы оплаты
+                // группы оплаты
                 try {
                     $cart = \App::user()->getCart(); // TODO: old usage
 
@@ -141,9 +141,11 @@ namespace EnterApplication\Action\ProductCard {
             }
             */
 
+            // пользователь и его подписки
             $userQuery = null;
             if ($request->userToken) {
                 $userQuery = (new Query\User\GetByToken($request->userToken))->prepare($userError);
+                $subscribeQuery = (new Query\Subscribe\GetByUserToken($request->userToken))->prepare($subscribeError);
             }
 
             // редирект
