@@ -4601,9 +4601,6 @@ img[height="0"] {
     z-index: 101;
     background: #ffffff;
   }
-  .topbarfix_cart.mEmpty {
-    background: #f4f4f4;
-  }
   .topbarfix_cart:hover .topbarfix_dd {
     display: block;
   }
@@ -4681,7 +4678,7 @@ img[height="0"] {
   }
   .topbarfix_log-unlogin {
     line-height: 50px;
-    background: #f4f4f4;
+    background: #ffffff;
   }
   .topbarfix_log-unlogin:after {
     background: none;
@@ -4710,7 +4707,6 @@ img[height="0"] {
     white-space: nowrap;
   }
   .topbarfix_cmpr {
-    background: #f4f4f4;
     position: relative;
     z-index: 101;
   }
