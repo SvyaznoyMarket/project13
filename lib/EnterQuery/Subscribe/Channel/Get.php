@@ -19,10 +19,10 @@ namespace EnterQuery\Subscribe\Channel
 
         /**
          * @param \Exception $error
-         * @param callable|null $callback
+         * @param callable[] $callbacks
          * @return $this
          */
-        public function prepare(\Exception &$error = null, $callback = null)
+        public function prepare(\Exception &$error = null, array $callbacks = [])
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
@@ -31,7 +31,7 @@ namespace EnterQuery\Subscribe\Channel
                 ),
                 [], // data
                 0.5, // timeout multiplier
-                $callback,
+                $callbacks,
                 $error,
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];

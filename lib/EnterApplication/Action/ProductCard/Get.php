@@ -24,20 +24,12 @@ namespace EnterApplication\Action\ProductCard {
             }
 
             // доставка, группы оплаты, магазины, отзывы и рейтинг товаров, ...
-            $productQuery->prepare($productError, function() use ( // TODO: сделать массив функций
-                &$productQuery //,
-                //&$deliveryError,
-                //&$paymentGroupError,
-                //&$ratingError
-                //&$categoryError
-            ) {
-                $product = $productQuery->response->product;
-                if (!$product['id']) {
-                    return;
-                }
-
+            $productQuery->prepare($productError, [
                 // доставка
-                try {
+                function() use (&$productQuery, &$deliveryQuery) {
+                    $product = $productQuery->response->product;
+                    if (!$product['id']) return;
+
                     $deliveryQuery = new Query\Delivery\GetByCart();
                     // корзина
                     $deliveryQuery->cart->products[] = $deliveryQuery->cart->createProduct($product['id'], 1);
@@ -52,12 +44,13 @@ namespace EnterApplication\Action\ProductCard {
                         $shopQuery = (new Query\Shop\GetById(array_keys($deliveryQuery->response->shops)))->prepare($shopError);
                     });
                     */
-                } catch (\Exception $e) {
-                    $deliveryError = $e;
-                }
+                },
 
                 // магазины на основе остатков
-                try {
+                function() use (&$productQuery, &$shopQuery) {
+                    $product = $productQuery->response->product;
+                    if (!$product['id']) return;
+
                     $shopQuery = new Query\Shop\GetById();
                     foreach ($product['stock'] as $stock) {
                         if (!$stock['shop_id'] || !($stock['quantity'] + $stock['quantity_showroom'])) continue;
@@ -67,12 +60,13 @@ namespace EnterApplication\Action\ProductCard {
                     if ($shopQuery->ids) {
                         $shopQuery->prepare($shopError);
                     }
-                } catch (\Exception $e) {
-                    $shopError = $e;
-                }
+                },
 
                 // группы оплаты
-                try {
+                function() use (&$productQuery, &$paymentGroupQuery) {
+                    $product = $productQuery->response->product;
+                    if (!$product['id']) return;
+
                     $cart = \App::user()->getCart(); // TODO: old usage
 
                     $paymentGroupQuery = new Query\PaymentGroup\GetByCart();
@@ -85,12 +79,10 @@ namespace EnterApplication\Action\ProductCard {
                     $paymentGroupQuery->filter->isCredit = (bool)(($product['price'] * (($cart->getQuantityByProduct($product['id']) > 0) ? $cart->getQuantityByProduct($product['id']) : 1)) >= \App::config()->product['minCreditPrice']);
 
                     $paymentGroupQuery->prepare($paymentGroupError);
-                } catch (\Exception $e) {
-                    $paymentGroupError = $e;
-                }
+                },
 
                 // рейтинг товаров
-                try {
+                function() use (&$productQuery, &$ratingQuery) {
                     $ratingQuery = null;
 
                     if ($accessoryIds = array_slice((array)$productQuery->response->product['accessories'], 0, \App::config()->product['itemsPerPage'])) {
@@ -101,34 +93,35 @@ namespace EnterApplication\Action\ProductCard {
                     if ($ratingQuery) {
                         $ratingQuery->prepare($ratingError);
                     }
-                } catch (\Exception $e) {
-                    $ratingError = $e;
-                }
+                },
 
                 // отзывы товара
-                try {
+                function() use (&$productQuery, &$reviewQuery) {
+                    $product = $productQuery->response->product;
+                    if (!$product['id']) return;
+
                     $reviewQuery = (new Query\Product\Review\GetByProductUi($product['ui'], 0, 7))->prepare($reviewError);
-                } catch (\Exception $e) {
-                    $reviewError = $e;
-                }
+                },
 
                 // категория товаров
-                try {
+                function() use (&$productQuery, &$categoryQuery) {
+                    $product = $productQuery->response->product;
+                    if (!$product['id']) return;
+
                     $categoryQuery = null;
                     if ($categoryUi = end($product['category'])['ui']) {
                         $categoryQuery = (new Query\Product\Category\GetByUi($categoryUi, $productQuery->regionId))->prepare($categoryError);
                     }
-                } catch (\Exception $e) {
-                    $categoryError = $e;
-                }
+                },
 
-                // описание товара из cms
-                try {
+                function() use (&$productQuery, &$productDescriptionQuery) {
+                    $product = $productQuery->response->product;
+                    if (!$product['id']) return;
+
+                    // описание товара из scms
                     $productDescriptionQuery = (new Query\Product\GetDescriptionByUi([$product['ui']]))->prepare($productDescriptionError);
-                } catch (\Exception $e) {
-                    $productDescriptionError = $e;
-                }
-            });
+                },
+            ]);
 
             // отзывы о товаре
             /*
@@ -174,7 +167,6 @@ namespace EnterApplication\Action\ProductCard {
             $curl->execute();
 
             //die(microtime(true) - $startAt);
-            //die(var_dump($GLOBALS));
         }
 
         /**

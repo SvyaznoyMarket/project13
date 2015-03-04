@@ -11,7 +11,7 @@ trait CurlQueryTrait
      * @param $url
      * @param array $data
      * @param int|null $timeoutMultiplier
-     * @param callable|null $callback
+     * @param callable[] $callbacks
      * @param \Exception $error
      * @param callable|null $decoder
      * @return \EnterLab\Curl\Query
@@ -20,7 +20,7 @@ trait CurlQueryTrait
         $url,
         $data = [],
         $timeoutMultiplier = null,
-        $callback = null,
+        array $callbacks = [],
         \Exception &$error = null,
         $decoder = null
     ) {
@@ -85,7 +85,7 @@ trait CurlQueryTrait
         $query->resolveCallback = function() use (
             &$query,
             &$result,
-            &$callback,
+            &$callbacks,
             &$decoder,
             &$error,
             &$data,
@@ -93,6 +93,23 @@ trait CurlQueryTrait
         ) {
             if ($query->response->error) {
                 $error = $query->response->error;
+
+                // TODO: удалить; сейчас нужно для старого журнала
+                \App::logger()->error([
+                    'message'      => 'Fail curl',
+                    'error'        => ['code' => $error->getCode(), 'message' => $error->getMessage()],
+                    'url'          => $query->request->options[CURLOPT_URL],
+                    'data'         => $data,
+                    'info'         => $query->response->info,
+                    'header'       => null,
+                    'response'     => $query->response->body,
+                    'retryTimeout' => null,
+                    'retryCount'   => null,
+                    'timeout'      => $query->request->options[CURLOPT_TIMEOUT_MS],
+                    'startAt'      => $startedAt,
+                    'endAt'        => microtime(true),
+                ], ['curl']);
+                // end
 
                 return;
             }
@@ -137,11 +154,20 @@ trait CurlQueryTrait
                 $result = $query->response->body;
             }
 
-            if (!$error && is_callable($callback)) {
-                try {
-                    call_user_func($callback);
-                } catch(\Exception $e) {
-                    var_dump($e);
+            if (!$error) {
+                foreach ($callbacks as $callback) {
+                    if (!is_callable($callback)) {
+                        \App::logger()->error(['error' => sprintf('Неверная функция обратного вызова для %s', $query->request->options[CURLOPT_URL]), 'sender' => __FILE__ . ' ' .  __LINE__], ['curl-cache']);
+
+                        continue;
+                    }
+
+                    $callbackError = null;
+                    try {
+                        call_user_func($callback);
+                    } catch(\Exception $e) {
+                        $callbackError = $e; // TODO: подумать как передать ошибку обратного вызова
+                    }
                 }
             }
         };
