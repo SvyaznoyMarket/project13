@@ -31,6 +31,7 @@ class CacheAction {
                     $request->urlPath = $httpRequest->getPathInfo();
                     $request->productCriteria = ['token' => $productToken];
                     $request->regionId = $regionId;
+                    $request->userToken = \App::user()->getToken() ?: null;
 
                     $action->execute($request);
                 }

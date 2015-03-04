@@ -141,6 +141,11 @@ namespace EnterApplication\Action\ProductCard {
             }
             */
 
+            $userQuery = null;
+            if ($request->userToken) {
+                $userQuery = (new Query\User\GetByToken($request->userToken))->prepare($userError);
+            }
+
             // редирект
             $redirectQuery = (new Query\Redirect\GetByUrl($request->urlPath))->prepare($redirectError); // TODO: throw Exception
 
@@ -189,5 +194,7 @@ namespace EnterApplication\Action\ProductCard\Get {
         public $productCriteria;
         /** @var string */
         public $regionId;
+        /** @var string|null */
+        public $userToken;
     }
 }
