@@ -19,7 +19,7 @@
         $price = $helper->formatPrice($price);
         if (strpos($price, '.') === false) $price .= '.00';
         $priceArr = explode('.', $price);
-        $priceArr[1] = '<span style="font-size: 10px; position: relative; bottom: 3px">'.$priceArr[1].'</span>';
+        $priceArr[1] = '<span class="rub-c">'.$priceArr[1].'</span>';
         $price = implode('.', $priceArr);
     }
 
