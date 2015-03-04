@@ -106,9 +106,9 @@ class DeliveryAction {
 
             // получаем список магазинов
             \RepositoryManager::shop()->prepareCollectionById(
-                array_map(function($shopItem){
+                array_values(array_map(function($shopItem){
                     return (int)$shopItem['id'];
-                }, $shopData),
+                }, $shopData)),
                 function($data) use (&$shops) {
                     foreach ($data as $item) {
                         if (!isset($item['id'])) continue;
