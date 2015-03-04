@@ -105,6 +105,7 @@ class DeliveryAction {
             $shops = [];
 
             // получаем список магазинов
+            /*
             \RepositoryManager::shop()->prepareCollectionById(
                 array_values(array_map(function($shopItem){
                     return (int)$shopItem['id'];
@@ -120,6 +121,17 @@ class DeliveryAction {
                     }
                 }
             );
+            */
+            foreach ($shopData as $shopItem) {
+                if (!isset($shopItem['id'])) continue;
+
+                $shop = new \Model\Shop\Entity($item);
+                $id = $shop->getId();
+                if ( !isset($shops[$id]) ) {
+                    $shops[$id] = $shop;
+                }
+            }
+
 
             \App::coreClientV2()->execute();
 
