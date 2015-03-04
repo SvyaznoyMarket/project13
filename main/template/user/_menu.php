@@ -11,6 +11,10 @@ $activeMenuCss = 'personalControl_item-active';
 
 <!-- навигация по личному кабинету -->
 <nav class="personalControl">
+    <li class="personalControl_item <?= in_array($route, ['user.recommend']) ? $activeMenuCss : '' ?>">
+        <a href="<?= $helper->url('user.recommend') ?>" class="personalControl_link">Товары для вас</a>
+    </li>
+
     <li class="personalControl_item <?= in_array($route, ['user.order', 'user.orders']) ? $activeMenuCss : '' ?>">
         <a href="<?= $helper->url('user.orders') ?>" class="personalControl_link">Заказы</a>
     </li>

@@ -799,6 +799,10 @@ return [
         'action'    => ['User\OrderAction', 'execute'],
         'require'   => ['orderId' => '\d+']
     ],
+    'user.recommend' => [
+        'pattern'   => '/private/recommends',
+        'action'    => ['User\RecommendAction', 'execute'],
+    ],
     // подписки пользователя
     'user.subscriptions' => [
         'pattern' => '/private/subscriptions',
