@@ -47,6 +47,30 @@ $isNewRecommendation =
     <?= $page->render('cart/ab-self-delivery/_recommendSlider') ?>
 <? endif ?>
 
+<? if ($cart->isEmpty()): ?>
+    <?= $helper->render('product/__slider', [
+        'type'      => 'main',
+        'products'  => [],
+        'url'       => $page->url('cart.recommended', [
+            'sender' => [
+                'position' => 'Basket',
+            ],
+        ]),
+    ]) ?>
+
+    <?= $helper->render('product/__slider', [
+        'type'      => 'alsoBought',
+        'products'  => [],
+        'url'       => $page->url('cart.recommended', [
+            'sender' => [
+                'position' => 'Basket',
+            ],
+        ]),
+    ]) ?>
+<? endif ?>
+
+    <div class="clear"></div>
+
 <div class="backShop fl mNoPrint jsKnockoutCart" data-bind="visible: isUpdated() && cartSum() > 0" style="display: none">&lt; <a class="underline" href="<?= $backlink ?>">Вернуться к покупкам</a></div>
 
 <div class="basketBuy mNoPrint jsKnockoutCart" data-bind="visible: isUpdated() && cartSum() > 0" style="display: none">
@@ -58,26 +82,6 @@ $isNewRecommendation =
 <? if ($isNewRecommendation && \App::config()->product['pullRecommendation']): ?>
     <div class="basketLine">
     <? if (!$cart->isEmpty()): ?>
-        <?= $helper->render('product/__slider', [
-            'type'      => 'alsoBought',
-            'products'  => [],
-            'url'       => $page->url('cart.recommended', [
-                'sender' => [
-                    'position' => 'Basket',
-                ],
-            ]),
-        ]) ?>
-    <? else: ?>
-        <?= $helper->render('product/__slider', [
-            'type'      => 'main',
-            'products'  => [],
-            'url'       => $page->url('cart.recommended', [
-                'sender' => [
-                    'position' => 'Basket',
-                ],
-            ]),
-        ]) ?>
-
         <?= $helper->render('product/__slider', [
             'type'      => 'alsoBought',
             'products'  => [],
