@@ -119,9 +119,6 @@ trait CurlQueryTrait
                 try {
                     $result = call_user_func($decoder, $query->response->body, $query->response->statusCode);
 
-                    $id = $this->getQueryCacheId($query->request->options[CURLOPT_URL], $data);
-                    $this->setQueryCache($id, $result);
-
                     // TODO: удалить; сейчас нужно для старого журнала
                     $endAt = microtime(true);
                     $headers = [];
@@ -150,6 +147,9 @@ trait CurlQueryTrait
                 } catch (\Exception $e) {
                     $error = $e;
                 }
+
+                $id = $this->getQueryCacheId($query->request->options[CURLOPT_URL], $data);
+                $this->setQueryCache($id, $result);
             } else {
                 $result = $query->response->body;
             }

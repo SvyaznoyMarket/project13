@@ -131,13 +131,12 @@ class Client {
         if (\App::config()->curlCache['enabled']) {
             $id = $this->getQueryCacheId($url, $data);
 
-            $result = $this->getQueryCache($id);
-            if ($result && is_callable($successCallback)) {
-                call_user_func($successCallback, $result);
+            if ($this->hasQueryCache($id) && is_callable($successCallback)) {
+                call_user_func($successCallback, $this->getQueryCache($id));
 
                 return true;
             } else {
-                \App::logger()->error(['error' => sprintf('Запрос %s не попал в кеш', $url), 'sender' => __FILE__ . ' ' .  __LINE__], ['critical', 'curl-cache']);
+                \App::logger()->error(['error' => sprintf('Запрос %s %s не попал в кеш', $url, json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)), 'sender' => __FILE__ . ' ' .  __LINE__], ['critical', 'curl-cache']);
             }
         }
 

@@ -2,14 +2,14 @@
 
 namespace EnterQuery\Shop
 {
-    use EnterQuery\Shop\GetById\Response;
+    use EnterQuery\Shop\GetByIdList\Response;
 
-    class GetById
+    class GetByIdList
     {
         use \EnterQuery\CurlQueryTrait;
         use \EnterQuery\ScmsQueryTrait;
 
-        /** @var string */
+        /** @var string[] */
         public $ids;
         /** @var Response */
         public $response;
@@ -53,7 +53,7 @@ namespace EnterQuery\Shop
     }
 }
 
-namespace EnterQuery\Shop\GetById
+namespace EnterQuery\Shop\GetByIdList
 {
     class Response
     {

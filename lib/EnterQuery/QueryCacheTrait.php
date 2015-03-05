@@ -49,4 +49,13 @@ trait QueryCacheTrait
     {
         return isset($GLOBALS[$this->storageKey][$id]) ? $GLOBALS[$this->storageKey][$id] : null;
     }
+
+    /**
+     * @param $id
+     * @return bool
+     */
+    public function hasQueryCache($id)
+    {
+        return isset($GLOBALS[$this->storageKey]) && array_key_exists($id, $GLOBALS[$this->storageKey]);
+    }
 }

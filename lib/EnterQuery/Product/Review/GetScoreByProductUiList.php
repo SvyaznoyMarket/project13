@@ -2,26 +2,26 @@
 
 namespace EnterQuery\Product\Review
 {
-    use EnterQuery\Product\Review\GetScoreByProductIdList\Response;
+    use EnterQuery\Product\Review\GetScoreByProductUiList\Response;
 
-    class GetScoreByProductIdList
+    class GetScoreByProductUiList
     {
         use \EnterQuery\CurlQueryTrait;
         use \EnterQuery\ScmsQueryTrait;
 
         /** @var string[] */
-        public $productIds = [];
+        public $productUis = [];
         /** @var Response */
         public $response;
 
         /**
-         * @param string[] $productIds
+         * @param string[] $productUis
          */
-        public function __construct(array $productIds = [])
+        public function __construct(array $productUis = [])
         {
             $this->response = new Response();
 
-            $this->productIds = $productIds;
+            $this->productUis = $productUis;
         }
 
         /**
@@ -35,7 +35,7 @@ namespace EnterQuery\Product\Review
                 $this->buildUrl(
                     'reviews/scores-list',
                     [
-                        'product_list' => implode(',', $this->productIds),
+                        'product_ui' => implode(',', $this->productUis),
                     ]
                 ),
                 [], // data
@@ -56,7 +56,7 @@ namespace EnterQuery\Product\Review
     }
 }
 
-namespace EnterQuery\Product\Review\GetScoreByProductIdList
+namespace EnterQuery\Product\Review\GetScoreByProductUiList
 {
     class Response
     {

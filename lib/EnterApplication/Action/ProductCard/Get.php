@@ -1,8 +1,9 @@
 <?php
 
-namespace EnterApplication\Action\ProductCard {
-
+namespace EnterApplication\Action\ProductCard
+{
     use EnterApplication\Action\ProductCard\Get\Request;
+    use EnterApplication\Action\ProductCard\Get\Response;
     use EnterQuery as Query;
 
     class Get {
@@ -51,7 +52,7 @@ namespace EnterApplication\Action\ProductCard {
                     $product = $productQuery->response->product;
                     if (!$product['id']) return;
 
-                    $shopQuery = new Query\Shop\GetById();
+                    $shopQuery = new Query\Shop\GetByIdList();
                     foreach ($product['stock'] as $stock) {
                         if (!$stock['shop_id'] || !($stock['quantity'] + $stock['quantity_showroom'])) continue;
 
@@ -83,15 +84,37 @@ namespace EnterApplication\Action\ProductCard {
 
                 // рейтинг товаров
                 function() use (&$productQuery, &$ratingQuery) {
-                    $ratingQuery = null;
-
+                    $ids = []; // идентификаторы товаров
                     if ($accessoryIds = array_slice((array)$productQuery->response->product['accessories'], 0, \App::config()->product['itemsPerPage'])) {
-                        $ratingQuery = new Query\Product\Review\GetScoreByProductIdList();
-                        $ratingQuery->productIds = array_merge($ratingQuery->productIds, $accessoryIds);
+                        $ids = array_merge($ids, $accessoryIds);
                     }
 
-                    if ($ratingQuery) {
+                    if ($kitIds = array_column($productQuery->response->product['kit'], 'id')) {
+                        $ids = array_merge($ids, $kitIds);
+                    }
+
+                    if ($ids) {
+                        $ratingQuery = new Query\Product\Review\GetScoreByProductIdList($ids);
                         $ratingQuery->prepare($ratingError);
+                    }
+                },
+
+                // связанные товары: аксессуары, наборы, ...
+                function() use (&$productQuery, &$relatedProductQueries) {
+                    $ids = []; // идентификаторы товаров
+                    if ($accessoryIds = array_slice((array)$productQuery->response->product['accessories'], 0, \App::config()->product['itemsPerPage'])) {
+                        $ids = array_merge($ids, $accessoryIds);
+                    }
+
+                    if ($kitIds = array_column($productQuery->response->product['kit'], 'id')) {
+                        $ids = array_merge($ids, $kitIds);
+                    }
+
+                    if ($ids) {
+                        $relatedProductQueries = [];
+                        foreach (array_chunk($ids, \App::config()->coreV2['chunk_size']) as $idsInChunk) {
+                            $relatedProductQueries[] = (new Query\Product\GetByIdList($idsInChunk, $productQuery->regionId))->prepare($relatedProductError);
+                        }
                     }
                 },
 
@@ -114,12 +137,12 @@ namespace EnterApplication\Action\ProductCard {
                     }
                 },
 
+                // описание товара из scms
                 function() use (&$productQuery, &$productDescriptionQuery) {
                     $product = $productQuery->response->product;
                     if (!$product['id']) return;
 
-                    // описание товара из scms
-                    $productDescriptionQuery = (new Query\Product\GetDescriptionByUi([$product['ui']]))->prepare($productDescriptionError);
+                    $productDescriptionQuery = (new Query\Product\GetDescriptionByUiList([$product['ui']]))->prepare($productDescriptionError);
                 },
             ]);
 
@@ -167,6 +190,26 @@ namespace EnterApplication\Action\ProductCard {
             $curl->execute();
 
             //die(microtime(true) - $startAt);
+
+            // response
+            $response = new Response();
+            $response->productQuery = $productQuery;
+            $response->userQuery = $userQuery;
+            $response->subscribeQuery = $subscribeQuery;
+            $response->redirectQuery = $redirectQuery;
+            $response->abTestQuery = $abTestQuery;
+            $response->regionQuery = $regionQuery;
+            $response->mainRegionQuery = $mainRegionQuery;
+            $response->subscribeChannelQuery = $subscribeChannelQuery;
+            $response->categoryRootTreeQuery = $categoryRootTreeQuery;
+            $response->menuQuery = $menuQuery;
+            $response->deliveryQuery = $deliveryQuery;
+            $response->shopQuery = $shopQuery;
+            $response->paymentGroupQuery = $paymentGroupQuery;
+            $response->ratingQuery = $ratingQuery;
+            $response->relatedProductQueries = $relatedProductQueries;
+            $response->reviewQuery = $reviewQuery;
+            $response->categoryQuery = $categoryQuery;
         }
 
         /**
@@ -179,7 +222,10 @@ namespace EnterApplication\Action\ProductCard {
     }
 }
 
-namespace EnterApplication\Action\ProductCard\Get {
+namespace EnterApplication\Action\ProductCard\Get
+{
+    use EnterQuery as Query;
+
     class Request
     {
         /** @var string */
@@ -190,5 +236,43 @@ namespace EnterApplication\Action\ProductCard\Get {
         public $regionId;
         /** @var string|null */
         public $userToken;
+    }
+
+    class Response
+    {
+        /** @var Query\Product\GetByToken */
+        public $productQuery;
+        /** @var Query\User\GetByToken|null */
+        public $userQuery;
+        /** @var Query\Subscribe\GetByUserToken|null */
+        public $subscribeQuery;
+        /** @var Query\Redirect\GetByUrl */
+        public $redirectQuery;
+        /** @var Query\AbTest\GetActive */
+        public $abTestQuery;
+        /** @var Query\Region\GetById */
+        public $regionQuery;
+        /** @var Query\Region\GetMain */
+        public $mainRegionQuery; // TODO: убрать, будет через ajax
+        /** @var Query\Subscribe\Channel\Get */
+        public $subscribeChannelQuery;
+        /** @var Query\Product\Category\GetRootTree */
+        public $categoryRootTreeQuery;
+        /** @var Query\MainMenu\GetByTagList */
+        public $menuQuery;
+        /** @var Query\Delivery\GetByCart|null */
+        public $deliveryQuery;
+        /** @var Query\Shop\GetByIdList|null */
+        public $shopQuery;
+        /** @var Query\PaymentGroup\GetByCart|null */
+        public $paymentGroupQuery;
+        /** @var Query\Product\Review\GetScoreByProductIdList|null */
+        public $ratingQuery;
+        /** @var Query\Product\GetByIdList[] */
+        public $relatedProductQueries = [];
+        /** @var Query\Product\Review\GetByProductUi|null */
+        public $reviewQuery;
+        /** @var Query\Product\Category\GetByUi|null */
+        public $categoryQuery;
     }
 }

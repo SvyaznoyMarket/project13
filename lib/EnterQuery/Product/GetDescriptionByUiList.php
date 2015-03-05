@@ -1,27 +1,24 @@
 <?php
 
-namespace EnterQuery\Product\Review
+namespace EnterQuery\Product
 {
-    use EnterQuery\Product\Review\GetScoreByProductIdList\Response;
+    use EnterQuery\Product\GetDescriptionByUiList\Response;
 
-    class GetScoreByProductIdList
+    class GetDescriptionByUiList
     {
         use \EnterQuery\CurlQueryTrait;
         use \EnterQuery\ScmsQueryTrait;
 
         /** @var string[] */
-        public $productIds = [];
+        public $uis = [];
         /** @var Response */
         public $response;
 
-        /**
-         * @param string[] $productIds
-         */
-        public function __construct(array $productIds = [])
+        public function __construct(array $uis = [], $filter = null)
         {
             $this->response = new Response();
 
-            $this->productIds = $productIds;
+            $this->uis = $uis;
         }
 
         /**
@@ -33,19 +30,22 @@ namespace EnterQuery\Product\Review
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
-                    'reviews/scores-list',
+                    'product/get-description/v1',
                     [
-                        'product_list' => implode(',', $this->productIds),
+                        'uids'        => $this->uis,
+                        'trustfactor' => true, // TODO: filter
+                        'seo'         => true, // TODO: filter
+                        'media'       => true, // TODO: filter
                     ]
                 ),
                 [], // data
-                0.5, // timeout multiplier
+                1, // timeout multiplier
                 $callbacks,
                 $error,
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode);
 
-                    $this->response->reviews = isset($result['product_scores'][0]) ? $result['product_scores'] : [];
+                    $this->response->products = (isset($result['products']) && is_array($result['products'])) ? $result['products'] : [];
 
                     return $result; // for cache
                 }
@@ -56,11 +56,11 @@ namespace EnterQuery\Product\Review
     }
 }
 
-namespace EnterQuery\Product\Review\GetScoreByProductIdList
+namespace EnterQuery\Product\GetDescriptionByUiList
 {
     class Response
     {
         /** @var array */
-        public $reviews = [];
+        public $products = [];
     }
 }

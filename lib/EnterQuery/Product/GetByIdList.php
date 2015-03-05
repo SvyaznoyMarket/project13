@@ -2,23 +2,26 @@
 
 namespace EnterQuery\Product
 {
-    use EnterQuery\Product\GetDescriptionByUi\Response;
+    use EnterQuery\Product\GetByIdList\Response;
 
-    class GetDescriptionByUi
+    class GetByIdList
     {
         use \EnterQuery\CurlQueryTrait;
-        use \EnterQuery\ScmsQueryTrait;
+        use \EnterQuery\CoreQueryTrait;
 
         /** @var string[] */
-        public $uis = [];
+        public $ids = [];
+        /** @var string|null */
+        public $regionId;
         /** @var Response */
         public $response;
 
-        public function __construct(array $uis = [], $filter = null)
+        public function __construct($ids = null, $regionId = null)
         {
             $this->response = new Response();
 
-            $this->uis = $uis;
+            $this->ids = $ids;
+            $this->regionId = $regionId;
         }
 
         /**
@@ -30,12 +33,11 @@ namespace EnterQuery\Product
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
-                    'product/get-description/v1',
+                    'v2/product/get',
                     [
-                        'uids'        => $this->uis,
-                        'trustfactor' => true, // TODO: filter
-                        'seo'         => true, // TODO: filter
-                        'media'       => true, // TODO: filter
+                        'select_type' => 'id',
+                        'id'          => $this->ids,
+                        'geo_id'      => $this->regionId,
                     ]
                 ),
                 [], // data
@@ -43,9 +45,9 @@ namespace EnterQuery\Product
                 $callbacks,
                 $error,
                 function($response, $statusCode) {
-                    $result = $this->decodeResponse($response, $statusCode);
+                    $result = $this->decodeResponse($response, $statusCode)['result'];
 
-                    $this->response->products = (isset($result['products']) && is_array($result['products'])) ? $result['products'] : [];
+                    $this->response->product = $result[0];
 
                     return $result; // for cache
                 }
@@ -56,11 +58,11 @@ namespace EnterQuery\Product
     }
 }
 
-namespace EnterQuery\Product\GetDescriptionByUi
+namespace EnterQuery\Product\GetByIdList
 {
     class Response
     {
-        /** @var array */
-        public $products = [];
+        /** @var array|null */
+        public $product;
     }
 }
