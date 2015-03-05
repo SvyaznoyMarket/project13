@@ -9,6 +9,10 @@ namespace EnterApplication\Action\ProductCard
     class Get {
         use \EnterApplication\CurlTrait;
 
+        /**
+         * @param Request $request
+         * @return Response
+         */
         public function execute(Request $request)
         {
             $startAt = microtime(true);
@@ -215,6 +219,8 @@ namespace EnterApplication\Action\ProductCard
             $response->relatedProductQueries = $relatedProductQueries;
             $response->reviewQuery = $reviewQuery;
             $response->categoryQuery = $categoryQuery;
+
+            return $response;
         }
 
         /**
