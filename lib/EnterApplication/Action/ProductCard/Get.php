@@ -16,8 +16,20 @@ namespace EnterApplication\Action\ProductCard
         public function execute(Request $request)
         {
             $startAt = microtime(true);
+            $GLOBALS['startAt'] = $startAt;
+            register_shutdown_function(function() use ($startAt) {
+                var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | ' . round(memory_get_peak_usage() / 1048576, 2) . ' Mb');
+                var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | ' . (microtime(true) - $startAt));
+            });
 
             $curl = $this->getCurl();
+
+            $abTestQuery = (new Query\AbTest\GetActive())->prepare($abTestError);
+            $regionQuery = (new Query\Region\GetById($request->regionId))->prepare($regionError);
+
+            $curl->execute();
+            die();
+
 
             // товар
             $productQuery = null;
@@ -181,7 +193,7 @@ namespace EnterApplication\Action\ProductCard
             $abTestQuery = (new Query\AbTest\GetActive())->prepare($abTestError);
 
             // регион
-            $regionQuery = (new Query\Region\GetById($request->regionId))->prepare($abTestError);
+            $regionQuery = (new Query\Region\GetById($request->regionId))->prepare($regionError);
 
             // список регионов для выбора города
             $mainRegionQuery = (new Query\Region\GetMain())->prepare($mainRegionError);
@@ -199,8 +211,8 @@ namespace EnterApplication\Action\ProductCard
             // выполнение запросов
             $curl->execute();
 
-            var_dump($GLOBALS['enter/curl/query/cache']);
-            die(microtime(true) - $startAt);
+            //var_dump($GLOBALS['enter/curl/query/cache']);
+            die(var_dump('done'));
 
             // response
             $response = new Response();

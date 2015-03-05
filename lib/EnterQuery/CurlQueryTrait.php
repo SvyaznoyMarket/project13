@@ -46,7 +46,8 @@ trait CurlQueryTrait
         $timeoutMultiplier = null,
         \Exception &$error = null,
         $decoder = null
-    ) {
+    )
+    {
         if ($timeoutMultiplier < 0) {
             throw new \InvalidArgumentException();
         }
@@ -62,20 +63,168 @@ trait CurlQueryTrait
         $startedAt = microtime(true);
         \App::logger()->info([
             'message' => 'Create curl',
-            'cache'   => true, // важно
-            'url'     => $url,
-            'data'    => $data,
+            'cache' => true, // важно
+            'url' => $url,
+            'data' => $data,
             'timeout' => $timeout,
             'startAt' => $startedAt,
         ], ['curl']);
         // end
 
+        $queryCollection = new \ArrayObject();
+        foreach ([0, 0.4] as $i) {
+            $query = $this->createCurlQuery(
+                $url,
+                $data,
+                $timeout,
+                $timeout * $i
+            );
+
+            $query->resolveCallback = function () use (
+                $query,
+                $queryCollection,
+                &$result,
+                &$error,
+                $decoder,
+                $data,
+                $startedAt
+            ) {
+                if ($query->response->error) {
+                    $error = $query->response->error;
+
+                    // TODO: удалить; сейчас нужно для старого журнала
+                    \App::logger()->error([
+                        'message' => 'Fail curl',
+                        'cache' => true, // важно
+                        'delay' => $query->request->delay, // важно
+                        'error' => ['code' => $error->getCode(), 'message' => $error->getMessage()],
+                        'url' => $query->request->options[CURLOPT_URL],
+                        'data' => $data,
+                        'info' => $query->response->info,
+                        'header' => null,
+                        'response' => $query->response->body,
+                        'retryTimeout' => null,
+                        'retryCount' => null,
+                        'timeout' => $query->request->options[CURLOPT_TIMEOUT_MS],
+                        'startAt' => $startedAt,
+                        'endAt' => microtime(true),
+                    ], ['curl']);
+                    // end
+
+                    return;
+                }
+
+                // удалить дубликаты
+                foreach ($queryCollection as $retryQuery) {
+                    if ($query->handle === $retryQuery->handle) {
+                        var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | it\'s me ' . $retryQuery->request);
+                        //continue;
+                    }
+                    if (is_callable($retryQuery->rejectCallback)) {
+                        call_user_func($retryQuery->rejectCallback); // отменяет запрос
+                    }
+
+                    //$retryQuery->resolveCallback = null;
+                    unset($retryQuery);
+                }
+
+                $result = null;
+                if (is_callable($decoder)) {
+                    try {
+                        $result = call_user_func($decoder, $query->response->body, $query->response->statusCode);
+
+                        // TODO: удалить; сейчас нужно для старого журнала
+                        $endAt = microtime(true);
+                        $headers = [];
+                        foreach ($query->response->headers as $header) {
+                            if ($pos = strpos($header, ':')) {
+                                $key = substr($header, 0, $pos);
+                                $value = trim(substr($header, $pos + 1));
+                                $headers[$key] = $value;
+                            } else {
+                                $headers[] = $header;
+                            }
+                        }
+                        \App::logger()->info([
+                            'message' => 'End curl',
+                            'cache' => true, // важно
+                            'delay' => $query->request->delay, // важно
+                            'url' => $query->request->options[CURLOPT_URL],
+                            'data' => $data,
+                            'info' => $query->response->info,
+                            'header' => $headers,
+                            'timeout' => $query->request->options[CURLOPT_TIMEOUT_MS],
+                            'startAt' => $startedAt,
+                            'endAt' => $endAt,
+                            'spend' => $endAt - $startedAt,
+                        ], ['curl']);
+                        // end
+                    } catch (\Exception $e) {
+                        $error = $e;
+                    }
+
+                    //$id = $this->getQueryCacheId($query->request->options[CURLOPT_URL], $data);
+                    //$this->setQueryCache($id, $result);
+                } else {
+                    $result = $query->response->body;
+                }
+
+                if (!$error) {
+                    foreach ($this->callbacks as $callback) {
+                        try {
+                            //call_user_func($callback->handler);
+                        } catch (\Exception $e) {
+                            $callback->error = $e;
+                        }
+                    }
+                }
+            };
+
+            $query->resolveCallback = function() use ($queryCollection, $query) {
+                // удалить дубликаты
+                foreach ($queryCollection as $retryQuery) {
+                    if ($query->handle === $retryQuery->handle) {
+                        var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | it\'s me ' . $retryQuery->request);
+                        //continue;
+                    }
+                    if (is_callable($retryQuery->rejectCallback)) {
+                        call_user_func($retryQuery->rejectCallback); // отменяет запрос
+                    }
+
+                    //$retryQuery->resolveCallback = null;
+                    unset($retryQuery);
+                }
+            };
+
+            $queryCollection->append($query);
+        }
+
+        // подготовка запросов
+        foreach ($queryCollection as $query) {
+            $this->getCurl()->addQuery($query);
+        }
+
+        return $queryCollection;
+    }
+
+    /**
+     * @param string $url
+     * @param string $data
+     * @param int $timeout
+     * @param int|null $delay
+     * @return Query
+     */
+    private function createCurlQuery($url, $data, $timeout, $delay)
+    {
         $query = $this->getCurl()->createQuery();
+
+        $query->request->delay = $delay;
 
         $startingResponse = false;
         $query->request->options = [
-            CURLOPT_HEADER            => false,
-            CURLOPT_HEADERFUNCTION    => function ($ch, $h) use (&$query, &$startingResponse) {
+            CURLOPT_HEADER => false,
+            CURLOPT_RETURNTRANSFER => false, // важно
+            CURLOPT_HEADERFUNCTION => function ($ch, $h) use (&$query, &$startingResponse) {
                 $value = trim($h);
                 if ($value === '') {
                     $startingResponse = true;
@@ -88,139 +237,28 @@ trait CurlQueryTrait
 
                 return strlen($h);
             },
-            CURLOPT_RETURNTRANSFER    => true,
-            CURLOPT_NOSIGNAL          => true,
-            CURLOPT_IPRESOLVE         => CURL_IPRESOLVE_V4,
-            CURLOPT_ENCODING          => 'gzip,deflate',
+            CURLOPT_WRITEFUNCTION => function($ch, $str) use (&$query) {
+                $query->response->body .= $str;
 
-            CURLOPT_URL               => $url,
-            CURLOPT_TIMEOUT_MS        => $timeout,
+                return strlen($str);
+            },
+            CURLOPT_NOSIGNAL => true,
+            CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
+            CURLOPT_ENCODING => 'gzip,deflate',
+
+            CURLOPT_URL => $url,
+            CURLOPT_TIMEOUT_MS => $timeout,
             CURLOPT_CONNECTTIMEOUT_MS => $timeout,
-            CURLOPT_HTTPHEADER        => ['X-Request-Id: ' . \App::$id, 'Expect:'], // TODO: customize
+            CURLOPT_HTTPHEADER => ['X-Request-Id: ' . \App::$id, 'Expect:'], // TODO: customize
         ];
         if ($data) {
             $query->request->options[CURLOPT_HTTPHEADER][] = 'Content-Type: application/json'; // TODO: customize
             $query->request->options += [
-                CURLOPT_POST       => true,
+                CURLOPT_POST => true,
                 CURLOPT_POSTFIELDS => json_encode($data),
             ];
         }
-        $query->resolveCallback = function() use (
-            &$query,
-            &$result,
-            &$decoder,
-            &$error,
-            &$data,
-            &$startedAt
-        ) {
-            if ($query->response->error) {
-                $error = $query->response->error;
 
-                // TODO: удалить; сейчас нужно для старого журнала
-                \App::logger()->error([
-                    'message'      => 'Fail curl',
-                    'cache'        => true, // важно
-                    'delay'        => $query->request->delay, // важно
-                    'error'        => ['code' => $error->getCode(), 'message' => $error->getMessage()],
-                    'url'          => $query->request->options[CURLOPT_URL],
-                    'data'         => $data,
-                    'info'         => $query->response->info,
-                    'header'       => null,
-                    'response'     => $query->response->body,
-                    'retryTimeout' => null,
-                    'retryCount'   => null,
-                    'timeout'      => $query->request->options[CURLOPT_TIMEOUT_MS],
-                    'startAt'      => $startedAt,
-                    'endAt'        => microtime(true),
-                ], ['curl']);
-                // end
-
-                return;
-            }
-
-            $result = null;
-            if (is_callable($decoder)) {
-                try {
-                    $result = call_user_func($decoder, $query->response->body, $query->response->statusCode);
-
-                    // TODO: удалить; сейчас нужно для старого журнала
-                    $endAt = microtime(true);
-                    $headers = [];
-                    foreach ($query->response->headers as $header) {
-                        if ($pos = strpos($header, ':')) {
-                            $key = substr($header, 0, $pos);
-                            $value = trim(substr($header, $pos + 1));
-                            $headers[$key] = $value;
-                        } else {
-                            $headers[] = $header;
-                        }
-                    }
-                    \App::logger()->info([
-                        'message' => 'End curl',
-                        'cache'   => true, // важно
-                        'delay'   => $query->request->delay, // важно
-                        'url'     => $query->request->options[CURLOPT_URL],
-                        'data'    => $data,
-                        'info'    => $query->response->info,
-                        'header'  => $headers,
-                        'timeout' => $query->request->options[CURLOPT_TIMEOUT_MS],
-                        'startAt' => $startedAt,
-                        'endAt'   => $endAt,
-                        'spend'   => $endAt - $startedAt,
-                    ], ['curl']);
-                    // end
-                } catch (\Exception $e) {
-                    $error = $e;
-                }
-
-                $id = $this->getQueryCacheId($query->request->options[CURLOPT_URL], $data);
-                $this->setQueryCache($id, $result);
-            } else {
-                $result = $query->response->body;
-            }
-
-            if (!$error) {
-                foreach ($this->callbacks as $callback) {
-                    try {
-                        call_user_func($callback->handler);
-                    } catch(\Exception $e) {
-                        $callback->error = $e;
-                    }
-                }
-            }
-        };
-
-        // retry
-        // TODO: customize
-        /** @var Query[] $queries */
-        $queries = [$query];
-        $retryQuery = clone $query;
-        $retryQuery->request->delay = $timeout / 2;
-        $queries[] = $retryQuery;
-
-        foreach ($queries as $query) {
-            $this->addCallback(function() use (&$queries, &$query) {
-                var_dump(round(explode(' ', microtime())[0] * 10000) . ' remove duplicates');
-                foreach ($queries as $iQuery) {
-                    if ($query === $iQuery) {
-                        var_dump(round(explode(' ', microtime())[0] * 10000) . ' it\'s me ' . $query->request);
-                        continue;
-                    }
-                    if (!is_callable($iQuery->rejectCallback)) continue;
-
-                    call_user_func($iQuery->rejectCallback); // отменяет запрос
-
-                    $iQuery->rejectCallback = null;
-                    $iQuery->resolveCallback = null;
-                }
-            });
-        }
-
-        // подготовка запросов
-        foreach ($queries as $query) {
-            $this->getCurl()->addQuery($query);
-        }
-
-        return $queries;
+        return $query;
     }
 }

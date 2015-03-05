@@ -65,8 +65,9 @@ class App {
                         $logger->error(['message' => $message, 'sender' => $file . ' ' . $line], ['critical', 'error_handler']);
                     }
 
-                    return true;
+                    //return true;
             }
+            var_dump([$level, $message, $file, $level, $context]);
 
             if (error_reporting() & $level) {
                 throw new \ErrorException(sprintf('%s: %s in %s line %d', isset($levels[$level]) ? $levels[$level] : $level, $message, $file, $line));

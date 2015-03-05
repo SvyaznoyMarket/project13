@@ -9,13 +9,13 @@ class Config
      *
      * @var int
      */
-    public $selectTimeout = 50;
+    public $selectTimeout = 500;
     /**
      * Задержка для curl_multi_timeout, мкс
      *
      * @var int
      */
-    public $multiSelectTimeout = 250;
+    public $multiSelectTimeout = 1000;
     /**
      * @var int
      */
