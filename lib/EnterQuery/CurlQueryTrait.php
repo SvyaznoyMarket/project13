@@ -8,10 +8,32 @@ trait CurlQueryTrait
     use QueryCacheTrait;
 
     /**
+     * @var Callback[]
+     */
+    protected $callbacks = [];
+
+    /**
+     * @param callable $handler
+     * @return Callback
+     */
+    public function addCallback($handler)
+    {
+        if (!is_callable($handler)) {
+            throw new \InvalidArgumentException('Неверный обработчик');
+        }
+
+        $callback = new Callback();
+        $callback->handler = $handler;
+
+        $this->callbacks[] = $callback;
+
+        return $callback;
+    }
+
+    /**
      * @param $url
      * @param array $data
      * @param int|null $timeoutMultiplier
-     * @param callable[] $callbacks
      * @param \Exception $error
      * @param callable|null $decoder
      * @return \EnterLab\Curl\Query
@@ -20,7 +42,6 @@ trait CurlQueryTrait
         $url,
         $data = [],
         $timeoutMultiplier = null,
-        array $callbacks = [],
         \Exception &$error = null,
         $decoder = null
     ) {
@@ -85,7 +106,6 @@ trait CurlQueryTrait
         $query->resolveCallback = function() use (
             &$query,
             &$result,
-            &$callbacks,
             &$decoder,
             &$error,
             &$data,
@@ -155,18 +175,11 @@ trait CurlQueryTrait
             }
 
             if (!$error) {
-                foreach ($callbacks as $callback) {
-                    if (!is_callable($callback)) {
-                        \App::logger()->error(['error' => sprintf('Неверная функция обратного вызова для %s', $query->request->options[CURLOPT_URL]), 'sender' => __FILE__ . ' ' .  __LINE__], ['curl-cache']);
-
-                        continue;
-                    }
-
-                    $callbackError = null;
+                foreach ($this->callbacks as $callback) {
                     try {
-                        call_user_func($callback);
+                        call_user_func($callback->handler);
                     } catch(\Exception $e) {
-                        $callbackError = $e; // TODO: подумать как передать ошибку обратного вызова
+                        $callback->error = $e;
                     }
                 }
             }

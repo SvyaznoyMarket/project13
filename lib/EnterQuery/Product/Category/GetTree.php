@@ -44,10 +44,9 @@ namespace EnterQuery\Product\Category
 
         /**
          * @param \Exception $error
-         * @param callable[] $callbacks
          * @return $this
          */
-        public function prepare(\Exception &$error = null, array $callbacks = [])
+        public function prepare(\Exception &$error = null)
         {
             $urlQuery = [];
             // критерий для корневой категории
@@ -88,7 +87,6 @@ namespace EnterQuery\Product\Category
                 ),
                 [], // data
                 1, // timeout multiplier
-                $callbacks,
                 $error,
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];

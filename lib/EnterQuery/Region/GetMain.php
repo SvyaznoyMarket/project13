@@ -19,10 +19,9 @@ namespace EnterQuery\Region
 
         /**
          * @param \Exception $error
-         * @param callable[] $callbacks
          * @return $this
          */
-        public function prepare(\Exception &$error = null, array $callbacks = [])
+        public function prepare(\Exception &$error = null)
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
@@ -31,7 +30,6 @@ namespace EnterQuery\Region
                 ),
                 [], // data
                 0.5, // timeout multiplier
-                $callbacks,
                 $error,
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
