@@ -3,8 +3,10 @@
 		d = $(document),
 		debugPanel = $('.jsDebugPanel'),
 		debugPanelContent = $('.jsDebugPanelContent'),
-		debugPanelConfig = debugPanel.data('value'),
-		debugPanelItemContent = debugPanel.find('.jsDebugPanelItemContent');
+		currentDebugPanelItemConfig = debugPanel.data('value'),
+		currentDebugPanelItemContent = debugPanel.find('.jsCurrentDebugPanelItemContent'),
+		prevDebugPanelItemConfig = debugPanel.data('prev-value'),
+		prevDebugPanelItemContent = debugPanel.find('.jsPrevDebugPanelItemContent');
 	// end of vars
 
 
@@ -340,7 +342,8 @@
 	// end of functions
 
 
-	initPanel( debugPanelItemContent, debugPanelConfig );
+	initPanel( currentDebugPanelItemContent, currentDebugPanelItemConfig );
+	initPanel( prevDebugPanelItemContent, prevDebugPanelItemConfig );
 
 	debugPanel.on('click', '.jsExpandValue', expandValue);
 	debugPanel.on('click', '.jsOpenDebugPanelItem', openDebugPanel);

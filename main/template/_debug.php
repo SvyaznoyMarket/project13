@@ -149,13 +149,18 @@
     </div>
 </script>
 
-<div class="jsDebugPanel debug-panel" data-value="<?= $helper->json($debugData) ?>">
+<div class="jsDebugPanel debug-panel" data-value="<?= $helper->json($debugData) ?>" data-prev-value="<?= $helper->json($prevDebugData) ?>">
     <a class="debug-panel-open jsOpenDebugPanelContent" href="#">debug</a>
     <div class="debug-panel-content jsDebugPanelContent">
-        <div>
-            <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#"><?= $helper->escape(\App::request()->getUri()) ?></a>
+        <div class="debug-panel-item-prev" title="Previous document debug">
+            <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#"><?= $helper->escape($prevDebugData['server']['value']['REQUEST_URI']) ?></a>
             <a class="debug-panel-item-close jsCloseDebugPanelItem">×</a>
-            <table class="debug-panel-item-content jsDebugPanelItemContent"></table>
+            <table class="debug-panel-item-content jsDebugPanelItemContent jsPrevDebugPanelItemContent"></table>
+        </div>
+        <div>
+            <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#"><?= $helper->escape($debugData['server']['value']['REQUEST_URI']) ?></a>
+            <a class="debug-panel-item-close jsCloseDebugPanelItem">×</a>
+            <table class="debug-panel-item-content jsDebugPanelItemContent jsCurrentDebugPanelItemContent"></table>
         </div>
     </div>
 </div>
@@ -184,6 +189,14 @@
         border-radius: 4px;
         border-top-left-radius: 0;
         box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    .debug-panel-item-prev {
+        opacity: 0.3;
+    }
+
+    .debug-panel-item-prev:hover {
+        opacity: 1;
     }
 
     .debug-panel {
