@@ -2,8 +2,9 @@
 	var
 		d = $(document),
 		debugPanel = $('.jsDebugPanel'),
+		debugPanelContent = $('.jsDebugPanelContent'),
 		debugPanelConfig = debugPanel.data('value'),
-		debugContent = debugPanel.find('.jsDebugPanelContent');
+		debugPanelItemContent = debugPanel.find('.jsDebugPanelItemContent');
 	// end of vars
 
 
@@ -217,7 +218,7 @@
 		/**
 		 * Инициализация панели отладки
 		 */
-		initPanel = function initPanel( node, data ) {
+		initPanel = function( node, data ) {
 			var
 				html,
 				key;
@@ -242,7 +243,7 @@
 		/**
 		 * Общий обработчик AJAX
 		 */
-		ajaxResponse = function ajaxResponse( event, xhr, settings ) {
+		ajaxResponse = function( event, xhr, settings ) {
 			var
 				res,
 				debugInfo,
@@ -268,8 +269,8 @@
 			}
 
 			html = render['ajax'](siteUrl);
-			debugPanel.append(html);
-			outNode = debugPanel.find('.jsDebugPanelContent').eq(debugPanel.find('.jsDebugPanelContent').length - 1);
+			debugPanelContent.append(html);
+			outNode = debugPanel.find('.jsDebugPanelItemContent').eq(debugPanel.find('.jsDebugPanelItemContent').length - 1);
 
 			initPanel( outNode, debugInfo );
 		},
@@ -277,7 +278,7 @@
 		/**
 		 * Сворачивание\Разворачивание значений
 		 */
-		expandValue = function expandValue() {
+		expandValue = function() {
 			var
 				self = $(this),
 				openClass = 'jsOpened',
@@ -298,14 +299,14 @@
 		},
 
 		/**
-		 * Открытие дебаг панели
+		 * Открытие элемента дебаг панели
 		 */
-		openDebugPanel = function openDebugPanel() {
+		openDebugPanel = function() {
 			var
 				self = $(this),
 				openClass = 'jsOpened',
 				opened = self.hasClass(openClass),
-				expand = self.siblings('.jsDebugPanelContent');
+				expand = self.siblings('.jsDebugPanelItemContent');
 			// end of vars
 
 			if ( opened ) {
@@ -321,21 +322,30 @@
 		};
 
         /**
-         * Уничтожение дебаг панели
+         * Уничтожение элемента дебаг панели
          */
-        removeDebugPanel = function openDebugPanel() {
+        removeDebugPanel = function() {
             $(this).parent().remove();
 
             return false;
-        };
+        },
+
+		/**
+		 * Открытие дебаг панели
+		 */
+		openDebugPanelContent = function(e) {
+			e.preventDefault();
+			debugPanelContent.toggle();
+		};
 	// end of functions
 
 
-	initPanel( debugContent, debugPanelConfig );
+	initPanel( debugPanelItemContent, debugPanelConfig );
 
 	debugPanel.on('click', '.jsExpandValue', expandValue);
-	debugPanel.on('click', '.jsOpenDebugPanel', openDebugPanel);
-	debugPanel.on('click', '.jsDebugPanelClose', removeDebugPanel);
+	debugPanel.on('click', '.jsOpenDebugPanelItem', openDebugPanel);
+	debugPanel.on('click', '.jsCloseDebugPanelItem', removeDebugPanel);
+	debugPanel.on('click', '.jsOpenDebugPanelContent', openDebugPanelContent);
 
 	d.ajaxSuccess(ajaxResponse);
 

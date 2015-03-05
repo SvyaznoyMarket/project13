@@ -143,22 +143,25 @@
 
 <script id="tplDebugAjax" type="text/html">
     <div>
-        <a class="jsOpenDebugPanel" href="#">{{name}}</a>
-        <a class="jsDebugPanelClose">×</a>
-        <div class="jsDebugPanelContent" style="display: none"></div>
+        <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#">{{name}}</a>
+        <a class="debug-panel-item-close jsCloseDebugPanelItem">×</a>
+        <div class="debug-panel-item-content jsDebugPanelItemContent"></div>
     </div>
 </script>
 
 <div class="jsDebugPanel debug-panel" data-value="<?= $helper->json($debugData) ?>">
-    <div>
-        <a class="jsOpenDebugPanel" href="#">debug</a>
-        <a class="jsDebugPanelClose">×</a>
-        <table class="jsDebugPanelContent" style="display: none"></table>
+    <a class="debug-panel-open jsOpenDebugPanelContent" href="#">debug</a>
+    <div class="debug-panel-content jsDebugPanelContent">
+        <div>
+            <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#"><?= $helper->escape(\App::request()->getUri()) ?></a>
+            <a class="debug-panel-item-close jsCloseDebugPanelItem">×</a>
+            <table class="debug-panel-item-content jsDebugPanelItemContent"></table>
+        </div>
     </div>
 </div>
 
 <style type="text/css">
-    .jsOpenDebugPanel {
+    .debug-panel-open, .debug-panel-item-open {
         padding: 5px;
         display: inline-block;
         margin: 4px 0 0;
@@ -171,9 +174,8 @@
         border-top-right-radius: 4px;
         box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
-    .jsOpenDebugPanel.jsOpened {
-    }
-    .jsDebugPanelContent {
+    .debug-panel-item-content {
+        display: none;
         background: #0f1113;
         -webkit-border-radius: 4px;
         -webkit-border-top-left-radius: 0;
@@ -202,7 +204,11 @@
         text-decoration: none;
     }
 
-    a.jsDebugPanelClose, a.jsDebugPanelClose:hover {
+    .debug-panel-content {
+        display: none;
+    }
+
+    a.debug-panel-item-close, a.debug-panel-item-close:hover {
         display: inline-block;
         cursor: pointer;
         font-size: 16px;
