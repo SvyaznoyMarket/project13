@@ -597,7 +597,7 @@ class IndexAction {
                 'is_credit'      => $is_credit,
             ],
             [
-                'product_list'   => [$product->getId() => ['id' => $product->getId(), 'quantity' => (($cart->getQuantityByProduct($product->getId()) > 0) ? $cart->getQuantityByProduct($product->getId()) : 1)]],
+                'product_list'   => [['id' => $product->getId(), 'quantity' => (($cart->getQuantityByProduct($product->getId()) > 0) ? $cart->getQuantityByProduct($product->getId()) : 1)]],
             ],
             function($data) use (&$hasCreditPaymentMethod) {
                 if (!isset($data['detail']) || !is_array($data['detail'])) {

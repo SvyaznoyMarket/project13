@@ -34,6 +34,11 @@ namespace EnterApplication\Action\ProductCard
                     $deliveryQuery = new Query\Delivery\GetByCart();
                     // корзина
                     $deliveryQuery->cart->products[] = $deliveryQuery->cart->createProduct($product['id'], 1);
+                    if ($kitIds = array_column($productQuery->response->product['kit'], 'id')) {
+                        // TODO: пока нельзя
+                        //$deliveryQuery->cart->products = array_merge($deliveryQuery->cart->products, $kitIds);
+                    }
+
                     // регион
                     $deliveryQuery->regionId = $productQuery->regionId;
 
