@@ -49,9 +49,11 @@
                     <tbody>
                         {{#value}}
                             <tr>
-                                <td class="query-cell">{{#cache}}<span style="color: #ffff00">*</span>{{/cache}} {{info.total_time}}</td>
-                                <td class="query-cell">{{retryCount}}</td>
-                                <td class="query-cell">{{header.X-Server-Name}} {{header.X-API-Mode}}</td>
+                                <td class="query-cell">{{#cache}}<span style="color: #ffff00" title="Cached">*</span>{{/cache}} <span title="Response time">{{info.total_time}}</span></td>
+                                <td class="query-cell"><span title="Retry count">{{retryCount}}</span></td>
+                                <td class="query-cell"><span title="Server name">{{header.X-Server-Name}}</span></td>
+                                <td class="query-cell">{{header.X-API-Mode}}</td>
+                                <td class="query-cell"><a href="{{^data}}{{url}}{{/data}}{{#data}}/debug/query?data={{encodedData}}&url={{encodedUrl}}{{/data}}" target="_blank" title="Open directly" class="openDirectly">&#11016;</a></td>
                                 <td class="query-cell">
                                     <a class="query 
                                             {{#error}}
@@ -60,7 +62,7 @@
                                             {{#url}}
                                                 query-ok
                                             {{/url}}"
-                                        href="/debug/query?data={{data}}&url={{url}}" target="_blank">{{&escapedUrl}}</a>
+                                        href="/debug/query?data={{encodedData}}&url={{encodedUrl}}" target="_blank">{{url}}</a>
                                     {{#data}}{{data}}{{/data}}
                                 </td>
                             </tr>
@@ -273,5 +275,11 @@
     .debug-panel .property-value .query-cell {
         padding: 2px 10px 2px 0;
         white-space: nowrap;
+    }
+    .debug-panel .property-value .query-cell span[title] {
+        cursor: help;
+    }
+    .debug-panel .openDirectly {
+        color: #bebebe;
     }
 </style>

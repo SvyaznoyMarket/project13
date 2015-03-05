@@ -14,8 +14,10 @@
         <ul style="list-style-type: none; padding: 5px 0 10px 0;">
         <? foreach ($test->getCases() as $case) : ?>
             <li>
-                <input type="radio" class="changeCase" name="<?= $test->getKey() ?>" value="<?= $case->getKey() ?>" <?= $test->getChosenCase() == $case ? 'checked' : '' ?> <?= !$test->isActive() ? 'disabled' : '' ?> />
-                <?= $case->getName() ?> <span style="color: gray;"><?= $case->getTraffic() ?>%</span>
+                <label>
+                    <input type="radio" class="changeCase" name="<?= $test->getKey() ?>" value="<?= $case->getKey() ?>" <?= $test->getChosenCase() == $case ? 'checked' : '' ?> <?= !$test->isActive() ? 'disabled' : '' ?> />
+                    <?= $case->getName() ?> <span style="color: gray;"><?= $case->getTraffic() ?>%</span>
+                </label>
                 <span class="gaValue" style="color: #AAA; border: 1px solid #AAA; border-radius: 2px; font-size: 12px; padding: 0 2px; cursor: pointer" title="<?= $test->getKey().'_'.$case->getKey() ?>">GA</span>
             </li>
         <? endforeach ?>
