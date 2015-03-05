@@ -106,6 +106,7 @@ class IndexPage extends \View\DefaultLayout {
         $sender = ['name' => 'retailrocket'];
 
         $products = $this->getParam('productList');
+        if (empty($products)) return '';
         $personal = @$this->getParam('rrProducts')['personal'];
         $personalForWalking = @$this->getParam('rrProducts')['personal'];
         $personalForWalking = array_filter((array)$personalForWalking, function($p) {
