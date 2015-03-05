@@ -61,6 +61,7 @@ class Client
      */
     public function addQuery(Query $query)
     {
+        var_dump(round(explode(' ', microtime())[0] * 10000) . ' add ' . $query->request);
         $request = $query->request;
 
         $handle = curl_init();
@@ -174,6 +175,7 @@ class Client
 
             $callback = is_callable($query->resolveCallback) ? $query->resolveCallback : null;
 
+            var_dump(round(explode(' ', microtime())[0] * 10000) . ' done ' . $id);
             $this->removeRequest($id);
 
             if ($callback) {
@@ -204,7 +206,10 @@ class Client
             );
             curl_close($handle);
 
+            var_dump(round(explode(' ', microtime())[0] * 10000) . ' remove ' . $id . ' ' . $this->queriesById[$id]->request);
             unset($this->handlesById[$id], $this->queriesById[$id]);
+        } else {
+            var_dump(round(explode(' ', microtime())[0] * 10000) . ' can\'t remove ' . $id);
         }
     }
 

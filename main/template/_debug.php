@@ -53,6 +53,7 @@
                                 <td class="query-cell"><span title="Retry count">{{retryCount}}</span></td>
                                 <td class="query-cell"><span title="Server name">{{header.X-Server-Name}}</span></td>
                                 <td class="query-cell">{{header.X-API-Mode}}</td>
+                                <td class="query-cell"><span title="Delay">{{delay}}</span></td>
                                 <td class="query-cell"><a href="{{^data}}{{url}}{{/data}}{{#data}}/debug/query?data={{encodedData}}&url={{encodedUrl}}{{/data}}" target="_blank" title="Open directly" class="openDirectly">&#11016;</a></td>
                                 <td class="query-cell">
                                     <a class="query 

@@ -199,7 +199,8 @@ namespace EnterApplication\Action\ProductCard
             // выполнение запросов
             $curl->execute();
 
-            //die(microtime(true) - $startAt);
+            var_dump($GLOBALS['enter/curl/query/cache']);
+            die(microtime(true) - $startAt);
 
             // response
             $response = new Response();

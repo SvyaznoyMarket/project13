@@ -18,4 +18,10 @@ class Query
         $this->request = new Request();
         $this->response = new Response();
     }
+
+    public function __clone()
+    {
+        $this->request = clone $this->request;
+        $this->response = clone $this->response;
+    }
 }

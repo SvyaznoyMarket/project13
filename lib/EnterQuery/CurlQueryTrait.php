@@ -2,6 +2,8 @@
 
 namespace EnterQuery;
 
+use EnterLab\Curl\Query;
+
 trait CurlQueryTrait
 {
     use \EnterApplication\CurlTrait;
@@ -36,7 +38,7 @@ trait CurlQueryTrait
      * @param int|null $timeoutMultiplier
      * @param \Exception $error
      * @param callable|null $decoder
-     * @return \EnterLab\Curl\Query
+     * @return \EnterLab\Curl\Query[]
      */
     public function prepareCurlQuery(
         $url,
@@ -117,6 +119,8 @@ trait CurlQueryTrait
                 // TODO: удалить; сейчас нужно для старого журнала
                 \App::logger()->error([
                     'message'      => 'Fail curl',
+                    'cache'        => true, // важно
+                    'delay'        => $query->request->delay, // важно
                     'error'        => ['code' => $error->getCode(), 'message' => $error->getMessage()],
                     'url'          => $query->request->options[CURLOPT_URL],
                     'data'         => $data,
@@ -154,6 +158,7 @@ trait CurlQueryTrait
                     \App::logger()->info([
                         'message' => 'End curl',
                         'cache'   => true, // важно
+                        'delay'   => $query->request->delay, // важно
                         'url'     => $query->request->options[CURLOPT_URL],
                         'data'    => $data,
                         'info'    => $query->response->info,
@@ -185,8 +190,37 @@ trait CurlQueryTrait
             }
         };
 
-        $this->getCurl()->addQuery($query);
+        // retry
+        // TODO: customize
+        /** @var Query[] $queries */
+        $queries = [$query];
+        $retryQuery = clone $query;
+        $retryQuery->request->delay = $timeout / 2;
+        $queries[] = $retryQuery;
 
-        return $query;
+        foreach ($queries as $query) {
+            $this->addCallback(function() use (&$queries, &$query) {
+                var_dump(round(explode(' ', microtime())[0] * 10000) . ' remove duplicates');
+                foreach ($queries as $iQuery) {
+                    if ($query === $iQuery) {
+                        var_dump(round(explode(' ', microtime())[0] * 10000) . ' it\'s me ' . $query->request);
+                        continue;
+                    }
+                    if (!is_callable($iQuery->rejectCallback)) continue;
+
+                    call_user_func($iQuery->rejectCallback); // отменяет запрос
+
+                    $iQuery->rejectCallback = null;
+                    $iQuery->resolveCallback = null;
+                }
+            });
+        }
+
+        // подготовка запросов
+        foreach ($queries as $query) {
+            $this->getCurl()->addQuery($query);
+        }
+
+        return $queries;
     }
 }
