@@ -18,7 +18,6 @@ trait QueryCacheTrait
         ksort($urlQuery);
         //ksort($data);
         ksort($data);
-        $data = array_keys($data);
 
         $id =
             $urlParts['scheme']

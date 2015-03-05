@@ -33,7 +33,7 @@ class CacheAction {
                     $request->regionId = $regionId;
                     $request->userToken = \App::user()->getToken() ?: null;
 
-                    $action->execute($request);
+                    $response = $action->execute($request);
                 }
             },
         ];

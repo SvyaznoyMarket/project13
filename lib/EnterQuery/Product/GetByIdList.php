@@ -47,7 +47,7 @@ namespace EnterQuery\Product
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
-                    $this->response->product = $result[0];
+                    $this->response->products = isset($result[0]) ? $result : [];
 
                     return $result; // for cache
                 }
@@ -62,7 +62,7 @@ namespace EnterQuery\Product\GetByIdList
 {
     class Response
     {
-        /** @var array|null */
-        public $product;
+        /** @var array */
+        public $products = [];
     }
 }

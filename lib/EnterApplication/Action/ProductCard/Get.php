@@ -9,6 +9,10 @@ namespace EnterApplication\Action\ProductCard
     class Get {
         use \EnterApplication\CurlTrait;
 
+        /**
+         * @param Request $request
+         * @return Response
+         */
         public function execute(Request $request)
         {
             $startAt = microtime(true);
@@ -34,6 +38,11 @@ namespace EnterApplication\Action\ProductCard
                     $deliveryQuery = new Query\Delivery\GetByCart();
                     // корзина
                     $deliveryQuery->cart->products[] = $deliveryQuery->cart->createProduct($product['id'], 1);
+                    if ($kitIds = array_column($productQuery->response->product['kit'], 'id')) {
+                        // TODO: пока нельзя
+                        //$deliveryQuery->cart->products = array_merge($deliveryQuery->cart->products, $kitIds);
+                    }
+
                     // регион
                     $deliveryQuery->regionId = $productQuery->regionId;
 
@@ -210,6 +219,8 @@ namespace EnterApplication\Action\ProductCard
             $response->relatedProductQueries = $relatedProductQueries;
             $response->reviewQuery = $reviewQuery;
             $response->categoryQuery = $categoryQuery;
+
+            return $response;
         }
 
         /**
