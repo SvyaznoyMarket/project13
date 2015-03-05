@@ -112,7 +112,7 @@ return function(
                                     <? if ($order->isPaid()) : ?>
                                         Заказ оплачен
                                     <? else : ?>
-                                        Вы сможете оплатить заказ при получении.
+                                        Вы можете оплатить заказ при получении.
                                     <? endif ?>
                                 </div>
                             </div>
@@ -161,7 +161,7 @@ return function(
                                     <? elseif ($order->getPaymentId() == PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY) : ?>
                                     Оплата заказа банковской картой при получении.
                                     <? else : ?>
-                                    Вы можете оплатить заказ при получении.
+                                    Вы сможете оплатить заказ при получении.
                                     <? endif ?>
                                 </div>
                             </div>

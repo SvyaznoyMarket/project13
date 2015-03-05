@@ -156,6 +156,14 @@
         $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '17 Оплатить_онлайн_вход_Оплата']);
 	});
 
+    $orderContent.on('click', '.jsOnlinePaymentPossibleNoMotiv', function(){
+        var $blocks = $('.jsOnlinePaymentBlock');
+        if ($blocks.length) {
+            $(this).hide();
+            $blocks.show();
+        }
+    });
+
     // Мотивация онлайн-оплаты (купон)
     $orderContent.on('click', '.jsOrderCouponInitial', function(event){
         $(this).hide();
