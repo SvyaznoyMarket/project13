@@ -66,13 +66,14 @@ class ShowAction {
             if ($url) {
                 if ('Create curl' == $message['message']) {
                     $queryData[$index] = [
-                        'url'        => urlencode($url),
-                        'escapedUrl' => $helper->escape(rawurldecode($url)),
-                        'data'       => (bool)$data ? json_encode($data) : null,
-                        'timeout'    => isset($message['timeout']) ? $message['timeout'] : null,
-                        'startAt'    => $startAt,
-                        'count'      => isset($queryData[$index]['count']) ? ($queryData[$index]['count'] + 1) : 1,
-                        'cache'      => isset($message['cache']),
+                        'url'         => $url,
+                        'encodedUrl'  => urlencode($url),
+                        'data'        => (bool)$data ? json_encode($data) : null,
+                        'encodedData' => (bool)$data ? urlencode(json_encode($data)) : null,
+                        'timeout'     => isset($message['timeout']) ? $message['timeout'] : null,
+                        'startAt'     => $startAt,
+                        'count'       => isset($queryData[$index]['count']) ? ($queryData[$index]['count'] + 1) : 1,
+                        'cache'       => isset($message['cache']),
                     ];
                 } else if ((('Fail curl' == $message['message']) || ('End curl' == $message['message'])) && isset($queryData[$index])) {
                     if (isset($message['error'])) {
