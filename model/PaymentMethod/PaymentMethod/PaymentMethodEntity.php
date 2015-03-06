@@ -13,6 +13,7 @@ class PaymentMethodEntity {
     const PAYMENT_PSB = 8;
     const PAYMENT_CERTIFICATE = 10;
     const PAYMENT_PAYPAL = 13;
+    const PAYMENT_SVYAZNOY_CLUB = 14;
 
     /** @var int */
     public $id;
