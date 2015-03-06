@@ -174,6 +174,7 @@ class TemplateHelper {
     public function formatPrice($price) {
         $price = str_replace(',', '.', $price);
         $price = preg_replace('/\s/', '', $price);
+        $price = number_format($price, 2, '.', '');
         $price = explode('.', $price);
 
         /* Маленькие пробелы между разрядами целой части цены */

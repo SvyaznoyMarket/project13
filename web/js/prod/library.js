@@ -616,9 +616,10 @@ String.prototype.isEmail = isTrueEmail; // добавляем методом д�
  */
 (function( global ) {
 	global.printPrice = function(price) {
-		price = price + '';
+		price = String(price);
 		price = price.replace(',', '.');
 		price = price.replace(/\s/g, '');
+		price = String(Number(price).toFixed(2));
 		price = price.split('.');
 
 		if (price[0].length >= 5) {
