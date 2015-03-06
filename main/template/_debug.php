@@ -49,9 +49,11 @@
                     <tbody>
                         {{#value}}
                             <tr>
-                                <td class="query-cell">{{info.total_time}}</td>
-                                <td class="query-cell">{{retryCount}}</td>
-                                <td class="query-cell">{{header.X-Server-Name}} {{header.X-API-Mode}}</td>
+                                <td class="query-cell">{{#cache}}<span style="color: #ffff00" title="Cached">*</span>{{/cache}} <span title="Response time">{{info.total_time}}</span></td>
+                                <td class="query-cell"><span title="Retry count">{{retryCount}}</span></td>
+                                <td class="query-cell"><span title="Server name">{{header.X-Server-Name}}</span></td>
+                                <td class="query-cell">{{header.X-API-Mode}}</td>
+                                <td class="query-cell"><a href="{{^data}}{{url}}{{/data}}{{#data}}/debug/query?data={{encodedData}}&url={{encodedUrl}}{{/data}}" target="_blank" title="Open directly" class="openDirectly">&#11016;</a></td>
                                 <td class="query-cell">
                                     <a class="query 
                                             {{#error}}
@@ -60,10 +62,8 @@
                                             {{#url}}
                                                 query-ok
                                             {{/url}}"
-                                        href="/debug/query?data={{data}}&url={{url}}" target="_blank">{{&escapedUrl}}</a>
-                                    {{#data}}
-                                    {{data}}
-                                    {{/data}}
+                                        href="/debug/query?data={{encodedData}}&url={{encodedUrl}}" target="_blank">{{url}}</a>
+                                    {{#data}}{{data}}{{/data}}
                                 </td>
                             </tr>
                         {{/value}}
@@ -143,22 +143,30 @@
 
 <script id="tplDebugAjax" type="text/html">
     <div>
-        <a class="jsOpenDebugPanel" href="#">{{name}}</a>
-        <a class="jsDebugPanelClose">×</a>
-        <div class="jsDebugPanelContent" style="display: none"></div>
+        <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#">{{name}}</a>
+        <a class="debug-panel-item-close jsCloseDebugPanelItem">×</a>
+        <div class="debug-panel-item-content jsDebugPanelItemContent"></div>
     </div>
 </script>
 
-<div class="jsDebugPanel debug-panel" data-value="<?= $helper->json($debugData) ?>">
-    <div>
-        <a class="jsOpenDebugPanel" href="#">debug</a>
-        <a class="jsDebugPanelClose">×</a>
-        <table class="jsDebugPanelContent" style="display: none"></table>
+<div class="jsDebugPanel debug-panel" data-value="<?= $helper->json($debugData) ?>" data-prev-value="<?= $helper->json($prevDebugData) ?>">
+    <a class="debug-panel-open jsOpenDebugPanelContent" href="#">debug</a>
+    <div class="debug-panel-content jsDebugPanelContent">
+        <div class="debug-panel-item-prev" title="Previous document debug">
+            <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#"><?= $helper->escape($prevDebugData['server']['value']['REQUEST_URI']) ?></a>
+            <a class="debug-panel-item-close jsCloseDebugPanelItem">×</a>
+            <table class="debug-panel-item-content jsDebugPanelItemContent jsPrevDebugPanelItemContent"></table>
+        </div>
+        <div>
+            <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#"><?= $helper->escape($debugData['server']['value']['REQUEST_URI']) ?></a>
+            <a class="debug-panel-item-close jsCloseDebugPanelItem">×</a>
+            <table class="debug-panel-item-content jsDebugPanelItemContent jsCurrentDebugPanelItemContent"></table>
+        </div>
     </div>
 </div>
 
 <style type="text/css">
-    .jsOpenDebugPanel {
+    .debug-panel-open, .debug-panel-item-open {
         padding: 5px;
         display: inline-block;
         margin: 4px 0 0;
@@ -171,9 +179,8 @@
         border-top-right-radius: 4px;
         box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
-    .jsOpenDebugPanel.jsOpened {
-    }
-    .jsDebugPanelContent {
+    .debug-panel-item-content {
+        display: none;
         background: #0f1113;
         -webkit-border-radius: 4px;
         -webkit-border-top-left-radius: 0;
@@ -182,6 +189,14 @@
         border-radius: 4px;
         border-top-left-radius: 0;
         box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    .debug-panel-item-prev {
+        opacity: 0.3;
+    }
+
+    .debug-panel-item-prev:hover {
+        opacity: 1;
     }
 
     .debug-panel {
@@ -202,7 +217,11 @@
         text-decoration: none;
     }
 
-    a.jsDebugPanelClose, a.jsDebugPanelClose:hover {
+    .debug-panel-content {
+        display: none;
+    }
+
+    a.debug-panel-item-close, a.debug-panel-item-close:hover {
         display: inline-block;
         cursor: pointer;
         font-size: 16px;
@@ -275,5 +294,11 @@
     .debug-panel .property-value .query-cell {
         padding: 2px 10px 2px 0;
         white-space: nowrap;
+    }
+    .debug-panel .property-value .query-cell span[title] {
+        cursor: help;
+    }
+    .debug-panel .openDirectly {
+        color: #bebebe;
     }
 </style>
