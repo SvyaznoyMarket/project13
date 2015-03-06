@@ -179,7 +179,7 @@ class TemplateHelper {
 
         /* Маленькие пробелы между разрядами целой части цены */
         if (strlen($price[0]) >= 5) {
-            $price[0] = preg_replace('/(\d)(?=(\d\d\d)+([^\d]|$))/', '$1&thinsp;', $price[0]);
+            $price[0] = preg_replace('/(\d)(?=(\d\d\d)+([^\d]|$))/', '$1&thinsp;', $price[0]); // TODO: заменить &thinsp; на соответствующий unicode символ
         }
 
         if (isset($price[1]) && $price[1] == 0) {
