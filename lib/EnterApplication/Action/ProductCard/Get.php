@@ -24,12 +24,12 @@ namespace EnterApplication\Action\ProductCard
 
             $curl = $this->getCurl();
 
+            /*
             $abTestQuery = (new Query\AbTest\GetActive())->prepare($abTestError);
             $regionQuery = (new Query\Region\GetById($request->regionId))->prepare($regionError);
-
             $curl->execute();
             die();
-
+            */
 
             // товар
             $productQuery = null;
@@ -212,7 +212,7 @@ namespace EnterApplication\Action\ProductCard
             $curl->execute();
 
             //var_dump($GLOBALS['enter/curl/query/cache']);
-            die(var_dump('done'));
+            //die(var_dump('done'));
 
             // response
             $response = new Response();

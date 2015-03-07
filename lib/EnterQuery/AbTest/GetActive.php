@@ -31,8 +31,6 @@ namespace EnterQuery\AbTest
                 0.5, // timeout multiplier
                 $error,
                 function($response, $statusCode) {
-                    var_dump($response);
-                    return;
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
                     $this->response->tests = isset($result[0]) ? $result : [];

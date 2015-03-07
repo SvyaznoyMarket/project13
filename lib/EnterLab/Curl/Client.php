@@ -39,6 +39,14 @@ class Client
             //$this->execute();
         }
 
+        foreach ($this->queriesById as $id => $query) {
+            //var_dump('close ' . $id);
+            if (!is_resource($query->handle)) continue;
+
+            curl_multi_remove_handle($this->mh, $query->handle);
+            curl_close($query->handle);
+        }
+
         if ($this->mh) {
             curl_multi_close($this->mh);
             $this->mh = null;
@@ -76,14 +84,14 @@ class Client
 
         if ($request->delay) {
             $this->delays[$id] = microtime(true) + ($request->delay / 1000);
-            var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | add delay ' . $id);
+            //var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | add delay ' . $id);
         } else {
-            var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | add ' . $id . ' ' . $query->request);
+            //var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | add ' . $id . ' ' . $query->request);
             curl_multi_add_handle($this->mh, $handle);
         }
 
-        var_dump('added');
-        var_dump(array_map(function(Query $query) { return $query->handle; }, $this->queriesById));
+        //var_dump('added');
+        //var_dump(array_map(function(Query $query) { return $query->handle; }, $this->queriesById));
 
         // принудительно отправить запросы на выполнение
         if (count($this->queriesById) >= $this->queryLimit) {
@@ -104,8 +112,8 @@ class Client
         do {
             if ($this->active && (curl_multi_select($this->mh, $selectTimeout) === -1)) {
                 usleep($multiSelectTimeout); // выполнить задержку если curl_multi_select вернул -1 https://bugs.php.net/bug.php?id=61141
-                var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | sleep... ' . $this->active);
-                var_dump(array_map(function(Query $query) { return $query->handle; }, $this->queriesById));
+                //var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | sleep... ' . $this->active);
+                //var_dump(array_map(function(Query $query) { return $query->handle; }, $this->queriesById));
             }
 
             // добавить отложенные запросы, если это необходимо
@@ -121,9 +129,8 @@ class Client
 
             // if there are delays but no transfers, then sleep for a bit
             if (!$this->active && $this->delays) {
-                //usleep(500);
-                usleep(50000);
-                var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | has delays... ' . $this->active);
+                usleep(500);
+                //var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | has delays... ' . $this->active);
             }
         } while ($this->active || $this->queriesById);
     }
@@ -144,7 +151,7 @@ class Client
                     $this->mh,
                     $this->queriesById[$id]->handle
                 );
-                var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | add delayed ' . $this->queriesById[$id]->request);
+                //var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | add delayed ' . $this->queriesById[$id]->request);
             }
         }
     }
@@ -158,27 +165,26 @@ class Client
     {
         while ($done = curl_multi_info_read($this->mh)) {
             $id = (int)$done['handle'];
-            var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | done ' . $id);
-            var_dump($done);
+            //var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | done ' . $id);
+            //var_dump($done);
 
             $query = isset($this->queriesById[$id]) ? $this->queriesById[$id] : null;
             if (!$query) {
-                var_dump('canceled');
+                //var_dump('canceled');
                 // вероятно, был отменен
                 continue;
             }
 
             if ($done['result'] !== CURLM_OK) {
                 $query->response->error = $this->createError($done);
-                var_dump('error ' . $query->response->error);
+                //var_dump('error ' . $query->response->error);
             }
 
             $response = $query->response;
             $response->info = curl_getinfo($done['handle']);
             $response->statusCode = $query->response->info['http_code'];
             //$response->body = curl_multi_getcontent($done['handle']); // убрать, используем CURLOPT_WRITEFUNCTION
-            //var_dump($query->request . ' ' . $response->info['total_time'] * 1000);
-            var_dump($response->body);
+            //var_dump($response->body);
 
             $callback = is_callable($query->resolveCallback) ? $query->resolveCallback : null;
 
@@ -187,7 +193,7 @@ class Client
 
             if ($callback) {
                 try {
-                    //call_user_func($query->resolveCallback);
+                    call_user_func($query->resolveCallback);
                 } catch (\Exception $e) {}
             }
         }
@@ -202,17 +208,14 @@ class Client
     {
         if ($query = (isset($this->queriesById[$id]) ? $this->queriesById[$id] : null)) {
             if (is_resource($query->handle)) {
-                curl_multi_remove_handle(
-                    $this->mh,
-                    $query->handle
-                );
+                //curl_multi_remove_handle($this->mh, $query->handle); // FIXME: сильно глючит при retry
                 curl_close($query->handle);
-                var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | remove ' . $id . ' ' . $this->queriesById[$id]->request);
+                //var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | remove ' . $id . ' ' . $this->queriesById[$id]->request);
             }
 
             unset($this->delays[$id], $this->queriesById[$id], $query);
         }
-        var_dump('removed ' . $id);
+        //var_dump('removed ' . $id);
     }
 
     /**

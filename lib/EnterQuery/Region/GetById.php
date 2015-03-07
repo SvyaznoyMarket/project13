@@ -38,8 +38,6 @@ namespace EnterQuery\Region
                 1, // timeout multiplier
                 $error,
                 function($response, $statusCode) {
-                    var_dump($response);
-                    return;
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
                     $this->response->region = $result[0];

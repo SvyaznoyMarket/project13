@@ -72,7 +72,7 @@ trait CurlQueryTrait
         // end
 
         $queryCollection = new \ArrayObject();
-        foreach ([0, 0.4] as $i) {
+        foreach ([0, 0.8] as $i) {
             $query = $this->createCurlQuery(
                 $url,
                 $data,
@@ -117,8 +117,8 @@ trait CurlQueryTrait
                 // удалить дубликаты
                 foreach ($queryCollection as $retryQuery) {
                     if ($query->handle === $retryQuery->handle) {
-                        var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | it\'s me ' . $retryQuery->request);
-                        //continue;
+                        //var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | it\'s me ' . $retryQuery->request);
+                        continue;
                     }
                     if (is_callable($retryQuery->rejectCallback)) {
                         call_user_func($retryQuery->rejectCallback); // отменяет запрос
@@ -163,8 +163,8 @@ trait CurlQueryTrait
                         $error = $e;
                     }
 
-                    //$id = $this->getQueryCacheId($query->request->options[CURLOPT_URL], $data);
-                    //$this->setQueryCache($id, $result);
+                    $id = $this->getQueryCacheId($query->request->options[CURLOPT_URL], $data);
+                    $this->setQueryCache($id, $result);
                 } else {
                     $result = $query->response->body;
                 }
@@ -172,27 +172,11 @@ trait CurlQueryTrait
                 if (!$error) {
                     foreach ($this->callbacks as $callback) {
                         try {
-                            //call_user_func($callback->handler);
+                            call_user_func($callback->handler);
                         } catch (\Exception $e) {
                             $callback->error = $e;
                         }
                     }
-                }
-            };
-
-            $query->resolveCallback = function() use ($queryCollection, $query) {
-                // удалить дубликаты
-                foreach ($queryCollection as $retryQuery) {
-                    if ($query->handle === $retryQuery->handle) {
-                        var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | it\'s me ' . $retryQuery->request);
-                        //continue;
-                    }
-                    if (is_callable($retryQuery->rejectCallback)) {
-                        call_user_func($retryQuery->rejectCallback); // отменяет запрос
-                    }
-
-                    //$retryQuery->resolveCallback = null;
-                    unset($retryQuery);
                 }
             };
 
