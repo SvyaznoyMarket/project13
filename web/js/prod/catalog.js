@@ -492,7 +492,7 @@
 			clearTimeout(tID);
 
 			tID = setTimeout(function() {
-				filterBlock.trigger('submit', [page]);
+				catalog.filter.sendFilter(page);
 			}, 300);
 		},
 
@@ -500,10 +500,7 @@
 		 * Отправка результатов фильтров
 		 * Получение ответа от сервера
 		 */
-		sendFilter: function( e, page ) {
-			console.info('sendFilter');
-			console.log(e);
-
+		sendFilter: function(page) {
 			var url = catalog.filter.getFilterUrl(page);
 
 			if ( url !== (document.location.pathname + document.location.search) ) {
@@ -531,8 +528,6 @@
 					$link.attr('href', hrefWithoutQueryString + filterQueryString);
 				});
 			}
-
-			return false;
 		},
 
 		/**
@@ -978,7 +973,10 @@
 	filterOtherParamsToggleButton.on('click', toggleFilterViewHandler);
 	filterMenuItem.on('click', selectFilterCategoryHandler);
 	filterBlock.on('change', 'input, select, textarea', catalog.filter.changeFilterHandler);
-	filterBlock.on('submit', catalog.filter.sendFilter);
+	filterBlock.on('submit', function(e) {
+		e.preventDefault();
+		catalog.filter.sendFilter();
+	});
 
 	// Sorting items
 	viewParamPanel.on('click', '.jsSorting', sortingItemsHandler);

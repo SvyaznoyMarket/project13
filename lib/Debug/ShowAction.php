@@ -137,7 +137,7 @@ class ShowAction {
         $debug->add('act', $action ?: 'undefined', 135, $action ? \Debug\Collector::TYPE_INFO : \Debug\Collector::TYPE_ERROR);
 
         // session
-        $debug->add('session', \App::session()->all(), 133);
+        $debug->add('session', array_merge(\App::session()->all(), ['__prevDebug__' => null]), 133);
 
         // memory
         $debug->add('memory', ['value' => round(memory_get_peak_usage() / 1048576, 2), 'unit' => 'Mb'], 132);
@@ -200,8 +200,12 @@ class ShowAction {
             $response->setData($contentData);
         } else if ($response instanceof \Http\Response) {
             $response->setContent(
-                str_replace('</body>', PHP_EOL . \App::templating()->render('_debug', ['debugData' => $debugData, 'helper' => new \Helper\TemplateHelper()]) . PHP_EOL .'</body>', $response->getContent())
+                str_replace('</body>', PHP_EOL . \App::templating()->render('_debug', ['debugData' => $debugData, 'prevDebugData' => \App::session()->get('__prevDebug__', []), 'helper' => new \Helper\TemplateHelper()]) . PHP_EOL .'</body>', $response->getContent())
             );
+        }
+
+        if (!$request->isXmlHttpRequest()) {
+            \App::session()->set('__prevDebug__', $debugData);
         }
     }
 }
