@@ -72,7 +72,7 @@ trait CurlQueryTrait
         // end
 
         $queryCollection = new \ArrayObject();
-        foreach ([0, 0.8] as $i) {
+        foreach ([0, 0.05] as $i) {
             $query = $this->createCurlQuery(
                 $url,
                 $data,

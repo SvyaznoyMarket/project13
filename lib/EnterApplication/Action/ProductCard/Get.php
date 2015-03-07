@@ -17,14 +17,15 @@ namespace EnterApplication\Action\ProductCard
         {
             $startAt = microtime(true);
             $GLOBALS['startAt'] = $startAt;
+
+            $curl = $this->getCurl();
+
+            /*
             register_shutdown_function(function() use ($startAt) {
                 var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | ' . round(memory_get_peak_usage() / 1048576, 2) . ' Mb');
                 var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | ' . (microtime(true) - $startAt));
             });
 
-            $curl = $this->getCurl();
-
-            /*
             $abTestQuery = (new Query\AbTest\GetActive())->prepare($abTestError);
             $regionQuery = (new Query\Region\GetById($request->regionId))->prepare($regionError);
             $curl->execute();

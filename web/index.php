@@ -93,12 +93,10 @@ $GLOBALS['enter/service'] = new EnterApplication\Service();
 
         // очищаем буфер вывода
         $previous = null;
-        /*
         while (($level = ob_get_level()) > 0 && $level !== $previous) {
             $previous = $level;
             ob_end_clean();
         }
-        */
 
         if (\App::config()->debug) {
             $action = new \Debug\ErrorAction();
