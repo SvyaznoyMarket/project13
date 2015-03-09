@@ -38,7 +38,7 @@ trait CurlQueryTrait
      * @param int|null $timeoutMultiplier
      * @param \Exception $error
      * @param callable|null $decoder
-     * @return \EnterLab\Curl\Query[]
+     * @return Query[]
      */
     public function prepareCurlQuery(
         $url,
@@ -72,7 +72,7 @@ trait CurlQueryTrait
         // end
 
         $queryCollection = new \ArrayObject();
-        foreach ([0, 0.05] as $i) {
+        foreach ([0/*, 0.05*/] as $i) {
             $query = $this->createCurlQuery(
                 $url,
                 $data,
