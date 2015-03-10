@@ -12,7 +12,6 @@ class IndexPage extends \View\DefaultLayout {
             return;
         }
 
-        $this->setParam('title', $category->getSeoTitle());
         $this->setTitle($category->getSeoTitle());
         $this->addMeta('description', $category->getSeoDescription());
         $this->addMeta('keywords', $category->getSeoKeywords());
