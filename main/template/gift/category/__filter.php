@@ -41,8 +41,7 @@ return function(
     }
     ?>
 
-    <div class="fltrBtn fltrBtn-gift" style="background-image: url('/styles/catalog/img/bg-gift-8m.jpg?2')">
-        <a class="fltrBtn-action-item" href="/gift_holiday" target="_blank"><img src="/styles/catalog/img/bg-gift-promo.png" alt=""></a>
+    <div class="fltrBtn fltrBtn-gift" style="background-image: url('/styles/catalog/img/gifts-bg-10mar.jpg?2')">
         <form id="productCatalog-filter-form" class="fltrBtnPosBottom js-category-filter" action="<?= $baseUrl ?>" method="GET">
             <div class="fltrBtnLn">
                 <? if ($holidayProperty): ?>
