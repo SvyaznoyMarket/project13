@@ -1,13 +1,18 @@
 ;(function($){
 	var $body = $(document.body),
-		timeoutId,
+		timeoutId,      // id таймаута для пролистывания баннеров
 
 		// БАННЕРЫ
 		$bannerWrapper = $('.jsMainBannerWrapper'),
 		$bannerHolder = $('.jsMainBannerHolder'),
 		bannerHeight = 240,
 		$bannerThumbs = $('.jsMainBannerThumb'), // превью баннеров
+        $bannerThumbsWrapper = $('.jsMainBannerThumbsWrapper'),
 		activeThumbClass = 'slidesbnnr_thmbs_img-act',
+        visibleThumbsCount = 4,         // количество видимых превьюшек баннеров
+        thumbsHeightWithMargin = 58,    // количество пикселов для промотки превьюшек
+        $bannersButtons = $('.jsMainBannersButton'),    // кнопки вверх-вниз у превьюшек
+        bannersUpClass = 'jsMainBannersUpButton',
 
 		slidesWidth = 473,
 		slidesDotClass = 'slidesBox_dott_i',
@@ -18,9 +23,6 @@
 		$jsSlidesWideHolder = $('.jsSlidesWideHolder').first(),
 		$jsSlidesWideItems = $('.jsSlidesWideItem'),
 		$jsSlidesWideName = $('.jsSlidesWideName');
-
-	// Ничего не выполняем, если у нас не новая главная
-	if (!$body.hasClass('jsMainNew')) return;
 
 	// Слайдеры рекомендаций
 	$body.on('click', '.jsMainSlidesButton', function(){
@@ -92,20 +94,68 @@
 		})
 	});
 
+    /**
+     * Остановка слайдера
+     */
+    function stopSlider(){
+        clearTimeout(timeoutId);
+    }
+
+    /**
+     * Запуск слайдера
+     */
+    function startSlider(){
+        autoSlide($bannerThumbs.find('img.'+activeThumbClass).data('timeout'));
+    }
+
+    // остановка/воспроизведение листалки при наведении на баннеры
+    $bannerWrapper.hover(function(){
+        stopSlider()
+    }, function(){
+        startSlider()
+    });
+
+    /** остановка/воспроизведение c visibility api (пробная реализация)
+     * @link https://developer.mozilla.org/en-US/docs/Web/Guide/User_experience/Using_the_Page_Visibility_API
+     * */
+    if (typeof document.hidden !== 'undefined') {
+        document.addEventListener('visibilitychange', function(){
+            if (document.hidden) {
+                stopSlider()
+            } else {
+                startSlider()
+            }
+        }, false);
+    }
+
+    // клик по кнопкам превьюшек баннеров
+    $bannersButtons.on('click', function(){
+        var direction = $(this).hasClass(bannersUpClass) ? -1 : 1;
+        stopSlider();
+        showNextSlide(direction);
+    });
+
 	// запускаем листалку при загрузке
-	autoSlide($bannerThumbs.find('img.'+activeThumbClass).data('timeout'));
+	startSlider();
 
 	// Автоматическая листалка
-	function autoSlide( timeout) {
+	function autoSlide(timeout) {
 	 	timeoutId = setTimeout(showNextSlide, parseInt(timeout, 10))
 	}
 
-	function showNextSlide() {
+	function showNextSlide(mIndex) {
 		var index = $bannerThumbs.find('img').index($bannerThumbs.find('img.'+activeThumbClass)),
 			bannersLength = $bannerThumbs.length,
-			nextIndex = index + 1 == bannersLength ? 0 : index + 1;
+            manualIndex = typeof mIndex != 'undefined' ? mIndex : 1,
+			nextIndex = index + manualIndex == bannersLength ? 0 : index + manualIndex,
+            thumbsMarginMultiplier;
 
-		$bannerHolder.animate({
+        if (nextIndex == -1) nextIndex = bannersLength - 1; // fix для нажатия кнопки вверх у превью
+
+        thumbsMarginMultiplier = nextIndex >= visibleThumbsCount ? nextIndex - visibleThumbsCount + 1 : 0;
+
+		// пролистываем баннеры
+        $bannerHolder.animate({
 			'margin-top': -(nextIndex * bannerHeight)
 		},{
 			duration: 400,
@@ -115,7 +165,12 @@
 				autoSlide($bannerThumbs.find('img').eq(nextIndex).data('timeout'));
 				$body.trigger('mainBannerView', nextIndex)
 			}
-		})
+		});
+
+        // пролистываем превью баннеров
+        $bannerThumbsWrapper.animate({
+            'margin-top': -(thumbsMarginMultiplier * thumbsHeightWithMargin)
+        })
 	}
 
 	// Установка корректной ширины блоков со слайдерами

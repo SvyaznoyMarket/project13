@@ -3145,7 +3145,6 @@ img[height="0"] {
     position: relative;
     overflow: hidden;
     height: 240px;
-    border: 1px solid #bbbbbb;
     border-top: none;
   }
   .slidesbnnr_lst {
@@ -3154,6 +3153,8 @@ img[height="0"] {
   }
   .slidesbnnr_img {
     display: block;
+    height: 240px;
+    width: 960px;
   }
   .slidesbnnr_lk {
     display: block;
