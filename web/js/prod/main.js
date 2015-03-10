@@ -197,9 +197,9 @@
 	});
 
 	// просмотр главного баннера
-	$body.on('mainBannerView', function(e, index) {
+	/*$body.on('mainBannerView', function(e, index) {
 		$body.trigger('trackGoogleEvent',['slider view', 'main banner', index + 1 + ''])
-	});
+	});*/
 
 	// пролистывание рекомендаций
 	$body.on('click', '.jsMainSlidesRetailRocket .jsMainSlidesButton, .jsMainSlidesRetailRocket .slidesBox_dott', function(){
