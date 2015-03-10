@@ -702,7 +702,7 @@ return [
 
     'order.svyaznoyClub.complete' => [
         'pattern' => '/orders/svyaznoy-club',
-        'action'  => ['Order\SvyaznoyClubAction', 'complete'],
+        'action'  => ['OrderV3\CompleteAction', 'execute'],
         'method'  => ['GET'],
     ],
 

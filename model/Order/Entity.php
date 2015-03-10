@@ -26,6 +26,7 @@ class Entity {
     const PAYMENT_STATUS_ADVANCE = 3;   // частично оплачен
     const PAYMENT_STATUS_PAID = 2;      // оплачен
     const PAYMENT_STATUS_CANCELED = 5;  // отмена оплаты
+    const PAYMENT_STATUS_SVYAZNOY_CLUB = 21;  // оплата баллами Связной-клуб
 
     /** @var int */
     public $id;
@@ -989,6 +990,31 @@ class Entity {
      */
     public function getAccessToken() {
         return $this->accessToken;
+    }
+
+    /** Возвращает значение из метаданных по ключу
+     * @param $key
+     * @param null $default
+     * @return mixed|null
+     */
+    public function getMetaByKey($key, $default = null) {
+        return array_key_exists($key, $this->meta_data) && is_array($this->meta_data[$key])
+            ? reset($this->meta_data[$key])     // возвращаем первый элемент массива (особенности ответа ядра)
+            : $default;
+    }
+
+    /** Оплата с помощью баллов Связного клуба
+     * @return bool
+     */
+    public function isPaidBySvyaznoy() {
+        return $this->paymentStatusId == self::PAYMENT_STATUS_SVYAZNOY_CLUB;
+    }
+
+    /** Возвращает количество списанных баллов
+     * @return float
+     */
+    public function getSvyaznoyPaymentSum(){
+        return (float)$this->getMetaByKey('payment.svyaznoy_club', 0);
     }
 }
 

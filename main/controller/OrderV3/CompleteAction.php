@@ -29,6 +29,7 @@ class CompleteAction extends OrderV3 {
 //            return $controller;
 //        }
 
+        $page = new \View\OrderV3\CompletePage();
         \App::logger()->debug('Exec ' . __METHOD__);
 
         ProductPageSenders::clean();
@@ -46,10 +47,16 @@ class CompleteAction extends OrderV3 {
         $banks = [];
         $shopIds = [];
         $shops = [];
+        $errors = [];
 
         try {
 
             if (!(bool)$this->sessionOrders) throw new \Exception('В сессии нет заказов');
+
+            if ($request->query->has('svyaznoyClub')) {
+                $activateSuccess = $this->completeSvyaznoy($request, $this->sessionOrders, $page);
+                if ($activateSuccess) return new \Http\RedirectResponse(\App::router()->generate('orderV3.complete', ['refresh' => 1]));
+            }
 
             // забираем заказы и доступные методы оплаты
             foreach ($this->sessionOrders as $sessionOrder) {
@@ -60,7 +67,7 @@ class CompleteAction extends OrderV3 {
                 if (\App::config()->order['sessionInfoOnComplete'] && !$request->query->get('refresh')) { // SITE-4828
                     $orders[$sessionOrder['number']] = new Entity($sessionOrder);
                 } else {
-                    $this->client->addQuery('order/get-by-mobile', ['number' => $sessionOrder['number'], 'mobile' => $sessionOrder['phone']], [], function ($data) use (&$orders, $sessionOrder) {
+                    $this->client->addQuery('order/get-by-mobile', ['number' => $sessionOrder['number'], 'mobile' => preg_replace('/[^0-9]/', '', $sessionOrder['phone'])], [], function ($data) use (&$orders, $sessionOrder) {
                         $data = reset($data);
                         $orders[$sessionOrder['number']] = $data ? new Entity($data) : null;
                     });
@@ -158,7 +165,6 @@ class CompleteAction extends OrderV3 {
         $sessionIsReaded = !($this->sessionIsReaded === false);
         $this->session->remove(self::SESSION_IS_READED_KEY);
 
-        $page = new \View\OrderV3\CompletePage();
         $page->setParam('orders', $orders);
         $page->setParam('ordersPayment', $ordersPayment);
         $page->setParam('motivationAction', $this->getMotivationAction($orders, $ordersPayment));
@@ -168,6 +174,8 @@ class CompleteAction extends OrderV3 {
         $page->setParam('banks', $banks);
         $page->setParam('shops', $shops);
         $page->setParam('subscribe', (bool)$request->cookies->get(\App::config()->subscribe['cookieName3']));
+
+        $page->setParam('errors', array_merge( $page->getParam('errors', []), $errors));
 
         $page->setParam('sessionIsReaded', $sessionIsReaded);
 
@@ -267,6 +275,60 @@ class CompleteAction extends OrderV3 {
 
         return new \Http\JsonResponse($result);
 
+    }
+
+    /** Оплата баллами Связного
+     * @param $request \Http\Request
+     * @param $orders array
+     * @param $page \View\OrderV3\CompletePage
+     * @return bool Флаг об успешности операции
+     * @link https://wiki.enter.ru/pages/viewpage.action?pageId=22588834
+     */
+    private function completeSvyaznoy($request, $orders, &$page) {
+
+        $error = $request->query->get('Error');
+
+        $data = [
+            'OrderId'    => $request->query->get('OrderId'),
+            'Status'     => $request->query->get('Status'),
+            'Discount'   => $request->query->get('Discount'),
+            'CardNumber' => $request->query->get('CardNumber'),
+            'Signature'  => $request->query->get('Signature'),
+        ];
+
+        try {
+
+            // Если есть ошибка, то в ядро не надо делать запроса
+            if ($error) throw new \Exception($data['Error']);
+
+            $result = \App::coreClientV2()->query('payment/svyaznoy-club', [], $data, \App::config()->coreV2['hugeTimeout']);
+
+            if (!isset($result['detail']['order']) || !is_array($result['detail']['order'])) {
+                throw new \Exception('Не получена информация о заказе');
+            }
+
+            // Если всё хорошо, то сохраняем обновленную информацию о заказе
+            foreach ($orders as &$order) {
+                if ($order['id'] == $result['detail']['order']['id']) {
+                    $order['payment_status_id'] = Entity::PAYMENT_STATUS_SVYAZNOY_CLUB;
+                    $order['meta_data']['payment.svyaznoy_club'] = [$result['detail']['order']['pay_sum']];
+                }
+            }
+
+            $this->session->set(\App::config()->order['sessionName'] ? : 'lastOrder', $orders);
+            return true;
+
+        } catch (\Exception $e) {
+            \App::exception()->remove($e);
+            $page->setParam('errors', array_merge(
+                $page->getParam('errors', []),
+                [[
+                    'code'      => $e->getCode(),
+                    'message'   => \App::config()->debug ? $e->getMessage() : 'Ошибка списания баллов Связного Клуба'
+                ]]
+            ));
+            return false;
+        }
     }
 
     /** Возвращает акцию по мотивации к покупке онлайн на основании АБ-теста и возможных акций из ядра
