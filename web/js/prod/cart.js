@@ -39,6 +39,12 @@
 					if (data.success && data.product) {
 						UserModel.removeProductByID(data.product.id);
 						$body.trigger('removeFromCart', [data.product]);
+
+						try {
+							if (0 === data.cart.products.length) {
+								setTimeout(function() { window.location.reload(); }, 100);
+							}
+						} catch (error) { console.error(error);	}
 					}
 				}
 			})

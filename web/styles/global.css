@@ -8893,6 +8893,12 @@ img[height="0"] {
   .orderDelivery .orderPayment_msg_info {
     margin-top: 0;
   }
+  .rub-c {
+    font-size: 10px;
+    position: relative;
+    bottom: 3px;
+    padding-right: 2px;
+  }
 }
 @media all {
   .orderU {
