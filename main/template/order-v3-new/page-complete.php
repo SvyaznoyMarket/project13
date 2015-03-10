@@ -13,6 +13,7 @@ return function(
 ) {
 /** @var $products \Model\Product\Entity[] */
     $page = new \View\OrderV3\CompletePage();
+    array_map(function(\Model\PaymentMethod\PaymentEntity &$entity) {$entity->unsetSvyaznoyClub();}, $ordersPayment); // fix for SITE-5229 (see comments)
 ?>
 <style>
     .jsPaymentForms {

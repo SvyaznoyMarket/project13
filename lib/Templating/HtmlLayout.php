@@ -52,16 +52,17 @@ class HtmlLayout {
         return array_key_exists($name, $this->params);
     }
 
-    /**
-     * @param $name
-     * @return null
+    /** Возвращает параметр страницы
+     * @param $name string Ключ
+     * @param $default mixed Значение, возвращаемое при отстуствии ключа
+     * @return mixed
      */
-    public function getParam($name) {
+    public function getParam($name, $default = null) {
         if (!array_key_exists($name, $this->params)) {
             \App::logger()->warn(sprintf('Неизвестный параметр шаблона "%s"', $name), ['view']);
         }
 
-        return array_key_exists($name, $this->params) ? $this->params[$name] : null;
+        return array_key_exists($name, $this->params) ? $this->params[$name] : $default;
     }
 
     /**

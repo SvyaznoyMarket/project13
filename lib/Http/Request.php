@@ -14,11 +14,13 @@ namespace Http;
  *   * getUriForPath
  *
  * @api
+ * @link http://symfony.com/doc/current/components/http_foundation/introduction.html
  */
 class Request {
     protected static $trustProxy = false;
 
     /**
+     * No equivalent - used by your app to store other data.
      * @var \Http\ParameterBag
      *
      * @api
@@ -26,6 +28,7 @@ class Request {
     public $attributes;
 
     /**
+     * Equivalent of $_POST.
      * @var \Http\ParameterBag
      *
      * @api
@@ -33,6 +36,7 @@ class Request {
     public $request;
 
     /**
+     * Equivalent of $_GET.
      * @var \Http\ParameterBag
      *
      * @api
@@ -40,6 +44,7 @@ class Request {
     public $query;
 
     /**
+     * Equivalent of $_SERVER.
      * @var \Http\ServerBag
      *
      * @api
@@ -47,6 +52,7 @@ class Request {
     public $server;
 
     /**
+     * Equivalent of $_FILES.
      * @var \Http\FileBag
      *
      * @api
@@ -54,6 +60,7 @@ class Request {
     public $files;
 
     /**
+     * Equivalent of $_COOKIE.
      * @var \Http\ParameterBag
      *
      * @api
@@ -61,6 +68,7 @@ class Request {
     public $cookies;
 
     /**
+     * Mostly equivalent to a sub-set of $_SERVER ($request->headers->get('User-Agent').
      * @var \Http\HeaderBag
      *
      * @api
