@@ -176,6 +176,7 @@ class IndexAction {
 
         // формируем вьюху, передаём ей данные
         $page = new \View\Tchibo\IndexPage();
+        $page->setParam('category', $category);
         $page->setParam('slideData', $slideData);
         $page->setParam('catalogConfig', $catalogJson);
         $page->setParam('catalogCategories', $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : []);

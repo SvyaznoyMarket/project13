@@ -8,7 +8,7 @@ class Request {
      *
      * @var int
      */
-    public $delay;
+    public $delay = 0;
     /**
      * CURLOPT_*
      *
@@ -20,6 +20,6 @@ class Request {
     ];
 
     public function __toString() {
-        return sprintf('%s (%s ms)', urldecode($this->options[CURLOPT_URL]), $this->options[CURLOPT_TIMEOUT_MS]);
+        return sprintf('%s {timeout: %s ms, delay: %s}', urldecode($this->options[CURLOPT_URL]), $this->options[CURLOPT_TIMEOUT_MS], $this->delay);
     }
 }

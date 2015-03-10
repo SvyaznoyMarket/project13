@@ -34,8 +34,6 @@ class Action {
                 return (AbTest::isNewMainPage() ? 3 : 1) == (int)@$item['type_id'];
             });
 
-            if (AbTest::isNewMainPage()) $data = array_slice((array)$data, 0, 5);
-
             foreach ($data as $i => $item) {
                 $bannerId = isset($item['id']) ? (int)$item['id'] : null;
                 $item = [

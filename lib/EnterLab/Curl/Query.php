@@ -4,6 +4,8 @@ namespace EnterLab\Curl;
 
 class Query
 {
+    /** @var resource */
+    public $handle;
     /** @var Request */
     public $request;
     /** @var Response */
@@ -17,5 +19,17 @@ class Query
     {
         $this->request = new Request();
         $this->response = new Response();
+    }
+
+    public function __destruct()
+    {
+        unset($this->request);
+        unset($this->response);
+    }
+
+    public function __clone()
+    {
+        $this->request = clone $this->request;
+        $this->response = clone $this->response;
     }
 }

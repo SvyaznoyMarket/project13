@@ -11,6 +11,8 @@ class ProductPageSendersForMarketplace {
      * @param string $sender
      */
     public static function add($productUid, $sender) {
+        $sender = (string)$sender;
+
         if ($sender) {
             $productPageSenders = \App::session()->get(\App::config()->product['productPageSendersForMarketplaceSessionKey'], []);
 
@@ -28,7 +30,7 @@ class ProductPageSendersForMarketplace {
 
     /**
      * @param string $productUid
-     * @return array
+     * @return string
      */
     public static function get($productUid) {
         $productPageSenders = \App::session()->get(\App::config()->product['productPageSendersForMarketplaceSessionKey']);
@@ -36,7 +38,7 @@ class ProductPageSendersForMarketplace {
             return $productPageSenders[$productUid];
         }
 
-        return [];
+        return '';
     }
 
     public static function clean() {

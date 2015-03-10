@@ -60,8 +60,9 @@ class ShowAction {
             $url = !empty($message['url']) ? $message['url'] : null;
             $data = !empty($message['data']) ? $message['data'] : null;
             $startAt = isset($message['startAt']) ? $message['startAt'] : null;
+            $delay = isset($message['delay']) ? $message['delay'] : 0;
 
-            $index = md5($url . ':' . serialize($data));
+            $index = md5($url . ' ' . serialize($data) . ' ' . $delay);
 
             if ($url) {
                 if ('Create curl' == $message['message']) {
@@ -95,6 +96,7 @@ class ShowAction {
                     $queryData[$index]['retryTimeout'] = isset($message['retryTimeout']) ? $message['retryTimeout'] : null;
                     $queryData[$index]['header'] = isset($message['header']) ? $message['header'] : null;
                     $queryData[$index]['cache'] = isset($message['cache']);
+                    $queryData[$index]['delay'] = $delay;
                 }
             } else if ($startAt && ('End curl executing' == $message['message'])) {
                 /*
@@ -180,9 +182,7 @@ class ShowAction {
         }
 
         // server
-        if ('live' != \App::$env) {
-            $debug->add('server', isset($_SERVER) ? $_SERVER : [], 86);
-        }
+        $debug->add('server', isset($_SERVER) ? $_SERVER : [], 86);
 
 
 
