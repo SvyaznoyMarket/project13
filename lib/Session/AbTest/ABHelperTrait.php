@@ -80,4 +80,20 @@ trait ABHelperTrait {
 
         return 1;
     }
+
+    /** Открытие ссылок на товары в новом окне
+     * @return bool
+     */
+    public static function isNewWindow(){
+        $test = \App::abTest()->getTest('new_window');
+        return $test && $test->getChosenCase()->getKey() == 'on';
+    }
+
+    /** Меню-гамбургер
+     * @return bool
+     */
+    public static function isMenuHamburger(){
+        $test = \App::abTest()->getTest('new_window');
+        return $test && $test->getChosenCase()->getKey() == 'hamburger';
+    }
 }
