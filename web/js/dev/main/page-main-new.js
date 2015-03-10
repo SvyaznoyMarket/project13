@@ -140,6 +140,7 @@
 
 	// Автоматическая листалка
 	function autoSlide(timeout) {
+        stopSlider();
 	 	timeoutId = setTimeout(showNextSlide, parseInt(timeout, 10))
 	}
 
