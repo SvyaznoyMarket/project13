@@ -1670,6 +1670,11 @@
 
     // PAGE DELIVERY
 
+	// SITE-5275
+	$pageDelivery.on('click', '.jsAcceptTerms', function(e){
+		$(e.currentTarget).parent().removeClass('accept-err');
+	});
+
     $pageDelivery.on('click', '.orderCompl_btn', function(e){
         var error = [],
 			$agreement = $('.jsAcceptAgreement'),
