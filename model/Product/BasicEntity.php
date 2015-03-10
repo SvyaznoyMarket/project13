@@ -6,6 +6,9 @@ class BasicEntity {
     use \Model\MediaHostTrait;
 
     const LABEL_ID_PODARI_ZHIZN = 17;
+    const PARTNER_OFFER_TYPE_SLOT = 2;
+    /** Электронный подарочный сертификат giftery.ru */
+    const GIFTERY_UID = '684fb825-ebf5-4e4f-be2b-96a81e938cb2';
 
     /** @var string|null */
     protected $ui;
@@ -304,10 +307,11 @@ class BasicEntity {
      * @return bool
      */
     public function getIsBuyable() {
-        //return true;
+//        return true;
         return
             $this->getState() && $this->getState()->getIsBuyable()
             && (\App::config()->product['allowBuyOnlyInshop'] ? true : !$this->isInShopStockOnly())
+            && $this->getPrice() !== null
         ;
     }
 
@@ -566,7 +570,7 @@ class BasicEntity {
     public function getSlotPartnerOffer()
     {
         foreach ($this->partnersOffer as $offer) {
-            if (isset($offer['type']) && 2 == $offer['type']) {
+            if (isset($offer['type']) && self::PARTNER_OFFER_TYPE_SLOT == $offer['type']) {
                 return $offer + ['name' => null, 'offer' => null];
             }
         }
@@ -687,5 +691,10 @@ class BasicEntity {
         }
 
         return false;
+    }
+
+    /* Электронный сертификат от giftery.ru */
+    public function isGifteryCertificate() {
+        return $this->getUi() == $this::GIFTERY_UID;
     }
 }

@@ -19,7 +19,7 @@
 		} else {
 			oneClickOpening = true;
 			$.ajax({
-				url: ENTER.utils.generateUrl('orderV3OneClick.form', {productUid: button.data('product-ui'), sender: button.data('sender')}),
+				url: ENTER.utils.generateUrl('orderV3OneClick.form', {productUid: button.data('product-ui'), sender: button.data('sender'), sender2: button.data('sender2')}),
 				type: 'POST',
 				dataType: 'json',
 				closeClick: false,

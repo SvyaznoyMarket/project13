@@ -75,11 +75,11 @@ $helper = new \Helper\TemplateHelper();
                 <? foreach ($block as $product) : ?>
                 <? if (!$product) continue ?>
                 <? $productLink = $product->getLink() . '?' . http_build_query([
-                            'sender[name]'      => 'retailrocket',
-                            'sender[position]'  => @$blockname == 'ПОПУЛЯРНЫЕ ТОВАРЫ' ? 'MainPopular' : 'MainRecommended',
-                            'sender[method]'    => @$blockname == 'ПОПУЛЯРНЫЕ ТОВАРЫ' ? 'ItemsToMain' : 'PersonalRecommendation',
-                            'sender[from]'      => 'MainPage'
-                        ]) ?>
+                    'sender[name]'      => 'retailrocket',
+                    'sender[position]'  => @$blockname == 'ПОПУЛЯРНЫЕ ТОВАРЫ' ? 'MainPopular' : 'MainRecommended',
+                    'sender[method]'    => @$blockname == 'ПОПУЛЯРНЫЕ ТОВАРЫ' ? 'ItemsToMain' : 'PersonalRecommendation',
+                    'sender[from]'      => 'MainPage'
+                ]) ?>
                 <div class="item">
                     <a href="<?= $productLink ?>" class="item_imgw"><img src="<?= $product->getImageUrl(2) ?>" class="item_img" alt="<?= $product->getName() ?>"/></a>
                     <div class="item_n"><a href="<?= $productLink ?>"><?= $product->getName() ?></a></div>
@@ -90,7 +90,7 @@ $helper = new \Helper\TemplateHelper();
                         'reserveAsBuy'   => true,
                         'noUpdate'       => true,
                     ]) // Кнопка купить ?>
-<!--                    <a class="item_btn btn5" href="">Купить</a>-->
+                    <!-- <a class="item_btn btn5" href="">Купить</a>-->
                 </div>
                 <? endforeach ?>
             </li>

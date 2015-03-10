@@ -60,18 +60,21 @@ class ShowAction {
             $url = !empty($message['url']) ? $message['url'] : null;
             $data = !empty($message['data']) ? $message['data'] : null;
             $startAt = isset($message['startAt']) ? $message['startAt'] : null;
+            $delay = isset($message['delay']) ? $message['delay'] : 0;
 
-            $index = md5($url . ':' . serialize($data));
+            $index = md5($url . ' ' . serialize($data) . ' ' . $delay);
 
             if ($url) {
                 if ('Create curl' == $message['message']) {
                     $queryData[$index] = [
-                        'url'        => urlencode($url),
-                        'escapedUrl' => $helper->escape(rawurldecode($url)),
-                        'data'       => (bool)$data ? json_encode($data) : null,
-                        'timeout'    => isset($message['timeout']) ? $message['timeout'] : null,
-                        'startAt'    => $startAt,
-                        'count'      => isset($queryData[$index]['count']) ? ($queryData[$index]['count'] + 1) : 1,
+                        'url'         => $url,
+                        'encodedUrl'  => urlencode($url),
+                        'data'        => (bool)$data ? json_encode($data) : null,
+                        'encodedData' => (bool)$data ? urlencode(json_encode($data)) : null,
+                        'timeout'     => isset($message['timeout']) ? $message['timeout'] : null,
+                        'startAt'     => $startAt,
+                        'count'       => isset($queryData[$index]['count']) ? ($queryData[$index]['count'] + 1) : 1,
+                        'cache'       => isset($message['cache']),
                     ];
                 } else if ((('Fail curl' == $message['message']) || ('End curl' == $message['message'])) && isset($queryData[$index])) {
                     if (isset($message['error'])) {
@@ -92,6 +95,8 @@ class ShowAction {
                     $queryData[$index]['retryCount'] = isset($message['retryCount']) ? $message['retryCount'] : null;
                     $queryData[$index]['retryTimeout'] = isset($message['retryTimeout']) ? $message['retryTimeout'] : null;
                     $queryData[$index]['header'] = isset($message['header']) ? $message['header'] : null;
+                    $queryData[$index]['cache'] = isset($message['cache']);
+                    $queryData[$index]['delay'] = $delay;
                 }
             } else if ($startAt && ('End curl executing' == $message['message'])) {
                 /*
@@ -132,7 +137,7 @@ class ShowAction {
         $debug->add('act', $action ?: 'undefined', 135, $action ? \Debug\Collector::TYPE_INFO : \Debug\Collector::TYPE_ERROR);
 
         // session
-        $debug->add('session', \App::session()->all(), 133);
+        $debug->add('session', array_merge(\App::session()->all(), ['__prevDebug__' => null]), 133);
 
         // memory
         $debug->add('memory', ['value' => round(memory_get_peak_usage() / 1048576, 2), 'unit' => 'Mb'], 132);
@@ -195,8 +200,12 @@ class ShowAction {
             $response->setData($contentData);
         } else if ($response instanceof \Http\Response) {
             $response->setContent(
-                str_replace('</body>', PHP_EOL . \App::templating()->render('_debug', ['debugData' => $debugData, 'helper' => new \Helper\TemplateHelper()]) . PHP_EOL .'</body>', $response->getContent())
+                str_replace('</body>', PHP_EOL . \App::templating()->render('_debug', ['debugData' => $debugData, 'prevDebugData' => \App::session()->get('__prevDebug__', []), 'helper' => new \Helper\TemplateHelper()]) . PHP_EOL .'</body>', $response->getContent())
             );
+        }
+
+        if (!$request->isXmlHttpRequest()) {
+            \App::session()->set('__prevDebug__', $debugData);
         }
     }
 }

@@ -11,7 +11,6 @@ class ProductButtonAction {
      * @param array $sender Данные поставщика, например: {name: retailrocket, position: ProductSimilar, action: Переход в карточку товара}
      * @param bool $noUpdate
      * @param string|null $location
-     * @internal param null|string $url
      * @return array
      */
     public function execute(
@@ -22,7 +21,8 @@ class ProductButtonAction {
         array $sender = [],
         $noUpdate = false, // Не обновлять кнопку купить
         $location = null, // местоположение кнопки купить: userbar, product-card, ...
-        $reserveAsBuy = false
+        $reserveAsBuy = false,
+        $sender2 = ''
     ) {
         $urlParams = [
             'productId' => $product->getId(),
@@ -45,6 +45,10 @@ class ProductButtonAction {
             ]);
         }
 
+        if ($sender2) {
+            $urlParams['sender2'] = $sender2;
+        }
+
         $buyUrl = $helper->url('cart.product.set', $urlParams);
 
         $data = [
@@ -57,6 +61,7 @@ class ProductButtonAction {
             'class'      => \View\Id::cartButtonForProduct($product->getId()),
             'onClick'    => $onClick,
             'sender'     => $helper->json($sender),
+            'sender2'    => $sender2,
             'productUi'  => $product->getUi(),
             'data'       => [
                 'productId' => $product->getId(),
@@ -93,6 +98,11 @@ class ProductButtonAction {
             $data['productPrice'] = $product->getPrice();
             $data['partnerName'] = $slotPartnerOffer['name'];
             $data['partnerOfferUrl'] = $slotPartnerOffer['offer'];
+        } else if ($product->isGifteryCertificate()) {
+            $data['isSlot'] = true;
+            $data['url'] = '#';
+            $data['class'] .= ' btn btn--slot giftery-show-widget ' . ('product-card' !== $location ? 'btn--short' : 'btn--big');
+            $data['value'] = 'Купить';
         } else if ($product->isInShopStockOnly() && $forceDefaultBuy) {
             if ($reserveAsBuy) {
                 $data['id'] = 'quickBuyButton-' . $product->getId();

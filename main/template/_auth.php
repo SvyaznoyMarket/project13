@@ -10,6 +10,8 @@ $req = \App::request();
 $redirect_to = $req->getPathInfo();
 // SITE-4576 Пустая фраза поиска при входе в личный кабинет
 if ($req->attributes->get('route') == 'search') $redirect_to .= '?' . $req->getQueryString();
+
+if (!isset($showRegisterForm)) $showRegisterForm = true;
 ?>
 
 <noindex>
@@ -26,14 +28,10 @@ if ($req->attributes->get('route') == 'search') $redirect_to .= '?' . $req->getQ
 
         <!-- показываем этот текст в окне входа на сайт -->
         <div class="authAct">
-            <span
-                class="brb-dt authForm_registerLink js-link"
-                data-value="<?= $page->json(['target' => '#auth-block', 'state' => 'register']) ?>"
-            >Регистрация</span>
-            <span
-                class="brb-dt authForm_authLink js-link"
-                data-value="<?= $page->json(['target' => '#auth-block', 'state' => 'default']) ?>"
-            >Войти</span>
+            <? if ($showRegisterForm): ?>
+                <span class="brb-dt authForm_registerLink js-link" data-value="<?= $page->json(['target' => '#auth-block', 'state' => 'register']) ?>">Регистрация</span>
+            <? endif ?>
+            <span class="brb-dt authForm_authLink js-link" data-value="<?= $page->json(['target' => '#auth-block', 'state' => 'default']) ?>">Войти</span>
         </div>
 
         <!-- показываем этот текст в окне регистрации -->

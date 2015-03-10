@@ -37,6 +37,8 @@ $c->mobileHost = 'm.enter.ru';
 $c->redirect301['enabled'] = true;
 $c->mobileRedirect['enabled'] = false;
 
+$c->curlCache['enabled'] = true;
+
 $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 $c->coreV2['client_id']    = 'site';
 $c->coreV2['timeout']      = 5;
@@ -256,6 +258,12 @@ $c->partners['Sociaplus']['enabled'] = true;
 $c->partners['AdBlender']['enabled'] = true;
 $c->partners['ActionpayRetargeting']['enabled'] = true;
 $c->partners['Optimizely']['enabled'] = true;
+$c->partners['MnogoRu']['enabled'] = true;
+$c->partners['MnogoRu']['cookieName'] = 'enter_mnogo_ru';
+$c->partners['PandaPay']['cookieName'] = 'enter_panda_pay';
+
+$c->partners['Giftery']['enabled'] = true;
+$c->partners['Giftery']['lowestPrice'] = 500;
 
 $c->adFox['enabled'] = true;
 
@@ -315,6 +323,7 @@ $c->product['minCreditPrice']           = 3000;
 $c->product['totalCount']               = 55000;
 $c->product['recommendationSessionKey']     = 'recommendationProductIds';
 $c->product['productPageSendersSessionKey'] = 'productPageSenders';
+$c->product['productPageSendersForMarketplaceSessionKey'] = 'productPageSendersForMarketplace';
 // глобальный (без учета региона) список товаров
 $c->product['globalListEnabled']      = true;
 $c->product['showAveragePrice']       = false;
@@ -402,7 +411,7 @@ $c->coupon['enabled'] = true;
 $c->blackcard['enabled'] = false;
 
 $c->user['corporateRegister'] = true;
-$c->user['defaultRoute'] = 'user.orders';
+$c->user['defaultRoute'] = 'user.recommend';
 
 $c->database['host']     = 'site-db';
 $c->database['name']     = 'enter';

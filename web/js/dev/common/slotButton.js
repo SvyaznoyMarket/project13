@@ -11,6 +11,7 @@
 				'<form action="' + ENTER.utils.generateUrl('order.slot.create') + '" method="post">' +
 					'<input type="hidden" name="productId" value="{{productId}}" />' +
 					'<input type="hidden" name="sender" value="{{sender}}" />' +
+					'<input type="hidden" name="sender2" value="{{sender2}}" />' +
 
 					'{{#full}}' +
 						'<div class="popup--request__head msg--recall">Закажите обратный звонок и уточните:</div>' +
@@ -51,7 +52,7 @@
 
 					'<div class="popup__form-group checkbox-group js-slotButton-popup-element">' +
 						'<div class="checkbox-inner js-slotButton-popup-element-field">' +
-							'<input type="checkbox" name="confirm" value="1" id="accept" class="customInput customInput-checkbox js-slotButton-popup-confirm" /><label class="customLabel jsAcceptTerms" for="accept">Я ознакомлен и согласен с информацией о продавце и его {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</label>' +
+							'<input type="checkbox" name="confirm" value="1" id="accept" class="customInput customInput-checkbox js-customInput js-slotButton-popup-confirm" /><label class="customLabel customLabel-checkbox jsAcceptTerms" for="accept">Я ознакомлен и согласен с информацией {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}о продавце и его офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</label>' +
 						'</div>' +
 					'</div>' +
 					'<div class="popup__form-group vendor">Продавец-партнёр: {{partnerName}}</div>' +
@@ -164,9 +165,10 @@
 				productUrl: $button.data('product-url'),
 				productId: $button.data('product-id'),
 				sender: $button.attr('data-sender'),
+				sender2: $button.data('sender2') || '',
 				userPhone: ENTER.utils.Base64.decode(ENTER.config.userInfo.user.mobile || ''),
 				userEmail: ENTER.config.userInfo.user.email || '',
-				userName: ENTER.config.userInfo.user.name || ''
+				userName: ENTER.config.userInfo.user.firstName || ''
 			})),
 			$form = $('form', $popup),
 			$errors = $('.js-slotButton-popup-errors', $form),
@@ -221,6 +223,7 @@
 			$errors.empty().hide();
 
 			if (!validate($form)) {
+				$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '7_1 Оформить ошибка', catalogPath]);
 				return;
 			}
 
@@ -234,6 +237,7 @@
 				success: function(result){
 					if (result.error) {
 						$errors.text(result.error).show();
+						$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '7_1 Оформить ошибка', catalogPath]);
 						return;
 					}
 
@@ -247,12 +251,15 @@
 						$popup.trigger('close');
 					});
 
+					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '7 Оформить успешно', catalogPath]);
+
 					if (typeof ENTER.utils.sendOrderToGA == 'function' && result.orderAnalytics) {
 						ENTER.utils.sendOrderToGA(result.orderAnalytics);
 					}
 				},
 				error: function(){
 					$errors.text('Ошибка при создании заявки').show();
+					$body.trigger('trackGoogleEvent', ['Воронка_marketplace-slot_' + region, '7_1 Оформить ошибка', catalogPath]);
 				},
 				complete: function(){
 					$submitButton.removeAttr('disabled');

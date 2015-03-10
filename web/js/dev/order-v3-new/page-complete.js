@@ -24,35 +24,35 @@
             left: '50%' // Left position relative to parent
         }) : null,
 
-        getForm = function getFormF(methodId, orderId, orderNumber, action) {
-            var data = {
-                'method' : methodId,
-                'order': orderId,
-                'number': orderNumber
-            };
-            if (typeof action !== 'undefined' && action != '') data.action = action;
-            $.ajax({
-                'url': 'getPaymentForm',
-                'type': 'POST',
-                'data': data,
-                'success': function(data) {
-                    var $form;
-                    if (data.form != '') {
-                        $form = $(data.form);
-                        if (spinner) spinner.spin(body);
+		getForm = function getFormF(methodId, orderId, orderNumber, action) {
+			var data = {
+				'method' : methodId,
+				'order': orderId,
+				'number': orderNumber
+			};
+			if (typeof action !== 'undefined' && action != '') data.action = action;
+			$.ajax({
+				'url': 'getPaymentForm',
+				'type': 'POST',
+				'data': data,
+				'success': function(data) {
+					var $form;
+					if (data.form != '') {
+						$form = $(data.form);
+						if (spinner) spinner.spin(body);
 
-                        if ($form.hasClass('jsPaymentFormPaypal') && typeof $form.attr('action') != 'undefined') {
-                            window.location.href = $form.attr('action');
-                        } else {
+						if ($form.hasClass('jsPaymentFormPaypal') && typeof $form.attr('action') != 'undefined') {
+							window.location.href = $form.attr('action');
+						} else {
 							$body.append($form);
 							$form.submit();
-                        }
-                    }
-                    console.log('Payment data', data);
+						}
+					}
+					console.log('Payment data', data);
 
-                }
-            })
-        },
+				}
+			})
+		},
 
         showCreditWidget = function showCreditWidgetF(bankProviderId, data, number_erp, bank_id) {
 
@@ -150,9 +150,9 @@
     });
 
 	// Мотивация онлайн-оплаты
-    $orderContent.on('click', '.jsOnlinePaymentPossible', function(){
-		$(this).hide();
-		$orderContent.find('.jsOnlinePaymentBlock').show();
+	$orderContent.on('click', '.jsOnlinePaymentPossible', function(){
+		$(this).find('.jsOnlinePaymentDiscount').hide();
+        $orderContent.find('.jsOnlinePaymentDiscountPayNow').show();
         $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '17 Оплатить_онлайн_вход_Оплата']);
 	});
 
@@ -162,7 +162,7 @@
         $('.jsOrderCouponExpanded').show();
 
         event.preventDefault();
-    });
+	});
 
     // клик по "оплатить онлайн"
     $orderContent.on('click', '.jsOnlinePaymentSpan', function(e){
@@ -233,6 +233,10 @@
 
         // При успешной онлайн-оплате
         if ($('.jsOrderPaid').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '18 Успешная_Оплата']);
+
+        // Сбрасываем куку mnogo.ru и PandaPay
+        if (docCookies.hasItem('enter_mnogo_ru')) docCookies.setItem('enter_mnogo_ru', '', 1, '/');
+        if (docCookies.hasItem('enter_panda_pay')) docCookies.setItem('enter_panda_pay', '', 1, '/');
     }
 
     if ($jsOrder.length != 0) {

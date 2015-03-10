@@ -738,35 +738,35 @@
             left: '50%' // Left position relative to parent
         }) : null,
 
-        getForm = function getFormF(methodId, orderId, orderNumber, action) {
-            var data = {
-                'method' : methodId,
-                'order': orderId,
-                'number': orderNumber
-            };
-            if (typeof action !== 'undefined' && action != '') data.action = action;
-            $.ajax({
-                'url': 'getPaymentForm',
-                'type': 'POST',
-                'data': data,
-                'success': function(data) {
-                    var $form;
-                    if (data.form != '') {
-                        $form = $(data.form);
-                        if (spinner) spinner.spin(body);
+		getForm = function getFormF(methodId, orderId, orderNumber, action) {
+			var data = {
+				'method' : methodId,
+				'order': orderId,
+				'number': orderNumber
+			};
+			if (typeof action !== 'undefined' && action != '') data.action = action;
+			$.ajax({
+				'url': 'getPaymentForm',
+				'type': 'POST',
+				'data': data,
+				'success': function(data) {
+					var $form;
+					if (data.form != '') {
+						$form = $(data.form);
+						if (spinner) spinner.spin(body);
 
-                        if ($form.hasClass('jsPaymentFormPaypal') && typeof $form.attr('action') != 'undefined') {
-                            window.location.href = $form.attr('action');
-                        } else {
+						if ($form.hasClass('jsPaymentFormPaypal') && typeof $form.attr('action') != 'undefined') {
+							window.location.href = $form.attr('action');
+						} else {
 							$body.append($form);
 							$form.submit();
-                        }
-                    }
-                    console.log('Payment data', data);
+						}
+					}
+					console.log('Payment data', data);
 
-                }
-            })
-        },
+				}
+			})
+		},
 
         showCreditWidget = function showCreditWidgetF(bankProviderId, data, number_erp, bank_id) {
 
@@ -864,9 +864,9 @@
     });
 
 	// Мотивация онлайн-оплаты
-    $orderContent.on('click', '.jsOnlinePaymentPossible', function(){
-		$(this).hide();
-		$orderContent.find('.jsOnlinePaymentBlock').show();
+	$orderContent.on('click', '.jsOnlinePaymentPossible', function(){
+		$(this).find('.jsOnlinePaymentDiscount').hide();
+        $orderContent.find('.jsOnlinePaymentDiscountPayNow').show();
         $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '17 Оплатить_онлайн_вход_Оплата']);
 	});
 
@@ -876,7 +876,7 @@
         $('.jsOrderCouponExpanded').show();
 
         event.preventDefault();
-    });
+	});
 
     // клик по "оплатить онлайн"
     $orderContent.on('click', '.jsOnlinePaymentSpan', function(e){
@@ -947,6 +947,10 @@
 
         // При успешной онлайн-оплате
         if ($('.jsOrderPaid').length > 0) $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '18 Успешная_Оплата']);
+
+        // Сбрасываем куку mnogo.ru и PandaPay
+        if (docCookies.hasItem('enter_mnogo_ru')) docCookies.setItem('enter_mnogo_ru', '', 1, '/');
+        if (docCookies.hasItem('enter_panda_pay')) docCookies.setItem('enter_panda_pay', '', 1, '/');
     }
 
     if ($jsOrder.length != 0) {
@@ -1024,6 +1028,37 @@
         },
         deleteDiscount = function deleteDiscountF(block_name, number) {
             sendChanges('deleteDiscount',{'block_name': block_name, 'number':number})
+        },
+        checkPandaPay = function checkPandaPayF($button, number) {
+            var errorClass = 'cuponErr',
+                $message = $('<div />', { 'class': 'jsPandaPayMessage' });
+
+            // блокируем кнопку отправки
+            $button.attr('disabled', true).css('opacity', '0.5');
+            // удаляем старые сообщения
+            $('.' + errorClass).remove();
+
+            $.ajax({
+                url: 'http://pandapay.ru/api/promocode/check',
+                data: {
+                    format: 'jsonp',
+                    code: number
+                },
+                dataType: 'jsonp',
+                jsonp: 'callback',
+                success: function(resp) {
+                    if (resp.error) {
+                        $message.addClass(errorClass).text(resp.message).insertBefore($button.parent());
+                    }
+                    else if (resp.success) {
+                        $message.addClass(errorClass).css('color', 'green').text('Промокод принят').insertBefore($button.parent());
+                        docCookies.setItem('enter_panda_pay', number, 60 * 60, '/'); // на час ставим этот промокод
+                        $button.remove(); // пока только так... CORE-2738
+                    }
+                }
+            }).always(function(){
+                $button.attr('disabled', false).css('opacity', '1');
+            });
         },
         checkCertificate = function checkCertificateF(block_name, code){
             $.ajax({
@@ -1328,10 +1363,15 @@
     // применить скидку
     $orderContent.on('click', '.jsApplyDiscount', function(e){
         var $this = $(this),
-            block_name = $this.closest('.orderRow').data('block_name'),
-            number = $this.parent().siblings('input').val();
-        // TODO mask
-        if (number != '') applyDiscount(block_name, number);
+            $orderBlock = $this.closest('.orderRow'),
+            block_name = $orderBlock.data('block_name'),
+            number = $this.parent().siblings('input').val().trim();
+
+        // проверяем код PandaPay если есть совпадение маски и нет применённых дискаунтов
+        if (/SN.{10}/.test(number) && $orderBlock.find('.jsOrderV3Discount').length == 0) checkPandaPay($this, number);
+        // иначе стандартный вариант
+        else if (number != '') applyDiscount(block_name, number);
+
         e.preventDefault();
     });
 
@@ -1474,7 +1514,7 @@
 	});
 
 	$('.jsOrderV3BonusCardField').each(function(i,elem){
-		$(elem).closest('.bonusCnt-v2').find('.bonusCnt_tx_code .brb-dt').text($(elem).val())
+		$(elem).closest('.bonusCnt-v2').find('.bonusCnt_tx_code .brb-dt').eq(i).text($(elem).val())
 	});
 
     // АНАЛИТИКА
@@ -1529,11 +1569,15 @@
             var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(email);
         },
+		validateMnogoRu = function validateMnogoRuF(val){
+			return val.length == 0 || /\d{4}\s\d{4}/.test(val)
+		},
         validate = function validateF(){
 			var error = [],
 				$phoneInput = $('[name=user_info\\[phone\\]]'),
 				$emailInput = $('[name=user_info\\[email\\]]'),
 				$bonusCardInput =  $('[name=user_info\\[bonus_card_number\\]]'),
+				$mnogoRuInput = $('.jsOrderV3MnogoRuCardField'),
 				$subscribeInput = $('.jsOrderV3SubscribeCheckbox'),
 				phone = $phoneInput.val().replace(/\s+/g, '');
 
@@ -1554,13 +1598,22 @@
 				$emailInput.removeClass('textfield-err').siblings('.errTx').hide();
 			}
 
-			$bonusCardInput.mask($bonusCardInput.data('mask')); // еще раз, т.к. событие blur и последующий validate проскакивает раньше обновления значения инпута плагином
+			if ($bonusCardInput.length > 0) $bonusCardInput.mask($bonusCardInput.data('mask')); // еще раз, т.к. событие blur и последующий validate проскакивает раньше обновления значения инпута плагином
+			if ($mnogoRuInput.length > 0) $mnogoRuInput.mask($mnogoRuInput.data('mask')); // еще раз, т.к. событие blur и последующий validate проскакивает раньше обновления значения инпута плагином
 
 			if ($bonusCardInput.val().length != 0 && !ENTER.utils.checkEan($bonusCardInput.val())) {
 				error.push('Неверный код карты лояльности');
 				$bonusCardInput.addClass(errorClass).siblings('.errTx').show();
 			} else {
 				$bonusCardInput.removeClass('textfield-err').siblings('.errTx').hide();
+			}
+
+			// Много.ру
+			if ($mnogoRuInput.length > 0 && !validateMnogoRu($mnogoRuInput.val())) {
+				error.push('Неверный код карты Много.ру');
+				$mnogoRuInput.addClass(errorClass).siblings('.errTx').show();
+			} else {
+				$mnogoRuInput.removeClass('textfield-err').siblings('.errTx').hide();
 			}
 
 			return error;
@@ -1579,11 +1632,15 @@
 
     // проверка телефона и email
     $pageNew.find('form').on('submit', function (e) {
-		var error = validate();
+		var error = validate(),
+			$mnogoRuInput = $('.jsOrderV3MnogoRuCardField');
         if (error.length != 0) {
             e.preventDefault();
             $body.trigger('trackUserAction', ['6_2 Далее_ошибка_Получатель', 'Поле ошибки: '+ error.join(', ')])
-        }
+        } else {
+			// запоминаем значение номера карты Много.ру
+			if ($mnogoRuInput) docCookies.setItem('enter_mnogo_ru', $mnogoRuInput.val(), 31536e3, '/');
+		}
     });
 
 	$pageNew.on('change', '.jsOrderV3SubscribeCheckbox', function(){
@@ -1596,6 +1653,12 @@
 			? $body.trigger('trackGoogleEvent', ['Email_checkout', 'success_validation', 'email'])
 			: $body.trigger('trackGoogleEvent', ['Email_checkout', 'fail_prevalidation', 'email'])
 	});
+
+	// добавляем сохраненное значение карты Много.ру
+	if ($pageNew && docCookies.getItem('enter_mnogo_ru') != null) {
+		$pageNew.find('.jsOrderV3MnogoRuCardField').val(docCookies.getItem('enter_mnogo_ru'));
+		$pageNew.find('.jsMnogoRuSpan').text(docCookies.getItem('enter_mnogo_ru'));
+	}
 
     // PAGE DELIVERY
 

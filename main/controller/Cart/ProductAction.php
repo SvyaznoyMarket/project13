@@ -18,6 +18,7 @@ class ProductAction {
         $productId = (int)$productId;
         $quantity = $request->get('quantity');
         $sender = $request->query->get('sender');
+        $sender2 = (string)$request->query->get('sender2');
         $params = [];
         $moveProductToUp = false;
 
@@ -31,6 +32,10 @@ class ProductAction {
 
         if ($sender) {
             $params['sender'] = $sender;
+        }
+
+        if ($sender2) {
+            $params['sender2'] = $sender2;
         }
 
         try {
@@ -167,6 +172,7 @@ class ProductAction {
         $cart = \App::user()->getCart();
         $client = \App::coreClientV2();
         $sender = $request->query->get('sender');
+        $sender2 = (string)$request->query->get('sender2');
         $params = [];
 
         if (is_string($sender) && !empty($sender)) {
@@ -179,6 +185,10 @@ class ProductAction {
 
         if ($sender) {
             $params['sender'] = $sender;
+        }
+
+        if ($sender2) {
+            $params['sender2'] = $sender2;
         }
 
         try {

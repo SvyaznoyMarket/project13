@@ -9,56 +9,157 @@
 	}
 }
 
-.epHeader {
+.ep-logo {
+	.inline-block();
+    width: 273px;
+	height: 70px;
+	margin: 10px 20px 0 0;
+
+	vertical-align: top;
+    text-indent: -9999px;
+
+	background: url("@{base-url}/enterPrize/img/logo_3D.png") no-repeat 0 0;
+}
+
+.ep-head {
+	padding: 0 10px;
 	position: relative;
+	margin: 0 0 30px;
 
-	padding-right: 25px;
-
-	&_logo {
+	&__desc {
 		.inline-block();
-	    width: 273px;
-		height: 70px;
 
-		vertical-align: top;
-	    text-indent: -9999px;
-
-		background: url("@{base-url}/enterPrize/img/logo_3D.png") no-repeat 0 0;
-	}
-
-	&_controls {
-		float: right;
-
-		margin: 13px 0 0;
-
-		color: #c7c7c7;
+		color: @white;
+		width: 390px;
 
 		font-size: 14px;
 
-		&_item {
-			margin: 0 0 8px;
+		margin-right: 39px;
 
-			text-align: right;
+		&__i {
+			margin: 0 0 5px;
+		}
+	}
 
-			&-colors {
+	&__control {
+		float: right;
+		width: 210px;
+		text-align: right;
+
+		color: @white;
+
+		font-size: 14px;
+
+		&__i {
+			line-height: 1.4;
+    		margin: 0 0 28px;
+
+			&__lk {
+				color: @white;
+				border-bottom-color: #a0a0a0;
+			}
+
+			&__log {
+				border-color: @firmOrange;
+
 				color: @firmOrange;
 
-				font-size: 16px;
-
-				a {
-					text-decoration: underline;
-
-					color: @firmOrange;
-
-					font-size: 16px;
-					font-weight: bold;
-				}
+				font-size: 18px;
 			}
 
-			&-border {
+			&__hint {
 				cursor: pointer;
 
-				border-bottom: 1px dotted;
+				border-bottom: 1px dotted @white;
 			}
+		}
+	}
+}
+
+.ep-tl {
+	margin: 5px 0 25px 15px;
+
+	color: @white;
+
+    font-family: "Enter";
+    font-size: 30px;
+}
+
+.ep-box {
+	.rounded(4px);
+	margin: 40px 0 20px;
+	padding: 10px;
+	position: relative;
+
+	background: #eaeaea;
+
+	&--hidden {
+
+		.ep-box__tx,
+		.ep-list {
+			.opacity(0.5);
+		}
+	}
+
+	.ep-list {
+	    position: absolute;
+	    top: -45px;
+	    right: 0;
+	}
+
+	.ep-logo{
+		margin: -40px 0 0;
+	}
+
+	.ep-rules {
+		float: none;
+
+		width: 600px;
+		height: auto;
+		margin: 13px 0;
+		padding: 15px;
+
+		border-bottom: 1px solid #bbbbbb;
+		background: @white;
+
+		font-size: 16px;
+		line-height: 1.6;
+
+		strong {
+			font-size: 18px;
+		}
+	}
+
+	&__login {
+		margin: 0 0 0 15px;
+
+		font-size: 14px;
+
+		a {
+			text-decoration: underline;
+		}
+	}
+}
+
+.ep-rules {
+	margin-top: -64px;
+	padding: 65px 0 10px 15px;
+
+	border-radius: 4px;
+
+	&__img {
+		float: left;
+
+	   	width: 95px;
+		height: 82px;
+	    margin-top: 10px;
+	    margin-right: 15px;
+
+	    vertical-align: middle;
+
+		img {
+			width: 100%;
+			height: auto;
 		}
 	}
 }
@@ -66,7 +167,7 @@
 .epHintPopup {
 	.rounded(4px);
 	position: absolute;
-    top: 61px;
+    top: 78px;
 	right: 0;
 
 	display: none;
@@ -105,39 +206,6 @@
 	}
 }
 
-.epHead {
-	margin: 0 0 20px;
-	padding: 15px 0;
-	background: url("@{base-url}/enterPrize/img/bgFishki.png") no-repeat 100% 0;
-
-	&_title {
-		margin: 5px 0 25px;
-
-	    text-transform: uppercase;
-
-		color: @white;
-
-	    font-family: "Enter";
-	    font-size: 28px;
-	}
-
-	&_list {
-		margin: 0px;
-
-		color: #c7c7c7;
-
-		font-size: 15px;
-
-		&_item {
-			margin: 0px;
-
-			strong {
-				color: @white;
-			}
-		}
-	}
-}
-
 .epListTitle {
     margin-top: 25px;
 
@@ -150,14 +218,13 @@
     }
 }
 
-.epSelectFishka {
-	.rounded(4px);
+.ep-selected-coupon {
 	margin: 0 0 30px;
-	padding: 10px;
+	padding: 10px 10px 10px 0;
 
-	background: #707070;
+	background: #272727;
 
-	&_left {
+	&__l {
 		float: left;
 
 		margin: 0;
@@ -167,13 +234,13 @@
 		}
 	}
 
-	&_right {
+	&__r {
 		float: right;
 
 		width: 680px;
 	}
 
-	&_desc {
+	&__desc {
     	margin: 0 0 10px;
 
 		color: @white;
@@ -182,13 +249,13 @@
 		line-height: 1.5;
 	}
 
-	&_slider {
+	&__slider {
 		.rounded(4px);
 		padding: 10px;
 
 		background: @white;
 
-		&_link {
+		&__lk {
 			text-decoration: underline;
 
 			color: #3f3f3f;
@@ -198,3 +265,28 @@
 		}
 	}
  }
+
+ .ep-rules-lst {
+	display: none;
+	margin: 0 0 20px;
+	text-align: left;
+
+	&__i {
+		margin: 0 0 15px 0;
+		border-left: 3px solid;
+		padding-left: 10px;
+		font-size: 12px;
+
+		&.mBlue {
+			border-color: @firmBlue;
+		}
+
+		&.mOrange {
+			border-color: @firmOrange;
+		}
+
+		&.mGreen {
+			border-color: @firmGreen;
+		}
+	}
+}

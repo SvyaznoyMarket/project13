@@ -13,25 +13,9 @@ trait ABHelperTrait {
      * @return bool
      */
     public static function isNewMainPage() {
-        return \App::abTest()->getTest('main_page') && in_array(\App::abTest()->getTest('main_page')->getChosenCase()->getKey(), ['new', 'search_new_1', 'search_new_2']);
-    }
-
-    /** Возвращает вариант новой главной страницы
-     * @return bool|int
-     */
-    public static function getNewMainPageVar(){
-        if (\App::abTest()->getTest('main_page')) {
-            switch (\App::abTest()->getTest('main_page')->getChosenCase()->getKey()) {
-                case 'search_new_1':
-                    return 1;
-                case 'search_new_2':
-                    return 2;
-                default:
-                    return 0;
-            }
-        } else {
-            return false;
-        }
+        // TODO данный тест был отключен 03.03.2015. Через некоторое время следует удалить данный метод и его вызовы из кода
+        return true;
+//        return \App::abTest()->getTest('main_page') && in_array(\App::abTest()->getTest('main_page')->getChosenCase()->getKey(), ['new', 'search_new_1', 'search_new_2']);
     }
 
     /** Поиск с возможностью фильтрации по категориям?
@@ -80,4 +64,20 @@ trait ABHelperTrait {
         return \App::abTest()->getTest('order_email') && \App::abTest()->getTest('order_email')->getChosenCase()->getKey() == 'required';
     }
 
-} 
+    /**
+     * @return int
+     */
+    public static function getGiftButtonNumber(){
+        $test = \App::abTest()->getTest('giftButton');
+        if ($test) {
+            $key = $test->getChosenCase()->getKey();
+            if ($key === 'default') {
+                return 1;
+            } else {
+                return $key;
+            }
+        }
+
+        return 1;
+    }
+}

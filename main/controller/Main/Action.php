@@ -215,7 +215,7 @@ class Action {
      * @param float $timeout Таймаут для запроса к RR
      * @return array
      */
-    private function getProductIdsFromRR(\Http\Request $request, $timeout = 0.15) {
+    public function getProductIdsFromRR(\Http\Request $request, $timeout = 0.15) {
         $rrClient = \App::rrClient();
         $rrUserId = $request->cookies->get('rrpusid');
         $ids = [

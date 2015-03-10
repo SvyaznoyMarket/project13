@@ -38,6 +38,7 @@ $isKitPage = (bool)$product->getKit();
 $isProductAvailable = $product->isAvailable();
 
 $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
+$buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 ?>
 
 <?= $helper->render('product/__data', ['product' => $product]) ?>
@@ -57,45 +58,30 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
 </div>
 
 <div class="product-card__section-right">
-    <? if ($isProductAvailable): ?>
-        <div class="product-card__vendor">Продавец-партнёр: <?= $helper->escape($product->getSlotPartnerOffer()['name']) ?></div>
 
-        <?= $helper->render('product/slot/__price', ['product' => $product]) // Цена ?>
+    <?= $helper->render('product-giftery/__price', ['product' => $product]) // Цена ?>
 
-        <span class="product-card__info--price">Цена базового комплекта</span>
-        <span class="product-card__info--deliv-period">Срок доставки базового комплекта 3 дня</span>
-        <div class="product-card__info--recall">
-            <span>Закажите обратный звонок и уточните:</span>
-            <ul class="product-card__info--recall__list">
-                <li>комплектность мебели и техники;</li>
-                <li>условия доставки, сборки и оплаты.</li>
-            </ul>
+    <div class="product-card__info--recall">
+        <span>Электронный подарочный сертификат на покупки в Enter.</span>
         <?= $helper->render('cart/__button-product', [
             'product'  => $product,
             'sender'   => $buySender,
             'location' => 'product-card',
         ]) ?>
+    </div>
 
-        </div>
+    <div class="product-card__specify" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        <?= $helper->render('product/__mainProperties', ['product' => $product]) ?>
+    </div>
 
-        <div class="product-card__specify" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-            <?= $helper->render('product/__mainProperties', ['product' => $product]) ?>
-        </div>
+    <div class="clear"></div>
 
-        <div class="clear"></div>
+    <div class="js-showTopBar"></div>
 
-        <div class="js-showTopBar"></div>
-
-        <div class="bWidgetBuy mWidget compare--slot js-WidgetBuy">
-            <?= $page->render('compare/_button-product-compare', ['product' => $product]) ?>
-        </div>
-
-    <? else: ?>
-        <div class="js-showTopBar"></div>
-    <? endif ?>
 </div>
 
 <div class="clear"></div>
+<? /*
 <div class="product-card__bordered">
     <? if ($isProductAvailable && \App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
@@ -110,9 +96,11 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
                 'name'     => 'retailrocket',
                 'position' => 'ProductSimilar',
             ],
+            'sender2'  => 'slot',
         ]) ?>
     <? endif ?>
 </div>
+*/ ?>
 <div class="product-card__bordered">
     <div class="product-card__desc">
         <?= $product->getDescription() ?>
@@ -137,6 +125,7 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
                 'name'     => 'retailrocket',
                 'position' => 'ProductAccessories', // все правильно - так и надо!
             ],
+            'sender2'  => 'slot',
         ]) ?>
     <? endif ?>
 
@@ -161,7 +150,6 @@ $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Sessio
 
     <? if (\App::config()->analytics['enabled']): ?>
         <?= $page->tryRender('product/partner-counter/_cityads', ['product' => $product]) ?>
-        <?//= $page->tryRender('product/partner-counter/_recreative', ['product' => $product]) ?>
     <? endif ?>
 
     <?= $page->tryRender('product/_tag', ['product' => $product]) ?>

@@ -799,6 +799,10 @@ return [
         'action'    => ['User\OrderAction', 'execute'],
         'require'   => ['orderId' => '\d+']
     ],
+    'user.recommend' => [
+        'pattern'   => '/private/recommends',
+        'action'    => ['User\RecommendAction', 'execute'],
+    ],
     // подписки пользователя
     'user.subscriptions' => [
         'pattern' => '/private/subscriptions',
@@ -1008,6 +1012,11 @@ return [
     'enterprize.show' => [
         'pattern' => '/enterprize/{enterprizeToken}',
         'action'  => ['Enterprize\ShowAction', 'execute'],
+    ],
+
+    'enterprize.slider' => [
+        'pattern' => '/enterprize-slider/{enterprizeToken}',
+        'action'  => ['Enterprize\SliderAction', 'execute'],
     ],
 
     'mobidengi' => [
