@@ -2,7 +2,7 @@
 
 return function (
     \Helper\TemplateHelper $helper,
-    \Model\Product\BasicEntity $product,
+    \Model\Product\Entity $product,
     $onClick = null,
     $isRetailRocket = null,
     $sender = [],

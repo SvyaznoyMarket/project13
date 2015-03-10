@@ -1,7 +1,7 @@
 <?php
 /**
  * @var $page       \View\Layout
- * @var $product    \Model\Product\CompactEntity
+ * @var $product    \Model\Product\Entity
  * @var $isHidden   bool
  * @var $maxHeight  bool
  * @var $gaEvent    string

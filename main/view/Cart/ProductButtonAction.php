@@ -5,17 +5,18 @@ namespace View\Cart;
 class ProductButtonAction {
     /**
      * @param \Helper\TemplateHelper $helper
-     * @param \Model\Product\BasicEntity $product
+     * @param \Model\Product\Entity $product
      * @param null $onClick
      * @param bool $isRetailRocket
      * @param array $sender Данные поставщика, например: {name: retailrocket, position: ProductSimilar, action: Переход в карточку товара}
      * @param bool $noUpdate
      * @param string|null $location
+     * @param \Model\Product\Entity[] $kitProducts
      * @return array
      */
     public function execute(
         \Helper\TemplateHelper $helper,
-        \Model\Product\BasicEntity $product,
+        \Model\Product\Entity $product,
         $onClick = null,
         $isRetailRocket = false,
         array $sender = [],
@@ -24,32 +25,7 @@ class ProductButtonAction {
         $reserveAsBuy = false,
         $sender2 = ''
     ) {
-        $urlParams = [
-            'productId' => $product->getId(),
-        ];
-
-        if ($helper->hasParam('sender')) {
-            $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
-        } else if ($isRetailRocket) {
-            $urlParams['sender'] = 'retailrocket';
-        }
-
-        if ($sender) {
-            $urlParams = array_merge($urlParams, [
-                'sender' => [
-                    'name'      => isset($sender['name']) ? $sender['name'] : null,
-                    'position'  => isset($sender['position']) ? $sender['position'] : null,
-                    'method'    => isset($sender['method']) ? $sender['method'] : null,
-                    'from'      => isset($sender['from']) ? $sender['from'] : null,
-                ],
-            ]);
-        }
-
-        if ($sender2) {
-            $urlParams['sender2'] = $sender2;
-        }
-
-        $buyUrl = $helper->url('cart.product.set', $urlParams);
+        $buyUrl = $this->getBuyUrl($helper, $product, $isRetailRocket, $sender, $sender2);
 
         $data = [
             'id'         => 'buyButton-' . $product->getId() . '-'. md5(json_encode([$location, isset($sender['position']) ? $sender['position'] : null])),
@@ -72,10 +48,6 @@ class ProductButtonAction {
                 'noUpdate'  => $noUpdate,
             ],
         ];
-
-        /** @var $region \Model\Region\Entity|null */
-        $region = \App::user()->getRegion();
-        $forceDefaultBuy = $region ? $region->getForceDefaultBuy() : true;
 
         if (!$product->getIsBuyable()) {
             $data['disabled'] = true;
@@ -103,19 +75,24 @@ class ProductButtonAction {
             $data['url'] = '#';
             $data['class'] .= ' btn btn--slot giftery-show-widget ' . ('product-card' !== $location ? 'btn--short' : 'btn--big');
             $data['value'] = 'Купить';
-        } else if ($product->isInShopStockOnly() && $forceDefaultBuy) {
+        } else if ($product->isInShopStockOnly() && \App::user()->getRegion()->getForceDefaultBuy()) {
             if ($reserveAsBuy) {
                 $data['id'] = 'quickBuyButton-' . $product->getId();
-                $data['url'] = $helper->url('cart.oneClick.product.set', array_merge($urlParams, ['productId' => $product->getId()]));
+                $data['url'] = $this->getOneClickBuyUrl($helper, $product, $isRetailRocket, $sender, $sender2);
                 $data['class'] .= ' btnBuy__eLink jsOneClickButton-new';
                 $data['value'] = 'Купить';
                 $data['title'] = 'Резерв товара';
             } else {
                 $data['inShopOnly'] = true;
-                $data['url'] = $helper->url('cart.oneClick.product.set', array_merge($urlParams, ['productId' => $product->getId()]));
+                $data['url'] = $this->getOneClickBuyUrl($helper, $product, $isRetailRocket, $sender, $sender2);
                 $data['class'] .= ' btnBuy__eLink mShopsOnly jsOneClickButton';
                 $data['value'] = 'Резерв';
             }
+        } else if ($product->getKit() && !$product->getIsKitLocked()) {
+            $data['isKit'] = true;
+            $data['value'] = 'Купить';
+            $data['class'] .= ' btnBuy__eLink js-kitButton';
+            $data['url'] = $this->getKitBuyUrl($helper, $product, $isRetailRocket, $sender, $sender2);
 		} else if (\App::user()->getCart()->hasProduct($product->getId()) && !$noUpdate) {
             $data['url'] = $helper->url('cart');
             $data['class'] .= ' btnBuy__eLink mBought';
@@ -127,5 +104,64 @@ class ProductButtonAction {
         }
 
         return $data;
+    }
+
+    private function getBuyUrl(\Helper\TemplateHelper $helper, \Model\Product\Entity $product, $isRetailRocket, $sender, $sender2) {
+        return $helper->url(
+            'cart.product.set',
+            array_merge(
+                $this->getSenderUrlParams($helper, $product, $isRetailRocket, $sender, $sender2),
+                ['productId' => $product->getId()]
+            )
+        );
+    }
+
+    private function getOneClickBuyUrl(\Helper\TemplateHelper $helper, \Model\Product\Entity $product, $isRetailRocket, $sender, $sender2) {
+        return $helper->url(
+            'cart.oneClick.product.set',
+            array_merge(
+                $this->getSenderUrlParams($helper, $product, $isRetailRocket, $sender, $sender2),
+                ['productId' => $product->getId()]
+            )
+        );
+    }
+
+    private function getKitBuyUrl(\Helper\TemplateHelper $helper, \Model\Product\Entity $product, $isRetailRocket, $sender, $sender2) {
+        $urlParams = $this->getSenderUrlParams($helper, $product, $isRetailRocket, $sender, $sender2);
+
+        foreach ($product->getKit() as $kitItem) {
+            $urlParams['product'][] = ['id' => $kitItem->getId(), 'quantity' => $kitItem->getCount()];
+        }
+
+        return $helper->url('cart.product.setList', $urlParams);
+    }
+
+    private function getSenderUrlParams(\Helper\TemplateHelper $helper, \Model\Product\Entity $product, $isRetailRocket, $sender, $sender2) {
+        $urlParams = [];
+
+        if (!$product->getKit() || $product->getIsKitLocked()) {
+            if ($helper->hasParam('sender')) {
+                $urlParams['sender'] = $helper->getParam('sender') . '|' . $product->getId();
+            } else if ($isRetailRocket) {
+                $urlParams['sender'] = 'retailrocket';
+            }
+        }
+
+        if ($sender) {
+            $urlParams = array_merge($urlParams, [
+                'sender' => [
+                    'name'      => isset($sender['name']) ? $sender['name'] : null,
+                    'position'  => isset($sender['position']) ? $sender['position'] : null,
+                    'method'    => isset($sender['method']) ? $sender['method'] : null,
+                    'from'      => isset($sender['from']) ? $sender['from'] : null,
+                ],
+            ]);
+        }
+
+        if ($sender2) {
+            $urlParams['sender2'] = $sender2;
+        }
+
+        return $urlParams;
     }
 }

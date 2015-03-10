@@ -5,7 +5,7 @@ namespace View\Product;
 class ShowAction {
     /**
      * @param \Helper\TemplateHelper $helper
-     * @param \Model\Product\BasicEntity $product
+     * @param \Model\Product\Entity $product
      * @param null $buyMethod
      * @param bool $showState
      * @param \View\Cart\ProductButtonAction $cartButtonAction
@@ -16,7 +16,7 @@ class ShowAction {
      */
     public function execute(
         \Helper\TemplateHelper $helper,
-        \Model\Product\BasicEntity $product,
+        \Model\Product\Entity $product,
         $buyMethod = null,
         $showState = true,
         $cartButtonAction = null,
@@ -24,8 +24,6 @@ class ShowAction {
         $imageSize = 2,
         array $cartButtonSender = []
     ) {
-        /** @var $product \Model\Product\Entity */
-
         $user = \App::user();
 
         $stateLabel = null;
@@ -52,7 +50,8 @@ class ShowAction {
                 ? ['name' => $product->getLabel()->getName(), 'image' => $product->getLabel()->getImageUrl()]
                 : null
             ,
-            'isPodariZhiznProduct' => $product->getLabel() && $product->getLabel()->getId() == \Model\Product\BasicEntity::LABEL_ID_PODARI_ZHIZN,
+            'showCartButton' => !($product->getLabel() && $product->getLabel()->getId() == \Model\Product\BasicEntity::LABEL_ID_PODARI_ZHIZN),
+            'showCompareButton' => !$product->getKit() || $product->getIsKitLocked(),
             'cartButton'   => [],
             'image'        => $product->getImageUrl($imageSize),
             'hoverImage'   => $this->getHoverImageUrl($product, $imageSize),

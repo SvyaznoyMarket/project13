@@ -52,6 +52,7 @@ $config = array_merge([
         'compare.delete'            => ['pattern' => $routerRules['compare.delete']['pattern']],
         'orderV3OneClick.delivery'  => ['pattern' => $routerRules['orderV3OneClick.delivery']['pattern']],
         'product.category'          => ['pattern' => $routerRules['product.category']['pattern']],
+        'product.kit'               => ['pattern' => $routerRules['product.kit']['pattern']],
         'orderV3OneClick.form'      => ['pattern' => $routerRules['orderV3OneClick.form']['pattern']],
         'order.slot.create'         => ['pattern' => $routerRules['order.slot.create']['pattern']],
     ],

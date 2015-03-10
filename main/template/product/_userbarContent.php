@@ -26,21 +26,13 @@ $productPageSender2 = \Session\ProductPageSendersForMarketplace::get($product->g
 
 <div class="topbarfix_buy js-topbarfixBuy <?= $line ? 'hidden' : 'none' ?>">
 
-    <? if (!$product->getKit() || $product->getIsKitLocked()): ?>
-        <?= $helper->render('cart/__button-product', [
-            'product'  => $product,
-            'onClick'  => $addToCartJS ? $addToCartJS : null,
-            'sender'   => ($request->get('sender') ? (array)$request->get('sender') : $productPageSender) + ['name' => null, 'method' => null, 'position' => null],
-            'location' => 'userbar',
-            'sender2'  => $productPageSender2,
-        ]) // Кнопка купить ?>
-    <? else: ?>
-        <?= $helper->render('cart/__button-product-kit', [
-            'product'  => $product,
-            'sender'   => ($request->get('sender') ? (array)$request->get('sender') : $productPageSender) + ['name' => null, 'method' => null, 'position' => null],
-            'sender2'  => $productPageSender2,
-        ]) // Кнопка купить ?>
-    <? endif ?>
+    <?= $helper->render('cart/__button-product', [
+        'product'  => $product,
+        'onClick'  => $addToCartJS ? $addToCartJS : null,
+        'sender'   => ($request->get('sender') ? (array)$request->get('sender') : $productPageSender) + ['name' => null, 'method' => null, 'position' => null],
+        'location' => 'userbar',
+        'sender2'  => $productPageSender2,
+    ]) // Кнопка купить ?>
 
     <? if (!$product->getSlotPartnerOffer() && $product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && (!$product->getKit() || $product->getIsKitLocked())): ?>
         <?= $helper->render('__spinner', [

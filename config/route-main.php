@@ -358,6 +358,10 @@ return [
         'require' => ['productId' => '\d+'],
         'action'  => ['Product\NotificationAction', 'lowerPrice'],
     ],
+    'product.kit' => [
+        'pattern' => '/ajax/product/kit/{productUi}',
+        'action'  => ['Product\KitAction', 'execute'],
+    ],
 
     // теги
     'tag' => [
