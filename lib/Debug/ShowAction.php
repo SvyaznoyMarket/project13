@@ -182,9 +182,7 @@ class ShowAction {
         }
 
         // server
-        if ('live' != \App::$env) {
-            $debug->add('server', isset($_SERVER) ? $_SERVER : [], 86);
-        }
+        $debug->add('server', isset($_SERVER) ? $_SERVER : [], 86);
 
 
 
