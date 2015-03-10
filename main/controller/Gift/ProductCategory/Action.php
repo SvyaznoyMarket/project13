@@ -344,15 +344,18 @@ class Action {
         $isSubmitted = (bool)$params->get('f-holiday');
 
         if (!$this->hasTagFilterPropertyValue('holiday', $params->get('f-holiday'))) {
-            $params->set('f-holiday', 739);
+            $params->set('f-holiday', 707);
         }
 
         if (!$this->hasTagFilterPropertyValue('sex', $params->get('f-sex'))) {
+            $params->set('f-sex', 688);
+            /*
             if ($params->get('f-holiday') == 738) {
                 $params->set('f-sex', 688);
             } else {
                 $params->set('f-sex', 687);
             }
+            */
         }
 
         if (!$this->hasTagFilterPropertyValue('status', $params->get('f-status'))) {
