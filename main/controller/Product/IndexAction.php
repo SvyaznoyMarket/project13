@@ -313,7 +313,6 @@ class IndexAction {
         $productLine = $product->getLine();
 
         $line = null;
-        $parts = [];
         $kitProducts = [];
         $relatedKits = [];
         $productRepository = \RepositoryManager::product();
@@ -321,35 +320,7 @@ class IndexAction {
 
         /* Набор пакеты */
         if ((bool)$product->getKit()) {
-            $restParts = [];
-
-            // Получим основные товары набора
-            $productPartsIds = [];
-            foreach ($product->getKit() as $part) {
-                $productPartsIds[] = $part->getId();
-            }
-
-            // Если товар находится в какой-либо линии, то запросим остальные продукты линии
-            if ($productLine instanceof \Model\Product\Line\Entity ) {
-                $line = \RepositoryManager::line()->getEntityByToken($productLine->getToken());
-                $restPartsIds = array_diff($line->getProductId(), $productPartsIds);
-            }
-
-            // Получим сущности по id
-            try {
-                $parts = $productRepository->getCollectionById($productPartsIds);
-                if (isset($restPartsIds) && count($restPartsIds) > 0) {
-                    $restParts = $productRepository->getCollectionById($restPartsIds);
-                } else {
-                    $restParts = [];
-                }
-            } catch (\Exception $e) {
-                \App::exception()->add($e);
-                \App::logger()->error($e);
-            }
-
-            // Приготовим набор для отображения на сайте
-            $kitProducts = $this->prepareKit($parts, $restParts, $product, $region);
+            $kitProducts = $productRepository->getKitProducts($product);
         }
 
         // Если у товара есть линия, то получим киты, в которые он входит
@@ -657,81 +628,4 @@ class IndexAction {
 
         return $result;
     }
-
-    /**
-     * Подготовка данных для набора продуктов
-     * @var array $products
-     * @var array $restProducts
-     * @var \Model\Product\Entity $product
-     * @var \Model\Region\Entity $region
-     */
-    private function prepareKit($products, $restProducts, $mainProduct, $region) {
-        $result = [];
-
-        foreach (array('baseLine' => $products, 'restLine' => $restProducts) as $lineName => $products) {
-
-            foreach ($products as $key => $product) {
-                $id = $product->getId();
-                $result[$id]['id'] = $id;
-                $result[$id]['name'] = $product->getName();
-                $result[$id]['article'] = $product->getArticle();
-                $result[$id]['token'] = $product->getToken();
-                $result[$id]['url'] = $product->getLink();
-                $result[$id]['image'] = $product->getImageUrl();
-                $result[$id]['product'] = $product;
-                $result[$id]['price'] = $product->getPrice();
-                $result[$id]['lineName'] = $lineName;
-                $result[$id]['height'] = '';
-                $result[$id]['width'] = '';
-                $result[$id]['depth'] = '';
-                $result[$id]['deliveryDate'] = '';
-
-                // добавляем размеры
-                $dimensionsTranslate = [
-                    'Высота' => 'height',
-                    'Ширина' => 'width',
-                    'Глубина' => 'depth'
-                ];
-                if ($product->getProperty()) {
-                    foreach ($product->getProperty() as $property) {
-                        if (in_array($property->getName(), array('Высота', 'Ширина', 'Глубина'))) {
-                            $result[$id][$dimensionsTranslate[$property->getName()]] = $property->getValue();
-                        }
-                    }
-                }
-            }
-
-        }
-
-        foreach ($result as &$value) {
-            $value['count'] = 0;
-        }
-
-        foreach ($mainProduct->getKit() as $kitPart) {
-            if (isset($result[$kitPart->getId()])) $result[$kitPart->getId()]['count'] = $kitPart->getCount();
-        }
-
-        $deliveryItems = [];
-        foreach ($result as $item) {
-            $deliveryItems[] = array(
-                'id'    => $item['product']->getId(),
-                'quantity' => isset($item['count']) ? $item['count'] : 1
-            );
-        }
-
-        $deliveryData = (new \Controller\Product\DeliveryAction())->getResponseData($deliveryItems, $region->getId());
-
-        if ($deliveryData['success']) {
-            foreach ($deliveryData['product'] as $product) {
-                $id = $product['id'];
-                $date = $product['delivery'][0]['date']['value'];
-                $result[$id]['deliveryDate'] = $date;
-            }
-
-        }
-
-        return $result;
-    }
-
-
 }

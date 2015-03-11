@@ -31,7 +31,7 @@
 <?
 $region = \App::user()->getRegion();
 if (!$lifeGiftProduct) $lifeGiftProduct = null;
-$isKitPage = (bool)$product->getKit();
+$isKit = (bool)$product->getKit();
 
 $isProductAvailable = $product->isAvailable();
 if (\App::config()->preview) {
@@ -106,7 +106,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
 
     <div class="clear"></div>
 
-    <? if ( $isKitPage ): // если это набор пакет ?>
+    <? if ($isKit): ?>
         <?= $helper->render('product/__baseKit', [
             'products' => $kitProducts,
             'product' => $product,
@@ -209,31 +209,23 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
                 ]) ?>
             <? endif ?>
 
-            <? if ($isKitPage && !$product->getIsKitLocked()): ?>
-                <?= $helper->render('cart/__button-product-kit', [
-                    'product'  => $product,
-                    'sender'  => $buySender,
-                    'sender2' => $buySender2,
-                ]) // Кнопка купить для набора продуктов ?>
-            <? else: ?>
-                <?= $helper->render('cart/__button-product', [
-                    'product'  => $product,
-                    'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
-                    'sender'   => $buySender + [
-                        'from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) // удаляем из REFERER параметры
-                    ],
-                    'sender2' => $buySender2,
-                    'location' => 'product-card',
-                ]) // Кнопка купить ?>
-            <? endif ?>
+            <?= $helper->render('cart/__button-product', [
+                'product'  => $product,
+                'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
+                'sender'   => $buySender + [
+                    'from' => preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) == null ? $request->server->get('HTTP_REFERER') : preg_filter('/\?+?.*$/', '', $request->server->get('HTTP_REFERER')) // удаляем из REFERER параметры
+                ],
+                'sender2' => $buySender2,
+                'location' => 'product-card',
+            ]) // Кнопка купить ?>
 
             <div class="js-showTopBar"></div>
 
-            <? if (!$hasFurnitureConstructor && !count($product->getPartnersOffer()) && (!$isKitPage || $product->getIsKitLocked())): ?>
+            <? if (!$hasFurnitureConstructor && !count($product->getPartnersOffer()) && (!$isKit || $product->getIsKitLocked())): ?>
                 <?= $helper->render('cart/__button-product-oneClick', ['product' => $product, 'sender'  => $buySender, 'sender2' => $buySender2]) // Покупка в один клик ?>
             <? endif ?>
 
-            <? if (!$isKitPage || $product->getIsKitLocked()) : ?>
+            <? if (!$isKit || $product->getIsKitLocked()) : ?>
                 <?= $page->render('compare/_button-product-compare', ['product' => $product]) ?>
             <? endif ?>
 
@@ -245,7 +237,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
 
             <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'main']) ?>
         </div>
-    <? elseif (!$isKitPage || $product->getIsKitLocked()): ?>
+    <? elseif (!$isKit || $product->getIsKitLocked()): ?>
         <div class="bWidgetBuy mWidget js-WidgetBuy">
             <div class="js-showTopBar"></div>
             <?= $page->render('compare/_button-product-compare', ['product' => $product]) ?>

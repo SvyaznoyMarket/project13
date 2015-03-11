@@ -752,7 +752,7 @@ window.ANALYTICS = {
 					if ( 'undefined' !== product ) {
 
                         /* На наборах выполняется другой трекинговый код */
-                        if ($(this).hasClass('jsChangePackageSet')) {
+                        if ($(this).hasClass('js-kitButton')) {
                             console.log('GA: send event addedCollection collection %s', product.article);
                             ga('send', 'event', 'addedCollection', 'collection', product.article);
                             return ;
