@@ -38,12 +38,12 @@ module.exports = function (grunt, options) {
 
         vendorScripts: {
             files: [ pathRoot + 'vendor/*.js'],
-            tasks: ['uglify:vendorScripts', 'jshint']
+            tasks: ['uglify:vendorScripts']
         },
 
         debugPanel: {
             files: [ pathDev + 'debug-panel/*.js'],
-            tasks: ['concat:debugPanel', 'jshint']
+            tasks: ['concat:debugPanel']
         },
 
         cartJS:{
@@ -168,7 +168,7 @@ module.exports = function (grunt, options) {
 		
 		gameSlotsJs:{
             files: [ pathDev + 'game/slots/jquery.transit.js', pathDev + 'game/slots/slots.js'],
-            tasks: ['concat:gameSlotsJs', 'jshint', 'uglify:gameSlotsJs']
+            tasks: ['concat:gameSlotsJs', 'uglify:gameSlotsJs']
         },
 
         serviceHaJS:{
