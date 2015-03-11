@@ -51,6 +51,8 @@ namespace EnterQuery\Product\Review
 
                     $this->response->reviews = isset($result['review_list'][0]) ? $result['review_list'] : [];
                     $this->response->reviewCount = isset($result['num_reviews']) ? $result['num_reviews'] : null;
+                    $this->response->score = isset($result['avg_score']) ? $result['avg_score'] : null;
+                    $this->response->starScore = isset($result['avg_star_score']) ? $result['avg_star_score'] : null;
 
                     return $result; // for cache
                 }
@@ -69,5 +71,9 @@ namespace EnterQuery\Product\Review\GetByProductUi
         public $reviews = [];
         /** @var int */
         public $reviewCount;
+        /** @var float */
+        public $score;
+        /** @var float */
+        public $starScore;
     }
 }

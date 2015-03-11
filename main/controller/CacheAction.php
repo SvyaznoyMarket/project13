@@ -34,6 +34,7 @@ class CacheAction {
                     $request->userToken = \App::user()->getToken() ?: null;
 
                     $response = $action->execute($request);
+                    \Controller\Product\IndexAction::$actionResponse = $response; // FIXME
                 }
             },
         ];
