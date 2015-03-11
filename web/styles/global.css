@@ -1600,8 +1600,9 @@ img[height="0"] {
   }
   .header-ddnav .header_b {
     position: absolute;
-    bottom: -91px;
+    bottom: -69px;
     left: 0;
+    border: none;
     -webkit-box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
     box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
@@ -1616,6 +1617,9 @@ img[height="0"] {
     border-bottom: 9px solid #ffffff;
     top: -9px;
     left: 22px;
+  }
+  .header-ddnav.header-new .header_b {
+    bottom: -90px;
   }
   .header-ddnav .header-icon-ddnav {
     background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAzAQAAAADEf9fiAAAAAnRSTlMAAHaTzTgAAAAXSURBVHgBY6A3YPz///8PrBTd9dENAACB2S+JmUkSHwAAAABJRU5ErkJggg==') no-repeat 50% 50%;

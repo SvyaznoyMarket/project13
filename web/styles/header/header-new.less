@@ -225,13 +225,20 @@
 
         .header_b {
             position: absolute;
-            bottom: -91px;
+            bottom: -69px;
             left: 0;
+            border: none;
             .box-shadow(0 2px 3px 0 rgba(0, 0, 0, 0.5));
 
             &:after {
                 .pseudo-corner-top(9px, @white, -9px);
                 left: 22px;
+            }
+        }
+
+        &.header-new {
+            .header_b {
+                bottom: -90px;
             }
         }
 
