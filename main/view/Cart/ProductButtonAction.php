@@ -89,7 +89,7 @@ class ProductButtonAction {
                 $data['value'] = 'Резерв';
             }
         } else if ($product->getKit() && !$product->getIsKitLocked()) {
-            $data['isKit'] = true;
+            $data['isKit'] = $location === 'slider' ? false : true;
             $data['value'] = 'Купить';
             $data['class'] .= ' btnBuy__eLink js-kitButton';
             $data['url'] = $this->getKitBuyUrl($helper, $product, $isRetailRocket, $sender, $sender2);
