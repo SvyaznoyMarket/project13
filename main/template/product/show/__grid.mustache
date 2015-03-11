@@ -1,13 +1,13 @@
 <div class="productInner__hover js-listing-item" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}>
     <div class="productInner__imgBox">
-        <a class="productInner__imgLink js-listing-item-img" href="{{link}}">
+        <a class="productInner__imgLink js-listing-item-img" href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>
             <img class="productInner__img" src="{{image}}" alt="{{name}}" />
         </a>
     </div><!--/ картинка продукта -->
 
     <div class="productInner__desc">
         <div class="inner">
-            <a class="name" href="{{link}}">{{name}}</a>
+            <a class="name" href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>{{name}}</a>
 
             <div class="clearfix">
                 <span class="price" class="">{{&price}} <span class="rubl">p</span></span>
@@ -33,7 +33,7 @@
             <div class="bBtnLine clearfix">
                 {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
                 <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}></a>
-                <a class="btnView btn1 js-listing-item-viewButton" href="{{link}}">Посмотреть</a>
+                <a class="btnView btn1 js-listing-item-viewButton" href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>Посмотреть</a>
             </div>
         </div>
     </div><!--/ описание продукта -->

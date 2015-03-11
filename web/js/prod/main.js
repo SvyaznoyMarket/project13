@@ -209,15 +209,14 @@
 
 	$body.on('click', '.jsMainSlidesRetailRocket a:not(.jsBuyButton, .jsOneClickButton-new)', function(e){
 		var block = $(this).closest('.jsMainSlidesRetailRocket').data('block'),
-			link = $(this).attr('href');
-		e.preventDefault();
+			link = $(this).attr('href'),
+            aTarget = $(this).attr('target');
+		if (aTarget != '_blank') e.preventDefault();
 		$body.trigger('trackGoogleEvent', {
 			category: 'RR_взаимодействие',
 			action: 'Перешел на карточку товара',
 			label: block,
-			hitCallback: function(){
-				window.location.href = link
-			}
+			hitCallback: aTarget == '_blank' ? null : link
 		})
 	});
 

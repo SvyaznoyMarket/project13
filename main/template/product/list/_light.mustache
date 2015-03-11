@@ -28,12 +28,12 @@
                 </ul>
 
                 {{#hoverImage}}
-                    <a href="{{link}}" class="lstn_imglk lstn_imglk-default js-listing-item-img"><img class="lstn_img" src="{{image}}" alt="" /></a>
-                    <a href="{{link}}" class="lstn_imglk lstn_imglk-hover js-listing-item-img"><img class="lstn_img" src="{{hoverImage}}" alt="" /></a>
+                    <a href="{{link}}" target="_blank" class="lstn_imglk lstn_imglk-default js-listing-item-img"><img class="lstn_img" src="{{image}}" alt="" /></a>
+                    <a href="{{link}}" target="_blank" class="lstn_imglk lstn_imglk-hover js-listing-item-img"><img class="lstn_img" src="{{hoverImage}}" alt="" /></a>
                 {{/hoverImage}}
 
                 {{^hoverImage}}
-                    <a href="{{link}}" class="lstn_imglk js-listing-item-img"><img class="lstn_img" src="{{image}}" alt="" /></a>
+                    <a href="{{link}}" target="_blank" class="lstn_imglk js-listing-item-img"><img class="lstn_img" src="{{image}}" alt="" /></a>
                 {{/hoverImage}}
                 
                 <div style="display: table; width: 100%;">
@@ -122,7 +122,7 @@
                 </div>
                 
                 {{#view.bottomDescription}}
-                    <div class="lstn_desc"><a href="{{link}}">{{name}}</a></div>
+                    <div class="lstn_desc"><a href="{{link}}" target="_blank">{{name}}</a></div>
                     {{#review}}{{> product/_review-compact }}{{/review}}
                 {{/view.bottomDescription}}
             </div>

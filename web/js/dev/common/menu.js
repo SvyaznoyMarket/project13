@@ -97,7 +97,6 @@
 
 	// аналитика
 	$body.on('click', '.jsRecommendedItemInMenu', function(event) {
-		console.log('jsRecommendedItemInMenu');
 
 		event.stopPropagation();
 
@@ -105,6 +104,7 @@
 
 			var $el = $(this),
 				link = $el.attr('href'),
+				isNewWindow = $el.attr('target') == '_blank',
 				sender = $el.data('sender');
 
 			$body.trigger('TLT_processDOMEvent', [event]);
@@ -113,8 +113,7 @@
 				category: 'RR_взаимодействие',
 				action: 'Перешел на карточку товара',
 				label: sender ? sender.position : null,
-				hitCallback: function(){
-					console.log({link: link});
+				hitCallback: isNewWindow ? null : function(){
 
 					if (link) {
 						setTimeout(function() { window.location.href = link; }, 90);
