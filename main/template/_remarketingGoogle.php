@@ -4,7 +4,7 @@
 */
 if (\App::config()->googleAnalytics['enabled']): ?>
 
-    <? $tag_params = array_merge(['pagetype' => 'default',], $tag_params) ?>
+    <? $tag_params = array_merge(['pagetype' => 'default', 'ecomm_city' => \App::user()->getRegion()->getName()], $tag_params) ?>
 
     <!-- Google Code for 'Тег ремаркетинга' -->
     <!-- Remarketing tags may not be associated with personally identifiable information or placed on pages related to sensitive categories. For instructions on adding this tag and more information on the above requirements, read the setup guide: google.com/ads/remarketingsetup -->
