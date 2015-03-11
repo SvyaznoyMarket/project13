@@ -13,7 +13,7 @@ $btnTypes = array(
 
 <!-- поиск -->
 <div class="header_c clearfix header_c-v2">
-    <span class="header-icon-ddnav" title=""></span>
+    <span class="header-icon-ddnav jsHamburgerIcon" title=""></span>
 
     <a href="/" class="hdlogo sitelogo"></a>
 

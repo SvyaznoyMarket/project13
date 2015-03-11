@@ -3076,7 +3076,8 @@ $(document).ready(function() {
 
 	var $body = $(document.body),
 		$nav = $('nav'),
-		MenuStorage, storage, fillRecommendBlocks;
+        $hamburgerIcon = $('.jsHamburgerIcon'),
+		MenuStorage, storage, fillRecommendBlocks, hideMenuTimeoutId;
 
 	/**
 	 * Конструктор хранилища данных. Возвращает либо lscache, либо объект с необходимыми свойствами (функциями)
@@ -3198,7 +3199,31 @@ $(document).ready(function() {
 			$el.trigger('TL_recommendation_clicked');
 
 		} catch (e) { console.error(e); }
-	})
+	});
+
+    $body.on('click', '.jsHamburgerIcon', function(){
+        $nav.toggle();
+    });
+
+    if ($hamburgerIcon.length > 0) {
+        $hamburgerIcon.hover(function(){
+            clearTimeout(hideMenuTimeoutId);
+            hideMenuTimeoutId = null;
+            $nav.show();
+        });
+        $body.on('hover', 'div', function(e){
+            var $target;
+            if ($nav.is(':visible') && !hideMenuTimeoutId) {
+                $target = $(e.target);
+                if ($target.closest('nav').length == 0
+                    && $target.prop('nodeName') != 'NAV'
+                    && !$target.hasClass('jsHamburgerIcon') ) {
+                    hideMenuTimeoutId = setTimeout( function(){ $nav.hide() }, 2000 );
+                }
+            }
+        })
+    }
+
 })(jQuery);
 (function() {
 	var oneClickOpening = false;

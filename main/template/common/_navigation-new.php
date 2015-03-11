@@ -31,10 +31,12 @@ foreach ($menu as $menu1) {
         \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['main_menu', 'recommendation']);
     }
 }
+
+$hideMenu = \App::abTest()->isMenuHamburger() ? ' style="display:none" ' : '';
 ?>
 
 <!-- навигация -->
-<nav class="header_b">
+<nav class="header_b" <?= $hideMenu ?>>
     <ul class="navsite js-mainmenu-level1">
         <? foreach ($menu as $menu1): ?>
             <?

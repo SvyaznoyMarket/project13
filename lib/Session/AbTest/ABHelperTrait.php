@@ -89,11 +89,11 @@ trait ABHelperTrait {
         return $test && $test->getChosenCase()->getKey() == 'on';
     }
 
-    /** Меню-гамбургер
+    /** Меню-гамбургер (только в карточке товара)
      * @return bool
      */
     public static function isMenuHamburger(){
         $test = \App::abTest()->getTest('new_window');
-        return $test && $test->getChosenCase()->getKey() == 'hamburger';
+        return $test && $test->getChosenCase()->getKey() == 'hamburger' && \App::request()->attributes->get('route') == 'product';
     }
 }
