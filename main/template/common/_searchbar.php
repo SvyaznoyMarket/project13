@@ -13,6 +13,8 @@ $btnTypes = array(
 
 <!-- поиск -->
 <div class="header_c clearfix header_c-v2">
+    <span class="header-icon-ddnav" title=""></span>
+
     <a href="/" class="hdlogo sitelogo"></a>
 
     <div class="hdsearch jsKnockoutSearch" data-bind="css: { 'hdsearch-v2': advancedSearch }">

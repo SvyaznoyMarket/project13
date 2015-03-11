@@ -36,6 +36,7 @@
     &-new {
         background: @white;
     }
+
     // верхний блок шапки
     &_t{
         height: @header-height;
@@ -46,6 +47,7 @@
     &_i{
         .inline-block-middle();
     }
+
     &_c{
         height: 60px;
         padding: 5px 10px;
@@ -212,6 +214,57 @@
     }
     &.header-new{
         .box-shadow(0px 0px 26px 0px rgba(50, 50, 50, 0.25));
+    }
+
+    .header-icon-ddnav {
+        display: none;
+    }
+
+    // Гамбургер
+    &-ddnav {
+
+        .header_b {
+            position: absolute;
+            bottom: -91px;
+            left: 0;
+            .box-shadow(0 2px 3px 0 rgba(0, 0, 0, 0.5));
+
+            &:after {
+                .pseudo-corner-top(9px, @white, -9px);
+                left: 22px;
+            }
+        }
+
+        .header-icon-ddnav {
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAzAQAAAADEf9fiAAAAAnRSTlMAAHaTzTgAAAAXSURBVHgBY6A3YPz///8PrBTd9dENAACB2S+JmUkSHwAAAABJRU5ErkJggg==') no-repeat 50% 50%;
+            float: left;
+            display: block;
+            margin: 5px 0 0;
+            height: 51px;
+            width: 44px;
+            cursor: pointer;
+        }
+
+        .hdlogo {
+            margin: 0 35px 0 13px;
+        }
+
+        .hdsearch_itb {
+            width: 481px;
+            padding: 0px 10px 0 5px;
+
+            &:after {
+                background: none;
+            }
+        }
+
+        .hdgift--new {
+            margin: 18px 0 0 21px;
+        }
+
+        .hdep {
+            margin: 11px 0px 0 0;
+        }
     }
 }
 // контакты
