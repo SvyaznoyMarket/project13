@@ -365,7 +365,7 @@
             body.trigger('trackGooglePageview', ['/enterprize/form/' + dataValue.token]);
         }
 
-        if (dataValue.slider.url) {
+        if ( dataValue.slider.url ) {
             var $sliderContainer = $('.js-enterprize-slider-container');
 
             $sliderContainer.empty();
@@ -382,6 +382,10 @@
             xhr.done(function(response) {
                 if (response.content) {
                     $sliderContainer.removeClass('mLoader').html(response.content);
+
+                    if ( $('.js-slider').data('slider').count != 0 ) {
+                        $('.js-ep-slides').show(500);
+                    }
                 }
             });
             xhr.always(function() {
@@ -390,7 +394,7 @@
             });
 
             body.data('enterprizeSliderXhr', xhr);
-        };
+        }
     });
 
     body.on('click', '.js-ep-hint-closer', function(e) {
