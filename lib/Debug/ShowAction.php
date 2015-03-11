@@ -62,7 +62,7 @@ class ShowAction {
             $startAt = isset($message['startAt']) ? $message['startAt'] : null;
             $delay = isset($message['delay']) ? $message['delay'] : 0;
 
-            $index = md5($url . ' ' . serialize($data) . ' ' . $delay);
+            $index = md5($url . ' ' . serialize($data));
 
             if ($url) {
                 if ('Create curl' == $message['message']) {
@@ -75,6 +75,7 @@ class ShowAction {
                         'startAt'     => $startAt,
                         'count'       => isset($queryData[$index]['count']) ? ($queryData[$index]['count'] + 1) : 1,
                         'cache'       => isset($message['cache']),
+                        'delay'       => isset($message['delay']),
                     ];
                 } else if ((('Fail curl' == $message['message']) || ('End curl' == $message['message'])) && isset($queryData[$index])) {
                     if (isset($message['error'])) {

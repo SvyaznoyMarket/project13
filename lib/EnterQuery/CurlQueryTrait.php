@@ -48,6 +48,8 @@ trait CurlQueryTrait
         $decoder = null
     )
     {
+        $delayMultipliers = [0, 0.05]; // коэффициенты для задержек запросов (retry)
+
         if ($timeoutMultiplier < 0) {
             throw new \InvalidArgumentException();
         }
@@ -72,12 +74,12 @@ trait CurlQueryTrait
         // end
 
         $queryCollection = new \ArrayObject();
-        foreach ([0/*, 0.05*/] as $i) {
+        foreach ($delayMultipliers as $delayMultiplier) {
             $query = $this->createCurlQuery(
                 $url,
                 $data,
                 $timeout,
-                $timeout * $i
+                $timeout * $delayMultiplier
             );
 
             $query->resolveCallback = function () use (
