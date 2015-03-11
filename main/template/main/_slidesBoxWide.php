@@ -9,9 +9,7 @@
                 <li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Guess"></li>
                 <li class="slidesBox_dott_i" data-name="Guess"></li>
                 <li class="slidesBox_dott_i" data-name="Magic Moments"></li>
-                <li class="slidesBox_dott_i" data-name="Суперароматы для настоящих мужчин"></li>
                 <li class="slidesBox_dott_i" data-name="Новая ювелирная коллекция"></li>
-                <li class="slidesBox_dott_i" data-name="Stroili"></li>
             </ul>
         </div>
 
@@ -127,12 +125,6 @@
             </li>
 
             <li class="slidesBox_i jsSlidesWideItem">
-                <a href="http://www.enter.ru/catalog/parfyumeriya-i-kosmetika/parfyumeriya-mugskaya-parfyumeriya-2600" class="slidesBox_lk">
-                    <img src="styles/mainpage/img/collection-parf23.jpg" alt="" class="slidesBox_img">
-                </a>
-            </li>
-
-            <li class="slidesBox_i jsSlidesWideItem">
                 <a href="/catalog/jewel/pandora-1320" class="slidesBox_lk">
                     <img src="styles/mainpage/img/pandora/pandora-b.jpg" alt="" class="slidesBox_img">
                 </a>
@@ -180,12 +172,6 @@
                 </ul>
 
                 <a href="/catalog/jewel/pandora-1320" class="slidesBox_btnview">Посмотреть<br/>коллекцию</a>
-            </li>
-
-            <li class="slidesBox_i jsSlidesWideItem">
-                <a href="http://www.enter.ru/catalog/ukrasheniya-i-chasi/stroili-ee73" class="slidesBox_lk">
-                    <img src="styles/mainpage/img/collection-stroili40.jpg" alt="" class="slidesBox_img">
-                </a>
             </li>
         </ul>
     </div>
