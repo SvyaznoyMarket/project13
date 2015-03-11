@@ -111,6 +111,11 @@ class BasicEntity {
         if (isset($data['meta_keywords'])) $this->setSeoKeywords($data['meta_keywords']);
         if (isset($data['meta_description'])) $this->setSeoDescription($data['meta_description']);
 
+        if (array_key_exists('kit', $data) && is_array($data['kit'])) $this->setKit(array_map(function($data) {
+            return new Kit\Entity($data);
+        }, $data['kit']));
+        if (array_key_exists('is_kit_locked', $data)) $this->setIsKitLocked($data['is_kit_locked']);
+
         $this->calculateState($data);
     }
 

@@ -138,9 +138,6 @@ class Entity extends BasicEntity {
         if (array_key_exists('service', $data) && is_array($data['service'])) $this->setService(array_map(function($data) {
             return new Service\Entity($data);
         }, $data['service']));
-        if (array_key_exists('kit', $data) && is_array($data['kit'])) $this->setKit(array_map(function($data) {
-            return new Kit\Entity($data);
-        }, $data['kit']));
         if (array_key_exists('related', $data)) $this->setRelatedId($data['related']);
         if (array_key_exists('accessories', $data)) $this->setAccessoryId($data['accessories']);
         if (array_key_exists('warranty', $data) && is_array($data['warranty'])) foreach ($data['warranty'] as $warranty) {
@@ -149,7 +146,6 @@ class Entity extends BasicEntity {
         if (array_key_exists('nearest_city', $data) && is_array($data['nearest_city'])) foreach ($data['nearest_city'] as $city) {
             $this->addNearestCity(new \Model\Region\Entity($city));
         }
-        if (array_key_exists('is_kit_locked', $data)) $this->setIsKitLocked($data['is_kit_locked']);
 
         $indexedPropertyGroups = [];
         foreach ($this->propertyGroup as $group) {
