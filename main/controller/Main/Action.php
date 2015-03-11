@@ -96,7 +96,7 @@ class Action {
         if ((bool)$productsById) {
             \RepositoryManager::product()->prepareCollectionById(array_keys($productsById), $region, function($data) use (&$productsById) {
                 foreach ($data as $item) {
-                    $productsById[(int)$item['id']] = new \Model\Product\BasicEntity($item);
+                    $productsById[(int)$item['id']] = new \Model\Product\Entity($item);
                 }
             }, function(\Exception $e) {
                 \App::exception()->remove($e);
@@ -195,6 +195,8 @@ class Action {
         foreach ($rrProducts as $collection) {
             $rrProductsById = array_merge($rrProductsById, $collection);
         }
+
+        \RepositoryManager::product()->setEntityClass('\Model\Product\Entity');
 
         // получаем продукты из ядра
         $products = \RepositoryManager::product()->getCollectionById(array_unique($rrProductsById), null, false);
