@@ -10961,9 +10961,13 @@ img[height="0"] {
     *display: inline;
     *zoom: 1;
     border: 1px solid;
+    background: #cbdf59;
+    border-color: #99ac29;
+    color: #000;
   }
   .btn--slot:hover {
     text-decoration: none;
+    background: #cee062;
   }
   .btn--slot--container {
     width: 100%;
@@ -10971,7 +10975,6 @@ img[height="0"] {
     overflow: visible;
   }
   .btn--slot.btn--big {
-    background-color: #cbdf59;
     -webkit-box-shadow: 0 3px 0 #b8c64b, 0 3px 0 #b8c64b;
     -moz-box-shadow: 0 3px 0 #b8c64b, 0 3px 0 #b8c64b;
     box-shadow: 0 3px 0 #b8c64b, 0 3px 0 #b8c64b;
@@ -10979,7 +10982,6 @@ img[height="0"] {
     border-color: #ccd594;
     text-align: center;
     text-decoration: none;
-    color: #000;
     font-size: 18px;
     min-width: 145px;
   }
@@ -10995,8 +10997,6 @@ img[height="0"] {
     margin-bottom: -2px;
   }
   .btn--short {
-    background: #c1d837;
-    border-color: #9cb214;
     box-shadow: none;
     width: 74px;
     font-size: 12px;
@@ -11010,9 +11010,6 @@ img[height="0"] {
     width: 72px;
     padding: 5px 0 6px;
     margin: 0px;
-    color: #ffffff;
-    background: #80c342;
-    border-color: #548d1e;
   }
   .topbarfix_buy .btn--slot--container {
     width: 86px;
@@ -11030,10 +11027,6 @@ img[height="0"] {
   }
   .cmprCnt_buy .btn--slot {
     box-shadow: none;
-    background: none;
-    background-color: #80c342;
-    border-color: #6b9b39;
-    color: #ffffff;
     font-weight: normal;
     font-size: 16px;
     padding: 4px 6px;
