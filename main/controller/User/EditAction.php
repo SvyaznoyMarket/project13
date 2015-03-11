@@ -27,10 +27,10 @@ class EditAction {
             } catch (\Curl\Exception $e) {
                 \App::logger()->error($e, ['error', 'curl']);
                 \App::exception()->remove($e);
-                $this->session->flash(['type' => 'error', 'message' => 'Не удалось сохранить данные: '.$e->getMessage()]);
+                $this->session->flash(['type' => 'error', 'message' => 'Не удалось сохранить данные']);
             } catch (\Exception $e) {
                 \App::logger()->error($e, ['error']);
-                $this->session->flash(['type' => 'error', 'message' => 'Не удалось сохранить данные: '.$e->getMessage()]);
+                $this->session->flash(['type' => 'error', 'message' => 'Не удалось сохранить данные']);
             }
             return new \Http\RedirectResponse(\App::router()->generate('user.edit'));
         }
