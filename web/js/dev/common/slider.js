@@ -13,7 +13,7 @@
 
             $body.trigger('TLT_processDOMEvent', [event]);
 
-            if (!$target.hasClass('jsBuyButton')) {
+            if (!$target.hasClass('js-orderButton')) {
 				var rrEventLabel = '';
 				if (ENTER.config.pageConfig.product) {
 					if (ENTER.config.pageConfig.product.isSlot) {

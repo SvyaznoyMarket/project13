@@ -29,7 +29,7 @@
 	});
 
 	/* Трекинг перехода в карточку товара из блока рекомендаций */
-	$body.on('click', '.basketLine a:not(.jsBuyButton, .jsOneClickButton-new)', function(e){
+	$body.on('click', '.basketLine a:not(.js-orderButton)', function(e){
 		var $target = $(e.target),
 			nodeName = $target.prop('nodeName'),
 			href = '',

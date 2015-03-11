@@ -263,7 +263,7 @@
 		$body.trigger('trackGoogleEvent',['RR_взаимодействие', 'Пролистывание', block])
 	});
 
-	$body.on('click', '.jsMainSlidesRetailRocket a:not(.jsBuyButton, .jsOneClickButton-new)', function(e){
+	$body.on('click', '.jsMainSlidesRetailRocket a:not(.js-orderButton)', function(e){
 		var block = $(this).closest('.jsMainSlidesRetailRocket').data('block'),
 			link = $(this).attr('href');
 		e.preventDefault();
