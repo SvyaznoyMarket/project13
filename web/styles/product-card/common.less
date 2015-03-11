@@ -124,8 +124,12 @@
         .box-sizing();
         .inline-block();
         border: 1px solid;
+        background: @firmLime;
+        border-color: #99ac29;
+        color: #000;
         &:hover {
             text-decoration: none;
+            background: #cee062;
         }
         &--container{
             width:100%;
@@ -135,13 +139,11 @@
 
     }
     &--slot&--big{
-        background-color: #cbdf59;
         .box-shadow2(0 3px 0 #b8c64b, 0 5px #feffbe);
         padding: 4px 23px 3px;
         border-color: #ccd594;
         text-align: center;
         text-decoration: none;
-        color: #000;
         font-size: 18px;
         min-width: 145px;
         &:hover{
@@ -155,8 +157,6 @@
         }
     }
     &--short {
-        background: #c1d837;
-        border-color: #9cb214;
         box-shadow: none;
         width: 74px;
         font-size: 12px;
@@ -171,9 +171,6 @@
     width: 72px;
     padding: 5px 0 6px;
     margin: 0px;
-    color: @white;
-    background: #80c342;
-    border-color: #548d1e;
 }
 .topbarfix_buy .btn--slot--container{
     width: 86px;
@@ -191,10 +188,6 @@
 }
 .cmprCnt_buy .btn--slot {
     box-shadow: none;
-    background: none;
-    background-color: #80c342;
-	border-color: #6b9b39;
-    color: @white;
     font-weight: normal;
     font-size: 16px;
     padding: 4px 6px;
