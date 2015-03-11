@@ -12681,8 +12681,13 @@
     *display: inline;
   }
   .bCatalogList .bCategoriesImg__eImg {
-    max-height: 96px;
-    width: 96px;
+    max-height: 100%;
+    max-width: 100%;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
     vertical-align: middle;
   }
   .bCatalogList .bCategoriesName {
@@ -12707,8 +12712,14 @@
   }
   .bSearchCategoryRoot .bCatalogList .bCategoriesImg__eImg {
     max-height: 46px;
-    width: 48px;
+    max-width: 48px;
     margin-top: 0;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
   }
   .bSearchCategoryRoot .bCatalogList .bCategoriesName {
     width: 242px;
