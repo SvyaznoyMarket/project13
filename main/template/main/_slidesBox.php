@@ -89,6 +89,7 @@ $helper = new \Helper\TemplateHelper();
                         'sender'         => $sender,
                         'reserveAsBuy'   => true,
                         'noUpdate'       => true,
+                        'location'       => 'slider',
                     ]) // Кнопка купить ?>
                     <!-- <a class="item_btn btn5" href="">Купить</a>-->
                 </div>
