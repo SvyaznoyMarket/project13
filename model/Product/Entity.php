@@ -67,10 +67,6 @@ class Entity extends BasicEntity {
     protected $priceOld;
     /** @var Service\Entity[] */
     protected $service = [];
-    /** @var Kit\Entity[] */
-    protected $kit = [];
-    /** @var bool */
-    protected $isKitLocked = false;
     /** @var [] */
     protected $groupedProperties = [];
     /** @var int */
@@ -718,29 +714,6 @@ class Entity extends BasicEntity {
         return $this->service;
     }
 
-    /**
-     * @param Kit\Entity[] $kits
-     */
-    public function setKit(array $kits) {
-        $this->kit = [];
-        foreach ($kits as $kit) {
-            $this->addKit($kit);
-        }
-    }
-
-    /**
-     * @param Kit\Entity $kit
-     */
-    public function addKit(Kit\Entity $kit) {
-        $this->kit[] = $kit;
-    }
-
-    /**
-     * @return Kit\Entity[]
-     */
-    public function getKit() {
-        return $this->kit;
-    }
 
     /**
      * @return bool
@@ -890,20 +863,5 @@ class Entity extends BasicEntity {
         $this->nearestCity[] = $city;
     }
 
-    /**
-     * @param boolean $isKitLocked
-     */
-    public function setIsKitLocked($isKitLocked)
-    {
-        $this->isKitLocked = (bool)$isKitLocked;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsKitLocked()
-    {
-        return $this->isKitLocked;
-    }
 
 }

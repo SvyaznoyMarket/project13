@@ -183,20 +183,17 @@ $f = function (
 
                         <div class="slideItem_pr"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
 
-                        <? if ($product->getKit() && !$product->getIsKitLocked()) : ?>
-                            <a class="btnView mBtnGrey" href="<?= $product->getLink() ?>" <?= $linkTarget ?>>Посмотреть</a>
-                        <? else: ?>
-                            <?= $helper->render('cart/__button-product', [
-                                'product'        => $product,
-                                'onClick'        => $addToCartJS ? $addToCartJS : null,
-                                'isRetailRocket' => $isRetailrocketProduct, // TODO: удалить
-                                'sender'         => $sender,
-                                'noUpdate'       => true,
-                                'location'       => 'slider',
-                                'reserveAsBuy'   => true,
-                                'sender2'       => $sender2,
-                            ]) // Кнопка купить ?>
-                        <? endif ?>
+
+                        <?= $helper->render('cart/__button-product', [
+                            'product'        => $product,
+                            'onClick'        => $addToCartJS ? $addToCartJS : null,
+                            'isRetailRocket' => $isRetailrocketProduct, // TODO: удалить
+                            'sender'         => $sender,
+                            'noUpdate'       => true,
+                            'location'       => 'slider',
+                            'reserveAsBuy'   => true,
+                            'sender2'       => $sender2,
+                        ]) // Кнопка купить ?>
                     <? endif ?>
                 </div>
             <? if ($needCloseLiTag) : ?></li><? endif ?>

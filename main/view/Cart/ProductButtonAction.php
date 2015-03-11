@@ -120,6 +120,11 @@ class ProductButtonAction {
             $data['url'] = $helper->url('cart');
             $data['class'] .= ' btnBuy__eLink mBought';
             $data['value'] = 'В корзине';
+        } else if ($product->getKit() && !$product->getIsKitLocked()) {
+            unset($urlParams['productId']);
+            $data['url'] = $helper->url('product', $urlParams + ['productPath' => $product->getPath()]);
+            $data['class'] .= ' btnBuy__eLink';
+            $data['value'] = 'Купить';
         } else {
             $data['url'] = $buyUrl;
             $data['class'] .= ' btnBuy__eLink jsBuyButton';
