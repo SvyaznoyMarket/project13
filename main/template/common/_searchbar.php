@@ -9,13 +9,10 @@ $btnTypes = array(
         2 => "hdgift--new",
         3 => "hdgift--new hdgift--new-cursive"
     );
-$hamburgerJsClass = \App::abTest()->isMenuHamburger() ? ' jsHamburgerIcon ' : '';
 ?>
 
 <!-- поиск -->
 <div class="header_c clearfix header_c-v2">
-    <span class="header-icon-ddnav <?= $hamburgerJsClass ?>" title=""></span>
-
     <a href="/" class="hdlogo sitelogo"></a>
 
     <div class="hdsearch jsKnockoutSearch" data-bind="css: { 'hdsearch-v2': advancedSearch }">

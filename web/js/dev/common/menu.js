@@ -128,26 +128,26 @@
 	});
 
     $body.on('click', '.jsHamburgerIcon', function(){
-        $nav.toggle();
+        $nav.toggleClass('show');
     });
 
-    if ($hamburgerIcon.length > 0) {
-        $hamburgerIcon.hover(function(){
-            clearTimeout(hideMenuTimeoutId);
-            hideMenuTimeoutId = null;
-            $nav.show();
-        });
-        $body.on('hover', 'div', function(e){
-            var $target;
-            if ($nav.is(':visible') && !hideMenuTimeoutId) {
-                $target = $(e.target);
-                if ($target.closest('nav').length == 0
-                    && $target.prop('nodeName') != 'NAV'
-                    && !$target.hasClass('jsHamburgerIcon') ) {
-                    hideMenuTimeoutId = setTimeout( function(){ $nav.hide() }, 2000 );
-                }
-            }
-        })
-    }
+    // if ($hamburgerIcon.length > 0) {
+    //     $hamburgerIcon.hover(function(){
+    //         clearTimeout(hideMenuTimeoutId);
+    //         hideMenuTimeoutId = null;
+    //         $nav.show();
+    //     });
+    //     $body.on('hover', 'div', function(e){
+    //         var $target;
+    //         if ($nav.is(':visible') && !hideMenuTimeoutId) {
+    //             $target = $(e.target);
+    //             if ($target.closest('nav').length == 0
+    //                 && $target.prop('nodeName') != 'NAV'
+    //                 && !$target.hasClass('jsHamburgerIcon') ) {
+    //                 hideMenuTimeoutId = setTimeout( function(){ $nav.hide() }, 2000 );
+    //             }
+    //         }
+    //     })
+    // }
 
 })(jQuery);

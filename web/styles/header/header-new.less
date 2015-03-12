@@ -224,36 +224,60 @@
     &-ddnav {
 
         .header_b {
-            position: absolute;
-            bottom: -79px;
-            left: 0;
             border: none;
+            float: left;
+            padding: 0 5px 0 10px;
+            height: 70px;
+            background: @black;
+        }
+
+        .header_c {
+            float: right;
+            width: 881px;
+        }
+
+        .header-ddnav-wrap {
+            position: relative;
+
+            &:hover {
+                .header-ddnav-box {
+                    display: block;
+                }
+            }
+        }
+
+        .header-icon-ddnav {
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAzAQAAAADEf9fiAAAAAnRSTlMAAHaTzTgAAAAXSURBVHgBY6A3YPz///8PrBTd9dENAACB2S+JmUkSHwAAAABJRU5ErkJggg==') no-repeat 50% 50% @black;
+            display: block;
+            height: 70px;
+            width: 44px;
+            cursor: pointer;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .header-ddnav-box {
+            position: absolute;
+            bottom: -90px;
+            left: -10px;
+            padding: 5px 5px 0;
+            width: 950px;
+            display: none;
             .box-shadow(0 2px 3px 0 rgba(0, 0, 0, 0.5));
+            background: @white;
 
             &:after {
                 .pseudo-corner-top(9px, @white, -9px);
                 left: 22px;
             }
-        }
 
-        &.header-new {
-            .header_b {
-                bottom: -90px;
+            &.show {
+                display: block;
             }
         }
 
-        .header-icon-ddnav {
-            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAzAQAAAADEf9fiAAAAAnRSTlMAAHaTzTgAAAAXSURBVHgBY6A3YPz///8PrBTd9dENAACB2S+JmUkSHwAAAABJRU5ErkJggg==') no-repeat 50% 50%;
-            float: left;
-            display: block;
-            margin: 5px 0 0;
-            height: 51px;
-            width: 44px;
-            cursor: pointer;
-        }
-
         .hdlogo {
-            margin: 0 35px 0 13px;
+            margin: 0 35px 0 0;
         }
 
         .hdsearch_itb {
