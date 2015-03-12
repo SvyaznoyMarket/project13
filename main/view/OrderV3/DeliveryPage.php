@@ -8,7 +8,10 @@ class DeliveryPage extends Layout {
     }
 
     public function slotGoogleRemarketingJS() {
-        $tagParams = ['pagetype' => 'cart'];
+        $tagParams = [
+            'pagetype'          => 'cart',
+            'ecomm_cartvalue'   => \App::user()->getCart()->getSum()
+        ];
         return parent::slotGoogleRemarketingJS($tagParams);
     }
 

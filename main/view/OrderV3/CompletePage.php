@@ -4,12 +4,30 @@ namespace View\OrderV3;
 
 class CompletePage extends Layout {
 
+    /** @var \Model\Order\Entity[] */
+    private $orders;
+
     public function slotGoogleRemarketingJS() {
-        $tagParams = ['pagetype' => 'purchase'];
+
+        $ordersSum = 0;
+
+        foreach ($this->orders as $order) {
+            $ordersSum += $order->getSum();
+        }
+
+        $tagParams = [
+            'pagetype'          => 'purchase',
+            'ecomm_ordervalue'  => $ordersSum
+        ];
+
         return parent::slotGoogleRemarketingJS($tagParams);
     }
 
     public function prepare() {
+
+        // Внутренние переменные
+        $this->orders = $this->getParam('orders', []);
+
         $this->setTitle('Оформление заказа - Enter');
 
         // подготовим данные для кредита, если таковой есть
@@ -119,8 +137,7 @@ class CompletePage extends Layout {
         return $html;
     }
 
-    public function slotRevolverJS()
-    {
+    public function slotRevolverJS() {
         if (!\App::config()->partners['Revolver']['enabled']) return '';
 
         $content = parent::slotRevolverJS();
@@ -164,8 +181,7 @@ class CompletePage extends Layout {
         return '<div id="GetIntentJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
     }
 
-    public function slotGoogleTagManagerJS()
-    {
+    public function slotGoogleTagManagerJS() {
         /** @var \Model\Order\Entity[] $orders */
         $orders = $this->getParam('orders', []);
         $data = [];
@@ -183,6 +199,5 @@ class CompletePage extends Layout {
 
         return parent::slotGoogleTagManagerJS($data);
     }
-
 
 }
