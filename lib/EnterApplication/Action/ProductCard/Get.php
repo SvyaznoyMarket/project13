@@ -226,6 +226,8 @@ namespace EnterApplication\Action\ProductCard
             // выполнение запросов
             $curl->execute();
 
+            $this->removeCurl();
+
             //var_dump($GLOBALS['enter/curl/query/cache']);
             //die(var_dump('done'));
 
