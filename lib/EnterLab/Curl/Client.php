@@ -208,7 +208,7 @@ class Client
     {
         if ($query = (isset($this->queriesById[$id]) ? $this->queriesById[$id] : null)) {
             if (is_resource($query->handle)) {
-                curl_multi_remove_handle($this->mh, $query->handle); // FIXME: сильно глючит при retry
+                //curl_multi_remove_handle($this->mh, $query->handle); // FIXME: сильно глючит при retry
                 curl_close($query->handle);
                 //var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | remove ' . $id . ' ' . $this->queriesById[$id]->request);
             }
