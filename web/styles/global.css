@@ -1633,14 +1633,14 @@ img[height="0"] {
     left: -10px;
     padding: 5px 5px 0;
     width: 950px;
-    display: block;
-    visibility: hidden;
     -webkit-box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
     box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
     background: #ffffff;
+    display: block;
+    visibility: hidden;
     transition-property: visibility;
-    transition-delay: 110ms;
+    transition-delay: 1000ms;
   }
   .header-ddnav .header-ddnav-box:after {
     position: absolute;
