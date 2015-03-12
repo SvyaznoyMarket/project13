@@ -1429,7 +1429,7 @@ img[height="0"] {
   }
   .header {
     width: 960px;
-    padding: 0 0 20px;
+    padding: 0 0 10px;
     margin: 0 0 0 -10px;
     background: #ffffff;
   }
@@ -1600,7 +1600,7 @@ img[height="0"] {
   }
   .header-ddnav .header_b {
     position: absolute;
-    bottom: -69px;
+    bottom: -79px;
     left: 0;
     border: none;
     -webkit-box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
