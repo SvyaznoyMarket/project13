@@ -53,28 +53,4 @@ class UpsellPage extends \View\DefaultLayout {
         return $this->render('order/_footer', $this->params) . "\n\n" . $response['content'];
     }
 
-    public function slotInnerJavascript() {
-        /** @var $product \Model\Product\Entity */
-        $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
-        if ($product) {
-            $categories = $product->getCategory();
-            $category = array_pop($categories);
-        }
-
-        $tag_params = [
-            'prodid' => $product->getId(),
-            'pagetype' => 'product',
-            'pname' => $product->getName(),
-            'pcat' => ($category) ? $category->getToken() : '',
-            'pcat_upper' => $product->getMainCategory() ? $product->getMainCategory()->getToken() : '',
-            'pvalue' => $product->getPrice()
-        ];
-
-        return ''
-            . "\n\n"
-            . ($product ? $this->render('_remarketingGoogle', ['tag_params' => $tag_params]) : '')
-            . "\n\n"
-            . $this->render('_innerJavascript');
-    }
-
 }

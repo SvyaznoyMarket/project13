@@ -60,7 +60,7 @@ class IndexPage extends \View\DefaultLayout {
         return $this->render('order/_footer', $this->params) . "\n\n" . $response['content'];
     }
 
-    public function slotInnerJavascript() {
+    public function slotGoogleRemarketingJS($tagParams = []) {
         /** @var $products \Model\Product\Entity[] */
         $products = $this->getParam('productEntities');
 
@@ -75,11 +75,9 @@ class IndexPage extends \View\DefaultLayout {
             $tag_params['pcat_upper'][] = $product->getMainCategory() ? $product->getMainCategory()->getToken() : '';
         }
 
-        return ''
-            . $this->render('_remarketingGoogle', ['tag_params' => $tag_params])
-            . "\n\n"
-            . $this->render('_innerJavascript');
+        return parent::slotGoogleRemarketingJS($tag_params);
     }
+
 
     public function slotСpaexchangeJS () {
         if ( !\App::config()->partners['Сpaexchange']['enabled'] ) {

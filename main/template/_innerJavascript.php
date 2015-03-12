@@ -14,6 +14,7 @@
 <?= $page->slotСpaexchangeConversionJS() ?>
 <?= $page->slotAdLensJS() ?>
 <?= $page->slotRevolvermarketingConversionJS() ?>
+<?= $page->slotGoogleRemarketingJS() ?>
 <?= $page->slotGoogleTagManagerJS() ?>
 
 <!-- Lamoda Start -->

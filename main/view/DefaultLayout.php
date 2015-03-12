@@ -200,17 +200,26 @@ class DefaultLayout extends Layout {
         return $return;
     }
 
-
-
+    /** Большое количество JS-кода партнеров в подвале
+     * @return string
+     */
     public function slotInnerJavascript() {
-        $return = ''
-            . $this->render('_remarketingGoogle', ['tag_params' => []])
-            . "\n\n"
-            . $this->render('_innerJavascript');
-
-        return $return;
+        return $this->render('_innerJavascript');
     }
 
+    /** Google Remarketing Code (standard tag)
+     * @link https://developers.google.com/adwords-remarketing-tag/
+     * @param array $tagParams
+     * @return string|null
+     */
+    public function slotGoogleRemarketingJS($tagParams = []) {
+
+        $tagParams = array_merge(['pagetype' => 'default'], $tagParams);
+
+        return \App::config()->googleAnalytics['enabled']
+            ? $this->tryRender('_remarketingGoogle', ['tag_params' => $tagParams])
+            : null;
+    }
 
     public function slotAuth() {
         // SITE-3676

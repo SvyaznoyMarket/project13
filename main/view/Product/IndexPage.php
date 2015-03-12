@@ -100,9 +100,10 @@ class IndexPage extends \View\DefaultLayout {
         return parent::slotBodyClassAttribute() . $this->hasParam('categoryClass') ? ' ' . $this->getParam('categoryClass') : '';
     }
 
-    public function slotInnerJavascript() {
+    public function slotGoogleRemarketingJS($tagParams = []) {
         /** @var $product \Model\Product\Entity */
-        $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
+        $product =  $this->getParam('product');
+        if (!$product instanceof \Model\Product\Entity) return null;
         $categories = $product->getCategory();
         $category = array_pop($categories);
 
@@ -115,12 +116,9 @@ class IndexPage extends \View\DefaultLayout {
             'pvalue' => $product->getPrice()
         ];
 
-        return ''
-            . "\n\n"
-            . ($product ? $this->render('_remarketingGoogle', ['tag_params' => $tag_params]) : '')
-            . "\n\n"
-            . $this->render('_innerJavascript');
+        return parent::slotGoogleRemarketingJS($tag_params);
     }
+
 
     public function slotMetaOg() {
         /** @var \Model\Product\Entity $product  */

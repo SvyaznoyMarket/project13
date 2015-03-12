@@ -7,11 +7,12 @@ class DeliveryPage extends Layout {
         $this->setTitle('Оформление заказа - Enter');
     }
 
-    public function slotInnerJavascript() {
-        return ''
-        . $this->render('_remarketingGoogle', ['tag_params' => ['pagetype' => 'cart']])
-        . "\n\n"
-        . $this->render('_innerJavascript');
+    public function slotGoogleRemarketingJS($tagParams = []) {
+        $tagParams = [
+            'pagetype'          => 'cart',
+            'ecomm_cartvalue'   => \App::user()->getCart()->getSum()
+        ];
+        return parent::slotGoogleRemarketingJS($tagParams);
     }
 
     public function slotContent() {
