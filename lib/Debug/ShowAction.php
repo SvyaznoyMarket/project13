@@ -76,6 +76,7 @@ class ShowAction {
                         'count'       => isset($queryData[$index]['count']) ? ($queryData[$index]['count'] + 1) : 1,
                         'cache'       => isset($message['cache']),
                         'delay'       => isset($message['delay']),
+                        'delayRatio'  => isset($message['delayRatio']) ? implode(', ', $message['delayRatio']) : [],
                     ];
                 } else if ((('Fail curl' == $message['message']) || ('End curl' == $message['message'])) && isset($queryData[$index])) {
                     if (isset($message['error'])) {

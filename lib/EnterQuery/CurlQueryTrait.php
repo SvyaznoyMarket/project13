@@ -35,7 +35,7 @@ trait CurlQueryTrait
     /**
      * @param $url
      * @param array $data
-     * @param int|null $timeoutMultiplier
+     * @param int|null $timeoutRatio
      * @param \Exception $error
      * @param callable|null $decoder
      * @return Query[]
@@ -43,22 +43,28 @@ trait CurlQueryTrait
     public function prepareCurlQuery(
         $url,
         $data = [],
-        $timeoutMultiplier = null,
+        $timeoutRatio = null,
         \Exception &$error = null,
         $decoder = null
     )
     {
-        $delayMultipliers = [0, 0.05]; // коэффициенты для задержек запросов (retry)
-
-        if ($timeoutMultiplier < 0) {
+        if ($timeoutRatio < 0) {
             throw new \InvalidArgumentException();
         }
 
         $timeout = \App::config()->coreV2['timeout'] * 1000; // таймаут, мс
-        $timeout *= $timeoutMultiplier;
+        $timeout *= $timeoutRatio;
         // ограничение таймаута
         if (!$timeout || $timeout > 90000) {
             $timeout = 5000;
+        }
+
+        // коэффициенты для задержек запросов (retry)
+        $delayRatios = [0, 0.05];
+
+        // если таймаут слишком маленький, то убираем retry
+        if ($timeout <= 1) {
+            $delayRatios = [0];
         }
 
         // TODO: удалить; сейчас нужно для старого журнала
@@ -70,16 +76,17 @@ trait CurlQueryTrait
             'data' => $data,
             'timeout' => $timeout,
             'startAt' => $startedAt,
+            'delayRatio' => array_map(function($ratio) use ($timeout) { return $ratio * $timeout; }, $delayRatios),
         ], ['curl']);
         // end
 
         $queryCollection = new \ArrayObject();
-        foreach ($delayMultipliers as $delayMultiplier) {
+        foreach ($delayRatios as $delayRatio) {
             $query = $this->createCurlQuery(
                 $url,
                 $data,
                 $timeout,
-                $timeout * $delayMultiplier
+                $timeout * $delayRatio
             );
 
             $query->resolveCallback = function () use (
