@@ -1614,7 +1614,10 @@ img[height="0"] {
     z-index: 99;
   }
   .header-ddnav .header-ddnav-wrap:hover .header-ddnav-box {
+    transition-property: visibility;
+    transition-delay: 100ms;
     display: block;
+    visibility: visible;
   }
   .header-ddnav .header-icon-ddnav {
     background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAzAQAAAADEf9fiAAAAAnRSTlMAAHaTzTgAAAAXSURBVHgBY6A3YPz///8PrBTd9dENAACB2S+JmUkSHwAAAABJRU5ErkJggg==') no-repeat 50% 50% #000000;
@@ -1630,11 +1633,14 @@ img[height="0"] {
     left: -10px;
     padding: 5px 5px 0;
     width: 950px;
-    display: none;
+    display: block;
+    visibility: hidden;
     -webkit-box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
     box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
     background: #ffffff;
+    transition-property: visibility;
+    transition-delay: 110ms;
   }
   .header-ddnav .header-ddnav-box:after {
     position: absolute;
