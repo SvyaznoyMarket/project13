@@ -9,6 +9,7 @@ class IndexAction {
     public static $actionResponse; // осторожно, вынужденный г*код
 
     /**
+     * @deprecated
      * @param string        $productPath
      * @param \Http\Request $request
      * @return \Http\RedirectResponse|\Http\Response
@@ -579,7 +580,7 @@ class IndexAction {
      * @param $product
      * @return array
      */
-    protected function getDataForCredit(\Model\Product\Entity $product) {
+    protected function getDataForCredit(\Model\Product\Entity $product, \EnterQuery\PaymentGroup\GetByCart $paymentGroupQuery = null) {
         $user = \App::user();
         $region = $user->getRegion();
 
@@ -599,56 +600,63 @@ class IndexAction {
         // SITE-4076 Учитывать возможность кредита из API
         $hasCreditPaymentMethod = false;
         $is_credit = (bool)(($product->getPrice() * (($cart->getQuantityByProduct($product->getId()) > 0) ? $cart->getQuantityByProduct($product->getId()) : 1)) >= \App::config()->product['minCreditPrice']);
-        \RepositoryManager::paymentGroup()->prepareCollection($region,
-            [
-                'is_corporative' => false,
-                'is_credit'      => $is_credit,
-            ],
-            [
-                'product_list'   => [['id' => $product->getId(), 'quantity' => (($cart->getQuantityByProduct($product->getId()) > 0) ? $cart->getQuantityByProduct($product->getId()) : 1)]],
-            ],
-            function($data) use (&$hasCreditPaymentMethod) {
-                if (!isset($data['detail']) || !is_array($data['detail'])) {
-                    return;
-                }
 
-                foreach ($data['detail'] as $group) {
-                    $paymentGroup = new \Model\PaymentMethod\Group\Entity($group);
-                    if (!$paymentGroup->getPaymentMethods()) {
-                        continue;
-                    }
-
-                    // выкидываем заблокированные методы
-                    $blockedIds = (array)\App::config()->payment['blockedIds'];
-                    $filteredMethods = array_filter($paymentGroup->getPaymentMethods(), function(\Model\PaymentMethod\Entity $method) use ($blockedIds) {
-                        if (in_array($method->getId(), $blockedIds)) return false;
-                        return true;
-                    });
-                    $paymentGroup->setPaymentMethods($filteredMethods);
-
-                    if (empty($filteredMethods)) {
-                        continue;
-                    }
-
-                    // пробегаем по методах и ищем метод "Покупка в кредит"
-                    foreach ($filteredMethods as $method) {
-                        if (
-                            !$method instanceof \Model\PaymentMethod\Entity ||
-                            $method->getId() != \Model\PaymentMethod\Entity::CREDIT_ID
-                        ) {
-                            continue;
-                        }
-
-                        $hasCreditPaymentMethod = true;
-                    }
-                }
-            },
-            function($e){
-                \App::exception()->remove($e);
-                \App::logger()->error($e);
+        $successCallback = function($data) use (&$hasCreditPaymentMethod) {
+            if (!isset($data['detail']) || !is_array($data['detail'])) {
+                return;
             }
-        );
-        \App::curl()->execute();
+
+            foreach ($data['detail'] as $group) {
+                $paymentGroup = new \Model\PaymentMethod\Group\Entity($group);
+                if (!$paymentGroup->getPaymentMethods()) {
+                    continue;
+                }
+
+                // выкидываем заблокированные методы
+                $blockedIds = (array)\App::config()->payment['blockedIds'];
+                $filteredMethods = array_filter($paymentGroup->getPaymentMethods(), function(\Model\PaymentMethod\Entity $method) use ($blockedIds) {
+                    if (in_array($method->getId(), $blockedIds)) return false;
+                    return true;
+                });
+                $paymentGroup->setPaymentMethods($filteredMethods);
+
+                if (empty($filteredMethods)) {
+                    continue;
+                }
+
+                // пробегаем по методах и ищем метод "Покупка в кредит"
+                foreach ($filteredMethods as $method) {
+                    if (
+                        !$method instanceof \Model\PaymentMethod\Entity ||
+                        $method->getId() != \Model\PaymentMethod\Entity::CREDIT_ID
+                    ) {
+                        continue;
+                    }
+
+                    $hasCreditPaymentMethod = true;
+                }
+            }
+        };
+
+        if ($paymentGroupQuery) {
+            call_user_func($successCallback, ['detail' => $paymentGroupQuery->response->paymentGroups]);
+        } else {
+            \RepositoryManager::paymentGroup()->prepareCollection($region,
+                [
+                    'is_corporative' => false,
+                    'is_credit'      => $is_credit,
+                ],
+                [
+                    'product_list'   => [['id' => $product->getId(), 'quantity' => (($cart->getQuantityByProduct($product->getId()) > 0) ? $cart->getQuantityByProduct($product->getId()) : 1)]],
+                ],
+                $successCallback,
+                function($e){
+                    \App::exception()->remove($e);
+                    \App::logger()->error($e);
+                }
+            );
+            \App::curl()->execute();
+        }
 
         $dataForCredit = array(
             'price'        => $product->getPrice(),
@@ -971,11 +979,65 @@ class IndexAction {
         // кредит
         $creditData = $this->getDataForCredit($product, $actionResponse->paymentGroupQuery);
 
-        // TODO
+        // наличие в магазинах
+        /** @var $shopStates \Model\Product\ShopState\Entity[] */
         $shopStates = [];
+        $quantityByShop = [];
+        foreach ($product->getStock() as $stock) {
+            $quantityShowroom = (int)$stock->getQuantityShowroom();
+            $quantity = (int)$stock->getQuantity();
+            $shopId = $stock->getShopId();
+            if ((0 < $quantity + $quantityShowroom) && !empty($shopId)) {
+                $quantityByShop[$shopId] = [
+                    'quantity' => $quantity,
+                    'quantityShowroom' => $quantityShowroom,
+                ];
+            }
+        }
+        if ($quantityByShop && $actionResponse->shopQuery) {
+            foreach ($actionResponse->shopQuery->response->shops as $item) {
+                $shop = new \Model\Shop\Entity($item);
+
+                if ($shop->getWorkingTimeToday()) {
+
+                    $shopState = new \Model\Product\ShopState\Entity();
+
+                    $shopState->setShop($shop);
+                    $shopState->setQuantity(isset($quantityByShop[$shop->getId()]['quantity']) ? $quantityByShop[$shop->getId()]['quantity'] : 0);
+                    $shopState->setQuantityInShowroom(isset($quantityByShop[$shop->getId()]['quantityShowroom']) ? $quantityByShop[$shop->getId()]['quantityShowroom'] : 0);
+
+                    $shopStates[] = $shopState;
+
+                }
+            }
+        }
+
+        // на товар перешли с блока рекомендаций
         $addToCartJS = null;
+        if ('cart_rec' === $request->get('from')) {
+            // пишем в сессию id товара
+            if ($sessionName = \App::config()->product['recommendationSessionKey']) {
+                $storage = \App::session();
+                $limit = \App::config()->cart['productLimit'];
 
+                $data = (array)$storage->get($sessionName, []);
+                if (!in_array($product->getId(), $data)) {
+                    $data[] = $product->getId();
+                }
 
+                $productCount = count($data);
+                if ($productCount > $limit) {
+                    $data = array_slice($data, $productCount - $limit, $limit, true);
+                }
+
+                $storage->set($sessionName, $data);
+            }
+
+            // Retailrocket. Добавление товара в корзину
+            if ($request->get('rrMethod')) {
+                $addToCartJS = "try{rrApi.recomAddToCart({$product->getId()}, {methodName: '{$request->get('rrMethod')}'})}catch(e){}";
+            }
+        }
 
         if ($product->getSlotPartnerOffer()) {
             $page = new \View\Product\SlotPage();
