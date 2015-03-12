@@ -2,6 +2,11 @@
 
 namespace View\Order;
 
+/**
+ * Class CreatePage
+ * @package View\Order
+ * @deprecated
+ */
 class CreatePage extends Layout {
     public function prepare() {
         $this->setTitle('Оформление заказа - Enter');
@@ -16,28 +21,5 @@ class CreatePage extends Layout {
 
     public function slotBodyDataAttribute() {
         return 'order';
-    }
-
-    public function slotInnerJavascript() {
-        /** @var $productsForRetargeting \Model\Product\Entity */
-
-        $productsForRetargeting = $this->getParam('productsForRetargeting');
-
-        $tag_params = ['prodid' => [], 'pname' => [], 'pcat' => [], 'ordervalue' => \App::user()->getCart()->getSum(), 'pagetype' => 'try2order'];
-        foreach ($productsForRetargeting as $product) {
-            /** @var $product \Model\Product\Entity */
-            $categories = $product->getCategory();
-            $category = array_pop($categories);
-
-            $tag_params['prodid'][] = $product->getId();
-            $tag_params['pname'][] = $product->getName();
-            $tag_params['pcat'][] = $category ? $category->getToken() : '';
-            $tag_params['pcat_upper'][] = $product->getMainCategory() ? $product->getMainCategory()->getToken() : '';
-        }
-
-        return ''
-            . $this->render('_remarketingGoogle', ['tag_params' => $tag_params])
-            . "\n\n"
-            . $this->render('_innerJavascript');
     }
 }

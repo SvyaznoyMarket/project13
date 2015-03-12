@@ -63,13 +63,10 @@ class IndexPage extends \View\DefaultLayout {
         return (new \Helper\TemplateHelper())->render('main/__footer');
     }
 
-    public function slotInnerJavascript() {
-        return ''
-            . "\n\n"
-            . $this->render('_remarketingGoogle', ['tag_params' => ['pagetype' => 'homepage']])
-            . "\n\n"
-            . $this->render('_innerJavascript');
+    public function slotGoogleRemarketingJS() {
+        return parent::slotGoogleRemarketingJS(['pagetype' => 'homepage']);
     }
+
 
     public function slotСpaexchangeJS () {
         if ( !\App::config()->partners['Сpaexchange']['enabled'] ) {

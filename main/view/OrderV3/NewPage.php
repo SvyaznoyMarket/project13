@@ -7,11 +7,9 @@ class NewPage extends Layout {
         $this->setTitle('Оформление заказа - Enter');
     }
 
-    public function slotInnerJavascript() {
-        return ''
-            . $this->render('_remarketingGoogle', ['tag_params' => ['pagetype' => 'cart']])
-            . "\n\n"
-            . $this->render('_innerJavascript');
+    public function slotGoogleRemarketingJS() {
+        $tagParams = ['pagetype' => 'cart'];
+        return parent::slotGoogleRemarketingJS($tagParams);
     }
 
     public function slotContent() {

@@ -17,7 +17,7 @@ class SetPage extends \View\DefaultLayout {
         return 'product_catalog';
     }
 
-    public function slotInnerJavascript() {
+    public function slotGoogleRemarketingJS() {
         /** @var $product \Model\Product\Entity */
         $products = is_array($this->getParam('products')) ? $this->getParam('products') : [];
         $tagData = ['prodid' => [], 'pagetype' => 'productset', 'pname' => [], 'pcat' => [], 'pvalue' => []];
@@ -34,13 +34,9 @@ class SetPage extends \View\DefaultLayout {
 
         }
         $product = end($products);
-
-        return ''
-            . "\n\n"
-            . ($product ? $this->render('_remarketingGoogle', ['tag_params' => $tagData]) : '')
-            . "\n\n"
-            . $this->render('_innerJavascript');
+        return parent::slotGoogleRemarketingJS($tagData);
     }
+
 
     public function slotUserbarContent() {
         return $this->render('slice/_userbarContent', [

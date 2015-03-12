@@ -60,29 +60,6 @@ class LinePage extends \View\DefaultLayout {
         return 'product_card';
     }
 
-    public function slotInnerJavascript() {
-        /** @var $product \Model\Product\Entity */
-        $product = $this->getParam('mainProduct') instanceof \Model\Product\Entity ? $this->getParam('mainProduct') : null;
-        if ($product) {
-            $categories = $product->getCategory();
-            $category = array_pop($categories);
-        }
-
-        $tag_params = [
-            'prodid' => $product->getId(),
-            'pagetype' => 'product',
-            'pname' => $product->getName(),
-            'pcat' => ($category) ? $category->getToken() : '',
-            'pcat_upper' => $product->getMainCategory() ? $product->getMainCategory()->getToken() : '',
-            'pvalue' => $product->getPrice()
-        ];
-
-        return ''
-            . "\n\n"
-            . ((bool)$product ? $this->render('_remarketingGoogle', ['tag_params' => $tag_params]) : '')
-            . "\n\n"
-            . $this->render('_innerJavascript');
-    }
 
     public function slotUserbarContent() {
         $product = $this->getParam('mainProduct') instanceof \Model\Product\Entity ? $this->getParam('mainProduct') : null;
