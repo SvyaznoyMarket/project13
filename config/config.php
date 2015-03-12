@@ -240,7 +240,6 @@ $c->partners['livetex']['liveTexID'] = 41836; // for enter.ru
 //$c->partners['livetex']['liveTexID'] = 52705; // for olga.ent3.ru
 $c->partners['AdLens']['enabled'] = true;
 $c->partners['Сpaexchange']['enabled'] = true;
-$c->partners['Admitad']['enabled'] = false;
 $c->partners['Revolvermarketing']['enabled'] = true;
 $c->partners['Lamoda']['enabled'] = false;
 $c->partners['Lamoda']['lamodaID'] = '11640775691088171491';

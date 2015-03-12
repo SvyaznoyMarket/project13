@@ -43,7 +43,6 @@
     <?= $page->slotInnerJavascript() ?>
     <?= $page->slotAuth() ?>
     <?= $page->slotYandexMetrika() ?>
-    <?= $page->slotAdvanceSeoCounter() ?>
     <?= $page->slotPartnerCounter() ?>
     <?= $page->slotAdblender() ?>
     <?= $page->slotAdriver() ?>

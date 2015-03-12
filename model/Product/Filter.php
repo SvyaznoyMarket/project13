@@ -107,7 +107,7 @@ class Filter {
     }
 
     /**
-     * @param array $valuesadmitad_uid
+     * @param array $values
      */
     public function setValues(array $values) {
         $this->values = $values;

@@ -35,7 +35,6 @@ $c->googleTagManager['enabled'] = false;
 $c->tealeaf['enabled'] = false;
 $c->kissmentrics['enabled'] = false;
 
-$c->partners['RuTarget']['enabled'] = false;
 $c->partners['Revolver']['enabled'] = false;
 $c->partners['GetIntent']['enabled'] = false;
 $c->partners['Сpaexchange']['enabled'] = false;

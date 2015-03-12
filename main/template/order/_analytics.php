@@ -12,10 +12,6 @@ if (\App::config()->analytics['enabled']) : ?>
 
     <div id="yandexOrderComplete" class="jsanalytics"></div>
 
-    <div id="mixmarket" class="jsanalytics"></div>
-
-    <div id="marketgidOrderSuccess" class="jsanalytics"></div>
-
     <img src="http://rs.mail.ru/g632.gif" style="width:0;height:0;position:absolute;" alt=""/>
 
         <?php foreach ($orders as $i => $order):

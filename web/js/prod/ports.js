@@ -112,10 +112,6 @@ console.log('ports.js inited');
 
 window.ANALYTICS = {
 	
-	mixmarket : function() {
-		document.write('<img src="http://mixmarket.biz/tr.plx?e=3779408&r=' + escape(document.referrer) + '&t=' + (new Date()).getTime() + '" width="1" height="1"/>')
-	},
-
 	adriverCommon : function() {
 		var RndNum4NoCash = Math.round(Math.random() * 1000000000);
 		var ar_Tail='unknown'; if (document.referrer) ar_Tail = escape(document.referrer);
@@ -321,23 +317,6 @@ window.ANALYTICS = {
 			x.parentNode.insertBefore(s, x);
 		})();
 	},
-
-    // enterleadsJS : function() { // SITE-1911
-    //     (function () {
-    //         try {
-    //             var script = document.createElement('script');
-
-    //             script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') +
-    //                 unescape('bn.adblender.ru%2Fpixel.js%3Fclient%3Denterleads%26cost%3D') + escape(0) +
-    //                 unescape('%26order%3D') + escape(0) + unescape('%26r%3D') + Math.random();
-
-    //             document.getElementsByTagName('head')[0].appendChild(script);
-
-    //         } catch (e) {
-    //         }
-    //     })();
-    // },
-
 
 	/**
 	 * CityAds counter
@@ -1001,60 +980,6 @@ window.ANALYTICS = {
 		console.groupEnd();
 	},
 
-	//SITE-3027 Установка кода TagMan на сайт
-    //SITE-3661 Удаление кода TagMan
-	/*TagManJS : function() {
-
-		initTagMan = function initTagMan() {
-        	console.info( 'TagManJS init' );
-
-			(function( d,s ) {
-			    var client = 'enterru';
-    		    var siteId = 1;
-
-			  //  do not edit
-			  var a=d.createElement(s),b=d.getElementsByTagName(s)[0];
-			  a.async=true;a.type='text/javascript';
-			  a.src='//sec.levexis.com/clients/'+client+'/'+siteId+'.js';
-			  a.tagman='st='+(+new Date())+'&c='+client+'&sid='+siteId;
-			  b.parentNode.insertBefore( a,b );
-			} ) (document,'script');
-        };
-
-		var
-  			template = body.data('template'),
-  			pageLink = location.href;
-
-		if ( template == 'order_complete' ) {
-			console.info("TagManJS Order Complete");
-
-			var 
-				data = $('#jsOrder').data('value'),
-				orderData = data.orders,
-				orderSum = orderData[0].sum;
-				orderNum = orderData[0].numberErp;
-
-			window.tmParam = {
-				page_type : 'confirmation', // REQ 
-				page_name : template, // REQ 
-				page_url : pageLink, // REQ
-				levrev : orderSum, // REQ when available
-				levordref : orderNum, // REQ when available
-				levresdes : 'confirmation' // REQ when available
-			};
-		}
-		else {
-			console.info("TagManJS Default")
-
-			window.tmParam = {
-				page_type : 'generic', // REQ 
-				page_name : template, // REQ 
-				page_url : pageLink // REQ
-			};
-		};
-
-        initTagMan();
-	},*/
 
     RetailRocketJS : function() {
     	console.groupCollapsed('ports.js::RetailRocketJS');
@@ -1125,51 +1050,6 @@ window.ANALYTICS = {
 		console.groupEnd();
     },
 
-//    AdmitadJS : function() {
-//        window._retag = window._retag || [];
-//        var ad_data = $('#AdmitadJS').data('value');
-//
-//        if (ad_data) {
-//
-//            if (ad_data.ad_data) {
-//                /**
-//                 * NB! Переменные потипу var ad_category должны быть глобальными согласно задаче SITE-1670
-//                 */
-//                if (ad_data.ad_data.ad_category) {
-//                    window.ad_category = ad_data.ad_data.ad_category;
-//                }
-//
-//                if (ad_data.ad_data.ad_product) {
-//                    window.ad_product = ad_data.ad_data.ad_product;
-//                }
-//
-//                if (ad_data.ad_data.ad_products) {
-//                    window.ad_products = ad_data.ad_data.ad_products;
-//                }
-//
-//                if (ad_data.ad_data.ad_order) {
-//                    window.ad_order = ad_data.ad_data.ad_order;
-//                }
-//
-//                if (ad_data.ad_data.ad_amount) {
-//                    window.ad_amount = ad_data.ad_data.ad_amount;
-//                }
-//
-//            }
-//
-//            if (ad_data.pushData) {
-//                window._retag.push(ad_data.pushData);
-//            }
-//        }
-//
-//        (function(d){
-//            var s=document.createElement("script");
-//            s.async=true;
-//            s.src=(d.location.protocol == "https:" ? "https:" : "http:") + "//cdn.admitad.com/static/js/retag.js";
-//            var a=d.getElementsByTagName("script")[0];
-//            a.parentNode.insertBefore(s, a);
-//        }(document));
-//    },
 
 	AlexaJS: function () {
 		_atrk_opts = {
@@ -1192,45 +1072,11 @@ window.ANALYTICS = {
 		})();
 	},
 
-    marketgidProd : function() {
-        var MGDate = new Date();
-        document.write('<iframe src ="http://'
-        +'marketgid.com/resiver.html#label1'
-        +MGDate.getYear()+MGDate.getMonth()
-        +MGDate.getDate()+MGDate.getHours()
-        +'" width="0%" height="0" sty'
-        +'le = "position:absolute;left:'
-        +'-1000px" ></iframe>');
-    },
-
-	marketgidOrder : function() {
-		var MGDate = new Date();
-		document.write('<iframe src ="http://'
-		+'marketgid.com/resiver.html#label2'
-		+MGDate.getYear()+MGDate.getMonth()
-		+MGDate.getDate()+MGDate.getHours()
-		+'" width="0%" height="0" sty'
-		+'le = "position:absolute;left:'
-		+'-1000px" ></iframe>');
-	},
-
-	marketgidOrderSuccess : function() {
-		var MGDate = new Date();
-		document.write('<iframe src ="http://'
-		+'marketgid.com/resiver.html#label3'
-		+MGDate.getYear()+MGDate.getMonth()
-		+MGDate.getDate()+MGDate.getHours()
-		+'" width="0%" height="0" sty'
-		+'le = "position:absolute;left:'
-		+'-1000px" ></iframe>');
-	},
-
 	runMethod : function( fnname ) {
-		if( !this. enable )
-			return
+
 		document.writeln = function(){
 			$('body').append( $(arguments[0] + '') )
-		}
+		};
 
 		if( fnname+'' in this ) {
 			this[fnname+'']()
@@ -1262,13 +1108,8 @@ window.ANALYTICS = {
     },
 
 	parseAllAnalDivs : function( nodes ) {
+
 		console.groupCollapsed('parseAllAnalDivs');
-
-		if ( !this.enable ) {
-			console.warn('Not enabled. Return');
-
-			return;
-		}
 
 		var
 			self = this;
@@ -1564,7 +1405,7 @@ window.ANALYTICS = {
 		}
 	},
 
-	LamodaJS: function () {
+/*	LamodaJS: function () {
 		(function() {
 			var
 				lamoda = $('#LamodaJS'),
@@ -1653,7 +1494,7 @@ window.ANALYTICS = {
 			JSREObject('cart_checkout');
 			JSREObject('conversion');
 		})();
-	},
+	},*/
 
 	googleTagManagerJS: function () {
 		var
@@ -1990,9 +1831,8 @@ window.ANALYTICS = {
 		window.smCustomVars = hubrusVars;
 
 		$LAB.script('http://pixel.hubrus.com/containers/enter/dist/smartPixel.min.js');
-	},
+	}
 
-	enable : true
 };
 
 $(function(){

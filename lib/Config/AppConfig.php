@@ -238,9 +238,6 @@ class AppConfig {
                 'cookieName' => null,
             ],
         ],
-        'Admitad' => [
-            'enabled' => null,
-        ],
         'AdLens' => [
             'enabled' => null,
         ],

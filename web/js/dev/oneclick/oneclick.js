@@ -574,11 +574,6 @@ $(document).ready(function() {
 				_gaq.push(['_trackPageview', '/order_form']);
 			}
 
-			if ( 'ANALYTICS' in window ) {
-				console.log('% Oneclick. Run marketgidOrder from ANALYTICS');
-				ANALYTICS.runMethod('marketgidOrder');
-			}
-
 			if ( typeof(_kmq) !== 'undefined' ) {
 				console.log('% Oneclick. Setting toKISS_oc code');
 				//console.log(toKISS_oc);

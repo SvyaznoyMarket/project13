@@ -144,19 +144,6 @@ class IndexPage extends \View\DefaultLayout {
             "<link rel=\"image_src\" href=\"". $this->escape($product->getImageUrl(3)). "\" />\r\n";
     }
 
-    public function slotAdvanceSeoCounter() {
-        /** @var \Model\Product\Entity $product  */
-        $product = $this->getParam('product');
-
-        if (!$product) {
-            return '';
-        }
-
-        return \App::config()->analytics['enabled']
-            ? ("<div id=\"marketgidProd\" class=\"jsanalytics\"></div>\r\n")
-            : '';
-    }
-
     public function slotAdriver() {
         /** @var \Model\Product\Entity $product  */
         $product = $this->getParam('product');

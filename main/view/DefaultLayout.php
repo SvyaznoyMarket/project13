@@ -281,10 +281,6 @@ class DefaultLayout extends Layout {
         return '';
     }
 
-    public function slotAdvanceSeoCounter() {
-        return '';
-    }
-
     public function slotAdriver() {
         return \App::config()->partners['Adriver']['enabled'] ? '<div id="adriverCommon" class="jsanalytics"></div>' : '';
     }
@@ -368,7 +364,6 @@ class DefaultLayout extends Layout {
             }
 
             if ('subscribe_friends' == $routeToken) {
-                $return .= $this->tryRender('partner-counter/_am15_net');
                 $return .= $this->tryRender('partner-counter/_actionpay_subscribe');
                 $return .= $this->tryRender('partner-counter/_cityAds_subscribe');
             }
@@ -532,49 +527,6 @@ class DefaultLayout extends Layout {
 
     public function slotSociaPlus() {
         return \App::config()->partners['Sociaplus']['enabled'] ? '<div id="sociaPlusJs" class="jsanalytics"></div>' : '';
-    }
-
-    public function slotAdmitad() {
-        if ( \App::config()->partners['Admitad']['enabled'] ) {
-            $return = '';
-            $adData = [];
-            $routeName = \App::request()->attributes->get('route');
-            $adObj = new \View\Partners\Admitad($routeName);
-
-            if ($routeName == 'product.category') {
-
-                $category = $this->getParam('category');
-                $adData = $adObj->category($category);
-
-            } elseif ($routeName == 'product') {
-
-                $product = $this->getParam('product');
-                $adData = $adObj->product($product);
-
-            } else if ($routeName == 'cart') {
-
-                //$products = $this->getParam('products');
-                $cartProductsById = $this->getParam('cartProductsById');
-                $adData = $adObj->cart($cartProductsById);
-
-            } elseif ($routeName == 'order.complete') {
-
-                $orders = $this->getParam('orders');
-                $adData = $adObj->ordercomplete($orders);
-
-            } elseif ($routeName == 'homepage') {
-
-                $adData = $adObj->toSend($routeName);
-
-            }
-
-            if (!empty($adData)) {
-                $return = '<div id="AdmitadJS" data-value="' . $this->json($adData) . '" class="jsanalytics" ></div>';
-            }
-
-            return $return;
-        }
-        return;
     }
 
 

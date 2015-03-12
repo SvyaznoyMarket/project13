@@ -168,13 +168,6 @@ class Manager {
                     $prefix . '.' . \Partner\Counter\Actionpay::NAME . '.actionpay' => $request->cookies->get('actionpay'),
                 ];
                 break;
-            /*case \Partner\Counter\Admitad::NAME:
-            case \Partner\Counter\Admitad::NAME_SYNONYM:
-                $return = [
-                    $prefix => [\Partner\Counter\Admitad::NAME],
-                    $prefix . '.' . \Partner\Counter\Admitad::NAME . '.cpamit_uid' => $request->cookies->get('cpamit_uid'),
-                ];
-                break;*/
             /*case \Partner\Counter\Recreative::NAME:
                 $return = [
                     $prefix => [\Partner\Counter\Recreative::NAME],

@@ -75,7 +75,6 @@
         <?= $page->slotBodyJavascript() ?>
         <?= $page->slotInnerJavascript() ?>
         <?= $page->slotYandexMetrika() ?>
-        <?= $page->slotAdvanceSeoCounter() ?>
         <?= $page->slotAdriver() ?>
         <?= $page->slotPartnerCounter() ?>
         <?= $page->slotEnterprizeConfirmJs() ?>
