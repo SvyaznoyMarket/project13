@@ -66,12 +66,12 @@ $f = function(
                 'number'      => $coupon->getDiscount() ? $coupon->getDiscount()->getNumber() : null,
                 'discount'    => $helper->formatPrice($coupon->getPrice()) . ($coupon->getIsCurrency() ? ' <span class="rubl">p</span>' : '%'),
                 'start'       =>
-                    $coupon->getDiscount()
+                    (false && $coupon->getDiscount())
                     ? ($coupon->getDiscount()->getStartDate() instanceof \DateTime ? $coupon->getDiscount()->getStartDate()->format('d.m.Y') : null)
                     : ($coupon->getStartDate() instanceof \DateTime ? $coupon->getStartDate()->format('d.m.Y') : null)
                 ,
                 'end'         =>
-                    $coupon->getDiscount()
+                    (false && $coupon->getDiscount())
                     ? ($coupon->getDiscount()->getEndDate() instanceof \DateTime ? $coupon->getDiscount()->getEndDate()->format('d.m.Y') : null)
                     : ($coupon->getEndDate() instanceof \DateTime ? $coupon->getEndDate()->format('d.m.Y') : null)
                 ,
