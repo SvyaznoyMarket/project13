@@ -79,7 +79,7 @@ $f = function(
                 'minOrderSum' => $helper->formatPrice($coupon->getMinOrderSum()),
                 'isUserOwner' => (bool)$coupon->getDiscount(),
                 'link'        =>
-                    $coupon->getName() && $coupon->getLink()
+                    $coupon->getName()
                     ? [
                         'name' => $coupon->getName(),
                         'url'  => $coupon->getLink(),
