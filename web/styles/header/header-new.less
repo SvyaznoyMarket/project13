@@ -238,8 +238,10 @@
 
         .header-ddnav-wrap {
             position: relative;
+            z-index: 99;
 
             &:hover {
+
                 .header-ddnav-box {
                     display: block;
                 }
@@ -267,7 +269,7 @@
             background: @white;
 
             &:after {
-                .pseudo-corner-top(9px, @white, -9px);
+                .pseudo-corner-top(9px, @white, -8px);
                 left: 22px;
             }
 

@@ -1611,6 +1611,7 @@ img[height="0"] {
   }
   .header-ddnav .header-ddnav-wrap {
     position: relative;
+    z-index: 99;
   }
   .header-ddnav .header-ddnav-wrap:hover .header-ddnav-box {
     display: block;
@@ -1643,7 +1644,7 @@ img[height="0"] {
     border-left: 9px solid transparent;
     border-right: 9px solid transparent;
     border-bottom: 9px solid #ffffff;
-    top: -9px;
+    top: -8px;
     left: 22px;
   }
   .header-ddnav .header-ddnav-box.show {
