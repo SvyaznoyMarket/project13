@@ -181,7 +181,7 @@ class CompletePage extends Layout {
         return '<div id="GetIntentJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
     }
 
-    public function slotGoogleTagManagerJS() {
+    public function slotGoogleTagManagerJS($data = []) {
         /** @var \Model\Order\Entity[] $orders */
         $orders = $this->getParam('orders', []);
         $data = [];

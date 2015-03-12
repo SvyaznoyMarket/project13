@@ -32,19 +32,22 @@
 				activeClass = 'searchdd_lk_iact',
 				index = $links.index($links.filter('.'+activeClass));
 
+            console.log(keycode, index);
+
 			if (!self.isNoSearchResult()) {
 				$links.removeClass(activeClass);
 				switch (keycode) {
-					case 13:
+					case 13: // Enter key
 						if (index > -1) {
 							window.location.href = $links.eq(index).attr('href');
 							return false;
 						}
 						break;
-					case 38:
+					case 38: // up key
+                        if (index == -1) index = self.searchResults.length;
 						$links.eq(index - 1).addClass(activeClass);
 						break;
-					case 40:
+					case 40: // down key
 						$links.eq(index + 1).addClass(activeClass);
 						break
 				}
