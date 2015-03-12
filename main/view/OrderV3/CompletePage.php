@@ -7,7 +7,7 @@ class CompletePage extends Layout {
     /** @var \Model\Order\Entity[] */
     private $orders;
 
-    public function slotGoogleRemarketingJS() {
+    public function slotGoogleRemarketingJS($tagParams = []) {
 
         $ordersSum = 0;
 

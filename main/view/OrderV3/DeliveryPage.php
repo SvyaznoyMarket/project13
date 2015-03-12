@@ -7,7 +7,7 @@ class DeliveryPage extends Layout {
         $this->setTitle('Оформление заказа - Enter');
     }
 
-    public function slotGoogleRemarketingJS() {
+    public function slotGoogleRemarketingJS($tagParams = []) {
         $tagParams = [
             'pagetype'          => 'cart',
             'ecomm_cartvalue'   => \App::user()->getCart()->getSum()

@@ -100,7 +100,7 @@ class IndexPage extends \View\DefaultLayout {
         return parent::slotBodyClassAttribute() . $this->hasParam('categoryClass') ? ' ' . $this->getParam('categoryClass') : '';
     }
 
-    public function slotGoogleRemarketingJS() {
+    public function slotGoogleRemarketingJS($tagParams = []) {
         /** @var $product \Model\Product\Entity */
         $product =  $this->getParam('product');
         if (!$product instanceof \Model\Product\Entity) return null;

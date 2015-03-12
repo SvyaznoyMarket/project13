@@ -63,7 +63,7 @@ class IndexPage extends \View\DefaultLayout {
         return (new \Helper\TemplateHelper())->render('main/__footer');
     }
 
-    public function slotGoogleRemarketingJS() {
+    public function slotGoogleRemarketingJS($tagParams = []) {
         return parent::slotGoogleRemarketingJS(['pagetype' => 'homepage']);
     }
 

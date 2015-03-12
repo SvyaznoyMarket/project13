@@ -17,7 +17,7 @@ class SetPage extends \View\DefaultLayout {
         return 'product_catalog';
     }
 
-    public function slotGoogleRemarketingJS() {
+    public function slotGoogleRemarketingJS($tagParams = []) {
         /** @var $product \Model\Product\Entity */
         $products = is_array($this->getParam('products')) ? $this->getParam('products') : [];
         $tagData = ['prodid' => [], 'pagetype' => 'productset', 'pname' => [], 'pcat' => [], 'pvalue' => []];

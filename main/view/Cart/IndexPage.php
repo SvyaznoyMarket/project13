@@ -60,7 +60,7 @@ class IndexPage extends \View\DefaultLayout {
         return $this->render('order/_footer', $this->params) . "\n\n" . $response['content'];
     }
 
-    public function slotGoogleRemarketingJS() {
+    public function slotGoogleRemarketingJS($tagParams = []) {
         /** @var $products \Model\Product\Entity[] */
         $products = $this->getParam('productEntities');
 
