@@ -811,12 +811,11 @@ class Repository {
         return $productsGrouped;
     }
 
-    public function getKitProducts(\Model\Product\Entity $product) {
+    public function getKitProducts(\Model\Product\Entity $product, array $parts = [], \EnterQuery\Delivery\GetByCart $deliveryQuery = null) {
         $productRepository = \RepositoryManager::product();
         $productRepository->setEntityClass('\Model\Product\Entity');
         $productLine = $product->getLine();
         $restParts = [];
-        $parts = [];
 
         // Получим основные товары набора
         $productPartsIds = [];
@@ -832,7 +831,9 @@ class Repository {
 
         // Получим сущности по id
         try {
-            $parts = $productRepository->getCollectionById($productPartsIds);
+            if (!$parts) {
+                $parts = $productRepository->getCollectionById($productPartsIds);
+            }
             if (isset($restPartsIds) && count($restPartsIds) > 0) {
                 $restParts = $productRepository->getCollectionById($restPartsIds);
             } else {
@@ -844,7 +845,7 @@ class Repository {
         }
 
         // Приготовим набор для отображения на сайте
-        return $this->prepareKit($parts, $restParts, $product);
+        return $this->prepareKit($parts, $restParts, $product, $deliveryQuery);
     }
 
     /**
@@ -853,7 +854,7 @@ class Repository {
      * @var array $restProducts
      * @var \Model\Product\Entity $product
      */
-    private function prepareKit($products, $restProducts, $mainProduct) {
+    private function prepareKit($products, $restProducts, $mainProduct, \EnterQuery\Delivery\GetByCart $deliveryQuery = null) {
         $result = [];
 
         foreach (array('baseLine' => $products, 'restLine' => $restProducts) as $lineName => $products) {
@@ -907,7 +908,7 @@ class Repository {
             );
         }
 
-        $deliveryData = (new \Controller\Product\DeliveryAction())->getResponseData($deliveryItems, \App::user()->getRegion()->getId());
+        $deliveryData = (new \Controller\Product\DeliveryAction())->getResponseData($deliveryItems, \App::user()->getRegion()->getId(), $deliveryQuery);
 
         if ($deliveryData['success']) {
             foreach ($deliveryData['product'] as $product) {

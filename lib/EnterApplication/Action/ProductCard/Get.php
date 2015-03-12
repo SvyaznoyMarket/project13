@@ -49,9 +49,8 @@ namespace EnterApplication\Action\ProductCard
                 $deliveryQuery = new Query\Delivery\GetByCart();
                 // корзина
                 $deliveryQuery->cart->products[] = $deliveryQuery->cart->createProduct($product['id'], 1);
-                if ($kitIds = array_column($productQuery->response->product['kit'], 'id')) {
-                    // TODO: пока нельзя
-                    //$deliveryQuery->cart->products = array_merge($deliveryQuery->cart->products, $kitIds);
+                foreach(array_column($productQuery->response->product['kit'], 'id') as $kitId) {
+                    $deliveryQuery->cart->products[] = $deliveryQuery->cart->createProduct($kitId, 1);
                 }
 
                 // регион
@@ -165,6 +164,21 @@ namespace EnterApplication\Action\ProductCard
                 $productDescriptionQuery = (new Query\Product\GetDescriptionByUiList([$product['ui']]))->prepare($productDescriptionError);
             });
 
+            // товар для Подари Жизнь
+            $lifeGiftProductCallback = $productQuery->addCallback(function() use (&$productQuery, &$lifeGiftProductQuery) {
+                $product = $productQuery->response->product;
+                if (!$product['ui']) return;
+
+                $labelId = isset($product['label'][0]['id']) ? $product['label'][0]['id'] : null;
+                if (
+                    \App::config()->lifeGift['enabled']
+                    && $labelId
+                    && (\App::config()->lifeGift['labelId'] === $labelId)
+                ) {
+                    $lifeGiftProductQuery = new Query\Product\GetByUi($product['ui'], \App::config()->lifeGift['regionId']);
+                }
+            });
+
             // подготовка запроса на получение товара
             $productQuery->prepare($productError);
 
@@ -218,6 +232,7 @@ namespace EnterApplication\Action\ProductCard
             // response
             $response = new Response();
             $response->productQuery = $productQuery;
+            $response->productDescriptionQuery = $productDescriptionQuery;
             $response->userQuery = $userQuery;
             $response->subscribeQuery = $subscribeQuery;
             $response->redirectQuery = $redirectQuery;
@@ -234,6 +249,7 @@ namespace EnterApplication\Action\ProductCard
             $response->relatedProductQueries = $relatedProductQueries;
             $response->reviewQuery = $reviewQuery;
             $response->categoryQuery = $categoryQuery;
+            $response->lifeGiftProductQuery = $lifeGiftProductQuery;
 
             return $response;
         }
@@ -268,6 +284,8 @@ namespace EnterApplication\Action\ProductCard\Get
     {
         /** @var Query\Product\GetByToken */
         public $productQuery;
+        /** @var Query\Product\GetDescriptionByUiList|null */
+        public $productDescriptionQuery;
         /** @var Query\User\GetByToken|null */
         public $userQuery;
         /** @var Query\Subscribe\GetByUserToken|null */
@@ -300,5 +318,7 @@ namespace EnterApplication\Action\ProductCard\Get
         public $reviewQuery;
         /** @var Query\Product\Category\GetByUi|null */
         public $categoryQuery;
+        /** @var Query\Product\GetByToken */
+        public $lifeGiftProductQuery;
     }
 }
