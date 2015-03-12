@@ -757,24 +757,24 @@ class DefaultLayout extends Layout {
         return '';
     }
 
-    public function slotGoogleTagManagerJS() {
-        if (!\App::config()->googleTagManager['enabled'] || !\App::config()->analytics['enabled']) return;
+    /** Google Tag Manager Container (ports.js)
+     * @param array $data Дополнительные данные для GTM
+     * @return string
+     */
+    public function slotGoogleTagManagerJS($data = []) {
 
         $containerId = \App::config()->googleTagManager['containerId'];
-        if (!$containerId) {
-            return;
-        }
 
-        $data = [
-            'containerId' => $containerId,
-        ];
+        if (!\App::config()->googleTagManager['enabled'] || !\App::config()->analytics['enabled'] || !$containerId) return '';
+
+        $data = array_merge(['containerId' => $containerId], $data);
 
         return
-            "<div id=\"googleTagManagerJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\">
+            '<div id="googleTagManagerJS" class="jsanalytics" data-value="' . $this->json($data) . '">
                 <!-- Google Tag Manager -->
-                <noscript><iframe src=\"//www.googletagmanager.com/ns.html?id=" . $containerId . "\" height=\"0\" width=\"0\" style=\"display:none;visibility:hidden\"></iframe></noscript>
+                <noscript><iframe src="//www.googletagmanager.com/ns.html?id=' . $containerId . '" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <!-- End Google Tag Manager -->
-            </div>";
+            </div>';
     }
 
     public function slotFlocktoryExchangeJS() {

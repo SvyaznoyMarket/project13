@@ -165,4 +165,26 @@ class CompletePage extends Layout {
 
         return '<div id="GetIntentJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
     }
+
+    public function slotGoogleTagManagerJS()
+    {
+        /** @var \Model\Order\Entity[] $orders */
+        $orders = $this->getParam('orders', []);
+        $data = [];
+
+        /* Дополнительные данные для LinkProfit */
+        if (\App::config()->partners['LinkProfit']['enabled'] && \App::partner()->getName() == 'linkprofit') {
+            foreach ($orders as $order) {
+                $data[] = [
+                    'orderNumber' => $order->getNumber(),
+                    'orderSum' => $order->getSum(),
+                    'webmaster_id' => \App::request()->cookies->get(\App::config()->partners['LinkProfit']['cookieName'], 0)
+                ];
+            }
+        }
+
+        return parent::slotGoogleTagManagerJS($data);
+    }
+
+
 }
