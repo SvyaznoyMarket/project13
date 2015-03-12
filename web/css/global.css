@@ -12633,6 +12633,10 @@
     font-size: 12px;
     color: #545454;
   }
+  .bBreadcrumbs--light .bBreadcrumbs__eItem.mLast,
+  .bBreadcrumbs--light .bBreadcrumbs__eItem:last-child {
+    background: none;
+  }
   .bBreadcrumbs--light .bBreadcrumbs__eLink {
     border-bottom: 1px solid #9c9c9c;
     color: #545454;
