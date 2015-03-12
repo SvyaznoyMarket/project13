@@ -147,10 +147,7 @@ class Client
         foreach ($this->delays as $id => $delay) {
             if ($time >= $delay) {
                 unset($this->delays[$id]);
-                curl_multi_add_handle(
-                    $this->mh,
-                    $this->queriesById[$id]->handle
-                );
+                curl_multi_add_handle($this->mh, $this->queriesById[$id]->handle);
                 //var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | add delayed ' . $this->queriesById[$id]->request);
             }
         }
@@ -170,7 +167,6 @@ class Client
 
             $query = isset($this->queriesById[$id]) ? $this->queriesById[$id] : null;
             if (!$query) {
-                //var_dump('canceled');
                 // вероятно, был отменен
                 continue;
             }

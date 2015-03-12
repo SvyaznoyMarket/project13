@@ -125,10 +125,6 @@ trait CurlQueryTrait
 
                 // удалить дубликаты
                 foreach ($queryCollection as $retryQuery) {
-                    if ($query->handle === $retryQuery->handle) {
-                        //var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | it\'s me ' . $retryQuery->request);
-                        continue;
-                    }
                     if (is_callable($retryQuery->rejectCallback)) {
                         call_user_func($retryQuery->rejectCallback); // отменяет запрос
                     }
