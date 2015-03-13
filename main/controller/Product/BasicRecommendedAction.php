@@ -20,10 +20,10 @@ class BasicRecommendedAction {
     /**
      * @param string        $productId
      * @param \Http\Request $request
-     * @return array
+     * @return \Http\JsonResponse
      * @throws \Exception\NotFoundException
      */
-    public function getResponseData($productId, \Http\Request $request) {
+    public function execute($productId, \Http\Request $request) {
         $responseData = [];
 
         try {
@@ -59,7 +59,7 @@ class BasicRecommendedAction {
             ];
         }
 
-        return $responseData;
+        return new \Http\JsonResponse($responseData);
     }
 
 
