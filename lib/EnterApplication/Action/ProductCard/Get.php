@@ -182,6 +182,11 @@ namespace EnterApplication\Action\ProductCard
             // подготовка запроса на получение товара
             $productQuery->prepare($productError);
 
+            // регион
+            $regionQuery = (new Query\Region\GetById($request->regionId))->prepare($regionError);
+
+            $curl->execute(); // важно: только товар и регион в запросе
+
             // отзывы о товаре
             /*
             $reviewQuery = null;
@@ -206,9 +211,6 @@ namespace EnterApplication\Action\ProductCard
 
             // аб-тест
             $abTestQuery = (new Query\AbTest\GetActive())->prepare($abTestError);
-
-            // регион
-            $regionQuery = (new Query\Region\GetById($request->regionId))->prepare($regionError);
 
             // список регионов для выбора города
             $mainRegionQuery = (new Query\Region\GetMain())->prepare($mainRegionError);
