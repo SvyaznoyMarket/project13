@@ -8779,6 +8779,10 @@ img[height="0"] {
   .orderPayment_msg_info_status {
     line-height: 25px;
   }
+  .orderPayment_msg_info.-short {
+    font-size: 13px;
+    vertical-align: middle;
+  }
   .orderPayment_msg_adding {
     width: 370px;
     overflow-x: hidden;
@@ -8990,6 +8994,21 @@ img[height="0"] {
     position: relative;
     bottom: 3px;
     padding-right: 2px;
+  }
+  .btn-discount-orange {
+    margin-left: 18px;
+    border: 1px solid #ffa901;
+    color: #ffa901;
+    text-decoration: none;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 4px 13px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 2px;
+  }
+  .btn-discount-orange:hover {
+    text-decoration: none;
   }
 }
 @media all {
