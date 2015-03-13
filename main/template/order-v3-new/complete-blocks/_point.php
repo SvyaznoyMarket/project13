@@ -44,9 +44,10 @@
                     <? if ($order->isPaid()) : ?>
                         Заказ оплачен
                     <? elseif ($order->isPaidBySvyaznoy()) : ?>
-                        Вы успешно применили плюсы Связной клуб<br />
-                        Не забудьте взять карту Связной клуб в магазин<br />
-                        <br />
+                        <div class="orderPayment_msg_info">
+                            Вы успешно применили плюсы <img src="/styles/order/img/sclub-complete.jpg"><br/>
+                            <b>Не забудьте</b> взять карту «Связной Клуб» в магазин!
+                        </div>
                         Сумма к оплате: <?= $helper->formatPrice($order->getSum() - $order->getSvyaznoyPaymentSum()) ?> Р<br />
                         Оплата при получении — наличными или картой.
                     <? elseif (in_array($order->getPaymentId(), [
