@@ -1429,7 +1429,7 @@ img[height="0"] {
   }
   .header {
     width: 960px;
-    padding: 0 0 20px;
+    padding: 0 0 10px;
     margin: 0 0 0 -10px;
     background: #ffffff;
   }
@@ -1594,6 +1594,83 @@ img[height="0"] {
     -webkit-box-shadow: 0px 0px 26px 0px rgba(50, 50, 50, 0.25);
     -moz-box-shadow: 0px 0px 26px 0px rgba(50, 50, 50, 0.25);
     box-shadow: 0px 0px 26px 0px rgba(50, 50, 50, 0.25);
+  }
+  .header .header-icon-ddnav {
+    display: none;
+  }
+  .header-ddnav .header_b {
+    border: none;
+    float: left;
+    padding: 0 5px 0 10px;
+    height: 70px;
+    background: #000000;
+  }
+  .header-ddnav .header_c {
+    float: right;
+    width: 881px;
+  }
+  .header-ddnav .header-ddnav-wrap {
+    position: relative;
+    z-index: 99;
+  }
+  .header-ddnav .header-ddnav-wrap:hover .header-ddnav-box {
+    transition-property: visibility;
+    transition-delay: 100ms;
+    display: block;
+    visibility: visible;
+  }
+  .header-ddnav .header-icon-ddnav {
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAzAQAAAADEf9fiAAAAAnRSTlMAAHaTzTgAAAAXSURBVHgBY6A3YPz///8PrBTd9dENAACB2S+JmUkSHwAAAABJRU5ErkJggg==') no-repeat 50% 50% #000000;
+    display: block;
+    height: 70px;
+    width: 44px;
+    margin: 0;
+    cursor: pointer;
+  }
+  .header-ddnav .header-ddnav-box {
+    position: absolute;
+    bottom: -90px;
+    left: -10px;
+    padding: 5px 5px 0;
+    width: 950px;
+    -webkit-box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
+    background: #ffffff;
+    display: block;
+    visibility: hidden;
+    transition-property: visibility;
+    transition-delay: 1000ms;
+  }
+  .header-ddnav .header-ddnav-box:after {
+    position: absolute;
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-bottom: 9px solid #ffffff;
+    top: -8px;
+    left: 22px;
+  }
+  .header-ddnav .header-ddnav-box.show {
+    display: block;
+  }
+  .header-ddnav .hdlogo {
+    margin: 0 35px 0 0;
+  }
+  .header-ddnav .hdsearch_itb {
+    width: 481px;
+    padding: 0px 10px 0 5px;
+  }
+  .header-ddnav .hdsearch_itb:after {
+    background: none;
+  }
+  .header-ddnav .hdgift--new {
+    margin: 18px 0 0 21px;
+  }
+  .header-ddnav .hdep {
+    margin: 11px 0px 0 0;
   }
   .hdcontacts {
     margin: 0 10px 0 0;

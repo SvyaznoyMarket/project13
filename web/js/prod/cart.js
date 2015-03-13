@@ -129,13 +129,15 @@
 	$body.on('click', '.basketLine a:not(.js-orderButton)', function(e){
 		var $target = $(e.target),
 			nodeName = $target.prop('nodeName'),
-			href = '',
+			href = '', isNewWindow,
 			product = $(e.target).closest('.jsSliderItem').data('product');
 
 		if (!product) return;
 
-		if (nodeName == 'A') href = $target.prop('href');
-		if (nodeName == 'IMG') href = $target.closest('a').prop('href');
+		if (nodeName == 'IMG') $target = $target.closest('a');
+
+        href = $target.attr('a');
+        isNewWindow = $target.attr('target') == '_blank';
 
 		if (!docCookies.hasItem(cookieKey2)) {
 			docCookies.setItem(cookieKey2, product.article)
@@ -149,9 +151,7 @@
 				{	category: 'Платный_самовывоз_' + config.user.region.name,
 					action:'перешел на карточку из рекомендации',
 					label:'статичная корзина',
-					hitCallback: function(){
-						window.location.href = href;
-					}
+					hitCallback: isNewWindow ? null : href
 				})
 		}
 	})

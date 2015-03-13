@@ -89,6 +89,7 @@ class ShowAction {
             'brandImage'    => $product->getBrand() && $product->getBrand()->getImage() ? $product->getBrand()->getImage() : null,
             'isSlot' => (bool)$product->getSlotPartnerOffer(),
             'isOnlyFromPartner' => $product->isOnlyFromPartner(),
+            'isNewWindow'       => \App::abTest()->isNewWindow() // открытие товаров в новом окне
         ];
 
         // oldPrice and priceSale

@@ -31,61 +31,71 @@ foreach ($menu as $menu1) {
         \App::logger()->error(['error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__], ['main_menu', 'recommendation']);
     }
 }
+
+$hideMenu = \App::abTest()->isMenuHamburger() ? '' : '';
+$hamburgerJsClass = \App::abTest()->isMenuHamburger() ? ' jsHamburgerIcon ' : '';
 ?>
 
 <!-- навигация -->
-<nav class="header_b">
-    <ul class="navsite js-mainmenu-level1">
-        <? foreach ($menu as $menu1): ?>
-            <?
-            $recommendUrl = ($menu1->id && !empty($recommendUrlsByMenuId[$menu1->id])) ? $recommendUrlsByMenuId[$menu1->id] : null;
-            ?>
-            <li class="navsite_i <?= ((bool)$menu1->children) ? 'navsite_i-child' : '' ?> <?= $lastMenu1 == $menu1 ? 'navsite_i-last': '' ?> js-mainmenu-level1-item" <? if ($recommendUrl): ?> data-recommend-url="<?= $recommendUrl ?>"<? endif ?>>
-                <? if ($menu1->char) : ?>
-                    <a href="<?= $menu1->link ?>" class="navsite_lk">
-                        <div class="navsite_icon"><?= $menu1->char?></div>
-                        <span class="navsite_tx"><?= $menu1->name?></span>
-                    </a>
-                <? else : ?>
-                    <a href="<?= $menu1->link ?>" class="navsite_lk">
-                        <div class="navsite_imgw"><img class="navsite_img" src="<?= $menu1->image ?>" alt=""></div>
-                        <span class="navsite_tx"><?= $menu1->name?></span>
-                    </a>
-                <? endif ?>
+<div class="header_b" <?= $hideMenu ?>>
 
-                <? if (!empty($menu1->children)) : ?>
+    <div class="header-ddnav-wrap">
+        <span class="header-icon-ddnav <?= $hamburgerJsClass ?>"></span>
 
-                    <ul class="navsite2 navsite2-new js-mainmenu-level2">
+        <nav class="header-ddnav-box">
+            <ul class="navsite js-mainmenu-level1">
+                <? foreach ($menu as $menu1): ?>
+                    <?
+                    $recommendUrl = ($menu1->id && !empty($recommendUrlsByMenuId[$menu1->id])) ? $recommendUrlsByMenuId[$menu1->id] : null;
+                    ?>
+                    <li class="navsite_i <?= ((bool)$menu1->children) ? 'navsite_i-child' : '' ?> <?= $lastMenu1 == $menu1 ? 'navsite_i-last': '' ?> js-mainmenu-level1-item" <? if ($recommendUrl): ?> data-recommend-url="<?= $recommendUrl ?>"<? endif ?>>
+                        <? if ($menu1->char) : ?>
+                            <a href="<?= $menu1->link ?>" class="navsite_lk">
+                                <div class="navsite_icon"><?= $menu1->char?></div>
+                                <span class="navsite_tx"><?= $menu1->name?></span>
+                            </a>
+                        <? else : ?>
+                            <a href="<?= $menu1->link ?>" class="navsite_lk">
+                                <div class="navsite_imgw"><img class="navsite_img" src="<?= $menu1->image ?>" alt=""></div>
+                                <span class="navsite_tx"><?= $menu1->name?></span>
+                            </a>
+                        <? endif ?>
 
-                        <? foreach ((array)$menu1->children as $menu2) : ?>
-                            <li class="navsite2_i <?= ((bool)$menu2->children) ? 'navsite2_i-child' : '' ?> js-mainmenu-level2-item">
+                        <? if (!empty($menu1->children)) : ?>
 
-                                <? if ($menu2->logo) : ?>
-                                    <a href="<?= $menu2->link ?>" class="navsite2_lk"><img src="<?= $menu2->logo ?>" alt="<?= $menu2->name ?>"/></a>
-                                <? else : ?>
-                                    <a href="<?= $menu2->link ?>" class="navsite2_lk"><span class="navsite2_tx"><?= $menu2->name ?></span></a>
-                                <? endif ?>
+                            <ul class="navsite2 navsite2-new js-mainmenu-level2">
 
-                                <? if (true || !empty($menu2->children)) : ?>
-                                    <ul class="navsite3 js-mainmenu-level3">
-                                        <li class="navsite3_i navsite3_i-tl"><?= $menu2->name ?></li>
-                                        <? foreach ((array)$menu2->children as $menu3) : ?>
-                                            <li class="navsite3_i"><a href="<?= $menu3->link ?>" class="navsite3_lk"><?= $menu3->name ?></a></li>
-                                        <? endforeach ?>
+                                <? foreach ((array)$menu1->children as $menu2) : ?>
+                                    <li class="navsite2_i <?= ((bool)$menu2->children) ? 'navsite2_i-child' : '' ?> js-mainmenu-level2-item">
 
-                                        <li class="navsite3_i jsMenuRecommendation"<? if ($menu2->id): ?> data-parent-category-id="<?= $menu2->id ?>"<? endif ?>></li>
-                                    </ul>
-                                <? endif ?>
+                                        <? if ($menu2->logo) : ?>
+                                            <a href="<?= $menu2->link ?>" class="navsite2_lk"><img src="<?= $menu2->logo ?>" alt="<?= $menu2->name ?>"/></a>
+                                        <? else : ?>
+                                            <a href="<?= $menu2->link ?>" class="navsite2_lk"><span class="navsite2_tx"><?= $menu2->name ?></span></a>
+                                        <? endif ?>
 
-                            </li>
-                        <? endforeach ?>
+                                        <? if (true || !empty($menu2->children)) : ?>
+                                            <ul class="navsite3 js-mainmenu-level3">
+                                                <li class="navsite3_i navsite3_i-tl"><?= $menu2->name ?></li>
+                                                <? foreach ((array)$menu2->children as $menu3) : ?>
+                                                    <li class="navsite3_i"><a href="<?= $menu3->link ?>" class="navsite3_lk"><?= $menu3->name ?></a></li>
+                                                <? endforeach ?>
 
-                    </ul>
+                                                <li class="navsite3_i jsMenuRecommendation"<? if ($menu2->id): ?> data-parent-category-id="<?= $menu2->id ?>"<? endif ?>></li>
+                                            </ul>
+                                        <? endif ?>
 
-                <? endif ?>
+                                    </li>
+                                <? endforeach ?>
 
-            </li>
-        <? endforeach ?>
-    </ul>
-</nav>
+                            </ul>
+
+                        <? endif ?>
+
+                    </li>
+                <? endforeach ?>
+            </ul>
+        </nav>
+    </div>
+</div>
 <!-- /навигация -->

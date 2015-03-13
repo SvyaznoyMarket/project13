@@ -12625,6 +12625,22 @@
     text-decoration: none;
     border-bottom: none;
   }
+  .bBreadcrumbs--light {
+    margin: 0 0 10px;
+  }
+  .bBreadcrumbs--light .bBreadcrumbs__eItem {
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAQAAABwz0azAAAAWUlEQVR4AWPIZa8UrWSAQIYGn/qHDUYNDCAIIuLq3zZEgThMDAwMi/65/W//3w1kgxXwNGxqOFPIyVDI0KBSf7lhUQMHUE+tecOrhjyIASx/HzGEMhxkAAMA3eshfb0oo6gAAAAASUVORK5CYII=') no-repeat 100% 5px;
+    font-size: 12px;
+    color: #545454;
+  }
+  .bBreadcrumbs--light .bBreadcrumbs__eItem.mLast,
+  .bBreadcrumbs--light .bBreadcrumbs__eItem:last-child {
+    background: none;
+  }
+  .bBreadcrumbs--light .bBreadcrumbs__eLink {
+    border-bottom: 1px solid #9c9c9c;
+    color: #545454;
+  }
 }
 @media all {
   .bCatalogList {

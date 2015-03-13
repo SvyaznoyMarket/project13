@@ -118,6 +118,7 @@ class IndexAction {
             }
 
             $slideData[] = [
+                'target'  => \App::abTest()->isNewWindow() ? '_blank' : '_self',
                 'imgUrl'  => \App::config()->dataStore['url'] . 'promo/' . $promo->getToken() . '/' . trim($image->getUrl(), '/'),
                 'title'   => $image->getName(),
                 'linkUrl' => $image->getLink()?($image->getLink().'?from='.$promo->getToken()):'',

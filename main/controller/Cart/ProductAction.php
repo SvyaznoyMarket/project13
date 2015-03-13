@@ -103,6 +103,7 @@ class ProductAction {
                 'serviceQuantity' => $cart->getServicesQuantityByProduct($product->getId()),
                 'isSlot' => (bool)$product->getSlotPartnerOffer(),
                 'isOnlyFromPartner' => $product->isOnlyFromPartner(),
+                'isNewWindow'       => \App::abTest()->isNewWindow() // открытие товаров в новом окне
             ];
             if (\App::config()->kissmentrics['enabled']) {
                 try {

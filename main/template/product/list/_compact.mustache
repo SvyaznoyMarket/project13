@@ -19,7 +19,7 @@
                     <div class="shoppilot-category-container" data-product-id="{{id}}"></div>
                 {{/abtestKeys.shoppilot}}
 
-                <p class="bSimplyDesc__eText"><a href="{{link}}">{{name}}</a></p>
+                <p class="bSimplyDesc__eText"><a href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>{{name}}</a></p>
                 {{#abtestKeys.default}}
                     {{#review}}{{> product/_review-compact }}{{/review}}
                 {{/abtestKeys.default}}
@@ -43,7 +43,7 @@
             </div>
             <!-- /Блок с именем продукта и иконками доп. просмотра товара -->
 
-            <a href="{{link}}" class="bProductImg js-listing-item-img"><img class="bProductImg__eImg" src="{{image}}" alt="" /></a>
+            <a href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}} class="bProductImg js-listing-item-img"><img class="bProductImg__eImg" src="{{image}}" alt="" /></a>
 
             <div class="bPriceLine clearfix">
                 {{#oldPrice}}
@@ -88,7 +88,7 @@
                     <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}></a>
                 {{/showCompareButton}}
 
-                <a class="btnView btn1 js-listing-item-viewButton" href="{{link}}">Посмотреть</a>
+                <a class="btnView btn1 js-listing-item-viewButton" href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>Посмотреть</a>
             </div>
         </div>
     </li>

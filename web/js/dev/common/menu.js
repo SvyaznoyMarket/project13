@@ -2,7 +2,8 @@
 
 	var $body = $(document.body),
 		$nav = $('nav'),
-		MenuStorage, storage, fillRecommendBlocks;
+        $hamburgerIcon = $('.jsHamburgerIcon'),
+		MenuStorage, storage, fillRecommendBlocks, hideMenuTimeoutId;
 
 	/**
 	 * Конструктор хранилища данных. Возвращает либо lscache, либо объект с необходимыми свойствами (функциями)
@@ -97,7 +98,6 @@
 
 	// аналитика
 	$body.on('click', '.jsRecommendedItemInMenu', function(event) {
-		console.log('jsRecommendedItemInMenu');
 
 		event.stopPropagation();
 
@@ -105,6 +105,7 @@
 
 			var $el = $(this),
 				link = $el.attr('href'),
+				isNewWindow = $el.attr('target') == '_blank',
 				sender = $el.data('sender');
 
 			$body.trigger('TLT_processDOMEvent', [event]);
@@ -113,8 +114,7 @@
 				category: 'RR_взаимодействие',
 				action: 'Перешел на карточку товара',
 				label: sender ? sender.position : null,
-				hitCallback: function(){
-					console.log({link: link});
+				hitCallback: isNewWindow ? null : function(){
 
 					if (link) {
 						setTimeout(function() { window.location.href = link; }, 90);
@@ -125,5 +125,29 @@
 			$el.trigger('TL_recommendation_clicked');
 
 		} catch (e) { console.error(e); }
-	})
+	});
+
+    $body.on('click', '.jsHamburgerIcon', function(){
+        $nav.toggleClass('show');
+    });
+
+    // if ($hamburgerIcon.length > 0) {
+    //     $hamburgerIcon.hover(function(){
+    //         clearTimeout(hideMenuTimeoutId);
+    //         hideMenuTimeoutId = null;
+    //         $nav.show();
+    //     });
+    //     $body.on('hover', 'div', function(e){
+    //         var $target;
+    //         if ($nav.is(':visible') && !hideMenuTimeoutId) {
+    //             $target = $(e.target);
+    //             if ($target.closest('nav').length == 0
+    //                 && $target.prop('nodeName') != 'NAV'
+    //                 && !$target.hasClass('jsHamburgerIcon') ) {
+    //                 hideMenuTimeoutId = setTimeout( function(){ $nav.hide() }, 2000 );
+    //             }
+    //         }
+    //     })
+    // }
+
 })(jQuery);

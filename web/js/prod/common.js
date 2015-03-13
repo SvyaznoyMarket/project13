@@ -3314,7 +3314,8 @@ $(document).ready(function() {
 
 	var $body = $(document.body),
 		$nav = $('nav'),
-		MenuStorage, storage, fillRecommendBlocks;
+        $hamburgerIcon = $('.jsHamburgerIcon'),
+		MenuStorage, storage, fillRecommendBlocks, hideMenuTimeoutId;
 
 	/**
 	 * Конструктор хранилища данных. Возвращает либо lscache, либо объект с необходимыми свойствами (функциями)
@@ -3409,7 +3410,6 @@ $(document).ready(function() {
 
 	// аналитика
 	$body.on('click', '.jsRecommendedItemInMenu', function(event) {
-		console.log('jsRecommendedItemInMenu');
 
 		event.stopPropagation();
 
@@ -3417,6 +3417,7 @@ $(document).ready(function() {
 
 			var $el = $(this),
 				link = $el.attr('href'),
+				isNewWindow = $el.attr('target') == '_blank',
 				sender = $el.data('sender');
 
 			$body.trigger('TLT_processDOMEvent', [event]);
@@ -3425,8 +3426,7 @@ $(document).ready(function() {
 				category: 'RR_взаимодействие',
 				action: 'Перешел на карточку товара',
 				label: sender ? sender.position : null,
-				hitCallback: function(){
-					console.log({link: link});
+				hitCallback: isNewWindow ? null : function(){
 
 					if (link) {
 						setTimeout(function() { window.location.href = link; }, 90);
@@ -3437,7 +3437,31 @@ $(document).ready(function() {
 			$el.trigger('TL_recommendation_clicked');
 
 		} catch (e) { console.error(e); }
-	})
+	});
+
+    $body.on('click', '.jsHamburgerIcon', function(){
+        $nav.toggleClass('show');
+    });
+
+    // if ($hamburgerIcon.length > 0) {
+    //     $hamburgerIcon.hover(function(){
+    //         clearTimeout(hideMenuTimeoutId);
+    //         hideMenuTimeoutId = null;
+    //         $nav.show();
+    //     });
+    //     $body.on('hover', 'div', function(e){
+    //         var $target;
+    //         if ($nav.is(':visible') && !hideMenuTimeoutId) {
+    //             $target = $(e.target);
+    //             if ($target.closest('nav').length == 0
+    //                 && $target.prop('nodeName') != 'NAV'
+    //                 && !$target.hasClass('jsHamburgerIcon') ) {
+    //                 hideMenuTimeoutId = setTimeout( function(){ $nav.hide() }, 2000 );
+    //             }
+    //         }
+    //     })
+    // }
+
 })(jQuery);
 (function() {
 	var oneClickOpening = false;
@@ -4122,55 +4146,7 @@ $(document).ready(function() {
 				 * @param collection_position	позиция в слайдере
 				 * @param delay					текущая задержка на данном слайдере
 				 */
-				collectionShow: function(collection_name, collection_position, delay) {
-//					var
-//						item,
-//						i;
-//					// end of vars
-//
-//					var
-//						collectionViewPush = function collectionViewPush( item ) {
-//							if ( !item ) {
-//								return;
-//							}
-//
-//							console.info('TchiboSliderAnalytics collection_view');
-//							console.log(item);
-//							_gaq.push(item);
-//						};
-//					// end of functions
-//
-//					if (
-//						!tchiboAnalytics.isAnalyticsEnabled ||
-//						'undefined' == typeof(collection_name) ||
-//						'undefined' == typeof(collection_position) ||
-//						'undefined' == typeof(delay)
-//						) {
-//						return;
-//					}
-//
-//					// страница не отображается
-//					if ( true === documentHidden ) {
-//						return;
-//					}
-//
-//					item = ['_trackEvent', 'collection_view', collection_name+'_'+collection_position, delay.toString(), , true];
-//
-//					if ( 'undefined' == typeof(_gaq) ) {
-//						tchiboAnalyticsBuffer.push(item);
-//
-//						return;
-//					}
-//
-//					if ( tchiboAnalyticsBuffer.length > 0 ) {
-//						for ( i=0; i<tchiboAnalyticsBuffer.length; i++ ) {
-//							collectionViewPush(tchiboAnalyticsBuffer[i]);
-//						}
-//						tchiboAnalyticsBuffer = [];
-//					}
-//
-//					collectionViewPush(item);
-				},
+				collectionShow: function(collection_name, collection_position, delay) {	},
 
 				/**
 				 * @param collection_name		название коллекции
@@ -4453,6 +4429,7 @@ $(document).ready(function() {
             var $el = $(this),
                 $target = $(event.target),
                 link = $el.attr('href'),
+                aTarget = $el.attr('target'),
                 $slider = $el.parents('.js-slider'),
                 sender = $slider.length ? $slider.data('slider').sender : null;
 
@@ -4472,7 +4449,7 @@ $(document).ready(function() {
                     category: 'RR_взаимодействие' + rrEventLabel,
                     action: 'Перешел на карточку товара',
                     label: sender ? sender.position : null,
-                    hitCallback: link
+                    hitCallback: aTarget == '_blank' ? null : link
                 });
             }
 

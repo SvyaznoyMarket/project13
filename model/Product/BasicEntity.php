@@ -32,6 +32,10 @@ class BasicEntity {
     protected $state;
     /** @var int|null */
     protected $statusId;
+    /** @var Kit\Entity[] */
+    protected $kit = [];
+    /** @var bool */
+    protected $isKitLocked = false;
     /** @var Line\Entity */
     protected $line;
     /** @var Category\Entity */
@@ -106,6 +110,11 @@ class BasicEntity {
         if (isset($data['title'])) $this->setSeoTitle($data['title']);
         if (isset($data['meta_keywords'])) $this->setSeoKeywords($data['meta_keywords']);
         if (isset($data['meta_description'])) $this->setSeoDescription($data['meta_description']);
+
+        if (array_key_exists('kit', $data) && is_array($data['kit'])) $this->setKit(array_map(function($data) {
+            return new Kit\Entity($data);
+        }, $data['kit']));
+        if (array_key_exists('is_kit_locked', $data)) $this->setIsKitLocked($data['is_kit_locked']);
 
         $this->calculateState($data);
     }
@@ -313,6 +322,46 @@ class BasicEntity {
             && (\App::config()->product['allowBuyOnlyInshop'] ? true : !$this->isInShopStockOnly())
             && $this->getPrice() !== null
         ;
+    }
+
+    /**
+     * @param Kit\Entity[] $kits
+     */
+    public function setKit(array $kits) {
+        $this->kit = [];
+        foreach ($kits as $kit) {
+            $this->addKit($kit);
+        }
+    }
+
+    /**
+     * @param Kit\Entity $kit
+     */
+    public function addKit(Kit\Entity $kit) {
+        $this->kit[] = $kit;
+    }
+
+    /**
+     * @return Kit\Entity[]
+     */
+    public function getKit() {
+        return $this->kit;
+    }
+
+    /**
+     * @param boolean $isKitLocked
+     */
+    public function setIsKitLocked($isKitLocked)
+    {
+        $this->isKitLocked = (bool)$isKitLocked;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsKitLocked()
+    {
+        return $this->isKitLocked;
     }
 
     /**

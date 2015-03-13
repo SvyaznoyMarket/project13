@@ -38,7 +38,7 @@
 
     <div class="wrapper">
         <!-- шапка -->
-        <div class="header header-new">
+        <div class="header header-new <?= \App::abTest()->isMenuHamburger() ? 'header-ddnav jsMenuHamburger' : '' ?>">
 
             <?= $page->slotTopbar() ?>
 
