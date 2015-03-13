@@ -238,9 +238,6 @@ class AppConfig {
                 'cookieName' => null,
             ],
         ],
-        'AdLens' => [
-            'enabled' => null,
-        ],
         'Сpaexchange' => [
             'enabled' => null,
         ],

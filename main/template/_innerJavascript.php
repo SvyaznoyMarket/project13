@@ -11,7 +11,6 @@
 <?= $page->slotMarinConversionTagJS() ?>
 <?= $page->slotСpaexchangeJS() ?>
 <?= $page->slotСpaexchangeConversionJS() ?>
-<?= $page->slotAdLensJS() ?>
 <?= $page->slotRevolvermarketingConversionJS() ?>
 <?= $page->slotGoogleRemarketingJS() ?>
 <?= $page->slotGoogleTagManagerJS() ?>

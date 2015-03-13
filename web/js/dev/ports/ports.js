@@ -1256,49 +1256,6 @@ window.ANALYTICS = {
 		})();
 	},
 
-	AdLensJS: function () {
-		var
-			adLens = $('#AdLensJS'),
-			data = {},
-			ef_event_type="transaction",
-			ef_transaction_properties,
-			ef_segment = "",
-			ef_search_segment = "",
-			ef_userid = "    ",
-			ef_pixel_host="pixel.everesttech.net",
-			ef_fb_is_app = 0,
-			ef_allow_3rd_party_pixels = 1;
-		// end of vars
-
-		if ( !adLens.length ) {
-			return;
-		}
-
-		data = adLens.data('value');
-
-		var al = document.createElement('script'); al.type = 'text/javascript';
-		al.src = 'http://www.everestjs.net/static/st.v2.js';
-		var s = document.getElementsByTagName('script')[0];
-		s.parentNode.insertBefore(al, s);
-
-		al.onload = function() {
-			if ( data.orders == undefined || data.revenue == undefined || data.margin == undefined || data.items == undefined || data.transid == undefined ) {
-				return;
-			}
-
-			ef_event_type="transaction";
-			ef_transaction_properties = "ev_Orders="+data.orders+"&ev_Revenue="+data.revenue+"&ev_Margin="+data.margin+"&ev_Items="+data.items+"&ev_transid="+data.transid;
-			ef_segment = "";
-			ef_search_segment = "";
-			ef_userid="245";
-			ef_pixel_host="pixel.everesttech.net";
-			ef_fb_is_app = 0;
-			ef_allow_3rd_party_pixels = 1;
-
-			'function' === typeof(effp) && effp();
-		}
-	},
-
 	googleTagManagerJS: function () {
 		var
 			manager = $('#googleTagManagerJS'),

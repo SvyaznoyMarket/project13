@@ -238,7 +238,6 @@ $c->partners['RetailRocket']['userEmail']['cookieName'] = 'user_email';
 $c->partners['livetex']['enabled'] = true;
 $c->partners['livetex']['liveTexID'] = 41836; // for enter.ru
 //$c->partners['livetex']['liveTexID'] = 52705; // for olga.ent3.ru
-$c->partners['AdLens']['enabled'] = true;
 $c->partners['Сpaexchange']['enabled'] = true;
 $c->partners['Revolvermarketing']['enabled'] = true;
 $c->partners['TagMan']['enabled'] = false;
