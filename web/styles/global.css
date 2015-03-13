@@ -10019,96 +10019,6 @@ img[height="0"] {
   }
 }
 /*---------Хиты продаж/Выгодное предложение/Самым разборчивым----------*/
-/*---END----Хиты продаж/Выгодное предложение/Самым разборчивым---------*/
-/*---------Личный кабинет пользователя----------*/
-@media all {
-  /*---------Личный кабинет пользователя----------*/
-  .personalControl {
-    margin: 0 0 10px;
-    padding: 10px;
-    background: #e6e6e6;
-    font-size: 0;
-  }
-  .personalControl-arrow {
-    padding-bottom: 15px;
-  }
-  .personalControl-arrow .personalControl_item {
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    position: relative;
-    width: 160px;
-    margin-right: 29px;
-    padding: 10px 0 10px 45px;
-    font-size: 16px;
-  }
-  .personalControl-arrow .personalControl_item-active {
-    width: 158px;
-    padding: 9px 0 9px 45px;
-    border-width: 1px;
-    border-width: 2px;
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAVCAYAAABc6S4mAAAACXBIWXMAAAsTAAALEwEAmpwYAAABmElEQVQ4EWP8//8/Ay0BEy0NB5k9agHBEGYhqAKPgq8TxcVZuVjS/zEysnGmPq0FJhiMFEO2Bb9myYSycrHNZmBk4Gf6z/C+oYGhDugWDAsYsViKx80QqZ9zZAoYGRj7YQr///+Xx576dDKMj0xjTUXfZ8ma/5wmpoKsEMb+OVs6F9lwoPgyXIaD9GBY8GW2pDYzE8MJRjb22z/nyB78MUNSAaQQBH7OlPIAGj4BwgOFx//Nl/89SYDxsdEYQcQIBD9myRxkZGSwBWkABuGTvz9/mjOxsLAB8VmgkBBUfMuV/0+DjNP+/wbxcQEMC0AKv00RlWJmZz8OtEsOrPH//4tA+i8DI6MRmM/w/9L7D3+sxEtefIXwcZNYLQAp/zZL2oiFkekIMJVwomr///X/7//G7JlPb6KKY+dhxAFMGVfa03P/GP6mwvgw+t///3nEGg7Sg9MHMAN/zpZZAwyqYBAfGB/X2VOfaMHkiKFx+gCmedPup+FAo1cDc9AhYGS7wMSJpQn6gFiDcKkj6ANcGokVH7WAYEgBAJYZjZ01a8uvAAAAAElFTkSuQmCC) no-repeat 12px 50% #ffffff;
-  }
-  .personalControl-arrow .personalControl_item-past {
-    width: 158px;
-    padding: 9px 0 9px 45px;
-    color: #a6a6a6;
-    border-width: 2px;
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAVCAYAAABc6S4mAAAACXBIWXMAAAsTAAALEwEAmpwYAAABsklEQVQ4EWP8//8/Ay0BEy0NB5k9agHBEGYhqAKPgvb2dmE5OTn3P3/+PImPjz+ETSnZcTBv3jw/ZWXlE8LCwktZWVlrsRkOEiPLBwsWLMjl4+PrZWFhYf3y5cu/379/TyDJgrlz56oA8wfX0qVLr+3fv/8Psmag4Vm8vLwTgWKMIPGvX7+2AINnK7IaZDYjekbLy8tjNzc3P8/JyakKdNmpz58/F6ekpJwAaQIa7sXDw7OekZGRjZmZmQEoNykuLq4AaAbO3IphAcigxYsXN/Pz89eA9P369evVhw8fnIDszwICAieAwSLJxMQEcvmkmJgYvIaDzMIaB0ADW4CGaANdGwg0UAxIrwJa8AkYmWDDgeG+6c6dO8VAMZwuBxkOAlh9AJKYOnUqMIEI72VnZ9f/9+8fAzBYQMIMwGC7//z5c+uCgoLnYAECBE4LQPpmzZqlCwyWfcDwFgFZAvTVn48fP/olJSVtJ2AuXBpvPkhLS7v87du3dGBI/OHi4mIAsqeRYjjIFrwWgBQkJCSsA4a5KzBeYt+8eVMBEiMF4A0iUgzCpZagD3BpJFZ81AKCIQUAvBi4MD6DT14AAAAASUVORK5CYII=) no-repeat 12px 50% #ffffff;
-  }
-  .personalControl-arrow .personalControl_item:after {
-    position: absolute;
-    top: 9px;
-    right: -23px;
-    width: 12px;
-    height: 24px;
-    content: '';
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAYCAYAAADOMhxqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAbElEQVQ4EY3PWQrAIAxF0VC677pza0oVhwz3Qf7uQZRaa2kn9DTUYdQBRjNAaAcpskCIPOCiCJgoAwciYEEUDHQL36Ppxfu/1LfgSuuE/uGLKRgxAUucgSOOgBl7wI0tEMY7SOMZoLgDHCt4AduZji0GgNA/AAAAAElFTkSuQmCC) no-repeat 0 0;
-  }
-  .personalControl-links .personalControl_item:hover {
-    text-decoration: none;
-    border-color: #ffa901;
-  }
-  .personalControl_item {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    margin-right: 10px;
-    border: 1px solid #c7c7c7;
-    background: #ffffff;
-    font-size: 14px;
-  }
-  .personalControl_item:last-child,
-  .personalControl_item-last {
-    margin-right: 0;
-  }
-  .personalControl_item:last-child:after,
-  .personalControl_item-last:after {
-    background: none;
-  }
-  .personalControl_item-text {
-    background: none;
-    border: none;
-    line-height: 39px;
-  }
-  .personalControl_item-active {
-    border-color: #ffa901;
-    border-left-width: 5px;
-  }
-  .personalControl .personalControl_item-last {
-    margin-right: 0;
-  }
-  .personalControl_link {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    padding: 10px 20px;
-  }
-}
 @media all {
   .personalTitle {
     margin: 20px 0;
@@ -10278,6 +10188,96 @@ img[height="0"] {
     line-height: 14px;
   }
 }
+/*---END----Хиты продаж/Выгодное предложение/Самым разборчивым---------*/
+/*---------Личный кабинет пользователя----------*/
+@media all {
+  /*---------Личный кабинет пользователя----------*/
+  .personalControl {
+    margin: 0 0 10px;
+    padding: 10px;
+    background: #e6e6e6;
+    font-size: 0;
+  }
+  .personalControl-arrow {
+    padding-bottom: 15px;
+  }
+  .personalControl-arrow .personalControl_item {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    position: relative;
+    width: 160px;
+    margin-right: 29px;
+    padding: 10px 0 10px 45px;
+    font-size: 16px;
+  }
+  .personalControl-arrow .personalControl_item-active {
+    width: 158px;
+    padding: 9px 0 9px 45px;
+    border-width: 1px;
+    border-width: 2px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAVCAYAAABc6S4mAAAACXBIWXMAAAsTAAALEwEAmpwYAAABmElEQVQ4EWP8//8/Ay0BEy0NB5k9agHBEGYhqAKPgq8TxcVZuVjS/zEysnGmPq0FJhiMFEO2Bb9myYSycrHNZmBk4Gf6z/C+oYGhDugWDAsYsViKx80QqZ9zZAoYGRj7YQr///+Xx576dDKMj0xjTUXfZ8ma/5wmpoKsEMb+OVs6F9lwoPgyXIaD9GBY8GW2pDYzE8MJRjb22z/nyB78MUNSAaQQBH7OlPIAGj4BwgOFx//Nl/89SYDxsdEYQcQIBD9myRxkZGSwBWkABuGTvz9/mjOxsLAB8VmgkBBUfMuV/0+DjNP+/wbxcQEMC0AKv00RlWJmZz8OtEsOrPH//4tA+i8DI6MRmM/w/9L7D3+sxEtefIXwcZNYLQAp/zZL2oiFkekIMJVwomr///X/7//G7JlPb6KKY+dhxAFMGVfa03P/GP6mwvgw+t///3nEGg7Sg9MHMAN/zpZZAwyqYBAfGB/X2VOfaMHkiKFx+gCmedPup+FAo1cDc9AhYGS7wMSJpQn6gFiDcKkj6ANcGokVH7WAYEgBAJYZjZ01a8uvAAAAAElFTkSuQmCC) no-repeat 12px 50% #ffffff;
+  }
+  .personalControl-arrow .personalControl_item-past {
+    width: 158px;
+    padding: 9px 0 9px 45px;
+    color: #a6a6a6;
+    border-width: 2px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAVCAYAAABc6S4mAAAACXBIWXMAAAsTAAALEwEAmpwYAAABsklEQVQ4EWP8//8/Ay0BEy0NB5k9agHBEGYhqAKPgvb2dmE5OTn3P3/+PImPjz+ETSnZcTBv3jw/ZWXlE8LCwktZWVlrsRkOEiPLBwsWLMjl4+PrZWFhYf3y5cu/379/TyDJgrlz56oA8wfX0qVLr+3fv/8Psmag4Vm8vLwTgWKMIPGvX7+2AINnK7IaZDYjekbLy8tjNzc3P8/JyakKdNmpz58/F6ekpJwAaQIa7sXDw7OekZGRjZmZmQEoNykuLq4AaAbO3IphAcigxYsXN/Pz89eA9P369evVhw8fnIDszwICAieAwSLJxMQEcvmkmJgYvIaDzMIaB0ADW4CGaANdGwg0UAxIrwJa8AkYmWDDgeG+6c6dO8VAMZwuBxkOAlh9AJKYOnUqMIEI72VnZ9f/9+8fAzBYQMIMwGC7//z5c+uCgoLnYAECBE4LQPpmzZqlCwyWfcDwFgFZAvTVn48fP/olJSVtJ2AuXBpvPkhLS7v87du3dGBI/OHi4mIAsqeRYjjIFrwWgBQkJCSsA4a5KzBeYt+8eVMBEiMF4A0iUgzCpZagD3BpJFZ81AKCIQUAvBi4MD6DT14AAAAASUVORK5CYII=) no-repeat 12px 50% #ffffff;
+  }
+  .personalControl-arrow .personalControl_item:after {
+    position: absolute;
+    top: 9px;
+    right: -23px;
+    width: 12px;
+    height: 24px;
+    content: '';
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAYCAYAAADOMhxqAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAbElEQVQ4EY3PWQrAIAxF0VC677pza0oVhwz3Qf7uQZRaa2kn9DTUYdQBRjNAaAcpskCIPOCiCJgoAwciYEEUDHQL36Ppxfu/1LfgSuuE/uGLKRgxAUucgSOOgBl7wI0tEMY7SOMZoLgDHCt4AduZji0GgNA/AAAAAElFTkSuQmCC) no-repeat 0 0;
+  }
+  .personalControl-links .personalControl_item:hover {
+    text-decoration: none;
+    border-color: #ffa901;
+  }
+  .personalControl_item {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    margin-right: 10px;
+    border: 1px solid #c7c7c7;
+    background: #ffffff;
+    font-size: 14px;
+  }
+  .personalControl_item:last-child,
+  .personalControl_item-last {
+    margin-right: 0;
+  }
+  .personalControl_item:last-child:after,
+  .personalControl_item-last:after {
+    background: none;
+  }
+  .personalControl_item-text {
+    background: none;
+    border: none;
+    line-height: 39px;
+  }
+  .personalControl_item-active {
+    border-color: #ffa901;
+    border-left-width: 5px;
+  }
+  .personalControl .personalControl_item-last {
+    margin-right: 0;
+  }
+  .personalControl_link {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    padding: 10px 20px;
+  }
+}
 @media all {
   .personalPage_left {
     display: inline-block;
@@ -10405,6 +10405,10 @@ img[height="0"] {
   }
   .personalInfo .shopsInfo_time {
     margin: 5px 0 0;
+  }
+  .personalPage .bGoodsSlider:nth-last-child(n-1) ~ .bGoodsSlider {
+    border-top: 1px solid #e6e6e6;
+    margin-top: 20px;
   }
 }
 @media all {
