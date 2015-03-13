@@ -50,11 +50,4 @@ class SetPage extends \View\DefaultLayout {
         ];
     }
 
-    public function slotMailRu() {
-        return $this->render('_mailRu', [
-            'pageType' => 'product_set',
-            'productIds' => [],
-            'price' => '',
-        ]);
-    }
 }

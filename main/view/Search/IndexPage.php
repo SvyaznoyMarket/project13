@@ -80,29 +80,6 @@ class IndexPage extends \View\DefaultLayout {
         ];
     }
 
-    public function slotLamodaSearchJS() {
-        if (!\App::config()->partners['Lamoda']['enabled']) return;
-
-        $searchQuery = $this->getParam('searchQuery');
-        if (!$searchQuery || empty($searchQuery)) {
-            return;
-        }
-
-        $data = [
-            'query' => $searchQuery,
-        ];
-
-        return "<div id=\"LamodaSearchJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
-    }
-
-    public function slotMailRu() {
-        return $this->render('_mailRu', [
-            'pageType' => 'search_results',
-            'productIds' => [],
-            'price' => '',
-        ]);
-    }
-
     public function slotConfig() {
         return $this->tryRender('_config', ['config' => [
             'location' => ['listing'],

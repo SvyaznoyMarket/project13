@@ -281,10 +281,6 @@ class DefaultLayout extends Layout {
         return '';
     }
 
-    public function slotAdriver() {
-        return \App::config()->partners['Adriver']['enabled'] ? '<div id="adriverCommon" class="jsanalytics"></div>' : '';
-    }
-
     public function slotMainMenu() {
         $renderer = \App::closureTemplating();
 
@@ -346,14 +342,6 @@ class DefaultLayout extends Layout {
             ])) {
                 if (\App::config()->partners['SmartLeads']['enabled']) $return .= "\n\n" . '<div id="xcntmyAsync" class="jsanalytics"></div>';
             }
-
-            // на всех страницах сайта, кроме shop.*
-            /*if ((0 !== strpos($routeName, 'shop')) && !in_array($routeName, [
-                'order',
-                'order.complete',
-            ])) {
-                $return .= "\n\n" . $this->tryRender('partner-counter/_reactive');
-            }*/
 
             // ActionPay — на странице с полным описанием продукта и на стр "спс за заказ"
             if (in_array($routeName, [
@@ -570,10 +558,6 @@ class DefaultLayout extends Layout {
         return '';
     }
 
-    public function slotAdLensJS () {
-        return;
-    }
-
     public function slotAdFoxBground() {
         $viewParams = $this->getParam('viewParams');
         $show = (bool) ( $viewParams && isset($viewParams['showSideBanner']) ) ? $viewParams['showSideBanner'] : true;
@@ -638,86 +622,6 @@ class DefaultLayout extends Layout {
         return '';
     }
 
-    public function slotAdblender() {
-        return \App::config()->partners['AdBlender']['enabled'] ? '<div id="adblenderCommon" class="jsanalytics" data-vars="'.$this->json(['layout' =>$this->layout]).'"></div>' : '';
-    }
-
-    /**
-     * Lamoda
-     * Общая часть кода - выполнить на всех страницах:
-     * @return string
-     */
-    public function slotLamodaJS() {
-        if (!\App::config()->partners['Lamoda']['enabled']) return;
-
-        $data = [
-            'lamodaID' => \App::config()->partners['Lamoda']['lamodaID'],
-        ];
-
-        return "<div id=\"LamodaJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
-    }
-
-    /**
-     * На страницы КАТЕГОРИЙ (помимо общего)
-     * @return string
-     */
-    public function slotLamodaCategoryJS() {
-        return '';
-    }
-
-    /**
-     * Lamoda
-     * На страницу результата поиска (помимо общего)
-     * @return string
-     */
-    public function slotLamodaSearchJS() {
-        return '';
-    }
-
-    /**
-     * Lamoda
-     * На продуктовые страницы (помимо общего)
-     * @return string
-     */
-    public function slotLamodaProductJS() {
-        return '';
-    }
-
-    /**
-     * Lamoda
-     * На все ОСТАЛЬНЫЕ страницы (помимо общего)
-     * @return string
-     */
-    public function slotLamodaOtherPageJS() {
-        if (!\App::config()->partners['Lamoda']['enabled']) return;
-
-        $pixels = [
-            $this->slotLamodaCategoryJS(),
-            $this->slotLamodaSearchJS(),
-            $this->slotLamodaProductJS(),
-            $this->slotLamodaCompleteJS(),
-        ];
-
-        // отсекаем с массива все отсутствующие на странице пиксели Lamoda
-        $pixels = array_filter($pixels);
-
-        // если на странице уже присутствует Lamoda пиксель, то не выводим наш пиксель LamodaOtherPage
-        if (!empty($pixels)) {
-            return;
-        }
-
-        return "<div id='LamodaOtherPageJS' class='jsanalytics'></div>";
-    }
-
-    /**
-     * Lamoda
-     * Заказ (success page)
-     * @return string
-     */
-    public function slotLamodaCompleteJS() {
-        return '';
-    }
-
     /** Google Tag Manager Container (ports.js)
      * @param array $data Дополнительные данные для GTM
      * @return string
@@ -752,14 +656,6 @@ class DefaultLayout extends Layout {
 
     public function slotHubrusJS() {
         return \App::config()->partners['Hubrus']['enabled'] ? '<div id="hubrusJS" class="jsanalytics"></div>' :  '';
-    }
-
-    public function slotMailRu() {
-        return $this->render('_mailRu', [
-            'pageType' => 'other',
-            'productIds' => [],
-            'price' => '',
-        ]);
     }
 
     public function slotInsiderJS(){

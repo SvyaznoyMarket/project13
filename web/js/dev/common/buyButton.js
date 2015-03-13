@@ -173,34 +173,6 @@
                 }
 			},
 
-
-			/**
-			 * Soloway аналитика добавления в корзину
-			 */
-				adAdriver = function adAdriver( event, data ) {
-				var productData = data.product,
-					offer_id = productData.id,
-					category_id =  ( productData.category ) ? productData.category[productData.category.length - 1].id : 0,
-
-					s = 'http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=add_basket&custom=10='+offer_id+';11='+category_id+'&bt=55&pz=0&rnd=![rnd]',
-					d = document,
-					i = d.createElement('IMG'),
-					b = d.body;
-				// end of vars
-
-				s = s.replace(/!\[rnd\]/, Math.round(Math.random()*9999999)) + '&tail256=' + escape(d.referrer || 'unknown');
-				i.style.position = 'absolute';
-				i.style.width = i.style.height = '0px';
-
-				i.onload = i.onerror = function(){
-					b.removeChild(i);
-					i = b = null;
-				};
-
-				i.src = s;
-				b.insertBefore(i, b.firstChild);
-			},
-
 			/**
 			 * Обработчик добавления товаров в корзину. Рекомендации от RetailRocket
 			 */
@@ -214,53 +186,13 @@
 					}
 					catch ( err ) {}
 				}
-			},
-
-			/**
-			 * Аналитика при нажатии кнопки "купить"
-			 * @param event
-			 * @param data
-			 */
-				addToLamoda = function addToLamoda( event, data ) {
-				var
-					product = data.product;
-				// end of vars
-
-				if ( 'undefined' == typeof(product) || !product.hasOwnProperty('id') || 'undefined' == typeof(JSREObject) ) {
-					return;
-				}
-
-				console.info('Lamoda addToCart');
-				console.log('product_id=' + product.id);
-				JSREObject('cart_add', product.id);
-			}
-
-		/*,
-		 addToVisualDNA = function addToVisualDNA( event, data ) {
-		 var
-		 productData 	= data.product,
-		 product_id 		= productData.id,
-		 product_price 	= productData.price,
-		 category_id 	= ( productData.category ) ? productData.category[productData.category.length - 1].id : 0,
-		 d = document,
-		 b = d.body,
-		 i = d.createElement('IMG' );
-		 // end of vars
-
-		 i.src = '//e.visualdna.com/conversion?api_key=enter.ru&id=added_to_basket&product_id=' + product_id + '&product_category=' + category_id + '&value=' + product_price + '&currency=RUB';
-		 i.width = i.height = '1';
-		 i.alt = '';
-
-		 b.appendChild(i);
-		 }*/
-			;
+			};
 		//end of functions
 
 		try{
 			if (data.product) {
 				kissAnalytics(event, data);
 				googleAnalytics(event, data);
-				adAdriver(event, data);
 				addToRetailRocket(event, data);
 			}
 
@@ -272,8 +204,6 @@
 				}
 				console.groupEnd();
 			}
-			//addToVisualDNA(event, data);
-			addToLamoda(event, data);
 		}
 		catch( e ) {
 			console.warn('addtocartAnalytics error');

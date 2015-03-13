@@ -30,14 +30,6 @@ class LeafPage extends Layout {
         ];
     }
 
-    public function slotMailRu() {
-        return $this->render('_mailRu', [
-            'pageType' => 'category',
-            'productIds' => [],
-            'price' => '',
-        ]);
-    }
-
     public function slotConfig() {
         return $this->tryRender('_config', ['config' => [
             'location' => ['listing'],

@@ -35,24 +35,4 @@ class NewPage extends Layout {
         return (bool)$this->getParam('oneClick');
     }
 
-    public function slotMailRu() {
-        $products = $this->getParam('productsById');
-        $productIds = [];
-        if (is_array($products)) {
-            foreach ($products as $product) {
-                if (is_object($product) && $product instanceof \Model\Product\Entity) {
-                    $productIds[] = $product->getId();
-                }
-            }
-        }
-
-        /** @var \Session\Cart $cart */
-        $cart = $this->getParam('cart');
-
-        return $this->render('_mailRu', [
-            'pageType' => 'order',
-            'productIds' => $productIds,
-            'price' => is_object($cart) && $cart instanceof \Session\Cart ? $cart->getSum() : '',
-        ]);
-    }
 }

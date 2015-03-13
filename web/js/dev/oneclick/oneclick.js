@@ -657,7 +657,6 @@ $(document).ready(function() {
 			}
 
 			ANALYTICS.parseAllAnalDivs( $('.jsanalytics') ); // NB! .jsanalytics, добавленные ajax-om не будут парситься // Вероятнее всего, это не нужно, т.к. parseAllAnalDivs не обработает диви, добавленные аджаксом
-			ANALYTICS.adriverOrder( {order_id: data.orderNumber} );
 
 			console.log('% Oneclick. ### End of AnalyticsComplete.');
 		};

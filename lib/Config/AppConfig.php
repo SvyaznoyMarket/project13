@@ -238,18 +238,11 @@ class AppConfig {
                 'cookieName' => null,
             ],
         ],
-        'AdLens' => [
-            'enabled' => null,
-        ],
         'Сpaexchange' => [
             'enabled' => null,
         ],
         'Revolvermarketing' => [
             'enabled' => null,
-        ],
-        'Lamoda' => [
-            'enabled' => null,
-            'lamodaID' => null,
         ],
         'TagMan' => [
             'enabled' => null,

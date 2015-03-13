@@ -76,14 +76,6 @@ class IndexPage extends \View\DefaultLayout {
         return '<div id="cpaexchangeJS" class="jsanalytics" data-value="' . $this->json(['id' => 22249]) . '"></div>';
     }
 
-    public function slotMailRu() {
-        return $this->render('_mailRu', [
-            'pageType' => 'home',
-            'productIds' => [],
-            'price' => '',
-        ]);
-    }
-
     public function slotMetaOg()
     {
         $result = '';
