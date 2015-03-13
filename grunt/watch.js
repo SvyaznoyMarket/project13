@@ -33,7 +33,7 @@ module.exports = function (grunt, options) {
 
         partnerScripts: {
             files: [ pathRoot + 'partner/*.js'],
-            tasks: ['concat:partnerScripts', 'uglify:partnerScripts']
+            tasks: ['uglify:partnerScripts']
         },
 
         vendorScripts: {
@@ -58,7 +58,7 @@ module.exports = function (grunt, options) {
 
         commonJS:{
             files: [ pathDev + 'common/*.js'],
-            tasks: ['jsmin-sourcemap:common']
+            tasks: ['concat:commonJS', 'uglify:commonJS', 'jsmin-sourcemap:common']
         },
 
         infopageJS:{
@@ -66,14 +66,14 @@ module.exports = function (grunt, options) {
             tasks: ['concat:infopageJS', 'uglify:infopageJS']
         },
 
-        jqueryPluginsJS:{
+		jqueryPlugins:{
             files: [ pathDev + 'jquery-plugins/*.js'],
-            tasks: ['jsmin-sourcemap:jqueryPlugins']
+            tasks: ['concat:jqueryPlugins', 'uglify:jqueryPlugins', 'jsmin-sourcemap:jqueryPlugins']
         },
 
         libraryJS:{
             files: [ pathDev + 'library/*.js'],
-            tasks: ['jsmin-sourcemap:library']
+            tasks: ['concat:libraryJS', 'uglify:libraryJS', 'jsmin-sourcemap:library']
         },
 
         lkJS:{
@@ -103,27 +103,27 @@ module.exports = function (grunt, options) {
 
         orderV3JS: {
             files: [ pathDev + 'order-v3/*.js'],
-            tasks: ['jsmin-sourcemap:orderV3JS']
+            tasks: ['concat:orderV3JS', 'uglify:orderV3JS', 'jsmin-sourcemap:orderV3JS']
         },
 
         orderV31ClickJS: {
             files: [ pathDev + 'order-v3-1click/*.js'],
-            tasks: ['jsmin-sourcemap:orderV31ClickJS']
+            tasks: ['concat:orderV31ClickJS', 'uglify:orderV31ClickJS', 'jsmin-sourcemap:orderV31ClickJS']
         },
 
         orderV3newJS: {
             files: [ pathDev + 'order-v3-new/*.js'],
-            tasks: ['jsmin-sourcemap:orderV3newJS']
+            tasks: ['concat:orderV3newJS', 'uglify:orderV3newJS', 'jsmin-sourcemap:orderV3newJS']
         },
         
         orderV3lifegiftJS: {
             files: [ pathDev + 'order-v3-lifegift/*.js'],
-            tasks: ['jsmin-sourcemap:orderV3lifegiftJS']
+            tasks: ['concat:orderV3lifegiftJS', 'uglify:orderV3lifegiftJS', 'jsmin-sourcemap:orderV3lifegiftJS']
         },
 
         orderNewV5JS:{
             files: [ pathDev + 'order-new-v5/*.js'],
-            tasks: ['jsmin-sourcemap:order_new_v5']
+            tasks: ['concat:orderNewV5JS', 'uglify:orderNewV5JS', 'jsmin-sourcemap:order_new_v5']
         },
 
         pandoraJS:{
@@ -138,7 +138,7 @@ module.exports = function (grunt, options) {
 
         catalogJS:{
             files: [ pathDev + 'catalog/*.js'],
-            tasks: ['jsmin-sourcemap:catalog']
+            tasks: ['concat:catalogJS', 'uglify:catalogJS', 'jsmin-sourcemap:catalog']
         },
 
 		giftJS:{
@@ -153,7 +153,7 @@ module.exports = function (grunt, options) {
 
         shopJS:{
             files: [ pathDev + 'shop/*.js'],
-            tasks: ['jsmin-sourcemap:shop']
+            tasks: ['concat:shopJS', 'uglify:shopJS', 'jsmin-sourcemap:shop']
         },
 
         tchiboJS:{

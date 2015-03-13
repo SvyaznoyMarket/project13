@@ -60,7 +60,7 @@ trait CurlQueryTrait
         }
 
         // коэффициенты для задержек запросов (retry)
-        $delayRatios = [0, 0.05];
+        $delayRatios = [0, 0.06];
 
         // если таймаут слишком маленький, то убираем retry
         if ($timeout <= 1) {

@@ -16,8 +16,6 @@ class Client
     private $queries = [];
     /** @var Delay[] */
     private $delays = [];
-    /** @var int */
-    private $queryLimit = 100;
 
     /**
      * @param Config $config
@@ -103,7 +101,7 @@ class Client
         //var_dump(array_map(function(Query $query) { return $query->handle; }, $this->queriesById));
 
         // принудительно отправить запросы на выполнение
-        if (count($this->queries) >= $this->queryLimit) {
+        if (count($this->queries) >= $this->config->queryLimit) {
             $this->execute();
         }
     }
@@ -139,8 +137,8 @@ class Client
             if ($this->active) {
                 if (-1 === curl_multi_select($this->mh, $selectTimeout)) {
                     usleep($multiSelectTimeout); // выполнить задержку если curl_multi_select вернул -1 https://bugs.php.net/bug.php?id=61141
+                    //var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | sleep... ' . $this->active);
                 }
-                //var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | sleep... ' . $this->active);
                 //var_dump(array_map(function(Query $query) { return $query->handle; }, $this->queriesById));
             }
 
