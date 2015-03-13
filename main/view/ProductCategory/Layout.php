@@ -114,19 +114,4 @@ abstract class Layout extends \View\DefaultLayout {
 
     }
 
-    public function slotLamodaCategoryJS() {
-        if (!\App::config()->partners['Lamoda']['enabled']) return;
-
-        /** @var \Model\Product\Category\Entity $category */
-        $category = $this->getParam('category');
-        if (!$category) {
-            return;
-        }
-
-        $data = [
-            'id' => $category->getId(),
-        ];
-
-        return "<div id=\"LamodaCategoryJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
-    }
 }

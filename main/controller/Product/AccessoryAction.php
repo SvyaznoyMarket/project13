@@ -2,6 +2,11 @@
 
 namespace Controller\Product;
 
+/**
+ * Class AccessoryAction
+ * @package Controller\Product
+ * @deprecated
+ */
 class AccessoryAction {
 
     CONST NUM_RELATED_ON_PAGE = 4;

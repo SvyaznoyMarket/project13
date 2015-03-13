@@ -144,26 +144,6 @@ class IndexPage extends \View\DefaultLayout {
             "<link rel=\"image_src\" href=\"". $this->escape($product->getImageUrl(3)). "\" />\r\n";
     }
 
-    public function slotAdriver() {
-        /** @var \Model\Product\Entity $product  */
-        $product = $this->getParam('product');
-
-        if (!$product) {
-            $data = array(
-                'productId' => 0,
-                'categoryId' => 0,
-            );
-        }
-        else {
-            $data = array(
-                'productId' => $product->getId(),
-                'categoryId' => $product->getMainCategory() ? $product->getMainCategory()->getId() : 0,
-            );
-        }
-
-        return \App::config()->partners['Adriver']['enabled'] ? sprintf('<div id="adriverProduct" data-vars="%s" class="jsanalytics"></div>', $this->json($data)) : '';
-    }
-
     public function slotConfig() {
         $config = ['location' => ['product']];
 
@@ -199,22 +179,6 @@ class IndexPage extends \View\DefaultLayout {
         ];
     }
 
-    public function slotLamodaProductJS() {
-        if (!\App::config()->partners['Lamoda']['enabled']) return;
-
-        /** @var $product \Model\Product\Entity */
-        $product = $this->getParam('product');
-        if (!$product) {
-            return;
-        }
-
-        $data = [
-            'id' => $product->getId(),
-        ];
-
-        return "<div id=\"LamodaProductJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
-    }
-
     public function slotAdvMakerJS() {
         if (!\App::config()->partners['AdvMaker']['enabled'] || empty($this->product)) return '';
         $product = [
@@ -248,20 +212,6 @@ class IndexPage extends \View\DefaultLayout {
         if (!empty($html)) {
             return $html . \View\Partners\Hubrus::addProductData($this->product);
         }
-    }
-
-    public function slotMailRu() {
-        /** @var \Model\Product\Entity $product */
-        $product = $this->getParam('product');
-        if (!is_object($product) || !($product instanceof \Model\Product\Entity)) {
-            return '';
-        }
-
-        return $this->render('_mailRu', [
-            'pageType' => 'product',
-            'productIds' => [$product->getId()],
-            'price' => $product->getPrice(),
-        ]);
     }
 
     public function slotGoogleAnalytics()

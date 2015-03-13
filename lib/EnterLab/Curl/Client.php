@@ -13,8 +13,8 @@ class Client
     /** @var bool */
     private $active;
     /** @var Query[] */
-    private $queriesById = [];
-    /** @var int[] */
+    private $queries = [];
+    /** @var Delay[] */
     private $delays = [];
     /** @var int */
     private $queryLimit = 100;
@@ -36,11 +36,11 @@ class Client
     public function __destruct()
     {
         // завершить все соединения
-        if ($this->queriesById) {
+        if ($this->queries) {
             //$this->execute();
         }
 
-        foreach ($this->queriesById as $id => $query) {
+        foreach ($this->queries as $id => $query) {
             //var_dump('close ' . $id);
             if (!is_resource($query->handle)) continue;
 
@@ -69,33 +69,41 @@ class Client
      */
     public function addQuery(Query $query)
     {
-        $request = $query->request;
+        $query->id = uniqid();
 
-        $handle = curl_init();
-        $id = (int)$handle;
-        if (!$id) {
-            throw new \RuntimeException(sprintf('Не удалось инициализировать запрос %s', $request));
-        }
-        $query->handle = $handle;
-        curl_setopt_array($handle, $request->options);
-        $this->queriesById[$id] = $query;
-        $query->rejectCallback = function() use ($id) {
-            $this->removeRequest($id);
+        $create = function() use ($query) {
+            $handle = curl_init();
+            $id = (int)$handle;
+            if (!$id) {
+                throw new \RuntimeException(sprintf('Не удалось инициализировать запрос %s', $query->request));
+            }
+            $query->handle = $handle;
+            curl_setopt_array($handle, $query->request->options);
+            $query->rejectCallback = function() use ($query) {
+                $this->removeQuery($query);
+            };
+
+            $done = curl_multi_add_handle($this->mh, $handle);
+            if (0 !== $done) {
+                throw new \RuntimeException(curl_error($handle), (int)$done);
+            }
+            $this->queries[$id] = $query;
         };
 
-        if ($request->delay) {
-            $this->delays[$id] = microtime(true) + ($request->delay / 1000);
-            //var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | add delay ' . $id);
+        if ($query->request->delay) {
+            $delay = new Delay();
+            $delay->time = microtime(true) + ($query->request->delay / 1000);
+            $delay->callback = $create;
+            $this->delays[$query->id] = $delay;
         } else {
-            //var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | add ' . $id . ' ' . $query->request);
-            curl_multi_add_handle($this->mh, $handle);
+            call_user_func($create);
         }
 
         //var_dump('added');
         //var_dump(array_map(function(Query $query) { return $query->handle; }, $this->queriesById));
 
         // принудительно отправить запросы на выполнение
-        if (count($this->queriesById) >= $this->queryLimit) {
+        if (count($this->queries) >= $this->queryLimit) {
             $this->execute();
         }
     }
@@ -111,12 +119,6 @@ class Client
         $multiSelectTimeout = $this->config->multiSelectTimeout;
 
         do {
-            if ($this->active && (curl_multi_select($this->mh, $selectTimeout) === -1)) {
-                usleep($multiSelectTimeout); // выполнить задержку если curl_multi_select вернул -1 https://bugs.php.net/bug.php?id=61141
-                //var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | sleep... ' . $this->active);
-                //var_dump(array_map(function(Query $query) { return $query->handle; }, $this->queriesById));
-            }
-
             // добавить отложенные запросы, если это необходимо
             if ($this->delays) {
                 $this->addDelays();
@@ -133,7 +135,19 @@ class Client
                 usleep(500);
                 //var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | has delays... ' . $this->active);
             }
-        } while ($this->active || $this->queriesById);
+
+            if ($this->active) {
+                if (-1 === curl_multi_select($this->mh, $selectTimeout)) {
+                    usleep($multiSelectTimeout); // выполнить задержку если curl_multi_select вернул -1 https://bugs.php.net/bug.php?id=61141
+                }
+                //var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | sleep... ' . $this->active);
+                //var_dump(array_map(function(Query $query) { return $query->handle; }, $this->queriesById));
+            }
+
+            if ($this->queries) {
+                $this->active = true;
+            }
+        } while ($this->active);
     }
 
     /**
@@ -146,9 +160,9 @@ class Client
         $time = microtime(true);
 
         foreach ($this->delays as $id => $delay) {
-            if ($time >= $delay) {
+            if ($time >= $delay->time) {
                 unset($this->delays[$id]);
-                curl_multi_add_handle($this->mh, $this->queriesById[$id]->handle);
+                call_user_func($delay->callback);
                 //var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | add delayed ' . $this->queriesById[$id]->request);
             }
         }
@@ -166,7 +180,7 @@ class Client
             //var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | done ' . $id);
             //var_dump($done);
 
-            $query = isset($this->queriesById[$id]) ? $this->queriesById[$id] : null;
+            $query = isset($this->queries[$id]) ? $this->queries[$id] : null;
             if (!$query) {
                 // вероятно, был отменен
                 continue;
@@ -185,7 +199,7 @@ class Client
 
             $callback = is_callable($query->resolveCallback) ? $query->resolveCallback : null;
 
-            $this->removeRequest($id);
+            $this->removeQuery($query);
             //$this->removeRequest($id + 1);
 
             if ($callback) {
@@ -197,21 +211,23 @@ class Client
     }
 
     /**
-     * Удаляет запрос по идентификатору
-     *
-     * @param int $id
+     * @param Query $query
      */
-    private function removeRequest($id)
+    public function removeQuery(Query $query)
     {
-        if ($query = (isset($this->queriesById[$id]) ? $this->queriesById[$id] : null)) {
-            if (is_resource($query->handle)) {
-                //curl_multi_remove_handle($this->mh, $query->handle); // FIXME: сильно глючит при retry
-                curl_close($query->handle);
-                //var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | remove ' . $id . ' ' . $this->queriesById[$id]->request);
-            }
-
-            unset($this->delays[$id], $this->queriesById[$id], $query);
+        // удалить задержку
+        if (isset($this->delays[$query->id])) {
+            unset($this->delays[$query->id]);
         }
+
+        $id = (int)$query->handle;
+        if (is_resource($query->handle)) {
+            curl_multi_remove_handle($this->mh, $query->handle); // FIXME: сильно глючит при retry
+            curl_close($query->handle);
+            //var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | remove ' . $id . ' ' . $this->queriesById[$id]->request);
+        }
+
+        unset($this->queries[$id]/*, $query*/);
         //var_dump('removed ' . $id);
     }
 

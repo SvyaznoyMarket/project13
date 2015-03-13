@@ -45,9 +45,7 @@
 <?= $page->slotInnerJavascript() ?>
 <?= $page->slotAuth() ?>
 <?= $page->slotYandexMetrika() ?>
-<?= $page->slotAdriver() ?>
 <?= $page->slotPartnerCounter() ?>
-<?= $page->slotAdblender() ?>
 <?= $page->slotKissMetrics() ?>
 
 </body>

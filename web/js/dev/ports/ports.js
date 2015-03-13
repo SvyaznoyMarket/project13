@@ -6,37 +6,6 @@ console.log('ports.js inited');
 
 window.ANALYTICS = {
 	
-	adriverCommon : function() {
-		var RndNum4NoCash = Math.round(Math.random() * 1000000000);
-		var ar_Tail='unknown'; if (document.referrer) ar_Tail = escape(document.referrer);
-		document.write('<img src="' + ('https:' == document.location.protocol ? 'https:' : 'http:') + '//ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=182615&bt=21&pz=0&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border=0 width=1 height=1>')
-	},
-
-	adriverProduct : function() {
-		var a = arguments[0];
-
-		var RndNum4NoCash = Math.round(Math.random() * 1000000000);
-		var ar_Tail='unknown'; if (document.referrer) ar_Tail = escape(document.referrer);
-		document.write('<img src="http://ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=182615&bt=21&pz=0'+
-			'&custom=10='+ a.productId +';11='+ a.categoryId +
-			'&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border=0 width=1 height=1>')
-	},
-
-	adriverOrder : function() {
-		var a = (arguments && arguments[0]) ? arguments[0] : false,
-            ordNum = (a && a.order_id ) ? a.order_id : false;
-
-        if (!ordNum) {
-            return;
-        }
-
-		var RndNum4NoCash = Math.round(Math.random() * 1000000000);
-		var ar_Tail='unknown'; if (document.referrer) ar_Tail = escape(document.referrer);
-		document.write('<img src="http://ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=182615&sz=order&bt=55&pz=0'+
-			'&custom=150='+ ordNum +
-			'&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border="0" width="1" height="1" alt="" />');
-	},
-	
 	yandexOrderComplete: function() {
         try {
             var orderData = $('#jsOrder').data('value');
@@ -978,29 +947,6 @@ window.ANALYTICS = {
 
 	},
 
-    adblenderCommon: function(){
-
-        var layout = '';
-
-        if (arguments[0].layout) layout = arguments[0].layout;
-
-        function addAdblenderCode(scriptName) {
-            var ra = document.createElement('script');
-            ra.type = 'text/javascript';
-            ra.async = true;
-            ra.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/c/enter/' + scriptName + '.js?' + Math.random();
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ra, s);
-        }
-
-        // For all pages
-        addAdblenderCode('all');
-
-        // For order page and complete order page
-        if (layout == 'layout-order') addAdblenderCode('basket');
-        if (layout == 'layout-order-complete') addAdblenderCode('success');
-    },
-
 	parseAllAnalDivs : function( nodes ) {
 
 		console.groupCollapsed('parseAllAnalDivs');
@@ -1255,140 +1201,6 @@ window.ANALYTICS = {
 			b.appendChild(s);
 		})();
 	},
-
-	AdLensJS: function () {
-		var
-			adLens = $('#AdLensJS'),
-			data = {},
-			ef_event_type="transaction",
-			ef_transaction_properties,
-			ef_segment = "",
-			ef_search_segment = "",
-			ef_userid = "    ",
-			ef_pixel_host="pixel.everesttech.net",
-			ef_fb_is_app = 0,
-			ef_allow_3rd_party_pixels = 1;
-		// end of vars
-
-		if ( !adLens.length ) {
-			return;
-		}
-
-		data = adLens.data('value');
-
-		var al = document.createElement('script'); al.type = 'text/javascript';
-		al.src = 'http://www.everestjs.net/static/st.v2.js';
-		var s = document.getElementsByTagName('script')[0];
-		s.parentNode.insertBefore(al, s);
-
-		al.onload = function() {
-			if ( data.orders == undefined || data.revenue == undefined || data.margin == undefined || data.items == undefined || data.transid == undefined ) {
-				return;
-			}
-
-			ef_event_type="transaction";
-			ef_transaction_properties = "ev_Orders="+data.orders+"&ev_Revenue="+data.revenue+"&ev_Margin="+data.margin+"&ev_Items="+data.items+"&ev_transid="+data.transid;
-			ef_segment = "";
-			ef_search_segment = "";
-			ef_userid="245";
-			ef_pixel_host="pixel.everesttech.net";
-			ef_fb_is_app = 0;
-			ef_allow_3rd_party_pixels = 1;
-
-			'function' === typeof(effp) && effp();
-		}
-	},
-
-/*	LamodaJS: function () {
-		(function() {
-			var
-				lamoda = $('#LamodaJS'),
-				data = lamoda.data('value');
-			// end of vars
-
-			if ( 'undefined' == typeof(data) || !data.hasOwnProperty('lamodaID') ) {
-				return;
-			}
-
-			console.log('LamodaJS');
-
-			window.JSREObject = window.JSREObject || function() { window.JSREObject.q.push(arguments) };
-			window.JSREObject.q = window.JSREObject.q || [];
-			window.JSREObject.l = +new Date;
-			JSREObject('create', data.lamodaID, 'r24-tech.com');
-			$.getScript("//jsre.r24-tech.com/static/dsp/min/js/jsre-min.js");
-		})();
-	},
-
-	LamodaCategoryJS: function () {
-		(function() {
-			var
-				lamoda = $('#LamodaCategoryJS'),
-				data = lamoda.data('value');
-			// end of vars
-
-			if ( 'undefined' == typeof(data) || !data.hasOwnProperty('id') || 'undefined' == typeof(JSREObject) ) {
-				return;
-			}
-
-			console.info('LamodaCategoryJS');
-			console.log('category_id=' + data.id);
-			JSREObject('pageview_catalog', 'category', data.id);
-		})();
-	},
-
-	LamodaSearchJS: function () {
-		(function() {
-			var
-				lamoda = $('#LamodaSearchJS'),
-				data = lamoda.data('value');
-			// end of vars
-
-			if ( 'undefined' == typeof(data) || !data.hasOwnProperty('query') || 'undefined' == typeof(JSREObject) ) {
-				return;
-			}
-
-			console.info('LamodaSearchJS');
-			console.log('search_query=' + data.query);
-			JSREObject('pageview_catalog', 'category', data.query);
-		})();
-	},
-
-	LamodaProductJS: function () {
-		(function() {
-			var
-				lamoda = $('#LamodaProductJS'),
-				data = lamoda.data('value');
-			// end of vars
-
-			if ( 'undefined' == typeof(data) || !data.hasOwnProperty('id') || 'undefined' == typeof(JSREObject) ) {
-				return;
-			}
-
-			console.info('LamodaProductJS');
-			console.log('product_id=' + data.id);
-			JSREObject('pageview_product', data.id);
-		})();
-	},
-
-	LamodaOtherPageJS: function () {
-		(function() {
-			if ( 'undefined' == typeof(JSREObject) ) return;
-
-			console.log('LamodaOtherPageJS');
-			JSREObject('pageview');
-		})();
-	},
-
-	LamodaCompleteJS: function () {
-		(function() {
-			if ( 'undefined' == typeof(JSREObject) ) return;
-
-			console.log('LamodaCompleteJS');
-			JSREObject('cart_checkout');
-			JSREObject('conversion');
-		})();
-	},*/
 
 	googleTagManagerJS: function () {
 		var
