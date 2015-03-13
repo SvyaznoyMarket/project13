@@ -865,7 +865,7 @@ window.ANALYTICS = {
 		console.group('ports.js::gaJS');
 		try{
 			if ( 'function' !== typeof(ga) ) {
-				console.error('GA: init error');
+				console.warn('GA: init error');
 				console.groupEnd();
 				return false; // метод ga не определён, ошибка, нечего анализировать, выходим
 			}
