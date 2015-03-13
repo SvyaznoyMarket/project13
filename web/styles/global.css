@@ -10279,6 +10279,9 @@ img[height="0"] {
   }
 }
 @media all {
+  .personalPage {
+    padding-bottom: 20px;
+  }
   .personalPage_left {
     display: inline-block;
     vertical-align: top;
