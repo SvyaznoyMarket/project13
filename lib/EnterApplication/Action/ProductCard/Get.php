@@ -230,9 +230,6 @@ namespace EnterApplication\Action\ProductCard
 
             $this->removeCurl();
 
-            //var_dump($GLOBALS['enter/curl/query/cache']);
-            //die(var_dump('done'));
-
             // response
             $response = new Response();
             $response->productQuery = $productQuery;
@@ -254,6 +251,10 @@ namespace EnterApplication\Action\ProductCard
             $response->reviewQuery = $reviewQuery;
             $response->categoryQuery = $categoryQuery;
             $response->lifeGiftProductQuery = $lifeGiftProductQuery;
+
+            //var_dump($GLOBALS['enter/curl/query/cache']);
+            //var_dump($response);
+            //die(var_dump('done'));
 
             return $response;
         }

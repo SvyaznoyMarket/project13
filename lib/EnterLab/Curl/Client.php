@@ -227,7 +227,7 @@ class Client
             //var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | remove ' . $id . ' ' . $this->queriesById[$id]->request);
         }
 
-        unset($this->queries[$id], $query);
+        unset($this->queries[$id]/*, $query*/);
         //var_dump('removed ' . $id);
     }
 
