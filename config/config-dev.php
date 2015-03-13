@@ -32,7 +32,6 @@ $c->yandexMetrika['enabled'] = false;
 $c->adFox['enabled'] = false;
 $c->googleTagManager['enabled'] = false;
 $c->tealeaf['enabled'] = false;
-$c->kissmentrics['enabled'] = false;
 
 $c->partners['Revolver']['enabled'] = false;
 $c->partners['GetIntent']['enabled'] = false;

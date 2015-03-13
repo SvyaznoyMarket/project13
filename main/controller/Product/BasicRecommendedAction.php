@@ -100,19 +100,6 @@ class BasicRecommendedAction {
                 $product->setIsUpsale(true);
             }
 
-            //$additionalData[$product->getId()] = \Kissmetrics\Manager::getProductEvent($product, $i+1, 'Also Viewed');
-
-            /*
-            $return[] = [
-                'id'     => $product->getId(),
-                'name'   => $product->getName(),
-                'image'  => $product->getImageUrl(),
-                'rating' => $product->getRating(),
-                'link'   => $product->getLink() . (false === strpos($product->getLink(), '?') ? '?' : '&') . 'sender=' . $senderName . '|' . $product->getId(),
-                'price'  => $product->getPrice(),
-                'data'   => \Kissmetrics\Manager::getProductEvent($product, $i+1, 'Similar'),
-            ];
-            */
         }
 
         if (!(bool)$products) {

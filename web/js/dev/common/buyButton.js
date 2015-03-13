@@ -60,72 +60,6 @@
 	$body.on('addtocart', function(event, data){
 		var
 			/**
-			 * KISS Аналитика для добавления в корзину
-			 */
-				kissAnalytics = function kissAnalytics( event, data ) {
-				var productData = data.product,
-					serviceData = data.service,
-					warrantyData = data.warranty,
-					nowUrl = window.location.href,
-					toKISS = {};
-				//end of vars
-
-				if ( typeof _kmq === 'undefined' ) {
-					return;
-				}
-
-				if ( productData ) {
-					toKISS = {
-						'Add to Cart SKU': productData.article,
-						'Add to Cart SKU Quantity': productData.quantity,
-						'Add to Cart Product Name': productData.name,
-						'Add to Cart Root category': productData.category[0].name,
-						'Add to Cart Root ID': productData.category[0].id,
-						'Add to Cart Category name': ( productData.category ) ? productData.category[productData.category.length - 1].name : 0,
-						'Add to Cart Category ID': ( productData.category ) ? productData.category[productData.category.length - 1].id : 0,
-						'Add to Cart SKU Price': productData.price,
-						'Add to Cart Page URL': nowUrl,
-						'Add to Cart F1 Quantity': productData.serviceQuantity
-					};
-
-					_kmq.push(['record', 'Add to Cart', toKISS]);
-
-					productData.isUpsale && _kmq.push(['record', 'cart rec added from rec', {'SKU cart added from rec': productData.article}]);
-					productData.fromUpsale && _kmq.push(['record', 'cart recommendation added', {'SKU cart rec added': productData.article}]);
-				}
-
-				if ( serviceData ) {
-					toKISS = {
-						'Add F1 F1 Name': serviceData.name,
-						'Add F1 F1 Price': serviceData.price,
-						'Add F1 SKU': productData.article,
-						'Add F1 Product Name': productData.name,
-						'Add F1 Root category': productData.category[0].name,
-						'Add F1 Root ID': productData.category[0].id,
-						'Add F1 Category name': ( productData.category ) ? productData.category[productData.category.length - 1].name : 0,
-						'Add F1 Category ID': ( productData.category ) ? productData.category[productData.category.length - 1].id : 0
-					};
-
-					_kmq.push(['record', 'Add F1', toKISS]);
-				}
-
-				if ( warrantyData ) {
-					toKISS = {
-						'Add Warranty Warranty Name': warrantyData.name,
-						'Add Warranty Warranty Price': warrantyData.price,
-						'Add Warranty SKU': productData.article,
-						'Add Warranty Product Name': productData.name,
-						'Add Warranty Root category': productData.category[0].name,
-						'Add Warranty Root ID': productData.category[0].id,
-						'Add Warranty Category name': ( productData.category ) ? productData.category[productData.category.length - 1].name : 0,
-						'Add Warranty Category ID': ( productData.category ) ? productData.category[productData.category.length - 1].id : 0
-					};
-
-					_kmq.push(['record', 'Add Warranty', toKISS]);
-				}
-			},
-
-			/**
 			 * Google Analytics аналитика добавления в корзину
 			 */
 				googleAnalytics = function googleAnalytics( event, data ) {
@@ -191,7 +125,6 @@
 
 		try{
 			if (data.product) {
-				kissAnalytics(event, data);
 				googleAnalytics(event, data);
 				addToRetailRocket(event, data);
 			}

@@ -72,7 +72,6 @@
             <?= $page->slotPartnerCounter() ?>
             <?= $page->slotEnterprizeConfirmJs() ?>
             <?= $page->slotEnterprizeCompleteJs() ?>
-            <?= $page->slotKissMetrics() ?>
             <?= $page->slotFlocktoryEnterprizeJs() ?>
             <?= $page->slotEnterprizeRegJS() ?>
         </div>

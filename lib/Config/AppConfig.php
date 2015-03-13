@@ -183,13 +183,6 @@ class AppConfig {
         'enabled'           => null,
     ];
     /** @var array */
-    public $kissmentrics = [
-        'enabled'    =>  null,
-        'cookieName' => [
-            'needUpdate' => null,
-        ],
-    ];
-    /** @var array */
     public $pickpoint = [
         'url'          => null,
         'timeout'      => null,

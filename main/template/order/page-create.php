@@ -254,6 +254,5 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
 
 
 <?php if (\App::config()->analytics['enabled']): ?>
-    <?= $page->tryRender('order/_kissmetrics-create') ?>
     <?= $page->tryRender('order/partner-counter/_cityads-create') ?>
 <?php endif ?>

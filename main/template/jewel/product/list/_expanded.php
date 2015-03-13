@@ -8,5 +8,5 @@
 ?>
 
 <? foreach ($pager as $i => $product): ?>
-    <?= $page->render('jewel/product/show/_expanded', array('product' => $product, 'addInfo' => $isAddInfo?\Kissmetrics\Manager::getProductSearchEvent($product, $i, $pager->getPage()):[])) ?>
+    <?= $page->render('jewel/product/show/_expanded', array('product' => $product)) ?>
 <?php endforeach ?>

@@ -59,7 +59,6 @@ class AccessoryAction {
                 'categoryToken'   => empty($categoryToken) ? '' : $categoryToken,
                 'isHidden'  => false,
                 'gaEvent'   => 'SmartEngine',
-                'additionalData'    =>  \Kissmetrics\Manager::getProductEvent($accessory, $begin, 'Accessorize'),
             ));
             $begin++;
         }

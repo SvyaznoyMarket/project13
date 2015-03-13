@@ -45,8 +45,6 @@
     </div>
     <!--    --><?// endif ?>
 
-    <div id="_searchKiss" style="display: none" data-search="<?= $helper->json(['query' => $searchQuery, 'url' => \App::request()->headers->get('referer'), 'count' => $productCount]) ?>"></div>
-
     <?= $helper->render('search/__filter', [
         'baseUrl'          => $helper->url('search', ['q' => $searchQuery]),
         'countUrl'         => null,

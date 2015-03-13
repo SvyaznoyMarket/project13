@@ -61,25 +61,6 @@ class DefaultLayout extends Layout {
         return $this->tryRender('_googleAnalytics');
     }
 
-    public function slotKissMetrics() {
-        if (!\App::config()->kissmentrics['enabled']) return '';
-        $cookie = \App::request()->cookies;
-        $cookieName = \App::config()->kissmentrics['cookieName']['needUpdate'];
-
-        $return = $this->tryRender('_kissMetrics');
-
-        // SITE-2895
-        if ((bool)$cookie->get($cookieName) && \App::user()->getToken()) {
-            $data = [
-                'entity_id' => \App::user()->getToken(),
-                'cookieName' => $cookieName
-            ];
-            $return .= sprintf('<div id="kissUpdateJS" class="jsanalytics" data-value="%s"></div>', $this->json($data));
-        }
-
-        return $return;
-    }
-
     public function slotBodyDataAttribute() {
         return 'default';
     }
@@ -409,9 +390,6 @@ class DefaultLayout extends Layout {
         $return = '';
 
         if ( in_array( $routeName, ['order', 'order.complete'] ) ) {
-            // !!! Не дублировать! Hа этих страницах Sociomantic
-            // вместе с inclusion tag
-            // подключается через JS — см файл /web/js/dev/order/order.js
             return;
         }
 
@@ -451,27 +429,6 @@ class DefaultLayout extends Layout {
         } else if ($routeName == 'tchibo') {
             $return .= $this->render($smantic_path . 'smanticPage', ['prod_cats' => ['Tchibo']]);
         }
-        /* else if ($routeName == 'order.complete') {
-
-            // !!! На этих страницах подключается через js — /web/js/dev/order/order.js
-
-            //$products = $this->getParam('products');
-            //$cartProductsById = $this->getParam('cartProductsById');
-            //$cart = \App::user()->getCart();
-            $orders = $this->getParam('orders'); // \Model\Order\Entity Object
-            $return .= $this->render($smantic_path . '05a-confirmation_page',
-                ['orders' => $orders, 'smantic' => &$smantic]
-            );
-
-            $smantic->restoreSession();
-
-        }*/
-        /*else if ( $routeName == 'order' ) {
-
-            //$products = $this->getParam('products');
-            //$smantic->makeSession( $products );
-
-        }*/
 
         return !empty($return) ? $return : false;
     }

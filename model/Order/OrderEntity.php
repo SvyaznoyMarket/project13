@@ -368,7 +368,6 @@ class OrderEntity {
                     \App::partner()->fabricateMetaByPartners($partners, $product)
                 );
                 $data['user_agent'] = $request->server->get('HTTP_USER_AGENT');
-                $data['kiss_session'] = $request->request->get('kiss_session');
                 $data['last_partner'] = $request->cookies->get('last_partner');
 
                 // Много.ру

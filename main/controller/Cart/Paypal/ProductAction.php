@@ -2,6 +2,11 @@
 
 namespace Controller\Cart\Paypal;
 
+/**
+ * Class ProductAction
+ * @package Controller\Cart\Paypal
+ * @deprecated
+ */
 class ProductAction {
     /**
      * @param int           $productId
@@ -52,14 +57,6 @@ class ProductAction {
                 'link'  =>  $product->getLink(),
                 'price' =>  $product->getPrice(),
             ];
-            if (false && \App::config()->kissmentrics['enabled']) {
-                try {
-                    $kissInfo = \Kissmetrics\Manager::getCartEvent($product);
-                    $productInfo = array_merge($productInfo, $kissInfo['product']);
-                } catch (\Exception $e) {
-                    \App::logger()->error($e, ['kissmetrics']);
-                }
-            }
 
             $result = \App::coreClientV2()->query(
                 'payment/paypal-set-checkout',

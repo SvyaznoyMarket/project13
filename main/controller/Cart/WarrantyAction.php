@@ -2,6 +2,11 @@
 
 namespace Controller\Cart;
 
+/**
+ * Class WarrantyAction
+ * @package Controller\Cart
+ * @deprecated
+ */
 class WarrantyAction {
     /**
      * @param int           $warrantyId
@@ -73,11 +78,6 @@ class WarrantyAction {
                     'link'  =>  $product->getLink(),
                     'price' =>  $product->getPrice(),
                 ];
-            }
-            if (\App::config()->kissmentrics['enabled']) {
-                $kissInfo = \Kissmetrics\Manager::getCartEvent($product, null, $warranty);
-                if (isset($kissInfo['product'])) $productInfo = array_merge($productInfo, $kissInfo['product']);
-                if (isset($kissInfo['warranty'])) $warrantyInfo = $kissInfo['warranty'];
             }
 
             $completeInfo = [

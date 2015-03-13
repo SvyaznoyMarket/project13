@@ -89,7 +89,6 @@
     <?= $page->slotBodyJavascript() ?>
     <?= $page->slotInnerJavascript() ?>
     <?= $page->slotPartnerCounter() ?>
-    <?= $page->slotKissMetrics() ?>
 
     <? if (\App::config()->analytics['enabled']): ?>
         <div id="yandexMetrika" class="jsanalytics"></div>

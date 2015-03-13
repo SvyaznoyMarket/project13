@@ -58,7 +58,6 @@ if (\App::request()->get('shop')) {
             'index'         => $i,
             'product'       => $product,
             'isHidden'      => $i > $itemsInSlider,
-            'addInfo' => $isAddInfo ? \Kissmetrics\Manager::getProductSearchEvent($product, $i, $pager->getPage()) : []
         )) ?>
     <? } ?>
 </div>

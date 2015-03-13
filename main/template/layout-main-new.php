@@ -78,7 +78,6 @@
     <?= $page->slotBodyJavascript() ?>
     <?= $page->slotInnerJavascript() ?>
     <?= $page->slotPartnerCounter() ?>
-    <?= $page->slotKissMetrics() ?>
     <?= $page->slotGifteryJS() ?>
 
     <? if (\App::config()->analytics['enabled']): ?>

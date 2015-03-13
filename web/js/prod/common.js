@@ -1093,72 +1093,6 @@
 	$body.on('addtocart', function(event, data){
 		var
 			/**
-			 * KISS Аналитика для добавления в корзину
-			 */
-				kissAnalytics = function kissAnalytics( event, data ) {
-				var productData = data.product,
-					serviceData = data.service,
-					warrantyData = data.warranty,
-					nowUrl = window.location.href,
-					toKISS = {};
-				//end of vars
-
-				if ( typeof _kmq === 'undefined' ) {
-					return;
-				}
-
-				if ( productData ) {
-					toKISS = {
-						'Add to Cart SKU': productData.article,
-						'Add to Cart SKU Quantity': productData.quantity,
-						'Add to Cart Product Name': productData.name,
-						'Add to Cart Root category': productData.category[0].name,
-						'Add to Cart Root ID': productData.category[0].id,
-						'Add to Cart Category name': ( productData.category ) ? productData.category[productData.category.length - 1].name : 0,
-						'Add to Cart Category ID': ( productData.category ) ? productData.category[productData.category.length - 1].id : 0,
-						'Add to Cart SKU Price': productData.price,
-						'Add to Cart Page URL': nowUrl,
-						'Add to Cart F1 Quantity': productData.serviceQuantity
-					};
-
-					_kmq.push(['record', 'Add to Cart', toKISS]);
-
-					productData.isUpsale && _kmq.push(['record', 'cart rec added from rec', {'SKU cart added from rec': productData.article}]);
-					productData.fromUpsale && _kmq.push(['record', 'cart recommendation added', {'SKU cart rec added': productData.article}]);
-				}
-
-				if ( serviceData ) {
-					toKISS = {
-						'Add F1 F1 Name': serviceData.name,
-						'Add F1 F1 Price': serviceData.price,
-						'Add F1 SKU': productData.article,
-						'Add F1 Product Name': productData.name,
-						'Add F1 Root category': productData.category[0].name,
-						'Add F1 Root ID': productData.category[0].id,
-						'Add F1 Category name': ( productData.category ) ? productData.category[productData.category.length - 1].name : 0,
-						'Add F1 Category ID': ( productData.category ) ? productData.category[productData.category.length - 1].id : 0
-					};
-
-					_kmq.push(['record', 'Add F1', toKISS]);
-				}
-
-				if ( warrantyData ) {
-					toKISS = {
-						'Add Warranty Warranty Name': warrantyData.name,
-						'Add Warranty Warranty Price': warrantyData.price,
-						'Add Warranty SKU': productData.article,
-						'Add Warranty Product Name': productData.name,
-						'Add Warranty Root category': productData.category[0].name,
-						'Add Warranty Root ID': productData.category[0].id,
-						'Add Warranty Category name': ( productData.category ) ? productData.category[productData.category.length - 1].name : 0,
-						'Add Warranty Category ID': ( productData.category ) ? productData.category[productData.category.length - 1].id : 0
-					};
-
-					_kmq.push(['record', 'Add Warranty', toKISS]);
-				}
-			},
-
-			/**
 			 * Google Analytics аналитика добавления в корзину
 			 */
 				googleAnalytics = function googleAnalytics( event, data ) {
@@ -1224,7 +1158,6 @@
 
 		try{
 			if (data.product) {
-				kissAnalytics(event, data);
 				googleAnalytics(event, data);
 				addToRetailRocket(event, data);
 			}
@@ -1851,233 +1784,6 @@ $(function() {
 	inputs.each(function(index, input) {
 		updateInput($(input));
 	});
-});
-$(document).ready(function(){
-	// var carturl = $('.lightboxinner .point2').attr('href')
-
-
-	/* вывод слайдера со схожими товарами, если товар доступен только на витрине*/
-	if ( $('#similarGoodsSlider').length ) {
-
-		// основные элементы
-		var similarSlider = $('#similarGoodsSlider'),
-			similarWrap = similarSlider.find('.bSimilarGoodsSlider_eWrap'),
-			similarArrow = similarSlider.find('.bSimilarGoodsSlider_eArrow'),
-
-			slidesW = 0,
-
-			sliderW = 0,
-			slidesCount = 0,
-			wrapW = 0,
-			left = 0;
-		// end of vars
-		
-		var kissSimilar = function kissSimilar() {
-				var clicked = $(this),
-					toKISS = {
-						'Recommended Item Clicked Similar Recommendation Place':'product',
-						'Recommended Item Clicked Similar Clicked SKU':clicked.data('article'),
-						'Recommended Item Clicked Similar Clicked Product Name':clicked.data('name'),
-						'Recommended Item Clicked Similar Product Position':clicked.data('pos')
-					};
-				// end of vars
-				
-				if (typeof(_kmq) !== 'undefined') {
-					_kmq.push(['record', 'Recommended Item Clicked Similar', toKISS]);
-				}
-			},
-
-			// init
-			init = function init( data ) {
-				var similarGoods = similarSlider.find('.bSimilarGoodsSlider_eGoods');
-
-				for ( var item in data ) {
-					var similarGood = tmpl('similarGoodTmpl',data[item]);
-					similarWrap.append(similarGood);
-				}
-
-				slidesW = similarGoods.width() + parseInt(similarGoods.css('paddingLeft'), 10) * 2;
-				slidesCount = similarGoods.length;
-				wrapW = slidesW * slidesCount;
-				similarWrap.width(wrapW);
-
-				if ( slidesCount > 0 ) {
-					$('.bSimilarGoods').fadeIn(300, function() {
-						sliderW = similarSlider.width();
-					});
-				}
-
-				if ( slidesCount < 4 ){
-					$('.bSimilarGoodsSlider_eArrow.mRight').hide();
-				}
-			};
-
-		$.getJSON( $('#similarGoodsSlider').data('url') , function( data ) {
-			if ( !($.isEmptyObject(data)) ){
-				var initData = data;
-
-				init(initData);
-			}
-		}).done(function() {
-			var similarGoods = similarSlider.find('.bSimilarGoodsSlider_eGoods');
-
-			slidesCount = similarGoods.length;
-			wrapW = slidesW * slidesCount;
-			similarWrap.width(wrapW);
-			if ( slidesCount > 0 ) {
-				$('.bSimilarGoods').fadeIn(300, function(){
-					sliderW = similarSlider.width();
-				});
-			}
-		});
-		
-		similarArrow.bind('click', function() {
-			if ( $(this).hasClass('mLeft') ) {
-				left += (slidesW * 2);
-			}
-			else {
-				left -= (slidesW * 2);
-			}
-			// left *= ($(this).hasClass('mLeft'))?-1:1
-			if ( (left <= sliderW-wrapW) ) {
-				left = sliderW - wrapW;
-				$('.bSimilarGoodsSlider_eArrow.mRight').hide();
-				$('.bSimilarGoodsSlider_eArrow.mLeft').show();
-			} 
-			else if ( left >= 0 ) {
-				left = 0;
-				$('.bSimilarGoodsSlider_eArrow.mLeft').hide();
-				$('.bSimilarGoodsSlider_eArrow.mRight').show();
-			}
-			else {
-				similarArrow.show();
-			}
-
-			similarWrap.animate({'left':left});
-			return false;
-		});
-
-
-		// KISS
-		$('.bSimilarGoods.mProduct .bSimilarGoodsSlider_eGoods').on('click', kissSimilar);
-	}
-
-	/* ---- */
-
-	/**
-	 * KISS view category
-	 */
-	var kissForCategory = function kissForCategory() {
-		var data = $('#_categoryData').data('category'),
-			toKISS = {
-				'Viewed Category Category Type':data.type,
-				'Viewed Category Category Level':data.level,
-				'Viewed Category Parent category':data.parent_category,
-				'Viewed Category Category name':data.category,
-				'Viewed Category Category ID':data.id
-			};
-		// end of vars
-		
-		if ( typeof(_kmq) !== 'undefined' ) {
-			_kmq.push(['record', 'Viewed Category', toKISS]);
-		}
-	};
-
-
-    var kissForProductOfCategory = function kissForProductOfCategory(event) {
-        //event.preventDefault(); // tmp
-        //console.log('*** clickeD!!! '); // tmp
-
-        var t = $(this), box, datap, toKISS = false,
-            datac = $('#_categoryData').data('category');
-        // end of vars
-
-        box = t.parents('.js-goodsboxContainer');
-
-        if ( !box.length ) {
-        	box = t.parents('div.goodsboxlink');
-        }
-
-        datap = box.length ? box.data('add') : false;
-
-        if ( datap && datac ) {
-            toKISS = {
-                'Category Results Clicked Category Type': datac.type,
-                'Category Results Clicked Category Level': datac.level,
-                'Category Results Clicked Parent category': datac.parent_category,
-                'Category Results Clicked Category name': datac.category,
-                'Category Results Clicked Category ID': datac.id,
-                'Category Results Clicked SKU': datap.article,
-                'Category Results Clicked Product Name': datap.name,
-                'Category Results Clicked Page Number': datap.page,
-                'Category Results Clicked Product Position': datap.position
-            };
-        }
-
-        /** For Debug:  **/
-        /*
-        console.log('*** test IN CLICK BEGIN { ');
-        if (toKISS) console.log(toKISS);
-        if (!datap) console.log('!!! DataP is empty!');
-        if (!datac) console.log('!!! DataP is empty!');
-        console.log('*** } test IN CLICK END');
-        */
-        /** **/
-
-        if ( toKISS && typeof _kmq !== 'undefined' ) {
-            _kmq.push(['record', 'Category Results Clicked', toKISS]);
-        }
-
-        //return false; // tmp
-    };
-
-
-    if ( $('#_categoryData').length ) {
-		kissForCategory();
-        /** Вызываем kissForProductOfCategory() для всех категорий - в том числе слайдеров, аджаксов и тп **/
-        $('body').delegate('.js-goodsbox a', 'click', kissForProductOfCategory);
-	}
-
-	/**
-	 * KISS Search
-	 */
-	var kissForSearchResultPage = function kissForSearchResultPage() {
-		var data = $('#_searchKiss').data('search'),
-			toKISS = {
-				'Search String':data.query,
-				'Search Page URL':data.url,
-				'Search Items Found':data.count
-			};
-		// end of vars
-
-		if ( typeof(_kmq) !== 'undefined' ) {
-			_kmq.push(['record', 'Search', toKISS]);
-		}
-
-		var KISSsearchClick = function() {
-			var productData = $(this).data('add'),
-				prToKISS = {
-					'Search Results Clicked Search String':data.query,
-					'Search Results Clicked SKU':productData.article,
-					'Search Results Clicked Product Name':productData.name,
-					'Search Results Clicked Page Number':productData.page,
-					'Search Results Clicked Product Position':productData.position
-				};
-			// end of vars
-
-			if ( typeof(_kmq) !== 'undefined' ) {
-				_kmq.push(['record', 'Search Results Clicked',  prToKISS]);
-			}
-		};
-
-		$('.js-goodsboxContainer').on('click', KISSsearchClick);
-		$('.goodsboxlink').on('click', KISSsearchClick);
-	};
-
-	if ( $('#_searchKiss').length ) {
-		kissForSearchResultPage();
-	}
-
 });
 ;$(function(){
     var
@@ -3175,9 +2881,6 @@ $(document).ready(function(){
 					_gaq.push(['_trackEvent', 'Account', 'Log in', type, window.location.href]);
 				}
 
-				if ( typeof(_kmq) !== 'undefined' ) {
-					_kmq.push(['identify', this.form.find('.jsSigninUsername').val() ]);
-				}
 			}
 			else if ( 'register' === this.getFormName() ) {
 				if ( typeof(_gaq) !== 'undefined' ) {
@@ -3185,9 +2888,6 @@ $(document).ready(function(){
 					_gaq.push(['_trackEvent', 'Account', 'Create account', type]);
 				}
 
-				if ( typeof(_kmq) !== 'undefined' ) {
-					_kmq.push(['identify', this.form.find('.jsRegisterUsername').val() ]);
-				}
 			}
 			else if ( 'forgot' === this.getFormName() ) {
 				if ( typeof(_gaq) !== 'undefined' ) {
@@ -3203,9 +2903,6 @@ $(document).ready(function(){
 		 * @public
 		 */
 		Login.prototype.logoutLinkClickLog = function() {
-			if ( typeof(_kmq) !== 'undefined' ) {
-				_kmq.push(['clearIdentity']);
-			}
 		};
 
 		/**
@@ -5532,8 +5229,6 @@ $(document).ready(function() {
 
 			// google analytics
 			typeof _gaq == 'function' && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_shown', data.product.article]);
-			// Kissmetrics
-			typeof _kmq == 'function' && _kmq.push(['record', 'cart recommendation shown', {'SKU cart rec shown': data.product.article}]);
 		}
 
 		console.log(upsale);
@@ -5583,8 +5278,6 @@ $(document).ready(function() {
 		console.log('Трекинг при клике по товару из списка рекомендаций');
 		// google analytics
 		_gaq && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_clicked', product.article]);
-		// Kissmetrics
-		_kmq && _kmq.push(['record', 'cart recommendation clicked', {'SKU cart rec clicked': product.article}]);
 
 		//window.docCookies.setItem('used_cart_rec', 1, 1, 4*7*24*60*60, '/');
 	}

@@ -202,8 +202,6 @@ $c->analytics['enabled'] = true;
 $c->googleAnalytics['enabled'] = true;
 $c->googleAnalyticsTchibo['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;
-$c->kissmentrics['enabled'] = true;
-$c->kissmentrics['cookieName']['needUpdate'] = 'kissNeedUpdate';
 $c->googleTagManager['enabled'] = true;
 $c->googleTagManager['containerId'] = 'GTM-P65PBR';
 

@@ -404,7 +404,6 @@ class IndexAction {
             $accessoriesCount = 1;
             foreach ($products as $item) {
                 if (isset($accessories[$item->getId()])) {
-                    $additionalData[$item->getId()] = \Kissmetrics\Manager::getProductEvent($item, $accessoriesCount, 'Accessorize');
                     $accessoriesCount++;
                     $accessories[$item->getId()] = $item;
                 }
@@ -870,7 +869,6 @@ class IndexAction {
         $accessoriesCount = 1;
         foreach ($relatedProductsById as $item) {
             if (isset($accessories[$item->getId()])) {
-                $additionalData[$item->getId()] = \Kissmetrics\Manager::getProductEvent($item, $accessoriesCount, 'Accessorize');
                 $accessoriesCount++;
             }
         }

@@ -8,8 +8,7 @@
  * @author	Zaytsev Alexandr
  */
 ;(function ( window, document, $, ENTER, ko ) {
-	console.info('separate-order.js init');
-	
+
 	var
 		serverData = $('#jsOrderDelivery').data('value'),
 		utils = ENTER.utils,
@@ -888,9 +887,7 @@
 			var itemDeleteAnalytics = function itemDeleteAnalytics( data ) {
 					var products = ENTER.OrderModel.orderDictionary.products,
 						totalPrice = 0,
-						totalQuan = 0,
-
-						toKISS = {};
+						totalQuan = 0;
 					// end of vars
 
 					if ( !data.product ) {
@@ -900,15 +897,6 @@
 					for ( var product in products ) {
 						totalPrice += products[product].price;
 						totalQuan += products[product].quantity;
-					}
-
-					toKISS = {
-						'Checkout Step 1 SKU Quantity': totalQuan,
-						'Checkout Step 1 SKU Total': totalPrice
-					};
-
-					if ( typeof _kmq !== 'undefined' ) {
-						_kmq.push(['set', toKISS]);
 					}
 
 					if ( typeof _gaq !== 'undefined' ) {
@@ -1252,9 +1240,6 @@
 				totalPrice = 0,
 				totalQuan = 0,
                 basketProd = [],
-
-				toKISS = {},
-
 				product;
 			// end of vars
 
@@ -1272,18 +1257,8 @@
                 );
 			}
 
-			toKISS = {
-				'Checkout Step 1 SKU Quantity': totalQuan,
-				'Checkout Step 1 SKU Total': totalPrice,
-				'Checkout Step 1 Order Type': 'cart order'
-			};
-
 			if ( typeof _gaq !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'New order', 'Items', totalQuan]);
-			}
-
-			if ( typeof _kmq !== 'undefined' ) {
-				_kmq.push(['record', 'Checkout Step 1', toKISS]);
 			}
 
             // ActionPay Analytics:

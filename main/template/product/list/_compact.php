@@ -20,7 +20,6 @@ $hasLastLine = isset($hasLastLine) ? $hasLastLine : true;
     <? $i = 0; foreach ($pager as $product): $i++ ?>
         <?= $page->render('product/show/_compact', [
             'product'       => $product,
-            'addInfo'       => \Kissmetrics\Manager::getProductSearchEvent($product, $i, $pager->getPage())
         ]) ?>
         <? if (!($i % $itemsPerRow) && ($i == $pager->count() ? $hasLastLine : true)): ?>
             <div class="clear"></div>

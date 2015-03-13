@@ -105,14 +105,6 @@ class ProductAction {
                 'isOnlyFromPartner' => $product->isOnlyFromPartner(),
                 'isNewWindow'       => \App::abTest()->isNewWindow() // открытие товаров в новом окне
             ];
-            if (\App::config()->kissmentrics['enabled']) {
-                try {
-                    $kissInfo = \Kissmetrics\Manager::getCartEvent($product);
-                    $productInfo = array_merge($productInfo, $kissInfo['product']);
-                } catch (\Exception $e) {
-                    \App::logger()->error($e, ['kissmetrics']);
-                }
-            }
 
             $parentCategoryId = $product->getParentCategory() ? $product->getParentCategory()->getId() : null;
 
@@ -288,14 +280,6 @@ class ProductAction {
                         'id' => \View\Id::cartButtonForProduct($product->getId()),
                     ],
                 ];
-                if (\App::config()->kissmentrics['enabled']) {
-                    try {
-                        $kissInfo = \Kissmetrics\Manager::getCartEvent($product);
-                        $productInfo = array_merge($productInfo, $kissInfo['product']);
-                    } catch (\Exception $e) {
-                        \App::logger()->error($e, ['kissmetrics']);
-                    }
-                }
 
                 $productsInfo[] = $productInfo;
             }

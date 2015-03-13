@@ -616,9 +616,6 @@ window.ANALYTICS = {
 						ga('send', 'event', 'Mobile App Click', type);
 					}
 				});
-				/**
-				 * Отслеживание кликов по баннерам карусели вынесено в web/js/dev/main/welcome.js
-				 */
 			},
 
 			ga_category = function ga_category() {
@@ -1149,8 +1146,7 @@ window.ANALYTICS = {
 	enterprizeConfirmJs: function () {
 		var
 			enterprize = $('#enterprizeConfirmJs'),
-			data = {},
-			toKiss = {};
+			data = {};
 		// end of vars
 
 		if ( !enterprize.length ) {
@@ -1158,22 +1154,6 @@ window.ANALYTICS = {
 		}
 
 		data = enterprize.data('value');
-
-		// --- Kiss ---
-		if (typeof _kmq != 'undefined') {
-			toKiss = {
-				'[Ent_Req] Name': data.name,
-				'[Ent_Req] Phone': data.mobile,
-				'[Ent_Req] Email': data.email,
-				'[Ent_Req] Token name': data.couponName,
-				'[Ent_Req] Token number': data.enterprizeToken,
-				'[Ent_Req] Date': data.date,// Текущая дата
-				'[Ent_Req] Time': data.time,//Текущее время
-				'[Ent_Req] enter_id': data.enter_id//идентификаgтор клиента в cookie сайта
-			};
-
-			_kmq.push(['record', 'Enterprize Token Request', toKiss]);
-		}
 
 		// --- GA ---
 		if (typeof ga != 'undefined') {
@@ -1188,7 +1168,6 @@ window.ANALYTICS = {
 		var
 			enterprize = $('#enterprizeCompleteJs'),
 			data = {},
-			toKiss = {},
 			old_identity;
 		// end of vars
 
@@ -1197,32 +1176,6 @@ window.ANALYTICS = {
 		}
 
 		data = enterprize.data('value');
-
-		// --- Kiss ---
-		if (typeof _kmq != 'undefined') {
-			toKiss = {
-				'[Ent_Gr] Name': data.name,
-				'[Ent_Gr] Phone': data.mobile,
-				'[Ent_Gr] Email': data.email,
-				'[Ent_Gr] Token name': data.couponName,
-				'[Ent_Gr] Token number': data.enterprizeToken,
-				'[Ent_Gr] Date': data.date,// Текущая дата
-				'[Ent_Gr] Time': data.time,//Текущее время
-				'[Ent_Gr] enter_id': data.enter_id//идентификатор клиента в cookie сайта
-			};
-
-			_kmq.push(['record', 'Enterprize Token Granted', toKiss]);
-
-			// Если данные для нас новые - идентифицируем его новыми данными и мёрджим с предыдущим ID
-			if (data.mobile != KM.i()) {
-				old_identity = KM.i()
-				_kmq.push(['identify', data.mobile]);
-				_kmq.push(['set', {'enter_id': data.enter_id}]);
-				_kmq.push(['set', {'user name': data.name}]);
-				_kmq.push(['set', {'user email': data.email}]);
-				_kmq.push(['alias', old_identity, KM.i()]);
-			}
-		}
 
 		// --- GA ---
 		if (typeof ga != 'undefined') {
@@ -1237,33 +1190,6 @@ window.ANALYTICS = {
 	enterprizeRegAnalyticsJS: function() {
 		typeof _gaq !== "undefined" && _gaq.push(['_trackEvent', 'Enterprize Registration', 'true']);
 		typeof ga !== "undefined" && ga('send', 'event', 'Enterprize Registration', 'true');
-	},
-
-	kissUpdateJS: function () {
-		var
-			kiss = $('#kissUpdateJS'),
-			data = {};
-		// end of vars
-
-		if ( !kiss.length ) {
-			return;
-		}
-
-		data = kiss.data('value');
-
-		if (
-			'object' != typeof(data) ||
-			!data.hasOwnProperty('entity_id') ||
-			!data.hasOwnProperty('cookieName') ||
-			'undefined' == typeof(_kmq)
-			) {
-			return;
-		}
-
-		_kmq.push(['alias', KM.i(), data.entity_id]);
-		_kmq.push(['set', {'enter_id': data.entity_id}]);
-
-		window.docCookies.removeItem(data.cookieName, '/');
 	},
 
 	sociaPlusJs: function() {

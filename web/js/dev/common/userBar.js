@@ -303,8 +303,6 @@
 
 			// google analytics
 			typeof _gaq == 'function' && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_shown', data.product.article]);
-			// Kissmetrics
-			typeof _kmq == 'function' && _kmq.push(['record', 'cart recommendation shown', {'SKU cart rec shown': data.product.article}]);
 		}
 
 		console.log(upsale);
@@ -354,8 +352,6 @@
 		console.log('Трекинг при клике по товару из списка рекомендаций');
 		// google analytics
 		_gaq && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_clicked', product.article]);
-		// Kissmetrics
-		_kmq && _kmq.push(['record', 'cart recommendation clicked', {'SKU cart rec clicked': product.article}]);
 
 		//window.docCookies.setItem('used_cart_rec', 1, 1, 4*7*24*60*60, '/');
 	}

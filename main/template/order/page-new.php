@@ -631,6 +631,5 @@ foreach ($productsById as $product) {
 ]) ?>"></div>
 
 <?php if (\App::config()->analytics['enabled']): ?>
-	<?= $page->tryRender('order/_kissmetrics-create') ?>
 	<?= $page->tryRender('order/partner-counter/_cityads-create') ?>
 <?php endif ?>

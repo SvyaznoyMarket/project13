@@ -54,16 +54,6 @@ module.exports = {
         dest: '<%= pathProd %>main.js'
     },
 
-    oneclickJS : {
-        src: ['<%= pathDev %>oneclick/*.js'],
-        dest: '<%= pathProd %>oneclick.js'
-    },
-
-    orderJS : {
-        src: ['<%= pathDev %>order/*.js'],
-        dest: '<%= pathProd %>order.js'
-    },
-
     orderNewV5JS : {
         src: ['<%= pathDev %>order-new-v5/*.js'],
         dest: '<%= pathProd %>order-new-v5.js'

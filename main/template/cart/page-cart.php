@@ -104,6 +104,5 @@ $isNewRecommendation =
 <div class="clear"></div>
 
 <? if (\App::config()->analytics['enabled']): ?>
-    <?= $page->render('cart/partner/_kiss', ['cart' => $cart]) ?>
     <?= $page->tryRender('cart/partner/_cityads') ?>
 <? endif ?>

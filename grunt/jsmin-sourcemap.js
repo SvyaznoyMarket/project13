@@ -135,20 +135,6 @@ module.exports = function (grunt, options) {
                 srcRoot: '/js',
                 cwd: 'web/js'
         },
-        oneclick: {
-            src: ['dev/oneclick/*.js'],
-                dest: 'prod/oneclick.js',
-                destMap: 'prod/oneclick.js.map',
-                srcRoot: '/js',
-                cwd: 'web/js'
-        },
-        order: {
-            src: ['dev/order/*.js'],
-                dest: 'prod/order.js',
-                destMap: 'prod/order.js.map',
-                srcRoot: '/js',
-                cwd: 'web/js'
-        },
         order_new_v5: {
             src: ['dev/order-new-v5/*.js'],
                 dest: 'prod/order-new-v5.js',

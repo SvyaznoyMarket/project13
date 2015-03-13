@@ -380,7 +380,6 @@ class CreateAction {
                                 \App::partner()->fabricateMetaByPartners($partners, $product)
                             );
                             $orderData['meta_data']['user_agent'] = $request->server->get('HTTP_USER_AGENT');
-                            $orderData['meta_data']['kiss_session'] = $request->request->get('kiss_session');
                             $orderData['meta_data']['last_partner'] = $request->cookies->get('last_partner');
                         }
                         \App::logger()->info(['message' => 'Создается заказ от партнеров', 'meta_data' => $orderData['meta_data']['partner']], ['order', 'partner']);

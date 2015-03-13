@@ -54,7 +54,6 @@
         <?= $page->slotInnerJavascript() ?>
         <?= $page->slotYandexMetrika() ?>
         <?= $page->slotPartnerCounter() ?>
-        <?= $page->slotKissMetrics() ?>
     </div>
 </body>
 </html>
