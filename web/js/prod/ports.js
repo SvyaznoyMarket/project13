@@ -1053,29 +1053,6 @@ window.ANALYTICS = {
 
 	},
 
-    adblenderCommon: function(){
-
-        var layout = '';
-
-        if (arguments[0].layout) layout = arguments[0].layout;
-
-        function addAdblenderCode(scriptName) {
-            var ra = document.createElement('script');
-            ra.type = 'text/javascript';
-            ra.async = true;
-            ra.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/c/enter/' + scriptName + '.js?' + Math.random();
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ra, s);
-        }
-
-        // For all pages
-        addAdblenderCode('all');
-
-        // For order page and complete order page
-        if (layout == 'layout-order') addAdblenderCode('basket');
-        if (layout == 'layout-order-complete') addAdblenderCode('success');
-    },
-
 	parseAllAnalDivs : function( nodes ) {
 
 		console.groupCollapsed('parseAllAnalDivs');

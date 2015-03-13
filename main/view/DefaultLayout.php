@@ -343,14 +343,6 @@ class DefaultLayout extends Layout {
                 if (\App::config()->partners['SmartLeads']['enabled']) $return .= "\n\n" . '<div id="xcntmyAsync" class="jsanalytics"></div>';
             }
 
-            // на всех страницах сайта, кроме shop.*
-            /*if ((0 !== strpos($routeName, 'shop')) && !in_array($routeName, [
-                'order',
-                'order.complete',
-            ])) {
-                $return .= "\n\n" . $this->tryRender('partner-counter/_reactive');
-            }*/
-
             // ActionPay — на странице с полным описанием продукта и на стр "спс за заказ"
             if (in_array($routeName, [
                 'product',
@@ -629,11 +621,6 @@ class DefaultLayout extends Layout {
     public function slotFlocktoryEnterprizeRegistrationJs() {
         return '';
     }
-
-    public function slotAdblender() {
-        return \App::config()->partners['AdBlender']['enabled'] ? '<div id="adblenderCommon" class="jsanalytics" data-vars="'.$this->json(['layout' =>$this->layout]).'"></div>' : '';
-    }
-
 
     /** Google Tag Manager Container (ports.js)
      * @param array $data Дополнительные данные для GTM

@@ -78,7 +78,6 @@
     <?= $page->slotBodyJavascript() ?>
     <?= $page->slotInnerJavascript() ?>
     <?= $page->slotPartnerCounter() ?>
-    <?= $page->slotAdblender() ?>
     <?= $page->slotKissMetrics() ?>
     <?= $page->slotGifteryJS() ?>
 

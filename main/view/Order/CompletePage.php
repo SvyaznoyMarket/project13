@@ -101,11 +101,6 @@ class CompletePage extends Layout {
         return $this->tryRender('partner-counter/_revolvermarketing_conversion');
     }
 
-    public function slotAdblender() {
-        // For ports.js analytics
-        return \App::config()->analytics['enabled'] ? '<div id="adblenderCommon" class="jsanalytics" data-vars="'.$this->json(['layout' => 'layout-order-complete']).'"></div>' : '';
-    }
-
     public function slotFlocktoryExchangeJS() {
         if (!\App::config()->flocktoryExchange['enabled']) return;
 

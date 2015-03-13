@@ -68,7 +68,6 @@
 <?= $page->slotAuth() ?>
 <?= $page->slotYandexMetrika() ?>
 <?= $page->slotPartnerCounter() ?>
-<?= $page->slotAdblender() ?>
 <?= $page->slotKissMetrics() ?>
 
 </body>

@@ -72,7 +72,6 @@
     <?= $page->slotBodyJavascript() ?>
     <?= $page->slotInnerJavascript() ?>
     <?= $page->slotPartnerCounter() ?>
-    <?= $page->slotAdblender() ?>
     <?= $page->slotKissMetrics() ?>
 
     <? if (\App::config()->analytics['enabled']): ?>
