@@ -168,22 +168,6 @@ class Manager {
                     $prefix . '.' . \Partner\Counter\Actionpay::NAME . '.actionpay' => $request->cookies->get('actionpay'),
                 ];
                 break;
-            /*case \Partner\Counter\Recreative::NAME:
-                $return = [
-                    $prefix => [\Partner\Counter\Recreative::NAME],
-                ];
-                break;*/
-            /*
-            case \Smartengine\Client::NAME:
-                $return = [
-                    $prefix => [\Smartengine\Client::NAME],
-                ];
-                break;*/
-            /*case \Partner\Counter\Reactive::NAME:
-                $return = [
-                    'name' => \Partner\Counter\Reactive::NAME,
-                ];
-                break;*/
         }
 
         if ((bool)$product) {
