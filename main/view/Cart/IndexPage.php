@@ -87,24 +87,6 @@ class IndexPage extends \View\DefaultLayout {
         return '<div id="cpaexchangeJS" class="jsanalytics" data-value="' . $this->json(['id' => 25013]) . '"></div>';
     }
 
-    public function slotMailRu() {
-        $products = $this->getParam('productEntities');
-        $productIds = [];
-        if (is_array($products)) {
-            foreach ($products as $product) {
-                if (is_object($product) && $product instanceof \Model\Product\Entity) {
-                    $productIds[] = $product->getId();
-                }
-            }
-        }
-
-        return $this->render('_mailRu', [
-            'pageType' => 'cart',
-            'productIds' => $productIds,
-            'price' => \App::user()->getCart()->getSum(),
-        ]);
-    }
-
     public function slotHubrusJS() {
         $html = parent::slotHubrusJS();
         if (!empty($html)) {

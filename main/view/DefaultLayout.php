@@ -679,14 +679,6 @@ class DefaultLayout extends Layout {
         return \App::config()->partners['Hubrus']['enabled'] ? '<div id="hubrusJS" class="jsanalytics"></div>' :  '';
     }
 
-    public function slotMailRu() {
-        return $this->render('_mailRu', [
-            'pageType' => 'other',
-            'productIds' => [],
-            'price' => '',
-        ]);
-    }
-
     public function slotInsiderJS(){
         return \App::config()->partners['Insider']['enabled'] ? '<div id="insiderJS" class="jsanalytics"></div>' :  '';
     }

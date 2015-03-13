@@ -47,7 +47,6 @@ $c->partners['AddThis']['enabled'] = false;
 $c->partners['AdvMaker']['enabled'] = false;
 $c->partners['Hubrus']['enabled'] = false;
 $c->partners['Adriver']['enabled'] = false;
-$c->partners['Mailru']['enabled'] = false;
 $c->partners['SmartLeads']['enabled'] = false;
 $c->partners['Sociaplus']['enabled'] = false;
 $c->partners['AdBlender']['enabled'] = false;

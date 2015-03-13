@@ -15,7 +15,6 @@
 <?= $page->slotRevolvermarketingConversionJS() ?>
 <?= $page->slotGoogleRemarketingJS() ?>
 <?= $page->slotGoogleTagManagerJS() ?>
-<?= $page->slotMailRu() ?>
 <?= $page->slotRevolverJS() ?>
 <?= $page->slotInsiderJS() ?>
 <?= $page->slotGetIntentJS() ?>

@@ -80,14 +80,6 @@ class IndexPage extends \View\DefaultLayout {
         ];
     }
 
-    public function slotMailRu() {
-        return $this->render('_mailRu', [
-            'pageType' => 'search_results',
-            'productIds' => [],
-            'price' => '',
-        ]);
-    }
-
     public function slotConfig() {
         return $this->tryRender('_config', ['config' => [
             'location' => ['listing'],

@@ -234,20 +234,6 @@ class IndexPage extends \View\DefaultLayout {
         }
     }
 
-    public function slotMailRu() {
-        /** @var \Model\Product\Entity $product */
-        $product = $this->getParam('product');
-        if (!is_object($product) || !($product instanceof \Model\Product\Entity)) {
-            return '';
-        }
-
-        return $this->render('_mailRu', [
-            'pageType' => 'product',
-            'productIds' => [$product->getId()],
-            'price' => $product->getPrice(),
-        ]);
-    }
-
     public function slotGoogleAnalytics()
     {
         return $this->tryRender('_googleAnalytics', ['product' => $this->getParam('product')]);

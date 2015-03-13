@@ -196,29 +196,6 @@ class CompletePage extends Layout {
             <div id="flocktoryExchangeJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
     }
 
-    public function slotMailRu() {
-        $orders = $this->getParam('orders');
-        $productIds = [];
-        $totalProductPrice = 0;
-        if (is_array($orders)) {
-            foreach ($orders as $order) {
-                /** @var \Model\Order\Entity $order */
-                if (is_object($order) && $order instanceof \Model\Order\Entity) {
-                    foreach ($order->getProduct() as $orderProduct) {
-                        $productIds[] = $orderProduct->getId();
-                        $totalProductPrice += $orderProduct->getSum();
-                    }
-                }
-            }
-        }
-
-        return $this->render('_mailRu', [
-            'pageType' => 'purchase',
-            'productIds' => $productIds,
-            'price' => $totalProductPrice,
-        ]);
-    }
-
     public function slotRevolverJS()
     {
         if (!\App::config()->partners['Revolver']['enabled']) return '';
