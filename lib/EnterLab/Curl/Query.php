@@ -4,6 +4,8 @@ namespace EnterLab\Curl;
 
 class Query
 {
+    /** @var string */
+    public $id;
     /** @var resource */
     public $handle;
     /** @var Request */

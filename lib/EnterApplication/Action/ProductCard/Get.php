@@ -185,7 +185,7 @@ namespace EnterApplication\Action\ProductCard
             // регион
             $regionQuery = (new Query\Region\GetById($request->regionId))->prepare($regionError);
 
-            $curl->execute(); // важно: только товар и регион в запросе
+            //$curl->execute(); // важно: только товар и регион в запросе
 
             // отзывы о товаре
             /*
