@@ -163,12 +163,6 @@ class CompletePage extends Layout {
         return \App::config()->analytics['enabled'] ? '<div id="adblenderCommon" class="jsanalytics" data-vars="'.$this->json(['layout' => 'layout-order-complete']).'"></div>' : '';
     }
 
-    public function slotLamodaCompleteJS() {
-        if (!\App::config()->partners['Lamoda']['enabled']) return;
-
-        return '<div id="LamodaCompleteJS" class="jsanalytics"></div>';
-    }
-
     public function slotFlocktoryExchangeJS() {
         if (!\App::config()->flocktoryExchange['enabled']) return;
 

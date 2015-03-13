@@ -199,22 +199,6 @@ class IndexPage extends \View\DefaultLayout {
         ];
     }
 
-    public function slotLamodaProductJS() {
-        if (!\App::config()->partners['Lamoda']['enabled']) return;
-
-        /** @var $product \Model\Product\Entity */
-        $product = $this->getParam('product');
-        if (!$product) {
-            return;
-        }
-
-        $data = [
-            'id' => $product->getId(),
-        ];
-
-        return "<div id=\"LamodaProductJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
-    }
-
     public function slotAdvMakerJS() {
         if (!\App::config()->partners['AdvMaker']['enabled'] || empty($this->product)) return '';
         $product = [

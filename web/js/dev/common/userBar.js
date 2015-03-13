@@ -198,16 +198,6 @@
 		// end of vars
 
 		var
-			deleteFromLamoda = function deleteFromLamoda( data ) {
-				if ('undefined' == typeof(JSREObject) || !data.hasOwnProperty('product') || !data.product.hasOwnProperty('id') ) {
-					return;
-				}
-
-				console.info('Lamoda removeFromCart');
-				console.log('product_id=' + data.product.id);
-				JSREObject('cart_remove', data.product.id);
-			},
-
 			deleteFromRetailRocket = function deleteFromRetailRocket( data ) {
 				if ( !data.hasOwnProperty('product') || !data.product.hasOwnProperty('id') ) {
 					return;
@@ -224,7 +214,6 @@
 				}
 
 				deleteFromRetailRocket(data);
-				deleteFromLamoda(data);
 			};
 
 		$.ajax({

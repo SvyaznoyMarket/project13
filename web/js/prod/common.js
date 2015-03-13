@@ -1247,46 +1247,7 @@
 					}
 					catch ( err ) {}
 				}
-			},
-
-			/**
-			 * Аналитика при нажатии кнопки "купить"
-			 * @param event
-			 * @param data
-			 */
-				addToLamoda = function addToLamoda( event, data ) {
-				var
-					product = data.product;
-				// end of vars
-
-				if ( 'undefined' == typeof(product) || !product.hasOwnProperty('id') || 'undefined' == typeof(JSREObject) ) {
-					return;
-				}
-
-				console.info('Lamoda addToCart');
-				console.log('product_id=' + product.id);
-				JSREObject('cart_add', product.id);
-			}
-
-		/*,
-		 addToVisualDNA = function addToVisualDNA( event, data ) {
-		 var
-		 productData 	= data.product,
-		 product_id 		= productData.id,
-		 product_price 	= productData.price,
-		 category_id 	= ( productData.category ) ? productData.category[productData.category.length - 1].id : 0,
-		 d = document,
-		 b = d.body,
-		 i = d.createElement('IMG' );
-		 // end of vars
-
-		 i.src = '//e.visualdna.com/conversion?api_key=enter.ru&id=added_to_basket&product_id=' + product_id + '&product_category=' + category_id + '&value=' + product_price + '&currency=RUB';
-		 i.width = i.height = '1';
-		 i.alt = '';
-
-		 b.appendChild(i);
-		 }*/
-			;
+			};
 		//end of functions
 
 		try{
@@ -1305,8 +1266,6 @@
 				}
 				console.groupEnd();
 			}
-			//addToVisualDNA(event, data);
-			addToLamoda(event, data);
 		}
 		catch( e ) {
 			console.warn('addtocartAnalytics error');
@@ -5520,16 +5479,6 @@ $(document).ready(function() {
 		// end of vars
 
 		var
-			deleteFromLamoda = function deleteFromLamoda( data ) {
-				if ('undefined' == typeof(JSREObject) || !data.hasOwnProperty('product') || !data.product.hasOwnProperty('id') ) {
-					return;
-				}
-
-				console.info('Lamoda removeFromCart');
-				console.log('product_id=' + data.product.id);
-				JSREObject('cart_remove', data.product.id);
-			},
-
 			deleteFromRetailRocket = function deleteFromRetailRocket( data ) {
 				if ( !data.hasOwnProperty('product') || !data.product.hasOwnProperty('id') ) {
 					return;
@@ -5546,7 +5495,6 @@ $(document).ready(function() {
 				}
 
 				deleteFromRetailRocket(data);
-				deleteFromLamoda(data);
 			};
 
 		$.ajax({

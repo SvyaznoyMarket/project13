@@ -4042,13 +4042,6 @@
 					}
 
 					if ( data.hasOwnProperty('product') && data.product.hasOwnProperty('id') ) {
-						/* Lamoda */
-						if ( 'undefined' != typeof(JSREObject) ) {
-							console.info('Lamoda removeFromCart');
-							console.log('product_id=' + data.product.id);
-							JSREObject('cart_remove', data.product.id);
-						}
-
 						/* RetailRocket */
 						console.info('RetailRocket removeFromCart');
 						console.log('product_id=' + data.product.id);
