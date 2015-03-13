@@ -25,7 +25,6 @@ try {
 
 $routerRules = \App::router()->getRules();
 $config = array_merge([
-    'optimizelyEnabled'     => $appConfig->partners['Optimizely']['enabled'],
     'adfoxEnabled'     => $appConfig->adFox['enabled'],
     'jsonLog'               => $appConfig->jsonLog['enabled'],
     'userUrl'               => $router->generate('user.info'),

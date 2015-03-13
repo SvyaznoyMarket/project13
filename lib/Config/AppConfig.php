@@ -181,7 +181,6 @@ class AppConfig {
     /** @var array */
     public $analytics = [
         'enabled'           => null,
-        'optimizelyEnabled' => null,
     ];
     /** @var array */
     public $kissmentrics = [

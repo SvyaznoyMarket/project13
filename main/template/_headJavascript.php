@@ -24,9 +24,3 @@
         _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
     </script>
 <? endif ?>
-
-
-<? if (\App::config()->analytics['optimizelyEnabled']): ?>
-    <!-- Optimizely -->
-    <!-- <script src="//cdn.optimizely.com/js/204544654.js"></script>-->
-<? endif ?>

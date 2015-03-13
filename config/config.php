@@ -199,7 +199,6 @@ $c->company['icq'] = '648198963';
 
 $c->jsonLog['enabled'] = true;
 $c->analytics['enabled'] = true;
-$c->analytics['optimizelyEnabled'] = true;
 $c->googleAnalytics['enabled'] = true;
 $c->googleAnalyticsTchibo['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;
@@ -250,7 +249,6 @@ $c->partners['Hubrus']['enabled'] = true;
 $c->partners['SmartLeads']['enabled'] = true;
 $c->partners['Sociaplus']['enabled'] = true;
 $c->partners['ActionpayRetargeting']['enabled'] = true;
-$c->partners['Optimizely']['enabled'] = true;
 $c->partners['MnogoRu']['enabled'] = true;
 $c->partners['MnogoRu']['cookieName'] = 'enter_mnogo_ru';
 $c->partners['PandaPay']['cookieName'] = 'enter_panda_pay';
