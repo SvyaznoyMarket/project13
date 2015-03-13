@@ -173,34 +173,6 @@
                 }
 			},
 
-
-			/**
-			 * Soloway аналитика добавления в корзину
-			 */
-				adAdriver = function adAdriver( event, data ) {
-				var productData = data.product,
-					offer_id = productData.id,
-					category_id =  ( productData.category ) ? productData.category[productData.category.length - 1].id : 0,
-
-					s = 'http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=add_basket&custom=10='+offer_id+';11='+category_id+'&bt=55&pz=0&rnd=![rnd]',
-					d = document,
-					i = d.createElement('IMG'),
-					b = d.body;
-				// end of vars
-
-				s = s.replace(/!\[rnd\]/, Math.round(Math.random()*9999999)) + '&tail256=' + escape(d.referrer || 'unknown');
-				i.style.position = 'absolute';
-				i.style.width = i.style.height = '0px';
-
-				i.onload = i.onerror = function(){
-					b.removeChild(i);
-					i = b = null;
-				};
-
-				i.src = s;
-				b.insertBefore(i, b.firstChild);
-			},
-
 			/**
 			 * Обработчик добавления товаров в корзину. Рекомендации от RetailRocket
 			 */
@@ -221,7 +193,6 @@
 			if (data.product) {
 				kissAnalytics(event, data);
 				googleAnalytics(event, data);
-				adAdriver(event, data);
 				addToRetailRocket(event, data);
 			}
 

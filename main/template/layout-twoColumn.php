@@ -82,7 +82,6 @@
         <?= $page->slotBodyJavascript() ?>
         <?= $page->slotInnerJavascript() ?>
         <?= $page->slotYandexMetrika() ?>
-        <?= $page->slotAdriver() ?>
         <?= $page->slotPartnerCounter() ?>
         <?= $page->slotEnterprizeConfirmJs() ?>
         <?= $page->slotEnterprizeCompleteJs() ?>

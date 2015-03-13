@@ -45,7 +45,6 @@
     <?= $page->slotYandexMetrika() ?>
     <?= $page->slotPartnerCounter() ?>
     <?= $page->slotAdblender() ?>
-    <?= $page->slotAdriver() ?>
     <?= $page->slotKissMetrics() ?>
   
 </body>

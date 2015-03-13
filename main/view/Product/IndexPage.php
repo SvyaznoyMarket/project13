@@ -144,26 +144,6 @@ class IndexPage extends \View\DefaultLayout {
             "<link rel=\"image_src\" href=\"". $this->escape($product->getImageUrl(3)). "\" />\r\n";
     }
 
-    public function slotAdriver() {
-        /** @var \Model\Product\Entity $product  */
-        $product = $this->getParam('product');
-
-        if (!$product) {
-            $data = array(
-                'productId' => 0,
-                'categoryId' => 0,
-            );
-        }
-        else {
-            $data = array(
-                'productId' => $product->getId(),
-                'categoryId' => $product->getMainCategory() ? $product->getMainCategory()->getId() : 0,
-            );
-        }
-
-        return \App::config()->partners['Adriver']['enabled'] ? sprintf('<div id="adriverProduct" data-vars="%s" class="jsanalytics"></div>', $this->json($data)) : '';
-    }
-
     public function slotConfig() {
         $config = ['location' => ['product']];
 

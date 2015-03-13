@@ -47,11 +47,6 @@ class CompletePage extends Layout {
         return $isOrderAnalytics ? $this->render('_googleAnalytics', ['orders' => $orders, 'productsById' => $productsById, 'servicesById' => $servicesById, 'isOrderAnalytics' => $isOrderAnalytics]) : $this->render('_googleAnalytics');
     }
 
-    public function slotAdriver() {
-        //Adriver данные выводятся через order/_analitycs
-        return '';
-    }
-
     public function slotMarinConversionTagJS()
     {
         $sessionIsReaded = $this->getParam('sessionIsReaded');

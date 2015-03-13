@@ -281,10 +281,6 @@ class DefaultLayout extends Layout {
         return '';
     }
 
-    public function slotAdriver() {
-        return \App::config()->partners['Adriver']['enabled'] ? '<div id="adriverCommon" class="jsanalytics"></div>' : '';
-    }
-
     public function slotMainMenu() {
         $renderer = \App::closureTemplating();
 

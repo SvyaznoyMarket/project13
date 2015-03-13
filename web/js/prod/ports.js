@@ -112,37 +112,6 @@ console.log('ports.js inited');
 
 window.ANALYTICS = {
 	
-	adriverCommon : function() {
-		var RndNum4NoCash = Math.round(Math.random() * 1000000000);
-		var ar_Tail='unknown'; if (document.referrer) ar_Tail = escape(document.referrer);
-		document.write('<img src="' + ('https:' == document.location.protocol ? 'https:' : 'http:') + '//ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=182615&bt=21&pz=0&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border=0 width=1 height=1>')
-	},
-
-	adriverProduct : function() {
-		var a = arguments[0];
-
-		var RndNum4NoCash = Math.round(Math.random() * 1000000000);
-		var ar_Tail='unknown'; if (document.referrer) ar_Tail = escape(document.referrer);
-		document.write('<img src="http://ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=182615&bt=21&pz=0'+
-			'&custom=10='+ a.productId +';11='+ a.categoryId +
-			'&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border=0 width=1 height=1>')
-	},
-
-	adriverOrder : function() {
-		var a = (arguments && arguments[0]) ? arguments[0] : false,
-            ordNum = (a && a.order_id ) ? a.order_id : false;
-
-        if (!ordNum) {
-            return;
-        }
-
-		var RndNum4NoCash = Math.round(Math.random() * 1000000000);
-		var ar_Tail='unknown'; if (document.referrer) ar_Tail = escape(document.referrer);
-		document.write('<img src="http://ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=182615&sz=order&bt=55&pz=0'+
-			'&custom=150='+ ordNum +
-			'&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border="0" width="1" height="1" alt="" />');
-	},
-	
 	yandexOrderComplete: function() {
         try {
             var orderData = $('#jsOrder').data('value');

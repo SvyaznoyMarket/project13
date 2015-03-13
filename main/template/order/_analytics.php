@@ -29,8 +29,6 @@ if (\App::config()->analytics['enabled']) : ?>
             );
             ?>
 
-            <div id="adriverOrder" data-vars="<?= $page->json($jsonOrdr) ?>" class="jsanalytics"></div>
-
             <div id="adblenderOrder" data-vars="<?= $page->json($jsonOrdr) ?>" class="jsanalytics"></div>
             <!-- Efficient Frontiers -->
             <img src="http://pixel.everesttech.net/245/t?ev_Orders=1&amp;ev_Revenue=<?= $order->getSum() ?>&amp;ev_Quickorders=0&amp;ev_Quickrevenue=0&amp;ev_transid=<?= $order->getNumber() ?>" width="1" height="1" />
