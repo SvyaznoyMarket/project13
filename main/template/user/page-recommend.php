@@ -1,8 +1,9 @@
 <?php
 /**
- * @var $page     \View\User\OrderPage
- * @var $user     \Session\User
- * @var $products \Model\Product\Entity[]
+ * @var $page                \View\User\OrderPage
+ * @var $user                \Session\User
+ * @var $recommendedProducts \Model\Product\Entity[]
+ * @var $viewedProducts      \Model\Product\Entity[]
  */
 ?>
 
@@ -12,15 +13,13 @@ $helper = new \Helper\TemplateHelper();
 
 <div class="personalPage">
 
-<?= $page->render('user/_menu', ['page' => $page]) ?>
-
-<!--<div class="personalTitle">Товары для вас <span class="personalTitle_count"><?= count($products) ?></span></div>-->
+    <?= $page->render('user/_menu', ['page' => $page]) ?>
 
     <?= $helper->render('product/__slider', [
         'type'           => 'main',
         'title'          => 'Мы рекомендуем',
-        'products'       => array_values($products),
-        'count'          => count($products),
+        'products'       => $recommendedProducts,
+        'count'          => count($recommendedProducts),
         'limit'          => \App::config()->product['itemsInSlider'],
         'page'           => 1,
         'class'          => 'slideItem-7item',
@@ -29,6 +28,17 @@ $helper = new \Helper\TemplateHelper();
             'position' => 'UserRecommended',
             'method'   => 'PersonalRecommendation',
         ],
+    ]) ?>
+
+    <?= $helper->render('product/__slider', [
+        'type'      => 'viewed',
+        'title'     => 'Вы смотрели',
+        'products'  => $viewedProducts,
+        'count'     => count($viewedProducts),
+        'limit'     => \App::config()->product['itemsInSlider'],
+        'page'      => 1,
+        'class'     => 'slideItem-viewed',
+        'isCompact' => true,
     ]) ?>
 
 </div>
