@@ -13,9 +13,13 @@ class IndexPage extends \View\DefaultLayout {
             $this->addStylesheet('/css/basket/ie10.min.css');
         }
 
-        $backlink = $this->url('homepage');
-
-        if ($this->hasParam('products')) {
+        $backlink = null;
+        $productData = \App::user()->getCart()->getProductsNC();
+        $productData = end($productData);
+        if (!empty($productData['referer'])) {
+            $backlink = $productData['referer'];
+        }
+        if (!$backlink && $this->hasParam('products')) {
             $this->products = $this->getParam('products');
             foreach (array_reverse($this->products) as $product) {
                 /** @var $product \Model\Product\Entity */
@@ -24,6 +28,9 @@ class IndexPage extends \View\DefaultLayout {
                     break;
                 }
             }
+        }
+        if (!$backlink) {
+            $backlink = '/';
         }
 
         $this->setTitle('Корзина - Enter.ru');

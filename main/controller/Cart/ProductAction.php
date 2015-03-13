@@ -22,6 +22,12 @@ class ProductAction {
         $params = [];
         $moveProductToUp = false;
 
+        $referer = $request->headers->get('referer') ?: '/';
+        if (false === strpos($referer, \App::config()->mainHost)) {
+            $referer = '/';
+        }
+        $params['referer'] = $referer;
+
         if (is_string($sender) && !empty($sender)) {
             $sender = ['name' => $sender];
         }
@@ -67,7 +73,9 @@ class ProductAction {
                 }
             }
 
-            if ($request->query->get('credit') == 'on') $params['credit'] = ['enabled' => true];
+            if ($request->query->get('credit') == 'on') {
+                $params['credit'] = ['enabled' => true];
+            }
 
             // не учитываем является ли товар набором или нет - за это отвечает ядро
             $cart->setProduct($product, $quantity, $params, $moveProductToUp);
