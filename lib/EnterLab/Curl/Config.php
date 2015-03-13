@@ -19,7 +19,7 @@ class Config
     /**
      * @var int
      */
-    public $handleLimit = 100;
+    public $queryLimit = 30;
     /**
      * Таймаут для запросов по умолчанию, мс
      *
