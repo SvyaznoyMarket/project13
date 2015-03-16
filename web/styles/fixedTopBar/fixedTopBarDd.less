@@ -136,63 +136,55 @@
 	}
 }
 
-.cartLst {
+.ddBlock {
+	display: block;
+}
+/*
+Новая верстка - таблица
+*/
+.topbarfix-cart-wrap{
 	max-height: 207px;
 	overflow-y: auto;
 	overflow-x: hidden;
+}
+.table-cart{
+	border: none;
 
-	&_i {
+	&__i{
 		height: 55px;
-		padding: 5px 0 5px 5px;
 		overflow: hidden;
 		font-size: 11px;
-		min-width: 210px;
-
-		&.mHover {
-			background: #fff7e6;
+		vertical-align: top;
+		&:nth-last-child(4),&:nth-last-child(4)~&{
+			.table-cart__inf{
+				padding-right: 3px;
+			}
 		}
 	}
-
-	&_lk {
-		.inline-block();
-		width: 30px;
-		margin: 0 5px 0 0;
-	}
-
-	&_img {
+	&__img{
 		max-height: 40px;
 		max-width: 30px;
-	}
+		&-wrap{
+			padding: 5px;
+		}
 
-	&_n {
-		.inline-block();
-		width: 110px;
+	}
+	&__name{
 		line-height: 1.2;
-		height: 53px;
-		overflow: hidden;
+		padding: 5px 5px 5px 0;
+		width: 125px;
 	}
-
-	&_inf {
-		.inline-block();
-		width: 55px;
-
-		line-height: 1.2;
+	&__inf{
+		padding:5px 0;
+		.price{
+			white-space: nowrap;
+			display: block;
+		}
+		.quan{
+			display: block;
+		}
+		.del{
+			text-decoration: underline;
+		}
 	}
-
-	.del {
-		text-decoration: underline;
-	}
-
-	.price {
-		display: block;
-	}
-
-	.quan {
-		margin: 4px 0;
-		display: block;
-	}
-}
-
-.ddBlock {
-	display: block;
 }

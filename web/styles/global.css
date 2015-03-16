@@ -4407,66 +4407,54 @@ img[height="0"] {
   .quickOrder.btnBuy .btnBuy__eLink {
     width: 100%;
   }
-  .cartLst {
+  .ddBlock {
+    display: block;
+  }
+  /*
+Новая верстка - таблица
+*/
+  .topbarfix-cart-wrap {
     max-height: 207px;
     overflow-y: auto;
     overflow-x: hidden;
   }
-  .cartLst_i {
+  .table-cart {
+    border: none;
+  }
+  .table-cart__i {
     height: 55px;
-    padding: 5px 0 5px 5px;
     overflow: hidden;
     font-size: 11px;
-    min-width: 210px;
-  }
-  .cartLst_i.mHover {
-    background: #fff7e6;
-  }
-  .cartLst_lk {
-    display: inline-block;
     vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    width: 30px;
-    margin: 0 5px 0 0;
   }
-  .cartLst_img {
+  .table-cart__i:nth-last-child(4) .table-cart__inf,
+  .table-cart__i:nth-last-child(4) ~ .table-cart__i .table-cart__inf {
+    padding-right: 3px;
+  }
+  .table-cart__img {
     max-height: 40px;
     max-width: 30px;
   }
-  .cartLst_n {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    width: 110px;
-    line-height: 1.2;
-    height: 53px;
-    overflow: hidden;
+  .table-cart__img-wrap {
+    padding: 5px;
   }
-  .cartLst_inf {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    width: 55px;
+  .table-cart__name {
     line-height: 1.2;
+    padding: 5px 5px 5px 0;
+    width: 125px;
   }
-  .cartLst .del {
+  .table-cart__inf {
+    padding: 5px 0;
+  }
+  .table-cart__inf .price {
+    white-space: nowrap;
+    display: block;
+  }
+  .table-cart__inf .quan {
+    display: block;
+  }
+  .table-cart__inf .del {
     text-decoration: underline;
-  }
-  .cartLst .price {
-    display: block;
-  }
-  .cartLst .quan {
-    margin: 4px 0;
-    display: block;
-  }
-  .ddBlock {
-    display: block;
   }
 }
 @media all {
