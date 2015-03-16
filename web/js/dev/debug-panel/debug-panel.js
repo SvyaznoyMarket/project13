@@ -3,12 +3,11 @@
 		d = $(document),
 		debugPanel = $('.jsDebugPanel'),
 		debugPanelContent = $('.jsDebugPanelContent'),
-		currentDebugPanelItemConfig = debugPanel.data('value'),
+		currentDebugPanelItemConfig = JSON.parse(debugPanel.find('script').eq(0).html()),
 		currentDebugPanelItemContent = debugPanel.find('.jsCurrentDebugPanelItemContent'),
-		prevDebugPanelItemConfig = debugPanel.data('prev-value'),
+		prevDebugPanelItemConfig = JSON.parse(debugPanel.find('script').eq(1).html()),
 		prevDebugPanelItemContent = debugPanel.find('.jsPrevDebugPanelItemContent');
 	// end of vars
-
 
 	var
 		/**
