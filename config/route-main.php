@@ -854,10 +854,6 @@ return [
         'action'  => ['Subscribe\Action', 'create'],
         'method'  => ['POST'],
     ],
-    'subscribe.cancel' => [
-        'pattern' => '/subscribe/cancel',
-        'action'  => ['Subscribe\Action', 'cancel'],
-    ],
     'subscribe.confirm' => [
         'pattern' => '/subscribe/confirm',
         'action'  => ['Subscribe\Action', 'confirm'],

@@ -4070,11 +4070,8 @@ $(document).ready(function() {
 							notNowClickHandler = function( e ) {
 							e.preventDefault();
 
-							var url = $(this).data('url');
-
 							subPopup.slideUp(300);
 							window.docCookies.setItem('subscribed', 0, 157680000, '/');
-							$.post(url);
 						};
 					// end of functions
 

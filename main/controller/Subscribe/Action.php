@@ -64,19 +64,6 @@ class Action {
     }
 
     /**
-     * @return \Http\JsonResponse
-     */
-    public function cancel() {
-        try {
-            $responseData = ['success' => true];
-        } catch (\Exception $e) {
-            $responseData = ['success' => false];
-        }
-
-        return new \Http\JsonResponse($responseData);
-    }
-
-    /**
      * @param \Http\Request $request
      * @return \Http\Response
      * @throws \Exception
