@@ -79,6 +79,17 @@ class DeliveryAction extends OrderV3 {
                 $this->logger(['delivery-self-price' => $order->delivery->price]);
             }
 
+            $subscribeResult = false;  // ответ на подписку
+            try {
+                // Если стоит галка "подписаться на рассылку"
+                $email = !empty($data['user_info']['email']) ? $data['user_info']['email'] : null;
+                if (!empty($email)) {
+                    $this->addSubscribeRequest($subscribeResult, $email);
+                }
+            } catch (\Exception $e) {
+                \App::logger()->error($e->getMessage(), ['cart/split']);
+            }
+
             // вытаскиваем старые ошибки из предыдущих разбиений
             $oldErrors = $this->session->flash();
             if ($oldErrors && is_array($oldErrors)) {
@@ -92,7 +103,20 @@ class DeliveryAction extends OrderV3 {
 
             $page = new \View\OrderV3\DeliveryPage();
             $page->setParam('orderDelivery', $orderDelivery);
-            return new \Http\Response($page->show());
+
+            // http-ответ
+            $response = new \Http\Response($page->show());
+
+            // сохраняем результаты подписки в куку
+            if ($subscribeResult === true) {
+                $response->headers->setCookie(new \Http\Cookie(
+                    \App::config()->subscribe['cookieName2'],
+                    json_encode(['1' => true]), strtotime('+30 days' ), '/',
+                    \App::config()->session['cookie_domain'], false, false
+                ));
+            }
+
+            return $response;
 
         } catch (\Curl\Exception $e) {
             \App::exception()->remove($e);
@@ -280,8 +304,30 @@ class DeliveryAction extends OrderV3 {
         }
 
         return $changes;
-
     }
 
+    /** Добавление запроса на подписку
+     * @param $subscribeResult
+     * @param $email
+     */
+    private function addSubscribeRequest(&$subscribeResult, $email) {
 
+        $subscribeParams = [
+            'email'      => $email,
+            'geo_id'     => $this->user->getRegion()->getId(),
+            'channel_id' => 1,
+        ];
+
+        if ($userEntity = $this->user->getEntity()) {
+            $subscribeParams['token'] = $userEntity->getToken();
+        }
+
+        $this->client->addQuery('subscribe/create', $subscribeParams, [], function($data) use (&$subscribeResult) {
+            if (isset($data['subscribe_id']) && isset($data['subscribe_id'])) $subscribeResult = true;
+        }, function(\Exception $e) use (&$subscribeResult) {
+            \App::exception()->remove($e);
+            // "code":910,"message":"Не удается добавить подписку, указанный email уже подписан на этот канал рассылок"
+            if ($e->getCode() == 910) $subscribeResult = true;
+        });
+    }
 }
