@@ -45,31 +45,31 @@ return function(
         <form id="productCatalog-filter-form" class="fltrBtnPosBottom js-category-filter" action="<?= $baseUrl ?>" method="GET">
             <div class="fltrBtnLn">
                 <? if ($holidayProperty): ?>
-                    <?= $helper->render('gift/category/filter/property/__dropBox', ['productFilter' => $productFilter, 'property' => $holidayProperty]) ?>
+                    <?= $helper->render('gift/category/filter/element/__dropBox', ['productFilter' => $productFilter, 'property' => $holidayProperty]) ?>
                 <? endif ?>
 
                 <? if ($sexProperty): ?>
-                    <?= $helper->render('gift/category/filter/property/__dropBox', ['productFilter' => $productFilter, 'property' => $sexProperty]) ?>
+                    <?= $helper->render('gift/category/filter/element/__dropBox', ['productFilter' => $productFilter, 'property' => $sexProperty]) ?>
                 <? endif ?>
 
                 <? if ($statusProperty): ?>
-                    <?= $helper->render('gift/category/filter/property/__dropBox', ['productFilter' => $productFilter, 'property' => $statusProperty, 'sexProperty' => $sexProperty]) ?>
+                    <?= $helper->render('gift/category/filter/element/__dropBox', ['productFilter' => $productFilter, 'property' => $statusProperty, 'sexProperty' => $sexProperty]) ?>
                 <? endif ?>
 
                 <? if ($ageProperty): ?>
-                    <?= $helper->render('gift/category/filter/property/__dropBox', ['productFilter' => $productFilter, 'property' => $ageProperty, 'initialValue' => 'Возраст']) ?>
+                    <?= $helper->render('gift/category/filter/element/__dropBox', ['productFilter' => $productFilter, 'property' => $ageProperty, 'initialValue' => 'Возраст']) ?>
                 <? endif ?>
             </div>
 
             <div class="fltrBtnLn fltrBtnLn-bg">
                 <? if ($priceProperty): ?>
-                    <?= $helper->render('gift/category/filter/property/__slider', ['productFilter' => $productFilter, 'property' => $priceProperty]) ?>
+                    <?= $helper->render('gift/category/filter/element/__slider', ['productFilter' => $productFilter, 'property' => $priceProperty]) ?>
                 <? endif ?>
             </div>
 
             <div class="fltrBtnLn fltrBtnLn-lst fltrBtnLn-bg clearfix js-gift-category-filter-category">
                 <? if ($categoryProperty): ?>
-                    <?= $helper->render('gift/category/filter/property/__list', ['productFilter' => $productFilter, 'property' => $categoryProperty]) ?>
+                    <?= $helper->render('gift/category/filter/element/__list', ['productFilter' => $productFilter, 'property' => $categoryProperty]) ?>
                 <? endif ?>
             </div>
         </form>

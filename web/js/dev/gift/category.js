@@ -2,9 +2,9 @@ $(function() {
 	var
 		$body = $('body'),
 		dropBoxOpenClass = 'opn',
-		$dropBoxes = $('.js-gift-category-filter-property-dropBox'),
-		$dropBoxOpeners = $('.js-gift-category-filter-property-dropBox-opener'),
-		$dropBoxContents = $('.js-gift-category-filter-property-dropBox-content'),
+		$dropBoxes = $('.js-gift-category-filter-element-dropBox'),
+		$dropBoxOpeners = $('.js-gift-category-filter-element-dropBox-opener'),
+		$dropBoxContents = $('.js-gift-category-filter-element-dropBox-content'),
 		$priceProperty = $('.js-gift-category-filter-element-price');
 
 	// Открытие и закрытие выпадающих списков
@@ -13,7 +13,7 @@ $(function() {
 			e.preventDefault();
 
 			var
-				$dropBox = $(e.currentTarget).closest('.js-gift-category-filter-property-dropBox'),
+				$dropBox = $(e.currentTarget).closest('.js-gift-category-filter-element-dropBox'),
 				isOpen = $dropBox.hasClass(dropBoxOpenClass);
 
 			$dropBoxes.removeClass(dropBoxOpenClass);
@@ -39,7 +39,7 @@ $(function() {
 		});
 
 		function changeSexDropBox($dropBox, $selectedItem) {
-			if ($dropBox.is('.js-gift-category-filter-property-dropBox-holiday')) {
+			if ($dropBox.is('.js-gift-category-filter-element-dropBox-holiday')) {
 				var
 					selectedHolidayValue = $('input:radio', $selectedItem).val(),
 					previousSelectedHolidayValue = $('input:radio:checked', $dropBox).val();
@@ -53,19 +53,19 @@ $(function() {
 					}
 
 					if (newSexValue) {
-						$('.js-gift-category-filter-property-dropBox-sex .js-gift-category-filter-property-dropBox-content-item-input[value="' + newSexValue + '"]').closest('.js-gift-category-filter-property-dropBox-content-item').find('.js-gift-category-filter-property-dropBox-content-item-clicker').click();
+						$('.js-gift-category-filter-element-dropBox-sex .js-gift-category-filter-element-dropBox-content-item-input[value="' + newSexValue + '"]').closest('.js-gift-category-filter-element-dropBox-content-item').find('.js-gift-category-filter-element-dropBox-content-item-clicker').click();
 					}
 				}
 			}
 		}
 
 		function changeStatusDropBox($dropBox, $selectedItem) {
-			if ($dropBox.is('.js-gift-category-filter-property-dropBox-sex')) {
+			if ($dropBox.is('.js-gift-category-filter-element-dropBox-sex')) {
 				var
-					$statusDropBox = $('.js-gift-category-filter-property-dropBox-status'),
-					$statusDropBoxItems = $('.js-gift-category-filter-property-dropBox-content-item', $statusDropBox),
+					$statusDropBox = $('.js-gift-category-filter-element-dropBox-status'),
+					$statusDropBoxItems = $('.js-gift-category-filter-element-dropBox-content-item', $statusDropBox),
 					selectedSexValue = $('input:radio', $selectedItem).val(),
-					selectedStatusIndex = $statusDropBoxItems.index($('input:radio:checked', $statusDropBox).closest('.js-gift-category-filter-property-dropBox-content-item')),
+					selectedStatusIndex = $statusDropBoxItems.index($('input:radio:checked', $statusDropBox).closest('.js-gift-category-filter-element-dropBox-content-item')),
 					previousSelectedSexValue = $('input:radio:checked', $dropBox).val();
 
 				if (selectedSexValue != previousSelectedSexValue) {
@@ -101,7 +101,7 @@ $(function() {
 						$prototypeItemParent.append($prototypeItemClone);
 					});
 
-					var $statusDropBoxClickers = $('.js-gift-category-filter-property-dropBox-content-item-clicker', $statusDropBox);
+					var $statusDropBoxClickers = $('.js-gift-category-filter-element-dropBox-content-item-clicker', $statusDropBox);
 					if (!$statusDropBoxClickers[selectedStatusIndex]) {
 						selectedStatusIndex = 0;
 					}
@@ -111,14 +111,14 @@ $(function() {
 			}
 		}
 
-		$dropBoxContents.on('click', '.js-gift-category-filter-property-dropBox-content-item-clicker', function(e) {
+		$dropBoxContents.on('click', '.js-gift-category-filter-element-dropBox-content-item-clicker', function(e) {
 			var
-				$dropBox = $(e.currentTarget).closest('.js-gift-category-filter-property-dropBox'),
-				$item = $(e.currentTarget).closest('.js-gift-category-filter-property-dropBox-content-item'),
-				title = $('.js-gift-category-filter-property-dropBox-content-item-title', $item).text();
+				$dropBox = $(e.currentTarget).closest('.js-gift-category-filter-element-dropBox'),
+				$item = $(e.currentTarget).closest('.js-gift-category-filter-element-dropBox-content-item'),
+				title = $('.js-gift-category-filter-element-dropBox-content-item-title', $item).text();
 
-			$('.js-gift-category-filter-property-dropBox-title', $dropBox).text(title);
-			$('.js-gift-category-filter-property-dropBox-opener', $dropBox).removeClass('fltrBtnBox_tggl-dsbld');
+			$('.js-gift-category-filter-element-dropBox-title', $dropBox).text(title);
+			$('.js-gift-category-filter-element-dropBox-opener', $dropBox).removeClass('fltrBtnBox_tggl-dsbld');
 
 			setTimeout(function() { // setTimeout для IE8 (иначе не посылается событие change)
 				$dropBox.removeClass(dropBoxOpenClass);
