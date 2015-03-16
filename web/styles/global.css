@@ -7409,7 +7409,6 @@ img[height="0"] {
   .packageSetBuy {
     clear: both;
     float: right;
-    height: 35px;
     margin: 15px 0 0;
     width: 170px;
   }
@@ -10279,6 +10278,9 @@ img[height="0"] {
   }
 }
 @media all {
+  .personalPage {
+    padding-bottom: 20px;
+  }
   .personalPage_left {
     display: inline-block;
     vertical-align: top;
@@ -10405,6 +10407,10 @@ img[height="0"] {
   }
   .personalInfo .shopsInfo_time {
     margin: 5px 0 0;
+  }
+  .personalPage .bGoodsSlider:nth-last-child(n-1) ~ .bGoodsSlider {
+    border-top: 1px solid #e6e6e6;
+    margin-top: 20px;
   }
 }
 @media all {

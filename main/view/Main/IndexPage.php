@@ -109,6 +109,7 @@ class IndexPage extends \View\DefaultLayout {
         // Удаление продуктов с одинаковыми именами из массива персональных рекомендаций
         array_walk ( $personalForWalkingIds , function ($id, $key) use (&$personalIds, &$names, $products) {
             // Имя продукта
+            if (!$products[$id] instanceof \Model\Product\BasicEntity) return;
             $currentProductName = trim($products[$id]->getName());
             if (array_search($currentProductName, $names) === false) {
                 // Если такого имени нет в массиве имён, то добавляем имя в массив

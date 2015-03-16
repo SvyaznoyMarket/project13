@@ -303,7 +303,7 @@ class CompleteAction extends OrderV3 {
         try {
 
             // Если есть ошибка, то в ядро не надо делать запроса
-            if ($error) throw new \Exception($data['Error']);
+            if ($error) throw new \Exception($error);
 
             $result = \App::coreClientV2()->query('payment/svyaznoy-club', [], $data, \App::config()->coreV2['hugeTimeout']);
 
@@ -324,13 +324,15 @@ class CompleteAction extends OrderV3 {
 
         } catch (\Exception $e) {
             \App::exception()->remove($e);
-            $page->setParam('errors', array_merge(
-                $page->getParam('errors', []),
-                [[
-                    'code'      => $e->getCode(),
-                    'message'   => \App::config()->debug ? $e->getMessage() : 'Ошибка списания баллов Связного Клуба'
-                ]]
-            ));
+            if (!empty($e->getCode())) {
+                $page->setParam('errors', array_merge(
+                    $page->getParam('errors', []),
+                    [[
+                        'code' => $e->getCode(),
+                        'message' => \App::config()->debug ? $e->getMessage() : 'Ошибка списания баллов Связного Клуба'
+                    ]]
+                ));
+            }
             return false;
         }
     }
