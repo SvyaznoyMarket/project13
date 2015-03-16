@@ -87,7 +87,7 @@ class CompletePage extends Layout {
             foreach ($methods as $paymentKey => $payment) {
                 foreach ($payment->methods as $methodKey => $method) {
                     // убираем все, в которых нет мотивирующей акции
-                    if (is_null($method->getAction($this->getParam('motivationAction')))) unset($methods[$paymentKey]->methods[$methodKey]);
+                    if (is_null($method->getAction($this->getParam('motivationAction'))) && !$method->isSvyaznoyClub()) unset($methods[$paymentKey]->methods[$methodKey]);
                 }
             }
             $this->setParam('ordersPayment', $methods);
