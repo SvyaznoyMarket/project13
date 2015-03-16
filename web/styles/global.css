@@ -8345,7 +8345,7 @@ img[height="0"] {
     position: relative;
     float: left;
     margin: 0 0 5px 5px;
-    width: 225px;
+    width: 208px;
     padding-left: 20px;
   }
   .deliv-list .deliv-item__addr-name {
@@ -8416,7 +8416,7 @@ img[height="0"] {
     margin-top: 2px;
   }
   .deliv-list .deliv-item__info {
-    float: left;
+    float: right;
   }
   .deliv-ctrls {
     padding-left: 10px;
