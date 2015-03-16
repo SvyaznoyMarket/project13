@@ -52,6 +52,23 @@
 
 	});
 
+	// Событие добавления в корзину SITE-5289
+	$body.on('addtocart', function ga_addtocart(event, data) {
+		try {
+			if (1 == data.cart.products.length) {
+				console.info('#js-cart-firstRecommendation');
+				var $container = $('#js-cart-firstRecommendation');
+				if ($container.length) {
+					$container.html($($container.text()));
+					$container.find('.js-slider').goodsSlider();
+					$container.show();
+				}
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	});
+
 	// Ручное обновление количества продукта
 	$body.on('keydown', '.ajaquant', function(e){
 		var $input = $(e.target),
