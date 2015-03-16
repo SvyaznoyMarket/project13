@@ -4443,6 +4443,10 @@ img[height="0"] {
     padding: 5px 5px 5px 0;
     width: 125px;
   }
+  .table-cart__name-inn {
+    max-width: 120px;
+    display: block;
+  }
   .table-cart__inf {
     padding: 5px 0;
   }
