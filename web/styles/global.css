@@ -8168,7 +8168,7 @@ img[height="0"] {
   }
   .orderCol_f_l {
     float: left;
-    width: 255px;
+    width: 240px;
   }
   .orderCol_f_r {
     float: right;
@@ -8190,8 +8190,10 @@ img[height="0"] {
   .orderCol_summ {
     float: right;
     clear: right;
-    width: 92px;
+    min-width: 92px;
+    margin-left: 10px;
     font-size: 16px;
+    white-space: nowrap;
   }
   .orderCol-r {
     float: right;
