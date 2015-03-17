@@ -9294,6 +9294,7 @@
     padding: 10px;
     position: absolute;
     width: 180px;
+    word-wrap: break-word;
   }
   .slideItem_flt_i:after {
     border-left: 6px solid transparent;

@@ -4480,7 +4480,7 @@ img[height="0"] {
   }
   .table-cart__i:nth-last-child(4) .table-cart__inf,
   .table-cart__i:nth-last-child(4) ~ .table-cart__i .table-cart__inf {
-    padding-right: 17px;
+    padding-right: 18px;
   }
   .table-cart__img {
     max-height: 40px;
@@ -4526,7 +4526,7 @@ img[height="0"] {
     top: 0px;
   }
   .table-cart__inf {
-    padding: 5px 0;
+    padding: 5px 5px 5px 0px;
     white-space: nowrap;
   }
   .table-cart__inf .price {
@@ -5121,6 +5121,7 @@ img[height="0"] {
     display: inline-block;
     vertical-align: top;
     width: 480px;
+    word-wrap: break-word;
     *display: inline;
     zoom: 1;
   }
@@ -8589,7 +8590,7 @@ img[height="0"] {
 }
 @media all {
   /*---------Оформление заказа 3.0 ----------*/
-  /* 
+  /*
     orderCol
         orderCol_cnt
         orderCol_t
@@ -8638,10 +8639,11 @@ img[height="0"] {
     font-size: 16px;
   }
   .orderCol_data-summ {
-    width: 90px;
+    min-width: 90px;
     padding-right: 10px;
     text-align: right;
     color: #000000;
+    white-space: nowrap;
   }
   .orderCol_data-count {
     border-bottom: 1px dotted;
