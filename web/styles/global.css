@@ -7783,6 +7783,11 @@ img[height="0"] {
   .popup-auth#auth-block.state_default .authForm_registerLink {
     display: inline;
   }
+  .popup-auth#auth-block[data-state='default'] .authForm_register,
+  .popup-auth#auth-block.state_default .authForm_register {
+    visibility: hidden;
+    display: none;
+  }
   .popup-auth#auth-block[data-state='register'] .authForm_reset,
   .popup-auth#auth-block.state_register .authForm_reset {
     overflow: hidden;
@@ -7805,6 +7810,11 @@ img[height="0"] {
   }
   .popup-auth#auth-block[data-state='register'] .authForm_registerLink,
   .popup-auth#auth-block.state_register .authForm_registerLink {
+    display: none;
+  }
+  .popup-auth#auth-block[data-state='register'] .authForm__login,
+  .popup-auth#auth-block.state_register .authForm__login {
+    visibility: hidden;
     display: none;
   }
   .popup-auth#auth-block[data-state='reset'] .authForm_login,
