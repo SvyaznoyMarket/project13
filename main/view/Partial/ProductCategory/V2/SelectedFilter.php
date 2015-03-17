@@ -70,7 +70,7 @@ class SelectedFilter {
 
                 $links = $this->getPropertyLinks($helper, $productFilter, $property, $baseUrl, $sort);
                 if ($links) {
-                    if ($property->isShop() || ($property->isBrand() && $productFilter->getCategory()->isV2Furniture())) {
+                    if ($property->isShop() || ($property->isBrand() && !$property->getIsAlwaysShow())) {
                         $name = '';
                     } else {
                         $name = $property->getName();
@@ -93,7 +93,7 @@ class SelectedFilter {
     private function getPropertyLinks(\Helper\TemplateHelper $helper, \Model\Product\Filter $productFilter, \Model\Product\Filter\Entity $property, $baseUrl, $sort) {
         $isPrice = $property->isPrice();
 
-        if (($property->isBrand() && !$productFilter->getCategory()->isV2Furniture()) || $isPrice) {
+        if (($property->isBrand() && $property->getIsAlwaysShow()) || $isPrice) {
             return [];
         }
 

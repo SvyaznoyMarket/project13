@@ -428,10 +428,7 @@ class Entity extends BasicEntity {
     }
 
     public function isV2() {
-        $root = $this->getRoot();
-        if (!$root) {
-            $root = $this;
-        }
+        $root = $this->getRootOrSelf();
 
         if ($this->isNewMainPage()) {
             // Бытовая техника
@@ -449,10 +446,7 @@ class Entity extends BasicEntity {
     }
 
     public function isV2Furniture() {
-        $root = $this->getRoot();
-        if (!$root) {
-            $root = $this;
-        }
+        $root = $this->getRootOrSelf();
 
         if ($this->isNewMainPage()) {
             // Мебель
@@ -462,6 +456,28 @@ class Entity extends BasicEntity {
         }
 
         return false;
+    }
+
+    public function isShowSmartChoice() {
+        $root = $this->getRootOrSelf();
+
+        if ($this->isNewMainPage()) {
+            // Мебель
+            if ($root->getUi() === 'f7a2f781-c776-4342-81e8-ab2ebe24c51a') {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private function getRootOrSelf() {
+        $root = $this->getRoot();
+        if (!$root) {
+            return $this;
+        }
+
+        return $root;
     }
 
     public function isV3() {

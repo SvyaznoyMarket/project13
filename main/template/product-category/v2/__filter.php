@@ -26,7 +26,7 @@ return function(
             $priceFilter->setStepType('price');
         } else if ($property->isLabel()) {
             $labelFilter = $property;
-        } else if ($property->isBrand() && !$productFilter->getCategory()->isV2Furniture()) {
+        } else if ($property->isBrand() && $property->getIsAlwaysShow()) {
             $brandFilter1 = clone $property;
 
             $brandFilter2 = clone $property;
@@ -141,7 +141,7 @@ return function(
                                         <? foreach ($group->properties as $property): ?>
                                             <? if ($property->getIsInList()): ?>
                                                 <div class="fltrBtn_param"> <!--fltrBtn_param-2col-->
-                                                    <? if (!$property->isShop() && !($property->isBrand() && $productFilter->getCategory()->isV2Furniture()) && 'instore' !== $property->getId()): ?>
+                                                    <? if (!$property->isShop() && !($property->isBrand() && !$property->getIsAlwaysShow()) && 'instore' !== $property->getId()): ?>
                                                         <div class="fltrBtn_param_n"><?= $property->getName() ?></div>
                                                     <? endif ?>
 

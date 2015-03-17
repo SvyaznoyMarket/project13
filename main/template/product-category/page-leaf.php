@@ -57,7 +57,7 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
             ) // дочерние категории and relatedCategories ?>
         <? endif ?>
 
-        <? if (!$category->isV2Furniture()): ?>
+        <? if ($category->isShowSmartChoice()): ?>
             <?= $helper->render('product/__smartChoice', ['smartChoiceProducts' => $smartChoiceProducts]); ?>
         <? endif ?>
 

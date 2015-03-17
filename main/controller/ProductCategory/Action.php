@@ -324,7 +324,7 @@ class Action {
         }
 
         if ($category->isV2()) {
-            $this->transformFiltersV2($filters);
+            $this->transformFiltersV2($filters, $category);
         }
 
         $this->correctFiltersForJewel($filters, $category);
@@ -634,7 +634,7 @@ class Action {
     /**
      * @param \Model\Product\Filter\Entity[] $filters
      */
-    private function transformFiltersV2(array &$filters) {
+    private function transformFiltersV2(array &$filters, \Model\Product\Category\Entity $category) {
         $newProperties = [];
 
         foreach ($filters as $key => $property) {
@@ -670,6 +670,10 @@ class Action {
                     unset($filters[$key]);
                 }
             } else if ($property->isBrand()) {
+                if (!$category->isV2Furniture()) {
+                    $property->setIsAlwaysShow(true);
+                }
+
                 $this->sortOptionsByQuantity($property);
             }
         }
