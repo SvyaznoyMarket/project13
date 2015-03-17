@@ -386,7 +386,10 @@
 			emptyCompareNoticeElements[emptyCompareNoticeName] = element;
 		}
 
-		emptyCompareNoticeElements[emptyCompareNoticeName].addClass(emptyCompareNoticeShowClass);
+		if (!$('.mhintDdOn').length){
+			emptyCompareNoticeElements[emptyCompareNoticeName].addClass(emptyCompareNoticeShowClass);
+		}
+
 	}
 
 	console.info('Init userbar module');
