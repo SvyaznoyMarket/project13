@@ -102,6 +102,7 @@ class DeliveryAction {
             ];
 
             $shopData = &$result['shop_list'];
+            /** @var \Model\Shop\Entity[] $shops */
             $shops = [];
 
             // получаем список магазинов
@@ -192,8 +193,8 @@ class DeliveryAction {
                             // добавляем url к магазинам
                             foreach ($shops as $shop) {
                                 foreach ($delivery['shop'] as $key => $shopItem) {
-                                    if($shopItem['id'] == $shop->getId()) {
-                                        $delivery['shop'][$key]['url'] = \App::router()->generate('shop.show', array('regionToken' => $shop->getRegion()->getToken(), 'shopToken' => $shop->getToken()));
+                                    if ($shop && ($shopItem['id'] == $shop->getId()) && $shop->getRegion()) {
+                                        $delivery['shop'][$key]['url'] = \App::router()->generate('shop.show', ['regionToken' => $shop->getRegion()->getToken(), 'shopToken' => $shop->getToken()]);
                                     }
                                 }
                             }
