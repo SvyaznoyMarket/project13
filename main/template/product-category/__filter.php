@@ -86,7 +86,7 @@ return function(
     $isV3 = $productFilter->getCategory() && $productFilter->getCategory()->isV3();
     ?>
 
-    <div class="fltr <? if ($isV3): ?>fltr-hasAlwaysShowFilters<? endif ?>">
+    <div class="fltr">
         <form id="productCatalog-filter-form" class="bFilter clearfix js-category-filter <? if ($isV3): ?>js-category-filter-v3<? endif ?>" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
             <? if ($isV3): ?>
                 <? // Для IE9 (чтобы он отправлял форму при нажатии на клавишу enter в текстовом поле ввода) ?>
