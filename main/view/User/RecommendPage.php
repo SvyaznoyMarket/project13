@@ -29,4 +29,17 @@ class RecommendPage extends \View\DefaultLayout {
     public function slotBodyDataAttribute() {
         return 'lk';
     }
+
+    public function slotUserbar() {
+        if ($this->new_menu) {
+            return $this->render('main/_userbar');
+        }
+    }
+
+    public function slotUserbarContentData() {
+        return [
+            'target' => '.js-showTopBar',
+            'showWhenFullCartOnly' => true,
+        ];
+    }
 }

@@ -86,4 +86,8 @@ class PaymentMethodEntity {
         return null;
     }
 
+    public function isSvyaznoyClub() {
+        return $this->id == self::PAYMENT_SVYAZNOY_CLUB;
+    }
+
 } 
