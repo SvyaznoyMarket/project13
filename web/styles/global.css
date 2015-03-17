@@ -4468,11 +4468,8 @@ img[height="0"] {
   }
   .table-cart {
     border: none;
-    width: 231px;
-    /*table-layout: fixed;*/
   }
   .table-cart__i {
-    width: 231px;
     height: 55px;
     overflow: hidden;
     font-size: 11px;
@@ -8190,8 +8187,7 @@ img[height="0"] {
   .orderCol_summ {
     float: right;
     clear: right;
-    min-width: 92px;
-    margin-left: 10px;
+    width: 120px;
     font-size: 16px;
     white-space: nowrap;
   }
@@ -8641,7 +8637,7 @@ img[height="0"] {
     font-size: 16px;
   }
   .orderCol_data-summ {
-    min-width: 90px;
+    width: 110px;
     padding-right: 10px;
     text-align: right;
     color: #000000;
