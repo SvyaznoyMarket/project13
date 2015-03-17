@@ -247,7 +247,7 @@ class Action {
             }
         }
 
-        $productFilter = new \Model\Product\Filter($filters, false, $shop);
+        $productFilter = new \Model\Product\Filter($filters, $shop);
         $productFilter->setValues($values);
 
         return $productFilter;

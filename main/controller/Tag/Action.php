@@ -289,22 +289,6 @@ class Action {
     /**
      * @param string        $categoryPath
      * @param \Http\Request $request
-     * @return \Http\RedirectResponse
-     */
-    public function setInstore($categoryPath, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
-
-        $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('product.category', [
-            'categoryPath' => $categoryPath,
-            'instore'      => 1,
-        ]));
-
-        return $response;
-    }
-
-    /**
-     * @param string        $categoryPath
-     * @param \Http\Request $request
      * @return \Http\JsonResponse
      * @throws \Exception\NotFoundException
      */
@@ -406,7 +390,7 @@ class Action {
 
 
         // Product Filter
-        $productFilter = new \Model\Product\Filter($filters, self::inStore(), $shop);
+        $productFilter = new \Model\Product\Filter($filters, $shop);
         //$productFilter = $this->getFilter($filters, $category, $brand, $request, $shop); // old
         //$productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $category, $brand, $request, $shop);
 
@@ -488,7 +472,7 @@ class Action {
             }
         }
 
-        $productFilter = new \Model\Product\Filter($filters, $inStore, $shop);
+        $productFilter = new \Model\Product\Filter($filters, $shop);
         $productFilter->setCategory($category);
         $productFilter->setValues($values);
 

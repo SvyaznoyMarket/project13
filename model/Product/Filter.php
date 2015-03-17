@@ -13,18 +13,15 @@ class Filter {
     private $filters = [];
     /** @var array */
     private $values = [];
-    private $inStore = false;
     /** @var \Model\Shop\Entity */
     private $shop;
 
     /**
      * @param FilterEntity[] $filterCollection
-     * @param bool           $inStore
      * @param null           $shop
      */
-    public function __construct(array $filterCollection, $inStore = false, $shop = null) {
+    public function __construct(array $filterCollection, $shop = null) {
         $this->filters = $filterCollection;
-        $this->inStore = $inStore;
         $this->shop = $shop;
     }
 
@@ -183,13 +180,6 @@ class Filter {
         }
 
         return null;
-    }
-
-    /**
-     * @return bool
-     */
-    public function inStore() {
-        return $this->inStore;
     }
 
     public function hasInListGroupedProperties() {

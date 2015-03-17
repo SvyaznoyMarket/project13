@@ -1175,7 +1175,7 @@ class Action {
             }
         }
 
-        $productFilter = new \Model\Product\Filter($filters, $inStore, $shop);
+        $productFilter = new \Model\Product\Filter($filters, $shop);
         $productFilter->setCategory($category);
         $productFilter->setValues($values);
 
