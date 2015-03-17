@@ -280,7 +280,7 @@ class Filter {
             array_unshift($groups, $group);
         }
 
-        if ($brandProperty && !$property->getIsAlwaysShow()) {
+        if ($brandProperty && !$brandProperty->getIsAlwaysShow()) {
             $group = new Group();
             $group->name = $brandProperty->getName();
             $group->properties[] = $brandProperty;
