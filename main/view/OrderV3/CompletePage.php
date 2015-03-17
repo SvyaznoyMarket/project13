@@ -186,15 +186,19 @@ class CompletePage extends Layout {
         $orders = $this->getParam('orders', []);
         $data = [];
 
-        /* Дополнительные данные для LinkProfit */
-        if (\App::config()->partners['LinkProfit']['enabled'] && \App::partner()->getName() == 'linkprofit') {
-            foreach ($orders as $order) {
-                $data[] = [
-                    'orderNumber' => $order->getNumber(),
-                    'orderSum' => $order->getSum(),
-                    'webmaster_id' => \App::request()->cookies->get(\App::config()->partners['LinkProfit']['cookieName'], 0)
-                ];
+        foreach ($orders as $order) {
+            /* Основные данные для GTM */
+            $orderData = [
+                'orderNumber' => $order->getNumber(),
+                'orderSum' => $order->getSum(),
+            ];
+
+            /* Дополнительные данные для LinkProfit */
+            if (\App::config()->partners['LinkProfit']['enabled'] && \App::partner()->getName() == 'linkprofit') {
+                $orderData['webmaster_id'] = \App::request()->cookies->get(\App::config()->partners['LinkProfit']['cookieName'], 0);
             }
+
+            $data[] = $orderData;
         }
 
         return parent::slotGoogleTagManagerJS($data);
