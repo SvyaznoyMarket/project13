@@ -52,7 +52,7 @@ class Action {
                     'imgs'  => $item['image'] ? ($host . $urls[AbTest::isNewMainPage() ? 4 : 0] . $item['image']) : null,
                     'imgb'  => $item['image'] ? ($host . $urls[AbTest::isNewMainPage() ? 3 : 1] . $item['image']) : null,
                     'url'   => $item['url'],
-                    't'     => $i > 0 ? $timeout : $timeout + 4000,
+                    't'     => $i > 0 ? $timeout : $timeout + 2000,
                     'ga'    => $bannerId . ' - ' . $item['name'],
                     'pos'   => $i,
                 ];
