@@ -631,7 +631,8 @@ class FormAction {
 
         // Фильтруем продукты, которые стоят меньше, чем рублевая скидка по фишке
         if ($coupon->getIsCurrency()) {
-            $products = array_filter($products, function(\Model\Product\Entity $product) use ($coupon) { return $product->getPrice() > $coupon->getPrice(); });
+            $price = abs($coupon->getPrice());
+            $products = array_filter($products, function(\Model\Product\Entity $product) use ($price) { return $product->getPrice() > $price; });
         }
 
         // перемешиваем список товаров
