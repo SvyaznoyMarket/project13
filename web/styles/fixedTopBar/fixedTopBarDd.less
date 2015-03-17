@@ -150,7 +150,7 @@
 .table-cart{
 	border: none;
 	width:231px;
-	table-layout: fixed;
+	/*table-layout: fixed;*/
 
 	&__i{
 		width:231px;
@@ -160,7 +160,7 @@
 		vertical-align: top;
 		&:nth-last-child(4),&:nth-last-child(4)~&{
 			.table-cart__inf{
-				padding-right: 3px;
+				padding-right: 17px;
 			}
 		}
 	}
@@ -176,8 +176,8 @@
 	&__name{
 		line-height: 1.2;
 		padding: 5px 5px 5px 0;
-		min-width: 90px;
-		max-width: 125px;
+		width: 100%;
+		max-width: 0;
 		&-inn{
 			max-width: 120px;
 			display: block;
@@ -190,8 +190,8 @@
 	}
 	&__inf{
 		padding:5px 0;
-		max-width: 80px;
-		display: inline-block;
+
+		white-space: nowrap;
 		.price{
 			white-space: nowrap;
 			display: block;

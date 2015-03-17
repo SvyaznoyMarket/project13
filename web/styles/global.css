@@ -4469,7 +4469,7 @@ img[height="0"] {
   .table-cart {
     border: none;
     width: 231px;
-    table-layout: fixed;
+    /*table-layout: fixed;*/
   }
   .table-cart__i {
     width: 231px;
@@ -4480,7 +4480,7 @@ img[height="0"] {
   }
   .table-cart__i:nth-last-child(4) .table-cart__inf,
   .table-cart__i:nth-last-child(4) ~ .table-cart__i .table-cart__inf {
-    padding-right: 3px;
+    padding-right: 17px;
   }
   .table-cart__img {
     max-height: 40px;
@@ -4493,8 +4493,8 @@ img[height="0"] {
   .table-cart__name {
     line-height: 1.2;
     padding: 5px 5px 5px 0;
-    min-width: 90px;
-    max-width: 125px;
+    width: 100%;
+    max-width: 0;
   }
   .table-cart__name-inn {
     max-width: 120px;
@@ -4527,8 +4527,7 @@ img[height="0"] {
   }
   .table-cart__inf {
     padding: 5px 0;
-    max-width: 80px;
-    display: inline-block;
+    white-space: nowrap;
   }
   .table-cart__inf .price {
     white-space: nowrap;
