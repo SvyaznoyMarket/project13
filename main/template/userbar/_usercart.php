@@ -22,7 +22,7 @@
                             </a>
                         </td>
                         <td class="table-cart__name">
-                            <a class="table-cart__name-inn" data-bind="attr: { href: link }, text: name"></a>
+                            <a class="table-cart__name-inn" data-bind="attr: { href: link, title: name }, text: name"></a>
                         </td>
                         <td class="table-cart__inf">
                             <span class="price"><span data-bind="html: window.printPrice(price)"></span> &nbsp;<span class="rubl">p</span></span>
