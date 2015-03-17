@@ -8798,6 +8798,9 @@ img[height="0"] {
   .orderPayment_block--border .orderSum-lbl {
     padding-left: 24px;
   }
+  .orderPayment_block_error {
+    border-color: #ec434f;
+  }
   .orderPayment_block .orderSum-lbl {
     width: 200px;
     margin-right: 14px;
