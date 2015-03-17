@@ -4480,7 +4480,7 @@ img[height="0"] {
   }
   .table-cart__i:nth-last-child(4) .table-cart__inf,
   .table-cart__i:nth-last-child(4) ~ .table-cart__i .table-cart__inf {
-    padding-right: 18px;
+    padding-right: 22px;
   }
   .table-cart__img {
     max-height: 40px;
