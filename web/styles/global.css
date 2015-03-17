@@ -4475,10 +4475,6 @@ img[height="0"] {
     font-size: 11px;
     vertical-align: top;
   }
-  .table-cart__i:nth-last-child(4) .table-cart__inf,
-  .table-cart__i:nth-last-child(4) ~ .table-cart__i .table-cart__inf {
-    padding-right: 22px;
-  }
   .table-cart__img {
     max-height: 40px;
     max-width: 30px;
@@ -4523,7 +4519,7 @@ img[height="0"] {
     top: 0px;
   }
   .table-cart__inf {
-    padding: 5px 5px 5px 0px;
+    padding: 5px 22px 5px 0px;
     white-space: nowrap;
   }
   .table-cart__inf .price {
