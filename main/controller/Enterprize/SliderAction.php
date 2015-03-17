@@ -70,7 +70,7 @@ class SliderAction {
                         'price'         => $helper->formatPrice($product->getPrice()),
                         'discountPrice' => $helper->formatPrice(
                             $enterpizeCoupon->getIsCurrency()
-                            ? ($product->getPrice() - $enterpizeCoupon->getPrice())
+                            ? ($product->getPrice() - (($enterpizeCoupon->getPrice() > 0) ? $enterpizeCoupon->getPrice() : -$enterpizeCoupon->getPrice()))
                             : ceil($product->getPrice() - $product->getPrice() * $enterpizeCoupon->getPrice() / 100)
                         ),
                         'name'          => $product->getName(),
