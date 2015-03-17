@@ -49,7 +49,7 @@ return function(
         $links[] = $link;
     }
 
-    if ($category->isV2()) {
+    if (!$category->isShowFullChildren()) {
         $templatePath = 'product-category/v2/_children';
     } else if ('furniture' === $category_class) {
         $templatePath = 'furniture/product-category/_listInFilter';

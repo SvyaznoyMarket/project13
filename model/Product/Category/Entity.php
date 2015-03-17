@@ -471,6 +471,37 @@ class Entity extends BasicEntity {
         return true;
     }
 
+    public function isShowFullChildren() {
+        if ($this->isV2()) {
+            return (bool)$this->getClosest([
+                '56ee3e3c-a1ee-4a42-834f-97bd1de3b16e', // Мебель для руководителей
+                'da1e9ace-9c81-4d19-a069-36a809e8b98f', // Мебель для персонала
+                'df612c33-3a48-47dd-b424-f0398f82e37e', // Коллекции мебели для гостиной
+                '7d6fd0b2-e57b-4f4b-a577-9ce81d6af07a', // Коллекции мебели для спальни
+                '61b83d8a-6383-4e51-9173-f51f89726cd4', // Коллекции мебели для прихожей
+                '4358f982-288f-4973-8eec-d77253fc9233', // Коллекции мебели для детской
+                '81dd06df-221c-4eb8-b095-73b3982f0874', // Коллекции мягкой мебели
+            ]);
+        }
+
+        return true;
+    }
+
+    private function getClosest(array $expectedUis) {
+        /** @var Entity[] $ancestors */
+        $ancestors = $this->ancestor;
+        $ancestors[] = $this;
+        $ancestors = array_reverse($ancestors);
+
+        foreach ($ancestors as $category) {
+            if (in_array($category->getUi(), $expectedUis, true)) {
+                return $category;
+            }
+        }
+
+        return null;
+    }
+
     private function getRootOrSelf() {
         $root = $this->getRoot();
         if (!$root) {
