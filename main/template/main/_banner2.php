@@ -2,6 +2,7 @@
 /**
  * @var $banners array
  */
+$isArrowsVisible = count($banners) > 4
 ?>
 
 <? if (!empty($banners)) : ?>
@@ -15,7 +16,7 @@
     </ul>
 
     <div class="slidesbnnr_thmbs_wrap">
-        <div class="slidesbnnr_thmbs_btn slidesbnnr_thmbs_btn-top jsMainBannersButton jsMainBannersUpButton"></div>
+        <? if ($isArrowsVisible) : ?><div class="slidesbnnr_thmbs_btn slidesbnnr_thmbs_btn-top jsMainBannersButton jsMainBannersUpButton"></div><? endif ?>
 
         <ul class="slidesbnnr_thmbs jsMainBannerThumbsWrapper">
             <? foreach ($banners as $key => $banner) : ?>
@@ -29,7 +30,7 @@
             <? endforeach; ?>
         </ul>
 
-        <div class="slidesbnnr_thmbs_btn slidesbnnr_thmbs_btn-bottom jsMainBannersButton jsMainBannersDownButton"></div>
+        <? if ($isArrowsVisible) : ?><div class="slidesbnnr_thmbs_btn slidesbnnr_thmbs_btn-bottom jsMainBannersButton jsMainBannersDownButton"></div><? endif ?>
     </div>
 </div>
 <? endif; ?>
