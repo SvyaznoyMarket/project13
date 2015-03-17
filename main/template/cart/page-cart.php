@@ -55,7 +55,23 @@ $isNewRecommendation =
     <?= $page->render('cart/ab-self-delivery/_recommendSlider') ?>
 <? endif ?>
 
-<? if ($cart->isEmpty()): ?>
+<? if ($cart->isEmpty()): // жуткий костыль SITE-5289 ?>
+    <div id="js-cart-firstRecommendation" style="display: none;">
+        <? $page->startEscape()?>
+        <div class="basketLine">
+            <?= $helper->render('product/__slider', [
+                'type'      => 'alsoBought',
+                'products'  => [],
+                'url'       => $page->url('cart.recommended', [
+                    'sender' => [
+                        'position' => 'Basket',
+                    ],
+                ]),
+            ]) ?>
+        </div>
+        <? $page->endEscape() ?>
+    </div>
+
     <div class="basketLine">
     <?= $helper->render('product/__slider', [
         'type'      => 'main',
@@ -84,9 +100,7 @@ $isNewRecommendation =
     <div class="clear"></div>
 
 
-<? if ($isNewRecommendation && \App::config()->product['pullRecommendation']): ?>
-
-    <? if (!$cart->isEmpty()): ?>
+<? if ($isNewRecommendation && \App::config()->product['pullRecommendation'] && !$cart->isEmpty()): ?>
     <div class="basketLine">
         <?= $helper->render('product/__slider', [
             'type'      => 'alsoBought',
@@ -97,8 +111,7 @@ $isNewRecommendation =
                 ],
             ]),
         ]) ?>
-        </div>
-    <? endif ?>
+    </div>
 <? endif ?>
 
 <div class="clear"></div>
