@@ -48,7 +48,7 @@
                             Вы успешно применили плюсы <img src="/styles/order/img/sclub-complete.jpg"><br/>
                             <b>Не забудьте</b> взять карту «Связной Клуб» в магазин!
                         </div>
-                        Сумма к оплате: <b><?= $helper->formatPrice($order->getSum() - $order->getSvyaznoyPaymentSum()) ?></b> <span class="rubl">p</span><br />
+                        Сумма к оплате: <b><?= $helper->formatPrice($order->getSum() - $order->getSvyaznoyPaymentSum()) ?> <span class="rubl">p</span></b><br />
                         Оплата при получении — наличными или картой.
                     <? elseif (in_array($order->getPaymentId(), [
                         PaymentMethodEntity::PAYMENT_PAYPAL,
