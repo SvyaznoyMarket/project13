@@ -625,6 +625,7 @@ class DefaultLayout extends Layout {
     /** Google Tag Manager Container (ports.js)
      * @param array $data Дополнительные данные для GTM
      * @return string
+     * @link https://developers.google.com/tag-manager/
      */
     public function slotGoogleTagManagerJS($data = []) {
 
@@ -632,10 +633,9 @@ class DefaultLayout extends Layout {
 
         if (!\App::config()->googleTagManager['enabled'] || !\App::config()->analytics['enabled'] || !$containerId) return '';
 
-        $data = array_merge(['containerId' => $containerId], $data);
-
         return
-            '<div id="googleTagManagerJS" class="jsanalytics" data-value="' . $this->json($data) . '">
+            '<div id="googleTagManagerJS" class="jsanalytics" data-value="' . \App::config()->googleTagManager['containerId'] . '">
+                <script>var dataLayerGTM = '. json_encode($data, JSON_UNESCAPED_UNICODE) .';</script>
                 <!-- Google Tag Manager -->
                 <noscript><iframe src="//www.googletagmanager.com/ns.html?id=' . $containerId . '" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <!-- End Google Tag Manager -->

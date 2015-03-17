@@ -1203,17 +1203,10 @@ window.ANALYTICS = {
 	},
 
 	googleTagManagerJS: function () {
-		var
-			manager = $('#googleTagManagerJS'),
-			data = manager.data('value');
-		// end of vars
+		var containerId = $('#googleTagManagerJS').data('value');
 
 		console.groupCollapsed('ports.js::googleTagManagerJS');
-
-		if ("undefined" == typeof(data) || !data.hasOwnProperty('containerId')) {
-			console.warn('Не переданы данные для googleTagManager (containerId, ...) ');
-			return;
-		}
+        console.log('googleTagManagerJS init');
 
 		(function(w,d,s,l,i){
 			w[l]=w[l]||[];
@@ -1222,10 +1215,8 @@ window.ANALYTICS = {
 			j.async=true;
 			j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;
 			f.parentNode.insertBefore(j,f);
-
-			console.log('googleTagManagerJS init');
-			console.groupEnd();
-		})(window,document,'script','dataLayer', data.containerId);
+		})(window,document,'script','dataLayerGTM', containerId);
+        console.groupEnd();
 	},
 
 	flocktoryExchangeJS: function () {
