@@ -25,8 +25,6 @@ class Entity extends BasicEntity {
     protected $seoHotlinks = [];
     /** @var int|null */
     protected $productCount;
-    /** @var int|null */
-    protected $globalProductCount;
     /** @var bool|null */
     protected $hasChild;
     /** @var float|null */
@@ -94,7 +92,6 @@ class Entity extends BasicEntity {
         }
 
         if (isset($data['product_count'])) $this->setProductCount($data['product_count']);
-        if (isset($data['product_count_global'])) $this->setGlobalProductCount($data['product_count_global']);
         if (isset($data['has_children'])) $this->setHasChild($data['has_children']);
         if (isset($data['price_change_percent_trigger'])) $this->setPriceChangePercentTrigger($data['price_change_percent_trigger'] / 100);
         if (isset($data['price_change_trigger_enabled'])) $this->setPriceChangeTriggerEnabled($data['price_change_trigger_enabled']);
@@ -179,20 +176,6 @@ class Entity extends BasicEntity {
     public function getProductCount()
     {
         return $this->productCount;
-    }
-
-    /**
-     * @param int $globalProductCount
-     */
-    public function setGlobalProductCount($globalProductCount) {
-        $this->globalProductCount = (int)$globalProductCount;
-    }
-
-    /**
-     * @return int
-     */
-    public function getGlobalProductCount() {
-        return $this->globalProductCount;
     }
 
     /**

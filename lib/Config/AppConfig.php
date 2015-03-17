@@ -320,7 +320,6 @@ class AppConfig {
         'itemsInCategorySlider'  => null,
         'minCreditPrice'         => null,
         'totalCount'             => null,
-        'globalListEnabled'      => null, // глобальный (без учета региона) список товаров
         'showAveragePrice'       => null,
         'allowBuyOnlyInshop'     => null, // позволять покупать товар, который находится только в магазине
         'reviewEnabled'          => null, // отзывы о товаре

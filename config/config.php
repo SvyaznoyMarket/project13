@@ -315,8 +315,6 @@ $c->product['totalCount']               = 55000;
 $c->product['recommendationSessionKey']     = 'recommendationProductIds';
 $c->product['productPageSendersSessionKey'] = 'productPageSenders';
 $c->product['productPageSendersForMarketplaceSessionKey'] = 'productPageSendersForMarketplace';
-// глобальный (без учета региона) список товаров
-$c->product['globalListEnabled']      = true;
 $c->product['showAveragePrice']       = false;
 $c->product['allowBuyOnlyInshop']     = true;
 $c->product['reviewEnabled']          = true;

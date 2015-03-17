@@ -3,13 +3,11 @@
 namespace Controller\Tag;
 
 class Action {
-    private static $globalCookieName = 'global';
-
     public function index($tagToken, \Http\Request $request, $categoryToken = null) {
         \App::logger()->debug('Exec ' . __METHOD__);
         $client = \App::coreClientV2();
-        /** @var $region \Model\Region\Entity|null */
-        $region = self::isGlobal() ? null : \App::user()->getRegion();
+        /** @var $region \Model\Region\Entity */
+        $region = \App::user()->getRegion();
 
         $tag = \RepositoryManager::tag()->getEntityByToken($tagToken);
         if (!$tag) {
@@ -128,7 +126,7 @@ class Action {
 
         $shop = null;
         try {
-            if (!\Controller\ProductCategory\Action::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
+            if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
             }
         } catch (\Exception $e) {
@@ -317,8 +315,7 @@ class Action {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
-        // vars
-        $region = self::isGlobal() ? null : \App::user()->getRegion();
+        $region = \App::user()->getRegion();
         $categoryToken = null;
         $category = null;
         $selectedCategory = null;
@@ -396,7 +393,7 @@ class Action {
         // магазины
         $shop = null;
         try {
-            if (!self::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
+            if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
             }
         } catch (\Exception $e) {
@@ -409,7 +406,7 @@ class Action {
 
 
         // Product Filter
-        $productFilter = new \Model\Product\Filter($filters, self::isGlobal(), self::inStore(), $shop);
+        $productFilter = new \Model\Product\Filter($filters, self::inStore(), $shop);
         //$productFilter = $this->getFilter($filters, $category, $brand, $request, $shop); // old
         //$productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $category, $brand, $request, $shop);
 
@@ -434,19 +431,13 @@ class Action {
      * @return \Model\Product\Filter
      */
     protected function getFilter(array $filters, \Model\Product\Category\TreeEntity $category, \Model\Brand\Entity $brand = null, \Http\Request $request, $shop = null) {
-        // флаг глобального списка в параметрах запроса
-        $isGlobal = self::isGlobal();
-        //
         $inStore = self::inStore();
 
         // регион для фильтров
-        $region = $isGlobal ? null : \App::user()->getRegion();
+        $region = \App::user()->getRegion();
 
         // filter values
         $values = (array)$request->get(\View\Product\FilterForm::$name, []);
-        if ($isGlobal) {
-            $values['global'] = 1;
-        }
         if ($inStore) {
             $values['instore'] = 1;
         }
@@ -497,19 +488,11 @@ class Action {
             }
         }
 
-        $productFilter = new \Model\Product\Filter($filters, $isGlobal, $inStore, $shop);
+        $productFilter = new \Model\Product\Filter($filters, $inStore, $shop);
         $productFilter->setCategory($category);
         $productFilter->setValues($values);
 
         return $productFilter;
-    }
-
-    /**
-     * @return bool
-     */
-    public static function isGlobal() {
-        return \App::user()->getRegion()->getHasTransportCompany()
-            && (bool)(\App::request()->cookies->get(self::$globalCookieName, false));
     }
 
     /**

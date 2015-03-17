@@ -13,20 +13,17 @@ class Filter {
     private $filters = [];
     /** @var array */
     private $values = [];
-    private $isGlobal = false;
     private $inStore = false;
     /** @var \Model\Shop\Entity */
     private $shop;
 
     /**
      * @param FilterEntity[] $filterCollection
-     * @param bool           $isGlobal
      * @param bool           $inStore
      * @param null           $shop
      */
-    public function __construct(array $filterCollection, $isGlobal = false, $inStore = false, $shop = null) {
+    public function __construct(array $filterCollection, $inStore = false, $shop = null) {
         $this->filters = $filterCollection;
-        $this->isGlobal = $isGlobal;
         $this->inStore = $inStore;
         $this->shop = $shop;
     }
@@ -89,10 +86,6 @@ class Filter {
 
         if ($this->category) {
             $return[] = ['category', 1, $this->category->getId()];
-        }
-
-        if (array_key_exists('global', $this->values) && $this->values['global']) {
-            $return[] = ['is_global_buyable', 1, 1];
         }
 
         if (array_key_exists('instore', $this->values) && $this->values['instore']) {
@@ -190,13 +183,6 @@ class Filter {
         }
 
         return null;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isGlobal() {
-        return $this->isGlobal;
     }
 
     /**

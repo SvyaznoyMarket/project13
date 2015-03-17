@@ -6,31 +6,7 @@ use Model\Product\Filter\Entity;
 use View\Product\FilterForm;
 
 class Action {
-    private static $globalCookieName = 'global';
     protected $pageTitle;
-
-    /**
-     * @param string        $categoryPath
-     * @param \Http\Request $request
-     * @return \Http\RedirectResponse
-     */
-    public function setGlobal($categoryPath, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
-
-        $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('product.category', ['categoryPath' => $categoryPath]));
-
-        if ($request->query->has('global')) {
-            if ($request->query->get('global')) {
-                $cookie = new \Http\Cookie(self::$globalCookieName, 1, strtotime('+7 days' ));
-                $response->headers->clearCookie(\App::config()->shop['cookieName']);
-                $response->headers->setCookie($cookie);
-            } else {
-                $response->headers->clearCookie(self::$globalCookieName);
-            }
-        }
-
-        return $response;
-    }
 
     /**
      * @param string        $categoryPath
@@ -64,7 +40,7 @@ class Action {
         $categoryToken = explode('/', $categoryPath);
         $categoryToken = end($categoryToken);
 
-        $region = self::isGlobal() ? null : \App::user()->getRegion();
+        $region = \App::user()->getRegion();
 
         $repository = \RepositoryManager::productCategory();
         $category = $repository->getEntityByToken($categoryToken);
@@ -84,7 +60,7 @@ class Action {
 
         $shop = null;
         try {
-            if (!self::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
+            if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
             }
         } catch (\Exception $e) {
@@ -151,8 +127,8 @@ class Action {
             \App::user()->setRegion($regionEntity);
         }
 
-        /** @var $region \Model\Region\Entity|null */
-        $region = self::isGlobal() ? null : \App::user()->getRegion();
+        /** @var $region \Model\Region\Entity */
+        $region = \App::user()->getRegion();
 
         // подготовка 2-го пакета запросов
 
@@ -311,7 +287,7 @@ class Action {
 
         $shop = null;
         try {
-            if (!self::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
+            if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
             }
         } catch (\Exception $e) {
@@ -741,7 +717,7 @@ class Action {
         $links = [];
         foreach ($categories as $child) {
             $config = isset($categoryConfigById[$child->getId()]) ? $categoryConfigById[$child->getId()] : null;
-            $productCount = $child->getProductCount() ? : $child->getGlobalProductCount();
+            $productCount = $child->getProductCount();
             $totalText = '';
 
             if ( $productCount > 0 ) {
@@ -998,11 +974,7 @@ class Action {
         }
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage($itemsPerPage);
-        if (self::isGlobal()) {
-            $category->setGlobalProductCount($productPager->count());
-        } else {
-            $category->setProductCount($productPager->count());
-        }
+        $category->setProductCount($productPager->count());
 
         // проверка на максимально допустимый номер страницы
         if ((1 != $productPager->getPage()) && (($productPager->getPage() - $productPager->getLastPage()) > 0)) {
@@ -1115,21 +1087,15 @@ class Action {
      * @return \Model\Product\Filter
      */
     public function getFilter(array $filters, \Model\Product\Category\Entity $category = null, \Model\Brand\Entity $brand = null, \Http\Request $request, $shop = null) {
-        // флаг глобального списка в параметрах запроса
-        $isGlobal = self::isGlobal();
-        //
         $inStore = self::inStore();
 
         // регион для фильтров
-        $region = $isGlobal ? null : \App::user()->getRegion();
+        $region = \App::user()->getRegion();
 
         // добывание фильтров из http-запроса
         $values = $this->getFilterFromUrl($request);
         $values = $this->deleteNotExistsValues($values, $filters);
 
-        if ($isGlobal) {
-            $values['global'] = 1;
-        }
         if ($inStore) {
             $values['instore'] = 1;
             $values['label'][] = 1; // TODO SITE-2403 Вернуть фильтр instore
@@ -1209,7 +1175,7 @@ class Action {
             }
         }
 
-        $productFilter = new \Model\Product\Filter($filters, $isGlobal, $inStore, $shop);
+        $productFilter = new \Model\Product\Filter($filters, $inStore, $shop);
         $productFilter->setCategory($category);
         $productFilter->setValues($values);
 
@@ -1264,14 +1230,6 @@ class Action {
         }
 
         return $values;
-    }
-
-    /**
-     * @return bool
-     */
-    public static function isGlobal() {
-        return \App::user()->getRegion()->getHasTransportCompany()
-        && (bool)(\App::request()->cookies->get(self::$globalCookieName, false));
     }
 
     /**

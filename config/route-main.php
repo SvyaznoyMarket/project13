@@ -189,18 +189,6 @@ return [
         'require' => ['sliceToken' => '[\w\d-_]+'],
     ],
 
-    // показывать глобальный список товаров
-    'product.category.global.short' => [
-        'pattern' => '/catalog/{categoryPath}/_global',
-        'action'  => ['ProductCategory\Action', 'setGlobal'],
-        'require' => ['categoryPath' => '[\w\d-_]+'],
-    ],
-    // показывать глобальный список товаров
-    'product.category.global' => [
-        'pattern' => '/catalog/{categoryPath}/_global',
-        'action'  => ['ProductCategory\Action', 'setGlobal'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+'],
-    ],
     // показывать товары на складе
     'product.category.instore' => [
         'pattern' => '/catalog/{categoryPath}/_instore',

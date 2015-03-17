@@ -366,9 +366,6 @@ class Repository {
                 if ($region && isset($data['product_count'])) {
                     $category->setProductCount($data['product_count']);
                 }
-                if (\App::config()->product['globalListEnabled'] && isset($data['product_count_global'])) {
-                    $category->setGlobalProductCount($data['product_count_global']);
-                }
 
                 // добавляем дочерние узлы
                 if (isset($data['children']) && is_array($data['children'])) {
