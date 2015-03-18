@@ -534,6 +534,4 @@ $c->bandit['enabled'] = false;
 
 $c->tealeaf['enabled'] = true;
 
-$c->gift['buyProducts']['cookie']['name'] = 'giftBuyProducts';
-
 return $c;

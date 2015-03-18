@@ -652,14 +652,6 @@ class AppConfig {
         'enabled' => null,
     ];
 
-    public $gift = [
-        'buyProducts' => [
-            'cookie' => [
-                'name' => null
-            ]
-        ],
-    ];
-
     public function __construct() {
 
         $this->vkontakteOauth = new OAuth\VkontakteConfig();
