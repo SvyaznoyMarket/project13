@@ -68,8 +68,11 @@ class Client
     public function addQuery(Query $query)
     {
         $query->id = uniqid();
+        $query->rejectCallback = function() use ($query) {
+            $this->removeQuery($query);
+        };
 
-        $create = function() use ($query) {
+        $create = function() use (&$query) {
             $handle = curl_init();
             $id = (int)$handle;
             if (!$id) {
@@ -77,9 +80,6 @@ class Client
             }
             $query->handle = $handle;
             curl_setopt_array($handle, $query->request->options);
-            $query->rejectCallback = function() use ($query) {
-                $this->removeQuery($query);
-            };
 
             $done = curl_multi_add_handle($this->mh, $handle);
             if (0 !== $done) {
@@ -198,7 +198,6 @@ class Client
             $callback = is_callable($query->resolveCallback) ? $query->resolveCallback : null;
 
             $this->removeQuery($query);
-            //$this->removeRequest($id + 1);
 
             if ($callback) {
                 try {

@@ -55,7 +55,7 @@ trait CurlQueryTrait
         }
 
         $timeout = \App::config()->coreV2['timeout'] * 1000; // таймаут, мс
-        $timeout *= $timeoutRatio;
+        $timeout *= (int)$timeoutRatio;
         // ограничение таймаута
         if (!$timeout || $timeout > 90000) {
             $timeout = 5000;
@@ -75,22 +75,24 @@ trait CurlQueryTrait
         $startedAt = microtime(true);
         \App::logger()->info([
             'message' => 'Create curl',
-            'cache' => true, // важно
-            'url' => $url,
-            'data' => $data,
+            'cache'   => true, // важно
+            'url'     => $url,
+            'data'    => $data,
             'timeout' => $timeout,
             'startAt' => $startedAt,
-            'delayRatio' => array_map(function($ratio) use ($timeout) { return $ratio * $timeout; }, $delayRatios),
+            'delays'  => array_map(function($ratio) use ($timeout) { return (int)($ratio * $timeout); }, $delayRatios),
         ], ['curl']);
         // end
 
         $queryCollection = new \ArrayObject();
         foreach ($delayRatios as $delayRatio) {
+            $delay = (int)($timeout * $delayRatio);
+
             $query = $this->createCurlQuery(
                 $url,
                 $data,
                 $timeout,
-                $timeout * $delayRatio
+                $delay
             );
 
             $query->resolveCallback = function () use (
@@ -123,6 +125,7 @@ trait CurlQueryTrait
                         'endAt' => microtime(true),
                     ], ['curl']);
                     // end
+                    //var_dump($error);
 
                     return;
                 }
@@ -231,6 +234,7 @@ trait CurlQueryTrait
                 return strlen($h);
             },
             CURLOPT_WRITEFUNCTION => function($ch, $str) use (&$query) {
+                //var_dump((string)$query->request);
                 $query->response->body .= $str;
 
                 return strlen($str);
