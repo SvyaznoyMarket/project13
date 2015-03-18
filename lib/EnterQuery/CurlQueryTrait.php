@@ -35,17 +35,19 @@ trait CurlQueryTrait
     /**
      * @param $url
      * @param array $data
-     * @param int|null $timeoutRatio
      * @param \Exception $error
      * @param callable|null $decoder
+     * @param int|null $timeoutRatio
+     * @param float[] $delayRatios
      * @return Query[]
      */
     public function prepareCurlQuery(
         $url,
         $data = [],
-        $timeoutRatio = null,
         \Exception &$error = null,
-        $decoder = null
+        $decoder = null,
+        $timeoutRatio = 1,
+        array $delayRatios = null
     )
     {
         if ($timeoutRatio < 0) {
@@ -59,8 +61,10 @@ trait CurlQueryTrait
             $timeout = 5000;
         }
 
-        // коэффициенты для задержек запросов (retry)
-        $delayRatios = [0, 0.06];
+        // задержки по умолчанию
+        if (null === $delayRatios) {
+            $delayRatios = [0, 0.1];
+        }
 
         // если таймаут слишком маленький, то убираем retry
         if ($timeout <= 1) {

@@ -79,7 +79,12 @@ class SliderAction {
                             $enterpizeCoupon->getDiscount()
                             ? $cartButtonAction->execute(
                                 new \Helper\TemplateHelper(),
-                                $product
+                                $product,
+                                null,
+                                false,
+                                [],
+                                false,
+                                'slider'
                             )
                             : null
                         ,

@@ -12,7 +12,7 @@
 		right: -1px;
 		background: #ffffff;
 		border: 1px solid #ccc;
-		width: 230px;
+		width: 227px;
 		.drop-shadow(0, 3px, 5px, 0.2);
 		color: @black;
 
@@ -136,63 +136,65 @@
 	}
 }
 
-.cartLst {
+.ddBlock {
+	display: block;
+}
+/*
+Новая верстка - таблица
+*/
+.topbarfix-cart-wrap{
 	max-height: 207px;
 	overflow-y: auto;
 	overflow-x: hidden;
+}
+.table-cart{
+	border: none;
 
-	&_i {
+	&__i{
 		height: 55px;
-		padding: 5px 0 5px 5px;
 		overflow: hidden;
 		font-size: 11px;
-		min-width: 210px;
-
-		&.mHover {
-			background: #fff7e6;
-		}
+		vertical-align: top;
 	}
-
-	&_lk {
-		.inline-block();
-		width: 30px;
-		margin: 0 5px 0 0;
-	}
-
-	&_img {
+	&__img{
 		max-height: 40px;
 		max-width: 30px;
-	}
+		&-wrap{
+			padding: 5px;
+			width: 40px;
+		}
 
-	&_n {
-		.inline-block();
-		width: 110px;
+	}
+	&__name{
 		line-height: 1.2;
-		height: 53px;
-		overflow: hidden;
+		padding: 5px 5px 5px 0;
+		width: 100%;
+		max-width: 0;
+		&-inn{
+			max-width: 120px;
+			display: block;
+			position: relative;
+			overflow: hidden;
+			&:after{
+				.after-gradient-stub(15px);
+			}
+		}
 	}
+	&__inf{
+		padding:5px 10px 5px 0px;
 
-	&_inf {
-		.inline-block();
-		width: 55px;
-
-		line-height: 1.2;
+		white-space: nowrap;
+		.price{
+			white-space: nowrap;
+			display: block;
+			min-width: 50px;
+		}
+		.quan{
+			display: block;
+		}
+		.del{
+			display: block;
+			text-decoration: underline;
+		}
 	}
-
-	.del {
-		text-decoration: underline;
-	}
-
-	.price {
-		display: block;
-	}
-
-	.quan {
-		margin: 4px 0;
-		display: block;
-	}
-}
-
-.ddBlock {
-	display: block;
 }
