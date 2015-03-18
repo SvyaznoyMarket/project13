@@ -26,7 +26,7 @@ class Client
     {
         $this->config = $config;
         $this->mh = curl_multi_init();
-        curl_multi_setopt($this->mh, CURLMOPT_MAXCONNECTS, 50);
+        curl_multi_setopt($this->mh, CURLMOPT_MAXCONNECTS, 25);
         //curl_multi_setopt($this->mh, CURLMOPT_PIPELINING, 0);
     }
 
