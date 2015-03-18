@@ -185,7 +185,14 @@ namespace EnterApplication\Action\ProductCard
             // регион
             $regionQuery = (new Query\Region\GetById($request->regionId))->prepare($regionError);
 
-            $curl->execute(); // важно: только товар и регион в запросе
+            // дерево категорий для меню
+            //$categoryTreeQuery = (new Query\Product\Category\GetTree(null, 3, null, null, true))->prepare($categoryTreeError);
+            $categoryRootTreeQuery = (new Query\Product\Category\GetRootTree($request->regionId, 3))->prepare($categoryRootTreeError);
+
+            // главное меню
+            $menuQuery = (new Query\MainMenu\GetByTagList(['site-web']))->prepare($menuError);
+
+            $curl->execute(); // важно: только самые важные запросы: товар, регион, корневые категории, меню
 
             // отзывы о товаре
             /*
@@ -217,13 +224,6 @@ namespace EnterApplication\Action\ProductCard
 
             // каналы подписок
             $subscribeChannelQuery = (new Query\Subscribe\Channel\Get())->prepare($subscribeChannelError);
-
-            // дерево категорий для меню
-            //$categoryTreeQuery = (new Query\Product\Category\GetTree(null, 3, null, null, true))->prepare($categoryTreeError);
-            $categoryRootTreeQuery = (new Query\Product\Category\GetRootTree($request->regionId, 3))->prepare($categoryRootTreeError);
-
-            // главное меню
-            $menuQuery = (new Query\MainMenu\GetByTagList(['site-web']))->prepare($menuError);
 
             // выполнение запросов
             $curl->execute();

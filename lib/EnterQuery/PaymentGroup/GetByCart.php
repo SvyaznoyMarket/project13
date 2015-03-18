@@ -75,7 +75,9 @@ namespace EnterQuery\PaymentGroup
                     $this->response->paymentGroups = isset($result['detail'][0]) ? $result['detail'] : [];
 
                     return $result; // for cache
-                }
+                },
+                1, // timeout ratio
+                [0] // delay ratio
             );
 
             return $this;

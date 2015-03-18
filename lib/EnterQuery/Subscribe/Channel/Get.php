@@ -36,7 +36,9 @@ namespace EnterQuery\Subscribe\Channel
                     $this->response->channels = isset($result[0]) ? $result : [];
 
                     return $result; // for cache
-                }
+                },
+                0.5, // timeout ratio
+                [0] // delay ratio
             );
 
             return $this;
