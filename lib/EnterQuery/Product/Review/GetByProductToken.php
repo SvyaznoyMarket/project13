@@ -43,7 +43,6 @@ namespace EnterQuery\Product\Review
                     ]
                 ),
                 [], // data
-                0.5, // timeout multiplier
                 $error,
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode);
