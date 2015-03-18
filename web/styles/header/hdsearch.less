@@ -196,6 +196,8 @@
         display: block;
 
         padding: 5px 10px;
+        overflow: hidden;
+        position: relative;
         &:hover, &_iact{
             text-decoration: none;
 
@@ -205,6 +207,12 @@
 
                 border-bottom: 1px solid #a0a0a0;
             }
+        }
+        &:hover:after{
+            .after-gradient-stub(10px,#e6e6e6);
+        }
+        &:after{
+            .after-gradient-stub(10px);
         }
     }
     &_img{

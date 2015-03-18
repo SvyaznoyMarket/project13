@@ -35,7 +35,6 @@ namespace EnterQuery\Shop
                     ]
                 ),
                 [], // data
-                1, // timeout multiplier
                 $error,
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];

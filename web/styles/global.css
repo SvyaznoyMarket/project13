@@ -2138,6 +2138,8 @@ img[height="0"] {
   .searchdd_lk {
     display: block;
     padding: 5px 10px;
+    overflow: hidden;
+    position: relative;
   }
   .searchdd_lk:hover,
   .searchdd_lk_iact {
@@ -2148,6 +2150,52 @@ img[height="0"] {
   .searchdd_lk_iact .undrlh {
     text-decoration: none;
     border-bottom: 1px solid #a0a0a0;
+  }
+  .searchdd_lk:hover:after {
+    content: '';
+    background: #e6e6e6;
+    background: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #e6e6e6 100%);
+    /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(100%, #e6e6e6));
+    /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #e6e6e6 100%);
+    /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #e6e6e6 100%);
+    /* Opera 11.10+ */
+    background: -ms-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #e6e6e6 100%);
+    /* IE10+ */
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, #e6e6e6 100%);
+    /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00ffffff', endColorstr='@stop', GradientType=1);
+    /* IE6-8 */
+    height: 100%;
+    width: 10px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+  }
+  .searchdd_lk:after {
+    content: '';
+    background: #ffffff;
+    background: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+    /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(100%, #ffffff));
+    /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+    /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+    /* Opera 11.10+ */
+    background: -ms-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+    /* IE10+ */
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+    /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00ffffff', endColorstr='@stop', GradientType=1);
+    /* IE6-8 */
+    height: 100%;
+    width: 10px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
   }
   .searchdd_img {
     width: 48px;
@@ -4301,7 +4349,7 @@ img[height="0"] {
     right: -1px;
     background: #ffffff;
     border: 1px solid #ccc;
-    width: 230px;
+    width: 227px;
     -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
     -moz-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
@@ -4407,66 +4455,84 @@ img[height="0"] {
   .quickOrder.btnBuy .btnBuy__eLink {
     width: 100%;
   }
-  .cartLst {
+  .ddBlock {
+    display: block;
+  }
+  /*
+Новая верстка - таблица
+*/
+  .topbarfix-cart-wrap {
     max-height: 207px;
     overflow-y: auto;
     overflow-x: hidden;
   }
-  .cartLst_i {
+  .table-cart {
+    border: none;
+  }
+  .table-cart__i {
     height: 55px;
-    padding: 5px 0 5px 5px;
     overflow: hidden;
     font-size: 11px;
-    min-width: 210px;
-  }
-  .cartLst_i.mHover {
-    background: #fff7e6;
-  }
-  .cartLst_lk {
-    display: inline-block;
     vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    width: 30px;
-    margin: 0 5px 0 0;
   }
-  .cartLst_img {
+  .table-cart__img {
     max-height: 40px;
     max-width: 30px;
   }
-  .cartLst_n {
-    display: inline-block;
-    vertical-align: top;
-    /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    width: 110px;
+  .table-cart__img-wrap {
+    padding: 5px;
+    width: 40px;
+  }
+  .table-cart__name {
     line-height: 1.2;
-    height: 53px;
+    padding: 5px 5px 5px 0;
+    width: 100%;
+    max-width: 0;
+  }
+  .table-cart__name-inn {
+    max-width: 120px;
+    display: block;
+    position: relative;
     overflow: hidden;
   }
-  .cartLst_inf {
-    display: inline-block;
-    vertical-align: top;
+  .table-cart__name-inn:after {
+    content: '';
+    background: #ffffff;
+    background: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+    /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(100%, #ffffff));
+    /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+    /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+    /* Opera 11.10+ */
+    background: -ms-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+    /* IE10+ */
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+    /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00ffffff', endColorstr='@stop', GradientType=1);
     /* IE6-8 */
-    *display: inline;
-    *zoom: 1;
-    width: 55px;
-    line-height: 1.2;
+    height: 100%;
+    width: 15px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
   }
-  .cartLst .del {
+  .table-cart__inf {
+    padding: 5px 10px 5px 0px;
+    white-space: nowrap;
+  }
+  .table-cart__inf .price {
+    white-space: nowrap;
+    display: block;
+    min-width: 50px;
+  }
+  .table-cart__inf .quan {
+    display: block;
+  }
+  .table-cart__inf .del {
+    display: block;
     text-decoration: underline;
-  }
-  .cartLst .price {
-    display: block;
-  }
-  .cartLst .quan {
-    margin: 4px 0;
-    display: block;
-  }
-  .ddBlock {
-    display: block;
   }
 }
 @media all {
@@ -5046,6 +5112,7 @@ img[height="0"] {
     display: inline-block;
     vertical-align: top;
     width: 480px;
+    word-wrap: break-word;
     *display: inline;
     zoom: 1;
   }
@@ -8102,7 +8169,7 @@ img[height="0"] {
   }
   .orderCol_f_l {
     float: left;
-    width: 255px;
+    width: 240px;
   }
   .orderCol_f_r {
     float: right;
@@ -8124,8 +8191,9 @@ img[height="0"] {
   .orderCol_summ {
     float: right;
     clear: right;
-    width: 92px;
+    width: 120px;
     font-size: 16px;
+    white-space: nowrap;
   }
   .orderCol-r {
     float: right;
@@ -8524,7 +8592,7 @@ img[height="0"] {
 }
 @media all {
   /*---------Оформление заказа 3.0 ----------*/
-  /* 
+  /*
     orderCol
         orderCol_cnt
         orderCol_t
@@ -8573,10 +8641,11 @@ img[height="0"] {
     font-size: 16px;
   }
   .orderCol_data-summ {
-    width: 90px;
+    width: 110px;
     padding-right: 10px;
     text-align: right;
     color: #000000;
+    white-space: nowrap;
   }
   .orderCol_data-count {
     border-bottom: 1px dotted;
@@ -8736,6 +8805,9 @@ img[height="0"] {
   }
   .orderPayment_block--border .orderSum-lbl {
     padding-left: 24px;
+  }
+  .orderPayment_block_error {
+    border-color: #ec434f;
   }
   .orderPayment_block .orderSum-lbl {
     width: 200px;

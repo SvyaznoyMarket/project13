@@ -377,7 +377,7 @@ $c->shopPhoto['url'] = [
     5 => '/8/1/original/',
 ];
 
-$c->banner['timeout'] = 6000;
+$c->banner['timeout'] = 5000;
 $c->banner['url'] = [
     0 => '/4/1/230x302/',
     1 => '/4/1/768x302/',

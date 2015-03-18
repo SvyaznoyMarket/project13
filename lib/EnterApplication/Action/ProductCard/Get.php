@@ -185,7 +185,7 @@ namespace EnterApplication\Action\ProductCard
             // регион
             $regionQuery = (new Query\Region\GetById($request->regionId))->prepare($regionError);
 
-            //$curl->execute(); // важно: только товар и регион в запросе
+            $curl->execute(); // важно: только товар и регион в запросе
 
             // отзывы о товаре
             /*
@@ -229,6 +229,13 @@ namespace EnterApplication\Action\ProductCard
             $curl->execute();
 
             $this->removeCurl();
+
+            // обработка ошибок
+            if ($menuError) {
+                $menuQuery->response->items = \App::dataStoreClient()->query('/main-menu.json')['item'];
+
+                \App::logger()->error(['error' => $menuError, 'sender' => __FILE__ . ' ' .  __LINE__], ['main_menu', 'controller']);
+            }
 
             // response
             $response = new Response();
