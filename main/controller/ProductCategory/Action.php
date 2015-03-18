@@ -904,6 +904,8 @@ class Action {
         if (!empty($pagerAll)) {
             $productPager = $pagerAll;
         } else {
+            $productError = null;
+
             $productPager = null;
 
             $productIds = [];
@@ -914,9 +916,16 @@ class Action {
                 $offset,
                 $limit,
                 $region,
-                function($data) use (&$productIds, &$productCount) {
-                    if (isset($data['list'][0])) $productIds = $data['list'];
-                    if (isset($data['count'])) $productCount = (int)$data['count'];
+                function($data) use (&$productIds, &$productCount, &$productError) {
+                    if (is_array($data)) {
+                        if (isset($data['list'][0])) $productIds = $data['list'];
+                        if (isset($data['count'])) $productCount = (int)$data['count'];
+                    } else {
+                        $productError = new \Exception('Товары не получены');
+                    }
+                },
+                function(\Exception $e) use (&$productError) {
+                    $productError = $e;
                 }
             );
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
@@ -926,19 +935,27 @@ class Action {
 
             $products = [];
             if ((bool)$productIds) {
-                $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
-                    if (is_array($data)) {
-                        foreach ($data as $item) {
-                            $products[] = new \Model\Product\Entity($item);
+                $repository->prepareCollectionById(
+                    $productIds,
+                    $region,
+                    function($data) use (&$products, &$productError) {
+                        if (is_array($data)) {
+                            foreach ($data as $item) {
+                                $products[] = new \Model\Product\Entity($item);
+                            }
+                        } else {
+                            $productError = new \Exception('Товары не получены');
+                            \App::logger()->error(['error' => $productError, 'core.response' => $data, 'sender' => __FILE__ . ' ' .  __LINE__], ['controller']);
                         }
-                    } else {
-                        \App::logger()->error(['error' => 'Товары не получены', 'core.response' => $data, 'sender' => __FILE__ . ' ' .  __LINE__], ['controller']);
+                    },
+                    function(\Exception $e) use (&$productError) {
+                        $productError = $e;
                     }
-                });
+                );
             }
             \App::coreClientV2()->execute();
 
-            if (!$products && ('true' == $request->get('ajax'))) {
+            if ($productError && !$products && ('true' == $request->get('ajax'))) {
                 throw new \Exception('Товары не найдены');
             }
 
