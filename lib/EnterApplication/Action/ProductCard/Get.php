@@ -230,6 +230,13 @@ namespace EnterApplication\Action\ProductCard
 
             $this->removeCurl();
 
+            // обработка ошибок
+            if ($menuError) {
+                $menuQuery->response->items = \App::dataStoreClient()->query('/main-menu.json')['item'];
+
+                \App::logger()->error(['error' => $menuError, 'sender' => __FILE__ . ' ' .  __LINE__], ['main_menu', 'controller']);
+            }
+
             // response
             $response = new Response();
             $response->productQuery = $productQuery;
