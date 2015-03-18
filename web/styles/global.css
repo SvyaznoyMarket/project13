@@ -6333,6 +6333,9 @@ img[height="0"] {
     text-align: center;
     display: none;
   }
+  .ep-hint__row .slideItem {
+    z-index: 0;
+  }
   .ep-hint__cmplt-tl {
     font-size: 28px;
     color: #f99b1c;
