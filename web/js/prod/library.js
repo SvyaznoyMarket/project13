@@ -4432,7 +4432,7 @@ if ( !Array.prototype.indexOf ) {
 				'id': o.numberErp,
 				'affiliation': o.is_partner ? 'Партнер' : 'Enter',
 				'total': o.paySum,
-				'shipping': o.delivery[0] ? o.delivery[0].price : '',
+				'shipping': o.delivery.price,
 				'city': o.region.name
 			};
 			googleOrderTrackingData.products = $.map(o.products, function(p){
@@ -4459,7 +4459,7 @@ if ( !Array.prototype.indexOf ) {
 				}
 
 				/* SITE-4472 Аналитика по АБ-тесту платного самовывоза и рекомендаций из корзины */
-				if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.config.pageConfig.selfDeliveryLimit > parseInt(o.paySum, 10) - o.delivery[0].price) productName = productName + ' (paid pickup)';
+				if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.config.pageConfig.selfDeliveryLimit > parseInt(o.paySum, 10) - o.delivery.price) productName = productName + ' (paid pickup)';
 
 				// Аналитика по купленным товарам из рекомендаций
 				// Отправляем RR_покупка не только для retailrocket товаров
