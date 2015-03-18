@@ -2,7 +2,10 @@
 
     ENTER.OrderV3 = ENTER.OrderV3 || {};
 
-    console.log('Model', $('#initialOrderModel').data('value'));
+    try {
+        console.log('Model', JSON.parse($('#initialOrderModel').html()));
+    } catch (e) {
+    }
 
     var body = document.getElementsByTagName('body')[0],
         $body = $(body),
@@ -146,6 +149,16 @@
 					});
 					if (typeof ENTER.OrderV3.constructors.smartAddressInit == 'function') ENTER.OrderV3.constructors.smartAddressInit();
 				}
+
+                // Новый самовывоз
+                ENTER.OrderV3.koModels = [];
+                $.each($orderContent.find('.jsNewPoints'), function(i,val) {
+                    var pointData = JSON.parse($(this).find('script.jsMapData').html()),
+                        points = new ENTER.DeliveryPoints(pointData.points, ENTER.OrderV3.map);
+                    ENTER.OrderV3.koModels.push(points);
+                    ko.applyBindings(points, val);
+                })
+
             }).always(function(){
                 $orderContent.stop(true, true).fadeIn(200);
                 if (spinner) spinner.stop();
@@ -159,19 +172,18 @@
                 "url": '/order/log'
             })
         },
-        showMap = function(elem, token) {
+        showMap = function(elem) {
             var $currentMap = elem.find('.js-order-map').first(),
-                mapData = $currentMap.data('value'),
+                mapData = JSON.parse($currentMap.next().html()), // не очень хорошо
                 mapOptions = ENTER.OrderV3.mapOptions,
                 map = ENTER.OrderV3.map;
 
-            if (!token) {
-                token = Object.keys(mapData.points)[0];
-                $currentMap.siblings('.selShop_l').hide();
-                $currentMap.siblings('.selShop_l[data-token='+token+']').show();
-            }
+            if (mapData && map.constructor.name == 'Map') {
 
-            if (mapData) {
+                elem.lightbox_me({
+                    centered: true,
+                    closeSelector: '.jsCloseFl'
+                });
 
                 if (!elem.is(':visible')) elem.show();
 
@@ -180,36 +192,40 @@
                 $currentMap.append(ENTER.OrderV3.$map.show());
                 map.container.fitToViewport();
 
-                for (var i = 0; i < mapData.points[token].length; i++) {
-                    var point = mapData.points[token][i],
-                        balloonContent = 'Адрес: ' + point.address;
+                $.each(mapData.points, function(token){
 
-                    if (!point.latitude || !point.longitude) continue;
+                    for (var i = 0; i < mapData.points[token].length; i++) {
+                        var point = mapData.points[token][i],
+                            balloonContent = 'Адрес: ' + point.address;
 
-                    if (point.regtime) balloonContent += '<br /> Время работы: ' + point.regtime;
+                        if (!point.latitude || !point.longitude) continue;
 
-                    // кнопка "Выбрать магазин"
-                    balloonContent += '<br />' + $('<button />', {
-                        'text':'Выбрать магазин',
-                        'class': 'btnLightGrey jsChangePoint',
-                        'data-id': point.id,
-                        'data-token': token
-                        }
-                    )[0].outerHTML;
+                        if (point.regtime) balloonContent += '<br /> Время работы: ' + point.regtime;
 
-                    var placemark = new ymaps.Placemark([point.latitude, point.longitude], {
-                        balloonContentHeader: point.name,
-                        balloonContentBody: balloonContent,
-                        hintContent: point.name
-                    }, {
-                        iconLayout: 'default#image',
-                        iconImageHref: point.marker.iconImageHref,
-                        iconImageSize: point.marker.iconImageSize,
-                        iconImageOffset: point.marker.iconImageOffset
-                    });
+                        // кнопка "Выбрать магазин"
+                        balloonContent += '<br />' + $('<button />', {
+                                'text':'Выбрать',
+                                'class': 'btnLightGrey jsChangePoint',
+                                'data-id': point.id,
+                                'data-token': token,
+                                'data-blockname': point.orderToken
+                            }
+                        )[0].outerHTML;
 
-                    map.geoObjects.add(placemark);
-                }
+                        var placemark = new ymaps.Placemark([point.latitude, point.longitude], {
+                            balloonContentHeader: point.name,
+                            balloonContentBody: balloonContent,
+                            hintContent: point.name
+                        }, {
+                            iconLayout: 'default#image',
+                            iconImageHref: point.marker.iconImageHref,
+                            iconImageSize: point.marker.iconImageSize,
+                            iconImageOffset: point.marker.iconImageOffset
+                        });
+
+                        map.geoObjects.add(placemark);
+                    }
+                });
 
                 if (map.geoObjects.getLength() === 1) {
                     map.setCenter(map.geoObjects.get(0).geometry.getCoordinates(), 15);
@@ -217,8 +233,6 @@
                     map.setBounds(map.geoObjects.getBounds());
                 }
 
-            } else {
-                console.error('No map data for token = "%s"', token,  elem);
             }
 		},
 
@@ -263,16 +277,7 @@
         $('.popupFl').hide();
 
         if ($(this).hasClass('js-order-changePlace-link')) {
-            var token = $(elemId).find('.selShop_l:first').data('token');
-            // скрываем все списки точек и показываем первую
-            $(elemId).find('.selShop_l').hide().first().show();
-            // первая вкладка активная
-            $(elemId).find('.selShop_tab').removeClass('selShop_tab-act').first().addClass('selShop_tab-act');
-            $(elemId).lightbox_me({
-                centered: true,
-                closeSelector: '.jsCloseFl'
-            });
-            showMap($(elemId), token);
+            showMap($(elemId));
             $body.trigger('trackUserAction', ['10 Место_самовывоза_Доставка_ОБЯЗАТЕЛЬНО']);
         } else {
             $(elemId).show();
@@ -284,7 +289,7 @@
     });
 
     // клик по способу доставки
-	$body.on('click', '.selShop_tab:not(.selShop_tab-act)', function(){
+/*	$body.on('click', '.selShop_tab:not(.selShop_tab-act)', function(){
         var token = $(this).data('token'),
             id = $(this).closest('.popupFl').attr('id');
         // переключение списка магазинов
@@ -294,8 +299,8 @@
         $('.selShop_tab').removeClass('selShop_tab-act');
         $('.selShop_tab[data-token='+token+']').addClass('selShop_tab-act');
         // показ карты
-        showMap($('#'+id), token);
-    });
+        showMap($('#'+id));
+    });*/
 
     // клик по "Ввести код скидки"
     $orderContent.on('click', '.jsShowDiscountForm', function(e) {
@@ -307,11 +312,7 @@
     $orderContent.on('click', '.orderCol_delivrLst li', function() {
         var $elem = $(this);
         if (!$elem.hasClass('orderCol_delivrLst_i-act')) {
-//            if ($elem.data('delivery_group_id') == 1) {
-//                showMap($elem.parent().siblings('.selShop').first());
-//            } else {
-                changeDelivery($(this).closest('.orderRow').data('block_name'), $(this).data('delivery_method_token'));
-//            }
+            changeDelivery($elem.closest('.orderRow').data('block_name'), $elem.data('delivery_method_token'));
         }
     });
 
@@ -326,13 +327,18 @@
 
     // клик по списку точек самовывоза
     $body.on('click', '.jsChangePoint', function() {
-        var id = $(this).data('id'),
+        var blockname = $(this).data('blockname'),
+            id = $(this).data('id'),
             token = $(this).data('token');
         if (id && token) {
             $body.trigger('trackUserAction', ['10_1 Ввод_данных_Самовывоза_Доставка_ОБЯЗАТЕЛЬНО']);
             $body.children('.selShop, .lb_overlay').remove();
-            changePoint($(this).closest('.selShop').data('block_name'), id, token);
+            changePoint(blockname, id, token);
         }
+    });
+
+    $body.on('click', '.jsOrderV3Dropbox',function(){
+        $(this).find('.jsOrderV3DropboxInner').toggle();
     });
 
     // клик на селекте интервала
@@ -413,16 +419,6 @@
         e.preventDefault();
     });
 
-    // клик по "хочу быстрее"
-    $orderContent.on('click', '.jsWanna', function(){
-        var span = '<span style="margin: 5px 0 17px 10px; display: inline-block; color: #878787;">Спасибо за участие в опросе.</span>';
-        $(span).insertAfter($(this));
-        $(this).hide();
-        window.docCookies.setItem('enter_order_v3_wanna', 1, 0, '/order');
-        $body.trigger('trackUserAction', ['1_2 Срок_Хочу_быстрее_Доставка']);
-        log({'action':'wanna'});
-    });
-
     $orderContent.on('click', '.jsDeleteCertificate', function(){
         var block_name = $(this).closest('.orderRow').data('block_name');
         deleteCertificate(block_name);
@@ -489,15 +485,13 @@
             link = $(this).attr('href');
 
         e.preventDefault();
-        // TODO вынести как функцию с проверкой существования ga и немедленным вызовом hitCallback в остуствии ga и трекера
-        ga('send', 'event', {
+
+        $body.trigger('trackGoogleEvent', [{
             'eventCategory': 'Воронка_' + oldRegion,
             'eventAction': '8 Регион_Доставка',
             'eventLabel': 'Было: ' + oldRegion + ', Стало: ' + newRegion,
-            'hitCallback': function() {
-                window.location.href = link;
-            }
-        });
+            'hitCallback': link
+        }]);
 
     })
 

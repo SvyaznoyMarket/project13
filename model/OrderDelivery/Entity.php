@@ -185,8 +185,10 @@ namespace Model\OrderDelivery\Entity {
         public $action_name;
         /** @var string */
         public $block_name;
-        /** @var Point\Shop[]|Point\Pickpoint[] */
+        /** @var Point\Shop[]|Point\Pickpoint[]|Point\Svyaznoy[] */
         public $list = [];
+        /* @var string */
+        public $icon;
         /** @var array */
         public $marker = [
             'iconImageSize' => [28, 39],
@@ -220,15 +222,18 @@ namespace Model\OrderDelivery\Entity {
                 switch ($this->token) {
                     case 'self_partner_pickpoint_pred_supplier':
                     case 'self_partner_pickpoint':
-                        $this->marker['iconImageHref'] = '/images/map/marker-pickpoint.png';
+                        $this->marker['iconImageHref'] = '/images/deliv-icon/pickpoint.png';
+                        $this->icon = '/images/deliv-logo/pickpoint.png';
                         break;
                     case 'self_partner_svyaznoy_pred_supplier':
                     case 'self_partner_svyaznoy':
                     case 'shops_svyaznoy':
-                        $this->marker['iconImageHref'] = '/images/map/marker-svyaznoy.png';
+                        $this->marker['iconImageHref'] = '/images/deliv-icon/svyaznoy.png';
+                        $this->icon = '/images/deliv-logo/svyaznoy.png';
                         break;
                     default:
-                        $this->marker['iconImageHref'] = '/images/map/marker-shop.png';
+                        $this->marker['iconImageHref'] = '/images/deliv-icon/enter.png';
+                        $this->icon = '/images/deliv-logo/enter.png';
                 }
             }
         }
@@ -389,7 +394,8 @@ namespace Model\OrderDelivery\Entity {
 
                             $point = [
                                 'point'         => &$orderDelivery->points[$pointType]->list[$pointItem['id']],
-                                'nearestDay'    => $pointItem['nearest_day']
+                                'nearestDay'    => $pointItem['nearest_day'],
+                                'cost'          => [0,100,300,500][rand(0,3)]
                             ];
 
                             $this->possible_points[$pointType][] =  $point;
@@ -550,8 +556,6 @@ namespace Model\OrderDelivery\Entity\Point {
         public $latitude;
         /** @var float */
         public $longitude;
-        /** @var string|null */
-        public $nearestDay;
 
         public function __construct(array $data = []) {
             if (isset($data['id'])) $this->id = (string)$data['id'];

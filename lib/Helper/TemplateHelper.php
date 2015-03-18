@@ -167,6 +167,10 @@ class TemplateHelper {
         return htmlspecialchars(json_encode($value, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_QUOT|JSON_HEX_APOS), ENT_QUOTES, 'UTF-8');
     }
 
+    public function jsonInScriptTag($value, $id = '', $class = '') {
+        return sprintf('<script id="%s" class="%s" type="application/json">%s</script>', $id, $class, json_encode($value, JSON_UNESCAPED_UNICODE));
+    }
+
     /**
      * @param float|int|string $price
      * @return string
@@ -179,7 +183,7 @@ class TemplateHelper {
 
         /* Маленькие пробелы между разрядами целой части цены */
         if (strlen($price[0]) >= 5) {
-            $price[0] = preg_replace('/(\d)(?=(\d\d\d)+([^\d]|$))/', '$1&thinsp;', $price[0]); // TODO: заменить &thinsp; на соответствующий unicode символ
+            $price[0] = preg_replace('/(\d)(?=(\d\d\d)+([^\d]|$))/', '$1 ', $price[0]); // в замене используется тонкий пробельный символ U+2009
         }
 
         if (isset($price[1]) && $price[1] == 0) {
@@ -234,10 +238,11 @@ class TemplateHelper {
 
     /**
      * @param \DateTime $date
+     * @param string $format Формат для возврата
      * @return string
      */
-    public function humanizeDate(\DateTime $date) {
-        $formatted = $date->format('d.m.Y');
+    public function humanizeDate(\DateTime $date, $format = 'd.m.Y') {
+        $formatted = $date->format($format);
 
         $namesByDay = [
             0 => 'Сегодня',
@@ -252,7 +257,7 @@ class TemplateHelper {
                 $now->modify('+1 day');
             }
 
-            if ($formatted == $now->format('d.m.Y')) {
+            if ($formatted == $now->format($format)) {
                 return $name;
             }
         }

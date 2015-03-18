@@ -241,7 +241,10 @@
 		if (initialAddressData.apartment) address.apartmentName(initialAddressData.apartment);
 	}
 
-	ko.applyBindings(address);
+    $.each($('.jsAddressRootNode'), function(i,val){
+        console.log(val)
+        ko.applyBindings(address, val);
+    });
 
 	ENTER.OrderV3.address = address;
 	ENTER.OrderV3.constructors.smartAddressInit();

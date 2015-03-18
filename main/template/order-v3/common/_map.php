@@ -17,6 +17,9 @@ return function(
         'points'    => [],
     ];
 
+    $pointsCost = [];
+    $nearestDays = [];
+
     /** @var \Model\OrderDelivery\Entity\Point\Shop[]|\Model\OrderDelivery\Entity\Point\Pickpoint[]|\Model\OrderDelivery\Entity\Point\Svyaznoy[] $points */
     foreach ($order->possible_points as $token => $points) {
         foreach ($points as $point) {
@@ -28,13 +31,28 @@ return function(
                 'regtime' => $p->regtime,
                 'latitude' => $p->latitude,
                 'longitude' => $p->longitude,
-                'marker'    => $orderDelivery->points[$token]->marker
+                'marker'    => $orderDelivery->points[$token]->marker,
+                'token'  => $token,
+                'icon'  => $orderDelivery->points[$token]->icon,
+                'cost'  => (string)$point['cost'],
+                'humanNearestDay'   => $helper->humanizeDate(DateTime::createFromFormat('Y-m-d', $point['nearestDay']), 'Y-m-d'),
+                'nearestDay'  => $point['nearestDay'],
+                'blockName'    => $orderDelivery->points[$token]->block_name,
+                'orderToken' => $order->block_name
             ];
+            $pointsCost[] = $point['cost'];
+            $nearestDays[] = $point['nearestDay'];
         }
     }
+
+    $uniqueCosts = array_unique($pointsCost);
+    sort($uniqueCosts);
+    $uniqueDays = array_unique($nearestDays);
+    sort($uniqueDays);
     ?>
 
-    <div id="<?= $id ?>" class="selShop popupFl deliv-wrap" style="display: none;" data-block_name="<?= $order->block_name ?>">
+    <div id="<?= $id ?>" class="selShop popupFl deliv-wrap jsNewPoints" style="display: none;" data-block_name="<?= $order->block_name ?>">
+
         <div class="js-order-changePlace-close popupFl_clsr jsCloseFl" data-content="#<?= $id ?>"></div>
 
         <div class="selShop_hh">Выберите точку самовывоза</div>
@@ -42,250 +60,125 @@ return function(
         <!-- Новая верстка -->
         <div class="popup-left-container">
             <div class="deliv-ctrls">
+
                 <div class="deliv-search">
-                    <input class="deliv-search-input" type="text" placeholder="Искать по улице, метро"/>
+                    <input class="deliv-search-input" type="text" placeholder="Искать по улице, метро" data-bind="value: searchInput, valueUpdate: 'afterkeydown'" />
                 </div>
+
                 <div class="deliv-sel-group fltrBtn_kit fltrBtn_kit-box js-category-v2-filter-otherGroups">
-                    <div class="deliv-sel fltrBtnBox js-category-v2-filter-dropBox">
-                        <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener <?//="picked"; - этот класс должен добавляться после выбора какого-либо значения?>">
-                            <span class="fltrBtnBox_tggl_tx">Все точки</span>
+
+                    <!-- Точка самовывоза -->
+                    <div class="deliv-sel fltrBtnBox js-category-v2-filter-dropBox jsOrderV3Dropbox">
+                        <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener" data-bind="css: { picked: choosenTokens().length > 0 }">
+                            <span class="fltrBtnBox_tggl_tx" data-bind="text: pointsText">Все точки</span>
                             <i class="fltrBtnBox_tggl_corner"></i>
                         </div>
 
-                        <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content">
+                        <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner">
                             <div class="fltrBtnBox_dd_inn">
                                 <div class="fltrBtn_param"> <!--fltrBtn_param-2col-->
-                                    <div class="fltrBtn_ln ">
-                                        <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput  " type="checkbox" id="id-delivery-point-enter" name="" value="">
-                                        <label class="customLabel customLabel-defcheck2" for="id-delivery-point-enter">
+                                    <? foreach ($order->possible_points as $token => $points) : ?>
 
-                                            <span class="customLabel_btx">Магазин Enter</span>
-                                        </label>
-                                    </div>
-                                    <div class="fltrBtn_ln ">
-                                        <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput  " type="checkbox" id="id-delivery-point-post" name="" value="">
-                                        <label class="customLabel customLabel-defcheck2" for="id-delivery-point-post">
+                                        <div class="fltrBtn_ln ">
+                                            <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput"
+                                                   type="checkbox" id="id-delivery-point-<?= $token.$order->block_name ?>" name="" value="<?= $token ?>"
+                                                   data-bind="checked: choosenTokens" />
+                                            <label class="customLabel customLabel-defcheck2" for="id-delivery-point-<?= $token.$order->block_name ?>">
+                                                <span class="customLabel_btx"><?= $orderDelivery->points[$token]->block_name ?></span>
+                                            </label>
+                                        </div>
 
-                                            <span class="customLabel_btx">Почта России</span>
-                                        </label>
-                                    </div>
-                                    <div class="fltrBtn_ln ">
-                                        <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput  " type="checkbox" id="id-delivery-point-hermes" name="" value="">
-                                        <label class="customLabel customLabel-defcheck2" for="id-delivery-point-hermes">
-
-                                            <span class="customLabel_btx">HermesDPD</span>
-                                        </label>
-                                    </div>
-                                    <div class="fltrBtn_ln ">
-                                        <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput  " type="checkbox" id="id-delivery-point-podorozhnik" name="" value="">
-                                        <label class="customLabel customLabel-defcheck2" for="id-delivery-point-podorozhnik">
-
-                                            <span class="customLabel_btx">Подорожник</span>
-                                        </label>
-                                    </div>
-                                    <div class="fltrBtn_ln ">
-                                        <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput  " type="checkbox" id="id-delivery-point-pickpoint" name="" value="">
-                                        <label class="customLabel customLabel-defcheck2" for="id-delivery-point-pickpoint">
-
-                                            <span class="customLabel_btx">PickPoint</span>
-                                        </label>
-                                    </div>
-
+                                    <? endforeach ?>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="deliv-sel fltrBtnBox js-category-v2-filter-dropBox">
-                        <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener <?//="picked"; - этот класс должен добавляться после выбора какого-либо значения?>">
+                    <!-- Cтоимость -->
+                    <div class="deliv-sel fltrBtnBox js-category-v2-filter-dropBox jsOrderV3Dropbox">
+                        <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener" data-bind="css: { picked: $root.choosenCosts().length > 0 }">
                             <span class="fltrBtnBox_tggl_tx">Стоимость</span>
                             <i class="fltrBtnBox_tggl_corner"></i>
                         </div>
 
-                        <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content">
+                        <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner">
                             <div class="fltrBtnBox_dd_inn">
-                                <div class="fltrBtn_param"> <!--fltrBtn_param-2col-->
-                                    <div class="fltrBtn_ln ">
-                                        <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput  " type="checkbox" id="id-delivery-price1" name="" value="">
-                                        <label class="customLabel customLabel-defcheck2" for="id-delivery-price1">
+                                <div class="fltrBtn_param">
+                                    <? foreach ($uniqueCosts as $cost) : ?>
 
-                                            <span class="customLabel_btx">50<span class="rubl">р</span></span>
-                                        </label>
-                                    </div>
-                                    <div class="fltrBtn_ln ">
-                                        <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput  " type="checkbox" id="id-delivery-price2" name="" value="">
-                                        <label class="customLabel customLabel-defcheck2" for="id-delivery-price2">
+                                        <div class="fltrBtn_ln ">
+                                            <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput"
+                                                   type="checkbox" id="id-delivery-price-<?= $cost.$order->block_name ?>" name="" value="<?= $cost ?>"
+                                                    data-bind="checked: $root.choosenCosts" />
+                                            <label class="customLabel customLabel-defcheck2" for="id-delivery-price-<?= $cost.$order->block_name ?>">
+                                                <span class="customLabel_btx"><?= $cost == 0 ? 'Бесплатно' : $cost . ' <span class="rubl">р</span>' ?></span>
+                                            </label>
+                                        </div>
 
-                                            <span class="customLabel_btx">500<span class="rubl">р</span></span>
-                                        </label>
-                                    </div>
-                                    <div class="fltrBtn_ln ">
-                                        <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput  " type="checkbox" id="id-delivery-price3" name="" value="">
-                                        <label class="customLabel customLabel-defcheck2" for="id-delivery-price3">
-
-                                            <span class="customLabel_btx">120<span class="rubl">р</span></span>
-                                        </label>
-                                    </div>
+                                    <? endforeach ?>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="deliv-sel fltrBtnBox js-category-v2-filter-dropBox">
-                        <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener <?//="picked"; - этот класс должен добавляться после выбора какого-либо значения?>">
+                    <!-- Дата самовывоза -->
+                    <div class="deliv-sel fltrBtnBox js-category-v2-filter-dropBox jsOrderV3Dropbox">
+                        <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener" data-bind="css: { picked: choosenDates().length > 0 }">
                             <span class="fltrBtnBox_tggl_tx">Дата</span>
                             <i class="fltrBtnBox_tggl_corner"></i>
                         </div>
 
-                        <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content">
+                        <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner">
                             <div class="fltrBtnBox_dd_inn">
-                                <div class="fltrBtn_param"> <!--fltrBtn_param-2col-->
-                                    <div class="fltrBtn_ln ">
-                                        <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput  " type="checkbox" id="id-delivery-date1" name="" value="">
-                                        <label class="customLabel customLabel-defcheck2" for="id-delivery-date1">
-
-                                            <span class="customLabel_btx">Сегодня<span class="rubl">р</span></span>
-                                        </label>
-                                    </div>
-                                    <div class="fltrBtn_ln ">
-                                        <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput  " type="checkbox" id="id-delivery-date2" name="" value="">
-                                        <label class="customLabel customLabel-defcheck2" for="id-delivery-date2">
-
-                                            <span class="customLabel_btx">Завтра<span class="rubl">р</span></span>
-                                        </label>
-                                    </div>
-                                    <div class="fltrBtn_ln ">
-                                        <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput  " type="checkbox" id="id-delivery-date3" name="" value="">
-                                        <label class="customLabel customLabel-defcheck2" for="id-delivery-date3">
-
-                                            <span class="customLabel_btx">23.05.2015<span class="rubl">р</span></span>
-                                        </label>
-                                    </div>
+                                <div class="fltrBtn_param">
+                                    <? foreach ($uniqueDays as $day) : ?>
+                                        <div class="fltrBtn_ln ">
+                                            <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput"
+                                                   type="checkbox" id="id-delivery-date-<?= $day.$order->block_name ?>" name="" value="<?= $day ?>"
+                                                   data-bind="checked: choosenDates" />
+                                            <label class="customLabel customLabel-defcheck2" for="id-delivery-date-<?= $day.$order->block_name ?>">
+                                                <span class="customLabel_btx"><?= $helper->humanizeDate(DateTime::createFromFormat('Y-m-d', $day), 'Y-m-d') ?></span>
+                                            </label>
+                                        </div>
+                                    <? endforeach ?>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                 </div>
-
-
             </div>
-                <div class="selShop_l" data-token="shops">
-                    <ul class="deliv-list">
 
-                        <li class="deliv-item">
-                            <div class="deliv-item__logo">
-                                <img src="/styles/order/img/deliv-logo/enter.png" class="deliv-item__img">
-                                <span class="deliv-item__name">Магазин Enter</span>
-                            </div>
-                            <div class="deliv-item__addr">
-                                <div class="deliv-item__metro" style="background: #FBAA33;">
-                                   <div class="deliv-item__metro-inn">м. Ленинский проспект</div>
-                                </div>
-                                <div class="deliv-item__addr-name">ул. Орджоникидзе, д. 11, стр. 10</div>
-                                <div class="deliv-item__time">с 10.00 до 21.00</div>
-                            </div>
+            <div class="selShop_l" data-token="shops">
+                <ul class="deliv-list" data-bind="foreach: points">
 
-                            <div class="deliv-item__info">
-                                <div class="deliv-item__date">Завтра</div>
-                                <div class="deliv-item__price">50 <span class="rubl">p</span></div>
+                    <li class="deliv-item jsChangePoint" data-bind="attr: { 'data-id': $data.id, 'data-token': $data.token, 'data-blockname': $data.orderToken }">
+                        <div class="deliv-item__logo">
+                            <img src="" class="deliv-item__img" data-bind="attr: { src: icon }" />
+                            <span class="deliv-item__name" data-bind="text: blockName"></span>
+                        </div>
+                        <div class="deliv-item__addr">
+                            <!-- ko if: typeof subway !== 'undefined' -->
+                            <div class="deliv-item__metro" style="background: #FBAA33;">
+                               <div class="deliv-item__metro-inn">м. Ленинский проспект</div>
                             </div>
-                        </li>
-                        <li class="deliv-item">
-                            <div class="deliv-item__logo">
-                                <img src="/styles/order/img/deliv-logo/post.png" class="deliv-item__img">
-                                <span class="deliv-item__name">Почта России</span>
-                            </div>
-                            <div class="deliv-item__addr">
-                                <div class="deliv-item__metro" style="background: #FBAA33;">
-                                   <div class="deliv-item__metro-inn">м. Ленинский проспект</div>
-                                </div>
-                                <div class="deliv-item__addr-name">ул. Орджоникидзе, д. 11, стр. 10</div>
-                                <div class="deliv-item__time">с 10.00 до 21.00</div>
-                            </div>
+                            <!-- /ko -->
+                            <div class="deliv-item__addr-name" data-bind="text: address"></div>
+                            <div class="deliv-item__time" data-bind="text: regtime"></div>
+                        </div>
 
-                            <div class="deliv-item__info">
-                                <div class="deliv-item__date">23.05.2015</div>
-                                <div class="deliv-item__price">50 <span class="rubl">p</span></div>
-                            </div>
-                        </li>
-                        <li class="deliv-item">
-                            <div class="deliv-item__logo">
-                                <img src="/styles/order/img/deliv-logo/hermes.png" class="deliv-item__img">
-                                <span class="deliv-item__name">HermesDPD</span>
-                            </div>
-                            <div class="deliv-item__addr">
-                                <div class="deliv-item__metro" style="background: #FBAA33;">
-                                   <div class="deliv-item__metro-inn">м. Ленинский проспект</div>
-                                </div>
-                                <div class="deliv-item__addr-name">ул. Орджоникидзе, д. 11, стр. 10</div>
-                                <div class="deliv-item__time">с 10.00 до 21.00</div>
-                            </div>
+                        <div class="deliv-item__info">
+                            <div class="deliv-item__date" data-bind="text: humanNearestDay"></div>
+                            <div class="deliv-item__price"><span data-bind="text: cost == 0 ? 'Бесплатно' : cost "></span> <span class="rubl" data-bind="visible: cost != 0">p</span></div>
+                        </div>
+                    </li>
 
-                            <div class="deliv-item__info">
-                                <div class="deliv-item__date">Послезавтра</div>
-                                <div class="deliv-item__price">500 <span class="rubl">p</span></div>
-                            </div>
-                        </li>
-                        <li class="deliv-item">
-                            <div class="deliv-item__logo">
-                                <img src="/styles/order/img/deliv-logo/pickpoint.png" class="deliv-item__img">
-                                <span class="deliv-item__name">PickPoint</span>
-                            </div>
-                            <div class="deliv-item__addr">
-                                <div class="deliv-item__metro" style="background: #FBAA33;">
-                                   <div class="deliv-item__metro-inn">м. Ленинский проспект</div>
-                                </div>
-                                <div class="deliv-item__addr-name">ул. Орджоникидзе, д. 11, стр. 10</div>
-                                <div class="deliv-item__time">с 10.00 до 21.00</div>
-                            </div>
-
-                            <div class="deliv-item__info">
-                                <div class="deliv-item__date">Послезавтра</div>
-                                <div class="deliv-item__price">500 <span class="rubl">p</span></div>
-                            </div>
-                        </li>
-                          <li class="deliv-item">
-                            <div class="deliv-item__logo">
-                                <img src="/styles/order/img/deliv-logo/pickpoint.png" class="deliv-item__img">
-                                <span class="deliv-item__name">PickPoint</span>
-                            </div>
-                            <div class="deliv-item__addr">
-                                <div class="deliv-item__metro" style="background: #FBAA33;">
-                                   <div class="deliv-item__metro-inn">м. Ленинский проспект</div>
-                                </div>
-                                <div class="deliv-item__addr-name">ул. Орджоникидзе, д. 11, стр. 10</div>
-                                <div class="deliv-item__time">с 10.00 до 21.00</div>
-                            </div>
-
-                            <div class="deliv-item__info">
-                                <div class="deliv-item__date">Послезавтра</div>
-                                <div class="deliv-item__price">500 <span class="rubl">p</span></div>
-                            </div>
-                        </li>
-                        <li class="deliv-item">
-                            <div class="deliv-item__logo">
-                                <img src="/styles/order/img/deliv-logo/podorozhnik.png" class="deliv-item__img">
-                                <span class="deliv-item__name">Подорожник</span>
-                            </div>
-                            <div class="deliv-item__addr">
-                                <div class="deliv-item__metro" style="background: #FBAA33;">
-                                   <div class="deliv-item__metro-inn">м. Ленинский проспект</div>
-                                </div>
-                                <div class="deliv-item__addr-name">ул. Орджоникидзе, д. 11, стр. 10</div>
-                                <div class="deliv-item__time">с 10.00 до 21.00</div>
-                            </div>
-
-                            <div class="deliv-item__info">
-                                <div class="deliv-item__date">Послезавтра</div>
-                                <div class="deliv-item__price">500 <span class="rubl">p</span></div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+                </ul>
+            </div>
         </div>
 
-        <div id="<?= $id . '-map' ?>" class="js-order-map selShop_r" data-value="<?= $helper->json($dataValue) ?>"></div>
+        <div id="<?= $id . '-map' ?>" class="js-order-map selShop_r"></div>
+        <?= $helper->jsonInScriptTag($dataValue, '', 'jsMapData') ?>
 
     </div>
 
