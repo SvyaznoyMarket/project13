@@ -3,9 +3,9 @@
 		d = $(document),
 		debugPanel = $('.jsDebugPanel'),
 		debugPanelContent = $('.jsDebugPanelContent'),
-		currentDebugPanelItemConfig = JSON.parse(debugPanel.find('script').eq(0).html()),
+		currentDebugPanelItemConfig = $.parseJSON(debugPanel.find('script').eq(0).html()),
 		currentDebugPanelItemContent = debugPanel.find('.jsCurrentDebugPanelItemContent'),
-		prevDebugPanelItemConfig = JSON.parse(debugPanel.find('script').eq(1).html()),
+		prevDebugPanelItemConfig = $.parseJSON(debugPanel.find('script').eq(1).html()),
 		prevDebugPanelItemContent = debugPanel.find('.jsPrevDebugPanelItemContent');
 	// end of vars
 

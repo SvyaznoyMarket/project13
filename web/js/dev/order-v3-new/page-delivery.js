@@ -3,7 +3,7 @@
     ENTER.OrderV3 = ENTER.OrderV3 || {};
 
     try {
-        console.log('Model', JSON.parse($('#initialOrderModel').html()));
+        console.log('Model', $.parseJSON($('#initialOrderModel').html()));
     } catch (e) {
     }
 
@@ -153,7 +153,7 @@
                 // Новый самовывоз
                 ENTER.OrderV3.koModels = [];
                 $.each($orderContent.find('.jsNewPoints'), function(i,val) {
-                    var pointData = JSON.parse($(this).find('script.jsMapData').html()),
+                    var pointData = $.parseJSON($(this).find('script.jsMapData').html()),
                         points = new ENTER.DeliveryPoints(pointData.points, ENTER.OrderV3.map);
                     ENTER.OrderV3.koModels.push(points);
                     ko.applyBindings(points, val);
@@ -174,11 +174,11 @@
         },
         showMap = function(elem) {
             var $currentMap = elem.find('.js-order-map').first(),
-                mapData = JSON.parse($currentMap.next().html()), // не очень хорошо
+                mapData = $.parseJSON($currentMap.next().html()), // не очень хорошо
                 mapOptions = ENTER.OrderV3.mapOptions,
                 map = ENTER.OrderV3.map;
 
-            if (mapData && map.constructor.name == 'Map') {
+            if (mapData && typeof map.getType == 'function') {
 
                 elem.lightbox_me({
                     centered: true,
@@ -289,7 +289,7 @@
     });
 
     // клик по способу доставки
-/*	$body.on('click', '.selShop_tab:not(.selShop_tab-act)', function(){
+	$body.on('click', '.selShop_tab:not(.selShop_tab-act)', function(){
         var token = $(this).data('token'),
             id = $(this).closest('.popupFl').attr('id');
         // переключение списка магазинов
@@ -300,7 +300,7 @@
         $('.selShop_tab[data-token='+token+']').addClass('selShop_tab-act');
         // показ карты
         showMap($('#'+id));
-    });*/
+    });
 
     // клик по "Ввести код скидки"
     $orderContent.on('click', '.jsShowDiscountForm', function(e) {
