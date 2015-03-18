@@ -76,7 +76,11 @@ class ShowAction {
                         'count'       => isset($queryData[$index]['count']) ? ($queryData[$index]['count'] + 1) : 1,
                         'cache'       => isset($message['cache']),
                         'delay'       => isset($message['delay']),
-                        'delayRatio'  => isset($message['delayRatio']) ? implode(', ', $message['delayRatio']) : [],
+                        'delayRatio'  =>
+                            !empty($message['delayRatio'])
+                            ? implode(' ', $message['delayRatio'])
+                            : null
+                        ,
                     ];
                 } else if ((('Fail curl' == $message['message']) || ('End curl' == $message['message'])) && isset($queryData[$index])) {
                     if (isset($message['error'])) {
@@ -99,6 +103,9 @@ class ShowAction {
                     $queryData[$index]['header'] = isset($message['header']) ? $message['header'] : null;
                     $queryData[$index]['cache'] = isset($message['cache']);
                     $queryData[$index]['delay'] = $delay;
+                    if (empty($queryData[$index]['delayRatio'])) {
+                        $queryData[$index]['delayRatio'] = $queryData[$index]['retryCount'] ? ('x' . $queryData[$index]['retryCount']) : null;
+                    }
                 }
             } else if ($startAt && ('End curl executing' == $message['message'])) {
                 /*
