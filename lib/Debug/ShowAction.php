@@ -76,11 +76,7 @@ class ShowAction {
                         'count'       => isset($queryData[$index]['count']) ? ($queryData[$index]['count'] + 1) : 1,
                         'cache'       => isset($message['cache']),
                         'delay'       => isset($message['delay']),
-                        'delayRatio'  =>
-                            !empty($message['delayRatio'])
-                            ? implode(' ', $message['delayRatio'])
-                            : null
-                        ,
+                        'delays'      => !empty($message['delays']) ? array_map(function($i) { return ['value' => $i]; }, $message['delays']) : [],
                     ];
                 } else if ((('Fail curl' == $message['message']) || ('End curl' == $message['message'])) && isset($queryData[$index])) {
                     if (isset($message['error'])) {
@@ -103,8 +99,21 @@ class ShowAction {
                     $queryData[$index]['header'] = isset($message['header']) ? $message['header'] : null;
                     $queryData[$index]['cache'] = isset($message['cache']);
                     $queryData[$index]['delay'] = $delay;
-                    if (empty($queryData[$index]['delayRatio'])) {
-                        $queryData[$index]['delayRatio'] = $queryData[$index]['retryCount'] ? ('x' . $queryData[$index]['retryCount']) : null;
+                    if (empty($queryData[$index]['delays'])) {
+                        $queryData[$index]['delays'] =
+                            $queryData[$index]['retryCount']
+                            ? [
+                                'value' => ('x' . $queryData[$index]['retryCount']),
+                            ] : [];
+                    } else {
+                        $iDelay = null;
+                        foreach ($queryData[$index]['delays'] as &$iDelay) {
+                            if ($delay == $iDelay['value']) {
+                                $iDelay['selected'] = true;
+                                $iDelay['http_code'] = isset($queryData[$index]['info']['http_code']) ? $queryData[$index]['info']['http_code'] : null;
+                            }
+                        }
+                        unset($iDelay);
                     }
                 }
             } else if ($startAt && ('End curl executing' == $message['message'])) {

@@ -59,9 +59,18 @@
                                 <td class="query-cell">
                                     {{#cache}}<span style="color: #ffff00">*</span>{{/cache}} {{info.total_time}} {{#spend}}({{spend}}){{/spend}}
                                 </td>
-                                <td class="query-cell" title="{{delay}}"><span>{{&delayRatio}}</span></td>
+                                <td class="query-cell" title="{{delay}}">
+                                    {{#delays}}
+                                        {{#selected}}
+                                            <span style="color: #ffa200;">{{value}}</span><sup>{{http_code}}</sup>
+                                        {{/selected}}
+                                        {{^selected}}
+                                            {{value}}<sup>{{http_code}}</sup>
+                                        {{/selected}}
+                                    {{/delays}}
+                                </td>
                                 <!--<td class="query-cell"><span title="Retry count">{{retryCount}}</span></td>-->
-                                <td class="query-cell"><span>{{header.X-Server-Name}}</span></td>
+                                <td class="query-cell">{{header.X-Server-Name}}</td>
                                 <td class="query-cell">{{header.X-API-Mode}}</td>
                                 <td class="query-cell">
                                     <a href="{{^data}}{{url}}{{/data}}{{#data}}/debug/query?data={{encodedData}}&url={{encodedUrl}}{{/data}}" target="_blank" class="openDirectly">&#11016;</a>
