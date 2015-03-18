@@ -234,7 +234,7 @@
 				'id': o.numberErp,
 				'affiliation': o.is_partner ? 'Партнер' : 'Enter',
 				'total': o.paySum,
-				'shipping': o.delivery[0].price,
+				'shipping': o.delivery[0] ? o.delivery[0].price : '',
 				'city': o.region.name
 			};
 			googleOrderTrackingData.products = $.map(o.products, function(p){
