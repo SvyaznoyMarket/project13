@@ -5888,6 +5888,9 @@ img[height="0"] {
   .form-reg__btn .btn-def {
     margin: 8px 0 0;
   }
+  .form-reg__btn .btn-def:active {
+    margin: 10px 0 -2px;
+  }
   .form-reg__login {
     font-size: 14px;
     float: left;
