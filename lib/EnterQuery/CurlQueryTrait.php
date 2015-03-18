@@ -63,7 +63,7 @@ trait CurlQueryTrait
 
         // задержки по умолчанию
         if (null === $delayRatios) {
-            $delayRatios = [0, 0.1];
+            $delayRatios = \App::config()->curlCache['delayRatio'] ?: [0];
         }
 
         // если таймаут слишком маленький, то убираем retry

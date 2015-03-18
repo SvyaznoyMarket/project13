@@ -38,6 +38,7 @@ $c->redirect301['enabled'] = true;
 $c->mobileRedirect['enabled'] = false;
 
 $c->curlCache['enabled'] = false;
+$c->curlCache['delayRatio'] = [0, 0.025]; // количество и время задержек
 
 $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 $c->coreV2['client_id']    = 'site';

@@ -41,151 +41,21 @@ namespace EnterApplication\Action\ProductCard
                 throw new \InvalidArgumentException('Неверный критерий получения товара');
             }
 
-            // доставка
-            $deliveryCallback = $productQuery->addCallback(function() use (&$productQuery, &$deliveryQuery) {
-                $product = $productQuery->response->product;
-                if (!$product['id']) return;
-
-                $deliveryQuery = new Query\Delivery\GetByCart();
-                // корзина
-                $deliveryQuery->cart->products[] = $deliveryQuery->cart->createProduct($product['id'], 1);
-                foreach(array_column($productQuery->response->product['kit'], 'id') as $kitId) {
-                    $deliveryQuery->cart->products[] = $deliveryQuery->cart->createProduct($kitId, 1);
-                }
-
-                // регион
-                $deliveryQuery->regionId = $productQuery->regionId;
-
-                $deliveryQuery->prepare($deliveryError);
-                /*
-                $deliveryQuery->prepare($deliveryError, function() use (&$deliveryQuery, &$deliveryError) {
-                    if ($deliveryError || !$deliveryQuery->response->shops) return;
-
-                    $shopQuery = (new Query\Shop\GetById(array_keys($deliveryQuery->response->shops)))->prepare($shopError);
-                });
-                */
-            });
-
-            // магазины на основе остатков
-            $shopCallback = $productQuery->addCallback(function() use (&$productQuery, &$shopQuery) {
-                $product = $productQuery->response->product;
-                if (!$product['id']) return;
-
-                $shopQuery = new Query\Shop\GetByIdList();
-                foreach ($product['stock'] as $stock) {
-                    if (!$stock['shop_id'] || !($stock['quantity'] + $stock['quantity_showroom'])) continue;
-
-                    $shopQuery->ids[] = $stock['shop_id'];
-                }
-                if ($shopQuery->ids) {
-                    $shopQuery->prepare($shopError);
-                }
-            });
-
-            // группы оплаты
-            $paymentGroupCallback = $productQuery->addCallback(function() use (&$productQuery, &$paymentGroupQuery) {
-                $product = $productQuery->response->product;
-                if (!$product['id']) return;
-
-                $cart = \App::user()->getCart(); // TODO: old usage
-
-                $paymentGroupQuery = new Query\PaymentGroup\GetByCart();
-                // корзина
-                $paymentGroupQuery->cart->products[] = $paymentGroupQuery->cart->createProduct($product['id'], 1);
-                // регион
-                $paymentGroupQuery->regionId = $productQuery->regionId;
-                // фильтер
-                $paymentGroupQuery->filter->isCorporative = false;
-                $paymentGroupQuery->filter->isCredit = (bool)(($product['price'] * (($cart->getQuantityByProduct($product['id']) > 0) ? $cart->getQuantityByProduct($product['id']) : 1)) >= \App::config()->product['minCreditPrice']);
-
-                $paymentGroupQuery->prepare($paymentGroupError);
-            });
-
-            // рейтинг товаров
-            $ratingCallback = $productQuery->addCallback(function() use (&$productQuery, &$ratingQuery) {
-                $ids = []; // идентификаторы товаров
-                if ($accessoryIds = array_slice((array)$productQuery->response->product['accessories'], 0, \App::config()->product['itemsPerPage'])) {
-                    $ids = array_merge($ids, $accessoryIds);
-                }
-
-                if ($kitIds = array_column($productQuery->response->product['kit'], 'id')) {
-                    $ids = array_merge($ids, $kitIds);
-                }
-
-                if ($ids) {
-                    $ratingQuery = new Query\Product\Review\GetScoreByProductIdList($ids);
-                    $ratingQuery->prepare($ratingError);
-                }
-            });
-
-            // связанные товары: аксессуары, наборы, ...
-            $relatedProductCallback = $productQuery->addCallback(function() use (&$productQuery, &$relatedProductQueries) {
-                $ids = []; // идентификаторы товаров
-                if ($accessoryIds = array_slice((array)$productQuery->response->product['accessories'], 0, \App::config()->product['itemsPerPage'])) {
-                    $ids = array_merge($ids, $accessoryIds);
-                }
-
-                if ($kitIds = array_column($productQuery->response->product['kit'], 'id')) {
-                    $ids = array_merge($ids, $kitIds);
-                }
-
-                if ($ids) {
-                    $relatedProductQueries = [];
-                    foreach (array_chunk($ids, \App::config()->coreV2['chunk_size']) as $idsInChunk) {
-                        $relatedProductQueries[] = (new Query\Product\GetByIdList($idsInChunk, $productQuery->regionId))->prepare($relatedProductError);
-                    }
-                }
-            });
-
-            // отзывы товара
-            $reviewCallback = $productQuery->addCallback(function() use (&$productQuery, &$reviewQuery) {
-                $product = $productQuery->response->product;
-                if (!$product['id']) return;
-
-                $reviewQuery = (new Query\Product\Review\GetByProductUi($product['ui'], 0, 7))->prepare($reviewError);
-            });
-
-            // категория товаров
-            $categoryCallback = $productQuery->addCallback(function() use (&$productQuery, &$categoryQuery) {
-                $product = $productQuery->response->product;
-                if (!$product['id']) return;
-
-                $categoryQuery = null;
-                if ($categoryUi = end($product['category'])['ui']) {
-                    $categoryQuery = (new Query\Product\Category\GetByUi($categoryUi, $productQuery->regionId))->prepare($categoryError);
-                }
-            });
-
-            // описание товара из scms
-            $productDescriptionCallback = $productQuery->addCallback(function() use (&$productQuery, &$productDescriptionQuery) {
-                $product = $productQuery->response->product;
-                if (!$product['id']) return;
-
-                $productDescriptionQuery = (new Query\Product\GetDescriptionByUiList([$product['ui']]))->prepare($productDescriptionError);
-            });
-
-            // товар для Подари Жизнь
-            $lifeGiftProductCallback = $productQuery->addCallback(function() use (&$productQuery, &$lifeGiftProductQuery) {
-                $product = $productQuery->response->product;
-                if (!$product['ui']) return;
-
-                $labelId = isset($product['label'][0]['id']) ? $product['label'][0]['id'] : null;
-                if (
-                    \App::config()->lifeGift['enabled']
-                    && $labelId
-                    && (\App::config()->lifeGift['labelId'] === $labelId)
-                ) {
-                    $lifeGiftProductQuery = new Query\Product\GetByUi($product['ui'], \App::config()->lifeGift['regionId']);
-                }
-            });
-
             // подготовка запроса на получение товара
             $productQuery->prepare($productError);
 
             // регион
             $regionQuery = (new Query\Region\GetById($request->regionId))->prepare($regionError);
 
-            $curl->execute(); // важно: только товар и регион в запросе
+            // выполнение запросов
+            $curl->execute(); // важно: только самые важные запросы: товар, регион
+
+            // дерево категорий для меню
+            //$categoryTreeQuery = (new Query\Product\Category\GetTree(null, 3, null, null, true))->prepare($categoryTreeError);
+            $categoryRootTreeQuery = (new Query\Product\Category\GetRootTree($request->regionId, 3))->prepare($categoryRootTreeError);
+
+            // главное меню
+            $menuQuery = (new Query\MainMenu\GetByTagList(['site-web']))->prepare($menuError);
 
             // отзывы о товаре
             /*
@@ -218,12 +88,146 @@ namespace EnterApplication\Action\ProductCard
             // каналы подписок
             $subscribeChannelQuery = (new Query\Subscribe\Channel\Get())->prepare($subscribeChannelError);
 
-            // дерево категорий для меню
-            //$categoryTreeQuery = (new Query\Product\Category\GetTree(null, 3, null, null, true))->prepare($categoryTreeError);
-            $categoryRootTreeQuery = (new Query\Product\Category\GetRootTree($request->regionId, 3))->prepare($categoryRootTreeError);
+            // выполнение запросов
+            $curl->execute();
 
-            // главное меню
-            $menuQuery = (new Query\MainMenu\GetByTagList(['site-web']))->prepare($menuError);
+            // доставка
+            call_user_func(function() use (&$productQuery, &$deliveryQuery) {
+                $product = $productQuery->response->product;
+                if (!$product['id']) return;
+
+                $deliveryQuery = new Query\Delivery\GetByCart();
+                // корзина
+                $deliveryQuery->cart->products[] = $deliveryQuery->cart->createProduct($product['id'], 1);
+                foreach(array_column($productQuery->response->product['kit'], 'id') as $kitId) {
+                    $deliveryQuery->cart->products[] = $deliveryQuery->cart->createProduct($kitId, 1);
+                }
+
+                // регион
+                $deliveryQuery->regionId = $productQuery->regionId;
+
+                $deliveryQuery->prepare($deliveryError);
+                /*
+                $deliveryQuery->prepare($deliveryError, function() use (&$deliveryQuery, &$deliveryError) {
+                    if ($deliveryError || !$deliveryQuery->response->shops) return;
+
+                    $shopQuery = (new Query\Shop\GetById(array_keys($deliveryQuery->response->shops)))->prepare($shopError);
+                });
+                */
+            });
+
+            // магазины на основе остатков
+            call_user_func(function() use (&$productQuery, &$shopQuery) {
+                $product = $productQuery->response->product;
+                if (!$product['id']) return;
+
+                $shopQuery = new Query\Shop\GetByIdList();
+                foreach ($product['stock'] as $stock) {
+                    if (!$stock['shop_id'] || !($stock['quantity'] + $stock['quantity_showroom'])) continue;
+
+                    $shopQuery->ids[] = $stock['shop_id'];
+                }
+                if ($shopQuery->ids) {
+                    $shopQuery->prepare($shopError);
+                }
+            });
+
+            // группы оплаты
+            call_user_func(function() use (&$productQuery, &$paymentGroupQuery) {
+                $product = $productQuery->response->product;
+                if (!$product['id']) return;
+
+                $cart = \App::user()->getCart(); // TODO: old usage
+
+                $paymentGroupQuery = new Query\PaymentGroup\GetByCart();
+                // корзина
+                $paymentGroupQuery->cart->products[] = $paymentGroupQuery->cart->createProduct($product['id'], 1);
+                // регион
+                $paymentGroupQuery->regionId = $productQuery->regionId;
+                // фильтер
+                $paymentGroupQuery->filter->isCorporative = false;
+                $paymentGroupQuery->filter->isCredit = (bool)(($product['price'] * (($cart->getQuantityByProduct($product['id']) > 0) ? $cart->getQuantityByProduct($product['id']) : 1)) >= \App::config()->product['minCreditPrice']);
+
+                $paymentGroupQuery->prepare($paymentGroupError);
+            });
+
+            // рейтинг товаров
+            call_user_func(function() use (&$productQuery, &$ratingQuery) {
+                $ids = []; // идентификаторы товаров
+                if ($accessoryIds = array_slice((array)$productQuery->response->product['accessories'], 0, \App::config()->product['itemsPerPage'])) {
+                    $ids = array_merge($ids, $accessoryIds);
+                }
+
+                if ($kitIds = array_column($productQuery->response->product['kit'], 'id')) {
+                    $ids = array_merge($ids, $kitIds);
+                }
+
+                if ($ids) {
+                    $ratingQuery = new Query\Product\Review\GetScoreByProductIdList($ids);
+                    $ratingQuery->prepare($ratingError);
+                }
+            });
+
+            // связанные товары: аксессуары, наборы, ...
+            call_user_func(function() use (&$productQuery, &$relatedProductQueries) {
+                $ids = []; // идентификаторы товаров
+                if ($accessoryIds = array_slice((array)$productQuery->response->product['accessories'], 0, \App::config()->product['itemsPerPage'])) {
+                    $ids = array_merge($ids, $accessoryIds);
+                }
+
+                if ($kitIds = array_column($productQuery->response->product['kit'], 'id')) {
+                    $ids = array_merge($ids, $kitIds);
+                }
+
+                if ($ids) {
+                    $relatedProductQueries = [];
+                    foreach (array_chunk($ids, \App::config()->coreV2['chunk_size']) as $idsInChunk) {
+                        $relatedProductQueries[] = (new Query\Product\GetByIdList($idsInChunk, $productQuery->regionId))->prepare($relatedProductError);
+                    }
+                }
+            });
+
+            // отзывы товара
+            call_user_func(function() use (&$productQuery, &$reviewQuery) {
+                $product = $productQuery->response->product;
+                if (!$product['id']) return;
+
+                $reviewQuery = (new Query\Product\Review\GetByProductUi($product['ui'], 0, 7))->prepare($reviewError);
+            });
+
+            // категория товаров
+            call_user_func(function() use (&$productQuery, &$categoryQuery) {
+                $product = $productQuery->response->product;
+                if (!$product['id']) return;
+
+                $categoryQuery = null;
+                if ($categoryUi = end($product['category'])['ui']) {
+                    $categoryQuery = (new Query\Product\Category\GetByUi($categoryUi, $productQuery->regionId))->prepare($categoryError);
+                }
+            });
+
+            // описание товара из scms
+            call_user_func(function() use (&$productQuery, &$productDescriptionQuery) {
+                $product = $productQuery->response->product;
+                if (!$product['id']) return;
+
+                $productDescriptionQuery = (new Query\Product\GetDescriptionByUiList([$product['ui']]))->prepare($productDescriptionError);
+            });
+
+            // товар для Подари Жизнь
+            call_user_func(function() use (&$productQuery, &$lifeGiftProductQuery) {
+                $product = $productQuery->response->product;
+                if (!$product['ui']) return;
+
+                $labelId = isset($product['label'][0]['id']) ? $product['label'][0]['id'] : null;
+                if (
+                    \App::config()->lifeGift['enabled']
+                    && $labelId
+                    && (\App::config()->lifeGift['labelId'] === $labelId)
+                ) {
+                    $lifeGiftProductQuery = new Query\Product\GetByUi($product['ui'], \App::config()->lifeGift['regionId']);
+                }
+            });
 
             // выполнение запросов
             $curl->execute();

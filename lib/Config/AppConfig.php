@@ -89,7 +89,8 @@ class AppConfig {
     ];
 
     public $curlCache = [
-        'enabled' => null,
+        'enabled'    => null,
+        'delayRatio' => [0],
     ];
 
     /**

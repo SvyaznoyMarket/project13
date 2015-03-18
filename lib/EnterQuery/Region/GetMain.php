@@ -36,7 +36,9 @@ namespace EnterQuery\Region
                     $this->response->regions = isset($result[0]) ? $result : [];
 
                     return $result; // for cache
-                }
+                },
+                0.5, // timeout ratio
+                [0] // delay ratio
             );
 
             return $this;

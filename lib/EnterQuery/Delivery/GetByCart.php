@@ -69,7 +69,9 @@ namespace EnterQuery\Delivery
                     $this->response->regions = (isset($result['geo_list']) && is_array($result['geo_list'])) ? $result['geo_list'] : [];
 
                     return $result; // for cache
-                }
+                },
+                1, // timeout ratio
+                [0, 0.08] // delay ratio
             );
 
             return $this;
