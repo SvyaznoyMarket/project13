@@ -190,6 +190,8 @@ trait CurlQueryTrait
                         }
                     }
                 }
+
+                $query->__destruct();
             };
 
             $queryCollection->append($query);
