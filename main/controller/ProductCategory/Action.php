@@ -1084,8 +1084,8 @@ class Action {
         $values = $this->deleteNotExistsValues($values, $filters);
 
         if (\App::request()->get('instore')) {
-            $values['instore'] = 1;
-            $values['label'][] = 1; // TODO SITE-2403 Вернуть фильтр instore
+            $values['instore'] = 1; // TODO SITE-2403 Вернуть фильтр instore
+            $values['label'][] = 1; // TODO Костыль для таска: SITE-2403 Вернуть фильтр instore
         }
         if ($brand) {
             $values['brand'] = [
