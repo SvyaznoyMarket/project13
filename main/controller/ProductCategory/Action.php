@@ -712,8 +712,8 @@ class Action {
             }
 
             $linkUrl = $child->getLink();
-            $linkUrl .= \App::request()->getQueryString() ? (strpos('?', $linkUrl) === false ? '?' : '&') . \App::request()->getQueryString() : '';
-            $linkUrl .= \App::request()->get('instore') ? (strpos('?', $linkUrl) === false ? '?' : '&') . 'instore=1' : '';
+            $linkUrl .= \App::request()->getQueryString() ? (strpos($linkUrl, '?') === false ? '?' : '&') . \App::request()->getQueryString() : '';
+            $linkUrl .= \App::request()->get('instore') ? (strpos($linkUrl, '?') === false ? '?' : '&') . 'instore=1' : '';
 
             $links[] = [
                 'name'          => isset($config['name']) ? $config['name'] : $child->getName(),
