@@ -14,10 +14,13 @@
         self.searchInput = ko.observable();
         self.limitedSearchInput = ko.computed(self.searchInput).extend({throttle: 500});
         self.limitedSearchInput.subscribe(function(text) {
-            var map = ENTER.OrderV3.map,
+
+            var map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map,
                 extendValue = 1,
                 extendedBounds = [[pointsBounds[0][0] - extendValue, pointsBounds[0][1] - extendValue],[pointsBounds[1][0] + extendValue, pointsBounds[1][1] + extendValue]];
+
             if (typeof window.ymaps == 'undefined' || text.length == 0) return;
+
             ymaps.geocode(text, { boundedBy: extendedBounds, strictBounds: true }).then(
                 function(res){
                     var bounds = res.geoObjects.get(0).geometry.getBounds();
@@ -110,7 +113,7 @@
         $.each(points, function(token, pointsArr) {
             $.each(pointsArr, function(index, point){
                 self.availablePoints.push(point);
-                if (typeof pointsBounds == 'undefined') pointsBounds = [[point.latitude, point.latitude], [point.longitude, point.longitude]];
+                if (typeof pointsBounds == 'undefined') pointsBounds = [[point.latitude, point.longitude], [point.latitude, point.longitude]];
                 else {
                     if (point.latitude < pointsBounds[0][0]) pointsBounds[0][0] = point.latitude;
                     if (point.latitude > pointsBounds[1][0]) pointsBounds[1][0] = point.latitude;
@@ -118,7 +121,6 @@
                     if (point.longitude > pointsBounds[1][1]) pointsBounds[1][1] = point.longitude;
                 }
             });
-            console.log('Point bounds', pointsBounds);
         });
 
         return self;

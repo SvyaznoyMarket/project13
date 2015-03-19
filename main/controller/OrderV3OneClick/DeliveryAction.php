@@ -81,18 +81,12 @@ class DeliveryAction {
 
         try {
 
-            //$this->logger(['action' => 'view-page-delivery']);
-
             // сохраняем данные пользователя
             $data['action'] = 'changeUserInfo';
             $data['user_info'] = $this->session->get($this->splitSessionKey)['user_info'];
 
             //$orderDelivery =  new \Model\OrderDelivery\Entity($this->session->get($this->splitSessionKey));
             $orderDelivery = $this->getSplit($data);
-
-            foreach($orderDelivery->orders as $order) {
-                //$this->logger(['delivery-self-price' => $order->delivery->price]);
-            }
 
             $page = new \View\OrderV3\DeliveryPage();
             $page->setParam('orderDelivery', $orderDelivery);

@@ -140,8 +140,12 @@
                     window.location.href = response.result.redirect;
                 }
             }).done(function(data) {
-                console.log("Query: %s", data.result.OrderDeliveryRequest);
+
+                //console.log("Query: %s", data.result.OrderDeliveryRequest);
                 console.log("Model:", data.result.OrderDeliveryModel);
+
+                $('.jsNewPoints').remove(); // иначе неправильно работает биндинг
+
                 $orderContent.empty().html($(data.result.page).find('#js-order-content').html());
 				if ($orderContent.find('.jsAddressRootNode').length > 0) {
 					$.each($orderContent.find('.jsAddressRootNode'), function(i,val){
