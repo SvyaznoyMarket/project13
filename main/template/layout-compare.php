@@ -43,7 +43,7 @@
     </div>
 
     <footer class="footerw js-compare-footer">
-        <p class="footerw_tx clearfix">&copy; ООО «Энтер» 2011&ndash;<?=date(Y);?>. ENTER&reg; ЕНТЕР&reg; Enter&reg;. Все права защищены. <a href="javascript:void(0)" class="footer__copy__link" id="jira">Сообщить об ошибке</a></p>
+        <p class="footerw_tx clearfix">&copy; ООО «Энтер» 2011&ndash;<?= date('Y') ?>. ENTER&reg; ЕНТЕР&reg; Enter&reg;. Все права защищены. <a href="javascript:void(0)" class="footer__copy__link" id="jira">Сообщить об ошибке</a></p>
     </footer>
 
     <?= $page->slotAuth() ?>
