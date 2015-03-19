@@ -11181,7 +11181,7 @@ img[height="0"] {
   }
   .bBtnLine .btn--slot,
   .topbarfix_buy .btn--slot {
-    width: 72px;
+    width: 82px;
     padding: 5px 0 6px;
     margin: 0px;
   }
@@ -11196,7 +11196,7 @@ img[height="0"] {
   }
   .bBtnLine .btn--slot--container {
     float: left;
-    margin-right: 10px;
+    margin-right: 5px;
     width: auto;
   }
   .cmprCnt_buy .btn--slot {
