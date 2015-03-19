@@ -847,18 +847,6 @@ class Action {
         }
 
         $filters = $productFilter->dump();
-        // TODO Костыль для таска: SITE-2403 Вернуть фильтр instore
-        if (self::inStore()) {
-            foreach ($filters as $filterKey => $filter) {
-                if ('label' === $filter[0]) {
-                    foreach ($filter[2] as $labelFilterKey => $labelFilter) {
-                        if (1 === $labelFilter) {
-                            unset($filters[$filterKey][2][$labelFilterKey]);
-                        }
-                    }
-                }
-            }
-        }
 
         $smartChoiceEnabled = isset($catalogJson['smartchoice']) ? $catalogJson['smartchoice'] : false;
         $smartChoiceData = [];
@@ -1104,8 +1092,6 @@ class Action {
      * @return \Model\Product\Filter
      */
     public function getFilter(array $filters, \Model\Product\Category\Entity $category = null, \Model\Brand\Entity $brand = null, \Http\Request $request, $shop = null) {
-        $inStore = self::inStore();
-
         // регион для фильтров
         $region = \App::user()->getRegion();
 
@@ -1113,7 +1099,7 @@ class Action {
         $values = $this->getFilterFromUrl($request);
         $values = $this->deleteNotExistsValues($values, $filters);
 
-        if ($inStore) {
+        if (\App::request()->get('instore')) {
             $values['instore'] = 1;
             $values['label'][] = 1; // TODO SITE-2403 Вернуть фильтр instore
         }
@@ -1248,14 +1234,6 @@ class Action {
 
         return $values;
     }
-
-    /**
-     * @return bool
-     */
-    public static function inStore() {
-        return (bool)\App::request()->get('instore');
-    }
-
 
     /**
      * @return mixed

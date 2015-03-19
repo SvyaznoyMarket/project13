@@ -93,6 +93,23 @@ class Filter {
             $return[] = ['shop', 1, $this->shop->getId()];
         }
 
+        // TODO Костыль для таска: SITE-2403 Вернуть фильтр instore
+        if (\App::request()->get('instore')) {
+            foreach ($return as $key => $val) {
+                if ('label' === $val[0]) {
+                    if (isset($val[2])) {
+                        foreach ($val[2] as $labelKey => $labelVal) {
+                            if (1 === $labelVal) {
+                                unset($return[$key][2][$labelKey]);
+                                $return[$key][2] = array_values($return[$key][2]);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         return $return;
     }
 

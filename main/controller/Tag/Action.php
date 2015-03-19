@@ -391,8 +391,6 @@ class Action {
 
         // Product Filter
         $productFilter = new \Model\Product\Filter($filters, $shop);
-        //$productFilter = $this->getFilter($filters, $category, $brand, $request, $shop); // old
-        //$productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $category, $brand, $request, $shop);
 
         $productFilter->setValue( 'tag', $tag->getId() );
         if (isset($selectedCategory)) {
@@ -406,86 +404,6 @@ class Action {
             'count'    => $count,
         ));
     }
-
-    /**
-     * @param \Model\Product\Filter\Entity[] $filters
-     * @param \Model\Product\Category\TreeEntity $category
-     * @param \Model\Brand\Entity|null       $brand
-     * @param \Http\Request $request
-     * @return \Model\Product\Filter
-     */
-    protected function getFilter(array $filters, \Model\Product\Category\TreeEntity $category, \Model\Brand\Entity $brand = null, \Http\Request $request, $shop = null) {
-        $inStore = self::inStore();
-
-        // регион для фильтров
-        $region = \App::user()->getRegion();
-
-        // filter values
-        $values = (array)$request->get(\View\Product\FilterForm::$name, []);
-        if ($inStore) {
-            $values['instore'] = 1;
-        }
-        if ($brand) {
-            $values['brand'] = [
-                $brand->getId(),
-            ];
-        }
-
-        //если есть фильтр по магазину
-        if ($shop) {
-            /** @var \Model\Shop\Entity $shop */
-            $values['shop'] = $shop->getId();
-        }
-
-        // проверяем есть ли в запросе фильтры
-        if ((bool)$values) {
-            // проверяем есть ли в запросе фильтры, которых нет в текущей категории (фильтры родительских категорий)
-            /** @var $exists Ид фильтров текущей категории */
-            $exists = array_map(function($filter) { /** @var $filter \Model\Product\Filter\Entity */ return $filter->getId(); }, $filters);
-            /** @var $diff Ид фильтров родительских категорий */
-            $diff = array_diff(array_keys($values), $exists);
-            if ((bool)$diff && (bool)$category) {
-                foreach ($category->getAncestor() as $ancestor) {
-                    try {
-                        /** @var $ancestorFilters \Model\Product\Filter\Entity[] */
-                        $ancestorFilters = [];
-                        \RepositoryManager::productFilter()->prepareCollectionByCategory($ancestor, $region, function($data) use (&$ancestorFilters) {
-                            foreach ($data as $item) {
-                                $ancestorFilters[] = new \Model\Product\Filter\Entity($item);
-                            }
-                        });
-                        \App::coreClientV2()->execute();
-                    } catch (\Exception $e) {
-                        $ancestorFilters = [];
-                    }
-                    foreach ($ancestorFilters as $filter) {
-                        if (false === $i = array_search($filter->getId(), $diff)) continue;
-
-                        // скрываем фильтр в списке
-                        $filter->setIsInList(false);
-                        $filters[] = $filter;
-                        unset($diff[$i]);
-                        if (!(bool)$diff) break;
-                    }
-                    if (!(bool)$diff) break;
-                }
-            }
-        }
-
-        $productFilter = new \Model\Product\Filter($filters, $shop);
-        $productFilter->setCategory($category);
-        $productFilter->setValues($values);
-
-        return $productFilter;
-    }
-
-    /**
-     * @return bool
-     */
-    public static function inStore() {
-        return (bool)\App::request()->get('instore');
-    }
-
 
     /**
      * добавить дочерний токен к родительскому токену в дереве категорий для сайдбара
