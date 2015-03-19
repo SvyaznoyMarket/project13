@@ -74,7 +74,7 @@ return function(
                             <i class="fltrBtnBox_tggl_corner"></i>
                         </div>
 
-                        <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner">
+                        <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner" onmouseleave="this.style.display='none'">
                             <div class="fltrBtnBox_dd_inn">
                                 <div class="fltrBtn_param"> <!--fltrBtn_param-2col-->
                                     <? foreach ($order->possible_points as $token => $points) : ?>
@@ -84,7 +84,7 @@ return function(
                                                    type="checkbox" id="id-delivery-point-<?= $token.$order->block_name ?>" name="" value="<?= $token ?>"
                                                    data-bind="checked: choosenTokens" />
                                             <label class="customLabel customLabel-defcheck2" for="id-delivery-point-<?= $token.$order->block_name ?>">
-                                                <span class="customLabel_btx"><?= $orderDelivery->points[$token]->block_name ?></span>
+                                                <span class="customLabel_btx"><?= $orderDelivery->points[$token]->dropdown_name ?></span>
                                             </label>
                                         </div>
 
@@ -101,7 +101,7 @@ return function(
                             <i class="fltrBtnBox_tggl_corner"></i>
                         </div>
 
-                        <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner">
+                        <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner" onmouseleave="this.style.display='none'">
                             <div class="fltrBtnBox_dd_inn">
                                 <div class="fltrBtn_param">
                                     <? foreach ($uniqueCosts as $cost) : ?>
@@ -128,7 +128,7 @@ return function(
                             <i class="fltrBtnBox_tggl_corner"></i>
                         </div>
 
-                        <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner">
+                        <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner" onmouseleave="this.style.display='none'">
                             <div class="fltrBtnBox_dd_inn">
                                 <div class="fltrBtn_param">
                                     <? foreach ($uniqueDays as $day) : ?>

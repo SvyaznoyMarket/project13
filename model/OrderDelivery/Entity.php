@@ -185,6 +185,8 @@ namespace Model\OrderDelivery\Entity {
         public $action_name;
         /** @var string */
         public $block_name;
+        /** @var string|null */
+        public $dropdown_name;
         /** @var Point\Shop[]|Point\Pickpoint[]|Point\Svyaznoy[] */
         public $list = [];
         /* @var string */
@@ -224,16 +226,19 @@ namespace Model\OrderDelivery\Entity {
                     case 'self_partner_pickpoint':
                         $this->marker['iconImageHref'] = '/images/deliv-icon/pickpoint.png';
                         $this->icon = '/images/deliv-logo/pickpoint.png';
+                        $this->dropdown_name = 'Постаматы Pickpoint';
                         break;
                     case 'self_partner_svyaznoy_pred_supplier':
                     case 'self_partner_svyaznoy':
                     case 'shops_svyaznoy':
                         $this->marker['iconImageHref'] = '/images/deliv-icon/svyaznoy.png';
                         $this->icon = '/images/deliv-logo/svyaznoy.png';
+                        $this->dropdown_name = 'Магазины Связной';
                         break;
                     default:
                         $this->marker['iconImageHref'] = '/images/deliv-icon/enter.png';
                         $this->icon = '/images/deliv-logo/enter.png';
+                        $this->dropdown_name = 'Магазины Enter';
                 }
             }
         }
@@ -395,7 +400,7 @@ namespace Model\OrderDelivery\Entity {
                             $point = [
                                 'point'         => &$orderDelivery->points[$pointType]->list[$pointItem['id']],
                                 'nearestDay'    => $pointItem['nearest_day'],
-                                'cost'          => [0,100,300,500][rand(0,3)]
+                                'cost'          => (int)$pointItem['cost']
                             ];
 
                             $this->possible_points[$pointType][] =  $point;
