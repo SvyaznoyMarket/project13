@@ -52,7 +52,8 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
                     'relatedCategories'  => $relatedCategories,
                     'categoryConfigById' => $categoryConfigById,
                     'productPager'       => $productPager,
-                    'category_class'     => $category_class
+                    'category_class'     => $category_class,
+                    'showFullChildren'   => $category->isShowFullChildren(),
                 ]
             ) // дочерние категории and relatedCategories ?>
         <? endif ?>
