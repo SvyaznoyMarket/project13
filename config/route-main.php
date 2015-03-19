@@ -189,13 +189,6 @@ return [
         'require' => ['sliceToken' => '[\w\d-_]+'],
     ],
 
-    // показывать товары на складе
-    'product.category.instore' => [
-        'pattern' => '/catalog/{categoryPath}/_instore',
-        'action'  => ['ProductCategory\Action', 'setInstore'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
-    ],
-
     // tchibo
     'tchibo' => [
         'pattern' => '/catalog/tchibo',
