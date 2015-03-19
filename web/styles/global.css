@@ -5699,6 +5699,12 @@ img[height="0"] {
     font-size: 14px;
     font-weight: bold;
   }
+  .ep-selected-coupon__slider .slideItem_btn-prv {
+    left: -10px;
+  }
+  .ep-selected-coupon__slider .slideItem_btn-nxt {
+    right: -10px;
+  }
   .ep-rules-lst {
     display: none;
     margin: 0 0 20px;
