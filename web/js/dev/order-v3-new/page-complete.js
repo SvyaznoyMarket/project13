@@ -123,12 +123,13 @@
         };
 
     // клик по методу онлайн-оплаты
-    $orderContent.on('click', '.jsPaymentMethod', function(){
+    $orderContent.on('click', '.jsPaymentMethod', function(e){
         var id = $(this).data('value'),
             $order = $(this).closest('.orderLn').length > 0 ? $(this).closest('.orderLn') : $orderContent,
             orderId = $order.data('order-id'),
             orderNumber = $order.data('order-number'),
             action = $order.data('order-action');
+        e.preventDefault();
         switch (id) {
             case 5:
                 getForm(5, orderId, orderNumber, action);
