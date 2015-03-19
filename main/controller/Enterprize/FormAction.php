@@ -271,6 +271,8 @@ class FormAction {
                         ], \App::config()->coreV2['hugeTimeout']
                     );
                     \App::logger()->info(['core.response' => $confirm], ['coupon', 'confirm/email']);
+
+                    $notice = 'Для завершения регистрации, пожалуйста, перейдите по ссылке в письме, отправленном на Ваш почтовый адрес.';
                 } catch (\Curl\Exception $e) {
                     \App::exception()->remove($e);
                     $form->setError('email', $e->getMessage());
