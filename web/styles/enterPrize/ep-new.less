@@ -54,6 +54,18 @@
 	.topbarfix_cmpr-full .topbarfix_cmpr_tl {
 	    background-position: 0 -323px;
 	}
+	.table-cart{
+		color: @white;
+		&__name-inn{
+			color: @white;
+			&:after{
+				.after-gradient-stub(15px, #272727);
+			}
+		}
+		.del{
+			color: @white;
+		}
+	}
 }
 
 .wrapper {
@@ -120,18 +132,9 @@
 		//     text-decoration: none;
 		// }
 
-		.topbarfix_dd {
+		.topbarfix_cartOn{
 			border: none;
 			right: 0;
-			.table-cart{
-				color: @white;
-				&__name-inn{
-					color: @white;
-					&:after{
-						.after-gradient-stub(15px, #272727);
-					}
-				}
-			}
 		}
 
 		.quickOrder {
