@@ -249,6 +249,7 @@ class FormAction {
         ]);
         $session->set($sessionName, $data);
 
+        $notice = null;
         if ($form->isValid()) {
             $userToken = $data['token'];
             $data = $session->get($sessionName, []);
@@ -256,6 +257,9 @@ class FormAction {
             if ($data['isEmailConfirmed']) {
                 // пользователь все подтвердил, пробуем создать купон
                 $link = \App::router()->generate('enterprize.create');
+                (new \Controller\Enterprize\CouponAction())->create($request, $data);
+
+                $notice = 'Купон отправлен на ваш email';
             } elseif (!$data['isEmailConfirmed']) {
                 try {
                     $confirm = $client->query('confirm/email', [
@@ -303,6 +307,8 @@ class FormAction {
                         \App::config()->coreV2['hugeTimeout']
                     );
                     \App::logger()->info(['core.response' => $confirm], ['coupon', 'confirm/email']);
+
+                    $notice = 'Для завершения регистрации, пожалуйста, перейдите по ссылке в письме, отправленном на Ваш почтовый адрес.';
 
                 } catch (\Exception $e) {
                     \App::exception()->remove($e);
@@ -354,7 +360,7 @@ class FormAction {
                 }
 
                 // пишем в хранилище
-                $storageResult = \App::coreClientPrivate()->query('storage/post', ['user_id' => $result['user_id']], $regData);
+                $storageResult = \App::coreClientPrivate()->query('storage/post', ['user_id' => $result['user_id'], 'token' => $result['token']], $regData);
 
             } catch (\Exception $e) {
                 \App::logger()->error($e, ['coupon/register-in-enter-prize', 'user_id']);
@@ -365,7 +371,7 @@ class FormAction {
                 ? new \Http\JsonResponse([
                     'success' => true,
                     'error'   => null,
-                    'notice'  => ['message' => 'Для завершения регистрации, пожалуйста, перейдите по ссылке в письме, отправленном на Ваш почтовый адрес.', 'type' => 'info'],
+                    'notice'  => ['message' => $notice, 'type' => 'info'],
                     //'data'    => ['link' => $link],
                     'data'    => [],
                 ])
@@ -395,14 +401,17 @@ class FormAction {
 
         return $response
             ? $response
-            : ($request->isXmlHttpRequest()
+            :
+                ($request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([
                     'success' => true,
                     'error'   => null,
                     //'data'    => ['link' => \App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken])],
                     'data'    => [],
                 ])
-                : new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken])));
+                : new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken]))
+            )
+        ;
     }
 
     /**
