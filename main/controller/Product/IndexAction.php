@@ -130,7 +130,7 @@ class IndexAction {
         $accessoryItems = [];
         $accessoryCategory = array_map(function($accessoryGrouped){
             return $accessoryGrouped['category'];
-        }, \Model\Product\Repository::filterAccessoryId($product, $accessoryItems, null, \App::config()->product['itemsInAccessorySlider'] * 36, $catalogJson));
+        }, \Model\Product\Repository::filterAccessoryId($product, $accessoryItems, null, \App::config()->product['itemsInAccessorySlider'] * 36, $catalogJson, $accessories));
         if ((bool)$accessoryCategory) {
             $firstAccessoryCategory = new \Model\Product\Category\Entity();
             $firstAccessoryCategory->setId(0);

@@ -572,14 +572,17 @@ class Repository {
      * Фильтрует аксессуары согласно разрешенным в json категориям
      * Возвращает массив с аксессуарами, сгруппированными по категориям
      *
+     * TODO: отрефакторить этот г*код
+     *
      * @param $product
      * @param $accessoryItems
      * @param int|null $category
      * @param int|null $limit
      * @param array|null $catalogJson
+     * @param \Model\Product\Entity[] $accessories
      * @return array
      */
-    public static function filterAccessoryId(&$product, &$accessoryItems, $category = null, $limit = null, $catalogJson = null) {
+    public static function filterAccessoryId(&$product, &$accessoryItems, $category = null, $limit = null, $catalogJson = null, $accessories = []) {
         // массив токенов категорий, разрешенных в json
         if(is_null($catalogJson)) {
             $jsonCategoryToken = self::getJsonCategoryToken($product);
@@ -596,12 +599,14 @@ class Repository {
         // если передана категория - фильтруем, иначе - нет
         // например на вкладке "популярные" (токен категории не передается)
         // надо выводить первые 8 продуктов без фильтрации
-        if($category) {
-            // получаем аксессуары продукта отфильтрованные согласно разрешенным в json категориям
-            $accessories = self::getAccessoriesFilteredByJson($product, $jsonCategoryToken);
-        } else {
-            // получаем аксессуары продукта
-            $accessories = self::getAccessories($product);
+        if (!$accessories) {
+            if ($category) {
+                // получаем аксессуары продукта отфильтрованные согласно разрешенным в json категориям
+                $accessories = self::getAccessoriesFilteredByJson($product, $jsonCategoryToken);
+            } else {
+                // получаем аксессуары продукта
+                $accessories = self::getAccessories($product);
+            }
         }
 
         $accessoriesClone = $accessories;
