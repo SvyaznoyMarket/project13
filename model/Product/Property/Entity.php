@@ -44,7 +44,11 @@ class Entity {
         if (array_key_exists('is_multiple', $data)) $this->setIsMultiple($data['is_multiple']);
         if (array_key_exists('option_id', $data)) $this->setOptionId($data['option_id']);
         if (array_key_exists('value', $data)) $this->setValue($data['value']);
-        if (array_key_exists('group_id', $data)) $this->setGroupId($data['group_id']);
+        if (array_key_exists('group_uid', $data)) {
+            $this->setGroupId($data['group_uid']);
+        } else if (array_key_exists('group_id', $data)) {
+            $this->setGroupId($data['group_id']); // SITE-5290
+        }
         if (array_key_exists('group_position', $data)) $this->setGroupPosition($data['group_position']);
         if (array_key_exists('position', $data)) $this->setPosition($data['position']);
         if (array_key_exists('is_view_list', $data)) $this->setIsInList($data['is_view_list']);
@@ -57,7 +61,7 @@ class Entity {
      * @param int $groupId
      */
     public function setGroupId($groupId) {
-        $this->groupId = (int)$groupId;
+        $this->groupId = $groupId;
     }
 
     /**

@@ -35,9 +35,39 @@ class IndexAction {
 
         // товар
         /** @var $product \Model\Product\Entity */
+        $productItem = [];
+        if ($actionResponse->productQuery->response->product) {
+            $productItem = array_merge($productItem, $actionResponse->productQuery->response->product);
+        }
+        call_user_func(function() use (&$actionResponse, &$productItem) {
+            if ($actionResponse->productDescriptionQuery->response->products) {
+                $productDescriptionItem = reset($actionResponse->productDescriptionQuery->response->products);
+                // проверка на корректность данных от scms
+                if (empty($productDescriptionItem['uid'])) {
+                    return;
+                }
+
+                // осторожно! Если ядро не вернуло товар...
+                if (empty($productItem['id'])) {
+                    \App::exception()->add(new \Exception(sprintf('Товар @%s не получен от ядра', $productDescriptionItem['slug'])));
+                    $productItem = $productDescriptionItem;
+                }
+
+                $propertyData = isset($productDescriptionItem['properties'][0]) ? $productDescriptionItem['properties'] : [];
+                if ($propertyData) {
+                    $productItem['property'] = $propertyData;
+                }
+
+                $propertyGroupData = isset($productDescriptionItem['property_groups'][0]) ? $productDescriptionItem['property_groups'] : [];
+                if ($propertyGroupData) {
+                    $productItem['property_group'] = $propertyGroupData;
+                }
+            }
+        });
+
         $product =
-            $actionResponse->productQuery->response->product
-            ? new \Model\Product\Entity($actionResponse->productQuery->response->product)
+            (bool)$productItem
+            ? new \Model\Product\Entity($productItem)
             : null
         ;
         if (!$product) {
