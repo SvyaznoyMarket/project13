@@ -18,6 +18,6 @@
     </div>
 
     <div class="b-footer">
-        <span class="b-footer-cell mod_1">&copy; ООО «Энтер» 2011–<?=date(Y);?>. ENTER® ЕНТЕР® Enter®. Все права защищены. </span>
+        <span class="b-footer-cell mod_1">&copy; ООО «Энтер» 2011–<?= date('Y') ?>. ENTER® ЕНТЕР® Enter®. Все права защищены. </span>
     </div>
 </div>
