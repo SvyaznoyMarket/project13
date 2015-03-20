@@ -8311,6 +8311,18 @@ img[height="0"] {
     background: -ms-linear-gradient(bottom, #ffffff, rgba(255, 255, 255, 0));
     background: -moz-linear-gradient(center bottom, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
   }
+  .selShop.deliv-wrap .selShop_l:before {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 27px;
+    width: 100%;
+    background: #ffffff;
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgba(255, 255, 255, 0)), color-stop(1, #ffffff));
+    background: -ms-linear-gradient(bottom, rgba(255, 255, 255, 0), #ffffff);
+    background: -moz-linear-gradient(center bottom, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+  }
   .selShop.deliv-wrap .selShop_hh {
     margin-bottom: 10px;
   }
@@ -8319,6 +8331,7 @@ img[height="0"] {
     overflow-x: hidden;
     display: block;
     max-height: 350px;
+    padding-top: 12px;
   }
   .deliv-list:after {
     content: '';
