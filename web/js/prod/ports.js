@@ -412,7 +412,7 @@ window.ANALYTICS = {
     },
 
     flocktoryCompleteOrderJS : function() {
-        var data = $('#jsOrderFlocktory').data('value');
+        var data = $('#flocktoryCompleteOrderJS').data('value');
         window.flocktory = window.flocktory || [];
         console.info('Flocktory data', data);
         window.flocktory.push(['postcheckout', data]);
