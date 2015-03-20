@@ -100,6 +100,7 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
         'bannerPlaceholder'      => !empty($catalogJson['bannerPlaceholder']) && 'jewel' !== $listingStyle ? $catalogJson['bannerPlaceholder'] : [],
         'listingStyle'           => $listingStyle,
         'columnCount'            => isset($columnCount) ? $columnCount : 4,
+        'class'                  => $category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing() ? 'lstn-btn2' : '',
     ]) // листинг ?>
 
     <? if ($category->isV2()): ?>
