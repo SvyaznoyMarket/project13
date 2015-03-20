@@ -40,12 +40,14 @@ namespace EnterApplication\Action\ProductCard
             if (!$productQuery) {
                 throw new \InvalidArgumentException('Неверный критерий получения товара');
             }
-
             // подготовка запроса на получение товара
             $productQuery->prepare($productError);
 
             // регион
             $regionQuery = (new Query\Region\GetById($request->regionId))->prepare($regionError);
+
+            // описание товара из scms
+            $productDescriptionQuery = (new Query\Product\GetDescriptionByTokenList([$request->productCriteria['token']]))->prepare($productDescriptionError);
 
             // выполнение запросов
             $curl->execute(); // важно: только самые важные запросы: товар, регион
@@ -204,14 +206,6 @@ namespace EnterApplication\Action\ProductCard
                 if ($categoryUi = end($product['category'])['ui']) {
                     $categoryQuery = (new Query\Product\Category\GetByUi($categoryUi, $productQuery->regionId))->prepare($categoryError);
                 }
-            });
-
-            // описание товара из scms
-            call_user_func(function() use (&$productQuery, &$productDescriptionQuery) {
-                $product = $productQuery->response->product;
-                if (!$product['id']) return;
-
-                $productDescriptionQuery = (new Query\Product\GetDescriptionByUiList([$product['ui']]))->prepare($productDescriptionError);
             });
 
             // товар для Подари Жизнь
