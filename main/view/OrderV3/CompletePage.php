@@ -129,9 +129,6 @@ class CompletePage extends Layout {
         $config = \App::config();
         $html = parent::slotPartnerCounter();
 
-        // ActionPay
-        $html .= $this->tryRender('partner-counter/_actionpay', ['routeName' => 'order.complete'] );
-
         // Sociomantic - передаём все заказы!
         $html .= '<div id="sociomanticOrderCompleteJS" class="jsanalytics" ></div>';
 

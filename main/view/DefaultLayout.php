@@ -324,14 +324,6 @@ class DefaultLayout extends Layout {
                 if (\App::config()->partners['SmartLeads']['enabled']) $return .= "\n\n" . '<div id="xcntmyAsync" class="jsanalytics"></div>';
             }
 
-            // ActionPay — на странице с полным описанием продукта и на стр "спс за заказ"
-            if (in_array($routeName, [
-                'product',
-                'order.complete',
-            ])) {
-                $return .= $this->tryRender('partner-counter/_actionpay', ['routeName' => $routeName] );
-            }
-
             if ('subscribe_friends' == $routeToken) {
                 $return .= $this->tryRender('partner-counter/_actionpay_subscribe');
                 $return .= $this->tryRender('partner-counter/_cityAds_subscribe');
