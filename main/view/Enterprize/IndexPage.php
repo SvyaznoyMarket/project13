@@ -21,7 +21,7 @@ class IndexPage extends \View\DefaultLayout {
         }
 
 //        if ((bool)$this->getParam('isRegistration')) {
-//            $return .= '<div id="flocktoryAddScript" class="jsanalytics"></div>';
+//            $return .= '<div id="flocktoryScriptJS" class="jsanalytics"></div>';
 //        }
 
         return $return;

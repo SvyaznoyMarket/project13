@@ -593,6 +593,11 @@ class AppConfig {
     ];
 
     /** @var array */
+    public $flocktoryPostCheckout = [
+        'enabled' => null,
+    ];
+
+    /** @var array */
     public $flocktoryCoupon = [
         'enabled' => null,
         'paramName' => null,

@@ -301,134 +301,15 @@ window.ANALYTICS = {
         }
     },
 
-    flocktoryAddScript : function() {
-        var s = document.createElement('script');
-        s.type = 'text/javascript';
-        s.async = true;
-        s.src = "//api.flocktory.com/1/hello.2.js";
-        var l = document.getElementsByTagName('script')[0];
-        l.parentNode.insertBefore(s, l);
+    flocktoryScriptJS : function() {
+        $LAB.script('//api.flocktory.com/v2/loader.js?site_id=427');
     },
 
-    jsOrderFlocktory : function() {
-        console.info('foctory order complete');
-        console.log($('#jsOrderFlocktory').data('value'));
-
-        var _flocktory = window._flocktory = _flocktory || [],
-            flocktoryData = $('#jsOrderFlocktory').data('value');
-        // end of vars
-
-        _flocktory.push(flocktoryData);
-
-        this.flocktoryAddScript();
-    },
-
-    flocktoryJS : function() {
-        this.flocktoryAddScript();
-
-        window.Flocktory = {
-            /**
-             * Структура методов объекта:
-             * popup_bind(elem)  связывает событие  subscribing_friend()  с элементом (elem)
-             * subscribing_friend()  проверяет емейл/телефон и вызывает  popup_open()
-             *
-             * flk - сокращение от flocktory
-             */
-            name : '',
-            mail : '',
-
-            popup_prepare : function () {
-                var flk_mail = $('.flocktory_email'); // Проверим эти элементы
-                if ( !flk_mail.length ) flk_mail = $('.subscribe-form__email');
-                if ( !flk_mail.length ) flk_mail = $('#recipientEmail');
-                flk_mail = flk_mail.val();
-
-                var flk_name = $('input.bFastInner__eInput').val(); // используем имя пользователя, если существует
-                if (flk_name && !flk_name.length && flk_mail && flk_mail.length ) flk_name = flk_mail;
-
-                if ( !flk_mail || !flk_mail.length ) {
-                    // если нет емейла, глянем телефон и передадим его вместо мейла
-                    var flk_tlf = $('#phonemask').val().replace(' ','');
-                    //flk_mail = $('.flocktory_tlf').val() + '@email.tlf';
-                    if ( !flk_name.length ) flk_name = flk_tlf;
-                    flk_mail = flk_tlf + '@email.tlf'; // допишем суффикс к тлф, дабы получить фиктивный мейл и передать его
-                }
-
-                if ( flk_mail.search('@') !== -1 ) {
-                    //if (!flk_name || !flk_name.length) flk_name = 'Покупатель';
-                    if (!flk_name || !flk_name.length) flk_name = flk_mail;
-                    window.Flocktory.name = flk_name;
-                    window.Flocktory.mail = flk_mail;
-                    return true;
-                }
-                return false;
-            },
-
-            subscribing_friend: function () {
-                if ( Flocktory.popup_prepare() ) {
-                    return Flocktory.popup_subscribe(Flocktory.mail, Flocktory.name);
-                }
-                return false;
-            },
-
-            popup_opder : function ( toFLK_order )  {
-				try{
-					if ( Flocktory.popup_prepare() ) {
-						toFLK_order.email = Flocktory.mail;
-						toFLK_order.name = Flocktory.name;
-						return Flocktory.popup(toFLK_order);
-					}
-				}catch(e){};
-                return false;
-            },
-
-            popup_bind : function( jq_el ) { // передаётся элемент вида — $('.jquery_elem')
-                if ( jq_el && jq_el.length ) {
-                    // Если элемент существует, навесим событие вызовом flocktory по клику
-                    jq_el.bind('click', function () {
-                        Flocktory.subscribing_friend();
-                    });
-                }
-            },
-
-            popup_bind_default : function( ) {
-                // Свяжем действия со стандартными названиями кнопок
-                Flocktory.popup_bind( $('.run_flocktory_popup') );
-                Flocktory.popup_bind( $('.subscribe-form__btn') );
-            },
-
-            popup: function (toFLK) {
-                var _fl = window._flocktory = _flocktory || [];
-                return _fl.push(toFLK);
-            },
-
-            popup_subscribe : function ( flk_mail, flk_name ) {
-                //flk_mail = 'hello@flocktory.com'; // tmp, for debug
-                flk_name = flk_name || flk_mail;
-                var date = new Date();
-
-                var toFLK = {
-                    "order_id": date.getFullYear() + '' + date.getMonth() + '' + date.getDay() + '' + date.getHours() + '' + date.getMinutes() + '' + date.getSeconds() + '' + date.getMilliseconds() + '' + Math.floor(Math.random() * 1000000),
-                    "email": flk_mail,
-                    "name": flk_name,
-                    "price": 0,
-                    "domain": "registration.enter.ru",
-                    "items": [{
-                        "id": "подписка на рассылку",
-                        "title": "подписка на рассылку",
-                        "price":  0,
-                        "image": "",
-                        "count":  1
-                    }]
-                };
-
-                return Flocktory.popup(toFLK);
-            }
-
-        } // end of window.Flocktory object
-
-        Flocktory.popup_bind_default();
-
+    flocktoryCompleteOrderJS : function() {
+        var data = $('#jsOrderFlocktory').data('value');
+        window.flocktory = window.flocktory || [];
+        console.info('Flocktory data', data);
+        window.flocktory.push(['postcheckout', data]);
     },
 
 	/**
@@ -1170,7 +1051,7 @@ window.ANALYTICS = {
 	flocktoryEnterprizeJS: function() {
 		console.groupCollapsed('ports.js::flocktoryEnterprizeJS');
 
-//		this.flocktoryAddScript();
+//		this.flocktoryScriptJS();
 
 		var
 			data = {
@@ -1271,7 +1152,7 @@ window.ANALYTICS = {
 	},
 
 	flocktoryEnterprizeFormJS: function() {
-//		this.flocktoryAddScript();
+//		this.flocktoryScriptJS();
 
 		var s = document.createElement('script');
 		s.type = 'text/javascript';
