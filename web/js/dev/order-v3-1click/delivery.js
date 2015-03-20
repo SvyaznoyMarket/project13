@@ -160,44 +160,29 @@
 					$currentMap.append(ENTER.OrderV31Click.$map.show());
 					map.container.fitToViewport();
 
-                    $.each(mapData.points, function(token) {
+                    // добавляем невидимые точки на карту
+                    $.each(mapData.points, function(token){
                         for (var i = 0; i < mapData.points[token].length; i++) {
-                            var point = mapData.points[token][i],
-                                balloonContent = 'Адрес: ' + point.address;
-
-                            if (!point.latitude || !point.longitude) continue;
-
-                            if (point.regtime) balloonContent += '<br /> Время работы: ' + point.regtime;
-
-                            // кнопка "Выбрать магазин"
-                            balloonContent += '<br />' + $('<button />', {
-                                    'text': 'Выбрать магазин',
-                                    'class': 'btnLightGrey jsChangePoint',
-                                    'data-id': point.id,
-                                    'data-token': token
-                                }
-                            )[0].outerHTML;
-
-                            var placemark = new ymaps.Placemark([point.latitude, point.longitude], {
-                                balloonContentHeader: point.name,
-                                balloonContentBody: balloonContent,
-                                hintContent: point.name
-                            }, {
-                                iconLayout: 'default#image',
-                                iconImageHref: point.marker.iconImageHref,
-                                iconImageSize: point.marker.iconImageSize,
-                                iconImageOffset: point.marker.iconImageOffset
-                            });
-
-                            map.geoObjects.add(placemark);
+                            try {
+                                map.geoObjects.add(new ENTER.Placemark(mapData.points[token][i], false));
+                            } catch (e) {
+                                console.error('Ошибка добавления точки на карту', e);
+                            }
                         }
                     });
 
-					if (map.geoObjects.getLength() === 1) {
-						map.setCenter(map.geoObjects.get(0).geometry.getCoordinates(), 15);
-					} else {
-						map.setBounds(map.geoObjects.getBounds());
-					}
+                    if (map.geoObjects.getLength() === 1) {
+                        map.setCenter(map.geoObjects.get(0).geometry.getCoordinates(), 15);
+                        map.geoObjects.get(0).options.set('visible', true);
+                    } else {
+                        map.setBounds(map.geoObjects.getBounds());
+                        // точки становятся видимыми только при увеличения зума
+                        map.events.add('boundschange', function(event){
+                            if (event.get('oldZoom') < event.get('newZoom')) {
+                                map.geoObjects.each(function(point) { point.options.set('visible', true)})
+                            }
+                        })
+                    }
 
 				} else {
 					console.error('No map data for token = "%s"', token,  elem);
@@ -228,7 +213,9 @@
 
         // новый самовывоз
         $body.on('click', '.jsOrderV3Dropbox',function(){
-            $(this).find('.jsOrderV3DropboxInner').toggle();
+            $(this).siblings().removeClass('opn').find('.jsOrderV3DropboxInner').hide(); // скрываем все, кроме потомка
+            $(this).find('.jsOrderV3DropboxInner').toggle(); // потомка переключаем
+            $(this).hasClass('opn') ? $(this).removeClass('opn') : $(this).addClass('opn');
         });
 
 		// клик по крестику на всплывающих окнах

@@ -128,7 +128,6 @@
                             points = new ENTER.DeliveryPoints(pointData.points, E.map);
 
                         E.koModels.push(points);
-                        console.log('Apply bindings');
                         ko.applyBindings(points, val);
                     });
 

@@ -265,6 +265,14 @@ class TemplateHelper {
         return $formatted;
     }
 
+    /** Заменяет пробелы после точки неразрывным юникодных пробелом U+00A0
+     * @param $string string
+     * @return string
+     */
+    public function noBreakSpaceAfterDot($string) {
+        return preg_replace('/\.\s+/', '. ', $string);
+    }
+
     /** Возвращает номер телефона в зависимости от региона
      * @return string
      */

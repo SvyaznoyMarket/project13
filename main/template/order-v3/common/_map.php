@@ -10,6 +10,9 @@ return function(
 
     $region = \App::user()->getRegion();
 
+    // для дропбоксов
+    $onmouseleave = "this.style.display='none'; $(this).parent().removeClass('opn')";
+
     $dataValue = [
         'latitude'  => $region->getLatitude(),
         'longitude' => $region->getLongitude(),
@@ -27,7 +30,7 @@ return function(
             $dataValue['points'][$token][] = [
                 'id' => $p->id,
                 'name' => $p->name,
-                'address' => $p->address,
+                'address' => $helper->noBreakSpaceAfterDot($p->address),
                 'regtime' => $p->regtime,
                 'latitude' => $p->latitude,
                 'longitude' => $p->longitude,
@@ -74,7 +77,7 @@ return function(
                             <i class="fltrBtnBox_tggl_corner"></i>
                         </div>
 
-                        <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner" onmouseleave="this.style.display='none'">
+                        <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner" onmouseleave="<?= $onmouseleave ?>">
                             <div class="fltrBtnBox_dd_inn">
                                 <div class="fltrBtn_param"> <!--fltrBtn_param-2col-->
                                     <? foreach ($order->possible_points as $token => $points) : ?>
@@ -101,7 +104,7 @@ return function(
                             <i class="fltrBtnBox_tggl_corner"></i>
                         </div>
 
-                        <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner" onmouseleave="this.style.display='none'">
+                        <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner" onmouseleave="<?= $onmouseleave ?>">
                             <div class="fltrBtnBox_dd_inn">
                                 <div class="fltrBtn_param">
                                     <? foreach ($uniqueCosts as $cost) : ?>
@@ -128,7 +131,7 @@ return function(
                             <i class="fltrBtnBox_tggl_corner"></i>
                         </div>
 
-                        <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner" onmouseleave="this.style.display='none'">
+                        <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner" onmouseleave="<?= $onmouseleave ?>">
                             <div class="fltrBtnBox_dd_inn">
                                 <div class="fltrBtn_param">
                                     <? foreach ($uniqueDays as $day) : ?>

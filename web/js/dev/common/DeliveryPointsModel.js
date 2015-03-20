@@ -4,9 +4,7 @@
 
 ;(function($, ko){
 
-    var DeliveryPointsModel;
-
-    DeliveryPointsModel = function DeliveryPointsF (points) {
+    ENTER.DeliveryPoints = function DeliveryPointsF (points) {
 
         var self = this,
             pointsBounds;
@@ -127,7 +125,43 @@
 
     };
 
-    ENTER.DeliveryPoints = DeliveryPointsModel;
+    ENTER.Placemark = function(point, visible) {
 
+        var visibility = typeof visible == 'undefined' ? true : visible,
+            balloonContent = '<b>Адрес:</b> ' + point.address,
+            placemark;
+
+        if (!point.latitude || !point.longitude) throw 'Не указаны координаты точки';
+
+        if (point.regtime) balloonContent += '<br /> <b>Время работы:</b> ' + point.regtime;
+
+        // кнопка "Выбрать магазин"
+        balloonContent += $('<button />', {
+                'text':'Выбрать',
+                'class': 'btnLightGrey bBtnLine btnView jsChangePoint',
+                'style': 'display: block',
+                'data-id': point.id,
+                'data-token': point.token,
+                'data-blockname': point.orderToken
+            }
+        )[0].outerHTML;
+
+        placemark = new ymaps.Placemark([point.latitude, point.longitude], {
+            balloonContentHeader: point.name,
+            balloonContentBody: balloonContent,
+            hintContent: point.name
+        }, {
+            balloonMaxWidth: 200,
+            iconLayout: 'default#image',
+            iconImageHref: point.marker.iconImageHref,
+            iconImageSize: point.marker.iconImageSize,
+            iconImageOffset: point.marker.iconImageOffset,
+            visible: visibility
+        });
+
+        //placemark.balloon.set('maxWidth', 100);
+
+        return placemark;
+    };
 
 })(jQuery, ko);
