@@ -7,13 +7,14 @@
  */
 (function( global ) {
 	global.printPrice = function(price) {
-		price = price + '';
+		price = String(price);
 		price = price.replace(',', '.');
 		price = price.replace(/\s/g, '');
+		price = String(Number(price).toFixed(2));
 		price = price.split('.');
 
 		if (price[0].length >= 5) {
-			price[0] = price[0].replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1&thinsp;');
+			price[0] = price[0].replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1&thinsp;'); // TODO: заменить &thinsp; на соответствующий unicode символ
 		}
 
 		if (price[1] == 0) {

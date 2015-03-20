@@ -27,15 +27,12 @@ $c->loadMediaHost = false;
 
 $c->jsonLog['enabled'] = false;
 $c->analytics['enabled'] = false;
-$c->analytics['optimizelyEnabled'] = false;
 $c->googleAnalytics['enabled'] = false;
 $c->yandexMetrika['enabled'] = false;
 $c->adFox['enabled'] = false;
 $c->googleTagManager['enabled'] = false;
 $c->tealeaf['enabled'] = false;
-$c->kissmentrics['enabled'] = false;
 
-$c->partners['RuTarget']['enabled'] = false;
 $c->partners['Revolver']['enabled'] = false;
 $c->partners['GetIntent']['enabled'] = false;
 $c->partners['Сpaexchange']['enabled'] = false;
@@ -47,13 +44,9 @@ $c->partners['alexa']['enabled'] = false;
 $c->partners['AddThis']['enabled'] = false;
 $c->partners['AdvMaker']['enabled'] = false;
 $c->partners['Hubrus']['enabled'] = false;
-$c->partners['Adriver']['enabled'] = false;
-$c->partners['Mailru']['enabled'] = false;
 $c->partners['SmartLeads']['enabled'] = false;
 $c->partners['Sociaplus']['enabled'] = false;
-$c->partners['AdBlender']['enabled'] = false;
 $c->partners['ActionpayRetargeting']['enabled'] = false;
-$c->partners['Optimizely']['enabled'] = false;
 
 $c->paymentPsb['terminal']     = '79036768';
 $c->paymentPsb['merchant']     = '790367686219999';

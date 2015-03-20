@@ -85,20 +85,11 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotContentHead() {
-        // заголовок контента страницы
-        if (!$this->hasParam('title')) {
-            $this->setParam('title', null);
-        }
-        // навигация
-        if (!$this->hasParam('breadcrumbs')) {
-            $this->setParam('breadcrumbs', []);
-        }
-
         return $this->render('product/_contentHead', $this->params);
     }
 
     public function slotContent() {
-        return $this->render('product/page-index', $this->params) . PHP_EOL . $this->render('partner-counter/_flocktory_popup', $this->params);
+        return $this->render('product/page-index', $this->params);
     }
 
     public function slotBodyDataAttribute() {
@@ -109,9 +100,10 @@ class IndexPage extends \View\DefaultLayout {
         return parent::slotBodyClassAttribute() . $this->hasParam('categoryClass') ? ' ' . $this->getParam('categoryClass') : '';
     }
 
-    public function slotInnerJavascript() {
+    public function slotGoogleRemarketingJS($tagParams = []) {
         /** @var $product \Model\Product\Entity */
-        $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
+        $product =  $this->getParam('product');
+        if (!$product instanceof \Model\Product\Entity) return null;
         $categories = $product->getCategory();
         $category = array_pop($categories);
 
@@ -124,12 +116,9 @@ class IndexPage extends \View\DefaultLayout {
             'pvalue' => $product->getPrice()
         ];
 
-        return ''
-            . "\n\n"
-            . ($product ? $this->render('_remarketingGoogle', ['tag_params' => $tag_params]) : '')
-            . "\n\n"
-            . $this->render('_innerJavascript');
+        return parent::slotGoogleRemarketingJS($tag_params);
     }
+
 
     public function slotMetaOg() {
         /** @var \Model\Product\Entity $product  */
@@ -155,49 +144,16 @@ class IndexPage extends \View\DefaultLayout {
             "<link rel=\"image_src\" href=\"". $this->escape($product->getImageUrl(3)). "\" />\r\n";
     }
 
-    public function slotAdvanceSeoCounter() {
-        /** @var \Model\Product\Entity $product  */
-        $product = $this->getParam('product');
-
-        if (!$product) {
-            return '';
-        }
-
-        return \App::config()->analytics['enabled']
-            ? ("<div id=\"marketgidProd\" class=\"jsanalytics\"></div>\r\n")
-            : '';
-    }
-
-    public function slotAdriver() {
-        /** @var \Model\Product\Entity $product  */
-        $product = $this->getParam('product');
-
-        if (!$product) {
-            $data = array(
-                'productId' => 0,
-                'categoryId' => 0,
-            );
-        }
-        else {
-            $data = array(
-                'productId' => $product->getId(),
-                'categoryId' => $product->getMainCategory() ? $product->getMainCategory()->getId() : 0,
-            );
-        }
-
-        return \App::config()->partners['Adriver']['enabled'] ? sprintf('<div id="adriverProduct" data-vars="%s" class="jsanalytics"></div>', $this->json($data)) : '';
-    }
-
     public function slotConfig() {
-        $config = [];
+        $config = ['location' => ['product']];
 
         /** @var \Model\Product\Entity|null $product */
         $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
         if ($product) {
-            $config = [
-                'product' => [
-                    'id' => $product->getId(),
-                ],
+            $config['product'] = [
+                'id' => $product->getId(),
+                'isSlot' => (bool)$product->getSlotPartnerOffer(),
+                'isOnlyFromPartner' => $product->isOnlyFromPartner(),
             ];
         }
 
@@ -221,22 +177,6 @@ class IndexPage extends \View\DefaultLayout {
             'target' => '.js-showTopBar',
             'productId' => $product->getId(),
         ];
-    }
-
-    public function slotLamodaProductJS() {
-        if (!\App::config()->partners['Lamoda']['enabled']) return;
-
-        /** @var $product \Model\Product\Entity */
-        $product = $this->getParam('product');
-        if (!$product) {
-            return;
-        }
-
-        $data = [
-            'id' => $product->getId(),
-        ];
-
-        return "<div id=\"LamodaProductJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
     }
 
     public function slotAdvMakerJS() {
@@ -272,20 +212,6 @@ class IndexPage extends \View\DefaultLayout {
         if (!empty($html)) {
             return $html . \View\Partners\Hubrus::addProductData($this->product);
         }
-    }
-
-    public function slotMailRu() {
-        /** @var \Model\Product\Entity $product */
-        $product = $this->getParam('product');
-        if (!is_object($product) || !($product instanceof \Model\Product\Entity)) {
-            return '';
-        }
-
-        return $this->render('_mailRu', [
-            'pageType' => 'product',
-            'productIds' => [$product->getId()],
-            'price' => $product->getPrice(),
-        ]);
     }
 
     public function slotGoogleAnalytics()

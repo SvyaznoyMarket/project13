@@ -81,7 +81,6 @@
 
         pageConfig = $('#page-config').data('value'),
 
-		optimizelyUrl = '//cdn.optimizely.com/js/204544654.js',
 		directCreditUrl = 'http://direct-credit.ru/widget/api_script_utf.js',
         adfoxUrl = 'adfox_lib_ff.min.js', // 'adfox.asyn.code.ver3.min.js',
 		yandexMapUrl, yandexMapUrlv2_1, mustacheUrl, historyUrl, kladr, knockoutUrl, tealeafUrl,
@@ -95,7 +94,6 @@
 	}
 
 	if (pageConfig) {
-		if (pageConfig.optimizelyEnabled == false) optimizelyUrl = '';
 		if (pageConfig.adfoxEnabled == false) adfoxUrl = '';
 	}
 
@@ -279,7 +277,6 @@
 					.wait()
 					.script(yandexMapUrlv2_1)
 					.script( getWithVersion('order-v3-1click.js') )
-					.script( optimizelyUrl )
 					.script( adfoxUrl )
 					.wait()
 					.script( getWithVersion('ports.js') )
@@ -300,7 +297,6 @@
 					.wait()
 					.script(yandexMapUrlv2_1)
 					.script( getWithVersion('order-v3-1click.js') )
-					.script( optimizelyUrl )
 					.script( adfoxUrl )
 					.wait()
 					.script( getWithVersion('enterprize.js') )
@@ -324,7 +320,6 @@
 					.wait()
 					.script(yandexMapUrlv2_1)
 					.script( getWithVersion('order-v3-1click.js') )
-					.script( optimizelyUrl )
 					.script( adfoxUrl )
 					.wait()
 					.script( getWithVersion('ports.js') )
@@ -344,7 +339,6 @@
 					.wait()
 					.script(yandexMapUrlv2_1)
 					.script( getWithVersion('order-v3-1click.js') )
-					.script( optimizelyUrl )
 					.script( adfoxUrl )
 					.wait()
 					.script( getWithVersion('ports.js') )
@@ -365,7 +359,6 @@
 					.wait()
 					.script(yandexMapUrlv2_1)
 					.script( getWithVersion('order-v3-1click.js') )
-					.script( optimizelyUrl )
 					.script( adfoxUrl )
 					.wait()
 					.script( getWithVersion('ports.js') )
@@ -388,7 +381,6 @@
 					.wait()
 					.script(yandexMapUrlv2_1)
 					.script( getWithVersion('order-v3-1click.js') )
-					.script( optimizelyUrl )
 					.script( adfoxUrl )
 					.wait()
 					.script( getWithVersion('ports.js') )
@@ -410,7 +402,6 @@
 					.wait()
 					.script(yandexMapUrlv2_1)
 					.script( getWithVersion('order-v3-1click.js') )
-					.script( optimizelyUrl )
 					.script( adfoxUrl )
 					.wait()
 					.script( getWithVersion('ports.js') )
@@ -427,10 +418,10 @@
 					.wait()
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('lk.js') )
+					.script( getWithVersion('product.js') )
 					.wait()
 					.script(yandexMapUrlv2_1)
 					.script( getWithVersion('order-v3-1click.js') )
-					.script( optimizelyUrl )
 					.script( adfoxUrl )
 					.wait()
 					.script( getWithVersion('ports.js') )
@@ -451,7 +442,6 @@
 						.script( getWithVersion('common.js') )
 						.script( getWithVersion('order-new.js') )
 						.wait()
-						.script( optimizelyUrl )
 						.script( adfoxUrl )
 						.wait()
 						.script( getWithVersion('ports.js') )
@@ -537,7 +527,6 @@
 					.script( getWithVersion('common.js') )
 					.script( getWithVersion('order.js') )
 					.wait()
-					.script( optimizelyUrl )
 					.script( adfoxUrl )
 					.wait()
 					.script( getWithVersion('ports.js') )
@@ -561,7 +550,6 @@
 					.wait()
 					.script(yandexMapUrlv2_1)
 					.script( getWithVersion('order-v3-1click.js') )
-					.script( optimizelyUrl )
 					.script( adfoxUrl )
 					.wait()
 					.script( getWithVersion('ports.js') )
@@ -584,7 +572,6 @@
 						.wait()
                         .script(yandexMapUrlv2_1)
                         .script( getWithVersion('order-v3-1click.js') )
-						.script( optimizelyUrl )
 						.script( adfoxUrl )
 						.wait()
 						.script( getWithVersion('ports.js') )
@@ -607,7 +594,6 @@
 					.wait()
 					.script(yandexMapUrlv2_1)
 					.script( getWithVersion('order-v3-1click.js') )
-					.script( optimizelyUrl )
 					.script( adfoxUrl )
 					.wait()
 					.script( getWithVersion('ports.js') )
@@ -626,7 +612,6 @@
 					.wait()
 					.script(yandexMapUrlv2_1)
 					.script( getWithVersion('order-v3-1click.js') )
-					.script( optimizelyUrl )
 					.script( adfoxUrl )
 					.wait()
 					.script( getWithVersion('ports.js') )
@@ -649,7 +634,6 @@
 						.wait()
 						.script(yandexMapUrlv2_1)
 						.script( getWithVersion('order-v3-1click.js') )
-						.script( optimizelyUrl )
                         .wait()
                         .script( getWithVersion('ports.js') )
 			}).runQueue();

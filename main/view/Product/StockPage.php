@@ -2,6 +2,11 @@
 
 namespace View\Product;
 
+/**
+ * Class StockPage
+ * @package View\Product
+ * @deprecated
+ */
 class StockPage extends \View\DefaultLayout {
     /** @var string */
     protected $layout  = 'layout-oneColumn';
@@ -49,27 +54,5 @@ class StockPage extends \View\DefaultLayout {
 
     public function slotBodyDataAttribute() {
         return 'product_stock';
-    }
-
-    public function slotInnerJavascript() {
-        /** @var $product \Model\Product\Entity */
-        $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
-        $categories = $product->getCategory();
-        $category = array_pop($categories);
-
-        $tag_params = [
-            'prodid' => $product->getId(),
-            'pagetype' => 'product',
-            'pname' => $product->getName(),
-            'pcat' => ($category) ? $category->getToken() : '',
-            'pcat_upper' => $product->getMainCategory() ? $product->getMainCategory()->getToken() : '',
-            'pvalue' => $product->getPrice()
-        ];
-
-        return ''
-            . "\n\n"
-            . ($product ? $this->render('_remarketingGoogle', ['tag_params' => $tag_params]) : '')
-            . "\n\n"
-            . $this->render('_innerJavascript');
     }
 }

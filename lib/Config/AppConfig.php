@@ -88,6 +88,11 @@ class AppConfig {
         'enabled' => null,
     ];
 
+    public $curlCache = [
+        'enabled'    => null,
+        'delayRatio' => [0],
+    ];
+
     /**
      * @var array
      */
@@ -177,14 +182,6 @@ class AppConfig {
     /** @var array */
     public $analytics = [
         'enabled'           => null,
-        'optimizelyEnabled' => null,
-    ];
-    /** @var array */
-    public $kissmentrics = [
-        'enabled'    =>  null,
-        'cookieName' => [
-            'needUpdate' => null,
-        ],
     ];
     /** @var array */
     public $pickpoint = [
@@ -234,21 +231,11 @@ class AppConfig {
                 'cookieName' => null,
             ],
         ],
-        'Admitad' => [
-            'enabled' => null,
-        ],
-        'AdLens' => [
-            'enabled' => null,
-        ],
         'Сpaexchange' => [
             'enabled' => null,
         ],
         'Revolvermarketing' => [
             'enabled' => null,
-        ],
-        'Lamoda' => [
-            'enabled' => null,
-            'lamodaID' => null,
         ],
         'TagMan' => [
             'enabled' => null,
@@ -334,7 +321,6 @@ class AppConfig {
         'itemsInCategorySlider'  => null,
         'minCreditPrice'         => null,
         'totalCount'             => null,
-        'globalListEnabled'      => null, // глобальный (без учета региона) список товаров
         'showAveragePrice'       => null,
         'allowBuyOnlyInshop'     => null, // позволять покупать товар, который находится только в магазине
         'reviewEnabled'          => null, // отзывы о товаре
@@ -607,9 +593,8 @@ class AppConfig {
     ];
 
     /** @var array */
-    public $flocktoryCoupon = [
+    public $flocktoryPostCheckout = [
         'enabled' => null,
-        'paramName' => null,
     ];
 
     /** @var array */
@@ -665,14 +650,6 @@ class AppConfig {
 
     public $tealeaf = [
         'enabled' => null,
-    ];
-
-    public $gift = [
-        'buyProducts' => [
-            'cookie' => [
-                'name' => null
-            ]
-        ],
     ];
 
     public function __construct() {

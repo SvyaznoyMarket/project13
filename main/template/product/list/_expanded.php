@@ -10,6 +10,5 @@
 <? foreach ($pager as $i => $product): ?>
     <?= $page->render('product/show/_expanded', [
         'product'       => $product,
-        'addInfo'       => \Kissmetrics\Manager::getProductSearchEvent($product, $i+1, $pager->getPage()),
     ]); ?>
 <?php endforeach ?>

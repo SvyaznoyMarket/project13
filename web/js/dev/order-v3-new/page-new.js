@@ -39,7 +39,7 @@
 	});
 
 	$('.jsOrderV3BonusCardField').each(function(i,elem){
-		$(elem).closest('.bonusCnt-v2').find('.bonusCnt_tx_code .brb-dt').text($(elem).val())
+		$(elem).closest('.bonusCnt-v2').find('.bonusCnt_tx_code .brb-dt').eq(i).text($(elem).val())
 	});
 
     // АНАЛИТИКА

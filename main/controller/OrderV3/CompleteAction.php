@@ -4,7 +4,9 @@ namespace Controller\OrderV3;
 
 use Model\Order\Entity;
 use Model\PaymentMethod\PaymentEntity;
+use Model\Point\PointEntity;
 use Session\ProductPageSenders;
+use Session\ProductPageSendersForMarketplace;
 
 class CompleteAction extends OrderV3 {
 
@@ -18,18 +20,17 @@ class CompleteAction extends OrderV3 {
     }
 
     /**
+     * @param $request \Http\Request
      * @return \Http\Response
      * @throws \Exception
      */
     public function execute(\Http\Request $request) {
-//        $controller = parent::execute($request);
-//        if ($controller) {
-//            return $controller;
-//        }
 
+        $page = new \View\OrderV3\CompletePage();
         \App::logger()->debug('Exec ' . __METHOD__);
 
         ProductPageSenders::clean();
+        ProductPageSendersForMarketplace::clean();
 
         /** @var \Model\Order\Entity[] $orders */
         $orders = [];
@@ -42,11 +43,17 @@ class CompleteAction extends OrderV3 {
         /** @var $banks \Model\CreditBank\Entity[] */
         $banks = [];
         $shopIds = [];
-        $shops = [];
+        $pointUis = [];
+        $errors = [];
 
         try {
 
             if (!(bool)$this->sessionOrders) throw new \Exception('В сессии нет заказов');
+
+            if ($request->query->has('svyaznoyClub')) {
+                $activateSuccess = $this->completeSvyaznoy($request, $this->sessionOrders, $page);
+                if ($activateSuccess) return new \Http\RedirectResponse(\App::router()->generate('orderV3.complete', ['refresh' => 1]));
+            }
 
             // забираем заказы и доступные методы оплаты
             foreach ($this->sessionOrders as $sessionOrder) {
@@ -57,7 +64,7 @@ class CompleteAction extends OrderV3 {
                 if (\App::config()->order['sessionInfoOnComplete'] && !$request->query->get('refresh')) { // SITE-4828
                     $orders[$sessionOrder['number']] = new Entity($sessionOrder);
                 } else {
-                    $this->client->addQuery('order/get-by-mobile', ['number' => $sessionOrder['number'], 'mobile' => $sessionOrder['phone']], [], function ($data) use (&$orders, $sessionOrder) {
+                    $this->client->addQuery('order/get-by-mobile', ['number' => $sessionOrder['number'], 'mobile' => preg_replace('/[^0-9]/', '', $sessionOrder['phone'])], [], function ($data) use (&$orders, $sessionOrder) {
                         $data = reset($data);
                         $orders[$sessionOrder['number']] = $data ? new Entity($data) : null;
                     });
@@ -86,8 +93,6 @@ class CompleteAction extends OrderV3 {
 
             $this->client->execute();
 
-            sort($orders);
-
             // получаем продукты для заказов
             foreach ($orders as $order) {
                 \RepositoryManager::product()->prepareCollectionById(array_map(function(\Model\Order\Product\Entity $product) { return $product->getId(); }, $order->getProduct()), null, function ($data) use ($order, &$products) {
@@ -99,7 +104,8 @@ class CompleteAction extends OrderV3 {
                 // Нужны ли нам кредитные банки?
                 if ($order->paymentId == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT) $needCreditBanksData = true;
                 // и магазины
-                if ($order->getShopId()) $shopIds[] = $order->getShopId();
+                if ($order->getShopId()) $shopIds[$order->getShopId()] = $order->getNumber();
+                if ($order->getDelivery()->pointUi) $pointUis[$order->getDelivery()->pointUi] = $order->getNumber();
 
             }
 
@@ -112,9 +118,18 @@ class CompleteAction extends OrderV3 {
                 });
             }
 
-            // Запрашиваем магазины
-            if (!empty($shopIds)) \RepositoryManager::shop()->prepareCollectionById($shopIds, function($data) use (&$shops) {
-                foreach ((array)$data as $shopData) $shops[(int)@$shopData['id']] = new \Model\Shop\Entity($shopData);
+            // Запрашиваем магазины (они пока нужны для получения для ссылки "Как добраться")
+            if (!empty($shopIds)) \RepositoryManager::shop()->prepareCollectionById(array_keys($shopIds), function($data) use ($shopIds, &$orders) {
+                foreach ((array)$data as $shopData) {
+                    $orders[$shopIds[$shopData['id']]]->shop = new \Model\Shop\Entity($shopData);
+                }
+            });
+
+            // Запрашиваем точки
+            if (!empty($pointUis)) \RepositoryManager::shop()->preparePointCollectionByUi(array_keys($pointUis), function($data) use ($pointUis, &$orders) {
+                foreach ((array)$data as $point) {
+                    if (isset($orders[$pointUis[$point['ui']]])) $orders[$pointUis[$point['ui']]]->point = new PointEntity($point);
+                }
             });
 
             $this->client->execute();
@@ -138,7 +153,7 @@ class CompleteAction extends OrderV3 {
                 $data['order-product-category'] = array_map(function(\Model\Product\Entity $product) { $category = $product->getMainCategory(); return $category ? $category->getName() : null; }, $productsForOrder);
                 $data['order-product-price'] = array_map(function(\Model\Product\Entity $product) { return $product->getPrice(); }, $productsForOrder);
                 $data['order-sum'] = $order->getSum();
-                $data['order-delivery-price'] = isset($order->getDelivery()[0]) ? $order->getDelivery()[0]->getPrice() : '';
+                $data['order-delivery-price'] = $order->getDelivery() ? $order->getDelivery()->getPrice() : '';
                 $data['user-phone'] = $order->getMobilePhone();
                 $this->logger($data);
             }
@@ -155,15 +170,16 @@ class CompleteAction extends OrderV3 {
         $sessionIsReaded = !($this->sessionIsReaded === false);
         $this->session->remove(self::SESSION_IS_READED_KEY);
 
-        $page = new \View\OrderV3\CompletePage();
         $page->setParam('orders', $orders);
         $page->setParam('ordersPayment', $ordersPayment);
+        $page->setParam('motivationAction', $this->getMotivationAction($orders, $ordersPayment));
         $page->setParam('products', $products);
         $page->setParam('userEntity', $this->user->getEntity());
         $page->setParam('paymentProviders', $paymentProviders);
         $page->setParam('banks', $banks);
-        $page->setParam('shops', $shops);
         $page->setParam('subscribe', (bool)$request->cookies->get(\App::config()->subscribe['cookieName3']));
+
+        $page->setParam('errors', array_merge( $page->getParam('errors', []), $errors));
 
         $page->setParam('sessionIsReaded', $sessionIsReaded);
 
@@ -172,8 +188,14 @@ class CompleteAction extends OrderV3 {
         return $response;
     }
 
-    public function getPaymentForm(\Http\Request $request, $methodId, $orderId, $orderNumber) {
+    public function getPaymentForm(\Http\Request $request) {
         $form = '';
+
+        $methodId = $request->request->get('method');
+        $orderId = $request->request->get('order');
+        $orderNumber = $request->request->get('number');
+        $action = $request->request->get('action'); // акция по мотивации онлайн-оплаты
+
         $privateClient = \App::coreClientPrivate();
 
         if (!(bool)$this->sessionOrders) throw new \Exception('В сессии нет заказов');
@@ -184,11 +206,15 @@ class CompleteAction extends OrderV3 {
             $order = new \Model\Order\Entity($sessionOrder);
         }
 
+        $data = [
+            'method_id' => $methodId,
+            'order_id'  => $orderId,
+        ];
+
+        if ($action !== null) $data['action_alias'] = (string)$action;
+
         $result = $privateClient->query('site-integration/payment-config',
-            [
-                'method_id' => $methodId,
-                'order_id'  => $orderId,
-            ],
+            $data,
             [
                 'back_ref'    => \App::router()->generate('orderV3.complete', ['refresh' => 1], true), // обратная ссылка
                 'email'       => $order->getUser() ? $order->getUser()->getEmail() : '',
@@ -254,4 +280,104 @@ class CompleteAction extends OrderV3 {
         return new \Http\JsonResponse($result);
 
     }
+
+    /** Оплата баллами Связного
+     * @param $request \Http\Request
+     * @param $orders array
+     * @param $page \View\OrderV3\CompletePage
+     * @return bool Флаг об успешности операции
+     * @link https://wiki.enter.ru/pages/viewpage.action?pageId=22588834
+     */
+    private function completeSvyaznoy($request, $orders, &$page) {
+
+        $error = $request->query->get('Error');
+
+        $data = [
+            'OrderId'    => $request->query->get('OrderId'),
+            'Status'     => $request->query->get('Status'),
+            'Discount'   => $request->query->get('Discount'),
+            'CardNumber' => $request->query->get('CardNumber'),
+            'Signature'  => $request->query->get('Signature'),
+        ];
+
+        try {
+
+            // Если есть ошибка, то в ядро не надо делать запроса
+            if ($error) throw new \Exception($error);
+
+            $result = \App::coreClientV2()->query('payment/svyaznoy-club', [], $data, \App::config()->coreV2['hugeTimeout']);
+
+            if (!isset($result['detail']['order']) || !is_array($result['detail']['order'])) {
+                throw new \Exception('Не получена информация о заказе');
+            }
+
+            // Если всё хорошо, то сохраняем обновленную информацию о заказе
+            foreach ($orders as &$order) {
+                if ($order['id'] == $result['detail']['order']['id']) {
+                    $order['payment_status_id'] = Entity::PAYMENT_STATUS_SVYAZNOY_CLUB;
+                    $order['meta_data']['payment.svyaznoy_club'] = [$result['detail']['order']['pay_sum']];
+                }
+            }
+
+            $this->session->set(\App::config()->order['sessionName'] ? : 'lastOrder', $orders);
+            return true;
+
+        } catch (\Exception $e) {
+            \App::exception()->remove($e);
+            if (!empty($e->getCode())) {
+                $page->setParam('errors', array_merge(
+                    $page->getParam('errors', []),
+                    [[
+                        'code' => $e->getCode(),
+                        'message' => \App::config()->debug ? $e->getMessage() : 'Ошибка списания баллов Связного Клуба'
+                    ]]
+                ));
+            }
+            return false;
+        }
+    }
+
+    /** Возвращает акцию по мотивации к покупке онлайн на основании АБ-теста и возможных акций из ядра
+     *  Для тестирования первой строкой вписать return 'online_motivation_discount'; или return 'online_motivation_coupon';
+     * @param   $orders         \Model\Order\Entity[]
+     * @param   $ordersPayment  \Model\PaymentMethod\PaymentEntity[]
+     * @return  string|null
+     */
+    private function getMotivationAction($orders, $ordersPayment) {
+        /** @var $order \Model\Order\Entity */
+        if (count($orders) != 1 || count($ordersPayment) != 1 || !\App::abTest()->getTest('online_motivation')) {
+            return null;
+        }
+
+        $order = reset($orders);
+        // если пользователь выбрал что-то отличное от оплаты наличными, то не предлагаем ему акцию
+        if ($order->paymentId != \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CASH) {
+            return null;
+        }
+
+        // если резерв сегодня, то не мотивируем
+        foreach ($orders as $iOrder) {
+            $delivery = $iOrder->getDelivery();
+            if (!$delivery || !$delivery->getDeliveredAt() || $delivery->isShipping) continue;
+
+            if ((new \DateTime())->format('d.m.Y') === $delivery->getDeliveredAt()->format('d.m.Y')) { // сегодня
+                return null;
+            }
+        }
+
+        // достанем список методов из первого возможного метода "прямо сейчас"
+        $orderPayment = reset($ordersPayment);
+        $onlineMethods = $orderPayment instanceof \Model\PaymentMethod\PaymentEntity ? $orderPayment->getOnlineMethods() : null;
+        if (empty($onlineMethods)) {
+            return null;
+        }
+
+        $key = \App::abTest()->getTest('online_motivation')->getChosenCase()->getKey();
+        if ($onlineMethods[0]->getAction($key)) {
+            return $key;
+        }
+
+        return null;
+    }
+
 }

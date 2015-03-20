@@ -31,11 +31,10 @@ class Action {
                 'email'      => $email,
                 'channel_id' => $channelId,
             ];
-            /* SITE-1374
+
             if ($userEntity = \App::user()->getEntity()) {
                 $params['token'] = $userEntity->getToken();
             }
-            */
 
             $result = $client->query('subscribe/create', $params, []);
 
@@ -62,19 +61,6 @@ class Action {
         }
 
         return $response;
-    }
-
-    /**
-     * @return \Http\JsonResponse
-     */
-    public function cancel() {
-        try {
-            $responseData = ['success' => true];
-        } catch (\Exception $e) {
-            $responseData = ['success' => false];
-        }
-
-        return new \Http\JsonResponse($responseData);
     }
 
     /**

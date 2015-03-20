@@ -7,6 +7,14 @@ class NewPage extends Layout {
         $this->setTitle('Оформление заказа - Enter');
     }
 
+    public function slotGoogleRemarketingJS($tagParams = []) {
+        $tagParams = [
+            'pagetype'          => 'cart',
+            'ecomm_cartvalue'   => \App::user()->getCart()->getSum()
+        ];
+        return parent::slotGoogleRemarketingJS($tagParams);
+    }
+
     public function slotContent() {
         $path = 'order-v3';
 

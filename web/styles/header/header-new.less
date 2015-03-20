@@ -29,13 +29,14 @@
 
 .header{
     width: 960px;
-    padding: 0 0 20px;
+    padding: 0 0 10px;
     margin: 0 0 0 -10px;
     background: @white;
 
     &-new {
         background: @white;
     }
+
     // верхний блок шапки
     &_t{
         height: @header-height;
@@ -46,6 +47,7 @@
     &_i{
         .inline-block-middle();
     }
+
     &_c{
         height: 60px;
         padding: 5px 10px;
@@ -156,7 +158,7 @@
 
                 &_itb {
                     border: none;
-                    width: 463px;
+                    width: 479px;
                     background: transparent;
                     margin: 0;
 
@@ -186,30 +188,6 @@
             .hdlogo {
                 margin: 0 30px 0 10px;
             }
-
-            .hdgift {
-                background: url("@{base-url}/mainpage/img/enter_presents_v3.png") no-repeat 0 0;
-                border-right: medium none;
-                float: left;
-                height: 39px;
-                margin: 6px 0 0 30px;
-                overflow: hidden;
-                padding: 0 0 0;
-                text-align: center;
-                width: 133px;
-
-                &_tx,
-                &_img {
-                    display: none;
-                }
-
-                &_lk {
-                    display: block;
-                    width: 100%;
-                    height: 100%;
-                }
-            }
-
             .hdep {
                 float: right;
                 margin: 11px 10px 0 0;
@@ -236,6 +214,98 @@
     }
     &.header-new{
         .box-shadow(0px 0px 26px 0px rgba(50, 50, 50, 0.25));
+    }
+
+    .header-icon-ddnav {
+        display: none;
+    }
+
+    // Гамбургер
+    &-ddnav {
+
+        .header_b {
+            border: none;
+            float: left;
+            padding: 0 5px 0 10px;
+            height: 70px;
+            background: @black;
+        }
+
+        .header_c {
+            float: right;
+            width: 881px;
+        }
+
+        .header-ddnav-wrap {
+            position: relative;
+            z-index: 99;
+
+            &:hover {
+
+                .header-ddnav-box {
+                    transition-property: visibility;
+                    transition-delay: 100ms;
+                    display: block;
+                    visibility: visible;
+                }
+            }
+        }
+
+        .header-icon-ddnav {
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAzAQAAAADEf9fiAAAAAnRSTlMAAHaTzTgAAAAXSURBVHgBY6A3YPz///8PrBTd9dENAACB2S+JmUkSHwAAAABJRU5ErkJggg==') no-repeat 50% 50% @black;
+            display: block;
+            height: 70px;
+            width: 44px;
+            cursor: pointer;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .header-ddnav-box {
+            position: absolute;
+            bottom: -90px;
+            left: -10px;
+            padding: 5px 5px 0;
+            width: 950px;
+
+            .box-shadow(0 2px 3px 0 rgba(0, 0, 0, 0.5));
+            background: @white;
+
+            display: block;
+            visibility: hidden;
+            transition-property: visibility;
+            transition-delay: 1000ms;
+
+            &:after {
+                .pseudo-corner-top(9px, @white, -8px);
+                left: 22px;
+            }
+
+            &.show {
+                display: block;
+            }
+        }
+
+        .hdlogo {
+            margin: 0 35px 0 0;
+        }
+
+        .hdsearch_itb {
+            width: 481px;
+            padding: 0px 10px 0 5px;
+
+            &:after {
+                background: none;
+            }
+        }
+
+        .hdgift--new {
+            margin: 18px 0 0 21px;
+        }
+
+        .hdep {
+            margin: 11px 0px 0 0;
+        }
     }
 }
 // контакты
@@ -393,7 +463,7 @@
     }
 }
 
-.hdgift {
+.hdgift{
     float: right;
     border-right: 1px dotted @white;
     margin: 14px 10px 0 0;
@@ -413,6 +483,57 @@
         width: 55px;
         line-height: 1.1;
         margin: 2px 0 0 3px;
+    }
+
+    &--new {
+        border-right: medium none;
+        float: left;
+        margin: 18px 0 0 30px;
+        overflow: hidden;
+        padding: 0;
+        text-align: center;
+        width: 133px;
+        color:#fff;
+
+        &_tx,
+        &_img {
+            display: none;
+        }
+
+        &_lk {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        background: #ef404a;
+        .box-shadow(0 2px 0 #a91507);
+        .rounded(2px);
+        height: 25px;
+        width: 130px;
+        .hdgift_tx {
+            .inline-block();
+            font-family: "Enter type";
+            color: #fff;
+            font-size: 16px;
+            width: auto;
+            line-height: 25px;
+            margin: 0px;
+        }
+        .hdgift_img{
+            display: none;
+        }
+        &-cursive{
+            .hdgift_tx {
+                font-family: "Enter";
+                text-transform: uppercase;
+                font-size: 15px;
+            }
+        }
+
+    }
+    &--old{
+        border-right: medium none;
+        padding: 1px 29px 2px 0;
     }
 }
 

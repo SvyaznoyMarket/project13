@@ -6,6 +6,9 @@ class BasicEntity {
     use \Model\MediaHostTrait;
 
     const LABEL_ID_PODARI_ZHIZN = 17;
+    const PARTNER_OFFER_TYPE_SLOT = 2;
+    /** Электронный подарочный сертификат giftery.ru */
+    const GIFTERY_UID = '684fb825-ebf5-4e4f-be2b-96a81e938cb2';
 
     /** @var string|null */
     protected $ui;
@@ -23,12 +26,16 @@ class BasicEntity {
     protected $token;
     /** @var string|null */
     protected $image;
-    /** @var int|null */
+    /** @var float|null */
     protected $price;
     /** @var State\Entity|null */
     protected $state;
     /** @var int|null */
     protected $statusId;
+    /** @var Kit\Entity[] */
+    protected $kit = [];
+    /** @var bool */
+    protected $isKitLocked = false;
     /** @var Line\Entity */
     protected $line;
     /** @var Category\Entity */
@@ -103,6 +110,11 @@ class BasicEntity {
         if (isset($data['title'])) $this->setSeoTitle($data['title']);
         if (isset($data['meta_keywords'])) $this->setSeoKeywords($data['meta_keywords']);
         if (isset($data['meta_description'])) $this->setSeoDescription($data['meta_description']);
+
+        if (array_key_exists('kit', $data) && is_array($data['kit'])) $this->setKit(array_map(function($data) {
+            return new Kit\Entity($data);
+        }, $data['kit']));
+        if (array_key_exists('is_kit_locked', $data)) $this->setIsKitLocked($data['is_kit_locked']);
 
         $this->calculateState($data);
     }
@@ -207,14 +219,14 @@ class BasicEntity {
     }
 
     /**
-     * @param int $price
+     * @param float $price
      */
     public function setPrice($price) {
-        $this->price = (int)$price;
+        $this->price = (float)$price;
     }
 
     /**
-     * @return int
+     * @return float
      */
     public function getPrice() {
         return $this->price;
@@ -304,11 +316,52 @@ class BasicEntity {
      * @return bool
      */
     public function getIsBuyable() {
-        //return true;
+//        return true;
         return
             $this->getState() && $this->getState()->getIsBuyable()
             && (\App::config()->product['allowBuyOnlyInshop'] ? true : !$this->isInShopStockOnly())
+            && $this->getPrice() !== null
         ;
+    }
+
+    /**
+     * @param Kit\Entity[] $kits
+     */
+    public function setKit(array $kits) {
+        $this->kit = [];
+        foreach ($kits as $kit) {
+            $this->addKit($kit);
+        }
+    }
+
+    /**
+     * @param Kit\Entity $kit
+     */
+    public function addKit(Kit\Entity $kit) {
+        $this->kit[] = $kit;
+    }
+
+    /**
+     * @return Kit\Entity[]
+     */
+    public function getKit() {
+        return $this->kit;
+    }
+
+    /**
+     * @param boolean $isKitLocked
+     */
+    public function setIsKitLocked($isKitLocked)
+    {
+        $this->isKitLocked = (bool)$isKitLocked;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsKitLocked()
+    {
+        return $this->isKitLocked;
     }
 
     /**
@@ -560,6 +613,20 @@ class BasicEntity {
         return $this->isOnlyFromPartner;
     }
 
+    /**
+     * @return array|null
+     */
+    public function getSlotPartnerOffer()
+    {
+        foreach ($this->partnersOffer as $offer) {
+            if (isset($offer['type']) && self::PARTNER_OFFER_TYPE_SLOT == $offer['type']) {
+                return $offer + ['name' => null, 'offer' => null];
+            }
+        }
+
+        return null;
+    }
+
     public function setModel(Model\Entity $model = null) {
         $this->model = $model;
     }
@@ -665,11 +732,18 @@ class BasicEntity {
         }
 
         foreach ($this->medias as $media) {
-            if (in_array($media->provider, ['megavisor', 'maybe3d', 'swf'], true)) {
+            // Временно отключаем maybe3d html5 модели из-за проблем, описанных в SITE-3783
+//            if (in_array($media->provider, ['megavisor', 'maybe3d', 'swf'], true)) {
+            if (in_array($media->provider, ['megavisor', 'swf'], true) || ($media->provider === 'maybe3d' && $media->getSourceByType('swf'))) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    /* Электронный сертификат от giftery.ru */
+    public function isGifteryCertificate() {
+        return $this->getUi() == $this::GIFTERY_UID;
     }
 }

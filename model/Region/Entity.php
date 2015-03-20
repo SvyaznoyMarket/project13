@@ -2,15 +2,10 @@
 
 namespace Model\Region;
 
-class Entity {
-    /** @var int */
-    private $id;
+class Entity extends BasicRegionEntity {
+
     /** @var int */
     private $parentId;
-    /** @var string */
-    private $name;
-    /** @var string */
-    private $token;
     /** @var bool */
     private $isMain;
     /** @var bool */
@@ -21,10 +16,6 @@ class Entity {
     private $hasSubway;
     /** @var bool */
     private $hasService;
-    /** @var float */
-    private $latitude;
-    /** @var float */
-    private $longitude;
     /** @var Entity */
     private $parent;
     /** @var bool */
@@ -33,18 +24,14 @@ class Entity {
     private $forceDefaultBuy = true;
 
     public function __construct(array $data = []) {
-        if (array_key_exists('id', $data)) $this->setId($data['id']);
+        parent::__construct($data);
         if (array_key_exists('parent_id', $data)) $this->setParentId($data['parent_id']);
-        if (array_key_exists('name', $data)) $this->setName($data['name']);
-        if (array_key_exists('token', $data)) $this->setToken($data['token']);
         if (array_key_exists('slug', $data)) $this->setToken($data['slug']);
         if (array_key_exists('is_main', $data)) $this->setIsMain($data['is_main']);
         if (array_key_exists('has_shop', $data)) $this->setHasShop($data['has_shop']);
         if (array_key_exists('has_delivery', $data)) $this->setHasDelivery($data['has_delivery']);
         if (array_key_exists('has_subway', $data)) $this->setHasSubway($data['has_subway']);
         if (array_key_exists('has_f1', $data)) $this->setHasService($data['has_f1']);
-        if (array_key_exists('coord_long', $data)) $this->setLongitude($data['coord_long']);
-        if (array_key_exists('coord_lat', $data)) $this->setLatitude($data['coord_lat']);
         if (isset($data['location']['longitude'])) $this->setLongitude($data['location']['longitude']);
         if (isset($data['location']['latitude'])) $this->setLatitude($data['location']['latitude']);
         if (array_key_exists('tk_available', $data)) $this->setHasTransportCompany($data['tk_available']);
@@ -305,12 +292,6 @@ class Entity {
             return array_key_exists($inflect, $data) ? $data[$inflect] : $this->name;
         } catch (\Exception $e) {
             \App::logger()->warn($e);
-            if ($dbh = \App::database()) {
-                $dbh->exec("INSERT INTO `queue` (`name`, `body`) VALUES ('inflect', '" . addslashes(json_encode([
-                    'original' => $this->name,
-                    'file'     => \App::config()->dataDir . '/data-store/inflect/region/' . $this->id . '.json',
-                ], JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT))."')");
-            }
         }
 
         return $this->name;

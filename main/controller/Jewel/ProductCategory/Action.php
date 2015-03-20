@@ -227,11 +227,7 @@ class Action extends \Controller\ProductCategory\Action {
         $productPager = new \Iterator\EntityPager($products, $productCount);
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage($limit);
-        if (self::isGlobal()) {
-            $category->setGlobalProductCount($productPager->count());
-        } else {
-            $category->setProductCount($productPager->count());
-        }
+        $category->setProductCount($productPager->count());
 
         // проверка на максимально допустимый номер страницы
         if (($productPager->getPage() - $productPager->getLastPage()) > 0) {

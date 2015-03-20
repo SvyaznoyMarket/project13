@@ -3,13 +3,11 @@
 namespace Controller\Tag;
 
 class Action {
-    private static $globalCookieName = 'global';
-
     public function index($tagToken, \Http\Request $request, $categoryToken = null) {
         \App::logger()->debug('Exec ' . __METHOD__);
         $client = \App::coreClientV2();
-        /** @var $region \Model\Region\Entity|null */
-        $region = self::isGlobal() ? null : \App::user()->getRegion();
+        /** @var $region \Model\Region\Entity */
+        $region = \App::user()->getRegion();
 
         $tag = \RepositoryManager::tag()->getEntityByToken($tagToken);
         if (!$tag) {
@@ -128,7 +126,7 @@ class Action {
 
         $shop = null;
         try {
-            if (!\Controller\ProductCategory\Action::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
+            if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
             }
         } catch (\Exception $e) {
@@ -214,7 +212,7 @@ class Action {
                 $productUIs[] = $product->getUi();
             }
 
-            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) {
+            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use(&$products) {
                 if (isset($data['product_scores'][0])) {
                     \RepositoryManager::review()->addScores($products, $data);
                 }
@@ -291,22 +289,6 @@ class Action {
     /**
      * @param string        $categoryPath
      * @param \Http\Request $request
-     * @return \Http\RedirectResponse
-     */
-    public function setInstore($categoryPath, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
-
-        $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('product.category', [
-            'categoryPath' => $categoryPath,
-            'instore'      => 1,
-        ]));
-
-        return $response;
-    }
-
-    /**
-     * @param string        $categoryPath
-     * @param \Http\Request $request
      * @return \Http\JsonResponse
      * @throws \Exception\NotFoundException
      */
@@ -317,8 +299,7 @@ class Action {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
-        // vars
-        $region = self::isGlobal() ? null : \App::user()->getRegion();
+        $region = \App::user()->getRegion();
         $categoryToken = null;
         $category = null;
         $selectedCategory = null;
@@ -396,7 +377,7 @@ class Action {
         // магазины
         $shop = null;
         try {
-            if (!self::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
+            if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
             }
         } catch (\Exception $e) {
@@ -409,9 +390,7 @@ class Action {
 
 
         // Product Filter
-        $productFilter = new \Model\Product\Filter($filters, self::isGlobal(), self::inStore(), $shop);
-        //$productFilter = $this->getFilter($filters, $category, $brand, $request, $shop); // old
-        //$productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $category, $brand, $request, $shop);
+        $productFilter = new \Model\Product\Filter($filters, $shop);
 
         $productFilter->setValue( 'tag', $tag->getId() );
         if (isset($selectedCategory)) {
@@ -425,269 +404,6 @@ class Action {
             'count'    => $count,
         ));
     }
-
-    /**
-     * @param \Model\Product\Category\TreeEntity $category
-     * @param \Model\Product\Filter          $productFilter
-     * @param \View\Layout                   $page
-     * @param \Http\Request                  $request
-     * @return \Http\Response
-     * @throws \Exception\NotFoundException
-     */
-    protected function leafCategory(\Model\Product\Category\TreeEntity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
-
-        if (\App::config()->debug) \App::debug()->add('sub.act', 'Tag\\Action.leafCategory', 134);
-
-        $region = \App::user()->getRegion();
-
-        $pageNum = (int)$request->get('page', 1);
-        if ($pageNum < 1) {
-            throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $pageNum));
-        }
-
-        // сортировка
-        $productSorting = new \Model\Product\Sorting();
-        list($sortingName, $sortingDirection) = array_pad(explode('-', $request->get('sort')), 2, null);
-        $productSorting->setActive($sortingName, $sortingDirection);
-
-        // вид товаров
-        $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
-        // листалка
-        $limit = \App::config()->product['itemsPerPage'];
-        $repository = \RepositoryManager::product();
-        $repository->setEntityClass(
-            \Model\Product\Category\Entity::PRODUCT_VIEW_EXPANDED == $productView
-                ? '\\Model\\Product\\ExpandedEntity'
-                : '\\Model\\Product\\CompactEntity'
-        );
-
-        if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
-            $productIds = [];
-            $productCount = 0;
-            $repository->prepareIteratorByFilter(
-                $productFilter->dump(),
-                $page->getParam('sort'),
-                ($pageNum - 1) * $limit,
-                $limit,
-                $region,
-                function($data) use (&$productIds, &$productCount) {
-                    if (isset($data['list'][0])) $productIds = $data['list'];
-                    if (isset($data['count'])) $productCount = (int)$data['count'];
-                }
-            );
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-            $products = [];
-            if ((bool)$productIds) {
-                $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
-                    foreach ($data as $item) {
-                        $products[] = new \Model\Product\CompactEntity($item);
-                    }
-                });
-            }
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-            if ((bool)$products) {
-                $productUIs = [];
-                foreach ($products as $product) {
-                    if (!$product instanceof \Model\Product\BasicEntity) continue;
-                    $productUIs[] = $product->getUi();
-                }
-
-                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) {
-                    if (isset($data['product_scores'][0])) {
-                        \RepositoryManager::review()->addScores($products, $data);
-                    }
-                });
-            }
-
-            $repository->prepareProductsMedias($products);
-
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-            $pagerAll = new \Iterator\EntityPager($products, $productCount);
-            $page->setGlobalParam('allCount', $pagerAll->count());
-        }
-
-        if (!empty($pagerAll)) {
-            $productPager = $pagerAll;
-        } else {
-            $productPager = null;
-
-            $productIds = [];
-            $productCount = 0;
-            $repository->prepareIteratorByFilter(
-                $productFilter->dump(),
-                $page->getParam('sort'),
-                ($pageNum - 1) * $limit,
-                $limit,
-                $region,
-                function($data) use (&$productIds, &$productCount) {
-                    if (isset($data['list'][0])) $productIds = $data['list'];
-                    if (isset($data['count'])) $productCount = (int)$data['count'];
-                }
-            );
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-            $products = [];
-            if ((bool)$productIds) {
-                $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
-                    foreach ($data as $item) {
-                        $products[] = new \Model\Product\CompactEntity($item);
-                    }
-                });
-            }
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-            if ((bool)$products) {
-                $productUIs = [];
-                foreach ($products as $product) {
-                    if (!$product instanceof \Model\Product\BasicEntity) continue;
-                    $productUIs[] = $product->getUi();
-                }
-
-                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) {
-                    if (isset($data['product_scores'][0])) {
-                        \RepositoryManager::review()->addScores($products, $data);
-                    }
-                });
-            }
-
-            $repository->prepareProductsMedias($products);
-
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
-
-            $productPager = new \Iterator\EntityPager($products, $productCount);
-        }
-
-        $productPager->setPage($pageNum);
-        $productPager->setMaxPerPage($limit);
-        if (self::isGlobal()) {
-            $category->setGlobalProductCount($productPager->count());
-        } else {
-            $category->setProductCount($productPager->count());
-        }
-
-        // проверка на максимально допустимый номер страницы
-        if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
-            //throw new \Exception\NotFoundException(sprintf('Неверный номер страницы "%s".', $productPager->getPage()));
-            return new \Http\RedirectResponse((new \Helper\TemplateHelper())->replacedUrl([
-                'page' => $productPager->getLastPage(),
-            ]));
-        }
-
-        // ajax
-        if ($request->isXmlHttpRequest()) {
-            return new \Http\Response(\App::templating()->render('product/_list', array(
-                'page'                   => new \View\Layout(),
-                'pager'                  => $productPager,
-                'view'                   => $productView,
-                'isAjax'                 => true,
-            )));
-        }
-
-        $page->setParam('productPager', $productPager);
-        $page->setParam('productSorting', $productSorting);
-        $page->setParam('productView', $productView);
-        $page->setParam('sidebarHotlinks', true);
-
-        return new \Http\Response($page->show());
-    }
-
-    /**
-     * @param \Model\Product\Filter\Entity[] $filters
-     * @param \Model\Product\Category\TreeEntity $category
-     * @param \Model\Brand\Entity|null       $brand
-     * @param \Http\Request $request
-     * @return \Model\Product\Filter
-     */
-    protected function getFilter(array $filters, \Model\Product\Category\TreeEntity $category, \Model\Brand\Entity $brand = null, \Http\Request $request, $shop = null) {
-        // флаг глобального списка в параметрах запроса
-        $isGlobal = self::isGlobal();
-        //
-        $inStore = self::inStore();
-
-        // регион для фильтров
-        $region = $isGlobal ? null : \App::user()->getRegion();
-
-        // filter values
-        $values = (array)$request->get(\View\Product\FilterForm::$name, []);
-        if ($isGlobal) {
-            $values['global'] = 1;
-        }
-        if ($inStore) {
-            $values['instore'] = 1;
-        }
-        if ($brand) {
-            $values['brand'] = [
-                $brand->getId(),
-            ];
-        }
-
-        //если есть фильтр по магазину
-        if ($shop) {
-            /** @var \Model\Shop\Entity $shop */
-            $values['shop'] = $shop->getId();
-        }
-
-        // проверяем есть ли в запросе фильтры
-        if ((bool)$values) {
-            // проверяем есть ли в запросе фильтры, которых нет в текущей категории (фильтры родительских категорий)
-            /** @var $exists Ид фильтров текущей категории */
-            $exists = array_map(function($filter) { /** @var $filter \Model\Product\Filter\Entity */ return $filter->getId(); }, $filters);
-            /** @var $diff Ид фильтров родительских категорий */
-            $diff = array_diff(array_keys($values), $exists);
-            if ((bool)$diff && (bool)$category) {
-                foreach ($category->getAncestor() as $ancestor) {
-                    try {
-                        /** @var $ancestorFilters \Model\Product\Filter\Entity[] */
-                        $ancestorFilters = [];
-                        \RepositoryManager::productFilter()->prepareCollectionByCategory($ancestor, $region, function($data) use (&$ancestorFilters) {
-                            foreach ($data as $item) {
-                                $ancestorFilters[] = new \Model\Product\Filter\Entity($item);
-                            }
-                        });
-                        \App::coreClientV2()->execute();
-                    } catch (\Exception $e) {
-                        $ancestorFilters = [];
-                    }
-                    foreach ($ancestorFilters as $filter) {
-                        if (false === $i = array_search($filter->getId(), $diff)) continue;
-
-                        // скрываем фильтр в списке
-                        $filter->setIsInList(false);
-                        $filters[] = $filter;
-                        unset($diff[$i]);
-                        if (!(bool)$diff) break;
-                    }
-                    if (!(bool)$diff) break;
-                }
-            }
-        }
-
-        $productFilter = new \Model\Product\Filter($filters, $isGlobal, $inStore, $shop);
-        $productFilter->setCategory($category);
-        $productFilter->setValues($values);
-
-        return $productFilter;
-    }
-
-    /**
-     * @return bool
-     */
-    public static function isGlobal() {
-        return \App::user()->getRegion()->getHasTransportCompany()
-            && (bool)(\App::request()->cookies->get(self::$globalCookieName, false));
-    }
-
-    /**
-     * @return bool
-     */
-    public static function inStore() {
-        return (bool)\App::request()->get('instore');
-    }
-
 
     /**
      * добавить дочерний токен к родительскому токену в дереве категорий для сайдбара

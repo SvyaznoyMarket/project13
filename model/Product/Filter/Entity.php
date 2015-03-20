@@ -59,6 +59,8 @@ class Entity {
 
     /** @var  string */
     private $stepType;
+    /** @var bool */
+    public $isOpenByDefault = false;
 
     public function __construct(array $data = []) {
         if (array_key_exists('filter_id', $data)) $this->setId($data['filter_id']);
@@ -254,13 +256,18 @@ class Entity {
     }
     
     /**
+     * @param Option\Entity[] $options
      * @return Option\Entity|null
      */
-    public function getSelectedOption(\Model\Product\Filter $productFilter) {
+    public function getSelectedOption(\Model\Product\Filter $productFilter, array $options = []) {
         $selectedOption = null;
+
+        if (!$options) {
+            $options = $this->getOption();
+        }
         
         $values = $productFilter->getValue($this);
-        foreach ($this->getOption() as $option) {
+        foreach ($options as $option) {
             if (in_array($option->getId(), $values)) {
                 $selectedOption = $option;
                 break;

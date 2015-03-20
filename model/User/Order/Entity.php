@@ -123,18 +123,6 @@ class Entity extends \Model\Order\Entity {
         return array_map( function(\Model\Order\Product\Entity $product) { return $product->getId(); }, $this->getProduct() );
     }
 
-    /** Возвращает первый первую доставку из массива доставок
-     *
-     * @return \Model\Order\Delivery\Entity|null
-     */
-    public function getDelivery() {
-        if (isset(parent::getDelivery()[0])) {
-            return parent::getDelivery()[0];
-        } else {
-            return null;
-        }
-    }
-
     /**
      * @return string 'завтра, 15 июня 2004, среда'
      */

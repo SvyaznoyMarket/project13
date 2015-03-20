@@ -4,7 +4,30 @@ namespace View\OrderV3;
 
 class CompletePage extends Layout {
 
+    /** @var \Model\Order\Entity[] */
+    private $orders;
+
+    public function slotGoogleRemarketingJS($tagParams = []) {
+
+        $ordersSum = 0;
+
+        foreach ($this->orders as $order) {
+            $ordersSum += $order->getSum();
+        }
+
+        $tagParams = [
+            'pagetype'          => 'purchase',
+            'ecomm_ordervalue'  => $ordersSum
+        ];
+
+        return parent::slotGoogleRemarketingJS($tagParams);
+    }
+
     public function prepare() {
+
+        // Внутренние переменные
+        $this->orders = $this->getParam('orders', []);
+
         $this->setTitle('Оформление заказа - Enter');
 
         // подготовим данные для кредита, если таковой есть
@@ -56,6 +79,20 @@ class CompletePage extends Layout {
             }
         }
         $this->setParam('creditData', $creditData);
+
+        // в случае онлайн-мотивации отфильтруем методы оплаты
+        if (is_string($this->getParam('motivationAction'))) {
+            /** @var $methods \Model\PaymentMethod\PaymentEntity[] */
+            $methods = $this->getParam('ordersPayment');
+            foreach ($methods as $paymentKey => $payment) {
+                foreach ($payment->methods as $methodKey => $method) {
+                    // убираем все, в которых нет мотивирующей акции
+                    if (is_null($method->getAction($this->getParam('motivationAction'))) && !$method->isSvyaznoyClub()) unset($methods[$paymentKey]->methods[$methodKey]);
+                }
+            }
+            $this->setParam('ordersPayment', $methods);
+        }
+
     }
 
     public function slotContent() {
@@ -66,8 +103,7 @@ class CompletePage extends Layout {
             $order = reset($orders);
             /* Если выбран самовывоз из определенной точки или выбрана доставка с адресом */
             /* Пикпоинт (6) пока исключим, т.к. для него не отдаётся адрес: CORE-2558 */
-            if ((in_array($order->getDeliveryTypeId(), [3,4]) && $order->getShopId())
-                || ($order->getDeliveryTypeId() == 1 && $order->getAddress())) $template = 'page-complete_online-motivation';
+            if (in_array($order->getDeliveryTypeId(), [3,4]) || $order->getDeliveryTypeId() == 1 || $order->point) $template = 'page-complete_online-motivation';
         }
         return \App::closureTemplating()->render('order-v3-new/' . $template, $this->params);
     }
@@ -90,6 +126,7 @@ class CompletePage extends Layout {
 
     public function slotPartnerCounter()
     {
+        $config = \App::config();
         $html = parent::slotPartnerCounter();
 
         // ActionPay
@@ -98,11 +135,14 @@ class CompletePage extends Layout {
         // Sociomantic - передаём все заказы!
         $html .= '<div id="sociomanticOrderCompleteJS" class="jsanalytics" ></div>';
 
+        // Flocktory
+        if ($config->flocktoryExchange['enabled'] || $config->flocktoryPostCheckout['enabled'])
+            $html .= '<div id="flocktoryScriptJS" class="jsanalytics" ></div>';
+
         return $html;
     }
 
-    public function slotRevolverJS()
-    {
+    public function slotRevolverJS() {
         if (!\App::config()->partners['Revolver']['enabled']) return '';
 
         $content = parent::slotRevolverJS();
@@ -145,4 +185,28 @@ class CompletePage extends Layout {
 
         return '<div id="GetIntentJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
     }
+
+    public function slotGoogleTagManagerJS($data = []) {
+        /** @var \Model\Order\Entity[] $orders */
+        $orders = $this->getParam('orders', []);
+        $data = [];
+
+        foreach ($orders as $order) {
+            /* Основные данные для GTM */
+            $orderData = [
+                'orderNumber' => $order->getNumber(),
+                'orderSum' => $order->getSum(),
+            ];
+
+            /* Дополнительные данные для LinkProfit */
+            if (\App::config()->partners['LinkProfit']['enabled'] && \App::partner()->getName() == 'linkprofit') {
+                $orderData['webmaster_id'] = \App::request()->cookies->get(\App::config()->partners['LinkProfit']['cookieName'], 0);
+            }
+
+            $data[] = $orderData;
+        }
+
+        return parent::slotGoogleTagManagerJS($data);
+    }
+
 }

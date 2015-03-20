@@ -193,20 +193,25 @@
 		.bAvailible {
 			.rounded(3px);
 			float: right;
-			padding: 2px 0 3px;
+			padding: 2px 0px 3px;
 
 			border: 1px solid;
+			width: 116px;
 
 			text-align: center;
-			width: 90px;
-			border-color: #c7c7c7;
-			color: #424242;
-			font-size: 11px;
+
+			&.from-stock{
+				border-color: #c7c7c7;
+				color: #424242;
+				font-size: 11px;
+				width: auto;
+				padding: 2px 3px 3px;
+			}
 		}
 
 		.bPrice {
 			float: left;
-			width: 112px;
+			min-width: 112px;
 			font-size: 20px;
 			margin-left: 0;
 		}
@@ -562,8 +567,8 @@
 		float: right;
 	    font-size: 12px;
 	    height: 29px;
-	    line-height: 26px;
-	    padding: 1px 0;
+	    line-height: 27px;
+	    padding: 0px;
 	    width: 79px;
 	}
 }

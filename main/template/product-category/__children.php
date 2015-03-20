@@ -7,7 +7,8 @@ return function(
     array $relatedCategories = [],
     array $categoryConfigById = [],
     \Iterator\EntityPager $productPager = null,
-    $category_class = null
+    $category_class = null,
+    $showFullChildren = true
 ) {
 
     $links = [];
@@ -49,7 +50,7 @@ return function(
         $links[] = $link;
     }
 
-    if ($category->isV2()) {
+    if (!$showFullChildren) {
         $templatePath = 'product-category/v2/_children';
     } else if ('furniture' === $category_class) {
         $templatePath = 'furniture/product-category/_listInFilter';

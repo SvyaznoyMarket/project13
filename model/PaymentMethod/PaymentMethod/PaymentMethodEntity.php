@@ -13,6 +13,7 @@ class PaymentMethodEntity {
     const PAYMENT_PSB = 8;
     const PAYMENT_CERTIFICATE = 10;
     const PAYMENT_PAYPAL = 13;
+    const PAYMENT_SVYAZNOY_CLUB = 14;
 
     /** @var int */
     public $id;
@@ -30,6 +31,9 @@ class PaymentMethodEntity {
     public $isAvailableToPickpoint;
     /** @var  \Model\PaymentMethod\PaymentGroup\PaymentGroupEntity */
     public $paymentGroup;
+    /** Возможные маркетинговые акции
+     * @var array */
+    public $availableActions = [];
 
     /** @var string|null */
     public $icon;
@@ -67,6 +71,23 @@ class PaymentMethodEntity {
             case 14: $this->icon = '/styles/order/img/svyaznoy.png'; break;
         }
 
+        if (isset($arr['available_actions']) && is_array($arr['available_actions'])) $this->availableActions = $arr['available_actions'];
+
+    }
+
+    /** Возвращает discount-акцию
+     * @param $alias string
+     * @return array|null
+     */
+    public function getAction($alias) {
+        foreach ($this->availableActions as $arr) {
+            if (isset($arr['alias']) && $alias == $arr['alias']) return $arr;
+        }
+        return null;
+    }
+
+    public function isSvyaznoyClub() {
+        return $this->id == self::PAYMENT_SVYAZNOY_CLUB;
     }
 
 } 

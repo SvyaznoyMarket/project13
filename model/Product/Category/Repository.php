@@ -347,7 +347,7 @@ class Repository {
         }
 
         if (!empty($filters)) {
-            $params['filters'] = $filters;
+            $params['filter']['filters'] = $filters;
         }
 
         // SITE-3524 Поддержка неактивных категорий для отладки страниц на preview.enter.ru
@@ -365,9 +365,6 @@ class Repository {
                 // только при загрузке дерева ядро может отдать нам количество товаров в ней
                 if ($region && isset($data['product_count'])) {
                     $category->setProductCount($data['product_count']);
-                }
-                if (\App::config()->product['globalListEnabled'] && isset($data['product_count_global'])) {
-                    $category->setGlobalProductCount($data['product_count_global']);
                 }
 
                 // добавляем дочерние узлы

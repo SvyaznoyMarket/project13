@@ -35,7 +35,6 @@ class Layout extends \View\DefaultLayout {
         $routeToken = \App::request()->attributes->get('token');
 
         if ('subscribe_friends' == $routeToken) {
-            $html .= $this->tryRender('partner-counter/_am15_net');
             $html .= $this->tryRender('partner-counter/_actionpay_subscribe');
             $html .= $this->tryRender('partner-counter/_cityAds_subscribe');
         }

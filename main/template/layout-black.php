@@ -69,10 +69,7 @@
 <?= $page->slotYandexMetrika() ?>
 <?= $page->slotBodyJavascript() ?>
 <?= $page->slotInnerJavascript() ?>
-<?= $page->slotAdriver() ?>
 <?= $page->slotPartnerCounter() ?>
-<?= $page->slotAdblender() ?>
-<?= $page->slotKissMetrics() ?>
 
 <? if (\App::config()->analytics['enabled']): ?>
     <div id="yandexMetrika" class="jsanalytics"></div>

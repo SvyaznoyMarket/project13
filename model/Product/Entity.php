@@ -4,9 +4,7 @@ namespace Model\Product;
 
 class Entity extends BasicEntity {
 
-    /**
-     * Дефолтное отображение связанных товаров - аксессуары сверху, смежные товары в футере
-     */
+    /** Дефолтное отображение связанных товаров - аксессуары сверху, смежные товары в футере */
     const DEFAULT_CONNECTED_PRODUCTS_VIEW_MODE = 1;
 
     /** @var int */
@@ -63,16 +61,12 @@ class Entity extends BasicEntity {
     protected $type;
     /** @var int */
     protected $commentCount;
-    /** @var int */
+    /** @var float */
     protected $priceAverage;
-    /** @var int */
+    /** @var float */
     protected $priceOld;
     /** @var Service\Entity[] */
     protected $service = [];
-    /** @var Kit\Entity[] */
-    protected $kit = [];
-    /** @var bool */
-    protected $isKitLocked = false;
     /** @var [] */
     protected $groupedProperties = [];
     /** @var int */
@@ -144,9 +138,6 @@ class Entity extends BasicEntity {
         if (array_key_exists('service', $data) && is_array($data['service'])) $this->setService(array_map(function($data) {
             return new Service\Entity($data);
         }, $data['service']));
-        if (array_key_exists('kit', $data) && is_array($data['kit'])) $this->setKit(array_map(function($data) {
-            return new Kit\Entity($data);
-        }, $data['kit']));
         if (array_key_exists('related', $data)) $this->setRelatedId($data['related']);
         if (array_key_exists('accessories', $data)) $this->setAccessoryId($data['accessories']);
         if (array_key_exists('warranty', $data) && is_array($data['warranty'])) foreach ($data['warranty'] as $warranty) {
@@ -155,7 +146,6 @@ class Entity extends BasicEntity {
         if (array_key_exists('nearest_city', $data) && is_array($data['nearest_city'])) foreach ($data['nearest_city'] as $city) {
             $this->addNearestCity(new \Model\Region\Entity($city));
         }
-        if (array_key_exists('is_kit_locked', $data)) $this->setIsKitLocked($data['is_kit_locked']);
 
         $indexedPropertyGroups = [];
         foreach ($this->propertyGroup as $group) {
@@ -430,42 +420,28 @@ class Entity extends BasicEntity {
     }
 
     /**
-     * @param int $price
-     */
-    public function setPrice($price) {
-        $this->price = (int)$price;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPrice() {
-        return $this->price;
-    }
-
-    /**
-     * @param int $priceAverage
+     * @param float $priceAverage
      */
     public function setPriceAverage($priceAverage) {
-        $this->priceAverage = (int)$priceAverage;
+        $this->priceAverage = (float)$priceAverage;
     }
 
     /**
-     * @return int
+     * @return float
      */
     public function getPriceAverage() {
         return $this->priceAverage;
     }
 
     /**
-     * @param int $priceOld
+     * @param float $priceOld
      */
     public function setPriceOld($priceOld) {
-        $this->priceOld = (int)$priceOld;
+        $this->priceOld = (float)$priceOld;
     }
 
     /**
-     * @return int
+     * @return float
      */
     public function getPriceOld() {
         return $this->priceOld;
@@ -734,29 +710,6 @@ class Entity extends BasicEntity {
         return $this->service;
     }
 
-    /**
-     * @param Kit\Entity[] $kits
-     */
-    public function setKit(array $kits) {
-        $this->kit = [];
-        foreach ($kits as $kit) {
-            $this->addKit($kit);
-        }
-    }
-
-    /**
-     * @param Kit\Entity $kit
-     */
-    public function addKit(Kit\Entity $kit) {
-        $this->kit[] = $kit;
-    }
-
-    /**
-     * @return Kit\Entity[]
-     */
-    public function getKit() {
-        return $this->kit;
-    }
 
     /**
      * @return bool
@@ -906,19 +859,5 @@ class Entity extends BasicEntity {
         $this->nearestCity[] = $city;
     }
 
-    /**
-     * @param boolean $isKitLocked
-     */
-    public function setIsKitLocked($isKitLocked)
-    {
-        $this->isKitLocked = (bool)$isKitLocked;
-    }
 
-    /**
-     * @return boolean
-     */
-    public function getIsKitLocked()
-    {
-        return $this->isKitLocked;
-    }
 }

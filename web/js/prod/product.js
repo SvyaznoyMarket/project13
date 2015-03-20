@@ -78,12 +78,12 @@
 			try {
 				if (!$('#js-product-3d-img-container').length) {
 					(new DAnimFramePlayer($element[0], host)).DoLoadModel(data);
-
-					$element.lightbox_me({
-						centered: true,
-						closeSelector: '.close'
-					});
 				}
+
+				$element.lightbox_me({
+					centered: true,
+					closeSelector: '.close'
+				});
 			}
 			catch (err) {}
 		});
@@ -592,211 +592,6 @@
 		}
 	});
 }());
-/**
- * Kit JS
- *
- * @requires jQuery, knockout, printPrice
- * @author	Zhukov Roman
- * @param	{Object}	ENTER	Enter namespace
- */
-;$(document).ready(function( ENTER ) {
-
-    if ($('.packageSet').length === 0) return; // выходим из функции
-
-	var product = $('#jsProductCard').data('value'),
-        packageSetBtn = $('.jsChangePackageSet'),
-		packageSetWindow = $('.jsPackageSetPopup'),
-		data = $('.js-packageSetEdit').data('value'),
-        sender = data.sender,
-        packageProducts = data.products;
-
-	/**
-	 * Показ окна с изменение комплекта 
-	 */
-	var showPackageSetPopup = function showPackageSetPopup(event) {
-        event.preventDefault();
-        $('.bCountSection').goodsCounter('destroy');
-			packageSetWindow.lightbox_me({
-				autofocus: true
-			});
-        // Google Analytics
-        if (typeof _gaq !== 'undefined' && typeof product !== 'undefined') {
-            console.log('_gaq:_trackEvent addedCollection collection %s', product.article);
-            _gaq.push(['_trackEvent', 'addedCollection', 'collection', product.article]);
-        }
-    };
-
-	packageSetBtn.on('click', showPackageSetPopup);
-
-    /**
-     * Закрытие окна
-     */
-    $('body').on('addtocart', function(){
-        packageSetWindow.trigger('close.lme');
-    });
-
-    init();
-
-    function init() {
-        var ko = window.ko;
-
-        function ProductModel(product){
-            var self = this;
-
-            self.id = product.id;
-            self.url = product.url;
-            self.name = product.name;
-            self.line = product.lineName;
-            self.price = product.price;
-            self.image = product.image;
-            self.height = product.height;
-            self.width = product.width;
-            self.depth = product.depth;
-            self.count = ko.observable(product.count);
-            self.maxCount = ko.observable(Infinity);
-            self.prettyPrice = ko.computed(function(){
-                return window.printPrice(parseInt(self.price) * parseInt(self.count()));
-            });
-            self.prettyItemPrice = ko.computed(function(){
-                return window.printPrice(parseInt(self.price));
-            });
-            self.deliveryDate = ko.observable(product.deliveryDate);
-
-            self.plusClick = function() {
-                if (self.maxCount() > self.count() && self.count() < 99) {
-                    self.count(parseInt(self.count()) + 1);
-                    $.post('/ajax/product/delivery', {product: [
-                        {id: self.id, quantity: self.count()}
-                    ] }, function (data) {
-                        if (data.success) {
-                            self.deliveryDate(data.product[0].delivery[0].date.value);
-                            console.log('Delivery: id=', self.id, ' quantity=', self.count(), ' date: ', data.product[0].delivery)
-                        } else {
-                            self.count(self.count() - 1);
-                            self.maxCount(self.count());
-                        }
-                    })
-                }
-            };
-
-            self.minusClick = function() {
-                if (self.count() > 0) self.count(self.count()-1);
-            };
-
-            self.countKeydown = function(item, e) {
-                e.stopPropagation();
-                var isTextSelected = e.target.selectionStart - e.target.selectionEnd != 0;
-
-                if ( e.which === 38 ) { // up arrow
-                    item.plusClick();
-                    return false;
-                }
-                else if ( e.which === 40 ) { // down arrow
-                    item.minusClick();
-                    return false;
-                }
-                else if ( e.which === 39 || e.which === 37 ) return true;
-                else if ( (( (e.which >= 48) && (e.which <= 57) ) ||  //num keys
-                    ( (e.which >= 96) && (e.which <= 105) ) || //numpad keys
-                    (e.which === 8) ||
-                    (e.which === 46))
-                    ) {
-                    if (!isTextSelected) { // если текст не выделен
-                        if (item.count().toString().length < 2 && (e.which == 8 || e.which == 46)) return false; // предотвращаем пустую строку ввода
-                        if (item.count().toString().length > 1 && !(e.which == 8 || e.which == 46)) return false;
-                    }
-                    return true;
-                }
-                return false;
-            };
-
-            self.countKeyUp = function(item, e) {
-                // TODO-zra сделать проверку доставки
-                if (self.count() === "") self.count(1); // если поле ввода вдруг окажется пустым
-                return false;
-            }
-        }
-
-        function ProductList(){
-            var self = this;
-
-            self.products = ko.observableArray([]);
-
-            self.isBaseKit = ko.computed(function(){
-                var isEqual = true;
-                ko.utils.arrayForEach(self.products(), function(item){
-                    if (packageProducts[item.id].count != item.count()) isEqual = false;
-                });
-                return isEqual;
-            });
-
-            self.totalPrice = ko.computed(function(){
-                var total = 0;
-                ko.utils.arrayForEach(self.products(), function(item) {
-                    total += parseInt(item.count()) * parseInt(item.price)
-                });
-                return window.printPrice(total);
-            });
-
-            self.totalCount = ko.computed(function(){
-                var total = 0;
-                ko.utils.arrayForEach(self.products(), function(item) {
-                    total += parseInt(item.count())
-                });
-                return total;
-            });
-
-            self.buyLink = ko.computed(function(){
-                var link = '/cart/set-products?',
-                    id = 0;
-
-                ko.utils.arrayForEach(self.products(), function(item){
-                    if (item.count() > 0 ) {
-                        link += 'product['+id+'][id]=' + item.id + '&product['+id+'][quantity]=' + item.count() + '&';
-                        id += 1;
-                    }
-                });
-
-				link += $.param({sender: sender});
-
-                return link;
-            });
-
-            self.dataUpsale = function(mainId){
-                var url = '/ajax/upsale/' + mainId;
-                return ko.toJSON({url : url, fromUpsale: false});
-            };
-
-            self.addProduct = function(product){
-                self.products.push(new ProductModel(product))
-            };
-
-            self.populateWithObj = function(obj) {
-                // Заполняем Модель продуктами
-                self.products($.map(obj, function (item) {
-                    return new ProductModel(item)
-                }));
-
-                // Сортируем по line
-                self.products.sort(function(a, b){
-                    return a.line == b.line ? 0 : ( a.line < b.line ? -1 : 1)
-                });
-            };
-
-            self.resetToBaseKit = function() {
-                self.populateWithObj(packageProducts);
-            };
-
-            self.populateWithObj(packageProducts);
-
-        }
-
-		ko.cleanNode(document.querySelector('.jsPackageSetPopup')); // на всякий случай
-        ko.applyBindings(new ProductList(), document.querySelector('.jsPackageSetPopup'));
-
-    }
-
-}(window.ENTER));
 $(document).ready(function() {
 
 
@@ -806,21 +601,22 @@ $(document).ready(function() {
 	 * @requires jQuery, jQuery.elevateZoom
 	 */
 	(function () {
-		if ( !$('.bZoomedImg').length ) {
+		var image = $('.js-photo-zoomedImg');
+
+		if ( !image.length ) {
 			console.warn('Нет изображения для elevateZoom');
 
 			return;
 		}
 
 		var
-			image = $('.bZoomedImg'),
 			zoomDisable = ( image.data('zoom-disable') !== undefined ) ? image.data('zoom-disable') : true,
 			zoomConfig = {
 				gallery: 'productImgGallery',
-				galleryActiveClass: 'mActive',
+				galleryActiveClass: 'prod-photoslider__gal__link--active',
 				zoomWindowOffety: 0,
 				zoomWindowOffetx: 19,
-				zoomWindowWidth: 519,
+				zoomWindowWidth: image.data('is-slot') ? 344 : 519,
 				borderSize: 1,
 				borderColour: '#C7C7C7',
 				disableZoom: zoomDisable
@@ -911,50 +707,6 @@ $(document).ready(function() {
 	});
 
 
-	/**
-	 * Обработчик кнопки PayPal в карточке товара
-	 */
-	(function() {
-		var
-			successHandler = function successHandler( res ) {
-				console.info('payPal ajax complete');
-
-				if ( !res.success || !res.redirect ) {
-					window.ENTER.utils.blockScreen.unblock();
-
-					return;
-				}
-
-				document.location.href = res.redirect;
-			},
-
-			buyOneClickAndRedirect = function buyOneClickAndRedirect() {
-				console.info('payPal click');
-
-				var button = $(this),
-					url = button.attr('href'),
-					quantityBlock = $('.bCountSection__eNum'),
-					data = {};
-				// end of vars
-
-				window.ENTER.utils.blockScreen.block('Загрузка');
-
-				// если количество товаров > 1, то передаем его на сервер
-				if ( quantityBlock.length && $.isNumeric(quantityBlock.val()) && quantityBlock.val() * 1 > 1 ) {
-					data.quantity = quantityBlock.val();
-				}
-
-				$.get(url, data, successHandler);
-
-				return false;
-            };
-		// end of functions
-
-		$('.jsPayPalButton').bind('click', buyOneClickAndRedirect);
-		$('.jsLifeGiftButton').bind('click', buyOneClickAndRedirect);
-		$('.jsOneClickButton').bind('click', buyOneClickAndRedirect);
-	})();
-
 	// карточка товара - характеристики товара краткие/полные
 	if ( $('#productDescriptionToggle').length ) {
 		$('#productDescriptionToggle').toggle(
@@ -995,11 +747,6 @@ $(document).ready(function() {
 (function() {
 	var
 		productInfo = $('#jsProductCard').data('value') || {},
-		toKISS = {
-			'Viewed Product SKU': productInfo.article,
-			'Viewed Product Product Name': productInfo.name,
-			'Viewed Product Product Status': productInfo.stockState
-		},
 	// end of vars
 
 		reviewsYandexClick = function ( e ) {
@@ -1025,9 +772,6 @@ $(document).ready(function() {
 		return false;
 	}
 
-	if ( typeof _kmq !== 'undefined' ) {
-		_kmq.push(['record', 'Viewed Product', toKISS]);
-	}
 	if ( typeof _gaq !== 'undefined' ) {
 		// GoogleAnalitycs for review click
 		$( 'a.reviewLink.yandex' ).each(function() {
@@ -1036,84 +780,6 @@ $(document).ready(function() {
 	}
 })();
 
-
-/**
- * Аналитика для слайдеров
- */
-(function() {
-		/**
-		 * Аналитика по типу слайдера
-		 *
-		 * @param	{Object}	productData	Данные о продукте на который произошел клик
-		 */
-	var trackAs = {
-			accessorize: function( productData ) {
-				console.log(productData);
-
-				var toKISS = {
-					'Recommended Item Clicked Accessorize Recommendation Place': 'product',
-					'Recommended Item Clicked Accessorize Clicked SKU': productData.article,
-					'Recommended Item Clicked Accessorize Clicked Product Name': productData.name,
-					'Recommended Item Clicked Accessorize Product Position': productData.position
-				};
-
-				if ( typeof _kmq !== 'undefined' ) {
-					_kmq.push(['record', 'Recommended Item Clicked Accessorize', toKISS]);
-				}
-			},
-
-			alsoBought: function( productData ) {
-				console.log(productData);
-
-				var toKISS = {
-					'Recommended Item Clicked Also Bought Recommendation Place': 'product',
-					'Recommended Item Clicked Also Bought Clicked SKU': productData.article,
-					'Recommended Item Clicked Also Bought Clicked Product Name': productData.name,
-					'Recommended Item Clicked Also Bought Product Position': productData.position
-				};
-
-				if ( typeof _kmq !== 'undefined' ) {
-					_kmq.push(['record', 'Recommended Item Clicked Also Bought', toKISS]);
-				}
-
-			},
-
-			alsoViewed: function( productData ) {
-				console.log(productData);
-
-				var toKISS = {
-					'Recommended Item Clicked Also Viewed Recommendation Place': 'product',
-					'Recommended Item Clicked Also Viewed Clicked SKU': productData.article,
-					'Recommended Item Clicked Also Viewed Clicked Product Name': productData.name,
-					'Recommended Item Clicked Also Viewed Product Position': productData.position
-				};
-
-				if ( typeof _kmq !== 'undefined' ) {
-					_kmq.push(['record', 'Recommended Item Clicked Also Viewed', toKISS]);
-				}
-			}
-		},
-
-		sliderAnalytics = function sliderAnalytics() {
-			console.info('click!');
-
-			var sliderData = $(this).parents('.js-slider').data('slider'),
-				sliderType = sliderData.type,
-
-				productData = $(this).data('product');
-			// end of vars
-			
-			console.log(sliderType);
-			productData.position = $(this).index();
-
-			if ( trackAs.hasOwnProperty(sliderType) ) {
-				trackAs[sliderType](productData);
-			}
-		};
-	// end of functions
-
-	$('.js-slider').on('click', '.bSliderAction__eItem', sliderAnalytics);
-}());
 ;(function() {
 	// текущая страница для каждой вкладки
 	var reviewCurrentPage = {

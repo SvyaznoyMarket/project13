@@ -198,16 +198,6 @@
 		// end of vars
 
 		var
-			deleteFromLamoda = function deleteFromLamoda( data ) {
-				if ('undefined' == typeof(JSREObject) || !data.hasOwnProperty('product') || !data.product.hasOwnProperty('id') ) {
-					return;
-				}
-
-				console.info('Lamoda removeFromCart');
-				console.log('product_id=' + data.product.id);
-				JSREObject('cart_remove', data.product.id);
-			},
-
 			deleteFromRetailRocket = function deleteFromRetailRocket( data ) {
 				if ( !data.hasOwnProperty('product') || !data.product.hasOwnProperty('id') ) {
 					return;
@@ -215,7 +205,7 @@
 
 				console.info('RetailRocket removeFromCart');
 				console.log('product_id=' + data.product.id);
-				window.rrApiOnReady.push(function(){ window.rrApi.removeFromBasket(data.product.id) });
+				if (window.rrApiOnReady) window.rrApiOnReady.push(function(){ window.rrApi.removeFromBasket(data.product.id) });
 			},
 
 			deleteProductAnalytics = function deleteProductAnalytics( data ) {
@@ -224,7 +214,6 @@
 				}
 
 				deleteFromRetailRocket(data);
-				deleteFromLamoda(data);
 			};
 
 		$.ajax({
@@ -314,8 +303,6 @@
 
 			// google analytics
 			typeof _gaq == 'function' && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_shown', data.product.article]);
-			// Kissmetrics
-			typeof _kmq == 'function' && _kmq.push(['record', 'cart recommendation shown', {'SKU cart rec shown': data.product.article}]);
 		}
 
 		console.log(upsale);
@@ -325,9 +312,25 @@
 			return;
 		}
 
+		var
+			url = upsale.url,
+			sender2 = '';
+
+		if (ENTER.config.pageConfig.product) {
+			if (ENTER.config.pageConfig.product.isSlot) {
+				sender2 = 'slot';
+			} else if (ENTER.config.pageConfig.product.isOnlyFromPartner) {
+				sender2 = 'marketplace';
+			}
+		}
+
+		if (sender2) {
+			url = ENTER.utils.setURLParam('sender2', sender2, url);
+		}
+
 		$.ajax({
 			type: 'GET',
-			url: upsale.url,
+			url: url,
 			success: responseFromServer
 		});
 	}
@@ -349,8 +352,6 @@
 		console.log('Трекинг при клике по товару из списка рекомендаций');
 		// google analytics
 		_gaq && _gaq.push(['_trackEvent', 'cart_recommendation', 'cart_rec_clicked', product.article]);
-		// Kissmetrics
-		_kmq && _kmq.push(['record', 'cart recommendation clicked', {'SKU cart rec clicked': product.article}]);
 
 		//window.docCookies.setItem('used_cart_rec', 1, 1, 4*7*24*60*60, '/');
 	}
@@ -385,7 +386,10 @@
 			emptyCompareNoticeElements[emptyCompareNoticeName] = element;
 		}
 
-		emptyCompareNoticeElements[emptyCompareNoticeName].addClass(emptyCompareNoticeShowClass);
+		if (!$('.mhintDdOn').length){
+			emptyCompareNoticeElements[emptyCompareNoticeName].addClass(emptyCompareNoticeShowClass);
+		}
+
 	}
 
 	console.info('Init userbar module');

@@ -43,10 +43,6 @@ $isNewRecommendation =
 
 </div>
 
-<? if (!$isNewRecommendation): ?>
-    <?= $page->render('cart/ab-self-delivery/_recommendSlider') ?>
-<? endif ?>
-
 <div class="backShop fl mNoPrint jsKnockoutCart" data-bind="visible: isUpdated() && cartSum() > 0" style="display: none">&lt; <a class="underline" href="<?= $backlink ?>">Вернуться к покупкам</a></div>
 
 <div class="basketBuy mNoPrint jsKnockoutCart" data-bind="visible: isUpdated() && cartSum() > 0" style="display: none">
@@ -55,9 +51,57 @@ $isNewRecommendation =
 
 <div class="clear"></div>
 
-<? if ($isNewRecommendation && \App::config()->product['pullRecommendation']): ?>
-    <div class="basketLine">
+<? if (!$isNewRecommendation): ?>
+    <?= $page->render('cart/ab-self-delivery/_recommendSlider') ?>
+<? endif ?>
 
+<? if ($cart->isEmpty()): // жуткий костыль SITE-5289 ?>
+    <div id="js-cart-firstRecommendation" style="display: none;">
+        <? $page->startEscape()?>
+        <div class="basketLine">
+            <?= $helper->render('product/__slider', [
+                'type'      => 'alsoBought',
+                'products'  => [],
+                'url'       => $page->url('cart.recommended', [
+                    'sender' => [
+                        'position' => 'Basket',
+                    ],
+                ]),
+            ]) ?>
+        </div>
+        <? $page->endEscape() ?>
+    </div>
+
+    <div class="basketLine">
+    <?= $helper->render('product/__slider', [
+        'type'      => 'main',
+        'products'  => [],
+        'url'       => $page->url('cart.recommended', [
+            'sender' => [
+                'position' => 'Basket',
+            ],
+        ]),
+    ]) ?>
+    </div>
+    <div class="basketLine">
+    <?= $helper->render('product/__slider', [
+        'type'      => 'alsoBought',
+        'products'  => [],
+        'url'       => $page->url('cart.recommended', [
+            'sender' => [
+                'position' => 'Basket',
+            ],
+        ]),
+    ]) ?>
+    </div>
+    <div class="cart--ep"><a href="/enterprize" title=""><img src="/css/bEmptyCart/img/ep.jpg" alt="" /></a></div>
+<? endif ?>
+
+    <div class="clear"></div>
+
+
+<? if ($isNewRecommendation && \App::config()->product['pullRecommendation'] && !$cart->isEmpty()): ?>
+    <div class="basketLine">
         <?= $helper->render('product/__slider', [
             'type'      => 'alsoBought',
             'products'  => [],
@@ -73,7 +117,5 @@ $isNewRecommendation =
 <div class="clear"></div>
 
 <? if (\App::config()->analytics['enabled']): ?>
-    <?= $page->render('cart/partner/_mixmarket') ?>
-    <?= $page->render('cart/partner/_kiss', ['cart' => $cart]) ?>
     <?= $page->tryRender('cart/partner/_cityads') ?>
 <? endif ?>

@@ -6,41 +6,6 @@ console.log('ports.js inited');
 
 window.ANALYTICS = {
 	
-	mixmarket : function() {
-		document.write('<img src="http://mixmarket.biz/tr.plx?e=3779408&r=' + escape(document.referrer) + '&t=' + (new Date()).getTime() + '" width="1" height="1"/>')
-	},
-
-	adriverCommon : function() {
-		var RndNum4NoCash = Math.round(Math.random() * 1000000000);
-		var ar_Tail='unknown'; if (document.referrer) ar_Tail = escape(document.referrer);
-		document.write('<img src="' + ('https:' == document.location.protocol ? 'https:' : 'http:') + '//ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=182615&bt=21&pz=0&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border=0 width=1 height=1>')
-	},
-
-	adriverProduct : function() {
-		var a = arguments[0];
-
-		var RndNum4NoCash = Math.round(Math.random() * 1000000000);
-		var ar_Tail='unknown'; if (document.referrer) ar_Tail = escape(document.referrer);
-		document.write('<img src="http://ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=182615&bt=21&pz=0'+
-			'&custom=10='+ a.productId +';11='+ a.categoryId +
-			'&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border=0 width=1 height=1>')
-	},
-
-	adriverOrder : function() {
-		var a = (arguments && arguments[0]) ? arguments[0] : false,
-            ordNum = (a && a.order_id ) ? a.order_id : false;
-
-        if (!ordNum) {
-            return;
-        }
-
-		var RndNum4NoCash = Math.round(Math.random() * 1000000000);
-		var ar_Tail='unknown'; if (document.referrer) ar_Tail = escape(document.referrer);
-		document.write('<img src="http://ad.adriver.ru/cgi-bin/rle.cgi?' + 'sid=182615&sz=order&bt=55&pz=0'+
-			'&custom=150='+ ordNum +
-			'&rnd=' + RndNum4NoCash + '&tail256=' + ar_Tail + '" border="0" width="1" height="1" alt="" />');
-	},
-	
 	yandexOrderComplete: function() {
         try {
             var orderData = $('#jsOrder').data('value');
@@ -216,23 +181,6 @@ window.ANALYTICS = {
 		})();
 	},
 
-    // enterleadsJS : function() { // SITE-1911
-    //     (function () {
-    //         try {
-    //             var script = document.createElement('script');
-
-    //             script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') +
-    //                 unescape('bn.adblender.ru%2Fpixel.js%3Fclient%3Denterleads%26cost%3D') + escape(0) +
-    //                 unescape('%26order%3D') + escape(0) + unescape('%26r%3D') + Math.random();
-
-    //             document.getElementsByTagName('head')[0].appendChild(script);
-
-    //         } catch (e) {
-    //         }
-    //     })();
-    // },
-
-
 	/**
 	 * CityAds counter
  	 */
@@ -353,134 +301,15 @@ window.ANALYTICS = {
         }
     },
 
-    flocktoryAddScript : function() {
-        var s = document.createElement('script');
-        s.type = 'text/javascript';
-        s.async = true;
-        s.src = "//api.flocktory.com/1/hello.2.js";
-        var l = document.getElementsByTagName('script')[0];
-        l.parentNode.insertBefore(s, l);
+    flocktoryScriptJS : function() {
+        $LAB.script('//api.flocktory.com/v2/loader.js?site_id=427');
     },
 
-    jsOrderFlocktory : function() {
-        console.info('foctory order complete');
-        console.log($('#jsOrderFlocktory').data('value'));
-
-        var _flocktory = window._flocktory = _flocktory || [],
-            flocktoryData = $('#jsOrderFlocktory').data('value');
-        // end of vars
-
-        _flocktory.push(flocktoryData);
-
-        this.flocktoryAddScript();
-    },
-
-    flocktoryJS : function() {
-        this.flocktoryAddScript();
-
-        window.Flocktory = {
-            /**
-             * Структура методов объекта:
-             * popup_bind(elem)  связывает событие  subscribing_friend()  с элементом (elem)
-             * subscribing_friend()  проверяет емейл/телефон и вызывает  popup_open()
-             *
-             * flk - сокращение от flocktory
-             */
-            name : '',
-            mail : '',
-
-            popup_prepare : function () {
-                var flk_mail = $('.flocktory_email'); // Проверим эти элементы
-                if ( !flk_mail.length ) flk_mail = $('.subscribe-form__email');
-                if ( !flk_mail.length ) flk_mail = $('#recipientEmail');
-                flk_mail = flk_mail.val();
-
-                var flk_name = $('input.bFastInner__eInput').val(); // используем имя пользователя, если существует
-                if (flk_name && !flk_name.length && flk_mail && flk_mail.length ) flk_name = flk_mail;
-
-                if ( !flk_mail || !flk_mail.length ) {
-                    // если нет емейла, глянем телефон и передадим его вместо мейла
-                    var flk_tlf = $('#phonemask').val().replace(' ','');
-                    //flk_mail = $('.flocktory_tlf').val() + '@email.tlf';
-                    if ( !flk_name.length ) flk_name = flk_tlf;
-                    flk_mail = flk_tlf + '@email.tlf'; // допишем суффикс к тлф, дабы получить фиктивный мейл и передать его
-                }
-
-                if ( flk_mail.search('@') !== -1 ) {
-                    //if (!flk_name || !flk_name.length) flk_name = 'Покупатель';
-                    if (!flk_name || !flk_name.length) flk_name = flk_mail;
-                    window.Flocktory.name = flk_name;
-                    window.Flocktory.mail = flk_mail;
-                    return true;
-                }
-                return false;
-            },
-
-            subscribing_friend: function () {
-                if ( Flocktory.popup_prepare() ) {
-                    return Flocktory.popup_subscribe(Flocktory.mail, Flocktory.name);
-                }
-                return false;
-            },
-
-            popup_opder : function ( toFLK_order )  {
-				try{
-					if ( Flocktory.popup_prepare() ) {
-						toFLK_order.email = Flocktory.mail;
-						toFLK_order.name = Flocktory.name;
-						return Flocktory.popup(toFLK_order);
-					}
-				}catch(e){};
-                return false;
-            },
-
-            popup_bind : function( jq_el ) { // передаётся элемент вида — $('.jquery_elem')
-                if ( jq_el && jq_el.length ) {
-                    // Если элемент существует, навесим событие вызовом flocktory по клику
-                    jq_el.bind('click', function () {
-                        Flocktory.subscribing_friend();
-                    });
-                }
-            },
-
-            popup_bind_default : function( ) {
-                // Свяжем действия со стандартными названиями кнопок
-                Flocktory.popup_bind( $('.run_flocktory_popup') );
-                Flocktory.popup_bind( $('.subscribe-form__btn') );
-            },
-
-            popup: function (toFLK) {
-                var _fl = window._flocktory = _flocktory || [];
-                return _fl.push(toFLK);
-            },
-
-            popup_subscribe : function ( flk_mail, flk_name ) {
-                //flk_mail = 'hello@flocktory.com'; // tmp, for debug
-                flk_name = flk_name || flk_mail;
-                var date = new Date();
-
-                var toFLK = {
-                    "order_id": date.getFullYear() + '' + date.getMonth() + '' + date.getDay() + '' + date.getHours() + '' + date.getMinutes() + '' + date.getSeconds() + '' + date.getMilliseconds() + '' + Math.floor(Math.random() * 1000000),
-                    "email": flk_mail,
-                    "name": flk_name,
-                    "price": 0,
-                    "domain": "registration.enter.ru",
-                    "items": [{
-                        "id": "подписка на рассылку",
-                        "title": "подписка на рассылку",
-                        "price":  0,
-                        "image": "",
-                        "count":  1
-                    }]
-                };
-
-                return Flocktory.popup(toFLK);
-            }
-
-        } // end of window.Flocktory object
-
-        Flocktory.popup_bind_default();
-
+    flocktoryCompleteOrderJS : function() {
+        var data = $('#flocktoryCompleteOrderJS').data('value');
+        window.flocktory = window.flocktory || [];
+        console.info('Flocktory data', data);
+        window.flocktory.push(['postcheckout', data]);
     },
 
 	/**
@@ -562,9 +391,6 @@ window.ANALYTICS = {
 						ga('send', 'event', 'Mobile App Click', type);
 					}
 				});
-				/**
-				 * Отслеживание кликов по баннерам карусели вынесено в web/js/dev/main/welcome.js
-				 */
 			},
 
 			ga_category = function ga_category() {
@@ -646,7 +472,7 @@ window.ANALYTICS = {
 					if ( 'undefined' !== product ) {
 
                         /* На наборах выполняется другой трекинговый код */
-                        if ($(this).hasClass('jsChangePackageSet')) {
+                        if ($(this).hasClass('js-kitButton')) {
                             console.log('GA: send event addedCollection collection %s', product.article);
                             ga('send', 'event', 'addedCollection', 'collection', product.article);
                             return ;
@@ -814,7 +640,8 @@ window.ANALYTICS = {
 		console.group('ports.js::gaJS');
 		try{
 			if ( 'function' !== typeof(ga) ) {
-				console.error('GA: init error');
+				console.warn('GA: init error');
+				console.groupEnd();
 				return false; // метод ga не определён, ошибка, нечего анализировать, выходим
 			}
 			ga('create', 'UA-25485956-5', 'enter.ru');
@@ -894,60 +721,6 @@ window.ANALYTICS = {
 		console.groupEnd();
 	},
 
-	//SITE-3027 Установка кода TagMan на сайт
-    //SITE-3661 Удаление кода TagMan
-	/*TagManJS : function() {
-
-		initTagMan = function initTagMan() {
-        	console.info( 'TagManJS init' );
-
-			(function( d,s ) {
-			    var client = 'enterru';
-    		    var siteId = 1;
-
-			  //  do not edit
-			  var a=d.createElement(s),b=d.getElementsByTagName(s)[0];
-			  a.async=true;a.type='text/javascript';
-			  a.src='//sec.levexis.com/clients/'+client+'/'+siteId+'.js';
-			  a.tagman='st='+(+new Date())+'&c='+client+'&sid='+siteId;
-			  b.parentNode.insertBefore( a,b );
-			} ) (document,'script');
-        };
-
-		var
-  			template = body.data('template'),
-  			pageLink = location.href;
-
-		if ( template == 'order_complete' ) {
-			console.info("TagManJS Order Complete");
-
-			var 
-				data = $('#jsOrder').data('value'),
-				orderData = data.orders,
-				orderSum = orderData[0].sum;
-				orderNum = orderData[0].numberErp;
-
-			window.tmParam = {
-				page_type : 'confirmation', // REQ 
-				page_name : template, // REQ 
-				page_url : pageLink, // REQ
-				levrev : orderSum, // REQ when available
-				levordref : orderNum, // REQ when available
-				levresdes : 'confirmation' // REQ when available
-			};
-		}
-		else {
-			console.info("TagManJS Default")
-
-			window.tmParam = {
-				page_type : 'generic', // REQ 
-				page_name : template, // REQ 
-				page_url : pageLink // REQ
-			};
-		};
-
-        initTagMan();
-	},*/
 
     RetailRocketJS : function() {
     	console.groupCollapsed('ports.js::RetailRocketJS');
@@ -1018,51 +791,6 @@ window.ANALYTICS = {
 		console.groupEnd();
     },
 
-//    AdmitadJS : function() {
-//        window._retag = window._retag || [];
-//        var ad_data = $('#AdmitadJS').data('value');
-//
-//        if (ad_data) {
-//
-//            if (ad_data.ad_data) {
-//                /**
-//                 * NB! Переменные потипу var ad_category должны быть глобальными согласно задаче SITE-1670
-//                 */
-//                if (ad_data.ad_data.ad_category) {
-//                    window.ad_category = ad_data.ad_data.ad_category;
-//                }
-//
-//                if (ad_data.ad_data.ad_product) {
-//                    window.ad_product = ad_data.ad_data.ad_product;
-//                }
-//
-//                if (ad_data.ad_data.ad_products) {
-//                    window.ad_products = ad_data.ad_data.ad_products;
-//                }
-//
-//                if (ad_data.ad_data.ad_order) {
-//                    window.ad_order = ad_data.ad_data.ad_order;
-//                }
-//
-//                if (ad_data.ad_data.ad_amount) {
-//                    window.ad_amount = ad_data.ad_data.ad_amount;
-//                }
-//
-//            }
-//
-//            if (ad_data.pushData) {
-//                window._retag.push(ad_data.pushData);
-//            }
-//        }
-//
-//        (function(d){
-//            var s=document.createElement("script");
-//            s.async=true;
-//            s.src=(d.location.protocol == "https:" ? "https:" : "http:") + "//cdn.admitad.com/static/js/retag.js";
-//            var a=d.getElementsByTagName("script")[0];
-//            a.parentNode.insertBefore(s, a);
-//        }(document));
-//    },
 
 	AlexaJS: function () {
 		_atrk_opts = {
@@ -1085,45 +813,11 @@ window.ANALYTICS = {
 		})();
 	},
 
-    marketgidProd : function() {
-        var MGDate = new Date();
-        document.write('<iframe src ="http://'
-        +'marketgid.com/resiver.html#label1'
-        +MGDate.getYear()+MGDate.getMonth()
-        +MGDate.getDate()+MGDate.getHours()
-        +'" width="0%" height="0" sty'
-        +'le = "position:absolute;left:'
-        +'-1000px" ></iframe>');
-    },
-
-	marketgidOrder : function() {
-		var MGDate = new Date();
-		document.write('<iframe src ="http://'
-		+'marketgid.com/resiver.html#label2'
-		+MGDate.getYear()+MGDate.getMonth()
-		+MGDate.getDate()+MGDate.getHours()
-		+'" width="0%" height="0" sty'
-		+'le = "position:absolute;left:'
-		+'-1000px" ></iframe>');
-	},
-
-	marketgidOrderSuccess : function() {
-		var MGDate = new Date();
-		document.write('<iframe src ="http://'
-		+'marketgid.com/resiver.html#label3'
-		+MGDate.getYear()+MGDate.getMonth()
-		+MGDate.getDate()+MGDate.getHours()
-		+'" width="0%" height="0" sty'
-		+'le = "position:absolute;left:'
-		+'-1000px" ></iframe>');
-	},
-
 	runMethod : function( fnname ) {
-		if( !this. enable )
-			return
+
 		document.writeln = function(){
 			$('body').append( $(arguments[0] + '') )
-		}
+		};
 
 		if( fnname+'' in this ) {
 			this[fnname+'']()
@@ -1131,37 +825,9 @@ window.ANALYTICS = {
 
 	},
 
-    adblenderCommon: function(){
-
-        var layout = '';
-
-        if (arguments[0].layout) layout = arguments[0].layout;
-
-        function addAdblenderCode(scriptName) {
-            var ra = document.createElement('script');
-            ra.type = 'text/javascript';
-            ra.async = true;
-            ra.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'bn.adblender.ru/c/enter/' + scriptName + '.js?' + Math.random();
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ra, s);
-        }
-
-        // For all pages
-        addAdblenderCode('all');
-
-        // For order page and complete order page
-        if (layout == 'layout-order') addAdblenderCode('basket');
-        if (layout == 'layout-order-complete') addAdblenderCode('success');
-    },
-
 	parseAllAnalDivs : function( nodes ) {
+
 		console.groupCollapsed('parseAllAnalDivs');
-
-		if ( !this.enable ) {
-			console.warn('Not enabled. Return');
-
-			return;
-		}
 
 		var
 			self = this;
@@ -1255,8 +921,7 @@ window.ANALYTICS = {
 	enterprizeConfirmJs: function () {
 		var
 			enterprize = $('#enterprizeConfirmJs'),
-			data = {},
-			toKiss = {};
+			data = {};
 		// end of vars
 
 		if ( !enterprize.length ) {
@@ -1264,22 +929,6 @@ window.ANALYTICS = {
 		}
 
 		data = enterprize.data('value');
-
-		// --- Kiss ---
-		if (typeof _kmq != 'undefined') {
-			toKiss = {
-				'[Ent_Req] Name': data.name,
-				'[Ent_Req] Phone': data.mobile,
-				'[Ent_Req] Email': data.email,
-				'[Ent_Req] Token name': data.couponName,
-				'[Ent_Req] Token number': data.enterprizeToken,
-				'[Ent_Req] Date': data.date,// Текущая дата
-				'[Ent_Req] Time': data.time,//Текущее время
-				'[Ent_Req] enter_id': data.enter_id//идентификаgтор клиента в cookie сайта
-			};
-
-			_kmq.push(['record', 'Enterprize Token Request', toKiss]);
-		}
 
 		// --- GA ---
 		if (typeof ga != 'undefined') {
@@ -1294,7 +943,6 @@ window.ANALYTICS = {
 		var
 			enterprize = $('#enterprizeCompleteJs'),
 			data = {},
-			toKiss = {},
 			old_identity;
 		// end of vars
 
@@ -1303,32 +951,6 @@ window.ANALYTICS = {
 		}
 
 		data = enterprize.data('value');
-
-		// --- Kiss ---
-		if (typeof _kmq != 'undefined') {
-			toKiss = {
-				'[Ent_Gr] Name': data.name,
-				'[Ent_Gr] Phone': data.mobile,
-				'[Ent_Gr] Email': data.email,
-				'[Ent_Gr] Token name': data.couponName,
-				'[Ent_Gr] Token number': data.enterprizeToken,
-				'[Ent_Gr] Date': data.date,// Текущая дата
-				'[Ent_Gr] Time': data.time,//Текущее время
-				'[Ent_Gr] enter_id': data.enter_id//идентификатор клиента в cookie сайта
-			};
-
-			_kmq.push(['record', 'Enterprize Token Granted', toKiss]);
-
-			// Если данные для нас новые - идентифицируем его новыми данными и мёрджим с предыдущим ID
-			if (data.mobile != KM.i()) {
-				old_identity = KM.i()
-				_kmq.push(['identify', data.mobile]);
-				_kmq.push(['set', {'enter_id': data.enter_id}]);
-				_kmq.push(['set', {'user name': data.name}]);
-				_kmq.push(['set', {'user email': data.email}]);
-				_kmq.push(['alias', old_identity, KM.i()]);
-			}
-		}
 
 		// --- GA ---
 		if (typeof ga != 'undefined') {
@@ -1343,33 +965,6 @@ window.ANALYTICS = {
 	enterprizeRegAnalyticsJS: function() {
 		typeof _gaq !== "undefined" && _gaq.push(['_trackEvent', 'Enterprize Registration', 'true']);
 		typeof ga !== "undefined" && ga('send', 'event', 'Enterprize Registration', 'true');
-	},
-
-	kissUpdateJS: function () {
-		var
-			kiss = $('#kissUpdateJS'),
-			data = {};
-		// end of vars
-
-		if ( !kiss.length ) {
-			return;
-		}
-
-		data = kiss.data('value');
-
-		if (
-			'object' != typeof(data) ||
-			!data.hasOwnProperty('entity_id') ||
-			!data.hasOwnProperty('cookieName') ||
-			'undefined' == typeof(_kmq)
-			) {
-			return;
-		}
-
-		_kmq.push(['alias', KM.i(), data.entity_id]);
-		_kmq.push(['set', {'enter_id': data.entity_id}]);
-
-		window.docCookies.removeItem(data.cookieName, '/');
 	},
 
 	sociaPlusJs: function() {
@@ -1414,152 +1009,11 @@ window.ANALYTICS = {
 		})();
 	},
 
-	AdLensJS: function () {
-		var
-			adLens = $('#AdLensJS'),
-			data = {},
-			ef_event_type="transaction",
-			ef_transaction_properties,
-			ef_segment = "",
-			ef_search_segment = "",
-			ef_userid = "    ",
-			ef_pixel_host="pixel.everesttech.net",
-			ef_fb_is_app = 0,
-			ef_allow_3rd_party_pixels = 1;
-		// end of vars
-
-		if ( !adLens.length ) {
-			return;
-		}
-
-		data = adLens.data('value');
-
-		var al = document.createElement('script'); al.type = 'text/javascript';
-		al.src = 'http://www.everestjs.net/static/st.v2.js';
-		var s = document.getElementsByTagName('script')[0];
-		s.parentNode.insertBefore(al, s);
-
-		al.onload = function() {
-			if ( data.orders == undefined || data.revenue == undefined || data.margin == undefined || data.items == undefined || data.transid == undefined ) {
-				return;
-			}
-
-			ef_event_type="transaction";
-			ef_transaction_properties = "ev_Orders="+data.orders+"&ev_Revenue="+data.revenue+"&ev_Margin="+data.margin+"&ev_Items="+data.items+"&ev_transid="+data.transid;
-			ef_segment = "";
-			ef_search_segment = "";
-			ef_userid="245";
-			ef_pixel_host="pixel.everesttech.net";
-			ef_fb_is_app = 0;
-			ef_allow_3rd_party_pixels = 1;
-
-			'function' === typeof(effp) && effp();
-		}
-	},
-
-	LamodaJS: function () {
-		(function() {
-			var
-				lamoda = $('#LamodaJS'),
-				data = lamoda.data('value');
-			// end of vars
-
-			if ( 'undefined' == typeof(data) || !data.hasOwnProperty('lamodaID') ) {
-				return;
-			}
-
-			console.log('LamodaJS');
-
-			window.JSREObject = window.JSREObject || function() { window.JSREObject.q.push(arguments) };
-			window.JSREObject.q = window.JSREObject.q || [];
-			window.JSREObject.l = +new Date;
-			JSREObject('create', data.lamodaID, 'r24-tech.com');
-			$.getScript("//jsre.r24-tech.com/static/dsp/min/js/jsre-min.js");
-		})();
-	},
-
-	LamodaCategoryJS: function () {
-		(function() {
-			var
-				lamoda = $('#LamodaCategoryJS'),
-				data = lamoda.data('value');
-			// end of vars
-
-			if ( 'undefined' == typeof(data) || !data.hasOwnProperty('id') || 'undefined' == typeof(JSREObject) ) {
-				return;
-			}
-
-			console.info('LamodaCategoryJS');
-			console.log('category_id=' + data.id);
-			JSREObject('pageview_catalog', 'category', data.id);
-		})();
-	},
-
-	LamodaSearchJS: function () {
-		(function() {
-			var
-				lamoda = $('#LamodaSearchJS'),
-				data = lamoda.data('value');
-			// end of vars
-
-			if ( 'undefined' == typeof(data) || !data.hasOwnProperty('query') || 'undefined' == typeof(JSREObject) ) {
-				return;
-			}
-
-			console.info('LamodaSearchJS');
-			console.log('search_query=' + data.query);
-			JSREObject('pageview_catalog', 'category', data.query);
-		})();
-	},
-
-	LamodaProductJS: function () {
-		(function() {
-			var
-				lamoda = $('#LamodaProductJS'),
-				data = lamoda.data('value');
-			// end of vars
-
-			if ( 'undefined' == typeof(data) || !data.hasOwnProperty('id') || 'undefined' == typeof(JSREObject) ) {
-				return;
-			}
-
-			console.info('LamodaProductJS');
-			console.log('product_id=' + data.id);
-			JSREObject('pageview_product', data.id);
-		})();
-	},
-
-	LamodaOtherPageJS: function () {
-		(function() {
-			if ( 'undefined' == typeof(JSREObject) ) return;
-
-			console.log('LamodaOtherPageJS');
-			JSREObject('pageview');
-		})();
-	},
-
-	LamodaCompleteJS: function () {
-		(function() {
-			if ( 'undefined' == typeof(JSREObject) ) return;
-
-			console.log('LamodaCompleteJS');
-			JSREObject('cart_checkout');
-			JSREObject('conversion');
-		})();
-	},
-
 	googleTagManagerJS: function () {
-		var
-			manager = $('#googleTagManagerJS'),
-			data = manager.data('value');
-		// end of vars
+		var containerId = $('#googleTagManagerJS').data('value');
 
 		console.groupCollapsed('ports.js::googleTagManagerJS');
-
-		if ("undefined" == typeof(data) || !data.hasOwnProperty('containerId')) {
-			console.warn('Не переданы данные для googleTagManager (containerId, ...) ');
-			return;
-		}
+        console.log('googleTagManagerJS init');
 
 		(function(w,d,s,l,i){
 			w[l]=w[l]||[];
@@ -1568,199 +1022,10 @@ window.ANALYTICS = {
 			j.async=true;
 			j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;
 			f.parentNode.insertBefore(j,f);
-
-			console.log('googleTagManagerJS init');
-			console.groupEnd();
-		})(window,document,'script','dataLayer', data.containerId);
+		})(window,document,'script','dataLayerGTM', containerId);
+        console.groupEnd();
 	},
 
-	flocktoryExchangeJS: function () {
-		var
-			flocktoryExchange = $('#flocktoryExchangeJS'),
-			data = flocktoryExchange.data('value'),
-			_flocktory = window._flocktory || [];
-		// end of vars
-
-		if ( !flocktoryExchange.length || 'undefined' == typeof(data) ) {
-			return;
-		}
-
-		console.info('flocktoryExchange');
-		console.log(['exchange', data]);
-
-		_flocktory.push(['exchange', data]);
-//		(function() {
-//			var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
-//			s.src = "//api.flocktory.com/1/hello.js";
-//			var l = document.getElementsByTagName('script')[0]; l.parentNode.insertBefore(s, l);
-//		})();
-	},
-
-	flocktoryEnterprizeJS: function() {
-		console.groupCollapsed('ports.js::flocktoryEnterprizeJS');
-
-//		this.flocktoryAddScript();
-
-		var
-			data = {
-				name: "",
-				email: "",
-				sex: "",
-				action: "precheckout",
-				spot: "popup_enterprize"
-			},
-			flocktoryEnterprize = {
-				/**
-				 * подставляем данные с get-параметров
-				 */
-				fillDataFromParams: function() {
-					var urlParams = getUrlParams();
-
-					if ( typeof urlParams === "undefined" ) {
-						return;
-					}
-
-					if ( typeof urlParams['name'] !== "undefined" )		data.name = urlParams['name'];
-					if ( typeof urlParams['email'] !== "undefined" )	data.email = urlParams['email'];
-					if ( typeof urlParams['sex'] !== "undefined" )		data.sex = urlParams['sex'];
-
-					return;
-				},
-
-				init: function() {
-					var needUserInfoData = false;
-
-					flocktoryEnterprize.fillDataFromParams();
-
-					if ( data.name == "" || data.email == "" || data.sex == "" ) {
-						needUserInfoData = true;
-					}
-
-					if ( ENTER.config.userInfo === false || needUserInfoData === false ) {
-						flocktoryEnterprize.action();
-					}
-					else if ( !ENTER.config.userInfo ) {
-						$("body").on("userLogged", function() {flocktoryEnterprize.action(ENTER.config.userInfo)} );
-					}
-					else {
-						// событие уже прошло
-						console.warn(ENTER.config.userInfo);
-						flocktoryEnterprize.action(ENTER.config.userInfo);
-					}
-				},
-
-				action: function(userInfo) {
-					if ( userInfo && userInfo.id ) {
-						if ( data.name == "" )	data.name = userInfo.name;
-						if ( data.email == "" )	data.email = userInfo.email;
-						if ( data.sex == "" )	data.sex = (1 == userInfo.sex) ? "m" : ( 2 == userInfo.sex ? "f" : "" );
-					}
-
-					// первый блок
-					$('<div/>', {
-						"class": "i-flocktory",
-						"data-fl-user-name": data.name,
-						"data-fl-user-email": data.email,
-						"data-fl-user-sex": data.sex
-					}).appendTo('#flocktoryEnterprizeJS');
-
-					// второй блок
-					$('<div/>', {
-						"class": "i-flocktory",
-						"data-fl-action": data.action,
-						"data-fl-spot": data.spot
-					}).appendTo('#flocktoryEnterprizeJS');
-				}
-			};
-		// end of vars
-
-		var
-			/**
-			 * Получение get параметров текущей страницы
-			 */
-			getUrlParams = function () {
-				var $_GET = {},
-					__GET = window.location.search.substring(1).split('&'),
-					getVar,
-					i;
-				// end of vars
-
-				for ( i = 0; i < __GET.length; i++ ) {
-					getVar = __GET[i].split('=');
-					$_GET[getVar[0]] = typeof(getVar[1]) == 'undefined' ? '' : getVar[1];
-				}
-
-				return $_GET;
-			};
-		// end of functions
-
-		flocktoryEnterprize.init();
-
-		console.groupEnd();
-	},
-
-	flocktoryEnterprizeFormJS: function() {
-//		this.flocktoryAddScript();
-
-		var s = document.createElement('script');
-		s.type = 'text/javascript';
-		s.async = true;
-		s.src = "//api.flocktory.com/v2/loader.js?site_id=1401";
-		var l = document.getElementsByTagName('script')[0];
-		l.parentNode.insertBefore(s, l);
-	},
-
-	flocktoryEnterprizeRegJS: function() {
-		var
-			data = $("#flocktoryEnterprizeRegJS").data('value');
-		// end of vars
-
-		var
-			action = function( userInfo ) {
-				var result;
-
-				if (
-					!data ||
-					!userInfo ||
-					!userInfo.hasOwnProperty('email') || !userInfo.email ||
-					!userInfo.hasOwnProperty('name') || !userInfo.name
-				) {
-					return;
-				}
-
-				data.user.email = userInfo.email;
-				data.user.name = userInfo.name;
-
-				if ( userInfo.hasOwnProperty('sex') ) {
-					data.user.sex = 1 == userInfo.sex ? 'm' : (2 == userInfo.sex ? 'f' : null);
-				}
-
-				result = ['postcheckout', data];
-
-				console.info("Analytics flocktoryEnterprizeReg");
-				console.log(result);
-
-				window.flocktory.push(result);
-			};
-		// end of functions
-
-		if ( !data ) {
-			return;
-		}
-
-		window.flocktory = window.flocktory || [];
-
-		if ( ENTER.config.userInfo === false ) {
-			// пользователь должен быть авторизован
-			return;
-		}
-		else if ( !ENTER.config.userInfo ) {
-			$("body").on("userLogged", function() {action(ENTER.config.userInfo)} );
-		}
-		else {
-			action(ENTER.config.userInfo);
-		}
-	},
 
 	insiderJS: function(){
 
@@ -1883,268 +1148,12 @@ window.ANALYTICS = {
 		window.smCustomVars = hubrusVars;
 
 		$LAB.script('http://pixel.hubrus.com/containers/enter/dist/smartPixel.min.js');
-	},
+	}
 
-	enable : true
 };
 
 $(function(){
 	ANALYTICS.parseAllAnalDivs( $('.jsanalytics') );
 });
 
-var ADFOX_pr = Math.floor(Math.random() * 1000000);
 
-var ADFOX = {
-	adfoxbground : function() {
-		if( $(window).width() < 1000 ) // ATTENTION
-			return
-
-        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
-		if (typeof(document.referrer) != 'undefined') {
-		  if (typeof(afReferrer) == 'undefined') {
-			afReferrer = escape(document.referrer);
-		  }
-		} else {
-		  afReferrer = '';
-		}
-		var addate = new Date();
-		var dl = escape(document.location);
-		var pr1 = Math.floor(Math.random() * 1000000);
-		
-		document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>'+
-		'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>' )
-		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&ps=vto&p2=enlz&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&prr=' + afReferrer + '&dl='+dl+'&pr1='+pr1);		
-	},
-	
-	adfox400counter : function() {
-        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
-		if (typeof(document.referrer) != 'undefined') {
-		  if (typeof(afReferrer) == 'undefined') {
-			afReferrer = escape(document.referrer);
-		  }
-		} else {
-		  afReferrer = '';
-		}
-		var addate = new Date();
-		var dl = escape(document.location);
-		var pr1 = Math.floor(Math.random() * 1000000);  
-		document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>' +
-		'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>')
-		AdFox_getCodeScript(1,pr1, 'http://ads.adfox.ru/171829/prepareCode?p1=biewf&p2=engb&pct=a&pfc=a&pfb=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&prr=' + afReferrer + '&dl='+dl+'&pr1='+pr1);
-	},
-
-	adfox400 : function() {
-        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
-		if (typeof(document.referrer) != 'undefined') {
-		  if (typeof(afReferrer) == 'undefined') {
-			afReferrer = escape(document.referrer);
-		  }
-		} else {
-		  afReferrer = '';
-		}
-		var addate = new Date(),
-			dl = escape(document.location),
-			pr1 = Math.floor(Math.random() * 1000000);
-		document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>' +
-		'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>' )
-		//AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&ps=vto&p2=engb&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&prr=' + afReferrer + '&dl='+dl+'&pr1='+pr1);
-	},
-	
-	adfox215 : function() {
-        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
-		if (typeof(document.referrer) != 'undefined') {
-		  if (typeof(afReferrer) == 'undefined') {
-			afReferrer = escape(document.referrer);
-		  }
-		} else {
-		  afReferrer = '';
-		}
-		var addate = new Date();
-		var dl = escape(document.location);
-		var pr1 = Math.floor(Math.random() * 1000000);
-		
-		document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>')
-		document.write( '<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>' )
-		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&ps=vto&p2=emud&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&prr=' + afReferrer + '&dl='+dl+'&pr1='+pr1);		
-	},
-	
-	adfox683 : function() {
-		if (typeof(pr) == 'undefined') { var pr = Math.floor(Math.random() * 1000000); }
-		if (typeof(document.referrer) != 'undefined') {
-		  if (typeof(afReferrer) == 'undefined') {
-			afReferrer = escape(document.referrer);
-		  }
-		} else {
-		  afReferrer = '';
-		}
-		var addate = new Date();
-		var dl = escape(document.location);
-		var pr1 = Math.floor(Math.random() * 1000000);
-		
-		document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>' +
-		'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>' )
-		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&ps=vto&p2=emue&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&prr=' + afReferrer + '&dl='+dl+'&pr1='+pr1);
-	},
-	
-	adfox683sub : function() {
-        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
-		if (typeof(document.referrer) != 'undefined') {
-		  if (typeof(afReferrer) == 'undefined') {
-			afReferrer = escape(document.referrer);
-		  }
-		} else {
-		  afReferrer = '';
-		}
-		var addate = new Date();
-		var dl = escape(document.location);
-		var pr1 = Math.floor(Math.random() * 1000000);
-
-		document.write('<div id="AdFox_banner_'+pr1+'"><\/div>');
-		document.write('<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>');
-
-		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&ps=bdto&p2=emue&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&prr=' + afReferrer + '&dl='+dl+'&pr1='+pr1);
-	},
-
-	adfox980 : function() {
-        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
-		if (typeof(document.referrer) != 'undefined') {
-		  if (typeof(afReferrer) == 'undefined') {
-			afReferrer = escape(document.referrer);
-		  }
-		} else {
-		  afReferrer = '';
-		}
-		var addate = new Date();
-		var dl = escape(document.location);
-		var pr1 = Math.floor(Math.random() * 1000000);
-		
-		document.write( '<div id="AdFox_banner_'+pr1+'"><\/div>'+
-		'<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>' )
-		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&ps=vto&p2=emvi&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&prr=' + afReferrer + '&dl='+dl+'&pr1='+pr1);
-	},
-
-	adfoxWowCredit : function() {
-        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
-		if (typeof(document.referrer) != 'undefined') {
-		  if (typeof(afReferrer) == 'undefined') {
-			afReferrer = escape(document.referrer);
-		  }
-		} else {
-		  afReferrer = '';
-		}
-		var addate = new Date();
-		var dl = escape(document.location);
-		var pr1 = Math.floor(Math.random() * 1000000);
-
-		document.write('<div id="AdFox_banner_'+pr1+'"><\/div>');
-		document.write('<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>');
-
-		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?p1=bipsp&p2=engb&pct=a&pfc=a&pfb=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&prr=' + afReferrer + '&dl='+dl+'&pr1='+pr1);
-	},
-
-	adfoxGift : function() {
-        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
-		if (typeof(document.referrer) != 'undefined') {
-		  if (typeof(afReferrer) == 'undefined') {
-			afReferrer = escape(document.referrer);
-		  }
-		} else {
-		  afReferrer = '';
-		}
-		var addate = new Date();
-		var dl = escape(document.location);
-		var pr1 = Math.floor(Math.random() * 1000000);
-
-		document.write('<div id="AdFox_banner_'+pr1+'"><\/div>');
-		document.write('<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>');
-
-		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?p1=bizeq&p2=engb&pct=a&pfc=a&pfb=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&prr=' + afReferrer + '&dl='+dl+'&pr1='+pr1);
-	},
-
-	adfox920: function() {
-        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
-		if (typeof(document.referrer) != 'undefined') {
-		  if (typeof(afReferrer) == 'undefined') {
-			afReferrer = escape(document.referrer);
-		  }
-		} else {
-		  afReferrer = '';
-		}
-		var addate = new Date();
-		var dl = escape(document.location);
-		var pr1 = Math.floor(Math.random() * 1000000);
-
-		document.write('<div id="AdFox_banner_'+pr1+'"><\/div>');
-		document.write('<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>');
-
-		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&ps=vto&p2=epis&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&prr=' + afReferrer + '&dl='+dl+'&pr1='+pr1);
-	},
-
-	adfox_categoryFilterBanner: function() {
-        var pr = (typeof(ADFOX_pr) == 'undefined') ? Math.floor(Math.random() * 1000000) : ADFOX_pr;
-		if (typeof(document.referrer) != 'undefined') {
-			if (typeof(afReferrer) == 'undefined') {
-				afReferrer = escape(document.referrer);
-			}
-		} else {
-			afReferrer = '';
-		}
-		var addate = new Date();
-		var dl = escape(document.location);
-		var pr1 = Math.floor(Math.random() * 1000000);
-
-		document.write('<div id="AdFox_banner_'+pr1+'"><\/div>');
-		document.write('<div style="visibility:hidden; position:absolute;"><iframe id="AdFox_iframe_'+pr1+'" width=1 height=1 marginwidth=0 marginheight=0 scrolling=no frameborder=0><\/iframe><\/div>');
-
-		AdFox_getCodeScript(1,pr1,'http://ads.adfox.ru/171829/prepareCode?pp=g&ps=vto&p2=espi&pct=a&plp=a&pli=a&pop=a&pr=' + pr +'&pt=b&pd=' + addate.getDate() + '&pw=' + addate.getDay() + '&pv=' + addate.getHours() + '&prr=' + afReferrer + '&dl='+dl+'&pr1='+pr1);
-	},
-
-	parseAllAdfoxDivs : function( nodes ) {
-		 if( !this.enable ) {
-			 return;
-		 }
-
-// 		if( window.addEventListener ) {
-// 			var nativeEL = window.addEventListener
-// 			window.addEventListener = function(){
-// //console.info('addEventListener WINDOW', arguments[0])
-// 			  nativeEL.call(this, arguments[0], arguments[1])
-// 			  if( arguments[0] === 'load' )
-// 				arguments[1]()
-// 			}
-// 		} else if( window.attachEvent ) { //IE < 9
-// 			var nativeEL = window.attachEvent
-// 			window.attachEvent = function(){
-// //console.info('addEventListener WINDOW', arguments[0])
-// //console.info('addEventListener WINDOW', arguments[0])
-// 			  //nativeEL.call(window, arguments[0], arguments[1])
-// 			  if( arguments[0] === 'onload' )
-// 				arguments[1]()
-// 			}
-// 		}        
-			
-		var anNode = null;
-		document.writeln = function() {
-			if( anNode ) {
-				anNode.innerHTML += arguments[0];
-			}
-		}
-
-		$.each( nodes , function() {
-			anNode = this;
-			if( this['id'] + '' in ADFOX ) {
-				ADFOX[this['id']]();
-			}
-		});
-		anNode = null;
-		document.writeln = function(){
-			$('body').append( $(arguments[0] + '') );
-		}
-	},
-
-	enable : true
-};
-
-$(function(){
-	ADFOX.parseAllAdfoxDivs( $('.adfoxWrapper') );
-});

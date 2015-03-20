@@ -18,6 +18,9 @@ if ($disabled) {
     $url = $page->url('cart.product.set', array('productId' => $product->getId()));
 }
 
+// открытие товаров в новом окне
+$linkTarget = \App::abTest()->isNewWindow() ? ' target="_blank" ' : '';
+
 $imgSize = isset($itemsPerRow) && 3 == $itemsPerRow ? 6 : 2;
 if ($product->getPriceOld()) {
     $priceSale = round( ( 1 - ($product->getPrice() / $product->getPriceOld() ) ) *100, 0 );
@@ -29,9 +32,9 @@ if ($product->getPriceOld()) {
 <li class="lstn_i js-jewelListing js-goodsbox">
     <div class="lstn_i_inn js-goodsboxContainer" data-url="<?= $product->getLink() ?>" <?php if (isset($additionalData)) echo 'data-product="' . $page->json($additionalData) . '"' ?> <?= (count($addInfo)) ? 'data-add="'.$page->json($addInfo).'"' :''; ?>>
 
-        <a class="lstn_n" href="<?= $product->getLink() ?>"><?= $product->getName() ?></a>
+        <a class="lstn_n" href="<?= $product->getLink() ?>" <?= $linkTarget ?>><?= $product->getName() ?></a>
 
-        <a class="lstn_imglk" href="<?= $product->getLink() ?>"><img class="lstn_img" src="<?= $product->getImageUrl($imgSize) ?>" alt="<?= $page->escape($product->getNameWithCategory()) ?>" /></a>
+        <a class="lstn_imglk" href="<?= $product->getLink() ?>" <?= $linkTarget ?>><img class="lstn_img" src="<?= $product->getImageUrl($imgSize) ?>" alt="<?= $page->escape($product->getNameWithCategory()) ?>" /></a>
 
         <ul class="stickLst clearfix">
             <? if ($product->getLabel() && $product->getLabel()->getImageUrl()): ?>
@@ -66,7 +69,7 @@ if ($product->getPriceOld()) {
         </div>
 
         <div class="lstn_btn">
-            <a href="" class="btnCmprb jsCompareListLink" data-id="<?= $page->escape($product->getId()) ?>" data-bind="compareListBinding: compare"></a>
+            <a href="" class="btnCmprb jsCompareListLink" data-id="<?= $page->escape($product->getId()) ?>" data-bind="compareListBinding: compare" data-is-slot="<?= (bool)$product->getSlotPartnerOffer() ?>" data-is-only-from-partner="<?= $product->isOnlyFromPartner() ?>"></a>
 
             <? if ($product->getIsBuyable()): ?>
                 <?= $helper->render('cart/__button-product', ['product' => $product]) // Кнопка купить ?>

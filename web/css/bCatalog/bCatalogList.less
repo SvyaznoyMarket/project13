@@ -62,9 +62,9 @@
 		*display: inline;
 
 		&__eImg {
-			margin-top: 5px;
-			max-height: 96px;
-			width: 96px;
+			max-height: 100%;
+			max-width: 100%;
+			.inline-block();
 			vertical-align: middle;
 		}
 	}
@@ -106,8 +106,10 @@
 
 			&__eImg {
 				max-height: 46px;
-				width: 48px;
+				max-width: 48px;
 				margin-top: 0;
+				.inline-block();
+				vertical-align: middle;
 			}
 		}
 

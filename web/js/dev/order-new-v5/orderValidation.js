@@ -343,10 +343,6 @@
 			dataToSend.push({ name: 'order[delivery_type_id]', value: ENTER.OrderModel.choosenDeliveryTypeId });
 			dataToSend.push({ name: 'order[part]', value: JSON.stringify(parts) });
 
-			if ( typeof(window.KM) !== 'undefined' ) {
-				dataToSend.push({ name: 'kiss_session', value: window.KM.i });
-			}
-
 			console.log('dataToSend:');
 			console.log(dataToSend);
 

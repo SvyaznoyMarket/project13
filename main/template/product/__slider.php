@@ -16,6 +16,7 @@
  * @param bool $showPageCounter         Показывать "Страница n из N"
  * @param int  $rowsCount               Количество строк в слайдере
  * @param string|null $containerStyle
+ * @param string $sender2
  */
 $f = function (
     \Helper\TemplateHelper $helper,
@@ -32,7 +33,8 @@ $f = function (
     $isCompact = false,
     $showPageCounter = false,
     $rowsCount = 1,
-    $containerStyle = '' // вот это хардкод
+    $containerStyle = '', // вот это хардкод
+    $sender2 = ''
 ) {
     if (null === $namePosition) {
         $namePosition = 'bottom';
@@ -49,6 +51,10 @@ $f = function (
 
     $id = 'slider-' . md5(json_encode([$url, $sender, $type]));
     $products = array_filter($products, function($product) { return $product instanceof \Model\Product\Entity; });
+
+    // открытие товаров в новом окне
+    $linkTarget = \App::abTest()->isNewWindow() ? ' target="_blank" ' : '';
+
 ?>
 <div
     id="<?= $id ?>"
@@ -60,6 +66,7 @@ $f = function (
         'url'    => $url,
         'type'   => $type,
         'sender' => $sender,
+        'sender2' => $sender2,
     ]) ?>"
     <? if ($containerStyle): ?> style="<?= $containerStyle ?>" <? endif ?>
 >
@@ -115,6 +122,10 @@ $f = function (
                     $urlParams['from'] = 'cart_rec';
                 }
 
+                if ($sender2) {
+                    $urlParams['sender2'] = $sender2;
+                }
+
                 $link = $helper->url(
                     'product',
                     array_merge(
@@ -138,7 +149,7 @@ $f = function (
             ?>
                 <? if ($needStartLiTag) : ?>
                 <li
-                    class="slideItem_i jsRecommendedItem jsSliderItem"
+                    class="slideItem_i jsRecommendedItem jsSliderItem <? if ($product->getSlotPartnerOffer()): ?>slot--centered<? endif ?>"
                     data-category="<?= $category ? ($sliderId . '-category-' . $category->getId()) : null ?>"
                     data-product="<?= $helper->json([
                         'article'  => $product->getArticle(),
@@ -150,7 +161,7 @@ $f = function (
                 <div class="slideItem_i__child">
                     <? if ('top' == $namePosition): ?>
                         <div class="slideItem_n">
-                            <a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a>
+                            <a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?> <?= $linkTarget ?>><?= $product->getName() ?></a>
                         </div>
                     <? endif ?>
 
@@ -158,7 +169,7 @@ $f = function (
                         <img class="slideItem_stick" src="<?= $product->getLabel()->getImageUrl(0) ?>" alt="<?= $product->getLabel()->getName() ?>" />
                     <? endif ?>
 
-                    <a id="<?= $elementId . '-image' ?>" class="<? if ($isRetailrocketProduct): ?>jsRecommendedItem <? endif ?>slideItem_imgw<? if($product->getIsUpsale()): ?> jsUpsaleProduct<? endif; ?>" href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>>
+                    <a id="<?= $elementId . '-image' ?>" class="<? if ($isRetailrocketProduct): ?>jsRecommendedItem <? endif ?>slideItem_imgw<? if($product->getIsUpsale()): ?> jsUpsaleProduct<? endif; ?>" href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?> <?= $linkTarget ?>>
                         <img class="slideItem_img" src="<?= $product->getImageUrl() ?>" alt="<?= $helper->escape($product->getName()) ?>" />
                     </a>
 
@@ -166,25 +177,22 @@ $f = function (
 
                         <? if ('bottom' == $namePosition) : ?>
                             <div class="slideItem_n">
-                                <a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?>><?= $product->getName() ?></a>
+                                <a id="<?= $elementId ?>" <? if ($isRetailrocketProduct): ?>class="jsRecommendedItem" <? endif ?> href="<?= $link ?>"<? if ($isRetailrocketRecommendation && $linkClickJS): ?> onmousedown="<?= $linkClickJS ?>"<? endif ?> <?= $linkTarget ?>><?= $product->getName() ?></a>
                             </div>
                         <? endif ?>
 
                         <div class="slideItem_pr"><span class="price"><?= $helper->formatPrice($product->getPrice()) ?> <span class="rubl">p</span></span></div>
 
-                        <? if ($product->getKit() && !$product->getIsKitLocked()) : ?>
-                            <a class="btnView mBtnGrey" href="<?= $product->getLink() ?>">Посмотреть</a>
-                        <? else: ?>
-                            <?= $helper->render('cart/__button-product', [
-                                'product'        => $product,
-                                'onClick'        => $addToCartJS ? $addToCartJS : null,
-                                'isRetailRocket' => $isRetailrocketProduct, // TODO: удалить
-                                'sender'         => $sender,
-                                'noUpdate'       => true,
-                                'location'       => 'slider',
-                                'reserveAsBuy'   => true,
-                            ]) // Кнопка купить ?>
-                        <? endif ?>
+                        <?= $helper->render('cart/__button-product', [
+                            'product'        => $product,
+                            'onClick'        => $addToCartJS ? $addToCartJS : null,
+                            'isRetailRocket' => $isRetailrocketProduct, // TODO: удалить
+                            'sender'         => $sender,
+                            'noUpdate'       => true,
+                            'location'       => 'slider',
+                            'reserveAsBuy'   => true,
+                            'sender2'       => $sender2,
+                        ]) // Кнопка купить ?>
                     <? endif ?>
                 </div>
             <? if ($needCloseLiTag) : ?></li><? endif ?>

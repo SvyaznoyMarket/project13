@@ -15,7 +15,6 @@
     <? $i = 0; foreach ($pager as $product): $i++ ?>
     <?= $page->render('product/show/_line', [
         'product'       => $product,
-        'addInfo'       => \Kissmetrics\Manager::getProductSearchEvent($product, $i, $pager->getPage())
     ]); ?>
 
     <? if (!($i % 3) && !$isAjax): ?>

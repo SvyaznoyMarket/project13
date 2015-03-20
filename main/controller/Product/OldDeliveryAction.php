@@ -156,7 +156,7 @@ class OldDeliveryAction {
                     $response = $data;
                 }
             });
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['forever'], \App::config()->coreV2['retryCount']);
+            \App::coreClientV2()->execute();
 
             if (!isset($response['product_list'])) $response['product_list'] = [];
             if (!isset($response['geo_list'])) $response['geo_list'] = [];

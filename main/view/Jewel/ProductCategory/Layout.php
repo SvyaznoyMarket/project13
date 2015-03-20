@@ -52,5 +52,4 @@ abstract class Layout extends \View\ProductCategory\Layout {
     }
 
     public function slotMetaOg() {}
-    public function slotLamodaCategoryJS() {}
 }

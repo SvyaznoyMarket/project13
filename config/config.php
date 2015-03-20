@@ -37,9 +37,12 @@ $c->mobileHost = 'm.enter.ru';
 $c->redirect301['enabled'] = true;
 $c->mobileRedirect['enabled'] = false;
 
+$c->curlCache['enabled'] = true;
+$c->curlCache['delayRatio'] = [0, 0.025]; // количество и время задержек
+
 $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 $c->coreV2['client_id']    = 'site';
-$c->coreV2['timeout']      = 5;
+$c->coreV2['timeout']      = 4;
 $c->coreV2['hugeTimeout']  = 90;
 $c->coreV2['retryCount']   = 2;
 $c->coreV2['retryTimeout'] = [
@@ -49,7 +52,6 @@ $c->coreV2['retryTimeout'] = [
     'medium'  => 0.5,
     'long'    => 0.8,
     'huge'    => 1.5,
-    'forever' => 0,
 ];
 $c->coreV2['chunk_size']   = 50;
 $c->coreV2['debug']        = false;
@@ -57,7 +59,7 @@ $c->coreV2['debug']        = false;
 $c->corePrivate['url']          = 'http://api.enter.ru/private/';
 $c->corePrivate['user']         = 'Developer';
 $c->corePrivate['password']     = 'dEl23sTOas';
-$c->corePrivate['timeout']      = 5;
+$c->corePrivate['timeout']      = 4;
 $c->corePrivate['retryCount']   = 2;
 $c->corePrivate['retryTimeout'] = [
     'default' => 1.5,
@@ -66,12 +68,11 @@ $c->corePrivate['retryTimeout'] = [
     'medium'  => 0.5,
     'long'    => 0.8,
     'huge'    => 1.5,
-    'forever' => 0,
 ];
 
 $c->searchClient['url']          = 'http://search.enter.ru/';
 $c->searchClient['client_id']    = 'site';
-$c->searchClient['timeout']      = 5;
+$c->searchClient['timeout']      = 4;
 $c->searchClient['hugeTimeout']  = 90;
 $c->searchClient['retryCount']   = 2;
 $c->searchClient['retryTimeout'] = [
@@ -81,7 +82,6 @@ $c->searchClient['retryTimeout'] = [
     'medium'  => 0.5,
     'long'    => 0.8,
     'huge'    => 1.5,
-    'forever' => 0,
 ];
 $c->searchClient['chunk_size']   = 50;
 $c->searchClient['debug']        = false;
@@ -105,7 +105,7 @@ $c->odnoklassnikiOauth->publicKey    = 'CBAQGMICEBABABABA';
 
 $c->reviewsStore['url']          = 'http://scms.enter.ru/reviews/';
 $c->reviewsStore['retryCount']   = 2;
-$c->reviewsStore['timeout']      = 0.4;
+$c->reviewsStore['timeout']      = 0.6;
 $c->reviewsStore['retryTimeout'] = [
     'default' => 0.18,
     'tiny'    => 0.18,
@@ -113,7 +113,6 @@ $c->reviewsStore['retryTimeout'] = [
     'medium'  => 0.5,
     'long'    => 1,
     'huge'    => 2,
-    'forever' => 0,
 ];
 
 $c->wordpress['url'] = 'http://content.enter.ru/';
@@ -127,7 +126,6 @@ $c->wordpress['retryTimeout'] = [
     'medium'  => 0.3,
     'long'    => 0.5,
     'huge'    => 1,
-    'forever' => 0,
 ];
 
 $c->dataStore['url'] = 'http://cms.enter.ru/v1/';
@@ -140,7 +138,6 @@ $c->dataStore['retryTimeout'] = [
     'medium'  => 0.1,
     'long'    => 0.5,
     'huge'    => 1,
-    'forever' => 0,
 ];
 
 $c->scms['url']          = 'http://scms.enter.ru/';
@@ -153,7 +150,6 @@ $c->scms['retryTimeout'] = [
     'medium'  => 0.5,
     'long'    => 1,
     'huge'    => 2,
-    'forever' => 0,
 ];
 
 $c->scmsV2['url']          = 'http://scms.enter.ru/v2/';
@@ -166,7 +162,6 @@ $c->scmsV2['retryTimeout'] = [
     'medium'  => 0.5,
     'long'    => 1,
     'huge'    => 2,
-    'forever' => 0,
 ];
 
 $c->scmsSeo['url']          = 'http://scms.enter.ru/seo/';
@@ -179,13 +174,12 @@ $c->scmsSeo['retryTimeout'] = [
     'medium'  => 0.5,
     'long'    => 1,
     'huge'    => 2,
-    'forever' => 0,
 ];
 
 $c->crm['url'] = 'http://crm.enter.ru/';
 $c->crm['client_id'] = 'site';
 $c->crm['timeout'] = 3;
-$c->crm['hugeTimeout'] = 5;
+$c->crm['hugeTimeout'] = 4;
 $c->crm['retryCount'] = 2;
 $c->crm['retryTimeout'] = [
     'default' => 0.5,
@@ -194,7 +188,6 @@ $c->crm['retryTimeout'] = [
     'medium'  => 0.5,
     'long'    => 0.8,
     'huge'    => 1.5,
-    'forever' => 0,
 ];
 $c->crm['debug'] = false;
 
@@ -207,12 +200,9 @@ $c->company['icq'] = '648198963';
 
 $c->jsonLog['enabled'] = true;
 $c->analytics['enabled'] = true;
-$c->analytics['optimizelyEnabled'] = true;
 $c->googleAnalytics['enabled'] = true;
 $c->googleAnalyticsTchibo['enabled'] = true;
 $c->yandexMetrika['enabled'] = true;
-$c->kissmentrics['enabled'] = true;
-$c->kissmentrics['cookieName']['needUpdate'] = 'kissNeedUpdate';
 $c->googleTagManager['enabled'] = true;
 $c->googleTagManager['containerId'] = 'GTM-P65PBR';
 
@@ -226,7 +216,6 @@ $c->pickpoint['retryTimeout'] = [
     'medium'  => 0.1,
     'long'    => 0.5,
     'huge'    => 1,
-    'forever' => 0,
 ];
 
 // TODO: Вынести сюда же настройки для get4click
@@ -247,26 +236,26 @@ $c->partners['RetailRocket']['userEmail']['cookieName'] = 'user_email';
 $c->partners['livetex']['enabled'] = true;
 $c->partners['livetex']['liveTexID'] = 41836; // for enter.ru
 //$c->partners['livetex']['liveTexID'] = 52705; // for olga.ent3.ru
-$c->partners['AdLens']['enabled'] = true;
 $c->partners['Сpaexchange']['enabled'] = true;
-$c->partners['Admitad']['enabled'] = false;
 $c->partners['Revolvermarketing']['enabled'] = true;
-$c->partners['Lamoda']['enabled'] = false;
-$c->partners['Lamoda']['lamodaID'] = '11640775691088171491';
 $c->partners['TagMan']['enabled'] = false;
 $c->partners['Revolver']['enabled'] = true;
 $c->partners['Insider']['enabled'] = true;
 $c->partners['GetIntent']['enabled'] = true;
 $c->partners['AddThis']['enabled'] = true;
 $c->partners['AdvMaker']['enabled'] = true;
-$c->partners['Hubrus']['enabled'] = false;
-$c->partners['Adriver']['enabled'] = true;
-$c->partners['Mailru']['enabled'] = true;
+$c->partners['Hubrus']['enabled'] = true;
 $c->partners['SmartLeads']['enabled'] = true;
 $c->partners['Sociaplus']['enabled'] = true;
-$c->partners['AdBlender']['enabled'] = true;
 $c->partners['ActionpayRetargeting']['enabled'] = true;
-$c->partners['Optimizely']['enabled'] = true;
+$c->partners['MnogoRu']['enabled'] = true;
+$c->partners['MnogoRu']['cookieName'] = 'enter_mnogo_ru';
+$c->partners['PandaPay']['cookieName'] = 'enter_panda_pay';
+$c->partners['LinkProfit']['enabled'] = true;
+$c->partners['LinkProfit']['cookieName'] = 'linkprofit_id';
+
+$c->partners['Giftery']['enabled'] = true;
+$c->partners['Giftery']['lowestPrice'] = 500;
 
 $c->adFox['enabled'] = true;
 
@@ -326,8 +315,7 @@ $c->product['minCreditPrice']           = 3000;
 $c->product['totalCount']               = 55000;
 $c->product['recommendationSessionKey']     = 'recommendationProductIds';
 $c->product['productPageSendersSessionKey'] = 'productPageSenders';
-// глобальный (без учета региона) список товаров
-$c->product['globalListEnabled']      = true;
+$c->product['productPageSendersForMarketplaceSessionKey'] = 'productPageSendersForMarketplace';
 $c->product['showAveragePrice']       = false;
 $c->product['allowBuyOnlyInshop']     = true;
 $c->product['reviewEnabled']          = true;
@@ -390,13 +378,13 @@ $c->shopPhoto['url'] = [
     5 => '/8/1/original/',
 ];
 
-$c->banner['timeout'] = 6000;
+$c->banner['timeout'] = 5000;
 $c->banner['url'] = [
     0 => '/4/1/230x302/',
     1 => '/4/1/768x302/',
     2 => '/4/1/920x320/',
-    3 => '/4/1/958x300/', // баннеры для новой главной (большой)
-    4 => '/4/1/85x55/', // баннеры для новой главной (маленький)
+    3 => '/4/1/960x240/', // баннеры для новой главной (большой)
+    4 => '/4/1/220x50/', // баннеры для новой главной (маленький)
 ];
 
 $c->cart['productLimit'] = 30;
@@ -413,7 +401,7 @@ $c->coupon['enabled'] = true;
 $c->blackcard['enabled'] = false;
 
 $c->user['corporateRegister'] = true;
-$c->user['defaultRoute'] = 'user.orders';
+$c->user['defaultRoute'] = 'user.recommend';
 
 $c->database['host']     = 'site-db';
 $c->database['name']     = 'enter';
@@ -522,9 +510,7 @@ $c->svyaznoyClub['userTicket']['cookieName'] = 'UserTicket';
 $c->svyaznoyClub['cardNumber']['cookieName'] = 'scid';
 
 $c->flocktoryExchange['enabled'] = true;
-
-$c->flocktoryCoupon['enabled'] = true;
-$c->flocktoryCoupon['paramName'] = 'utm_coupon';
+$c->flocktoryPostCheckout['enabled'] = true;
 
 
 $c->photoContest = [
@@ -546,7 +532,5 @@ $c->siteVersionSwitcher['cookieLifetime'] = 20 * 365 * 24 * 60 * 60;
 $c->bandit['enabled'] = false;
 
 $c->tealeaf['enabled'] = true;
-
-$c->gift['buyProducts']['cookie']['name'] = 'giftBuyProducts';
 
 return $c;

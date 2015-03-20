@@ -71,15 +71,16 @@ class IndexAction {
 
         // получаем купоны ренее выданные пользователю
         $userCouponSeries = [];
-        $userCoupons = [];
+        /** @var \Model\EnterprizeCoupon\DiscountCoupon\Entity[] $userDiscounts */
+        $userDiscounts = [];
         if (\App::user()->getToken()) {
             try {
-                $client->addQuery('user/get-discount-coupons', ['token' => \App::user()->getToken(), 'extended' => false], [],
-                    function ($data) use (&$userCoupons, &$userCouponSeries) {
+                $client->addQuery('user/get-discount-coupons', ['token' => \App::user()->getToken()], [],
+                    function ($data) use (&$userDiscounts, &$userCouponSeries) {
                         if (isset($data['detail']) && is_array($data['detail'])) {
                             foreach ($data['detail'] as $item) {
                                 $entity = new \Model\EnterprizeCoupon\DiscountCoupon\Entity($item);
-                                $userCoupons[] = $entity;
+                                $userDiscounts[] = $entity;
                                 $userCouponSeries[] = $entity->getSeries();
                             }
                         }
@@ -94,15 +95,42 @@ class IndexAction {
         // выполнение пакета запросов
         \App::curl()->execute();
 
+        /** @var \Model\EnterprizeCoupon\Entity[] $enterpizeCouponsByToken */
+        $enterpizeCouponsByToken = [];
+        foreach ($enterpizeCoupons as $coupon) {
+            $enterpizeCouponsByToken[$coupon->getToken()] = $coupon;
+        }
+
+        /** @var \Model\EnterprizeCoupon\Entity[] $userCoupons */
+        $userCoupons = [];
+        foreach ($userDiscounts as $userDiscount) {
+            $coupon = isset($enterpizeCouponsByToken[$userDiscount->getSeries()]) ? $enterpizeCouponsByToken[$userDiscount->getSeries()] : null;
+            if (
+                !$userDiscount->getSeries()
+                || !$coupon
+                || $userDiscount->getUsed()
+                || ($userDiscount->getEndDate() && ($userDiscount->getEndDate() < new \DateTime()))
+            ) {
+                continue;
+            }
+
+            $coupon->setDiscount($userDiscount);
+
+            $userCoupons[] = $coupon;
+        }
+
+
         // отфильтровываем ненужные купоны
         $enterpizeCoupons = array_filter($enterpizeCoupons, function($coupon) use ($limits, $userCouponSeries, $user) {
             if (!$coupon instanceof \Model\EnterprizeCoupon\Entity || !array_key_exists($coupon->getToken(), $limits)) return false;
 
-            // убераем купоны с кол-вом <= 0
-            if ($limits[$coupon->getToken()] <= 0) return false;
+            // убираем купоны ренее выданные пользователю
+            if (in_array($coupon->getToken(), $userCouponSeries)) {
+                return false;
+            }
 
-            // убераем купоны ренее выданные пользователю
-            if (in_array($coupon->getToken(), $userCouponSeries)) return false;
+            // убираем купоны с кол-вом <= 0
+            if ($limits[$coupon->getToken()] <= 0) return false;
 
             if (!(bool)$coupon->isForMember() && !(bool)$coupon->isForNotMember()) return false;
 
@@ -179,11 +207,12 @@ class IndexAction {
         $page = new \View\Enterprize\IndexPage();
         $page->setParam('enterpizeCoupons', $enterpizeCoupons);
         $page->setParam('enterpizeCoupon', $enterpizeCoupon);
+        $page->setParam('userCoupons', $userCoupons);
         $page->setParam('viewParams', ['showSideBanner' => false]);
         $page->setParam('isCouponSent', $isCouponSent);
         $page->setParam('isRegistration', $isRegistration);
+        $page->setParam('form', (new \Controller\Enterprize\FormAction())->getForm());
         $page->setParam('products', $products);
-        $page->setParam('hasFlocktoryPopup', (bool)$request->get('flocktory_popup'));
         $page->setParam('enterprizeData', $enterprizeData);
 
         return new \Http\Response($page->show());

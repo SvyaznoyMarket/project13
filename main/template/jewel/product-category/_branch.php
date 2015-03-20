@@ -9,9 +9,6 @@
 ?>
 
 <?php
-// флаг: показывать все товары в категории
-$isGlobal = $productFilter->isGlobal();
-
 // название региона в предложном падеже
 $regionInflectedName = $user->getRegion()->getInflectedName(5);
 

@@ -574,19 +574,6 @@ class App {
     }    
 
     /**
-     * @return \Coupon\CouponManager
-     */
-    public static function couponManager() {
-        static $instance;
-
-        if (!$instance) {
-            $instance = new \Coupon\CouponManager();
-        }
-
-        return $instance;
-    }
-
-    /**
      * @static
      * @return \Scms\Client
      */

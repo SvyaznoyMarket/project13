@@ -3,6 +3,8 @@
 namespace Curl;
 
 class Client {
+    use \EnterQuery\QueryCacheTrait;
+
     /** @var \Logger\LoggerInterface */
     private $logger;
     /** @var resource|null */
@@ -125,6 +127,19 @@ class Client {
      * @return bool
      */
     public function addQuery($url, array $data = [], $successCallback = null, $failCallback = null, $timeout = null) {
+        // cache
+        if (\App::config()->curlCache['enabled']) {
+            $id = $this->getQueryCacheId($url, $data);
+
+            if ($this->hasQueryCache($id) && is_callable($successCallback)) {
+                call_user_func($successCallback, $this->getQueryCache($id));
+
+                return true;
+            } else {
+                \App::logger()->error(['error' => sprintf('Запрос %s %s не попал в кеш', $url, json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)), 'sender' => __FILE__ . ' ' .  __LINE__], ['critical', 'curl-cache']);
+            }
+        }
+
         $timeout = $timeout ? $timeout : $this->getDefaultTimeout();
 
         if (!$this->multiHandler) {
@@ -200,8 +215,9 @@ class Client {
 
                     //удаляем запрос из массива запросов на исполнение и прерываем дублирующие запросы
                     foreach ($this->queries[$this->queryIndex[(string)$handler]]['resources'] as $resource) {
-                        if ($resource !== $handler) {
+                        if (is_resource($resource) && ($resource !== $handler)) {
                             curl_multi_remove_handle($this->multiHandler, $resource);
+                            curl_close($resource);
                         }
                     }
 
@@ -250,8 +266,10 @@ class Client {
                         ], ['curl']);
 
                         if (isset($this->queries[$this->queryIndex[(string)$handler]])) {
-                            curl_multi_remove_handle($this->multiHandler, $handler);
-                            curl_close($handler);
+                            if (is_resource($handler)) {
+                                curl_multi_remove_handle($this->multiHandler, $handler);
+                                curl_close($handler);
+                            }
                             unset($this->queries[$this->queryIndex[(string)$handler]]);
                         }
                     } catch (\Exception $e) {
@@ -278,8 +296,10 @@ class Client {
                         }
 
                         if (isset($this->queries[$this->queryIndex[(string)$handler]])) {
-                            curl_multi_remove_handle($this->multiHandler, $handler);
-                            curl_close($handler);
+                            if (is_resource($handler)) {
+                                curl_multi_remove_handle($this->multiHandler, $handler);
+                                curl_close($handler);
+                            }
                             unset($this->queries[$this->queryIndex[(string)$handler]]);
                         }
                     }
@@ -333,8 +353,10 @@ class Client {
         }
         // clear multi container
         foreach ($this->resources as $resource) {
-            curl_multi_remove_handle($this->multiHandler, $resource);
-            curl_close($resource);
+            if (is_resource($resource)) {
+                curl_multi_remove_handle($this->multiHandler, $resource);
+                curl_close($resource);
+            }
         }
         curl_multi_close($this->multiHandler);
         $this->multiHandler = null;

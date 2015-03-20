@@ -2,6 +2,11 @@
 
 namespace Controller\Cart;
 
+/**
+ * Class ServiceAction
+ * @package Controller\Cart
+ * @deprecated
+ */
 class ServiceAction {
     /**
      * @param int           $serviceId
@@ -66,11 +71,6 @@ class ServiceAction {
                     'link'  =>  $product->getLink(),
                     'price' =>  $product->getPrice(),
                 ];
-            }
-            if (\App::config()->kissmentrics['enabled']) {
-                $kissInfo = \Kissmetrics\Manager::getCartEvent($product, $service);
-                if (isset($kissInfo['product'])) $productInfo = array_merge($productInfo, $kissInfo['product']);
-                if (isset($kissInfo['service'])) $serviceInfo = $kissInfo['service'];
             }
 
             $completeInfo = [

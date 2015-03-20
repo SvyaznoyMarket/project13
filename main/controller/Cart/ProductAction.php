@@ -18,8 +18,15 @@ class ProductAction {
         $productId = (int)$productId;
         $quantity = $request->get('quantity');
         $sender = $request->query->get('sender');
+        $sender2 = (string)$request->query->get('sender2');
         $params = [];
         $moveProductToUp = false;
+
+        $referer = $request->headers->get('referer') ?: '/';
+        if (false === strpos($referer, \App::config()->mainHost)) {
+            $referer = '/';
+        }
+        $params['referer'] = $referer;
 
         if (is_string($sender) && !empty($sender)) {
             $sender = ['name' => $sender];
@@ -31,6 +38,10 @@ class ProductAction {
 
         if ($sender) {
             $params['sender'] = $sender;
+        }
+
+        if ($sender2) {
+            $params['sender2'] = $sender2;
         }
 
         try {
@@ -62,7 +73,9 @@ class ProductAction {
                 }
             }
 
-            if ($request->query->get('credit') == 'on') $params['credit'] = ['enabled' => true];
+            if ($request->query->get('credit') == 'on') {
+                $params['credit'] = ['enabled' => true];
+            }
 
             // не учитываем является ли товар набором или нет - за это отвечает ядро
             $cart->setProduct($product, $quantity, $params, $moveProductToUp);
@@ -82,6 +95,7 @@ class ProductAction {
 
             $productInfo = [
                 'id'        => $product->getId(),
+                'article'   => $product->getArticle(),
                 'name'      => $product->getName(),
                 'img'       => $product->getImageUrl(),
                 'link'      => $product->getLink(),
@@ -92,15 +106,13 @@ class ProductAction {
                     'id' => \View\Id::cartButtonForProduct($product->getId()),
                 ],
                 'isTchiboProduct' => $product->getMainCategory() && 'Tchibo' === $product->getMainCategory()->getName(),
+                'category'        => $this->getCategories($product),
+                'quantity'        => $cartProduct ? $cartProduct->getQuantity() : 0,
+                'serviceQuantity' => $cart->getServicesQuantityByProduct($product->getId()),
+                'isSlot' => (bool)$product->getSlotPartnerOffer(),
+                'isOnlyFromPartner' => $product->isOnlyFromPartner(),
+                'isNewWindow'       => \App::abTest()->isNewWindow() // открытие товаров в новом окне
             ];
-            if (\App::config()->kissmentrics['enabled']) {
-                try {
-                    $kissInfo = \Kissmetrics\Manager::getCartEvent($product);
-                    $productInfo = array_merge($productInfo, $kissInfo['product']);
-                } catch (\Exception $e) {
-                    \App::logger()->error($e, ['kissmetrics']);
-                }
-            }
 
             $parentCategoryId = $product->getParentCategory() ? $product->getParentCategory()->getId() : null;
 
@@ -143,12 +155,25 @@ class ProductAction {
         }
     }
 
+    private function getCategories(\Model\Product\Entity $product) {
+        $categories = [];
+        foreach ($product->getCategory() as $category) {
+            $categories[] = [
+                'id'   => $category->getId(),
+                'name' => $category->getName(),
+            ];
+        }
+
+        return $categories;
+    }
+
 
     public function setList(\Http\Request $request) {
         $region = \App::user()->getRegion();
         $cart = \App::user()->getCart();
         $client = \App::coreClientV2();
         $sender = $request->query->get('sender');
+        $sender2 = (string)$request->query->get('sender2');
         $params = [];
 
         if (is_string($sender) && !empty($sender)) {
@@ -161,6 +186,10 @@ class ProductAction {
 
         if ($sender) {
             $params['sender'] = $sender;
+        }
+
+        if ($sender2) {
+            $params['sender2'] = $sender2;
         }
 
         try {
@@ -259,14 +288,6 @@ class ProductAction {
                         'id' => \View\Id::cartButtonForProduct($product->getId()),
                     ],
                 ];
-                if (\App::config()->kissmentrics['enabled']) {
-                    try {
-                        $kissInfo = \Kissmetrics\Manager::getCartEvent($product);
-                        $productInfo = array_merge($productInfo, $kissInfo['product']);
-                    } catch (\Exception $e) {
-                        \App::logger()->error($e, ['kissmetrics']);
-                    }
-                }
 
                 $productsInfo[] = $productInfo;
             }

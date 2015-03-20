@@ -20,11 +20,14 @@ $f = function(
     ]);
 
     $id = 'productLink-' . $product->getId() . '-' . md5(json_encode($sender));
+
+    // открытие товаров в новом окне
+    $linkTarget = \App::abTest()->isNewWindow() ? ' target="_blank" ' : '';
 ?>
 
 <div class="navitem">
     <div class="navitem_tl">ТОВАР ДНЯ</div>
-    <a id="<?= $id ?>" href="<?= $link ?>" class="navitem_cnt jsRecommendedItemInMenu" data-sender="<?= $helper->json($sender)?>">
+    <a id="<?= $id ?>" href="<?= $link ?>" class="navitem_cnt jsRecommendedItemInMenu" data-sender="<?= $helper->json($sender)?>" <?= $linkTarget ?>>
         <img data-src="<?= $product->getImageUrl(3) ?>" alt="<?= $helper->escape($product->getName()) ?>" class="navitem_img menuImgLazy">
         <noscript><img src="<?= $product->getImageUrl(3) ?>" alt="<?= $helper->escape($product->getName()) ?>" class="navitem_img"></noscript>
         <span class="navitem_n"><?= $product->getName() ?></span>

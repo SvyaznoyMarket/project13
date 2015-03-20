@@ -336,8 +336,6 @@ class Repository {
     public function prepareIteratorByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null, $done, $fail = null) {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $offset = $this->correctOffset($offset, $limit);
-
         $this->client->addQuery('listing/list',
             [
                 'region_id' => $region ? $region->getId() : \App::user()->getRegion()->getId(),
@@ -366,8 +364,6 @@ class Repository {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = clone $this->client;
-
-        $offset = $this->correctOffset($offset, $limit);
 
         $response = [];
         $client->addQuery('listing/list',
@@ -426,8 +422,6 @@ class Repository {
         \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = clone $this->client;
-
-        $offset = $this->correctOffset($offset, $limit);
 
         $response = [];
         $client->addQuery('listing/list',
@@ -578,14 +572,17 @@ class Repository {
      * Фильтрует аксессуары согласно разрешенным в json категориям
      * Возвращает массив с аксессуарами, сгруппированными по категориям
      *
+     * TODO: отрефакторить этот г*код
+     *
      * @param $product
      * @param $accessoryItems
      * @param int|null $category
      * @param int|null $limit
      * @param array|null $catalogJson
+     * @param \Model\Product\Entity[] $accessories
      * @return array
      */
-    public static function filterAccessoryId(&$product, &$accessoryItems, $category = null, $limit = null, $catalogJson = null) {
+    public static function filterAccessoryId(&$product, &$accessoryItems, $category = null, $limit = null, $catalogJson = null, $accessories = []) {
         // массив токенов категорий, разрешенных в json
         if(is_null($catalogJson)) {
             $jsonCategoryToken = self::getJsonCategoryToken($product);
@@ -602,12 +599,14 @@ class Repository {
         // если передана категория - фильтруем, иначе - нет
         // например на вкладке "популярные" (токен категории не передается)
         // надо выводить первые 8 продуктов без фильтрации
-        if($category) {
-            // получаем аксессуары продукта отфильтрованные согласно разрешенным в json категориям
-            $accessories = self::getAccessoriesFilteredByJson($product, $jsonCategoryToken);
-        } else {
-            // получаем аксессуары продукта
-            $accessories = self::getAccessories($product);
+        if (!$accessories) {
+            if ($category) {
+                // получаем аксессуары продукта отфильтрованные согласно разрешенным в json категориям
+                $accessories = self::getAccessoriesFilteredByJson($product, $jsonCategoryToken);
+            } else {
+                // получаем аксессуары продукта
+                $accessories = self::getAccessories($product);
+            }
         }
 
         $accessoriesClone = $accessories;
@@ -817,10 +816,115 @@ class Repository {
         return $productsGrouped;
     }
 
-    private function correctOffset($offset, $limit) {
-        if ($offset > 5000 - $limit)
-            $offset = 5000 - $limit;
+    public function getKitProducts(\Model\Product\Entity $product, array $parts = [], \EnterQuery\Delivery\GetByCart $deliveryQuery = null) {
+        $productRepository = \RepositoryManager::product();
+        $productRepository->setEntityClass('\Model\Product\Entity');
+        $productLine = $product->getLine();
+        $restParts = [];
 
-        return $offset;
+        // Получим основные товары набора
+        $productPartsIds = [];
+        foreach ($product->getKit() as $part) {
+            $productPartsIds[] = $part->getId();
+        }
+
+        // Если товар находится в какой-либо линии, то запросим остальные продукты линии
+        if ($productLine instanceof \Model\Product\Line\Entity ) {
+            $line = \RepositoryManager::line()->getEntityByToken($productLine->getToken());
+            $restPartsIds = array_diff($line->getProductId(), $productPartsIds);
+        }
+
+        // Получим сущности по id
+        try {
+            if (!$parts) {
+                $parts = $productRepository->getCollectionById($productPartsIds);
+            }
+            if (isset($restPartsIds) && count($restPartsIds) > 0) {
+                $restParts = $productRepository->getCollectionById($restPartsIds);
+            } else {
+                $restParts = [];
+            }
+        } catch (\Exception $e) {
+            \App::exception()->add($e);
+            \App::logger()->error($e);
+        }
+
+        // Приготовим набор для отображения на сайте
+        return $this->prepareKit($parts, $restParts, $product, $deliveryQuery);
     }
+
+    /**
+     * Подготовка данных для набора продуктов
+     * @var array $products
+     * @var array $restProducts
+     * @var \Model\Product\Entity $product
+     */
+    private function prepareKit($products, $restProducts, $mainProduct, \EnterQuery\Delivery\GetByCart $deliveryQuery = null) {
+        $result = [];
+
+        foreach (array('baseLine' => $products, 'restLine' => $restProducts) as $lineName => $products) {
+
+            foreach ($products as $key => $product) {
+                $id = $product->getId();
+                $result[$id]['id'] = $id;
+                $result[$id]['name'] = $product->getName();
+                $result[$id]['article'] = $product->getArticle();
+                $result[$id]['token'] = $product->getToken();
+                $result[$id]['url'] = $product->getLink();
+                $result[$id]['image'] = $product->getImageUrl();
+                $result[$id]['product'] = $product;
+                $result[$id]['price'] = $product->getPrice();
+                $result[$id]['lineName'] = $lineName;
+                $result[$id]['height'] = '';
+                $result[$id]['width'] = '';
+                $result[$id]['depth'] = '';
+                $result[$id]['deliveryDate'] = '';
+
+                // добавляем размеры
+                $dimensionsTranslate = [
+                    'Высота' => 'height',
+                    'Ширина' => 'width',
+                    'Глубина' => 'depth'
+                ];
+                if ($product->getProperty()) {
+                    foreach ($product->getProperty() as $property) {
+                        if (in_array($property->getName(), array('Высота', 'Ширина', 'Глубина'))) {
+                            $result[$id][$dimensionsTranslate[$property->getName()]] = $property->getValue();
+                        }
+                    }
+                }
+            }
+
+        }
+
+        foreach ($result as &$value) {
+            $value['count'] = 0;
+        }
+
+        foreach ($mainProduct->getKit() as $kitPart) {
+            if (isset($result[$kitPart->getId()])) $result[$kitPart->getId()]['count'] = $kitPart->getCount();
+        }
+
+        $deliveryItems = [];
+        foreach ($result as $item) {
+            $deliveryItems[] = array(
+                'id'    => $item['product']->getId(),
+                'quantity' => isset($item['count']) ? $item['count'] : 1
+            );
+        }
+
+        $deliveryData = (new \Controller\Product\DeliveryAction())->getResponseData($deliveryItems, \App::user()->getRegion()->getId(), $deliveryQuery);
+
+        if ($deliveryData['success']) {
+            foreach ($deliveryData['product'] as $product) {
+                $id = $product['id'];
+                $date = $product['delivery'][0]['date']['value'];
+                $result[$id]['deliveryDate'] = $date;
+            }
+
+        }
+
+        return $result;
+    }
+
 }

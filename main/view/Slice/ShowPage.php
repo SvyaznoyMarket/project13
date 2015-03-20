@@ -46,11 +46,9 @@ class ShowPage extends \View\DefaultLayout {
         ];
     }
 
-    public function slotMailRu() {
-        return $this->render('_mailRu', [
-            'pageType' => 'slice',
-            'productIds' => [],
-            'price' => '',
-        ]);
+    public function slotConfig() {
+        return $this->tryRender('_config', ['config' => [
+            'location' => ['listing'],
+        ]]);
     }
 }

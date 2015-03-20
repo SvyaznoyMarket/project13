@@ -5,8 +5,6 @@ namespace Controller\Slice;
 use Controller\Product\SetAction;
 
 class ShowAction {
-    private static $globalCookieName = 'global';
-
     /**
      * @param \Http\Request $request
      * @param string        $sliceToken
@@ -97,9 +95,6 @@ class ShowAction {
         // выполнение 1-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
 
-        /** @var $region \Model\Region\Entity|null */
-        if (self::isGlobal()) $region = null;
-
         // подготовка 2-го пакета запросов
 
         $category = new \Model\Product\Category\Entity();
@@ -143,9 +138,6 @@ class ShowAction {
                 // только при загрузке дерева ядро может отдать нам количество товаров в ней
                 if ($region && isset($data['product_count'])) {
                     $category->setProductCount($data['product_count']);
-                }
-                if (\App::config()->product['globalListEnabled'] && isset($data['product_count_global'])) {
-                    $category->setGlobalProductCount($data['product_count_global']);
                 }
 
                 // добавляем дочерние узлы
@@ -237,7 +229,7 @@ class ShowAction {
 
         $shop = null;
         try {
-            if (!self::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
+            if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
             }
         } catch (\Exception $e) {
@@ -370,7 +362,7 @@ class ShowAction {
                     $productUIs[] = $product->getUi();
                 }
 
-                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) {
+                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use(&$products) {
                     if (isset($data['product_scores'][0])) {
                         \RepositoryManager::review()->addScores($products, $data);
                     }
@@ -437,7 +429,7 @@ class ShowAction {
                     $productUIs[] = $product->getUi();
                 }
 
-                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) {
+                \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use(&$products) {
                     if (isset($data['product_scores'][0])) {
                         \RepositoryManager::review()->addScores($products, $data);
                     }
@@ -453,11 +445,7 @@ class ShowAction {
 
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage($limit);
-        if (self::isGlobal()) {
-            $category->setGlobalProductCount($productPager->count());
-        } else {
-            $category->setProductCount($productPager->count());
-        }
+        $category->setProductCount($productPager->count());
 
         // проверка на максимально допустимый номер страницы
         if (($productPager->getPage() - $productPager->getLastPage()) > 0) {
@@ -498,16 +486,6 @@ class ShowAction {
 
         return new \Http\Response($page->show());
     }
-
-
-    /**
-     * @return bool
-     */
-    public static function isGlobal() {
-        return \App::user()->getRegion()->getHasTransportCompany()
-        && (bool)(\App::request()->cookies->get(self::$globalCookieName, false));
-    }
-
 
     /**
      * Получение фильтров среза

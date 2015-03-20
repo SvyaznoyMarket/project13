@@ -1,0 +1,175 @@
+.ep-hint {
+	background: @white;
+	margin: 0 0 10px 0;
+    position: relative;
+    .box-shadow(0 0 10px rgba(0, 0, 0, 0.8));
+    top: -25px;
+    width: 960px;
+    z-index: 30;
+    clear: both;
+
+    .mLoader {
+		float: none !important;
+	}
+
+	.slideItem_btn-prv {
+        left: -10px;
+    }
+
+    .slideItem_btn-nxt {
+        right: -10px;
+    }
+
+    .ep-rules-lst {
+	    margin: 20px 0 0 269px;
+	}
+
+	&:after {
+		.pseudo-corner-top( 16px, @white, -16px);
+		left: 101px;
+		z-index: 25;
+	}
+
+	&.col-2 {
+
+		&:after {
+			left: 341px;
+		}
+	}
+
+	&.col-3 {
+
+		&:after {
+			left: 581px;
+		}
+	}
+
+	&.col-4 {
+
+		&:after {
+			left: 821px;
+		}
+	}
+
+	&--2col {
+
+		.ep-hint__col {
+			float: left;
+			max-width: 50%;
+			text-align: left;
+		}
+
+		.ep-hint__col--r {
+			float: right;
+			margin-right: 10px;
+		}
+
+		.ep-hint__lvl3 {
+			margin: 0 0 55px;
+		}
+
+		.ep-hint__lvl1 {
+			margin-bottom: 10px;
+		}
+
+		.ep-rules-lst {
+			margin-left: 0;
+		}
+	}
+
+	&--position {
+		left: 0;
+	    margin: 0;
+	    position: absolute;
+	    top: 213px;
+	    z-index: 26;
+
+	    .ep-hint__row--cut {
+	    	padding-bottom: 10px;
+	    }
+	}
+
+	&__row {
+		padding: 15px 20px 10px 20px;
+
+		&--cut {
+			position: relative;
+			padding-bottom: 0;
+			padding-top: 10px;
+
+			&:after {
+				.pseudo-class();
+				width: 100%;
+				top: 0;
+				left: 0;
+				height: 1px;
+				border-top: 1px dotted;
+			}
+		}
+
+		&--cmplt {
+			text-align: center;
+			display: none;
+		}
+		.slideItem{
+				z-index: 0;
+			}
+	}
+
+	&__cmplt-tl {
+		font-size: 28px;
+		color: #f99b1c;
+		margin-bottom: 10px;
+	}
+
+	&__cmplt-tx {
+		font-size: 16px;
+	}
+
+	&__col {
+		text-align: center;
+	}
+
+	&__lvl1 {
+		font-size: 18px;
+		margin-bottom: 0;
+	}
+
+	&__lvl2 {
+		font-size: 14px;
+		margin-top: 0;
+	}
+
+	&__lvl3 {
+		margin: 0 0 20px;
+	}
+
+	&__lvl4 {
+		margin: 10px 0 0;
+	}
+}
+
+.ep-hint-number {
+	border: 1px dashed #999;
+	margin: 0 auto;
+	.inline-block();
+	padding: 8px 15px 5px;
+	position: relative;
+
+	&__tl {
+		background: @white;
+		font-size: 11px;
+	    font-weight: bold;
+	    left: 50%;
+	    margin-left: -39px;
+	    margin-top: -11px;
+	    padding: 2px 6px;
+	    position: absolute;
+	    top: 0;
+	}
+
+	&__val {
+		font-size: 20px;
+		font-weight: bold;
+	}
+}

@@ -26,10 +26,10 @@ Autoloader::register($config->appDir);
 if (isset($_GET['APPLICATION_DEBUG'])) {
     if (!empty($_GET['APPLICATION_DEBUG'])) {
         $config->debug = true;
-        setcookie('debug', 1, strtotime('+14 days' ), '/');
+        setcookie('debug', 1, strtotime('+14 days' ), '/', $config->session['cookie_domain']);
     } else {
         $config->debug = false;
-        setcookie('debug', 0, strtotime('+14 days' ), '/');
+        setcookie('debug', 0, strtotime('+14 days' ), '/', $config->session['cookie_domain']);
     }
 } else if (isset($_COOKIE['debug'])) {
     $config->debug = !empty($_COOKIE['debug']);
@@ -58,6 +58,9 @@ if ('main' == \App::$name) {
 
 // response
 $response = null;
+
+// сервис EnterLab !новинка
+$GLOBALS['enter/service'] = new EnterApplication\Service();
 
 \App::init($env, $config, function() use (&$response) {
     $request = \App::request();
@@ -117,7 +120,6 @@ $response = null;
         } else {
             \App::partner()->set($response);
             \App::sclubManager()->set($response);
-            \App::couponManager()->set($response);
         }
 
         // debug panel

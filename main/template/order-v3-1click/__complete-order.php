@@ -19,9 +19,7 @@ $f = function(
 
     $product = reset($productsById);
 
-    $deliveries = $order->getDelivery();
-    /** @var \Model\Order\Delivery\Entity|null $delivery */
-    $delivery = reset($deliveries);
+    $delivery = $order->getDelivery();
 ?>
 
     <div class="orderCol_cnt clearfix">

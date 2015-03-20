@@ -1,13 +1,11 @@
 default:
   - 'newer:less'
   - 'newer:concat'
-  - 'jshint'
   - 'newer:uglify'
 
 all:
   - 'less'
   - 'concat'
-  - 'jshint'
   - 'uglify'
 
 css:
@@ -15,7 +13,6 @@ css:
 
 js:
   - 'concat'
-  - 'jshint'
   - 'uglify'
 
 sm:

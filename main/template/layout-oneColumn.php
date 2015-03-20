@@ -39,7 +39,7 @@
     <?= $page->slotAdFoxBground() ?>
 
     <div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
-        <div class="header">
+        <div class="header <?= \App::abTest()->isMenuHamburger() ? 'header-ddnav jsMenuHamburger' : '' ?> clearfix">
 
             <?= $page->slotHeader() ?>
             <!-- Topbar -->
@@ -75,15 +75,11 @@
         <?= $page->slotBodyJavascript() ?>
         <?= $page->slotInnerJavascript() ?>
         <?= $page->slotYandexMetrika() ?>
-        <?= $page->slotAdvanceSeoCounter() ?>
-        <?= $page->slotAdriver() ?>
         <?= $page->slotPartnerCounter() ?>
         <?= $page->slotEnterprizeConfirmJs() ?>
         <?= $page->slotEnterprizeCompleteJs() ?>
-        <?= $page->slotAdblender() ?>
-        <?= $page->slotKissMetrics() ?>
-        <?= $page->slotFlocktoryEnterprizeJs() ?>
         <?= $page->slotEnterprizeRegJS() ?>
+        <?= $page->slotGifteryJS() ?>
     </div>
 </body>
 </html>

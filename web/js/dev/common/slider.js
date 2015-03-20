@@ -8,23 +8,27 @@
             var $el = $(this),
                 $target = $(event.target),
                 link = $el.attr('href'),
+                aTarget = $el.attr('target'),
                 $slider = $el.parents('.js-slider'),
                 sender = $slider.length ? $slider.data('slider').sender : null;
 
             $body.trigger('TLT_processDOMEvent', [event]);
 
-            if ($target.hasClass('jsBuyButton')) {
+            if (!$target.hasClass('js-orderButton')) {
+				var rrEventLabel = '';
+				if (ENTER.config.pageConfig.product) {
+					if (ENTER.config.pageConfig.product.isSlot) {
+						rrEventLabel = '_marketplace-slot';
+					} else if (ENTER.config.pageConfig.product.isOnlyFromPartner) {
+						rrEventLabel = '_marketplace';
+					}
+				}
+
                 $body.trigger('trackGoogleEvent', {
-                    category: 'RR_взаимодействие',
-                    action: 'Добавил в корзину',
-                    label: sender ? sender.position : null
-                });
-            } else {
-                $body.trigger('trackGoogleEvent', {
-                    category: 'RR_взаимодействие',
+                    category: 'RR_взаимодействие' + rrEventLabel,
                     action: 'Перешел на карточку товара',
                     label: sender ? sender.position : null,
-                    hitCallback: link
+                    hitCallback: aTarget == '_blank' ? null : link
                 });
             }
 
@@ -44,7 +48,16 @@
                 sender = $slider.length ? $slider.data('slider').sender : null
                 ;
 
-            $body.trigger('trackGoogleEvent',['RR_Взаимодействие', 'Пролистывание', sender.position]);
+			var rrEventLabel = '';
+			if (ENTER.config.pageConfig.product) {
+				if (ENTER.config.pageConfig.product.isSlot) {
+					rrEventLabel = '_marketplace-slot';
+				} else if (ENTER.config.pageConfig.product.isOnlyFromPartner) {
+					rrEventLabel = '_marketplace';
+				}
+			}
+
+            $body.trigger('trackGoogleEvent',['RR_Взаимодействие' + rrEventLabel, 'Пролистывание', sender.position]);
         } catch (e) { console.error(e); }
     });
 

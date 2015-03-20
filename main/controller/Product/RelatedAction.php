@@ -2,6 +2,11 @@
 
 namespace Controller\Product;
 
+/**
+ * Class RelatedAction
+ * @package Controller\Product
+ * @deprecated
+ */
 class RelatedAction {
 
     CONST NUM_RELATED_ON_PAGE = 5;
@@ -32,7 +37,6 @@ class RelatedAction {
                 'product'   => $accessory,
                 'isHidden'  => false,
                 'gaEvent'   => 'SmartEngine',
-                'additionalData'    =>  \Kissmetrics\Manager::getProductEvent($accessory, $begin, 'Also Bought'),
             ));
             $begin++;
         }

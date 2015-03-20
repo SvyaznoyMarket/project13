@@ -5,7 +5,6 @@
         orderCompl_l
         orderCompl_btn
 */
-
 .orderCompl{
     clear: both;
 
@@ -101,6 +100,33 @@
         padding: 20px 25px 20px;
 
         border: 1px solid #ccc;
+        &--border{
+            border-color: @firmOrange;
+            .orderPaymentWeb_lst-i{
+                padding:10px;
+            }
+            .orderPayment_msg_head{
+                color: @firmOrange;
+
+            }
+            .orderPayment_msg_head-row:first-child{
+                margin-top: 10px;
+            }
+            .orderSum-lbl{
+                padding-left:24px;
+            }
+
+        }
+        &_error{
+            border-color: @red-1;
+        }
+        .orderSum-lbl{
+            width: 200px;
+            margin-right: 14px;
+
+            .inline-block();
+            .box-sizing();
+        }
     }
     &_head{
         font-size: 30px;
@@ -147,11 +173,23 @@
             &_status{
                 line-height: 25px;
             }
+            &.-short{
+                font-size: 13px;
+                vertical-align: middle;
+            }
         }
         &_adding{
             width: 370px;
             overflow-x: hidden;
             margin-top: 20px;
+        }
+        &_link{
+            text-decoration: underline;
+            &--mid{
+                line-height: 31px;
+                text-decoration: underline;
+                margin-left: 10px;
+            }
         }
     }
     &.orderPaymentCr &_block
@@ -200,14 +238,6 @@
         color: @white;
         border-radius: 4px;
         background: @firmOrange;
-    }
-    .orderSum{
-        &-lbl{
-            width: 200px;
-            margin-right: 14px;
-
-            .inline-block();
-        }
     }
 }
 .orderPaymentCr{
@@ -283,7 +313,7 @@
             overflow: hidden;
 
             height: 24px;
-            padding: 10px 20px;
+            padding: 10px;
             &:hover{
                 background: #feebd2;
                 & .orderPayment_btn-toggle{
@@ -365,5 +395,26 @@
     }
     .orderPayment_msg_info{
         margin-top: 0;
+    }
+}
+.rub-c{
+    font-size: 10px;
+    position: relative;
+    bottom: 3px;
+    padding-right: 2px;
+}
+.btn-discount-orange{
+    margin-left:12px;
+    border:1px solid @firmOrange;
+    color: @firmOrange;
+    text-decoration: none;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 4px 13px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 2px;
+    &:hover{
+        text-decoration: none;
     }
 }

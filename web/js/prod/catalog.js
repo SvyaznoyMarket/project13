@@ -407,7 +407,7 @@
 		 *
 		 * @return	{String}	url
 		 */
-		getFilterUrl: function() {
+		getFilterUrl: function(page) {
 			console.info('getFilterUrl');
 
 			var formData = filterBlock.serializeArray(),
@@ -455,6 +455,10 @@
 				url = url.addParameterToUrl('sort', sortUrl);
 			}
 
+			if (page && page > 1 && (!catalog.lastPage || page <= catalog.lastPage)) {
+				url = url.addParameterToUrl('page', page);
+			}
+
 			return url;
 		},
 
@@ -479,35 +483,25 @@
 		/**
 		 * Изменение параметров фильтра
 		 */
-		changeFilterHandler: function( e ) {
-			console.info('change filter');
-			console.log(e);
-
+		changeFilterHandler: function(page) {
 			// SITE-4894 Не изменяются выбранные фильтры при переходе назад
 			if (!catalog.filter.updateOnChange) {
 				return;
 			}
 
-			var sendUpdate = function sendUpdate() {
-				filterBlock.trigger('submit');
-			};
-
-			console.info('need update from server...');
-
 			clearTimeout(tID);
 
-			tID = setTimeout(sendUpdate, 300);
+			tID = setTimeout(function() {
+				catalog.filter.sendFilter(page);
+			}, 300);
 		},
 
 		/**
 		 * Отправка результатов фильтров
 		 * Получение ответа от сервера
 		 */
-		sendFilter: function( e ) {
-			console.info('sendFilter');
-			console.log(e);
-
-			var url = catalog.filter.getFilterUrl();
+		sendFilter: function(page) {
+			var url = catalog.filter.getFilterUrl(page);
 
 			if ( url !== (document.location.pathname + document.location.search) ) {
 				console.info('goto url '+url);
@@ -534,8 +528,6 @@
 					$link.attr('href', hrefWithoutQueryString + filterQueryString);
 				});
 			}
-
-			return false;
 		},
 
 		/**
@@ -650,7 +642,7 @@
 	/**
 	 * Слайдеры в фильтре
 	 */
-	var initSliderRange = function initSliderRange() {
+	var initSliderRange = function() {
 			var sliderWrap = $(this),
 				slider = sliderWrap.find('.js-category-filter-rangeSlider-slider'),
 				sliderConfig = slider.data('config'),
@@ -742,7 +734,7 @@
 		/**
 		 * Обработка нажатий на ссылки удаления фильтров
 		 */
-		jsHistoryLinkHandler = function jsHistoryLinkHandler(e) {
+		jsHistoryLinkHandler = function(e) {
 			var self = $(this),
 				url = self.attr('href');
 			// end of vars
@@ -755,9 +747,9 @@
 		},
 
 		/**
-		 * Обработчик кнопки переключения между расширенным и компактным видом фильтра
+		 * Обработчик кнопки для отображения расширенных фильтров
 		 */
-		toggleFilterViewHandler = function toggleFilterViewHandler( openAnyway ) {
+		toggleFilterViewHandler = function( openAnyway ) {
 			var open = filterOtherParamsToggleButton.hasClass(filterOpenClass);
 			// end of vars
 
@@ -774,7 +766,6 @@
 
 			return false;
 		},
-
 
 		/**
 		 * Обработчик кнопк сворачивания/разворачивания блоков
@@ -802,9 +793,9 @@
 		/**
 		 * Обработка пагинации
 		 */
-		jsPaginationLinkHandler = function jsPaginationLinkHandler(e) {
+		jsPaginationLinkHandler = function(e) {
 			var self = $(this),
-				url = self.attr('href'),
+				page = utils.getURLParam('page', self.attr('href')),
 				activeClass = 'mActive',
 				parentItem = self.parent();
 			// end of vars
@@ -815,7 +806,7 @@
 				return;
 			}
 
-			catalog.history.gotoUrl(url);
+			catalog.filter.changeFilterHandler(page);
 
 			if ( filterBlock.length ) {
 				$.scrollTo(filterBlock, 500);
@@ -825,7 +816,7 @@
 		/**
 		 * Обработчик выбора категории фильтра
 		 */
-		selectFilterCategoryHandler = function selectFilterCategoryHandler() {
+		selectFilterCategoryHandler = function() {
 			var self = $(this),
 				activeClass = 'mActive',
 				categoryId = self.data('ref');
@@ -854,7 +845,7 @@
 		/**
 		 * Смена отображения каталога
 		 */
-		changeViewItemsHandler = function changeViewItemsHandler(e) {
+		changeViewItemsHandler = function(e) {
 			var self = $(this),
 				url = self.attr('href'),
 				activeClass = 'mActive',
@@ -884,9 +875,8 @@
 		/**
 		 * Сортировка элементов
 		 */
-		sortingItemsHandler = function sortingItemsHandler(e) {
+		sortingItemsHandler = function(e) {
 			var self = $(this),
-				url = self.attr('href'),
 				activeClass = 'mActive',
 				parentItem = self.parent();
 			// end of vars
@@ -899,7 +889,7 @@
 
 			viewParamPanel.find('.js-category-sorting-item').removeClass(activeClass).removeClass('act').removeClass('js-category-sorting-activeItem');
 			parentItem.addClass(activeClass).addClass('act').addClass('js-category-sorting-activeItem');
-			catalog.history.gotoUrl(url);
+			catalog.filter.changeFilterHandler();
 		};
 	// end of functions
 
@@ -983,7 +973,10 @@
 	filterOtherParamsToggleButton.on('click', toggleFilterViewHandler);
 	filterMenuItem.on('click', selectFilterCategoryHandler);
 	filterBlock.on('change', 'input, select, textarea', catalog.filter.changeFilterHandler);
-	filterBlock.on('submit', catalog.filter.sendFilter);
+	filterBlock.on('submit', function(e) {
+		e.preventDefault();
+		catalog.filter.sendFilter();
+	});
 
 	// Sorting items
 	viewParamPanel.on('click', '.jsSorting', sortingItemsHandler);
@@ -1099,7 +1092,8 @@
 			var errorHandler = function errorHandler() {
 					// utils.blockScreen.unblock();
 					if ( catalog.loader ) {
-						catalog.loader.complete();
+						catalog.infScroll.loading = false;
+						catalog.loader.error();
 					}
 				},
 
@@ -1312,7 +1306,8 @@
 		}
 	};
 
-	var infBtnHandler = function infBtnHandler(e) {
+	var
+		infBtnHandler = function(e) {
 			var activeClass = 'mActive',
 				infBtn = viewParamPanel.find('.js-category-pagination-infinity'),
 				isActiveTab = infBtn.hasClass(activeClass);
@@ -1320,14 +1315,14 @@
 
 			e.preventDefault();
 
-			if ( isActiveTab ) {
+			if (isActiveTab) {
 				return;
 			}
 
 			catalog.infScroll.enable();
 		},
 
-		paginationBtnHandler = function paginationBtnHandler(e) {
+		paginationBtnHandler = function(e) {
 			console.info('paginationBtnHandler');
 			var activeClass = 'mActive',
 				infBtn = viewParamPanel.find('.js-category-pagination-infinity'),
@@ -1336,9 +1331,11 @@
 
 			e.preventDefault();
 
-			if ( isActiveTab ) {
-				catalog.infScroll.disable();
+			if (!isActiveTab) {
+				return;
 			}
+
+			catalog.infScroll.disable();
 		};
 	// end of functions
 
@@ -1348,6 +1345,24 @@
 	viewParamPanel.on('click', '.jsInfinityEnable', infBtnHandler);
 
 }(window.ENTER));
+$(function() {
+	var $body = $('body');
+
+	$body.on('click', '.js-listing-item-img, .js-listing-item-viewButton', function(e) {
+		var
+			$target = $(e.currentTarget),
+			$item = $target.closest('.js-listing-item');
+
+		var action = 'listing';
+		if ($item.data('is-slot')) {
+			action = 'listing-marketplace-slot';
+		} else if ($item.data('is-only-from-partner')) {
+			action = 'listing-marketplace';
+		}
+
+		$body.trigger('trackGoogleEvent', ['View', action, $target.is('.js-listing-item-img') ? 'image' : 'button']);
+	});
+});
 /**
  * Catalog loader
  *
@@ -1396,31 +1411,17 @@
 			}
 			filterSubminBtn.removeClass('mButLoader');
 			$('body').trigger('catalogLoadingComplete');
+		},
+
+		error: function() {
+			console.warn('error');
+
+			if ( catalog.loader._loader ) {
+				catalog.loader._loader.remove();
+				catalog.loader._loader = null;
+			}
 		}
 	};
-
-}(window.ENTER));
-/**
- * Package set
- *
- * 
- */
-;(function( ENTER ) {
-
-	var packageSetBtn = $('.jsChangePackageSet'),
-		packageSetWindow = $('.jsPackageSetPopup');
-	// end of vars
-	
-	/**
-	 * Показ окна с изменение комплекта 
-	 */
-	var showPackageSetPopup = function showPackageSetPopup() {
-			packageSetWindow.lightbox_me({
-				autofocus: true
-			});
-		};
-
-	packageSetBtn.on('click', showPackageSetPopup);
 
 }(window.ENTER));
 /**
@@ -1588,7 +1589,7 @@ $(function() {
 		$dropBoxContents = $('.js-category-v2-filter-dropBox-content'),
 		$priceLinks = $('.js-category-v2-filter-price-link'),
 		$radio = $('.js-category-v2-filter-element-list-radio'),
-		catalogPath = document.location.pathname.replace(/^\/catalog\/([^\/]*).*$/i, '$1'); // Используем значение URL адреса на момент загрузки страницы, т.к. на данный момент при выполнении поиска URL страницы изменяется на URL формы, в которой задан URL из метода http://admin.enter.ru/v2/category/get-seo (в котором содержится некорректный URL; без средней части - "/catalog/holodilniki-i-morozilniki-1096" вместо "/catalog/appliances/holodilniki-i-morozilniki-1096")
+		catalogPath = ENTER.utils.getCategoryPath();
 
 	// Открытие и закрытие выпадающих списков
 	(function() {
@@ -1817,7 +1818,7 @@ $(function() {
 		$otherBrandsOpener = $('.js-category-v2-root-brands-otherOpener'),
 		$brandsTitle = $('.js-category-v2-root-brands-title'),
 		$linksWrapper = $('.js-category-v2-root-linksWrapper'),
-		catalogPath = document.location.pathname.replace(/^\/catalog\/([^\/]*).*$/i, '$1'); // Используем значение URL адреса на момент загрузки страницы, т.к. на данный момент при выполнении поиска URL страницы изменяется на URL формы, в которой задан URL из метода http://admin.enter.ru/v2/category/get-seo (в котором содержится некорректный URL; без средней части - "/catalog/holodilniki-i-morozilniki-1096" вместо "/catalog/appliances/holodilniki-i-morozilniki-1096")
+		catalogPath = ENTER.utils.getCategoryPath();
 
 	function renderSelectedBrandsTemplate() {
 		var $template = $('#root_page_selected_brands_tmpl');

@@ -8,8 +8,7 @@
  * @author	Zaytsev Alexandr
  */
 ;(function ( window, document, $, ENTER, ko ) {
-	console.info('separate-order.js init');
-	
+
 	var
 		serverData = $('#jsOrderDelivery').data('value'),
 		utils = ENTER.utils,
@@ -888,9 +887,7 @@
 			var itemDeleteAnalytics = function itemDeleteAnalytics( data ) {
 					var products = ENTER.OrderModel.orderDictionary.products,
 						totalPrice = 0,
-						totalQuan = 0,
-
-						toKISS = {};
+						totalQuan = 0;
 					// end of vars
 
 					if ( !data.product ) {
@@ -902,27 +899,11 @@
 						totalQuan += products[product].quantity;
 					}
 
-					toKISS = {
-						'Checkout Step 1 SKU Quantity': totalQuan,
-						'Checkout Step 1 SKU Total': totalPrice
-					};
-
-					if ( typeof _kmq !== 'undefined' ) {
-						_kmq.push(['set', toKISS]);
-					}
-
 					if ( typeof _gaq !== 'undefined' ) {
 						_gaq.push(['_trackEvent', 'Order card', 'Item deleted']);
 					}
 
 					if ( data.hasOwnProperty('product') && data.product.hasOwnProperty('id') ) {
-						/* Lamoda */
-						if ( 'undefined' != typeof(JSREObject) ) {
-							console.info('Lamoda removeFromCart');
-							console.log('product_id=' + data.product.id);
-							JSREObject('cart_remove', data.product.id);
-						}
-
 						/* RetailRocket */
 						console.info('RetailRocket removeFromCart');
 						console.log('product_id=' + data.product.id);
@@ -944,21 +925,6 @@
 					// запуск аналитики
 					itemDeleteAnalytics(res);
 
-					if ( res.product ) {
-						var productId = res.product.id;
-						var categoryId = res.category_id;
-
-						// Soloway
-						// Чтобы клиент не видел баннер с товаром которого нет на сайте и призывом купить
-						(function(s){
-							var d = document, i = d.createElement('IMG'), b = d.body;
-							s = s.replace(/!\[rnd\]/, Math.round(Math.random()*9999999)) + '&tail256=' + escape(d.referrer || 'unknown');
-							i.style.position = 'absolute'; i.style.width = i.style.height = '0px';
-							i.onload = i.onerror = function(){b.removeChild(i); i = b = null;};
-							i.src = s;
-							b.insertBefore(i, b.firstChild);
-						})('http://ad.adriver.ru/cgi-bin/rle.cgi?sid=182615&sz=del_basket&bt=55&pz=0&custom=10='+productId+';11='+categoryId+'&![rnd]');
-					}
 				};
 			// end of functions
 
@@ -1274,9 +1240,6 @@
 				totalPrice = 0,
 				totalQuan = 0,
                 basketProd = [],
-
-				toKISS = {},
-
 				product;
 			// end of vars
 
@@ -1294,18 +1257,8 @@
                 );
 			}
 
-			toKISS = {
-				'Checkout Step 1 SKU Quantity': totalQuan,
-				'Checkout Step 1 SKU Total': totalPrice,
-				'Checkout Step 1 Order Type': 'cart order'
-			};
-
 			if ( typeof _gaq !== 'undefined' ) {
 				_gaq.push(['_trackEvent', 'New order', 'Items', totalQuan]);
-			}
-
-			if ( typeof _kmq !== 'undefined' ) {
-				_kmq.push(['record', 'Checkout Step 1', toKISS]);
 			}
 
             // ActionPay Analytics:

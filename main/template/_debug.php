@@ -47,23 +47,42 @@
             <div class="jsExpandedValue property-value-expanded">
                 <table>
                     <tbody>
+                            <tr>
+                                <th>Time</th>
+                                <th>Retry</th>
+                                <th>Server</th>
+                                <th>Mode</th>
+                                <th>Query</th>
+                            </tr>
                         {{#value}}
                             <tr>
-                                <td class="query-cell">{{info.total_time}}</td>
-                                <td class="query-cell">{{retryCount}}</td>
-                                <td class="query-cell">{{header.X-Server-Name}} {{header.X-API-Mode}}</td>
                                 <td class="query-cell">
-                                    <a class="query 
+                                    {{#cache}}<span style="color: #ffff00">*</span>{{/cache}} {{info.total_time}} {{#spend}}({{spend}}){{/spend}}
+                                </td>
+                                <td class="query-cell" title="{{delay}}">
+                                    {{#delays}}
+                                        {{#selected}}
+                                            <span style="color: #ffa200;">{{value}}</span><sup>{{http_code}}</sup>
+                                        {{/selected}}
+                                        {{^selected}}
+                                            {{value}}<sup>{{http_code}}</sup>
+                                        {{/selected}}
+                                    {{/delays}}
+                                </td>
+                                <!--<td class="query-cell"><span title="Retry count">{{retryCount}}</span></td>-->
+                                <td class="query-cell">{{header.X-Server-Name}}</td>
+                                <td class="query-cell">{{header.X-API-Mode}}</td>
+                                <td class="query-cell">
+                                    <a href="{{^data}}{{url}}{{/data}}{{#data}}/debug/query?data={{encodedData}}&url={{encodedUrl}}{{/data}}" target="_blank" class="openDirectly">&#11016;</a>
+                                    <a class="query
                                             {{#error}}
                                                 query-fail
                                             {{/error}}
                                             {{#url}}
                                                 query-ok
                                             {{/url}}"
-                                        href="/debug/query?data={{data}}&url={{url}}" target="_blank">{{&escapedUrl}}</a>
-                                    {{#data}}
-                                    {{data}}
-                                    {{/data}}
+                                        href="/debug/query?data={{encodedData}}&url={{encodedUrl}}" target="_blank">{{url}}</a>
+                                    {{#data}}{{data}}{{/data}}
                                 </td>
                             </tr>
                         {{/value}}
@@ -143,22 +162,30 @@
 
 <script id="tplDebugAjax" type="text/html">
     <div>
-        <a class="jsOpenDebugPanel" href="#">{{name}}</a>
-        <a class="jsDebugPanelClose">×</a>
-        <div class="jsDebugPanelContent" style="display: none"></div>
+        <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#">{{name}}</a>
+        <a class="debug-panel-item-close jsCloseDebugPanelItem">×</a>
+        <div class="debug-panel-item-content jsDebugPanelItemContent"></div>
     </div>
 </script>
 
-<div class="jsDebugPanel debug-panel" data-value="<?= $helper->json($debugData) ?>">
-    <div>
-        <a class="jsOpenDebugPanel" href="#">debug</a>
-        <a class="jsDebugPanelClose">×</a>
-        <table class="jsDebugPanelContent" style="display: none"></table>
+<div class="jsDebugPanel debug-panel" data-value="<?= $helper->json($debugData) ?>" data-prev-value="<?= $helper->json($prevDebugData) ?>">
+    <a class="debug-panel-open jsOpenDebugPanelContent" href="#">debug</a>
+    <div class="debug-panel-content jsDebugPanelContent">
+        <div class="debug-panel-item-prev" title="Previous document debug">
+            <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#"><?= $helper->escape($prevDebugData['server']['value']['REQUEST_URI']) ?></a>
+            <a class="debug-panel-item-close jsCloseDebugPanelItem">×</a>
+            <table class="debug-panel-item-content jsDebugPanelItemContent jsPrevDebugPanelItemContent"></table>
+        </div>
+        <div>
+            <a class="debug-panel-item-open jsOpenDebugPanelItem" href="#"><?= $helper->escape($debugData['server']['value']['REQUEST_URI']) ?></a>
+            <a class="debug-panel-item-close jsCloseDebugPanelItem">×</a>
+            <table class="debug-panel-item-content jsDebugPanelItemContent jsCurrentDebugPanelItemContent"></table>
+        </div>
     </div>
 </div>
 
 <style type="text/css">
-    .jsOpenDebugPanel {
+    .debug-panel-open, .debug-panel-item-open {
         padding: 5px;
         display: inline-block;
         margin: 4px 0 0;
@@ -171,9 +198,8 @@
         border-top-right-radius: 4px;
         box-shadow: 0 0 10px rgba(0,0,0,0.5);
     }
-    .jsOpenDebugPanel.jsOpened {
-    }
-    .jsDebugPanelContent {
+    .debug-panel-item-content {
+        display: none;
         background: #0f1113;
         -webkit-border-radius: 4px;
         -webkit-border-top-left-radius: 0;
@@ -182,6 +208,14 @@
         border-radius: 4px;
         border-top-left-radius: 0;
         box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    .debug-panel-item-prev {
+        opacity: 0.3;
+    }
+
+    .debug-panel-item-prev:hover {
+        opacity: 1;
     }
 
     .debug-panel {
@@ -202,7 +236,11 @@
         text-decoration: none;
     }
 
-    a.jsDebugPanelClose, a.jsDebugPanelClose:hover {
+    .debug-panel-content {
+        display: none;
+    }
+
+    a.debug-panel-item-close, a.debug-panel-item-close:hover {
         display: inline-block;
         cursor: pointer;
         font-size: 16px;
@@ -259,7 +297,7 @@
     .debug-panel .property-value-expanded {
         color: limegreen;
         display: none;
-        max-height: 130px;
+        max-height: 160px;
         max-width: 1000px;
         overflow: auto;
     }
@@ -275,5 +313,11 @@
     .debug-panel .property-value .query-cell {
         padding: 2px 10px 2px 0;
         white-space: nowrap;
+    }
+    .debug-panel .property-value .query-cell span[title] {
+        cursor: help;
+    }
+    .debug-panel .openDirectly {
+        color: #bebebe;
     }
 </style>

@@ -16,10 +16,20 @@ class Entity {
     private $title;
     /** @var bool */
     private $used;
-    /** @var string */
+    /**
+     * @deprecated
+     * @var string
+     */
     private $from;
-    /** @var string */
+    /**
+     * @deprecated
+     * @var string
+     */
     private $to;
+    /** @var \DateTime|null */
+    private $startDate;
+    /** @var \DateTime|null */
+    private $endDate;
 
     public function __construct(array $data = []) {
         if (array_key_exists('series', $data)) $this->setSeries($data['series']);
@@ -28,8 +38,11 @@ class Entity {
         if (array_key_exists('amount', $data)) $this->setAmount($data['amount']);
         if (array_key_exists('title', $data)) $this->setTitle($data['title']);
         if (array_key_exists('used', $data)) $this->setUsed($data['used']);
-        if (array_key_exists('from', $data)) $this->setFrom($data['from']);
-        if (array_key_exists('to', $data)) $this->setTo($data['to']);
+        if (array_key_exists('from', $data)) $this->setFrom($data['from']); // deprecated
+        if (array_key_exists('to', $data)) $this->setTo($data['to']); // deprecated
+
+        if (array_key_exists('from', $data)) $this->setStartDate($data['from'] ? new \DateTime($data['from']) : null);
+        if (array_key_exists('to', $data)) $this->setEndDate($data['to'] ? new \DateTime($data['to']) : null);
     }
 
     /**
@@ -143,4 +156,32 @@ class Entity {
     public function getUsed() {
         return $this->used;
     }
-} 
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getStartDate() {
+        return $this->startDate;
+    }
+
+    /**
+     * @param \DateTime|null $startDate
+     */
+    public function setStartDate($startDate) {
+        $this->startDate = $startDate;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getEndDate() {
+        return $this->endDate;
+    }
+
+    /**
+     * @param \DateTime|null $endDate
+     */
+    public function setEndDate($endDate) {
+        $this->endDate = $endDate;
+    }
+}

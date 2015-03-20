@@ -14,7 +14,7 @@
             <div class="title">Безопасные покупки</div>
             <span class="span__text">Вы приобретаете качественный товар. Получаете и оплачиваете любым удобным для&nbsp;Вас способом.</span>
         </li>
-     
+
         <li class="footer__list__item mOrder">
             <div class="title">Сопровождение заказа</div>
             <span class="span__text">После оформления заказа с&nbsp;Вами свяжется специалист нашего Контакт-сENTER для подтверждения заказа.</span>
@@ -31,7 +31,7 @@
         <div id="jira" class="feedback__link"><a href="javascript:void(0)">Сообщить об ошибке</a></div>
 
         <div class="footerbottom">
-            <div class="copy">© «Enter» 2011–2014. Все права защищены.<br />Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.</div>
+            <div class="copy">© «Enter» 2011–<?= date('Y') ?>. Все права защищены.<br />Указанная стоимость товаров и условия их приобретения действительны по состоянию на текущую дату.</div>
             <ul class="creditcard__list">
                 <li class="creditcard__list__item"><img alt="" height="30" src="/images/counter2.gif" width="50"></li>
                 <li class="creditcard__list__item"><img alt="" height="30" src="/images/counter3.gif" width="50"></li>
@@ -43,7 +43,7 @@
 
 <footer class="footer__order">
     <div class="footer__insert">
-        <p class="footer__copy clearfix">&copy; ООО «Энтер» 2011–2014. ENTER® ЕНТЕР® Enter®. Все права защищены. <a id="jira" class="footer__copy__link" href="javascript:void(0)">Сообщить об ошибке</a></p>
+        <p class="footer__copy clearfix">&copy; ООО «Энтер» 2011–<?= date('Y') ?>. ENTER® ЕНТЕР® Enter®. Все права защищены. <a id="jira" class="footer__copy__link" href="javascript:void(0)">Сообщить об ошибке</a></p>
     </div>
 </footer>
 

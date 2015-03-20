@@ -82,7 +82,7 @@ class UpsaleAction extends BasicRecommendedAction {
             // SITE-2818 Из блока "С этим товаром покупают" убраем товары, которые есть только в магазинах ("Резерв" и витринные)
             foreach ($products as $key => $item) {
                 /** @var Entity $item */
-                if ($item->isInShopOnly() || $item->isInShopStockOnly() || !$item->getIsBuyable()) {
+                if ($item->isInShopOnly() || $item->isInShopStockOnly() || !$item->getIsBuyable() || (5 == $item->getStatusId())) {
                     unset($products[$key]);
                 }
             }
@@ -107,6 +107,7 @@ class UpsaleAction extends BasicRecommendedAction {
                         'position' => 'AddBasket',
                         'method'   => $this->retailrocketMethodName,
                     ],
+                    'sender2'      => (string)$request->get('sender2'),
                 ]),
                 'data' => [
                     'id'              => $product->getId(),//идентификатор товара (или категории, пользователя или поисковая фраза) к которому были отображены рекомендации

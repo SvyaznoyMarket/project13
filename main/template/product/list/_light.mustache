@@ -8,7 +8,7 @@
     {{/isBanner}}
 
     {{^isBanner}}
-        <li class="lstn_i {{#view.hoverDescription}}lstn_i-hover{{/view.hoverDescription}}">
+        <li class="lstn_i {{#view.hoverDescription}}lstn_i-hover{{/view.hoverDescription}} js-listing-item" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}>
             <div class="lstn_i_inn">
                 <ul class="stickLst clearfix">
                     {{#label}}
@@ -28,12 +28,12 @@
                 </ul>
 
                 {{#hoverImage}}
-                    <a href="{{link}}" class="lstn_imglk lstn_imglk-default"><img class="lstn_img" src="{{image}}" alt="" /></a>
-                    <a href="{{link}}" class="lstn_imglk lstn_imglk-hover"><img class="lstn_img" src="{{hoverImage}}" alt="" /></a>
+                    <a href="{{link}}" target="_blank" class="lstn_imglk lstn_imglk-default js-listing-item-img"><img class="lstn_img" src="{{image}}" alt="" /></a>
+                    <a href="{{link}}" target="_blank" class="lstn_imglk lstn_imglk-hover js-listing-item-img"><img class="lstn_img" src="{{hoverImage}}" alt="" /></a>
                 {{/hoverImage}}
 
                 {{^hoverImage}}
-                    <a href="{{link}}" class="lstn_imglk"><img class="lstn_img" src="{{image}}" alt="" /></a>
+                    <a href="{{link}}" target="_blank" class="lstn_imglk js-listing-item-img"><img class="lstn_img" src="{{image}}" alt="" /></a>
                 {{/hoverImage}}
                 
                 <div style="display: table; width: 100%;">
@@ -52,7 +52,7 @@
                 {{#view.extraContent}}
                     <div class="lstn_btn">
                         {{^hasKit}}
-                            <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare"></a>
+                            <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}></a>
 
                             {{#isBuyable}}
                                 {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
@@ -86,7 +86,7 @@
                         {{/hasKit}}
 
                         {{#isKitLocked}}
-                            <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare"></a>
+                            <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}></a>
                             {{#isBuyable}}
                                 {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
                             {{/isBuyable}}
@@ -122,7 +122,7 @@
                 </div>
                 
                 {{#view.bottomDescription}}
-                    <div class="lstn_desc"><a href="{{link}}">{{name}}</a></div>
+                    <div class="lstn_desc"><a href="{{link}}" target="_blank">{{name}}</a></div>
                     {{#review}}{{> product/_review-compact }}{{/review}}
                 {{/view.bottomDescription}}
             </div>

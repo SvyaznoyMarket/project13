@@ -2,10 +2,14 @@
 
 namespace Model\Order;
 
+use Model\Point\PointEntity as Point;
+use Model\Shop\Entity as Shop;
+
 class Entity {
     const TYPE_ORDER = 1;
     const TYPE_PREORDER = 2;
     const TYPE_CUSTOM = 3;
+    const TYPE_SLOT = 4;
     const TYPE_1CLICK = 9;
 
     const STATUS_FORMED = 1;
@@ -25,6 +29,7 @@ class Entity {
     const PAYMENT_STATUS_ADVANCE = 3;   // частично оплачен
     const PAYMENT_STATUS_PAID = 2;      // оплачен
     const PAYMENT_STATUS_CANCELED = 5;  // отмена оплаты
+    const PAYMENT_STATUS_SVYAZNOY_CLUB = 21;  // оплата баллами Связной-клуб
 
     /** @var int */
     public $id;
@@ -134,6 +139,10 @@ class Entity {
     public $seller;
     /** @var string */
     private $accessToken;
+    /** @var Point|null */
+    public $point;
+    /** @var Shop|null */
+    public $shop;
 
     /**
      * @param array $data
@@ -210,7 +219,6 @@ class Entity {
             }
         }
         if (array_key_exists('delivery', $data)) {
-            $this->delivery = [];
             foreach ((array)$data['delivery'] as $deliveryData) {
                 $this->addDelivery(new Delivery\Entity($deliveryData));
             }
@@ -345,16 +353,6 @@ class Entity {
     }
 
     /**
-     * @param \Model\Order\Delivery\Entity[] $deliveries
-     */
-    public function setDelivery(array $deliveries = []) {
-        $this->delivery = [];
-        foreach ($deliveries as $delivery) {
-            $this->addDelivery($delivery);
-        }
-    }
-
-    /**
      * @param Delivery\Entity $delivery
      */
     public function addDelivery(\Model\Order\Delivery\Entity $delivery) {
@@ -362,10 +360,10 @@ class Entity {
     }
 
     /**
-     * @return \Model\Order\Delivery\Entity[]
+     * @return \Model\Order\Delivery\Entity
      */
     public function getDelivery() {
-        return $this->delivery;
+        return reset($this->delivery);
     }
 
     /**
@@ -557,7 +555,7 @@ class Entity {
         $this->number = (string)$number;
     }
 
-    /**
+    /** Возвращает номер вида XF719570
      * @return string
      */
     public function getNumber() {
@@ -571,7 +569,7 @@ class Entity {
         $this->numberErp = (string)$numberErp;
     }
 
-    /**
+    /** Возвращает номер вида COXF-719233
      * @return string
      */
     public function getNumberErp() {
@@ -739,14 +737,14 @@ class Entity {
     }
 
     /**
-     * @param int $sum
+     * @param int|float $sum
      */
     public function setSum($sum) {
         $this->sum = $sum;
     }
 
     /**
-     * @return int
+     * @return int|float
      */
     public function getSum() {
         return $this->sum;
@@ -988,6 +986,31 @@ class Entity {
      */
     public function getAccessToken() {
         return $this->accessToken;
+    }
+
+    /** Возвращает значение из метаданных по ключу
+     * @param $key
+     * @param null $default
+     * @return mixed|null
+     */
+    public function getMetaByKey($key, $default = null) {
+        return array_key_exists($key, $this->meta_data) && is_array($this->meta_data[$key])
+            ? reset($this->meta_data[$key])     // возвращаем первый элемент массива (особенности ответа ядра)
+            : $default;
+    }
+
+    /** Оплата с помощью баллов Связного клуба
+     * @return bool
+     */
+    public function isPaidBySvyaznoy() {
+        return $this->paymentStatusId == self::PAYMENT_STATUS_SVYAZNOY_CLUB;
+    }
+
+    /** Возвращает количество списанных баллов
+     * @return float
+     */
+    public function getSvyaznoyPaymentSum(){
+        return (float)$this->getMetaByKey('payment.svyaznoy_club', 0);
     }
 }
 

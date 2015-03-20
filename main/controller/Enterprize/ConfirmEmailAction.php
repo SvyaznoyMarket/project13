@@ -28,7 +28,8 @@ class ConfirmEmailAction {
         }
 
         if ($this->isEmailConfirmed()) {
-            return (new \Controller\Enterprize\ConfirmPhoneAction())->create($request);
+            //return (new \Controller\Enterprize\ConfirmPhoneAction())->create($request);
+            return (new \Controller\Enterprize\CouponAction())->create($request);
         }
 
         /** @var $enterpizeCoupon \Model\EnterprizeCoupon\Entity|null */
@@ -228,13 +229,12 @@ class ConfirmEmailAction {
             $session->set($sessionName, $data);
 
             $userToken = !empty($data['token']) ? $data['token'] : \App::user()->getToken();
-            if ($userToken==null) {
+            if ($userToken == null) {
 
                 $response = new \Http\RedirectResponse(\App::router()->generate('enterprize.confirmEmail.warn'));
 
             } else {
-
-                $response = (new \Controller\Enterprize\CouponAction())->create($request);
+                $response = (new \Controller\Enterprize\CouponAction())->create($request, $data);
 
                 // авторизовываем пользователя
                 if ($userToken && !\App::user()->getEntity()) {

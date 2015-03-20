@@ -4,12 +4,15 @@
  * @var $menu \Model\Menu\BasicMenuEntity[]|null
  */
 $menu = $page->getGlobalParam('menu');
-// $menuVar = 0, 1 или 2
-$menuVar = \Session\AbTest\ABHelperTrait::getNewMainPageVar();
+$btnTypes = array(
+        1 => "hdgift--old",
+        2 => "hdgift--new",
+        3 => "hdgift--new hdgift--new-cursive"
+    );
 ?>
 
 <!-- поиск -->
-<div class="header_c clearfix <?= 'header_c-v'.$menuVar ?>">
+<div class="header_c clearfix header_c-v2">
     <a href="/" class="hdlogo sitelogo"></a>
 
     <div class="hdsearch jsKnockoutSearch" data-bind="css: { 'hdsearch-v2': advancedSearch }">
@@ -56,7 +59,7 @@ $menuVar = \Session\AbTest\ABHelperTrait::getNewMainPageVar();
                     <input type="text"
                         class="hdsearch_it jsSearchInput"
                         name="q"
-                        placeholder="Поиск по товарам..."
+                        placeholder="Поиск товаров"
                         autocomplete="off"
                         data-bind="value: searchInput, valueUpdate: ['input', 'afterkeydown'], hasFocus: searchFocus, event: { keydown: searchResultNavigation }" /></div>
                 </div>
@@ -90,10 +93,10 @@ $menuVar = \Session\AbTest\ABHelperTrait::getNewMainPageVar();
         <a href="<?= \App::router()->generate('enterprize') ?>" class="i-header i-header-ep jsEnterprizeInSearchBarButton"></a>
     </div>
 
-    <div class="hdgift">
+    <div class="hdgift <?= $btnTypes[ $page->escape(\Session\AbTest\ABHelperTrait::getGiftButtonNumber()) ] ?>">
         <a class="hdgift_i hdgift_lk jsGiftInSearchBarButton" href="<?= \App::router()->generate('product.gift') ?>">
             <img class="hdgift_i hdgift_img" src="/styles/header/img/icon-gift.png" alt="">
-            <span class="hdgift_i hdgift_tx">Выбери подарок!</span>
+            <span class="hdgift_i hdgift_tx">Выбери подарки!</span>
         </a>
     </div>
 </div>

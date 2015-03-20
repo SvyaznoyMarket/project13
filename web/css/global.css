@@ -7428,40 +7428,6 @@
     text-align: center;
     background: url('/css/subscribeLightboxPopup/img/bgSubscribeTop.png') repeat-x 0 0;
   }
-  .bSubscribeLightboxPopup.mEnterPrize {
-    background: #f79a20;
-    text-align: left;
-  }
-  .bSubscribeLightboxPopup.mEnterPrize .bSubscribeLightboxPopup__eTitle {
-    font-family: "Enter";
-    font-size: 27px;
-    line-height: 43px;
-    padding-right: 100px;
-    background: url('/css/subscribeLightboxPopup/img/epFishki.png') no-repeat 100% 50%;
-    padding-right: 55px;
-    margin: 0 15px 0 0;
-  }
-  .bSubscribeLightboxPopup.mEnterPrize .bSubscribeLightboxPopup__eLink {
-    background: #000000;
-    color: #ffffff;
-    text-transform: uppercase;
-    display: inline-block;
-    vertical-align: top;
-    font-family: "Enter";
-    font-size: 18px;
-    height: 29px;
-    line-height: 29px;
-    text-align: center;
-    border: 1px solid #ffffff;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    width: 115px;
-    margin: 5px 0 0 0;
-  }
-  .bSubscribeLightboxPopup.mEnterPrize .bSubscribeLightboxPopup__eLink:hover {
-    text-decoration: none;
-  }
   .bSubscribeLightboxPopup__eTitle {
     margin: 0 22px 0 0px;
     text-transform: uppercase;
@@ -9175,12 +9141,12 @@
     position: relative;
   }
   .slideItem_i__child {
-    margin-bottom: 7px;
+    margin: 3px 0;
     display: block;
   }
   .slideItem_imgw {
     display: table-cell;
-    width: 110px;
+    width: 120px;
     height: 110px;
     vertical-align: middle;
   }
@@ -9191,7 +9157,7 @@
   .slideItem_n {
     overflow: hidden;
     height: 37px;
-    margin: 5px 0 12px;
+    margin: 5px 0 10px;
     font-size: 11px;
     line-height: 1.1;
   }
@@ -9294,6 +9260,7 @@
     padding: 10px;
     position: absolute;
     width: 180px;
+    word-wrap: break-word;
   }
   .slideItem_flt_i:after {
     border-left: 6px solid transparent;
@@ -9321,6 +9288,50 @@
     width: 0;
     z-index: 2;
   }
+  .slideItem__ep-price {
+    background: #000000;
+    background: rgba(0, 0, 0, 0.65);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    color: #ffffff;
+    height: 100%;
+    width: 100%;
+    padding: 0 2px;
+    left: -2px;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    -webkit-opacity: 0;
+    opacity: 0;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    filter: alpha(opacity=0);
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    vertical-align: middle;
+  }
+  .slideItem__ep-price:hover {
+    text-decoration: none;
+  }
+  .slideItem__ep-price__i {
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    margin: 8px 0;
+  }
+  .slideItem__ep-price__inn {
+    display: table-cell;
+    height: 155px;
+    vertical-align: middle;
+  }
+  .slideItem__ep-price__sale {
+    font-size: 24px;
+  }
   .slideItem-7item .slideItem_inn {
     width: 910px;
   }
@@ -9329,6 +9340,43 @@
   }
   .slideItem-6item .slideItem_inn {
     width: 390px;
+  }
+  .slideItem--sale .slideItem_i__child {
+    position: relative;
+    text-align: center;
+  }
+  .slideItem--sale .slideItem_i:hover .slideItem__ep-price {
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    -webkit-opacity: 1;
+    opacity: 1;
+    -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
+    filter: alpha(opacity=100);
+  }
+  .slideItem--center {
+    text-align: center;
+  }
+  .slideItem--center .slideItem_pr {
+    display: block;
+    margin: 0 0 10px;
+  }
+  .slideItem--center .slideItem_pr__sale {
+    font-size: 18px;
+    display: block;
+  }
+  .slideItem--center .slideItem_i {
+    margin-bottom: 5px;
+  }
+  .slideItem--center .btnBuy__eLink {
+    border: medium none;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    font-size: 14px;
+    padding: 0 14px 1px;
+  }
+  .slideItem--center .slideItem_i__child {
+    margin-bottom: 0;
   }
   .slideItem-br1 {
     border: 3px solid #ffa901;
@@ -12111,17 +12159,21 @@
     -moz-border-radius: 3px;
     border-radius: 3px;
     float: right;
-    padding: 2px 0 3px;
+    padding: 2px 0px 3px;
     border: 1px solid;
+    width: 116px;
     text-align: center;
-    width: 90px;
+  }
+  .bListing .bPriceLine .bAvailible.from-stock {
     border-color: #c7c7c7;
     color: #424242;
     font-size: 11px;
+    width: auto;
+    padding: 2px 3px 3px;
   }
   .bListing .bPriceLine .bPrice {
     float: left;
-    width: 112px;
+    min-width: 112px;
     font-size: 20px;
     margin-left: 0;
   }
@@ -12455,8 +12507,8 @@
     float: right;
     font-size: 12px;
     height: 29px;
-    line-height: 26px;
-    padding: 1px 0;
+    line-height: 27px;
+    padding: 0px;
     width: 79px;
   }
   .btnView {
@@ -12540,6 +12592,22 @@
     text-decoration: none;
     border-bottom: none;
   }
+  .bBreadcrumbs--light {
+    margin: 0 0 10px;
+  }
+  .bBreadcrumbs--light .bBreadcrumbs__eItem {
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAQAAABwz0azAAAAWUlEQVR4AWPIZa8UrWSAQIYGn/qHDUYNDCAIIuLq3zZEgThMDAwMi/65/W//3w1kgxXwNGxqOFPIyVDI0KBSf7lhUQMHUE+tecOrhjyIASx/HzGEMhxkAAMA3eshfb0oo6gAAAAASUVORK5CYII=') no-repeat 100% 5px;
+    font-size: 12px;
+    color: #545454;
+  }
+  .bBreadcrumbs--light .bBreadcrumbs__eItem.mLast,
+  .bBreadcrumbs--light .bBreadcrumbs__eItem:last-child {
+    background: none;
+  }
+  .bBreadcrumbs--light .bBreadcrumbs__eLink {
+    border-bottom: 1px solid #9c9c9c;
+    color: #545454;
+  }
 }
 @media all {
   .bCatalogList {
@@ -12596,9 +12664,13 @@
     *display: inline;
   }
   .bCatalogList .bCategoriesImg__eImg {
-    margin-top: 5px;
-    max-height: 96px;
-    width: 96px;
+    max-height: 100%;
+    max-width: 100%;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
     vertical-align: middle;
   }
   .bCatalogList .bCategoriesName {
@@ -12623,8 +12695,14 @@
   }
   .bSearchCategoryRoot .bCatalogList .bCategoriesImg__eImg {
     max-height: 46px;
-    width: 48px;
+    max-width: 48px;
     margin-top: 0;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
   }
   .bSearchCategoryRoot .bCatalogList .bCategoriesName {
     width: 242px;

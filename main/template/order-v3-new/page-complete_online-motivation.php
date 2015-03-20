@@ -10,16 +10,15 @@ return function(
     $userEntity,
     $sessionIsReaded,
     $banks,
-    $shops,
     $creditData,
-    $subscribe
+    $subscribe,
+    $motivationAction,
+    $errors
 ) {
     /** @var $products \Model\Product\Entity[] */
     $page = new \View\OrderV3\CompletePage();
     /** @var $order \Model\Order\Entity */
     $order = reset($orders);
-    /* @var $shop \Model\Shop\Entity|null */
-    $shop = @$shops[$order->getShopId()];
     /* @var $orderPayment \Model\PaymentMethod\PaymentEntity|null */
     $orderPayment = @$ordersPayment[$order->getNumber()];
     // Онлайн оплата возможна при существовании такой группы
@@ -30,7 +29,12 @@ return function(
 
     <?= $helper->render('order-v3-new/__head', ['step' => 3]) ?>
 
-    <section class="orderCnt jsNewOnlineCompletePage" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>" data-order-number-erp="<?= $order->getNumberErp() ?>">
+    <section class="orderCnt jsNewOnlineCompletePage"
+             data-order-id="<?= $order->getId() ?>"
+             data-order-number="<?= $order->getNumber() ?>"
+             data-order-number-erp="<?= $order->getNumberErp() ?>"
+             data-order-action="<?= $motivationAction ?>"
+        >
 
         <!-- Блок оплата -->
         <div class="orderPayment">
@@ -43,100 +47,20 @@ return function(
                 <? endif ?>
             </div>
 
+            <?= $helper->render('order-v3-new/complete-blocks/_errors', ['errors' => $errors]) ?>
+
             <? if ($isOnlinePaymentChecked && !$order->isPaid()) : ?>
                 <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
             <? endif ?>
 
             <? if ($order->getPaymentId() != PaymentMethodEntity::PAYMENT_CREDIT) : ?>
 
-                <? if ($order->getDeliveryTypeId() == 3 || $order->getDeliveryTypeId() == 4) : ?>
-
-                <div class="orderPayment <?= $order->isPaid() ? 'orderPaid jsOrderPaid': '' ?>">
-                    <!-- Блок в обводке -->
-                    <div class="orderPayment_block orderPayment_noOnline">
-
-                        <? if ($shop) : ?>
-
-                        <div class="orderPayment_msg orderPayment_noOnline_msg">
-                            <div class="orderPayment_msg_head">
-                                Ждем вас <?= $order->getDeliveredAt()->format('d.m.Y') ?> в магазине
-                            </div>
-                            <div class="orderPayment_msg_shop markerLst_row">
-                                <? if ((bool)$shop->getSubway()) : ?>
-                                <span class="markerList_col markerList_col-mark">
-                                    <i class="markColor" style="background-color: <?= $shop->getSubway()[0]->getLine()->getColor() ?>"></i>
-                                </span>
-                                <span class="markerList_col">
-                                <span class="orderPayment_msg_shop_metro"><?= $shop->getSubway()[0]->getName() ?></span>
-                                <? endif ?>
-                                <span class="orderPayment_msg_shop_addr"><?= $shop->getAddress() ?></span>
-                                    <a href="<?= \App::router()->generate('shop.show', ['regionToken' => \App::user()->getRegion()->getToken(), 'shopToken' => $shop->getToken()])?>" class="orderPayment_msg_addr_link jsCompleteOrderShowShop" target="_blank">
-                                        Как добраться
-                                    </a>
-                                </span>
-                                <? if ($order->comment) : ?>
-                                    <div class="orderPayment_msg_adding">Дополнительные пожелания:<br/> «<?= $order->comment ?>»</div>
-                                <? endif ?>
-                            </div>
-                            <div class="orderPayment_msg_info">
-                                <? if ($order->isPaid()) : ?>
-                                Заказ оплачен
-                                <!--<div class="orderPaymentWeb_lst_sys-logo noFlnoWdt"><img src="/styles/order/img/logo-yamoney.jpg"></div>-->
-                                <? elseif (in_array($order->getPaymentId(), [PaymentMethodEntity::PAYMENT_PAYPAL, PaymentMethodEntity::PAYMENT_CARD_ONLINE, PaymentMethodEntity::PAYMENT_PSB])) : ?>
-                                Вы можете оплатить заказ при получении.
-                                <? else : ?>
-                                Оплата при получении — наличными или картой.
-                                <? endif ?>
-                            </div>
-                        </div>
-
-                        <? endif ?>
-
-                    </div>
-
-                </div>
-
+                <? if ($order->getDeliveryTypeId() == 3 || $order->getDeliveryTypeId() == 4 || $order->point) : ?>
+                    <?= $helper->render('order-v3-new/complete-blocks/_point', ['order' => $order]) ?>
                 <? endif ?>
 
                 <? if ($order->getDeliveryTypeId() == 1) : ?>
-
-                    <!-- Блок доставка -->
-                    <div class="orderPayment orderDelivery <?= $order->isPaid() ? 'orderPaid': '' ?>">
-                        <!-- Заголовок-->
-                        <!-- Блок в обводке -->
-                        <div class="orderPayment_block orderPayment_noOnline">
-
-                            <div class="orderPayment_msg orderPayment_noOnline_msg">
-                                <div class="orderPayment_msg_head">
-                                    Доставка назначена на <?= $order->getDeliveredAt()->format('d.m.Y') ?>
-                                </div>
-                                <div class="orderPayment_msg_shop markerLst_row">
-                            <!--<span class="markerList_col markerList_col-mark">
-                                <i class="markColor" style="background-color: #B61D8E"></i>
-                            </span>-->
-                            <span class="markerList_col">
-                                <!--<span class="orderPayment_msg_shop_metro">м. Пролетарская</span>-->
-                                <span class="orderPayment_msg_shop_addr"><?= $order->getAddress() ?></span>
-                                <? if ($order->comment) : ?>
-                                <div class="orderPayment_msg_adding">Дополнительные пожелания:<br/> «<?= $order->comment ?>»</div>
-                                <? endif ?>
-                            </span>
-
-                                </div>
-                                <div class="orderPayment_msg_info">
-                                    <? if ($order->isPaid()) : ?>
-                                    Заказ оплачен
-                                    <!--<div class="orderPaymentWeb_lst_sys-logo noFlnoWdt"><img src="/styles/order/img/logo-yamoney.jpg"></div>-->
-                                    <? elseif ($order->getPaymentId() == PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY) : ?>
-                                    Оплата заказа банковской картой при получении.
-                                    <? else : ?>
-                                    Вы сможете оплатить заказ наличными при получении.
-                                    <? endif ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                    <?= $helper->render('order-v3-new/complete-blocks/_delivery', ['order' => $order]) ?>
                 <? endif ?>
 
             <? endif ?>
@@ -148,9 +72,9 @@ return function(
         <? endif ?>
 
 
-        <? if ($isOnlinePaymentPossible && !$isOnlinePaymentChecked && $order->getPaymentId() != PaymentMethodEntity::PAYMENT_CREDIT) : ?>
+        <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'topMessage' => 'Онлайн-оплата в два клика']) ?>
 
-            <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'topMessage' => 'Онлайн-оплата в два клика']) ?>
+        <? if ($isOnlinePaymentPossible && !$isOnlinePaymentChecked && $order->getPaymentId() != PaymentMethodEntity::PAYMENT_CREDIT && !$motivationAction && !$order->isPaidBySvyaznoy()) : ?>
 
             <!-- Блок оплата в два клика-->
             <div class="orderPayment orderPaymentWeb jsOnlinePaymentPossible jsOnlinePaymentPossibleNoMotiv">
@@ -166,8 +90,6 @@ return function(
                             <button class="orderPayment_btn btn3">Оплатить</button>
                             <ul class="orderPaymentWeb_lst-sm">
                                 <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src="/styles/order/img/visa-logo-sm.jpg"></a></li>
-<!--                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src ="/styles/order/img/yamoney-sm.jpg"></a></li>-->
-<!--                                <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src="/styles/order/img/paypal.png"></a></li>-->
                                 <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src="/styles/order/img/psb.png" /></a></li>
                             </ul>
                         </div>
@@ -175,6 +97,14 @@ return function(
                 </div>
             </div>
 
+        <? endif ?>
+
+        <?= $motivationAction && !$order->isPaidBySvyaznoy() ? $helper->render('order-v3-new/complete-blocks/_online_motivation_action', ['order' => $order, 'orderPayment' => $orderPayment, 'action' => $motivationAction]) : '' ?>
+
+        <?= $orderPayment && $orderPayment->hasSvyaznoyClub() && !$order->isPaidBySvyaznoy() ? $helper->render('order-v3-new/complete-blocks/_svyaznoy-club') : '' ?>
+
+        <? if (\App::config()->flocktoryExchange['enabled']) : ?>
+            <div class="i-flocktory" data-fl-action="exchange" data-fl-spot="thankyou2" data-fl-username="<?= $order->getFirstName() ?>" data-fl-user-email="<?= $order->email ?>"></div>
         <? endif ?>
 
         <div class="orderCompl orderCompl_final clearfix">
@@ -187,12 +117,13 @@ return function(
         <div class="jsGAOnlinePaymentNotPossible"></div>
     <? endif ?>
 
+    <? // Показываем флоктори, если покупатель вернулся после оплаты заказа ?>
     <? if ($order->isPaid()) : ?>
         <?= $helper->render('order-v3/partner-counter/_flocktory-complete',[
             'orders'    => $orders,
             'products'  => $products,
         ]); ?>
-    <? endif ?>
+    <? endif; ?>
 
     <? if (!$sessionIsReaded): ?>
         <span class="js-orderV3New-complete-subscribe" data-value="<?=$helper->json(['subscribe' => $subscribe, 'email' => isset($orders[0]->email) ? $orders[0]->email : null])?>"></span>
@@ -210,6 +141,15 @@ return function(
         ]);
 
         echo $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $products]);
+
+        /* Показываем флоктори без нарушения конверсии онлайн-оплаты (т.е. не выбран онлайновый метод оплаты) */
+        if (!$isOnlinePaymentChecked) {
+            echo $helper->render('order-v3/partner-counter/_flocktory-complete',[
+                'orders'    => $orders,
+                'products'  => $products,
+            ]);
+        }
+
         ?>
     <? endif ?>
 

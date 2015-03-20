@@ -13,6 +13,7 @@ if ($product) {
 }
 
 $productPageSender = \Session\ProductPageSenders::get($product->getUi());
+$productPageSender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 ?>
 
 <div class="topbarfix_crumbs">
@@ -25,21 +26,15 @@ $productPageSender = \Session\ProductPageSenders::get($product->getUi());
 
 <div class="topbarfix_buy js-topbarfixBuy <?= $line ? 'hidden' : 'none' ?>">
 
-    <? if (!$product->getKit() || $product->getIsKitLocked()): ?>
-        <?= $helper->render('cart/__button-product', [
-            'product'  => $product,
-            'onClick'  => $addToCartJS ? $addToCartJS : null,
-            'sender'   => ($request->get('sender') ? (array)$request->get('sender') : $productPageSender) + ['name' => null, 'method' => null, 'position' => null],
-            'location' => 'userbar',
-        ]) // Кнопка купить ?>
-    <? else: ?>
-        <?= $helper->render('cart/__button-product-kit', [
-            'product'  => $product,
-            'sender'   => ($request->get('sender') ? (array)$request->get('sender') : $productPageSender) + ['name' => null, 'method' => null, 'position' => null],
-        ]) // Кнопка купить ?>
-    <? endif ?>
+    <?= $helper->render('cart/__button-product', [
+        'product'  => $product,
+        'onClick'  => $addToCartJS ? $addToCartJS : null,
+        'sender'   => ($request->get('sender') ? (array)$request->get('sender') : $productPageSender) + ['name' => null, 'method' => null, 'position' => null],
+        'location' => 'userbar',
+        'sender2'  => $productPageSender2,
+    ]) // Кнопка купить ?>
 
-    <? if ($product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && (!$product->getKit()) || $product->getIsKitLocked()): ?>
+    <? if (!$product->getSlotPartnerOffer() && $product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && (!$product->getKit() || $product->getIsKitLocked())): ?>
         <?= $helper->render('__spinner', [
             'id'        => \View\Id::cartButtonForProduct($product->getId()),
             'productId' => $product->getId(),

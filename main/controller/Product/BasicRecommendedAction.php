@@ -7,7 +7,6 @@ class BasicRecommendedAction {
     //use _DebugTestTrait; // for debug
 
     protected $retailrocketMethodName;
-    protected $smartengineMethodName;
     protected $actionType;
     protected $actionTitle;
     protected $name;
@@ -19,28 +18,12 @@ class BasicRecommendedAction {
 
 
     /**
-     * Разводящий метод: запускает либо smartengineClient , либо retailrocketClient
-     *
      * @param string        $productId
      * @param \Http\Request $request
      * @return \Http\JsonResponse
      * @throws \Exception\NotFoundException
      */
-    public function execute($productId, \Http\Request $request)
-    {
-        \App::logger()->debug('Exec ' . __METHOD__);
-
-        return new \Http\JsonResponse($this->getResponseData($productId, $request));
-    }
-
-
-    /**
-     * @param string        $productId
-     * @param \Http\Request $request
-     * @return array
-     * @throws \Exception\NotFoundException
-     */
-    public function getResponseData($productId, \Http\Request $request) {
+    public function execute($productId, \Http\Request $request) {
         $responseData = [];
 
         try {
@@ -49,18 +32,6 @@ class BasicRecommendedAction {
                 throw new \Exception(sprintf('Товар #%s не найден', $productId));
             }
 
-            $key = \App::abTest()->getTest('other') ? \App::abTest()->getTest('other')->getChosenCase()->getKey() : null;
-
-            /*if ('retailrocket' == $key) {
-                $products = $this->getProductsFromRetailrocket($product, $request, $this->retailrocketMethodName);
-            } elseif ('hybrid' == $key) {
-                $products = $this->getProductsHybrid($product, $request, $this->retailrocketMethodName);
-            } else {
-                $products = $this->getProductsFromSmartengine($product, $request, $this->smartengineMethodName);
-            }*/
-            /*
-             * UPD: Отключаем Smartengine СОВСЕМ
-            */
             $products = $this->getProductsFromRetailrocket($product, $request, $this->retailrocketMethodName); // UPD
 
             if ( !is_array($products) ) {
@@ -88,7 +59,7 @@ class BasicRecommendedAction {
             ];
         }
 
-        return $responseData;
+        return new \Http\JsonResponse($responseData);
     }
 
 
@@ -129,19 +100,6 @@ class BasicRecommendedAction {
                 $product->setIsUpsale(true);
             }
 
-            //$additionalData[$product->getId()] = \Kissmetrics\Manager::getProductEvent($product, $i+1, 'Also Viewed');
-
-            /*
-            $return[] = [
-                'id'     => $product->getId(),
-                'name'   => $product->getName(),
-                'image'  => $product->getImageUrl(),
-                'rating' => $product->getRating(),
-                'link'   => $product->getLink() . (false === strpos($product->getLink(), '?') ? '?' : '&') . 'sender=' . $senderName . '|' . $product->getId(),
-                'price'  => $product->getPrice(),
-                'data'   => \Kissmetrics\Manager::getProductEvent($product, $i+1, 'Similar'),
-            ];
-            */
         }
 
         if (!(bool)$products) {
@@ -150,66 +108,6 @@ class BasicRecommendedAction {
 
         return $products;
     }
-
-
-
-
-    /**
-     * !!! Не используется теперь
-     *
-     * @param \Model\Product\Entity     $product
-     * @param \Http\Request             $request
-     * @param string                    $method
-     * @return \Model\Product\Entity[]  $products
-     * @throws \Exception
-     *
-    protected function getProductsFromSmartengine($product, \Http\Request $request, $method = 'relateditems')
-    {
-        \App::logger()->debug('Exec ' . __METHOD__);
-        $this->setEngine('smartengine');
-
-        //print '** This is Smartengine Method. Should be disabled **'; // tmp, for debug
-
-        $client = \App::smartengineClient();
-        $user = \App::user()->getEntity();
-
-        $params = [
-            'sessionid' => session_id(),
-            'itemid' => $product->getId(),
-        ];
-
-        if ($method == 'relateditems') {
-            $params['assoctype'] = 'IS_SIMILAR';
-            $params['numberOfResults'] = 15;
-        }
-        if ($user) $params['userid'] = $user->getId();
-
-        $params['itemtype'] = $product->getMainCategory() ? $product->getMainCategory()->getId() : null;
-
-        if ($method == 'otherusersalsoviewed') {
-            $params['requesteditemtype'] = $product->getMainCategory() ? $product->getMainCategory()->getId() : null;
-        }
-
-
-        $r = $client->query($method, $params);
-
-        if (isset($r['error'])) {
-            throw new \Exception($r['error']['@message'] . ': ' . json_encode($r, JSON_UNESCAPED_UNICODE), (int)$r['error']['@code']);
-        }
-
-
-        $ids = (is_array($r['recommendeditems']) && array_key_exists('id', $r['recommendeditems']['item']))
-            ? [$r['recommendeditems']['item']['id']]
-            : array_map(function ($item) {
-                return $item['id'];
-            }, isset($r['recommendeditems']['item']) ? $r['recommendeditems']['item'] : []);
-
-        $products = $this->getProducts($ids, $client::NAME);
-
-        return $products;
-
-    }*/
-
 
     /**
      * @param \Model\Product\Entity     $product
@@ -247,34 +145,6 @@ class BasicRecommendedAction {
 
         return $products;
     }
-
-
-
-    /**
-     * !!! Не используется теперь
-     *
-     * @param \Model\Product\Entity     $product
-     * @param \Http\Request             $request
-     * @param string                    $method
-     * @return \Model\Product\Entity[]  $products
-     *
-    private function getProductsHybrid( $product, \Http\Request $request, $method = 'UpSellItemToItems' ) {
-
-        if ( $this->actionType == 'AlsoViewedAction' ) { // if AlsoViewedAction
-
-            // С этим товаром также смотрят - ВСЕГДА от RetailRocket,
-            $products = $this->getProductsFromRetailrocket($product, $request, 'UpSellItemToItems');
-
-        } else { // if SimilarAction
-
-            // Похожие товары - ВСЕГДА  от SmartEngine
-            $products = $this->getProductsFromSmartengine($product, $request, 'relateditems');
-
-        }
-
-        return $products;
-
-    }*/
 
     /**
      * @return string

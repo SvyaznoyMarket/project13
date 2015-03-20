@@ -544,9 +544,6 @@
 					_gaq.push(['_trackEvent', 'Account', 'Log in', type, window.location.href]);
 				}
 
-				if ( typeof(_kmq) !== 'undefined' ) {
-					_kmq.push(['identify', this.form.find('.jsSigninUsername').val() ]);
-				}
 			}
 			else if ( 'register' === this.getFormName() ) {
 				if ( typeof(_gaq) !== 'undefined' ) {
@@ -554,9 +551,6 @@
 					_gaq.push(['_trackEvent', 'Account', 'Create account', type]);
 				}
 
-				if ( typeof(_kmq) !== 'undefined' ) {
-					_kmq.push(['identify', this.form.find('.jsRegisterUsername').val() ]);
-				}
 			}
 			else if ( 'forgot' === this.getFormName() ) {
 				if ( typeof(_gaq) !== 'undefined' ) {
@@ -572,9 +566,6 @@
 		 * @public
 		 */
 		Login.prototype.logoutLinkClickLog = function() {
-			if ( typeof(_kmq) !== 'undefined' ) {
-				_kmq.push(['clearIdentity']);
-			}
 		};
 
 		/**

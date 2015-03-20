@@ -61,25 +61,6 @@ class DefaultLayout extends Layout {
         return $this->tryRender('_googleAnalytics');
     }
 
-    public function slotKissMetrics() {
-        if (!\App::config()->kissmentrics['enabled']) return '';
-        $cookie = \App::request()->cookies;
-        $cookieName = \App::config()->kissmentrics['cookieName']['needUpdate'];
-
-        $return = $this->tryRender('_kissMetrics');
-
-        // SITE-2895
-        if ((bool)$cookie->get($cookieName) && \App::user()->getToken()) {
-            $data = [
-                'entity_id' => \App::user()->getToken(),
-                'cookieName' => $cookieName
-            ];
-            $return .= sprintf('<div id="kissUpdateJS" class="jsanalytics" data-value="%s"></div>', $this->json($data));
-        }
-
-        return $return;
-    }
-
     public function slotBodyDataAttribute() {
         return 'default';
     }
@@ -92,17 +73,7 @@ class DefaultLayout extends Layout {
     }
 
     public function slotHeader() {
-        $subscribeForm = [];
-
-        \App::dataStoreClient()->addQuery(
-            'subscribe-form.json', [],
-            function($data) use (&$subscribeForm) {
-                if ($data) $subscribeForm = (array) $data;
-            },
-            function(\Exception $e) {
-                \App::exception()->remove($e);
-            }
-        );
+        $subscribeForm = (array)\App::dataStoreClient()->query('/subscribe-form.json');
 
         \App::dataStoreClient()->execute();
 
@@ -210,17 +181,26 @@ class DefaultLayout extends Layout {
         return $return;
     }
 
-
-
+    /** Большое количество JS-кода партнеров в подвале
+     * @return string
+     */
     public function slotInnerJavascript() {
-        $return = ''
-            . $this->render('_remarketingGoogle', ['tag_params' => []])
-            . "\n\n"
-            . $this->render('_innerJavascript');
-
-        return $return;
+        return $this->render('_innerJavascript');
     }
 
+    /** Google Remarketing Code (standard tag)
+     * @link https://developers.google.com/adwords-remarketing-tag/
+     * @param array $tagParams
+     * @return string|null
+     */
+    public function slotGoogleRemarketingJS($tagParams = []) {
+
+        $tagParams = array_merge(['pagetype' => 'default'], $tagParams);
+
+        return \App::config()->googleAnalytics['enabled']
+            ? $this->tryRender('_remarketingGoogle', ['tag_params' => $tagParams])
+            : null;
+    }
 
     public function slotAuth() {
         // SITE-3676
@@ -280,14 +260,6 @@ class DefaultLayout extends Layout {
 
     public function slotMetaOg() {
         return '';
-    }
-
-    public function slotAdvanceSeoCounter() {
-        return '';
-    }
-
-    public function slotAdriver() {
-        return \App::config()->partners['Adriver']['enabled'] ? '<div id="adriverCommon" class="jsanalytics"></div>' : '';
     }
 
     public function slotMainMenu() {
@@ -352,14 +324,6 @@ class DefaultLayout extends Layout {
                 if (\App::config()->partners['SmartLeads']['enabled']) $return .= "\n\n" . '<div id="xcntmyAsync" class="jsanalytics"></div>';
             }
 
-            // на всех страницах сайта, кроме shop.*
-            /*if ((0 !== strpos($routeName, 'shop')) && !in_array($routeName, [
-                'order',
-                'order.complete',
-            ])) {
-                $return .= "\n\n" . $this->tryRender('partner-counter/_reactive');
-            }*/
-
             // ActionPay — на странице с полным описанием продукта и на стр "спс за заказ"
             if (in_array($routeName, [
                 'product',
@@ -369,7 +333,6 @@ class DefaultLayout extends Layout {
             }
 
             if ('subscribe_friends' == $routeToken) {
-                $return .= $this->tryRender('partner-counter/_am15_net');
                 $return .= $this->tryRender('partner-counter/_actionpay_subscribe');
                 $return .= $this->tryRender('partner-counter/_cityAds_subscribe');
             }
@@ -427,9 +390,6 @@ class DefaultLayout extends Layout {
         $return = '';
 
         if ( in_array( $routeName, ['order', 'order.complete'] ) ) {
-            // !!! Не дублировать! Hа этих страницах Sociomantic
-            // вместе с inclusion tag
-            // подключается через JS — см файл /web/js/dev/order/order.js
             return;
         }
 
@@ -469,27 +429,6 @@ class DefaultLayout extends Layout {
         } else if ($routeName == 'tchibo') {
             $return .= $this->render($smantic_path . 'smanticPage', ['prod_cats' => ['Tchibo']]);
         }
-        /* else if ($routeName == 'order.complete') {
-
-            // !!! На этих страницах подключается через js — /web/js/dev/order/order.js
-
-            //$products = $this->getParam('products');
-            //$cartProductsById = $this->getParam('cartProductsById');
-            //$cart = \App::user()->getCart();
-            $orders = $this->getParam('orders'); // \Model\Order\Entity Object
-            $return .= $this->render($smantic_path . '05a-confirmation_page',
-                ['orders' => $orders, 'smantic' => &$smantic]
-            );
-
-            $smantic->restoreSession();
-
-        }*/
-        /*else if ( $routeName == 'order' ) {
-
-            //$products = $this->getParam('products');
-            //$smantic->makeSession( $products );
-
-        }*/
 
         return !empty($return) ? $return : false;
     }
@@ -535,49 +474,6 @@ class DefaultLayout extends Layout {
         return \App::config()->partners['Sociaplus']['enabled'] ? '<div id="sociaPlusJs" class="jsanalytics"></div>' : '';
     }
 
-    public function slotAdmitad() {
-        if ( \App::config()->partners['Admitad']['enabled'] ) {
-            $return = '';
-            $adData = [];
-            $routeName = \App::request()->attributes->get('route');
-            $adObj = new \View\Partners\Admitad($routeName);
-
-            if ($routeName == 'product.category') {
-
-                $category = $this->getParam('category');
-                $adData = $adObj->category($category);
-
-            } elseif ($routeName == 'product') {
-
-                $product = $this->getParam('product');
-                $adData = $adObj->product($product);
-
-            } else if ($routeName == 'cart') {
-
-                //$products = $this->getParam('products');
-                $cartProductsById = $this->getParam('cartProductsById');
-                $adData = $adObj->cart($cartProductsById);
-
-            } elseif ($routeName == 'order.complete') {
-
-                $orders = $this->getParam('orders');
-                $adData = $adObj->ordercomplete($orders);
-
-            } elseif ($routeName == 'homepage') {
-
-                $adData = $adObj->toSend($routeName);
-
-            }
-
-            if (!empty($adData)) {
-                $return = '<div id="AdmitadJS" data-value="' . $this->json($adData) . '" class="jsanalytics" ></div>';
-            }
-
-            return $return;
-        }
-        return;
-    }
-
 
     public function slotEnterleads() {
         $routeToken = \App::request()->attributes->get('token');
@@ -617,10 +513,6 @@ class DefaultLayout extends Layout {
 
     public function slotRevolvermarketingConversionJS () {
         return '';
-    }
-
-    public function slotAdLensJS () {
-        return;
     }
 
     public function slotAdFoxBground() {
@@ -679,116 +571,24 @@ class DefaultLayout extends Layout {
         return '';
     }
 
-    public function slotFlocktoryEnterprizeJs() {
-        return '';
-    }
-
-    public function slotFlocktoryEnterprizeRegistrationJs() {
-        return '';
-    }
-
-    public function slotAdblender() {
-        return \App::config()->partners['AdBlender']['enabled'] ? '<div id="adblenderCommon" class="jsanalytics" data-vars="'.$this->json(['layout' =>$this->layout]).'"></div>' : '';
-    }
-
-    /**
-     * Lamoda
-     * Общая часть кода - выполнить на всех страницах:
+    /** Google Tag Manager Container (ports.js)
+     * @param array $data Дополнительные данные для GTM
      * @return string
+     * @link https://developers.google.com/tag-manager/
      */
-    public function slotLamodaJS() {
-        if (!\App::config()->partners['Lamoda']['enabled']) return;
-
-        $data = [
-            'lamodaID' => \App::config()->partners['Lamoda']['lamodaID'],
-        ];
-
-        return "<div id=\"LamodaJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\"></div>";
-    }
-
-    /**
-     * На страницы КАТЕГОРИЙ (помимо общего)
-     * @return string
-     */
-    public function slotLamodaCategoryJS() {
-        return '';
-    }
-
-    /**
-     * Lamoda
-     * На страницу результата поиска (помимо общего)
-     * @return string
-     */
-    public function slotLamodaSearchJS() {
-        return '';
-    }
-
-    /**
-     * Lamoda
-     * На продуктовые страницы (помимо общего)
-     * @return string
-     */
-    public function slotLamodaProductJS() {
-        return '';
-    }
-
-    /**
-     * Lamoda
-     * На все ОСТАЛЬНЫЕ страницы (помимо общего)
-     * @return string
-     */
-    public function slotLamodaOtherPageJS() {
-        if (!\App::config()->partners['Lamoda']['enabled']) return;
-
-        $pixels = [
-            $this->slotLamodaCategoryJS(),
-            $this->slotLamodaSearchJS(),
-            $this->slotLamodaProductJS(),
-            $this->slotLamodaCompleteJS(),
-        ];
-
-        // отсекаем с массива все отсутствующие на странице пиксели Lamoda
-        $pixels = array_filter($pixels);
-
-        // если на странице уже присутствует Lamoda пиксель, то не выводим наш пиксель LamodaOtherPage
-        if (!empty($pixels)) {
-            return;
-        }
-
-        return "<div id='LamodaOtherPageJS' class='jsanalytics'></div>";
-    }
-
-    /**
-     * Lamoda
-     * Заказ (success page)
-     * @return string
-     */
-    public function slotLamodaCompleteJS() {
-        return '';
-    }
-
-    public function slotGoogleTagManagerJS() {
-        if (!\App::config()->googleTagManager['enabled'] || !\App::config()->analytics['enabled']) return;
+    public function slotGoogleTagManagerJS($data = []) {
 
         $containerId = \App::config()->googleTagManager['containerId'];
-        if (!$containerId) {
-            return;
-        }
 
-        $data = [
-            'containerId' => $containerId,
-        ];
+        if (!\App::config()->googleTagManager['enabled'] || !\App::config()->analytics['enabled'] || !$containerId) return '';
 
         return
-            "<div id=\"googleTagManagerJS\" class=\"jsanalytics\" data-value=\"" . $this->json($data) . "\">
+            '<div id="googleTagManagerJS" class="jsanalytics" data-value="' . \App::config()->googleTagManager['containerId'] . '">
+                <script>var dataLayerGTM = '. json_encode($data, JSON_UNESCAPED_UNICODE) .';</script>
                 <!-- Google Tag Manager -->
-                <noscript><iframe src=\"//www.googletagmanager.com/ns.html?id=" . $containerId . "\" height=\"0\" width=\"0\" style=\"display:none;visibility:hidden\"></iframe></noscript>
+                <noscript><iframe src="//www.googletagmanager.com/ns.html?id=' . $containerId . '" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <!-- End Google Tag Manager -->
-            </div>";
-    }
-
-    public function slotFlocktoryExchangeJS() {
-        return;
+            </div>';
     }
 
     public function slotEnterprizeRegJS() {
@@ -801,14 +601,6 @@ class DefaultLayout extends Layout {
 
     public function slotHubrusJS() {
         return \App::config()->partners['Hubrus']['enabled'] ? '<div id="hubrusJS" class="jsanalytics"></div>' :  '';
-    }
-
-    public function slotMailRu() {
-        return $this->render('_mailRu', [
-            'pageType' => 'other',
-            'productIds' => [],
-            'price' => '',
-        ]);
     }
 
     public function slotInsiderJS(){
@@ -877,5 +669,20 @@ class DefaultLayout extends Layout {
         return AbTest::isAdvancedSearch()
             ? '<input type="hidden" name="category" data-bind="value: currentCategory() == null ? 0 : currentCategory().id, disable: currentCategory() == null " />'
             : null;
+    }
+
+    public function slotGifteryJS() {
+        if (!\App::config()->partners['Giftery']['enabled']) return '';
+        return <<<EOL
+        <!-- BEGIN GIFTERY CODE {literal} -->
+        <script type="text/javascript">
+        (function(){
+        var s = document.createElement('script');s.type = 'text/javascript';s.async = true;
+        s.src = '//widget.giftery.ru/js/114550/11456/';
+        var ss = document.getElementsByTagName('script')[0];ss.parentNode.insertBefore(s, ss);
+        })();
+        </script>
+        <!-- {/literal} END GIFTERY CODE -->
+EOL;
     }
 }

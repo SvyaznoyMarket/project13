@@ -38,7 +38,7 @@
 
     <div class="wrapper">
         <!-- шапка -->
-        <div class="header header-new">
+        <div class="header header-new <?= \App::abTest()->isMenuHamburger() ? 'header-ddnav jsMenuHamburger' : '' ?>">
 
             <?= $page->slotTopbar() ?>
 
@@ -77,10 +77,8 @@
     <?= $page->slotYandexMetrika() ?>
     <?= $page->slotBodyJavascript() ?>
     <?= $page->slotInnerJavascript() ?>
-    <?= $page->slotAdriver() ?>
     <?= $page->slotPartnerCounter() ?>
-    <?= $page->slotAdblender() ?>
-    <?= $page->slotKissMetrics() ?>
+    <?= $page->slotGifteryJS() ?>
 
     <? if (\App::config()->analytics['enabled']): ?>
         <div id="yandexMetrika" class="jsanalytics"></div>

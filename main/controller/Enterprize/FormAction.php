@@ -118,7 +118,8 @@ class FormAction {
         $session = \App::session();
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
         $data = $session->get($sessionName, []);
-        $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
+        $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : $userData['guid'];
+        $data['enterprizeToken'] = $enterprizeToken;
 
         if (!$enterprizeToken) {
             $link = \App::router()->generate('enterprize');
@@ -175,8 +176,7 @@ class FormAction {
             if (401 == $e->getCode()) {
                 $form->setError('global', $e->getMessage());
                 $needAuth = true;
-
-            } elseif (600 == $e->getCode()) {
+            } else if (600 == $e->getCode()) {
                 $form->setError('global', $e->getMessage());
 
                 foreach ($detail as $fieldName => $errors) {
@@ -226,10 +226,10 @@ class FormAction {
                 }
             } elseif (409 == $e->getCode()) {
                 $error = 'Уже зарегистрирован в ENTER PRIZE. <a class="bAuthLink" href="'. \App::router()->generate('user.login') .'">Войти</a>';
-                if (isset($detail['mobile_in_enter_prize']) && $detail['mobile_in_enter_prize']) {
-                    $form->setError('mobile', $error);
-                } elseif (isset($detail['email_in_enter_prize']) && $detail['email_in_enter_prize']) {
+                if (isset($detail['email_in_enter_prize']) && $detail['email_in_enter_prize']) {
                     $form->setError('email', $error);
+                } else if (isset($detail['mobile_in_enter_prize']) && $detail['mobile_in_enter_prize']) {
+                    $form->setError('mobile', $error);
                 } else {
                     $form->setError('global', $error);
                 }
@@ -252,9 +252,36 @@ class FormAction {
         if ($form->isValid()) {
             $userToken = $data['token'];
             $data = $session->get($sessionName, []);
-            if ($data['isPhoneConfirmed'] && $data['isEmailConfirmed']) {
+            //if ($data['isPhoneConfirmed'] && $data['isEmailConfirmed']) {
+            if ($data['isEmailConfirmed']) {
                 // пользователь все подтвердил, пробуем создать купон
                 $link = \App::router()->generate('enterprize.create');
+            } elseif (!$data['isEmailConfirmed']) {
+                try {
+                    $confirm = $client->query('confirm/email', [
+                            'client_id' => \App::config()->coreV2['client_id'],
+                            'token'     => $userToken,
+                        ], [
+                            'email'    => $data['email'],
+                            'template' => 'enter_prize',
+                        ], \App::config()->coreV2['hugeTimeout']
+                    );
+                    \App::logger()->info(['core.response' => $confirm], ['coupon', 'confirm/email']);
+                } catch (\Curl\Exception $e) {
+                    \App::exception()->remove($e);
+                    $form->setError('email', $e->getMessage());
+
+                    $formErrors = [];
+                    foreach ($form->getErrors() as $fieldName => $errorMessage) {
+                        $formErrors[] = ['code' => 0, 'message' => $errorMessage, 'field' => $fieldName];
+                    }
+
+                    return new \Http\JsonResponse([
+                        'error'    => ['code' => 0, 'message' => 'Не удалось сохранить форму'],
+                        'form'     => ['error' => $formErrors],
+                        'needAuth' => $needAuth && !\App::user()->getEntity() ? true : false,
+                    ]);
+                }
             } elseif ($data['isPhoneConfirmed']) {
                 // просим подтвердит email
                 $link = \App::router()->generate('enterprize.confirmEmail.show');
@@ -338,8 +365,9 @@ class FormAction {
                 ? new \Http\JsonResponse([
                     'success' => true,
                     'error'   => null,
-                    'notice'  => ['message' => 'Поздравляем с регистрацией в Enter Prize!', 'type' => 'info'],
-                    'data'    => ['link' => $link],
+                    'notice'  => ['message' => 'Для завершения регистрации, пожалуйста, перейдите по ссылке в письме, отправленном на Ваш почтовый адрес.', 'type' => 'info'],
+                    //'data'    => ['link' => $link],
+                    'data'    => [],
                 ])
                 : new \Http\RedirectResponse($link);
 
@@ -371,7 +399,8 @@ class FormAction {
                 ? new \Http\JsonResponse([
                     'success' => true,
                     'error'   => null,
-                    'data'    => ['link' => \App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken])],
+                    //'data'    => ['link' => \App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken])],
+                    'data'    => [],
                 ])
                 : new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken])));
     }
@@ -474,6 +503,32 @@ class FormAction {
                     $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
                 }
             } else {
+                /** @var $slice \Model\Slice\Entity|null */
+                $slice = null;
+                if ('slices' === $linkParts[0]) {
+                    if ($sliceToken = (isset($linkParts[1]) ? $linkParts[1] : null)) {
+                        // получение среза
+                        \RepositoryManager::slice()->prepareEntityByToken($sliceToken, function($data) use (&$slice, $sliceToken) {
+                            if (is_array($data) && (bool)$data) {
+                                $data['token'] = $sliceToken;
+                                $slice = new \Model\Slice\Entity($data);
+                            }
+                        });
+                        \App::scmsClient()->execute();
+
+                        if ($slice) {
+                            // проверка на срез с баркодами
+                            $requestData = [];
+                            parse_str($slice->getFilterQuery(), $requestData);
+                            if (isset($requestData['barcode'])) {
+                                $linkParts[0] = 'products';
+                                $linkParts[2] = is_array($requestData['barcode']) ? implode(',', $requestData['barcode']) : $requestData['barcode'];
+                            }
+                        }
+
+                    }
+                }
+
                 switch ($linkParts[0]) {
                     case 'catalog':
                         $categoryToken = end($linkParts);
@@ -481,22 +536,9 @@ class FormAction {
                         break;
 
                     case 'slices':
-                        $sliceToken = $linkParts[1];
-
-                        // получение среза
-                        /** @var $slice \Model\Slice\Entity|null */
-                        $slice = null;
-                        \RepositoryManager::slice()->prepareEntityByToken($sliceToken, function($data) use (&$slice, $sliceToken) {
-                            if (is_array($data) && (bool)$data) {
-                                $data['token'] = $sliceToken;
-                                $slice = new \Model\Slice\Entity($data);
-                            }
-                        });
-                        \App::dataStoreClient()->execute();
-
                         if ($slice) {
-                            // добавляем фильтры среза к общему списку фильтров
                             $sliceFilters = \Controller\Slice\ShowAction::getSliceFilters($slice);
+                            // добавляем фильтры среза к общему списку фильтров
                             foreach ($sliceFilters as $filter) {
                                 $filters[] = $filter;
                             }
@@ -585,6 +627,12 @@ class FormAction {
                     $client->execute(\App::config()->coreV2['retryTimeout']['medium']);
                 }
             }
+        }
+
+        // Фильтруем продукты, которые стоят меньше, чем рублевая скидка по фишке
+        if ($coupon->getIsCurrency()) {
+            $price = abs($coupon->getPrice());
+            $products = array_filter($products, function(\Model\Product\Entity $product) use ($price) { return $product->getPrice() > $price; });
         }
 
         // перемешиваем список товаров

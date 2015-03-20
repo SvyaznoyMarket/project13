@@ -17,12 +17,7 @@ class UpsellAction {
 
         // запрашиваем текущий регион, если есть кука региона
         if ($user->getRegionId()) {
-            $regionConfig = [];
-            \App::dataStoreClient()->addQuery("region/{$user->getRegionId()}.json", [], function($data) use (&$regionConfig) {
-                if((bool)$data) {
-                    $regionConfig = $data;
-                }
-            });
+            $regionConfig = (array)\App::dataStoreClient()->query("/region/{$user->getRegionId()}.json");
 
             \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
@@ -47,8 +42,8 @@ class UpsellAction {
         /** @var $product \Model\Product\Entity */
         $product = null;
         \RepositoryManager::product()->prepareEntityByToken($productToken, $region, function($data) use (&$product) {
-            $data = reset($data);
-            if ((bool)$data) {
+            $data = is_array($data) ? reset($data) : null;
+            if ($data) {
                 $product = new \Model\Product\Entity($data);
             }
         });

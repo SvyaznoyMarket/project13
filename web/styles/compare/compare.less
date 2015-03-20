@@ -27,6 +27,7 @@
 	position: fixed;
 	right: 0;
 	left: 0;
+	top: 50px;
 	background: @typLightGray;
 	border-bottom: 1px solid @lightgreyBr;
 	border-top: 1px solid @lightgreyBr;
@@ -312,13 +313,22 @@
 	}
 
 	&_pt {
-		height: 54px;
+		height: 50px;
 		overflow: hidden;
 		padding-right: 25px;
+		line-height: 1.2;
+		margin-bottom: 4px;
 	}
 
 	&_cat {
 		font-size: 12px;
+		width: 210px;
+		display: block;
+		height: 14px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		padding-right: 5px;
 	}
 
 	&_n {

@@ -48,13 +48,13 @@
         width: 120px;
         position: relative;
         &__child{
-            margin-bottom: 7px;
+            margin: 3px 0;
             display: block;
         }
     }
     &_imgw {
         display: table-cell;
-        width: 110px;
+        width: 120px;
         height: 110px;
         vertical-align: middle;
     }
@@ -65,7 +65,7 @@
     &_n {
         overflow: hidden;
         height: 37px;
-        margin: 5px 0 12px;
+        margin: 5px 0 10px;
         font-size: 11px;
         line-height: 1.1;
     }
@@ -140,6 +140,7 @@
             padding: 10px;
             position: absolute;
             width: 180px;
+            word-wrap: break-word;
 
             &:after {
                 border-left: 6px solid transparent;
@@ -169,6 +170,43 @@
             }
         }
     }
+
+    &__ep-price {
+        background: @black;
+        background: rgba(0, 0, 0, 0.65);
+        .rounded(5px);
+        color: @white;
+        height: 100%;
+        width: 100%;
+        padding: 0 2px;
+        left: -2px;
+        position: absolute;
+        text-align: center;
+        top: 0;
+        .opacity(0);
+        .transition(all .3s ease);
+        vertical-align: middle;
+
+        &:hover {
+            text-decoration: none;
+        }
+
+        &__i {
+            .inline-block();
+            margin: 8px 0;
+        }
+
+        &__inn {
+            display: table-cell;
+            height: 155px;
+            vertical-align:middle;
+        }
+
+        &__sale {
+            font-size: 24px;
+        }
+    }
+
     // 7 товаров в слайдере
     &-7item {
         .slideItem_inn {
@@ -188,6 +226,53 @@
         }
         .slideItem_i{
 
+        }
+    }
+
+    &--sale {
+
+        .slideItem_i__child {
+            position: relative;
+            text-align: center;
+        }
+
+        .slideItem_i {
+
+            &:hover {
+
+                .slideItem__ep-price {
+                    .opacity(1);
+                }
+            }
+        }
+    }
+
+    &--center {
+        text-align: center;
+
+        .slideItem_pr {
+            display: block;
+            margin: 0 0 10px;
+
+            &__sale {
+                font-size: 18px;
+                display: block;
+            }
+        }
+
+        .slideItem_i {
+            margin-bottom: 5px;
+        }
+
+        .btnBuy__eLink {
+            border: medium none;
+            .rounded(2px);
+            font-size: 14px;
+            padding: 0 14px 1px;
+        }
+
+        .slideItem_i__child {
+            margin-bottom: 0;
         }
     }
 

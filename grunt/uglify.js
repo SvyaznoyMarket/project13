@@ -97,16 +97,6 @@ module.exports = function (grunt, options) {
             dest: pathProd + 'main.min.js'
         },
 
-        oneclickJS: {
-            src: pathDev + 'oneclick/*.js',
-            dest: pathProd + 'oneclick.min.js'
-        },
-
-        orderJS : {
-            src: pathDev + 'order/*.js',
-            dest: pathProd + 'order.min.js'
-        },
-
         orderNewV5JS : {
             src: pathDev + 'order-new-v5/*.js',
             dest: pathProd + 'order-new-v5.min.js'
@@ -117,12 +107,12 @@ module.exports = function (grunt, options) {
             dest: pathProd + 'order-v3.min.js'
         },
 
-        orderV3JSnew: {
+		orderV3newJS: {
             src: pathDev + 'order-v3-new/*.js',
             dest: pathProd + 'order-v3-new.min.js'
         },
 
-        orderV3JSlifegift: {
+		orderV3lifegiftJS: {
             src: pathDev + 'order-v3-lifegift/*.js',
             dest: pathProd + 'order-v3-lifegift.min.js'
         },

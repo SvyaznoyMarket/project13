@@ -21,15 +21,18 @@ class DeliveryAction {
     /**
      * @param array $product
      * @param int $region
+     * @param \EnterQuery\Delivery\GetByCart|null $deliveryQuery
      * @return array
      */
-    public function getResponseData($product, $region = null) {
+    public function getResponseData($product, $region = null, \EnterQuery\Delivery\GetByCart $deliveryQuery = null) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $helper = new \View\Helper();
         $user = \App::user();
 
         try {
+            $productIds = array_column($product, 'id');
+
             $productData = [];
             foreach ((array)$product as $item) {
                 if (!isset($item['id'])) {
@@ -56,30 +59,39 @@ class DeliveryAction {
 
             $exception = null;
             $result = [];
-            \App::coreClientV2()->addQuery(
-                'delivery/calc2',
-                [
-                    'geo_id' => $regionId
-                ],
-                [
-                    'product_list' => $productData
-                ],
-                function($data) use (&$result) {
-                    $result = array_merge([
-                        'product_list'  => [],
-                        'interval_list' => [],
-                        'shop_list'     => [],
-                        'geo_list'      => [],
-                    ], $data);
-                },
-                function(\Exception $e) use (&$exception) {
-                    $exception = $e;
-                    \App::exception()->remove($e);
-                },
-                1.5 * \App::config()->coreV2['timeout']
-            );
+            if ($deliveryQuery) {
+                $result = [
+                    'product_list'  => $deliveryQuery->response->products,
+                    'interval_list' => $deliveryQuery->response->intervals,
+                    'shop_list'     => $deliveryQuery->response->shops,
+                    'geo_list'      => $deliveryQuery->response->regions,
+                ];
+            } else {
+                \App::coreClientV2()->addQuery(
+                    'delivery/calc2',
+                    [
+                        'geo_id' => $regionId
+                    ],
+                    [
+                        'product_list' => $productData
+                    ],
+                    function($data) use (&$result) {
+                        $result = array_merge([
+                            'product_list'  => [],
+                            'interval_list' => [],
+                            'shop_list'     => [],
+                            'geo_list'      => [],
+                        ], $data);
+                    },
+                    function(\Exception $e) use (&$exception) {
+                        $exception = $e;
+                        \App::exception()->remove($e);
+                    },
+                    1.5 * \App::config()->coreV2['timeout']
+                );
 
-            \App::coreClientV2()->execute();
+                \App::coreClientV2()->execute();
+            }
 
             if ($exception instanceof \Exception) {
                 throw $exception;
@@ -102,13 +114,15 @@ class DeliveryAction {
             ];
 
             $shopData = &$result['shop_list'];
+            /** @var \Model\Shop\Entity[] $shops */
             $shops = [];
 
             // получаем список магазинов
+            /*
             \RepositoryManager::shop()->prepareCollectionById(
-                array_map(function($shopItem){
+                array_values(array_map(function($shopItem){
                     return (int)$shopItem['id'];
-                }, $shopData),
+                }, $shopData)),
                 function($data) use (&$shops) {
                     foreach ($data as $item) {
                         if (!isset($item['id'])) continue;
@@ -120,11 +134,24 @@ class DeliveryAction {
                     }
                 }
             );
+            */
+            foreach ($shopData as $shopItem) {
+                if (!isset($shopItem['id'])) continue;
+
+                $shop = new \Model\Shop\Entity($item);
+                $id = $shop->getId();
+                if ( !isset($shops[$id]) ) {
+                    $shops[$id] = $shop;
+                }
+            }
+
 
             \App::coreClientV2()->execute();
 
             foreach ($result['product_list'] as $item) {
-                $product = [
+                if (!in_array($item['id'], $productIds)) continue;
+
+                $iProduct = [
                     'id'    => $item['id'],
                     //'token' => $item['token'],
                     'delivery' => [],
@@ -180,8 +207,8 @@ class DeliveryAction {
                             // добавляем url к магазинам
                             foreach ($shops as $shop) {
                                 foreach ($delivery['shop'] as $key => $shopItem) {
-                                    if($shopItem['id'] == $shop->getId()) {
-                                        $delivery['shop'][$key]['url'] = \App::router()->generate('shop.show', array('regionToken' => $shop->getRegion()->getToken(), 'shopToken' => $shop->getToken()));
+                                    if ($shop && ($shopItem['id'] == $shop->getId()) && $shop->getRegion()) {
+                                        $delivery['shop'][$key]['url'] = \App::router()->generate('shop.show', ['regionToken' => $shop->getRegion()->getToken(), 'shopToken' => $shop->getToken()]);
                                     }
                                 }
                             }
@@ -189,10 +216,10 @@ class DeliveryAction {
                         }
                     }
 
-                    $product['delivery'][] = $delivery;
+                    $iProduct['delivery'][] = $delivery;
                 }
 
-                $responseData['product'][] = $product;
+                $responseData['product'][] = $iProduct;
             }
         } catch(\Exception $e) {
             \App::logger()->error($e->getMessage(), ['delivery']);

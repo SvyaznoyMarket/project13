@@ -13,25 +13,9 @@ trait ABHelperTrait {
      * @return bool
      */
     public static function isNewMainPage() {
-        return \App::abTest()->getTest('main_page') && in_array(\App::abTest()->getTest('main_page')->getChosenCase()->getKey(), ['new', 'search_new_1', 'search_new_2']);
-    }
-
-    /** Возвращает вариант новой главной страницы
-     * @return bool|int
-     */
-    public static function getNewMainPageVar(){
-        if (\App::abTest()->getTest('main_page')) {
-            switch (\App::abTest()->getTest('main_page')->getChosenCase()->getKey()) {
-                case 'search_new_1':
-                    return 1;
-                case 'search_new_2':
-                    return 2;
-                default:
-                    return 0;
-            }
-        } else {
-            return false;
-        }
+        // TODO данный тест был отключен 03.03.2015. Через некоторое время следует удалить данный метод и его вызовы из кода
+        return true;
+//        return \App::abTest()->getTest('main_page') && in_array(\App::abTest()->getTest('main_page')->getChosenCase()->getKey(), ['new', 'search_new_1', 'search_new_2']);
     }
 
     /** Поиск с возможностью фильтрации по категориям?
@@ -68,7 +52,9 @@ trait ABHelperTrait {
      * @return bool
      */
     public static function isOnlineMotivation($ordersCount = 0){
-        return (int)$ordersCount == 1 && \App::abTest()->getTest('online_motivation') && \App::abTest()->getTest('online_motivation')->getChosenCase()->getKey() == 'on';
+        return (int)$ordersCount == 1
+            && \App::abTest()->getTest('online_motivation')
+            && in_array(\App::abTest()->getTest('online_motivation')->getChosenCase()->getKey(), ['on', 'online_motivation_coupon', 'online_motivation_discount']);
     }
 
     /** Обязательный email при оформлении заказа?
@@ -78,4 +64,36 @@ trait ABHelperTrait {
         return \App::abTest()->getTest('order_email') && \App::abTest()->getTest('order_email')->getChosenCase()->getKey() == 'required';
     }
 
-} 
+    /**
+     * @return int
+     */
+    public static function getGiftButtonNumber(){
+        $test = \App::abTest()->getTest('giftButton');
+        if ($test) {
+            $key = $test->getChosenCase()->getKey();
+            if ($key === 'default') {
+                return 1;
+            } else {
+                return $key;
+            }
+        }
+
+        return 1;
+    }
+
+    /** Открытие ссылок на товары в новом окне
+     * @return bool
+     */
+    public static function isNewWindow(){
+        $test = \App::abTest()->getTest('new_window');
+        return $test && $test->getChosenCase()->getKey() == 'on';
+    }
+
+    /** Меню-гамбургер (только в карточке товара)
+     * @return bool
+     */
+    public static function isMenuHamburger(){
+        $test = \App::abTest()->getTest('new_window');
+        return $test && $test->getChosenCase()->getKey() == 'hamburger' && \App::request()->attributes->get('route') == 'product';
+    }
+}

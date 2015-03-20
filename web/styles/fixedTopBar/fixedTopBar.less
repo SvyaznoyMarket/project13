@@ -269,10 +269,6 @@
 		z-index: 101;
 		background: @white;
 
-		&.mEmpty {
-			background: #f4f4f4;
-		}
-
 		&:hover {
 
 			.topbarfix_dd {
@@ -362,7 +358,7 @@
 
 		&-unlogin {
 			line-height: 50px;
-			background: #f4f4f4;
+			background: @white;
 
 			&:after {
 				background: none;
@@ -405,7 +401,6 @@
 	}
 
 	&_cmpr {
-		background: #f4f4f4;
 		position: relative;
 		z-index: 101;
 
@@ -554,8 +549,8 @@
 		.bPrice {
 			float: right;
 			font-size: 20px;
-			width: 105px;
-			margin: 1px 0 0;
+			min-width: 105px;
+			margin: 1px 4px 0 0;
 		}
 
 		.bCountSection {

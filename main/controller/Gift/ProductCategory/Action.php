@@ -25,11 +25,7 @@ class Action {
         // запрашиваем текущий регион, если есть кука региона
         $regionConfig = [];
         if ($user->getRegionId()) {
-            \App::dataStoreClient()->addQuery("region/{$user->getRegionId()}.json", [], function($data) use (&$regionConfig) {
-                if ($data) {
-                    $regionConfig = $data;
-                }
-            });
+            $regionConfig = (array)\App::dataStoreClient()->query("/region/{$user->getRegionId()}.json");
 
             \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
@@ -251,7 +247,7 @@ class Action {
             }
         }
 
-        $productFilter = new \Model\Product\Filter($filters, false, false, $shop);
+        $productFilter = new \Model\Product\Filter($filters, $shop);
         $productFilter->setValues($values);
 
         return $productFilter;
@@ -341,19 +337,25 @@ class Action {
         return $values;
     }
 
+    /** Начальные параметры фильтров
+     * @param \Http\ParameterBag $params
+     */
     private function setDefaultValues(\Http\ParameterBag $params) {
         $isSubmitted = (bool)$params->get('f-holiday');
 
         if (!$this->hasTagFilterPropertyValue('holiday', $params->get('f-holiday'))) {
-            $params->set('f-holiday', 737);
+            $params->set('f-holiday', 707);
         }
 
         if (!$this->hasTagFilterPropertyValue('sex', $params->get('f-sex'))) {
+            $params->set('f-sex', 688);
+            /*
             if ($params->get('f-holiday') == 738) {
                 $params->set('f-sex', 688);
             } else {
                 $params->set('f-sex', 687);
             }
+            */
         }
 
         if (!$this->hasTagFilterPropertyValue('status', $params->get('f-status'))) {
@@ -547,7 +549,7 @@ class Action {
                 $productUIs[] = $product->getUi();
             }
 
-            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) {
+            \RepositoryManager::review()->prepareScoreCollectionByUi($productUIs, function($data) use(&$products) {
                 if (isset($data['product_scores'][0])) {
                     \RepositoryManager::review()->addScores($products, $data);
                 }

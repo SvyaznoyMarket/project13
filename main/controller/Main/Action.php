@@ -34,8 +34,6 @@ class Action {
                 return (AbTest::isNewMainPage() ? 3 : 1) == (int)@$item['type_id'];
             });
 
-            if (AbTest::isNewMainPage()) $data = array_slice((array)$data, 0, 5);
-
             foreach ($data as $i => $item) {
                 $bannerId = isset($item['id']) ? (int)$item['id'] : null;
                 $item = [
@@ -54,7 +52,7 @@ class Action {
                     'imgs'  => $item['image'] ? ($host . $urls[AbTest::isNewMainPage() ? 4 : 0] . $item['image']) : null,
                     'imgb'  => $item['image'] ? ($host . $urls[AbTest::isNewMainPage() ? 3 : 1] . $item['image']) : null,
                     'url'   => $item['url'],
-                    't'     => $i > 0 ? $timeout : $timeout + 4000,
+                    't'     => $timeout,
                     'ga'    => $bannerId . ' - ' . $item['name'],
                     'pos'   => $i,
                 ];
@@ -98,7 +96,7 @@ class Action {
         if ((bool)$productsById) {
             \RepositoryManager::product()->prepareCollectionById(array_keys($productsById), $region, function($data) use (&$productsById) {
                 foreach ($data as $item) {
-                    $productsById[(int)$item['id']] = new \Model\Product\BasicEntity($item);
+                    $productsById[(int)$item['id']] = new \Model\Product\Entity($item);
                 }
             }, function(\Exception $e) {
                 \App::exception()->remove($e);
@@ -198,6 +196,8 @@ class Action {
             $rrProductsById = array_merge($rrProductsById, $collection);
         }
 
+        \RepositoryManager::product()->setEntityClass('\Model\Product\Entity');
+
         // получаем продукты из ядра
         $products = \RepositoryManager::product()->getCollectionById(array_unique($rrProductsById), null, false);
         foreach ($products as $product) {
@@ -215,7 +215,7 @@ class Action {
      * @param float $timeout Таймаут для запроса к RR
      * @return array
      */
-    private function getProductIdsFromRR(\Http\Request $request, $timeout = 0.15) {
+    public function getProductIdsFromRR(\Http\Request $request, $timeout = 0.15) {
         $rrClient = \App::rrClient();
         $rrUserId = $request->cookies->get('rrpusid');
         $ids = [

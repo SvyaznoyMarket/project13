@@ -63,28 +63,17 @@ class IndexPage extends \View\DefaultLayout {
         return (new \Helper\TemplateHelper())->render('main/__footer');
     }
 
-    public function slotInnerJavascript() {
-        return ''
-            . "\n\n"
-            . $this->render('_remarketingGoogle', ['tag_params' => ['pagetype' => 'homepage']])
-            . "\n\n"
-            . $this->render('_innerJavascript');
+    public function slotGoogleRemarketingJS($tagParams = []) {
+        return parent::slotGoogleRemarketingJS(['pagetype' => 'homepage']);
     }
+
 
     public function slotСpaexchangeJS () {
         if ( !\App::config()->partners['Сpaexchange']['enabled'] ) {
-            return;
+            return '';
         }
 
         return '<div id="cpaexchangeJS" class="jsanalytics" data-value="' . $this->json(['id' => 22249]) . '"></div>';
-    }
-
-    public function slotMailRu() {
-        return $this->render('_mailRu', [
-            'pageType' => 'home',
-            'productIds' => [],
-            'price' => '',
-        ]);
     }
 
     public function slotMetaOg()
@@ -102,31 +91,32 @@ class IndexPage extends \View\DefaultLayout {
 
     public function slotRecommendations() {
 
+        /**
+         * @var $products               \Model\Product\Entity[]
+         * @var $personalIds            int[]
+         * @var $personalForWalkingIds  int[]
+         */
+
         $return = '';
         $sender = ['name' => 'retailrocket'];
 
         $products = $this->getParam('productList');
-        $personal = @$this->getParam('rrProducts')['personal'];
-        $personalForWalking = @$this->getParam('rrProducts')['personal'];
-        $personalForWalking = array_filter((array)$personalForWalking, function($p) {
-            return
-                ($p instanceof \Model\Product\BasicEntity)
-                && $p->isAvailable() && !$p->isInShopShowroomOnly()
-            ;
-        });
+        if (empty($products)) return '';
+        $personalIds = @$this->getParam('rrProducts')['personal'];
+        $personalForWalkingIds = @$this->getParam('rrProducts')['personal'];
         $names = [];
 
         // Удаление продуктов с одинаковыми именами из массива персональных рекомендаций
-        array_walk ( $personalForWalking , function ($id, $key) use (&$personal, &$names, $products) {
-            /* @var $products \Model\Product\Entity[] */
+        array_walk ( $personalForWalkingIds , function ($id, $key) use (&$personalIds, &$names, $products) {
             // Имя продукта
+            if (!$products[$id] instanceof \Model\Product\BasicEntity) return;
             $currentProductName = trim($products[$id]->getName());
             if (array_search($currentProductName, $names) === false) {
                 // Если такого имени нет в массиве имён, то добавляем имя в массив
                 $names[$id] = $currentProductName;
             } else {
                 // Если такое имя уже есть, то удаляем продукт из массива персональных рекомендаций
-                unset($personal[$key]);
+                unset($personalIds[$key]);
             }
         } );
 
@@ -142,7 +132,7 @@ class IndexPage extends \View\DefaultLayout {
                 'blockname' => 'МЫ РЕКОМЕНДУЕМ',
                 'class' => 'slidesBox slidesBox-bg2 slidesBox-items slidesBox-items-r',
                 'productList' => $this->getParam('productList'),
-                'rrProducts' => (array)$personal,
+                'rrProducts' => (array)$personalIds,
                 'sender' => $sender + ['position' => 'MainRecommended', 'method' => 'Personal']
             ]);
         }

@@ -25,7 +25,6 @@ try {
 
 $routerRules = \App::router()->getRules();
 $config = array_merge([
-    'optimizelyEnabled'     => $appConfig->partners['Optimizely']['enabled'],
     'adfoxEnabled'     => $appConfig->adFox['enabled'],
     'jsonLog'               => $appConfig->jsonLog['enabled'],
     'userUrl'               => $router->generate('user.info'),
@@ -37,6 +36,7 @@ $config = array_merge([
     'prepayment'            => $appConfig->order['prepayment'],
     'isMobile'              => $isMobile,
     'currentRoute'          => \App::request()->attributes->get('route'),
+    'location'              => [],
     'user' => [
         'region' => [
             'forceDefaultBuy' => \App::user()->getRegion()->getForceDefaultBuy(),
@@ -51,7 +51,9 @@ $config = array_merge([
         'compare.delete'            => ['pattern' => $routerRules['compare.delete']['pattern']],
         'orderV3OneClick.delivery'  => ['pattern' => $routerRules['orderV3OneClick.delivery']['pattern']],
         'product.category'          => ['pattern' => $routerRules['product.category']['pattern']],
+        'product.kit'               => ['pattern' => $routerRules['product.kit']['pattern']],
         'orderV3OneClick.form'      => ['pattern' => $routerRules['orderV3OneClick.form']['pattern']],
+        'order.slot.create'         => ['pattern' => $routerRules['order.slot.create']['pattern']],
     ],
     'selfDeliveryTest'    => \Session\AbTest\AbTest::isSelfPaidDelivery(), // удалять осторожно, поломается JS
     'selfDeliveryLimit'    => $appConfig->self_delivery['limit'] // стоимость платного самовывоза, удалять осторожно, поломается JS

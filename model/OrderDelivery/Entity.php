@@ -30,7 +30,7 @@ namespace Model\OrderDelivery {
          */
         public $user_info;
         /** Общая стоимость заказов
-         * @var int
+         * @var float
          */
         public $total_cost;
         /** Ошибки разбиения
@@ -87,7 +87,7 @@ namespace Model\OrderDelivery {
             if (isset($data['user_info'])) $this->user_info = new Entity\UserInfo($data['user_info']);
 
             if (isset($data['total_cost'])) {
-                $this->total_cost = (int)$data['total_cost'];
+                $this->total_cost = (float)$data['total_cost'];
             } else {
                 throw new \Exception('Отстуствует общая стоимость заказа');
             }
@@ -303,11 +303,11 @@ namespace Model\OrderDelivery\Entity {
          */
         public $points;
         /** Стоимость заказа (со скидками)
-         * @var int
+         * @var float
          */
         public $total_cost;
         /** Стоимость заказа (без скидок)
-         * @var
+         * @var float
          */
         public $total_original_cost;
         /** @var string */
@@ -372,8 +372,8 @@ namespace Model\OrderDelivery\Entity {
 
             if (isset($data['possible_intervals']) && is_array($data['possible_intervals'])) $this->possible_intervals = (array)$data['possible_intervals'];
 
-            if (isset($data['total_cost'])) $this->total_cost = (int)$data['total_cost'];
-            if (isset($data['total_original_cost'])) $this->total_original_cost = (int)$data['total_original_cost'];
+            if (isset($data['total_cost'])) $this->total_cost = (float)$data['total_cost'];
+            if (isset($data['total_original_cost'])) $this->total_original_cost = (float)$data['total_original_cost'];
 
             if (isset($data['possible_point_data']) && is_array($data['possible_point_data'])) {
                 foreach ($data['possible_point_data'] as $pointType => $points) {
@@ -635,11 +635,11 @@ namespace Model\OrderDelivery\Entity\Order {
         public $prefix;
         /** @var string */
         public $name_web;
-        /** @var int */
+        /** @var float */
         public $price;
-        /** @var int */
+        /** @var float */
         public $original_price;
-        /** @var int */
+        /** @var float */
         public $sum;
         /** @var int */
         public $quantity;
@@ -660,9 +660,9 @@ namespace Model\OrderDelivery\Entity\Order {
             if (isset($data['url'])) $this->link = (string)$data['url'];
             if (isset($data['name_web'])) $this->name_web = (string)$data['name_web'];
             if (isset($data['prefix'])) $this->prefix = (string)$data['prefix'];
-            if (isset($data['price'])) $this->price = (int)$data['price'];
-            if (isset($data['original_price'])) $this->original_price = (int)$data['original_price'];
-            if (isset($data['sum'])) $this->sum = (int)$data['sum'];
+            if (isset($data['price'])) $this->price = (float)$data['price'];
+            if (isset($data['original_price'])) $this->original_price = (float)$data['original_price'];
+            if (isset($data['sum'])) $this->sum = (float)$data['sum'];
 
             if (isset($data['quantity'])) {
                 $this->quantity = (int)$data['quantity'];
@@ -720,7 +720,7 @@ namespace Model\OrderDelivery\Entity\Order {
         public $delivery_method_token;
         /** @var Delivery\Point|null */
         public $point;
-        /** @var int */
+        /** @var float */
         public $price;
         /** @var \DateTime */
         public $date;
@@ -734,7 +734,7 @@ namespace Model\OrderDelivery\Entity\Order {
         public function __construct(array $data = [], \Model\OrderDelivery\Entity &$orderDelivery = null) {
             if (isset($data['delivery_method_token'])) $this->delivery_method_token = (string)$data['delivery_method_token'];
             if (isset($data['point']['id'])) $this->point = new Delivery\Point($data['point']);
-            if (isset($data['price'])) $this->price = (int)$data['price'];
+            if (isset($data['price'])) $this->price = (float)$data['price'];
             if (isset($data['date'])) $this->date = \DateTime::createFromFormat('U', $data['date']);
             if (isset($data['interval']) && is_array($data['interval'])) $this->interval = array_merge(['from' => null, 'to' => null], $data['interval']);
             if (isset($data['use_user_address'])) $this->use_user_address = (bool)$data['use_user_address'];

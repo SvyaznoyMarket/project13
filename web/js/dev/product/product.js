@@ -7,21 +7,22 @@ $(document).ready(function() {
 	 * @requires jQuery, jQuery.elevateZoom
 	 */
 	(function () {
-		if ( !$('.bZoomedImg').length ) {
+		var image = $('.js-photo-zoomedImg');
+
+		if ( !image.length ) {
 			console.warn('Нет изображения для elevateZoom');
 
 			return;
 		}
 
 		var
-			image = $('.bZoomedImg'),
 			zoomDisable = ( image.data('zoom-disable') !== undefined ) ? image.data('zoom-disable') : true,
 			zoomConfig = {
 				gallery: 'productImgGallery',
-				galleryActiveClass: 'mActive',
+				galleryActiveClass: 'prod-photoslider__gal__link--active',
 				zoomWindowOffety: 0,
 				zoomWindowOffetx: 19,
-				zoomWindowWidth: 519,
+				zoomWindowWidth: image.data('is-slot') ? 344 : 519,
 				borderSize: 1,
 				borderColour: '#C7C7C7',
 				disableZoom: zoomDisable
@@ -111,50 +112,6 @@ $(document).ready(function() {
 		}
 	});
 
-
-	/**
-	 * Обработчик кнопки PayPal в карточке товара
-	 */
-	(function() {
-		var
-			successHandler = function successHandler( res ) {
-				console.info('payPal ajax complete');
-
-				if ( !res.success || !res.redirect ) {
-					window.ENTER.utils.blockScreen.unblock();
-
-					return;
-				}
-
-				document.location.href = res.redirect;
-			},
-
-			buyOneClickAndRedirect = function buyOneClickAndRedirect() {
-				console.info('payPal click');
-
-				var button = $(this),
-					url = button.attr('href'),
-					quantityBlock = $('.bCountSection__eNum'),
-					data = {};
-				// end of vars
-
-				window.ENTER.utils.blockScreen.block('Загрузка');
-
-				// если количество товаров > 1, то передаем его на сервер
-				if ( quantityBlock.length && $.isNumeric(quantityBlock.val()) && quantityBlock.val() * 1 > 1 ) {
-					data.quantity = quantityBlock.val();
-				}
-
-				$.get(url, data, successHandler);
-
-				return false;
-            };
-		// end of functions
-
-		$('.jsPayPalButton').bind('click', buyOneClickAndRedirect);
-		$('.jsLifeGiftButton').bind('click', buyOneClickAndRedirect);
-		$('.jsOneClickButton').bind('click', buyOneClickAndRedirect);
-	})();
 
 	// карточка товара - характеристики товара краткие/полные
 	if ( $('#productDescriptionToggle').length ) {

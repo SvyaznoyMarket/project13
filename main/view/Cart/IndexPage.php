@@ -13,9 +13,13 @@ class IndexPage extends \View\DefaultLayout {
             $this->addStylesheet('/css/basket/ie10.min.css');
         }
 
-        $backlink = $this->url('homepage');
-
-        if ($this->hasParam('products')) {
+        $backlink = null;
+        $productData = \App::user()->getCart()->getProductsNC();
+        $productData = end($productData);
+        if (!empty($productData['referer'])) {
+            $backlink = $productData['referer'];
+        }
+        if (!$backlink && $this->hasParam('products')) {
             $this->products = $this->getParam('products');
             foreach (array_reverse($this->products) as $product) {
                 /** @var $product \Model\Product\Entity */
@@ -24,6 +28,9 @@ class IndexPage extends \View\DefaultLayout {
                     break;
                 }
             }
+        }
+        if (!$backlink) {
+            $backlink = '/';
         }
 
         $this->setTitle('Корзина - Enter.ru');
@@ -60,7 +67,7 @@ class IndexPage extends \View\DefaultLayout {
         return $this->render('order/_footer', $this->params) . "\n\n" . $response['content'];
     }
 
-    public function slotInnerJavascript() {
+    public function slotGoogleRemarketingJS($tagParams = []) {
         /** @var $products \Model\Product\Entity[] */
         $products = $this->getParam('productEntities');
 
@@ -75,11 +82,9 @@ class IndexPage extends \View\DefaultLayout {
             $tag_params['pcat_upper'][] = $product->getMainCategory() ? $product->getMainCategory()->getToken() : '';
         }
 
-        return ''
-            . $this->render('_remarketingGoogle', ['tag_params' => $tag_params])
-            . "\n\n"
-            . $this->render('_innerJavascript');
+        return parent::slotGoogleRemarketingJS($tag_params);
     }
+
 
     public function slotСpaexchangeJS () {
         if ( !\App::config()->partners['Сpaexchange']['enabled'] ) {
@@ -87,24 +92,6 @@ class IndexPage extends \View\DefaultLayout {
         }
 
         return '<div id="cpaexchangeJS" class="jsanalytics" data-value="' . $this->json(['id' => 25013]) . '"></div>';
-    }
-
-    public function slotMailRu() {
-        $products = $this->getParam('productEntities');
-        $productIds = [];
-        if (is_array($products)) {
-            foreach ($products as $product) {
-                if (is_object($product) && $product instanceof \Model\Product\Entity) {
-                    $productIds[] = $product->getId();
-                }
-            }
-        }
-
-        return $this->render('_mailRu', [
-            'pageType' => 'cart',
-            'productIds' => $productIds,
-            'price' => \App::user()->getCart()->getSum(),
-        ]);
     }
 
     public function slotHubrusJS() {

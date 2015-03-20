@@ -3,7 +3,7 @@
 		region = ENTER.config.pageConfig.user.region.name,
 		userInfoURL = ENTER.config.pageConfig.userUrl.addParameterToUrl('ts', new Date().getTime() + Math.floor(Math.random() * 1000)),
 		authorized_cookie = '_authorized',
-		startTime, endTime, spendTime, $compareNotice, compareNoticeTimeout;
+		startTime, endTime, spendTime;
 
 	/* Модель продукта в корзине */
 	function createCartModel(cart) {
@@ -69,7 +69,6 @@
 		/* Удаление продукта по ID */
 		model.removeProductByID = function(product_id) {
 			model.cart.remove(function(item) { return item.id == product_id });
-			ENTER.utils.gift.deleteProductIdFromCookie(product_id);
 		};
 
 		/* АБ-тест платного самовывоза */
@@ -82,53 +81,6 @@
 		});
 
 		return model;
-	}
-
-	function showCompareNotice(product) {
-		var compareNoticeShowClass = 'topbarfix_cmpr_popup-show';
-
-		if (!$compareNotice) {
-			var $userbar = ENTER.userBar.userBarFixed;
-			$compareNotice = $('.js-compare-addPopup', $userbar);
-
-			$('.js-compare-addPopup-closer', $compareNotice).click(function() {
-				$compareNotice.removeClass(compareNoticeShowClass);
-			});
-
-			$('.js-topbarfixLogin, .js-topbarfixNotEmptyCart', $userbar).mouseover(function() {
-				$compareNotice.removeClass(compareNoticeShowClass);
-			});
-
-			$('html').click(function() {
-				$compareNotice.removeClass(compareNoticeShowClass);
-			});
-
-			$($compareNotice).click(function(e) {
-				e.stopPropagation();
-			});
-
-			$(document).keyup(function(e) {
-				if (e.keyCode == 27) {
-					$compareNotice.removeClass(compareNoticeShowClass);
-				}
-			});
-		}
-
-		if (compareNoticeTimeout) {
-			clearTimeout(compareNoticeTimeout);
-		}
-
-		compareNoticeTimeout = setTimeout(function() {
-			$compareNotice.removeClass(compareNoticeShowClass);
-		}, 2000);
-
-		$('.js-compare-addPopup-image', $compareNotice).attr('src', product.imageUrl);
-		$('.js-compare-addPopup-prefix', $compareNotice).text(product.prefix);
-		$('.js-compare-addPopup-webName', $compareNotice).text(product.webName);
-
-		ENTER.userBar.show(true, function(){
-			$compareNotice.addClass(compareNoticeShowClass)
-		});
 	}
 
 	ENTER.UserModel = createUserModel();
@@ -157,7 +109,7 @@
 			ENTER.config.userInfo = data;
 
 			if (!docCookies.hasItem(authorized_cookie)) {
-				if (data && null !== data.id) {
+				if (data && data.user && typeof data.user.id != 'undefined') {
 					docCookies.setItem(authorized_cookie, 1, 60*60, '/'); // on
 				} else {
 					docCookies.setItem(authorized_cookie, 0, 60*60, '/'); // off
@@ -173,32 +125,6 @@
 			ko.cleanNode(this);
 			ko.applyBindings(ENTER.UserModel, this);
 		});
-	});
-
-	$body.on('click', '.jsCompareLink, .jsCompareListLink', function(e){
-		var url = this.href,
-			productId = $(this).data('id'),
-			inCompare = $(this).hasClass('btnCmprb-act');
-
-		if ($(this).hasClass('jsCompareListLink')) {
-			url = inCompare ? ENTER.utils.generateUrl('compare.delete', {productId: productId}) : ENTER.utils.generateUrl('compare.add', {productId: productId});
-		}
-
-		e.preventDefault();
-
-		$.ajax({
-			url: url,
-			success: function(data) {
-				if (data.compare) {
-					ENTER.UserModel.compare.removeAll();
-					$.each(data.compare, function(i,val){ ENTER.UserModel.compare.push(val) });
-
-					if (!inCompare) {
-						showCompareNotice(data.product);
-					}
-				}
-			}
-		})
 	});
 
 	$body.on('addtocart', function(event, data) {

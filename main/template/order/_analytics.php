@@ -12,10 +12,6 @@ if (\App::config()->analytics['enabled']) : ?>
 
     <div id="yandexOrderComplete" class="jsanalytics"></div>
 
-    <div id="mixmarket" class="jsanalytics"></div>
-
-    <div id="marketgidOrderSuccess" class="jsanalytics"></div>
-
     <img src="http://rs.mail.ru/g632.gif" style="width:0;height:0;position:absolute;" alt=""/>
 
         <?php foreach ($orders as $i => $order):
@@ -32,14 +28,6 @@ if (\App::config()->analytics['enabled']) : ?>
                 }, $order->getProduct())),
             );
             ?>
-
-            <div id="adriverOrder" data-vars="<?= $page->json($jsonOrdr) ?>" class="jsanalytics"></div>
-
-            <div id="adblenderOrder" data-vars="<?= $page->json($jsonOrdr) ?>" class="jsanalytics"></div>
-            <!-- Efficient Frontiers -->
-            <img src="http://pixel.everesttech.net/245/t?ev_Orders=1&amp;ev_Revenue=<?= $order->getSum() ?>&amp;ev_Quickorders=0&amp;ev_Quickrevenue=0&amp;ev_transid=<?= $order->getNumber() ?>" width="1" height="1" />
-
-            <?//= (new \View\Partners\VisualDna)->routeOrderComplete($orders, $productsById, $paymentMethod); // add VisualDNA pixel, SITE-2773; rm, SITE-3200 ?>
 
         <?php endforeach ?>
 <? endif;

@@ -5,7 +5,7 @@ namespace View\Product;
 class ShowAction {
     /**
      * @param \Helper\TemplateHelper $helper
-     * @param \Model\Product\BasicEntity $product
+     * @param \Model\Product\Entity $product
      * @param null $buyMethod
      * @param bool $showState
      * @param \View\Cart\ProductButtonAction $cartButtonAction
@@ -16,7 +16,7 @@ class ShowAction {
      */
     public function execute(
         \Helper\TemplateHelper $helper,
-        \Model\Product\BasicEntity $product,
+        \Model\Product\Entity $product,
         $buyMethod = null,
         $showState = true,
         $cartButtonAction = null,
@@ -24,24 +24,19 @@ class ShowAction {
         $imageSize = 2,
         array $cartButtonSender = []
     ) {
-        /** @var $product \Model\Product\Entity */
-
         $user = \App::user();
 
         $stateLabel = null;
         if ($product->isInShopOnly()) {
             $stateLabel = ['name' => 'Только в магазинах'];
-        } else if (
-            $product->getMainCategory() && $product->getMainCategory()->getIsFurniture()
-            && $product->getState() && $product->getState()->getIsStore()
-        ) {
+        } else if ($product->getMainCategory() && $product->getMainCategory()->getIsFurniture() && $product->getState() && $product->getState()->getIsStore() && !$product->getSlotPartnerOffer()) {
             if (\App::config()->region['defaultId'] === $user->getRegion()->getId()) {
                 // Для Москвы, SITE-2850
                 //$stateLabel = ['name' => 'Товар за три дня'];
-                $stateLabel = ['name' => 'Товар со склада']; // SITE-3131
+                $stateLabel = ['name' => 'Товар со склада', 'inStore' => true]; // SITE-3131
             } else {
                 // Для регионов (привозит быстрее, но не за три дня)
-                $stateLabel = ['name' => 'Товар со склада'];
+                $stateLabel = ['name' => 'Товар со склада', 'inStore' => true];
             }
             //$showState = true; // включаем отображение шильдика для всех
         }
@@ -55,7 +50,8 @@ class ShowAction {
                 ? ['name' => $product->getLabel()->getName(), 'image' => $product->getLabel()->getImageUrl()]
                 : null
             ,
-            'isPodariZhiznProduct' => $product->getLabel() && $product->getLabel()->getId() == \Model\Product\BasicEntity::LABEL_ID_PODARI_ZHIZN,
+            'showCartButton' => !($product->getLabel() && $product->getLabel()->getId() == \Model\Product\BasicEntity::LABEL_ID_PODARI_ZHIZN),
+            'showCompareButton' => !$product->getKit() || $product->getIsKitLocked(),
             'cartButton'   => [],
             'image'        => $product->getImageUrl($imageSize),
             'hoverImage'   => $this->getHoverImageUrl($product, $imageSize),
@@ -90,7 +86,10 @@ class ShowAction {
                 : null,
             'hasKit'       => (bool)$product->getKit(),
             'isKitLocked'   => (bool)$product->getIsKitLocked(),
-            'brandImage'    => $product->getBrand() && $product->getBrand()->getImage() ? $product->getBrand()->getImage() : null
+            'brandImage'    => $product->getBrand() && $product->getBrand()->getImage() ? $product->getBrand()->getImage() : null,
+            'isSlot' => (bool)$product->getSlotPartnerOffer(),
+            'isOnlyFromPartner' => $product->isOnlyFromPartner(),
+            'isNewWindow'       => \App::abTest()->isNewWindow() // открытие товаров в новом окне
         ];
 
         // oldPrice and priceSale
@@ -103,8 +102,10 @@ class ShowAction {
         if ($buyMethod && in_array(strtolower($buyMethod), ['none', 'false'])) {
             $productItem['cartButton'] = null;
         } else {
-            $productItem['cartButton'] = $cartButtonAction ? $cartButtonAction->execute($helper, $product, null, false, $cartButtonSender) : null;
+            $productItem['cartButton'] = $cartButtonAction ? $cartButtonAction->execute($helper, $product, null, false, $cartButtonSender, false) : null;
         }
+
+        if ($product->isGifteryCertificate()) $productItem['price'] = 'от ' . \App::config()->partners['Giftery']['lowestPrice'];
 
         return $productItem;
     }

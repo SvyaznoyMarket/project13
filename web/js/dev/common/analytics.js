@@ -1,8 +1,36 @@
 ;(function($) {
 
     var body = $(document.body),
-        ga = this.ga,
-        _gaq = this._gaq,
+        ga = this.ga,       // Universal
+        _gaq = this._gaq,   // Classic
+
+        isUniversalAvailable = function isUniversalAvailableF (){
+            return typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length != 0;
+        },
+        isClassicAvailable = function isClassicAvailableF() {
+            return typeof _gaq === 'object';
+        },
+        /**
+         * Логирование просмотра страницы в Google Analytics (Classical + Universal)
+         * @link 'https://developers.google.com/analytics/devguides/collection/analyticsjs/pages'
+         * @link 'https://developers.google.com/analytics/devguides/collection/gajs/methods/gaJSApiBasicConfiguration#_gat.GA_Tracker_._trackPageview'
+         * @param jQueryEvent event, который автоматически передается от jQuery.trigger()
+         * @param eventObject Параметры в следующем порядке: 'page', 'title'
+         */
+        trackGooglePageview = function trackGooglePageView (jQueryEvent, eventObject) {
+            var data = {};
+            if (arguments.length >= 2 && typeof eventObject == 'string') {
+                data.page = arguments[1];
+                if (typeof data.page == 'string' && data.page.substr(0,1) != '/') data.page = '/' + data.page;
+                if (arguments[2]) data.title = arguments[2]
+            }
+            if (isUniversalAvailable()) {
+                ga('send', 'pageview', data);
+            }
+            if (isClassicAvailable()) {
+                _gaq.push(['_trackPageview', data.page])
+            }
+        },
 
         /**
          * Логирование события в Google Analytics (Classical + Universal)
@@ -61,6 +89,7 @@
             }
 
             // Universal Tracking Code
+            // TODO refactor if statement
             if (typeof ga === 'function' && typeof ga.getAll == 'function' && ga.getAll().length != 0) {
                 universalEvent.eventCategory = e.category;
                 universalEvent.eventAction = e.action;
@@ -152,6 +181,7 @@
         },
         /**
          * Логирование транзакции в Google Analytics (Classical + Universal)
+		 * Если в action передаётся несколько меток, то для удобства фильтрации по ним в аналитеке нужно заключать каждую метку в скобки, например: RR_покупка (marketplace)(gift)
          * @link 'https://developers.google.com/analytics/devguides/collection/analyticsjs/ecommerce'
          * @link 'https://developers.google.com/analytics/devguides/collection/gajs/gaTrackingEcommerce'
          * @param jQueryEvent event, который автоматически передается от jQuery.trigger()
@@ -193,81 +223,12 @@
                 console.error('[Google Analytics Ecommerce] %s', exception)
             }
 
-		},
-
-		/**
-		 * Приготовление и отправка данных в GA, аналитика
-		 * @param orderData
-		 */
-		sendOrderToGA = function sendOrderF(orderData) {
-			var
-				oData = orderData || { orders: [] },
-				giftBuyProducts = ENTER.utils.gift.getProductIdsFromCookie();
-
-			ENTER.utils.gift.deleteAllProductIdsFromCookie();
-
-			console.log('[Google Analytics] Start processing orders', oData.orders);
-			$.each(oData.orders, function(i,o) {
-				var googleOrderTrackingData = {};
-				googleOrderTrackingData.transaction = {
-					'id': o.numberErp,
-					'affiliation': o.is_partner ? 'Партнер' : 'Enter',
-					'total': o.paySum,
-					'shipping': o.delivery[0].price,
-					'city': o.region.name
-				};
-				googleOrderTrackingData.products = $.map(o.products, function(p){
-					var
-						productName = p.name,
-						labels = [];
-
-					if (o.is_partner) {
-						labels.push('marketplace');
-					}
-
-					if (p.sender) {
-						labels.push(p.sender);
-					} else if (giftBuyProducts.indexOf(p.id + '') != -1) {
-						labels.push('gift'); // Данный код является рудиментом и его можно будет удалить после 1.3.2015
-					}
-
-                    if (p.sender && p.position) {
-                        labels.push('RR_' + p.position);
-                    }
-
-					if (labels.length) {
-						productName += ' (' + labels.join(', ') + ')';
-					}
-
-					/* SITE-4472 Аналитика по АБ-тесту платного самовывоза и рекомендаций из корзины */
-					if (ENTER.config.pageConfig.selfDeliveryTest && ENTER.config.pageConfig.selfDeliveryLimit > parseInt(o.paySum, 10) - o.delivery[0].price) productName = productName + ' (paid pickup)';
-
-					// Аналитика по купленным товарам из рекомендаций
-					if (p.sender) {
-						if (p.from) body.trigger('trackGoogleEvent',['RR_покупка','Купил просмотренные', p.position || '']);
-						else body.trigger('trackGoogleEvent',['RR_покупка','Купил добавленные', p.position || '']);
-					}
-					return {
-						'id': p.id,
-						'name': productName,
-						'sku': p.article,
-						'category': p.category[0].name +  ' - ' + p.category[p.category.length -1].name,
-						'price': p.price,
-						'quantity': p.quantity
-					}
-				});
-
-				console.log('[Google Analytics] Order', googleOrderTrackingData);
-				body.trigger('trackGoogleTransaction',[googleOrderTrackingData]);
-
-			});
 		};
-
-	ENTER.utils.sendOrderToGA = sendOrderToGA;
 
     if (typeof ga === 'undefined') ga = window[window['GoogleAnalyticsObject']]; // try to assign ga
 
     // common listener for triggering from another files or functions
+    body.on('trackGooglePageview', trackGooglePageview);
     body.on('trackGoogleEvent', trackGoogleEvent);
     body.on('trackGoogleTransaction', trackGoogleTransaction);
 

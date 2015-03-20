@@ -189,25 +189,6 @@ return [
         'require' => ['sliceToken' => '[\w\d-_]+'],
     ],
 
-    // показывать глобальный список товаров
-    'product.category.global.short' => [
-        'pattern' => '/catalog/{categoryPath}/_global',
-        'action'  => ['ProductCategory\Action', 'setGlobal'],
-        'require' => ['categoryPath' => '[\w\d-_]+'],
-    ],
-    // показывать глобальный список товаров
-    'product.category.global' => [
-        'pattern' => '/catalog/{categoryPath}/_global',
-        'action'  => ['ProductCategory\Action', 'setGlobal'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/[\w\d-_]+'],
-    ],
-    // показывать товары на складе
-    'product.category.instore' => [
-        'pattern' => '/catalog/{categoryPath}/_instore',
-        'action'  => ['ProductCategory\Action', 'setInstore'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
-    ],
-
     // tchibo
     'tchibo' => [
         'pattern' => '/catalog/tchibo',
@@ -357,6 +338,10 @@ return [
         'pattern' => '/ajax/product-notification/{productId}',
         'require' => ['productId' => '\d+'],
         'action'  => ['Product\NotificationAction', 'lowerPrice'],
+    ],
+    'product.kit' => [
+        'pattern' => '/ajax/product/kit/{productUi}',
+        'action'  => ['Product\KitAction', 'execute'],
     ],
 
     // теги
@@ -567,8 +552,7 @@ return [
         'action'  => ['OrderV3\CompleteAction', 'execute'],
     ],
     'orderV3.paymentForm' => [
-        'pattern' => '/order/getPaymentForm/{methodId}/order/{orderId}/number/{orderNumber}',
-        'require' => ['methodId' => '\d+', 'orderId' => '\d+', 'orderNumber'=>'\w+'],
+        'pattern' => '/order/getPaymentForm',
         'action'  => ['OrderV3\CompleteAction', 'getPaymentForm'],
     ],
     // ошибки
@@ -703,8 +687,14 @@ return [
 
     'order.svyaznoyClub.complete' => [
         'pattern' => '/orders/svyaznoy-club',
-        'action'  => ['Order\SvyaznoyClubAction', 'complete'],
+        'action'  => ['OrderV3\CompleteAction', 'execute'],
         'method'  => ['GET'],
+    ],
+
+    'order.slot.create' => [
+        'pattern' => '/orders/slot/create',
+        'action'  => ['OrderSlot\Action', 'create'],
+        'method'  => ['POST'],
     ],
 
     // услуги
@@ -794,6 +784,10 @@ return [
         'action'    => ['User\OrderAction', 'execute'],
         'require'   => ['orderId' => '\d+']
     ],
+    'user.recommend' => [
+        'pattern'   => '/private/recommends',
+        'action'    => ['User\RecommendAction', 'execute'],
+    ],
     // подписки пользователя
     'user.subscriptions' => [
         'pattern' => '/private/subscriptions',
@@ -840,10 +834,6 @@ return [
         'pattern' => '/subscribe/create',
         'action'  => ['Subscribe\Action', 'create'],
         'method'  => ['POST'],
-    ],
-    'subscribe.cancel' => [
-        'pattern' => '/subscribe/cancel',
-        'action'  => ['Subscribe\Action', 'cancel'],
     ],
     'subscribe.confirm' => [
         'pattern' => '/subscribe/confirm',
@@ -1005,6 +995,11 @@ return [
         'action'  => ['Enterprize\ShowAction', 'execute'],
     ],
 
+    'enterprize.slider' => [
+        'pattern' => '/enterprize-slider/{enterprizeToken}',
+        'action'  => ['Enterprize\SliderAction', 'execute'],
+    ],
+
     'mobidengi' => [
         'pattern' => '/tele2',
         'action'  => ['Mobidengi\IndexAction', 'execute'],
@@ -1125,6 +1120,12 @@ return [
     'compare.clear' => [
         'pattern' => '/compare/clear',
         'action'  => ['Compare\CompareAction', 'clear'],
+    ],
+
+    // Внешние ссылки на карточку товара
+    'product.internal' => [
+        'pattern'   => '/internal/product',
+        'action'    => ['Product\ShowInternalAction', 'execute'],
     ],
 
     // Переключение АБ-тестов

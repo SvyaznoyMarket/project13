@@ -269,8 +269,6 @@ class Action {
             $response->headers->setCookie($cookie);
         }
 
-        $response->headers->setCookie(new \Http\Cookie(\App::config()->gift['buyProducts']['cookie']['name'], '', 0, '/', 'enter.ru', false, false));
-
         if ($form->getEmail() != '') {
             \App::retailrocket()->setUserEmail($response, $form->getEmail());
         }

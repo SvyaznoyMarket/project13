@@ -9,8 +9,6 @@
 
 namespace View\Partners;
 
-use \Model\Order\Delivery\Entity as Delivery;
-
 class GoogleAnalytics {
 
     private $routeName;
@@ -311,9 +309,6 @@ class GoogleAnalytics {
             if (!$order->getNumber()) {
                 continue;
             }
-
-            $delivery = $order->getDelivery();
-            $delivery = reset($delivery);
 
             $addTransaction = [
                 'id'        => $order->getNumber(), // Transaction ID. Required.

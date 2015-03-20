@@ -11,6 +11,10 @@ class Entity {
     private $typeId;
     /** @var \DateTime */
     private $deliveredAt;
+    /** @var bool */
+    public $isShipping;
+    /** @var string */
+    public $pointUi;
 
     public function __construct(array $data = []) {
         if (array_key_exists('delivery_type_id', $data)) $this->setId($data['delivery_type_id']);
@@ -23,6 +27,9 @@ class Entity {
                 \App::logger()->error($e);
             }
         }
+
+        $this->isShipping = isset($data['is_delivery']) && (bool)$data['is_delivery'];
+        if (isset($data['point_ui'])) $this->pointUi = $data['point_ui'];
     }
 
     /**

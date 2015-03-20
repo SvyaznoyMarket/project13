@@ -6,47 +6,7 @@ use Model\Product\Filter\Entity;
 use View\Product\FilterForm;
 
 class Action {
-    private static $globalCookieName = 'global';
     protected $pageTitle;
-
-    /**
-     * @param string        $categoryPath
-     * @param \Http\Request $request
-     * @return \Http\RedirectResponse
-     */
-    public function setGlobal($categoryPath, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
-
-        $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('product.category', ['categoryPath' => $categoryPath]));
-
-        if ($request->query->has('global')) {
-            if ($request->query->get('global')) {
-                $cookie = new \Http\Cookie(self::$globalCookieName, 1, strtotime('+7 days' ));
-                $response->headers->clearCookie(\App::config()->shop['cookieName']);
-                $response->headers->setCookie($cookie);
-            } else {
-                $response->headers->clearCookie(self::$globalCookieName);
-            }
-        }
-
-        return $response;
-    }
-
-    /**
-     * @param string        $categoryPath
-     * @param \Http\Request $request
-     * @return \Http\RedirectResponse
-     */
-    public function setInstore($categoryPath, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
-
-        $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('product.category', [
-            'categoryPath' => $categoryPath,
-            'instore'      => 1,
-        ]));
-
-        return $response;
-    }
 
     /**
      * @param string        $categoryPath
@@ -64,7 +24,7 @@ class Action {
         $categoryToken = explode('/', $categoryPath);
         $categoryToken = end($categoryToken);
 
-        $region = self::isGlobal() ? null : \App::user()->getRegion();
+        $region = \App::user()->getRegion();
 
         $repository = \RepositoryManager::productCategory();
         $category = $repository->getEntityByToken($categoryToken);
@@ -84,7 +44,7 @@ class Action {
 
         $shop = null;
         try {
-            if (!self::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
+            if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
             }
         } catch (\Exception $e) {
@@ -122,11 +82,7 @@ class Action {
         // запрашиваем текущий регион, если есть кука региона
         $regionConfig = [];
         if ($user->getRegionId()) {
-            \App::dataStoreClient()->addQuery("region/{$user->getRegionId()}.json", [], function($data) use (&$regionConfig) {
-                if((bool)$data) {
-                    $regionConfig = $data;
-                }
-            });
+            $regionConfig = (array)\App::dataStoreClient()->query("/region/{$user->getRegionId()}.json");
 
             \RepositoryManager::region()->prepareEntityById($user->getRegionId(), function($data) {
                 $data = reset($data);
@@ -155,8 +111,8 @@ class Action {
             \App::user()->setRegion($regionEntity);
         }
 
-        /** @var $region \Model\Region\Entity|null */
-        $region = self::isGlobal() ? null : \App::user()->getRegion();
+        /** @var $region \Model\Region\Entity */
+        $region = \App::user()->getRegion();
 
         // подготовка 2-го пакета запросов
 
@@ -315,7 +271,7 @@ class Action {
 
         $shop = null;
         try {
-            if (!self::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
+            if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
             }
         } catch (\Exception $e) {
@@ -328,13 +284,15 @@ class Action {
         }
 
         if ($category->isV2()) {
-            $this->transformFiltersV2($filters);
+            $this->transformFiltersV2($filters, $category);
         }
+
+        $this->correctFiltersForJewel($filters, $category);
 
         // фильтры
         $productFilter = $this->getFilter($filters, $category, $brand, $request, $shop);
 
-        $this->correctFilterAndCategoryForJewel($category, $productFilter);
+        $this->correctProductFilterAndCategoryForJewel($category, $productFilter);
 
         if (!$category->isV2()) {
             // SITE-4734
@@ -496,6 +454,7 @@ class Action {
                         }
 
                         $slideData[] = [
+                            'target'  => \App::abTest()->isNewWindow() ? '_blank' : '_self',
                             'imgUrl'  => \App::config()->dataStore['url'] . 'promo/' . $promo->getToken() . '/' . trim($image->getUrl(), '/'),
                             'title'   => $image->getName(),
                             'linkUrl' => $image->getLink()?($image->getLink().'?from='.$promo->getToken()):'',
@@ -635,7 +594,7 @@ class Action {
     /**
      * @param \Model\Product\Filter\Entity[] $filters
      */
-    private function transformFiltersV2(array &$filters) {
+    private function transformFiltersV2(array &$filters, \Model\Product\Category\Entity $category) {
         $newProperties = [];
 
         foreach ($filters as $key => $property) {
@@ -671,6 +630,10 @@ class Action {
                     unset($filters[$key]);
                 }
             } else if ($property->isBrand()) {
+                if (!$category->isV2Furniture()) {
+                    $property->setIsAlwaysShow(true);
+                }
+
                 $this->sortOptionsByQuantity($property);
             }
         }
@@ -738,7 +701,7 @@ class Action {
         $links = [];
         foreach ($categories as $child) {
             $config = isset($categoryConfigById[$child->getId()]) ? $categoryConfigById[$child->getId()] : null;
-            $productCount = $child->getProductCount() ? : $child->getGlobalProductCount();
+            $productCount = $child->getProductCount();
             $totalText = '';
 
             if ( $productCount > 0 ) {
@@ -749,8 +712,8 @@ class Action {
             }
 
             $linkUrl = $child->getLink();
-            $linkUrl .= \App::request()->getQueryString() ? (strpos('?', $linkUrl) === false ? '?' : '&') . \App::request()->getQueryString() : '';
-            $linkUrl .= \App::request()->get('instore') ? (strpos('?', $linkUrl) === false ? '?' : '&') . 'instore=1' : '';
+            $linkUrl .= \App::request()->getQueryString() ? (strpos($linkUrl, '?') === false ? '?' : '&') . \App::request()->getQueryString() : '';
+            $linkUrl .= \App::request()->get('instore') ? (strpos($linkUrl, '?') === false ? '?' : '&') . 'instore=1' : '';
 
             $links[] = [
                 'name'          => isset($config['name']) ? $config['name'] : $child->getName(),
@@ -868,18 +831,6 @@ class Action {
         }
 
         $filters = $productFilter->dump();
-        // TODO Костыль для таска: SITE-2403 Вернуть фильтр instore
-        if (self::inStore()) {
-            foreach ($filters as $filterKey => $filter) {
-                if ('label' === $filter[0]) {
-                    foreach ($filter[2] as $labelFilterKey => $labelFilter) {
-                        if (1 === $labelFilter) {
-                            unset($filters[$filterKey][2][$labelFilterKey]);
-                        }
-                    }
-                }
-            }
-        }
 
         $smartChoiceEnabled = isset($catalogJson['smartchoice']) ? $catalogJson['smartchoice'] : false;
         $smartChoiceData = [];
@@ -925,6 +876,8 @@ class Action {
         if (!empty($pagerAll)) {
             $productPager = $pagerAll;
         } else {
+            $productError = null;
+
             $productPager = null;
 
             $productIds = [];
@@ -935,24 +888,48 @@ class Action {
                 $offset,
                 $limit,
                 $region,
-                function($data) use (&$productIds, &$productCount) {
-                    if (isset($data['list'][0])) $productIds = $data['list'];
-                    if (isset($data['count'])) $productCount = (int)$data['count'];
+                function($data) use (&$productIds, &$productCount, &$productError) {
+                    if (is_array($data)) {
+                        if (isset($data['list'][0])) $productIds = $data['list'];
+                        if (isset($data['count'])) $productCount = (int)$data['count'];
+                    } else {
+                        $productError = new \Exception('Товары не получены');
+                    }
+                },
+                function(\Exception $e) use (&$productError) {
+                    $productError = $e;
                 }
             );
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
 
+            // HINT Можно добавлять ID неопубликованных продуктов для показа в листингах
+            // array_unshift($productIds, 201540);
+
             $products = [];
             if ((bool)$productIds) {
-                $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
-                    if (is_array($data)) {
-                        foreach ($data as $item) {
-                            $products[] = new \Model\Product\Entity($item);
+                $repository->prepareCollectionById(
+                    $productIds,
+                    $region,
+                    function($data) use (&$products, &$productError) {
+                        if (is_array($data)) {
+                            foreach ($data as $item) {
+                                $products[] = new \Model\Product\Entity($item);
+                            }
+                        } else {
+                            $productError = new \Exception('Товары не получены');
+                            \App::logger()->error(['error' => $productError, 'core.response' => $data, 'sender' => __FILE__ . ' ' .  __LINE__], ['controller']);
                         }
+                    },
+                    function(\Exception $e) use (&$productError) {
+                        $productError = $e;
                     }
-                });
+                );
             }
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+            \App::coreClientV2()->execute();
+
+            if ($productError && !$products && ('true' == $request->get('ajax'))) {
+                throw new \Exception('Товары не найдены');
+            }
 
             $scoreData = [];
             if ((bool)$products) {
@@ -971,7 +948,7 @@ class Action {
 
             $repository->prepareProductsMedias($products);
 
-            \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
+            \App::coreClientV2()->execute();
 
             \RepositoryManager::review()->addScores($products, $scoreData);
 
@@ -986,11 +963,7 @@ class Action {
         }
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage($itemsPerPage);
-        if (self::isGlobal()) {
-            $category->setGlobalProductCount($productPager->count());
-        } else {
-            $category->setProductCount($productPager->count());
-        }
+        $category->setProductCount($productPager->count());
 
         // проверка на максимально допустимый номер страницы
         if ((1 != $productPager->getPage()) && (($productPager->getPage() - $productPager->getLastPage()) > 0)) {
@@ -1103,24 +1076,16 @@ class Action {
      * @return \Model\Product\Filter
      */
     public function getFilter(array $filters, \Model\Product\Category\Entity $category = null, \Model\Brand\Entity $brand = null, \Http\Request $request, $shop = null) {
-        // флаг глобального списка в параметрах запроса
-        $isGlobal = self::isGlobal();
-        //
-        $inStore = self::inStore();
-
         // регион для фильтров
-        $region = $isGlobal ? null : \App::user()->getRegion();
+        $region = \App::user()->getRegion();
 
         // добывание фильтров из http-запроса
         $values = $this->getFilterFromUrl($request);
         $values = $this->deleteNotExistsValues($values, $filters);
 
-        if ($isGlobal) {
-            $values['global'] = 1;
-        }
-        if ($inStore) {
-            $values['instore'] = 1;
-            $values['label'][] = 1; // TODO SITE-2403 Вернуть фильтр instore
+        if (\App::request()->get('instore')) {
+            $values['instore'] = 1; // TODO SITE-2403 Вернуть фильтр instore
+            $values['label'][] = 1; // TODO Костыль для таска: SITE-2403 Вернуть фильтр instore
         }
         if ($brand) {
             $values['brand'] = [
@@ -1197,7 +1162,7 @@ class Action {
             }
         }
 
-        $productFilter = new \Model\Product\Filter($filters, $isGlobal, $inStore, $shop);
+        $productFilter = new \Model\Product\Filter($filters, $shop);
         $productFilter->setCategory($category);
         $productFilter->setValues($values);
 
@@ -1255,22 +1220,6 @@ class Action {
     }
 
     /**
-     * @return bool
-     */
-    public static function isGlobal() {
-        return \App::user()->getRegion()->getHasTransportCompany()
-        && (bool)(\App::request()->cookies->get(self::$globalCookieName, false));
-    }
-
-    /**
-     * @return bool
-     */
-    public static function inStore() {
-        return (bool)\App::request()->get('instore');
-    }
-
-
-    /**
      * @return mixed
      */
     private function getPageTitle() {
@@ -1316,12 +1265,41 @@ class Action {
         return true;
     }
 
+    /**
+     * @param \Model\Product\Filter\Entity[] $filters
+     */
+    private function correctFiltersForJewel(array &$filters, \Model\Product\Category\Entity $category) {
+        foreach ($filters as $key => $filter) {
+            if ($filter->isPrice() && in_array($category->getUi(), [
+                'd792f833-f6fa-4158-83f6-2ac657077076', // Кольца Бронницкий Ювелир
+                '4caf66a4-f1c4-4b79-a6e4-1f2e6a1700cc', // Подвески Бронницкий Ювелир
+                'd4bc284a-9a1f-4614-a3d0-ec690d7e1b78', // Серьги Бронницкий Ювелир
+                'ae6975b8-f6e3-46b3-baba-a85305213dea', // Цепи Бронницкий Ювелир
+                'cd2c06d0-a087-47c2-a043-7ca02317424a', // Танцующие бриллианты
+            ], true)) {
+                unset($filters[$key]);
+                break;
+            }
+        }
 
-    private function correctFilterAndCategoryForJewel(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter) {
+        $filters = array_values($filters);
+    }
+
+    private function correctProductFilterAndCategoryForJewel(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter) {
         if ($category->isV3()) {
             foreach ($productFilter->getFilterCollection() as $filter) {
                 if ('Металл' === $filter->getName() || 'Вставка' === $filter->getName()) {
                     $filter->setIsAlwaysShow(true);
+                }
+
+                if ('Металл' === $filter->getName() && in_array($category->getUi(), [
+                    'd792f833-f6fa-4158-83f6-2ac657077076', // Кольца Бронницкий Ювелир
+                    '4caf66a4-f1c4-4b79-a6e4-1f2e6a1700cc', // Подвески Бронницкий Ювелир
+                    'd4bc284a-9a1f-4614-a3d0-ec690d7e1b78', // Серьги Бронницкий Ювелир
+                    'ae6975b8-f6e3-46b3-baba-a85305213dea', // Цепи Бронницкий Ювелир
+                    'cd2c06d0-a087-47c2-a043-7ca02317424a', // Танцующие бриллианты
+                ], true)) {
+                    $filter->isOpenByDefault = true;
                 }
             }
 
@@ -1330,6 +1308,12 @@ class Action {
                 '9cbeabe3-0a06-4368-8e16-1e617fb74d7b', // Браслеты Raganella Princess
                 'c61f0526-ad96-41e6-8c83-b49b4cb06a7d', // Колье Raganella Princess
                 'd2a5feac-110c-4c08-9d49-b69abf9f8861', // Серьги Raganella Princess
+
+                'd792f833-f6fa-4158-83f6-2ac657077076', // Кольца Бронницкий Ювелир
+                '4caf66a4-f1c4-4b79-a6e4-1f2e6a1700cc', // Подвески Бронницкий Ювелир
+                'd4bc284a-9a1f-4614-a3d0-ec690d7e1b78', // Серьги Бронницкий Ювелир
+                'ae6975b8-f6e3-46b3-baba-a85305213dea', // Цепи Бронницкий Ювелир
+                'cd2c06d0-a087-47c2-a043-7ca02317424a', // Танцующие бриллианты
 
                 '5505db94-143c-4c28-adb9-b608d39afe26', // КОЛЬЦА
                 'd7b951ed-7b94-4ece-a3ae-c685cf77e0dd', // СЕРЬГИ

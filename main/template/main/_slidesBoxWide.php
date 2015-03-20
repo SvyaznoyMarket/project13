@@ -7,6 +7,7 @@
 
             <ul class="slidesBox_dott">
                 <li class="slidesBox_dott_i slidesBox_dott_i-act" data-name="Guess"></li>
+                <li class="slidesBox_dott_i" data-name="Guess"></li>
                 <li class="slidesBox_dott_i" data-name="Magic Moments"></li>
                 <li class="slidesBox_dott_i" data-name="Новая ювелирная коллекция"></li>
             </ul>
@@ -66,6 +67,12 @@
                 </ul>
 
                 <a href="/catalog/jewel/guess-5ec8" class="slidesBox_btnview">Посмотреть<br/>коллекцию</a>
+            </li>
+
+            <li class="slidesBox_i jsSlidesWideItem">
+                <a href="http://www.enter.ru/slices/brands-guess?from=enter_internal_940x240_Guess_sale" class="slidesBox_lk">
+                    <img src="styles/mainpage/img/collection-guess-sale70.jpg" alt="" class="slidesBox_img">
+                </a>
             </li>
 
             <li class="slidesBox_i jsSlidesWideItem">

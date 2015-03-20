@@ -271,7 +271,7 @@ class Cart {
                 'cartButton'        => [ 'id' => \View\Id::cartButtonForProduct($cartProduct['id']), ],
                 'category'          => $cartProduct['category'],
                 'rootCategory'      => $cartProduct['rootCategory'],
-                'isCredit'          => @$cartProduct['credit']['enabled'] === true
+                'isCredit'          => isset($cartProduct['credit']['enabled']) && ($cartProduct['credit']['enabled'] === true)
             ];
         }
 
@@ -294,7 +294,7 @@ class Cart {
     public function getCreditProductIds(){
         $ids = [];
         foreach ((array)$this->getProductsNC() as $product) {
-            if (@$product['credit']['enabled'] == true) $ids[] = $product['id'];
+            if (isset($product['credit']['enabled']) && (true == $product['credit']['enabled'])) $ids[] = $product['id'];
         }
         return $ids;
     }

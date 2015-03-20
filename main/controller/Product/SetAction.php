@@ -151,11 +151,11 @@ class SetAction {
 
         // подготовка 1-го запроса
 
-        /** @var $products \Model\Product\ExpandedEntity */
+        /** @var $products \Model\Product\Entity */
         $products = [];
         \RepositoryManager::product()->prepareCollectionByBarcode($productBarcodes, \App::user()->getRegion(), function($data) use (&$products) {
             foreach ($data as $item) {
-                $products[] = new \Model\Product\CompactEntity($item);
+                $products[] = new \Model\Product\Entity($item);
             }
         });
 

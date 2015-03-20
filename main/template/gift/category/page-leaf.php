@@ -13,7 +13,7 @@ $helper = new \Helper\TemplateHelper();
 ?>
 
 <div class="bCatalog js-gift-category <?= $isNewMainPage ? 'newLayout' : '' ?>" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
-    <div class="bCustomFilter" styles="background-image: url('/styles/catalog/img/bg-ny-gift.jpg?2')">
+    <div class="bCustomFilter">
 
         <?= $helper->render('gift/category/__filter', [
             'productFilter' => $productFilter,
@@ -37,7 +37,7 @@ $helper = new \Helper\TemplateHelper();
             'cartButtonSender'    => $cartButtonSender
         ]) ?>
     </div>
-    
+
     <div class="sorting clearfix js-category-sortingAndPagination">
         <?= $helper->render('gift/category/__pagination', ['pager' => $productPager]) ?>
     </div>

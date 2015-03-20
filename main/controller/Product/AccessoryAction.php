@@ -2,6 +2,11 @@
 
 namespace Controller\Product;
 
+/**
+ * Class AccessoryAction
+ * @package Controller\Product
+ * @deprecated
+ */
 class AccessoryAction {
 
     CONST NUM_RELATED_ON_PAGE = 4;
@@ -54,7 +59,6 @@ class AccessoryAction {
                 'categoryToken'   => empty($categoryToken) ? '' : $categoryToken,
                 'isHidden'  => false,
                 'gaEvent'   => 'SmartEngine',
-                'additionalData'    =>  \Kissmetrics\Manager::getProductEvent($accessory, $begin, 'Accessorize'),
             ));
             $begin++;
         }

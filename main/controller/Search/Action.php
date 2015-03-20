@@ -44,7 +44,7 @@ class Action {
 
         $shop = null;
         try {
-            if (!\Controller\ProductCategory\Action::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
+            if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
             }
         } catch (\Exception $e) {
@@ -322,11 +322,7 @@ class Action {
 
         $shop = null;
         try {
-            if (
-                !\Controller\ProductCategory\Action::isGlobal() &&
-                \App::request()->get('shop') &&
-                \App::config()->shop['enabled']
-            ) {
+            if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
             }
         } catch (\Exception $e) {}

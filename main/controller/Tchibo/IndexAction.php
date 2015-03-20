@@ -118,6 +118,7 @@ class IndexAction {
             }
 
             $slideData[] = [
+                'target'  => \App::abTest()->isNewWindow() ? '_blank' : '_self',
                 'imgUrl'  => \App::config()->dataStore['url'] . 'promo/' . $promo->getToken() . '/' . trim($image->getUrl(), '/'),
                 'title'   => $image->getName(),
                 'linkUrl' => $image->getLink()?($image->getLink().'?from='.$promo->getToken()):'',
@@ -176,6 +177,7 @@ class IndexAction {
 
         // формируем вьюху, передаём ей данные
         $page = new \View\Tchibo\IndexPage();
+        $page->setParam('category', $category);
         $page->setParam('slideData', $slideData);
         $page->setParam('catalogConfig', $catalogJson);
         $page->setParam('catalogCategories', $rootCategoryInMenu ? $rootCategoryInMenu->getChild() : []);

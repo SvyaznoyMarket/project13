@@ -3,331 +3,429 @@
  *
  * @author  Shaposhnik Vitaly
  */
-;(function(ENTER) {
-	var
-		form = $('.jsEnterprizeForm'),
-		body = $('body'),
-		mobilePhoneField = $('.jsMobile'),
-		authBlock = $('#enterprize-auth-block'),
+;
+(function(ENTER) {
+    var
+        form = $('.jsEnterprizeForm'),
+        body = $('body'),
+        mobilePhoneField = $('.jsMobile'),
+        authBlock = $('#enterprize-auth-block'),
 
-		/**
-		 * Конфигурация валидатора для формы ЛК Enterprize
-		 * @type {Object}
-		 */
-		validationConfig = {
-			fields: [
-				{
-					fieldNode: $('.jsName'),
-					require: true,
-					customErr: 'Не указано имя'
-				},
-				{
-					fieldNode: mobilePhoneField,
-					require: true,
-					validBy: 'isPhone',
-					customErr: 'Не указан мобильный телефон'
-				},
-				{
-					fieldNode: $('.jsEmail'),
-					require: true,
-					validBy: 'isEmail',
-					customErr: 'Не указан email'
-				},
-				{
-					fieldNode: $('.jsAgree'),
-					require: true,
-					customErr: 'Необходимо согласие'
-				},
-				{
-					fieldNode: $('.jsSubscribe'),
-					require: true,
-					customErr: 'Необходимо согласие'
-				}
-			]
-		},
-		validator = new FormValidator(validationConfig),
+        /**
+         * Конфигурация валидатора для формы ЛК Enterprize
+         * @type {Object}
+         */
+        validationConfig = {
+            fields: [{
+                fieldNode: $('.jsName'),
+                require: true,
+                customErr: 'Не указано имя'
+            }, {
+                fieldNode: mobilePhoneField,
+                require: true,
+                validBy: 'isPhone',
+                customErr: 'Не указан мобильный телефон'
+            }, {
+                fieldNode: $('.jsEmail'),
+                require: true,
+                validBy: 'isEmail',
+                customErr: 'Не указан email'
+            }, {
+                fieldNode: $('.jsAgree'),
+                require: true,
+                customErr: 'Необходимо согласие'
+            }, {
+                fieldNode: $('.jsSubscribe'),
+                require: true,
+                customErr: 'Необходимо согласие'
+            }]
+        },
+        validator = new FormValidator(validationConfig),
 
-		/**
-		 * Конфигурация валидатора для формы логина
-		 * @type {Object}
-		 */
-		signinValidationConfig = {
-			fields: [
-				{
-					fieldNode: $('.jsSigninUsername', authBlock),
-					require: true,
-					customErr: 'Не указан логин'
-				},
-				{
-					fieldNode: $('.jsSigninPassword', authBlock),
-					require: true,
-					customErr: 'Не указан пароль'
-				}
-			]
-		},
-		signinValidator = new FormValidator(signinValidationConfig),
+        /**
+         * Конфигурация валидатора для формы логина
+         * @type {Object}
+         */
+        signinValidationConfig = {
+            fields: [{
+                fieldNode: $('.jsSigninUsername', authBlock),
+                require: true,
+                customErr: 'Не указан логин'
+            }, {
+                fieldNode: $('.jsSigninPassword', authBlock),
+                require: true,
+                customErr: 'Не указан пароль'
+            }]
+        },
+        signinValidator = new FormValidator(signinValidationConfig),
 
-		/**
-		 * Конфигурация валидатора для формы регистрации
-		 * @type {Object}
-		 */
-		forgotPwdValidationConfig = {
-			fields: [
-				{
-					fieldNode: $('.jsForgotPwdLogin', authBlock),
-					require: true,
-					customErr: 'Не указан email или мобильный телефон',
-					validateOnChange: true
-				}
-			]
-		},
-		forgotValidator = new FormValidator(forgotPwdValidationConfig);
-	// end of vars
+        /**
+         * Конфигурация валидатора для формы регистрации
+         * @type {Object}
+         */
+        forgotPwdValidationConfig = {
+            fields: [{
+                fieldNode: $('.jsForgotPwdLogin', authBlock),
+                require: true,
+                customErr: 'Не указан email или мобильный телефон',
+                validateOnChange: true
+            }]
+        },
+        forgotValidator = new FormValidator(forgotPwdValidationConfig);
+    // end of vars
 
-	var
-		/**
-		 * Очистка блока сообщений
-		 */
-		clearMsg = function clearMsg() {
-			$('ul.red').length && $('ul.red').html('');
-			$('ul.green').length && $('ul.green').html('');
-		},
+    var
+    /**
+     * Очистка блока сообщений
+     */
+        clearMsg = function clearMsg() {
+            $('ul.red').length && $('ul.red').html('');
+            $('ul.green').length && $('ul.green').html('');
+        },
 
-		/**
-		 * Показ сообщений
-		 *
-		 * @param   {String}    msg     Сообщение которое необходимо показать пользователю
-		 * @param   {String}    type    Тип сообщения. Ожидаемое значение 'error' или 'notice'
-		 */
-		showMsg = function showMsg( msg, type ) {
-			var
-				type = type ? type : 'error',
-				msgClass = 'error' === type ? 'red' : ('notice' === type ? 'green' : null),
-				msgBlock = $('ul.' + msgClass);
-			// end of vars
+        /**
+         * Показ сообщений
+         *
+         * @param   {String}    msg     Сообщение которое необходимо показать пользователю
+         * @param   {String}    type    Тип сообщения. Ожидаемое значение 'error' или 'notice'
+         */
+        showMsg = function showMsg(msg, type) {
+            var
+                type = type ? type : 'error',
+                msgClass = 'error' === type ? 'red' : ('notice' === type ? 'green' : null),
+                msgBlock = $('ul.' + msgClass);
+            // end of vars
 
-			if ( !msgClass ) {
-				return;
-			}
+            if (!msgClass) {
+                return;
+            }
 
-			if ( msgBlock.length ) {
-				msgBlock.html('<li>' + msg + '</li>');
-			}
-			else {
-				form.prepend($('<ul class="' + msgClass + '" />').append('<li>' + msg + '</li>'));
-			}
+            if (msgBlock.length) {
+                msgBlock.html('<li>' + msg + '</li>');
+            } else {
+                form.prepend($('<ul class="' + msgClass + '" />').append('<li>' + msg + '</li>'));
+            }
 
-			return false;
-		},
+            return false;
+        },
 
-		/**
-		 * Обработчик ошибок формы
-		 *
-		 * @param   {Object}    formError   Объект с полем содержащим ошибки
-		 */
-		formErrorHandler = function formErrorHandler( formError ) {
-			var
-				field = $('[name="user[' + formError.field + ']"]');
-			// end of vars
+        /**
+         * Обработчик ошибок формы
+         *
+         * @param   {Object}    formError   Объект с полем содержащим ошибки
+         */
+        formErrorHandler = function formErrorHandler(formError) {
+            var
+                field = $('[name="user[' + formError.field + ']"]');
+            // end of vars
 
-			var
-				clearError = function clearError() {
-					validator._unmarkFieldError($(this));
-				};
-			// end of functions
+            var
+                clearError = function clearError() {
+                    validator._unmarkFieldError($(this));
+                };
+            // end of functions
 
-			console.warn('Ошибка в поле');
+            console.warn('Ошибка в поле');
 
-			validator._markFieldError(field, formError.message);
-			field.bind('focus', clearError);
+            validator._markFieldError(field, formError.message);
+            field.bind('focus', clearError);
 
-			return false;
-		},
+            return false;
+        },
 
-		/**
-		 * Обработчик ошибок из ответа от сервера
-		 *
-		 * @param res
-		 */
-		serverErrorHandler = function serverErrorHandler( res ) {
-			var
-				formError = null,
-				i;
-			// end of vars
+        /**
+         * Обработчик ошибок из ответа от сервера
+         *
+         * @param res
+         */
+        serverErrorHandler = function serverErrorHandler(res) {
+            var
+                formError = null,
+                i;
+            // end of vars
 
-			console.warn('Обработка ошибок формы');
+            console.warn('Обработка ошибок формы');
 
-			for ( i = res.form.error.length - 1; i >= 0; i-- ) {
-				formError = res.form.error[i];
+            for (i = res.form.error.length - 1; i >= 0; i--) {
+                formError = res.form.error[i];
 
-				if ( !formError.message ) {
-					continue;
-				}
+                if (!formError.message) {
+                    continue;
+                }
 
-				console.warn(formError);
+                console.warn(formError);
 
-				if ( formError.field === 'global' ) {
-					showMsg(formError.message);
-				}
-				else {
-					formErrorHandler(formError);
-				}
-			}
+                if (formError.field === 'global') {
+                    showMsg(formError.message);
+                } else {
+                    formErrorHandler(formError);
+                }
+            }
 
-			return false;
-		},
+            return false;
+        },
 
-		/**
-		 * Обработчик сабмита формы ЛК Enterprize
-		 *
-		 * @param e
-		 */
-		formSubmit = function formSubmit( e ) {
-			e.preventDefault();
+        /**
+         * Обработчик сабмита формы ЛК Enterprize
+         *
+         * @param e
+         */
+        formSubmit = function formSubmit(e) {
+            e.preventDefault();
 
-			var
-				formData = $(this).serializeArray(),
-				action = $(this).attr('action');
-			// end of vars
+            var
+                formData = $(this).serializeArray(),
+                action = $(this).attr('action');
+            // end of vars
 
-			var
-				/**
-				 * Обработчик ответа от сервера
-				 * @param response
-				 */
-				responseFromServer = function responseFromServer( response ) {
-					if ( response.error ) {
-						if ( response.needAuth ) {
-							openAuth();
-						}
+            var
+            /**
+             * Обработчик ответа от сервера
+             * @param response
+             */
+                responseFromServer = function responseFromServer(response) {
+                    if (response.error) {
+                        if (response.needAuth) {
+                            openAuth();
+                        }
 
-						console.warn('Form has error');
-						serverErrorHandler(response);
+                        console.warn('Form has error');
+                        serverErrorHandler(response);
+                        return false;
+                    }
 
-						return false;
-					}
+                    if (response.data.link !== undefined) {
+                        window.location.href = response.data.link;
+                    } else if (response.notice.message) {
+                        showMsg(response.notice.message, 'notice');
+                    }
 
-					if ( response.data.link !== undefined ) {
-						window.location.href = response.data.link;
-					}
-					else if ( response.notice.message ) {
-						showMsg(response.notice.message, 'notice');
-					}
+                    return false;
+                },
 
-					return false;
-				};
-			// end of functions
+                responseNewFromServer = function responseFromServer(response) {
+                    var form = $('.js-ep-reg-form'),
+                    	regComplete = $('.js-ep-reg-complete'),
+                    	regCompleteText = regComplete.find('.js-ep-reg-complete-text');
 
-			$.post(action, formData, responseFromServer, 'json');
+                    if (response.error) {
+                        if (response.needAuth) {
+                            openAuth();
+                        }
 
-			// очищаем блок сообщений
-			clearMsg();
+                        console.warn('Form has error');
+                        serverErrorHandler(response);
+                        return false;
+                    }
 
-			return false;
-		},
+                    if (response.data.link !== undefined) {
+                        window.location.href = response.data.link;
+                    } else if (response.notice.message) {
+                        regCompleteText.html(response.notice.message);
+                    }
 
-		epHintPopup = function() {
-			console.log('hint');
+                    form.hide();
+                    regComplete.show();
 
-			var
-				btnHintPopup = $('.js-ep-btn-hint-popup'),
+                    return false;
+                };
+            // end of functions
 
-				hintPopup = $('.js-ep-hint-popup'),
-				hintPopupClose = hintPopup.find('.js-ep-hint-popup-close');
-			// end of vars
+            if ( $(this).data('form') == 'new-form' ) {
+                $.post(action, formData, responseNewFromServer, 'json');
+            } else {
+            	$.post(action, formData, responseFromServer, 'json');
+            }
 
-			var
-				showHintPopup = function showHintPopup() {
-					console.log('hint show');
-					hintPopup.fadeIn(100);
+            // очищаем блок сообщений
+            clearMsg();
 
-					return false;
-				},
+            return false;
+        },
 
-				closeHintPopup = function closeHintPopup() {
-					hintPopup.fadeOut(100);
+        epHintPopup = function() {
+            console.log('hint');
 
-					return false;
-				};
-			// end of functions
+            var
+                btnHintPopup = $('.js-ep-btn-hint-popup'),
 
-			btnHintPopup.on('click', showHintPopup);
+                hintPopup = $('.js-ep-hint-popup'),
+                hintPopupClose = hintPopup.find('.js-ep-hint-popup-close');
+            // end of vars
 
-			hintPopupClose.on('click', closeHintPopup);
-		},
+            var
+                showHintPopup = function showHintPopup() {
+                    hintPopup.fadeIn(100);
 
-		/**
-		 * Открыть окно авторизации
-		 */
-		openAuth = function() {
-			ENTER.utils.signinValidationConfig = signinValidationConfig;
-			ENTER.utils.signinValidator = signinValidator;
-			ENTER.utils.forgotPwdValidationConfig = forgotPwdValidationConfig;
-			ENTER.utils.forgotValidator = forgotValidator;
+                    return false;
+                },
 
-			var
-				/**
-				 * При закрытии попапа убераем ошибки с полей
-				 */
-				removeErrors = function() {
-					var
-						validators = ['signin', 'forgot'],
-						validator,
-						config,
-						self,
-						i, j;
-					// end of vars
+                closeHintPopup = function closeHintPopup() {
+                    hintPopup.fadeOut(100);
 
-					for (j in validators) {
-						validator = eval('ENTER.utils.' + validators[j] + 'Validator');
-						config = eval('ENTER.utils.' + validators[j] + 'ValidationConfig');
+                    return false;
+                };
+            // end of functions
 
-						if ( !config || !config.fields || !validator ) {
-							continue;
-						}
+            btnHintPopup.on('click', showHintPopup);
 
-						for (i in config.fields) {
-							self = config.fields[i].fieldNode;
-							self && validator._unmarkFieldError(self);
-						}
-					}
-				};
-			// end of functions
+            hintPopupClose.on('click', closeHintPopup);
+        },
 
-			authBlock.lightbox_me({
-				centered: true,
-				autofocus: true,
-				onLoad: function() {
-					authBlock.find('input:first').focus();
-				},
-				onClose: removeErrors
-			});
+        /**
+         * Открыть окно авторизации
+         */
+        openAuth = function() {
+            ENTER.utils.signinValidationConfig = signinValidationConfig;
+            ENTER.utils.signinValidator = signinValidator;
+            ENTER.utils.forgotPwdValidationConfig = forgotPwdValidationConfig;
+            ENTER.utils.forgotValidator = forgotValidator;
 
-			return false;
-		};
-	// end of functions
+            var
+            /**
+             * При закрытии попапа убераем ошибки с полей
+             */
+                removeErrors = function() {
+                var
+                    validators = ['signin', 'forgot'],
+                    validator,
+                    config,
+                    self,
+                    i, j;
+                // end of vars
 
-	// устанавливаем маску для поля "Ваш мобильный телефон"
-	$.mask.definitions['n'] = '[0-9]';
-	mobilePhoneField.length && mobilePhoneField.mask('8 (nnn) nnn-nn-nn');
+                for (j in validators) {
+                    validator = eval('ENTER.utils.' + validators[j] + 'Validator');
+                    config = eval('ENTER.utils.' + validators[j] + 'ValidationConfig');
 
-	body.on('submit', '.jsEnterprizeForm', formSubmit);
-	body.on('click', '.jsEnterprizeAuthLink', openAuth);
+                    if (!config || !config.fields || !validator) {
+                        continue;
+                    }
 
-	// Подключение слайдера товаров
-	if ( $('.js-slider').length ) {
-		$('.js-slider').goodsSlider();
-	}
+                    for (i in config.fields) {
+                        self = config.fields[i].fieldNode;
+                        self && validator._unmarkFieldError(self);
+                    }
+                }
+            };
+            // end of functions
 
-	$(document).ready(function() {
-		if ( $('.epHintPopup').length ) {
-			epHintPopup();
-		}
-	});
+            authBlock.lightbox_me({
+                centered: true,
+                autofocus: true,
+                onLoad: function() {
+                    authBlock.find('input:first').focus();
+                },
+                onClose: removeErrors
+            });
 
-	// Открываем информационный попап
-//	if ( infoBlock.length ) {
-//		openInfoBlock();
-//	}
+            return false;
+        };
+    // end of functions
+
+    // устанавливаем маску для поля "Ваш мобильный телефон"
+    $.mask.definitions['n'] = '[0-9]';
+    mobilePhoneField.length && mobilePhoneField.mask('8 (nnn) nnn-nn-nn');
+
+    body.on('submit', '.jsEnterprizeForm', formSubmit);
+    body.on('click', '.jsEnterprizeAuthLink', openAuth);
+
+    // Подключение слайдера товаров
+    if ($('.js-slider').length) {
+        $('.js-slider').goodsSlider();
+    }
+
+    // показываем описание фишки
+    body.on('click', '.js-enterprize-coupon', function() {
+        var $self = $(this),
+            template = $('#tplEnterprizeForm'),
+            templateHint = template.html(),
+            $hint = $('.js-enterprize-coupon-hint'),
+
+            selectClass = $self.data('column'),
+            activeClass = 'act',
+
+            html,
+            dataValue = $self.data('value');
+
+        $hint.remove();
+
+        html = Mustache.render(templateHint, dataValue);
+
+        // показываем окно с описанием фишки
+        if ($self.hasClass(activeClass)) {
+            $self.removeClass(activeClass);
+            $hint.remove();
+
+        } else {
+            $('.js-enterprize-coupon').removeClass(activeClass);
+            $self.addClass(activeClass);
+            $self.closest('.js-enterprize-coupon-parent').append(html);
+            $('.js-enterprize-coupon-hint').addClass(selectClass);
+            body.trigger('trackGooglePageview', ['/enterprize/form/' + dataValue.token]);
+        }
+
+        if ( dataValue.slider.url ) {
+            var $sliderContainer = $('.js-enterprize-slider-container');
+
+            $sliderContainer.empty();
+            if (body.data('enterprizeSliderXhr')) { // если до этого была загрузка слайдера - прибиваем
+                try {
+                    body.data('enterprizeSliderXhr').abort();
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+            var xhr = $.get(dataValue.slider.url);
+
+            xhr.done(function(response) {
+                if (response.content) {
+                    $sliderContainer.removeClass('mLoader').html(response.content);
+
+                    if ( $('.js-slider').data('slider').count != 0 ) {
+                        $('.js-ep-slides').show(500);
+                    }
+                }
+            });
+            xhr.always(function() {
+                body.data('enterprizeSliderXhr', null);
+                $('.js-slider').goodsSlider();
+            });
+
+            body.data('enterprizeSliderXhr', xhr);
+        }
+    });
+
+    body.on('click', '.js-ep-hint-closer', function(e) {
+    	e.preventDefault();
+
+    	$(this).closest('.js-enterprize-coupon-hint').remove();
+    	$('.js-enterprize-coupon').removeClass('act');
+    });
+
+    body.on('focus', '.js-phone-mask', function() {
+        var $self = $(this);
+
+        $.mask.definitions['n'] = '[0-9]';
+        $self.length && $self.mask('8 (nnn) nnn-nn-nn');
+    });
+
+    body.on('click', '.js-ep-rules-toggle', function(e) {
+    	e.preventDefault();
+
+    	$('.js-ep-rules-list').toggle();
+    })
+
+    $(document).ready(function() {
+        if ( $('.epHintPopup').length ) {
+            epHintPopup('slow');
+        }
+    });
+
+    // Открываем информационный попап
+    //	if ( infoBlock.length ) {
+    //		openInfoBlock();
+    //	}
 
 }(window.ENTER));
