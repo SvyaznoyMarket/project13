@@ -52,9 +52,17 @@ class Entity {
         if (array_key_exists('group_position', $data)) $this->setGroupPosition($data['group_position']);
         if (array_key_exists('position', $data)) $this->setPosition($data['position']);
         if (array_key_exists('is_view_list', $data)) $this->setIsInList($data['is_view_list']);
-        if (array_key_exists('option', $data) && is_array($data['option'])) $this->setOption(array_map(function($data) {
-            return new Option\Entity($data);
-        }, $data['option']));
+        if (isset($data['option'][0])) {
+            $this->setOption(array_map(function($data) {
+                return new Option\Entity($data);
+            }, $data['option']));
+        } else if (isset($data['options'][0])) {
+            array_walk($data['options'], function($data) {
+                if (isset($data['value'])) {
+                    $this->addOption(new \Model\Product\Property\Option\Entity($data));
+                }
+            });
+        }
     }
 
     /**
@@ -247,31 +255,26 @@ class Entity {
     }
 
     public function getStringValue() {
-        if ($this->value!==null) {
-		
-            if (in_array($this->value, ['false', false], true)) {
-                return 'нет';
-            }
-            if (in_array($this->value, ['true', true], true)) {
-                return 'да';
-            }
-            if (!empty($this->unit)) {
-                return sprintf('%s %s', $this->value, $this->unit);
-            }
-
-            return $this->value;
-        }
-
-        if (!empty($this->option)) {
-            $value = [];
-            foreach ($this->option as $option) {
-                $value[] = $option->getHumanizedName();
-            }
-
-            return join(', ', $value);
+        $value = null;
+        if (1 == count($this->getOption())) {
+            $value = $this->getOption()[0]->getValue();
         } else {
-            return null;
+            $value = implode(
+                ', ',
+                array_map(
+                    function(\Model\Product\Property\Option\Entity $option) {
+                        return $option->getValue();
+                    },
+                    $this->getOption()
+                )
+            );
         }
+
+        if ($value && $this->unit) {
+            $value .= (' ' . $this->unit);
+        }
+
+        return $value;
     }
 
     /**
