@@ -8517,7 +8517,8 @@ img[height="0"] {
     padding: 0 4px;
     cursor: pointer;
   }
-  .orderCol_addrs .ui-autocomplete .ui-corner-all:hover {
+  .orderCol_addrs .ui-autocomplete .ui-corner-all:hover,
+  .orderCol_addrs .ui-autocomplete .ui-corner-all.ui-state-focus {
     text-decoration: none;
     background: #fde6c6;
   }
