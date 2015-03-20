@@ -3289,6 +3289,12 @@ img[height="0"] {
     right: 8px;
     top: 0;
     height: 240px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
   .slidesbnnr_thmbs_wrap:hover .slidesbnnr_thmbs_btn {
     -moz-opacity: 1;
@@ -8511,7 +8517,8 @@ img[height="0"] {
     padding: 0 4px;
     cursor: pointer;
   }
-  .orderCol_addrs .ui-autocomplete .ui-corner-all:hover {
+  .orderCol_addrs .ui-autocomplete .ui-corner-all:hover,
+  .orderCol_addrs .ui-autocomplete .ui-corner-all.ui-state-focus {
     text-decoration: none;
     background: #fde6c6;
   }

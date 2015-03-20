@@ -18,7 +18,6 @@ class FormPage extends \View\DefaultLayout {
 
         if ($this->params['limit'] > 0) {
             $return = $this->render('enterprize/page-form', $this->params);
-            $return .= '<div id="flocktoryEnterprizeFormJS" class="jsanalytics"></div>';
         }
 
         return $return;

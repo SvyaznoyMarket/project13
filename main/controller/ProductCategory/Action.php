@@ -294,6 +294,10 @@ class Action {
 
         $this->correctProductFilterAndCategoryForJewel($category, $productFilter);
 
+        if ($category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing()) {
+            $category->setProductView(3);
+        }
+
         if (!$category->isV2()) {
             // SITE-4734
             foreach ($productFilter->getFilterCollection() as $filter) {
@@ -765,7 +769,12 @@ class Action {
         // вид товаров
         $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
         // листалка
-        $itemsPerPage = \App::config()->product['itemsPerPage'];
+        if ($category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing()) {
+            $itemsPerPage = 21;
+        } else {
+            $itemsPerPage = \App::config()->product['itemsPerPage'];
+        }
+
         $limit = $itemsPerPage;
         $offset = ($pageNum - 1) * $limit;
 
@@ -973,7 +982,15 @@ class Action {
             ]));
         }
 
-        $columnCount = (bool)array_intersect(array_map(function(\Model\Product\Category\Entity $category) { return $category->getId(); }, $category->getAncestor()), [1320, 4649]) ? 3 : 4;
+        if ($category->isV2Furniture()) {
+            if (\Session\AbTest\AbTest::isNewFurnitureListing()) {
+                $columnCount = 3;
+            } else {
+                $columnCount = 4;
+            }
+        } else {
+            $columnCount = (bool)array_intersect(array_map(function(\Model\Product\Category\Entity $category) { return $category->getId(); }, $category->getAncestor()), [1320, 4649]) ? 3 : 4;
+        }
 
         // ajax
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {

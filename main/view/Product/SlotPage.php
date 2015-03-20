@@ -8,6 +8,6 @@ class SlotPage extends \View\Product\IndexPage {
     }
 
     public function slotContent() {
-        return $this->render('product-slot/content', $this->params) . PHP_EOL . $this->render('partner-counter/_flocktory_popup', $this->params);
+        return $this->render('product-slot/content', $this->params);
     }
 }
