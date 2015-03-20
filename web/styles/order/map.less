@@ -17,6 +17,15 @@
 			width: 100%;
 			.gradient(rgba(255,255,255,0), #fff, rgba(255,255,255,0));
 		}
+		&:before{
+			content:'';
+			position: absolute;
+			top:0px;
+			left:0px;
+			height: 27px;
+			width: 100%;
+			.gradient(#fff, rgba(255,255,255,0), #fff);
+		}
 	}
 	.selShop_hh{
 		margin-bottom: 10px;
@@ -29,6 +38,7 @@
 	overflow-x: hidden;
 	display: block;
 	max-height: 350px;
+	padding-top:12px;
 	&:after {
 		content:'';
 		height: 20px;
