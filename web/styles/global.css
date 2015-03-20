@@ -3289,6 +3289,12 @@ img[height="0"] {
     right: 8px;
     top: 0;
     height: 240px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
   .slidesbnnr_thmbs_wrap:hover .slidesbnnr_thmbs_btn {
     -moz-opacity: 1;
