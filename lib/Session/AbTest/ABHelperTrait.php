@@ -18,6 +18,11 @@ trait ABHelperTrait {
 //        return \App::abTest()->getTest('main_page') && in_array(\App::abTest()->getTest('main_page')->getChosenCase()->getKey(), ['new', 'search_new_1', 'search_new_2']);
     }
 
+    public static function isNewFurnitureListing() {
+        $test = \App::abTest()->getTest('furnitureListing');
+        return $test && $test->getChosenCase()->getKey() === 'new';
+    }
+
     /** Поиск с возможностью фильтрации по категориям?
      * @return bool
      */
