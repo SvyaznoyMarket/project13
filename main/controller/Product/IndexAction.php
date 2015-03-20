@@ -16,7 +16,7 @@ class IndexAction {
     public function execute($productPath, \Http\Request $request) {
         $actionResponse = self::$actionResponse;
 
-        if (!self::$actionResponse) {
+        if (!$actionResponse) {
             return (new \Controller\Product\OldIndexAction())->execute($productPath, $request);
         }
 
