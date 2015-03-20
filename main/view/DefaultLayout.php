@@ -571,14 +571,6 @@ class DefaultLayout extends Layout {
         return '';
     }
 
-    public function slotFlocktoryEnterprizeJs() {
-        return '';
-    }
-
-    public function slotFlocktoryEnterprizeRegistrationJs() {
-        return '';
-    }
-
     /** Google Tag Manager Container (ports.js)
      * @param array $data Дополнительные данные для GTM
      * @return string
@@ -597,10 +589,6 @@ class DefaultLayout extends Layout {
                 <noscript><iframe src="//www.googletagmanager.com/ns.html?id=' . $containerId . '" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <!-- End Google Tag Manager -->
             </div>';
-    }
-
-    public function slotFlocktoryExchangeJS() {
-        return;
     }
 
     public function slotEnterprizeRegJS() {

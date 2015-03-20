@@ -598,12 +598,6 @@ class AppConfig {
     ];
 
     /** @var array */
-    public $flocktoryCoupon = [
-        'enabled' => null,
-        'paramName' => null,
-    ];
-
-    /** @var array */
     public $scms = [
         'url'          => null,
         'timeout'      => null,

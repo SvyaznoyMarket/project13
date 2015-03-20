@@ -512,9 +512,6 @@ $c->svyaznoyClub['cardNumber']['cookieName'] = 'scid';
 $c->flocktoryExchange['enabled'] = true;
 $c->flocktoryPostCheckout['enabled'] = true;
 
-$c->flocktoryCoupon['enabled'] = true;
-$c->flocktoryCoupon['paramName'] = 'utm_coupon';
-
 
 $c->photoContest = [
 	'client' => [

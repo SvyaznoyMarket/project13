@@ -78,7 +78,6 @@
         <?= $page->slotPartnerCounter() ?>
         <?= $page->slotEnterprizeConfirmJs() ?>
         <?= $page->slotEnterprizeCompleteJs() ?>
-        <?= $page->slotFlocktoryEnterprizeJs() ?>
         <?= $page->slotEnterprizeRegJS() ?>
         <?= $page->slotGifteryJS() ?>
     </div>
