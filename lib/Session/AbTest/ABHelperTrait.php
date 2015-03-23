@@ -62,13 +62,6 @@ trait ABHelperTrait {
             && in_array(\App::abTest()->getTest('online_motivation')->getChosenCase()->getKey(), ['on', 'online_motivation_coupon', 'online_motivation_discount']);
     }
 
-    /** Обязательный email при оформлении заказа?
-     * @return bool
-     */
-    public static function isEmailRequired(){
-        return \App::abTest()->getTest('order_email') && \App::abTest()->getTest('order_email')->getChosenCase()->getKey() == 'required';
-    }
-
     /**
      * @return int
      */
