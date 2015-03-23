@@ -102,12 +102,6 @@ namespace Model\OrderDelivery {
             $this->validateOrders();
 
 
-            // идиотский АБ-тест TODO remove
-            // суммируем общую стоимость заказов заново
-            if (\Session\AbTest\AbTest::isSelfPaidDelivery()) {
-                $this->total_cost = 0;
-                foreach ($this->orders as $order) $this->total_cost += $order->total_cost;
-            }
         }
 
         /** Различные странные ситуации, которые надо проверить
@@ -429,11 +423,6 @@ namespace Model\OrderDelivery\Entity {
                 if (isset($data['certificate']['par']))  $this->certificate['par'] = (string)$data['certificate']['par'];
             }
 
-            // идиотский АБ-тест TODO remove
-            if (\Session\AbTest\AbTest::isSelfPaidDelivery() && $this->total_cost < \App::config()->self_delivery['limit'] && $this->delivery->delivery_method_token == 'self') {
-                $this->delivery->price = 100;
-                $this->total_cost = $this->total_cost + $this->delivery->price;
-            }
         }
 
         /** Это заказ партнерский?
