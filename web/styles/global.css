@@ -11495,6 +11495,7 @@ img[height="0"] {
   }
   .product-container--kitchen .product-card__head__title {
     line-height: 1em;
+    font-size: 32px;
   }
   .product-container--kitchen .product-card__head__article {
     line-height: 16px;
