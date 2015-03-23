@@ -557,6 +557,8 @@ class FormAction {
 
                                 if (!empty($productIds)) {
                                     $productRepository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
+                                        if (!isset($data[0])) return;
+
                                         foreach ($data as $item) {
                                             $entity = new \Model\Product\Entity($item);
                                             if ($entity->isInShopOnly() || $entity->isInShopStockOnly() || !$entity->getIsBuyable()) {
