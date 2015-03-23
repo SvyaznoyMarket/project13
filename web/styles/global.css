@@ -7283,7 +7283,8 @@ img[height="0"] {
     border-bottom: 1px solid #929292;
   }
   .packageSet_inner {
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     max-height: 440px;
   }
   .packageSet.mPackageSetEdit {
