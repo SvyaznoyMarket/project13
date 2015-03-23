@@ -172,7 +172,9 @@ class DeliveryAction extends OrderV3 {
                     $splitData,
                     $i * \App::config()->coreV2['timeout']
                 );
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+                if ($e->getCode() == 600) throw $e; // когда удалили последний товар
+            }
 
             if ($orderDeliveryData) break; // если получен ответ прекращаем попытки
         }
