@@ -1,24 +1,31 @@
 <?php
 
-namespace EnterQuery\User
+namespace EnterQuery\User\Favorite
 {
-    use EnterQuery\User\GetByToken\Response;
+    use EnterQuery\User\Favorite\Set\Response;
 
-    class GetByToken
+    class Set
     {
         use \EnterQuery\CurlQueryTrait;
-        use \EnterQuery\CoreQueryTrait;
+        use \EnterQuery\CrmQueryTrait;
 
         /** @var string */
-        public $token;
+        public $userUi;
+        /** @var string */
+        public $ui;
         /** @var Response */
         public $response;
 
-        public function __construct($token = null)
+        /**
+         * @param string|null $userUi
+         * @param string|null $ui
+         */
+        public function __construct($userUi = null, $ui = null)
         {
             $this->response = new Response();
 
-            $this->token = $token;
+            $this->userUi = $userUi;
+            $this->ui = $ui;
         }
 
         /**
@@ -28,16 +35,15 @@ namespace EnterQuery\User
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
-                    'v2/user/get',
-                    [
-                        'token' => $this->token,
-                    ]
+                    'api/favorite/add',
+                    []
                 ),
-                [], // data
+                [
+                    'user_uid' => $this->userUi,
+                    'uid'      => $this->ui,
+                ], // data
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
-
-                    $this->response->user = isset($result['id']) ? $result : null;
 
                     return $result; // for cache
                 }
@@ -48,11 +54,9 @@ namespace EnterQuery\User
     }
 }
 
-namespace EnterQuery\User\GetByToken
+namespace EnterQuery\User\Favorite\Set
 {
     class Response
     {
-        /** @var array|null */
-        public $user;
     }
 }

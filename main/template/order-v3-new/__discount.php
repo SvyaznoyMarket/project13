@@ -30,6 +30,8 @@ return function(
                 <div class="cuponErr">Скидки с таким кодом не существует</div>
             <? elseif ($err->code == 1001) : ?>
                 <div class="cuponErr">Купон неприменим к данному заказу</div>
+            <? elseif ($err->code == 1022) : ?>
+                <div class="cuponErr">Купон уже был использован или истек срок действия</div>
             <? else : ?>
                 <div class="cuponErr"><?= $err->message ?></div>
             <? endif ?>

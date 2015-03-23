@@ -26,12 +26,10 @@ namespace EnterQuery\Delivery
         }
 
         /**
-         * @param \Exception $error
-
          * @return $this
          * @throws \Exception
          */
-        public function prepare(\Exception &$error = null)
+        public function prepare()
         {
             // валидация
             if (!$this->regionId) {
@@ -59,7 +57,6 @@ namespace EnterQuery\Delivery
                         $this->cart->products
                     ),
                 ], // data
-                $error,
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 

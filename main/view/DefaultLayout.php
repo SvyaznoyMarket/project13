@@ -34,9 +34,9 @@ class DefaultLayout extends Layout {
             — загружаются там из json для главной страницы, например.
         */
 
-        $this->addStylesheet('/css/global.min.css');
+        $this->addStylesheet(\App::config()->debug ? '/css/global.css' : '/css/global.min.css');
 
-        $this->addStylesheet('/styles/global.min.css');
+        $this->addStylesheet(\App::config()->debug ? '/styles/global.css' : '/styles/global.min.css');
 
         $this->addJavascript(\App::config()->debug ? '/js/loadjs.js' : '/js/loadjs.min.js');
     }

@@ -1,27 +1,27 @@
 <?php
 
-namespace EnterQuery\Product\Line
+namespace EnterQuery\User\Favorite
 {
-    use EnterQuery\Product\Line\GetByTokenList\Response;
+    use EnterQuery\User\Favorite\Get\Response;
 
-    class GetByTokenList
+    class Get
     {
         use \EnterQuery\CurlQueryTrait;
-        use \EnterQuery\CoreQueryTrait;
+        use \EnterQuery\CrmQueryTrait;
 
-        /** @var string[] */
-        public $tokens = [];
-        /** @var string|null */
-        public $regionId;
+        /** @var string */
+        public $userUi;
         /** @var Response */
         public $response;
 
-        public function __construct($tokens = [], $regionId = null)
+        /**
+         * @param string|null $userUi
+         */
+        public function __construct($userUi = null)
         {
             $this->response = new Response();
 
-            $this->tokens = $tokens;
-            $this->regionId = $regionId;
+            $this->userUi = $userUi;
         }
 
         /**
@@ -31,17 +31,16 @@ namespace EnterQuery\Product\Line
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
-                    'v2/line/list',
+                    'api/favorite',
                     [
-                        'token'  => $this->tokens,
-                        'geo_id' => $this->regionId,
+                        'user_uid' => $this->userUi,
                     ]
                 ),
                 [], // data
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
-                    $this->response->lines = isset($result[0]) ? $result : [];
+                    $this->response->products = isset($result['products'][0]) ? $result['products'] : [];
 
                     return $result; // for cache
                 }
@@ -52,11 +51,11 @@ namespace EnterQuery\Product\Line
     }
 }
 
-namespace EnterQuery\Product\Line\GetByTokenList
+namespace EnterQuery\User\Favorite\Get
 {
     class Response
     {
         /** @var array */
-        public $lines = [];
+        public $products = [];
     }
 }

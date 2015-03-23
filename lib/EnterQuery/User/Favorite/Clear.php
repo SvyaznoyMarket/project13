@@ -1,24 +1,27 @@
 <?php
 
-namespace EnterQuery\MainMenu
+namespace EnterQuery\User\Favorite
 {
-    use EnterQuery\MainMenu\GetByTagList\Response;
+    use EnterQuery\User\Favorite\Clear\Response;
 
-    class GetByTagList
+    class Clear
     {
         use \EnterQuery\CurlQueryTrait;
-        use \EnterQuery\ScmsQueryTrait;
+        use \EnterQuery\CrmQueryTrait;
 
+        /** @var string */
+        public $userUi;
         /** @var Response */
         public $response;
-        /** @var string[] */
-        public $tags = [];
 
-        public function __construct(array $tags = [])
+        /**
+         * @param string|null $userUi
+         */
+        public function __construct($userUi = null)
         {
             $this->response = new Response();
 
-            $this->tags = $tags;
+            $this->userUi = $userUi;
         }
 
         /**
@@ -28,16 +31,14 @@ namespace EnterQuery\MainMenu
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
-                    'seo/main-menu',
+                    'api/favorite/flush',
                     [
-                        'tags' => $this->tags,
+                        'user_uid' => $this->userUi,
                     ]
                 ),
                 [], // data
                 function($response, $statusCode) {
-                    $result = $this->decodeResponse($response, $statusCode);
-
-                    $this->response->items = isset($result['item'][0]) ? $result['item'] : [];
+                    $result = $this->decodeResponse($response, $statusCode)['result'];
 
                     return $result; // for cache
                 }
@@ -48,11 +49,9 @@ namespace EnterQuery\MainMenu
     }
 }
 
-namespace EnterQuery\MainMenu\GetByTagList
+namespace EnterQuery\User\Favorite\Clear
 {
     class Response
     {
-        /** @var array */
-        public $items = [];
     }
 }

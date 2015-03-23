@@ -43,10 +43,9 @@ namespace EnterQuery\Product\Category
         }
 
         /**
-         * @param \Exception $error
          * @return $this
          */
-        public function prepare(\Exception &$error = null)
+        public function prepare()
         {
             $urlQuery = [];
             // критерий для корневой категории
@@ -86,7 +85,6 @@ namespace EnterQuery\Product\Category
                     $urlQuery
                 ),
                 [], // data
-                $error,
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
