@@ -120,7 +120,6 @@ $GLOBALS['enter/service'] = new EnterApplication\Service();
         } else {
             \App::partner()->set($response);
             \App::sclubManager()->set($response);
-            \App::couponManager()->set($response);
         }
 
         // debug panel

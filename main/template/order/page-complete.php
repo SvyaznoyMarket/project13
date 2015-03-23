@@ -106,11 +106,6 @@ if (!isset($paymentUrl)) $paymentUrl = null;
         ]) ?>
     </div>
 <? else: ?>
-    <? if(!empty($form)) { ?>
-        <? if($paymentMethod && $paymentMethod->isCash()) { ?>
-            <?= $page->tryRender('order/partner-counter/_flocktory-complete', ['order' => $order, 'userForm' => $form, 'productsById' => $productsById]) ?>
-        <? } ?>
-    <? } ?>
     <div class="mt32" style="text-align: center">
         <? if ($isCredit): ?>
             <a class='bBigOrangeButton jsCreditBtn' href="#">Перейти к оформлению кредита</a>
@@ -157,5 +152,3 @@ if (!isset($paymentUrl)) $paymentUrl = null;
     ]);
     echo $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $productsById]);
 } ?>
-
-<?= $page->slotFlocktoryExchangeJS() ?>

@@ -126,13 +126,15 @@ class CompletePage extends Layout {
 
     public function slotPartnerCounter()
     {
+        $config = \App::config();
         $html = parent::slotPartnerCounter();
-
-        // ActionPay
-        $html .= $this->tryRender('partner-counter/_actionpay', ['routeName' => 'order.complete'] );
 
         // Sociomantic - передаём все заказы!
         $html .= '<div id="sociomanticOrderCompleteJS" class="jsanalytics" ></div>';
+
+        // Flocktory
+        if ($config->flocktoryExchange['enabled'] || $config->flocktoryPostCheckout['enabled'])
+            $html .= '<div id="flocktoryScriptJS" class="jsanalytics" ></div>';
 
         return $html;
     }

@@ -324,14 +324,6 @@ class DefaultLayout extends Layout {
                 if (\App::config()->partners['SmartLeads']['enabled']) $return .= "\n\n" . '<div id="xcntmyAsync" class="jsanalytics"></div>';
             }
 
-            // ActionPay — на странице с полным описанием продукта и на стр "спс за заказ"
-            if (in_array($routeName, [
-                'product',
-                'order.complete',
-            ])) {
-                $return .= $this->tryRender('partner-counter/_actionpay', ['routeName' => $routeName] );
-            }
-
             if ('subscribe_friends' == $routeToken) {
                 $return .= $this->tryRender('partner-counter/_actionpay_subscribe');
                 $return .= $this->tryRender('partner-counter/_cityAds_subscribe');
@@ -571,14 +563,6 @@ class DefaultLayout extends Layout {
         return '';
     }
 
-    public function slotFlocktoryEnterprizeJs() {
-        return '';
-    }
-
-    public function slotFlocktoryEnterprizeRegistrationJs() {
-        return '';
-    }
-
     /** Google Tag Manager Container (ports.js)
      * @param array $data Дополнительные данные для GTM
      * @return string
@@ -597,10 +581,6 @@ class DefaultLayout extends Layout {
                 <noscript><iframe src="//www.googletagmanager.com/ns.html?id=' . $containerId . '" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <!-- End Google Tag Manager -->
             </div>';
-    }
-
-    public function slotFlocktoryExchangeJS() {
-        return;
     }
 
     public function slotEnterprizeRegJS() {
