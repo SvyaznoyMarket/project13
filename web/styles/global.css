@@ -8897,6 +8897,9 @@ img[height="0"] {
   .orderPayment_msg_shop_metro + .orderPayment_msg_shop_addr {
     margin-left: 0px;
   }
+  .orderPayment_msg_shop.markerLst_row .orderPayment_msg_shop_addr {
+    margin-top: 15px;
+  }
   .orderPayment_msg_addr_link {
     margin-top: 5px;
     text-decoration: underline;
