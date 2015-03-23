@@ -29,10 +29,9 @@ namespace EnterQuery\User\Favorite
         }
 
         /**
-         * @param \Exception $error
          * @return $this
          */
-        public function prepare(\Exception &$error = null)
+        public function prepare()
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
@@ -43,7 +42,6 @@ namespace EnterQuery\User\Favorite
                     'user_uid' => $this->userUi,
                     'uid'      => $this->ui,
                 ], // data
-                $error,
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 

@@ -10,6 +10,11 @@ trait CurlQueryTrait
     use QueryCacheTrait;
 
     /**
+     * @var \Exception|null
+     */
+    public $error;
+
+    /**
      * @var Callback[]
      */
     protected $callbacks = [];
@@ -35,7 +40,6 @@ trait CurlQueryTrait
     /**
      * @param $url
      * @param array $data
-     * @param \Exception $error
      * @param callable|null $decoder
      * @param int|null $timeoutRatio
      * @param float[] $delayRatios
@@ -44,14 +48,13 @@ trait CurlQueryTrait
     public function prepareCurlQuery(
         $url,
         $data = [],
-        \Exception &$error = null,
         $decoder = null,
         $timeoutRatio = 1,
         array $delayRatios = null
     )
     {
-        if ($timeoutRatio < 0) {
-            throw new \InvalidArgumentException();
+        if ($timeoutRatio <= 0) {
+            throw new \InvalidArgumentException(sprintf('Неверный коэффициент таймаута %s', $timeoutRatio));
         }
 
         $timeout = \App::config()->coreV2['timeout'] * 1000; // таймаут, мс
@@ -99,20 +102,20 @@ trait CurlQueryTrait
                 $query,
                 $queryCollection,
                 &$result,
-                &$error,
                 $decoder,
                 $data,
                 $startedAt
             ) {
+                // если ошибка
                 if ($query->response->error) {
-                    $error = $query->response->error;
+                    $this->error = $query->response->error;
 
                     // TODO: удалить; сейчас нужно для старого журнала
                     \App::logger()->error([
                         'message' => 'Fail curl',
                         'cache' => true, // важно
                         'delay' => $query->request->delay, // важно
-                        'error' => ['code' => $error->getCode(), 'message' => $error->getMessage()],
+                        'error' => ['code' => $this->error->getCode(), 'message' => $this->error->getMessage()],
                         'url' => $query->request->options[CURLOPT_URL],
                         'data' => $data,
                         'info' => $query->response->info,
@@ -125,9 +128,13 @@ trait CurlQueryTrait
                         'endAt' => microtime(true),
                     ], ['curl']);
                     // end
-                    //var_dump($error);
 
                     return;
+                }
+
+                // если ошибки нет, то удалить раннее полученную ошибку, если есть (например, первая попытка сорвалась по таймауту)
+                if ($this->error) {
+                    $this->error = null;
                 }
 
                 // удалить дубликаты
@@ -171,8 +178,8 @@ trait CurlQueryTrait
                             'spend' => $endAt - $startedAt,
                         ], ['curl']);
                         // end
-                    } catch (\Exception $e) {
-                        $error = $e;
+                    } catch (\Exception $error) {
+                        $this->error = $error;
                     }
 
                     $id = $this->getQueryCacheId($query->request->options[CURLOPT_URL], $data);
@@ -181,12 +188,12 @@ trait CurlQueryTrait
                     $result = $query->response->body;
                 }
 
-                if (!$error) {
+                if (!$this->error) {
                     foreach ($this->callbacks as $callback) {
                         try {
                             call_user_func($callback->handler);
-                        } catch (\Exception $e) {
-                            $callback->error = $e;
+                        } catch (\Exception $error) {
+                            $callback->error = $error;
                         }
                     }
                 }

@@ -18,17 +18,15 @@ namespace EnterQuery\AbTest
         }
 
         /**
-         * @param \Exception $error
          * @return $this
          */
-        public function prepare(\Exception &$error = null)
+        public function prepare()
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
                     'api/ab_test/get-active'
                 ),
                 [], // data
-                $error,
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 

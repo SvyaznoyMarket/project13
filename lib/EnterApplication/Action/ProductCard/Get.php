@@ -24,25 +24,25 @@ namespace EnterApplication\Action\ProductCard
             /** @var Query\Region\GetById|Query\Region\GetByIp $regionQuery */
             $regionQuery = null;
             if ($request->regionId) {
-                $regionQuery = (new Query\Region\GetById($request->regionId))->prepare($regionError);
+                $regionQuery = (new Query\Region\GetById($request->regionId))->prepare();
             } else if (
                 \App::config()->region['autoresolve']
                 && (false === strpos(\App::request()->headers->get('user-agent'), 'http://yandex.com/bots')) // SITE-4393
             ) {
-                $regionQuery = (new Query\Region\GetByIp(\App::request()->getClientIp()))->prepare($regionError);
+                $regionQuery = (new Query\Region\GetByIp(\App::request()->getClientIp()))->prepare();
             }
             if (!$regionQuery) {
-                $regionQuery = (new Query\Region\GetById(\App::config()->region['defaultId']))->prepare($regionError);
+                $regionQuery = (new Query\Region\GetById(\App::config()->region['defaultId']))->prepare();
             }
 
             // редирект
-            $redirectQuery = (new Query\Redirect\GetByUrl($request->urlPath))->prepare($redirectError); // TODO: throw Exception
+            $redirectQuery = (new Query\Redirect\GetByUrl($request->urlPath))->prepare(); // TODO: throw Exception
 
             // аб-тест
-            $abTestQuery = (new Query\AbTest\GetActive())->prepare($abTestError);
+            $abTestQuery = (new Query\AbTest\GetActive())->prepare();
 
             // главное меню
-            $menuQuery = (new Query\MainMenu\GetByTagList(['site-web']))->prepare($menuError);
+            $menuQuery = (new Query\MainMenu\GetByTagList(['site-web']))->prepare();
 
             // выполнение запросов
             $curl->execute();
@@ -62,11 +62,11 @@ namespace EnterApplication\Action\ProductCard
                 throw new \InvalidArgumentException('Неверный критерий получения товара');
             }
             // подготовка запроса на получение товара
-            $productQuery->prepare($productError);
+            $productQuery->prepare();
 
             // дерево категорий для меню
             //$categoryTreeQuery = (new Query\Product\Category\GetTree(null, 3, null, null, true))->prepare($categoryTreeError);
-            $categoryRootTreeQuery = (new Query\Product\Category\GetRootTree($regionQuery->response->region['id'], 3))->prepare($categoryRootTreeError);
+            $categoryRootTreeQuery = (new Query\Product\Category\GetRootTree($regionQuery->response->region['id'], 3))->prepare();
 
             // отзывы о товаре
             /*
@@ -83,15 +83,15 @@ namespace EnterApplication\Action\ProductCard
             $userQuery = null;
             $subscribeQuery = null;
             if ($request->userToken) {
-                $userQuery = (new Query\User\GetByToken($request->userToken))->prepare($userError);
-                $subscribeQuery = (new Query\Subscribe\GetByUserToken($request->userToken))->prepare($subscribeError);
+                $userQuery = (new Query\User\GetByToken($request->userToken))->prepare();
+                $subscribeQuery = (new Query\Subscribe\GetByUserToken($request->userToken))->prepare();
             }
 
             // список регионов для выбора города
-            $mainRegionQuery = (new Query\Region\GetMain())->prepare($mainRegionError);
+            $mainRegionQuery = (new Query\Region\GetMain())->prepare();
 
             // каналы подписок
-            $subscribeChannelQuery = (new Query\Subscribe\Channel\Get())->prepare($subscribeChannelError);
+            $subscribeChannelQuery = (new Query\Subscribe\Channel\Get())->prepare();
 
             // выполнение запросов
             $curl->execute();
@@ -111,7 +111,7 @@ namespace EnterApplication\Action\ProductCard
                 // регион
                 $deliveryQuery->regionId = $productQuery->regionId;
 
-                $deliveryQuery->prepare($deliveryError);
+                $deliveryQuery->prepare();
                 /*
                 $deliveryQuery->prepare($deliveryError, function() use (&$deliveryQuery, &$deliveryError) {
                     if ($deliveryError || !$deliveryQuery->response->shops) return;
@@ -133,7 +133,7 @@ namespace EnterApplication\Action\ProductCard
                     $shopQuery->ids[] = $stock['shop_id'];
                 }
                 if ($shopQuery->ids) {
-                    $shopQuery->prepare($shopError);
+                    $shopQuery->prepare();
                 }
             });
 
@@ -153,7 +153,7 @@ namespace EnterApplication\Action\ProductCard
                 $paymentGroupQuery->filter->isCorporative = false;
                 $paymentGroupQuery->filter->isCredit = (bool)(($product['price'] * (($cart->getQuantityByProduct($product['id']) > 0) ? $cart->getQuantityByProduct($product['id']) : 1)) >= \App::config()->product['minCreditPrice']);
 
-                $paymentGroupQuery->prepare($paymentGroupError);
+                $paymentGroupQuery->prepare();
             });
 
             // рейтинг товаров
@@ -169,7 +169,7 @@ namespace EnterApplication\Action\ProductCard
 
                 if ($ids) {
                     $ratingQuery = new Query\Product\Review\GetScoreByProductIdList($ids);
-                    $ratingQuery->prepare($ratingError);
+                    $ratingQuery->prepare();
                 }
             });
 
@@ -188,7 +188,7 @@ namespace EnterApplication\Action\ProductCard
                 if ($ids) {
                     $relatedProductQueries = [];
                     foreach (array_chunk($ids, \App::config()->coreV2['chunk_size']) as $idsInChunk) {
-                        $relatedProductQueries[] = (new Query\Product\GetByIdList($idsInChunk, $productQuery->regionId))->prepare($relatedProductError);
+                        $relatedProductQueries[] = (new Query\Product\GetByIdList($idsInChunk, $productQuery->regionId))->prepare();
                     }
                 }
             });
@@ -198,7 +198,7 @@ namespace EnterApplication\Action\ProductCard
                 $product = $productQuery->response->product;
                 if (!$product['id']) return;
 
-                $reviewQuery = (new Query\Product\Review\GetByProductUi($product['ui'], 0, 7))->prepare($reviewError);
+                $reviewQuery = (new Query\Product\Review\GetByProductUi($product['ui'], 0, 7))->prepare();
             });
 
             // категория товаров
@@ -208,7 +208,7 @@ namespace EnterApplication\Action\ProductCard
 
                 $categoryQuery = null;
                 if ($categoryUi = end($product['category'])['ui']) {
-                    $categoryQuery = (new Query\Product\Category\GetByUi($categoryUi, $productQuery->regionId))->prepare($categoryError);
+                    $categoryQuery = (new Query\Product\Category\GetByUi($categoryUi, $productQuery->regionId))->prepare();
                 }
             });
 
@@ -217,7 +217,7 @@ namespace EnterApplication\Action\ProductCard
                 $product = $productQuery->response->product;
                 if (!$product['id']) return;
 
-                $productDescriptionQuery = (new Query\Product\GetDescriptionByUiList([$product['ui']]))->prepare($productDescriptionError);
+                $productDescriptionQuery = (new Query\Product\GetDescriptionByUiList([$product['ui']]))->prepare();
             });
 
             // товар для Подари Жизнь
@@ -241,10 +241,10 @@ namespace EnterApplication\Action\ProductCard
             $this->removeCurl();
 
             // обработка ошибок
-            if ($menuError) {
+            if ($menuQuery->error) {
                 $menuQuery->response->items = \App::dataStoreClient()->query('/main-menu.json')['item'];
 
-                \App::logger()->error(['error' => $menuError, 'sender' => __FILE__ . ' ' .  __LINE__], ['main_menu', 'controller']);
+                \App::logger()->error(['error' => $menuQuery->error, 'sender' => __FILE__ . ' ' .  __LINE__], ['main_menu', 'controller']);
             }
 
             // response

@@ -18,10 +18,9 @@ namespace EnterQuery\Region
         }
 
         /**
-         * @param \Exception $error
          * @return $this
          */
-        public function prepare(\Exception &$error = null)
+        public function prepare()
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
@@ -29,7 +28,6 @@ namespace EnterQuery\Region
                     []
                 ),
                 [], // data
-                $error,
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
