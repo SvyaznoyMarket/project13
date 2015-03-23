@@ -351,7 +351,7 @@ class FormAction {
 
             // задаем регистрационный флаг
             try {
-                $regData = ['isRegistration' => true];
+                $regData = ['isRegistration' => true, 'token' => $result['token']];
 
                 // пишем в сессию
                 $data = array_merge($data, $regData);
@@ -362,7 +362,7 @@ class FormAction {
                 }
 
                 // пишем в хранилище
-                $storageResult = \App::coreClientPrivate()->query('storage/post', ['user_id' => $result['user_id'], 'token' => $result['token']], $regData);
+                $storageResult = \App::coreClientPrivate()->query('storage/post', ['user_id' => $result['user_id']], $regData);
 
             } catch (\Exception $e) {
                 \App::logger()->error($e, ['coupon/register-in-enter-prize', 'user_id']);
