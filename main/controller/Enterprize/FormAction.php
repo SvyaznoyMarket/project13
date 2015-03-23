@@ -537,7 +537,7 @@ class FormAction {
 
                     case 'slices':
                         if ($slice) {
-                            $sliceFilters = \Controller\Slice\ShowAction::getSliceFilters($slice);
+                            $sliceFilters = \RepositoryManager::slice()->getSliceFiltersForSearchClientRequest($slice);
                             // добавляем фильтры среза к общему списку фильтров
                             foreach ($sliceFilters as $filter) {
                                 $filters[] = $filter;

@@ -53,18 +53,7 @@ class Action {
 
         // фильтры
         $brand = null;
-        $productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $selectedCategory, $brand, $request, $shop);
-
-        // SITE-4734
-        foreach ($productFilter->getFilterCollection() as $filter) {
-            if ('brand' === $filter->getId()) {
-                foreach ($filter->getOption() as $option) {
-                    $option->setImageUrl('');
-                }
-
-                break;
-            }
-        }
+        $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $selectedCategory, $brand, $request, $shop);
 
         // параметры ядерного запроса
         $params = [
@@ -329,7 +318,7 @@ class Action {
 
         // фильтры
         $brand = null;
-        $productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $selectedCategory, $brand, $request, $shop);
+        $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $selectedCategory, $brand, $request, $shop);
 
         $count = \RepositoryManager::product()->countByFilter($productFilter->dump());
 

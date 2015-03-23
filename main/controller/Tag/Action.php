@@ -137,23 +137,11 @@ class Action {
 
         $brand = null;
 
-        $productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $selectedCategory, $brand, $request, $shop);
+        $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $selectedCategory, $brand, $request, $shop);
         $productFilter->setValue( 'tag', $tag->getId() );
         if ($selectedCategory) {
             $productFilter->setCategory($selectedCategory);
         }
-
-        // SITE-4734
-        foreach ($productFilter->getFilterCollection() as $filter) {
-            if ('brand' === $filter->getId()) {
-                foreach ($filter->getOption() as $option) {
-                    $option->setImageUrl('');
-                }
-
-                break;
-            }
-        }
-
 
         // сортировка
         $productSorting = new \Model\Product\Sorting();
