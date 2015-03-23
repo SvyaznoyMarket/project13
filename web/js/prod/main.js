@@ -149,9 +149,13 @@
 			bannersLength = $bannerThumbs.length,
             manualIndex = typeof mIndex != 'undefined' ? mIndex : 1,
 			nextIndex = index + manualIndex == bannersLength ? 0 : index + manualIndex,
+            duration = 400,
             thumbsMarginMultiplier;
 
         if (nextIndex == -1) nextIndex = bannersLength - 1; // fix для нажатия кнопки вверх у превью
+
+        // если текущий баннер является последним, то пролистываем на первый мгновенно
+        if (index == bannersLength - 1) duration = 0;
 
         thumbsMarginMultiplier = nextIndex >= visibleThumbsCount ? nextIndex - visibleThumbsCount + 1 : 0;
 
@@ -159,7 +163,7 @@
         $bannerHolder.animate({
 			'margin-top': -(nextIndex * bannerHeight)
 		},{
-			duration: 400,
+			duration: duration,
 			complete: function(){
 				$bannerThumbs.find('img').removeClass(activeThumbClass);
 				$bannerThumbs.find('img').eq(nextIndex).addClass(activeThumbClass);
