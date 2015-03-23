@@ -3,7 +3,9 @@ module.exports = {
     // компиляция LESS
     compile: {
         options: {
-            paths: ['web/css/']
+            paths: ['web/css/'],
+            sourceMapBasepath: 'web/css/',
+            sourceMap: true
         },
         files: {
             'web/css/global.css': ['web/css/global.less']
@@ -24,7 +26,9 @@ module.exports = {
     // компиляция LESS
     compileNew: {
         options: {
-            paths: ['web/styles/']
+            paths: ['web/styles/'],
+            sourceMapBasepath: 'web/styles/',
+            sourceMap: true
         },
         files: {
             'web/styles/global.css': ['web/styles/global.less']
