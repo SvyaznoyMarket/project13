@@ -15,7 +15,7 @@ class CacheAction {
     public function execute(\Http\Request $request) {
         \App::logger()->debug('Exec ' . __METHOD__);
 
-        $regionId = (string)\App::user()->getRegionId() ?: '14974';
+        $regionId = (string)\App::user()->getRegionId();
 
         // cache
         $route = $request->attributes->get('route');

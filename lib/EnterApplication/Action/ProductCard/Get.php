@@ -15,27 +15,48 @@ namespace EnterApplication\Action\ProductCard
          */
         public function execute(Request $request)
         {
-            $startAt = microtime(true);
-            $GLOBALS['startAt'] = $startAt;
+            //$startAt = microtime(true);
+            //$GLOBALS['startAt'] = $startAt;
 
             $curl = $this->getCurl();
 
-            /*
-            register_shutdown_function(function() use ($startAt) {
-                var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | ' . round(memory_get_peak_usage() / 1048576, 2) . ' Mb');
-                var_dump((round((microtime(true) - $GLOBALS['startAt']) * 1000)) . ' | ' . (microtime(true) - $startAt));
-            });
+            // регион
+            /** @var Query\Region\GetById|Query\Region\GetByIp $regionQuery */
+            $regionQuery = null;
+            if ($request->regionId) {
+                $regionQuery = (new Query\Region\GetById($request->regionId))->prepare($regionError);
+            } else if (
+                \App::config()->region['autoresolve']
+                && (false === strpos(\App::request()->headers->get('user-agent'), 'http://yandex.com/bots')) // SITE-4393
+            ) {
+                $regionQuery = (new Query\Region\GetByIp(\App::request()->getClientIp()))->prepare($regionError);
+            }
+            if (!$regionQuery) {
+                $regionQuery = (new Query\Region\GetById(\App::config()->region['defaultId']))->prepare($regionError);
+            }
 
+            // редирект
+            $redirectQuery = (new Query\Redirect\GetByUrl($request->urlPath))->prepare($redirectError); // TODO: throw Exception
+
+            // аб-тест
             $abTestQuery = (new Query\AbTest\GetActive())->prepare($abTestError);
-            $regionQuery = (new Query\Region\GetById($request->regionId))->prepare($regionError);
+
+            // главное меню
+            $menuQuery = (new Query\MainMenu\GetByTagList(['site-web']))->prepare($menuError);
+
+            // выполнение запросов
             $curl->execute();
-            die();
-            */
+
+            // проверка ид региона
+            if (empty($regionQuery->response->region['id'])) {
+                $regionQuery = new Query\Region\GetById(\App::config()->region['defaultId']);
+                $regionQuery->response->region = \App::dataStoreClient()->query('/region-default.json')['result'];
+            }
 
             // товар
             $productQuery = null;
             if ($request->productCriteria['token']) {
-                $productQuery = new Query\Product\GetByToken($request->productCriteria['token'], $request->regionId);
+                $productQuery = new Query\Product\GetByToken($request->productCriteria['token'], $regionQuery->response->region['id']);
             }
             if (!$productQuery) {
                 throw new \InvalidArgumentException('Неверный критерий получения товара');
@@ -43,21 +64,9 @@ namespace EnterApplication\Action\ProductCard
             // подготовка запроса на получение товара
             $productQuery->prepare($productError);
 
-            // регион
-            $regionQuery = (new Query\Region\GetById($request->regionId))->prepare($regionError);
-
-            // описание товара из scms
-            $productDescriptionQuery = (new Query\Product\GetDescriptionByTokenList([$request->productCriteria['token']]))->prepare($productDescriptionError);
-
-            // выполнение запросов
-            $curl->execute(); // важно: только самые важные запросы: товар, регион
-
             // дерево категорий для меню
             //$categoryTreeQuery = (new Query\Product\Category\GetTree(null, 3, null, null, true))->prepare($categoryTreeError);
-            $categoryRootTreeQuery = (new Query\Product\Category\GetRootTree($request->regionId, 3))->prepare($categoryRootTreeError);
-
-            // главное меню
-            $menuQuery = (new Query\MainMenu\GetByTagList(['site-web']))->prepare($menuError);
+            $categoryRootTreeQuery = (new Query\Product\Category\GetRootTree($regionQuery->response->region['id'], 3))->prepare($categoryRootTreeError);
 
             // отзывы о товаре
             /*
@@ -77,12 +86,6 @@ namespace EnterApplication\Action\ProductCard
                 $userQuery = (new Query\User\GetByToken($request->userToken))->prepare($userError);
                 $subscribeQuery = (new Query\Subscribe\GetByUserToken($request->userToken))->prepare($subscribeError);
             }
-
-            // редирект
-            $redirectQuery = (new Query\Redirect\GetByUrl($request->urlPath))->prepare($redirectError); // TODO: throw Exception
-
-            // аб-тест
-            $abTestQuery = (new Query\AbTest\GetActive())->prepare($abTestError);
 
             // список регионов для выбора города
             $mainRegionQuery = (new Query\Region\GetMain())->prepare($mainRegionError);
@@ -206,6 +209,14 @@ namespace EnterApplication\Action\ProductCard
                 if ($categoryUi = end($product['category'])['ui']) {
                     $categoryQuery = (new Query\Product\Category\GetByUi($categoryUi, $productQuery->regionId))->prepare($categoryError);
                 }
+            });
+
+            // описание товара из scms
+            call_user_func(function() use (&$productQuery, &$productDescriptionQuery) {
+                $product = $productQuery->response->product;
+                if (!$product['id']) return;
+
+                $productDescriptionQuery = (new Query\Product\GetDescriptionByUiList([$product['ui']]))->prepare($productDescriptionError);
             });
 
             // товар для Подари Жизнь

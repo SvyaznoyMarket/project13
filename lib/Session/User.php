@@ -249,7 +249,7 @@ class User {
     public function getRegionId() {
         $cookieName = \App::config()->region['cookieName'];
 
-        return \App::request()->cookies->has($cookieName) ? (int) \App::request()->cookies->get($cookieName): \App::config()->region['defaultId'];
+        return \App::request()->cookies->has($cookieName) ? (int)\App::request()->cookies->get($cookieName): \App::config()->region['defaultId'];
     }
 
     /**
