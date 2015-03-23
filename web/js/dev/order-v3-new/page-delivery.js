@@ -385,8 +385,8 @@
     });
 
     // клик по "Дополнительные пожелания"
-    $orderContent.on('click', '.orderComment_t', function(){
-        $('.orderComment_fld').show();
+    $orderContent.on('click', '.jsOrderV3Comment', function(){
+        $('.orderComment_fld').toggle();
     });
 
     // применить скидку
