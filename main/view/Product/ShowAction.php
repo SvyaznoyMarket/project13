@@ -26,19 +26,16 @@ class ShowAction {
     ) {
         $user = \App::user();
 
-        $stateLabel = null;
         if ($product->isInShopOnly()) {
-            $stateLabel = ['name' => 'Только в магазинах'];
-        } else if ($product->getMainCategory() && $product->getMainCategory()->getIsFurniture() && $product->getState() && $product->getState()->getIsStore() && !$product->getSlotPartnerOffer()) {
-            if (\App::config()->region['defaultId'] === $user->getRegion()->getId()) {
-                // Для Москвы, SITE-2850
-                //$stateLabel = ['name' => 'Товар за три дня'];
-                $stateLabel = ['name' => 'Товар со склада', 'inStore' => true]; // SITE-3131
-            } else {
-                // Для регионов (привозит быстрее, но не за три дня)
-                $stateLabel = ['name' => 'Товар со склада', 'inStore' => true];
-            }
-            //$showState = true; // включаем отображение шильдика для всех
+            $inShopOnlyLabel = ['name' => 'Только в магазинах'];
+        } else {
+            $inShopOnlyLabel = null;
+        }
+
+        if (!$product->isInShopOnly() && $product->getMainCategory() && $product->getMainCategory()->getIsFurniture() && $product->getState() && $product->getState()->getIsStore() && !$product->getSlotPartnerOffer()) {
+            $inStoreLabel = ['name' => 'Товар со склада', 'inStore' => true]; // SITE-3131
+        } else {
+            $inStoreLabel = null;
         }
 
         $productItem = [
@@ -58,10 +55,12 @@ class ShowAction {
             'price'        => $helper->formatPrice($product->getPrice()),
             'oldPrice'     => null,
             'isBuyable'    => $product->getIsBuyable(),
-            'isInShopShowroomOnly' => !$product->getIsBuyable() && $product->isInShopShowroomOnly(),
-            'isInShopStockOnly'    => $product->isInShopStockOnly(),
+            'inShopShowroomLabel'  => !$product->getIsBuyable() && $product->isInShopShowroomOnly() ? 'На витрине' : '',
+            'inShopStockOnlyLabel' => $product->isInShopStockOnly() ? 'Только в магазинах' : '',
+            'notBuyableLabel'      => !$product->isInShopShowroomOnly() && !$product->isInShopStockOnly() && !$product->getIsBuyable() ? 'Нет в наличии' : '',
+            'inStoreLabel' => $inStoreLabel,
             'onlyInShop'   => $product->isInShopOnly(),
-            'stateLabel'   => $showState ? $stateLabel : null,
+            'stateLabel'   => $showState ? ($inShopOnlyLabel ? $inShopOnlyLabel : $inStoreLabel) : null,
             'variations'   =>
             ((isset($hasModel) ? $hasModel : true) && $product->getModel() && (bool)$product->getModel()->getProperty()) // TODO: перенести в \View\*Action
                 ? array_map(function(\Model\Product\Model\Property\Entity $property) {
