@@ -8840,9 +8840,12 @@ img[height="0"] {
   /*===========================================================================
  Оформление заказа: оплата
 ============================================================================*/
+  .orderPayment {
+    width: 432px;
+    margin: 15px auto 10px;
+  }
   .orderPayment_block {
     width: 380px;
-    margin: 30px auto 10px;
     padding: 20px 25px 20px;
     border: 1px solid #ccc;
   }
@@ -9147,6 +9150,20 @@ img[height="0"] {
     border-radius: 2px;
   }
   .btn-discount-orange:hover {
+    text-decoration: none;
+  }
+  .btn-discount-red {
+    border: 1px solid #ec434f;
+    color: #ec434f;
+    text-decoration: none;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 4px 13px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 2px;
+  }
+  .btn-discount-red:hover {
     text-decoration: none;
   }
 }
