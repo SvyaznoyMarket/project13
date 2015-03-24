@@ -189,7 +189,7 @@
 					.addClass('mDisabled')
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
-					.addClass('jsBuyButton')
+					.addClass('js-orderButton jsBuyButton')
 					.attr('href', '#');
 			} else if (typeof statusId != 'undefined' && 5 == statusId) { // SITE-2924
 				$elem
@@ -197,7 +197,7 @@
 					.addClass('mDisabled')
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
-					.addClass('jsBuyButton')
+					.addClass('js-orderButton jsBuyButton')
 					.attr('href', '#');
 			} else if (typeof isSlot != 'undefined' && isSlot) {
 				$elem
@@ -205,14 +205,15 @@
 					.removeClass('mDisabled')
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
-					.addClass('btn btn--slot js-slotButton')
+					.addClass('btn btn--slot js-orderButton js-slotButton')
 					.attr('href', '#');
-			} else if (typeof inShopStockOnly != 'undefined' && inShopStockOnly && ENTER.config.pageConfig.user.region.forceDefaultBuy) {
+			} else if (typeof inShopStockOnly != 'undefined' && inShopStockOnly && ENTER.config.pageConfig.user.region.forceDefaultBuy) { // Резерв товара
 				$elem
-					.text('Резерв')
+					.text('Купить')
 					.removeClass('mDisabled')
-					.addClass('mShopsOnly')
+					.removeClass('mShopsOnly')
 					.removeClass('mBought')
+					.addClass('js-orderButton jsOneClickButton-new')
 					.removeClass('jsBuyButton')
 					.attr('href', ENTER.utils.generateUrl('cart.oneClick.product.set', {productId: productId}));
 			} else if (ENTER.utils.getObjectWithElement(cart, 'id', productId) && !noUpdate) {
@@ -221,6 +222,7 @@
 					.removeClass('mDisabled')
 					.removeClass('mShopsOnly')
 					.addClass('mBought')
+					.removeClass('js-orderButton')
 					.removeClass('jsBuyButton')
 					.attr('href', ENTER.utils.generateUrl('cart'));
 			} else if ($elem.hasClass('mBought')) {
@@ -229,7 +231,7 @@
 					.removeClass('mDisabled')
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
-					.addClass('jsBuyButton')
+					.addClass('js-orderButton jsBuyButton')
 					.attr('href', buyUrl ? buyUrl : ENTER.utils.generateUrl('cart.product.set', {productId: productId}));
 			}
 		}
@@ -3236,10 +3238,6 @@ $(document).ready(function() {
 				data.quantity = button.data('quantity');
 				data.shopId = button.data('shop');
 				$orderContent.data('shop', data.shopId);
-
-				if (button.data('title')) {
-					$target.find('.jsOneClickTitle').text(button.data('title'));
-				}
 
 				$target.lightbox_me({
 					centered: true,

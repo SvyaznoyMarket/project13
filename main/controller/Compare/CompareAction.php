@@ -101,6 +101,7 @@ class CompareAction {
 
                     $compareGroups[$key]['products'][$key2] = [
                         'id' => $product->getId(),
+                        'ui' => $product->getUi(),
                         'article' => $product->getArticle(),
                         'prefix' => $product->getPrefix(),
                         'webName' => $product->getWebName(),

@@ -8,7 +8,6 @@ return function (
     $sender = [],
     $noUpdate = false,
     $location = null,
-    $reserveAsBuy = false,
     $sender2 = ''
 ) {
 ?>
@@ -21,7 +20,6 @@ return function (
             $sender,
             $noUpdate,
             $location,
-            $reserveAsBuy,
             $sender2
         )
     ) ?>

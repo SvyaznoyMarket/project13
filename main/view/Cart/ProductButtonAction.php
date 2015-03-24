@@ -22,7 +22,6 @@ class ProductButtonAction {
         array $sender = [],
         $noUpdate = false, // Не обновлять кнопку купить
         $location = null, // местоположение кнопки купить: userbar, product-card, ...
-        $reserveAsBuy = false,
         $sender2 = ''
     ) {
         $buyUrl = $this->getBuyUrl($helper, $product, $isRetailRocket, $sender, $sender2);
@@ -75,19 +74,11 @@ class ProductButtonAction {
             $data['url'] = '#';
             $data['class'] .= ' btn btn--slot giftery-show-widget ' . ('product-card' !== $location ? 'btn--short' : 'btn--big');
             $data['value'] = 'Купить';
-        } else if ($product->isInShopStockOnly() && \App::user()->getRegion()->getForceDefaultBuy()) {
-            if ($reserveAsBuy) {
-                $data['id'] = 'quickBuyButton-' . $product->getId();
-                $data['url'] = $this->getOneClickBuyUrl($helper, $product, $isRetailRocket, $sender, $sender2);
-                $data['class'] .= ' btnBuy__eLink js-orderButton jsOneClickButton-new';
-                $data['value'] = 'Купить';
-                $data['title'] = 'Резерв товара';
-            } else {
-                $data['inShopOnly'] = true;
-                $data['url'] = $this->getOneClickBuyUrl($helper, $product, $isRetailRocket, $sender, $sender2);
-                $data['class'] .= ' btnBuy__eLink mShopsOnly js-orderButton jsOneClickButton';
-                $data['value'] = 'Резерв';
-            }
+        } else if ($product->isInShopStockOnly() && \App::user()->getRegion()->getForceDefaultBuy()) { // Резерв товара
+            $data['id'] = 'quickBuyButton-' . $product->getId();
+            $data['url'] = $this->getOneClickBuyUrl($helper, $product, $isRetailRocket, $sender, $sender2);
+            $data['class'] .= ' btnBuy__eLink js-orderButton jsOneClickButton-new';
+            $data['value'] = 'Купить';
         } else if ($product->getKit() && !$product->getIsKitLocked()) {
             $data['isKit'] = $location === 'slider' ? false : true;
             $data['value'] = 'Купить';

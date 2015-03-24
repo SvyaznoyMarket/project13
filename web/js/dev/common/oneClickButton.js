@@ -76,10 +76,6 @@
 				data.shopId = button.data('shop');
 				$orderContent.data('shop', data.shopId);
 
-				if (button.data('title')) {
-					$target.find('.jsOneClickTitle').text(button.data('title'));
-				}
-
 				$target.lightbox_me({
 					centered: true,
 					sticky: false,
