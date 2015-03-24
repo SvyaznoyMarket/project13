@@ -7,6 +7,8 @@ use View\Product\FilterForm;
 
 class Action {
     protected $pageTitle;
+    /** @var \EnterApplication\Action\ProductCatalog\GetByCategory\Response|null */
+    public static $actionResponse; // осторожно, вынужденный г*код
 
     /**
      * @param string        $categoryPath

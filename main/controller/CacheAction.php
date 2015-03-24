@@ -20,24 +20,41 @@ class CacheAction {
         // cache
         $route = $request->attributes->get('route');
         /** @var callable[] $actionByRoute */
-        $actionByRoute = [
-            'product' => function(\Http\Request $httpRequest) use (&$regionId) {
-                $productToken = explode('/', $httpRequest->attributes->get('productPath'));
-                $productToken = end($productToken);
+        $actionByRoute = [];
+        // карточка товара
+        $actionByRoute['product'] = function(\Http\Request $httpRequest) use (&$regionId) {
+            $productToken = explode('/', $httpRequest->attributes->get('productPath'));
+            $productToken = end($productToken);
 
-                if ($productToken) {
-                    $action = (new Action\ProductCard\Get());
-                    $request = $action->createRequest();
-                    $request->urlPath = $httpRequest->getPathInfo();
-                    $request->productCriteria = ['token' => $productToken];
-                    $request->regionId = $regionId;
-                    $request->userToken = \App::user()->getToken() ?: null;
+            if ($productToken) {
+                $action = new Action\ProductCard\Get();
+                $request = $action->createRequest();
+                $request->urlPath = $httpRequest->getPathInfo();
+                $request->productCriteria = ['token' => $productToken];
+                $request->regionId = $regionId;
+                $request->userToken = \App::user()->getToken() ?: null;
 
-                    $response = $action->execute($request);
-                    \Controller\Product\IndexAction::$actionResponse = $response; // FIXME
-                }
-            },
-        ];
+                $response = $action->execute($request);
+                \Controller\Product\IndexAction::$actionResponse = $response; // FIXME
+            }
+        };
+        // каталог товаров
+        $actionByRoute['product.category'] = function(\Http\Request $httpRequest) use (&$regionId) {
+            $categoryToken = explode('/', $httpRequest->attributes->get('categoryPath'));
+            $categoryToken = end($categoryToken);
+
+            if ($categoryToken) {
+                $action = new Action\ProductCatalog\GetByCategory();
+                $request = $action->createRequest();
+                $request->urlPath = $httpRequest->getPathInfo();
+                $request->categoryCriteria = ['token' => $categoryToken];
+                $request->regionId = $regionId;
+                $request->userToken = \App::user()->getToken() ?: null;
+
+                $response = $action->execute($request);
+                \Controller\ProductCategory\Action::$actionResponse = $response; // FIXME
+            }
+        };
 
         if ($route && isset($actionByRoute[$route])) {
             call_user_func($actionByRoute[$route], $request);
