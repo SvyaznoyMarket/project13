@@ -18,7 +18,7 @@ class ShowPage extends \View\DefaultLayout {
     }
 
     public function slotContent() {
-        return $this->render('slice/page-show', $this->params);
+        return $this->render('slice/content', $this->params);
     }
 
     public function slotBodyDataAttribute() {

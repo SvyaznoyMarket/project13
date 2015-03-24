@@ -16,8 +16,6 @@
 $helper = new \Helper\TemplateHelper();
 ?>
 
-<form class="bFilter clearfix hidden js-category-filter" action="<?= \App::request()->getRequestUri() ?>" method="GET"></form>
-
 <div class="bCatalog" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
 
     <?= $helper->render('slice/__breadcrumbs', ['category' => $category, 'slice' => $slice]) // хлебные крошки ?>
@@ -30,12 +28,13 @@ $helper = new \Helper\TemplateHelper();
         <?= $helper->render('product-category/__children', ['category' => $category]) // дочерние категории ?>
     <? endif ?>
 
-    <?/*= $helper->render('product-category/__filter', [
-        'baseUrl'          => $helper->url('slice.show', ['sliceToken' => $slice->getToken()]),
+    <?= $helper->render('product-category/__filter', [
+        'baseUrl'          => $helper->url(),
         'countUrl'         => null,
         'productFilter'    => $productFilter,
-        'categories'       => $categories,
-    ])*/ // фильтры ?>
+        'openFilter'    => false,
+        'productPager'  => $productPager,
+    ]) ?>
 
     <?= $helper->render('product/__listAction', [
         'pager'          => $productPager,
@@ -45,7 +44,6 @@ $helper = new \Helper\TemplateHelper();
     <?= $helper->render('product/__list', [
         'pager'                  => $productPager,
         'view'                   => $productView,
-        'bannerPlaceholder'      => !empty($catalogJson['bannerPlaceholder']) ? $catalogJson['bannerPlaceholder'] : [],
         'buyMethod'              => $slice->getProductBuyMethod(),
         'showState'              => $slice->getShowProductState(),
     ]) // листинг ?>

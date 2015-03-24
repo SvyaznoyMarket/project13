@@ -51,7 +51,7 @@ class Action {
             \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
         }
 
-        $productFilter = $this->getFilter($filters, $category, null, $request, $shop);
+        $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $category, null, $request, $shop);
 
         $count = \RepositoryManager::product()->countByFilter($productFilter->dump());
 
@@ -158,28 +158,8 @@ class Action {
 
         // запрашиваем дерево категорий
         if ($category->isV2Root()) {
-            // получаем фильтры из http-запроса
-            $filterUrl = $this->getFilterFromUrl($request);
-
-            // заполняем параметр filters для запроса к ядру
-            $filterParams = [];
-            if (!empty($filterUrl)) {
-                foreach ($filterUrl as $name => $values) {
-                    if (isset($values['from']) || isset($values['to'])) {
-                        $filterParams[] = [
-                            $name,
-                            2,
-                            isset($values['from']) ? $values['from'] : null,
-                            isset($values['to']) ? $values['to'] : null
-                        ];
-                    } else {
-                        $filterParams[] = [$name, 1, $values];
-                    }
-                }
-            }
-
             // Необходимо запросить сестринские категории, т.к. они используется в гридстере (/main/template/product-category/__sibling-list.php) и в ювелирке (/main/template/jewel/product-category/_branch.php)
-            \RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region, $filterParams);
+            \RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region, $this->convertFiltersToSearchClientRequestFormat(\RepositoryManager::productFilter()->getFilterValuesFromHttpRequest($request)));
         } else {
             // Необходимо запросить сестринские категории, т.к. они используется в гридстере (/main/template/product-category/__sibling-list.php) и в ювелирке (/main/template/jewel/product-category/_branch.php)
             \RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region);
@@ -290,25 +270,12 @@ class Action {
         $this->correctFiltersForJewel($filters, $category);
 
         // фильтры
-        $productFilter = $this->getFilter($filters, $category, $brand, $request, $shop);
+        $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $category, $brand, $request, $shop, !$category->isV2());
 
         $this->correctProductFilterAndCategoryForJewel($category, $productFilter);
 
         if ($category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing()) {
             $category->setProductView(3);
-        }
-
-        if (!$category->isV2()) {
-            // SITE-4734
-            foreach ($productFilter->getFilterCollection() as $filter) {
-                if ('brand' === $filter->getId()) {
-                    foreach ($filter->getOption() as $option) {
-                        $option->setImageUrl('');
-                    }
-
-                    break;
-                }
-            }
         }
 
         // получаем из json данные о горячих ссылках и content
@@ -1044,196 +1011,24 @@ class Action {
         return new \Http\Response($page->show());
     }
 
-    /**
-     * @param \Http\Request $request
-     * @return array
-     */
-    public function getFilterFromUrl(\Http\Request $request) {
-        // добывание фильтров из http-запроса
-        $requestData = ('POST'== $request->getMethod()) ? $request->request : $request->query;
-
-        $values = [];
-        foreach ($requestData as $k => $v) {
-            if (0 !== strpos($k, \View\Product\FilterForm::$name)) {
-                continue;
-            }
-
-            $parts = array_pad(explode('-', $k), 3, null);
-
-            if ('from' == $parts[2] || 'to' == $parts[2]) {
-                $values[$parts[1]][$parts[2]] = $v;
-            } else {
-                $values[$parts[1]][] = $v;
-            }
-        }
-
-        foreach ($values as $k => $v) {
-            if (isset($v['from']) && isset($v['to'])) {
-                if ($v['from'] > $v['to']) {
-                    $values[$k]['from'] = $v['to'];
+    private function convertFiltersToSearchClientRequestFormat($filterValues) {
+        $result = [];
+        if (is_array($filterValues)) {
+            foreach ($filterValues as $name => $values) {
+                if (isset($values['from']) || isset($values['to'])) {
+                    $result[] = [
+                        $name,
+                        2,
+                        isset($values['from']) ? $values['from'] : null,
+                        isset($values['to']) ? $values['to'] : null
+                    ];
+                } else {
+                    $result[] = [$name, 1, $values];
                 }
             }
         }
 
-        // filter values
-        if ($request->get('scrollTo')) {
-            // TODO: SITE-2218 сделать однотипные фильтры для ювелирки и неювелирки
-            $values = (array)$request->get(\View\Product\FilterForm::$name, []);
-        }
-
-        return $values;
-    }
-
-    /**
-     * @param \Model\Product\Filter\Entity[] $filters
-     * @param \Model\Product\Category\Entity $category
-     * @param \Model\Brand\Entity|null $brand
-     * @param \Http\Request $request
-     * @param \Model\Shop\Entity|null $shop
-     * @return \Model\Product\Filter
-     */
-    public function getFilter(array $filters, \Model\Product\Category\Entity $category = null, \Model\Brand\Entity $brand = null, \Http\Request $request, $shop = null) {
-        // регион для фильтров
-        $region = \App::user()->getRegion();
-
-        // добывание фильтров из http-запроса
-        $values = $this->getFilterFromUrl($request);
-        $values = $this->deleteNotExistsValues($values, $filters);
-
-        if (\App::request()->get('instore')) {
-            $values['instore'] = 1; // TODO SITE-2403 Вернуть фильтр instore
-            $values['label'][] = 1; // TODO Костыль для таска: SITE-2403 Вернуть фильтр instore
-        }
-        if ($brand) {
-            $values['brand'] = [
-                $brand->getId(),
-            ];
-        }
-
-        //если есть фильтр по магазину
-        if ($shop) {
-            /** @var \Model\Shop\Entity $shop */
-            $values['shop'] = $shop->getId();
-        }
-
-        // проверяем есть ли в запросе фильтры
-        if ((bool)$values) {
-
-            // полнотекстовый поиск через сфинкс
-            if (\App::config()->sphinx['showListingSearchBar']) {
-                $sphinxFilter = isset($values['text']) ? $values['text'] : null;
-
-                if ($sphinxFilter) {
-                    $clientV2 = \App::coreClientV2();
-                    $result = null;
-                    $clientV2->addQuery('search/normalize', [], ['request' => $sphinxFilter], function ($data) use (&$result) {
-                        $result = $data;
-                    });
-                    $clientV2->execute();
-
-                    if(is_array($result)) {
-                        $values['text'] = implode(' ', $result);
-                    } else {
-                        unset($values['text']);
-                    }
-                }
-
-                $sphinxFilterData = [
-                    'filter_id'     => 'text',
-                    'type_id'       => \Model\Product\Filter\Entity::TYPE_STRING,
-                ];
-                $sphinxFilter = new \Model\Product\Filter\Entity($sphinxFilterData);
-                array_push($filters, $sphinxFilter);
-            }
-
-            // проверяем есть ли в запросе фильтры, которых нет в текущей категории (фильтры родительских категорий)
-            /** @var $exists Ид фильтров текущей категории */
-            $exists = array_map(function($filter) { /** @var $filter \Model\Product\Filter\Entity */ return $filter->getId(); }, $filters);
-            /** @var $diff Ид фильтров родительских категорий */
-            $diff = array_diff(array_keys($values), $exists);
-            if ((bool)$diff && $category) {
-                foreach ($category->getAncestor() as $ancestor) {
-                    try {
-                        /** @var $ancestorFilters \Model\Product\Filter\Entity[] */
-                        $ancestorFilters = [];
-                        \RepositoryManager::productFilter()->prepareCollectionByCategory($ancestor, $region, function($data) use (&$ancestorFilters) {
-                            foreach ($data as $item) {
-                                $ancestorFilters[] = new \Model\Product\Filter\Entity($item);
-                            }
-                        });
-                        \App::coreClientV2()->execute();
-                    } catch (\Exception $e) {
-                        $ancestorFilters = [];
-                    }
-                    foreach ($ancestorFilters as $filter) {
-                        if (false === $i = array_search($filter->getId(), $diff)) continue;
-
-                        // скрываем фильтр в списке
-                        $filter->setIsInList(false);
-                        $filters[] = $filter;
-                        unset($diff[$i]);
-                        if (!(bool)$diff) break;
-                    }
-                    if (!(bool)$diff) break;
-                }
-            }
-        }
-
-        $productFilter = new \Model\Product\Filter($filters, $shop);
-        $productFilter->setCategory($category);
-        $productFilter->setValues($values);
-
-        foreach ($productFilter->getFilterCollection() as $property) {
-            if (\Model\Product\Filter\Entity::TYPE_LIST == $property->getTypeId() && !in_array($property->getId(), ['shop', 'category'])) {
-                $property->setIsMultiple(true);
-            } else {
-                $property->setIsMultiple(false);
-            }
-        }
-
-        return $productFilter;
-    }
-
-    /**
-     * @param array $values
-     * @param \Model\Product\Filter\Entity[] $filters
-     * @return array
-     */
-    private function deleteNotExistsValues(array $values, array $filters) {
-        // SITE-4818 Не учитывать фильтр при переходе в подкатегорию, если такового не существует
-        foreach ($values as $propertyId => $propertyValues) {
-            $isPropertyExistsInFilter = false;
-
-            foreach ($filters as $property) {
-                if ($property->getId() === $propertyId) {
-                    $isPropertyExistsInFilter = true;
-                    if ($property->getTypeId() === \Model\Product\Filter\Entity::TYPE_LIST) {
-                        $optionIds = [];
-                        foreach ($property->getOption() as $option) {
-                            $optionIds[] = (string)$option->getId();
-                        }
-
-                        foreach ($propertyValues as $i => $value) {
-                            if (!in_array((string)$value, $optionIds, true)) {
-                                unset($values[$propertyId][$i]);
-                            }
-                        }
-
-                        if (!count($values[$propertyId])) {
-                            unset($values[$propertyId]);
-                        }
-                    }
-
-                    break;
-                }
-            }
-
-            if (!$isPropertyExistsInFilter) {
-                unset($values[$propertyId]);
-            }
-        }
-
-        return $values;
+        return $result;
     }
 
     /**
@@ -1288,12 +1083,12 @@ class Action {
     private function correctFiltersForJewel(array &$filters, \Model\Product\Category\Entity $category) {
         foreach ($filters as $key => $filter) {
             if ($filter->isPrice() && in_array($category->getUi(), [
-                'd792f833-f6fa-4158-83f6-2ac657077076', // Кольца Бронницкий Ювелир
-                '4caf66a4-f1c4-4b79-a6e4-1f2e6a1700cc', // Подвески Бронницкий Ювелир
-                'd4bc284a-9a1f-4614-a3d0-ec690d7e1b78', // Серьги Бронницкий Ювелир
-                'ae6975b8-f6e3-46b3-baba-a85305213dea', // Цепи Бронницкий Ювелир
-                'cd2c06d0-a087-47c2-a043-7ca02317424a', // Танцующие бриллианты
-            ], true)) {
+                    'd792f833-f6fa-4158-83f6-2ac657077076', // Кольца Бронницкий Ювелир
+                    '4caf66a4-f1c4-4b79-a6e4-1f2e6a1700cc', // Подвески Бронницкий Ювелир
+                    'd4bc284a-9a1f-4614-a3d0-ec690d7e1b78', // Серьги Бронницкий Ювелир
+                    'ae6975b8-f6e3-46b3-baba-a85305213dea', // Цепи Бронницкий Ювелир
+                    'cd2c06d0-a087-47c2-a043-7ca02317424a', // Танцующие бриллианты
+                ], true)) {
                 unset($filters[$key]);
                 break;
             }
@@ -1310,12 +1105,12 @@ class Action {
                 }
 
                 if ('Металл' === $filter->getName() && in_array($category->getUi(), [
-                    'd792f833-f6fa-4158-83f6-2ac657077076', // Кольца Бронницкий Ювелир
-                    '4caf66a4-f1c4-4b79-a6e4-1f2e6a1700cc', // Подвески Бронницкий Ювелир
-                    'd4bc284a-9a1f-4614-a3d0-ec690d7e1b78', // Серьги Бронницкий Ювелир
-                    'ae6975b8-f6e3-46b3-baba-a85305213dea', // Цепи Бронницкий Ювелир
-                    'cd2c06d0-a087-47c2-a043-7ca02317424a', // Танцующие бриллианты
-                ], true)) {
+                        'd792f833-f6fa-4158-83f6-2ac657077076', // Кольца Бронницкий Ювелир
+                        '4caf66a4-f1c4-4b79-a6e4-1f2e6a1700cc', // Подвески Бронницкий Ювелир
+                        'd4bc284a-9a1f-4614-a3d0-ec690d7e1b78', // Серьги Бронницкий Ювелир
+                        'ae6975b8-f6e3-46b3-baba-a85305213dea', // Цепи Бронницкий Ювелир
+                        'cd2c06d0-a087-47c2-a043-7ca02317424a', // Танцующие бриллианты
+                    ], true)) {
                     $filter->isOpenByDefault = true;
                 }
             }

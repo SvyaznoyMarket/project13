@@ -15,7 +15,7 @@ class Action extends \Controller\ProductCategory\Action {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         // фильтры
-        $productFilter = $this->getFilter($filters, $category, $brand, $request);
+        $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $category, $brand, $request);
 
         // получаем из json данные о горячих ссылках и content
         try {
