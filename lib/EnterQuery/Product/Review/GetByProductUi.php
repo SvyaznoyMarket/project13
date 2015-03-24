@@ -50,6 +50,7 @@ namespace EnterQuery\Product\Review
                     $this->response->reviewCount = isset($result['num_reviews']) ? $result['num_reviews'] : null;
                     $this->response->score = isset($result['avg_score']) ? $result['avg_score'] : null;
                     $this->response->starScore = isset($result['avg_star_score']) ? $result['avg_star_score'] : null;
+                    $this->response->groupedScoreCount = isset($result['num_users_by_score']) ? $result['num_users_by_score'] : [];
 
                     return $result; // for cache
                 }
@@ -72,5 +73,7 @@ namespace EnterQuery\Product\Review\GetByProductUi
         public $score;
         /** @var float */
         public $starScore;
+        /** @var array */
+        public $groupedScoreCount;
     }
 }
