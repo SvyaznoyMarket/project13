@@ -51,6 +51,9 @@ class RecommendAction {
             $product = isset($productsById[$productId]) ? $productsById[$productId] : null;
             if (!$product) continue;
 
+            // если товар недоступен для покупки - пропустить
+            if (!$product->isAvailable() || $product->isInShopShowroomOnly() || $product->isInShopOnly()) continue;
+
             $recommendedProducts[] = $product;
         }
 
@@ -63,7 +66,7 @@ class RecommendAction {
         }
 
         // сортировка
-        try {
+        if (false) try {
             // TODO: вынести в репозиторий
             usort($recommendedProducts, function(\Model\Product\Entity $a, \Model\Product\Entity $b) {
                 if ($b->getIsBuyable() != $a->getIsBuyable()) {
