@@ -8,6 +8,7 @@ namespace EnterApplication\Action\ProductCard
 
     class Get {
         use \EnterApplication\CurlTrait;
+        use \EnterApplication\Action\ActionTrait;
 
         /**
          * @param Request $request
@@ -21,19 +22,7 @@ namespace EnterApplication\Action\ProductCard
             $curl = $this->getCurl();
 
             // регион
-            /** @var Query\Region\GetById|Query\Region\GetByIp $regionQuery */
-            $regionQuery = null;
-            if ($request->regionId) {
-                $regionQuery = (new Query\Region\GetById($request->regionId))->prepare();
-            } else if (
-                \App::config()->region['autoresolve']
-                && (false === strpos(\App::request()->headers->get('user-agent'), 'http://yandex.com/bots')) // SITE-4393
-            ) {
-                $regionQuery = (new Query\Region\GetByIp(\App::request()->getClientIp()))->prepare();
-            }
-            if (!$regionQuery) {
-                $regionQuery = (new Query\Region\GetById(\App::config()->region['defaultId']))->prepare();
-            }
+            $regionQuery = $this->getRegionQuery($request->regionId);
 
             // редирект
             $redirectQuery = (new Query\Redirect\GetByUrl($request->urlPath))->prepare(); // TODO: throw Exception
@@ -47,11 +36,8 @@ namespace EnterApplication\Action\ProductCard
             // выполнение запросов
             $curl->execute();
 
-            // проверка ид региона
-            if (empty($regionQuery->response->region['id'])) {
-                $regionQuery = new Query\Region\GetById(\App::config()->region['defaultId']);
-                $regionQuery->response->region = \App::dataStoreClient()->query('/region-default.json')['result'];
-            }
+            // проверка региона
+            $this->checkRegionQuery($regionQuery);
 
             // товар
             $productQuery = null;
