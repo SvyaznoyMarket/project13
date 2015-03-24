@@ -7618,6 +7618,11 @@ img[height="0"] {
     width: 41px;
     right: 10px;
   }
+  .popup-noradius {
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+  }
   .popup_inn {
     padding: 10px 20px 30px 10px;
     max-height: 600px;
@@ -9815,13 +9820,9 @@ img[height="0"] {
     font-size: 14px;
   }
   .orderOneClick .orderU_fldsbottom {
-    background: #fee6c6;
-    border-top: 1px solid #eaeaea;
     margin: 0 0 -20px -25px;
     padding: 25px 10px;
     width: 665px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
   }
   .orderOneClick .orderCol-r {
     float: none;
