@@ -31,7 +31,7 @@ class Action {
 
             // Фильтруем баннеры для новой и старой главной
             $data = array_filter($data, function($item) {
-                return (AbTest::isNewMainPage() ? 3 : 1) == (int)@$item['type_id'];
+                return 3 == (int)@$item['type_id'];
             });
 
             foreach ($data as $i => $item) {
@@ -49,8 +49,8 @@ class Action {
                 $bannerData[] = [
                     'id'    => $bannerId,
                     'alt'   => $item['name'],
-                    'imgs'  => $item['image'] ? ($host . $urls[AbTest::isNewMainPage() ? 4 : 0] . $item['image']) : null,
-                    'imgb'  => $item['image'] ? ($host . $urls[AbTest::isNewMainPage() ? 3 : 1] . $item['image']) : null,
+                    'imgs'  => $item['image'] ? ($host . $urls[4] . $item['image']) : null,
+                    'imgb'  => $item['image'] ? ($host . $urls[3] . $item['image']) : null,
                     'url'   => $item['url'],
                     't'     => $timeout,
                     'ga'    => $bannerId . ' - ' . $item['name'],
@@ -80,16 +80,13 @@ class Action {
             }
         }
 
-        // Запрашиваем рекомендации и добавляем ID продуктов в массив для product/get
-        if (AbTest::isNewMainPage()) {
-            $productsIdsFromRR = $this->getProductIdsFromRR($request);
-            foreach ($productsIdsFromRR as $arr) {
-                foreach ($arr as $key => $val) {
-                    $productsById[(int)$val] = null;
-                }
+        $productsIdsFromRR = $this->getProductIdsFromRR($request);
+        foreach ($productsIdsFromRR as $arr) {
+            foreach ($arr as $key => $val) {
+                $productsById[(int)$val] = null;
             }
-            unset($val, $key, $arr);
         }
+        unset($val, $key, $arr);
 
         // подготовка 2-го пакета запросов
         // запрашиваем товары

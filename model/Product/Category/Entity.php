@@ -407,45 +407,28 @@ class Entity extends BasicEntity {
     }
 
     public function isV2Root() {
-        return ($this->isNewMainPage() && '616e6afd-fd4d-4ff4-9fe1-8f78236d9be6' === $this->getUi()); // Корневая бытовой техники
+        return ('616e6afd-fd4d-4ff4-9fe1-8f78236d9be6' === $this->getUi()); // Корневая бытовой техники
     }
 
     public function isV2() {
-        if ($this->isNewMainPage()) {
-            return in_array($this->getRootOrSelf()->getUi(), [
-                '616e6afd-fd4d-4ff4-9fe1-8f78236d9be6', // Бытовая техника
-                'f7a2f781-c776-4342-81e8-ab2ebe24c51a', // Мебель
+        return in_array($this->getRootOrSelf()->getUi(), [
+            '616e6afd-fd4d-4ff4-9fe1-8f78236d9be6', // Бытовая техника
+            'f7a2f781-c776-4342-81e8-ab2ebe24c51a', // Мебель
 //                'd91b814f-0470-4fd5-a2d0-a0449e63ab6f', // Электронника
-            ], true);
-        }
-
-        return false;
+        ], true);
     }
 
     public function isV2Furniture() {
         $root = $this->getRootOrSelf();
-
-        if ($this->isNewMainPage()) {
-            // Мебель
-            if ($root->getUi() === 'f7a2f781-c776-4342-81e8-ab2ebe24c51a') {
-                return true;
-            }
-        }
-
-        return false;
+        // Мебель
+        return $root->getUi() === 'f7a2f781-c776-4342-81e8-ab2ebe24c51a';
     }
 
     public function isShowSmartChoice() {
         $root = $this->getRootOrSelf();
 
-        if ($this->isNewMainPage()) {
-            // Мебель
-            if ($root->getUi() === 'f7a2f781-c776-4342-81e8-ab2ebe24c51a') {
-                return false;
-            }
-        }
-
-        return true;
+        // Мебель
+        return $root->getUi() !== 'f7a2f781-c776-4342-81e8-ab2ebe24c51a';
     }
 
     public function isShowFullChildren() {

@@ -5,14 +5,13 @@
  * @var \Iterator\EntityPager $productPager
  * @var \Model\Product\Sorting $productSorting
  * @var int $columnCount
- * @var bool $isNewMainPage
  * @var array $cartButtonSender
  */
 
 $helper = new \Helper\TemplateHelper();
 ?>
 
-<div class="bCatalog js-gift-category <?= $isNewMainPage ? 'newLayout' : '' ?>" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
+<div class="bCatalog js-gift-category newLayout" id="bCatalog" data-lastpage="<?= $productPager->getLastPage() ?>">
     <div class="bCustomFilter">
 
         <?= $helper->render('gift/category/__filter', [

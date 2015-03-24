@@ -9,16 +9,12 @@ class DefaultLayout extends Layout {
     protected $layout  = 'layout-twoColumn';
     protected $breadcrumbsPath = null;
     protected $useTchiboAnalytics = false;
-    /** @var bool АБ-тест новой главной страницы (и новое меню) */
-    public $new_menu = false;
 
     public function __construct() {
         parent::__construct();
 
         // Меню нужно в нескольких рендерингах, поэтому запрашиваем его сразу
         $this->setGlobalParam('menu', (new Menu($this))->generate_new(\App::user()->getRegion()));
-
-        $this->new_menu = \Session\AbTest\AbTest::isNewMainPage();
 
         $this->setTitle('Enter - это выход!');
         $this->addMeta('yandex-verification', '623bb356993d4993');
@@ -69,7 +65,7 @@ class DefaultLayout extends Layout {
      * @return string
      */
     public function slotBodyClassAttribute() {
-        return \App::abTest()->isNewMainPage() ? ' body-new' : '';
+        return ' body-new';
     }
 
     public function slotHeader() {
@@ -213,7 +209,7 @@ class DefaultLayout extends Layout {
      * @return string
      */
     public function slotTopbar() {
-        return $this->render($this->new_menu ? 'userbar2/topbar' : 'userbar/topbar');
+        return $this->render('userbar2/topbar');
     }
 
     /** Всплывающий юзербар
@@ -227,14 +223,14 @@ class DefaultLayout extends Layout {
      * @return string
      */
     public function slotSearchBar() {
-        return $this->new_menu ? $this->render('common/_searchbar') : '';
+        return $this->render('common/_searchbar');
     }
 
     /** Строка поиска
      * @return string
      */
     public function slotNavigation() {
-        return $this->render($this->new_menu ? 'common/_navigation-new' : 'common/_navigation-old', ['menu' => $this->getGlobalParam('menu')]);
+        return $this->render('common/_navigation-new', ['menu' => $this->getGlobalParam('menu')]);
     }
 
     public function slotUserbarContent() {

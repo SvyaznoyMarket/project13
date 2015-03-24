@@ -866,6 +866,10 @@ return [
         'pattern' => '/debug/info',
         'action'  => ['DebugAction', 'info'],
     ],
+    'debug.session' => [
+        'pattern' => '/debug/session',
+        'action'  => ['DebugAction', 'session'],
+    ],
 
     //cron
     'cron-index' => [

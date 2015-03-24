@@ -145,7 +145,6 @@ class Action {
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('columnCount', $columnCount);
-        $page->setParam('isNewMainPage', $this->isNewMainPage());
         $page->setParam('cartButtonSender', $cartButtonSender);
         $page->setGlobalParam('shop', $shop);
 

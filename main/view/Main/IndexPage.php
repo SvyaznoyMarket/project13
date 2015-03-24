@@ -3,7 +3,8 @@
 namespace View\Main;
 
 class IndexPage extends \View\DefaultLayout {
-    protected $layout  = 'layout-main';
+
+    protected $layout  = 'layout-main-new';
 
     public function __construct() {
         // Неправильная обертка для ajax-запроса /index/recommend
@@ -32,14 +33,10 @@ class IndexPage extends \View\DefaultLayout {
         if (isset($seo['keywords']) && $seo['keywords']) {
             $this->addMeta('keywords', $seo['keywords']);
         }
-
-        if ($this->new_menu) $this->layout = 'layout-main-new';
     }
 
     public function slotUserbar() {
-        if ($this->new_menu) {
-            return $this->render('main/_userbar');
-        }
+        return $this->render('main/_userbar');
     }
 
     public function slotUserbarContentData() {
@@ -50,9 +47,7 @@ class IndexPage extends \View\DefaultLayout {
     }
 
     public function slotUpper() {
-        if ($this->new_menu) {
-            return (new \Helper\TemplateHelper())->render('common/__upper', ['offset' => '.js-showTopBar', 'showWhenFullCartOnly' => true]);
-        }
+        return (new \Helper\TemplateHelper())->render('common/__upper', ['offset' => '.js-showTopBar', 'showWhenFullCartOnly' => true]);
     }
 
     public function slotBanner() {

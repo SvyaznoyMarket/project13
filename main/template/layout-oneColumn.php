@@ -63,7 +63,7 @@
 
     </div><!--/ Шаблон -->
 
-    <?= $page->render(!$page->new_menu ? 'common/_footer-old' : 'common/_footer-new') ?>
+    <?= $page->render('common/_footer-new') ?>
 
     <?= $page->slotUpper() ?>
     <?= $page->slotUserbar() ?>

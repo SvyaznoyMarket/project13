@@ -24,4 +24,10 @@ class DebugAction {
         return new \Http\JsonResponse($data);
     }
 
+    public function session() {
+        $data = \App::session()->all();
+        unset($data['__prevDebug__']);
+        return new \Http\JsonResponse($data);
+    }
+
 }
