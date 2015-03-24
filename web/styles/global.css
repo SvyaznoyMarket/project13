@@ -11732,6 +11732,21 @@ img[height="0"] {
     margin: 0 0 0 -10px;
     width: 960px;
   }
+  .lstn .btnBuy.mBuySet {
+    width: auto;
+  }
+  .lstn .btnBuy.mBuySet .btnBuy__eLink {
+    padding-left: 27px;
+    width: auto;
+  }
+  .lstn .btnBuy.mBuySet .btnBuy__eLink:after {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoklEQVQoFWP8//8/AymABai4Boi1gLgKiGWAmB+IsYGfQMFDIA3BQKwIxH1A7AzE8kCMbi0jUOwjEJ9iADpJFIgdgJgN5DxCmBGo4B7UVGsgDbMNyMQAH4AixSANsUCGJhBPAmIBIOYGYnQnAYUYfgPxdSYQixRAspPI8vR5oJNAweoCxN5AjC9Y60HxsBaIQRH3Boj3AjG+iPsB8gNQDfEAAIDIdEZhVaRSAAAAAElFTkSuQmCC) no-repeat 0 0;
+    height: 12px;
+    left: 10px;
+    margin-top: -6px;
+    top: 50%;
+    width: 12px;
+  }
   .lstn_empty {
     padding: 30px 0;
     font-size: 14px;
