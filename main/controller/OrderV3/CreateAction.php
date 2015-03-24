@@ -73,7 +73,7 @@ class CreateAction extends OrderV3 {
         $sessionData = [];
 
         foreach ($coreResponse as $orderData) {
-            $sessionData[$orderData['number']] = $orderData += ['confirmed' => null, 'phone' => (string)$splitResult['user_info']['phone']];
+            $sessionData[$orderData['number']] = $orderData;
         }
 
         $this->session->set(\App::config()->order['sessionName'] ?: 'lastOrder', $sessionData);
