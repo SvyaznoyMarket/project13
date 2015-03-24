@@ -1,17 +1,13 @@
 /**
  * Окно смены региона
- *
- * @param	{Object}	global	Объект window
  */
-;(function( global ) {
+;(function() {
 
 	var body = $('body'),
 		regionWindow = $('.popupRegion'),
 		inputRegion = $('#jscity'),
 		formRegionSubmitBtn = $('#jschangecity'),
 		clearBtn = regionWindow.find('.inputClear'),
-
-		changeRegionBtn = $('.jsChangeRegion'),
 
 		changeRegionAnalyticsBtn = $('.jsChangeRegionAnalytics'),
 
@@ -21,8 +17,6 @@
 		rightArrow = regionWindow.find('.rightArr'),
 		citySlides = regionWindow.find('.regionSlides'),
 		slideWithCity = regionWindow.find('.regionSlides_slide');
-	// end of vars
-
 
 	/**
 	 * Настройка автодополнения поля для ввода региона
@@ -68,218 +62,205 @@
 			}
 		});
 	}
-
 	
-		/**
-		 * Показ окна с выбором города
-		 */
-	var showRegionPopup = function showRegionPopup() {
-			regionWindow.lightbox_me({
-				autofocus: true,
-				onLoad: function(){
-					if (inputRegion.val().length){
-						inputRegion.putCursorAtEnd();
-						submitBtnEnable();
-					}
-				},
-				onClose: function() {
-					var id = changeRegionBtn.data('region-id');
+	function isGeoshopCookieSet() {
+		return Boolean(parseInt(docCookies.getItem('geoshop')));
+	}
+	
+	/**
+	 * Показ окна с выбором города
+	 */
+	function openRegionPopup() {
+		var autoResolveUrl = formRegionSubmitBtn.data('autoresolve-url');
 
-					if ( !global.docCookies.hasItem('geoshop') ) {
-						global.docCookies.setItem('geoshop', id, 31536e3, '/');
-						// document.location.reload()
+		if (typeof autoResolveUrl !== 'undefined' ) {
+			$.ajax({
+				type: 'GET',
+				url: autoResolveUrl,
+				success: function( res ) {
+					if ( !res.data.length ) {
+						$('.popupRegion .mAutoresolve').html('');
+						return false;
 					}
+
+					var url = res.data[0].url,
+						name = res.data[0].name,
+						id = res.data[0].id;
+					// end of vars
+
+					if ( id === 14974 || id === 108136 ) {
+						return false;
+					}
+
+					if ( $('.popupRegion .mAutoresolve').length ) {
+						$('.popupRegion .mAutoresolve').html('<a href="'+url+'">'+name+'</a>');
+					}
+					else {
+						$('.popupRegion .cityInline').prepend('<div class="cityItem mAutoresolve"><a href="'+url+'">'+name+'</a></div>');
+					}
+
 				}
 			});
+		}
 
-			// analytics only for main page
-			if ( document.location.pathname === '/' ) {
-				body.trigger('trackGoogleEvent',[{category: 'citySelector', action: 'viewed', nonInteraction: true}]);
-			}
-		},
-
-		/**
-		 * Обработка кнопок для смены региона
-		 */
-		changeRegionHandler = function changeRegionHandler() {
-			var self = $(this),
-				autoResolve = self.data('autoresolve-url');
-			// end of vars
-
-			var authFromServer = function authFromServer( res ) {
-				if ( !res.data.length ) {
-					$('.popupRegion .mAutoresolve').html('');
-					return false;
+		regionWindow.lightbox_me({
+			autofocus: true,
+			onLoad: function(){
+				if (inputRegion.val().length){
+					inputRegion.putCursorAtEnd();
+					submitBtnEnable();
 				}
-
-				var url = res.data[0].url,
-					name = res.data[0].name,
-					id = res.data[0].id;
-				// end of vars
-
-				if ( id === 14974 || id === 108136 ) {
-					return false;
+			},
+			onClose: function() {
+				if (!isGeoshopCookieSet()) {
+					docCookies.setItem('geoshop', formRegionSubmitBtn.data('current-region-id'), 31536e3, '/');
 				}
-				
-				if ( $('.popupRegion .mAutoresolve').length ) {
-					$('.popupRegion .mAutoresolve').html('<a href="'+url+'">'+name+'</a>');
-				}
-				else {
-					$('.popupRegion .cityInline').prepend('<div class="cityItem mAutoresolve"><a href="'+url+'">'+name+'</a></div>');
-				}
-				
-			};
-
-			if (typeof autoResolve !== 'undefined' ) {
-				$.ajax({
-					type: 'GET',
-					url: autoResolve,
-					success: authFromServer
-				});
 			}
-			
-			showRegionPopup();
+		});
 
-			return false;
-		},
+		// analytics only for main page
+		if ( location.pathname === '/' ) {
+			body.trigger('trackGoogleEvent',[{category: 'citySelector', action: 'viewed', nonInteraction: true}]);
+		}
 
-		/**
-		 * Следующий слайд с городами
-		 */
-		nextCitySlide = function nextCitySlide() {
-			var regionSlideW = slideWithCity.width() * 1,
-				sliderW = citySlides.width() * 1,
-				sliderLeft = parseInt(citySlides.css('left'), 10);
-			// end of vars
+		return false;
+	}
 
-			leftArrow.show();
-			citySlides.animate({'left':sliderLeft - regionSlideW});
+	/**
+	 * Следующий слайд с городами
+	 */
+	function nextCitySlide() {
+		var regionSlideW = slideWithCity.width() * 1,
+			sliderW = citySlides.width() * 1,
+			sliderLeft = parseInt(citySlides.css('left'), 10);
+		// end of vars
 
-			if ( sliderLeft - (regionSlideW * 2) <= -sliderW ) {
-				rightArrow.hide();
-			}
+		leftArrow.show();
+		citySlides.animate({'left':sliderLeft - regionSlideW});
 
-			return false;
-		},
+		if ( sliderLeft - (regionSlideW * 2) <= -sliderW ) {
+			rightArrow.hide();
+		}
 
-		/**
-		 * Предыдущий слайд с городами
-		 */
-		prevCitySlide = function prevCitySlide() {
-			var regionSlideW = slideWithCity.width() * 1,
-				sliderW = citySlides.width() * 1,
-				sliderLeft = parseInt(citySlides.css('left'), 10);
-			// end of vars
+		return false;
+	}
 
-			rightArrow.show();
-			citySlides.animate({'left':sliderLeft + regionSlideW});
+	/**
+	 * Предыдущий слайд с городами
+	 */
+	function prevCitySlide() {
+		var regionSlideW = slideWithCity.width() * 1,
+			sliderW = citySlides.width() * 1,
+			sliderLeft = parseInt(citySlides.css('left'), 10);
+		// end of vars
 
-			if ( sliderLeft + (regionSlideW * 2) >= 0 ) {
-				leftArrow.hide();
-			}
+		rightArrow.show();
+		citySlides.animate({'left':sliderLeft + regionSlideW});
 
-			return false;
-		},
+		if ( sliderLeft + (regionSlideW * 2) >= 0 ) {
+			leftArrow.hide();
+		}
 
-		/**
-		 * Раскрытие полного списка городов
-		 */
-		expandCityList = function expandCityList() {
-			$(this).toggleClass('mExpand');
-			slidesWrap.slideToggle(300);
+		return false;
+	}
 
-			return false;
-		},
+	/**
+	 * Раскрытие полного списка городов
+	 */
+	function expandCityList() {
+		$(this).toggleClass('mExpand');
+		slidesWrap.slideToggle(300);
 
-		/**
-		 * Очистка поля для ввода города
-		 */
-		clearInputHandler = function clearInputHandler() {
-			inputRegion.val('');
+		return false;
+	}
+
+	/**
+	 * Очистка поля для ввода города
+	 */
+	function clearInputHandler() {
+		inputRegion.val('');
+		submitBtnDisable();
+		clearBtn.hide();
+
+		return false;
+	}
+
+	/**
+	 * Обработчик изменения в поле ввода города
+	 */
+	function inputRegionChangeHandler() {
+		if ( $(this).val() ) {
+			submitBtnEnable();
+			clearBtn.show();
+		}
+		else {
 			submitBtnDisable();
 			clearBtn.hide();
-			
-			return false;
-		},
+		}
+	}
 
-		/**
-		 * Обработчик изменения в поле ввода города
-		 */
-		inputRegionChangeHandler = function inputRegionChangeHandler() {
-			if ( $(this).val() ) {
-				submitBtnEnable();
-				clearBtn.show();
-			}
-			else {
-				submitBtnDisable();
-				clearBtn.hide();
-			}
-		},
+	function changeRegionAnalytics( regionName ) {
+		if ( typeof _gaq !== 'undefined' ) {
+			_gaq.push(['_trackEvent', 'citySelector', 'selected', regionName]);
+		}
 
-		changeRegionAnalytics = function changeRegionAnalytics( regionName ) {
-			if ( typeof _gaq !== 'undefined' ) {
-				_gaq.push(['_trackEvent', 'citySelector', 'selected', regionName]);
-			}
+		if (typeof ga == 'function') {
+			ga('send', 'event', 'citySelector', 'selected', regionName, {
+				'dimension14': regionName
+			});
+		}
+	}
 
-			if (typeof ga == 'function') {
-				ga('send', 'event', 'citySelector', 'selected', regionName, {
-					'dimension14': regionName
+	function changeRegionAnalyticsHandler() {
+		var regionName = $(this).text();
+
+		changeRegionAnalytics(regionName);
+	}
+
+	/**
+	 * Обработчик сохранения введенного региона
+	 */
+	function submitCityHandler() {
+		var
+			url = $(this).data('url'),
+			regionName = inputRegion.val();
+		// end of vars
+
+		changeRegionAnalytics(regionName);
+
+		if ( url ) {
+			location = url;
+		}
+		else {
+			if (ENTER.utils.trim(inputRegion[0].defaultValue) != ENTER.utils.trim(regionName)) {
+				queryAutocompleteVariants(regionName, function(res) {
+					if (res[0] && res[0].url) {
+						location = res[0].url;
+					}
 				});
 			}
-		},
 
-		changeRegionAnalyticsHandler = function changeRegionAnalyticsHandler() {
-			var regionName = $(this).text();
+			regionWindow.trigger('close');
+		}
 
-			changeRegionAnalytics(regionName);
-		},
+		return false;
+	}
 
-		/**
-		 * Обработчик сохранения введенного региона
-		 */
-		submitCityHandler = function submitCityHandler() {
-			var
-				url = $(this).data('url'),
-				regionName = inputRegion.val();
-			// end of vars
+	/**
+	 * Блокировка кнопки "Сохранить"
+	 */
+	function submitBtnDisable() {
+		formRegionSubmitBtn.addClass('mDisabled');
+		formRegionSubmitBtn.attr('disabled','disabled');
+	}
 
-			changeRegionAnalytics(regionName);
-
-			if ( url ) {
-				global.location = url;
-			}
-			else {
-				if (ENTER.utils.trim(inputRegion[0].defaultValue) != ENTER.utils.trim(regionName)) {
-					queryAutocompleteVariants(regionName, function(res) {
-						if (res[0] && res[0].url) {
-							global.location = res[0].url;
-						}
-					});
-				}
-
-				regionWindow.trigger('close');
-			}
-
-			return false;
-		},
-
-		/**
-		 * Блокировка кнопки "Сохранить"
-		 */
-		submitBtnDisable = function() {
-			formRegionSubmitBtn.addClass('mDisabled');
-			formRegionSubmitBtn.attr('disabled','disabled');
-		},
-
-		/**
-		 * Разблокировка кнопки "Сохранить"
-		 */
-		submitBtnEnable = function() {
-			formRegionSubmitBtn.removeClass('mDisabled');
-			formRegionSubmitBtn.removeAttr('disabled');
-		};
-	// end of functions
-
+	/**
+	 * Разблокировка кнопки "Сохранить"
+	 */
+	function submitBtnEnable() {
+		formRegionSubmitBtn.removeClass('mDisabled');
+		formRegionSubmitBtn.removeAttr('disabled');
+	}
 
 	/**
 	 * ==== Handlers ====
@@ -290,7 +271,7 @@
 	rightArrow.on('click', nextCitySlide);
 	leftArrow.on('click', prevCitySlide);
 	inputRegion.on('keyup', inputRegionChangeHandler);
-	body.on('click', '.jsChangeRegion', changeRegionHandler);
+	body.on('click', '.jsChangeRegion', openRegionPopup);
 
 	changeRegionAnalyticsBtn.on('click', changeRegionAnalyticsHandler);
 
@@ -298,7 +279,7 @@
 	/**
 	 * ==== GEOIP fix ====
 	 */
-	if ( !global.docCookies.hasItem('geoshop') ) {
-		showRegionPopup();
+	if (!isGeoshopCookieSet()) {
+		openRegionPopup();
 	}
-}(this));
+}());
