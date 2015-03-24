@@ -64,7 +64,7 @@
                         <a href="/product/jewel/podveska-sharm-serdtse-velikobritanii-pandora-791512enmx-2034000003479" class="slidesBox_items_lk"><img src="styles/mainpage/img/pandora/pan-2034000003479.jpg" alt="" class="slidesBox_items_img"></a>
                     </li>
                 </ul>
-
+                <a href="/catalog/jewel/pandora-1320" class="slidesBox_btnview">Посмотреть<br/>коллекцию</a>
             </li>
 
             <li class="slidesBox_i jsSlidesWideItem">
