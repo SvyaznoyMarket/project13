@@ -37,7 +37,7 @@ return function(
         >
 
         <!-- Блок оплата -->
-        <div class="orderPayment">
+        <div class="orderPayment_wrap">
             <!-- Заголовок-->
             <div class="orderPayment_head">
                 <? if ($userEntity) : ?>
