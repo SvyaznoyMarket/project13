@@ -5269,9 +5269,6 @@ img[height="0"] {
     width: 250px;
     margin: 8px 0 0;
   }
-  .eprize #sp-fancybox-overlay {
-    position: fixed!important;
-  }
   .enterprizeConfirm {
     margin: 0 0 200px 25px;
     font-size: 14px;
@@ -5404,6 +5401,9 @@ img[height="0"] {
   }
   .epSliderBody  .bSlider__eInner {
     width: 845px;
+  }
+  .enterprize #sp-fancybox-overlay {
+    position: fixed!important;
   }
 }
 @media all {
