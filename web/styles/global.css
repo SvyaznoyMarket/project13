@@ -5402,6 +5402,9 @@ img[height="0"] {
   .epSliderBody  .bSlider__eInner {
     width: 845px;
   }
+  .enterprize #sp-fancybox-overlay {
+    position: fixed!important;
+  }
 }
 @media all {
   .enterPrizeDesc {
