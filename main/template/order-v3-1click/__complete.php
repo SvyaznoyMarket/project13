@@ -16,13 +16,12 @@ $f = function(
 
 <? foreach ($orders as $order): ?>
 <div class="orderOneClick jsOneClickCompletePage">
-    <span class="orderOneClick_t">Оформление завершено</span>
 
     <div id="jsOrderV3OneClickOrder" data-url="<?= $helper->url('orderV3OneClick.get', ['accessToken' => $order->getAccessToken()]) ?>"></div>
-	
+
 	<div class="orderU_fldsbottom ta-c orderOneClick_cmpl">
-    	<p class="orderOneClick_cmpl_t"><strong>Заявка</strong> <?= $order->getNumber() ?> <strong>оформлена!</strong></p>
-    	<p style="margin-bottom: 20px;">Наш сотрудник позвонит Вам для уточнения деталей<br/> и зарегистрирует заказ.</p>
+    	<p class="orderOneClick_cmpl_t">Оформлен заказ <?= $order->getNumber() ?></p>
+    	<p class="orderOneClick_recall" style="margin-bottom: 20px;">Наш сотрудник позвонит Вам для уточнения деталей<br/> и зарегистрирует заказ.</p>
     	<a href="" class="orderCompl_btn btnsubmit jsOrderOneClickClose">Продолжить покупки</a>
     </div>
 </div>
