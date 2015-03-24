@@ -12,7 +12,6 @@
  * @var $selectedCategory   \Model\Product\Category\Entity
  * @var $productView        string
  * @var $bannerPlaceholder  array
- * @var $allCount           array
  **/
 ?>
 
