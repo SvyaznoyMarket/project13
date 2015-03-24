@@ -8789,12 +8789,15 @@ img[height="0"] {
     vertical-align: top;
   }
   .orderCompl_btn {
-    font-size: 20px;
+    font-size: 15px;
     font-weight: bold;
-    line-height: 32px;
-    min-width: 220px;
-    height: 40px;
+    line-height: 29px;
+    height: 30px;
     margin: 0 0 0 15px;
+    border: 1px solid #f09650;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
   }
   .orderCompl_continue_link {
     font-size: 18px;
@@ -8852,6 +8855,7 @@ img[height="0"] {
   .orderPayment_block {
     width: 380px;
     padding: 20px 25px 20px;
+    margin: 15px auto 10px;
     border: 1px solid #ccc;
   }
   .orderPayment_block--border {
@@ -9758,7 +9762,7 @@ img[height="0"] {
     display: none;
   }
   .orderOneClick_cmpl_t {
-    font-size: 25px;
+    font-size: 30px;
     margin-bottom: 15px;
   }
   .orderOneClick_cmpl .orderCompl_btn {
@@ -9772,6 +9776,9 @@ img[height="0"] {
   }
   .orderOneClick_cmpl .orderCompl_btn:hover {
     text-decoration: none;
+  }
+  .orderOneClick_recall {
+    font-size: 14px;
   }
   .orderOneClick .orderOneClick_cmpl.orderU_fldsbottom {
     padding-top: 10px;
