@@ -63,6 +63,16 @@ namespace EnterApplication\Action\ProductCatalog
             // выполнение запросов
             $curl->execute();
 
+            $filterQuery = (new Query\Product\Filter\Get(
+                [
+                    ['category', 1, $categoryQuery->response->category['id']],
+                ],
+                $regionQuery->response->region['id']
+            ))->prepare();
+
+            // выполнение запросов
+            $curl->execute();
+
             $this->removeCurl();
 
             // обработка ошибок

@@ -1,26 +1,26 @@
 <?php
 
-namespace EnterQuery\Product\Line
+namespace EnterQuery\Product\Filter
 {
-    use EnterQuery\Product\Line\GetByTokenList\Response;
+    use EnterQuery\Product\Filter\Get\Response;
 
-    class GetByTokenList
+    class Get
     {
         use \EnterQuery\CurlQueryTrait;
-        use \EnterQuery\CoreQueryTrait;
+        use \EnterQuery\SearchQueryTrait;
 
-        /** @var string[] */
-        public $tokens = [];
+        /** @var array */
+        public $filterData = [];
         /** @var string|null */
         public $regionId;
         /** @var Response */
         public $response;
 
-        public function __construct(array $tokens = [], $regionId = null)
+        public function __construct(array $filterData = [], $regionId = null)
         {
             $this->response = new Response();
 
-            $this->tokens = $tokens;
+            $this->filterData = $filterData;
             $this->regionId = $regionId;
         }
 
@@ -31,17 +31,19 @@ namespace EnterQuery\Product\Line
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
-                    'v2/line/list',
+                    'listing/filter',
                     [
-                        'token'  => $this->tokens,
-                        'geo_id' => $this->regionId,
+                        'region_id' => $this->regionId,
+                        'filter'    => [
+                            'filters' => $this->filterData,
+                        ],
                     ]
                 ),
                 [], // data
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
-                    $this->response->lines = isset($result[0]) ? $result : [];
+                    $this->response->filters = isset($result[0]) ? $result : [];
 
                     return $result; // for cache
                 }
@@ -52,11 +54,11 @@ namespace EnterQuery\Product\Line
     }
 }
 
-namespace EnterQuery\Product\Line\GetByTokenList
+namespace EnterQuery\Product\Filter\Get
 {
     class Response
     {
         /** @var array */
-        public $lines = [];
+        public $filters = [];
     }
 }
