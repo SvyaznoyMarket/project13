@@ -201,7 +201,7 @@ class CompleteAction extends OrderV3 {
         if (!(bool)$this->sessionOrders) throw new \Exception('В сессии нет заказов');
         $sessionOrder = reset($this->sessionOrders);
 
-        $order = \RepositoryManager::order()->getEntityByNumberAndPhone($orderNumber, $sessionOrder['phone']);
+        $order = \RepositoryManager::order()->getEntityByNumberAndPhone($orderNumber, $sessionOrder['mobile']);
         if (!$order) {
             $order = new \Model\Order\Entity($sessionOrder);
         }
