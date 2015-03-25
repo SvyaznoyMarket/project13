@@ -31,9 +31,7 @@ class RecommendPage extends \View\DefaultLayout {
     }
 
     public function slotUserbar() {
-        if ($this->new_menu) {
-            return $this->render('main/_userbar');
-        }
+        return $this->render('main/_userbar');
     }
 
     public function slotUserbarContentData() {

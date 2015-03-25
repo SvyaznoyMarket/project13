@@ -6,11 +6,10 @@ return function(
     $sender = [], // Поставщик товара: обычно retail rocket
     $sender2 = ''
 ) {
-    $title = 'Купить быстро в 1 клик';
     $user = \App::user()->getEntity();
 ?>
 <div class="orderOneClick">
-    <span class="orderOneClick_t jsOneClickTitle"><?= $title ?></span>
+    <span class="orderOneClick_t">Оформление заказа</span>
 
     <?= $helper->render('order-v3/__error', ['error' => null]) ?>
 

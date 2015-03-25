@@ -271,6 +271,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
         'sender'    => [
             'name'     => 'enter',
             'position' => 'Viewed',
+            'from'     => 'productPage',
         ],
         'sender2' => $sender2,
     ]) ?>

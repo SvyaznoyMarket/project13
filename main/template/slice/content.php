@@ -22,9 +22,7 @@ $helper = new \Helper\TemplateHelper();
 
     <h1 class="bTitlePage js-pageTitle"><?= $slice->getName() ?></h1>
 
-    <? if (!empty($promoContent)): ?>
-        <?= $promoContent ?>
-    <? elseif ($productPager->getLastPage() > 1 && $hasCategoryChildren): // SITE-2644, SITE-3558 ?>
+    <? if ($productPager->getLastPage() > 1 && $hasCategoryChildren): // SITE-2644, SITE-3558 ?>
         <?= $helper->render('product-category/__children', ['category' => $category]) // дочерние категории ?>
     <? endif ?>
 

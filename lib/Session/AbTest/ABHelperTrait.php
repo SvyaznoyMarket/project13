@@ -9,15 +9,6 @@ namespace Session\AbTest;
  */
 trait ABHelperTrait {
 
-    /** Новая главная страница?
-     * @return bool
-     */
-    public static function isNewMainPage() {
-        // TODO данный тест был отключен 03.03.2015. Через некоторое время следует удалить данный метод и его вызовы из кода
-        return true;
-//        return \App::abTest()->getTest('main_page') && in_array(\App::abTest()->getTest('main_page')->getChosenCase()->getKey(), ['new', 'search_new_1', 'search_new_2']);
-    }
-
     public static function isNewFurnitureListing() {
         $test = \App::abTest()->getTest('furnitureListing');
         return $test && $test->getChosenCase()->getKey() === 'new';

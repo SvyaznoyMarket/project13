@@ -803,7 +803,6 @@ class Action {
             \RepositoryManager::review()->addScores($products, $scoreData);
 
             $pagerAll = new \Iterator\EntityPager($products, $productCount);
-            $page->setGlobalParam('allCount', $pagerAll->count());
         }
 
         $filters = $productFilter->dump();

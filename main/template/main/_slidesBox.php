@@ -90,7 +90,6 @@ $linkTarget = \App::abTest()->isNewWindow() ? ' target="_blank" ' : '';
                     <?= $helper->render('cart/__button-product', [
                         'product'        => $product,
                         'sender'         => $sender,
-                        'reserveAsBuy'   => true,
                         'noUpdate'       => true,
                         'location'       => 'slider',
                     ]) // Кнопка купить ?>

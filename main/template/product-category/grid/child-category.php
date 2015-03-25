@@ -68,6 +68,7 @@ foreach ($gridCells as $cell) {
             'sender'    => [
                 'name'     => 'enter',
                 'position' => 'Viewed',
+                'from'     => 'categoryPage'
             ],
         ]) ?>
     <? endif ?>

@@ -31,7 +31,7 @@ $productLink = $product->getLink().($page->hasGlobalParam('sender')?(false === s
     <? endif ?>
 
     <h3><a href="<?= $productLink ?>"<?php if (!empty($gaEvent)) echo ' data-event="'.$gaEvent.'" data-title="Переход по ссылке" class="gaEvent"'; ?>><?php echo $product->getName() ?></a></h3>
-        <?= $page->render('cart/_button', ['product' => $product]) ?>
+        <?= \App::closureTemplating()->render('cart/__button-product', ['product' => $product]) ?>
 	    <div class="font18 pb10 mSmallBtns"><span class="price"><?php echo $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></div>
         <?= $page->render('product/show/__corner_features', ['product' => $product]) ?>
     </div>
