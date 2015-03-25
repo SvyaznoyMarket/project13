@@ -30,7 +30,7 @@ class GetAction {
             }
 
             if ((bool)$productsById) {
-                foreach (\RepositoryManager::product()->getCollectionById(array_keys($productsById)) as $product) {
+                foreach (\RepositoryManager::product()->getCollectionById(array_keys($productsById), null, false) as $product) {
                     $productsById[$product->getId()] = $product;
                 }
             }
