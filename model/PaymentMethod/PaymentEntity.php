@@ -26,6 +26,7 @@ namespace Model\PaymentMethod {
 
             if (isset($arr['methods']) && is_array($arr['methods'])) {
                 foreach ($arr['methods'] as $method) {
+                    if ($method['id'] == PaymentMethodEntity::PAYMENT_SVYAZNOY_CLUB && \App::request()->cookies->get('enable_sv') != 1) continue; // TODO удалить после теста на бою (тестирование списания баллов Связного Клуба)
                     $this->methods[$method['id']] = new PaymentMethodEntity($method, $this->groups);
                 }
             } else {
