@@ -62,6 +62,8 @@ class EditAction {
 
         $form = new \View\User\EditForm();
         $form->fromEntity($this->user);
+        $form->setMobilePhone(preg_replace('/^8/', '+7', $form->getMobilePhone()));
+        $form->setHomePhone(preg_replace('/^8/', '+7', $form->getHomePhone()));
 
         $message = $this->session->get('flash');
         $this->session->remove('flash');
@@ -92,6 +94,16 @@ class EditAction {
 
         if (!array_key_exists('is_subscribe', $userData)) {
             $userData['is_subscribe'] = false;
+        }
+
+        if (isset($userData['mobile_phone'])) {
+            $userData['mobile_phone'] = preg_replace('/^\+7/', '8', $userData['mobile_phone']);
+            $userData['mobile_phone'] = preg_replace('/[^\d]/', '', $userData['mobile_phone']);
+        }
+
+        if (isset($userData['home_phone'])) {
+            $userData['home_phone'] = preg_replace('/^\+7/', '8', $userData['home_phone']);
+            $userData['home_phone'] = preg_replace('/[^\d]/', '', $userData['home_phone']);
         }
 
         if (array_key_exists('bonus_card', $userData) && (bool)$userData['bonus_card'] && is_array($userData['bonus_card'])) {
