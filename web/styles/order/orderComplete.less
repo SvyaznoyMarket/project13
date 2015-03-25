@@ -28,13 +28,23 @@
         }
     }
     &_btn{
-        font-size: 15px;
+        font-size: 20px;
         font-weight: bold;
-        line-height: 29px;
-        height: 30px;
+        line-height: 32px;
+        min-width: 220px;
+        height: 40px;
         margin: 0 0 0 15px;
-        border: 1px solid #f09650;
-        .rounded(2px);
+
+        .orderOneClick &{
+            font-size: 15px;
+            font-weight: bold;
+            line-height: 29px;
+            height: 30px;
+            margin: 0px;
+            border: 1px solid #f09650;
+            .rounded(2px);
+            min-width: 0px;
+        }
 
     }
     &_continue_link{
