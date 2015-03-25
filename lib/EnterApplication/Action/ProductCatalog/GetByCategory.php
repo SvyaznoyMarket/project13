@@ -63,12 +63,40 @@ namespace EnterApplication\Action\ProductCatalog
             // выполнение запросов
             $curl->execute();
 
-            $filterQuery = (new Query\Product\Filter\Get(
-                [
-                    ['category', 1, $categoryQuery->response->category['id']],
-                ],
-                $regionQuery->response->region['id']
-            ))->prepare();
+            /** @var Query\Product\Filter\Get $filterQuery */
+            $filterQuery = null;
+            call_user_func(function() use (&$categoryQuery, &$filterQuery, &$regionQuery) {
+                $category = $categoryQuery->response->category;
+                if (!$category['id']) return;
+
+                $filterData = [
+                    ['category', 1, $category['id']],
+                ];
+
+                $filterQuery = (new Query\Product\Filter\Get($filterData, $regionQuery->response->region['id']))->prepare();
+            });
+
+            // выполнение запросов
+            $curl->execute();
+
+            call_user_func(function() use (&$filterQuery, &$brandQuery, &$regionQuery) {
+                if (!$filterQuery) return;
+
+                foreach ($filterQuery->response->filters as $item) {
+                    $id = isset($item['filter_id']) ? $item['filter_id'] : null;
+                    if ('brand' === $id) {
+                        usort($item['options'], function($a, $b) { return $b['quantity'] - $a['quantity']; });
+                        $brandIds = array_column($item['options'], 'id');
+                        $brandIds = array_slice($brandIds, 0, 60);
+
+                        if ($brandIds) {
+                            $brandQuery = (new Query\Brand\GetByIdList($brandIds, $regionQuery->response->region['id']))->prepare();
+                        }
+
+                        break;
+                    }
+                }
+            });
 
             // выполнение запросов
             $curl->execute();
