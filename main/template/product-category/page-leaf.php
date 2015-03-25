@@ -125,6 +125,7 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
             'sender'    => [
                 'name'     => 'enter',
                 'position' => 'Viewed',
+                'from'     => 'categoryPage'
             ],
         ]) ?>
     <? endif ?>
