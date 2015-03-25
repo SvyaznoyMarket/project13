@@ -154,17 +154,18 @@ class Action {
 
         // подготовка 3-го пакета запросов
 
-        \RepositoryManager::productCategory()->prepareEntityHasChildren($category);
+        //\RepositoryManager::productCategory()->prepareEntityHasChildren($category); // удалил запрос, SITE-5351
 
         $client->execute();
 
         // запрашиваем дерево категорий
+        // удалил запрос, SITE-5351
         if ($category->isV2Root()) {
             // Необходимо запросить сестринские категории, т.к. они используется в гридстере (/main/template/product-category/__sibling-list.php) и в ювелирке (/main/template/jewel/product-category/_branch.php)
-            \RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region, $this->convertFiltersToSearchClientRequestFormat(\RepositoryManager::productFilter()->getFilterValuesFromHttpRequest($request)));
+            //\RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region, $this->convertFiltersToSearchClientRequestFormat(\RepositoryManager::productFilter()->getFilterValuesFromHttpRequest($request)));
         } else {
             // Необходимо запросить сестринские категории, т.к. они используется в гридстере (/main/template/product-category/__sibling-list.php) и в ювелирке (/main/template/jewel/product-category/_branch.php)
-            \RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region);
+            //\RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region);
         }
 
         // запрашиваем фильтры

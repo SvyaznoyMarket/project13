@@ -39,6 +39,27 @@ namespace EnterApplication\Action\ProductCatalog
             // проверка региона
             $this->checkRegionQuery($regionQuery);
 
+            // категория
+            $categoryQuery = (new Query\Product\Category\GetByToken($request->categoryCriteria['token'], $regionQuery->response->region['id']))->prepare();
+
+            // дерево категорий для меню
+            //$categoryTreeQuery = (new Query\Product\Category\GetTree(null, 3, null, null, true))->prepare($categoryTreeError);
+            $categoryRootTreeQuery = (new Query\Product\Category\GetRootTree($regionQuery->response->region['id'], 3))->prepare();
+
+            // пользователь и его подписки
+            $userQuery = null;
+            $subscribeQuery = null;
+            if ($request->userToken) {
+                $userQuery = (new Query\User\GetByToken($request->userToken))->prepare();
+                $subscribeQuery = (new Query\Subscribe\GetByUserToken($request->userToken))->prepare();
+            }
+
+            // список регионов для выбора города
+            $mainRegionQuery = (new Query\Region\GetMain())->prepare();
+
+            // каналы подписок
+            $subscribeChannelQuery = (new Query\Subscribe\Channel\Get())->prepare();
+
             // выполнение запросов
             $curl->execute();
 
@@ -56,6 +77,10 @@ namespace EnterApplication\Action\ProductCatalog
             $response->redirectQuery = $redirectQuery;
             $response->abTestQuery = $abTestQuery;
             $response->regionQuery = $regionQuery;
+            $response->mainRegionQuery = $mainRegionQuery;
+            $response->subscribeChannelQuery = $subscribeChannelQuery;
+            //$response->categoryRootTreeQuery = $categoryRootTreeQuery;
+            $response->menuQuery = $menuQuery;
 
             return $response;
         }
@@ -88,11 +113,23 @@ namespace EnterApplication\Action\ProductCatalog\GetByCategory
 
     class Response
     {
+        /** @var Query\User\GetByToken|null */
+        public $userQuery;
+        /** @var Query\Subscribe\GetByUserToken|null */
+        public $subscribeQuery;
         /** @var Query\Redirect\GetByUrl */
         public $redirectQuery;
         /** @var Query\AbTest\GetActive */
         public $abTestQuery;
         /** @var Query\Region\GetById */
         public $regionQuery;
+        /** @var Query\Region\GetMain */
+        public $mainRegionQuery; // TODO: убрать, будет через ajax
+        /** @var Query\Subscribe\Channel\Get */
+        public $subscribeChannelQuery;
+        /** @var Query\Product\Category\GetRootTree */
+        public $categoryRootTreeQuery;
+        /** @var Query\MainMenu\GetByTagList */
+        public $menuQuery;
     }
 }
