@@ -5402,6 +5402,9 @@ img[height="0"] {
   .epSliderBody  .bSlider__eInner {
     width: 845px;
   }
+  .enterprize #sp-fancybox-overlay {
+    position: fixed!important;
+  }
 }
 @media all {
   .enterPrizeDesc {
@@ -7283,7 +7286,8 @@ img[height="0"] {
     border-bottom: 1px solid #929292;
   }
   .packageSet_inner {
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     max-height: 440px;
   }
   .packageSet.mPackageSetEdit {
@@ -8836,10 +8840,14 @@ img[height="0"] {
   /*===========================================================================
  Оформление заказа: оплата
 ============================================================================*/
+  .orderPayment {
+    width: 432px;
+    margin: 15px auto 10px;
+  }
   .orderPayment_block {
     width: 380px;
-    margin: 30px auto 10px;
     padding: 20px 25px 20px;
+    margin: 15px auto 10px;
     border: 1px solid #ccc;
   }
   .orderPayment_block--border {
@@ -8895,6 +8903,9 @@ img[height="0"] {
   }
   .orderPayment_msg_shop_metro + .orderPayment_msg_shop_addr {
     margin-left: 0px;
+  }
+  .orderPayment_msg_shop.markerLst_row > .orderPayment_msg_shop_addr {
+    margin-top: 15px;
   }
   .orderPayment_msg_addr_link {
     margin-top: 5px;
@@ -9140,6 +9151,20 @@ img[height="0"] {
     border-radius: 2px;
   }
   .btn-discount-orange:hover {
+    text-decoration: none;
+  }
+  .btn-discount-red {
+    border: 1px solid #ec434f;
+    color: #ec434f;
+    text-decoration: none;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 4px 13px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 2px;
+  }
+  .btn-discount-red:hover {
     text-decoration: none;
   }
 }
@@ -11725,6 +11750,43 @@ img[height="0"] {
     margin: 0 0 0 -10px;
     width: 960px;
   }
+  .lstn .btnBuy.mBuySet {
+    width: auto;
+  }
+  .lstn .btnBuy.mBuySet .btnBuy__eLink {
+    padding-left: 27px;
+    width: auto;
+  }
+  .lstn .btnBuy.mBuySet .btnBuy__eLink:after {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoklEQVQoFWP8//8/AymABai4Boi1gLgKiGWAmB+IsYGfQMFDIA3BQKwIxH1A7AzE8kCMbi0jUOwjEJ9iADpJFIgdgJgN5DxCmBGo4B7UVGsgDbMNyMQAH4AixSANsUCGJhBPAmIBIOYGYnQnAYUYfgPxdSYQixRAspPI8vR5oJNAweoCxN5AjC9Y60HxsBaIQRH3Boj3AjG+iPsB8gNQDfEAAIDIdEZhVaRSAAAAAElFTkSuQmCC) no-repeat 0 0;
+    height: 12px;
+    left: 10px;
+    margin-top: -6px;
+    top: 50%;
+    width: 12px;
+  }
+  .lstn .btn--short {
+    box-shadow: none;
+    width: auto;
+    font-size: 12px;
+    text-align: center;
+    padding: 7px 5px 8px;
+    margin-top: 0;
+    line-height: 1;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+  }
+  .lstn .btn--slot--container {
+    width: auto;
+    display: inline-block;
+    vertical-align: top;
+    /* IE6-8 */
+    *display: inline;
+    *zoom: 1;
+    vertical-align: middle;
+    margin-left: 5px;
+  }
   .lstn_empty {
     padding: 30px 0;
     font-size: 14px;
@@ -11826,7 +11888,7 @@ img[height="0"] {
   }
   .lstn_i-banner .lstn_i_inn {
     background-color: transparent;
-    min-height: 249px;
+    min-height: 243px;
   }
   .lstn_i-banner .adfoxWrapper {
     left: 50%;

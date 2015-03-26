@@ -37,7 +37,7 @@ return function(
         >
 
         <!-- Блок оплата -->
-        <div class="orderPayment">
+        <div class="orderPayment_wrap">
             <!-- Заголовок-->
             <div class="orderPayment_head">
                 <? if ($userEntity) : ?>
@@ -104,7 +104,9 @@ return function(
         <?= $orderPayment && $orderPayment->hasSvyaznoyClub() && !$order->isPaidBySvyaznoy() ? $helper->render('order-v3-new/complete-blocks/_svyaznoy-club') : '' ?>
 
         <? if (\App::config()->flocktoryExchange['enabled']) : ?>
-            <div class="i-flocktory" data-fl-action="exchange" data-fl-spot="thankyou2" data-fl-username="<?= $order->getFirstName() ?>" data-fl-user-email="<?= $order->email ?>"></div>
+<!--            <div>-->
+                <div class="i-flocktory orderPayment" data-fl-action="exchange" data-fl-spot="thankyou2" data-fl-username="<?= $order->getFirstName() ?>" data-fl-user-email="<?= $order->email ?>"></div>
+<!--            </div>-->
         <? endif ?>
 
         <div class="orderCompl orderCompl_final clearfix">

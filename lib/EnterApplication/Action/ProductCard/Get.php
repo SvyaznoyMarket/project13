@@ -169,6 +169,7 @@ namespace EnterApplication\Action\ProductCard
             });
 
             // связанные товары: аксессуары, наборы, ...
+            $relatedProductQueries = [];
             call_user_func(function() use (&$productQuery, &$relatedProductQueries) {
                 $ids = []; // идентификаторы товаров
                 if ($accessoryIds = array_slice((array)$productQuery->response->product['accessories'], 0, \App::config()->product['itemsPerPage'])) {

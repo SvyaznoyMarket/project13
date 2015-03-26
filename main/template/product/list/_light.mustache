@@ -37,88 +37,45 @@
                 {{/hoverImage}}
                 
                 <div style="display: table; width: 100%;">
-                <div class="lstn_pr">
-                    {{#oldPrice}}
-                        <span class="lstn_pr_old">
-                            <span class="td-lineth">{{&oldPrice}}</span> <span class="rubl">p</span>
-                            {{#priceSale}}
-                                &nbsp;<span class="lstn_pr_sale">-{{priceSale}}%</span>
-                            {{/priceSale}}
-                        </span>
-                    {{/oldPrice}}
-                    <span class="lstn_pr_now{{#priceSale}} lstn_pr_now-sale{{/priceSale}}"><strong>{{&price}}</strong> <span class="rubl">p</span></span>
-                </div>
-
-                {{#view.extraContent}}
-                    <div class="lstn_btn">
-                        {{^hasKit}}
-                            <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}></a>
-
-                            {{#isBuyable}}
-                                {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
-                            {{/isBuyable}}
-
-                            {{#view.extraContent}}
-                                {{#isInShopShowroomOnly}}
-                                    <span class="lstn_btn_not">
-                                        На витрине
-                                    </span>
-                                {{/isInShopShowroomOnly}}
-
-                                {{^isInShopShowroomOnly}}
-                                    {{#isInShopStockOnly}}
-                                        <span class="lstn_btn_ftn">
-                                            Только в магазинах
-                                        </span>
-                                    {{/isInShopStockOnly}}
-                                {{/isInShopShowroomOnly}}
-
-                                {{^isInShopShowroomOnly}}
-                                    {{^isInShopStockOnly}}
-                                        {{^isBuyable}}
-                                            <span class="lstn_btn_not">
-                                                Нет в наличии
-                                            </span>
-                                        {{/isBuyable}}
-                                    {{/isInShopStockOnly}}
-                                {{/isInShopShowroomOnly}}
-                            {{/view.extraContent}}
-                        {{/hasKit}}
-
-                        {{#isKitLocked}}
-                            <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}></a>
-                            {{#isBuyable}}
-                                {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
-                            {{/isBuyable}}
-
-                            {{#view.extraContent}}
-                                {{#isInShopShowroomOnly}}
-                                    <span class="lstn_btn_not">
-                                        На витрине
-                                    </span>
-                                {{/isInShopShowroomOnly}}
-
-                                {{^isInShopShowroomOnly}}
-                                    {{#isInShopStockOnly}}
-                                        <span class="lstn_btn_ftn">
-                                            Только в магазинах
-                                        </span>
-                                    {{/isInShopStockOnly}}
-                                {{/isInShopShowroomOnly}}
-
-                                {{^isInShopShowroomOnly}}
-                                    {{^isInShopStockOnly}}
-                                        {{^isBuyable}}
-                                            <span class="lstn_btn_not">
-                                                Нет в наличии
-                                            </span>
-                                        {{/isBuyable}}
-                                    {{/isInShopStockOnly}}
-                                {{/isInShopShowroomOnly}}
-                            {{/view.extraContent}}
-                        {{/isKitLocked}}
+                    <div class="lstn_pr">
+                        {{#oldPrice}}
+                            <span class="lstn_pr_old">
+                                <span class="td-lineth">{{&oldPrice}}</span> <span class="rubl">p</span>
+                                {{#priceSale}}
+                                    &nbsp;<span class="lstn_pr_sale">-{{priceSale}}%</span>
+                                {{/priceSale}}
+                            </span>
+                        {{/oldPrice}}
+                        <span class="lstn_pr_now{{#priceSale}} lstn_pr_now-sale{{/priceSale}}"><strong>{{&price}}</strong> <span class="rubl">p</span></span>
                     </div>
-                {{/view.extraContent}}
+
+                    {{#view.extraContent}}
+                        <div class="lstn_btn">
+                            {{#showCompareButton}}
+                                <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}></a>
+                            {{/showCompareButton}}
+
+                            {{#isBuyable}}
+                                {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
+                            {{/isBuyable}}
+
+                            {{#inShopShowroomLabel}}
+                                <span class="lstn_btn_not">{{inShopShowroomLabel}}</span>
+                            {{/inShopShowroomLabel}}
+
+                            {{#inShopStockOnlyLabel}}
+                                <span class="lstn_btn_ftn">{{inShopStockOnlyLabel}}</span>
+                            {{/inShopStockOnlyLabel}}
+
+                            {{#inStoreLabel}}
+                                <span class="lstn_btn_ftn">{{name}}</span>
+                            {{/inStoreLabel}}
+
+                            {{#notBuyableLabel}}
+                                <span class="lstn_btn_not">{{notBuyableLabel}}</span>
+                            {{/notBuyableLabel}}
+                        </div>
+                    {{/view.extraContent}}
                 </div>
                 
                 {{#view.bottomDescription}}

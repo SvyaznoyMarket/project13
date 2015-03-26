@@ -189,6 +189,9 @@ class Entity extends BasicEntity {
 
             $this->secondaryGroupedProperties = $this->groupedProperties;
         }
+
+        // TODO удалить
+        if ($this->isGifteryCertificate()) $this->state->setIsBuyable(true);
     }
 
     /**

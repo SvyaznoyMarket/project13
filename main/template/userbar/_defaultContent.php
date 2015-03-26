@@ -1,5 +1,5 @@
 <div class="topbar_l">
-    <a class="topbar_loc jsChangeRegion" href="<?= $page->url('region.change', ['regionId' => $user->getRegion()->getId()]) ?>" data-url="<?= $page->url('region.init') ?>" data-region-id="<?= $user->getRegion()->getId() ?>" data-autoresolve-url="<?= $page->url('region.autoresolve', ['nocache' => 1]) ?>">
+    <a class="topbar_loc jsChangeRegion" href="<?= $page->url('region.change', ['regionId' => $user->getRegion()->getId()]) ?>">
         <?= $user->getRegion()->getName() ?>
     </a>
 

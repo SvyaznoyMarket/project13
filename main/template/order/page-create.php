@@ -109,7 +109,7 @@ if ($form->hasSubway()) $jsValidator['order[address_metro]'] = 'Укажите �
             <div class="bBuyingLine__eRight" style="width: 640px;">
                 <div>
                     <p></p>
-                    <strong><?= $region->getName() ?></strong> ( <a class="jsChangeRegion" data-region-id="<?= $user->getRegion()->getId() ?>" data-url="<?= $page->url('region.init') ?>" href="<?= $page->url('region.change', array('regionId' => $region->getId())) ?>" style="font-weight: normal">изменить</a> )
+                    <strong><?= $region->getName() ?></strong> ( <a class="jsChangeRegion" href="<?= $page->url('region.change', array('regionId' => $region->getId())) ?>" style="font-weight: normal">изменить</a> )
                 </div>
 
                 <? if ($form->hasSubway()): ?>

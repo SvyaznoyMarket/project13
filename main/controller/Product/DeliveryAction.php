@@ -180,7 +180,7 @@ class DeliveryAction {
                         if ($day > 7) continue;
 
                         if (in_array($delivery['token'], ['self', 'now'])) {
-                            foreach ($dateItem['shop_list'] as $shopItem) {
+                            foreach (isset($dateItem['shop_list'][0]) ? $dateItem['shop_list'] : [] as $shopItem) {
                                 if (!isset($shopItem['id']) || !isset($shopData[$shopItem['id']])) continue;
 
                                 /*
