@@ -8805,7 +8805,7 @@ img[height="0"] {
     font-weight: bold;
     line-height: 29px;
     height: 30px;
-    margin: 0 0 0 15px;
+    margin: 0px;
     border: 1px solid #f09650;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
@@ -9841,7 +9841,6 @@ img[height="0"] {
   .orderOneClick .orderU_fldsbottom {
     margin: 0px;
     padding: 8px 0px 0px;
-    width: 665px;
   }
   .orderOneClick .orderCol-r {
     float: none;
