@@ -27,12 +27,6 @@ class IndexAction {
             : null
         ;
 
-        // города для выбора
-        $regionsToSelect = [];
-        foreach ($actionResponse->mainRegionQuery->response->regions as $item) {
-            $regionsToSelect[] = new \Model\Region\Entity($item);
-        }
-
         // товар
         /** @var $product \Model\Product\Entity */
         $productItem = [];
@@ -343,7 +337,6 @@ class IndexAction {
         }
 
         $page->setParam('renderer', \App::closureTemplating());
-        $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('product', $product);
         $page->setParam('lifeGiftProduct', $lifeGiftProduct);
         $page->setParam('title', $product->getName());

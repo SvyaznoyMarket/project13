@@ -27,7 +27,7 @@ class QueueManager {
      * @throws Exception
      */
     public function process($queueName, $handler, $limit = 1000) {
-        $this->logger->debug(sprintf('Executing %s with limit %s', $queueName, $limit), ['queue']);
+        //$this->logger->debug(sprintf('Executing %s with limit %s', $queueName, $limit), ['queue']);
 
         if (!is_callable($handler)) {
             throw new \Exception(sprintf('Для задания %s передан неправильный обработчик', $queueName));

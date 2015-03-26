@@ -17,7 +17,7 @@ class Repository {
      * @return Entity|null
      */
     public function getDefaultEntity() {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         return $this->getEntityById(\App::config()->region['defaultId']);
     }
@@ -27,7 +27,7 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityById($id) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = clone $this->client;
 
@@ -58,7 +58,7 @@ class Repository {
      * @param $callback
      */
     public function prepareEntityById($id, $callback) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery('geo/get', array('id' => array($id)), [], $callback);
     }
@@ -68,7 +68,7 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityByToken($token) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = clone $this->client;
 
@@ -93,7 +93,7 @@ class Repository {
      * @return Entity[]
      */
     public function getShopAvailableCollection() {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = clone $this->client;
 
@@ -113,7 +113,7 @@ class Repository {
      * @param $done
      */
     public function prepareShopAvailableCollection($done) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery('geo/get-shop-available', [], [], $done);
     }
@@ -122,7 +122,7 @@ class Repository {
      * @return Entity[]
      */
     public function getShownInMenuCollection() {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = clone $this->client;
 
@@ -142,7 +142,7 @@ class Repository {
      * @param $done
      */
     public function prepareShownInMenuCollection($done) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery('geo/get-menu-cities', [], [], $done);
     }
@@ -153,7 +153,7 @@ class Repository {
      * @param callback|null $fail
      */
     public function prepareEntityByIp($ip, $done, $fail = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery('geo/locate', ['ip' => $ip], [], $done, $fail);
     }

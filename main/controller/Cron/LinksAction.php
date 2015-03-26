@@ -5,7 +5,7 @@ namespace Controller\Cron;
 class LinksAction {
 
     public function execute(\Http\Request $request, $task) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if(!$request->isXmlHttpRequest()) throw new \Exception\NotFoundException();
 

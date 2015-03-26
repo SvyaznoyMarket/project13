@@ -18,7 +18,7 @@ class Repository {
      * @return Entity[]
      */
     public function getCollection(\Model\Region\Entity $region = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
         $client = clone $this->client;
 
@@ -44,7 +44,7 @@ class Repository {
      * @param                      $callback
      */
     public function prepareCollection(\Model\Region\Entity $region = null, $callback) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $params = [];
         if ($region) {

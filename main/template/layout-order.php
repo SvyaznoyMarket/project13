@@ -62,7 +62,6 @@
 
 <? if (!(bool)\App::exception()->all()) echo $page->render('order/_footer') ?>
 
-<?= $page->slotRegionSelection() ?>
 <?= $page->slotBodyJavascript() ?>
 <?= $page->slotInnerJavascript() ?>
 <?= $page->slotAuth() ?>

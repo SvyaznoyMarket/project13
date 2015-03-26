@@ -3,7 +3,7 @@
 	var address,
 		initialAddressData = $('#jsUserAddress').data('value'),
 		kladrConfig = $('#kladr-config').data('value'),
-		regionName = $('#page-config').data('value').user.region.name;
+        region = $('#page-config').data('value').user.region;
 
 	function AddressModel () {
 
@@ -132,7 +132,7 @@
 	// чтобы вызывать функцию после AJAX-запросов, копируем её в глобальную переменную
 	ENTER.OrderV3.constructors.smartAddressInit = function() {
 		var $input = $('.jsSmartAddressInput'),
-			initKladrQuery = $.extend(kladrConfig, {'limit': 1, type: $.kladr.type.city, name: regionName});
+			initKladrQuery = $.extend(kladrConfig, {'limit': 1, type: $.kladr.type.city, name: region.name});
 
 		// jQuery-ui autocomplete from КЛАДР
 		$input.autocomplete({
@@ -209,7 +209,9 @@
 			}
 		});
 
-		if (kladrConfig && regionName) {
+		if (region.kladrId) {
+            address.cityId(region.kladrId)
+        } else if (kladrConfig && region.name) {
 			$.kladr.api(initKladrQuery, function (data){
 				var id = data.length > 0 ? data[0].id : 0;
 				if (id==0) console.error('КЛАДР не определил город, конфигурация запроса: ', initKladrQuery);

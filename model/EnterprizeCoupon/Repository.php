@@ -20,7 +20,7 @@ class Repository {
      * @param null $fail
      */
     public function prepareCollection($done, $member_type = null, $fail = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $params = [];
         if (!is_null($member_type)) {
@@ -38,7 +38,7 @@ class Repository {
      * @param null $fail
      */
     public function prepareCollectionByMemberType($member_type = 0, $done, $fail = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery('coupon/get', ['member_type' => $member_type], [], $done, $fail);
     }
@@ -48,7 +48,7 @@ class Repository {
      * @return null
      */
     public function getEntityByToken($uid = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $entityClass = $this->entityClass;
 
@@ -86,7 +86,7 @@ class Repository {
      * @return null
      */
     public function getEntityFromPartner($keyword = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $entityClass = $this->entityClass;
         $coupon = null;

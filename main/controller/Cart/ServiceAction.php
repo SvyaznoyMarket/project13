@@ -16,7 +16,7 @@ class ServiceAction {
      * @throws \Exception
      */
     public function set($serviceId, $productId, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $cart = \App::user()->getCart();
 
@@ -107,7 +107,7 @@ class ServiceAction {
      * @return \Http\JsonResponse|\Http\RedirectResponse
      */
     public function delete(\Http\Request $request, $serviceId, $productId = null) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $request->query->set('quantity', 0);
 

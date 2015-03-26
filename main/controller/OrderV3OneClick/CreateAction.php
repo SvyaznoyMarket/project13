@@ -21,7 +21,7 @@ class CreateAction {
      * @throws \Exception
      */
     public function execute(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $referer = $request->headers->get('referer') ?: '/';
 

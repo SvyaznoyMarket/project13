@@ -13,7 +13,7 @@ class GitAction {
      * @return \Http\Response
      */
     public function pull() {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         try {
             $result = shell_exec('cd "' . \App::config()->appDir . '" && (git fetch; git status; git pull; git status)');
@@ -32,7 +32,7 @@ class GitAction {
      * @return \Http\Response
      */
     public function checkout($version) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $version = 'v' . (int)$version;
 

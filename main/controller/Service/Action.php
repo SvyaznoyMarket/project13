@@ -7,7 +7,7 @@ class Action {
      * @return \Http\Response
      */
     public function index() {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
         $user = \App::user();
@@ -23,14 +23,6 @@ class Action {
                 }
             });
         }
-
-        // запрашиваем список регионов для выбора
-        $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
-            foreach ($data as $item) {
-                $regionsToSelect[] = new \Model\Region\Entity($item);
-            }
-        });
 
         // выполнение 1-го пакета запросов
         $client->execute();
@@ -66,14 +58,13 @@ class Action {
         $client->execute();
 
         $page = new \View\Service\IndexPage();
-        $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('categories', $categories);
 
         return new \Http\Response($page->show());
     }
 
     public function category($categoryToken) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
         $user = \App::user();
@@ -89,14 +80,6 @@ class Action {
                 }
             });
         }
-
-        // запрашиваем список регионов для выбора
-        $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
-            foreach ($data as $item) {
-                $regionsToSelect[] = new \Model\Region\Entity($item);
-            }
-        });
 
         // выполнение 1-го пакета запросов
         $client->execute();
@@ -190,7 +173,6 @@ class Action {
         }
 
         $page = new \View\Service\CategoryPage();
-        $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('category', $category);
         $page->setParam('servicesByCategory', $servicesByCategory);
         $page->setParam('allCategories', $allCategories);
@@ -199,7 +181,7 @@ class Action {
     }
 
     public function show($serviceToken) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
         $user = \App::user();
@@ -218,14 +200,6 @@ class Action {
                 }
             });
         }
-
-        // запрашиваем список регионов для выбора
-        $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
-            foreach ($data as $item) {
-                $regionsToSelect[] = new \Model\Region\Entity($item);
-            }
-        });
 
         // выполнение 1-го пакета запросов
         $client->execute();
@@ -276,7 +250,6 @@ class Action {
         }
 
         $page = new \View\Service\ShowPage();
-        $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('service', $service);
 
         return new \Http\Response($page->show());

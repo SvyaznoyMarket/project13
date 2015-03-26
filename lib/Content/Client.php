@@ -37,7 +37,7 @@ class Client {
      */
     public function query ($action, array $data = [], $throwException = null, $retryTimeout = null) {
         \Debug\Timer::start('content');
-        \App::logger()->debug('Start content request ' . $action, ['content']);
+        //\App::logger()->debug('Start content request ' . $action, ['content']);
 
         if (null === $throwException) {
             $throwException = $this->config['throwException'];
@@ -51,13 +51,13 @@ class Client {
         $this->curl->addQuery($url, $data, function ($data) use (&$response, $action) {
             $response = $data;
             $spend = \Debug\Timer::stop('content');
-            \App::logger()->debug('End content request ' . $action . ' in ' . $spend, ['content']);
+            //\App::logger()->debug('End content request ' . $action . ' in ' . $spend, ['content']);
         }, function ($e) use ($action, $throwException) {
             if (false === $throwException) {
                 \App::exception()->remove($e);
             }
             $spend = \Debug\Timer::stop('content');
-            \App::logger()->debug('Fail content request ' . $action . ' in ' . $spend . ' with ' . $e, ['content']);
+            //\App::logger()->debug('Fail content request ' . $action . ' in ' . $spend . ' with ' . $e, ['content']);
         }, $this->config['timeout']);
         $this->curl->execute($retryTimeout, $this->config['retryCount']);
 

@@ -13,7 +13,7 @@ class OldIndexAction {
      * @throws \Exception\NotFoundException
      */
     public function execute($productPath, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
         $user = \App::user();
@@ -36,16 +36,6 @@ class OldIndexAction {
                 }
             });
         }
-
-        // запрашиваем список регионов для выбора
-        $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
-            foreach ((array)$data as $item) {
-                if (empty($item['id'])) continue;
-
-                $regionsToSelect[] = new \Model\Region\Entity($item);
-            }
-        });
 
         // выполнение 1-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
@@ -347,7 +337,7 @@ class OldIndexAction {
         /*
         if ($categoryClass) {
             $controller = '\\Controller\\'.ucfirst($categoryClass).'\\Product\\IndexAction';
-            return (new $controller())->executeDirect($product, $regionsToSelect, $catalogJson);
+            return (new $controller())->executeDirect($product, $catalogJson);
         }
         */
 
@@ -490,7 +480,6 @@ class OldIndexAction {
         }
 
         $page->setParam('renderer', \App::closureTemplating());
-        $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('product', $product);
         $page->setParam('lifeGiftProduct', $lifeGiftProduct);
         $page->setParam('title', $product->getName());

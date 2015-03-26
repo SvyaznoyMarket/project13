@@ -14,7 +14,7 @@ class CreateAction extends OrderV3 {
      */
     public function execute(\Http\Request $request) {
 
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $coreResponse = null;   // ответ о ядра
         $ordersData = [];       // данные для отправки на ядро

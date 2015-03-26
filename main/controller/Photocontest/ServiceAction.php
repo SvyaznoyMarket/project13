@@ -11,7 +11,7 @@ class ServiceAction {
 	 * @return type
 	 */
 	public function safeKey(\Http\Request $request){
-		\App::logger()->debug('Exec ' . __METHOD__);
+		//\App::logger()->debug('Exec ' . __METHOD__);
 		
 		$curl = \App::photoContestClient();
 		$r = $curl->query('contest/lastActive');

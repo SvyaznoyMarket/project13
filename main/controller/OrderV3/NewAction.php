@@ -17,7 +17,7 @@ class NewAction extends OrderV3 {
 //            return $controller;
 //        }
 
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $page = new \View\OrderV3\NewPage();
 

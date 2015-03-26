@@ -14,7 +14,7 @@ class Action {
      * @throws \Exception
      */
     public function complete(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__, ['order']);
+        //\App::logger()->debug('Exec ' . __METHOD__, ['order']);
 
         $user = \App::user();
         $userEntity = $user->getEntity();
@@ -283,7 +283,7 @@ class Action {
      * @throws \Exception\NotFoundException
      */
     public function paymentComplete($orderNumber, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__, ['order']);
+        //\App::logger()->debug('Exec ' . __METHOD__, ['order']);
 
         $orderNumber = trim((string)$orderNumber);
         if (!$orderNumber) {
@@ -319,7 +319,7 @@ class Action {
      * @return \Http\Response
      */
     public function paymentSuccess(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__, ['order']);
+        //\App::logger()->debug('Exec ' . __METHOD__, ['order']);
 
         $user = \App::user();
 
@@ -340,7 +340,7 @@ class Action {
      * @return \Http\Response
      */
     public function paymentFail(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__, ['order']);
+        //\App::logger()->debug('Exec ' . __METHOD__, ['order']);
 
         $user = \App::user();
 
@@ -361,7 +361,7 @@ class Action {
      * @return \Http\Response
      */
     public function clearPaymentUrl(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__, ['order']);
+        //\App::logger()->debug('Exec ' . __METHOD__, ['order']);
         if ($request->isMethod('post') && $request->isXmlHttpRequest()) {
             \App::session()->remove('paymentUrl');
             return new \Http\JsonResponse([

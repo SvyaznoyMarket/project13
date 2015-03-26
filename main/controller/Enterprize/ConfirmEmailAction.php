@@ -10,7 +10,7 @@ class ConfirmEmailAction {
      * @throws \Exception\NotFoundException
      */
     public function show(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!\App::config()->enterprize['enabled']) {
             throw new \Exception\NotFoundException();
@@ -70,7 +70,7 @@ class ConfirmEmailAction {
      * @throws \Exception\NotFoundException
      */
     public function create(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!\App::config()->enterprize['enabled']) {
             throw new \Exception\NotFoundException();
@@ -149,7 +149,7 @@ class ConfirmEmailAction {
      * @throws \Exception\NotFoundException
      */
     public function check(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!\App::config()->enterprize['enabled']) {
             throw new \Exception\NotFoundException();
@@ -286,7 +286,7 @@ class ConfirmEmailAction {
      * @return bool
      */
     public function isEmailConfirmed() {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
         $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
 
         $userToken = !empty($data['token']) ? $data['token'] : \App::user()->getToken();

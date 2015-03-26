@@ -16,7 +16,7 @@ class SmartChoiceAction {
     public function execute(Request $request) {
         // request type: $.getJSON('/ajax/product-smartchoice',{"products":[55092,64686]},function(data){})
 
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $rrConfig = \App::config()->partners['RetailRocket'];
         $region = \App::user()->getRegion();

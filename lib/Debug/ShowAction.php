@@ -4,7 +4,7 @@ namespace Debug;
 
 class ShowAction {
     public function execute(\Http\Request $request, \Http\Response $response = null) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $debug = \App::debug();
         $helper = new \Helper\TemplateHelper();

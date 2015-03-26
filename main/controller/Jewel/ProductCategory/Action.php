@@ -7,12 +7,10 @@ class Action extends \Controller\ProductCategory\Action {
      * @param \Model\Product\Filter\Entity[]  $filters
      * @param \Model\Brand\Entity|null        $brand
      * @param \Http\Request                   $request
-     * @param \Model\Region\Entity[]          $regionsToSelect
      * @throws \Exception\NotFoundException
      * @return \Http\Response
      */
-    public function categoryDirect($filters, \Model\Product\Category\Entity $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+    public function categoryDirect($filters, \Model\Product\Category\Entity $category, $brand, $request, $catalogJson, $promoContent) {
 
         // фильтры
         $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $category, $brand, $request);
@@ -54,7 +52,6 @@ class Action extends \Controller\ProductCategory\Action {
 
         $setPageParameters = function(\View\Layout $page) use (
             &$category,
-            &$regionsToSelect,
             &$productFilter,
             &$brand,
             &$hotlinks,
@@ -64,7 +61,6 @@ class Action extends \Controller\ProductCategory\Action {
             &$itemsPerRow
         ) {
             $page->setParam('category', $category);
-            $page->setParam('regionsToSelect', $regionsToSelect);
             $page->setParam('productFilter', $productFilter);
             $page->setParam('brand', $brand);
             $page->setParam('hotlinks', $hotlinks);
@@ -115,7 +111,7 @@ class Action extends \Controller\ProductCategory\Action {
      * @return \Http\Response
      */
     protected function branchCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.branchCategory', 134);
 
@@ -131,7 +127,7 @@ class Action extends \Controller\ProductCategory\Action {
      * @throws \Exception\NotFoundException
      */
     protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.leafCategory', 134);
 

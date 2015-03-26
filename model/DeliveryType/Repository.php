@@ -17,7 +17,7 @@ class Repository {
      * @return Entity[]
      */
     public function getCollection() {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $hasTransportCompany = \App::user()->getRegion()->getHasTransportCompany(); // Если регион ТК то показываем надпись "Доставка заказа транспортной компанией"
 
@@ -99,7 +99,7 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityById($id) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         foreach ($this->getCollection() as $entity) {
             if ($id == $entity->getId()) {
@@ -115,7 +115,7 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityByToken($token) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         foreach ($this->getCollection() as $entity) {
             if ($token == $entity->getToken()) {
@@ -131,7 +131,7 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityByMethodToken($methodToken) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         foreach ($this->getCollection() as $entity) {
             if (in_array($methodToken, $entity->getMethodTokens())) {

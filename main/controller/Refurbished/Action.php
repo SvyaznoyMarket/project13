@@ -7,7 +7,7 @@ class Action {
      * @return \Http\Response
      */
     public function execute() {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $page = new \View\Refurbished\IndexPage();
         $form = new \View\Refurbished\SubscribeForm();
@@ -23,7 +23,7 @@ class Action {
      * @throws \Exception\NotFoundException
      */
     public function subscribe(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
 

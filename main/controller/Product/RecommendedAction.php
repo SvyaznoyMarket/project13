@@ -5,7 +5,7 @@ namespace Controller\Product;
 class RecommendedAction {
 
     public function execute(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::retailrocketClient();
         $templating = \App::closureTemplating();

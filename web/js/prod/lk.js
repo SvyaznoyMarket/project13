@@ -36,6 +36,11 @@
 
 	// устанавливаем маски для карт лояльности
 	bonusCardFields.length && bonusCardFields.each(addCardMask);
+
+	$.mask.definitions['x'] = '[0-9]';
+	$('.js-lk-mobilePhone, .js-lk-homePhone').mask('+7 (xxx) xxx-xx-xx', {
+		autoclear: 0
+	});
 }());
 /**
  * Orders Page

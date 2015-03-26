@@ -13,7 +13,7 @@ class CacheAction {
      * @return \Http\Response|null
      */
     public function execute(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $regionId = (string)\App::user()->getRegionId();
 

@@ -15,7 +15,7 @@ class Action {
      * @throws \Exception\NotFoundException
      */
     public function count($categoryPath, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!$request->isXmlHttpRequest()) {
             throw new \Exception\NotFoundException('Request is not xml http request');
@@ -69,7 +69,7 @@ class Action {
      * @return \Http\Response
      */
     public function category(\Http\Request $request, $categoryPath, $brandToken = null) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
         $user = \App::user();
@@ -91,14 +91,6 @@ class Action {
                 }
             });
         }
-
-        // запрашиваем список регионов для выбора
-        $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
-            foreach ($data as $item) {
-                $regionsToSelect[] = new \Model\Region\Entity($item);
-            }
-        });
 
         // выполнение 1-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
@@ -201,7 +193,7 @@ class Action {
             if ('jewel' == $categoryClass) {
                 if (\App::config()->debug) \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\Action.categoryDirect', 134);
 
-                return (new \Controller\Jewel\ProductCategory\Action())->categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent);
+                return (new \Controller\Jewel\ProductCategory\Action())->categoryDirect($filters, $category, $brand, $request, $catalogJson, $promoContent);
             } else if ('grid' == $categoryClass) {
                 if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\Grid\ChildAction.executeByEntity', 134);
 
@@ -443,7 +435,6 @@ class Action {
 
         $setPageParameters = function(\View\Layout $page) use (
             &$category,
-            &$regionsToSelect,
             &$productFilter,
             &$brand,
             &$hotlinks,
@@ -457,7 +448,6 @@ class Action {
             &$slideData
         ) {
             $page->setParam('category', $category);
-            $page->setParam('regionsToSelect', $regionsToSelect);
             $page->setParam('productFilter', $productFilter);
             $page->setParam('brand', $brand);
             $page->setParam('hotlinks', $hotlinks);
@@ -638,7 +628,7 @@ class Action {
      * @return \Http\Response
      */
     protected function rootCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request, array $categoryConfigById = []) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.rootCategory', 134);
 
@@ -707,7 +697,7 @@ class Action {
      * @throws \Exception\NotFoundException
      */
     protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.leafCategory', 134);
 

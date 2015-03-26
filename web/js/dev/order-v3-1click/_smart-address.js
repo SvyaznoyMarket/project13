@@ -3,7 +3,7 @@
 	ENTER.OrderV31Click.functions.initAddress = function(){
         var address,
             kladrConfig = $('#kladr-config').data('value'),
-            regionName = $('#page-config').data('value').user.region.name;
+            region = $('#page-config').data('value').user.region;
     
         function AddressModel () {
     
@@ -131,7 +131,7 @@
         ENTER.OrderV31Click.functions.smartAddressInit = function() {
             var $input = $('.jsSmartAddressInput'),
                 bindingNode = $('.jsAddressRootNode'),
-                initKladrQuery = $.extend(kladrConfig, {'limit': 1, type: $.kladr.type.city, name: regionName});
+                initKladrQuery = $.extend(kladrConfig, {'limit': 1, type: $.kladr.type.city, name: region.name});
     
             // jQuery-ui autocomplete from КЛАДР
             $input.autocomplete({
@@ -210,8 +210,10 @@
                     }
                 }
             });
-    
-            if (kladrConfig && regionName) {
+
+            if (region.kladrId) {
+                address.cityId(region.kladrId)
+            } else if (kladrConfig && region.name) {
                 $.kladr.api(initKladrQuery, function (data){
                     var id = data.length > 0 ? data[0].id : 0;
                     if (id==0) console.error('КЛАДР не определил город, конфигурация запроса: ', initKladrQuery);

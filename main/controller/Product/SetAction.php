@@ -13,7 +13,7 @@ class SetAction {
      * @throws \Exception\NotFoundException
      */
     public function execute($productBarcodes, \Http\Request $request, $setTitle = null) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
         $limit = \App::config()->product['itemsPerPage'];
         $pageNum = (int)$request->get('page', 1);
         $productBarcodes = explode(',', $productBarcodes);
@@ -140,7 +140,7 @@ class SetAction {
      * @throws \Exception\NotFoundException
      */
     public function widget($productBarcodes, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
 

@@ -11,7 +11,7 @@ class Action {
      * @return \Http\Response
      */
     public function index(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $router = \App::router();
         $client = \App::coreClientV2();

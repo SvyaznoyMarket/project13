@@ -42,7 +42,7 @@ class OrdersAction {
      */
     public function getData() {
 
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
         $user = \App::user();

@@ -15,7 +15,7 @@ class Action {
      * @return \Http\Response
      */
     public function category(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
         $user = \App::user();
@@ -34,14 +34,6 @@ class Action {
                 }
             });
         }
-
-        // запрашиваем список регионов для выбора
-        $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
-            foreach ($data as $item) {
-                $regionsToSelect[] = new \Model\Region\Entity($item);
-            }
-        });
 
         // выполнение 1-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);

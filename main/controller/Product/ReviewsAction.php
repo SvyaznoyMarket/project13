@@ -10,7 +10,7 @@ class ReviewsAction {
      * @return \Http\JsonResponse
      */
     public function execute(\Http\Request $request, $productUi) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $page = $request->get('page', 0);
         $reviewsType = $request->get('type', 'user');
@@ -46,7 +46,7 @@ class ReviewsAction {
      * @return \Http\JsonResponse
      */
     public function create(\Http\Request $request, $productUi) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!$productUi) {
             throw new \Exception('Не удалось получить ui продукта');
