@@ -1107,6 +1107,11 @@ return [
         'action'  => ['Bandit\IndexAction', 'execute'],
     ],
 
+    'favorite.add' => [
+        'pattern' => '/favorite/add-product',
+        'action'  => ['Favorite\SetAction', 'execute'],
+    ],
+
     'compare' => [
         'pattern' => '/compare',
         'action'  => ['Compare\CompareAction', 'execute'],

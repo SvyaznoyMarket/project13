@@ -80,6 +80,7 @@ class BasicEntity {
     public function __construct(array $data = []) {
         if (isset($data['id'])) $this->setId($data['id']);
         if (isset($data['ui'])) $this->setUi($data['ui']);
+        if (isset($data['uid'])) $this->setUi($data['uid']); // для scms
         if (isset($data['status_id'])) $this->setStatusId($data['status_id']);
         if (isset($data['name'])) $this->setName($data['name']);
         if (isset($data['link'])) $this->setLink($data['link']);
