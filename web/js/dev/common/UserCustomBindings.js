@@ -10,9 +10,10 @@
 				statusId = $elem.data('status-id'),
                 noUpdate = $elem.data('noUpdate'),
 				buyUrl = $elem.data('buy-url'),
-				isSlot = $elem.data('is-slot')
+				isSlot = $elem.data('is-slot'),
+                sender = $elem.data('sender') || {}
             ;
-			
+
 			if (typeof isBuyable != 'undefined' && !isBuyable) {
 				$elem
 					.text(typeof inShopShowroomOnly != 'undefined' && inShopShowroomOnly ? 'На витрине' : 'Нет')
@@ -45,7 +46,7 @@
 					.removeClass('mBought')
 					.addClass('js-orderButton jsOneClickButton-new')
 					.removeClass('jsBuyButton')
-					.attr('href', ENTER.utils.generateUrl('cart.oneClick.product.set', {productId: productId}));
+					.attr('href', ENTER.utils.generateUrl('cart.oneClick.product.set', $.extend({productId: productId}, sender)));
 			} else if (ENTER.utils.getObjectWithElement(cart, 'id', productId) && !noUpdate) {
 				$elem
 					.text('В корзине')
@@ -62,7 +63,7 @@
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
 					.addClass('js-orderButton jsBuyButton')
-					.attr('href', buyUrl ? buyUrl : ENTER.utils.generateUrl('cart.product.set', {productId: productId}));
+					.attr('href', buyUrl ? buyUrl : ENTER.utils.generateUrl('cart.product.set', $.extend({productId: productId}, sender)));
 			}
 		}
 	};
