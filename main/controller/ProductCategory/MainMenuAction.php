@@ -9,7 +9,7 @@ class MainMenuAction {
      * @return \Http\Response
      */
     public function execute(\Http\Request $request, $regionId = null) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $region = null;
         if (!empty($regionId)) {

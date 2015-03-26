@@ -117,7 +117,7 @@ class BasicRecommendedAction {
      * @throws \Exception\
      */
     public function getProductsIdsFromRetailrocket( $product = null, \Http\Request $request, $method = 'UpSellItemToItems' ) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
         $this->setEngine('retailrocket');
 
         $client = \App::retailrocketClient();
@@ -136,7 +136,7 @@ class BasicRecommendedAction {
      * @throws \Exception\
      */
     protected function getProductsFromRetailrocket( $product, \Http\Request $request, $method = 'UpSellItemToItems' ) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
         $this->setEngine('retailrocket');
 
         $client = \App::retailrocketClient();

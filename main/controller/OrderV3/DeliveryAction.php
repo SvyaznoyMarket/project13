@@ -17,7 +17,7 @@ class DeliveryAction extends OrderV3 {
 //            return $controller;
 //        }
 
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if ($request->isXmlHttpRequest()) {
 

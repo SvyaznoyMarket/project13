@@ -7,7 +7,7 @@ class Action {
      * @return \Http\Response
      */
     public function index() {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
         $user = \App::user();
@@ -136,7 +136,7 @@ class Action {
      * @return \Http\RedirectResponse
      */
     public function region($regionId) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         return new \Http\RedirectResponse(\App::router()->generate('shop'), 301);
     }
@@ -149,7 +149,7 @@ class Action {
      * @throws \Exception\NotFoundException
      */
     public function show($regionToken, $shopToken) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
         $user = \App::user();

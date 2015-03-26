@@ -16,7 +16,7 @@ class WarrantyAction {
      * @throws \Exception
      */
     public function set($warrantyId, $productId, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $cart = \App::user()->getCart();
 
@@ -114,7 +114,7 @@ class WarrantyAction {
      * @return \Http\JsonResponse|\Http\RedirectResponse
      */
     public function delete(\Http\Request $request, $warrantyId, $productId = null) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $request->query->set('quantity', 0);
 

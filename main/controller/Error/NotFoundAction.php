@@ -9,7 +9,7 @@ class NotFoundAction {
      * @return \Http\Response
      */
     public function execute(\Exception $e, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         \App::logger()->warn([
             'message'   => 'Страница не найдена.',

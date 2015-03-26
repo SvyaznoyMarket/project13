@@ -19,7 +19,7 @@ class Repository {
      * @param                      $callback
      */
     public function prepareEntityByToken($token, \Model\Region\Entity $region = null, $callback) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery('brand/get', [
             'token'  => $token,
@@ -34,7 +34,7 @@ class Repository {
      * @return Entity[]
      */
     public function getCollectionByCategory(\Model\Product\Category\BasicEntity $category, $limit, $offset) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = clone $this->client;
 
@@ -61,7 +61,7 @@ class Repository {
      * @param callable|null $fail
      */
     public function prepareByIds(array $ids, \Model\Region\Entity $region = null, $done, $fail = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery('brand/get', [
             'id'     => implode(',', $ids), // Согласно https://wiki.enter.ru/pages/viewpage.action?pageId=8093924

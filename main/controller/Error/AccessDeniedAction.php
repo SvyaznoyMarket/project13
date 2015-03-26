@@ -4,7 +4,7 @@ namespace Controller\Error;
 
 class AccessDeniedAction {
     public function execute(\Exception $e, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         \App::logger()->info([
             'message'   => 'Доступ запрещен.',

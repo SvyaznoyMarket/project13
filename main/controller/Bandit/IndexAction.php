@@ -6,7 +6,7 @@ use Http\RedirectResponse;
 
 class IndexAction {
     public function execute() {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!\App::config()->bandit['enabled']) {
             return new \Http\RedirectResponse(\App::router()->generate('homepage'));

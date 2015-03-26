@@ -15,7 +15,7 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityByToken($token) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $data = $this->client->query(sprintf('promo/%s/index.json', $token));
         if (is_array($data)) {
@@ -30,7 +30,7 @@ class Repository {
      * @param $done
      */
     public function prepareEntityByToken($token, $done) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery(sprintf('promo/%s/index.json', $token), [], $done);
     }

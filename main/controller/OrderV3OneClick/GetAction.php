@@ -17,7 +17,7 @@ class GetAction {
      * @return \Http\Response
      */
     public function execute(\Http\Request $request, $accessToken) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $orders = [];
         $productsById = [];

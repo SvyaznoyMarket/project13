@@ -27,7 +27,7 @@ class CompleteAction extends OrderV3 {
     public function execute(\Http\Request $request) {
 
         $page = new \View\OrderV3\CompletePage();
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         ProductPageSenders::clean();
         ProductPageSendersForMarketplace::clean();

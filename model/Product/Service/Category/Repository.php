@@ -16,7 +16,7 @@ class Repository {
      * @param                      $fail
      */
     public function prepareRootCollection(\Model\Region\Entity $region = null, $done, $fail = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $params = [
             'max_depth' => 3,
@@ -32,7 +32,7 @@ class Repository {
      * @param                      $callback
      */
     public function prepareCollection(\Model\Region\Entity $region = null, $callback) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $params = [
             'max_depth' => 3,
@@ -48,7 +48,7 @@ class Repository {
      * @return Entity[]
      */
     public function getCollection(\Model\Region\Entity $region = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = clone $this->client;
 
@@ -86,7 +86,7 @@ class Repository {
      * @param                      $callback
      */
     public function prepareEntityByToken($token, \Model\Region\Entity $region = null, $callback) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $params = [
             'slug' => $token,

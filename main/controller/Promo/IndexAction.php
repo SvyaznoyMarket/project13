@@ -4,7 +4,7 @@ namespace Controller\Promo;
 
 class IndexAction {
     public function execute($promoToken, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $router = \App::router();
         $client = \App::coreClientV2();

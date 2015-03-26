@@ -5,7 +5,7 @@ namespace Controller\Cron;
 class IndexAction {
 
     public function execute(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $page = new \View\Cron\IndexPage();
 

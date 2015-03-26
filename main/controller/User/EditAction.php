@@ -18,7 +18,7 @@ class EditAction {
     }
 
     public function execute(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if ($request->isMethod('post')) {
             try {
@@ -190,7 +190,7 @@ class EditAction {
      * @return \Http\JsonResponse
      */
     public function editSclubNumber(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!$request->isXmlHttpRequest()) {
             throw new \Exception\NotFoundException('Request is not xml http request');

@@ -14,7 +14,7 @@ class ShowAction {
      * @return \Http\Response
      */
     public function execute(\Http\Request $request, $sliceToken, $categoryToken = null) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         /** @var $slice \Model\Slice\Entity|null */
         $slice = null;

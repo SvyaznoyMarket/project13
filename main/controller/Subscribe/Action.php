@@ -9,7 +9,7 @@ class Action {
      * @throws \Exception
      */
     public function create(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
         $responseData = ['success' => false];

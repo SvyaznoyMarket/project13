@@ -9,7 +9,7 @@ class ShowAction {
      * @return \Http\Response
      */
     public function execute(\Http\Request $request, $photoId) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         die('ok');
     }

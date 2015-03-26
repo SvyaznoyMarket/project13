@@ -11,7 +11,7 @@ class OrderAction {
     }
 
     public function execute(\Http\Request $request, $orderId) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         try {
             if ($request->isXmlHttpRequest()) {
@@ -45,7 +45,7 @@ class OrderAction {
 
     public function getData(\Http\Request $request, $orderId) {
 
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
         $user = \App::user();

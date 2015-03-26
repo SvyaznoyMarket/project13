@@ -15,7 +15,7 @@ class Maybe3dImportAction {
      */
     public function execute($pathToCms = null) {
 
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
         $client = \App::coreClientV2();
         clearstatcache();
 

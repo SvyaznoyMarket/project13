@@ -12,7 +12,7 @@ class Action extends \Controller\ProductCategory\Action {
      * @return \Http\Response
      */
     public function categoryDirect($filters, \Model\Product\Category\Entity $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         // фильтры
         $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $category, $brand, $request);
@@ -115,7 +115,7 @@ class Action extends \Controller\ProductCategory\Action {
      * @return \Http\Response
      */
     protected function branchCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.branchCategory', 134);
 
@@ -131,7 +131,7 @@ class Action extends \Controller\ProductCategory\Action {
      * @throws \Exception\NotFoundException
      */
     protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.leafCategory', 134);
 

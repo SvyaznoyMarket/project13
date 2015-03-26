@@ -4,7 +4,7 @@ namespace Controller\Import\Inflect;
 
 class RegionAction {
     public function execute() {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $xml = simplexml_load_file(\App::config()->dataDir . '/core/geo.xml');
 

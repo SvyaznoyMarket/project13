@@ -13,7 +13,7 @@ class LogAction {
             throw new \Exception\NotFoundException();
         }
 
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $result = '';
         try {

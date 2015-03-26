@@ -22,7 +22,7 @@ class Client {
             }
             $info = curl_getinfo($connection);
 
-            $this->logger->debug('ShopPilot response resource: ' . $connection, ['ShopPilot']);
+            //$this->logger->debug('ShopPilot response resource: ' . $connection, ['ShopPilot']);
 
             if ($this->config['logEnabled']) {
                 $this->logger->info('Response ' . $connection . ' : ' . (is_array($info) ? json_encode($info, JSON_UNESCAPED_UNICODE) : $info), ['ShopPilot']);

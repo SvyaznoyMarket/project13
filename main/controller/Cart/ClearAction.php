@@ -8,7 +8,7 @@ class ClearAction {
      * @return \Http\JsonResponse|\Http\RedirectResponse
      */
     public function execute(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         \App::user()->getCart()->clear();
 

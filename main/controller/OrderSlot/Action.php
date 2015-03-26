@@ -11,7 +11,7 @@ class Action {
      * @return \Http\Response
      */
     public function create(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $referer = $request->headers->get('referer') ?: '/';
         $orderCreatePacketParams = [];

@@ -8,7 +8,7 @@ class GetAction {
      * @return \Http\JsonResponse
      */
     public function execute(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         try {
             $token = trim((string)$request->get('token'));

@@ -18,7 +18,7 @@ class Repository {
      * @return Entity[]
      */
     public function getCollectionByRegion(\Model\Region\Entity $region) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = clone $this->client;
 
@@ -46,7 +46,7 @@ class Repository {
      * @param $fail
      */
     public function prepareCollectionByRegion(\Model\Region\Entity $region, $done, $fail = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery('subway/get', [
             'geo_id' => $region->getId(),

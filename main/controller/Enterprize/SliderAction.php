@@ -11,7 +11,7 @@ class SliderAction {
      * @throws \Exception\NotFoundException
      */
     public function execute($enterprizeToken = null, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $user = \App::user();
         $repository = \RepositoryManager::enterprize();

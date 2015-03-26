@@ -10,7 +10,7 @@ class ProductAction {
      * @throws \Exception
      */
     public function set($productId, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $cart = \App::user()->getLifeGiftCart();
 
@@ -81,7 +81,7 @@ class ProductAction {
      * @return \Http\JsonResponse|\Http\RedirectResponse
      */
     public function delete(\Http\Request $request, $productId) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $request->query->set('quantity', 0);
 

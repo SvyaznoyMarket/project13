@@ -9,7 +9,7 @@ class DebugAction {
      * @return \Http\JsonResponse
      */
     public function info(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $data = [];
 

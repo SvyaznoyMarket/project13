@@ -8,7 +8,7 @@ class CouponAction {
      * @return \Http\RedirectResponse|null
      */
     public function create(\Http\Request $request, $data = []) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!\App::config()->enterprize['enabled']) {
             throw new \Exception\NotFoundException();
@@ -152,7 +152,7 @@ class CouponAction {
 
 
     public function fail(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!\App::config()->enterprize['enabled']) {
             throw new \Exception\NotFoundException();
@@ -193,7 +193,7 @@ class CouponAction {
      * @return \Http\Response
      */
     public function complete(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!\App::config()->enterprize['enabled']) {
             throw new \Exception\NotFoundException();

@@ -13,7 +13,7 @@ class SetAction {
      * @throws \Exception
      */
     public function execute(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $curl = $this->getCurl();
         $user = \App::user();
