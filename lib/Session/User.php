@@ -191,19 +191,9 @@ class User {
     public function getRegion() {
         if (!$this->region) {
             $regionId = $this->getRegionId();
-
-            if ($regionId) {
-                $this->region = \RepositoryManager::region()->getEntityById($regionId);
-                if (!$this->region) {
-                    \App::logger()->warn(sprintf('Регион #"%s" не найден.', $regionId), ['session', 'user']);
-                }
-            // иначе автоопределение
-            } else if (\App::config()->region['autoresolve']) {
-                if (false !== strpos(\App::request()->headers->get('user-agent'), 'http://yandex.com/bots')) { // SITE-4393
-                    $this->region = \RepositoryManager::region()->getDefaultEntity();
-                } else {
-                    $this->region = $this->getAutoresolvedRegion();
-                }
+            $this->region = \RepositoryManager::region()->getEntityById($regionId);
+            if (!$this->region) {
+                \App::logger()->warn(sprintf('Регион #"%s" не найден.', $regionId), ['session', 'user']);
             }
         }
 
@@ -244,7 +234,7 @@ class User {
     /**
      * Возвращает значение куки региона
      *
-     * @return int|null
+     * @return int
      */
     public function getRegionId() {
         $cookieName = \App::config()->region['cookieName'];

@@ -44,15 +44,17 @@
 
     // Lightbox
     showPopup = function showPopupF($elem) {
-		var autoResolveUrl = $popup.data('autoresolve-url');
+		var
+			autoResolveUrl = $popup.data('autoresolve-url'),
+			$autoresolve = $('.jsAutoresolve', $popup);
 
-		if (autoResolveUrl != null) {
+		if (autoResolveUrl != null && !$autoresolve.length) {
 			$.ajax({
 				type: 'GET',
 				url: autoResolveUrl,
 				success: function( res ) {
 					if (!res.data.length) {
-						$('.jsAutoresolve', $popup).html('');
+						$autoresolve.html('');
 						return false;
 					}
 
@@ -64,7 +66,6 @@
 						return false;
 					}
 
-					var $autoresolve = $('.jsAutoresolve', $popup);
 					if ($autoresolve.length) {
 						$autoresolve.html('<a href="' + url + '">' + name + '</a>');
 					}  else {
