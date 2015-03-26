@@ -40,7 +40,6 @@
     </div><!--/ Контент -->
 </div><!--/ Шаблон -->
 
-<?= $page->slotRegionSelection() ?>
 <?= $page->slotBodyJavascript() ?>
 <?= $page->slotInnerJavascript() ?>
 <?= $page->slotAuth() ?>

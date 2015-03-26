@@ -5,8 +5,11 @@ namespace Controller\Region;
 use Templating\Helper;
 
 class Action {
-    public function init(\Http\Request $request) {
 
+    public function init() {
+        $regions = \RepositoryManager::region()->getShownInMenuCollection();
+        $html = \App::templating()->render('_regionSelection', [ 'regions' => $regions ]);
+        return new \Http\JsonResponse(['result' => $html]);
     }
 
     /**

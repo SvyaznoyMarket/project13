@@ -169,14 +169,6 @@ class Action {
             });
         }
 
-        // запрашиваем список регионов для выбора
-        $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
-            foreach ($data as $item) {
-                $regionsToSelect[] = new \Model\Region\Entity($item);
-            }
-        });
-
         // выполнение 1-го пакета запросов
         $client->execute();
 
@@ -240,7 +232,6 @@ class Action {
         \App::curl()->execute();
 
         $page = new \View\Shop\ShowPage();
-        $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('currentRegion', $currentRegion);
         $page->setParam('shop', $shop);
 

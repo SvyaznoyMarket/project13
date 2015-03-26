@@ -66,7 +66,6 @@
         <?= $page->slotFooter() ?>
     </div><!--/ Подвал -->
 
-    <?= $page->slotRegionSelection() ?>
     <?= $page->slotAuth() ?>
     <?= $page->slotYandexMetrika() ?>
     <?= $page->slotBodyJavascript() ?>

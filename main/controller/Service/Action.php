@@ -24,14 +24,6 @@ class Action {
             });
         }
 
-        // запрашиваем список регионов для выбора
-        $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
-            foreach ($data as $item) {
-                $regionsToSelect[] = new \Model\Region\Entity($item);
-            }
-        });
-
         // выполнение 1-го пакета запросов
         $client->execute();
 
@@ -66,7 +58,6 @@ class Action {
         $client->execute();
 
         $page = new \View\Service\IndexPage();
-        $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('categories', $categories);
 
         return new \Http\Response($page->show());
@@ -89,14 +80,6 @@ class Action {
                 }
             });
         }
-
-        // запрашиваем список регионов для выбора
-        $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
-            foreach ($data as $item) {
-                $regionsToSelect[] = new \Model\Region\Entity($item);
-            }
-        });
 
         // выполнение 1-го пакета запросов
         $client->execute();
@@ -190,7 +173,6 @@ class Action {
         }
 
         $page = new \View\Service\CategoryPage();
-        $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('category', $category);
         $page->setParam('servicesByCategory', $servicesByCategory);
         $page->setParam('allCategories', $allCategories);
@@ -218,14 +200,6 @@ class Action {
                 }
             });
         }
-
-        // запрашиваем список регионов для выбора
-        $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
-            foreach ($data as $item) {
-                $regionsToSelect[] = new \Model\Region\Entity($item);
-            }
-        });
 
         // выполнение 1-го пакета запросов
         $client->execute();
@@ -276,7 +250,6 @@ class Action {
         }
 
         $page = new \View\Service\ShowPage();
-        $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('service', $service);
 
         return new \Http\Response($page->show());
