@@ -13,7 +13,7 @@ $rowCount = 13;
 $count = count($regions);
 ?>
 
-<div class="popup popupRegion clearfix jsRegionPopup" style="display:none">
+<div class="popup popupRegion clearfix jsRegionPopup" style="display:none" data-current-region-id="<?= $page->escape($currentRegion->getId()) ?>" data-autoresolve-url="<?= $page->url('region.autoresolve', ['nocache' => 1]) ?>">
     <a href="#" class="close">Закрыть</a>
     <div class="popuptitle">Ваш город</div>
     <p class="font14 popupRegion__eTopText">Выберите город, в котором собираетесь получать товары.<br/>
@@ -25,9 +25,9 @@ $count = count($regions);
 
         <div id="jscities" class="bSelectRegionDd" style="position:relative"></div>
     </form>
-    <div class="cityInline font12 clearfix">
+    <div class="cityInline font12 clearfix jsCityInline">
         <? if (!in_array($currentRegion->getId(), [14974, 108136])): ?>
-            <div class="cityItem mAutoresolve"><a href="<?= $page->url('region.change', ['regionId' => $currentRegion->getId()]) ?>"><?= $currentRegion->getName() ?></a></div>
+            <div class="cityItem mAutoresolve jsAutoresolve"><a href="<?= $page->url('region.change', ['regionId' => $currentRegion->getId()]) ?>"><?= $currentRegion->getName() ?></a></div>
         <? endif ?>
         <div class="cityItem"><a class="jsChangeRegionLink" href="<?= $page->url('region.change', ['regionId' => 14974]) ?>">Москва</a></div>
         <div class="cityItem"><a class="jsChangeRegionLink" href="<?= $page->url('region.change', ['regionId' => 108136]) ?>">Санкт-Петербург</a></div>

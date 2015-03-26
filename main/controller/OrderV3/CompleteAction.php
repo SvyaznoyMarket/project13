@@ -64,7 +64,7 @@ class CompleteAction extends OrderV3 {
                 if (\App::config()->order['sessionInfoOnComplete'] && !$request->query->get('refresh')) { // SITE-4828
                     $orders[$sessionOrder['number']] = new Entity($sessionOrder);
                 } else {
-                    $this->client->addQuery('order/get-by-mobile', ['number' => $sessionOrder['number'], 'mobile' => preg_replace('/[^0-9]/', '', $sessionOrder['phone'])], [], function ($data) use (&$orders, $sessionOrder) {
+                    $this->client->addQuery('order/get-by-mobile', ['number' => $sessionOrder['number'], 'mobile' => preg_replace('/[^0-9]/', '', $sessionOrder['mobile'])], [], function ($data) use (&$orders, $sessionOrder) {
                         $data = reset($data);
                         $orders[$sessionOrder['number']] = $data ? new Entity($data) : null;
                     });
@@ -201,7 +201,7 @@ class CompleteAction extends OrderV3 {
         if (!(bool)$this->sessionOrders) throw new \Exception('В сессии нет заказов');
         $sessionOrder = reset($this->sessionOrders);
 
-        $order = \RepositoryManager::order()->getEntityByNumberAndPhone($orderNumber, $sessionOrder['phone']);
+        $order = \RepositoryManager::order()->getEntityByNumberAndPhone($orderNumber, $sessionOrder['mobile']);
         if (!$order) {
             $order = new \Model\Order\Entity($sessionOrder);
         }

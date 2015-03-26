@@ -870,6 +870,9 @@ class Action {
             // HINT Можно добавлять ID неопубликованных продуктов для показа в листингах
             // array_unshift($productIds, 201540);
 
+            // TODO удалить (электронный сертификат в листинг сертификатов)
+            if ($category->ui === 'b2885b1b-06bc-4c6f-b40d-9a0af22ff61c') array_unshift($productIds, 201540);
+
             $products = [];
             if ((bool)$productIds) {
                 $repository->prepareCollectionById(
