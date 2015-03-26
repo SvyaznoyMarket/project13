@@ -4,7 +4,8 @@ return function(
     \Model\OrderDelivery\Entity\Order $order
 ) {
 
-    if ($order->isPartnerOffer()) return;
+    // не показываем поля дискаунта, если заказ партнерский (Связной - исключение)
+    if ($order->isPartnerOffer() && !$order->seller->isSvyaznoy()) return;
 
     $couponErrors = array_filter($order->errors, function( \Model\OrderDelivery\Error $error) { return in_array($error->code, [404, 1001]) && isset($error->details['coupon_number']); });
     if ($couponErrors) $couponNumber = $couponErrors[0]->details['coupon_number'];
