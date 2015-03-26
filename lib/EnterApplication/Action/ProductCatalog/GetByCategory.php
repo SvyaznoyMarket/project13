@@ -66,11 +66,13 @@ namespace EnterApplication\Action\ProductCatalog
             /** @var Query\Product\Filter\Get $filterQuery */
             $filterQuery = null;
             call_user_func(function() use (&$categoryQuery, &$filterQuery, &$regionQuery) {
-                $category = $categoryQuery->response->category;
-                if (!$category['id']) return;
+                $categoryId = $categoryQuery->response->category['id'];
+                if (!$categoryId) return;
+
+                if (1 === $categoryQuery->response->category['level']) return;
 
                 $filterData = [
-                    ['category', 1, $category['id']],
+                    ['category', 1, $categoryId],
                 ];
 
                 $filterQuery = (new Query\Product\Filter\Get($filterData, $regionQuery->response->region['id']))->prepare();
@@ -117,7 +119,7 @@ namespace EnterApplication\Action\ProductCatalog
             $response->regionQuery = $regionQuery;
             $response->mainRegionQuery = $mainRegionQuery;
             $response->subscribeChannelQuery = $subscribeChannelQuery;
-            //$response->categoryRootTreeQuery = $categoryRootTreeQuery;
+            $response->categoryRootTreeQuery = $categoryRootTreeQuery;
             $response->menuQuery = $menuQuery;
 
             return $response;
@@ -161,6 +163,8 @@ namespace EnterApplication\Action\ProductCatalog\GetByCategory
         public $abTestQuery;
         /** @var Query\Region\GetById */
         public $regionQuery;
+        /** @var Query\Product\Filter\Get */
+        public $filterQuery;
         /** @var Query\Region\GetMain */
         public $mainRegionQuery; // TODO: убрать, будет через ajax
         /** @var Query\Subscribe\Channel\Get */
