@@ -51,6 +51,7 @@ namespace EnterQuery\Product\Review
                     $this->response->score = isset($result['avg_score']) ? $result['avg_score'] : null;
                     $this->response->starScore = isset($result['avg_star_score']) ? $result['avg_star_score'] : null;
                     $this->response->groupedScoreCount = isset($result['num_users_by_score']) ? $result['num_users_by_score'] : [];
+                    $this->response->pageCount = isset($result['page_count']) ? $result['page_count'] : null;
 
                     return $result; // for cache
                 }
@@ -75,5 +76,7 @@ namespace EnterQuery\Product\Review\GetByProductUi
         public $starScore;
         /** @var array */
         public $groupedScoreCount;
+        /** @var int */
+        public $pageCount;
     }
 }

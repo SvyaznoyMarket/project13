@@ -12,7 +12,7 @@ return function(
     $userBonusCards = $userEntity ? $userEntity->getBonusCard() : null;
     $userBonusCard = null;
 
-    $emailRequiredTest = \App::abTest()->isEmailRequired();
+    $isEmailRequired = \App::config()->order['emailRequired'];
     $config = \App::config();
 ?>
 
@@ -36,8 +36,8 @@ return function(
                     </div>
 
                     <div class="orderU_fld">
-                        <input class="orderU_tx textfield jsOrderV3EmailField <?= $emailRequiredTest ? 'jsOrderV3EmailRequired' : '' ?>" type="text" name="user_info[email]" value="<?= $userEntity ? $userEntity->getEmail() : '' ?>" placeholder="mail@domain.com">
-                        <label class="orderU_lbl <?= $emailRequiredTest ? 'orderU_lbl-str' : '' ?>" for="">E-mail</label>
+                        <input class="orderU_tx textfield jsOrderV3EmailField <?= $isEmailRequired ? 'jsOrderV3EmailRequired' : '' ?>" type="text" name="user_info[email]" value="<?= $userEntity ? $userEntity->getEmail() : '' ?>" placeholder="mail@domain.com">
+                        <label class="orderU_lbl <?= $isEmailRequired ? 'orderU_lbl-str' : '' ?>" for="">E-mail</label>
                         <span class="errTx" style="display: none">Неверный формат email</span>
                         <? if (!$user->isSubscribed()) : ?>
                             <? if ($userEntity && $userEntity->isEnterprizeMember()) : ?>
