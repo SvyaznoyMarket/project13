@@ -16,7 +16,7 @@ class Img3dImportAction {
      */
     public function execute($pathToData, $pathToCms = null) {
 
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
         clearstatcache();
 
         if (!is_dir($pathToData)) throw new \RuntimeException('Указан не правильный путь до папки с исходными json-файлами');

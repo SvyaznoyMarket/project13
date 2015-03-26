@@ -4,7 +4,7 @@ namespace Controller\Tag;
 
 class Action {
     public function index($tagToken, \Http\Request $request, $categoryToken = null) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
         $client = \App::coreClientV2();
         /** @var $region \Model\Region\Entity */
         $region = \App::user()->getRegion();
@@ -281,7 +281,7 @@ class Action {
      * @throws \Exception\NotFoundException
      */
     public function count($tagToken, $categoryPath = null, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!$request->isXmlHttpRequest()) {
             throw new \Exception\NotFoundException('Request is not xml http request');

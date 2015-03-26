@@ -11,7 +11,7 @@ class FormAction {
      * @throws \Exception\NotFoundException
      */
     public function show($enterprizeToken = null, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!\App::config()->enterprize['enabled']) {
             throw new \Exception\NotFoundException();
@@ -107,7 +107,7 @@ class FormAction {
      * @throws \Exception
      */
     public function update(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
         $user = \App::user()->getEntity();
@@ -409,7 +409,7 @@ class FormAction {
      * @return \View\Enterprize\Form
      */
     public function getForm(){
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $user = \App::user()->getEntity();
         $session = \App::session();
@@ -448,7 +448,7 @@ class FormAction {
      * @return \Model\Product\Entity[]
      */
     public static function getProducts(\Model\EnterprizeCoupon\Entity $coupon) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
         $region = \App::user()->getRegion();

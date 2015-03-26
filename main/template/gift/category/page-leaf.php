@@ -53,6 +53,7 @@ $helper = new \Helper\TemplateHelper();
             'sender'    => [
                 'name'     => 'enter',
                 'position' => 'Viewed',
+                'from'     => 'categoryPage'
             ],
         ]) ?>
     <? endif ?>

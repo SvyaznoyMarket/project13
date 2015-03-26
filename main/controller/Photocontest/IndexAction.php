@@ -5,7 +5,7 @@ namespace Controller\Photocontest;
 class IndexAction {
 	
 	public function index(\Http\Request $request){
-		\App::logger()->debug('Exec ' . __METHOD__);
+		//\App::logger()->debug('Exec ' . __METHOD__);
 		
 		$curl = \App::photoContestClient();
 		$r = $curl->query('contest/lastActive');
@@ -20,7 +20,7 @@ class IndexAction {
      * @return \Http\Response
      */
     public function contest(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
 		$curl	= \App::photoContestClient();
 		$contest = $curl->query('contest/item/'.$request->get('contestRoute'));

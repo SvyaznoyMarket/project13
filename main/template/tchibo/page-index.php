@@ -133,6 +133,7 @@ if ((bool)$siblingCategories) {
             'sender'    => [
                 'name'     => 'enter',
                 'position' => 'Viewed',
+                'from'     => 'categoryPage',
             ],
         ]) ?>
     <? endif ?>

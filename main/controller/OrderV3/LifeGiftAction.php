@@ -14,7 +14,7 @@ class LifeGiftAction {
     }
 
     public function execute(\Http\Request $request, $productId) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
         $error = null;
         $product = null;
         $responseData = null;

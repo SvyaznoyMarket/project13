@@ -45,7 +45,7 @@ class InflectReplacer {
 
                         $caseIndex = $this->caseIndexes[$case];
                         if (empty($this->patterns[$pattern][$caseIndex])) {
-                            \App::logger()->debug(sprintf('Не найден падеж %s для %s', $case, $pattern));
+                            //\App::logger()->debug(sprintf('Не найден падеж %s для %s', $case, $pattern));
                             $caseIndex = 0;
                         }
 

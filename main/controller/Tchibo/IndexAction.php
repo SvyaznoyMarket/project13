@@ -5,7 +5,7 @@ namespace Controller\Tchibo;
 class IndexAction {
 
     public function execute(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
         $contentClient = \App::contentClient();

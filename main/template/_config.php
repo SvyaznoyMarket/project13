@@ -40,6 +40,7 @@ $config = array_merge([
     'user' => [
         'region' => [
             'forceDefaultBuy' => \App::user()->getRegion()->getForceDefaultBuy(),
+            'kladrId'         => \App::user()->getRegion()->kladrId,
             'name'            => \App::user()->getRegion() ? \App::user()->getRegion()->getName() : null
         ],
     ],

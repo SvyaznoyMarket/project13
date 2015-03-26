@@ -9,7 +9,7 @@ class MobileRedirectAction {
      * @return \Http\Response
      */
     public function execute(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $config = \App::config();
 

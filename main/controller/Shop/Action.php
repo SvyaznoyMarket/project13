@@ -7,7 +7,7 @@ class Action {
      * @return \Http\Response
      */
     public function index() {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
         $user = \App::user();
@@ -136,7 +136,7 @@ class Action {
      * @return \Http\RedirectResponse
      */
     public function region($regionId) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         return new \Http\RedirectResponse(\App::router()->generate('shop'), 301);
     }
@@ -149,7 +149,7 @@ class Action {
      * @throws \Exception\NotFoundException
      */
     public function show($regionToken, $shopToken) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
         $user = \App::user();
@@ -168,14 +168,6 @@ class Action {
                 }
             });
         }
-
-        // запрашиваем список регионов для выбора
-        $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
-            foreach ($data as $item) {
-                $regionsToSelect[] = new \Model\Region\Entity($item);
-            }
-        });
 
         // выполнение 1-го пакета запросов
         $client->execute();
@@ -240,7 +232,6 @@ class Action {
         \App::curl()->execute();
 
         $page = new \View\Shop\ShowPage();
-        $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('currentRegion', $currentRegion);
         $page->setParam('shop', $shop);
 

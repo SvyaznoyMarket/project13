@@ -5,7 +5,7 @@ namespace Controller\Enterprize;
 class ShowAction {
 
     public function execute(\Http\Request $request, $enterprizeToken = null) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!\App::config()->enterprize['enabled']) {
             throw new \Exception\NotFoundException();

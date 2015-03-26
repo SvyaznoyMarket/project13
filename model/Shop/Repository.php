@@ -18,7 +18,7 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityById($id) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = clone $this->client;
 
@@ -44,7 +44,7 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityByToken($token) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = clone $this->client;
 
@@ -70,7 +70,7 @@ class Repository {
      * @param        $callback
      */
     public function prepareEntityByToken($token, $callback) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery('shop/get', array(
             'slug' => [$token],
@@ -82,7 +82,7 @@ class Repository {
      * @return Entity[]
      */
     public function getCollectionByRegion(\Model\Region\Entity $region) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = clone $this->client;
 
@@ -109,7 +109,7 @@ class Repository {
      * @param                      $callback
      */
     public function prepareCollectionByRegion(\Model\Region\Entity $region = null, $callback) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $params = [];
         if (!is_null($region)) {
@@ -124,7 +124,7 @@ class Repository {
      * @return Entity[]
      */
     public function getCollectionById(array $ids = []) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         if (!(bool)$ids) return [];
 
@@ -155,7 +155,7 @@ class Repository {
      * @return array
      */
     public function prepareCollectionById(array $ids = [], $done, $fail = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         if (!(bool)$ids) return [];
 
@@ -176,7 +176,7 @@ class Repository {
      * @return array
      */
     public function preparePointCollectionByUi(array $uids = [], $done, $fail = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         if (!(bool)$uids) return [];
 

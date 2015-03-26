@@ -4,7 +4,7 @@ namespace Controller\Product;
 
 class StockAction {
     public function execute($productPath, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
         $user = \App::user();
@@ -27,14 +27,6 @@ class StockAction {
                 }
             });
         }
-
-        // запрашиваем список регионов для выбора
-        $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
-            foreach ($data as $item) {
-                $regionsToSelect[] = new \Model\Region\Entity($item);
-            }
-        });
 
         // выполнение 1-го пакета запросов
         $client->execute();
@@ -71,7 +63,6 @@ class StockAction {
         }
 
         $page = new \View\Product\StockPage();
-        $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('product', $product);
 
         return new \Http\Response($page->show());

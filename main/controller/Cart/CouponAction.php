@@ -10,7 +10,7 @@ class CouponAction {
      * @return \Http\Response
      */
     public function apply(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!$request->isXmlHttpRequest()) {
             throw new \Exception\NotFoundException('Request is not xml http request');
@@ -61,7 +61,7 @@ class CouponAction {
      * @return \Http\JsonResponse
      */
     public function delete(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $responseData = [];
         try {

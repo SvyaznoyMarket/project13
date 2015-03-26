@@ -17,7 +17,7 @@ class DeliveryAction {
      * @throws \Exception
      */
     public function execute(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $product_list = (array)$request->get('products');
         $shopId = is_scalar($request->get('shopId')) ? $request->get('shopId') : null;

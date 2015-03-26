@@ -66,15 +66,15 @@ namespace EnterApplication\Action\ProductCard
             */
 
             // пользователь и его подписки
+            /** @var Query\User\GetByToken $userQuery */
             $userQuery = null;
             $subscribeQuery = null;
             if ($request->userToken) {
+                // пользователь
                 $userQuery = (new Query\User\GetByToken($request->userToken))->prepare();
+                // подписки пользователя
                 $subscribeQuery = (new Query\Subscribe\GetByUserToken($request->userToken))->prepare();
             }
-
-            // список регионов для выбора города
-            $mainRegionQuery = (new Query\Region\GetMain())->prepare();
 
             // каналы подписок
             $subscribeChannelQuery = (new Query\Subscribe\Channel\Get())->prepare();
@@ -84,12 +84,12 @@ namespace EnterApplication\Action\ProductCard
 
             // доставка
             call_user_func(function() use (&$productQuery, &$deliveryQuery) {
-                $product = $productQuery->response->product;
-                if (!$product['id']) return;
+                $productId = $productQuery->response->product['id'];
+                if (!$productId) return;
 
                 $deliveryQuery = new Query\Delivery\GetByCart();
                 // корзина
-                $deliveryQuery->cart->products[] = $deliveryQuery->cart->createProduct($product['id'], 1);
+                $deliveryQuery->cart->products[] = $deliveryQuery->cart->createProduct($productId, 1);
                 foreach(array_column($productQuery->response->product['kit'], 'id') as $kitId) {
                     $deliveryQuery->cart->products[] = $deliveryQuery->cart->createProduct($kitId, 1);
                 }
@@ -109,35 +109,34 @@ namespace EnterApplication\Action\ProductCard
 
             // магазины на основе остатков
             call_user_func(function() use (&$productQuery, &$shopQuery) {
-                $product = $productQuery->response->product;
-                if (!$product['id']) return;
-
-                $shopQuery = new Query\Shop\GetByIdList();
-                foreach ($product['stock'] as $stock) {
+                $shopIds = [];
+                foreach ($productQuery->response->product['stock'] as $stock) {
                     if (!$stock['shop_id'] || !($stock['quantity'] + $stock['quantity_showroom'])) continue;
 
-                    $shopQuery->ids[] = $stock['shop_id'];
+                    $shopIds[] = $stock['shop_id'];
                 }
-                if ($shopQuery->ids) {
-                    $shopQuery->prepare();
+                if ($shopIds) {
+                    $shopQuery = (new Query\Shop\GetByIdList($shopIds))->prepare();
                 }
             });
 
             // группы оплаты
             call_user_func(function() use (&$productQuery, &$paymentGroupQuery) {
-                $product = $productQuery->response->product;
-                if (!$product['id']) return;
+                $productId = $productQuery->response->product['id'];
+                if (!$productId) return;
+
+                $price = $productQuery->response->product['price'];
 
                 $cart = \App::user()->getCart(); // TODO: old usage
 
                 $paymentGroupQuery = new Query\PaymentGroup\GetByCart();
                 // корзина
-                $paymentGroupQuery->cart->products[] = $paymentGroupQuery->cart->createProduct($product['id'], 1);
+                $paymentGroupQuery->cart->products[] = $paymentGroupQuery->cart->createProduct($productId, 1);
                 // регион
                 $paymentGroupQuery->regionId = $productQuery->regionId;
                 // фильтер
                 $paymentGroupQuery->filter->isCorporative = false;
-                $paymentGroupQuery->filter->isCredit = (bool)(($product['price'] * (($cart->getQuantityByProduct($product['id']) > 0) ? $cart->getQuantityByProduct($product['id']) : 1)) >= \App::config()->product['minCreditPrice']);
+                $paymentGroupQuery->filter->isCredit = (bool)(($price * (($cart->getQuantityByProduct($productId) > 0) ? $cart->getQuantityByProduct($productId) : 1)) >= \App::config()->product['minCreditPrice']);
 
                 $paymentGroupQuery->prepare();
             });
@@ -181,29 +180,37 @@ namespace EnterApplication\Action\ProductCard
 
             // отзывы товара
             call_user_func(function() use (&$productQuery, &$reviewQuery) {
-                $product = $productQuery->response->product;
-                if (!$product['id']) return;
+                $productUi = $productQuery->response->product['ui'];
+                if (!$productUi) return;
 
-                $reviewQuery = (new Query\Product\Review\GetByProductUi($product['ui'], 0, 7))->prepare();
+                $reviewQuery = (new Query\Product\Review\GetByProductUi($productUi, 0, 7))->prepare();
             });
 
             // категория товаров
             call_user_func(function() use (&$productQuery, &$categoryQuery) {
-                $product = $productQuery->response->product;
-                if (!$product['id']) return;
+                $categoryUi = isset($productQuery->response->product['category']) ? end($productQuery->response->product['category'])['ui'] : null;
+                if (!$categoryUi) return;
 
-                $categoryQuery = null;
-                if ($categoryUi = end($product['category'])['ui']) {
-                    $categoryQuery = (new Query\Product\Category\GetByUi($categoryUi, $productQuery->regionId))->prepare();
-                }
+                $categoryQuery = (new Query\Product\Category\GetByUi($categoryUi, $productQuery->regionId))->prepare();
             });
 
             // описание товара из scms
             call_user_func(function() use (&$productQuery, &$productDescriptionQuery) {
-                $product = $productQuery->response->product;
-                if (!$product['id']) return;
+                $productUi = $productQuery->response->product['ui'];
+                if (!$productUi) return;
 
-                $productDescriptionQuery = (new Query\Product\GetDescriptionByUiList([$product['ui']]))->prepare();
+                $productDescriptionQuery = (new Query\Product\GetDescriptionByUiList([$productUi]))->prepare();
+            });
+
+            // избранные товары пользователя
+            call_user_func(function() use (&$userQuery, &$productQuery, &$favoriteQuery) {
+                $userUi = ($userQuery && $userQuery->response->user['ui']) ? $userQuery->response->user['ui'] : null;
+                if (!$userUi) return;
+
+                $productUi = $productQuery->response->product['ui'];
+                if (!$productUi) return;
+
+                $favoriteQuery = (new Query\User\Favorite\Check($userUi, [$productUi]))->prepare();
             });
 
             // товар для Подари Жизнь
@@ -242,7 +249,6 @@ namespace EnterApplication\Action\ProductCard
             $response->redirectQuery = $redirectQuery;
             $response->abTestQuery = $abTestQuery;
             $response->regionQuery = $regionQuery;
-            $response->mainRegionQuery = $mainRegionQuery;
             $response->subscribeChannelQuery = $subscribeChannelQuery;
             $response->categoryRootTreeQuery = $categoryRootTreeQuery;
             $response->menuQuery = $menuQuery;
@@ -304,8 +310,6 @@ namespace EnterApplication\Action\ProductCard\Get
         public $abTestQuery;
         /** @var Query\Region\GetById */
         public $regionQuery;
-        /** @var Query\Region\GetMain */
-        public $mainRegionQuery; // TODO: убрать, будет через ajax
         /** @var Query\Subscribe\Channel\Get */
         public $subscribeChannelQuery;
         /** @var Query\Product\Category\GetRootTree */
@@ -326,6 +330,8 @@ namespace EnterApplication\Action\ProductCard\Get
         public $reviewQuery;
         /** @var Query\Product\Category\GetByUi|null */
         public $categoryQuery;
+        /** @var Query\User\Favorite\Check|null */
+        public $favoriteQuery;
         /** @var Query\Product\GetByToken */
         public $lifeGiftProductQuery;
     }

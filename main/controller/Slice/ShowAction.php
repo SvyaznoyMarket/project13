@@ -14,7 +14,7 @@ class ShowAction {
      * @return \Http\Response
      */
     public function execute(\Http\Request $request, $sliceToken, $categoryToken = null) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         /** @var $slice \Model\Slice\Entity|null */
         $slice = null;
@@ -31,15 +31,6 @@ class ShowAction {
             }
         );
 
-        // запрашиваем список регионов для выбора
-        $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
-            if (is_array($data)) {
-                foreach ($data as $item) {
-                    $regionsToSelect[] = new \Model\Region\Entity($item);
-                }
-            }
-        });
 
         \App::scmsSeoClient()->execute();
 
@@ -110,7 +101,6 @@ class ShowAction {
 
         $page = new \View\Slice\ShowPage();
         $page->setParam('category', $category);
-        $page->setParam('regionsToSelect', $regionsToSelect);
 
         if ($slice->categoryUid) {
             $page->setParam('seoContent', $slice->getContent());

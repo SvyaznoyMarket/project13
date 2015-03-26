@@ -17,7 +17,7 @@ class RelatedAction {
      * @return \Http\JsonResponse
      */
     public function execute(\Http\Request $request, $productToken) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $page = $request->get('page', 1);
 

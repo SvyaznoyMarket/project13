@@ -4,15 +4,14 @@ return function (
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product,
     $onClick = null,
-    $isRetailRocket = null,
+    $isRetailRocket = false,
     $sender = [],
     $noUpdate = false,
     $location = null,
     $sender2 = ''
 ) {
 ?>
-    <?= $helper->renderWithMustache('cart/_button-product',
-        (new \View\Cart\ProductButtonAction())->execute(
+    <?= $helper->renderWithMustache('cart/_button-product', (new \View\Cart\ProductButtonAction())->execute(
             new \Helper\TemplateHelper(),
             $product,
             $onClick,
@@ -21,6 +20,5 @@ return function (
             $noUpdate,
             $location,
             $sender2
-        )
-    ) ?>
+        )) ?>
 <? };

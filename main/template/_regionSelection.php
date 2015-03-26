@@ -1,27 +1,26 @@
 <?php
 /**
- * @var $page     \View\Layout
- * @var $user     \Session\User
  * @var $regions  \Model\Region\Entity[]
  */
 ?>
 
 <?
+$page = new \Templating\HtmlLayout();
+$user = \App::user();
 $currentRegion = $user->getRegion();
-
 $colCount = 4;
 $rowCount = 13;
 $count = count($regions);
 ?>
 
-<div class="popup popupRegion clearfix" style="display:none">
+<div class="popup popupRegion clearfix jsRegionPopup" style="display:none">
     <a href="#" class="close">Закрыть</a>
     <div class="popuptitle">Ваш город</div>
     <p class="font14 popupRegion__eTopText">Выберите город, в котором собираетесь получать товары.<br/>
 От выбора зависит стоимость товаров и доставки.</p>
     <form class="ui-css popupRegion__eForm">
         <input id="jscity" data-url-autocomplete="<?= $page->url('region.autocomplete') ?>" placeholder="Название города" class="bBuyingLine__eText font18" value="<?= $currentRegion->getName() ?>" />
-        <a class="inputClear" href="#">&times;</a>
+        <a class="inputClear jsRegionInputClear" href="#">&times;</a>
         <input id="jschangecity" type="submit" value="Сохранить" class="button bigbutton mDisabled" disabled />
 
         <div id="jscities" class="bSelectRegionDd" style="position:relative"></div>
@@ -30,22 +29,22 @@ $count = count($regions);
         <? if (!in_array($currentRegion->getId(), [14974, 108136])): ?>
             <div class="cityItem mAutoresolve"><a href="<?= $page->url('region.change', ['regionId' => $currentRegion->getId()]) ?>"><?= $currentRegion->getName() ?></a></div>
         <? endif ?>
-        <div class="cityItem"><a class="jsChangeRegionAnalytics" href="<?= $page->url('region.change', ['regionId' => 14974]) ?>">Москва</a></div>
-        <div class="cityItem"><a class="jsChangeRegionAnalytics" href="<?= $page->url('region.change', ['regionId' => 108136]) ?>">Санкт-Петербург</a></div>
-        <div class="cityItem"><a class="moreCity" href="#">Еще города</a></div>
+        <div class="cityItem"><a class="jsChangeRegionLink" href="<?= $page->url('region.change', ['regionId' => 14974]) ?>">Москва</a></div>
+        <div class="cityItem"><a class="jsChangeRegionLink" href="<?= $page->url('region.change', ['regionId' => 108136]) ?>">Санкт-Петербург</a></div>
+        <div class="cityItem"><a class="moreCity jsRegionListMoreCity" href="#">Еще города</a></div>
     </div>
     
-    <div class="regionSlidesWrap fl">
+    <div class="regionSlidesWrap fl jsRegionSlidesWrap">
         <div class="regionSlides__inner">
-            <div class="regionSlides clearfix">
+            <div class="regionSlides clearfix jsRegionSlidesHolder">
                 <!-- 2 слайда по 4 колонки -->
-                <div class="regionSlides_slide">
+                <div class="regionSlides_slide jsRegionOneSlide">
                         <div class="colomn font12">
                         <?php
                             /** @var $region  \Model\Region\Entity */
                             $cols = 0; $rows = 0; $i = 0; foreach ($regions as $region): $i++;  $rows++;
                         ?>
-                            <a class="jsChangeRegionAnalytics" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>"><?= $region->getName(); ?></a>
+                            <a class="jsChangeRegionLink" href="<?= $page->url('region.change', ['regionId' => $region->getId()]) ?>"><?= $region->getName(); ?></a>
                             <?php if ($i == $count) break; ?>
                             <?php if ($rows == $rowCount): $rows = 0; $cols++;?>
                         </div>
@@ -60,7 +59,7 @@ $count = count($regions);
                 </div>
             </div>
         </div>
-        <div class="BlackArrow fl leftArr"></div>
-        <div class="BlackArrow fl rightArr"></div>
+        <div class="BlackArrow fl leftArr jsRegionArrow jsRegionArrowLeft" data-dir="+"></div>
+        <div class="BlackArrow fl rightArr jsRegionArrow jsRegionArrowRight" data-dir="-"></div>
     </div>
     </div>

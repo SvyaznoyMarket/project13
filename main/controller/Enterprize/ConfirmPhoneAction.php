@@ -10,7 +10,7 @@ class ConfirmPhoneAction {
      * @throws \Exception\NotFoundException
      */
     public function show(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!\App::config()->enterprize['enabled']) {
             throw new \Exception\NotFoundException();
@@ -70,7 +70,7 @@ class ConfirmPhoneAction {
      * @throws \Exception
      */
     public function create(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!\App::config()->enterprize['enabled']) {
             throw new \Exception\NotFoundException();
@@ -121,7 +121,7 @@ class ConfirmPhoneAction {
      * @throws \Exception\NotFoundException
      */
     public function check(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!\App::config()->enterprize['enabled']) {
             throw new \Exception\NotFoundException();
@@ -176,7 +176,7 @@ class ConfirmPhoneAction {
      * @return bool
      */
     public function isPhoneConfirmed() {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
         $data = \App::session()->get(\App::config()->enterprize['formDataSessionKey'], []);
 
         return isset($data['isPhoneConfirmed']) && $data['isPhoneConfirmed'] || (\App::user()->getEntity() ? \App::user()->getEntity()->getIsPhoneConfirmed() : false);

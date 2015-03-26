@@ -17,7 +17,7 @@ class CreateAction {
      * @throws \Exception
      */
     public function execute(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!$request->isXmlHttpRequest()) {
             throw new \Exception\NotFoundException('Request is not xml http request');

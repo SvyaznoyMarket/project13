@@ -9,7 +9,7 @@ class RetailClient {
      * @throws \Exception\NotFoundException
      */
     public function show(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!\App::config()->enterprize['enabled']) {
             throw new \Exception\NotFoundException();
@@ -38,7 +38,7 @@ class RetailClient {
      * @throws \Exception\NotFoundException
      */
     public function create(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!\App::config()->enterprize['enabled']) {
             throw new \Exception\NotFoundException();

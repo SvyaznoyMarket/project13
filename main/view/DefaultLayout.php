@@ -139,23 +139,6 @@ class DefaultLayout extends Layout {
         return '';
     }
 
-    public function slotRegionSelection() {
-        /** @var $regions \Model\Region\Entity */
-        $regions = $this->getParam('regionsToSelect', null);
-
-        if (null === $regions) {
-            try {
-                $regions = \RepositoryManager::region()->getShownInMenuCollection();
-            } catch (\Exception $e) {
-                \App::logger()->error($e);
-
-                $regions = [];
-            }
-        }
-
-        return $this->render('_regionSelection', array_merge($this->params, array('regions' => $regions)));
-    }
-
     /**
      * @return string
      */

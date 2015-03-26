@@ -4,7 +4,7 @@ namespace Controller\Order;
 
 class PaypalAction {
     public function complete(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
 
@@ -45,7 +45,7 @@ class PaypalAction {
      * @return \Http\Response
      */
     public function fail(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $page = new \View\Order\PaymentFailPage();
 

@@ -8,7 +8,7 @@ use Http\Response;
 class PhotoAction {
 	
 	public function show(\Http\Request $request){
-		\App::logger()->debug('Exec ' . __METHOD__);
+		//\App::logger()->debug('Exec ' . __METHOD__);
 		
 		$curl = \App::photoContestClient();
 
@@ -53,7 +53,7 @@ class PhotoAction {
 	
 	
 	public function create(\Http\Request $request){
-		\App::logger()->debug('Exec ' . __METHOD__);
+		//\App::logger()->debug('Exec ' . __METHOD__);
 		
 		$hasError= false;
 		$form	= (object)[
@@ -230,7 +230,7 @@ class PhotoAction {
 	 */
 	
 	public function safeKey(\Http\Request $request){
-		\App::logger()->debug('Exec ' . __METHOD__);
+		//\App::logger()->debug('Exec ' . __METHOD__);
 		
 		$curl = \App::photoContestClient();
 		$r = $curl->query('vote/safeKey');
@@ -250,14 +250,14 @@ class PhotoAction {
 	
 	
 	public function vote(\Http\Request $request){
-		\App::logger()->debug('Exec ' . __METHOD__);
+		//\App::logger()->debug('Exec ' . __METHOD__);
 		return $this->voteRequest($request,'create');
 	}
 	
 	
 	
 	public function unvote(\Http\Request $request) {
-		\App::logger()->debug('Exec ' . __METHOD__);
+		//\App::logger()->debug('Exec ' . __METHOD__);
 		return $this->voteRequest($request,'delete');
 	}
 	

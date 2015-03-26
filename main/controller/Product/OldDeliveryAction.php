@@ -9,7 +9,7 @@ class OldDeliveryAction {
      * @throws \Exception\NotFoundException
      */
     public function info(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!$request->isXmlHttpRequest()) {
             throw new \Exception\NotFoundException('Request is not xml http request');
@@ -124,7 +124,7 @@ class OldDeliveryAction {
      * @throws \Exception\NotFoundException
      */
     public function oneClick(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $helper = new \View\Helper();
 
