@@ -39,14 +39,6 @@ class IndexAction {
             });
         }
 
-        // запрашиваем список регионов для выбора
-        $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
-            foreach ($data as $item) {
-                $regionsToSelect[] = new \Model\Region\Entity($item);
-            }
-        });
-
         // выполнение 1-го пакета запросов
         $client->execute();
 
@@ -126,7 +118,6 @@ class IndexAction {
         }
 
         $page = new \View\Cart\IndexPage();
-        $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('selectCredit', 1 == $request->cookies->get('credit_on'));
         $page->setParam('productEntities', $productEntities);
         $page->setParam('products', $products);

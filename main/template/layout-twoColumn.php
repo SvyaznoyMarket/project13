@@ -75,7 +75,6 @@
 
     <?= $page->slotUpper() ?>
     <?= $page->slotUserbar() ?>
-    <?= $page->slotRegionSelection() ?>
     <?= $page->slotAuth() ?>
 
     <div style="position:absolute; height: 0; z-index:-1; top: 0;">

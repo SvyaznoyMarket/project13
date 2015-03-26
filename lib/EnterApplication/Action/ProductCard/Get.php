@@ -73,9 +73,6 @@ namespace EnterApplication\Action\ProductCard
                 $subscribeQuery = (new Query\Subscribe\GetByUserToken($request->userToken))->prepare();
             }
 
-            // список регионов для выбора города
-            $mainRegionQuery = (new Query\Region\GetMain())->prepare();
-
             // каналы подписок
             $subscribeChannelQuery = (new Query\Subscribe\Channel\Get())->prepare();
 
@@ -242,7 +239,6 @@ namespace EnterApplication\Action\ProductCard
             $response->redirectQuery = $redirectQuery;
             $response->abTestQuery = $abTestQuery;
             $response->regionQuery = $regionQuery;
-            $response->mainRegionQuery = $mainRegionQuery;
             $response->subscribeChannelQuery = $subscribeChannelQuery;
             $response->categoryRootTreeQuery = $categoryRootTreeQuery;
             $response->menuQuery = $menuQuery;
@@ -304,8 +300,6 @@ namespace EnterApplication\Action\ProductCard\Get
         public $abTestQuery;
         /** @var Query\Region\GetById */
         public $regionQuery;
-        /** @var Query\Region\GetMain */
-        public $mainRegionQuery; // TODO: убрать, будет через ajax
         /** @var Query\Subscribe\Channel\Get */
         public $subscribeChannelQuery;
         /** @var Query\Product\Category\GetRootTree */

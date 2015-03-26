@@ -92,14 +92,6 @@ class Action {
             });
         }
 
-        // запрашиваем список регионов для выбора
-        $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
-            foreach ($data as $item) {
-                $regionsToSelect[] = new \Model\Region\Entity($item);
-            }
-        });
-
         // выполнение 1-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
 
@@ -201,7 +193,7 @@ class Action {
             if ('jewel' == $categoryClass) {
                 if (\App::config()->debug) \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\Action.categoryDirect', 134);
 
-                return (new \Controller\Jewel\ProductCategory\Action())->categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent);
+                return (new \Controller\Jewel\ProductCategory\Action())->categoryDirect($filters, $category, $brand, $request, $catalogJson, $promoContent);
             } else if ('grid' == $categoryClass) {
                 if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\Grid\ChildAction.executeByEntity', 134);
 
@@ -443,7 +435,6 @@ class Action {
 
         $setPageParameters = function(\View\Layout $page) use (
             &$category,
-            &$regionsToSelect,
             &$productFilter,
             &$brand,
             &$hotlinks,
@@ -457,7 +448,6 @@ class Action {
             &$slideData
         ) {
             $page->setParam('category', $category);
-            $page->setParam('regionsToSelect', $regionsToSelect);
             $page->setParam('productFilter', $productFilter);
             $page->setParam('brand', $brand);
             $page->setParam('hotlinks', $hotlinks);

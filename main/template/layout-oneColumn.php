@@ -69,7 +69,6 @@
     <?= $page->slotUserbar() ?>
 
     <?= $page->slotAuth() ?>
-    <?= $page->slotRegionSelection() ?>
 
     <div style="position:absolute; height: 0; top:0; z-index:-1;">
         <?= $page->slotBodyJavascript() ?>

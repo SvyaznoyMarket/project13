@@ -35,14 +35,6 @@ class Action {
             });
         }
 
-        // запрашиваем список регионов для выбора
-        $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
-            foreach ($data as $item) {
-                $regionsToSelect[] = new \Model\Region\Entity($item);
-            }
-        });
-
         // выполнение 1-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
 
