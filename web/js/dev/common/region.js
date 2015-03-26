@@ -14,11 +14,11 @@
                         $popup = $(res.result);
                         $body.append($popup);
                         initAutocomplete($popup.find('#jscity'));
-                        showPopup($popup)
+                        showPopup()
                     }
                 });
         } else {
-            showPopup($popup);
+            showPopup();
         }
 
         // analytics only for main page
@@ -42,8 +42,23 @@
 		return Boolean(parseInt(docCookies.getItem('geoshop')));
 	}
 
+	function queryAutocompleteVariants(term, onSuccess) {
+		$.ajax({
+			url: $popup.data('autocomplete-url'),
+			dataType: 'json',
+			data: {
+				q: term
+			},
+			success: function( data ) {
+				if (onSuccess) {
+					onSuccess(data.data.slice(0, 15));
+				}
+			}
+		});
+	}
+
     // Lightbox
-    showPopup = function showPopupF($elem) {
+    showPopup = function showPopupF() {
 		var
 			autoResolveUrl = $popup.data('autoresolve-url'),
 			$autoresolve = $('.jsAutoresolve', $popup);
@@ -76,7 +91,7 @@
 			});
 		}
 
-        $elem.lightbox_me({
+		$popup.lightbox_me({
             autofocus: true,
             onLoad: function(){
                 $popup.find('#jscity').putCursorAtEnd();
@@ -122,22 +137,6 @@
                 $(this).removeClass('ui-corner-top').addClass('ui-corner-all');
             }
         });
-
-        function queryAutocompleteVariants(term, onSuccess) {
-            $.ajax({
-                url: $elem.data('url-autocomplete'),
-                dataType: 'json',
-                data: {
-                    q: term
-                },
-                success: function( data ) {
-                    if (onSuccess) {
-                        onSuccess(data.data.slice(0, 15));
-                    }
-                }
-            });
-        }
-
     };
 
     // клик по названию региона в юзербаре
@@ -184,14 +183,26 @@
 
     // Клик по кнопке "Сохранить"
     $body.on('click', '#jschangecity', function submitCityHandler(e) {
+		e.preventDefault();
 
         var url = $(this).data('url'),
             inputRegion = $popup.find('#jscity'),
             regionName = inputRegion.val();
 
-        changeRegionAction(regionName, url);
+		if (url) {
+			changeRegionAction(regionName, url);
+		} else {
+			// SITE-5123
+			if (ENTER.utils.trim(inputRegion[0].defaultValue) != ENTER.utils.trim(regionName)) {
+				queryAutocompleteVariants(regionName, function(res) {
+					if (res[0] && res[0].url) {
+						location = res[0].url;
+					}
+				});
+			}
 
-        e.preventDefault();
+			$popup.trigger('close');
+		}
     });
 
     $body.on('click', '.jsChangeRegionLink', function(e){
