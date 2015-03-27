@@ -31,20 +31,12 @@ class InfoAction {
                 'sum'      => $cartProduct->getSum(),
                 'quantity' => $cartProduct->getQuantity(),
                 'service'  => [],
-                'warranty' => [],
             ];
             foreach ($cartProduct->getService() as $cartService) {
                 $productData['service'][$cartService->getId()] = [
                     'id'       => $cartService->getId(),
                     'sum'      => $cartService->getSum(),
                     'quantity' => $cartService->getQuantity(),
-                ];
-            }
-            foreach ($cartProduct->getWarranty() as $cartWarranty) {
-                $productData['warranty'][$cartWarranty->getId()] = [
-                    'id'       => $cartWarranty->getId(),
-                    'sum'      => $cartWarranty->getSum(),
-                    'quantity' => $cartWarranty->getQuantity(),
                 ];
             }
 

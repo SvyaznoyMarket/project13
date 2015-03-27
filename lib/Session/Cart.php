@@ -14,8 +14,6 @@ class Cart {
     private $products = null;
     /** @var \Model\Cart\Service\Entity[]|null */
     private $services = null;
-    /** @var \Model\Cart\Warranty\Entity[]|null */
-    private $warranties = null;
     /** @var \Model\Cart\Certificate\Entity[] */
     private $certificates = null;
     /** @var \Model\Cart\Coupon\Entity[] */
@@ -43,7 +41,6 @@ class Cart {
             $this->storage->set($this->sessionName, [
                 'productList'     => [],
                 'serviceList'     => [],
-                'warrantyList'    => [],
                 'certificateList' => [],
                 'couponList'      => [],
                 'blackcardList'   => [],
@@ -62,12 +59,6 @@ class Cart {
         if (!array_key_exists('serviceList', $session[$this->sessionName])) {
             $data = $this->storage->get($this->sessionName);
             $data['serviceList'] = [];
-            $this->storage->set($this->sessionName, $data);
-        }
-
-        if (!array_key_exists('warrantyList', $session[$this->sessionName])) {
-            $data = $this->storage->get($this->sessionName);
-            $data['warrantyList'] = [];
             $this->storage->set($this->sessionName, $data);
         }
 
@@ -131,7 +122,6 @@ class Cart {
         $this->sum = null;
         $this->products = null;
         $this->services = null;
-        $this->warranties = null;
         $this->certificates = null;
         $this->coupons = null;
         $this->blackcards = null;
@@ -345,49 +335,6 @@ class Cart {
         return 0;
     }
 
-    /**
-     * @param \Model\Product\Warranty\Entity $warranty
-     * @param int $quantity
-     * @param int $productId
-     * @throws \InvalidArgumentException
-     */
-    public function setWarranty(\Model\Product\Warranty\Entity $warranty, $quantity = 1, $productId) {
-        if ($quantity < 0) $quantity = 0;
-
-        if (empty($productId)) {
-            throw new \InvalidArgumentException(sprintf('Пустой ид товара для гарантии #%s', $warranty->getId()));
-        }
-
-        $data = $this->storage->get($this->sessionName);
-        if (!array_key_exists($warranty->getId(), $data['warrantyList'])) {
-            $data['warrantyList'][$warranty->getId()] = [];
-        }
-        // удаляем ранее установленную для товара гарантию
-        foreach ($data['warrantyList'] as $iWarrantyId => $warrantyData) {
-            foreach ($warrantyData as $iProductId => $iQuantity) {
-                if ($iProductId == $productId) {
-                    $data['warrantyList'][$iWarrantyId][$iProductId] = 0;
-                }
-            }
-        }
-
-        $data['warrantyList'][$warranty->getId()][$productId] = $quantity;
-
-        $this->storage->set($this->sessionName, $data);
-        $this->clearEmpty();
-    }
-
-    /**
-     * @param int $productId
-     * @param int $warrantyId
-     * @return bool
-     */
-    public function hasWarranty($productId, $warrantyId) {
-        $data = $this->getData();
-
-        return isset($data['warrantyList'][$warrantyId][$productId]);
-    }
-
     /** Возвращает количество продуктов и сервисов
      * @return int
      */
@@ -430,20 +377,6 @@ class Cart {
         }
         foreach ($this->getServices() as $service) {
             $price += $service->getPrice();
-        }
-
-        return $price;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTotalWarrantyPrice() {
-        $price = 0;
-        foreach ($this->getProducts() as $product) {
-            foreach ($product->getWarranty() as $warranty) {
-                $price += $warranty->getSum();
-            }
         }
 
         return $price;
@@ -527,29 +460,6 @@ class Cart {
     }
 
     /**
-     * @return \Model\Cart\Warranty\Entity[]
-     */
-    public function getWarranties() {
-        if (null === $this->warranties) {
-            $this->fill();
-        }
-
-        return $this->warranties;
-    }
-
-    /**
-     * @param int $warrantyId
-     * @return \Model\Cart\Warranty\Entity|null
-     */
-    public function getWarrantyById($warrantyId) {
-        if (null === $this->warranties) {
-            $this->fill();
-        }
-
-        return isset($this->warranties[$warrantyId]) ? $this->warranties[$warrantyId] : null;
-    }
-
-    /**
      * @return int
      */
     public function getProductsQuantity() {
@@ -586,15 +496,6 @@ class Cart {
 
     public function getData() {
         return $this->storage->get($this->sessionName);
-    }
-
-    /**
-     * @return int
-     */
-    public function getWarrantiesQuantity() {
-        $data = $this->getData();
-
-        return count($data['warrantyList']);
     }
 
     /**
@@ -658,25 +559,6 @@ class Cart {
                     $item['product_id'] = $productId;
                 }
                 $return[] = $item;
-            }
-        }
-
-        return $return;
-    }
-
-    /**
-     * @return array
-     */
-    public function getWarrantyData() {
-        $data = $this->getData();
-        $return = [];
-        foreach($data['warrantyList'] as $warrantyId => $warrantyData) {
-            foreach($warrantyData as $productId => $quantity) {
-                $return[] = [
-                    'id'         => $warrantyId,
-                    'quantity'   => $quantity,
-                    'product_id' => (int)$productId,
-                ];
             }
         }
 
@@ -881,7 +763,6 @@ class Cart {
         $default = [
             'product_list'   => [],
             'service_list'   => [],
-            'warranty_list'  => [],
             'card_f1_list'   => [],
             'coupon_list'    => [],
             'blackcard_list' => [],
@@ -911,7 +792,6 @@ class Cart {
                     [
                         'product_list'  => $this->getProductData(),
                         'service_list'  => $this->getServiceData(),
-                        'warranty_list' => $this->getWarrantyData(),
                     ],
                     function ($data) use (&$response) {
                         if ((bool)$data) {
@@ -986,22 +866,6 @@ class Cart {
             }
         }
 
-        $this->warranties = [];
-        if(array_key_exists('warranty_list', $response)) {
-            foreach($response['warranty_list'] as $warrantyData) {
-                $warranty = new \Model\Cart\Warranty\Entity($warrantyData);
-                $productId = (array_key_exists('product_id', $warrantyData)) ? (int)$warrantyData['product_id'] : null;
-                /** @var $cartProduct \Model\Cart\Product\Entity|null */
-                $cartProduct = $productId && isset($this->products[$productId]) && ($this->products[$productId] instanceof \Model\Cart\Product\Entity)
-                    ? $this->products[$productId]
-                    : null;
-                if ($cartProduct) {
-                    $cartProduct->addWarranty($warranty);
-                } else {
-                    $this->services[$warrantyData['id']] = $warranty;
-                }
-            }
-        }
     }
 
     /**
@@ -1028,21 +892,6 @@ class Cart {
 
                 if (!(bool)$data['serviceList'][$serviceId]) {
                     unset($data['serviceList'][$serviceId]);
-                }
-            }
-        }
-        // гарантии
-        foreach($data['warrantyList'] as $warrantyId => $warrantyData) {
-            foreach($warrantyData as $productId => $quantity) {
-                if (
-                    ($productId && !array_key_exists($productId, $data['productList']))
-                    || !$quantity
-                ) {
-                    unset($data['warrantyList'][$warrantyId][$productId]);
-                }
-
-                if (!(bool)$data['warrantyList'][$warrantyId]) {
-                    unset($data['warrantyList'][$warrantyId]);
                 }
             }
         }

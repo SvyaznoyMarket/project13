@@ -14,17 +14,6 @@ class Id {
     }
 
     /**
-     * Генерирует ид чекбокса для гарантии у товара
-     *
-     * @param $productId
-     * @param $warrantyId
-     * @return string
-     */
-    public static function cartButtonForProductWarranty($productId, $warrantyId) {
-        return sprintf('id-cartButton-product-%s-warranty-%s', $productId, $warrantyId);
-    }
-
-    /**
      * Генерирует ид чекбокса для услуги F1 у товара
      *
      * @param $productId

@@ -5,8 +5,6 @@ namespace Model\Product;
 class CartEntity extends CompactEntity {
     /** @var Service\Entity[] */
     protected $service = [];
-    /** @var Warranty\Entity[] */
-    protected $warranty = [];
     /** @var Kit\Entity[] */
     protected $kit = [];
 
@@ -16,9 +14,6 @@ class CartEntity extends CompactEntity {
         if (array_key_exists('service', $data) && is_array($data['service'])) $this->setService(array_map(function($data) {
             return new Service\Entity($data);
         }, $data['service']));
-        if (array_key_exists('warranty', $data) && is_array($data['warranty'])) $this->setWarranty(array_map(function($data) {
-            return new Warranty\Entity($data);
-        }, $data['warranty']));
         if (array_key_exists('kit', $data) && is_array($data['kit'])) $this->setKit(array_map(function($data) {
             return new Kit\Entity($data);
         }, $data['kit']));
@@ -46,47 +41,6 @@ class CartEntity extends CompactEntity {
      */
     public function getService() {
         return $this->service;
-    }
-
-    /**
-     * @param Warranty\Entity[] $warranties
-     * @return void
-     */
-    public function setWarranty(array $warranties) {
-        $this->warranty = [];
-        foreach ($warranties as $warranty) {
-            $this->addWarranty($warranty);
-        }
-    }
-
-    /**
-     * @param Warranty\Entity $warranty
-     */
-    public function addWarranty(Warranty\Entity $warranty) {
-        $this->warranty[] = $warranty;
-    }
-
-    /**
-     * @return Warranty\Entity[]
-     */
-    public function getWarranty() {
-        return $this->warranty;
-    }
-
-    /**
-     * @param int $warrantyId
-     * @return Warranty\Entity|null
-     */
-    public function getWarrantyById($warrantyId) {
-        $return = null;
-        foreach ($this->warranty as $warranty) {
-            if ($warrantyId == $warranty->getId()) {
-                $return = $warranty;
-                break;
-            }
-        }
-
-        return $return;
     }
 
     /**

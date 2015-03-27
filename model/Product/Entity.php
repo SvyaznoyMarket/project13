@@ -75,8 +75,6 @@ class Entity extends BasicEntity {
     protected $accessoryId = [];
     /** @var array */
     protected $relatedId = [];
-    /** @var Warranty\Entity[] */
-    protected $warranty = [];
     /** @var \Model\Region\Entity */
     protected $nearestCity = [];
 
@@ -140,9 +138,6 @@ class Entity extends BasicEntity {
         }, $data['service']));
         if (array_key_exists('related', $data)) $this->setRelatedId($data['related']);
         if (array_key_exists('accessories', $data)) $this->setAccessoryId($data['accessories']);
-        if (array_key_exists('warranty', $data) && is_array($data['warranty'])) foreach ($data['warranty'] as $warranty) {
-            $this->addWarranty(new Warranty\Entity($warranty));
-        }
         if (array_key_exists('nearest_city', $data) && is_array($data['nearest_city'])) foreach ($data['nearest_city'] as $city) {
             $this->addNearestCity(new \Model\Region\Entity($city));
         }
@@ -813,29 +808,6 @@ class Entity extends BasicEntity {
     public function getRelatedId()
     {
         return $this->relatedId;
-    }
-
-    /**
-     * @param array
-     */
-    public function setWarranty($warranties)
-    {
-        $this->warranty = [];
-        foreach ($warranties as $warranty) {
-            $this->addWarranty($warranty);
-        }
-    }
-
-    /**
-     * @return array|Warranty\Entity[]
-     */
-    public function getWarranty()
-    {
-        return $this->warranty;
-    }
-
-    public function addWarranty(Warranty\Entity $warranty) {
-        $this->warranty[] = $warranty;
     }
 
 

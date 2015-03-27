@@ -32,7 +32,6 @@ class OldInfoAction {
             'vcomp'            => 0,
             'productsInCart'   => [],
             'servicesInCart'   => [],
-            'warrantiesInCart' => [],
             'bingo'            => false,
             'region_id'        => $region->getId(),
             'is_credit'        => 1 == $request->cookies->get('credit_on'),
@@ -80,8 +79,6 @@ class OldInfoAction {
             });
         }
 
-        $warrantyData = $cart->getWarrantyData();
-
         // получаем общую стоимость корзины
         if (((bool)$productData || (bool)$serviceData)) {
             try {
@@ -90,7 +87,6 @@ class OldInfoAction {
                     array(
                         'product_list'  => $productData,
                         'service_list'  => $serviceData,
-                        'warranty_list' => $warrantyData,
                     ), function($data) use (&$responseData) {
                         $responseData['sum'] = array_key_exists('price_total', $data) ? $data['price_total'] : 0;
                     }
@@ -130,14 +126,6 @@ class OldInfoAction {
                 } else {
                     $responseData['servicesInCart'][$serviceTokensById[$item['id']]][0] = $item['quantity'];
                     $totalQuantity++;
-                }
-            }
-
-            // warranties
-            foreach ($warrantyData as $warrantyId => $warrantiesByProduct) {
-                foreach ($warrantiesByProduct as $productId => $item) {
-                    if (!isset($productTokensById[$item['id']])) continue;
-                    $responseData['warrantiesInCart'][$warrantyId][$productTokensById[$item['id']]] = $item['quantity'];
                 }
             }
 

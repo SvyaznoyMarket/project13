@@ -94,7 +94,7 @@ class ProductAction {
             $responseData['cart']     = [
                 'sum'           => $cartProduct ? $cartProduct->getSum() : 0,
                 'quantity'      => $quantity,
-                'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity() + $cart->getWarrantiesQuantity(),
+                'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity(),
                 'full_price'    => $cart->getSum(),
                 'old_price'     => $cart->getOriginalSum(),
                 'link'          => $product->getLink(),

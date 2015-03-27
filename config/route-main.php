@@ -475,18 +475,6 @@ return [
         'require' => ['productId' => '\d+', 'serviceId' => '\d+'],
         'action'  => ['Cart\ServiceAction', 'delete'],
     ],
-    // добавление гарантии в корзину
-    'cart.warranty.set' => [
-        'pattern' => '/cart/add-warranty/{warrantyId}/for-product/{productId}',
-        'require' => ['productId' => '\d+', 'warrantyId' => '\d+'],
-        'action'  => ['Cart\WarrantyAction', 'set'],
-    ],
-    // удаление гарантии из корзины
-    'cart.warranty.delete' => [
-        'pattern' => '/cart/delete-warranty/{warrantyId}/for-product/{productId}',
-        'require' => ['productId' => '\d+', 'warrantyId' => '\d+'],
-        'action'  => ['Cart\WarrantyAction', 'delete'],
-    ],
     'cart.certificate.apply' => [
         'pattern' => '/cart/f1-certificate',
         'action'  => ['Cart\CertificateAction', 'apply'],

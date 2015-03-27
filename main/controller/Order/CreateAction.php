@@ -283,14 +283,6 @@ class CreateAction {
 
                 ];
 
-                // расширенная гарантия
-                foreach ($cartProduct->getWarranty() as $cartWarranty) {
-                    $productData['additional_warranty'][] = [
-                        'id'         => $cartWarranty->getId(),
-                        'quantity'   => $cartProduct->getQuantity(),
-                    ];
-                }
-
                 $orderData['product'][] = $productData;
 
                 // связанные услуги

@@ -26,7 +26,6 @@ class SumAction {
             [
                 'product_list'  => $productInCartData,
                 'service_list'  => [],
-                'warranty_list' => [],
             ],
             function ($data) use (&$result) {
                 $result = $data;

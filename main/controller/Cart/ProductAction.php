@@ -248,7 +248,6 @@ class ProductAction {
                 [
                     'product_list'  => $cart->getProductData(),
                     'service_list'  => [],
-                    'warranty_list' => [],
                 ],
                 function ($data) use (&$result) {
                     $result = $data;

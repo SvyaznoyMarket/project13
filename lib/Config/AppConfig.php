@@ -401,10 +401,6 @@ class AppConfig {
     ];
 
     /** @var array */
-    public $warranty = [
-        'enabled' => null,
-    ];
-    /** @var array */
     public $f1Certificate = [
         'enabled' => null,
     ];
