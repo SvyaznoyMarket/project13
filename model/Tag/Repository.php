@@ -30,6 +30,8 @@ class Repository {
             ],
             [],
             function ($data) use (&$entity) {
+                if (!is_array($data)) return;
+
                 $data = reset($data);
                 $entity = $data ? new Entity($data) : null;
             }
