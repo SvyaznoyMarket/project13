@@ -65,7 +65,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
     <span class="product-card__info--price">Цена базового комплекта</span>
     <span class="product-card__info--deliv-period">Срок доставки базового комплекта 3 дня</span>
     <div class="product-card__info--recall">
-        <span>Закажите обратный звонок и уточните:</span>
+        <span>Вам перезвонит специалист и поможет выбрать:</span>
         <ul class="product-card__info--recall__list">
             <li>комплектность мебели и техники;</li>
             <li>условия доставки, сборки и оплаты.</li>
@@ -76,6 +76,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
             'sender2'  => $buySender2,
             'location' => 'product-card',
         ]) ?>
+    <div class="product-card__payment-types">Доступные способы оплаты:<br/>Наличные, банковский перевод</div>
     </div>
 
     <div class="product-card__specify" itemprop="offers" itemscope itemtype="http://schema.org/Offer">

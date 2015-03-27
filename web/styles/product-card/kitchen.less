@@ -40,18 +40,36 @@
                 padding-left: 5px;
                 text-align: center;
             }
+            &__price{
+                margin-left: 0px;
+                font-size: 36px;
+                text-align: center;
+            }
+            &__payment-types{
+                .textcolor();
+                font-size: 12px;
+                line-height: 18px;
+                text-align: center;
+                margin-top:20px;
+            }
             &__info {
                 &--price {
                     display: block;
-                    .textcolor();
                     font-size: 14px;
                     text-align: center;
+                }
+                &--oldprice{
+                      color: #616161;
+                      font-size: 24px;
+                      text-decoration: line-through;
+                      text-align: center;
                 }
                 &--deliv-period {
                     display: block;
                     font-size: 12px;
                     text-align: center;
                     margin-top: 5px;
+                    .textcolor();
                 }
                 &--recall {
                     display: block;
@@ -115,11 +133,6 @@
             }
         } //product-card
         //остаток старых классов
-        .bInputList {
-            margin-left: 0px;
-            font-size: 36px;
-            text-align: center;
-        }
         .bPhotoAction {
             width: 100%;
             position: absolute;
@@ -133,12 +146,19 @@
                 width: 280px;
                 &__wrap{
                 	width:280px;
+                    text-align: center;
+                }
+                &__gal{
+                    .inline-block();
                 }
             }
         }
         .slideItem_inn {
                 width: 900px;
             }
+        .bSpecifications .bSpecificationsList__eName{
+            border-color: #808080;
+        }
 
     } //kitchen wrap
 }
