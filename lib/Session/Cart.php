@@ -16,8 +16,6 @@ class Cart {
     private $certificates = null;
     /** @var \Model\Cart\Coupon\Entity[] */
     private $coupons = null;
-    /** @var \Model\Cart\Blackcard\Entity[] */
-    private $blackcards = null;
     /** @var array */
     private $actions = null;
     /** @var int */
@@ -40,7 +38,6 @@ class Cart {
                 'productList'     => [],
                 'certificateList' => [],
                 'couponList'      => [],
-                'blackcardList'   => [],
                 'actionData'      => [],
                 'paypalProduct'   => [],
             ]);
@@ -62,12 +59,6 @@ class Cart {
         if (!array_key_exists('couponList', $session[$this->sessionName])) {
             $data = $this->storage->get($this->sessionName);
             $data['couponList'] = [];
-            $this->storage->set($this->sessionName, $data);
-        }
-
-        if (!array_key_exists('blackcardList', $session[$this->sessionName])) {
-            $data = $this->storage->get($this->sessionName);
-            $data['blackcardList'] = [];
             $this->storage->set($this->sessionName, $data);
         }
 
@@ -114,7 +105,6 @@ class Cart {
         $this->products = null;
         $this->certificates = null;
         $this->coupons = null;
-        $this->blackcards = null;
         $this->actions = null;
 
         // MSITE-78 для мобильного сайта
@@ -140,7 +130,6 @@ class Cart {
         $data['productList'][$product->getId()] = (int)$quantity;
 
         $this->storage->set($this->sessionName, $data);
-        $this->clearEmpty();
 
         // новый формат
         $data = $this->storage->get($this->sessionNameNC);
@@ -400,7 +389,6 @@ class Cart {
         ];
 
         $this->storage->set($this->sessionName, $data);
-        $this->clearEmpty();
     }
 
     /**
@@ -521,47 +509,6 @@ class Cart {
     }
 
     /**
-     * @param \Model\Cart\Blackcard\Entity $blackcard
-     */
-    public function setBlackcard(\Model\Cart\Blackcard\Entity $blackcard) {
-        $this->clearBlackcards(); // возможно активировать только одну черную карту
-
-        $data = $this->storage->get($this->sessionName);
-        $data['blackcardList'][] = [
-            'number' => $blackcard->getNumber(),
-        ];
-        $this->blackcards[] = $blackcard;
-
-        $this->fill();
-
-        $this->storage->set($this->sessionName, $data);
-    }
-
-    public function clearBlackcards() {
-        $data = $this->storage->get($this->sessionName);
-        $data['blackcardList'] = [];
-        $this->blackcards = [];
-
-        $this->fill();
-
-        $this->storage->set($this->sessionName, $data);
-    }
-
-    /**
-     * @return \Model\Cart\Blackcard\Entity[]
-     */
-    public function getBlackcards() {
-        if (null === $this->blackcards) {
-            $data = $this->storage->get($this->sessionName);
-            foreach ($data['blackcardList'] as $blackcardData) {
-                $this->blackcards[$blackcardData['number']] = new \Model\Cart\Blackcard\Entity($blackcardData);
-            }
-        }
-
-        return $this->blackcards ?: [];
-    }
-
-    /**
      * Костылище для ядра
      *
      * @param array $newActionData
@@ -628,7 +575,6 @@ class Cart {
             'product_list'   => [],
             'card_f1_list'   => [],
             'coupon_list'    => [],
-            'blackcard_list' => [],
             'price_total'    => 0,
         ];
 
@@ -637,17 +583,6 @@ class Cart {
 
             // если в корзине есть товары или услуги
             if ((bool)$this->getProductsQuantity()) {
-                // сертификат
-                $certificates = $this->getCertificates();
-                $certificate = is_array($certificates) ? reset($certificates) : null;
-
-                // купоны
-                $coupons = $this->getCoupons();
-                $coupon = is_array($coupons) ? reset($coupons) : null;
-
-                // черные карты
-                $blackcards = $this->getBlackcards();
-                $blackcard = is_array($blackcards) ? reset($blackcards) : null;
 
                 \App::coreClientV2()->addQuery(
                     'cart/get-price',
@@ -675,62 +610,11 @@ class Cart {
             $this->setActionData((array)$response['action_list']);
         }
 
-        $this->certificates = [];
-        if (array_key_exists('card_f1_list', $response)) {
-            foreach ($response['card_f1_list'] as $certificateData) {
-                $this->certificates[$certificateData['number']] = new \Model\Cart\Certificate\Entity($certificateData);
-            }
-        }
-
-        $this->coupons = [];
-        if (array_key_exists('coupon_list', $response)) {
-            foreach ($response['coupon_list'] as $couponData) {
-                if (isset($couponData['error']) && (bool)$couponData['error']) {
-                    \App::logger()->error($couponData['error'], ['cart']);
-                }
-                $this->coupons[$couponData['number']] = new \Model\Cart\Coupon\Entity($couponData);
-            }
-        }
-
-        /*
-        $this->blackcards = [];
-        if (array_key_exists('blackcard_list', $response)) {
-            foreach ($response['blackcard_list'] as $blackcardData) {
-                if (isset($blackcardData['error']) && (bool)$blackcardData['error']) {
-                    \App::logger()->error($blackcardData['error'], ['cart']);
-                }
-                $this->blackcards[$blackcardData['number']] = new \Model\Cart\Blackcard\Entity($blackcardData);
-            }
-        }
-        */
-
         $this->products = [];
         if (array_key_exists('product_list', $response)) {
             foreach ($response['product_list'] as $productData) {
                 $this->products[$productData['id']] = new \Model\Cart\Product\Entity($productData);
             }
         }
-    }
-
-    /**
-     * Удаляет товары, услуги и гарантии с нулевым количеством
-     */
-    private function clearEmpty() {
-        $data = $this->storage->get($this->sessionName);
-
-        // товары
-        foreach ($data['productList'] as $productId => $quantity) {
-            if (!$quantity) {
-                unset($data['productList'][$productId]);
-            }
-        }
-
-        // товары, оплачиваемые через PayPal
-        $item = reset($data['paypalProduct']);
-        if (isset($item['quantity']) && !$item['quantity']) {
-            $data['paypalProduct'] = [];
-        }
-
-        $this->storage->set($this->sessionName, $data);
     }
 }

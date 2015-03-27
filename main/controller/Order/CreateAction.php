@@ -65,9 +65,6 @@ class CreateAction {
                 // если заказ разбился более чем на один подзаказ, то ...
                 if (count($form->getPart()) > 1) {
                     // очищаем данные купона
-                    $cart->clearCoupons();
-                    $cart->fill();
-
                     $responseData['action']['alert'] = [
                         'message' => 'Не удалось применить скидку. Свяжитесь с оператором Контакт-cENTER ' . \App::config()->company['phone'],
                         'cancel'  => false,

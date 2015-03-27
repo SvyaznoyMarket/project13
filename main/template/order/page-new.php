@@ -252,7 +252,7 @@ foreach ($productsById as $product) {
 	<!-- /Delivery boxes --> 
 	
 	<? if (!$oneClick && !$onlyPartnersProducts): ?>
-	    <? if (\App::config()->coupon['enabled'] || \App::config()->blackcard['enabled']): ?>
+	    <? if (\App::config()->coupon['enabled']): ?>
 		<!-- Sale section -->
 		<div class="bBuyingLineWrap bBuyingSale clearfix" data-bind="visible: deliveryBoxes().length == 1 && !/svyaznoy/.test(deliveryBoxes()[0].state) && !$root.lifeGift(), ">
 			<div class="bBuyingLine clearfix">
@@ -260,9 +260,6 @@ foreach ($productsById as $product) {
 					<h2 class="bBuyingSteps__eTitle">
 						Скидки
 					</h2>
-
-	                <? if (\App::config()->blackcard['enabled']): ?> карта Enter SPA <? endif ?>
-	                <? if (\App::config()->coupon['enabled'] && \App::config()->blackcard['enabled']): ?> или<? endif ?>
 	                <? if (\App::config()->coupon['enabled']): ?> Код фишки, купон, промокод <? endif ?>
 				</div>
 
@@ -279,12 +276,6 @@ foreach ($productsById as $product) {
 							</li>
 	                        <? endif ?>
 
-	                        <? if (\App::config()->blackcard['enabled']): ?>
-							<li class="bSaleList__eItem mEnterSpa" data-type="blackcard">
-								<input value="<?= $page->url('cart.blackcard.apply') ?>" class="jsCustomRadio bCustomInput mCustomRadioBig" type="radio" id="black_card" name="add_sale" data-bind="checked: couponUrl" />
-								<label class="bCustomLabel mCustomLabelRadioBig" for="black_card">Enter Spa</label>
-							</li>
-	                        <? endif ?>
 						</ul>
 
 						<input class="bBuyingLine__eText mSaleInput" type="text" id="coupon_number" data-bind="value: couponNumber, valueUpdate: 'afterkeydown', disable: couponsBox().length " />

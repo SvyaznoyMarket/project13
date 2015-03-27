@@ -44,7 +44,6 @@ class Action {
 
                 $cartProducts = \App::user()->getOneClickCart()->getProducts();
                 $coupons = [];
-                $blackcards = [];
             } else if (true === $paypalECS) {
                 $cartProduct = $cart->getPaypalProduct();
                 if ($cartProduct) {
@@ -55,7 +54,6 @@ class Action {
 
                 $cartProducts = $cartProduct ? [$cartProduct] : [];
                 $coupons = [];
-                $blackcards = [];
             } else if (true === $lifeGift) {
                 $region = new \Model\Region\Entity(['id' => \App::config()->lifeGift['regionId']]); // TODO: осторожно, говонокодистое место
 
@@ -65,11 +63,9 @@ class Action {
 
                 $cartProducts = \App::user()->getLifeGiftCart()->getProducts();
                 $coupons = [];
-                $blackcards = [];
             } else {
                 $cartProducts = $cart->getProducts();
                 $coupons = $cart->getCoupons();
-                $blackcards = $cart->getBlackcards();
             }
 
             // проверка на пустую корзину
@@ -81,13 +77,6 @@ class Action {
             $couponData = (\App::config()->coupon['enabled'] && ($coupon = reset($coupons)))
                 ? [
                     ['number' => $coupon->getNumber()],
-                ]
-                : [];
-
-            // черные карты
-            $blackcardData = (\App::config()->blackcard['enabled'] && ($blackcard = reset($blackcards)))
-                ? [
-                    ['number' => $blackcard->getNumber()],
                 ]
                 : [];
 
@@ -106,7 +95,6 @@ class Action {
                         ];
                     }, $cartProducts),
                     'coupon_list'    => $couponData,
-                    'blackcard_list' => $blackcardData,
                 ],
                 function($data) use (&$result, &$shops) {
                     $result = $data;
@@ -121,20 +109,6 @@ class Action {
 
             if ($exception instanceof \Exception) {
                 throw $exception;
-            }
-
-            if (!($paypalECS || $lifeGift) && \App::config()->blackcard['enabled'] && array_key_exists('blackcard_list', $result)) {
-                foreach ($result['blackcard_list'] as $blackcardItem) {
-                    $blackcardItem = array_merge([
-                        'number'       => null,
-                        'name'         => 'Карта',
-                        'discount_sum' => 0,
-                    ], (array)$blackcardItem);
-
-                    $blackcard = new \Model\Cart\Blackcard\Entity($blackcardItem);
-                    $cart->clearBlackcards();
-                    $cart->setBlackcard($blackcard);
-                }
             }
 
             if (array_key_exists('action_list', $result) && !empty($result['action_list'])) {
@@ -491,19 +465,6 @@ class Action {
                         'sum'       => $coupon->getDiscountSum(),
                         'error'     => $coupon->getError() ? ['code' => $coupon->getError()->getCode(), 'message' => \Model\Cart\Coupon\Entity::getErrorMessage($coupon->getError()->getCode()) ?: 'Не удалось активировать купон'] : null,
                         'deleteUrl' => $router->generate('cart.coupon.delete'),
-                    ];
-                }
-            }
-
-            // черные карты
-            if (!($paypalECS || $lifeGift || $oneClick)) {
-                foreach ($cart->getBlackcards() as $blackcard) {
-                    $responseData['discounts'][] = [
-                        'type'      => 'blackcard',
-                        'name'      => $blackcard->getName(),
-                        'sum'       => $blackcard->getDiscountSum(),
-                        'error'     => $blackcard->getError() ? ['code' => $blackcard->getError()->getCode(), 'message' => \Model\Cart\Blackcard\Entity::getErrorMessage($blackcard->getError()->getCode()) ?: 'Не удалось активировать карту'] : null,
-                        'deleteUrl' => $router->generate('cart.blackcard.delete'),
                     ];
                 }
             }

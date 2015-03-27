@@ -479,14 +479,6 @@ return [
         'pattern' => '/cart/coupon/delete',
         'action'  => ['Cart\CouponAction', 'delete'],
     ],
-    'cart.blackcard.apply' => [
-        'pattern' => '/cart/blackcard',
-        'action'  => ['Cart\BlackcardAction', 'apply'],
-    ],
-    'cart.blackcard.delete' => [
-        'pattern' => '/cart/blackcard/delete',
-        'action'  => ['Cart\BlackcardAction', 'delete'],
-    ],
     'cart.sum' => [
         'pattern' => '/cart/sum',
         'action'  => ['Cart\SumAction', 'execute'],

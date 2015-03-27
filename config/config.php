@@ -382,7 +382,6 @@ $c->payment['blockedIds'] = [];
 
 $c->f1Certificate['enabled'] = true;
 $c->coupon['enabled'] = true;
-$c->blackcard['enabled'] = false;
 
 $c->user['corporateRegister'] = true;
 $c->user['defaultRoute'] = 'user.recommend';
