@@ -21,11 +21,11 @@ $f = function(
 <? foreach ($orders as $order): ?>
 <div class="orderOneClick jsOneClickCompletePage" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>">
 
-    <div id="jsOrderV3OneClickOrder" data-url="<?= $helper->url('orderV3OneClick.get', ['accessToken' => $order->getAccessToken()]) ?>"></div>
+
 
 	<div class="orderU_fldsbottom ta-c orderOneClick_cmpl">
-    	<p class="orderOneClick_cmpl_t">Оформлен заказ <?= $order->getNumber() ?></p>
-    	<p class="orderOneClick_recall" style="margin-bottom: 20px;">Наш сотрудник позвонит Вам для уточнения деталей<br/> и зарегистрирует заказ.</p>
+    	<p class="orderOneClick_cmpl_t">Оформлен заказ № <?= $order->getNumber() ?></p>
+    	<p class="orderOneClick_recall" style="margin-bottom: 20px;">Наш сотрудник позвонит Вам для уточнения деталей заказа.</p>
     </div>
 
     <? if ($ordersPayment[$order->getNumber()] && array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $ordersPayment[$order->getNumber()]->groups)) : ?>
