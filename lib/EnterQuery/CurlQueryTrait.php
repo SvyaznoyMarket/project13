@@ -55,7 +55,7 @@ trait CurlQueryTrait
         }
 
         $timeout = \App::config()->coreV2['timeout'] * 1000; // таймаут, мс
-        $timeout *= (int)$timeoutRatio;
+        $timeout = intval($timeout * $timeoutRatio);
         // ограничение таймаута
         if (!$timeout || $timeout > 90000) {
             $timeout = 5000;
