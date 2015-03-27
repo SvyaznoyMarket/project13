@@ -1,0 +1,8 @@
+{
+  "name": "enter/project13",
+  "description": "www.enter.ru",
+  "require": {
+    "mustache/mustache": "v2.7.0",
+    "mobiledetect/mobiledetectlib": "2.8.12"
+  }
+}

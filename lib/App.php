@@ -556,8 +556,6 @@ class App {
         static $instance;
 
         if (!$instance) {
-            require \App::config()->appDir . '/vendor/mustache/src/Mustache/Autoloader.php';
-            Mustache_Autoloader::register(\App::config()->appDir . '/vendor/mustache/src');
             $instance = new Mustache_Engine([
                 'template_class_prefix' => preg_replace('/[^\w]/', '_', \App::$config->mainHost . '-'),
                 'cache'                 => (sys_get_temp_dir() ?: '/tmp') . '/mustache-cache',

@@ -26,14 +26,6 @@ class MobileRedirectAction {
             return null;
         }
 
-        $classFile = $config->appDir . '/vendor/Mobile-Detect/Mobile_Detect.php';
-        if (!file_exists($classFile)) {
-            \App::logger()->error('Класс Mobile_Detect не найден', ['mobile']);
-
-            return null;
-        }
-        include_once $classFile;
-
         $mobileDetect = new \Mobile_Detect();
         if (!$mobileDetect->isMobile()) {
             return null;

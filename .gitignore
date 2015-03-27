@@ -11,7 +11,7 @@
 /lib/filter/doctrine/base/*
 /lib/form/doctrine/base/*
 /lib/model/doctrine/base/*
-/config/databases.yml
+/vendor
 /web/xml/*
 /web/sitemap*
 /web/pdf/*
