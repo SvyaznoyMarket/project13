@@ -43,7 +43,6 @@ class Action {
                 $responseData['oneClick'] = true;
 
                 $cartProducts = \App::user()->getOneClickCart()->getProducts();
-                $coupons = [];
             }  else if (true === $lifeGift) {
                 $region = new \Model\Region\Entity(['id' => \App::config()->lifeGift['regionId']]); // TODO: осторожно, говонокодистое место
 
@@ -52,23 +51,14 @@ class Action {
                 $responseData['lifeGift'] = true;
 
                 $cartProducts = \App::user()->getLifeGiftCart()->getProducts();
-                $coupons = [];
             } else {
                 $cartProducts = $cart->getProducts();
-                $coupons = $cart->getCoupons();
             }
 
             // проверка на пустую корзину
             if (!(bool)$cartProducts) {
                 throw new \Exception('Корзина пустая');
             }
-
-            // купоны
-            $couponData = (\App::config()->coupon['enabled'] && ($coupon = reset($coupons)))
-                ? [
-                    ['number' => $coupon->getNumber()],
-                ]
-                : [];
 
             $result = null;
             $exception = null;
@@ -84,7 +74,6 @@ class Action {
                             'quantity' => $cartProduct->getQuantity(),
                         ];
                     }, $cartProducts),
-                    'coupon_list'    => $couponData,
                 ],
                 function($data) use (&$result, &$shops) {
                     $result = $data;
@@ -443,19 +432,6 @@ class Action {
 
                         return \Util\Geo::distance($a['latitude'], $a['longitude'], $region->getLatitude(), $region->getLongitude()) > \Util\Geo::distance($b['latitude'], $b['longitude'], $region->getLatitude(), $region->getLongitude());
                     });
-                }
-            }
-
-            // купоны
-            if (!($paypalECS || $lifeGift || $oneClick)) {
-                foreach ($cart->getCoupons() as $coupon) {
-                    $responseData['discounts'][] = [
-                        'type'      => 'coupon',
-                        'name'      => $coupon->getName(),
-                        'sum'       => $coupon->getDiscountSum(),
-                        'error'     => $coupon->getError() ? ['code' => $coupon->getError()->getCode(), 'message' => \Model\Cart\Coupon\Entity::getErrorMessage($coupon->getError()->getCode()) ?: 'Не удалось активировать купон'] : null,
-                        'deleteUrl' => $router->generate('cart.coupon.delete'),
-                    ];
                 }
             }
 

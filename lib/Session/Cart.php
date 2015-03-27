@@ -12,8 +12,6 @@ class Cart {
     private $storage;
     /** @var \Model\Cart\Product\Entity[]|null */
     private $products = null;
-    /** @var \Model\Cart\Coupon\Entity[] */
-    private $coupons = null;
     /** @var array */
     private $actions = null;
     /** @var int */
@@ -34,7 +32,6 @@ class Cart {
         if (empty($session[$this->sessionName])) {
             $this->storage->set($this->sessionName, [
                 'productList'     => [],
-                'couponList'      => [],
                 'actionData'      => [],
             ]);
             return;
@@ -43,12 +40,6 @@ class Cart {
         if (!array_key_exists('productList', $session[$this->sessionName])) {
             $data = $this->storage->get($this->sessionName);
             $data['productList'] = [];
-            $this->storage->set($this->sessionName, $data);
-        }
-
-        if (!array_key_exists('couponList', $session[$this->sessionName])) {
-            $data = $this->storage->get($this->sessionName);
-            $data['couponList'] = [];
             $this->storage->set($this->sessionName, $data);
         }
 
@@ -87,10 +78,9 @@ class Cart {
         $this->storage->set($this->sessionName, null);
         $this->sum = null;
         $this->products = null;
-        $this->coupons = null;
         $this->actions = null;
 
-        // MSITE-78 для мобильного сайта
+        // Для мобильного сайта
         $this->storage->set('cart', null);
     }
 
@@ -368,56 +358,6 @@ class Cart {
     }
 
     /**
-     * @param \Model\Cart\Coupon\Entity $coupon
-     */
-    public function setCoupon(\Model\Cart\Coupon\Entity $coupon) {
-        $this->clearCoupons(); // возможно активировать только один купон
-
-        $data = $this->storage->get($this->sessionName);
-        $data['couponList'][] = [
-            'number' => $coupon->getNumber(),
-        ];
-        $this->coupons[] = $coupon;
-
-        $this->fill();
-
-        $this->storage->set($this->sessionName, $data);
-    }
-
-    public function clearCoupons() {
-        $data = $this->storage->get($this->sessionName);
-        $data['couponList'] = [];
-
-        if (is_array($data['actionData'])) {
-            foreach ($data['actionData'] as $key => $actionDataItem) {
-                if (isset($actionDataItem['type']) && $actionDataItem['type'] === 'coupon') {
-                    unset($data['actionData'][$key]);
-                }
-            }
-
-            $data['actionData'] = array_values($data['actionData']);
-        }
-
-        $this->coupons = null;
-        $this->storage->set($this->sessionName, $data);
-        $this->fill();
-    }
-
-    /**
-     * @return \Model\Cart\Coupon\Entity[]
-     */
-    public function getCoupons() {
-        if (null === $this->coupons) {
-            $data = $this->storage->get($this->sessionName);
-            foreach ($data['couponList'] as $couponData) {
-                $this->coupons[$couponData['number']] = new \Model\Cart\Coupon\Entity($couponData);
-            }
-        }
-
-        return $this->coupons ?: [];
-    }
-
-    /**
      * Костылище для ядра
      *
      * @param array $newActionData
@@ -482,8 +422,6 @@ class Cart {
         // получаем список цен
         $default = [
             'product_list'   => [],
-            'card_f1_list'   => [],
-            'coupon_list'    => [],
             'price_total'    => 0,
         ];
 

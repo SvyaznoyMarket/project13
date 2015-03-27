@@ -60,25 +60,6 @@ class CreateAction {
                 throw new \Exception('Форма заполнена неверно');
             }
 
-            $cartCoupons = $cart->getCoupons();
-            if (\App::config()->coupon['enabled'] && (bool)$cartCoupons) {
-                // если заказ разбился более чем на один подзаказ, то ...
-                if (count($form->getPart()) > 1) {
-                    // очищаем данные купона
-                    $responseData['action']['alert'] = [
-                        'message' => 'Не удалось применить скидку. Свяжитесь с оператором Контакт-cENTER ' . \App::config()->company['phone'],
-                        'cancel'  => false,
-                    ];
-                } else {
-                    // если всё ок, то применяем купон и запоминаем его номер
-                    /** @var $couponEntity \Model\Cart\Coupon\Entity **/
-                    $couponEntity = reset($cartCoupons);
-                    if ($couponEntity && !$couponEntity->getError()) {
-                        $form->setCouponNumber($couponEntity->getNumber());
-                    }
-                }
-            }
-
             // TODO: прибавить к cartSum стоимость доставки
             $cartSum = $user->getCart()->getSum();
             if ($form->getPaymentMethodId() && ($cartSum > \App::config()->order['maxSumOnline']) && in_array($form->getPaymentMethodId(), [\Model\PaymentMethod\Entity::QIWI_ID, \Model\PaymentMethod\Entity::WEBMONEY_ID])) {

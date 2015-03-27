@@ -381,7 +381,6 @@ $c->payment['paypalECS'] = false;
 $c->payment['blockedIds'] = [];
 
 $c->f1Certificate['enabled'] = true;
-$c->coupon['enabled'] = true;
 
 $c->user['corporateRegister'] = true;
 $c->user['defaultRoute'] = 'user.recommend';

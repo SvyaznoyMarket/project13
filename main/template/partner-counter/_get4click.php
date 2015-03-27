@@ -23,19 +23,6 @@ $params['_orderValue'] = $order->getPaySum();
 $params['_orderCurrency'] = 'RUB';
 //$params['_usedPromoCode'] = 'CVB4560981'; // код использованной скидки
 
-$coupons = $user->getCart()->getCoupons();
-$coupon = is_array($coupons) ? reset($coupons) : null;
-
-if (\App::config()->coupon['enabled'] && $coupon instanceof \Model\Cart\Coupon\Entity) {
-    // Установим код использованной скидки:
-    $params['_usedPromoCode'] = $coupon->getNumber();
-}
-
-
-
-
-
-
 // Если юзер почему-то безымянный, то обратимся как "Уважаемый Покупатель"
 if ( empty($params['_customerFirstName']) ) {
     $params['_customerFirstName'] = 'Покупатель';
