@@ -229,6 +229,8 @@ class Repository {
                 ],
                 [],
                 function($data) use(&$collection, $entityClass, $i) {
+                    if (!is_array($data)) return;
+
                     foreach ($data as $item) {
                         $collection[$i][] = new $entityClass($item);
                     }
