@@ -231,10 +231,6 @@ class CreateAction {
 
                 $orderData['product'][] = $productData;
 
-                // скидки
-                //$orderData['action'] = (array)$user->getCart()->getActionData();
-                $orderData['action'] = [];
-
                 // мета-теги
                 if (\App::config()->order['enableMetaTag'] && !$bMeta) {
                     try {

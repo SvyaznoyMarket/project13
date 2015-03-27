@@ -32,9 +32,6 @@ class DeliveryAction {
      * @return array
      */
     public function getResponseData($paypalECS = false, $lifeGift = false, $oneClick = false) {
-        if (\App::config()->newDeliveryCalc) {
-            return (new \Controller\Delivery\Action())->getResponseData($paypalECS, $lifeGift, $oneClick);
-        }
 
         $router = \App::router();
         $client = \App::coreClientV2();

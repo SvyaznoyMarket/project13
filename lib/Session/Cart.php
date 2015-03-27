@@ -32,7 +32,6 @@ class Cart {
         if (empty($session[$this->sessionName])) {
             $this->storage->set($this->sessionName, [
                 'productList'     => [],
-                'actionData'      => [],
             ]);
             return;
         }
@@ -40,12 +39,6 @@ class Cart {
         if (!array_key_exists('productList', $session[$this->sessionName])) {
             $data = $this->storage->get($this->sessionName);
             $data['productList'] = [];
-            $this->storage->set($this->sessionName, $data);
-        }
-
-        if (!array_key_exists('actionData', $session[$this->sessionName])) {
-            $data = $this->storage->get($this->sessionName);
-            $data['actionData'] = [];
             $this->storage->set($this->sessionName, $data);
         }
 
@@ -234,15 +227,6 @@ class Cart {
         return $ids;
     }
 
-    public function shiftProduct() {
-        $data = $this->storage->get($this->sessionName);
-        reset($data['productList']);
-
-        $key = key($data['productList']);
-        unset($data['productList'][$key]);
-        $this->storage->set($this->sessionName, $data);
-    }
-
     /**
      * @param int $productId
      * @return int
@@ -256,31 +240,6 @@ class Cart {
         }
 
         return 0;
-    }
-
-    /** Возвращает количество продуктов и сервисов
-     * @return int
-     */
-    public function count() {
-        $count = 0;
-        $data = $this->getData();
-        foreach ($data['productList'] as $quantity) {
-            $count += $quantity;
-        }
-
-        return $count;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTotalProductPrice() {
-        $price = 0;
-        foreach ($this->getProducts() as $product) {
-            $price += $product->getSum();
-        }
-
-        return $price;
     }
 
     /**
@@ -357,67 +316,6 @@ class Cart {
         return $return;
     }
 
-    /**
-     * Костылище для ядра
-     *
-     * @param array $newActionData
-     */
-    public function setActionData(array $newActionData) {
-        try {
-            $data = $this->storage->get($this->sessionName);
-            \App::logger()->info(['action' => __METHOD__,  'cart.actionData' => $data['actionData']], ['cart']);
-
-            $actionDataCopy = $data['actionData'];
-            foreach ($newActionData as $newActionDataItem) {
-                if (!isset($newActionDataItem['id'])) {
-                    continue;
-                }
-
-                if (!isset($newActionDataItem['product_list'])) {
-                    $newActionDataItem['product_list'] = [];
-                }
-
-                foreach ($actionDataCopy as $i => $actionDataCopyItem) {
-                    if (isset($actionDataCopyItem['id']) && $actionDataCopyItem['id'] === $newActionDataItem['id']) {
-                        unset($data['actionData'][$i]);
-                    }
-                }
-
-                $data['actionData'][] = $newActionDataItem;
-            }
-
-            $data['actionData'] = array_values($data['actionData']);
-            $this->actions = $data['actionData'];
-
-            \App::logger()->info(['action' => __METHOD__, 'cart.actionData' => $data['actionData']], ['cart']);
-
-            $this->storage->set($this->sessionName, $data);
-        } catch(\Exception $e) {
-            \App::logger()->error(['message' => $e->getMessage(), 'action' => __METHOD__], ['cart']);
-        }
-    }
-
-    /**
-     * @return array
-     */
-    public function getActionData() {
-        $data = $this->storage->get($this->sessionName);
-
-        if (!empty($data['actionData'])) {
-            $this->actions = $data['actionData'];
-        } elseif (null === $this->actions) {
-            $this->fill();
-        }
-
-        return $this->actions ?: [];
-    }
-
-    public function clearActionData() {
-        $data = $this->storage->get($this->sessionName);
-        $data['actionData'] = [];
-        $this->storage->set($this->sessionName, $data);
-    }
-
     public function fill() {
         // получаем список цен
         $default = [
@@ -452,10 +350,6 @@ class Cart {
 
         $this->sum = array_key_exists('sum', $response) ? $response['sum'] : 0;
         $this->originalSum = array_key_exists('original_sum', $response) ? $response['original_sum'] : 0;
-
-        if (array_key_exists('action_list', $response)) {
-            $this->setActionData((array)$response['action_list']);
-        }
 
         $this->products = [];
         if (array_key_exists('product_list', $response)) {

@@ -269,9 +269,6 @@ class CreateAction {
                     continue;
                 }
 
-                // скидки
-                $orderData['action'] = (array)$user->getCart()->getActionData();
-
                 // мета-теги
                 if (\App::config()->order['enableMetaTag'] && !$bMeta) {
                     try {
