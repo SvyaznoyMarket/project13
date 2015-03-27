@@ -4500,6 +4500,7 @@ img[height="0"] {
     display: block;
     position: relative;
     overflow: hidden;
+    max-height: 40px;
   }
   .table-cart__name-inn:after {
     content: '';
