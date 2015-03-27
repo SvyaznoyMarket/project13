@@ -9777,6 +9777,7 @@ img[height="0"] {
   .orderOneClick_cmpl_t {
     font-size: 30px;
     margin-bottom: 15px;
+    margin-top: 0px;
   }
   .orderOneClick_cmpl .orderCompl_btn {
     display: inline-block;
@@ -9794,8 +9795,9 @@ img[height="0"] {
     font-size: 14px;
   }
   .orderOneClick .orderOneClick_cmpl.orderU_fldsbottom {
-    padding-top: 10px;
+    padding-top: 0px;
     font-size: 20px;
+    text-align: left;
   }
   .orderOneClick .orderU_flds {
     display: block;
@@ -9932,6 +9934,18 @@ img[height="0"] {
     border-top: 1px solid #e6e6e6;
     cursor: default;
     font-weight: bold;
+  }
+  .orderOneClick .orderPayment.orderPaymentWeb .orderPayment_block {
+    border-color: #fff;
+  }
+  .orderOneClick .orderCnt {
+    padding-bottom: 0px;
+  }
+  .orderOneClick .orderPayment {
+    margin-left: -25px;
+  }
+  .orderOneClick .orderPayment_block {
+    padding-bottom: 0px;
   }
 }
 @media all {
