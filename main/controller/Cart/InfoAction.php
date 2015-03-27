@@ -35,12 +35,6 @@ class InfoAction {
             $data['product'][$cartProduct->getId()] = $productData;
         }
 
-        foreach ($cart->getCertificates() as $certificate) {
-            $data['certificate'][$certificate->getNumber()] = [
-                'number' => $certificate->getNumber(),
-            ];
-        }
-
         return new \Http\JsonResponse($data);
     }
 }

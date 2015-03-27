@@ -12,8 +12,6 @@ class Cart {
     private $storage;
     /** @var \Model\Cart\Product\Entity[]|null */
     private $products = null;
-    /** @var \Model\Cart\Certificate\Entity[] */
-    private $certificates = null;
     /** @var \Model\Cart\Coupon\Entity[] */
     private $coupons = null;
     /** @var array */
@@ -36,7 +34,6 @@ class Cart {
         if (empty($session[$this->sessionName])) {
             $this->storage->set($this->sessionName, [
                 'productList'     => [],
-                'certificateList' => [],
                 'couponList'      => [],
                 'actionData'      => [],
             ]);
@@ -46,12 +43,6 @@ class Cart {
         if (!array_key_exists('productList', $session[$this->sessionName])) {
             $data = $this->storage->get($this->sessionName);
             $data['productList'] = [];
-            $this->storage->set($this->sessionName, $data);
-        }
-
-        if (!array_key_exists('certificateList', $session[$this->sessionName])) {
-            $data = $this->storage->get($this->sessionName);
-            $data['certificateList'] = [];
             $this->storage->set($this->sessionName, $data);
         }
 
@@ -96,7 +87,6 @@ class Cart {
         $this->storage->set($this->sessionName, null);
         $this->sum = null;
         $this->products = null;
-        $this->certificates = null;
         $this->coupons = null;
         $this->actions = null;
 
@@ -375,47 +365,6 @@ class Cart {
         }
 
         return $return;
-    }
-
-    /**
-     * @param \Model\Cart\Certificate\Entity $certificate
-     */
-    public function setCertificate(\Model\Cart\Certificate\Entity $certificate) {
-        $this->clearCertificates(); // возможно активировать только один сертификат
-
-        $data = $this->storage->get($this->sessionName);
-        $data['certificateList'][] = [
-            'number' => $certificate->getNumber(),
-        ];
-        $this->certificates[] = $certificate;
-
-        $this->fill();
-
-        $this->storage->set($this->sessionName, $data);
-    }
-
-    public function clearCertificates() {
-        $data = $this->storage->get($this->sessionName);
-        $data['certificateList'] = [];
-        $this->certificates = null;
-
-        $this->fill();
-
-        $this->storage->set($this->sessionName, $data);
-    }
-
-    /**
-     * @return \Model\Cart\Certificate\Entity[]
-     */
-    public function getCertificates() {
-        if (null === $this->certificates) {
-            $data = $this->storage->get($this->sessionName);
-            foreach ($data['certificateList'] as $certificateData) {
-                $this->certificates[$certificateData['number']] = new \Model\Cart\Certificate\Entity($certificateData);
-            }
-        }
-
-        return $this->certificates ?: [];
     }
 
     /**
