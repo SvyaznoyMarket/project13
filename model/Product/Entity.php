@@ -140,7 +140,7 @@ class Entity extends BasicEntity {
         $indexedPropertyGroups = [];
         foreach ($this->propertyGroup as $group) {
             if (!isset($this->groupedProperties[$group->getId()])) {
-                $this->groupedProperties[$group->getId()] = array('group' => $group, 'properties' => []);
+                $this->groupedProperties[$group->getId()] = ['group' => $group, 'properties' => []];
             }
 
             $indexedPropertyGroups[$group->getId()] = $group;
@@ -161,8 +161,7 @@ class Entity extends BasicEntity {
                     $this->mainProperties[] = $property;
                 }
             }
-        }
-        else {
+        } else {
             foreach ($this->property as $property) {
                 /** @var \Model\Product\Property\Entity $property */
                 $stringValue = $property->getStringValue();

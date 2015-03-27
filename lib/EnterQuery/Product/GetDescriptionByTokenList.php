@@ -2,35 +2,36 @@
 
 namespace EnterQuery\Product
 {
-    use EnterQuery\Product\GetDescriptionByUiList\Response;
+    use EnterQuery\Product\GetDescriptionByTokenList\Response;
 
-    class GetDescriptionByUiList
+    class GetDescriptionByTokenList
     {
         use \EnterQuery\CurlQueryTrait;
         use \EnterQuery\ScmsQueryTrait;
 
         /** @var string[] */
-        public $uis = [];
+        public $tokens = [];
         /** @var Response */
         public $response;
 
-        public function __construct(array $uis = [], $filter = null)
+        public function __construct(array $tokens = [], $filter = null)
         {
             $this->response = new Response();
 
-            $this->uis = $uis;
+            $this->tokens = $tokens;
         }
 
         /**
+         * @param \Exception $error
          * @return $this
          */
-        public function prepare()
+        public function prepare(\Exception &$error = null)
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
                     'product/get-description/v1',
                     [
-                        'uids'        => $this->uis,
+                        'slugs'       => $this->tokens,
                         'trustfactor' => true, // TODO: filter
                         'seo'         => true, // TODO: filter
                         'media'       => true, // TODO: filter
@@ -38,6 +39,7 @@ namespace EnterQuery\Product
                     ]
                 ),
                 [], // data
+                $error,
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode);
 
@@ -52,7 +54,7 @@ namespace EnterQuery\Product
     }
 }
 
-namespace EnterQuery\Product\GetDescriptionByUiList
+namespace EnterQuery\Product\GetDescriptionByTokenList
 {
     class Response
     {
