@@ -151,11 +151,6 @@ class CreateAction {
             $response->headers->setCookie($cookie);
         }
 
-        // очистка кеша
-        if ($responseData['success']) {
-            $user->setCacheCookie($response);
-        }
-
         return $response;
     }
 

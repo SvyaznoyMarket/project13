@@ -77,8 +77,6 @@ class AppConfig {
         'cookie_lifetime' => null,
         'cookie_domain'   => null,
     ];
-    /** @var string */
-    public $cacheCookieName = null;
     /** @var array */
     public $redirect301 = [
         'enabled' => null,

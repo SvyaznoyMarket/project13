@@ -119,11 +119,6 @@ class CreateAction {
             $response->headers->setCookie($cookie);
         }
 
-        // очистка кеша
-        if ($responseData['success']) {
-            $user->setCacheCookie($response);
-        }
-
         \App::logger()->info(['site.response' => $responseData], ['order', 'life-gift']);
 
         return $response;
@@ -265,15 +260,6 @@ class CreateAction {
                             $partners = [];
                             if ($partnerName = \App::partner()->getName()) {
                                 $partners[] = \App::partner()->getName();
-                            }
-                            foreach (\Controller\Product\BasicRecommendedAction::$recomendedPartners as $recomPartnerName) {
-                                if ($viewedAt = \App::user()->getRecommendedProductByParams($product->getId(), $recomPartnerName, 'viewed_at')) {
-                                    if ((time() - $viewedAt) <= 30 * 24 * 60 * 60) { // 30days
-                                        $partners[] = $recomPartnerName;
-                                    } else {
-                                        \App::user()->deleteRecommendedProductByParams($product->getId(), $recomPartnerName, 'viewed_at');
-                                    }
-                                }
                             }
                             $orderData['meta_data'] = \App::partner()->fabricateCompleteMeta(
                                 isset($orderData['meta_data']) ? $orderData['meta_data'] : [],

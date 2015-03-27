@@ -137,12 +137,6 @@ class ProductAction {
                 $response = new \Http\RedirectResponse($returnRedirect);
             }
 
-            if ($cart->getSum()) {
-                \Session\User::enableInfoCookie($response);
-            } else {
-//                \Session\User::disableInfoCookie($response); // SITE-3926
-            }
-
             return $response;
 
         } catch (\Exception $e) {
@@ -308,13 +302,6 @@ class ProductAction {
             ];
 
             $response = new \Http\JsonResponse($responseData);
-
-            if ($cart->getSum()) {
-                \Session\User::enableInfoCookie($response);
-            } else {
-                \Session\User::disableInfoCookie($response);
-            }
-
 
         } catch(\Exception $e) {
             $responseData = [
