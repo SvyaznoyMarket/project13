@@ -104,12 +104,7 @@ trait ResponseDataTrait {
            foreach (array_chunk(array_keys($productDataById), \App::config()->coreV2['chunk_size']) as $idsInChunk) {
                \RepositoryManager::product()->prepareCollectionById($idsInChunk, $region, function($data) use (&$productDataById, &$router, &$cart, &$quantitiesByProduct, &$responseData) {
                    foreach ($data as $item) {
-                       if ($responseData['paypalECS']) {
-                           $cartProduct = $cart->getPaypalProduct();
-                           if (!$cartProduct) continue;
-                           $setUrl = $router->generate('cart.paypal.product.set', ['productId' => $item['id'], 'quantity' => isset($quantitiesByProduct[$cartProduct->getId()]) ? $quantitiesByProduct[$cartProduct->getId()] : $cartProduct->getQuantity()]);
-                           $deleteUrl = $router->generate('cart.paypal.product.delete', ['productId' => $item['id']]);
-                       } else if ($responseData['lifeGift']) {
+                       if ($responseData['lifeGift']) {
                            $cartProduct = \App::user()->getLifeGiftCart()->getProductById($item['id']);
                            if (!$cartProduct) continue;
                            $setUrl = $router->generate('cart.lifeGift.product.set', ['productId' => $item['id'], 'quantity' => isset($quantitiesByProduct[$cartProduct->getId()]) ? $quantitiesByProduct[$cartProduct->getId()] : $cartProduct->getQuantity()]);
@@ -220,10 +215,7 @@ trait ResponseDataTrait {
         $cart = $this->getCart();
 
         if (!(bool)$this->productDataById) {
-            if ((true === $responseData['paypalECS']) && !$cart->getPaypalProduct()) {
-                $responseData['redirect'] = $router->generate('cart');
-                $message = 'Пустая корзина';
-            } else if ((true === $responseData['lifeGift']) && !(bool)\App::user()->getLifeGiftCart()->getProducts()) {
+            if ((true === $responseData['lifeGift']) && !(bool)\App::user()->getLifeGiftCart()->getProducts()) {
                 $responseData['redirect'] = $router->generate('homepage');
                 $message = 'Пустая корзина';
             } else if ((true === $responseData['oneClick']) && !(bool)\App::user()->getOneClickCart()->getProducts()) {

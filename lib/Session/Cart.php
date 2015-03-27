@@ -39,7 +39,6 @@ class Cart {
                 'certificateList' => [],
                 'couponList'      => [],
                 'actionData'      => [],
-                'paypalProduct'   => [],
             ]);
             return;
         }
@@ -65,12 +64,6 @@ class Cart {
         if (!array_key_exists('actionData', $session[$this->sessionName])) {
             $data = $this->storage->get($this->sessionName);
             $data['actionData'] = [];
-            $this->storage->set($this->sessionName, $data);
-        }
-
-        if (!array_key_exists('paypalProduct', $session[$this->sessionName])) {
-            $data = $this->storage->get($this->sessionName);
-            $data['paypalProduct'] = [];
             $this->storage->set($this->sessionName, $data);
         }
 
@@ -109,13 +102,6 @@ class Cart {
 
         // MSITE-78 для мобильного сайта
         $this->storage->set('cart', null);
-    }
-
-    public function clearPaypal() {
-        $data = $this->storage->get($this->sessionName);
-        $data['paypalProduct'] = [];
-
-        $this->storage->set($this->sessionName, $data);
     }
 
     /**
@@ -373,32 +359,6 @@ class Cart {
 
     public function getData() {
         return $this->storage->get($this->sessionName);
-    }
-
-    /**
-     * @param \Model\Cart\Product\Entity $product
-     */
-    public function setPaypalProduct(\Model\Cart\Product\Entity $product) {
-        $data = $this->storage->get($this->sessionName);
-        $data['paypalProduct'] = [];
-        $data['paypalProduct'][$product->getId()] = [
-            'id'          => $product->getId(),
-            'quantity'    => $product->getQuantity(),
-            'sum'         => $product->getSum(),
-            'deliverySum' => $product->getDeliverySum(),
-        ];
-
-        $this->storage->set($this->sessionName, $data);
-    }
-
-    /**
-     * @return \Model\Cart\Product\Entity|null
-     */
-    public function getPaypalProduct() {
-        $data = $this->storage->get($this->sessionName);
-        $item = reset($data['paypalProduct']);
-
-        return is_array($item) ? new \Model\Cart\Product\Entity($item) : null;
     }
 
     /**

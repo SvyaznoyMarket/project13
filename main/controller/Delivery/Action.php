@@ -44,17 +44,7 @@ class Action {
 
                 $cartProducts = \App::user()->getOneClickCart()->getProducts();
                 $coupons = [];
-            } else if (true === $paypalECS) {
-                $cartProduct = $cart->getPaypalProduct();
-                if ($cartProduct) {
-                    $responseData['cart']['sum'] = $cartProduct->getSum() + $cartProduct->getDeliverySum();
-                }
-
-                $responseData['paypalECS'] = true;
-
-                $cartProducts = $cartProduct ? [$cartProduct] : [];
-                $coupons = [];
-            } else if (true === $lifeGift) {
+            }  else if (true === $lifeGift) {
                 $region = new \Model\Region\Entity(['id' => \App::config()->lifeGift['regionId']]); // TODO: осторожно, говонокодистое место
 
                 $responseData['cart']['sum'] = \App::user()->getLifeGiftCart()->getSum();
