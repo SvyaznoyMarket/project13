@@ -31,10 +31,21 @@
         font-size: 20px;
         font-weight: bold;
         line-height: 32px;
-
         min-width: 220px;
         height: 40px;
         margin: 0 0 0 15px;
+
+        .orderOneClick &{
+            font-size: 15px;
+            font-weight: bold;
+            line-height: 29px;
+            height: 30px;
+            margin: 0px;
+            border: 1px solid #f09650;
+            .rounded(2px);
+            min-width: 0px;
+        }
+
     }
     &_continue_link{
         font-size: 18px;
@@ -94,10 +105,12 @@
  Оформление заказа: оплата
 ============================================================================*/
 .orderPayment{
+    width: 432px;
+    margin: 15px auto 10px;
     &_block{
         width: 380px;
-        margin: 30px auto 10px;
         padding: 20px 25px 20px;
+        margin: 15px auto 10px;
 
         border: 1px solid #ccc;
         &--border{
@@ -160,7 +173,7 @@
             &_addr{
                 margin-left: 0px;
             }
-            &.markerLst_row &_addr{
+            &.markerLst_row > &_addr{
                 margin-top:15px;
             }
         }
@@ -410,6 +423,20 @@
     margin-left:12px;
     border:1px solid @firmOrange;
     color: @firmOrange;
+    text-decoration: none;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 4px 13px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 2px;
+    &:hover{
+        text-decoration: none;
+    }
+}
+.btn-discount-red{
+    border:1px solid @red-1;
+    color: @red-1;
     text-decoration: none;
     display: inline-block;
     vertical-align: middle;

@@ -3,11 +3,10 @@
 
     var $body = $('body'),
         $popup = $('.jsRegionPopup'),
-        changeRegion, showPopup, initAutocomplete, changeRegionAction;
+        openRegionPopup, showPopup, initAutocomplete, changeRegionAction;
 
     // Wrapper показа окна
-    changeRegion = function changeRegionF(e){
-        e.preventDefault();
+    openRegionPopup = function openRegionPopupF(){
         if ($popup.length == 0) {
             $.get('/region/init')
                 .done(function (res) {
@@ -15,11 +14,11 @@
                         $popup = $(res.result);
                         $body.append($popup);
                         initAutocomplete($popup.find('#jscity'));
-                        showPopup($popup)
+                        showPopup()
                     }
                 });
         } else {
-            showPopup($popup);
+            showPopup();
         }
 
         // analytics only for main page
@@ -39,18 +38,68 @@
         });
     };
 
+	function isGeoshopCookieSet() {
+		return Boolean(parseInt(docCookies.getItem('geoshop')));
+	}
+
+	function queryAutocompleteVariants(term, onSuccess) {
+		$.ajax({
+			url: $popup.data('autocomplete-url'),
+			dataType: 'json',
+			data: {
+				q: term
+			},
+			success: function( data ) {
+				if (onSuccess) {
+					onSuccess(data.data.slice(0, 15));
+				}
+			}
+		});
+	}
+
     // Lightbox
-    showPopup = function showPopupF($elem) {
-        $elem.lightbox_me({
+    showPopup = function showPopupF() {
+		var
+			autoResolveUrl = $popup.data('autoresolve-url'),
+			$autoresolve = $('.jsAutoresolve', $popup);
+
+		if (autoResolveUrl != null && !$autoresolve.length) {
+			$.ajax({
+				type: 'GET',
+				url: autoResolveUrl,
+				success: function( res ) {
+					if (!res.data.length) {
+						$autoresolve.html('');
+						return false;
+					}
+
+					var url = res.data[0].url,
+						name = res.data[0].name,
+						id = res.data[0].id;
+
+					if (id === 14974 || id === 108136) {
+						return false;
+					}
+
+					if ($autoresolve.length) {
+						$autoresolve.html('<a href="' + url + '">' + name + '</a>');
+					}  else {
+						$('.jsCityInline', $popup).prepend('<div class="cityItem mAutoresolve jsAutoresolve"><a href="'+url+'">'+name+'</a></div>');
+					}
+
+				}
+			});
+		}
+
+		$popup.lightbox_me({
             autofocus: true,
             onLoad: function(){
                 $popup.find('#jscity').putCursorAtEnd();
             },
             onClose: function() {
-                var id = $popup.find('#jschangecity').data('region-id');
-                if ( !docCookies.hasItem('geoshop') ) {
-                    docCookies.setItem('geoshop', id, 31536e3, '/');
-                }
+				if (!isGeoshopCookieSet()) {
+					docCookies.setItem('geoshop', $popup.data('current-region-id'), 31536e3, '/');
+				}
             }
         })
     };
@@ -88,26 +137,13 @@
                 $(this).removeClass('ui-corner-top').addClass('ui-corner-all');
             }
         });
-
-        function queryAutocompleteVariants(term, onSuccess) {
-            $.ajax({
-                url: $elem.data('url-autocomplete'),
-                dataType: 'json',
-                data: {
-                    q: term
-                },
-                success: function( data ) {
-                    if (onSuccess) {
-                        onSuccess(data.data.slice(0, 15));
-                    }
-                }
-            });
-        }
-
     };
 
     // клик по названию региона в юзербаре
-    $body.on('click', '.jsChangeRegion', changeRegion);
+    $body.on('click', '.jsChangeRegion', function(e) {
+		e.preventDefault();
+		openRegionPopup();
+	});
 
     // полный список городов
     $body.on('click', '.jsRegionListMoreCity', function(e){
@@ -147,14 +183,26 @@
 
     // Клик по кнопке "Сохранить"
     $body.on('click', '#jschangecity', function submitCityHandler(e) {
+		e.preventDefault();
 
         var url = $(this).data('url'),
             inputRegion = $popup.find('#jscity'),
             regionName = inputRegion.val();
 
-        changeRegionAction(regionName, url);
+		if (url) {
+			changeRegionAction(regionName, url);
+		} else {
+			// SITE-5123
+			if (ENTER.utils.trim(inputRegion[0].defaultValue) != ENTER.utils.trim(regionName)) {
+				queryAutocompleteVariants(regionName, function(res) {
+					if (res[0] && res[0].url) {
+						location = res[0].url;
+					}
+				});
+			}
 
-        e.preventDefault();
+			$popup.trigger('close');
+		}
     });
 
     $body.on('click', '.jsChangeRegionLink', function(e){
@@ -162,4 +210,7 @@
         e.preventDefault();
     });
 
+	if (!isGeoshopCookieSet()) {
+		openRegionPopup();
+	}
 }(jQuery));

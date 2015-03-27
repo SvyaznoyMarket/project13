@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Model\PaymentMethod {
-
 
     use Model\PaymentMethod\PaymentGroup\PaymentGroupEntity;
     use Model\PaymentMethod\PaymentMethod\PaymentMethodEntity;
@@ -46,13 +44,15 @@ namespace Model\PaymentMethod {
          * @return bool
          */
         public function hasSvyaznoyClub() {
-            return (bool)$this->methods[PaymentMethodEntity::PAYMENT_SVYAZNOY_CLUB];
+            return
+                isset($this->methods[PaymentMethodEntity::PAYMENT_SVYAZNOY_CLUB])
+                ? (bool)$this->methods[PaymentMethodEntity::PAYMENT_SVYAZNOY_CLUB]
+                : false
+            ;
         }
 
         public function unsetSvyaznoyClub() {
             unset($this->methods[PaymentMethodEntity::PAYMENT_SVYAZNOY_CLUB]);
         }
-
     }
-
 }

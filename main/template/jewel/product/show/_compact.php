@@ -9,6 +9,10 @@
 
 <?
 $helper = new \Helper\TemplateHelper();
+if (!isset($addInfo)) {
+    $addInfo = [];
+}
+
 $disabled = !$product->getIsBuyable();
 $gaEvent = !empty($gaEvent) ? $gaEvent : null;
 $gaTitle = !empty($gaTitle) ? $gaTitle : null;

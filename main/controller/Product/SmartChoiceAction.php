@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Controller\Product;
 
 use \Http\JsonResponse,
@@ -56,6 +55,8 @@ class SmartChoiceAction {
             if (count($recommendedIds)) {
                 foreach ($recommendedIds as &$value) {
                     \RepositoryManager::product()->prepareCollectionById($value, $region, function ($data) use (&$value) {
+                        if (!is_array($data)) return;
+
                         foreach ($data as $key => &$product) {
                             $product = new ProductEntity($product);
                             if (!$product instanceof ProductEntity) continue;

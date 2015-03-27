@@ -133,7 +133,12 @@ class CompareAction {
                         'article' => $product->getArticle(),
                         'prefix' => $product->getPrefix(),
                         'webName' => $product->getWebName(),
-                        'link' => $product->getLink(),
+                        'link' => $product->getLink() . '?' . http_build_query([
+                            'sender' => [
+                                'name'      => 'Enter',
+                                'from'      => 'ComparePage'
+                            ]
+                        ]),
                         'price' => $templateHelper->formatPrice($product->getPrice()),
                         'priceOld' => $templateHelper->formatPrice($product->getPriceOld()),
                         'inShopStockOnly' => $product->isInShopStockOnly(),
@@ -155,6 +160,12 @@ class CompareAction {
                         'upsale' => json_encode([
                             'url' => \App::router()->generate('product.upsale', ['productId' => $product->getId()]),
                             'fromUpsale' => ($templateHelper->hasParam('from') && 'cart_rec' === $templateHelper->getParam('from')) ? true : false,
+                        ]),
+                        'sender' => json_encode([
+                            'sender' => [
+                                'name'      => 'Enter',
+                                'position'  => 'ComparePage'
+                            ]
                         ])
                     ];
                 }

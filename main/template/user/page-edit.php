@@ -115,10 +115,10 @@
 
             <p style="xs">Надежный пароль должен содержать от 6 до 16 знаков следующих трех видов: прописные буквы, строчные буквы, цифры или символы, но не должен включать широко распространенные слова и имена.</p>
             <label class="labeltext">Старый пароль:</label>
-            <input type="password" class="textfield personalData_text" name="password_old" />
+            <input type="password" class="textfield personalData_text" name="password_old" autocomplete="off" />
 
             <label class="labeltext">Новый пароль:</label>
-            <input type="password" class="textfield personalData_text" name="password_new" />
+            <input type="password" class="textfield personalData_text" name="password_new" autocomplete="off" />
 
             <!--<p style="xs">Внимание! После смены пароля Вам придет письмо и SMS с новым паролем</p>-->
         </fieldset>

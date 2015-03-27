@@ -1,30 +1,61 @@
 <?php
 
+use \Model\PaymentMethod\PaymentGroup\PaymentGroupEntity;
+
 /**
  * @param \Helper\TemplateHelper $helper
- * @param \Model\Order\CreatedEntity[] $orders
+ * @param \Model\Order\Entity[] $orders
+ * @param \Model\PaymentMethod\PaymentEntity[] $ordersPayment
+ * @return string
  */
 $f = function(
     \Helper\TemplateHelper $helper,
-    $orders
+    $orders,
+    $ordersPayment
 ) {
 
-    /** @var \Model\Order\CreatedEntity $order */
     $order = reset($orders) ?: null;
     if (!$order) return '';
 ?>
 
 <? foreach ($orders as $order): ?>
-<div class="orderOneClick jsOneClickCompletePage">
-    <span class="orderOneClick_t">Оформление завершено</span>
+<div class="orderOneClick jsOneClickCompletePage" data-order-id="<?= $order->getId() ?>" data-order-number="<?= $order->getNumber() ?>">
 
     <div id="jsOrderV3OneClickOrder" data-url="<?= $helper->url('orderV3OneClick.get', ['accessToken' => $order->getAccessToken()]) ?>"></div>
-	
+
 	<div class="orderU_fldsbottom ta-c orderOneClick_cmpl">
-    	<p class="orderOneClick_cmpl_t"><strong>Заявка</strong> <?= $order->getNumber() ?> <strong>оформлена!</strong></p>
-    	<p style="margin-bottom: 20px;">Наш сотрудник позвонит Вам для уточнения деталей<br/> и зарегистрирует заказ.</p>
-    	<a href="" class="orderCompl_btn btnsubmit jsOrderOneClickClose">Продолжить покупки</a>
+    	<p class="orderOneClick_cmpl_t">Оформлен заказ <?= $order->getNumber() ?></p>
+    	<p class="orderOneClick_recall" style="margin-bottom: 20px;">Наш сотрудник позвонит Вам для уточнения деталей<br/> и зарегистрирует заказ.</p>
     </div>
+
+    <? if ($ordersPayment[$order->getNumber()] && array_key_exists(PaymentGroupEntity::PAYMENT_NOW, $ordersPayment[$order->getNumber()]->groups)) : ?>
+
+        <?= $helper->render('order-v3-new/complete-blocks/_online-payments', [
+            'order' => $order,
+            'orderPayment' => $ordersPayment[$order->getNumber()],
+            'blockVisible' => false]) ?>
+
+        <!-- Блок оплата в два клика-->
+        <div class="orderPayment orderPaymentWeb jsOnlinePaymentPossible">
+            <div class="orderPayment_block orderPayment_noOnline">
+
+                <div class="orderPayment_msg orderPayment_noOnline_msg">
+                    <div class="orderPayment_msg_head">
+                        Онлайн-оплата в два клика
+                    </div>
+                    <div class="orderPayment_msg_shop orderPayment_pay">
+                        <button class="orderPayment_btn btn3">Оплатить</button>
+                        <ul class="orderPaymentWeb_lst-sm">
+                            <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src="/styles/order/img/visa-logo-sm.jpg"></a></li>
+                            <li class="orderPaymentWeb_lst-sm-i"><a href="#"><img src="/styles/order/img/psb.png" /></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <? endif ?>
+
 </div>
 <? endforeach ?>
 
