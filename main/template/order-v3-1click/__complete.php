@@ -24,7 +24,7 @@ $f = function(
 
 
 	<div class="orderU_fldsbottom ta-c orderOneClick_cmpl">
-    	<p class="orderOneClick_cmpl_t">Оформлен заказ № <?= $order->getNumber() ?></p>
+    	<p class="orderOneClick_cmpl_t">Оформлен заказ № <?= $order->getNumberErp() ?></p>
     	<p class="orderOneClick_recall" style="margin-bottom: 20px;">Наш сотрудник позвонит Вам для уточнения деталей заказа.</p>
     </div>
 
@@ -33,7 +33,9 @@ $f = function(
         <?= $helper->render('order-v3-new/complete-blocks/_online-payments', [
             'order' => $order,
             'orderPayment' => $ordersPayment[$order->getNumber()],
-            'blockVisible' => false]) ?>
+            'blockVisible' => false,
+            'bottomMessage' => 'Вы будете перемещены на сайт платежной системы'
+        ]) ?>
 
         <!-- Блок оплата в два клика-->
         <div class="orderPayment orderPaymentWeb jsOnlinePaymentPossible">
