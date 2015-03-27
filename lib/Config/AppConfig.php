@@ -345,15 +345,6 @@ class AppConfig {
         'url' => [],
     ];
     /** @var array */
-    public $service = [
-        'url'                 => [],
-        'minPriceForDelivery' => null,
-    ];
-    /** @var array */
-    public $serviceCategory = [
-        'url' => [],
-    ];
-    /** @var array */
     public $shopPhoto = [
         'url' => [],
     ];

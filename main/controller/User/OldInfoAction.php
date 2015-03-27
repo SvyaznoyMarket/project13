@@ -31,7 +31,6 @@ class OldInfoAction {
             'vwish'            => 0,
             'vcomp'            => 0,
             'productsInCart'   => [],
-            'servicesInCart'   => [],
             'bingo'            => false,
             'region_id'        => $region->getId(),
             'is_credit'        => 1 == $request->cookies->get('credit_on'),
@@ -65,28 +64,14 @@ class OldInfoAction {
             });
         }
 
-        // получаем токены услуг
-        $serviceTokensById = [];
-        if ((bool)$serviceData = $cart->getServiceData()) {
-            foreach ($serviceData as $item) {
-                $serviceTokensById[$item['id']] = null;
-            }
-
-            \RepositoryManager::service()->prepareCollectionById(array_keys($serviceTokensById), $region, function($data) use(&$serviceTokensById) {
-                foreach($data as $item){
-                    $serviceTokensById[$item['id']] = $item['token'];
-                }
-            });
-        }
 
         // получаем общую стоимость корзины
-        if (((bool)$productData || (bool)$serviceData)) {
+        if (((bool)$productData)) {
             try {
                 $client->addQuery('cart/get-price',
                     array('geo_id' => $user->getRegion()->getId()),
                     array(
                         'product_list'  => $productData,
-                        'service_list'  => $serviceData,
                     ), function($data) use (&$responseData) {
                         $responseData['sum'] = array_key_exists('price_total', $data) ? $data['price_total'] : 0;
                     }
@@ -96,7 +81,7 @@ class OldInfoAction {
             }
         }
 
-        if ($productData || $serviceData || $user->getToken()) {
+        if ($productData || $user->getToken()) {
             $client->execute();
 
             // если пользователь авторизован
@@ -113,20 +98,6 @@ class OldInfoAction {
                 if (!isset($productTokensById[$item['id']])) continue;
 
                 $responseData['productsInCart'][$productTokensById[$item['id']]] = $item['quantity'];
-            }
-
-            // services
-            foreach ($serviceData as $item) {
-                if (!isset($responseData['servicesInCart'][$serviceTokensById[$item['id']]])) {
-                    $responseData['servicesInCart'][$serviceTokensById[$item['id']]] = [];
-                }
-
-                if (!empty($item['product_id']) && isset($productTokensById[$item['product_id']])) {
-                    $responseData['servicesInCart'][$serviceTokensById[$item['id']]][$productTokensById[$item['product_id']]] = $item['quantity'];
-                } else {
-                    $responseData['servicesInCart'][$serviceTokensById[$item['id']]][0] = $item['quantity'];
-                    $totalQuantity++;
-                }
             }
 
             $responseData['vitems'] = $totalQuantity;

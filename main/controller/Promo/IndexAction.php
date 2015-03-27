@@ -19,8 +19,6 @@ class IndexAction {
         // товары, услуги, категории
         /** @var $productsById \Model\Product\BasicEntity[] */
         $productsById = [];
-        /** @var $productsById \Model\Product\Service\Entity[] */
-        $servicesById = [];
         /** @var $productsById \Model\Product\Category\Entity[] */
         $categoriesById = [];
         foreach ($promo->getImage() as $promoImage) {
@@ -48,17 +46,7 @@ class IndexAction {
                 });
             }
         }
-        // запрашиваем услуги
-        if ((bool)$servicesById) {
-            \RepositoryManager::service()->prepareCollectionById(array_keys($servicesById), $region, function($data) use (&$servicesById) {
-                foreach ($data as $item) {
-                    $servicesById[(int)$item['id']] = new \Model\Product\Service\Entity($item);
-                }
-            }, function(\Exception $e) {
-                \App::exception()->remove($e);
-                \App::logger()->error('Не удалось получить услуги для промо-каталога');
-            });
-        }
+
         // запрашиваем категории товаров
         if ((bool)$categoriesById) {
             \RepositoryManager::productCategory()->prepareCollectionById(array_keys($categoriesById), $region, function($data) use (&$categoriesById) {
@@ -76,7 +64,7 @@ class IndexAction {
             });
         }
 
-        if ((bool)$productsById || (bool)$servicesById || (bool)$categoriesById) {
+        if ((bool)$productsById || (bool)$categoriesById) {
             // выполнение 2-го пакета запросов
             $client->execute();
         }
@@ -85,7 +73,7 @@ class IndexAction {
 
         $slideData = [];
         foreach ($promo->getImage() as $image) {
-            $repository->setEntityImageLink($image, $router, $productsById, $categoriesById, $servicesById);
+            $repository->setEntityImageLink($image, $router, $productsById, $categoriesById);
 
             $slideData[] = [
                 'imgUrl'  => \App::config()->dataStore['url'] . 'promo/' . $promo->getToken() . '/' . trim($image->getUrl(), '/'),

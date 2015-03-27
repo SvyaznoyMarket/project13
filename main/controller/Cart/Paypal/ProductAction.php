@@ -74,7 +74,6 @@ class ProductAction {
                             'quantity' => $cartProduct->getQuantity(),
                         ],
                     ],
-                    'service'         => [],
                 ],
                 \App::config()->coreV2['hugeTimeout']
             );
@@ -94,7 +93,7 @@ class ProductAction {
             $responseData['cart']     = [
                 'sum'           => $cartProduct ? $cartProduct->getSum() : 0,
                 'quantity'      => $quantity,
-                'full_quantity' => $cart->getProductsQuantity() + $cart->getServicesQuantity(),
+                'full_quantity' => $cart->getProductsQuantity(),
                 'full_price'    => $cart->getSum(),
                 'old_price'     => $cart->getOriginalSum(),
                 'link'          => $product->getLink(),

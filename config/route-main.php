@@ -463,18 +463,6 @@ return [
         'action'  => ['Cart\OneClick\ProductAction', 'setList'],
     ],
 
-    // добавление услуги в корзину
-    'cart.service.set' => [
-        'pattern' => '/cart/add-service/{serviceId}/for-product/{productId}',
-        'require' => ['productId' => '\d+', 'serviceId' => '\d+'],
-        'action'  => ['Cart\ServiceAction', 'set'],
-    ],
-    // удаление услуги из корзины
-    'cart.service.delete' => [
-        'pattern' => '/cart/delete-service/{serviceId}/for-product/{productId}',
-        'require' => ['productId' => '\d+', 'serviceId' => '\d+'],
-        'action'  => ['Cart\ServiceAction', 'delete'],
-    ],
     'cart.certificate.apply' => [
         'pattern' => '/cart/f1-certificate',
         'action'  => ['Cart\CertificateAction', 'apply'],
@@ -683,22 +671,6 @@ return [
         'pattern' => '/orders/slot/create',
         'action'  => ['OrderSlot\Action', 'create'],
         'method'  => ['POST'],
-    ],
-
-    // услуги
-    'service' => [
-        'pattern' => '/f1',
-        'action'  => ['Service\Action', 'index'],
-    ],
-    'service.category' => [
-        'pattern' => '/f1/{categoryToken}',
-        'require' => ['categoryToken' => '[\w\d-_]+'],
-        'action'  => ['Service\Action', 'category'],
-    ],
-    'service.show' => [
-        'pattern' => '/f1/show/{serviceToken}',
-        'require' => ['serviceToken' => '[\w\d-_]+'],
-        'action'  => ['Service\Action', 'show'],
     ],
 
     // промо каталоги

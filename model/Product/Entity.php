@@ -65,8 +65,6 @@ class Entity extends BasicEntity {
     protected $priceAverage;
     /** @var float */
     protected $priceOld;
-    /** @var Service\Entity[] */
-    protected $service = [];
     /** @var [] */
     protected $groupedProperties = [];
     /** @var int */
@@ -133,9 +131,6 @@ class Entity extends BasicEntity {
         if (array_key_exists('comment_count', $data)) $this->setCommentCount($data['comment_count']);
         if (array_key_exists('price_average', $data)) $this->setPriceAverage($data['price_average']);
         if (array_key_exists('price_old', $data)) $this->setPriceOld($data['price_old']);
-        if (array_key_exists('service', $data) && is_array($data['service'])) $this->setService(array_map(function($data) {
-            return new Service\Entity($data);
-        }, $data['service']));
         if (array_key_exists('related', $data)) $this->setRelatedId($data['related']);
         if (array_key_exists('accessories', $data)) $this->setAccessoryId($data['accessories']);
         if (array_key_exists('nearest_city', $data) && is_array($data['nearest_city'])) foreach ($data['nearest_city'] as $city) {
@@ -684,29 +679,6 @@ class Entity extends BasicEntity {
         return $this->type;
     }
 
-    /**
-     * @param Service\Entity[] $services
-     */
-    public function setService(array $services) {
-        $this->service = [];
-        foreach ($services as $service) {
-            $this->addService($service);
-        }
-    }
-
-    /**
-     * @param Service\Entity $service
-     */
-    public function addService(Service\Entity $service) {
-        $this->service[] = $service;
-    }
-
-    /**
-     * @return Service\Entity[]
-     */
-    public function getService() {
-        return $this->service;
-    }
 
 
     /**

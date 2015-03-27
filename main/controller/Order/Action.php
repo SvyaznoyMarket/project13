@@ -64,18 +64,6 @@ class Action {
             $productsById[$product->getId()] = $product;
         }
 
-        // услуги индексированные по ид
-        /** @var $servicesById \Model\Product\Service\Entity[] */
-        $servicesById = [];
-        foreach ($orders as $order) {
-            foreach ($order->getService() as $orderService) {
-                $servicesById[$orderService->getId()] = null;
-            }
-        }
-        foreach (\RepositoryManager::service()->getCollectionById(array_map(function ($orderService) { /** @var $orderService \Model\Order\Service\Entity */ return $orderService->getId(); }, $order->getService()), $user->getRegion()) as $service) {
-            $servicesById[$service->getId()] = $service;
-        }
-
         // метод оплаты
         $paymentMethod = \RepositoryManager::paymentMethod()->getEntityById($order->getPaymentId(), new \Model\Region\Entity(['id' => \App::config()->region['defaultId']]));
         if (!$paymentMethod) {
@@ -251,7 +239,6 @@ class Action {
         $page->setParam('orders', $orders);
         $page->setParam('shopsById', $shopsById);
         $page->setParam('productsById', $productsById);
-        $page->setParam('servicesById', $servicesById);
         $page->setParam('paymentMethod', $paymentMethod);
         $page->setParam('paymentProvider', $paymentProvider);
         $page->setParam('paymentForm', $paymentForm);

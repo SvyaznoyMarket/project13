@@ -4,15 +4,12 @@ namespace Model\Banner\Item;
 
 class Entity {
     const TYPE_PRODUCT = 1;
-    const TYPE_SERVICE = 2;
     const TYPE_PRODUCT_CATEGORY = 3;
 
     /** @var int */
     private $typeId;
     /** @var int */
     private $productId;
-    /** @var int */
-    private $serviceId;
     /** @var int */
     private $productCategoryId;
 
@@ -22,9 +19,6 @@ class Entity {
             switch ($this->typeId) {
                 case self::TYPE_PRODUCT:
                     $this->setProductId($data['id']);
-                    break;
-                case self::TYPE_SERVICE:
-                    $this->setServiceId($data['id']);
                     break;
                 case self::TYPE_PRODUCT_CATEGORY:
                     $this->setProductCategoryId($data['id']);
@@ -59,20 +53,6 @@ class Entity {
      */
     public function getProductId() {
         return $this->productId;
-    }
-
-    /**
-     * @param int $serviceId
-     */
-    public function setServiceId($serviceId) {
-        $this->serviceId = (int)$serviceId;
-    }
-
-    /**
-     * @return int
-     */
-    public function getServiceId() {
-        return $this->serviceId;
     }
 
     /**

@@ -12,8 +12,6 @@ class Cart {
     private $storage;
     /** @var \Model\Cart\Product\Entity[]|null */
     private $products = null;
-    /** @var \Model\Cart\Service\Entity[]|null */
-    private $services = null;
     /** @var \Model\Cart\Certificate\Entity[] */
     private $certificates = null;
     /** @var \Model\Cart\Coupon\Entity[] */
@@ -40,7 +38,6 @@ class Cart {
         if (empty($session[$this->sessionName])) {
             $this->storage->set($this->sessionName, [
                 'productList'     => [],
-                'serviceList'     => [],
                 'certificateList' => [],
                 'couponList'      => [],
                 'blackcardList'   => [],
@@ -53,12 +50,6 @@ class Cart {
         if (!array_key_exists('productList', $session[$this->sessionName])) {
             $data = $this->storage->get($this->sessionName);
             $data['productList'] = [];
-            $this->storage->set($this->sessionName, $data);
-        }
-
-        if (!array_key_exists('serviceList', $session[$this->sessionName])) {
-            $data = $this->storage->get($this->sessionName);
-            $data['serviceList'] = [];
             $this->storage->set($this->sessionName, $data);
         }
 
@@ -114,14 +105,13 @@ class Cart {
      * @return bool
      */
     public function isEmpty() {
-        return !(bool)$this->getProducts() && !(bool)$this->getServices();
+        return !(bool)$this->getProducts();
     }
 
     public function clear() {
         $this->storage->set($this->sessionName, null);
         $this->sum = null;
         $this->products = null;
-        $this->services = null;
         $this->certificates = null;
         $this->coupons = null;
         $this->blackcards = null;
@@ -299,28 +289,6 @@ class Cart {
     }
 
     /**
-     * @param \Model\Product\Service\Entity $service
-     * @param int $quantity
-     * @param int|null $productId
-     */
-    public function setService(\Model\Product\Service\Entity $service, $quantity = 1, $productId = null) {
-        if ($quantity < 0) $quantity = 0;
-
-        if (!$productId) {
-            $productId = 0;
-        }
-
-        $data = $this->storage->get($this->sessionName);
-        if (!array_key_exists($service->getId(), $data['serviceList'])) {
-            $data['serviceList'][$service->getId()] = [];
-        }
-        $data['serviceList'][$service->getId()][$productId] = $quantity;
-
-        $this->storage->set($this->sessionName, $data);
-        $this->clearEmpty();
-    }
-
-    /**
      * @param int $productId
      * @return int
      */
@@ -341,11 +309,6 @@ class Cart {
     public function count() {
         $count = 0;
         $data = $this->getData();
-        foreach ($data['serviceList'] as $service) {
-            foreach ($service as $quantity) {
-                $count += $quantity;
-            }
-        }
         foreach ($data['productList'] as $quantity) {
             $count += $quantity;
         }
@@ -360,23 +323,6 @@ class Cart {
         $price = 0;
         foreach ($this->getProducts() as $product) {
             $price += $product->getSum();
-        }
-
-        return $price;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTotalServicePrice() {
-        $price = 0;
-        foreach ($this->getProducts() as $product) {
-            foreach ($product->getService() as $service) {
-                $price += $service->getSum();
-            }
-        }
-        foreach ($this->getServices() as $service) {
-            $price += $service->getPrice();
         }
 
         return $price;
@@ -428,70 +374,12 @@ class Cart {
     }
 
     /**
-     * @return \Model\Cart\Service\Entity[]
-     */
-    public function getServices() {
-        if (null === $this->services) {
-            $this->fill();
-        }
-
-        return $this->services;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasServices() {
-        $data = $this->getData();
-
-        return count($data['serviceList']) > 0;
-    }
-
-    /**
-     * @param int $serviceId
-     * @return \Model\Cart\Service\Entity|null
-     */
-    public function getServiceById($serviceId) {
-        if (null === $this->services) {
-            $this->fill();
-        }
-
-        return isset($this->services[$serviceId]) ? $this->services[$serviceId] : null;
-    }
-
-    /**
      * @return int
      */
     public function getProductsQuantity() {
         $data = $this->getData();
 
         return count($data['productList']);
-    }
-
-    /**
-     * @return int
-     */
-    public function getServicesQuantity() {
-        $data = $this->getData();
-
-        return count($data['serviceList']);
-    }
-
-    /**
-     * @param int|null $productId
-     * @return int
-     */
-    public function getServicesQuantityByProduct($productId) {
-        $count = 0;
-        $data = $this->getData();
-
-        foreach ($data['serviceList'] as $service) {
-            if (array_key_exists($productId, $service)) {
-                $count++;
-            }
-        }
-
-        return $count;
     }
 
     public function getData() {
@@ -536,30 +424,6 @@ class Cart {
                 'id'       => $productId,
                 'quantity' => $productQuantity
             ];
-        }
-
-        return $return;
-    }
-
-    /**
-     * @return array
-     */
-    public function getServiceData() {
-        $data = $this->getData();
-        $return = [];
-        foreach ($data['serviceList'] as $serviceId => $serviceData) {
-            foreach ($serviceData as $productId => $serviceQuantity) {
-                $productId = (int)$productId;
-                $item = [
-                    'id'       => $serviceId,
-                    'quantity' => $serviceQuantity
-                ];
-
-                if ($productId > 0) {
-                    $item['product_id'] = $productId;
-                }
-                $return[] = $item;
-            }
         }
 
         return $return;
@@ -762,7 +626,6 @@ class Cart {
         // получаем список цен
         $default = [
             'product_list'   => [],
-            'service_list'   => [],
             'card_f1_list'   => [],
             'coupon_list'    => [],
             'blackcard_list' => [],
@@ -773,7 +636,7 @@ class Cart {
             $response = $default;
 
             // если в корзине есть товары или услуги
-            if (((bool)$this->getProductsQuantity() || (bool)$this->getServicesQuantity())) {
+            if ((bool)$this->getProductsQuantity()) {
                 // сертификат
                 $certificates = $this->getCertificates();
                 $certificate = is_array($certificates) ? reset($certificates) : null;
@@ -791,7 +654,6 @@ class Cart {
                     ['geo_id' => \App::user()->getRegion()->getId()],
                     [
                         'product_list'  => $this->getProductData(),
-                        'service_list'  => $this->getServiceData(),
                     ],
                     function ($data) use (&$response) {
                         if ((bool)$data) {
@@ -848,24 +710,6 @@ class Cart {
                 $this->products[$productData['id']] = new \Model\Cart\Product\Entity($productData);
             }
         }
-
-        $this->services = [];
-        if (array_key_exists('service_list', $response)) {
-            foreach ($response['service_list'] as $serviceData) {
-                $service = new \Model\Cart\Service\Entity($serviceData);
-                $productId = (array_key_exists('product_id', $serviceData)) ? (int)$serviceData['product_id'] : null;
-                /** @var $cartProduct \Model\Cart\Product\Entity|null */
-                $cartProduct = $productId && isset($this->products[$productId]) && ($this->products[$productId] instanceof \Model\Cart\Product\Entity)
-                    ? $this->products[$productId]
-                    : null;
-                if ($cartProduct) {
-                    $cartProduct->addService($service);
-                } else {
-                    $this->services[$serviceData['id']] = $service;
-                }
-            }
-        }
-
     }
 
     /**
@@ -880,21 +724,7 @@ class Cart {
                 unset($data['productList'][$productId]);
             }
         }
-        // услуги
-        foreach ($data['serviceList'] as $serviceId => $serviceData) {
-            foreach ($serviceData as $productId => $quantity) {
-                if (
-                    ($productId && !array_key_exists($productId, $data['productList']))
-                    || !$quantity
-                ) {
-                    unset($data['serviceList'][$serviceId][$productId]);
-                }
 
-                if (!(bool)$data['serviceList'][$serviceId]) {
-                    unset($data['serviceList'][$serviceId]);
-                }
-            }
-        }
         // товары, оплачиваемые через PayPal
         $item = reset($data['paypalProduct']);
         if (isset($item['quantity']) && !$item['quantity']) {

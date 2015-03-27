@@ -15,8 +15,6 @@ class Entity {
     private $deliverySum;
     /** @var bool */
     private $isBuyable = true;
-    /** @var \Model\Cart\Service\Entity[] */
-    private $service = [];
 
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
@@ -118,42 +116,6 @@ class Entity {
      */
     public function getIsBuyable() {
         return $this->isBuyable;
-    }
-
-    /**
-     * @param \Model\Cart\Service\Entity[] $services
-     */
-    public function setService(array $services) {
-        $this->service = [];
-        foreach ($services as $service) {
-            $this->addService($service);
-        }
-    }
-
-    /**\
-     * @param \Model\Cart\Service\Entity $service
-     */
-    public function addService(\Model\Cart\Service\Entity $service) {
-        $this->service[$service->getId()] = $service;
-    }
-
-    /**
-     * @return array|\Model\Cart\Service\Entity[]
-     */
-    public function getService() {
-        return $this->service;
-    }
-
-    /**
-     * @param int $serviceId
-     * @return \Model\Cart\Service\Entity|null
-     */
-    public function getServiceById($serviceId) {
-        return isset($this->service[$serviceId]) ? $this->service[$serviceId] : null;
-    }
-
-    public function hasService($serviceId) {
-        return array_key_exists($serviceId, $this->service);
     }
 
 }

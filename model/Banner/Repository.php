@@ -57,11 +57,10 @@ class Repository {
      * @param Entity $entity
      * @param \Routing\Router $router
      * @param \Model\Product\Entity[] $productsById
-     * @param \Model\Product\Service\Entity[] $servicesById
      * @param \Model\Product\Category\Entity[] $categoriesById
      * @throws \Exception
      */
-    public function setEntityUrl(Entity $entity, \Routing\Router $router, $productsById = [], $categoriesById = [], $servicesById = []) {
+    public function setEntityUrl(Entity $entity, \Routing\Router $router, $productsById = [], $categoriesById = []) {
         $url = $entity->getUrl();
         if (!empty($url)) {
             return;
@@ -101,8 +100,6 @@ class Repository {
                         'productBarcodes' => implode(',', $barcodes),
                     ));
                 }
-            } else if ($item->getServiceId()) {
-                \App::logger()->error('Услуги для баннера еще не реализованы');
             } else if ($item->getProductCategoryId()) {
                 /** @var $product \Model\Product\Category\Entity */
                 $category = ($item->getProductCategoryId() && isset($categoriesById[$item->getProductCategoryId()]))

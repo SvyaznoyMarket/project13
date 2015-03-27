@@ -14,27 +14,6 @@ class Id {
     }
 
     /**
-     * Генерирует ид чекбокса для услуги F1 у товара
-     *
-     * @param $productId
-     * @param $serviceId
-     * @return string
-     */
-    public static function cartButtonForProductService($productId, $serviceId) {
-        return sprintf('id-cartButton-product-%s-service-%s', $productId, $serviceId);
-    }
-
-    /**
-     * Генерирует ид кнопки "купить" для услуги F1
-     *
-     * @param $serviceId
-     * @return string
-     */
-    public static function cartButtonForService($serviceId) {
-        return sprintf('id-cartButton-service-%s', $serviceId);
-    }
-
-    /**
      * Генерирует ид фильтра в каталоге товаров
      *
      * @param $filterId

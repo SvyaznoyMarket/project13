@@ -113,8 +113,6 @@ class Entity {
     public $user;
     /** @var \Model\Order\Product\Entity[] */
     public $product = [];
-    /** @var \Model\Order\Service\Entity[] */
-    public $service = [];
     /** @var \Model\Order\Delivery\Entity[] */
     public $delivery = [];
     /** @var int */
@@ -210,12 +208,6 @@ class Entity {
             $this->product = [];
             foreach ((array)$data['product'] as $productData) {
                 $this->addProduct(new Product\Entity($productData));
-            }
-        }
-        if (array_key_exists('service', $data)) {
-            $this->service = [];
-            foreach ((array)$data['service'] as $serviceData) {
-                $this->addService(new Service\Entity($serviceData));
             }
         }
         if (array_key_exists('delivery', $data)) {
@@ -668,30 +660,6 @@ class Entity {
      */
     public function getCity() {
         return $this->city;
-    }
-
-    /**
-     * @param \Model\Order\Service\Entity[] $services
-     */
-    public function setService(array $services) {
-        $this->service = [];
-        foreach ($services as $service) {
-            $this->addService($service);
-        }
-    }
-
-    /**
-     * @param Service\Entity $service
-     */
-    public function addService(\Model\Order\Service\Entity $service) {
-        $this->service[] = $service;
-    }
-
-    /**
-     * @return \Model\Order\Service\Entity[]
-     */
-    public function getService() {
-        return $this->service;
     }
 
     /**

@@ -216,7 +216,6 @@ class CreateAction {
                 'delivery_date'     => $orderPart->getDate() instanceof \DateTime ? $orderPart->getDate()->format('Y-m-d') : null,
                 'ip'                => $request->getClientIp(),
                 'product'           => [],
-                'service'           => [],
                 'payment_params'    => [
                     'qiwi_phone' => $form->getQiwiPhone(),
                 ],
@@ -285,17 +284,9 @@ class CreateAction {
 
                 $orderData['product'][] = $productData;
 
-                // связанные услуги
-                foreach ($cartProduct->getService() as $cartService) {
-                    $orderData['service'][] = [
-                        'id'         => $cartService->getId(),
-                        'quantity'   => $cartService->getQuantity(),
-                        'product_id' => $cartProduct->getId(),
-                    ];
-                }
 
                 // Проверим наличие товаров либо услуг, чтобы не было создания заказа с пустой корзиной, SITE-2859
-                if ( empty($orderData['product']) && empty($orderData['service']) ) {
+                if ( empty($orderData['product'])  ) {
                     unset($orderData);
                     continue;
                 }

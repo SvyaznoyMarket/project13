@@ -56,15 +56,11 @@ class IndexAction {
 
         // TODO: запрашиваем меню
         $cartProductsById = array_reverse($cart->getProducts(), true);
-        $cartServicesById = $cart->getServices();
 
         $productIds = array_keys($cartProductsById);
-        $serviceIds = array_keys($cartServicesById);
 
         /** @var $products \Model\Product\CartEntity[] */
         $products = [];
-        /** @var $services \Model\Product\Service\Entity[] */
-        $services = [];
         /** @var $products \Model\Product\Entity[] */
         $productEntities = [];
 
@@ -74,15 +70,6 @@ class IndexAction {
                 foreach ($data as $item) {
                     $products[] = new \Model\Product\Entity($item);
                     $productEntities[] = new \Model\Product\Entity($item);
-                }
-            });
-        }
-
-        // запрашиваем список услуг
-        if ((bool)$serviceIds) {
-            \RepositoryManager::service()->prepareCollectionById($serviceIds, $region, function($data) use(&$services, $cartServicesById) {
-                foreach ($data as $item) {
-                    $services[] = new \Model\Product\Service\Entity($item);
                 }
             });
         }
@@ -121,9 +108,7 @@ class IndexAction {
         $page->setParam('selectCredit', 1 == $request->cookies->get('credit_on'));
         $page->setParam('productEntities', $productEntities);
         $page->setParam('products', $products);
-        $page->setParam('services', $services);
         $page->setParam('cartProductsById', $cartProductsById);
-        $page->setParam('cartServicesById', $cartServicesById);
         $page->setParam('productKitsById', $productKitsById);
         $page->setParam('categoryIdByProductId', $categoryIdByProductId);
 

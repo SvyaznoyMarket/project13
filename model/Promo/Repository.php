@@ -39,11 +39,10 @@ class Repository {
      * @param Image\Entity $image
      * @param \Routing\Router $router
      * @param \Model\Product\Entity[] $productsById
-     * @param \Model\Product\Service\Entity[] $servicesById
      * @param \Model\Product\Category\Entity[] $categoriesById
      * @throws \Exception
      */
-    public function setEntityImageLink(Image\Entity $image, \Routing\Router $router, $productsById = [], $categoriesById = [], $servicesById = []) {
+    public function setEntityImageLink(Image\Entity $image, \Routing\Router $router, $productsById = [], $categoriesById = []) {
         $link = null;
 
         try {

@@ -176,7 +176,6 @@ class CreateAction {
                 'delivery_date'     => $orderPart->getDate() instanceof \DateTime ? $orderPart->getDate()->format('Y-m-d') : null,
                 'ip'                => $request->getClientIp(),
                 'product'           => [],
-                'service'           => [],
                 'payment_params'    => [
                     'qiwi_phone' => $form->getQiwiPhone(),
                 ],
@@ -223,14 +222,6 @@ class CreateAction {
 
                 $orderData['product'][] = $productData;
 
-                // связанные услуги
-                foreach ($cartProduct->getService() as $cartService) {
-                    $orderData['service'][] = [
-                        'id'         => $cartService->getId(),
-                        'quantity'   => $cartService->getQuantity(),
-                        'product_id' => $cartProduct->getId(),
-                    ];
-                }
 
                 // скидки
                 //$orderData['action'] = (array)$user->getCart()->getActionData();

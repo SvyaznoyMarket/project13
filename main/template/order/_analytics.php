@@ -3,7 +3,6 @@
  * @var $page           \View\Layout
  * @var $orders         \Model\Order\Entity[]
  * @var $productsById   \Model\Product\Entity[]
- * @var $servicesById   \Model\Product\Service\Entity[]
  * @var $shopsById      \Model\Shop\Entity[]
  * @var $paymentMethod  \Model\PaymentMethod\Entity
  */

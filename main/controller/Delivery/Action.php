@@ -105,7 +105,6 @@ class Action {
                             'quantity' => $cartProduct->getQuantity(),
                         ];
                     }, $cartProducts),
-                    'service'        => [],
                     'coupon_list'    => $couponData,
                     'blackcard_list' => $blackcardData,
                 ],

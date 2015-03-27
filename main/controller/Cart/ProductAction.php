@@ -108,7 +108,6 @@ class ProductAction {
                 'isTchiboProduct' => $product->getMainCategory() && 'Tchibo' === $product->getMainCategory()->getName(),
                 'category'        => $this->getCategories($product),
                 'quantity'        => $cartProduct ? $cartProduct->getQuantity() : 0,
-                'serviceQuantity' => $cart->getServicesQuantityByProduct($product->getId()),
                 'isSlot' => (bool)$product->getSlotPartnerOffer(),
                 'isOnlyFromPartner' => $product->isOnlyFromPartner(),
                 'isNewWindow'       => \App::abTest()->isNewWindow() // открытие товаров в новом окне
@@ -247,7 +246,6 @@ class ProductAction {
                 ['geo_id' => \App::user()->getRegion()->getId()],
                 [
                     'product_list'  => $cart->getProductData(),
-                    'service_list'  => [],
                 ],
                 function ($data) use (&$result) {
                     $result = $data;
