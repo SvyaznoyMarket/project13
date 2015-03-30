@@ -102,7 +102,7 @@ class CompleteAction extends OrderV3 {
                 });
 
                 // Нужны ли нам кредитные банки?
-                if ($order->paymentId == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT) $needCreditBanksData = true;
+                if ($order->isCredit()) $needCreditBanksData = true;
                 // и магазины
                 if ($order->getShopId()) $shopIds[$order->getShopId()] = $order->getNumber();
                 if ($order->getDelivery()->pointUi) $pointUis[$order->getDelivery()->pointUi] = $order->getNumber();

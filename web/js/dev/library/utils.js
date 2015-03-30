@@ -1,5 +1,5 @@
 ;(function ( ENTER ) {
-	var
+	var $body = $(document.body),
 		utils = ENTER.utils;
 	// end of vars
 
@@ -203,7 +203,7 @@
 
 		// Return the result
 		return checksum == originalCheck;
-	}
+	};
 
     utils.arrayUnique = function(array) {
         var unique = [];
@@ -223,9 +223,8 @@
 	 * @param orderData
 	 */
 	utils.sendOrderToGA = function(orderData) {
-		var
-			$body = $('body'),
-			oData = orderData || { orders: [] };
+
+        var	oData = orderData || { orders: [] };
 
 		console.log('[Google Analytics] Start processing orders', oData.orders);
 		$.each(oData.orders, function(i,o) {
@@ -289,7 +288,7 @@
 							action = 'enter';
 						}
 
-						$('body').trigger('trackGoogleEvent', ['Compare_покупка', action, p.compareLocation]);
+						$body.trigger('trackGoogleEvent', ['Compare_покупка', action, p.compareLocation]);
 					})();
 				}
 
@@ -302,6 +301,14 @@
 					'quantity': p.quantity
 				}
 			});
+
+            if (o.isCredit) {
+                if ($.grep(o.products, function(product){ return product.sender2 == 'credit' }).length > 0) {
+                    $body.trigger('trackGoogleEvent', ['Credit', 'Покупка', 'Карточка товара'])
+                } else {
+                    $body.trigger('trackGoogleEvent', ['Credit', 'Покупка', 'Оформление заказа'])
+                }
+            }
 
 			console.log('[Google Analytics] Order', googleOrderTrackingData);
 			$body.trigger('trackGoogleTransaction', [googleOrderTrackingData]);
@@ -336,7 +343,7 @@
 					actions.push(location);
 				}
 
-				$('body').trigger('trackGoogleEvent', ['Add2Basket', '(' + actions.join(')(') + ')', productArticle]);
+				$body.trigger('trackGoogleEvent', ['Add2Basket', '(' + actions.join(')(') + ')', productArticle]);
 			}
 		}
 	};

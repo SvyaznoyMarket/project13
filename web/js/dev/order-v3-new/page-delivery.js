@@ -460,7 +460,10 @@
 		var $this = $(this),
 			block_name = $this.closest('.orderRow').data('block_name'),
 			method = $this.val();
-        if (method == 'by_online_credit') $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Кредит']);
+        if (method == 'by_online_credit') {
+            $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Кредит']);
+            $body.trigger('trackGoogleEvent', ['Credit', 'Выбор опции', 'Оформление заказа']);
+        }
         if (method == 'by_online') $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Онлайн-оплата']);
 		changePaymentMethod(block_name, method, 'true')
 	});

@@ -24,7 +24,10 @@
 					var status = $(this).val(), // 'on'|'off'
 						$link = $('.js-WidgetBuy .jsBuyButton');
 
-					if ($link.length > 0) $link.attr('href', ENTER.utils.setURLParam('credit', status, $link.attr('href')));
+					if ($link.length > 0) {
+                        $link.attr('href', ENTER.utils.setURLParam('credit', status, $link.attr('href')));
+                        $link.attr('href', ENTER.utils.setURLParam('sender2', 'credit', $link.attr('href')));
+                    }
 				});
 
 				if (typeof window.dc_getCreditForTheProduct == 'function') dc_getCreditForTheProduct(
@@ -56,6 +59,10 @@
 				})
 			}
 		});
+
+        $body.on('click', '.jsProductCreditRadio', function(){
+            $body.trigger('trackGoogleEvent', ['Credit', 'Выбор опции', 'Карточка товара']);
+        });
 		
 		creditBox.init();
 	}
