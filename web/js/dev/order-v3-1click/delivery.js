@@ -209,7 +209,8 @@
 					token = $(this).data('token');
 				if (id && token) {
 					$body.trigger('trackUserAction', ['2_2 Ввод_данных_Самовывоза|Доставки']);
-					$body.children('.selShop, .lb_overlay').remove();
+					$body.children('.selShop').remove();
+					$body.children('.lb_overlay')[1].remove();
 					changePoint($(this).closest('.selShop').data('block_name'), id, token);
 				}
 			}

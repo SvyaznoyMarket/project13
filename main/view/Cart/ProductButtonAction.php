@@ -85,7 +85,7 @@ class ProductButtonAction {
             } else {
                 $data['inShopOnly'] = true;
                 $data['url'] = $this->getOneClickBuyUrl($helper, $product, $isRetailRocket, $sender, $sender2);
-                $data['class'] .= ' btnBuy__eLink mShopsOnly js-orderButton jsOneClickButton';
+                $data['class'] .= ' btnBuy__eLink mShopsOnly js-orderButton jsOneClickButton-new';
                 $data['value'] = 'Резерв';
             }
         } else if ($product->getKit() && !$product->getIsKitLocked()) {

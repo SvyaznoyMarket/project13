@@ -68,6 +68,7 @@ class IndexAction {
                 'avg_score'          => $actionResponse->reviewQuery->response->score,
                 'avg_star_score'     => $actionResponse->reviewQuery->response->starScore,
                 'num_users_by_score' => $actionResponse->reviewQuery->response->groupedScoreCount,
+                'page_count'         => $actionResponse->reviewQuery->response->pageCount,
             ]
             : []
         ;
