@@ -24,7 +24,11 @@ $f = function(
 
 
 	<div class="orderU_fldsbottom ta-c orderOneClick_cmpl">
-    	<p class="orderOneClick_cmpl_t">Оформлен заказ № <?= $order->getNumberErp() ?></p>
+        <? if (\App::user()->getEntity()) : ?>
+            <p class="orderOneClick_cmpl_t">Оформлен заказ № <a class="orderOneClick__order-link" href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>"><?= $order->getNumberErp() ?></a></p>
+        <? else : ?>
+            <p class="orderOneClick_cmpl_t">Оформлен заказ № <?= $order->getNumberErp() ?></p>
+        <? endif ?>
     	<p class="orderOneClick_recall" style="margin-bottom: 20px;">Наш сотрудник позвонит Вам для уточнения деталей заказа.</p>
     </div>
 
