@@ -9950,6 +9950,13 @@ img[height="0"] {
   .orderOneClick .orderPayment_block {
     padding-bottom: 0px;
   }
+  .orderOneClick__order-link {
+    text-decoration: none;
+    border-bottom: 1px solid;
+  }
+  .orderOneClick__order-link:hover {
+    text-decoration: none;
+  }
 }
 @media all {
   .popupFl {
