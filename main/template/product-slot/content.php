@@ -73,8 +73,8 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
     <div class="product-card__info--recall">
         <span>Вам перезвонит специалист и поможет выбрать:</span>
         <ul class="product-card__info--recall__list">
-            <li>Состав комплекта и его изменения</li>
-            <li>Условия доставки и сборки</li>
+            <li>состав комплекта и его изменения;</li>
+            <li>условия доставки и сборки.</li>
         </ul>
         <?= $helper->render('cart/__button-product', [
             'product'  => $product,
