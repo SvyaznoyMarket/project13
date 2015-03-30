@@ -127,9 +127,30 @@
                 padding: 0 10px;
                 margin: 10px -10px 0;
                 border-top: 1px solid @lightgreyBr;
+                overflow: hidden;
+                position: relative;
             }
             &__desc {
                 margin-top: 10px;
+
+            }
+            &__base-set{
+                background: #f7f7f7;
+                width:450px;
+                padding: 12px 5px 20px 20px;
+                float: right;
+                &-list{
+                    list-style: square;
+                    padding-left: 20px;
+                }
+                &-item{
+                    font-size: 12px;
+                    line-height: 18px;
+                }
+                &-header{
+                    font-size:16px;
+                    margin-top:0px;
+                }
             }
         } //product-card
         //остаток старых классов

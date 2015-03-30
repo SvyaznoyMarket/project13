@@ -123,21 +123,24 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
     <div class="product-card__desc">
         <?= $product->getDescription() ?>
     </div>
+    <? if ($equipment): ?>
+        <div class="product-card__base-set">
+            <h2 class="product-card__base-set-header">Базовый комплект</h2>
+            <ul class="product-card__base-set-list">
+                <? foreach ($equipment as $equipmentItem): ?>
+                    <li class="product-card__base-set-item"><?= $equipmentItem ?>.</li>
+                <? endforeach ?>
+            </ul>
+        </div>
+    <? endif ?>
     <div class="product-card__props">
         <? if ($secondaryGroupedProperties): // показываем все характеристики (сгруппированые), если ранее они не были показаны ?>
             <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $secondaryGroupedProperties]) // Характеристики ?>
         <? endif ?>
     </div>
 
-    <? if ($equipment): ?>
-        <h2>Базовый комплект</h2>
-        <ul>
-            <? foreach ($equipment as $equipmentItem): ?>
-                <li><?= $equipmentItem ?>.</li>
-            <? endforeach ?>
-        </ul>
-    <? endif ?>
 
+<div class="clear"></div>
     <? /* if (\App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
             'type'           => 'alsoBought',
