@@ -2,10 +2,11 @@
 
 namespace Http;
 
-class Session implements \Http\SessionInterface {
+class Session extends \Symfony\Component\HttpFoundation\Session\Session {
     static private $started = false;
 
     public function start() {
+
         $cookieDefaults = session_get_cookie_params();
 
         $options = [
@@ -41,44 +42,12 @@ class Session implements \Http\SessionInterface {
         }
     }
 
-    public function isStarted() {
-        return self::$started;
-    }
-
-    public function setId($value) {
-        session_id($value);
-    }
-
-    public function getId() {
-        return session_id();
-    }
-
-    public function setName($value) {
-        session_name($value);
-    }
-
-    public function getName() {
-        return session_name();
-    }
-
     public function regenerate($destroy = false, $lifetime = null) {
         if (null !== $lifetime) {
             ini_set('session.cookie_lifetime', $lifetime);
         }
 
         return session_regenerate_id($destroy);
-    }
-
-    public function set($name, $value) {
-        $_SESSION[$name] = $value;
-    }
-
-    public function all() {
-        return $_SESSION;
-    }
-
-    public function get($name, $default = null) {
-        return array_key_exists($name, $_SESSION) ? $_SESSION[$name] : $default;
     }
 
     public function getWithChecking($name, $default = null) {
@@ -88,18 +57,6 @@ class Session implements \Http\SessionInterface {
         $_SESSION[$name]['_is_readed'] = (bool) isset($_SESSION[$name]['_is_readed']);
 
         return $_SESSION[$name];
-    }
-
-    public function has($name) {
-        return array_key_exists($name, $_SESSION);
-    }
-
-    public function remove($name) {
-        if (isset($_SESSION[$name])) unset($_SESSION[$name]);
-    }
-
-    public function clear() {
-        $_SESSION = [];
     }
 
     /** Функция для работы с flash-сообщениями
