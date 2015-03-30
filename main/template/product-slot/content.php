@@ -37,6 +37,12 @@ $isKitPage = (bool)$product->getKit();
 
 $isProductAvailable = $product->isAvailable();
 
+$secondaryGroupedProperties = $product->getSecondaryGroupedProperties(['Комплектация']);
+$equipment = $product->getEquipmentProperty() ? preg_split('/(\r?\n)+/', trim($product->getEquipmentProperty()->getStringValue())) : null;
+foreach ($equipment as $key => $value) {
+    $equipment[$key] = preg_replace('/\s*<br \/>$/', '', trim(mb_strtoupper(mb_substr($value, 0, 1)) . mb_substr($value, 1)));
+}
+
 $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
 $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 ?>
@@ -118,10 +124,19 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
         <?= $product->getDescription() ?>
     </div>
     <div class="product-card__props">
-        <? if ($product->getSecondaryGroupedProperties()): // показываем все характеристики (сгруппированые), если ранее они не были показаны ?>
-            <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getSecondaryGroupedProperties()]) // Характеристики ?>
+        <? if ($secondaryGroupedProperties): // показываем все характеристики (сгруппированые), если ранее они не были показаны ?>
+            <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $secondaryGroupedProperties]) // Характеристики ?>
         <? endif ?>
     </div>
+
+    <? if ($equipment): ?>
+        <h2>Базовый комплект</h2>
+        <ul>
+            <? foreach ($equipment as $equipmentItem): ?>
+                <li><?= $equipmentItem ?>.</li>
+            <? endforeach ?>
+        </ul>
+    <? endif ?>
 
     <? /* if (\App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
