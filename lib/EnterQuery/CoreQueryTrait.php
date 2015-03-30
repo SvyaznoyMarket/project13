@@ -30,6 +30,7 @@ trait CoreQueryTrait
 
     /**
      * @param string|null $response
+     * @param $statusCode
      * @return array
      * @throws \Exception
      */
