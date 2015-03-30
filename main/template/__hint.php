@@ -10,7 +10,7 @@ return function(
     <div class="bHint_ePopup popup">
         <div class="close"></div>
         <div class="bHint-text">
-            <p><?= $value ?></p>
+            <p><?= nl2br($value) ?></p>
         </div>
     </div>
 </div>

@@ -291,13 +291,10 @@ class Entity {
     public function getValueHint()
     {
         $hint = null;
-        if ($this->getIsMultiple()) {
-            foreach ($this->getOption() as $option) {
-                $hint .= $option->getHint();
-            }
-        } else {
-            $hint = $this->valueHint;
+        foreach ($this->getOption() as $option) {
+            $hint .= $option->getHint();
         }
+
         return $hint;
     }
 }
