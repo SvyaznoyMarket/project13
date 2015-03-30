@@ -25,7 +25,7 @@ $f = function(
 
 	<div class="orderU_fldsbottom ta-c orderOneClick_cmpl">
         <? if (\App::user()->getEntity()) : ?>
-            <p class="orderOneClick_cmpl_t">Оформлен заказ № <a href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>"><?= $order->getNumberErp() ?></a></p>
+            <p class="orderOneClick_cmpl_t">Оформлен заказ № <a class="orderOneClick__order-link" href="<?= \App::router()->generate('user.order', ['orderId' =>$order->getId()]) ?>"><?= $order->getNumberErp() ?></a></p>
         <? else : ?>
             <p class="orderOneClick_cmpl_t">Оформлен заказ № <?= $order->getNumberErp() ?></p>
         <? endif ?>
