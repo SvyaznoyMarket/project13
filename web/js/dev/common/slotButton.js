@@ -14,10 +14,10 @@
 					'<input type="hidden" name="sender2" value="{{sender2}}" />' +
 
 					'{{#full}}' +
-						'<div class="popup--request__head msg--recall">Закажите обратный звонок и уточните:</div>' +
+						'<div class="popup--request__head msg--recall">Вам перезвонит специалист и поможет выбрать:</div>' +
 						'<ul class="recall-list">' +
-							'<li>комплектность мебели и техники;</li>' +
-							'<li>условия доставки, сборки и оплаты.</li>' +
+							'<li>Состав комплекта и его изменения</li>' +
+							'<li>Условия доставки и сборки</li>' +
 						'</ul>' +
 					'{{/full}}' +
 
