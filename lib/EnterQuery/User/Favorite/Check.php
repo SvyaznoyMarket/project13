@@ -49,7 +49,8 @@ namespace EnterQuery\User\Favorite
 
                     return $result; // for cache
                 },
-                0.4
+                0.4,
+                [0]
             );
 
             return $this;
