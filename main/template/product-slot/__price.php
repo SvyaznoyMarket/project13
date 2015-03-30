@@ -4,10 +4,6 @@ return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Entity $product
 ) {
-    if ($_SERVER['APPLICATION_ENV'] === 'local' || $_SERVER['APPLICATION_ENV'] === 'dev') {
-        $product->setPriceOld(10000);
-    }
-
     if (0 === $product->getPrice()) {
         return;
     }
