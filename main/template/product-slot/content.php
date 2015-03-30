@@ -40,8 +40,7 @@ $isProductAvailable = $product->isAvailable();
 $secondaryGroupedProperties = $product->getSecondaryGroupedProperties(['Комплектация']);
 $equipment = $product->getEquipmentProperty() ? preg_split('/(\r?\n)+/', trim($product->getEquipmentProperty()->getStringValue())) : null;
 foreach ($equipment as $key => $value) {
-    $value = trim($value);
-    $equipment[$key] = mb_strtoupper(mb_substr($value, 0, 1)) . mb_substr($value, 1);
+    $equipment[$key] = preg_replace('/\s*<br \/>$/', '', trim(mb_strtoupper(mb_substr($value, 0, 1)) . mb_substr($value, 1)));
 }
 
 $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
@@ -74,8 +73,8 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
     <div class="product-card__info--recall">
         <span>Вам перезвонит специалист и поможет выбрать:</span>
         <ul class="product-card__info--recall__list">
-            <li>комплектность мебели и техники;</li>
-            <li>условия доставки, сборки и оплаты.</li>
+            <li>Состав комплекта и его изменения</li>
+            <li>Условия доставки и сборки</li>
         </ul>
         <?= $helper->render('cart/__button-product', [
             'product'  => $product,
