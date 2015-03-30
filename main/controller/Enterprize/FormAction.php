@@ -351,7 +351,7 @@ class FormAction {
 
             // задаем регистрационный флаг
             try {
-                $regData = ['isRegistration' => true, 'token' => $result['token']];
+                $regData = ['isRegistration' => true, 'token' => $result['token'], 'enterprizeToken' => $enterprizeToken,];
 
                 // пишем в сессию
                 $data = array_merge($data, $regData);
