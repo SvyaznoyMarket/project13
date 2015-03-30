@@ -14,6 +14,8 @@ class AppConfig {
      * @hidden
      */
     public $encoding;
+    /** @var array */
+    public $trustedProxies = [];
     /** @var bool */
     public $debug;
     /** @var array */

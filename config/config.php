@@ -15,6 +15,8 @@ $c->webDir = $c->appDir . '/web';
 $c->templateDir = $c->appDir . '/main/template';
 $c->cmsDir = $c->appDir . '/../../cms.enter.ru/wwwroot';
 
+$c->trustedProxies = ['127.0.0.1', '10.22.244.0/24'];
+
 $c->controllerPrefix = 'Controller';
 $c->routePrefix = '';
 

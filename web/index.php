@@ -37,8 +37,7 @@ if (isset($_GET['APPLICATION_DEBUG'])) {
 }
 
 // request
-\Http\Request::trustProxyData();
-// TODO: придумать, как по другому можно получить имя хоста
+\Http\Request::setTrustedProxies($config->trustedProxies);
 //$request = \Http\Request::createFromGlobals(); // TODO: временно убрал проверку на мобильное приложение
 
 // app name
