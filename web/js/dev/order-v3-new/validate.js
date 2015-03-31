@@ -10,7 +10,7 @@
 		cancelInputBlur = false,
         validateEmail = function validateEmailF(email) {
             var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(email);
+            return re.test(email) && !/[а-яА-Я]/.test(email);
         },
 		validateMnogoRu = function validateMnogoRuF(val){
 			return val.length == 0 || /\d{4}\s\d{4}/.test(val)
