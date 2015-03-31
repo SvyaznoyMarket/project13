@@ -17,7 +17,7 @@
 	</div>
 
 	<ul class="product-tabs">
-		<li class="product-tabs__i"><a class="product-tabs__lk" href="" title="">Подробности</a></li>
+		<li class="product-tabs__i active"><a class="product-tabs__lk" href="" title="">Подробности</a></li>
 		<li class="product-tabs__i"><a class="product-tabs__lk" href="" title="">Аксессуары</a></li>
 		<li class="product-tabs__i"><a class="product-tabs__lk" href="" title="">Отзывы</a></li>
 		<li class="product-tabs__i"><a class="product-tabs__lk" href="" title="">Похожие товары</a></li>
@@ -26,38 +26,46 @@
 	<div class="product-section">
 		<div class="product-section__props">
 			<div class="product-section__tl">Характеристики</div>
-
+			<div class="product-section__sbtl">Общие</div>
 			<dl class="props-list">
-				<dt class="props-list__name--tl"></dt>
-				<dd class="props-list__val"></dd>
+				<dt class="props-list__name--tl"><span class="props-list__name-i">Характеристика</span></dt>
+				<dd class="props-list__val">значение</dd>
 
-				<dt class="props-list__name"></dt>
-				<dd class="props-list__val"></dd>
+				<dt class="props-list__name--tl"><span class="props-list__name-i">Характеристика</span></dt>
+				<dd class="props-list__val">значение</dd>
 
-				<dt class="props-list__name"></dt>
-				<dd class="props-list__val"></dd>
+				<dt class="props-list__name--tl"><span class="props-list__name-i">Характеристика</span></dt>
+				<dd class="props-list__val">значение</dd>
 
-				<dt class="props-list__name"></dt>
-				<dd class="props-list__val"></dd>
+				<dt class="props-list__name--tl"><span class="props-list__name-i">Характеристика</span></dt>
+				<dd class="props-list__val">значение</dd>
 			</dl>
 
+			<div class="product-section__sbtl">Режимы работы</div>
 			<dl class="props-list">
-				<dt class="props-list__name--tl"></dt>
-				<dd class="props-list__val"></dd>
+				<dt class="props-list__name--tl"><span class="props-list__name-i">Характеристика</span></dt>
+				<dd class="props-list__val">значение</dd>
 
-				<dt class="props-list__name"></dt>
-				<dd class="props-list__val"></dd>
+				<dt class="props-list__name--tl"><span class="props-list__name-i">Характеристика</span></dt>
+				<dd class="props-list__val">значение</dd>
 
-				<dt class="props-list__name"></dt>
-				<dd class="props-list__val"></dd>
+				<dt class="props-list__name--tl"><span class="props-list__name-i">Характеристика</span></dt>
+				<dd class="props-list__val">значение</dd>
 
-				<dt class="props-list__name"></dt>
-				<dd class="props-list__val"></dd>
+				<dt class="props-list__name--tl"><span class="props-list__name-i">Характеристика</span></dt>
+				<dd class="props-list__val">значение</dd>
 			</dl>
 		</div>
 
 		<div class="product-section__desc">
 			<div class="product-section__tl">Описание</div>
+			<div class="product-section__guides">
+				<ul class="product-section__guides-list">
+					<li class="product-section__guides-item"></li>
+				</ul>
+			</div>
+			<div class="product-section__content">Электроника и производительность купольной вытяжки Hotpoint-Ariston 7HHP 6 R (OW)/HA шириной 60 см подойдет консервативным людям, любящим порядок и надежность во всем. Производительность модели составляет 451 м3/ч, что вполне достаточно для очистки воздуха в стандартной кухне. Вытяжка может работать в двух режимах: отвод воздуха в вентиляционную шахту и рециркуляции. В режиме отвода все кухонные испарения, запахи, гарь и копоть, проходя через многоразовый многослойный анодированный алюминиевый жироулавливающий фильтр, выводятся за пределы помещения. По мере загрязнения алюминиевый фильтр нужно мыть в горячей мыльной воде или в посудомоечной машине. В режиме рециркуляции вытяжка не подключается к вентиляционной шахте, а всасываемый воздух просто прогоняется через вытяжку внутри кухни. В этом режиме должен быть установлен угольный фильтр, который приобретается дополнительно и подлежит замене каждые 4 месяца. В комплект входит антивозвратный клапан, препятствующий прониканию в кухню запахов из вентиляционной шахты. Инструментом управления служит электронный переключатель с эргономичными кнопками, а три скорости работы позволяют выбрать оптимальный режим для наилучшей очистки воздуха. Для дополнительного освещения рабочей поверхности в вытяжку встроены две экономичные и долговечные галогенные лампы. Благодаря лаконичному строгому дизайну, вытяжка Hotpoint-Ariston 7HHP 6 R
+(OW)/HA гармонично сочетается с любым современным кухонным гарнитуром.</div>
 		</div>
 	</div>
 
