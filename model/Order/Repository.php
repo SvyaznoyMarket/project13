@@ -2,6 +2,12 @@
 
 namespace Model\Order;
 
+/**
+ * Class Repository
+ * @package Model\Order
+ * @link https://wiki.enter.ru/pages/viewpage.action?pageId=5374028 order/get order/get-limited
+ * @link https://wiki.enter.ru/pages/viewpage.action?pageId=6390064 order/get-by-mobile
+ */
 class Repository {
     /** @var \Core\ClientInterface */
     private $client;
@@ -56,12 +62,14 @@ class Repository {
     /**
      * @param string $userToken
      * @param $callback
+     * @param $offset
+     * @param $limit
      * @return void
      */
-    public function prepareCollectionByUserToken($userToken, $callback) {
+    public function prepareCollectionByUserToken($userToken, $callback, $offset = 0, $limit = 20) {
         //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
-        $this->client->addQuery('order/get-limited', ['token' => $userToken], [], $callback, null, \App::config()->coreV2['hugeTimeout']);
+        $this->client->addQuery('order/get-limited', ['token' => $userToken, 'offset' => $offset, 'limit' => $limit], [], $callback, null, \App::config()->coreV2['hugeTimeout']);
     }
 
     /**

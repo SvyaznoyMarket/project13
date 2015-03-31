@@ -49,7 +49,7 @@ class OrdersAction {
 
         // подготовка 1-го пакета запросов
 
-        /** @var $orders \Model\Order\Entity[] */
+        /** @var $orders \Model\User\Order\Entity[] */
         $orders = [];
         $orders_by_year = [];
 
@@ -71,7 +71,8 @@ class OrdersAction {
                         $orders_by_year[$order->getCreatedAt()->format('Y')][] = $order;
                     }
                 }
-            }
+            },
+            0, 40
         );
 
         // выполнение 1-го пакета запросов

@@ -144,14 +144,18 @@
 	 	timeoutId = setTimeout(showNextSlide, parseInt(timeout, 10))
 	}
 
-	function showNextSlide(mIndex) {
+	function showNextSlide(direction) {
 		var index = $bannerThumbs.find('img').index($bannerThumbs.find('img.'+activeThumbClass)),
 			bannersLength = $bannerThumbs.length,
-            manualIndex = typeof mIndex != 'undefined' ? mIndex : 1,
-			nextIndex = index + manualIndex == bannersLength ? 0 : index + manualIndex,
+            dir = typeof direction != 'undefined' ? direction : 1,
+			nextIndex = index + dir == bannersLength ? 0 : index + dir,
+            duration = 400,
             thumbsMarginMultiplier;
 
         if (nextIndex == -1) nextIndex = bannersLength - 1; // fix для нажатия кнопки вверх у превью
+
+        // если текущий баннер является последним и мы не пролистываем назад, то пролистываем на первый мгновенно
+        if (index == bannersLength - 1 && dir != -1) duration = 0;
 
         thumbsMarginMultiplier = nextIndex >= visibleThumbsCount ? nextIndex - visibleThumbsCount + 1 : 0;
 
@@ -159,7 +163,7 @@
         $bannerHolder.animate({
 			'margin-top': -(nextIndex * bannerHeight)
 		},{
-			duration: 400,
+			duration: duration,
 			complete: function(){
 				$bannerThumbs.find('img').removeClass(activeThumbClass);
 				$bannerThumbs.find('img').eq(nextIndex).addClass(activeThumbClass);

@@ -65,8 +65,6 @@ class Entity extends BasicEntity {
     protected $priceAverage;
     /** @var float */
     protected $priceOld;
-    /** @var Service\Entity[] */
-    protected $service = [];
     /** @var [] */
     protected $groupedProperties = [];
     /** @var int */
@@ -75,8 +73,6 @@ class Entity extends BasicEntity {
     protected $accessoryId = [];
     /** @var array */
     protected $relatedId = [];
-    /** @var Warranty\Entity[] */
-    protected $warranty = [];
     /** @var \Model\Region\Entity */
     protected $nearestCity = [];
 
@@ -135,14 +131,8 @@ class Entity extends BasicEntity {
         if (array_key_exists('comment_count', $data)) $this->setCommentCount($data['comment_count']);
         if (array_key_exists('price_average', $data)) $this->setPriceAverage($data['price_average']);
         if (array_key_exists('price_old', $data)) $this->setPriceOld($data['price_old']);
-        if (array_key_exists('service', $data) && is_array($data['service'])) $this->setService(array_map(function($data) {
-            return new Service\Entity($data);
-        }, $data['service']));
         if (array_key_exists('related', $data)) $this->setRelatedId($data['related']);
         if (array_key_exists('accessories', $data)) $this->setAccessoryId($data['accessories']);
-        if (array_key_exists('warranty', $data) && is_array($data['warranty'])) foreach ($data['warranty'] as $warranty) {
-            $this->addWarranty(new Warranty\Entity($warranty));
-        }
         if (array_key_exists('nearest_city', $data) && is_array($data['nearest_city'])) foreach ($data['nearest_city'] as $city) {
             $this->addNearestCity(new \Model\Region\Entity($city));
         }
@@ -150,7 +140,7 @@ class Entity extends BasicEntity {
         $indexedPropertyGroups = [];
         foreach ($this->propertyGroup as $group) {
             if (!isset($this->groupedProperties[$group->getId()])) {
-                $this->groupedProperties[$group->getId()] = array('group' => $group, 'properties' => []);
+                $this->groupedProperties[$group->getId()] = ['group' => $group, 'properties' => []];
             }
 
             $indexedPropertyGroups[$group->getId()] = $group;
@@ -171,8 +161,7 @@ class Entity extends BasicEntity {
                     $this->mainProperties[] = $property;
                 }
             }
-        }
-        else {
+        } else {
             foreach ($this->property as $property) {
                 /** @var \Model\Product\Property\Entity $property */
                 $stringValue = $property->getStringValue();
@@ -189,6 +178,9 @@ class Entity extends BasicEntity {
 
             $this->secondaryGroupedProperties = $this->groupedProperties;
         }
+
+        // TODO удалить
+        if ($this->isGifteryCertificate()) $this->state->setIsBuyable(true);
     }
 
     /**
@@ -686,29 +678,6 @@ class Entity extends BasicEntity {
         return $this->type;
     }
 
-    /**
-     * @param Service\Entity[] $services
-     */
-    public function setService(array $services) {
-        $this->service = [];
-        foreach ($services as $service) {
-            $this->addService($service);
-        }
-    }
-
-    /**
-     * @param Service\Entity $service
-     */
-    public function addService(Service\Entity $service) {
-        $this->service[] = $service;
-    }
-
-    /**
-     * @return Service\Entity[]
-     */
-    public function getService() {
-        return $this->service;
-    }
 
 
     /**
@@ -810,29 +779,6 @@ class Entity extends BasicEntity {
     public function getRelatedId()
     {
         return $this->relatedId;
-    }
-
-    /**
-     * @param array
-     */
-    public function setWarranty($warranties)
-    {
-        $this->warranty = [];
-        foreach ($warranties as $warranty) {
-            $this->addWarranty($warranty);
-        }
-    }
-
-    /**
-     * @return array|Warranty\Entity[]
-     */
-    public function getWarranty()
-    {
-        return $this->warranty;
-    }
-
-    public function addWarranty(Warranty\Entity $warranty) {
-        $this->warranty[] = $warranty;
     }
 
 

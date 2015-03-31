@@ -240,9 +240,8 @@ class GoogleAnalytics {
         $userEntity = $this->user->getEntity();
         $cartProductsById = $this->getParam('cartProductsById');
         $products = $this->getParam('products');
-        //$cartServicesById = $this->getParam('cartServicesById');
 
-        if (!$cartProductsById /*&& !$cartServicesById*/) return false;
+        if (!$cartProductsById) return false;
 
         foreach ($products as $product) {
             if (!isset($cartProductsById[$product->getId()])) continue;
@@ -252,11 +251,6 @@ class GoogleAnalytics {
             $SKUs .= $product->getArticle() . ',';
             $total += $product->getPrice();
         }
-
-        /*foreach($cartServicesById as $item) {
-            // @var $product \Model\Order\Service\Entity
-            $total += $item->getSum();
-        }*/
 
         self::rmLastSeporator($SKUs);
 

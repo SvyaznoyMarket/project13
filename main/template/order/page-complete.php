@@ -4,7 +4,6 @@
  * @var $user               \Session\User
  * @var $orders             \Model\Order\Entity[]
  * @var $productsById       \Model\Product\Entity[]
- * @var $servicesById       \Model\Product\Service\Entity[]
  * @var $shopsById          \Model\Shop\Entity[]
  * @var $isCredit           bool
  * @var $paymentProvider    \Payment\ProviderInterface
@@ -139,7 +138,6 @@ if (!isset($paymentUrl)) $paymentUrl = null;
 <? if ($isOrderAnalytics) echo $page->render('order/_analytics', array(
     'orders'       => $orders,
     'productsById' => $productsById,
-    'servicesById' => $servicesById,
     'shopsById'    => $shopsById,
     'paymentMethod' => $paymentMethod
 )) ?>

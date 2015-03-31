@@ -2,7 +2,10 @@
 
 namespace Controller\Compare;
 
+use EnterQuery as Query;
+
 class CompareAction {
+    use \EnterApplication\CurlTrait;
 
     /** @var array */
     public $data;
@@ -16,13 +19,15 @@ class CompareAction {
     }
 
     public function execute(\Http\Request $request) {
-        $products = [];
+        $productsById = [];
         $compareProducts = $this->session->get($this->compareSessionKey);
         $lastProduct = null;
         if ($compareProducts && is_array($compareProducts)) {
             $reviewsData = null;
             $productIds = array_keys($compareProducts);
             $lastProduct = end($compareProducts);
+
+            $productDataByUi = [];
 
             $client = \App::coreClientV2();
             $client->addQuery(
@@ -33,9 +38,10 @@ class CompareAction {
                     'geo_id'      => \App::user()->getRegion()->getId(),
                 ],
                 [],
-                function($data) use(&$products) {
-                    foreach ($data as $d) {
-                        if (isset($d['id'])) $products[$d['id']] = new \Model\Product\Entity($d);
+                function($data) use(&$productDataByUi) {
+                    foreach ($data as $item) {
+                        if (!isset($item['ui'])) continue;
+                        $productDataByUi[$item['ui']] = $item;
                     }
                 }
             );
@@ -46,13 +52,35 @@ class CompareAction {
 
             $client->execute();
 
-            $compareGroups = $this->getCompareGroups($compareProducts, $products, $reviewsData);
+            // описание товара из scms
+            $productDescriptionQuery = (new Query\Product\GetDescriptionByUiList(array_keys($productDataByUi)))->prepare();
+            $this->getCurl()->execute();
+
+            foreach ($productDescriptionQuery->response->products as $ui => $descriptionItem) {
+                $item = isset($productDataByUi[$ui]) ? $productDataByUi[$ui] : null;
+                if (!$item) continue;
+
+                $propertyData = isset($descriptionItem['properties'][0]) ? $descriptionItem['properties'] : [];
+                if ($propertyData) {
+                    $item['property'] = $propertyData;
+                }
+
+                $propertyGroupData = isset($descriptionItem['property_groups'][0]) ? $descriptionItem['property_groups'] : [];
+                if ($propertyGroupData) {
+                    $item['property_group'] = $propertyGroupData;
+                }
+
+                $productsById[$item['id']] = new \Model\Product\Entity($item);
+            }
+
+
+            $compareGroups = $this->getCompareGroups($compareProducts, $productsById, $reviewsData);
         } else {
             $compareGroups = [];
         }
 
         $page = new \View\Compare\CompareLayout();
-        $page->setParam('products', $products);
+        $page->setParam('products', $productsById);
         $page->setParam('compareGroups', $compareGroups);
         $page->setParam('activeCompareGroupIndex', $this->getActiveCompareGroupIndex($compareGroups, $request->get('typeId') !== null ? $request->get('typeId') : (isset($lastProduct['typeId']) ? $lastProduct['typeId'] : null)));
         return new \Http\Response($page->show());
@@ -105,7 +133,12 @@ class CompareAction {
                         'article' => $product->getArticle(),
                         'prefix' => $product->getPrefix(),
                         'webName' => $product->getWebName(),
-                        'link' => $product->getLink(),
+                        'link' => $product->getLink() . '?' . http_build_query([
+                            'sender' => [
+                                'name'      => 'Enter',
+                                'from'      => 'ComparePage'
+                            ]
+                        ]),
                         'price' => $templateHelper->formatPrice($product->getPrice()),
                         'priceOld' => $templateHelper->formatPrice($product->getPriceOld()),
                         'inShopStockOnly' => $product->isInShopStockOnly(),
@@ -127,6 +160,12 @@ class CompareAction {
                         'upsale' => json_encode([
                             'url' => \App::router()->generate('product.upsale', ['productId' => $product->getId()]),
                             'fromUpsale' => ($templateHelper->hasParam('from') && 'cart_rec' === $templateHelper->getParam('from')) ? true : false,
+                        ]),
+                        'sender' => json_encode([
+                            'sender' => [
+                                'name'      => 'Enter',
+                                'position'  => 'ComparePage'
+                            ]
                         ])
                     ];
                 }

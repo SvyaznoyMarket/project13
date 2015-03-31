@@ -600,24 +600,6 @@
 			}).runQueue();
 		},
 
-		'service': function() {
-			$LAB.queueWait( function() {
-				$LAB.script( getWithVersion('jquery-plugins.js') )
-					.script( getWithVersion('library.js') )
-					.script( mustacheUrl )
-					.script( knockoutUrl )
-					.script( loadDebugPanel )
-					.wait()
-					.script( getWithVersion('common.js') )
-					.wait()
-					.script(yandexMapUrlv2_1)
-					.script( getWithVersion('order-v3-1click.js') )
-					.script( adfoxUrl )
-					.wait()
-					.script( getWithVersion('ports.js') )
-			}).runQueue();
-		},
-
 		'shop': function() {
 			$LAB.queueScript( yandexMapUrlv2_1 )
 				.queueWait( function() {

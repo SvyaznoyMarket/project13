@@ -38,13 +38,12 @@ class CompletePage extends Layout {
     public function slotGoogleAnalytics() {
         $orders = $this->getParam('orders');
         $productsById = $this->getParam('productsById');
-        $servicesById = $this->getParam('servicesById');
 
         $isOrderAnalytics = $this->getParam('isOrderAnalytics');
         $isOrderAnalytics = (null !== $isOrderAnalytics) ? $isOrderAnalytics : true;
 
 
-        return $isOrderAnalytics ? $this->render('_googleAnalytics', ['orders' => $orders, 'productsById' => $productsById, 'servicesById' => $servicesById, 'isOrderAnalytics' => $isOrderAnalytics]) : $this->render('_googleAnalytics');
+        return $isOrderAnalytics ? $this->render('_googleAnalytics', ['orders' => $orders, 'productsById' => $productsById, 'isOrderAnalytics' => $isOrderAnalytics]) : $this->render('_googleAnalytics');
     }
 
     public function slotMarinConversionTagJS()

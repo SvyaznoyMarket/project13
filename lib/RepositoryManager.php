@@ -67,33 +67,6 @@ class RepositoryManager {
     }
 
     /**
-     * @return Model\Product\Service\Repository
-     */
-    static public function service() {
-        static $instance;
-
-        if (!$instance) {
-            $instance = new \Model\Product\Service\Repository(\App::coreClientV2());
-        }
-
-        return $instance;
-    }
-
-    /**
-     * @return Model\Product\Service\Category\Repository
-     */
-    static public function serviceCategory() {
-        static $instance;
-
-        if (!$instance) {
-            $instance = new \Model\Product\Service\Category\Repository(\App::coreClientV2());
-        }
-
-        return $instance;
-    }
-
-
-    /**
      * @return Model\Page\Repository
      */
     static public function page() {

@@ -2,10 +2,8 @@
 
 namespace Controller\OrderV3OneClick;
 
-use Http\Response;
 use Model\Order\OrderEntity;
-use Session\ProductPageSenders;
-use Session\ProductPageSendersForMarketplace;
+use Model\PaymentMethod\PaymentEntity;
 
 class CreateAction {
     public function __construct() {
@@ -27,9 +25,10 @@ class CreateAction {
 
         $coreResponse = null;   // ответ о ядра
         $ordersData = [];       // данные для отправки на ядро
-        /** @var \Model\Order\CreatedEntity[] $createdOrders */
+        /** @var \Model\Order\Entity[] $createdOrders */
         $createdOrders = [];    // созданные заказы
         $params = [];           // параметры запроса на ядро
+        $ordersPayment = [];
 
         $userInfo = (array)$request->get('user_info');
 
@@ -116,16 +115,12 @@ class CreateAction {
                     \App::logger()->error(['message' => 'Получены неверные данные для созданного заказа', 'orderData' => $orderData], ['order']);
                     continue;
                 }
-                $createdOrder = new \Model\Order\CreatedEntity($orderData);
+                $createdOrder = new \Model\Order\Entity($orderData);
 
                 // если не получен номер заказа
                 if (!$createdOrder->getNumber()) {
                     \App::logger()->error(['message' => 'Не получен номер заказа', 'orderData' => $orderData], ['order']);
                     continue;
-                }
-                // если заказ не подтвержден
-                if (!$createdOrder->getConfirmed()) {
-                    \App::logger()->error(['message' => 'Заказ не подтвержден', 'orderData' => $orderData], ['order']);
                 }
 
                 $createdOrders[] = $createdOrder;
@@ -134,14 +129,36 @@ class CreateAction {
         }
 
         if ((bool)$createdOrders) {
-            $this->session->set(\App::config()->order['sessionName'] ?: 'lastOrder', array_map(function(\Model\Order\CreatedEntity $createdOrder) use ($splitResult) {
+            $this->session->set(\App::config()->order['sessionName'] ? : 'lastOrder', array_map(function(\Model\Order\Entity $createdOrder) use ($splitResult) {
                 return [
                     'number'        => $createdOrder->getNumber(),
                     'number_erp'    => $createdOrder->numberErp,
                     'id'            => $createdOrder->getId(),
-                    'phone'         => (string)$splitResult['user_info']['phone']
+                    'mobile'         => $createdOrder->getMobilePhone()
                 ];
             }, $createdOrders));
+
+            // методы оплаты для заказа
+            foreach ($createdOrders as $order) {
+                $this->client->addQuery(
+                    'payment-method/get-for-order',
+                    [
+                        'geo_id' => $this->user->getRegion()->getId(),
+                        'client_id' => 'site',
+                        'number_erp' => $order->numberErp
+                    ],
+                    [],
+                    function ($data) use ($order, &$ordersPayment) {
+                        $ordersPayment[$order->getNumber()] = new PaymentEntity($data);
+                    },
+                    function (\Exception $e) {
+                        \App::logger()->error(['error' => $e, 'message' => 'Не получены методы оплаты'], ['order']);
+                        \App::exception()->remove($e);
+                    }
+                );
+            }
+
+            $this->client->execute();
         }
 
         // удаляем предыдущее разбиение
@@ -152,7 +169,8 @@ class CreateAction {
 
         $result = [
             'page' => \App::closureTemplating()->render('order-v3-1click/__complete', [
-                'orders' => $createdOrders,
+                'orders'        => $createdOrders,
+                'ordersPayment' => $ordersPayment
             ]),
             'orders' => [
                 [

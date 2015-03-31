@@ -11,12 +11,6 @@ class Entity {
     private $sum = 0;
     /** @var int */
     private $quantity = 0;
-    /** @var int */
-    private $warrantyId;
-    /** @var int */
-    private $warrantyPrice;
-    /** @var int */
-    private $warrantyQuantity;
 
     /**
      * @param array $data
@@ -25,9 +19,6 @@ class Entity {
         if (array_key_exists('id', $data)) $this->setId($data['id']);
         if (array_key_exists('price', $data)) $this->setPrice($data['price']);
         if (array_key_exists('quantity', $data)) $this->setQuantity($data['quantity']);
-        if (array_key_exists('warranty_id', $data)) $this->setWarrantyId($data['warranty_id']);
-        if (array_key_exists('warranty_price', $data)) $this->setWarrantyPrice($data['warranty_price']);
-        if (array_key_exists('warranty_quantity', $data)) $this->setWarrantyQuantity($data['warranty_quantity']);
 
         if (array_key_exists('sum', $data)) { // TODO: осторожно, костыль для ядра
             $this->setSum($data['sum']);
@@ -92,45 +83,4 @@ class Entity {
         return $this->quantity;
     }
 
-    /**
-     * @param int $warrantyId
-     */
-    public function setWarrantyId($warrantyId) {
-        $this->warrantyId = (int)$warrantyId;
-    }
-
-    /**
-     * @return int
-     */
-    public function getWarrantyId() {
-        return $this->warrantyId;
-    }
-
-    /**
-     * @param int $warrantyPrice
-     */
-    public function setWarrantyPrice($warrantyPrice) {
-        $this->warrantyPrice = (int)$warrantyPrice;
-    }
-
-    /**
-     * @return int
-     */
-    public function getWarrantyPrice() {
-        return $this->warrantyPrice;
-    }
-
-    /**
-     * @param int $warrantyQuantity
-     */
-    public function setWarrantyQuantity($warrantyQuantity) {
-        $this->warrantyQuantity = (int)$warrantyQuantity;
-    }
-
-    /**
-     * @return int
-     */
-    public function getWarrantyQuantity() {
-        return $this->warrantyQuantity;
-    }
 }

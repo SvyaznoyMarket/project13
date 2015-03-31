@@ -209,8 +209,6 @@ class Action {
         $response = new \Http\RedirectResponse($redirect_to);
 
         $user->removeToken($response);
-        $user->setCacheCookie($response);
-        \Session\User::disableInfoCookie($response);
 
         // Очищаем источник авторизации
         \App::session()->remove('authSource');

@@ -2,7 +2,11 @@
 
 namespace Partner;
 
+use EnterQuery as Query;
+
 class Manager {
+    use \EnterApplication\CurlTrait;
+
     private $cookieName;
     private $secondClickCookieName;
     private $cookieLifetime;
@@ -44,8 +48,13 @@ class Manager {
             // ОСНОВНАЯ ЛОГИКА
             if ($refererHost && !preg_match('/ent(er|3)\.(ru|loc)/', $refererHost)) {
 
-                $paidSources = \App::dataStoreClient()->query('partner/paid-source.json');
-                $freeHosts = \App::dataStoreClient()->query('partner/free-host.json');
+                $partnerQuery = (new Query\CmsQuery('partner/paid-source.json'))->prepare();
+                $hostQuery = (new Query\CmsQuery('partner/free-host.json'))->prepare();
+
+                $this->getCurl()->execute();
+
+                $paidSources = $partnerQuery->response;
+                $freeHosts = $hostQuery->response;
 
                 if (!is_array($paidSources) || !is_array($freeHosts)) {
                     throw new \Exception('Ошибка получения данных для партнеров из GIT CMS');

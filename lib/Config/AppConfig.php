@@ -77,8 +77,6 @@ class AppConfig {
         'cookie_lifetime' => null,
         'cookie_domain'   => null,
     ];
-    /** @var string */
-    public $cacheCookieName = null;
     /** @var array */
     public $redirect301 = [
         'enabled' => null,
@@ -347,15 +345,6 @@ class AppConfig {
         'url' => [],
     ];
     /** @var array */
-    public $service = [
-        'url'                 => [],
-        'minPriceForDelivery' => null,
-    ];
-    /** @var array */
-    public $serviceCategory = [
-        'url' => [],
-    ];
-    /** @var array */
     public $shopPhoto = [
         'url' => [],
     ];
@@ -403,19 +392,7 @@ class AppConfig {
     ];
 
     /** @var array */
-    public $warranty = [
-        'enabled' => null,
-    ];
-    /** @var array */
     public $f1Certificate = [
-        'enabled' => null,
-    ];
-    /** @var array */
-    public $coupon = [
-        'enabled' => null,
-    ];
-    /** @var array */
-    public $blackcard = [
         'enabled' => null,
     ];
     /** @var array */

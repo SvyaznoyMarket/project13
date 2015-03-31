@@ -119,11 +119,6 @@ class CreateAction {
             $response->headers->setCookie($cookie);
         }
 
-        // очистка кеша
-        if ($responseData['success']) {
-            $user->setCacheCookie($response);
-        }
-
         \App::logger()->info(['site.response' => $responseData], ['order', 'life-gift']);
 
         return $response;
@@ -181,7 +176,6 @@ class CreateAction {
                 'delivery_date'     => $orderPart->getDate() instanceof \DateTime ? $orderPart->getDate()->format('Y-m-d') : null,
                 'ip'                => $request->getClientIp(),
                 'product'           => [],
-                'service'           => [],
                 'payment_params'    => [
                     'qiwi_phone' => $form->getQiwiPhone(),
                 ],
@@ -226,28 +220,8 @@ class CreateAction {
 
                 ];
 
-                // расширенная гарантия
-                foreach ($cartProduct->getWarranty() as $cartWarranty) {
-                    $productData['additional_warranty'][] = [
-                        'id'         => $cartWarranty->getId(),
-                        'quantity'   => $cartProduct->getQuantity(),
-                    ];
-                }
-
                 $orderData['product'][] = $productData;
 
-                // связанные услуги
-                foreach ($cartProduct->getService() as $cartService) {
-                    $orderData['service'][] = [
-                        'id'         => $cartService->getId(),
-                        'quantity'   => $cartService->getQuantity(),
-                        'product_id' => $cartProduct->getId(),
-                    ];
-                }
-
-                // скидки
-                //$orderData['action'] = (array)$user->getCart()->getActionData();
-                $orderData['action'] = [];
 
                 // мета-теги
                 if (\App::config()->order['enableMetaTag'] && !$bMeta) {
@@ -265,15 +239,6 @@ class CreateAction {
                             $partners = [];
                             if ($partnerName = \App::partner()->getName()) {
                                 $partners[] = \App::partner()->getName();
-                            }
-                            foreach (\Controller\Product\BasicRecommendedAction::$recomendedPartners as $recomPartnerName) {
-                                if ($viewedAt = \App::user()->getRecommendedProductByParams($product->getId(), $recomPartnerName, 'viewed_at')) {
-                                    if ((time() - $viewedAt) <= 30 * 24 * 60 * 60) { // 30days
-                                        $partners[] = $recomPartnerName;
-                                    } else {
-                                        \App::user()->deleteRecommendedProductByParams($product->getId(), $recomPartnerName, 'viewed_at');
-                                    }
-                                }
                             }
                             $orderData['meta_data'] = \App::partner()->fabricateCompleteMeta(
                                 isset($orderData['meta_data']) ? $orderData['meta_data'] : [],

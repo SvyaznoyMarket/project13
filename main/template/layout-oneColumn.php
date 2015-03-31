@@ -30,6 +30,7 @@
     <?= $page->slotRelLink() ?>
     <?= $page->slotGoogleAnalytics() ?>
     <?= $page->slotMetaOg() ?>
+    <?= $page->slotGifteryJS() ?>
 </head>
 
 <body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
@@ -78,7 +79,6 @@
         <?= $page->slotEnterprizeConfirmJs() ?>
         <?= $page->slotEnterprizeCompleteJs() ?>
         <?= $page->slotEnterprizeRegJS() ?>
-        <?= $page->slotGifteryJS() ?>
     </div>
 </body>
 </html>

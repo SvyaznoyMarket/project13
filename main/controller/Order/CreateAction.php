@@ -60,28 +60,6 @@ class CreateAction {
                 throw new \Exception('Форма заполнена неверно');
             }
 
-            $cartCoupons = $cart->getCoupons();
-            if (\App::config()->coupon['enabled'] && (bool)$cartCoupons) {
-                // если заказ разбился более чем на один подзаказ, то ...
-                if (count($form->getPart()) > 1) {
-                    // очищаем данные купона
-                    $cart->clearCoupons();
-                    $cart->fill();
-
-                    $responseData['action']['alert'] = [
-                        'message' => 'Не удалось применить скидку. Свяжитесь с оператором Контакт-cENTER ' . \App::config()->company['phone'],
-                        'cancel'  => false,
-                    ];
-                } else {
-                    // если всё ок, то применяем купон и запоминаем его номер
-                    /** @var $couponEntity \Model\Cart\Coupon\Entity **/
-                    $couponEntity = reset($cartCoupons);
-                    if ($couponEntity && !$couponEntity->getError()) {
-                        $form->setCouponNumber($couponEntity->getNumber());
-                    }
-                }
-            }
-
             // TODO: прибавить к cartSum стоимость доставки
             $cartSum = $user->getCart()->getSum();
             if ($form->getPaymentMethodId() && ($cartSum > \App::config()->order['maxSumOnline']) && in_array($form->getPaymentMethodId(), [\Model\PaymentMethod\Entity::QIWI_ID, \Model\PaymentMethod\Entity::WEBMONEY_ID])) {
@@ -151,11 +129,6 @@ class CreateAction {
             $response->headers->setCookie($cookie);
         }
 
-        // очистка кеша
-        if ($responseData['success']) {
-            $user->setCacheCookie($response);
-        }
-
         return $response;
     }
 
@@ -221,7 +194,6 @@ class CreateAction {
                 'delivery_date'     => $orderPart->getDate() instanceof \DateTime ? $orderPart->getDate()->format('Y-m-d') : null,
                 'ip'                => $request->getClientIp(),
                 'product'           => [],
-                'service'           => [],
                 'payment_params'    => [
                     'qiwi_phone' => $form->getQiwiPhone(),
                 ],
@@ -288,33 +260,14 @@ class CreateAction {
 
                 ];
 
-                // расширенная гарантия
-                foreach ($cartProduct->getWarranty() as $cartWarranty) {
-                    $productData['additional_warranty'][] = [
-                        'id'         => $cartWarranty->getId(),
-                        'quantity'   => $cartProduct->getQuantity(),
-                    ];
-                }
-
                 $orderData['product'][] = $productData;
 
-                // связанные услуги
-                foreach ($cartProduct->getService() as $cartService) {
-                    $orderData['service'][] = [
-                        'id'         => $cartService->getId(),
-                        'quantity'   => $cartService->getQuantity(),
-                        'product_id' => $cartProduct->getId(),
-                    ];
-                }
 
                 // Проверим наличие товаров либо услуг, чтобы не было создания заказа с пустой корзиной, SITE-2859
-                if ( empty($orderData['product']) && empty($orderData['service']) ) {
+                if ( empty($orderData['product'])  ) {
                     unset($orderData);
                     continue;
                 }
-
-                // скидки
-                $orderData['action'] = (array)$user->getCart()->getActionData();
 
                 // мета-теги
                 if (\App::config()->order['enableMetaTag'] && !$bMeta) {

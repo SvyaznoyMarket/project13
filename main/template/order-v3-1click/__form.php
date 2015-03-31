@@ -31,7 +31,6 @@ return function(
         <input type="hidden" value="changeUserInfo" name="action" />
 
         <fieldset class="orderU_flds">
-            <legend class="orderU_lgnd">Покупатель</legend>
 
             <div>
                 <div class="orderU_fld">
@@ -52,7 +51,7 @@ return function(
                 </div>
             </div>
         </fieldset>
-        
+
         <fieldset class="orderU_flds">
             <legend class="orderU_lgnd orderU_lgnd-tggl js-order-oneclick-delivery-toggle-btn">Способ получения<span class="orderU_lgnd_tgglnote js-order-oneclick-delivery-toggle-btn-note">скрыть</span></legend>
 
@@ -70,7 +69,7 @@ return function(
                 "></div>
             </div>
         </fieldset>
-        
+
         <fieldset class="orderU_fldsbottom">
             <input type="hidden" name="sender" value="<?= $helper->json($sender) ?>" />
             <input type="hidden" name="sender2" value="<?= $helper->escape($sender2) ?>" />

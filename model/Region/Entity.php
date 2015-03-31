@@ -16,8 +16,6 @@ class Entity extends BasicRegionEntity {
     private $hasDelivery;
     /** @var bool */
     private $hasSubway;
-    /** @var bool */
-    private $hasService;
     /** @var Entity */
     private $parent;
     /** @var bool */
@@ -34,7 +32,6 @@ class Entity extends BasicRegionEntity {
         if (array_key_exists('has_shop', $data)) $this->setHasShop($data['has_shop']);
         if (array_key_exists('has_delivery', $data)) $this->setHasDelivery($data['has_delivery']);
         if (array_key_exists('has_subway', $data)) $this->setHasSubway($data['has_subway']);
-        if (array_key_exists('has_f1', $data)) $this->setHasService($data['has_f1']);
         if (isset($data['location']['longitude'])) $this->setLongitude($data['location']['longitude']);
         if (isset($data['location']['latitude'])) $this->setLatitude($data['location']['latitude']);
         if (array_key_exists('tk_available', $data)) $this->setHasTransportCompany($data['tk_available']);
@@ -54,22 +51,6 @@ class Entity extends BasicRegionEntity {
     public function getHasDelivery()
     {
         return $this->hasDelivery;
-    }
-
-    /**
-     * @param boolean $hasService
-     */
-    public function setHasService($hasService)
-    {
-        $this->hasService = $hasService;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getHasService()
-    {
-        return $this->hasService;
     }
 
     /**
