@@ -358,4 +358,8 @@ class Cart {
             }
         }
     }
+
+    public function count() {
+        return count($this->getProducts());
+    }
 }
