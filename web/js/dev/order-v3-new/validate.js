@@ -24,7 +24,7 @@
 				$subscribeInput = $('.jsOrderV3SubscribeCheckbox'),
 				phone = $phoneInput.val().replace(/\s+/g, '');
 
-			if (!/8\(\d{3}\)\d{3}-\d{2}-\d{2}/.test(phone)) {
+			if (!/\+7\(\d{3}\)\d{3}-\d{2}-\d{2}/.test(phone)) {
 				error.push('Неверный формат телефона');
 				$phoneInput.addClass('textfield-err').siblings('.errTx').show();
 			} else {

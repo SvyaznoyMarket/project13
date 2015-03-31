@@ -4143,7 +4143,7 @@ $(document).ready(function() {
 					'<div class="popup__form-group js-slotButton-popup-element">' +
 						'<div class="input-group js-slotButton-popup-element-field">' +
 							'<label class="label-for-input label-phone">Телефон</label>' +
-							'<input type="text" name="phone" value="{{userPhone}}" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" class="js-slotButton-popup-phone" />' +
+							'<input type="text" name="phone" value="{{userPhone}}" placeholder="+7 (___) ___-__-__" data-mask="+7 (xxx) xxx-xx-xx" class="js-slotButton-popup-phone" />' +
 						'</div>' +
 						'<span class="js-slotButton-popup-element-error popup__form-group__error" style="display: none">Неверный формат телефона</span>' +
 					'</div>' +
@@ -4203,7 +4203,7 @@ $(document).ready(function() {
 		validatePhone = function($form, disableFail) {
 			var $phoneInput = $('.js-slotButton-popup-phone', $form);
 
-			if (!/8\(\d{3}\)\d{3}-\d{2}-\d{2}/.test($phoneInput.val().replace(/\s+/g, ''))) {
+			if (!/\+7\(\d{3}\)\d{3}-\d{2}-\d{2}/.test($phoneInput.val().replace(/\s+/g, ''))) {
 				if (!disableFail) {
 					showError($phoneInput);
 				}
