@@ -166,7 +166,7 @@
 				productId: $button.data('product-id'),
 				sender: $button.attr('data-sender'),
 				sender2: $button.data('sender2') || '',
-				userPhone: ENTER.utils.Base64.decode(ENTER.config.userInfo.user.mobile || ''),
+				userPhone: String(ENTER.utils.Base64.decode(ENTER.config.userInfo.user.mobile || '')).replace(/^8/, '+7'),
 				userEmail: ENTER.config.userInfo.user.email || '',
 				userName: ENTER.config.userInfo.user.firstName || ''
 			})),

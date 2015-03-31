@@ -34,7 +34,7 @@ return function(
 
             <div>
                 <div class="orderU_fld">
-                    <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[mobile]" value="<?= $user ? $helper->escape($user->getMobilePhone()) : '' ?>" placeholder="+7 (___) ___-__-__" data-mask="+7 (xxx) xxx-xx-xx">
+                    <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[mobile]" value="<?= $user ? $helper->escape(preg_replace('/^8/', '+7', $user->getMobilePhone())) : '' ?>" placeholder="+7 (___) ___-__-__" data-mask="+7 (xxx) xxx-xx-xx">
                     <label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
                     <span class="errTx" style="display: none">Неверный формат телефона</span>
                 </div>

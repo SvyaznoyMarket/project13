@@ -209,6 +209,10 @@ class DeliveryAction extends OrderV3 {
 
         $changes = [];
 
+        if (isset($data['user_info']['phone'])) {
+            $data['user_info']['phone'] = preg_replace('/^\+7/', '8', $data['user_info']['phone']);
+        }
+
         switch ($data['action']) {
 
             case 'changeUserInfo':
