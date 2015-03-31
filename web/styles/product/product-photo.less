@@ -1,0 +1,43 @@
+.product-card-photo {
+	text-align: center;
+	margin: 0 0 15px;
+
+	&__img {
+		max-width: 100%;
+	}
+
+	&-thumbs {
+
+		&-list {
+			font-size: 0;
+			text-align: center;
+		}
+
+		&__i {
+			width: 40px;
+			height: 40px;
+			.inline-block();
+			margin: 0 10px 0 0;
+			.rounded(3px);
+			border: 1px solid transparent;
+			cursor: pointer;
+
+			&:last-child {
+				margin: 0;
+			}
+
+			&--act {
+				border-color: #f99b1c;
+			}
+
+			&--media {
+				background: #3d3d3d;
+				border-color: #3d3d3d;
+			}
+		}
+
+		&__img {
+			max-width: 98%;
+		}
+	}
+}
