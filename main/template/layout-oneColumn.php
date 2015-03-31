@@ -41,25 +41,25 @@
 
     <div class="wrapper<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
         <div class="header <?= \App::abTest()->isMenuHamburger() ? 'header-ddnav jsMenuHamburger' : '' ?> clearfix">
+            <div class="header__inn">
+                <?= $page->slotHeader() ?>
 
-            <?= $page->slotHeader() ?>
-            <!-- Topbar -->
-
-            <?= $page->slotTopbar() ?>
-            <!-- /Topbar -->
+                <?= $page->slotTopbar() ?>
+            </div>
 
             <?= $page->slotSearchBar() ?>
 
-            <!-- Header -->
-            <?= $page->slotNavigation() ?>
-            <!-- /Header -->
-
+            <div class="header__inn">
+                <?= $page->slotNavigation() ?>
+            </div>
         </div>
 
         <div class="content clearfix">
-            <?= $page->slotContentHead() ?>
+            <div class="inn">
+                <?= $page->slotContentHead() ?>
 
-            <?= $page->slotContent() ?>
+                <?= $page->slotContent() ?>
+            </div>
         </div><!--/ Контент-->
 
     </div><!--/ Шаблон -->

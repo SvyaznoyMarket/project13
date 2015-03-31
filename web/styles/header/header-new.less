@@ -1,25 +1,6 @@
 // header var
 @header-height: 50px;
 @full-size: 100%;
-.main-new {
-    .header {
-        padding-bottom: 0;
-        margin-left: 0;
-
-        &_b{
-            border-right: 1px solid @lightgrey9;
-            border-left: 1px solid @lightgrey9;
-            border-bottom: 1px solid @lightgrey9;
-        }
-
-        &_t{
-            border-width: 0 1px 0 1px;
-            border-style: solid;
-            border-color: @lightgrey9;
-        }
-    }
-}
-
 .userbar {
 
     .header_t {
@@ -28,14 +9,8 @@
 }
 
 .header{
-    width: 960px;
-    padding: 0 0 10px;
-    margin: 0 0 0 -10px;
+    width: 100%;
     background: @white;
-
-    &-new {
-        background: @white;
-    }
 
     // верхний блок шапки
     &_t{
@@ -50,7 +25,7 @@
 
     &_c{
         height: 60px;
-        padding: 5px 10px;
+        padding: 5px 0;
 
         background: @black;
 
@@ -101,7 +76,7 @@
             }
 
             .hdlogo {
-                margin: 0 30px 0 10px;
+                margin: 0 30px 0 20px;
             }
 
             .hdgift {
@@ -133,7 +108,7 @@
 
             .hdep {
                 float: right;
-                margin: 11px 10px 0 0;
+                margin: 11px 20px 0 0;
                 text-align: center;
             }
         }
@@ -186,11 +161,12 @@
             }
 
             .hdlogo {
-                margin: 0 30px 0 10px;
+                margin: 0 30px 0 20px;
             }
+
             .hdep {
                 float: right;
-                margin: 11px 10px 0 0;
+                margin: 11px 20px 0 0;
                 text-align: center;
             }
         }
@@ -553,24 +529,5 @@
     }
     &-search{
         .sprite-temp(-186px, -2px, 27px, 20px);
-    }
-}
-
-.body-new {
-    background: #e8e8e8;
-
-    .userbtn_i {
-        background: @white;
-
-        &.mEmpty {
-            background: @white;
-        }
-    }
-    .topbarfix_log {
-        background: #fff5e0;
-
-        &-unlogin {
-            background: @white;
-        }
     }
 }

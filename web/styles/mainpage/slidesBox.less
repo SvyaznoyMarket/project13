@@ -2,24 +2,38 @@
 @full-size: 100%;
 .slidesBox{
     border: 1px solid #c1d837;
+
     &-items{
-        width: 473px;
+        width: 464px;
         height: 533px;
 
         .inline-block();
+
         .slidesBox_inn{
-            width: 473px;
+            width: 464px;
             height: 483px;
         }
+
         .slidesBox_i{
             width: 473px;
             height: 483px;
+
             .item{
                 float: left;
 
                 width: 207px;
                 margin: 7px 19px 0 10px;
             }
+        }
+
+        &-l{
+            float: left;
+            margin-left:10px;
+        }
+
+        &-r{
+            float: right;
+            margin-right:10px;
         }
     }
     &_h{
@@ -96,6 +110,7 @@
     }
     &_i{
         float: left;
+        background: @white;
     }
     &-bg2{
         border-color: @firmBlue;
