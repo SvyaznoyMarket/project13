@@ -355,7 +355,8 @@ class FormAction {
                     'isRegistration'  => true,
                     'token'           => $result['token'],
                     'enterprizeToken' => $enterprizeToken,
-                    'name'             => $form->getName(),
+                    'name'            => $form->getName(),
+                    'email'           => $form->getEmail(),
                 ];
 
                 // пишем в сессию
