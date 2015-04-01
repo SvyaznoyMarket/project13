@@ -11,7 +11,7 @@
 <section>
 	<h1 class="product-name">Купольная вытяжка Hotpoint-Ariston 7HHP 6 R (OW)/HA</h1>
 
-	<div class="vandor-offer"><a href="" class="vandor-offer__lk">Продавец: ООО Связной логистика <i class="i-product i-product--info-normal"></i></a></div>
+	<div class="vandor-offer"><a href="" class="vandor-offer__lk i-info"><span class="i-info__tx">Продавец: ООО Связной логистика</span> <i class="i-info__icon i-product i-product--info-normal"></i></a></div>
 
 	<!-- карточка товара -->
 	<div class="product-card clearfix">
@@ -88,9 +88,9 @@
 
 		<!-- купить -->
 		<div class="product-card__r">
-			<div class="product-card-action">
-				<span class="product-card-action__tx">Акция действует<br>ещё 1 день 22:11:07</span>
-				<i class="info-icon-action"></i>
+			<div class="product-card-action i-info">
+				<span class="product-card-action__tx i-info__tx">Акция действует<br>ещё 1 день 22:11:07</span>
+				<i class="product-card-action__icon i-product i-product--info-warn i-info__icon"></i>
 			</div>
 
 			<div class="product-card-old-price"><span class="product-card-old-price__inn">11 223</span> <span class="rubl">p</span></div>
@@ -100,9 +100,9 @@
 				i.
 			</div>
 
-			<a class="btn-type btn-type--buy">В корзину</a>
+			<a class="btn-type btn-type--buy btn-type--longer btn-type--buy--bigger">В корзину</a>
 
-			<a class="btn-type btn-type--normal">
+			<a class="btn-type btn-type--normal btn-type--longer">
 				Купить в кредит
 				от 390 <span class="rubl">p</span> в месяц
 			</a>
@@ -183,7 +183,8 @@
 
 	<div class="product-section">
 		<div class="product-section__tl">Отзывы</div>
-		<div class="reviews">
+
+		<div class="reviews clearfix">
 			<div class="reviews__l">
 				<div class="reviews__i">
 					<div class="reviews__cpt"><div class="reviews__author">Мерзликин Виталий</div>,
@@ -215,8 +216,9 @@
 					</div>
 				</div>
 			</div>
+
 			<div class="reviews__r">
-				<div class="btn btn--add-review">+ Добавить отзыв</div>
+				<div class="btn-type btn-type--normal">+ Добавить отзыв</div>
 				<span class="reviews-percentage__tl">Всего 57 отзывов</span>
 				<ul class="reviews-percentage-list">
 					<li class="reviews-percentage-item">
@@ -297,14 +299,17 @@
 				</ul>
 			</div>
 		</div>
-		<div class="btn btn--more-reviews">Показать больше отзывов</div>
+
+		<div class="btn-type btn-type--normal">Показать больше отзывов</div>
 	</div>
+
 	<ul class="bread-crumbs">
 		<li class="bread-crumbs__i"><a href="" class="bread-crumbs__lk">Бытовая техника</a></li>
 		<li class="bread-crumbs__i"><a href="" class="bread-crumbs__lk">Встраиваемая техника</a></li>
 		<li class="bread-crumbs__i"><a href="" class="bread-crumbs__lk">Вытяжки</a></li>
 		<li class="bread-crumbs__i">Артикул: 468-6393</li>
 	</ul>
+
 	<div class="bottom-content">
 		<p class="bottom-content__p">
 			<span class="bottom-content__tl">Теги: </span>Вытяжки Hotpoint-Ariston дома, Вытяжки Hotpoint-Ariston на работе, Вытяжки Hotpoint-Ariston в поле и в лесу.

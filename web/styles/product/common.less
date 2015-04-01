@@ -1,3 +1,55 @@
+.btn-mix() {
+	.rounded(3px);
+	border-width: 1px;
+	border-style: solid;
+	border-bottom-width: 3px;
+	font-size: 14px;
+	padding: 5px 15px;
+	margin: 0 0 10px;
+	line-height: 1;
+	.inline-block();
+}
+
+.btn-type {
+	.btn-mix();
+
+	&--normal {
+		background-color: @white;
+		border-color: #c7c7c7;
+	}
+
+	&--longer {
+		.box-sizing(border-box);
+		width: 100%;
+		text-align: center;
+		padding: 5px 10px;
+	}
+
+	&--buy {
+		background-color: #f99b1c;
+		border-color: #f99b1c;
+		border-bottom-color: #bf7716;
+		color: #fff;
+
+		&--bigger {
+			font-size: 22px;
+			padding: 10px;
+		}
+	}
+}
+
+.i-info {
+	display: block;
+
+	&__tx {
+		.inline-block-middle();
+	}
+
+	&__icon {
+		margin-left: 2px;
+	}
+}
+
 // название товара
 .product-name {
     font-size: 26px;
@@ -9,6 +61,7 @@
 .vandor-offer {
     &__lk {
         color: #9c9c9c;
+        .inline-block();
         &:hover {
             text-decoration: none;
         }
@@ -110,11 +163,20 @@
 
     color: #ef404a;
     border: 1px dotted #ef404a;
+
+    &__icon {
+
+    }
+
+    &__tx {
+    	width: 177px;
+    }
 }
 
 // спарйт
 .i-product {
-    background-image: url(' {base-url}/product/img/i-product.png');
+    background-image: url('@{base-url}/product/img/i-product.png');
+
     &--finger-positive {
         .sprite-temp(-0px, -0px, 25px, 25px);
     }
@@ -138,9 +200,11 @@
     }
     &--info-normal {
         .sprite-temp(-22px, -50px, 15px, 15px);
+        vertical-align: middle;
     }
     &--info-warn {
         .sprite-temp(-37px, -50px, 15px, 15px);
+        vertical-align: middle;
     }
     &--star-empty {
         .sprite-temp(-52px, -50px, 11px, 10px);
