@@ -1,19 +1,92 @@
 <ul class="bread-crumbs">
-	<li class="bread-crumbs__i"><a href="" class="bread-crumbs__lk"></a></li>
-	<li class="bread-crumbs__i"><a href="" class="bread-crumbs__lk"></a></li>
-	<li class="bread-crumbs__i"><a href="" class="bread-crumbs__lk"></a></li>
-	<li class="bread-crumbs__i"></li>
+	<li class="bread-crumbs__i"><a href="" class="bread-crumbs__lk">Бытовая техника</a></li>
+	<li class="bread-crumbs__i"><a href="" class="bread-crumbs__lk">Встраиваемая техника</a></li>
+	<li class="bread-crumbs__i"><a href="" class="bread-crumbs__lk">Вытяжки</a></li>
+	<li class="bread-crumbs__i">Артикул: 468-6393</li>
 </ul>
 
 <section>
-	<h1 class="product-name"></h1>
+	<h1 class="product-name">Купольная вытяжка Hotpoint-Ariston 7HHP 6 R (OW)/HA</h1>
 
-	<div class="vandor-offer"><a class="vandor-offer__lk"></a></div>
+	<div class="vandor-offer"><a href="" class="vandor-offer__lk">Продавец: ООО Связной логистика </a></div>
 
-	<div class="product-card">
-		<div class="product-card__l"></div>
-		<div class="product-card__c"></div>
-		<div class="product-card__r"></div>
+	<div class="product-card clearfix">
+		<div class="product-card__l">
+			<div class="product-card-photo">
+				<img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo__img" />
+			</div>
+
+			<div class="product-card-photo-thumbs">
+				<ul class="product-card-photo-thumbs-list">
+					<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img" /></li>
+					<li class="product-card-photo-thumbs__i product-card-photo-thumbs__i--act"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img" /></li>
+					<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img" /></li>
+					<li class="product-card-photo-thumbs__i product-card-photo-thumbs__i--media"></li>
+					<li class="product-card-photo-thumbs__i product-card-photo-thumbs__i--media"></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="product-card__c">
+			<div class="product-rating">
+				<span class="product-rating__state">
+					<i class="product-rating__i product-rating__i--1"></i>
+					<i class="product-rating__i product-rating__i--2"></i>
+					<i class="product-rating__i product-rating__i--3"></i>
+					<i class="product-rating__i product-rating__i--4"></i>
+					<i class="product-rating__i product-rating__i--5"></i>
+				</span>
+
+				<span class="product-rating__tx">5 отзывов</span>
+			</div>
+
+			<div class="product-filter">
+				<span class="product-filter__tl">Размер:</span>
+			</div>
+
+			<p class="product-desc">Купольная вытяжка шириной 60 см с тремя скоростями работы и галогенным освещением.</p>
+
+			<dl class="product-prop">
+				<dt class="product-prop__name"></dt>
+				<dd class="product-prop__val"></dd>
+
+				<dt class="product-prop__name"></dt>
+				<dd class="product-prop__val"></dd>
+
+				<dt class="product-prop__name"></dt>
+				<dd class="product-prop__val"></dd>
+			</dl>
+		</div>
+
+		<div class="product-card__r">
+			<div class="product-card-action">
+				<span class="product-card-action__tx"></span>
+				<i class="info-icon-action"></i>
+			</div>
+
+			<div class="product-card-old-price"><span class="product-card-old-price__inn"></span></div>
+
+			<div class="product-card-price"></div>
+
+			<a class="btn-type btn-type--buy">В корзину</a>
+
+			<a class="btn-type btn-type--normal">
+				Купить в кредит
+				от 390 <span class="rubl">p</span> в месяц
+			</a>
+
+			<ul class="product-card-tools">
+				<li class="product-card-tools__i product-card-tools__i--onclick"><i class="product-card-tools__icon"></i> <span class="product-card-tools__tx">Купить в 1 клик</span></li>
+				<li class="product-card-tools__i product-card-tools__i--compare"><i class="product-card-tools__icon"></i> <span class="product-card-tools__tx">Сравнить</span></li>
+				<li class="product-card-tools__i product-card-tools__i--wish"><i class="product-card-tools__icon"></i> <span class="product-card-tools__tx">В избранное</span></li>
+			</ul>
+
+			<div class="buy-now-inshop">
+				<div class="buy-now-inshop__title">В наличии</div>
+				<div class="buy-now-inshop__line">Самовывоз <span class="buy-now-inshop__text-mark">сегодня, бесплатно</span></div>
+				<div class="buy-now-inshop__line">Доставка <span class="buy-now-inshop__text-mark">22.03.2015, 150₽</span></div>
+			</div>
+		</div>
 	</div>
 
 	<ul class="product-tabs">
