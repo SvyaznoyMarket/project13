@@ -221,3 +221,71 @@
         .sprite-temp(-3px, -52px, 10px, 10px);
     }
 }
+
+//блок с дисконтами
+.product-discounts {
+    text-align: center;
+    border-bottom: 1px solid #e8e8e8;
+    margin: 0 -10px;
+
+    &-list {
+        margin: 0 auto;
+        width: 700px;
+        padding: 20px 10px;
+        white-space: nowrap;
+        font-size: 0px;
+    }
+    &__i {
+        width: 140px;
+        height: 30px;
+        .inline-block();
+        margin: 0 0 0 140px;
+        &:first-child {
+            margin: 0px;
+        }
+    }
+    &__link {
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}
+.product-card-safeguards {
+    margin: 15px 0 0;
+
+    &__i {
+        height: 40px;
+        display: block;
+    }
+    &__txt {
+        .inline-block-middle();
+        width: 221px;
+        font-size: 12px;
+    }
+    .safeguard-icon {
+        position: relative;
+        margin-right: 13px;
+        .inline-block-middle();
+        width: 42px;
+        height: 40px;
+        
+        &--pandora {
+            background: url("@{base-url}/product/img/pandora.png") no-repeat center;
+        }
+        &--return {
+            background: url("@{base-url}/product/img/jewelery-guar.png") no-repeat center;
+        }
+        &:after {
+            content: "";
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 3.5px 0 3.5px 4px;
+            border-color: transparent transparent transparent #969696;
+            position: absolute;
+            top: 50%;
+            margin-top: -2px;
+            right: -5px;
+        }
+    }
+}

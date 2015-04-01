@@ -2,7 +2,7 @@
     border-bottom: 4px solid #e8e8e8;
     white-space: nowrap;
     padding: 0 20px;
-    margin: 0 -10px;
+    margin: 10px -10px 0;
 
     &__i {
         .inline-block();
@@ -68,10 +68,15 @@
         margin-top: 10px;
         padding: 10px 20px;
         background-color: #f7f7f7;
+
+        .product-section__tl{
+            padding:0;
+        }
     }
     &__content {
         line-height: 24px;
         font-size: 14px;
+        padding: 10px 0 0;
     }
 }
 
@@ -220,5 +225,27 @@
     }
     &__text {
         margin-top: 20px;
+    }
+}
+.product-guides{
+    &-list{
+
+    }
+    &-i{
+        height: 25px;
+        line-height: 25px;
+        color: #363636;
+        margin: 10px 0 0;
+    }
+    &-link{
+        &:hover{
+            text-decoration: none;
+        }
+    }
+    &__tl{
+        border-bottom: 1px solid #9c9c9c;
+    }
+    .i-guides-icon{
+        margin-right: 10px;
     }
 }
