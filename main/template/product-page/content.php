@@ -106,9 +106,9 @@
 
 			<a class="btn-type btn-type--buy btn-type--longer btn-type--buy--bigger" href="">В корзину</a>
 
-			<a class="btn-type btn-type--normal btn-type--longer" href="">
-				Купить в кредит
-				от 390 <span class="rubl">p</span> в месяц
+			<a class="buy-on-credit btn-type btn-type--normal btn-type--longer" href="">
+				<span class="buy-on-credit__tl">Купить в кредит</span>
+				<span class="buy-on-credit__tx">от <mark class="buy-on-credit__mark">390</mark>&nbsp;&nbsp;<span class="rubl">p</span> в месяц</span>
 			</a>
 
 			<ul class="product-card-tools">
