@@ -4127,10 +4127,10 @@ $(document).ready(function() {
 					'<input type="hidden" name="sender2" value="{{sender2}}" />' +
 
 					'{{#full}}' +
-						'<div class="popup--request__head msg--recall">Закажите обратный звонок и уточните:</div>' +
+						'<div class="popup--request__head msg--recall">Вам перезвонит специалист и поможет выбрать:</div>' +
 						'<ul class="recall-list">' +
-							'<li>комплектность мебели и техники;</li>' +
-							'<li>условия доставки, сборки и оплаты.</li>' +
+							'<li>состав комплекта и его изменения;</li>' +
+							'<li>условия доставки и сборки.</li>' +
 						'</ul>' +
 					'{{/full}}' +
 
@@ -4143,7 +4143,7 @@ $(document).ready(function() {
 					'<div class="popup__form-group js-slotButton-popup-element">' +
 						'<div class="input-group js-slotButton-popup-element-field">' +
 							'<label class="label-for-input label-phone">Телефон</label>' +
-							'<input type="text" name="phone" value="{{userPhone}}" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" class="js-slotButton-popup-phone" />' +
+							'<input type="text" name="phone" value="{{userPhone}}" placeholder="+7 (___) ___-__-__" data-mask="+7 (xxx) xxx-xx-xx" class="js-slotButton-popup-phone" />' +
 						'</div>' +
 						'<span class="js-slotButton-popup-element-error popup__form-group__error" style="display: none">Неверный формат телефона</span>' +
 					'</div>' +
@@ -4203,7 +4203,7 @@ $(document).ready(function() {
 		validatePhone = function($form, disableFail) {
 			var $phoneInput = $('.js-slotButton-popup-phone', $form);
 
-			if (!/8\(\d{3}\)\d{3}-\d{2}-\d{2}/.test($phoneInput.val().replace(/\s+/g, ''))) {
+			if (!/\+7\(\d{3}\)\d{3}-\d{2}-\d{2}/.test($phoneInput.val().replace(/\s+/g, ''))) {
 				if (!disableFail) {
 					showError($phoneInput);
 				}
@@ -4279,7 +4279,7 @@ $(document).ready(function() {
 				productId: $button.data('product-id'),
 				sender: $button.attr('data-sender'),
 				sender2: $button.data('sender2') || '',
-				userPhone: ENTER.utils.Base64.decode(ENTER.config.userInfo.user.mobile || ''),
+				userPhone: String(ENTER.utils.Base64.decode(ENTER.config.userInfo.user.mobile || '')).replace(/^8/, '+7'),
 				userEmail: ENTER.config.userInfo.user.email || '',
 				userName: ENTER.config.userInfo.user.firstName || ''
 			})),

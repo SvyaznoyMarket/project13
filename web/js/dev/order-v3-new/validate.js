@@ -10,7 +10,7 @@
 		cancelInputBlur = false,
         validateEmail = function validateEmailF(email) {
             var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(email);
+            return re.test(email) && !/[а-яА-Я]/.test(email);
         },
 		validateMnogoRu = function validateMnogoRuF(val){
 			return val.length == 0 || /\d{4}\s\d{4}/.test(val)
@@ -24,7 +24,7 @@
 				$subscribeInput = $('.jsOrderV3SubscribeCheckbox'),
 				phone = $phoneInput.val().replace(/\s+/g, '');
 
-			if (!/8\(\d{3}\)\d{3}-\d{2}-\d{2}/.test(phone)) {
+			if (!/\+7\(\d{3}\)\d{3}-\d{2}-\d{2}/.test(phone)) {
 				error.push('Неверный формат телефона');
 				$phoneInput.addClass('textfield-err').siblings('.errTx').show();
 			} else {

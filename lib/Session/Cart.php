@@ -301,12 +301,14 @@ class Cart {
     }
 
     /**
+     * TODO получать товары из новой корзины
      * @return array
      */
     public function getProductData() {
         $data = $this->getData();
         $return = [];
         foreach ($data['productList'] as $productId => $productQuantity) {
+            if ($productQuantity == 0) continue;
             $return[] = [
                 'id'       => $productId,
                 'quantity' => $productQuantity
@@ -357,5 +359,9 @@ class Cart {
                 $this->products[$productData['id']] = new \Model\Cart\Product\Entity($productData);
             }
         }
+    }
+
+    public function count() {
+        return count($this->getProducts());
     }
 }

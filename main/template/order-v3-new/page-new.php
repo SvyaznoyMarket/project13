@@ -29,7 +29,7 @@ return function(
             <fieldset class="orderU_flds">
                 <div>
                     <div class="orderU_fld">
-                        <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[phone]" value="<?= $userEntity ? $userEntity->getMobilePhone() : '' ?>" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx">
+                        <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[phone]" value="<?= $userEntity ? preg_replace('/^8/', '+7', $userEntity->getMobilePhone()) : '' ?>" placeholder="+7 (___) ___-__-__" data-mask="+7 (xxx) xxx-xx-xx">
                         <label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
                         <span class="errTx" style="display: none">Неверный формат телефона</span>
                         <span class="orderU_hint">Для смс о состоянии заказа</span>

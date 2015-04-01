@@ -458,8 +458,38 @@ class Entity extends BasicEntity {
         return $this->mainProperties;
     }
 
-    public function getSecondaryGroupedProperties() {
-        return $this->secondaryGroupedProperties;
+    public function getSecondaryGroupedProperties($excludePropertyNames = []) {
+        if ($excludePropertyNames) {
+            foreach ($excludePropertyNames as $key => $value) {
+                $excludePropertyNames[$key] = mb_strtolower($value);
+            }
+
+            $secondaryGroupedProperties = [];
+            foreach ($this->secondaryGroupedProperties as $key => $value) {
+                foreach ($value['properties'] as $key2 => $property) {
+                    /** @var Property\Entity $property */
+                    if (in_array(mb_strtolower($property->getName()), $excludePropertyNames, true)) {
+                        unset($value['properties'][$key2]);
+                    }
+                }
+
+                $value['properties'] = array_values($value['properties']);
+
+                $secondaryGroupedProperties[$key] = $value;
+            }
+
+            return $secondaryGroupedProperties;
+        } else {
+            return $this->secondaryGroupedProperties;
+        }
+    }
+
+    public function getEquipmentProperty() {
+        foreach ($this->property as $property) {
+            if (mb_strtolower($property->getName()) === 'комплектация') {
+                return $property;
+            }
+        }
     }
 
     /**

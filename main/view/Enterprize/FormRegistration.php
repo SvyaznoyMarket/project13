@@ -94,7 +94,8 @@ class FormRegistration extends \Form\FormAbstract {
      * @param string $mobile
      */
     public function setMobile($mobile) {
-        $this->mobile = preg_replace('/[^0-9]/', '', (string)$mobile);
+        $mobile = preg_replace('/^\+7/', '8', (string)$mobile);
+        $this->mobile = preg_replace('/[^0-9]/', '', $mobile);
     }
 
     /**

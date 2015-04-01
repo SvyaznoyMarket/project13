@@ -37,6 +37,12 @@ $isKitPage = (bool)$product->getKit();
 
 $isProductAvailable = $product->isAvailable();
 
+$secondaryGroupedProperties = $product->getSecondaryGroupedProperties(['Комплектация']);
+$equipment = $product->getEquipmentProperty() ? preg_split('/(\r?\n)+/', trim($product->getEquipmentProperty()->getStringValue())) : null;
+foreach ($equipment as $key => $value) {
+    $equipment[$key] = preg_replace('/\s*<br \/>$/', '', trim(mb_strtoupper(mb_substr($value, 0, 1)) . mb_substr($value, 1)));
+}
+
 $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
 $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 ?>
@@ -65,10 +71,10 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
     <span class="product-card__info--price">Цена базового комплекта</span>
     <span class="product-card__info--deliv-period">Срок доставки базового комплекта 3 дня</span>
     <div class="product-card__info--recall">
-        <span>Закажите обратный звонок и уточните:</span>
+        <span>Вам перезвонит специалист и поможет выбрать:</span>
         <ul class="product-card__info--recall__list">
-            <li>комплектность мебели и техники;</li>
-            <li>условия доставки, сборки и оплаты.</li>
+            <li>состав комплекта и его изменения;</li>
+            <li>условия доставки и сборки.</li>
         </ul>
         <?= $helper->render('cart/__button-product', [
             'product'  => $product,
@@ -76,6 +82,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
             'sender2'  => $buySender2,
             'location' => 'product-card',
         ]) ?>
+    <div class="product-card__payment-types">Доступные способы оплаты:<br/>Наличные, банковский перевод</div>
     </div>
 
     <div class="product-card__specify" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
@@ -116,12 +123,24 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
     <div class="product-card__desc">
         <?= $product->getDescription() ?>
     </div>
+    <? if ($equipment): ?>
+        <div class="product-card__base-set">
+            <h2 class="product-card__base-set-header">Базовый комплект</h2>
+            <ul class="product-card__base-set-list">
+                <? foreach ($equipment as $equipmentItem): ?>
+                    <li class="product-card__base-set-item"><?= $equipmentItem ?>.</li>
+                <? endforeach ?>
+            </ul>
+        </div>
+    <? endif ?>
     <div class="product-card__props">
-        <? if ($product->getSecondaryGroupedProperties()): // показываем все характеристики (сгруппированые), если ранее они не были показаны ?>
-            <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $product->getSecondaryGroupedProperties()]) // Характеристики ?>
+        <? if ($secondaryGroupedProperties): // показываем все характеристики (сгруппированые), если ранее они не были показаны ?>
+            <?= $helper->render('product/__groupedProperty', ['groupedProperties' => $secondaryGroupedProperties]) // Характеристики ?>
         <? endif ?>
     </div>
 
+
+<div class="clear"></div>
     <? /* if (\App::config()->product['pullRecommendation']): ?>
         <?= $helper->render('product/__slider', [
             'type'           => 'alsoBought',

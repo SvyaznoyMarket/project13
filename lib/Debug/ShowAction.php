@@ -7,7 +7,6 @@ class ShowAction {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
         $debug = \App::debug();
-        $helper = new \Helper\TemplateHelper();
 
         if ($response && (200 != $response->getStatusCode())) {
             $debug->add('status', $response->getStatusCode(), 150, \Debug\Collector::TYPE_ERROR);
@@ -133,13 +132,15 @@ class ShowAction {
 
         // timers
         $appTimer = \Debug\Timer::get('app');
+        $curlTimer = \Debug\Timer::get('curl');
         $coreTimer = \Debug\Timer::get('core');
-        $contentTimer = \Debug\Timer::get('content');
-        $dataStoreTimer = \Debug\Timer::get('data-store');
+//        $contentTimer = \Debug\Timer::get('content');
+//        $dataStoreTimer = \Debug\Timer::get('data-store');
         $timerData = [
             ['name' => 'core', 'value' => round($coreTimer['total'], 3) * 1000, 'count' => $coreTimer['count'], 'unit' => 'ms'],
-            ['name' => 'data-store', 'value' => round($dataStoreTimer['total'], 3) * 1000, 'count' => $dataStoreTimer['count'], 'unit' => 'ms'],
-            ['name' => 'content', 'value' => round($contentTimer['total'], 3) * 1000, 'count' => $contentTimer['count'], 'unit' => 'ms'],
+            ['name' => 'curl', 'value' => round($curlTimer['total'], 3) * 1000, 'count' => $curlTimer['count'], 'unit' => 'ms'],
+//            ['name' => 'data-store', 'value' => round($dataStoreTimer['total'], 3) * 1000, 'count' => $dataStoreTimer['count'], 'unit' => 'ms'],
+//            ['name' => 'content', 'value' => round($contentTimer['total'], 3) * 1000, 'count' => $contentTimer['count'], 'unit' => 'ms'],
             ['name' => 'total', 'value' => round($appTimer['total'], 3) * 1000, 'count' => $appTimer['count'], 'unit' => 'ms'],
         ];
         $debug->add('timer', $timerData, 138);
