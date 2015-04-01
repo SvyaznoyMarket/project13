@@ -145,9 +145,10 @@ class Repository {
      * @param \Http\Request $request
      * @param \Model\Shop\Entity|null $shop
      * @param bool $unsetBrandFilterImages
+     * @param \Closure|null $isPreserveImagesForProperty
      * @return \Model\Product\Filter
      */
-    public function createProductFilter(array $filters, \Model\Product\Category\Entity $category = null, \Model\Brand\Entity $brand = null, \Http\Request $request, $shop = null, $unsetBrandFilterImages = true) {
+    public function createProductFilter(array $filters, \Model\Product\Category\Entity $category = null, \Model\Brand\Entity $brand = null, \Http\Request $request, $shop = null, $isPreserveImagesForProperty = null) {
         // регион для фильтров
         $region = \App::user()->getRegion();
 
@@ -245,7 +246,7 @@ class Repository {
                 $property->setIsMultiple(false);
             }
 
-            if ($unsetBrandFilterImages && $property->isBrand()) {
+            if (!$isPreserveImagesForProperty || !$isPreserveImagesForProperty($property)) {
                 foreach ($property->getOption() as $option) {
                     $option->setImageUrl('');
                 }
