@@ -21,27 +21,41 @@
 					<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img" /></li>
 					<li class="product-card-photo-thumbs__i product-card-photo-thumbs__i--act"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img" /></li>
 					<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img" /></li>
-					<li class="product-card-photo-thumbs__i product-card-photo-thumbs__i--media"></li>
-					<li class="product-card-photo-thumbs__i product-card-photo-thumbs__i--media"></li>
+					<li class="product-card-photo-thumbs__i product-card-photo-thumbs__i--media product-card-photo-thumbs__i--media-video"></li>
+					<li class="product-card-photo-thumbs__i product-card-photo-thumbs__i--media product-card-photo-thumbs__i--media-3d"></li>
 				</ul>
 			</div>
 		</div>
 
 		<div class="product-card__c">
-			<div class="product-rating">
-				<span class="product-rating__state">
-					<i class="product-rating__i product-rating__i--1"></i>
-					<i class="product-rating__i product-rating__i--2"></i>
-					<i class="product-rating__i product-rating__i--3"></i>
-					<i class="product-rating__i product-rating__i--4"></i>
-					<i class="product-rating__i product-rating__i--5"></i>
+			<div class="product-card-rating">
+				<span class="product-card-rating__state">
+					<i class="product-card-rating__i product-card-rating__i--1"></i>
+					<i class="product-card-rating__i product-card-rating__i--2"></i>
+					<i class="product-card-rating__i product-card-rating__i--3"></i>
+					<i class="product-card-rating__i product-card-rating__i--4"></i>
+					<i class="product-card-rating__i product-card-rating__i--5"></i>
 				</span>
 
-				<span class="product-rating__tx">5 отзывов</span>
+				<span class="product-card-rating__tx">5 отзывов</span>
 			</div>
 
 			<div class="product-filter">
 				<span class="product-filter__tl">Размер:</span>
+
+				<div class="product-filter__box">
+					<div class="filter-btn-box">
+						<div class="filter-btn-box__toggle">
+							<span class="filter-btn-box__tx">Духовка</span>
+						</div>
+
+						<div class="filter-btn-box__dd">
+							<div class="filter-btn-box__inn">
+								1111
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 
 			<p class="product-desc">Купольная вытяжка шириной 60 см с тремя скоростями работы и галогенным освещением.</p>

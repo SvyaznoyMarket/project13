@@ -299,12 +299,13 @@
     -ms-user-select: auto;
     user-select: auto;
 }
+
 .after-gradient-stub(@width, @start:rgba(255,255,255,0), @stop:#fff){
-  content:'';
+  content: '';
   .smoke-lrgradient(@start, @stop);
   height: 100%;
   width: @width;
   position: absolute;
   right: 0px;
-  top:0px;
+  top: 0px;
 }
