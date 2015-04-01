@@ -115,7 +115,7 @@
 	<!--/ карточка товара -->
 
 	<ul class="product-tabs">
-		<li class="product-tabs__i active"><a class="product-tabs__lk" href="" title="">Подробности</a></li>
+		<li class="product-tabs__i product-tabs__i--active"><a class="product-tabs__lk" href="" title="">Подробности</a></li>
 		<li class="product-tabs__i"><a class="product-tabs__lk" href="" title="">Аксессуары</a></li>
 		<li class="product-tabs__i"><a class="product-tabs__lk" href="" title="">Отзывы</a></li>
 		<li class="product-tabs__i"><a class="product-tabs__lk" href="" title="">Похожие товары</a></li>
@@ -174,29 +174,137 @@
 
 	<div class="product-section">
 		<div class="product-section__tl">Отзывы</div>
-
 		<div class="reviews">
 			<div class="reviews__l">
-				<div class="reviews__authtor"></div>
+				<div class="reviews__i">
+					<div class="reviews__cpt"><div class="reviews__author">Мерзликин Виталий</div>,
+					<div class="reviews__date">8.01.2015</div></div>
 
-				<div class="reviews__stars"></div>
+					<div class="product-card-rating">
+							<span class="product-card-rating__state">
+								<i class="product-card-rating__i product-card-rating__i--1"></i>
+								<i class="product-card-rating__i product-card-rating__i--2"></i>
+								<i class="product-card-rating__i product-card-rating__i--3"></i>
+								<i class="product-card-rating__i product-card-rating__i--4"></i>
+								<i class="product-card-rating__i product-card-rating__i--5"></i>
+							</span>
+					</div>
 
-				<div class="reviews__tl">Достоинства</div>
-				<p class="reviews__tx">1. Программная часть: все-таки win 8 еще не дотягивает до андроида и уж тем более до оси. С обновлением до win 8.1 стало немного лучше, но этого "немного" всё же недостаточно. 2. Очень слабенький аккумулятор - при нормальном использовании заряда хватает максимум на один день. 3. При отрицательной температуре глючит сенсор (проверялось на двух Lumia 620, а значит это не косяк только моей модели).</p>
+					<div class="reviews__tl">Достоинства:</div>
+					<p class="reviews__tx">1. Программная часть: все-таки win 8 еще не дотягивает до андроида и уж тем более до оси. С обновлением до win 8.1 стало немного лучше, но этого "немного" всё же недостаточно. 2. Очень слабенький аккумулятор - при нормальном использовании заряда хватает максимум на один день. 3. При отрицательной температуре глючит сенсор (проверялось на двух Lumia 620, а значит это не косяк только моей модели).</p>
 
-				<div class="reviews__tl">Недостатки:</div>
-				<p class="reviews__tx">1. Программная часть: все-таки win 8 еще не дотягивает до андроида и уж тем более до оси. С обновлением до win 8.1 стало немного лучше, но этого "немного" всё же недостаточно. 2. Очень слабенький аккумулятор - при нормальном использовании заряда хватает максимум на один день. 3. При отрицательной температуре глючит сенсор (проверялось на двух Lumia 620, а значит это не косяк только моей модели).</p>
+					<div class="reviews__tl">Недостатки:</div>
+					<p class="reviews__tx">1. Программная часть: все-таки win 8 еще не дотягивает до андроида и уж тем более до оси. С обновлением до win 8.1 стало немного лучше, но этого "немного" всё же недостаточно. 2. Очень слабенький аккумулятор - при нормальном использовании заряда хватает максимум на один день. 3. При отрицательной температуре глючит сенсор (проверялось на двух Lumia 620, а значит это не косяк только моей модели).</p>
 
-				<div class="reviews__tl">Комментарий:</div>
-				<p class="reviews__tx">1. Программная часть: все-таки win 8 еще не дотягивает до андроида и уж тем более до оси. С обновлением до win 8.1 стало немного лучше, но этого "немного" всё же недостаточно. 2. Очень слабенький аккумулятор - при нормальном использовании заряда хватает максимум на один день. 3. При отрицательной температуре глючит сенсор (проверялось на двух Lumia 620, а значит это не косяк только моей модели).</p>
+					<div class="reviews__tl">Комментарий:</div>
+					<p class="reviews__tx">1. Программная часть: все-таки win 8 еще не дотягивает до андроида и уж тем более до оси. С обновлением до win 8.1 стало немного лучше, но этого "немного" всё же недостаточно. 2. Очень слабенький аккумулятор - при нормальном использовании заряда хватает максимум на один день. 3. При отрицательной температуре глючит сенсор (проверялось на двух Lumia 620, а значит это не косяк только моей модели)это не косяк только моей модели).</p>
 
-				<div class="reviews-voice">
-					<div class="reviews-voice__tl"></div>
-					<a href="" class="reviews-voice__positive"></a>
-					<a href="" class="reviews-voice__negative"></a>
+					<div class="reviews-voting">
+						<div class="reviews-voting__tl">Полезный отзыв?</div>
+						<a href="#" class="reviews-vote reviews-vote--positive">33</a>
+						<a href="#" class="reviews-vote reviews-vote--negative">24</a>
+					</div>
 				</div>
 			</div>
-			<div class="reviews__r"></div>
+			<div class="reviews__r">
+				<div class="btn btn--add-review">+ Добавить отзыв</div>
+				<span class="reviews-percentage__tl">Всего 57 отзывов</span>
+				<ul class="reviews-percentage-list">
+					<li class="reviews-percentage-item">
+						<div class="product-card-rating">
+							<span class="product-card-rating__state">
+								<i class="product-card-rating__i product-card-rating__i--1"></i>
+								<i class="product-card-rating__i product-card-rating__i--2"></i>
+								<i class="product-card-rating__i product-card-rating__i--3"></i>
+								<i class="product-card-rating__i product-card-rating__i--4"></i>
+								<i class="product-card-rating__i product-card-rating__i--5"></i>
+							</span>
+							<div class="product-card-rating-chart">
+								<span class="product-card-rating-chart__val" style="width:60px;"></span>
+							</div>
+							<span class="product-card-rating__val">49</span>
+						</div>
+					</li>
+					<li class="reviews-percentage-item">
+						<div class="product-card-rating">
+							<span class="product-card-rating__state">
+								<i class="product-card-rating__i product-card-rating__i--1"></i>
+								<i class="product-card-rating__i product-card-rating__i--2"></i>
+								<i class="product-card-rating__i product-card-rating__i--3"></i>
+								<i class="product-card-rating__i product-card-rating__i--4"></i>
+								<i class="product-card-rating__i product-card-rating__i--5"></i>
+							</span>
+							<div class="product-card-rating-chart">
+								<span class="product-card-rating-chart__val" style="width:10px;"></span>
+							</div>
+							<span class="product-card-rating__val">5</span>
+						</div>
+					</li>
+					<li class="reviews-percentage-item">
+						<div class="product-card-rating">
+							<span class="product-card-rating__state">
+								<i class="product-card-rating__i product-card-rating__i--1"></i>
+								<i class="product-card-rating__i product-card-rating__i--2"></i>
+								<i class="product-card-rating__i product-card-rating__i--3"></i>
+								<i class="product-card-rating__i product-card-rating__i--4"></i>
+								<i class="product-card-rating__i product-card-rating__i--5"></i>
+							</span>
+							<div class="product-card-rating-chart">
+								<span class="product-card-rating-chart__val" style="width:20px;"></span>
+							</div>
+							<span class="product-card-rating__val">15</span>
+						</div>
+					</li>
+					<li class="reviews-percentage-item">
+						<div class="product-card-rating">
+							<span class="product-card-rating__state">
+								<i class="product-card-rating__i product-card-rating__i--1"></i>
+								<i class="product-card-rating__i product-card-rating__i--2"></i>
+								<i class="product-card-rating__i product-card-rating__i--3"></i>
+								<i class="product-card-rating__i product-card-rating__i--4"></i>
+								<i class="product-card-rating__i product-card-rating__i--5"></i>
+							</span>
+							<div class="product-card-rating-chart">
+								<span class="product-card-rating-chart__val" style="width:7px;"></span>
+							</div>
+							<span class="product-card-rating__val">7</span>
+						</div>
+					</li>
+					<li class="reviews-percentage-item">
+						<div class="product-card-rating">
+							<span class="product-card-rating__state">
+								<i class="product-card-rating__i product-card-rating__i--1"></i>
+								<i class="product-card-rating__i product-card-rating__i--2"></i>
+								<i class="product-card-rating__i product-card-rating__i--3"></i>
+								<i class="product-card-rating__i product-card-rating__i--4"></i>
+								<i class="product-card-rating__i product-card-rating__i--5"></i>
+							</span>
+							<div class="product-card-rating-chart">
+								<span class="product-card-rating-chart__val" style="width:3px;"></span>
+							</div>
+							<span class="product-card-rating__val">1</span>
+						</div>
+					</li>
+				</ul>
+			</div>
 		</div>
+		<div class="btn btn--more-reviews">Показать больше отзывов</div>
+	</div>
+	<ul class="bread-crumbs">
+		<li class="bread-crumbs__i"><a href="" class="bread-crumbs__lk">Бытовая техника</a></li>
+		<li class="bread-crumbs__i"><a href="" class="bread-crumbs__lk">Встраиваемая техника</a></li>
+		<li class="bread-crumbs__i"><a href="" class="bread-crumbs__lk">Вытяжки</a></li>
+		<li class="bread-crumbs__i">Артикул: 468-6393</li>
+	</ul>
+	<div class="bottom-content">
+		<p class="bottom-content__p">
+			<span class="bottom-content__tl">Теги: </span>Вытяжки Hotpoint-Ariston дома, Вытяжки Hotpoint-Ariston на работе, Вытяжки Hotpoint-Ariston в поле и в лесу.
+		</p>
+		<p class="bottom-content__p">
+			<span class="bottom-content__tl">Похожие товары: </span>Вытяжка Kaiser A 6416WBE, Купольная вытяжка Krona Bella PB 600 стальнаяКупольная вытяжка CATA S 600 inox
+		</p>
+		<p class="bottom-content__p bottom-content__text">
+			Вытяжка представляет собой авторитаризм, учитывая результат предыдущих медиа-кампаний. Политическое учение Локка, анализируя результаты рекламной кампании, программирует потребительский рынок. Если архаический миф не знал противопоставления реальности тексту, ударение вызывает англо-американский тип политической культуры, учитывая результат предыдущих медиа-кампаний. Как предсказывают футурологи институциализация отталкивает комплексный мониторинг активности. Речевой акт непосредственно начинает символ.
+		</p>
 	</div>
 </section>

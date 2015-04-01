@@ -27,4 +27,26 @@
 		border-bottom: 1px dotted #8c8c8c;
 		line-height: 1.2;
 	}
+	&__val {
+		.inline-block-middle();
+		color: #9c9c9c;
+		line-height: 1.2;
+		margin: 0 0 0 5px;
+	}
+
+	&-chart {
+		.inline-block-middle();
+		width: 100px;
+		height: 3px;
+		background: #e0e0e0;
+		position: relative;
+		&__val {
+			background: #f99b1c;
+			position: absolute;
+			height: 3px;
+			left: 0px;
+			top: 0px;
+		}
+	}
+
 }
