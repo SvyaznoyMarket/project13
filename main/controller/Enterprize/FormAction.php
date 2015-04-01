@@ -357,6 +357,7 @@ class FormAction {
                     'enterprizeToken' => $enterprizeToken,
                     'name'            => $form->getName(),
                     'email'           => $form->getEmail(),
+                    'mobile'          => $form->getMobile(),
                 ];
 
                 // пишем в сессию
