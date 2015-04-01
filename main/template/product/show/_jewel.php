@@ -231,10 +231,6 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
 
     <?= $helper->render('product/__adfox', ['product' => $product]) // Баннер Adfox ?>
 
-    <?//= $helper->render('product/__warranty', ['product' => $product]) ?>
-
-    <?//= $helper->render('product/__service', ['product' => $product]) ?>
-
     <? if ($product->isAvailable()): // SITE-4709 ?>
         <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'right']) ?>
     <? endif ?>
@@ -271,6 +267,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
         'sender'    => [
             'name'     => 'enter',
             'position' => 'Viewed',
+            'from'     => 'productPage',
         ],
         'sender2' => $sender2,
     ]) ?>

@@ -17,8 +17,6 @@ class TreeEntity extends BasicEntity {
     protected $productView;
     /** @var int|null */
     protected $productCount;
-    /** @var int|null */
-    protected $globalProductCount;
     /** @var bool|null */
     protected $hasChild;
     /** @var TreeEntity[] */
@@ -40,7 +38,6 @@ class TreeEntity extends BasicEntity {
         if (isset($data['product_view_id'])) $this->setProductView($data['product_view_id']);
         if (isset($data['level'])) $this->setLevel($data['level']);
         if (isset($data['product_count'])) $this->setProductCount($data['product_count']);
-        if (isset($data['product_count_global'])) $this->setGlobalProductCount($data['product_count_global']);
         if (isset($data['has_children'])) $this->setHasChild($data['has_children']);
         if (isset($data['is_new'])) $this->isNew = $data['is_new'];
 
@@ -136,20 +133,6 @@ class TreeEntity extends BasicEntity {
     public function getProductCount()
     {
         return $this->productCount;
-    }
-
-    /**
-     * @param int $globalProductCount
-     */
-    public function setGlobalProductCount($globalProductCount) {
-        $this->globalProductCount = (int)$globalProductCount;
-    }
-
-    /**
-     * @return int
-     */
-    public function getGlobalProductCount() {
-        return $this->globalProductCount;
     }
 
     /**

@@ -38,13 +38,12 @@ class CompletePage extends Layout {
     public function slotGoogleAnalytics() {
         $orders = $this->getParam('orders');
         $productsById = $this->getParam('productsById');
-        $servicesById = $this->getParam('servicesById');
 
         $isOrderAnalytics = $this->getParam('isOrderAnalytics');
         $isOrderAnalytics = (null !== $isOrderAnalytics) ? $isOrderAnalytics : true;
 
 
-        return $isOrderAnalytics ? $this->render('_googleAnalytics', ['orders' => $orders, 'productsById' => $productsById, 'servicesById' => $servicesById, 'isOrderAnalytics' => $isOrderAnalytics]) : $this->render('_googleAnalytics');
+        return $isOrderAnalytics ? $this->render('_googleAnalytics', ['orders' => $orders, 'productsById' => $productsById, 'isOrderAnalytics' => $isOrderAnalytics]) : $this->render('_googleAnalytics');
     }
 
     public function slotMarinConversionTagJS()
@@ -99,39 +98,6 @@ class CompletePage extends Layout {
         }
 
         return $this->tryRender('partner-counter/_revolvermarketing_conversion');
-    }
-
-    public function slotFlocktoryExchangeJS() {
-        if (!\App::config()->flocktoryExchange['enabled']) return;
-
-        $orders = $this->getParam('orders');
-        if (empty($orders) || !is_array($orders)) {
-            return;
-        }
-
-        /** @var $order Order */
-        $order = reset($orders);
-        /** @var $form OrderForm */
-        $form = $this->getParam('form');
-        if (!$order instanceof Order || !$form instanceof OrderForm) {
-            return;
-        }
-
-        $email = $form->getEmail();
-        if (!$email) {
-            $email = $order->getMobilePhone() . '@unknown.email';
-        }
-
-        $data = [
-            'spot' => 'thankyou',
-            'email' => $email,
-            'name' => $form->getFirstName() . ' ' . $form->getLastName(),
-            'container' => 'flocktory_exchange' // DOM element in which banner will be inserted.
-        ];
-
-        return
-            '<div id="flocktory_exchange"></div>
-            <div id="flocktoryExchangeJS" class="jsanalytics" data-value="' . $this->json($data) . '"></div>';
     }
 
     public function slotRevolverJS()

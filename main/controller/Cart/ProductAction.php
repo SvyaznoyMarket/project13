@@ -11,7 +11,7 @@ class ProductAction {
      * @throws \Exception
      */
     public function set($productId, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $cart = \App::user()->getCart();
 
@@ -108,7 +108,6 @@ class ProductAction {
                 'isTchiboProduct' => $product->getMainCategory() && 'Tchibo' === $product->getMainCategory()->getName(),
                 'category'        => $this->getCategories($product),
                 'quantity'        => $cartProduct ? $cartProduct->getQuantity() : 0,
-                'serviceQuantity' => $cart->getServicesQuantityByProduct($product->getId()),
                 'isSlot' => (bool)$product->getSlotPartnerOffer(),
                 'isOnlyFromPartner' => $product->isOnlyFromPartner(),
                 'isNewWindow'       => \App::abTest()->isNewWindow() // открытие товаров в новом окне
@@ -135,12 +134,6 @@ class ProductAction {
                 ]);
             } else {
                 $response = new \Http\RedirectResponse($returnRedirect);
-            }
-
-            if ($cart->getSum()) {
-                \Session\User::enableInfoCookie($response);
-            } else {
-//                \Session\User::disableInfoCookie($response); // SITE-3926
             }
 
             return $response;
@@ -253,8 +246,6 @@ class ProductAction {
                 ['geo_id' => \App::user()->getRegion()->getId()],
                 [
                     'product_list'  => $cart->getProductData(),
-                    'service_list'  => [],
-                    'warranty_list' => [],
                 ],
                 function ($data) use (&$result) {
                     $result = $data;
@@ -309,13 +300,6 @@ class ProductAction {
 
             $response = new \Http\JsonResponse($responseData);
 
-            if ($cart->getSum()) {
-                \Session\User::enableInfoCookie($response);
-            } else {
-                \Session\User::disableInfoCookie($response);
-            }
-
-
         } catch(\Exception $e) {
             $responseData = [
                 'success' => false,
@@ -337,7 +321,7 @@ class ProductAction {
      * @return \Http\JsonResponse|\Http\RedirectResponse
      */
     public function delete(\Http\Request $request, $productId) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
         $request->query->set('quantity', 0);
         return $this->set($productId, $request);
     }

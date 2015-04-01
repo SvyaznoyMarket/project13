@@ -77,10 +77,10 @@
             <input class="personalData_text textfield" type="email"  value="<?= $form->getEmail() ?>" name="user[email]" <? if ($form->getIsDisabled()): ?>readonly<? endif ?> />
 
             <label class="personalData_label labeltext">Мобильный телефон:</label>
-            <input class="personalData_text textfield" type="text"  value="<?= $form->getMobilePhone() ?>" name="user[mobile_phone]" class="text" <? if ($form->getIsDisabled()): ?>readonly<? endif ?> />
+            <input class="personalData_text textfield js-lk-mobilePhone" type="text"  value="<?= $form->getMobilePhone() ?>" name="user[mobile_phone]" class="text" <? if ($form->getIsDisabled()): ?>readonly<? endif ?> />
 
             <label class="personalData_label labeltext">Домашний телефон:</label>
-            <input class="personalData_text textfield" type="text" value="<?= $form->getHomePhone() ?>" name="user[home_phone]" />
+            <input class="personalData_text textfield js-lk-homePhone" type="text" value="<?= $form->getHomePhone() ?>" name="user[home_phone]" />
 
             <? if (isset($bonusCards) && is_array($bonusCards)): ?>
                 <? foreach ($bonusCards as $card):
@@ -115,10 +115,10 @@
 
             <p style="xs">Надежный пароль должен содержать от 6 до 16 знаков следующих трех видов: прописные буквы, строчные буквы, цифры или символы, но не должен включать широко распространенные слова и имена.</p>
             <label class="labeltext">Старый пароль:</label>
-            <input type="password" class="textfield personalData_text" name="password_old" />
+            <input type="password" class="textfield personalData_text" name="password_old" autocomplete="off" />
 
             <label class="labeltext">Новый пароль:</label>
-            <input type="password" class="textfield personalData_text" name="password_new" />
+            <input type="password" class="textfield personalData_text" name="password_new" autocomplete="off" />
 
             <!--<p style="xs">Внимание! После смены пароля Вам придет письмо и SMS с новым паролем</p>-->
         </fieldset>

@@ -30,11 +30,10 @@ namespace EnterQuery\PaymentGroup
         }
 
         /**
-         * @param \Exception $error
          * @return $this
          * @throws \Exception
          */
-        public function prepare(\Exception &$error = null)
+        public function prepare()
         {
             // валидация
             if (!$this->regionId) {
@@ -68,15 +67,15 @@ namespace EnterQuery\PaymentGroup
                         $this->cart->products
                     ),
                 ], // data
-                0.5, // timeout multiplier
-                $error,
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
                     $this->response->paymentGroups = isset($result['detail'][0]) ? $result['detail'] : [];
 
                     return $result; // for cache
-                }
+                },
+                1, // timeout ratio
+                [0] // delay ratio
             );
 
             return $this;

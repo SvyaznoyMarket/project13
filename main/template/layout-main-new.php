@@ -72,7 +72,6 @@
 
     <?= $page->slotUpper() ?>
     <?= $page->slotUserbar() ?>
-    <?= $page->slotRegionSelection() ?>
     <?= $page->slotAuth() ?>
     <?= $page->slotYandexMetrika() ?>
     <?= $page->slotBodyJavascript() ?>

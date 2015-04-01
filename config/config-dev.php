@@ -21,7 +21,7 @@ $c->dataStore['timeout'] *= 1.5;
 
 $c->pickpoint['url'] = 'http://e-solution.pickpoint.ru/apitest/';
 
-$c->database['host'] = 'localhost';
+$c->order['emailRequired'] = false;
 
 $c->loadMediaHost = false;
 

@@ -11,7 +11,7 @@ class SliderAction {
      * @throws \Exception\NotFoundException
      */
     public function execute($enterprizeToken = null, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $user = \App::user();
         $repository = \RepositoryManager::enterprize();
@@ -70,7 +70,7 @@ class SliderAction {
                         'price'         => $helper->formatPrice($product->getPrice()),
                         'discountPrice' => $helper->formatPrice(
                             $enterpizeCoupon->getIsCurrency()
-                            ? ($product->getPrice() - $enterpizeCoupon->getPrice())
+                            ? ($product->getPrice() - (($enterpizeCoupon->getPrice() > 0) ? $enterpizeCoupon->getPrice() : -$enterpizeCoupon->getPrice()))
                             : ceil($product->getPrice() - $product->getPrice() * $enterpizeCoupon->getPrice() / 100)
                         ),
                         'name'          => $product->getName(),
@@ -79,7 +79,12 @@ class SliderAction {
                             $enterpizeCoupon->getDiscount()
                             ? $cartButtonAction->execute(
                                 new \Helper\TemplateHelper(),
-                                $product
+                                $product,
+                                null,
+                                false,
+                                [],
+                                false,
+                                'slider'
                             )
                             : null
                         ,

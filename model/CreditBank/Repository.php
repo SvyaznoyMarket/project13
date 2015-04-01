@@ -20,7 +20,7 @@ class Repository
      * @return string
      */
     public static function getCreditTypeByCategoryToken($categoryToken) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         return
             in_array(
@@ -37,7 +37,7 @@ class Repository
      * @return Entity|null
      */
     public function getEntityById($id) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         if (!$id) {
             return null;
@@ -67,7 +67,7 @@ class Repository
      * @return Entity[]
      */
     public function getCollection() {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = clone $this->client;
 
@@ -94,7 +94,7 @@ class Repository
      * @param callback $fail
      */
     public function prepareCollection($done, $fail = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery('payment-method/get-credit-bank', array(
             'geo_id' => \App::user()->getRegion()->getId(),

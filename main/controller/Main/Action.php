@@ -11,7 +11,7 @@ class Action {
      * @return \Http\Response
      */
     public function index(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $router = \App::router();
         $client = \App::coreClientV2();
@@ -31,7 +31,7 @@ class Action {
 
             // Фильтруем баннеры для новой и старой главной
             $data = array_filter($data, function($item) {
-                return (AbTest::isNewMainPage() ? 3 : 1) == (int)@$item['type_id'];
+                return 3 == (int)@$item['type_id'];
             });
 
             foreach ($data as $i => $item) {
@@ -49,10 +49,10 @@ class Action {
                 $bannerData[] = [
                     'id'    => $bannerId,
                     'alt'   => $item['name'],
-                    'imgs'  => $item['image'] ? ($host . $urls[AbTest::isNewMainPage() ? 4 : 0] . $item['image']) : null,
-                    'imgb'  => $item['image'] ? ($host . $urls[AbTest::isNewMainPage() ? 3 : 1] . $item['image']) : null,
+                    'imgs'  => $item['image'] ? ($host . $urls[4] . $item['image']) : null,
+                    'imgb'  => $item['image'] ? ($host . $urls[3] . $item['image']) : null,
                     'url'   => $item['url'],
-                    't'     => $i > 0 ? $timeout : $timeout + 4000,
+                    't'     => $timeout,
                     'ga'    => $bannerId . ' - ' . $item['name'],
                     'pos'   => $i,
                 ];
@@ -80,16 +80,13 @@ class Action {
             }
         }
 
-        // Запрашиваем рекомендации и добавляем ID продуктов в массив для product/get
-        if (AbTest::isNewMainPage()) {
-            $productsIdsFromRR = $this->getProductIdsFromRR($request);
-            foreach ($productsIdsFromRR as $arr) {
-                foreach ($arr as $key => $val) {
-                    $productsById[(int)$val] = null;
-                }
+        $productsIdsFromRR = $this->getProductIdsFromRR($request);
+        foreach ($productsIdsFromRR as $arr) {
+            foreach ($arr as $key => $val) {
+                $productsById[(int)$val] = null;
             }
-            unset($val, $key, $arr);
         }
+        unset($val, $key, $arr);
 
         // подготовка 2-го пакета запросов
         // запрашиваем товары

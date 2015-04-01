@@ -22,10 +22,9 @@ namespace EnterQuery\Product
         }
 
         /**
-         * @param \Exception $error
          * @return $this
          */
-        public function prepare(\Exception &$error = null)
+        public function prepare()
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
@@ -35,11 +34,10 @@ namespace EnterQuery\Product
                         'trustfactor' => true, // TODO: filter
                         'seo'         => true, // TODO: filter
                         'media'       => true, // TODO: filter
+                        'property'    => true, // TODO: filter
                     ]
                 ),
                 [], // data
-                1, // timeout multiplier
-                $error,
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode);
 

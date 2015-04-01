@@ -29,15 +29,14 @@ $c->session['cookie_lifetime'] = 2592000; // 30 дней
 $c->session['cookie_domain'] = '.enter.ru';
 $c->session['compareKey']   = 'compare'; // ключ для массива сравнения
 
-$c->cacheCookieName = 'enter_auth'; //TODO: удалить
-
 $c->mainHost = 'www.enter.ru';
 $c->mobileHost = 'm.enter.ru';
 
 $c->redirect301['enabled'] = true;
 $c->mobileRedirect['enabled'] = false;
 
-$c->curlCache['enabled'] = false;
+$c->curlCache['enabled'] = true;
+$c->curlCache['delayRatio'] = [0, 0.025]; // количество и время задержек
 
 $c->coreV2['url']          = 'http://api.enter.ru/v2/';
 $c->coreV2['client_id']    = 'site';
@@ -315,8 +314,6 @@ $c->product['totalCount']               = 55000;
 $c->product['recommendationSessionKey']     = 'recommendationProductIds';
 $c->product['productPageSendersSessionKey'] = 'productPageSenders';
 $c->product['productPageSendersForMarketplaceSessionKey'] = 'productPageSendersForMarketplace';
-// глобальный (без учета региона) список товаров
-$c->product['globalListEnabled']      = true;
 $c->product['showAveragePrice']       = false;
 $c->product['allowBuyOnlyInshop']     = true;
 $c->product['reviewEnabled']          = true;
@@ -357,19 +354,6 @@ $c->productCategory['url'] = [
     5 => '/6/1/960/'
 ];
 
-$c->service['url'] = [
-    0 => '/11/1/160/',
-    1 => '/11/1/500/',
-    2 => '/11/1/120/',
-];
-
-$c->serviceCategory['url'] = [
-    0 => '/10/1/160/',
-    1 => '/10/1/500/',
-];
-
-$c->service['minPriceForDelivery'] = 950;
-
 $c->shopPhoto['url'] = [
     0 => '/8/1/40/',
     1 => '/8/1/120/',
@@ -379,7 +363,7 @@ $c->shopPhoto['url'] = [
     5 => '/8/1/original/',
 ];
 
-$c->banner['timeout'] = 6000;
+$c->banner['timeout'] = 5000;
 $c->banner['url'] = [
     0 => '/4/1/230x302/',
     1 => '/4/1/768x302/',
@@ -396,10 +380,7 @@ $c->payment['creditEnabled'] = true;
 $c->payment['paypalECS'] = false;
 $c->payment['blockedIds'] = [];
 
-$c->warranty['enabled'] = true;
 $c->f1Certificate['enabled'] = true;
-$c->coupon['enabled'] = true;
-$c->blackcard['enabled'] = false;
 
 $c->user['corporateRegister'] = true;
 $c->user['defaultRoute'] = 'user.recommend';
@@ -443,6 +424,7 @@ $c->order['prepayment'] = [
 $c->order['splitSessionKey'] = 'order_split';
 $c->order['oneClickSplitSessionKey'] = $c->order['splitSessionKey'] . '-1click';
 $c->order['sessionInfoOnComplete'] = true; // краткая инфа о заказе
+$c->order['emailRequired'] = true;          // обязательность email
 
 $c->newDeliveryCalc = true;
 
@@ -511,9 +493,7 @@ $c->svyaznoyClub['userTicket']['cookieName'] = 'UserTicket';
 $c->svyaznoyClub['cardNumber']['cookieName'] = 'scid';
 
 $c->flocktoryExchange['enabled'] = true;
-
-$c->flocktoryCoupon['enabled'] = true;
-$c->flocktoryCoupon['paramName'] = 'utm_coupon';
+$c->flocktoryPostCheckout['enabled'] = true;
 
 
 $c->photoContest = [
@@ -535,7 +515,5 @@ $c->siteVersionSwitcher['cookieLifetime'] = 20 * 365 * 24 * 60 * 60;
 $c->bandit['enabled'] = false;
 
 $c->tealeaf['enabled'] = true;
-
-$c->gift['buyProducts']['cookie']['name'] = 'giftBuyProducts';
 
 return $c;

@@ -7,9 +7,10 @@
         $pageDelivery = $('.jsOrderV3PageDelivery'),
         $validationErrors = $('.jsOrderValidationErrors'),
         errorClass = 'textfield-err',
+		cancelInputBlur = false,
         validateEmail = function validateEmailF(email) {
             var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(email);
+            return re.test(email) && !/[а-яА-Я]/.test(email);
         },
 		validateMnogoRu = function validateMnogoRuF(val){
 			return val.length == 0 || /\d{4}\s\d{4}/.test(val)
@@ -23,7 +24,7 @@
 				$subscribeInput = $('.jsOrderV3SubscribeCheckbox'),
 				phone = $phoneInput.val().replace(/\s+/g, '');
 
-			if (!/8\(\d{3}\)\d{3}-\d{2}-\d{2}/.test(phone)) {
+			if (!/\+7\(\d{3}\)\d{3}-\d{2}-\d{2}/.test(phone)) {
 				error.push('Неверный формат телефона');
 				$phoneInput.addClass('textfield-err').siblings('.errTx').show();
 			} else {
@@ -67,6 +68,10 @@
 
 	/* Проверяем форму при потере фокуса любого input */
 	$pageNew.on('blur', 'input', function(){
+		if (cancelInputBlur) {
+			return;
+		}
+
 		validate();
 	});
 
@@ -85,11 +90,26 @@
 		}
     });
 
+	// SITE-5292
+	$pageNew.on('mousedown keydown', '.jsOrderV3SubscribeLabel, .jsOrderV3SubscribeCheckbox', function(){
+		cancelInputBlur = true;
+		$pageNew.one('mouseup keyup', function() {
+			setTimeout(function() {
+				cancelInputBlur = false;
+				$('input', $pageNew).blur();
+			}, 0);
+		});
+	});
+
 	$pageNew.on('change', '.jsOrderV3SubscribeCheckbox', function(){
 		if (!$(this).is(':checked')) $body.trigger('trackGoogleEvent', ['Email_checkout', 'unsubscribe', 'email']);
 	});
 
 	$pageNew.on('blur', '.jsOrderV3EmailField', function(){
+		if (cancelInputBlur) {
+			return;
+		}
+
 		var $this = $(this);
 		validateEmail($this.val())
 			? $body.trigger('trackGoogleEvent', ['Email_checkout', 'success_validation', 'email'])

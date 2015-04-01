@@ -12,18 +12,27 @@
     </a>
 
     <div class="topbarfix_dd topbarfix_cartOn" >
-        <ul class="cartLst" data-bind="foreach: cart">
-            <li class="cartLst_i">
-                <a class="cartLst_lk" data-bind="attr: { href: link }"><img class="cartLst_img" src="" data-bind="attr: { src: img }"/></a>
-                <div class="cartLst_n"><a data-bind="attr: { href: link }, text: name"></a></div>
-                <div class="cartLst_inf">
-                    <span class="price"><span data-bind="html: window.printPrice(price)"></span> &nbsp;<span class="rubl">p</span></span>
-                    <span class="quan"><!--ko text: quantity--><!--/ko--> шт.</span>
-                    <a class="del jsCartDelete" data-bind="attr: { href: deleteUrl }">удалить</a>
-                </div>
-            </li>
-        </ul>
-
+        <div class="topbarfix-cart-wrap">
+            <table class="table-cart">
+                <tbody data-bind="foreach: cart">
+                    <tr class="table-cart__i">
+                        <td class="table-cart__img-wrap">
+                            <a data-bind="attr: { href: link }">
+                                <img class="table-cart__img" src="" data-bind="attr: { src: img }"/>
+                            </a>
+                        </td>
+                        <td class="table-cart__name">
+                            <a class="table-cart__name-inn" data-bind="attr: { href: link, title: name }, text: name"></a>
+                        </td>
+                        <td class="table-cart__inf">
+                            <span class="price"><span data-bind="html: window.printPrice(price)"></span> &nbsp;<span class="rubl">p</span></span>
+                            <span class="quan"><!--ko text: quantity--><!--/ko--> шт.</span>
+                            <a class="del jsCartDelete" data-bind="attr: { href: deleteUrl }">удалить</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <!-- для кнопки с иконкой btnBuy-inf -->
         <div class="btnBuy quickOrder" data-bind="css: {'btnBuy-inf': infoIconVisible() }"><a href="<?= $page->url('order') ?>" class="btnBuy__eLink quickOrder__link">Оформить заказ</a></div>
 

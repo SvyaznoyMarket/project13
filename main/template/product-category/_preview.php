@@ -7,7 +7,7 @@
 ?>
 
 <?php
-$productCount = $category->getProductCount() ?: $category->getGlobalProductCount();
+$productCount = $category->getProductCount();
 
 // total text
 $totalText = $productCount . ' ' . ($category->getHasLine()

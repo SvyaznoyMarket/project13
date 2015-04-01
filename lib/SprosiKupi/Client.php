@@ -22,7 +22,7 @@ class Client {
             }
             $info = curl_getinfo($connection);
 
-            $this->logger->debug('SprosiKupi response resource: ' . $connection, ['SprosiKupi']);
+            //$this->logger->debug('SprosiKupi response resource: ' . $connection, ['SprosiKupi']);
 
             if ($this->config['logEnabled']) {
                 $this->logger->info('Response ' . $connection . ' : ' . (is_array($info) ? json_encode($info, JSON_UNESCAPED_UNICODE) : $info), ['SprosiKupi']);

@@ -14,12 +14,11 @@ class CreateAction extends OrderV3 {
      */
     public function execute(\Http\Request $request) {
 
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $coreResponse = null;   // ответ о ядра
         $ordersData = [];       // данные для отправки на ядро
         $params = [];           // параметры запроса на ядро
-        $subscribeResult = false;  // ответ на подписку
 
         $splitResult = $this->session->get($this->splitSessionKey);
 
@@ -41,11 +40,6 @@ class CreateAction extends OrderV3 {
             if (isset($splitOrder)) unset($splitOrder);
 
             $coreResponse = $this->client->query('order/create-packet2', $params, $ordersData, \App::config()->coreV2['hugeTimeout']);
-
-            // Если стоит галка "подписаться на рассылку"
-            if ((bool)$request->cookies->get(\App::config()->subscribe['cookieName3']) && !empty($ordersData[0]['email'])) {
-                $this->addSubscribeRequest($subscribeResult, $ordersData[0]['email']);
-            }
 
             $this->client->execute();
 
@@ -79,7 +73,7 @@ class CreateAction extends OrderV3 {
         $sessionData = [];
 
         foreach ($coreResponse as $orderData) {
-            $sessionData[$orderData['number']] = $orderData += ['confirmed' => null, 'phone' => (string)$splitResult['user_info']['phone']];
+            $sessionData[$orderData['number']] = $orderData;
         }
 
         $this->session->set(\App::config()->order['sessionName'] ?: 'lastOrder', $sessionData);
@@ -92,41 +86,7 @@ class CreateAction extends OrderV3 {
 
         $response = new \Http\RedirectResponse(\App::router()->generate('orderV3.complete'));
 
-        // сохраняем результаты подписки в куку
-        if ($subscribeResult === true) {
-            $response->headers->setCookie(new \Http\Cookie(
-                \App::config()->subscribe['cookieName2'],
-                json_encode(['1' => true]), strtotime('+30 days' ), '/',
-                \App::config()->session['cookie_domain'], false, false
-            ));
-        }
-
         return $response;
-    }
-
-    /** Добавление запроса на подписку
-     * @param $subscribeResult
-     * @param $email
-     */
-    private function addSubscribeRequest(&$subscribeResult, $email) {
-
-        $subscribeParams = [
-            'email'      => $email,
-            'geo_id'     => $this->user->getRegion()->getId(),
-            'channel_id' => 1,
-        ];
-
-        if ($userEntity = $this->user->getEntity()) {
-            $subscribeParams['token'] = $userEntity->getToken();
-        }
-
-        $this->client->addQuery('subscribe/create', $subscribeParams, [], function($data) use (&$subscribeResult) {
-            if (isset($data['subscribe_id']) && isset($data['subscribe_id'])) $subscribeResult = true;
-        }, function(\Exception $e) use (&$subscribeResult) {
-            \App::exception()->remove($e);
-            // "code":910,"message":"Не удается добавить подписку, указанный email уже подписан на этот канал рассылок"
-            if ($e->getCode() == 910) $subscribeResult = true;
-        });
     }
 
     /** Логируем ответ от ядра в случае успешного запроса

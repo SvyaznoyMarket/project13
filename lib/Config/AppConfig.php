@@ -77,8 +77,6 @@ class AppConfig {
         'cookie_lifetime' => null,
         'cookie_domain'   => null,
     ];
-    /** @var string */
-    public $cacheCookieName = null;
     /** @var array */
     public $redirect301 = [
         'enabled' => null,
@@ -89,7 +87,8 @@ class AppConfig {
     ];
 
     public $curlCache = [
-        'enabled' => null,
+        'enabled'    => null,
+        'delayRatio' => [0],
     ];
 
     /**
@@ -320,7 +319,6 @@ class AppConfig {
         'itemsInCategorySlider'  => null,
         'minCreditPrice'         => null,
         'totalCount'             => null,
-        'globalListEnabled'      => null, // глобальный (без учета региона) список товаров
         'showAveragePrice'       => null,
         'allowBuyOnlyInshop'     => null, // позволять покупать товар, который находится только в магазине
         'reviewEnabled'          => null, // отзывы о товаре
@@ -344,15 +342,6 @@ class AppConfig {
     ];
     /** @var array */
     public $productCategory = [
-        'url' => [],
-    ];
-    /** @var array */
-    public $service = [
-        'url'                 => [],
-        'minPriceForDelivery' => null,
-    ];
-    /** @var array */
-    public $serviceCategory = [
         'url' => [],
     ];
     /** @var array */
@@ -403,19 +392,7 @@ class AppConfig {
     ];
 
     /** @var array */
-    public $warranty = [
-        'enabled' => null,
-    ];
-    /** @var array */
     public $f1Certificate = [
-        'enabled' => null,
-    ];
-    /** @var array */
-    public $coupon = [
-        'enabled' => null,
-    ];
-    /** @var array */
-    public $blackcard = [
         'enabled' => null,
     ];
     /** @var array */
@@ -593,9 +570,8 @@ class AppConfig {
     ];
 
     /** @var array */
-    public $flocktoryCoupon = [
+    public $flocktoryPostCheckout = [
         'enabled' => null,
-        'paramName' => null,
     ];
 
     /** @var array */
@@ -651,14 +627,6 @@ class AppConfig {
 
     public $tealeaf = [
         'enabled' => null,
-    ];
-
-    public $gift = [
-        'buyProducts' => [
-            'cookie' => [
-                'name' => null
-            ]
-        ],
     ];
 
     public function __construct() {

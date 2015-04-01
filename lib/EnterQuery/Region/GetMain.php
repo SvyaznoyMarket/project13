@@ -18,10 +18,9 @@ namespace EnterQuery\Region
         }
 
         /**
-         * @param \Exception $error
          * @return $this
          */
-        public function prepare(\Exception &$error = null)
+        public function prepare()
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
@@ -29,15 +28,15 @@ namespace EnterQuery\Region
                     []
                 ),
                 [], // data
-                0.5, // timeout multiplier
-                $error,
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
                     $this->response->regions = isset($result[0]) ? $result : [];
 
                     return $result; // for cache
-                }
+                },
+                0.5, // timeout ratio
+                [0] // delay ratio
             );
 
             return $this;

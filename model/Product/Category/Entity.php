@@ -25,8 +25,6 @@ class Entity extends BasicEntity {
     protected $seoHotlinks = [];
     /** @var int|null */
     protected $productCount;
-    /** @var int|null */
-    protected $globalProductCount;
     /** @var bool|null */
     protected $hasChild;
     /** @var float|null */
@@ -94,7 +92,6 @@ class Entity extends BasicEntity {
         }
 
         if (isset($data['product_count'])) $this->setProductCount($data['product_count']);
-        if (isset($data['product_count_global'])) $this->setGlobalProductCount($data['product_count_global']);
         if (isset($data['has_children'])) $this->setHasChild($data['has_children']);
         if (isset($data['price_change_percent_trigger'])) $this->setPriceChangePercentTrigger($data['price_change_percent_trigger'] / 100);
         if (isset($data['price_change_trigger_enabled'])) $this->setPriceChangeTriggerEnabled($data['price_change_trigger_enabled']);
@@ -179,20 +176,6 @@ class Entity extends BasicEntity {
     public function getProductCount()
     {
         return $this->productCount;
-    }
-
-    /**
-     * @param int $globalProductCount
-     */
-    public function setGlobalProductCount($globalProductCount) {
-        $this->globalProductCount = (int)$globalProductCount;
-    }
-
-    /**
-     * @return int
-     */
-    public function getGlobalProductCount() {
-        return $this->globalProductCount;
     }
 
     /**
@@ -424,44 +407,68 @@ class Entity extends BasicEntity {
     }
 
     public function isV2Root() {
-        return ($this->isNewMainPage() && '616e6afd-fd4d-4ff4-9fe1-8f78236d9be6' === $this->getUi()); // Корневая бытовой техники
+        return ('616e6afd-fd4d-4ff4-9fe1-8f78236d9be6' === $this->getUi()); // Корневая бытовой техники
     }
 
     public function isV2() {
-        $root = $this->getRoot();
-        if (!$root) {
-            $root = $this;
-        }
-
-        if ($this->isNewMainPage()) {
-            // Бытовая техника
-            if ($root->getUi() === '616e6afd-fd4d-4ff4-9fe1-8f78236d9be6') {
-                return true;
-            }
-
-            // Мебель
-            if ($root->getUi() === 'f7a2f781-c776-4342-81e8-ab2ebe24c51a') {
-                return true;
-            }
-        }
-
-        return false;
+        return in_array($this->getRootOrSelf()->getUi(), [
+            '616e6afd-fd4d-4ff4-9fe1-8f78236d9be6', // Бытовая техника
+            'f7a2f781-c776-4342-81e8-ab2ebe24c51a', // Мебель
+//                'd91b814f-0470-4fd5-a2d0-a0449e63ab6f', // Электронника
+        ], true);
     }
 
     public function isV2Furniture() {
-        $root = $this->getRoot();
-        if (!$root) {
-            $root = $this;
+        $root = $this->getRootOrSelf();
+        // Мебель
+        return $root->getUi() === 'f7a2f781-c776-4342-81e8-ab2ebe24c51a';
+    }
+
+    public function isShowSmartChoice() {
+        $root = $this->getRootOrSelf();
+
+        // Мебель
+        return $root->getUi() !== 'f7a2f781-c776-4342-81e8-ab2ebe24c51a';
+    }
+
+    public function isShowFullChildren() {
+        if ($this->isV2()) {
+            return (bool)$this->getClosest([
+                '56ee3e3c-a1ee-4a42-834f-97bd1de3b16e', // Мебель для руководителей
+                'da1e9ace-9c81-4d19-a069-36a809e8b98f', // Мебель для персонала
+                'df612c33-3a48-47dd-b424-f0398f82e37e', // Коллекции мебели для гостиной
+                '7d6fd0b2-e57b-4f4b-a577-9ce81d6af07a', // Коллекции мебели для спальни
+                '61b83d8a-6383-4e51-9173-f51f89726cd4', // Коллекции мебели для прихожей
+                '4358f982-288f-4973-8eec-d77253fc9233', // Коллекции мебели для детской
+                '81dd06df-221c-4eb8-b095-73b3982f0874', // Коллекции мягкой мебели
+            ]);
         }
 
-        if ($this->isNewMainPage()) {
-            // Мебель
-            if ($root->getUi() === 'f7a2f781-c776-4342-81e8-ab2ebe24c51a') {
-                return true;
+        return true;
+    }
+
+    private function getClosest(array $expectedUis) {
+        /** @var Entity[] $ancestors */
+        $ancestors = $this->ancestor;
+        $ancestors[] = $this;
+        $ancestors = array_reverse($ancestors);
+
+        foreach ($ancestors as $category) {
+            if (in_array($category->getUi(), $expectedUis, true)) {
+                return $category;
             }
         }
 
-        return false;
+        return null;
+    }
+
+    private function getRootOrSelf() {
+        $root = $this->getRoot();
+        if (!$root) {
+            return $this;
+        }
+
+        return $root;
     }
 
     public function isV3() {

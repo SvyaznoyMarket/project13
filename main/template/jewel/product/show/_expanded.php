@@ -68,7 +68,7 @@ $addInfo = isset($addInfo)?$addInfo:[];
             <span class="db font18 pb10"><b><span class="price"><?= $page->helper->formatPrice($product->getPrice()) ?></span> <span class="rubl">p</span></b></span>
 
             <div class="goodsbar mSmallBtns">
-                <?= $page->render('cart/_button', ['product' => $product]) ?>
+                <?= \App::closureTemplating()->render('cart/__button-product', ['product' => $product]) ?>
             </div>
             <?= $page->render('product/show/__corner_features', ['product' => $product]) ?>
             <? if ($product->getIsBuyable()): ?>

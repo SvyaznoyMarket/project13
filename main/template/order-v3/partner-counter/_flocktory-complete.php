@@ -4,6 +4,9 @@ return function (
     $orders,
     $products
 ) {
+
+    if (!\App::config()->flocktoryPostCheckout['enabled']) return '';
+
     /** @var $order \Model\Order\Entity */
     $order = reset($orders) ?: null;
     if (!$order) return '';
@@ -23,18 +26,26 @@ return function (
         ];
     }
 
-    $data = [
-        'order_id'     => $order->getId(),
-        'email'        => $order->email ? $order->email : $order->getMobilePhone().'@enter.ru',
-        'name'         => $order->getFirstName(),
-        'sex'          => $order->getFirstName() && preg_match('/[аяa]$/', $order->getFirstName()) ? 'f' : 'm',
-        'price'        => $order->getProductSum(),
+    $user = [
+        'name'  => $order->getFirstName(),
+        'email' => $order->email ? $order->email : $order->getMobilePhone().'@enter.phone',
+        'sex'   => $order->getFirstName() && preg_match('/[аяa]$/', $order->getFirstName()) ? 'f' : 'm'
+    ];
+
+    $order = [
+        'id'  => $order->getId(),
+        'price' => $order->getSum(),
         'custom_field' => $order->getNumber(),
-        'items'        => $items,
+        'items' => $items
+    ];
+
+    $data = [
+        'user'  => $user,
+        'order' => $order
     ];
 
 ?>
 
-    <div id="jsOrderFlocktory" class="jsanalytics" data-value="<?= $helper->json($data) ?>"></div>
+    <div id="flocktoryCompleteOrderJS" class="jsanalytics" data-value="<?= $helper->json($data) ?>"></div>
 
 <? } ?>

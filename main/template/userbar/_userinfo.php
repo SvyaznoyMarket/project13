@@ -5,7 +5,7 @@
 ?>
 
 <li class="userbtn_i topbarfix_log topbarfix_log-unlogin" data-bind="visible: !name()">
-    <a href="/login" class="topbarfix_log_lk bAuthLink"><span class="topbarfix_log_tx"><?= $page->new_menu === true ? 'Вход' : 'Личный кабинет' ?></span></a>
+    <a href="/login" class="topbarfix_log_lk bAuthLink"><span class="topbarfix_log_tx">Вход</span></a>
 </li>
 
 <li class="userbtn_i topbarfix_log topbarfix_log-login js-topbarfixLogin" data-bind="visible: name(), css: {'enterprizeMember': isEnterprizeMember}" style="display: none">

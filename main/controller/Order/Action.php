@@ -14,7 +14,7 @@ class Action {
      * @throws \Exception
      */
     public function complete(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__, ['order']);
+        //\App::logger()->debug('Exec ' . __METHOD__, ['order']);
 
         $user = \App::user();
         $userEntity = $user->getEntity();
@@ -62,18 +62,6 @@ class Action {
         \RepositoryManager::product()->setEntityClass('\Model\Product\Entity');
         foreach (\RepositoryManager::product()->getCollectionById(array_keys($productsById)) as $product) {
             $productsById[$product->getId()] = $product;
-        }
-
-        // услуги индексированные по ид
-        /** @var $servicesById \Model\Product\Service\Entity[] */
-        $servicesById = [];
-        foreach ($orders as $order) {
-            foreach ($order->getService() as $orderService) {
-                $servicesById[$orderService->getId()] = null;
-            }
-        }
-        foreach (\RepositoryManager::service()->getCollectionById(array_map(function ($orderService) { /** @var $orderService \Model\Order\Service\Entity */ return $orderService->getId(); }, $order->getService()), $user->getRegion()) as $service) {
-            $servicesById[$service->getId()] = $service;
         }
 
         // метод оплаты
@@ -251,7 +239,6 @@ class Action {
         $page->setParam('orders', $orders);
         $page->setParam('shopsById', $shopsById);
         $page->setParam('productsById', $productsById);
-        $page->setParam('servicesById', $servicesById);
         $page->setParam('paymentMethod', $paymentMethod);
         $page->setParam('paymentProvider', $paymentProvider);
         $page->setParam('paymentForm', $paymentForm);
@@ -269,8 +256,6 @@ class Action {
             $response->headers->setCookie($cookie);
         }
 
-        $response->headers->setCookie(new \Http\Cookie(\App::config()->gift['buyProducts']['cookie']['name'], '', 0, '/', 'enter.ru', false, false));
-
         if ($form->getEmail() != '') {
             \App::retailrocket()->setUserEmail($response, $form->getEmail());
         }
@@ -285,7 +270,7 @@ class Action {
      * @throws \Exception\NotFoundException
      */
     public function paymentComplete($orderNumber, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__, ['order']);
+        //\App::logger()->debug('Exec ' . __METHOD__, ['order']);
 
         $orderNumber = trim((string)$orderNumber);
         if (!$orderNumber) {
@@ -321,7 +306,7 @@ class Action {
      * @return \Http\Response
      */
     public function paymentSuccess(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__, ['order']);
+        //\App::logger()->debug('Exec ' . __METHOD__, ['order']);
 
         $user = \App::user();
 
@@ -342,7 +327,7 @@ class Action {
      * @return \Http\Response
      */
     public function paymentFail(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__, ['order']);
+        //\App::logger()->debug('Exec ' . __METHOD__, ['order']);
 
         $user = \App::user();
 
@@ -363,7 +348,7 @@ class Action {
      * @return \Http\Response
      */
     public function clearPaymentUrl(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__, ['order']);
+        //\App::logger()->debug('Exec ' . __METHOD__, ['order']);
         if ($request->isMethod('post') && $request->isXmlHttpRequest()) {
             \App::session()->remove('paymentUrl');
             return new \Http\JsonResponse([

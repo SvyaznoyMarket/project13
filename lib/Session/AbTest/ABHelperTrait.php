@@ -9,13 +9,9 @@ namespace Session\AbTest;
  */
 trait ABHelperTrait {
 
-    /** Новая главная страница?
-     * @return bool
-     */
-    public static function isNewMainPage() {
-        // TODO данный тест был отключен 03.03.2015. Через некоторое время следует удалить данный метод и его вызовы из кода
-        return true;
-//        return \App::abTest()->getTest('main_page') && in_array(\App::abTest()->getTest('main_page')->getChosenCase()->getKey(), ['new', 'search_new_1', 'search_new_2']);
+    public static function isNewFurnitureListing() {
+        $test = \App::abTest()->getTest('furnitureListing');
+        return $test && $test->getChosenCase()->getKey() === 'new';
     }
 
     /** Поиск с возможностью фильтрации по категориям?
@@ -55,13 +51,6 @@ trait ABHelperTrait {
         return (int)$ordersCount == 1
             && \App::abTest()->getTest('online_motivation')
             && in_array(\App::abTest()->getTest('online_motivation')->getChosenCase()->getKey(), ['on', 'online_motivation_coupon', 'online_motivation_discount']);
-    }
-
-    /** Обязательный email при оформлении заказа?
-     * @return bool
-     */
-    public static function isEmailRequired(){
-        return \App::abTest()->getTest('order_email') && \App::abTest()->getTest('order_email')->getChosenCase()->getKey() == 'required';
     }
 
     /**

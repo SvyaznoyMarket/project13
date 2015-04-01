@@ -8,7 +8,7 @@ class IndexAction {
      * @return \Http\Response
      */
     public function execute(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
         $user = \App::user();
@@ -39,14 +39,6 @@ class IndexAction {
             });
         }
 
-        // запрашиваем список регионов для выбора
-        $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
-            foreach ($data as $item) {
-                $regionsToSelect[] = new \Model\Region\Entity($item);
-            }
-        });
-
         // выполнение 1-го пакета запросов
         $client->execute();
 
@@ -64,15 +56,11 @@ class IndexAction {
 
         // TODO: запрашиваем меню
         $cartProductsById = array_reverse($cart->getProducts(), true);
-        $cartServicesById = $cart->getServices();
 
         $productIds = array_keys($cartProductsById);
-        $serviceIds = array_keys($cartServicesById);
 
         /** @var $products \Model\Product\CartEntity[] */
         $products = [];
-        /** @var $services \Model\Product\Service\Entity[] */
-        $services = [];
         /** @var $products \Model\Product\Entity[] */
         $productEntities = [];
 
@@ -82,15 +70,6 @@ class IndexAction {
                 foreach ($data as $item) {
                     $products[] = new \Model\Product\Entity($item);
                     $productEntities[] = new \Model\Product\Entity($item);
-                }
-            });
-        }
-
-        // запрашиваем список услуг
-        if ((bool)$serviceIds) {
-            \RepositoryManager::service()->prepareCollectionById($serviceIds, $region, function($data) use(&$services, $cartServicesById) {
-                foreach ($data as $item) {
-                    $services[] = new \Model\Product\Service\Entity($item);
                 }
             });
         }
@@ -126,13 +105,10 @@ class IndexAction {
         }
 
         $page = new \View\Cart\IndexPage();
-        $page->setParam('regionsToSelect', $regionsToSelect);
         $page->setParam('selectCredit', 1 == $request->cookies->get('credit_on'));
         $page->setParam('productEntities', $productEntities);
         $page->setParam('products', $products);
-        $page->setParam('services', $services);
         $page->setParam('cartProductsById', $cartProductsById);
-        $page->setParam('cartServicesById', $cartServicesById);
         $page->setParam('productKitsById', $productKitsById);
         $page->setParam('categoryIdByProductId', $categoryIdByProductId);
 

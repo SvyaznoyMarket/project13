@@ -17,15 +17,6 @@ $extendedMargin = isset($extendedMargin) ? (bool)$extendedMargin : false;
 
 <div class="pagehead">
 
-    <? if ($hasSearch && !$page->new_menu): ?>
-    <noindex>
-        <div class="searchbox">
-            <?= $page->render('search/form-default', ['searchQuery' => $page->getParam('searchQuery')]) ?>
-            <div id="searchAutocomplete"></div>
-        </div>
-    </noindex>
-    <? endif ?>
-
     <?php echo $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs')) ?>
 
     <? if ($title): ?><h1><?= $title ?></h1><? endif ?>

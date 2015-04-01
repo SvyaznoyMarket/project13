@@ -26,12 +26,10 @@ namespace EnterQuery\Delivery
         }
 
         /**
-         * @param \Exception $error
-
          * @return $this
          * @throws \Exception
          */
-        public function prepare(\Exception &$error = null)
+        public function prepare()
         {
             // валидация
             if (!$this->regionId) {
@@ -59,8 +57,6 @@ namespace EnterQuery\Delivery
                         $this->cart->products
                     ),
                 ], // data
-                1, // timeout multiplier
-                $error,
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode)['result'];
 
@@ -70,7 +66,9 @@ namespace EnterQuery\Delivery
                     $this->response->regions = (isset($result['geo_list']) && is_array($result['geo_list'])) ? $result['geo_list'] : [];
 
                     return $result; // for cache
-                }
+                },
+                1, // timeout ratio
+                [0, 0.08] // delay ratio
             );
 
             return $this;

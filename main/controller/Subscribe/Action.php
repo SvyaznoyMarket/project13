@@ -9,7 +9,7 @@ class Action {
      * @throws \Exception
      */
     public function create(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
         $responseData = ['success' => false];
@@ -61,19 +61,6 @@ class Action {
         }
 
         return $response;
-    }
-
-    /**
-     * @return \Http\JsonResponse
-     */
-    public function cancel() {
-        try {
-            $responseData = ['success' => true];
-        } catch (\Exception $e) {
-            $responseData = ['success' => false];
-        }
-
-        return new \Http\JsonResponse($responseData);
     }
 
     /**

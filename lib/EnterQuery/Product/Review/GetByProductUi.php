@@ -28,10 +28,9 @@ namespace EnterQuery\Product\Review
         }
 
         /**
-         * @param \Exception $error
          * @return $this
          */
-        public function prepare(\Exception &$error = null)
+        public function prepare()
         {
             $this->prepareCurlQuery(
                 $this->buildUrl(
@@ -44,8 +43,6 @@ namespace EnterQuery\Product\Review
                     ]
                 ),
                 [], // data
-                0.5, // timeout multiplier
-                $error,
                 function($response, $statusCode) {
                     $result = $this->decodeResponse($response, $statusCode);
 
@@ -53,6 +50,8 @@ namespace EnterQuery\Product\Review
                     $this->response->reviewCount = isset($result['num_reviews']) ? $result['num_reviews'] : null;
                     $this->response->score = isset($result['avg_score']) ? $result['avg_score'] : null;
                     $this->response->starScore = isset($result['avg_star_score']) ? $result['avg_star_score'] : null;
+                    $this->response->groupedScoreCount = isset($result['num_users_by_score']) ? $result['num_users_by_score'] : [];
+                    $this->response->pageCount = isset($result['page_count']) ? $result['page_count'] : null;
 
                     return $result; // for cache
                 }
@@ -75,5 +74,9 @@ namespace EnterQuery\Product\Review\GetByProductUi
         public $score;
         /** @var float */
         public $starScore;
+        /** @var array */
+        public $groupedScoreCount;
+        /** @var int */
+        public $pageCount;
     }
 }

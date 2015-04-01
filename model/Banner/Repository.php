@@ -18,7 +18,7 @@ class Repository {
      * @return Entity[]
      */
     public function getCollection(\Model\Region\Entity $region = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args()));
 
         $client = clone $this->client;
 
@@ -44,7 +44,7 @@ class Repository {
      * @param                      $callback
      */
     public function prepareCollection(\Model\Region\Entity $region = null, $callback) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $params = [];
         if ($region) {
@@ -57,11 +57,10 @@ class Repository {
      * @param Entity $entity
      * @param \Routing\Router $router
      * @param \Model\Product\Entity[] $productsById
-     * @param \Model\Product\Service\Entity[] $servicesById
      * @param \Model\Product\Category\Entity[] $categoriesById
      * @throws \Exception
      */
-    public function setEntityUrl(Entity $entity, \Routing\Router $router, $productsById = [], $categoriesById = [], $servicesById = []) {
+    public function setEntityUrl(Entity $entity, \Routing\Router $router, $productsById = [], $categoriesById = []) {
         $url = $entity->getUrl();
         if (!empty($url)) {
             return;
@@ -101,8 +100,6 @@ class Repository {
                         'productBarcodes' => implode(',', $barcodes),
                     ));
                 }
-            } else if ($item->getServiceId()) {
-                \App::logger()->error('Услуги для баннера еще не реализованы');
             } else if ($item->getProductCategoryId()) {
                 /** @var $product \Model\Product\Category\Entity */
                 $category = ($item->getProductCategoryId() && isset($categoriesById[$item->getProductCategoryId()]))

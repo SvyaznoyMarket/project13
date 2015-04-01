@@ -11,7 +11,7 @@ class Action {
      * @throws \Exception\NotFoundException
      */
     public function execute(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $searchQuery = $this->getSearchQueryByRequest($request);
 
@@ -44,7 +44,7 @@ class Action {
 
         $shop = null;
         try {
-            if (!\Controller\ProductCategory\Action::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
+            if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
             }
         } catch (\Exception $e) {
@@ -53,18 +53,7 @@ class Action {
 
         // фильтры
         $brand = null;
-        $productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $selectedCategory, $brand, $request, $shop);
-
-        // SITE-4734
-        foreach ($productFilter->getFilterCollection() as $filter) {
-            if ('brand' === $filter->getId()) {
-                foreach ($filter->getOption() as $option) {
-                    $option->setImageUrl('');
-                }
-
-                break;
-            }
-        }
+        $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $selectedCategory, $brand, $request, $shop);
 
         // параметры ядерного запроса
         $params = [
@@ -281,7 +270,7 @@ class Action {
 
 
     public function count(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!$request->isXmlHttpRequest()) {
             throw new \Exception\NotFoundException('Request is not xml http request');
@@ -322,18 +311,14 @@ class Action {
 
         $shop = null;
         try {
-            if (
-                !\Controller\ProductCategory\Action::isGlobal() &&
-                \App::request()->get('shop') &&
-                \App::config()->shop['enabled']
-            ) {
+            if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
             }
         } catch (\Exception $e) {}
 
         // фильтры
         $brand = null;
-        $productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $selectedCategory, $brand, $request, $shop);
+        $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $selectedCategory, $brand, $request, $shop);
 
         $count = \RepositoryManager::product()->countByFilter($productFilter->dump());
 
@@ -350,7 +335,7 @@ class Action {
      * @throws \Exception\NotFoundException
      */
     public function autocomplete(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!$request->isXmlHttpRequest()) {
             throw new \Exception\NotFoundException('Request is not xml http request');

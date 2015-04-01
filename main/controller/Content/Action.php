@@ -5,7 +5,7 @@ namespace Controller\Content;
 class Action {
 
     public function execute(\Http\Request $request, $token) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::contentClient();
 
@@ -53,7 +53,7 @@ class Action {
     }
 
     private function getServiceJson() {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $dataStore = \App::dataStoreClient();
 

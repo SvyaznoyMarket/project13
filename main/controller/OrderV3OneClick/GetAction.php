@@ -17,7 +17,7 @@ class GetAction {
      * @return \Http\Response
      */
     public function execute(\Http\Request $request, $accessToken) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $orders = [];
         $productsById = [];
@@ -30,7 +30,7 @@ class GetAction {
             }
 
             if ((bool)$productsById) {
-                foreach (\RepositoryManager::product()->getCollectionById(array_keys($productsById)) as $product) {
+                foreach (\RepositoryManager::product()->getCollectionById(array_keys($productsById), null, false) as $product) {
                     $productsById[$product->getId()] = $product;
                 }
             }

@@ -4,7 +4,7 @@ namespace Controller\Mobidengi;
 
 class IndexAction {
     public function execute(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if ($request->isXmlHttpRequest()) {
             $response = null;

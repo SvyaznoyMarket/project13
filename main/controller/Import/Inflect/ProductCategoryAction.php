@@ -10,7 +10,7 @@ class ProductCategoryAction {
     }
 
     public function execute() {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $inflectDir = \App::config()->dataStore['url'] . 'inflect/product-category';
         if (!is_dir($inflectDir)) {

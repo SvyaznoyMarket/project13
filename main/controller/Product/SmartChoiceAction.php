@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Controller\Product;
 
 use \Http\JsonResponse,
@@ -16,7 +15,7 @@ class SmartChoiceAction {
     public function execute(Request $request) {
         // request type: $.getJSON('/ajax/product-smartchoice',{"products":[55092,64686]},function(data){})
 
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $rrConfig = \App::config()->partners['RetailRocket'];
         $region = \App::user()->getRegion();
@@ -56,6 +55,8 @@ class SmartChoiceAction {
             if (count($recommendedIds)) {
                 foreach ($recommendedIds as &$value) {
                     \RepositoryManager::product()->prepareCollectionById($value, $region, function ($data) use (&$value) {
+                        if (!is_array($data)) return;
+
                         foreach ($data as $key => &$product) {
                             $product = new ProductEntity($product);
                             if (!$product instanceof ProductEntity) continue;

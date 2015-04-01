@@ -6,47 +6,7 @@ use Model\Product\Filter\Entity;
 use View\Product\FilterForm;
 
 class Action {
-    private static $globalCookieName = 'global';
     protected $pageTitle;
-
-    /**
-     * @param string        $categoryPath
-     * @param \Http\Request $request
-     * @return \Http\RedirectResponse
-     */
-    public function setGlobal($categoryPath, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
-
-        $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('product.category', ['categoryPath' => $categoryPath]));
-
-        if ($request->query->has('global')) {
-            if ($request->query->get('global')) {
-                $cookie = new \Http\Cookie(self::$globalCookieName, 1, strtotime('+7 days' ));
-                $response->headers->clearCookie(\App::config()->shop['cookieName']);
-                $response->headers->setCookie($cookie);
-            } else {
-                $response->headers->clearCookie(self::$globalCookieName);
-            }
-        }
-
-        return $response;
-    }
-
-    /**
-     * @param string        $categoryPath
-     * @param \Http\Request $request
-     * @return \Http\RedirectResponse
-     */
-    public function setInstore($categoryPath, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
-
-        $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('product.category', [
-            'categoryPath' => $categoryPath,
-            'instore'      => 1,
-        ]));
-
-        return $response;
-    }
 
     /**
      * @param string        $categoryPath
@@ -55,7 +15,7 @@ class Action {
      * @throws \Exception\NotFoundException
      */
     public function count($categoryPath, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!$request->isXmlHttpRequest()) {
             throw new \Exception\NotFoundException('Request is not xml http request');
@@ -64,7 +24,7 @@ class Action {
         $categoryToken = explode('/', $categoryPath);
         $categoryToken = end($categoryToken);
 
-        $region = self::isGlobal() ? null : \App::user()->getRegion();
+        $region = \App::user()->getRegion();
 
         $repository = \RepositoryManager::productCategory();
         $category = $repository->getEntityByToken($categoryToken);
@@ -84,14 +44,14 @@ class Action {
 
         $shop = null;
         try {
-            if (!self::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
+            if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
             }
         } catch (\Exception $e) {
             \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
         }
 
-        $productFilter = $this->getFilter($filters, $category, null, $request, $shop);
+        $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $category, null, $request, $shop);
 
         $count = \RepositoryManager::product()->countByFilter($productFilter->dump());
 
@@ -109,7 +69,7 @@ class Action {
      * @return \Http\Response
      */
     public function category(\Http\Request $request, $categoryPath, $brandToken = null) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
         $user = \App::user();
@@ -132,14 +92,6 @@ class Action {
             });
         }
 
-        // запрашиваем список регионов для выбора
-        $regionsToSelect = [];
-        \RepositoryManager::region()->prepareShownInMenuCollection(function($data) use (&$regionsToSelect) {
-            foreach ($data as $item) {
-                $regionsToSelect[] = new \Model\Region\Entity($item);
-            }
-        });
-
         // выполнение 1-го пакета запросов
         $client->execute(\App::config()->coreV2['retryTimeout']['tiny']);
 
@@ -151,8 +103,8 @@ class Action {
             \App::user()->setRegion($regionEntity);
         }
 
-        /** @var $region \Model\Region\Entity|null */
-        $region = self::isGlobal() ? null : \App::user()->getRegion();
+        /** @var $region \Model\Region\Entity */
+        $region = \App::user()->getRegion();
 
         // подготовка 2-го пакета запросов
 
@@ -198,28 +150,8 @@ class Action {
 
         // запрашиваем дерево категорий
         if ($category->isV2Root()) {
-            // получаем фильтры из http-запроса
-            $filterUrl = $this->getFilterFromUrl($request);
-
-            // заполняем параметр filters для запроса к ядру
-            $filterParams = [];
-            if (!empty($filterUrl)) {
-                foreach ($filterUrl as $name => $values) {
-                    if (isset($values['from']) || isset($values['to'])) {
-                        $filterParams[] = [
-                            $name,
-                            2,
-                            isset($values['from']) ? $values['from'] : null,
-                            isset($values['to']) ? $values['to'] : null
-                        ];
-                    } else {
-                        $filterParams[] = [$name, 1, $values];
-                    }
-                }
-            }
-
             // Необходимо запросить сестринские категории, т.к. они используется в гридстере (/main/template/product-category/__sibling-list.php) и в ювелирке (/main/template/jewel/product-category/_branch.php)
-            \RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region, $filterParams);
+            \RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region, $this->convertFiltersToSearchClientRequestFormat(\RepositoryManager::productFilter()->getFilterValuesFromHttpRequest($request)));
         } else {
             // Необходимо запросить сестринские категории, т.к. они используется в гридстере (/main/template/product-category/__sibling-list.php) и в ювелирке (/main/template/jewel/product-category/_branch.php)
             \RepositoryManager::productCategory()->prepareEntityBranch($category->getHasChild() ? $category->getId() : $category->getParentId(), $category, $region);
@@ -261,7 +193,7 @@ class Action {
             if ('jewel' == $categoryClass) {
                 if (\App::config()->debug) \App::debug()->add('sub.act', 'Jewel\\ProductCategory\\Action.categoryDirect', 134);
 
-                return (new \Controller\Jewel\ProductCategory\Action())->categoryDirect($filters, $category, $brand, $request, $regionsToSelect, $catalogJson, $promoContent);
+                return (new \Controller\Jewel\ProductCategory\Action())->categoryDirect($filters, $category, $brand, $request, $catalogJson, $promoContent);
             } else if ('grid' == $categoryClass) {
                 if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\Grid\ChildAction.executeByEntity', 134);
 
@@ -311,7 +243,7 @@ class Action {
 
         $shop = null;
         try {
-            if (!self::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
+            if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
             }
         } catch (\Exception $e) {
@@ -324,27 +256,18 @@ class Action {
         }
 
         if ($category->isV2()) {
-            $this->transformFiltersV2($filters);
+            $this->transformFiltersV2($filters, $category);
         }
 
         $this->correctFiltersForJewel($filters, $category);
 
         // фильтры
-        $productFilter = $this->getFilter($filters, $category, $brand, $request, $shop);
+        $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $category, $brand, $request, $shop, !$category->isV2());
 
         $this->correctProductFilterAndCategoryForJewel($category, $productFilter);
 
-        if (!$category->isV2()) {
-            // SITE-4734
-            foreach ($productFilter->getFilterCollection() as $filter) {
-                if ('brand' === $filter->getId()) {
-                    foreach ($filter->getOption() as $option) {
-                        $option->setImageUrl('');
-                    }
-
-                    break;
-                }
-            }
+        if ($category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing()) {
+            $category->setProductView(3);
         }
 
         // получаем из json данные о горячих ссылках и content
@@ -512,7 +435,6 @@ class Action {
 
         $setPageParameters = function(\View\Layout $page) use (
             &$category,
-            &$regionsToSelect,
             &$productFilter,
             &$brand,
             &$hotlinks,
@@ -526,7 +448,6 @@ class Action {
             &$slideData
         ) {
             $page->setParam('category', $category);
-            $page->setParam('regionsToSelect', $regionsToSelect);
             $page->setParam('productFilter', $productFilter);
             $page->setParam('brand', $brand);
             $page->setParam('hotlinks', $hotlinks);
@@ -634,7 +555,7 @@ class Action {
     /**
      * @param \Model\Product\Filter\Entity[] $filters
      */
-    private function transformFiltersV2(array &$filters) {
+    private function transformFiltersV2(array &$filters, \Model\Product\Category\Entity $category) {
         $newProperties = [];
 
         foreach ($filters as $key => $property) {
@@ -670,6 +591,10 @@ class Action {
                     unset($filters[$key]);
                 }
             } else if ($property->isBrand()) {
+                if (!$category->isV2Furniture()) {
+                    $property->setIsAlwaysShow(true);
+                }
+
                 $this->sortOptionsByQuantity($property);
             }
         }
@@ -703,7 +628,7 @@ class Action {
      * @return \Http\Response
      */
     protected function rootCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request, array $categoryConfigById = []) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.rootCategory', 134);
 
@@ -737,7 +662,7 @@ class Action {
         $links = [];
         foreach ($categories as $child) {
             $config = isset($categoryConfigById[$child->getId()]) ? $categoryConfigById[$child->getId()] : null;
-            $productCount = $child->getProductCount() ? : $child->getGlobalProductCount();
+            $productCount = $child->getProductCount();
             $totalText = '';
 
             if ( $productCount > 0 ) {
@@ -748,8 +673,8 @@ class Action {
             }
 
             $linkUrl = $child->getLink();
-            $linkUrl .= \App::request()->getQueryString() ? (strpos('?', $linkUrl) === false ? '?' : '&') . \App::request()->getQueryString() : '';
-            $linkUrl .= \App::request()->get('instore') ? (strpos('?', $linkUrl) === false ? '?' : '&') . 'instore=1' : '';
+            $linkUrl .= \App::request()->getQueryString() ? (strpos($linkUrl, '?') === false ? '?' : '&') . \App::request()->getQueryString() : '';
+            $linkUrl .= \App::request()->get('instore') ? (strpos($linkUrl, '?') === false ? '?' : '&') . 'instore=1' : '';
 
             $links[] = [
                 'name'          => isset($config['name']) ? $config['name'] : $child->getName(),
@@ -772,7 +697,7 @@ class Action {
      * @throws \Exception\NotFoundException
      */
     protected function leafCategory(\Model\Product\Category\Entity $category, \Model\Product\Filter $productFilter, \View\Layout $page, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::config()->debug) \App::debug()->add('sub.act', 'ProductCategory\\Action.leafCategory', 134);
 
@@ -801,7 +726,12 @@ class Action {
         // вид товаров
         $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
         // листалка
-        $itemsPerPage = \App::config()->product['itemsPerPage'];
+        if ($category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing()) {
+            $itemsPerPage = 21;
+        } else {
+            $itemsPerPage = \App::config()->product['itemsPerPage'];
+        }
+
         $limit = $itemsPerPage;
         $offset = ($pageNum - 1) * $limit;
 
@@ -863,22 +793,9 @@ class Action {
             \RepositoryManager::review()->addScores($products, $scoreData);
 
             $pagerAll = new \Iterator\EntityPager($products, $productCount);
-            $page->setGlobalParam('allCount', $pagerAll->count());
         }
 
         $filters = $productFilter->dump();
-        // TODO Костыль для таска: SITE-2403 Вернуть фильтр instore
-        if (self::inStore()) {
-            foreach ($filters as $filterKey => $filter) {
-                if ('label' === $filter[0]) {
-                    foreach ($filter[2] as $labelFilterKey => $labelFilter) {
-                        if (1 === $labelFilter) {
-                            unset($filters[$filterKey][2][$labelFilterKey]);
-                        }
-                    }
-                }
-            }
-        }
 
         $smartChoiceEnabled = isset($catalogJson['smartchoice']) ? $catalogJson['smartchoice'] : false;
         $smartChoiceData = [];
@@ -924,6 +841,8 @@ class Action {
         if (!empty($pagerAll)) {
             $productPager = $pagerAll;
         } else {
+            $productError = null;
+
             $productPager = null;
 
             $productIds = [];
@@ -934,9 +853,16 @@ class Action {
                 $offset,
                 $limit,
                 $region,
-                function($data) use (&$productIds, &$productCount) {
-                    if (isset($data['list'][0])) $productIds = $data['list'];
-                    if (isset($data['count'])) $productCount = (int)$data['count'];
+                function($data) use (&$productIds, &$productCount, &$productError) {
+                    if (is_array($data)) {
+                        if (isset($data['list'][0])) $productIds = $data['list'];
+                        if (isset($data['count'])) $productCount = (int)$data['count'];
+                    } else {
+                        $productError = new \Exception('Товары не получены');
+                    }
+                },
+                function(\Exception $e) use (&$productError) {
+                    $productError = $e;
                 }
             );
             \App::coreClientV2()->execute(\App::config()->coreV2['retryTimeout']['medium']);
@@ -944,21 +870,32 @@ class Action {
             // HINT Можно добавлять ID неопубликованных продуктов для показа в листингах
             // array_unshift($productIds, 201540);
 
+            // TODO удалить (электронный сертификат в листинг сертификатов)
+            if ($category->ui === 'b2885b1b-06bc-4c6f-b40d-9a0af22ff61c') array_unshift($productIds, 201540);
+
             $products = [];
             if ((bool)$productIds) {
-                $repository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
-                    if (is_array($data)) {
-                        foreach ($data as $item) {
-                            $products[] = new \Model\Product\Entity($item);
+                $repository->prepareCollectionById(
+                    $productIds,
+                    $region,
+                    function($data) use (&$products, &$productError) {
+                        if (is_array($data)) {
+                            foreach ($data as $item) {
+                                $products[] = new \Model\Product\Entity($item);
+                            }
+                        } else {
+                            $productError = new \Exception('Товары не получены');
+                            \App::logger()->error(['error' => $productError, 'core.response' => $data, 'sender' => __FILE__ . ' ' .  __LINE__], ['controller']);
                         }
-                    } else {
-                        \App::logger()->error(['error' => 'Товары не получены', 'core.response' => $data, 'sender' => __FILE__ . ' ' .  __LINE__], ['controller']);
+                    },
+                    function(\Exception $e) use (&$productError) {
+                        $productError = $e;
                     }
-                });
+                );
             }
             \App::coreClientV2()->execute();
 
-            if (!$products && ('true' == $request->get('ajax'))) {
+            if ($productError && !$products && ('true' == $request->get('ajax'))) {
                 throw new \Exception('Товары не найдены');
             }
 
@@ -994,11 +931,7 @@ class Action {
         }
         $productPager->setPage($pageNum);
         $productPager->setMaxPerPage($itemsPerPage);
-        if (self::isGlobal()) {
-            $category->setGlobalProductCount($productPager->count());
-        } else {
-            $category->setProductCount($productPager->count());
-        }
+        $category->setProductCount($productPager->count());
 
         // проверка на максимально допустимый номер страницы
         if ((1 != $productPager->getPage()) && (($productPager->getPage() - $productPager->getLastPage()) > 0)) {
@@ -1008,7 +941,15 @@ class Action {
             ]));
         }
 
-        $columnCount = (bool)array_intersect(array_map(function(\Model\Product\Category\Entity $category) { return $category->getId(); }, $category->getAncestor()), [1320, 4649]) ? 3 : 4;
+        if ($category->isV2Furniture()) {
+            if (\Session\AbTest\AbTest::isNewFurnitureListing()) {
+                $columnCount = 3;
+            } else {
+                $columnCount = 4;
+            }
+        } else {
+            $columnCount = (bool)array_intersect(array_map(function(\Model\Product\Category\Entity $category) { return $category->getId(); }, $category->getAncestor()), [1320, 4649]) ? 3 : 4;
+        }
 
         // ajax
         if ($request->isXmlHttpRequest() && 'true' == $request->get('ajax')) {
@@ -1062,221 +1003,25 @@ class Action {
         return new \Http\Response($page->show());
     }
 
-    /**
-     * @param \Http\Request $request
-     * @return array
-     */
-    public function getFilterFromUrl(\Http\Request $request) {
-        // добывание фильтров из http-запроса
-        $requestData = ('POST'== $request->getMethod()) ? $request->request : $request->query;
-
-        $values = [];
-        foreach ($requestData as $k => $v) {
-            if (0 !== strpos($k, \View\Product\FilterForm::$name)) {
-                continue;
-            }
-
-            $parts = array_pad(explode('-', $k), 3, null);
-
-            if ('from' == $parts[2] || 'to' == $parts[2]) {
-                $values[$parts[1]][$parts[2]] = $v;
-            } else {
-                $values[$parts[1]][] = $v;
-            }
-        }
-
-        foreach ($values as $k => $v) {
-            if (isset($v['from']) && isset($v['to'])) {
-                if ($v['from'] > $v['to']) {
-                    $values[$k]['from'] = $v['to'];
+    private function convertFiltersToSearchClientRequestFormat($filterValues) {
+        $result = [];
+        if (is_array($filterValues)) {
+            foreach ($filterValues as $name => $values) {
+                if (isset($values['from']) || isset($values['to'])) {
+                    $result[] = [
+                        $name,
+                        2,
+                        isset($values['from']) ? $values['from'] : null,
+                        isset($values['to']) ? $values['to'] : null
+                    ];
+                } else {
+                    $result[] = [$name, 1, $values];
                 }
             }
         }
 
-        // filter values
-        if ($request->get('scrollTo')) {
-            // TODO: SITE-2218 сделать однотипные фильтры для ювелирки и неювелирки
-            $values = (array)$request->get(\View\Product\FilterForm::$name, []);
-        }
-
-        return $values;
+        return $result;
     }
-
-    /**
-     * @param \Model\Product\Filter\Entity[] $filters
-     * @param \Model\Product\Category\Entity $category
-     * @param \Model\Brand\Entity|null $brand
-     * @param \Http\Request $request
-     * @param \Model\Shop\Entity|null $shop
-     * @return \Model\Product\Filter
-     */
-    public function getFilter(array $filters, \Model\Product\Category\Entity $category = null, \Model\Brand\Entity $brand = null, \Http\Request $request, $shop = null) {
-        // флаг глобального списка в параметрах запроса
-        $isGlobal = self::isGlobal();
-        //
-        $inStore = self::inStore();
-
-        // регион для фильтров
-        $region = $isGlobal ? null : \App::user()->getRegion();
-
-        // добывание фильтров из http-запроса
-        $values = $this->getFilterFromUrl($request);
-        $values = $this->deleteNotExistsValues($values, $filters);
-
-        if ($isGlobal) {
-            $values['global'] = 1;
-        }
-        if ($inStore) {
-            $values['instore'] = 1;
-            $values['label'][] = 1; // TODO SITE-2403 Вернуть фильтр instore
-        }
-        if ($brand) {
-            $values['brand'] = [
-                $brand->getId(),
-            ];
-        }
-
-        //если есть фильтр по магазину
-        if ($shop) {
-            /** @var \Model\Shop\Entity $shop */
-            $values['shop'] = $shop->getId();
-        }
-
-        // проверяем есть ли в запросе фильтры
-        if ((bool)$values) {
-
-            // полнотекстовый поиск через сфинкс
-            if (\App::config()->sphinx['showListingSearchBar']) {
-                $sphinxFilter = isset($values['text']) ? $values['text'] : null;
-
-                if ($sphinxFilter) {
-                    $clientV2 = \App::coreClientV2();
-                    $result = null;
-                    $clientV2->addQuery('search/normalize', [], ['request' => $sphinxFilter], function ($data) use (&$result) {
-                        $result = $data;
-                    });
-                    $clientV2->execute();
-
-                    if(is_array($result)) {
-                        $values['text'] = implode(' ', $result);
-                    } else {
-                        unset($values['text']);
-                    }
-                }
-
-                $sphinxFilterData = [
-                    'filter_id'     => 'text',
-                    'type_id'       => \Model\Product\Filter\Entity::TYPE_STRING,
-                ];
-                $sphinxFilter = new \Model\Product\Filter\Entity($sphinxFilterData);
-                array_push($filters, $sphinxFilter);
-            }
-
-            // проверяем есть ли в запросе фильтры, которых нет в текущей категории (фильтры родительских категорий)
-            /** @var $exists Ид фильтров текущей категории */
-            $exists = array_map(function($filter) { /** @var $filter \Model\Product\Filter\Entity */ return $filter->getId(); }, $filters);
-            /** @var $diff Ид фильтров родительских категорий */
-            $diff = array_diff(array_keys($values), $exists);
-            if ((bool)$diff && $category) {
-                foreach ($category->getAncestor() as $ancestor) {
-                    try {
-                        /** @var $ancestorFilters \Model\Product\Filter\Entity[] */
-                        $ancestorFilters = [];
-                        \RepositoryManager::productFilter()->prepareCollectionByCategory($ancestor, $region, function($data) use (&$ancestorFilters) {
-                            foreach ($data as $item) {
-                                $ancestorFilters[] = new \Model\Product\Filter\Entity($item);
-                            }
-                        });
-                        \App::coreClientV2()->execute();
-                    } catch (\Exception $e) {
-                        $ancestorFilters = [];
-                    }
-                    foreach ($ancestorFilters as $filter) {
-                        if (false === $i = array_search($filter->getId(), $diff)) continue;
-
-                        // скрываем фильтр в списке
-                        $filter->setIsInList(false);
-                        $filters[] = $filter;
-                        unset($diff[$i]);
-                        if (!(bool)$diff) break;
-                    }
-                    if (!(bool)$diff) break;
-                }
-            }
-        }
-
-        $productFilter = new \Model\Product\Filter($filters, $isGlobal, $inStore, $shop);
-        $productFilter->setCategory($category);
-        $productFilter->setValues($values);
-
-        foreach ($productFilter->getFilterCollection() as $property) {
-            if (\Model\Product\Filter\Entity::TYPE_LIST == $property->getTypeId() && !in_array($property->getId(), ['shop', 'category'])) {
-                $property->setIsMultiple(true);
-            } else {
-                $property->setIsMultiple(false);
-            }
-        }
-
-        return $productFilter;
-    }
-
-    /**
-     * @param array $values
-     * @param \Model\Product\Filter\Entity[] $filters
-     * @return array
-     */
-    private function deleteNotExistsValues(array $values, array $filters) {
-        // SITE-4818 Не учитывать фильтр при переходе в подкатегорию, если такового не существует
-        foreach ($values as $propertyId => $propertyValues) {
-            $isPropertyExistsInFilter = false;
-
-            foreach ($filters as $property) {
-                if ($property->getId() === $propertyId) {
-                    $isPropertyExistsInFilter = true;
-                    if ($property->getTypeId() === \Model\Product\Filter\Entity::TYPE_LIST) {
-                        $optionIds = [];
-                        foreach ($property->getOption() as $option) {
-                            $optionIds[] = (string)$option->getId();
-                        }
-
-                        foreach ($propertyValues as $i => $value) {
-                            if (!in_array((string)$value, $optionIds, true)) {
-                                unset($values[$propertyId][$i]);
-                            }
-                        }
-
-                        if (!count($values[$propertyId])) {
-                            unset($values[$propertyId]);
-                        }
-                    }
-
-                    break;
-                }
-            }
-
-            if (!$isPropertyExistsInFilter) {
-                unset($values[$propertyId]);
-            }
-        }
-
-        return $values;
-    }
-
-    /**
-     * @return bool
-     */
-    public static function isGlobal() {
-        return \App::user()->getRegion()->getHasTransportCompany()
-        && (bool)(\App::request()->cookies->get(self::$globalCookieName, false));
-    }
-
-    /**
-     * @return bool
-     */
-    public static function inStore() {
-        return (bool)\App::request()->get('instore');
-    }
-
 
     /**
      * @return mixed
@@ -1330,12 +1075,12 @@ class Action {
     private function correctFiltersForJewel(array &$filters, \Model\Product\Category\Entity $category) {
         foreach ($filters as $key => $filter) {
             if ($filter->isPrice() && in_array($category->getUi(), [
-                'd792f833-f6fa-4158-83f6-2ac657077076', // Кольца Бронницкий Ювелир
-                '4caf66a4-f1c4-4b79-a6e4-1f2e6a1700cc', // Подвески Бронницкий Ювелир
-                'd4bc284a-9a1f-4614-a3d0-ec690d7e1b78', // Серьги Бронницкий Ювелир
-                'ae6975b8-f6e3-46b3-baba-a85305213dea', // Цепи Бронницкий Ювелир
-                'cd2c06d0-a087-47c2-a043-7ca02317424a', // Танцующие бриллианты
-            ], true)) {
+                    'd792f833-f6fa-4158-83f6-2ac657077076', // Кольца Бронницкий Ювелир
+                    '4caf66a4-f1c4-4b79-a6e4-1f2e6a1700cc', // Подвески Бронницкий Ювелир
+                    'd4bc284a-9a1f-4614-a3d0-ec690d7e1b78', // Серьги Бронницкий Ювелир
+                    'ae6975b8-f6e3-46b3-baba-a85305213dea', // Цепи Бронницкий Ювелир
+                    'cd2c06d0-a087-47c2-a043-7ca02317424a', // Танцующие бриллианты
+                ], true)) {
                 unset($filters[$key]);
                 break;
             }
@@ -1352,12 +1097,12 @@ class Action {
                 }
 
                 if ('Металл' === $filter->getName() && in_array($category->getUi(), [
-                    'd792f833-f6fa-4158-83f6-2ac657077076', // Кольца Бронницкий Ювелир
-                    '4caf66a4-f1c4-4b79-a6e4-1f2e6a1700cc', // Подвески Бронницкий Ювелир
-                    'd4bc284a-9a1f-4614-a3d0-ec690d7e1b78', // Серьги Бронницкий Ювелир
-                    'ae6975b8-f6e3-46b3-baba-a85305213dea', // Цепи Бронницкий Ювелир
-                    'cd2c06d0-a087-47c2-a043-7ca02317424a', // Танцующие бриллианты
-                ], true)) {
+                        'd792f833-f6fa-4158-83f6-2ac657077076', // Кольца Бронницкий Ювелир
+                        '4caf66a4-f1c4-4b79-a6e4-1f2e6a1700cc', // Подвески Бронницкий Ювелир
+                        'd4bc284a-9a1f-4614-a3d0-ec690d7e1b78', // Серьги Бронницкий Ювелир
+                        'ae6975b8-f6e3-46b3-baba-a85305213dea', // Цепи Бронницкий Ювелир
+                        'cd2c06d0-a087-47c2-a043-7ca02317424a', // Танцующие бриллианты
+                    ], true)) {
                     $filter->isOpenByDefault = true;
                 }
             }

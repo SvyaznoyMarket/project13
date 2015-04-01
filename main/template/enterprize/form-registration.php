@@ -18,7 +18,7 @@ if (!isset($form)) {
         <input class="formDefault__inputText jsName" type="text" name="user[name]" value="<?= $form->getName() ?>" />
 
         <label class="formDefault__label">Мобильный телефон:</label>
-        <input class="formDefault__inputText jsMobile formDefault__inputText--styled" type="text" name="user[mobile]" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" value="<?= $form->getMobile() ?>" <? if ('phone' === $authSource): ?>readonly="readonly"<? endif ?> />
+        <input class="formDefault__inputText jsMobile formDefault__inputText--styled" type="text" name="user[mobile]" placeholder="+7 (___) ___-__-__" data-mask="+7 (xxx) xxx-xx-xx" value="<?= preg_replace('/^8/', '+7', $form->getMobile()) ?>" <? if ('phone' === $authSource): ?>readonly="readonly"<? endif ?> />
 
         <label class="formDefault__label">E-mail:</label>
         <input class="formDefault__inputText jsEmail" type="text" name="user[email]" value="<?= $form->getEmail() ?>" <? if ('email' === $authSource): ?>readonly="readonly"<? endif ?> />

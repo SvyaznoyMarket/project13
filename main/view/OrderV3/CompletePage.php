@@ -87,7 +87,7 @@ class CompletePage extends Layout {
             foreach ($methods as $paymentKey => $payment) {
                 foreach ($payment->methods as $methodKey => $method) {
                     // убираем все, в которых нет мотивирующей акции
-                    if (is_null($method->getAction($this->getParam('motivationAction')))) unset($methods[$paymentKey]->methods[$methodKey]);
+                    if (is_null($method->getAction($this->getParam('motivationAction'))) && !$method->isSvyaznoyClub()) unset($methods[$paymentKey]->methods[$methodKey]);
                 }
             }
             $this->setParam('ordersPayment', $methods);
@@ -126,13 +126,15 @@ class CompletePage extends Layout {
 
     public function slotPartnerCounter()
     {
+        $config = \App::config();
         $html = parent::slotPartnerCounter();
-
-        // ActionPay
-        $html .= $this->tryRender('partner-counter/_actionpay', ['routeName' => 'order.complete'] );
 
         // Sociomantic - передаём все заказы!
         $html .= '<div id="sociomanticOrderCompleteJS" class="jsanalytics" ></div>';
+
+        // Flocktory
+        if ($config->flocktoryExchange['enabled'] || $config->flocktoryPostCheckout['enabled'])
+            $html .= '<div id="flocktoryScriptJS" class="jsanalytics" ></div>';
 
         return $html;
     }
@@ -186,15 +188,19 @@ class CompletePage extends Layout {
         $orders = $this->getParam('orders', []);
         $data = [];
 
-        /* Дополнительные данные для LinkProfit */
-        if (\App::config()->partners['LinkProfit']['enabled'] && \App::partner()->getName() == 'linkprofit') {
-            foreach ($orders as $order) {
-                $data[] = [
-                    'orderNumber' => $order->getNumber(),
-                    'orderSum' => $order->getSum(),
-                    'webmaster_id' => \App::request()->cookies->get(\App::config()->partners['LinkProfit']['cookieName'], 0)
-                ];
+        foreach ($orders as $order) {
+            /* Основные данные для GTM */
+            $orderData = [
+                'orderNumber' => $order->getNumber(),
+                'orderSum' => $order->getSum(),
+            ];
+
+            /* Дополнительные данные для LinkProfit */
+            if (\App::config()->partners['LinkProfit']['enabled'] && \App::partner()->getName() == 'linkprofit') {
+                $orderData['webmaster_id'] = \App::request()->cookies->get(\App::config()->partners['LinkProfit']['cookieName'], 0);
             }
+
+            $data[] = $orderData;
         }
 
         return parent::slotGoogleTagManagerJS($data);

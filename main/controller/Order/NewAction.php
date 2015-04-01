@@ -12,7 +12,7 @@ class NewAction {
      * @throws \Exception
      */
     public function execute(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $user = \App::user();
         $region = $user->getRegion();
@@ -54,7 +54,7 @@ class NewAction {
          */
         $paymentGroups = [];
         $paymentMethods = [];
-        $isCreditAllowed = \App::config()->payment['creditEnabled'] && ($user->getCart()->getTotalProductPrice()) >= \App::config()->product['minCreditPrice'];
+        $isCreditAllowed = \App::config()->payment['creditEnabled'];
         \RepositoryManager::paymentGroup()->prepareCollection($region,
             [
                 'is_corporative' => $user->getEntity() ? $user->getEntity()->getIsCorporative() : false,

@@ -41,7 +41,7 @@ $helper = new \Helper\TemplateHelper();
                 <a class='bOrangeButton' href onclick="document.getElementById('searchForm').submit(); return false;">Найти</a>
             </form>
 
-            <span>или позвоните нам в&nbsp;Контакт-сENTER <b>8 (800) 700 00 09</b><br> Звонок бесплатный. Радость в&nbsp;подарок.</span><br><br>
+            <span>или позвоните нам в&nbsp;Контакт-сENTER <b>+7 (800) 700 00 09</b><br> Звонок бесплатный. Радость в&nbsp;подарок.</span><br><br>
             <a class='bBigOrangeButton' href='/'>Перейти на&nbsp;главную</a>
         </div>
 

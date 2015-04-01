@@ -15,7 +15,7 @@ class Action {
      * @return bool|\Http\JsonResponse|\Http\RedirectResponse
      */
     private function checkRedirect(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $this->redirect = \App::router()->generate(\App::config()->user['defaultRoute']); // default redirect to the /private page (Личный кабинет)
         $redirectTo = rawurldecode($request->get('redirect_to'));
@@ -55,7 +55,7 @@ class Action {
      * @throws \Exception
      */
     public function login(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $checkRedirect = $this->checkRedirect($request);
         if ($checkRedirect) return $checkRedirect;
@@ -188,7 +188,7 @@ class Action {
      * @return \Http\RedirectResponse
      */
     public function logout(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $user = \App::user();
 
@@ -209,8 +209,6 @@ class Action {
         $response = new \Http\RedirectResponse($redirect_to);
 
         $user->removeToken($response);
-        $user->setCacheCookie($response);
-        \Session\User::disableInfoCookie($response);
 
         // Очищаем источник авторизации
         \App::session()->remove('authSource');
@@ -230,7 +228,7 @@ class Action {
      * @throws \Exception
      */
     public function register(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!$request->isMethod('post') && !$request->isXmlHttpRequest()) {
             // SITE-3676
@@ -374,7 +372,7 @@ class Action {
      * @return bool|\Http\JsonResponse|\Http\RedirectResponse|\Http\Response
      */
     public function registrationExtended(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         // @todo причесать бы это дело, разнести логику чуть
         $checkRedirect = $this->checkRedirect($request);
@@ -435,7 +433,7 @@ class Action {
      * @return bool|\Http\JsonResponse|\Http\RedirectResponse|\Http\Response
      */
     public function updateRegistration(\Http\Request $request){
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!$request->isXmlHttpRequest()) {
             return new \Http\Response('Некорректный запрос к серверу',400);
@@ -575,7 +573,7 @@ class Action {
      * @return array
      */
     protected function CUser ($form) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $user = \App::user()->getEntity();
         $session = \App::session();
@@ -676,7 +674,7 @@ class Action {
      * @throws \Exception
      */
     public function registerCorporate(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (\App::user()->getEntity() && $request->isXmlHttpRequest() ) {
             return new \Http\JsonResponse(['success' => true]);
@@ -901,7 +899,7 @@ class Action {
      * @throws \Exception
      */
     public function forgot(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $username = trim((string)$request->get('forgot')['login']);
 

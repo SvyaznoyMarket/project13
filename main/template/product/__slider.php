@@ -190,7 +190,6 @@ $f = function (
                             'sender'         => $sender,
                             'noUpdate'       => true,
                             'location'       => 'slider',
-                            'reserveAsBuy'   => true,
                             'sender2'       => $sender2,
                         ]) // Кнопка купить ?>
                     <? endif ?>

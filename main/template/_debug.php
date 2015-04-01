@@ -47,16 +47,34 @@
             <div class="jsExpandedValue property-value-expanded">
                 <table>
                     <tbody>
+                            <tr>
+                                <th>Time</th>
+                                <th>Retry</th>
+                                <th>Server</th>
+                                <th>Mode</th>
+                                <th>Query</th>
+                            </tr>
                         {{#value}}
                             <tr>
-                                <td class="query-cell">{{#cache}}<span style="color: #ffff00" title="Cached">*</span>{{/cache}} <span title="Response time">{{info.total_time}}</span></td>
-                                <td class="query-cell"><span title="Retry count">{{retryCount}}</span></td>
-                                <td class="query-cell"><span title="Server name">{{header.X-Server-Name}}</span></td>
-                                <td class="query-cell">{{header.X-API-Mode}}</td>
-                                <td class="query-cell"><span title="Delay">{{delay}} {{#delayRatio}}({{delayRatio}}){{/delayRatio}}</span></td>
-                                <td class="query-cell"><a href="{{^data}}{{url}}{{/data}}{{#data}}/debug/query?data={{encodedData}}&url={{encodedUrl}}{{/data}}" target="_blank" title="Open directly" class="openDirectly">&#11016;</a></td>
                                 <td class="query-cell">
-                                    <a class="query 
+                                    {{#cache}}<span style="color: #ffff00">*</span>{{/cache}} {{info.total_time}} {{#spend}}({{spend}}){{/spend}}
+                                </td>
+                                <td class="query-cell" title="{{delay}}">
+                                    {{#delays}}
+                                        {{#selected}}
+                                            <span style="color: #ffa200;">{{value}}</span><sup>{{http_code}}</sup>
+                                        {{/selected}}
+                                        {{^selected}}
+                                            {{value}}<sup>{{http_code}}</sup>
+                                        {{/selected}}
+                                    {{/delays}}
+                                </td>
+                                <!--<td class="query-cell"><span title="Retry count">{{retryCount}}</span></td>-->
+                                <td class="query-cell">{{header.X-Server-Name}}</td>
+                                <td class="query-cell">{{header.X-API-Mode}}</td>
+                                <td class="query-cell">
+                                    <a href="{{^data}}{{url}}{{/data}}{{#data}}/debug/query?data={{encodedData}}&url={{encodedUrl}}{{/data}}" target="_blank" class="openDirectly">&#11016;</a>
+                                    <a class="query
                                             {{#error}}
                                                 query-fail
                                             {{/error}}
@@ -281,7 +299,7 @@
     .debug-panel .property-value-expanded {
         color: limegreen;
         display: none;
-        max-height: 130px;
+        max-height: 160px;
         max-width: 1000px;
         overflow: auto;
     }

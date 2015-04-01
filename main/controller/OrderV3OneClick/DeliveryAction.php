@@ -17,7 +17,7 @@ class DeliveryAction {
      * @throws \Exception
      */
     public function execute(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $product_list = (array)$request->get('products');
         $shopId = is_scalar($request->get('shopId')) ? $request->get('shopId') : null;
@@ -130,7 +130,7 @@ class DeliveryAction {
         }
 
         $orderDeliveryData = null;
-        foreach ([1, 3] as $i) { // две попытки на расчет доставки: 1*5 и 4*5 секунды
+        foreach ([1, 3] as $i) { // две попытки на расчет доставки: 1*4 и 3*4 секунды
             try {
                 $orderDeliveryData = $this->client->query(
                     'cart/split',

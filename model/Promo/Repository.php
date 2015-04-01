@@ -15,7 +15,7 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityByToken($token) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $data = $this->client->query(sprintf('promo/%s/index.json', $token));
         if (is_array($data)) {
@@ -30,7 +30,7 @@ class Repository {
      * @param $done
      */
     public function prepareEntityByToken($token, $done) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery(sprintf('promo/%s/index.json', $token), [], $done);
     }
@@ -39,11 +39,10 @@ class Repository {
      * @param Image\Entity $image
      * @param \Routing\Router $router
      * @param \Model\Product\Entity[] $productsById
-     * @param \Model\Product\Service\Entity[] $servicesById
      * @param \Model\Product\Category\Entity[] $categoriesById
      * @throws \Exception
      */
-    public function setEntityImageLink(Image\Entity $image, \Routing\Router $router, $productsById = [], $categoriesById = [], $servicesById = []) {
+    public function setEntityImageLink(Image\Entity $image, \Routing\Router $router, $productsById = [], $categoriesById = []) {
         $link = null;
 
         try {

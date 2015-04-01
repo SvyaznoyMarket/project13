@@ -264,7 +264,7 @@ return function(
     <? endforeach ?>
 
     <div class="orderComment">
-        <div class="orderComment_t">Дополнительные пожелания</div>
+        <div class="orderComment_t jsOrderV3Comment">Дополнительные пожелания</div>
 
         <textarea class="orderComment_fld textarea" style="display: <?= $firstOrder->comment == '' ? 'none': 'block' ?>"><?= $firstOrder->comment ?></textarea>
     </div>

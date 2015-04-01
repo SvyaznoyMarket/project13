@@ -9,7 +9,7 @@ class IndexAction {
      * @throws \Exception
      */
     public function execute(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!\App::config()->enterprize['enabled']) {
             throw new \Exception\NotFoundException();
@@ -213,7 +213,6 @@ class IndexAction {
         $page->setParam('isRegistration', $isRegistration);
         $page->setParam('form', (new \Controller\Enterprize\FormAction())->getForm());
         $page->setParam('products', $products);
-        $page->setParam('hasFlocktoryPopup', (bool)$request->get('flocktory_popup'));
         $page->setParam('enterprizeData', $enterprizeData);
 
         return new \Http\Response($page->show());

@@ -11,7 +11,7 @@ class FormAction {
      * @throws \Exception\NotFoundException
      */
     public function show($enterprizeToken = null, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!\App::config()->enterprize['enabled']) {
             throw new \Exception\NotFoundException();
@@ -107,7 +107,7 @@ class FormAction {
      * @throws \Exception
      */
     public function update(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
         $user = \App::user()->getEntity();
@@ -409,7 +409,7 @@ class FormAction {
      * @return \View\Enterprize\Form
      */
     public function getForm(){
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $user = \App::user()->getEntity();
         $session = \App::session();
@@ -448,7 +448,7 @@ class FormAction {
      * @return \Model\Product\Entity[]
      */
     public static function getProducts(\Model\EnterprizeCoupon\Entity $coupon) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $client = \App::coreClientV2();
         $region = \App::user()->getRegion();
@@ -537,7 +537,7 @@ class FormAction {
 
                     case 'slices':
                         if ($slice) {
-                            $sliceFilters = \Controller\Slice\ShowAction::getSliceFilters($slice);
+                            $sliceFilters = \RepositoryManager::slice()->getSliceFiltersForSearchClientRequest($slice);
                             // добавляем фильтры среза к общему списку фильтров
                             foreach ($sliceFilters as $filter) {
                                 $filters[] = $filter;
@@ -557,6 +557,8 @@ class FormAction {
 
                                 if (!empty($productIds)) {
                                     $productRepository->prepareCollectionById($productIds, $region, function($data) use (&$products) {
+                                        if (!isset($data[0])) return;
+
                                         foreach ($data as $item) {
                                             $entity = new \Model\Product\Entity($item);
                                             if ($entity->isInShopOnly() || $entity->isInShopStockOnly() || !$entity->getIsBuyable()) {
@@ -631,7 +633,8 @@ class FormAction {
 
         // Фильтруем продукты, которые стоят меньше, чем рублевая скидка по фишке
         if ($coupon->getIsCurrency()) {
-            $products = array_filter($products, function(\Model\Product\Entity $product) use ($coupon) { return $product->getPrice() > $coupon->getPrice(); });
+            $price = abs($coupon->getPrice());
+            $products = array_filter($products, function(\Model\Product\Entity $product) use ($price) { return $product->getPrice() > $price; });
         }
 
         // перемешиваем список товаров

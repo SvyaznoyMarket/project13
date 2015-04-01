@@ -30,6 +30,7 @@
     <?= $page->slotRelLink() ?>
     <?= $page->slotGoogleAnalytics() ?>
     <?= $page->slotMetaOg() ?>
+    <?= $page->slotGifteryJS() ?>
 </head>
 
 <body class="<?= $page->slotBodyClassAttribute() ?>" data-template="<?= $page->slotBodyDataAttribute() ?>" data-id="<?= \App::$id ?>"<? if (\App::config()->debug): ?> data-debug=true<? endif ?>>
@@ -63,13 +64,12 @@
 
     </div><!--/ Шаблон -->
 
-    <?= $page->render(!$page->new_menu ? 'common/_footer-old' : 'common/_footer-new') ?>
+    <?= $page->render('common/_footer-new') ?>
 
     <?= $page->slotUpper() ?>
     <?= $page->slotUserbar() ?>
 
     <?= $page->slotAuth() ?>
-    <?= $page->slotRegionSelection() ?>
 
     <div style="position:absolute; height: 0; top:0; z-index:-1;">
         <?= $page->slotBodyJavascript() ?>
@@ -78,9 +78,7 @@
         <?= $page->slotPartnerCounter() ?>
         <?= $page->slotEnterprizeConfirmJs() ?>
         <?= $page->slotEnterprizeCompleteJs() ?>
-        <?= $page->slotFlocktoryEnterprizeJs() ?>
         <?= $page->slotEnterprizeRegJS() ?>
-        <?= $page->slotGifteryJS() ?>
     </div>
 </body>
 </html>

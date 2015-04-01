@@ -27,7 +27,7 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityByToken($token, \Model\Region\Entity $region = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = clone $this->client;
 
@@ -57,7 +57,7 @@ class Repository {
      * @param                      $callback
      */
     public function prepareEntityById($id, \Model\Region\Entity $region = null, $callback) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery('product/get', [
             'select_type' => 'id',
@@ -71,7 +71,7 @@ class Repository {
      * @param        $successCallback
      */
     public function prepareEntityByUid($uid, $successCallback) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery('product/get', [
             'select_type' => 'ui',
@@ -86,7 +86,7 @@ class Repository {
      * @param                      $callback
      */
     public function prepareEntityByToken($token, \Model\Region\Entity $region = null, $callback) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery('product/get', [
             'select_type' => 'slug',
@@ -101,7 +101,7 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityById($id, \Model\Region\Entity $region = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = clone $this->client;
 
@@ -130,7 +130,7 @@ class Repository {
      * @return Entity[]
      */
     public function getCollectionByToken(array $tokens, \Model\Region\Entity $region = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         if (!(bool)$tokens) return [];
 
@@ -161,7 +161,7 @@ class Repository {
      * @return Entity[]
      */
     public function getCollectionByBarcode(array $barcodes, \Model\Region\Entity $region = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         if (!(bool)$barcodes) return [];
 
@@ -194,7 +194,7 @@ class Repository {
      * @param                      $fail
      */
     public function prepareCollectionByBarcode(array $barcodes, \Model\Region\Entity $region = null, $done, $fail = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery('product/get', [
             'select_type' => 'bar_code',
@@ -210,7 +210,7 @@ class Repository {
      * @return Entity[]
      */
     public function getCollectionById(array $ids, \Model\Region\Entity $region = null, $addScores = true) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         if (!(bool)$ids) return [];
 
@@ -229,6 +229,8 @@ class Repository {
                 ],
                 [],
                 function($data) use(&$collection, $entityClass, $i) {
+                    if (!is_array($data)) return;
+
                     foreach ($data as $item) {
                         $collection[$i][] = new $entityClass($item);
                     }
@@ -255,7 +257,7 @@ class Repository {
      * @param null $fail
      */
     public function prepareCollectionById(array $ids, \Model\Region\Entity $region = null, $done, $fail = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         if (!(bool)$ids || !is_array($ids)) return;
 
@@ -273,7 +275,7 @@ class Repository {
      * @param null $fail
      */
     public function prepareCollectionByUi(array $uis, \Model\Region\Entity $region = null, $done, $fail = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         if (!(bool)$uis) return;
 
@@ -291,7 +293,7 @@ class Repository {
      * @param                       $fail
      */
     public function prepareCollectionByEan(array $eans, \Model\Region\Entity $region = null, $done, $fail = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         if (!(bool)$eans) return;
 
@@ -308,7 +310,7 @@ class Repository {
      * @return int
      */
     public function countByFilter(array $filter = [], \Model\Region\Entity $region = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = clone $this->client;
 
@@ -334,7 +336,7 @@ class Repository {
     }
 
     public function prepareIteratorByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null, $done, $fail = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $this->client->addQuery('listing/list',
             [
@@ -361,7 +363,7 @@ class Repository {
      * @return array
      */
     public function getCollectionByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = clone $this->client;
 
@@ -419,7 +421,7 @@ class Repository {
      * @return array
      */
     public function getIdsByFilter(array $filter = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = clone $this->client;
 
@@ -453,7 +455,7 @@ class Repository {
      * @return \Iterator\EntityPager[]
      */
     public function getIteratorsByFilter(array $filters = [], array $sort = [], $offset = null, $limit = null, \Model\Region\Entity $region = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = clone $this->client;
 
@@ -572,14 +574,17 @@ class Repository {
      * Фильтрует аксессуары согласно разрешенным в json категориям
      * Возвращает массив с аксессуарами, сгруппированными по категориям
      *
+     * TODO: отрефакторить этот г*код
+     *
      * @param $product
      * @param $accessoryItems
      * @param int|null $category
      * @param int|null $limit
      * @param array|null $catalogJson
+     * @param \Model\Product\Entity[] $accessories
      * @return array
      */
-    public static function filterAccessoryId(&$product, &$accessoryItems, $category = null, $limit = null, $catalogJson = null) {
+    public static function filterAccessoryId(&$product, &$accessoryItems, $category = null, $limit = null, $catalogJson = null, $accessories = []) {
         // массив токенов категорий, разрешенных в json
         if(is_null($catalogJson)) {
             $jsonCategoryToken = self::getJsonCategoryToken($product);
@@ -596,12 +601,14 @@ class Repository {
         // если передана категория - фильтруем, иначе - нет
         // например на вкладке "популярные" (токен категории не передается)
         // надо выводить первые 8 продуктов без фильтрации
-        if($category) {
-            // получаем аксессуары продукта отфильтрованные согласно разрешенным в json категориям
-            $accessories = self::getAccessoriesFilteredByJson($product, $jsonCategoryToken);
-        } else {
-            // получаем аксессуары продукта
-            $accessories = self::getAccessories($product);
+        if (!$accessories) {
+            if ($category) {
+                // получаем аксессуары продукта отфильтрованные согласно разрешенным в json категориям
+                $accessories = self::getAccessoriesFilteredByJson($product, $jsonCategoryToken);
+            } else {
+                // получаем аксессуары продукта
+                $accessories = self::getAccessories($product);
+            }
         }
 
         $accessoriesClone = $accessories;

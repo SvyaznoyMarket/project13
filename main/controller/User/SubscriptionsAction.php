@@ -62,7 +62,7 @@ class SubscriptionsAction {
      */
     private function getData() {
 
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $userChannels = [];
         $channelCollection = [];

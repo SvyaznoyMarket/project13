@@ -8,6 +8,6 @@ class GifteryPage extends \View\Product\IndexPage {
     }
 
     public function slotContent() {
-        return $this->render('product-giftery/content', $this->params) . PHP_EOL . $this->render('partner-counter/_flocktory_popup', $this->params);
+        return $this->render('product-giftery/content', $this->params);
     }
 }

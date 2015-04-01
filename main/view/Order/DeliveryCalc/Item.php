@@ -4,7 +4,6 @@ namespace View\Order\DeliveryCalc;
 
 class Item {
     const TYPE_PRODUCT = 'product';
-    const TYPE_SERVICE = 'service';
 
     public $id;
     public $type; // товар или услуга

@@ -11,13 +11,17 @@ class Entity {
     private $position;
 
     public function __construct(array $data = []) {
-        if (array_key_exists('id', $data)) $this->setId($data['id']);
+        if (array_key_exists('id', $data)) {
+            $this->setId($data['id']);
+        } else if (array_key_exists('uid', $data)) {
+            $this->setId($data['uid']); // SITE-5290
+        }
         if (array_key_exists('name', $data)) $this->setName($data['name']);
         if (array_key_exists('position', $data)) $this->setPosition($data['position']);
     }
 
     public function setId($id) {
-        $this->id = (int)$id;
+        $this->id = $id;
     }
 
     public function getId() {

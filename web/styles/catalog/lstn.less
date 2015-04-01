@@ -2,6 +2,45 @@
 	margin: 0 0 0 -10px;
 	width: 960px;
 
+	.btnBuy {
+
+		&.mBuySet {
+			width: auto;
+
+			.btnBuy__eLink {
+				padding-left: 27px;
+				width: auto;
+
+				&:after {
+					background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAoklEQVQoFWP8//8/AymABai4Boi1gLgKiGWAmB+IsYGfQMFDIA3BQKwIxH1A7AzE8kCMbi0jUOwjEJ9iADpJFIgdgJgN5DxCmBGo4B7UVGsgDbMNyMQAH4AixSANsUCGJhBPAmIBIOYGYnQnAYUYfgPxdSYQixRAspPI8vR5oJNAweoCxN5AjC9Y60HxsBaIQRH3Boj3AjG+iPsB8gNQDfEAAIDIdEZhVaRSAAAAAElFTkSuQmCC) no-repeat 0 0;
+					height: 12px;
+					left: 10px;
+					margin-top: -6px;
+					top: 50%;
+					width: 12px;
+				}
+			}
+		}
+	}
+
+	.btn--short {
+		box-shadow: none;
+		width: auto;
+		font-size: 12px;
+		text-align: center;
+		padding: 7px 5px 8px;
+		margin-top: 0;
+		line-height: 1;
+		.rounded(3px);
+	}
+
+	.btn--slot--container {
+		width: auto;
+		.inline-block();
+		vertical-align: middle;
+		margin-left: 5px;
+	}
+
 	&_empty {
 		padding: 30px 0;
 		font-size: 14px;
@@ -26,7 +65,7 @@
 			z-index: 2;
 		}
 
-		&:hover {
+		&.js-listing-item:hover {
 			z-index: 10;
 
 			.lstn_i_inn {
@@ -108,7 +147,7 @@
 
 			.lstn_i_inn {
 				background-color: transparent;
-				min-height: 249px;
+				min-height: 243px;
 			}
 
 			.adfoxWrapper {

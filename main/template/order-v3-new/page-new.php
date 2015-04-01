@@ -12,7 +12,7 @@ return function(
     $userBonusCards = $userEntity ? $userEntity->getBonusCard() : null;
     $userBonusCard = null;
 
-    $emailRequiredTest = \App::abTest()->isEmailRequired();
+    $isEmailRequired = \App::config()->order['emailRequired'];
     $config = \App::config();
 ?>
 
@@ -29,22 +29,22 @@ return function(
             <fieldset class="orderU_flds">
                 <div>
                     <div class="orderU_fld">
-                        <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[phone]" value="<?= $userEntity ? $userEntity->getMobilePhone() : '' ?>" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx">
+                        <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[phone]" value="<?= $userEntity ? preg_replace('/^8/', '+7', $userEntity->getMobilePhone()) : '' ?>" placeholder="+7 (___) ___-__-__" data-mask="+7 (xxx) xxx-xx-xx">
                         <label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
                         <span class="errTx" style="display: none">Неверный формат телефона</span>
                         <span class="orderU_hint">Для смс о состоянии заказа</span>
                     </div>
 
                     <div class="orderU_fld">
-                        <input class="orderU_tx textfield jsOrderV3EmailField <?= $emailRequiredTest ? 'jsOrderV3EmailRequired' : '' ?>" type="text" name="user_info[email]" value="<?= $userEntity ? $userEntity->getEmail() : '' ?>" placeholder="mail@domain.com">
-                        <label class="orderU_lbl <?= $emailRequiredTest ? 'orderU_lbl-str' : '' ?>" for="">E-mail</label>
+                        <input class="orderU_tx textfield jsOrderV3EmailField <?= $isEmailRequired ? 'jsOrderV3EmailRequired' : '' ?>" type="text" name="user_info[email]" value="<?= $userEntity ? $userEntity->getEmail() : '' ?>" placeholder="mail@domain.com">
+                        <label class="orderU_lbl <?= $isEmailRequired ? 'orderU_lbl-str' : '' ?>" for="">E-mail</label>
                         <span class="errTx" style="display: none">Неверный формат email</span>
                         <? if (!$user->isSubscribed()) : ?>
                             <? if ($userEntity && $userEntity->isEnterprizeMember()) : ?>
                             <? else : ?>
                             <span class="orderU_hint">
                                 <input type="checkbox" name="" id="subscribe" class="customInput customInput-defcheck js-customInput jsOrderV3SubscribeCheckbox" <?= \App::abTest()->getTest('order_email') ? 'checked' : '' ?>>
-                                <label for="subscribe" class="customLabel customLabel-defcheck">Подписаться на рассылку и получить купон со скидкой 300 рублей на следующую покупку</label>
+                                <label for="subscribe" class="customLabel customLabel-defcheck jsOrderV3SubscribeLabel">Подписаться на рассылку и получить купон со скидкой 300 рублей на следующую покупку</label>
                             </span>
                             <? endif ?>
                         <? endif ?>

@@ -31,7 +31,6 @@ $config = array_merge([
     'routeUrl'              => $router->generate('route'),
     'f1Certificate'         => $appConfig->f1Certificate['enabled'],
     'tealeaf'               => $appConfig->tealeaf['enabled'],
-    'coupon'                => $appConfig->coupon['enabled'],
     'addressAutocomplete'   => $appConfig->order['addressAutocomplete'],
     'prepayment'            => $appConfig->order['prepayment'],
     'isMobile'              => $isMobile,
@@ -40,6 +39,7 @@ $config = array_merge([
     'user' => [
         'region' => [
             'forceDefaultBuy' => \App::user()->getRegion()->getForceDefaultBuy(),
+            'kladrId'         => \App::user()->getRegion()->kladrId,
             'name'            => \App::user()->getRegion() ? \App::user()->getRegion()->getName() : null
         ],
     ],

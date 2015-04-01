@@ -27,7 +27,7 @@ class CompleteAction extends OrderV3 {
     public function execute(\Http\Request $request) {
 
         $page = new \View\OrderV3\CompletePage();
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         ProductPageSenders::clean();
         ProductPageSendersForMarketplace::clean();
@@ -64,7 +64,7 @@ class CompleteAction extends OrderV3 {
                 if (\App::config()->order['sessionInfoOnComplete'] && !$request->query->get('refresh')) { // SITE-4828
                     $orders[$sessionOrder['number']] = new Entity($sessionOrder);
                 } else {
-                    $this->client->addQuery('order/get-by-mobile', ['number' => $sessionOrder['number'], 'mobile' => preg_replace('/[^0-9]/', '', $sessionOrder['phone'])], [], function ($data) use (&$orders, $sessionOrder) {
+                    $this->client->addQuery('order/get-by-mobile', ['number' => $sessionOrder['number'], 'mobile' => preg_replace('/[^0-9]/', '', $sessionOrder['mobile'])], [], function ($data) use (&$orders, $sessionOrder) {
                         $data = reset($data);
                         $orders[$sessionOrder['number']] = $data ? new Entity($data) : null;
                     });
@@ -201,7 +201,7 @@ class CompleteAction extends OrderV3 {
         if (!(bool)$this->sessionOrders) throw new \Exception('В сессии нет заказов');
         $sessionOrder = reset($this->sessionOrders);
 
-        $order = \RepositoryManager::order()->getEntityByNumberAndPhone($orderNumber, $sessionOrder['phone']);
+        $order = \RepositoryManager::order()->getEntityByNumberAndPhone($orderNumber, $sessionOrder['mobile']);
         if (!$order) {
             $order = new \Model\Order\Entity($sessionOrder);
         }
@@ -303,7 +303,7 @@ class CompleteAction extends OrderV3 {
         try {
 
             // Если есть ошибка, то в ядро не надо делать запроса
-            if ($error) throw new \Exception($data['Error']);
+            if ($error) throw new \Exception($error);
 
             $result = \App::coreClientV2()->query('payment/svyaznoy-club', [], $data, \App::config()->coreV2['hugeTimeout']);
 
@@ -324,13 +324,15 @@ class CompleteAction extends OrderV3 {
 
         } catch (\Exception $e) {
             \App::exception()->remove($e);
-            $page->setParam('errors', array_merge(
-                $page->getParam('errors', []),
-                [[
-                    'code'      => $e->getCode(),
-                    'message'   => \App::config()->debug ? $e->getMessage() : 'Ошибка списания баллов Связного Клуба'
-                ]]
-            ));
+            if (!empty($e->getCode())) {
+                $page->setParam('errors', array_merge(
+                    $page->getParam('errors', []),
+                    [[
+                        'code' => $e->getCode(),
+                        'message' => \App::config()->debug ? $e->getMessage() : 'Ошибка списания баллов Связного Клуба'
+                    ]]
+                ));
+            }
             return false;
         }
     }

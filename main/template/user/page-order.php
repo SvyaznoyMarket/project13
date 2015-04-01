@@ -172,7 +172,11 @@
                 </div>
 
                 <div class="personalTable_cell">
-                    <?= $order->getDelivery()->getPrice() == 0 ? 'Бесплатно' : $order->getDelivery()->getPrice() ?>
+                    <? if ($order->getDelivery()->getPrice()): ?>
+                        <?= $order->getDelivery()->getPrice() ?> <span class="rubl">p</span>
+                    <? else: ?>
+                        Бесплатно
+                    <? endif ?>
                 </div>
             </div>
             <? endif; ?>

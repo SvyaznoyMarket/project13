@@ -9,16 +9,12 @@ class DefaultLayout extends Layout {
     protected $layout  = 'layout-twoColumn';
     protected $breadcrumbsPath = null;
     protected $useTchiboAnalytics = false;
-    /** @var bool АБ-тест новой главной страницы (и новое меню) */
-    public $new_menu = false;
 
     public function __construct() {
         parent::__construct();
 
         // Меню нужно в нескольких рендерингах, поэтому запрашиваем его сразу
         $this->setGlobalParam('menu', (new Menu($this))->generate_new(\App::user()->getRegion()));
-
-        $this->new_menu = \Session\AbTest\AbTest::isNewMainPage();
 
         $this->setTitle('Enter - это выход!');
         $this->addMeta('yandex-verification', '623bb356993d4993');
@@ -34,9 +30,9 @@ class DefaultLayout extends Layout {
             — загружаются там из json для главной страницы, например.
         */
 
-        $this->addStylesheet('/css/global.min.css');
+        $this->addStylesheet(\App::config()->debug ? '/css/global.css' : '/css/global.min.css');
 
-        $this->addStylesheet('/styles/global.min.css');
+        $this->addStylesheet(\App::config()->debug ? '/styles/global.css' : '/styles/global.min.css');
 
         $this->addJavascript(\App::config()->debug ? '/js/loadjs.js' : '/js/loadjs.min.js');
     }
@@ -69,7 +65,7 @@ class DefaultLayout extends Layout {
      * @return string
      */
     public function slotBodyClassAttribute() {
-        return \App::abTest()->isNewMainPage() ? ' body-new' : '';
+        return ' body-new';
     }
 
     public function slotHeader() {
@@ -143,23 +139,6 @@ class DefaultLayout extends Layout {
         return '';
     }
 
-    public function slotRegionSelection() {
-        /** @var $regions \Model\Region\Entity */
-        $regions = $this->getParam('regionsToSelect', null);
-
-        if (null === $regions) {
-            try {
-                $regions = \RepositoryManager::region()->getShownInMenuCollection();
-            } catch (\Exception $e) {
-                \App::logger()->error($e);
-
-                $regions = [];
-            }
-        }
-
-        return $this->render('_regionSelection', array_merge($this->params, array('regions' => $regions)));
-    }
-
     /**
      * @return string
      */
@@ -213,7 +192,7 @@ class DefaultLayout extends Layout {
      * @return string
      */
     public function slotTopbar() {
-        return $this->render($this->new_menu ? 'userbar2/topbar' : 'userbar/topbar');
+        return $this->render('userbar2/topbar');
     }
 
     /** Всплывающий юзербар
@@ -227,14 +206,14 @@ class DefaultLayout extends Layout {
      * @return string
      */
     public function slotSearchBar() {
-        return $this->new_menu ? $this->render('common/_searchbar') : '';
+        return $this->render('common/_searchbar');
     }
 
     /** Строка поиска
      * @return string
      */
     public function slotNavigation() {
-        return $this->render($this->new_menu ? 'common/_navigation-new' : 'common/_navigation-old', ['menu' => $this->getGlobalParam('menu')]);
+        return $this->render('common/_navigation-new', ['menu' => $this->getGlobalParam('menu')]);
     }
 
     public function slotUserbarContent() {
@@ -322,14 +301,6 @@ class DefaultLayout extends Layout {
                 'cart',
             ])) {
                 if (\App::config()->partners['SmartLeads']['enabled']) $return .= "\n\n" . '<div id="xcntmyAsync" class="jsanalytics"></div>';
-            }
-
-            // ActionPay — на странице с полным описанием продукта и на стр "спс за заказ"
-            if (in_array($routeName, [
-                'product',
-                'order.complete',
-            ])) {
-                $return .= $this->tryRender('partner-counter/_actionpay', ['routeName' => $routeName] );
             }
 
             if ('subscribe_friends' == $routeToken) {
@@ -571,17 +542,10 @@ class DefaultLayout extends Layout {
         return '';
     }
 
-    public function slotFlocktoryEnterprizeJs() {
-        return '';
-    }
-
-    public function slotFlocktoryEnterprizeRegistrationJs() {
-        return '';
-    }
-
     /** Google Tag Manager Container (ports.js)
      * @param array $data Дополнительные данные для GTM
      * @return string
+     * @link https://developers.google.com/tag-manager/
      */
     public function slotGoogleTagManagerJS($data = []) {
 
@@ -589,18 +553,13 @@ class DefaultLayout extends Layout {
 
         if (!\App::config()->googleTagManager['enabled'] || !\App::config()->analytics['enabled'] || !$containerId) return '';
 
-        $data = array_merge(['containerId' => $containerId], $data);
-
         return
-            '<div id="googleTagManagerJS" class="jsanalytics" data-value="' . $this->json($data) . '">
+            '<div id="googleTagManagerJS" class="jsanalytics" data-value="' . \App::config()->googleTagManager['containerId'] . '">
+                <script>var dataLayerGTM = '. json_encode($data, JSON_UNESCAPED_UNICODE) .';</script>
                 <!-- Google Tag Manager -->
                 <noscript><iframe src="//www.googletagmanager.com/ns.html?id=' . $containerId . '" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <!-- End Google Tag Manager -->
             </div>';
-    }
-
-    public function slotFlocktoryExchangeJS() {
-        return;
     }
 
     public function slotEnterprizeRegJS() {

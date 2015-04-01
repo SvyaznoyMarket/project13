@@ -4,14 +4,11 @@ return function(
     \Model\OrderDelivery\Entity\Order $order
 ) {
 
-    if ($order->isPartnerOffer()) return;
+    // не показываем поля дискаунта, если заказ партнерский (Связной - исключение)
+    if ($order->isPartnerOffer() && !$order->seller->isSvyaznoy()) return;
 
-    $couponNumber = null;
-
-    if ((bool)array_filter($order->errors, function( \Model\OrderDelivery\Error $error) { return $error->code == 404 && isset($error->details['coupon_number']); })) {
-        $couponErrors = array_filter($order->errors, function( \Model\OrderDelivery\Error $error) { return $error->code == 404 && isset($error->details['coupon_number']); });
-        $couponNumber = $couponErrors[0]->details['coupon_number'];
-    }
+    $couponErrors = array_filter($order->errors, function( \Model\OrderDelivery\Error $error) { return in_array($error->code, [404, 1001]) && isset($error->details['coupon_number']); });
+    if ($couponErrors) $couponNumber = $couponErrors[0]->details['coupon_number'];
 
     ?>
 
@@ -29,9 +26,17 @@ return function(
             <input class="cuponField cuponPin_it textfieldgrey jsCertificatePinInput" type="text" name="" value="" />
         </div>
 
-        <? if ($couponNumber !== null) : ?>
-            <div class="cuponErr">Скидки с таким кодом не существует</div>
-        <? endif; ?>
+        <? foreach ($couponErrors as $err) : ?>
+            <? if ($err->code == 404) : ?>
+                <div class="cuponErr">Скидки с таким кодом не существует</div>
+            <? elseif ($err->code == 1001) : ?>
+                <div class="cuponErr">Купон неприменим к данному заказу</div>
+            <? elseif ($err->code == 1022) : ?>
+                <div class="cuponErr">Купон уже был использован или истек срок действия</div>
+            <? else : ?>
+                <div class="cuponErr"><?= $err->message ?></div>
+            <? endif ?>
+        <? endforeach ?>
 
         <div><button class="cuponBtn btnLightGrey jsApplyDiscount">Применить</button></div>
     </div>

@@ -9,7 +9,7 @@ class DeliveryAction {
      * @throws \Exception\NotFoundException
      */
     public function execute(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!$request->isXmlHttpRequest()) {
             throw new \Exception\NotFoundException('Request is not xml http request');
@@ -25,7 +25,7 @@ class DeliveryAction {
      * @return array
      */
     public function getResponseData($product, $region = null, \EnterQuery\Delivery\GetByCart $deliveryQuery = null) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $helper = new \View\Helper();
         $user = \App::user();
@@ -114,6 +114,7 @@ class DeliveryAction {
             ];
 
             $shopData = &$result['shop_list'];
+            /** @var \Model\Shop\Entity[] $shops */
             $shops = [];
 
             // получаем список магазинов
@@ -179,7 +180,7 @@ class DeliveryAction {
                         if ($day > 7) continue;
 
                         if (in_array($delivery['token'], ['self', 'now'])) {
-                            foreach ($dateItem['shop_list'] as $shopItem) {
+                            foreach (isset($dateItem['shop_list'][0]) ? $dateItem['shop_list'] : [] as $shopItem) {
                                 if (!isset($shopItem['id']) || !isset($shopData[$shopItem['id']])) continue;
 
                                 /*
@@ -206,8 +207,8 @@ class DeliveryAction {
                             // добавляем url к магазинам
                             foreach ($shops as $shop) {
                                 foreach ($delivery['shop'] as $key => $shopItem) {
-                                    if($shopItem['id'] == $shop->getId()) {
-                                        $delivery['shop'][$key]['url'] = \App::router()->generate('shop.show', array('regionToken' => $shop->getRegion()->getToken(), 'shopToken' => $shop->getToken()));
+                                    if ($shop && ($shopItem['id'] == $shop->getId()) && $shop->getRegion()) {
+                                        $delivery['shop'][$key]['url'] = \App::router()->generate('shop.show', ['regionToken' => $shop->getRegion()->getToken(), 'shopToken' => $shop->getToken()]);
                                     }
                                 }
                             }

@@ -3,13 +3,11 @@
 namespace Controller\Tag;
 
 class Action {
-    private static $globalCookieName = 'global';
-
     public function index($tagToken, \Http\Request $request, $categoryToken = null) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
         $client = \App::coreClientV2();
-        /** @var $region \Model\Region\Entity|null */
-        $region = self::isGlobal() ? null : \App::user()->getRegion();
+        /** @var $region \Model\Region\Entity */
+        $region = \App::user()->getRegion();
 
         $tag = \RepositoryManager::tag()->getEntityByToken($tagToken);
         if (!$tag) {
@@ -128,7 +126,7 @@ class Action {
 
         $shop = null;
         try {
-            if (!\Controller\ProductCategory\Action::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
+            if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
             }
         } catch (\Exception $e) {
@@ -139,23 +137,11 @@ class Action {
 
         $brand = null;
 
-        $productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $selectedCategory, $brand, $request, $shop);
+        $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $selectedCategory, $brand, $request, $shop);
         $productFilter->setValue( 'tag', $tag->getId() );
         if ($selectedCategory) {
             $productFilter->setCategory($selectedCategory);
         }
-
-        // SITE-4734
-        foreach ($productFilter->getFilterCollection() as $filter) {
-            if ('brand' === $filter->getId()) {
-                foreach ($filter->getOption() as $option) {
-                    $option->setImageUrl('');
-                }
-
-                break;
-            }
-        }
-
 
         // сортировка
         $productSorting = new \Model\Product\Sorting();
@@ -291,34 +277,17 @@ class Action {
     /**
      * @param string        $categoryPath
      * @param \Http\Request $request
-     * @return \Http\RedirectResponse
-     */
-    public function setInstore($categoryPath, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
-
-        $response = new \Http\RedirectResponse($request->headers->get('referer') ?: \App::router()->generate('product.category', [
-            'categoryPath' => $categoryPath,
-            'instore'      => 1,
-        ]));
-
-        return $response;
-    }
-
-    /**
-     * @param string        $categoryPath
-     * @param \Http\Request $request
      * @return \Http\JsonResponse
      * @throws \Exception\NotFoundException
      */
     public function count($tagToken, $categoryPath = null, \Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!$request->isXmlHttpRequest()) {
             throw new \Exception\NotFoundException('Request is not xml http request');
         }
 
-        // vars
-        $region = self::isGlobal() ? null : \App::user()->getRegion();
+        $region = \App::user()->getRegion();
         $categoryToken = null;
         $category = null;
         $selectedCategory = null;
@@ -396,7 +365,7 @@ class Action {
         // магазины
         $shop = null;
         try {
-            if (!self::isGlobal() && \App::request()->get('shop') && \App::config()->shop['enabled']) {
+            if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
                 $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
             }
         } catch (\Exception $e) {
@@ -409,9 +378,7 @@ class Action {
 
 
         // Product Filter
-        $productFilter = new \Model\Product\Filter($filters, self::isGlobal(), self::inStore(), $shop);
-        //$productFilter = $this->getFilter($filters, $category, $brand, $request, $shop); // old
-        //$productFilter = (new \Controller\ProductCategory\Action())->getFilter($filters, $category, $brand, $request, $shop);
+        $productFilter = new \Model\Product\Filter($filters, $shop);
 
         $productFilter->setValue( 'tag', $tag->getId() );
         if (isset($selectedCategory)) {
@@ -425,100 +392,6 @@ class Action {
             'count'    => $count,
         ));
     }
-
-    /**
-     * @param \Model\Product\Filter\Entity[] $filters
-     * @param \Model\Product\Category\TreeEntity $category
-     * @param \Model\Brand\Entity|null       $brand
-     * @param \Http\Request $request
-     * @return \Model\Product\Filter
-     */
-    protected function getFilter(array $filters, \Model\Product\Category\TreeEntity $category, \Model\Brand\Entity $brand = null, \Http\Request $request, $shop = null) {
-        // флаг глобального списка в параметрах запроса
-        $isGlobal = self::isGlobal();
-        //
-        $inStore = self::inStore();
-
-        // регион для фильтров
-        $region = $isGlobal ? null : \App::user()->getRegion();
-
-        // filter values
-        $values = (array)$request->get(\View\Product\FilterForm::$name, []);
-        if ($isGlobal) {
-            $values['global'] = 1;
-        }
-        if ($inStore) {
-            $values['instore'] = 1;
-        }
-        if ($brand) {
-            $values['brand'] = [
-                $brand->getId(),
-            ];
-        }
-
-        //если есть фильтр по магазину
-        if ($shop) {
-            /** @var \Model\Shop\Entity $shop */
-            $values['shop'] = $shop->getId();
-        }
-
-        // проверяем есть ли в запросе фильтры
-        if ((bool)$values) {
-            // проверяем есть ли в запросе фильтры, которых нет в текущей категории (фильтры родительских категорий)
-            /** @var $exists Ид фильтров текущей категории */
-            $exists = array_map(function($filter) { /** @var $filter \Model\Product\Filter\Entity */ return $filter->getId(); }, $filters);
-            /** @var $diff Ид фильтров родительских категорий */
-            $diff = array_diff(array_keys($values), $exists);
-            if ((bool)$diff && (bool)$category) {
-                foreach ($category->getAncestor() as $ancestor) {
-                    try {
-                        /** @var $ancestorFilters \Model\Product\Filter\Entity[] */
-                        $ancestorFilters = [];
-                        \RepositoryManager::productFilter()->prepareCollectionByCategory($ancestor, $region, function($data) use (&$ancestorFilters) {
-                            foreach ($data as $item) {
-                                $ancestorFilters[] = new \Model\Product\Filter\Entity($item);
-                            }
-                        });
-                        \App::coreClientV2()->execute();
-                    } catch (\Exception $e) {
-                        $ancestorFilters = [];
-                    }
-                    foreach ($ancestorFilters as $filter) {
-                        if (false === $i = array_search($filter->getId(), $diff)) continue;
-
-                        // скрываем фильтр в списке
-                        $filter->setIsInList(false);
-                        $filters[] = $filter;
-                        unset($diff[$i]);
-                        if (!(bool)$diff) break;
-                    }
-                    if (!(bool)$diff) break;
-                }
-            }
-        }
-
-        $productFilter = new \Model\Product\Filter($filters, $isGlobal, $inStore, $shop);
-        $productFilter->setCategory($category);
-        $productFilter->setValues($values);
-
-        return $productFilter;
-    }
-
-    /**
-     * @return bool
-     */
-    public static function isGlobal() {
-        return \App::user()->getRegion()->getHasTransportCompany()
-            && (bool)(\App::request()->cookies->get(self::$globalCookieName, false));
-    }
-
-    /**
-     * @return bool
-     */
-    public static function inStore() {
-        return (bool)\App::request()->get('instore');
-    }
-
 
     /**
      * добавить дочерний токен к родительскому токену в дереве категорий для сайдбара

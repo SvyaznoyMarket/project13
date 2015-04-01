@@ -14,7 +14,7 @@ class InflectAction {
      * @throws \Exception
      */
     public function execute($limit = 10000) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $manager = new \QueueManager(\App::config()->queue, \App::logger());
         $manager->process('inflect', function($taskName, $taskData = []) {

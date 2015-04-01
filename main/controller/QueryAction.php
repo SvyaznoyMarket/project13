@@ -9,7 +9,7 @@ class QueryAction {
      * @return \Http\Response
      */
     public function index(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         \App::config()->debug = false;
 
@@ -67,7 +67,7 @@ class QueryAction {
      * @return \Http\Response
      */
     public function show(\Http\Request $request, $queryToken) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         \App::config()->debug = false;
 

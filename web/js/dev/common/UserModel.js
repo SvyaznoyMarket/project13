@@ -69,7 +69,6 @@
 		/* Удаление продукта по ID */
 		model.removeProductByID = function(product_id) {
 			model.cart.remove(function(item) { return item.id == product_id });
-			ENTER.utils.gift.deleteProductIdFromCookie(product_id);
 		};
 
 		/* АБ-тест платного самовывоза */

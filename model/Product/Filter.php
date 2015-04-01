@@ -13,21 +13,15 @@ class Filter {
     private $filters = [];
     /** @var array */
     private $values = [];
-    private $isGlobal = false;
-    private $inStore = false;
     /** @var \Model\Shop\Entity */
     private $shop;
 
     /**
      * @param FilterEntity[] $filterCollection
-     * @param bool           $isGlobal
-     * @param bool           $inStore
      * @param null           $shop
      */
-    public function __construct(array $filterCollection, $isGlobal = false, $inStore = false, $shop = null) {
+    public function __construct(array $filterCollection, $shop = null) {
         $this->filters = $filterCollection;
-        $this->isGlobal = $isGlobal;
-        $this->inStore = $inStore;
         $this->shop = $shop;
     }
 
@@ -91,16 +85,29 @@ class Filter {
             $return[] = ['category', 1, $this->category->getId()];
         }
 
-        if (array_key_exists('global', $this->values) && $this->values['global']) {
-            $return[] = ['is_global_buyable', 1, 1];
-        }
-
         if (array_key_exists('instore', $this->values) && $this->values['instore']) {
             $return[] = ['is_store', 1, 1];
         }
 
         if (array_key_exists('shop', $this->values) && $this->values['shop'] && $this->shop && $this->shop instanceof \Model\Shop\Entity) {
             $return[] = ['shop', 1, $this->shop->getId()];
+        }
+
+        // TODO Костыль для таска: SITE-2403 Вернуть фильтр instore
+        if (\App::request()->get('instore')) {
+            foreach ($return as $key => $val) {
+                if ('label' === $val[0]) {
+                    if (isset($val[2])) {
+                        foreach ($val[2] as $labelKey => $labelVal) {
+                            if (1 === $labelVal) {
+                                unset($return[$key][2][$labelKey]);
+                                $return[$key][2] = array_values($return[$key][2]);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         return $return;
@@ -192,20 +199,6 @@ class Filter {
         return null;
     }
 
-    /**
-     * @return bool
-     */
-    public function isGlobal() {
-        return $this->isGlobal;
-    }
-
-    /**
-     * @return bool
-     */
-    public function inStore() {
-        return $this->inStore;
-    }
-
     public function hasInListGroupedProperties() {
         foreach ($this->getGroupedPropertiesV2() as $group) {
             if ($group->hasInListProperties()) {
@@ -280,7 +273,7 @@ class Filter {
             array_unshift($groups, $group);
         }
 
-        if ($brandProperty && $this->getCategory() instanceof \Model\Product\Category\Entity && $this->getCategory()->isV2Furniture()) {
+        if ($brandProperty && !$brandProperty->getIsAlwaysShow()) {
             $group = new Group();
             $group->name = $brandProperty->getName();
             $group->properties[] = $brandProperty;
@@ -302,7 +295,7 @@ class Filter {
                 $properties[] = $property;
             } else if ($property->isLabel()) {
                 $properties[] = $property;
-            } else if ($property->isBrand() && $this->getCategory() instanceof \Model\Product\Category\Entity && !$this->getCategory()->isV2Furniture()) {
+            } else if ($property->isBrand() && $property->getIsAlwaysShow()) {
                 $properties[] = $property;
             }
         }

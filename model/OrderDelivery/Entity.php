@@ -603,6 +603,7 @@ namespace Model\OrderDelivery\Entity\Order {
     class Seller {
 
         const UI_ENTER = '24594081-6c68-11e2-a300-e83935c0a4d4';
+        const UI_SVYAZNOY = 'c562d9cb-cfd7-11e1-be71-3c4a92f6ffb8';
 
         /** @var string */
         public $name;
@@ -618,6 +619,10 @@ namespace Model\OrderDelivery\Entity\Order {
             if (isset($data['offer'])) $this->offer = (string)$data['offer'];
             if (isset($data['id'])) $this->id = (int)$data['id'];
             if (isset($data['ui'])) $this->ui = (string)$data['ui'];
+        }
+
+        public function isSvyaznoy() {
+            return $this->ui == self::UI_SVYAZNOY;
         }
     }
 

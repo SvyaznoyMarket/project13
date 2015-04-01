@@ -4,10 +4,9 @@ namespace Debug;
 
 class ShowAction {
     public function execute(\Http\Request $request, \Http\Response $response = null) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $debug = \App::debug();
-        $helper = new \Helper\TemplateHelper();
 
         if ($response && (200 != $response->getStatusCode())) {
             $debug->add('status', $response->getStatusCode(), 150, \Debug\Collector::TYPE_ERROR);
@@ -76,7 +75,7 @@ class ShowAction {
                         'count'       => isset($queryData[$index]['count']) ? ($queryData[$index]['count'] + 1) : 1,
                         'cache'       => isset($message['cache']),
                         'delay'       => isset($message['delay']),
-                        'delayRatio'  => isset($message['delayRatio']) ? implode(', ', $message['delayRatio']) : [],
+                        'delays'      => !empty($message['delays']) ? array_map(function($i) { return ['value' => $i]; }, $message['delays']) : [],
                     ];
                 } else if ((('Fail curl' == $message['message']) || ('End curl' == $message['message'])) && isset($queryData[$index])) {
                     if (isset($message['error'])) {
@@ -99,6 +98,22 @@ class ShowAction {
                     $queryData[$index]['header'] = isset($message['header']) ? $message['header'] : null;
                     $queryData[$index]['cache'] = isset($message['cache']);
                     $queryData[$index]['delay'] = $delay;
+                    if (empty($queryData[$index]['delays'])) {
+                        $queryData[$index]['delays'] =
+                            $queryData[$index]['retryCount']
+                            ? [
+                                'value' => ('x' . $queryData[$index]['retryCount']),
+                            ] : [];
+                    } else {
+                        $iDelay = null;
+                        foreach ($queryData[$index]['delays'] as &$iDelay) {
+                            if ($delay == $iDelay['value']) {
+                                $iDelay['selected'] = true;
+                                $iDelay['http_code'] = isset($queryData[$index]['info']['http_code']) ? $queryData[$index]['info']['http_code'] : null;
+                            }
+                        }
+                        unset($iDelay);
+                    }
                 }
             } else if ($startAt && ('End curl executing' == $message['message'])) {
                 /*
@@ -117,13 +132,15 @@ class ShowAction {
 
         // timers
         $appTimer = \Debug\Timer::get('app');
+        $curlTimer = \Debug\Timer::get('curl');
         $coreTimer = \Debug\Timer::get('core');
-        $contentTimer = \Debug\Timer::get('content');
-        $dataStoreTimer = \Debug\Timer::get('data-store');
+//        $contentTimer = \Debug\Timer::get('content');
+//        $dataStoreTimer = \Debug\Timer::get('data-store');
         $timerData = [
             ['name' => 'core', 'value' => round($coreTimer['total'], 3) * 1000, 'count' => $coreTimer['count'], 'unit' => 'ms'],
-            ['name' => 'data-store', 'value' => round($dataStoreTimer['total'], 3) * 1000, 'count' => $dataStoreTimer['count'], 'unit' => 'ms'],
-            ['name' => 'content', 'value' => round($contentTimer['total'], 3) * 1000, 'count' => $contentTimer['count'], 'unit' => 'ms'],
+            ['name' => 'curl', 'value' => round($curlTimer['total'], 3) * 1000, 'count' => $curlTimer['count'], 'unit' => 'ms'],
+//            ['name' => 'data-store', 'value' => round($dataStoreTimer['total'], 3) * 1000, 'count' => $dataStoreTimer['count'], 'unit' => 'ms'],
+//            ['name' => 'content', 'value' => round($contentTimer['total'], 3) * 1000, 'count' => $contentTimer['count'], 'unit' => 'ms'],
             ['name' => 'total', 'value' => round($appTimer['total'], 3) * 1000, 'count' => $appTimer['count'], 'unit' => 'ms'],
         ];
         $debug->add('timer', $timerData, 138);

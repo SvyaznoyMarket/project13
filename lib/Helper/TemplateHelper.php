@@ -22,12 +22,23 @@ class TemplateHelper {
     }
 
     /**
-     * @param string $routeName
-     * @param array $params
+     * @param string|null $routeName Если не задан, то используется текущий
+     * @param array $params Если не заданы, то используются текущие
      * @param bool $absolute
      * @return mixed
      */
-    public function url($routeName, array $params = [], $absolute = false) {
+    public function url($routeName = null, array $params = [], $absolute = false) {
+        if ($routeName === null) {
+            $routeName = \App::request()->attributes->get('route');
+        }
+
+        if (!$params) {
+            $request = \App::request();
+            foreach (array_diff(array_keys($request->attributes->all()), ['pattern', 'method', 'action', 'route', 'require']) as $k) {
+                $params[$k] = $request->attributes->get($k);
+            }
+        }
+
         return \App::router()->generate($routeName, $params, $absolute);
     }
 
@@ -178,7 +189,7 @@ class TemplateHelper {
     public function formatPrice($price) {
         $price = str_replace(',', '.', $price);
         $price = preg_replace('/\s/', '', $price);
-        $price = number_format($price, 2, '.', '');
+        $price = number_format((float)$price, 2, '.', '');
         $price = explode('.', $price);
 
         /* Маленькие пробелы между разрядами целой части цены */

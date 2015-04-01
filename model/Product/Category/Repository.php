@@ -18,7 +18,7 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityByToken($token) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = \App::scmsClient();
 
@@ -52,7 +52,7 @@ class Repository {
      * @param                      $callback
      */
     public function prepareEntityByToken($token, \Model\Region\Entity $region = null, $callback, $brandSlug = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $params = [
             'slug' => $token,
@@ -83,7 +83,7 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityById($id) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = \App::scmsClient();
 
@@ -116,7 +116,7 @@ class Repository {
      * @return Entity|null
      */
     public function getEntityByUid($uid) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = \App::scmsClient();
 
@@ -149,7 +149,7 @@ class Repository {
      * @return Entity[]
      */
     public function getCollectionById(array $ids) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = \App::scmsClient();
 
@@ -183,7 +183,7 @@ class Repository {
      * @param                      $fail
      */
     public function prepareCollectionById(array $ids, \Model\Region\Entity $region = null, $done, $fail = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         if (!$ids) {
             return;
@@ -219,7 +219,7 @@ class Repository {
      * @return Entity[]
      */
     public function getRootCollection() {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = clone \App::searchClient();
 
@@ -251,7 +251,7 @@ class Repository {
      * @return Entity[]
      */
     public function getTreeCollection(\Model\Region\Entity $region = null, $maxLevel = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $client = clone \App::searchClient();
 
@@ -289,7 +289,7 @@ class Repository {
      * @param callback|null        $fail
      */
     public function prepareTreeCollection(\Model\Region\Entity $region = null, $maxLevel = null, $count_local = 0, $done, $fail = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $params = [
             'is_load_parents' => true,
@@ -313,7 +313,7 @@ class Repository {
      * @param callback|null $fail
      */
     public function prepareTreeCollectionByRoot($rootId, \Model\Region\Entity $region = null, $maxLevel = null, $done, $fail = null) {
-        \App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
+        //\App::logger()->debug('Exec ' . __METHOD__ . ' ' . json_encode(func_get_args(), JSON_UNESCAPED_UNICODE));
 
         $params = [
             'is_load_parents' => true,
@@ -365,9 +365,6 @@ class Repository {
                 // только при загрузке дерева ядро может отдать нам количество товаров в ней
                 if ($region && isset($data['product_count'])) {
                     $category->setProductCount($data['product_count']);
-                }
-                if (\App::config()->product['globalListEnabled'] && isset($data['product_count_global'])) {
-                    $category->setGlobalProductCount($data['product_count_global']);
                 }
 
                 // добавляем дочерние узлы

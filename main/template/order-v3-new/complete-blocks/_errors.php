@@ -5,7 +5,7 @@
 ?>
 
     <div class="orderPayment_block orderPayment_block_error">
-        <?= $error['code'] ?> <?= $error['message'] ?>
+        <?= \App::debug() ? $error['code'].':' : '' ?> <?= $error['message'] ?>
     </div>
 
 <? }}; return $f;

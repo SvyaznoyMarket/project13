@@ -75,7 +75,6 @@
 
     <?= $page->slotUpper() ?>
     <?= $page->slotUserbar() ?>
-    <?= $page->slotRegionSelection() ?>
     <?= $page->slotAuth() ?>
 
     <div style="position:absolute; height: 0; z-index:-1; top: 0;">
@@ -85,7 +84,6 @@
         <?= $page->slotPartnerCounter() ?>
         <?= $page->slotEnterprizeConfirmJs() ?>
         <?= $page->slotEnterprizeCompleteJs() ?>
-        <?= $page->slotFlocktoryEnterprizeJs() ?>
         <?= $page->slotEnterprizeRegJS() ?>
     </div>
 </body>

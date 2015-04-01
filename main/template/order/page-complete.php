@@ -4,7 +4,6 @@
  * @var $user               \Session\User
  * @var $orders             \Model\Order\Entity[]
  * @var $productsById       \Model\Product\Entity[]
- * @var $servicesById       \Model\Product\Service\Entity[]
  * @var $shopsById          \Model\Shop\Entity[]
  * @var $isCredit           bool
  * @var $paymentProvider    \Payment\ProviderInterface
@@ -54,7 +53,7 @@ if (!isset($paymentUrl)) $paymentUrl = null;
             <b>Продавец:</b> Закрытое акционерное общество «Связной Логистика».<br/>
             Адрес: 115280, г. Москва, ул. Ленинская слобода, д. 19<br/>
             ИНН: 7703567318, ОГРН 1057748731336<br/>
-            Интернет-магазин «Связной» 8 (800) 700 43 43
+            Интернет-магазин «Связной» +7 (800) 700 43 43
         <? else : ?>
             Ваш заказ принят, наш оператор свяжется с Вами, уточнит детали заказа и согласует условия доставки.
             Доставку будет осуществлять компания-партнер <?= $order->seller->name ?>.
@@ -106,11 +105,6 @@ if (!isset($paymentUrl)) $paymentUrl = null;
         ]) ?>
     </div>
 <? else: ?>
-    <? if(!empty($form)) { ?>
-        <? if($paymentMethod && $paymentMethod->isCash()) { ?>
-            <?= $page->tryRender('order/partner-counter/_flocktory-complete', ['order' => $order, 'userForm' => $form, 'productsById' => $productsById]) ?>
-        <? } ?>
-    <? } ?>
     <div class="mt32" style="text-align: center">
         <? if ($isCredit): ?>
             <a class='bBigOrangeButton jsCreditBtn' href="#">Перейти к оформлению кредита</a>
@@ -144,7 +138,6 @@ if (!isset($paymentUrl)) $paymentUrl = null;
 <? if ($isOrderAnalytics) echo $page->render('order/_analytics', array(
     'orders'       => $orders,
     'productsById' => $productsById,
-    'servicesById' => $servicesById,
     'shopsById'    => $shopsById,
     'paymentMethod' => $paymentMethod
 )) ?>
@@ -157,5 +150,3 @@ if (!isset($paymentUrl)) $paymentUrl = null;
     ]);
     echo $helper->render('order/__analyticsData', ['orders' => $orders, 'productsById' => $productsById]);
 } ?>
-
-<?= $page->slotFlocktoryExchangeJS() ?>

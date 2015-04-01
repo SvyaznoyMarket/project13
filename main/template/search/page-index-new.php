@@ -12,7 +12,6 @@
  * @var $selectedCategory   \Model\Product\Category\Entity
  * @var $productView        string
  * @var $bannerPlaceholder  array
- * @var $allCount           array
  **/
 ?>
 
@@ -45,12 +44,12 @@
     </div>
     <!--    --><?// endif ?>
 
-    <?= $helper->render('search/__filter', [
+    <?= $helper->render('product-category/__filter', [
         'baseUrl'          => $helper->url('search', ['q' => $searchQuery]),
         'countUrl'         => null,
         'productFilter'    => $productFilter,
         'categories'       => $categories,
-        'selectedCategory' => $selectedCategory,
+        'openFilter'       => true,
     ]) // фильтры ?>
 
     <?= $helper->render('product/__listAction', [

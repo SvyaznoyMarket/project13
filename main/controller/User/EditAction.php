@@ -18,7 +18,7 @@ class EditAction {
     }
 
     public function execute(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if ($request->isMethod('post')) {
             try {
@@ -27,10 +27,16 @@ class EditAction {
             } catch (\Curl\Exception $e) {
                 \App::logger()->error($e, ['error', 'curl']);
                 \App::exception()->remove($e);
-                $this->session->flash(['type' => 'error', 'message' => 'Не удалось сохранить данные']);
+
+                $message = 'Не удалось сохранить данные';
+                if (in_array($e->getCode(), [613])) {
+                    $message = $e->getMessage();
+                }
+
+                $this->session->flash(['type' => 'error', 'message' => $message]);
             } catch (\Exception $e) {
                 \App::logger()->error($e, ['error']);
-                $this->session->flash(['type' => 'error', 'message' => 'Не удалось сохранить данные']);
+                $this->session->flash(['type' => 'error', 'message' => $e->getMessage()]);
             }
             return new \Http\RedirectResponse(\App::router()->generate('user.edit'));
         }
@@ -56,6 +62,8 @@ class EditAction {
 
         $form = new \View\User\EditForm();
         $form->fromEntity($this->user);
+        $form->setMobilePhone(preg_replace('/^8/', '+7', $form->getMobilePhone()));
+        $form->setHomePhone(preg_replace('/^8/', '+7', $form->getHomePhone()));
 
         $message = $this->session->get('flash');
         $this->session->remove('flash');
@@ -86,6 +94,16 @@ class EditAction {
 
         if (!array_key_exists('is_subscribe', $userData)) {
             $userData['is_subscribe'] = false;
+        }
+
+        if (isset($userData['mobile_phone'])) {
+            $userData['mobile_phone'] = preg_replace('/^\+7/', '8', $userData['mobile_phone']);
+            $userData['mobile_phone'] = preg_replace('/[^\d]/', '', $userData['mobile_phone']);
+        }
+
+        if (isset($userData['home_phone'])) {
+            $userData['home_phone'] = preg_replace('/^\+7/', '8', $userData['home_phone']);
+            $userData['home_phone'] = preg_replace('/[^\d]/', '', $userData['home_phone']);
         }
 
         if (array_key_exists('bonus_card', $userData) && (bool)$userData['bonus_card'] && is_array($userData['bonus_card'])) {
@@ -172,7 +190,7 @@ class EditAction {
      * @return \Http\JsonResponse
      */
     public function editSclubNumber(\Http\Request $request) {
-        \App::logger()->debug('Exec ' . __METHOD__);
+        //\App::logger()->debug('Exec ' . __METHOD__);
 
         if (!$request->isXmlHttpRequest()) {
             throw new \Exception\NotFoundException('Request is not xml http request');
