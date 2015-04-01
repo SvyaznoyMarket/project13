@@ -351,11 +351,17 @@ class FormAction {
 
             // задаем регистрационный флаг
             try {
-                $regData = ['isRegistration' => true, 'token' => $result['token'], 'enterprizeToken' => $enterprizeToken,];
+                $regData = [
+                    'isRegistration'  => true,
+                    'token'           => $result['token'],
+                    'enterprizeToken' => $enterprizeToken,
+                    'name'             => $form->getName(),
+                ];
 
                 // пишем в сессию
                 $data = array_merge($data, $regData);
                 $session->set($sessionName, $data);
+                \App::logger()->info(['sender' => __FILE__ . ' ' .  __LINE__, 'data' => $data], ['enterprize']);
 
                 if (!isset($result['user_id']) || empty($result['user_id'])) {
                     throw new \Exception('Не передан user_id');
