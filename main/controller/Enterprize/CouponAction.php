@@ -16,7 +16,11 @@ class CouponAction {
 
         $session = \App::session();
         $sessionName = \App::config()->enterprize['formDataSessionKey'];
-        $data = array_merge($session->get($sessionName, []), $data);
+        if (!$data) {
+            $data = $session->get($sessionName);
+        }
+        \App::logger()->info(['sender' => __FILE__ . ' ' .  __LINE__, 'data' => $data], ['enterprize']);
+
         $enterprizeToken = isset($data['enterprizeToken']) ? $data['enterprizeToken'] : null;
 
         if (!$enterprizeToken) {
