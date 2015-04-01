@@ -53,7 +53,7 @@ class ShowAction {
         $pageNum = $this->getPageNum();
         $productSorting = $this->getSorting();
         $shop = $this->getShop();
-        $region = $this->getRegion($sliceRequestFilters['region']);
+        $region = $this->getRegion(isset($sliceRequestFilters['region']) ? $sliceRequestFilters['region'] : null);
         $category = $this->getCategory($categoryToken, $slice, $region);
         $sliceFiltersForSearchClientRequest = \RepositoryManager::slice()->getSliceFiltersForSearchClientRequest($slice, $category->getId() ? true : false);
 

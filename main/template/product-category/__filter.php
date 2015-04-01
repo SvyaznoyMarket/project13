@@ -82,58 +82,23 @@ return function(
     if ($productPager && (bool)$productFilter->getValues()) {
         $countProducts = $hasBanner ? ($productPager->count() - 1) : $productPager->count();
     }
-
-    $isV3 = $productFilter->getCategory() && $productFilter->getCategory()->isV3();
     ?>
 
     <div class="fltr">
-        <form id="productCatalog-filter-form" class="bFilter clearfix js-category-filter <? if ($isV3): ?>js-category-filter-v3<? endif ?>" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
-            <? if ($isV3): ?>
-                <? // Для IE9 (чтобы он отправлял форму при нажатии на клавишу enter в текстовом поле ввода) ?>
-                <div style="overflow: hidden; position: absolute; top: 0; left: 0; width: 0; height: 0;"><input type="submit" /></div>
-
-                <? foreach ($alwaysShowFilters as $filter): ?>
-                    <div class="fltrSet <? if (!$filter->isOpenByDefault): ?>fltrSet-close<? endif ?> js-category-filter-toggle-container <? if ('Металл' === $filter->getName()): ?>fltrSet-metall<? endif ?> <? if ('Вставка' === $filter->getName()): ?>fltrSet-insertion<? endif ?>">
-                        <div class="fltrSet_tggl <? if ($filter->isOpenByDefault): ?>fltrSet_tggl-dn<? endif ?> js-category-filter-toggle-button">
-                            <span class="fltrSet_tggl_tx"><?= $helper->escape($filter->getName()) ?></span>
-                        </div>
-
-                        <div class="fltrSet_cnt js-category-filter-toggle-content" <? if (!$filter->isOpenByDefault): ?>style="display: none;"<? endif ?>>
-                            <div class="fltrSet_inn clearfix">
-                                <?= $helper->render('product-category/filter/__element', ['productFilter' => $productFilter, 'filter' => $filter, 'promoStyle' => $promoStyle]) ?>
-                            </div>
-                        </div>
-                    </div>
-                <? endforeach ?>
+        <form id="productCatalog-filter-form" class="bFilter clearfix js-category-filter" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
+            <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
+                <? if ($showParamsButton): ?>
+                    <a class="bFilterToggle btnGrey <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-category-filter-otherParamsToggleButton js-category-v1-filter-otherParamsToggleButton" href="#"><span class="bToggleText">Бренды и параметры</span></a>
+                <? endif ?>
 
                 <? if ($priceFilter && $productFilter): ?>
-                    <div class="flrtBox">
-                        <?= $helper->render('product-category/filter/element/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter, 'promoStyle' => $promoStyle]) ?>
-                    </div>
+                    <?= $helper->render('product-category/filter/element/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter, 'promoStyle' => $promoStyle]) ?>
                 <? endif ?>
 
-                <? if ($otherFilters): ?>
-                    <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
-                        <div class="fltrSet_tggl <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-category-filter-otherParamsToggleButton">
-                            <span class="fltrSet_tggl_tx">Ещё параметры</span>
-                        </div>
-                    </div>
-                <? endif ?>
-            <? else: ?>
-                <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
-                    <? if ($showParamsButton): ?>
-                        <a class="bFilterToggle btnGrey <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-category-filter-otherParamsToggleButton js-category-v1-filter-otherParamsToggleButton" href="#"><span class="bToggleText">Бренды и параметры</span></a>
-                    <? endif ?>
-
-                    <? if ($priceFilter && $productFilter): ?>
-                        <?= $helper->render('product-category/filter/element/__slider', ['productFilter' => $productFilter, 'filter' => $priceFilter, 'promoStyle' => $promoStyle]) ?>
-                    <? endif ?>
-
-                    <div class="bBtnPick clearfix">
-                        <button type="submit" class="bBtnPick__eLink mBtnGrey js-category-filter-submit js-category-v1-filter-submit">Подобрать<?= $countProducts ? " ($countProducts)" : '' ?></button>
-                    </div>
+                <div class="bBtnPick clearfix">
+                    <button type="submit" class="bBtnPick__eLink mBtnGrey js-category-filter-submit js-category-v1-filter-submit">Подобрать<?= $countProducts ? " ($countProducts)" : '' ?></button>
                 </div>
-            <? endif; ?>
+            </div>
 
             <div class="fltrSet js-category-v1-filter-otherParams" style="padding-top: 0;">
                 <!-- Фильтр по выбранным параметрам -->
