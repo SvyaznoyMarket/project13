@@ -43,8 +43,8 @@ return function(
                             <? if ($userEntity && $userEntity->isEnterprizeMember()) : ?>
                             <? else : ?>
                             <span class="orderU_hint">
-                                <input type="checkbox" name="" value="" id="subscribe" class="customInput customInput-checkbox customInput-defcheck js-customInput jsOrderV3SubscribeCheckbox" <?= \App::abTest()->getTest('order_email') ? 'checked' : '' ?>>
-                                <label for="subscribe" class="customLabel customLabel-checkbox customLabel-defcheck jsOrderV3SubscribeLabel mChecked">Подписаться на рассылку и получить купон со скидкой 300 рублей на следующую покупку</label>
+                                <input class="customInput customInput-defcheck jsCustomRadio js-customInput jsOrderV3SubscribeCheckbox" type="checkbox" name="subscribe" value="" id="subscribe" <?= \App::abTest()->getTest('order_email') ? 'checked' : '' ?>>
+                                <label class="customLabel customLabel-defcheck mChecked jsOrderV3SubscribeLabel" for="subscribe">Подписаться на рассылку и получить купон со скидкой 300 рублей на следующую покупку</label>
                             </span>
                             <? endif ?>
                         <? endif ?>
