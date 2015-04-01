@@ -90,7 +90,7 @@
 	</div>
 
 	<ul class="product-tabs">
-		<li class="product-tabs__i active"><a class="product-tabs__lk" href="" title="">Подробности</a></li>
+		<li class="product-tabs__i product-tabs__i--active"><a class="product-tabs__lk" href="" title="">Подробности</a></li>
 		<li class="product-tabs__i"><a class="product-tabs__lk" href="" title="">Аксессуары</a></li>
 		<li class="product-tabs__i"><a class="product-tabs__lk" href="" title="">Отзывы</a></li>
 		<li class="product-tabs__i"><a class="product-tabs__lk" href="" title="">Похожие товары</a></li>
