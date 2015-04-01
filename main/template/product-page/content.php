@@ -95,14 +95,14 @@
 
 			<div class="product-card-old-price"><span class="product-card-old-price__inn">11 223</span> <span class="rubl">p</span></div>
 
-			<div class="product-card-price">
-				11 223</span> <span class="rubl">p</span>
-				i.
+			<div class="product-card-price i-info">
+				<span class="i-info__tx">11 223</span> <span class="rubl">p</span></span>
+				<i class="i-product i-product--info-normal i-info__icon"></i>
 			</div>
 
-			<a class="btn-type btn-type--buy btn-type--longer btn-type--buy--bigger">В корзину</a>
+			<a class="btn-type btn-type--buy btn-type--longer btn-type--buy--bigger" href="">В корзину</a>
 
-			<a class="btn-type btn-type--normal btn-type--longer">
+			<a class="btn-type btn-type--normal btn-type--longer" href="">
 				Купить в кредит
 				от 390 <span class="rubl">p</span> в месяц
 			</a>
