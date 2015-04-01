@@ -1,30 +1,37 @@
 // рейтинг товара
 .product-card-rating {
-	line-height: 1;
-	margin: 0 0 15px;
+    line-height: 1;
 
-	&__state {
-		.inline-block-middle();
-		font-size: 0;
-		margin: 0 4px 0 0;
-	}
+    margin: 0 0 10px;
 
-	&__i {
-		.inline-block-middle();
-		width: 11px;
-		height: 10px;
-		margin: 0 3px 0 0;
-		background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAYAAABi8KSDAAAAz0lEQVR42oWMMQrCQBREB+xV7OxFtPQAdlpbiIWglpZaiGewUkFMzC7EWqysLATP4ElUkuzW+gcMhCTgwLL737z9SCdy0LQaH974F6OwijT6vDPle4vyS6HETaGHnkjH8wAFo/HgTM6eHkIXbSnuctZybqFCAxJ7QEs+LsjZ0wO3WAXXeBghJ+Ts6YF57lAkCBzUkqKwqmz32ac3DKVYxp9/8pQc6VCUoms0xvI+yXsi7w55nuxbjYsI82CDSqQw4yz8mpHDPeqUkowzeTx/AXE9c606iYtFAAAAAElFTkSuQmCC') no-repeat 0 0;
+    &__state {
+        font-size: 0;
 
-		&--fill {
-			background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAYAAABi8KSDAAAAv0lEQVR42oWQzQnCQBSEB7yrWIRgF3bgyYutpAFPCqLoJmABgnjwZAv2INhADCbZJHpQZ8QF2Qg+eCwz8+3bH/iVLdCzIZ5a8a9ygzXhh9ZamEzRvhi0NCldYUDwrMnsRFq+cnHIIvQFvNugEOg6DxG7TBw2QzQodgRLAX7LVy4OqniGpo2wZVB5YMHpe+X+w0YM7x58kw+/OGH8AaqCd3SnyP/1ZQcCp9IguE7QsUsE0txwrMHpHF1B3560fKdfSCafJUEManEAAAAASUVORK5CYII=');
-		}
-	}
+        margin: 0 4px 0 0;
 
-	&__tx {
-		.inline-block-middle();
-		color: #9c9c9c;
-		border-bottom: 1px dotted #8c8c8c;
-		line-height: 1.2;
-	}
+        .inline-block-middle();
+    }
+
+    &__i {
+        width: 11px;
+        height: 10px;
+        margin: 0 3px 0 0;
+
+        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAYAAABi8KSDAAAAz0lEQVR42oWMMQrCQBREB+xV7OxFtPQAdlpbiIWglpZaiGewUkFMzC7EWqysLATP4ElUkuzW+gcMhCTgwLL737z9SCdy0LQaH974F6OwijT6vDPle4vyS6HETaGHnkjH8wAFo/HgTM6eHkIXbSnuctZybqFCAxJ7QEs+LsjZ0wO3WAXXeBghJ+Ts6YF57lAkCBzUkqKwqmz32ac3DKVYxp9/8pQc6VCUoms0xvI+yXsi7w55nuxbjYsI82CDSqQw4yz8mpHDPeqUkowzeTx/AXE9c606iYtFAAAAAElFTkSuQmCC') no-repeat 0 0;
+
+        .inline-block-middle();
+
+        &--fill {
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAYAAABi8KSDAAAAv0lEQVR42oWQzQnCQBSEB7yrWIRgF3bgyYutpAFPCqLoJmABgnjwZAv2INhADCbZJHpQZ8QF2Qg+eCwz8+3bH/iVLdCzIZ5a8a9ygzXhh9ZamEzRvhi0NCldYUDwrMnsRFq+cnHIIvQFvNugEOg6DxG7TBw2QzQodgRLAX7LVy4OqniGpo2wZVB5YMHpe+X+w0YM7x58kw+/OGH8AaqCd3SnyP/1ZQcCp9IguE7QsUsE0txwrMHpHF1B3560fKdfSCafJUEManEAAAAASUVORK5CYII=');
+        }
+    }
+
+    &__tx {
+        line-height: 1.2;
+
+        color: #9c9c9c;
+        border-bottom: 1px dotted #8c8c8c;
+
+        .inline-block-middle();
+    }
 }

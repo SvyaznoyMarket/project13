@@ -11,7 +11,7 @@
 <section>
 	<h1 class="product-name">Купольная вытяжка Hotpoint-Ariston 7HHP 6 R (OW)/HA</h1>
 
-	<div class="vandor-offer"><a href="" class="vandor-offer__lk">Продавец: ООО Связной логистика </a></div>
+	<div class="vandor-offer"><a href="" class="vandor-offer__lk">Продавец: ООО Связной логистика <i class="i-product i-product--info-normal"></i></a></div>
 
 	<!-- карточка товара -->
 	<div class="product-card clearfix">
@@ -47,35 +47,41 @@
 				<span class="product-card-rating__tx">5 отзывов</span>
 			</div>
 
-			<div class="product-filter">
-				<span class="product-filter__tl">Размер:</span>
+			<div class="product-card-filter">
+				<span class="product-card-filter__tl">Размер:</span>
 
-				<div class="product-filter__box">
+				<div class="product-card-filter__box">
 					<div class="filter-btn-box">
 						<div class="filter-btn-box__toggle">
-							<span class="filter-btn-box__tx">Духовка</span>
+							<span class="filter-btn-box__tx">Полутороспальный</span>
+							<i class="filter-btn-box__corner"></i>
 						</div>
 
 						<div class="filter-btn-box__dd">
 							<div class="filter-btn-box__inn">
-								1111
+								<ul class="filter-btn-box-lst">
+									<li class="filter-btn-box-lst__i"><a href="" class="filter-btn-box-lst__lk">Односпальная</a></li>
+									<li class="filter-btn-box-lst__i"><a href="" class="filter-btn-box-lst__lk">Двуспальная</a></li>
+									<li class="filter-btn-box-lst__i"><a href="" class="filter-btn-box-lst__lk">Трехспальная</a></li>
+									<li class="filter-btn-box-lst__i"><a href="" class="filter-btn-box-lst__lk">Кровать на 100 человек и больше</a></li>
+								</ul>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<p class="product-desc">Купольная вытяжка шириной 60 см с тремя скоростями работы и галогенным освещением.</p>
+			<p class="product-card-desc">Купольная вытяжка шириной 60 см с тремя скоростями работы и галогенным освещением.</p>
 
-			<dl class="product-prop">
-				<dt class="product-prop__name"></dt>
-				<dd class="product-prop__val"></dd>
+			<dl class="product-card-prop">
+				<dt class="product-card-prop__i product-card-prop__i--name">Максимальная производительность</dt>
+				<dd class="product-card-prop__i product-card-prop__i--val">значение</dd>
 
-				<dt class="product-prop__name"></dt>
-				<dd class="product-prop__val"></dd>
+				<dt class="product-card-prop__i product-card-prop__i--name">Максимальный уровень шума</dt>
+				<dd class="product-card-prop__i product-card-prop__i--val">значение</dd>
 
-				<dt class="product-prop__name"></dt>
-				<dd class="product-prop__val"></dd>
+				<dt class="product-card-prop__i product-card-prop__i--name">Характеристика</dt>
+				<dd class="product-card-prop__i product-card-prop__i--val">значение</dd>
 			</dl>
 		</div>
 		<!--/ описание товара -->
@@ -83,13 +89,16 @@
 		<!-- купить -->
 		<div class="product-card__r">
 			<div class="product-card-action">
-				<span class="product-card-action__tx"></span>
+				<span class="product-card-action__tx">Акция действует<br>ещё 1 день 22:11:07</span>
 				<i class="info-icon-action"></i>
 			</div>
 
-			<div class="product-card-old-price"><span class="product-card-old-price__inn"></span></div>
+			<div class="product-card-old-price"><span class="product-card-old-price__inn">11 223</span> <span class="rubl">p</span></div>
 
-			<div class="product-card-price"></div>
+			<div class="product-card-price">
+				11 223</span> <span class="rubl">p</span>
+				i.
+			</div>
 
 			<a class="btn-type btn-type--buy">В корзину</a>
 
