@@ -152,7 +152,7 @@ return function(
                 </div>
             </div>
 
-            <div class="selShop_l" data-token="shops">
+            <div class="selShop_l" data-token="shops" data-bind="visible: points().length != 0">
                 <ul class="deliv-list" data-bind="foreach: points">
 
                     <li class="deliv-item jsChangePoint" data-bind="attr: { 'data-id': $data.id, 'data-token': $data.token, 'data-blockname': $data.orderToken }">
