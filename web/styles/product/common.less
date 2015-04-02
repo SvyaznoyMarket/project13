@@ -1,12 +1,73 @@
 .i-info {
-    display: block;
+    position: relative;
 
-    cursor: pointer;
+    display: block;
     &__tx {
         .inline-block-middle();
     }
     &__icon {
         margin-left: 2px;
+
+        cursor: pointer;
+
+        .inline-block-middle();
+    }
+    &-popup {
+        position: absolute;
+        z-index: 5;
+        right: 0;
+
+        width: 100%;
+        padding: 10px;
+
+        border: 1px solid #c7c7c7;
+        background: @white;
+
+        .box-sizing(border-box);
+        .box-shadow(0 0 15px rgba(0, 0, 0, .4));
+        &--best-price {
+            top: 50px;
+            right: 0;
+
+            width: 270px;
+        }
+        &--action {
+            bottom: 44px;
+
+            padding: 0;
+
+            text-align: center;
+
+            &:after {
+            	.pseudo-class();
+				.pseudo-corner-bottom(8px, #fff);
+				bottom: -8px;
+				right: 10px;
+            }
+
+            &:before {
+            	.pseudo-class();
+				.pseudo-corner-bottom(10px, #c7c7c7);
+				bottom: -10px;
+				right: 8px;
+            }
+        }
+    }
+}
+
+.best-price-popup {
+    color: #363636;
+    &__it {
+        width: 100%;
+        margin: 0 0 10px;
+    }
+    .customInput-defcheck + .customLabel {
+        margin: 0 0 10px;
+
+        background-position: 0 3px;
+    }
+    &__btn {
+        margin: 0 auto;
     }
 }
 
@@ -34,10 +95,11 @@
     margin: 10px 0 20px;
     &__l {
         float: left;
-        text-align: center;
 
         width: 350px;
         margin: 0 60px 0 0;
+
+        text-align: center;
     }
     &__c {
         float: left;
@@ -111,23 +173,27 @@
 
 // цена
 .product-card-price {
-    font-size: 36px;
+    &__val {
+        font-size: 36px;
 
-    color: #363636;
+        color: #363636;
+    }
 }
 
 // блок акций
 .product-card-action {
-    font-weight: bold;
-
     position: relative;
 
     margin: 0 0 10px;
     padding: 5px 10px;
 
+    cursor: pointer;
+
     color: #ef404a;
     border: 1px dotted #ef404a;
     &__tx {
+        font-weight: bold;
+
         width: 177px;
     }
 }
@@ -223,12 +289,11 @@
     }
 }
 
-.pay-system-list{
-    margin: 20px 0 0;
+.pay-system-list {
     float: right;
-
-    &__i{
-        .inline-block-middle();
+    &__i {
         margin: 0 0 0 10px;
+
+        .inline-block-middle();
     }
 }
