@@ -118,6 +118,11 @@
 				</li>
 			</ul>
 			<!--/ трастфакторы гарантии -->
+			<ul class="pay-system-list">
+				<li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--visa"></i></li>
+				<li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--mastercard"></i></li>
+				<li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--psb"></i></li>
+			</ul>
 		</div>
 		<!--/ описание товара -->
 
