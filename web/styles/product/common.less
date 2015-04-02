@@ -1,12 +1,55 @@
 .i-info {
+    position: relative;
     display: block;
 
-    cursor: pointer;
     &__tx {
         .inline-block-middle();
     }
     &__icon {
         margin-left: 2px;
+    }
+    &-popup {
+        position: absolute;
+        z-index: 5;
+        right: 0;
+        overflow: hidden;
+
+        width: 100%;
+        padding: 10px;
+
+        border: 1px solid #c7c7c7;
+
+        background: @white;
+
+        .box-sizing(border-box);
+        .box-shadow(0 0 15px rgba(0, 0, 0, .4));
+        &--best-price {
+            right: 0;
+            top: 50px;
+
+            width: 270px;
+        }
+        &--action {
+        	bottom: 44px;
+        	padding: 0;
+        	text-align: center;
+        }
+    }
+}
+
+.best-price-popup {
+    color: #363636;
+    &__it {
+        width: 100%;
+        margin: 0 0 10px;
+    }
+    .customInput-defcheck + .customLabel {
+        margin: 0 0 10px;
+
+        background-position: 0 3px;
+    }
+    &__btn {
+        margin: 0 auto;
     }
 }
 
@@ -34,10 +77,11 @@
     margin: 10px 0 20px;
     &__l {
         float: left;
-        text-align: center;
 
         width: 350px;
         margin: 0 60px 0 0;
+
+        text-align: center;
     }
     &__c {
         float: left;
@@ -111,15 +155,15 @@
 
 // цена
 .product-card-price {
-    font-size: 36px;
+    &__val {
+        font-size: 36px;
 
-    color: #363636;
+        color: #363636;
+    }
 }
 
 // блок акций
 .product-card-action {
-    font-weight: bold;
-
     position: relative;
 
     margin: 0 0 10px;
@@ -129,6 +173,7 @@
     border: 1px dotted #ef404a;
     &__tx {
         width: 177px;
+        font-weight: bold;
     }
 }
 

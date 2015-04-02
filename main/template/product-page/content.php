@@ -58,6 +58,7 @@
 				<span class="product-card-rating__tx">5 отзывов</span>
 			</div>
 
+			<!-- фильтрация по моделям -->
 			<div class="product-card-filter">
 				<span class="product-card-filter__tl">Размер:</span>
 
@@ -81,7 +82,9 @@
 					</div>
 				</div>
 			</div>
+			<!--/ фильтрация по моделям -->
 
+			<!-- описаные характеристики -->
 			<p class="product-card-desc">Купольная вытяжка шириной 60 см с тремя скоростями работы и галогенным освещением.</p>
 
 			<dl class="product-card-prop">
@@ -94,7 +97,9 @@
 				<dt class="product-card-prop__i product-card-prop__i--name">Характеристика</dt>
 				<dd class="product-card-prop__i product-card-prop__i--val">значение</dd>
 			</dl>
+			<!--/ описаные характеристики -->
 
+			<!-- трастфакторы гарантии -->
 			<ul class="product-card-assure">
 				<li class="product-card-assure__i">
 					<div class="product-card-assure__l">
@@ -112,6 +117,7 @@
 					<span class="product-card-assure__r">Обмен в течение 30 дней<br/>Возврат по гарантии в течение 1 года</span>
 				</li>
 			</ul>
+			<!--/ трастфакторы гарантии -->
 		</div>
 		<!--/ описание товара -->
 
@@ -120,17 +126,46 @@
 			<div class="product-card-action i-info">
 				<span class="product-card-action__tx i-info__tx">Акция действует<br>ещё 1 день 22:11:07</span>
 				<i class="product-card-action__icon i-product i-product--info-warn i-info__icon"></i>
+
+				<!-- попап - подробности акции -->
+				<div class="i-info-popup i-info-popup--action" style="display: block;">
+					<i class="closer">&#215;</i>
+					<a href="" title=""><img src="/styles/product/img/trust-sale.png" alt=""></a>
+				</div>
+				<!--/ попап - подробности акции -->
 			</div>
 
 			<div class="product-card-old-price">
 				<span class="product-card-old-price__inn">11 223</span> <span class="rubl">p</span>
 			</div>
 
+			<!-- цена товара -->
 			<div class="product-card-price i-info">
-				<span class="i-info__tx">11 223 <span class="rubl">p</span></span>
+				<span class="product-card-price__val i-info__tx">11 223 <span class="rubl">p</span></span>
 				<i class="i-product i-product--info-normal i-info__icon"></i>
-			</div>
 
+				<!-- попап - узнатьо снижении цены -->
+				<div class="best-price-popup i-info-popup i-info-popup--best-price" style="display: block;">
+					<i class="closer">&#215;</i>
+
+					<strong class="best-price-popup__tl">Узнать о снижении цены</strong>
+
+					<p class="best-price-popup__desc">Вы получите письмо,<br/>когда цена станет ниже 9 000 <span class="rubl">p</span></p>
+
+					<input class="best-price-popup__it textfield" placeholder="Ваш email" value="">
+
+					<input type="checkbox" name="subscribe" id="subscribe" value="1" autocomplete="off" class="customInput customInput-defcheck jsCustomRadio js-customInput jsSubscribe" checked>
+					<label class="best-price-popup__check customLabel customLabel-defcheck" for="subscribe">Подписаться на рассылку и получить купон со скидкой 300 рублей на следующую покупку</label>
+
+					<div style="text-align: center">
+						<a href="#" class="best-price-popup__btn btn-type btn-type--buy">Сохранить</a>
+					</div>
+				</div>
+				<!--/ попап - узнатьо снижении цены -->
+			</div>
+			<!--/ цена товара -->
+
+			<!-- применить скидку -->
 			<div class="product-card-discount-switch">
 				<div class="product-card-discount-switch__i discount-switch">
 					<input class="discount-switch__it" type="checkbox" name="" id="discount-switch">
@@ -140,6 +175,7 @@
 				<span class="product-card-discount-switch__i product-card-discount-switch__i--tx">Скидка 10%</span>
 				<img class="product-card-discount-switch__i product-card-discount-switch__img" src="/styles/product/img/i-fishka.png">
 			</div>
+			<!--/ применить скидку -->
 
 			<a class="btn-type btn-type--buy btn-type--longer btn-type--buy--bigger" href="">В корзину</a>
 
