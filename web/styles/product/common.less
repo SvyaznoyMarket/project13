@@ -9,13 +9,13 @@
         margin-left: 2px;
 
         cursor: pointer;
+
+        .inline-block-middle();
     }
     &-popup {
         position: absolute;
         z-index: 5;
         right: 0;
-
-        overflow: hidden;
 
         width: 100%;
         padding: 10px;
@@ -37,6 +37,20 @@
             padding: 0;
 
             text-align: center;
+
+            &:after {
+            	.pseudo-class();
+				.pseudo-corner-bottom(8px, #fff);
+				bottom: -8px;
+				right: 10px;
+            }
+
+            &:before {
+            	.pseudo-class();
+				.pseudo-corner-bottom(10px, #c7c7c7);
+				bottom: -10px;
+				right: 8px;
+            }
         }
     }
 }
@@ -275,11 +289,11 @@
     }
 }
 
-.pay-system-list{
+.pay-system-list {
     float: right;
-
-    &__i{
-        .inline-block-middle();
+    &__i {
         margin: 0 0 0 10px;
+
+        .inline-block-middle();
     }
 }

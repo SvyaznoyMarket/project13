@@ -58,7 +58,6 @@
 				<span class="product-card-rating__tx">5 отзывов</span>
 			</div>
 
-			<!-- фильтрация по моделям -->
 			<div class="product-card-filter">
 				<span class="product-card-filter__tl">Размер:</span>
 
@@ -82,9 +81,7 @@
 					</div>
 				</div>
 			</div>
-			<!--/ фильтрация по моделям -->
 
-			<!-- описаные характеристики -->
 			<p class="product-card-desc">Купольная вытяжка шириной 60 см с тремя скоростями работы и галогенным освещением.</p>
 
 			<dl class="product-card-prop">
@@ -97,9 +94,7 @@
 				<dt class="product-card-prop__i product-card-prop__i--name">Характеристика</dt>
 				<dd class="product-card-prop__i product-card-prop__i--val">значение</dd>
 			</dl>
-			<!--/ описаные характеристики -->
 
-			<!-- трастфакторы гарантии -->
 			<ul class="product-card-assure">
 				<li class="product-card-assure__i">
 					<div class="product-card-assure__l">
@@ -117,12 +112,11 @@
 					<span class="product-card-assure__r">Обмен в течение 30 дней<br/>Возврат по гарантии в течение 1 года</span>
 				</li>
 			</ul>
-			<!--/ трастфакторы гарантии -->
 			<ul class="pay-system-list">
-				<li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--visa"></i></li>
-				<li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--mastercard"></i></li>
-				<li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--psb"></i></li>
-			</ul>
+                <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--visa"></i></li>
+                <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--mastercard"></i></li>
+                <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--psb"></i></li>
+            </ul>
 		</div>
 		<!--/ описание товара -->
 
@@ -134,7 +128,7 @@
 
 				<!-- попап - подробности акции -->
 				<div class="i-info-popup i-info-popup--action" style="display: block;">
-					<i class="closer">&#215;</i>
+					<i class="closer">×</i>
 					<a href="" title=""><img src="/styles/product/img/trust-sale.png" alt=""></a>
 				</div>
 				<!--/ попап - подробности акции -->
@@ -151,16 +145,16 @@
 
 				<!-- попап - узнатьо снижении цены -->
 				<div class="best-price-popup i-info-popup i-info-popup--best-price" style="display: block;">
-					<i class="closer">&#215;</i>
+					<i class="closer">×</i>
 
 					<strong class="best-price-popup__tl">Узнать о снижении цены</strong>
 
-					<p class="best-price-popup__desc">Вы получите письмо,<br/>когда цена станет ниже 9 000 <span class="rubl">p</span></p>
+					<p class="best-price-popup__desc">Вы получите письмо,<br>когда цена станет ниже 9 000 <span class="rubl">p</span></p>
 
 					<input class="best-price-popup__it textfield" placeholder="Ваш email" value="">
 
-					<input type="checkbox" name="subscribe" id="subscribe" value="1" autocomplete="off" class="customInput customInput-defcheck jsCustomRadio js-customInput jsSubscribe" checked>
-					<label class="best-price-popup__check customLabel customLabel-defcheck" for="subscribe">Подписаться на рассылку и получить купон со скидкой 300 рублей на следующую покупку</label>
+					<input type="checkbox" name="subscribe" id="subscribe" value="1" autocomplete="off" class="customInput customInput-defcheck jsCustomRadio js-customInput jsSubscribe" checked="">
+					<label class="best-price-popup__check customLabel customLabel-defcheck mChecked" for="subscribe">Подписаться на рассылку и получить купон со скидкой 300 рублей на следующую покупку</label>
 
 					<div style="text-align: center">
 						<a href="#" class="best-price-popup__btn btn-type btn-type--buy">Сохранить</a>
