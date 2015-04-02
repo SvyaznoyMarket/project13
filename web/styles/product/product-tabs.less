@@ -18,8 +18,8 @@
         text-align: center;
 
         .inline-block();
-        &--active ,
-        &:hover {
+        &&--active {
+            font-weight: bold;
             .product-tabs__lk {
                 border: none;
             }
@@ -36,16 +36,13 @@
                 background: #f99b1c;
             }
         }
-        &--active {
-            font-weight: bold;
-        }
     }
     &__lk {
         text-decoration: none;
-
-        border-bottom: 1px solid;
         &:hover {
             text-decoration: none;
+
+            border-bottom: 1px solid;
         }
     }
 }
@@ -60,18 +57,18 @@
         width: 500px;
         padding: 20px 10px;
         .product-section__tl {
-            padding: 0;
+            margin: 5px 0 20px;
         }
     }
     &__tl {
         font-size: 16px;
         font-weight: bold;
 
-        margin: 10px 0 5px;
-        padding: 0 0 0 10px;
+        margin: 5px 0 20px 10px;
     }
     &__sbtl {
         font-size: 14px;
+        font-weight: bold;
 
         margin: 10px 0 5px;
     }
@@ -85,7 +82,7 @@
 
         background-color: #f7f7f7;
         .product-section__tl {
-            padding: 0;
+            margin: 5px 0 20px;
         }
     }
     &__content {
@@ -186,16 +183,16 @@
         font-size: 12px;
         font-weight: bold;
 
-        margin: 5px 0 8px;
+        margin: 5px 0 5px;
     }
     &__tx {
         font-size: 14px;
         line-height: 18px;
 
-        margin-bottom: 20px;
+        margin-bottom: 15px;
     }
     &-voting {
-        margin: -15px 0 0;
+        margin: -5px 0 0;
 
         text-align: right;
         &__tl {
@@ -217,11 +214,14 @@
         padding-left: 30px;
 
         .inline-block-middle();
-        .opacity(.4);
+        &:after {
+            .opacity(.4);
+        }
         &:hover {
             text-decoration: none;
-
-            .opacity(1);
+            &:after {
+                .opacity(1);
+            }
         }
         &--positive:after {
             position: absolute;
@@ -245,6 +245,9 @@
 
             .sprite-temp(-0px, -0px, 25px, 25px);
         }
+    }
+    .product-card-rating {
+        margin: 0 0 15px;
     }
 }
 
