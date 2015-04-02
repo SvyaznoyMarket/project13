@@ -13,7 +13,7 @@
         self.limitedSearchInput = ko.computed(self.searchInput).extend({throttle: 500});
         self.limitedSearchInput.subscribe(function(text) {
 
-            var map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map,
+            var map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map, // TODO уже можно вынести
                 extendValue = 1,
                 extendedBounds = [[pointsBounds[0][0] - extendValue, pointsBounds[0][1] - extendValue],[pointsBounds[1][0] + extendValue, pointsBounds[1][1] + extendValue]];
 
@@ -119,6 +119,22 @@
             return self.latitudeMin() < point.latitude && self.longitudeMin() < point.longitude && self.latitudeMax() > point.latitude && self.longitudeMax() > point.longitude;
         };
 
+        /**
+         * Отображаем на карте только те точки, которые были выбраны в первом дропдауне
+         */
+        self.choosenTokens.subscribe(function(arr){
+            var map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map; // TODO уже можно вынести
+
+            map.geoObjects.each(function(geoObject){
+                if (arr.length == 0) {
+                    geoObject.options.set('visible', true)
+                } else {
+                    geoObject.options.set('visible', $.inArray(geoObject.properties.get('enterToken'), arr) !== -1)
+                }
+            });
+            console.log(arr);
+        });
+
         /* INIT */
 
         $.each(points, function(token, pointsArr) {
@@ -134,7 +150,7 @@
             });
         });
 
-        window.map = self;
+        //window.map = self;
 
         return self;
 
@@ -164,7 +180,8 @@
         placemark = new ymaps.Placemark([point.latitude, point.longitude], {
             balloonContentHeader: point.name,
             balloonContentBody: balloonContent,
-            hintContent: point.name
+            hintContent: point.name,
+            enterToken: point.token // Дополняем собственными свойствами
         }, {
             balloonMaxWidth: 200,
             iconLayout: 'default#image',
