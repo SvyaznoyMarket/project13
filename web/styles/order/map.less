@@ -3,11 +3,14 @@
 	float: left;
 }
 .selShop.deliv-wrap{
-	width: 980px;
+	width: 900px;
+
 	.selShop_l{
 		width: 410px;
 		display: inline-block;
 		position: relative;
+		border-top: 1px solid #d3d3d3;
+
 		&:after{
 			content:'';
 			position: absolute;
@@ -26,6 +29,10 @@
 			width: 100%;
 			.gradient(#fff, rgba(255,255,255,0), #fff);
 		}
+	}
+	.selShop_r{
+		width: 480px;
+		height: 433px;
 	}
 	.selShop_hh{
 		margin-bottom: 10px;
@@ -140,18 +147,41 @@
 }
 .deliv-ctrls{
 	padding-left:10px;
+
 	.deliv-sel{
 		padding: 0 5px;
- 		margin-right: 0px;
-		.picked{
-			border: 2px solid orange;
-			outline: none;
-			.rounded(2px);
-		}
-		height: 24px;
+		margin-right: 0px;
 		line-height: 24px;
 		color: #515151;
-		padding: 0 23px 0 9px;
+		padding: 0 10px 0 0;
+
+		.fltrBtnBox_tggl{
+			margin:2px 0;
+			&.picked{
+				border: 2px solid orange;
+				outline: none;
+				.rounded(2px);
+				margin: 0px;
+
+				.fltrBtnBox_tggl_tx{
+					border-bottom-color: transparent;
+				}
+
+			}
+		}
+		
+		&.fltrBtnBox.opn
+		{
+			.fltrBtnBox_tggl_tx{
+				margin-top: 1px;
+			}
+			.picked .fltrBtnBox_tggl_tx{
+				margin-top: 0px;
+			}
+			.fltrBtnBox_tggl{
+				margin: 1px 0;
+			}
+		}
 	}
 	.deliv-search{
 		height: 35px;

@@ -2,7 +2,10 @@
 {{#products}}
 <!-- Элемент листинга/продукт -->
     {{#isBanner}}
-      <li class="bListingItem mBannerItem" style="background-image: url('{{image}}'); background-repeat: no-repeat;"><div class="adfoxWrapper" id="adfox215"></div></li>
+      <li class="bListingItem mBannerItem" style="background-image: url('{{image}}'); background-repeat: no-repeat;">
+        <a class="lstn_i-banner-link" href="/enterprize"></a>
+        <div class="adfoxWrapper" id="adfox215"></div>
+      </li>
     {{/isBanner}}
     {{^isBanner}}
     <li class="bListingItem js-listing-item" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}>

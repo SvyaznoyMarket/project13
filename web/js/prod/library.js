@@ -4197,7 +4197,7 @@ if ( !Array.prototype.indexOf ) {
 	};
 }(this));
 ;(function ( ENTER ) {
-	var
+	var $body = $(document.body),
 		utils = ENTER.utils;
 	// end of vars
 
@@ -4401,7 +4401,7 @@ if ( !Array.prototype.indexOf ) {
 
 		// Return the result
 		return checksum == originalCheck;
-	}
+	};
 
     utils.arrayUnique = function(array) {
         var unique = [];
@@ -4421,9 +4421,8 @@ if ( !Array.prototype.indexOf ) {
 	 * @param orderData
 	 */
 	utils.sendOrderToGA = function(orderData) {
-		var
-			$body = $('body'),
-			oData = orderData || { orders: [] };
+
+        var	oData = orderData || { orders: [] };
 
 		console.log('[Google Analytics] Start processing orders', oData.orders);
 		$.each(oData.orders, function(i,o) {
@@ -4453,6 +4452,9 @@ if ( !Array.prototype.indexOf ) {
 				if (p.sender && p.position) {
 					labels.push('RR_' + p.position);
 				}
+
+                // Отслеживание покупок в кредит
+                if (p.sender2 == 'credit') labels.push('Credit');
 
 				if (labels.length) {
 					productName += ' (' + labels.join(')(') + ')';
@@ -4487,7 +4489,7 @@ if ( !Array.prototype.indexOf ) {
 							action = 'enter';
 						}
 
-						$('body').trigger('trackGoogleEvent', ['Compare_покупка', action, p.compareLocation]);
+						$body.trigger('trackGoogleEvent', ['Compare_покупка', action, p.compareLocation]);
 					})();
 				}
 
@@ -4500,6 +4502,14 @@ if ( !Array.prototype.indexOf ) {
 					'quantity': p.quantity
 				}
 			});
+
+            if (o.isCredit) {
+                if ($.grep(o.products, function(product){ return product.sender2 == 'credit' }).length > 0) {
+                    $body.trigger('trackGoogleEvent', ['Credit', 'Покупка', 'Карточка товара'])
+                } else {
+                    $body.trigger('trackGoogleEvent', ['Credit', 'Покупка', 'Оформление заказа'])
+                }
+            }
 
 			console.log('[Google Analytics] Order', googleOrderTrackingData);
 			$body.trigger('trackGoogleTransaction', [googleOrderTrackingData]);
@@ -4534,7 +4544,7 @@ if ( !Array.prototype.indexOf ) {
 					actions.push(location);
 				}
 
-				$('body').trigger('trackGoogleEvent', ['Add2Basket', '(' + actions.join(')(') + ')', productArticle]);
+				$body.trigger('trackGoogleEvent', ['Add2Basket', '(' + actions.join(')(') + ')', productArticle]);
 			}
 		}
 	};
