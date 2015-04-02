@@ -169,7 +169,7 @@ $showStatus = \App::user()->getEntity() && in_array(\App::user()->getEntity()->g
                         <div class="personalTable_cell"><?= $order->getStatusText($order->getStatusId()) ?></div>
 
                         <div class="personalTable_cell personalTable_cell-last ta-r">
-                            <? if ($order->getTypeId() != \Model\Order\Entity::TYPE_SLOT): ?>
+                            <? if (!$order->isSlot()): ?>
                                 <a href="<?= $order->addProductsToCartLink() ?>" class="jsBuyButton"><button class="tableBtn btnLightGrey">Добавить в корзину</button></a>
                             <? endif ?>
                         </div>
