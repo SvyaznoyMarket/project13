@@ -84,8 +84,16 @@
 				<dd class="product-card-prop__i product-card-prop__i--val">значение</dd>
 			</dl>
 			<ul class="product-card-safeguards">
-				<li class="product-card-safeguards__i"><i class="safeguard-icon safeguard-icon--pandora"></i><span class="product-card-safeguards__txt">Гарантия подлинности и качества</span></li>
-				<li class="product-card-safeguards__i"><i class="safeguard-icon safeguard-icon--return"></i><span class="product-card-safeguards__txt">Обмен в течение 30 дней<br/>Возврат по гарантии в течение 1 года</span></li>
+				<li class="product-card-safeguards__i">
+					<div class="product-card-safeguards__img-wrap">
+						<img class="product-card-safeguards__img" src="/styles/product/img/pandora.png">
+					</div>
+					<span class="product-card-safeguards__txt">Гарантия подлинности и качества</span></li>
+				<li class="product-card-safeguards__i">
+					<div class="product-card-safeguards__img-wrap">
+						<img class="product-card-safeguards__img" src="/styles/product/img/jewelery-guar.png">
+					</div>
+					<span class="product-card-safeguards__txt">Обмен в течение 30 дней<br/>Возврат по гарантии в течение 1 года</span></li>
 			</ul>
 		</div>
 		<!--/ описание товара -->
@@ -154,9 +162,9 @@
 	<!-- ссылки связной, сбер и многору -->
 	<div class="product-discounts">
 		<ul class="product-discounts-list">
-			<li class="product-discounts__i"><a class="product-discounts__link" href="/sclub"><img src="/styles/product/img/svyaznoy.png"></a></li>
-			<li class="product-discounts__i"><a class="product-discounts__link" href="/mnogo-ru"><img src="/styles/product/img/mnogoru.png"></a></li>
-			<li class="product-discounts__i"><a class="product-discounts__link" href="/sberbank_spasibo"><img src="/styles/product/img/sberbank.png"></a></li>
+			<li class="product-discounts-list__i"><a class="product-discounts-list__lk" href="/sclub"><img src="/styles/product/img/svyaznoy.png"></a></li>
+			<li class="product-discounts-list__i"><a class="product-discounts-list__lk" href="/mnogo-ru"><img src="/styles/product/img/mnogoru.png"></a></li>
+			<li class="product-discounts-list__i"><a class="product-discounts-list__lk" href="/sberbank_spasibo"><img src="/styles/product/img/sberbank.png"></a></li>
 		</ul>
 	</div>
 	<!--/ ссылки связной, сбер и многору -->
@@ -173,10 +181,10 @@
 			<div class="product-section__sbtl">Общие</div>
 			<dl class="props-list">
 				<dt class="props-list__name--tl"><span class="props-list__name-i">Характеристика</span></dt>
-				<dd class="props-list__val">значение</dd>
+				<dd class="props-list__val">значение <a class="props-list__val-hint-lk i-product--hint" href="#"></a></dd>
 
 				<dt class="props-list__name--tl"><span class="props-list__name-i">Характеристика</span></dt>
-				<dd class="props-list__val">значение</dd>
+				<dd class="props-list__val">очень длинное значение, которое возможно не помещается на одну строчку <a class="props-list__val-hint-lk i-product--hint" href="#"></a></dd>
 
 				<dt class="props-list__name--tl"><span class="props-list__name-i">Характеристика</span></dt>
 				<dd class="props-list__val">значение</dd>
@@ -204,9 +212,9 @@
 		<div class="product-section__desc">
 			<div class="product-section__tl">Описание</div>
 			<div class="product-guides">
-				<ul class="product--guides-list">
-					<li class="product-guides-i"><a class="product-guides-link" href="#"><i class="i-product i-product--pdf i-guides-icon"></i><span class="product-guides__tl">Инструкция по эксплуатации</span></a></li>
-					<li class="product-guides-i"><a class="product-guides-link" href="#"><i class="i-product i-product--pdf i-guides-icon"></i><span class="product-guides__tl">Руководство по сборке</span></a></li>
+				<ul class="product-guides-list">
+					<li class="product-guides-list__i"><a class="product-guides-list__lk" href="#"><i class="i-product i-product--pdf product-guides-list__icon"></i><span class="product-guides-list__lk-tl">Инструкция по эксплуатации</span></a></li>
+					<li class="product-guides-list__i"><a class="product-guides-list__lk" href="#"><i class="i-product i-product--pdf product-guides-list__icon"></i><span class="product-guides-list__lk-tl">Руководство по сборке</span></a></li>
 				</ul>
 			</div>
 			<div class="product-section__content">Электроника и производительность купольной вытяжки Hotpoint-Ariston 7HHP 6 R (OW)/HA шириной 60 см подойдет консервативным людям, любящим порядок и надежность во всем. Производительность модели составляет 451 м3/ч, что вполне достаточно для очистки воздуха в стандартной кухне. Вытяжка может работать в двух режимах: отвод воздуха в вентиляционную шахту и рециркуляции. В режиме отвода все кухонные испарения, запахи, гарь и копоть, проходя через многоразовый многослойный анодированный алюминиевый жироулавливающий фильтр, выводятся за пределы помещения. По мере загрязнения алюминиевый фильтр нужно мыть в горячей мыльной воде или в посудомоечной машине. В режиме рециркуляции вытяжка не подключается к вентиляционной шахте, а всасываемый воздух просто прогоняется через вытяжку внутри кухни. В этом режиме должен быть установлен угольный фильтр, который приобретается дополнительно и подлежит замене каждые 4 месяца. В комплект входит антивозвратный клапан, препятствующий прониканию в кухню запахов из вентиляционной шахты. Инструментом управления служит электронный переключатель с эргономичными кнопками, а три скорости работы позволяют выбрать оптимальный режим для наилучшей очистки воздуха. Для дополнительного освещения рабочей поверхности в вытяжку встроены две экономичные и долговечные галогенные лампы. Благодаря лаконичному строгому дизайну, вытяжка Hotpoint-Ariston 7HHP 6 R(OW)/HA гармонично сочетается с любым современным кухонным гарнитуром.</div>
