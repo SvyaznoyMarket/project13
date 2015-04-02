@@ -433,7 +433,8 @@
 </section>
 <!-- попап добавления отзыва -->
 <div class="popup popup--add-review">
-	<div class="popup-wrapper">
+	<i class="closer">×</i>
+		<div class="popup-close"></div>
 		<div class="popup__tl">Отзыв о товаре</div>
 		<div class="popup__product-line">
 			<div class="popup__product-line-img-wrap">
