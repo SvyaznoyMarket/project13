@@ -249,6 +249,7 @@ class FormAction {
         ]);
         $session->set($sessionName, $data);
 
+        $notice = null;
         if ($form->isValid()) {
             $userToken = $data['token'];
             $data = $session->get($sessionName, []);
@@ -256,6 +257,9 @@ class FormAction {
             if ($data['isEmailConfirmed']) {
                 // пользователь все подтвердил, пробуем создать купон
                 $link = \App::router()->generate('enterprize.create');
+                (new \Controller\Enterprize\CouponAction())->create($request, $data);
+
+                $notice = 'Купон отправлен на ваш email';
             } elseif (!$data['isEmailConfirmed']) {
                 try {
                     $confirm = $client->query('confirm/email', [
@@ -267,6 +271,8 @@ class FormAction {
                         ], \App::config()->coreV2['hugeTimeout']
                     );
                     \App::logger()->info(['core.response' => $confirm], ['coupon', 'confirm/email']);
+
+                    $notice = 'Для завершения регистрации, пожалуйста, перейдите по ссылке в письме, отправленном на Ваш почтовый адрес.';
                 } catch (\Curl\Exception $e) {
                     \App::exception()->remove($e);
                     $form->setError('email', $e->getMessage());
@@ -303,6 +309,8 @@ class FormAction {
                         \App::config()->coreV2['hugeTimeout']
                     );
                     \App::logger()->info(['core.response' => $confirm], ['coupon', 'confirm/email']);
+
+                    $notice = 'Для завершения регистрации, пожалуйста, перейдите по ссылке в письме, отправленном на Ваш почтовый адрес.';
 
                 } catch (\Exception $e) {
                     \App::exception()->remove($e);
@@ -343,11 +351,19 @@ class FormAction {
 
             // задаем регистрационный флаг
             try {
-                $regData = ['isRegistration' => true];
+                $regData = [
+                    'isRegistration'  => true,
+                    'token'           => $result['token'],
+                    'enterprizeToken' => $enterprizeToken,
+                    'name'            => $form->getName(),
+                    'email'           => $form->getEmail(),
+                    'mobile'          => $form->getMobile(),
+                ];
 
                 // пишем в сессию
                 $data = array_merge($data, $regData);
                 $session->set($sessionName, $data);
+                \App::logger()->info(['sender' => __FILE__ . ' ' .  __LINE__, 'data' => $data], ['enterprize']);
 
                 if (!isset($result['user_id']) || empty($result['user_id'])) {
                     throw new \Exception('Не передан user_id');
@@ -365,7 +381,7 @@ class FormAction {
                 ? new \Http\JsonResponse([
                     'success' => true,
                     'error'   => null,
-                    'notice'  => ['message' => 'Для завершения регистрации, пожалуйста, перейдите по ссылке в письме, отправленном на Ваш почтовый адрес.', 'type' => 'info'],
+                    'notice'  => ['message' => $notice, 'type' => 'info'],
                     //'data'    => ['link' => $link],
                     'data'    => [],
                 ])
@@ -395,14 +411,17 @@ class FormAction {
 
         return $response
             ? $response
-            : ($request->isXmlHttpRequest()
+            :
+                ($request->isXmlHttpRequest()
                 ? new \Http\JsonResponse([
                     'success' => true,
                     'error'   => null,
                     //'data'    => ['link' => \App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken])],
                     'data'    => [],
                 ])
-                : new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken])));
+                : new \Http\RedirectResponse(\App::router()->generate('enterprize.form.show', ['enterprizeToken' => $enterprizeToken]))
+            )
+        ;
     }
 
     /**

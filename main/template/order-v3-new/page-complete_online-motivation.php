@@ -53,7 +53,7 @@ return function(
                 <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'blockVisible' => true]) ?>
             <? endif ?>
 
-            <? if ($order->getPaymentId() != PaymentMethodEntity::PAYMENT_CREDIT) : ?>
+            <? if (!$order->isCredit()) : ?>
 
                 <? if ($order->getDeliveryTypeId() == 3 || $order->getDeliveryTypeId() == 4 || $order->point) : ?>
                     <?= $helper->render('order-v3-new/complete-blocks/_point', ['order' => $order]) ?>
@@ -67,14 +67,14 @@ return function(
 
         </div>
 
-        <? if ($order->getPaymentId() == PaymentMethodEntity::PAYMENT_CREDIT) : ?>
+        <? if ($order->isCredit()) : ?>
             <?= $helper->render('order-v3-new/complete-blocks/_credit', ['order' => $order, 'creditData' => $creditData, 'banks' => $banks]) ?>
         <? endif ?>
 
 
         <?= $helper->render('order-v3-new/complete-blocks/_online-payments', ['order' => $order, 'orderPayment' => $orderPayment, 'topMessage' => 'Онлайн-оплата в два клика']) ?>
 
-        <? if ($isOnlinePaymentPossible && !$isOnlinePaymentChecked && $order->getPaymentId() != PaymentMethodEntity::PAYMENT_CREDIT && !$motivationAction && !$order->isPaidBySvyaznoy()) : ?>
+        <? if ($isOnlinePaymentPossible && !$isOnlinePaymentChecked && !$order->isCredit() && !$motivationAction && !$order->isPaidBySvyaznoy()) : ?>
 
             <!-- Блок оплата в два клика-->
             <div class="orderPayment orderPaymentWeb jsOnlinePaymentPossible jsOnlinePaymentPossibleNoMotiv">
@@ -103,7 +103,7 @@ return function(
 
         <?= $orderPayment && $orderPayment->hasSvyaznoyClub() && !$order->isPaidBySvyaznoy() ? $helper->render('order-v3-new/complete-blocks/_svyaznoy-club') : '' ?>
 
-        <? if (\App::config()->flocktoryExchange['enabled'] && $order->getPaymentId() != PaymentMethodEntity::PAYMENT_CREDIT) : ?>
+        <? if (\App::config()->flocktoryExchange['enabled'] && !$order->isCredit()) : ?>
 <!--            <div>-->
                 <div class="i-flocktory orderPayment" data-fl-action="exchange" data-fl-spot="thankyou2" data-fl-username="<?= $order->getFirstName() ?>" data-fl-user-email="<?= $order->email ?>"></div>
 <!--            </div>-->

@@ -980,6 +980,20 @@ class Entity {
     public function getSvyaznoyPaymentSum(){
         return (float)$this->getMetaByKey('payment.svyaznoy_club', 0);
     }
+
+    /** Является ли заказ заявкой (например, заказ кухонь)
+     * @return bool
+     */
+    public function isSlot(){
+        return $this->typeId == self::TYPE_SLOT;
+    }
+
+    /** Оформлен ли заказ в кредит
+     * @return bool
+     */
+    public function isCredit(){
+        return $this->paymentId == self::PAYMENT_TYPE_ID_ONLINE_CREDIT;
+    }
 }
 
 class Seller {

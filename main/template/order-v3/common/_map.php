@@ -41,7 +41,10 @@ return function(
                 'humanNearestDay'   => $helper->humanizeDate(DateTime::createFromFormat('Y-m-d', $point['nearestDay']), 'Y-m-d'),
                 'nearestDay'  => $point['nearestDay'],
                 'blockName'    => $orderDelivery->points[$token]->block_name,
-                'orderToken' => $order->block_name
+                'orderToken' => $order->block_name,
+                'dropdownName'  => $orderDelivery->points[$token]->dropdown_name,
+                'listName'  => $p->listName,
+                'subway'    => $p->subway
             ];
             $pointsCost[] = $point['cost'];
             $nearestDays[] = $point['nearestDay'];
@@ -100,7 +103,7 @@ return function(
                     <!-- Cтоимость -->
                     <div class="deliv-sel fltrBtnBox js-category-v2-filter-dropBox jsOrderV3Dropbox">
                         <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener" data-bind="css: { picked: $root.choosenCosts().length > 0 }">
-                            <span class="fltrBtnBox_tggl_tx">Стоимость</span>
+                            <span class="fltrBtnBox_tggl_tx" data-bind="html: costsText">Стоимость</span>
                             <i class="fltrBtnBox_tggl_corner"></i>
                         </div>
 
@@ -114,7 +117,7 @@ return function(
                                                    type="checkbox" id="id-delivery-price-<?= $cost.$order->block_name ?>" name="" value="<?= $cost ?>"
                                                     data-bind="checked: $root.choosenCosts" />
                                             <label class="customLabel customLabel-defcheck2" for="id-delivery-price-<?= $cost.$order->block_name ?>">
-                                                <span class="customLabel_btx"><?= $cost == 0 ? 'Бесплатно' : $cost . ' <span class="rubl">р</span>' ?></span>
+                                                <span class="customLabel_btx"><?= $cost == 0 ? 'Бесплатно' : $cost . ' <span class="rubl">p</span>' ?></span>
                                             </label>
                                         </div>
 
@@ -127,7 +130,7 @@ return function(
                     <!-- Дата самовывоза -->
                     <div class="deliv-sel fltrBtnBox js-category-v2-filter-dropBox jsOrderV3Dropbox">
                         <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener" data-bind="css: { picked: choosenDates().length > 0 }">
-                            <span class="fltrBtnBox_tggl_tx">Дата</span>
+                            <span class="fltrBtnBox_tggl_tx" data-bind="text: datesText">Дата</span>
                             <i class="fltrBtnBox_tggl_corner"></i>
                         </div>
 
@@ -158,12 +161,12 @@ return function(
                     <li class="deliv-item jsChangePoint" data-bind="attr: { 'data-id': $data.id, 'data-token': $data.token, 'data-blockname': $data.orderToken }">
                         <div class="deliv-item__logo">
                             <img src="" class="deliv-item__img" data-bind="attr: { src: icon }" />
-                            <span class="deliv-item__name" data-bind="text: blockName"></span>
+                            <span class="deliv-item__name" data-bind="text: listName"></span>
                         </div>
                         <div class="deliv-item__addr">
-                            <!-- ko if: typeof subway !== 'undefined' -->
-                            <div class="deliv-item__metro" style="background: #FBAA33;">
-                               <div class="deliv-item__metro-inn">м. Ленинский проспект</div>
+                            <!-- ko if: $.isArray(subway) -->
+                            <div class="deliv-item__metro" style="background: #FBAA33;" data-bind="style: { background: subway[0].line.color }">
+                               <div class="deliv-item__metro-inn" data-bind="text: subway[0].name"></div>
                             </div>
                             <!-- /ko -->
                             <div class="deliv-item__addr-name" data-bind="text: address"></div>
