@@ -431,3 +431,53 @@
 		</p>
 	</div>
 </section>
+<!-- попап добавления отзыва -->
+<div class="popup popup--add-review">
+	<i class="closer">×</i>
+		<div class="popup-close"></div>
+		<div class="popup__tl">Отзыв о товаре</div>
+		<div class="popup__product-line">
+			<div class="popup__product-line-img-wrap">
+				<img class="popup__product-line-img" src="http://fs10.enter.ru/1/1/120/01/338119.jpg">
+			</div>
+			<div class="popup__product-line-tl">
+				Купольная вытяжка Hotpoint-Ariston 7HHP 6 R (OW)/HA
+			</div>
+		</div>
+		<div class="popup-rating">
+			<span class="popup-rating__tl">Оценка:</span>
+			<span class="popup-rating__state">
+				<i class="popup-rating__i popup-rating__i--1"></i>
+				<i class="popup-rating__i popup-rating__i--2"></i>
+				<i class="popup-rating__i popup-rating__i--3"></i>
+				<i class="popup-rating__i popup-rating__i--4"></i>
+				<i class="popup-rating__i popup-rating__i--5"></i>
+			</span>
+		</div>
+		<form class="popup-form">
+			<div class="popup-form__input-group popup-form__input-group--inline">
+				<input class="popup-form__input" type="text" name="name">
+				<label class="popup-form__input-tl" for="name">Имя</label>
+			</div>
+			<div class="popup-form__input-group popup-form__input-group--inline">
+				<input class="popup-form__input" type="text" name="email">
+				<label class="popup-form__input-tl popup-form__input-tl--required" for="email">E-mail</label>
+			</div>
+			<div class="popup-form__textarea-group">
+				<label class="popup-form__textarea-tl" for="email">Достоинства:</label>
+				<textarea class="popup-form__textarea">Тихо работает</textarea>
+			</div>
+			<div class="popup-form__textarea-group">
+				<label class="popup-form__textarea-tl" for="email">Недостатки:</label>
+				<textarea class="popup-form__textarea">Громко шумит</textarea>
+			</div>
+			<div class="popup-form__textarea-group">
+				<label class="popup-form__textarea-tl" for="email">Комментарий:</label>
+				<textarea class="popup-form__textarea">Что вообще происходит, непонятно</textarea>
+			</div>
+			<div class="popup-form__btn-container">
+				<button class="btn-type btn-type--buy btn-type--normal" type="submit">Отправить</button>
+			</div>
+		</form>
+	</div>
+</div>
