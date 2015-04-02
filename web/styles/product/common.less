@@ -47,6 +47,7 @@
 
 .i-info {
     display: block;
+    cursor: pointer;
     &__tx {
         .inline-block-middle();
     }
@@ -118,6 +119,7 @@
 // красткие характеристики
 .product-card-prop {
     color: #9c9c9c;
+    margin: 0 0 15px;
     &__i {
         width: 135px;
         margin: 0 0 8px;
@@ -216,58 +218,18 @@
 	}
 }
 
-// спарйт
-.i-product {
-    background-image: url('@{base-url}/product/img/i-product.png');
-    &--finger-positive {
-        .sprite-temp(-25px, 0, 25px, 25px);
-    }
-    &--finger-negative {
-        .sprite-temp(0, 0, 25px, 25px);
-    }
-    &--pdf {
-        .sprite-temp(-53px, -22px, 19px, 25px);
-    }
-    &--fishka {
-        .sprite-temp(0, -25px, 23px, 23px);
-    }
-    &--info-normal {
-        .sprite-temp(-23px, -25px, 15px, 15px);
+.product-card-discount-switch {
+	margin: 5px 0 10px;
 
-        vertical-align: middle;
-    }
-    &--info-warn {
-        .sprite-temp(-38px, -25px, 15px, 15px);
+	&__i {
+		.inline-block-middle();
 
-        vertical-align: middle;
-    }
-    &--star-empty {
-        .sprite-temp(-23px, -47px, 11px, 10px);
-    }
-    &--star-fill {
-        .sprite-temp(-34px, -47px, 11px, 10px);
-    }
-    &--hint {
-        .sprite-temp(-50px, 0, 10px, 10px);
-    }
-    &--onclick {
-        .sprite-temp(-60px, 0, 21px, 22px);
-    }
-}
-
-.i-tools-icon {
-    background-image: url('@{base-url}/product/img/i-tools-icons.png');
-
-    .transition(all .2s ease-out);
-    &--header-compare {
-        .sprite-temp(0, 0, 25px, 25px);
-    }
-    &--product-compare {
-        .sprite-temp(-25px, 0, 22px, 21px);
-    }
-    &--wish {
-        .sprite-temp(-47px, 0, 22px, 22px);
-    }
+		&--tx {
+			color: #8c8c8c;
+			max-width: 110px;
+			margin: 0 2px 0 5px;
+		}
+	}
 }
 
 //блок с дисконтами
@@ -305,18 +267,17 @@
     }
 }
 .product-card-safeguards {
-    margin: 15px 0 0;
+
     &__i {
         display: block;
-
-        height: 40px;
+        margin: 0 0 3px;
     }
-    &__txt {
+    &__r {
         .inline-block-middle();
         width: 220px;
-        font-size: 12px;
         padding-left: 12px;
         position: relative;
+        line-height: 1.3;
 
         &:before {
             content: "";
@@ -331,22 +292,17 @@
             left: 0px;
         }
     }
-    &__img {
+
+    &__l {
+        text-align: center;
         .inline-block-middle();
+        margin-right: 3px;
+        width:40px;
+    }
 
-        &-wrap{
-            width:40px;
-            height: 42px;
-            line-height: 42px;
-            text-align: center;
-            .inline-block-middle();
-            margin-right: 3px;
-
-            &:after{
-                height: 100%;
-                .inline-block-middle();
-            }
-
-        }
+    &__img {
+		max-width: 40px;
+		display: block;
+  		margin: auto;
     }
 }

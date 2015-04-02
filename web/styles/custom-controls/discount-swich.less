@@ -1,0 +1,87 @@
+.discount-switch {
+    &__it {
+        font-size: 0;
+        line-height: 0;
+
+        position: absolute;
+        z-index: -1;
+
+        float: right;
+        overflow: hidden;
+        zoom: 1;
+
+        width: 0;
+        height: 0;
+        margin-top: 0;
+        padding: 0;
+
+        .opacity(0);
+    }
+    &__lbl {
+        position: relative;
+
+        width: 49px;
+        height: 17px;
+
+        color: #8c8c8c;
+        border: 1px solid #c7c7c7;
+        background: #d4d4d4;
+
+        .rounded(30px);
+        .inline-block();
+
+        &:after {
+            position: absolute;
+            top: -1px;
+            left: -1px;
+
+            width: 17px;
+            height: 17px;
+
+            content: '';
+
+            border: 1px solid #c7c7c7;
+            background: @white;
+
+            .rounded(50%);
+            .transition(all .3s ease);
+        }
+        &:before {
+            font-size: 10px;
+            line-height: 17px;
+
+            position: absolute;
+            top: 0;
+            left: 20px;
+
+            content: 'Выкл';
+
+            .transition(all .3s ease);
+        }
+    }
+    .discount-switch__it:checked + .discount-switch__lbl {
+        color: @white;
+        background: #80c342;
+        &:after {
+            left: 31px;
+        }
+        &:before {
+            left: 9px;
+
+            content: 'Вкл';
+        }
+    }
+
+    .discount-switch__lbl.mChecked {
+        color: @white;
+        background: #80c342;
+        &:after {
+            left: 31px;
+        }
+        &:before {
+            left: 9px;
+
+            content: 'Вкл';
+        }
+    }
+}

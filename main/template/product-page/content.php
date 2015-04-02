@@ -83,17 +83,23 @@
 				<dt class="product-card-prop__i product-card-prop__i--name">Характеристика</dt>
 				<dd class="product-card-prop__i product-card-prop__i--val">значение</dd>
 			</dl>
+
 			<ul class="product-card-safeguards">
 				<li class="product-card-safeguards__i">
-					<div class="product-card-safeguards__img-wrap">
+					<div class="product-card-safeguards__l">
 						<img class="product-card-safeguards__img" src="/styles/product/img/pandora.png">
 					</div>
-					<span class="product-card-safeguards__txt">Гарантия подлинности и качества</span></li>
+
+					<span class="product-card-safeguards__r">Гарантия подлинности и качества</span>
+				</li>
+
 				<li class="product-card-safeguards__i">
-					<div class="product-card-safeguards__img-wrap">
+					<div class="product-card-safeguards__l">
 						<img class="product-card-safeguards__img" src="/styles/product/img/jewelery-guar.png">
 					</div>
-					<span class="product-card-safeguards__txt">Обмен в течение 30 дней<br/>Возврат по гарантии в течение 1 года</span></li>
+
+					<span class="product-card-safeguards__r">Обмен в течение 30 дней<br/>Возврат по гарантии в течение 1 года</span>
+				</li>
 			</ul>
 		</div>
 		<!--/ описание товара -->
@@ -112,6 +118,16 @@
 			<div class="product-card-price i-info">
 				<span class="i-info__tx">11 223 <span class="rubl">p</span></span>
 				<i class="i-product i-product--info-normal i-info__icon"></i>
+			</div>
+
+			<div class="product-card-discount-switch">
+				<div class="product-card-discount-switch__i discount-switch">
+					<input class="discount-switch__it" type="checkbox" name="" id="discount-switch">
+					<label class="discount-switch__lbl" for="discount-switch"></label>
+				</div>
+
+				<span class="product-card-discount-switch__i product-card-discount-switch__i--tx">Скидка 10%</span>
+				<img class="product-card-discount-switch__i product-card-discount-switch__img" src="/styles/product/img/i-fishka.png">
 			</div>
 
 			<a class="btn-type btn-type--buy btn-type--longer btn-type--buy--bigger" href="">В корзину</a>
@@ -159,6 +175,7 @@
 		<!--/ купить -->
 	</div>
 	<!--/ карточка товара -->
+
 	<!-- ссылки связной, сбер и многору -->
 	<div class="product-discounts">
 		<ul class="product-discounts-list">
@@ -181,10 +198,10 @@
 			<div class="product-section__sbtl">Общие</div>
 			<dl class="props-list">
 				<dt class="props-list__name--tl"><span class="props-list__name-i">Характеристика</span></dt>
-				<dd class="props-list__val">значение <a class="props-list__val-hint-lk i-product--hint" href="#"></a></dd>
+				<dd class="props-list__val">значение <a class="props-list__val-hint-lk i-product i-product--hint" href="#"></a></dd>
 
 				<dt class="props-list__name--tl"><span class="props-list__name-i">Характеристика</span></dt>
-				<dd class="props-list__val">очень длинное значение, которое возможно не помещается на одну строчку <a class="props-list__val-hint-lk i-product--hint" href="#"></a></dd>
+				<dd class="props-list__val">очень длинное значение, которое возможно не помещается на одну строчку <a class="props-list__val-hint-lk i-product i-product--hint" href="#"></a></dd>
 
 				<dt class="props-list__name--tl"><span class="props-list__name-i">Характеристика</span></dt>
 				<dd class="props-list__val">значение</dd>
