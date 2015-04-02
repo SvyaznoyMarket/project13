@@ -303,7 +303,7 @@ class OrderEntity {
 
         if (isset($arr['order']['actions']) && is_array($arr['order']['actions']) && (bool)$arr['order']['actions']) $this->action = $arr['order']['actions'];
 
-        if (isset($arr['order']['box_ui'])) $this->box_ui = $arr['order']['box_ui'];
+        if (isset($arr['order']['delivery']['box_ui'])) $this->box_ui = $arr['order']['delivery']['box_ui'];
 
         if (\App::config()->order['enableMetaTag']) $this->meta_data = $this->getMetaData($sender, $sender2);
 
