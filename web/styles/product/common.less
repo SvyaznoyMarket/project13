@@ -1,58 +1,58 @@
 .btn-mix() {
-	.rounded(3px);
-	border-width: 1px;
-	border-style: solid;
-	border-bottom-width: 3px;
-	font-size: 14px;
-	padding: 5px 15px;
-	margin: 0 0 10px;
-	line-height: 1;
-	.inline-block();
-	cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+
+    margin: 0 0 10px;
+    padding: 5px 15px;
+
+    cursor: pointer;
+
+    border-width: 1px;
+    border-style: solid;
+    border-bottom-width: 3px;
+
+    .rounded(3px);
+    .inline-block();
 }
 
 .btn-type {
-	.btn-mix();
+    .btn-mix();
+    &--normal {
+        border-color: #c7c7c7;
+        background-color: @white;
+    }
+    &--longer {
+        width: 100%;
+        padding: 5px 10px;
 
-	&--normal {
-		background-color: @white;
-		border-color: #c7c7c7;
-	}
+        text-align: center;
 
-	&--longer {
-		.box-sizing(border-box);
-		width: 100%;
-		text-align: center;
-		padding: 5px 10px;
-	}
+        .box-sizing(border-box);
+    }
+    &--buy {
+        color: #fff;
+        border-color: #f99b1c;
+        border-bottom-color: #bf7716;
+        background-color: #f99b1c;
+        &--bigger {
+            font-size: 22px;
 
-	&--buy {
-		background-color: #f99b1c;
-		border-color: #f99b1c;
-		border-bottom-color: #bf7716;
-		color: #fff;
-
-		&--bigger {
-			font-size: 22px;
-			padding: 10px;
-		}
-	}
-
-	&:hover {
-		text-decoration: none;
-	}
+            padding: 10px;
+        }
+    }
+    &:hover {
+        text-decoration: none;
+    }
 }
 
 .i-info {
-	display: block;
-
-	&__tx {
-		.inline-block-middle();
-	}
-
-	&__icon {
-		margin-left: 2px;
-	}
+    display: block;
+    &__tx {
+        .inline-block-middle();
+    }
+    &__icon {
+        margin-left: 2px;
+    }
 }
 
 // название товара
@@ -66,6 +66,7 @@
 .vandor-offer {
     &__lk {
         color: #9c9c9c;
+
         .inline-block();
         &:hover {
             text-decoration: none;
@@ -168,91 +169,122 @@
 
     color: #ef404a;
     border: 1px dotted #ef404a;
-
-    &__icon {
-
-    }
-
     &__tx {
-    	width: 177px;
+        width: 177px;
     }
 }
 
 .buy-on-credit {
+    &__tl {
+        font-size: 18px;
+
+        display: block;
+
+        margin: 0 0 2px;
+
+        color: #f99b1c;
+    }
+    &__tx {
+        font-size: 11px;
+
+        color: #8c8c8c;
+    }
+    &__mark {
+        color: #363636;
+        background: none;
+    }
+}
+
+.buy-now-inshop {
+	border: 1px solid #80c342;
+	padding: 7px 10px 10px;
+	cursor: pointer;
 
 	&__tl {
-		font-size: 18px;
-		color: #f99b1c;
-		display: block;
-		margin: 0 0 2px;
+		font-size: 14px;
+		color: #80c342;
+		border-bottom: 1px solid #80c342;
+		.inline-block();
 	}
 
-	&__tx {
-		font-size: 11px;
-		color: #8c8c8c;
+	&__line {
+		margin: 3px 0 0;
 	}
 
 	&__mark {
-		color: #363636;
-		background: none;
+		color: #9c9c9c;
 	}
 }
 
 // спарйт
 .i-product {
     background-image: url('@{base-url}/product/img/i-product.png');
-
     &--finger-positive {
-        .sprite-temp(-0px, -0px, 25px, 25px);
+        .sprite-temp(-25px, 0, 25px, 25px);
     }
     &--finger-negative {
-        .sprite-temp(-25px, -0px, 25px, 25px);
+        .sprite-temp(0, 0, 25px, 25px);
     }
     &--pdf {
-        .sprite-temp(-0px, -25px, 19px, 25px);
-    }
-    &--product-card-compare {
-        .sprite-temp(-47px, -25px, 25px, 24px);
-    }
-    &--product-card-compare-fill {
-        .sprite-temp(-50px, -0px, 25px, 23px);
+        .sprite-temp(-53px, -22px, 19px, 25px);
     }
     &--fishka {
-        .sprite-temp(-22px, -27px, 23px, 23px);
-    }
-    &--wish {
-        .sprite-temp(-76px, -2px, 22px, 22px);
+        .sprite-temp(0, -25px, 23px, 23px);
     }
     &--info-normal {
-        .sprite-temp(-22px, -50px, 15px, 15px);
+        .sprite-temp(-23px, -25px, 15px, 15px);
+
         vertical-align: middle;
     }
     &--info-warn {
-        .sprite-temp(-37px, -50px, 15px, 15px);
+        .sprite-temp(-38px, -25px, 15px, 15px);
+
         vertical-align: middle;
     }
     &--star-empty {
-        .sprite-temp(-52px, -50px, 11px, 10px);
+        .sprite-temp(-23px, -47px, 11px, 10px);
     }
     &--star-fill {
-        .sprite-temp(-63px, -50px, 11px, 10px);
+        .sprite-temp(-34px, -47px, 11px, 10px);
     }
     &--hint {
-        .sprite-temp(-3px, -52px, 10px, 10px);
+        .sprite-temp(-50px, 0, 10px, 10px);
+    }
+    &--onclick {
+        .sprite-temp(-60px, 0, 21px, 22px);
+    }
+}
+
+.i-tools-icon {
+    background-image: url('@{base-url}/product/img/i-tools-icons.png');
+
+    .transition(all .2s ease-out);
+    &--header-compare {
+        .sprite-temp(0, 0, 25px, 25px);
+    }
+    &--product-compare {
+        .sprite-temp(-25px, 0, 22px, 21px);
+    }
+    &--wish {
+        .sprite-temp(-47px, 0, 22px, 22px);
     }
 }
 
 //блок с дисконтами
 .product-discounts {
+
     text-align: center;
     border-bottom: 1px solid #e8e8e8;
     border-top: 1px solid #e8e8e8;
     margin: 0 -10px;
 
     &-list {
-        margin: 0 auto;
+        font-size: 0;
+
         width: 700px;
+        margin: 0 auto;
         padding: 20px 10px;
+
         white-space: nowrap;
         font-size: 0px;
 
@@ -274,10 +306,10 @@
 }
 .product-card-safeguards {
     margin: 15px 0 0;
-
     &__i {
-        height: 40px;
         display: block;
+
+        height: 40px;
     }
     &__txt {
         .inline-block-middle();
@@ -288,11 +320,11 @@
 
         &:before {
             content: "";
-            width: 0;
-            height: 0;
-            border-style: solid;
+
             border-width: 3.5px 0 3.5px 4px;
+            border-style: solid;
             border-color: transparent transparent transparent #969696;
+
             position: absolute;
             top: 50%;
             margin-top: -2px;
@@ -314,6 +346,7 @@
                 height: 100%;
                 .inline-block-middle();
             }
+
         }
     }
 }

@@ -114,22 +114,45 @@
 
 			<a class="btn-type btn-type--buy btn-type--longer btn-type--buy--bigger" href="">В корзину</a>
 
-			<a class="btn-type btn-type--normal btn-type--longer" href="">
-				Купить в кредит
-				от 390 <span class="rubl">p</span> в месяц
+			<!-- купить в кредит -->
+			<a class="buy-on-credit btn-type btn-type--normal btn-type--longer" href="">
+				<span class="buy-on-credit__tl">Купить в кредит</span>
+				<span class="buy-on-credit__tx">от <mark class="buy-on-credit__mark">390</mark>&nbsp;&nbsp;<span class="rubl">p</span> в месяц</span>
 			</a>
+			<!--/ купить в кредит -->
 
+			<!-- сравнить, добавить в виш лист -->
 			<ul class="product-card-tools">
-				<li class="product-card-tools__i product-card-tools__i--onclick"><i class="product-card-tools__icon"></i> <span class="product-card-tools__tx">Купить в 1 клик</span></li>
-				<li class="product-card-tools__i product-card-tools__i--compare"><i class="product-card-tools__icon"></i> <span class="product-card-tools__tx">Сравнить</span></li>
-				<li class="product-card-tools__i product-card-tools__i--wish"><i class="product-card-tools__icon"></i> <span class="product-card-tools__tx">В избранное</span></li>
-			</ul>
+				<li class="product-card-tools__i product-card-tools__i--onclick">
+					<a href="" class="product-card-tools__lk">
+						<i class="product-card-tools__icon i-product i-product--onclick"></i>
+						<span class="product-card-tools__tx">Купить в 1 клик</span>
+					</a>
+				</li>
 
+				<li class="product-card-tools__i product-card-tools__i--compare">
+					<a href="" class="product-card-tools__lk">
+						<i class="product-card-tools__icon i-tools-icon i-tools-icon--product-compare"></i>
+						<span class="product-card-tools__tx">Сравнить</span>
+					</a>
+				</li>
+
+				<li class="product-card-tools__i product-card-tools__i--wish">
+					<a href="" class="product-card-tools__lk">
+						<i class="product-card-tools__icon i-tools-icon i-tools-icon--wish"></i>
+						<span class="product-card-tools__tx">В избранное</span>
+					</a>
+				</li>
+			</ul>
+			<!--/ сравнить, добавить в виш лист -->
+
+			<!-- в наличии -->
 			<div class="buy-now-inshop">
-				<div class="buy-now-inshop__title">В наличии</div>
-				<div class="buy-now-inshop__line">Самовывоз <span class="buy-now-inshop__text-mark">сегодня, бесплатно</span></div>
-				<div class="buy-now-inshop__line">Доставка <span class="buy-now-inshop__text-mark">22.03.2015, 150₽</span></div>
+				<span class="buy-now-inshop__tl">В наличии</span>
+				<div class="buy-now-inshop__line">Самовывоз <span class="buy-now-inshop__mark">сегодня, бесплатно</span></div>
+				<div class="buy-now-inshop__line">Доставка <span class="buy-now-inshop__mark">22.03.2015, 150₽</span></div>
 			</div>
+			<!--/ в наличии -->
 		</div>
 		<!--/ купить -->
 	</div>
@@ -212,13 +235,13 @@
 					<div class="reviews__date">8.01.2015</div></div>
 
 					<div class="product-card-rating">
-							<span class="product-card-rating__state">
-								<i class="product-card-rating__i product-card-rating__i--1"></i>
-								<i class="product-card-rating__i product-card-rating__i--2"></i>
-								<i class="product-card-rating__i product-card-rating__i--3"></i>
-								<i class="product-card-rating__i product-card-rating__i--4"></i>
-								<i class="product-card-rating__i product-card-rating__i--5"></i>
-							</span>
+						<span class="product-card-rating__state">
+							<i class="product-card-rating__i product-card-rating__i--1"></i>
+							<i class="product-card-rating__i product-card-rating__i--2"></i>
+							<i class="product-card-rating__i product-card-rating__i--3"></i>
+							<i class="product-card-rating__i product-card-rating__i--4"></i>
+							<i class="product-card-rating__i product-card-rating__i--5"></i>
+						</span>
 					</div>
 
 					<div class="reviews__tl">Достоинства:</div>
