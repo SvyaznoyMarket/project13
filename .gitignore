@@ -28,5 +28,6 @@ erase_barcode.cmd
 /web/survey
 /node_modules
 /web/version.txt
+npm-debug.log
 *.map
 sftp-config.json
