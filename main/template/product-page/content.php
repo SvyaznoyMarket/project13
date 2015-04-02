@@ -21,15 +21,26 @@
 				<img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo__img" />
 			</div>
 
-			<div class="product-card-photo-thumbs">
+			<!-- если картинок больше 5 добавляем класс product-card-photo-thumbs--slides -->
+			<div class="product-card-photo-thumbs product-card-photo-thumbs--slides">
 				<ul class="product-card-photo-thumbs-list">
+					<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img" /></li>
+					<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img" /></li>
 					<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img" /></li>
 					<li class="product-card-photo-thumbs__i product-card-photo-thumbs__i--act"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img" /></li>
 					<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img" /></li>
-					<li class="product-card-photo-thumbs__i product-card-photo-thumbs__i--media product-card-photo-thumbs__i--media-video"></li>
-					<li class="product-card-photo-thumbs__i product-card-photo-thumbs__i--media product-card-photo-thumbs__i--media-3d"></li>
+					<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img" /></li>
+					<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img" /></li>
 				</ul>
+
+				<div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--l product-card-photo-thumbs__btn--disabled"></div>
+				<div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--r"></div>
 			</div>
+
+			<ul class="product-card-media">
+				<li class="product-card-media__i product-card-media__i--video"></li>
+				<li class="product-card-media__i product-card-media__i--3d"></li>
+			</ul>
 		</div>
 		<!--/ карточка товара -->
 
