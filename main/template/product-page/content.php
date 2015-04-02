@@ -97,10 +97,12 @@
 				<i class="product-card-action__icon i-product i-product--info-warn i-info__icon"></i>
 			</div>
 
-			<div class="product-card-old-price"><span class="product-card-old-price__inn">11 223</span> <span class="rubl">p</span></div>
+			<div class="product-card-old-price">
+				<span class="product-card-old-price__inn">11 223</span> <span class="rubl">p</span>
+			</div>
 
 			<div class="product-card-price i-info">
-				<span class="i-info__tx">11 223</span> <span class="rubl">p</span></span>
+				<span class="i-info__tx">11 223 <span class="rubl">p</span></span>
 				<i class="i-product i-product--info-normal i-info__icon"></i>
 			</div>
 
