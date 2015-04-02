@@ -272,11 +272,12 @@
 
 //блок с дисконтами
 .product-discounts {
-    margin: 0 -10px;
 
     text-align: center;
-
     border-bottom: 1px solid #e8e8e8;
+    border-top: 1px solid #e8e8e8;
+    margin: 0 -10px;
+
     &-list {
         font-size: 0;
 
@@ -285,20 +286,21 @@
         padding: 20px 10px;
 
         white-space: nowrap;
-    }
-    &__i {
-        width: 140px;
-        height: 30px;
-        margin: 0 0 0 140px;
+        font-size: 0px;
 
-        .inline-block();
-        &:first-child {
-            margin: 0;
+        &__i {
+            width: 140px;
+            height: 30px;
+            .inline-block();
+            margin: 0 0 0 140px;
+            &:first-child {
+                margin: 0px;
+            }
         }
-    }
-    &__link {
-        &:hover {
-            text-decoration: none;
+        &__lk {
+            &:hover {
+                text-decoration: none;
+            }
         }
     }
 }
@@ -310,40 +312,41 @@
         height: 40px;
     }
     &__txt {
-        font-size: 12px;
-
-        width: 221px;
-
         .inline-block-middle();
-    }
-    .safeguard-icon {
+        width: 220px;
+        font-size: 12px;
+        padding-left: 12px;
         position: relative;
 
-        width: 42px;
-        height: 40px;
-        margin-right: 13px;
-
-        .inline-block-middle();
-        &--pandora {
-            background: url('@{base-url}/product/img/pandora.png') no-repeat center;
-        }
-        &--return {
-            background: url('@{base-url}/product/img/jewelery-guar.png') no-repeat center;
-        }
-        &:after {
-            position: absolute;
-            top: 50%;
-            right: -5px;
-
-            width: 0;
-            height: 0;
-            margin-top: -2px;
-
-            content: '';
+        &:before {
+            content: "";
 
             border-width: 3.5px 0 3.5px 4px;
             border-style: solid;
             border-color: transparent transparent transparent #969696;
+
+            position: absolute;
+            top: 50%;
+            margin-top: -2px;
+            left: 0px;
+        }
+    }
+    &__img {
+        .inline-block-middle();
+
+        &-wrap{
+            width:40px;
+            height: 42px;
+            line-height: 42px;
+            text-align: center;
+            .inline-block-middle();
+            margin-right: 3px;
+
+            &:after{
+                height: 100%;
+                .inline-block-middle();
+            }
+
         }
     }
 }
