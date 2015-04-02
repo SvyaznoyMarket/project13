@@ -2,8 +2,7 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Filter $productFilter,
-    $baseUrl,
-    $countUrl
+    $baseUrl
 ) {
 
     /** @var \Model\Product\Filter\Entity $priceFilter */
@@ -54,7 +53,7 @@ return function(
     ?>
 
     <div class="fltrBtn fltrBtn-bt">
-        <form id="productCatalog-filter-form" class="js-category-filter" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
+        <form id="productCatalog-filter-form" class="js-category-filter" action="<?= $baseUrl ?>" method="GET">
             <? if ($brandFilter1): ?>
                 <? // Для IE9 (чтобы он отправлял форму при нажатии на клавишу enter в текстовом поле ввода) ?>
                 <div style="overflow: hidden; position: absolute; top: 0; left: 0; width: 0; height: 0;"><input type="submit" /></div>

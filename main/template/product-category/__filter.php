@@ -6,7 +6,6 @@ return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Filter $productFilter,
     $baseUrl,
-    $countUrl,
     $openFilter,
     array $promoStyle = [],
     array $categories = [],
@@ -85,7 +84,7 @@ return function(
     ?>
 
     <div class="fltr">
-        <form id="productCatalog-filter-form" class="bFilter clearfix js-category-filter" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
+        <form id="productCatalog-filter-form" class="bFilter clearfix js-category-filter" action="<?= $baseUrl ?>" method="GET">
             <div class="bFilterHead"<? if(!empty($promoStyle['bFilterHead'])): ?> style="<?= $promoStyle['bFilterHead'] ?>"<? endif ?>>
                 <? if ($showParamsButton): ?>
                     <a class="bFilterToggle btnGrey <?= $openFilter ? 'fltrSet_tggl-dn' : '' ?> js-category-filter-otherParamsToggleButton js-category-v1-filter-otherParamsToggleButton" href="#"><span class="bToggleText">Бренды и параметры</span></a>

@@ -36,10 +36,6 @@ return [
         'pattern' => '/search',
         'action'  => ['Search\Action', 'execute'],
     ],
-    'search.count' => [
-        'pattern' => '/ajax/search/_count',
-        'action'  => ['Search\Action', 'count'],
-    ],
     // поиск бесконечная прокрутка
     'search.infinity' => [
         'pattern' => '/search/_infinity',
@@ -217,12 +213,6 @@ return [
         'action'  => ['ProductCategory\Action', 'slider'],
         'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
     ],
-    // общее количество отфильтрованных товаров
-    'product.category.count' => [
-        'pattern' => '/ajax/catalog/{categoryPath}/_count',
-        'action'  => ['ProductCategory\Action', 'count'],
-        'require' => ['categoryPath' => '[\w\d-_]+\/?[\w\d-_]+'],
-    ],
     // каталог товаров с бесконечной прокруткой
     'product.category.infinity' => [
         'pattern' => '/ajax/catalog/{categoryPath}/_infinity',
@@ -360,23 +350,6 @@ return [
     'tag.category.infinity' => [
         'pattern' => '/tags/{tagToken}/{categoryToken}/_infinity',
         'action'  => ['Tag\Action', 'index'],
-    ],
-    // общее количество отфильтрованных товаров для тегов
-    'tag.count' => [
-        'pattern' => '/ajax/tags/{tagToken}/_count',
-        'action'  => ['Tag\Action', 'count'],
-        'require' => [
-            'tagToken' => '[\w\d-_]+\/?[\w\d-_]+',
-        ],
-    ],
-    // общее количество отфильтрованных товаров для категорий тегов
-    'tag.category.count' => [
-        'pattern' => '/ajax/tags/{tagToken}/{categoryToken}/_count',
-        'action'  => ['Tag\Action', 'count'],
-        'require' => [
-            'tagToken'      => '[\w\d-_]+\/?[\w\d-_]+',
-            'categoryToken' => '[\w\d-_]+\/?[\w\d-_]+',
-        ],
     ],
     'product.rating.create_total' => [
         'pattern' => '/product-rating/createtotal/{productId}/{rating}',

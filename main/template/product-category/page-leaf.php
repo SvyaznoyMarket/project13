@@ -65,13 +65,11 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
         <? if ($category->isV2()): ?>
             <?= $helper->render('product-category/v2/__filter', [
                 'baseUrl'       => $helper->url('product.category', ['categoryPath' => $category->getPath()]),
-                'countUrl'      => $helper->url('product.category.count', ['categoryPath' => $category->getPath()]),
                 'productFilter' => $productFilter,
             ]) // фильтры ?>
         <? elseif ($category->isV3()): ?>
             <?= $helper->render('product-category/v3/__filter', [
                 'baseUrl'       => $helper->url('product.category', ['categoryPath' => $category->getPath()]),
-                'countUrl'      => $helper->url('product.category.count', ['categoryPath' => $category->getPath()]),
                 'productFilter' => $productFilter,
                 'openFilter'    => false,
                 'promoStyle'    => $promoStyle,
@@ -79,7 +77,6 @@ $category_class = !empty($catalogJson['category_class']) ? strtolower(trim((stri
         <? else: ?>
             <?= $helper->render('product-category/__filter', [
                 'baseUrl'       => $helper->url('product.category', ['categoryPath' => $category->getPath()]),
-                'countUrl'      => $helper->url('product.category.count', ['categoryPath' => $category->getPath()]),
                 'productFilter' => $productFilter,
                 'openFilter'    => false,
                 'promoStyle'    => $promoStyle,

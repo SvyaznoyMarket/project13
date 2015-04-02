@@ -17,9 +17,6 @@ $categoriesLinks = []; // дочерние категории для тегов:
 
 $tagCategoryTokens = ['tagToken' => $tag->getToken()];
 
-//$filterParams['countUrl'] = $helper->url('tag.category.count', $tagCategoryTokens); // <- TODO
-
-
 // подкатегории для тегов:
 foreach ( $categories as $subCategory ) {
     /** @var $subCategory \Model\Product\Category\Entity */
@@ -48,7 +45,6 @@ foreach ( $categories as $subCategory ) {
         'productFilter'     => $productFilter,
         'categories'        => $categories,
         'openFilter'        => true,
-        'countUrl'          => $helper->url('tag.count', $tagCategoryTokens),
         'baseUrl'           => $helper->url('tag', $tagCategoryTokens),
     ]); // фильтры ?>
 
