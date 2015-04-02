@@ -132,7 +132,6 @@
                     geoObject.options.set('visible', $.inArray(geoObject.properties.get('enterToken'), arr) !== -1)
                 }
             });
-            console.log(arr);
         });
 
         /* INIT */
