@@ -156,10 +156,10 @@
 			<div class="product-section__sbtl">Общие</div>
 			<dl class="props-list">
 				<dt class="props-list__name--tl"><span class="props-list__name-i">Характеристика</span></dt>
-				<dd class="props-list__val">значение</dd>
+				<dd class="props-list__val">значение <a class="props-list__val-hint-lk i-product--hint" href="#"></a></dd>
 
 				<dt class="props-list__name--tl"><span class="props-list__name-i">Характеристика</span></dt>
-				<dd class="props-list__val">значение</dd>
+				<dd class="props-list__val">очень длинное значение, которое возможно не помещается на одну строчку <a class="props-list__val-hint-lk i-product--hint" href="#"></a></dd>
 
 				<dt class="props-list__name--tl"><span class="props-list__name-i">Характеристика</span></dt>
 				<dd class="props-list__val">значение</dd>
