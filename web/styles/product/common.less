@@ -254,19 +254,20 @@
         padding: 20px 10px;
         white-space: nowrap;
         font-size: 0px;
-    }
-    &__i {
-        width: 140px;
-        height: 30px;
-        .inline-block();
-        margin: 0 0 0 140px;
-        &:first-child {
-            margin: 0px;
+
+        &__i {
+            width: 140px;
+            height: 30px;
+            .inline-block();
+            margin: 0 0 0 140px;
+            &:first-child {
+                margin: 0px;
+            }
         }
-    }
-    &__link {
-        &:hover {
-            text-decoration: none;
+        &__lk {
+            &:hover {
+                text-decoration: none;
+            }
         }
     }
 }
@@ -279,23 +280,12 @@
     }
     &__txt {
         .inline-block-middle();
-        width: 221px;
+        width: 220px;
         font-size: 12px;
-    }
-    .safeguard-icon {
+        padding-left: 12px;
         position: relative;
-        margin-right: 13px;
-        .inline-block-middle();
-        width: 42px;
-        height: 40px;
-        
-        &--pandora {
-            background: url("@{base-url}/product/img/pandora.png") no-repeat center;
-        }
-        &--return {
-            background: url("@{base-url}/product/img/jewelery-guar.png") no-repeat center;
-        }
-        &:after {
+
+        &:before {
             content: "";
             width: 0;
             height: 0;
@@ -305,7 +295,24 @@
             position: absolute;
             top: 50%;
             margin-top: -2px;
-            right: -5px;
+            left: 0px;
+        }
+    }
+    &__img {
+        .inline-block-middle();
+
+        &-wrap{
+            width:40px;
+            height: 42px;
+            line-height: 42px;
+            text-align: center;
+            .inline-block-middle();
+            margin-right: 3px;
+
+            &:after{
+                height: 100%;
+                .inline-block-middle();
+            }
         }
     }
 }

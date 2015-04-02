@@ -30,11 +30,11 @@
         }
     }
     &__lk {
-        border-bottom: 1px solid;
         text-decoration: none;
 
         &:hover {
             text-decoration: none;
+            border-bottom: 1px solid;
         }
     }
 }
@@ -230,22 +230,23 @@
 .product-guides{
     &-list{
 
-    }
-    &-i{
-        height: 25px;
-        line-height: 25px;
-        color: #363636;
-        margin: 10px 0 0;
-    }
-    &-link{
-        &:hover{
-            text-decoration: none;
+        &__i{
+            height: 25px;
+            line-height: 25px;
+            color: #363636;
+            margin: 10px 0 0;
         }
-    }
-    &__tl{
-        border-bottom: 1px solid #9c9c9c;
-    }
-    .i-guides-icon{
-        margin-right: 10px;
+        &__lk{
+
+            &:hover{
+                text-decoration: none;
+            }
+            &-tl{
+                    border-bottom: 1px solid #9c9c9c;
+            }
+        }
+        &__icon{
+            margin-right: 10px;
+        }
     }
 }
