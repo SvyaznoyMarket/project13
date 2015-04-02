@@ -9,7 +9,6 @@ return function(
 ) {
     $orderCount = count($orderDelivery->orders);
     $region = \App::user()->getRegion();
-    $regionName = $region->getName();
     $firstOrder = reset($orderDelivery->orders);
     $i = 0;
 
@@ -233,8 +232,8 @@ return function(
                 <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY]) && !\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) : ?>
 
                     <div class="orderCheck" style="margin-bottom: 0;">
-                        <input type="checkbox" class="customInput customInput-checkbox jsCreditCardPayment" id="creditCardsPay-<?= $order->block_name ?>" name="" value="" <?= $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY  ? 'checked ' : '' ?>/>
-                        <label  class="customLabel" for="creditCardsPay-<?= $order->block_name ?>">
+                        <input type="checkbox" class="customInput customInput-checkbox jsCreditCardPayment js-customInput" id="creditCardsPay-<?= $order->block_name ?>" name="" value="" <?= $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY  ? 'checked ' : '' ?>/>
+                        <label  class="customLabel customLabel-checkbox" for="creditCardsPay-<?= $order->block_name ?>">
                             <span class="brb-dt" style="vertical-align: top;">Оплата курьеру банковской картой</span> <img class="orderCheck_img" src="/styles/order/img/i-visa.png" alt=""><img class="orderCheck_img" src="/styles/order/img/i-mc.png" alt="">
                         </label>
                     </div>
@@ -243,7 +242,7 @@ return function(
 
             <? endif ?>
 
-            <?= $helper->render('order-v3-new/__map', [
+            <?= $helper->render('order-v3/common/_map', [
                 'id'            => 'id-order-changePlace-content-' . $order->id,
                 'order'         => $order,
                 'orderDelivery' => $orderDelivery
@@ -253,8 +252,8 @@ return function(
             <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CREDIT]) && !\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) : ?>
 
                 <div class="orderCheck orderCheck-credit clearfix">
-                    <input type="checkbox" class="customInput customInput-checkbox jsCreditPayment" id="credit-<?= $order->block_name ?>" name="" value="" <?= $order->payment_method_id == PaymentMethod::PAYMENT_CREDIT ? 'checked' : '' ?>>
-                    <label class="customLabel" for="credit-<?= $order->block_name ?>"><span class="brb-dt">Купить в кредит</span><!--, от 2 223 <span class="rubl">p</span> в месяц--></label>
+                    <input type="checkbox" class="customInput customInput-checkbox jsCreditPayment js-customInput" id="credit-<?= $order->block_name ?>" name="" value="" <?= $order->payment_method_id == PaymentMethod::PAYMENT_CREDIT ? 'checked' : '' ?>>
+                    <label class="customLabel customLabel-checkbox" for="credit-<?= $order->block_name ?>"><span class="brb-dt">Купить в кредит</span><!--, от 2 223 <span class="rubl">p</span> в месяц--></label>
                 </div>
 
             <? endif; ?>
@@ -300,7 +299,7 @@ return function(
 <div id="yandex-map-container" class="selShop_r" style="display: none;" data-options="<?= $helper->json($initialMapCords)?>"></div>
 <div id="kladr-config" data-value="<?= $helper->json(\App::config()->kladr ); ?>"></div>
 <div id="region-name" data-value=<?= json_encode($region->getName(), JSON_UNESCAPED_UNICODE); ?>></div>
-<? if (App::config()->debug) : ?><div id="initialOrderModel" data-value="<?= $helper->json($orderDelivery) ?>"></div><? endif; ?>
+<?= App::config()->debug ? $helper->jsonInScriptTag($orderDelivery, 'initialOrderModel') : '' ?>
 <div id="jsUserAddress" data-value="<?= $helper->json($orderDelivery->user_info->address) ?>"></div>
 
 <div class="popup popup-simple js-order-oferta-popup">

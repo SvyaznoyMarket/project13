@@ -265,7 +265,10 @@ class Action {
         $this->correctFiltersForJewel($filters, $category);
 
         // фильтры
-        $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $category, $brand, $request, $shop, !$category->isV2());
+
+        $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $category, $brand, $request, $shop, function(\Model\Product\Filter\Entity $property) use($category) {
+            return ($category->isV2() && $property->isBrand() || $category->isV3() && in_array($property->getName(), ['Металл', 'Вставка'], true));
+        });
 
         $this->correctProductFilterAndCategoryForJewel($category, $productFilter);
 
@@ -1128,14 +1131,6 @@ class Action {
                 $category->setProductView(3);
             } else {
                 $category->setProductView(4);
-            }
-        } else {
-            foreach ($productFilter->getFilterCollection() as $filter) {
-                if ('Металл' === $filter->getName() || 'Вставка' === $filter->getName()) {
-                    foreach ($filter->getOption() as $option) {
-                        $option->setImageUrl('');
-                    }
-                }
             }
         }
     }

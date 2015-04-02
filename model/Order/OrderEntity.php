@@ -5,7 +5,7 @@ namespace Model\Order;
 use Partner\Counter\Actionpay;
 
 
-/** Класс ля создания заказа на ядре
+/** Класс для создания заказа на ядре
  * Class OrderEntity
  * @package Model\Order
  */
@@ -262,11 +262,6 @@ class OrderEntity {
             $this->certificate = $arr['order']['certificate']['code'];
             $this->certificate_pin = $arr['order']['certificate']['pin'];
             $this->payment_id = self::PAYMENT_ID_CERTIFICATE;
-        }
-
-        // идиотский АБ-тест TODO remove
-        if (\Session\AbTest\AbTest::isSelfPaidDelivery() && $arr['total_cost'] < \App::config()->self_delivery['limit'] && $this->delivery_type_id == 3) {
-            $this->delivery_price = 100;
         }
 
         if ($user) {

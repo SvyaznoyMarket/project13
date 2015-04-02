@@ -92,7 +92,7 @@ return function(
                 </div>
             <? endif ?>
 
-            <?= $helper->render('order-v3-new/__map', [
+            <?= $helper->render('order-v3/common/_map', [
                 'id'            => 'id-order-changePlace-content-' . $order->id,
                 'order'         => $order,
                 'orderDelivery' => $orderDelivery

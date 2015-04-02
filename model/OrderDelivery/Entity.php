@@ -102,12 +102,6 @@ namespace Model\OrderDelivery {
             $this->validateOrders();
 
 
-            // идиотский АБ-тест TODO remove
-            // суммируем общую стоимость заказов заново
-            if (\Session\AbTest\AbTest::isSelfPaidDelivery()) {
-                $this->total_cost = 0;
-                foreach ($this->orders as $order) $this->total_cost += $order->total_cost;
-            }
         }
 
         /** Различные странные ситуации, которые надо проверить
@@ -185,8 +179,12 @@ namespace Model\OrderDelivery\Entity {
         public $action_name;
         /** @var string */
         public $block_name;
-        /** @var Point\Shop[]|Point\Pickpoint[] */
+        /** @var string|null */
+        public $dropdown_name;
+        /** @var Point\Shop[]|Point\Pickpoint[]|Point\Svyaznoy[] */
         public $list = [];
+        /* @var string */
+        public $icon;
         /** @var array */
         public $marker = [
             'iconImageSize' => [28, 39],
@@ -220,15 +218,21 @@ namespace Model\OrderDelivery\Entity {
                 switch ($this->token) {
                     case 'self_partner_pickpoint_pred_supplier':
                     case 'self_partner_pickpoint':
-                        $this->marker['iconImageHref'] = '/images/map/marker-pickpoint.png';
+                        $this->marker['iconImageHref'] = '/images/deliv-icon/pickpoint.png';
+                        $this->icon = '/images/deliv-logo/pickpoint.png';
+                        $this->dropdown_name = 'Постаматы Pickpoint';
                         break;
                     case 'self_partner_svyaznoy_pred_supplier':
                     case 'self_partner_svyaznoy':
                     case 'shops_svyaznoy':
-                        $this->marker['iconImageHref'] = '/images/map/marker-svyaznoy.png';
+                        $this->marker['iconImageHref'] = '/images/deliv-icon/svyaznoy.png';
+                        $this->icon = '/images/deliv-logo/svyaznoy.png';
+                        $this->dropdown_name = 'Магазины Связной';
                         break;
                     default:
-                        $this->marker['iconImageHref'] = '/images/map/marker-shop.png';
+                        $this->marker['iconImageHref'] = '/images/deliv-icon/enter.png';
+                        $this->icon = '/images/deliv-logo/enter.png';
+                        $this->dropdown_name = 'Магазины Enter';
                 }
             }
         }
@@ -389,7 +393,8 @@ namespace Model\OrderDelivery\Entity {
 
                             $point = [
                                 'point'         => &$orderDelivery->points[$pointType]->list[$pointItem['id']],
-                                'nearestDay'    => $pointItem['nearest_day']
+                                'nearestDay'    => $pointItem['nearest_day'],
+                                'cost'          => (int)$pointItem['cost']
                             ];
 
                             $this->possible_points[$pointType][] =  $point;
@@ -418,11 +423,6 @@ namespace Model\OrderDelivery\Entity {
                 if (isset($data['certificate']['par']))  $this->certificate['par'] = (string)$data['certificate']['par'];
             }
 
-            // идиотский АБ-тест TODO remove
-            if (\Session\AbTest\AbTest::isSelfPaidDelivery() && $this->total_cost < \App::config()->self_delivery['limit'] && $this->delivery->delivery_method_token == 'self') {
-                $this->delivery->price = 100;
-                $this->total_cost = $this->total_cost + $this->delivery->price;
-            }
         }
 
         /** Это заказ партнерский?
@@ -550,8 +550,6 @@ namespace Model\OrderDelivery\Entity\Point {
         public $latitude;
         /** @var float */
         public $longitude;
-        /** @var string|null */
-        public $nearestDay;
 
         public function __construct(array $data = []) {
             if (isset($data['id'])) $this->id = (string)$data['id'];

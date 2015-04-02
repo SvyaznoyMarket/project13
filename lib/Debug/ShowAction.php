@@ -68,8 +68,8 @@ class ShowAction {
                     $queryData[$index] = [
                         'url'         => $url,
                         'encodedUrl'  => urlencode($url),
-                        'data'        => (bool)$data ? json_encode($data) : null,
-                        'encodedData' => (bool)$data ? urlencode(json_encode($data)) : null,
+                        'data'        => (bool)$data ? json_encode($data, JSON_UNESCAPED_UNICODE) : null,
+                        'encodedData' => (bool)$data ? urlencode(json_encode($data, JSON_UNESCAPED_UNICODE)) : null,
                         'timeout'     => isset($message['timeout']) ? $message['timeout'] : null,
                         'startAt'     => $startAt,
                         'count'       => isset($queryData[$index]['count']) ? ($queryData[$index]['count'] + 1) : 1,
