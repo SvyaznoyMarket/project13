@@ -62,7 +62,7 @@
         /* Текст для дропдауна со стоимостью */
         self.costsText = ko.computed(function(){
             if (self.choosenCosts().length == 1) {
-                return self.choosenCosts()[0] == 0 ? 'Бесплатно' : self.choosenCosts()[0] + '&nbsp;<span class="rubl">р</span>';
+                return self.choosenCosts()[0] == 0 ? 'Бесплатно' : self.choosenCosts()[0] + '&nbsp;<span class="rubl">p</span>';
             }
             return 'Стоимость';
         });
