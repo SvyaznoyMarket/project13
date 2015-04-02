@@ -45,20 +45,33 @@
         self.longitudeMin = ko.observable();
         self.longitudeMax = ko.observable();
 
-        /* Текст для дропдауна */
+        /* Текст для дропдауна с точками самовывоза */
         self.pointsText = ko.computed(function(){
             switch (self.choosenTokens().length) {
                 case 0:
                     return 'Все точки';
                 case 1:
-                    return '1 точка'; // TODO значение точки e.g. "Магазин"
-                default:
+                    return $.grep(self.availablePoints(), function(point){ return self.choosenTokens()[0] == point['token'] })[0]['dropdownName'];
+                case 2: case 3: case 4:
                     return self.choosenTokens().length + ' точки';
+                default:
+                    return self.choosenTokens().length + ' точек';
             }
         });
 
-        self.datesText = ko.computed(function(){
+        /* Текст для дропдауна со стоимостью */
+        self.costsText = ko.computed(function(){
+            if (self.choosenCosts().length == 1) {
+                return self.choosenCosts()[0] == 0 ? 'Бесплатно' : self.choosenCosts()[0] + '&nbsp;<span class="rubl">р</span>';
+            }
+            return 'Стоимость';
+        });
 
+        /* Текст для дропдауна с датой */
+        self.datesText = ko.computed(function(){
+            return self.choosenDates().length == 1
+                ? $.grep(self.availablePoints(), function(point){ return self.choosenDates()[0] == point['nearestDay'] })[0]['humanNearestDay']
+                : 'Дата';
         });
 
         /* Список точек с учетом фильтрации */
@@ -120,6 +133,8 @@
                 }
             });
         });
+
+        window.map = self;
 
         return self;
 

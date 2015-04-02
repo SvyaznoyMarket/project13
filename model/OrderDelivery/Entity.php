@@ -550,6 +550,10 @@ namespace Model\OrderDelivery\Entity\Point {
         public $latitude;
         /** @var float */
         public $longitude;
+        /** @var string|null */
+        public $listName;
+        /** @var \Model\OrderDelivery\Entity\Subway[]|null */
+        public $subway;
 
         public function __construct(array $data = []) {
             if (isset($data['id'])) $this->id = (string)$data['id'];
@@ -562,8 +566,6 @@ namespace Model\OrderDelivery\Entity\Point {
     }
 
     class Shop extends DefaultPoint {
-        /** @var \Model\OrderDelivery\Entity\Subway[] */
-        public $subway = [];
 
         public function __construct(array $data = []) {
             parent::__construct($data);
@@ -572,6 +574,7 @@ namespace Model\OrderDelivery\Entity\Point {
                     $this->subway[] = new \Model\OrderDelivery\Entity\Subway($item);
                 }
             }
+            $this->listName = 'Магазин Enter';
         }
     }
 
@@ -585,12 +588,14 @@ namespace Model\OrderDelivery\Entity\Point {
             parent::__construct($data);
             if (isset($data['number'])) $this->number = (string)$data['number'];
             if (isset($data['house'])) $this->house = (string)$data['house'];
+            $this->listName = 'PickPoint';
         }
     }
 
     class Svyaznoy extends DefaultPoint {
         public function __construct(array $data = []) {
             parent::__construct($data);
+            $this->listName = 'Связной';
         }
     }
 }
