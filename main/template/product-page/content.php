@@ -84,21 +84,21 @@
 				<dd class="product-card-prop__i product-card-prop__i--val">значение</dd>
 			</dl>
 
-			<ul class="product-card-safeguards">
-				<li class="product-card-safeguards__i">
-					<div class="product-card-safeguards__l">
-						<img class="product-card-safeguards__img" src="/styles/product/img/pandora.png">
+			<ul class="product-card-assure">
+				<li class="product-card-assure__i">
+					<div class="product-card-assure__l">
+						<img class="product-card-assure__img" src="/styles/product/img/pandora.png">
 					</div>
 
-					<span class="product-card-safeguards__r">Гарантия подлинности и качества</span>
+					<span class="product-card-assure__r">Гарантия подлинности и качества</span>
 				</li>
 
-				<li class="product-card-safeguards__i">
-					<div class="product-card-safeguards__l">
-						<img class="product-card-safeguards__img" src="/styles/product/img/jewelery-guar.png">
+				<li class="product-card-assure__i">
+					<div class="product-card-assure__l">
+						<img class="product-card-assure__img" src="/styles/product/img/jewelery-guar.png">
 					</div>
 
-					<span class="product-card-safeguards__r">Обмен в течение 30 дней<br/>Возврат по гарантии в течение 1 года</span>
+					<span class="product-card-assure__r">Обмен в течение 30 дней<br/>Возврат по гарантии в течение 1 года</span>
 				</li>
 			</ul>
 		</div>

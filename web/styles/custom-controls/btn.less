@@ -1,0 +1,46 @@
+.btn-mix() {
+    font-size: 14px;
+    line-height: 1;
+
+    margin: 0 0 10px;
+    padding: 5px 15px;
+
+    cursor: pointer;
+
+    border-width: 1px;
+    border-style: solid;
+    border-bottom-width: 3px;
+
+    .rounded(3px);
+    .inline-block();
+}
+
+.btn-type {
+    .btn-mix();
+    &--normal {
+        border-color: #c7c7c7;
+        background-color: @white;
+    }
+    &--longer {
+        width: 100%;
+        padding: 5px 10px;
+
+        text-align: center;
+
+        .box-sizing(border-box);
+    }
+    &--buy {
+        color: #fff;
+        border-color: #f99b1c;
+        border-bottom-color: #bf7716;
+        background-color: #f99b1c;
+        &--bigger {
+            font-size: 22px;
+
+            padding: 10px;
+        }
+    }
+    &:hover {
+        text-decoration: none;
+    }
+}

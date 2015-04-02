@@ -1,52 +1,6 @@
-.btn-mix() {
-    font-size: 14px;
-    line-height: 1;
-
-    margin: 0 0 10px;
-    padding: 5px 15px;
-
-    cursor: pointer;
-
-    border-width: 1px;
-    border-style: solid;
-    border-bottom-width: 3px;
-
-    .rounded(3px);
-    .inline-block();
-}
-
-.btn-type {
-    .btn-mix();
-    &--normal {
-        border-color: #c7c7c7;
-        background-color: @white;
-    }
-    &--longer {
-        width: 100%;
-        padding: 5px 10px;
-
-        text-align: center;
-
-        .box-sizing(border-box);
-    }
-    &--buy {
-        color: #fff;
-        border-color: #f99b1c;
-        border-bottom-color: #bf7716;
-        background-color: #f99b1c;
-        &--bigger {
-            font-size: 22px;
-
-            padding: 10px;
-        }
-    }
-    &:hover {
-        text-decoration: none;
-    }
-}
-
 .i-info {
     display: block;
+
     cursor: pointer;
     &__tx {
         .inline-block-middle();
@@ -118,8 +72,9 @@
 
 // красткие характеристики
 .product-card-prop {
-    color: #9c9c9c;
     margin: 0 0 15px;
+
+    color: #9c9c9c;
     &__i {
         width: 135px;
         margin: 0 0 8px;
@@ -198,49 +153,50 @@
 }
 
 .buy-now-inshop {
-	border: 1px solid #80c342;
-	padding: 7px 10px 10px;
-	cursor: pointer;
+    padding: 7px 10px 10px;
 
-	&__tl {
-		font-size: 14px;
-		color: #80c342;
-		border-bottom: 1px solid #80c342;
-		.inline-block();
-	}
+    cursor: pointer;
 
-	&__line {
-		margin: 3px 0 0;
-	}
+    border: 1px solid #80c342;
+    &__tl {
+        font-size: 14px;
 
-	&__mark {
-		color: #9c9c9c;
-	}
+        color: #80c342;
+        border-bottom: 1px solid #80c342;
+
+        .inline-block();
+    }
+    &__line {
+        margin: 3px 0 0;
+    }
+    &__mark {
+        color: #9c9c9c;
+    }
 }
 
 .product-card-discount-switch {
-	margin: 5px 0 10px;
+    margin: 5px 0 10px;
+    &__i {
+        .inline-block-middle();
+        &--tx {
+            max-width: 110px;
+            margin: 0 2px 0 5px;
 
-	&__i {
-		.inline-block-middle();
-
-		&--tx {
-			color: #8c8c8c;
-			max-width: 110px;
-			margin: 0 2px 0 5px;
-		}
-	}
+            color: #8c8c8c;
+        }
+    }
 }
 
 //блок с дисконтами
 .product-discounts {
-
-    text-align: center;
-    border-bottom: 1px solid #e8e8e8;
-    border-top: 1px solid #e8e8e8;
     margin: 0 -10px;
 
+    text-align: center;
+
+    border-top: 1px solid #e8e8e8;
+    border-bottom: 1px solid #e8e8e8;
     &-list {
+        font-size: 0;
         font-size: 0;
 
         width: 700px;
@@ -248,15 +204,14 @@
         padding: 20px 10px;
 
         white-space: nowrap;
-        font-size: 0px;
-
         &__i {
             width: 140px;
             height: 30px;
-            .inline-block();
             margin: 0 0 0 140px;
+
+            .inline-block();
             &:first-child {
-                margin: 0px;
+                margin: 0;
             }
         }
         &__lk {
@@ -264,45 +219,5 @@
                 text-decoration: none;
             }
         }
-    }
-}
-.product-card-safeguards {
-
-    &__i {
-        display: block;
-        margin: 0 0 3px;
-    }
-    &__r {
-        .inline-block-middle();
-        width: 220px;
-        padding-left: 12px;
-        position: relative;
-        line-height: 1.3;
-
-        &:before {
-            content: "";
-
-            border-width: 3.5px 0 3.5px 4px;
-            border-style: solid;
-            border-color: transparent transparent transparent #969696;
-
-            position: absolute;
-            top: 50%;
-            margin-top: -2px;
-            left: 0px;
-        }
-    }
-
-    &__l {
-        text-align: center;
-        .inline-block-middle();
-        margin-right: 3px;
-        width:40px;
-    }
-
-    &__img {
-		max-width: 40px;
-		display: block;
-  		margin: auto;
     }
 }
