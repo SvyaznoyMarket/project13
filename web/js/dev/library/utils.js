@@ -255,6 +255,9 @@
 					labels.push('RR_' + p.position);
 				}
 
+                // Отслеживание покупок в кредит
+                if (p.sender2 == 'credit') labels.push('Credit');
+
 				if (labels.length) {
 					productName += ' (' + labels.join(')(') + ')';
 				}
