@@ -453,7 +453,7 @@
 			<i class="popup-rating__i popup-rating__i--5"></i>
 		</span>
 	</div>
-	<form class="popup-form popup-form--review">
+	<form class="popup-form popup-form--review form-ctrl">
 		<fieldset class="form-ctrl__line">
 			<div class="form-ctrl__group form-ctrl__group--inline">
 				<input class="form-ctrl__input form-ctrl__input--err" type="text" name="name">
@@ -484,5 +484,32 @@
 </div>
 <div class="popup popup--photo">
 	<i class="closer">×</i>
+	<div class="product-card-photo">
+		<img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo__img">
+		<div class="product-card-photo__ctrl product-card-photo__ctrl--prev"></div>
+		<div class="product-card-photo__ctrl product-card-photo__ctrl--next"></div>
+		<div class="product-card-photo-zoom">
+			<div class="product-card-photo-zoom__ctrl product-card-photo-zoom__ctrl--in">+</div>
+			<div class="product-card-photo-zoom__ctrl product-card-photo-zoom__ctrl--out">–</div>
+		</div>
+	</div>
+	<div class="product-card-photo-thumbs product-card-photo-thumbs--slides">
+		<ul class="product-card-photo-thumbs-list">
+			<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img"></li>
+			<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img"></li>
+			<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img"></li>
+			<li class="product-card-photo-thumbs__i product-card-photo-thumbs__i--act"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img"></li>
+			<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img"></li>
+			<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img"></li>
+			<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img"></li>
+		</ul>
 
+		<div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--l product-card-photo-thumbs__btn--disabled"></div>
+		<div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--r"></div>
+	</div>
+	<form class="popup-form popup-form--photo form-ctrl">
+		<div class="form-ctrl__btn-container">
+			<button class="btn-type btn-type--buy btn-type--normal" type="submit">В корзину</button>
+		</div>
+	</form>
 </div>
