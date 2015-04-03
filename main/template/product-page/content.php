@@ -454,28 +454,31 @@
 				<i class="popup-rating__i popup-rating__i--5"></i>
 			</span>
 		</div>
-		<form class="popup-form">
-			<div class="popup-form__input-group popup-form__input-group--inline">
-				<input class="popup-form__input" type="text" name="name">
-				<label class="popup-form__input-tl" for="name">Имя</label>
+		<form class="popup-form popup-form--review">
+			<fieldset class="form-ctrl__line">
+				<div class="form-ctrl__group form-ctrl__group--inline">
+					<input class="form-ctrl__input" type="text" name="name">
+					<label class="form-ctrl__input-lbl" for="name">Имя</label>
+				</div>
+				<div class="form-ctrl__group form-ctrl__group--inline">
+					<input class="form-ctrl__input" type="text" name="email">
+					<label class="form-ctrl__input-lbl form-ctrl__input-lbl--required" for="email">E-mail</label>
+				</div>
+			</fieldset>
+			
+			<div class="form-ctrl__group">
+				<label class="form-ctrl__textarea-lbl" for="email">Достоинства:</label>
+				<textarea class="form-ctrl__textarea">Тихо работает</textarea>
 			</div>
-			<div class="popup-form__input-group popup-form__input-group--inline">
-				<input class="popup-form__input" type="text" name="email">
-				<label class="popup-form__input-tl popup-form__input-tl--required" for="email">E-mail</label>
+			<div class="form-ctrl__group">
+				<label class="form-ctrl__textarea-lbl" for="email">Недостатки:</label>
+				<textarea class="form-ctrl__textarea">Громко шумит</textarea>
 			</div>
-			<div class="popup-form__textarea-group">
-				<label class="popup-form__textarea-tl" for="email">Достоинства:</label>
-				<textarea class="popup-form__textarea">Тихо работает</textarea>
+			<div class="form-ctrl__group">
+				<label class="form-ctrl__textarea-lbl" for="email">Комментарий:</label>
+				<textarea class="form-ctrl__textarea">Что вообще происходит, непонятно</textarea>
 			</div>
-			<div class="popup-form__textarea-group">
-				<label class="popup-form__textarea-tl" for="email">Недостатки:</label>
-				<textarea class="popup-form__textarea">Громко шумит</textarea>
-			</div>
-			<div class="popup-form__textarea-group">
-				<label class="popup-form__textarea-tl" for="email">Комментарий:</label>
-				<textarea class="popup-form__textarea">Что вообще происходит, непонятно</textarea>
-			</div>
-			<div class="popup-form__btn-container">
+			<div class="form-ctrl__btn-container">
 				<button class="btn-type btn-type--buy btn-type--normal" type="submit">Отправить</button>
 			</div>
 		</form>
