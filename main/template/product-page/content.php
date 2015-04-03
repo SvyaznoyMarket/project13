@@ -142,11 +142,11 @@
 
 			<!-- цена товара -->
 			<div class="product-card-price i-info">
-				<span class="product-card-price__val i-info__tx">11 223 <span class="rubl">p</span></span>
+				<span class="product-card-price__val i-info__tx">9223<span class="rubl">p</span></span>
 				<i class="i-product i-product--info-normal i-info__icon"></i>
 
 				<!-- попап - узнатьо снижении цены -->
-				<div class="best-price-popup i-info-popup i-info-popup--best-price" style="display: block;">
+				<div class="best-price-popup i-info-popup i-info-popup--best-price" style="display: none;">
 					<i class="closer">×</i>
 
 					<strong class="best-price-popup__tl">Узнать о снижении цены</strong>
@@ -178,7 +178,7 @@
 			</div>
 			<!--/ применить скидку -->
 
-			<a class="btn-type btn-type--buy btn-type--longer btn-type--buy--bigger" href="">В корзину</a>
+			<div class="buy-online"><a class="btn-type btn-type--buy btn-type--longer btn-type--buy--bigger" href="">В корзину</a></div>
 
 			<!-- купить в кредит -->
 			<a class="buy-on-credit btn-type btn-type--normal btn-type--longer" href="">
