@@ -523,6 +523,14 @@ class Entity extends BasicEntity {
 
             if (isset($data['property']['bannerPlaceholder'])) {
                 $result['bannerPlaceholder'] = $data['property']['bannerPlaceholder'];
+
+                if (isset($result['bannerPlaceholder']['image'])) {
+                    $result['bannerPlaceholder']['image'] = trim($result['bannerPlaceholder']['image']);
+                }
+
+                if (isset($result['bannerPlaceholder']['url'])) {
+                    $result['bannerPlaceholder']['url'] = trim($result['bannerPlaceholder']['url']);
+                }
             }
 
             if (isset($data['property']['smartchoice']['enabled'])) {
