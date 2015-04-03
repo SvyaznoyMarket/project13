@@ -3,7 +3,9 @@
     <!-- Элемент листинга/продукт -->
     {{#isBanner}}
         <li class="lstn_i lstn_i-banner {{#view.hoverDescription}}lstn_i-hover{{/view.hoverDescription}}" style="background-image: url('{{image}}'); background-repeat: no-repeat;">
-            <a class="lstn_i-banner-link" href="/enterprize"></a>
+            {{#url}}
+                <a class="lstn_i-banner-link" href="{{url}}"></a>
+            {{/url}}
             <div class="lstn_i_inn"><div class="adfoxWrapper" id="adfox215"></div></div>
         </li>
     {{/isBanner}}
