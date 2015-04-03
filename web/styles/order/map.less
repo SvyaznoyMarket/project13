@@ -149,7 +149,7 @@
         color: #515151;
         padding: 0 10px 0 0;
 
-        .fltrBtnBox_tggl {
+        &:not(.opn) .fltrBtnBox_tggl {
             margin: 2px 0;
 
             &.picked {
@@ -157,6 +157,7 @@
                 outline: none;
                 .rounded(2px);
                 margin: 0px;
+                padding: 6px 9px 3px;
 
                 .fltrBtnBox_tggl_tx {
                     border-bottom-color: transparent;
@@ -166,16 +167,13 @@
         &.fltrBtnBox.opn {
 
             .fltrBtnBox_tggl_tx {
-                margin-top: 1px;
+                margin-top: 2px;
             }
             .picked .fltrBtnBox_tggl_tx {
-                margin-top: 0px;
+                margin-top: 1px;
             }
             .fltrBtnBox_tggl {
                 border-bottom: none;
-            }
-            .picked+.fltrBtnBox_dd {
-                border: 2px solid orange;
             }
         }
     }
