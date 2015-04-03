@@ -135,6 +135,19 @@
 					</div>
 				</div>
 				<!--/ попап - подробности акции -->
+
+				<!-- попап - подробности акции, что бы показать/скрыть окно необходимо добавить/удалить класс i-info-popup--open -->
+				<div class="action-hint i-info-popup i-info-popup--action i-info-popup--open">
+					<i class="closer">×</i>
+					<div class="i-info-popup__inn">
+						<div class="action-hint__desc">
+							<img class="action-hint__img" src="/styles/product/img/shild-124x38.png">
+
+							<a class="action-hint__lk">Черная пятница в Enter</a>
+						</div>
+					</div>
+				</div>
+				<!--/ попап - подробности акции -->
 			</div>
 
 			<div class="product-card-old-price">
@@ -225,6 +238,12 @@
 	</div>
 	<!--/ карточка товара -->
 
+	<!-- с этим товаром покупают -->
+	<div class="product-section product-section--inn product-section--border-top">
+		<div class="product-section__h3">С этим товаром покупают</div>
+	</div>
+	<!--/ с этим товаром покупают -->
+
 	<!-- ссылки связной, сбер и многору -->
 	<div class="product-discounts">
 		<ul class="product-discounts-list">
@@ -234,6 +253,7 @@
 		</ul>
 	</div>
 	<!--/ ссылки связной, сбер и многору -->
+
 	<ul class="product-tabs">
 		<li class="product-tabs__i product-tabs__i--active"><a class="product-tabs__lk" href="" title="">Подробности</a></li>
 		<li class="product-tabs__i"><a class="product-tabs__lk" href="" title="">Аксессуары</a></li>
@@ -414,6 +434,18 @@
 
 		<div class="btn-type btn-type--normal">Показать больше отзывов</div>
 	</div>
+
+	<!-- похожие товары -->
+	<div class="product-section product-section--inn">
+		<div class="product-section__h3">Похожие товары</div>
+	</div>
+	<!--/ похожие товары -->
+
+	<!-- вы смотрели -->
+	<div class="product-section product-section--inn">
+		<div class="product-section__h3">Вы смотрели</div>
+	</div>
+	<!--/ вы смотрели -->
 
 	<ul class="bread-crumbs">
 		<li class="bread-crumbs__i"><a href="" class="bread-crumbs__lk">Бытовая техника</a></li>
