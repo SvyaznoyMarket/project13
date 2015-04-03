@@ -25,4 +25,4 @@ if (!isset($titlePrefix)) $titlePrefix = null;
 <div class="product-container product-container--kitchen clearfix">
 
 
-    <?php echo $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'breadcrumbs')) ?>
+    <?php echo $page->render('_breadcrumbs', array('breadcrumbs' => $breadcrumbs, 'class' => 'bBreadcrumbs clearfix bBreadcrumbs--light')) ?>
