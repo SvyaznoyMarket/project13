@@ -4,7 +4,8 @@ return function(
     \Helper\TemplateHelper $helper,
     \Session\User $user,
     array $bonusCards,
-    $error = null
+    $error = null,
+    $previousPost = null
 ) {
     /** @var $bonusCards \Model\Order\BonusCard\Entity[] */
     $userEntity = $user->getEntity();
@@ -14,6 +15,9 @@ return function(
 
     $isEmailRequired = \App::config()->order['emailRequired'];
     $config = \App::config();
+
+    $userPhone = isset($previousPost['user_info']['phone']) ? $previousPost['user_info']['phone'] : '';
+    $userMail = isset($previousPost['user_info']['email']) ? $previousPost['user_info']['email'] : '';
 ?>
 
 <?= $helper->render('order-v3-new/__head', ['step' => 1]) ?>
@@ -29,14 +33,14 @@ return function(
             <fieldset class="orderU_flds">
                 <div>
                     <div class="orderU_fld">
-                        <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[phone]" value="<?= $userEntity ? preg_replace('/^8/', '+7', $userEntity->getMobilePhone()) : '' ?>" placeholder="+7 (___) ___-__-__" data-mask="+7 (xxx) xxx-xx-xx">
+                        <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[phone]" value="<?= $userEntity ? preg_replace('/^8/', '+7', $userEntity->getMobilePhone()) : $userPhone ?>" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx">
                         <label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
                         <span class="errTx" style="display: none">Неверный формат телефона</span>
                         <span class="orderU_hint">Для смс о состоянии заказа</span>
                     </div>
 
                     <div class="orderU_fld">
-                        <input class="orderU_tx textfield jsOrderV3EmailField <?= $isEmailRequired ? 'jsOrderV3EmailRequired' : '' ?>" type="text" name="user_info[email]" value="<?= $userEntity ? $userEntity->getEmail() : '' ?>" placeholder="mail@domain.com">
+                        <input class="orderU_tx textfield jsOrderV3EmailField <?= $isEmailRequired ? 'jsOrderV3EmailRequired' : '' ?>" type="text" name="user_info[email]" value="<?= $userEntity ? $userEntity->getEmail() : $userMail ?>" placeholder="mail@domain.com">
                         <label class="orderU_lbl <?= $isEmailRequired ? 'orderU_lbl-str' : '' ?>" for="">E-mail</label>
                         <span class="errTx" style="display: none">Неверный формат email</span>
                         <? if (!$user->isSubscribed()) : ?>
