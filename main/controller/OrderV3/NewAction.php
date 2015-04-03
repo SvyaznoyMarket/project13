@@ -20,6 +20,7 @@ class NewAction extends OrderV3 {
         \App::logger()->debug('Exec ' . __METHOD__);
 
         $page = new \View\OrderV3\NewPage();
+        $post = null;
 
         try {
 
@@ -66,6 +67,7 @@ class NewAction extends OrderV3 {
             $page = $e->getCode() == 759 ? new \View\OrderV3\NewPage() : new \View\OrderV3\ErrorPage();
 
             $page->setParam('error', $e->getMessage());
+
             $page->setParam('step', 1);
 
         } catch (\Exception $e) {
@@ -82,6 +84,7 @@ class NewAction extends OrderV3 {
         $bonusCards = (new \Model\Order\BonusCard\Repository($this->client))->getCollection(['product_list' => array_map(function(\Model\Cart\Product\Entity $v) { return ['id' => $v->getId(), 'quantity' => $v->getQuantity()]; }, $cart->getProducts())]);
 
         $page->setParam('user', $this->user);
+        $page->setParam('previousPost', $post);
         $page->setParam('bonusCards', $bonusCards);
 
         return new \Http\Response($page->show());
