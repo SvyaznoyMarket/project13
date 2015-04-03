@@ -308,11 +308,6 @@ return [
         'pattern' => '/products/widget/{productBarcodes}',
         'action'  => ['Product\SetAction', 'widget'],
     ],
-    'product.upsell' => [
-        'pattern' => '/tocart/{productToken}',
-        'action'  => ['Product\UpsellAction', 'execute'],
-        'require' => ['productToken' => '[\w\d-_]+'],
-    ],
     //reviews
     'product.review.create' => [
         'pattern' => '/product-reviews/create/{productUi}',
