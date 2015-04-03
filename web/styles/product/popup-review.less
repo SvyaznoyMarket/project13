@@ -29,7 +29,6 @@
                 height: 46px;
                 overflow: hidden;
                 .rounded(3px);
-                margin: 2px;
                 position: relative;
                 .inline-block-middle();
             }
@@ -64,78 +63,6 @@
     }
     &-form {
         overflow: hidden;
-
-        &__input {
-            width: 210px;
-            height: 33px;
-            line-height: 33px;
-            padding: 0 0 0 90px;
-            border: 1px solid #c7c7c7;
-            .rounded(4px);
-            position: relative;
-
-            &-group {
-                position: relative;
-
-                &--inline {
-                    margin: 0 20px 20px 0;
-                    .inline-block();
-
-                    &:last-child {
-                        margin: 0 0 20px 0;
-                    }
-                }
-
-            }
-            &-tl {
-                background-color: #efefef;
-                border-right: 1px solid #c7c7c7;
-                font-size: 12px;
-                color: #363636;
-                width: 65px;
-                padding: 0 5px 0 10px;
-                height: 33px;
-                line-height: 33px;
-                position: absolute;
-                top: 1px;
-                left: 1px;
-                .border-radius(2px, 0, 0, 2px);
-                
-                &--required {
-                        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAcCAYAAACzipU4AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAA0UlEQVQ4EWNgGA7g51RJze8zpePR/cKELPCPjdGKkYmxA1kMxGZ5N1OQn4uRM/XP799LkCQZgSY6MPxnlObMeLKEiZ2JQ4WBgSmDlZXtMeN/pkpGBgaBH7Ol7zMxMuxiYmLwAmkEikEAUKcjExPjDiCP7T8Dw7pf//6l86U/ewOShbuJkel/wP///z/8Y/jfyvj/vxvbn98CEO1QRV+myegxMjDmMjL8y+BMfVr7n4HxKAMb+2SYIjj9dYakCYzzZYKY+LfpwtIw/ig9GgJEhgAAwyw6V7DK4EwAAAAASUVORK5CYII=');
-                        background-position: 2px 4px; 
-                        background-repeat: no-repeat; 
-                }
-            }
-        }
-        &__textarea {
-            border: 1px solid #c7c7c7;
-            .rounded(3px);
-            font-size: 14px;
-            padding: 10px;
-            width: 608px;
-            height: 85px;
-            color: #363636;
-
-            &-group {
-                padding: ;
-                margin: 0 0 10px 0;
-                position: relative;
-
-            }
-            &-tl {
-                font-size: 12px;
-                font-weight: bold;
-                margin: 0 0 5px 0;
-                display: block;
-                color: #363636;
-            }
-        }
-        &__btn-container {
-            margin: 20px 0 0;
-            text-align: center;
-        }
-
     }
     .closer {
         font-size: 24px;

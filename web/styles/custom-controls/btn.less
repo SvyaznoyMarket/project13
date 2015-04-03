@@ -2,7 +2,6 @@
     font-size: 14px;
     line-height: 1;
 
-    margin: 0 0 10px;
     padding: 5px 15px;
 
     cursor: pointer;
@@ -30,18 +29,33 @@
         .box-sizing(border-box);
     }
     &--buy {
+        font-size: 16px;
+
         color: #fff;
         border-color: #f99b1c;
         border-bottom-color: #bf7716;
         background-color: #f99b1c;
+
+        .transition(background-color .2s ease);
         &--bigger {
             font-size: 22px;
 
             padding: 10px;
         }
+        &:hover {
+            background-color: #ff9f1d;
+        }
+        &:active {
+            background-color: #f99b1c;
+        }
     }
     &:hover {
         text-decoration: none;
+    }
+    &:active {
+        margin-top: 2px;
+
+        border-bottom-width: 1px;
     }
 }
 
@@ -50,8 +64,9 @@
     line-height: 18px;
 
     position: absolute;
-    top: 3px;
-    right: 3px;
+    z-index: 100;
+    top: 6px;
+    right: 6px;
 
     width: 18px;
 
@@ -59,4 +74,9 @@
     text-align: center;
 
     color: #828282;
+
+    .transition(all .3 ease-out);
+    &:hover {
+        color: rgba(0, 0, 0, .7);
+    }
 }

@@ -18,6 +18,7 @@
 		<!-- слайдер изображений товара -->
 		<div class="product-card__l">
 			<div class="product-card-photo">
+				<a class="product-card-photo-sticker"><img src="/styles/product/img/shild-124x38.png" alt=""></a>
 				<img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo__img" />
 			</div>
 
@@ -62,7 +63,7 @@
 				<span class="product-card-filter__tl">Размер:</span>
 
 				<div class="product-card-filter__box">
-					<div class="filter-btn-box">
+					<div class="filter-btn-box filter-btn-box--open">
 						<div class="filter-btn-box__toggle">
 							<span class="filter-btn-box__tx">Полутороспальный</span>
 							<i class="filter-btn-box__corner"></i>
@@ -126,10 +127,12 @@
 				<span class="product-card-action__tx i-info__tx">Акция действует<br>ещё 1 день 22:11:07</span>
 				<i class="product-card-action__icon i-product i-product--info-warn i-info__icon"></i>
 
-				<!-- попап - подробности акции -->
-				<div class="i-info-popup i-info-popup--action" style="display: block;">
+				<!-- попап - подробности акции, что бы показать/скрыть окно необходимо добавить/удалить класс i-info-popup--open -->
+				<div class="i-info-popup i-info-popup--action i-info-popup--open">
 					<i class="closer">×</i>
-					<a href="" title=""><img src="/styles/product/img/trust-sale.png" alt=""></a>
+					<div class="i-info-popup__inn">
+						<a href="" title=""><img src="/styles/product/img/trust-sale.png" alt=""></a>
+					</div>
 				</div>
 				<!--/ попап - подробности акции -->
 			</div>
@@ -140,11 +143,11 @@
 
 			<!-- цена товара -->
 			<div class="product-card-price i-info">
-				<span class="product-card-price__val i-info__tx">11 223 <span class="rubl">p</span></span>
+				<span class="product-card-price__val i-info__tx">9223<span class="rubl">p</span></span>
 				<i class="i-product i-product--info-normal i-info__icon"></i>
 
-				<!-- попап - узнатьо снижении цены -->
-				<div class="best-price-popup i-info-popup i-info-popup--best-price" style="display: block;">
+				<!-- попап - узнатьо снижении цены, что бы показать/скрыть окно необходимо добавить/удалить класс i-info-popup--open -->
+				<div class="best-price-popup i-info-popup i-info-popup--best-price i-info-popup--open">
 					<i class="closer">×</i>
 
 					<strong class="best-price-popup__tl">Узнать о снижении цены</strong>
@@ -176,7 +179,7 @@
 			</div>
 			<!--/ применить скидку -->
 
-			<a class="btn-type btn-type--buy btn-type--longer btn-type--buy--bigger" href="">В корзину</a>
+			<div class="buy-online"><a class="btn-type btn-type--buy btn-type--longer btn-type--buy--bigger" href="">В корзину</a></div>
 
 			<!-- купить в кредит -->
 			<a class="buy-on-credit btn-type btn-type--normal btn-type--longer" href="">
@@ -434,50 +437,82 @@
 <!-- попап добавления отзыва -->
 <div class="popup popup--add-review">
 	<i class="closer">×</i>
-		<div class="popup-close"></div>
-		<div class="popup__tl">Отзыв о товаре</div>
-		<div class="popup__product-line">
-			<div class="popup__product-line-img-wrap">
-				<img class="popup__product-line-img" src="http://fs10.enter.ru/1/1/120/01/338119.jpg">
-			</div>
-			<div class="popup__product-line-tl">
-				Купольная вытяжка Hotpoint-Ariston 7HHP 6 R (OW)/HA
-			</div>
+	<div class="popup__tl">Отзыв о товаре</div>
+	<div class="popup__product-line">
+		<div class="popup__product-line-img-wrap">
+			<img class="popup__product-line-img" src="http://fs10.enter.ru/1/1/120/01/338119.jpg">
 		</div>
-		<div class="popup-rating">
-			<span class="popup-rating__tl">Оценка:</span>
-			<span class="popup-rating__state">
-				<i class="popup-rating__i popup-rating__i--1"></i>
-				<i class="popup-rating__i popup-rating__i--2"></i>
-				<i class="popup-rating__i popup-rating__i--3"></i>
-				<i class="popup-rating__i popup-rating__i--4"></i>
-				<i class="popup-rating__i popup-rating__i--5"></i>
-			</span>
+		<div class="popup__product-line-tl">
+			Купольная вытяжка Hotpoint-Ariston 7HHP 6 R (OW)/HA
 		</div>
-		<form class="popup-form">
-			<div class="popup-form__input-group popup-form__input-group--inline">
-				<input class="popup-form__input" type="text" name="name">
-				<label class="popup-form__input-tl" for="name">Имя</label>
-			</div>
-			<div class="popup-form__input-group popup-form__input-group--inline">
-				<input class="popup-form__input" type="text" name="email">
-				<label class="popup-form__input-tl popup-form__input-tl--required" for="email">E-mail</label>
-			</div>
-			<div class="popup-form__textarea-group">
-				<label class="popup-form__textarea-tl" for="email">Достоинства:</label>
-				<textarea class="popup-form__textarea">Тихо работает</textarea>
-			</div>
-			<div class="popup-form__textarea-group">
-				<label class="popup-form__textarea-tl" for="email">Недостатки:</label>
-				<textarea class="popup-form__textarea">Громко шумит</textarea>
-			</div>
-			<div class="popup-form__textarea-group">
-				<label class="popup-form__textarea-tl" for="email">Комментарий:</label>
-				<textarea class="popup-form__textarea">Что вообще происходит, непонятно</textarea>
-			</div>
-			<div class="popup-form__btn-container">
-				<button class="btn-type btn-type--buy btn-type--normal" type="submit">Отправить</button>
-			</div>
-		</form>
 	</div>
+	<div class="popup-rating">
+		<span class="popup-rating__tl">Оценка:</span>
+		<span class="popup-rating__state">
+			<i class="popup-rating__i popup-rating__i--1"></i>
+			<i class="popup-rating__i popup-rating__i--2"></i>
+			<i class="popup-rating__i popup-rating__i--3"></i>
+			<i class="popup-rating__i popup-rating__i--4"></i>
+			<i class="popup-rating__i popup-rating__i--5"></i>
+		</span>
+	</div>
+	<form class="popup-form popup-form--review form-ctrl">
+		<fieldset class="form-ctrl__line">
+			<div class="form-ctrl__group form-ctrl__group--inline">
+				<input class="form-ctrl__input form-ctrl__input--err" type="text" name="name">
+				<label class="form-ctrl__input-lbl" for="name">Имя</label>
+			</div>
+			<div class="form-ctrl__group form-ctrl__group--inline">
+				<input class="form-ctrl__input" type="text" name="email">
+				<label class="form-ctrl__input-lbl form-ctrl__input-lbl--required" for="email">E-mail</label>
+			</div>
+		</fieldset>
+
+		<div class="form-ctrl__group">
+			<label class="form-ctrl__textarea-lbl" for="email">Достоинства:</label>
+			<textarea class="form-ctrl__textarea">Тихо работает</textarea>
+		</div>
+		<div class="form-ctrl__group">
+			<label class="form-ctrl__textarea-lbl" for="email">Недостатки:</label>
+			<textarea class="form-ctrl__textarea">Громко шумит</textarea>
+		</div>
+		<div class="form-ctrl__group">
+			<label class="form-ctrl__textarea-lbl" for="email">Комментарий:</label>
+			<textarea class="form-ctrl__textarea">Что вообще происходит, непонятно</textarea>
+		</div>
+		<div class="form-ctrl__btn-container">
+			<button class="btn-type btn-type--buy btn-type--normal" type="submit">Отправить</button>
+		</div>
+	</form>
+</div>
+<div class="popup popup--photo">
+	<i class="closer">×</i>
+	<div class="product-card-photo">
+		<img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo__img">
+		<div class="product-card-photo__ctrl product-card-photo__ctrl--prev"></div>
+		<div class="product-card-photo__ctrl product-card-photo__ctrl--next"></div>
+		<div class="product-card-photo-zoom">
+			<div class="product-card-photo-zoom__ctrl product-card-photo-zoom__ctrl--in">+</div>
+			<div class="product-card-photo-zoom__ctrl product-card-photo-zoom__ctrl--out">–</div>
+		</div>
+	</div>
+	<div class="product-card-photo-thumbs product-card-photo-thumbs--slides">
+		<ul class="product-card-photo-thumbs-list">
+			<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img"></li>
+			<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img"></li>
+			<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img"></li>
+			<li class="product-card-photo-thumbs__i product-card-photo-thumbs__i--act"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img"></li>
+			<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img"></li>
+			<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img"></li>
+			<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img"></li>
+		</ul>
+
+		<div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--l product-card-photo-thumbs__btn--disabled"></div>
+		<div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--r"></div>
+	</div>
+	<form class="popup-form popup-form--photo form-ctrl">
+		<div class="form-ctrl__btn-container">
+			<button class="btn-type btn-type--buy btn-type--normal" type="submit">В корзину</button>
+		</div>
+	</form>
 </div>

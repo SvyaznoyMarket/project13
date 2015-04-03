@@ -15,44 +15,63 @@
     &-popup {
         position: absolute;
         z-index: 5;
-        right: 0;
 
-        width: 100%;
+        visibility: hidden;
+        overflow: hidden;
+
         padding: 10px;
 
         border: 1px solid #c7c7c7;
         background: @white;
 
-        .box-sizing(border-box);
+        .opacity(0);
+        .transition(all .2s ease-out);
         .box-shadow(0 0 15px rgba(0, 0, 0, .4));
+        &--open {
+            visibility: visible;
+            overflow: visible;
+
+            .opacity(1);
+        }
+        &__inn {
+            overflow: hidden;
+        }
         &--best-price {
             top: 50px;
             right: 0;
 
-            width: 270px;
+            width: 250px;
         }
         &--action {
-            bottom: 44px;
+            right: -1px;
+            bottom: 41px;
 
+            width: 100%;
             padding: 0;
 
             text-align: center;
-
             &:after {
-            	.pseudo-class();
-				.pseudo-corner-bottom(8px, #fff);
-				bottom: -8px;
-				right: 10px;
-            }
+                right: 10px;
+                bottom: -8px;
 
+                .pseudo-class();
+                .pseudo-corner-bottom(8px, #fff);
+            }
             &:before {
-            	.pseudo-class();
-				.pseudo-corner-bottom(10px, #c7c7c7);
-				bottom: -10px;
-				right: 8px;
+                right: 8px;
+                bottom: -10px;
+
+                .pseudo-class();
+                .pseudo-corner-bottom(10px, #c7c7c7);
             }
         }
     }
+}
+
+.product-card-photo-sticker {
+	position: absolute;
+	top: 0;
+	left: 0;
 }
 
 .best-price-popup {
@@ -110,17 +129,20 @@
         float: right;
 
         width: 220px;
+        margin-right: -10px;
     }
 }
 
 // описание товара
 .product-card-desc {
+    margin: 0 0 5px;
+
     color: #9c9c9c;
 }
 
 // фильтр моделей
 .product-card-filter {
-    margin: 0 0 15px;
+    margin: 0 0 20px;
     &__tl {
         font-size: 14px;
 
@@ -140,7 +162,7 @@
     color: #9c9c9c;
     &__i {
         width: 135px;
-        margin: 0 0 8px;
+        margin: 0 0 6px;
 
         .inline-block();
         &--val {
@@ -173,8 +195,12 @@
 
 // цена
 .product-card-price {
+    margin: 0 0 10px;
     &__val {
-        font-size: 36px;
+        font-size: 44px;
+        line-height: 1.2;
+
+        margin: 0 5px 0 0;
 
         color: #363636;
     }
@@ -182,6 +208,8 @@
 
 // блок акций
 .product-card-action {
+    line-height: 1.2;
+
     position: relative;
 
     margin: 0 0 10px;
@@ -195,10 +223,16 @@
         font-weight: bold;
 
         width: 177px;
+        min-height: 29px;
     }
 }
 
+.buy-online {
+    margin: 0 0 10px;
+}
+
 .buy-on-credit {
+    margin: 0 0 10px;
     &__tl {
         font-size: 18px;
 
@@ -242,7 +276,7 @@
 }
 
 .product-card-discount-switch {
-    margin: 5px 0 10px;
+    margin: 0 0 10px;
     &__i {
         .inline-block-middle();
         &--tx {
@@ -295,6 +329,6 @@
         margin: 0 0 0 10px;
 
         .inline-block-middle();
-        .opacity(0.5);
+        .opacity(.5);
     }
 }

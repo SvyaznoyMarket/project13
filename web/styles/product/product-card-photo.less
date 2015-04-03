@@ -1,6 +1,6 @@
 // изображения товара, варианта просмотра товара
 .product-card-photo {
-    margin: 0 0 15px;
+    margin: 0 0 10px;
 
     text-align: center;
 
@@ -14,11 +14,13 @@
 
         max-width: 250px;
         height: 40px;
+        .noselect();
 
         .inline-block-middle();
 
         &-list {
             font-size: 0;
+            margin: 0 0 0 12px;
 
             text-align: center;
             white-space: nowrap;
@@ -26,21 +28,24 @@
         &__i {
             width: 38px;
             height: 38px;
-            margin: 0 5px;
+            margin: 0 7px 0 0;
 
             cursor: pointer;
 
             border: 1px solid transparent;
 
             .inline-block();
+            .transition(all .1s ease-out);
             .rounded(3px);
 
-            &--act {
+            &--act,
+            &:hover {
                 border-color: #f99b1c;
             }
         }
         &__img {
             max-width: 98%;
+            .rounded(3px);
         }
         &__btn {
             position: absolute;
@@ -49,21 +54,23 @@
             visibility: hidden;
             overflow: hidden;
 
-            width: 15px;
+            width: 10px;
             height: 40px;
 
             cursor: pointer;
 
-            background: @black;
-
             .opacity(0);
             .transition(all .2s ease-out);
+            background-repeat: no-repeat;
+            background-position: 50% 50%;
 
             &--l {
                 left: 0;
+                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAQCAYAAADagWXwAAAA0UlEQVQYGW3BoUrGYBQG4Hf8roj+RRSzDoYsyPed877HLQkWy4LVCxDBbPZWRCy2XYHNC9AgCEaLxWjW+DH2PMACA2os6bpuS+6fyvkCJTOr5f4g8gXABgqVzC6D/DnJ+QglMzsU+S2za5SaplmH9CzyEUCFwkrudyI/hmHYQ6nv+ybIX+Z8jjmSZ2H2pZSOsWAl8incJ0k7mCN5EO7v7n5rZjXmJPXh/sacr7Cg8pxvwv2V/zDXtu22yPuQpohYYy6ltBvuk7sLS07J/XEcN/8ArJswAJhcyRwAAAAASUVORK5CYII=');
             }
             &--r {
                 right: 0;
+                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAQCAYAAADagWXwAAAA1UlEQVR42m2QvQ4BQRSFR9AI2whRs8lGtpD5uXfsVhKNZgutBxCJWutZRDQ6T6DzABQSiVKhUqqdKcfs6SbfOffcO8JJC1EXZWKl5mzMM03TZhmvMdEFhr3WOpwwVmpoiT6s9QLPSmAAWCH9RnoQQJfA+INlPsdxHAU0z/MuDA9UbPGsBgZSagb4zbIsDrulHFmtX0Q09QFz2xpzwuijN9bdaIzZAN6R6v93LQFuSGc+gACuRqm19wnW2gi3uZ5dkiQtL4UedktIKTvB6kVRNCZEPVGiH+yGL//EYhxNAAAAAElFTkSuQmCC');
             }
             &--disabled {
                 visibility: hidden;
@@ -77,13 +84,17 @@
                 visibility: visible;
                 overflow: visible;
 
-                .opacity(1);
+                .opacity(.5);
 
                 &--disabled {
                     visibility: hidden;
                     overflow: hidden;
 
                     .opacity(0);
+                }
+
+                &:hover {
+                    .opacity(.9);
                 }
             }
         }
