@@ -15,16 +15,16 @@
     &-popup {
         position: absolute;
         z-index: 5;
-        right: 0;
 
-        width: 100%;
         padding: 10px;
 
         border: 1px solid #c7c7c7;
         background: @white;
 
-        .box-sizing(border-box);
         .box-shadow(0 0 15px rgba(0, 0, 0, .4));
+        &__inn {
+        	overflow: hidden;
+        }
         &--best-price {
             top: 50px;
             right: 0;
@@ -32,7 +32,9 @@
             width: 270px;
         }
         &--action {
-            bottom: 44px;
+            bottom: 41px;
+            right: -1px;
+            width: 100%;
 
             padding: 0;
 
@@ -110,17 +112,19 @@
         float: right;
 
         width: 220px;
+        margin-right: -10px;
     }
 }
 
 // описание товара
 .product-card-desc {
     color: #9c9c9c;
+    margin: 0 0 5px;
 }
 
 // фильтр моделей
 .product-card-filter {
-    margin: 0 0 15px;
+    margin: 0 0 20px;
     &__tl {
         font-size: 14px;
 
@@ -140,7 +144,7 @@
     color: #9c9c9c;
     &__i {
         width: 135px;
-        margin: 0 0 8px;
+        margin: 0 0 6px;
 
         .inline-block();
         &--val {
@@ -173,8 +177,11 @@
 
 // цена
 .product-card-price {
+	margin: 0 0 10px;
+
     &__val {
-        font-size: 36px;
+        font-size: 44px;
+        line-height: 1.2;
 
         color: #363636;
     }
@@ -186,6 +193,7 @@
 
     margin: 0 0 10px;
     padding: 5px 10px;
+    line-height: 1.2;
 
     cursor: pointer;
 
@@ -193,6 +201,7 @@
     border: 1px dotted #ef404a;
     &__tx {
         font-weight: bold;
+        min-height: 29px;
 
         width: 177px;
     }
@@ -242,7 +251,7 @@
 }
 
 .product-card-discount-switch {
-    margin: 5px 0 10px;
+    margin: 0 0 10px;
     &__i {
         .inline-block-middle();
         &--tx {

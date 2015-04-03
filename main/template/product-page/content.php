@@ -129,7 +129,9 @@
 				<!-- попап - подробности акции -->
 				<div class="i-info-popup i-info-popup--action" style="display: block;">
 					<i class="closer">×</i>
-					<a href="" title=""><img src="/styles/product/img/trust-sale.png" alt=""></a>
+					<div class="i-info-popup__inn">
+						<a href="" title=""><img src="/styles/product/img/trust-sale.png" alt=""></a>
+					</div>
 				</div>
 				<!--/ попап - подробности акции -->
 			</div>
