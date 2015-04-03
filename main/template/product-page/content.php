@@ -129,7 +129,9 @@
 				<!-- попап - подробности акции -->
 				<div class="i-info-popup i-info-popup--action" style="display: block;">
 					<i class="closer">×</i>
-					<a href="" title=""><img src="/styles/product/img/trust-sale.png" alt=""></a>
+					<div class="i-info-popup__inn">
+						<a href="" title=""><img src="/styles/product/img/trust-sale.png" alt=""></a>
+					</div>
 				</div>
 				<!--/ попап - подробности акции -->
 			</div>
@@ -140,11 +142,11 @@
 
 			<!-- цена товара -->
 			<div class="product-card-price i-info">
-				<span class="product-card-price__val i-info__tx">11 223 <span class="rubl">p</span></span>
+				<span class="product-card-price__val i-info__tx">9223<span class="rubl">p</span></span>
 				<i class="i-product i-product--info-normal i-info__icon"></i>
 
 				<!-- попап - узнатьо снижении цены -->
-				<div class="best-price-popup i-info-popup i-info-popup--best-price" style="display: block;">
+				<div class="best-price-popup i-info-popup i-info-popup--best-price" style="display: none;">
 					<i class="closer">×</i>
 
 					<strong class="best-price-popup__tl">Узнать о снижении цены</strong>
@@ -176,7 +178,7 @@
 			</div>
 			<!--/ применить скидку -->
 
-			<a class="btn-type btn-type--buy btn-type--longer btn-type--buy--bigger" href="">В корзину</a>
+			<div class="buy-online"><a class="btn-type btn-type--buy btn-type--longer btn-type--buy--bigger" href="">В корзину</a></div>
 
 			<!-- купить в кредит -->
 			<a class="buy-on-credit btn-type btn-type--normal btn-type--longer" href="">
@@ -464,7 +466,7 @@
 				<label class="form-ctrl__input-lbl form-ctrl__input-lbl--required" for="email">E-mail</label>
 			</div>
 		</fieldset>
-		
+
 		<div class="form-ctrl__group">
 			<label class="form-ctrl__textarea-lbl" for="email">Достоинства:</label>
 			<textarea class="form-ctrl__textarea">Тихо работает</textarea>
