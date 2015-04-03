@@ -69,19 +69,12 @@ return function(
 
                 <div class="deliv-search">
                     <div class="deliv-search__input-wrap">
-                        <input class="deliv-search-input" type="text" placeholder="Искать по улице, метро" data-bind="value: searchInput, valueUpdate: 'afterkeydown'" />
-                        <div class="deliv-search__clear">×</div>
+                        <input class="deliv-search-input" type="text" placeholder="Искать по улице, метро" data-bind="click: enableAutocompleteListVisible, value: searchInput, valueUpdate: 'afterkeydown'" />
+                        <div class="deliv-search__clear" data-bind="click: clearSearchInput, visible: searchInput ">×</div>
                     </div>
-                    <div class="deliv-suggest">
-                        <ul class="deliv-suggest__list">
-                            <li class="deliv-suggest__i">метро Ленинский проспект</li>
-                            <li class="deliv-suggest__i">Ленинский проспект, Москва, Россия</li>
-                            <li class="deliv-suggest__i">Ленинградский проспект, Москва, Россия</li>
-                            <li class="deliv-suggest__i">метро Ленинградский проспект</li>
-                            <li class="deliv-suggest__i">метро Ленинский проспект</li>
-                            <li class="deliv-suggest__i">Ленинградский проспект, Москва, Россия</li>
-                            <li class="deliv-suggest__i">метро Ленинградский проспект</li>
-                            <li class="deliv-suggest__i">метро Ленинский проспект</li>
+                    <div class="deliv-suggest" data-bind="visible: searchAutocompleteListVisible() && searchAutocompleteList().length > 0, event: { mouseleave: disableAutocompleteListVisible }">
+                        <ul class="deliv-suggest__list" data-bind="foreach: searchAutocompleteList">
+                            <li class="deliv-suggest__i" data-bind="text: name, attr: { 'data-bounds': bounds }, click: $parent.setMapCenter"></li>
                         </ul>
                     </div>
                 </div>
@@ -170,7 +163,10 @@ return function(
                 </div>
             </div>
 
-            <div class="selShop_l" data-token="shops" data-bind="visible: points().length != 0">
+            <div class="selShop_l" data-token="shops">
+
+                <span data-bind="visible: points().length == 0">Поиск не дал результатов</span>
+
                 <ul class="deliv-list" data-bind="foreach: points">
 
                     <li class="deliv-item jsChangePoint" data-bind="attr: { 'data-id': $data.id, 'data-token': $data.token, 'data-blockname': $data.orderToken }">
