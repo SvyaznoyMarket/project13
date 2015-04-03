@@ -23,9 +23,12 @@
 					$phoneInput.removeClass(errorClass).siblings('.errTx').hide();
 				}
 
-				if ($emailInput.val().length != 0 && !validateEmail($emailInput.val())) {
-					isValid = false;
-					$emailInput.addClass(errorClass).siblings('.errTx').show();
+				if ($emailInput.hasClass('jsOrderV3EmailRequired') && $emailInput.val().length == 0) {
+                    $emailInput.addClass('textfield-err').siblings('.errTx').text('Не указан email').show();
+                    isValid = false;
+                } else if ($emailInput.val().length != 0 && !validateEmail($emailInput.val())) {
+                    $emailInput.addClass('textfield-err').siblings('.errTx').text('Неверный формат email').show();
+                    isValid = false;
 				} else {
 					$emailInput.removeClass(errorClass).siblings('.errTx').hide();
 				}
