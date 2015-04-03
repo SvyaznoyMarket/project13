@@ -492,8 +492,8 @@
 	<i class="closer">×</i>
 	<div class="product-card-photo">
 		<img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo__img">
-		<div class="product-card-photo__ctrl product-card-photo__ctrl--prev"></div>
-		<div class="product-card-photo__ctrl product-card-photo__ctrl--next"></div>
+		<div class="product-card-photo__ctrl product-card-photo__ctrl--prev"><span class="symb"></span></div>
+		<div class="product-card-photo__ctrl product-card-photo__ctrl--next"><span class="symb"></span></div>
 		<div class="product-card-photo-zoom">
 			<div class="product-card-photo-zoom__ctrl product-card-photo-zoom__ctrl--in">+</div>
 			<div class="product-card-photo-zoom__ctrl product-card-photo-zoom__ctrl--out">–</div>
