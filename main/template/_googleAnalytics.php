@@ -49,62 +49,6 @@
 
         _gaq.push(['_trackPageview']);
 
-        <? if (isset($orders) && isset($productsById)): ?>
-            <? foreach ($orders as $order): ?>
-                <?
-                /** @var $order \Model\Order\Entity */
-                /** @var $shop  \Model\Shop\Entity */
-                /** @var $page  \View\DefaultLayout */
-                $shop = $order->getShopId() && isset($shopsById[$order->getShopId()]) ? $shopsById[$order->getShopId()] : null;
-//                $delivery = $order->getDelivery();
-                ?>
-
-                _gaq.push(['_addTrans',
-                    '<?= $order->getNumberErp() ?>', // Номер заказа
-                    '<?= $shop ? $page->escape($shop->getName()) : '' ?>', // Название магазина (Необязательно)
-                    '<?= str_replace(',', '.', $order->getPaySum()) ?>', // Полная сумма заказа (дроби через точку)
-                    '', // налог
-                    '<?= 0 //$delivery ? $delivery->getPrice() : 0 ?>', // Стоимость доставки (дроби через точку)
-                    '<?= $order->getCity() ? $page->escape($order->getCity()->getName()) : '' ?>', // Город доставки (Необязательно)
-                    '', // Область (необязательно)
-                    '' // Страна (нобязательно)
-                ]);
-
-                // _addItem: Номер заказа, Артикул, Название товара, Категория товара, Стоимость 1 единицы товара, Количество товара
-                <? foreach ($order->getProduct() as $orderProduct): ?>
-                    <?
-                        /** @var $product \Model\Product\Entity */
-                        $product = isset($productsById[$orderProduct->getId()]) ? $productsById[$orderProduct->getId()] : null;
-                        if (!$product) continue;
-
-                        $categories = $product->getCategory();
-                        $category = array_pop($categories);
-                        $rootCategory = array_shift($categories);
-                        if (!$category || !$rootCategory) continue;
-
-                        $categoryName = ($rootCategory && ($rootCategory->getId() != $category->getId()))
-                            ? ($rootCategory->getName() . ' - ' . $category->getName())
-                            : $category->getName();
-
-                        $labels = [];
-                        if ($order->isPartner) {
-                            $labels[] = 'marketplace';
-                        }
-
-                        $productName = $product->getName();
-
-                        if ($labels) {
-                            $productName .= ' (' . implode(')(', $labels) . ')';
-                        }
-                    ?>
-
-                    _gaq.push(['_addItem', '<?= implode("','", array($order->getNumberErp(), $product->getArticle(), $page->escape($productName), $page->escape($categoryName), $orderProduct->getPrice(), $orderProduct->getQuantity())) ?>']);
-                <?php endforeach ?>
-
-                _gaq.push(['_trackTrans']);
-            <? endforeach ?>
-        <? endif ?>
-
         /* Classic Google Analytics */
         (function()
         {   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;

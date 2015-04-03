@@ -448,27 +448,6 @@
 				}).runQueue();
 		},
 
-		'order_new': function() {
-			$LAB.queueScript( yandexMapUrl )
-				.queueScript( kladr )
-				.queueWait( function() {
-					$LAB.script( getWithVersion('jquery-plugins.js') )
-						.script('JsHttpRequest.min.js')
-						.script( getWithVersion('library.js') )
-						.script( directCreditUrl )
-						.script( mustacheUrl )
-						.script( knockoutUrl )
-						.script( loadDebugPanel )
-						.wait()
-						.script( getWithVersion('common.js') )
-						.script( getWithVersion('order-new-v5.js') )
-						.wait()
-						.script( adfoxUrl )
-						.wait()
-						.script( getWithVersion('ports.js') );
-				}).runQueue();
-		},
-
         'order-v3': function() {
             $LAB.queueScript(yandexMapUrlv2_1)
                 .queueWait( function() {

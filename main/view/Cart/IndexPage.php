@@ -46,27 +46,6 @@ class IndexPage extends \View\DefaultLayout {
         return 'cart';
     }
 
-    public function slotFooter() {
-        $client = \App::contentClient();
-
-        $response = null;
-        $client->addQuery(
-            'footer_compact',
-            [],
-            function($data) use (&$response) {
-                $response = $data;
-            },
-            function(\Exception $e) {
-                \App::exception()->add($e);
-            }
-        );
-        $client->execute();
-
-        $response = array_merge(['content' => ''], (array)$response);
-
-        return $this->render('order/_footer', $this->params) . "\n\n" . $response['content'];
-    }
-
     public function slotGoogleRemarketingJS($tagParams = []) {
         /** @var $products \Model\Product\Entity[] */
         $products = $this->getParam('productEntities');

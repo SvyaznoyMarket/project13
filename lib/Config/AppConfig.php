@@ -232,9 +232,6 @@ class AppConfig {
         'Сpaexchange' => [
             'enabled' => null,
         ],
-        'Revolvermarketing' => [
-            'enabled' => null,
-        ],
         'TagMan' => [
             'enabled' => null,
         ],
@@ -356,7 +353,6 @@ class AppConfig {
     /** @var array */
     public $payment = [
         'creditEnabled'    => null,
-        'paypalECS' => null,
         'blockedIds'       => [],
     ];
     /**

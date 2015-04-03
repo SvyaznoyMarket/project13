@@ -60,10 +60,6 @@
     </div><!--/ Контент -->
 </div><!--/ Шаблон -->
 
-<div class="footer">
-    <?= $page->slotFooter() ?>
-</div><!--/ Подвал -->
-
 <?= $page->slotAuth() ?>
 <?= $page->slotYandexMetrika() ?>
 <?= $page->slotBodyJavascript() ?>

@@ -235,7 +235,6 @@ $c->partners['livetex']['enabled'] = true;
 $c->partners['livetex']['liveTexID'] = 41836; // for enter.ru
 //$c->partners['livetex']['liveTexID'] = 52705; // for olga.ent3.ru
 $c->partners['Сpaexchange']['enabled'] = true;
-$c->partners['Revolvermarketing']['enabled'] = true;
 $c->partners['TagMan']['enabled'] = false;
 $c->partners['Revolver']['enabled'] = true;
 $c->partners['Insider']['enabled'] = true;
@@ -377,7 +376,6 @@ $c->cart['sessionName'] = 'userCart';
 $c->cart['checkStock'] = false;
 
 $c->payment['creditEnabled'] = true;
-$c->payment['paypalECS'] = false;
 $c->payment['blockedIds'] = [];
 
 $c->f1Certificate['enabled'] = true;

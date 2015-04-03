@@ -39,18 +39,4 @@ class UpsellPage extends \View\DefaultLayout {
     public function slotBodyDataAttribute() {
         return 'product_card';
     }
-
-    public function slotFooter() {
-        try {
-            $response = \App::contentClient()->query('footer_compact');
-        } catch (\Exception $e) {
-            \App::exception()->add($e);
-            \App::logger()->error($e);
-
-            $response = array('content' => '');
-        }
-
-        return $this->render('order/_footer', $this->params) . "\n\n" . $response['content'];
-    }
-
 }

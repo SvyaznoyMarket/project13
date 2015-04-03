@@ -54,11 +54,6 @@ module.exports = {
         dest: '<%= pathProd %>main.js'
     },
 
-    orderNewV5JS : {
-        src: ['<%= pathDev %>order-new-v5/*.js'],
-        dest: '<%= pathProd %>order-new-v5.js'
-    },
-
     orderV3JS: {
         src: ['<%= pathDev %>order-v3/*.js'],
         dest: '<%= pathProd %>order-v3.js'

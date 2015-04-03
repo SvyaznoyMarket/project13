@@ -67,8 +67,4 @@ $helper = new \Helper\TemplateHelper();
 			<?= $page->render('product/_list', ['pager' => $productPager, 'view' => $productView, 'itemsPerRow' => 4]) ?>
 		</div>
 	<? endif ?>
-
-    <? if ($mainProduct->getIsBuyable()): ?>
-        <?= $page->render('order/form-oneClick', ['product' => $mainProduct]) ?>
-    <? endif ?>
 </div>

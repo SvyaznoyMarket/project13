@@ -394,28 +394,6 @@ return [
         'action'  => ['Cart\ProductAction', 'setList'],
     ],
     // добавление товара в корзину
-    'cart.paypal.product.set' => [
-        'pattern' => '/cart/paypal/add-product/{productId}',
-        'action'  => ['Cart\Paypal\ProductAction', 'set'],
-    ],
-    // удаление товара из корзины
-    'cart.paypal.product.delete' => [
-        'pattern' => '/cart/paypal/delete-product/{productId}',
-        'action'  => ['Cart\Paypal\ProductAction', 'delete'],
-    ],
-
-    // добавление товара в корзину
-    'cart.lifeGift.product.set' => [
-        'pattern' => '/cart/life-gift/add-product/{productId}',
-        'action'  => ['Cart\LifeGift\ProductAction', 'set'],
-    ],
-    // удаление товара из корзины
-    'cart.lifeGift.product.delete' => [
-        'pattern' => '/cart/life-gift/delete-product/{productId}',
-        'action'  => ['Cart\LifeGift\ProductAction', 'delete'],
-    ],
-
-    // добавление товара в корзину
     'cart.oneClick.product.set' => [
         'pattern' => '/cart/one-click/add-product/{productId}',
         'action'  => ['Cart\OneClick\ProductAction', 'set'],
@@ -515,6 +493,12 @@ return [
         'action'    => ['OrderV3\LifeGiftAction', 'complete']
     ],
 
+    'orderV3.svyaznoyClub.complete' => [
+        'pattern' => '/orders/svyaznoy-club',
+        'action'  => ['OrderV3\CompleteAction', 'execute'],
+        'method'  => ['GET'],
+    ],
+
     'orderV3OneClick.delivery' => [
         'pattern' => '/order-1click/delivery',
         'action'  => ['OrderV3OneClick\DeliveryAction', 'execute'],
@@ -532,96 +516,18 @@ return [
         'action'  => ['OrderV3OneClick\FormAction', 'execute'],
     ],
 
-
     // заказ
-    'order.1click' => [
-        'pattern' => '/orders/1click',
-        'action'  => ['Order\OneClickAction', 'execute'],
-        'method'  => ['POST'],
-    ],
     'order.oneClick.new' => [
         'pattern' => '/orders/one-click/new',
         'action'  => ['Order\OneClick\NewAction', 'execute'],
-    ],
-    'order.oneClick.create' => [
-        'pattern' => '/orders/one-click/create',
-        'action'  => ['Order\OneClick\CreateAction', 'execute'],
-        'method'  => ['POST'],
     ],
     'order' => [
         'pattern' => '/orders/new',
         'action'  => ['Order\NewAction', 'execute'],
     ],
-    'order.create' => [
-        'pattern' => '/orders/create',
-        'action'  => ['Order\CreateAction', 'execute'],
-        'method'  => ['POST'],
-    ],
-    'order.delivery' => [
-        'pattern' => '/ajax/order-delivery',
-        'action'  => ['Order\DeliveryAction', 'execute'],
-    ],
-    'order.externalCreate' => [
-        'pattern' => '/orders/create-external',
-        'action'  => ['Order\ExternalCreateAction', 'execute'],
-    ],
     'order.complete' => [
         'pattern' => '/orders/complete',
         'action'  => ['Order\Action', 'complete'],
-    ],
-    'order.paymentComplete' => [
-        'pattern' => '/orders/payment/{orderNumber}',
-        'action'  => ['Order\Action', 'paymentComplete'],
-    ],
-    'order.paymentSuccess' => [
-        'pattern' => '/orders/complete_payment',
-        'action'  => ['Order\Action', 'paymentSuccess'],
-    ],
-    'order.paymentFail' => [
-        'pattern' => '/orders/fail_payment',
-        'action'  => ['Order\Action', 'paymentFail'],
-    ],
-    'order.paypal.new' => [
-        'pattern' => '/orders/paypal/new',
-        'action'  => ['Order\Paypal\NewAction', 'execute'],
-    ],
-    'order.paypal.create' => [
-        'pattern' => '/orders/paypal/create',
-        'action'  => ['Order\Paypal\CreateAction', 'execute'],
-        'method'  => ['POST'],
-    ],
-    'order.lifeGift.new' => [
-        'pattern' => '/orders/life-gift/new',
-        'action'  => ['Order\LifeGift\NewAction', 'execute'],
-    ],
-    'order.lifeGift.create' => [
-        'pattern' => '/orders/life-gift/create',
-        'action'  => ['Order\LifeGift\CreateAction', 'execute'],
-        'method'  => ['POST'],
-    ],
-    'order.bill' => [
-        'pattern' => '/private/orders/{orderNumber}/bill',
-        'action'  => ['Order\BillAction', 'execute'],
-    ],
-    'order.clearPaymentUrl' => [
-        'pattern' => '/orders/clearPaymentUrl',
-        'action'  => ['Order\Action', 'clearPaymentUrl'],
-    ],
-
-    // paypal
-    'order.paypal.complete' => [
-        'pattern' => '/orders/paypal-complete',
-        'action'  => ['Order\PaypalAction', 'complete'],
-    ],
-    'order.paypal.fail' => [
-        'pattern' => '/orders/paypal-fail',
-        'action'  => ['Order\PaypalAction', 'fail'],
-    ],
-
-    'order.svyaznoyClub.complete' => [
-        'pattern' => '/orders/svyaznoy-club',
-        'action'  => ['OrderV3\CompleteAction', 'execute'],
-        'method'  => ['GET'],
     ],
 
     'order.slot.create' => [
