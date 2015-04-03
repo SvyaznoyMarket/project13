@@ -434,6 +434,7 @@
 		</p>
 	</div>
 </section>
+
 <!-- попап добавления отзыва -->
 <div class="popup popup--add-review">
 	<i class="closer">×</i>
@@ -459,11 +460,11 @@
 	<form class="popup-form popup-form--review form-ctrl">
 		<fieldset class="form-ctrl__line">
 			<div class="form-ctrl__group form-ctrl__group--inline">
-				<input class="form-ctrl__input form-ctrl__input--err" type="text" name="name">
+				<input class="form-ctrl__input" type="text" name="name">
 				<label class="form-ctrl__input-lbl" for="name">Имя</label>
 			</div>
 			<div class="form-ctrl__group form-ctrl__group--inline">
-				<input class="form-ctrl__input" type="text" name="email">
+				<input class="form-ctrl__input form-ctrl__input--err" type="text" name="email">
 				<label class="form-ctrl__input-lbl form-ctrl__input-lbl--required" for="email">E-mail</label>
 			</div>
 		</fieldset>
@@ -485,6 +486,8 @@
 		</div>
 	</form>
 </div>
+<!--/ попап добавления отзыва -->
+
 <div class="popup popup--photo">
 	<i class="closer">×</i>
 	<div class="product-card-photo">
