@@ -63,11 +63,11 @@ class NewAction extends OrderV3 {
             \App::exception()->remove($e);
             \App::logger()->error($e->getMessage(), ['curl', 'cart/split']);
 
-            $page = new \View\OrderV3\ErrorPage();
-            $page->setParam('error', 'CORE: '.$e->getMessage());
+            $page = $e->getCode() == 759 ? new \View\OrderV3\NewPage() : new \View\OrderV3\ErrorPage();
+
+            $page->setParam('error', $e->getMessage());
             $page->setParam('step', 1);
 
-            return new \Http\Response($page->show(), 500);
         } catch (\Exception $e) {
             \App::logger()->error($e->getMessage(), ['cart/split']);
 
