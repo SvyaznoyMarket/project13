@@ -68,7 +68,22 @@ return function(
             <div class="deliv-ctrls">
 
                 <div class="deliv-search">
-                    <input class="deliv-search-input" type="text" placeholder="Искать по улице, метро" data-bind="value: searchInput, valueUpdate: 'afterkeydown'" />
+                    <div class="deliv-search__input-wrap">
+                        <input class="deliv-search-input" type="text" placeholder="Искать по улице, метро" data-bind="value: searchInput, valueUpdate: 'afterkeydown'" />
+                        <div class="deliv-search__clear">×</div>
+                    </div>
+                    <div class="deliv-suggest">
+                        <ul class="deliv-suggest__list">
+                            <li class="deliv-suggest__i">метро Ленинский проспект</li>
+                            <li class="deliv-suggest__i">Ленинский проспект, Москва, Россия</li>
+                            <li class="deliv-suggest__i">Ленинградский проспект, Москва, Россия</li>
+                            <li class="deliv-suggest__i">метро Ленинградский проспект</li>
+                            <li class="deliv-suggest__i">метро Ленинский проспект</li>
+                            <li class="deliv-suggest__i">Ленинградский проспект, Москва, Россия</li>
+                            <li class="deliv-suggest__i">метро Ленинградский проспект</li>
+                            <li class="deliv-suggest__i">метро Ленинский проспект</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="deliv-sel-group fltrBtn_kit fltrBtn_kit-box js-category-v2-filter-otherGroups">
