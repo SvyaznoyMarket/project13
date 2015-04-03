@@ -163,9 +163,9 @@ return function(
                 </div>
             </div>
 
-            <div class="selShop_l" data-token="shops">
+            <div class="selShop_l" data-token="shops" data-bind="css:{'nobefore': points().length == 0}">
 
-                <span data-bind="visible: points().length == 0">Поиск не дал результатов</span>
+                <span class="deliv-nomatch" data-bind="visible: points().length == 0">Поиск не дал результатов</span>
 
                 <ul class="deliv-list" data-bind="foreach: points">
 
