@@ -18,6 +18,7 @@
 		<!-- слайдер изображений товара -->
 		<div class="product-card__l">
 			<div class="product-card-photo">
+				<a class="product-card-photo-sticker"><img src="/styles/product/img/shild-124x38.png" alt=""></a>
 				<img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo__img" />
 			</div>
 
