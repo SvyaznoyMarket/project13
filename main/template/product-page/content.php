@@ -62,7 +62,7 @@
 				<span class="product-card-filter__tl">Размер:</span>
 
 				<div class="product-card-filter__box">
-					<div class="filter-btn-box">
+					<div class="filter-btn-box filter-btn-box--open">
 						<div class="filter-btn-box__toggle">
 							<span class="filter-btn-box__tx">Полутороспальный</span>
 							<i class="filter-btn-box__corner"></i>
@@ -146,7 +146,7 @@
 				<i class="i-product i-product--info-normal i-info__icon"></i>
 
 				<!-- попап - узнатьо снижении цены -->
-				<div class="best-price-popup i-info-popup i-info-popup--best-price" style="display: none;">
+				<div class="best-price-popup i-info-popup i-info-popup--best-price" style="display: block;">
 					<i class="closer">×</i>
 
 					<strong class="best-price-popup__tl">Узнать о снижении цены</strong>
