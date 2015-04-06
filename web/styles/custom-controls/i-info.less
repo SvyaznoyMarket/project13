@@ -12,59 +12,60 @@
 
         .inline-block-middle();
     }
-    &-popup {
-        position: absolute;
-        z-index: 5;
+}
 
-        visibility: hidden;
+.info-popup {
+    position: absolute;
+    z-index: 5;
+
+    visibility: hidden;
+    overflow: hidden;
+    cursor: default;
+
+    padding: 10px;
+
+    border: 1px solid #c7c7c7;
+    background: @white;
+
+    .opacity(0);
+    .transition(all .2s ease-out);
+    .box-shadow(0 0 15px rgba(0, 0, 0, .4));
+    &--open {
+        visibility: visible;
+        overflow: visible;
+
+        .opacity(1);
+    }
+    &__inn {
         overflow: hidden;
-        cursor: default;
+    }
+    &--best-price {
+        top: 50px;
+        right: 0;
 
-        padding: 10px;
+        width: 250px;
+    }
+    &--action {
+        right: -1px;
+        bottom: 42px;
 
-        border: 1px solid #c7c7c7;
-        background: @white;
+        width: 100%;
+        padding: 0;
 
-        .opacity(0);
-        .transition(all .2s ease-out);
-        .box-shadow(0 0 15px rgba(0, 0, 0, .4));
-        &--open {
-            visibility: visible;
-            overflow: visible;
+        text-align: center;
+        &:after {
+            right: 10px;
+            bottom: -8px;
 
-            .opacity(1);
+            .pseudo-class();
+            .pseudo-corner-bottom(8px, #fff);
         }
-        &__inn {
-            overflow: hidden;
-        }
-        &--best-price {
-            top: 50px;
-            right: 0;
+        &:before {
+            right: 8px;
+            bottom: -10px;
 
-            width: 250px;
-        }
-        &--action {
-            right: -1px;
-            bottom: 42px;
-
-            width: 100%;
-            padding: 0;
-
-            text-align: center;
-            &:after {
-                right: 10px;
-                bottom: -8px;
-
-                .pseudo-class();
-                .pseudo-corner-bottom(8px, #fff);
-            }
-            &:before {
-                right: 8px;
-                bottom: -10px;
-
-                .pseudo-class();
-                .pseudo-corner-bottom(10px, #c7c7c7);
-            }
+            .pseudo-class();
+            .pseudo-corner-bottom(10px, #c7c7c7);
         }
     }
 }

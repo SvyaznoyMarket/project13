@@ -127,19 +127,19 @@
 				<span class="product-card-action__tx i-info__tx">Акция действует<br>ещё 1 день 22:11:07</span>
 				<i class="product-card-action__icon i-product i-product--info-warn i-info__icon"></i>
 
-				<!-- попап - подробности акции, что бы показать/скрыть окно необходимо добавить/удалить класс i-info-popup--open -->
-				<div class="i-info-popup i-info-popup--action i-info-popup--open">
+				<!-- попап - подробности акции, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open -->
+				<div class="info-popup info-popup--action info-popup--open">
 					<i class="closer">×</i>
-					<div class="i-info-popup__inn">
+					<div class="info-popup__inn">
 						<a href="" title=""><img src="/styles/product/img/trust-sale.png" alt=""></a>
 					</div>
 				</div>
 				<!--/ попап - подробности акции -->
 
-				<!-- попап - подробности акции, что бы показать/скрыть окно необходимо добавить/удалить класс i-info-popup--open -->
-				<div class="action-hint i-info-popup i-info-popup--action i-info-popup--open">
+				<!-- попап - подробности акции, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open -->
+				<div class="action-hint info-popup info-popup--action info-popup--open">
 					<i class="closer">×</i>
-					<div class="i-info-popup__inn">
+					<div class="info-popup__inn">
 						<div class="action-hint__desc">
 							<img class="action-hint__img" src="/styles/product/img/shild-124x38.png">
 
@@ -159,8 +159,8 @@
 				<span class="product-card-price__val i-info__tx">9223<span class="rubl">p</span></span>
 				<i class="i-product i-product--info-normal i-info__icon"></i>
 
-				<!-- попап - узнатьо снижении цены, что бы показать/скрыть окно необходимо добавить/удалить класс i-info-popup--open -->
-				<div class="best-price-popup i-info-popup i-info-popup--best-price i-info-popup--open">
+				<!-- попап - узнатьо снижении цены, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open -->
+				<div class="best-price-popup info-popup info-popup--best-price info-popup--open">
 					<i class="closer">×</i>
 
 					<strong class="best-price-popup__tl">Узнать о снижении цены</strong>
@@ -261,7 +261,7 @@
 		<li class="product-tabs__i"><a class="product-tabs__lk" href="" title="">Похожие товары</a></li>
 	</ul>
 
-	<div class="product-section">
+	<div class="product-section clearfix">
 		<div class="product-section__props">
 			<div class="product-section__tl">Характеристики</div>
 			<div class="product-section__sbtl">Общие</div>
@@ -272,10 +272,10 @@
 					значение
 					<div class="props-list__hint">
 						<a class="i-product i-product--hint" href="#"></a>
-						<!-- попап с подсказкой -->
-						<div class="prop-hint i-info-popup">
+						<!-- попап с подсказкой, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open -->
+						<div class="prop-hint info-popup">
 							<i class="closer">×</i>
-							<div class="i-info-popup__inn">
+							<div class="info-popup__inn">
 								Такой сенсорный дисплей поддерживает управление жестами, то есть способен обрабатывать более одного касания одновременно. Это критично, если вы собираетесь играть в современные игры, в которых для управления часто используются жесты.
 							</div>
 						</div>
@@ -288,10 +288,10 @@
 					очень длинное значение, которое возможно не помещается на одну строчку
 					<div class="props-list__hint">
 						<a class="i-product i-product--hint" href="#"></a>
-						<!-- попап с подсказкой -->
-						<div class="prop-hint i-info-popup i-info-popup--open">
+						<!-- попап с подсказкой, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open -->
+						<div class="prop-hint info-popup info-popup--open">
 							<i class="closer">×</i>
-							<div class="i-info-popup__inn">
+							<div class="info-popup__inn">
 								Такой сенсорный дисплей поддерживает управление жестами, то есть способен обрабатывать более одного касания одновременно. Это критично, если вы собираетесь играть в современные игры, в которых для управления часто используются жесты.
 							</div>
 						</div>
