@@ -254,13 +254,16 @@
 	</div>
 	<!--/ ссылки связной, сбер и многору -->
 
+	<!-- навигация по странице -->
 	<ul class="product-tabs">
 		<li class="product-tabs__i product-tabs__i--active"><a class="product-tabs__lk" href="" title="">Подробности</a></li>
 		<li class="product-tabs__i"><a class="product-tabs__lk" href="" title="">Аксессуары</a></li>
 		<li class="product-tabs__i"><a class="product-tabs__lk" href="" title="">Отзывы</a></li>
 		<li class="product-tabs__i"><a class="product-tabs__lk" href="" title="">Похожие товары</a></li>
 	</ul>
+	<!--/ навигация по странице -->
 
+	<!-- характеристики/описание товара -->
 	<div class="product-section clearfix">
 		<div class="product-section__props">
 			<div class="product-section__tl">Характеристики</div>
@@ -270,6 +273,7 @@
 				<dt class="props-list__name--tl"><span class="props-list__name-i">Характеристика</span></dt>
 				<dd class="props-list__val">
 					значение
+
 					<div class="props-list__hint">
 						<a class="i-product i-product--hint" href="#"></a>
 						<!-- попап с подсказкой, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open -->
@@ -286,6 +290,7 @@
 				<dt class="props-list__name--tl"><span class="props-list__name-i">Характеристика</span></dt>
 				<dd class="props-list__val">
 					очень длинное значение, которое возможно не помещается на одну строчку
+
 					<div class="props-list__hint">
 						<a class="i-product i-product--hint" href="#"></a>
 						<!-- попап с подсказкой, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open -->
@@ -333,13 +338,15 @@
 			<div class="product-section__content">Электроника и производительность купольной вытяжки Hotpoint-Ariston 7HHP 6 R (OW)/HA шириной 60 см подойдет консервативным людям, любящим порядок и надежность во всем. Производительность модели составляет 451 м3/ч, что вполне достаточно для очистки воздуха в стандартной кухне. Вытяжка может работать в двух режимах: отвод воздуха в вентиляционную шахту и рециркуляции. В режиме отвода все кухонные испарения, запахи, гарь и копоть, проходя через многоразовый многослойный анодированный алюминиевый жироулавливающий фильтр, выводятся за пределы помещения. По мере загрязнения алюминиевый фильтр нужно мыть в горячей мыльной воде или в посудомоечной машине. В режиме рециркуляции вытяжка не подключается к вентиляционной шахте, а всасываемый воздух просто прогоняется через вытяжку внутри кухни. В этом режиме должен быть установлен угольный фильтр, который приобретается дополнительно и подлежит замене каждые 4 месяца. В комплект входит антивозвратный клапан, препятствующий прониканию в кухню запахов из вентиляционной шахты. Инструментом управления служит электронный переключатель с эргономичными кнопками, а три скорости работы позволяют выбрать оптимальный режим для наилучшей очистки воздуха. Для дополнительного освещения рабочей поверхности в вытяжку встроены две экономичные и долговечные галогенные лампы. Благодаря лаконичному строгому дизайну, вытяжка Hotpoint-Ariston 7HHP 6 R(OW)/HA гармонично сочетается с любым современным кухонным гарнитуром.</div>
 		</div>
 	</div>
+	<!--/ характеристики/описание товара -->
 
+	<!-- аксессуары -->
 	<div class="product-section">
 		<div class="product-section__tl">Аксессуары</div>
-
-
 	</div>
+	<!--/ аксессуары -->
 
+	<!-- отзывы -->
 	<div class="product-section">
 		<div class="product-section__tl">Отзывы</div>
 
@@ -379,6 +386,7 @@
 			<div class="reviews__r">
 				<div class="btn-type btn-type--normal">+ Добавить отзыв</div>
 				<span class="reviews-percentage__tl">Всего 57 отзывов</span>
+
 				<ul class="reviews-percentage-list">
 					<li class="reviews-percentage-item">
 						<div class="product-card-rating">
@@ -389,12 +397,15 @@
 								<i class="product-card-rating__i product-card-rating__i--4"></i>
 								<i class="product-card-rating__i product-card-rating__i--5"></i>
 							</span>
+
 							<div class="product-card-rating-chart">
 								<span class="product-card-rating-chart__val" style="width:60px;"></span>
 							</div>
+
 							<span class="product-card-rating__val">49</span>
 						</div>
 					</li>
+
 					<li class="reviews-percentage-item">
 						<div class="product-card-rating">
 							<span class="product-card-rating__state">
@@ -404,12 +415,15 @@
 								<i class="product-card-rating__i product-card-rating__i--4"></i>
 								<i class="product-card-rating__i product-card-rating__i--5"></i>
 							</span>
+
 							<div class="product-card-rating-chart">
 								<span class="product-card-rating-chart__val" style="width:10px;"></span>
 							</div>
+
 							<span class="product-card-rating__val">5</span>
 						</div>
 					</li>
+
 					<li class="reviews-percentage-item">
 						<div class="product-card-rating">
 							<span class="product-card-rating__state">
@@ -419,12 +433,15 @@
 								<i class="product-card-rating__i product-card-rating__i--4"></i>
 								<i class="product-card-rating__i product-card-rating__i--5"></i>
 							</span>
+
 							<div class="product-card-rating-chart">
 								<span class="product-card-rating-chart__val" style="width:20px;"></span>
 							</div>
+
 							<span class="product-card-rating__val">15</span>
 						</div>
 					</li>
+
 					<li class="reviews-percentage-item">
 						<div class="product-card-rating">
 							<span class="product-card-rating__state">
@@ -434,12 +451,15 @@
 								<i class="product-card-rating__i product-card-rating__i--4"></i>
 								<i class="product-card-rating__i product-card-rating__i--5"></i>
 							</span>
+
 							<div class="product-card-rating-chart">
 								<span class="product-card-rating-chart__val" style="width:7px;"></span>
 							</div>
+
 							<span class="product-card-rating__val">7</span>
 						</div>
 					</li>
+
 					<li class="reviews-percentage-item">
 						<div class="product-card-rating">
 							<span class="product-card-rating__state">
@@ -449,9 +469,11 @@
 								<i class="product-card-rating__i product-card-rating__i--4"></i>
 								<i class="product-card-rating__i product-card-rating__i--5"></i>
 							</span>
+
 							<div class="product-card-rating-chart">
 								<span class="product-card-rating-chart__val" style="width:3px;"></span>
 							</div>
+
 							<span class="product-card-rating__val">1</span>
 						</div>
 					</li>
@@ -461,6 +483,7 @@
 
 		<div class="btn-type btn-type--normal">Показать больше отзывов</div>
 	</div>
+	<!--/ отзывы -->
 
 	<!-- похожие товары -->
 	<div class="product-section product-section--inn">
@@ -474,13 +497,16 @@
 	</div>
 	<!--/ вы смотрели -->
 
+	<!-- хлебные крошки -->
 	<ul class="bread-crumbs">
 		<li class="bread-crumbs__i"><a href="" class="bread-crumbs__lk">Бытовая техника</a></li>
 		<li class="bread-crumbs__i"><a href="" class="bread-crumbs__lk">Встраиваемая техника</a></li>
 		<li class="bread-crumbs__i"><a href="" class="bread-crumbs__lk">Вытяжки</a></li>
 		<li class="bread-crumbs__i">Артикул: 468-6393</li>
 	</ul>
+	<!--/ хлебные крошки -->
 
+	<!-- seo информация -->
 	<div class="bottom-content">
 		<p class="bottom-content__p">
 			<span class="bottom-content__tl">Теги: </span>Вытяжки Hotpoint-Ariston дома, Вытяжки Hotpoint-Ariston на работе, Вытяжки Hotpoint-Ariston в поле и в лесу.
@@ -492,6 +518,7 @@
 			Вытяжка представляет собой авторитаризм, учитывая результат предыдущих медиа-кампаний. Политическое учение Локка, анализируя результаты рекламной кампании, программирует потребительский рынок. Если архаический миф не знал противопоставления реальности тексту, ударение вызывает англо-американский тип политической культуры, учитывая результат предыдущих медиа-кампаний. Как предсказывают футурологи институциализация отталкивает комплексный мониторинг активности. Речевой акт непосредственно начинает символ.
 		</p>
 	</div>
+	<!--/ seo информация -->
 </section>
 
 <!-- попап добавления отзыва -->
@@ -556,6 +583,7 @@
 </div>
 <!--/ попап добавления отзыва -->
 
+<!-- попап просмотра большого изображения -->
 <div class="popup popup--photo">
 	<i class="closer">×</i>
 
@@ -587,3 +615,4 @@
 
 	<a href="" class="btn-type btn-type--buy">В корзину</a>
 </div>
+<!--/ попап просмотра большого изображения -->
