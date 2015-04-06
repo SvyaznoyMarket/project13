@@ -48,6 +48,18 @@ class ProductButtonAction {
             ],
         ];
 
+        // SITE-5394 цвет кнопки купить
+        $colorClass = null;
+        switch (\App::abTest()->getTest('cart_button_color')->getChosenCase()->getKey()) {
+        //switch ('red') {
+            case 'red':
+                $colorClass = ' btnBuy__eLink--red';
+                break;
+            case 'magenta':
+                $colorClass = ' btnBuy__eLink--magenta';
+                break;
+        }
+
         if (!$product->getIsBuyable()) {
             $data['disabled'] = true;
             $data['url'] = '#';
@@ -77,12 +89,12 @@ class ProductButtonAction {
         } else if ($product->isInShopStockOnly() && \App::user()->getRegion()->getForceDefaultBuy()) { // Резерв товара
             $data['id'] = 'quickBuyButton-' . $product->getId();
             $data['url'] = $this->getOneClickBuyUrl($helper, $product, $isRetailRocket, $sender, $sender2);
-            $data['class'] .= ' btnBuy__eLink js-orderButton jsOneClickButton-new';
+            $data['class'] .= ' btnBuy__eLink js-orderButton jsOneClickButton-new' . $colorClass;
             $data['value'] = 'Купить';
         } else if ($product->getKit() && !$product->getIsKitLocked()) {
             $data['isKit'] = $location === 'slider' ? false : true;
             $data['value'] = 'Купить';
-            $data['class'] .= ' btnBuy__eLink js-orderButton js-kitButton';
+            $data['class'] .= ' btnBuy__eLink js-orderButton js-kitButton' . $colorClass;
             $data['url'] = $this->getKitBuyUrl($helper, $product, $isRetailRocket, $sender, $sender2);
 		} else if (\App::user()->getCart()->hasProduct($product->getId()) && !$noUpdate) {
             $data['url'] = $helper->url('cart');
@@ -90,7 +102,7 @@ class ProductButtonAction {
             $data['value'] = 'В корзине';
         } else {
             $data['url'] = $buyUrl;
-            $data['class'] .= ' btnBuy__eLink js-orderButton jsBuyButton';
+            $data['class'] .= ' btnBuy__eLink js-orderButton jsBuyButton' . $colorClass;
             $data['value'] = 'Купить';
         }
 
