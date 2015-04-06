@@ -259,20 +259,15 @@ class Entity {
     }
 
     public function getStringValue() {
-        $value = null;
-        if (1 == count($this->getOption())) {
-            $value = $this->getOption()[0]->getValue();
-        } else {
-            $value = implode(
-                ', ',
-                array_map(
-                    function(\Model\Product\Property\Option\Entity $option) {
-                        return $option->getValue();
-                    },
-                    $this->getOption()
-                )
-            );
-        }
+        $value = implode(
+            ', ',
+            array_map(
+                function(\Model\Product\Property\Option\Entity $option) {
+                    return $option->getValue();
+                },
+                $this->getOption()
+            )
+        );
 
         if ($value && $this->unit) {
             $value .= (' ' . $this->unit);
