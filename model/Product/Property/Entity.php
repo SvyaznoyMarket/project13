@@ -50,7 +50,11 @@ class Entity {
             $this->setGroupId($data['group_id']); // SITE-5290
         }
         if (array_key_exists('group_position', $data)) $this->setGroupPosition($data['group_position']);
-        if (array_key_exists('position', $data)) $this->setPosition($data['position']);
+        if (array_key_exists('position_in_list', $data)) {
+            $this->setPosition($data['position_in_list']);
+        } else  if (array_key_exists('position', $data)) {
+            $this->setPosition($data['position']);
+        }
         if (array_key_exists('is_view_list', $data)) $this->setIsInList($data['is_view_list']);
         if (isset($data['option'][0])) {
             $this->setOption(array_map(function($data) {
