@@ -40,21 +40,19 @@
 
         <div class="wrapper wrapper--ep<? if ('cart' == $page->slotBodyDataAttribute()): ?> buyingpage<? endif ?>" <? if ('product_card' == $page->slotBodyDataAttribute()): ?>itemscope itemtype="http://schema.org/Product"<? endif ?>>
             <div class="header header--ep">
-
-                <?= $page->slotHeader() ?>
-                <!-- Topbar -->
-
-                <?= $page->slotTopbar() ?>
-                <!-- /Topbar -->
+                <div class="header__inn">
+                    <?= $page->slotHeader() ?>
+                    <?= $page->slotTopbar() ?>
+                </div>
 
                 <?= $page->slotSearchBar() ?>
-
             </div>
 
             <div class="content content--ep clearfix">
-                <?= $page->slotContent() ?>
+                <div class="inn">
+                    <?= $page->slotContent() ?>
+                </div>
             </div><!--/ Контент-->
-
         </div><!--/ Шаблон -->
 
         <?= $page->render('common/_footer-ep') ?>
