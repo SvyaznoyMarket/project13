@@ -9,8 +9,8 @@ return function(
 
     $couponNumber = null;
 
-    if ((bool)array_filter($order->errors, function( \Model\OrderDelivery\Error $error) { return $error->code == 404 && isset($error->details['coupon_number']); })) {
-        $couponErrors = array_filter($order->errors, function( \Model\OrderDelivery\Error $error) { return $error->code == 404 && isset($error->details['coupon_number']); });
+    if ((bool)array_filter($order->errors, function( \Model\OrderDelivery\Error $error) { return isset($error->details['coupon_number']); })) {
+        $couponErrors = array_filter($order->errors, function( \Model\OrderDelivery\Error $error) { return isset($error->details['coupon_number']); });
         $couponNumber = $couponErrors[0]->details['coupon_number'];
     }
 
