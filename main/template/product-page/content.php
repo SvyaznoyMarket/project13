@@ -113,7 +113,23 @@
 					<span class="product-card-assure__r">Обмен в течение 30 дней<br/>Возврат по гарантии в течение 1 года</span>
 				</li>
 			</ul>
-
+			<ul class="product-card-sharing-list">
+				<li class="product-card-sharing-list__i">
+					<i class="product-card-sharing-list__icon i-sharing-icon i-sharing-icon--fb"></i>
+				</li>
+				<li class="product-card-sharing-list__i">
+					<i class="product-card-sharing-list__icon i-sharing-icon i-sharing-icon--vk"></i>
+				</li>
+				<li class="product-card-sharing-list__i">
+					<i class="product-card-sharing-list__icon i-sharing-icon i-sharing-icon--tw"></i>
+				</li>
+				<li class="product-card-sharing-list__i">
+					<i class="product-card-sharing-list__icon i-sharing-icon i-sharing-icon--pi"></i>
+				</li>
+				<li class="product-card-sharing-list__i">
+					<i class="product-card-sharing-list__icon i-sharing-icon i-sharing-icon--gp"></i>
+				</li>
+			</ul>
 			<ul class="pay-system-list">
                 <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--visa"></i></li>
                 <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--mastercard"></i></li>
