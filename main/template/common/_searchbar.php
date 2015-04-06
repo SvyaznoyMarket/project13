@@ -92,7 +92,7 @@ $btnTypes = array(
 
             <div class="hdep">
                 <div class="hdep_h">Больше скидок</div>
-                <a href="<?= \App::router()->generate('enterprize') ?>" class="i-header i-header-ep jsEnterprizeInSearchBarButton"></a>
+                <a href="<?= \App::router()->generate('enterprize') ?>" class="i-header i-header--ep jsEnterprizeInSearchBarButton"></a>
             </div>
 
             <div class="hdgift <?= $btnTypes[ $page->escape(\Session\AbTest\ABHelperTrait::getGiftButtonNumber()) ] ?>">
