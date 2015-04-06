@@ -790,19 +790,12 @@ class Repository {
     public function getKitProducts(\Model\Product\Entity $product, array $parts = [], \EnterQuery\Delivery\GetByCart $deliveryQuery = null) {
         $productRepository = \RepositoryManager::product();
         $productRepository->setEntityClass('\Model\Product\Entity');
-        $productLine = $product->getLine();
         $restParts = [];
 
         // Получим основные товары набора
         $productPartsIds = [];
         foreach ($product->getKit() as $part) {
             $productPartsIds[] = $part->getId();
-        }
-
-        // Если товар находится в какой-либо линии, то запросим остальные продукты линии
-        if ($productLine instanceof \Model\Product\Line\Entity ) {
-            $line = \RepositoryManager::line()->getEntityByToken($productLine->getToken());
-            $restPartsIds = array_diff($line->getProductId(), $productPartsIds);
         }
 
         // Получим сущности по id

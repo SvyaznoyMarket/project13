@@ -9,8 +9,6 @@ class Entity extends BasicEntity {
 
     /** @var bool|null */
     protected $isFurniture;
-    /** @var bool|null */
-    protected $hasLine;
     /** @var string|null */
     protected $productView;
     /** @var string|null */
@@ -78,7 +76,6 @@ class Entity extends BasicEntity {
             }
         }
 
-        if (isset($data['has_line'])) $this->setHasLine($data['has_line']);
         if (isset($data['product_view_id'])) $this->setProductView($data['product_view_id']);
         if (isset($data['level'])) $this->setLevel($data['level']);
 
@@ -132,20 +129,6 @@ class Entity extends BasicEntity {
      */
     public function isLeaf() {
         return !$this->hasChild;
-    }
-
-    /**
-     * @param boolean $hasLine
-     */
-    public function setHasLine($hasLine) {
-        $this->hasLine = (bool)$hasLine;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getHasLine() {
-        return $this->hasLine;
     }
 
     /**

@@ -616,10 +616,7 @@ class Action {
             $totalText = '';
 
             if ( $productCount > 0 ) {
-                $totalText = $productCount . ' ' . ($child->getHasLine()
-                        ? $page->helper->numberChoice($productCount, array('серия', 'серии', 'серий'))
-                        : $page->helper->numberChoice($productCount, array('товар', 'товара', 'товаров'))
-                    );
+                $totalText = $productCount . ' ' . ($page->helper->numberChoice($productCount, array('товар', 'товара', 'товаров')));
             }
 
             $linkUrl = $child->getLink();
@@ -674,7 +671,7 @@ class Action {
         }
 
         // вид товаров
-        $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
+        $productView = $request->get('view', $category->getProductView());
         // листалка
         if ($category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing()) {
             $itemsPerPage = 21;

@@ -249,11 +249,6 @@ return [
         'action'  => ['Product\IndexAction', 'execute'],
         'require' => ['productPath' => '[\w\d-_]+\/{1}[\w\d-_]+'],
     ],
-    // карточка линии товара
-    'product.line' => [
-        'pattern' => '/line/{lineToken}',
-        'action'  => ['Product\LineAction', 'execute'],
-    ],
     // расчет доставки товара
     'old.product.delivery' => [
         'pattern' => '/product/delivery-info',

@@ -120,19 +120,6 @@ class RepositoryManager {
     }
 
     /**
-     * @return Model\Line\Repository
-     */
-    static function line() {
-        static $instance;
-
-        if (!$instance) {
-            $instance = new \Model\Line\Repository(\App::coreClientV2());
-        }
-
-        return $instance;
-    }
-
-    /**
      * @return Model\Order\Repository
      */
     static function order() {

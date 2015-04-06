@@ -159,7 +159,7 @@ class Action {
         // вид товаров
         $productView = \Model\Product\Category\Entity::PRODUCT_VIEW_COMPACT;
         if ($selectedCategory) {
-            $productView = $request->get('view', $selectedCategory->getHasLine() ? 'line' : $selectedCategory->getProductView());
+            $productView = $request->get('view', $selectedCategory->getProductView());
         }
 
 

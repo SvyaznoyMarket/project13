@@ -300,38 +300,13 @@ class OldIndexAction {
             }
         }
 
-        // Если набор, то получим $productLine
-        $productLine = $product->getLine();
-
-        $line = null;
         $kitProducts = [];
-        $relatedKits = [];
         $productRepository = \RepositoryManager::product();
         $productRepository->setEntityClass('\Model\Product\Entity');
 
         /* Набор пакеты */
         if ((bool)$product->getKit()) {
             $kitProducts = $productRepository->getKitProducts($product);
-        }
-
-        // Если у товара есть линия, то получим киты, в которые он входит
-        if ($productLine instanceof \Model\Product\Line\Entity ) {
-            try {
-                $line = \RepositoryManager::line()->getEntityByToken($productLine->getToken());
-                if (!$line || !$line instanceof \Model\Line\Entity) {
-                    throw new \Exception(sprintf('Не получена линия %s', $productLine->getToken()));
-                }
-
-                $lineKits = $productRepository->getCollectionById($line->getKitId());
-                $relatedKitsIds = [];
-                foreach ($lineKits as $kit) {
-                    if (in_array($product->getId(), array_map(function($v){ return $v->getId(); }, $kit->getKit()))) $relatedKitsIds[] = $kit->getId();
-                }
-                if ((bool)$relatedKitsIds) $relatedKits = $productRepository->getCollectionById($relatedKitsIds);
-            } catch (\Exception $e) {
-                \App::exception()->add($e);
-                \App::logger()->error($e);
-            }
         }
 
         /*
@@ -487,7 +462,6 @@ class OldIndexAction {
         $page->setParam('accessoryCategory', $accessoryCategory);
         $page->setParam('kit', $kit);
         $page->setParam('kitProducts', $kitProducts);
-        $page->setParam('relatedKits', $relatedKits);
         $page->setParam('additionalData', $additionalData);
         $page->setParam('creditData', $creditData);
         $page->setParam('shopStates', $shopStates);
@@ -497,7 +471,6 @@ class OldIndexAction {
         $page->setParam('useLens', $useLens);
         $page->setParam('catalogJson', $catalogJson);
         $page->setParam('trustfactors', $trustfactors);
-        $page->setParam('line', $line);
         $page->setParam('deliveryData', (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId()));
         $page->setParam('isUserSubscribedToEmailActions', $isUserSubscribedToEmailActions);
         $page->setParam('actionChannelName', $actionChannelName);

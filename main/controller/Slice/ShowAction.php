@@ -124,7 +124,7 @@ class ShowAction {
         $page->setParam('productPager', $productPager);
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productFilter', $productFilter);
-        $page->setParam('productView', $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView()));
+        $page->setParam('productView', $request->get('view', $category->getProductView()));
         $page->setParam('hasCategoryChildren', in_array($request->get('route'), ['slice.show', 'slice.category'])); // SITE-3558
         $page->setGlobalParam('shop', $shop);
 

@@ -318,7 +318,6 @@ $c->product['allowBuyOnlyInshop']     = true;
 $c->product['reviewEnabled']          = true;
 $c->product['pushReview']             = true;
 $c->product['lowerPriceNotification'] = true;
-$c->product['furnitureConstructor']   = true;
 // jewel
 $c->product['itemsPerPageJewel']      = 24;
 $c->product['itemsPerRowJewel']       = 4;

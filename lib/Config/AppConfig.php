@@ -321,7 +321,6 @@ class AppConfig {
         'reviewEnabled'          => null, // отзывы о товаре
         'pushReview'             => null, // возможность добавлять отзывы
         'lowerPriceNotification' => null,
-        'furnitureConstructor'   => null, // конструктор шкафов-купе
         'recommendationPull'     => null, // подтягивать информацию о рекоммендованных товарах
         'recommendationPush'     => null, // отправлять данные для расчета рекоммендованных товаров
     ];
