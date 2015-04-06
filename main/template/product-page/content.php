@@ -18,7 +18,7 @@
 		<!-- слайдер изображений товара -->
 		<div class="product-card__l">
 			<div class="product-card-photo">
-				<a class="product-card-photo-sticker"><img src="/styles/product/img/shild-124x38.png" alt=""></a>
+				<a class="product-card-photo-sticker" href=""><img src="/styles/product/img/shild-124x38.png" alt=""></a>
 				<img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo__img" />
 			</div>
 
@@ -113,6 +113,7 @@
 					<span class="product-card-assure__r">Обмен в течение 30 дней<br/>Возврат по гарантии в течение 1 года</span>
 				</li>
 			</ul>
+
 			<ul class="pay-system-list">
                 <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--visa"></i></li>
                 <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--mastercard"></i></li>
