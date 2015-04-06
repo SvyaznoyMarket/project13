@@ -92,3 +92,23 @@
         }
     }
 }
+
+.prop-hint {
+    top: 20px;
+    right: -23px;
+    padding: 10px 20px 10px 10px;
+    width: 300px;
+
+    &:after {
+        right: 22px;
+
+        .pseudo-class();
+        .pseudo-corner-top(6px, #fff, -6px);
+    }
+    &:before {
+        right: 20px;
+
+        .pseudo-class();
+        .pseudo-corner-top(8px, #c7c7c7, -8px);
+    }
+}

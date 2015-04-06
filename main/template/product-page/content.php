@@ -265,12 +265,39 @@
 		<div class="product-section__props">
 			<div class="product-section__tl">Характеристики</div>
 			<div class="product-section__sbtl">Общие</div>
-			<dl class="props-list">
+
+			<dl class="props-list clearfix">
 				<dt class="props-list__name--tl"><span class="props-list__name-i">Характеристика</span></dt>
-				<dd class="props-list__val">значение <a class="props-list__hint i-product i-product--hint" href="#"></a></dd>
+				<dd class="props-list__val">
+					значение
+					<div class="props-list__hint">
+						<a class="i-product i-product--hint" href="#"></a>
+						<!-- попап с подсказкой -->
+						<div class="prop-hint i-info-popup">
+							<i class="closer">×</i>
+							<div class="i-info-popup__inn">
+								Такой сенсорный дисплей поддерживает управление жестами, то есть способен обрабатывать более одного касания одновременно. Это критично, если вы собираетесь играть в современные игры, в которых для управления часто используются жесты.
+							</div>
+						</div>
+						<!--/ попап с подсказкой -->
+					</div>
+				</dd>
 
 				<dt class="props-list__name--tl"><span class="props-list__name-i">Характеристика</span></dt>
-				<dd class="props-list__val">очень длинное значение, которое возможно не помещается на одну строчку <a class="props-list__hint i-product i-product--hint" href="#"></a></dd>
+				<dd class="props-list__val">
+					очень длинное значение, которое возможно не помещается на одну строчку
+					<div class="props-list__hint">
+						<a class="i-product i-product--hint" href="#"></a>
+						<!-- попап с подсказкой -->
+						<div class="prop-hint i-info-popup i-info-popup--open">
+							<i class="closer">×</i>
+							<div class="i-info-popup__inn">
+								Такой сенсорный дисплей поддерживает управление жестами, то есть способен обрабатывать более одного касания одновременно. Это критично, если вы собираетесь играть в современные игры, в которых для управления часто используются жесты.
+							</div>
+						</div>
+						<!--/ попап с подсказкой -->
+					</div>
+				</dd>
 
 				<dt class="props-list__name--tl"><span class="props-list__name-i">Характеристика</span></dt>
 				<dd class="props-list__val">значение</dd>
