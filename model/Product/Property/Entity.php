@@ -28,7 +28,7 @@ class Entity {
     /** @var int */
     private $groupPosition;
     /** @var int */
-    private $position;
+    private $position = 1000;
     /** @var bool */
     private $isInList;
     /** @var Option\Entity[] */
