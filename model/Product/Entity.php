@@ -2,6 +2,8 @@
 
 namespace Model\Product;
 
+use Model\Product\Delivery\ProductDelivery;
+
 class Entity extends BasicEntity {
 
     /** Дефолтное отображение связанных товаров - аксессуары сверху, смежные товары в футере */
@@ -75,6 +77,8 @@ class Entity extends BasicEntity {
     protected $relatedId = [];
     /** @var \Model\Region\Entity */
     protected $nearestCity = [];
+    /** @var ProductDelivery|null */
+    public $delivery;
 
     public function __construct(array $data = []) {
         parent::__construct($data);
@@ -266,7 +270,7 @@ class Entity extends BasicEntity {
         $this->announce = (string)$announce;
     }
 
-    /**
+    /** Краткое описание товара
      * @return string
      */
     public function getAnnounce() {

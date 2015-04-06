@@ -337,6 +337,8 @@ class IndexAction {
             $page = new \View\Product\IndexPage();
         }
 
+        $deliveryData = (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery, $product);
+
         $page->setParam('renderer', \App::closureTemplating());
         $page->setParam('product', $product);
         $page->setParam('lifeGiftProduct', $lifeGiftProduct);
@@ -356,7 +358,7 @@ class IndexAction {
         $page->setParam('catalogJson', $catalogJson);
         $page->setParam('trustfactors', $trustfactors);
         $page->setParam('line', $line);
-        $page->setParam('deliveryData', (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery));
+        $page->setParam('deliveryData', $deliveryData);
         $page->setParam('isUserSubscribedToEmailActions', $isUserSubscribedToEmailActions);
         $page->setParam('actionChannelName', $actionChannelName);
         $page->setGlobalParam('from', $request->get('from') ? $request->get('from') : null);

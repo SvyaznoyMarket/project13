@@ -607,6 +607,13 @@ class BasicEntity {
         return $this->partnersOffer;
     }
 
+    /** Возвращает наименование первого партнера
+     * @return string|null
+     */
+    public function getPartnerName(){
+        return !empty($this->partnersOffer) && isset($this->partnersOffer[0]['name']) ? $this->partnersOffer[0]['name'] : null;
+    }
+
     /**
      * @return boolean
      */

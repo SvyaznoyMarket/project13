@@ -1,99 +1,72 @@
-<!-- хлебные крошки -->
-<ul class="bread-crumbs">
-	<li class="bread-crumbs__i"><a href="" class="bread-crumbs__lk">Бытовая техника</a></li>
-	<li class="bread-crumbs__i"><a href="" class="bread-crumbs__lk">Встраиваемая техника</a></li>
-	<li class="bread-crumbs__i"><a href="" class="bread-crumbs__lk">Вытяжки</a></li>
-	<li class="bread-crumbs__i">Артикул: 468-6393</li>
-</ul>
-<!--/ хлебные крошки -->
+<?
+/**
+ * @var $page                   \View\Product\IndexPage
+ * @var $product                \Model\Product\Entity
+ * @var $lifeGiftProduct        \Model\Product\Entity|null
+ * @var $user                   \Session\User
+ * @var $accessories            \Model\Product\Entity[]
+ * @var $accessoryCategory      \Model\Product\Category\Entity[]
+ * @var $kit                    \Model\Product\Entity[]
+ * @var $relatedKits            array
+ * @var $additionalData         array
+ * @var $shopStates             \Model\Product\ShopState\Entity[]
+ * @var $creditData             array
+ * @var $line                   \Model\Line\Entity
+ * @var $isTchibo               boolean
+ * @var $addToCartJS     string
+ * @var $isUserSubscribedToEmailActions boolean
+ * @var $actionChannelName string
+ * @var $kitProducts            array   Продукты кита
+ * @var $useLens                bool    Показывать лупу
+ * @var $reviewsData            array   Данные отзывов
+ * @var $breadcrumbs            array   Хлебные крошки
+ * @var $trustfactors           array   Трастфакторы
+ * @var $reviewsDataSummary     array   Данные отзывов
+ * @var $sprosikupiReviews      array   Данные отзывов
+ * @var $shoppilotReviews       array   Данные отзывов
+ */
 
-<!--  -->
+$helper = \App::helper();
+
+?>
+
+<?= !empty($breadcrumbs) ? $helper->renderWithMustache('product-page/blocks/breadcrumbs.mustache', ['breadcrumbs' => $breadcrumbs]) : '' ?>
+
 <section>
-	<h1 class="product-name">Купольная вытяжка Hotpoint-Ariston 7HHP 6 R (OW)/HA</h1>
 
-	<div class="vandor-offer"><a href="" class="vandor-offer__lk i-info"><span class="i-info__tx">Продавец: ООО Связной логистика</span> <i class="i-info__icon i-product i-product--info-normal"></i></a></div>
+	<h1 class="product-name"><?= $product->getName() ?></h1>
+
+	<? if ($product->isOnlyFromPartner() && $product->getPartnerName()) : ?>
+        <!-- Информация о партнере -->
+        <div class="vandor-offer">
+            <a href="" class="vandor-offer__lk i-info">
+                <span class="i-info__tx">Продавец: <?= $product->getPartnerName() ?></span> <i class="i-info__icon i-product i-product--info-normal"></i>
+            </a>
+        </div>
+        <!-- /Информация о партнере -->
+    <? endif ?>
 
 	<!-- карточка товара -->
 	<div class="product-card clearfix">
-		<!-- слайдер изображений товара -->
-		<div class="product-card__l">
-			<div class="product-card-photo">
-				<a class="product-card-photo-sticker" href=""><img src="/styles/product/img/shild-124x38.png" alt=""></a>
-				<img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo__img" />
-			</div>
 
-			<!-- если картинок больше 5 добавляем класс product-card-photo-thumbs--slides -->
-			<div class="product-card-photo-thumbs product-card-photo-thumbs--slides">
-				<ul class="product-card-photo-thumbs-list">
-					<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img" /></li>
-					<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img" /></li>
-					<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img" /></li>
-					<li class="product-card-photo-thumbs__i product-card-photo-thumbs__i--act"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img" /></li>
-					<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img" /></li>
-					<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img" /></li>
-					<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img" /></li>
-				</ul>
+        <!-- блок с фото -->
+        <?= $helper->render('product-page/blocks/photo', ['product' => $product]) ?>
+        <!--/ блок с фото -->
 
-				<div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--l product-card-photo-thumbs__btn--disabled"></div>
-				<div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--r"></div>
-			</div>
-
-			<ul class="product-card-media">
-				<li class="product-card-media__i product-card-media__i--video"></li>
-				<li class="product-card-media__i product-card-media__i--3d"></li>
-			</ul>
-		</div>
-		<!--/ карточка товара -->
-
-		<!-- описание товара -->
+		<!-- краткое описание товара -->
 		<div class="product-card__c">
-			<div class="product-card-rating">
-				<span class="product-card-rating__state">
-					<i class="product-card-rating__i product-card-rating__i--fill"></i>
-					<i class="product-card-rating__i"></i>
-					<i class="product-card-rating__i"></i>
-					<i class="product-card-rating__i"></i>
-					<i class="product-card-rating__i"></i>
-				</span>
 
-				<span class="product-card-rating__tx">5 отзывов</span>
-			</div>
+            <?= $helper->render('product-page/blocks/reviews.short', ['reviewsData' => $reviewsData]) ?>
 
-			<div class="product-card-filter">
-				<span class="product-card-filter__tl">Размер:</span>
+			<?= $helper->render('product-page/blocks/variants', ['product' => $product]) ?>
 
-				<div class="product-card-filter__box">
-					<div class="filter-btn-box filter-btn-box--open">
-						<div class="filter-btn-box__toggle">
-							<span class="filter-btn-box__tx">Полутороспальный</span>
-							<i class="filter-btn-box__corner"></i>
-						</div>
+			<p class="product-card-desc"><?= $product->getAnnounce() ?></p>
 
-						<div class="filter-btn-box__dd">
-							<div class="filter-btn-box__inn">
-								<ul class="filter-btn-box-lst">
-									<li class="filter-btn-box-lst__i"><a href="" class="filter-btn-box-lst__lk">Односпальная</a></li>
-									<li class="filter-btn-box-lst__i"><a href="" class="filter-btn-box-lst__lk">Двуспальная</a></li>
-									<li class="filter-btn-box-lst__i"><a href="" class="filter-btn-box-lst__lk">Трехспальная</a></li>
-									<li class="filter-btn-box-lst__i"><a href="" class="filter-btn-box-lst__lk">Кровать на 100 человек и больше</a></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<p class="product-card-desc">Купольная вытяжка шириной 60 см с тремя скоростями работы и галогенным освещением.</p>
-
-			<dl class="product-card-prop">
-				<dt class="product-card-prop__i product-card-prop__i--name">Максимальная производительность</dt>
-				<dd class="product-card-prop__i product-card-prop__i--val">значение</dd>
-
-				<dt class="product-card-prop__i product-card-prop__i--name">Максимальный уровень шума</dt>
-				<dd class="product-card-prop__i product-card-prop__i--val">значение</dd>
-
-				<dt class="product-card-prop__i product-card-prop__i--name">Характеристика</dt>
-				<dd class="product-card-prop__i product-card-prop__i--val">значение</dd>
+            <dl class="product-card-prop">
+                <? foreach ($product->getMainProperties() as $property) : ?>
+				<dt class="product-card-prop__i product-card-prop__i--name"><?= $property->getName() ?></dt>
+				<dd class="product-card-prop__i product-card-prop__i--val"><?= $property->getStringValue() ?></dd>
+                <? endforeach ?>
 			</dl>
 
 			<ul class="product-card-assure">
@@ -113,6 +86,7 @@
 					<span class="product-card-assure__r">Обмен в течение 30 дней<br/>Возврат по гарантии в течение 1 года</span>
 				</li>
 			</ul>
+
 			<ul class="product-card-sharing-list">
 				<li class="product-card-sharing-list__i">
 					<i class="product-card-sharing-list__icon i-sharing-icon i-sharing-icon--fb"></i>
@@ -136,16 +110,16 @@
                 <li class="pay-system-list__i"><i class="pay-system-list__icon i-paysystem-icon i-paysystem-icon--psb"></i></li>
             </ul>
 		</div>
-		<!--/ описание товара -->
+		<!--/ краткое описание товара -->
 
 		<!-- купить -->
 		<div class="product-card__r">
-			<div class="product-card-action i-info">
+			<div class="product-card-action i-info" style="display: none">
 				<span class="product-card-action__tx i-info__tx">Акция действует<br>ещё 1 день 22:11:07</span>
 				<i class="product-card-action__icon i-product i-product--info-warn i-info__icon"></i>
 
 				<!-- попап - подробности акции, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open -->
-				<div class="info-popup info-popup--action info-popup--open">
+				<div class="info-popup info-popup--action info-popup--open" style="display: none">
 					<i class="closer">×</i>
 					<div class="info-popup__inn">
 						<a href="" title=""><img src="/styles/product/img/trust-sale.png" alt=""></a>
@@ -154,7 +128,7 @@
 				<!--/ попап - подробности акции -->
 
 				<!-- попап - подробности акции, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open -->
-				<div class="action-hint info-popup info-popup--action info-popup--open">
+				<div class="action-hint info-popup info-popup--action info-popup--open" style="display: none">
 					<i class="closer">×</i>
 					<div class="info-popup__inn">
 						<div class="action-hint__desc">
@@ -167,17 +141,19 @@
 				<!--/ попап - подробности акции -->
 			</div>
 
-			<div class="product-card-old-price">
-				<span class="product-card-old-price__inn">11 223</span> <span class="rubl">p</span>
+            <? if ($product->getPriceOld()) : ?>
+            <div class="product-card-old-price">
+				<span class="product-card-old-price__inn"><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span>
 			</div>
+            <? endif ?>
 
 			<!-- цена товара -->
 			<div class="product-card-price i-info">
-				<span class="product-card-price__val i-info__tx">9223<span class="rubl">p</span></span>
+				<span class="product-card-price__val i-info__tx"><?= $helper->formatPrice($product->getPrice()) ?><span class="rubl">p</span></span>
 				<i class="i-product i-product--info-normal i-info__icon"></i>
 
 				<!-- попап - узнатьо снижении цены, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open -->
-				<div class="best-price-popup info-popup info-popup--best-price info-popup--open">
+				<div class="best-price-popup info-popup info-popup--best-price info-popup--open" style="display: none">
 					<i class="closer">×</i>
 
 					<strong class="best-price-popup__tl">Узнать о снижении цены</strong>
@@ -198,7 +174,7 @@
 			<!--/ цена товара -->
 
 			<!-- применить скидку -->
-			<div class="product-card-discount-switch">
+			<div class="product-card-discount-switch" style="display: none">
 				<div class="product-card-discount-switch__i discount-switch">
 					<input class="discount-switch__it" type="checkbox" name="" id="discount-switch">
 					<label class="discount-switch__lbl" for="discount-switch"></label>
@@ -211,12 +187,15 @@
 
 			<div class="buy-online"><a class="btn-type btn-type--buy btn-type--longer btn-type--buy--bigger" href="">В корзину</a></div>
 
-			<!-- купить в кредит -->
-			<a class="buy-on-credit btn-type btn-type--normal btn-type--longer" href="">
-				<span class="buy-on-credit__tl">Купить в кредит</span>
-				<span class="buy-on-credit__tx">от <mark class="buy-on-credit__mark">390</mark>&nbsp;&nbsp;<span class="rubl">p</span> в месяц</span>
-			</a>
-			<!--/ купить в кредит -->
+			<? if ($product->getPrice() >= \App::config()->product['minCreditPrice']) : ?>
+                <!-- купить в кредит -->
+                <a class="buy-on-credit btn-type btn-type--normal btn-type--longer jsProductCreditButton" href="" style="display: none"
+                   data-credit='<?= $creditData['creditData'] ?>'>
+                    <span class="buy-on-credit__tl">Купить в кредит</span>
+                    <span class="buy-on-credit__tx">от <mark class="buy-on-credit__mark jsProductCreditPrice">0</mark>&nbsp;&nbsp;<span class="rubl">p</span> в месяц</span>
+                </a>
+                <!--/ купить в кредит -->
+            <? endif ?>
 
 			<!-- сравнить, добавить в виш лист -->
 			<ul class="product-card-tools">
@@ -234,7 +213,7 @@
 					</a>
 				</li>
 
-				<li class="product-card-tools__i product-card-tools__i--wish">
+				<li class="product-card-tools__i product-card-tools__i--wish" style="display: none">
 					<a href="" class="product-card-tools__lk">
 						<i class="product-card-tools__icon i-tools-icon i-tools-icon--wish"></i>
 						<span class="product-card-tools__tx">В избранное</span>
@@ -243,13 +222,8 @@
 			</ul>
 			<!--/ сравнить, добавить в виш лист -->
 
-			<!-- в наличии -->
-			<div class="buy-now-inshop">
-				<span class="buy-now-inshop__tl">В наличии</span>
-				<div class="buy-now-inshop__line">Самовывоз <span class="buy-now-inshop__mark">сегодня, бесплатно</span></div>
-				<div class="buy-now-inshop__line">Доставка <span class="buy-now-inshop__mark">22.03.2015, 150₽</span></div>
-			</div>
-			<!--/ в наличии -->
+			<?= $helper->render('product-page/blocks/delivery', ['product' => $product]) ?>
+
 		</div>
 		<!--/ купить -->
 	</div>
@@ -539,7 +513,7 @@
 </section>
 
 <!-- попап добавления отзыва -->
-<div class="popup popup--add-review">
+<div class="popup popup--add-review" style="display: none">
 	<i class="closer">×</i>
 
 	<div class="popup__tl">Отзыв о товаре</div>
@@ -599,43 +573,4 @@
 	</form>
 </div>
 <!--/ попап добавления отзыва -->
-<!-- попап просмотра большого изображения -->
-<div class="popup popup--photo">
-	<i class="closer">×</i>
-
-	<div class="product-card-photo">
-		<img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo__img">
-		<div class="product-card-photo__ctrl product-card-photo__ctrl--prev"><span class="symb"></span></div>
-		<div class="product-card-photo__ctrl product-card-photo__ctrl--next"><span class="symb"></span></div>
-
-		<div class="product-card-photo-zoom">
-			<div class="product-card-photo-zoom__ctrl product-card-photo-zoom__ctrl--in">+</div>
-			<div class="product-card-photo-zoom__ctrl product-card-photo-zoom__ctrl--out">–</div>
-		</div>
-	</div>
-
-	<div class="product-card-photo-thumbs product-card-photo-thumbs--slides">
-		<ul class="product-card-photo-thumbs-list">
-			<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img"></li>
-			<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img"></li>
-			<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img"></li>
-			<li class="product-card-photo-thumbs__i product-card-photo-thumbs__i--act"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img"></li>
-			<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img"></li>
-			<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img"></li>
-			<li class="product-card-photo-thumbs__i"><img src="http://fs10.enter.ru/1/1/500/61/113290.jpg" class="product-card-photo-thumbs__img"></li>
-		</ul>
-
-		<div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--l product-card-photo-thumbs__btn--disabled"></div>
-		<div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--r"></div>
-	</div>
-
-	<a href="" class="btn-type btn-type--buy">В корзину</a>
-</div>
-<!--/ попап просмотра большого изображения -->
-<!-- Попап видео -->
-<div class="popup popup--skinny">
-	<i class="closer">×</i>
-	<!-- видео или 3d должно быть тут -->
-	<iframe src="https://player.vimeo.com/video/124139626?color=ffffff&portrait=0&badge=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-</div>
-<!--/ Попап видео-->
+<!--/ карточка товара -->
