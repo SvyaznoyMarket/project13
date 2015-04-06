@@ -7,29 +7,48 @@
     ENTER.DeliveryPoints = function DeliveryPointsF (points) {
 
         var self = this,
-            pointsBounds;
+            pointsBounds,
+            map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map;
 
         self.searchInput = ko.observable();
+        self.searchAutocompleteList = ko.observableArray();
+        self.searchAutocompleteListVisible = ko.observable(false);
+        self.enableAutocompleteListVisible = function(){self.searchAutocompleteListVisible(true)};
+        self.disableAutocompleteListVisible = function(){self.searchAutocompleteListVisible(false)};
         self.limitedSearchInput = ko.computed(self.searchInput).extend({throttle: 500});
         self.limitedSearchInput.subscribe(function(text) {
 
-            var map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map, // TODO уже можно вынести
-                extendValue = 1,
+            var extendValue = 0.5,
                 extendedBounds = [[pointsBounds[0][0] - extendValue, pointsBounds[0][1] - extendValue],[pointsBounds[1][0] + extendValue, pointsBounds[1][1] + extendValue]];
 
             if (typeof window.ymaps == 'undefined' || text.length == 0) return;
 
+            self.searchAutocompleteList.removeAll();
+            self.searchAutocompleteListVisible(false);
+
             ymaps.geocode(text, { boundedBy: extendedBounds, strictBounds: true }).then(
                 function(res){
-                    var bounds = res.geoObjects.get(0).geometry.getBounds();
-                    if (bounds) map.setCenter(bounds[0], 14);
-                    //map.geoObjects.add(res.geoObjects.get(0));
+                    res.geoObjects.each(function(obj){
+                        self.searchAutocompleteList.push({
+                            'name' : obj.properties.get('name') + ', ' + obj.properties.get('description'),
+                            'bounds' : obj.geometry.getBounds()
+                        })
+                    });
+                    self.searchAutocompleteListVisible(true);
                 },
                 function(err){
                     console.warn('Geocode error', err)
                 }
             )
         });
+        self.clearSearchInput = function(){
+            self.searchInput('');
+            self.searchAutocompleteList.removeAll();
+        };
+        self.setMapCenter = function(val) {
+            map.setCenter(val.bounds[0], 14);
+            self.searchAutocompleteListVisible(false);
+        };
 
         /* Полный список точек */
         self.availablePoints = ko.observableArray([]);
@@ -149,7 +168,7 @@
             });
         });
 
-        //window.map = self;
+        window.map = self;
 
         return self;
 

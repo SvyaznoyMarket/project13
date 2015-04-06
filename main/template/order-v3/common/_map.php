@@ -68,7 +68,15 @@ return function(
             <div class="deliv-ctrls">
 
                 <div class="deliv-search">
-                    <input class="deliv-search-input" type="text" placeholder="Искать по улице, метро" data-bind="value: searchInput, valueUpdate: 'afterkeydown'" />
+                    <div class="deliv-search__input-wrap">
+                        <input class="deliv-search-input" type="text" placeholder="Искать по улице, метро" data-bind="click: enableAutocompleteListVisible, value: searchInput, valueUpdate: 'afterkeydown'" />
+                        <div class="deliv-search__clear" data-bind="click: clearSearchInput, visible: searchInput ">×</div>
+                    </div>
+                    <div class="deliv-suggest" data-bind="visible: searchAutocompleteListVisible() && searchAutocompleteList().length > 0, event: { mouseleave: disableAutocompleteListVisible }">
+                        <ul class="deliv-suggest__list" data-bind="foreach: searchAutocompleteList">
+                            <li class="deliv-suggest__i" data-bind="text: name, attr: { 'data-bounds': bounds }, click: $parent.setMapCenter"></li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="deliv-sel-group fltrBtn_kit fltrBtn_kit-box js-category-v2-filter-otherGroups">
@@ -155,7 +163,10 @@ return function(
                 </div>
             </div>
 
-            <div class="selShop_l" data-token="shops" data-bind="visible: points().length != 0">
+            <div class="selShop_l" data-token="shops" data-bind="css:{'nobefore': points().length == 0}">
+
+                <span class="deliv-nomatch" data-bind="visible: points().length == 0">Поиск не дал результатов</span>
+
                 <ul class="deliv-list" data-bind="foreach: points">
 
                     <li class="deliv-item jsChangePoint" data-bind="attr: { 'data-id': $data.id, 'data-token': $data.token, 'data-blockname': $data.orderToken }">

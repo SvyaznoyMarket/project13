@@ -9,7 +9,11 @@ return function (
 ) {
 
     $properties = $product->getMainProperties();
-    ?>
+
+    uasort($properties, function(\Model\Product\Property\Entity $a, \Model\Product\Property\Entity $b) {
+        return $a->getPosition() - $b->getPosition();
+    });
+?>
 
     <div class="bSpecifications mSimpleProperty">
 
