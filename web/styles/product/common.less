@@ -246,7 +246,7 @@
         }
     }
 }
-
+//блок с платежными системами
 .pay-system-list {
     float: right;
     &__i {
@@ -255,4 +255,22 @@
         .inline-block-middle();
         .opacity(.5);
     }
+}
+//блок с шарингами
+.product-card-sharing-list{
+    float:left;
+    height: 22px;
+    white-space: nowrap;
+    font-size: 0;
+
+    &__i{
+        .inline-block-middle();
+        margin-right: 4px;
+        cursor: pointer;
+
+        &:last-child{
+            margin-right: 0px;
+        }
+    }
+
 }
