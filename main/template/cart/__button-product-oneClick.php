@@ -66,7 +66,7 @@ return function (
         }
     }
 
-    if ($product->getIsBuyable()) {
+    if ($product->getIsBuyable() && $shop) {
         $class .= $colorClass;
     }
 
