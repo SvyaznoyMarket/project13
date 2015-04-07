@@ -47,6 +47,29 @@ return function (
     }
     */
 
+    // SITE-5394 цвет кнопки купить
+    $colorClass = null;
+    switch (\App::abTest()->getTest('cart_button_color')->getChosenCase()->getKey()) {
+        //switch ('red') {
+        case 'red':
+            $colorClass = ' btnBuy__eLink--red';
+            break;
+        case 'magenta':
+            $colorClass = ' btnBuy__eLink--magenta';
+            break;
+    }
+
+    foreach ($product->getCategory() as $category) {
+        if (in_array($category->getUi(), ['3fe49466-e5cf-4042-963d-025db2142600'])) {
+            $colorClass = null;
+            break;
+        }
+    }
+
+    if ($product->getIsBuyable() && $shop) {
+        $class .= $colorClass;
+    }
+
     if (!$product->getIsBuyable()) {
         $url = '#';
         $class .= ' mDisabled';

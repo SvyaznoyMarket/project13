@@ -9567,10 +9567,10 @@
   .bGoodsSlider.mWithCategory {
     border-bottom: 1px solid #c7c7c7;
   }
-  .bGoodsSlider__ecat {
+  .bGoodsSlider__eCat {
     display: none;
   }
-  .mWithCategory .bGoodsSlider__ecat {
+  .mWithCategory .bGoodsSlider__eCat {
     display: block;
     float: left;
     overflow: auto;
@@ -9580,23 +9580,23 @@
     border-top: 1px solid #c7c7c7;
     border-right: 1px solid #c7c7c7;
   }
-  .bGoodsSlider__ecatitem {
+  .bGoodsSlider__eCatItem {
     cursor: pointer;
   }
-  .bGoodsSlider__ecatitem span {
+  .bGoodsSlider__eCatItem span {
     display: block;
     padding: 5px;
   }
-  .bGoodsSlider__ecatitem span:hover {
+  .bGoodsSlider__eCatItem span:hover {
     text-decoration: underline;
   }
-  .bGoodsSlider__ecatitem.mActive {
+  .bGoodsSlider__eCatItem.mActive {
     cursor: default;
   }
-  .bGoodsSlider__ecatitem.mActive span {
+  .bGoodsSlider__eCatItem.mActive span {
     background: #e4e4e4;
   }
-  .bGoodsSlider__ecatitem.mActive span:hover {
+  .bGoodsSlider__eCatItem.mActive span:hover {
     text-decoration: none;
   }
   .bGoodsSlider.mWithCategory .slideItem {
