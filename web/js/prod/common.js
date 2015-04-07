@@ -300,9 +300,9 @@ buyInfo=$('.topbarfix_cartOn');if(!buyInfo.length){return;}
 buyInfo.slideUp(300,function(){buyInfo.removeAttr('style');});}
 function removeOverlay(){if(!overlay||!userBar.showOverlay){checkScroll();return;}
 overlay.fadeOut(100,function(){overlay.off('click');overlay.remove();userBar.showOverlay=false;buyInfoShowing=false;checkScroll();});}
-if(!upsaleWrap.hasClass('mhintDdOn')){removeBuyInfoBlock();removeOverlay();return;}
+setTimeout(function(){userBarFixed.removeClass('userbar--show');},100);if(!upsaleWrap.hasClass('mhintDdOn')){removeBuyInfoBlock();removeOverlay();return;}
 upsaleWrap.removeClass('mhintDdOn');wrapLogIn.removeClass(openClass);wrap.removeClass(openClass);removeBuyInfoBlock();removeOverlay();return false;}
-function showBuyInfo(e,data,upsale){console.info('userbar::showBuyInfo');$body.trigger('showBuyInfo');$.each(emptyCompareNoticeElements,function(){this.removeClass(emptyCompareNoticeShowClass);});var	buyInfo=$('.topbarfix_cartOn');if(!userBar.showOverlay&&overlay){$body.append(overlay);overlay.fadeIn(300);userBar.showOverlay=true;overlay.on('click',closeBuyInfo);}
+function showBuyInfo(e,data,upsale){console.info('userbar::showBuyInfo');$body.trigger('showBuyInfo');$.each(emptyCompareNoticeElements,function(){this.removeClass(emptyCompareNoticeShowClass);});userBarFixed.addClass('userbar--show');var	buyInfo=$('.topbarfix_cartOn');if(!userBar.showOverlay&&overlay){$body.append(overlay);overlay.fadeIn(300);userBar.showOverlay=true;overlay.on('click',closeBuyInfo);}
 if(e){buyInfo.slideDown(300);}
 else{buyInfo.show();}
 showUserbar(true);if(upsale){showUpsell(data,upsale);}

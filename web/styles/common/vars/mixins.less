@@ -103,6 +103,11 @@
          -o-transition-delay: @delayTime;
             transition-delay: @delayTime;
 }
+.animation(@name, @duration: 300ms, @delay: 0, @ease: ease) {
+    -webkit-animation: @name @duration @delay @ease;
+    -moz-animation:    @name @duration @delay @ease;
+    -ms-animation:     @name @duration @delay @ease;
+}
 .inner-shadow(@horizontal:0, @vertical:1px, @blur:2px, @color) {
     -webkit-box-shadow: inset @horizontal @vertical @blur @color;
        -moz-box-shadow: inset @horizontal @vertical @blur @color;

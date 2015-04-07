@@ -135,6 +135,10 @@
 		}
 		// end of function
 
+		setTimeout(function() {
+			userBarFixed.removeClass('userbar--show');
+		}, 100);
+
 		// только BuyInfoBlock
 		if ( !upsaleWrap.hasClass('mhintDdOn') ) {
 			removeBuyInfoBlock();
@@ -162,6 +166,8 @@
 		$.each(emptyCompareNoticeElements, function(){
 			this.removeClass(emptyCompareNoticeShowClass);
 		});
+
+		userBarFixed.addClass('userbar--show');
 
 		var	buyInfo = $('.topbarfix_cartOn');
 

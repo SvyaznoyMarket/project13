@@ -24,18 +24,7 @@
     }
     .topbarfix_cart:hover {
         .topbarfix_cartQuan {
-            -webkit-animation-name: shake;
-               -moz-animation-name: shake;
-                    animation-name: shake;
-            -webkit-animation-duration: .6s;
-               -moz-animation-duration: .6s;
-                    animation-duration: .6s;
-            -webkit-animation-timing-function: ease;
-               -moz-animation-timing-function: ease;
-                    animation-timing-function: ease;
-            -webkit-animation-iteration-count: 1;
-               -moz-animation-iteration-count: 1;
-                    animation-iteration-count: 1;
+            .animation(shake, .6s, 1, ease);
         }
     }
     &.mProdCard {
@@ -253,7 +242,8 @@
         }
     }
     &_crumbsListLink {
-        border-bottom: 1px dotted;
+        border-bottom: 1px solid;
+  		color: #545454;
         &:hover {
             text-decoration: none;
 
