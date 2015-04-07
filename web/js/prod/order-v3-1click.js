@@ -379,18 +379,37 @@
 			if (typeof _gaq === 'object') _gaq.push(['_trackEvent', 'Воронка_1 клик_' + region, act, lbl]);
 			if (typeof ga === 'function') ga('send', 'event', 'Воронка_1 клик_' + region, act, lbl);
 
+<<<<<<< HEAD
+=======
+			// log to console
+			if (typeof ga !== 'function') console.warn('Нет объекта ga');
+			if (typeof ga === 'function' && typeof ga.getAll === 'function' &&  ga.getAll().length == 0) console.warn('Не установлен трекер для ga');
+			console.log('[Google Analytics] Send event: category: "Воронка_1 клик_%s", action: "%s", label: "%s"', region, act, lbl);
+>>>>>>> master
 		};
 
     // common listener for triggering from another files or functions
     body.on('trackUserAction.orderV3Tracking', sendAnalytic);
 
+<<<<<<< HEAD
+=======
+    // TODO вынести инициализацию трекера из ports.js
+    if (typeof ga === 'function' && typeof ga.getAll === 'function' && ga.getAll().length == 0) {
+        ga( 'create', 'UA-25485956-5', 'enter.ru' );
+    }
+
+>>>>>>> master
 })(jQuery);
 ;(function(w,ko,$) {
 
 	ENTER.OrderV31Click.functions.initAddress = function(){
         var address,
             kladrConfig = $('#kladr-config').data('value'),
+<<<<<<< HEAD
             region = $('#page-config').data('value').user.region;
+=======
+            regionName = $('#page-config').data('value').user.region.name;
+>>>>>>> master
     
         function AddressModel () {
     
@@ -518,7 +537,11 @@
         ENTER.OrderV31Click.functions.smartAddressInit = function() {
             var $input = $('.jsSmartAddressInput'),
                 bindingNode = $('.jsAddressRootNode'),
+<<<<<<< HEAD
                 initKladrQuery = $.extend(kladrConfig, {'limit': 1, type: $.kladr.type.city, name: region.name});
+=======
+                initKladrQuery = $.extend(kladrConfig, {'limit': 1, type: $.kladr.type.city, name: regionName});
+>>>>>>> master
     
             // jQuery-ui autocomplete from КЛАДР
             $input.autocomplete({
@@ -597,10 +620,15 @@
                     }
                 }
             });
+<<<<<<< HEAD
 
             if (region.kladrId) {
                 address.cityId(region.kladrId)
             } else if (kladrConfig && region.name) {
+=======
+    
+            if (kladrConfig && regionName) {
+>>>>>>> master
                 $.kladr.api(initKladrQuery, function (data){
                     var id = data.length > 0 ? data[0].id : 0;
                     if (id==0) console.error('КЛАДР не определил город, конфигурация запроса: ', initKladrQuery);
@@ -627,8 +655,11 @@
 
 		var init = function() {
 
+<<<<<<< HEAD
             console.log('Init yandex maps');
 
+=======
+>>>>>>> master
 			var options = $mapContainer.data('options');
 
 			E.map = new ymaps.Map("yandex-map-container", {
@@ -638,11 +669,16 @@
 				autoFitToViewport: 'always'
 			});
 
+<<<<<<< HEAD
 			E.map.controls.remove('searchControl');
+=======
+			E.map.controls.remove('searchControl')
+>>>>>>> master
 
 			E.mapOptions = options;
 			E.$map = $mapContainer;
 
+<<<<<<< HEAD
             // храним тут модели, но неплохо бы и переделать
             E.koModels = [];
 
@@ -658,6 +694,9 @@
                     });
                 }
             });
+=======
+			console.info(E.map);
+>>>>>>> master
 
 		};
 
@@ -720,6 +759,10 @@
 	//console.log('Model', $('#initialOrderModel').data('value'));
 	ENTER.OrderV31Click.functions.initDelivery = function() {
 		var $orderContent = $('#js-order-content'),
+<<<<<<< HEAD
+=======
+			comment = '',
+>>>>>>> master
 			$popup = $('#jsOneClickContent'),
 			spinner = typeof Spinner == 'function' ? new Spinner({
 				lines: 11, // The number of lines to draw
@@ -829,6 +872,7 @@
 						$orderContent.empty().html($(data.result.page).html());
 						ENTER.OrderV31Click.functions.initAddress();
 						$orderContent.find('input[name=address]').focus();
+<<<<<<< HEAD
 
                         // Новый самовывоз
                         console.log('Applying knockout bindings');
@@ -840,6 +884,8 @@
                             ko.applyBindings(points, val);
                         })
 
+=======
+>>>>>>> master
 					}).always(function(){
 						$orderContent.stop(true, true).fadeIn(200);
 						if (spinner) spinner.stop();
@@ -855,7 +901,11 @@
 			},
 			showMap = function(elem, token) {
 				var $currentMap = elem.find('.js-order-map').first(),
+<<<<<<< HEAD
                     mapData = $.parseJSON($currentMap.next().html()), // не очень хорошо
+=======
+					mapData = $currentMap.data('value'),
+>>>>>>> master
 					mapOptions = ENTER.OrderV31Click.mapOptions,
 					map = ENTER.OrderV31Click.map;
 
@@ -865,7 +915,11 @@
 					$currentMap.siblings('.selShop_l[data-token='+token+']').show();
 				}
 
+<<<<<<< HEAD
 				if (mapData && typeof map.getType == 'function') {
+=======
+				if (mapData) {
+>>>>>>> master
 
 					if (!elem.is(':visible')) elem.show();
 
@@ -874,6 +928,7 @@
 					$currentMap.append(ENTER.OrderV31Click.$map.show());
 					map.container.fitToViewport();
 
+<<<<<<< HEAD
                     // добавляем невидимые точки на карту
                     $.each(mapData.points, function(token){
                         for (var i = 0; i < mapData.points[token].length; i++) {
@@ -897,6 +952,44 @@
                             }
                         })
                     }
+=======
+					for (var i = 0; i < mapData.points[token].length; i++) {
+						var point = mapData.points[token][i],
+							balloonContent = 'Адрес: ' + point.address;
+
+						if (!point.latitude || !point.longitude) continue;
+
+						if (point.regtime) balloonContent += '<br /> Время работы: ' + point.regtime;
+
+						// кнопка "Выбрать магазин"
+						balloonContent += '<br />' + $('<button />', {
+								'text':'Выбрать магазин',
+								'class': 'btnLightGrey jsChangePoint',
+								'data-id': point.id,
+								'data-token': token
+							}
+						)[0].outerHTML;
+
+						var placemark = new ymaps.Placemark([point.latitude, point.longitude], {
+							balloonContentHeader: point.name,
+							balloonContentBody: balloonContent,
+							hintContent: point.name
+						}, {
+							iconLayout: 'default#image',
+							iconImageHref: point.marker.iconImageHref,
+							iconImageSize: point.marker.iconImageSize,
+							iconImageOffset: point.marker.iconImageOffset
+						});
+
+						map.geoObjects.add(placemark);
+					}
+
+					if (map.geoObjects.getLength() === 1) {
+						map.setCenter(map.geoObjects.get(0).geometry.getCoordinates(), 15);
+					} else {
+						map.setBounds(map.geoObjects.getBounds());
+					}
+>>>>>>> master
 
 				} else {
 					console.error('No map data for token = "%s"', token,  elem);
@@ -924,6 +1017,7 @@
 					$body.children('.lb_overlay')[1].remove();
 					changePoint($(this).closest('.selShop').data('block_name'), id, token);
 				}
+<<<<<<< HEAD
 			};
 
         // новый самовывоз
@@ -932,6 +1026,12 @@
             $(this).find('.jsOrderV3DropboxInner').toggle(); // потомка переключаем
             $(this).hasClass('opn') ? $(this).removeClass('opn') : $(this).addClass('opn');
         });
+=======
+			}
+			;
+
+		// TODO change all selectors to .jsMethod
+>>>>>>> master
 
 		// клик по крестику на всплывающих окнах
 		$orderContent.on('click', '.jsCloseFl', function(e) {
@@ -1032,6 +1132,30 @@
 			$(this).closest('#jsOneClickContent').trigger('close');
 		});
 	};
+<<<<<<< HEAD
+=======
+
+	// отслеживаем смену региона
+	/*
+	 $body.on('click', 'a.jsChangeRegionAnalytics', function(e){
+	 var newRegion = $(this).text(),
+	 oldRegion = $('.jsRegion').data('value'),
+	 link = $(this).attr('href');
+
+	 e.preventDefault();
+	 // TODO вынести как функцию с проверкой существования ga и немедленным вызовом hitCallback в остуствии ga и трекера
+	 ga('send', 'event', {
+	 'eventCategory': 'Воронка_' + oldRegion,
+	 'eventAction': '8 Регион_Доставка',
+	 'eventLabel': 'Было: ' + oldRegion + ', Стало: ' + newRegion,
+	 'hitCallback': function() {
+	 window.location.href = link;
+	 }
+	 });
+
+	 })
+	 */
+>>>>>>> master
 })(jQuery);
 ;(function($) {
 
@@ -1042,7 +1166,11 @@
 			errorClass = 'textfield-err',
 			validateEmail = function validateEmailF(email) {
 				var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+<<<<<<< HEAD
 				return re.test(email) && !/[а-яА-Я]/.test(email);
+=======
+				return re.test(email);
+>>>>>>> master
 			},
 			validate = function validateF(){
 				var isValid = true,
@@ -1051,7 +1179,11 @@
 					$deliveryMethod = $('.orderCol_delivrLst_i-act span'),
 					phone = $phoneInput.val().replace(/\s+/g, '');
 
+<<<<<<< HEAD
 				if (!/\+7\(\d{3}\)\d{3}-\d{2}-\d{2}/.test(phone)) {
+=======
+				if (!/8\(\d{3}\)\d{3}-\d{2}-\d{2}/.test(phone)) {
+>>>>>>> master
 					isValid = false;
 					$phoneInput.addClass(errorClass).siblings('.errTx').show();
 				} else {
