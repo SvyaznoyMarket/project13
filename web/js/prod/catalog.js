@@ -1766,16 +1766,19 @@ $(function() {
 		}
 	});
 
-	// Снятие radio "В магазине"
+	// Снятие radio
 	(function() {
 		$radio.each(function(index, radio) {
 			$(radio).data('previous-checked', radio.checked);
 		});
 
 		$radio.click(function(e) {
-			if ($(e.currentTarget).data('previous-checked')) {
+			var previousChecked = $(e.currentTarget).data('previous-checked');
+			$radio.filter('[name="' + e.currentTarget.name + '"]').data('previous-checked', false);
+
+			if (previousChecked) {
 				e.currentTarget.checked = false;
-				$(e.currentTarget).data('previous-checked', false).change();
+				$(e.currentTarget).change();
 				ENTER.catalog.filter.sendFilter();
 			} else {
 				$(e.currentTarget).data('previous-checked', true);
