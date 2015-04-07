@@ -49,7 +49,11 @@ class Entity {
         } else if (array_key_exists('group_id', $data)) {
             $this->setGroupId($data['group_id']); // SITE-5290
         }
-        if (array_key_exists('group_position', $data)) $this->setGroupPosition($data['group_position']);
+        if (array_key_exists('position_in_group', $data)) {
+            $this->setGroupPosition($data['position_in_group']);
+        } else if (array_key_exists('group_position', $data)) {
+            $this->setGroupPosition($data['group_position']);
+        }
         if (array_key_exists('position_in_list', $data)) {
             $this->setPosition($data['position_in_list']);
         } else  if (array_key_exists('position', $data)) {

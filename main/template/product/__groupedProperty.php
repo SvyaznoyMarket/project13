@@ -3,12 +3,19 @@
 return function(
     \Helper\TemplateHelper $helper,
     $groupedProperties
-) { ?>
+) {
+?>
 
 <h3 id="productspecification" class="bHeadSection">Характеристики</h3>
 <div class="bSpecifications">
     <? foreach ($groupedProperties as $group): ?>
-        <? if (!(bool)$group['properties']) continue ?>
+    <?
+        if (!(bool)$group['properties']) continue;
+
+        uasort($group['properties'], function(\Model\Product\Property\Entity $a, \Model\Product\Property\Entity $b) {
+            return $a->getGroupPosition() - $b->getGroupPosition();
+        });
+    ?>
 
         <div class="bSpecifications__eHead"><?= $group['group']->getName() ?></div>
         <dl class="bSpecificationsList clearfix">
