@@ -264,7 +264,7 @@ class Action {
         // фильтры
 
         $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $category, $brand, $request, $shop, function(\Model\Product\Filter\Entity $property) use($category) {
-            return ($category->isV2() && $property->isBrand() || $category->isV3() && in_array($property->getName(), ['Металл', 'Вставка'], true));
+            return ($category->isV2() && $property->isBrand() && $property->getIsAlwaysShow() || $category->isV3() && in_array($property->getName(), ['Металл', 'Вставка'], true));
         });
 
         $this->correctProductFilterAndCategoryForJewel($category, $productFilter);
