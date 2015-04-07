@@ -1,7 +1,6 @@
 .topbarfix {
     display: none;
     &-fx {
-
         .topbarfix_cartOn {
             width: 228px;
         }
@@ -28,17 +27,21 @@
         }
     }
     &.mProdCard {
-        .topbarfix {
-            &_crumbs {
-                position: absolute;
-                top: 0;
-                left: 0;
+        .userbar-crumbs {
+            &-wrap {
+                float: none;
 
-                width: 100%;
-                padding: 0 5px;
+                width: 280px;
+
+                .inline-block-middle();
             }
-            &_crumbsListItem {
-                background-image: none;
+
+            &-list {
+
+            	&__i {
+            		display: block;
+            		background: none;
+            	}
             }
         }
     }
@@ -117,15 +120,6 @@
             color: @white;
         }
     }
-    .wrapperCrumbsList {
-        position: relative;
-
-        overflow: hidden;
-
-        width: 500px;
-
-        .inline-block();
-    }
     &_up {
         float: left;
 
@@ -162,92 +156,6 @@
         }
         &:hover {
             text-decoration: none;
-        }
-    }
-    &_crumbs {
-        position: relative;
-
-        float: left;
-        overflow: hidden;
-
-        padding: 0 5px;
-
-        .inline-block-middle();
-    }
-    &_wrapCrumbsList {
-        position: relative;
-
-        overflow: hidden;
-
-        width: 260px;
-
-        .inline-block-middle();
-        &:after {
-            position: absolute;
-            top: 0;
-            right: 0;
-
-            width: 40px;
-            height: 100%;
-
-            content: '';
-
-            background: rgba(31,37,31,0);
-            background:    -moz-linear-gradient(left, rgba(31,37,31,0) 0%, rgba(31,37,31,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 86%);
-            background: -webkit-gradient(left top, right top, color-stop(0%, rgba(31,37,31,0)), color-stop(0%, rgba(31,37,31,0)), color-stop(0%, rgba(255,255,255,0)), color-stop(86%, rgba(255,255,255,1)));
-            background: -webkit-linear-gradient(left, rgba(31,37,31,0) 0%, rgba(31,37,31,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 86%);
-            background:      -o-linear-gradient(left, rgba(31,37,31,0) 0%, rgba(31,37,31,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 86%);
-            background:     -ms-linear-gradient(left, rgba(31,37,31,0) 0%, rgba(31,37,31,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 86%);
-            background:         linear-gradient(to right, rgba(31,37,31,0) 0%, rgba(31,37,31,0) 0%, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 86%);
-
-            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1f251f', endColorstr='#ffffff', GradientType=1 );
-        }
-    }
-
-    &_crumbsImg {
-        line-height: 47px;
-
-        height: 50px;
-        margin-right: 5px;
-
-        text-align: center;
-
-        .inline-block-middle();
-        .crumbsImg {
-            max-height: 40px;
-            .inline-block-middle();
-        }
-    }
-    &_crumbsList {
-
-        white-space: nowrap;
-
-        .inline-block();
-    }
-    &_crumbsListItem {
-        margin: 0 0 2px;
-        padding-right: 10px;
-
-        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpCMjhGREUyOEZEQUMxMUUyOTI4QjkyMzRGMEUwRjlGQyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozNjE4NUIwNjAwRDQxMUUzOTI4QjkyMzRGMEUwRjlGQyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkIyOEZERTI2RkRBQzExRTI5MjhCOTIzNEYwRTBGOUZDIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkIyOEZERTI3RkRBQzExRTI5MjhCOTIzNEYwRTBGOUZDIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+DzYFVQAAAGlJREFUeNpimDRp0u/fv//DAIONjY2bm9vHjx+h/JcvX1pYWGhraz948ADEB+Lv378HBweLi4sD5ZgYGEBKbt68qaSkxMXFxXDy5EmgTHh4OFAVSL2+vn5VVdW/f/+g5u3fv/8/EgAIMACh4VPB4p8Q3wAAAABJRU5ErkJggg==);
-        background-repeat: no-repeat;
-        background-position: 100% 4px;
-
-        .inline-block();
-        &.mLast {
-            font-size: 14px;
-
-            display: block;
-
-            background: none;
-        }
-    }
-    &_crumbsListLink {
-        border-bottom: 1px solid;
-  		color: #545454;
-        &:hover {
-            text-decoration: none;
-
-            border-bottom: none;
         }
     }
     &_cart {
@@ -304,7 +212,7 @@
         position: relative;
         z-index: 10;
 
-        max-width: 130px;
+        max-width: 120px;
 
         white-space: nowrap;
         &:after {
@@ -375,6 +283,7 @@
     &_cmpr {
         position: relative;
         z-index: 101;
+
         background: @white;
         &-full {
             background-color: @white;
@@ -497,66 +406,26 @@
         position: relative;
         z-index: 10;
 
-        float: right;
-
-        margin: 12px 0 0;
-        padding: 0 10px 3px 5px;
-
         background: @white;
 
-        .inline-block();
-        &:after {
-            position: absolute;
-            position: absolute;
-            top: -12px;
-            left: -20px;
+        .inline-block-middle();
+        .inline-block-middle();
+        &-btn {
+            margin: 0 5px 0 10px;
 
-            width: 20px;
-            height: 50px;
-
-            content: '';
-
-            background:    -moz-linear-gradient(left,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 49%); /* FF3.6+ */
-            background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,0)), color-stop(49%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
-            background: -webkit-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 49%); /* Chrome10+,Safari5.1+ */
-            background:      -o-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 49%); /* Opera 11.10+ */
-            background:     -ms-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 49%); /* IE10+ */
-            background:         linear-gradient(to right,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 49%); /* W3C */
-
-            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
+            .inline-block-middle();
         }
-        .btnBuy {
-            float: right;
+        &-price {
+            font-size: 20px;
+            line-height: 1.2;
 
-            width: 86px;
-            margin: 0 5px;
-            &__elink {
-                font-size: 12px;
+            color: #363636;
 
-                width: 86px;
-                padding: 4px 0;
+            .inline-block-middle();
+            .rubl {
+                margin-left: -2px;
             }
         }
-        .bPrice {
-            font-size: 20px;
-
-            float: right;
-
-            min-width: 105px;
-            margin: 1px 4px 0 0;
-        }
-        .bCountSection {
-            float: right;
-
-            width: 108px;
-            padding-left: 0;
-        }
-    }
-}
-
-.topbarfix-home {
-    .userbtn_i {
-        border: none;
     }
 }
 

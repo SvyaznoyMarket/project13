@@ -16,32 +16,31 @@ $productPageSender = \Session\ProductPageSenders::get($product->getUi());
 $productPageSender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 ?>
 
-<div class="topbarfix_crumbs">
-    <div class="topbarfix_crumbsImg"><img class="crumbsImg" src="<?= $product ? $product->getImageUrl() : '' ?>" /></div>
+<div class="userbar-crumbs">
+    <div class="userbar-crumbs-img"><img class="userbar-crumbs-img__img" src="<?= $product ? $product->getImageUrl() : '' ?>" /></div>
 
-    <div class="wrapperCrumbsList">
+    <div class="userbar-crumbs-wrap">
         <?= $helper->render('__breadcrumbsUserbar', ['links' => $links]) ?>
     </div>
 </div>
 
 <div class="topbarfix_buy js-topbarfixBuy <?= $line ? 'hidden' : 'none' ?>">
 
-    <?= $helper->render('cart/__button-product', [
+    <?/*= $helper->render('cart/__button-product', [
         'product'  => $product,
         'onClick'  => $addToCartJS ? $addToCartJS : null,
         'sender'   => ($request->get('sender') ? (array)$request->get('sender') : $productPageSender) + ['name' => null, 'method' => null, 'position' => null],
         'location' => 'userbar',
         'sender2'  => $productPageSender2,
-    ]) // Кнопка купить ?>
+    ]) // Кнопка купить */?>
 
-    <? if (!$product->getSlotPartnerOffer() && $product->getIsBuyable() && !$product->isInShopStockOnly() && (5 !== $product->getStatusId()) && (!$product->getKit() || $product->getIsKitLocked())): ?>
-        <?= $helper->render('__spinner', [
-            'id'        => \View\Id::cartButtonForProduct($product->getId()),
-            'productId' => $product->getId(),
-            'location'  => 'userbar',
-        ]) ?>
-    <? endif ?>
+    <div class="topbarfix_buy-price">
+        <div class="product-card-old-price" style="font-size: 12px;">
+            <span class="product-card-old-price__inn">11 223</span> <span class="rubl">p</span>
+        </div>
 
-    <div class="bPrice"><strong class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></strong> <span class="rubl">p</span></div>
+        <span class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></span><span class="rubl">p</span>
+    </div>
 
+    <a href="#" class="topbarfix_buy-btn btn-type btn-type--buy">В корзину</a>
 </div>
