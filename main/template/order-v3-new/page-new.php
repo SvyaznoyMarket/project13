@@ -61,9 +61,11 @@ return function(
                     </div>
                 </div>
 
-                <? if ($bonusCards) : ?>
                 <div>
                     <div class="bonusCnt bonusCnt-v2">
+
+                        <? if ($bonusCards) : // Бонусные карты от ядра ?>
+
                             <div class="bonusCnt_lst">
                                 <? foreach ($bonusCards as $key => $card) : ?>
 
@@ -76,30 +78,29 @@ return function(
                                     </div>
 
                                 <? endforeach ?>
-
-
-
                             </div>
 
-                        <? foreach ($bonusCards as $card) : ?>
-                        <? if ($userBonusCards) $userBonusCard = array_filter($userBonusCards, function($arr) use (&$card) {
-                                /** @var $card \Model\Order\BonusCard\Entity */
-                                return $card->getId() == $arr['bonus_card_id']; })
-                            ?>
-                            <div class="bonusCnt_it clearfix" style="display: <?= (bool)$userBonusCard ? 'none' : 'none' ?>">
-                                <div class="orderU_fld">
-                                    <input class="orderU_tx textfield jsOrderV3BonusCardField" type="text" name="user_info[bonus_card_number]" value="<?= (bool)$userBonusCard ? $userBonusCard[0]['number'] : '' ?>" placeholder="<?= $card->getMask() ?>" data-mask="<?= $card->getMask() ?>">
-                                    <label class="orderU_lbl" for="">Номер</label>
-                                    <span class="errTx" style="display: none">Неверный код карты лояльности</span>
-                                    <span class="orderU_inf jsShowBonusCardHint"></span>
-                                </div>
+                            <? foreach ($bonusCards as $card) : ?>
+                            <? if ($userBonusCards) $userBonusCard = array_filter($userBonusCards, function($arr) use (&$card) {
+                                    /** @var $card \Model\Order\BonusCard\Entity */
+                                    return $card->getId() == $arr['bonus_card_id']; })
+                                ?>
+                                <div class="bonusCnt_it clearfix" style="display: <?= (bool)$userBonusCard ? 'none' : 'none' ?>">
+                                    <div class="orderU_fld">
+                                        <input class="orderU_tx textfield jsOrderV3BonusCardField" type="text" name="user_info[bonus_card_number]" value="<?= (bool)$userBonusCard ? $userBonusCard[0]['number'] : '' ?>" placeholder="<?= $card->getMask() ?>" data-mask="<?= $card->getMask() ?>">
+                                        <label class="orderU_lbl" for="">Номер</label>
+                                        <span class="errTx" style="display: none">Неверный код карты лояльности</span>
+                                        <span class="orderU_inf jsShowBonusCardHint"></span>
+                                    </div>
 
-                                <div class="bonusCnt_popup" style="display: none">
-                                    <div class="bonusCnt_descr"><?= $card->getDescription() ?></div>
-                                    <img src="<?= $card->getImage() ?>" alt="" />
+                                    <div class="bonusCnt_popup" style="display: none">
+                                        <div class="bonusCnt_descr"><?= $card->getDescription() ?></div>
+                                        <img src="<?= $card->getImage() ?>" alt="" />
+                                    </div>
                                 </div>
-                            </div>
-                        <? endforeach ; ?>
+                            <? endforeach ; ?>
+
+                        <? endif ?>
 
                         <? if ($config->partners['MnogoRu']['enabled']) : ?>
                             <!-- Карта Много.ру -->
@@ -130,7 +131,6 @@ return function(
 
                     </div>
                 </div>
-                <? endif ?>
             </fieldset>
 
             <? if (!$userEntity) : ?>
