@@ -166,7 +166,7 @@ class BasicEntity {
      * @return null|string
      */
     public function getWikimartId() {
-        return '35107190';
+        return '79685940';
         return $this->wikimartId;
     }
 
