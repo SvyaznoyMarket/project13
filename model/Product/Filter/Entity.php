@@ -61,6 +61,8 @@ class Entity {
     private $stepType;
     /** @var bool */
     public $isOpenByDefault = false;
+    /** @var string */
+    public $defaultTitle = '';
 
     public function __construct(array $data = []) {
         if (array_key_exists('filter_id', $data)) $this->setId($data['filter_id']);

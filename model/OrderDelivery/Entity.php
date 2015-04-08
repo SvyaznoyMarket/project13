@@ -220,7 +220,7 @@ namespace Model\OrderDelivery\Entity {
                     case 'self_partner_pickpoint':
                         $this->marker['iconImageHref'] = '/images/deliv-icon/pickpoint.png';
                         $this->icon = '/images/deliv-logo/pickpoint.png';
-                        $this->dropdown_name = 'Постаматы Pickpoint';
+                        $this->dropdown_name = 'Точки самовывоза Pickpoint';
                         break;
                     case 'self_partner_svyaznoy_pred_supplier':
                     case 'self_partner_svyaznoy':

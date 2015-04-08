@@ -67,7 +67,9 @@ class OrderAction {
                     if ($orderId == $item['id']) $order = $orderItem;
                     if (!$orderItem->isCompleted()) $currentOrdersCount++;
                 }
-            }
+            },
+            0,
+            40
         );
 
         // выполнение 1-го пакета запросов
