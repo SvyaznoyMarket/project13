@@ -834,6 +834,4 @@ class Entity extends BasicEntity {
     public function addNearestCity(\Model\Region\Entity $city) {
         $this->nearestCity[] = $city;
     }
-
-
 }

@@ -513,4 +513,7 @@ $c->bandit['enabled'] = false;
 
 $c->tealeaf['enabled'] = true;
 
+$c->wikimart['enabled'] = true;
+$c->wikimart['jsUrl'] = 'http://checkout.wikimart.ru/js/vmetro/script/';
+
 return $c;

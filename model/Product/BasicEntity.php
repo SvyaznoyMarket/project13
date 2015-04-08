@@ -591,10 +591,17 @@ class BasicEntity {
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isOnlyFromPartner() {
         return $this->isOnlyFromPartner;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOnlyWikimartPartnerOffer() {
+        return isset($this->partnersOffer[0]) && ('???' === $this->partnersOffer[0]['id']); // TODO: wikimart.id
     }
 
     /**

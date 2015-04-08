@@ -242,6 +242,7 @@
 	historyUrl = ( debug ) ? '/js/vendor/history.js' : '/js/prod/history.min.js';
 	kladr = ( debug ) ? '/js/vendor/jquery.kladr.js' : '/js/prod/jquery.kladr.min.js';
 	tealeafUrl = ( debug ) ? '/js/prod/tealeaf.js' : '/js/prod/tealeaf.min.js';
+	var wikimartUrl = pageConfig.wikimart.url;
 
 	/**
 	 * Загрузка скриптов по шаблону
@@ -251,6 +252,7 @@
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
+					.script( wikimartUrl )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
@@ -267,6 +269,7 @@
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
+					.script( wikimartUrl )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
@@ -289,6 +292,7 @@
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
+					.script( wikimartUrl )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
@@ -312,6 +316,7 @@
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
+					.script( wikimartUrl )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
@@ -330,6 +335,7 @@
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
+					.script( wikimartUrl )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
@@ -349,6 +355,7 @@
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
+					.script( wikimartUrl )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
@@ -371,6 +378,7 @@
 					.script('JsHttpRequest.min.js')
 					.script( getWithVersion('library.js') )
 					.script( directCreditUrl )
+					.script( wikimartUrl )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
@@ -392,6 +400,7 @@
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( directCreditUrl )
+					.script( wikimartUrl )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
@@ -412,6 +421,7 @@
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
+					.script( wikimartUrl )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
@@ -435,6 +445,7 @@
 						.script('JsHttpRequest.min.js')
 						.script( getWithVersion('library.js') )
 						.script( directCreditUrl )
+						.script( wikimartUrl )
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.script( loadDebugPanel )
@@ -453,6 +464,7 @@
                 .queueWait( function() {
                     $LAB.script( getWithVersion('jquery-plugins.js') )
                         .script( getWithVersion('library.js') )
+						.script( wikimartUrl )
                         .script( mustacheUrl )
                         .script( knockoutUrl )
                         .script( loadDebugPanel )
@@ -469,6 +481,7 @@
 				.queueWait( function() {
 					$LAB.script( getWithVersion('jquery-plugins.js') )
 						.script( getWithVersion('library.js') )
+						.script( wikimartUrl )
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.script( loadDebugPanel )
@@ -484,6 +497,7 @@
 			$LAB.queueWait( function() {
 					$LAB.script( getWithVersion('jquery-plugins.js') )
 						.script( getWithVersion('library.js') )
+						.script( wikimartUrl )
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.script( loadDebugPanel )
@@ -499,6 +513,7 @@
 			$LAB.queueWait( function() {
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
+					.script( wikimartUrl )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
@@ -517,6 +532,7 @@
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( historyUrl )
+					.script( wikimartUrl )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
@@ -542,6 +558,7 @@
 						.script( getWithVersion('library.js') )
 						.script('JsHttpRequest.min.js')
 						.script( directCreditUrl )
+						.script( wikimartUrl )
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.script( loadDebugPanel )
@@ -562,6 +579,7 @@
 				$LAB.script( getWithVersion('jquery-plugins.js') )
 					.script( getWithVersion('library.js') )
 					.script( historyUrl )
+					.script( wikimartUrl )
 					.script( mustacheUrl )
 					.script( knockoutUrl )
 					.script( loadDebugPanel )
@@ -584,6 +602,7 @@
 				.queueWait( function() {
 					$LAB.script( getWithVersion('jquery-plugins.js') )
 						.script( getWithVersion('library.js') )
+						.script( wikimartUrl )
 						.script( mustacheUrl )
 						.script( knockoutUrl )
 						.script( loadDebugPanel )
@@ -604,6 +623,7 @@
             $LAB.queueWait( function() {
                 $LAB.script( getWithVersion('jquery-plugins.js') )
                     .script( getWithVersion('library.js') )
+					.script( wikimartUrl )
                     .script( mustacheUrl )
                     .script( knockoutUrl )
                     .script( loadDebugPanel )
@@ -625,6 +645,7 @@
                 $LAB.script( getWithVersion('jquery-plugins.js') )
                     .script( getWithVersion('library.js') )
                     .script('JsHttpRequest.min.js')
+					.script( wikimartUrl )
                     .script( mustacheUrl )
                     .script( knockoutUrl )
                     .script( loadDebugPanel )
