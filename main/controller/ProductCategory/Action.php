@@ -1058,15 +1058,15 @@ class Action {
         if ($category->isTyre()) {
             foreach ($filters as $key => $property) {
                 if ($property->getName() === 'Сезон') {
-                    $property->defaultTitle = 'Любой сезон';
+                    $property->defaultTitle = 'Все сезоны';
                 } else if ($property->getName() === 'Бренд') {
                     $property->defaultTitle = 'Все производители';
                 } else if ($property->getName() === 'Ширина') {
-                    $property->defaultTitle = 'Любая ширина';
+                    $property->defaultTitle = 'Не выбрано';
                 } else if ($property->getName() === 'Профиль') {
-                    $property->defaultTitle = 'Любой профиль';
+                    $property->defaultTitle = 'Не выбрано';
                 } else if ($property->getName() === 'Диаметр') {
-                    $property->defaultTitle = 'Любой диаметр';
+                    $property->defaultTitle = 'Не выбрано';
                 }
             }
 

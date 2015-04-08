@@ -458,8 +458,11 @@ class Entity extends BasicEntity {
         return false;
     }
 
-    public function isTyre () {
-        return $this->getUi() === '94fe0c01-665b-4f66-bb9d-c20e62aa9b7a';
+    public function isTyre() {
+        return in_array($this->getUi(), [
+            '94fe0c01-665b-4f66-bb9d-c20e62aa9b7a', // Шины и принадлежности
+            '018638bb-b54b-473f-8cb0-fa3953cd3695', // Шины и принадлежности -> Шины
+        ], true);
     }
 
     private function getClosest(array $expectedUis) {
