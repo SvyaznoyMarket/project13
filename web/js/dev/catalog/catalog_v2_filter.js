@@ -44,15 +44,18 @@ $(function() {
 				$dropBox = $(e.currentTarget).closest('.js-category-v2-filter-dropBox2'),
 				title;
 
-			setTimeout(function() {
-				if (e.currentTarget.checked) {
-					title = ENTER.utils.trim($dropBox.find('label[for="' + e.currentTarget.id + '"]').text());
-				} else {
+				$('input[type="radio"]', $dropBox).each(function(i, input) {
+					if (input.checked) {
+						title = ENTER.utils.trim($dropBox.find('label[for="' + input.id + '"]').text())
+						return false;
+					}
+				});
+
+				if (!title) {
 					title = $dropBox.data('default-title');
 				}
 
 				$dropBox.find('.js-category-v2-filter-dropBox2-title').text(title);
-			}, 0);
 		});
 
 		$('input[type="checkbox"]', $dropBoxContents).on('click change', function(e) {
