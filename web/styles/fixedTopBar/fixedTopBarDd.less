@@ -1,75 +1,47 @@
 /**
 * Выпадающие блоки из блока корзины и логина
 */
+.userbar-dd {
+	position: absolute;
+    z-index: 101;
+    top: 50px;
+
+    display: none;
+
+    color: @black;
+    border: 1px solid #ccc;
+    background: @white;
+    -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, .2);
+       -moz-box-shadow: 0 3px 5px rgba(0, 0, 0, .2);
+            box-shadow: 0 2px 7px -1px rgba(0, 0, 0, .2);
+}
+
+.minicart {
+    right: 0;
+
+    width: 227px;
+
+    &__buy {
+        padding: 10px;
+
+        border-top: 1px solid #ccc;
+    }
+    &__btn {
+        font-size: 18px;
+
+        padding: 10px 0;
+    }
+}
 
 .topbarfix {
 
-	&_dd {
-		position: absolute;
-		display: none;
-		z-index: 101;
-		top: 50px;
-		right: -1px;
-		background: #ffffff;
-		border: 1px solid #ccc;
-		width: 227px;
-		-webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
-		-moz-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
-		box-shadow: 0px 2px 7px -1px rgba(0, 0, 0, 0.2);
-		color: @black;
-
-		.btnBuy {
-
-			&-inf {
-				position: relative;
-
-				.btnBuy__eLink {
-				    padding-left: 30px;
-
-					&:after {
-						background: url("@{base-url}/fixedTopBar/img/i-btn.png") no-repeat 0 0;
-						position: absolute;
-						content: '';
-						height: 20px;
-					    top: 50%;
-					    left: 30px;
-						width: 20px;
-						margin-top: -10px;
-					}
-				}
-			}
-		}
-	}
-
 	&_logOut {
-		width: 230px;
-		left: -1px;
+		width: 180px;
+		padding: 10px;
 	}
+}
 
-	.enterPrize {
-		line-height: 1.3;
-		padding-bottom: 10px;
-
-		&_text {
-			background: url("@{base-url}/enterPrize/img/bgFishkiSmall.png") no-repeat 0 20px;
-			padding: 12px 0 12px 65px;
-
-			.title {
-				display: block;
-				margin: 0 0 3px;
-			}
-		}
-	}
-
-	&_logOutLink {
-		display: block;
-		text-align: center;
-		margin: 10px 10px 10px;
-		height: 25px;
-		line-height: 25px;
-	}
-
-	.hintDd {
+.hintDd {
 		position: absolute;
 		top: 50px;
 		width: 732px;
@@ -95,13 +67,14 @@
 			.drop-shadow(0px, 4px, 11px, 0.2);
 			border-bottom: 1px solid #ccc;
 		}
+
+		.slideItem {
+			width: 700px;
+			margin: 0 auto;
+		}
 	}
 
-	.slideItem {
-		width: 700px;
-		margin: 0 auto;
-	}
-}
+
 
 .buyInfo {
 	border-top: 3px solid #f99b1c;
@@ -125,18 +98,6 @@
 	}
 }
 
-.quickOrder {
-	border-top: 1px solid #ccc;
-	padding: 10px;
-	.rounded(0);
-
-	&.btnBuy {
-
-		.btnBuy__eLink {
-			width: 100%;
-		}
-	}
-}
 
 .ddBlock {
 	display: block;

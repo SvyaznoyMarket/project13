@@ -1,17 +1,17 @@
 .enterprize {
     background: @black;
-    .topbarfix-fx {
+    .userbar--fixed {
         width: 960px;
 
         border: none;
 
         .rounded(0);
     }
-    .topbarfix-fx ,
+    .userbar--fixed ,
     .topbarfix_log-unlogin ,
     li.userbtn_i.topbarfix_cmpr ,
     .userbtn_i ,
-    .topbarfix_dd {
+    .userbar-dd {
         background: #272727;
     }
     .topbarfix_cmpr_tl ,
@@ -24,7 +24,7 @@
     .cartLst_i a {
         color: #f7f7f7;
     }
-    .topbarfix_dd {
+    .userbar-dd {
         right: 0;
 
         border: none;
@@ -104,25 +104,27 @@
 
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#272727', endColorstr='#272727', GradientType=1 );
         }
-        .topbarfix_dd {
+        .userbar-dd {
             background: #272727;
         }
-        .topbarfix_cmpr_tl {
-            background-position: 0 -286px;
+
+        .topbarfix_cmpr {
+            .i-header--compare {
+                background-position: -108px 0;
+            }
+            &-full {
+                .i-header--compare {
+                    background-position: -133px 0;
+                }
+            }
         }
-        .topbarfix_cmpr-full .topbarfix_cmpr_tl {
-            background-position: 0 -323px;
-        }
-        // .topbarfix_cart_tx {
-        //     border-bottom: 1px solid #a0a0a0;
-        //     text-decoration: none;
-        // }
+
         .topbarfix_cartOn {
             right: 0;
 
             border: none;
         }
-        .quickOrder {
+        .minicart__buy {
             border-top: 1px solid #333;
         }
     }

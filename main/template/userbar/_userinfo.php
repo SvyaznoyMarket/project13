@@ -13,7 +13,7 @@
         <!--ko text: firstName--><!--/ko--> <!--ko text: lastName--><!--/ko-->
     </a>
 
-    <div class="topbarfix_dd topbarfix_logOut">
-        <a class="mBtnGrey topbarfix_logOutLink" href="<?= $page->url('user.logout') ?>">Выйти</a>
+    <div class="userbar-dd topbarfix_logOut">
+        <a class="btn-type btn-type--normal btn-type--longer" href="<?= $page->url('user.logout') ?>">Выйти</a>
     </div>
 </li>

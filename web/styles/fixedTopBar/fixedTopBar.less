@@ -1,123 +1,7 @@
 .topbarfix {
-    display: none;
-    &-fx {
-        .topbarfix_cartOn {
-            width: 228px;
-        }
-    }
-    &-stc {
-        font-size: 12px;
-
-        position: relative;
-        z-index: 999;
-
-        display: block;
-        float: right;
-
-        height: 50px;
-
-        border-left: 1px solid #bbb;
-        .topbarfix_log {
-            border-left: none;
-        }
-    }
     .topbarfix_cart:hover {
         .topbarfix_cartQuan {
             .animation(shake, .6s, 1, ease);
-        }
-    }
-    &.mProdCard {
-        .userbar-crumbs {
-            &-wrap {
-                float: none;
-
-                width: 280px;
-
-                .inline-block-middle();
-            }
-
-            &-list {
-
-            	&__i {
-            		display: block;
-            		background: none;
-            	}
-            }
-        }
-    }
-    &-home {
-        border: none;
-
-        .rounded (0 0 4px 4px);
-        .buyInfo_lk {
-            color: @white;
-        }
-        .topbarfix {
-            &_log {
-                padding-left: 0;
-
-                background: none;
-                &_lk {
-                    color: @white;
-                }
-                &:after {
-                    background: rgba(0,0,0,0);
-                    background:    -moz-linear-gradient(left, rgba(0,0,0,0) 17%, rgba(0,0,0,.58) 55%, rgba(0,0,0,1) 82%, rgba(0,0,0,1) 93%, rgba(0,0,0,1) 100%);
-                    background: -webkit-gradient(left top, right top, color-stop(17%, rgba(0,0,0,0)), color-stop(55%, rgba(0,0,0,.58)), color-stop(82%, rgba(0,0,0,1)), color-stop(93%, rgba(0,0,0,1)), color-stop(100%, rgba(0,0,0,1)));
-                    background: -webkit-linear-gradient(left, rgba(0,0,0,0) 17%, rgba(0,0,0,.58) 55%, rgba(0,0,0,1) 82%, rgba(0,0,0,1) 93%, rgba(0,0,0,1) 100%);
-                    background:      -o-linear-gradient(left, rgba(0,0,0,0) 17%, rgba(0,0,0,.58) 55%, rgba(0,0,0,1) 82%, rgba(0,0,0,1) 93%, rgba(0,0,0,1) 100%);
-                    background:     -ms-linear-gradient(left, rgba(0,0,0,0) 17%, rgba(0,0,0,.58) 55%, rgba(0,0,0,1) 82%, rgba(0,0,0,1) 93%, rgba(0,0,0,1) 100%);
-                    background:         linear-gradient(to right, rgba(0,0,0,0) 17%, rgba(0,0,0,.58) 55%, rgba(0,0,0,1) 82%, rgba(0,0,0,1) 93%, rgba(0,0,0,1) 100%);
-
-                    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#000000', GradientType=1 );
-                }
-            }
-            &_cart {
-                color: @white;
-                background: @black;
-                &.mEmpty {
-                    background: @black;
-                }
-                &_tl {
-                    color: @white;
-                }
-            }
-            &_cmpr {
-                border: none;
-                background: @black;
-                &-full {
-                    .topbarfix_cmpr_tl {
-                        background-position: 0 -323px;
-                    }
-                }
-                &_tl {
-                    color: @white;
-                    background-position: 0 -285px;
-                }
-            }
-            &_logoutlink {
-                color: @white;
-                border: 0;
-                background: none;
-
-                .box-shadow(0 0 10px 2px #444443);
-            }
-            &_dd {
-                color: @white;
-                border-color: @typLinkColor;
-                background: @black;
-            }
-        }
-        .del {
-            color: @white;
-        }
-        .quickOrder {
-            border-color: @typLinkColor;
-
-            .rounded(0);
-        }
-        .cartLst_n a {
-            color: @white;
         }
     }
     &_up {
@@ -164,7 +48,7 @@
 
         background: @white;
         &:hover {
-            .topbarfix_dd {
+            .userbar-dd {
                 display: block;
             }
         }
@@ -259,7 +143,7 @@
             }
         }
         &:hover {
-            .topbarfix_logOut {
+            .userbar-dd {
                 display: block;
             }
         }
@@ -288,7 +172,7 @@
         &-full {
             background-color: @white;
             .i-header--compare {
-                background-position: -158px 0;
+                background-position: -208px 0;
             }
         }
         &_tl {

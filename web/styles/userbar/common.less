@@ -1,8 +1,10 @@
 .userbar {
     background: @white;
-    -webkit-box-shadow: 0 4px 28px 0 rgba(0, 0, 0, .3);
-       -moz-box-shadow: 0 4px 28px 0 rgba(0, 0, 0, .3);
-            box-shadow: 0 4px 28px 0 rgba(0, 0, 0, .3);
+    display: none;
+    -webkit-box-shadow: 0 4px 28px 0 rgba(0, 0, 0, .5);
+       -moz-box-shadow: 0 4px 28px 0 rgba(0, 0, 0, .5);
+            box-shadow: 0 4px 28px 0 rgba(0, 0, 0, .5);
+    // фиксированнй юзербар
     &--fixed {
         position: fixed;
         z-index: 999;
@@ -11,6 +13,25 @@
 
         width: 100%;
         min-width: 960px;
+    }
+    // юзербар в карточке товара
+    &--pp {
+        .userbar-crumbs {
+            &-wrap {
+                float: none;
+
+                width: 280px;
+
+                .inline-block-middle();
+            }
+            &-list {
+                &__i {
+                    display: block;
+
+                    background: none;
+                }
+            }
+        }
     }
     &__inn {
         position: relative;
