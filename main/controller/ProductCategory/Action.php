@@ -255,11 +255,9 @@ class Action {
             $this->createInStoreFilter($filters);
         }
 
-        if ($category->isV2()) {
-            $this->transformFiltersV2($filters, $category);
-        }
+        $this->transformFiltersV2($filters, $category);
 
-        $this->correctFiltersForJewel($filters, $category);
+        $this->correctFiltersForBronnitskiyYuvelir($filters, $category);
 
         // фильтры
 
@@ -508,117 +506,6 @@ class Action {
         $setPageParameters($page);
 
         return $this->leafCategory($category, $productFilter, $page, $request);
-    }
-
-    /**
-     * @param \Model\Product\Filter\Entity[] $filters
-     */
-    private function createInStoreFilter(array &$filters) {
-        $labelFilter = null;
-        $labelFilterKey = null;
-        foreach ($filters as $key => $filter) {
-            if ('label' === $filter->getId()) {
-                $labelFilter = $filter;
-                $labelFilterKey = $key;
-            }
-        }
-
-        // если нету блока фильтров "WOW-товары", то создаем
-        if (null === $labelFilter) {
-            $labelFilter = new \Model\Product\Filter\Entity();
-            $labelFilter->setId('label');
-            $labelFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-            $labelFilter->setName('WOW-товары');
-            $labelFilter->getIsInList(true);
-        }
-
-        // создаем фильтр "Товар за три дня"
-        $option = new \Model\Product\Filter\Option\Entity();
-        $option->setId(1);
-        $option->setToken('instore');
-        if (\App::config()->region['defaultId'] === \App::user()->getRegion()->getId()) {
-            // Для Москвы, SITE-2850
-            //$option->setName('Товар за три дня');
-            $option->setName('Товар со склада'); // SITE-3131
-        } else {
-            // Для регионов (привозит быстрее, но не за три дня)
-            $option->setName('Товар со склада');
-        }
-
-        $labelFilter->unshiftOption($option);
-
-        // добавляем фильтр в массив фильтров
-        if (null !== $labelFilterKey) {
-            $filters[$labelFilterKey] = $labelFilter;
-        } else {
-            array_unshift($filters, $labelFilter);
-        }
-    }
-
-    /**
-     * @param \Model\Product\Filter\Entity[] $filters
-     */
-    private function transformFiltersV2(array &$filters, \Model\Product\Category\Entity $category) {
-        $newProperties = [];
-
-        foreach ($filters as $key => $property) {
-            if ($property->isLabel()) {
-                $property->setName('Скидки');
-
-                foreach ($property->getOption() as $option) {
-                    if ('instore' === $option->getToken()) {
-                        $labelProperty = new \Model\Product\Filter\Entity();
-                        $labelProperty->setId($option->getToken());
-                        $labelProperty->setName($option->getName());
-                        $labelProperty->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-
-                        $option->setName('да');
-                        $labelProperty->addOption($option);
-
-                        $newProperties[] = $labelProperty;
-
-                        $property->deleteOption($option);
-
-                        break;
-                    }
-                }
-            } else if ($property->isShop()) {
-                $property->setName('В магазине');
-                foreach ($property->getOption() as $option) {
-                    if (!$option->getQuantity()) {
-                        $property->deleteOption($option);
-                    }
-                }
-
-                if (!$property->getOption()) {
-                    unset($filters[$key]);
-                }
-            } else if ($property->isBrand()) {
-                if (!$category->isV2Furniture()) {
-                    $property->setIsAlwaysShow(true);
-                }
-
-                $this->sortOptionsByQuantity($property);
-            }
-        }
-
-        foreach ($newProperties as $property) {
-            array_push($filters, $property);
-        }
-    }
-
-    private function sortOptionsByQuantity(\Model\Product\Filter\Entity $property) {
-        $options = $property->getOption();
-
-        usort($options, function(\Model\Product\Filter\Option\Entity $a, \Model\Product\Filter\Option\Entity $b) {
-            if ($a->getQuantity() == $b->getQuantity()) {
-                return 0;
-            }
-
-            return ($a->getQuantity() > $b->getQuantity()) ? -1 : 1;
-        });
-
-        $property->setOption($options);
     }
 
     /**
@@ -1075,7 +962,166 @@ class Action {
     /**
      * @param \Model\Product\Filter\Entity[] $filters
      */
-    private function correctFiltersForJewel(array &$filters, \Model\Product\Category\Entity $category) {
+    private function createInStoreFilter(array &$filters) {
+        $labelFilter = null;
+        $labelFilterKey = null;
+        foreach ($filters as $key => $filter) {
+            if ('label' === $filter->getId()) {
+                $labelFilter = $filter;
+                $labelFilterKey = $key;
+            }
+        }
+
+        // если нету блока фильтров "WOW-товары", то создаем
+        if (null === $labelFilter) {
+            $labelFilter = new \Model\Product\Filter\Entity();
+            $labelFilter->setId('label');
+            $labelFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+            $labelFilter->setName('WOW-товары');
+            $labelFilter->getIsInList(true);
+        }
+
+        // создаем фильтр "Товар за три дня"
+        $option = new \Model\Product\Filter\Option\Entity();
+        $option->setId(1);
+        $option->setToken('instore');
+        if (\App::config()->region['defaultId'] === \App::user()->getRegion()->getId()) {
+            // Для Москвы, SITE-2850
+            //$option->setName('Товар за три дня');
+            $option->setName('Товар со склада'); // SITE-3131
+        } else {
+            // Для регионов (привозит быстрее, но не за три дня)
+            $option->setName('Товар со склада');
+        }
+
+        $labelFilter->unshiftOption($option);
+
+        // добавляем фильтр в массив фильтров
+        if (null !== $labelFilterKey) {
+            $filters[$labelFilterKey] = $labelFilter;
+        } else {
+            array_unshift($filters, $labelFilter);
+        }
+    }
+
+    /**
+     * @param \Model\Product\Filter\Entity[] $filters
+     */
+    private function transformFiltersV2(array &$filters, \Model\Product\Category\Entity $category) {
+        if (!$category->isV2()) {
+            return;
+        }
+
+        $newProperties = [];
+
+        foreach ($filters as $key => $property) {
+            if ($property->isLabel()) {
+                $property->setName('Скидки');
+
+                foreach ($property->getOption() as $option) {
+                    if ('instore' === $option->getToken()) {
+                        $labelProperty = new \Model\Product\Filter\Entity();
+                        $labelProperty->setId($option->getToken());
+                        $labelProperty->setName($option->getName());
+                        $labelProperty->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+
+                        $option->setName('да');
+                        $labelProperty->addOption($option);
+
+                        $newProperties[] = $labelProperty;
+
+                        $property->deleteOption($option);
+
+                        break;
+                    }
+                }
+            } else if ($property->isShop()) {
+                $property->setName('В магазине');
+                foreach ($property->getOption() as $option) {
+                    if (!$option->getQuantity()) {
+                        $property->deleteOption($option);
+                    }
+                }
+
+                if (!$property->getOption()) {
+                    unset($filters[$key]);
+                }
+            } else if ($property->isBrand()) {
+                if ($category->isAlwaysShowBrand()) {
+                    $property->setIsAlwaysShow(true);
+                }
+
+                $this->sortOptionsByQuantity($property);
+            }
+        }
+
+        if ($category->isTyre()) {
+            foreach ($filters as $key => $property) {
+                if ($property->getName() === 'Сезон') {
+                    $property->defaultTitle = 'Любой сезон';
+                } else if ($property->getName() === 'Бренд') {
+                    $property->defaultTitle = 'Все производители';
+                } else if ($property->getName() === 'Ширина') {
+                    $property->defaultTitle = 'Любая ширина';
+                } else if ($property->getName() === 'Профиль') {
+                    $property->defaultTitle = 'Любой профиль';
+                } else if ($property->getName() === 'Диаметр') {
+                    $property->defaultTitle = 'Любой диаметр';
+                }
+            }
+
+            usort($filters, function(\Model\Product\Filter\Entity $a, \Model\Product\Filter\Entity $b) {
+                $order = [
+                    'Сезон' => 0,
+                    'Бренд' => 1,
+                    'Ширина' => 2,
+                    'Профиль' => 3,
+                    'Диаметр' => 4,
+                ];
+
+                if (isset($order[$a->getName()])) {
+                    $a = $order[$a->getName()];
+                } else {
+                    $a = 0;
+                }
+
+                if (isset($order[$b->getName()])) {
+                    $b = $order[$b->getName()];
+                } else {
+                    $b = 0;
+                }
+
+                if ($a == $b) {
+                    return 0;
+                }
+
+                return $a < $b ? -1 : 1;
+            });
+        }
+
+        foreach ($newProperties as $property) {
+            array_push($filters, $property);
+        }
+    }
+
+    private function sortOptionsByQuantity(\Model\Product\Filter\Entity $property) {
+        $options = $property->getOption();
+
+        usort($options, function(\Model\Product\Filter\Option\Entity $a, \Model\Product\Filter\Option\Entity $b) {
+            if ($a->getQuantity() == $b->getQuantity()) {
+                return 0;
+            }
+
+            return ($a->getQuantity() > $b->getQuantity()) ? -1 : 1;
+        });
+
+        $property->setOption($options);
+    }
+
+    /**
+     * @param \Model\Product\Filter\Entity[] $filters
+     */
+    private function correctFiltersForBronnitskiyYuvelir(array &$filters, \Model\Product\Category\Entity $category) {
         foreach ($filters as $key => $filter) {
             if ($filter->isPrice() && in_array($category->getUi(), [
                     'd792f833-f6fa-4158-83f6-2ac657077076', // Кольца Бронницкий Ювелир

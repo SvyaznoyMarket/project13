@@ -14,11 +14,13 @@ return function(
     $brandFilter1 = null;
     /** @var \Model\Product\Filter\Entity $brandFilter2 */
     $brandFilter2 = null;
+    /** @var \Model\Product\Filter\Entity[] $tyreFilters */
+    $tyreFilters = [];
 
     $hasSelectedOtherBrands = false;
 
     $countInListFilters = 0;
-    foreach ($productFilter->getUngroupedPropertiesV2() as $property) {
+    foreach ($productFilter->getUngroupedPropertiesV2() as $key => $property) {
         if (!$property->getIsInList()) {
             continue;
         } else if ($property->isPrice()) {
@@ -43,6 +45,8 @@ return function(
                     $brandFilter2->unshiftOption($option);
                 }
             }
+        } else {
+            $tyreFilters[$key] = $property;
         }
 
         $countInListFilters++;
@@ -55,10 +59,27 @@ return function(
 
     <div class="fltrBtn fltrBtn-bt">
         <form id="productCatalog-filter-form" class="js-category-filter" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
-            <? if ($brandFilter1): ?>
-                <? // Для IE9 (чтобы он отправлял форму при нажатии на клавишу enter в текстовом поле ввода) ?>
-                <div style="overflow: hidden; position: absolute; top: 0; left: 0; width: 0; height: 0;"><input type="submit" /></div>
+            <? // Для IE9 (чтобы он отправлял форму при нажатии на клавишу enter в текстовом поле ввода) ?>
+            <div style="overflow: hidden; position: absolute; top: 0; left: 0; width: 0; height: 0;"><input type="submit" /></div>
 
+            <? if ($tyreFilters): ?>
+                <div class="fltrBtn_kit clearfix">
+                    Параметры шин:
+
+                    <? foreach ($tyreFilters as $property): ?>
+                        <div>
+                            <div><?= $property->getName() ?></div>
+                            <?= $helper->render('product-category/v2/filter/element/__dropBox2', ['productFilter' => $productFilter, 'property' => $property]) ?>
+                        </div>
+
+                        <? if ($property->getName() === 'Ширина'): ?>
+                            /
+                        <? endif ?>
+                    <? endforeach ?>
+                </div>
+            <? endif ?>
+
+            <? if ($brandFilter1): ?>
                 <div class="fltrBtn_kit clearfix">
                     <div class="fltrBtn_tggl fltrBtn_kit_l <? if (!$brandFilter2 || !count($brandFilter2->getOption())): ?>fltrBtn_tggl-ncorner<? endif ?> <? if ($hasSelectedOtherBrands): ?>opn<? endif ?> <? if ($brandFilter2 && count($brandFilter2->getOption())): ?>js-category-v2-filter-brandTitle<? endif ?>">
                         <span class="fltrBtn_tggl_tx"><?= $brandFilter1->getName() ?></span>
@@ -141,7 +162,7 @@ return function(
                                         <? foreach ($group->properties as $property): ?>
                                             <? if ($property->getIsInList()): ?>
                                                 <div class="fltrBtn_param"> <!--fltrBtn_param-2col-->
-                                                    <? if (!$property->isShop() && !($property->isBrand() && !$property->getIsAlwaysShow()) && 'instore' !== $property->getId()): ?>
+                                                    <? if (count($group->properties) > 1 || $property->getName() !== $group->name): ?>
                                                         <div class="fltrBtn_param_n"><?= $property->getName() ?></div>
                                                     <? endif ?>
 
