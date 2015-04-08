@@ -9,10 +9,7 @@ $f = function(
 
     <div class="product-card-rating">
                     <span class="product-card-rating__state">
-                        <? foreach (range(1,5) as $starIndex) : ?>
-                            <i class="product-card-rating__i
-                            <?= isset($reviewsData['avg_star_score']) && $starIndex <= $reviewsData['avg_star_score'] ? 'product-card-rating__i--fill' : '' ?>"></i>
-                        <? endforeach ?>
+                        <?= $helper->render('product-page/blocks/reviews._stars', ['stars' => $reviewsData['avg_star_score']]) ?>
                     </span>
 
         <span class="product-card-rating__tx"><?= $helper->numberChoiceWithCount($reviewsData['num_reviews'], ['отзыв', 'отзыва', 'отзывов']) ?></span>

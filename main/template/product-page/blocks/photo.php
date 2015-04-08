@@ -79,6 +79,13 @@ $f = function(
         </div>
         <!--/ попап просмотра большого изображения -->
 
+        <!-- Попап видео -->
+        <div class="popup popup--skinny" style="display: none"k>
+            <i class="closer">×</i>
+            <!-- видео или 3d должно быть тут -->
+            <iframe src="https://player.vimeo.com/video/124139626?color=ffffff&portrait=0&badge=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        </div>
+        <!--/ Попап видео-->
 
     </div>
 

@@ -46,4 +46,18 @@ class Media {
 
         return null;
     }
+
+    /** Является ли медиа файловым вложением (не картинкой)
+     * @return bool
+     */
+    public function isFile(){
+        return $this->provider === 'file';
+    }
+
+    /** Ссылка на файл (если это файловое вложение)
+     * @return null|string
+     */
+    public function getFileLink() {
+        return $this->isFile() && $this->sources ? $this->sources[0]->url : null;
+    }
 }

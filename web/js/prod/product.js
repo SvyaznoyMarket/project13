@@ -650,6 +650,15 @@
         )
     }
 
+    $body.on('click', '.jsReviewAdd', function(){
+        $('.jsReviewForm').lightbox_me({
+            centered: true,
+            closeSelector: '.closer',
+            onLoad: function() {},
+            onClose: function() {}
+        });
+    })
+
 
 })(jQuery);
 
