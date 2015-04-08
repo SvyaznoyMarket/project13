@@ -63,19 +63,20 @@ return function(
             <div style="overflow: hidden; position: absolute; top: 0; left: 0; width: 0; height: 0;"><input type="submit" /></div>
 
             <? if ($tyreFilters): ?>
-                <div class="fltrBtn_kit clearfix">
-                    Параметры шин:
+                <div class="fltrBtn_kit fltrBtn_kit--titled clearfix">
 
+                    <div class="fltrBtn_tggl fltrBtn_kit_l fltrBtn_tggl-ncorner">
+                        <span class="fltrBtn_tggl_tx">Параметры шин</span>
+                    </div>
+                    
+                    <ul class="fltrBtn_lst">
                     <? foreach ($tyreFilters as $property): ?>
-                        <div>
-                            <div><?= $property->getName() ?></div>
+                        <li class="fltrBtn_lst-i <? if ($property->getName() === 'Ширина'): ?>slash-after<? endif ?>">
+                            <div class="fltrBtn_lst-i-name"><?= $property->getName() ?></div>
                             <?= $helper->render('product-category/v2/filter/element/__dropBox2', ['productFilter' => $productFilter, 'property' => $property]) ?>
-                        </div>
-
-                        <? if ($property->getName() === 'Ширина'): ?>
-                            /
-                        <? endif ?>
+                        </li>
                     <? endforeach ?>
+                    </ul>
                 </div>
             <? endif ?>
 
