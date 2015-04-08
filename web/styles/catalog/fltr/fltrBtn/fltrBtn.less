@@ -90,7 +90,7 @@
 		&_l{
 			float: left;
 
-			width: 80px;
+			min-width: 80px;
 			margin: 15px 0 0 12px;
 		}
 		&_r{
@@ -101,6 +101,30 @@
 			width: 830px;
 			max-height: 135px;
 			padding: 10px 0 0 1px;
+		}
+		&--titled{
+			padding: 8px 10px;
+
+			.fltrBtnBox.actv,
+			.fltrBtnBox{
+				border: 1px solid #c7c7c7;
+				.rounded(2px);
+			}
+			.fltrBtnBox_tggl_tx{
+				padding: 0 0 4px;
+				border: none;
+				height: 16px;
+				line-height: 16px;
+			}
+			.fltrBtnBox.opn .fltrBtnBox_tggl{
+				padding-bottom: 3px;
+			}
+			.fltrBtnBox{
+				margin-top: 5px;
+			}
+			.fltrBtn_kit_l{
+				margin-top: 27px;
+			}
 		}
 	}
 	&_range {
@@ -284,6 +308,24 @@
 			right: 0;
 		}
 	}
+	&_lst {
+			float: left;
+			margin: 0 0 0 30px;
+
+			&-i {
+				float:left;
+				margin: 0 10px 0 0;
+
+				&-name {
+					font-size: 14px;
+				}
+				&.slash-after:after{
+					content:"/";
+					font-size: 23px;
+				}
+
+			}
+		}
 }
 
 // анимация карты на странице с подарками /gift
