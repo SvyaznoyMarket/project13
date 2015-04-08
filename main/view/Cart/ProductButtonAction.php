@@ -77,6 +77,11 @@ class ProductButtonAction {
             $data['url'] = '#';
             $data['class'] .= ' btnBuy__eLink mDisabled js-orderButton jsBuyButton';
             $data['value'] = 'Нет';
+        } else if ($product->isOnlyWikimartPartnerOffer()) {
+            $data['url'] = '#';
+            $data['class'] .= ' btnBuy__eLink jsWmBuyButton' . $colorClass;
+            $data['value'] = 'Купить*';
+            $data['wikimartId'] = $product->getWikimartId();
         } else if ($slotPartnerOffer = $product->getSlotPartnerOffer()) {
             $data['isSlot'] = true;
             $data['url'] = '#';

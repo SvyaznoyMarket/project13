@@ -15,6 +15,8 @@ class BasicEntity {
     /** @var int|null */
     protected $id;
     /** @var string|null */
+    protected $wikimartId;
+    /** @var string|null */
     protected $barcode;
     /** @var string|null */
     protected $article;
@@ -77,6 +79,7 @@ class BasicEntity {
 
     public function __construct(array $data = []) {
         if (isset($data['id'])) $this->setId($data['id']);
+        if (isset($data['wikimart_id'])) $this->setWikimartId($data['wikimart_id']);
         if (isset($data['ui'])) $this->setUi($data['ui']);
         if (isset($data['uid'])) $this->setUi($data['uid']); // для scms
         if (isset($data['status_id'])) $this->setStatusId($data['status_id']);
@@ -157,6 +160,20 @@ class BasicEntity {
      */
     public function getId() {
         return $this->id;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getWikimartId() {
+        return $this->wikimartId;
+    }
+
+    /**
+     * @param null|string $wikimartId
+     */
+    public function setWikimartId($wikimartId) {
+        $this->wikimartId = $wikimartId;
     }
 
     /**

@@ -4,6 +4,30 @@
 (function(ENTER) {
 	var $body = $('body');
 
+	// Обработчик для кнопок купить WM
+	$body.on('click', '.jsWmBuyButton', function(e) {
+		var $button = $(e.currentTarget);
+
+		$body.trigger('TL_buyButton_clicked');
+
+		console.info({'wmId': $button.data('wmId')});
+		addGoodToCart($button.data('wmId'));
+
+		if ($button.hasClass('mDisabled')) {
+			//return false;
+			e.preventDefault();
+		}
+
+		if ($button.hasClass('mBought')) {
+			document.location.href('/cart');
+			//return false;
+			e.preventDefault();
+		}
+
+		//return false;
+		e.preventDefault();
+	});
+
 	// Обработчик для кнопок купить
 	$body.on('click', '.jsBuyButton', function(e) {
 		var $button = $(e.currentTarget);
