@@ -599,7 +599,6 @@
 	</form>
 </div>
 <!--/ попап добавления отзыва -->
-
 <!-- попап просмотра большого изображения -->
 <div class="popup popup--photo">
 	<i class="closer">×</i>
@@ -633,3 +632,10 @@
 	<a href="" class="btn-type btn-type--buy">В корзину</a>
 </div>
 <!--/ попап просмотра большого изображения -->
+<!-- Попап видео -->
+<div class="popup popup--skinny">
+	<i class="closer">×</i>
+	<!-- видео или 3d должно быть тут -->
+	<iframe src="https://player.vimeo.com/video/124139626?color=ffffff&portrait=0&badge=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+</div>
+<!--/ Попап видео-->
