@@ -10,6 +10,13 @@ class IndexAction {
     public function execute(\Http\Request $request) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
+        // wikimart
+        if (\App::config()->wikimart['enabled']) {
+            $page = new \View\Cart\WikimartPage();
+
+            return new \Http\Response($page->show());
+        }
+
         $client = \App::coreClientV2();
         $user = \App::user();
         $cart = $user->getCart();

@@ -17,6 +17,9 @@ $isNewRecommendation =
 
 ?>
 
+<a class="wikimart-checkout-button" href="#">Показать корзину</a>
+<div id="wikimart-checkout-block" style="position: relative;">Контейнер корзины</div>
+
 <div class="jsKnockoutCart" data-bind="visible: !isUpdated()">
     <?= $page->render('cart/_spinner') ?>
 </div>

@@ -166,7 +166,9 @@ class BasicEntity {
      * @return null|string
      */
     public function getWikimartId() {
-        return '79685940';
+        // FIXME: для тестирования
+        return ['79685940', '5389290', '20153091', '20153093', '149172235', '164428694', '108076354'][rand(0, 6)];
+
         return $this->wikimartId;
     }
 
