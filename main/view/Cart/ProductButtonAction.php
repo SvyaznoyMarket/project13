@@ -60,10 +60,13 @@ class ProductButtonAction {
                 break;
         }
 
-        foreach ($product->getCategory() as $category) {
-            if (in_array($category->getUi(), ['3fe49466-e5cf-4042-963d-025db2142600'])) {
-                $colorClass = null;
-                break;
+        if ($location !== 'slider') {
+            foreach ($product->getCategory() as $category) {
+                // Pandora
+                if (in_array($category->getUi(), ['3fe49466-e5cf-4042-963d-025db2142600'])) {
+                    $colorClass = null;
+                    break;
+                }
             }
         }
 
