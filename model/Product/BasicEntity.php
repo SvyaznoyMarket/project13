@@ -7,6 +7,7 @@ class BasicEntity {
 
     const LABEL_ID_PODARI_ZHIZN = 17;
     const PARTNER_OFFER_TYPE_SLOT = 2;
+    const PARTNER_OFFER_ID_WIKIMART = '????'; // TODO
     /** Электронный подарочный сертификат giftery.ru */
     const GIFTERY_UID = '684fb825-ebf5-4e4f-be2b-96a81e938cb2';
 
@@ -79,7 +80,6 @@ class BasicEntity {
 
     public function __construct(array $data = []) {
         if (isset($data['id'])) $this->setId($data['id']);
-        if (isset($data['wikimart_id'])) $this->setWikimartId($data['wikimart_id']);
         if (isset($data['ui'])) $this->setUi($data['ui']);
         if (isset($data['uid'])) $this->setUi($data['uid']); // для scms
         if (isset($data['status_id'])) $this->setStatusId($data['status_id']);
@@ -166,14 +166,8 @@ class BasicEntity {
      * @return null|string
      */
     public function getWikimartId() {
+        return '35107190';
         return $this->wikimartId;
-    }
-
-    /**
-     * @param null|string $wikimartId
-     */
-    public function setWikimartId($wikimartId) {
-        $this->wikimartId = $wikimartId;
     }
 
     /**
@@ -595,6 +589,11 @@ class BasicEntity {
     {
         $this->partnersOffer = [];
         foreach ($partnersOffer as $offer) {
+            // wikimart id
+            if (self::PARTNER_OFFER_ID_WIKIMART === $offer['id']) { // TODO: wikimart id
+                $this->wikimartId = $offer['offer_id'];
+            }
+
             $this->partnersOffer[] = $offer;
         }
     }
@@ -618,7 +617,8 @@ class BasicEntity {
      * @return bool
      */
     public function isOnlyWikimartPartnerOffer() {
-        return isset($this->partnersOffer[0]) && ('???' === $this->partnersOffer[0]['id']); // TODO: wikimart.id
+        return true;
+        return isset($this->partnersOffer[0]) && (self::PARTNER_OFFER_ID_WIKIMART === $this->partnersOffer[0]['id']); // TODO: wikimart.id
     }
 
     /**

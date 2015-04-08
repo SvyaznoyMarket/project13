@@ -11,7 +11,7 @@
 		$body.trigger('TL_buyButton_clicked');
 
 		console.info({'wmId': $button.data('wmId')});
-		addGoodToCart($button.data('wmId'));
+		WikimartAffiliate.addGoodToCart($button.data('wmId'));
 
 		if ($button.hasClass('mDisabled')) {
 			//return false;
