@@ -3,6 +3,8 @@
 
 namespace Session\AbTest;
 
+use Model\Product\Entity;
+
 /** Трейт, помогающий определять вариант АБ-теста у пользователя
  * Class ABHelperTrait
  * @package Session\AbTest
@@ -41,6 +43,31 @@ trait ABHelperTrait {
             return true;
         }
         return false;
+    }
+
+    public static function getColorClass(Entity $product, $location = null){
+        // SITE-5394 цвет кнопки купить
+        $colorClass = null;
+        switch (\App::abTest()->getTest('cart_button_color')->getChosenCase()->getKey()) {
+            case 'red':
+                $colorClass = ' btnBuy__eLink--red';
+                break;
+            case 'magenta':
+                $colorClass = ' btnBuy__eLink--magenta';
+                break;
+        }
+
+        if ($location !== 'slider') {
+            foreach ($product->getCategory() as $category) {
+                // Pandora
+                if (in_array($category->getUi(), ['3fe49466-e5cf-4042-963d-025db2142600'])) {
+                    $colorClass = null;
+                    break;
+                }
+            }
+        }
+
+        return $colorClass;
     }
 
     /** Онлайн-мотивация при покупке?
