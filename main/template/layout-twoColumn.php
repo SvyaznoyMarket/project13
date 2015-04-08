@@ -76,6 +76,7 @@
     <?= $page->slotUpper() ?>
     <?= $page->slotUserbar() ?>
     <?= $page->slotAuth() ?>
+    <?= $page->slotMustacheTemplates() ?>
 
     <div style="position:absolute; height: 0; z-index:-1; top: 0;">
         <?= $page->slotBodyJavascript() ?>

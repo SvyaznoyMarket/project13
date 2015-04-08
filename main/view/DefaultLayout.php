@@ -628,4 +628,26 @@ class DefaultLayout extends Layout {
         <!-- {/literal} END GIFTERY CODE -->
 EOL;
     }
+
+    public function slotMustacheTemplates() {
+        $templates = [
+            'tpl-cart-kitForm' => 'cart/kitForm.mustache',
+            'tpl-cart-slot-form' => 'cart/slot/form.mustache',
+            'tpl-cart-slot-form-result' => 'cart/slot/form/result.mustache',
+        ];
+
+        $result = '';
+        foreach ($templates as $id => $path) {
+            $result .= $this->getMustacheTemplateInsertion($id, $path);
+        }
+
+        return $result;
+    }
+
+    protected function getMustacheTemplateInsertion($id, $path) {
+        return
+            '<script id="' . $id . '" type="text/html">' . "\n" .
+                file_get_contents(\App::config()->templateDir . '/' . $path) .
+            '</script>' . "\n";
+    }
 }
