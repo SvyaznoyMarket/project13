@@ -12,7 +12,7 @@ $f = function(
                         <?= $helper->render('product-page/blocks/reviews._stars', ['stars' => $reviewsData['avg_star_score']]) ?>
                     </span>
 
-        <span class="product-card-rating__tx"><?= $helper->numberChoiceWithCount($reviewsData['num_reviews'], ['отзыв', 'отзыва', 'отзывов']) ?></span>
+        <a href="#reviews"><span class="product-card-rating__tx"><?= $helper->numberChoiceWithCount($reviewsData['num_reviews'], ['отзыв', 'отзыва', 'отзывов']) ?></span></a>
     </div>
 
     <!--/ Оценка и количество отзывово -->

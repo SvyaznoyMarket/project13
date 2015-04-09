@@ -4969,33 +4969,6 @@ $(document).ready(function() {
     $body.on('TLT_processDOMEvent', TLT_processDOMEvent);
 
 })(jQuery);
-;$(function($){
-
-	// var $menu = $('.js-mainmenu-level2');
-
-	// $menu.menuAim({
-	// 	activate: activateSubmenu,
-	// 	deactivate: deactivateSubmenu,
-	// 	exitOnMouseOut: true
-	// });
-
-	// function activateSubmenu(row) {
-	// 	var $row = $(row),
-	//       $submenu = $row.children('ul');
-
-	// 	$row.addClass('hover');
-	// 	$submenu.css({display: 'block'});
-	// }
-
-	// function deactivateSubmenu(row) {
-	// 	var $row = $(row),
-	// 		$submenu = $row.children('ul');
-
-	// 	$row.removeClass('hover');
-	// 	$submenu.css('display', 'none');
-	// }
-
-}(jQuery));
 /**
  * Кнопка наверх
  *
@@ -5023,11 +4996,11 @@ $(document).ready(function() {
 		if (!visible && $window.scrollTop() > offset && (!showWhenFullCartOnly || cartLength)) {
 			//появление
 			visible = true;
-			$upper.animate({marginTop: '0'}, 400);
+			$upper.fadeIn(400);
 		} else if (visible && ($window.scrollTop() < offset || showWhenFullCartOnly && !cartLength)) {
 			//исчезновение
 			visible = false;
-			$upper.animate({marginTop: '-55px'}, 400);
+			$upper.fadeOut(400);
 		}
 	}
 
@@ -5180,6 +5153,10 @@ $(document).ready(function() {
 		}
 		// end of function
 
+		setTimeout(function() {
+			userBarFixed.removeClass('userbar--show');
+		}, 100);
+
 		// только BuyInfoBlock
 		if ( !upsaleWrap.hasClass('mhintDdOn') ) {
 			removeBuyInfoBlock();
@@ -5207,6 +5184,8 @@ $(document).ready(function() {
 		$.each(emptyCompareNoticeElements, function(){
 			this.removeClass(emptyCompareNoticeShowClass);
 		});
+
+		userBarFixed.addClass('userbar--show');
 
 		var	buyInfo = $('.topbarfix_cartOn');
 

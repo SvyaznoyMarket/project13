@@ -44,5 +44,5 @@ $productPageSender2 = \Session\ProductPageSendersForMarketplace::get($product->g
         <span class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></span><span class="rubl">p</span>
     </div>
 
-    <a href="#" class="topbarfix_buy-btn btn-type btn-type--buy">В корзину</a>
+    <a href="<?= \App::helper()->url('cart') ?>" class="topbarfix_buy-btn btn-type btn-type--buy">В корзину</a>
 </div>
