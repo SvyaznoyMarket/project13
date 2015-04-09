@@ -77,7 +77,7 @@ class ProductButtonAction {
             $data['url'] = '#';
             $data['class'] .= ' btnBuy__eLink mDisabled js-orderButton jsBuyButton';
             $data['value'] = 'Нет';
-        } else if ($product->isOnlyWikimartPartnerOffer()) {
+        } else if (\App::config()->wikimart['enabled'] && $product->isOnlyWikimartPartnerOffer()) {
             $data['url'] = '#';
             $data['class'] .= ' btnBuy__eLink jsWmBuyButton' . $colorClass;
             $data['value'] = 'Купить*';

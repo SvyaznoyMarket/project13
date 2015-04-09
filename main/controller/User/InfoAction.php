@@ -79,7 +79,7 @@ class InfoAction {
                 $responseData['user']['sclubNumber'] = !empty($sclubCard) && isset($sclubCard['number']) ? $sclubCard['number'] : null;
             }
 
-            if (!$cart->isEmpty()) {
+            if (!\App::config()->wikimart['enabled'] && !$cart->isEmpty()) {
 
                 // заполнение недостающих данных для продуктов
                 $productsToUpdate = [];
