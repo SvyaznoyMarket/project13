@@ -10,13 +10,13 @@
 
 <div class="reviews clearfix">
     <div class="reviews__l">
-
-        <? foreach ($reviews as $review) : ?>
-
-            <?= $helper->render('product-page/blocks/reviews.single', ['review' => $review]) ?>
-
-        <? endforeach ?>
-
+        <? if ($reviewsData['num_reviews'] == 0) : ?>
+            Пока нет отзывов.
+        <? else : ?>
+            <? foreach ($reviews as $key => $review) : ?>
+                <?= $helper->render('product-page/blocks/reviews.single', ['review' => $review, 'hidden' => $key > 1]) ?>
+            <? endforeach ?>
+        <? endif ?>
     </div>
 
     <div class="reviews__r">
@@ -26,15 +26,14 @@
 
             <span class="reviews-percentage__tl">Всего <?= $helper->numberChoiceWithCount($reviewsData['num_reviews'], ['отзыв', 'отзыва', 'отзывов']) ?></span>
             <?= $helper->render('product-page/blocks/reviews.rating', ['scores' => (array)$reviewsData['num_users_by_score']]) ?>
-
-        <? else : ?>
-
-            Пока нет отзывов.
-
         <? endif ?>
 
     </div>
 </div>
+
+<? if ($reviewsData['num_reviews'] > 2) : ?>
+    <div class="btn-type btn-type--normal jsShowMoreReviews">Показать больше отзывов</div>
+<? endif ?>
 
 <!-- попап добавления отзыва -->
 <div class="popup popup--add-review jsReviewForm" style="display: none">

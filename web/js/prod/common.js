@@ -281,7 +281,6 @@ loadResponse();};$(document).ready(function(){searchInput.bind('keydown',suggest
 ;(function(){if(/catalog\/tchibo/.test(document.location.href)&&window.history&&window.history.replaceState){var history=window.history;$(window).on('beforeunload',function(){history.replaceState({pageYOffset:pageYOffset},'');});if(history&&history.state&&history.state.pageYOffset){window.scrollTo(0,history.state.pageYOffset);}}}());
 ;(function($){var
 $body=$('body'),TLT=(typeof this.TLT==='object')?this.TLT:null,TLT_logCustomEvent=function(event,TLT_eventName,TLT_eventData){try{console.info('TLT_logCustomEvent',TLT_eventName,TLT_eventData);TLT.logCustomEvent(TLT_eventName,TLT_eventData);}catch(e){console.error(e);}},TLT_processDOMEvent=function(event,originalEvent){try{console.info('TLT_processDOMEvent',originalEvent);TLT.processDOMEvent(originalEvent);}catch(e){console.error(e);}};$body.on('TLT_processDOMEvent',TLT_processDOMEvent);})(jQuery);
-;$(function($){}(jQuery));
 ;(function(){var
 $body=$('body'),$window=$(window),$upper=$('.js-upper'),visible=false,offset=$upper.data('offset'),showWhenFullCartOnly=$upper.data('showWhenFullCartOnly');if(typeof offset=='string'){var $offset=$(offset);if($offset.length){offset=$offset.offset().top;}}
 function checkScroll(){var cartLength=ENTER.UserModel.cart().length;if(!visible&&$window.scrollTop()>offset&&(!showWhenFullCartOnly||cartLength)){visible=true;$upper.fadeIn(400);}else if(visible&&($window.scrollTop()<offset||showWhenFullCartOnly&&!cartLength)){visible=false;$upper.fadeOut(400);}}

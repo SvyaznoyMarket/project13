@@ -35,9 +35,11 @@ $productPageSender2 = \Session\ProductPageSendersForMarketplace::get($product->g
     ]) // Кнопка купить */?>
 
     <div class="topbarfix_buy-price">
+        <? if ($product->getPriceOld()) : ?>
         <div class="product-card-old-price" style="font-size: 12px;">
-            <span class="product-card-old-price__inn">11 223</span> <span class="rubl">p</span>
+            <span class="product-card-old-price__inn"><?= $helper->formatPrice($product->getPriceOld()) ?></span> <span class="rubl">p</span>
         </div>
+        <? endif ?>
 
         <span class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></span><span class="rubl">p</span>
     </div>

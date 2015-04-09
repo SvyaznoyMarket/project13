@@ -202,6 +202,8 @@ $showAccessories = $accessories && \App::config()->product['showAccessories'];
                 <!--/ купить в кредит -->
             <? endif ?>
 
+            <div class="js-showTopBar"></div>
+
 			<!-- сравнить, добавить в виш лист -->
 			<ul class="product-card-tools">
 				<li class="product-card-tools__i product-card-tools__i--onclick">
@@ -267,12 +269,14 @@ $showAccessories = $accessories && \App::config()->product['showAccessories'];
 	<!--/ ссылки связной, сбер и многору -->
 
 	<!-- навигация по странице -->
-	<ul class="product-tabs">
-		<li class="product-tabs__i product-tabs__i--active"><a class="product-tabs__lk" href="" title="">Подробности</a></li>
-		<? if ($showAccessories) : ?><li class="product-tabs__i"><a class="product-tabs__lk" href="" title="">Аксессуары</a></li><? endif ?>
-		<li class="product-tabs__i"><a class="product-tabs__lk" href="" title="">Отзывы</a></li>
-		<li class="product-tabs__i"><a class="product-tabs__lk" href="" title="">Похожие товары</a></li>
-	</ul>
+    <div id="jsScrollSpy" class="jsProductTabs">
+        <ul class="nav product-tabs">
+            <li class="product-tabs__i"><a class="product-tabs__lk" href="#more" title="">Подробности</a></li>
+            <? if ($showAccessories) : ?><li class="product-tabs__i"><a class="product-tabs__lk" href="#accessorize" title="">Аксессуары</a></li><? endif ?>
+            <li class="product-tabs__i"><a class="product-tabs__lk" href="#reviews" title="">Отзывы</a></li>
+            <li class="product-tabs__i jsSimilarTab" style="display: none"><a class="product-tabs__lk" href="#similar" title="">Похожие товары</a></li>
+        </ul>
+    </div>
 	<!--/ навигация по странице -->
 
 	<!-- характеристики/описание товара -->
@@ -281,7 +285,7 @@ $showAccessories = $accessories && \App::config()->product['showAccessories'];
         <?= $helper->render('product-page/blocks/properties', ['product' => $product]) ?>
 
         <div class="product-section__desc">
-			<div class="product-section__tl">Описание</div>
+			<div class="product-section__tl" id="more">Описание</div>
 			<?= $helper->render('product-page/blocks/guides', ['trustfactors' => $trustfactors]) ?>
 			<div class="product-section__content"><?= $product->getDescription() ?></div>
 		</div>
@@ -291,7 +295,7 @@ $showAccessories = $accessories && \App::config()->product['showAccessories'];
     <? if ($showAccessories): ?>
     <!-- аксессуары -->
 	<div class="product-section">
-		<div class="product-section__tl">Аксессуары</div>
+		<div class="product-section__tl" id="accessorize">Аксессуары</div>
 
             <?= $helper->render('product/__slider', [
                 'type'           => 'accessorize',
@@ -316,21 +320,19 @@ $showAccessories = $accessories && \App::config()->product['showAccessories'];
     <? endif ?>
 
 	<? if ($reviewsData) : ?>
+        <!-- отзывы -->
+        <div class="product-section" id="reviews">
+            <div class="product-section__tl">Отзывы</div>
 
-    <!-- отзывы -->
-	<div class="product-section">
-		<div class="product-section__tl">Отзывы</div>
+            <?= $helper->render('product-page/blocks/reviews', ['reviewsData' => $reviewsData, 'product' => $product ]) ?>
 
-		<?= $helper->render('product-page/blocks/reviews', ['reviewsData' => $reviewsData, 'product' => $product ]) ?>
 
-		<div class="btn-type btn-type--normal jsShowMoreReviews">Показать больше отзывов</div>
-	</div>
-	<!--/ отзывы -->
-
+        </div>
+        <!--/ отзывы -->
     <? endif ?>
 
 	<!-- похожие товары -->
-	<div class="product-section product-section--inn">
+	<div class="product-section product-section--inn" id="similar">
 <!--		<div class="product-section__h3">Похожие товары</div>-->
         <? if ($isProductAvailable && \App::config()->product['pullRecommendation']): ?>
             <?= $helper->render('product/__slider', [

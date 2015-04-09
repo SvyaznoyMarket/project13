@@ -98,6 +98,9 @@ $(document).ready(function() {
 	$('.js-slider').goodsSlider({
 		onLoad: function(goodsSlider) {
 			ko.applyBindings(ENTER.UserModel, goodsSlider);
+
+            // Для табов в новой карточке товара
+            if ($(goodsSlider).data('position') == 'ProductSimilar') $('.jsSimilarTab').show();
 		}
 	});
 

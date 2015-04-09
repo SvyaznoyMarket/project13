@@ -1,11 +1,12 @@
 <?php
 $f = function(
     \Helper\TemplateHelper $helper,
-    array $review
+    array $review,
+    $hidden
 ){
     ?>
 
-    <div class="reviews__i jsReviewItem">
+    <div class="reviews__i jsReviewItem" style="display: <?= $hidden ? 'none' : 'block' ?>">
         <div class="reviews__cpt"><div class="reviews__author"><?= $review['author'] ? : 'Аноним' ?></div>,
             <div class="reviews__date"><?= \Util\Date::strftimeRu('%e %B2 %G', DateTime::createFromFormat('Y-m-d', $review['date'])->format('U')) ?></div></div>
 

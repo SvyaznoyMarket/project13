@@ -3,8 +3,10 @@
 * */
 ;(function($){
 
-    var $body = $(document.body),
-        creditButton = $body.find('.jsProductCreditButton');
+    var $window = $(window),
+        $body = $(document.body),
+        $creditButton = $body.find('.jsProductCreditButton'),
+        $tabs = $('.jsProductTabs');
 
     /* Если это не новая карточка, то do nothing */
     if (!$body.hasClass('product-card-new')) return;
@@ -41,16 +43,16 @@
     });
 
     // Кредит
-    if (creditButton.length > 0 && typeof window['dc_getCreditForTheProduct'] == 'function') {
+    if ($creditButton.length > 0 && typeof window['dc_getCreditForTheProduct'] == 'function') {
         window['dc_getCreditForTheProduct'](
             4427,
             window.docCookies.getItem('enter_auth'),
             'getPayment',
-            { price : creditButton.data('credit')['price'], count : 1, type : creditButton.data('credit')['product_type'] },
+            { price : $creditButton.data('credit')['price'], count : 1, type : $creditButton.data('credit')['product_type'] },
             function( result ) {
                 if( typeof result['payment'] != 'undefined' && result['payment'] > 0 ) {
-                    creditButton.find('.jsProductCreditPrice').text( printPrice( Math.ceil(result['payment']) ) );
-                    creditButton.show();
+                    $creditButton.find('.jsProductCreditPrice').text( printPrice( Math.ceil(result['payment']) ) );
+                    $creditButton.show();
                 }
             }
         )
@@ -63,7 +65,29 @@
             onLoad: function() {},
             onClose: function() {}
         });
-    })
+    });
 
+    // Отзывы
+    $body.on('click', '.jsShowMoreReviews', function(){
+        var $hiddenReviews = $('.jsReviewItem:hidden');
+        if ($hiddenReviews.length > 0) {
+            $hiddenReviews.show()
+        } else {
+            // Подгружаем отзывы
+        }
+    });
+
+    if ($tabs.length) {
+        $window.on('scroll', function(){
+            var fixedClass = 'product-tabs-fixed';
+            if ($window.scrollTop() - 70 > $tabs.offset().top) {
+                $tabs.addClass(fixedClass)
+            } else {
+                $tabs.removeClass(fixedClass)
+            }
+        });
+    }
+
+    $body.scrollspy({ target: '#jsScrollSpy' });
 
 })(jQuery);
