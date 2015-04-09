@@ -34,9 +34,10 @@ if(typeof ga==='function'&&ga.getAll().length!=0){ga('require','ecommerce','ecom
 (function(){var checkedSms=false;var checkedEmail=false;var handleSubscribeSms=function(){if(checkedSms){$('#mobilePhoneWrapper').hide();$('#mobilePhoneWrapper').parent().find('.red').html('');checkedSms=false;}else{$('#mobilePhoneWrapper').show();checkedSms=true;}};var handleSubscribeEmail=function(){if(checkedEmail){$('#emailWrapper').hide();$('#emailWrapper').parent().find('.red').html('');checkedEmail=false;}else{$('#emailWrapper').show();checkedEmail=true;}};$(document).ready(function(){checkedSms=$('.smsCheckbox').hasClass('checked');if(!$('#user_mobile_phone').val()){$('.smsCheckbox').bind('click',handleSubscribeSms);}
 checkedEmail=$('.emailCheckbox').hasClass('checked');if(!$('#user_email').val()){$('.emailCheckbox').bind('click',handleSubscribeEmail);}});}());
 
-(function(ENTER){var $body=$('body');$body.on('click','.jsWmBuyButton',function(e){var $button=$(e.currentTarget);$body.trigger('TL_buyButton_clicked');console.info({'wmId':$button.data('wmId')});$button.text('В корзине*');$button.attr('href','/cart');WikimartAffiliate.addGoodToCart($button.data('wmId'));if($button.hasClass('mDisabled')){e.preventDefault();}
+(function(ENTER){var $body=$('body');$body.on('click','.jsWmBuyButton',function(e){var $button=$(e.currentTarget);$body.trigger('TL_buyButton_clicked');console.info({'wmId':$button.data('wmId')});if($button.hasClass('mDisabled')){e.preventDefault();}
 if($button.hasClass('mBought')){document.location.href('/cart');e.preventDefault();}
-e.preventDefault();});$body.on('click','.jsBuyButton',function(e){var $button=$(e.currentTarget);$body.trigger('TL_buyButton_clicked');if($button.hasClass('mDisabled')){e.preventDefault();}
+$button.text('В корзине*');$button.attr('href','/cart');$button.addClass('mBought')
+WikimartAffiliate.addGoodToCart($button.data('wmId'));e.preventDefault();});$body.on('click','.jsBuyButton',function(e){var $button=$(e.currentTarget);$body.trigger('TL_buyButton_clicked');if($button.hasClass('mDisabled')){e.preventDefault();}
 if($button.hasClass('mBought')){document.location.href($button.attr('href'));e.preventDefault();}
 $button.addClass('mLoading');$.ajax({url:$button.attr('href'),type:'GET',success:function(data){var
 upsale=$button.data('upsale')?$button.data('upsale'):null,product=$button.parents('.jsSliderItem').data('product');if(!data.success){return;}
