@@ -7,5 +7,6 @@
 $helper = new \Helper\TemplateHelper();
 ?>
 
-<a class="wikimart-checkout-button" href="#">Показать корзину</a>
-<div id="wikimart-checkout-block" style="position: relative;">Контейнер корзины</div>
+<div id="wikimart-checkout-block" style="position: relative;">Подождите...</div>
+
+<div class="clear"></div>
