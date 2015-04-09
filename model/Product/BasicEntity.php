@@ -7,7 +7,7 @@ class BasicEntity {
 
     const LABEL_ID_PODARI_ZHIZN = 17;
     const PARTNER_OFFER_TYPE_SLOT = 2;
-    const PARTNER_OFFER_ID_WIKIMART = '????'; // TODO
+    const PARTNER_OFFER_ID_WIKIMART = 'ad8fa8fb-6d74-4e2c-ae6e-71fc31ff8ce6'; // TODO
     /** Электронный подарочный сертификат giftery.ru */
     const GIFTERY_UID = '684fb825-ebf5-4e4f-be2b-96a81e938cb2';
 
@@ -167,7 +167,7 @@ class BasicEntity {
      */
     public function getWikimartId() {
         // FIXME: для тестирования
-        return ['79685940', '5389290', '20153091', '20153093', '149172235', '164428694', '108076354'][rand(0, 6)];
+        //return ['79685940', '5389290', '20153091', '20153093', '149172235', '164428694', '108076354'][rand(0, 6)];
 
         return $this->wikimartId;
     }
@@ -619,7 +619,7 @@ class BasicEntity {
      * @return bool
      */
     public function isOnlyWikimartPartnerOffer() {
-        return true;
+        //return true;
         return isset($this->partnersOffer[0]) && (self::PARTNER_OFFER_ID_WIKIMART === $this->partnersOffer[0]['id']); // TODO: wikimart.id
     }
 
