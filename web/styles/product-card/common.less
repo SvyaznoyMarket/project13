@@ -34,21 +34,6 @@
         float: left;
         margin: 15px 0 0;
         width: 660px;
-        .bProductDescImg {
-            width: 600px;
-            position: relative;
-            &Big {
-                width: 600px;
-                height: 500px;
-                .bProductDescImgBig__eImg{
-                    min-width: 500px;
-                    width: auto;
-                    height: 500px;
-                    .inline-block();
-                    float: none;
-                }
-            }
-        }
     }
     &__section-right {
         float: right;
@@ -74,6 +59,13 @@
    						}
                     }
                 }
+    }
+    &__bordered {
+        padding: 0 10px;
+        margin: 10px -10px 0;
+        border-top: 1px solid @lightgreyBr;
+        overflow: hidden;
+        position: relative;
     }
 }
 .fontello-icon {
@@ -147,6 +139,9 @@
         padding: 2px 0px 3px;
         margin-top: 3px;
         min-width: 0px;
+    }
+    &--giftery{
+
     }
 }
 .bBtnLine .btn--slot,

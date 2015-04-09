@@ -2,6 +2,8 @@
 
 namespace View\Cart;
 
+use Session\AbTest\AbTest;
+
 class ProductButtonAction {
     /**
      * @param \Helper\TemplateHelper $helper
@@ -26,6 +28,8 @@ class ProductButtonAction {
     ) {
         $buyUrl = $this->getBuyUrl($helper, $product, $isRetailRocket, $sender, $sender2);
 
+        $colorClass = AbTest::getColorClass($product, $location);
+
         $data = [
             'id'         => 'buyButton-' . $product->getId() . '-'. md5(json_encode([$location, isset($sender['position']) ? $sender['position'] : null])),
             'disabled'   => false,
@@ -38,6 +42,7 @@ class ProductButtonAction {
             'sender'     => $helper->json($sender),
             'sender2'    => $sender2,
             'productUi'  => $product->getUi(),
+            'colorClass' => $colorClass,
             'data'       => [
                 'productId' => $product->getId(),
                 'upsale'    => json_encode([
@@ -47,25 +52,6 @@ class ProductButtonAction {
                 'noUpdate'  => $noUpdate,
             ],
         ];
-
-        // SITE-5394 цвет кнопки купить
-        $colorClass = null;
-        switch (\App::abTest()->getTest('cart_button_color')->getChosenCase()->getKey()) {
-        //switch ('red') {
-            case 'red':
-                $colorClass = ' btnBuy__eLink--red';
-                break;
-            case 'magenta':
-                $colorClass = ' btnBuy__eLink--magenta';
-                break;
-        }
-
-        foreach ($product->getCategory() as $category) {
-            if (in_array($category->getUi(), ['3fe49466-e5cf-4042-963d-025db2142600'])) {
-                $colorClass = null;
-                break;
-            }
-        }
 
         if (!$product->getIsBuyable()) {
             $data['disabled'] = true;
@@ -94,9 +80,9 @@ class ProductButtonAction {
             $data['partnerName'] = $slotPartnerOffer['name'];
             $data['partnerOfferUrl'] = $slotPartnerOffer['offer'];
         } else if ($product->isGifteryCertificate()) {
-            $data['isSlot'] = true;
+            $data['isGiftery'] = true;
             $data['url'] = '#';
-            $data['class'] .= ' btn btn--slot giftery-show-widget ' . ('product-card' !== $location ? 'btn--short' : 'btn--big');
+            $data['class'] .= ' btnBuy__eLink giftery-show-widget ';
             $data['value'] = 'Купить';
         } else if ($product->isInShopStockOnly() && \App::user()->getRegion()->getForceDefaultBuy()) { // Резерв товара
             $data['id'] = 'quickBuyButton-' . $product->getId();

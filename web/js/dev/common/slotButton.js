@@ -4,76 +4,6 @@
 		errorCssClass = 'lbl-error',
 		region = ENTER.config.pageConfig.user.region.name,
 		catalogPath = ENTER.utils.getCategoryPath(),
-		popupTemplate =
-			'<div class="js-slotButton-popup popup--request">' +
-				'<a href="#" class="js-slotButton-popup-close popup--request__close" title="Закрыть"></a>' +
-
-				'<form action="' + ENTER.utils.generateUrl('order.slot.create') + '" method="post">' +
-					'<input type="hidden" name="productId" value="{{productId}}" />' +
-					'<input type="hidden" name="sender" value="{{sender}}" />' +
-					'<input type="hidden" name="sender2" value="{{sender2}}" />' +
-
-					'{{#full}}' +
-						'<div class="popup--request__head msg--recall">Вам перезвонит специалист и поможет выбрать:</div>' +
-						'<ul class="recall-list">' +
-							'<li>состав комплекта и его изменения;</li>' +
-							'<li>условия доставки и сборки.</li>' +
-						'</ul>' +
-					'{{/full}}' +
-
-					'{{^full}}' +
-						'<div class="popup--request__head">Отправить заявку</div>' +
-					'{{/full}}' +
-
-					'<div class="js-slotButton-popup-errors errtx" style="display: none;"></div>' +
-
-					'<div class="popup__form-group js-slotButton-popup-element">' +
-						'<div class="input-group js-slotButton-popup-element-field">' +
-							'<label class="label-for-input label-phone">Телефон</label>' +
-							'<input type="text" name="phone" value="{{userPhone}}" placeholder="+7 (___) ___-__-__" data-mask="+7 (xxx) xxx-xx-xx" class="js-slotButton-popup-phone" />' +
-						'</div>' +
-						'<span class="js-slotButton-popup-element-error popup__form-group__error" style="display: none">Неверный формат телефона</span>' +
-					'</div>' +
-
-					'<div class="popup__form-group js-slotButton-popup-element">' +
-						'<div class="input-group js-slotButton-popup-element-field">' +
-							'<label class="label-for-input">E-mail</label>' +
-							'<input type="text" name="email" value="{{userEmail}}" placeholder="mail@domain.com" class="js-slotButton-popup-email" />' +
-						'</div>' +
-						'<span class="js-slotButton-popup-element-error popup__form-group__error" style="display: none">Неверный формат email</span>' +
-					'</div>' +
-
-					'<div class="popup__form-group">' +
-						'<div class="input-group">' +
-							'<label class="label-for-input">Имя</label>' +
-							'<input type="text" name="name" value="{{userName}}" class="js-slotButton-popup-name" />' +
-						'</div>' +
-					'</div>' +
-
-					'<div class="popup__form-group checkbox-group js-slotButton-popup-element">' +
-						'<div class="checkbox-inner js-slotButton-popup-element-field">' +
-							'<input type="checkbox" name="confirm" value="1" id="accept" class="customInput customInput-checkbox js-customInput js-slotButton-popup-confirm" /><label class="customLabel customLabel-checkbox jsAcceptTerms" for="accept">Я ознакомлен и согласен с информацией {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}о продавце и его офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</label>' +
-						'</div>' +
-					'</div>' +
-					'<div class="popup__form-group vendor">Продавец-партнёр: {{partnerName}}</div>' +
-
-					'<div class="btn--slot--container">' +
-						'<button type="submit" class="js-slotButton-popup-submitButton btn btn--slot btn--big">Отправить заявку</button>' +
-					'</div>' +
-
-					'{{#full}}' +
-						'<div class="popup__form-group msg--goto-card">' +
-							'<a href="{{productUrl}}" class="lnk--goto-card js-slotButton-popup-goToProduct">Перейти в карточку товара</a>' +
-						'</div>' +
-					'{{/full}}' +
-				'</form>' +
-			'</div>',
-
-		popupResultTemplate =
-			'<div class="popup--request__head msg--send">Ваша заявка № {{orderNumber}} отправлена</div>' +
-			'<div class="btn--container">' +
-				'<button type="submit" class="js-slotButton-popup-okButton btn btn--slot btn--big">Ок</button>' +
-			'</div>',
 
 		showError = function($input) {
 			var $element = $input.closest('.js-slotButton-popup-element');
@@ -158,7 +88,8 @@
 			sender = $button.data('sender') || {},
 			productArticle = $button.data('product-article'),
 			productPrice = $button.data('product-price'),
-			$popup = $(Mustache.render(popupTemplate, {
+			$popup = $(Mustache.render($('#tpl-cart-slot-form').html(), {
+				orderCreateUrl: ENTER.utils.generateUrl('order.slot.create'),
 				full: $button.data('full'),
 				partnerName: $button.data('partner-name'),
 				partnerOfferUrl: $button.data('partner-offer-url'),
@@ -241,7 +172,7 @@
 						return;
 					}
 
-					$form.after($(Mustache.render(popupResultTemplate, {
+					$form.after($(Mustache.render($('#tpl-cart-slot-form-result').html(), {
 						orderNumber: result.orderNumber
 					})));
 

@@ -1,4 +1,5 @@
-<div class="{{#isSlot}}btn--slot--container{{/isSlot}} {{^isSlot}}btnBuy {{#isKit}}mBuySet{{/isKit}}{{/isSlot}}">
+<div class="{{#isSlot}}btn--slot--container{{/isSlot}} {{^isSlot}}btnBuy {{#isKit}}mBuySet{{/isKit}}{{/isSlot}}
+{{#isGiftery}}btn--container{{/isGiftery}}">
     <a
         {{#id}}id="{{id}}"{{/id}}
         href="{{url}}"
@@ -10,6 +11,7 @@
         data-sender="{{&sender}}"
         data-sender2="{{sender2}}"
         data-wm-id="{{wikimartId}}"
+        data-color-class="{{colorClass}}"
         {{#full}}data-full="{{full}}"{{/full}}
         {{#productUrl}}data-product-url="{{productUrl}}"{{/productUrl}}
         {{#productArticle}}data-product-article="{{productArticle}}"{{/productArticle}}

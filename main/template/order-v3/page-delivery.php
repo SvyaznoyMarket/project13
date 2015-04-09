@@ -144,8 +144,9 @@ return function(
                 <? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT])) : ?>
 
                     <div class="orderCheck orderCheck-credit clearfix">
-                        <input type="checkbox" class="customInput customInput-checkbox jsCreditPayment" id="credit-<?= $order->block_name ?>" name="" value="" <?= $order->payment_method_id == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT ? 'checked' : '' ?>>
-                        <label class="customLabel" for="credit-<?= $order->block_name ?>">Купить в кредит<!--, от 2 223 <span class="rubl">p</span> в месяц--></label>
+                        <? $checked = $order->payment_method_id == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT; ?>
+                        <input type="checkbox" class="customInput customInput-checkbox jsCreditPayment" id="credit-<?= $order->block_name ?>" name="" value="" <?= $checked ? 'checked' : '' ?>>
+                        <label class="customLabel <?= $checked ? 'mChecked' : '' ?>" for="credit-<?= $order->block_name ?>">Купить в кредит<!--, от 2 223 <span class="rubl">p</span> в месяц--></label>
                     </div>
 
                 <? endif; ?>
@@ -231,8 +232,9 @@ return function(
                 <? if (isset($order->possible_payment_methods[\Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY])) : ?>
 
                     <div class="orderCheck mb10">
-                        <input type="checkbox" class="customInput customInput-checkbox jsCreditCardPayment" id="creditCardsPay-<?= $order->block_name ?>" name="" value="" <?= $order->payment_method_id == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY  ? 'checked ' : '' ?>/>
-                        <label  class="customLabel" for="creditCardsPay-<?= $order->block_name ?>">
+                        <? $checked = $order->payment_method_id == \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CARD_ON_DELIVERY; ?>
+                        <input type="checkbox" class="customInput customInput-checkbox jsCreditCardPayment" id="creditCardsPay-<?= $order->block_name ?>" name="" value="" <?= $checked ? 'checked ' : '' ?>/>
+                        <label  class="customLabel <?= $checked ? 'mChecked ' : '' ?>" for="creditCardsPay-<?= $order->block_name ?>">
                             Оплата банковской картой
                             <span class="dblock colorBrightGrey s">Иначе курьер сможет принять только наличные</span>
                         </label>

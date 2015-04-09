@@ -38,7 +38,7 @@ return function(
                 'token'  => $token,
                 'icon'  => $orderDelivery->points[$token]->icon,
                 'cost'  => (string)$point['cost'],
-                'humanNearestDay'   => $helper->humanizeDate(DateTime::createFromFormat('Y-m-d', $point['nearestDay']), 'Y-m-d'),
+                'humanNearestDay'   => $helper->humanizeDate(DateTime::createFromFormat('Y-m-d', $point['nearestDay'])),
                 'nearestDay'  => $point['nearestDay'],
                 'blockName'    => $orderDelivery->points[$token]->block_name,
                 'orderToken' => $order->block_name,
@@ -151,7 +151,7 @@ return function(
                                                    type="checkbox" id="id-delivery-date-<?= $day.$order->block_name ?>" name="" value="<?= $day ?>"
                                                    data-bind="checked: choosenDates" />
                                             <label class="customLabel customLabel-defcheck2" for="id-delivery-date-<?= $day.$order->block_name ?>">
-                                                <span class="customLabel_btx"><?= $helper->humanizeDate(DateTime::createFromFormat('Y-m-d', $day), 'Y-m-d') ?></span>
+                                                <span class="customLabel_btx"><?= $helper->humanizeDate(DateTime::createFromFormat('Y-m-d', $day)) ?></span>
                                             </label>
                                         </div>
                                     <? endforeach ?>
