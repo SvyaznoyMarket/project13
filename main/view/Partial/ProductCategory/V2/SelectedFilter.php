@@ -70,10 +70,10 @@ class SelectedFilter {
 
                 $links = $this->getPropertyLinks($helper, $productFilter, $property, $baseUrl, $sort);
                 if ($links) {
-                    if ($property->isShop() || ($property->isBrand() && !$property->getIsAlwaysShow())) {
-                        $name = '';
-                    } else {
+                    if (count($group->properties) > 1 || $property->getName() !== $group->name) {
                         $name = $property->getName();
+                    } else {
+                        $name = '';
                     }
 
                     $filterGroup['properties'][] = ['name' => $name, 'links' => $links];
