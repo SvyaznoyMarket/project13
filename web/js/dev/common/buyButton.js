@@ -11,6 +11,8 @@
 		$body.trigger('TL_buyButton_clicked');
 
 		console.info({'wmId': $button.data('wmId')});
+		$button.text('В корзине*');
+		$button.attr('href', '/cart');
 		WikimartAffiliate.addGoodToCart($button.data('wmId'));
 
 		if ($button.hasClass('mDisabled')) {

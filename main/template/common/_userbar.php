@@ -8,7 +8,7 @@
 	<ul class="userbtn js-topbarfix">
 		<?= $page->render('userbar/_userinfo') ?>
 	    <?= $page->render('userbar/_usercompare') ?>
-	    <?= $page->render('userbar/_usercart') ?>
+	    <?= $page->render(\App::config()->wikimart['enabled'] ? 'userbar/_usercart-wikimart' : 'userbar/_usercart') ?>
 	</ul>
 
 	<?= $page->slotUserbarContent() ?>
