@@ -18,6 +18,7 @@ namespace EnterApplication\Action\ProductCard
         {
             //$startAt = microtime(true);
             //$GLOBALS['startAt'] = $startAt;
+            \Debug\Timer::start('curl');
 
             $curl = $this->getCurl();
 
@@ -264,6 +265,8 @@ namespace EnterApplication\Action\ProductCard
             //var_dump($GLOBALS['enter/curl/query/cache']);
             //var_dump($response);
             //die(var_dump('done'));
+
+            \Debug\Timer::stop('curl');
 
             return $response;
         }

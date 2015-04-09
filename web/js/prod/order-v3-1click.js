@@ -379,19 +379,10 @@
 			if (typeof _gaq === 'object') _gaq.push(['_trackEvent', 'Воронка_1 клик_' + region, act, lbl]);
 			if (typeof ga === 'function') ga('send', 'event', 'Воронка_1 клик_' + region, act, lbl);
 
-			// log to console
-			if (typeof ga !== 'function') console.warn('Нет объекта ga');
-			if (typeof ga === 'function' && typeof ga.getAll === 'function' &&  ga.getAll().length == 0) console.warn('Не установлен трекер для ga');
-			console.log('[Google Analytics] Send event: category: "Воронка_1 клик_%s", action: "%s", label: "%s"', region, act, lbl);
 		};
 
     // common listener for triggering from another files or functions
     body.on('trackUserAction.orderV3Tracking', sendAnalytic);
-
-    // TODO вынести инициализацию трекера из ports.js
-    if (typeof ga === 'function' && typeof ga.getAll === 'function' && ga.getAll().length == 0) {
-        ga( 'create', 'UA-25485956-5', 'enter.ru' );
-    }
 
 })(jQuery);
 ;(function(w,ko,$) {
@@ -636,6 +627,8 @@
 
 		var init = function() {
 
+            console.log('Init yandex maps');
+
 			var options = $mapContainer.data('options');
 
 			E.map = new ymaps.Map("yandex-map-container", {
@@ -645,12 +638,26 @@
 				autoFitToViewport: 'always'
 			});
 
-			E.map.controls.remove('searchControl')
+			E.map.controls.remove('searchControl');
 
 			E.mapOptions = options;
 			E.$map = $mapContainer;
 
-			console.info(E.map);
+            // храним тут модели, но неплохо бы и переделать
+            E.koModels = [];
+
+            E.map.events.add('boundschange', function (event) {
+                var bounds;
+                if (event.get('newBounds')) {
+                    bounds = event.get('target').getBounds();
+                    $.each(ENTER.OrderV31Click.koModels, function(i,val){
+                        val.latitudeMin(bounds[0][0]);
+                        val.latitudeMax(bounds[1][0]);
+                        val.longitudeMin(bounds[0][1]);
+                        val.longitudeMax(bounds[1][1]);
+                    });
+                }
+            });
 
 		};
 
@@ -713,7 +720,6 @@
 	//console.log('Model', $('#initialOrderModel').data('value'));
 	ENTER.OrderV31Click.functions.initDelivery = function() {
 		var $orderContent = $('#js-order-content'),
-			comment = '',
 			$popup = $('#jsOneClickContent'),
 			spinner = typeof Spinner == 'function' ? new Spinner({
 				lines: 11, // The number of lines to draw
@@ -823,6 +829,17 @@
 						$orderContent.empty().html($(data.result.page).html());
 						ENTER.OrderV31Click.functions.initAddress();
 						$orderContent.find('input[name=address]').focus();
+
+                        // Новый самовывоз
+                        console.log('Applying knockout bindings');
+                        ENTER.OrderV31Click.koModels = [];
+                        $.each($orderContent.find('.jsNewPoints'), function(i,val) {
+                            var pointData = $.parseJSON($(this).find('script.jsMapData').html()),
+                                points = new ENTER.DeliveryPoints(pointData.points, ENTER.OrderV31Click.map);
+                            ENTER.OrderV31Click.koModels.push(points);
+                            ko.applyBindings(points, val);
+                        })
+
 					}).always(function(){
 						$orderContent.stop(true, true).fadeIn(200);
 						if (spinner) spinner.stop();
@@ -838,7 +855,7 @@
 			},
 			showMap = function(elem, token) {
 				var $currentMap = elem.find('.js-order-map').first(),
-					mapData = $currentMap.data('value'),
+                    mapData = $.parseJSON($currentMap.next().html()), // не очень хорошо
 					mapOptions = ENTER.OrderV31Click.mapOptions,
 					map = ENTER.OrderV31Click.map;
 
@@ -848,7 +865,7 @@
 					$currentMap.siblings('.selShop_l[data-token='+token+']').show();
 				}
 
-				if (mapData) {
+				if (mapData && typeof map.getType == 'function') {
 
 					if (!elem.is(':visible')) elem.show();
 
@@ -857,42 +874,29 @@
 					$currentMap.append(ENTER.OrderV31Click.$map.show());
 					map.container.fitToViewport();
 
-					for (var i = 0; i < mapData.points[token].length; i++) {
-						var point = mapData.points[token][i],
-							balloonContent = 'Адрес: ' + point.address;
+                    // добавляем невидимые точки на карту
+                    $.each(mapData.points, function(token){
+                        for (var i = 0; i < mapData.points[token].length; i++) {
+                            try {
+                                map.geoObjects.add(new ENTER.Placemark(mapData.points[token][i], false));
+                            } catch (e) {
+                                console.error('Ошибка добавления точки на карту', e);
+                            }
+                        }
+                    });
 
-						if (!point.latitude || !point.longitude) continue;
-
-						if (point.regtime) balloonContent += '<br /> Время работы: ' + point.regtime;
-
-						// кнопка "Выбрать магазин"
-						balloonContent += '<br />' + $('<button />', {
-								'text':'Выбрать магазин',
-								'class': 'btnLightGrey jsChangePoint',
-								'data-id': point.id,
-								'data-token': token
-							}
-						)[0].outerHTML;
-
-						var placemark = new ymaps.Placemark([point.latitude, point.longitude], {
-							balloonContentHeader: point.name,
-							balloonContentBody: balloonContent,
-							hintContent: point.name
-						}, {
-							iconLayout: 'default#image',
-							iconImageHref: point.marker.iconImageHref,
-							iconImageSize: point.marker.iconImageSize,
-							iconImageOffset: point.marker.iconImageOffset
-						});
-
-						map.geoObjects.add(placemark);
-					}
-
-					if (map.geoObjects.getLength() === 1) {
-						map.setCenter(map.geoObjects.get(0).geometry.getCoordinates(), 15);
-					} else {
-						map.setBounds(map.geoObjects.getBounds());
-					}
+                    if (map.geoObjects.getLength() === 1) {
+                        map.setCenter(map.geoObjects.get(0).geometry.getCoordinates(), 15);
+                        map.geoObjects.get(0).options.set('visible', true);
+                    } else {
+                        map.setBounds(map.geoObjects.getBounds());
+                        // точки становятся видимыми только при увеличения зума
+                        map.events.once('boundschange', function(event){
+                            if (event.get('oldZoom') < event.get('newZoom')) {
+                                map.geoObjects.each(function(point) { point.options.set('visible', true)})
+                            }
+                        })
+                    }
 
 				} else {
 					console.error('No map data for token = "%s"', token,  elem);
@@ -920,10 +924,14 @@
 					$body.children('.lb_overlay')[1].remove();
 					changePoint($(this).closest('.selShop').data('block_name'), id, token);
 				}
-			}
-			;
+			};
 
-		// TODO change all selectors to .jsMethod
+        // новый самовывоз
+        $body.on('click', '.jsOrderV3Dropbox',function(){
+            $(this).siblings().removeClass('opn').find('.jsOrderV3DropboxInner').hide(); // скрываем все, кроме потомка
+            $(this).find('.jsOrderV3DropboxInner').toggle(); // потомка переключаем
+            $(this).hasClass('opn') ? $(this).removeClass('opn') : $(this).addClass('opn');
+        });
 
 		// клик по крестику на всплывающих окнах
 		$orderContent.on('click', '.jsCloseFl', function(e) {
@@ -1024,27 +1032,6 @@
 			$(this).closest('#jsOneClickContent').trigger('close');
 		});
 	};
-
-	// отслеживаем смену региона
-	/*
-	 $body.on('click', 'a.jsChangeRegionAnalytics', function(e){
-	 var newRegion = $(this).text(),
-	 oldRegion = $('.jsRegion').data('value'),
-	 link = $(this).attr('href');
-
-	 e.preventDefault();
-	 // TODO вынести как функцию с проверкой существования ga и немедленным вызовом hitCallback в остуствии ga и трекера
-	 ga('send', 'event', {
-	 'eventCategory': 'Воронка_' + oldRegion,
-	 'eventAction': '8 Регион_Доставка',
-	 'eventLabel': 'Было: ' + oldRegion + ', Стало: ' + newRegion,
-	 'hitCallback': function() {
-	 window.location.href = link;
-	 }
-	 });
-
-	 })
-	 */
 })(jQuery);
 ;(function($) {
 
@@ -1055,7 +1042,7 @@
 			errorClass = 'textfield-err',
 			validateEmail = function validateEmailF(email) {
 				var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-				return re.test(email);
+				return re.test(email) && !/[а-яА-Я]/.test(email);
 			},
 			validate = function validateF(){
 				var isValid = true,
@@ -1064,16 +1051,19 @@
 					$deliveryMethod = $('.orderCol_delivrLst_i-act span'),
 					phone = $phoneInput.val().replace(/\s+/g, '');
 
-				if (!/8\(\d{3}\)\d{3}-\d{2}-\d{2}/.test(phone)) {
+				if (!/\+7\(\d{3}\)\d{3}-\d{2}-\d{2}/.test(phone)) {
 					isValid = false;
 					$phoneInput.addClass(errorClass).siblings('.errTx').show();
 				} else {
 					$phoneInput.removeClass(errorClass).siblings('.errTx').hide();
 				}
 
-				if ($emailInput.val().length != 0 && !validateEmail($emailInput.val())) {
-					isValid = false;
-					$emailInput.addClass(errorClass).siblings('.errTx').show();
+				if ($emailInput.hasClass('jsOrderV3EmailRequired') && $emailInput.val().length == 0) {
+                    $emailInput.addClass('textfield-err').siblings('.errTx').text('Не указан email').show();
+                    isValid = false;
+                } else if ($emailInput.val().length != 0 && !validateEmail($emailInput.val())) {
+                    $emailInput.addClass('textfield-err').siblings('.errTx').text('Неверный формат email').show();
+                    isValid = false;
 				} else {
 					$emailInput.removeClass(errorClass).siblings('.errTx').hide();
 				}

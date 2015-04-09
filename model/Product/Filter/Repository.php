@@ -145,9 +145,10 @@ class Repository {
      * @param \Http\Request $request
      * @param \Model\Shop\Entity|null $shop
      * @param bool $unsetBrandFilterImages
+     * @param \Closure|null $isPreserveImagesForProperty
      * @return \Model\Product\Filter
      */
-    public function createProductFilter(array $filters, \Model\Product\Category\Entity $category = null, \Model\Brand\Entity $brand = null, \Http\Request $request, $shop = null, $unsetBrandFilterImages = true) {
+    public function createProductFilter(array $filters, \Model\Product\Category\Entity $category = null, \Model\Brand\Entity $brand = null, \Http\Request $request, $shop = null, $isPreserveImagesForProperty = null) {
         // регион для фильтров
         $region = \App::user()->getRegion();
 
@@ -239,13 +240,13 @@ class Repository {
         $productFilter->setValues($values);
 
         foreach ($productFilter->getFilterCollection() as $property) {
-            if (\Model\Product\Filter\Entity::TYPE_LIST == $property->getTypeId() && !in_array($property->getId(), ['shop', 'category'])) {
+            if (\Model\Product\Filter\Entity::TYPE_LIST == $property->getTypeId() && !in_array($property->getId(), ['shop', 'category']) && !($category && $category->isTyre() && in_array($property->getName(), ['Сезон', 'Ширина', 'Профиль', 'Диаметр'], true))) {
                 $property->setIsMultiple(true);
             } else {
                 $property->setIsMultiple(false);
             }
 
-            if ($unsetBrandFilterImages && $property->isBrand()) {
+            if (!$isPreserveImagesForProperty || !$isPreserveImagesForProperty($property)) {
                 foreach ($property->getOption() as $option) {
                     $option->setImageUrl('');
                 }

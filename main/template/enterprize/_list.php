@@ -96,7 +96,7 @@ $f = function(
                     + (
                         $userEntity
                         ? [
-                            'mobile' => $userEntity->getMobilePhone(),
+                            'mobile' => preg_replace('/^8/', '+7', $userEntity->getMobilePhone()),
                             'name'   => $userEntity->getFirstName(),
                             'email'  => $userEntity->getEmail(),
                         ]

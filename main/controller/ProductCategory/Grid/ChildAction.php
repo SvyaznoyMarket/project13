@@ -91,8 +91,11 @@ class ChildAction {
         });
 
         if (
-            $category->getProductCount() == 0 && (bool)$category->getAncestor() &&
-            $category->getAncestor()[0]->getToken() == 'tchibo' && \App::config()->preview !== true
+            ($category->getProductCount() == 0)
+            && (bool)$category->getAncestor()
+            && ($category->getAncestor()[0]->getToken() == 'tchibo')
+            && (\App::config()->preview !== true)
+            && !\App::config()->debug
         ) {
             return new \Http\RedirectResponse(\App::router()->generate('tchibo.where_buy', $request->query->all()));
         }

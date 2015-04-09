@@ -2,7 +2,10 @@
 
     ENTER.OrderV3 = ENTER.OrderV3 || {};
 
-    console.log('Model', $('#initialOrderModel').data('value'));
+    try {
+        console.log('Model', $.parseJSON($('#initialOrderModel').html()));
+    } catch (e) {
+    }
 
     var body = document.getElementsByTagName('body')[0],
         $body = $(body),
@@ -137,8 +140,12 @@
                     window.location.href = response.result.redirect;
                 }
             }).done(function(data) {
-                console.log("Query: %s", data.result.OrderDeliveryRequest);
+
+                //console.log("Query: %s", data.result.OrderDeliveryRequest);
                 console.log("Model:", data.result.OrderDeliveryModel);
+
+                $('.jsNewPoints').remove(); // иначе неправильно работает биндинг
+
                 $orderContent.empty().html($(data.result.page).find('#js-order-content').html());
 				if ($orderContent.find('.jsAddressRootNode').length > 0) {
 					$.each($orderContent.find('.jsAddressRootNode'), function(i,val){
@@ -146,6 +153,16 @@
 					});
 					if (typeof ENTER.OrderV3.constructors.smartAddressInit == 'function') ENTER.OrderV3.constructors.smartAddressInit();
 				}
+
+                // Новый самовывоз
+                ENTER.OrderV3.koModels = [];
+                $.each($orderContent.find('.jsNewPoints'), function(i,val) {
+                    var pointData = $.parseJSON($(this).find('script.jsMapData').html()),
+                        points = new ENTER.DeliveryPoints(pointData.points, ENTER.OrderV3.map);
+                    ENTER.OrderV3.koModels.push(points);
+                    ko.applyBindings(points, val);
+                })
+
             }).always(function(){
                 $orderContent.stop(true, true).fadeIn(200);
                 if (spinner) spinner.stop();
@@ -159,19 +176,18 @@
                 "url": '/order/log'
             })
         },
-        showMap = function(elem, token) {
+        showMap = function(elem) {
             var $currentMap = elem.find('.js-order-map').first(),
-                mapData = $currentMap.data('value'),
+                mapData = $.parseJSON($currentMap.next().html()), // не очень хорошо
                 mapOptions = ENTER.OrderV3.mapOptions,
                 map = ENTER.OrderV3.map;
 
-            if (!token) {
-                token = Object.keys(mapData.points)[0];
-                $currentMap.siblings('.selShop_l').hide();
-                $currentMap.siblings('.selShop_l[data-token='+token+']').show();
-            }
+            if (mapData && typeof map.getType == 'function') {
 
-            if (mapData) {
+                elem.lightbox_me({
+                    centered: true,
+                    closeSelector: '.jsCloseFl'
+                });
 
                 if (!elem.is(':visible')) elem.show();
 
@@ -180,45 +196,30 @@
                 $currentMap.append(ENTER.OrderV3.$map.show());
                 map.container.fitToViewport();
 
-                for (var i = 0; i < mapData.points[token].length; i++) {
-                    var point = mapData.points[token][i],
-                        balloonContent = 'Адрес: ' + point.address;
-
-                    if (!point.latitude || !point.longitude) continue;
-
-                    if (point.regtime) balloonContent += '<br /> Время работы: ' + point.regtime;
-
-                    // кнопка "Выбрать магазин"
-                    balloonContent += '<br />' + $('<button />', {
-                        'text':'Выбрать магазин',
-                        'class': 'btnLightGrey jsChangePoint',
-                        'data-id': point.id,
-                        'data-token': token
+                // добавляем невидимые точки на карту
+                $.each(mapData.points, function(token){
+                    for (var i = 0; i < mapData.points[token].length; i++) {
+                        try {
+                            map.geoObjects.add(new ENTER.Placemark(mapData.points[token][i], false));
+                        } catch (e) {
+                            console.error('Ошибка добавления точки на карту', e);
                         }
-                    )[0].outerHTML;
-
-                    var placemark = new ymaps.Placemark([point.latitude, point.longitude], {
-                        balloonContentHeader: point.name,
-                        balloonContentBody: balloonContent,
-                        hintContent: point.name
-                    }, {
-                        iconLayout: 'default#image',
-                        iconImageHref: point.marker.iconImageHref,
-                        iconImageSize: point.marker.iconImageSize,
-                        iconImageOffset: point.marker.iconImageOffset
-                    });
-
-                    map.geoObjects.add(placemark);
-                }
+                    }
+                });
 
                 if (map.geoObjects.getLength() === 1) {
                     map.setCenter(map.geoObjects.get(0).geometry.getCoordinates(), 15);
+                    map.geoObjects.get(0).options.set('visible', true);
                 } else {
                     map.setBounds(map.geoObjects.getBounds());
+                    // точки становятся видимыми только при увеличения зума
+                    map.events.once('boundschange', function(event){
+                        if (event.get('oldZoom') < event.get('newZoom')) {
+                            map.geoObjects.each(function(point) { point.options.set('visible', true)})
+                        }
+                    })
                 }
 
-            } else {
-                console.error('No map data for token = "%s"', token,  elem);
             }
 		},
 
@@ -263,16 +264,7 @@
         $('.popupFl').hide();
 
         if ($(this).hasClass('js-order-changePlace-link')) {
-            var token = $(elemId).find('.selShop_l:first').data('token');
-            // скрываем все списки точек и показываем первую
-            $(elemId).find('.selShop_l').hide().first().show();
-            // первая вкладка активная
-            $(elemId).find('.selShop_tab').removeClass('selShop_tab-act').first().addClass('selShop_tab-act');
-            $(elemId).lightbox_me({
-                centered: true,
-                closeSelector: '.jsCloseFl'
-            });
-            showMap($(elemId), token);
+            showMap($(elemId));
             $body.trigger('trackUserAction', ['10 Место_самовывоза_Доставка_ОБЯЗАТЕЛЬНО']);
         } else {
             $(elemId).show();
@@ -294,7 +286,7 @@
         $('.selShop_tab').removeClass('selShop_tab-act');
         $('.selShop_tab[data-token='+token+']').addClass('selShop_tab-act');
         // показ карты
-        showMap($('#'+id), token);
+        showMap($('#'+id));
     });
 
     // клик по "Ввести код скидки"
@@ -307,11 +299,7 @@
     $orderContent.on('click', '.orderCol_delivrLst li', function() {
         var $elem = $(this);
         if (!$elem.hasClass('orderCol_delivrLst_i-act')) {
-//            if ($elem.data('delivery_group_id') == 1) {
-//                showMap($elem.parent().siblings('.selShop').first());
-//            } else {
-                changeDelivery($(this).closest('.orderRow').data('block_name'), $(this).data('delivery_method_token'));
-//            }
+            changeDelivery($elem.closest('.orderRow').data('block_name'), $elem.data('delivery_method_token'));
         }
     });
 
@@ -326,13 +314,20 @@
 
     // клик по списку точек самовывоза
     $body.on('click', '.jsChangePoint', function() {
-        var id = $(this).data('id'),
+        var blockname = $(this).data('blockname'),
+            id = $(this).data('id'),
             token = $(this).data('token');
         if (id && token) {
             $body.trigger('trackUserAction', ['10_1 Ввод_данных_Самовывоза_Доставка_ОБЯЗАТЕЛЬНО']);
             $body.children('.selShop, .lb_overlay').remove();
-            changePoint($(this).closest('.selShop').data('block_name'), id, token);
+            changePoint(blockname, id, token);
         }
+    });
+
+    $body.on('click', '.jsOrderV3Dropbox',function(){
+        $(this).siblings().removeClass('opn').find('.jsOrderV3DropboxInner').hide(); // скрываем все, кроме потомка
+        $(this).find('.jsOrderV3DropboxInner').toggle(); // потомка переключаем
+        $(this).hasClass('opn') ? $(this).removeClass('opn') : $(this).addClass('opn');
     });
 
     // клик на селекте интервала
@@ -413,16 +408,6 @@
         e.preventDefault();
     });
 
-    // клик по "хочу быстрее"
-    $orderContent.on('click', '.jsWanna', function(){
-        var span = '<span style="margin: 5px 0 17px 10px; display: inline-block; color: #878787;">Спасибо за участие в опросе.</span>';
-        $(span).insertAfter($(this));
-        $(this).hide();
-        window.docCookies.setItem('enter_order_v3_wanna', 1, 0, '/order');
-        $body.trigger('trackUserAction', ['1_2 Срок_Хочу_быстрее_Доставка']);
-        log({'action':'wanna'});
-    });
-
     $orderContent.on('click', '.jsDeleteCertificate', function(){
         var block_name = $(this).closest('.orderRow').data('block_name');
         deleteCertificate(block_name);
@@ -460,7 +445,10 @@
 		var $this = $(this),
 			block_name = $this.closest('.orderRow').data('block_name'),
 			method = $this.val();
-        if (method == 'by_online_credit') $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Кредит']);
+        if (method == 'by_online_credit') {
+            $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Кредит']);
+            $body.trigger('trackGoogleEvent', ['Credit', 'Выбор опции', 'Оформление заказа']);
+        }
         if (method == 'by_online') $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Онлайн-оплата']);
 		changePaymentMethod(block_name, method, 'true')
 	});
@@ -489,15 +477,13 @@
             link = $(this).attr('href');
 
         e.preventDefault();
-        // TODO вынести как функцию с проверкой существования ga и немедленным вызовом hitCallback в остуствии ga и трекера
-        ga('send', 'event', {
+
+        $body.trigger('trackGoogleEvent', [{
             'eventCategory': 'Воронка_' + oldRegion,
             'eventAction': '8 Регион_Доставка',
             'eventLabel': 'Было: ' + oldRegion + ', Стало: ' + newRegion,
-            'hitCallback': function() {
-                window.location.href = link;
-            }
-        });
+            'hitCallback': link
+        }]);
 
     })
 

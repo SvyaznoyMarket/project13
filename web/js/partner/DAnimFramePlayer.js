@@ -275,8 +275,10 @@ var DAnimFramePlayer = function (ParentItem, Host) {
 
     var playTimeInterval=null;
 
-    function OnPressSmallButtL()
+    function OnPressSmallButtL(event)
     {
+		event = event || window.event;
+
         if ((bOldIE?window.event.button:event.button)!=2)
         {
             if (playTimeInterval)
@@ -299,8 +301,10 @@ var DAnimFramePlayer = function (ParentItem, Host) {
         }
     }
 
-    function OnPressSmallButtR()
+    function OnPressSmallButtR(event)
     {
+		event = event || window.event;
+
         if ((bOldIE?window.event.button:event.button)!=2)
         {
             if (playTimeInterval)

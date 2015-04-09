@@ -3,12 +3,11 @@
 		d = $(document),
 		debugPanel = $('.jsDebugPanel'),
 		debugPanelContent = $('.jsDebugPanelContent'),
-		currentDebugPanelItemConfig = debugPanel.data('value'),
+		currentDebugPanelItemConfig = $.parseJSON(debugPanel.find('script').eq(0).html()),
 		currentDebugPanelItemContent = debugPanel.find('.jsCurrentDebugPanelItemContent'),
-		prevDebugPanelItemConfig = debugPanel.data('prev-value'),
+		prevDebugPanelItemConfig = $.parseJSON(debugPanel.find('script').eq(1).html()),
 		prevDebugPanelItemContent = debugPanel.find('.jsPrevDebugPanelItemContent');
 	// end of vars
-
 
 	var
 		/**
@@ -85,7 +84,6 @@
 
                 data.name = name;
                 data.iconUrl = '/debug/icons/git.png';
-                console.info(data)
 
                 html = Mustache.render(template, data, partials);
 
@@ -264,8 +262,7 @@
 				if ( !debugInfo ) {
 					throw "debugInfo error";
 				}
-			}
-			catch (e) {
+			} catch (e) {
 				console.warn(e);
 				return;
 			}
@@ -330,7 +327,7 @@
             $(this).parent().remove();
 
             return false;
-        },
+        };
 
 		/**
 		 * Открытие дебаг панели
@@ -352,4 +349,4 @@
 
 	d.ajaxSuccess(ajaxResponse);
 
-}(this, this.document, this.jQuery, this.ENTER, this.Mustache));
+}(window, document, jQuery, ENTER, Mustache));

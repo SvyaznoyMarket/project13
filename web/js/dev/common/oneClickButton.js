@@ -69,7 +69,6 @@
 				if (typeof $(elem).data('mask') !== 'undefined') $(elem).mask($(elem).data('mask'));
 			});
 
-			console.warn($target.length);
 			if ($target.length) {
 				var data = $.parseJSON($orderContent.data('param'));
 				data.quantity = button.data('quantity');
@@ -92,6 +91,9 @@
 							$target.remove();
 							$('.jsOneClickForm').remove();
 						}
+                        $('.jsNewPoints').remove();            // удалить ранее созданные карты
+                        ENTER.OrderV31Click.koModels = [];
+                        ENTER.OrderV31Click.map.destroy();
 					}
 				});
 
@@ -115,6 +117,15 @@
 					console.log("Query: %s", data.result.OrderDeliveryRequest);
 					console.log("Model:", data.result.OrderDeliveryModel);
 					$orderContent.empty().html($(data.result.page).html());
+
+                    $.each($('.jsNewPoints'), function(i,val) {
+                        var E = ENTER.OrderV31Click,
+                            pointData = JSON.parse($(this).find('script.jsMapData').html()),
+                            points = new ENTER.DeliveryPoints(pointData.points, E.map);
+
+                        E.koModels.push(points);
+                        ko.applyBindings(points, val);
+                    });
 
 					ENTER.OrderV31Click.functions.initAddress();
 					$orderContent.find('input[name=address]').focus();

@@ -173,6 +173,7 @@ class Cart {
      */
     public function getProductsNC(){
         $data = $this->storage->get($this->sessionNameNC);
+
         return isset($data['product']) ? $data['product'] : null;
     }
 
@@ -211,9 +212,9 @@ class Cart {
      * @return bool
      */
     public function hasProduct($productId) {
-        $data = $this->storage->get($this->sessionName);
+        $data = $this->storage->get($this->sessionNameNC);
 
-        return array_key_exists($productId, $data['productList']);
+        return array_key_exists($productId, $data['product']);
     }
 
     /** Возвращает массив id продуктов, добавленных в кредит (или пустой массив)
@@ -301,12 +302,14 @@ class Cart {
     }
 
     /**
+     * TODO получать товары из новой корзины
      * @return array
      */
     public function getProductData() {
         $data = $this->getData();
         $return = [];
         foreach ($data['productList'] as $productId => $productQuantity) {
+            if ($productQuantity == 0) continue;
             $return[] = [
                 'id'       => $productId,
                 'quantity' => $productQuantity
@@ -357,5 +360,9 @@ class Cart {
                 $this->products[$productData['id']] = new \Model\Cart\Product\Entity($productData);
             }
         }
+    }
+
+    public function count() {
+        return count($this->getProducts());
     }
 }

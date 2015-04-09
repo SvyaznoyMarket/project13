@@ -10,7 +10,7 @@
 		cancelInputBlur = false,
         validateEmail = function validateEmailF(email) {
             var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(email);
+            return re.test(email) && !/[а-яА-Я]/.test(email);
         },
 		validateMnogoRu = function validateMnogoRuF(val){
 			return val.length == 0 || /\d{4}\s\d{4}/.test(val)
@@ -24,7 +24,7 @@
 				$subscribeInput = $('.jsOrderV3SubscribeCheckbox'),
 				phone = $phoneInput.val().replace(/\s+/g, '');
 
-			if (!/8\(\d{3}\)\d{3}-\d{2}-\d{2}/.test(phone)) {
+			if (!/\+7\(\d{3}\)\d{3}-\d{2}-\d{2}/.test(phone)) {
 				error.push('Неверный формат телефона');
 				$phoneInput.addClass('textfield-err').siblings('.errTx').show();
 			} else {
@@ -44,7 +44,7 @@
 			if ($bonusCardInput.length > 0) $bonusCardInput.mask($bonusCardInput.data('mask')); // еще раз, т.к. событие blur и последующий validate проскакивает раньше обновления значения инпута плагином
 			if ($mnogoRuInput.length > 0) $mnogoRuInput.mask($mnogoRuInput.data('mask')); // еще раз, т.к. событие blur и последующий validate проскакивает раньше обновления значения инпута плагином
 
-			if ($bonusCardInput.val().length != 0 && !ENTER.utils.checkEan($bonusCardInput.val())) {
+			if ($bonusCardInput.length > 0 && $bonusCardInput.val().length != 0 && !ENTER.utils.checkEan($bonusCardInput.val())) {
 				error.push('Неверный код карты лояльности');
 				$bonusCardInput.addClass(errorClass).siblings('.errTx').show();
 			} else {
@@ -87,6 +87,7 @@
         } else {
 			// запоминаем значение номера карты Много.ру
 			if ($mnogoRuInput) docCookies.setItem('enter_mnogo_ru', $mnogoRuInput.val(), 31536e3, '/');
+            console.log('mnogo.ru', docCookies.getItem('enter_mnogo_ru'))
 		}
     });
 

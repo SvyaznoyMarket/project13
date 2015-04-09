@@ -325,7 +325,7 @@
 
     // устанавливаем маску для поля "Ваш мобильный телефон"
     $.mask.definitions['n'] = '[0-9]';
-    mobilePhoneField.length && mobilePhoneField.mask('8 (nnn) nnn-nn-nn');
+    mobilePhoneField.length && mobilePhoneField.mask('+7 (nnn) nnn-nn-nn');
 
     body.on('submit', '.jsEnterprizeForm', formSubmit);
     body.on('click', '.jsEnterprizeAuthLink', openAuth);
@@ -362,6 +362,13 @@
             $self.addClass(activeClass);
             $self.closest('.js-enterprize-coupon-parent').append(html);
             $('.js-enterprize-coupon-hint').addClass(selectClass);
+
+			$('.js-phone-mask').each(function() {
+				var $self = $(this);
+				$.mask.definitions['n'] = '[0-9]';
+				$self.length && $self.mask('+7 (nnn) nnn-nn-nn');
+			});
+
             body.trigger('trackGooglePageview', ['/enterprize/form/' + dataValue.token]);
         }
 
@@ -402,13 +409,6 @@
 
     	$(this).closest('.js-enterprize-coupon-hint').remove();
     	$('.js-enterprize-coupon').removeClass('act');
-    });
-
-    body.on('focus', '.js-phone-mask', function() {
-        var $self = $(this);
-
-        $.mask.definitions['n'] = '[0-9]';
-        $self.length && $self.mask('8 (nnn) nnn-nn-nn');
     });
 
     body.on('click', '.js-ep-rules-toggle', function(e) {

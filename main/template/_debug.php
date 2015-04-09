@@ -168,7 +168,9 @@
     </div>
 </script>
 
-<div class="jsDebugPanel debug-panel" data-value="<?= $helper->json($debugData) ?>" data-prev-value="<?= $helper->json($prevDebugData) ?>">
+<div class="jsDebugPanel debug-panel" data-value="" data-prev-value="">
+    <script type="application/json"><?= json_encode($debugData, JSON_UNESCAPED_UNICODE) ?></script>
+    <script type="application/json"><?= json_encode($prevDebugData, JSON_UNESCAPED_UNICODE) ?></script>
     <a class="debug-panel-open jsOpenDebugPanelContent" href="#">debug</a>
     <div class="debug-panel-content jsDebugPanelContent">
         <div class="debug-panel-item-prev" title="Previous document debug">

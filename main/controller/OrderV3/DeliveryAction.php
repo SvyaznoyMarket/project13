@@ -173,7 +173,7 @@ class DeliveryAction extends OrderV3 {
                     $i * \App::config()->coreV2['timeout']
                 );
             } catch (\Exception $e) {
-                if ($e->getCode() == 600) throw $e; // когда удалили последний товар
+                if (in_array($e->getCode(), [600, 759])) throw $e; // когда удалили последний товар, некорректный email
             }
 
             if ($orderDeliveryData) break; // если получен ответ прекращаем попытки
@@ -208,6 +208,10 @@ class DeliveryAction extends OrderV3 {
     private function formatChanges($data, $previousSplit) {
 
         $changes = [];
+
+        if (isset($data['user_info']['phone'])) {
+            $data['user_info']['phone'] = preg_replace('/^\+7/', '8', $data['user_info']['phone']);
+        }
 
         switch ($data['action']) {
 

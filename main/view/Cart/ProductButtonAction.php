@@ -2,6 +2,8 @@
 
 namespace View\Cart;
 
+use Session\AbTest\AbTest;
+
 class ProductButtonAction {
     /**
      * @param \Helper\TemplateHelper $helper
@@ -26,6 +28,8 @@ class ProductButtonAction {
     ) {
         $buyUrl = $this->getBuyUrl($helper, $product, $isRetailRocket, $sender, $sender2);
 
+        $colorClass = AbTest::getColorClass($product, $location);
+
         $data = [
             'id'         => 'buyButton-' . $product->getId() . '-'. md5(json_encode([$location, isset($sender['position']) ? $sender['position'] : null])),
             'disabled'   => false,
@@ -38,6 +42,7 @@ class ProductButtonAction {
             'sender'     => $helper->json($sender),
             'sender2'    => $sender2,
             'productUi'  => $product->getUi(),
+            'colorClass' => $colorClass,
             'data'       => [
                 'productId' => $product->getId(),
                 'upsale'    => json_encode([
@@ -77,12 +82,12 @@ class ProductButtonAction {
         } else if ($product->isInShopStockOnly() && \App::user()->getRegion()->getForceDefaultBuy()) { // Резерв товара
             $data['id'] = 'quickBuyButton-' . $product->getId();
             $data['url'] = $this->getOneClickBuyUrl($helper, $product, $isRetailRocket, $sender, $sender2);
-            $data['class'] .= ' btnBuy__eLink js-orderButton jsOneClickButton-new';
+            $data['class'] .= ' btnBuy__eLink js-orderButton jsOneClickButton-new' . $colorClass;
             $data['value'] = 'Купить';
         } else if ($product->getKit() && !$product->getIsKitLocked()) {
             $data['isKit'] = $location === 'slider' ? false : true;
             $data['value'] = 'Купить';
-            $data['class'] .= ' btnBuy__eLink js-orderButton js-kitButton';
+            $data['class'] .= ' btnBuy__eLink js-orderButton js-kitButton' . $colorClass;
             $data['url'] = $this->getKitBuyUrl($helper, $product, $isRetailRocket, $sender, $sender2);
 		} else if (\App::user()->getCart()->hasProduct($product->getId()) && !$noUpdate) {
             $data['url'] = $helper->url('cart');
@@ -90,7 +95,7 @@ class ProductButtonAction {
             $data['value'] = 'В корзине';
         } else {
             $data['url'] = $buyUrl;
-            $data['class'] .= ' btnBuy__eLink js-orderButton jsBuyButton';
+            $data['class'] .= ' btnBuy__eLink js-orderButton jsBuyButton' . $colorClass;
             $data['value'] = 'Купить';
         }
 

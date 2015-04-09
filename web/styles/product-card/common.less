@@ -1,32 +1,6 @@
 .product-container {
     background-color: @white;
-   .bBreadcrumbs {
-   		margin-left: 15px;
-        //Стили для новой карточки товара, пока не используем.
-        /*&__eItem {
-            background: none;
-            position: relative;
-            float: left;
-            margin: 0px;
-            padding: 0px 18px 0 0;
-            &:after {
-                .fontello-icon();
-                font-size: 1em;
-                content: '\e803';
-                position: absolute;
-				right: 2px;
-				top: 6px;
-            }
-            &:last-child:after {
-                content: "";
-                padding: 0px;
-            }
-        }
-        &__eLink {
-            border-bottom: 1px dotted;
-            padding-bottom: 1px;
-        }*/
-    }
+    
     .zoomWindowContainer{
         width:400px;
         .zoomWindow{
@@ -38,6 +12,10 @@
     }
     .compare--slot{
         text-align: center;
+        width: 220px;
+        padding: 6px 5px;
+        margin: 0 auto 10px;
+
         .btnCmpr{
             margin: 0px;
             &_lk{
@@ -64,6 +42,7 @@
                 height: 500px;
                 .bProductDescImgBig__eImg{
                     min-width: 500px;
+                    width: auto;
                     height: 500px;
                     .inline-block();
                     float: none;
@@ -74,20 +53,24 @@
     &__section-right {
         float: right;
         margin: 15px 0 0 16px;
-        width: 260px;
+        width: 273px;
         zoom: 1;
 
     }
     &__specify {}
     &__props{
-        margin-bottom: 15px;
+        margin: 0px 0 15px;
+        float:left;
+        width:450px;
     	//старые классы
                 .bSpecifications {
+                    float:left;
 
                     .bSpecificationsList {
 
                         &__eValue {
                         	float:left;
+                            max-width: 170px;
    						}
                     }
                 }
@@ -222,18 +205,13 @@
 			}
         }
         .recall-list{
-			text-align: center;
+            padding-left: 18px;
+            list-style: square;
+            width: 230px;
+            margin: 0 auto;
 	    	li{
-	    		list-style: none;
-	    		padding-left: 18px;
 	            position: relative;
 	            font-size: 14px;
-	            .inline-block();
-	            &:before {
-	                content: "\2014";
-	                position: absolute;
-	                left: 0px;
-	            }
 	    	}
     	}
         .errtx{

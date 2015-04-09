@@ -5,7 +5,7 @@ namespace Model\Order;
 use Partner\Counter\Actionpay;
 
 
-/** Класс ля создания заказа на ядре
+/** Класс для создания заказа на ядре
  * Class OrderEntity
  * @package Model\Order
  */
@@ -185,6 +185,12 @@ class OrderEntity {
      * @var string
      */
     private $certificate_pin;
+    /**
+     * Ui коробки пикпоинта
+     *
+     * @var string|null
+     */
+    private $box_ui;
 
     /**
      * @param array $arr
@@ -264,11 +270,6 @@ class OrderEntity {
             $this->payment_id = self::PAYMENT_ID_CERTIFICATE;
         }
 
-        // идиотский АБ-тест TODO remove
-        if (\Session\AbTest\AbTest::isSelfPaidDelivery() && $arr['total_cost'] < \App::config()->self_delivery['limit'] && $this->delivery_type_id == 3) {
-            $this->delivery_price = 100;
-        }
-
         if ($user) {
             $this->user_id = $user->getId();
             if ($user->getMiddleName() !== null && $user->getMiddleName() !== '') $this->middle_name = $user->getMiddleName();
@@ -296,6 +297,8 @@ class OrderEntity {
         if (isset($arr['order']['comment']) && $arr['order']['comment'] !== '') $this->extra = (string)$arr['order']['comment'];
 
         if (isset($arr['order']['actions']) && is_array($arr['order']['actions']) && (bool)$arr['order']['actions']) $this->action = $arr['order']['actions'];
+
+        if (isset($arr['order']['delivery']['box_ui'])) $this->box_ui = $arr['order']['delivery']['box_ui'];
 
         if (\App::config()->order['enableMetaTag']) $this->meta_data = $this->getMetaData($sender, $sender2);
 

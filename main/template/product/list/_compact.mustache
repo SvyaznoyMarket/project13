@@ -2,96 +2,101 @@
 {{#products}}
 <!-- Элемент листинга/продукт -->
     {{#isBanner}}
-      <li class="bListingItem mBannerItem" style="background-image: url('{{image}}'); background-repeat: no-repeat;"><div class="adfoxWrapper" id="adfox215"></div></li>
+        <li class="bListingItem mBannerItem" style="background-image: url('{{image}}'); background-repeat: no-repeat;">
+            {{#url}}
+                <a class="lstn_i-banner-link" href="{{url}}"></a>
+            {{/url}}
+            <div class="adfoxWrapper" id="adfox215"></div>
+        </li>
     {{/isBanner}}
     {{^isBanner}}
-    <li class="bListingItem js-listing-item" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}>
-        <div class="bListingItem__eInner">
-            <!-- Блок с именем продукта и иконками доп. просмотра товара -->
-            <div class="bSimplyDesc">
-                {{#abtestKeys.sprosikupi}}
-                    <div class="sprosikupiCategoryRating">
-                        <div class="spk-good-rating" shop-id="52dbdd369928f539612151" good-id="{{id}}"></div>
-                    </div>
-                {{/abtestKeys.sprosikupi}}
+        <li class="bListingItem js-listing-item" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}>
+            <div class="bListingItem__eInner">
+                <!-- Блок с именем продукта и иконками доп. просмотра товара -->
+                <div class="bSimplyDesc">
+                    {{#abtestKeys.sprosikupi}}
+                        <div class="sprosikupiCategoryRating">
+                            <div class="spk-good-rating" shop-id="52dbdd369928f539612151" good-id="{{id}}"></div>
+                        </div>
+                    {{/abtestKeys.sprosikupi}}
 
-                {{#abtestKeys.shoppilot}}
-                    <div class="shoppilot-category-container" data-product-id="{{id}}"></div>
-                {{/abtestKeys.shoppilot}}
+                    {{#abtestKeys.shoppilot}}
+                        <div class="shoppilot-category-container" data-product-id="{{id}}"></div>
+                    {{/abtestKeys.shoppilot}}
 
-                <p class="bSimplyDesc__eText"><a href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>{{name}}</a></p>
-                {{#abtestKeys.default}}
-                    {{#review}}{{> product/_review-compact }}{{/review}}
-                {{/abtestKeys.default}}
+                    <p class="bSimplyDesc__eText"><a href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>{{name}}</a></p>
+                    {{#abtestKeys.default}}
+                        {{#review}}{{> product/_review-compact }}{{/review}}
+                    {{/abtestKeys.default}}
 
-                <ul class="bSimplyDescStikers clearfix">
-                    {{#label}}
-                        <li class="bSimplyDescStikers__eItem mLeftStiker"><img class="SimplyDescStikers__eImg" src="{{image}}" alt="{{name}}" /></li>
-                    {{/label}}
-                    {{#brandImage}}
-                        <li class="bSimplyDescStikers__eItem mRightStiker"><img class="SimplyDescStikers__eImg" src="{{brandImage}}" alt="{{name}}" /></li>
-                    {{/brandImage}}
+                    <ul class="bSimplyDescStikers clearfix">
+                        {{#label}}
+                            <li class="bSimplyDescStikers__eItem mLeftStiker"><img class="SimplyDescStikers__eImg" src="{{image}}" alt="{{name}}" /></li>
+                        {{/label}}
+                        {{#brandImage}}
+                            <li class="bSimplyDescStikers__eItem mRightStiker"><img class="SimplyDescStikers__eImg" src="{{brandImage}}" alt="{{name}}" /></li>
+                        {{/brandImage}}
 
-                    {{#hasVideo}}
-                        <li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/video.png" /></li>
-                    {{/hasVideo}}
+                        {{#hasVideo}}
+                            <li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/video.png" /></li>
+                        {{/hasVideo}}
 
-                    {{#has360}}
-                        <li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/grad360.png" /></li>
-                    {{/has360}}
-                </ul>
-            </div>
-            <!-- /Блок с именем продукта и иконками доп. просмотра товара -->
+                        {{#has360}}
+                            <li class="bSimplyDescStikers__eItem"><img class="SimplyDescStikers__eImg" src="/css/bCatalog/img/grad360.png" /></li>
+                        {{/has360}}
+                    </ul>
+                </div>
+                <!-- /Блок с именем продукта и иконками доп. просмотра товара -->
 
-            <a href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}} class="bProductImg js-listing-item-img"><img class="bProductImg__eImg" src="{{image}}" alt="" /></a>
+                <a href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}} class="bProductImg js-listing-item-img"><img class="bProductImg__eImg" src="{{image}}" alt="" /></a>
 
-            <div class="bPriceLine clearfix">
-                {{#oldPrice}}
-                    <span class="bPriceOld">
-                        <strong class="bDecor">{{&oldPrice}}</strong> <span class="rubl">p</span>
-                        {{#priceSale}}
-                            <span class="bPriceSale">-{{priceSale}}%</span>
-                        {{/priceSale}}
-                    </span>
-                {{/oldPrice}}
-                {{#stateLabel}}
-                    <span class="bAvailible {{#inStore}}from-stock{{/inStore}}">{{name}}</span>
-                {{/stateLabel}}
-            </div>
+                <div class="bPriceLine clearfix">
+                    {{#oldPrice}}
+                        <span class="bPriceOld">
+                            <strong class="bDecor">{{&oldPrice}}</strong> <span class="rubl">p</span>
+                            {{#priceSale}}
+                                <span class="bPriceSale">-{{priceSale}}%</span>
+                            {{/priceSale}}
+                        </span>
+                    {{/oldPrice}}
+                    {{#stateLabel}}
+                        <span class="bAvailible {{#inStore}}from-stock{{/inStore}}">{{name}}</span>
+                    {{/stateLabel}}
+                </div>
 
-            <div class="bPriceLine clearfix">
-                <span class="bPrice{{#priceSale}} bHasSale{{/priceSale}}"><strong>{{&price}}</strong> <span class="rubl">p</span></span>
+                <div class="bPriceLine clearfix">
+                    <span class="bPrice{{#priceSale}} bHasSale{{/priceSale}}"><strong>{{&price}}</strong> <span class="rubl">p</span></span>
+                    {{#hasVariations}}
+                    <span class="bOptions"><span class="bDecor">Варианты</span></span>
+                    {{/hasVariations}}
+                </div>
+
                 {{#hasVariations}}
-                <span class="bOptions"><span class="bDecor">Варианты</span></span>
+                <div class="bOptionsSection">
+                    <i class="bCorner"></i>
+                    <i class="bCornerDark"></i>
+
+                    <ul class="bOptionsList">
+                    {{#variations}}
+                        <li class="bOptionsList__eItem">{{name}}</li>
+                    {{/variations}}
+                    </ul>
+                </div>
                 {{/hasVariations}}
+
+                <div class="bBtnLine clearfix">
+                    {{#showCartButton}}
+                        {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
+                    {{/showCartButton}}
+
+                    {{#showCompareButton}}
+                        <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}></a>
+                    {{/showCompareButton}}
+
+                    <a class="btnView btn1 js-listing-item-viewButton" href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>Посмотреть</a>
+                </div>
             </div>
-
-            {{#hasVariations}}
-            <div class="bOptionsSection">
-                <i class="bCorner"></i>
-                <i class="bCornerDark"></i>
-
-                <ul class="bOptionsList">
-                {{#variations}}
-                    <li class="bOptionsList__eItem">{{name}}</li>
-                {{/variations}}
-                </ul>
-            </div>
-            {{/hasVariations}}
-
-            <div class="bBtnLine clearfix">
-                {{#showCartButton}}
-                    {{#cartButton}}{{> cart/_button-product }}{{/cartButton}}
-                {{/showCartButton}}
-
-                {{#showCompareButton}}
-                    <a href="" class="btnCmprb jsCompareListLink" data-id="{{id}}" data-bind="compareListBinding: compare" {{#isSlot}}data-is-slot="true"{{/isSlot}} {{#isOnlyFromPartner}}data-is-only-from-partner="true"{{/isOnlyFromPartner}}></a>
-                {{/showCompareButton}}
-
-                <a class="btnView btn1 js-listing-item-viewButton" href="{{link}}" {{#isNewWindow}}target="_blank"{{/isNewWindow}}>Посмотреть</a>
-            </div>
-        </div>
-    </li>
+        </li>
     {{/isBanner}}
 <!-- /Элемент листинга/продукт -->
 {{/products}}

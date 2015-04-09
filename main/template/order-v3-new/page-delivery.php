@@ -9,7 +9,6 @@ return function(
 ) {
     $orderCount = count($orderDelivery->orders);
     $region = \App::user()->getRegion();
-    $regionName = $region->getName();
     $firstOrder = reset($orderDelivery->orders);
     $i = 0;
 
@@ -243,7 +242,7 @@ return function(
 
             <? endif ?>
 
-            <?= $helper->render('order-v3-new/__map', [
+            <?= $helper->render('order-v3/common/_map', [
                 'id'            => 'id-order-changePlace-content-' . $order->id,
                 'order'         => $order,
                 'orderDelivery' => $orderDelivery
@@ -300,7 +299,7 @@ return function(
 <div id="yandex-map-container" class="selShop_r" style="display: none;" data-options="<?= $helper->json($initialMapCords)?>"></div>
 <div id="kladr-config" data-value="<?= $helper->json(\App::config()->kladr ); ?>"></div>
 <div id="region-name" data-value=<?= json_encode($region->getName(), JSON_UNESCAPED_UNICODE); ?>></div>
-<? if (App::config()->debug) : ?><div id="initialOrderModel" data-value="<?= $helper->json($orderDelivery) ?>"></div><? endif; ?>
+<?= App::config()->debug ? $helper->jsonInScriptTag($orderDelivery, 'initialOrderModel') : '' ?>
 <div id="jsUserAddress" data-value="<?= $helper->json($orderDelivery->user_info->address) ?>"></div>
 
 <div class="popup popup-simple js-order-oferta-popup">
