@@ -96,10 +96,8 @@ class ShowAction {
         // oldPrice and priceSale
         if ( $product->getPriceOld() ) {
             $productItem['oldPrice'] = $helper->formatPrice($product->getPriceOld());
-
-            if (AbTest::isShowSalePercentage()) {
-                $productItem['priceSale'] = round( ( 1 - ($product->getPrice() / $product->getPriceOld() ) ) *100, 0 );
-            }
+            $productItem['priceSale'] = round( ( 1 - ($product->getPrice() / $product->getPriceOld() ) ) *100, 0 );
+            $productItem['showPriceSale'] = AbTest::isShowSalePercentage();
         }
 
         // cart
