@@ -53,10 +53,10 @@ return function(
                 </li>
             <? endif ?>
 
-            <? if ($maybe3dHtml5Source): ?>
+            <? if ($properties3D['type'] == 'html5'): ?>
                 <li class="bPhotoActionOtherAction__eGrad360 bPhotoViewer__eItem mGrad360 js-product-3d-html5-opener">
                     <a class="bPhotoLink" href=""></a>
-                    <div id="maybe3dModelPopup" class="popup js-product-3d-html5-popup" data-url="<?= $helper->escape($maybe3dHtml5Source->url); ?>" data-id="<?= $helper->escape($maybe3dHtml5Source->id); ?>">
+                    <div id="maybe3dModelPopup" class="popup js-product-3d-html5-popup" data-url="<?= $helper->escape($properties3D['url']); ?>" data-id="<?= $helper->escape($properties3D['id']); ?>">
                         <i class="close jsPopupCloser" title="Закрыть">Закрыть</i>
                         <div class="js-product-3d-html5-popup-container" style="position: relative;">
                             <div id="js-product-3d-html5-popup-model" class="model"></div>

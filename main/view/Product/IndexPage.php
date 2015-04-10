@@ -10,7 +10,7 @@ class IndexPage extends \View\DefaultLayout {
     /** Карточка товара 2015
      * @var bool
      */
-    protected $isNewProductPage = true;
+    protected $isNewProductPage = false;
 
     public function prepare() {
         /** @var $product \Model\Product\Entity */
@@ -271,11 +271,12 @@ class IndexPage extends \View\DefaultLayout {
 
                     break;
                 case 'maybe3d':
-                    // Временно отключаем maybe3d html5 модели из-за проблем, описанных в SITE-3783
+                    // ADM-447
                     /*if ($source = $media->getSourceByType('html5')) {
-                        $maybe3dHtml5Source = $source;
-                    }*/
-                    if ($source = $media->getSourceByType('swf')) {
+                        $properties3D['type'] = 'html5';
+                        $properties3D['url'] = $source->url;
+                        $properties3D['id'] = $source->id;
+                    } else*/ if ($source = $media->getSourceByType('swf')) {
                         $properties3D['type'] = 'swf';
                         $properties3D['url'] = $source->url;
                     }
