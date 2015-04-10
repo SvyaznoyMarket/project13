@@ -5345,7 +5345,7 @@ $(document).ready(function() {
         if (ENTER.config.pageConfig.wikimart.url) {
             var WikimartSettings = {
                 // Формат ссылок на товары
-                catalogGoodUrlPattern: 'http://example.com#modelDetail?goodId=%GOOD_ID%',
+                catalogGoodUrlPattern: ENTER.config.pageConfig.wikimart.productUrlPattern,
                 // Ссылка на каталог
                 catalogUrl: 'http://example.com#catalog',
                 // Id города
