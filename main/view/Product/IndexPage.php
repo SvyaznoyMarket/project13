@@ -20,6 +20,8 @@ class IndexPage extends \View\DefaultLayout {
 
         // Хлебные крошки
         $this->prepareBreadcrumbs();
+        // Видео и 3D
+        $this->prepareMedia();
 
         $page = new \Model\Page\Entity();
 
@@ -223,5 +225,65 @@ class IndexPage extends \View\DefaultLayout {
 
             $this->setParam('breadcrumbs', $breadcrumbs);
         }
+    }
+
+    /**
+     * Подготовка видео и 3D
+     */
+    private function prepareMedia(){
+
+        $helper = \App::helper();
+        $videoHtml = null;
+        $properties3D = ['type' => null, 'url' => null];
+
+        foreach ($this->product->medias as $media) {
+            $source = $media->getSourceByType('reference');
+            switch ($media->provider) {
+                case 'vimeo':
+                    if ($source) {
+                        $width = 700;
+                        $height = ceil($width / ($source->width / $source->height));
+                        $videoHtml = sprintf(
+                            '<iframe data-src="%s?autoplay=1" width="%s" height="%s" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>',
+                            $helper->escape($source->url), $width, $height);
+                    }
+                    break;
+                case 'youtube':
+                    if ($source) {
+                        $width = 700;
+                        $height = ceil($width / ($source->width / $source->height));
+                        $videoHtml = sprintf(
+                            '<iframe data-src="//www.youtube.com/embed/%s?autoplay=1" width="%s" height="%s" frameborder="0" allowfullscreen></iframe>',
+                            $helper->escape($source->id), $width, $height);
+                    }
+                    break;
+                case 'megavisor':
+                    if ($source) {
+                        $properties3D['type'] = 'swf';
+                        $properties3D['url'] = 'http://media.megavisor.com/player/player.swf?uuid=' . urlencode($source->id);
+                    }
+                    break;
+                case 'swf':
+                    if ($source){
+                        $properties3D['type'] = 'swf';
+                        $properties3D['url'] = $source->url;
+                    }
+
+                    break;
+                case 'maybe3d':
+                    // Временно отключаем maybe3d html5 модели из-за проблем, описанных в SITE-3783
+                    /*if ($source = $media->getSourceByType('html5')) {
+                        $maybe3dHtml5Source = $source;
+                    }*/
+                    if ($source = $media->getSourceByType('swf')) {
+                        $properties3D['type'] = 'swf';
+                        $properties3D['url'] = $source->url;
+                    }
+                    break;
+            }
+        }
+
+        $this->setParam('videoHtml', $videoHtml);
+        $this->setParam('properties3D', $properties3D);
     }
 }

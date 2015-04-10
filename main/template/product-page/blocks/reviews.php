@@ -37,7 +37,7 @@
 
 <!-- попап добавления отзыва -->
 <div class="popup popup--add-review jsReviewForm" style="display: none">
-    <i class="closer">×</i>
+    <i class="closer jsPopupCloser">×</i>
 
     <div class="popup__tl">Отзыв о товаре</div>
 

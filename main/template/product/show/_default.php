@@ -25,6 +25,8 @@
  * @var $reviewsDataSummary     array   Данные отзывов
  * @var $sprosikupiReviews      array   Данные отзывов
  * @var $shoppilotReviews       array   Данные отзывов
+ * @var $videoHtml              string|null
+ * @var $properties3D           []
  */
 ?>
 
@@ -46,7 +48,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
 <?= $helper->render('product/__data', ['product' => $product]) ?>
 
 <div class="bProductSectionLeftCol">
-    <?= $helper->render('product/__photo', ['product' => $product, 'useLens' => $useLens]) ?>
+    <?= $helper->render('product/__photo', ['product' => $product, 'useLens' => $useLens, 'videoHtml' => $videoHtml, 'properties3D' => $properties3D]) ?>
 
     <div class="bProductDesc<? if (!$creditData['creditIsAllowed'] || $user->getRegion()->getHasTransportCompany()): ?> mNoCredit<? endif ?>" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
 
