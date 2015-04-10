@@ -1,7 +1,9 @@
 <?
 $f = function(
     \Helper\TemplateHelper $helper,
-    \Model\Product\Entity $product
+    \Model\Product\Entity $product,
+    $videoHtml,
+    $properties3D
 ){
 
     ?>
@@ -36,18 +38,42 @@ $f = function(
 
         </div>
 
-        <ul class="product-card-media">
+        <ul class="product-card-media jsProductMediaButton">
             <? if ($product->hasVideo()) : ?>
                 <li class="product-card-media__i product-card-media__i--video"></li>
+                <!-- Попап видео -->
+                <div class="popup popup--skinny" style="display: none">
+                    <i class="closer jsPopupCloser">×</i>
+                    <?= $videoHtml ?>
+                </div>
+                <!--/ Попап видео-->
             <? endif ?>
             <? if ($product->has3d()) : ?>
                 <li class="product-card-media__i product-card-media__i--3d"></li>
+                <!-- Попап 3D -->
+                <div class="popup popup--skinny" style="display: none">
+                    <i class="closer jsPopupCloser">×</i>
+                    <? if ($properties3D['type'] == 'swf') : ?>
+                        <div class="jsProduct3DContainer" style="position: relative" data-url="<?= $helper->escape($properties3D['url']); ?>" data-type="swf">
+                            <div id="js-product-3d-swf-popup-model">
+                                <!-- Fallback -->
+                                <a href="http://www.adobe.com/go/getflashplayer">
+                                    <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
+                                </a>
+                                <!--/ Fallback -->
+                            </div>
+                        </div>
+                    <? elseif ($product->json3d) : ?>
+                        <div class="jsProduct3DJSON" data-value="<?= $helper->json($product->json3d); ?>" data-host="<?= $helper->json(['http://' . App::request()->getHost()]) ?>"></div>
+                    <? endif ?>
+                </div>
+                <!--/ Попап 3D -->
             <? endif ?>
         </ul>
 
         <!-- попап просмотра большого изображения -->
         <div class="popup popup--photo jsProductImgPopup" style="display: none">
-            <i class="closer">×</i>
+            <i class="closer jsPopupCloser">×</i>
 
             <div class="product-card-photo">
                 <div class="product-card-photo__img jsProductPopupBigPhotoHolder" style="height: 620px; margin: 0 auto; overflow: hidden">
@@ -79,13 +105,7 @@ $f = function(
         </div>
         <!--/ попап просмотра большого изображения -->
 
-        <!-- Попап видео -->
-        <div class="popup popup--skinny" style="display: none"k>
-            <i class="closer">×</i>
-            <!-- видео или 3d должно быть тут -->
-            <iframe src="https://player.vimeo.com/video/124139626?color=ffffff&portrait=0&badge=0" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-        </div>
-        <!--/ Попап видео-->
+
 
     </div>
 

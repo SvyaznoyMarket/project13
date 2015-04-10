@@ -7,19 +7,18 @@
         $body = $(document.body),
         $creditButton = $body.find('.jsProductCreditButton'),
         $userbar = $('.js-topbar-fixed'),
-        $tabs = $('.jsProductTabs');
+        $tabs = $('.jsProductTabs'),
+        popupDefaults = {
+            centered: true,
+            closeSelector: '.jsPopupCloser'
+        };
 
     /* Если это не новая карточка, то do nothing */
     if (!$body.hasClass('product-card-new')) return;
 
     /* Попап новой карточки товара */
     $body.on('click', '.jsOpenProductImgPopup', function(){
-        $body.find('.jsProductImgPopup').lightbox_me({
-            centered: true,
-            closeSelector: '.closer',
-            onLoad: function() {},
-            onClose: function() {}
-        });
+        $body.find('.jsProductImgPopup').lightbox_me(popupDefaults);
     });
 
     /* Меняем большое изображение в popup при клике на миниатюру */
@@ -43,6 +42,77 @@
         //var direction = $(this).data('dir')
     });
 
+    // Youtube и 3D
+    $body.on('click', '.jsProductMediaButton', function(e){
+        var $popup = $(e.target).next(),
+            $iframe = $popup.find('iframe'),
+            src = $iframe.data('src'),
+            $3dContainer = $popup.find('.jsProduct3DContainer'),
+            $3DJSONContainer = $popup.find('.jsProduct3DJSON');
+
+        // Загружаем видео только при открытии попапа
+        if (src) $iframe.attr('src', src);
+
+        if ($3dContainer.length == 0 && $3DJSONContainer.length == 0) {
+            // Видео
+            $popup.lightbox_me($.extend(popupDefaults, {
+                destroyOnClose: true,
+                onClose: function(){
+                    $iframe.removeAttr('src');
+                    $(e.target).parent().append($popup.clone().hide()); // Возвращаем всё на место
+                }
+            }))
+        } else {
+            // 3D
+            if ($3dContainer.data('type') == 'swf') {
+                $LAB.script('swfobject.min.js').wait(function() {
+                    var id = 'js-product-3d-swf-popup-object';
+
+                    swfobject.embedSWF(
+                        $3dContainer.data('url'),
+                        'js-product-3d-swf-popup-model', '700px', '500px', '10.0.0', 'js/vendor/expressInstall.swf',
+                        { language: 'auto' },
+                        {
+                            menu: 'false',
+                            scale: 'noScale',
+                            allowFullscreen: 'true',
+                            allowScriptAccess: 'always',
+                            wmode: 'direct'
+                        },
+                        { id: id }
+                    );
+
+                    $popup.lightbox_me($.extend(popupDefaults, {
+                        onClose: function() {
+                            $(e.target).parent().append($popup.clone().hide());
+                        }
+                    }))
+
+                });
+            } else if ($3DJSONContainer.length > 0) {
+                $LAB.script('DAnimFramePlayer.min.js').wait(function() {
+                    var data = $3DJSONContainer.data('value'),
+                        host = $3DJSONContainer.data('host');
+
+                    try {
+                        if (!$('#js-product-3d-img-container').length) {
+                            (new DAnimFramePlayer($3DJSONContainer[0], host)).DoLoadModel(data);
+                        }
+
+                        $popup.lightbox_me($.extend(popupDefaults, {
+                            onClose: function() {
+                                $(e.target).parent().append($popup.clone().hide());
+                            }
+                        }));
+                    }
+                    catch (err) {
+                        console.error(err)
+                    }
+                });
+            }
+        }
+    });
+
     // Кредит
     if ($creditButton.length > 0 && typeof window['dc_getCreditForTheProduct'] == 'function') {
         window['dc_getCreditForTheProduct'](
@@ -60,12 +130,10 @@
     }
 
     $body.on('click', '.jsReviewAdd', function(){
-        $('.jsReviewForm').lightbox_me({
-            centered: true,
-            closeSelector: '.closer',
+        $('.jsReviewForm').lightbox_me($.extend(popupDefaults, {
             onLoad: function() {},
             onClose: function() {}
-        });
+        }));
     });
 
     // Отзывы
@@ -92,5 +160,7 @@
     }
 
     $body.scrollspy({ target: '#jsScrollSpy' });
+
+
 
 })(jQuery);
