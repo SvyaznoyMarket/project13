@@ -1,6 +1,7 @@
 .userbar {
-    background: @white;
     display: none;
+
+    background: @white;
     -webkit-box-shadow: 0 4px 28px 0 rgba(0, 0, 0, .5);
        -moz-box-shadow: 0 4px 28px 0 rgba(0, 0, 0, .5);
             box-shadow: 0 4px 28px 0 rgba(0, 0, 0, .5);
@@ -16,6 +17,12 @@
     }
     // юзербар в карточке товара
     &--pp {
+        &.pp-fixed {
+            border-bottom: 1px solid #e8e8e8;
+            -webkit-box-shadow: none;
+               -moz-box-shadow: none;
+                    box-shadow: none;
+        }
         .userbar-crumbs {
             &-wrap {
                 float: none;

@@ -1,10 +1,38 @@
-.product-tabs {
-    margin: 10px -10px 0;
-    padding: 0 20px;
-
-    white-space: nowrap;
-
+.product-tabs-scroll {
     border-bottom: 4px solid #e8e8e8;
+    margin: 10px -10px 0;
+    &.pp-fixed {
+        position: fixed;
+        z-index: 99;
+        top: 50px;
+        left: 0;
+        margin: 0;
+
+        width: 100%;
+
+        background: @white;
+        -webkit-box-shadow: 0 4px 28px 0 rgba(0, 0, 0, .5);
+           -moz-box-shadow: 0 4px 28px 0 rgba(0, 0, 0, .5);
+                box-shadow: 0 4px 28px 0 rgba(0, 0, 0, .5);
+        .product-ep {
+            // visibility: visible;
+            // overflow: visible;
+
+            // height: auto;
+
+            // .opacity(1);
+        }
+    }
+
+    .product-tabs {
+        width: 920px;
+        margin: 0 auto;
+    }
+}
+
+.product-tabs {
+
+    padding: 0 20px;
     &__i {
         font-size: 16px;
         line-height: 50px;
@@ -47,6 +75,42 @@
 
             border-bottom: none;
         }
+    }
+    &__right {
+        position: relative;
+
+        float: right;
+    }
+}
+
+.product-ep {
+    visibility: visible;
+    overflow: hidden;
+
+    height: 0;
+    margin: -5px 0 0;
+
+    .opacity(0);
+    .transition(all .2s ease);
+    &-fishka {
+        font-size: 16px;
+        line-height: 62px;
+
+        width: 64px;
+
+        text-align: center;
+
+        background: url('@{base-url}/product/img/i-product-ep-fishka.png') no-repeat 0 0;
+
+        .inline-block-middle();
+    }
+    &-desc {
+        width: 130px;
+        margin: 0 0 0 5px;
+
+        color: #363636;
+
+        .inline-block-middle();
     }
 }
 

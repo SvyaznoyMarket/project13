@@ -779,6 +779,7 @@
     var $window = $(window),
         $body = $(document.body),
         $creditButton = $body.find('.jsProductCreditButton'),
+        $userbar = $('.js-topbar-fixed'),
         $tabs = $('.jsProductTabs');
 
     /* Если это не новая карточка, то do nothing */
@@ -852,11 +853,13 @@
 
     if ($tabs.length) {
         $window.on('scroll', function(){
-            var fixedClass = 'product-tabs-fixed';
+            var fixedClass = 'pp-fixed';
             if ($window.scrollTop() - 70 > $tabs.offset().top) {
-                $tabs.addClass(fixedClass)
+                $tabs.addClass(fixedClass);
+                $userbar.addClass(fixedClass);
             } else {
-                $tabs.removeClass(fixedClass)
+                $tabs.removeClass(fixedClass);
+                $userbar.removeClass(fixedClass);
             }
         });
     }

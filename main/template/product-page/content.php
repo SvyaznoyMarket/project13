@@ -370,12 +370,17 @@ $showAccessories = $accessories && \App::config()->product['showAccessories'];
     <!--/ ссылки связной, сбер и многору -->
 
     <!-- навигация по странице -->
-    <div id="jsScrollSpy" class="jsProductTabs">
+    <div id="jsScrollSpy" class="product-tabs-scroll jsProductTabs">
         <ul class="nav product-tabs">
             <li class="product-tabs__i"><a class="product-tabs__lk" href="#more" title="">Подробности</a></li>
             <? if ($showAccessories) : ?><li class="product-tabs__i"><a class="product-tabs__lk" href="#accessorize" title="">Аксессуары</a></li><? endif ?>
             <li class="product-tabs__i"><a class="product-tabs__lk" href="#reviews" title="">Отзывы</a></li>
             <li class="product-tabs__i jsSimilarTab" style="display: none"><a class="product-tabs__lk" href="#similar" title="">Похожие товары</a></li>
+
+            <li class="product-tabs__right product-ep">
+                <div class="product-ep-fishka">%</div>
+                <div class="product-ep-desc">Фишка со скидкой 20% на этот товар</div>
+            </li>
         </ul>
     </div>
     <!--/ навигация по странице -->
