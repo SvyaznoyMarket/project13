@@ -10,7 +10,7 @@ class IndexPage extends \View\DefaultLayout {
     /** Карточка товара 2015
      * @var bool
      */
-    protected $isNewProductPage = false;
+    protected $isNewProductPage = true;
 
     public function prepare() {
         /** @var $product \Model\Product\Entity */

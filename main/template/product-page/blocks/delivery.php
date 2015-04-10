@@ -5,6 +5,8 @@ $f = function (
 ) {
     $deliveryPickup = $product->delivery && $product->delivery->getPickupWithMinDate() ? $product->delivery->getPickupWithMinDate() : null;
     $deliveryDelivery = $product->delivery && $product->delivery->getDeliveryWithMinDate() ? $product->delivery->getDeliveryWithMinDate() : null;
+
+    if (!$product->getIsBuyable()) return;
 ?>
     <!-- в наличии -->
     <div class="buy-now-inshop">
