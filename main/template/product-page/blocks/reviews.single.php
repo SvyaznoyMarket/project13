@@ -27,8 +27,8 @@ $f = function(
 
         <div class="reviews-voting">
             <div class="reviews-voting__tl">Полезный отзыв?</div>
-            <a href="#" class="reviews-vote reviews-vote--positive"><?= $review['useful_count'] ?></a>
-            <a href="#" class="reviews-vote reviews-vote--negative"><?= $review['not_useful_count'] ?></a>
+            <span class="reviews-vote reviews-vote--positive"><?= $review['useful_count'] ?></span>
+            <span class="reviews-vote reviews-vote--negative"><?= $review['not_useful_count'] ?></span>
         </div>
     </div>
 
