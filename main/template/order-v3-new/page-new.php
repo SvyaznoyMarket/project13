@@ -3,6 +3,7 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Session\User $user,
+    $hasProductsOnlyFromPartner,
     array $bonusCards,
     $error = null,
     $previousPost = null
@@ -103,7 +104,7 @@ return function(
 
                         <? endif ?>
 
-                        <? if ($config->partners['MnogoRu']['enabled']) : ?>
+                        <? if ($config->partners['MnogoRu']['enabled'] && !$hasProductsOnlyFromPartner) : ?>
                             <!-- Карта Много.ру -->
                             <div class="bonusCnt_i" data-eq="<?= count($bonusCards) ?>">
                                 <img class="bonusCnt_img" src="/styles/order/img/mnogoru-mini.png" alt="mnogo.ru" />

@@ -2,6 +2,8 @@
 
 namespace View\Product;
 
+use Session\AbTest\AbTest;
+
 class ShowAction {
     /**
      * @param \Helper\TemplateHelper $helper
@@ -91,6 +93,7 @@ class ShowAction {
         if ( $product->getPriceOld() ) {
             $productItem['oldPrice'] = $helper->formatPrice($product->getPriceOld());
             $productItem['priceSale'] = round( ( 1 - ($product->getPrice() / $product->getPriceOld() ) ) *100, 0 );
+            $productItem['showPriceSale'] = AbTest::isShowSalePercentage();
         }
 
         // cart

@@ -54,9 +54,11 @@
                     {{#oldPrice}}
                         <span class="bPriceOld">
                             <strong class="bDecor">{{&oldPrice}}</strong> <span class="rubl">p</span>
-                            {{#priceSale}}
-                                <span class="bPriceSale">-{{priceSale}}%</span>
-                            {{/priceSale}}
+                            {{#showPriceSale}}
+                                {{#priceSale}}
+                                    <span class="bPriceSale">-{{priceSale}}%</span>
+                                {{/priceSale}}
+                            {{/showPriceSale}}
                         </span>
                     {{/oldPrice}}
                     {{#stateLabel}}
