@@ -71,7 +71,7 @@ $f = function (
     <? if ($containerStyle): ?> style="<?= $containerStyle ?>" <? endif ?>
 >
     <? if ($title): ?>
-        <h3 class="bHeadSection"><?= $title ?></h3>
+        <div class="bHeadSection"><?= $title ?></div>
     <? endif ?>
 
     <? if ((bool)$categories): ?>
