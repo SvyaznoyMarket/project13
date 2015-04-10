@@ -8,6 +8,7 @@
         $creditButton = $body.find('.jsProductCreditButton'),
         $userbar = $('.js-topbar-fixed'),
         $tabs = $('.jsProductTabs'),
+        tabsOffset = $tabs.offset().top,// это не очень хорошее поведение, т.к. при добавлении сверху элементов (AJAX, например) offset не изменяется
         popupDefaults = {
             centered: true,
             closeSelector: '.jsPopupCloser'
@@ -149,7 +150,7 @@
     if ($tabs.length) {
         $window.on('scroll', function(){
             var fixedClass = 'pp-fixed';
-            if ($window.scrollTop() - 70 > $tabs.offset().top) {
+            if ($window.scrollTop() - 60 > tabsOffset) {
                 $tabs.addClass(fixedClass);
                 $userbar.addClass(fixedClass);
             } else {
