@@ -67,11 +67,6 @@ return [
         'pattern' => '/ajax/subscribe/status/set/{status}',
         'action'  => ['User\InfoAction', 'setSubscribeStatus'],
     ],*/
-    // инфо пользователя
-    'old.user.info' => [
-        'pattern' => '/user/shortinfo',
-        'action'  => ['User\OldInfoAction', 'execute'],
-    ],
     // вход пользователя
     'user.login' => [
         'pattern' => '/login',
