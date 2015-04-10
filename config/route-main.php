@@ -550,16 +550,6 @@ return [
         'pattern' => '/product-recommended',
         'action' => ['Product\RecommendedAction', 'execute'],
     ],
-    'product.similar' => [
-        'pattern' => '/ajax/product-similar/{productId}',
-        'action'  => ['Product\SimilarAction', 'execute'],
-        'require' => ['productId' => '\d+'],
-    ],
-    'product.alsoViewed' => [
-        'pattern' => '/ajax/product-also-viewed/{productId}',
-        'action'  => ['Product\AlsoViewedAction', 'execute'],
-        'require' => ['productId' => '\d+'],
-    ],
     'product.upsale' => [
         'pattern' => '/ajax/upsale/{productId}',
         'action' => ['Product\UpsaleAction', 'execute'],
