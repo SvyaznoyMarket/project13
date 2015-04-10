@@ -14,7 +14,7 @@ class WikimartPage extends \View\DefaultLayout {
         }
 
         $this->setTitle('Корзина - Enter.ru');
-        $this->setParam('title', 'Корзина');
+        //$this->setParam('title', 'Корзина');
     }
 
     public function slotContent() {
