@@ -27,21 +27,7 @@ trait ABHelperTrait {
      * @return bool
      */
     public static function isSelfPaidDelivery(){
-        if (\App::config()->self_delivery['enabled'] == false) return false;
-        // если нет магазинов в регионе пользователя
-        if (\App::user()->getRegion() && !\App::user()->getRegion()->getHasShop()) return false;
-        /* Область -> parent_id
-         * --------------------
-         * Московская - 83
-         * Москва - 82
-         * Ленинградская - 34
-         * Санкт-Петербург - 39
-         */
-        /* Если пользователь попадает в регион теста */
-        if (\App::user()->getRegion() && !in_array(\App::user()->getRegion()->getParentId(), [82,83,34,39])) {
-//            return \App::abTest()->getTest('order_delivery_price_2') && \App::abTest()->getTest('order_delivery_price_2')->getChosenCase()->getKey() == 'delivery_self_100';
-            return true;
-        }
+        // SITE-5298, SITE-5425
         return false;
     }
 

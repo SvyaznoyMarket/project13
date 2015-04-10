@@ -273,7 +273,7 @@ class Filter {
             array_unshift($groups, $group);
         }
 
-        if ($brandProperty && !$brandProperty->getIsAlwaysShow()) {
+        if ($brandProperty && !$brandProperty->getIsAlwaysShow() && (!$this->getCategory() || !$this->getCategory()->isTyre())) {
             $group = new Group();
             $group->name = $brandProperty->getName();
             $group->properties[] = $brandProperty;
@@ -289,13 +289,23 @@ class Filter {
      */
     public function getUngroupedPropertiesV2() {
         $properties = [];
-
+        $isTyre = $this->getCategory() && $this->getCategory()->isTyre();
         foreach ($this->filters as $property) {
             if ($property->isPrice()) {
                 $properties[] = $property;
             } else if ($property->isLabel()) {
                 $properties[] = $property;
             } else if ($property->isBrand() && $property->getIsAlwaysShow()) {
+                $properties[] = $property;
+            } else if ($isTyre && $property->getName() === 'Сезон') {
+                $properties[] = $property;
+            } else if ($isTyre && $property->isBrand()) {
+                $properties[] = $property;
+            } else if ($isTyre && $property->getName() === 'Ширина') {
+                $properties[] = $property;
+            } else if ($isTyre && $property->getName() === 'Профиль') {
+                $properties[] = $property;
+            } else if ($isTyre && $property->getName() === 'Диаметр') {
                 $properties[] = $property;
             }
         }
