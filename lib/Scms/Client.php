@@ -2,7 +2,9 @@
 
 namespace Scms;
 
-class Client {
+use Core\ClientInterface;
+
+class Client implements ClientInterface {
     /** @var array */
     private $config;
     /** @var \Curl\Client */

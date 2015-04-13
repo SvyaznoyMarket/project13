@@ -323,6 +323,10 @@ return [
         'pattern' => '/ajax/product/kit/{productUi}',
         'action'  => ['Product\KitAction', 'execute'],
     ],
+    'product.wm'  => [
+        'pattern' => '/wm-product/{wmProductId}',
+        'action'  => ['Product\WikimartAction', 'redirect']
+    ],
 
     // теги
     'tag' => [
