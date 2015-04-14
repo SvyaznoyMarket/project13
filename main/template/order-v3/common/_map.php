@@ -57,32 +57,33 @@ return function(
     sort($uniqueDays);
     ?>
 
-    <div id="<?= $id ?>" class="selShop popupFl deliv-wrap jsNewPoints" style="display: none;" data-block_name="<?= $order->block_name ?>">
+    <div id="<?= $id ?>" class="selShop popupFl pickup jsNewPoints" style="display: none;" data-block_name="<?= $order->block_name ?>">
 
         <div class="js-order-changePlace-close popupFl_clsr jsCloseFl" data-content="#<?= $id ?>"></div>
 
-        <div class="selShop_hh">Выберите точку самовывоза</div>
+        <div class="pickup__title">Выберите точку самовывоза</div>
 
         <!-- Новая верстка -->
+        <div class="common-wrap clearfix">
         <div class="popup-left-container">
-            <div class="deliv-ctrls">
+            <div class="pickup-ctrls">
 
-                <div class="deliv-search">
-                    <div class="deliv-search__input-wrap">
-                        <input class="deliv-search-input" type="text" placeholder="Искать по улице, метро" data-bind="click: enableAutocompleteListVisible, value: searchInput, valueUpdate: 'afterkeydown'" />
-                        <div class="deliv-search__clear" data-bind="click: clearSearchInput, visible: searchInput ">×</div>
+                <div class="pickup-search">
+                    <div class="pickup-search__input-wrap">
+                        <input class="pickup-search-input" type="text" placeholder="Искать по улице, метро" data-bind="click: enableAutocompleteListVisible, value: searchInput, valueUpdate: 'afterkeydown'" />
+                        <div class="pickup-search__clear" data-bind="click: clearSearchInput, visible: searchInput ">×</div>
                     </div>
-                    <div class="deliv-suggest" data-bind="visible: searchAutocompleteListVisible() && searchAutocompleteList().length > 0, event: { mouseleave: disableAutocompleteListVisible }">
-                        <ul class="deliv-suggest__list" data-bind="foreach: searchAutocompleteList">
-                            <li class="deliv-suggest__i" data-bind="text: name, attr: { 'data-bounds': bounds }, click: $parent.setMapCenter"></li>
+                    <div class="pickup-suggest" data-bind="visible: searchAutocompleteListVisible() && searchAutocompleteList().length > 0, event: { mouseleave: disableAutocompleteListVisible }">
+                        <ul class="pickup-suggest__list" data-bind="foreach: searchAutocompleteList">
+                            <li class="pickup-suggest__i" data-bind="text: name, attr: { 'data-bounds': bounds }, click: $parent.setMapCenter"></li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="deliv-sel-group fltrBtn_kit fltrBtn_kit-box js-category-v2-filter-otherGroups">
+                <div class="pickup-sel-group fltrBtn_kit fltrBtn_kit-box js-category-v2-filter-otherGroups">
 
                     <!-- Точка самовывоза -->
-                    <div class="deliv-sel fltrBtnBox js-category-v2-filter-dropBox jsOrderV3Dropbox">
+                    <div class="pickup-sel fltrBtnBox js-category-v2-filter-dropBox jsOrderV3Dropbox">
                         <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener" data-bind="css: { picked: choosenTokens().length > 0 }">
                             <span class="fltrBtnBox_tggl_tx" data-bind="text: pointsText">Все точки</span>
                             <i class="fltrBtnBox_tggl_corner"></i>
@@ -109,7 +110,7 @@ return function(
                     </div>
 
                     <!-- Cтоимость -->
-                    <div class="deliv-sel fltrBtnBox js-category-v2-filter-dropBox jsOrderV3Dropbox">
+                    <div class="pickup-sel fltrBtnBox js-category-v2-filter-dropBox jsOrderV3Dropbox">
                         <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener" data-bind="css: { picked: $root.choosenCosts().length > 0 }">
                             <span class="fltrBtnBox_tggl_tx" data-bind="html: costsText">Стоимость</span>
                             <i class="fltrBtnBox_tggl_corner"></i>
@@ -136,7 +137,7 @@ return function(
                     </div>
 
                     <!-- Дата самовывоза -->
-                    <div class="deliv-sel fltrBtnBox js-category-v2-filter-dropBox jsOrderV3Dropbox">
+                    <div class="pickup-sel fltrBtnBox js-category-v2-filter-dropBox jsOrderV3Dropbox">
                         <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener" data-bind="css: { picked: choosenDates().length > 0 }">
                             <span class="fltrBtnBox_tggl_tx" data-bind="text: datesText">Дата</span>
                             <i class="fltrBtnBox_tggl_corner"></i>
@@ -162,41 +163,69 @@ return function(
 
                 </div>
             </div>
+                
+                <div class="selShop_l" data-token="shops" data-bind="css:{'nobefore': points().length == 0}">
 
-            <div class="selShop_l" data-token="shops" data-bind="css:{'nobefore': points().length == 0}">
+                    <span class="pickup-nomatch" data-bind="visible: points().length == 0">Поиск не дал результатов</span>
 
-                <span class="deliv-nomatch" data-bind="visible: points().length == 0">Поиск не дал результатов</span>
+                    <table class="pickup-list">
+                        <tbody data-bind="foreach: points">
+                            <tr class="pickup-item jsChangePoint clearfix" data-bind="attr: { 'data-id': $data.id, 'data-token': $data.token, 'data-blockname': $data.orderToken }">
+                                <td class="pickup-item__logo">
+                                    <img src="" class="pickup-item__img" data-bind="attr: { src: icon }" />
+                                    <span class="pickup-item__name" data-bind="text: listName"></span>
+                                </td>
+                                <td class="pickup-item__addr">
+                                    <!-- ko if: $.isArray(subway) -->
+                                    <div class="pickup-item__metro" style="background: #FBAA33;" data-bind="style: { background: subway[0].line.color }">
+                                       <div class="pickup-item__metro-inn" data-bind="text: subway[0].name"></div>
+                                    </div>
+                                    <!-- /ko -->
+                                    <div class="pickup-item__addr-name" data-bind="text: address"></div>
+                                    <div class="pickup-item__time" data-bind="text: regtime"></div>
+                                </td>
+                                <!-- если товар доступен для заказа, выводим это: -->
+                                <td class="pickup-item__info">
+                                    <div class="pickup-item__date" data-bind="text: humanNearestDay"></div>
+                                    <div class="pickup-item__price"><span data-bind="text: cost == 0 ? 'Бесплатно' : cost "></span> <span class="rubl" data-bind="visible: cost != 0">p</span></div>
+                                </div>
+                                <div class="pickup-item__buy">
+                                    <a href="" class="btn-type btn-type--buy">Купить</a>
+                                </div>
+                                </td>
 
-                <ul class="deliv-list" data-bind="foreach: points">
+                                <!-- конец -->
+                                <!-- если товар только на витрине, выводим это: -->
+                                 <!-- <td class="pickup-item__info pickup-item__info--ondisplay">
+                                    <span class="pickup-item__ondisplay-lbl">На витрине</span>
+                                    <i class="i-product i-product--info-normal i-info__icon pickup-item__ondisplay-icon"></i>
+                                    <?//попап с подсказкой, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open?>
+                                    <div class="pickup-item__ondisplay-popup info-popup info-popup--ondisplay">
+                                        <p>Чтобы купить товар с витрины,<br/>нужно приехать в магазин и обратиться к продавцу.</p>
+                                    </div>
+                                </td> -->
+                                <!-- конец -->
+                            </tr>
+                        </tbody>
 
-                    <li class="deliv-item jsChangePoint" data-bind="attr: { 'data-id': $data.id, 'data-token': $data.token, 'data-blockname': $data.orderToken }">
-                        <div class="deliv-item__logo">
-                            <img src="" class="deliv-item__img" data-bind="attr: { src: icon }" />
-                            <span class="deliv-item__name" data-bind="text: listName"></span>
-                        </div>
-                        <div class="deliv-item__addr">
-                            <!-- ko if: $.isArray(subway) -->
-                            <div class="deliv-item__metro" style="background: #FBAA33;" data-bind="style: { background: subway[0].line.color }">
-                               <div class="deliv-item__metro-inn" data-bind="text: subway[0].name"></div>
-                            </div>
-                            <!-- /ko -->
-                            <div class="deliv-item__addr-name" data-bind="text: address"></div>
-                            <div class="deliv-item__time" data-bind="text: regtime"></div>
-                        </div>
-
-                        <div class="deliv-item__info">
-                            <div class="deliv-item__date" data-bind="text: humanNearestDay"></div>
-                            <div class="deliv-item__price"><span data-bind="text: cost == 0 ? 'Бесплатно' : cost "></span> <span class="rubl" data-bind="visible: cost != 0">p</span></div>
-                        </div>
-                    </li>
-
-                </ul>
+                    </table>
+                </div>
             </div>
-        </div>
 
-        <div id="<?= $id . '-map' ?>" class="js-order-map selShop_r"></div>
+            <div id="<?= $id . '-map' ?>" class="js-order-map selShop_r clearfix"></div>
         <?= $helper->jsonInScriptTag($dataValue, '', 'jsMapData') ?>
-
+          </div>
+                <div class="deliv">
+                    <div class="deliv__title">Доставка</div>
+                    <div class="deliv-info">
+                        <span class="deliv-info__date">Сегодня</span>
+                        <span class="deliv-info__price">290 <span class="rubl">p</span></span>
+                        <div class="deliv-info__buy">
+                            <a href="" class="btn-type btn-type--buy">Купить с доставкой</a>
+                        </div>
+                        <a class="deliv-info-more-link" href="#">Подробнее об условиях и способах доставки</a>
+                    </div>
+                </div>
     </div>
 
 <? };
