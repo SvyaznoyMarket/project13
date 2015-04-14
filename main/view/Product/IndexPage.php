@@ -10,13 +10,14 @@ class IndexPage extends \View\DefaultLayout {
     /** Карточка товара 2015
      * @var bool
      */
-    protected $isNewProductPage = true;
+    protected $isNewProductPage = false;
 
     public function prepare() {
         /** @var $product \Model\Product\Entity */
         $product = $this->getParam('product') instanceof \Model\Product\Entity ? $this->getParam('product') : null;
         if (!$product) return;
         $this->product = $product;
+        $this->isNewProductPage = \App::abTest()->isNewProductPage();
 
         // Хлебные крошки
         $this->prepareBreadcrumbs();
@@ -84,7 +85,7 @@ class IndexPage extends \View\DefaultLayout {
     public function slotBodyClassAttribute() {
         return parent::slotBodyClassAttribute()
         . ($this->hasParam('categoryClass') ? ' ' . $this->getParam('categoryClass') : '')
-        . $this->isNewProductPage ? ' product-card-new ' : '';
+        . ($this->isNewProductPage ? ' product-card-new ' : '');
     }
 
     public function slotGoogleRemarketingJS($tagParams = []) {
@@ -271,7 +272,6 @@ class IndexPage extends \View\DefaultLayout {
 
                     break;
                 case 'maybe3d':
-                    // ADM-447
                     /*if ($source = $media->getSourceByType('html5')) {
                         $properties3D['type'] = 'html5';
                         $properties3D['url'] = $source->url;

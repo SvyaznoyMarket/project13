@@ -34,8 +34,9 @@ if (\App::config()->preview) $isProductAvailable = true;
 $showAccessories = $accessories && \App::config()->product['showAccessories'];
 
 /* Показывать блок "Подробнее" если есть описание или инструкции или характеристики */
+$hasMedia = array_filter($trustfactors, function(\Model\Product\Trustfactor $t) { return $t->media && $t->media->isFile(); });
 $showDescription = $product->getDescription()
-    || array_filter($trustfactors, function(\Model\Product\Trustfactor $t) { return $t->media && $t->media->isFile(); })
+    || $hasMedia
     || $product->getSecondaryGroupedProperties();
 
 $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
@@ -198,12 +199,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 			</div>
 			<!--/ применить скидку -->
 
-			<div class="buy-online">
-                <a class="btn-type btn-type--buy btn-type--longer btn-type--buy--bigger"
-                   href="">В корзину</a>
-            </div>
-
-            <? $helper->render('cart/__button-product', [
+            <?= $helper->render('cart/__button-product', [
                 'product'  => $product,
                 'onClick'  => isset($addToCartJS) ? $addToCartJS : null,
                 'sender'   => $buySender + [
@@ -424,11 +420,15 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 
             <?= $helper->render('product-page/blocks/properties', ['product' => $product]) ?>
 
-            <div class="product-section__desc">
-                <div class="product-section__tl" id="more">Описание</div>
-                <?= $helper->render('product-page/blocks/guides', ['trustfactors' => $trustfactors]) ?>
-                <div class="product-section__content"><?= $product->getDescription() ?></div>
-            </div>
+            <? if ($hasMedia || $product->getDescription()) : ?>
+
+                <div class="product-section__desc">
+                    <div class="product-section__tl" id="more">Описание</div>
+                    <?= $helper->render('product-page/blocks/guides', ['trustfactors' => $trustfactors]) ?>
+                    <div class="product-section__content"><?= $product->getDescription() ?></div>
+                </div>
+
+            <? endif ?>
         </div>
         <!--/ характеристики/описание товара -->
 

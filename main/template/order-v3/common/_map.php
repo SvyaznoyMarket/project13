@@ -214,7 +214,6 @@ return function(
 
             <div id="<?= $id . '-map' ?>" class="js-order-map selShop_r clearfix"></div>
         <?= $helper->jsonInScriptTag($dataValue, '', 'jsMapData') ?>
-          </div>
                 <div class="deliv">
                     <div class="deliv__title">Доставка</div>
                     <div class="deliv-info">

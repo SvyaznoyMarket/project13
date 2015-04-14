@@ -8,7 +8,7 @@
         $creditButton = $body.find('.jsProductCreditButton'),
         $userbar = $('.js-topbar-fixed'),
         $tabs = $('.jsProductTabs'),
-        tabsOffset = $tabs.offset().top,// это не очень хорошее поведение, т.к. при добавлении сверху элементов (AJAX, например) offset не изменяется
+        tabsOffset,// это не очень хорошее поведение, т.к. при добавлении сверху элементов (AJAX, например) offset не изменяется
         popupDefaults = {
             centered: true,
             closeSelector: '.jsPopupCloser'
@@ -16,6 +16,8 @@
 
     /* Если это не новая карточка, то do nothing */
     if (!$body.hasClass('product-card-new')) return;
+
+    tabsOffset = $tabs.offset().top;
 
     /* Попап новой карточки товара */
     $body.on('click', '.jsOpenProductImgPopup', function(){
@@ -130,6 +132,7 @@
         )
     }
 
+    // Добавление отзыва
     $body.on('click', '.jsReviewAdd', function(){
         $('.jsReviewForm').lightbox_me($.extend(popupDefaults, {
             onLoad: function() {},
@@ -147,6 +150,7 @@
         }
     });
 
+    // Плавающая навигация ala scrollspy
     if ($tabs.length) {
         $window.on('scroll', function(){
             var fixedClass = 'pp-fixed';

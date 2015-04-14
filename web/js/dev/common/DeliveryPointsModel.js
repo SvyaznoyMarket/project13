@@ -177,9 +177,10 @@
     ENTER.Placemark = function(point, visible) {
 
         var visibility = typeof visible == 'undefined' ? true : visible,
-            // balloonContent = '<b>Адрес:</b> ' + point.address,
-            // placemark;
-            balloonContent = '<table class="pickup-list">'+
+            balloonContent = '<b>Адрес:</b> ' + point.address,
+            placemark;
+
+        balloonContent = '<table class="pickup-list">'+
                                 '<tbody>'+
                                     '<tr class="pickup-item jsChangePoint clearfix" data-bind="attr: { "data-id": $data.id, "data-token": $data.token, "data-blockname": $data.orderToken }" data-id="68" data-token="shops" data-blockname="selftype134">'+
                                         '<td class="pickup-item__logo">'+
