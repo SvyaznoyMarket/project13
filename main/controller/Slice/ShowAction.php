@@ -125,7 +125,7 @@ class ShowAction {
         $page->setParam('productSorting', $productSorting);
         $page->setParam('productFilter', $productFilter);
         $page->setParam('productView', $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView()));
-        $page->setParam('hasCategoryChildren', in_array($request->get('route'), ['slice.show', 'slice.category'])); // SITE-3558
+        $page->setParam('hasCategoryChildren', !$this->isSeoSlice()); // SITE-3558
         $page->setGlobalParam('shop', $shop);
 
         return new \Http\Response($page->show());
@@ -295,14 +295,21 @@ class ShowAction {
             $params['region_id'] = $region->getId();
         }
 
-        \App::searchClient()->addQuery('category/tree', $params, [], function($data) use (&$category, &$region, $sliceToken) {
+        $isSeoSlice = $this->isSeoSlice();
+
+        \App::searchClient()->addQuery('category/tree', $params, [], function($data) use (&$category, &$region, $sliceToken, &$isSeoSlice) {
             $helper = new \Helper\TemplateHelper();
 
-            $changeCategoryUrlToSliceUrl = function(\Model\Product\Category\Entity $category) use($sliceToken, $helper) {
-                $url = explode('/', $category->getLink());
-                $url = $helper->url('slice.category', ['sliceToken' => $sliceToken, 'categoryToken' => end($url)]);
-                $category->setLink($url);
-            };
+            if ($isSeoSlice) {
+                // SITE-5432
+                $changeCategoryUrlToSliceUrl = function() {};
+            } else {
+                $changeCategoryUrlToSliceUrl = function(\Model\Product\Category\Entity $category) use($sliceToken, $helper) {
+                    $url = explode('/', $category->getLink());
+                    $url = $helper->url('slice.category', ['sliceToken' => $sliceToken, 'categoryToken' => end($url)]);
+                    $category->setLink($url);
+                };
+            }
 
             /**
              * Загрузка дочерних и родительских узлов категории
@@ -407,5 +414,9 @@ class ShowAction {
                 }
             }
         });
+    }
+
+    private function isSeoSlice() {
+        return in_array(\App::request()->get('route'), ['product.category.slice']);
     }
 }
