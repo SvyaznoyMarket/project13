@@ -58,8 +58,9 @@
     display: block;
     max-height: 350px;
     padding: 12px 12px 0 0;
+    text-align: left;
 
-    &:after {
+    .selShop_l &:after {
         content: '';
         height: 20px;
         width: 100%;
@@ -72,21 +73,21 @@
         margin: 0 6px 0 3px;
         width: 415px;
 
-        &:hover {
+        .selShop_l &:hover {
             background: rgba(249,155,28,0.1);
         }
-        &:hover .pickup-item__metro-inn{
+        .selShop_l &:hover .pickup-item__metro-inn{
             background: #fff5e8;
         }
         &:hover .pickup-item__buy{
             display: block;
         }
-        &:hover .pickup-item__info:not(.pickup-item__info--ondisplay) .pickup-item__date,
-        &:hover .pickup-item__info:not(.pickup-item__info--ondisplay) .pickup-item__price{
+        &:hover .pickup-item__info:not(.pickup-item__info--nobtn) .pickup-item__date,
+        &:hover .pickup-item__info:not(.pickup-item__info--nobtn) .pickup-item__price{
             display: none;
         }
 
-        &:last-child {
+        .selShop_l &:last-child {
             border-bottom: none;
             & td{
                 margin-bottom: 25px;
@@ -394,4 +395,29 @@
             }
         }
     }
+}
+.ymaps-2-1-23-balloon__content{
+    width: 388px;
+    padding: 10px;
+    margin:0px;
+    text-align: center;
+    .btn-type{
+        display: inline-block!important;
+    }
+}
+.ymaps-2-1-23-balloon__content ymaps{
+    height: auto!important;
+    width: 100%!important;
+    .pickup-list{
+        padding-top: 0px;
+    }
+    .pickup-item{
+        border: none;
+        & td{
+            padding-bottom: 5px;
+        }
+    }
+}
+.ymaps-2-1-23-balloon__close-button{
+    display: none;
 }

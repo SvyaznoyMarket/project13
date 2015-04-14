@@ -196,7 +196,7 @@ return function(
 
                                 <!-- конец -->
                                 <!-- если товар только на витрине, выводим это: -->
-                                 <!-- <td class="pickup-item__info pickup-item__info--ondisplay">
+                                 <!-- <td class="pickup-item__info pickup-item__info--nobtn">
                                     <span class="pickup-item__ondisplay-lbl">На витрине</span>
                                     <i class="i-product i-product--info-normal i-info__icon pickup-item__ondisplay-icon"></i>
                                     <?//попап с подсказкой, чтобы показать/скрыть окно необходимо добавить/удалить класс info-popup--open?>
