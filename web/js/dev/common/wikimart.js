@@ -7,7 +7,7 @@
                 // Ссылка на каталог
                 catalogUrl: 'http://example.com#catalog',
                 // Id города
-                cityId: $("#cityId").val()
+                cityId: ENTER.config.pageConfig.wikimart.cityId
             };
             WikimartAffiliate = new WikimartAffiliateCore();
             WikimartAffiliate.init(WikimartSettings);

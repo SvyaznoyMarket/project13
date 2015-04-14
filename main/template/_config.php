@@ -34,6 +34,7 @@ $config = array_merge([
     'wikimart'              => [
         'url'               => $appConfig->wikimart['enabled'] ? $appConfig->wikimart['jsUrl'] : null,
         'productUrlPattern' => 'http://' . App::request()->getHost() . '/wm-product/%GOOD_ID%',
+        'cityId'            => \App::user()->getRegion()->wikimartId
     ],
     'addressAutocomplete'   => $appConfig->order['addressAutocomplete'],
     'prepayment'            => $appConfig->order['prepayment'],

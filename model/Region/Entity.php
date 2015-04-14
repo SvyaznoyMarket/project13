@@ -6,6 +6,9 @@ class Entity extends BasicRegionEntity {
 
     /** @var string|null */
     public $kladrId;
+    /** ID региона в Викимарте
+     * @var string|null */
+    public $wikimartId;
     /** @var int */
     private $parentId;
     /** @var bool */
@@ -26,6 +29,7 @@ class Entity extends BasicRegionEntity {
     public function __construct(array $data = []) {
         parent::__construct($data);
         if (array_key_exists('kladr_id', $data)) $this->kladrId = $data['kladr_id'];
+        if (array_key_exists('wikimart_id', $data)) $this->wikimartId = $data['wikimart_id'];
         if (array_key_exists('parent_id', $data)) $this->setParentId($data['parent_id']);
         if (array_key_exists('slug', $data)) $this->setToken($data['slug']);
         if (array_key_exists('is_main', $data)) $this->setIsMain($data['is_main']);
