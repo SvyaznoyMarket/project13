@@ -33,7 +33,7 @@ $config = array_merge([
     'tealeaf'               => $appConfig->tealeaf['enabled'],
     'wikimart'              => [
         'url'               => $appConfig->wikimart['enabled'] ? $appConfig->wikimart['jsUrl'] : null,
-        'productUrlPattern' => \App::request()->getSchemeAndHttpHost() . '/wm-product/%GOOD_ID%',
+        'productUrlPattern' => 'http://' . App::request()->getHost() . '/wm-product/%GOOD_ID%',
     ],
     'addressAutocomplete'   => $appConfig->order['addressAutocomplete'],
     'prepayment'            => $appConfig->order['prepayment'],
