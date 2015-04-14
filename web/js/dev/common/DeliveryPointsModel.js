@@ -177,17 +177,41 @@
     ENTER.Placemark = function(point, visible) {
 
         var visibility = typeof visible == 'undefined' ? true : visible,
-            balloonContent = '<b>Адрес:</b> ' + point.address,
-            placemark;
+            // balloonContent = '<b>Адрес:</b> ' + point.address,
+            // placemark;
+            balloonContent = '<table class="pickup-list">'+
+                                '<tbody>'+
+                                    '<tr class="pickup-item jsChangePoint clearfix" data-bind="attr: { "data-id": $data.id, "data-token": $data.token, "data-blockname": $data.orderToken }" data-id="68" data-token="shops" data-blockname="selftype134">'+
+                                        '<td class="pickup-item__logo">'+
+'                                            <img src="/images/deliv-logo/enter.png" class="pickup-item__img" data-bind="attr: { src: icon }">'+
+'                                            <span class="pickup-item__name" data-bind="text: listName">Магазин Enter</span>'+
+'                                        </td>'+
+'                                        <td class="pickup-item__addr">'+
+'                                            <!-- ko if: $.isArray(subway) -->'+
+'                                            <div class="pickup-item__metro" style="background: rgb(255, 216, 3);" data-bind="style: { background: subway[0].line.color }">'+
+'                                               <div class="pickup-item__metro-inn" data-bind="text: subway[0].name">Новогиреево</div>'+
+'                                            </div>'+
+'                                            <!-- /ko -->'+
+'                                            <div class="pickup-item__addr-name" data-bind="text: address">Свободный пр-кт, д.&nbsp;33</div>'+
+'                                            <div class="pickup-item__time" data-bind="text: regtime">'+point.regtime+'</div>'+
+'                                        </td>'+
+'                                        <td class="pickup-item__info pickup-item__info--nobtn">'+
+'                                            <div class="pickup-item__date" data-bind="text: humanNearestDay">Послезавтра</div>'+
+'                                            <div class="pickup-item__price"><span data-bind="text: cost == 0 ? "Бесплатно" : cost ">Бесплатно</span> <span class="rubl" data-bind="visible: cost != 0" style="display: none;">p</span></div>'+
+'                                        '+
+'                                        </td>'+
+'                                    </tr>'+
+'                                </tbody>'+
+'                            </table>';
 
         if (!point.latitude || !point.longitude) throw 'Не указаны координаты точки';
 
-        if (point.regtime) balloonContent += '<br /> <b>Время работы:</b> ' + point.regtime;
+        // if (point.regtime) balloonContent += '<br /> <b>Время работы:</b> ' + point.regtime;
 
         // кнопка "Выбрать магазин"
         balloonContent += $('<button />', {
-                'text':'Выбрать',
-                'class': 'btnLightGrey bBtnLine btnView jsChangePoint',
+                'text':'Купить',
+                'class': 'btn-type btn-type--buy jsChangePoint',
                 'style': 'display: block',
                 'data-id': point.id,
                 'data-token': point.token,
@@ -196,12 +220,12 @@
         )[0].outerHTML;
 
         placemark = new ymaps.Placemark([point.latitude, point.longitude], {
-            balloonContentHeader: point.name,
+            // balloonContentHeader: point.name,
             balloonContentBody: balloonContent,
             hintContent: point.name,
             enterToken: point.token // Дополняем собственными свойствами
         }, {
-            balloonMaxWidth: 200,
+            balloonMaxWidth: 428,
             iconLayout: 'default#image',
             iconImageHref: point.marker.iconImageHref,
             iconImageSize: point.marker.iconImageSize,

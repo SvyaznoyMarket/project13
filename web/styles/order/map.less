@@ -1,25 +1,29 @@
 .popup-left-container {
-    width: 415px;
+    width: 419px;
     float: left;
 }
+.common-wrap{
 
-.selShop.deliv-wrap {
+}
+.selShop.pickup {
     width: 900px;
     .rounded(0px);
+    height: auto;
+    max-height: none;
+    padding:15px 10px;
 
     .selShop_l {
-        width: 410px;
+        width: 419px;
         display: inline-block;
         position: relative;
-        border-top: 1px solid #d3d3d3;
 
         &:not(.nobefore):after {
             content: '';
             position: absolute;
             bottom: 0px;
             left: 0px;
-            height: 60px;
-            width: 96%;
+            height: 40px;
+            width: 405px;
             .gradient(rgba(255, 255, 255, 0), #fff, rgba(255, 255, 255, 0));
         }
         &:not(.nobefore):before {
@@ -28,45 +32,66 @@
             top: 0px;
             left: 0px;
             height: 27px;
-            width: 96%;
+            width: 405px;
             .gradient(#fff, rgba(255, 255, 255, 0), #fff);
+            z-index: 1;
         }
     }
     .selShop_r {
         width: 480px;
-        height: 433px;
+        height: 453px;
     }
-    .selShop_hh {
-        margin-bottom: 10px;
+    .pickup__title,
+    .deliv__title {
+        margin: 0 0 10px 10px;
+        font-size: 18px;
     }
 }
-.deliv-nomatch {
+.pickup-nomatch {
     margin-top: 10px;
     color: #616161;
     .inline-block();
 }
-.deliv-list {
+.pickup-list {
     overflow-y: auto;
     overflow-x: hidden;
     display: block;
     max-height: 350px;
-    padding-top: 12px;
+    padding: 12px 12px 0 0;
+    text-align: left;
 
-    &:after {
+    .selShop_l &:after {
         content: '';
         height: 20px;
         width: 100%;
         display: block;
     }
-    .deliv-item {
-        padding: 12px 5px 5px;
+    .pickup-item {
+        // padding: 12px 3px 5px;
         border-bottom: 1px solid @lightgrey-2;
         cursor: pointer;
-        overflow: hidden;
+        margin: 0 6px 0 3px;
+        width: 415px;
 
-        &:last-child {
+        .selShop_l &:hover {
+            background: rgba(249,155,28,0.1);
+        }
+        .selShop_l &:hover .pickup-item__metro-inn{
+            background: #fff5e8;
+        }
+        &:hover .pickup-item__buy{
+            display: block;
+        }
+        &:hover .pickup-item__info:not(.pickup-item__info--nobtn) .pickup-item__date,
+        &:hover .pickup-item__info:not(.pickup-item__info--nobtn) .pickup-item__price{
+            display: none;
+        }
+
+        .selShop_l &:last-child {
             border-bottom: none;
-            margin-bottom: 10px;
+            & td{
+                margin-bottom: 25px;
+            }
         }
         &__name {
             font-size: 10px;
@@ -75,10 +100,13 @@
         }
         &__addr {
             position: relative;
-            float: left;
+            width: 100%;
+            min-width: 0;
+
+            // float: left;
             margin: 0 0 5px 5px;
-            width: 208px;
-            padding-left: 20px;
+            // width: 204px;
+            padding: 12px 3px 5px 20px;
 
             &-name {
                 color: #616161;
@@ -89,7 +117,8 @@
             text-align: center;
             width: 70px;
             position: relative;
-            float: left;
+            padding: 12px 3px 5px;
+            // float: left;
         }
         &__img {
             max-width: 100%;
@@ -118,11 +147,11 @@
             width: 80px;
             text-align: center;
             font-size: 12px;
-            background: #feeed5;
+            background: rgba(249,155,28,0.25);
             .rounded(3px);
             line-height: 1;
-            padding: 1px 0 2px;
-            margin: 4px 0 0;
+            padding: 2px 5px;
+            margin: 10px 0 0;
             color: #424242;
         }
         &__time {
@@ -138,15 +167,62 @@
             margin-top: 2px;
         }
         &__info {
+            // float: right;
+            padding: 12px 3px 5px 0px;
+
+            white-space: nowrap;
+            position: relative;
+            &--ondisplay {
+                padding-top: 8px;
+            }
+        }
+        &__buy {
+            display: none;
             float: right;
+            margin: 0 2px 0;
+        }
+        &__ondisplay{
+            &-lbl {
+                color: #616161;
+                font-size: 14px;
+                vertical-align: middle;
+            }
+            &-icon {
+                vertical-align: middle;
+            }
+            &-popup{
+                position: absolute;
+                top: 55px;
+                right: -5px;
+                width: 348px;
+                height: 46px;
+                padding: 10px;
+                color: #616161;
+                font-size: 14px;
+
+                &:after {
+                    right: 10px;
+
+                    .pseudo-class();
+                    .pseudo-corner-top(6px, #fff, -6px);
+                }
+                &:before {
+                    right: 8px;
+
+                    .pseudo-class();
+                    .pseudo-corner-top(8px, #c7c7c7, -8px);
+                }
+            }
         }
     }
 }
 
-.deliv-ctrls {
+.pickup-ctrls {
     padding-left: 5px;
+    margin-right:10px;
+    border-bottom: 1px solid #d3d3d3;
 
-    .deliv-sel {
+    .pickup-sel {
         padding: 0 5px;
         margin-right: 0px;
         line-height: 24px;
@@ -181,7 +257,7 @@
             }
         }
     }
-    .deliv-search {
+    .pickup-search {
         height: 35px;
         border: 1px solid #c7c7c7;
         padding-left: 40px;
@@ -225,7 +301,7 @@
         	cursor: pointer;
         	.rounded(9px);
         }
-        .deliv-suggest {
+        .pickup-suggest {
             width: 100%;
             height: 155px;
             position: absolute;
@@ -284,4 +360,64 @@
     .customLabel {
         font-size: 12px;
     }
+}
+.deliv{
+    &-info{
+
+        &__date {
+            .inline-block-middle();
+            width: 80px;
+            text-align: center;
+            font-size: 14px;
+            background: rgba(249,155,28,0.25);
+            .rounded(3px);
+            line-height: 1;
+            padding: 2px 5px;
+            color: #424242;
+        }
+        &__price{
+            font-size: 14px;
+            .inline-block-middle();
+
+        }
+        &__buy{
+            .inline-block-middle();
+            margin-left: 40px;
+        }
+        &-more-link{
+            .inline-block-middle();
+            margin-left: 70px;
+            color: #8c8c8c;
+            border-bottom: 1px solid #8c8c8c;
+            font-size: 14px;
+            &:hover{
+                text-decoration: none;
+            }
+        }
+    }
+}
+.ymaps-2-1-23-balloon__content{
+    width: 388px;
+    padding: 10px;
+    margin:0px;
+    text-align: center;
+    .btn-type{
+        display: inline-block!important;
+    }
+}
+.ymaps-2-1-23-balloon__content ymaps{
+    height: auto!important;
+    width: 100%!important;
+    .pickup-list{
+        padding-top: 0px;
+    }
+    .pickup-item{
+        border: none;
+        & td{
+            padding-bottom: 5px;
+        }
+    }
+}
+.ymaps-2-1-23-balloon__close-button{
+    display: none;
 }
