@@ -33,6 +33,11 @@ if (\App::config()->preview) $isProductAvailable = true;
 
 $showAccessories = $accessories && \App::config()->product['showAccessories'];
 
+/* Показывать блок "Подробнее" если есть описание или инструкции или характеристики */
+$showDescription = $product->getDescription()
+    || array_filter($trustfactors, function(\Model\Product\Trustfactor $t) { return $t->media && $t->media->isFile(); })
+    || $product->getSecondaryGroupedProperties();
+
 $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
 $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 
@@ -399,7 +404,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
     <!-- навигация по странице -->
     <div id="jsScrollSpy" class="product-tabs-scroll jsProductTabs">
         <ul class="nav product-tabs">
-            <li class="product-tabs__i"><a class="product-tabs__lk" href="#more" title="">Подробности</a></li>
+            <? if ($showDescription) : ?><li class="product-tabs__i"><a class="product-tabs__lk" href="#more" title="">Подробности</a></li><? endif ?>
             <? if ($showAccessories) : ?><li class="product-tabs__i"><a class="product-tabs__lk" href="#accessorize" title="">Аксессуары</a></li><? endif ?>
             <li class="product-tabs__i"><a class="product-tabs__lk" href="#reviews" title="">Отзывы</a></li>
             <li class="product-tabs__i jsSimilarTab" style="display: none"><a class="product-tabs__lk" href="#similar" title="">Похожие товары</a></li>
@@ -412,18 +417,22 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
     </div>
 	<!--/ навигация по странице -->
 
-	<!-- характеристики/описание товара -->
-	<div class="product-section clearfix">
+    <? if ($showDescription) : ?>
 
-        <?= $helper->render('product-page/blocks/properties', ['product' => $product]) ?>
+        <!-- характеристики/описание товара -->
+        <div class="product-section clearfix">
 
-        <div class="product-section__desc">
-			<div class="product-section__tl" id="more">Описание</div>
-			<?= $helper->render('product-page/blocks/guides', ['trustfactors' => $trustfactors]) ?>
-			<div class="product-section__content"><?= $product->getDescription() ?></div>
-		</div>
-	</div>
-	<!--/ характеристики/описание товара -->
+            <?= $helper->render('product-page/blocks/properties', ['product' => $product]) ?>
+
+            <div class="product-section__desc">
+                <div class="product-section__tl" id="more">Описание</div>
+                <?= $helper->render('product-page/blocks/guides', ['trustfactors' => $trustfactors]) ?>
+                <div class="product-section__content"><?= $product->getDescription() ?></div>
+            </div>
+        </div>
+        <!--/ характеристики/описание товара -->
+
+    <? endif ?>
 
     <? if ($showAccessories): ?>
     <!-- аксессуары -->
