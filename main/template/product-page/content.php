@@ -226,7 +226,12 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 				<li class="product-card-tools__i product-card-tools__i--onclick">
 
                     <? if (!$hasFurnitureConstructor && !count($product->getPartnersOffer()) && (!$isKit || $product->getIsKitLocked())): ?>
-                        <?= $helper->render('cart/__button-product-oneClick', ['product' => $product, 'sender'  => $buySender, 'sender2' => $buySender2]) // Покупка в один клик ?>
+                        <?= $helper->render('cart/__button-product-oneClick', [
+                            'product' => $product,
+                            'sender'  => $buySender,
+                            'sender2' => $buySender2,
+                            'value' => 'Купить в 1 клик'
+                        ]) // Покупка в один клик ?>
                     <? endif ?>
 
 
