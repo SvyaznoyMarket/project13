@@ -224,10 +224,12 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 			<!-- сравнить, добавить в виш лист -->
 			<ul class="product-card-tools">
 				<li class="product-card-tools__i product-card-tools__i--onclick">
-					<a href="" class="product-card-tools__lk">
-						<i class="product-card-tools__icon i-product i-product--onclick"></i>
-						<span class="product-card-tools__tx">Купить в 1 клик</span>
-					</a>
+
+                    <? if (!$hasFurnitureConstructor && !count($product->getPartnersOffer()) && (!$isKit || $product->getIsKitLocked())): ?>
+                        <?= $helper->render('cart/__button-product-oneClick', ['product' => $product, 'sender'  => $buySender, 'sender2' => $buySender2]) // Покупка в один клик ?>
+                    <? endif ?>
+
+
 				</li>
 
                 <!-- TODO функционал удаления из сравнения -->
