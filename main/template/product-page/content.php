@@ -237,8 +237,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 
 				</li>
 
-                <!-- TODO функционал удаления из сравнения -->
-                <li class="product-card-tools__i product-card-tools__i--compare"
+                <li class="product-card-tools__i product-card-tools__i--compare js-compareProduct"
                     data-bind="compareButtonBinding: compare"
                     data-id="<?= $product->getId() ?>"
                     data-type-id="<?= $product->getType() ? $product->getType()->getId() : null ?>">

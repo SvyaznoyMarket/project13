@@ -92,6 +92,8 @@
 				$elem = $(element),
 				productId = $elem.data('id'),
 				typeId = $elem.data('type-id'),
+                activeLinkClass = 'btnCmpr_lk-act',
+                buttonText = 'Добавить к сравнению',
 				comparableProducts;
 
 			var location = '';
@@ -100,17 +102,22 @@
 			} else if (ENTER.config.pageConfig.location.indexOf('product') != -1) {
 				location = 'product';
 			}
+
+            if (ENTER.config.pageConfig.newProductPage) {
+                activeLinkClass = 'product-card-tools__lk--active';
+                buttonText = 'Сравнить';
+            }
 			
 			if (ENTER.utils.getObjectWithElement(compare, 'id', productId)) {
 				$elem
 					.addClass('btnCmpr-act')
-					.find('a.btnCmpr_lk').addClass('btnCmpr_lk-act').attr('href', ENTER.utils.generateUrl('compare.delete', {productId: productId}))
+					.find('.jsCompareLink').addClass(activeLinkClass).attr('href', ENTER.utils.generateUrl('compare.delete', {productId: productId}))
 					.find('span').text('Убрать из сравнения');
 			} else {
 				$elem
 					.removeClass('btnCmpr-act')
-					.find('a.btnCmpr_lk').removeClass('btnCmpr_lk-act').attr('href', ENTER.utils.generateUrl('compare.add', {productId: productId, location: location}))
-					.find('span').text('Добавить к сравнению');
+					.find('.jsCompareLink').removeClass(activeLinkClass).attr('href', ENTER.utils.generateUrl('compare.add', {productId: productId, location: location}))
+					.find('span').text(buttonText);
 			}
 	
 			// массив продуктов, которые можно сравнить с данным продуктом
