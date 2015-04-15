@@ -15,11 +15,12 @@ $f = function(
                 <a class="product-card-photo-sticker" href=""><img src="<?= $product->getLabel()->getImageUrl(1) ?>" alt="<?= $helper->escape($product->getLabel()->getName()) ?>"></a>
             <? endif ?>
             <img src="<?= $product->getImageUrl(3) ?>"
-                 class="product-card-photo__img js-photo-zoomedImg"
+                 class="product-card-photo__img js-photo-zoomedImg jsOpenProductImgPopup"
                  data-zoom-image="<?= $product->getImageUrl(5) ?>"
-                 data-zoom-disable="false"
+                 data-zoom-disable="true"
                  alt="<?= $helper->escape($product->getName()) ?>"
                  data-is-slot="<?= $product->getSlotPartnerOffer() ? 'true' : 'false' ?>"
+                 style="cursor: zoom-in"
                 />
         </div>
 
@@ -27,7 +28,7 @@ $f = function(
         <div class="product-card-photo-thumbs <?= count($product->getPhoto()) > 5 ? 'product-card-photo-thumbs--slides' : ''?>">
             <ul class="product-card-photo-thumbs-list">
                 <? foreach ($product->getPhoto() as $key => $photo) : ?>
-                    <li class="product-card-photo-thumbs__i jsOpenProductImgPopup jsProductPhotoThumb <?= $key == 0 ? 'product-card-photo-thumbs__i--act' : '' ?>"
+                    <li class="product-card-photo-thumbs__i jsProductPhotoThumb <?= $key == 0 ? 'product-card-photo-thumbs__i--act' : '' ?>"
                         data-big-img="<?= $photo->getUrl(5) ?>"
                         ><img src="<?= $photo->getUrl() ?>" class="product-card-photo-thumbs__img" /></li>
                 <? endforeach ?>
