@@ -196,7 +196,14 @@ class DeliveryAction extends OrderV3 {
         // обновляем корзину пользователя
         if (isset($data['action']) && isset($data['params']['id']) && $data['action'] == 'changeProductQuantity') {
             $product = (new \Model\Product\Repository($this->client))->getEntityById($data['params']['id']);
-            if ($product !== null) $this->cart->setProduct($product, $data['params']['quantity']);
+            if ($product !== null) {
+                if (isset($orderDelivery->getProductsById()[$data['params']['id']])) {
+                    $this->cart->setProduct($product, $orderDelivery->getProductsById()[$data['params']['id']]->quantity);
+                } else {
+                    $this->cart->setProduct($product, 0);
+                }
+
+            }
         }
 
         // сохраняем в сессию расчет доставки
