@@ -173,6 +173,7 @@ class DeliveryAction extends OrderV3 {
                     $i * \App::config()->coreV2['timeout']
                 );
             } catch (\Exception $e) {
+                if ($e->getCode() == \Curl\Client::CODE_TIMEOUT) \App::exception()->remove($e);
                 if (in_array($e->getCode(), [600, 759])) throw $e; // когда удалили последний товар, некорректный email
             }
 
