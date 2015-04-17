@@ -61,4 +61,6 @@ $c->mainMenu['recommendationsEnabled'] = false;
 
 $c->tealeaf['enabled'] = false;
 
+$c->wikimart['jsUrl'] = '//checkout-test.wikimart.ru/js/test/script/';
+
 return $c;

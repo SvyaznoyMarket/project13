@@ -624,6 +624,11 @@ class AppConfig {
         'enabled' => null,
     ];
 
+    public $wikimart = [
+        'enabled' => null,
+        'jsUrl'   => null,
+    ];
+
     public function __construct() {
 
         $this->vkontakteOauth = new OAuth\VkontakteConfig();

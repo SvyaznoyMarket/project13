@@ -1260,6 +1260,34 @@
 (function(ENTER) {
 	var $body = $('body');
 
+	// Обработчик для кнопок купить WM
+	$body.on('click', '.jsWmBuyButton', function(e) {
+		var $button = $(e.currentTarget);
+
+		$body.trigger('TL_buyButton_clicked');
+
+		console.info({'wmId': $button.data('wmId')});
+
+		if ($button.hasClass('mDisabled')) {
+			//return false;
+			e.preventDefault();
+		}
+
+		if ($button.hasClass('mBought')) {
+			document.location.href('/cart');
+			//return false;
+			e.preventDefault();
+		}
+
+		$button.text('В корзине*');
+		$button.attr('href', '/cart');
+		$button.addClass('mBought')
+		WikimartAffiliate.addGoodToCart($button.data('wmId'));
+
+		//return false;
+		e.preventDefault();
+	});
+
 	// Обработчик для кнопок купить
 	$body.on('click', '.jsBuyButton', function(e) {
 		var $button = $(e.currentTarget);
@@ -5311,3 +5339,22 @@ $(document).ready(function() {
 	}
 
 }(window.ENTER));
+
+(function(){
+    try {
+        if (ENTER.config.pageConfig.wikimart.url) {
+            var WikimartSettings = {
+                // Формат ссылок на товары
+                catalogGoodUrlPattern: ENTER.config.pageConfig.wikimart.productUrlPattern,
+                // Ссылка на каталог
+                catalogUrl: 'http://example.com#catalog',
+                // Id города
+                cityId: ENTER.config.pageConfig.wikimart.cityId
+            };
+            WikimartAffiliate = new WikimartAffiliateCore();
+            WikimartAffiliate.init(WikimartSettings);
+        }
+    } catch (error) {
+        console.error(error);
+    }
+})();

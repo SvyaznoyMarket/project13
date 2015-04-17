@@ -31,6 +31,11 @@ $config = array_merge([
     'routeUrl'              => $router->generate('route'),
     'f1Certificate'         => $appConfig->f1Certificate['enabled'],
     'tealeaf'               => $appConfig->tealeaf['enabled'],
+    'wikimart'              => [
+        'url'               => $appConfig->wikimart['enabled'] ? $appConfig->wikimart['jsUrl'] : null,
+        'productUrlPattern' => 'http://' . App::request()->getHost() . '/wm-product/%GOOD_ID%',
+        'cityId'            => \App::user()->getRegion()->wikimartId
+    ],
     'addressAutocomplete'   => $appConfig->order['addressAutocomplete'],
     'prepayment'            => $appConfig->order['prepayment'],
     'isMobile'              => $isMobile,

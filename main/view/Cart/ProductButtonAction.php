@@ -63,6 +63,16 @@ class ProductButtonAction {
             $data['url'] = '#';
             $data['class'] .= ' btnBuy__eLink mDisabled js-orderButton jsBuyButton';
             $data['value'] = 'Нет';
+        } else if (\App::config()->wikimart['enabled'] && $product->isOnlyWikimartPartnerOffer()) {
+            $data['url'] = '#';
+            $data['class'] .= ' btnBuy__eLink jsWmBuyButton' . $colorClass;
+            $data['value'] = 'Купить*';
+            $data['wikimartId'] = $product->getWikimartId();
+        } else if (\App::config()->wikimart['enabled']) {
+            $data['id'] = 'quickBuyButton-' . $product->getId();
+            $data['url'] = $this->getOneClickBuyUrl($helper, $product, $isRetailRocket, $sender, $sender2);
+            $data['class'] .= ' btnBuy__eLink js-orderButton jsOneClickButton-new' . $colorClass;
+            $data['value'] = 'Купить';
         } else if ($slotPartnerOffer = $product->getSlotPartnerOffer()) {
             $data['isSlot'] = true;
             $data['url'] = '#';
