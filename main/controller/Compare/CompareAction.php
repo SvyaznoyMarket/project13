@@ -102,6 +102,7 @@ class CompareAction {
             foreach ($compareProducts as $compareProduct) {
                 /** @var \Model\Product\Entity $product */
                 $product = $products[$compareProduct['id']];
+                if (!$product) continue;
 
                 $typeId = $product->getType() ? $product->getType()->getId() : null;
                 if (!isset($compareGroups[$typeId])) {

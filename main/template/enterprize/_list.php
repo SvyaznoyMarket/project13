@@ -16,7 +16,6 @@ $f = function(
 
     $userEntity = $user->getEntity();
     $isEnterprizeMember = $userEntity && $userEntity->isEnterprizeMember();
-
 ?>
 
 <? $i = 0; foreach(array_chunk($enterpizeCoupons, 4) as $couponsInChunk): ?>
@@ -91,7 +90,8 @@ $f = function(
                 ],
                 'user'        =>
                     [
-                        'isMember' => $userEntity && $userEntity->isEnterprizeMember(),
+                        'isAuthorized' => (bool)$userEntity,
+                        'isMember'     => $userEntity && $userEntity->isEnterprizeMember(),
                     ]
                     + (
                         $userEntity

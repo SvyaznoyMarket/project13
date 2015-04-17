@@ -174,7 +174,7 @@ class Cart {
     public function getProductsNC(){
         $data = $this->storage->get($this->sessionNameNC);
 
-        return isset($data['product']) ? $data['product'] : null;
+        return (isset($data['product']) && is_array($data['product'])) ? $data['product'] : [];
     }
 
     public function getProductsDumpNC() {
