@@ -51,6 +51,10 @@ class Action {
             if (910 == $e->getCode()) {
                 $responseData['data'] = trim((string)$request->get('error_msg')) ?: 'Вы уже подписаны на нашу рассылку. Мы сообщим Вам о лучших скидках в письме. Не забывайте проверять почту от Enter!';
             }
+
+            if (850 == $e->getCode()) {
+                $responseData['error'] = 'Вы ввели некорректный email';
+            }
         }
 
         $response = new \Http\JsonResponse($responseData);

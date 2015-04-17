@@ -132,9 +132,20 @@ $(document).ready(function(){
 				}
 
 				$.post(url, data, function(res){
+                    var errorDiv = form.find('.formErrorMsg');
+
 					if ( res.hasOwnProperty('data') && undefined != typeof(res.data) ) {
 						form.html('<div class="subscribe-form__title">' + res.data + '</div>');
 					}
+
+                    if ( res.error ) {
+                        if (errorDiv.length == 0) {
+                            form.append($('<div class="formErrorMsg" style="margin-left: 135px; clear: both; color: red;"/>').text(res.error));
+                        } else {
+                            errorDiv.text(res.error).show();
+                        }
+                        form.find('.formErrorMsg').delay(2000).slideUp(600);
+                    }
 
 					if( !res.success ) {
 						return false;
