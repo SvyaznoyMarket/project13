@@ -12,12 +12,6 @@ class NewAction extends OrderV3 {
      * @return \Http\Response
      */
     public function execute(\Http\Request $request) {
-//        $controller = parent::execute($request);
-//        if ($controller) {
-//            return $controller;
-//        }
-
-        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $page = new \View\OrderV3\NewPage();
         $post = null;
@@ -50,7 +44,6 @@ class NewAction extends OrderV3 {
                 }
             }
 
-            $this->logger(['action' => 'view-page-new']);
             $this->getLastOrderData();
 
             $this->session->remove($this->splitSessionKey);
@@ -86,6 +79,7 @@ class NewAction extends OrderV3 {
         $page->setParam('user', $this->user);
         $page->setParam('previousPost', $post);
         $page->setParam('bonusCards', $bonusCards);
+        $page->setParam('hasProductsOnlyFromPartner', $this->hasProductsOnlyFromPartner($cart));
 
         return new \Http\Response($page->show());
     }
@@ -110,5 +104,15 @@ class NewAction extends OrderV3 {
 
         return !empty($cookieValue) ? $cookieValue : null;
 
+    }
+
+    /** Есть ли товары не от Enter?
+     * @param \Session\Cart $cart
+     * @return bool
+     */
+    private function hasProductsOnlyFromPartner(\Session\Cart $cart) {
+        $products = \RepositoryManager::product()->getCollectionById(array_keys($cart->getProductsNC()), \App::user()->getRegion(), false);
+        $productsFromPartner = array_filter($products, function (\Model\Product\Entity $p) { return $p->isOnlyFromPartner() ; });
+        return (bool)$productsFromPartner;
     }
 }

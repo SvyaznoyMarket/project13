@@ -6,15 +6,6 @@
 
 $cart = $user->getCart();
 $helper = new \Helper\TemplateHelper();
-
-// АБ-тест рекомендаций
-$test = \App::abTest()->getTest('recommended_product');
-$isNewRecommendation =
-    $test->getEnabled()
-    && $test->getChosenCase()
-    && ('new_recommendation' == $test->getChosenCase()->getKey())
-;
-
 ?>
 
 <div class="jsKnockoutCart" data-bind="visible: !isUpdated()">
@@ -50,10 +41,6 @@ $isNewRecommendation =
 </div>
 
 <div class="clear"></div>
-
-<? if (!$isNewRecommendation): ?>
-    <?= $page->render('cart/ab-self-delivery/_recommendSlider') ?>
-<? endif ?>
 
 <? if ($cart->isEmpty()): // жуткий костыль SITE-5289 ?>
     <div id="js-cart-firstRecommendation" style="display: none;">
@@ -100,7 +87,7 @@ $isNewRecommendation =
     <div class="clear"></div>
 
 
-<? if ($isNewRecommendation && \App::config()->product['pullRecommendation'] && !$cart->isEmpty()): ?>
+<? if (\App::config()->product['pullRecommendation'] && !$cart->isEmpty()): ?>
     <div class="basketLine">
         <?= $helper->render('product/__slider', [
             'type'      => 'alsoBought',

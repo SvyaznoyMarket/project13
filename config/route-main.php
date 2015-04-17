@@ -67,11 +67,6 @@ return [
         'pattern' => '/ajax/subscribe/status/set/{status}',
         'action'  => ['User\InfoAction', 'setSubscribeStatus'],
     ],*/
-    // инфо пользователя
-    'old.user.info' => [
-        'pattern' => '/user/shortinfo',
-        'action'  => ['User\OldInfoAction', 'execute'],
-    ],
     // вход пользователя
     'user.login' => [
         'pattern' => '/login',
@@ -553,16 +548,6 @@ return [
     'product.recommended' => [
         'pattern' => '/product-recommended',
         'action' => ['Product\RecommendedAction', 'execute'],
-    ],
-    'product.similar' => [
-        'pattern' => '/ajax/product-similar/{productId}',
-        'action'  => ['Product\SimilarAction', 'execute'],
-        'require' => ['productId' => '\d+'],
-    ],
-    'product.alsoViewed' => [
-        'pattern' => '/ajax/product-also-viewed/{productId}',
-        'action'  => ['Product\AlsoViewedAction', 'execute'],
-        'require' => ['productId' => '\d+'],
     ],
     'product.upsale' => [
         'pattern' => '/ajax/upsale/{productId}',

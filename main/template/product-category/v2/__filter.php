@@ -1,4 +1,7 @@
 <?php
+
+use \Model\Product\Filter\Option\Entity as Option;
+
 return function(
     \Helper\TemplateHelper $helper,
     \Model\Product\Filter $productFilter,
@@ -45,6 +48,11 @@ return function(
                 }
             }
         } else {
+            if ($property->isBrand()) { // Сортировка брендов по алфавиту
+                $option = $property->getOption();
+                usort($option, function(Option $a, Option $b){ return $a->getName() > $b->getName(); });
+                $property->setOption($option);
+            }
             $tyreFilters[$key] = $property;
         }
 

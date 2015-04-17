@@ -5,6 +5,8 @@ namespace Curl;
 class Client {
     use \EnterQuery\QueryCacheTrait;
 
+    const CODE_TIMEOUT = 28;
+
     /** @var \Logger\LoggerInterface */
     private $logger;
     /** @var resource|null */
@@ -63,6 +65,7 @@ class Client {
         $response = curl_exec($connection);
         try {
             if (curl_errno($connection) > 0) {
+                // TODO-zra refactor to CurlException
                 throw new \RuntimeException(curl_error($connection), curl_errno($connection));
             }
             $info = curl_getinfo($connection);
