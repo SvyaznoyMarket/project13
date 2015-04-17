@@ -242,10 +242,13 @@ return function(
 
             <? endif ?>
 
-            <?= $helper->render('order-v3/common/_map', [
-                'id'            => 'id-order-changePlace-content-' . $order->id,
-                'order'         => $order,
-                'orderDelivery' => $orderDelivery
+            <?
+                $dataPoints = (new \View\PointsMap\MapView());
+                $dataPoints->preparePointsWithOrder($order, $orderDelivery);
+            ?>
+
+            <?= \App::templating()->render('order-v3/common/_map', [
+                'dataPoints'    => $dataPoints,
             ]) ?>
 
             <!--/ способ доставки -->

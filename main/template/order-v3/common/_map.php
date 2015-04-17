@@ -1,63 +1,29 @@
-<?php
+<?
+/**
+ * @var $dataPoints \View\PointsMap\MapView
+ * @var $product \Model\Product\Entity
+ */
 
-return function(
-    \Helper\TemplateHelper $helper,
-    $id,
-    \Model\OrderDelivery\Entity\Order $order,
-    \Model\OrderDelivery\Entity $orderDelivery
-) {
-    /** @var \Model\OrderDelivery\Entity\Point\Shop[]|\Model\OrderDelivery\Entity\Point\Pickpoint[] $pointsById */
-
-    $region = \App::user()->getRegion();
+    $helper = \App::helper();
+    $uniqId = uniqid();
 
     // для дропбоксов
     $onmouseleave = "this.style.display='none'; $(this).parent().removeClass('opn')";
 
-    $dataValue = [
-        'latitude'  => $region->getLatitude(),
-        'longitude' => $region->getLongitude(),
-        'zoom'      => 10,
-        'points'    => [],
+    $mapData = [
+        'latitude'  => $dataPoints->mapConfig['latitude'],
+        'longitude' => $dataPoints->mapConfig['longitude'],
+        'zoom'      => $dataPoints->mapConfig['zoom'],
+        'points'    => $dataPoints->points
     ];
 
-    $pointsCost = [];
-    $nearestDays = [];
+    $uniqueCosts = $dataPoints->getUniquePointCosts();
+    $uniqueDays = $dataPoints->getUniquePointDays();
+    $uniqueTokens = $dataPoints->getUniquePointTokens();
 
-    /** @var \Model\OrderDelivery\Entity\Point\Shop[]|\Model\OrderDelivery\Entity\Point\Pickpoint[]|\Model\OrderDelivery\Entity\Point\Svyaznoy[] $points */
-    foreach ($order->possible_points as $token => $points) {
-        foreach ($points as $point) {
-            $p = $point['point'];
-            $dataValue['points'][$token][] = [
-                'id' => $p->id,
-                'name' => $p->name,
-                'address' => $helper->noBreakSpaceAfterDot($p->address),
-                'regtime' => $p->regtime,
-                'latitude' => $p->latitude,
-                'longitude' => $p->longitude,
-                'marker'    => $orderDelivery->points[$token]->marker,
-                'token'  => $token,
-                'icon'  => $orderDelivery->points[$token]->icon,
-                'cost'  => (string)$point['cost'],
-                'humanNearestDay'   => $helper->humanizeDate(DateTime::createFromFormat('Y-m-d', $point['nearestDay'])),
-                'nearestDay'  => $point['nearestDay'],
-                'blockName'    => $orderDelivery->points[$token]->block_name,
-                'orderToken' => $order->block_name,
-                'dropdownName'  => $orderDelivery->points[$token]->dropdown_name,
-                'listName'  => $p->listName,
-                'subway'    => $p->subway
-            ];
-            $pointsCost[] = $point['cost'];
-            $nearestDays[] = $point['nearestDay'];
-        }
-    }
-
-    $uniqueCosts = array_unique($pointsCost);
-    sort($uniqueCosts);
-    $uniqueDays = array_unique($nearestDays);
-    sort($uniqueDays);
     ?>
 
-    <div id="<?= $id ?>" class="selShop popupFl pickup jsNewPoints" style="display: none;" data-block_name="<?= $order->block_name ?>">
+    <div class="selShop popupFl pickup jsNewPoints" style="display: none;" data-block_name="<?= $order->block_name ?>">
 
         <div class="js-order-changePlace-close popupFl_clsr jsCloseFl" data-content="#<?= $id ?>"></div>
 
@@ -73,7 +39,8 @@ return function(
                         <input class="pickup-search-input" type="text" placeholder="Искать по улице, метро" data-bind="click: enableAutocompleteListVisible, value: searchInput, valueUpdate: 'afterkeydown'" />
                         <div class="pickup-search__clear" data-bind="click: clearSearchInput, visible: searchInput ">×</div>
                     </div>
-                    <div class="pickup-suggest" data-bind="visible: searchAutocompleteListVisible() && searchAutocompleteList().length > 0, event: { mouseleave: disableAutocompleteListVisible }">
+                    <div class="pickup-suggest" style="display: none"
+                         data-bind="visible: searchAutocompleteListVisible() && searchAutocompleteList().length > 0, event: { mouseleave: disableAutocompleteListVisible }">
                         <ul class="pickup-suggest__list" data-bind="foreach: searchAutocompleteList">
                             <li class="pickup-suggest__i" data-bind="text: name, attr: { 'data-bounds': bounds }, click: $parent.setMapCenter"></li>
                         </ul>
@@ -92,14 +59,14 @@ return function(
                         <div class="fltrBtnBox_dd js-category-v2-filter-dropBox-content jsOrderV3DropboxInner" onmouseleave="<?= $onmouseleave ?>">
                             <div class="fltrBtnBox_dd_inn">
                                 <div class="fltrBtn_param"> <!--fltrBtn_param-2col-->
-                                    <? foreach ($order->possible_points as $token => $points) : ?>
+                                    <? foreach ($uniqueTokens as $token) : ?>
 
                                         <div class="fltrBtn_ln ">
                                             <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput"
-                                                   type="checkbox" id="id-delivery-point-<?= $token.$order->block_name ?>" name="" value="<?= $token ?>"
+                                                   type="checkbox" id="id-delivery-point-<?= $token.$uniqId ?>" name="" value="<?= $token ?>"
                                                    data-bind="checked: choosenTokens" />
-                                            <label class="customLabel customLabel-defcheck2" for="id-delivery-point-<?= $token.$order->block_name ?>">
-                                                <span class="customLabel_btx"><?= $orderDelivery->points[$token]->dropdown_name ?></span>
+                                            <label class="customLabel customLabel-defcheck2" for="id-delivery-point-<?= $token.$uniqId ?>">
+                                                <span class="customLabel_btx"><?= $dataPoints->getDropdownName($token) ?></span>
                                             </label>
                                         </div>
 
@@ -123,9 +90,9 @@ return function(
 
                                         <div class="fltrBtn_ln ">
                                             <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput"
-                                                   type="checkbox" id="id-delivery-price-<?= $cost.$order->block_name ?>" name="" value="<?= $cost ?>"
+                                                   type="checkbox" id="id-delivery-price-<?= $cost.$uniqId ?>" name="" value="<?= $cost ?>"
                                                     data-bind="checked: $root.choosenCosts" />
-                                            <label class="customLabel customLabel-defcheck2" for="id-delivery-price-<?= $cost.$order->block_name ?>">
+                                            <label class="customLabel customLabel-defcheck2" for="id-delivery-price-<?= $cost.$uniqId ?>">
                                                 <span class="customLabel_btx"><?= $cost == 0 ? 'Бесплатно' : $cost . ' <span class="rubl">p</span>' ?></span>
                                             </label>
                                         </div>
@@ -149,9 +116,9 @@ return function(
                                     <? foreach ($uniqueDays as $day) : ?>
                                         <div class="fltrBtn_ln ">
                                             <input class="customInput customInput-defcheck2 js-category-v2-filter-element-list-checkbox jsCustomRadio js-customInput"
-                                                   type="checkbox" id="id-delivery-date-<?= $day.$order->block_name ?>" name="" value="<?= $day ?>"
+                                                   type="checkbox" id="id-delivery-date-<?= $day.$uniqId ?>" name="" value="<?= $day ?>"
                                                    data-bind="checked: choosenDates" />
-                                            <label class="customLabel customLabel-defcheck2" for="id-delivery-date-<?= $day.$order->block_name ?>">
+                                            <label class="customLabel customLabel-defcheck2" for="id-delivery-date-<?= $day.$uniqId ?>">
                                                 <span class="customLabel_btx"><?= $helper->humanizeDate(DateTime::createFromFormat('Y-m-d', $day)) ?></span>
                                             </label>
                                         </div>
@@ -213,18 +180,24 @@ return function(
             </div>
 
             <div id="<?= $id . '-map' ?>" class="js-order-map selShop_r clearfix"></div>
-        <?= $helper->jsonInScriptTag($dataValue, '', 'jsMapData') ?>
-                <div class="deliv">
-                    <div class="deliv__title">Доставка</div>
-                    <div class="deliv-info">
-                        <span class="deliv-info__date">Сегодня</span>
-                        <span class="deliv-info__price">290 <span class="rubl">p</span></span>
-                        <div class="deliv-info__buy">
-                            <a href="" class="btn-type btn-type--buy">Купить с доставкой</a>
-                        </div>
-                        <a class="deliv-info-more-link" href="#">Подробнее об условиях и способах доставки</a>
-                    </div>
-                </div>
-    </div>
 
-<? };
+        <? if (isset($product) && $product->delivery && $product->delivery->getDelivery()) : ?>
+
+            <div class="deliv">
+                <div class="deliv__title">Доставка</div>
+                <div class="deliv-info">
+                    <span class="deliv-info__date"><?= $helper->humanizeDate($product->delivery->getDeliveryWithMinDate()->getMinDate()->date) ?></span>
+                    <span class="deliv-info__price"><?= $helper->formatPrice($product->delivery->getDeliveryWithMinDate()->price) ?> <span class="rubl">p</span></span>
+                    <div class="deliv-info__buy">
+                        <a href="" class="btn-type btn-type--buy">Купить с доставкой</a>
+                    </div>
+                    <a class="deliv-info-more-link" href="#">Подробнее об условиях и способах доставки</a>
+                </div>
+            </div>
+
+        <? endif ?>
+
+        <?= $helper->jsonInScriptTag($mapData, '', 'jsMapData') ?>
+
+    </div>
+</div>

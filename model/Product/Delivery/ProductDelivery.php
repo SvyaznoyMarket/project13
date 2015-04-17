@@ -5,6 +5,7 @@ namespace Model\Product\Delivery;
 
 use Model\Shop\Entity as Shop; // TODO BasicShopEntity
 use Model\Region\BasicRegionEntity as Region;
+use Point\PickpointPoint;
 
 class ProductDelivery {
 
@@ -18,6 +19,8 @@ class ProductDelivery {
     public $intervals = [];
     /** @var Shop[] */
     public $shops = [];
+    /** @var */
+    public $pickpoints = [];
     /** @var Region[] */
     public $geo = [];
     /** @var Delivery[] */
@@ -28,6 +31,11 @@ class ProductDelivery {
         // Список магазинов
         if (isset($arr['shop_list']) && is_array($arr['shop_list'])) {
             foreach ($arr['shop_list'] as $shopData) $this->shops[$shopData['id']] = new Shop($shopData);
+        }
+
+        // Список пикпоинтов
+        if (isset($arr['pickpoint_list']) && is_array($arr['pickpoint_list'])) {
+            foreach ($arr['pickpoint_list'] as $pickpointData) $this->pickpoints[$pickpointData['id']] = new PickpointPoint($pickpointData);
         }
 
         // Список регионов
@@ -42,9 +50,20 @@ class ProductDelivery {
 
         // Список доставок
         if (isset($arr['product_list'][$productId]['delivery_mode_list']) && is_array($arr['product_list'][$productId]['delivery_mode_list'])) {
-            foreach ($arr['product_list'][$productId]['delivery_mode_list'] as $deliveryData) $this->deliveries[] = new Delivery($deliveryData);
+            foreach ($arr['product_list'][$productId]['delivery_mode_list'] as $deliveryData) $this->deliveries[] = new Delivery($deliveryData, $this);
         }
 
+    }
+
+    /** Возвращает точку по ID ( ненадежно! id могут пересекаться, но пока этого нет )
+     * @param $id
+     * @return null
+     */
+    public function getPointById($id) {
+        foreach ([$this->shops, $this->pickpoints] as $pointsArr) {
+            if (isset($pointsArr[$id])) return $pointsArr[$id];
+        }
+        return null;
     }
 
     /** Возвращает список доставок самовывозом
@@ -112,13 +131,13 @@ class Delivery {
     /** @var DeliveryDate[] */
     public $dates = [];
 
-    public function __construct(array $arr = []) {
+    public function __construct(array $arr = [], ProductDelivery &$productDelivery) {
         if (isset($arr['id'])) $this->id = $arr['id'];
         if (isset($arr['token'])) $this->token = $arr['token'];
         if (isset($arr['name'])) $this->name = $arr['name'];
         if (isset($arr['price'])) $this->price = $arr['price'];
         if (isset($arr['date_list']) && is_array($arr['date_list'])) {
-            foreach ($arr['date_list'] as $dateData) $this->dates[] = new DeliveryDate($dateData);
+            foreach ($arr['date_list'] as $dateData) $this->dates[] = new DeliveryDate($dateData, $productDelivery);
         }
         // сортируем по дате
         usort($this->dates, function($a, $b){ return $a > $b; });
@@ -137,9 +156,16 @@ class DeliveryDate {
 
     /** @var \DateTime */
     public $date;
+    /** @var [] */
+    public $points = [];
 
-    public function __construct(array $arr = []) {
+    public function __construct(array $arr = [], ProductDelivery &$productDelivery) {
         if (isset($arr['date'])) $this->date = new \DateTime($arr['date']);
+        if (isset($arr['shop_list']) && is_array($arr['shop_list'])) {
+            foreach ($arr['shop_list'] as $data) {
+                if (isset($data['id']) && $productDelivery->getPointById($data['id'])) $this->points[] = $productDelivery->getPointById($data['id']);
+            }
+        }
     }
 
 }

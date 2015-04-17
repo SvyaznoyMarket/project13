@@ -12,7 +12,8 @@
         popupDefaults = {
             centered: true,
             closeSelector: '.jsPopupCloser'
-        };
+        },
+        $mapContainer = $('.jsNewPoints');
 
     /* Если это не новая карточка, то do nothing */
     if (!$body.hasClass('product-card-new')) return;
@@ -166,6 +167,37 @@
 
     $body.scrollspy({ target: '#jsScrollSpy' });
 
+    $body.on('click', '.jsShowDeliveryMap', function(){
+
+        var mapData = $.parseJSON($mapContainer.find('.jsMapData').html()),
+            mapDivId = $mapContainer.find('.js-order-map').first().attr('id'),
+            map;
+
+
+        if (mapData) {
+
+            $mapContainer.lightbox_me({
+                centered: true,
+                closeSelector: '.jsCloseFl',
+                overlayCSS: {background: 'black', opacity: .5},
+                preventScroll: true
+            });
+
+            map = new ymaps.Map(mapDivId, {
+                center: [mapData.latitude, mapData.longitude],
+                zoom: mapData.zoom
+            },{
+                autoFitToViewport: 'always'
+            });
+
+            map.controls.remove('searchControl');
+
+            map.geoObjects.removeAll();
+            map.container.fitToViewport();
+
+        }
+
+    });
 
 
 })(jQuery);

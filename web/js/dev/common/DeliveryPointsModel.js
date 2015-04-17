@@ -155,17 +155,15 @@
 
         /* INIT */
 
-        $.each(points, function(token, pointsArr) {
-            $.each(pointsArr, function(index, point){
-                self.availablePoints.push(point);
-                if (typeof pointsBounds == 'undefined') pointsBounds = [[point.latitude, point.longitude], [point.latitude, point.longitude]];
-                else {
-                    if (point.latitude < pointsBounds[0][0]) pointsBounds[0][0] = point.latitude;
-                    if (point.latitude > pointsBounds[1][0]) pointsBounds[1][0] = point.latitude;
-                    if (point.longitude < pointsBounds[0][1]) pointsBounds[0][1] = point.longitude;
-                    if (point.longitude > pointsBounds[1][1]) pointsBounds[1][1] = point.longitude;
-                }
-            });
+        $.each(points, function(index, point) {
+            self.availablePoints.push(point);
+            if (typeof pointsBounds == 'undefined') pointsBounds = [[point.latitude, point.longitude], [point.latitude, point.longitude]];
+            else {
+                if (point.latitude < pointsBounds[0][0]) pointsBounds[0][0] = point.latitude;
+                if (point.latitude > pointsBounds[1][0]) pointsBounds[1][0] = point.latitude;
+                if (point.longitude < pointsBounds[0][1]) pointsBounds[0][1] = point.longitude;
+                if (point.longitude > pointsBounds[1][1]) pointsBounds[1][1] = point.longitude;
+            }
         });
 
         window.map = self;
