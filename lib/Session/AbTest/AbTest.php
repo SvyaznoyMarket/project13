@@ -52,6 +52,8 @@ class AbTest {
                 unset($this->cookie[$testKey]);
             }
         }
+
+        ksort($this->cookie);
     }
 
     /**
