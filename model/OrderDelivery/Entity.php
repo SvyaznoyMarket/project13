@@ -2,6 +2,7 @@
 
 namespace Model\OrderDelivery {
 
+    use Model\OrderDelivery\Entity\Order\Product;
     use Model\OrderDelivery\Entity\ValidationError;
 
     class Entity {
@@ -102,6 +103,25 @@ namespace Model\OrderDelivery {
             $this->validateOrders();
 
 
+        }
+
+        /**
+         * Возвращает массив [id => product] всех товаров в заказах
+         * @return Product[]
+         */
+        public function getProductsById(){
+            /** @var $products Product[] */
+            $products = [];
+            foreach ($this->orders as $order) {
+                foreach ($order->products as $product) {
+                    if (isset($products[$product->id])) {
+                        $products[$product->id]->quantity += $product->quantity;
+                    } else {
+                        $products[$product->id] = clone $product;
+                    }
+                }
+            }
+            return $products;
         }
 
         /** Различные странные ситуации, которые надо проверить
@@ -220,7 +240,7 @@ namespace Model\OrderDelivery\Entity {
                     case 'self_partner_pickpoint':
                         $this->marker['iconImageHref'] = '/images/deliv-icon/pickpoint.png';
                         $this->icon = '/images/deliv-logo/pickpoint.png';
-                        $this->dropdown_name = 'Точки самовывоза Pickpoint';
+                        $this->dropdown_name = 'Пункты выдачи Pickpoint';
                         break;
                     case 'self_partner_svyaznoy_pred_supplier':
                     case 'self_partner_svyaznoy':
