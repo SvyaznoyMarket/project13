@@ -8,6 +8,7 @@
         $validationErrors = $('.jsOrderValidationErrors'),
         errorClass = 'textfield-err',
 		cancelInputBlur = false,
+        mnogoRuCookie = docCookies.getItem('enter_mnogo_ru'),
         validateEmail = function validateEmailF(email) {
             var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(email) && !/[а-яА-Я]/.test(email);
@@ -118,9 +119,9 @@
 	});
 
 	// добавляем сохраненное значение карты Много.ру
-	if ($pageNew && docCookies.getItem('enter_mnogo_ru') != null) {
-		$pageNew.find('.jsOrderV3MnogoRuCardField').val(docCookies.getItem('enter_mnogo_ru'));
-		$pageNew.find('.jsMnogoRuSpan').text(docCookies.getItem('enter_mnogo_ru'));
+	if ($pageNew && mnogoRuCookie != null && mnogoRuCookie != 'undefined') {
+		$pageNew.find('.jsOrderV3MnogoRuCardField').val(mnogoRuCookie);
+		$pageNew.find('.jsMnogoRuSpan').text(mnogoRuCookie);
 	}
 
     // PAGE DELIVERY
