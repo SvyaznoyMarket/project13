@@ -489,7 +489,7 @@ $c->svyaznoyClub['cookieLifetime'] = 2592000; // 30 дней
 $c->svyaznoyClub['userTicket']['cookieName'] = 'UserTicket';
 $c->svyaznoyClub['cardNumber']['cookieName'] = 'scid';
 
-$c->flocktoryExchange['enabled'] = true;
+$c->flocktoryExchange['enabled'] = false;
 $c->flocktoryPostCheckout['enabled'] = true;
 
 
