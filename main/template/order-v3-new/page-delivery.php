@@ -70,7 +70,7 @@ return function(
                     <?= $product->name_web ?>
                 </a>
 
-                <span class="orderCol_data orderCol_data-summ" ><?= $helper->formatPrice($product->sum) ?> <span class="rubl">p</span></span>
+                <span class="orderCol_data orderCol_data-summ" ><?= $helper->formatPrice($product->original_sum) ?> <span class="rubl">p</span></span>
                 <span class="orderCol_data orderCol_data-count"><?= $product->quantity ?> шт.</span>
 
                 <div class="orderCol_data orderCol_data-edit" style="display: none">

@@ -669,6 +669,8 @@ namespace Model\OrderDelivery\Entity\Order {
         public $original_price;
         /** @var float */
         public $sum;
+        /** @var float */
+        public $original_sum;
         /** @var int */
         public $quantity;
         /** @var string */
@@ -691,6 +693,7 @@ namespace Model\OrderDelivery\Entity\Order {
             if (isset($data['price'])) $this->price = (float)$data['price'];
             if (isset($data['original_price'])) $this->original_price = (float)$data['original_price'];
             if (isset($data['sum'])) $this->sum = (float)$data['sum'];
+            if (isset($data['original_sum'])) $this->original_sum = (float)$data['original_sum'];
 
             if (isset($data['quantity'])) {
                 $this->quantity = (int)$data['quantity'];
