@@ -4,11 +4,13 @@
 
 ;(function($, ko){
 
-    ENTER.DeliveryPoints = function DeliveryPointsF (points) {
+    ENTER.DeliveryPoints = function DeliveryPointsF (points, mapParam) {
 
         var self = this,
             pointsBounds,
             map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map;
+
+        if (mapParam) map = mapParam;
 
         self.searchInput = ko.observable();
         self.searchAutocompleteList = ko.observableArray();
@@ -142,8 +144,6 @@
          * Отображаем на карте только те точки, которые были выбраны в первом дропдауне
          */
         self.choosenTokens.subscribe(function(arr){
-            var map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map; // TODO уже можно вынести
-
             map.geoObjects.each(function(geoObject){
                 if (arr.length == 0) {
                     geoObject.options.set('visible', true)
@@ -154,6 +154,8 @@
         });
 
         /* INIT */
+
+        console.log('Init DeliveryPointsModel with ', {points: points, mapParam: mapParam});
 
         $.each(points, function(index, point) {
             self.availablePoints.push(point);

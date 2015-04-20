@@ -101,7 +101,7 @@ class ProductButtonAction {
         }
 
         /* Новая карточка товара */
-        if (\App::abTest()->isNewProductPage()) {
+        if (\App::abTest()->isNewProductPage() && $location !== null) {
             $data['class'] = str_replace('btnBuy__eLink', '', $data['class']) . ' btn-type btn-type--buy';
             if ('product-card' === $location) $data['class'] .= ' btn-type--longer btn-type--buy--bigger';
             if ('slider' === $location) $data['class'] .= ' btn-type--light';

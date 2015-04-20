@@ -169,33 +169,104 @@
 
     $body.on('click', '.jsShowDeliveryMap', function(){
 
-        var mapData = $.parseJSON($mapContainer.find('.jsMapData').html()),
-            mapDivId = $mapContainer.find('.js-order-map').first().attr('id'),
-            map;
+        var productId = $(this).data('product-id'),
+            $div = $('.jsProductPointsMap');
 
-
-        if (mapData) {
-
-            $mapContainer.lightbox_me({
+        // Если точки были загружены, то просто показываем этот div
+        if ($div.find('.jsNewPoints').length > 0) {
+            $div.lightbox_me({
                 centered: true,
-                closeSelector: '.jsCloseFl',
-                overlayCSS: {background: 'black', opacity: .5},
                 preventScroll: true
             });
-
-            map = new ymaps.Map(mapDivId, {
-                center: [mapData.latitude, mapData.longitude],
-                zoom: mapData.zoom
-            },{
-                autoFitToViewport: 'always'
-            });
-
-            map.controls.remove('searchControl');
-
-            map.geoObjects.removeAll();
-            map.container.fitToViewport();
-
+            return ;
         }
+
+        $.ajax('/ajax/product/map/' + productId, {
+            dataType: 'json',
+            beforeSend: function(){
+                $div.lightbox_me({
+                    centered: true,
+                    preventScroll: true
+                })
+            }
+        }).done(function(data){
+
+            if (!data.success) {
+                console.error('product/map response: %s', data.error);
+            } else {
+                var $mapContainer = $(data.html),
+                    mapData = $.parseJSON($mapContainer.find('.jsMapData').html()),
+                    mapDivId = $mapContainer.find('.js-order-map').first().attr('id'),
+                    yMap, pointsModel;
+
+                $div.html(data.html);
+
+                $body.on('click', '.jsCloseFl', function(){
+                    $div.trigger('close');
+                });
+
+                if (mapData) {
+
+                    yMap = new ymaps.Map(mapDivId, {
+                        center: [mapData.latitude, mapData.longitude],
+                        zoom: mapData.zoom
+                    },{
+                        autoFitToViewport: 'always'
+                    });
+
+                    yMap.controls.remove('searchControl');
+
+                    yMap.geoObjects.removeAll();
+                    yMap.container.fitToViewport();
+
+                    pointsModel = new ENTER.DeliveryPoints(mapData.points, yMap);
+
+                    // Эвент на изменение размера карты (для фильтрации точек)
+                    yMap.events.add('boundschange', function (event) {
+                        var bounds;
+                        if (event.get('newBounds')) {
+                            bounds = event.get('target').getBounds();
+                            pointsModel.latitudeMin(bounds[0][0]);
+                            pointsModel.latitudeMax(bounds[1][0]);
+                            pointsModel.longitudeMin(bounds[0][1]);
+                            pointsModel.longitudeMax(bounds[1][1]);
+                        }
+                    });
+
+                    // добавляем видимые точки на карту
+                    $.each(mapData.points, function(i, point){
+                        try {
+                            yMap.geoObjects.add(new ENTER.Placemark(point, true));
+                        } catch (e) {
+                            console.error('Ошибка добавления точки на карту', e);
+                        }
+                    });
+
+                    if (yMap.geoObjects.getLength() === 1) {
+                        yMap.setCenter(yMap.geoObjects.get(0).geometry.getCoordinates(), 15);
+                        yMap.geoObjects.get(0).options.set('visible', true);
+                    } else {
+                        yMap.setBounds(yMap.geoObjects.getBounds());
+                        // точки становятся видимыми только при увеличения зума
+                        yMap.events.once('boundschange', function(event){
+                            if (event.get('oldZoom') < event.get('newZoom')) {
+                                yMap.geoObjects.each(function(point) { point.options.set('visible', true)})
+                            }
+                        })
+                    }
+
+                    ko.applyBindings(pointsModel, $div[0]);
+
+                    $body.on('click', '.jsOrderV3Dropbox',function(){
+                        $(this).siblings().removeClass('opn').find('.jsOrderV3DropboxInner').hide(); // скрываем все, кроме потомка
+                        $(this).find('.jsOrderV3DropboxInner').toggle(); // потомка переключаем
+                        $(this).hasClass('opn') ? $(this).removeClass('opn') : $(this).addClass('opn');
+                    });
+
+                }
+            }
+
+        })
 
     });
 

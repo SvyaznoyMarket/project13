@@ -240,4 +240,42 @@ class DeliveryAction {
 
         return $responseData;
     }
+
+    public function map (\Http\Request $request, $productId) {
+
+        $result = [
+            'success' => false
+        ];
+
+        $splitResult = \App::coreClientV2()->query('cart/split',
+            [
+                'geo_id'     => \App::user()->getRegionId(),
+                'request_id' => \App::$id,
+            ],
+            [ 'cart' => [
+                    'product_list' => [
+                        $productId => [
+                            'id' => $productId,
+                            'quantity'  => 1
+                        ]
+                    ]
+                ]
+            ]);
+
+        $order = new \Model\OrderDelivery\Entity($splitResult);
+
+        if ($order && $order->orders) {
+            $map = new \View\PointsMap\MapView();
+            $map->preparePointsWithOrder(reset($order->orders), $order);
+            $result = [
+                'success'   => true,
+                'html'      => \App::templating()->render('order-v3/common/_map', ['dataPoints' => $map, 'visible' => true])
+            ];
+        } else {
+            $result['error'] = 'Ошибка разбиения';
+        }
+
+        return new \Http\JsonResponse($result);
+
+    }
 }

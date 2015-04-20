@@ -343,6 +343,11 @@ return [
         'pattern' => '/ajax/product/kit/{productUi}',
         'action'  => ['Product\KitAction', 'execute'],
     ],
+    // Карта со всеми точками самовывоза
+    'product.map' => [
+        'pattern' => '/ajax/product/map/{productId}',
+        'action'  => ['Product\DeliveryAction', 'map']
+    ],
 
     // теги
     'tag' => [

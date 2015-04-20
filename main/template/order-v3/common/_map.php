@@ -2,6 +2,7 @@
 /**
  * @var $dataPoints \View\PointsMap\MapView
  * @var $product \Model\Product\Entity
+ * @var $visible bool
  */
 
     $helper = \App::helper();
@@ -21,11 +22,13 @@
     $uniqueDays = $dataPoints->getUniquePointDays();
     $uniqueTokens = $dataPoints->getUniquePointTokens();
 
+    if (!isset($visible)) $visible = false;
+
     ?>
 
-    <div class="selShop popupFl pickup jsNewPoints" style="display: none;" data-block_name="<?= $order->block_name ?>">
+    <div class="selShop popupFl pickup jsNewPoints" style="display: <?= $visible ? 'block' : 'none';  ?>" data-block_name="<?= $order->block_name ?>">
 
-        <div class="js-order-changePlace-close popupFl_clsr jsCloseFl" data-content="#<?= $id ?>"></div>
+        <div class="js-order-changePlace-close popupFl_clsr jsCloseFl" data-content="#<?= 'map-' . $uniqId ?>"></div>
 
         <div class="pickup__title">Выберите точку самовывоза</div>
 
@@ -179,7 +182,7 @@
                 </div>
             </div>
 
-            <div id="<?= $id . '-map' ?>" class="js-order-map selShop_r clearfix"></div>
+            <div id="<?= 'map-' . $uniqId ?>" class="js-order-map selShop_r clearfix"></div>
 
         <? if (isset($product) && $product->delivery && $product->delivery->getDelivery()) : ?>
 
