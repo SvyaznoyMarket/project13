@@ -17,7 +17,7 @@ class UpsaleAction extends BasicRecommendedAction {
      * @return array
      * @throws \Exception\NotFoundException
      */
-    public function getResponseData($productId, \Http\Request $request) {
+    public function execute($productId, \Http\Request $request) {
 
         try {
             $product = \RepositoryManager::product()->getEntityById($productId);
@@ -123,6 +123,6 @@ class UpsaleAction extends BasicRecommendedAction {
             ];
         }
 
-        return $responseData;
+        return new \Http\JsonResponse($responseData);
     }
 }
