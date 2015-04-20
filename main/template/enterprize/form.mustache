@@ -97,10 +97,12 @@
                 </fieldset>
 
                 <fieldset class="form-reg__fld form-reg__btn clearfix">
+                    {{^user.isAuthorized}}
                     <div class="form-reg__login">
                         У Вас есть логин и пароль?<br/>
                         <a href="/login" class="form-reg__login__lk undrl bAuthLink">Войти</a>
                     </div>
+                    {{/user.isAuthorized}}
 
                     <button type="submit" class="btn-def fl-r">Зарегистрироваться</button>
                 </fieldset>

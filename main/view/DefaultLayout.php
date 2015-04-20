@@ -94,30 +94,6 @@ class DefaultLayout extends Layout {
         return $this->render('_seoContent', $this->params);
     }
 
-    public function slotFooter() {
-        $client = \App::contentClient();
-
-        $response = null;
-        $client->addQuery(
-            'footer_default',
-            [],
-            function($data) use (&$response) {
-                $response = $data;
-            },
-            function(\Exception $e) {
-                \App::exception()->add($e);
-            }
-        );
-        $client->execute();
-
-        $response = array_merge(['content' => ''], (array)$response);
-
-        $response['content'] = str_replace('8 (800) 700-00-09', \App::config()->company['phone'], $response['content']);
-
-
-        return $response['content'];
-    }
-
     public function slotContentHead() {
         // заголовок контента страницы
         if (!$this->hasParam('title')) {
@@ -479,10 +455,6 @@ class DefaultLayout extends Layout {
      * Данный пиксель устанавливается на страницу «спасибо за заказ»
      */
     public function slotСpaexchangeConversionJS () {
-        return '';
-    }
-
-    public function slotRevolvermarketingConversionJS () {
         return '';
     }
 

@@ -27,5 +27,6 @@
 
 <body>
     <?= $page->slotContent() ?>
+    <?= $page->slotMustacheTemplates() ?>
 </body>
 </html>

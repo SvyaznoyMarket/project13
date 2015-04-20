@@ -92,6 +92,8 @@ class Action {
         // запрашиваем товары
         if ((bool)$productsById) {
             \RepositoryManager::product()->prepareCollectionById(array_keys($productsById), $region, function($data) use (&$productsById) {
+                if (!is_array($data)) return;
+
                 foreach ($data as $item) {
                     $productsById[(int)$item['id']] = new \Model\Product\Entity($item);
                 }
@@ -229,7 +231,7 @@ class Action {
             },null, $timeout);
             $rrClient->execute();
         } catch (\Exception $e) {
-            if ($e->getCode() == 28) {
+            if ($e->getCode() == \Curl\Client::CODE_TIMEOUT) {
                 \App::exception()->remove($e);
             }
         }

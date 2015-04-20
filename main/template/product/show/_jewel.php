@@ -20,14 +20,6 @@ $isKitPage = (bool)$product->getKit();
 
 $showSimilarOnTop = !$product->isAvailable();
 
-// АБ-тест рекомендаций
-$test = \App::abTest()->getTest('recommended_product');
-$isNewRecommendation =
-    $test->getEnabled()
-    && $test->getChosenCase()
-    && ('new_recommendation' == $test->getChosenCase()->getKey())
-;
-
 $buySender = ($request->get('sender') ? (array)$request->get('sender') : \Session\ProductPageSenders::get($product->getUi())) + ['name' => null, 'method' => null, 'position' => null];
 $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? 'marketplace' : '';
@@ -64,7 +56,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
             </div>
         <? endif ?>
 
-        <? if ($showSimilarOnTop && $isNewRecommendation): ?>
+        <? if ($showSimilarOnTop): ?>
             <? if (\App::config()->product['pullRecommendation']): ?>
                 <?= $helper->render('product/__slider', [
                     'type'     => 'similar',
@@ -144,7 +136,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
 
     <?= $page->render('product/_reviews', ['product' => $product, 'reviewsData' => $reviewsData, 'reviewsDataSummary' => $reviewsDataSummary, 'reviewsPresent' => $reviewsPresent, 'sprosikupiReviews' => $sprosikupiReviews, 'shoppilotReviews' => $shoppilotReviews]) ?>
 
-    <? if (!$showSimilarOnTop || !$isNewRecommendation): ?>
+    <? if (!$showSimilarOnTop): ?>
         <? if (\App::config()->product['pullRecommendation']): ?>
             <?= $helper->render('product/__slider', [
                 'type'     => 'similar',
@@ -205,8 +197,6 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
                 <?= $helper->render('product/__delivery', ['product' => $product, 'deliveryData' => $deliveryData, 'shopStates' => $shopStates]) // Доставка ?>
             <? endif ?>
 
-            <?= $helper->render('cart/__button-product-paypal', ['product' => $product]) // Кнопка купить через paypal ?>
-
             <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'main']) ?>
         </div>
     <? elseif (!$isKitPage || $product->getIsKitLocked()): ?>
@@ -255,7 +245,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
     ]) ?>
 <? endif ?>
 
-<? if ($isNewRecommendation && \App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
+<? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
     <?= $helper->render('product/__slider', [
         'type'      => 'viewed',
         'title'     => 'Вы смотрели',

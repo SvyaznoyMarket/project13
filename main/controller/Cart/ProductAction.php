@@ -81,18 +81,6 @@ class ProductAction {
             $cart->setProduct($product, $quantity, $params, $moveProductToUp);
             $cartProduct = $cart->getProductById($product->getId());
 
-            $returnRedirect = $request->headers->get('referer') ?: ($product->getLink() ?: \App::router()->generate('homepage'));
-            if (\App::abTest()->getTest('other')) {
-                switch (\App::abTest()->getTest('other') && \App::abTest()->getTest('other')->getChosenCase()->getKey()) {
-                    case 'upsell':
-                        $returnRedirect = \App::router()->generate('product.upsell', ['productToken' => $product->getToken()]);
-                        break;
-                    case 'order2cart':
-                        $returnRedirect = \App::router()->generate('cart');
-                        break;
-                }
-            }
-
             $productInfo = [
                 'id'        => $product->getId(),
                 'article'   => $product->getArticle(),
@@ -133,7 +121,7 @@ class ProductAction {
                     'sender'      => $sender,
                 ]);
             } else {
-                $response = new \Http\RedirectResponse($returnRedirect);
+                $response = new \Http\RedirectResponse($request->headers->get('referer') ?: ($product->getLink() ?: \App::router()->generate('homepage')));
             }
 
             return $response;

@@ -28,7 +28,6 @@ $helper = new \Helper\TemplateHelper();
 
     <?= $helper->render('product-category/__filter', [
         'baseUrl'          => $helper->url(),
-        'countUrl'         => null,
         'productFilter'    => $productFilter,
         'openFilter'    => false,
         'productPager'  => $productPager,

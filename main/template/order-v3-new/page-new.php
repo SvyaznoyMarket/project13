@@ -3,8 +3,10 @@
 return function(
     \Helper\TemplateHelper $helper,
     \Session\User $user,
+    $hasProductsOnlyFromPartner,
     array $bonusCards,
-    $error = null
+    $error = null,
+    $previousPost = null
 ) {
     /** @var $bonusCards \Model\Order\BonusCard\Entity[] */
     $userEntity = $user->getEntity();
@@ -14,6 +16,9 @@ return function(
 
     $isEmailRequired = \App::config()->order['emailRequired'];
     $config = \App::config();
+
+    $userPhone = isset($previousPost['user_info']['phone']) ? $previousPost['user_info']['phone'] : '';
+    $userMail = isset($previousPost['user_info']['email']) ? $previousPost['user_info']['email'] : '';
 ?>
 
 <?= $helper->render('order-v3-new/__head', ['step' => 1]) ?>
@@ -29,22 +34,23 @@ return function(
             <fieldset class="orderU_flds">
                 <div>
                     <div class="orderU_fld">
-                        <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[phone]" value="<?= $userEntity ? preg_replace('/^8/', '+7', $userEntity->getMobilePhone()) : '' ?>" placeholder="+7 (___) ___-__-__" data-mask="+7 (xxx) xxx-xx-xx">
+                        <input class="orderU_tx textfield jsOrderV3PhoneField" type="text" name="user_info[phone]" value="<?= $userEntity ? preg_replace('/^8/', '+7', $userEntity->getMobilePhone()) : $userPhone ?>" placeholder="+7 (___) ___-__-__" data-mask="+7 (xxx) xxx-xx-xx">
                         <label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
                         <span class="errTx" style="display: none">Неверный формат телефона</span>
                         <span class="orderU_hint">Для смс о состоянии заказа</span>
                     </div>
 
                     <div class="orderU_fld">
-                        <input class="orderU_tx textfield jsOrderV3EmailField <?= $isEmailRequired ? 'jsOrderV3EmailRequired' : '' ?>" type="text" name="user_info[email]" value="<?= $userEntity ? $userEntity->getEmail() : '' ?>" placeholder="mail@domain.com">
+                        <input class="orderU_tx textfield jsOrderV3EmailField <?= $isEmailRequired ? 'jsOrderV3EmailRequired' : '' ?>" type="text" name="user_info[email]" value="<?= $userEntity ? $userEntity->getEmail() : $userMail ?>" placeholder="mail@domain.com">
                         <label class="orderU_lbl <?= $isEmailRequired ? 'orderU_lbl-str' : '' ?>" for="">E-mail</label>
                         <span class="errTx" style="display: none">Неверный формат email</span>
                         <? if (!$user->isSubscribed()) : ?>
                             <? if ($userEntity && $userEntity->isEnterprizeMember()) : ?>
                             <? else : ?>
                             <span class="orderU_hint">
-                                <input class="customInput customInput-defcheck jsCustomRadio js-customInput jsOrderV3SubscribeCheckbox" type="checkbox" name="subscribe" value="" id="subscribe" <?= \App::abTest()->getTest('order_email') ? 'checked' : '' ?>>
-                                <label class="customLabel customLabel-defcheck mChecked jsOrderV3SubscribeLabel" for="subscribe">Подписаться на рассылку и получить купон со скидкой 300 рублей на следующую покупку</label>
+                                <? $checked = \App::abTest()->getTest('order_email'); ?>
+                                <input class="customInput customInput-defcheck jsCustomRadio js-customInput jsOrderV3SubscribeCheckbox" type="checkbox" name="subscribe" value="" id="orderV3Subscribe" <?= $checked ? 'checked' : '' ?>>
+                                <label class="customLabel customLabel-defcheck <?= $checked ? 'mChecked' : '' ?> jsOrderV3SubscribeLabel" for="orderV3Subscribe">Подписаться на рассылку и получить купон со скидкой 300 рублей на следующую покупку</label>
                             </span>
                             <? endif ?>
                         <? endif ?>
@@ -57,9 +63,11 @@ return function(
                     </div>
                 </div>
 
-                <? if ($bonusCards) : ?>
                 <div>
                     <div class="bonusCnt bonusCnt-v2">
+
+                        <? if ($bonusCards) : // Бонусные карты от ядра ?>
+
                             <div class="bonusCnt_lst">
                                 <? foreach ($bonusCards as $key => $card) : ?>
 
@@ -72,32 +80,31 @@ return function(
                                     </div>
 
                                 <? endforeach ?>
-
-
-
                             </div>
 
-                        <? foreach ($bonusCards as $card) : ?>
-                        <? if ($userBonusCards) $userBonusCard = array_filter($userBonusCards, function($arr) use (&$card) {
-                                /** @var $card \Model\Order\BonusCard\Entity */
-                                return $card->getId() == $arr['bonus_card_id']; })
-                            ?>
-                            <div class="bonusCnt_it clearfix" style="display: <?= (bool)$userBonusCard ? 'none' : 'none' ?>">
-                                <div class="orderU_fld">
-                                    <input class="orderU_tx textfield jsOrderV3BonusCardField" type="text" name="user_info[bonus_card_number]" value="<?= (bool)$userBonusCard ? $userBonusCard[0]['number'] : '' ?>" placeholder="<?= $card->getMask() ?>" data-mask="<?= $card->getMask() ?>">
-                                    <label class="orderU_lbl" for="">Номер</label>
-                                    <span class="errTx" style="display: none">Неверный код карты лояльности</span>
-                                    <span class="orderU_inf jsShowBonusCardHint"></span>
-                                </div>
+                            <? foreach ($bonusCards as $card) : ?>
+                            <? if ($userBonusCards) $userBonusCard = array_filter($userBonusCards, function($arr) use (&$card) {
+                                    /** @var $card \Model\Order\BonusCard\Entity */
+                                    return $card->getId() == $arr['bonus_card_id']; })
+                                ?>
+                                <div class="bonusCnt_it clearfix" style="display: <?= (bool)$userBonusCard ? 'none' : 'none' ?>">
+                                    <div class="orderU_fld">
+                                        <input class="orderU_tx textfield jsOrderV3BonusCardField" type="text" name="user_info[bonus_card_number]" value="<?= (bool)$userBonusCard ? $userBonusCard[0]['number'] : '' ?>" placeholder="<?= $card->getMask() ?>" data-mask="<?= $card->getMask() ?>">
+                                        <label class="orderU_lbl" for="">Номер</label>
+                                        <span class="errTx" style="display: none">Неверный код карты лояльности</span>
+                                        <span class="orderU_inf jsShowBonusCardHint"></span>
+                                    </div>
 
-                                <div class="bonusCnt_popup" style="display: none">
-                                    <div class="bonusCnt_descr"><?= $card->getDescription() ?></div>
-                                    <img src="<?= $card->getImage() ?>" alt="" />
+                                    <div class="bonusCnt_popup" style="display: none">
+                                        <div class="bonusCnt_descr"><?= $card->getDescription() ?></div>
+                                        <img src="<?= $card->getImage() ?>" alt="" />
+                                    </div>
                                 </div>
-                            </div>
-                        <? endforeach ; ?>
+                            <? endforeach ; ?>
 
-                        <? if ($config->partners['MnogoRu']['enabled']) : ?>
+                        <? endif ?>
+
+                        <? if ($config->partners['MnogoRu']['enabled'] && !$hasProductsOnlyFromPartner) : ?>
                             <!-- Карта Много.ру -->
                             <div class="bonusCnt_i" data-eq="<?= count($bonusCards) ?>">
                                 <img class="bonusCnt_img" src="/styles/order/img/mnogoru-mini.png" alt="mnogo.ru" />
@@ -126,7 +133,6 @@ return function(
 
                     </div>
                 </div>
-                <? endif ?>
             </fieldset>
 
             <? if (!$userEntity) : ?>

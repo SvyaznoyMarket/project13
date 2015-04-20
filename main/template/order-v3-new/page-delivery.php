@@ -70,7 +70,7 @@ return function(
                     <?= $product->name_web ?>
                 </a>
 
-                <span class="orderCol_data orderCol_data-summ" ><?= $helper->formatPrice($product->sum) ?> <span class="rubl">p</span></span>
+                <span class="orderCol_data orderCol_data-summ" ><?= $helper->formatPrice($product->original_sum) ?> <span class="rubl">p</span></span>
                 <span class="orderCol_data orderCol_data-count"><?= $product->quantity ?> шт.</span>
 
                 <div class="orderCol_data orderCol_data-edit" style="display: none">
@@ -232,8 +232,9 @@ return function(
                 <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CARD_ON_DELIVERY]) && !\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) : ?>
 
                     <div class="orderCheck" style="margin-bottom: 0;">
-                        <input type="checkbox" class="customInput customInput-checkbox jsCreditCardPayment js-customInput" id="creditCardsPay-<?= $order->block_name ?>" name="" value="" <?= $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY  ? 'checked ' : '' ?>/>
-                        <label  class="customLabel customLabel-checkbox" for="creditCardsPay-<?= $order->block_name ?>">
+                        <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CARD_ON_DELIVERY; ?>
+                        <input type="checkbox" class="customInput customInput-checkbox jsCreditCardPayment js-customInput" id="creditCardsPay-<?= $order->block_name ?>" name="" value="" <?= $checked ? 'checked ' : '' ?>/>
+                        <label  class="customLabel customLabel-checkbox <?= $checked ? 'mChecked ' : '' ?>" for="creditCardsPay-<?= $order->block_name ?>">
                             <span class="brb-dt" style="vertical-align: top;">Оплата курьеру банковской картой</span> <img class="orderCheck_img" src="/styles/order/img/i-visa.png" alt=""><img class="orderCheck_img" src="/styles/order/img/i-mc.png" alt="">
                         </label>
                     </div>
@@ -252,8 +253,9 @@ return function(
             <? if (isset($order->possible_payment_methods[PaymentMethod::PAYMENT_CREDIT]) && !\App::abTest()->isOnlineMotivation(count($orderDelivery->orders))) : ?>
 
                 <div class="orderCheck orderCheck-credit clearfix">
-                    <input type="checkbox" class="customInput customInput-checkbox jsCreditPayment js-customInput" id="credit-<?= $order->block_name ?>" name="" value="" <?= $order->payment_method_id == PaymentMethod::PAYMENT_CREDIT ? 'checked' : '' ?>>
-                    <label class="customLabel customLabel-checkbox" for="credit-<?= $order->block_name ?>"><span class="brb-dt">Купить в кредит</span><!--, от 2 223 <span class="rubl">p</span> в месяц--></label>
+                    <? $checked = $order->payment_method_id == PaymentMethod::PAYMENT_CREDIT; ?>
+                    <input type="checkbox" class="customInput customInput-checkbox jsCreditPayment js-customInput" id="credit-<?= $order->block_name ?>" name="" value="" <?= $checked ? 'checked' : '' ?>>
+                    <label class="customLabel customLabel-checkbox <?= $checked ? 'mChecked' : '' ?>" for="credit-<?= $order->block_name ?>"><span class="brb-dt">Купить в кредит</span><!--, от 2 223 <span class="rubl">p</span> в месяц--></label>
                 </div>
 
             <? endif; ?>

@@ -73,7 +73,8 @@ class Analytics {
                 'products'      => [],
                 'coupon_number' => $order->getCouponNumber(),
                 'is_partner'    => $order->getIsPartner(),
-                'isSlot'        => $order->getTypeId() == \Model\Order\Entity::TYPE_SLOT,
+                'isSlot'        => $order->isSlot(),
+                'isCredit'      => $order->isCredit()
             ];
 
             foreach ($order->getProduct() as $orderProduct) {

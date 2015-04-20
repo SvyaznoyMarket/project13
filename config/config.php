@@ -235,7 +235,6 @@ $c->partners['livetex']['enabled'] = true;
 $c->partners['livetex']['liveTexID'] = 41836; // for enter.ru
 //$c->partners['livetex']['liveTexID'] = 52705; // for olga.ent3.ru
 $c->partners['Сpaexchange']['enabled'] = true;
-$c->partners['Revolvermarketing']['enabled'] = true;
 $c->partners['TagMan']['enabled'] = false;
 $c->partners['Revolver']['enabled'] = true;
 $c->partners['Insider']['enabled'] = true;
@@ -319,7 +318,6 @@ $c->product['allowBuyOnlyInshop']     = true;
 $c->product['reviewEnabled']          = true;
 $c->product['pushReview']             = true;
 $c->product['lowerPriceNotification'] = true;
-$c->product['furnitureConstructor']   = true;
 // jewel
 $c->product['itemsPerPageJewel']      = 24;
 $c->product['itemsPerRowJewel']       = 4;
@@ -377,7 +375,6 @@ $c->cart['sessionName'] = 'userCart';
 $c->cart['checkStock'] = false;
 
 $c->payment['creditEnabled'] = true;
-$c->payment['paypalECS'] = false;
 $c->payment['blockedIds'] = [];
 
 $c->f1Certificate['enabled'] = true;
@@ -492,7 +489,7 @@ $c->svyaznoyClub['cookieLifetime'] = 2592000; // 30 дней
 $c->svyaznoyClub['userTicket']['cookieName'] = 'UserTicket';
 $c->svyaznoyClub['cardNumber']['cookieName'] = 'scid';
 
-$c->flocktoryExchange['enabled'] = true;
+$c->flocktoryExchange['enabled'] = false;
 $c->flocktoryPostCheckout['enabled'] = true;
 
 

@@ -166,7 +166,7 @@ class Action extends \Controller\ProductCategory\Action {
         }
 
         // вид товаров
-        $productView = $category->getHasLine() ? 'line' : $category->getProductView();
+        $productView = $category->getProductView();
         // листалка
         $limit = \App::config()->product['itemsPerPageJewel'];
         $repository = \RepositoryManager::product();

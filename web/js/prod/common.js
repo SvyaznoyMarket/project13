@@ -7,29 +7,48 @@
     ENTER.DeliveryPoints = function DeliveryPointsF (points) {
 
         var self = this,
-            pointsBounds;
+            pointsBounds,
+            map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map;
 
         self.searchInput = ko.observable();
+        self.searchAutocompleteList = ko.observableArray();
+        self.searchAutocompleteListVisible = ko.observable(false);
+        self.enableAutocompleteListVisible = function(){self.searchAutocompleteListVisible(true)};
+        self.disableAutocompleteListVisible = function(){self.searchAutocompleteListVisible(false)};
         self.limitedSearchInput = ko.computed(self.searchInput).extend({throttle: 500});
         self.limitedSearchInput.subscribe(function(text) {
 
-            var map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map,
-                extendValue = 1,
+            var extendValue = 0.5,
                 extendedBounds = [[pointsBounds[0][0] - extendValue, pointsBounds[0][1] - extendValue],[pointsBounds[1][0] + extendValue, pointsBounds[1][1] + extendValue]];
 
             if (typeof window.ymaps == 'undefined' || text.length == 0) return;
 
+            self.searchAutocompleteList.removeAll();
+            self.searchAutocompleteListVisible(false);
+
             ymaps.geocode(text, { boundedBy: extendedBounds, strictBounds: true }).then(
                 function(res){
-                    var bounds = res.geoObjects.get(0).geometry.getBounds();
-                    if (bounds) map.setCenter(bounds[0], 14);
-                    //map.geoObjects.add(res.geoObjects.get(0));
+                    res.geoObjects.each(function(obj){
+                        self.searchAutocompleteList.push({
+                            'name' : obj.properties.get('name') + ', ' + obj.properties.get('description'),
+                            'bounds' : obj.geometry.getBounds()
+                        })
+                    });
+                    self.searchAutocompleteListVisible(true);
                 },
                 function(err){
                     console.warn('Geocode error', err)
                 }
             )
         });
+        self.clearSearchInput = function(){
+            self.searchInput('');
+            self.searchAutocompleteList.removeAll();
+        };
+        self.setMapCenter = function(val) {
+            map.setCenter(val.bounds[0], 14);
+            self.searchAutocompleteListVisible(false);
+        };
 
         /* Полный список точек */
         self.availablePoints = ko.observableArray([]);
@@ -45,20 +64,33 @@
         self.longitudeMin = ko.observable();
         self.longitudeMax = ko.observable();
 
-        /* Текст для дропдауна */
+        /* Текст для дропдауна с точками самовывоза */
         self.pointsText = ko.computed(function(){
             switch (self.choosenTokens().length) {
                 case 0:
                     return 'Все точки';
                 case 1:
-                    return '1 точка'; // TODO значение точки e.g. "Магазин"
-                default:
+                    return $.grep(self.availablePoints(), function(point){ return self.choosenTokens()[0] == point['token'] })[0]['dropdownName'];
+                case 2: case 3: case 4:
                     return self.choosenTokens().length + ' точки';
+                default:
+                    return self.choosenTokens().length + ' точек';
             }
         });
 
-        self.datesText = ko.computed(function(){
+        /* Текст для дропдауна со стоимостью */
+        self.costsText = ko.computed(function(){
+            if (self.choosenCosts().length == 1) {
+                return self.choosenCosts()[0] == 0 ? 'Бесплатно' : self.choosenCosts()[0] + '&nbsp;<span class="rubl">p</span>';
+            }
+            return 'Стоимость';
+        });
 
+        /* Текст для дропдауна с датой */
+        self.datesText = ko.computed(function(){
+            return self.choosenDates().length == 1
+                ? $.grep(self.availablePoints(), function(point){ return self.choosenDates()[0] == point['nearestDay'] })[0]['humanNearestDay']
+                : 'Дата';
         });
 
         /* Список точек с учетом фильтрации */
@@ -106,6 +138,21 @@
             return self.latitudeMin() < point.latitude && self.longitudeMin() < point.longitude && self.latitudeMax() > point.latitude && self.longitudeMax() > point.longitude;
         };
 
+        /**
+         * Отображаем на карте только те точки, которые были выбраны в первом дропдауне
+         */
+        self.choosenTokens.subscribe(function(arr){
+            var map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map; // TODO уже можно вынести
+
+            map.geoObjects.each(function(geoObject){
+                if (arr.length == 0) {
+                    geoObject.options.set('visible', true)
+                } else {
+                    geoObject.options.set('visible', $.inArray(geoObject.properties.get('enterToken'), arr) !== -1)
+                }
+            });
+        });
+
         /* INIT */
 
         $.each(points, function(token, pointsArr) {
@@ -120,6 +167,8 @@
                 }
             });
         });
+
+        window.map = self;
 
         return self;
 
@@ -149,7 +198,8 @@
         placemark = new ymaps.Placemark([point.latitude, point.longitude], {
             balloonContentHeader: point.name,
             balloonContentBody: balloonContent,
-            hintContent: point.name
+            hintContent: point.name,
+            enterToken: point.token // Дополняем собственными свойствами
         }, {
             balloonMaxWidth: 200,
             iconLayout: 'default#image',
@@ -349,6 +399,7 @@
                 noUpdate = $elem.data('noUpdate'),
 				buyUrl = $elem.data('buy-url'),
 				isSlot = $elem.data('is-slot'),
+				colorClass = $elem.data('color-class') || '',
                 sender = $elem.data('sender') || {}
             ;
 
@@ -383,6 +434,7 @@
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
 					.addClass('js-orderButton jsOneClickButton-new')
+					.addClass(colorClass)
 					.removeClass('jsBuyButton')
 					.attr('href', ENTER.utils.generateUrl('cart.oneClick.product.set', $.extend({productId: productId}, sender)));
 			} else if (ENTER.utils.getObjectWithElement(cart, 'id', productId) && !noUpdate) {
@@ -401,6 +453,7 @@
 					.removeClass('mShopsOnly')
 					.removeClass('mBought')
 					.addClass('js-orderButton jsBuyButton')
+					.addClass(colorClass)
 					.attr('href', buyUrl ? buyUrl : ENTER.utils.generateUrl('cart.product.set', $.extend({productId: productId}, sender)));
 			}
 		}
@@ -1758,7 +1811,7 @@ $(function() {
 			success: function(result) {
 				$('.bCountSection').goodsCounter('destroy');
 
-				var $popup = $(getPopupTemplate());
+				var $popup = $(Mustache.render($('#tpl-cart-kitForm').html()));
 
 				$popup.lightbox_me({
 					autofocus: true,
@@ -1782,105 +1835,6 @@ $(function() {
 			}
 		});
 	});
-
-	function getPopupTemplate() {
-		return '<div class="popup packageSetPopup jsKitPopup">' +
-			'<a href="" class="close"></a>' +
-
-			'<div class="bPageHead">' +
-				'<div class="bPageHead__eSubtitle" data-bind="html: $root.productPrefix"></div>' +
-				'<div class="bPageHead__eTitle clearfix">' +
-					'<h1 itemprop="name" data-bind="html: $root.productWebname"></h1>' +
-				'</div>' +
-			'</div>' +
-
-			'<div class="packageSetMainImg"><img data-bind="attr: {src: $root.productImageUrl}" /></div>' +
-
-			'<!-- Состав комплекта -->' +
-			'<div class="packageSet mPackageSetEdit">' +
-
-				'<div class="packageSetHead cleared">' +
-					'<span class="packageSetHead_title">Уточните комплектацию</span>' +
-				'</div>' +
-
-				'<div class="packageSet_inner" data-bind="foreach: products">' +
-
-					'<div class="packageSetBodyItem" data-bind="css: { mDisabled: count() < 1 }">' +
-						'<a class="packageSetBodyItem_img" href="" data-bind="attr: { href : url }"><img src="" data-bind="attr: { src: image }" /></a><!--/ изображение товара -->' +
-
-						'<div class="packageSetBodyItem_desc">' +
-							'<div class="name"><a class="" href="" data-bind="text: name, attr: { href : url }"></a></div><!--/ название товара -->' +
-
-							'<div class="price"><span data-bind="html: prettyItemPrice"></span>&nbsp;<span class="rubl">p</span></div> <!-- Цена за единицу товара -->' +
-
-							'<!-- размеры товара -->' +
-							'<div class="column dimantion">' +
-								'<span class="dimantion_name">Высота</span>' +
-								'<span class="dimantion_val" data-bind="text: height"></span>' +
-							'</div>' +
-
-							'<div class="column dimantion">' +
-								'<span class="dimantion_name">&nbsp;</span>' +
-								'<span class="dimantion_val separation">x</span>' +
-							'</div>' +
-
-							'<div class="column dimantion">' +
-								'<span class="dimantion_name">Ширина</span>' +
-								'<span class="dimantion_val" data-bind="text: width"></span>' +
-							'</div>' +
-
-							'<div class="column dimantion">' +
-								'<span class="dimantion_name">&nbsp;</span>' +
-								'<span class="dimantion_val separation">x</span>' +
-							'</div>' +
-
-							'<div class="column dimantion">' +
-								'<span class="dimantion_name">Глубина</span>' +
-								'<span class="dimantion_val" data-bind="text: depth"></span>' +
-							'</div>' +
-
-							'<div class="column dimantion">' +
-								'<span class="dimantion_name">&nbsp;</span>' +
-								'<span class="dimantion_val">см</span>' +
-							'</div>' +
-							'<!--/ размеры товара -->' +
-
-							'<div class="column delivery" data-bind="css: { \'delivery-nodate\': deliveryDate() == \'\' } ">' +
-								'<span class="dimantion_val" data-bind="if: deliveryDate() != \'\' ">Доставка <strong data-bind="text: deliveryDate()"></strong></span>' +
-								'<span class="dimantion_val" data-bind="if: deliveryDate() == \'\' ">Уточните дату доставки в Контакт-сEnter</span>' +
-							'</div><!--/ доставка -->' +
-						'</div>' +
-
-						'<div class="bCountSection clearfix">' +
-							'<button class="bCountSection__eM" data-bind="click: minusClick, css: { mDisabled : count() == 0 }">-</button>' +
-							'<input type="text" value="" class="bCountSection__eNum" data-bind="value: count, valueUpdate: \'input\', event: { keydown: countKeydown, keyup: countKeyUp }">' +
-							'<button class="bCountSection__eP" data-bind="click: plusClick, css: { mDisabled : count() == maxCount() }">+</button>' +
-							'<span>шт.</span>' +
-						'</div>' +
-
-						'<div class="packageSetBodyItem_price">' +
-							'<span data-bind="html: prettyPrice"></span>&nbsp;<span class="rubl">p</span>' +
-						'</div><!--/ цена -->' +
-					'</div>' +
-
-				'</div>' +
-
-				'<div class="packageSetFooter">' +
-					'<div class="packageSetDefault">' +
-						'<input type="checkbox" id="defaultSet" class="bInputHidden bCustomInput jsCustomRadio" data-bind="click: resetToBaseKit">' +
-						'<label for="defaultSet" class="packageSetLabel" data-bind="css: { mChecked : isBaseKit }, click: resetToBaseKit">Базовый комплект</label>' +
-					'</div>' +
-
-					'<div class="packageSetPrice">Итого за <span data-bind="text: totalCount"></span> предметов: <strong data-bind="html: totalPrice"></strong> <span class="rubl">p</span></div>' +
-
-					'<div class="packageSetBuy btnBuy">' +
-						'<a class="btnBuy__eLink jsBuyButton" href="" data-bind="css: { mDisabled: totalCount() == 0 }, attr: { href: buyLink, \'data-upsale\': dataUpsale($root.productId) }">Купить</a>' +
-					'</div>' +
-				'</div>' +
-			'</div>' +
-			'<!--/ Состав комплекта -->' +
-		'</div>';
-	}
 
 	function PopupModel(product, sender, sender2) {
 		var self = this;
@@ -4296,76 +4250,6 @@ $(document).ready(function() {
 		errorCssClass = 'lbl-error',
 		region = ENTER.config.pageConfig.user.region.name,
 		catalogPath = ENTER.utils.getCategoryPath(),
-		popupTemplate =
-			'<div class="js-slotButton-popup popup--request">' +
-				'<a href="#" class="js-slotButton-popup-close popup--request__close" title="Закрыть"></a>' +
-
-				'<form action="' + ENTER.utils.generateUrl('order.slot.create') + '" method="post">' +
-					'<input type="hidden" name="productId" value="{{productId}}" />' +
-					'<input type="hidden" name="sender" value="{{sender}}" />' +
-					'<input type="hidden" name="sender2" value="{{sender2}}" />' +
-
-					'{{#full}}' +
-						'<div class="popup--request__head msg--recall">Вам перезвонит специалист и поможет выбрать:</div>' +
-						'<ul class="recall-list">' +
-							'<li>состав комплекта и его изменения;</li>' +
-							'<li>условия доставки и сборки.</li>' +
-						'</ul>' +
-					'{{/full}}' +
-
-					'{{^full}}' +
-						'<div class="popup--request__head">Отправить заявку</div>' +
-					'{{/full}}' +
-
-					'<div class="js-slotButton-popup-errors errtx" style="display: none;"></div>' +
-
-					'<div class="popup__form-group js-slotButton-popup-element">' +
-						'<div class="input-group js-slotButton-popup-element-field">' +
-							'<label class="label-for-input label-phone">Телефон</label>' +
-							'<input type="text" name="phone" value="{{userPhone}}" placeholder="+7 (___) ___-__-__" data-mask="+7 (xxx) xxx-xx-xx" class="js-slotButton-popup-phone" />' +
-						'</div>' +
-						'<span class="js-slotButton-popup-element-error popup__form-group__error" style="display: none">Неверный формат телефона</span>' +
-					'</div>' +
-
-					'<div class="popup__form-group js-slotButton-popup-element">' +
-						'<div class="input-group js-slotButton-popup-element-field">' +
-							'<label class="label-for-input">E-mail</label>' +
-							'<input type="text" name="email" value="{{userEmail}}" placeholder="mail@domain.com" class="js-slotButton-popup-email" />' +
-						'</div>' +
-						'<span class="js-slotButton-popup-element-error popup__form-group__error" style="display: none">Неверный формат email</span>' +
-					'</div>' +
-
-					'<div class="popup__form-group">' +
-						'<div class="input-group">' +
-							'<label class="label-for-input">Имя</label>' +
-							'<input type="text" name="name" value="{{userName}}" class="js-slotButton-popup-name" />' +
-						'</div>' +
-					'</div>' +
-
-					'<div class="popup__form-group checkbox-group js-slotButton-popup-element">' +
-						'<div class="checkbox-inner js-slotButton-popup-element-field">' +
-							'<input type="checkbox" name="confirm" value="1" id="accept" class="customInput customInput-checkbox js-customInput js-slotButton-popup-confirm" /><label class="customLabel customLabel-checkbox jsAcceptTerms" for="accept">Я ознакомлен и согласен с информацией {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}о продавце и его офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</label>' +
-						'</div>' +
-					'</div>' +
-					'<div class="popup__form-group vendor">Продавец-партнёр: {{partnerName}}</div>' +
-
-					'<div class="btn--slot--container">' +
-						'<button type="submit" class="js-slotButton-popup-submitButton btn btn--slot btn--big">Отправить заявку</button>' +
-					'</div>' +
-
-					'{{#full}}' +
-						'<div class="popup__form-group msg--goto-card">' +
-							'<a href="{{productUrl}}" class="lnk--goto-card js-slotButton-popup-goToProduct">Перейти в карточку товара</a>' +
-						'</div>' +
-					'{{/full}}' +
-				'</form>' +
-			'</div>',
-
-		popupResultTemplate =
-			'<div class="popup--request__head msg--send">Ваша заявка № {{orderNumber}} отправлена</div>' +
-			'<div class="btn--container">' +
-				'<button type="submit" class="js-slotButton-popup-okButton btn btn--slot btn--big">Ок</button>' +
-			'</div>',
 
 		showError = function($input) {
 			var $element = $input.closest('.js-slotButton-popup-element');
@@ -4450,7 +4334,8 @@ $(document).ready(function() {
 			sender = $button.data('sender') || {},
 			productArticle = $button.data('product-article'),
 			productPrice = $button.data('product-price'),
-			$popup = $(Mustache.render(popupTemplate, {
+			$popup = $(Mustache.render($('#tpl-cart-slot-form').html(), {
+				orderCreateUrl: ENTER.utils.generateUrl('order.slot.create'),
 				full: $button.data('full'),
 				partnerName: $button.data('partner-name'),
 				partnerOfferUrl: $button.data('partner-offer-url'),
@@ -4533,7 +4418,7 @@ $(document).ready(function() {
 						return;
 					}
 
-					$form.after($(Mustache.render(popupResultTemplate, {
+					$form.after($(Mustache.render($('#tpl-cart-slot-form-result').html(), {
 						orderNumber: result.orderNumber
 					})));
 

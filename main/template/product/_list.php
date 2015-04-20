@@ -26,9 +26,6 @@ if (!isset($isAddInfo)) $isAddInfo = false;
         case 'expanded':
             require __DIR__ . '/list/_expanded.php';
             break;
-        case 'line':
-            require __DIR__ . '/list/_line.php';
-            break;
         default:
             require __DIR__ . '/list/_compact.php';
             break;

@@ -28,7 +28,7 @@ class Entity {
     /** @var int */
     private $groupPosition;
     /** @var int */
-    private $position;
+    private $position = 1000;
     /** @var bool */
     private $isInList;
     /** @var Option\Entity[] */
@@ -49,8 +49,16 @@ class Entity {
         } else if (array_key_exists('group_id', $data)) {
             $this->setGroupId($data['group_id']); // SITE-5290
         }
-        if (array_key_exists('group_position', $data)) $this->setGroupPosition($data['group_position']);
-        if (array_key_exists('position', $data)) $this->setPosition($data['position']);
+        if (array_key_exists('position_in_group', $data)) {
+            $this->setGroupPosition($data['position_in_group']);
+        } else if (array_key_exists('group_position', $data)) {
+            $this->setGroupPosition($data['group_position']);
+        }
+        if (array_key_exists('position_in_list', $data)) {
+            $this->setPosition($data['position_in_list']);
+        } else  if (array_key_exists('position', $data)) {
+            $this->setPosition($data['position']);
+        }
         if (array_key_exists('is_view_list', $data)) $this->setIsInList($data['is_view_list']);
         if (isset($data['option'][0])) {
             $this->setOption(array_map(function($data) {
@@ -255,20 +263,15 @@ class Entity {
     }
 
     public function getStringValue() {
-        $value = null;
-        if (1 == count($this->getOption())) {
-            $value = $this->getOption()[0]->getValue();
-        } else {
-            $value = implode(
-                ', ',
-                array_map(
-                    function(\Model\Product\Property\Option\Entity $option) {
-                        return $option->getValue();
-                    },
-                    $this->getOption()
-                )
-            );
-        }
+        $value = implode(
+            ', ',
+            array_map(
+                function(\Model\Product\Property\Option\Entity $option) {
+                    return $option->getValue();
+                },
+                $this->getOption()
+            )
+        );
 
         if ($value && $this->unit) {
             $value .= (' ' . $this->unit);

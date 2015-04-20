@@ -135,13 +135,6 @@ module.exports = function (grunt, options) {
                 srcRoot: '/js',
                 cwd: 'web/js'
         },
-        order_new_v5: {
-            src: ['dev/order-new-v5/*.js'],
-                dest: 'prod/order-new-v5.js',
-                destMap: 'prod/order-new-v5.js.map',
-                srcRoot: '/js',
-                cwd: 'web/js'
-        },
         orderV3JS: {
             src: ['dev/order-v3/*.js'],
             dest: 'prod/order-v3.js',

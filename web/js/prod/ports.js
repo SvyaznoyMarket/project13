@@ -278,7 +278,7 @@ window.ANALYTICS = {
 				vars.pageType = 0;
 			}
 
-			if ($('body').data('template') != 'order_new') window.APRT_DATA = vars;
+			window.APRT_DATA = vars;
 
 			s.type  = 'text/javascript';
 			s.src = '//aprtx.com/code/enter/';

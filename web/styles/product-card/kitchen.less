@@ -1,30 +1,46 @@
 .textcolor {
     color: @darkgrey5;
 }
+
 .product-container {
     &--kitchen {
         .product-card {
             &__head {
-                margin: 21px 0 10px;
+                margin: 0 0 10px;
                 padding: 0;
                 font-size: 16px;
                 &__subtitle {
                     .inline-block();
                 }
                 &__title {
-                    line-height: 1em;
                     font-size: 24px;
+                    margin: 0 0 5px;
                 }
                 &__article {
-                    line-height: 16px;
+                    font-size: 12px;
                     .textcolor();
                 }
             }
             &__section-left {
                 display: inline-block;
                 float: left;
-                margin: 15px 0 0 15px;
+                margin: 0 0 0 15px;
                 width: 625px;
+                .bProductDescImg {
+                    width: 600px;
+                    position: relative;
+                    &Big {
+                        width: 600px;
+                        height: 500px;
+                        .bProductDescImgBig__eImg{
+                            min-width: 500px;
+                            width: auto;
+                            height: 500px;
+                            .inline-block();
+                            float: none;
+                        }
+                    }
+                }
             }
             &__section-right {
                 float: right;
@@ -33,24 +49,25 @@
                 width: 260px;
                 border-left: 1px dotted @lightgrey-4;
                 zoom: 1;
+                position: relative;
             }
             &__vendor {
                 .textcolor();
                 font-size: 14px;
                 padding-left: 5px;
                 text-align: center;
+                margin: 0 -5px;
             }
-            &__price{
+            &__price {
                 margin-left: 0px;
                 font-size: 36px;
                 text-align: center;
             }
-            &__payment-types{
+            &__payment-types {
                 .textcolor();
-                font-size: 12px;
-                line-height: 18px;
+                font-size: 13px;
                 text-align: center;
-                margin-top:20px;
+                margin-top: 18px;
             }
             &__info {
                 &--price {
@@ -58,11 +75,11 @@
                     font-size: 14px;
                     text-align: center;
                 }
-                &--oldprice{
-                      color: #616161;
-                      font-size: 24px;
-                      text-decoration: line-through;
-                      text-align: center;
+                &--oldprice {
+                    color: #616161;
+                    font-size: 24px;
+                    text-decoration: line-through;
+                    text-align: center;
                 }
                 &--deliv-period {
                     display: block;
@@ -74,7 +91,7 @@
                 &--recall {
                     display: block;
                     font-size: 14px;
-                    padding: 20px;
+                    padding: 20px 20px 15px 20px;
                     margin: 15px -20px 0 -15px;
                     background-color: #f9f9f9;
                     &__list {
@@ -90,17 +107,18 @@
             &__specify {
                 //старые классы
                 .bSpecifications.mSimpleProperty {
-                    margin: 25px 0 25px;
+                    margin: 10px 0 25px;
                     color: #6E6E6E;
                     font-size: 12px;
                     .bSpecificationsList {
-                        margin: 0 0 15px;
-                        .textcolor();
+                        margin: 0 0 10px;
+
                         &__eName {
                             width: 137px;
                             margin: 0 0 15px;
                             border: none;
                             background: none;
+                            padding-left: 0;
                             .bName {
                                 top: 0;
                             }
@@ -109,7 +127,6 @@
                             width: 110px;
                             margin: 0 0 15px;
                             padding: 0;
-
                             word-wrap: break-word;
                         }
                     }
@@ -118,33 +135,25 @@
                     }
                 }
             }
-            &__bordered {
-                padding: 0 10px;
-                margin: 10px -10px 0;
-                border-top: 1px solid @lightgreyBr;
-                overflow: hidden;
-                position: relative;
-            }
             &__desc {
                 margin-top: 10px;
-
             }
-            &__base-set{
+            &__base-set {
                 background: #f7f7f7;
-                width:450px;
+                width: 450px;
                 padding: 12px 5px 20px 20px;
                 float: right;
-                &-list{
+                &-list {
                     list-style: square;
                     padding-left: 20px;
                 }
-                &-item{
+                &-item {
                     font-size: 12px;
                     line-height: 18px;
                 }
-                &-header{
-                    font-size:16px;
-                    margin-top:0px;
+                &-header {
+                    font-size: 16px;
+                    margin-top: 0px;
                 }
             }
         } //product-card
@@ -160,21 +169,33 @@
                 float: none;
                 .inline-block();
                 width: 280px;
-                &__wrap{
-                	width:280px;
+                &__wrap {
+                    width: 280px;
                     text-align: center;
                 }
-                &__gal{
+                &__gal {
                     .inline-block();
                 }
             }
         }
         .slideItem_inn {
-                width: 900px;
-            }
-        .bSpecifications .bSpecificationsList__eName{
+            width: 900px;
+        }
+        .bSpecifications .bSpecificationsList__eName {
             border-color: #808080;
         }
-
+        .product-containter__brcr-bottom {
+            margin-left: -15px;
+        }
+        .bBreadcrumbs {
+            margin-left: 15px;
+        }
+        .bTextMore {
+            font-size: 14px;
+        }
+        .bHint_ePopup{
+            right: -70px;
+            left: auto;
+        }
     } //kitchen wrap
 }

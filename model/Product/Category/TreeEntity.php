@@ -11,8 +11,6 @@ class TreeEntity extends BasicEntity {
     protected $image;
     /** @var string|null */
     protected $image480x480;
-    /** @var bool|null */
-    protected $hasLine;
     /** @var string|null */
     protected $productView;
     /** @var int|null */
@@ -34,7 +32,6 @@ class TreeEntity extends BasicEntity {
         if (isset($data['token'])) $this->setToken($data['token']);
         if (isset($data['media_image'])) $this->setImage($data['media_image']);
         if (isset($data['media_image_480x480'])) $this->image480x480 = $data['media_image_480x480'];
-        if (isset($data['has_line'])) $this->setHasLine($data['has_line']);
         if (isset($data['product_view_id'])) $this->setProductView($data['product_view_id']);
         if (isset($data['level'])) $this->setLevel($data['level']);
         if (isset($data['product_count'])) $this->setProductCount($data['product_count']);
@@ -75,20 +72,6 @@ class TreeEntity extends BasicEntity {
      */
     public function isLeaf() {
         return !$this->hasChild;
-    }
-
-    /**
-     * @param boolean $hasLine
-     */
-    public function setHasLine($hasLine) {
-        $this->hasLine = (bool)$hasLine;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getHasLine() {
-        return $this->hasLine;
     }
 
     /**

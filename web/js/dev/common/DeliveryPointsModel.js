@@ -7,29 +7,48 @@
     ENTER.DeliveryPoints = function DeliveryPointsF (points) {
 
         var self = this,
-            pointsBounds;
+            pointsBounds,
+            map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map;
 
         self.searchInput = ko.observable();
+        self.searchAutocompleteList = ko.observableArray();
+        self.searchAutocompleteListVisible = ko.observable(false);
+        self.enableAutocompleteListVisible = function(){self.searchAutocompleteListVisible(true)};
+        self.disableAutocompleteListVisible = function(){self.searchAutocompleteListVisible(false)};
         self.limitedSearchInput = ko.computed(self.searchInput).extend({throttle: 500});
         self.limitedSearchInput.subscribe(function(text) {
 
-            var map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map,
-                extendValue = 1,
+            var extendValue = 0.5,
                 extendedBounds = [[pointsBounds[0][0] - extendValue, pointsBounds[0][1] - extendValue],[pointsBounds[1][0] + extendValue, pointsBounds[1][1] + extendValue]];
 
             if (typeof window.ymaps == 'undefined' || text.length == 0) return;
 
+            self.searchAutocompleteList.removeAll();
+            self.searchAutocompleteListVisible(false);
+
             ymaps.geocode(text, { boundedBy: extendedBounds, strictBounds: true }).then(
                 function(res){
-                    var bounds = res.geoObjects.get(0).geometry.getBounds();
-                    if (bounds) map.setCenter(bounds[0], 14);
-                    //map.geoObjects.add(res.geoObjects.get(0));
+                    res.geoObjects.each(function(obj){
+                        self.searchAutocompleteList.push({
+                            'name' : obj.properties.get('name') + ', ' + obj.properties.get('description'),
+                            'bounds' : obj.geometry.getBounds()
+                        })
+                    });
+                    self.searchAutocompleteListVisible(true);
                 },
                 function(err){
                     console.warn('Geocode error', err)
                 }
             )
         });
+        self.clearSearchInput = function(){
+            self.searchInput('');
+            self.searchAutocompleteList.removeAll();
+        };
+        self.setMapCenter = function(val) {
+            map.setCenter(val.bounds[0], 14);
+            self.searchAutocompleteListVisible(false);
+        };
 
         /* Полный список точек */
         self.availablePoints = ko.observableArray([]);
@@ -45,20 +64,33 @@
         self.longitudeMin = ko.observable();
         self.longitudeMax = ko.observable();
 
-        /* Текст для дропдауна */
+        /* Текст для дропдауна с точками самовывоза */
         self.pointsText = ko.computed(function(){
             switch (self.choosenTokens().length) {
                 case 0:
                     return 'Все точки';
                 case 1:
-                    return '1 точка'; // TODO значение точки e.g. "Магазин"
-                default:
+                    return $.grep(self.availablePoints(), function(point){ return self.choosenTokens()[0] == point['token'] })[0]['dropdownName'];
+                case 2: case 3: case 4:
                     return self.choosenTokens().length + ' точки';
+                default:
+                    return self.choosenTokens().length + ' точек';
             }
         });
 
-        self.datesText = ko.computed(function(){
+        /* Текст для дропдауна со стоимостью */
+        self.costsText = ko.computed(function(){
+            if (self.choosenCosts().length == 1) {
+                return self.choosenCosts()[0] == 0 ? 'Бесплатно' : self.choosenCosts()[0] + '&nbsp;<span class="rubl">p</span>';
+            }
+            return 'Стоимость';
+        });
 
+        /* Текст для дропдауна с датой */
+        self.datesText = ko.computed(function(){
+            return self.choosenDates().length == 1
+                ? $.grep(self.availablePoints(), function(point){ return self.choosenDates()[0] == point['nearestDay'] })[0]['humanNearestDay']
+                : 'Дата';
         });
 
         /* Список точек с учетом фильтрации */
@@ -106,6 +138,21 @@
             return self.latitudeMin() < point.latitude && self.longitudeMin() < point.longitude && self.latitudeMax() > point.latitude && self.longitudeMax() > point.longitude;
         };
 
+        /**
+         * Отображаем на карте только те точки, которые были выбраны в первом дропдауне
+         */
+        self.choosenTokens.subscribe(function(arr){
+            var map = ENTER.OrderV3 ? ENTER.OrderV3.map : ENTER.OrderV31Click.map; // TODO уже можно вынести
+
+            map.geoObjects.each(function(geoObject){
+                if (arr.length == 0) {
+                    geoObject.options.set('visible', true)
+                } else {
+                    geoObject.options.set('visible', $.inArray(geoObject.properties.get('enterToken'), arr) !== -1)
+                }
+            });
+        });
+
         /* INIT */
 
         $.each(points, function(token, pointsArr) {
@@ -120,6 +167,8 @@
                 }
             });
         });
+
+        window.map = self;
 
         return self;
 
@@ -149,7 +198,8 @@
         placemark = new ymaps.Placemark([point.latitude, point.longitude], {
             balloonContentHeader: point.name,
             balloonContentBody: balloonContent,
-            hintContent: point.name
+            hintContent: point.name,
+            enterToken: point.token // Дополняем собственными свойствами
         }, {
             balloonMaxWidth: 200,
             iconLayout: 'default#image',

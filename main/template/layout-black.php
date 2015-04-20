@@ -60,11 +60,8 @@
     </div><!--/ Контент -->
 </div><!--/ Шаблон -->
 
-<div class="footer">
-    <?= $page->slotFooter() ?>
-</div><!--/ Подвал -->
-
 <?= $page->slotAuth() ?>
+<?= $page->slotMustacheTemplates() ?>
 <?= $page->slotYandexMetrika() ?>
 <?= $page->slotBodyJavascript() ?>
 <?= $page->slotInnerJavascript() ?>

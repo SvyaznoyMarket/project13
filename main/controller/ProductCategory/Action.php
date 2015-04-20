@@ -9,59 +9,6 @@ class Action {
     protected $pageTitle;
 
     /**
-     * @param string        $categoryPath
-     * @param \Http\Request $request
-     * @return \Http\JsonResponse
-     * @throws \Exception\NotFoundException
-     */
-    public function count($categoryPath, \Http\Request $request) {
-        //\App::logger()->debug('Exec ' . __METHOD__);
-
-        if (!$request->isXmlHttpRequest()) {
-            throw new \Exception\NotFoundException('Request is not xml http request');
-        }
-
-        $categoryToken = explode('/', $categoryPath);
-        $categoryToken = end($categoryToken);
-
-        $region = \App::user()->getRegion();
-
-        $repository = \RepositoryManager::productCategory();
-        $category = $repository->getEntityByToken($categoryToken);
-        if (!$category) {
-            throw new \Exception\NotFoundException(sprintf('Категория товара @%s не найдена.', $categoryToken));
-        }
-
-        // фильтры
-        try {
-            $filters = \RepositoryManager::productFilter()->getCollectionByCategory($category, $region);
-        } catch (\Exception $e) {
-            \App::exception()->add($e);
-            \App::logger()->error($e);
-
-            $filters = [];
-        }
-
-        $shop = null;
-        try {
-            if (\App::request()->get('shop') && \App::config()->shop['enabled']) {
-                $shop = \RepositoryManager::shop()->getEntityById( \App::request()->get('shop') );
-            }
-        } catch (\Exception $e) {
-            \App::logger()->error(sprintf('Не удалось отфильтровать товары по магазину #%s', \App::request()->get('shop')));
-        }
-
-        $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $category, null, $request, $shop);
-
-        $count = \RepositoryManager::product()->countByFilter($productFilter->dump());
-
-        return new \Http\JsonResponse([
-            'success' => true,
-            'count'   => $count,
-        ]);
-    }
-
-    /**
      * @param \Http\Request $request
      * @param string        $categoryPath
      * @param string|null   $brandToken
@@ -255,16 +202,14 @@ class Action {
             $this->createInStoreFilter($filters);
         }
 
-        if ($category->isV2()) {
-            $this->transformFiltersV2($filters, $category);
-        }
+        $this->transformFiltersV2($filters, $category);
 
-        $this->correctFiltersForJewel($filters, $category);
+        $this->correctFiltersForBronnitskiyYuvelir($filters, $category);
 
         // фильтры
 
         $productFilter = \RepositoryManager::productFilter()->createProductFilter($filters, $category, $brand, $request, $shop, function(\Model\Product\Filter\Entity $property) use($category) {
-            return ($category->isV2() && $property->isBrand() || $category->isV3() && in_array($property->getName(), ['Металл', 'Вставка'], true));
+            return ($category->isV2() && $property->isBrand() && $property->getIsAlwaysShow() || $category->isV3() && in_array($property->getName(), ['Металл', 'Вставка'], true));
         });
 
         $this->correctProductFilterAndCategoryForJewel($category, $productFilter);
@@ -511,117 +456,6 @@ class Action {
     }
 
     /**
-     * @param \Model\Product\Filter\Entity[] $filters
-     */
-    private function createInStoreFilter(array &$filters) {
-        $labelFilter = null;
-        $labelFilterKey = null;
-        foreach ($filters as $key => $filter) {
-            if ('label' === $filter->getId()) {
-                $labelFilter = $filter;
-                $labelFilterKey = $key;
-            }
-        }
-
-        // если нету блока фильтров "WOW-товары", то создаем
-        if (null === $labelFilter) {
-            $labelFilter = new \Model\Product\Filter\Entity();
-            $labelFilter->setId('label');
-            $labelFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-            $labelFilter->setName('WOW-товары');
-            $labelFilter->getIsInList(true);
-        }
-
-        // создаем фильтр "Товар за три дня"
-        $option = new \Model\Product\Filter\Option\Entity();
-        $option->setId(1);
-        $option->setToken('instore');
-        if (\App::config()->region['defaultId'] === \App::user()->getRegion()->getId()) {
-            // Для Москвы, SITE-2850
-            //$option->setName('Товар за три дня');
-            $option->setName('Товар со склада'); // SITE-3131
-        } else {
-            // Для регионов (привозит быстрее, но не за три дня)
-            $option->setName('Товар со склада');
-        }
-
-        $labelFilter->unshiftOption($option);
-
-        // добавляем фильтр в массив фильтров
-        if (null !== $labelFilterKey) {
-            $filters[$labelFilterKey] = $labelFilter;
-        } else {
-            array_unshift($filters, $labelFilter);
-        }
-    }
-
-    /**
-     * @param \Model\Product\Filter\Entity[] $filters
-     */
-    private function transformFiltersV2(array &$filters, \Model\Product\Category\Entity $category) {
-        $newProperties = [];
-
-        foreach ($filters as $key => $property) {
-            if ($property->isLabel()) {
-                $property->setName('Скидки');
-
-                foreach ($property->getOption() as $option) {
-                    if ('instore' === $option->getToken()) {
-                        $labelProperty = new \Model\Product\Filter\Entity();
-                        $labelProperty->setId($option->getToken());
-                        $labelProperty->setName($option->getName());
-                        $labelProperty->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
-
-                        $option->setName('да');
-                        $labelProperty->addOption($option);
-
-                        $newProperties[] = $labelProperty;
-
-                        $property->deleteOption($option);
-
-                        break;
-                    }
-                }
-            } else if ($property->isShop()) {
-                $property->setName('В магазине');
-                foreach ($property->getOption() as $option) {
-                    if (!$option->getQuantity()) {
-                        $property->deleteOption($option);
-                    }
-                }
-
-                if (!$property->getOption()) {
-                    unset($filters[$key]);
-                }
-            } else if ($property->isBrand()) {
-                if (!$category->isV2Furniture()) {
-                    $property->setIsAlwaysShow(true);
-                }
-
-                $this->sortOptionsByQuantity($property);
-            }
-        }
-
-        foreach ($newProperties as $property) {
-            array_push($filters, $property);
-        }
-    }
-
-    private function sortOptionsByQuantity(\Model\Product\Filter\Entity $property) {
-        $options = $property->getOption();
-
-        usort($options, function(\Model\Product\Filter\Option\Entity $a, \Model\Product\Filter\Option\Entity $b) {
-            if ($a->getQuantity() == $b->getQuantity()) {
-                return 0;
-            }
-
-            return ($a->getQuantity() > $b->getQuantity()) ? -1 : 1;
-        });
-
-        $property->setOption($options);
-    }
-
-    /**
      * @param \Model\Product\Category\Entity $category
      * @param \Model\Product\Filter $productFilter
      * @param \View\Layout $page
@@ -669,10 +503,7 @@ class Action {
             $totalText = '';
 
             if ( $productCount > 0 ) {
-                $totalText = $productCount . ' ' . ($child->getHasLine()
-                        ? $page->helper->numberChoice($productCount, array('серия', 'серии', 'серий'))
-                        : $page->helper->numberChoice($productCount, array('товар', 'товара', 'товаров'))
-                    );
+                $totalText = $productCount . ' ' . ($page->helper->numberChoice($productCount, array('товар', 'товара', 'товаров')));
             }
 
             $linkUrl = $child->getLink();
@@ -727,7 +558,7 @@ class Action {
         }
 
         // вид товаров
-        $productView = $request->get('view', $category->getHasLine() ? 'line' : $category->getProductView());
+        $productView = $request->get('view', $category->getProductView());
         // листалка
         if ($category->isV2Furniture() && \Session\AbTest\AbTest::isNewFurnitureListing()) {
             $itemsPerPage = 21;
@@ -1075,7 +906,166 @@ class Action {
     /**
      * @param \Model\Product\Filter\Entity[] $filters
      */
-    private function correctFiltersForJewel(array &$filters, \Model\Product\Category\Entity $category) {
+    private function createInStoreFilter(array &$filters) {
+        $labelFilter = null;
+        $labelFilterKey = null;
+        foreach ($filters as $key => $filter) {
+            if ('label' === $filter->getId()) {
+                $labelFilter = $filter;
+                $labelFilterKey = $key;
+            }
+        }
+
+        // если нету блока фильтров "WOW-товары", то создаем
+        if (null === $labelFilter) {
+            $labelFilter = new \Model\Product\Filter\Entity();
+            $labelFilter->setId('label');
+            $labelFilter->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+            $labelFilter->setName('WOW-товары');
+            $labelFilter->getIsInList(true);
+        }
+
+        // создаем фильтр "Товар за три дня"
+        $option = new \Model\Product\Filter\Option\Entity();
+        $option->setId(1);
+        $option->setToken('instore');
+        if (\App::config()->region['defaultId'] === \App::user()->getRegion()->getId()) {
+            // Для Москвы, SITE-2850
+            //$option->setName('Товар за три дня');
+            $option->setName('Товар со склада'); // SITE-3131
+        } else {
+            // Для регионов (привозит быстрее, но не за три дня)
+            $option->setName('Товар со склада');
+        }
+
+        $labelFilter->unshiftOption($option);
+
+        // добавляем фильтр в массив фильтров
+        if (null !== $labelFilterKey) {
+            $filters[$labelFilterKey] = $labelFilter;
+        } else {
+            array_unshift($filters, $labelFilter);
+        }
+    }
+
+    /**
+     * @param \Model\Product\Filter\Entity[] $filters
+     */
+    private function transformFiltersV2(array &$filters, \Model\Product\Category\Entity $category) {
+        if (!$category->isV2()) {
+            return;
+        }
+
+        $newProperties = [];
+
+        foreach ($filters as $key => $property) {
+            if ($property->isLabel()) {
+                $property->setName('Скидки');
+
+                foreach ($property->getOption() as $option) {
+                    if ('instore' === $option->getToken()) {
+                        $labelProperty = new \Model\Product\Filter\Entity();
+                        $labelProperty->setId($option->getToken());
+                        $labelProperty->setName($option->getName());
+                        $labelProperty->setTypeId(\Model\Product\Filter\Entity::TYPE_LIST);
+
+                        $option->setName('да');
+                        $labelProperty->addOption($option);
+
+                        $newProperties[] = $labelProperty;
+
+                        $property->deleteOption($option);
+
+                        break;
+                    }
+                }
+            } else if ($property->isShop()) {
+                $property->setName('В магазине');
+                foreach ($property->getOption() as $option) {
+                    if (!$option->getQuantity()) {
+                        $property->deleteOption($option);
+                    }
+                }
+
+                if (!$property->getOption()) {
+                    unset($filters[$key]);
+                }
+            } else if ($property->isBrand()) {
+                if ($category->isAlwaysShowBrand()) {
+                    $property->setIsAlwaysShow(true);
+                }
+
+                $this->sortOptionsByQuantity($property);
+            }
+        }
+
+        if ($category->isTyre()) {
+            foreach ($filters as $key => $property) {
+                if ($property->getName() === 'Сезон') {
+                    $property->defaultTitle = 'Все сезоны';
+                } else if ($property->getName() === 'Бренд') {
+                    $property->defaultTitle = 'Все производители';
+                } else if ($property->getName() === 'Ширина') {
+                    $property->defaultTitle = 'Не выбрано';
+                } else if ($property->getName() === 'Профиль') {
+                    $property->defaultTitle = 'Не выбрано';
+                } else if ($property->getName() === 'Диаметр') {
+                    $property->defaultTitle = 'Не выбрано';
+                }
+            }
+
+            usort($filters, function(\Model\Product\Filter\Entity $a, \Model\Product\Filter\Entity $b) {
+                $order = [
+                    'Сезон' => 0,
+                    'Бренд' => 1,
+                    'Ширина' => 2,
+                    'Профиль' => 3,
+                    'Диаметр' => 4,
+                ];
+
+                if (isset($order[$a->getName()])) {
+                    $a = $order[$a->getName()];
+                } else {
+                    $a = 0;
+                }
+
+                if (isset($order[$b->getName()])) {
+                    $b = $order[$b->getName()];
+                } else {
+                    $b = 0;
+                }
+
+                if ($a == $b) {
+                    return 0;
+                }
+
+                return $a < $b ? -1 : 1;
+            });
+        }
+
+        foreach ($newProperties as $property) {
+            array_push($filters, $property);
+        }
+    }
+
+    private function sortOptionsByQuantity(\Model\Product\Filter\Entity $property) {
+        $options = $property->getOption();
+
+        usort($options, function(\Model\Product\Filter\Option\Entity $a, \Model\Product\Filter\Option\Entity $b) {
+            if ($a->getQuantity() == $b->getQuantity()) {
+                return 0;
+            }
+
+            return ($a->getQuantity() > $b->getQuantity()) ? -1 : 1;
+        });
+
+        $property->setOption($options);
+    }
+
+    /**
+     * @param \Model\Product\Filter\Entity[] $filters
+     */
+    private function correctFiltersForBronnitskiyYuvelir(array &$filters, \Model\Product\Category\Entity $category) {
         foreach ($filters as $key => $filter) {
             if ($filter->isPrice() && in_array($category->getUi(), [
                     'd792f833-f6fa-4158-83f6-2ac657077076', // Кольца Бронницкий Ювелир

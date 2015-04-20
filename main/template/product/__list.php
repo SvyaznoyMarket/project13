@@ -30,10 +30,6 @@ return function(
             $listingClass = 'lstn-light lstn';
             $templatePath = 'product/list/_light';
             break;
-        case 'line':
-            $listingClass = '';
-            $templatePath = 'product/list/_line';
-            break;
         default:
             $listingClass = '';
             $templatePath = 'product/list/_compact';

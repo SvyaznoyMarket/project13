@@ -1223,7 +1223,7 @@
                 } else {
                     map.setBounds(map.geoObjects.getBounds());
                     // точки становятся видимыми только при увеличения зума
-                    map.events.add('boundschange', function(event){
+                    map.events.once('boundschange', function(event){
                         if (event.get('oldZoom') < event.get('newZoom')) {
                             map.geoObjects.each(function(point) { point.options.set('visible', true)})
                         }
@@ -1455,7 +1455,10 @@
 		var $this = $(this),
 			block_name = $this.closest('.orderRow').data('block_name'),
 			method = $this.val();
-        if (method == 'by_online_credit') $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Кредит']);
+        if (method == 'by_online_credit') {
+            $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Кредит']);
+            $body.trigger('trackGoogleEvent', ['Credit', 'Выбор опции', 'Оформление заказа']);
+        }
         if (method == 'by_online') $body.trigger('trackGoogleEvent', ['Воронка_новая_v2_'+region, '13_3 Способы_оплаты_Доставка', 'Онлайн-оплата']);
 		changePaymentMethod(block_name, method, 'true')
 	});
@@ -1624,7 +1627,7 @@
 			if ($bonusCardInput.length > 0) $bonusCardInput.mask($bonusCardInput.data('mask')); // еще раз, т.к. событие blur и последующий validate проскакивает раньше обновления значения инпута плагином
 			if ($mnogoRuInput.length > 0) $mnogoRuInput.mask($mnogoRuInput.data('mask')); // еще раз, т.к. событие blur и последующий validate проскакивает раньше обновления значения инпута плагином
 
-			if ($bonusCardInput.val().length != 0 && !ENTER.utils.checkEan($bonusCardInput.val())) {
+			if ($bonusCardInput.length > 0 && $bonusCardInput.val().length != 0 && !ENTER.utils.checkEan($bonusCardInput.val())) {
 				error.push('Неверный код карты лояльности');
 				$bonusCardInput.addClass(errorClass).siblings('.errTx').show();
 			} else {
@@ -1667,6 +1670,7 @@
         } else {
 			// запоминаем значение номера карты Много.ру
 			if ($mnogoRuInput) docCookies.setItem('enter_mnogo_ru', $mnogoRuInput.val(), 31536e3, '/');
+            console.log('mnogo.ru', docCookies.getItem('enter_mnogo_ru'))
 		}
     });
 

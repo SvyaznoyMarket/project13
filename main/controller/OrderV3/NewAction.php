@@ -12,14 +12,9 @@ class NewAction extends OrderV3 {
      * @return \Http\Response
      */
     public function execute(\Http\Request $request) {
-//        $controller = parent::execute($request);
-//        if ($controller) {
-//            return $controller;
-//        }
-
-        //\App::logger()->debug('Exec ' . __METHOD__);
 
         $page = new \View\OrderV3\NewPage();
+        $post = null;
 
         try {
 
@@ -49,7 +44,6 @@ class NewAction extends OrderV3 {
                 }
             }
 
-            $this->logger(['action' => 'view-page-new']);
             $this->getLastOrderData();
 
             $this->session->remove($this->splitSessionKey);
@@ -63,11 +57,12 @@ class NewAction extends OrderV3 {
             \App::exception()->remove($e);
             \App::logger()->error($e->getMessage(), ['curl', 'cart/split']);
 
-            $page = new \View\OrderV3\ErrorPage();
-            $page->setParam('error', 'CORE: '.$e->getMessage());
+            $page = $e->getCode() == 759 ? new \View\OrderV3\NewPage() : new \View\OrderV3\ErrorPage();
+
+            $page->setParam('error', $e->getMessage());
+
             $page->setParam('step', 1);
 
-            return new \Http\Response($page->show(), 500);
         } catch (\Exception $e) {
             \App::logger()->error($e->getMessage(), ['cart/split']);
 
@@ -82,7 +77,9 @@ class NewAction extends OrderV3 {
         $bonusCards = (new \Model\Order\BonusCard\Repository($this->client))->getCollection(['product_list' => array_map(function(\Model\Cart\Product\Entity $v) { return ['id' => $v->getId(), 'quantity' => $v->getQuantity()]; }, $cart->getProducts())]);
 
         $page->setParam('user', $this->user);
+        $page->setParam('previousPost', $post);
         $page->setParam('bonusCards', $bonusCards);
+        $page->setParam('hasProductsOnlyFromPartner', $this->hasProductsOnlyFromPartner($cart));
 
         return new \Http\Response($page->show());
     }
@@ -107,5 +104,17 @@ class NewAction extends OrderV3 {
 
         return !empty($cookieValue) ? $cookieValue : null;
 
+    }
+
+    /** Есть ли товары не от Enter?
+     * @param \Session\Cart $cart
+     * @return bool
+     */
+    private function hasProductsOnlyFromPartner(\Session\Cart $cart) {
+        $ids = array_keys($cart->getProductsNC());
+        $products = (bool)$ids ? \RepositoryManager::product()->getCollectionById($ids, \App::user()->getRegion(), false) : [];
+        $productsFromPartner = array_filter($products, function (\Model\Product\Entity $p) { return $p->isOnlyFromPartner() ; });
+
+        return (bool)$productsFromPartner;
     }
 }

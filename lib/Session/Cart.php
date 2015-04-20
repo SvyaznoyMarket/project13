@@ -173,7 +173,8 @@ class Cart {
      */
     public function getProductsNC(){
         $data = $this->storage->get($this->sessionNameNC);
-        return isset($data['product']) ? $data['product'] : null;
+
+        return (isset($data['product']) && is_array($data['product'])) ? $data['product'] : [];
     }
 
     public function getProductsDumpNC() {
@@ -211,9 +212,9 @@ class Cart {
      * @return bool
      */
     public function hasProduct($productId) {
-        $data = $this->storage->get($this->sessionName);
+        $data = $this->storage->get($this->sessionNameNC);
 
-        return array_key_exists($productId, $data['productList']);
+        return array_key_exists($productId, $data['product']);
     }
 
     /** Возвращает массив id продуктов, добавленных в кредит (или пустой массив)

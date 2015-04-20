@@ -40,8 +40,8 @@ return function(
                 </div>
 
                 <div class="orderU_fld">
-                    <input class="orderU_tx textfield jsOrderV3EmailField" type="text" name="user_info[email]" value="<?= $user ? $helper->escape($user->getEmail()) : '' ?>" placeholder="mail@domain.com">
-                    <label class="orderU_lbl" for="">E-mail</label>
+                    <input class="orderU_tx textfield jsOrderV3EmailField jsOrderV3EmailRequired" type="text" name="user_info[email]" value="<?= $user ? $helper->escape($user->getEmail()) : '' ?>" placeholder="mail@domain.com">
+                    <label class="orderU_lbl orderU_lbl-str" for="">E-mail</label>
                     <span class="errTx" style="display: none">Неверный формат email</span>
                 </div>
 
