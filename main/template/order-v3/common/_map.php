@@ -147,7 +147,7 @@
                                 </td>
                                 <td class="pickup-item__addr">
                                     <!-- ko if: $.isArray(subway) -->
-                                    <div class="pickup-item__metro" style="background: #FBAA33;" data-bind="style: { background: subway[0].line.color }">
+                                    <div class="pickup-item__metro" data-bind="style: { background: subway[0].line.color }">
                                        <div class="pickup-item__metro-inn" data-bind="text: subway[0].name"></div>
                                     </div>
                                     <!-- /ko -->

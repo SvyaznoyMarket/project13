@@ -198,7 +198,7 @@
 					$body.trigger('trackUserAction', ['2_2 Ввод_данных_Самовывоза|Доставки']);
 					$body.children('.selShop').remove();
 					//$body.children('.lb_overlay')[1].remove();
-					changePoint($('.jsNewPoints').data('block_name'), id, token);
+					changePoint($('.jsOneClickOrderRow').data('block_name'), id, token);
 				}
 			};
 

@@ -14,7 +14,7 @@ return function(
     <? endif ?>
 
     <!-- блок разбиения заказа -->
-    <div class="orderRow clearfix" data-block_name="<?= $order->block_name ?>">
+    <div class="orderRow clearfix jsOneClickOrderRow" data-block_name="<?= $order->block_name ?>">
         <!-- информация о доставке -->
         <div class="orderCol orderCol-r">
             <menu class="orderCol_delivrLst clearfix">

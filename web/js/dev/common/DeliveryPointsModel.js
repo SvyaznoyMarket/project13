@@ -4,6 +4,22 @@
 
 ;(function($, ko){
 
+    var balloonTemplate =
+        '<table class="pickup-list"><tbody><tr class="pickup-item clearfix" ><td class="pickup-item__logo">'+
+        '<img src="{{ icon }}" class="pickup-item__img" >'+
+        '<span class="pickup-item__name">{{ listName }}</span>'+
+        '</td><td class="pickup-item__addr">'+
+        '{{# subway }}' +
+        '<div class="pickup-item__metro" style="background: {{ subway.line.color }};">'+
+        '<div class="pickup-item__metro-inn">{{ subway.name }}</div></div>'+
+        '{{/ subway }}'+
+        '<div class="pickup-item__addr-name">{{ address }}</div>'+
+        '<div class="pickup-item__time">{{ regtime }}</div></td>'+
+        '<td class="pickup-item__info pickup-item__info--nobtn">'+
+        '<div class="pickup-item__date" data-bind="text: humanNearestDay">{{ humanNearestDay }}</div>'+
+        '<div class="pickup-item__price"><span >{{ humanCost }}</span> {{# showRubles }}<span class="rubl">p</span></div>{{/ showRubles }}'+
+        '</td></tr></tbody></table>';
+
     ENTER.DeliveryPoints = function DeliveryPointsF (points, mapParam) {
 
         var self = this,
@@ -177,37 +193,20 @@
     ENTER.Placemark = function(point, visible) {
 
         var visibility = typeof visible == 'undefined' ? true : visible,
-            balloonContent = '<b>Адрес:</b> ' + point.address,
-            placemark;
+            balloonContent, placemark;
 
-        balloonContent = '<table class="pickup-list">'+
-                                '<tbody>'+
-                                    '<tr class="pickup-item jsChangePoint clearfix" data-bind="attr: { "data-id": $data.id, "data-token": $data.token, "data-blockname": $data.orderToken }" data-id="68" data-token="shops" data-blockname="selftype134">'+
-                                        '<td class="pickup-item__logo">'+
-'                                            <img src="/images/deliv-logo/enter.png" class="pickup-item__img" data-bind="attr: { src: icon }">'+
-'                                            <span class="pickup-item__name" data-bind="text: listName">Магазин Enter</span>'+
-'                                        </td>'+
-'                                        <td class="pickup-item__addr">'+
-'                                            <!-- ko if: $.isArray(subway) -->'+
-'                                            <div class="pickup-item__metro" style="background: rgb(255, 216, 3);" data-bind="style: { background: subway[0].line.color }">'+
-'                                               <div class="pickup-item__metro-inn" data-bind="text: subway[0].name">Новогиреево</div>'+
-'                                            </div>'+
-'                                            <!-- /ko -->'+
-'                                            <div class="pickup-item__addr-name" data-bind="text: address">Свободный пр-кт, д.&nbsp;33</div>'+
-'                                            <div class="pickup-item__time" data-bind="text: regtime">'+point.regtime+'</div>'+
-'                                        </td>'+
-'                                        <td class="pickup-item__info pickup-item__info--nobtn">'+
-'                                            <div class="pickup-item__date" data-bind="text: humanNearestDay">Послезавтра</div>'+
-'                                            <div class="pickup-item__price"><span data-bind="text: cost == 0 ? "Бесплатно" : cost ">Бесплатно</span> <span class="rubl" data-bind="visible: cost != 0" style="display: none;">p</span></div>'+
-'                                        '+
-'                                        </td>'+
-'                                    </tr>'+
-'                                </tbody>'+
-'                            </table>';
+        // Для шаблона
+        if (point.cost == 0) {
+            point.humanCost = 'Бесплатно';
+            point.showRubles = false;
+        } else {
+            point.humanCost = point.cost;
+            point.showRubles = true;
+        }
 
         if (!point.latitude || !point.longitude) throw 'Не указаны координаты точки';
 
-        // if (point.regtime) balloonContent += '<br /> <b>Время работы:</b> ' + point.regtime;
+        balloonContent = Mustache.render(balloonTemplate, point);
 
         // кнопка "Выбрать магазин"
         balloonContent += $('<button />', {
@@ -234,6 +233,7 @@
             visible: visibility
         });
 
+        // Максимальная ширина балуна
         //placemark.balloon.set('maxWidth', 100);
 
         return placemark;
