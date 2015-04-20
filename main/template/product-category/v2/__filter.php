@@ -65,7 +65,7 @@ return function(
     ?>
 
     <div class="fltrBtn fltrBtn-bt">
-        <form id="productCatalog-filter-form" class="js-category-filter" action="<?= $baseUrl ?>" data-count-url="<?= $countUrl ?>" method="GET">
+        <form id="productCatalog-filter-form" class="js-category-filter" action="<?= $baseUrl ?>" data-count-url="<?//= $countUrl ?>" method="GET">
             <? // Для IE9 (чтобы он отправлял форму при нажатии на клавишу enter в текстовом поле ввода) ?>
             <div style="overflow: hidden; position: absolute; top: 0; left: 0; width: 0; height: 0;"><input type="submit" /></div>
 
