@@ -54,10 +54,31 @@ class Cart {
         // новый формат корзины
         $data = $this->storage->get('cart');
         if (!isset($data['product']) || !is_array($data['product'])) {
-            $this->storage->set('cart', [
-                'product' => [],
-            ]);
+            $this->storage->set(
+                'cart',
+                [
+                    'updated' => null,
+                    'product' => [],
+                ]
+            );
         }
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getUpdatedTime() {
+        $data = $this->storage->get($this->sessionNameNC);
+
+        $date = null;
+        try {
+            $updated = isset($data['updated']) ? $data['updated'] : null;
+            if ($updated) {
+                $date = new \DateTime($data['updated']);
+            }
+        } catch (\Exception $e) {}
+
+        return $date;
     }
 
     /**
@@ -174,7 +195,52 @@ class Cart {
     public function getProductsNC(){
         $data = $this->storage->get($this->sessionNameNC);
 
-        return (isset($data['product']) && is_array($data['product'])) ? $data['product'] : [];
+        $products = (isset($data['product']) && is_array($data['product'])) ? $data['product'] : [];
+
+        // обновление цен товаров
+        if ($products) {
+            $isUpdated = false;
+            $now = new \DateTime('now');
+            $updated = $this->getUpdatedTime();
+
+            if (
+                !$updated
+                || ($updated->diff($now, true)->h > 12) // больше 12 часов
+                || (($now->format('H') >= 9) && ($updated->format('H') < 9)) // уже 9 часов утра - цены в ядре обновились
+            ) {
+                \App::coreClientV2()->addQuery(
+                    'cart/get-price',
+                    ['geo_id' => \App::user()->getRegion()->getId()],
+                    [
+                        'product_list'  => $this->getProductData(),
+                    ],
+                    function ($response) use (&$products, &$isUpdated) {
+                        if (!isset($response['product_list'][0])) return;
+
+                        foreach ($response['product_list'] as $item) {
+                            $product = (isset($item['id']) && isset($products[$item['id']])) ? $products[$item['id']] : null;
+                            if (!$product) continue;
+
+                            if (!empty($item['price'])) {
+                                $product['price'] = (float)$item['price'];
+                                $isUpdated = true;
+                            }
+
+                            $products[$item['id']] = $product;
+                        }
+                    }
+                );
+                \App::coreClientV2()->execute();
+
+                if ($isUpdated) {
+                    $data['product'] = $products;
+                    $data['updated'] = (new \DateTime('now'))->format('c');
+                    $this->storage->set($this->sessionNameNC, $data);
+                }
+            }
+        }
+
+        return $products;
     }
 
     public function getProductsDumpNC() {
