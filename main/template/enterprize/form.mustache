@@ -64,8 +64,6 @@
                 <fieldset class="form-reg__fld">
                     <div class="form-reg__tl">МЫ ОТПРАВИМ КОД НА СКИДКУ В SMS И E-MAIL</div>
 
-                    <div class="errtx-light js-global-error"></div>
-
                     <div class="txFld-w">
                         <input class="txFld-it" type="text" name="user[name]" id="" value="{{user.name}}">
                         <label class="txFld-lbl" for=""><span class="txFld-lbl__str">*</span> Имя</label>
@@ -121,7 +119,7 @@
     </div>
     {{/isUserOwner}}
 
-
+    
     <div class="ep-hint__row ep-hint__row--cut">
         <div class="ta-r mb10">
             {{#user.isMember}}

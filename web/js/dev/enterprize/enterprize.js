@@ -157,7 +157,6 @@
 
                 if (formError.field === 'global') {
                     showMsg(formError.message);
-                    $('.js-global-error').html(formError.message);
                 } else {
                     formErrorHandler(formError);
                 }
