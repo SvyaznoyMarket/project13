@@ -12,8 +12,7 @@
         popupDefaults = {
             centered: true,
             closeSelector: '.jsPopupCloser'
-        },
-        $mapContainer = $('.jsNewPoints');
+        };
 
     /* Если это не новая карточка, то do nothing */
     if (!$body.hasClass('product-card-new')) return;
@@ -167,13 +166,17 @@
 
     $body.scrollspy({ target: '#jsScrollSpy' });
 
+    $body.on('click', '.jsOneClickButtonOnDeliveryMap', function(){
+        $('.jsProductPointsMap').trigger('close');
+    });
+
     $body.on('click', '.jsShowDeliveryMap', function(){
 
         var productId = $(this).data('product-id'),
             $div = $('.jsProductPointsMap');
 
         // Если точки были загружены, то просто показываем этот div
-        if ($div.find('.jsNewPoints').length > 0) {
+        if ($div.find('.jsDeliveryMapPoints').length > 0) {
             $div.lightbox_me({
                 centered: true,
                 preventScroll: true
@@ -236,7 +239,7 @@
                     // добавляем видимые точки на карту
                     $.each(mapData.points, function(i, point){
                         try {
-                            yMap.geoObjects.add(new ENTER.Placemark(point, true));
+                            yMap.geoObjects.add(new ENTER.Placemark(point, true, 'jsOneClickButtonOnDeliveryMap jsOneClickButton-new'));
                         } catch (e) {
                             console.error('Ошибка добавления точки на карту', e);
                         }
@@ -256,6 +259,7 @@
                     }
 
                     ko.applyBindings(pointsModel, $div[0]);
+
 
                     $body.on('click', '.jsOrderV3Dropbox',function(){
                         $(this).siblings().removeClass('opn').find('.jsOrderV3DropboxInner').hide(); // скрываем все, кроме потомка

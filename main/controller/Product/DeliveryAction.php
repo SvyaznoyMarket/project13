@@ -269,7 +269,11 @@ class DeliveryAction {
             $map->preparePointsWithOrder(reset($order->orders), $order);
             $result = [
                 'success'   => true,
-                'html'      => \App::templating()->render('order-v3/common/_map', ['dataPoints' => $map, 'visible' => true])
+                'html'      => \App::templating()->render('order-v3/common/_map',
+                    ['dataPoints' => $map,
+                        'visible' => true,
+                        'class'   => 'jsDeliveryMapPoints'
+                    ])
             ];
         } else {
             $result['error'] = 'Ошибка разбиения';

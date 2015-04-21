@@ -1,8 +1,9 @@
 <?
 /**
  * @var $dataPoints \View\PointsMap\MapView
- * @var $product \Model\Product\Entity
- * @var $visible bool
+ * @var $product    \Model\Product\Entity
+ * @var $visible    bool
+ * @var $class      string
  */
 
     $helper = \App::helper();
@@ -23,10 +24,11 @@
     $uniqueTokens = $dataPoints->getUniquePointTokens();
 
     if (!isset($visible)) $visible = false;
+    if (!isset($class)) $class = 'jsNewPoints';
 
     ?>
 
-    <div class="selShop popupFl pickup jsNewPoints" style="display: <?= $visible ? 'block' : 'none';  ?>" data-block_name="<?= $order->block_name ?>">
+    <div class="selShop popupFl pickup <?= $class ?>" style="display: <?= $visible ? 'block' : 'none';  ?>" data-block_name="<?= $order->block_name ?>">
 
         <div class="js-order-changePlace-close popupFl_clsr jsCloseFl" data-content="#<?= 'map-' . $uniqId ?>"></div>
 
@@ -160,7 +162,11 @@
                                     <div class="pickup-item__price"><span data-bind="text: cost == 0 ? 'Бесплатно' : cost "></span> <span class="rubl" data-bind="visible: cost != 0">p</span></div>
                                 </div>
                                 <div class="pickup-item__buy">
-                                    <a href="" class="btn-type btn-type--buy">Купить</a>
+                                    <a
+                                        href=""
+                                        class="btn-type btn-type--buy jsOneClickButton-new jsOneClickButtonOnDeliveryMap"
+                                        <? if ($product) : ?>data-product-ui="<?= $product->getUi() ?>"<? endif ?>
+                                        data-bind="attr: { 'data-shop': id }">Купить</a>
                                 </div>
                                 </td>
 

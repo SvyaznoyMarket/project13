@@ -9,9 +9,6 @@ $f = function (
     $deliveryPickup = $product->delivery->getPickupWithMinDate() ? $product->delivery->getPickupWithMinDate() : null;
     $deliveryDelivery = $product->delivery->getDeliveryWithMinDate() ? $product->delivery->getDeliveryWithMinDate() : null;
 
-/*    $dataPoints = (new \View\PointsMap\MapView());
-    $dataPoints->preparePointsWithDelivery($product->delivery);*/
-
 ?>
     <!-- в наличии -->
     <div class="buy-now-inshop jsShowDeliveryMap" data-product-id="<?= $product->getId() ?>">
@@ -25,17 +22,12 @@ $f = function (
             <div class="buy-now-inshop__line">Доставка <span class="buy-now-inshop__mark"><?= mb_strtolower($helper->humanizeDate($deliveryDelivery->getMinDate()->date)) ?>, <?= $deliveryDelivery->price == 0 ? 'бесплатно' : $helper->formatPrice($deliveryDelivery->price) . '&nbsp;<span class="rubl">p</span>' ?></span></div>
         <? endif ?>
 
-<!--        --><?/*= \App::templating()->render('order-v3/common/_map', [
-            'dataPoints'    => $dataPoints,
-            'product'       => $product
-        ]) */?>
-
     </div>
     <!--/ в наличии -->
 
     <style>
         .spinner {
-            margin: 100px auto;
+            margin: 250px auto;
             width: 50px;
             height: 30px;
             text-align: center;

@@ -44,6 +44,10 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 
 ?>
 
+<div id="product-info"
+     data-ui="<?= $product->getUi() ?>"
+    ></div>
+
 <?= !empty($breadcrumbs) ? $helper->renderWithMustache('product-page/blocks/breadcrumbs.mustache', ['breadcrumbs' => $breadcrumbs]) : '' ?>
 
 <section>

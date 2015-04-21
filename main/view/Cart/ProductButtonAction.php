@@ -98,6 +98,7 @@ class ProductButtonAction {
             $data['url'] = $buyUrl;
             $data['class'] .= ' btnBuy__eLink js-orderButton jsBuyButton' . $colorClass;
             $data['value'] = 'Купить';
+            if (\App::abTest()->isNewProductPage() && 'product-card' === $location) $data['value'] = 'В корзину';
         }
 
         /* Новая карточка товара */
@@ -106,7 +107,6 @@ class ProductButtonAction {
             if ('product-card' === $location) $data['class'] .= ' btn-type--longer btn-type--buy--bigger';
             if ('slider' === $location) $data['class'] .= ' btn-type--light';
             $data['divClass'] = 'buy-online';
-            $data['value'] = 'product-card' === $location ? 'В корзину' : 'Купить';
         }
 
         return $data;

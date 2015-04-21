@@ -190,10 +190,12 @@
 
     };
 
-    ENTER.Placemark = function(point, visible) {
+    ENTER.Placemark = function(point, visible, buyButtonClass) {
 
         var visibility = typeof visible == 'undefined' ? true : visible,
             balloonContent, placemark;
+
+        if (!buyButtonClass) buyButtonClass = 'jsChangePoint';
 
         // Для шаблона
         if (point.cost == 0) {
@@ -211,9 +213,9 @@
         // кнопка "Выбрать магазин"
         balloonContent += $('<button />', {
                 'text':'Купить',
-                'class': 'btn-type btn-type--buy jsChangePoint',
+                'class': 'btn-type btn-type--buy ' + buyButtonClass,
                 'style': 'display: block',
-                'data-id': point.id,
+                'data-shop': point.id,
                 'data-token': point.token,
                 'data-blockname': point.orderToken
             }

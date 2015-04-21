@@ -11,7 +11,13 @@
 
 		var
 			button = $(e.currentTarget),
-			$target = $('#jsOneClickContent');
+			$target = $('#jsOneClickContent'),
+            $productInfo = $('#product-info'),
+            productUi;
+
+        productUi = $productInfo.length > 0 ? $productInfo.data('ui') : button.data('product-ui');
+
+        if (!productUi) throw 'Не обнаружен ui продукта';
 
 		if ($target.length) {
 			openPopup(false);
@@ -19,7 +25,7 @@
 		} else {
 			oneClickOpening = true;
 			$.ajax({
-				url: ENTER.utils.generateUrl('orderV3OneClick.form', {productUid: button.data('product-ui'), sender: button.data('sender'), sender2: button.data('sender2')}),
+				url: ENTER.utils.generateUrl('orderV3OneClick.form', {productUid: productUi, sender: button.data('sender'), sender2: button.data('sender2')}),
 				type: 'POST',
 				dataType: 'json',
 				closeClick: false,
