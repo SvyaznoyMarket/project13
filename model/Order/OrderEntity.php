@@ -312,7 +312,7 @@ class OrderEntity {
         $request = \App::request();
         $user = \App::user();
         $data = [];
-        $cart = $user->getCart()->getProductsNC();
+        $cart = $user->getCart()->getProductData();
         $oneClickCart = $user->getOneClickCart()->getProductSourceData();
 
         try {

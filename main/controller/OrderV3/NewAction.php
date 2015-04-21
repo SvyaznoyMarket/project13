@@ -111,7 +111,7 @@ class NewAction extends OrderV3 {
      * @return bool
      */
     private function hasProductsOnlyFromPartner(\Session\Cart $cart) {
-        $ids = array_keys($cart->getProductsNC());
+        $ids = array_keys($cart->getProductData());
         $products = (bool)$ids ? \RepositoryManager::product()->getCollectionById($ids, \App::user()->getRegion(), false) : [];
         $productsFromPartner = array_filter($products, function (\Model\Product\Entity $p) { return $p->isOnlyFromPartner() ; });
 

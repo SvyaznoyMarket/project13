@@ -14,7 +14,7 @@ class IndexPage extends \View\DefaultLayout {
         }
 
         $backlink = null;
-        $productData = \App::user()->getCart()->getProductsNC();
+        $productData = \App::user()->getCart()->getProductData();
         $productData = is_array($productData) ? end($productData) : [];
         if (!empty($productData['referer'])) {
             $backlink = $productData['referer'];
