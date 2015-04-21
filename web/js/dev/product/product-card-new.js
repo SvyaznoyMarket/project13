@@ -171,7 +171,7 @@
     if ($tabs.length) {
         $window.on('scroll', function(){
             var fixedClass = 'pp-fixed';
-            if ($window.scrollTop() - 60 > tabsOffset) {
+            if ($window.scrollTop() - 110 > tabsOffset) {
                 $tabs.addClass(fixedClass);
                 $userbar.addClass(fixedClass);
             } else {
@@ -181,7 +181,14 @@
         });
     }
 
-    $body.scrollspy({ target: '#jsScrollSpy' });
+    $body.scrollspy({ target: '#jsScrollSpy', offset: 100 });
+
+    $body.on('click', '.jsProductTabs a', function(e) {
+        var hash = $(this).attr('href');
+        e.preventDefault();
+        window.location.hash = hash;
+        window.scrollTo(0, $(hash).offset().top - 100);
+    });
 
     $body.on('click', '.jsOneClickButtonOnDeliveryMap', function(){
         $('.jsProductPointsMap').trigger('close');
