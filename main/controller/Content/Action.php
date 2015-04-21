@@ -7,9 +7,22 @@ class Action {
     public function execute(\Http\Request $request, $token) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
-        $client = \App::contentClient();
+        $client = \App::scmsSeoClient();
 
-        $content = $client->query($token, [], false, \App::config()->coreV2['retryTimeout']['huge']);
+        $content = null;
+        $client->addQuery(
+            'static-page.json',
+            [
+                'token' => [$token],
+            ],
+            [],
+            function($data) use (&$content) {
+                if (!isset($data['pages'][0]['content'])) return;
+
+                $content = $data['pages'][0];
+            }
+        );
+        $client->execute();
 
         if (!(bool)$content) {
             throw new \Exception\NotFoundException();
