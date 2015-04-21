@@ -6,17 +6,10 @@
  */
 ?>
 
-<?= $page->render('order/form-oneClick', ['product' => $product]) ?>
-
 <?
 $json = array('jsref' => $product->getToken(), 'jstitle' => $product->getName(), 'jsprice' => $product->getPrice(), 'jssimg' => $product->getImageUrl(1), 'jsimg' => $product->getImageUrl(3), 'jsbimg' => $product->getImageUrl(2), 'jsshortcut' => $product->getArticle(), 'jsitemid' => $product->getId(), 'jsregionid' => $user->getRegion()->getId(), 'jsregion' => $user->getRegion()->getName());
 ?>
 <div class="clear"></div>
-<input type="hidden" id="stockmodel"
-    data-value="<?= $page->json($json) ?>"
-    link-output="<?= $page->url('order.1click', array('product' => $product->getToken())) ?>"
-    link-input="<?= $page->url('product.delivery_1click') ?>"
-/>
 
 <div class='bInShop' id="noDlvr" style="display:none">
     <div class='bInShop__eTop'>

@@ -38,10 +38,13 @@ return function(
                 'token'  => $token,
                 'icon'  => $orderDelivery->points[$token]->icon,
                 'cost'  => (string)$point['cost'],
-                'humanNearestDay'   => $helper->humanizeDate(DateTime::createFromFormat('Y-m-d', $point['nearestDay']), 'Y-m-d'),
+                'humanNearestDay'   => $helper->humanizeDate(DateTime::createFromFormat('Y-m-d', $point['nearestDay'])),
                 'nearestDay'  => $point['nearestDay'],
                 'blockName'    => $orderDelivery->points[$token]->block_name,
-                'orderToken' => $order->block_name
+                'orderToken' => $order->block_name,
+                'dropdownName'  => $orderDelivery->points[$token]->dropdown_name,
+                'listName'  => $p->listName,
+                'subway'    => $p->subway
             ];
             $pointsCost[] = $point['cost'];
             $nearestDays[] = $point['nearestDay'];
@@ -65,7 +68,15 @@ return function(
             <div class="deliv-ctrls">
 
                 <div class="deliv-search">
-                    <input class="deliv-search-input" type="text" placeholder="Искать по улице, метро" data-bind="value: searchInput, valueUpdate: 'afterkeydown'" />
+                    <div class="deliv-search__input-wrap">
+                        <input class="deliv-search-input" type="text" placeholder="Искать по улице, метро" data-bind="click: enableAutocompleteListVisible, value: searchInput, valueUpdate: 'afterkeydown'" />
+                        <div class="deliv-search__clear" data-bind="click: clearSearchInput, visible: searchInput ">×</div>
+                    </div>
+                    <div class="deliv-suggest" data-bind="visible: searchAutocompleteListVisible() && searchAutocompleteList().length > 0, event: { mouseleave: disableAutocompleteListVisible }">
+                        <ul class="deliv-suggest__list" data-bind="foreach: searchAutocompleteList">
+                            <li class="deliv-suggest__i" data-bind="text: name, attr: { 'data-bounds': bounds }, click: $parent.setMapCenter"></li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="deliv-sel-group fltrBtn_kit fltrBtn_kit-box js-category-v2-filter-otherGroups">
@@ -100,7 +111,7 @@ return function(
                     <!-- Cтоимость -->
                     <div class="deliv-sel fltrBtnBox js-category-v2-filter-dropBox jsOrderV3Dropbox">
                         <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener" data-bind="css: { picked: $root.choosenCosts().length > 0 }">
-                            <span class="fltrBtnBox_tggl_tx">Стоимость</span>
+                            <span class="fltrBtnBox_tggl_tx" data-bind="html: costsText">Стоимость</span>
                             <i class="fltrBtnBox_tggl_corner"></i>
                         </div>
 
@@ -114,7 +125,7 @@ return function(
                                                    type="checkbox" id="id-delivery-price-<?= $cost.$order->block_name ?>" name="" value="<?= $cost ?>"
                                                     data-bind="checked: $root.choosenCosts" />
                                             <label class="customLabel customLabel-defcheck2" for="id-delivery-price-<?= $cost.$order->block_name ?>">
-                                                <span class="customLabel_btx"><?= $cost == 0 ? 'Бесплатно' : $cost . ' <span class="rubl">р</span>' ?></span>
+                                                <span class="customLabel_btx"><?= $cost == 0 ? 'Бесплатно' : $cost . ' <span class="rubl">p</span>' ?></span>
                                             </label>
                                         </div>
 
@@ -127,7 +138,7 @@ return function(
                     <!-- Дата самовывоза -->
                     <div class="deliv-sel fltrBtnBox js-category-v2-filter-dropBox jsOrderV3Dropbox">
                         <div class="fltrBtnBox_tggl js-category-v2-filter-dropBox-opener" data-bind="css: { picked: choosenDates().length > 0 }">
-                            <span class="fltrBtnBox_tggl_tx">Дата</span>
+                            <span class="fltrBtnBox_tggl_tx" data-bind="text: datesText">Дата</span>
                             <i class="fltrBtnBox_tggl_corner"></i>
                         </div>
 
@@ -140,7 +151,7 @@ return function(
                                                    type="checkbox" id="id-delivery-date-<?= $day.$order->block_name ?>" name="" value="<?= $day ?>"
                                                    data-bind="checked: choosenDates" />
                                             <label class="customLabel customLabel-defcheck2" for="id-delivery-date-<?= $day.$order->block_name ?>">
-                                                <span class="customLabel_btx"><?= $helper->humanizeDate(DateTime::createFromFormat('Y-m-d', $day), 'Y-m-d') ?></span>
+                                                <span class="customLabel_btx"><?= $helper->humanizeDate(DateTime::createFromFormat('Y-m-d', $day)) ?></span>
                                             </label>
                                         </div>
                                     <? endforeach ?>
@@ -152,18 +163,21 @@ return function(
                 </div>
             </div>
 
-            <div class="selShop_l" data-token="shops" data-bind="visible: points().length != 0">
+            <div class="selShop_l" data-token="shops" data-bind="css:{'nobefore': points().length == 0}">
+
+                <span class="deliv-nomatch" data-bind="visible: points().length == 0">Поиск не дал результатов</span>
+
                 <ul class="deliv-list" data-bind="foreach: points">
 
                     <li class="deliv-item jsChangePoint" data-bind="attr: { 'data-id': $data.id, 'data-token': $data.token, 'data-blockname': $data.orderToken }">
                         <div class="deliv-item__logo">
                             <img src="" class="deliv-item__img" data-bind="attr: { src: icon }" />
-                            <span class="deliv-item__name" data-bind="text: blockName"></span>
+                            <span class="deliv-item__name" data-bind="text: listName"></span>
                         </div>
                         <div class="deliv-item__addr">
-                            <!-- ko if: typeof subway !== 'undefined' -->
-                            <div class="deliv-item__metro" style="background: #FBAA33;">
-                               <div class="deliv-item__metro-inn">м. Ленинский проспект</div>
+                            <!-- ko if: $.isArray(subway) -->
+                            <div class="deliv-item__metro" style="background: #FBAA33;" data-bind="style: { background: subway[0].line.color }">
+                               <div class="deliv-item__metro-inn" data-bind="text: subway[0].name"></div>
                             </div>
                             <!-- /ko -->
                             <div class="deliv-item__addr-name" data-bind="text: address"></div>

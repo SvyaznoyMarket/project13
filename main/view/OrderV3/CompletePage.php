@@ -38,10 +38,10 @@ class CompletePage extends Layout {
 
             foreach ($this->params['orders'] as $order) {
                 /** @var $order \Model\Order\Entity */
-                if ($order->paymentId != \Model\PaymentMethod\PaymentMethod\PaymentMethodEntity::PAYMENT_CREDIT) continue;
+                if (!$order->isCredit()) continue;
 
                 // Данные для "Купи-в-кредит"
-                $data = new \View\Order\Credit\Kupivkredit($order, $this->params['products']);
+                $data = new Credit\Kupivkredit($order, $this->params['products']);
                 $creditData[$order->getNumber()]['kupivkredit'] = [
                     'widget' => 'kupivkredit',
                     'vars'   => [

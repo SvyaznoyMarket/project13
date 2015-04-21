@@ -7,11 +7,9 @@
  * @var $accessories            \Model\Product\Entity[]
  * @var $accessoryCategory      \Model\Product\Category\Entity[]
  * @var $kit                    \Model\Product\Entity[]
- * @var $relatedKits            array
  * @var $additionalData         array
  * @var $shopStates             \Model\Product\ShopState\Entity[]
  * @var $creditData             array
- * @var $line                   \Model\Line\Entity
  * @var $deliveryData           array
  * @var $isTchibo               boolean
  * @var $addToCartJS     string
@@ -113,10 +111,6 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
             'sender'  => $buySender,
             'sender2' => $buySender2,
         ]) ?>
-    <? endif ?>
-
-    <? if ( (bool)$relatedKits ) : // если есть родительские пакеты ?>
-        <?= $helper->render('product/__relatedKits',['kits' => $relatedKits, 'product' => $product]) ?>
     <? endif ?>
 
     <? if ((bool)$accessories && \App::config()->product['showAccessories']): ?>
@@ -221,7 +215,7 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
 
             <div class="js-showTopBar"></div>
 
-            <? if (!$hasFurnitureConstructor && !count($product->getPartnersOffer()) && (!$isKit || $product->getIsKitLocked())): ?>
+            <? if (!count($product->getPartnersOffer()) && (!$isKit || $product->getIsKitLocked())): ?>
                 <?= $helper->render('cart/__button-product-oneClick', ['product' => $product, 'sender'  => $buySender, 'sender2' => $buySender2]) // Покупка в один клик ?>
             <? endif ?>
 
@@ -232,8 +226,6 @@ $sender2 = $product->isOnlyFromPartner() && !$product->getSlotPartnerOffer() ? '
             <? if (5 !== $product->getStatusId()): // SITE-3109 ?>
                 <?= $helper->render('product/__delivery', ['product' => $product, 'deliveryData' => $deliveryData, 'shopStates' => $shopStates]) // Доставка ?>
             <? endif ?>
-
-            <?= $helper->render('cart/__button-product-paypal', ['product' => $product]) // Кнопка купить через paypal ?>
 
             <?= $helper->render('product/__trustfactors', ['trustfactors' => $trustfactors, 'type' => 'main']) ?>
         </div>

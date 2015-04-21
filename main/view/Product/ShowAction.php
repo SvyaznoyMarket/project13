@@ -2,6 +2,8 @@
 
 namespace View\Product;
 
+use Session\AbTest\AbTest;
+
 class ShowAction {
     /**
      * @param \Helper\TemplateHelper $helper
@@ -79,10 +81,6 @@ class ShowAction {
             'has360'   => $product->has3d(),
             'review'   => $reviewtAction ? $reviewtAction->execute($helper, $product) : null,
             'isBanner' => false,
-            'line'     =>
-            ($line = $product->getLine())
-                ? ['name' => $line->getName(), 'productCount' => $line->getLineCount(), 'link' => $helper->url('product.line', ['lineToken' => $line->getToken()])]
-                : null,
             'hasKit'       => (bool)$product->getKit(),
             'isKitLocked'   => (bool)$product->getIsKitLocked(),
             'brandImage'    => $product->getBrand() && $product->getBrand()->getImage() ? $product->getBrand()->getImage() : null,
@@ -95,6 +93,7 @@ class ShowAction {
         if ( $product->getPriceOld() ) {
             $productItem['oldPrice'] = $helper->formatPrice($product->getPriceOld());
             $productItem['priceSale'] = round( ( 1 - ($product->getPrice() / $product->getPriceOld() ) ) *100, 0 );
+            $productItem['showPriceSale'] = AbTest::isShowSalePercentage();
         }
 
         // cart

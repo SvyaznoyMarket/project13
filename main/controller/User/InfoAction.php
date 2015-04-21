@@ -83,7 +83,7 @@ class InfoAction {
 
                 // заполнение недостающих данных для продуктов
                 $productsToUpdate = [];
-                $productsNC = $cart->getProductsNC();
+                $productsNC = $cart->getProductData();
 
                 $responseData['cart']['sum'] = $cart->getSum();
                 $responseData['cart']['quantity'] = $cart->getProductsQuantity();
@@ -98,10 +98,10 @@ class InfoAction {
                 }
 
                 foreach (\RepositoryManager::product()->getCollectionById($productsToUpdate) as $product) {
-                    $cart->updateProductNC($product);
+                    $cart->updateProduct($product);
                 }
 
-                $responseData['cartProducts'] = $cart->getProductsDumpNC();
+                $responseData['cartProducts'] = $cart->getProductDump();
             }
 
         } catch (\Exception $e) {

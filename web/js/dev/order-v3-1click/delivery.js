@@ -177,7 +177,7 @@
                     } else {
                         map.setBounds(map.geoObjects.getBounds());
                         // точки становятся видимыми только при увеличения зума
-                        map.events.add('boundschange', function(event){
+                        map.events.once('boundschange', function(event){
                             if (event.get('oldZoom') < event.get('newZoom')) {
                                 map.geoObjects.each(function(point) { point.options.set('visible', true)})
                             }
@@ -207,7 +207,7 @@
 				if (id && token) {
 					$body.trigger('trackUserAction', ['2_2 Ввод_данных_Самовывоза|Доставки']);
 					$body.children('.selShop').remove();
-					$body.children('.lb_overlay')[1].remove();
+					$body.children('.lb_overlay').last().remove();
 					changePoint($(this).closest('.selShop').data('block_name'), id, token);
 				}
 			};

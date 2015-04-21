@@ -3,6 +3,8 @@
 
 namespace Session\AbTest;
 
+use Model\Product\Entity;
+
 /** Трейт, помогающий определять вариант АБ-теста у пользователя
  * Class ABHelperTrait
  * @package Session\AbTest
@@ -25,22 +27,37 @@ trait ABHelperTrait {
      * @return bool
      */
     public static function isSelfPaidDelivery(){
-        if (\App::config()->self_delivery['enabled'] == false) return false;
-        // если нет магазинов в регионе пользователя
-        if (\App::user()->getRegion() && !\App::user()->getRegion()->getHasShop()) return false;
-        /* Область -> parent_id
-         * --------------------
-         * Московская - 83
-         * Москва - 82
-         * Ленинградская - 34
-         * Санкт-Петербург - 39
-         */
-        /* Если пользователь попадает в регион теста */
-        if (\App::user()->getRegion() && !in_array(\App::user()->getRegion()->getParentId(), [82,83,34,39])) {
-//            return \App::abTest()->getTest('order_delivery_price_2') && \App::abTest()->getTest('order_delivery_price_2')->getChosenCase()->getKey() == 'delivery_self_100';
-            return true;
-        }
+        // SITE-5298, SITE-5425
         return false;
+    }
+
+    public static function getColorClass(Entity $product, $location = null){
+        // SITE-5394 цвет кнопки купить
+        $colorClass = null;
+        switch (\App::abTest()->getTest('cart_button_color')->getChosenCase()->getKey()) {
+            case 'red':
+                $colorClass = ' btnBuy__eLink--red';
+                break;
+            case 'magenta':
+                $colorClass = ' btnBuy__eLink--magenta';
+                break;
+        }
+
+        if ($location !== 'slider') {
+            foreach ($product->getCategory() as $category) {
+                // Pandora
+                if (in_array($category->getUi(), ['3fe49466-e5cf-4042-963d-025db2142600'])) {
+                    $colorClass = null;
+                    break;
+                }
+            }
+        }
+
+        return $colorClass;
+    }
+
+    public static function isShowSalePercentage() {
+        return !in_array(\App::request()->attributes->get('route'), ['slice.category', 'slice.show'], true) || \App::request()->attributes->get('sliceToken') !== 'all_labels' || \App::abTest()->getTest('salePercentage')->getChosenCase()->getKey() !== 'hide';
     }
 
     /** Онлайн-мотивация при покупке?

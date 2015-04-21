@@ -14,7 +14,7 @@ class IndexPage extends \View\DefaultLayout {
         }
 
         $backlink = null;
-        $productData = \App::user()->getCart()->getProductsNC();
+        $productData = \App::user()->getCart()->getProductData();
         $productData = is_array($productData) ? end($productData) : [];
         if (!empty($productData['referer'])) {
             $backlink = $productData['referer'];
@@ -44,27 +44,6 @@ class IndexPage extends \View\DefaultLayout {
 
     public function slotBodyDataAttribute() {
         return 'cart';
-    }
-
-    public function slotFooter() {
-        $client = \App::contentClient();
-
-        $response = null;
-        $client->addQuery(
-            'footer_compact',
-            [],
-            function($data) use (&$response) {
-                $response = $data;
-            },
-            function(\Exception $e) {
-                \App::exception()->add($e);
-            }
-        );
-        $client->execute();
-
-        $response = array_merge(['content' => ''], (array)$response);
-
-        return $this->render('order/_footer', $this->params) . "\n\n" . $response['content'];
     }
 
     public function slotGoogleRemarketingJS($tagParams = []) {

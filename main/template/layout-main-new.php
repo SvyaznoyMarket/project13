@@ -73,6 +73,7 @@
     <?= $page->slotUpper() ?>
     <?= $page->slotUserbar() ?>
     <?= $page->slotAuth() ?>
+    <?= $page->slotMustacheTemplates() ?>
     <?= $page->slotYandexMetrika() ?>
     <?= $page->slotBodyJavascript() ?>
     <?= $page->slotInnerJavascript() ?>

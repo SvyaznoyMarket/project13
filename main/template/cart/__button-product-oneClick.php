@@ -47,6 +47,10 @@ return function (
     }
     */
 
+    if ($product->getIsBuyable() && $shop) {
+        $class .= \Session\AbTest\AbTest::getColorClass($product);
+    }
+
     if (!$product->getIsBuyable()) {
         $url = '#';
         $class .= ' mDisabled';

@@ -138,11 +138,8 @@ class IndexAction {
         // похожие товары
         $similarProducts = [];
 
-        $line = null;
-
         // набор пакеты
         $kit = [];
-        $relatedKits = [];
         $kitProducts = [];
         if ((bool)$product->getKit()) {
             // получим основные товары набора
@@ -345,7 +342,6 @@ class IndexAction {
         $page->setParam('accessoryCategory', $accessoryCategory);
         $page->setParam('kit', $kit);
         $page->setParam('kitProducts', $kitProducts);
-        $page->setParam('relatedKits', $relatedKits);
         $page->setParam('additionalData', $additionalData);
         $page->setParam('creditData', $creditData);
         $page->setParam('shopStates', $shopStates);
@@ -355,7 +351,6 @@ class IndexAction {
         $page->setParam('useLens', $useLens);
         $page->setParam('catalogJson', $catalogJson);
         $page->setParam('trustfactors', $trustfactors);
-        $page->setParam('line', $line);
         $page->setParam('deliveryData', (new \Controller\Product\DeliveryAction())->getResponseData([['id' => $product->getId()]], $region->getId(), $actionResponse->deliveryQuery));
         $page->setParam('isUserSubscribedToEmailActions', $isUserSubscribedToEmailActions);
         $page->setParam('actionChannelName', $actionChannelName);

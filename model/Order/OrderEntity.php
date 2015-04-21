@@ -185,6 +185,12 @@ class OrderEntity {
      * @var string
      */
     private $certificate_pin;
+    /**
+     * Ui коробки пикпоинта
+     *
+     * @var string|null
+     */
+    private $box_ui;
 
     /**
      * @param array $arr
@@ -292,6 +298,8 @@ class OrderEntity {
 
         if (isset($arr['order']['actions']) && is_array($arr['order']['actions']) && (bool)$arr['order']['actions']) $this->action = $arr['order']['actions'];
 
+        if (isset($arr['order']['delivery']['box_ui'])) $this->box_ui = $arr['order']['delivery']['box_ui'];
+
         if (\App::config()->order['enableMetaTag']) $this->meta_data = $this->getMetaData($sender, $sender2);
 
 
@@ -304,7 +312,7 @@ class OrderEntity {
         $request = \App::request();
         $user = \App::user();
         $data = [];
-        $cart = $user->getCart()->getProductsNC();
+        $cart = $user->getCart()->getProductData();
         $oneClickCart = $user->getOneClickCart()->getProductSourceData();
 
         try {

@@ -8,6 +8,7 @@
         $validationErrors = $('.jsOrderValidationErrors'),
         errorClass = 'textfield-err',
 		cancelInputBlur = false,
+        mnogoRuCookie = docCookies.getItem('enter_mnogo_ru'),
         validateEmail = function validateEmailF(email) {
             var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return re.test(email) && !/[а-яА-Я]/.test(email);
@@ -44,7 +45,7 @@
 			if ($bonusCardInput.length > 0) $bonusCardInput.mask($bonusCardInput.data('mask')); // еще раз, т.к. событие blur и последующий validate проскакивает раньше обновления значения инпута плагином
 			if ($mnogoRuInput.length > 0) $mnogoRuInput.mask($mnogoRuInput.data('mask')); // еще раз, т.к. событие blur и последующий validate проскакивает раньше обновления значения инпута плагином
 
-			if ($bonusCardInput.val().length != 0 && !ENTER.utils.checkEan($bonusCardInput.val())) {
+			if ($bonusCardInput.length > 0 && $bonusCardInput.val().length != 0 && !ENTER.utils.checkEan($bonusCardInput.val())) {
 				error.push('Неверный код карты лояльности');
 				$bonusCardInput.addClass(errorClass).siblings('.errTx').show();
 			} else {
@@ -87,6 +88,7 @@
         } else {
 			// запоминаем значение номера карты Много.ру
 			if ($mnogoRuInput) docCookies.setItem('enter_mnogo_ru', $mnogoRuInput.val(), 31536e3, '/');
+            console.log('mnogo.ru', docCookies.getItem('enter_mnogo_ru'))
 		}
     });
 
@@ -117,9 +119,9 @@
 	});
 
 	// добавляем сохраненное значение карты Много.ру
-	if ($pageNew && docCookies.getItem('enter_mnogo_ru') != null) {
-		$pageNew.find('.jsOrderV3MnogoRuCardField').val(docCookies.getItem('enter_mnogo_ru'));
-		$pageNew.find('.jsMnogoRuSpan').text(docCookies.getItem('enter_mnogo_ru'));
+	if ($pageNew && mnogoRuCookie != null && mnogoRuCookie != 'undefined') {
+		$pageNew.find('.jsOrderV3MnogoRuCardField').val(mnogoRuCookie);
+		$pageNew.find('.jsMnogoRuSpan').text(mnogoRuCookie);
 	}
 
     // PAGE DELIVERY

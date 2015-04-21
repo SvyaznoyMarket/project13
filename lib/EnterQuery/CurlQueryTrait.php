@@ -258,11 +258,9 @@ trait CurlQueryTrait
             CURLOPT_HTTPHEADER => ['X-Request-Id: ' . \App::$id, 'Expect:'], // TODO: customize
         ];
         if ($data) {
+            $query->request->options[CURLOPT_POST] = true;
+            $query->request->options[CURLOPT_POSTFIELDS] = json_encode($data); // TODO: customize
             $query->request->options[CURLOPT_HTTPHEADER][] = 'Content-Type: application/json'; // TODO: customize
-            $query->request->options += [
-                CURLOPT_POST => true,
-                CURLOPT_POSTFIELDS => json_encode($data),
-            ];
         }
 
         return $query;
