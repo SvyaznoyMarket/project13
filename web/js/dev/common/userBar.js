@@ -197,25 +197,6 @@
 		var btn = $(this);
 		// end of vars
 
-		var
-			deleteFromRetailRocket = function deleteFromRetailRocket( data ) {
-				if ( !data.hasOwnProperty('product') || !data.product.hasOwnProperty('id') ) {
-					return;
-				}
-
-				console.info('RetailRocket removeFromCart');
-				console.log('product_id=' + data.product.id);
-				if (window.rrApiOnReady) window.rrApiOnReady.push(function(){ window.rrApi.removeFromBasket(data.product.id) });
-			},
-
-			deleteProductAnalytics = function deleteProductAnalytics( data ) {
-				if ('undefined' == typeof(data) ) {
-					return;
-				}
-
-				deleteFromRetailRocket(data);
-			};
-
 		$.ajax({
 			type: 'GET',
 			url: btn.attr('href'),
@@ -226,9 +207,6 @@
 
 					return;
 				}
-
-				// аналитика
-				deleteProductAnalytics(res);
 
 				ENTER.UserModel.removeProductByID(res.product.id);
 

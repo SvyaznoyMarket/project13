@@ -261,7 +261,7 @@ class Cart {
      * @return bool
      */
     public function hasProduct($productId) {
-        $data = $this->storage->get($this->sessionName);
+        $data = $this->storage->get($this->sessionName) ?: [];
 
         return array_key_exists($productId, $data['product']);
     }
