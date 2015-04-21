@@ -180,9 +180,12 @@ class RecommendedAction {
                     $rowsCount = 2;
                 }
 
+                $template = \App::abTest()->isNewProductPage() ? 'product-page/blocks/slider' : 'product/__slider';
+//                $template = 'product/__slider';
+
                 $recommendData[$type] = [
                     'success'   => true,
-                    'content'   => $templating->render('product/__slider', [
+                    'content'   => $templating->render($template, [
                         'title'          => $this->getTitleByType($type),
                         'products'       => $products,
                         'count'          => count($products),

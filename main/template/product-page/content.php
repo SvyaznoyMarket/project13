@@ -278,7 +278,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 	<div class="product-section product-section--inn product-section--border-top">
 <!--		<div class="product-section__h3">С этим товаром покупают</div>-->
         <? if (\App::config()->product['pullRecommendation']): ?>
-            <?= $helper->render('product/__slider', [
+            <?= $helper->render('product-page/blocks/slider', [
                 'type'           => 'alsoBought',
                 'title'          => 'С этим товаром покупают',
                 'products'       => [],
@@ -294,108 +294,6 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
                 'sender2' => $sender2,
             ]) ?>
         <? endif ?>
-
-        <!-- слайдер товаров для слайдера с аксессуарами применяем модификатор goods-slider--5items -->
-        <div class="goods-slider">
-            <div class="goods-slider__inn">
-                <ul class="goods-slider-list clearfix">
-                    <li class="goods-slider-list__i" data-category="" data-product="">
-                        <img class="slideItem_stick" src="http://fs07.enter.ru/7/1/66x23/fe/375422.png" alt="Sale">
-
-                        <a id="" class="goods-slider-list__link" href="" target="_blank">
-                            <span class="goods-slider-list__action"><img class="goods-slider-list__img" src="http://fs03.enter.ru/1/1/120/ed/247782.jpg" alt="Защитная пленка для iPhone 5C  XtremeMac IPP-TSMLC-03 матовая"></span>
-
-                            <span class="goods-slider-list__name">Защитная пленка для iPhone 5C  XtremeMac IPP-TSMLC-03 матовая</span>
-                        </a>
-
-                        <div class="goods-slider-list__price-old"><span class="line-through">195</span> <span class="rubl">p</span></div>
-                        <div class="goods-slider-list__price-now">195 <span class="rubl">p</span></div>
-
-                        <a href="" class="btn-type btn-type--buy btn-type--light">Купить</a>
-                    </li>
-
-                    <li class="goods-slider-list__i" data-category="" data-product="">
-                        <img class="slideItem_stick" src="http://fs07.enter.ru/7/1/66x23/fe/375422.png" alt="Sale">
-
-                        <a id="" class="goods-slider-list__link" href="" target="_blank">
-                            <span class="goods-slider-list__action"><img class="goods-slider-list__img" src="http://fs03.enter.ru/1/1/120/ed/247782.jpg" alt="Защитная пленка для iPhone 5C  XtremeMac IPP-TSMLC-03 матовая"></span>
-
-                            <span class="goods-slider-list__name">Защитная пленка для iPhone 5C  XtremeMac IPP-TSMLC-03 матовая</span>
-                        </a>
-
-                        <div class="goods-slider-list__price-old"></div>
-                        <div class="goods-slider-list__price-now">195 <span class="rubl">p</span></div>
-
-                        <a href="" class="btn-type btn-type--buy btn-type--light">Купить</a>
-                    </li>
-
-                    <li class="goods-slider-list__i" data-category="" data-product="">
-                        <img class="slideItem_stick" src="http://fs07.enter.ru/7/1/66x23/fe/375422.png" alt="Sale">
-
-                        <a id="" class="goods-slider-list__link" href="" target="_blank">
-                            <span class="goods-slider-list__action"><img class="goods-slider-list__img" src="http://fs03.enter.ru/1/1/120/ed/247782.jpg" alt="Защитная пленка для iPhone 5C  XtremeMac IPP-TSMLC-03 матовая"></span>
-
-                            <span class="goods-slider-list__name">Защитная пленка для</span>
-                        </a>
-
-                        <div class="goods-slider-list__price-old"><span class="line-through">195</span> <span class="rubl">p</span></div>
-                        <div class="goods-slider-list__price-now">195 <span class="rubl">p</span></div>
-
-                        <a href="" class="btn-type btn-type--buy btn-type--light">Купить</a>
-                    </li>
-
-                    <li class="goods-slider-list__i" data-category="" data-product="">
-                        <img class="slideItem_stick" src="http://fs07.enter.ru/7/1/66x23/fe/375422.png" alt="Sale">
-
-                        <a id="" class="goods-slider-list__link" href="" target="_blank">
-                            <span class="goods-slider-list__action"><img class="goods-slider-list__img" src="http://fs03.enter.ru/1/1/120/ed/247782.jpg" alt="Защитная пленка для iPhone 5C  XtremeMac IPP-TSMLC-03 матовая"></span>
-
-                            <span class="goods-slider-list__name">Защитная пленка для iPhone 5C  XtremeMac IPP-TSMLC-03 матовая</span>
-                        </a>
-
-                        <div class="goods-slider-list__price-old"><span class="line-through">195</span> <span class="rubl">p</span></div>
-                        <div class="goods-slider-list__price-now">195 <span class="rubl">p</span></div>
-
-                        <a href="" class="btn-type btn-type--buy btn-type--light">Купить</a>
-                    </li>
-
-                    <li class="goods-slider-list__i" data-category="" data-product="">
-                        <img class="slideItem_stick" src="http://fs07.enter.ru/7/1/66x23/fe/375422.png" alt="Sale">
-
-                        <a id="" class="goods-slider-list__link" href="" target="_blank">
-                            <span class="goods-slider-list__action"><img class="goods-slider-list__img" src="http://fs03.enter.ru/1/1/120/ed/247782.jpg" alt="Защитная пленка для iPhone 5C  XtremeMac IPP-TSMLC-03 матовая"></span>
-
-                            <span class="goods-slider-list__name">Защитная пленка для iPhone 5C  XtremeMac IPP-TSMLC-03 матовая</span>
-                        </a>
-
-                        <div class="goods-slider-list__price-old"><span class="line-through">195</span> <span class="rubl">p</span></div>
-                        <div class="goods-slider-list__price-now">195 <span class="rubl">p</span></div>
-
-                        <a href="" class="btn-type btn-type--buy btn-type--light">Купить</a>
-                    </li>
-
-                    <li class="goods-slider-list__i" data-category="" data-product="">
-                        <img class="slideItem_stick" src="http://fs07.enter.ru/7/1/66x23/fe/375422.png" alt="Sale">
-
-                        <a id="" class="goods-slider-list__link" href="" target="_blank">
-                            <span class="goods-slider-list__action"><img class="goods-slider-list__img" src="http://fs03.enter.ru/1/1/120/ed/247782.jpg" alt="Защитная пленка для iPhone 5C  XtremeMac IPP-TSMLC-03 матовая"></span>
-
-                            <span class="goods-slider-list__name">Защитная пленка для iPhone 5C  XtremeMac IPP-TSMLC-03 матовая</span>
-                        </a>
-
-                        <div class="goods-slider-list__price-old"><span class="line-through">195</span> <span class="rubl">p</span></div>
-                        <div class="goods-slider-list__price-now">195 <span class="rubl">p</span></div>
-
-                        <a href="" class="btn-type btn-type--buy btn-type--light">Купить</a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="goods-slider__btn goods-slider__btn--prev disabled"></div>
-            <div class="goods-slider__btn goods-slider__btn--next"></div>
-        </div>
-    </div>
-    <!--/ слайдер товаров -->
     <!--/ с этим товаром покупают -->
 
     <!-- ссылки связной, сбер и многору -->
@@ -449,7 +347,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 	<div class="product-section">
 		<div class="product-section__tl" id="accessorize">Аксессуары</div>
 
-            <?= $helper->render('product/__slider', [
+            <?= $helper->render('product-page/blocks/slider', [
                 'type'           => 'accessorize',
                 'title'          => null,
                 'products'       => array_values($accessories),
@@ -487,7 +385,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 	<div class="product-section product-section--inn" id="similar">
 <!--		<div class="product-section__h3">Похожие товары</div>-->
         <? if ($isProductAvailable && \App::config()->product['pullRecommendation']): ?>
-            <?= $helper->render('product/__slider', [
+            <?= $helper->render('product-page/blocks/slider', [
                 'type'     => 'similar',
                 'title'    => 'Похожие товары',
                 'products' => [],
@@ -509,7 +407,7 @@ $buySender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
 	<div class="product-section product-section--inn">
 <!--		<div class="product-section__h3">Вы смотрели</div>-->
         <? if (\App::config()->product['pullRecommendation'] && \App::config()->product['viewedEnabled']): ?>
-            <?= $helper->render('product/__slider', [
+            <?= $helper->render('product-page/blocks/slider', [
                 'type'      => 'viewed',
                 'title'     => 'Вы смотрели',
                 'products'  => [],
