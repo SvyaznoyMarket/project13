@@ -47,7 +47,8 @@ class Criteo {
 
                 case "cart":
                     $viewEvent = 'viewBasket';
-                    $in_basket = $cart->getData()['productList'];
+                    //$in_basket = $cart->getData()['productList'];
+                    $in_basket = $cart->getProductData();
                     $products = $this->getParam('productEntities');
 
                     foreach($products as $product) {
@@ -55,7 +56,7 @@ class Criteo {
                         $eventItems_arr[] = array(
                             'id' => $product->getId(),
                             'price' => $product->getPrice(),
-                            'quantity' => $in_basket[ $product->getId() ],
+                            'quantity' => $in_basket[$product->getId()]['quantity'],
                         );
                     }
                     break;

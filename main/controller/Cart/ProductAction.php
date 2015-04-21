@@ -113,7 +113,7 @@ class ProductAction {
                         'full_price'    => $cart->getSum(),
                         'old_price'     => $cart->getOriginalSum(),
                         'link'          => \App::router()->generate('order'),
-                        'products'      => $cart->getProductsDumpNC(),
+                        'products'      => $cart->getProductDump(),
                     ],
                     'product'     => $productInfo,
                     'category_id' => $parentCategoryId,
@@ -226,14 +226,19 @@ class ProductAction {
 
                 $quantity += $cart->getQuantityByProduct($productId);
             }
-            $cart->fill();
+            $cart->update();
 
             $result = [];
             $client->addQuery(
                 'cart/get-price',
                 ['geo_id' => \App::user()->getRegion()->getId()],
                 [
-                    'product_list'  => $cart->getProductData(),
+                    'product_list'  => array_map(function($item) {
+                        return [
+                            'id'       => $item['id'],
+                            'quantity' => $item['quantity'],
+                        ];
+                    }, $cart->getProductData()),
                 ],
                 function ($data) use (&$result) {
                     $result = $data;
@@ -280,7 +285,7 @@ class ProductAction {
                     'full_price'    => $cart->getSum(),
                     'old_price'     => $cart->getOriginalSum(),
                     'link'          => \App::router()->generate('order'),
-                    'products'      => $cart->getProductsDumpNC(),
+                    'products'      => $cart->getProductDump(),
                 ],
                 'products'  => $productsInfo,
                 'sender'    => $sender,

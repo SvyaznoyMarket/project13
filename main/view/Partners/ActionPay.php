@@ -94,7 +94,7 @@ class ActionPay {
      */
     private function basketInfo() {
         $this->sendData['basketProducts'] = [];
-        foreach ((array)$this->cart->getProductsNC() as $product) {
+        foreach ((array)$this->cart->getProductData() as $product) {
             $this->sendData['basketProducts'][] = array(
                 'id' => @$product['id'],
                 'price' => @$product['price'],

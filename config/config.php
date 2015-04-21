@@ -371,8 +371,9 @@ $c->banner['url'] = [
 ];
 
 $c->cart['productLimit'] = 30;
-$c->cart['sessionName'] = 'userCart';
+$c->cart['sessionName'] = 'cart';
 $c->cart['checkStock'] = false;
+$c->cart['updateTime'] = 1; // обновлять корзину, если данные в ней устарели более, чем на 1 минуту
 
 $c->payment['creditEnabled'] = true;
 $c->payment['blockedIds'] = [];
