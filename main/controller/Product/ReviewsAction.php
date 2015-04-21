@@ -12,12 +12,14 @@ class ReviewsAction {
     public function execute(\Http\Request $request, $productUi) {
         //\App::logger()->debug('Exec ' . __METHOD__);
 
+        $numReviewsOnPage = $request->get('numOnPage', \Model\Review\Repository::NUM_REVIEWS_ON_PAGE);
+
         $page = $request->get('page', 0);
         $reviewsType = $request->get('type', 'user');
         $layout = $request->get('layout', false);
 
         $reviewsData = [];
-        \RepositoryManager::review()->prepareData($productUi, $reviewsType, $page, \Model\Review\Repository::NUM_REVIEWS_ON_PAGE, function($data) use(&$reviewsData) {
+        \RepositoryManager::review()->prepareData($productUi, $reviewsType, $page, $numReviewsOnPage, function($data) use(&$reviewsData) {
             $reviewsData = (array)$data;
         });
         \App::curl()->execute();
@@ -27,12 +29,19 @@ class ReviewsAction {
         if(!empty($reviewsData['review_list'])) {
             $response = '';
             foreach ($reviewsData['review_list'] as $key => $review) {
-                $response .= \App::templating()->render('product/_review', [
-                    'page' => (new \View\Product\IndexPage()),
-                    'review' => $review,
-                    'last' => empty($reviewsData['review_list'][$key + 1]),
-                    'layout' => $layout
-                ]);
+                if (!\App::abTest()->isNewProductPage()) {
+                    $response .= \App::templating()->render('product/_review', [
+                        'page' => (new \View\Product\IndexPage()),
+                        'review' => $review,
+                        'last' => empty($reviewsData['review_list'][$key + 1]),
+                        'layout' => $layout
+                    ]);
+                } else {
+                    $response .= \App::helper()->render('product-page/blocks/reviews.single', [
+                        'review' => $review,
+                        'hidden' => false
+                    ]);
+                }
             }
         }
 

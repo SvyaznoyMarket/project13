@@ -9,7 +9,7 @@
     ?>
 
 <div class="reviews clearfix">
-    <div class="reviews__l">
+    <div class="reviews__l jsReviewsList">
         <? if ($reviewsData['num_reviews'] == 0) : ?>
             Пока нет отзывов.
         <? else : ?>
@@ -32,7 +32,7 @@
 </div>
 
 <? if ($reviewsData['num_reviews'] > 2) : ?>
-    <div class="btn-type btn-type--normal jsShowMoreReviews">Показать больше отзывов</div>
+    <div class="btn-type btn-type--normal jsShowMoreReviews" data-ui="<?= $product->getUi() ?>" data-total-num="<?= $reviewsData['num_reviews'] ?>">Показать больше отзывов</div>
 <? endif ?>
 
 <!-- попап добавления отзыва -->

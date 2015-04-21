@@ -183,8 +183,8 @@ namespace EnterApplication\Action\ProductCard
             call_user_func(function() use (&$productQuery, &$reviewQuery) {
                 $productUi = $productQuery->response->product['ui'];
                 if (!$productUi) return;
-
-                $reviewQuery = (new Query\Product\Review\GetByProductUi($productUi, 0, 7))->prepare();
+                $pageSize = \App::abTest()->isNewProductPage() ? 10 : 7;
+                $reviewQuery = (new Query\Product\Review\GetByProductUi($productUi, 0, $pageSize))->prepare();
             });
 
             // категория товаров
