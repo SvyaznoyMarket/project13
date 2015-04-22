@@ -6,6 +6,10 @@ $f = function(
     $properties3D
 ){
 
+    $request = \App::request();
+    $productPageSender = \Session\ProductPageSenders::get($product->getUi());
+    $productPageSender2 = \Session\ProductPageSendersForMarketplace::get($product->getUi());
+
     ?>
 
     <!-- слайдер изображений товара -->
@@ -104,7 +108,14 @@ $f = function(
                 <div class="product-card-photo-thumbs__btn product-card-photo-thumbs__btn--r"></div>
             </div>
 
-            <a href="" class="btn-type btn-type--buy">В корзину</a>
+<!--            <a href="" class="btn-type btn-type--buy">В корзину</a>-->
+            <?= $helper->render('cart/__button-product', [
+                'product'  => $product,
+                'sender'   => ($request->get('sender') ? (array)$request->get('sender') : $productPageSender) + ['name' => null, 'method' => null, 'position' => null],
+                'location' => 'userbar',
+                'sender2'  => $productPageSender2,
+            ]) // Кнопка купить ?>
+
         </div>
         <!--/ попап просмотра большого изображения -->
 

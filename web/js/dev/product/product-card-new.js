@@ -103,6 +103,9 @@
         var productId = $(this).data('product-id'),
             $div = $('.jsProductPointsMap');
 
+        // Если нет пунктов самовывоза
+        if ($('.jsDeliveryPickupAvailable').length == 0) return;
+
         // Если точки были загружены, то просто показываем этот div
         if ($div.find('.jsDeliveryMapPoints').length > 0) {
             $div.lightbox_me({
