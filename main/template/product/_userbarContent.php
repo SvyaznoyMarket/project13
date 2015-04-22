@@ -43,5 +43,14 @@ $productPageSender2 = \Session\ProductPageSendersForMarketplace::get($product->g
         <span class="jsPrice"><?= $helper->formatPrice($product->getPrice()) ?></span><span class="rubl">p</span>
     </div>
 
-    <a href="<?= \App::helper()->url('cart') ?>" class="topbarfix_buy-btn btn-type btn-type--buy">В корзину</a>
+<!--    <a href="--><?//= \App::helper()->url('cart') ?><!--" class="topbarfix_buy-btn btn-type btn-type--buy">В корзину</a>-->
+    <?= $helper->render('cart/__button-product', [
+        'product'  => $product,
+        'onClick'  => $addToCartJS ? $addToCartJS : null,
+        'sender'   => ($request->get('sender') ? (array)$request->get('sender') : $productPageSender) + ['name' => null, 'method' => null, 'position' => null],
+        'location' => 'userbar',
+        'sender2'  => $productPageSender2,
+    ]) // Кнопка купить ?>
+
+
 </div>

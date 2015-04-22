@@ -1,5 +1,5 @@
-<div class="{{#isSlot}}btn--slot--container{{/isSlot}} {{^isSlot}}btnBuy {{#isKit}}mBuySet{{/isKit}}{{/isSlot}}
-{{#isGiftery}}btn--container{{/isGiftery}}">
+{{# surroundDiv }}<div class="{{#isSlot}}btn--slot--container{{/isSlot}} {{^isSlot}}btnBuy {{#isKit}}mBuySet{{/isKit}}{{/isSlot}}
+    {{#isGiftery}}btn--container{{/isGiftery}}">{{/surroundDiv}}
     <a
         {{#id}}id="{{id}}"{{/id}}
         href="{{url}}"
@@ -21,4 +21,4 @@
         {{#onClick}}onclick="{{onClick}}"{{/onClick}}
         data-bind="buyButtonBinding: cart"
     >{{value}}</a>
-</div>
+{{# surroundDiv }}</div>{{/surroundDiv}}
